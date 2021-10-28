@@ -8,7 +8,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -41,7 +41,7 @@ describe('AlignmentControl', () => {
 		}
 	});
 	it('Check Responsive text-alignment control', async () => {
-		const accordionPanel = await openSidebar(page, 'alignment');
+		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		const isItemChecked = await page.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
@@ -92,7 +92,7 @@ describe('AlignmentControl', () => {
 
 	it('Check Responsive alignment control', async () => {
 		await insertBlock('Button Maxi');
-		const accordionPanel = await openSidebar(page, 'alignment');
+		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		await accordionPanel.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',

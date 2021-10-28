@@ -1,0 +1,78 @@
+.maxi-sidebar .maxi-radio-control {
+	display: inline-flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 10px;
+
+	.maxi-display-control {
+		width: 100%;
+	}
+	.maxi-base-control {
+		&__field {
+			width: 100%;
+		}
+		&__label {
+			flex: 2;
+		}
+	}
+	.maxi-radio-control {
+		width: 100%;
+
+		&__option {
+			flex: 1;
+			min-width: 40px;
+			height: 32px;
+			border: 1px solid var(--maxi-grey-1-color);
+			margin-bottom: 0;
+			color: #464a53;
+			background-color: #fff;
+			opacity: 1 !important;
+			transition: all 0.5s;
+
+			&:hover {
+				background-color: var(--maxi-grey-3-color);
+			}
+			&:focus {
+				background-color: var(--maxi-grey-2-color);
+			}
+			input {
+				display: none;
+
+				&:checked ~ label {
+					position: relative;
+					z-index: 1;
+					border-bottom: 2px solid var(--maxi-secondary-color);
+					background-color: #f8fbfd;
+				}
+			}
+			label {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100%;
+			}
+			svg {
+				display: block;
+				width: 20px;
+				height: 100%;
+				margin: 0;
+				fill: #464a53;
+			}
+		}
+	}
+
+	&__full-width {
+		.maxi-base-control {
+			&__field {
+				flex-wrap: wrap;
+			}
+			&__label {
+				display: block;
+				flex: 100% !important;
+				width: 100%;
+				margin: 0 0 5px 0 !important;
+			}
+		}
+	}
+}

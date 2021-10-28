@@ -7,12 +7,18 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { getPrefixedAttributes } from '../../extensions/styles';
 
 /**
  * Attributes
  */
+const prefix = 'button-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
@@ -25,6 +31,29 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.icon,
+	...attributesData.iconHover,
+	...attributesData.iconPadding,
+	...{
+		...attributesData.iconBackgroundColor,
+		['icon-background-palette-color-status-general']: {
+			type: 'boolean',
+			default: true,
+		},
+		['icon-background-palette-color-general']: {
+			type: 'number',
+			default: 4,
+		},
+	},
+	...attributesData.iconBackgroundColorHover,
+	...attributesData.iconBackgroundGradient,
+	...attributesData.iconBackgroundGradientHover,
+	...attributesData.iconBorder,
+	...attributesData.iconBorderWidth,
+	...attributesData.iconBorderRadius,
+	...attributesData.iconBorderHover,
+	...attributesData.iconBorderWidthHover,
+	...attributesData.iconBorderRadiusHover,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -50,108 +79,124 @@ const attributes = {
 	},
 	...attributesData.typographyHover,
 	...{
-		...attributesData.background,
-		...attributesData.backgroundHover,
-		'background-active-media-general': {
+		...getPrefixedAttributes(attributesData.background, prefix),
+		[`${prefix}background-active-media-general`]: {
 			type: 'string',
 			default: 'color',
 		},
 	},
 	...{
-		...attributesData.backgroundColor,
-		'background-palette-color-general': {
+		...getPrefixedAttributes(attributesData.backgroundColor, prefix),
+		[`${prefix}background-palette-color-general`]: {
 			type: 'number',
 			default: 4,
 		},
 	},
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundGradientHover,
-	...attributesData.opacity,
-	...attributesData.border,
-	...attributesData.borderWidth,
+	...getPrefixedAttributes(attributesData.backgroundGradient, prefix),
+	...getPrefixedAttributes(attributesData.backgroundHover, prefix),
+	...getPrefixedAttributes(attributesData.backgroundColorHover, prefix),
+	...getPrefixedAttributes(attributesData.backgroundGradientHover, prefix),
+	...getPrefixedAttributes(attributesData.border, prefix),
+	...getPrefixedAttributes(attributesData.borderWidth, prefix),
 	...{
-		...attributesData.borderRadius,
-		'border-top-left-radius-general': {
+		...getPrefixedAttributes(attributesData.borderRadius, prefix),
+		[`${prefix}border-top-left-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
-		'border-top-right-radius-general': {
+		[`${prefix}border-top-right-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
-		'border-bottom-left-radius-general': {
+		[`${prefix}border-bottom-left-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
-		'border-bottom-right-radius-general': {
+		[`${prefix}border-bottom-right-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
 	},
-	...attributesData.icon,
-	...attributesData.iconPadding,
-	...attributesData.iconBackgroundColor,
-	...attributesData.iconBackgroundGradient,
-	...attributesData.iconBorder,
-	...attributesData.iconBorderWidth,
-	...attributesData.iconBorderRadius,
-	...attributesData.iconHover,
-	...attributesData.iconBackgroundColorHover,
-	...attributesData.iconBackgroundGradientHover,
-	...attributesData.iconBorderHover,
-	...attributesData.iconBorderWidthHover,
-	...attributesData.iconBorderRadiusHover,
+	...{
+		...getPrefixedAttributes(attributesData.borderHover, prefix),
+		[`${prefix}border-status-hover`]: {
+			type: 'boolean',
+			default: false,
+		},
+	},
+	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
+	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,
-	...attributesData.size,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...attributesData.margin,
+	...getPrefixedAttributes(attributesData.opacity, prefix),
+	...getPrefixedAttributes(attributesData.size, prefix),
+	...getPrefixedAttributes(attributesData.margin, prefix),
 	...{
-		...attributesData.padding,
-		'padding-top-general': {
+		...getPrefixedAttributes(attributesData.padding, prefix),
+		[`${prefix}padding-top-general`]: {
 			type: 'number',
 			default: 15,
 		},
-		'padding-right-general': {
+		[`${prefix}padding-right-general`]: {
 			type: 'number',
 			default: 36,
 		},
-		'padding-bottom-general': {
+		[`${prefix}padding-bottom-general`]: {
 			type: 'number',
 			default: 15,
 		},
-		'padding-left-general': {
+		[`${prefix}padding-left-general`]: {
 			type: 'number',
 			default: 36,
 		},
-		'padding-top-xxl': {
+		[`${prefix}padding-top-xxl`]: {
 			type: 'number',
 			default: 23,
 		},
-		'padding-right-xxl': {
+		[`${prefix}padding-right-xxl`]: {
 			type: 'number',
 			default: 55,
 		},
-		'padding-bottom-xxl': {
+		[`${prefix}padding-bottom-xxl`]: {
 			type: 'number',
 			default: 23,
 		},
-		'padding-left-xxl': {
+		[`${prefix}padding-left-xxl`]: {
 			type: 'number',
 			default: 55,
 		},
 	},
-	...attributesData.display,
-	...attributesData.position,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.blockBackground,
 	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.zIndex,
 	...attributesData.transitionDuration,
+	...attributesData.display,
+	...attributesData.position,
 	...attributesData.overflow,
+	...attributesData.zIndex,
+	...attributesData.size,
+	...attributesData.margin,
+	...attributesData.padding,
 };
 
 export default attributes;

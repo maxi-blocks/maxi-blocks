@@ -99,7 +99,7 @@ const save = props => {
 					/>
 				)}
 			</HoverPreview>
-			{captionType !== 'none' && (
+			{captionType !== 'none' && !isEmpty(captionContent) && (
 				<RichText.Content
 					className='maxi-image-block__caption'
 					value={captionContent}

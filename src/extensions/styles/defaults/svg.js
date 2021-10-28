@@ -39,6 +39,10 @@ const svg = {
 		type: 'string',
 		default: 'px',
 	},
+	'svg-responsive-general': {
+		type: 'boolean',
+		default: true,
+	},
 	'svg-stroke-xxl': {
 		type: 'number',
 	},
@@ -47,6 +51,9 @@ const svg = {
 	},
 	'svg-width-unit-xxl': {
 		type: 'string',
+	},
+	'svg-responsive-xxl': {
+		type: 'boolean',
 	},
 	'svg-stroke-xl': {
 		type: 'number',
@@ -57,6 +64,9 @@ const svg = {
 	'svg-width-unit-xl': {
 		type: 'string',
 	},
+	'svg-responsive-xl': {
+		type: 'boolean',
+	},
 	'svg-stroke-l': {
 		type: 'number',
 	},
@@ -65,6 +75,9 @@ const svg = {
 	},
 	'svg-width-unit-l': {
 		type: 'string',
+	},
+	'svg-responsive-l': {
+		type: 'boolean',
 	},
 	'svg-stroke-m': {
 		type: 'number',
@@ -75,6 +88,9 @@ const svg = {
 	'svg-width-unit-m': {
 		type: 'string',
 	},
+	'svg-responsive-m': {
+		type: 'boolean',
+	},
 	'svg-stroke-s': {
 		type: 'number',
 	},
@@ -83,6 +99,9 @@ const svg = {
 	},
 	'svg-width-unit-s': {
 		type: 'string',
+	},
+	'svg-responsive-s': {
+		type: 'boolean',
 	},
 	'svg-stroke-xs': {
 		type: 'number',

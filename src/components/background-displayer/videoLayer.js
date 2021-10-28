@@ -19,20 +19,11 @@ import './style.scss';
  * Component
  */
 const VideoLayer = props => {
-	const { videoOptions, blockClassName, className, breakpoint } = props;
+	const { videoOptions, className, breakpoint } = props;
 
 	let videoUrl = videoOptions['background-video-mediaURL'];
 
 	if (isNil(videoUrl)) return null;
-
-	// TODO: needs to be changed by a ref of the parent
-	const parentEl = document.querySelector(`.${blockClassName}`);
-	const iframeHeight = '100%';
-
-	// TOFIX: makes the component break when reloading the site
-	// if (parentEl) {
-	// 	iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // Set the height of the iframe according to the aspect ratio 16:9
-	// }
 
 	const videoLoop = getLastBreakpointAttribute(
 		'background-video-loop',
@@ -88,7 +79,7 @@ const VideoLayer = props => {
 	);
 
 	// Pause vimeo at the endTime
-	if (parsedVideo.type === 'vimeo' && videoEndTime && parentEl) {
+	if (parsedVideo.type === 'vimeo' && videoEndTime) {
 		const scriptsArray = Array.from(window.document.scripts);
 
 		const vimeoIsMounted = scriptsArray.findIndex(
@@ -161,14 +152,13 @@ const VideoLayer = props => {
 
 					{(parsedVideo.type === 'youtube' ||
 						parsedVideo.type === 'vimeo') && (
-						<div className='maxi-background-displayer__video-player__iframe-wrapper'>
+						<div className='maxi-background-displayer__iframe-wrapper'>
 							<iframe
 								title={`${parsedVideo.type} video`}
 								src={videoUrl}
 								frameBorder='0'
 								allow='autoplay'
 								allowFullScreen='allowfullscreen'
-								style={{ height: iframeHeight }}
 							/>
 						</div>
 					)}

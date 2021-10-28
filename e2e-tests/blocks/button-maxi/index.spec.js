@@ -10,7 +10,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { openSidebar } from '../../utils';
+import { openSidebarTab } from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
@@ -24,7 +24,7 @@ describe('Button Maxi', () => {
 	});
 
 	it('Button Style', async () => {
-		await openSidebar(page, 'style');
+		await openSidebarTab(page, 'style', 'style shortcut');
 
 		const buttons = await page.$$('.maxi-button-default-styles button');
 		await buttons[4].click();
@@ -38,7 +38,7 @@ describe('Button Maxi', () => {
 
 		await page.keyboard.type('Hello');
 
-		const accordionPanel = await openSidebar(page, 'icon');
+		const accordionPanel = await openSidebarTab(page, 'style', 'icon');
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
@@ -66,6 +66,6 @@ describe('Button Maxi', () => {
 			attributes['icon-content']
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, '')); 
+		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
 	}); */
 });

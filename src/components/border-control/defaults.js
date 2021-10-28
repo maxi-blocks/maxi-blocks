@@ -3,19 +3,18 @@ import {
 	borderWidth as defaultBorderWidth,
 } from '../../extensions/styles/defaults/border';
 
-import {
-	iconBorder as defaultIconBorder,
-	iconBorderWidth as defaultIconBorderWidth,
-} from '../../extensions/styles/defaults/iconBorder';
+import { getPrefixedAttributes } from '../../extensions/styles';
 
 export const borderNone = (prefix = '', isHover) => {
 	let response = {};
 
-	const currentDefaultBorder =
-		prefix === 'icon-' ? defaultIconBorder : defaultBorder;
+	const currentDefaultBorder = prefix
+		? getPrefixedAttributes(defaultBorder, prefix)
+		: defaultBorder;
 
-	const currentDefaultBorderWidth =
-		prefix === 'icon-' ? defaultIconBorderWidth : defaultBorderWidth;
+	const currentDefaultBorderWidth = prefix
+		? getPrefixedAttributes(defaultBorderWidth, prefix)
+		: defaultBorderWidth;
 
 	response = {
 		[`${prefix}border-palette-color-status`]:

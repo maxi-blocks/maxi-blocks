@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import Icon from '../icon';
 import MotionUniqueControl from './motion-unique-control';
 import {
@@ -132,7 +132,7 @@ const MotionControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<RadioControl
 				fullWidthMode
 				selected={motionStatus}
 				options={motionOptions}
@@ -142,7 +142,7 @@ const MotionControl = props => {
 					setMotionStatus(val);
 				}}
 			/>
-			{/* <FancyRadioControl
+			{/* <RadioControl
 						 label={__('Preview', 'maxi-blocks')}
 						 selected={props['motion-preview-status']}
 						 options={[
@@ -172,7 +172,7 @@ const MotionControl = props => {
 				return (
 					<div key={`maxi-motion-control-${type}-${breakpoint}`}>
 						{motionStatus === type && (
-							<FancyRadioControl
+							<RadioControl
 								label={__(
 									`Enable ${typeCapitalize}`,
 									'maxi-blocks'

@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import ToggleSwitch from '../toggle-switch';
 import InfoBox from '../info-box';
 import {
@@ -101,7 +101,7 @@ const ArrowControl = props => {
 			/>
 			{props['arrow-status'] && (
 				<>
-					<FancyRadioControl
+					<RadioControl
 						label=''
 						selected={getLastBreakpointAttribute(
 							'arrow-side',
@@ -109,7 +109,6 @@ const ArrowControl = props => {
 							props
 						)}
 						options={getOptions()}
-						optionType='string'
 						onChange={val =>
 							onChange({ [`arrow-side-${breakpoint}`]: val })
 						}

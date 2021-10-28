@@ -125,13 +125,20 @@ const DividerControl = props => {
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('divider-border-color')}
 					paletteColor={props['divider-palette-border-color']}
+					paletteOpacity={props['divider-palette-border-opacity']}
 					paletteStatus={props['divider-palette-border-color-status']}
-					onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
 						onChange({
 							'divider-border-color': color,
 							'divider-palette-border-color': paletteColor,
 							'divider-palette-border-color-status':
 								paletteStatus,
+							'divider-palette-border-opacity': paletteOpacity,
 						})
 					}
 					disableGradient

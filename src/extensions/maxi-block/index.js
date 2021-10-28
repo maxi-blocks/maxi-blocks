@@ -172,7 +172,7 @@ class MaxiBlockComponent extends Component {
 
 		if (this.shouldMaxiBlockUpdate) this.shouldMaxiBlockUpdate();
 
-		return !isEqual(nextProps.attributes, this.props.attributes);
+		return !isEqual(nextProps, this.props);
 	}
 
 	/**

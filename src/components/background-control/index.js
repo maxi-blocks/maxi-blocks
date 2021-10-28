@@ -12,7 +12,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import ColorLayer from './colorLayer';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
@@ -113,13 +113,12 @@ const BackgroundControl = props => {
 	return (
 		<div className={classes}>
 			{getOptions().length > 1 && (
-				<FancyRadioControl
+				<RadioControl
 					label={__('Background', 'maxi-blocks')}
 					className='maxi-background-control__simple'
 					fullWidthMode
 					selected={backgroundActiveMedia || 'none'}
 					options={getOptions()}
-					optionType='string'
 					onChange={val =>
 						onChange({
 							[getAttributeKey(

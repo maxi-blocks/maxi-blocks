@@ -7,7 +7,7 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import SquareControl from './square-control';
 import RotateControl from './rotate-control';
 import {
@@ -94,7 +94,7 @@ const TransformControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<RadioControl
 				label=''
 				selected={transformStatus}
 				options={[
@@ -110,7 +110,6 @@ const TransformControl = props => {
 						hidden: !isTransformed(),
 					},
 				]}
-				optionType='string'
 				onChange={val => setTransformStatus(val)}
 			/>
 			{transformStatus === 'scale' && (

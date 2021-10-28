@@ -78,7 +78,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			setAttributes,
 		} = this.props;
-		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
+		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -90,6 +90,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				{attributes['shape-divider-top-status'] && (
@@ -98,7 +99,7 @@ class edit extends MaxiBlockComponent {
 						location='top'
 					/>
 				)}
-				{isFirstOnHierarchy && fullWidth && (
+				{isFirstOnHierarchy && blockFullWidth === 'full' && (
 					<>
 						<ArrowDisplayer
 							{...getGroupAttributes(

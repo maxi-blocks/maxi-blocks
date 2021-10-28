@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -17,7 +17,11 @@ describe('DisplayControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'display');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'show hide block'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-display-control .maxi-base-control__field label',
@@ -32,13 +36,13 @@ describe('DisplayControl', () => {
 	});
 
 	it('Check Responsive display control', async () => {
-		await openAdvancedSidebar(page, 'display');
+		await openSidebarTab(page, 'advanced', 'show hide block');
 		const displayButtons = await page.$$(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option'
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option'
 		);
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[1].checked
 		);
 
@@ -49,7 +53,7 @@ describe('DisplayControl', () => {
 		await displayButtons[0].click();
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[0].checked
 		);
 
@@ -58,13 +62,13 @@ describe('DisplayControl', () => {
 		const expectAttributes = await getBlockAttributes();
 		const display = expectAttributes['display-s'];
 
-		expect(display).toStrictEqual('inherit');
+		expect(display).toStrictEqual('flex');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[0].checked
 		);
 
@@ -74,7 +78,7 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[1].checked
 		);
 

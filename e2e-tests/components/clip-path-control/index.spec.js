@@ -9,17 +9,13 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openAdvancedSidebar,
-	getBlockStyle,
-} from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('ClipPathOption', () => {
 	it('Checking the clip-path control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'clip path');
+		const accordionPanel = await openSidebarTab(page, 'style', 'clip path');
 
 		// Use clip-path to create a triangle
 		await accordionPanel.$eval(
@@ -55,7 +51,7 @@ describe('ClipPathOption', () => {
 
 		// Edit the square
 		await accordionPanel.$$eval(
-			'.maxi-clip-path-control__handles .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			'.maxi-clip-path-control__handles .maxi-radio-control .maxi-base-control__field .maxi-radio-control__option label',
 			use => use[1].click()
 		);
 

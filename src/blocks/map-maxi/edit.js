@@ -43,7 +43,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, apiKey } = this.props;
+		const { attributes, blockFullWidth, apiKey } = this.props;
 		const {
 			uniqueID,
 			'map-latitude': mapLatitude,
@@ -123,8 +123,8 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-map--${uniqueID}`}
-				ref={this.blockRef}
 				className='maxi-map-block'
+				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				{apiKey ? (

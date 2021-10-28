@@ -25,7 +25,7 @@ const SvgStrokeWidthControl = props => {
 	return (
 		<AdvancedNumberControl
 			label={__('Stroke Width', 'maxi-blocks')}
-			value={stroke}
+			value={stroke || defaultStroke}
 			placeholder={
 				breakpoint !== 'general'
 					? getLastBreakpointAttribute(
@@ -51,6 +51,7 @@ const SvgStrokeWidthControl = props => {
 						defaultStroke,
 				})
 			}
+			defaultValue={defaultStroke}
 			initialPosition={defaultStroke}
 		/>
 	);

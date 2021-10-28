@@ -52,6 +52,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const {
 			attributes,
+			blockFullWidth,
 			clientId,
 			deviceType,
 			hasInnerBlocks,
@@ -85,6 +86,7 @@ class edit extends MaxiBlockComponent {
 				<MaxiBlock
 					key={`maxi-row--${uniqueID}`}
 					ref={this.blockRef}
+					blockFullWidth={blockFullWidth}
 					{...getMaxiBlockBlockAttributes(this.props)}
 					disableMotion
 				>

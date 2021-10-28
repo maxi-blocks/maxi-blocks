@@ -13,7 +13,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, openPreviewPage } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	openPreviewPage,
+} from '../../utils';
 
 describe('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
@@ -43,7 +47,7 @@ describe('Image Maxi', () => {
 			submitUrl => submitUrl[0].click()
 		);
 
-		const accordionPanel = await openSidebar(page, 'caption');
+		const accordionPanel = await openSidebarTab(page, 'style', 'caption');
 
 		// Custom caption
 		const selector = await accordionPanel.$(
@@ -145,9 +149,6 @@ describe('Image Maxi', () => {
 		};
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
-
-		// await changeResponsive(page, 'general');
-		// accordionPanel = await openSidebar(page, 'caption');
 
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(
@@ -270,7 +271,7 @@ describe('Image Maxi', () => {
 	});
 
 	it('Image Dimension', async () => {
-		await openSidebar(page, 'image dimension');
+		await openSidebarTab(page, 'style', 'dimension');
 
 		// width
 		await page.$eval(
@@ -309,7 +310,7 @@ describe('Image Maxi', () => {
 		expect(checkFrontend).toMatchSnapshot();
 	});
 	it('Image alt tag', async () => {
-		await openSidebar(page, 'image alt tag');
+		await openSidebarTab(page, 'style', 'alt tag');
 
 		// select custom alt tag
 		const selector = await page.$('.maxi-image-inspector__alt-tag select');

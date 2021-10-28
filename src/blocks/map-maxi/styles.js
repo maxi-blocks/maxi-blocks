@@ -1,19 +1,48 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
-	getOpacityStyles,
-	getZIndexStyles,
-	getPositionStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getMapStyles,
-	getSizeStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
 	getOverflowStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
 	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -33,6 +62,35 @@ const getNormalObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
+	};
+
+	return response;
+};
+
+const getHoverNormalObject = props => {
+	const response = {
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
+		boxShadow:
+			props['box-shadow-status-hover'] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 	};
 
 	return response;
@@ -58,6 +116,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
+			':hover': getHoverNormalObject(props),
 			' .map-marker-info-window__title': getMapObject(props, 'title'),
 			' .map-marker-info-window__address': getMapObject(props, 'address'),
 		}),

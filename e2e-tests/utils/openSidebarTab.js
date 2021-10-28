@@ -6,11 +6,24 @@ import {
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 
-const openSidebar = async (page, item) => {
+const openSidebarTab = async (page, tab, item) => {
 	await openDocumentSettingsSidebar();
 	await ensureSidebarOpened();
 
 	const sidebar = await page.$('.maxi-sidebar');
+	const options = await page.$$(
+		'.maxi-tabs-control__sidebar-settings-tabs button'
+	);
+
+	const optionsLength = options.length;
+
+	const tabs =
+		optionsLength === 3
+			? ['style', 'canvas', 'advanced']
+			: ['style', 'advanced'];
+
+	await options[tabs.indexOf(tab)].click();
+
 	const wrapperElement = await page.$(
 		`.maxi-accordion-control__item[data-name="${item}"]`
 	);
@@ -25,10 +38,8 @@ const openSidebar = async (page, item) => {
 	const sidebarButtons = await sidebar.$$(
 		'.maxi-accordion-control__item__button'
 	);
-	for (let i = 0; i < sidebarButtons.length; i += 1) {
-		const el = sidebarButtons[i];
-
-		el.evaluate(el => {
+	for (const sidebarButton of sidebarButtons) {
+		sidebarButton.evaluate(el => {
 			if (el.getAttribute('aria-expanded'))
 				el.setAttribute('aria-expanded', false);
 		});
@@ -38,10 +49,8 @@ const openSidebar = async (page, item) => {
 	const sidebarPanels = await sidebar.$$(
 		'.maxi-accordion-control__item__panel'
 	);
-	for (let i = 0; i < sidebarPanels.length; i += 1) {
-		const el = sidebarPanels[i];
-
-		el.evaluate(el => {
+	for (const sidebarPanel of sidebarPanels) {
+		sidebarPanel.evaluate(el => {
 			if (!el.getAttribute('hidden')) el.setAttribute('hidden', '');
 		});
 	}
@@ -53,4 +62,4 @@ const openSidebar = async (page, item) => {
 	return content;
 };
 
-export default openSidebar;
+export default openSidebarTab;

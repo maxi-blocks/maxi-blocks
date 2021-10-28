@@ -8,7 +8,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getMarginPaddingStyles = (obj, prefix = '') => {
+const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
 	const response = {};
@@ -52,7 +52,6 @@ const getMarginPaddingStyles = (obj, prefix = '') => {
 						breakpoint,
 						obj
 					);
-
 					response[breakpoint][newLabel] =
 						value === 'auto' ? 'auto' : `${value}${unit}`;
 				}

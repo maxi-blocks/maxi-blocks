@@ -47,6 +47,8 @@ const MotionUniqueControl = props => {
 	)}`;
 
 	const inputLabel = type === 'fade' ? 'opacity' : label;
+	const minimum = type === 'fade' ? 0 : min;
+	const maximum = type === 'fade' ? 100 : max;
 
 	const labels = ['Starting', 'Mid', 'End'];
 
@@ -69,12 +71,12 @@ const MotionUniqueControl = props => {
 							value={value}
 							onChange={val => {
 								const newValues = [];
-								newValues[key] = val.target.value;
+								newValues[key] = parseInt(val.target.value);
 								onChange({ ...values, ...newValues });
 							}}
 							step={step}
-							min={min}
-							max={max}
+							min={minimum}
+							max={maximum}
 						/>
 						{!disableReset && (
 							<Button

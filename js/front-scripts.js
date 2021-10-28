@@ -320,15 +320,18 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Parallax Effect
-		if ('parallax-status' in motionData) {
-			const parallaxElem = document.querySelector(
-				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__parallax`
-			);
-			const parallaxStatus = motionData['parallax-status'];
-			const parallaxSpeed = motionData['parallax-speed'];
-			const parallaxDirection = motionData['parallax-direction'];
+		if ('bgParallaxLayers' in motionData) {
+			motionData.bgParallaxLayers.forEach(layer => {
+				const {
+					id,
+					'background-image-parallax-speed': parallaxSpeed,
+					'background-image-parallax-direction': parallaxDirection,
+				} = layer;
 
-			if (parallaxStatus) {
+				const parallaxElem = document.querySelector(
+					`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
+				);
+
 				window.addEventListener('scroll', () => {
 					new Parallax(
 						parallaxElem,
@@ -337,7 +340,7 @@ motionElems.forEach(function (elem) {
 							: parallaxSpeed
 					);
 				});
-			}
+			});
 		}
 
 		// Motion Effects

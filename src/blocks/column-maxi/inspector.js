@@ -10,8 +10,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	AdvancedNumberControl,
-	BlockStylesControl,
-	CustomLabel,
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';

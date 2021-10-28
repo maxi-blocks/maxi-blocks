@@ -16,7 +16,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const background = ({
 	props,
-	enableParallax = false,
 	disableImage = false,
 	disableVideo = false,
 	disableGradient = false,
@@ -40,12 +39,10 @@ const background = ({
 								<BlockBackgroundControl
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
-										'parallax',
 									])}
 									onChange={obj => setAttributes(obj)}
 									clientId={clientId}
 									breakpoint={deviceType}
-									enableParallax={enableParallax}
 									disableImage={disableImage}
 									disableVideo={disableVideo}
 									disableGradient={disableGradient}

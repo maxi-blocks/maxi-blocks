@@ -229,17 +229,12 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
 
 		return {
-			[uniqueID]: {
-				...{
-					...getGroupAttributes(
-						this.props.attributes,
-						'numberCounter'
-					),
-				},
+			...{
+				...getGroupAttributes(attributes, 'numberCounter'),
 			},
 		};
 	}

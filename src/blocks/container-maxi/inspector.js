@@ -61,7 +61,6 @@ const Inspector = props => {
 										},
 										...inspectorTabs.background({
 											props,
-											enableParallax: true,
 										}),
 										...inspectorTabs.border({
 											props,

@@ -16,16 +16,17 @@
 	}
 
 	&__iframe-wrapper {
-		height: 100%;
-		width: 100%;
+		position: absolute;
 		top: 0;
 		left: 0;
-		position: absolute;
+		height: 100%;
+		width: 100%;
+		padding-bottom: 56.25%; // 16/9 aspect ratio
 		overflow: hidden;
 
 		iframe {
 			position: absolute;
-			top: 50%;
+			top: 21.875%; // 50% - (56.25% / 2) => centers 16/9 aspect ratio
 			left: 50%;
 			transform: translate(-50%, -50%);
 			width: 100%;

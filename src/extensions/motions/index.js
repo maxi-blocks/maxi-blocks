@@ -4,6 +4,8 @@ const motionData = props => {
 	const response = {};
 	const { attributes } = props;
 
+	console.log(attributes);
+
 	const motionSettingsVertical = [
 		'speed',
 		'easing',
@@ -55,7 +57,7 @@ const motionData = props => {
 
 			return null;
 		});
-
+		console.log(responseString.trim());
 		return responseString.trim();
 	};
 
@@ -102,6 +104,8 @@ const motionData = props => {
 
 		return response;
 	}
+	console.log('motions: ');
+	console.log(response);
 	return response;
 };
 

@@ -136,7 +136,6 @@ const MotionControl = props => {
 				fullWidthMode
 				selected={motionStatus}
 				options={motionOptions}
-				optionType='string'
 				onChange={val => {
 					onChange({ [`motion-active-${breakpoint}`]: val });
 					setMotionStatus(val);
@@ -177,11 +176,13 @@ const MotionControl = props => {
 									`Enable ${typeCapitalize}`,
 									'maxi-blocks'
 								)}
-								selected={getLastBreakpointAttribute(
-									`motion-status-${type}`,
-									breakpoint,
-									props
-								)}
+								selected={
+									+getLastBreakpointAttribute(
+										`motion-status-${type}`,
+										breakpoint,
+										props
+									)
+								}
 								options={[
 									{
 										label: __('Yes', 'maxi-blocks'),
@@ -195,7 +196,7 @@ const MotionControl = props => {
 								onChange={val =>
 									onChange({
 										[`motion-status-${type}-${breakpoint}`]:
-											val,
+											!!+val,
 									})
 								}
 							/>

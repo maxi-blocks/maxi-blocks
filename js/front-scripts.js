@@ -60,15 +60,19 @@ const getDeviceType = () => {
 };
 
 // Map
-Object.values(maxi_custom_data.custom_data).map(item => {
-	if (item['map-api-key'] === '' || !item.hasOwnProperty('map-api-key'))
-		return;
+window.onload = () => {
+	if (google_map_api_options.google_api_key !== '') {
+		const script = document.createElement('script');
+		script.src = `https://maps.googleapis.com/maps/api/js?key=${google_map_api_options.google_api_key}&callback=initMap`;
+		script.async = true;
+		script.defer = true;
 
-	const script = document.createElement('script');
-	script.src = `https://maps.googleapis.com/maps/api/js?key=${item['map-api-key']}&callback=initMap`;
-	script.async = true;
+		document.head.appendChild(script);
+	}
+};
 
-	window.initMap = function () {
+window.initMap = function () {
+	Object.values(maxi_custom_data.custom_data).map(item => {
 		const mapCordinate = {
 			lat: +item['map-latitude'],
 			lng: +item['map-longitude'],
@@ -113,11 +117,8 @@ Object.values(maxi_custom_data.custom_data).map(item => {
 				item['map-marker-address'] !== '') &&
 				infowindow.open(map, marker);
 		});
-	};
-
-	if (document.querySelectorAll(`script[src="${script.src}"]`).length === 0)
-		document.head.appendChild(script);
-});
+	});
+};
 
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');

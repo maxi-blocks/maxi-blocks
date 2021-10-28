@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
-import FancyRadioControl from '../../../fancy-radio-control';
+import RadioControl from '../../../radio-control';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
@@ -60,7 +60,7 @@ const Size = props => {
 			<div className='toolbar-item__size__popover'>
 				{(isFirstOnHierarchy ||
 					blockName === 'maxi-blocks/row-maxi') && (
-					<FancyRadioControl
+					<RadioControl
 						label={__('Full Width', 'maxi-blocks')}
 						selected={fullWidth}
 						options={[
@@ -73,7 +73,6 @@ const Size = props => {
 								value: 'normal',
 							},
 						]}
-						optionType='string'
 						onChange={fullWidth => onChange({ fullWidth })}
 					/>
 				)}

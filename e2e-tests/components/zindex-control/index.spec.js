@@ -11,7 +11,7 @@ import {
  */
 import {
 	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -21,7 +21,11 @@ describe('ZIndexControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'z index');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'z index'
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-zIndex-control .maxi-base-control__field input',

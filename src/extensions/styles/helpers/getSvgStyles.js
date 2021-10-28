@@ -7,7 +7,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -20,14 +20,20 @@ const getSVGWidthStyles = obj => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`svg-width-${breakpoint}`])) {
-			response[breakpoint]['max-width'] = `${
-				obj[`svg-width-${breakpoint}`]
-			}${getLastBreakpointAttribute('svg-width-unit', breakpoint, obj)}`;
-			response[breakpoint]['max-height'] = `${
-				obj[`svg-width-${breakpoint}`]
-			}${getLastBreakpointAttribute('svg-width-unit', breakpoint, obj)}`;
-		}
+		const svgWidth = obj[`svg-width-${breakpoint}`];
+		const svgResponsive = obj[`svg-responsive-${breakpoint}`];
+
+		if (!isNil(svgWidth))
+			response[
+				breakpoint
+			].width = `${svgWidth}${getLastBreakpointAttribute(
+				'svg-width-unit',
+				breakpoint,
+				obj
+			)}`;
+
+		if (isBoolean(svgResponsive))
+			response[breakpoint]['max-width'] = svgResponsive ? '100%' : 'none';
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];

@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 console.error = jest.fn();
 
@@ -17,24 +17,24 @@ describe('MapControl', () => {
 	it('Check map control', async () => {
 		await createNewPost();
 		await insertBlock('Map Maxi');
-		const accordionPanel = await openSidebar(page, 'map');
+		const accordionPanel = await openSidebarTab(page, 'style', 'map');
 
 		const inputs = await accordionPanel.$$(
 			'.components-base-control .components-base-control__field input'
 		);
 
-		await inputs[1].focus();
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('555');
+		await inputs[0].focus();
+		await pressKeyTimes('Backspace', '9');
+		await page.keyboard.type('52.555');
 
 		const expectLatitude = '52.555';
 		const mapAttributes = await getBlockAttributes();
 		const latitudeAttribute = mapAttributes['map-latitude'];
 		expect(latitudeAttribute).toStrictEqual(expectLatitude);
 
-		await inputs[2].focus();
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('444');
+		await inputs[1].focus();
+		await pressKeyTimes('Backspace', '9');
+		await page.keyboard.type('13.444');
 
 		const expectLongitude = '13.444';
 		const mapAttribute = await getBlockAttributes();
@@ -103,8 +103,9 @@ describe('MapControl', () => {
 			color.focus()
 		);
 
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('55');
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('081219');
+		await page.keyboard.press('Enter');
 
 		const expectColor = '#081219';
 		const mapColorAttribute = await getBlockAttributes();
@@ -116,7 +117,7 @@ describe('MapControl', () => {
 			'.maxi-map-control__full-width-text input'
 		);
 
-		await marker[1].focus();
+		await marker[0].focus();
 		await pressKeyTimes('Backspace', '5');
 		await page.keyboard.type('test');
 

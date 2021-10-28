@@ -14,11 +14,20 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const background = ({ attributes, clientId, deviceType, setAttributes }) => {
+const background = ({
+	props,
+	disableImage = false,
+	disableVideo = false,
+	disableGradient = false,
+	disableColor = false,
+	disableSVG = false,
+}) => {
+	const { attributes, clientId, deviceType, setAttributes } = props;
+
 	const bgHoverStatus = attributes['background-hover-status'];
 
 	return {
-		label: __('Background', 'maxi-blocks'),
+		label: __('Background / Layer', 'maxi-blocks'),
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
@@ -34,6 +43,11 @@ const background = ({ attributes, clientId, deviceType, setAttributes }) => {
 									onChange={obj => setAttributes(obj)}
 									clientId={clientId}
 									breakpoint={deviceType}
+									disableImage={disableImage}
+									disableVideo={disableVideo}
+									disableGradient={disableGradient}
+									disableColor={disableColor}
+									disableSVG={disableSVG}
 								/>
 							</>
 						),

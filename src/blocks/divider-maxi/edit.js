@@ -37,7 +37,8 @@ class edit extends MaxiBlockComponent {
 			onDeviceTypeChange,
 			setAttributes,
 		} = this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
+			attributes;
 
 		onDeviceTypeChange();
 
@@ -87,6 +88,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				classes={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				tagName={BlockResizer}
@@ -112,7 +114,10 @@ class edit extends MaxiBlockComponent {
 				disableMotion
 			>
 				{attributes['divider-border-style'] !== 'none' && (
-					<hr className='maxi-divider-block__divider' />
+					<hr
+						data-align={fullWidth}
+						className='maxi-divider-block__divider'
+					/>
 				)}
 			</MaxiBlock>,
 		];

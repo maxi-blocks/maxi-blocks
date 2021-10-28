@@ -10,7 +10,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import AxisControl from '../axis-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import TextareaControl from '../textarea-control';
@@ -57,7 +57,7 @@ const HoverEffectControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<RadioControl
 				label={__('Hover Animation', 'maxi-blocks')}
 				selected={props['hover-type']}
 				options={[
@@ -65,7 +65,6 @@ const HoverEffectControl = props => {
 					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
-				optionType='string'
 				onChange={val => {
 					onChange({
 						'hover-type': val,
@@ -321,10 +320,8 @@ const HoverEffectControl = props => {
 							onChange({ 'hover-text-effect-type': val })
 						}
 					/>
-					<FancyRadioControl
-						type='classic-border'
+					<RadioControl
 						selected={props['hover-text-preset']}
-						optionType='string'
 						options={[
 							{
 								label: <Icon icon={alignLeftTop} />,

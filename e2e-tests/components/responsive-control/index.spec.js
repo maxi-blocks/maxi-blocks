@@ -11,43 +11,35 @@ import {
  */
 import {
 	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
 } from '../../utils';
 
 describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
 		await createNewPost();
-
-		// open the responsive selector
-		await page.$eval('#maxi-blocks__toolbar-buttons button', responsive =>
-			responsive.click()
-		);
-
-		// select the responsive XL
-		await page.$$eval(
-			'#maxi-blocks__toolbar-buttons .maxi-responsive-selector button',
-			selector => selector[2].click()
-		);
-
+		await changeResponsive(page, 'xs');
 		await insertBlock('Button Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'breakpoint');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'breakpoint'
+		);
 
 		await accordionPanel.$eval('.maxi-responsive-control input', input =>
 			input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('000');
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('50');
 
 		const attributes = await getBlockAttributes();
-		const breakpoint = attributes['breakpoints-xl'];
-		const expectValue = 1000;
+		const breakpoint = attributes['breakpoints-xs'];
 
-		expect(breakpoint).toStrictEqual(expectValue);
+		expect(breakpoint).toStrictEqual(450);
 	});
 
-	it('Check Responsive to responsive control', async () => {
+	/* it('Check Responsive to responsive control', async () => {
 		const input = await page.$('.maxi-responsive-control input');
 
 		const breakpoint = await page.$eval(
@@ -93,5 +85,5 @@ describe('ResponsiveControl', () => {
 		);
 
 		expect(breakpointM).toStrictEqual('1024');
-	});
+	}); */
 });

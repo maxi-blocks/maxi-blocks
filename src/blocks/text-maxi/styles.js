@@ -1,21 +1,21 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
-	getBorderStyles,
-	getSizeStyles,
-	getBoxShadowStyles,
-	getOpacityStyles,
-	getZIndexStyles,
-	getPositionStyles,
-	getDisplayStyles,
-	getTransformStyles,
-	getBlockBackgroundStyles,
-	getMarginPaddingStyles,
-	getTypographyStyles,
-	getTransitionStyles,
-	getCustomFormatsStyles,
 	getAlignmentTextStyles,
+	getBlockBackgroundStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
+	getCustomFormatsStyles,
+	getDisplayStyles,
 	getLinkStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
 	getOverflowStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
+	getTransitionStyles,
+	getTypographyStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -55,10 +55,10 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'transform'),
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),

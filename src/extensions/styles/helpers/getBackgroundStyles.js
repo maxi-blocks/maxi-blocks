@@ -26,8 +26,9 @@ export const getColorBackgroundObject = ({
 	prefix = '',
 	blockStyle: rawBlockStyle,
 	isButton = false,
+	isIcon = false,
 	isIconInherit = false,
-	breakpoint,
+	breakpoint = 'general',
 	...props
 }) => {
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
@@ -68,9 +69,9 @@ export const getColorBackgroundObject = ({
 		isHover
 	);
 
-	if (!bgPaletteStatus && !isEmpty(bgColor))
+	if (!bgPaletteStatus && !isEmpty(bgColor)) {
 		response[breakpoint]['background-color'] = bgColor;
-	else if (
+	} else if (
 		bgPaletteStatus &&
 		(currentBgPaletteColor || currentBgPaletteOpacity)
 	) {
@@ -91,14 +92,14 @@ export const getColorBackgroundObject = ({
 				isHover
 			);
 
-		if (isButton)
+		if (isButton) {
 			response[breakpoint].background = getColorRGBAString({
 				firstVar: `color${isHover ? '-hover' : ''}`,
 				secondVar: `color-${bgPaletteColor}`,
 				opacity: bgPaletteOpacity,
 				blockStyle,
 			});
-		else
+		} else
 			response[breakpoint]['background-color'] = getColorRGBAString({
 				firstVar: `color-${bgPaletteColor}`,
 				opacity: bgPaletteOpacity,
@@ -120,6 +121,14 @@ export const getColorBackgroundObject = ({
 				: bgColor;
 	}
 
+	if (!isIconInherit && isIcon) {
+		response[breakpoint]['background'] = getColorRGBAString({
+			firstVar: `color-${currentBgPaletteColor}`,
+			opacity: currentBgPaletteOpacity,
+			blockStyle,
+		});
+	}
+
 	if (!isEmpty(bgClipPath)) response[breakpoint]['clip-path'] = bgClipPath;
 
 	return response;
@@ -128,7 +137,8 @@ export const getColorBackgroundObject = ({
 export const getGradientBackgroundObject = ({
 	isHover = false,
 	prefix = '',
-	breakpoint,
+	breakpoint = 'general',
+	isIcon = false,
 	...props
 }) => {
 	const response = {
@@ -157,11 +167,25 @@ export const getGradientBackgroundObject = ({
 		breakpoint,
 	});
 
-	if (isNumber(bgGradientOpacity))
-		response[breakpoint].opacity = bgGradientOpacity;
-	if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
-	if (!isEmpty(bgGradientClipPath))
-		response[breakpoint]['clip-path'] = bgGradientClipPath;
+	if (
+		isIcon &&
+		getLastBreakpointAttribute(
+			`${prefix}background-active-media`,
+			breakpoint,
+			props,
+			isHover
+		) === 'gradient'
+	) {
+		if (isNumber(bgGradientOpacity))
+			response[breakpoint].opacity = bgGradientOpacity;
+		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+	} else if (!isIcon) {
+		if (isNumber(bgGradientOpacity))
+			response[breakpoint].opacity = bgGradientOpacity;
+		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+		if (!isEmpty(bgGradientClipPath))
+			response[breakpoint]['clip-path'] = bgGradientClipPath;
+	}
 
 	return response;
 };
@@ -898,7 +922,12 @@ export const getBackgroundStyles = ({
 		merge(response, {
 			...(currentActiveMedia === 'color' && {
 				background: getColorBackgroundObject({
-					...getGroupAttributes(props, 'backgroundColor'),
+					...getGroupAttributes(
+						props,
+						'backgroundColor',
+						isHover,
+						prefix
+					),
 					blockStyle,
 					isButton,
 					breakpoint,
@@ -909,7 +938,12 @@ export const getBackgroundStyles = ({
 			}),
 			...(currentActiveMedia === 'gradient' && {
 				background: getGradientBackgroundObject({
-					...getGroupAttributes(props, 'backgroundGradient'),
+					...getGroupAttributes(
+						props,
+						'backgroundGradient',
+						isHover,
+						prefix
+					),
 					breakpoint,
 					isHover,
 					prefix,

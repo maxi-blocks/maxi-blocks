@@ -5,12 +5,12 @@ body.maxi-blocks--active .maxi-divider-block {
 
 	&--horizontal {
 		hr {
-			margin: 0.5rem 0 !important;
+			margin: 0.5rem 0;
 		}
 	}
 	&--vertical {
 		hr {
-			margin: 0 0.5rem !important;
+			margin: 0 0.5rem;
 		}
 	}
 	hr {
@@ -18,6 +18,10 @@ body.maxi-blocks--active .maxi-divider-block {
 		position: relative;
 		background: none;
 
+		&[data-align='full'] {
+			width: 100% !important;
+			text-align: center;
+		}
 		&:before,
 		&:after {
 			content: none !important;

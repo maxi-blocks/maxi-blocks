@@ -5,17 +5,27 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	changeResponsive,
+} from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'typography');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
 
 		await changeResponsive(page, 'm');
 
@@ -37,8 +47,13 @@ describe('Advanced Number Control', () => {
 			'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
 			select => select.focus()
 		);
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('-4');
+		await pressKeyWithModifier('primary', 'a');
+		// TODO: AdvancedNumberControl doesn't allow to empty the input and write '-' (minus),
+		// so, made a cheat to test negative values
+		await page.keyboard.type('0');
+		await page.keyboard.press('ArrowDown');
+		await pressKeyTimes('Backspace', 2);
+		await page.keyboard.type('4');
 
 		const minAttributes = await getBlockAttributes();
 		const minAttribute = minAttributes['letter-spacing-m'];
@@ -51,7 +66,7 @@ describe('Advanced Number Control', () => {
 			'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
 			select => select.focus()
 		);
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('10');
 
 		await accordionPanel.$eval(

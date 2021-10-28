@@ -12,7 +12,7 @@ import {
  */
 import {
 	getBlockAttributes,
-	openSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -25,7 +25,11 @@ describe('ArrowControl', () => {
 			container.focus()
 		);
 
-		const accordionPanel = await openSidebar(page, 'callout arrow');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'callout arrow'
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-arrow-control .maxi-toggle-switch .maxi-base-control__label',
@@ -36,7 +40,7 @@ describe('ArrowControl', () => {
 
 		for (let i = 0; i < values.length; i++) {
 			await page.$$eval(
-				'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',
+				'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option label',
 				(buttons, i) => buttons[i].click(),
 				i
 			);
@@ -71,10 +75,14 @@ describe('ArrowControl', () => {
 	});
 
 	it('Check the responsive arrow control', async () => {
-		const accordionPanel = await openSidebar(page, 'callout arrow');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'callout arrow'
+		);
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',
+			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option label',
 			openArrowControl => openArrowControl[0].click()
 		);
 

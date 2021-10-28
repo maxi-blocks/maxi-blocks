@@ -15,7 +15,7 @@ describe('IconControl', () => {
 	it('Check Icon Control', async () => {
 		/* await createNewPost();
 		await insertBlock('Button Maxi');
-		const accordionPanel = await openSidebar(page, 'icon');
+		const accordionPanel = await openSidebarTab(page, 'style', 'icon');
 
 		await accordionPanel.$eval('.maxi-icon-control button', addIcon =>
 			addIcon.click()
@@ -69,7 +69,7 @@ describe('IconControl', () => {
 
 		// icon position
 		const label = await accordionPanel.$$(
-			'.maxi-fancy-radio-control .maxi-radio-control__option label'
+			'.maxi-radio-control .maxi-radio-control__option label'
 		);
 
 		await label[1].click();

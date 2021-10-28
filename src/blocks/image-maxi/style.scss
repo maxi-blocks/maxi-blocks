@@ -25,8 +25,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 			}
 		}
 		img {
-			height: 100% !important;
-			max-height: initial !important;
+			max-height: initial;
 			object-fit: cover;
 			position: absolute;
 			top: 0;

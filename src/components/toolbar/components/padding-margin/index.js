@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import FancyRadioControl from '../../../fancy-radio-control';
 import AxisControl from '../../../axis-control';
 import { getGroupAttributes } from '../../../../extensions/styles';
 

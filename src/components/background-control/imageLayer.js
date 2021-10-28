@@ -12,8 +12,10 @@ import ClipPath from '../clip-path-control';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
+import RadioControl from '../radio-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
+import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import {
 	getAttributeKey,
@@ -25,8 +27,6 @@ import { getDefaultLayerAttr } from './utils';
  * External dependencies
  */
 import { cloneDeep } from 'lodash';
-import SettingTabsControl from '../setting-tabs-control';
-import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * Component
@@ -927,7 +927,7 @@ const ImageLayerContent = props => {
 										'background-image-parallax-status'
 									] && (
 										<>
-											<FancyRadioControl
+											<RadioControl
 												className='parallax-direction'
 												label={__(
 													'Direction',

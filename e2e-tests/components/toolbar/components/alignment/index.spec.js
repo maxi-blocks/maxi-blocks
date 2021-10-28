@@ -6,7 +6,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../../../utils';
+import { getBlockAttributes, changeResponsive } from '../../../../utils';
 
 describe('AlignmentControl', () => {
 	it('Checking alignment in toolbar', async () => {
@@ -46,32 +46,35 @@ describe('AlignmentControl', () => {
 		expect(position).toStrictEqual('left');
 
 		// responsive s
+		await changeResponsive(page, 's');
 
-		await page.$eval('.toolbar-wrapper .toolbar-item__alignment', button =>
-			button.click()
+		await page.$$eval(
+			'.components-popover__content .maxi-alignment-control__no-label label',
+			button => button[1].click()
 		);
-
-		const toolbarAlignment = await page.$$(
-			'.components-popover__content .maxi-alignment-control__no-label label'
-		);
-
-		await toolbarAlignment[2].click();
 
 		const expectSAttributes = await getBlockAttributes();
 		const positionS = expectSAttributes['text-alignment-s'];
 
-		expect(positionS).toStrictEqual('right');
+		expect(positionS).toStrictEqual('center');
 
 		// responsive xs
-		const expectXsAttributes = await getBlockAttributes();
-		const positionXs = expectXsAttributes['text-alignment-xs'];
+		await changeResponsive(page, 'xs');
 
-		expect(positionXs).toStrictEqual('right');
+		const selected = await page.$$eval(
+			'.components-popover__content .maxi-alignment-control__no-label input',
+			button => button[1].checked
+		);
+
+		expect(selected).toBeTruthy();
 
 		// responsive m
-		const expectMAttributes = await getBlockAttributes();
-		const positionM = expectMAttributes['text-alignment-m'];
+		await changeResponsive(page, 'm');
+		const selectedM = await page.$$eval(
+			'.components-popover__content .maxi-alignment-control__no-label input',
+			button => button[0].checked
+		);
 
-		expect(positionM).toStrictEqual('left');
+		expect(selectedM).toBeTruthy();
 	});
 });

@@ -225,27 +225,57 @@ describe('Image Maxi', () => {
 			expect(textShadow).toStrictEqual(setting);
 		}
 
-		// Colors: LinkColor, LinkHoverColor, LinkActiveColor, LinkVisitedColor
 		// LinkColor
+		await accordionPanel.$$eval(
+			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			tabs => tabs[0].click()
+		);
+		await page.waitForTimeout(100);
+
 		await accordionPanel.$$eval(
 			'.maxi-typography-link-color .maxi-sc-color-palette div',
 			colors => colors[1].click()
 		);
+		await page.waitForTimeout(100);
+
 		// LinkHoverColor
+		await accordionPanel.$$eval(
+			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			tabs => tabs[1].click()
+		);
+		await page.waitForTimeout(100);
+
 		await accordionPanel.$$eval(
 			'.maxi-typography-link-hover-color .maxi-sc-color-palette div',
 			colors => colors[2].click()
 		);
+		await page.waitForTimeout(100);
+
 		// LinkActiveColor
+		await accordionPanel.$$eval(
+			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			tabs => tabs[2].click()
+		);
+		await page.waitForTimeout(100);
+
 		await accordionPanel.$$eval(
 			'.maxi-typography-link-active-color .maxi-sc-color-palette div',
 			colors => colors[3].click()
 		);
-		// LinkVisitedColor
+		await page.waitForTimeout(100);
+
+		// LinkActiveColor
+		await accordionPanel.$$eval(
+			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			tabs => tabs[3].click()
+		);
+		await page.waitForTimeout(100);
+
 		await accordionPanel.$$eval(
 			'.maxi-typography-link-visited-color .maxi-sc-color-palette div',
 			colors => colors[4].click()
 		);
+		await page.waitForTimeout(100);
 
 		const linkColorAttributes = await getBlockAttributes();
 		const linkAttributes = (({
@@ -309,6 +339,7 @@ describe('Image Maxi', () => {
 
 		expect(checkFrontend).toMatchSnapshot();
 	});
+
 	it('Image alt tag', async () => {
 		await openSidebarTab(page, 'style', 'alt tag');
 

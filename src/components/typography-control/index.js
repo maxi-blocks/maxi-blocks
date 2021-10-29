@@ -210,6 +210,7 @@ const LinkOptions = props => {
 		<>
 			<RadioControl
 				label=''
+				className='maxi-typography-control__link-options'
 				selected={linkStatus}
 				options={[
 					{

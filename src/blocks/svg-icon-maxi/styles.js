@@ -193,7 +193,6 @@ const getStyles = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'parallax',
 				]),
 				blockStyle,
 			}),
@@ -205,7 +204,6 @@ const getStyles = props => {
 						'border',
 						'borderWidth',
 						'borderRadius',
-						'parallax',
 					],
 					true
 				),

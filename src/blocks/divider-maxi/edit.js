@@ -9,10 +9,7 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -30,20 +27,6 @@ import { isNil } from 'lodash';
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
-	}
-
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-				}),
-			},
-		};
 	}
 
 	render() {

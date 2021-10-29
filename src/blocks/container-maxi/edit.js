@@ -41,32 +41,19 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const {
+			'shape-divider-top-status': shapeDividerTopStatus,
+			'shape-divider-bottom-status': shapeDividerBottomStatus,
+		} = attributes;
 
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!!this.props.attributes['parallax-status'];
-
-		const shapeStatus =
-			!!this.props.attributes['shape-divider-top-status'] ||
-			!!this.props.attributes['shape-divider-bottom-status'];
+		const shapeStatus = shapeDividerTopStatus || shapeDividerBottomStatus;
 
 		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
-				}),
-				...(shapeStatus && {
-					...getGroupAttributes(
-						this.props.attributes,
-						'shapeDivider'
-					),
-				}),
-			},
+			...(shapeStatus && {
+				...getGroupAttributes(attributes, 'shapeDivider'),
+			}),
 		};
 	}
 

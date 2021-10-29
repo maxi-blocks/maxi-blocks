@@ -27,7 +27,6 @@ const attributes = {
 	},
 	...attributesData.arrow,
 	...attributesData.blockBackground,
-	...attributesData.parallax,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

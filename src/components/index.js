@@ -44,7 +44,6 @@ export { default as MotionPreview } from './motion-preview';
 export { default as NumberCounterControl } from './number-counter-control';
 export { default as OpacityControl } from './opacity-control';
 export { default as OverflowControl } from './overflow-control';
-export { default as ParallaxControl } from './parallax-control';
 export { default as Placeholder } from './placeholder';
 export { default as PositionControl } from './position-control';
 export { default as RadioControl } from './radio-control';

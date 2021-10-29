@@ -15,10 +15,7 @@ import {
 	BlockResizer,
 	RawHTML,
 } from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -98,20 +95,6 @@ class edit extends MaxiBlockComponent {
 	state = {
 		isOpen: false,
 	};
-
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-				}),
-			},
-		};
-	}
 
 	render() {
 		const { attributes, clientId, deviceType, setAttributes, isSelected } =

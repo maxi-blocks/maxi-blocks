@@ -404,15 +404,62 @@ const elements = Array.from(
 );
 
 const setTransform = (el, transform) => {
+	const oldTransform = el.style.transform;
 	el.style.transform = transform;
 	el.style.WebkitTransform = transform;
+	// el.style.transform = oldTransform
+	// 	? `${oldTransform} ${transform}`
+	// 	: transform;
+	// el.style.WebkitTransform = oldTransform
+	// 	? `${oldTransform} ${transform}`
+	// 	: transform;
 };
 
 const setOpacity = (el, opacity) => {
 	el.style.opacity = opacity;
 };
 
-const getGeneralMotionSetting = (data, parent) => {
+const setBlur = (el, blur) => {
+	el.style.filter = blur;
+};
+
+const setVertical = (el, direction, value) => {
+	if (direction === 'up') el.style.top = value;
+	else el.style.bottom = value;
+};
+
+const setHorizontal = (el, direction, value) => {
+	if (direction === 'left') el.style.left = value;
+	else el.style.right = value;
+};
+
+const applyStyle = (el, type, value, direction) => {
+	console.log('applyStyle');
+	console.log(type, value);
+	switch (type) {
+		case 'rotate':
+			setTransform(el, `rotate(${value}deg)`);
+			break;
+		case 'fade':
+			setOpacity(el, `${value}%`);
+			break;
+		case 'blur':
+			setBlur(el, `${value}px`);
+			break;
+		case 'vertical':
+			setVertical(el, direction, `${value}px`);
+			break;
+		case 'horizontal':
+			setHorizontal(el, direction, `${value}px`);
+			break;
+		default:
+			break;
+	}
+
+	return null;
+};
+
+const getGeneralMotionSetting = (data, element) => {
 	const response = {};
 
 	const dataMotionVerticalArray = data.trim().split(' ');
@@ -421,22 +468,23 @@ const getGeneralMotionSetting = (data, parent) => {
 	response.viewportMid = parseInt(dataMotionVerticalArray[3]);
 	response.viewportBottom = parseInt(dataMotionVerticalArray[2]);
 
-	response.viewportMidPercent =
-		(parent.offsetHeight / 100) * response.viewportMid;
-	response.viewportTopPercent =
-		parent.offsetHeight -
-		(parent.offsetHeight / 100) * response.viewportTop;
-	response.viewportBottomPercent =
-		(parent.offsetHeight / 100) * response.viewportTop;
+	response.viewportMidPercent = Math.round(
+		(element.offsetHeight / 100) * response.viewportMid
+	);
+	response.viewportTopPercent = Math.round(
+		(element.offsetHeight / 100) * response.viewportTop
+	);
+	response.viewportBottomPercent = Math.round(
+		(element.offsetHeight / 100) * response.viewportTop
+	);
 
-	response.speedValue = parseFloat(dataMotionVerticalArray[0]);
+	response.speedValue = parseFloat(dataMotionVerticalArray[0]) || 200;
 
-	const easingValue = dataMotionVerticalArray[1];
-
+	const easingValue = dataMotionVerticalArray[1] || 'ease';
 	response.easingValue = easingValue;
 
-	// console.log('response: ');
-	// console.log(response);
+	console.log('response: ');
+	console.log(response);
 
 	return response;
 };
@@ -467,23 +515,7 @@ const startingTransform = (element, type) => {
 	const mid = parseInt(dataMotionArray[6]);
 	const end = parseInt(dataMotionArray[7]);
 
-	let transform = '';
-
-	switch (type) {
-		case 'rotate':
-			transform = `rotateZ(${start}deg)`;
-			break;
-		case 'fade':
-			transform = `${start}%`;
-			break;
-		default:
-			break;
-	}
-
-	if (type === 'fade') setOpacity(element, transform);
-	else setTransform(element, transform);
-
-	console.log(start, mid, end);
+	applyStyle(element, type, start);
 
 	return null;
 };
@@ -515,10 +547,6 @@ const scrollTransform = (element, type) => {
 
 	if (!dataMotion) return;
 
-	const parent =
-		element.parentNode.closest('.maxi-container-block') ||
-		element.parentNode.closest('article');
-
 	const {
 		viewportTop,
 		viewportMid,
@@ -528,7 +556,7 @@ const scrollTransform = (element, type) => {
 		viewportBottomPercent,
 		speedValue,
 		easingValue,
-	} = getGeneralMotionSetting(dataMotion, parent);
+	} = getGeneralMotionSetting(dataMotion, element);
 
 	const dataMotionArray = dataMotion.trim().split(' ');
 
@@ -536,9 +564,7 @@ const scrollTransform = (element, type) => {
 	const mid = parseInt(dataMotionArray[6]);
 	const end = parseInt(dataMotionArray[7]);
 
-	if (easingValue) {
-		element.style.transition = `all 200ms ${easingValue}`;
-	} else element.style.transition = 'all 200ms ease';
+	element.style.transition = `all ${speedValue}ms ${easingValue}`;
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
@@ -555,9 +581,9 @@ const scrollTransform = (element, type) => {
 	const elementMidInViewCoordinate =
 		elementTopInViewCoordinate + elementHalfHeight;
 
-	//	console.log(`Top: ${elementTopInViewCoordinate}`);
-	// console.log(`Mid: ${elementMidInViewCoordinate}`);
-	// console.log(`Bottom: ${elementBottomInViewCoordinate}`);
+	console.log(`Top: ${elementTopInViewCoordinate}`);
+	console.log(`Mid: ${elementMidInViewCoordinate}`);
+	console.log(`Bottom: ${elementBottomInViewCoordinate}`);
 
 	const scrollDirection = getScrollDirection();
 
@@ -582,9 +608,7 @@ const scrollTransform = (element, type) => {
 
 			console.log(`finalStartMid ${finalStartMid}`);
 
-			if (type !== 'fade')
-				setTransform(element, `rotate(${finalStartMid}deg)`); // from start to middle
-			if (type === 'fade') setOpacity(element, `${finalStartMid}%`);
+			applyStyle(element, type, finalStartMid);
 		} else {
 			console.log('Down - To End');
 			const stepEnd =
@@ -601,11 +625,7 @@ const scrollTransform = (element, type) => {
 
 			console.log(`finalMidEnd ${finalMidEnd}`);
 
-			if (type !== 'fade')
-				setTransform(element, `rotate(${finalMidEnd}deg)`); // from middle to ending
-
-			if (type === 'fade' && finalMidEnd)
-				setOpacity(element, `${finalMidEnd}%`);
+			applyStyle(element, type, finalMidEnd);
 		}
 	}
 	if (scrollDirection === 'up' && elementBottomInViewCoordinate >= 0) {
@@ -621,37 +641,34 @@ const scrollTransform = (element, type) => {
 			else newEndUp -= stepEnd;
 
 			const finalMidEnd =
-				Math.abs(Math.trunc(newEndUp + mid)) < Math.abs(mid)
-					? Math.trunc(newEndUp + mid)
+				Math.abs(Math.trunc(newEndUp + end)) < Math.abs(mid)
+					? Math.trunc(newEndUp + end)
 					: mid;
 
 			console.log(`finalMidEnd: ${finalMidEnd}`);
 
-			if (type !== 'fade')
-				setTransform(element, `rotate(${finalMidEnd}deg)`); // from ending to middle
-			if (type === 'fade' && finalMidEnd)
-				setOpacity(element, `${finalMidEnd}%`);
+			applyStyle(element, type, finalMidEnd);
 		} else {
 			console.log('Up - To Start');
 			const stepMid =
 				Math.abs(
-					(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
+					(Math.abs(mid) - Math.abs(start)) / elementHalfHeight
 				) * 4;
 
-			if (mid > start) newEndUp -= stepMid;
+			if (mid > start) newMidUp -= stepMid;
 			else newMidUp += stepMid;
 
-			const finalStartMid =
-				Math.abs(Math.trunc(newMidUp + start)) < Math.abs(start)
-					? Math.trunc(newMidUp + start)
+			console.log(stepMid);
+			console.log(newMidUp);
+
+			const finalMidStart =
+				Math.abs(Math.trunc(newMidUp + mid)) < Math.abs(start)
+					? Math.trunc(newMidUp + mid)
 					: start;
 
-			console.log(`finalStartMid: ${finalStartMid}`);
+			console.log(`finalStartMid: ${finalMidStart}`);
 
-			if (type !== 'fade')
-				setTransform(element, `rotate(${finalStartMid}deg)`); // from middle to starting
-			if (type === 'fade' && finalStartMid)
-				setOpacity(element, `${finalStartMid}%`);
+			applyStyle(element, type, finalMidStart);
 		}
 	}
 
@@ -703,9 +720,7 @@ elements.forEach(function maxiMotion(element, index) {
 
 		element.setAttribute('transform-size', transformSize);
 
-		if (speedValue && easingValue) {
-			element.style.transition = `all 200ms ${easingValue}`;
-		} else element.style.transition = 'all 200ms ease';
+		element.style.transition = `all ${speedValue}ms ${easingValue}`;
 
 		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
 		const direction = parseInt(dataMotionVerticalArray[5]);

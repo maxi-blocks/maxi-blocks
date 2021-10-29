@@ -1,17 +1,23 @@
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty } from 'lodash';
 
 const motionData = props => {
 	const response = {};
 	const { attributes } = props;
 
-	console.log(attributes);
+	const capitalize = string => {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	};
 
-	const motionSettingsVertical = [
+	const motionSettingsShared = [
 		'speed',
 		'easing',
 		'viewport-bottom',
 		'viewport-middle',
 		'viewport-top',
+	];
+
+	const motionSettingsVertical = [
+		...motionSettingsShared,
 		'direction',
 		'offset-start',
 		'offset-middle',
@@ -19,25 +25,31 @@ const motionData = props => {
 	];
 
 	const motionSettingsRotate = [
-		'speed',
-		'easing',
-		'viewport-bottom',
-		'viewport-middle',
-		'viewport-top',
+		...motionSettingsShared,
 		'rotate-start',
 		'rotate-middle',
 		'rotate-end',
 	];
 
 	const motionSettingsFade = [
-		'speed',
-		'easing',
-		'viewport-bottom',
-		'viewport-middle',
-		'viewport-top',
+		...motionSettingsShared,
 		'opacity-start',
 		'opacity-middle',
 		'opacity-end',
+	];
+
+	const motionSettingsBlur = [
+		...motionSettingsShared,
+		'blur-start',
+		'blur-middle',
+		'blur-end',
+	];
+
+	const motionSettingsScale = [
+		...motionSettingsShared,
+		'scale-start',
+		'scale-middle',
+		'scale-end',
 	];
 
 	const motionTypes = [
@@ -57,7 +69,6 @@ const motionData = props => {
 
 			return null;
 		});
-		console.log(responseString.trim());
 		return responseString.trim();
 	};
 
@@ -80,6 +91,12 @@ const motionData = props => {
 						break;
 					case 'fade':
 						motionSettings = motionSettingsFade;
+						break;
+					case 'blur':
+						motionSettings = motionSettingsBlur;
+						break;
+					case 'scale':
+						motionSettings = motionSettingsScale;
 						break;
 					default:
 						break;
@@ -104,8 +121,7 @@ const motionData = props => {
 
 		return response;
 	}
-	console.log('motions: ');
-	console.log(response);
+
 	return response;
 };
 

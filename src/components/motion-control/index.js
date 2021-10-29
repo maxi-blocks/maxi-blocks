@@ -257,8 +257,8 @@ const MotionControl = props => {
 											});
 										}}
 										min={0}
-										step={0.1}
-										max={20}
+										step={10}
+										max={1000}
 										onReset={() =>
 											onChange({
 												[`motion-speed-${type}-${breakpoint}`]:
@@ -436,6 +436,51 @@ const MotionControl = props => {
 													[`motion-opacity-middle-${type}-${breakpoint}`]:
 														values[1],
 													[`motion-opacity-end-${type}-${breakpoint}`]:
+														values[2],
+												})
+											}
+										/>
+									)}
+									{type === 'blur' && (
+										<MotionUniqueControl
+											label={__('Blur', 'maxi-blocks')}
+											type='blur'
+											step={1}
+											values={[
+												getLastBreakpointAttribute(
+													`motion-blur-start-${type}`,
+													breakpoint,
+													props
+												),
+												getLastBreakpointAttribute(
+													`motion-blur-middle-${type}`,
+													breakpoint,
+													props
+												),
+												getLastBreakpointAttribute(
+													`motion-blur-end-${type}`,
+													breakpoint,
+													props
+												),
+											]}
+											defaultValues={[
+												getDefaultAttribute(
+													`motion-blur-start-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-blur-middle-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-blur-end-${type}-general`
+												),
+											]}
+											onChange={values =>
+												onChange({
+													[`motion-blur-start-${type}-${breakpoint}`]:
+														values[0],
+													[`motion-blur-middle-${type}-${breakpoint}`]:
+														values[1],
+													[`motion-blur-end-${type}-${breakpoint}`]:
 														values[2],
 												})
 											}

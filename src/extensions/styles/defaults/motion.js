@@ -63,7 +63,7 @@ export const motion = (() => {
 	Object.values(motionTypes).forEach(type => {
 		generateAttr(type, 'status', 'boolean', false);
 		generateAttr(type, 'easing', 'string', 'ease');
-		generateAttr(type, 'speed', 'number', 3);
+		generateAttr(type, 'speed', 'number', 200);
 		generateAttr(type, 'viewport-bottom', 'number', 0);
 		generateAttr(type, 'viewport-middle', 'number', 50);
 		generateAttr(type, 'viewport-top', 'number', 100);
@@ -74,7 +74,7 @@ export const motion = (() => {
 		}
 
 		if (type === 'rotate') {
-			generateUniqueAttributes(type, 'rotate', [90, 180, 0]);
+			generateUniqueAttributes(type, 'rotate', [90, 0, 0]);
 		}
 
 		if (type === 'scale') {
@@ -82,7 +82,7 @@ export const motion = (() => {
 		}
 
 		if (type === 'fade') {
-			generateUniqueAttributes(type, 'opacity', [0, 50, 100]);
+			generateUniqueAttributes(type, 'opacity', [0, 100, 100]);
 		}
 
 		if (type === 'blur') {

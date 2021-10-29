@@ -156,7 +156,7 @@ const AxisControlContent = props => {
 				/>
 				<Button
 					className='components-maxi-control__reset-button'
-					onClick={onReset}
+					onClick={() => onReset(isGeneral, breakpoint)}
 					aria-label={sprintf(
 						__('Reset %s settings', 'maxi-blocks'),
 						label.toLowerCase()
@@ -223,7 +223,7 @@ const AxisControlContent = props => {
 							isHover
 						)}
 						onClick={() =>
-							onChangeSync('sync-vertical', breakpoint)
+							onChangeSync('sync-vertical', isGeneral, breakpoint)
 						}
 					/>
 				)}
@@ -279,7 +279,7 @@ const AxisControlContent = props => {
 						props,
 						isHover
 					)}
-					onClick={() => onChangeSync('sync')}
+					onClick={() => onChangeSync('sync', isGeneral, breakpoint)}
 				/>
 			</div>
 			<div className='maxi-axis-control__content maxi-axis-control__bottom-part'>
@@ -337,7 +337,13 @@ const AxisControlContent = props => {
 							props,
 							isHover
 						)}
-						onClick={() => onChangeSync('sync-horizontal')}
+						onClick={() =>
+							onChangeSync(
+								'sync-horizontal',
+								isGeneral,
+								breakpoint
+							)
+						}
 					/>
 				)}
 				<AxisInput
@@ -420,6 +426,8 @@ const AxisControl = props => {
 		className
 	);
 
+	const useResponsiveTabs = ['margin', 'padding'].includes(target);
+
 	const getOptions = () => {
 		const options = [];
 		allowedUnits.includes('px') &&
@@ -465,33 +473,69 @@ const AxisControl = props => {
 		return '';
 	};
 
-	const onReset = () => {
+	const onReset = (isGeneral, customBreakpoint) => {
 		const response = {};
 
 		inputsArray.forEach(key => {
-			response[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`] =
-				getDefaultAttribute(
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+			response[
+				getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			] = getDefaultAttribute(
+				getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			);
+
+			if (isGeneral)
+				response[
+					getAttributeKey(getKey(key), isHover, false, 'general')
+				] = getDefaultAttribute(
+					getAttributeKey(getKey(key), isHover, false, 'general')
 				);
 		});
 
 		onChange(response);
 	};
 
-	const onChangeSync = (key, customBreakpoint) => {
+	const onChangeSync = (key, isGeneral = false, customBreakpoint) => {
 		const response = {
-			[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`]:
-				!getLastBreakpointAttribute(
-					getKey(key),
-					breakpoint,
-					props,
-					isHover
-				),
+			[getAttributeKey(
+				getKey(key),
+				isHover,
+				false,
+				customBreakpoint ?? breakpoint
+			)]: !getLastBreakpointAttribute(
+				getKey(key),
+				customBreakpoint ?? breakpoint,
+				props,
+				isHover
+			),
+			...(isGeneral && {
+				[getAttributeKey(getKey(key), isHover, false, 'general')]:
+					!getLastBreakpointAttribute(
+						getKey(key),
+						customBreakpoint ?? breakpoint,
+						props,
+						isHover
+					),
+			}),
 		};
 
 		const syncArray = ['sync-horizontal', 'sync-vertical'];
+		const breakpointsArray = [
+			customBreakpoint ?? breakpoint,
+			...(isGeneral && ['general']),
+		];
+
 		if (syncArray.includes(key)) {
-			[breakpoint, customBreakpoint].forEach(bp => {
+			breakpointsArray.forEach(bp => {
 				const syncKey = getAttributeKey(
 					getKey('sync'),
 					isHover,
@@ -505,7 +549,7 @@ const AxisControl = props => {
 			});
 		} else if (target === 'padding' || target === 'margin')
 			syncArray.forEach(key => {
-				[breakpoint, customBreakpoint].forEach(bp => {
+				breakpointsArray.forEach(bp => {
 					const newKey = getAttributeKey(
 						getKey(key),
 						isHover,
@@ -583,16 +627,22 @@ const AxisControl = props => {
 					key.includes('right')
 				) {
 					response[
-						`${prefix}${target}-${key}${
-							auxTarget ? `-${auxTarget}` : ''
-						}-${breakpoint}${isHover ? '-hover' : ''}`
+						getAttributeKey(
+							getKey(key),
+							isHover,
+							false,
+							customBreakpoint ?? breakpoint
+						)
 					] = newValue;
 
 					if (isGeneral)
 						response[
-							`${prefix}${target}-${key}${
-								auxTarget ? `-${auxTarget}` : ''
-							}-general${isHover ? '-hover' : ''}`
+							getAttributeKey(
+								getKey(key),
+								isHover,
+								false,
+								'general'
+							)
 						] = newValue;
 				}
 			});
@@ -660,14 +710,19 @@ const AxisControl = props => {
 			onChange(response);
 		} else {
 			onChange({
-				[`${prefix}${target}-${singleTarget}${
-					auxTarget ? `-${auxTarget}` : ''
-				}-${customBreakpoint ?? breakpoint}${isHover ? '-hover' : ''}`]:
-					newValue,
+				[getAttributeKey(
+					getKey(singleTarget),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)]: newValue,
 				...(isGeneral && {
-					[`${prefix}${target}-${singleTarget}${
-						auxTarget ? `-${auxTarget}` : ''
-					}-general${isHover ? '-hover' : ''}`]: newValue,
+					[getAttributeKey(
+						getKey(singleTarget),
+						isHover,
+						false,
+						'general'
+					)]: newValue,
 				}),
 			});
 		}
@@ -675,13 +730,35 @@ const AxisControl = props => {
 
 	return (
 		<div className={classes}>
-			<ResponsiveTabsControl breakpoint={breakpoint}>
+			{useResponsiveTabs && (
+				<ResponsiveTabsControl breakpoint={breakpoint}>
+					<AxisControlContent
+						{...props}
+						label={label}
+						getOptions={getOptions}
+						currentUnit={currentUnit}
+						target={target}
+						isHover={isHover}
+						onChange={onChange}
+						onReset={onReset}
+						inputsArray={inputsArray}
+						getLastBreakpointValue={getLastBreakpointValue}
+						getValue={getValue}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						disableAuto={disableAuto}
+						getKey={getKey}
+						onChangeSync={onChangeSync}
+					/>
+				</ResponsiveTabsControl>
+			)}
+			{!useResponsiveTabs && (
 				<AxisControlContent
+					{...props}
 					label={label}
 					getOptions={getOptions}
 					currentUnit={currentUnit}
 					target={target}
-					breakpoint={breakpoint}
 					isHover={isHover}
 					onChange={onChange}
 					onReset={onReset}
@@ -694,7 +771,7 @@ const AxisControl = props => {
 					getKey={getKey}
 					onChangeSync={onChangeSync}
 				/>
-			</ResponsiveTabsControl>
+			)}
 		</div>
 	);
 };

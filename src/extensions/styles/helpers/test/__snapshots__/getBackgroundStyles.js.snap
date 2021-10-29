@@ -512,7 +512,6 @@ Object {
       "background-svg-SVGMediaURL": null,
       "background-svg-image-shape-flip-x-general": false,
       "background-svg-image-shape-flip-y-general": false,
-      "background-svg-image-shape-position-general": "",
       "background-svg-image-shape-rotate-general": 104,
       "background-svg-image-shape-scale-general": 72,
       "background-svg-left-general": 50,

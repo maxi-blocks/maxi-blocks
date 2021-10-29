@@ -10,7 +10,7 @@ import ColorControl from '../color-control';
 import ImageShape from '../image-shape';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
-import { injectImgSVG, getSVGHasImage } from '../../extensions/svg/utils';
+import { injectImgSVG, getSVGHasImage } from '../../extensions/svg/';
 
 /**
  * External dependencies

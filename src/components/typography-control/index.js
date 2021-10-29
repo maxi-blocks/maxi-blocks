@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, dispatch, useSelect, useState } from '@wordpress/data';
+import { select, dispatch, useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -232,7 +233,7 @@ const LinkOptions = props => {
 			/>
 			{linkStatus === 'normal_link' && (
 				<ColorControl
-					label={__('Link', 'maxi-blocks')}
+					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-color'
 					color={getValue(`${prefix}link-color`)}
 					defaultColor={getDefault(`${prefix}link-color`)}
@@ -271,7 +272,7 @@ const LinkOptions = props => {
 			)}
 			{linkStatus === 'hover_link' && (
 				<ColorControl
-					label={__('Link Hover', 'maxi-blocks')}
+					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-hover-color'
 					color={getValue(`${prefix}link-hover-color`)}
 					defaultColor={getDefault(`${prefix}link-hover-color`)}
@@ -309,9 +310,9 @@ const LinkOptions = props => {
 					globalProps={{ target: 'hover', type: 'link' }}
 				/>
 			)}
-			{linkStatus === 'acive_link' && (
+			{linkStatus === 'active_link' && (
 				<ColorControl
-					label={__('Link Active', 'maxi-blocks')}
+					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-active-color'
 					color={getValue(`${prefix}link-active-color`)}
 					defaultColor={getDefault(`${prefix}link-active-color`)}
@@ -353,7 +354,7 @@ const LinkOptions = props => {
 			)}
 			{linkStatus === 'visited_link' && (
 				<ColorControl
-					label={__('Link Visited', 'maxi-blocks')}
+					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-visited-color'
 					color={getValue(`${prefix}link-visited-color`)}
 					defaultColor={getDefault(`${prefix}link-visited-color`)}

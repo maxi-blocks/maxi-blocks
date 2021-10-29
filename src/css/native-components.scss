@@ -9,6 +9,10 @@
 .maxi-sidebar,
 .maxi-popover,
 .toolbar-item__popover {
+	hr {
+		margin: 0 0 8px 0;
+		border-bottom: 2px solid var(--maxi-grey-1-color);
+	}
 	.block-editor-link-control {
 		.block-editor-url-input__input {
 			color: #fff;

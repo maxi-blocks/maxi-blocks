@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, dispatch, useSelect } from '@wordpress/data';
+import { select, dispatch, useSelect, useState } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -14,6 +14,7 @@ import FontFamilySelector from '../font-family-selector';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
+import RadioControl from '../radio-control';
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -202,155 +203,196 @@ const LinkOptions = props => {
 		clientId,
 	} = props;
 
+	const [linkStatus, setLinkStatus] = useState('normal_link');
+
 	return (
 		<>
-			<ColorControl
-				label={__('Link', 'maxi-blocks')}
-				className='maxi-typography-link-color'
-				color={getValue(`${prefix}link-color`)}
-				defaultColor={getDefault(`${prefix}link-color`)}
-				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
-				paletteColor={getValue(`${prefix}link-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-palette-opacity`) || 100
-				}
-				onChange={({
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-					color,
-				}) =>
-					onChangeFormat(
-						{
-							[`${prefix}link-palette-color-status`]:
-								paletteStatus,
-							[`${prefix}link-palette-color`]: paletteColor,
-							[`${prefix}link-palette-opacity`]: paletteOpacity,
-							[`${prefix}link-color`]: color,
-						},
-						false,
-						true
-					)
-				}
-				textLevel={textLevel}
-				deviceType={breakpoint}
-				clientId={clientId}
-				disableGradient
-				globalProps={{ target: 'link', type: 'link' }}
+			<RadioControl
+				label=''
+				selected={linkStatus}
+				options={[
+					{
+						label: __('Link', 'maxi-block'),
+						value: 'normal_link',
+					},
+					{
+						label: __('Hover', 'maxi-block'),
+						value: 'hover_link',
+					},
+					{
+						label: __('Active', 'maxi-block'),
+						value: 'active_link',
+					},
+					{
+						label: __('Visited', 'maxi-block'),
+						value: 'visited_link',
+					},
+				]}
+				onChange={val => setLinkStatus(val)}
 			/>
-			<ColorControl
-				label={__('Link Hover', 'maxi-blocks')}
-				className='maxi-typography-link-hover-color'
-				color={getValue(`${prefix}link-hover-color`)}
-				defaultColor={getDefault(`${prefix}link-hover-color`)}
-				paletteStatus={getValue(
-					`${prefix}link-hover-palette-color-status`
-				)}
-				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-hover-palette-opacity`) || 100
-				}
-				onChange={({
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-					color,
-				}) =>
-					onChangeFormat(
-						{
-							[`${prefix}link-hover-palette-color-status`]:
-								paletteStatus,
-							[`${prefix}link-hover-palette-color`]: paletteColor,
-							[`${prefix}link-hover-palette-opacity`]:
-								paletteOpacity,
-							[`${prefix}link-hover-color`]: color,
-						},
-						false,
-						true
-					)
-				}
-				textLevel={textLevel}
-				deviceType={breakpoint}
-				clientId={clientId}
-				disableGradient
-				globalProps={{ target: 'hover', type: 'link' }}
-			/>
-			<ColorControl
-				label={__('Link Active', 'maxi-blocks')}
-				className='maxi-typography-link-active-color'
-				color={getValue(`${prefix}link-active-color`)}
-				defaultColor={getDefault(`${prefix}link-active-color`)}
-				paletteStatus={getValue(
-					`${prefix}link-active-palette-color-status`
-				)}
-				paletteColor={getValue(`${prefix}link-active-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-active-palette-opacity`) || 100
-				}
-				onChange={({
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-					color,
-				}) =>
-					onChangeFormat(
-						{
-							[`${prefix}link-active-palette-color-status`]:
-								paletteStatus,
-							[`${prefix}link-active-palette-color`]:
-								paletteColor,
-							[`${prefix}link-active-palette-opacity`]:
-								paletteOpacity,
-							[`${prefix}link-active-color`]: color,
-						},
-						false,
-						true
-					)
-				}
-				textLevel={textLevel}
-				deviceType={breakpoint}
-				clientId={clientId}
-				disableGradient
-				globalProps={{ target: 'active', type: 'link' }}
-			/>
-			<ColorControl
-				label={__('Link Visited', 'maxi-blocks')}
-				className='maxi-typography-link-visited-color'
-				color={getValue(`${prefix}link-visited-color`)}
-				defaultColor={getDefault(`${prefix}link-visited-color`)}
-				paletteStatus={getValue(
-					`${prefix}link-visited-palette-color-status`
-				)}
-				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-visited-palette-opacity`) || 100
-				}
-				onChange={({
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-					color,
-				}) =>
-					onChangeFormat(
-						{
-							[`${prefix}link-visited-palette-color-status`]:
-								paletteStatus,
-							[`${prefix}link-visited-palette-color`]:
-								paletteColor,
-							[`${prefix}link-visited-palette-opacity`]:
-								paletteOpacity,
-							[`${prefix}link-visited-color`]: color,
-						},
-						false,
-						true
-					)
-				}
-				textLevel={textLevel}
-				deviceType={breakpoint}
-				clientId={clientId}
-				disableGradient
-				globalProps={{ target: 'visited', type: 'link' }}
-			/>
+			{linkStatus === 'normal_link' && (
+				<ColorControl
+					label={__('Link', 'maxi-blocks')}
+					className='maxi-typography-link-color'
+					color={getValue(`${prefix}link-color`)}
+					defaultColor={getDefault(`${prefix}link-color`)}
+					paletteStatus={getValue(
+						`${prefix}link-palette-color-status`
+					)}
+					paletteColor={getValue(`${prefix}link-palette-color`)}
+					paletteOpacity={
+						getValue(`${prefix}link-palette-opacity`) || 100
+					}
+					onChange={({
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+						color,
+					}) =>
+						onChangeFormat(
+							{
+								[`${prefix}link-palette-color-status`]:
+									paletteStatus,
+								[`${prefix}link-palette-color`]: paletteColor,
+								[`${prefix}link-palette-opacity`]:
+									paletteOpacity,
+								[`${prefix}link-color`]: color,
+							},
+							false,
+							true
+						)
+					}
+					textLevel={textLevel}
+					deviceType={breakpoint}
+					clientId={clientId}
+					disableGradient
+					globalProps={{ target: 'link', type: 'link' }}
+				/>
+			)}
+			{linkStatus === 'hover_link' && (
+				<ColorControl
+					label={__('Link Hover', 'maxi-blocks')}
+					className='maxi-typography-link-hover-color'
+					color={getValue(`${prefix}link-hover-color`)}
+					defaultColor={getDefault(`${prefix}link-hover-color`)}
+					paletteStatus={getValue(
+						`${prefix}link-hover-palette-color-status`
+					)}
+					paletteColor={getValue(`${prefix}link-hover-palette-color`)}
+					paletteOpacity={
+						getValue(`${prefix}link-hover-palette-opacity`) || 100
+					}
+					onChange={({
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+						color,
+					}) =>
+						onChangeFormat(
+							{
+								[`${prefix}link-hover-palette-color-status`]:
+									paletteStatus,
+								[`${prefix}link-hover-palette-color`]:
+									paletteColor,
+								[`${prefix}link-hover-palette-opacity`]:
+									paletteOpacity,
+								[`${prefix}link-hover-color`]: color,
+							},
+							false,
+							true
+						)
+					}
+					textLevel={textLevel}
+					deviceType={breakpoint}
+					clientId={clientId}
+					disableGradient
+					globalProps={{ target: 'hover', type: 'link' }}
+				/>
+			)}
+			{linkStatus === 'acive_link' && (
+				<ColorControl
+					label={__('Link Active', 'maxi-blocks')}
+					className='maxi-typography-link-active-color'
+					color={getValue(`${prefix}link-active-color`)}
+					defaultColor={getDefault(`${prefix}link-active-color`)}
+					paletteStatus={getValue(
+						`${prefix}link-active-palette-color-status`
+					)}
+					paletteColor={getValue(
+						`${prefix}link-active-palette-color`
+					)}
+					paletteOpacity={
+						getValue(`${prefix}link-active-palette-opacity`) || 100
+					}
+					onChange={({
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+						color,
+					}) =>
+						onChangeFormat(
+							{
+								[`${prefix}link-active-palette-color-status`]:
+									paletteStatus,
+								[`${prefix}link-active-palette-color`]:
+									paletteColor,
+								[`${prefix}link-active-palette-opacity`]:
+									paletteOpacity,
+								[`${prefix}link-active-color`]: color,
+							},
+							false,
+							true
+						)
+					}
+					textLevel={textLevel}
+					deviceType={breakpoint}
+					clientId={clientId}
+					disableGradient
+					globalProps={{ target: 'active', type: 'link' }}
+				/>
+			)}
+			{linkStatus === 'visited_link' && (
+				<ColorControl
+					label={__('Link Visited', 'maxi-blocks')}
+					className='maxi-typography-link-visited-color'
+					color={getValue(`${prefix}link-visited-color`)}
+					defaultColor={getDefault(`${prefix}link-visited-color`)}
+					paletteStatus={getValue(
+						`${prefix}link-visited-palette-color-status`
+					)}
+					paletteColor={getValue(
+						`${prefix}link-visited-palette-color`
+					)}
+					paletteOpacity={
+						getValue(`${prefix}link-visited-palette-opacity`) || 100
+					}
+					onChange={({
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+						color,
+					}) =>
+						onChangeFormat(
+							{
+								[`${prefix}link-visited-palette-color-status`]:
+									paletteStatus,
+								[`${prefix}link-visited-palette-color`]:
+									paletteColor,
+								[`${prefix}link-visited-palette-opacity`]:
+									paletteOpacity,
+								[`${prefix}link-visited-color`]: color,
+							},
+							false,
+							true
+						)
+					}
+					textLevel={textLevel}
+					deviceType={breakpoint}
+					clientId={clientId}
+					disableGradient
+					globalProps={{ target: 'visited', type: 'link' }}
+				/>
+			)}
 		</>
 	);
 };
@@ -792,7 +834,6 @@ const TypographyControl = withFormatValue(props => {
 					/>
 				</>
 			)}
-			<hr />
 			{allowLink && (
 				<LinkOptions
 					getValue={getValue}

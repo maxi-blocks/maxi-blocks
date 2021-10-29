@@ -13,6 +13,7 @@ import {
 	getTransformStyles,
 	getZIndexStyles,
 	getOverflowStyles,
+	getSVGWidthStyles,
 } from '../../extensions/styles/helpers';
 
 const getWrapperObject = props => {
@@ -134,6 +135,7 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
+		width: getSVGWidthStyles(getGroupAttributes(props, 'svg')),
 	};
 
 	return response;

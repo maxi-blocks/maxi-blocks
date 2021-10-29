@@ -1,4 +1,4 @@
-import getSVGStyles from '../getSvgStyles';
+import { getSVGStyles } from '../getSvgStyles';
 
 jest.mock('@wordpress/data', () => {
 	return {

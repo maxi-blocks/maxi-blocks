@@ -25,7 +25,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, round } from 'lodash';
 
 /**
  * Content
@@ -105,25 +105,32 @@ class edit extends MaxiBlockComponent {
 			openFirstTime,
 			parentBlockStyle,
 			uniqueID,
+			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
 		} = attributes;
 
 		const isEmptyContent = isEmpty(content);
 
-		const handleOnResizeStart = (event, direction, elt) => {
-			event.preventDefault();
-
-			elt.querySelector('svg').style.width = 'auto';
-
-			setAttributes({
-				[`svg-width-unit-${deviceType}`]: 'px',
-			});
-		};
-
 		const handleOnResizeStop = (event, direction, elt) => {
+			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
 
+			// Get the new size
+			let newWidth = elt.getBoundingClientRect().width;
+
+			if (svgWidthUnit === '%') {
+				const wrapperWidth =
+					this.blockRef.current.getBoundingClientRect().width;
+
+				newWidth = round((newWidth / wrapperWidth) * 100, 2);
+			}
+			if (svgWidthUnit === 'vw') {
+				const winWidth = window.outerWidth;
+
+				newWidth = round((newWidth / winWidth) * 100, 2);
+			}
+
 			setAttributes({
-				[`svg-width-${deviceType}`]: elt.getBoundingClientRect().width,
+				[`svg-width-${deviceType}`]: newWidth,
 			});
 		};
 
@@ -181,7 +188,6 @@ class edit extends MaxiBlockComponent {
 								bottomLeft: true,
 								topLeft: true,
 							}}
-							onResizeStart={handleOnResizeStart}
 							onResizeStop={handleOnResizeStop}
 						>
 							<RawHTML>{content}</RawHTML>

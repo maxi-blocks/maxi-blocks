@@ -157,13 +157,13 @@ const MaxiBlock = forwardRef((props, ref) => {
 		'maxi-block',
 		!isSave && 'maxi-block--backend',
 		blockName && getBlockClassName(blockName),
-		(motion['hover-type'] && motion['hover-type'] !== 'none') ||
+		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||
 			motion['number-counter-status'] ||
 			motion['motion-status'] ||
-			(getHasParallax(background['background-layers']) &&
-				'maxi-motion-effect'),
+			getHasParallax(background['background-layers'])) &&
+			'maxi-motion-effect',
 		(motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||

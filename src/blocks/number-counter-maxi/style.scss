@@ -25,12 +25,6 @@ body.maxi-blocks--active .maxi-number-counter-block {
 				transform: rotate(-90deg);
 				transform-origin: center;
 			}
-			&__text {
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
-			}
 		}
 	}
 }

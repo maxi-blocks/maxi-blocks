@@ -71,7 +71,7 @@ const getTextStyles = (obj, blockStyle) => {
 		obj['number-counter-palette-text-color-status'] &&
 		obj['number-counter-palette-text-color']
 	)
-		response.general.color = getColorRGBAString({
+		response.general.fill = getColorRGBAString({
 			firstVar: `color-${obj['number-counter-palette-text-color']}`,
 			opacity: obj['number-counter-palette-text-opacity'],
 			blockStyle,

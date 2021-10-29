@@ -25,6 +25,11 @@ import {
 import getStyles from './styles';
 
 /**
+ * External dependencies
+ */
+import { round } from 'lodash';
+
+/**
  * Icons
  */
 import { replay } from '../../icons';
@@ -72,6 +77,7 @@ const NumberCounter = attributes => {
 				setCount(count + 1);
 			}, frameDuration);
 
+			// eslint-disable-next-line consistent-return
 			return () => clearInterval(countRef.current);
 		}
 	}, [count, replyStatus, preview, endCountValue]);
@@ -177,19 +183,29 @@ const NumberCounter = attributes => {
 								(count / 360) * circumference
 							)} ${circumference}`}
 						/>
+						<text
+							className='maxi-number-counter__box__text'
+							textAnchor='middle'
+							x='50%'
+							y='50%'
+							dy={`${round(fontSize / 4, 2)}px`}
+						>
+							{`${parseInt((count / 360) * 100)}`}
+
+							{attributes[
+								'number-counter-percentage-sign-status'
+							] && (
+								<sup>
+									{attributes[
+										'number-counter-percentage-sign-status'
+									]
+										? '%'
+										: ''}
+								</sup>
+							)}
+						</text>
 					</svg>
 				)}
-				<span className='maxi-number-counter__box__text'>
-					{`${parseInt((count / 360) * 100)}`}
-
-					{attributes['number-counter-percentage-sign-status'] && (
-						<sup>
-							{attributes['number-counter-percentage-sign-status']
-								? '%'
-								: ''}
-						</sup>
-					)}
-				</span>
 			</BlockResizer>
 		</>
 	);

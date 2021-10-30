@@ -108,9 +108,8 @@ const getSVGPathStrokeStyles = (obj, blockStyle) => {
 	return { SVGPathStroke: response };
 };
 
-export const getSvgStyles = ({ obj, target, blockStyle }) => {
+export const getSVGStyles = ({ obj, target, blockStyle }) => {
 	const response = {
-		// [` ${target} svg`]: getSVGWidthStyles(obj),
 		[` ${target} svg path`]: getSVGPathStyles(obj),
 		[` ${target} svg path[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle),

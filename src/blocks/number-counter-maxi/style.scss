@@ -15,7 +15,6 @@ body.maxi-blocks--active .maxi-number-counter-block {
 		&__box {
 			position: relative;
 			margin: 0 auto;
-			// min-height: 100px;
 			z-index: 2;
 			width: 100%;
 			max-width: 100%;
@@ -24,6 +23,11 @@ body.maxi-blocks--active .maxi-number-counter-block {
 			&__circle {
 				transform: rotate(-90deg);
 				transform-origin: center;
+			}
+
+			&__text {
+				display: block;
+				text-align: center;
 			}
 		}
 	}

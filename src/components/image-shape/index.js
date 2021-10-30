@@ -52,7 +52,7 @@ const ImageShape = props => {
 					icon={icon}
 				/>
 			)}
-			{!disableModal && icon && (
+			{icon && (
 				<>
 					{breakpoint === 'general' && (
 						<>

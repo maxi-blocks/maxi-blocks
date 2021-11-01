@@ -25,6 +25,7 @@
 			padding: 8px;
 			border-radius: 0;
 
+			&:focus,
 			&:hover {
 				border-color: var(--maxi-grey-6-color);
 			}

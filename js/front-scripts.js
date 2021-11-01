@@ -427,7 +427,7 @@ const setOpacity = (el, opacity) => {
 };
 
 const setBlur = (el, blur) => {
-	el.style.filter = blur;
+	el.style.filter = `blur(${blur})`;
 };
 
 const setVertical = (el, direction, value) => {
@@ -496,14 +496,31 @@ const getGeneralMotionSetting = (data, element) => {
 	return response;
 };
 
+const setTransition = (element, motionType) => {
+	let transition = '';
+	if (motionType.includes('vertical')) {
+		transition += '';
+	}
+	return null;
+};
+
+const getMotionData = (el, type) => {
+	return el.getAttribute(`data-motion-${type}-general`);
+};
+
+const getParent = el => {
+	return (
+		el.parentNode.closest('.maxi-container-block') ||
+		el.parentNode.closest('article')
+	);
+};
+
 const startingTransform = (element, type) => {
-	const dataMotion = element.getAttribute(`data-motion-${type}-general`);
+	const dataMotion = getMotionData(element, type);
 
 	if (!dataMotion) return null;
 
-	const parent =
-		element.parentNode.closest('.maxi-container-block') ||
-		element.parentNode.closest('article');
+	const parent = getParent(element);
 
 	const {
 		viewportTop,
@@ -550,7 +567,7 @@ let newMidDown = 0;
 let newEndDown = 0;
 
 const scrollTransform = (element, type) => {
-	const dataMotion = element.getAttribute(`data-motion-${type}-general`);
+	const dataMotion = getMotionData(element, type);
 
 	if (!dataMotion) return;
 
@@ -696,9 +713,7 @@ elements.forEach(function maxiMotion(element, index) {
 
 		if (!dataMotionVertical) return;
 
-		const parent =
-			element.parentNode.closest('.maxi-container-block') ||
-			element.parentNode.closest('article');
+		const parent = getParent(element);
 
 		const {
 			viewportTop,
@@ -727,7 +742,7 @@ elements.forEach(function maxiMotion(element, index) {
 
 		element.setAttribute('transform-size', transformSize);
 
-		element.style.transition = `all ${speedValue}ms ${easingValue}`;
+		// element.style.transition = `all ${speedValue}ms ${easingValue}`;
 
 		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
 		const direction = parseInt(dataMotionVerticalArray[5]);
@@ -771,7 +786,12 @@ elements.forEach(function maxiMotion(element, index) {
 		element.setAttribute('transform-size', transformSize);
 	}
 
-	if (motionType.includes('rotate') || motionType.includes('fade')) {
+	if (
+		motionType.includes('rotate') ||
+		motionType.includes('fade') ||
+		motionType.includes('blur') ||
+		motionType.includes('scale')
+	) {
 		startingTransform(element, motionType);
 	}
 });
@@ -799,9 +819,7 @@ window.addEventListener('scroll', () => {
 			const viewportMid = parseInt(dataMotionVerticalArray[3]);
 			const viewportBottom = parseInt(dataMotionVerticalArray[2]);
 
-			const parent =
-				element.parentNode.closest('.maxi-container-block') ||
-				element.parentNode.closest('article');
+			const parent = getParent(element);
 
 			const viewportMidPercent =
 				(parent.offsetHeight / 100) * viewportMid;
@@ -995,7 +1013,12 @@ window.addEventListener('scroll', () => {
 			}
 		} // vertical motion ends
 
-		if (motionType.includes('rotate') || motionType.includes('fade')) {
+		if (
+			motionType.includes('rotate') ||
+			motionType.includes('fade') ||
+			motionType.includes('blur') ||
+			motionType.includes('scale')
+		) {
 			scrollTransform(element, motionType);
 		}
 	});

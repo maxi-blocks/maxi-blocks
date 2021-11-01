@@ -33,8 +33,8 @@
 			}
 			&:focus:not(:disabled) {
 				background-color: var(--maxi-grey-2-color);
-				box-shadow: none !important;
-				outline: none !important;
+				box-shadow: none;
+				outline: none;
 			}
 			&:active {
 				background-color: var(--maxi-grey-3-color);

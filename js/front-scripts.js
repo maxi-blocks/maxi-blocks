@@ -490,18 +490,10 @@ const getGeneralMotionSetting = (data, element) => {
 	const easingValue = dataMotionVerticalArray[1] || 'ease';
 	response.easingValue = easingValue;
 
-	console.log('response: ');
-	console.log(response);
+	// console.log('response: ');
+	// console.log(response);
 
 	return response;
-};
-
-const setTransition = (element, motionType) => {
-	let transition = '';
-	if (motionType.includes('vertical')) {
-		transition += '';
-	}
-	return null;
 };
 
 const getMotionData = (el, type) => {
@@ -517,6 +509,8 @@ const getParent = el => {
 
 const startingTransform = (element, type) => {
 	const dataMotion = getMotionData(element, type);
+
+	console.log(`dataMotion: ${dataMotion}`);
 
 	if (!dataMotion) return null;
 
@@ -588,7 +582,7 @@ const scrollTransform = (element, type) => {
 	const mid = parseInt(dataMotionArray[6]);
 	const end = parseInt(dataMotionArray[7]);
 
-	element.style.transition = `all ${speedValue}ms ${easingValue}`;
+	// element.style.transition = `all ${speedValue}ms ${easingValue}`;
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
@@ -605,9 +599,9 @@ const scrollTransform = (element, type) => {
 	const elementMidInViewCoordinate =
 		elementTopInViewCoordinate + elementHalfHeight;
 
-	console.log(`Top: ${elementTopInViewCoordinate}`);
-	console.log(`Mid: ${elementMidInViewCoordinate}`);
-	console.log(`Bottom: ${elementBottomInViewCoordinate}`);
+	// console.log(`Top: ${elementTopInViewCoordinate}`);
+	// console.log(`Mid: ${elementMidInViewCoordinate}`);
+	// console.log(`Bottom: ${elementBottomInViewCoordinate}`);
 
 	const scrollDirection = getScrollDirection();
 
@@ -682,15 +676,15 @@ const scrollTransform = (element, type) => {
 			if (mid > start) newMidUp -= stepMid;
 			else newMidUp += stepMid;
 
-			console.log(stepMid);
-			console.log(newMidUp);
+			// console.log(stepMid);
+			// console.log(newMidUp);
 
 			const finalMidStart =
 				Math.abs(Math.trunc(newMidUp + mid)) < Math.abs(start)
 					? Math.trunc(newMidUp + mid)
 					: start;
 
-			console.log(`finalStartMid: ${finalMidStart}`);
+			// console.log(`finalStartMid: ${finalMidStart}`);
 
 			applyStyle(element, type, finalMidStart);
 		}
@@ -701,6 +695,51 @@ const scrollTransform = (element, type) => {
 
 elements.forEach(function maxiMotion(element, index) {
 	const motionType = element.getAttribute('data-motion-type');
+	const motionTypeArray = motionType.trim().split(' ');
+	const parent = getParent(element);
+	let transition = '';
+
+	motionTypeArray.map(type => {
+		const dataMotion = getMotionData(element, type);
+		const { speedValue, easingValue } = getGeneralMotionSetting(
+			dataMotion,
+			parent
+		);
+
+		switch (type) {
+			case 'vertical':
+				transition += `top ${speedValue}ms ${easingValue} 0s, `;
+				break;
+			case 'horizontal':
+				transition += `left ${speedValue}ms ${easingValue} 0s, `;
+				break;
+			case 'rotate':
+				transition += `transform ${speedValue}ms ${easingValue} 0s, `;
+				break;
+			case 'scale':
+				transition += `transform ${speedValue}ms ${easingValue} 0s, `;
+				break;
+			case 'fade':
+				transition += `opacity ${speedValue}ms ${easingValue} 0s, `;
+				break;
+			case 'blur':
+				transition += `filter ${speedValue}ms ${easingValue} 0s, `;
+				break;
+			default:
+				break;
+		}
+		startingTransform(element, type);
+		return null;
+	});
+
+	console.log('transition: ');
+	console.log(transition);
+
+	if (transition !== '')
+		element.style.transition = transition.substring(
+			0,
+			transition.length - 2
+		);
 
 	console.log(motionType);
 
@@ -786,14 +825,14 @@ elements.forEach(function maxiMotion(element, index) {
 		element.setAttribute('transform-size', transformSize);
 	}
 
-	if (
-		motionType.includes('rotate') ||
-		motionType.includes('fade') ||
-		motionType.includes('blur') ||
-		motionType.includes('scale')
-	) {
-		startingTransform(element, motionType);
-	}
+	// if (
+	// 	motionType.includes('rotate') ||
+	// 	motionType.includes('fade') ||
+	// 	motionType.includes('blur') ||
+	// 	motionType.includes('scale')
+	// ) {
+	// 	startingTransform(element, motionType);
+	// }
 });
 
 let currentTransformSize = 0;
@@ -803,6 +842,13 @@ let elementScrollSize = 0;
 window.addEventListener('scroll', () => {
 	elements.forEach(function motionOnScroll(element, index) {
 		const motionType = element.getAttribute('data-motion-type');
+
+		const motionTypeArray = motionType.trim().split(' ');
+
+		motionTypeArray.map(type => {
+			scrollTransform(element, type);
+			return null;
+		});
 		// 'speed(0) ease(1) viewport-bottom(2) viewport-middle(3) viewport-top(4) direction(5) offset-starting(6) offset-middle(7) offset-end(8)'
 		if (motionType.includes('vertical')) {
 			const dataMotionVertical = element.getAttribute(
@@ -995,7 +1041,7 @@ window.addEventListener('scroll', () => {
 				}
 
 				if (element.classList.contains('motion-direction-scroll-up')) {
-					console.log(`BUG: translateY( -${elementScrollSize}px)`);
+					// console.log(`BUG: translateY( -${elementScrollSize}px)`);
 					setTransform(
 						element,
 						`translateY( -${elementScrollSize}px)`
@@ -1013,14 +1059,14 @@ window.addEventListener('scroll', () => {
 			}
 		} // vertical motion ends
 
-		if (
-			motionType.includes('rotate') ||
-			motionType.includes('fade') ||
-			motionType.includes('blur') ||
-			motionType.includes('scale')
-		) {
-			scrollTransform(element, motionType);
-		}
+		// if (
+		// 	motionType.includes('rotate') ||
+		// 	motionType.includes('fade') ||
+		// 	motionType.includes('blur') ||
+		// 	motionType.includes('scale')
+		// ) {
+		// 	scrollTransform(element, motionType);
+		// }
 	});
 });
 

@@ -30,11 +30,9 @@ const RadioControl = ({
 	onChange,
 	options = [],
 	fullWidthMode = false,
-	...props
 }) => {
 	const instanceId = useInstanceId(RadioControl);
 	const id = `inspector-radio-control-${instanceId}`;
-	const onChangeValue = event => onChange(event.target.value);
 
 	const classes = classnames(
 		'maxi-radio-control',
@@ -45,26 +43,20 @@ const RadioControl = ({
 	return (
 		!isEmpty(options) && (
 			<BaseControl label={label} id={id} help={help} className={classes}>
-				{options.map((option, index) => (
-					<div
+				{options.map(({ value, label }, index) => (
+					<button
+						role='button'
+						tabIndex={0}
 						key={`${id}-${index}`}
 						className={`maxi-radio-control__option${
-							option.hidden ? ' hidden' : ''
+							selected === value
+								? ' maxi-radio-control__option--selected'
+								: ''
 						}`}
+						onClick={() => onChange(value)}
 					>
-						<input
-							id={`${id}-${index}`}
-							className='maxi-radio-control__input'
-							type='radio'
-							name={id}
-							value={option.value}
-							onChange={onChangeValue}
-							checked={option.value === selected}
-							aria-describedby={help ? `${id}__help` : undefined}
-							{...props}
-						/>
-						<label htmlFor={`${id}-${index}`}>{option.label}</label>
-					</div>
+						{label}
+					</button>
 				))}
 			</BaseControl>
 		)

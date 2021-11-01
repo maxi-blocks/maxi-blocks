@@ -13,6 +13,7 @@ import { select, useSelect } from '@wordpress/data';
 import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
+	getHasParallax,
 } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
 import MotionPreview from '../motion-preview';
@@ -159,17 +160,17 @@ const MaxiBlock = forwardRef((props, ref) => {
 		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||
-			motion['parallax-status'] ||
 			motion['number-counter-status'] ||
-			motion['motion-status']) &&
+			motion['motion-status'] ||
+			getHasParallax(background['background-layers'])) &&
 			'maxi-motion-effect',
-		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
+		(motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||
-			motion['parallax-status'] ||
 			motion['number-counter-status'] ||
-			motion['motion-status']) &&
-			`maxi-motion-effect-${uniqueID}`,
+			motion['motion-status'] ||
+			(getHasParallax(background['background-layers']) &&
+				`maxi-motion-effect-${uniqueID}`),
 		blockStyle,
 		extraClassName,
 		uniqueID,
@@ -259,14 +260,13 @@ export const getMaxiBlockBlockAttributes = props => {
 		...getGroupAttributes(attributes, [
 			'motion',
 			'numberCounter',
-			'parallax',
 			'shapeDivider',
 			'hover',
 		]),
 	};
 
 	const background = {
-		...getGroupAttributes(attributes, ['blockBackground', 'parallax']),
+		...getGroupAttributes(attributes, ['blockBackground']),
 	};
 	const hasArrow = props.attributes['arrow-status'] || false;
 	const hasLink =

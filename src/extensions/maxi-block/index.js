@@ -25,6 +25,7 @@ import {
 	styleGenerator,
 	getGroupAttributes,
 	getBlockStyle,
+	getParallaxLayers,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
@@ -233,9 +234,24 @@ class MaxiBlockComponent extends Component {
 		return null;
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	get getCustomData() {
-		return null;
+		const {
+			uniqueID,
+			'background-layers': bgLayers,
+			'motion-status': motionStatus,
+		} = this.props.attributes;
+
+		const bgParallaxLayers = getParallaxLayers(bgLayers);
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, ['motion']),
+				}),
+				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
+				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
+			},
+		};
 	}
 
 	getDefaultBlockStyle(blockStyle, clientId) {

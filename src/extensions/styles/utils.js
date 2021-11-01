@@ -23,3 +23,11 @@ export const validateOriginValue = val => {
 
 	return false;
 };
+
+export const getParallaxLayers = bgLayers =>
+	bgLayers?.filter(
+		layer =>
+			layer.type === 'image' && layer['background-image-parallax-status']
+	);
+
+export const getHasParallax = bgLayers => !isEmpty(getParallaxLayers(bgLayers));

@@ -74,50 +74,54 @@ window.onload = () => {
 
 window.initMap = function () {
 	Object.values(maxi_custom_data.custom_data).map(item => {
-		const mapCordinate = {
-			lat: +item['map-latitude'],
-			lng: +item['map-longitude'],
-		};
+		const el = document.getElementById(`map-container-${item.uniqueID}`);
 
-		const map = new google.maps.Map(
-			document.getElementById(`map-container-${item.uniqueID}`),
-			{
-				zoom: item['map-zoom'],
-				center: mapCordinate,
-			}
-		);
+		if (el) {
+			const mapCordinate = {
+				lat: +item['map-latitude'],
+				lng: +item['map-longitude'],
+			};
 
-		const contentTitleString = `<h6 class="map-marker-info-window__title">${item['map-marker-text']}</h6>`;
-		const contentAddressString = `<p class="map-marker-info-window__address">${item['map-marker-address']}</p>`;
-		const contentString = `<div class="map-marker-info-window">${
-			item['map-marker-text'] !== '' ? contentTitleString : ''
-		}${
-			item['map-marker-address'] !== '' ? contentAddressString : ''
-		}</div>`;
+			const map = new google.maps.Map(
+				document.getElementById(`map-container-${item.uniqueID}`),
+				{
+					zoom: item['map-zoom'],
+					center: mapCordinate,
+				}
+			);
 
-		const infowindow = new google.maps.InfoWindow({
-			content: contentString,
-		});
+			const contentTitleString = `<h6 class="map-marker-info-window__title">${item['map-marker-text']}</h6>`;
+			const contentAddressString = `<p class="map-marker-info-window__address">${item['map-marker-address']}</p>`;
+			const contentString = `<div class="map-marker-info-window">${
+				item['map-marker-text'] !== '' ? contentTitleString : ''
+			}${
+				item['map-marker-address'] !== '' ? contentAddressString : ''
+			}</div>`;
 
-		const marker = new google.maps.Marker({
-			position: mapCordinate,
-			map,
-			icon: {
-				...defaultMarkers[`marker-icon-${item['map-marker']}`],
-				fillColor: item['map-marker-fill-color'],
-				fillOpacity: item['map-marker-opacity'],
-				strokeWeight: 2,
-				strokeColor: item['map-marker-stroke-color'],
-				rotation: 0,
-				scale: item['map-marker-scale'],
-			},
-		});
+			const infowindow = new google.maps.InfoWindow({
+				content: contentString,
+			});
 
-		marker.addListener('click', () => {
-			(item['map-marker-text'] !== '' ||
-				item['map-marker-address'] !== '') &&
-				infowindow.open(map, marker);
-		});
+			const marker = new google.maps.Marker({
+				position: mapCordinate,
+				map,
+				icon: {
+					...defaultMarkers[`marker-icon-${item['map-marker']}`],
+					fillColor: item['map-marker-fill-color'],
+					fillOpacity: item['map-marker-opacity'],
+					strokeWeight: 2,
+					strokeColor: item['map-marker-stroke-color'],
+					rotation: 0,
+					scale: item['map-marker-scale'],
+				},
+			});
+
+			marker.addListener('click', () => {
+				(item['map-marker-text'] !== '' ||
+					item['map-marker-address'] !== '') &&
+					infowindow.open(map, marker);
+			});
+		}
 	});
 };
 
@@ -319,15 +323,18 @@ motionElements.forEach(function (elem) {
 		}
 
 		// Parallax Effect
-		if ('parallax-status' in motionData) {
-			const parallaxElem = document.querySelector(
-				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__parallax`
-			);
-			const parallaxStatus = motionData['parallax-status'];
-			const parallaxSpeed = motionData['parallax-speed'];
-			const parallaxDirection = motionData['parallax-direction'];
+		if ('bgParallaxLayers' in motionData) {
+			motionData.bgParallaxLayers.forEach(layer => {
+				const {
+					id,
+					'background-image-parallax-speed': parallaxSpeed,
+					'background-image-parallax-direction': parallaxDirection,
+				} = layer;
 
-			if (parallaxStatus) {
+				const parallaxElem = document.querySelector(
+					`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
+				);
+
 				window.addEventListener('scroll', () => {
 					new Parallax(
 						parallaxElem,
@@ -336,7 +343,7 @@ motionElements.forEach(function (elem) {
 							: parallaxSpeed
 					);
 				});
-			}
+			});
 		}
 	}
 });

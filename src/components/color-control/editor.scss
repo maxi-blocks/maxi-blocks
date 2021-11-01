@@ -34,14 +34,15 @@
 		input {
 			width: 90% !important;
 			height: 27px !important;
-			background-color: rgba(33, 141, 250, 0) !important;
-			border: 2px solid var(--maxi-grey-1-color) !important;
-			border-radius: 5px !important;
-			font-size: 13px !important;
+			border: 1px solid var(--maxi-grey-1-color) !important;
+			border-radius: 0 !important;
+			font-size: 12px !important;
 			box-shadow: none !important;
 
 			&:focus {
-				border-color: #d0d0d0 !important;
+				border-color: var(--maxi-grey-6-color) !important;
+				box-shadow: none !important;
+				outline: 0;
 			}
 		}
 	}

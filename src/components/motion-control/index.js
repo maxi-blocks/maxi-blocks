@@ -396,6 +396,51 @@ const MotionControl = props => {
 											}
 										/>
 									)}
+									{type === 'scale' && (
+										<MotionUniqueControl
+											label={__('Scale', 'maxi-blocks')}
+											type='scale'
+											step={1}
+											values={[
+												getLastBreakpointAttribute(
+													`motion-scale-start-${type}`,
+													breakpoint,
+													props
+												),
+												getLastBreakpointAttribute(
+													`motion-scale-middle-${type}`,
+													breakpoint,
+													props
+												),
+												getLastBreakpointAttribute(
+													`motion-scale-end-${type}`,
+													breakpoint,
+													props
+												),
+											]}
+											defaultValues={[
+												getDefaultAttribute(
+													`motion-scale-start-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-scale-middle-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-scale-end-${type}-general`
+												),
+											]}
+											onChange={values =>
+												onChange({
+													[`motion-scale-start-${type}-${breakpoint}`]:
+														values[0],
+													[`motion-scale-middle-${type}-${breakpoint}`]:
+														values[1],
+													[`motion-scale-end-${type}-${breakpoint}`]:
+														values[2],
+												})
+											}
+										/>
+									)}
 									{type === 'fade' && (
 										<MotionUniqueControl
 											label={__('Fade', 'maxi-blocks')}

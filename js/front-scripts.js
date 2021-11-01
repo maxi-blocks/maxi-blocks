@@ -450,6 +450,9 @@ const applyStyle = (el, type, value, direction) => {
 		case 'fade':
 			setOpacity(el, `${value}%`);
 			break;
+		case 'scale':
+			setTransform(el, `scale3d(${value}%, ${value}%, ${value}%)`);
+			break;
 		case 'blur':
 			setBlur(el, `${value}px`);
 			break;
@@ -530,8 +533,6 @@ const startingTransform = (element, type) => {
 	const dataMotionArray = dataMotion.trim().split(' ');
 
 	const start = parseInt(dataMotionArray[5]);
-	const mid = parseInt(dataMotionArray[6]);
-	const end = parseInt(dataMotionArray[7]);
 
 	applyStyle(element, type, start);
 
@@ -581,8 +582,6 @@ const scrollTransform = (element, type) => {
 	const start = parseInt(dataMotionArray[5]);
 	const mid = parseInt(dataMotionArray[6]);
 	const end = parseInt(dataMotionArray[7]);
-
-	// element.style.transition = `all ${speedValue}ms ${easingValue}`;
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
@@ -824,15 +823,6 @@ elements.forEach(function maxiMotion(element, index) {
 		transformSize = transform / (parentHeight + windowHeight);
 		element.setAttribute('transform-size', transformSize);
 	}
-
-	// if (
-	// 	motionType.includes('rotate') ||
-	// 	motionType.includes('fade') ||
-	// 	motionType.includes('blur') ||
-	// 	motionType.includes('scale')
-	// ) {
-	// 	startingTransform(element, motionType);
-	// }
 });
 
 let currentTransformSize = 0;
@@ -1058,15 +1048,6 @@ window.addEventListener('scroll', () => {
 				}
 			}
 		} // vertical motion ends
-
-		// if (
-		// 	motionType.includes('rotate') ||
-		// 	motionType.includes('fade') ||
-		// 	motionType.includes('blur') ||
-		// 	motionType.includes('scale')
-		// ) {
-		// 	scrollTransform(element, motionType);
-		// }
 	});
 });
 

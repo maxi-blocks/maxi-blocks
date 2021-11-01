@@ -4,10 +4,6 @@ const motionData = props => {
 	const response = {};
 	const { attributes } = props;
 
-	const capitalize = string => {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	};
-
 	const motionSettingsShared = [
 		'speed',
 		'easing',

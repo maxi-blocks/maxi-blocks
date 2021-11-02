@@ -45,21 +45,6 @@ class Parallax {
 	}
 }
 
-const getDeviceType = () => {
-	const ua = navigator.userAgent;
-	if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-		return 'tablet';
-	}
-	if (
-		/Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
-			ua
-		)
-	) {
-		return 'mobile';
-	}
-	return 'desktop';
-};
-
 // Map
 window.onload = () => {
 	if (google_map_api_options.google_api_key !== '') {
@@ -446,7 +431,6 @@ videoPlayerElements.forEach(videoPlayerElement => {
 });
 
 // Motion Effects
-const className = 'maxi-container-motion';
 const elements = Array.from(
 	document.getElementsByClassName('maxi-block-motion')
 );
@@ -571,15 +555,7 @@ const startingTransform = (element, type) => {
 
 	const parent = getParent(element);
 
-	const {
-		viewportTop,
-		viewportMid,
-		viewportBottom,
-		viewportTopPercent,
-		viewportMidPercent,
-		viewportBottomPercent,
-		start,
-	} = getMotionSetting(dataMotion, parent);
+	const { start } = getMotionSetting(dataMotion, parent);
 
 	applyStyle(element, type, start);
 

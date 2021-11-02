@@ -425,8 +425,7 @@ const setTransform = (el, transform, type) => {
 		if (transform.includes(type)) oldTransformArray.splice(key, 1);
 		return null;
 	});
-	console.log('oldTransformArray');
-	console.log(oldTransformArray);
+
 	el.style.transform = oldTransformArray.join(' ') + transform;
 	el.style.WebkitTransform = oldTransformArray.join(' ') + transform;
 	return null;
@@ -440,14 +439,22 @@ const setBlur = (el, blur) => {
 	el.style.filter = `blur(${blur})`;
 };
 
+const setVerticalStart = (el, value) => {
+	el.style.top = `${value}px`;
+};
+
 const setVertical = (el, direction, value) => {
-	if (direction === 'up') el.style.top = value;
-	else el.style.bottom = value;
+	if (direction === 'up') el.style.top = `${value}px`;
+	else el.style.top = `-${value}px`;
+};
+
+const setHorizontalStart = (el, value) => {
+	el.style.left = `${value}px`;
 };
 
 const setHorizontal = (el, direction, value) => {
-	if (direction === 'left') el.style.left = value;
-	else el.style.right = value;
+	if (direction === 'left') el.style.left = `${value}px`;
+	else el.style.left = `-${value}px`;
 };
 
 const applyStyle = (el, type, value, direction) => {
@@ -471,10 +478,12 @@ const applyStyle = (el, type, value, direction) => {
 			setBlur(el, `${value}px`);
 			break;
 		case 'vertical':
-			setVertical(el, direction, `${value}px`);
+			if (!direction) setVerticalStart(el, value);
+			else setVertical(el, direction, value);
 			break;
 		case 'horizontal':
-			setHorizontal(el, direction, `${value}px`);
+			if (!direction) setHorizontalStart(el, value);
+			else setHorizontal(el, direction, value);
 			break;
 		default:
 			break;
@@ -483,7 +492,7 @@ const applyStyle = (el, type, value, direction) => {
 	return null;
 };
 
-const getGeneralMotionSetting = (data, element) => {
+const getMotionSetting = (data, element) => {
 	const response = {};
 
 	const dataMotionVerticalArray = data.trim().split(' ');
@@ -511,6 +520,8 @@ const getGeneralMotionSetting = (data, element) => {
 	response.end = parseInt(dataMotionVerticalArray[8]);
 
 	response.easingValue = dataMotionVerticalArray[1] || 'ease';
+
+	response.direction = dataMotionVerticalArray[9] || '';
 
 	return response;
 };
@@ -542,13 +553,8 @@ const startingTransform = (element, type) => {
 		viewportTopPercent,
 		viewportMidPercent,
 		viewportBottomPercent,
-		speedValue,
-		easingValue,
 		start,
-		mid,
-		end,
-		reverseMotion,
-	} = getGeneralMotionSetting(dataMotion, parent);
+	} = getMotionSetting(dataMotion, parent);
 
 	applyStyle(element, type, start);
 
@@ -589,13 +595,12 @@ const scrollTransform = (element, type) => {
 		viewportTopPercent,
 		viewportMidPercent,
 		viewportBottomPercent,
-		speedValue,
-		easingValue,
 		start,
 		mid,
 		end,
 		reverseMotion,
-	} = getGeneralMotionSetting(dataMotion, element);
+		direction,
+	} = getMotionSetting(dataMotion, element);
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
@@ -624,10 +629,9 @@ const scrollTransform = (element, type) => {
 		if (elementMidInViewCoordinate >= 0) {
 			// from starting to middle
 			console.log('Down - To Mid');
-			const stepMid =
-				Math.abs(
-					(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
-				) * 4;
+			const stepMid = Math.abs(
+				(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
+			);
 
 			if (start < mid) newMidDown += stepMid;
 			else newMidDown -= stepMid;
@@ -639,12 +643,12 @@ const scrollTransform = (element, type) => {
 
 			console.log(`finalStartMid ${finalStartMid}`);
 
-			applyStyle(element, type, finalStartMid);
+			applyStyle(element, type, finalStartMid, direction);
 		} else {
 			console.log('Down - To End');
-			const stepEnd =
-				Math.abs((Math.abs(end) - Math.abs(mid)) / elementHalfHeight) *
-				4;
+			const stepEnd = Math.abs(
+				(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
+			);
 
 			if (mid < end) newEndDown += stepEnd;
 			else newEndDown -= stepEnd;
@@ -656,7 +660,7 @@ const scrollTransform = (element, type) => {
 
 			console.log(`finalMidEnd ${finalMidEnd}`);
 
-			applyStyle(element, type, finalMidEnd);
+			applyStyle(element, type, finalMidEnd, direction);
 		}
 	}
 	if (
@@ -682,13 +686,12 @@ const scrollTransform = (element, type) => {
 
 			console.log(`finalMidEnd: ${finalMidEnd}`);
 
-			applyStyle(element, type, finalMidEnd);
+			applyStyle(element, type, finalMidEnd, direction);
 		} else {
 			console.log('Up - To Start');
-			const stepMid =
-				Math.abs(
-					(Math.abs(mid) - Math.abs(start)) / elementHalfHeight
-				) * 4;
+			const stepMid = Math.abs(
+				(Math.abs(mid) - Math.abs(start)) / elementHalfHeight
+			);
 
 			if (mid > start) newMidUp -= stepMid;
 			else newMidUp += stepMid;
@@ -703,7 +706,7 @@ const scrollTransform = (element, type) => {
 
 			// console.log(`finalStartMid: ${finalMidStart}`);
 
-			applyStyle(element, type, finalMidStart);
+			applyStyle(element, type, finalMidStart, direction);
 		}
 	}
 };
@@ -716,7 +719,7 @@ elements.forEach(function maxiMotion(element, index) {
 
 	motionTypeArray.map(type => {
 		const dataMotion = getMotionData(element, type);
-		const { speedValue, easingValue } = getGeneralMotionSetting(
+		const { speedValue, easingValue } = getMotionSetting(
 			dataMotion,
 			parent
 		);
@@ -757,92 +760,10 @@ elements.forEach(function maxiMotion(element, index) {
 		);
 
 	console.log(motionType);
-
-	if (motionType.includes('vertical')) {
-		// motion data format date-motion-vertical=
-		// 'speed(0) ease(1) viewport-bottom(2) viewport-middle(3) viewport-top(4) direction(5) offset-starting(6) offset-middle(7) offset-end(8)'
-		const dataMotionVertical = element.getAttribute(
-			'data-motion-vertical-general'
-		);
-
-		if (!dataMotionVertical) return;
-
-		const parent = getParent(element);
-
-		const {
-			viewportTop,
-			viewportMid,
-			viewportBottom,
-			viewportTopPercent,
-			viewportMidPercent,
-			viewportBottomPercent,
-			speedValue,
-			easingValue,
-		} = getGeneralMotionSetting(dataMotionVertical, parent);
-
-		element.parentNode
-			.closest('.maxi-container-block')
-			.classList.add(className);
-
-		const parentHeight =
-			parent.offsetHeight - (viewportBottomPercent + viewportTopPercent);
-		const windowHeight = window.innerHeight;
-		const style = window.getComputedStyle(element);
-		let transform = parseInt(style.getPropertyValue('top'), 10) * 2;
-
-		element.setAttribute('transform', transform);
-
-		let transformSize = transform / (parentHeight + windowHeight);
-
-		element.setAttribute('transform-size', transformSize);
-
-		// element.style.transition = `all ${speedValue}ms ${easingValue}`;
-
-		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
-		const direction = parseInt(dataMotionVerticalArray[6]);
-
-		if (direction === 'up') {
-			element.style.transform = 'translate(0px, 0px)';
-			element.classList.remove('motion-direction-scroll-down');
-			element.classList.add('motion-direction-scroll-up');
-		} else if (direction === 'down') {
-			element.style.transform = 'translate(0px, 0px)';
-			element.classList.remove('motion-direction-scroll-up');
-			element.classList.add('motion-direction-scroll-down');
-		}
-
-		transform = Math.abs(parseInt(style.getPropertyValue('top'), 10)) * 2;
-
-		const offsetTop = parseInt(dataMotionVerticalArray[8]);
-		const offsetBottom = parseInt(dataMotionVerticalArray[7]);
-
-		if (offsetTop) {
-			if (element.classList.contains('motion-direction-scroll-up')) {
-				element.style.top = `${offsetTop * 100}px`;
-			} else if (
-				element.classList.contains('motion-direction-scroll-down')
-			) {
-				element.style.top = `-${offsetTop * 100}px`;
-			}
-
-			transform =
-				Math.abs(parseInt(style.getPropertyValue('top'), 10)) * 2;
-		}
-		if (offsetBottom) {
-			transform =
-				Math.abs(parseInt(style.getPropertyValue('top'), 10)) +
-				offsetBottom * 100;
-			transform = 'rotateX(90deg)';
-		}
-
-		element.setAttribute('transform', transform);
-		transformSize = transform / (parentHeight + windowHeight);
-		element.setAttribute('transform-size', transformSize);
-	}
 });
 
-let currentTransformSize = 0;
-let elementScrollSize = 0;
+const currentTransformSize = 0;
+const elementScrollSize = 0;
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('scroll', () => {
@@ -855,221 +776,6 @@ window.addEventListener('scroll', () => {
 			scrollTransform(element, type);
 			return null;
 		});
-		// 'speed(0) ease(1) viewport-bottom(2) viewport-middle(3) viewport-top(4) direction(5) offset-starting(6) offset-middle(7) offset-end(8)'
-		if (motionType.includes('vertical')) {
-			const dataMotionVertical = element.getAttribute(
-				'data-motion-vertical-general'
-			);
-
-			if (!dataMotionVertical) return;
-
-			const dataMotionVerticalArray = dataMotionVertical
-				.trim()
-				.split(' ');
-
-			const viewportTop = parseInt(dataMotionVerticalArray[4]);
-			const viewportMid = parseInt(dataMotionVerticalArray[3]);
-			const viewportBottom = parseInt(dataMotionVerticalArray[2]);
-
-			const parent = getParent(element);
-
-			const viewportMidPercent =
-				(parent.offsetHeight / 100) * viewportMid;
-			const viewportTopPercent =
-				parent.offsetHeight - (parent.offsetHeight / 100) * viewportTop;
-			const viewportBottomPercent =
-				(parent.offsetHeight / 100) * viewportBottom;
-
-			const offsetTop = parseInt(dataMotionVerticalArray[8]);
-			const offsetMid = parseInt(dataMotionVerticalArray[7]);
-			const offsetBottom = parseInt(dataMotionVerticalArray[6]);
-
-			const topPos = element.parentNode.closest(
-				'.maxi-container-block'
-			).offsetTop;
-			const { scrollTop } = document.documentElement;
-			const parentHeight =
-				parent.offsetHeight -
-				(viewportBottomPercent + viewportTopPercent);
-			const windowHeight = window.innerHeight;
-
-			if (
-				scrollTop + windowHeight >= topPos + viewportTopPercent &&
-				scrollTop <= topPos + parentHeight + viewportTopPercent
-			) {
-				let elementViewSize =
-					scrollTop + windowHeight - (topPos + viewportTopPercent);
-
-				let transformSizeAttr = element.getAttribute('transform-size');
-
-				elementScrollSize = elementViewSize * transformSizeAttr;
-
-				if (viewportMid) {
-					if (elementViewSize <= viewportMidPercent) {
-						if (offsetBottom || (offsetTop && offsetBottom)) {
-							transformSizeAttr =
-								(element.getAttribute('transform') -
-									offsetBottom * 100) /
-								viewportMidPercent;
-						} else if (offsetTop) {
-							transformSizeAttr =
-								(offsetTop * 100) / viewportMidPercent;
-						} else {
-							transformSizeAttr =
-								element.getAttribute('transform') /
-								2 /
-								viewportMidPercent;
-						}
-
-						currentTransformSize = element.getAttribute(
-							'transform-size-current'
-						);
-
-						elementScrollSize = elementViewSize * transformSizeAttr;
-						element.setAttribute(
-							'transform-size-current',
-							elementScrollSize
-						);
-					} else {
-						if (offsetBottom || (offsetBottom && offsetTop)) {
-							transformSizeAttr =
-								(offsetBottom * 100) /
-								(Math.abs(parentHeight - viewportMidPercent) +
-									windowHeight);
-						} else if (offsetTop) {
-							transformSizeAttr =
-								(element.getAttribute('transform') -
-									offsetTop * 100) /
-								(Math.abs(parentHeight - viewportMidPercent) +
-									windowHeight);
-						} else {
-							const style = window.getComputedStyle(element);
-							transformSizeAttr =
-								Math.abs(
-									parseInt(style.getPropertyValue('top'), 10)
-								) /
-								(parentHeight -
-									viewportMidPercent +
-									windowHeight);
-						}
-
-						elementScrollSize =
-							parseInt(currentTransformSize) +
-							Math.abs(
-								elementViewSize -
-									(viewportMidPercent - viewportTopPercent)
-							) *
-								transformSizeAttr;
-					}
-				}
-
-				if (offsetMid) {
-					if (
-						elementViewSize <=
-						parentHeight +
-							(viewportBottomPercent + viewportTopPercent)
-					) {
-						elementViewSize = scrollTop + windowHeight - topPos;
-						if (offsetBottom || (offsetTop && offsetBottom)) {
-							transformSizeAttr =
-								(element.getAttribute('transform') -
-									offsetBottom * 100 -
-									offsetMid) /
-								(parentHeight +
-									viewportBottomPercent +
-									viewportTopPercent);
-						} else if (offsetTop) {
-							transformSizeAttr =
-								(offsetTop * 100 - offsetMid) /
-								(parentHeight +
-									(viewportBottomPercent +
-										viewportTopPercent));
-						} else {
-							transformSizeAttr =
-								(element.getAttribute('transform') / 2 -
-									offsetMid) /
-								(parentHeight +
-									viewportBottomPercent +
-									viewportTopPercent);
-						}
-
-						currentTransformSize = element.getAttribute(
-							'transform-size-current'
-						);
-
-						elementScrollSize = elementViewSize * transformSizeAttr;
-						element.setAttribute(
-							'transform-size-current',
-							elementScrollSize
-						);
-					} else {
-						if (offsetBottom || (offsetBottom && offsetTop)) {
-							transformSizeAttr =
-								Math.abs(
-									element.getAttribute('transform') -
-										parseInt(currentTransformSize)
-								) /
-								Math.abs(
-									parentHeight +
-										(viewportBottomPercent +
-											viewportTopPercent) -
-										viewportMidPercent
-								);
-						} else if (offsetTop) {
-							transformSizeAttr =
-								Math.abs(
-									element.getAttribute('transform') -
-										(offsetTop - offsetMid)
-								) /
-								(parentHeight +
-									(viewportBottomPercent +
-										viewportTopPercent));
-						} else {
-							transformSizeAttr =
-								Math.abs(
-									element.getAttribute('transform') -
-										(element.getAttribute('transform') / 2 -
-											offsetMid)
-								) /
-								(parentHeight +
-									(viewportBottomPercent +
-										viewportTopPercent));
-						}
-
-						elementScrollSize =
-							parseInt(currentTransformSize) +
-							(elementViewSize -
-								(parentHeight +
-									(viewportBottomPercent +
-										viewportTopPercent))) *
-								transformSizeAttr;
-					}
-				}
-
-				if (element.classList.contains('motion-direction-scroll-up')) {
-					// console.log(`BUG: translateY( -${elementScrollSize}px)`);
-					setTransform(
-						element,
-						`translateY( -${elementScrollSize}px)`,
-						'vertical'
-					);
-				} else if (
-					element.classList.contains('motion-direction-scroll-down')
-				) {
-					setTransform(
-						element,
-						`translateY(${elementScrollSize}px)`,
-						'vertical'
-					);
-				} else {
-					setTransform(
-						element,
-						`translateY( -${elementScrollSize}px)`,
-						'vertical'
-					);
-				}
-			}
-		} // vertical motion ends
 	});
 });
 

@@ -63,15 +63,20 @@ export const motion = (() => {
 	Object.values(motionTypes).forEach(type => {
 		generateAttr(type, 'status', 'boolean', false);
 		generateAttr(type, 'easing', 'string', 'ease');
-		generateAttr(type, 'speed', 'number', 200);
+		generateAttr(type, 'speed', 'number', 500);
 		generateAttr(type, 'viewport-bottom', 'number', 0);
 		generateAttr(type, 'viewport-middle', 'number', 50);
 		generateAttr(type, 'viewport-top', 'number', 100);
 		generateAttr(type, 'status-reverse', 'boolean', true);
 
-		if (type === 'vertical' || type === 'horizontal') {
+		if (type === 'vertical') {
 			generateAttr(type, 'direction', 'string', 'up');
-			generateUniqueAttributes(type, 'offset', [-4, 0, 4]);
+			generateUniqueAttributes(type, 'offset', [-400, 0, 400]);
+		}
+
+		if (type === 'horizontal') {
+			generateAttr(type, 'direction', 'string', 'left');
+			generateUniqueAttributes(type, 'offset', [-200, 0, 200]);
 		}
 
 		if (type === 'rotate') {

@@ -9,7 +9,7 @@ import {
 	getOpacityStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getSvgStyles,
+	getSVGStyles,
 	getTransformStyles,
 	getZIndexStyles,
 	getOverflowStyles,
@@ -182,7 +182,7 @@ const getStyles = props => {
 			':hover': getWrapperObjectHover(props),
 			' .maxi-svg-icon-block__icon': getNormalObject(props),
 			' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-			...getSvgStyles({
+			...getSVGStyles({
 				obj: {
 					...getGroupAttributes(props, 'svg'),
 				},

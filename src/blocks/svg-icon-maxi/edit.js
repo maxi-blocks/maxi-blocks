@@ -124,7 +124,7 @@ class edit extends MaxiBlockComponent {
 				newWidth = round((newWidth / wrapperWidth) * 100, 2);
 			}
 			if (svgWidthUnit === 'vw') {
-				const winWidth = window.outerWidth;
+				const winWidth = window.innerWidth;
 
 				newWidth = round((newWidth / winWidth) * 100, 2);
 			}

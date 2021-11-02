@@ -27,4 +27,4 @@ export { default as getTypographyStyles } from './getTypographyStyles';
 export { default as getZIndexStyles } from './getZIndexStyles';
 export * from './getBackgroundStyles';
 export * from './getShapeDividerStyles';
-export * from './getSvgStyles';
+export * from './getSVGStyles';

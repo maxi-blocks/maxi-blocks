@@ -490,11 +490,13 @@ const getGeneralMotionSetting = (data, element) => {
 
 	response.speedValue = parseFloat(dataMotionVerticalArray[0]) || 200;
 
-	const easingValue = dataMotionVerticalArray[1] || 'ease';
-	response.easingValue = easingValue;
+	response.reverseMotion = dataMotionVerticalArray[5] || true;
 
-	// console.log('response: ');
-	// console.log(response);
+	response.start = parseInt(dataMotionVerticalArray[6]);
+	response.mid = parseInt(dataMotionVerticalArray[7]);
+	response.end = parseInt(dataMotionVerticalArray[8]);
+
+	response.easingValue = dataMotionVerticalArray[1] || 'ease';
 
 	return response;
 };
@@ -528,11 +530,11 @@ const startingTransform = (element, type) => {
 		viewportBottomPercent,
 		speedValue,
 		easingValue,
+		start,
+		mid,
+		end,
+		reverseMotion,
 	} = getGeneralMotionSetting(dataMotion, parent);
-
-	const dataMotionArray = dataMotion.trim().split(' ');
-
-	const start = parseInt(dataMotionArray[5]);
 
 	applyStyle(element, type, start);
 
@@ -575,13 +577,11 @@ const scrollTransform = (element, type) => {
 		viewportBottomPercent,
 		speedValue,
 		easingValue,
+		start,
+		mid,
+		end,
+		reverseMotion,
 	} = getGeneralMotionSetting(dataMotion, element);
-
-	const dataMotionArray = dataMotion.trim().split(' ');
-
-	const start = parseInt(dataMotionArray[5]);
-	const mid = parseInt(dataMotionArray[6]);
-	const end = parseInt(dataMotionArray[7]);
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
@@ -645,7 +645,11 @@ const scrollTransform = (element, type) => {
 			applyStyle(element, type, finalMidEnd);
 		}
 	}
-	if (scrollDirection === 'up' && elementBottomInViewCoordinate >= 0) {
+	if (
+		reverseMotion === 'true' &&
+		scrollDirection === 'up' &&
+		elementBottomInViewCoordinate >= 0
+	) {
 		newEndDown = 0;
 		newMidDown = 0;
 		if (elementMidInViewCoordinate <= 0) {
@@ -688,8 +692,6 @@ const scrollTransform = (element, type) => {
 			applyStyle(element, type, finalMidStart);
 		}
 	}
-
-	const style = window.getComputedStyle(element);
 };
 
 elements.forEach(function maxiMotion(element, index) {
@@ -783,7 +785,7 @@ elements.forEach(function maxiMotion(element, index) {
 		// element.style.transition = `all ${speedValue}ms ${easingValue}`;
 
 		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
-		const direction = parseInt(dataMotionVerticalArray[5]);
+		const direction = parseInt(dataMotionVerticalArray[6]);
 
 		if (direction === 'up') {
 			element.style.transform = 'translate(0px, 0px)';

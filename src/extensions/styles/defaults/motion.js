@@ -67,6 +67,7 @@ export const motion = (() => {
 		generateAttr(type, 'viewport-bottom', 'number', 0);
 		generateAttr(type, 'viewport-middle', 'number', 50);
 		generateAttr(type, 'viewport-top', 'number', 100);
+		generateAttr(type, 'status-reverse', 'boolean', true);
 
 		if (type === 'vertical' || type === 'horizontal') {
 			generateAttr(type, 'direction', 'string', 'up');
@@ -123,6 +124,8 @@ export const motion = (() => {
 				'noDefault',
 				breakpoint
 			);
+
+			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
 
 			if (type === 'vertical' || type === 'horizontal') {
 				generateAttr(

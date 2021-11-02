@@ -16,6 +16,7 @@ import {
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import RangeSliderControl from '../range-slider-control';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -531,6 +532,25 @@ const MotionControl = props => {
 											}
 										/>
 									)}
+									<ToggleSwitch
+										label={__(
+											'Enable reverse animation',
+											'maxi-blocks'
+										)}
+										selected={
+											+getLastBreakpointAttribute(
+												`motion-status-reverse-${type}`,
+												breakpoint,
+												props
+											)
+										}
+										onChange={val =>
+											onChange({
+												[`motion-status-reverse-${type}-${breakpoint}`]:
+													!!+val,
+											})
+										}
+									/>
 								</>
 							)}
 					</div>

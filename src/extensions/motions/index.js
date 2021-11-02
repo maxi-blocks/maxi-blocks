@@ -10,14 +10,15 @@ const motionData = props => {
 		'viewport-bottom',
 		'viewport-middle',
 		'viewport-top',
+		'status-reverse',
 	];
 
 	const motionSettingsVertical = [
 		...motionSettingsShared,
-		'direction',
 		'offset-start',
 		'offset-middle',
 		'offset-end',
+		'direction',
 	];
 
 	const motionSettingsRotate = [

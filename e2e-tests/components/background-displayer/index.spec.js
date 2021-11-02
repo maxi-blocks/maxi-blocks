@@ -200,5 +200,5 @@ describe.skip('BackgroundDisplayerControl', () => {
 		await modalMock(page, { type: 'background-layers' });
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
-	});
+	}); */
 });

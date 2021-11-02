@@ -410,16 +410,26 @@ const elements = Array.from(
 	document.getElementsByClassName('maxi-block-motion')
 );
 
-const setTransform = (el, transform) => {
+const setTransform = (el, transform, type) => {
 	const oldTransform = el.style.transform;
-	el.style.transform = transform;
-	el.style.WebkitTransform = transform;
-	// el.style.transform = oldTransform
-	// 	? `${oldTransform} ${transform}`
-	// 	: transform;
-	// el.style.WebkitTransform = oldTransform
-	// 	? `${oldTransform} ${transform}`
-	// 	: transform;
+
+	if (oldTransform == null) {
+		el.style.transform = transform;
+		el.style.WebkitTransform = transform;
+		return null;
+	}
+
+	const oldTransformArray = oldTransform.split(') ');
+
+	oldTransformArray.map((transform, key) => {
+		if (transform.includes(type)) oldTransformArray.splice(key, 1);
+		return null;
+	});
+	console.log('oldTransformArray');
+	console.log(oldTransformArray);
+	el.style.transform = oldTransformArray.join(' ') + transform;
+	el.style.WebkitTransform = oldTransformArray.join(' ') + transform;
+	return null;
 };
 
 const setOpacity = (el, opacity) => {
@@ -445,13 +455,17 @@ const applyStyle = (el, type, value, direction) => {
 	console.log(type, value);
 	switch (type) {
 		case 'rotate':
-			setTransform(el, `rotate(${value}deg)`);
+			setTransform(el, `rotate(${value}deg)`, 'rotate');
 			break;
 		case 'fade':
 			setOpacity(el, `${value}%`);
 			break;
 		case 'scale':
-			setTransform(el, `scale3d(${value}%, ${value}%, ${value}%)`);
+			setTransform(
+				el,
+				`scale3d(${value}%, ${value}%, ${value}%)`,
+				'scale'
+			);
 			break;
 		case 'blur':
 			setBlur(el, `${value}px`);
@@ -1036,16 +1050,22 @@ window.addEventListener('scroll', () => {
 					// console.log(`BUG: translateY( -${elementScrollSize}px)`);
 					setTransform(
 						element,
-						`translateY( -${elementScrollSize}px)`
+						`translateY( -${elementScrollSize}px)`,
+						'vertical'
 					);
 				} else if (
 					element.classList.contains('motion-direction-scroll-down')
 				) {
-					setTransform(element, `translateY(${elementScrollSize}px)`);
+					setTransform(
+						element,
+						`translateY(${elementScrollSize}px)`,
+						'vertical'
+					);
 				} else {
 					setTransform(
 						element,
-						`translateY( -${elementScrollSize}px)`
+						`translateY( -${elementScrollSize}px)`,
+						'vertical'
 					);
 				}
 			}

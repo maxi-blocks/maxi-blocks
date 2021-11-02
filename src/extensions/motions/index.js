@@ -71,16 +71,19 @@ const motionData = props => {
 
 	const enabledMotions = dataMotionTypeValue();
 
-	if (enabledMotions !== '') {
+	if (!isEmpty(enabledMotions)) {
 		response['data-motion-type'] = enabledMotions;
 
 		motionTypes.map(type => {
 			if (enabledMotions.includes(type)) {
-				response[`data-motion-${type}-general`] = '';
+				let responseString = '';
 				let motionSettings;
 
 				switch (type) {
 					case 'vertical':
+						motionSettings = motionSettingsVertical;
+						break;
+					case 'horizontal':
 						motionSettings = motionSettingsVertical;
 						break;
 					case 'rotate':
@@ -103,14 +106,14 @@ const motionData = props => {
 					const motionSettingValue =
 						attributes[`motion-${setting}-${type}-general`];
 
-					response[
-						`data-motion-${type}-general`
-					] += `${motionSettingValue} `;
+					responseString += `${motionSettingValue} `;
 
 					return null;
 				});
-				if (!isEmpty(response[`data-motion-${type}-general`]))
-					response[`data-motion-${type}-general`].trim();
+
+				if (!isEmpty(responseString))
+					response[`data-motion-${type}-general`] =
+						responseString.trim();
 			}
 
 			return null;

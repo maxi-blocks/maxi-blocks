@@ -789,6 +789,7 @@ const TypographyControl = withFormatValue(props => {
 							typography
 						)}
 						blockStyle={blockStyle}
+						breakpoint={breakpoint}
 					/>
 				</>
 			)}

@@ -70,12 +70,10 @@ export const motion = (() => {
 		generateAttr(type, 'status-reverse', 'boolean', true);
 
 		if (type === 'vertical') {
-			generateAttr(type, 'direction', 'string', 'up');
 			generateUniqueAttributes(type, 'offset', [-400, 0, 400]);
 		}
 
 		if (type === 'horizontal') {
-			generateAttr(type, 'direction', 'string', 'left');
 			generateUniqueAttributes(type, 'offset', [-200, 0, 200]);
 		}
 
@@ -133,13 +131,6 @@ export const motion = (() => {
 			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
 
 			if (type === 'vertical' || type === 'horizontal') {
-				generateAttr(
-					type,
-					'direction',
-					'string',
-					'noDefault',
-					breakpoint
-				);
 				generateUniqueAttributes(
 					type,
 					'offset',

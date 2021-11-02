@@ -439,27 +439,17 @@ const setBlur = (el, blur) => {
 	el.style.filter = `blur(${blur})`;
 };
 
-const setVerticalStart = (el, value) => {
+const setVertical = (el, value) => {
 	el.style.top = `${value}px`;
 };
 
-const setVertical = (el, direction, value) => {
-	if (direction === 'up') el.style.top = `${value}px`;
-	else el.style.top = `-${value}px`;
-};
-
-const setHorizontalStart = (el, value) => {
+const setHorizontal = (el, value) => {
 	el.style.left = `${value}px`;
 };
 
-const setHorizontal = (el, direction, value) => {
-	if (direction === 'left') el.style.left = `${value}px`;
-	else el.style.left = `-${value}px`;
-};
-
-const applyStyle = (el, type, value, direction) => {
-	console.log('applyStyle');
-	console.log(type, value);
+const applyStyle = (el, type, value) => {
+	// console.log('applyStyle');
+	// console.log(type, value);
 	switch (type) {
 		case 'rotate':
 			setTransform(el, `rotate(${value}deg)`, 'rotate');
@@ -478,12 +468,10 @@ const applyStyle = (el, type, value, direction) => {
 			setBlur(el, `${value}px`);
 			break;
 		case 'vertical':
-			if (!direction) setVerticalStart(el, value);
-			else setVertical(el, direction, value);
+			setVertical(el, value);
 			break;
 		case 'horizontal':
-			if (!direction) setHorizontalStart(el, value);
-			else setHorizontal(el, direction, value);
+			setHorizontal(el, value);
 			break;
 		default:
 			break;
@@ -521,8 +509,6 @@ const getMotionSetting = (data, element) => {
 
 	response.easingValue = dataMotionVerticalArray[1] || 'ease';
 
-	response.direction = dataMotionVerticalArray[9] || '';
-
 	return response;
 };
 
@@ -539,8 +525,6 @@ const getParent = el => {
 
 const startingTransform = (element, type) => {
 	const dataMotion = getMotionData(element, type);
-
-	console.log(`dataMotion: ${dataMotion}`);
 
 	if (!dataMotion) return null;
 
@@ -599,7 +583,6 @@ const scrollTransform = (element, type) => {
 		mid,
 		end,
 		reverseMotion,
-		direction,
 	} = getMotionSetting(dataMotion, element);
 
 	const rect = element.getBoundingClientRect();
@@ -628,7 +611,7 @@ const scrollTransform = (element, type) => {
 		newMidUp = 0;
 		if (elementMidInViewCoordinate >= 0) {
 			// from starting to middle
-			console.log('Down - To Mid');
+			//	console.log('Down - To Mid');
 			const stepMid = Math.abs(
 				(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
 			);
@@ -637,15 +620,15 @@ const scrollTransform = (element, type) => {
 			else newMidDown -= stepMid;
 
 			const finalStartMid =
-				Math.abs(Math.trunc(start + newMidDown)) < Math.abs(mid)
+				Math.abs(Math.trunc(start + newMidDown)) < mid
 					? Math.trunc(start + newMidDown)
 					: mid;
 
-			console.log(`finalStartMid ${finalStartMid}`);
+			//	console.log(`finalStartMid ${finalStartMid}`);
 
-			applyStyle(element, type, finalStartMid, direction);
+			applyStyle(element, type, finalStartMid);
 		} else {
-			console.log('Down - To End');
+			// console.log('Down - To End');
 			const stepEnd = Math.abs(
 				(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
 			);
@@ -654,13 +637,13 @@ const scrollTransform = (element, type) => {
 			else newEndDown -= stepEnd;
 
 			const finalMidEnd =
-				Math.abs(Math.trunc(newEndDown + mid)) < Math.abs(end)
+				Math.abs(Math.trunc(newEndDown + mid)) < end
 					? Math.trunc(newEndDown + mid)
 					: end;
 
-			console.log(`finalMidEnd ${finalMidEnd}`);
+			// console.log(`finalMidEnd ${finalMidEnd}`);
 
-			applyStyle(element, type, finalMidEnd, direction);
+			applyStyle(element, type, finalMidEnd);
 		}
 	}
 	if (
@@ -672,21 +655,21 @@ const scrollTransform = (element, type) => {
 		newMidDown = 0;
 		if (elementMidInViewCoordinate <= 0) {
 			console.log('Up - To Mid');
-			const stepEnd =
-				Math.abs((Math.abs(end) - Math.abs(mid)) / elementHalfHeight) *
-				4;
+			const stepEnd = Math.abs(
+				(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
+			);
 
 			if (end < mid) newEndUp += stepEnd;
 			else newEndUp -= stepEnd;
 
 			const finalMidEnd =
-				Math.abs(Math.trunc(newEndUp + end)) < Math.abs(mid)
+				Math.abs(Math.trunc(newEndUp + end)) < mid
 					? Math.trunc(newEndUp + end)
 					: mid;
 
 			console.log(`finalMidEnd: ${finalMidEnd}`);
 
-			applyStyle(element, type, finalMidEnd, direction);
+			applyStyle(element, type, finalMidEnd);
 		} else {
 			console.log('Up - To Start');
 			const stepMid = Math.abs(
@@ -699,14 +682,16 @@ const scrollTransform = (element, type) => {
 			// console.log(stepMid);
 			// console.log(newMidUp);
 
+			console.log(`start: ${start}`);
+
 			const finalMidStart =
-				Math.abs(Math.trunc(newMidUp + mid)) < Math.abs(start)
+				Math.abs(Math.trunc(newMidUp + mid)) < start
 					? Math.trunc(newMidUp + mid)
 					: start;
 
-			// console.log(`finalStartMid: ${finalMidStart}`);
+			console.log(`finalStartMid: ${finalMidStart}`);
 
-			applyStyle(element, type, finalMidStart, direction);
+			applyStyle(element, type, finalMidStart);
 		}
 	}
 };
@@ -750,20 +735,12 @@ elements.forEach(function maxiMotion(element, index) {
 		return null;
 	});
 
-	console.log('transition: ');
-	console.log(transition);
-
 	if (transition !== '')
 		element.style.transition = transition.substring(
 			0,
 			transition.length - 2
 		);
-
-	console.log(motionType);
 });
-
-const currentTransformSize = 0;
-const elementScrollSize = 0;
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('scroll', () => {

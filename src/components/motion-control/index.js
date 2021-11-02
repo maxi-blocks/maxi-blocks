@@ -95,42 +95,6 @@ const MotionControl = props => {
 		},
 	];
 
-	const getDirectionOptions = type => {
-		const directionVerticalOptions = [
-			{
-				label: __('Scroll Up', 'maxi-blocks'),
-				value: 'up',
-			},
-			{
-				label: __('Scroll Down', 'maxi-blocks'),
-				value: 'down',
-			},
-		];
-
-		const directionHorizontalOptions = [
-			{
-				label: __('To Left', 'maxi-blocks'),
-				value: 'left',
-			},
-			{
-				label: __('To Right', 'maxi-blocks'),
-				value: 'right',
-			},
-		];
-
-		switch (type) {
-			case 'vertical':
-				return directionVerticalOptions;
-			case 'horizontal':
-				return directionHorizontalOptions;
-			default:
-				return null;
-		}
-	};
-	// console.log(`breakpoint ${breakpoint}`);
-	// console.log(getLastBreakpointAttribute('motion-active', breakpoint, props));
-	// console.log('===================');
-
 	return (
 		<div className={classes}>
 			<RadioControl
@@ -220,27 +184,6 @@ const MotionControl = props => {
 										}
 										options={easingOptions}
 									/>
-									{(type === 'vertical' ||
-										type === 'horizontal') && (
-										<SelectControl
-											label={__(
-												'Direction',
-												'maxi-blocks'
-											)}
-											value={getLastBreakpointAttribute(
-												`motion-direction-${type}`,
-												breakpoint,
-												props
-											)}
-											options={getDirectionOptions(type)}
-											onChange={val =>
-												onChange({
-													[`motion-direction-${type}-${breakpoint}`]:
-														val,
-												})
-											}
-										/>
-									)}
 									<AdvancedNumberControl
 										label={__('Speed', 'maxi-blocks')}
 										value={getLastBreakpointAttribute(

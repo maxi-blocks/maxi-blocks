@@ -18,7 +18,6 @@ const motionData = props => {
 		'offset-start',
 		'offset-middle',
 		'offset-end',
-		'direction',
 	];
 
 	const motionSettingsRotate = [

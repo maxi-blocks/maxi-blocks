@@ -120,6 +120,7 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-map--${uniqueID}`}
+				ref={this.blockRef}
 				className='maxi-map-block'
 				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockBlockAttributes(this.props)}

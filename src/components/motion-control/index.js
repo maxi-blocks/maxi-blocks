@@ -54,13 +54,10 @@ const MotionControl = props => {
 	];
 
 	const classes = classnames('maxi-motion-control', className);
-	// const [presetLoad, setPresetLoad] = useState('');
 
 	const [motionStatus, setMotionStatus] = useState(
 		getLastBreakpointAttribute('motion-active', breakpoint, props) || 'none'
 	);
-
-	// console.log(`motionStatus ${motionStatus}`);
 
 	const motionOptions = [
 		{ label: <Icon icon={styleNone} />, value: 'none' },

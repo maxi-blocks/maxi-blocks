@@ -10,7 +10,7 @@ const defaultMarkers = {
 		path: 'M20,10c0,3.5-2.2,6.5-5.4,7.6L12,22l-2.6-4.4C6.2,16.5,4,13.4,4,10c0-4.4,3.6-8,8-8S20,5.6,20,10z M12,7 c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S13.7,7,12,7z',
 	},
 	'marker-icon-4': {
-		path: 'M4.9,12.6c0,0,1.8,0,2.4,0c3.2,0.1,2.9,1.2,5.9,1.200ms2.9-1.2,5.9-1.2V2c-2.9,0-2.9,1.2-5.9,1.2S10.2,2,7.3,2H4.9v20',
+		path: 'M4.9,12.6c0,0,1.8,0,2.4,0c3.2,0.1,2.9,1.2,5.9,1.2s2.9-1.2,5.9-1.2V2c-2.9,0-2.9,1.2-5.9,1.2S10.2,2,7.3,2H4.9v20',
 	},
 	'marker-icon-5': {
 		path: 'M 4.00,22.30 C 4.00,22.30 4.00,22.30 4.00,22.30 4.00,22.30 9.20,22.30 9.20,22.30 9.20,22.30 9.20,22.30 9.20,22.30M 20.00,1.70 C 20.00,1.70 6.60,1.70 6.60,1.70 6.60,1.70 6.70,13.10 6.70,13.10 6.70,13.10 20.00,13.10 20.00,13.10 20.00,13.10 15.10,7.40 15.10,7.40 15.10,7.40 20.00,1.70 20.00,1.70 Z M 6.60,1.70 C 6.60,1.70 6.60,22.30 6.60,22.30',
@@ -473,8 +473,6 @@ const setHorizontal = (el, value) => {
 };
 
 const applyStyle = (el, type, value) => {
-	// console.log('applyStyle');
-	// console.log(type, value);
 	switch (type) {
 		case 'rotate':
 			setTransform(el, `rotate(${value}deg)`, 'rotate');
@@ -602,24 +600,85 @@ const scrollTransform = (element, type) => {
 		reverseMotion,
 	} = getMotionSetting(dataMotion, element);
 
+	// console.log('viewportTop');
+	// console.log(viewportTop);
+
+	// console.log('viewportMid');
+	// console.log(viewportMid);
+
+	// console.log('viewportBottom');
+	// console.log(viewportBottom);
+
+	// console.log('viewportTopPercent');
+	// console.log(viewportTopPercent);
+
+	// console.log('viewportMidPercent');
+	// console.log(viewportMidPercent);
+
+	// console.log('viewportBottomPercent');
+	// console.log(viewportBottomPercent);
+
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
 	const windowHalfHeight = windowHeight / 2;
 	const elementHeight = element.offsetHeight;
 	const elementHalfHeight = elementHeight / 2;
 
-	const elementTopInViewCoordinate = Math.round(rect.top - windowHalfHeight);
-
-	const elementBottomInViewCoordinate = Math.round(
+	let elementTopInViewCoordinate = Math.round(rect.top - windowHalfHeight);
+	let elementBottomInViewCoordinate = Math.round(
 		rect.bottom - windowHalfHeight
 	);
+	let elementMidInViewCoordinate = Math.round(
+		elementTopInViewCoordinate + elementHalfHeight
+	);
 
-	const elementMidInViewCoordinate =
-		elementTopInViewCoordinate + elementHalfHeight;
+	// console.log('elementTopInViewCoordinate');
+	// console.log(elementTopInViewCoordinate);
 
-	// console.log(`Top: ${elementTopInViewCoordinate}`);
-	// console.log(`Mid: ${elementMidInViewCoordinate}`);
-	// console.log(`Bottom: ${elementBottomInViewCoordinate}`);
+	// console.log('elementBottomInViewCoordinate');
+	// console.log(elementBottomInViewCoordinate);
+
+	// console.log('elementMidInViewCoordinate');
+	// console.log(elementMidInViewCoordinate);
+
+	// Top shift
+	const topShiftPx =
+		viewportTopPercent -
+		Math.abs(elementTopInViewCoordinate - elementBottomInViewCoordinate);
+
+	// console.log(' topShiftPx ');
+	// console.log(topShiftPx);
+
+	if (topShiftPx !== 0) elementTopInViewCoordinate -= topShiftPx;
+
+	// Mid shift
+	const midShiftPx =
+		viewportMidPercent -
+		Math.abs(elementTopInViewCoordinate - elementMidInViewCoordinate);
+
+	// console.log(' midShiftPx ');
+	// console.log(midShiftPx);
+
+	if (midShiftPx !== 0) elementMidInViewCoordinate -= midShiftPx;
+
+	// Bottom shift
+	const bottomShiftPx =
+		viewportBottomPercent -
+		Math.abs(elementBottomInViewCoordinate - elementTopInViewCoordinate);
+
+	// console.log(' bottomShiftPx ');
+	// console.log(bottomShiftPx);
+
+	if (bottomShiftPx !== 0) elementBottomInViewCoordinate -= bottomShiftPx;
+
+	// console.log('elementTopInViewCoordinate after');
+	// console.log(elementTopInViewCoordinate);
+
+	// console.log('elementBottomInViewCoordinate after');
+	// console.log(elementBottomInViewCoordinate);
+
+	// console.log('elementMidInViewCoordinate after');
+	// console.log(elementMidInViewCoordinate);
 
 	const scrollDirection = getScrollDirection();
 
@@ -628,7 +687,6 @@ const scrollTransform = (element, type) => {
 		newMidUp = 0;
 		if (elementMidInViewCoordinate >= 0) {
 			// from starting to middle
-			//	console.log('Down - To Mid');
 			const stepMid = Math.abs(
 				(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
 			);
@@ -641,11 +699,8 @@ const scrollTransform = (element, type) => {
 					? Math.trunc(start + newMidDown)
 					: mid;
 
-			//	console.log(`finalStartMid ${finalStartMid}`);
-
 			applyStyle(element, type, finalStartMid);
 		} else {
-			// console.log('Down - To End');
 			const stepEnd = Math.abs(
 				(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
 			);
@@ -658,8 +713,6 @@ const scrollTransform = (element, type) => {
 					? Math.trunc(newEndDown + mid)
 					: end;
 
-			// console.log(`finalMidEnd ${finalMidEnd}`);
-
 			applyStyle(element, type, finalMidEnd);
 		}
 	}
@@ -671,7 +724,6 @@ const scrollTransform = (element, type) => {
 		newEndDown = 0;
 		newMidDown = 0;
 		if (elementMidInViewCoordinate <= 0) {
-			console.log('Up - To Mid');
 			const stepEnd = Math.abs(
 				(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
 			);
@@ -684,11 +736,8 @@ const scrollTransform = (element, type) => {
 					? Math.trunc(newEndUp + end)
 					: mid;
 
-			console.log(`finalMidEnd: ${finalMidEnd}`);
-
 			applyStyle(element, type, finalMidEnd);
 		} else {
-			console.log('Up - To Start');
 			const stepMid = Math.abs(
 				(Math.abs(mid) - Math.abs(start)) / elementHalfHeight
 			);
@@ -696,17 +745,10 @@ const scrollTransform = (element, type) => {
 			if (mid > start) newMidUp -= stepMid;
 			else newMidUp += stepMid;
 
-			// console.log(stepMid);
-			// console.log(newMidUp);
-
-			console.log(`start: ${start}`);
-
 			const finalMidStart =
 				Math.abs(Math.trunc(newMidUp + mid)) < start
 					? Math.trunc(newMidUp + mid)
 					: start;
-
-			console.log(`finalStartMid: ${finalMidStart}`);
 
 			applyStyle(element, type, finalMidStart);
 		}

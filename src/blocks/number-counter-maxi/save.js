@@ -73,6 +73,9 @@ const save = props => {
 						/>
 					</svg>
 				)}
+				{circleStatus && (
+					<span className='maxi-number-counter__box__text' />
+				)}
 			</div>
 		</MaxiBlock>
 	);

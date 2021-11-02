@@ -151,18 +151,17 @@ motionElems.forEach(function (elem) {
 
 			const radius = 90;
 			const circumference = 2 * Math.PI * radius;
-			const startCountValue = Math.ceil(
-				(motionData['number-counter-start'] * 360) / 100
-			);
-			const endCountValue = Math.ceil(
-				(motionData['number-counter-end'] * 360) / 100
-			);
-			const countDuration = motionData['number-counter-duration'];
-			const countPercentageSign =
-				motionData['number-counter-percentage-sign-status'];
-			const startAnimation = motionData['number-counter-start-animation'];
+			const {
+				'number-counter-start': motionCounterStart,
+				'number-counter-end': motionCounterEnd,
+				'number-counter-duration': motionCounterDuration,
+				'number-counter-percentage-sign-status': usePercentage,
+				'number-counter-start-animation': startAnimation,
+			} = motionData;
+			const startCountValue = Math.ceil((motionCounterStart * 360) / 100);
+			const endCountValue = Math.ceil((motionCounterEnd * 360) / 100);
 
-			const frameDuration = countDuration / 60;
+			const frameDuration = motionCounterDuration / 60;
 
 			let count = startCountValue;
 
@@ -175,9 +174,18 @@ motionElems.forEach(function (elem) {
 						clearInterval(interval);
 					}
 
-					numberCounterElemText.innerHTML = `${parseInt(
-						(count / 360) * 100
-					)}<sup>${countPercentageSign ? '%' : ''}</sup>`;
+					let newInnerHTML = `${parseInt((count / 360) * 100)}`;
+
+					if (usePercentage) {
+						const percentageNode =
+							numberCounterElemText.nodeName === 'SPAN'
+								? '<sup>%</sup>'
+								: '<tspan baselineShift="super">%</tspan>';
+
+						newInnerHTML += percentageNode;
+					}
+
+					numberCounterElemText.innerHTML = newInnerHTML;
 
 					numberCounterElemCircle &&
 						numberCounterElemCircle.setAttribute(

@@ -51,7 +51,7 @@ describe('BorderControl', () => {
 
 		// color
 		await page.$$eval(
-			'.maxi-border-control .maxi-base-control__field .maxi-sc-color-palette div',
+			'.maxi-border-control .maxi-base-control__field .maxi-sc-color-palette button',
 			clickDiv => clickDiv[4].click()
 		);
 

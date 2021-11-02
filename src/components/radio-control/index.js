@@ -48,6 +48,7 @@ const RadioControl = ({
 						role='button'
 						tabIndex={0}
 						key={`${id}-${index}`}
+						aria-pressed={selected === value}
 						className={`maxi-radio-control__option${
 							selected === value
 								? ' maxi-radio-control__option--selected'

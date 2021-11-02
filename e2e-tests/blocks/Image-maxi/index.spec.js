@@ -83,7 +83,7 @@ describe('Image Maxi', () => {
 
 		// fontColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette button',
 			select => select[3].click()
 		);
 
@@ -95,8 +95,8 @@ describe('Image Maxi', () => {
 
 		// alignment
 		await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field label',
-			alignment => alignment[2].click()
+			'.maxi-alignment-control .maxi-base-control__field button',
+			alignment => alignment[1].click()
 		);
 
 		const alignmentAttributes = await getBlockAttributes();
@@ -227,52 +227,52 @@ describe('Image Maxi', () => {
 
 		// LinkColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			'.maxi-radio-control.maxi-typography-control__link-options button',
 			tabs => tabs[0].click()
 		);
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-color .maxi-sc-color-palette div',
+			'.maxi-typography-link-color .maxi-sc-color-palette button',
 			colors => colors[1].click()
 		);
 		await page.waitForTimeout(100);
 
 		// LinkHoverColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			'.maxi-radio-control.maxi-typography-control__link-options button',
 			tabs => tabs[1].click()
 		);
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-hover-color .maxi-sc-color-palette div',
+			'.maxi-typography-link-hover-color .maxi-sc-color-palette button',
 			colors => colors[2].click()
 		);
 		await page.waitForTimeout(100);
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			'.maxi-radio-control.maxi-typography-control__link-options button',
 			tabs => tabs[2].click()
 		);
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-active-color .maxi-sc-color-palette div',
+			'.maxi-typography-link-active-color .maxi-sc-color-palette button',
 			colors => colors[3].click()
 		);
 		await page.waitForTimeout(100);
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options .maxi-radio-control__option input',
+			'.maxi-radio-control.maxi-typography-control__link-options button',
 			tabs => tabs[3].click()
 		);
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-visited-color .maxi-sc-color-palette div',
+			'.maxi-typography-link-visited-color .maxi-sc-color-palette button',
 			colors => colors[4].click()
 		);
 		await page.waitForTimeout(100);

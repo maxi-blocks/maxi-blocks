@@ -13,7 +13,7 @@ describe('Button', () => {
 		await insertBlock('Text Maxi');
 		await openSidebarTab(page, 'style', 'alignment');
 
-		await page.$$eval('.maxi-alignment-control label', click =>
+		await page.$$eval('.maxi-alignment-control button', click =>
 			click[1].click()
 		);
 

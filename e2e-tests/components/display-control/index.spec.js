@@ -24,8 +24,8 @@ describe('DisplayControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-display-control .maxi-base-control__field label',
-			button => button[2].click()
+			'.maxi-display-control .maxi-base-control__field button',
+			button => button[1].click()
 		);
 
 		const attributes = await getBlockAttributes();
@@ -38,12 +38,12 @@ describe('DisplayControl', () => {
 	it('Check Responsive display control', async () => {
 		await openSidebarTab(page, 'advanced', 'show hide block');
 		const displayButtons = await page.$$(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option'
+			'.maxi-display-control .maxi-base-control__field button'
 		);
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[1].checked
+			'.maxi-display-control .maxi-base-control__field button',
+			select => select[1].ariaPressed
 		);
 
 		expect(isItemChecked).toBeTruthy();
@@ -53,8 +53,8 @@ describe('DisplayControl', () => {
 		await displayButtons[0].click();
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[0].checked
+			'.maxi-display-control .maxi-base-control__field button',
+			select => select[0].ariaPressed
 		);
 
 		expect(responsiveSOption).toBeTruthy();
@@ -68,8 +68,8 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[0].checked
+			'.maxi-display-control .maxi-base-control__field button',
+			select => select[0].ariaPressed
 		);
 
 		expect(responsiveXsOption).toBeTruthy();
@@ -78,8 +78,8 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[1].checked
+			'.maxi-display-control .maxi-base-control__field button',
+			select => select[1].ariaPressed
 		);
 
 		expect(responsiveMOption).toBeTruthy();

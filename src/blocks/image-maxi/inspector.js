@@ -31,6 +31,176 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { capitalize, isEmpty, isNil, isEqual, cloneDeep } from 'lodash';
 
 /**
+ * Dimension tab
+ */
+const dimensionTab = props => {
+	const { attributes, clientId, imageData, setAttributes } = props;
+	const {
+		cropOptions,
+		imageRatio,
+		imageSize,
+		isImageUrl,
+		mediaID,
+		SVGElement,
+	} = attributes;
+
+	const getSizeOptions = () => {
+		const response = [];
+		if (imageData) {
+			let { sizes } = imageData.media_details;
+			sizes = Object.entries(sizes).sort((a, b) => {
+				return a[1].width - b[1].width;
+			});
+			sizes.forEach(size => {
+				const name = capitalize(size[0]);
+				const val = size[1];
+				response.push({
+					label: `${name} - ${val.width}x${val.height}`,
+					value: size[0],
+				});
+			});
+		}
+		response.push({
+			label: 'Custom',
+			value: 'custom',
+		});
+
+		return response;
+	};
+
+	const getSizeResponse = imageSize => {
+		if (cropOptions && imageSize === 'custom') {
+			const {
+				source_url: mediaURL,
+				width: mediaWidth,
+				height: mediaHeight,
+			} = cropOptions;
+			return { mediaURL, mediaWidth, mediaHeight };
+		}
+		if (imageData && imageSize !== 'custom') {
+			const {
+				source_url: mediaURL,
+				width: mediaWidth,
+				height: mediaHeight,
+			} = imageData.media_details.sizes[imageSize];
+
+			return { mediaURL, mediaWidth, mediaHeight };
+		}
+		return { mediaURL: null, mediaWidth: null, mediaHeight: null };
+	};
+
+	return {
+		label: __('Dimension', 'maxi-blocks'),
+		content: (
+			<>
+				{!isImageUrl ||
+					(!SVGElement && (
+						<>
+							<SelectControl
+								label={__('Image Size', 'maxi-blocks')}
+								value={
+									imageSize || imageSize === 'custom'
+										? imageSize
+										: 'full'
+								} // is still necessary?
+								options={getSizeOptions()}
+								onChange={imageSize => {
+									const {
+										mediaURL,
+										mediaWidth,
+										mediaHeight,
+									} = getSizeResponse(imageSize);
+									setAttributes({
+										imageSize,
+										mediaURL,
+										mediaWidth,
+										mediaHeight,
+									});
+								}}
+							/>
+							{imageSize === 'custom' && (
+								<ImageCropControl
+									mediaID={mediaID}
+									cropOptions={cropOptions}
+									onChange={cropOptions => {
+										setAttributes({
+											cropOptions,
+											mediaURL:
+												cropOptions.image.source_url,
+											mediaHeight:
+												cropOptions.image.height,
+											mediaWidth: cropOptions.image.width,
+										});
+									}}
+								/>
+							)}
+						</>
+					))}
+				<RangeControl
+					className='maxi-image-inspector__dimension-width'
+					label={__('Width', 'maxi-blocks')}
+					value={attributes.imgWidth}
+					onChange={val => {
+						if (!isNil(val))
+							setAttributes({
+								imgWidth: val,
+							});
+						else
+							setAttributes({
+								imgWidth: getDefaultAttribute(
+									'imgWidth',
+									clientId
+								),
+							});
+					}}
+					max={100}
+					allowReset
+					initialPosition={getDefaultAttribute('imgWidth', clientId)}
+				/>
+				{!SVGElement && (
+					<SelectControl
+						className='maxi-image-inspector__ratio'
+						label={__('Image Ratio', 'maxi-blocks')}
+						value={imageRatio}
+						options={[
+							{
+								label: __('Original Size', 'maxi-blocks'),
+								value: 'original',
+							},
+							{
+								label: __('1:1 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar11',
+							},
+							{
+								label: __('2:3 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar23',
+							},
+							{
+								label: __('3:2 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar32',
+							},
+							{
+								label: __('4:3 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar43',
+							},
+							{
+								label: __('16:9 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar169',
+							},
+						]}
+						onChange={imageRatio =>
+							setAttributes({
+								imageRatio,
+							})
+						}
+					/>
+				)}
+			</>
+		),
+	};
+};
+
+/**
  * Inspector
  */
 const Inspector = memo(
@@ -48,12 +218,7 @@ const Inspector = memo(
 			blockStyle,
 			captionType,
 			clipPath,
-			cropOptions,
-			imageRatio,
-			imageSize,
-			isImageUrl,
 			mediaAlt,
-			mediaID,
 			parentBlockStyle,
 			SVGElement,
 			uniqueID,
@@ -85,30 +250,6 @@ const Inspector = memo(
 			return response;
 		};
 
-		const getSizeOptions = () => {
-			const response = [];
-			if (imageData) {
-				let { sizes } = imageData.media_details;
-				sizes = Object.entries(sizes).sort((a, b) => {
-					return a[1].width - b[1].width;
-				});
-				sizes.forEach(size => {
-					const name = capitalize(size[0]);
-					const val = size[1];
-					response.push({
-						label: `${name} - ${val.width}x${val.height}`,
-						value: size[0],
-					});
-				});
-			}
-			response.push({
-				label: 'Custom',
-				value: 'custom',
-			});
-
-			return response;
-		};
-
 		const getCaptionOptions = () => {
 			const response = [
 				{ label: 'None', value: 'none' },
@@ -122,27 +263,6 @@ const Inspector = memo(
 				response.splice(1, 0, newCaption);
 			}
 			return response;
-		};
-
-		const getSizeResponse = imageSize => {
-			if (cropOptions && imageSize === 'custom') {
-				const {
-					source_url: mediaURL,
-					width: mediaWidth,
-					height: mediaHeight,
-				} = cropOptions;
-				return { mediaURL, mediaWidth, mediaHeight };
-			}
-			if (imageData && imageSize !== 'custom') {
-				const {
-					source_url: mediaURL,
-					width: mediaWidth,
-					height: mediaHeight,
-				} = imageData.media_details.sizes[imageSize];
-
-				return { mediaURL, mediaWidth, mediaHeight };
-			}
-			return { mediaURL: null, mediaWidth: null, mediaHeight: null };
 		};
 
 		return (
@@ -163,233 +283,73 @@ const Inspector = memo(
 									<AccordionControl
 										isSecondary
 										items={[
-											deviceType === 'general' && {
-												label: __(
-													'Dimension',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{!isImageUrl && (
-															<SelectControl
-																label={__(
-																	'Image Size',
-																	'maxi-blocks'
-																)}
-																value={
-																	imageSize ||
-																	imageSize ===
-																		'custom'
-																		? imageSize
-																		: 'full'
-																} // is still necessary?
-																options={getSizeOptions()}
-																onChange={imageSize => {
-																	const {
-																		mediaURL,
-																		mediaWidth,
-																		mediaHeight,
-																	} =
-																		getSizeResponse(
-																			imageSize
-																		);
-																	setAttributes(
-																		{
-																			imageSize,
-																			mediaURL,
-																			mediaWidth,
-																			mediaHeight,
-																		}
-																	);
-																}}
-															/>
-														)}
-														{!isImageUrl &&
-															imageSize ===
-																'custom' && (
-																<ImageCropControl
-																	mediaID={
-																		mediaID
-																	}
-																	cropOptions={
-																		cropOptions
-																	}
-																	onChange={cropOptions => {
-																		setAttributes(
-																			{
-																				cropOptions,
-																				mediaURL:
-																					cropOptions
-																						.image
-																						.source_url,
-																				mediaHeight:
-																					cropOptions
-																						.image
-																						.height,
-																				mediaWidth:
-																					cropOptions
-																						.image
-																						.width,
-																			}
-																		);
-																	}}
-																/>
-															)}
-														<RangeControl
-															className='maxi-image-inspector__dimension-width'
-															label={__(
-																'Width',
-																'maxi-blocks'
-															)}
-															value={
-																attributes.imgWidth
-															}
-															onChange={val => {
-																if (!isNil(val))
-																	setAttributes(
-																		{
-																			imgWidth:
-																				val,
-																		}
-																	);
-																else
-																	setAttributes(
-																		{
-																			imgWidth:
-																				getDefaultAttribute(
-																					'imgWidth',
-																					clientId
-																				),
-																		}
-																	);
-															}}
-															max={100}
-															allowReset
-															initialPosition={getDefaultAttribute(
-																'imgWidth',
-																clientId
-															)}
-														/>
-														<SelectControl
-															className='maxi-image-inspector__ratio'
-															label={__(
-																'Image Ratio',
-																'maxi-blocks'
-															)}
-															value={imageRatio}
-															options={[
-																{
-																	label: __(
-																		'Original Size',
-																		'maxi-blocks'
-																	),
-																	value: 'original',
-																},
-																{
-																	label: __(
-																		'1:1 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar11',
-																},
-																{
-																	label: __(
-																		'2:3 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar23',
-																},
-																{
-																	label: __(
-																		'3:2 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar32',
-																},
-																{
-																	label: __(
-																		'4:3 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar43',
-																},
-																{
-																	label: __(
-																		'16:9 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar169',
-																},
-															]}
-															onChange={imageRatio =>
-																setAttributes({
-																	imageRatio,
-																})
-															}
-														/>
-													</>
-												),
-											},
+											deviceType === 'general' &&
+												dimensionTab(props),
 											...inspectorTabs.alignment({
 												props,
 												isAlignment: true,
 												disableJustify: true,
 											}),
-											deviceType === 'general' && {
-												label: __(
-													'Alt tag',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														<SelectControl
-															className='maxi-image-inspector__alt-tag'
-															label={__(
-																'Image Alt Tag',
-																'maxi-blocks'
-															)}
-															value={altSelector}
-															options={getImageAltOptions()}
-															onChange={altSelector =>
-																setAttributes({
-																	altSelector,
-																	...(altSelector ===
-																		'wordpress' && {
-																		mediaAlt:
-																			wpAlt,
-																	}),
-																	...(altSelector ===
-																		'title' && {
-																		mediaAlt:
-																			titleAlt,
-																	}),
-																})
-															}
-														/>
-														{altSelector ===
-															'custom' && (
-															<TextControl
-																className='maxi-image-inspector__custom-tag'
-																placeholder={__(
-																	'Add Your Alt Tag Here',
+											deviceType === 'general' &&
+												!SVGElement && {
+													label: __(
+														'Alt tag',
+														'maxi-blocks'
+													),
+													content: (
+														<>
+															<SelectControl
+																className='maxi-image-inspector__alt-tag'
+																label={__(
+																	'Image Alt Tag',
 																	'maxi-blocks'
 																)}
 																value={
-																	mediaAlt ||
-																	''
+																	altSelector
 																}
-																onChange={mediaAlt =>
+																options={getImageAltOptions()}
+																onChange={altSelector =>
 																	setAttributes(
 																		{
-																			mediaAlt,
+																			altSelector,
+																			...(altSelector ===
+																				'wordpress' && {
+																				mediaAlt:
+																					wpAlt,
+																			}),
+																			...(altSelector ===
+																				'title' && {
+																				mediaAlt:
+																					titleAlt,
+																			}),
 																		}
 																	)
 																}
 															/>
-														)}
-													</>
-												),
-											},
+															{altSelector ===
+																'custom' && (
+																<TextControl
+																	className='maxi-image-inspector__custom-tag'
+																	placeholder={__(
+																		'Add Your Alt Tag Here',
+																		'maxi-blocks'
+																	)}
+																	value={
+																		mediaAlt ||
+																		''
+																	}
+																	onChange={mediaAlt =>
+																		setAttributes(
+																			{
+																				mediaAlt,
+																			}
+																		)
+																	}
+																/>
+															)}
+														</>
+													),
+												},
 											{
 												label: __(
 													'Caption',

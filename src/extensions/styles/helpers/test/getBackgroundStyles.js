@@ -281,7 +281,6 @@ describe('getBackgroundStyles', () => {
 					'background-svg-left-s': 31,
 					'background-svg-image-shape-flip-x-general': false,
 					'background-svg-image-shape-flip-y-general': false,
-					'background-svg-image-shape-position-general': '',
 					'background-svg-image-shape-rotate-general': 104,
 					'background-svg-image-shape-scale-general': 72,
 				},

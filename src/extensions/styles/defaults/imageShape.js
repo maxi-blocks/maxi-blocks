@@ -1,16 +1,8 @@
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const rawImageShape = {
-	'image-shape-size': {
-		type: 'string',
-		default: '',
-	},
 	'image-shape-scale': {
 		type: 'number',
-	},
-	'image-shape-position': {
-		type: 'string',
-		default: '',
 	},
 	'image-shape-rotate': {
 		type: 'number',

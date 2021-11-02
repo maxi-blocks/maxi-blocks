@@ -44,12 +44,6 @@ const attributes = {
 	SVGData: {
 		type: 'object',
 	},
-	SVGMediaID: {
-		type: 'number',
-	},
-	SVGMediaURL: {
-		type: 'string',
-	},
 	captionType: {
 		type: 'string',
 		default: 'none',

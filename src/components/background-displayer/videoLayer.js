@@ -11,7 +11,7 @@ import parseVideo from './utils';
 import { isNil } from 'lodash';
 
 /**
- * Styles
+ * style
  */
 import './style.scss';
 
@@ -19,11 +19,49 @@ import './style.scss';
  * Component
  */
 const VideoLayer = props => {
-	const { videoOptions, className, breakpoint } = props;
+	const { videoOptions, wrapperRef, className, breakpoint } = props;
 
 	let videoUrl = videoOptions['background-video-mediaURL'];
 
 	if (isNil(videoUrl)) return null;
+
+	const reduceBorder = videoOptions['background-video-reduce-border'];
+
+	const style = {
+		height: '100%',
+	};
+
+	if (wrapperRef && wrapperRef.current) {
+		const { offsetWidth: wrapperWidth, offsetHeight: wrapperHeight } =
+			wrapperRef.current;
+
+		const proportion = reduceBorder ? 2.4 : 1.77;
+
+		const hasBorder = wrapperWidth / wrapperHeight < proportion;
+
+		// Avoids Y axis black border
+		if (hasBorder) {
+			const landscapeProportion =
+				proportion - wrapperWidth / wrapperHeight + 1;
+			const portraitProportion =
+				proportion + (wrapperHeight / wrapperWidth - 1) * 2;
+
+			const newScale =
+				landscapeProportion < proportion
+					? landscapeProportion
+					: portraitProportion;
+
+			style.transform = `translate(-50%, -50%) scale(${
+				newScale * 1.033
+			})`; // increase of 33% to ensure
+		} else style.transform = null;
+
+		const isLandscape = wrapperWidth > wrapperHeight * 1.77;
+
+		const newHeight = isLandscape ? wrapperWidth / 1.77 : wrapperHeight;
+
+		style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
+	}
 
 	const videoLoop = getLastBreakpointAttribute(
 		'background-video-loop',
@@ -75,6 +113,7 @@ const VideoLayer = props => {
 	const videoPlayerClasses = classnames(
 		'maxi-background-displayer__layer',
 		'maxi-background-displayer__video-player',
+		reduceBorder && 'maxi-background-displayer__video-player--no-border',
 		className
 	);
 
@@ -159,6 +198,7 @@ const VideoLayer = props => {
 								frameBorder='0'
 								allow='autoplay'
 								allowFullScreen='allowfullscreen'
+								style={style}
 							/>
 						</div>
 					)}

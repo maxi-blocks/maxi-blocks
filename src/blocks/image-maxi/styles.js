@@ -45,7 +45,6 @@ const getWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
 			parentBlockStyle: props.parentBlockStyle,
 		}),
 		margin: getMarginPaddingStyles({
@@ -334,6 +333,9 @@ const getImageShapeObject = (target, props) => {
 			transform: getImageShapeStyles(target, {
 				...getGroupAttributes(props, 'imageShape'),
 			}),
+		}),
+		...(props.clipPath && {
+			image: { general: { 'clip-path': props.clipPath } },
 		}),
 	};
 	return response;

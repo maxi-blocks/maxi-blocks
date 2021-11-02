@@ -17,7 +17,7 @@ import {
 	svgCurrentColorStatus,
 	fitSvg,
 } from './util';
-import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
+import { injectImgSVG, generateDataObject } from '../../extensions/svg';
 import DOMPurify from 'dompurify';
 
 /**

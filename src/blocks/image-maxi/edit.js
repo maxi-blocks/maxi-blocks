@@ -27,7 +27,7 @@ import {
 	RawHTML,
 	ImageURL,
 } from '../../components';
-import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
@@ -123,7 +123,7 @@ class edit extends MaxiBlockComponent {
 		const wrapperClassName = classnames(
 			'maxi-image-block-wrapper',
 			'maxi-image-ratio',
-			`maxi-image-ratio__${imageRatio}`
+			!SVGElement && `maxi-image-ratio__${imageRatio}`
 		);
 
 		const hoverClasses = classnames(
@@ -236,11 +236,13 @@ class edit extends MaxiBlockComponent {
 							mediaHeight: media.height,
 							isImageUrl: false,
 						});
+
 						this.setState({ isExternalClass: false });
+
 						if (!isEmpty(attributes.SVGData)) {
-							const cleanedContent = DOMPurify.sanitize(
-								attributes.SVGElement
-							);
+							const cleanedContent =
+								DOMPurify.sanitize(SVGElement);
+
 							const svg = document
 								.createRange()
 								.createContextualFragment(
@@ -258,8 +260,6 @@ class edit extends MaxiBlockComponent {
 							const resEl = injectImgSVG(svg, resData);
 							setAttributes({
 								SVGElement: resEl.outerHTML,
-								SVGMediaID: null,
-								SVGMediaURL: null,
 								SVGData: SVGValue,
 							});
 						}

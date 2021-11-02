@@ -60,7 +60,7 @@ const MainBlock = forwardRef(
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
 					{disableBackground && (
-						<BackgroundDisplayer {...background} />
+						<BackgroundDisplayer isSave {...background} />
 					)}
 					{children}
 				</TagName>

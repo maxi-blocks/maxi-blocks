@@ -72,6 +72,7 @@ const NumberCounter = attributes => {
 				setCount(count + 1);
 			}, frameDuration);
 
+			// eslint-disable-next-line consistent-return
 			return () => clearInterval(countRef.current);
 		}
 	}, [count, replyStatus, preview, endCountValue]);

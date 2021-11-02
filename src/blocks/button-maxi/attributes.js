@@ -36,11 +36,11 @@ const attributes = {
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,
-		['icon-background-palette-color-status-general']: {
+		'icon-background-palette-color-status-general': {
 			type: 'boolean',
 			default: true,
 		},
-		['icon-background-palette-color-general']: {
+		'icon-background-palette-color-general': {
 			type: 'number',
 			default: 4,
 		},
@@ -149,22 +149,6 @@ const attributes = {
 	...getPrefixedAttributes(attributesData.margin, prefix),
 	...{
 		...getPrefixedAttributes(attributesData.padding, prefix),
-		[`${prefix}padding-top-general`]: {
-			type: 'number',
-			default: 15,
-		},
-		[`${prefix}padding-right-general`]: {
-			type: 'number',
-			default: 36,
-		},
-		[`${prefix}padding-bottom-general`]: {
-			type: 'number',
-			default: 15,
-		},
-		[`${prefix}padding-left-general`]: {
-			type: 'number',
-			default: 36,
-		},
 		[`${prefix}padding-top-xxl`]: {
 			type: 'number',
 			default: 23,
@@ -180,6 +164,22 @@ const attributes = {
 		[`${prefix}padding-left-xxl`]: {
 			type: 'number',
 			default: 55,
+		},
+		[`${prefix}padding-top-xl`]: {
+			type: 'number',
+			default: 15,
+		},
+		[`${prefix}padding-right-xl`]: {
+			type: 'number',
+			default: 36,
+		},
+		[`${prefix}padding-bottom-xl`]: {
+			type: 'number',
+			default: 15,
+		},
+		[`${prefix}padding-left-xl`]: {
+			type: 'number',
+			default: 36,
 		},
 	},
 

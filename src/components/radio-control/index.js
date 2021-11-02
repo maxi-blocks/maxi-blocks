@@ -29,20 +29,22 @@ const RadioControl = ({
 	help,
 	onChange,
 	options = [],
+	fullWidthMode = false,
 	...props
 }) => {
 	const instanceId = useInstanceId(RadioControl);
 	const id = `inspector-radio-control-${instanceId}`;
 	const onChangeValue = event => onChange(event.target.value);
 
+	const classes = classnames(
+		'maxi-radio-control',
+		fullWidthMode && 'maxi-radio-control__full-width',
+		className
+	);
+
 	return (
 		!isEmpty(options) && (
-			<BaseControl
-				label={label}
-				id={id}
-				help={help}
-				className={classnames(className, 'maxi-radio-control')}
-			>
+			<BaseControl label={label} id={id} help={help} className={classes}>
 				{options.map((option, index) => (
 					<div
 						key={`${id}-${index}`}

@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import Button from '../button';
@@ -34,6 +39,7 @@ const DefaultStylesControl = props => {
 
 				return (
 					<Button
+						label={item.label}
 						key={uniqueId('maxi-default-styles-control__button-')}
 						className={classesItem}
 						onClick={() => item.onChange()}

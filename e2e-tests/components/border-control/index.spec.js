@@ -9,7 +9,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import {
 	changeResponsive,
 	getBlockAttributes,
-	openSidebar,
+	openSidebarTab,
 	getBlockStyle,
 } from '../../utils';
 
@@ -17,7 +17,7 @@ describe('BorderControl', () => {
 	it('Checking the border control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const borderAccordion = await openSidebar(page, 'border');
+		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		await borderAccordion.$$(
 			'.maxi-tabs-content .maxi-default-styles-control button'
 		);
@@ -87,7 +87,7 @@ describe('BorderControl', () => {
 		expect(dottedButton).toStrictEqual('Dotted');
 
 		// responsive S
-		const accordionPanel = await openSidebar(page, 'border');
+		const accordionPanel = await openSidebarTab(page, 'style', 'border');
 		await changeResponsive(page, 's');
 
 		const selector = await accordionPanel.$(
@@ -126,7 +126,7 @@ describe('BorderControl', () => {
 	it('Check hover values kept after setting normal border to none', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const borderAccordion = await openSidebar(page, 'border');
+		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		await borderAccordion.$$eval(
 			'.maxi-tabs-content .maxi-default-styles-control button',
 			buttons => buttons[1].click()
@@ -152,7 +152,7 @@ describe('BorderControl', () => {
 
 		const expectChanges = {
 			'border-color-general': undefined,
-			'border-color-general-hover': '',
+			'border-color-general-hover': undefined,
 			'border-style-general': undefined,
 			'border-style-general-hover': 'solid',
 			'border-top-width-general': undefined,

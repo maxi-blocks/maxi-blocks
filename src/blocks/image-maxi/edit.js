@@ -77,20 +77,16 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
+	get getMaxiCustomData() {
+		const { 'motion-status': motionStatus } = this.props.attributes;
 
 		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'hover',
-					]),
-				}),
-			},
+			...(motionStatus && {
+				...getGroupAttributes(this.props.attributes, [
+					'motion',
+					'hover',
+				]),
+			}),
 		};
 	}
 
@@ -98,21 +94,22 @@ class edit extends MaxiBlockComponent {
 		const { attributes, imageData, setAttributes, clientId, isSelected } =
 			this.props;
 		const {
-			uniqueID,
-			fullWidth,
-			captionType,
+			'hover-preview': hoverPreview,
+			'hover-type': hoverType,
+			blockFullWidth,
 			captionContent,
-			mediaID,
+			captionType,
+			externalUrl,
+			fullWidth,
+			imageRatio,
+			imgWidth,
 			mediaAlt,
+			mediaHeight,
+			mediaID,
 			mediaURL,
 			mediaWidth,
-			mediaHeight,
 			SVGElement,
-			imgWidth,
-			imageRatio,
-			'hover-type': hoverType,
-			'hover-preview': hoverPreview,
-			externalUrl,
+			uniqueID,
 		} = attributes;
 		const { isExternalClass } = this.state;
 
@@ -223,6 +220,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-image--${uniqueID}`}
 				ref={this.blockRef}
 				tagName='figure'
+				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

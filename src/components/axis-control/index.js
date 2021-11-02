@@ -14,6 +14,7 @@ import SelectControl from '../select-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -111,6 +112,7 @@ const AxisControl = props => {
 		disableAuto = false,
 		allowedUnits = ['px', 'em', 'vw', '%'],
 		target,
+		prefix = '',
 		minMaxSettings = {
 			px: {
 				min: target === 'padding' ? 0 : -999,
@@ -163,7 +165,7 @@ const AxisControl = props => {
 	};
 
 	const getKey = key => {
-		return `${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
+		return `${prefix}${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
 	};
 
 	const getLastBreakpointValue = key => {
@@ -211,23 +213,29 @@ const AxisControl = props => {
 		};
 
 		const syncArray = ['sync-horizontal', 'sync-vertical'];
-		if (key === 'sync-vertical' || key === 'sync-horizontal') {
-			const syncKey = `${getKey('sync')}-${breakpoint}${
-				isHover ? '-hover' : ''
-			}`;
+		if (syncArray.includes(key)) {
+			const syncKey = getAttributeKey(
+				getKey('sync'),
+				isHover,
+				false,
+				breakpoint
+			);
 			const newSyncValue =
 				breakpoint === 'general' ? getDefaultAttribute(syncKey) : false;
 
 			response[syncKey] = newSyncValue;
-		} else if (target === 'padding' || target === 'margin') {
+		} else if (target === 'padding' || target === 'margin')
 			syncArray.forEach(key => {
-				response[
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-				] = getDefaultAttribute(
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+				const newKey = getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					breakpoint
 				);
+				const newValue = getDefaultAttribute(newKey);
+
+				response[newKey] = !!newValue;
 			});
-		}
 
 		onChange(response);
 	};
@@ -277,7 +285,7 @@ const AxisControl = props => {
 					key.includes('right')
 				)
 					response[
-						`${target}-${key}${
+						`${prefix}${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
 						}-${breakpoint}${isHover ? '-hover' : ''}`
 					] = newValue;
@@ -298,7 +306,7 @@ const AxisControl = props => {
 			inputsArray.forEach(key => {
 				if (key === 'left' || key === 'right')
 					response[
-						`${target}-${key}${
+						`${prefix}${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
 						}-${breakpoint}${isHover ? '-hover' : ''}`
 					] = newValue;
@@ -319,7 +327,7 @@ const AxisControl = props => {
 			inputsArray.forEach(key => {
 				if (key === 'top' || key === 'bottom')
 					response[
-						`${target}-${key}${
+						`${prefix}${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
 						}-${breakpoint}${isHover ? '-hover' : ''}`
 					] = newValue;
@@ -328,7 +336,7 @@ const AxisControl = props => {
 			onChange(response);
 		} else {
 			onChange({
-				[`${target}-${singleTarget}${
+				[`${prefix}${target}-${singleTarget}${
 					auxTarget ? `-${auxTarget}` : ''
 				}-${breakpoint}${isHover ? '-hover' : ''}`]: newValue,
 			});
@@ -347,7 +355,7 @@ const AxisControl = props => {
 					value={currentUnit}
 					onChange={val =>
 						onChange({
-							[`${target}-unit${
+							[`${prefix}${target}-unit${
 								auxTarget ? `-${auxTarget}` : ''
 							}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
 						})

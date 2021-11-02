@@ -17,10 +17,10 @@ import {
 const getNormalObject = props => {
 	const response = {
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -106,7 +106,6 @@ const getStyles = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -118,7 +117,6 @@ const getStyles = props => {
 						'border',
 						'borderWidth',
 						'borderRadius',
-						'parallax',
 					],
 					true
 				),

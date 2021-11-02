@@ -25,11 +25,6 @@ import {
 import getStyles from './styles';
 
 /**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
-/**
  * Icons
  */
 import { replay } from '../../icons';
@@ -234,17 +229,12 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
 
 		return {
-			[uniqueID]: {
-				...{
-					...getGroupAttributes(
-						this.props.attributes,
-						'numberCounter'
-					),
-				},
+			...{
+				...getGroupAttributes(attributes, 'numberCounter'),
 			},
 		};
 	}
@@ -252,7 +242,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, setAttributes, deviceType, isSelected } =
 			this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, blockFullWidth } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
@@ -279,6 +269,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

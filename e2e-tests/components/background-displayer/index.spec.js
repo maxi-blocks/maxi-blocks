@@ -18,7 +18,11 @@ describe.skip('BackgroundDisplayerControl', () => {
 	});
 
 	it('Check Background Color', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
 			select => select[4].click()
@@ -33,9 +37,13 @@ describe.skip('BackgroundDisplayerControl', () => {
 	});
 
 	it('Check Background Image', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[2].click()
 		);
 
@@ -48,9 +56,13 @@ describe.skip('BackgroundDisplayerControl', () => {
 	});
 
 	it('Check Background Video', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[3].click()
 		);
 
@@ -96,9 +108,13 @@ describe.skip('BackgroundDisplayerControl', () => {
 	});
 
 	it('Check Background Gradient', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[4].click()
 		);
 
@@ -110,10 +126,10 @@ describe.skip('BackgroundDisplayerControl', () => {
 		expect(backgroundGradient).toMatchSnapshot();
 	});
 
-	it.only('Check BackgroundShape', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+	/* it('Check BackgroundShape', async () => {
+		const accordionPanel = await openSidebarTab(page, 'style', 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
 		);
 
@@ -128,7 +144,7 @@ describe.skip('BackgroundDisplayerControl', () => {
 	});
 
 	it('Check Background Layers', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(page, 'style', 'background');
 
 		// add color layer
 		await accordionPanel.$$eval(

@@ -14,13 +14,20 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const background = ({ props, enableParallax = false }) => {
+const background = ({
+	props,
+	disableImage = false,
+	disableVideo = false,
+	disableGradient = false,
+	disableColor = false,
+	disableSVG = false,
+}) => {
 	const { attributes, clientId, deviceType, setAttributes } = props;
 
 	const bgHoverStatus = attributes['background-hover-status'];
 
 	return {
-		label: __('Background', 'maxi-blocks'),
+		label: __('Background / Layer', 'maxi-blocks'),
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
@@ -32,12 +39,15 @@ const background = ({ props, enableParallax = false }) => {
 								<BlockBackgroundControl
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
-										'parallax',
 									])}
 									onChange={obj => setAttributes(obj)}
 									clientId={clientId}
 									breakpoint={deviceType}
-									enableParallax={enableParallax}
+									disableImage={disableImage}
+									disableVideo={disableVideo}
+									disableGradient={disableGradient}
+									disableColor={disableColor}
+									disableSVG={disableSVG}
 								/>
 							</>
 						),

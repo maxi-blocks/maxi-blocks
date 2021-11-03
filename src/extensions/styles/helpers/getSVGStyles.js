@@ -11,7 +11,7 @@ import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getSVGWidthStyles = obj => {
+export const getSVGWidthStyles = obj => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -108,9 +108,8 @@ const getSVGPathStrokeStyles = (obj, blockStyle) => {
 	return { SVGPathStroke: response };
 };
 
-const getSvgStyles = ({ obj, target, blockStyle }) => {
+export const getSVGStyles = ({ obj, target, blockStyle }) => {
 	const response = {
-		[` ${target} svg`]: getSVGWidthStyles(obj),
 		[` ${target} svg path`]: getSVGPathStyles(obj),
 		[` ${target} svg path[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle),
@@ -128,5 +127,3 @@ const getSvgStyles = ({ obj, target, blockStyle }) => {
 
 	return response;
 };
-
-export default getSvgStyles;

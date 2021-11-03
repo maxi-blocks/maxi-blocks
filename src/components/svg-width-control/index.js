@@ -24,6 +24,7 @@ const SvgWidthControl = props => {
 		prefix,
 		isHover,
 		enableResponsive = false,
+		resizableObject = false,
 	} = props;
 
 	const width =
@@ -54,10 +55,17 @@ const SvgWidthControl = props => {
 						: null
 				}
 				onChangeValue={val => {
+					const newVal = val !== undefined && val !== '' ? val : '';
+
 					onChange({
 						[getAttributeKey('width', isHover, prefix, breakpoint)]:
-							val !== undefined && val !== '' ? val : '',
+							newVal,
 					});
+
+					if (resizableObject)
+						resizableObject.current?.updateSize({
+							width: `${newVal}${widthUnit}`,
+						});
 				}}
 				enableUnit
 				unit={widthUnit}
@@ -71,6 +79,11 @@ const SvgWidthControl = props => {
 							breakpoint
 						)]: val,
 					});
+
+					if (resizableObject)
+						resizableObject.current?.updateSize({
+							width: `${width}${val}`,
+						});
 				}}
 				min={10}
 				max={500}

@@ -158,6 +158,17 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			{!props['number-counter-circle-status'] &&
+				props['number-counter-end'] >= 100 && (
+					<div className='maxi-number-counter-control__alert-warning'>
+						<i>
+							{__(
+								"End Number can't be grater than 100 when circle is enabled",
+								'maxi-blocks'
+							)}
+						</i>
+					</div>
+				)}
 			<AdvancedNumberControl
 				label={__('Duration', 'maxi-blocks')}
 				min={1}
@@ -176,24 +187,26 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<AdvancedNumberControl
-				label={__('Stroke', 'maxi-blocks')}
-				min={1}
-				max={99}
-				initial={8}
-				step={1}
-				value={props['number-counter-stroke']}
-				onChangeValue={val =>
-					onChange({ 'number-counter-stroke': val })
-				}
-				onReset={() =>
-					onChange({
-						'number-counter-stroke': getDefaultAttribute(
-							'number-counter-stroke'
-						),
-					})
-				}
-			/>
+			{!props['number-counter-circle-status'] && (
+				<AdvancedNumberControl
+					label={__('Stroke', 'maxi-blocks')}
+					min={1}
+					max={99}
+					initial={8}
+					step={1}
+					value={props['number-counter-stroke']}
+					onChangeValue={val =>
+						onChange({ 'number-counter-stroke': val })
+					}
+					onReset={() =>
+						onChange({
+							'number-counter-stroke': getDefaultAttribute(
+								'number-counter-stroke'
+							),
+						})
+					}
+				/>
+			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
 				defaultValue={getDefaultAttribute(
@@ -243,10 +256,7 @@ const NumberCounterControl = props => {
 						'number-counter-circle-status': val,
 					});
 
-					if (
-						!props['number-counter-circle-status'] &&
-						props['number-counter-end'] > 100
-					)
+					if (!val && props['number-counter-end'] > 100)
 						onChange({ 'number-counter-end': 100 });
 				}}
 			/>
@@ -281,50 +291,61 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<hr />
-			<ColorControl
-				label={__('Circle Background', 'maxi-blocks')}
-				color={props['number-counter-circle-background-color']}
-				defaultColor={getDefaultAttribute(
-					'number-counter-circle-background-color'
-				)}
-				paletteColor={
-					props['number-counter-palette-circle-background-color']
-				}
-				paletteStatus={
-					props[
-						'number-counter-palette-circle-background-color-status'
-					]
-				}
-				onChange={({ color, paletteColor, paletteStatus }) =>
-					onChange({
-						'number-counter-circle-background-color': color,
-						'number-counter-palette-circle-background-color':
-							paletteColor,
-						'number-counter-palette-circle-background-color-status':
-							paletteStatus,
-					})
-				}
-			/>
-			<hr />
-			<ColorControl
-				label={__('Circle Bar', 'maxi-blocks')}
-				color={props['number-counter-circle-bar-color']}
-				defaultColor={getDefaultAttribute(
-					'number-counter-circle-bar-color'
-				)}
-				paletteColor={props['number-counter-palette-circle-bar-color']}
-				paletteStatus={
-					props['number-counter-palette-circle-bar-color-status']
-				}
-				onChange={({ color, paletteColor, paletteStatus }) =>
-					onChange({
-						'number-counter-circle-bar-color': color,
-						'number-counter-palette-circle-bar-color': paletteColor,
-						'number-counter-palette-circle-bar-color-status':
-							paletteStatus,
-					})
-				}
-			/>
+			{!props['number-counter-circle-status'] && (
+				<>
+					<ColorControl
+						label={__('Circle Background', 'maxi-blocks')}
+						color={props['number-counter-circle-background-color']}
+						defaultColor={getDefaultAttribute(
+							'number-counter-circle-background-color'
+						)}
+						paletteColor={
+							props[
+								'number-counter-palette-circle-background-color'
+							]
+						}
+						paletteStatus={
+							props[
+								'number-counter-palette-circle-background-color-status'
+							]
+						}
+						onChange={({ color, paletteColor, paletteStatus }) =>
+							onChange({
+								'number-counter-circle-background-color': color,
+								'number-counter-palette-circle-background-color':
+									paletteColor,
+								'number-counter-palette-circle-background-color-status':
+									paletteStatus,
+							})
+						}
+					/>
+					<hr />
+					<ColorControl
+						label={__('Circle Bar', 'maxi-blocks')}
+						color={props['number-counter-circle-bar-color']}
+						defaultColor={getDefaultAttribute(
+							'number-counter-circle-bar-color'
+						)}
+						paletteColor={
+							props['number-counter-palette-circle-bar-color']
+						}
+						paletteStatus={
+							props[
+								'number-counter-palette-circle-bar-color-status'
+							]
+						}
+						onChange={({ color, paletteColor, paletteStatus }) =>
+							onChange({
+								'number-counter-circle-bar-color': color,
+								'number-counter-palette-circle-bar-color':
+									paletteColor,
+								'number-counter-palette-circle-bar-color-status':
+									paletteStatus,
+							})
+						}
+					/>
+				</>
+			)}
 		</div>
 	);
 };

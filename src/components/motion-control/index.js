@@ -94,6 +94,15 @@ const MotionControl = props => {
 
 	return (
 		<div className={classes}>
+			<ToggleSwitch
+				label={__('Preview', 'maxi-block')}
+				selected={props['motion-preview-status']}
+				onChange={val =>
+					onChange({
+						'motion-preview-status': val,
+					})
+				}
+			/>
 			<RadioControl
 				fullWidthMode
 				selected={motionStatus}
@@ -103,30 +112,7 @@ const MotionControl = props => {
 					setMotionStatus(val);
 				}}
 			/>
-			{/* <RadioControl
-						 label={__('Preview', 'maxi-blocks')}
-						 selected={props['motion-preview-status']}
-						 options={[
-							 { label: __('Yes', 'maxi-blocks'), value: 1 },
-							 { label: __('No', 'maxi-blocks'), value: 0 },
-						 ]}
-						 onChange={val =>
-							 onChange({ 'motion-preview-status': val })
-						 }
-					 /> */}
 			{motionTypes.map(type => {
-				{
-					/* console.log(`type ${type}`);
-				console.log(
-					getLastBreakpointAttribute(
-						`motion-offset-start-${type}`,
-						breakpoint,
-						props
-					)
-				);
-				console.log('================================='); */
-				}
-
 				const typeCapitalize =
 					type.charAt(0).toUpperCase() + type.slice(1);
 

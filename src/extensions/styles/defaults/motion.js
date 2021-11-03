@@ -17,7 +17,7 @@ const response = {
 		type: 'boolean',
 		default: false,
 	},
-	'motion-preview-status-general': {
+	'motion-preview-status': {
 		type: 'boolean',
 		default: false,
 	},

@@ -71,7 +71,9 @@ const getTextStyles = (obj, blockStyle) => {
 		obj['number-counter-palette-text-color-status'] &&
 		obj['number-counter-palette-text-color']
 	)
-		response.general.color = getColorRGBAString({
+		response.general[
+			obj['number-counter-circle-status'] ? 'color' : 'fill'
+		] = getColorRGBAString({
 			firstVar: `color-${obj['number-counter-palette-text-color']}`,
 			opacity: obj['number-counter-palette-text-opacity'],
 			blockStyle,
@@ -115,7 +117,7 @@ const getNumberCounterStyles = ({ obj, target, blockStyle }) => {
 			obj,
 			blockStyle
 		),
-		[` ${target} .maxi-number-counter__box__text sup`]: getSupStyles(
+		[` ${target} .maxi-number-counter__box__text tspan`]: getSupStyles(
 			obj,
 			blockStyle
 		),

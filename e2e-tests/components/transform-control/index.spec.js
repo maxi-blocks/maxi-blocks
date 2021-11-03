@@ -27,7 +27,7 @@ describe('TransformControl', () => {
 		);
 
 		const buttons = await accordionPanel.$$(
-			'.maxi-transform-control .maxi-radio-control button'
+			'.maxi-transform-control .maxi-button-group-control button'
 		);
 
 		// Scale
@@ -182,7 +182,7 @@ describe('TransformControl', () => {
 	it('Check Responsive transform control', async () => {
 		await openSidebarTab(page, 'advanced', 'transform');
 		const tabsControl = await page.$$(
-			'.maxi-transform-control .maxi-radio-control button'
+			'.maxi-transform-control .maxi-button-group-control button'
 		);
 
 		// Scale

@@ -23,9 +23,8 @@ describe('DisplayControl', () => {
 			'show hide block'
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-display-control .maxi-base-control__field button',
-			button => button[1].click()
+		await accordionPanel.$$eval('.maxi-display-control button', button =>
+			button[1].click()
 		);
 
 		const attributes = await getBlockAttributes();
@@ -37,12 +36,10 @@ describe('DisplayControl', () => {
 
 	it('Check Responsive display control', async () => {
 		await openSidebarTab(page, 'advanced', 'show hide block');
-		const displayButtons = await page.$$(
-			'.maxi-display-control .maxi-base-control__field button'
-		);
+		const displayButtons = await page.$$('.maxi-display-control button');
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-display-control .maxi-base-control__field button',
+			'.maxi-display-control button',
 			select => select[1].ariaPressed
 		);
 
@@ -53,7 +50,7 @@ describe('DisplayControl', () => {
 		await displayButtons[0].click();
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-display-control .maxi-base-control__field button',
+			'.maxi-display-control button',
 			select => select[0].ariaPressed
 		);
 
@@ -68,7 +65,7 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-display-control .maxi-base-control__field button',
+			'.maxi-display-control button',
 			select => select[0].ariaPressed
 		);
 
@@ -78,7 +75,7 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-display-control .maxi-base-control__field button',
+			'.maxi-display-control button',
 			select => select[1].ariaPressed
 		);
 

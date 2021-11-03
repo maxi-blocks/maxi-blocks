@@ -41,7 +41,7 @@ describe('AlignmentControl', () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[0].ariaPressed
 		);
 
@@ -49,13 +49,12 @@ describe('AlignmentControl', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
-			button => button[1].click()
+		await accordionPanel.$$eval('.maxi-alignment-control button', button =>
+			button[1].click()
 		);
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[1].ariaPressed
 		);
 
@@ -70,7 +69,7 @@ describe('AlignmentControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[1].ariaPressed
 		);
 
@@ -80,7 +79,7 @@ describe('AlignmentControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[0].ariaPressed
 		);
 
@@ -94,13 +93,12 @@ describe('AlignmentControl', () => {
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
-		await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
-			button => button[1].click()
+		await accordionPanel.$$eval('.maxi-alignment-control button', button =>
+			button[1].click()
 		);
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[1].ariaPressed
 		);
 
@@ -108,13 +106,12 @@ describe('AlignmentControl', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
-			button => button[2].click()
+		await accordionPanel.$$eval('.maxi-alignment-control button', button =>
+			button[2].click()
 		);
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[2].ariaPressed
 		);
 
@@ -129,7 +126,7 @@ describe('AlignmentControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[2].ariaPressed
 		);
 
@@ -139,7 +136,7 @@ describe('AlignmentControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			select => select[1].ariaPressed
 		);
 

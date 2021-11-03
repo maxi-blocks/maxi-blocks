@@ -95,7 +95,7 @@ describe('Image Maxi', () => {
 
 		// alignment
 		await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field button',
+			'.maxi-alignment-control button',
 			alignment => alignment[1].click()
 		);
 
@@ -227,7 +227,7 @@ describe('Image Maxi', () => {
 
 		// LinkColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options button',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[0].click()
 		);
 		await page.waitForTimeout(100);
@@ -240,7 +240,7 @@ describe('Image Maxi', () => {
 
 		// LinkHoverColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options button',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[1].click()
 		);
 		await page.waitForTimeout(100);
@@ -253,7 +253,7 @@ describe('Image Maxi', () => {
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options button',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[2].click()
 		);
 		await page.waitForTimeout(100);
@@ -266,7 +266,7 @@ describe('Image Maxi', () => {
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-radio-control.maxi-typography-control__link-options button',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[3].click()
 		);
 		await page.waitForTimeout(100);

@@ -41,7 +41,7 @@ const ButtonGroupControl = ({
 
 	return (
 		!isEmpty(options) && (
-			<div role='group' className={classes} aria-lable={label}>
+			<div role='group' className={classes} aria-labelledby={label}>
 				{options.map(({ value, label }, index) => (
 					<Button
 						label={value}

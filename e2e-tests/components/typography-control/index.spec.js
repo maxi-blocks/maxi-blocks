@@ -118,7 +118,7 @@ describe.skip('TypographyControl', () => {
 			'typography'
 		);
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			'.maxi-sc-color-palette__custom .maxi-button-group-control button',
 			select => select.click()
 		);
 
@@ -148,7 +148,7 @@ describe.skip('TypographyControl', () => {
 			'typography'
 		);
 		await accordionPanel.$$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
 			select => select[1].click()
 		);
 		const input = await accordionPanel.$(
@@ -225,12 +225,12 @@ describe.skip('TypographyControl', () => {
 		await changeResponsive(page, 's');
 
 		const customColor = await accordionPanel.$$(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option label'
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-button-group-control__option label'
 		);
 		await customColor[0].click();
 
 		const paletteColorSStatus = await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-button-group-control__option input',
 			select => select[0].checked
 		);
 
@@ -245,7 +245,7 @@ describe.skip('TypographyControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const paletteColorXsStatus = await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-button-group-control__option input',
 			select => select[0].checked
 		);
 		await page.waitForTimeout(200);
@@ -255,7 +255,7 @@ describe.skip('TypographyControl', () => {
 		// m
 		await changeResponsive(page, 'm');
 		const paletteColorMStatus = await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-button-group-control__option input',
 			select => select[1].checked
 		);
 

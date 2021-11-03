@@ -21,6 +21,7 @@ describe('AlignmentControl', () => {
 		await page.waitForSelector(
 			'.components-popover__content .maxi-alignment-control__no-label'
 		);
+		await page.waitForTimeout(150);
 		const alignmentSettings = await page.$$(
 			'.components-popover__content .maxi-alignment-control__no-label button'
 		);

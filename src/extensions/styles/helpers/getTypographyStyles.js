@@ -58,20 +58,13 @@ const getTypographyStyles = ({
 	// As sometimes creators just change the value and not the unit, we need to
 	// be able to request the non-hover unit
 	const getUnitValue = (prop, breakpoint) => {
-		if (!normalTypography)
-			return getLastBreakpointAttribute(
-				`${prefix}${prop}`,
-				breakpoint,
-				isCustomFormat ? customFormatTypography : obj
-			);
-
-		const hoverUnit = getLastBreakpointAttribute(
+		const unit = getLastBreakpointAttribute(
 			`${prefix}${prop}`,
 			breakpoint,
 			isCustomFormat ? customFormatTypography : obj
 		);
 
-		if (hoverUnit) return hoverUnit;
+		if (!normalTypography || unit) return unit === '-' ? '' : unit;
 
 		return getLastBreakpointAttribute(
 			`${prefix}${prop}`,

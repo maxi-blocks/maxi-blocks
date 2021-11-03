@@ -1,4 +1,4 @@
-const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const blockBackground = {
 	'background-layers': {
@@ -10,217 +10,241 @@ export const blockBackground = {
 	},
 };
 
-const backgroundGeneral = {
-	'background-active-media-general': {
+export const rawBackground = {
+	'background-active-media': {
 		type: 'string',
 	},
 };
 
-const backgroundColorGeneral = {
-	'background-palette-color-status-general': {
+export const rawBackgroundColor = {
+	'background-palette-color-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'background-palette-color-general': {
+	'background-palette-color': {
 		type: 'number',
 		default: 1,
 	},
-	'background-palette-opacity-general': {
+	'background-palette-opacity': {
 		type: 'number',
 	},
-	'background-color-general': {
+	'background-color': {
 		type: 'string',
 	},
-	'background-color-clip-path-general': {
+	'background-color-clip-path': {
 		type: 'string',
 	},
 };
 
-const backgroundImageGeneral = {
-	'background-image-mediaID-general': {
+export const rawBackgroundImage = {
+	'background-image-mediaID': {
 		type: 'number',
 	},
-	'background-image-mediaURL-general': {
+	'background-image-mediaURL': {
 		type: 'string',
 	},
-	'background-image-size-general': {
+	'background-image-size': {
 		type: 'string',
 		default: 'auto',
 	},
-	'background-image-width-general': {
+	'background-image-width': {
 		type: 'number',
 		default: 100,
 	},
-	'background-image-width-unit-general': {
+	'background-image-width-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-height-general': {
+	'background-image-height': {
 		type: 'number',
 		default: 100,
 	},
-	'background-image-height-unit-general': {
+	'background-image-height-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-crop-options-general': {
+	'background-image-crop-options': {
 		type: 'object',
 	},
-	'background-image-repeat-general': {
+	'background-image-repeat': {
 		type: 'string',
 		default: 'no-repeat',
 	},
-	'background-image-position-general': {
+	'background-image-position': {
 		type: 'string',
 		default: 'center center',
 	},
-	'background-image-position-width-unit-general': {
+	'background-image-position-width-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-position-width-general': {
+	'background-image-position-width': {
 		type: 'number',
 		default: 0,
 	},
-	'background-image-position-height-unit-general': {
+	'background-image-position-height-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-position-height-general': {
+	'background-image-position-height': {
 		type: 'number',
 		default: 0,
 	},
-	'background-image-origin-general': {
+	'background-image-origin': {
 		type: 'string',
 		default: 'padding-box',
 	},
-	'background-image-clip-general': {
+	'background-image-clip': {
 		type: 'string',
 		default: 'border-box',
 	},
-	'background-image-attachment-general': {
+	'background-image-attachment': {
 		type: 'string',
 		default: 'scroll',
 	},
-	'background-image-clip-path-general': {
+	'background-image-clip-path': {
 		type: 'string',
 	},
-	'background-image-opacity-general': {
+	'background-image-opacity': {
 		type: 'number',
 		default: 1,
 	},
-};
-
-const backgroundVideoGeneral = {
-	'background-video-mediaID-general': {
-		type: 'number',
-	},
-	'background-video-mediaURL-general': {
-		type: 'string',
-	},
-	'background-video-startTime-general': {
-		type: 'string',
-	},
-	'background-video-endTime-general': {
-		type: 'string',
-	},
-	'background-video-loop-general': {
+	'background-image-parallax-status': {
 		type: 'boolean',
 		default: false,
 	},
-	'background-video-clip-path-general': {
-		type: 'string',
-	},
-	'background-video-fallbackID-general': {
+	'background-image-parallax-speed': {
 		type: 'number',
+		default: 4,
 	},
-	'background-video-fallbackURL-general': {
+	'background-image-parallax-direction': {
 		type: 'string',
-	},
-	'background-video-playOnMobile-general': {
-		type: 'boolean',
-		default: false,
-	},
-	'background-video-opacity-general': {
-		type: 'number',
-		default: 100,
+		default: 'up',
 	},
 };
 
-const backgroundGradientGeneral = {
-	'background-gradient-general': {
+export const rawBackgroundVideo = {
+	'background-video-mediaID': {
+		type: 'number',
+	},
+	'background-video-mediaURL': {
 		type: 'string',
 	},
-	'background-gradient-opacity-general': {
+	'background-video-startTime': {
+		type: 'string',
+	},
+	'background-video-endTime': {
+		type: 'string',
+	},
+	'background-video-loop': {
+		type: 'boolean',
+		default: false,
+	},
+	'background-video-clip-path': {
+		type: 'string',
+	},
+	'background-video-fallbackID': {
+		type: 'number',
+	},
+	'background-video-fallbackURL': {
+		type: 'string',
+	},
+	'background-video-playOnMobile': {
+		type: 'boolean',
+		default: false,
+	},
+	'background-video-opacity': {
 		type: 'number',
 		default: 1,
 	},
-	'background-gradient-clip-path-general': {
+	'background-video-reduce-border': {
+		type: 'boolean',
+		default: false,
+	},
+};
+
+export const rawBackgroundGradient = {
+	'background-gradient': {
+		type: 'string',
+	},
+	'background-gradient-opacity': {
+		type: 'number',
+		default: 1,
+	},
+	'background-gradient-clip-path': {
 		type: 'string',
 	},
 };
 
-const backgroundSVGGeneral = {
-	'background-palette-svg-color-status-general': {
+export const rawBackgroundSVG = {
+	'background-palette-svg-color-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'background-palette-svg-color-general': {
+	'background-palette-svg-color': {
 		type: 'number',
 		default: 5,
 	},
-	'background-palette-svg-opacity-general': {
+	'background-palette-svg-opacity': {
 		type: 'number',
 	},
-	'background-svg-SVGElement-general': {
+	'background-svg-SVGElement': {
 		type: 'string',
 	},
-	'background-svg-SVGData-general': {
+	'background-svg-SVGData': {
 		type: 'object',
 	},
-	'background-svg-SVGMediaID-general': {
+	'background-svg-SVGMediaID': {
 		type: 'number',
 	},
-	'background-svg-SVGMediaURL-general': {
+	'background-svg-SVGMediaURL': {
 		type: 'string',
 	},
-	'background-svg-top-unit-general': {
+	'background-svg-top-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-svg-top-general': {
+	'background-svg-position-top': {
 		type: 'number',
 		default: 0,
 	},
-	'background-svg-left-unit-general': {
+	'background-svg-position-right': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-bottom': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-left': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-svg-left-general': {
-		type: 'number',
-		default: 50,
-	},
-	'background-svg-size-general': {
+	'background-svg-size': {
 		type: 'number',
 		default: 100,
 	},
-	'background-svg-size-unit-general': {
+	'background-svg-size-unit': {
 		type: 'string',
 		default: '%',
 	},
 };
 
 const breakpointObjectCreator = obj => {
-	const response = { ...obj };
+	const response = {};
 
 	Object.entries(obj).forEach(([key, val]) => {
-		const newVal = { ...val };
-		delete newVal.default;
-
 		if (['background-layers'].includes(key)) return;
 
 		breakpoints.forEach(breakpoint => {
-			const newKey = key.replace('general', breakpoint);
+			const newVal = { ...val };
+			if (breakpoint !== 'general') delete newVal.default;
+
+			const newKey = `${key}-${breakpoint}`;
 
 			response[newKey] = newVal;
 		});
@@ -229,11 +253,11 @@ const breakpointObjectCreator = obj => {
 	return response;
 };
 
-export const background = breakpointObjectCreator(backgroundGeneral);
-export const backgroundColor = breakpointObjectCreator(backgroundColorGeneral);
-export const backgroundImage = breakpointObjectCreator(backgroundImageGeneral);
-export const backgroundVideo = breakpointObjectCreator(backgroundVideoGeneral);
+export const background = breakpointObjectCreator(rawBackground);
+export const backgroundColor = breakpointObjectCreator(rawBackgroundColor);
+export const backgroundImage = breakpointObjectCreator(rawBackgroundImage);
+export const backgroundVideo = breakpointObjectCreator(rawBackgroundVideo);
 export const backgroundGradient = breakpointObjectCreator(
-	backgroundGradientGeneral
+	rawBackgroundGradient
 );
-export const backgroundSVG = breakpointObjectCreator(backgroundSVGGeneral);
+export const backgroundSVG = breakpointObjectCreator(rawBackgroundSVG);

@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -16,10 +16,14 @@ describe.skip('ColorControl', () => {
 	it('Checking the color control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control label',
+			'.maxi-background-control .maxi-radio-control label',
 			fancyRadioControls => fancyRadioControls[2].click()
 		);
 
@@ -48,7 +52,7 @@ describe.skip('ColorControl', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await openSidebar(page, 'typography');
+		await openSidebarTab(page, 'style', 'typography');
 
 		await page.$$eval(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette div',

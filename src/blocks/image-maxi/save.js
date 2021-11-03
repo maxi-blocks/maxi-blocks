@@ -16,6 +16,7 @@ import MaxiBlock, {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Save
@@ -44,7 +45,7 @@ const save = props => {
 	const wrapperClassName = classnames(
 		'maxi-image-block-wrapper',
 		'maxi-image-ratio',
-		`maxi-image-ratio__${imageRatio}`
+		!SVGElement && `maxi-image-ratio__${imageRatio}`
 	);
 
 	const hoverClasses = classnames(
@@ -92,7 +93,7 @@ const save = props => {
 					/>
 				)}
 			</HoverPreview>
-			{captionType !== 'none' && (
+			{captionType !== 'none' && !isEmpty(captionContent) && (
 				<RichText.Content
 					className='maxi-image-block__caption'
 					value={captionContent}

@@ -21,16 +21,17 @@ import ImageLayer from './imageLayer';
 import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import { setBreakpointToLayer } from './utils';
 
 /**
  * External dependencies
  */
 import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
- * Styles and icons
+ * Icons
  */
 import { moveRight, toolbarSizing, toolbarShow } from '../../icons';
 
@@ -229,6 +230,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		image: (
@@ -238,6 +240,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		video: (
@@ -247,6 +250,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		gradient: (
@@ -256,6 +260,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		shape: (
@@ -266,6 +271,7 @@ const LayerCard = props => {
 				layerId={layerId}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 	};
@@ -360,62 +366,6 @@ const BackgroundLayersControl = ({
 
 	const [selector, changeSelector] = useState(null);
 
-	const setBreakpointToLayer = layer => {
-		const response = {};
-
-		const sameLabelAttr = [
-			'type',
-			'background-video-mediaID',
-			'background-video-mediaURL',
-			'background-video-startTime',
-			'background-video-endTime',
-			'background-video-loop',
-			'background-svg-SVGElement',
-			'background-svg-SVGData',
-			'background-svg-SVGMediaID',
-			'background-svg-SVGMediaURL',
-		];
-
-		Object.entries(layer).forEach(([key, val]) => {
-			if (!sameLabelAttr.includes(key)) {
-				// Current non-hover values
-				response[getAttributeKey(key, false, false, breakpoint)] = val;
-
-				// Current hover values
-				if (isHover)
-					response[getAttributeKey(key, isHover, false, breakpoint)] =
-						val;
-
-				if (breakpoint !== 'general') {
-					// General non-hover values
-					response[getAttributeKey(key, false, false, 'general')] =
-						val;
-
-					// General hover values
-					if (isHover)
-						response[
-							getAttributeKey(key, isHover, false, 'general')
-						] = val;
-				}
-			} else response[key] = val;
-
-			if (key === 'display') {
-				if (isHover || breakpoint !== 'general')
-					response['display-general'] = 'none';
-
-				// In case hover status is enabled, makes the layers added
-				// on normal be hidden by default on hover
-				if (hoverStatus || breakpoint !== 'general')
-					response['display-general-hover'] = 'none';
-
-				if (!hoverStatus && breakpoint !== 'general')
-					response[`display-${breakpoint}-hover`] = 'block';
-			}
-		});
-
-		return response;
-	};
-
 	const getNewLayerId = () =>
 		layers && !isEmpty(layers)
 			? layers.reduce((layerA, layerB) =>
@@ -427,27 +377,52 @@ const BackgroundLayersControl = ({
 		switch (type) {
 			case 'color':
 				return {
-					...setBreakpointToLayer(backgroundLayers.colorOptions),
+					...setBreakpointToLayer({
+						layer: backgroundLayers.colorOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
 					id: getNewLayerId(),
 				};
 			case 'image':
 				return {
-					...setBreakpointToLayer(backgroundLayers.imageOptions),
+					...setBreakpointToLayer({
+						layer: backgroundLayers.imageOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
 					id: getNewLayerId(),
 				};
 			case 'video':
 				return {
-					...setBreakpointToLayer(backgroundLayers.videoOptions),
+					...setBreakpointToLayer({
+						layer: backgroundLayers.videoOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
 					id: getNewLayerId(),
 				};
 			case 'gradient':
 				return {
-					...setBreakpointToLayer(backgroundLayers.gradientOptions),
+					...setBreakpointToLayer({
+						layer: backgroundLayers.gradientOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
 					id: getNewLayerId(),
 				};
 			case 'shape':
 				return {
-					...setBreakpointToLayer(backgroundLayers.SVGOptions),
+					...setBreakpointToLayer({
+						layer: backgroundLayers.SVGOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
 					id: getNewLayerId(),
 				};
 			default:
@@ -525,11 +500,13 @@ const BackgroundLayersControl = ({
 									clientId={clientId}
 									layer={layer}
 									onChange={newLayer => {
-										layers[i] = newLayer;
+										const newLayers = cloneDeep(layers);
+										newLayers[i] = newLayer;
 
-										onChange({
-											'background-layers': layers,
-										});
+										if (!isEqual(newLayers, layers))
+											onChange({
+												'background-layers': newLayers,
+											});
 									}}
 									onOpen={isOpen => {
 										if (isOpen) changeSelector(null);

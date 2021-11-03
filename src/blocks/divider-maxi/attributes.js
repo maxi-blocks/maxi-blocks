@@ -7,12 +7,19 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { getPrefixedAttributes } from '../../extensions/styles';
 
 /**
  * Attributes
  */
+const prefix = 'divider-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
+	...attributesData.divider,
 	customLabel: {
 		type: 'string',
 		default: __('Divider', 'maxi-blocks'),
@@ -37,6 +44,26 @@ const attributes = {
 		type: 'string',
 		default: 'row',
 	},
+	...getPrefixedAttributes(attributesData.size, prefix),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
+	...getPrefixedAttributes(attributesData.margin, prefix),
+	...getPrefixedAttributes(attributesData.padding, prefix),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...attributesData.blockBackground,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.opacity,
 	...{
 		...attributesData.size,
 		'height-general': {
@@ -48,18 +75,17 @@ const attributes = {
 			default: 'px',
 		},
 	},
-	...attributesData.blockBackground,
-	...attributesData.boxShadow,
-	...attributesData.boxShadowHover,
-	...attributesData.display,
-	...attributesData.divider,
 	...attributesData.margin,
-	...attributesData.motion,
-	...attributesData.opacity,
 	...attributesData.padding,
-	...attributesData.position,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.zIndex,
+	...attributesData.display,
+	...attributesData.position,
 	...attributesData.overflow,
+	...attributesData.zIndex,
 };
 export default attributes;

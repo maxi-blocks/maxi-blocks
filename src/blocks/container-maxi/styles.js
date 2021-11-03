@@ -60,7 +60,9 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'transform'),
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
 		}),
 	};
 
@@ -101,7 +103,9 @@ const getContainerObject = props => {
 
 	let response = {
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
 		}),
 	};
 
@@ -172,7 +176,6 @@ const getStyles = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),

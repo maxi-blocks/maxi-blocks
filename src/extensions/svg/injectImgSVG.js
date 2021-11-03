@@ -4,24 +4,28 @@
 import { select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import getSVGPosition from './getSVGPosition';
+
+/**
  * External dependencies
  */
-import { uniqueId, isObject, isEmpty, isElement } from 'lodash';
+import { isObject, isEmpty, isElement } from 'lodash';
+import { getSVGRatio } from '.';
 
 /**
  * Utils
  */
-export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
+const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
-	const props = getBlockAttributes(getSelectedBlockClientId());
-const {
-	uniqueID,
-	'image-shape-size-general': imageShapeSize,
-	'image-shape-position-general': imageShapePosition,
-} = props;
 
-	const imageShapeSizeValue = imageShapeSize === 'fill' ? ' slice' : '';
+	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
+	const imageShapePosition = getSVGPosition(svg.outerHTML ?? svg);
+	const imageShapeRatio = getSVGRatio(svg.outerHTML ?? svg);
+
+	const imageShapeRatioValue = imageShapeRatio === 'slice' ? ' slice' : '';
 
 	const SVGValue = !isObject(SVGData) ? JSON.parse(SVGData) : SVGData;
 
@@ -34,21 +38,35 @@ const {
 			'path, circle, rect, polygon, line, ellipse'
 		)
 	);
+	const SVGViewBox = SVGElement.getAttribute('viewBox')
+		.replace(/,/g, '')
+		.split(' ');
 
 	Object.entries(SVGValue).forEach(([id, el]) => {
 		SVGLayers.forEach((item, i) => {
+			const svgImage = SVGElement.querySelector(
+				'.maxi-svg-block__pattern'
+			);
+
 			if (isEmpty(el.imageURL) && removeMode) {
 				SVGLayers[i].removeAttribute('style');
-				SVGElement.querySelector('.maxi-svg-block__pattern').remove();
+				svgImage?.remove();
 			}
+
+			if (
+				svgImage &&
+				svgImage?.querySelector('image').href !== el.imageURL
+			)
+				svgImage?.remove();
+
 			if (!isEmpty(el.imageURL)) {
 				const pattern = document.createElement('pattern');
 				pattern.id = `${id}__img`;
 				pattern.classList.add('maxi-svg-block__pattern');
 				pattern.setAttribute('width', '100%');
 				pattern.setAttribute('height', '100%');
-				pattern.setAttribute('x', '0');
-				pattern.setAttribute('y', '0');
+				pattern.setAttribute('x', SVGViewBox[0]);
+				pattern.setAttribute('y', SVGViewBox[1]);
 				pattern.setAttribute('patternUnits', 'userSpaceOnUse');
 
 				const image = document.createElement('image');
@@ -62,11 +80,11 @@ const {
 				if (!isEmpty(imageShapePosition))
 					image.setAttribute(
 						'preserveAspectRatio',
-						`${imageShapePosition}${imageShapeSizeValue}`
+						`${imageShapePosition}${imageShapeRatioValue}`
 					);
 				image.setAttribute(
 					'preserveAspectRatio',
-					`xMidYMid${imageShapeSizeValue}`
+					`xMidYMid${imageShapeRatioValue}`
 				);
 
 				pattern.append(image);
@@ -87,34 +105,4 @@ const {
 	return SVGElement;
 };
 
-export const generateDataObject = (data, svg) => {
-	const response = data ? (!isObject(data) ? JSON.parse(data) : data) : {};
-	const obj = {
-		color: '',
-		imageID: '',
-		imageURL: '',
-	};
-	const { getBlockAttributes, getSelectedBlockClientId } =
-		select('core/block-editor');
-	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
-	const SVGLayers = Array.from(
-		svg.querySelectorAll('path, circle, rect, polygon, line, ellipse')
-	);
-
-	if (Object.keys(response).length > SVGLayers.length)
-		do {
-			delete response[
-				Object.keys(response)[Object.keys(response).length - 1]
-			];
-		} while (Object.keys(response).length !== SVGLayers.length);
-	else if (Object.keys(response).length < SVGLayers.length)
-		SVGLayers.forEach((layer, i) => {
-			if (
-				Object.keys(response).length <= i ||
-				Object.keys(response).length === 0
-			)
-				response[`${uniqueID}__${uniqueId()}`] = obj;
-		});
-
-	return response;
-};
+export default injectImgSVG;

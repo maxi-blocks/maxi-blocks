@@ -15,7 +15,6 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 
@@ -23,7 +22,6 @@ import IconToolbar from '../../components/toolbar/iconToolbar';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -84,23 +82,9 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-				}),
-			},
-		};
-	}
-
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
 
@@ -129,10 +113,11 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableBackground
 			>
-				<div className={buttonClasses}>
+				<div data-align={fullWidth} className={buttonClasses}>
 					{!attributes['icon-only'] && (
 						<RichText
 							className='maxi-button-block__content'

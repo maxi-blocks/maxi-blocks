@@ -4,9 +4,10 @@
 import getAttributeValue from '../getAttributeValue';
 import getBorderStyles from './getBorderStyles';
 import getColorRGBAString from '../getColorRGBAString';
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getDisplayStyles from './getDisplayStyles';
+import getGroupAttributes from '../getGroupAttributes';
+import getImageShapeStyles from './getImageShapeStyles';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -25,8 +26,9 @@ export const getColorBackgroundObject = ({
 	prefix = '',
 	blockStyle: rawBlockStyle,
 	isButton = false,
+	isIcon = false,
 	isIconInherit = false,
-	breakpoint,
+	breakpoint = 'general',
 	...props
 }) => {
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
@@ -67,9 +69,9 @@ export const getColorBackgroundObject = ({
 		isHover
 	);
 
-	if (!bgPaletteStatus && !isEmpty(bgColor))
+	if (!bgPaletteStatus && !isEmpty(bgColor)) {
 		response[breakpoint]['background-color'] = bgColor;
-	else if (
+	} else if (
 		bgPaletteStatus &&
 		(currentBgPaletteColor || currentBgPaletteOpacity)
 	) {
@@ -90,14 +92,14 @@ export const getColorBackgroundObject = ({
 				isHover
 			);
 
-		if (isButton)
+		if (isButton) {
 			response[breakpoint].background = getColorRGBAString({
 				firstVar: `color${isHover ? '-hover' : ''}`,
 				secondVar: `color-${bgPaletteColor}`,
 				opacity: bgPaletteOpacity,
 				blockStyle,
 			});
-		else
+		} else
 			response[breakpoint]['background-color'] = getColorRGBAString({
 				firstVar: `color-${bgPaletteColor}`,
 				opacity: bgPaletteOpacity,
@@ -119,6 +121,14 @@ export const getColorBackgroundObject = ({
 				: bgColor;
 	}
 
+	if (!isIconInherit && isIcon) {
+		response[breakpoint]['background'] = getColorRGBAString({
+			firstVar: `color-${currentBgPaletteColor}`,
+			opacity: currentBgPaletteOpacity,
+			blockStyle,
+		});
+	}
+
 	if (!isEmpty(bgClipPath)) response[breakpoint]['clip-path'] = bgClipPath;
 
 	return response;
@@ -127,7 +137,8 @@ export const getColorBackgroundObject = ({
 export const getGradientBackgroundObject = ({
 	isHover = false,
 	prefix = '',
-	breakpoint,
+	breakpoint = 'general',
+	isIcon = false,
 	...props
 }) => {
 	const response = {
@@ -156,11 +167,25 @@ export const getGradientBackgroundObject = ({
 		breakpoint,
 	});
 
-	if (isNumber(bgGradientOpacity))
-		response[breakpoint].opacity = bgGradientOpacity;
-	if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
-	if (!isEmpty(bgGradientClipPath))
-		response[breakpoint]['clip-path'] = bgGradientClipPath;
+	if (
+		isIcon &&
+		getLastBreakpointAttribute(
+			`${prefix}background-active-media`,
+			breakpoint,
+			props,
+			isHover
+		) === 'gradient'
+	) {
+		if (isNumber(bgGradientOpacity))
+			response[breakpoint].opacity = bgGradientOpacity;
+		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+	} else if (!isIcon) {
+		if (isNumber(bgGradientOpacity))
+			response[breakpoint].opacity = bgGradientOpacity;
+		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+		if (!isEmpty(bgGradientClipPath))
+			response[breakpoint]['clip-path'] = bgGradientClipPath;
+	}
 
 	return response;
 };
@@ -357,19 +382,37 @@ const getSVGWrapperBackgroundObject = ({
 		isHover
 	);
 	const bgSVGTop = getLastBreakpointAttribute(
-		'background-svg-top',
+		'background-svg-position-top',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGRight = getLastBreakpointAttribute(
+		'background-svg-position-right',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGbottom = getLastBreakpointAttribute(
+		'background-svg-position-bottom',
 		breakpoint,
 		props,
 		isHover
 	);
 	const bgSVGLeft = getLastBreakpointAttribute(
-		'background-svg-left',
+		'background-svg-position-left',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGUnit = getLastBreakpointAttribute(
+		'background-svg-position-unit',
 		breakpoint,
 		props,
 		isHover
 	);
 
-	if (bgSVGSize) {
+	if (isNumber(bgSVGSize)) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute(
 			'background-svg-size-unit',
 			breakpoint,
@@ -380,27 +423,22 @@ const getSVGWrapperBackgroundObject = ({
 		response[breakpoint].width = `${bgSVGSize}${bgSVGSizeUnit}`;
 	}
 
-	if (bgSVGTop) {
-		const bgSVGTopUnit = getLastBreakpointAttribute(
-			'background-svg-top-unit',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		response[breakpoint].top = `${bgSVGTop}${bgSVGTopUnit}`;
-	}
-
-	if (bgSVGLeft) {
-		const bgSVGLeftUnit = getLastBreakpointAttribute(
-			'background-svg-left-unit',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		response[breakpoint].left = `${bgSVGLeft}${bgSVGLeftUnit}`;
-	}
+	if (!isEmpty(bgSVGTop) || isNumber(bgSVGTop))
+		response[breakpoint].top = `${bgSVGTop}${
+			bgSVGTop !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGRight) || isNumber(bgSVGRight))
+		response[breakpoint].right = `${bgSVGRight}${
+			bgSVGRight !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGbottom) || isNumber(bgSVGbottom))
+		response[breakpoint].bottom = `${bgSVGbottom}${
+			bgSVGbottom !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGLeft) || isNumber(bgSVGLeft))
+		response[breakpoint].left = `${bgSVGLeft}${
+			bgSVGLeft !== 'auto' ? bgSVGUnit : ''
+		}`;
 
 	return response;
 };
@@ -634,20 +672,55 @@ const getBackgroundLayers = ({
 								blockStyle,
 								breakpoint,
 								isHover,
-							}),
-							getDisplayStyles(
-								{
-									...getGroupAttributes(
-										layer,
-										'display',
-										isHover
-									),
-								},
-								isHover
-							)
+							})
 						),
 					},
 				};
+				if (breakpoint === 'general') {
+					response[`${layerTarget} > svg:first-child`] = {
+						...response[`${layerTarget} > svg:first-child`],
+						[type]: {
+							...merge(
+								response?.[
+									`${layerTarget} > svg:first-child`
+								]?.[type],
+								...getImageShapeStyles(
+									'svg',
+									getGroupAttributes(
+										layer,
+										'imageShape',
+										false,
+										'background-svg-'
+									),
+									'background-svg-'
+								)
+							),
+						},
+					};
+					response[`${layerTarget} > svg:first-child pattern image`] =
+						{
+							...response[
+								`${layerTarget} > svg:first-child pattern image`
+							],
+							[type]: {
+								...merge(
+									response?.[
+										`${layerTarget} > svg:first-child pattern image`
+									]?.[type],
+									...getImageShapeStyles(
+										'image',
+										getGroupAttributes(
+											layer,
+											'imageShape',
+											false,
+											'background-svg-'
+										),
+										'background-svg-'
+									)
+								),
+							},
+						};
+				}
 				break;
 			default:
 				break;
@@ -795,18 +868,13 @@ export const getBlockBackgroundStyles = ({
 
 	if (isHover && !props[`${prefix}background-hover-status`]) return response;
 
-	const parallaxStatus = getAttributeValue({
-		target: 'parallax-status',
-		props,
-	});
-
 	const layers = getAttributeValue({
 		target: 'background-layers',
 		props,
 		prefix,
 	});
 
-	if (!parallaxStatus && layers && layers.length > 0)
+	if (layers && layers.length > 0)
 		BREAKPOINTS.forEach(breakpoint => {
 			response = {
 				...merge(
@@ -825,29 +893,6 @@ export const getBlockBackgroundStyles = ({
 				),
 			};
 		});
-	else if (parallaxStatus) {
-		const parallaxTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__parallax`;
-
-		BREAKPOINTS.forEach(breakpoint => {
-			response[parallaxTarget] = {
-				...merge(
-					{
-						...response[parallaxTarget],
-					},
-					{
-						image: {
-							...getImageBackgroundObject({
-								...getGroupAttributes(props, 'parallax'),
-								isHover,
-								prefix: 'parallax-',
-								breakpoint,
-							}),
-						},
-					}
-				),
-			};
-		});
-	}
 
 	return response;
 };
@@ -877,7 +922,12 @@ export const getBackgroundStyles = ({
 		merge(response, {
 			...(currentActiveMedia === 'color' && {
 				background: getColorBackgroundObject({
-					...getGroupAttributes(props, 'backgroundColor'),
+					...getGroupAttributes(
+						props,
+						'backgroundColor',
+						isHover,
+						prefix
+					),
 					blockStyle,
 					isButton,
 					breakpoint,
@@ -888,7 +938,12 @@ export const getBackgroundStyles = ({
 			}),
 			...(currentActiveMedia === 'gradient' && {
 				background: getGradientBackgroundObject({
-					...getGroupAttributes(props, 'backgroundGradient'),
+					...getGroupAttributes(
+						props,
+						'backgroundGradient',
+						isHover,
+						prefix
+					),
 					breakpoint,
 					isHover,
 					prefix,

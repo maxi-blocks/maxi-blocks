@@ -5,14 +5,18 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebarTab } from '../../utils';
 
 describe('AxisControl', () => {
 	it('Checking the axis control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
 		const axisControls = await accordionPanel.$$('.maxi-axis-control');
 		const instances = ['padding', 'margin'];
 
@@ -108,7 +112,7 @@ describe('AxisControl', () => {
 		const syncButton = await page.$$(
 			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
 		);
-		const topInput = await page.$$(
+		let topInput = await page.$$(
 			'.maxi-axis-control .maxi-axis-control__content__item__top input'
 		);
 
@@ -142,6 +146,9 @@ describe('AxisControl', () => {
 		);
 
 		// set responsive value
+		topInput = await page.$$(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		);
 		await topInput[1].focus();
 
 		await page.keyboard.type('0');

@@ -8,40 +8,37 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
 
 describe('AlignmentControl', () => {
-	it('Checking the operation of alignment-control', async () => {
+	it('Return correct values on general responsive stage', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		await page.$eval('.toolbar-item__alignment', button => button.click());
 
-		await page.waitForSelector(
-			'.components-popover__content .maxi-alignment-control__no-label'
-		);
+		await openSidebarTab(page, 'style', 'alignment');
+
 		const alignmentSettings = await page.$$(
-			'.components-popover__content .maxi-alignment-control__no-label .components-radio-control__option'
+			'.maxi-alignment-control label'
 		);
 
 		const alignments = ['center', 'right', 'justify', 'left'];
-
 		for (let i = 0; i < alignmentSettings.length; i++) {
 			const setting = alignmentSettings[i !== 3 ? i + 1 : 0];
 
 			await setting.click();
 
-			const attribute = attributes['text-alignment-general'];
 			const attributes = await getBlockAttributes();
-
+			const attribute = attributes['text-alignment-general'];
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
+
 	it('Check Responsive text-alignment control', async () => {
-		const accordionPanel = await openSidebar(page, 'alignment');
+		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		const isItemChecked = await page.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
@@ -88,11 +85,14 @@ describe('AlignmentControl', () => {
 		);
 
 		expect(responsiveMOption).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Responsive alignment control', async () => {
+		await createNewPost();
 		await insertBlock('Button Maxi');
-		const accordionPanel = await openSidebar(page, 'alignment');
+		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		await accordionPanel.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',

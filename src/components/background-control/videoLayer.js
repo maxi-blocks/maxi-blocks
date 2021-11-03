@@ -162,8 +162,9 @@ const VideoLayer = props => {
 				type='url'
 				// help={__('Add Video', 'maxi-blocks')}
 				value={getAttributeValue({
-					target: `${prefix}background-video-mediaURL`,
+					target: 'background-video-mediaURL',
 					props: videoOptions,
+					prefix,
 				})}
 				placeholder='Youtube, Vimeo, or Direct Link'
 				onChange={val => {
@@ -189,8 +190,9 @@ const VideoLayer = props => {
 				className='maxi-background-video-start-time'
 				label={__('Start Time (s)', 'maxi-blocks')}
 				value={getAttributeValue({
-					target: `${prefix}background-video-startTime`,
+					target: 'background-video-startTime',
 					props: videoOptions,
+					prefix,
 				})}
 				onChangeValue={val => {
 					onChange({
@@ -217,8 +219,9 @@ const VideoLayer = props => {
 				className='maxi-background-video-end-time'
 				label={__('End Time (s)', 'maxi-blocks')}
 				value={getAttributeValue({
-					target: `${prefix}background-video-endTime`,
+					target: 'background-video-endTime',
 					props: videoOptions,
+					prefix,
 				})}
 				onChangeValue={val =>
 					onChange({
@@ -244,23 +247,40 @@ const VideoLayer = props => {
 			<ToggleSwitch
 				className='video-loop'
 				label={__('Loop', 'maxi-blocks')}
-				selected={getLastBreakpointAttribute(
-					`${prefix}background-video-loop`,
-					breakpoint,
-					videoOptions
-				)}
+				selected={getAttributeValue({
+					target: 'background-video-loop',
+					props: videoOptions,
+					prefix,
+				})}
 				disabled={
-					+getLastBreakpointAttribute(
-						`${prefix}background-video-endTime`,
-						breakpoint,
-						videoOptions,
-						isHover
-					) === 0
+					+getAttributeValue({
+						target: 'background-video-endTime',
+						props: videoOptions,
+						prefix,
+					}) === 0
 				}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(
 							'background-video-loop',
+							isHover,
+							prefix
+						)]: val,
+					})
+				}
+			/>
+			<ToggleSwitch
+				className='video-reduce-border'
+				label={__('Reduce black borders', 'maxi-blocks')}
+				selected={getAttributeValue({
+					target: 'background-video-reduce-border',
+					props: videoOptions,
+					prefix,
+				})}
+				onChange={val =>
+					onChange({
+						[getAttributeKey(
+							'background-video-reduce-border',
 							isHover,
 							prefix
 						)]: val,

@@ -11,7 +11,7 @@ import parseVideo from './utils';
 import { isNil } from 'lodash';
 
 /**
- * Styles
+ * style
  */
 import './style.scss';
 
@@ -19,20 +19,49 @@ import './style.scss';
  * Component
  */
 const VideoLayer = props => {
-	const { videoOptions, blockClassName, className, breakpoint } = props;
+	const { videoOptions, wrapperRef, className, breakpoint } = props;
 
 	let videoUrl = videoOptions['background-video-mediaURL'];
 
 	if (isNil(videoUrl)) return null;
 
-	// TODO: needs to be changed by a ref of the parent
-	const parentEl = document.querySelector(`.${blockClassName}`);
-	const iframeHeight = '100%';
+	const reduceBorder = videoOptions['background-video-reduce-border'];
 
-	// TOFIX: makes the component break when reloading the site
-	// if (parentEl) {
-	// 	iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // Set the height of the iframe according to the aspect ratio 16:9
-	// }
+	const style = {
+		height: '100%',
+	};
+
+	if (wrapperRef && wrapperRef.current) {
+		const { offsetWidth: wrapperWidth, offsetHeight: wrapperHeight } =
+			wrapperRef.current;
+
+		const proportion = reduceBorder ? 2.4 : 1.77;
+
+		const hasBorder = wrapperWidth / wrapperHeight < proportion;
+
+		// Avoids Y axis black border
+		if (hasBorder) {
+			const landscapeProportion =
+				proportion - wrapperWidth / wrapperHeight + 1;
+			const portraitProportion =
+				proportion + (wrapperHeight / wrapperWidth - 1) * 2;
+
+			const newScale =
+				landscapeProportion < proportion
+					? landscapeProportion
+					: portraitProportion;
+
+			style.transform = `translate(-50%, -50%) scale(${
+				newScale * 1.033
+			})`; // increase of 33% to ensure
+		} else style.transform = null;
+
+		const isLandscape = wrapperWidth > wrapperHeight * 1.77;
+
+		const newHeight = isLandscape ? wrapperWidth / 1.77 : wrapperHeight;
+
+		style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
+	}
 
 	const videoLoop = getLastBreakpointAttribute(
 		'background-video-loop',
@@ -84,11 +113,12 @@ const VideoLayer = props => {
 	const videoPlayerClasses = classnames(
 		'maxi-background-displayer__layer',
 		'maxi-background-displayer__video-player',
+		reduceBorder && 'maxi-background-displayer__video-player--no-border',
 		className
 	);
 
 	// Pause vimeo at the endTime
-	if (parsedVideo.type === 'vimeo' && videoEndTime && parentEl) {
+	if (parsedVideo.type === 'vimeo' && videoEndTime) {
 		const scriptsArray = Array.from(window.document.scripts);
 
 		const vimeoIsMounted = scriptsArray.findIndex(
@@ -161,14 +191,14 @@ const VideoLayer = props => {
 
 					{(parsedVideo.type === 'youtube' ||
 						parsedVideo.type === 'vimeo') && (
-						<div className='maxi-background-displayer__video-player__iframe-wrapper'>
+						<div className='maxi-background-displayer__iframe-wrapper'>
 							<iframe
 								title={`${parsedVideo.type} video`}
 								src={videoUrl}
 								frameBorder='0'
 								allow='autoplay'
 								allowFullScreen='allowfullscreen'
-								style={{ height: iframeHeight }}
+								style={style}
 							/>
 						</div>
 					)}

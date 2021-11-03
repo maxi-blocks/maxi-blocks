@@ -1,6 +1,6 @@
 import boxShadow from './boxShadow';
 
-const boxShadowHover = (function boxShadowHoverGenerator() {
+const boxShadowHover = (() => {
 	const response = {
 		'box-shadow-status-hover': {
 			type: 'boolean',

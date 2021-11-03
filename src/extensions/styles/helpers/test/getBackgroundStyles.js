@@ -242,15 +242,6 @@ describe('getBackgroundStyles', () => {
 					'display-general': 'block',
 					'background-palette-svg-color-status-general': true,
 					'background-palette-svg-color-general': 5,
-					'background-svg-SVGElement':
-						'<svg viewBox="2.500000238418579, 11.457558631896973, 31.10000228881836, 12.842442512512207" class="shape-22-maxi-svg" data-item="group-maxi-12__svg"><path fill="" data-fill="" d="M33.6 12.9c-.4-.8-1.5-1-2.3-.8s-1.6.8-2.3 1.3-1.5 1-2.4 1.1c-1 .1-2-.5-3-.5-1.3 0-2.5.8-3.8.6-1.9-.2-3-2.4-4.8-3-1.7-.5-3.4.4-4.9 1.4S7 15.1 5.3 14.8c-1.3-.2-2.5-1.3-2.8-2.6v12.1h31.1V12.9z"></path></svg>',
-					'background-svg-SVGData': {
-						'group-maxi-12__30': {
-							color: '',
-							imageID: '',
-							imageURL: '',
-						},
-					},
 					'background-svg-SVGMediaID': null,
 					'background-svg-SVGMediaURL': null,
 					'background-svg-top-unit-general': '%',
@@ -262,15 +253,6 @@ describe('getBackgroundStyles', () => {
 					id: 0,
 					'background-svg-top-xl': 0,
 					'background-svg-size-xl': 34,
-					'SVGElement-xxl':
-						'<html xmlns="http://www.w3.org/1999/xhtml" data-item="group-maxi-12__svg"><body><parsererror style="display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black"><h3>This page contains the following errors:</h3><div style="font-family:monospace;font-size:12px">error on line 1 at column 1: Document is empty\n</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>',
-					'SVGData-xxl': {
-						'group-maxi-12__30': {
-							color: '',
-							imageID: '',
-							imageURL: '',
-						},
-					},
 					'background-palette-svg-color-status-xxl': true,
 					'background-palette-svg-color-xxl': 2,
 					'background-palette-svg-opacity-xxl': 37,
@@ -287,34 +269,20 @@ describe('getBackgroundStyles', () => {
 								'http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg',
 						},
 					},
-					'SVGElement-l':
-						'<html xmlns="http://www.w3.org/1999/xhtml" data-item="group-maxi-12__svg"><body><parsererror style="display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black"><h3>This page contains the following errors:</h3><div style="font-family:monospace;font-size:12px">error on line 1 at column 1: Document is empty\n</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>',
-					'SVGData-l': {
-						'group-maxi-12__30': {
-							color: '',
-							imageID: '',
-							imageURL: '',
-						},
-					},
 					'background-palette-svg-color-status-l': true,
 					'background-palette-svg-color-l': 3,
 					'background-palette-svg-opacity-l': 37,
 					'background-svg-top-l': 82,
 					'background-svg-left-l': 62,
-					'SVGElement-s':
-						'<html xmlns="http://www.w3.org/1999/xhtml" data-item="group-maxi-12__svg"><body><parsererror style="display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black"><h3>This page contains the following errors:</h3><div style="font-family:monospace;font-size:12px">error on line 1 at column 1: Document is empty\n</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>',
-					'SVGData-s': {
-						'group-maxi-12__30': {
-							color: '',
-							imageID: '',
-							imageURL: '',
-						},
-					},
 					'background-palette-svg-color-status-s': true,
 					'background-palette-svg-color-s': 7,
 					'background-palette-svg-opacity-s': 37,
 					'background-svg-top-s': 23,
 					'background-svg-left-s': 31,
+					'background-svg-image-shape-flip-x-general': false,
+					'background-svg-image-shape-flip-y-general': false,
+					'background-svg-image-shape-rotate-general': 104,
+					'background-svg-image-shape-scale-general': 72,
 				},
 			],
 		};
@@ -461,39 +429,6 @@ describe('getBackgroundStyles', () => {
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
-			'parallax-background-image-attachment-general': 'scroll',
-			'parallax-background-image-clip-general': 'border-box',
-			'parallax-background-image-height-general': 300,
-			'parallax-background-image-height-m': 600,
-			'parallax-background-image-height-unit-general': '%',
-			'parallax-background-image-height-xl': 300,
-			'parallax-background-image-mediaID-general': 302,
-			'parallax-background-image-mediaID-m': 226,
-			'parallax-background-image-mediaID-xl': 302,
-			'parallax-background-image-mediaURL-general':
-				'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
-			'parallax-background-image-mediaURL-m':
-				'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
-			'parallax-background-image-mediaURL-xl':
-				'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
-			'parallax-background-image-opacity-general': 0.23,
-			'parallax-background-image-opacity-m': 0.78,
-			'parallax-background-image-opacity-xl': 0.23,
-			'parallax-background-image-opacity-xxl': 0.73,
-			'parallax-background-image-origin-general': 'padding-box',
-			'parallax-background-image-position-general': 'center center',
-			'parallax-background-image-position-height-general': 0,
-			'parallax-background-image-position-height-unit-general': '%',
-			'parallax-background-image-position-width-general': 0,
-			'parallax-background-image-position-width-unit-general': '%',
-			'parallax-background-image-repeat-general': 'no-repeat',
-			'parallax-background-image-size-general': 'auto',
-			'parallax-background-image-width-general': 470,
-			'parallax-background-image-width-m': 600,
-			'parallax-background-image-width-unit-general': '%',
-			'parallax-background-image-width-xl': 470,
-			'parallax-direction': 'down',
-			'parallax-speed': 4,
 		});
 
 		expect(result).toMatchSnapshot();

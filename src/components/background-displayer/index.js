@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { RawHTML } from '@wordpress/element';
+import { RawHTML, useRef } from '@wordpress/element';
 
 /**
  * Internal Dependencies
@@ -23,7 +23,7 @@ import './style.scss';
  * Component
  */
 const BackgroundContent = props => {
-	const { blockClassName, isHover = false } = props;
+	const { wrapperRef, isHover = false } = props;
 
 	const layers = cloneDeep(
 		props[`background-layers${isHover ? '-hover' : ''}`]
@@ -59,8 +59,8 @@ const BackgroundContent = props => {
 									key={`maxi-background-displayer__${type}-${id}${
 										isHover ? '--hover' : ''
 									}`}
+									wrapperRef={wrapperRef}
 									videoOptions={layer}
-									blockClassName={blockClassName}
 									className={`maxi-background-displayer__${id}`}
 								/>
 							);
@@ -91,33 +91,31 @@ const BackgroundContent = props => {
 };
 
 const BackgroundDisplayer = props => {
-	const { className, 'parallax-status': parallaxStatus } = props;
+	const { className, isSave = false } = props;
 
 	const haveLayers = !isEmpty(props['background-layers']);
 
-	if (!parallaxStatus && !haveLayers) return null;
+	if (!haveLayers) return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const wrapperRef = isSave ? false : useRef(null);
+
 	return (
-		<div className={classes}>
-			{!parallaxStatus && (
-				<>
-					<BackgroundContent
-						key='maxi-background-displayer__content'
-						isHover={false}
-						{...props}
-					/>
-					<BackgroundContent
-						key='maxi-background-displayer__content--hover'
-						isHover
-						{...props}
-					/>
-				</>
-			)}
-			{parallaxStatus && (
-				<div className='maxi-background-displayer__parallax' />
-			)}
+		<div ref={wrapperRef} className={classes}>
+			<BackgroundContent
+				key='maxi-background-displayer__content'
+				wrapperRef={wrapperRef}
+				isHover={false}
+				{...props}
+			/>
+			<BackgroundContent
+				key='maxi-background-displayer__content--hover'
+				wrapperRef={wrapperRef}
+				isHover
+				{...props}
+			/>
 		</div>
 	);
 };

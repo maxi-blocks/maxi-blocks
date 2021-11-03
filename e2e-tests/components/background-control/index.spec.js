@@ -11,11 +11,7 @@ import {
 /**
  * Interactive dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebar,
-	addBackgroundLayer,
-} from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('BackgroundControl', () => {
 	it('Check Background Color layer', async () => {
@@ -23,7 +19,17 @@ describe('BackgroundControl', () => {
 		await insertBlock('Group Maxi');
 		await openSidebar(page, 'background');
 
-		await addBackgroundLayer(page, 'color');
+	it('Check Background Color Clip Path', async () => {
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-background-control__simple label',
+			select => select[2].click()
+		);
 
 		// change color
 		await page.$$eval(
@@ -53,12 +59,20 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
-	it('Check Background Color layer hover', async () => {
-		const accordion = await openSidebar(page, 'background');
-		// hover
-		await accordion.$$eval(
-			'.maxi-tabs-control--disable-padding button',
-			button => button[1].click()
+	it('Check Background Color Layer Clip Path', async () => {
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-tabs-content .maxi-background-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
+		);
+
+		const selectLayer = await accordionPanel.$(
+			'.maxi-tabs-content .maxi-background-control .maxi-loader-control .maxi-base-control__field select'
 		);
 
 		// enable hover

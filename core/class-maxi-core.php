@@ -41,6 +41,8 @@ if (!class_exists('MaxiBlocks_Core')):
             // Enqueue scripts and styles
             add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts_styles']);
 
+            add_action('enqueue_block_assets', [$this, 'enqueue_gutenberg_scripts_styles']);
+
             // Add MaxiBlocks classes on body element
             add_filter('body_class', [$this, 'maxi_blocks_body_class'], 99);
             add_filter('admin_body_class', [$this, 'maxi_blocks_body_class'], 99);
@@ -54,6 +56,14 @@ if (!class_exists('MaxiBlocks_Core')):
                 ));
                 }
             });
+        }
+
+        public function enqueue_gutenberg_scripts_styles()
+        {
+            wp_enqueue_script(
+                'maxi-motions-js',
+                plugins_url('/js/maxi-motions.js', dirname(__FILE__)),
+            );
         }
 
         public function enqueue_scripts_styles()
@@ -84,17 +94,19 @@ if (!class_exists('MaxiBlocks_Core')):
                 false,
                 true,
             );
-			wp_localize_script( 'maxi-front-scripts-js', 'google_map_api_options',
-				array(
-					'google_api_key' => get_option('google_api_key_option'),
-				)
-			);
+            wp_localize_script(
+                'maxi-front-scripts-js',
+                'google_map_api_options',
+                array(
+                    'google_api_key' => get_option('google_api_key_option'),
+                )
+            );
         }
 
         public function maxi_blocks_body_class($classes)
         {
             $MBClassAccessibilityClass = get_option('accessibility_option') ? ' maxi-blocks--accessibility ' : '';
-			$MBClass = " maxi-blocks--active $MBClassAccessibilityClass";
+            $MBClass = " maxi-blocks--active $MBClassAccessibilityClass";
 
             if (gettype($classes) === 'string') {
                 $classes .= $MBClass;

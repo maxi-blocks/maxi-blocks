@@ -230,12 +230,12 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	if (!disableMotion && !isSave)
-		return (
-			<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
-				<MainBlock {...blockProps}>{children}</MainBlock>
-			</MotionPreview>
-		);
+	// if (!disableMotion && !isSave)
+	// 	return (
+	// 		<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
+	// 			<MainBlock {...blockProps}>{children}</MainBlock>
+	// 		</MotionPreview>
+	// 	);
 
 	return <MainBlock {...blockProps}>{children}</MainBlock>;
 });

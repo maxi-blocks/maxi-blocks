@@ -13,14 +13,13 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const motion = ({ props }) => {
-	const {
-		attributes,
-		setAttributes,
-		uniqueID,
-		blockStyle,
-		clientId,
-		deviceType,
-	} = props;
+	const { attributes, setAttributes, blockStyle, clientId, deviceType } =
+		props;
+
+	const { uniqueID } = attributes;
+
+	console.log('uniqueID');
+	console.log(uniqueID);
 
 	return {
 		label: __('Motion Effects', 'maxi-blocks'),

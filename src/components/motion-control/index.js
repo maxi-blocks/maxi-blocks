@@ -17,12 +17,13 @@ import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import RangeSliderControl from '../range-slider-control';
 import ToggleSwitch from '../toggle-switch';
+import '../../extensions/motions/maxi-motions';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-// import { isEmpty, round } from 'lodash';
+
 /**
  * Styles and icons
  */
@@ -42,7 +43,7 @@ import { useState } from 'react';
  * Component
  */
 const MotionControl = props => {
-	const { className, onChange, breakpoint = 'general' } = props;
+	const { className, onChange, breakpoint = 'general', uniqueID } = props;
 
 	const motionTypes = [
 		'vertical',
@@ -92,16 +93,38 @@ const MotionControl = props => {
 		},
 	];
 
+	const el = document.querySelectorAll(
+		`.maxi-block--backend[uniqueid='${uniqueID}']`
+	)[0];
+
+	const addMotion = () => {
+		el.classList.add('maxi-block-motion');
+		startingMotion();
+	};
+
+	const removeMotion = () => {
+		el.classList.remove('maxi-block-motion');
+		el.style.removeProperty('top');
+		el.style.removeProperty('left');
+		el.style.removeProperty('filter');
+		el.style.removeProperty('transform');
+		el.style.removeProperty('transition');
+		el.style.removeProperty('opacity');
+	};
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={props['motion-preview-status']}
-				onChange={val =>
+				onChange={val => {
+					console.log(`.maxi-block--backend[uniqueid='${uniqueID}']`);
 					onChange({
 						'motion-preview-status': val,
-					})
-				}
+					});
+					if (val) addMotion();
+					else removeMotion();
+				}}
 			/>
 			<RadioControl
 				fullWidthMode

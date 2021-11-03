@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -34,14 +34,29 @@ const TextShadow = props => {
 
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
-	const valueDecomposed =
-		!isEmpty(value) && value !== 'none'
-			? value.split(' ')
-			: `0px 0px 0px ${defaultColor || ''}`.split(' ');
-	const x = +valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0];
-	const y = +valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0];
-	const blur = +valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0];
-	const { color, opacity } = getColorRGBAParts(valueDecomposed[3]);
+	const decomposeValue = rawVal => {
+		const val = rawVal ?? value;
+
+		const valueDecomposed =
+			!isEmpty(val) && val !== 'none'
+				? val.split(' ')
+				: `0px 0px 0px ${defaultColor || ''}`.split(' ');
+		const x = +valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0];
+		const y = +valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0];
+		const blur = +valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0];
+		const { color, opacity } = getColorRGBAParts(valueDecomposed[3]);
+
+		return {
+			valueDecomposed,
+			x,
+			y,
+			blur,
+			color,
+			opacity,
+		};
+	};
+
+	const { valueDecomposed, x, y, blur, color, opacity } = decomposeValue();
 
 	const [isPaletteActive, setIsPaletteActive] = useState(
 		isEmpty(color) || color.toString().length === 1
@@ -55,6 +70,17 @@ const TextShadow = props => {
 	const [currentColor, setCurrentColor] = useState(
 		!isPaletteActive ? color : undefined
 	);
+
+	useEffect(() => {
+		const { color, opacity } = decomposeValue();
+
+		if (color) {
+			setIsPaletteActive(color.toString().length === 1);
+			setCurrentPaletteColor(isPaletteActive ? color : undefined);
+		}
+		setCurrentPaletteOpacity(!isNil(opacity) ? +opacity * 100 : 100);
+		setCurrentColor(!isPaletteActive ? color : undefined);
+	}, [value]);
 
 	const getCurrentColor = ({
 		paletteStatus,
@@ -239,45 +265,25 @@ const TextShadow = props => {
 						disableGradient
 						disableGradientAboveBackground
 					/>
-					<AdvancedNumberControl
-						label={__('X', 'maxi-blocks')}
-						value={+trim(x)}
-						onChangeValue={val => {
-							onChangeValue(
-								0,
-								val !== undefined && val !== '' ? val : ''
-							);
-						}}
-						min={0}
-						max={100}
-						onReset={() => onChangeValue(0, 0)}
-					/>
-					<AdvancedNumberControl
-						label={__('Y', 'maxi-blocks')}
-						value={+trim(y)}
-						onChangeValue={val => {
-							onChangeValue(
-								1,
-								val !== undefined && val !== '' ? val : ''
-							);
-						}}
-						min={0}
-						max={100}
-						onReset={() => onChangeValue(1, 0)}
-					/>
-					<AdvancedNumberControl
-						label={__('Blur', 'maxi-blocks')}
-						value={+trim(blur)}
-						onChangeValue={val => {
-							onChangeValue(
-								2,
-								val !== undefined && val !== '' ? val : ''
-							);
-						}}
-						min={0}
-						max={100}
-						onReset={() => onChangeValue(2, 0)}
-					/>
+					{[
+						__('X', 'maxi-blocks'),
+						__('Y', 'maxi-blocks'),
+						__('Blur', 'maxi-blocks'),
+					].map((label, index) => (
+						<AdvancedNumberControl
+							label={__('X', 'maxi-blocks')}
+							value={+trim(x)}
+							onChangeValue={val => {
+								onChangeValue(
+									index,
+									val !== undefined && val !== '' ? val : ''
+								);
+							}}
+							min={0}
+							max={100}
+							onReset={() => onChangeValue(index, 0)}
+						/>
+					))}
 				</>
 			)}
 		</>
@@ -288,12 +294,23 @@ const TextShadow = props => {
  * Control
  */
 const TextShadowControl = props => {
-	const { textShadow, onChange, defaultColor, className, blockStyle } = props;
+	const {
+		textShadow,
+		onChange,
+		defaultColor,
+		className,
+		blockStyle,
+		breakpoint,
+	} = props;
 
 	const [showOptions, changeShowOptions] = useState(
 		!isEmpty(textShadow) ? 1 : 0
 	);
 	const [lastValue, changeLastValue] = useState(textShadow);
+
+	useEffect(() => {
+		changeLastValue(textShadow);
+	}, [breakpoint]);
 
 	const classes = classnames('maxi-textshadow-control', className);
 
@@ -319,6 +336,7 @@ const TextShadowControl = props => {
 					}}
 					defaultColor={defaultColor}
 					blockStyle={blockStyle}
+					breakpoint={breakpoint}
 				/>
 			)}
 		</div>

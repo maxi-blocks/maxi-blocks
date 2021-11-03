@@ -142,6 +142,11 @@ describe('NumberCounterControl', () => {
 		expect(hideCircleAttribute).toStrictEqual(hideCircle);
 
 		// Text colour, Circle Background Colour, Circle Bar Colour
+		// Return circle to be shown
+		await accordionPanel.$eval(
+			'.maxi-number-counter-control .maxi-toggle-switch.number-counter-circle-status .maxi-base-control__label',
+			click => click.click()
+		);
 
 		const colors = await accordionPanel.$$(
 			'.maxi-color-palette-control .maxi-sc-color-palette'

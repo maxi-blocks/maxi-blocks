@@ -24,6 +24,7 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
@@ -202,6 +203,7 @@ const LinkOptions = props => {
 		breakpoint,
 		textLevel,
 		clientId,
+		getOpacityValue,
 	} = props;
 
 	const [linkStatus, setLinkStatus] = useState('normal_link');
@@ -641,6 +643,12 @@ const TypographyControl = withFormatValue(props => {
 		onChange(obj);
 	};
 
+	const getOpacityValue = label => {
+		const value = getValue(label);
+
+		return getIsValid(value, true) ? value : 100;
+	};
+
 	return (
 		<div className={classes}>
 			{!disableFontFamily && (
@@ -662,7 +670,7 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
-					paletteOpacity={getValue(`${prefix}palette-opacity`) || 100}
+					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
 					onChange={({
 						color,
@@ -833,6 +841,7 @@ const TypographyControl = withFormatValue(props => {
 							typography
 						)}
 						blockStyle={blockStyle}
+						breakpoint={breakpoint}
 					/>
 				</>
 			)}
@@ -846,6 +855,7 @@ const TypographyControl = withFormatValue(props => {
 					textLevel={textLevel}
 					isHover={isHover}
 					clientId={clientId}
+					getOpacityValue={getOpacityValue}
 				/>
 			)}
 		</div>

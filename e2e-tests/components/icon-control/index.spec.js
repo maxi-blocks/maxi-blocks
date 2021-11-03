@@ -1,71 +1,61 @@
 /**
  * WordPress dependencies
  */
-/* import {
+import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-} from '@wordpress/e2e-test-utils'; */
+	getEditedPostContent,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-// import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebarTab, modalMock } from '../../utils';
 
 describe('IconControl', () => {
 	it('Check Icon Control', async () => {
-		/* await createNewPost();
+		await createNewPost();
 		await insertBlock('Button Maxi');
-		const accordionPanel = await openSidebarTab(page, 'style', 'icon');
-
-		await accordionPanel.$eval('.maxi-icon-control button', addIcon =>
-			addIcon.click()
-		);
+		await openSidebarTab(page, 'style', 'icon');
 
 		// select icon
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('Sword');
-		await page.waitForTimeout(1000);
-		await page.waitForSelector(
-			'.maxi-cloud-masonry-card__svg-container__button'
-		);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
-		);
+		await modalMock(page, { type: 'button-icon' });
 
-		const icon = await getBlockAttributes();
-		expect(icon['icon-content']).toMatchSnapshot();
+		expect(await getEditedPostContent()).toMatchSnapshot();
 
-		// size, spacing
-		const inputs = await accordionPanel.$$(
+		// width, stroke width
+		const inputs = await page.$$(
 			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
 
-		// size
+		// width
 		await inputs[0].click();
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40');
 
-		const expectSize = 40;
-		const sizeAttributes = await getBlockAttributes();
-		const size = sizeAttributes['icon-size'];
+		const widthAttributes = await getBlockAttributes();
+		const width = widthAttributes['icon-width-general'];
 
-		expect(size).toStrictEqual(expectSize);
+		expect(width).toStrictEqual(340);
 
-		// spacing
+		// stroke width
 		await inputs[2].click();
+		await page.keyboard.type('5');
+
+		const strokeAttributes = await getBlockAttributes();
+		const stroke = strokeAttributes['icon-stroke-general'];
+
+		expect(stroke).toStrictEqual(5);
+
+		// icon spacing
+		await inputs[4].click();
 		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('10');
+		await page.keyboard.type('66');
 
-		const expectSpacing = 10;
 		const spacingAttributes = await getBlockAttributes();
-		const spacing = spacingAttributes['icon-spacing'];
+		const spacing = spacingAttributes['icon-spacing-general'];
 
-		expect(spacing).toStrictEqual(expectSpacing);
+		expect(spacing).toStrictEqual(66);
 
 		// icon position
 		const label = await accordionPanel.$$(
@@ -73,28 +63,14 @@ describe('IconControl', () => {
 		);
 
 		await label[1].click();
-		const expectPosition = 'left';
 		const { 'icon-position': position } = await getBlockAttributes();
 
-		expect(position).toStrictEqual(expectPosition);
-
-		// Icon Color
-		await label[2];
-		const paletteColor = await accordionPanel.$$(
-			'.maxi-color-palette-control .maxi-base-control__field .maxi-sc-color-palette div'
-		);
-
-		await paletteColor[3].click();
-		const expectColor = 4;
-		const colorAttributes = await getBlockAttributes();
-		const color = colorAttributes['icon-palette-color'];
-
-		expect(color).toStrictEqual(expectColor);
+		expect(position).toStrictEqual('right');
 
 		// Icon Border
-		await label[5].click();
+		await label[3].click();
 
-		await accordionPanel.$$eval(
+		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',
 			button => button[2].click()
 		);
@@ -104,6 +80,6 @@ describe('IconControl', () => {
 		const borderAttributes = await getBlockAttributes();
 		const border = borderAttributes['icon-border-style-general'];
 
-		expect(border).toStrictEqual(expectBorder); */
+		expect(border).toStrictEqual(expectBorder);
 	});
 });

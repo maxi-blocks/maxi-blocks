@@ -19,7 +19,7 @@ import {
 	getBlockStyle,
 } from '../../utils';
 
-describe.skip('TypographyControl', () => {
+describe('TypographyControl', () => {
 	it('Checking the font family', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

@@ -319,6 +319,27 @@ const scrollTransform = (element, type) => {
 	}
 };
 
+const scrollMotion = () => {
+	const elements = Array.from(
+		document.getElementsByClassName('maxi-block-motion')
+	);
+
+	console.log('SCROLLING');
+	console.log('elements');
+	console.log(elements);
+
+	elements.forEach(function motionOnScroll(element, index) {
+		const motionType = element.getAttribute('data-motion-type');
+
+		const motionTypeArray = motionType.trim().split(' ');
+
+		motionTypeArray.map(type => {
+			scrollTransform(element, type);
+			return null;
+		});
+	});
+};
+
 const startingMotion = () => {
 	const elements = Array.from(
 		document.getElementsByClassName('maxi-block-motion')
@@ -373,31 +394,11 @@ const startingMotion = () => {
 	});
 };
 
-const scrollMotion = () => {
-	const elements = Array.from(
-		document.getElementsByClassName('maxi-block-motion')
-	);
-
-	console.log('SCROLLING');
-	console.log('elements');
-	console.log(elements);
-
-	elements.forEach(function motionOnScroll(element, index) {
-		const motionType = element.getAttribute('data-motion-type');
-
-		const motionTypeArray = motionType.trim().split(' ');
-
-		motionTypeArray.map(type => {
-			scrollTransform(element, type);
-			return null;
-		});
-	});
-};
 // eslint-disable-next-line @wordpress/no-global-event-listener
 document.addEventListener('DOMContentLoaded', function motionsOnLoad(event) {
 	// Motion Effects
 	startingMotion();
-
-	// eslint-disable-next-line @wordpress/no-global-event-listener
-	window.addEventListener('scroll', () => scrollMotion());
 });
+
+// eslint-disable-next-line @wordpress/no-global-event-listener
+window.addEventListener('scroll', () => scrollMotion());

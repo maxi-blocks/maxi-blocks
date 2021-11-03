@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-global-event-listener */
 /**
  * WordPress dependencies
  */
@@ -99,7 +100,13 @@ const MotionControl = props => {
 
 	const addMotion = () => {
 		el.classList.add('maxi-block-motion');
+		// eslint-disable-next-line no-undef
 		startingMotion();
+
+		document
+			.getElementsByClassName('interface-interface-skeleton__content')[0]
+			// eslint-disable-next-line no-undef
+			.addEventListener('scroll', () => scrollMotion());
 	};
 
 	const removeMotion = () => {
@@ -118,7 +125,6 @@ const MotionControl = props => {
 				label={__('Preview', 'maxi-block')}
 				selected={props['motion-preview-status']}
 				onChange={val => {
-					console.log(`.maxi-block--backend[uniqueid='${uniqueID}']`);
 					onChange({
 						'motion-preview-status': val,
 					});

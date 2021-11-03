@@ -114,10 +114,12 @@ class edit extends MaxiBlockComponent {
 		} = attributes;
 		const { isExternalClass } = this.state;
 
+		console.log(attributes);
+
 		const classes = classnames(
 			'maxi-image-block',
 			fullWidth === 'full' && 'alignfull',
-			attributes['motion-status-vertical-general'] && 'maxi-block-motion'
+			attributes['motion-preview-status'] && 'maxi-block-motion'
 		);
 
 		const wrapperClassName = classnames(

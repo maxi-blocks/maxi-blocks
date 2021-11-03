@@ -18,9 +18,6 @@ const motion = ({ props }) => {
 
 	const { uniqueID } = attributes;
 
-	console.log('uniqueID');
-	console.log(uniqueID);
-
 	return {
 		label: __('Motion Effects', 'maxi-blocks'),
 		content: (

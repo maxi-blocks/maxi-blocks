@@ -25,6 +25,11 @@ import {
 import getStyles from './styles';
 
 /**
+ * External dependencies
+ */
+import { round } from 'lodash';
+
+/**
  * Icons
  */
 import { replay } from '../../icons';
@@ -40,6 +45,7 @@ const NumberCounter = attributes => {
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
 		'number-counter-title-font-size': fontSize,
+		'number-counter-percentage-sign-status': usePercentage,
 		deviceType,
 		resizerProps,
 	} = attributes;
@@ -178,19 +184,26 @@ const NumberCounter = attributes => {
 								(count / 360) * circumference
 							)} ${circumference}`}
 						/>
+						<text
+							className='maxi-number-counter__box__text'
+							textAnchor='middle'
+							x='50%'
+							y='50%'
+							dy={`${round(fontSize / 4, 2)}px`}
+						>
+							{`${parseInt((count / 360) * 100)}`}
+							{usePercentage && (
+								<tspan baselineShift='super'>%</tspan>
+							)}
+						</text>
 					</svg>
 				)}
-				<span className='maxi-number-counter__box__text'>
-					{`${parseInt((count / 360) * 100)}`}
-
-					{attributes['number-counter-percentage-sign-status'] && (
-						<sup>
-							{attributes['number-counter-percentage-sign-status']
-								? '%'
-								: ''}
-						</sup>
-					)}
-				</span>
+				{circleStatus && (
+					<span className='maxi-number-counter__box__text'>
+						{`${parseInt((count / 360) * 100)}`}
+						{usePercentage && <sup>%</sup>}
+					</span>
+				)}
 			</BlockResizer>
 		</>
 	);
@@ -249,6 +262,7 @@ class edit extends MaxiBlockComponent {
 
 		const handleOnResizeStart = event => {
 			event.preventDefault();
+
 			setAttributes({
 				[`width-unit-${deviceType}`]: 'px',
 			});

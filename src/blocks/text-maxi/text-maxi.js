@@ -31,7 +31,7 @@ import { textIcon } from '../../icons';
 registerBlockType('maxi-blocks/text-maxi', {
 	title: __('Text Maxi', 'maxi-blocks'),
 	icon: textIcon,
-	description: 'Insert, modify or style text',
+	description: 'Insert, style or modify text element',
 	category: 'maxi-blocks',
 	supports: {
 		align: false,

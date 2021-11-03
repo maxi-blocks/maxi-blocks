@@ -115,21 +115,13 @@ const getTypographyStyles = ({
 			}),
 			...(!isNil(obj[getName('line-height', breakpoint)]) && {
 				'line-height': `${obj[getName('line-height', breakpoint)]}${
-					getLastBreakpointAttribute(
-						`${prefix}line-height-unit`,
-						breakpoint,
-						isCustomFormat ? customFormatTypography : obj
-					) || ''
+					getUnitValue(`${prefix}line-height-unit`, breakpoint) || ''
 				}`,
 			}),
 			...(!isNil(obj[getName('letter-spacing', breakpoint)]) && {
 				'letter-spacing': `${
 					obj[getName('letter-spacing', breakpoint)]
-				}${getLastBreakpointAttribute(
-					`${prefix}letter-spacing-unit`,
-					breakpoint,
-					isCustomFormat ? customFormatTypography : obj
-				)}`,
+				}${getUnitValue(`${prefix}letter-spacing-unit`, breakpoint)}`,
 			}),
 			...(!isNil(obj[getName('font-weight', breakpoint)]) && {
 				'font-weight': obj[getName('font-weight', breakpoint)],

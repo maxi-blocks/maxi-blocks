@@ -159,7 +159,7 @@ const NumberCounterControl = props => {
 				}
 			/>
 			{!props['number-counter-circle-status'] &&
-				props['number-counter-circle-status'] > 100 && (
+				props['number-counter-end'] >= 100 && (
 					<div className='maxi-number-counter-control__alert-warning'>
 						<i>
 							{__(

@@ -9,10 +9,11 @@ import {
 	getOpacityStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getSvgStyles,
+	getSVGStyles,
 	getTransformStyles,
 	getZIndexStyles,
 	getOverflowStyles,
+	getSVGWidthStyles,
 } from '../../extensions/styles/helpers';
 
 const getWrapperObject = props => {
@@ -134,6 +135,7 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
+		width: getSVGWidthStyles(getGroupAttributes(props, 'svg')),
 	};
 
 	return response;
@@ -180,7 +182,7 @@ const getStyles = props => {
 			':hover': getWrapperObjectHover(props),
 			' .maxi-svg-icon-block__icon': getNormalObject(props),
 			' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-			...getSvgStyles({
+			...getSVGStyles({
 				obj: {
 					...getGroupAttributes(props, 'svg'),
 				},

@@ -14,6 +14,7 @@ describe('AlignmentControl', () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 
+		await page.waitForSelector('.toolbar-wrapper .toolbar-item__alignment');
 		await page.$eval('.toolbar-wrapper .toolbar-item__alignment', button =>
 			button.click()
 		);

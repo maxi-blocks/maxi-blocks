@@ -274,6 +274,7 @@ const TextShadow = props => {
 						},
 					].map(({ label, value }, index) => (
 						<AdvancedNumberControl
+							key={`maxi-text-shadow-control__${label.toLocaleLowerCase()}`}
 							label={label}
 							value={value}
 							onChangeValue={val => {

@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import ButtonGroupControl from '../../../radio-control';
+import ButtonGroupControl from '../../../button-group-control';
 import {
 	getColorRGBAString,
 	getDefaultAttribute,

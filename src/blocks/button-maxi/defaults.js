@@ -82,11 +82,6 @@ export const preset1 = {
 	'button-border-top-right-radius-xxl': 10,
 	'button-border-unit-radius-xxl': 'px',
 	'icon-background-palette-opacity-general': 100,
-	// XL
-	'button-padding-top-xl': 15,
-	'button-padding-right-xl': 36,
-	'button-padding-bottom-xl': 15,
-	'button-padding-left-xl': 36,
 	// hover
 	'button-background-active-media-general': 'color',
 	'button-background-palette-color-hover-general': 6,
@@ -177,11 +172,6 @@ export const preset2 = {
 	'button-border-top-left-radius-xxl': 15,
 	'button-border-top-right-radius-xxl': 15,
 	'button-border-unit-radius-xxl': 'px',
-	// XL
-	'button-padding-top-xl': 15,
-	'button-padding-right-xl': 36,
-	'button-padding-bottom-xl': 15,
-	'button-padding-left-xl': 36,
 	// hover
 	'button-background-active-media-hover-general': 'none',
 	'button-border-status-hover': true,
@@ -278,11 +268,6 @@ export const preset3 = {
 	'button-border-top-right-radius-xxl': 0,
 	'button-border-sync-radius-xxl': true,
 	'button-border-unit-radius-xxl': 'px',
-	// XL
-	'button-padding-top-xl': 14,
-	'button-padding-right-xl': 34,
-	'button-padding-bottom-xl': 14,
-	'button-padding-left-xl': 34,
 	// hover
 	'button-background-active-media-hover-general': 'none',
 	'button-border-status-hover': true,
@@ -365,10 +350,10 @@ export const preset4 = {
 	'icon-content':
 		'<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#081219" data-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>',
 	'icon-inherit': false,
+	'icon-padding-top-general': 13,
+	'icon-padding-right-general': 13,
 	'icon-padding-bottom-general': 13,
 	'icon-padding-left-general': 13,
-	'icon-padding-right-general': 13,
-	'icon-padding-top-general': 13,
 	'icon-padding-sync-general': true,
 	'icon-padding-sync-horizontal-general': false,
 	'icon-padding-sync-vertical-general': false,
@@ -377,9 +362,9 @@ export const preset4 = {
 	'icon-palette-color-status': true,
 	'icon-position': 'right',
 	'icon-stroke-general': 3,
-	'icon-width-general': 20,
+	'icon-width-general': 14,
 	'icon-width-unit-general': 'px',
-	'icon-spacing-general': 8,
+	'icon-spacing-general': 14,
 	// 4k
 	'icon-width-xxl': 18,
 	'icon-spacing-xxl': 23,
@@ -405,13 +390,6 @@ export const preset4 = {
 	'button-border-top-right-radius-xxl': 8,
 	'button-border-sync-radius-xxl': true,
 	'button-border-unit-radius-xxl': 'px',
-	// XL
-	'icon-width-xl': 14,
-	'icon-spacing-xl': 14,
-	'button-padding-top-xl': 3,
-	'button-padding-right-xl': 6,
-	'button-padding-bottom-xl': 4,
-	'button-padding-left-xl': 10,
 	// hover
 	'button-background-active-media-hover-general': 'color',
 	'button-background-palette-color-hover-general': 6,
@@ -524,13 +502,6 @@ export const preset5 = {
 	'button-border-top-right-radius-xxl': 50,
 	'button-border-sync-radius-xxl': true,
 	'button-border-unit-radius-xxl': 'px',
-	// XL
-	'icon-width-xl': 14,
-	'icon-spacing-xl': 14,
-	'button-padding-top-xl': 3,
-	'button-padding-right-xl': 6,
-	'button-padding-bottom-xl': 4,
-	'button-padding-left-xl': 10,
 	// hover
 	'icon-border-palette-color-general-hover': 6,
 	'icon-border-style-general-hover': 'solid',
@@ -594,9 +565,9 @@ export const preset6 = {
 	'icon-padding-sync-vertical-general': false,
 	'icon-padding-unit-general': 'px',
 	'icon-position': 'right',
-	'icon-spacing-general': 13,
+	'icon-spacing-general': 14,
 	'icon-stroke-general': 4,
-	'icon-width-general': 20,
+	'icon-width-general': 14,
 	'icon-width-unit-general': 'px',
 	'icon-inherit': false,
 	// 4k
@@ -616,17 +587,6 @@ export const preset6 = {
 	'icon-padding-bottom-xxl': 0,
 	'icon-padding-left-xxl': 0,
 	'icon-padding-right-xxl': 0,
-	// XL
-	'icon-width-xl': 14,
-	'icon-spacing-xl': 14,
-	'button-padding-top-xl': 3,
-	'button-padding-right-xl': 6,
-	'button-padding-bottom-xl': 4,
-	'button-padding-left-xl': 10,
-	'button-border-bottom-left-radius-xl': 8,
-	'button-border-bottom-right-radius-xl': 8,
-	'button-border-top-left-radius-xl': 8,
-	'button-border-top-right-radius-xl': 8,
 	// hover
 	'icon-border-style-general-hover': 'none',
 	'button-background-active-media-hover-general': 'none',

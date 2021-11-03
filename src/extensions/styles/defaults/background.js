@@ -155,7 +155,11 @@ export const rawBackgroundVideo = {
 	},
 	'background-video-opacity': {
 		type: 'number',
-		default: 100,
+		default: 1,
+	},
+	'background-video-reduce-border': {
+		type: 'boolean',
+		default: false,
 	},
 };
 

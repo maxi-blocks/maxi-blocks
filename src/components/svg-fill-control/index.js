@@ -10,7 +10,7 @@ import ColorControl from '../color-control';
 import ImageShape from '../image-shape';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
-import { injectImgSVG, getSVGHasImage } from '../../extensions/svg/utils';
+import { injectImgSVG, getSVGHasImage } from '../../extensions/svg';
 
 /**
  * External dependencies
@@ -26,121 +26,104 @@ import { ResponsiveTabsControl } from '..';
 /**
  * Component
  */
-const ColorContent = props => {
-	const {
-		SVGOptions,
-		SVGData,
-		breakpoint,
-		isHover,
-		id,
-		value,
-		isGeneral,
-		onChange,
-		clientId,
-	} = props;
+const ColorContent = ({
+	SVGOptions,
+	SVGData,
+	breakpoint,
+	isHover,
+	id,
+	value,
+	isGeneral,
+	onChange,
+	clientId,
+}) => (
+	<ColorControl
+		label={__('Fill', 'maxi-blocks')}
+		paletteStatus={getLastBreakpointAttribute(
+			'background-palette-svg-color-status',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		paletteColor={getLastBreakpointAttribute(
+			'background-palette-svg-color',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		paletteOpacity={getLastBreakpointAttribute(
+			'background-palette-svg-opacity',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		color={getLastBreakpointAttribute('color', breakpoint, value, isHover)}
+		onChange={({ paletteStatus, paletteColor, paletteOpacity, color }) => {
+			SVGData[id][getAttributeKey('color', isHover, false, breakpoint)] =
+				color;
 
-	const SVGElement = SVGOptions['background-svg-SVGElement'];
-
-	return (
-		<ColorControl
-			label={__('Fill', 'maxi-blocks')}
-			paletteStatus={getLastBreakpointAttribute(
-				'background-palette-svg-color-status',
-				breakpoint,
-				SVGOptions,
-				isHover
-			)}
-			paletteColor={getLastBreakpointAttribute(
-				'background-palette-svg-color',
-				breakpoint,
-				SVGOptions,
-				isHover
-			)}
-			paletteOpacity={getLastBreakpointAttribute(
-				'background-palette-svg-opacity',
-				breakpoint,
-				SVGOptions,
-				isHover
-			)}
-			color={getLastBreakpointAttribute(
-				'color',
-				breakpoint,
-				value,
-				isHover
-			)}
-			onChange={({
-				paletteStatus,
-				paletteColor,
-				paletteOpacity,
-				color,
-			}) => {
-				SVGData[id][
-					getAttributeKey('color', isHover, false, breakpoint)
-				] = color;
-
-				onChange({
-					'background-svg-SVGElement': injectImgSVG(
-						SVGOptions['background-svg-SVGElement'],
-						SVGData
-					).outerHTML,
-					'background-svg-SVGData': SVGData,
+			onChange({
+				'background-svg-SVGElement': injectImgSVG(
+					SVGOptions['background-svg-SVGElement'],
+					SVGData
+				).outerHTML,
+				'background-svg-SVGData': SVGData,
+				[getAttributeKey(
+					'background-palette-svg-color-status',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteStatus,
+				[getAttributeKey(
+					'background-palette-svg-color',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteColor,
+				[getAttributeKey(
+					'background-palette-svg-opacity',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteOpacity,
+				[getAttributeKey(
+					'background-palette-svg-opacity',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteOpacity,
+				...(isGeneral && {
 					[getAttributeKey(
 						'background-palette-svg-color-status',
 						isHover,
 						false,
-						breakpoint
+						'general'
 					)]: paletteStatus,
 					[getAttributeKey(
 						'background-palette-svg-color',
 						isHover,
 						false,
-						breakpoint
+						'general'
 					)]: paletteColor,
 					[getAttributeKey(
 						'background-palette-svg-opacity',
 						isHover,
 						false,
-						breakpoint
+						'general'
 					)]: paletteOpacity,
 					[getAttributeKey(
 						'background-palette-svg-opacity',
 						isHover,
 						false,
-						breakpoint
+						'general'
 					)]: paletteOpacity,
-					...(isGeneral && {
-						[getAttributeKey(
-							'background-palette-svg-color-status',
-							isHover,
-							false,
-							'general'
-						)]: paletteStatus,
-						[getAttributeKey(
-							'background-palette-svg-color',
-							isHover,
-							false,
-							'general'
-						)]: paletteColor,
-						[getAttributeKey(
-							'background-palette-svg-opacity',
-							isHover,
-							false,
-							'general'
-						)]: paletteOpacity,
-						[getAttributeKey(
-							'background-palette-svg-opacity',
-							isHover,
-							false,
-							'general'
-						)]: paletteOpacity,
-					}),
-				});
-			}}
-			isHover={isHover}
-			clientId={clientId}
-		/>
-	);
-};
+				}),
+			});
+		}}
+		isHover={isHover}
+		clientId={clientId}
+	/>
+);
 
 const SVGFillControl = props => {
 	const {

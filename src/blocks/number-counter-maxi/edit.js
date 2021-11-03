@@ -249,6 +249,7 @@ class edit extends MaxiBlockComponent {
 
 		const handleOnResizeStart = event => {
 			event.preventDefault();
+
 			setAttributes({
 				[`width-unit-${deviceType}`]: 'px',
 			});

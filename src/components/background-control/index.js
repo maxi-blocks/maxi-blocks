@@ -12,7 +12,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import ColorLayer from './colorLayer';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
@@ -113,7 +113,7 @@ const BackgroundControl = props => {
 	return (
 		<div className={classes}>
 			{getOptions().length > 1 && (
-				<RadioControl
+				<ButtonGroupControl
 					label={__('Background', 'maxi-blocks')}
 					className='maxi-background-control__simple'
 					fullWidthMode

@@ -6,7 +6,7 @@ import { useInstanceId } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
+import Button from '../button';
 
 /**
  * External dependencies
@@ -22,46 +22,44 @@ import './editor.scss';
 /**
  * Component
  */
-const RadioControl = ({
+const ButtonGroupControl = ({
 	label,
 	className,
 	selected,
-	help,
 	onChange,
 	options = [],
 	fullWidthMode = false,
 }) => {
-	const instanceId = useInstanceId(RadioControl);
-	const id = `inspector-radio-control-${instanceId}`;
+	const instanceId = useInstanceId(ButtonGroupControl);
+	const id = `inspector-button-group-control-${instanceId}`;
 
 	const classes = classnames(
-		'maxi-radio-control',
-		fullWidthMode && 'maxi-radio-control__full-width',
+		'maxi-button-group-control',
+		fullWidthMode && 'maxi-button-group-control__full-width',
 		className
 	);
 
 	return (
 		!isEmpty(options) && (
-			<BaseControl label={label} id={id} help={help} className={classes}>
+			<div role='group' className={classes} aria-lable={label}>
 				{options.map(({ value, label }, index) => (
-					<button
-						role='button'
-						tabIndex={0}
+					<Button
+						label={value}
 						key={`${id}-${index}`}
 						aria-pressed={selected === value}
-						className={`maxi-radio-control__option${
+						className={`maxi-button-group-control__option${
 							selected === value
-								? ' maxi-radio-control__option--selected'
+								? ' maxi-button-group-control__option--selected'
 								: ''
 						}`}
 						onClick={() => onChange(value)}
 					>
 						{label}
-					</button>
+					</Button>
 				))}
-			</BaseControl>
+			</div>
 		)
 	);
 };
 
-export default RadioControl;
+export default ButtonGroupControl;

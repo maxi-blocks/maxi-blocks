@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import Icon from '../icon';
 
 /**
@@ -71,7 +71,7 @@ const AlignmentControl = props => {
 	);
 
 	return (
-		<RadioControl
+		<ButtonGroupControl
 			label={label}
 			className={classes}
 			selected={

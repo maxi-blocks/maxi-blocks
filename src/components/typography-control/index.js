@@ -15,7 +15,7 @@ import FontFamilySelector from '../font-family-selector';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -208,7 +208,7 @@ const LinkOptions = props => {
 
 	return (
 		<>
-			<RadioControl
+			<ButtonGroupControl
 				label=''
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}

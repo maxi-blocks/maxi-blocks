@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 
 /**
  * External dependencies
@@ -87,7 +87,7 @@ const DisplayControl = props => {
 
 	return (
 		<div className={classes}>
-			<RadioControl
+			<ButtonGroupControl
 				label={__('Display block', 'maxi-blocks')}
 				selected={getValue()}
 				options={getOptions()}

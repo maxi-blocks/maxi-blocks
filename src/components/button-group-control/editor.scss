@@ -1,4 +1,4 @@
-.maxi-sidebar .maxi-radio-control {
+.maxi-sidebar .maxi-button-group-control {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -21,6 +21,7 @@
 		min-width: 40px;
 		height: 32px;
 		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 0;
 		margin-bottom: 0;
 		background-color: #fff;
 		opacity: 1 !important;

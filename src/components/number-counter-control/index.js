@@ -158,16 +158,17 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			{!props['number-counter-circle-status'] && (
-				<div className='maxi-number-counter-control__alert-warning'>
-					<i>
-						{__(
-							"End Number can't be grater than 100 when circle is enabled",
-							'maxi-blocks'
-						)}
-					</i>
-				</div>
-			)}
+			{!props['number-counter-circle-status'] &&
+				props['number-counter-circle-status'] > 100 && (
+					<div className='maxi-number-counter-control__alert-warning'>
+						<i>
+							{__(
+								"End Number can't be grater than 100 when circle is enabled",
+								'maxi-blocks'
+							)}
+						</i>
+					</div>
+				)}
 			<AdvancedNumberControl
 				label={__('Duration', 'maxi-blocks')}
 				min={1}
@@ -186,24 +187,26 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<AdvancedNumberControl
-				label={__('Stroke', 'maxi-blocks')}
-				min={1}
-				max={99}
-				initial={8}
-				step={1}
-				value={props['number-counter-stroke']}
-				onChangeValue={val =>
-					onChange({ 'number-counter-stroke': val })
-				}
-				onReset={() =>
-					onChange({
-						'number-counter-stroke': getDefaultAttribute(
-							'number-counter-stroke'
-						),
-					})
-				}
-			/>
+			{!props['number-counter-circle-status'] && (
+				<AdvancedNumberControl
+					label={__('Stroke', 'maxi-blocks')}
+					min={1}
+					max={99}
+					initial={8}
+					step={1}
+					value={props['number-counter-stroke']}
+					onChangeValue={val =>
+						onChange({ 'number-counter-stroke': val })
+					}
+					onReset={() =>
+						onChange({
+							'number-counter-stroke': getDefaultAttribute(
+								'number-counter-stroke'
+							),
+						})
+					}
+				/>
+			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
 				defaultValue={getDefaultAttribute(

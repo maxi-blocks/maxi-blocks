@@ -415,7 +415,8 @@ const getIconHoverObject = (props, target) => {
 				true
 			),
 		background: iconHoverStatus &&
-			iconHoverActiveMedia === 'color' && {
+			iconHoverActiveMedia === 'color' &&
+			target === 'iconHover' && {
 				...getColorBackgroundObject({
 					...getGroupAttributes(
 						props,
@@ -430,6 +431,7 @@ const getIconHoverObject = (props, target) => {
 				}),
 			},
 		gradient: iconHoverStatus &&
+			iconHoverActiveMedia === 'gradient' &&
 			target === 'iconHover' && {
 				...getGradientBackgroundObject({
 					...getGroupAttributes(

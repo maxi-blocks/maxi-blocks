@@ -254,6 +254,7 @@ describe('AxisControl', () => {
 
 	it('CheckBox', async () => {
 		await changeResponsive(page, 'base');
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -293,7 +294,7 @@ describe('AxisControl', () => {
 			'style',
 			'margin padding'
 		);
-		const checkBox = await accordionPanel.$$(
+		await accordionPanel.$$(
 			'.maxi-axis-control__content__item .maxi-axis-control__content__item__checkbox input'
 		);
 		let topInput = await page.$$(
@@ -344,6 +345,7 @@ describe('AxisControl', () => {
 		);
 		await topInput[1].focus();
 	});
+
 	it('Padding cannot be less than 0 and sync', async () => {
 		await changeResponsive(page, 'base');
 
@@ -467,6 +469,7 @@ describe('AxisControl', () => {
 		expect(pressedMiddle).toStrictEqual('false');
 		expect(pressedBottomTrue).toStrictEqual('true');
 	});
+
 	it('Sync responsive buttons', async () => {
 		// general
 		const syncButtonTop = await page.$(

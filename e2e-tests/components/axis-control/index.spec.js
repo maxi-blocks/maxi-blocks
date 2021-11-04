@@ -9,7 +9,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	changeResponsive,
+} from '../../utils';
 
 describe('AxisControl', () => {
 	it('Checking AxisControl', async () => {
@@ -109,7 +113,11 @@ describe('AxisControl', () => {
 		);
 
 		// change values S responsive
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
 		const axisControls = await accordionPanel.$$(
 			'.maxi-axis-control .maxi-axis-control__top-part input'
 		);
@@ -181,7 +189,11 @@ describe('AxisControl', () => {
 
 	it('Check responsive reset values', async () => {
 		await changeResponsive(page, 'base');
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
 
 		// Base value
 		const marginGeneral = await accordionPanel.$$eval(
@@ -242,7 +254,11 @@ describe('AxisControl', () => {
 
 	it('CheckBox', async () => {
 		await changeResponsive(page, 'base');
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
 		const axisControls = await accordionPanel.$$('.maxi-axis-control');
 
 		const marginControl = axisControls[1];
@@ -272,7 +288,11 @@ describe('AxisControl', () => {
 	it('Responsive CheckBox', async () => {
 		await changeResponsive(page, 's');
 
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
 		const checkBox = await accordionPanel.$$(
 			'.maxi-axis-control__content__item .maxi-axis-control__content__item__checkbox input'
 		);
@@ -453,10 +473,6 @@ describe('AxisControl', () => {
 			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button'
 		);
 
-		const syncButtonBottom = await page.$(
-			'.maxi-axis-control__bottom-part .maxi-axis-control__content__item__sync button'
-		);
-
 		// Pressed-top and Pressed-bottom true
 		await syncButtonTop.click();
 
@@ -499,7 +515,7 @@ describe('AxisControl', () => {
 		);
 
 		expect(syncSButtonMiddle).toStrictEqual('true');
-		/// /////////////////
+
 		const pressedSTop = await page.$eval(
 			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button',
 			expectHtml => expectHtml.ariaPressed
@@ -520,20 +536,21 @@ describe('AxisControl', () => {
 			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button',
 			button => button[1].ariaPressed
 		);
-		expect(syncXsButtonMiddle).toStrictEqual('false');
+		expect(syncXsButtonMiddle).toStrictEqual('true');
+
 		// m
+		await changeResponsive(page, 'm');
 		const syncMButtonTop = await page.$eval(
 			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button',
-			button => button.arialPressed
+			expectHtml => expectHtml.ariaPressed
 		);
-
-		expect(syncMButtonTop).toBeTruthy();
 
 		const syncMButtonBottom = await page.$eval(
-			'.maxi-axis-control_bottom-part .maxi-axis-control__content__item__sync button',
-			button => button.ariaPressed
+			'.maxi-axis-control__bottom-part .maxi-axis-control__content__item__sync button',
+			expectHtml => expectHtml.ariaPressed
 		);
 
-		expect(syncMButtonBottom).toBeTruthy();
+		expect(syncMButtonTop).toStrictEqual('true');
+		expect(syncMButtonBottom).toStrictEqual('true');
 	});
 });

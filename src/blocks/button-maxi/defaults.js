@@ -173,7 +173,7 @@ export const preset2 = {
 	'button-border-top-right-radius-xxl': 15,
 	'button-border-unit-radius-xxl': 'px',
 	// hover
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': true,
 	'button-border-style-general-hover': 'solid',
 	'button-border-palette-color-general-hover': 6,
@@ -269,7 +269,7 @@ export const preset3 = {
 	'button-border-sync-radius-xxl': true,
 	'button-border-unit-radius-xxl': 'px',
 	// hover
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': true,
 	'button-border-style-general-hover': 'solid',
 	'button-border-palette-color-general-hover': 6,
@@ -391,7 +391,7 @@ export const preset4 = {
 	'button-border-sync-radius-xxl': true,
 	'button-border-unit-radius-xxl': 'px',
 	// hover
-	'button-background-active-media-hover-general': 'color',
+	'button-background-active-media-general-hover': 'color',
 	'button-background-palette-color-hover-general': 6,
 	'button-background-palette-color-status-hover-general': true,
 	'button-background-status-hover-general': true,
@@ -503,10 +503,11 @@ export const preset5 = {
 	'button-border-sync-radius-xxl': true,
 	'button-border-unit-radius-xxl': 'px',
 	// hover
+	'icon-status-hover': true,
 	'icon-border-palette-color-general-hover': 6,
 	'icon-border-style-general-hover': 'solid',
 	'icon-palette-color-hover': 6,
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': true,
 	'button-border-style-general-hover': 'solid',
 	'button-border-palette-color-general-hover': 6,
@@ -589,7 +590,7 @@ export const preset6 = {
 	'icon-padding-right-xxl': 0,
 	// hover
 	'icon-border-style-general-hover': 'none',
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-style-general-hover': 'none',
 	'button-background-palette-color-general-hover': 1,
 	'palette-color-general-hover': 6,
@@ -648,7 +649,7 @@ export const preset7 = {
 	'icon-width-xxl': 35,
 	'icon-stroke-xxl': 1.5,
 	// hover
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
@@ -728,7 +729,7 @@ export const preset8 = {
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
 	// hover
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
@@ -804,7 +805,7 @@ export const preset9 = {
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
 	// hover
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
@@ -887,7 +888,7 @@ export const preset10 = {
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
 	// hover
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
@@ -963,7 +964,7 @@ export const preset11 = {
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
 	// hover
-	'button-background-active-media-hover-general': 'none',
+	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,

@@ -27,7 +27,7 @@ const OpacityControl = props => {
 		<AdvancedNumberControl
 			className={classes}
 			label={`${!isEmpty(label) ? label : __('Opacity', 'maxi-blocks')}`}
-			value={getIsValid(opacity, true) ? opacity * 100 : 100}
+			value={getIsValid(opacity, true) ? round(opacity * 100, 2) : 100}
 			onChangeValue={val => {
 				onChange(!isNil(val) ? round(val / 100, 2) : 0);
 			}}

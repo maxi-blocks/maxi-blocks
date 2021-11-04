@@ -97,18 +97,13 @@ const AdvancedNumberControl = props => {
 
 	const getNewValueFromEmpty = e => {
 		const {
-			nativeEvent: { data, detail, inputType },
+			nativeEvent: { inputType },
 			target: { value: newValue },
 		} = e;
 
 		if (isNumber(value)) return newValue;
 
-		const typeofEvent =
-			inputType === 'insertText' &&
-			getIsValid(data, true) &&
-			getIsValid(detail, true)
-				? 'type'
-				: 'click';
+		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
 
 		switch (typeofEvent) {
 			case 'click':

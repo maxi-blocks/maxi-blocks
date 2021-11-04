@@ -407,6 +407,7 @@ const AxisControl = props => {
 
 	const classes = classnames(
 		'maxi-axis-control',
+		target && `maxi-axis-control__${target}`,
 		disableAuto && 'maxi-axis-control__disable-auto',
 		className
 	);

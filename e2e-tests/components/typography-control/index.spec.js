@@ -20,10 +20,13 @@ import {
 } from '../../utils';
 
 describe('TypographyControl', () => {
-	it('Checking the font family', async () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
+	});
+
+	it('Checking the font family', async () => {
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -51,9 +54,7 @@ describe('TypographyControl', () => {
 			'style',
 			'typography'
 		);
-		const closeAccordion = await page.$$(
-			'.interface-interface-skeleton__sidebar .edit-post-sidebar__panel-tabs button'
-		);
+
 		const input = await page.$(
 			'.maxi-typography-control .maxi-typography-control__font-family input'
 		);
@@ -185,7 +186,7 @@ describe('TypographyControl', () => {
 		const attributes = await getBlockAttributes();
 		const opacity = attributes['palette-opacity-s'];
 
-		expect(opacity).toStrictEqual(55);
+		expect(opacity).toStrictEqual(0.55);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -576,8 +577,7 @@ describe('TypographyControl', () => {
 			select => select[0].focus()
 		);
 
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
+		await page.keyboard.type('19');
 
 		// line-height
 		await accordionPanel.$$eval(
@@ -627,8 +627,8 @@ describe('TypographyControl', () => {
 		);
 
 		await input[0].focus();
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('19');
 
 		const sizeNumber = await accordionPanel.$$eval(
 			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',

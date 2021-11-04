@@ -266,13 +266,17 @@ const TextShadow = props => {
 						disableGradientAboveBackground
 					/>
 					{[
-						__('X', 'maxi-blocks'),
-						__('Y', 'maxi-blocks'),
-						__('Blur', 'maxi-blocks'),
-					].map((label, index) => (
+						{ label: __('X', 'maxi-blocks'), value: +trim(x) },
+						{ label: __('Y', 'maxi-blocks'), value: +trim(y) },
+						{
+							label: __('Blur', 'maxi-blocks'),
+							value: +trim(blur),
+						},
+					].map(({ label, value }, index) => (
 						<AdvancedNumberControl
-							label={__('X', 'maxi-blocks')}
-							value={+trim(x)}
+							key={`maxi-text-shadow-control__${label.toLocaleLowerCase()}`}
+							label={label}
+							value={value}
 							onChangeValue={val => {
 								onChangeValue(
 									index,

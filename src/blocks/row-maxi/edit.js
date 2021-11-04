@@ -88,7 +88,6 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					blockFullWidth={blockFullWidth}
 					{...getMaxiBlockBlockAttributes(this.props)}
-					disableMotion
 				>
 					<InnerBlocks
 						className='maxi-row-block__container'

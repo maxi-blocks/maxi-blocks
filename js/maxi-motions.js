@@ -1,4 +1,3 @@
-console.log('file loaded!');
 const setTransform = (el, transform, type) => {
 	const oldTransform = el.style.transform;
 
@@ -10,15 +9,10 @@ const setTransform = (el, transform, type) => {
 
 	const oldTransformArray = oldTransform.split(') ');
 
-	console.log('oldTransformArray');
-	console.log(oldTransformArray);
-
 	oldTransformArray.map((transform, key) => {
 		if (transform.includes(type)) oldTransformArray.splice(key, 1);
 		return null;
 	});
-
-	console.log(`transform: ${transform}`);
 
 	el.style.transform = oldTransformArray.join(' ') + transform;
 	el.style.WebkitTransform = oldTransformArray.join(' ') + transform;
@@ -324,10 +318,6 @@ const scrollMotion = () => {
 		document.getElementsByClassName('maxi-block-motion')
 	);
 
-	console.log('SCROLLING');
-	console.log('elements');
-	console.log(elements);
-
 	elements.forEach(function motionOnScroll(element, index) {
 		const motionType = element.getAttribute('data-motion-type');
 
@@ -344,8 +334,6 @@ const startingMotion = () => {
 	const elements = Array.from(
 		document.getElementsByClassName('maxi-block-motion')
 	);
-
-	console.log(elements);
 
 	elements.forEach(function maxiMotion(element, index) {
 		const motionType = element.getAttribute('data-motion-type');

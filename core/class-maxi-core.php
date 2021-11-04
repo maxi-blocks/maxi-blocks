@@ -41,8 +41,6 @@ if (!class_exists('MaxiBlocks_Core')):
             // Enqueue scripts and styles
             add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts_styles']);
 
-            add_action('enqueue_block_assets', [$this, 'enqueue_gutenberg_scripts_styles']);
-
             // Add MaxiBlocks classes on body element
             add_filter('body_class', [$this, 'maxi_blocks_body_class'], 99);
             add_filter('admin_body_class', [$this, 'maxi_blocks_body_class'], 99);
@@ -58,25 +56,12 @@ if (!class_exists('MaxiBlocks_Core')):
             });
         }
 
-        public function enqueue_gutenberg_scripts_styles()
-        {
-            wp_enqueue_script(
-                'maxi-motions-js',
-                plugins_url('/js/maxi-motions.js', dirname(__FILE__)),
-            );
-        }
-
         public function enqueue_scripts_styles()
         {
             wp_enqueue_style(
                 'maxi-animations-styles',
                 plugins_url('/css/animate.min.css', dirname(__FILE__)),
                 false,
-            );
-
-            wp_enqueue_script(
-                'maxi-waypoints-js',
-                plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
             );
 
             wp_enqueue_script(
@@ -92,6 +77,10 @@ if (!class_exists('MaxiBlocks_Core')):
                 array(
                     'google_api_key' => get_option('google_api_key_option'),
                 )
+            );
+            wp_enqueue_script(
+                'maxi-motions-js',
+                plugins_url('/js/maxi-motions.js', dirname(__FILE__)),
             );
         }
 

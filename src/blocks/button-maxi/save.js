@@ -10,6 +10,7 @@ import { Button } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import motionData from '../../extensions/motions';
 
 /**
  * External dependencies
@@ -41,7 +42,8 @@ const save = props => {
 			'maxi-button-block__button--icon-left',
 		attributes['icon-content'] &&
 			attributes['icon-position'] === 'right' &&
-			'maxi-button-block__button--icon-right'
+			'maxi-button-block__button--icon-right',
+		attributes['motion-active-general'] && 'maxi-block-motion'
 	);
 
 	return (
@@ -52,6 +54,7 @@ const save = props => {
 		>
 			<Button
 				className={buttonClasses}
+				{...motionData(props)}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!attributes['icon-only'] && (

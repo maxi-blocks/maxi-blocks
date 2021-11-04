@@ -16,7 +16,6 @@ import {
 	getHasParallax,
 } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
-import MotionPreview from '../motion-preview';
 
 /**
  * External dependencies
@@ -89,7 +88,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		blockFullWidth,
 		motion,
 		background,
-		disableMotion = false,
 		disableBackground = false,
 		isSave = false,
 		classes: customClasses,
@@ -229,13 +227,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		}),
 		...extraProps,
 	};
-
-	// if (!disableMotion && !isSave)
-	// 	return (
-	// 		<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
-	// 			<MainBlock {...blockProps}>{children}</MainBlock>
-	// 		</MotionPreview>
-	// 	);
 
 	return <MainBlock {...blockProps}>{children}</MainBlock>;
 });

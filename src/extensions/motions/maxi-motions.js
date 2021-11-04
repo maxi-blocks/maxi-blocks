@@ -1,4 +1,8 @@
-console.log('file loaded!');
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 const setTransform = (el, transform, type) => {
 	const oldTransform = el.style.transform;
 
@@ -10,15 +14,15 @@ const setTransform = (el, transform, type) => {
 
 	const oldTransformArray = oldTransform.split(') ');
 
-	console.log('oldTransformArray');
-	console.log(oldTransformArray);
+	// console.log('oldTransformArray');
+	// console.log(oldTransformArray);
 
 	oldTransformArray.map((transform, key) => {
 		if (transform.includes(type)) oldTransformArray.splice(key, 1);
 		return null;
 	});
 
-	console.log(`transform: ${transform}`);
+	// console.log(`transform: ${transform}`);
 
 	el.style.transform = oldTransformArray.join(' ') + transform;
 	el.style.WebkitTransform = oldTransformArray.join(' ') + transform;
@@ -319,20 +323,18 @@ const scrollTransform = (element, type) => {
 	}
 };
 
-const startingMotion = () => {
+export const startingMotion = () => {
 	const elements = Array.from(
 		document.getElementsByClassName('maxi-block-motion')
 	);
 
-	console.log(elements);
-
 	elements.forEach(function maxiMotion(element, index) {
 		const motionType = element.getAttribute('data-motion-type');
-		const motionTypeArray = motionType.trim().split(' ');
+		const motionTypeArray = motionType?.trim().split(' ');
 		const parent = getParent(element);
 		let transition = '';
 
-		motionTypeArray.map(type => {
+		motionTypeArray?.map(type => {
 			const dataMotion = getMotionData(element, type);
 			const { speedValue, easingValue } = getMotionSetting(
 				dataMotion,
@@ -373,7 +375,7 @@ const startingMotion = () => {
 	});
 };
 
-const scrollMotion = () => {
+export const scrollMotion = () => {
 	const elements = Array.from(
 		document.getElementsByClassName('maxi-block-motion')
 	);
@@ -381,19 +383,40 @@ const scrollMotion = () => {
 	elements.forEach(function motionOnScroll(element, index) {
 		const motionType = element.getAttribute('data-motion-type');
 
-		const motionTypeArray = motionType.trim().split(' ');
+		const motionTypeArray = motionType?.trim().split(' ');
 
-		motionTypeArray.map(type => {
+		motionTypeArray?.map(type => {
 			scrollTransform(element, type);
 			return null;
 		});
 	});
 };
-// eslint-disable-next-line @wordpress/no-global-event-listener
-document.addEventListener('DOMContentLoaded', function motionsOnLoad(event) {
-	// Motion Effects
-	startingMotion();
-});
 
-// eslint-disable-next-line @wordpress/no-global-event-listener
-window.addEventListener('scroll', () => scrollMotion());
+export const addMotion = () => {
+	startingMotion();
+
+	// eslint-disable-next-line @wordpress/no-global-event-listener
+	window.addEventListener('scroll', () => scrollMotion());
+
+	// eslint-disable-next-line @wordpress/no-global-event-listener
+	window.addEventListener('load', () => {
+		document
+			.getElementsByClassName('interface-interface-skeleton__content')[0]
+			.addEventListener('scroll', () => scrollMotion());
+	});
+};
+
+export const removeMotion = uniqueID => {
+	const el = document.querySelectorAll(
+		`.maxi-block--backend[uniqueid='${uniqueID}']`
+	)[0];
+	if (!isEmpty(el)) {
+		el.classList.remove('maxi-block-motion');
+		el.style.removeProperty('top');
+		el.style.removeProperty('left');
+		el.style.removeProperty('filter');
+		el.style.removeProperty('transform');
+		el.style.removeProperty('transition');
+		el.style.removeProperty('opacity');
+	}
+};

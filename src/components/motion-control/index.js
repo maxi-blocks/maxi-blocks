@@ -18,7 +18,7 @@ import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import RangeSliderControl from '../range-slider-control';
 import ToggleSwitch from '../toggle-switch';
-import '../../extensions/motions/maxi-motions';
+import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
 
 /**
  * External dependencies
@@ -94,31 +94,6 @@ const MotionControl = props => {
 		},
 	];
 
-	const el = document.querySelectorAll(
-		`.maxi-block--backend[uniqueid='${uniqueID}']`
-	)[0];
-
-	const addMotion = () => {
-		el.classList.add('maxi-block-motion');
-		// eslint-disable-next-line no-undef
-		startingMotion();
-
-		document
-			.getElementsByClassName('interface-interface-skeleton__content')[0]
-			// eslint-disable-next-line no-undef
-			.addEventListener('scroll', () => scrollMotion());
-	};
-
-	const removeMotion = () => {
-		el.classList.remove('maxi-block-motion');
-		el.style.removeProperty('top');
-		el.style.removeProperty('left');
-		el.style.removeProperty('filter');
-		el.style.removeProperty('transform');
-		el.style.removeProperty('transition');
-		el.style.removeProperty('opacity');
-	};
-
 	return (
 		<div className={classes}>
 			<ToggleSwitch
@@ -128,8 +103,16 @@ const MotionControl = props => {
 					onChange({
 						'motion-preview-status': val,
 					});
-					if (val) addMotion();
-					else removeMotion();
+					// console.log(`val: ${val}`);
+					// console.log(`currentMotion on change: ${currentMotion}`);
+					// setCurrentMotion(val);
+					// console.log(`currentMotion after change: ${currentMotion}`);
+					if (val) {
+						removeMotion(uniqueID);
+						addMotion();
+					} else {
+						removeMotion(uniqueID);
+					}
 				}}
 			/>
 			<RadioControl

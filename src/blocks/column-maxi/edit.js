@@ -115,7 +115,6 @@ class edit extends MaxiBlockComponent {
 								key={`maxi-column--${uniqueID}`}
 								ref={this.blockRef}
 								{...getMaxiBlockBlockAttributes(this.props)}
-								disableMotion
 								tagName={BlockResizer}
 								resizableObject={this.resizableObject}
 								classes={classnames(

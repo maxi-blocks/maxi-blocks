@@ -32,6 +32,7 @@ import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
+import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
 
 /**
  * External dependencies
@@ -54,8 +55,11 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		const { isImageUrl } = this.props.attributes;
+		const motionPreviewStatus =
+			this.props.attributes['motion-preview-status'];
 		this.state = {
 			isExternalClass: isImageUrl,
+			currentMotion: motionPreviewStatus,
 		};
 
 		this.textRef = createRef(null);
@@ -112,15 +116,15 @@ class edit extends MaxiBlockComponent {
 			SVGElement,
 			uniqueID,
 		} = attributes;
-		const { isExternalClass } = this.state;
-
-		console.log(attributes);
+		const { isExternalClass, currentMotion } = this.state;
 
 		const classes = classnames(
 			'maxi-image-block',
 			fullWidth === 'full' && 'alignfull',
-			attributes['motion-preview-status'] && 'maxi-block-motion'
+			currentMotion && 'maxi-block-motion'
 		);
+
+		currentMotion ? addMotion() : removeMotion(uniqueID);
 
 		const wrapperClassName = classnames(
 			'maxi-image-block-wrapper',

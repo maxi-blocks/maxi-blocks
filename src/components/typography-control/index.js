@@ -118,6 +118,10 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}line-height-unit`]: val,
+							...(val === '-' && {
+								[`${prefix}line-height`]:
+									minMaxSettings['-'].max,
+							}),
 						},
 						breakpoint
 					);

@@ -15,6 +15,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	addBackgroundLayer,
+	modalMock,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -307,15 +308,16 @@ describe('BackgroundControl', () => {
 		await addBackgroundLayer(page, 'shape');
 
 		// open library
-		await page.$eval(
+		/* await page.$eval(
 			'.maxi-library-modal__action-section__buttons button',
 			button => button.click()
-		);
-		await page.waitForTimeout(200);
+		); */
+		await modalMock(page, { type: 'bg-shape' });
+		/* await page.waitForTimeout(200);
 		await page.$$eval(
 			'.ais-InfiniteHits .maxi-cloud-masonry-card__svg-container',
 			selectShape => selectShape[0].click()
-		);
+		); */
 
 		// opacity
 		await page.$$eval(

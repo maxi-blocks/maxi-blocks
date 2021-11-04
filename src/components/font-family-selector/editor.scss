@@ -1,6 +1,6 @@
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-font-family-selector {
-		.maxi__control {
+		.maxi-font-family-selector__control {
 			border-color: var(--maxi-accessibility-grey-1-color);
 
 			&--is-focused,
@@ -18,7 +18,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	width: 100%;
 	margin-bottom: 8px;
 
-	.maxi__control {
+	.maxi-font-family-selector__control {
 		&__menu {
 			border: 1px solid var(--maxi-grey-1-color);
 			border-radius: 0;

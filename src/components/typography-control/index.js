@@ -16,7 +16,6 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import ButtonGroupControl from '../button-group-control';
-import SettingTabsControl from '../setting-tabs-control';
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -210,42 +209,6 @@ const LinkOptions = props => {
 
 	return (
 		<>
-			<SettingTabsControl
-				items={[
-					{
-						label: __('Link', 'maxi-blocks'),
-						content: (
-							<>
-								<h1>ddd</h1>
-							</>
-						),
-					},
-					{
-						label: __('Hover', 'maxi-blocks'),
-						content: (
-							<>
-								<h1>ddd</h1>
-							</>
-						),
-					},
-					{
-						label: __('Active', 'maxi-blocks'),
-						content: (
-							<>
-								<h1>ddd</h1>
-							</>
-						),
-					},
-					{
-						label: __('Visited', 'maxi-blocks'),
-						content: (
-							<>
-								<h1>ddd</h1>
-							</>
-						),
-					},
-				]}
-			/>
 			<ButtonGroupControl
 				label={__('Link options', 'maxi-blocks')}
 				className='maxi-typography-control__link-options'

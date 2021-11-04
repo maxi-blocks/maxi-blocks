@@ -60,7 +60,7 @@ const FontFamilySelector = props => {
 	return (
 		<Select
 			className={classes}
-			classNamePrefix='maxi__control'
+			classNamePrefix='maxi-font-family-selector__control'
 			options={options}
 			value={value}
 			placeholder={__('Search…', 'maxi-blocks')}

@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import OpacityControl from '../opacity-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Component
@@ -19,9 +22,14 @@ const opacity = ({ props }) => {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
 			<OpacityControl
-				{...getGroupAttributes(attributes, 'opacity')}
-				onChange={obj => setAttributes(obj)}
-				breakpoint={deviceType}
+				opacity={getLastBreakpointAttribute(
+					'opacity',
+					deviceType,
+					getGroupAttributes(attributes, 'opacity')
+				)}
+				onChange={val =>
+					setAttributes({ [`opacity-${deviceType}`]: val })
+				}
 			/>
 		),
 	};

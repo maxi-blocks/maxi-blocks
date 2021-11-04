@@ -7,15 +7,14 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
+import OpacityControl from '../opacity-control';
 import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -32,8 +31,7 @@ const ColorPaletteControl = props => {
 		onChange,
 		globalProps,
 		disableOpacity,
-		opacity = 100,
-		defaultOpacity = 100,
+		opacity = 1,
 		clientId,
 	} = props;
 
@@ -110,22 +108,12 @@ const ColorPaletteControl = props => {
 				</div>
 			</BaseControl>
 			{!disableOpacity && (
-				<AdvancedNumberControl
+				<OpacityControl
 					label={__('Colour Opacity', 'maxi-blocks')}
-					value={globalStatus ? globalPaletteOpacity : opacity}
-					onChangeValue={val => {
-						const value = !isNil(val) ? +val : 0;
-
+					opacity={globalStatus ? globalPaletteOpacity : opacity}
+					onChange={val =>
 						onChange({
-							paletteOpacity: value,
-						});
-					}}
-					min={0}
-					max={100}
-					initialPosition={defaultOpacity}
-					onReset={() =>
-						onChange({
-							paletteOpacity: defaultOpacity,
+							paletteOpacity: val,
 						})
 					}
 				/>

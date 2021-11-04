@@ -63,7 +63,17 @@ const TextOptions = props => {
 						breakpoint
 					);
 				}}
-				value={getValue(`${prefix}font-size`, breakpoint, avoidXXL)}
+				placeholder={getValue(
+					`${prefix}font-size`,
+					breakpoint,
+					avoidXXL
+				)}
+				value={getValue(
+					`${prefix}font-size`,
+					breakpoint,
+					avoidXXL,
+					true
+				)}
 				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat(
@@ -112,7 +122,17 @@ const TextOptions = props => {
 						breakpoint
 					);
 				}}
-				value={getValue(`${prefix}line-height`, breakpoint, avoidXXL)}
+				placeholder={getValue(
+					`${prefix}line-height`,
+					breakpoint,
+					avoidXXL
+				)}
+				value={getValue(
+					`${prefix}line-height`,
+					breakpoint,
+					avoidXXL,
+					true
+				)}
 				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat(
@@ -160,10 +180,16 @@ const TextOptions = props => {
 						breakpoint
 					);
 				}}
-				value={getValue(
+				placeholder={getValue(
 					`${prefix}letter-spacing`,
 					breakpoint,
 					avoidXXL
+				)}
+				value={getValue(
+					`${prefix}letter-spacing`,
+					breakpoint,
+					avoidXXL,
+					true
 				)}
 				defaultValue={getDefault(`${prefix}letter-spacing`, breakpoint)}
 				onChangeValue={val => {
@@ -443,10 +469,15 @@ const TypographyControl = withFormatValue(props => {
 		},
 	};
 
-	const getValue = (prop, customBreakpoint, avoidXXL) => {
+	const getValue = (
+		prop,
+		customBreakpoint,
+		avoidXXL,
+		customDisableFormats = false
+	) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
-		if (disableFormats)
+		if (disableFormats || customDisableFormats)
 			return getLastBreakpointAttribute(
 				prop,
 				currentBreakpoint,
@@ -602,7 +633,7 @@ const TypographyControl = withFormatValue(props => {
 	const getOpacityValue = label => {
 		const value = getValue(label);
 
-		return getIsValid(value, true) ? value : 100;
+		return getIsValid(value, true) ? value : 1;
 	};
 
 	return (

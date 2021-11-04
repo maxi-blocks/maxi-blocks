@@ -81,7 +81,7 @@ export const preset1 = {
 	'button-border-top-left-radius-xxl': 10,
 	'button-border-top-right-radius-xxl': 10,
 	'button-border-unit-radius-xxl': 'px',
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	// hover
 	'button-background-active-media-general': 'color',
 	'button-background-palette-color-hover-general': 6,
@@ -127,7 +127,7 @@ export const preset2 = {
 	'button-box-shadow-spread-general': undefined,
 	'button-box-shadow-vertical-general': undefined,
 	// icon
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-background-color-general': '',
 	'icon-background-gradient-opacity-general': 1,
 	'icon-background-palette-color-general': 4,
@@ -213,7 +213,7 @@ export const preset3 = {
 	'button-box-shadow-horizontal-general': 3,
 	'button-box-shadow-palette-color-general': 4,
 	'button-box-shadow-palette-color-status-general': true,
-	'button-box-shadow-palette-opacity-general': 100,
+	'button-box-shadow-palette-opacity-general': 1,
 	'button-box-shadow-spread-general': 0,
 	'button-box-shadow-vertical-general': 3,
 	'button-background-active-media-general': '',
@@ -222,7 +222,7 @@ export const preset3 = {
 	'palette-color-general': 4,
 	'palette-color-status-general': true,
 	// icon
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-background-color-general': '',
 	'icon-background-gradient-opacity-general': 1,
 	'icon-background-palette-color-general': 4,
@@ -280,7 +280,7 @@ export const preset3 = {
 	'button-box-shadow-horizontal-general-hover': 3,
 	'button-box-shadow-palette-color-general-hover': 6,
 	'button-box-shadow-palette-color-status-general-hover': true,
-	'button-box-shadow-palette-opacity-general-hover': 100,
+	'button-box-shadow-palette-opacity-general-hover': 1,
 	'button-box-shadow-spread-general-hover': 0,
 	'button-box-shadow-status-hover': true,
 	'button-box-shadow-vertical-general-hover': 3,
@@ -325,7 +325,7 @@ export const preset4 = {
 	'button-box-shadow-vertical-general': undefined,
 	// icon
 	'icon-background-active-media-general': 'background-color',
-	'icon-background-palette-opacity-general': 43,
+	'icon-background-palette-opacity-general': 0.43,
 	'icon-background-gradient-opacity-general': 1,
 	'icon-background-palette-color-general': 1,
 	'icon-background-palette-color-status-general': true,
@@ -437,7 +437,7 @@ export const preset5 = {
 	'button-box-shadow-vertical-general': undefined,
 	// icon
 	'icon-background-active-media-general': '',
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-inherit': false,
 	'icon-border-bottom-left-radius-general': 100,
 	'icon-border-bottom-right-radius-general': 100,
@@ -534,7 +534,7 @@ export const preset6 = {
 	'button-box-shadow-horizontal-general': 0,
 	'button-box-shadow-palette-color-general': 3,
 	'button-box-shadow-palette-color-status-general': true,
-	'button-box-shadow-palette-opacity-general': 100,
+	'button-box-shadow-palette-opacity-general': 1,
 	'button-box-shadow-spread-general': 0,
 	'button-box-shadow-blur-general': 8,
 	'button-box-shadow-vertical-general': 0,
@@ -550,7 +550,7 @@ export const preset6 = {
 	'button-border-sync-radius-xxl': true,
 	'button-border-unit-radius-xxl': 'px',
 	// icon
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-palette-color': 4,
 	'icon-palette-color-status': true,
 	'icon-background-color-general': '',
@@ -619,7 +619,7 @@ export const preset7 = {
 	// icon
 	'icon-background-active-media-general': '',
 	'icon-inherit': false,
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 1,
 	'icon-background-palette-color-status-general': true,
@@ -679,7 +679,7 @@ export const preset8 = {
 	'button-box-shadow-vertical-general': undefined,
 	// icon
 	'icon-background-active-media-general': '',
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 1,
 	'icon-background-palette-color-status-general': true,
@@ -763,7 +763,7 @@ export const preset9 = {
 	// icon
 	'icon-inherit': false,
 	'icon-background-active-media-general': 'background-color',
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 4,
 	'icon-background-palette-color-status-general': true,
@@ -837,7 +837,7 @@ export const preset10 = {
 	'button-box-shadow-vertical-general': undefined,
 	// icon
 	'icon-background-active-media-general': '',
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-inherit': false,
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 1,
@@ -921,7 +921,7 @@ export const preset11 = {
 	'button-box-shadow-vertical-general': undefined,
 	// icon
 	'icon-background-active-media-general': 'background-color',
-	'icon-background-palette-opacity-general': 100,
+	'icon-background-palette-opacity-general': 1,
 	'icon-inherit': false,
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 4,

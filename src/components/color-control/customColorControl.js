@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
+import OpacityControl from '../opacity-control';
 
 /**
  * External dependencies
  */
 import ChromePicker from 'react-color';
 import tinycolor from 'tinycolor2';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Component
@@ -24,9 +24,9 @@ const CustomColorControl = props => {
 		label,
 		color,
 		onChangeValue,
-		onReset,
 		disableColorDisplay,
 		disableOpacity,
+		onReset,
 	} = props;
 
 	return (
@@ -46,25 +46,20 @@ const CustomColorControl = props => {
 				</BaseControl>
 			)}
 			{!disableOpacity && (
-				<AdvancedNumberControl
+				<OpacityControl
 					label={__('Colour Opacity', 'maxi-blocks')}
-					value={color.a * 100}
-					onChangeValue={val => {
-						const value = !isNil(val) ? +val : 0;
-
+					opacity={color.a}
+					onChange={val => {
 						if (!isEmpty(color)) {
-							color.a = value / 100;
+							color.a = val;
 
 							onChangeValue({
 								color: tinycolor(color).toRgbString(),
-								paletteOpacity: value,
+								paletteOpacity: val,
 							});
 						}
 					}}
-					min={0}
-					max={100}
-					initialPosition={100}
-					onReset={() => onReset()}
+					onReset={onReset}
 				/>
 			)}
 			<div className='maxi-color-control__color'>

@@ -34,6 +34,7 @@ const Inspector = props => {
 		clientId,
 		deviceType,
 		setAttributes,
+		resizableObject,
 	} = props;
 	const {
 		blockStyle,
@@ -283,6 +284,9 @@ const Inspector = props => {
 													}}
 													breakpoint={deviceType}
 													prefix='svg-'
+													resizableObject={
+														resizableObject
+													}
 													enableResponsive
 												/>
 											),

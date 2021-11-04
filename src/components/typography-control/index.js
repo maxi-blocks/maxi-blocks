@@ -22,6 +22,7 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
@@ -204,6 +205,7 @@ const LinkOptions = props => {
 		breakpoint,
 		textLevel,
 		clientId,
+		getOpacityValue,
 	} = props;
 
 	return (
@@ -215,9 +217,9 @@ const LinkOptions = props => {
 				defaultColor={getDefault(`${prefix}link-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
 				paletteColor={getValue(`${prefix}link-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-palette-opacity`) || 100
-				}
+				paletteOpacity={getOpacityValue(
+					`${prefix}link-palette-opacity`
+				)}
 				onChange={({
 					paletteColor,
 					paletteStatus,
@@ -251,9 +253,9 @@ const LinkOptions = props => {
 					`${prefix}link-hover-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-hover-palette-opacity`) || 100
-				}
+				paletteOpacity={getOpacityValue(
+					`${prefix}link-hover-palette-opacity`
+				)}
 				onChange={({
 					paletteColor,
 					paletteStatus,
@@ -288,9 +290,9 @@ const LinkOptions = props => {
 					`${prefix}link-active-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-active-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-active-palette-opacity`) || 100
-				}
+				paletteOpacity={getOpacityValue(
+					`${prefix}link-active-palette-opacity`
+				)}
 				onChange={({
 					paletteColor,
 					paletteStatus,
@@ -326,9 +328,9 @@ const LinkOptions = props => {
 					`${prefix}link-visited-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
-				paletteOpacity={
-					getValue(`${prefix}link-visited-palette-opacity`) || 100
-				}
+				paletteOpacity={getOpacityValue(
+					`${prefix}link-visited-palette-opacity`
+				)}
 				onChange={({
 					paletteColor,
 					paletteStatus,
@@ -601,6 +603,12 @@ const TypographyControl = withFormatValue(props => {
 		onChange(obj);
 	};
 
+	const getOpacityValue = label => {
+		const value = getValue(label);
+
+		return getIsValid(value, true) ? value : 100;
+	};
+
 	return (
 		<div className={classes}>
 			{!disableFontFamily && (
@@ -622,7 +630,7 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
-					paletteOpacity={getValue(`${prefix}palette-opacity`) || 100}
+					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
 					onChange={({
 						color,
@@ -793,6 +801,7 @@ const TypographyControl = withFormatValue(props => {
 							typography
 						)}
 						blockStyle={blockStyle}
+						breakpoint={breakpoint}
 					/>
 				</>
 			)}
@@ -807,6 +816,7 @@ const TypographyControl = withFormatValue(props => {
 					textLevel={textLevel}
 					isHover={isHover}
 					clientId={clientId}
+					getOpacityValue={getOpacityValue}
 				/>
 			)}
 		</div>

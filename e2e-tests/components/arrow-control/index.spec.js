@@ -96,7 +96,7 @@ describe('ArrowControl', () => {
 			select => select[3].ariaPressed
 		);
 
-		expect(isItemChecked).toBeTruthy();
+		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -112,7 +112,7 @@ describe('ArrowControl', () => {
 			select => select[2].ariaPressed
 		);
 
-		expect(responsiveSOption).toBeTruthy();
+		expect(responsiveSOption).toBe('true');
 		const expectAttributes = await getBlockAttributes();
 		const position = expectAttributes['arrow-side-s'];
 
@@ -130,7 +130,7 @@ describe('ArrowControl', () => {
 			select => select[3].ariaPressed
 		);
 
-		expect(responsiveXsOption).toBeTruthy();
+		expect(responsiveXsOption).toBe('true');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -145,7 +145,7 @@ describe('ArrowControl', () => {
 			select => select[2].ariaPressed
 		);
 
-		expect(responsiveMOption).toBeTruthy();
+		expect(responsiveMOption).toBe('true');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

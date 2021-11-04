@@ -43,7 +43,7 @@ describe('DisplayControl', () => {
 			select => select[1].ariaPressed
 		);
 
-		expect(isItemChecked).toBeTruthy();
+		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -54,7 +54,7 @@ describe('DisplayControl', () => {
 			select => select[0].ariaPressed
 		);
 
-		expect(responsiveSOption).toBeTruthy();
+		expect(responsiveSOption).toBe('true');
 
 		const expectAttributes = await getBlockAttributes();
 		const display = expectAttributes['display-s'];
@@ -69,7 +69,7 @@ describe('DisplayControl', () => {
 			select => select[0].ariaPressed
 		);
 
-		expect(responsiveXsOption).toBeTruthy();
+		expect(responsiveXsOption).toBe('true');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -79,7 +79,7 @@ describe('DisplayControl', () => {
 			select => select[1].ariaPressed
 		);
 
-		expect(responsiveMOption).toBeTruthy();
+		expect(responsiveMOption).toBe('true');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

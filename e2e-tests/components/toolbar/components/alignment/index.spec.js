@@ -68,7 +68,7 @@ describe('AlignmentControl', () => {
 			button => button[1].ariaPressed
 		);
 
-		expect(selected).toBeTruthy();
+		expect(selected).toBe('true');
 
 		// responsive m
 		await changeResponsive(page, 'm');
@@ -77,6 +77,6 @@ describe('AlignmentControl', () => {
 			button => button[0].ariaPressed
 		);
 
-		expect(selectedM).toBeTruthy();
+		expect(selectedM).toBe('true');
 	});
 });

@@ -45,7 +45,7 @@ describe('AlignmentControl', () => {
 			select => select[0].ariaPressed
 		);
 
-		expect(isItemChecked).toBeTruthy();
+		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -58,7 +58,7 @@ describe('AlignmentControl', () => {
 			select => select[1].ariaPressed
 		);
 
-		expect(responsiveSOption).toBeTruthy();
+		expect(responsiveSOption).toBe('true');
 
 		const expectAttributes = await getBlockAttributes();
 		const position = expectAttributes['text-alignment-s'];
@@ -73,7 +73,7 @@ describe('AlignmentControl', () => {
 			select => select[1].ariaPressed
 		);
 
-		expect(responsiveXsOption).toBeTruthy();
+		expect(responsiveXsOption).toBe('true');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -83,7 +83,7 @@ describe('AlignmentControl', () => {
 			select => select[0].ariaPressed
 		);
 
-		expect(responsiveMOption).toBeTruthy();
+		expect(responsiveMOption).toBe('true');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -102,7 +102,7 @@ describe('AlignmentControl', () => {
 			select => select[1].ariaPressed
 		);
 
-		expect(isItemChecked).toBeTruthy();
+		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -115,7 +115,7 @@ describe('AlignmentControl', () => {
 			select => select[2].ariaPressed
 		);
 
-		expect(responsiveSOption).toBeTruthy();
+		expect(responsiveSOption).toBe('true');
 
 		const expectAttributes = await getBlockAttributes();
 		const position = expectAttributes['alignment-s'];
@@ -130,7 +130,7 @@ describe('AlignmentControl', () => {
 			select => select[2].ariaPressed
 		);
 
-		expect(responsiveXsOption).toBeTruthy();
+		expect(responsiveXsOption).toBe('true');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -140,7 +140,7 @@ describe('AlignmentControl', () => {
 			select => select[1].ariaPressed
 		);
 
-		expect(responsiveMOption).toBeTruthy();
+		expect(responsiveMOption).toBe('true');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

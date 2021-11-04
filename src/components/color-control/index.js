@@ -83,12 +83,12 @@ const ColorControl = props => {
 		onChange({
 			paletteStatus,
 			paletteColor,
-			paletteOpacity: 100,
+			paletteOpacity,
 			color: `rgba(${getPaletteColor(
 				clientId,
 				paletteColor,
 				blockStyle
-			)},1})`,
+			)},${paletteOpacity / 100 || 1})`,
 		});
 	};
 

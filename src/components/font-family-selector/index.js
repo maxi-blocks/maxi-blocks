@@ -26,7 +26,7 @@ import './editor.scss';
  * Component
  */
 const FontFamilySelector = props => {
-	const { font, onChange, className, theme = 'light', defaultValue } = props;
+	const { font, onChange, className, defaultValue } = props;
 
 	const { options } = useSelect(select => {
 		const { getFonts } = select('maxiBlocks/text');
@@ -60,7 +60,7 @@ const FontFamilySelector = props => {
 	return (
 		<Select
 			className={classes}
-			classNamePrefix='maxi'
+			classNamePrefix='maxi__control'
 			options={options}
 			value={value}
 			placeholder={__('Search…', 'maxi-blocks')}

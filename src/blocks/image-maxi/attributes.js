@@ -7,15 +7,32 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { getPrefixedAttributes } from '../../extensions/styles';
 
 /**
  * Attributes
  */
+const prefix = 'image-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),
+	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...{
+		...attributesData.alignment,
+		'alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
 	},
 	imageRatio: {
 		type: 'string',
@@ -27,19 +44,6 @@ const attributes = {
 	SVGData: {
 		type: 'object',
 	},
-	SVGMediaID: {
-		type: 'number',
-	},
-	SVGMediaURL: {
-		type: 'string',
-	},
-	imageSize: {
-		type: 'string',
-		default: 'full',
-	},
-	cropOptions: {
-		type: 'object',
-	},
 	captionType: {
 		type: 'string',
 		default: 'none',
@@ -48,9 +52,12 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	fullWidth: {
+	imageSize: {
 		type: 'string',
-		default: 'normal',
+		default: 'full',
+	},
+	cropOptions: {
+		type: 'object',
 	},
 	isImageUrl: {
 		type: 'boolean',
@@ -86,29 +93,10 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...attributesData.alignment,
-	...attributesData.background,
-	...attributesData.backgroundColor,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundGradientHover,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundImage,
-	...attributesData.backgroundImageHover,
-	...attributesData.backgroundSVG,
-	...attributesData.backgroundSVGHover,
-	...attributesData.backgroundVideo,
-	...attributesData.backgroundVideoHover,
-	...attributesData.border,
-	...attributesData.borderHover,
-	...attributesData.borderRadius,
-	...attributesData.borderRadiusHover,
-	...attributesData.borderWidth,
-	...attributesData.borderWidthHover,
-	...attributesData.boxShadow,
-	...attributesData.boxShadowHover,
-	...attributesData.container,
-	...attributesData.display,
+	...attributesData.link,
+	...attributesData.textAlignment,
+	...attributesData.typography,
+	...attributesData.imageShape,
 	...attributesData.hover,
 	...attributesData.hoverBackground,
 	...attributesData.hoverBackgroundColor,
@@ -120,27 +108,59 @@ const attributes = {
 	...attributesData.hoverMargin,
 	...attributesData.hoverPadding,
 	...attributesData.hoverTitleTypography,
-	...attributesData.link,
-	...attributesData.margin,
-	...attributesData.motion,
-	...attributesData.opacity,
-	...attributesData.padding,
-	...attributesData.parallax,
-	...attributesData.position,
-	...attributesData.size,
-	...attributesData.textAlignment,
-	...attributesData.transform,
-	...attributesData.typography,
-	...attributesData.zIndex,
+	...getPrefixedAttributes(attributesData.border, prefix),
+	...getPrefixedAttributes(attributesData.borderHover, prefix),
+	...getPrefixedAttributes(attributesData.borderRadius, prefix),
+	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
+	...getPrefixedAttributes(attributesData.borderWidth, prefix),
+	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
 	...{
-		...attributesData.alignment,
-		'alignment-general': {
+		...getPrefixedAttributes(attributesData.size, prefix),
+		[`${prefix}height-general`]: {
+			type: 'number',
+			default: 100,
+		},
+		[`${prefix}height-unit-general`]: {
 			type: 'string',
-			default: 'center',
+			default: '%',
 		},
 	},
+	...getPrefixedAttributes(attributesData.margin, prefix),
+	...getPrefixedAttributes(attributesData.padding, prefix),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...attributesData.container,
+	...attributesData.blockBackground,
+	...attributesData.border,
+	...attributesData.borderHover,
+	...attributesData.borderRadius,
+	...attributesData.borderRadiusHover,
+	...attributesData.borderWidth,
+	...attributesData.borderWidthHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.opacity,
+	...attributesData.size,
+	...attributesData.margin,
+	...attributesData.padding,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.motion,
+	...attributesData.transform,
+	...attributesData.display,
+	...attributesData.position,
 	...attributesData.overflow,
-	...attributesData.imageShape,
+	...attributesData.zIndex,
 };
 
 export default attributes;

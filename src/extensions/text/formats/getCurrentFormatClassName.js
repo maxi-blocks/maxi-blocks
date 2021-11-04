@@ -16,6 +16,8 @@ import { isEmpty } from 'lodash';
  * @returns {string} Current className for Maxi Custom format
  */
 const getCurrentFormatClassName = (formatValue, isHover = false) => {
+	if (!formatValue.formats || isEmpty(formatValue.formats)) return false;
+
 	let isWholeContent = false;
 
 	if (!isEmpty(formatValue)) {

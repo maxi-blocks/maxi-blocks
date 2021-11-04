@@ -9,10 +9,7 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -22,7 +19,7 @@ import MaxiBlock, {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Content
@@ -30,20 +27,6 @@ import { isNil, isEmpty } from 'lodash';
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
-	}
-
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-				}),
-			},
-		};
 	}
 
 	render() {
@@ -54,7 +37,8 @@ class edit extends MaxiBlockComponent {
 			onDeviceTypeChange,
 			setAttributes,
 		} = this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
+			attributes;
 
 		onDeviceTypeChange();
 
@@ -104,6 +88,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				classes={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				tagName={BlockResizer}
@@ -129,7 +114,10 @@ class edit extends MaxiBlockComponent {
 				disableMotion
 			>
 				{attributes['divider-border-style'] !== 'none' && (
-					<hr className='maxi-divider-block__divider' />
+					<hr
+						data-align={fullWidth}
+						className='maxi-divider-block__divider'
+					/>
 				)}
 			</MaxiBlock>,
 		];

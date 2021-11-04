@@ -35,6 +35,13 @@
 			border-radius: 5px;
 			margin-right: 10px;
 			background-size: cover !important;
+
+			svg {
+				display: block;
+				max-width: 21px;
+				max-height: 21px;
+				margin: auto;
+			}
 		}
 		&__row {
 			margin: 0 0 5px 0;
@@ -102,10 +109,7 @@
 				display: block;
 				width: 15px;
 				height: 15px;
-				position: absolute;
-				top: 50%;
-				right: 30px;
-				transform: translateY(-50%);
+				margin: auto 7px auto auto;
 				cursor: move;
 
 				svg {
@@ -116,6 +120,30 @@
 					}
 				}
 			}
+			&__display {
+				display: block;
+				width: 15px;
+				height: 15px;
+				margin: auto 7px auto auto;
+				cursor: pointer;
+
+				svg {
+					width: 15px;
+					height: 15px;
+				}
+
+				&--block {
+					path {
+						stroke: #000;
+					}
+				}
+				&--none {
+					path {
+						stroke: red; // TODO: style this part
+					}
+				}
+			}
+
 			&__remover {
 				position: relative;
 				display: block;

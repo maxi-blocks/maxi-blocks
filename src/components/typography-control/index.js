@@ -2,17 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
+import { select, dispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
-import AdvancedNumberControl from '../advanced-number-control';
 import TextShadowControl from '../text-shadow-control';
 import {
 	setFormat,
@@ -22,6 +22,7 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
@@ -29,18 +30,11 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, inRange, isEmpty, isBoolean, isNumber } from 'lodash';
-
-/**
- * Styles
- */
-import './editor.scss';
+import { isNil, isBoolean, isNumber } from 'lodash';
 
 /**
  * Component
  */
-const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
-
 const TextOptions = props => {
 	const {
 		getValue,
@@ -114,6 +108,10 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}line-height-unit`]: val,
+							...(val === '-' && {
+								[`${prefix}line-height`]:
+									minMaxSettings['-'].max,
+							}),
 						},
 						breakpoint
 					);
@@ -207,6 +205,7 @@ const LinkOptions = props => {
 		breakpoint,
 		textLevel,
 		clientId,
+		getOpacityValue,
 	} = props;
 
 	return (
@@ -218,19 +217,26 @@ const LinkOptions = props => {
 				defaultColor={getDefault(`${prefix}link-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
 				paletteColor={getValue(`${prefix}link-palette-color`)}
-				paletteOpacity={getValue(`${prefix}link-palette-opacity`)}
+				paletteOpacity={getOpacityValue(
+					`${prefix}link-palette-opacity`
+				)}
 				onChange={({
 					paletteColor,
 					paletteStatus,
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-palette-color-status`]: paletteStatus,
-						[`${prefix}link-palette-color`]: paletteColor,
-						[`${prefix}link-palette-opacity`]: paletteOpacity,
-						[`${prefix}link-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-palette-color`]: paletteColor,
+							[`${prefix}link-palette-opacity`]: paletteOpacity,
+							[`${prefix}link-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -247,20 +253,27 @@ const LinkOptions = props => {
 					`${prefix}link-hover-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
-				paletteOpacity={getValue(`${prefix}link-hover-palette-opacity`)}
+				paletteOpacity={getOpacityValue(
+					`${prefix}link-hover-palette-opacity`
+				)}
 				onChange={({
 					paletteColor,
 					paletteStatus,
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-hover-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-hover-palette-color`]: paletteColor,
-						[`${prefix}link-hover-palette-opacity`]: paletteOpacity,
-						[`${prefix}link-hover-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-hover-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-hover-palette-color`]: paletteColor,
+							[`${prefix}link-hover-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-hover-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -277,7 +290,7 @@ const LinkOptions = props => {
 					`${prefix}link-active-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-active-palette-color`)}
-				paletteOpacity={getValue(
+				paletteOpacity={getOpacityValue(
 					`${prefix}link-active-palette-opacity`
 				)}
 				onChange={({
@@ -286,14 +299,19 @@ const LinkOptions = props => {
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-active-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-active-palette-color`]: paletteColor,
-						[`${prefix}link-active-palette-opacity`]:
-							paletteOpacity,
-						[`${prefix}link-active-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-active-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-active-palette-color`]:
+								paletteColor,
+							[`${prefix}link-active-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-active-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -310,7 +328,7 @@ const LinkOptions = props => {
 					`${prefix}link-visited-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
-				paletteOpacity={getValue(
+				paletteOpacity={getOpacityValue(
 					`${prefix}link-visited-palette-opacity`
 				)}
 				onChange={({
@@ -319,14 +337,19 @@ const LinkOptions = props => {
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-visited-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-visited-palette-color`]: paletteColor,
-						[`${prefix}link-visited-palette-opacity`]:
-							paletteOpacity,
-						[`${prefix}link-visited-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-visited-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-visited-palette-color`]:
+								paletteColor,
+							[`${prefix}link-visited-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-visited-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -370,27 +393,17 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	const { styleCard, winWidth, maxiBreakpoints } = useSelect(select => {
+	const { styleCard } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-			select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-		const winWidth = receiveMaxiSettings().window?.width || null;
-
-		const maxiBreakpoints = receiveMaxiBreakpoints();
-
 		return {
 			styleCard,
-			winWidth,
-			maxiBreakpoints,
 		};
 	});
-
-	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -557,7 +570,11 @@ const TypographyControl = withFormatValue(props => {
 		return defaultAttribute;
 	};
 
-	const onChangeFormat = (value, customBreakpoint) => {
+	const onChangeFormat = (
+		value,
+		customBreakpoint,
+		forceDisableCustomFormats = false
+	) => {
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -566,7 +583,8 @@ const TypographyControl = withFormatValue(props => {
 			breakpoint: customBreakpoint || breakpoint,
 			isHover,
 			textLevel,
-			disableCustomFormats,
+			disableCustomFormats:
+				forceDisableCustomFormats ?? disableCustomFormats,
 			styleCardPrefix,
 			returnFormatValue: true,
 		});
@@ -585,40 +603,10 @@ const TypographyControl = withFormatValue(props => {
 		onChange(obj);
 	};
 
-	const getWinBreakpoint = () => {
-		if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
+	const getOpacityValue = label => {
+		const value = getValue(label);
 
-		if (winWidth > maxiBreakpoints.xl) return 'xxl';
-
-		const response = Object.entries(maxiBreakpoints).reduce(
-			([prevKey, prevValue], [currKey, currValue]) => {
-				if (!prevValue) return [prevKey];
-				if (inRange(winWidth, prevValue, currValue + 1))
-					return [currKey];
-
-				return [prevKey, prevValue];
-			}
-		)[0];
-
-		return response.toLowerCase();
-	};
-
-	const showNotification = customBreakpoint => {
-		if (breakpoint !== 'general')
-			return breakpoint === customBreakpoint.toLowerCase();
-
-		return getWinBreakpoint() === customBreakpoint.toLowerCase();
-	};
-
-	const getTextOptionsTab = () => {
-		if (breakpoint !== 'general')
-			return breakpoints.indexOf(breakpoint.toUpperCase());
-
-		const userBreakpoint = getWinBreakpoint();
-
-		if (!userBreakpoint) return null;
-
-		return breakpoints.indexOf(userBreakpoint.toUpperCase());
+		return getIsValid(value, true) ? value : 100;
 	};
 
 	return (
@@ -642,7 +630,7 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
-					paletteOpacity={getValue(`${prefix}palette-opacity`)}
+					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
 					onChange={({
 						color,
@@ -684,34 +672,20 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
-			<SettingTabsControl
+			<ResponsiveTabsControl
 				className='maxi-typography-control__text-options-tabs'
-				items={breakpoints.map(breakpoint => {
-					return {
-						label: breakpoint,
-						content: (
-							<TextOptions
-								getValue={getValue}
-								getDefault={getDefault}
-								onChangeFormat={onChangeFormat}
-								prefix={prefix}
-								minMaxSettings={minMaxSettings}
-								minMaxSettingsLetterSpacing={
-									minMaxSettingsLetterSpacing
-								}
-								breakpoint={breakpoint.toLowerCase()}
-								avoidXXL={!styleCards}
-							/>
-						),
-						showNotification: showNotification(breakpoint),
-						callback: () =>
-							styleCards
-								? setMaxiDeviceType(breakpoint.toLowerCase())
-								: null,
-					};
-				})}
-				forceTab={getTextOptionsTab()}
-			/>
+				breakpoint={breakpoint}
+			>
+				<TextOptions
+					getValue={getValue}
+					getDefault={getDefault}
+					onChangeFormat={onChangeFormat}
+					prefix={prefix}
+					minMaxSettings={minMaxSettings}
+					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
+					avoidXXL={!styleCards}
+				/>
+			</ResponsiveTabsControl>
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&
@@ -827,6 +801,7 @@ const TypographyControl = withFormatValue(props => {
 							typography
 						)}
 						blockStyle={blockStyle}
+						breakpoint={breakpoint}
 					/>
 				</>
 			)}
@@ -841,6 +816,7 @@ const TypographyControl = withFormatValue(props => {
 					textLevel={textLevel}
 					isHover={isHover}
 					clientId={clientId}
+					getOpacityValue={getOpacityValue}
 				/>
 			)}
 		</div>

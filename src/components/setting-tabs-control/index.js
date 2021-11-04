@@ -28,6 +28,8 @@ const SettingTabsControl = props => {
 		className,
 		forceTab,
 		returnValue,
+		callback,
+		target,
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -46,6 +48,7 @@ const SettingTabsControl = props => {
 
 	const classesControl = classnames(
 		'maxi-tabs-control',
+		target && `maxi-tabs-control__${target}`,
 		!disablePadding ? 'maxi-tabs-control--disable-padding' : null
 	);
 
@@ -66,6 +69,7 @@ const SettingTabsControl = props => {
 								onClick={() => {
 									setTab(i);
 
+									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 								}}
 								aria-pressed={tab === i}

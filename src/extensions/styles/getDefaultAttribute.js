@@ -5,6 +5,12 @@ import { select } from '@wordpress/data';
 import { getBlockAttributes } from '@wordpress/blocks';
 
 /**
+ * Internal dependencies
+ */
+import * as defaults from './defaults/index';
+import { getIsValid } from './utils';
+
+/**
  * External dependencies
  */
 import { isString, isArray, isNil } from 'lodash';
@@ -30,12 +36,13 @@ const getBlocksName = clientIds => {
  * Returns default property of the block
  *
  * @param {string} clientId Block's client id
- * @param {string} prop Claimed property to return
+ * @param {string} prop     Claimed property to return
  */
 const getDefaultAttribute = (prop, clientIds = null) => {
 	const { getBlockName, getSelectedBlockClientIds } =
 		select('core/block-editor');
 
+	let response = null;
 	let blockName = '';
 
 	if (isString(clientIds)) blockName = getBlockName(clientIds);
@@ -43,10 +50,17 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
 
+	// Check default value on block
 	if (blockName && blockName.includes('maxi-blocks'))
-		return getBlockAttributes(blockName)[prop];
+		response = getBlockAttributes(blockName)[prop];
+	if (getIsValid(response, true)) return response;
 
-	return null;
+	// Check default value
+	Object.values(defaults).forEach(defaultAttrs => {
+		if (prop in defaultAttrs) response = defaultAttrs[prop].default;
+	});
+
+	return response;
 };
 
 export default getDefaultAttribute;

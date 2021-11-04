@@ -27,7 +27,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { round } from 'lodash';
 
 /**
  * Icons
@@ -45,6 +45,7 @@ const NumberCounter = attributes => {
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
 		'number-counter-title-font-size': fontSize,
+		'number-counter-percentage-sign-status': usePercentage,
 		deviceType,
 		resizerProps,
 	} = attributes;
@@ -77,6 +78,7 @@ const NumberCounter = attributes => {
 				setCount(count + 1);
 			}, frameDuration);
 
+			// eslint-disable-next-line consistent-return
 			return () => clearInterval(countRef.current);
 		}
 	}, [count, replyStatus, preview, endCountValue]);
@@ -182,19 +184,26 @@ const NumberCounter = attributes => {
 								(count / 360) * circumference
 							)} ${circumference}`}
 						/>
+						<text
+							className='maxi-number-counter__box__text'
+							textAnchor='middle'
+							x='50%'
+							y='50%'
+							dy={`${round(fontSize / 4, 2)}px`}
+						>
+							{`${parseInt((count / 360) * 100)}`}
+							{usePercentage && (
+								<tspan baselineShift='super'>%</tspan>
+							)}
+						</text>
 					</svg>
 				)}
-				<span className='maxi-number-counter__box__text'>
-					{`${parseInt((count / 360) * 100)}`}
-
-					{attributes['number-counter-percentage-sign-status'] && (
-						<sup>
-							{attributes['number-counter-percentage-sign-status']
-								? '%'
-								: ''}
-						</sup>
-					)}
-				</span>
+				{circleStatus && (
+					<span className='maxi-number-counter__box__text'>
+						{`${parseInt((count / 360) * 100)}`}
+						{usePercentage && <sup>%</sup>}
+					</span>
+				)}
 			</BlockResizer>
 		</>
 	);
@@ -234,17 +243,12 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
 
 		return {
-			[uniqueID]: {
-				...{
-					...getGroupAttributes(
-						this.props.attributes,
-						'numberCounter'
-					),
-				},
+			...{
+				...getGroupAttributes(attributes, 'numberCounter'),
 			},
 		};
 	}
@@ -252,12 +256,13 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, setAttributes, deviceType, isSelected } =
 			this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, blockFullWidth } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
 		const handleOnResizeStart = event => {
 			event.preventDefault();
+
 			setAttributes({
 				[`width-unit-${deviceType}`]: 'px',
 			});
@@ -279,6 +284,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

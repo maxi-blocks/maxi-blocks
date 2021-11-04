@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import ToggleSwitch from '../toggle-switch';
 import InfoBox from '../info-box';
 import {
@@ -19,7 +19,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -31,6 +31,7 @@ const ArrowControl = props => {
 		isFullWidth,
 		breakpoint = 'general',
 		isFirstOnHierarchy,
+		'background-layers': backgroundLayers,
 	} = props;
 
 	const classes = classnames('maxi-arrow-control', className);
@@ -73,16 +74,16 @@ const ArrowControl = props => {
 		},
 	};
 
-	const simpleBackgroundColorStatus =
-		!props['background-layers-status'] &&
-		props['background-active-media'] !== 'color';
+	const isBackgroundColor = !isEmpty(backgroundLayers)
+		? backgroundLayers.some(layer => layer.type === 'color')
+		: false;
 
 	return (
 		<div className={classes}>
-			{simpleBackgroundColorStatus && (
+			{!isBackgroundColor && (
 				<InfoBox
 					message={__(
-						'Please set background colour to see the arrow.',
+						'Please set a background colour layer to see the arrow.',
 						'maxi-blocks'
 					)}
 					links={[
@@ -100,7 +101,7 @@ const ArrowControl = props => {
 			/>
 			{props['arrow-status'] && (
 				<>
-					<FancyRadioControl
+					<RadioControl
 						label=''
 						selected={getLastBreakpointAttribute(
 							'arrow-side',
@@ -108,7 +109,6 @@ const ArrowControl = props => {
 							props
 						)}
 						options={getOptions()}
-						optionType='string'
 						onChange={val =>
 							onChange({ [`arrow-side-${breakpoint}`]: val })
 						}

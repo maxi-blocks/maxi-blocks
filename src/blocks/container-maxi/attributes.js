@@ -13,11 +13,16 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
+	...attributesData.container,
 	customLabel: {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'full',
 	},
@@ -29,27 +34,26 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
-	...attributesData.container,
+	...attributesData.arrow,
+	...attributesData.shapeDivider,
 	...{
-		...attributesData.background,
-		'background-active-media': {
-			type: 'string',
-			default: 'color',
+		...attributesData.blockBackground,
+		'background-layers': {
+			type: 'array',
+			default: [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-color-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity': 100,
+					'background-color-general': '',
+					'background-color-clip-path-general': '',
+					id: 0,
+				},
+			],
 		},
 	},
-	...attributesData.backgroundColor,
-	...attributesData.backgroundImage,
-	...attributesData.backgroundVideo,
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundSVG,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundImageHover,
-	...attributesData.backgroundVideoHover,
-	...attributesData.backgroundGradientHover,
-	...attributesData.backgroundSVGHover,
-	...attributesData.size,
-	...attributesData.opacity,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -58,6 +62,7 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.size,
 	...attributesData.margin,
 	...{
 		...attributesData.padding,
@@ -70,15 +75,17 @@ const attributes = {
 			default: 20,
 		},
 	},
-	...attributesData.arrow,
-	...attributesData.shapeDivider,
+
+	/**
+	 * Advanced
+	 */
 	...attributesData.motion,
-	...attributesData.parallax,
 	...attributesData.transform,
 	...attributesData.display,
+	...attributesData.opacity,
 	...attributesData.position,
-	...attributesData.zIndex,
 	...attributesData.overflow,
+	...attributesData.zIndex,
 };
 
 export default attributes;

@@ -7,20 +7,22 @@ import {
 	insertBlock,
 	pressKeyWithModifier,
 	getEditedPostContent,
+	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	openPreviewPage,
+} from '../../utils';
 
 describe('Image Maxi', () => {
-	beforeEach(async () => {
+	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-	});
-
-	it('Image Maxi does not break', async () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
@@ -45,7 +47,7 @@ describe('Image Maxi', () => {
 			submitUrl => submitUrl[0].click()
 		);
 
-		const accordionPanel = await openSidebar(page, 'caption');
+		const accordionPanel = await openSidebarTab(page, 'style', 'caption');
 
 		// Custom caption
 		const selector = await accordionPanel.$(
@@ -103,12 +105,6 @@ describe('Image Maxi', () => {
 
 		expect(textAlignment).toStrictEqual(expectedAlignment);
 
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-tabs-control__button',
-			select => select[1].click()
-		);
-		await page.waitForTimeout(1000);
-
 		// size, line-height, letter-spacing
 		const inputs = await accordionPanel.$$(
 			'.maxi-advanced-number-control .maxi-base-control__field input'
@@ -130,21 +126,26 @@ describe('Image Maxi', () => {
 		await page.keyboard.type('11');
 		await page.waitForTimeout(200);
 
+		const responsiveStage = await accordionPanel.$eval(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
+			tab => tab.innerText.toLowerCase()
+		);
+
 		const styleAttributes = await getBlockAttributes();
 		const typographyAttributes = (({
-			'font-size-xl': fontSize,
-			'line-height-xl': lineHeight,
-			'letter-spacing-xl': letterSpacing,
+			[`font-size-${responsiveStage}`]: fontSize,
+			[`line-height-${responsiveStage}`]: lineHeight,
+			[`letter-spacing-${responsiveStage}`]: letterSpacing,
 		}) => ({
-			'font-size-xl': fontSize,
-			'line-height-xl': lineHeight,
-			'letter-spacing-xl': letterSpacing,
+			[`font-size-${responsiveStage}`]: fontSize,
+			[`line-height-${responsiveStage}`]: lineHeight,
+			[`letter-spacing-${responsiveStage}`]: letterSpacing,
 		}))(styleAttributes);
 
 		const expectedAttributesTwo = {
-			'font-size-xl': 19,
-			'line-height-xl': 4,
-			'letter-spacing-xl': 11,
+			[`font-size-${responsiveStage}`]: 19,
+			[`line-height-${responsiveStage}`]: 4,
+			[`letter-spacing-${responsiveStage}`]: 11,
 		};
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
@@ -267,5 +268,70 @@ describe('Image Maxi', () => {
 		};
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
+	});
+
+	it('Image Dimension', async () => {
+		await openSidebarTab(page, 'style', 'dimension');
+
+		// width
+		await page.$eval(
+			'.maxi-image-inspector__dimension-width .components-input-control__input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('60');
+
+		const imageWidth = await getBlockAttributes();
+		expect(imageWidth.imgWidth).toStrictEqual(60);
+
+		// reset width
+		const button = await page.$(
+			'.maxi-image-inspector__dimension-width button'
+		);
+		await button.click();
+
+		const imageWidthReset = await getBlockAttributes();
+		expect(imageWidthReset.imgWidth).toStrictEqual(100);
+
+		// imageRatio
+		const selector = await page.$('.maxi-image-inspector__ratio select');
+
+		await selector.select('ar11');
+
+		const ratio = await getBlockAttributes();
+		expect(ratio.imageRatio).toStrictEqual('ar11');
+
+		const checkFrontend = await page.$eval(
+			'.maxi-image-block .maxi-image-ratio__ar11',
+			div => div.innerHTML
+		);
+
+		expect(checkFrontend).toMatchSnapshot();
+	});
+	it('Image alt tag', async () => {
+		await openSidebarTab(page, 'style', 'alt tag');
+
+		// select custom alt tag
+		const selector = await page.$('.maxi-image-inspector__alt-tag select');
+		await selector.select('custom');
+
+		await page.$eval('.maxi-image-inspector__custom-tag input', input =>
+			input.focus()
+		);
+
+		await page.keyboard.type('Image Tag');
+
+		const altTag = await getBlockAttributes();
+		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
+
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+
+		const expectAlt = await previewPage.$eval(
+			'figure div img',
+			alterative => alterative.alt
+		);
+		expect(expectAlt).toStrictEqual('Image Tag');
 	});
 });

@@ -14,6 +14,11 @@ import { isBoolean, isNumber } from 'lodash';
 import { getBlockStyle } from '../../styles';
 
 /**
+ * Returns if is a valid value
+ */
+const getIsValidValue = val => val || isBoolean(val) || isNumber(val);
+
+/**
  * Retrieve the property from typography object requested
  *
  * @param {Object}  [$0]             Optional named arguments.
@@ -76,7 +81,7 @@ const getCustomFormatValue = ({
 		avoidXXL
 	);
 
-	if (value || isBoolean(value) || isNumber(value)) return value;
+	if (getIsValidValue(value)) return value;
 
 	// Style Cards value
 	const rawSCStyle = blockStyle ? blockStyle.replace('maxi-', '') : undefined;
@@ -96,7 +101,7 @@ const getCustomFormatValue = ({
 		avoidXXL
 	);
 
-	if (currentSCValue) return currentSCValue;
+	if (getIsValidValue(currentSCValue)) return currentSCValue;
 
 	const defaultSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
@@ -109,9 +114,9 @@ const getCustomFormatValue = ({
 		avoidXXL
 	);
 
-	if (defaultSCValue) return defaultSCValue;
+	if (getIsValidValue(defaultSCValue)) return defaultSCValue;
 
-	return '';
+	return null;
 };
 
 export default getCustomFormatValue;

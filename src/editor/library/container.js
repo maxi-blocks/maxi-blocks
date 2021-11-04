@@ -17,7 +17,7 @@ import {
 	svgCurrentColorStatus,
 	fitSvg,
 } from './util';
-import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
+import { injectImgSVG, generateDataObject } from '../../extensions/svg';
 import DOMPurify from 'dompurify';
 
 /**
@@ -37,7 +37,7 @@ import {
 	MenuSelect,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
-import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
+import { uniq, isEmpty, uniqueId } from 'lodash';
 
 const MasonryItem = props => {
 	const {

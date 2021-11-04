@@ -1,30 +1,51 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
-	getSizeStyles,
+	getBlockBackgroundStyles,
+	getBorderStyles,
 	getBoxShadowStyles,
-	getOpacityStyles,
-	getZIndexStyles,
-	getPositionStyles,
 	getDisplayStyles,
-	getTransformStyles,
-	getBackgroundStyles,
-	getMarginPaddingStyles,
 	getDividerStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
 	getOverflowStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 
-const getNormalObject = props => {
+const getWrapperObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
 
 	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
 		}),
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),
@@ -59,33 +80,21 @@ const getNormalObject = props => {
 	return response;
 };
 
-const getDividerObject = props => {
-	const { lineOrientation } = props;
+const getHoverWrapperObject = props => {
 	const response = {
-		divider: getDividerStyles(
-			{
-				...getGroupAttributes(props, 'divider'),
-				lineOrientation,
-			},
-			'line',
-			props.parentBlockStyle
-		),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
-		}),
-	};
-
-	return response;
-};
-
-const getHoverObject = props => {
-	const response = {
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
 			getBoxShadowStyles({
@@ -100,28 +109,94 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getDividerObject = props => {
+	const { lineOrientation } = props;
+
+	const response = {
+		divider: getDividerStyles(
+			{
+				...getGroupAttributes(props, 'divider'),
+				lineOrientation,
+			},
+			'line',
+			props.parentBlockStyle
+		),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, 'divider-'),
+			},
+			'divider-'
+		),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', false, 'divider-'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'divider-',
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin', false, 'divider-'),
+			},
+			prefix: 'divider-',
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding', false, 'divider-'),
+			},
+			prefix: 'divider-',
+		}),
+	};
+
+	return response;
+};
+
+const getHoverObject = props => {
+	const response = {
+		boxShadow:
+			props['divider-box-shadow-status-hover'] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true, 'divider-'),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+				prefix: 'divider-',
+			}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover hr.maxi-divider-block__divider': getHoverObject(props),
+			'': getWrapperObject(props),
+			':hover': getHoverWrapperObject(props),
+			' hr.maxi-divider-block__divider:hover': getHoverObject(props),
 			' hr.maxi-divider-block__divider': getDividerObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
+					'blockBackground',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-				]),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),

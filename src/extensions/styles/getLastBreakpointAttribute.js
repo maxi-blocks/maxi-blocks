@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { select } from '@wordpress/data';
+import getAttributeValue from './getAttributeValue';
 
 /**
  * External dependencies
@@ -31,11 +32,23 @@ const getLastBreakpointAttributeSingle = (
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
 	if (isNil(attr)) return false;
+	if (isNil(breakpoint))
+		return getAttributeValue({
+			target,
+			props: attr,
+			isHover,
+			breakpoint,
+		});
 
 	const attrFilter = attr =>
 		!isNil(attr) && (isNumber(attr) || isBoolean(attr) || !isEmpty(attr));
 
-	let currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
+	let currentAttr =
+		attr[
+			`${!isEmpty(target) ? `${target}-` : ''}${breakpoint}${
+				isHover ? '-hover' : ''
+			}`
+		];
 
 	if (attrFilter(currentAttr)) return currentAttr;
 
@@ -46,13 +59,14 @@ const getLastBreakpointAttributeSingle = (
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr =
 				attr[
-					`${target}-${breakpoints[breakpointPosition]}${
-						isHover ? '-hover' : ''
-					}`
+					`${!isEmpty(target) ? `${target}-` : ''}${
+						breakpoints[breakpointPosition]
+					}${isHover ? '-hover' : ''}`
 				];
 	} while (
 		breakpointPosition > 0 &&
 		!isNumber(currentAttr) &&
+		!isBoolean(currentAttr) &&
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	);
 

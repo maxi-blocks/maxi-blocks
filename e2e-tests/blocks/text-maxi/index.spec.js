@@ -1,12 +1,8 @@
 /* eslint-disable no-return-await */
-
 /**
  * IMPORTANT: when testing on non-interactive there are no delay times between action, so is possible that
  * is necessary to add `await page.waitForTimeout(150);` as the `formatValue` takes that time to be saved
  */
-
-// console.error = jest.fn();
-
 /**
  * WordPress dependencies
  */
@@ -27,11 +23,8 @@ import { getBlockAttributes, openPreviewPage } from '../../utils';
 
 const linkExample = 'test.com';
 describe('TextMaxi', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('Writes a sentence on Text Maxi', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -40,6 +33,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi on pressing enter', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.keyboard.press('Enter');
@@ -48,6 +42,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi split', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi...onSplit', { delay: 100 });
 		await pressKeyTimes('ArrowLeft', '7');
@@ -57,6 +52,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi on merge from top', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi...', { delay: 100 });
 		await page.keyboard.press('Enter');
@@ -67,6 +63,7 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 	it('Test Text Maxi on merge from bottom', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi...', { delay: 100 });
 		await page.keyboard.press('Enter');
@@ -78,6 +75,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi merge from bottom to top with Custom Formats', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi...', { delay: 100 });
 		await pressKeyTimes('ArrowLeft', '3');
@@ -110,6 +108,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi merge from top to bottom with Custom Formats', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi...', { delay: 100 });
 		await pressKeyTimes('ArrowLeft', '3');
@@ -142,6 +141,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in whole content', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -163,6 +163,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in whole content, and then keep writing', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -183,6 +184,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in whole content, and being modifiable from the end', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -196,7 +198,9 @@ describe('TextMaxi', () => {
 		);
 		await selectMaxiTextP.focus();
 		await page.waitForTimeout(150);
+		await page.waitForSelector('.toolbar-item__text-link');
 		await page.$eval('.toolbar-item__text-link', button => button.click());
+		await page.waitForSelector('a.components-external-link');
 		const isLinkModifiable = await page.$eval(
 			'a.components-external-link',
 			link => link.href.length > 0
@@ -206,6 +210,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in whole content, and then remove it', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -228,6 +233,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in whole content, and then removing a part', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -266,6 +272,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in whole content, and then removing last part', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -293,6 +300,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in part of the content', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -325,6 +333,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link in part of the content and then remove it', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await pressKeyTimes('ArrowLeft', 5);
@@ -342,11 +351,13 @@ describe('TextMaxi', () => {
 		await page.$eval('.toolbar-popover-link-destroyer', button =>
 			button.click()
 		);
+		await page.waitForTimeout(200);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link with all option on frontend', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 
@@ -383,6 +394,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi toolbar Link with multiple instances', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -449,6 +461,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Testing Text Maxi with custom formats when split', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi Bold', { delay: 100 });
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -472,6 +485,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Testing Text Maxi with custom formats when split a word at middle', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi Bold', { delay: 100 });
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -496,6 +510,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Testing Text Maxi with custom formats when merge from top block to bottom one', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi.', { delay: 100 });
 		await page.keyboard.press('Enter');
@@ -519,6 +534,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Testing Text Maxi with custom formats when merge from bottom block to top one', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi.', { delay: 100 });
 		await page.keyboard.press('Enter');
@@ -549,6 +565,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Test Text Maxi on List mode and changing the font color', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -599,6 +616,7 @@ describe('TextMaxi', () => {
 	});
 
 	it('Testing changing custom format and showing the correct value', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);

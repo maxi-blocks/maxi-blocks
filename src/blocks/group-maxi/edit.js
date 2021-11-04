@@ -33,27 +33,14 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!!this.props.attributes['parallax-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
-				}),
-			},
-		};
-	}
-
 	render() {
-		const { attributes, deviceType, hasInnerBlock, clientId } = this.props;
+		const {
+			attributes,
+			blockFullWidth,
+			clientId,
+			deviceType,
+			hasInnerBlock,
+		} = this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -80,13 +67,14 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				className={hasInnerBlock && 'has-child'}
 				key={`maxi-group--${uniqueID}`}
+				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
 					{...getGroupAttributes(
 						attributes,
-						['background', 'arrow', 'border'],
+						['blockBackground', 'arrow', 'border'],
 						true
 					)}
 					breakpoint={deviceType}

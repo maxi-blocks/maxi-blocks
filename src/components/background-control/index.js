@@ -7,13 +7,12 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
-	getGroupAttributes,
 	getAttributeKey,
-	getAttributeValue,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import BackgroundLayersControl from './backgroundLayersControl';
 import ColorLayer from './colorLayer';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
@@ -44,7 +43,6 @@ import './editor.scss';
 const BackgroundControl = props => {
 	const {
 		className,
-		disableLayers = false,
 		disableImage = false,
 		disableVideo = false,
 		disableGradient = false,
@@ -58,19 +56,16 @@ const BackgroundControl = props => {
 		disablePalette,
 		clientId,
 		isButton = false,
+		breakpoint = 'general',
 	} = props;
 
-	const backgroundActiveMedia = getAttributeValue(
-		'background-active-media',
+	const backgroundActiveMedia = getLastBreakpointAttribute(
+		`${prefix}background-active-media`,
+		breakpoint,
 		props,
-		isHover,
-		prefix
+		isHover
 	);
-	const layersOptions =
-		getAttributeValue('background-layers', props, isHover, prefix) || [];
-	const layersStatus =
-		getAttributeValue('background-layers-status', props, isHover, prefix) ||
-		false;
+
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {
@@ -79,7 +74,7 @@ const BackgroundControl = props => {
 		!disableNoneStyle &&
 			options.push({
 				label: <Icon icon={styleNone} />,
-				value: '',
+				value: 'none',
 			});
 
 		!disableColor &&
@@ -117,127 +112,115 @@ const BackgroundControl = props => {
 
 	return (
 		<div className={classes}>
-			{!disableLayers && (
-				<BackgroundLayersControl
-					layersOptions={layersOptions}
-					layersStatus={layersStatus}
-					onChange={obj => onChange(obj)}
-					isHover={isHover}
-					prefix={prefix}
-					disableImage={disableImage}
-					disableVideo={disableVideo}
-					disableGradient={disableGradient}
-					disableColor={disableColor}
-					disableSVG={disableSVG}
-					clientId={clientId}
-					isButton={isButton}
-				/>
-			)}
-			{!layersStatus && getOptions().length > 1 && (
-				<FancyRadioControl
+			{getOptions().length > 1 && (
+				<RadioControl
 					label={__('Background', 'maxi-blocks')}
+					className='maxi-background-control__simple'
 					fullWidthMode
-					selected={backgroundActiveMedia || ''}
+					selected={backgroundActiveMedia || 'none'}
 					options={getOptions()}
-					optionType='string'
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
 								'background-active-media',
 								isHover,
-								prefix
+								prefix,
+								breakpoint
 							)]: val,
 						})
 					}
 				/>
 			)}
-			{!layersStatus && (
-				<>
-					{!disableColor && backgroundActiveMedia === 'color' && (
-						<ColorLayer
-							colorOptions={{
-								...getGroupAttributes(
-									props,
-									'backgroundColor',
-									isHover,
-									prefix
-								),
-							}}
-							onChange={obj => onChange(obj)}
-							disableClipPath={disableClipPath}
-							isHover={isHover}
-							prefix={prefix}
-							disablePalette={disablePalette}
-							clientId={clientId}
-							isButton={isButton}
-						/>
-					)}
-					{!disableImage && backgroundActiveMedia === 'image' && (
-						<ImageLayer
-							imageOptions={{
-								...getGroupAttributes(
-									props,
-									'backgroundImage',
-									isHover,
-									prefix
-								),
-							}}
-							onChange={obj => onChange(obj)}
-							disableClipPath={disableClipPath}
-							isHover={isHover}
-							prefix={prefix}
-						/>
-					)}
-					{!disableVideo && backgroundActiveMedia === 'video' && (
-						<VideoLayer
-							videoOptions={{
-								...getGroupAttributes(
-									props,
-									'backgroundVideo',
-									isHover,
-									prefix
-								),
-							}}
-							onChange={obj => onChange(obj)}
-							disableClipPath={disableClipPath}
-							isHover={isHover}
-							prefix={prefix}
-						/>
-					)}
-					{!disableGradient && backgroundActiveMedia === 'gradient' && (
-						<GradientLayer
-							gradientOptions={{
-								...getGroupAttributes(
-									props,
-									'backgroundGradient',
-									isHover,
-									prefix
-								),
-							}}
-							onChange={obj => onChange(obj)}
-							disableClipPath={disableClipPath}
-							isHover={isHover}
-							prefix={prefix}
-						/>
-					)}
-					{!disableSVG && backgroundActiveMedia === 'svg' && (
-						<SVGLayer
-							SVGOptions={{
-								...getGroupAttributes(
-									props,
-									'backgroundSVG',
-									isHover,
-									prefix
-								),
-							}}
-							onChange={obj => onChange(obj)}
-							isHover={isHover}
-							prefix={prefix}
-							clientId={clientId}
-						/>
-					)}
-				</>
-			)}
+			<>
+				{!disableColor && backgroundActiveMedia === 'color' && (
+					<ColorLayer
+						colorOptions={{
+							...getGroupAttributes(
+								props,
+								'backgroundColor',
+								isHover,
+								prefix
+							),
+						}}
+						onChange={obj => onChange(obj)}
+						disableClipPath={disableClipPath}
+						isHover={isHover}
+						prefix={prefix}
+						disablePalette={disablePalette}
+						clientId={clientId}
+						isButton={isButton}
+						breakpoint={breakpoint}
+					/>
+				)}
+				{!disableImage && backgroundActiveMedia === 'image' && (
+					<ImageLayer
+						imageOptions={{
+							...getGroupAttributes(
+								props,
+								'backgroundImage',
+								isHover,
+								prefix
+							),
+						}}
+						onChange={obj => onChange(obj)}
+						disableClipPath={disableClipPath}
+						isHover={isHover}
+						prefix={prefix}
+						breakpoint={breakpoint}
+					/>
+				)}
+				{!disableVideo && backgroundActiveMedia === 'video' && (
+					<VideoLayer
+						videoOptions={{
+							...getGroupAttributes(
+								props,
+								'backgroundVideo',
+								isHover,
+								prefix
+							),
+						}}
+						onChange={obj => onChange(obj)}
+						disableClipPath={disableClipPath}
+						isHover={isHover}
+						prefix={prefix}
+						breakpoint={breakpoint}
+					/>
+				)}
+				{!disableGradient && backgroundActiveMedia === 'gradient' && (
+					<GradientLayer
+						gradientOptions={{
+							...getGroupAttributes(
+								props,
+								'backgroundGradient',
+								isHover,
+								prefix
+							),
+						}}
+						onChange={obj => onChange(obj)}
+						disableClipPath={disableClipPath}
+						isHover={isHover}
+						prefix={prefix}
+						breakpoint={breakpoint}
+					/>
+				)}
+				{!disableSVG && backgroundActiveMedia === 'svg' && (
+					<SVGLayer
+						SVGOptions={{
+							...getGroupAttributes(
+								props,
+								'backgroundSVG',
+								isHover,
+								prefix
+							),
+						}}
+						onChange={obj => onChange(obj)}
+						isHover={isHover}
+						prefix={prefix}
+						clientId={clientId}
+						breakpoint={breakpoint}
+					/>
+				)}
+			</>
 		</div>
 	);
 };

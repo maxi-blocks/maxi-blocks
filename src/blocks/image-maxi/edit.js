@@ -26,7 +26,7 @@ import {
 	RawHTML,
 	ImageURL,
 } from '../../components';
-import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
@@ -77,20 +77,16 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
+	get getMaxiCustomData() {
+		const { 'motion-status': motionStatus } = this.props.attributes;
 
 		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'hover',
-					]),
-				}),
-			},
+			...(motionStatus && {
+				...getGroupAttributes(this.props.attributes, [
+					'motion',
+					'hover',
+				]),
+			}),
 		};
 	}
 
@@ -98,21 +94,22 @@ class edit extends MaxiBlockComponent {
 		const { attributes, imageData, setAttributes, clientId, isSelected } =
 			this.props;
 		const {
-			uniqueID,
-			fullWidth,
-			captionType,
+			'hover-preview': hoverPreview,
+			'hover-type': hoverType,
+			blockFullWidth,
 			captionContent,
-			mediaID,
+			captionType,
+			externalUrl,
+			fullWidth,
+			imageRatio,
+			imgWidth,
 			mediaAlt,
+			mediaHeight,
+			mediaID,
 			mediaURL,
 			mediaWidth,
-			mediaHeight,
 			SVGElement,
-			imgWidth,
-			imageRatio,
-			'hover-type': hoverType,
-			'hover-preview': hoverPreview,
-			externalUrl,
+			uniqueID,
 		} = attributes;
 		const { isExternalClass } = this.state;
 
@@ -124,7 +121,7 @@ class edit extends MaxiBlockComponent {
 		const wrapperClassName = classnames(
 			'maxi-image-block-wrapper',
 			'maxi-image-ratio',
-			`maxi-image-ratio__${imageRatio}`
+			!SVGElement && `maxi-image-ratio__${imageRatio}`
 		);
 
 		const hoverClasses = classnames(
@@ -223,6 +220,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-image--${uniqueID}`}
 				ref={this.blockRef}
 				tagName='figure'
+				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
@@ -235,11 +233,13 @@ class edit extends MaxiBlockComponent {
 							mediaHeight: media.height,
 							isImageUrl: false,
 						});
+
 						this.setState({ isExternalClass: false });
+
 						if (!isEmpty(attributes.SVGData)) {
-							const cleanedContent = DOMPurify.sanitize(
-								attributes.SVGElement
-							);
+							const cleanedContent =
+								DOMPurify.sanitize(SVGElement);
+
 							const svg = document
 								.createRange()
 								.createContextualFragment(
@@ -257,8 +257,6 @@ class edit extends MaxiBlockComponent {
 							const resEl = injectImgSVG(svg, resData);
 							setAttributes({
 								SVGElement: resEl.outerHTML,
-								SVGMediaID: null,
-								SVGMediaURL: null,
 								SVGData: SVGValue,
 							});
 						}

@@ -16,7 +16,11 @@ describe('AxisControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
 		const axisControls = await accordionPanel.$$('.maxi-axis-control');
 		const instances = ['padding', 'margin'];
 
@@ -272,8 +276,8 @@ describe('AxisControl', () => {
 		const checkBox = await accordionPanel.$$(
 			'.maxi-axis-control__content__item .maxi-axis-control__content__item__checkbox input'
 		);
-		await accordionPanel.$$(
-			'.maxi-axis-control .maxi-axis-control__top-part input'
+		let topInput = await page.$$(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input'
 		);
 
 		const marginS = await accordionPanel.$$eval(
@@ -314,9 +318,12 @@ describe('AxisControl', () => {
 		);
 		await page.waitForTimeout(100);
 
-		expect(marginMBottomAuto).toStrictEqual('auto');
+		// set responsive value
+		topInput = await page.$$(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		);
+		await topInput[1].focus();
 	});
-
 	it('Padding cannot be less than 0 and sync', async () => {
 		await changeResponsive(page, 'base');
 

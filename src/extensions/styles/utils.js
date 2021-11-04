@@ -1,4 +1,17 @@
-const validateOriginValue = val => {
+/**
+ * External dependencies
+ */
+import { isNumber, isBoolean, isEmpty, isNil } from 'lodash';
+
+export const getIsValid = (val, cleaned = false) =>
+	(cleaned &&
+		(val ||
+			isNumber(val) ||
+			isBoolean(val) ||
+			(isEmpty(val) && !isNil(val)))) ||
+	!cleaned;
+
+export const validateOriginValue = val => {
 	const isNumeric = val => {
 		if (typeof val !== 'string') return false;
 		return !Number.isNaN(val) && !Number.isNaN(parseFloat(val));
@@ -11,4 +24,10 @@ const validateOriginValue = val => {
 	return false;
 };
 
-export default validateOriginValue;
+export const getParallaxLayers = bgLayers =>
+	bgLayers?.filter(
+		layer =>
+			layer.type === 'image' && layer['background-image-parallax-status']
+	);
+
+export const getHasParallax = bgLayers => !isEmpty(getParallaxLayers(bgLayers));

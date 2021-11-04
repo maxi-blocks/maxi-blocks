@@ -1,17 +1,22 @@
-export const background = {
-	'background-active-media': {
-		type: 'string',
-	},
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+export const blockBackground = {
 	'background-layers': {
 		type: 'array',
 	},
-	'background-layers-status': {
+	'background-hover-status': {
 		type: 'boolean',
 		default: false,
 	},
 };
 
-export const backgroundColor = {
+export const rawBackground = {
+	'background-active-media': {
+		type: 'string',
+	},
+};
+
+export const rawBackgroundColor = {
 	'background-palette-color-status': {
 		type: 'boolean',
 		default: true,
@@ -31,7 +36,7 @@ export const backgroundColor = {
 	},
 };
 
-export const backgroundImage = {
+export const rawBackgroundImage = {
 	'background-image-mediaID': {
 		type: 'number',
 	},
@@ -104,9 +109,21 @@ export const backgroundImage = {
 		type: 'number',
 		default: 1,
 	},
+	'background-image-parallax-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'background-image-parallax-speed': {
+		type: 'number',
+		default: 4,
+	},
+	'background-image-parallax-direction': {
+		type: 'string',
+		default: 'up',
+	},
 };
 
-export const backgroundVideo = {
+export const rawBackgroundVideo = {
 	'background-video-mediaID': {
 		type: 'number',
 	},
@@ -138,11 +155,15 @@ export const backgroundVideo = {
 	},
 	'background-video-opacity': {
 		type: 'number',
-		default: 100,
+		default: 1,
+	},
+	'background-video-reduce-border': {
+		type: 'boolean',
+		default: false,
 	},
 };
 
-export const backgroundGradient = {
+export const rawBackgroundGradient = {
 	'background-gradient': {
 		type: 'string',
 	},
@@ -155,7 +176,7 @@ export const backgroundGradient = {
 	},
 };
 
-export const backgroundSVG = {
+export const rawBackgroundSVG = {
 	'background-palette-svg-color-status': {
 		type: 'boolean',
 		default: true,
@@ -163,6 +184,9 @@ export const backgroundSVG = {
 	'background-palette-svg-color': {
 		type: 'number',
 		default: 5,
+	},
+	'background-palette-svg-opacity': {
+		type: 'number',
 	},
 	'background-svg-SVGElement': {
 		type: 'string',
@@ -176,28 +200,64 @@ export const backgroundSVG = {
 	'background-svg-SVGMediaURL': {
 		type: 'string',
 	},
-	'background-svg-top--unit': {
+	'background-svg-top-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-svg-top': {
+	'background-svg-position-top': {
 		type: 'number',
 		default: 0,
 	},
-	'background-svg-left--unit': {
+	'background-svg-position-right': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-bottom': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-left': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-unit': {
 		type: 'string',
 		default: '%',
-	},
-	'background-svg-left': {
-		type: 'number',
-		default: 50,
 	},
 	'background-svg-size': {
 		type: 'number',
 		default: 100,
 	},
-	'background-svg-size--unit': {
+	'background-svg-size-unit': {
 		type: 'string',
 		default: '%',
 	},
 };
+
+const breakpointObjectCreator = obj => {
+	const response = {};
+
+	Object.entries(obj).forEach(([key, val]) => {
+		if (['background-layers'].includes(key)) return;
+
+		breakpoints.forEach(breakpoint => {
+			const newVal = { ...val };
+			if (breakpoint !== 'general') delete newVal.default;
+
+			const newKey = `${key}-${breakpoint}`;
+
+			response[newKey] = newVal;
+		});
+	});
+
+	return response;
+};
+
+export const background = breakpointObjectCreator(rawBackground);
+export const backgroundColor = breakpointObjectCreator(rawBackgroundColor);
+export const backgroundImage = breakpointObjectCreator(rawBackgroundImage);
+export const backgroundVideo = breakpointObjectCreator(rawBackgroundVideo);
+export const backgroundGradient = breakpointObjectCreator(
+	rawBackgroundGradient
+);
+export const backgroundSVG = breakpointObjectCreator(rawBackgroundSVG);

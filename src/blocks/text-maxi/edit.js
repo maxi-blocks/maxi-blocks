@@ -42,41 +42,25 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
-				}),
-			},
-		};
-	}
-
 	render() {
 		const {
 			attributes,
-			isSelected,
-			setAttributes,
-			onReplace,
-			onRemove,
+			blockFullWidth,
 			clientId,
+			isSelected,
 			name,
+			onRemove,
+			onReplace,
+			setAttributes,
 		} = this.props;
 		const {
-			uniqueID,
-			textLevel,
 			content,
 			isList,
-			typeOfList,
-			listStart,
 			listReversed,
+			listStart,
+			textLevel,
+			typeOfList,
+			uniqueID,
 		} = attributes;
 
 		const onChangeRichText = ({ value: formatValue }) => {
@@ -158,6 +142,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
 				classes={`${isList ? 'maxi-list-block' : ''}`}
+				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

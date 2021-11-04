@@ -1,180 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getBackgroundStyles Get a correct background styles 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
-      },
-      "l": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
-      },
-      "m": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
-      },
-      "s": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
-      },
-      "xl": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
-      },
-      "xs": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
-      },
-      "xxl": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
-      },
-    },
-  },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
-    "background": Object {
-      "general": Object {
-        "background-color": "rgba(var(--maxi-undefined-color-1),0.2)",
-        "clip-path": "rgba(2,0,36,1)",
-      },
-      "label": "Background Color",
-    },
-  },
-}
-`;
-
-exports[`getBackgroundStyles Get a correct background styles 2`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__images": Object {
-    "imageBackground": Object {
-      "general": Object {
-        "background-attachment": "scroll",
-        "background-clip": "border-box",
-        "background-image": "url('/test/')",
-        "background-origin": "padding-box",
-        "background-position": "relative",
-        "background-repeat": "no-repeat",
-        "background-size": "auto",
-        "clip-path": "none",
-        "opacity": 0.3,
-      },
-      "label": "Background Image",
-    },
-  },
-}
-`;
-
-exports[`getBackgroundStyles Get a correct background styles 3`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
-    "videoBackground": Object {
-      "general": Object {
-        "opacity": 1,
-      },
-      "label": "Video Background",
-    },
-  },
-}
-`;
-
-exports[`getBackgroundStyles Get a correct background styles 4`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg": Object {
-    "SVGBackground": Object {
-      "general": Object {
-        "left": "1%",
-        "top": "4%",
-        "width": "2%",
-      },
-      "label": "SVG Wrapper Background",
-    },
-  },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg svg *": Object {
-    "SVGBackground": Object {
-      "general": Object {},
-      "label": "SVG Background",
-    },
-  },
-}
-`;
-
-exports[`getBackgroundStyles Get a correct background styles 5`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
-    "background": Object {
-      "general": Object {
-        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
-        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
-        "opacity": 0.66,
-      },
-      "label": "Background Gradient",
-    },
-  },
-}
-`;
-
-exports[`getBackgroundStyles Get a correct background styles 6`] = `
+exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
@@ -188,57 +14,746 @@ Object {
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "backgroundColor": Object {
+    "color": Object {
       "general": Object {
-        "background-color": "rgba(12,233,75,1)",
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
+        "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
       },
       "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+        "clip-path": "polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)",
+      },
+      "s": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+        "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xs": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+        "clip-path": "polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+        "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      },
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages and hover 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
+        "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+        "clip-path": "polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)",
+      },
+      "s": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+        "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xs": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+        "clip-path": "polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+        "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      },
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for general responsive stage 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "backgroundImage": Object {
+    "image": Object {
       "general": Object {
-        "background-attachment": "scroll",
-        "background-clip": "border-box",
-        "background-image": "url('https://test.img.com/uploads.png')",
-        "background-origin": "padding-box",
-        "background-position": "center center",
-        "background-repeat": "no-repeat",
-        "background-size": "",
-        "opacity": 1,
+        "display": "block",
       },
-      "label": "Background Image",
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
-    "backgroundVideo": Object {
+    "video": Object {
       "general": Object {
-        "opacity": 0.72,
+        "display": "block",
+        "opacity": 1,
+      },
+      "l": Object {
+        "opacity": 1,
       },
       "label": "Video Background",
+      "m": Object {
+        "opacity": 1,
+      },
+      "s": Object {
+        "opacity": 1,
+      },
+      "xl": Object {
+        "opacity": 1,
+      },
+      "xs": Object {
+        "opacity": 1,
+      },
+      "xxl": Object {
+        "opacity": 1,
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
-    "backgroundGradient": Object {
+    "gradient": Object {
       "general": Object {
-        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(62,102,120) 40%,rgb(155,81,224) 100%)",
-        "opacity": 0.51,
+        "display": "block",
+        "opacity": 1,
       },
+      "l": Object {},
       "label": "Background Gradient",
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
-    "backgroundSVG": Object {
+    "shape": Object {
       "general": Object {
+        "display": "block",
+        "width": "100%",
+      },
+      "l": Object {
         "width": "100%",
       },
       "label": "SVG Wrapper Background",
+      "m": Object {
+        "width": "100%",
+      },
+      "s": Object {
+        "width": "100%",
+      },
+      "xl": Object {
+        "width": "100%",
+      },
+      "xs": Object {
+        "width": "100%",
+      },
+      "xxl": Object {
+        "width": "100%",
+      },
     },
   },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child": Object {
+    "shape": Object {},
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child pattern image": Object {
+    "shape": Object {},
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
-    "backgroundSVG": Object {
-      "general": Object {},
+    "shape": Object {
+      "general": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "l": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
       "label": "SVG Background",
+      "m": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "s": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "xl": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "xs": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "xxl": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages 1`] = `
+Object {
+  "background-layers": Array [
+    Object {
+      "background-gradient-clip-path-general": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-gradient-clip-path-l": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
+      "background-gradient-clip-path-s": "polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)",
+      "background-gradient-clip-path-xl": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-gradient-clip-path-xxl": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      "background-gradient-general": "radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+      "background-gradient-l": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+      "background-gradient-opacity-general": 0.15,
+      "background-gradient-opacity-l": 0.8,
+      "background-gradient-opacity-s": 0.17,
+      "background-gradient-opacity-xl": 0.15,
+      "background-gradient-opacity-xxl": 0.48,
+      "background-gradient-s": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(118,170,192) 76%,rgb(155,81,224) 100%)",
+      "background-gradient-xl": "radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+      "display-general": "block",
+      "id": 0,
+      "type": "gradient",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages and hovers 1`] = `
+Object {
+  "background-layers": Array [
+    Object {
+      "background-gradient-clip-path-general": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-gradient-clip-path-general-hover": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+      "background-gradient-clip-path-l": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
+      "background-gradient-clip-path-l-hover": "circle(50% at 50% 50%)",
+      "background-gradient-clip-path-s": "polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)",
+      "background-gradient-clip-path-s-hover": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+      "background-gradient-clip-path-xl": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-gradient-clip-path-xl-hover": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+      "background-gradient-clip-path-xxl": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      "background-gradient-clip-path-xxl-hover": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+      "background-gradient-general": "radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+      "background-gradient-general-hover": "radial-gradient(rgb(26,229,6) 0%,rgb(186,69,107) 52%,rgb(224,218,82) 100%)",
+      "background-gradient-l": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+      "background-gradient-l-hover": "radial-gradient(rgb(26,229,6) 0%,rgb(89,136,156) 25%,rgb(186,69,107) 52%,rgba(0,114,163,0.08) 74%,rgb(224,218,82) 100%)",
+      "background-gradient-opacity-general": 0.15,
+      "background-gradient-opacity-general-hover": 0.71,
+      "background-gradient-opacity-l": 0.8,
+      "background-gradient-opacity-l-hover": 0.37,
+      "background-gradient-opacity-s": 0.17,
+      "background-gradient-opacity-s-hover": 0.91,
+      "background-gradient-opacity-xl": 0.15,
+      "background-gradient-opacity-xl-hover": 0.71,
+      "background-gradient-opacity-xxl": 0.48,
+      "background-gradient-s": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(118,170,192) 76%,rgb(155,81,224) 100%)",
+      "background-gradient-s-hover": "radial-gradient(rgb(186,69,107) 52%,rgba(0,114,163,0.08) 74%,rgb(224,218,82) 100%)",
+      "background-gradient-xl": "radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+      "background-gradient-xl-hover": "radial-gradient(rgb(26,229,6) 0%,rgb(186,69,107) 52%,rgb(224,218,82) 100%)",
+      "background-gradient-xxl-hover": "linear-gradient(205deg,rgb(26,229,6) 0%,rgb(186,69,107) 52%,rgb(224,218,82) 100%)",
+      "display-general": "block",
+      "id": 0,
+      "type": "gradient",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages 1`] = `
+Object {
+  "background-layers": Array [
+    Object {
+      "background-image-attachment-general": "local",
+      "background-image-attachment-l": "fixed",
+      "background-image-attachment-s": "scroll",
+      "background-image-attachment-xl": "local",
+      "background-image-clip-general": "padding-box",
+      "background-image-clip-l": "padding-box",
+      "background-image-clip-path-general": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-image-clip-path-l": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      "background-image-clip-path-s": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
+      "background-image-clip-path-xl": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-image-clip-path-xxl": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+      "background-image-clip-xl": "padding-box",
+      "background-image-crop-options-general": null,
+      "background-image-height-general": 300,
+      "background-image-height-l": 1920,
+      "background-image-height-unit-general": "%",
+      "background-image-height-xl": 300,
+      "background-image-height-xs": 600,
+      "background-image-mediaID-general": 302,
+      "background-image-mediaID-l": 227,
+      "background-image-mediaID-xl": 302,
+      "background-image-mediaID-xs": 226,
+      "background-image-mediaURL-general": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-image-mediaURL-l": "http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg",
+      "background-image-mediaURL-xl": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-image-mediaURL-xs": "http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg",
+      "background-image-opacity-general": 0.52,
+      "background-image-opacity-m": 0.91,
+      "background-image-opacity-xl": 0.52,
+      "background-image-opacity-xxl": 0.11,
+      "background-image-origin-general": "border-box",
+      "background-image-origin-l": "content-box",
+      "background-image-origin-xl": "border-box",
+      "background-image-position-general": "left top",
+      "background-image-position-height-general": 0,
+      "background-image-position-height-unit-general": "%",
+      "background-image-position-l": "right top",
+      "background-image-position-s": "center top",
+      "background-image-position-width-general": 0,
+      "background-image-position-width-unit-general": "%",
+      "background-image-position-xl": "left top",
+      "background-image-repeat-general": "repeat-x",
+      "background-image-repeat-l": "space",
+      "background-image-repeat-s": "repeat-x",
+      "background-image-repeat-xl": "repeat-x",
+      "background-image-size-general": "cover",
+      "background-image-size-l": "contain",
+      "background-image-size-xl": "cover",
+      "background-image-size-xs": "auto",
+      "background-image-width-general": 470,
+      "background-image-width-l": 2560,
+      "background-image-width-unit-general": "%",
+      "background-image-width-xl": 470,
+      "background-image-width-xs": 600,
+      "display-general": "block",
+      "id": 0,
+      "type": "image",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages and hovers 1`] = `
+Object {
+  "background-hover-status": true,
+  "background-layers": Array [
+    Object {
+      "background-image-attachment-general": "local",
+      "background-image-attachment-l": "fixed",
+      "background-image-attachment-s": "scroll",
+      "background-image-attachment-xl": "local",
+      "background-image-clip-general": "padding-box",
+      "background-image-clip-l": "padding-box",
+      "background-image-clip-path-general": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-image-clip-path-general-hover": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      "background-image-clip-path-l": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      "background-image-clip-path-s": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
+      "background-image-clip-path-s-hover": "ellipse(25% 40% at 50% 50%)",
+      "background-image-clip-path-xl": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      "background-image-clip-path-xl-hover": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+      "background-image-clip-path-xxl": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+      "background-image-clip-xl": "padding-box",
+      "background-image-crop-options-general": null,
+      "background-image-height-general": 300,
+      "background-image-height-general-hover": 600,
+      "background-image-height-l": 1920,
+      "background-image-height-l-hover": 300,
+      "background-image-height-unit-general": "%",
+      "background-image-height-xl": 300,
+      "background-image-height-xl-hover": 600,
+      "background-image-height-xs": 600,
+      "background-image-height-xxl-hover": 732,
+      "background-image-mediaID-general": 302,
+      "background-image-mediaID-general-hover": 226,
+      "background-image-mediaID-l": 227,
+      "background-image-mediaID-l-hover": 302,
+      "background-image-mediaID-xl": 302,
+      "background-image-mediaID-xl-hover": 226,
+      "background-image-mediaID-xs": 226,
+      "background-image-mediaID-xxl-hover": 210,
+      "background-image-mediaURL-general": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-image-mediaURL-general-hover": "http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg",
+      "background-image-mediaURL-l": "http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg",
+      "background-image-mediaURL-l-hover": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-image-mediaURL-xl": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-image-mediaURL-xl-hover": "http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg",
+      "background-image-mediaURL-xs": "http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg",
+      "background-image-mediaURL-xxl-hover": "http://localhost:8888/wp-content/uploads/2021/09/Captura-de-pantalla-2021-09-13-a-las-17.16.06.png",
+      "background-image-opacity-general": 0.52,
+      "background-image-opacity-general-hover": 0.17,
+      "background-image-opacity-l-hover": 0.81,
+      "background-image-opacity-m": 0.91,
+      "background-image-opacity-xl": 0.52,
+      "background-image-opacity-xl-hover": 0.17,
+      "background-image-opacity-xxl": 0.11,
+      "background-image-opacity-xxl-hover": 0.79,
+      "background-image-origin-general": "border-box",
+      "background-image-origin-l": "content-box",
+      "background-image-origin-xl": "border-box",
+      "background-image-position-general": "left top",
+      "background-image-position-height-general": 0,
+      "background-image-position-height-unit-general": "%",
+      "background-image-position-l": "right top",
+      "background-image-position-s": "center top",
+      "background-image-position-width-general": 0,
+      "background-image-position-width-unit-general": "%",
+      "background-image-position-xl": "left top",
+      "background-image-repeat-general": "repeat-x",
+      "background-image-repeat-l": "space",
+      "background-image-repeat-s": "repeat-x",
+      "background-image-repeat-xl": "repeat-x",
+      "background-image-size-general": "cover",
+      "background-image-size-l": "contain",
+      "background-image-size-xl": "cover",
+      "background-image-size-xs": "auto",
+      "background-image-width-general": 470,
+      "background-image-width-general-hover": 600,
+      "background-image-width-l": 2560,
+      "background-image-width-l-hover": 470,
+      "background-image-width-unit-general": "%",
+      "background-image-width-xl": 470,
+      "background-image-width-xl-hover": 600,
+      "background-image-width-xs": 600,
+      "background-image-width-xxl-hover": 788,
+      "display-general": "block",
+      "id": 0,
+      "type": "image",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages 1`] = `
+Object {
+  "background-layers": Array [
+    Object {
+      "SVGData": Object {
+        "group-maxi-12__30": Object {
+          "color": "",
+          "imageID": 7,
+          "imageURL": "http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg",
+        },
+      },
+      "SVGElement": "<svg viewBox=\\"2.500000238418579, 11.457558631896973, 31.10000228881836, 12.842442512512207\\" class=\\"shape-22-maxi-svg\\" data-item=\\"group-maxi-12__svg\\"><pattern xmlns=\\"http://www.w3.org/1999/xhtml\\" id=\\"group-maxi-12__30__img\\" class=\\"maxi-svg-block__pattern\\" width=\\"100%\\" height=\\"100%\\" x=\\"0\\" y=\\"0\\" patternunits=\\"userSpaceOnUse\\"><image class=\\"maxi-svg-block__pattern__image\\" width=\\"100%\\" height=\\"100%\\" x=\\"0\\" y=\\"0\\" href=\\"http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg\\" preserveaspectratio=\\"xMidYMid\\"></image></pattern><path fill=\\"url(#group-maxi-12__30__img)\\" data-fill=\\"\\" d=\\"M33.6 12.9c-.4-.8-1.5-1-2.3-.8s-1.6.8-2.3 1.3-1.5 1-2.4 1.1c-1 .1-2-.5-3-.5-1.3 0-2.5.8-3.8.6-1.9-.2-3-2.4-4.8-3-1.7-.5-3.4.4-4.9 1.4S7 15.1 5.3 14.8c-1.3-.2-2.5-1.3-2.8-2.6v12.1h31.1V12.9z\\" style=\\"fill: url(#group-maxi-12__30__img)\\"/></svg>",
+      "background-palette-svg-color-general": 5,
+      "background-palette-svg-color-l": 3,
+      "background-palette-svg-color-s": 7,
+      "background-palette-svg-color-status-general": true,
+      "background-palette-svg-color-status-l": true,
+      "background-palette-svg-color-status-s": true,
+      "background-palette-svg-color-status-xxl": true,
+      "background-palette-svg-color-xxl": 2,
+      "background-palette-svg-opacity-l": 37,
+      "background-palette-svg-opacity-s": 37,
+      "background-palette-svg-opacity-xxl": 37,
+      "background-svg-SVGMediaID": null,
+      "background-svg-SVGMediaURL": null,
+      "background-svg-image-shape-flip-x-general": false,
+      "background-svg-image-shape-flip-y-general": false,
+      "background-svg-image-shape-rotate-general": 104,
+      "background-svg-image-shape-scale-general": 72,
+      "background-svg-left-general": 50,
+      "background-svg-left-l": 62,
+      "background-svg-left-s": 31,
+      "background-svg-left-unit-general": "%",
+      "background-svg-left-xxl": 14,
+      "background-svg-size-general": 34,
+      "background-svg-size-unit-general": "%",
+      "background-svg-size-xl": 34,
+      "background-svg-size-xxl": 84,
+      "background-svg-top-general": 0,
+      "background-svg-top-l": 82,
+      "background-svg-top-s": 23,
+      "background-svg-top-unit-general": "%",
+      "background-svg-top-xl": 0,
+      "background-svg-top-xxl": 72,
+      "display-general": "block",
+      "id": 0,
+      "type": "shape",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages and hovers 1`] = `
+Object {
+  "background-layers": Array [
+    Object {
+      "SVGData": Object {
+        "group-maxi-12__30": Object {
+          "color": "",
+          "imageID": "",
+          "imageURL": "",
+        },
+      },
+      "SVGData-l": Object {
+        "group-maxi-12__30": Object {
+          "color": "",
+          "imageID": "",
+          "imageURL": "",
+        },
+      },
+      "SVGData-s": Object {
+        "group-maxi-12__30": Object {
+          "color": "",
+          "imageID": "",
+          "imageURL": "",
+        },
+      },
+      "SVGData-xxl": Object {
+        "group-maxi-12__30": Object {
+          "color": "",
+          "imageID": "",
+          "imageURL": "",
+        },
+      },
+      "SVGElement": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\" data-item=\\"group-maxi-1718__svg\\"><body><parsererror style=\\"display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black\\"><h3>This page contains the following errors:</h3><div style=\\"font-family:monospace;font-size:12px\\">error on line 1 at column 1: Document is empty
+</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>",
+      "SVGElement-l": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\" data-item=\\"group-maxi-12__svg\\"><body><parsererror style=\\"display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black\\"><h3>This page contains the following errors:</h3><div style=\\"font-family:monospace;font-size:12px\\">error on line 1 at column 1: Document is empty
+</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>",
+      "SVGElement-s": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\" data-item=\\"group-maxi-12__svg\\"><body><parsererror style=\\"display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black\\"><h3>This page contains the following errors:</h3><div style=\\"font-family:monospace;font-size:12px\\">error on line 1 at column 1: Document is empty
+</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>",
+      "SVGElement-xxl": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\" data-item=\\"group-maxi-12__svg\\"><body><parsererror style=\\"display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black\\"><h3>This page contains the following errors:</h3><div style=\\"font-family:monospace;font-size:12px\\">error on line 1 at column 1: Document is empty
+</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>",
+      "background-palette-svg-color-general": 5,
+      "background-palette-svg-color-general-hover": 4,
+      "background-palette-svg-color-l": 3,
+      "background-palette-svg-color-s": 7,
+      "background-palette-svg-color-s-hover": 8,
+      "background-palette-svg-color-status-general": true,
+      "background-palette-svg-color-status-general-hover": true,
+      "background-palette-svg-color-status-l": true,
+      "background-palette-svg-color-status-s": true,
+      "background-palette-svg-color-status-s-hover": true,
+      "background-palette-svg-color-status-xl-hover": true,
+      "background-palette-svg-color-status-xxl": true,
+      "background-palette-svg-color-status-xxl-hover": true,
+      "background-palette-svg-color-xl-hover": 4,
+      "background-palette-svg-color-xxl": 2,
+      "background-palette-svg-color-xxl-hover": 3,
+      "background-palette-svg-opacity-general-hover": 92,
+      "background-palette-svg-opacity-l": 37,
+      "background-palette-svg-opacity-s": 37,
+      "background-palette-svg-opacity-s-hover": 92,
+      "background-palette-svg-opacity-xl-hover": 92,
+      "background-palette-svg-opacity-xxl": 37,
+      "background-palette-svg-opacity-xxl-hover": 17,
+      "background-svg-SVGData": Object {
+        "group-maxi-12__30": Object {
+          "color": "",
+          "imageID": "",
+          "imageURL": "",
+        },
+      },
+      "background-svg-SVGElement": "<svg viewBox=\\"2.500000238418579, 11.457558631896973, 31.10000228881836, 12.842442512512207\\" class=\\"shape-22-maxi-svg\\" data-item=\\"group-maxi-12__svg\\"><path fill=\\"\\" data-fill=\\"\\" d=\\"M33.6 12.9c-.4-.8-1.5-1-2.3-.8s-1.6.8-2.3 1.3-1.5 1-2.4 1.1c-1 .1-2-.5-3-.5-1.3 0-2.5.8-3.8.6-1.9-.2-3-2.4-4.8-3-1.7-.5-3.4.4-4.9 1.4S7 15.1 5.3 14.8c-1.3-.2-2.5-1.3-2.8-2.6v12.1h31.1V12.9z\\"></path></svg>",
+      "background-svg-SVGMediaID": null,
+      "background-svg-SVGMediaURL": null,
+      "background-svg-left-general": 50,
+      "background-svg-left-general-hover": 39,
+      "background-svg-left-l": 62,
+      "background-svg-left-s": 31,
+      "background-svg-left-s-hover": 72,
+      "background-svg-left-unit-general": "%",
+      "background-svg-left-xl-hover": 39,
+      "background-svg-left-xxl": 14,
+      "background-svg-left-xxl-hover": 11,
+      "background-svg-size-general": 34,
+      "background-svg-size-general-hover": 211,
+      "background-svg-size-s-hover": 55,
+      "background-svg-size-unit-general": "%",
+      "background-svg-size-xl": 34,
+      "background-svg-size-xl-hover": 211,
+      "background-svg-size-xxl": 84,
+      "background-svg-size-xxl-hover": 50,
+      "background-svg-top-general": 0,
+      "background-svg-top-general-hover": 57,
+      "background-svg-top-l": 82,
+      "background-svg-top-s": 23,
+      "background-svg-top-s-hover": 10,
+      "background-svg-top-unit-general": "%",
+      "background-svg-top-xl": 0,
+      "background-svg-top-xl-hover": 57,
+      "background-svg-top-xxl": 72,
+      "background-svg-top-xxl-hover": 16,
+      "display-general": "block",
+      "id": 0,
+      "type": "shape",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages 1`] = `
+Object {
+  "background-layers": Array [
+    Object {
+      "background-video-clipPath-general": "",
+      "background-video-endTime": 625,
+      "background-video-fallbackID-general": 302,
+      "background-video-fallbackID-l": 226,
+      "background-video-fallbackID-xl": 302,
+      "background-video-fallbackID-xxl": 227,
+      "background-video-fallbackURL-general": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-video-fallbackURL-l": "http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg",
+      "background-video-fallbackURL-xl": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-video-fallbackURL-xxl": "http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg",
+      "background-video-loop": false,
+      "background-video-mediaID": null,
+      "background-video-mediaURL": "https://www.youtube.com/watch?v=y1dbbrfekAM",
+      "background-video-opacity-general": 0.11,
+      "background-video-opacity-l": 0.65,
+      "background-video-opacity-s": 0.25,
+      "background-video-opacity-xl": 0.11,
+      "background-video-opacity-xs": 0.9,
+      "background-video-opacity-xxl": 0.37,
+      "background-video-startTime": 285,
+      "display-general": "block",
+      "id": 0,
+      "type": "video",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages and hovers 1`] = `
+Object {
+  "background-hover-status": true,
+  "background-layers": Array [
+    Object {
+      "background-video-clipPath-general": "",
+      "background-video-endTime": 625,
+      "background-video-fallbackID-general": 302,
+      "background-video-fallbackID-l": 226,
+      "background-video-fallbackID-xl": 302,
+      "background-video-fallbackID-xxl": 227,
+      "background-video-fallbackURL-general": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-video-fallbackURL-l": "http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg",
+      "background-video-fallbackURL-xl": "http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg",
+      "background-video-fallbackURL-xxl": "http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg",
+      "background-video-loop": false,
+      "background-video-mediaID": null,
+      "background-video-mediaURL": "https://www.youtube.com/watch?v=y1dbbrfekAM",
+      "background-video-opacity-general": 0.11,
+      "background-video-opacity-general-hover": 0.82,
+      "background-video-opacity-l": 0.65,
+      "background-video-opacity-m-hover": 0.06,
+      "background-video-opacity-s": 0.25,
+      "background-video-opacity-s-hover": 1,
+      "background-video-opacity-xl": 0.11,
+      "background-video-opacity-xl-hover": 0.82,
+      "background-video-opacity-xs": 0.9,
+      "background-video-opacity-xxl": 0.37,
+      "background-video-opacity-xxl-hover": 0.21,
+      "background-video-startTime": 285,
+      "display-general": "block",
+      "id": 0,
+      "type": "video",
+    },
+  ],
+  "blockStyle": "light",
+  "isHover": false,
+  "target": "maxi-test",
+}
+`;
+
+exports[`getBackgroundStyles Get correct parallax background styles 1`] = `Object {}`;
+
+exports[`getBackgroundStyles Get correct simple background styles 1`] = `
+Object {
+  "background": Object {
+    "general": Object {
+      "background-color": "rgba(var(--maxi-light-color-1),0.39)",
+    },
+    "l": Object {
+      "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(155,81,224) 100%)",
+      "opacity": 0.29,
+    },
+    "label": "Background Gradient",
+    "m": Object {
+      "background-color": "rgba(var(--maxi-light-color-4),0.39)",
+    },
+    "s": Object {
+      "background-color": "rgba(43,43,179,0.39)",
+    },
+    "xl": Object {
+      "background-color": "rgba(var(--maxi-light-color-1),0.39)",
+    },
+    "xs": Object {
+      "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(102,186,223) 67%,rgb(155,81,224) 100%)",
+    },
+    "xxl": Object {
+      "background-color": "rgba(var(--maxi-light-color-2),0.39)",
     },
   },
 }

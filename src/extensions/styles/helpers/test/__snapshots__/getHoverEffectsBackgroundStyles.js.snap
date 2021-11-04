@@ -1,17 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 1`] = `
+exports[`getHoverEffectsBackgroundStyles Get a correct hover effects color background style 1`] = `
 Object {
-  "general": Object {
-    "background-color": "rgb(255,99,71)",
+  "background": Object {
+    "general": Object {
+      "background-color": "rgb(255,99,71)",
+    },
+    "l": Object {
+      "background-color": "rgb(255,99,71)",
+    },
+    "label": "Background Color",
+    "m": Object {
+      "background-color": "rgb(255,99,71)",
+    },
+    "s": Object {
+      "background-color": "rgb(255,99,71)",
+    },
+    "xl": Object {
+      "background-color": "rgb(255,99,71)",
+    },
+    "xs": Object {
+      "background-color": "rgb(255,99,71)",
+    },
+    "xxl": Object {
+      "background-color": "rgb(255,99,71)",
+    },
   },
+  "general": Object {},
 }
 `;
 
-exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 2`] = `
+exports[`getHoverEffectsBackgroundStyles Get a correct hover effects gradient background style 1`] = `
 Object {
-  "general": Object {
-    "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,0.8) 100%)",
+  "background": Object {
+    "general": Object {
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+      "opacity": 0.8,
+    },
+    "l": Object {
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+    },
+    "label": "Background Gradient",
+    "m": Object {
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+    },
+    "s": Object {
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+    },
+    "xl": Object {
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+    },
+    "xs": Object {
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+    },
+    "xxl": Object {
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+    },
   },
+  "general": Object {},
 }
 `;

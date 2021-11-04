@@ -23,27 +23,27 @@ export const iconHover = (() => {
 })();
 
 export const iconBackgroundColorHover = {
-	'icon-background-palette-color-status-hover': {
+	'icon-background-palette-color-status-general-hover': {
 		type: 'boolean',
 		default: true,
 	},
-	'icon-background-palette-color-hover': {
+	'icon-background-palette-color-general-hover': {
 		type: 'number',
-		default: 4,
+		default: 6,
 	},
-	'icon-background-palette-opacity-hover': {
+	'icon-background-palette-opacity-general-hover': {
 		type: 'number',
 	},
-	'icon-background-color-hover': {
+	'icon-background-color-general-hover': {
 		type: 'string',
 	},
 };
 
-export const iconGradientHover = {
-	'icon-background-gradient-hover': {
+export const iconBackgroundGradientHover = {
+	'icon-background-gradient-general-hover': {
 		type: 'string',
 	},
-	'icon-background-gradient-opacity-hover': {
+	'icon-background-gradient-opacity-general-hover': {
 		type: 'number',
 		default: 1,
 	},

@@ -2,15 +2,6 @@
 
 exports[`getSVGStyles Returns correct styles 1`] = `
 Object {
-  "  .maxi-svg-icon-block__icon svg": Object {
-    "SVGWidth": Object {
-      "general": Object {
-        "max-height": "64px",
-        "max-width": "64px",
-      },
-      "label": "SVG width",
-    },
-  },
   "  .maxi-svg-icon-block__icon svg g[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
       "general": Object {
@@ -33,6 +24,9 @@ Object {
         "stroke-width": "2",
       },
       "label": "SVG path",
+      "m": Object {
+        "stroke-width": "20",
+      },
     },
   },
   "  .maxi-svg-icon-block__icon svg path[data-fill]:not([fill^=\\"none\\"])": Object {

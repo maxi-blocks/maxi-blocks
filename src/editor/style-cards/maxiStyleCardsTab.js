@@ -16,7 +16,7 @@ import {
 	ColorControl,
 	Icon,
 	TypographyControl,
-	FancyRadioControl,
+	RadioControl,
 } from '../../components';
 import {
 	getDefaultSCValue,
@@ -47,7 +47,7 @@ const GlobalColor = props => {
 
 	return (
 		<>
-			<FancyRadioControl
+			<RadioControl
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
 				selected={processSCAttribute(SC, globalAttr, groupAttr)}
@@ -185,6 +185,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				label: __(`H${item}`, 'maxi-blocks'),
 				content: (
 					<SCAccordion
+						key={`sc-accordion__h${item}`}
 						colorContent={[
 							{
 								label: __(`H${item}`, 'maxi-blocks'),
@@ -355,6 +356,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				items={[
 					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
+						classNameItem: 'testing',
 						content: (
 							<>
 								<div className='maxi-style-cards__quick-color-presets'>
@@ -449,6 +451,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: buttonTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${buttonTabs.label}`}
 								{...buttonTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -461,6 +464,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: pTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${pTabs.label}`}
 								{...pTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -473,6 +477,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: linkTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${linkTabs.label}`}
 								{...linkTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -490,6 +495,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: iconTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${iconTabs.label}`}
 								{...iconTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -503,6 +509,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: dividerTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${dividerTabs.label}`}
 								{...dividerTabs}
 								breakpoint={breakpoint}
 								SC={SC}

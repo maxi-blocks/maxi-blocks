@@ -8,7 +8,7 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getMarginPaddingStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
@@ -41,10 +41,10 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'size'),
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -140,29 +140,26 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			' .maxi-row-block__container': getContainerObject(props),
 			':hover': getHoverObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
+					'blockBackground',
 					'border',
 					'borderWidth',
 					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),

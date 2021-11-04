@@ -26,4 +26,13 @@
 			opacity: 0.8;
 		}
 	}
+
+	// Temporary styles
+	&__dropdown {
+		width: 100%;
+		line-height: 24px;
+		border: 1px solid #000;
+		text-align: center;
+		cursor: pointer;
+	}
 }

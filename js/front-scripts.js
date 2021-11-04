@@ -60,64 +60,69 @@ const getDeviceType = () => {
 };
 
 // Map
-Object.values(maxi_custom_data.custom_data).map(item => {
-	if (item['map-api-key'] === '' || !item.hasOwnProperty('map-api-key'))
-		return;
+window.onload = () => {
+	if (google_map_api_options.google_api_key !== '') {
+		const script = document.createElement('script');
+		script.src = `https://maps.googleapis.com/maps/api/js?key=${google_map_api_options.google_api_key}&callback=initMap`;
+		script.async = true;
+		script.defer = true;
 
-	const script = document.createElement('script');
-	script.src = `https://maps.googleapis.com/maps/api/js?key=${item['map-api-key']}&callback=initMap`;
-	script.async = true;
-
-	window.initMap = function () {
-		const mapCordinate = {
-			lat: +item['map-latitude'],
-			lng: +item['map-longitude'],
-		};
-
-		const map = new google.maps.Map(
-			document.getElementById(`map-container-${item.uniqueID}`),
-			{
-				zoom: item['map-zoom'],
-				center: mapCordinate,
-			}
-		);
-
-		const contentTitleString = `<h6 class="map-marker-info-window__title">${item['map-marker-text']}</h6>`;
-		const contentAddressString = `<p class="map-marker-info-window__address">${item['map-marker-address']}</p>`;
-		const contentString = `<div class="map-marker-info-window">${
-			item['map-marker-text'] !== '' ? contentTitleString : ''
-		}${
-			item['map-marker-address'] !== '' ? contentAddressString : ''
-		}</div>`;
-
-		const infowindow = new google.maps.InfoWindow({
-			content: contentString,
-		});
-
-		const marker = new google.maps.Marker({
-			position: mapCordinate,
-			map,
-			icon: {
-				...defaultMarkers[`marker-icon-${item['map-marker']}`],
-				fillColor: item['map-marker-fill-color'],
-				fillOpacity: item['map-marker-opacity'],
-				strokeWeight: 2,
-				strokeColor: item['map-marker-stroke-color'],
-				rotation: 0,
-				scale: item['map-marker-scale'],
-			},
-		});
-
-		marker.addListener('click', () => {
-			(item['map-marker-text'] !== '' ||
-				item['map-marker-address'] !== '') &&
-				infowindow.open(map, marker);
-		});
-	};
-
-	if (document.querySelectorAll(`script[src="${script.src}"]`).length === 0)
 		document.head.appendChild(script);
-});
+	}
+};
+
+window.initMap = function () {
+	Object.values(maxi_custom_data.custom_data).map(item => {
+		const el = document.getElementById(`map-container-${item.uniqueID}`);
+
+		if (el) {
+			const mapCordinate = {
+				lat: +item['map-latitude'],
+				lng: +item['map-longitude'],
+			};
+
+			const map = new google.maps.Map(
+				document.getElementById(`map-container-${item.uniqueID}`),
+				{
+					zoom: item['map-zoom'],
+					center: mapCordinate,
+				}
+			);
+
+			const contentTitleString = `<h6 class="map-marker-info-window__title">${item['map-marker-text']}</h6>`;
+			const contentAddressString = `<p class="map-marker-info-window__address">${item['map-marker-address']}</p>`;
+			const contentString = `<div class="map-marker-info-window">${
+				item['map-marker-text'] !== '' ? contentTitleString : ''
+			}${
+				item['map-marker-address'] !== '' ? contentAddressString : ''
+			}</div>`;
+
+			const infowindow = new google.maps.InfoWindow({
+				content: contentString,
+			});
+
+			const marker = new google.maps.Marker({
+				position: mapCordinate,
+				map,
+				icon: {
+					...defaultMarkers[`marker-icon-${item['map-marker']}`],
+					fillColor: item['map-marker-fill-color'],
+					fillOpacity: item['map-marker-opacity'],
+					strokeWeight: 2,
+					strokeColor: item['map-marker-stroke-color'],
+					rotation: 0,
+					scale: item['map-marker-scale'],
+				},
+			});
+
+			marker.addListener('click', () => {
+				(item['map-marker-text'] !== '' ||
+					item['map-marker-address'] !== '') &&
+					infowindow.open(map, marker);
+			});
+		}
+	});
+};
 
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
@@ -146,18 +151,17 @@ motionElems.forEach(function (elem) {
 
 			const radius = 90;
 			const circumference = 2 * Math.PI * radius;
-			const startCountValue = Math.ceil(
-				(motionData['number-counter-start'] * 360) / 100
-			);
-			const endCountValue = Math.ceil(
-				(motionData['number-counter-end'] * 360) / 100
-			);
-			const countDuration = motionData['number-counter-duration'];
-			const countPercentageSign =
-				motionData['number-counter-percentage-sign-status'];
-			const startAnimation = motionData['number-counter-start-animation'];
+			const {
+				'number-counter-start': motionCounterStart,
+				'number-counter-end': motionCounterEnd,
+				'number-counter-duration': motionCounterDuration,
+				'number-counter-percentage-sign-status': usePercentage,
+				'number-counter-start-animation': startAnimation,
+			} = motionData;
+			const startCountValue = Math.ceil((motionCounterStart * 360) / 100);
+			const endCountValue = Math.ceil((motionCounterEnd * 360) / 100);
 
-			const frameDuration = countDuration / 60;
+			const frameDuration = motionCounterDuration / 60;
 
 			let count = startCountValue;
 
@@ -170,9 +174,18 @@ motionElems.forEach(function (elem) {
 						clearInterval(interval);
 					}
 
-					numberCounterElemText.innerHTML = `${parseInt(
-						(count / 360) * 100
-					)}<sup>${countPercentageSign ? '%' : ''}</sup>`;
+					let newInnerHTML = `${parseInt((count / 360) * 100)}`;
+
+					if (usePercentage) {
+						const percentageNode =
+							numberCounterElemText.nodeName === 'SPAN'
+								? '<sup>%</sup>'
+								: '<tspan baselineShift="super">%</tspan>';
+
+						newInnerHTML += percentageNode;
+					}
+
+					numberCounterElemText.innerHTML = newInnerHTML;
 
 					numberCounterElemCircle &&
 						numberCounterElemCircle.setAttribute(
@@ -319,15 +332,18 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Parallax Effect
-		if ('parallax-status' in motionData) {
-			const parallaxElem = document.querySelector(
-				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__images`
-			);
-			const parallaxStatus = motionData['parallax-status'];
-			const parallaxSpeed = motionData['parallax-speed'];
-			const parallaxDirection = motionData['parallax-direction'];
+		if ('bgParallaxLayers' in motionData) {
+			motionData.bgParallaxLayers.forEach(layer => {
+				const {
+					id,
+					'background-image-parallax-speed': parallaxSpeed,
+					'background-image-parallax-direction': parallaxDirection,
+				} = layer;
 
-			if (parallaxStatus) {
+				const parallaxElem = document.querySelector(
+					`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
+				);
+
 				window.addEventListener('scroll', () => {
 					new Parallax(
 						parallaxElem,
@@ -336,7 +352,7 @@ motionElems.forEach(function (elem) {
 							: parallaxSpeed
 					);
 				});
-			}
+			});
 		}
 
 		// Motion Effects
@@ -455,21 +471,55 @@ motionElems.forEach(function (elem) {
 });
 
 // Background Video Actions
-const containerElems = document.querySelectorAll('.maxi-container-block');
-containerElems.forEach(function (elem) {
-	const videoPlayerElement = elem.querySelector(
-		'.maxi-background-displayer__video-player'
-	);
-
+const videoPlayerElements = document.querySelectorAll(
+	'.maxi-background-displayer__video-player'
+);
+videoPlayerElements.forEach(videoPlayerElement => {
 	if (videoPlayerElement) {
 		const videoEnd = videoPlayerElement.getAttribute('data-end');
 		const videoType = videoPlayerElement.getAttribute('data-type');
 
 		// Make youtube & vimeo videos cover the container
 		if (videoType === 'youtube' || videoType === 'vimeo') {
-			const iframeElement = videoPlayerElement.querySelector('iframe');
-			const iframeWidth = videoPlayerElement.offsetWidth;
-			iframeElement.style.height = `${iframeWidth / 1.77}px`; // 1.77 is the aspect ratio 16:9
+			const setVideoSize = () => {
+				const iframeElement =
+					videoPlayerElement.querySelector('iframe');
+				const reduceBorder = videoPlayerElement.classList.contains(
+					'maxi-background-displayer__video-player--no-border'
+				);
+				const elWidth = videoPlayerElement.offsetWidth;
+				const elHeight = videoPlayerElement.offsetHeight;
+
+				const proportion = reduceBorder ? 2.4 : 1.77;
+
+				const hasBorder = elWidth / elHeight < proportion;
+
+				// Avoids Y axis black border
+				if (hasBorder) {
+					const landscapeProportion =
+						proportion - elWidth / elHeight + 1;
+					const portraitProportion =
+						proportion + (elHeight / elWidth - 1) * 2;
+
+					const newScale =
+						landscapeProportion < proportion
+							? landscapeProportion
+							: portraitProportion;
+
+					iframeElement.style.transform = `translate(-50%, -50%) scale(${
+						newScale * 1.033
+					})`; // increase of 33% to ensure
+				} else iframeElement.style.transform = null;
+
+				const isLandscape = elWidth > elHeight * 1.77;
+
+				const newHeight = isLandscape ? elWidth / 1.77 : elHeight;
+
+				iframeElement.style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
+			};
+
+			window.addEventListener('resize', setVideoSize);
+			setVideoSize();
 		}
 
 		if (videoType === 'vimeo' && videoEnd) {

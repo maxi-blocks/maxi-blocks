@@ -12,70 +12,37 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import MaxiModal from '../../editor/library/modal';
+import {
+	setSVGRatio,
+	setSVGPosition,
+	getSVGPosition,
+	getSVGRatio,
+} from '../../extensions/svg';
 
 /**
  * ImageShape
  */
 const ImageShape = props => {
-	const { onChange, breakpoint, icon } = props;
-
 	const {
-		[`image-shape-size-${breakpoint}`]: shapeSize,
-		[`image-shape-scale-${breakpoint}`]: shapeScale,
-		[`image-shape-position-${breakpoint}`]: shapePosition,
-		[`image-shape-rotate-${breakpoint}`]: shapeRotate,
-		[`image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
-		[`image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
+		onChange,
+		breakpoint,
+		icon,
+		prefix = '',
+		disableModal = false,
 	} = props;
 
-	const defaultScale = null;
-	let newIcon = icon;
-
-	const changeIcon = (attr, value) => {
-		switch (attr) {
-			case 'size': {
-				const oldPreserveAspectRatio = icon
-					.split('preserveaspectratio="')
-					.pop()
-					.split('"')[0];
-				let newPreserveAspectRatio;
-				value === 'fill'
-					? (newPreserveAspectRatio = `${oldPreserveAspectRatio} slice`)
-					: (newPreserveAspectRatio = `${oldPreserveAspectRatio} meet`);
-
-				newIcon = icon
-					.replaceAll(' meet', '')
-					.replaceAll(' slice', '')
-					.replace(oldPreserveAspectRatio, newPreserveAspectRatio);
-				return newIcon;
-			}
-			case 'position': {
-				const oldPreserveAspectRatio = icon
-					.split('preserveaspectratio="')
-					.pop()
-					.split('"')[0];
-				let newPreserveAspectRatio = value;
-
-				if (oldPreserveAspectRatio.includes('slice'))
-					newPreserveAspectRatio += ' slice';
-
-				if (oldPreserveAspectRatio.includes('meet'))
-					newPreserveAspectRatio += ' meet';
-
-				newIcon = icon.replace(
-					oldPreserveAspectRatio,
-					newPreserveAspectRatio
-				);
-				return newIcon;
-			}
-			default:
-				return newIcon;
-		}
-	};
+	const {
+		[`${prefix}image-shape-scale-${breakpoint}`]: shapeScale,
+		[`${prefix}image-shape-rotate-${breakpoint}`]: shapeRotate,
+		[`${prefix}image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
+		[`${prefix}image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
+	} = props;
+	const shapePosition = getSVGPosition(icon);
+	const shapeRatio = getSVGRatio(icon);
 
 	return (
 		<>
-			{breakpoint === 'general' && (
+			{!disableModal && breakpoint === 'general' && (
 				<MaxiModal
 					type='image-shape'
 					onSelect={obj => onChange(obj)}
@@ -91,21 +58,20 @@ const ImageShape = props => {
 						<>
 							<SelectControl
 								label={__('Image ratio', 'maxi-blocks')}
-								value={shapeSize || ''}
+								value={shapeRatio || ''}
 								options={[
 									{
 										label: __('Fit', 'maxi-blocks'),
-										value: '',
+										value: 'meet',
 									},
 									{
 										label: __('Fill', 'maxi-blocks'),
-										value: 'fill',
+										value: 'slice',
 									},
 								]}
 								onChange={val =>
 									onChange({
-										[`image-shape-size-${breakpoint}`]: val,
-										SVGElement: changeIcon('size', val),
+										SVGElement: setSVGRatio(icon, val),
 									})
 								}
 							/>
@@ -164,9 +130,7 @@ const ImageShape = props => {
 								]}
 								onChange={val =>
 									onChange({
-										[`image-shape-position-${breakpoint}`]:
-											val,
-										SVGElement: changeIcon('position', val),
+										SVGElement: setSVGPosition(icon, val),
 									})
 								}
 							/>
@@ -174,22 +138,22 @@ const ImageShape = props => {
 					)}
 					<AdvancedNumberControl
 						label={__('Scale shape', 'maxi-blocks')}
-						value={shapeScale || defaultScale}
+						value={shapeScale || null}
 						min={0}
 						max={500}
 						step={1}
-						initialPosition={100}
+						initial={100}
 						placeholder='100%'
 						onChangeValue={val => {
 							onChange({
-								[`image-shape-scale-${breakpoint}`]:
+								[`${prefix}image-shape-scale-${breakpoint}`]:
 									val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								[`image-shape-scale-${breakpoint}`]:
-									defaultScale,
+								[`${prefix}image-shape-scale-${breakpoint}`]:
+									null,
 							})
 						}
 					/>
@@ -203,13 +167,14 @@ const ImageShape = props => {
 						placeholder='0deg'
 						onChangeValue={val => {
 							onChange({
-								[`image-shape-rotate-${breakpoint}`]:
+								[`${prefix}image-shape-rotate-${breakpoint}`]:
 									val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								[`image-shape-rotate-${breakpoint}`]: '',
+								[`${prefix}image-shape-rotate-${breakpoint}`]:
+									'',
 							})
 						}
 					/>
@@ -218,7 +183,8 @@ const ImageShape = props => {
 						selected={shapeFlipHorizontally || 0}
 						onChange={val => {
 							onChange({
-								[`image-shape-flip-x-${breakpoint}`]: val,
+								[`${prefix}image-shape-flip-x-${breakpoint}`]:
+									val,
 							});
 						}}
 					/>
@@ -227,7 +193,8 @@ const ImageShape = props => {
 						selected={shapeFlipVertically || 0}
 						onChange={val => {
 							onChange({
-								[`image-shape-flip-y-${breakpoint}`]: val,
+								[`${prefix}image-shape-flip-y-${breakpoint}`]:
+									val,
 							});
 						}}
 					/>

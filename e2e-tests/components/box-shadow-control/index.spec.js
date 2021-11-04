@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('BoxShadowControl', () => {
 	beforeEach(async () => {
@@ -17,7 +17,11 @@ describe('BoxShadowControl', () => {
 		await insertBlock('Text Maxi');
 	});
 	it('Checking the boxShadow control', async () => {
-		const accordionPanel = await openSidebar(page, 'box shadow');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'box shadow'
+		);
 
 		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
 			click[1].click()
@@ -106,7 +110,11 @@ describe('BoxShadowControl', () => {
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {
-		const accordionPanel = await openSidebar(page, 'box shadow');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'box shadow'
+		);
 		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
 			click[1].click()
 		);
@@ -162,5 +170,7 @@ describe('BoxShadowControl', () => {
 		}))(shadowAttributes);
 
 		expect(boxShadow).toStrictEqual(expectChanges);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

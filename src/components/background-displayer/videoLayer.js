@@ -1,8 +1,4 @@
 /**
- * WordPress dependencies
- */
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -10,11 +6,12 @@ import classnames from 'classnames';
 /**
  * Internal Dependencies
  */
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import parseVideo from './utils';
 import { isNil } from 'lodash';
 
 /**
- * Styles
+ * style
  */
 import './style.scss';
 
@@ -22,76 +19,106 @@ import './style.scss';
  * Component
  */
 const VideoLayer = props => {
-	const { videoOptions, blockClassName, className } = props;
-
-	const parentEl = document.querySelector(`.${blockClassName}`);
-
-	let iframeHeight = '100%';
-
-	if (parentEl) {
-		iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // Set the height of the iframe according to the aspect ratio 16:9
-	}
+	const { videoOptions, wrapperRef, className, breakpoint } = props;
 
 	let videoUrl = videoOptions['background-video-mediaURL'];
 
-	const parsedVideo = !isNil(videoUrl) && parseVideo(videoUrl);
+	if (isNil(videoUrl)) return null;
 
-	if (!isNil(videoUrl) && parsedVideo.type === 'youtube') {
-		videoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
+	const reduceBorder = videoOptions['background-video-reduce-border'];
 
-		if (videoOptions['background-video-loop']) {
-			videoUrl += `&loop=1&playlist=${parsedVideo.id}`;
-		}
+	const style = {
+		height: '100%',
+	};
 
-		if (videoOptions['background-video-startTime']) {
-			videoUrl += `&start=${videoOptions['background-video-startTime']}`;
-		}
+	if (wrapperRef && wrapperRef.current) {
+		const { offsetWidth: wrapperWidth, offsetHeight: wrapperHeight } =
+			wrapperRef.current;
 
-		if (videoOptions['background-video-endTime']) {
-			videoUrl += `&end=${videoOptions['background-video-endTime']}`;
-		}
+		const proportion = reduceBorder ? 2.4 : 1.77;
+
+		const hasBorder = wrapperWidth / wrapperHeight < proportion;
+
+		// Avoids Y axis black border
+		if (hasBorder) {
+			const landscapeProportion =
+				proportion - wrapperWidth / wrapperHeight + 1;
+			const portraitProportion =
+				proportion + (wrapperHeight / wrapperWidth - 1) * 2;
+
+			const newScale =
+				landscapeProportion < proportion
+					? landscapeProportion
+					: portraitProportion;
+
+			style.transform = `translate(-50%, -50%) scale(${
+				newScale * 1.033
+			})`; // increase of 33% to ensure
+		} else style.transform = null;
+
+		const isLandscape = wrapperWidth > wrapperHeight * 1.77;
+
+		const newHeight = isLandscape ? wrapperWidth / 1.77 : wrapperHeight;
+
+		style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
 	}
 
-	if (!isNil(videoUrl) && parsedVideo.type === 'vimeo') {
-		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&muted=1&autopause=0`;
+	const videoLoop = getLastBreakpointAttribute(
+		'background-video-loop',
+		breakpoint,
+		videoOptions
+	);
+	const videoStartTime = getLastBreakpointAttribute(
+		'background-video-startTime',
+		breakpoint,
+		videoOptions
+	);
+	const videoEndTime = getLastBreakpointAttribute(
+		'background-video-endTime',
+		breakpoint,
+		videoOptions
+	);
 
-		if (videoOptions['background-video-loop']) {
-			videoUrl += '&loop=1';
-		}
+	const parsedVideo = parseVideo(videoUrl);
 
-		if (videoOptions['background-video-startTime']) {
-			videoUrl += `#t=${videoOptions['background-video-startTime']}`;
-		}
-	}
+	switch (parsedVideo.type) {
+		case 'youtube': {
+			videoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
 
-	if (!isNil(videoUrl) && parsedVideo.type === 'direct') {
-		if (
-			videoOptions['background-video-startTime'] &&
-			!videoOptions['background-video-endTime']
-		) {
-			videoUrl += `#t=${videoOptions['background-video-startTime']}`;
-		}
+			if (videoLoop) videoUrl += `&loop=1&playlist=${parsedVideo.id}`;
+			if (videoStartTime) videoUrl += `&start=${videoStartTime}`;
+			if (videoEndTime) videoUrl += `&end=${videoEndTime}`;
 
-		if (videoOptions['background-video-endTime']) {
-			videoUrl += `#t=${videoOptions['background-video-startTime']},${videoOptions['background-video-endTime']}`;
+			break;
 		}
+		case 'vimeo': {
+			videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&muted=1&autopause=0`;
+
+			if (videoLoop) videoUrl += '&loop=1';
+			if (videoStartTime) videoUrl += `#t=${videoStartTime}`;
+
+			break;
+		}
+		case 'direct': {
+			if (videoStartTime && !videoEndTime)
+				videoUrl += `#t=${videoStartTime}`;
+			if (videoEndTime)
+				videoUrl += `#t=${videoStartTime},${videoEndTime}`;
+			break;
+		}
+		default:
+			break;
 	}
 
 	const videoPlayerClasses = classnames(
 		'maxi-background-displayer__layer',
 		'maxi-background-displayer__video-player',
-		!videoOptions['background-video-playOnMobile'] &&
-			'maxi-background-displayer__video-player--mobile-hidden',
+		reduceBorder && 'maxi-background-displayer__video-player--no-border',
 		className
 	);
 
-	// Pasue vimeo at the endTime
-	if (
-		!isNil(videoUrl) &&
-		parsedVideo.type === 'vimeo' &&
-		videoOptions['background-video-endTime'] &&
-		parentEl
-	) {
+	// Pause vimeo at the endTime
+	if (parsedVideo.type === 'vimeo' && videoEndTime) {
 		const scriptsArray = Array.from(window.document.scripts);
 
 		const vimeoIsMounted = scriptsArray.findIndex(
@@ -115,12 +142,10 @@ const VideoLayer = props => {
 					const videoPlayerElement = elem.querySelector(
 						'.maxi-background-displayer__video-player'
 					);
-					const videoEnd = videoPlayerElement.getAttribute(
-						'data-end'
-					);
-					const videoType = videoPlayerElement.getAttribute(
-						'data-type'
-					);
+					const videoEnd =
+						videoPlayerElement.getAttribute('data-end');
+					const videoType =
+						videoPlayerElement.getAttribute('data-type');
 
 					if (videoType === 'vimeo' && videoEnd) {
 						// eslint-disable-next-line no-undef
@@ -141,42 +166,44 @@ const VideoLayer = props => {
 		}
 	}
 
+	const videoValidation = url =>
+		url.match(
+			/https?:\/\/.*\.(?:mp4|webm|ogg)|(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/
+		);
+
 	return (
 		<>
-			{!isNil(videoUrl) &&
-				videoUrl.match(
-					/https?:\/\/.*\.(?:mp4|webm|ogg)|(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/
-				) && (
-					<div
-						className={videoPlayerClasses}
-						data-start={videoOptions['background-video-startTime']}
-						data-end={videoOptions['background-video-endTime']}
-						data-type={parsedVideo.type}
-					>
-						{parsedVideo.type === 'direct' && (
-							<video
-								loop={!!+videoOptions['background-video-loop']}
-								src={videoUrl}
-								autoPlay
-								muted
-							/>
-						)}
+			{videoValidation(videoUrl) && (
+				<div
+					className={videoPlayerClasses}
+					data-start={videoStartTime}
+					data-end={videoEndTime}
+					data-type={parsedVideo.type}
+				>
+					{parsedVideo.type === 'direct' && (
+						<video
+							loop={!!+videoLoop}
+							src={videoUrl}
+							autoPlay
+							muted
+						/>
+					)}
 
-						{(parsedVideo.type === 'youtube' ||
-							parsedVideo.type === 'vimeo') && (
-							<div className='maxi-background-displayer__video-player__iframe-wrapper'>
-								<iframe
-									title={`${parsedVideo.type} video`}
-									src={videoUrl}
-									frameBorder='0'
-									allow='autoplay'
-									allowFullScreen='allowfullscreen'
-									style={{ height: iframeHeight }}
-								/>
-							</div>
-						)}
-					</div>
-				)}
+					{(parsedVideo.type === 'youtube' ||
+						parsedVideo.type === 'vimeo') && (
+						<div className='maxi-background-displayer__iframe-wrapper'>
+							<iframe
+								title={`${parsedVideo.type} video`}
+								src={videoUrl}
+								frameBorder='0'
+								allow='autoplay'
+								allowFullScreen='allowfullscreen'
+								style={style}
+							/>
+						</div>
+					)}
+				</div>
+			)}
 		</>
 	);
 };

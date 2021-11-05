@@ -264,11 +264,14 @@ const getHoverContentObject = props => {
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
-				...getGroupAttributes(props, 'typographyHover'),
+				...getGroupAttributes(props, 'typography', true),
 			},
 			isHover: true,
 			parentBlockStyle: props.parentBlockStyle,
 			textLevel: 'button',
+			normalTypography: {
+				...getGroupAttributes(props, 'typography'),
+			},
 		}),
 		transitionDuration: getTransitionStyles({
 			...getGroupAttributes(props, 'transitionDuration'),
@@ -288,7 +291,7 @@ const getIconSize = (obj, isHover = false) => {
 		response[breakpoint] = {};
 
 		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
-			response[breakpoint]['width'] = `${
+			response[breakpoint].width = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
 			}${getLastBreakpointAttribute(
 				'icon-width-unit',
@@ -296,7 +299,7 @@ const getIconSize = (obj, isHover = false) => {
 				obj,
 				isHover
 			)}`;
-			response[breakpoint]['height'] = `${
+			response[breakpoint].height = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
 			}${getLastBreakpointAttribute(
 				'icon-width-unit',

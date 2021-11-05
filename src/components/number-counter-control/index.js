@@ -130,7 +130,7 @@ const NumberCounterControl = props => {
 			<AdvancedNumberControl
 				label={__('Start Number', 'maxi-blocks')}
 				min={0}
-				max={props['number-counter-circle-status'] ? 9999 : 100}
+				max={props['number-counter-end']}
 				initial={0}
 				step={1}
 				value={props['number-counter-start']}
@@ -254,10 +254,15 @@ const NumberCounterControl = props => {
 				onChange={val => {
 					onChange({
 						'number-counter-circle-status': val,
+						...(!val && {
+							...(props['number-counter-end'] > 100 && {
+								'number-counter-end': 100,
+							}),
+							...(props['number-counter-start'] > 100 && {
+								'number-counter-start': 100,
+							}),
+						}),
 					});
-
-					if (!val && props['number-counter-end'] > 100)
-						onChange({ 'number-counter-end': 100 });
 				}}
 			/>
 			{!props['number-counter-circle-status'] && (

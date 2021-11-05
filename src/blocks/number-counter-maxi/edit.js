@@ -114,24 +114,13 @@ const NumberCounter = attributes => {
 			<BlockResizer
 				className='maxi-number-counter__box'
 				lockAspectRatio
-				size={{
-					width: `${getLastBreakpointAttribute(
-						'width',
-						deviceType,
-						attributes
-					)}${getLastBreakpointAttribute(
-						'width-unit',
-						deviceType,
-						attributes
-					)}`,
-				}}
 				defaultSize={{
 					width: `${getLastBreakpointAttribute(
-						'width',
+						'number-counter-width',
 						deviceType,
 						attributes
 					)}${getLastBreakpointAttribute(
-						'width-unit',
+						'number-counter-width-unit',
 						deviceType,
 						attributes
 					)}`,
@@ -222,19 +211,20 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute(
-				'width',
+				'number-counter-width',
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
 			const svgWidthUnit = getLastBreakpointAttribute(
-				'width-unit',
+				'number-counter-width-unit',
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
+			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
-			if (this.resizableObject.current.state.width !== `${svgWidth}%`)
+			if (this.resizableObject.current.state.width !== fullWidthValue)
 				this.resizableObject.current.updateSize({
-					width: `${svgWidth}${svgWidthUnit}`,
+					width: fullWidthValue,
 				});
 		}
 	}
@@ -264,13 +254,14 @@ class edit extends MaxiBlockComponent {
 			event.preventDefault();
 
 			setAttributes({
-				[`width-unit-${deviceType}`]: 'px',
+				[`number-counter-width-unit-${deviceType}`]: 'px',
 			});
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			setAttributes({
-				[`width-${deviceType}`]: elt.getBoundingClientRect().width,
+				[`number-counter-width-${deviceType}`]:
+					elt.getBoundingClientRect().width,
 			});
 		};
 

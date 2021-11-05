@@ -77,6 +77,12 @@ const ColorControl = props => {
 			...obj,
 		});
 
+	/**
+	 * TODO: reset is working just on Custom Color and when pressing
+	 * the reset of the opacity, which is not much UX.
+	 *
+	 * https://github.com/yeahcan/UX-UI/issues/8
+	 */
 	const onReset = () => {
 		if (defaultColor) onChange(defaultColor);
 
@@ -121,13 +127,13 @@ const ColorControl = props => {
 									clientId,
 									paletteColor,
 									blockStyle
-								)},${paletteOpacity / 100 || 1})`,
+								)},${paletteOpacity || 1})`,
 							}),
 							// If palette is set, save the custom color opacity
 							...(!disableOpacity &&
 								!val && {
 									paletteOpacity:
-										tinycolor(color).getAlpha() * 100 ||
+										tinycolor(color).getAlpha() ||
 										paletteOpacity,
 								}),
 						});

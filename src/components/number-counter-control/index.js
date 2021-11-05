@@ -130,7 +130,7 @@ const NumberCounterControl = props => {
 			<AdvancedNumberControl
 				label={__('Start Number', 'maxi-blocks')}
 				min={0}
-				max={100}
+				max={props['number-counter-circle-status'] ? 9999 : 100}
 				initial={0}
 				step={1}
 				value={props['number-counter-start']}

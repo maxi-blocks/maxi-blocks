@@ -29,7 +29,6 @@ const GradientControl = props => {
 		label,
 		className,
 		gradient,
-		defaultGradient = '',
 		onChange,
 		gradientOpacity,
 		onChangeOpacity,

@@ -5,7 +5,6 @@
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyWithModifier,
 	getEditedPostContent,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
@@ -111,16 +110,12 @@ describe('Image Maxi', () => {
 		);
 
 		await inputs[2].focus();
-		await page.waitForTimeout(200);
-		await page.keyboard.press('Backspace');
-		await page.waitForTimeout(200);
-		await page.keyboard.type('9');
+		await page.keyboard.type('19');
 		await page.waitForTimeout(200);
 
 		await inputs[4].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.waitForTimeout(200);
 		await page.keyboard.type('4');
+		await page.waitForTimeout(200);
 
 		await inputs[6].focus();
 		await page.keyboard.type('11');

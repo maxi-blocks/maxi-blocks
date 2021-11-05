@@ -61,11 +61,6 @@ const SvgWidthControl = props => {
 						[getAttributeKey('width', isHover, prefix, breakpoint)]:
 							newVal,
 					});
-
-					if (resizableObject)
-						resizableObject.current?.updateSize({
-							width: `${newVal}${widthUnit}`,
-						});
 				}}
 				enableUnit
 				unit={widthUnit}

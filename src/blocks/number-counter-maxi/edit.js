@@ -46,7 +46,6 @@ const NumberCounter = attributes => {
 		'number-counter-preview': preview,
 		'number-counter-title-font-size': fontSize,
 		'number-counter-percentage-sign-status': usePercentage,
-		deviceType,
 		resizerProps,
 	} = attributes;
 
@@ -114,28 +113,6 @@ const NumberCounter = attributes => {
 			<BlockResizer
 				className='maxi-number-counter__box'
 				lockAspectRatio
-				size={{
-					width: `${getLastBreakpointAttribute(
-						'number-counter-width',
-						deviceType,
-						attributes
-					)}${getLastBreakpointAttribute(
-						'number-counter-width-unit',
-						deviceType,
-						attributes
-					)}`,
-				}}
-				defaultSize={{
-					width: `${getLastBreakpointAttribute(
-						'number-counter-width',
-						deviceType,
-						attributes
-					)}${getLastBreakpointAttribute(
-						'number-counter-width-unit',
-						deviceType,
-						attributes
-					)}`,
-				}}
 				maxWidth='100%'
 				minWidth={
 					!circleStatus
@@ -231,10 +208,11 @@ class edit extends MaxiBlockComponent {
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
+			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
-			if (this.resizableObject.current.state.width !== `${svgWidth}%`)
+			if (this.resizableObject.current.state.width !== fullWidthValue)
 				this.resizableObject.current.updateSize({
-					width: `${svgWidth}${svgWidthUnit}`,
+					width: fullWidthValue,
 				});
 		}
 	}

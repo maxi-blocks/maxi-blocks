@@ -46,6 +46,7 @@ const NumberCounter = attributes => {
 		'number-counter-preview': preview,
 		'number-counter-title-font-size': fontSize,
 		'number-counter-percentage-sign-status': usePercentage,
+		deviceType,
 		resizerProps,
 	} = attributes;
 
@@ -113,6 +114,17 @@ const NumberCounter = attributes => {
 			<BlockResizer
 				className='maxi-number-counter__box'
 				lockAspectRatio
+				defaultSize={{
+					width: `${getLastBreakpointAttribute(
+						'number-counter-width',
+						deviceType,
+						attributes
+					)}${getLastBreakpointAttribute(
+						'number-counter-width-unit',
+						deviceType,
+						attributes
+					)}`,
+				}}
 				maxWidth='100%'
 				minWidth={
 					!circleStatus

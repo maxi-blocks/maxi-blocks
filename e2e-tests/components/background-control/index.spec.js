@@ -137,7 +137,7 @@ describe.skip('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 
@@ -291,7 +291,7 @@ describe.skip('BackgroundControl', () => {
 	// 	await setBrowserViewport('large');
 	// 	const accordionPanel = await openSidebarTab(page,'style', 'background');
 	// 	await accordionPanel.$$eval(
-	// 		'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
+	// 		'.maxi-background-control .maxi-button-group-control--full-width .maxi-base-control__field input',
 	// 		select => select[4].click()
 	// 	);
 
@@ -394,7 +394,7 @@ describe.skip('BackgroundControl', () => {
 
 		const accordionPanel = await openSidebarTab(page,'style', 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-button-group-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
 		);
 
@@ -434,7 +434,7 @@ describe.skip('BackgroundControl', () => {
 	/* it('Check Background Shape Custom Color', async () => {
 		const accordionPanel = await openSidebarTab(page,'style', 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-button-group-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
 		);
 
@@ -460,7 +460,7 @@ describe.skip('BackgroundControl', () => {
 			click => click[1].click()
 		);
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 
@@ -528,7 +528,7 @@ describe.skip('BackgroundControl', () => {
 		expect(bgLayerPaletteColor).toStrictEqual(expectedColor);
 
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 
@@ -637,7 +637,7 @@ describe.skip('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 

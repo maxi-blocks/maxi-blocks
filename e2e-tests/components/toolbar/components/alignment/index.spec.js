@@ -22,8 +22,9 @@ describe('AlignmentControl', () => {
 		await page.waitForSelector(
 			'.components-popover__content .maxi-alignment-control__no-label'
 		);
+		await page.waitForTimeout(150);
 		const alignmentSettings = await page.$$(
-			'.components-popover__content .maxi-alignment-control__no-label label'
+			'.components-popover__content .maxi-alignment-control__no-label button'
 		);
 
 		const alignments = ['center', 'right', 'justify', 'left'];
@@ -50,7 +51,7 @@ describe('AlignmentControl', () => {
 		await changeResponsive(page, 's');
 
 		await page.$$eval(
-			'.components-popover__content .maxi-alignment-control__no-label label',
+			'.components-popover__content .maxi-alignment-control__no-label button',
 			button => button[1].click()
 		);
 
@@ -63,19 +64,19 @@ describe('AlignmentControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const selected = await page.$$eval(
-			'.components-popover__content .maxi-alignment-control__no-label input',
-			button => button[1].checked
+			'.components-popover__content .maxi-alignment-control__no-label button',
+			button => button[1].ariaPressed
 		);
 
-		expect(selected).toBeTruthy();
+		expect(selected).toBe('true');
 
 		// responsive m
 		await changeResponsive(page, 'm');
 		const selectedM = await page.$$eval(
-			'.components-popover__content .maxi-alignment-control__no-label input',
-			button => button[0].checked
+			'.components-popover__content .maxi-alignment-control__no-label button',
+			button => button[0].ariaPressed
 		);
 
-		expect(selectedM).toBeTruthy();
+		expect(selectedM).toBe('true');
 	});
 });

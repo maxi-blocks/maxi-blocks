@@ -153,13 +153,13 @@ describe('NumberCounterControl', () => {
 		);
 
 		// Text colour
-		await colors[0].$$eval('div', click => click[3].click());
+		await colors[0].$$eval('button', click => click[3].click());
 
 		// Circle Background Colour
-		await colors[1].$$eval('div', click => click[2].click());
+		await colors[1].$$eval('button', click => click[2].click());
 
 		// Circle Bar Colour
-		await colors[2].$$eval('div', click => click[1].click());
+		await colors[2].$$eval('button', click => click[1].click());
 
 		// expect
 		const colorAttributes = await getBlockAttributes();

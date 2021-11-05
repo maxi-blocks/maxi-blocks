@@ -54,7 +54,6 @@ describe('TypographyControl', () => {
 			'style',
 			'typography'
 		);
-
 		const input = await page.$(
 			'.maxi-typography-control .maxi-typography-control__font-family input'
 		);
@@ -119,7 +118,7 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
 			select => select.click()
 		);
 
@@ -149,11 +148,11 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 		await accordionPanel.$$eval(
-			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
-			select => select[1].click()
+			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
+			select => select[0].click()
 		);
 		const input = await accordionPanel.$(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input'
+			'.maxi-typography-control .maxi-color-control .maxi-advanced-number-control input'
 		);
 
 		await input.focus();
@@ -163,7 +162,7 @@ describe('TypographyControl', () => {
 		await changeResponsive(page, 's');
 
 		const opacityLevel = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
+			'.maxi-typography-control .maxi-color-control .maxi-advanced-number-control input',
 			button => button.value
 		);
 
@@ -174,14 +173,14 @@ describe('TypographyControl', () => {
 
 		await input.focus();
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('55', { delay: 100 });
+		await page.keyboard.type('54', { delay: 100 });
 
 		const responsiveSOption = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
+			'.maxi-typography-control .maxi-color-control .maxi-advanced-number-control input',
 			selectedStyle => selectedStyle.value
 		);
 
-		expect(responsiveSOption).toStrictEqual('55');
+		expect(responsiveSOption).toStrictEqual('54');
 
 		const attributes = await getBlockAttributes();
 		const opacity = attributes['palette-opacity-s'];
@@ -192,17 +191,17 @@ describe('TypographyControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
+			'.maxi-typography-control .maxi-color-control .maxi-advanced-number-control input',
 			selectedStyle => selectedStyle.value
 		);
 
-		expect(responsiveXsOption).toStrictEqual('55');
+		expect(responsiveXsOption).toStrictEqual('54');
 
 		// responsive M
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
+			'.maxi-typography-control .maxi-color-control .maxi-advanced-number-control input',
 			selectedStyle => selectedStyle.value
 		);
 
@@ -225,17 +224,10 @@ describe('TypographyControl', () => {
 		// s
 		await changeResponsive(page, 's');
 
-		const customColor = await accordionPanel.$$(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option label'
+		await accordionPanel.$eval(
+			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
+			select => select.click()
 		);
-		await customColor[0].click();
-
-		const paletteColorSStatus = await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
-			select => select[0].checked
-		);
-
-		expect(paletteColorSStatus).toStrictEqual(true);
 
 		const attributesS = await getBlockAttributes();
 		const colorStatusS = attributesS['palette-color-status-s'];
@@ -245,22 +237,27 @@ describe('TypographyControl', () => {
 		// xs
 		await changeResponsive(page, 'xs');
 
-		const paletteColorXsStatus = await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
-			select => select[0].checked
+		await accordionPanel.$eval(
+			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
+			select => select.click()
 		);
-		await page.waitForTimeout(200);
 
-		expect(paletteColorXsStatus).toStrictEqual(true);
+		const attributesXs = await getBlockAttributes();
+		const colorStatusXs = attributesXs['palette-color-status-s'];
+
+		expect(colorStatusXs).toStrictEqual(false);
 
 		// m
 		await changeResponsive(page, 'm');
-		const paletteColorMStatus = await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
-			select => select[1].checked
+		await accordionPanel.$eval(
+			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
+			select => select.click()
 		);
 
-		expect(paletteColorMStatus).toStrictEqual(true);
+		const attributesM = await getBlockAttributes();
+		const colorStatusM = attributesM['palette-color-status-s'];
+
+		expect(colorStatusM).toStrictEqual(false);
 	});
 
 	it('Checking the Weight, Transform, Style and Decoration', async () => {

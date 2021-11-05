@@ -7,7 +7,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import OpacityControl from '../opacity-control';
 import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
@@ -207,7 +207,7 @@ const ShapeDividerControl = props => {
 
 	return (
 		<div className='maxi-shapedividercontrol'>
-			<RadioControl
+			<ButtonGroupControl
 				label=''
 				selected={shapeDividerStatus}
 				options={[
@@ -258,7 +258,7 @@ const ShapeDividerControl = props => {
 									</div>
 								)}
 								renderContent={() => (
-									<RadioControl
+									<ButtonGroupControl
 										className='maxi-shapedividercontrol__shape-list'
 										selected={
 											props[
@@ -388,7 +388,7 @@ const ShapeDividerControl = props => {
 									</div>
 								)}
 								renderContent={() => (
-									<RadioControl
+									<ButtonGroupControl
 										className='maxi-shapedividercontrol__shape-list'
 										selected={
 											props[

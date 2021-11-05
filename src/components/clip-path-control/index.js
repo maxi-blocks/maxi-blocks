@@ -14,7 +14,7 @@ import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import ToggleSwitch from '../toggle-switch';
 
 /**
@@ -393,7 +393,7 @@ const ClipPathControl = props => {
 								]}
 								onChange={value => onChangeType(value)}
 							/>
-							<RadioControl
+							<ButtonGroupControl
 								fullWidthMode
 								selected={customMode}
 								options={[

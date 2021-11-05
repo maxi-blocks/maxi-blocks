@@ -33,11 +33,12 @@ const customClasses = ({ props }) => {
 					label={__('Add ID', 'maxi-blocks')}
 					className='maxi-additional__css-classes'
 					value={extraID}
-					onChange={extraID =>
+					onChange={extraID => {
+						const id = extraID.trim();
 						setAttributes({
-							extraID,
-						})
-					}
+							extraID: id,
+						});
+					}}
 				/>
 			</>
 		),

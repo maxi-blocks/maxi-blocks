@@ -20,6 +20,9 @@ const global = {
 		type: 'string',
 		default: '',
 	},
+	extraID: {
+		type: 'string',
+	},
 	isFirstOnHierarchy: {
 		type: 'boolean',
 	},

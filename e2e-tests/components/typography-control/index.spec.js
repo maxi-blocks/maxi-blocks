@@ -185,7 +185,7 @@ describe('TypographyControl', () => {
 		const attributes = await getBlockAttributes();
 		const opacity = attributes['palette-opacity-s'];
 
-		expect(opacity).toStrictEqual(0.55);
+		expect(opacity).toStrictEqual(0.54);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

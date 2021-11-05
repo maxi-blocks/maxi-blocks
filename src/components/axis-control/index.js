@@ -74,22 +74,20 @@ const AxisInput = props => {
 
 	const getNewValueFromEmpty = e => {
 		const {
-			nativeEvent: { data, detail, inputType },
+			nativeEvent: { inputType },
 			target: { value: newValue },
 		} = e;
 
 		if (value !== '') return newValue;
 
-		const typeofEvent =
-			inputType === 'insertText' &&
-			getIsValid(data, true) &&
-			getIsValid(detail, true)
-				? 'type'
-				: 'click';
+		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
 
 		switch (typeofEvent) {
 			case 'click':
-				return lastValue + (+newValue ? 1 : -1);
+				return (
+					(isNumber(lastValue) ? lastValue : 0) + (+newValue ? 1 : -1)
+				);
+
 			case 'type':
 			default:
 				return newValue;
@@ -109,7 +107,12 @@ const AxisInput = props => {
 				placeholder={getLastBreakpointValue(label)}
 				value={value}
 				onChange={e => {
-					const newValue = getNewValueFromEmpty(e);
+					let newValue = getNewValueFromEmpty(e);
+
+					if (newValue < minMaxSettings[currentUnit]?.min)
+						newValue = minMaxSettings[currentUnit]?.min;
+					if (newValue > minMaxSettings[currentUnit]?.max)
+						newValue = minMaxSettings[currentUnit]?.max;
 
 					onChangeValue(newValue, label, isGeneral, breakpoint);
 				}}

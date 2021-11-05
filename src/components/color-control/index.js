@@ -133,7 +133,7 @@ const ColorControl = props => {
 							...(!disableOpacity &&
 								!val && {
 									paletteOpacity:
-										tinycolor(color).getAlpha() * 100 ||
+										tinycolor(color).getAlpha() ||
 										paletteOpacity,
 								}),
 						});

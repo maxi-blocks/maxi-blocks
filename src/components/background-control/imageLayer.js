@@ -12,7 +12,7 @@ import ClipPath from '../clip-path-control';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
@@ -927,7 +927,7 @@ const ImageLayerContent = props => {
 										'background-image-parallax-status'
 									] && (
 										<>
-											<RadioControl
+											<ButtonGroupControl
 												className='parallax-direction'
 												label={__(
 													'Direction',

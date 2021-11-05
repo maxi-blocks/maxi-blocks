@@ -309,7 +309,7 @@ const Inspector = memo(
 														items={[
 															{
 																label: __(
-																	'Normal',
+																	'Normal state',
 																	'maxi-blocks'
 																),
 																content: (
@@ -345,7 +345,7 @@ const Inspector = memo(
 															},
 															{
 																label: __(
-																	'Hover',
+																	'Hover state',
 																	'maxi-blocks'
 																),
 																content: (
@@ -441,7 +441,7 @@ const Inspector = memo(
 														items={[
 															{
 																label: __(
-																	'Normal',
+																	'Normal state',
 																	'maxi-blocks'
 																),
 																content: (
@@ -478,7 +478,7 @@ const Inspector = memo(
 															},
 															{
 																label: __(
-																	'Hover',
+																	'Hover state',
 																	'maxi-blocks'
 																),
 																content: (

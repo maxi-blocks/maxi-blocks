@@ -1,0 +1,66 @@
+.maxi-sidebar .maxi-button-group-control {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 10px;
+
+	.maxi-base-control {
+		&__field {
+			width: 100%;
+		}
+		&__label {
+			flex: 2;
+		}
+	}
+	&__option {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+		min-width: 40px;
+		height: 32px;
+		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 0;
+		margin-bottom: 0;
+		background-color: #fff;
+		opacity: 1 !important;
+		transition: all 0.5s;
+		cursor: pointer;
+
+		&:hover {
+			background-color: var(--maxi-grey-3-color);
+		}
+		&:focus {
+			background-color: var(--maxi-grey-2-color);
+			box-shadow: none;
+			outline: 0;
+		}
+		&--selected {
+			position: relative;
+			z-index: 1;
+			border-bottom: 2px solid var(--maxi-secondary-color) !important;
+			background-color: var(--maxi-white-4-color) !important;
+		}
+		svg {
+			display: block;
+			width: 20px;
+			height: 100%;
+			margin: 0;
+			fill: var(--maxi-grey-5-color);
+		}
+	}
+	&__full-width {
+		.maxi-base-control {
+			&__field {
+				flex-wrap: wrap;
+			}
+			&__label {
+				display: block;
+				flex: 100% !important;
+				width: 100%;
+				margin: 0 0 5px 0 !important;
+			}
+		}
+	}
+}

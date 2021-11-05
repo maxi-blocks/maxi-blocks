@@ -23,9 +23,8 @@ describe('DisplayControl', () => {
 			'show hide block'
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-display-control .maxi-base-control__field label',
-			button => button[2].click()
+		await accordionPanel.$$eval('.maxi-display-control button', button =>
+			button[1].click()
 		);
 
 		const attributes = await getBlockAttributes();
@@ -37,27 +36,25 @@ describe('DisplayControl', () => {
 
 	it('Check Responsive display control', async () => {
 		await openSidebarTab(page, 'advanced', 'show hide block');
-		const displayButtons = await page.$$(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option'
-		);
+		const displayButtons = await page.$$('.maxi-display-control button');
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[1].checked
+			'.maxi-display-control button',
+			select => select[1].ariaPressed
 		);
 
-		expect(isItemChecked).toBeTruthy();
+		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
 		await displayButtons[0].click();
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[0].checked
+			'.maxi-display-control button',
+			select => select[0].ariaPressed
 		);
 
-		expect(responsiveSOption).toBeTruthy();
+		expect(responsiveSOption).toBe('true');
 
 		const expectAttributes = await getBlockAttributes();
 		const display = expectAttributes['display-s'];
@@ -68,21 +65,21 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[0].checked
+			'.maxi-display-control button',
+			select => select[0].ariaPressed
 		);
 
-		expect(responsiveXsOption).toBeTruthy();
+		expect(responsiveXsOption).toBe('true');
 
 		// responsive M
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[1].checked
+			'.maxi-display-control button',
+			select => select[1].ariaPressed
 		);
 
-		expect(responsiveMOption).toBeTruthy();
+		expect(responsiveMOption).toBe('true');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

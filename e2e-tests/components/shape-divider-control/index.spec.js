@@ -53,7 +53,7 @@ describe('ShapeDividerControl', () => {
 		);
 
 		await page.$$eval(
-			'.maxi-shapedividercontrol__shape-list label',
+			'.maxi-shapedividercontrol__shape-list button',
 			click => click[1].click()
 		);
 
@@ -80,7 +80,7 @@ describe('ShapeDividerControl', () => {
 
 		// color
 		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-color-palette-control .maxi-sc-color-palette button',
 			selectColor => selectColor[3].click()
 		);
 

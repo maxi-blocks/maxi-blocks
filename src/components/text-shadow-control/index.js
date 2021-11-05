@@ -253,7 +253,7 @@ const TextShadow = props => {
 			{value !== 'none' && !isEmpty(value) && (
 				<>
 					<ColorControl
-						label={__('Text Shadow', 'maxi-blocks')}
+						label={__('Text shadow', 'maxi-blocks')}
 						paletteStatus={isPaletteActive}
 						paletteColor={currentPaletteColor}
 						paletteOpacity={currentPaletteOpacity}
@@ -321,7 +321,7 @@ const TextShadowControl = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				label={__('Text Shadow', 'maxi-blocks')}
+				label={__('Add text shadow', 'maxi-blocks')}
 				selected={showOptions}
 				onChange={val => {
 					changeShowOptions(val);

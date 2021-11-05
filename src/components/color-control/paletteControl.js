@@ -1,7 +1,7 @@
 /**
  * Wordpress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -84,11 +84,15 @@ const ColorPaletteControl = props => {
 		<>
 			<BaseControl
 				className='maxi-color-palette-control__palette-label'
-				label={label ? `${label} Colour` : ''}
+				label={label ? `${label} colour` : ''}
 			>
 				<div className={paletteClasses}>
 					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-						<div
+						<button
+							aria-label={sprintf(
+								__('Pallet box colour %s', 'maxi-blocks'),
+								item
+							)}
 							key={`maxi-sc-color-palette__box__${item}`}
 							className={`maxi-sc-color-palette__box ${
 								getIsActive(item)
@@ -105,13 +109,13 @@ const ColorPaletteControl = props => {
 							<span
 								className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
 							/>
-						</div>
+						</button>
 					))}
 				</div>
 			</BaseControl>
 			{!disableOpacity && (
 				<AdvancedNumberControl
-					label={__('Colour Opacity', 'maxi-blocks')}
+					label={__('Colour opacity', 'maxi-blocks')}
 					value={globalStatus ? globalPaletteOpacity : opacity}
 					onChangeValue={val => {
 						const value = !isNil(val) ? +val : 0;

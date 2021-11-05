@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
@@ -209,7 +209,7 @@ const IconControl = props => {
 							/>
 							{breakpoint === 'general' && (
 								<>
-									<RadioControl
+									<ButtonGroupControl
 										label={__(
 											'Icon Position',
 											'maxi-block'
@@ -250,7 +250,7 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					<RadioControl
+					<ButtonGroupControl
 						label=''
 						fullWidthMode
 						selected={iconStyle}
@@ -351,7 +351,7 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					<RadioControl
+					<ButtonGroupControl
 						fullWidthMode
 						selected={iconBackgroundActiveMedia || 'none'}
 						options={getBackgroundOptions()}

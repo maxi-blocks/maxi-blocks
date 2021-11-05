@@ -8,7 +8,7 @@ import {} from '@wordpress/element';
  * Internal dependencies
  */
 // import SelectControl from '../select-control';
-// import RadioControl from '../radio-control';
+// import ButtonGroupControl from '../radio-control';
 // import RangeSliderControl from '../range-slider-control';
 
 /**
@@ -396,7 +396,7 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) && (
 				<>
 					<hr />
-					<RadioControl
+					<ButtonGroupControl
 						label={__('X-Axis', 'maxi-blocks')}
 						selected={props['motion-transform-origin-x']}
 						options={[
@@ -417,7 +417,7 @@ const TimelineSettings = props => {
 							onChange({ 'motion-transform-origin-x': val })
 						}
 					/>
-					<RadioControl
+					<ButtonGroupControl
 						label={__('Y-Axis', 'maxi-blocks')}
 						selected={props['motion-transform-origin-y']}
 						options={[
@@ -439,7 +439,7 @@ const TimelineSettings = props => {
 						}
 					/>
 					<hr />
-					<RadioControl
+					<ButtonGroupControl
 						label={__('Tablet', 'maxi-blocks')}
 						selected={props['motion-tablet-status']}
 						options={[
@@ -456,7 +456,7 @@ const TimelineSettings = props => {
 							onChange({ 'motion-tablet-status': val })
 						}
 					/>
-					<RadioControl
+					<ButtonGroupControl
 						label={__('Mobile', 'maxi-blocks')}
 						selected={props['motion-mobile-status']}
 						options={[

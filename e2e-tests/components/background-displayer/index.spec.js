@@ -43,7 +43,7 @@ describe.skip('BackgroundDisplayerControl', () => {
 			'background'
 		);
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-button-control--full-width .maxi-base-control__field input',
 			select => select[2].click()
 		);
 
@@ -62,7 +62,7 @@ describe.skip('BackgroundDisplayerControl', () => {
 			'background'
 		);
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-button-control--full-width .maxi-base-control__field input',
 			select => select[3].click()
 		);
 
@@ -114,7 +114,7 @@ describe.skip('BackgroundDisplayerControl', () => {
 			'background'
 		);
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-button-control--full-width .maxi-base-control__field input',
 			select => select[4].click()
 		);
 
@@ -129,7 +129,7 @@ describe.skip('BackgroundDisplayerControl', () => {
 	/* it('Check BackgroundShape', async () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-button-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
 		);
 

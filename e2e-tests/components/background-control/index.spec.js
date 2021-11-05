@@ -19,10 +19,13 @@ import {
 } from '../../utils';
 
 describe('BackgroundControl', () => {
-	it('Check Background Color layer', async () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
+	});
+
+	it('Check Background Color layer', async () => {
 		await addBackgroundLayer(page, 'color');
 		// change color
 		await page.$$eval(
@@ -304,20 +307,7 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 	it('Check Background shape layer', async () => {
-		debugger;
-		await addBackgroundLayer(page, 'shape');
-
-		// open library
-		/* await page.$eval(
-			'.maxi-library-modal__action-section__buttons button',
-			button => button.click()
-		); */
-		await modalMock(page, { type: 'bg-shape' });
-		/* await page.waitForTimeout(200);
-		await page.$$eval(
-			'.ais-InfiniteHits .maxi-cloud-masonry-card__svg-container',
-			selectShape => selectShape[0].click()
-		); */
+		await modalMock(page, { type: 'bg-shape', isBGLayers: true });
 
 		// opacity
 		await page.$$eval(

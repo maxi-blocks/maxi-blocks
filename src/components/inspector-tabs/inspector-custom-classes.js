@@ -13,21 +13,33 @@ import TextControl from '../text-control';
  */
 const customClasses = ({ props }) => {
 	const { attributes, setAttributes } = props;
-	const { extraClassName } = attributes;
+	const { extraClassName, extraID } = attributes;
 
 	return {
 		label: __('Add CSS class/id', 'maxi-blocks'),
 		content: (
-			<TextControl
-				label={__('Add CSS classes', 'maxi-blocks')}
-				className='maxi-additional__css-classes'
-				value={extraClassName}
-				onChange={extraClassName =>
-					setAttributes({
-						extraClassName,
-					})
-				}
-			/>
+			<>
+				<TextControl
+					label={__('Add CSS classes', 'maxi-blocks')}
+					className='maxi-additional__css-classes'
+					value={extraClassName}
+					onChange={extraClassName =>
+						setAttributes({
+							extraClassName,
+						})
+					}
+				/>
+				<TextControl
+					label={__('Add ID', 'maxi-blocks')}
+					className='maxi-additional__css-classes'
+					value={extraID}
+					onChange={extraID =>
+						setAttributes({
+							extraID,
+						})
+					}
+				/>
+			</>
 		),
 	};
 };

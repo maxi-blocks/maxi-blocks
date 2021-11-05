@@ -4,6 +4,7 @@ const attributes = {
 	blockStyleBackground: 1,
 	defaultBlockStyle: 'maxi-def-light',
 	extraClassName: '',
+	extraID: '',
 	customLabel: 'Button',
 	fullWidth: 'normal',
 	buttonContent: '',

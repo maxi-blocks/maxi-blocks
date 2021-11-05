@@ -22,6 +22,7 @@ const global = {
 	},
 	extraID: {
 		type: 'string',
+		default: '',
 	},
 	isFirstOnHierarchy: {
 		type: 'boolean',

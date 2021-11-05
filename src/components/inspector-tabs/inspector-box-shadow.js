@@ -29,7 +29,7 @@ const boxShadow = ({ props, prefix = '' }) => {
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal', 'maxi-blocks'),
+						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<BoxShadowControl
 								{...getGroupAttributes(
@@ -46,7 +46,7 @@ const boxShadow = ({ props, prefix = '' }) => {
 						),
 					},
 					{
-						label: __('Hover', 'maxi-blocks'),
+						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

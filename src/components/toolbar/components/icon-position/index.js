@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import RadioControl from '../../../radio-control';
+import ButtonGroupControl from '../../../button-group-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -30,7 +30,7 @@ const IconPosition = props => {
 			icon={toolbarIconAlign}
 		>
 			<div className='toolbar-item__icon-position__popover'>
-				<RadioControl
+				<ButtonGroupControl
 					label={__('Icon Position', 'maxi-block')}
 					selected={props['icon-position']}
 					options={[

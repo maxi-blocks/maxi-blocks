@@ -128,7 +128,7 @@ describe('MapControl', () => {
 
 		// Marker text color
 		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette div',
+			'.maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette button',
 			color => color[4].click()
 		);
 

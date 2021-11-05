@@ -33,7 +33,7 @@ const background = ({
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal', 'maxi-blocks'),
+						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<>
 								<BlockBackgroundControl
@@ -53,7 +53,7 @@ const background = ({
 						),
 					},
 					{
-						label: __('Hover', 'maxi-blocks'),
+						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

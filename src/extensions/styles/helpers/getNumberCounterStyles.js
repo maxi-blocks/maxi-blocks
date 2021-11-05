@@ -66,7 +66,9 @@ const getTextStyles = (obj, blockStyle) => {
 		!obj['number-counter-palette-text-color-status'] &&
 		!isNil(obj['number-counter-text-color'])
 	)
-		response.general.stroke = obj['number-counter-text-color'];
+		response.general[
+			obj['number-counter-circle-status'] ? 'color' : 'fill'
+		] = obj['number-counter-text-color'];
 	else if (
 		obj['number-counter-palette-text-color-status'] &&
 		obj['number-counter-palette-text-color']

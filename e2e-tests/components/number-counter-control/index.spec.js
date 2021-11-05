@@ -68,7 +68,7 @@ describe('NumberCounterControl', () => {
 		// Title Font Size
 		await inputs[5].focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('1');
+		await page.keyboard.type('19');
 
 		// expect
 		const styleAttributes = await getBlockAttributes();
@@ -97,7 +97,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end': 50,
 			'number-counter-start': 20,
 			'number-counter-stroke': 50,
-			'number-counter-title-font-size': 321,
+			'number-counter-title-font-size': 19,
 		};
 
 		expect(numberCounterAttributes).toStrictEqual(expectedAttributes);

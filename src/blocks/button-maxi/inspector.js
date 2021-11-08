@@ -635,6 +635,9 @@ const Inspector = memo(
 												props,
 											}),
 										},
+										...inspectorTabs.customCss({
+											props,
+										}),
 										...inspectorTabs.motion({
 											props,
 										}),

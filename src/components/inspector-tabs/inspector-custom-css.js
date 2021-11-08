@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import TextControl from '../text-control';
+import TextareaControl from '../textarea-control';
 
 /**
  * Component
@@ -18,9 +18,9 @@ const customCss = ({ props }) => {
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
 		content: (
-			<TextControl
+			<TextareaControl
 				label={__('Add CSS classes', 'maxi-blocks')}
-				className='maxi-additional__css-classes'
+				className='maxi-additional__css'
 				value={extraClassName}
 				onChange={extraClassName =>
 					setAttributes({

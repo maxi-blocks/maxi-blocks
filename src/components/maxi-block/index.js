@@ -52,7 +52,7 @@ const MainBlock = forwardRef(
 			disableBackground,
 			uniqueID,
 			isSave,
-			extraID,
+			anchorLink,
 			...props
 		},
 		ref
@@ -60,7 +60,9 @@ const MainBlock = forwardRef(
 		if (isSave)
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
-					{!isEmpty(extraID) && <span id={extraID} />}
+					{!isEmpty(anchorLink) && (
+						<span id={anchorLink} className='maxi-block-anchor' />
+					)}
 					{disableBackground && (
 						<BackgroundDisplayer isSave {...background} />
 					)}
@@ -70,7 +72,7 @@ const MainBlock = forwardRef(
 
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
-				{!isEmpty(extraID) && <span id={extraID} />}
+				{!isEmpty(anchorLink) && <span id={anchorLink} />}
 				{disableBackground && <BackgroundDisplayer {...background} />}
 				{children}
 			</TagName>
@@ -86,7 +88,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		children,
 		blockStyle,
 		extraClassName,
-		extraID,
+		anchorLink,
 		uniqueID,
 		className,
 		displayValue,
@@ -195,7 +197,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		id: uniqueID,
 		key: `maxi-block-${uniqueID}`,
 		uniqueID,
-		extraID,
+		anchorLink,
 		background,
 		disableBackground: !disableBackground,
 		isSave,
@@ -250,7 +252,7 @@ export const getMaxiBlockBlockAttributes = props => {
 	const {
 		blockStyle,
 		extraClassName,
-		extraID,
+		anchorLink,
 		uniqueID,
 		blockFullWidth,
 		linkSettings,
@@ -283,7 +285,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		blockName: name,
 		blockStyle,
 		extraClassName,
-		extraID,
+		anchorLink,
 		uniqueID,
 		blockFullWidth,
 		displayValue,

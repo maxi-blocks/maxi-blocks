@@ -20,7 +20,7 @@ const global = {
 		type: 'string',
 		default: '',
 	},
-	extraID: {
+	anchorLink: {
 		type: 'string',
 		default: '',
 	},

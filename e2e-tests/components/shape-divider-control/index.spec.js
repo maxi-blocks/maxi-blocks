@@ -48,7 +48,7 @@ describe('ShapeDividerControl', () => {
 
 		// divider style
 		await accordionPanel.$eval(
-			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector div',
+			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector button',
 			modal => modal.click()
 		);
 

@@ -34,14 +34,15 @@
 		input {
 			width: 90% !important;
 			height: 27px !important;
-			background-color: rgba(33, 141, 250, 0) !important;
-			border: 2px solid var(--maxi-grey-1-color) !important;
-			border-radius: 5px !important;
-			font-size: 13px !important;
+			border: 1px solid var(--maxi-grey-1-color) !important;
+			border-radius: 0 !important;
+			font-size: 12px !important;
 			box-shadow: none !important;
 
 			&:focus {
-				border-color: #d0d0d0 !important;
+				border-color: var(--maxi-grey-6-color) !important;
+				box-shadow: none !important;
+				outline: 0;
 			}
 		}
 	}
@@ -71,10 +72,10 @@
 
 			span {
 				display: block;
-				width: 31px;
-				height: 31px;
-				border: 2px solid var(--maxi-grey-1-color);
-				border-radius: 5px;
+				width: 32px;
+				height: 32px;
+				border: 1px solid var(--maxi-grey-1-color);
+				border-radius: 0;
 				margin: auto;
 				opacity: 1;
 				float: left;
@@ -142,12 +143,21 @@
 			justify-content: center;
 			width: 32px;
 			height: 32px;
+			padding: 0;
 			border: 1px solid var(--maxi-grey-1-color);
+			margin: 0;
+			background-color: #fff;
 			cursor: pointer;
 			transition: all 0.5s;
 
 			&--active {
 				border: 2px solid var(--maxi-primary-color);
+			}
+			&:focus {
+				background: var(--maxi-white-1-color);
+				border-color: var(--maxi-grey-6-color);
+				box-shadow: none;
+				outline: none;
 			}
 			&:hover {
 				background: var(--maxi-white-1-color);

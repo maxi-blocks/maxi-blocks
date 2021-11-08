@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import Icon from '../icon';
 
 /**
@@ -14,7 +14,6 @@ import { isEmpty } from 'lodash';
 /**
  * Styles and Icons
  */
-import './editor.scss';
 import { alignLeft, alignCenter, alignRight, alignJustify } from '../../icons';
 
 /**
@@ -71,7 +70,7 @@ const AlignmentControl = props => {
 	);
 
 	return (
-		<RadioControl
+		<ButtonGroupControl
 			label={label}
 			className={classes}
 			selected={

@@ -34,7 +34,7 @@ const typography = ({
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal', 'maxi-blocks'),
+						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<TypographyControl
 								{...getGroupAttributes(
@@ -55,7 +55,7 @@ const typography = ({
 						),
 					},
 					{
-						label: __('Hover', 'maxi-blocks'),
+						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

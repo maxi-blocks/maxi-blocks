@@ -16,13 +16,14 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty } from 'lodash';
+import { trim, isEmpty, isNumber } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
 import { reset } from '../../icons';
+import { getIsValid } from '../../extensions/styles';
 
 /**
  * Component
@@ -94,6 +95,28 @@ const AdvancedNumberControl = props => {
 	const minValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.min;
 	const maxValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.max;
 
+	const getNewValueFromEmpty = e => {
+		const {
+			nativeEvent: { inputType },
+			target: { value: newValue },
+		} = e;
+
+		if (isNumber(value)) return newValue;
+
+		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
+
+		switch (typeofEvent) {
+			case 'click':
+				return (
+					(isNumber(placeholder) ? placeholder : 0) +
+					(+newValue ? 1 : -1)
+				);
+			case 'type':
+			default:
+				return newValue;
+		}
+	};
+
 	return (
 		<BaseControl
 			id={advancedNumberControlId}
@@ -106,7 +129,7 @@ const AdvancedNumberControl = props => {
 				className='maxi-advanced-number-control__value'
 				value={value === undefined ? defaultValue : trim(value)}
 				onChange={e => {
-					let { value } = e.target;
+					let value = getNewValueFromEmpty(e);
 
 					if (enableUnit) {
 						if (value !== '' && value > maxValue) value = maxValue;
@@ -159,7 +182,7 @@ const AdvancedNumberControl = props => {
 			)}
 			<RangeControl
 				label={label}
-				value={value || defaultValue || initial || 0}
+				value={value || defaultValue || initial || placeholder || 0}
 				onChange={val => {
 					onChangeValue(+val);
 				}}

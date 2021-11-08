@@ -5,7 +5,6 @@
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyWithModifier,
 	getEditedPostContent,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
@@ -83,7 +82,7 @@ describe('Image Maxi', () => {
 
 		// fontColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette button',
 			select => select[3].click()
 		);
 
@@ -95,8 +94,8 @@ describe('Image Maxi', () => {
 
 		// alignment
 		await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field label',
-			alignment => alignment[2].click()
+			'.maxi-alignment-control button',
+			alignment => alignment[1].click()
 		);
 
 		const alignmentAttributes = await getBlockAttributes();
@@ -111,16 +110,12 @@ describe('Image Maxi', () => {
 		);
 
 		await inputs[2].focus();
-		await page.waitForTimeout(200);
-		await page.keyboard.press('Backspace');
-		await page.waitForTimeout(200);
-		await page.keyboard.type('9');
+		await page.keyboard.type('19');
 		await page.waitForTimeout(200);
 
 		await inputs[4].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.waitForTimeout(200);
 		await page.keyboard.type('4');
+		await page.waitForTimeout(200);
 
 		await inputs[6].focus();
 		await page.keyboard.type('11');
@@ -225,27 +220,57 @@ describe('Image Maxi', () => {
 			expect(textShadow).toStrictEqual(setting);
 		}
 
-		// Colors: LinkColor, LinkHoverColor, LinkActiveColor, LinkVisitedColor
 		// LinkColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-color .maxi-sc-color-palette div',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			tabs => tabs[0].click()
+		);
+		await page.waitForTimeout(100);
+
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-color .maxi-sc-color-palette button',
 			colors => colors[1].click()
 		);
+		await page.waitForTimeout(100);
+
 		// LinkHoverColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-hover-color .maxi-sc-color-palette div',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			tabs => tabs[1].click()
+		);
+		await page.waitForTimeout(100);
+
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-hover-color .maxi-sc-color-palette button',
 			colors => colors[2].click()
 		);
+		await page.waitForTimeout(100);
+
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-active-color .maxi-sc-color-palette div',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			tabs => tabs[2].click()
+		);
+		await page.waitForTimeout(100);
+
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-active-color .maxi-sc-color-palette button',
 			colors => colors[3].click()
 		);
-		// LinkVisitedColor
+		await page.waitForTimeout(100);
+
+		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-visited-color .maxi-sc-color-palette div',
+			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			tabs => tabs[3].click()
+		);
+		await page.waitForTimeout(100);
+
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-visited-color .maxi-sc-color-palette button',
 			colors => colors[4].click()
 		);
+		await page.waitForTimeout(100);
 
 		const linkColorAttributes = await getBlockAttributes();
 		const linkAttributes = (({
@@ -309,6 +334,7 @@ describe('Image Maxi', () => {
 
 		expect(checkFrontend).toMatchSnapshot();
 	});
+
 	it('Image alt tag', async () => {
 		await openSidebarTab(page, 'style', 'alt tag');
 

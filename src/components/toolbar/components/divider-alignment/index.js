@@ -9,7 +9,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import Icon from '../../../icon';
 import SelectControl from '../../../select-control';
-import RadioControl from '../../../radio-control';
+import ButtonGroupControl from '../../../button-group-control';
 
 /**
  * Styles & Icons
@@ -87,7 +87,7 @@ const DividerAlignment = props => {
 					/>
 				)}
 				{lineOrientation === 'horizontal' && (
-					<RadioControl
+					<ButtonGroupControl
 						className='maxi-alignment-control'
 						selected={lineHorizontal}
 						options={getHorizontalOptions()}

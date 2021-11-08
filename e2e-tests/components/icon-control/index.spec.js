@@ -58,17 +58,15 @@ describe('IconControl', () => {
 		expect(spacing).toStrictEqual(66);
 
 		// icon position
-		const label = await page.$$(
-			'.maxi-radio-control .maxi-radio-control__option label'
-		);
+		const iconPosition = await page.$$('.maxi-button-group-control button');
 
-		await label[1].click();
+		await iconPosition[1].click();
 		const { 'icon-position': position } = await getBlockAttributes();
 
 		expect(position).toStrictEqual('right');
 
 		// Icon Border
-		await label[3].click();
+		await iconPosition[3].click();
 
 		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',

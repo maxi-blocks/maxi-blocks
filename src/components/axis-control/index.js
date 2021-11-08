@@ -16,6 +16,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getAttributeKey,
+	getIsValid,
 } from '../../extensions/styles';
 
 /**
@@ -55,19 +56,43 @@ const AxisSync = props => {
 
 const AxisInput = props => {
 	const {
-		placeholder,
-		value,
-		onChange,
 		label,
-		ariaLabel,
-		min,
-		max,
+		getValue,
+		getLastBreakpointValue,
+		breakpoint,
 		disableAuto,
-		checked,
-		onChangeCheckbox,
+		onChangeValue,
+		isGeneral,
+		minMaxSettings,
+		currentUnit,
+		type,
 	} = props;
 
+	const value = getValue(label, breakpoint);
+	const lastValue = getLastBreakpointValue(label);
 	const instanceId = useInstanceId(AxisInput);
+
+	const getNewValueFromEmpty = e => {
+		const {
+			nativeEvent: { inputType },
+			target: { value: newValue },
+		} = e;
+
+		if (value !== '') return newValue;
+
+		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
+
+		switch (typeofEvent) {
+			case 'click':
+				return (
+					(isNumber(lastValue) ? lastValue : 0) + (+newValue ? 1 : -1)
+				);
+
+			case 'type':
+			default:
+				return newValue;
+		}
+	};
 
 	return (
 		<div
@@ -79,12 +104,24 @@ const AxisInput = props => {
 			<input
 				className='maxi-axis-control__content__item__input'
 				type={disableAuto || value !== 'auto' ? 'number' : null}
-				placeholder={placeholder}
+				placeholder={getLastBreakpointValue(label)}
 				value={value}
-				onChange={onChange}
-				aria-label={ariaLabel}
-				min={min}
-				max={max}
+				onChange={e => {
+					let newValue = getNewValueFromEmpty(e);
+
+					if (newValue < minMaxSettings[currentUnit]?.min)
+						newValue = minMaxSettings[currentUnit]?.min;
+					if (newValue > minMaxSettings[currentUnit]?.max)
+						newValue = minMaxSettings[currentUnit]?.max;
+
+					onChangeValue(newValue, label, isGeneral, breakpoint);
+				}}
+				aria-label={sprintf(
+					__(`%s ${capitalize(label)}`, 'maxi-blocks'),
+					type
+				)}
+				min={minMaxSettings[currentUnit]?.min}
+				max={minMaxSettings[currentUnit]?.max}
 			/>
 			{!disableAuto && (
 				<label
@@ -93,8 +130,15 @@ const AxisInput = props => {
 				>
 					<input
 						type='checkbox'
-						checked={checked}
-						onChange={onChangeCheckbox}
+						checked={getLastBreakpointValue(label) === 'auto'}
+						onChange={e =>
+							onChangeValue(
+								e.target.checked ? 'auto' : '',
+								label,
+								isGeneral,
+								breakpoint
+							)
+						}
 						id={`${instanceId}-${label.toLowerCase()}`}
 					/>
 					{__('auto', 'maxi-blocks')}
@@ -106,7 +150,7 @@ const AxisInput = props => {
 
 const AxisControlContent = props => {
 	const {
-		label,
+		label: type,
 		getOptions,
 		currentUnit,
 		target,
@@ -128,7 +172,7 @@ const AxisControlContent = props => {
 	return (
 		<>
 			<BaseControl
-				label={__(label, 'maxi-blocks')}
+				label={__(type, 'maxi-blocks')}
 				className='maxi-axis-control__header'
 			>
 				<SelectControl
@@ -159,7 +203,7 @@ const AxisControlContent = props => {
 					onClick={() => onReset(isGeneral, breakpoint)}
 					aria-label={sprintf(
 						__('Reset %s settings', 'maxi-blocks'),
-						label.toLowerCase()
+						type.toLowerCase()
 					)}
 					action='reset'
 					type='reset'
@@ -169,30 +213,16 @@ const AxisControlContent = props => {
 			</BaseControl>
 			<div className='maxi-axis-control__content maxi-axis-control__top-part'>
 				<AxisInput
-					label='top'
-					placeholder={getLastBreakpointValue(inputsArray[0])}
-					value={getValue(inputsArray[0], breakpoint)}
-					onChange={e =>
-						onChangeValue(
-							e.target.value,
-							inputsArray[0],
-							isGeneral,
-							breakpoint
-						)
-					}
-					ariaLabel={sprintf(__('%s Top', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
+					label={inputsArray[0]}
+					getValue={getValue}
+					getLastBreakpointValue={getLastBreakpointValue}
+					breakpoint={breakpoint}
 					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[0]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[0],
-							isGeneral,
-							breakpoint
-						)
-					}
+					onChangeValue={onChangeValue}
+					isGeneral={isGeneral}
+					minMaxSettings={minMaxSettings}
+					currentUnit={currentUnit}
+					type={type}
 				/>
 				{(target === 'padding' || target === 'margin') && (
 					<AxisSync
@@ -228,30 +258,16 @@ const AxisControlContent = props => {
 					/>
 				)}
 				<AxisInput
-					label='bottom'
-					placeholder={getLastBreakpointValue(inputsArray[2])}
-					value={getValue(inputsArray[2], breakpoint)}
-					onChange={e =>
-						onChangeValue(
-							e.target.value,
-							inputsArray[2],
-							isGeneral,
-							breakpoint
-						)
-					}
-					ariaLabel={sprintf(__('%s Bottom', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
+					label={inputsArray[2]}
+					getValue={getValue}
+					getLastBreakpointValue={getLastBreakpointValue}
+					breakpoint={breakpoint}
 					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[2]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[2],
-							isGeneral,
-							breakpoint
-						)
-					}
+					onChangeValue={onChangeValue}
+					isGeneral={isGeneral}
+					minMaxSettings={minMaxSettings}
+					currentUnit={currentUnit}
+					type={type}
 				/>
 			</div>
 			<div className='maxi-axis-control__middle-part'>
@@ -284,30 +300,16 @@ const AxisControlContent = props => {
 			</div>
 			<div className='maxi-axis-control__content maxi-axis-control__bottom-part'>
 				<AxisInput
-					label='left'
-					placeholder={getLastBreakpointValue(inputsArray[3])}
-					value={getValue(inputsArray[3], breakpoint)}
-					onChange={e =>
-						onChangeValue(
-							e.target.value,
-							inputsArray[3],
-							isGeneral,
-							breakpoint
-						)
-					}
-					ariaLabel={sprintf(__('%s Left', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
+					label={inputsArray[3]}
+					getValue={getValue}
+					getLastBreakpointValue={getLastBreakpointValue}
+					breakpoint={breakpoint}
 					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[3]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[3],
-							isGeneral,
-							breakpoint
-						)
-					}
+					onChangeValue={onChangeValue}
+					isGeneral={isGeneral}
+					minMaxSettings={minMaxSettings}
+					currentUnit={currentUnit}
+					type={type}
 				/>
 				{(target === 'padding' || target === 'margin') && (
 					<AxisSync
@@ -347,30 +349,16 @@ const AxisControlContent = props => {
 					/>
 				)}
 				<AxisInput
-					label='right'
-					placeholder={getLastBreakpointValue(inputsArray[1])}
-					value={getValue(inputsArray[1], breakpoint)}
-					onChange={e =>
-						onChangeValue(
-							e.target.value,
-							inputsArray[1],
-							isGeneral,
-							breakpoint
-						)
-					}
-					ariaLabel={sprintf(__('%s Right', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
+					label={inputsArray[1]}
+					getValue={getValue}
+					getLastBreakpointValue={getLastBreakpointValue}
+					breakpoint={breakpoint}
 					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[1]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[1],
-							isGeneral,
-							breakpoint
-						)
-					}
+					onChangeValue={onChangeValue}
+					isGeneral={isGeneral}
+					minMaxSettings={minMaxSettings}
+					currentUnit={currentUnit}
+					type={type}
 				/>
 			</div>
 		</>
@@ -422,6 +410,7 @@ const AxisControl = props => {
 
 	const classes = classnames(
 		'maxi-axis-control',
+		target && `maxi-axis-control__${target}`,
 		disableAuto && 'maxi-axis-control__disable-auto',
 		className
 	);
@@ -734,6 +723,7 @@ const AxisControl = props => {
 				<ResponsiveTabsControl breakpoint={breakpoint}>
 					<AxisControlContent
 						{...props}
+						key='AxisControlContent__1'
 						label={label}
 						getOptions={getOptions}
 						currentUnit={currentUnit}
@@ -755,6 +745,7 @@ const AxisControl = props => {
 			{!useResponsiveTabs && (
 				<AxisControlContent
 					{...props}
+					key='AxisControlContent__2'
 					label={label}
 					getOptions={getOptions}
 					currentUnit={currentUnit}

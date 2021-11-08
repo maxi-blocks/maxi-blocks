@@ -29,7 +29,7 @@ describe('Dropdown', () => {
 		);
 
 		await page.$$eval(
-			'.maxi-shapedividercontrol__shape-list label',
+			'.maxi-shapedividercontrol__shape-list button',
 			click => click[1].click()
 		);
 

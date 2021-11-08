@@ -112,12 +112,12 @@ describe('AxisControl', () => {
 		const syncButton = await page.$$(
 			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
 		);
-		let topInput = await page.$$(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		let topInput = await page.$(
+			'.maxi-axis-control.maxi-axis-control__padding .maxi-axis-control__content__item__top input'
 		);
 
 		await syncButton[1].click();
-		await topInput[1].focus();
+		await topInput.focus();
 
 		await page.keyboard.type('-5');
 
@@ -130,7 +130,7 @@ describe('AxisControl', () => {
 		// value in general and responsive
 		// set value
 
-		await topInput[1].focus();
+		await topInput.focus();
 
 		await page.keyboard.press('Backspace');
 		await page.keyboard.type('13');
@@ -146,10 +146,10 @@ describe('AxisControl', () => {
 		);
 
 		// set responsive value
-		topInput = await page.$$(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		topInput = await page.$(
+			'.maxi-axis-control.maxi-axis-control__padding .maxi-axis-control__content__item__top input'
 		);
-		await topInput[1].focus();
+		await topInput.focus();
 
 		await page.keyboard.type('0');
 

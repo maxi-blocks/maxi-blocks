@@ -68,7 +68,7 @@ describe('NumberCounterControl', () => {
 		// Title Font Size
 		await inputs[5].focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('1');
+		await page.keyboard.type('19');
 
 		// expect
 		const styleAttributes = await getBlockAttributes();
@@ -97,7 +97,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end': 50,
 			'number-counter-start': 20,
 			'number-counter-stroke': 50,
-			'number-counter-title-font-size': 321,
+			'number-counter-title-font-size': 19,
 		};
 
 		expect(numberCounterAttributes).toStrictEqual(expectedAttributes);
@@ -153,13 +153,13 @@ describe('NumberCounterControl', () => {
 		);
 
 		// Text colour
-		await colors[0].$$eval('div', click => click[3].click());
+		await colors[0].$$eval('button', click => click[3].click());
 
 		// Circle Background Colour
-		await colors[1].$$eval('div', click => click[2].click());
+		await colors[1].$$eval('button', click => click[2].click());
 
 		// Circle Bar Colour
-		await colors[2].$$eval('div', click => click[1].click());
+		await colors[2].$$eval('button', click => click[1].click());
 
 		// expect
 		const colorAttributes = await getBlockAttributes();

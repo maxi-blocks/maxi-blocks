@@ -10,7 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	DividerControl,
-	RadioControl,
+	ButtonGroupControl,
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -45,7 +45,7 @@ const Inspector = props => {
 											label: __('Line', 'maxi-blocks'),
 											content: (
 												<>
-													<RadioControl
+													<ButtonGroupControl
 														fullWidthMode
 														label={__(
 															'Line Orientation',
@@ -76,7 +76,7 @@ const Inspector = props => {
 															})
 														}
 													/>
-													<RadioControl
+													<ButtonGroupControl
 														fullWidthMode
 														label={__(
 															'Line Vertical Position',
@@ -112,7 +112,7 @@ const Inspector = props => {
 															})
 														}
 													/>
-													<RadioControl
+													<ButtonGroupControl
 														fullWidthMode
 														label={__(
 															'Line Horizontal Position',

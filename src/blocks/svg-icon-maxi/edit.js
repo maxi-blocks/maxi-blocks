@@ -64,9 +64,9 @@ class edit extends MaxiBlockComponent {
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
+			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
-			if (this.resizableObject.current.state.width !== `${svgWidth}%`) {
-				const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
+			if (this.resizableObject.current.state.width !== fullWidthValue) {
 				this.resizableObject.current.updateSize({
 					width: fullWidthValue,
 				});

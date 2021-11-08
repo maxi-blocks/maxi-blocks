@@ -1,49 +1,44 @@
 .maxi-shapedividercontrol {
 	&__shape-list {
-		.maxi-base-control__field {
-			flex-wrap: wrap;
-			min-width: 250px;
-		}
-		.maxi-button-group-control {
-			&__input {
-				display: none;
-			}
-			&__option {
-				margin-bottom: 0;
-				display: block;
-				width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		width: 271px;
+		height: 300px;
+		overflow-y: scroll;
 
-				label {
-					display: block;
-					padding: 10px;
-					margin-bottom: 5px;
-				}
-				input {
-					&:checked ~ label {
-						background: #eee;
-					}
-				}
-				&:hover {
-					background: #eee;
+		.maxi-button-group-control__option {
+			width: 100%;
+
+			&:focus,
+			&--selected {
+				border: none;
+				background-color: var(--maxi-white-4-color) !important;
+				box-shadow: none;
+				outline: none;
+
+				svg {
+					fill: var(--maxi-secondary-color);
 				}
 			}
 		}
 	}
 	&__shape-selector {
 		width: 100%;
-		margin-bottom: 10px;
+		margin-bottom: 8px;
 
 		&__display {
 			display: block;
-			border: 2px solid #ebeced;
-			background-color: #fff;
-			border-radius: 5px;
 			width: 100%;
-			padding: 8px 0;
+			padding: 18px 0;
+			border: 1px solid var(--maxi-grey-1-color);
+			border-radius: 0;
+			background-color: #fff;
 			text-align: center;
+			transition: all 0.5s;
+			cursor: pointer;
 
 			&:hover {
-				color: #464a53;
+				border-color: var(--maxi-grey-6-color);
 			}
 		}
 	}

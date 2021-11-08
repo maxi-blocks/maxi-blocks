@@ -47,6 +47,7 @@ const Inspector = props => {
 												'Shape divider',
 												'maxi-blocks'
 											),
+											disablePadding: true,
 											content: (
 												<ShapeDividerControl
 													{...getGroupAttributes(

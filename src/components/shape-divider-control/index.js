@@ -2,11 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import SettingTabsControl from '../setting-tabs-control';
 import ButtonGroupControl from '../button-group-control';
 import OpacityControl from '../opacity-control';
 import ToggleSwitch from '../toggle-switch';
@@ -199,282 +199,356 @@ const ShapeDividerControl = props => {
 			case 'cloud-bottom-opacity':
 				return cloudBottomOpacity;
 			default:
-				return __('Divider Style', 'max-block');
+				return __('Divider style', 'max-block');
 		}
 	};
 
-	const [shapeDividerStatus, setShapeDividerStatus] = useState('top');
-
 	return (
 		<div className='maxi-shapedividercontrol'>
-			<ButtonGroupControl
-				label=''
-				selected={shapeDividerStatus}
-				options={[
-					{ label: __('Top', 'maxi-blocks'), value: 'top' },
-					{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
+			<SettingTabsControl
+				items={[
+					{
+						label: __('Top shape divider', 'maxi-blocks'),
+						content: (
+							<>
+								<ToggleSwitch
+									className='shape-divider-top-status'
+									label={__(
+										'Enable top shape divider',
+										'maxi-blocks'
+									)}
+									selected={props['shape-divider-top-status']}
+									onChange={val =>
+										onChange({
+											'shape-divider-top-status': val,
+										})
+									}
+								/>
+								{!!props['shape-divider-top-status'] && (
+									<>
+										<Dropdown
+											className='maxi-shapedividercontrol__shape-selector'
+											contentClassName='maxi-shapedividercontrol_popover'
+											position='bottom center'
+											renderToggle={({
+												isOpen,
+												onToggle,
+											}) => (
+												<div
+													className='maxi-shapedividercontrol__shape-selector__display'
+													onClick={onToggle}
+												>
+													{showShapes('top')}
+												</div>
+											)}
+											renderContent={() => (
+												<ButtonGroupControl
+													className='maxi-shapedividercontrol__shape-list'
+													selected={
+														props[
+															'shape-divider-top-shape-style'
+														]
+													}
+													options={shapeItems}
+													onChange={shapeStyle =>
+														onChange({
+															'shape-divider-top-shape-style':
+																shapeStyle,
+														})
+													}
+												/>
+											)}
+										/>
+										<OpacityControl
+											label={__(
+												'Colour opacity',
+												'maxi-blocks'
+											)}
+											opacity={
+												props[
+													'shape-divider-top-opacity'
+												]
+											}
+											onChange={opacity =>
+												onChange({
+													'shape-divider-top-opacity':
+														opacity,
+												})
+											}
+										/>
+										<ColorControl
+											label={__('Divider', 'maxi-blocks')}
+											color={
+												props['shape-divider-top-color']
+											}
+											defaultColor={getDefaultAttribute(
+												'shape-divider-top-color'
+											)}
+											paletteColor={
+												props[
+													'shape-divider-palette-top-color'
+												]
+											}
+											paletteStatus={
+												props[
+													'shape-divider-palette-top-color-status'
+												]
+											}
+											onChange={({
+												color,
+												paletteColor,
+												paletteStatus,
+											}) =>
+												onChange({
+													'shape-divider-top-color':
+														color,
+													'shape-divider-palette-top-color':
+														paletteColor,
+													'shape-divider-palette-top-color-status':
+														paletteStatus,
+												})
+											}
+											disableOpacity
+										/>
+										<AdvancedNumberControl
+											label={__(
+												'Divider height',
+												'maxi-blocks'
+											)}
+											enableUnit
+											unit={
+												props[
+													'shape-divider-top-height-unit'
+												]
+											}
+											allowedUnits={['px']}
+											onChangeUnit={val =>
+												onChange({
+													'shape-divider-top-height-unit':
+														val,
+												})
+											}
+											value={
+												props[
+													'shape-divider-top-height'
+												]
+											}
+											onChangeValue={val =>
+												onChange({
+													'shape-divider-top-height':
+														val,
+												})
+											}
+											onReset={() =>
+												onChange({
+													'shape-divider-top-height':
+														getDefaultAttribute(
+															'shape-divider-top-height'
+														),
+													'shape-divider-top-height-unit':
+														getDefaultAttribute(
+															'shape-divider-top-height-unit'
+														),
+												})
+											}
+										/>
+										<ToggleSwitch
+											className='shape-divider-top-effects-status'
+											label={__(
+												'Enable scroll effect',
+												'maxi-blocks'
+											)}
+											selected={
+												props[
+													'shape-divider-top-effects-status'
+												]
+											}
+											onChange={val =>
+												onChange({
+													'shape-divider-top-effects-status':
+														val,
+												})
+											}
+										/>
+									</>
+								)}
+							</>
+						),
+					},
+					{
+						label: __('Bottom shape divider', 'maxi-blocks'),
+						content: (
+							<>
+								<ToggleSwitch
+									className='shape-divider-bottom-status'
+									label={__(
+										'Enable bottom shape divider',
+										'maxi-blocks'
+									)}
+									selected={
+										props['shape-divider-bottom-status']
+									}
+									onChange={val =>
+										onChange({
+											'shape-divider-bottom-status': val,
+										})
+									}
+								/>
+								{!!props['shape-divider-bottom-status'] && (
+									<>
+										<Dropdown
+											className='maxi-shapedividercontrol__shape-selector'
+											contentClassName='maxi-shapedividercontrol_popover'
+											position='bottom center'
+											renderToggle={({
+												isOpen,
+												onToggle,
+											}) => (
+												<div
+													className='maxi-shapedividercontrol__shape-selector__display'
+													onClick={onToggle}
+												>
+													{showShapes('bottom')}
+												</div>
+											)}
+											renderContent={() => (
+												<ButtonGroupControl
+													className='maxi-shapedividercontrol__shape-list'
+													selected={
+														props[
+															'shape-divider-bottom-shape-style'
+														]
+													}
+													options={shapeItems}
+													onChange={shapeStyle =>
+														onChange({
+															'shape-divider-bottom-shape-style':
+																shapeStyle,
+														})
+													}
+												/>
+											)}
+										/>
+										<OpacityControl
+											label={__(
+												'Colour opacity',
+												'maxi-blocks'
+											)}
+											opacity={
+												props[
+													'shape-divider-bottom-opacity'
+												]
+											}
+											onChange={opacity =>
+												onChange({
+													'shape-divider-bottom-opacity':
+														opacity,
+												})
+											}
+										/>
+										<ColorControl
+											label={__('Divider', 'maxi-blocks')}
+											color={
+												props[
+													'shape-divider-bottom-color'
+												]
+											}
+											defaultColor={getDefaultAttribute(
+												'shape-divider-bottom-color'
+											)}
+											paletteColor={
+												props[
+													'shape-divider-palette-bottom-color'
+												]
+											}
+											paletteStatus={
+												props[
+													'shape-divider-palette-bottom-color-status'
+												]
+											}
+											onChange={({
+												color,
+												paletteColor,
+												paletteStatus,
+											}) =>
+												onChange({
+													'shape-divider-bottom-color':
+														color,
+													'shape-divider-palette-bottom-color':
+														paletteColor,
+													'shape-divider-palette-bottom-color-status':
+														paletteStatus,
+												})
+											}
+											disableOpacity
+										/>
+										<AdvancedNumberControl
+											label={__(
+												'Divider height',
+												'maxi-blocks'
+											)}
+											enableUnit
+											unit={
+												props[
+													'shape-divider-bottom-height-unit'
+												]
+											}
+											allowedUnits={['px']}
+											onChangeUnit={val =>
+												onChange({
+													'shape-divider-bottom-height-unit':
+														val,
+												})
+											}
+											value={
+												props[
+													'shape-divider-bottom-height'
+												]
+											}
+											onChangeValue={val =>
+												onChange({
+													'shape-divider-bottom-height':
+														val,
+												})
+											}
+											onReset={() =>
+												onChange({
+													'shape-divider-bottom-height':
+														getDefaultAttribute(
+															'shape-divider-bottom-height'
+														),
+													'shape-divider-bottom-height-unit':
+														getDefaultAttribute(
+															'shape-divider-bottom-height-unit'
+														),
+												})
+											}
+										/>
+										<ToggleSwitch
+											className='shape-divider-bottom-effects-status'
+											label={__(
+												'Enable scroll effect',
+												'maxi-blocks'
+											)}
+											selected={
+												props[
+													'shape-divider-bottom-effects-status'
+												]
+											}
+											onChange={val =>
+												onChange({
+													'shape-divider-bottom-effects-status':
+														val,
+												})
+											}
+										/>
+									</>
+								)}
+							</>
+						),
+					},
 				]}
-				onChange={val => setShapeDividerStatus(val)}
 			/>
-			{shapeDividerStatus === 'top' && (
-				<>
-					<ToggleSwitch
-						className='shape-divider-top-status'
-						label={__('Enable Top Shape Divider', 'maxi-blocks')}
-						selected={props['shape-divider-top-status']}
-						onChange={val =>
-							onChange({
-								'shape-divider-top-status': val,
-							})
-						}
-					/>
-					{!!props['shape-divider-top-status'] && (
-						<>
-							<ToggleSwitch
-								className='shape-divider-top-effects-status'
-								label={__(
-									'Enable Scroll Effect',
-									'maxi-blocks'
-								)}
-								selected={
-									props['shape-divider-top-effects-status']
-								}
-								onChange={val =>
-									onChange({
-										'shape-divider-top-effects-status': val,
-									})
-								}
-							/>
-							<Dropdown
-								className='maxi-shapedividercontrol__shape-selector'
-								contentClassName='maxi-shapedividercontrol_popover'
-								position='bottom center'
-								renderToggle={({ isOpen, onToggle }) => (
-									<div
-										className='maxi-shapedividercontrol__shape-selector__display'
-										onClick={onToggle}
-									>
-										{showShapes('top')}
-									</div>
-								)}
-								renderContent={() => (
-									<ButtonGroupControl
-										className='maxi-shapedividercontrol__shape-list'
-										selected={
-											props[
-												'shape-divider-top-shape-style'
-											]
-										}
-										options={shapeItems}
-										onChange={shapeStyle =>
-											onChange({
-												'shape-divider-top-shape-style':
-													shapeStyle,
-											})
-										}
-									/>
-								)}
-							/>
-							<OpacityControl
-								opacity={props['shape-divider-top-opacity']}
-								onChange={opacity =>
-									onChange({
-										'shape-divider-top-opacity': opacity,
-									})
-								}
-							/>
-							<ColorControl
-								label={__('Shape Top', 'maxi-blocks')}
-								color={props['shape-divider-top-color']}
-								defaultColor={getDefaultAttribute(
-									'shape-divider-top-color'
-								)}
-								paletteColor={
-									props['shape-divider-palette-top-color']
-								}
-								paletteStatus={
-									props[
-										'shape-divider-palette-top-color-status'
-									]
-								}
-								onChange={({
-									color,
-									paletteColor,
-									paletteStatus,
-								}) =>
-									onChange({
-										'shape-divider-top-color': color,
-										'shape-divider-palette-top-color':
-											paletteColor,
-										'shape-divider-palette-top-color-status':
-											paletteStatus,
-									})
-								}
-								disableOpacity
-							/>
-							<AdvancedNumberControl
-								label={__('Divider Height', 'maxi-blocks')}
-								enableUnit
-								unit={props['shape-divider-top-height-unit']}
-								allowedUnits={['px']}
-								onChangeUnit={val =>
-									onChange({
-										'shape-divider-top-height-unit': val,
-									})
-								}
-								value={props['shape-divider-top-height']}
-								onChangeValue={val =>
-									onChange({
-										'shape-divider-top-height': val,
-									})
-								}
-								onReset={() =>
-									onChange({
-										'shape-divider-top-height':
-											getDefaultAttribute(
-												'shape-divider-top-height'
-											),
-										'shape-divider-top-height-unit':
-											getDefaultAttribute(
-												'shape-divider-top-height-unit'
-											),
-									})
-								}
-							/>
-						</>
-					)}
-				</>
-			)}
-			{shapeDividerStatus === 'bottom' && (
-				<>
-					<ToggleSwitch
-						className='shape-divider-bottom-status'
-						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
-						selected={props['shape-divider-bottom-status']}
-						onChange={val =>
-							onChange({
-								'shape-divider-bottom-status': val,
-							})
-						}
-					/>
-					{!!props['shape-divider-bottom-status'] && (
-						<>
-							<ToggleSwitch
-								className='shape-divider-bottom-effects-status'
-								label={__(
-									'Enable Scroll Effect',
-									'maxi-blocks'
-								)}
-								selected={
-									props['shape-divider-bottom-effects-status']
-								}
-								onChange={val =>
-									onChange({
-										'shape-divider-bottom-effects-status':
-											val,
-									})
-								}
-							/>
-							<Dropdown
-								className='maxi-shapedividercontrol__shape-selector'
-								contentClassName='maxi-shapedividercontrol_popover'
-								position='bottom center'
-								renderToggle={({ isOpen, onToggle }) => (
-									<div
-										className='maxi-shapedividercontrol__shape-selector__display'
-										onClick={onToggle}
-									>
-										{showShapes('bottom')}
-									</div>
-								)}
-								renderContent={() => (
-									<ButtonGroupControl
-										className='maxi-shapedividercontrol__shape-list'
-										selected={
-											props[
-												'shape-divider-bottom-shape-style'
-											]
-										}
-										options={shapeItems}
-										onChange={shapeStyle =>
-											onChange({
-												'shape-divider-bottom-shape-style':
-													shapeStyle,
-											})
-										}
-									/>
-								)}
-							/>
-							<OpacityControl
-								opacity={props['shape-divider-bottom-opacity']}
-								onChange={opacity =>
-									onChange({
-										'shape-divider-bottom-opacity': opacity,
-									})
-								}
-							/>
-							<ColorControl
-								label={__('Shape Bottom', 'maxi-blocks')}
-								color={props['shape-divider-bottom-color']}
-								defaultColor={getDefaultAttribute(
-									'shape-divider-bottom-color'
-								)}
-								paletteColor={
-									props['shape-divider-palette-bottom-color']
-								}
-								paletteStatus={
-									props[
-										'shape-divider-palette-bottom-color-status'
-									]
-								}
-								onChange={({
-									color,
-									paletteColor,
-									paletteStatus,
-								}) =>
-									onChange({
-										'shape-divider-bottom-color': color,
-										'shape-divider-palette-bottom-color':
-											paletteColor,
-										'shape-divider-palette-bottom-color-status':
-											paletteStatus,
-									})
-								}
-								disableOpacity
-							/>
-							<AdvancedNumberControl
-								label={__('Divider Height', 'maxi-blocks')}
-								enableUnit
-								unit={props['shape-divider-bottom-height-unit']}
-								allowedUnits={['px']}
-								onChangeUnit={val =>
-									onChange({
-										'shape-divider-bottom-height-unit': val,
-									})
-								}
-								value={props['shape-divider-bottom-height']}
-								onChangeValue={val =>
-									onChange({
-										'shape-divider-bottom-height': val,
-									})
-								}
-								onReset={() =>
-									onChange({
-										'shape-divider-bottom-height':
-											getDefaultAttribute(
-												'shape-divider-bottom-height'
-											),
-										'shape-divider-bottom-height-unit':
-											getDefaultAttribute(
-												'shape-divider-bottom-height-unit'
-											),
-									})
-								}
-							/>
-						</>
-					)}
-				</>
-			)}
 		</div>
 	);
 };

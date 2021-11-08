@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openSidebarTab, modalMock } from '../../utils';
 // this test will be corrected with the update of the background-control tests
-describe.skip('LoaderControl', () => {
+describe('LoaderControl', () => {
 	it('Check loader control', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');

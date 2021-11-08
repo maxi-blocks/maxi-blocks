@@ -307,124 +307,111 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 	it('Check Background shape layer', async () => {
-		await modalMock(page, { type: 'bg-shape', isBGLayers: true });
-
-		// opacity
-		await page.$$eval(
-			'.maxi-color-palette-control .maxi-advanced-number-control input',
-			opacity => opacity[0].focus()
-		);
-
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('77');
-
-		// position
-		await page.$$eval(
-			'.maxi-background-layer__content .maxi-tabs-content .maxi-tabs-control button',
-			button => button[1].click()
-		);
-
-		// Y-axis
-		await page.$$eval(
-			'.maxi-settingstab-control .maxi-advanced-number-control .maxi-base-control__field input',
-			input => input[2].focus()
-		);
-
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('53');
-
-		// X-axis
-		await page.$$eval(
-			'.maxi-settingstab-control .maxi-advanced-number-control .maxi-base-control__field input',
-			input => input[4].focus()
-		);
-
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('36');
-
-		// size
-		await page.$$eval(
-			'.maxi-background-layer__content .maxi-tabs-content .maxi-tabs-control button',
-			opacity => opacity[2].click()
-		);
-
-		await page.$$eval('.maxi-advanced-number-control input', size =>
-			size[2].focus()
-		);
-
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('84');
-
-		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
-	});
-
-	it.skip('Check Background shape layer hover', async () => {
 		const accordion = await openSidebarTab(
 			page,
 			'style',
 			'background layer'
 		);
 
-		await page.waitForTimeout(200);
+		await accordion.$$eval(
+			'.maxi-tabs-control--disable-padding button',
+			button => button[0].click()
+		);
+
+		await modalMock(page, { type: 'bg-shape', isBGLayers: true });
+		await page.$eval('.maxi-background-layer__arrow', display =>
+			display.click()
+		);
+
+		// opacity
+		const opacityInput = await page.$$(
+			'.maxi-color-control .maxi-advanced-number-control input'
+		);
+
+		await opacityInput[0].focus();
+		await page.keyboard.type('77');
+
+		// sync button
+		await page.$$eval('.maxi-axis-control__middle-part button', input =>
+			input[0].click()
+		);
+
+		// position top
+		const positionTop = await page.$$(
+			'.maxi-axis-control__content__item__top input'
+		);
+
+		await positionTop[0].focus();
+		await page.keyboard.type('25');
+
+		// size
+		await page.$$eval(
+			'.maxi-responsive-tabs-control .maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const sizeInput = await page.$$(
+			'.maxi-tabs-content--disable-padding .maxi-tab-content--selected .maxi-tab-content--selected input'
+		);
+
+		await sizeInput[8].focus();
+		await page.keyboard.type('77');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('Check Background shape layer hover', async () => {
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
+
 		// hover
 		await accordion.$$eval(
 			'.maxi-tabs-control--disable-padding button',
 			button => button[1].click()
 		);
-		await page.waitForTimeout(200);
 		// hover options
 		await page.$$eval(
 			'.maxi-background-layers_options .maxi-background-layer__arrow',
-			options => options[3].click()
+			options => options[0].click()
 		);
 
-		await page.waitForTimeout('200');
 		// opacity
-		await page.$$eval(
-			'.maxi-advanced-number-control .maxi-base-control__field input',
-			opacity => opacity[2].focus()
+		const opacityInput = await page.$$(
+			'.maxi-color-control .maxi-advanced-number-control input'
 		);
 
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('62');
+		await opacityInput[0].focus();
+		await page.keyboard.type('77');
 
-		// position
-		await page.$$eval(
-			'.maxi-background-layer__content .maxi-tabs-content .maxi-tabs-control button',
-			button => button[1].click()
+		// sync button
+		await page.$$eval('.maxi-axis-control__middle-part button', input =>
+			input[0].click()
 		);
 
-		// Y-axis
-		await page.$$eval(
-			'.maxi-settingstab-control .maxi-advanced-number-control .maxi-base-control__field input',
-			input => input[2].focus()
+		// position top
+		const positionTop = await page.$$(
+			'.maxi-axis-control__content__item__top input'
 		);
 
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('93');
-
-		// X-axis
-		await page.$$eval(
-			'.maxi-settingstab-control .maxi-advanced-number-control .maxi-base-control__field input',
-			input => input[4].focus()
-		);
-
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('42');
+		await positionTop[0].focus();
+		await page.keyboard.type('25');
 
 		// size
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-tabs-content .maxi-tabs-control button',
-			opacity => opacity[2].click()
+			'.maxi-responsive-tabs-control .maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
 		);
 
-		await page.$$eval('.maxi-advanced-number-control input', size =>
-			size[2].focus()
+		const sizeInput = await page.$$(
+			'.maxi-tabs-content--disable-padding .maxi-tab-content--selected .maxi-tab-content--selected input'
 		);
 
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('44');
+		await sizeInput[4].focus();
+		await page.keyboard.type('77');
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();

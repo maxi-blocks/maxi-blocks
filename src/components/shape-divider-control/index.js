@@ -234,12 +234,12 @@ const ShapeDividerControl = props => {
 												isOpen,
 												onToggle,
 											}) => (
-												<div
+												<button
 													className='maxi-shapedividercontrol__shape-selector__display'
 													onClick={onToggle}
 												>
 													{showShapes('top')}
-												</div>
+												</button>
 											)}
 											renderContent={() => (
 												<ButtonGroupControl
@@ -404,12 +404,12 @@ const ShapeDividerControl = props => {
 												isOpen,
 												onToggle,
 											}) => (
-												<div
+												<button
 													className='maxi-shapedividercontrol__shape-selector__display'
 													onClick={onToggle}
 												>
 													{showShapes('bottom')}
-												</div>
+												</button>
 											)}
 											renderContent={() => (
 												<ButtonGroupControl

@@ -12,12 +12,12 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and Icons
  */
 import './editor.scss';
+import { BaseControl } from '..';
 
 /**
  * Component
@@ -26,6 +26,7 @@ const ButtonGroupControl = ({
 	label,
 	className,
 	selected,
+	help,
 	onChange,
 	options = [],
 	fullWidthMode = false,
@@ -40,25 +41,30 @@ const ButtonGroupControl = ({
 	);
 
 	return (
-		!isEmpty(options) && (
-			<div role='group' className={classes} aria-labelledby={label}>
-				{options.map(({ value, label }, index) => (
-					<Button
-						label={value}
-						key={`${id}-${index}`}
-						aria-pressed={selected === value}
-						className={`maxi-button-group-control__option${
-							selected === value
-								? ' maxi-button-group-control__option--selected'
-								: ''
-						}`}
-						onClick={() => onChange(value)}
-					>
-						{label}
-					</Button>
-				))}
-			</div>
-		)
+		<BaseControl
+			label={label}
+			help={help}
+			className={classes}
+			aria-labelledby={label}
+			role='group'
+		>
+			{options.map(({ value, label, ...rest }, index) => (
+				<Button
+					label={value}
+					key={`${id}-${index}`}
+					aria-pressed={selected === value}
+					className={`maxi-button-group-control__option${
+						selected === value
+							? ' maxi-button-group-control__option--selected'
+							: ''
+					}`}
+					onClick={() => onChange(value)}
+					{...rest}
+				>
+					{label}
+				</Button>
+			))}
+		</BaseControl>
 	);
 };
 

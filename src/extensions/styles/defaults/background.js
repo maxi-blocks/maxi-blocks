@@ -224,6 +224,10 @@ export const rawBackgroundSVG = {
 		type: 'string',
 		default: '%',
 	},
+	'background-svg-position-sync': {
+		type: 'string',
+		default: 'all',
+	},
 	'background-svg-size': {
 		type: 'number',
 		default: 100,

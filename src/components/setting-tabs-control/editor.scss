@@ -8,6 +8,7 @@
 		&__sidebar-settings-tabs {
 			.maxi-tabs-control__button[aria-pressed='true'] {
 				border-bottom-color: var(--maxi-primary-color);
+				color: var(--maxi-black-1-color);
 			}
 		}
 		&:not(.maxi-tabs-control--disable-padding) {
@@ -46,7 +47,7 @@
 			}
 			&[aria-pressed='true'] {
 				border-bottom: 2px solid var(--maxi-secondary-color);
-				color: var(--maxi-black-1-color);
+				color: var(--maxi-secondary-color);
 				background-color: var(--maxi-white-3-color);
 				font-weight: 500;
 			}

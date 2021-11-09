@@ -15,11 +15,13 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 }
 .maxi-shapedividercontrol {
 	&__shape-list {
-		display: flex;
-		flex-wrap: wrap;
-		width: 271px;
-		height: 300px;
-		overflow-y: scroll;
+		.maxi-base-control__field {
+			display: flex;
+			flex-wrap: wrap;
+			width: 271px;
+			height: 300px;
+			overflow-y: scroll;
+		}
 
 		.maxi-button-group-control__option {
 			width: 100%;

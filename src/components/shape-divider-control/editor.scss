@@ -24,6 +24,9 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		.maxi-button-group-control__option {
 			width: 100%;
 
+			svg {
+				width: 100% !important;
+			}
 			&:focus,
 			&--selected {
 				border: none;

@@ -28,7 +28,7 @@ import { setBreakpointToLayer } from './utils';
  */
 import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual } from 'lodash';
+import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
 
 /**
  * Icons
@@ -329,14 +329,16 @@ const LayerCard = props => {
 					>
 						<Icon icon={toolbarShow} />
 					</span>
-					<span
-						className={classnames(
-							'maxi-background-layer__title__remover',
-							'maxi-background-layer__ignore-move',
-							'maxi-background-layer__ignore-open'
-						)}
-						onClick={onRemove}
-					/>
+					{(!isHover || (isHover && layer.isHover)) && (
+						<span
+							className={classnames(
+								'maxi-background-layer__title__remover',
+								'maxi-background-layer__ignore-move',
+								'maxi-background-layer__ignore-open'
+							)}
+							onClick={onRemove}
+						/>
+					)}
 				</div>
 			</div>
 			{isOpen && (
@@ -350,6 +352,7 @@ const LayerCard = props => {
 
 const BackgroundLayersControl = ({
 	layersOptions,
+	layersHoverOptions,
 	isHover = false,
 	onChange,
 	disableImage = false,
@@ -359,16 +362,18 @@ const BackgroundLayersControl = ({
 	disableSVG = false,
 	clientId,
 	breakpoint,
-	hoverStatus = false,
 }) => {
 	const layers = cloneDeep(layersOptions);
-	layers.sort((a, b) => a.id - b.id);
+	const layersHover = cloneDeep(layersHoverOptions);
+	const allLayers = [...layers, ...layersHover];
+
+	allLayers.sort((a, b) => a.id - b.id);
 
 	const [selector, changeSelector] = useState(null);
 
 	const getNewLayerId = () =>
-		layers && !isEmpty(layers)
-			? layers.reduce((layerA, layerB) =>
+		allLayers && !isEmpty(allLayers)
+			? allLayers.reduce((layerA, layerB) =>
 					layerA.id > layerB.id ? layerA : layerB
 			  ).id + 1
 			: 1;
@@ -381,7 +386,6 @@ const BackgroundLayersControl = ({
 						layer: backgroundLayers.colorOptions,
 						breakpoint,
 						isHover,
-						hoverStatus,
 					}),
 					id: getNewLayerId(),
 				};
@@ -391,7 +395,6 @@ const BackgroundLayersControl = ({
 						layer: backgroundLayers.imageOptions,
 						breakpoint,
 						isHover,
-						hoverStatus,
 					}),
 					id: getNewLayerId(),
 				};
@@ -401,7 +404,6 @@ const BackgroundLayersControl = ({
 						layer: backgroundLayers.videoOptions,
 						breakpoint,
 						isHover,
-						hoverStatus,
 					}),
 					id: getNewLayerId(),
 				};
@@ -411,7 +413,6 @@ const BackgroundLayersControl = ({
 						layer: backgroundLayers.gradientOptions,
 						breakpoint,
 						isHover,
-						hoverStatus,
 					}),
 					id: getNewLayerId(),
 				};
@@ -421,7 +422,6 @@ const BackgroundLayersControl = ({
 						layer: backgroundLayers.SVGOptions,
 						breakpoint,
 						isHover,
-						hoverStatus,
 					}),
 					id: getNewLayerId(),
 				};
@@ -468,65 +468,105 @@ const BackgroundLayersControl = ({
 		return options;
 	};
 
+	const onLayersDrag = (fromIndex, toIndex) => {
+		const layer = allLayers.splice(fromIndex, 1)[0];
+
+		allLayers.splice(toIndex, 0, layer);
+
+		allLayers.forEach((layer, i) => {
+			allLayers[i].id = i;
+		});
+
+		const normalLayers = allLayers.filter(layer => !layer.isHover);
+		const hoverLayers = allLayers.filter(layer => layer.isHover);
+
+		onChange({
+			'background-layers': normalLayers,
+			'background-layers-hover': hoverLayers,
+		});
+	};
+
+	const onChangeLayer = layer => {
+		const isHoverLayer = layer.isHover;
+		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
+
+		allLayers.forEach((lay, i) => {
+			if (lay.id === layer.id) {
+				const index = findIndex(newLayers, { id: layer.id });
+
+				layer.id = i + 1;
+				newLayers[index] = layer;
+			}
+		});
+
+		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
+			onChange({
+				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+			});
+	};
+
+	const onAddLayer = layer => {
+		const isHoverLayer = layer.isHover;
+		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
+
+		newLayers.push(layer);
+
+		onChange({
+			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+		});
+	};
+
+	const onRemoveLayer = ({ id, isHover: isHoverLayer }) => {
+		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers).filter(
+			lay => lay.id !== id
+		);
+
+		onChange({
+			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+		});
+
+		changeSelector(null);
+	};
+
 	return (
 		<div className='maxi-background-control__layers'>
 			<div>
-				{!isEmpty(layers) && (
+				{!isEmpty(allLayers) && (
 					<ReactDragListView
-						onDragEnd={(fromIndex, toIndex) => {
-							const layer = layers.splice(fromIndex, 1)[0];
-							layers.splice(toIndex, 0, layer);
-
-							layers.forEach((layer, i) => {
-								layers[i].id = i;
-							});
-
-							onChange({
-								'background-layers': layers,
-							});
-						}}
+						onDragEnd={(fromIndex, toIndex) =>
+							onLayersDrag(fromIndex, toIndex)
+						}
 						nodeSelector='div.maxi-background-layer'
 						handleSelector='span.maxi-background-layer__title__mover'
 						ignoreSelector='.maxi-background-layer__ignore-move'
 					>
 						<div className='maxi-background-layers_options'>
-							{layers.map((layer, i) => (
-								<LayerCard
-									key={`maxi-background-layers__${layer.id}${
-										isHover ? '--hover' : ''
-									}`}
-									layerId={layer.id}
-									isHover={isHover}
-									clientId={clientId}
-									layer={layer}
-									onChange={newLayer => {
-										const newLayers = cloneDeep(layers);
-										newLayers[i] = newLayer;
-
-										if (!isEqual(newLayers, layers))
-											onChange({
-												'background-layers': newLayers,
-											});
-									}}
-									onOpen={isOpen => {
-										if (isOpen) changeSelector(null);
-										else
-											selector !== layer.id
-												? changeSelector(layer.id)
-												: changeSelector(null);
-									}}
-									isOpen={selector === layer.id}
-									onRemove={() => {
-										changeSelector(null);
-										layers.splice(i, 1);
-
-										onChange({
-											'background-layers': layers,
-										});
-									}}
-									breakpoint={breakpoint}
-								/>
-							))}
+							{[...(!isHover ? layers : allLayers)].map(
+								(layer, i) => (
+									<LayerCard
+										key={`maxi-background-layers__${
+											layer.id
+										}${isHover ? '--hover' : ''}`}
+										layerId={layer.id}
+										isHover={isHover}
+										clientId={clientId}
+										layer={layer}
+										onChange={onChangeLayer}
+										onOpen={isOpen => {
+											if (isOpen) changeSelector(null);
+											else
+												selector !== layer.id
+													? changeSelector(layer.id)
+													: changeSelector(null);
+										}}
+										isOpen={selector === layer.id}
+										onRemove={() => {
+											onRemoveLayer(layer);
+										}}
+										breakpoint={breakpoint}
+									/>
+								)
+							)}
 						</div>
 					</ReactDragListView>
 				)}
@@ -535,11 +575,7 @@ const BackgroundLayersControl = ({
 					buttonText={__('Add New Layer', 'maxi-blocks')}
 					onClick={value => {
 						const newLayer = getObject(value);
-						layers.push(newLayer);
-
-						onChange({
-							'background-layers': layers,
-						});
+						onAddLayer(newLayer);
 
 						changeSelector(newLayer.id);
 					}}

@@ -23,30 +23,35 @@ const getLayerAttributes = (attr, prefix = '') => {
 export const colorOptions = {
 	type: 'color',
 	display: 'block',
+	isHover: false,
 	...getLayerAttributes(rawBackgroundColor),
 };
 
 export const imageOptions = {
 	type: 'image',
 	display: 'block',
+	isHover: false,
 	...getLayerAttributes(rawBackgroundImage),
 };
 
 export const videoOptions = {
 	type: 'video',
 	display: 'block',
+	isHover: false,
 	...getLayerAttributes(rawBackgroundVideo),
 };
 
 export const gradientOptions = {
 	type: 'gradient',
 	display: 'block',
+	isHover: false,
 	...getLayerAttributes(rawBackgroundGradient),
 };
 
 export const SVGOptions = {
 	type: 'shape',
 	display: 'block',
+	isHover: false,
 	...getLayerAttributes(rawBackgroundSVG),
 	...getLayerAttributes(rawImageShape, 'background-svg-'),
 };

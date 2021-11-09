@@ -16,11 +16,11 @@ import { getGroupAttributes } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
 	Button,
 	HoverPreview,
-	MaxiBlockComponent,
 	Toolbar,
 	Placeholder,
 	RawHTML,

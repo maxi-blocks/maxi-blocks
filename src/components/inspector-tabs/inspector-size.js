@@ -13,7 +13,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const zindex = ({
+const size = ({
 	props,
 	prefix = '',
 	block = false,
@@ -70,4 +70,4 @@ const zindex = ({
 	};
 };
 
-export default zindex;
+export default size;

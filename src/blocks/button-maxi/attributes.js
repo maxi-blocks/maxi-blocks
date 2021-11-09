@@ -197,6 +197,10 @@ const attributes = {
 	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
+	customCss: {
+		type: 'object',
+		default: {},
+	},
 };
 
 export default attributes;

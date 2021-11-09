@@ -537,6 +537,9 @@ const getStyles = props => {
 		}),
 	};
 
+	const allSelectors = Object?.keys(Object?.values(response)[0]);
+	if (!isEmpty(allSelectors)) props.customCssSelectors = allSelectors;
+
 	return response;
 };
 

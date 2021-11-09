@@ -17,3 +17,12 @@
 		font-style: italic;
 	}
 }
+
+.maxi-additional__css {
+	.maxi-base-control {
+		&__field {
+			align-items: start;
+			flex-direction: column;
+		}
+	}
+}

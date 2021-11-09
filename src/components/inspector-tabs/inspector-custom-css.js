@@ -4,6 +4,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import { cloneDeep } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import TextareaControl from '../textarea-control';
@@ -13,21 +18,33 @@ import TextareaControl from '../textarea-control';
  */
 const customCss = ({ props }) => {
 	const { attributes, setAttributes } = props;
-	const { extraClassName } = attributes;
+	const { customCss, customCssSelectors } = attributes;
 
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
 		content: (
-			<TextareaControl
-				label={__('Add CSS classes', 'maxi-blocks')}
-				className='maxi-additional__css'
-				value={extraClassName}
-				onChange={extraClassName =>
-					setAttributes({
-						extraClassName,
-					})
-				}
-			/>
+			<>
+				{customCssSelectors.map((element, index) => {
+					return (
+						<TextareaControl
+							key={`${element}`}
+							label={`${__(
+								'Custom CSS for',
+								'maxi-blocks'
+							)} ${element}`}
+							className='maxi-additional__css'
+							value={customCss[index]}
+							onChange={val => {
+								const newCustomCss = cloneDeep(customCss);
+								newCustomCss[index] = val;
+								setAttributes({
+									customCss: newCustomCss,
+								});
+							}}
+						/>
+					);
+				})}
+			</>
 		),
 	};
 };

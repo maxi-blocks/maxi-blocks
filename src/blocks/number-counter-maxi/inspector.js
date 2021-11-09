@@ -66,7 +66,7 @@ const Inspector = props => {
 										}),
 										...inspectorTabs.boxShadow({
 											props,
-											prefox: 'number-counter-',
+											prefix: 'number-counter-',
 										}),
 										...inspectorTabs.marginPadding({
 											props,

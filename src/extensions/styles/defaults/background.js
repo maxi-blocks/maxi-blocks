@@ -4,6 +4,9 @@ export const blockBackground = {
 	'background-layers': {
 		type: 'array',
 	},
+	'background-layers-hover': {
+		type: 'array',
+	},
 	'background-hover-status': {
 		type: 'boolean',
 		default: false,

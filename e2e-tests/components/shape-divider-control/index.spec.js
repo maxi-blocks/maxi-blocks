@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */

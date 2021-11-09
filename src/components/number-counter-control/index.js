@@ -40,10 +40,6 @@ const NumberCounterControl = props => {
 			min: 0,
 			max: 3999,
 		},
-		em: {
-			min: 0,
-			max: 999,
-		},
 		vw: {
 			min: 0,
 			max: 999,
@@ -91,7 +87,6 @@ const NumberCounterControl = props => {
 					})
 				}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
 			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}

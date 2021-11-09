@@ -68,47 +68,51 @@ import {
 const ShapeDividerControl = props => {
 	const { onChange } = props;
 
-	const shapeItems = [
+	const shapeItemsTop = [
 		{ label: __('None', 'max-block'), value: '' },
 		{ label: wavesTop, value: 'waves-top' },
-		{ label: wavesBottom, value: 'waves-bottom' },
 		{ label: wavesTopOpacity, value: 'waves-top-opacity' },
-		{ label: wavesBottomOpacity, value: 'waves-bottom-opacity' },
 		{ label: waveTop, value: 'wave-top' },
-		{ label: waveBottom, value: 'wave-bottom' },
 		{ label: waveTopOpacity, value: 'wave-top-opacity' },
-		{ label: waveBottomOpacity, value: 'wave-bottom-opacity' },
 		{ label: triangleTop, value: 'triangle-top' },
-		{ label: triangleBottom, value: 'triangle-bottom' },
 		{ label: swishTop, value: 'swish-top' },
-		{ label: swishBottom, value: 'swish-bottom' },
 		{ label: swishTopOpacity, value: 'swish-top-opacity' },
-		{ label: swishBottomOpacity, value: 'swish-bottom-opacity' },
 		{ label: slantTop, value: 'slant-top' },
-		{ label: slantBottom, value: 'slant-bottom' },
 		{ label: slantTopOpacity, value: 'slant-top-opacity' },
-		{ label: slantBottomOpacity, value: 'slant-bottom-opacity' },
 		{ label: peakTop, value: 'peak-top' },
-		{ label: peakBottom, value: 'peak-bottom' },
 		{ label: mountainsTop, value: 'mountains-top' },
-		{ label: mountainsBottom, value: 'mountains-bottom' },
 		{ label: mountainsTopOpacity, value: 'mountains-top-opacity' },
-		{ label: mountainsBottomOpacity, value: 'mountains-bottom-opacity' },
 		{ label: curveTop, value: 'curve-top' },
-		{ label: curveBottom, value: 'curve-bottom' },
 		{ label: curveTopOpacity, value: 'curve-top-opacity' },
-		{ label: curveBottomOpacity, value: 'curve-bottom-opacity' },
 		{ label: arrowTop, value: 'arrow-top' },
-		{ label: arrowBottom, value: 'arrow-bottom' },
 		{ label: arrowTopOpacity, value: 'arrow-top-opacity' },
-		{ label: arrowBottomOpacity, value: 'arrow-bottom-opacity' },
 		{ label: asymmetricTop, value: 'asymmetric-top' },
-		{ label: asymmetricBottom, value: 'asymmetric-bottom' },
 		{ label: asymmetricTopOpacity, value: 'asymmetric-top-opacity' },
-		{ label: asymmetricBottomOpacity, value: 'asymmetric-bottom-opacity' },
 		{ label: cloudTop, value: 'cloud-top' },
-		{ label: cloudBottom, value: 'cloud-bottom' },
 		{ label: cloudTopOpacity, value: 'cloud-top-opacity' },
+	];
+
+	const shapeItemsBottom = [
+		{ label: __('None', 'max-block'), value: '' },
+		{ label: wavesBottom, value: 'waves-bottom' },
+		{ label: wavesBottomOpacity, value: 'waves-bottom-opacity' },
+		{ label: waveBottom, value: 'wave-bottom' },
+		{ label: waveBottomOpacity, value: 'wave-bottom-opacity' },
+		{ label: triangleBottom, value: 'triangle-bottom' },
+		{ label: swishBottom, value: 'swish-bottom' },
+		{ label: swishBottomOpacity, value: 'swish-bottom-opacity' },
+		{ label: slantBottom, value: 'slant-bottom' },
+		{ label: slantBottomOpacity, value: 'slant-bottom-opacity' },
+		{ label: peakBottom, value: 'peak-bottom' },
+		{ label: mountainsBottom, value: 'mountains-bottom' },
+		{ label: mountainsBottomOpacity, value: 'mountains-bottom-opacity' },
+		{ label: curveBottom, value: 'curve-bottom' },
+		{ label: curveBottomOpacity, value: 'curve-bottom-opacity' },
+		{ label: arrowBottom, value: 'arrow-bottom' },
+		{ label: arrowBottomOpacity, value: 'arrow-bottom-opacity' },
+		{ label: asymmetricBottom, value: 'asymmetric-bottom' },
+		{ label: asymmetricBottomOpacity, value: 'asymmetric-bottom-opacity' },
+		{ label: cloudBottom, value: 'cloud-bottom' },
 		{ label: cloudBottomOpacity, value: 'cloud-bottom-opacity' },
 	];
 
@@ -249,7 +253,7 @@ const ShapeDividerControl = props => {
 															'shape-divider-top-shape-style'
 														]
 													}
-													options={shapeItems}
+													options={shapeItemsTop}
 													onChange={shapeStyle =>
 														onChange({
 															'shape-divider-top-shape-style':
@@ -419,7 +423,7 @@ const ShapeDividerControl = props => {
 															'shape-divider-bottom-shape-style'
 														]
 													}
-													options={shapeItems}
+													options={shapeItemsBottom}
 													onChange={shapeStyle =>
 														onChange({
 															'shape-divider-bottom-shape-style':

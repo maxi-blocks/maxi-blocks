@@ -16,8 +16,8 @@ const alignment = ({
 	props,
 	isAlignment,
 	isTextAlignment,
-	alignmentLable,
-	textAlignmentLable,
+	alignmentLabel,
+	textAlignmentLabel,
 	disableJustify = false,
 }) => {
 	const { attributes, deviceType, setAttributes } = props;
@@ -28,7 +28,7 @@ const alignment = ({
 			<>
 				{isAlignment && (
 					<AlignmentControl
-						label={alignmentLable}
+						label={alignmentLabel}
 						{...getGroupAttributes(attributes, 'alignment')}
 						onChange={obj => setAttributes(obj)}
 						breakpoint={deviceType}
@@ -37,7 +37,7 @@ const alignment = ({
 				)}
 				{isTextAlignment && (
 					<AlignmentControl
-						label={textAlignmentLable}
+						label={textAlignmentLabel}
 						{...getGroupAttributes(attributes, 'textAlignment')}
 						onChange={obj => setAttributes(obj)}
 						breakpoint={deviceType}

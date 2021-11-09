@@ -413,11 +413,11 @@ const Inspector = memo(
 												props,
 												isAlignment: true,
 												isTextAlignment: true,
-												alignmentLable: __(
+												alignmentLabel: __(
 													'Button',
 													'maxi-blocks'
 												),
-												textAlignmentLable: __(
+												textAlignmentLabel: __(
 													'Text',
 													'maxi-blocks'
 												),
@@ -627,6 +627,11 @@ const Inspector = memo(
 									items={[
 										deviceType === 'general' && {
 											...inspectorTabs.customClasses({
+												props,
+											}),
+										},
+										deviceType === 'general' && {
+											...inspectorTabs.anchor({
 												props,
 											}),
 										},

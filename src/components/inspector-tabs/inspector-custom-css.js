@@ -55,11 +55,6 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 										'custom-css-general': newCustomCss,
 									});
 								}}
-								style={{
-									backgroundColor: '#f5f5f5',
-									fontFamily:
-										'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-								}}
 							/>
 						</BaseControl>
 					);

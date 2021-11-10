@@ -7,11 +7,12 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import { isEmpty, cloneDeep } from 'lodash';
+import CodeEditor from '@uiw/react-textarea-code-editor';
 
 /**
  * Internal dependencies
  */
-import TextareaControl from '../textarea-control';
+import BaseControl from '../base-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -35,22 +36,32 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 					if (isEmpty(element)) label = ' main block';
 					if (element === ':hover') label = ' main block hover';
 					return (
-						<TextareaControl
+						<BaseControl
 							key={`${label}`}
 							label={`${__(
 								'Custom CSS for',
 								'maxi-blocks'
 							)} ${label}`}
 							className='maxi-additional__css'
-							value={customCss[index]}
-							onChange={val => {
-								const newCustomCss = cloneDeep(customCss);
-								newCustomCss[index] = val;
-								setAttributes({
-									'custom-css-general': newCustomCss,
-								});
-							}}
-						/>
+						>
+							<CodeEditor
+								language='css'
+								placeholder='Please enter CSS code.'
+								value={customCss[index]}
+								onChange={evn => {
+									const newCustomCss = cloneDeep(customCss);
+									newCustomCss[index] = evn.target.value;
+									setAttributes({
+										'custom-css-general': newCustomCss,
+									});
+								}}
+								style={{
+									backgroundColor: '#f5f5f5',
+									fontFamily:
+										'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+								}}
+							/>
+						</BaseControl>
 					);
 				})}
 				{/* </ResponsiveTabsControl> */}

@@ -25,4 +25,12 @@
 			flex-direction: column;
 		}
 	}
+	.w-tc-editor {
+		width: 100%;
+		border: 1px solid var(--maxi-grey-1-color);
+		font-size: 13px;
+	}
+	code {
+		padding: 0;
+	}
 }

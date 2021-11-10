@@ -68,7 +68,6 @@ const mediaStylesGenerator = (target, content, breakpoint, media) => {
 
 	if (content.includes('css:')) {
 		finalContent = content.replaceAll('css: ', '').replaceAll(';;', ';');
-		console.log(finalContent);
 	}
 
 	generalString += `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},`;

@@ -6,13 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty, cloneDeep, capitalize } from 'lodash';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 
 /**
  * Internal dependencies
  */
 import BaseControl from '../base-control';
+import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -22,6 +23,33 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 	const { attributes, setAttributes } = props;
 	const { customCssSelectors } = attributes;
 	const customCss = attributes['custom-css-general'];
+	const customCssCategory = attributes['custom-css-category'];
+
+	// TODO: switch it based on the block
+	const customCssCategories = [
+		'canvas',
+		'button',
+		'before',
+		'after',
+		'background',
+		'icon',
+	];
+
+	const getOptions = () => {
+		const options = [
+			{
+				label: 'None',
+				value: 'none',
+			},
+		];
+		customCssCategories.forEach(category => {
+			options.push({
+				label: capitalize(category),
+				value: category,
+			});
+		});
+		return options;
+	};
 
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
@@ -31,10 +59,21 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 					className='maxi-typography-control__text-options-tabs'
 					breakpoint={breakpoint}
 				> */}
+				<SelectControl
+					label={__('Choose custom CSS', 'maxi-blocks')}
+					className='maxi-custom-css-control__category'
+					value={customCssCategory || 'none'}
+					options={getOptions()}
+					onChange={val => {
+						setAttributes({
+							'custom-css-category': val,
+						});
+					}}
+				/>
 				{customCssSelectors.map((element, index) => {
 					let label = element;
-					if (isEmpty(element)) label = ' main block';
-					if (element === ':hover') label = ' main block hover';
+					if (isEmpty(element)) label = ' canvas';
+					if (element === ':hover') label = ' canvas hover';
 					return (
 						<BaseControl
 							key={`${label}`}

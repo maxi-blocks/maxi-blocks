@@ -32,6 +32,7 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 		'before',
 		'after',
 		'background',
+		'text',
 		'icon',
 	];
 
@@ -82,6 +83,7 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 								'maxi-blocks'
 							)} ${label}`}
 							className='maxi-additional__css'
+							hidden={!!customCssCategory?.includes(label)}
 						>
 							<CodeEditor
 								language='css'

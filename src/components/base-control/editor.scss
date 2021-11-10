@@ -28,14 +28,18 @@
 	.w-tc-editor {
 		width: 100%;
 		border: 1px solid var(--maxi-grey-1-color);
-		font-size: 13px;
+		font-family: monospace !important;
+		textarea {
+			font-family: monospace !important;
+		}
 	}
 	code {
 		padding: 0;
 		background: #fff;
-		font-family: monospace;
+		font-family: monospace !important;
 		span {
 			background: #fff;
+			font-family: monospace !important;
 		}
 	}
 }

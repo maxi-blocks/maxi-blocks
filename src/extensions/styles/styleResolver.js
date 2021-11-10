@@ -17,7 +17,8 @@ const cleanContent = content => {
 	let newContent = { ...content };
 
 	for (const prop in newContent) {
-		if (
+		if (prop === 'customCss') newContent = newContent[prop].css;
+		else if (
 			(isEmpty(newContent[prop]) &&
 				!isNumber(newContent[prop]) &&
 				!isBoolean(newContent[prop])) ||
@@ -73,6 +74,9 @@ const styleResolver = (target, styles, remover = false, breakpoints) => {
 
 	if (!remover) dispatch('maxiBlocks/styles').updateStyles(target, response);
 	else dispatch('maxiBlocks/styles').removeStyles(response);
+
+	console.log('style resolver');
+	console.log(response);
 
 	return response;
 };

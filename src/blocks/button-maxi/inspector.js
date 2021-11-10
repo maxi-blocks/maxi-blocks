@@ -637,6 +637,7 @@ const Inspector = memo(
 										},
 										...inspectorTabs.customCss({
 											props,
+											breakpoint: deviceType,
 										}),
 										...inspectorTabs.motion({
 											props,

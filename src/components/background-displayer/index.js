@@ -12,7 +12,7 @@ import VideoLayer from './videoLayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep, isEmpty } from 'lodash';
+import { compact, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -23,11 +23,12 @@ import './style.scss';
  * Component
  */
 const BackgroundContent = props => {
-	const { wrapperRef, isHover = false } = props;
+	const { wrapperRef } = props;
 
-	const layers = cloneDeep(
-		props[`background-layers${isHover ? '-hover' : ''}`]
-	);
+	const layers = compact([
+		...props['background-layers'],
+		...props['background-layers-hover'],
+	]);
 
 	if (layers) layers.sort((a, b) => a.id - b.id);
 
@@ -36,7 +37,7 @@ const BackgroundContent = props => {
 			{layers &&
 				layers.length > 0 &&
 				layers.map(layer => {
-					const { type, id } = layer;
+					const { type, id, isHover = false } = layer;
 
 					switch (type) {
 						case 'color':
@@ -93,7 +94,9 @@ const BackgroundContent = props => {
 const BackgroundDisplayer = props => {
 	const { className, isSave = false } = props;
 
-	const haveLayers = !isEmpty(props['background-layers']);
+	const haveLayers =
+		!isEmpty(props['background-layers']) ||
+		!isEmpty(props['background-layers-hover']);
 
 	if (!haveLayers) return null;
 
@@ -105,15 +108,8 @@ const BackgroundDisplayer = props => {
 	return (
 		<div ref={wrapperRef} className={classes}>
 			<BackgroundContent
-				key='maxi-background-displayer__content'
 				wrapperRef={wrapperRef}
 				isHover={false}
-				{...props}
-			/>
-			<BackgroundContent
-				key='maxi-background-displayer__content--hover'
-				wrapperRef={wrapperRef}
-				isHover
 				{...props}
 			/>
 		</div>

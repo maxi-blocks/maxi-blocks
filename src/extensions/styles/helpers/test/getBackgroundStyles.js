@@ -515,7 +515,7 @@ describe('getBackgroundStyles', () => {
 	});
 
 	it('Get correct block background styles for image layer with different values on different responsive stages and hovers', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -620,13 +620,13 @@ describe('getBackgroundStyles', () => {
 						'ellipse(25% 40% at 50% 50%)',
 				},
 			],
-		};
+		});
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for video layer with different values on different responsive stages and hovers', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -668,13 +668,13 @@ describe('getBackgroundStyles', () => {
 					'background-video-opacity-s-hover': 1,
 				},
 			],
-		};
+		});
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for gradient layer with different values on different responsive stages and hovers', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -732,13 +732,13 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-opacity-s-hover': 0.91,
 				},
 			],
-		};
+		});
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for shape layer with different values on different responsive stages and hovers', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -846,7 +846,170 @@ describe('getBackgroundStyles', () => {
 					'background-svg-size-s-hover': 55,
 				},
 			],
-		};
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+	it('Get correct block background styles for different layers, onces created on normal and other on hover', () => {
+		const result = getBlockBackgroundStyles({
+			target: 'maxi-test',
+			isHover: false,
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'isHover-general': false,
+					'background-palette-color-status-general': true,
+					'background-palette-color-general': 1,
+					id: 2,
+					'background-palette-color-status-xl-hover': true,
+					'background-palette-color-xl-hover': 4,
+					'background-palette-color-status-general-hover': true,
+					'background-palette-color-general-hover': 4,
+				},
+				{
+					type: 'shape',
+					isHover: false,
+					'display-general': 'block',
+					'isHover-general': false,
+					'background-palette-svg-color-status-general': true,
+					'background-palette-svg-color-general': 4,
+					'background-svg-SVGElement':
+						'<svg fill="undefined" data-fill="" viewBox="2.1999988555908203, 2.5000007152557373, 31.674436569213867, 31" class="tick-5-maxi-svg" data-item="group-maxi-12__svg"><path d="M31.2 14.4c.3 1.2.5 2.4.5 3.6 0 7.7-6.3 13.9-14 13.9C10.1 32 3.8 25.7 3.8 18s6.3-13.9 14-13.9c2.2 0 4.2.5 6 1.4l1-1.3c-2.1-1.1-4.5-1.7-7-1.7-8.6 0-15.6 7-15.6 15.5 0 8.6 7 15.5 15.5 15.5 8.6 0 15.5-7 15.5-15.5 0-1.8-.3-3.5-.9-5.1l-1.1 1.5zm2.3-8.2l-3.9-2.9a.95.95 0 0 0-1.3.2l-1.5 1.9-1 1.3L18 16.9a.97.97 0 0 1-1.4.1l-4.5-4.5a.85.85 0 0 0-1.3 0L7.5 16c-.3.3-.3.9 0 1.2l9 9.8c.4.4 1 .4 1.4 0l12.3-15.2 1.1-1.3 2.4-2.9c.3-.5.2-1.1-.2-1.4z" fill=""/></svg>',
+					'background-svg-SVGData': {
+						'group-maxi-12__81': {
+							color: '',
+							imageID: '',
+							imageURL: '',
+						},
+					},
+					'background-svg-SVGMediaID': null,
+					'background-svg-SVGMediaURL': null,
+					'background-svg-top-unit-general': '%',
+					'background-svg-position-top-general': 0,
+					'background-svg-position-right-general': 0,
+					'background-svg-position-bottom-general': 0,
+					'background-svg-position-left-general': 0,
+					'background-svg-position-unit-general': '%',
+					'background-svg-size-general': 100,
+					'background-svg-size-unit-general': '%',
+					id: 3,
+					'background-palette-svg-color-status-xl': true,
+					'background-palette-svg-color-xl': 4,
+				},
+				{
+					type: 'video',
+					isHover: false,
+					'display-general': 'block',
+					'isHover-general': false,
+					'background-video-mediaURL':
+						'https://www.youtube.com/watch?v=CXSV98tr51A',
+					'background-video-loop': false,
+					'background-video-playOnMobile-general': false,
+					'background-video-opacity-general': 1,
+					'background-video-reduce-border-general': false,
+					id: 4,
+				},
+			],
+			'background-layers-hover': [
+				{
+					type: 'image',
+					isHover: true,
+					'display-general': 'none',
+					'display-general-hover': 'block',
+					'isHover-general': false,
+					'isHover-general-hover': false,
+					'background-image-mediaID-general-hover': 226,
+					'background-image-mediaURL-general-hover':
+						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
+					'background-image-size-general': 'auto',
+					'background-image-size-general-hover': 'auto',
+					'background-image-width-general': 100,
+					'background-image-width-general-hover': 600,
+					'background-image-width-unit-general': '%',
+					'background-image-width-unit-general-hover': '%',
+					'background-image-height-general': 100,
+					'background-image-height-general-hover': 600,
+					'background-image-height-unit-general': '%',
+					'background-image-height-unit-general-hover': '%',
+					'background-image-repeat-general': 'no-repeat',
+					'background-image-repeat-general-hover': 'no-repeat',
+					'background-image-position-general': 'center center',
+					'background-image-position-general-hover': 'center center',
+					'background-image-position-width-unit-general': '%',
+					'background-image-position-width-unit-general-hover': '%',
+					'background-image-position-width-general': 0,
+					'background-image-position-width-general-hover': 0,
+					'background-image-position-height-unit-general': '%',
+					'background-image-position-height-unit-general-hover': '%',
+					'background-image-position-height-general': 0,
+					'background-image-position-height-general-hover': 0,
+					'background-image-origin-general': 'padding-box',
+					'background-image-origin-general-hover': 'padding-box',
+					'background-image-clip-general': 'border-box',
+					'background-image-clip-general-hover': 'border-box',
+					'background-image-attachment-general': 'scroll',
+					'background-image-attachment-general-hover': 'scroll',
+					'background-image-opacity-general': 1,
+					'background-image-opacity-general-hover': 1,
+					'background-image-parallax-status': false,
+					'background-image-parallax-speed': 4,
+					'background-image-parallax-direction': 'up',
+					id: 0,
+					'background-image-mediaID-xl-hover': 226,
+					'background-image-mediaURL-xl-hover':
+						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
+					'background-image-width-xl-hover': 600,
+					'background-image-height-xl-hover': 600,
+				},
+				{
+					type: 'shape',
+					isHover: true,
+					'display-general': 'none',
+					'display-general-hover': 'block',
+					'isHover-general': false,
+					'isHover-general-hover': false,
+					'background-palette-svg-color-status-general': true,
+					'background-palette-svg-color-status-general-hover': true,
+					'background-palette-svg-color-general': 5,
+					'background-palette-svg-color-general-hover': 2,
+					'background-svg-SVGElement':
+						'<svg viewBox="2.590501546859741, 2.455554962158203, 30.95997428894043, 31.187908172607422" class="tick-12-maxi-svg" data-item="group-maxi-12__svg"><path fill="" data-fill="" d="M32.4 16.4c.4-.6.7-1.4.6-2.3-.1-1.3-1-2.3-2.1-2.8.2-.8.1-1.6-.3-2.3-.6-1.2-1.7-1.8-2.9-1.9-.1-.8-.5-1.5-1.1-2.1-1-.9-2.3-1.1-3.4-.7-.4-.7-1-1.3-1.8-1.6-1.2-.5-2.5-.2-3.4.6-.6-.5-1.4-.8-2.2-.8-1.5 0-2.7.9-3.2 2.3-.9-.4-1.9-.5-2.8 0-1.2.5-1.9 1.6-2 2.8-.8.2-1.6.5-2.2 1.1-.9.9-1.2 2.2-.9 3.4-.7.3-1.3.9-1.6 1.7-.5 1.2-.3 2.5.4 3.5-.5.6-.9 1.3-.9 2.2-.1 1.3.6 2.4 1.6 3.1-.3.7-.4 1.6-.1 2.4.4 1.2 1.4 2.1 2.6 2.3 0 .8.2 1.6.8 2.2.8 1 2.1 1.4 3.3 1.2.3.7.8 1.4 1.5 1.8 1.1.6 2.5.6 3.5-.1.5.6 1.2 1 2.1 1.2 1.3.2 2.5-.3 3.2-1.3.7.4 1.5.5 2.3.3 1.3-.3 2.2-1.2 2.6-2.4.8.1 1.6-.1 2.3-.5 1.1-.7 1.6-1.9 1.5-3.1.8-.2 1.5-.6 2-1.3.8-1 .8-2.4.3-3.5.6-.4 1.1-1.1 1.4-1.9.2-1.4-.2-2.6-1.1-3.5zM25.7 14l-9.5 10.1-5.4-5.4 1.7-1.7 3.7 3.7 7.8-8.3 1.7 1.6z"/></svg>',
+					'background-svg-SVGData': {
+						'group-maxi-12__69': {
+							color: '',
+							imageID: '',
+							imageURL: '',
+						},
+					},
+					'background-svg-SVGMediaID': null,
+					'background-svg-SVGMediaURL': null,
+					'background-svg-top-unit-general': '%',
+					'background-svg-top-unit-general-hover': '%',
+					'background-svg-position-top-general': 0,
+					'background-svg-position-top-general-hover': 0,
+					'background-svg-position-right-general': 0,
+					'background-svg-position-right-general-hover': 0,
+					'background-svg-position-bottom-general': 0,
+					'background-svg-position-bottom-general-hover': 0,
+					'background-svg-position-left-general': 0,
+					'background-svg-position-left-general-hover': 0,
+					'background-svg-position-unit-general': '%',
+					'background-svg-position-unit-general-hover': '%',
+					'background-svg-size-general': 100,
+					'background-svg-size-general-hover': 100,
+					'background-svg-size-unit-general': '%',
+					'background-svg-size-unit-general-hover': '%',
+					id: 1,
+					'background-palette-svg-color-status-xl-hover': true,
+					'background-palette-svg-color-xl-hover': 2,
+					'background-palette-svg-opacity-xl-hover': 0.38,
+					'background-palette-svg-opacity-general-hover': 0.38,
+				},
+			],
+		});
 
 		expect(result).toMatchSnapshot();
 	});

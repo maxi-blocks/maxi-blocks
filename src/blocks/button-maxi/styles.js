@@ -100,19 +100,6 @@ const getWrapperObject = props => {
 		),
 	};
 
-	console.log('response of getCustomCss');
-
-	console.log(
-		getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			0
-		)
-	);
-	console.log('response with getCustomCss');
-	console.log(response);
-
 	return response;
 };
 
@@ -560,8 +547,6 @@ const getStyles = props => {
 	const allSelectors = Object?.keys(Object?.values(response)[0]);
 	if (!isEmpty(allSelectors)) props.customCssSelectors = allSelectors;
 
-	console.log('final response');
-	console.log(response);
 	return response;
 };
 

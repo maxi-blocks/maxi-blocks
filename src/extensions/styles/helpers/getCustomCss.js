@@ -23,7 +23,7 @@ const getCustomCss = (obj, index) => {
 			],
 		};
 
-		console.log(typeof response[breakpoint]);
+		// console.log(typeof response[breakpoint]);
 	});
 
 	return response;

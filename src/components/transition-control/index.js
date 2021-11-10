@@ -27,7 +27,7 @@ const TransitionControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			label={__('Transition Duration', 'maxi-blocks')}
+			label={__('Transition duration', 'maxi-blocks')}
 			className={classes}
 			defaultValue={getDefaultAttribute(
 				`transition-duration-${breakpoint}`

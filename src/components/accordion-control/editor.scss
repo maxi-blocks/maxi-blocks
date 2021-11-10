@@ -18,15 +18,9 @@
 			max-height: 24px;
 		}
 
-		// This many values are strange...
 		&__panel {
-			overflow-x: hidden;
-
 			&:not(.maxi-accordion-control__item__panel--disable-padding) {
-				padding-top: 15px !important;
-				padding-left: 12px !important;
-				padding-right: 12px !important;
-				padding-bottom: 10px !important;
+				padding: 8px 8px 0;
 				background-color: #fff;
 			}
 		}

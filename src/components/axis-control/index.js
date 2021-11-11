@@ -119,9 +119,7 @@ const AxisContent = props => {
 			{sync === 'axis' && (
 				<>
 					<AxisInput
-						label={`${capitalize(inputsArray[0])} / ${capitalize(
-							inputsArray[2]
-						)}`}
+						label={`${inputsArray[0]} / ${inputsArray[2]}`}
 						target={inputsArray[0]}
 						singleTarget='vertical'
 						getValue={getValue}
@@ -135,9 +133,7 @@ const AxisContent = props => {
 						type={type}
 					/>
 					<AxisInput
-						label={`${capitalize(inputsArray[1])} / ${capitalize(
-							inputsArray[3]
-						)}`}
+						label={`${inputsArray[3]} / ${inputsArray[1]}`}
 						target={inputsArray[1]}
 						singleTarget='horizontal'
 						getValue={getValue}

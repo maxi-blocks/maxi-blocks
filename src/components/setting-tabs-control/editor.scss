@@ -5,6 +5,12 @@
 		display: flex;
 		padding-top: 0;
 
+		&__sidebar-settings-tabs {
+			.maxi-tabs-control__button[aria-pressed='true'] {
+				border-bottom-color: var(--maxi-primary-color);
+				color: var(--maxi-black-1-color);
+			}
+		}
 		&:not(.maxi-tabs-control--disable-padding) {
 			margin-bottom: 8px;
 		}
@@ -40,8 +46,8 @@
 				background-color: var(--maxi-grey-3-color);
 			}
 			&[aria-pressed='true'] {
-				border-bottom: 2px solid var(--maxi-primary-color);
-				color: var(--maxi-black-1-color);
+				border-bottom: 2px solid var(--maxi-secondary-color);
+				color: var(--maxi-secondary-color);
 				background-color: var(--maxi-white-3-color);
 				font-weight: 500;
 			}

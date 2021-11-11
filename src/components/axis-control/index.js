@@ -240,12 +240,18 @@ const AxisControlContent = props => {
 	const getSyncLabel = () => {
 		switch (sync) {
 			case 'all':
-				return __(`Set ${type.toLowerCase()} equal`, 'maxi-blocks');
+				return type
+					? __(`Set ${type.toLowerCase()} equal`, 'maxi-blocks')
+					: __(`Set equal`, 'maxi-blocks');
 			case 'axis':
-				return __(`Set ${type.toLowerCase()} together`, 'maxi-blocks');
+				return type
+					? __(`Set ${type.toLowerCase()} together`, 'maxi-blocks')
+					: __(`Set together`, 'maxi-blocks');
 			case 'none':
 			default:
-				return __(`Set ${type.toLowerCase()} separate`, 'maxi-blocks');
+				return type
+					? __(`Set ${type.toLowerCase()} separate`, 'maxi-blocks')
+					: __(`Set separate`, 'maxi-blocks');
 		}
 	};
 

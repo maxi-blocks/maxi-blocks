@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import { isEmpty } from '@wordpress/rich-text';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
@@ -13,18 +14,25 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block custom css properties
  */
-const getCustomCss = (obj, index) => {
+const getCustomCss = (obj, category, index) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {
-			css: getLastBreakpointAttribute('custom-css', breakpoint, obj)[
-				index
-			],
-		};
+		let value = '';
+		const customCssValue = getLastBreakpointAttribute(
+			'custom-css',
+			breakpoint,
+			obj
+		);
+		value = customCssValue?.category?.index;
 
-		// console.log(typeof response[breakpoint]);
+		if (value)
+			response[breakpoint] = {
+				css: value,
+			};
 	});
+
+	console.log(response);
 
 	return response;
 };

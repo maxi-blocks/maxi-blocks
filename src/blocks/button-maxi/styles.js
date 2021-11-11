@@ -96,6 +96,7 @@ const getWrapperObject = props => {
 			{
 				...getGroupAttributes(props, 'customCss'),
 			},
+			'canvas',
 			0
 		),
 	};

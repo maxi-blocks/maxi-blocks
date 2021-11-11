@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { isEmpty, cloneDeep, capitalize } from 'lodash';
 import CodeEditor from '@uiw/react-textarea-code-editor';
+import cssValidator from 'w3c-css-validator';
 
 /**
  * Internal dependencies
@@ -15,26 +16,134 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import BaseControl from '../base-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
+const validateCSS = async code => {
+	try {
+		const response = await cssValidator.validateText(code);
+
+		return response;
+	} catch (err) {
+		console.error(__(`Error validating css: ${err}`, 'maxi-blocks'));
+	}
+	return null;
+};
 /**
  * Component
  */
-const customCss = ({ props, breakpoint = 'general' }) => {
+const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	const { attributes, setAttributes } = props;
-	const { customCssSelectors } = attributes;
-	const customCss = attributes['custom-css-general'];
+	//	const { customCssSelectors } = attributes;
+
+	const customCssValue = getLastBreakpointAttribute(
+		'custom-css',
+		breakpoint,
+		attributes
+	);
+
+	console.log(customCssValue);
+
 	const customCssCategory = attributes['custom-css-category'];
 
-	// TODO: switch it based on the block
-	const customCssCategories = [
-		'canvas',
-		'button',
-		'before',
-		'after',
-		'background',
-		'text',
-		'icon',
-	];
+	const isCanvas = blockName.includes('button-maxi') === true;
+
+	const isCanvasBackgroundEnabled = !isEmpty(
+		getLastBreakpointAttribute(
+			'button-background-active-media',
+			breakpoint,
+			attributes,
+			false
+		)
+	);
+
+	const isCanvasBackgroundHoverEnabled = !isEmpty(
+		getLastBreakpointAttribute(
+			'button-background-active-media',
+			breakpoint,
+			attributes,
+			true
+		)
+	);
+
+	const isIconEnabled = !isEmpty(attributes['icon-content']);
+
+	const isIconHoverEnabled = attributes['icon-status-hover'];
+
+	let selectorsCanvas;
+	let selectorsBlock;
+	let selectorsCanvasBefore;
+	let selectorsCanvasAfter;
+	let selectorsBlockBefore;
+	let selectorsBlockAfter;
+	let selectorsCanvasBackground;
+	let selectorsIcon;
+	let selectorsContent;
+
+	blockName.includes();
+
+	const customCssSelectors = [];
+
+	switch (blockName) {
+		case 'maxi-blocks/button-maxi':
+			selectorsCanvas = ['', ':hover'];
+			selectorsBlock = [
+				'.maxi-button-block__button',
+				'.maxi-button-block__button:hover',
+			];
+			selectorsContent = [
+				'.maxi-button-block__content',
+				'.maxi-button-block__content:hover',
+			];
+			selectorsCanvasBackground = ['', ':hover'];
+			selectorsIcon = [
+				'.maxi-button-block__icon',
+				'.maxi-button-block__icon svg',
+				'.maxi-button-block__icon svg > *',
+				'.maxi-button-block__icon svg path',
+				'.maxi-button-block__icon:hover',
+				'.maxi-button-block__icon:hover svg',
+				'.maxi-button-block__icon:hover svg > *',
+				'.maxi-button-block__icon:hover svg path',
+			];
+			selectorsCanvasBefore = [':before', ':hover:before'];
+			selectorsCanvasAfter = [':after', ':hover:after'];
+			selectorsBlockBefore = [
+				'.maxi-button-block__button:before',
+				'.maxi-button-block__button:hover:before',
+			];
+			selectorsBlockAfter = [
+				'.maxi-button-block__button:after',
+				'.maxi-button-block__button:hover:after',
+			];
+			break;
+		default:
+	}
+
+	let customCssCategories = [];
+
+	switch (blockName) {
+		case 'maxi-blocks/button-maxi':
+			isCanvas &&
+				customCssCategories.push(
+					'canvas',
+					'before canvas',
+					'after canvas',
+					'canvas background'
+				);
+
+			customCssCategories.push(
+				'button',
+				'before button',
+				'after button',
+				'text'
+			);
+			isIconEnabled && customCssCategories.push('icon');
+
+			break;
+
+		default:
+			customCssCategories = ['canvas', 'before canvas', 'after canvas'];
+	}
 
 	const getOptions = () => {
 		const options = [
@@ -52,6 +161,43 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 		return options;
 	};
 
+	const generateComponent = (label, index, category) => {
+		const value = () => {
+			if (
+				customCssValue[category] &&
+				customCssValue[category] &&
+				customCssValue[category][index]
+			)
+				return customCssValue[category][index];
+			return '';
+		};
+		return (
+			<BaseControl
+				key={`${label}`}
+				label={`${__('Custom CSS for', 'maxi-blocks')} ${label}`}
+				className='maxi-additional__css'
+			>
+				<CodeEditor
+					language='css'
+					placeholder='Please enter CSS code.'
+					value={value()}
+					onChange={evn => {
+						const newCustomCss = !isEmpty(customCssValue)
+							? cloneDeep(customCssValue)
+							: {};
+						if (isEmpty(newCustomCss[category]))
+							newCustomCss[category] = {};
+
+						newCustomCss[category][index] = evn.target.value;
+						setAttributes({
+							[`custom-css-${breakpoint}`]: newCustomCss,
+						});
+					}}
+				/>
+			</BaseControl>
+		);
+	};
+
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
 		content: (
@@ -61,7 +207,7 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 					breakpoint={breakpoint}
 				> */}
 				<SelectControl
-					label={__('Choose custom CSS', 'maxi-blocks')}
+					label={__('Add CSS for', 'maxi-blocks')}
 					className='maxi-custom-css-control__category'
 					value={customCssCategory || 'none'}
 					options={getOptions()}
@@ -71,35 +217,111 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 						});
 					}}
 				/>
-				{customCssSelectors.map((element, index) => {
-					let label = element;
-					if (isEmpty(element)) label = ' canvas';
-					if (element === ':hover') label = ' canvas hover';
-					return (
-						<BaseControl
-							key={`${label}`}
-							label={`${__(
-								'Custom CSS for',
-								'maxi-blocks'
-							)} ${label}`}
-							className='maxi-additional__css'
-							hidden={!!customCssCategory?.includes(label)}
-						>
-							<CodeEditor
-								language='css'
-								placeholder='Please enter CSS code.'
-								value={customCss[index]}
-								onChange={evn => {
-									const newCustomCss = cloneDeep(customCss);
-									newCustomCss[index] = evn.target.value;
-									setAttributes({
-										'custom-css-general': newCustomCss,
-									});
-								}}
-							/>
-						</BaseControl>
-					);
-				})}
+				{customCssCategory === 'canvas' &&
+					selectorsCanvas.map((element, index) => {
+						let label = element;
+						if (isEmpty(element)) label = ' canvas';
+						if (element === ':hover') label = ' canvas on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'before canvas' &&
+					selectorsCanvasBefore.map((element, index) => {
+						let label = ' canvas :before';
+						if (element.includes(':hover'))
+							label = ' canvas :before on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'after canvas' &&
+					selectorsCanvasAfter.map((element, index) => {
+						let label = ' canvas :after';
+						if (element.includes(':hover'))
+							label = ' canvas :after on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'canvas background' &&
+					selectorsCanvasBackground.map((element, index) => {
+						let label = ' canvas background';
+						if (element.includes(':hover'))
+							label = ' canvas background on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'button' &&
+					selectorsBlock.map((element, index) => {
+						let label = ' button';
+						if (element.includes(':hover'))
+							label = ' button on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'before button' &&
+					selectorsBlockBefore.map((element, index) => {
+						let label = ' button :before';
+						if (element.includes(':hover'))
+							label = ' button :before on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'after button' &&
+					selectorsBlockAfter.map((element, index) => {
+						let label = ' button :after';
+						if (element.includes(':hover'))
+							label = ' button :after on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'text' &&
+					selectorsContent.map((element, index) => {
+						let label = ' button text';
+						if (element.includes(':hover'))
+							label = ' button text on hover';
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+				{customCssCategory === 'icon' &&
+					selectorsIcon.map((element, index) => {
+						let label = ' icon';
+						if (element.includes('icon:hover'))
+							label = ' icon on hover';
+						if (element.includes('svg'))
+							label = element.replace(
+								'.maxi-button-block__icon',
+								' '
+							);
+						return generateComponent(
+							label,
+							index,
+							customCssCategory
+						);
+					})}
+
 				{/* </ResponsiveTabsControl> */}
 			</>
 		),

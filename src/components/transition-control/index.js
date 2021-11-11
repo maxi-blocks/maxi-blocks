@@ -43,7 +43,7 @@ const TransitionControl = props => {
 						val !== undefined && val !== '' ? val : '',
 				});
 			}}
-			min={0}
+			min={0.3}
 			max={5}
 			step={0.1}
 			initial={0.3}

@@ -180,6 +180,11 @@ const Inspector = props => {
 											props,
 										}),
 									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
 									...inspectorTabs.transform({
 										props,
 									}),

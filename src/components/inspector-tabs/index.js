@@ -1,4 +1,5 @@
 export { default as alignment } from './inspector-alignment';
+export { default as anchor } from './inspector-anchor';
 export { default as background } from './inspector-background';
 export { default as blockSettings } from './inspector-block-settings';
 export { default as border } from './inspector-border';

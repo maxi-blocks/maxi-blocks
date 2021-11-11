@@ -8,6 +8,7 @@ import BackgroundLayersControl from './backgroundLayersControl';
  * External dependencies
  */
 import classnames from 'classnames';
+import { compact } from 'lodash';
 
 /**
  * Styles
@@ -32,12 +33,21 @@ const BlockBackgroundControl = props => {
 		disableSVG = false,
 	} = props;
 
-	const layersOptions =
-		getAttributeValue({
+	const layersOptions = compact([
+		...getAttributeValue({
 			target: 'background-layers',
 			props,
 			prefix,
-		}) || [];
+		}),
+	]);
+	const layersHoverOptions = compact([
+		...getAttributeValue({
+			target: 'background-layers',
+			props,
+			prefix,
+			isHover: true,
+		}),
+	]);
 
 	const hoverStatus = getAttributeValue({
 		target: 'background-hover-status',
@@ -51,6 +61,7 @@ const BlockBackgroundControl = props => {
 		<div className={classes}>
 			<BackgroundLayersControl
 				layersOptions={layersOptions}
+				layersHoverOptions={layersHoverOptions}
 				onChange={obj => onChange(obj)}
 				isHover={isHover}
 				prefix={prefix}

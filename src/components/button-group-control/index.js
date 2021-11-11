@@ -6,6 +6,7 @@ import { useInstanceId } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import Button from '../button';
 
 /**
@@ -23,7 +24,7 @@ import { BaseControl } from '..';
  * Component
  */
 const ButtonGroupControl = ({
-	label,
+	label = '',
 	className,
 	selected,
 	help,

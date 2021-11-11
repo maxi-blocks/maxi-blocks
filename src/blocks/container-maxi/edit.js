@@ -7,11 +7,11 @@ import { withSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
+import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
 	BlockPlaceholder,
 	Indicators,
-	MaxiBlockComponent,
 	ShapeDivider,
 	Toolbar,
 	InnerBlocks,

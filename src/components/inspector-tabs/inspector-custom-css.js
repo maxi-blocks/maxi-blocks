@@ -164,7 +164,7 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	const generateComponent = (label, index, category) => {
 		const value = () => {
 			if (
-				customCssValue[category] &&
+				customCssValue &&
 				customCssValue[category] &&
 				customCssValue[category][index]
 			)

@@ -129,7 +129,7 @@
 
 					&:hover {
 						background-color: var(--maxi-white-1-color);
-						border-color : rgba(180,180,180,0.8);
+						border-color: rgba(180, 180, 180, 0.8);
 					}
 
 					svg {
@@ -138,7 +138,7 @@
 					}
 				}
 
-				&[type="reset"] {
+				&[type='reset'] {
 					svg {
 						fill: #464a53;
 					}
@@ -192,7 +192,6 @@
 					height: 2px;
 					margin-top: 6px;
 					margin-right: -8px;
-					margin-left: -8px;
 					background: #dddfe1;
 				}
 			}
@@ -211,6 +210,7 @@
 						position: relative;
 						width: 16px;
 						height: 16px;
+						margin-right: -3px;
 						border: 2px solid var(--maxi-black-1-color);
 
 						&:after {

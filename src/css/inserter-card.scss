@@ -3,6 +3,7 @@
 ***********/
 .interface-interface-skeleton__sidebar {
 	width: 295px;
+	overflow-x: hidden;
 }
 .interface-complementary-area {
 	width: 100%;
@@ -40,7 +41,7 @@
 				margin: 0 0 2px 0;
 				font-size: 14px;
 				font-weight: 500;
-				line-height: unset;
+				line-height: 14px;
 			}
 			&__description {
 				display: block;

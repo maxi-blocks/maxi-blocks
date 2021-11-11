@@ -259,6 +259,8 @@ const AxisControlContent = props => {
 			>
 				<SelectControl
 					className='maxi-axis-control__units'
+					hideLabelFromVision
+					label={__('Unit', 'maxi-blocks')}
 					options={getOptions()}
 					value={currentUnit}
 					onChange={val =>

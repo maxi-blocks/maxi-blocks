@@ -10,6 +10,7 @@ import { useInstanceId } from '@wordpress/compose';
  */
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
+import ToggleSwitch from '../toggle-switch';
 import Button from '../button';
 
 /**
@@ -118,22 +119,11 @@ const AdvancedNumberControl = props => {
 	return (
 		<>
 			{enableAuto && (
-				<BaseControl label={__('Auto', 'maxi-blocks')}>
-					<label
-						className='maxi-axis-control__content__item__checkbox'
-						htmlFor={`${advancedNumberControlId}-${label.toLowerCase()}`}
-					>
-						<input
-							type='checkbox'
-							checked={value === 'auto'}
-							onChange={e =>
-								onChangeValue(e.target.checked ? 'auto' : '')
-							}
-							id={`${advancedNumberControlId}-${label.toLowerCase()}`}
-						/>
-						{__('auto', 'maxi-blocks')}
-					</label>
-				</BaseControl>
+				<ToggleSwitch
+					label={__('Auto', 'maxi-blocks')}
+					selected={value === 'auto'}
+					onChange={val => onChangeValue(val ? 'auto' : '')}
+				/>
 			)}
 			<BaseControl
 				id={advancedNumberControlId}
@@ -142,7 +132,7 @@ const AdvancedNumberControl = props => {
 			>
 				<input
 					id={advancedNumberControlId}
-					type={!enableAuto || value !== 'auto' ? 'number' : null}
+					type={!enableAuto || value !== 'auto' ? 'number' : 'hidden'}
 					className='maxi-advanced-number-control__value'
 					value={value === undefined ? defaultValue : trim(value)}
 					onChange={e => {

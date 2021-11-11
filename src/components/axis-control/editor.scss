@@ -47,12 +47,6 @@
 		position: relative;
 
 		&__item {
-			&:first-child {
-				margin-right: 5px;
-			}
-			&:last-child {
-				margin-left: 5px;
-			}
 			&__label,
 			&__input {
 				margin: 0 0 4px;

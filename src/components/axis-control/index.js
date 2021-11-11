@@ -27,7 +27,15 @@ import { isEmpty, capitalize, isNumber } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import { reset, sync as syncIcon } from '../../icons';
+import {
+	marginSeparate as marginSeparateIcon,
+	marginSyncAll as marginSyncAllIcon,
+	marginSyncDirection as marginSyncDirectionIcon,
+	paddingSeparate as paddingSeparateIcon,
+	paddingSyncAll as paddingSyncAllIcon,
+	paddingSyncDirection as paddingSyncDirectionIcon,
+	reset,
+} from '../../icons';
 import { ButtonGroupControl, AdvancedNumberControl } from '..';
 
 /**
@@ -290,15 +298,24 @@ const AxisControlContent = props => {
 				options={[
 					{
 						value: 'all',
-						label: syncIcon,
+						label:
+							type === 'Margin'
+								? marginSyncAllIcon
+								: paddingSyncAllIcon,
 					},
 					{
 						value: 'axis',
-						label: syncIcon,
+						label:
+							type === 'Margin'
+								? marginSyncDirectionIcon
+								: paddingSyncDirectionIcon,
 					},
 					{
 						value: 'none',
-						icon: syncIcon,
+						icon:
+							type === 'Margin'
+								? marginSeparateIcon
+								: paddingSeparateIcon,
 					},
 				]}
 				onChange={val => onChangeSync(val, isGeneral, breakpoint)}

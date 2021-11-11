@@ -18,7 +18,6 @@ import classnames from 'classnames';
  * Styles and Icons
  */
 import './editor.scss';
-import { BaseControl } from '..';
 
 /**
  * Component

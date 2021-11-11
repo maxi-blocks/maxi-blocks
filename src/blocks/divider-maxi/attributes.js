@@ -44,7 +44,6 @@ const attributes = {
 		type: 'string',
 		default: 'row',
 	},
-	...getPrefixedAttributes(attributesData.size, prefix),
 	...getPrefixedAttributes(attributesData.boxShadow, prefix),
 	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
 	...getPrefixedAttributes(attributesData.margin, prefix),

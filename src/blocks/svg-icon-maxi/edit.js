@@ -10,11 +10,10 @@ import { withSelect, withDispatch, dispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import {
+	getResizerSize,
 	MaxiBlockComponent,
-	Toolbar,
-	BlockResizer,
-	RawHTML,
-} from '../../components';
+} from '../../extensions/maxi-block';
+import { Toolbar, BlockResizer, RawHTML } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -25,7 +24,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, round } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Content
@@ -114,23 +113,12 @@ class edit extends MaxiBlockComponent {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
 
-			// Get the new size
-			let newWidth = elt.getBoundingClientRect().width;
-
-			if (svgWidthUnit === '%') {
-				const wrapperWidth =
-					this.blockRef.current.getBoundingClientRect().width;
-
-				newWidth = round((newWidth / wrapperWidth) * 100, 2);
-			}
-			if (svgWidthUnit === 'vw') {
-				const winWidth = window.innerWidth;
-
-				newWidth = round((newWidth / winWidth) * 100, 2);
-			}
-
 			setAttributes({
-				[`svg-width-${deviceType}`]: newWidth,
+				[`svg-width-${deviceType}`]: getResizerSize(
+					elt,
+					this.blockRef,
+					svgWidthUnit
+				),
 			});
 		};
 

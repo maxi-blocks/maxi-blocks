@@ -1,6 +1,8 @@
 .maxi-shape-divider {
 	z-index: 1;
 	transition: all 1s;
+	overflow: hidden;
+
 	svg {
 		width: 100%;
 		height: 100%;

@@ -6,6 +6,7 @@ import { useInstanceId } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import Button from '../button';
 
 /**
@@ -23,7 +24,7 @@ import './editor.scss';
  * Component
  */
 const ButtonGroupControl = ({
-	label,
+	label = '',
 	className,
 	selected,
 	onChange,
@@ -41,10 +42,11 @@ const ButtonGroupControl = ({
 
 	return (
 		!isEmpty(options) && (
-			<div role='group' className={classes} aria-labelledby={label}>
+			<BaseControl label={label} className={classes}>
 				{options.map(({ value, label }, index) => (
 					<Button
 						label={value}
+						tabIndex={0}
 						key={`${id}-${index}`}
 						aria-pressed={selected === value}
 						className={`maxi-button-group-control__option${
@@ -57,7 +59,7 @@ const ButtonGroupControl = ({
 						{label}
 					</Button>
 				))}
-			</div>
+			</BaseControl>
 		)
 	);
 };

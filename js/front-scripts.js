@@ -296,9 +296,12 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Shape Divider
-		if (motionData['shape-divider-top-status']) {
+		if (
+			motionData['shape-divider-top-effects-status'] &&
+			motionData['shape-divider-top-status']
+		) {
 			const shapeDividerTopHeight =
-				motionData['shape-divider-bottom-height'];
+				motionData['shape-divider-top-height'];
 			const shapeDividerTopHeightUnit =
 				motionData['shape-divider-top-height-unit'];
 			const target = document.querySelector(
@@ -314,7 +317,10 @@ motionElems.forEach(function (elem) {
 			});
 		}
 
-		if (motionData['shape-divider-bottom-status']) {
+		if (
+			motionData['shape-divider-bottom-effects-status'] &&
+			motionData['shape-divider-bottom-status']
+		) {
 			const shapeDividerBottomHeight =
 				motionData['shape-divider-bottom-height'];
 			const shapeDividerBottomHeightUnit =

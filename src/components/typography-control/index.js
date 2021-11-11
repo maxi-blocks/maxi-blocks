@@ -240,7 +240,6 @@ const LinkOptions = props => {
 	return (
 		<>
 			<ButtonGroupControl
-				label={__('Link options', 'maxi-blocks')}
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
 				options={[

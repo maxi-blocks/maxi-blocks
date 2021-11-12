@@ -36,6 +36,20 @@ import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const getCustomStyles = (props, type, index) => {
+	const response = {
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			type,
+			index
+		),
+	};
+
+	return response;
+};
+
 const getWrapperObject = props => {
 	const response = {
 		zIndex: getZIndexStyles({
@@ -425,6 +439,13 @@ const getIconObject = (props, target) => {
 				prefix: 'icon-',
 				parentBlockStyle: props.parentBlockStyle,
 			}),
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			'icon',
+			0
+		),
 	};
 
 	return response;
@@ -491,6 +512,13 @@ const getIconHoverObject = (props, target) => {
 				parentBlockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			'icon',
+			1
+		),
 	};
 
 	return response;
@@ -536,7 +564,11 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getWrapperObject(props),
+			':before': getCustomStyles(props, 'before canvas', 0),
+			':after': getCustomStyles(props, 'after canvas', 0),
 			':hover': getHoverWrapperObject(props),
+			':hover:before': getCustomStyles(props, 'before canvas', 1),
+			':hover:after': getCustomStyles(props, 'after canvas', 1),
 			' .maxi-button-block__button': getNormalObject(props),
 			' .maxi-button-block__icon': [
 				getIconObject(props, 'icon'),

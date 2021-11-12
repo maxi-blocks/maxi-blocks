@@ -59,27 +59,9 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 
 	const isCanvas = blockName.includes('button-maxi') === true;
 
-	const isCanvasBackgroundEnabled = !isEmpty(
-		getLastBreakpointAttribute(
-			'button-background-active-media',
-			breakpoint,
-			attributes,
-			false
-		)
-	);
-
-	const isCanvasBackgroundHoverEnabled = !isEmpty(
-		getLastBreakpointAttribute(
-			'button-background-active-media',
-			breakpoint,
-			attributes,
-			true
-		)
-	);
+	const isCanvasBackgroundEnabled = !isEmpty(attributes['background-layers']);
 
 	const isIconEnabled = !isEmpty(attributes['icon-content']);
-
-	const isIconHoverEnabled = attributes['icon-status-hover'];
 
 	let selectorsCanvas;
 	let selectorsBlock;
@@ -137,16 +119,13 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 				customCssCategories.push(
 					'canvas',
 					'before canvas',
-					'after canvas',
-					'canvas background'
+					'after canvas'
 				);
+			isCanvas &&
+				isCanvasBackgroundEnabled &&
+				customCssCategories.push('canvas background');
 
-			customCssCategories.push(
-				'button',
-				'before button',
-				'after button',
-				'text'
-			);
+			customCssCategories.push('button', 'before button', 'after button');
 			isIconEnabled && customCssCategories.push('icon');
 
 			break;
@@ -210,10 +189,13 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 							const validMessage = await validateCSS(
 								evn.target.value
 							);
-							if (typeof validMessage === 'string') {
-								document.getElementById(id).innerHTML =
-									validMessage;
-							} else document.getElementById(id).innerHTML = '';
+							const messageDiv = document.getElementById(id);
+							if (
+								typeof validMessage === 'string' &&
+								messageDiv
+							) {
+								messageDiv.innerHTML = validMessage;
+							} else if (messageDiv) messageDiv.innerHTML = '';
 						}
 						check();
 					}}

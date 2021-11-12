@@ -199,12 +199,21 @@ export const getImageBackgroundObject = ({
 	isHover = false,
 	prefix = '',
 	breakpoint,
+	isParallax = false,
 	...props
 }) => {
 	const response = {
 		label: 'Background Image',
 		[breakpoint]: {},
 	};
+
+	const bgImageUrl = getAttributeValue({
+		target: 'background-image-mediaURL',
+		props,
+		prefix,
+	});
+
+	if (isEmpty(bgImageUrl)) return {};
 
 	const getBgImageAttributeValue = target =>
 		getAttributeValue({
@@ -216,12 +225,6 @@ export const getImageBackgroundObject = ({
 		});
 	const getBgImageLastBreakpointAttribute = target =>
 		getLastBreakpointAttribute(prefix + target, breakpoint, props, isHover);
-
-	const bgImageUrl = getBgImageLastBreakpointAttribute(
-		'background-image-mediaURL'
-	);
-
-	if (isEmpty(bgImageUrl)) return {};
 
 	const bgImageSize = getLastBreakpointAttribute(
 		`${prefix}background-image-size`,
@@ -249,69 +252,103 @@ export const getImageBackgroundObject = ({
 		'background-image-clip-path'
 	);
 
-	// Image
-	if (bgImageSize === 'custom' && !isNil(bgImageCropOptions)) {
-		response[breakpoint][
-			'background-image'
-		] = `url('${bgImageCropOptions.image.source_url}')`;
-	} else if (
-		(bgImageSize === 'custom' && isNil(bgImageCropOptions)) ||
-		(bgImageSize !== 'custom' && !isNil(bgImageUrl))
-	) {
-		response[breakpoint]['background-image'] = `url('${bgImageUrl}')`;
-	}
+	if (!isParallax) {
+		// Image
+		if (breakpoint === 'general') {
+			if (bgImageSize === 'custom' && !isNil(bgImageCropOptions)) {
+				response[breakpoint][
+					'background-image'
+				] = `url('${bgImageCropOptions.image.source_url}')`;
+			} else if (
+				(bgImageSize === 'custom' && isNil(bgImageCropOptions)) ||
+				(bgImageSize !== 'custom' && !isNil(bgImageUrl))
+			) {
+				response[breakpoint][
+					'background-image'
+				] = `url('${bgImageUrl}')`;
+			}
+		}
 
-	// Size
-	if (bgImageSize !== 'custom') {
-		if (!isNil(response[breakpoint]['background-size']))
+		// Size
+		if (bgImageSize !== 'custom') {
+			if (!isNil(response[breakpoint]['background-size']))
+				response[breakpoint][
+					'background-size'
+				] = `${response[breakpoint]['background-size']},${bgImageSize}`;
+			else response[breakpoint]['background-size'] = bgImageSize;
+		} else if (!isNil(response[breakpoint]['background-size']))
 			response[breakpoint][
 				'background-size'
-			] = `${response[breakpoint]['background-size']},${bgImageSize}`;
-		else response[breakpoint]['background-size'] = bgImageSize;
-	} else if (!isNil(response[breakpoint]['background-size']))
-		response[breakpoint][
-			'background-size'
-		] = `${response[breakpoint]['background-size']},cover`;
-	else response[breakpoint]['background-size'] = 'cover';
+			] = `${response[breakpoint]['background-size']},cover`;
+		else response[breakpoint]['background-size'] = 'cover';
 
-	// Repeat
-	if (bgImageRepeat)
-		response[breakpoint]['background-repeat'] = bgImageRepeat;
+		// Repeat
+		if (bgImageRepeat)
+			response[breakpoint]['background-repeat'] = bgImageRepeat;
 
-	// Position
-	if (bgImagePosition !== 'custom')
-		response[breakpoint]['background-position'] = bgImagePosition;
-	else {
-		const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
-			'background-image-position-width'
-		);
-		const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
-			'background-image-position-width-unit'
-		);
-		const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
-			'background-image-position-height'
-		);
-		const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
-			'background-image-position-height-unit'
-		);
-		response[breakpoint][
-			'background-position'
-		] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
-	}
-	// Origin
-	if (bgImageOrigin)
-		response[breakpoint]['background-origin'] = bgImageOrigin;
-
-	// Clip
-	if (bgImageClip) response[breakpoint]['background-clip'] = bgImageClip;
-
-	// Attachment
-	if (bgImageAttachment) {
-		if (!isNil(response[breakpoint]['background-attachment']))
+		// Position
+		if (bgImagePosition !== 'custom')
+			response[breakpoint]['background-position'] = bgImagePosition;
+		else {
+			const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
+				'background-image-position-width'
+			);
+			const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-width-unit'
+			);
+			const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
+				'background-image-position-height'
+			);
+			const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-height-unit'
+			);
 			response[breakpoint][
-				'background-attachment'
-			] = `${response[breakpoint]['background-attachment']},${bgImageAttachment}`;
-		else response[breakpoint]['background-attachment'] = bgImageAttachment;
+				'background-position'
+			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
+		}
+
+		// Origin
+		if (bgImageOrigin)
+			response[breakpoint]['background-origin'] = bgImageOrigin;
+
+		// Clip
+		if (bgImageClip) response[breakpoint]['background-clip'] = bgImageClip;
+
+		// Attachment
+		if (bgImageAttachment) {
+			if (!isNil(response[breakpoint]['background-attachment']))
+				response[breakpoint][
+					'background-attachment'
+				] = `${response[breakpoint]['background-attachment']},${bgImageAttachment}`;
+			else
+				response[breakpoint]['background-attachment'] =
+					bgImageAttachment;
+		}
+	} else {
+		if (bgImageSize !== 'custom')
+			response[breakpoint]['object-fit'] = bgImageSize;
+		else response[breakpoint]['object-fit'] = 'cover';
+
+		// Position
+		if (bgImagePosition !== 'custom')
+			response[breakpoint]['object-position'] = bgImagePosition;
+		else {
+			const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
+				'background-image-position-width'
+			);
+			const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-width-unit'
+			);
+			const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
+				'background-image-position-height'
+			);
+			const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-height-unit'
+			);
+			response[breakpoint][
+				'object-position'
+			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
+		}
 	}
 
 	// Opacity
@@ -579,36 +616,94 @@ const getBackgroundLayers = ({
 					},
 				};
 				break;
-			case 'image':
-				response[layerTarget] = {
-					...response[layerTarget],
-					[type]: {
-						...merge(
-							response?.[layerTarget]?.[type],
-							getImageBackgroundObject({
-								...getGroupAttributes(
-									layer,
-									'backgroundImage',
-									isHover
-								),
-								isHover,
-								prefix,
-								breakpoint,
-							}),
-							getDisplayStyles(
-								{
+			case 'image': {
+				const parallaxStatus = getAttributeValue({
+					target: 'background-image-parallax-status',
+					props: layer,
+					prefix,
+				});
+
+				if (!parallaxStatus)
+					response[layerTarget] = {
+						...response[layerTarget],
+						[type]: {
+							...merge(
+								response?.[layerTarget]?.[type],
+								getImageBackgroundObject({
 									...getGroupAttributes(
 										layer,
-										'display',
+										'backgroundImage',
 										isHover
 									),
-								},
-								isHover
-							)
-						),
-					},
-				};
+									isHover,
+									prefix,
+									breakpoint,
+									isParallax: parallaxStatus,
+								}),
+								getDisplayStyles(
+									{
+										...getGroupAttributes(
+											layer,
+											'display',
+											isHover
+										),
+									},
+									isHover
+								)
+							),
+						},
+					};
+				else {
+					response[layerTarget] = {
+						...response[layerTarget],
+						[type]: {
+							...merge(
+								response?.[layerTarget]?.[type],
+								getDisplayStyles(
+									{
+										...getGroupAttributes(
+											layer,
+											'display',
+											isHover
+										),
+									},
+									isHover
+								)
+							),
+						},
+					};
+					response[`${layerTarget} img`] = {
+						...response[`${layerTarget} img`],
+						[type]: {
+							...merge(
+								response?.[`${layerTarget} img`]?.[type],
+								getImageBackgroundObject({
+									...getGroupAttributes(
+										layer,
+										'backgroundImage',
+										isHover
+									),
+									isHover,
+									prefix,
+									breakpoint,
+									isParallax: parallaxStatus,
+								}),
+								getDisplayStyles(
+									{
+										...getGroupAttributes(
+											layer,
+											'display',
+											isHover
+										),
+									},
+									isHover
+								)
+							),
+						},
+					};
+				}
 				break;
+			}
 			case 'video':
 				response[layerTarget] = {
 					...response[layerTarget],

@@ -201,12 +201,6 @@ class edit extends MaxiBlockComponent {
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
-				{...(imageData && {
-					altOptions: {
-						wpAlt: imageData.alt_text,
-						titleAlt: imageData.title.rendered,
-					},
-				})}
 				{...this.props}
 				propsToAvoid={['captionContent', 'formatValue']}
 			/>,

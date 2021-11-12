@@ -19,15 +19,30 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 const validateCSS = async code => {
+	let responseFinal = '';
 	try {
-		const response = await cssValidator.validateText(code);
+		const codeToCheck = `body {${code}}`;
+		const response = await cssValidator.validateText(codeToCheck, {
+			lang: 'en',
+			warningLevel: 0,
+		});
 
-		return response;
+		if (!response.valid) {
+			response.errors.forEach(error => {
+				responseFinal = `${responseFinal} ${__(
+					'line',
+					'maxi-blocks'
+				)} ${error?.line} - ${error?.message}<br>`;
+			});
+			return responseFinal;
+		}
+		return true;
 	} catch (err) {
 		console.error(__(`Error validating css: ${err}`, 'maxi-blocks'));
 	}
-	return null;
+	return responseFinal;
 };
+
 /**
  * Component
  */
@@ -40,9 +55,6 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 		breakpoint,
 		attributes
 	);
-
-	console.log(customCssValue);
-
 	const customCssCategory = attributes['custom-css-category'];
 
 	const isCanvas = blockName.includes('button-maxi') === true;
@@ -78,8 +90,6 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	let selectorsCanvasBackground;
 	let selectorsIcon;
 	let selectorsContent;
-
-	blockName.includes();
 
 	const customCssSelectors = [];
 
@@ -162,7 +172,7 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	};
 
 	const generateComponent = (label, index, category) => {
-		const value = () => {
+		const getValue = () => {
 			if (
 				customCssValue &&
 				customCssValue[category] &&
@@ -171,16 +181,18 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 				return customCssValue[category][index];
 			return '';
 		};
+		const labelForCss = label.replaceAll(' ', '_');
+		const id = `maxi-additional__css-error-text__${labelForCss}`;
 		return (
 			<BaseControl
 				key={`${label}`}
 				label={`${__('Custom CSS for', 'maxi-blocks')} ${label}`}
-				className='maxi-additional__css'
+				className={`maxi-additional__css maxi-additional__css-${labelForCss}`}
 			>
 				<CodeEditor
 					language='css'
-					placeholder='Please enter CSS code.'
-					value={value()}
+					placeholder='Please enter CSS code'
+					value={getValue()}
 					onChange={evn => {
 						const newCustomCss = !isEmpty(customCssValue)
 							? cloneDeep(customCssValue)
@@ -193,7 +205,20 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 							[`custom-css-${breakpoint}`]: newCustomCss,
 						});
 					}}
+					onBlur={evn => {
+						async function check() {
+							const validMessage = await validateCSS(
+								evn.target.value
+							);
+							if (typeof validMessage === 'string') {
+								document.getElementById(id).innerHTML =
+									validMessage;
+							} else document.getElementById(id).innerHTML = '';
+						}
+						check();
+					}}
 				/>
+				<div className='maxi-additional__css-error' id={id} />
 			</BaseControl>
 		);
 	};

@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { isEmpty } from '@wordpress/rich-text';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
@@ -24,6 +23,7 @@ const getCustomCss = (obj, category, index) => {
 			breakpoint,
 			obj
 		);
+
 		if (
 			customCssValue &&
 			customCssValue[category] &&

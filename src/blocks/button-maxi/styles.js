@@ -136,6 +136,13 @@ const getHoverWrapperObject = props => {
 				isHover: true,
 			}),
 		},
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			'canvas',
+			1
+		),
 	};
 
 	return response;
@@ -218,6 +225,13 @@ const getNormalObject = props => {
 			},
 			prefix: 'button-',
 		}),
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			'button',
+			0
+		),
 	};
 
 	return response;
@@ -263,6 +277,13 @@ const getHoverObject = props => {
 			isHover: true,
 			prefix: 'button-',
 		}),
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			'button',
+			1
+		),
 	};
 
 	return response;

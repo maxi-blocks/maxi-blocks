@@ -517,7 +517,7 @@ const getIconHoverObject = (props, target) => {
 				...getGroupAttributes(props, 'customCss'),
 			},
 			'icon',
-			1
+			4
 		),
 	};
 
@@ -570,18 +570,44 @@ const getStyles = props => {
 			':hover:before': getCustomStyles(props, 'before canvas', 1),
 			':hover:after': getCustomStyles(props, 'after canvas', 1),
 			' .maxi-button-block__button': getNormalObject(props),
+			' .maxi-button-block__button:before': getCustomStyles(
+				props,
+				'before button',
+				0
+			),
+			' .maxi-button-block__button:after': getCustomStyles(
+				props,
+				'after button',
+				0
+			),
 			' .maxi-button-block__icon': [
 				getIconObject(props, 'icon'),
 				getIconResponsive(props, 'icon'),
 			],
-			' .maxi-button-block__icon svg': getIconSize(props, false),
-			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
-			' .maxi-button-block__icon svg path': getIconPathStyles(
-				props,
-				false
-			),
+			' .maxi-button-block__icon svg': [
+				getIconSize(props, false),
+				getCustomStyles(props, 'icon', 1),
+			],
+			' .maxi-button-block__icon svg > *': [
+				getIconObject(props, 'svg'),
+				getCustomStyles(props, 'icon', 2),
+			],
+			' .maxi-button-block__icon svg path': [
+				getIconPathStyles(props, false),
+				getCustomStyles(props, 'icon', 3),
+			],
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),
+			' .maxi-button-block__button:hover:before': getCustomStyles(
+				props,
+				'before button',
+				1
+			),
+			' .maxi-button-block__button:hover:after': getCustomStyles(
+				props,
+				'after button',
+				1
+			),
 			' .maxi-button-block__button:hover .maxi-button-block__content':
 				getHoverContentObject(props),
 
@@ -589,12 +615,21 @@ const getStyles = props => {
 				props['icon-status-hover'] &&
 				getIconHoverObject(props, 'iconHover'),
 			' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
-				props['icon-status-hover'] &&
-				getIconHoverObject(props, 'iconHover'),
-			' .maxi-button-block__button:hover .maxi-button-block__icon svg':
+				[
+					props['icon-status-hover'] &&
+						getIconHoverObject(props, 'iconHover'),
+					getCustomStyles(props, 'icon', 7),
+				],
+			' .maxi-button-block__button:hover .maxi-button-block__icon svg': [
 				props['icon-status-hover'] && getIconSize(props, true),
+				getCustomStyles(props, 'icon', 6),
+			],
 			' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
-				props['icon-status-hover'] && getIconPathStyles(props, true),
+				[
+					props['icon-status-hover'] &&
+						getIconPathStyles(props, true),
+					getCustomStyles(props, 'icon', 8),
+				],
 		}),
 	};
 

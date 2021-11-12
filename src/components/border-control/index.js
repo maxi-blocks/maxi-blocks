@@ -21,6 +21,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -69,15 +70,15 @@ const BorderControl = props => {
 		isHover
 	);
 
-	const getIsActive = () => {
-		const items = [
-			`${prefix}border-top-width`,
-			`${prefix}border-right-width`,
-			`${prefix}border-bottom-width`,
-			`${prefix}border-left-width`,
-		];
+	const axisItems = [
+		`${prefix}border-top-width`,
+		`${prefix}border-right-width`,
+		`${prefix}border-bottom-width`,
+		`${prefix}border-left-width`,
+	];
 
-		const hasBorderWidth = items.some(item => {
+	const getIsActive = () => {
+		const hasBorderWidth = axisItems.some(item => {
 			return isNumber(
 				getLastBreakpointAttribute(item, breakpoint, props, isHover)
 			);
@@ -85,6 +86,24 @@ const BorderControl = props => {
 
 		if (hasBorderWidth) return borderStyleValue;
 		return 'none';
+	};
+
+	const getValuesOnChangeType = () => {
+		const response = {};
+
+		axisItems.forEach(item => {
+			const value = getLastBreakpointAttribute(
+				item,
+				breakpoint,
+				props,
+				isHover
+			);
+
+			if (!value)
+				response[getAttributeKey(item, isHover, false, breakpoint)] = 2;
+		});
+
+		return response;
 	};
 
 	return (
@@ -155,6 +174,7 @@ const BorderControl = props => {
 							[`${prefix}border-style-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: val,
+							...getValuesOnChangeType(),
 						});
 					}}
 				/>

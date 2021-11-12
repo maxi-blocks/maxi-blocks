@@ -94,7 +94,7 @@ const ColorControl = props => {
 				clientId,
 				paletteColor,
 				blockStyle
-			)},${paletteOpacity / 100 || 1})`,
+			)},1)`,
 		});
 	};
 

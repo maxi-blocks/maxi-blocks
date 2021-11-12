@@ -10,7 +10,8 @@ import { Button, Icon, withFocusOutside } from '@wordpress/components';
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import { MaxiBlockComponent, Toolbar, InnerBlocks } from '../../components';
+import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { Toolbar, InnerBlocks } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';

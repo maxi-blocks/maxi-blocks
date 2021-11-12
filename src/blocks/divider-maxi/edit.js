@@ -8,7 +8,11 @@ import { withSelect, withDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
+import {
+	getResizerSize,
+	MaxiBlockComponent,
+} from '../../extensions/maxi-block';
+import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock, {
@@ -55,14 +59,33 @@ class edit extends MaxiBlockComponent {
 
 		const handleOnResizeStart = event => {
 			event.preventDefault();
-			setAttributes({
-				[`height-unit-${deviceType}`]: 'px',
-			});
+
+			const sizeUnit = getLastBreakpointAttribute(
+				'height-unit',
+				deviceType,
+				attributes
+			);
+
+			if (sizeUnit === 'em')
+				setAttributes({
+					[`height-unit-${deviceType}`]: 'px',
+				});
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
+			const sizeUnit = getLastBreakpointAttribute(
+				'height-unit',
+				deviceType,
+				attributes
+			);
+
 			setAttributes({
-				[`height-${deviceType}`]: elt.getBoundingClientRect().height,
+				[`height-${deviceType}`]: getResizerSize(
+					elt,
+					this.blockRef,
+					sizeUnit,
+					'height'
+				),
 			});
 		};
 

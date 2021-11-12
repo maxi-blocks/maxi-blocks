@@ -14,6 +14,7 @@ import { isEmpty } from 'lodash';
 /**
  * Styles and Icons
  */
+import './editor.scss';
 import { alignLeft, alignCenter, alignRight, alignJustify } from '../../icons';
 
 /**

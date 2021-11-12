@@ -21,7 +21,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber } from 'lodash';
+import { isEmpty, capitalize, isNumber, replace } from 'lodash';
 
 /**
  * Styles and icons
@@ -61,7 +61,11 @@ const AxisInput = props => {
 	return (
 		<AdvancedNumberControl
 			label={__(capitalize(label), 'maxi-blocks')}
-			className={`maxi-axis-control__content__item maxi-axis-control__content__item__${label}`}
+			className={`maxi-axis-control__content__item maxi-axis-control__content__item__${replace(
+				label,
+				' / ',
+				'-'
+			).toLowerCase()}`}
 			placeholder={lastValue}
 			value={value}
 			onChangeValue={val =>

@@ -6,7 +6,6 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
-	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -18,13 +17,17 @@ import {
 	addBackgroundLayer,
 	modalMock,
 	changeResponsive,
+	removeBackgroundLayers,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
-	it('Check Background Color layer', async () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
+	});
+
+	it('Check Background Color layer', async () => {
 		await addBackgroundLayer(page, 'color');
 
 		// change color
@@ -39,7 +42,7 @@ describe('BackgroundControl', () => {
 			opacity => opacity.focus()
 		);
 
-		pressKeyWithModifier('primary', 'a');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('45');
 
 		// clip-path
@@ -102,7 +105,8 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background Color layer hover', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
+
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -135,10 +139,10 @@ describe('BackgroundControl', () => {
 
 		// opacity
 		await page.$eval(
-			'.maxi-background-control .maxi-advanced-number-control input',
+			'.maxi-background-control .maxi-opacity-control input[type="number"]',
 			opacity => opacity.focus()
 		);
-		pressKeyWithModifier('primary', 'a');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('45');
 
 		// clip-path
@@ -196,6 +200,8 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background image layer', async () => {
+		await changeResponsive(page, 'base');
+
 		await addBackgroundLayer(page, 'image');
 
 		// opacity
@@ -204,7 +210,7 @@ describe('BackgroundControl', () => {
 			opacity => opacity[0].focus()
 		);
 
-		pressKeyWithModifier('primary', 'a');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('55');
 
 		// selectors
@@ -390,7 +396,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background image layer hover', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -415,7 +421,7 @@ describe('BackgroundControl', () => {
 			opacity => opacity[0].focus()
 		);
 
-		await pressKeyTimes('Backspace', '3');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('82');
 
 		// selectors
@@ -601,7 +607,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background video layer', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
 		await addBackgroundLayer(page, 'video');
 
 		const video =
@@ -635,7 +641,7 @@ describe('BackgroundControl', () => {
 			opacity => opacity[0].focus()
 		);
 
-		await pressKeyTimes('Backspace', '3');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('44');
 
 		const layerExpect = await getBlockAttributes();
@@ -657,7 +663,7 @@ describe('BackgroundControl', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('32');
 
 		// expect s
@@ -685,7 +691,7 @@ describe('BackgroundControl', () => {
 		expect(backgroundOpacityM).toStrictEqual('44');
 	});
 	it('Check Background video layer hover', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -710,7 +716,7 @@ describe('BackgroundControl', () => {
 			opacity => opacity[0].focus()
 		);
 
-		await pressKeyTimes('Backspace', '3');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('82');
 
 		const layerExpect = await getBlockAttributes();
@@ -732,7 +738,7 @@ describe('BackgroundControl', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('45');
 
 		// expect s
@@ -760,7 +766,7 @@ describe('BackgroundControl', () => {
 		expect(backgroundOpacityM).toStrictEqual('82');
 	});
 	it('Check Background shape layer', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -783,7 +789,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await opacityInput[0].focus();
-		await pressKeyTimes('Backspace', '3');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('77');
 
 		await page.$eval('.maxi-background-layer__arrow', display =>
@@ -834,7 +840,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await opacityInput[0].focus();
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('54');
 
 		const sizeInput = await page.$$(
@@ -842,7 +848,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await sizeInput[0].focus();
-		await pressKeyTimes('Backspace', '1');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('23');
 
 		// expect S responsive
@@ -906,7 +912,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background shape layer hover', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -949,7 +955,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await sizeInput[0].focus();
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('22');
 
 		const layerExpect = await getBlockAttributes();
@@ -977,7 +983,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await sizeInput[0].focus();
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('12');
 
 		// expect S responsive
@@ -1020,6 +1026,8 @@ describe('BackgroundControl', () => {
 	});
 
 	it('generate a layer from hover and test the hider', async () => {
+		await removeBackgroundLayers(page);
+
 		await addBackgroundLayer(page, 'color');
 
 		// change color
@@ -1039,6 +1047,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('generate a layer from hover on responsive and test that layers cannot be deleted from hover', async () => {
+		await removeBackgroundLayers(page);
 		await changeResponsive(page, 'l');
 		await addBackgroundLayer(page, 'color');
 		const accordion = await openSidebarTab(

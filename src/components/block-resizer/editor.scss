@@ -1,122 +1,102 @@
-body.maxi-blocks--active {
-	.maxi-block.is-selected {
-		.maxi-block__resizer {
-			padding: 5px;
-		}
-	}
-	.maxi-block__resizer {
-		transition: padding 0.2s ease;
-
-		.maxi-resizable {
-			&__handle {
-				display: none;
+body.maxi-blocks--active .maxi-block__resizer {
+	.maxi-resizable {
+		&__handle {
+			display: none;
+			width: 15px;
+			height: 15px;
+			z-index: 20;
+			&--show {
+				display: block;
+			}
+			&:after {
+				content: '';
+				display: block;
 				width: 15px;
 				height: 15px;
-				z-index: 20;
-				&--show {
-					display: block;
-				}
-				&:after {
-					content: '';
-					display: block;
-					width: 15px;
-					height: 15px;
-					border: 2px solid #fff;
-					border-radius: 50%;
-					background: #ff4a17;
-					cursor: inherit;
-					position: absolute;
-					top: calc(50% - #{ceil(15px / 2)});
-					right: calc(50% - #{ceil(15px / 2)});
-				}
+				border: 2px solid #fff;
+				// border-radius: 50%;
+				background: #ff4a17;
+				cursor: inherit;
+				position: absolute;
+				top: calc(50% - #{ceil(15px / 2)});
+				right: calc(50% - #{ceil(15px / 2)});
+			}
+			&:before {
+				content: '';
+				display: block;
+				cursor: inherit;
+				position: absolute;
+				background: #ff4a17;
+			}
+			&-right {
+				right: 0 !important;
 				&:before {
-					content: '';
-					display: block;
-					cursor: inherit;
-					position: absolute;
-					background: #ff4a17;
-				}
-				&-right {
-					&:before {
-						top: 50%;
-						right: calc(50% - 2px);
-						transform: translateY(-50%);
-						width: 4px;
-					}
-				}
-				&-left {
-					&:before {
-						top: 50%;
-						left: calc(50% - 2px);
-						transform: translateY(-50%);
-						width: 4px;
-					}
-				}
-				&-top {
-					&:before {
-						top: calc(50% - 2px);
-						left: 50%;
-						transform: translateX(-50%);
-						height: 4px;
-					}
-				}
-				&-bottom {
-					&:before {
-						bottom: calc(50% - 2px);
-						left: 50%;
-						transform: translateX(-50%);
-						height: 4px;
-					}
+					top: 50%;
+					right: calc(50% - 2px);
+					transform: translateY(-50%);
+					width: 4px;
 				}
 			}
-			&__side-handle {
-				&.maxi-resizable__handle-top,
-				&.maxi-resizable__handle-bottom {
-					width: 100%;
-					&:active,
-					&:hover {
-						&:before {
-							animation: horiz-line-motion 0.1s ease-out 0s;
-							opacity: 1 !important;
-						}
-					}
-					&:before {
-						width: 100%;
-						opacity: 0;
-					}
+			&-left {
+				left: 0 !important;
+				&:before {
+					top: 50%;
+					left: calc(50% - 2px);
+					transform: translateY(-50%);
+					width: 4px;
 				}
-				&.maxi-resizable__handle-left,
-				&.maxi-resizable__handle-right {
-					height: 100%;
-					&:active,
-					&:hover {
-						&:before {
-							animation: vert-line-motion 0.1s ease-out 0s;
-							opacity: 1 !important;
-						}
-					}
-					&:before {
-						height: 100%;
-						opacity: 0;
-					}
+			}
+			&-top {
+				top: 0 !important;
+				&:before {
+					top: calc(50% - 2px);
+					left: 50%;
+					transform: translateX(-50%);
+					height: 4px;
+				}
+			}
+			&-bottom {
+				bottom: 0 !important;
+				&:before {
+					bottom: calc(50% - 2px);
+					left: 50%;
+					transform: translateX(-50%);
+					height: 4px;
 				}
 			}
 		}
-	}
-	.maxi-resizable__handle-top {
-		top: -2.5px !important;
-	}
-
-	.maxi-resizable__handle-right {
-		right: -2.5px !important;
-	}
-
-	.maxi-resizable__handle-bottom {
-		bottom: -2.5px !important;
-	}
-
-	.maxi-resizable__handle-left {
-		left: -2.5px !important;
+		&__side-handle {
+			&.maxi-resizable__handle-top,
+			&.maxi-resizable__handle-bottom {
+				width: 100%;
+				&:active,
+				&:hover {
+					&:before {
+						animation: horiz-line-motion 0.1s ease-out 0s;
+						opacity: 1 !important;
+					}
+				}
+				&:before {
+					width: 100%;
+					opacity: 0;
+				}
+			}
+			&.maxi-resizable__handle-left,
+			&.maxi-resizable__handle-right {
+				height: 100%;
+				&:active,
+				&:hover {
+					&:before {
+						animation: vert-line-motion 0.1s ease-out 0s;
+						opacity: 1 !important;
+					}
+				}
+				&:before {
+					height: 100%;
+					opacity: 0;
+				}
+			}
+		}
 	}
 }
 

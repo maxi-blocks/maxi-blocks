@@ -12,7 +12,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, round, isNumber, merge } from 'lodash';
+import { isEmpty, isNil, round, isNumber, merge, compact } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -122,14 +122,17 @@ export const getColorBackgroundObject = ({
 	}
 
 	if (!isIconInherit && isIcon) {
-		response[breakpoint]['background'] = getColorRGBAString({
+		response[breakpoint].background = getColorRGBAString({
 			firstVar: `color-${currentBgPaletteColor}`,
 			opacity: currentBgPaletteOpacity,
 			blockStyle,
 		});
 	}
 
-	if (!isEmpty(bgClipPath)) response[breakpoint]['clip-path'] = bgClipPath;
+	if (!isNil(bgClipPath))
+		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)
+			? 'none'
+			: bgClipPath;
 
 	return response;
 };
@@ -183,8 +186,10 @@ export const getGradientBackgroundObject = ({
 		if (isNumber(bgGradientOpacity))
 			response[breakpoint].opacity = bgGradientOpacity;
 		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
-		if (!isEmpty(bgGradientClipPath))
-			response[breakpoint]['clip-path'] = bgGradientClipPath;
+		if (!isNil(bgGradientClipPath))
+			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
+				? 'none'
+				: bgGradientClipPath;
 	}
 
 	return response;
@@ -313,8 +318,10 @@ export const getImageBackgroundObject = ({
 	if (isNumber(bgImageOpacity)) response[breakpoint].opacity = bgImageOpacity;
 
 	// Clip-path
-	if (!isEmpty(bgImageClipPath))
-		response[breakpoint]['clip-path'] = bgImageClipPath;
+	if (!isNil(bgImageClipPath))
+		response[breakpoint]['clip-path'] = isEmpty(bgImageClipPath)
+			? 'none'
+			: bgImageClipPath;
 
 	return response;
 };
@@ -353,8 +360,10 @@ export const getVideoBackgroundObject = ({
 	if (isNumber(bgVideoOpacity)) response[breakpoint].opacity = bgVideoOpacity;
 
 	// Clip-path
-	if (!isEmpty(bgVideoClipPath))
-		response[breakpoint]['clip-path'] = bgVideoClipPath;
+	if (!isNil(bgVideoClipPath))
+		response[breakpoint]['clip-path'] = isEmpty(bgVideoClipPath)
+			? 'none'
+			: bgVideoClipPath;
 
 	// Fallback URL
 	if (!isEmpty(bgVideoFallbackUrl)) {
@@ -868,11 +877,21 @@ export const getBlockBackgroundStyles = ({
 
 	if (isHover && !props[`${prefix}background-hover-status`]) return response;
 
-	const layers = getAttributeValue({
-		target: 'background-layers',
-		props,
-		prefix,
-	});
+	const layers = compact([
+		...getAttributeValue({
+			target: 'background-layers',
+			props,
+			prefix,
+		}),
+		...(isHover && [
+			...getAttributeValue({
+				target: 'background-layers',
+				props,
+				prefix,
+				isHover,
+			}),
+		]),
+	]);
 
 	if (layers && layers.length > 0)
 		BREAKPOINTS.forEach(breakpoint => {

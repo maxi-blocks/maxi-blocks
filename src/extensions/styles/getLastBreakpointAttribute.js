@@ -7,7 +7,7 @@ import getAttributeValue from './getAttributeValue';
 /**
  * External dependencies
  */
-import { isNil, isEmpty, isBoolean, isNumber, uniq } from 'lodash';
+import { isNil, isEmpty, isBoolean, isNumber, isString, uniq } from 'lodash';
 
 /**
  * Breakpoints
@@ -41,7 +41,8 @@ const getLastBreakpointAttributeSingle = (
 		});
 
 	const attrFilter = attr =>
-		!isNil(attr) && (isNumber(attr) || isBoolean(attr) || !isEmpty(attr));
+		!isNil(attr) &&
+		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
 	let currentAttr =
 		attr[

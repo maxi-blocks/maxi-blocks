@@ -190,7 +190,6 @@ const SVGLayerContent = props => {
 const SVGLayer = props => {
 	const {
 		clientId,
-		SVGOptions,
 		layerId,
 		onChange,
 		breakpoint,
@@ -199,36 +198,49 @@ const SVGLayer = props => {
 		isLayer = false,
 	} = props;
 
+	const SVGOptions = cloneDeep(props.SVGOptions);
+	const isLayerHover = SVGOptions.isHover;
+
 	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];
 
 	return (
 		<>
-			<MaxiModal
-				type='bg-shape'
-				style={getBlockStyle(clientId)}
-				onRemove={obj => {
-					if (layerId) {
-						delete SVGOptions[`${prefix}background-svg-SVGElement`];
-						delete SVGOptions[`${prefix}background-svg-SVGMediaID`];
-						delete SVGOptions[
-							`${prefix}background-svg-SVGMediaURL`
-						];
-						delete SVGOptions[`${prefix}background-svg-SVGData`];
-					}
-					onChange({ ...SVGOptions, ...obj });
-				}}
-				icon={SVGElement}
-				onSelect={obj => onChange(obj)}
-			/>
+			{(!isHover || (isHover && isLayerHover)) && (
+				<MaxiModal
+					type='bg-shape'
+					style={getBlockStyle(clientId)}
+					onRemove={obj => {
+						if (layerId) {
+							delete SVGOptions[
+								`${prefix}background-svg-SVGElement`
+							];
+							delete SVGOptions[
+								`${prefix}background-svg-SVGMediaID`
+							];
+							delete SVGOptions[
+								`${prefix}background-svg-SVGMediaURL`
+							];
+							delete SVGOptions[
+								`${prefix}background-svg-SVGData`
+							];
+						}
+						onChange({ ...SVGOptions, ...obj });
+					}}
+					icon={SVGElement}
+					onSelect={obj => onChange(obj)}
+				/>
+			)}
 			{!isEmpty(SVGElement) && (
 				<>
-					<SVGFillControl
-						SVGOptions={SVGOptions}
-						onChange={obj => onChange(obj)}
-						clientId={clientId}
-						isHover={isHover}
-						breakpoint={breakpoint}
-					/>
+					{(!isHover || (isHover && isLayerHover)) && (
+						<SVGFillControl
+							SVGOptions={SVGOptions}
+							onChange={obj => onChange(obj)}
+							clientId={clientId}
+							isHover={isHover}
+							breakpoint={breakpoint}
+						/>
+					)}
 					<ResponsiveTabsControl breakpoint={breakpoint}>
 						<SVGLayerContent
 							SVGOptions={SVGOptions}

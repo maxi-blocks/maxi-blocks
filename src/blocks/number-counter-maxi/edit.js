@@ -10,11 +10,10 @@ import { useState, useEffect, useRef, createRef } from '@wordpress/element';
  */
 import Inspector from './inspector';
 import {
-	BlockResizer,
-	Button,
+	getResizerSize,
 	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
+} from '../../extensions/maxi-block';
+import { BlockResizer, Button, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -250,18 +249,19 @@ class edit extends MaxiBlockComponent {
 
 		const classes = 'maxi-number-counter-block';
 
-		const handleOnResizeStart = event => {
-			event.preventDefault();
-
-			setAttributes({
-				[`number-counter-width-unit-${deviceType}`]: 'px',
-			});
-		};
-
 		const handleOnResizeStop = (event, direction, elt) => {
+			const widthUnit = getLastBreakpointAttribute(
+				'number-counter-width-unit',
+				deviceType,
+				attributes
+			);
+
 			setAttributes({
-				[`number-counter-width-${deviceType}`]:
-					elt.getBoundingClientRect().width,
+				[`number-counter-width-${deviceType}`]: getResizerSize(
+					elt,
+					this.blockRef,
+					widthUnit
+				),
 			});
 		};
 
@@ -285,7 +285,6 @@ class edit extends MaxiBlockComponent {
 						'size',
 					])}
 					resizerProps={{
-						onResizeStart: handleOnResizeStart,
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,
 						showHandle: isSelected,

@@ -66,7 +66,7 @@ const Inspector = props => {
 										}),
 										...inspectorTabs.boxShadow({
 											props,
-											prefox: 'number-counter-',
+											prefix: 'number-counter-',
 										}),
 										...inspectorTabs.marginPadding({
 											props,
@@ -114,6 +114,11 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
 											props,
 										}),
 									},

@@ -27,7 +27,7 @@ const TransitionControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			label={__('Transition Duration', 'maxi-blocks')}
+			label={__('Transition duration', 'maxi-blocks')}
 			className={classes}
 			defaultValue={getDefaultAttribute(
 				`transition-duration-${breakpoint}`
@@ -43,7 +43,7 @@ const TransitionControl = props => {
 						val !== undefined && val !== '' ? val : '',
 				});
 			}}
-			min={0}
+			min={0.3}
 			max={5}
 			step={0.1}
 			initial={0.3}

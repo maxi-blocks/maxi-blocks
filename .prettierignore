@@ -6,7 +6,7 @@ build
 node_modules
 
 API
-css
+/css
 img
 src/includes
 src/extensions/text/fonts/font.js

@@ -170,7 +170,6 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 			>
 				<CodeEditor
 					language='css'
-					placeholder='Please enter CSS code'
 					value={getValue()}
 					onChange={evn => {
 						const newCustomCss = !isEmpty(customCssValue)

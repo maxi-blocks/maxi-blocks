@@ -122,7 +122,7 @@ export const rawBackgroundImage = {
 	},
 	'background-image-parallax-direction': {
 		type: 'string',
-		default: 'up',
+		default: 'down',
 	},
 	'background-image-parallax-alt': {
 		type: 'string',

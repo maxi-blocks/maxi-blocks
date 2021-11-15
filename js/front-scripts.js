@@ -174,7 +174,6 @@ class Parallax {
 
 		window.addEventListener('resize', this.onResize.bind(this));
 		window.addEventListener('orientationchange', this.onResize.bind(this));
-		window.addEventListener('load', this.onResize.bind(this));
 		window.addEventListener('scroll', this.onScroll.bind(this));
 	}
 
@@ -514,9 +513,8 @@ motionElems.forEach(function (elem) {
 					`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
 				);
 
-				const speed = `${parallaxDirection === 'up' ? '' : '-'}${
-					parallaxSpeed / 10
-				}`;
+				const direction = parallaxDirection === 'up' ? 1 : -1;
+				const speed = parallaxSpeed / 10 + direction;
 
 				window.addEventListener('scroll', () => {
 					new Parallax(parallaxElem, speed);

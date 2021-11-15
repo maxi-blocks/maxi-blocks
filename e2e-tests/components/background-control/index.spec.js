@@ -6,6 +6,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
+	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -20,13 +21,16 @@ import {
 } from '../../utils';
 
 describe('BackgroundControl', () => {
-	beforeAll(async () => {
+	/* beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
-	});
+	}); */
 
-	it.only('Check Background Color layer', async () => {
+	it('Check Background Color layer', async () => {
+		await createNewPost();
+		await insertBlock('Group Maxi');
+		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'color');
 
 		// change color
@@ -197,7 +201,7 @@ describe('BackgroundControl', () => {
 		expect(mColorSelected).toStrictEqual('2');
 	});
 
-	it.only('Check Background image layer', async () => {
+	it('Check Background image layer', async () => {
 		await addBackgroundLayer(page, 'image');
 
 		// opacity
@@ -215,16 +219,16 @@ describe('BackgroundControl', () => {
 		);
 
 		// background size
-		await backgroundSelectors[1].select('contain');
+		await backgroundSelectors[0].select('contain');
 
 		// background repeat
-		await backgroundSelectors[2].select('repeat');
+		await backgroundSelectors[1].select('repeat');
 
 		// background position
-		await backgroundSelectors[3].select('left top');
+		await backgroundSelectors[2].select('left top');
 
 		// background attachment
-		await backgroundSelectors[4].select('fixed');
+		await backgroundSelectors[3].select('fixed');
 
 		// more settings
 		await page.$eval(
@@ -237,10 +241,10 @@ describe('BackgroundControl', () => {
 		);
 
 		// background origin
-		await moreSettingsSelectors[5].select('border-box');
+		await moreSettingsSelectors[4].select('border-box');
 
 		// background clip
-		await moreSettingsSelectors[6].select('content-box');
+		await moreSettingsSelectors[5].select('content-box');
 
 		// clip-path
 		await page.$eval(
@@ -256,7 +260,7 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
-	it.only('Check Background image layer responsive', async () => {
+	it('Check Background image layer responsive', async () => {
 		// general expects in S responsive
 		await changeResponsive(page, 's');
 
@@ -287,22 +291,6 @@ describe('BackgroundControl', () => {
 			selector => selector[3].value
 		);
 		expect(baseBackgroundAttachment).toStrictEqual('fixed');
-		/// ///////////////////////////////////////////////////////
-		// background origin
-		/* const baseBackgroundOrigin = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[4].value
-		);
-		expect(baseBackgroundOrigin).toStrictEqual('border-box');
-
-		// background clip
-		const baseBackgroundClip = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[5].value
-		);
-		expect(baseBackgroundClip).toStrictEqual('content-box'); */
-		/// //////////////////////////////////////////////////////
-		// change values in S responsive
 
 		// selectors
 		const backgroundSelectors = await page.$$(
@@ -320,12 +308,6 @@ describe('BackgroundControl', () => {
 
 		// background attachment
 		await backgroundSelectors[3].select('local');
-
-		// background origin
-		/* await backgroundSelectors[4].select('padding-box');
-
-		// background clip
-		await backgroundSelectors[5].select('border-box'); */
 
 		// expect values
 		// background size
@@ -355,21 +337,6 @@ describe('BackgroundControl', () => {
 			selector => selector[3].value
 		);
 		expect(sBackgroundAttachment).toStrictEqual('local');
-		/// ////////////////////////////////////////////////
-		// background origin
-		/* const sBackgroundOrigin = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[4].value
-		);
-		expect(sBackgroundOrigin).toStrictEqual('padding-box');
-
-		// background clip
-		const sBackgroundClip = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[5].value
-		);
-		expect(sBackgroundClip).toStrictEqual('border-box'); */
-		/// /////////////////////////////////////////////////
 
 		await changeResponsive(page, 'xs');
 		const xsBackgroundSize = await page.$$eval(
@@ -428,8 +395,7 @@ describe('BackgroundControl', () => {
 		expect(mBackgroundAttachment).toStrictEqual('fixed');
 	});
 
-	it.only('Check Background image layer hover', async () => {
-		debugger;
+	it('Check Background image layer hover', async () => {
 		await changeResponsive(page, 'xl');
 		const accordion = await openSidebarTab(
 			page,
@@ -455,7 +421,7 @@ describe('BackgroundControl', () => {
 			opacity => opacity[0].focus()
 		);
 
-		pressKeyWithModifier('primary', 'a');
+		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('82');
 
 		// selectors
@@ -464,16 +430,16 @@ describe('BackgroundControl', () => {
 		);
 
 		// background size
-		await backgroundSelectors[1].select('cover');
+		await backgroundSelectors[0].select('cover');
 
 		// background repeat
-		await backgroundSelectors[2].select('repeat-x');
+		await backgroundSelectors[1].select('repeat-x');
 
 		// background position
-		await backgroundSelectors[3].select('center top');
+		await backgroundSelectors[2].select('center top');
 
 		// background attachment
-		await backgroundSelectors[4].select('local');
+		await backgroundSelectors[3].select('local');
 
 		// more settings
 		await page.$eval(
@@ -486,12 +452,17 @@ describe('BackgroundControl', () => {
 		);
 
 		// background origin
-		await moreSettingsSelectors[5].select('content-box');
+		await moreSettingsSelectors[4].select('content-box');
 
 		// background clip
-		await moreSettingsSelectors[6].select('padding-box');
+		await moreSettingsSelectors[5].select('padding-box');
 
 		// clip-path
+		await page.$eval(
+			'.maxi-clip-path-control .maxi-toggle-switch__toggle input',
+			buttons => buttons.click()
+		);
+
 		await page.$$eval('.clip-path-defaults button', buttons =>
 			buttons[3].click()
 		);
@@ -499,7 +470,7 @@ describe('BackgroundControl', () => {
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
-	it.only('Check Background image layer hover responsive', async () => {
+	it('Check Background image layer hover responsive', async () => {
 		// general expects in S responsive
 		await changeResponsive(page, 's');
 
@@ -656,7 +627,7 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('55');
 
 		// edit end time
-		await page.$eval('.maxi-background-video-start-time input', input =>
+		await page.$eval('.maxi-background-video-end-time input', input =>
 			input.focus()
 		);
 		await page.keyboard.type('77');
@@ -670,60 +641,57 @@ describe('BackgroundControl', () => {
 			opacity => opacity[0].focus()
 		);
 
-		pressKeyWithModifier('primary', 'a');
+		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('44');
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
-
 	it('Check Background video layer responsive', async () => {
 		// general
-		const startTimeInputBase = await page.$$eval(
-			'.maxi-background-video-start-time input',
-			input => input[0].value()
-		);
-
-		expect(startTimeInputBase).toStrictEqual('55');
-
-		await page.keyboard.type('55');
-
-		expect(layerExpect['background-layers']).toMatchSnapshot();
-
 		await changeResponsive(page, 's');
-
-		// edit start time S
-		await page.$eval('.maxi-background-video-start-time input', input =>
-			input.focus()
+		const backgroundOpacityBase = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
 		);
 
-		await page.keyboard.type('89');
+		expect(backgroundOpacityBase).toStrictEqual('44');
 
-		const startTimeInputS = await page.$$eval(
-			'.maxi-background-video-start-time input',
-			input => input[0].value()
+		// change opacity S
+		await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.focus()
 		);
-		expect(startTimeInputS).toStrictEqual('89');
 
-		// edit start time Xs
-		const startTimeInputXs = await page.$$eval(
-			'.maxi-background-video-start-time input',
-			input => input[0].value()
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('32');
+
+		// expect s
+		const backgroundOpacityS = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
 		);
-		expect(startTimeInputXs).toStrictEqual('89');
 
-		// edit start time M
-		const startTimeInputM = await page.$$eval(
-			'.maxi-background-video-start-time input',
-			input => input[0].value()
+		expect(backgroundOpacityS).toStrictEqual('32');
+
+		// expect Xs
+		await changeResponsive(page, 'xs');
+		const backgroundOpacityXs = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
 		);
-		expect(startTimeInputM).toStrictEqual('89');
+		expect(backgroundOpacityXs).toStrictEqual('32');
+		// expect M
+		await changeResponsive(page, 'm');
+		const backgroundOpacityM = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
 
-		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(backgroundOpacityM).toStrictEqual('44');
 	});
-
 	it('Check Background video layer hover', async () => {
+		await changeResponsive(page, 'xl');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -763,13 +731,57 @@ describe('BackgroundControl', () => {
 			opacity => opacity[0].focus()
 		);
 
-		pressKeyWithModifier('primary', 'a');
+		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('82');
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
+	it('Check Background video layer hover responsive', async () => {
+		// general
+		await changeResponsive(page, 's');
+		const backgroundOpacityBase = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityBase).toStrictEqual('82');
+
+		// change opacity S
+		await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('45');
+
+		// expect s
+		const backgroundOpacityS = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityS).toStrictEqual('45');
+
+		// expect Xs
+		await changeResponsive(page, 'xs');
+		const backgroundOpacityXs = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+		expect(backgroundOpacityXs).toStrictEqual('45');
+		// expect M
+		await changeResponsive(page, 'm');
+		const backgroundOpacityM = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityM).toStrictEqual('82');
+	});
 	it('Check Background shape layer', async () => {
+		await changeResponsive(page, 'xl');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -792,6 +804,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await opacityInput[0].focus();
+		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('77');
 
 		// sync button
@@ -817,7 +830,7 @@ describe('BackgroundControl', () => {
 			'.maxi-tabs-content--disable-padding .maxi-tab-content--selected .maxi-tab-content--selected input'
 		);
 
-		await sizeInput[8].focus();
+		await sizeInput[7].focus();
 		await page.keyboard.type('77');
 
 		const layerExpect = await getBlockAttributes();
@@ -825,24 +838,103 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background shape layer responsive', async () => {
-		await page;
-		await page.keyboard.type('25');
+		debugger;
+		await changeResponsive(page, 's');
 
-		// size
+		const baseBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(baseBackgroundOpacity).toStrictEqual('77');
+
 		await page.$$eval(
-			'.maxi-responsive-tabs-control .maxi-settingstab-control .maxi-tabs-control button',
+			'.position-size-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
-		const sizeInput = await page.$$(
-			'.maxi-tabs-content--disable-padding .maxi-tab-content--selected .maxi-tab-content--selected input'
+		const baseBackgroundShapeSize = await page.$$eval(
+			'.position-size-control .maxi-advanced-number-control input',
+			selector => selector[0].value
 		);
 
-		await sizeInput[8].focus();
-		await page.keyboard.type('77');
+		expect(baseBackgroundShapeSize).toStrictEqual('77');
 
-		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		// opacity and size
+		const opacityInput = await page.$$(
+			'.maxi-color-control .maxi-advanced-number-control input'
+		);
+
+		await opacityInput[0].focus();
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('54');
+
+		const sizeInput = await page.$$(
+			'.position-size-control .maxi-advanced-number-control input'
+		);
+
+		await sizeInput[0].focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('23');
+
+		// expect S responsive
+		const sBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(sBackgroundOpacity).toStrictEqual('54');
+
+		const sBackgroundShapeSize = await page.$$eval(
+			'.position-size-control .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(sBackgroundShapeSize).toStrictEqual('723');
+
+		// expect XS responsive
+		await changeResponsive(page, 'xs');
+
+		const xsBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(xsBackgroundOpacity).toStrictEqual('54');
+
+		await page.$$eval(
+			'.position-size-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const xsBackgroundShapeSize = await page.$$eval(
+			'.position-size-control .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(xsBackgroundShapeSize).toStrictEqual('723');
+
+		// expect M responsive
+		await changeResponsive(page, 'm');
+
+		const mBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(mBackgroundOpacity).toStrictEqual('77');
+
+		await page.$$eval(
+			'.position-size-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const mBackgroundShapeSize = await page.$$eval(
+			'.position-size-control .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(mBackgroundShapeSize).toStrictEqual('77');
 	});
 
 	it('Check Background shape layer hover', async () => {
@@ -897,6 +989,21 @@ describe('BackgroundControl', () => {
 
 		await sizeInput[4].focus();
 		await page.keyboard.type('77');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('generate a layer from hover', async () => {
+		await addBackgroundLayer(page, 'color');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('generate a layer from hover on responsive', async () => {
+		await changeResponsive(page, 'l');
+		await addBackgroundLayer(page, 'color');
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();

@@ -906,7 +906,6 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background shape layer hover', async () => {
-		debugger;
 		await changeResponsive(page, 'xl');
 		const accordion = await openSidebarTab(
 			page,
@@ -1020,17 +1019,46 @@ describe('BackgroundControl', () => {
 		expect(mBackgroundShapeSize).toStrictEqual('22');
 	});
 
-	it('generate a layer from hover', async () => {
+	it('generate a layer from hover and test the hider', async () => {
 		await addBackgroundLayer(page, 'color');
+
+		// change color
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-sc-color-palette__box',
+			colorPalette => colorPalette[4].click()
+		);
+
+		// hide layer
+		await page.$eval(
+			'.maxi-background-layer__title .maxi-background-layer__title__display',
+			button => button.click()
+		);
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
-	it('generate a layer from hover on responsive', async () => {
+	it('generate a layer from hover on responsive and test that layers cannot be deleted from hover', async () => {
 		await changeResponsive(page, 'l');
 		await addBackgroundLayer(page, 'color');
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
 
+		// hover
+		await accordion.$$eval(
+			'.maxi-tabs-control--disable-padding button',
+			button => button[1].click()
+		);
+
+		const deleteOption = await page.$$eval(
+			'.maxi-background-layer__title',
+			backgroundLayerTitle => backgroundLayerTitle[2].innerHTML
+		);
+
+		expect(deleteOption).toMatchSnapshot();
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});

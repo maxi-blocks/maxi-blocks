@@ -36,7 +36,7 @@ Array [
     "background-palette-opacity-general": 0.05,
     "background-palette-opacity-m": 0.05,
     "background-palette-opacity-s": 0.05,
-    "background-palette-opacity-xl-hover": 0.45,
+    "background-palette-opacity-xl-hover": 0.05,
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -64,8 +64,8 @@ Array [
     "background-palette-opacity-general": 0.05,
     "background-palette-opacity-m": 0.05,
     "background-palette-opacity-s": 0.05,
-    "background-palette-opacity-s-hover": 0.45,
-    "background-palette-opacity-xl-hover": 0.45,
+    "background-palette-opacity-s-hover": 0.05,
+    "background-palette-opacity-xl-hover": 0.05,
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -134,8 +134,8 @@ Array [
     "background-palette-opacity-general": 0.05,
     "background-palette-opacity-m": 0.05,
     "background-palette-opacity-s": 0.05,
-    "background-palette-opacity-s-hover": 0.45,
-    "background-palette-opacity-xl-hover": 0.45,
+    "background-palette-opacity-s-hover": 0.05,
+    "background-palette-opacity-xl-hover": 0.05,
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -285,8 +285,8 @@ Array [
     "background-palette-opacity-general": 0.05,
     "background-palette-opacity-m": 0.05,
     "background-palette-opacity-s": 0.05,
-    "background-palette-opacity-s-hover": 0.45,
-    "background-palette-opacity-xl-hover": 0.45,
+    "background-palette-opacity-s-hover": 0.05,
+    "background-palette-opacity-xl-hover": 0.05,
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -388,8 +388,8 @@ Array [
     "background-palette-opacity-general": 0.05,
     "background-palette-opacity-m": 0.05,
     "background-palette-opacity-s": 0.05,
-    "background-palette-opacity-s-hover": 0.45,
-    "background-palette-opacity-xl-hover": 0.45,
+    "background-palette-opacity-s-hover": 0.05,
+    "background-palette-opacity-xl-hover": 0.05,
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -474,7 +474,7 @@ Array [
 ]
 `;
 
-exports[`BackgroundControl generate a layer from hover 1`] = `
+exports[`BackgroundControl generate a layer from hover and test the hider 1`] = `
 Array [
   Object {
     "background-palette-svg-color": 5,
@@ -508,12 +508,13 @@ Array [
     "background-svg-size-xl-hover": 22,
     "background-svg-top": null,
     "background-svg-top--unit": "%",
+    "display-m": "block",
     "id": 1,
     "type": "shape",
   },
   Object {
     "background-palette-color-general": 1,
-    "background-palette-color-m": 1,
+    "background-palette-color-m": 5,
     "background-palette-color-status-general": true,
     "background-palette-color-status-m": true,
     "display-general": "none",
@@ -525,7 +526,9 @@ Array [
 ]
 `;
 
-exports[`BackgroundControl generate a layer from hover on responsive 1`] = `
+exports[`BackgroundControl generate a layer from hover on responsive and test that layers cannot be deleted from hover 1`] = `"<span class=\\"maxi-background-layer__title__id\\"></span><span class=\\"maxi-background-layer__title__text\\"><span class=\\"maxi-background-layer__preview\\" style=\\"background: rgba(var(--maxi-light-color-1),1);\\"></span>Background Colour</span><span class=\\"maxi-background-layer__title__display maxi-background-layer__title__display--block maxi-background-layer__ignore-move maxi-background-layer__ignore-open\\"><svg width=\\"24\\" height=\\"24\\" xmlns=\\"http://www.w3.org/2000/svg\\" preserveAspectRatio=\\"none\\" viewBox=\\"0 0 24 24\\" role=\\"img\\" aria-hidden=\\"true\\" focusable=\\"false\\"><path id=\\"toolbar-show\\" fill=\\"none\\" stroke=\\"#FFF\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"1\\" d=\\"M14.35 11.55q0 1-.75 1.75-.7.75-1.75.75t-1.8-.75q-.75-.75-.75-1.75 0-1.05.75-1.8t1.8-.75q1.05 0 1.75.75.75.75.75 1.8zm2.55 0q0 2.05-1.5 3.55-1.45 1.5-3.55 1.5-2.1 0-3.6-1.5-1.45-1.5-1.45-3.55 0-2.1 1.45-3.6 1.5-1.45 3.6-1.45t3.55 1.45q1.5 1.5 1.5 3.6zm6.25 0q-2.5 3.1-6.5 4.75Q8.55 19.55.8 12.15q2.5-3.75 6.55-5.4 8.05-3.25 15.9 4.4\\"></path></svg></span>"`;
+
+exports[`BackgroundControl generate a layer from hover on responsive and test that layers cannot be deleted from hover 2`] = `
 Array [
   Object {
     "background-palette-svg-color": 5,
@@ -559,12 +562,13 @@ Array [
     "background-svg-size-xl-hover": 22,
     "background-svg-top": null,
     "background-svg-top--unit": "%",
+    "display-m": "block",
     "id": 1,
     "type": "shape",
   },
   Object {
     "background-palette-color-general": 1,
-    "background-palette-color-m": 1,
+    "background-palette-color-m": 5,
     "background-palette-color-status-general": true,
     "background-palette-color-status-m": true,
     "display-general": "none",

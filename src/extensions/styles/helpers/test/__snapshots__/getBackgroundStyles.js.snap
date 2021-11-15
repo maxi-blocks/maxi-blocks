@@ -2,17 +2,6 @@
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
@@ -52,17 +41,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages and hover 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
@@ -102,17 +80,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for different layers, onces created on normal and other on hover 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
     "color": Object {
       "general": Object {
@@ -259,17 +226,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for general responsive stage 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
@@ -418,17 +374,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
       "general": Object {
@@ -471,17 +416,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages and hovers 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
       "general": Object {
@@ -524,17 +458,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -598,17 +521,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages and hovers 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -672,17 +584,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with parallax and different values on different responsive stages 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -738,17 +639,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
       "general": Object {
@@ -857,17 +747,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages and hovers 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
       "general": Object {
@@ -932,17 +811,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
       "general": Object {
@@ -989,17 +857,6 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages and hovers 1`] = `
 Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
-    },
-  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
       "general": Object {

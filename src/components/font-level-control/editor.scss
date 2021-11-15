@@ -7,13 +7,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: #fff;
-		border: 1px solid var(--maxi-grey-1-color);
-		transition: all 0.5s;
-		border-radius: 0;
-		color: #151617 !important;
-		height: 32px;
 		width: calc(100% / 7);
+		height: 32px;
+		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 0;
+		background-color: #fff;
+		transition: all 0.5s;
 
 		&:hover {
 			background-color: var(--maxi-grey-3-color);
@@ -23,7 +22,8 @@
 		}
 		&[aria-pressed='true'] {
 			border-bottom: 2px solid var(--maxi-secondary-color);
-			background-color: #f8fbfd;
+			color: var(--maxi-secondary-color);
+			background-color: var(--maxi-white-4-color);
 		}
 	}
 }

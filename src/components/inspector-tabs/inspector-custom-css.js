@@ -49,7 +49,6 @@ const validateCSS = async code => {
  */
 const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	const { attributes, setAttributes } = props;
-	//	const { customCssSelectors } = attributes;
 
 	const customCssValue = getLastBreakpointAttribute(
 		'custom-css',
@@ -59,9 +58,7 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	const customCssCategory = attributes['custom-css-category'];
 
 	const isCanvas = blockName.includes('button-maxi') === true;
-
 	const isCanvasBackgroundEnabled = !isEmpty(attributes['background-layers']);
-
 	const isIconEnabled = !isEmpty(attributes['icon-content']);
 
 	let selectorsCanvas;
@@ -73,8 +70,6 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	let selectorsCanvasBackground;
 	let selectorsIcon;
 	let selectorsContent;
-
-	const customCssSelectors = [];
 
 	switch (blockName) {
 		case 'maxi-blocks/button-maxi':
@@ -138,14 +133,28 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	const getOptions = () => {
 		const options = [
 			{
-				label: 'None',
+				label: 'Choose',
 				value: 'none',
 			},
 		];
+
+		const isEmptyObject = obj => {
+			if (obj)
+				return Object.keys(obj).every(key => {
+					return obj[key] === '' || obj[key] === null;
+				});
+			return true;
+		};
+
 		customCssCategories.forEach(category => {
+			const optionClass = !isEmptyObject(customCssValue[category])
+				? 'maxi-option__in-use'
+				: 'maxi-option__not-in-use';
+
 			options.push({
 				label: capitalize(category),
 				value: category,
+				className: optionClass,
 			});
 		});
 		return options;
@@ -225,6 +234,7 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 				<SelectControl
 					label={__('Add CSS for', 'maxi-blocks')}
 					className='maxi-custom-css-control__category'
+					id='maxi-custom-css-control__category'
 					value={customCssCategory || 'none'}
 					options={getOptions()}
 					onChange={val => {
@@ -233,6 +243,7 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 						});
 					}}
 				/>
+
 				{customCssCategory === 'canvas' &&
 					selectorsCanvas.map((element, index) => {
 						let label = element;

@@ -59,7 +59,7 @@ export const borderSolid = prefix => {
 		[`${prefix}border-right-width`]: 2,
 		[`${prefix}border-bottom-width`]: 2,
 		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-sync-width`]: 'all',
 		[`${prefix}border-unit-width`]: 'px',
 	};
 	return response;
@@ -73,7 +73,7 @@ export const borderDashed = prefix => {
 		[`${prefix}border-right-width`]: 2,
 		[`${prefix}border-bottom-width`]: 2,
 		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-sync-width`]: 'all',
 		[`${prefix}border-unit-width`]: 'px',
 	};
 	return response;
@@ -87,7 +87,7 @@ export const borderDotted = prefix => {
 		[`${prefix}border-right-width`]: 2,
 		[`${prefix}border-bottom-width`]: 2,
 		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-sync-width`]: 'all',
 		[`${prefix}border-unit-width`]: 'px',
 	};
 	return response;

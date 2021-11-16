@@ -128,26 +128,26 @@ Object {
     "type": "number",
   },
   "button-border-sync-width-general": Object {
-    "default": true,
-    "type": "boolean",
+    "default": "all",
+    "type": "string",
   },
   "button-border-sync-width-l": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-border-sync-width-m": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-border-sync-width-s": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-border-sync-width-xl": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-border-sync-width-xs": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-border-sync-width-xxl": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-border-top-width-general": Object {
     "type": "number",
@@ -430,70 +430,26 @@ Object {
     "type": "string",
   },
   "button-margin-sync-general": Object {
-    "default": false,
-    "type": "boolean",
-  },
-  "button-margin-sync-horizontal-general": Object {
-    "default": false,
-    "type": "boolean",
-  },
-  "button-margin-sync-horizontal-l": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-horizontal-m": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-horizontal-s": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-horizontal-xl": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-horizontal-xs": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-horizontal-xxl": Object {
-    "type": "boolean",
+    "default": "all",
+    "type": "string",
   },
   "button-margin-sync-l": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-margin-sync-m": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-margin-sync-s": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-vertical-general": Object {
-    "default": false,
-    "type": "boolean",
-  },
-  "button-margin-sync-vertical-l": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-vertical-m": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-vertical-s": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-vertical-xl": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-vertical-xs": Object {
-    "type": "boolean",
-  },
-  "button-margin-sync-vertical-xxl": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-margin-sync-xl": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-margin-sync-xs": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-margin-sync-xxl": Object {
-    "type": "boolean",
+    "type": "string",
   },
   "button-margin-top-general": Object {
     "type": "string",

@@ -12,7 +12,7 @@ import {
 	getBlockStyle,
 } from '../../utils';
 
-describe('PositionControl', () => {
+describe.skip('PositionControl', () => {
 	it('Checking the position control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

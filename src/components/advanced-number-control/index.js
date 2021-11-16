@@ -10,6 +10,7 @@ import { useInstanceId } from '@wordpress/compose';
  */
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
+import ToggleSwitch from '../toggle-switch';
 import Button from '../button';
 
 /**
@@ -44,6 +45,7 @@ const AdvancedNumberControl = props => {
 		value,
 		onChangeValue,
 		disableReset = false,
+		enableAuto = false,
 		onReset,
 		allowedUnits = ['px', 'em', 'vw', '%', '-'],
 		minMaxSettings = {
@@ -107,10 +109,7 @@ const AdvancedNumberControl = props => {
 
 		switch (typeofEvent) {
 			case 'click':
-				return (
-					(isNumber(placeholder) ? placeholder : 0) +
-					(+newValue ? 1 : -1)
-				);
+				return (isNumber(placeholder) ? placeholder : 0) + +newValue;
 			case 'type':
 			default:
 				return newValue;
@@ -118,81 +117,104 @@ const AdvancedNumberControl = props => {
 	};
 
 	return (
-		<BaseControl
-			id={advancedNumberControlId}
-			label={label}
-			className={classes}
-		>
-			<input
-				id={advancedNumberControlId}
-				type='number'
-				className='maxi-advanced-number-control__value'
-				value={value === undefined ? defaultValue : trim(value)}
-				onChange={e => {
-					let value = getNewValueFromEmpty(e);
-
-					if (enableUnit) {
-						if (value !== '' && value > maxValue) value = maxValue;
-						if (value !== '' && value < minValue) value = minValue;
-					} else {
-						if (value !== '' && +value > max) value = max;
-						if (value !== '' && +value !== 0 && +value < min)
-							value = min;
-					}
-
-					onChangeValue(value === '' ? value : +value);
-				}}
-				min={enableUnit ? minValue : min}
-				max={enableUnit ? maxValue : max}
-				step={stepValue}
-				placeholder={placeholder}
-			/>
-			{enableUnit && (
-				<SelectControl
-					label={__('Unit', 'maxi-blocks')}
-					hideLabelFromVision
-					className='maxi-dimensions-control__units'
-					options={getOptions()}
-					value={unit}
-					onChange={val => {
-						onChangeUnit(val);
-
-						if (value > minMaxSettings[val]?.max)
-							onChangeValue(minMaxSettings[val]?.max);
-					}}
+		<>
+			{enableAuto && (
+				<ToggleSwitch
+					label={__('Auto', 'maxi-blocks')}
+					selected={value === 'auto'}
+					onChange={val => onChangeValue(val ? 'auto' : '')}
 				/>
 			)}
-			{!disableReset && (
-				<Button
-					className='components-maxi-control__reset-button'
-					onClick={e => {
-						e.preventDefault();
-						onReset();
-					}}
-					isSmall
-					aria-label={sprintf(
-						/* translators: %s: a textual label  */
-						__('Reset %s settings', 'maxi-blocks'),
-						label.toLowerCase()
-					)}
-					type='reset'
+			{value !== 'auto' && (
+				<BaseControl
+					id={advancedNumberControlId}
+					label={label}
+					className={classes}
 				>
-					{reset}
-				</Button>
+					<input
+						id={advancedNumberControlId}
+						type={
+							!enableAuto || value !== 'auto'
+								? 'number'
+								: 'hidden'
+						}
+						className='maxi-advanced-number-control__value'
+						value={value === undefined ? defaultValue : trim(value)}
+						onChange={e => {
+							let value = getNewValueFromEmpty(e);
+
+							if (enableUnit) {
+								if (value !== '' && value > maxValue)
+									value = maxValue;
+								if (value !== '' && value < minValue)
+									value = minValue;
+							} else {
+								if (value !== '' && +value > max) value = max;
+								if (
+									value !== '' &&
+									+value !== 0 &&
+									+value < min
+								)
+									value = min;
+							}
+
+							onChangeValue(value === '' ? value : +value);
+						}}
+						min={enableUnit ? minValue : min}
+						max={enableUnit ? maxValue : max}
+						step={stepValue}
+						placeholder={placeholder}
+					/>
+					{enableUnit && (
+						<SelectControl
+							label={__('Unit', 'maxi-blocks')}
+							hideLabelFromVision
+							className='maxi-dimensions-control__units'
+							options={getOptions()}
+							value={unit}
+							onChange={val => {
+								onChangeUnit(val);
+
+								if (value > minMaxSettings[val]?.max)
+									onChangeValue(minMaxSettings[val]?.max);
+							}}
+						/>
+					)}
+					{!disableReset && (
+						<Button
+							className='components-maxi-control__reset-button'
+							onClick={e => {
+								e.preventDefault();
+								onReset();
+							}}
+							isSmall
+							aria-label={sprintf(
+								/* translators: %s: a textual label  */
+								__('Reset %s settings', 'maxi-blocks'),
+								label.toLowerCase()
+							)}
+							type='reset'
+						>
+							{reset}
+						</Button>
+					)}
+					<RangeControl
+						label={label}
+						value={
+							value || defaultValue || initial || placeholder || 0
+						}
+						onChange={val => {
+							onChangeValue(+val);
+						}}
+						min={enableUnit ? minValue : min}
+						max={enableUnit ? maxValue : max}
+						step={stepValue}
+						withInputField={false}
+						initialPosition={value || initial}
+					/>
+				</BaseControl>
 			)}
-			<RangeControl
-				label={label}
-				value={value || defaultValue || initial || placeholder || 0}
-				onChange={val => {
-					onChangeValue(+val);
-				}}
-				min={enableUnit ? minValue : min}
-				max={enableUnit ? maxValue : max}
-				step={stepValue}
-				withInputField={false}
-				initialPosition={value || initial}
-			/>
-		</BaseControl>
+		</>
 	);
 };
 

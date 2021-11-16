@@ -20,6 +20,15 @@ const marginPadding = ({ props, prefix }) => {
 		content: (
 			<>
 				<AxisControl
+					{...getGroupAttributes(attributes, 'margin', false, prefix)}
+					prefix={prefix}
+					label={__('Margin', 'maxi-blocks')}
+					onChange={obj => setAttributes(obj)}
+					breakpoint={deviceType}
+					target='margin'
+					optionType='string'
+				/>
+				<AxisControl
 					{...getGroupAttributes(
 						attributes,
 						'padding',
@@ -32,15 +41,6 @@ const marginPadding = ({ props, prefix }) => {
 					breakpoint={deviceType}
 					target='padding'
 					disableAuto
-				/>
-				<AxisControl
-					{...getGroupAttributes(attributes, 'margin', false, prefix)}
-					prefix={prefix}
-					label={__('Margin', 'maxi-blocks')}
-					onChange={obj => setAttributes(obj)}
-					breakpoint={deviceType}
-					target='margin'
-					optionType='string'
 				/>
 			</>
 		),

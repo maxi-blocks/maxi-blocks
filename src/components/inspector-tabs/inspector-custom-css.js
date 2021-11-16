@@ -227,129 +227,131 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 		label: __('Custom CSS', 'maxi-blocks'),
 		content: (
 			<>
-				{/* <ResponsiveTabsControl
+				<ResponsiveTabsControl
 					className='maxi-typography-control__text-options-tabs'
 					breakpoint={breakpoint}
-				> */}
-				<SelectControl
-					label={__('Add CSS for', 'maxi-blocks')}
-					className='maxi-custom-css-control__category'
-					id='maxi-custom-css-control__category'
-					value={customCssCategory || 'none'}
-					options={getOptions()}
-					onChange={val => {
-						setAttributes({
-							'custom-css-category': val,
-						});
-					}}
-				/>
+				>
+					<>
+						<SelectControl
+							label={__('Add CSS for', 'maxi-blocks')}
+							className='maxi-custom-css-control__category'
+							id='maxi-custom-css-control__category'
+							value={customCssCategory || 'none'}
+							options={getOptions()}
+							onChange={val => {
+								setAttributes({
+									'custom-css-category': val,
+								});
+							}}
+						/>
 
-				{customCssCategory === 'canvas' &&
-					selectorsCanvas.map((element, index) => {
-						let label = element;
-						if (isEmpty(element)) label = ' canvas';
-						if (element === ':hover') label = ' canvas on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'before canvas' &&
-					selectorsCanvasBefore.map((element, index) => {
-						let label = ' canvas :before';
-						if (element.includes(':hover'))
-							label = ' canvas :before on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'after canvas' &&
-					selectorsCanvasAfter.map((element, index) => {
-						let label = ' canvas :after';
-						if (element.includes(':hover'))
-							label = ' canvas :after on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'canvas background' &&
-					selectorsCanvasBackground.map((element, index) => {
-						let label = ' canvas background';
-						if (element.includes(':hover'))
-							label = ' canvas background on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'button' &&
-					selectorsBlock.map((element, index) => {
-						let label = ' button';
-						if (element.includes(':hover'))
-							label = ' button on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'before button' &&
-					selectorsBlockBefore.map((element, index) => {
-						let label = ' button :before';
-						if (element.includes(':hover'))
-							label = ' button :before on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'after button' &&
-					selectorsBlockAfter.map((element, index) => {
-						let label = ' button :after';
-						if (element.includes(':hover'))
-							label = ' button :after on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'text' &&
-					selectorsContent.map((element, index) => {
-						let label = ' button text';
-						if (element.includes(':hover'))
-							label = ' button text on hover';
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-				{customCssCategory === 'icon' &&
-					selectorsIcon.map((element, index) => {
-						let label = ' icon';
-						if (element.includes('icon:hover'))
-							label = ' icon on hover';
-						if (element.includes('svg'))
-							label = element.replace(
-								'.maxi-button-block__icon',
-								' '
-							);
-						return generateComponent(
-							label,
-							index,
-							customCssCategory
-						);
-					})}
-
-				{/* </ResponsiveTabsControl> */}
+						{customCssCategory === 'canvas' &&
+							selectorsCanvas.map((element, index) => {
+								let label = element;
+								if (isEmpty(element)) label = ' canvas';
+								if (element === ':hover')
+									label = ' canvas on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'before canvas' &&
+							selectorsCanvasBefore.map((element, index) => {
+								let label = ' canvas :before';
+								if (element.includes(':hover'))
+									label = ' canvas :before on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'after canvas' &&
+							selectorsCanvasAfter.map((element, index) => {
+								let label = ' canvas :after';
+								if (element.includes(':hover'))
+									label = ' canvas :after on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'canvas background' &&
+							selectorsCanvasBackground.map((element, index) => {
+								let label = ' canvas background';
+								if (element.includes(':hover'))
+									label = ' canvas background on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'button' &&
+							selectorsBlock.map((element, index) => {
+								let label = ' button';
+								if (element.includes(':hover'))
+									label = ' button on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'before button' &&
+							selectorsBlockBefore.map((element, index) => {
+								let label = ' button :before';
+								if (element.includes(':hover'))
+									label = ' button :before on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'after button' &&
+							selectorsBlockAfter.map((element, index) => {
+								let label = ' button :after';
+								if (element.includes(':hover'))
+									label = ' button :after on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'text' &&
+							selectorsContent.map((element, index) => {
+								let label = ' button text';
+								if (element.includes(':hover'))
+									label = ' button text on hover';
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+						{customCssCategory === 'icon' &&
+							selectorsIcon.map((element, index) => {
+								let label = ' icon';
+								if (element.includes('icon:hover'))
+									label = ' icon on hover';
+								if (element.includes('svg'))
+									label = element.replace(
+										'.maxi-button-block__icon',
+										' '
+									);
+								return generateComponent(
+									label,
+									index,
+									customCssCategory
+								);
+							})}
+					</>
+				</ResponsiveTabsControl>
 			</>
 		),
 	};

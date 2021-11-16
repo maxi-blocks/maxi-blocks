@@ -17,6 +17,7 @@ import BaseControl from '../base-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+import Button from '../button';
 
 const validateCSS = async code => {
 	let responseFinal = '';
@@ -160,43 +161,52 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 				return customCssValue[category][index];
 			return '';
 		};
+
 		const labelForCss = label.replaceAll(' ', '_');
 		const id = `maxi-additional__css-error-text__${labelForCss}`;
+
+		async function validateCss(textarea) {
+			const validMessage = await validateCSS(textarea.target.value);
+			const messageDiv = document.getElementById(id);
+			if (typeof validMessage === 'string' && messageDiv) {
+				messageDiv.innerHTML = validMessage;
+				messageDiv.classList.remove('valid');
+				messageDiv.classList.add('not-valid');
+			} else if (messageDiv) {
+				messageDiv.innerHTML = __('Valid', 'maxi-blocks');
+				messageDiv.classList.remove('not-valid');
+				messageDiv.classList.add('valid');
+			}
+		}
 		return (
 			<BaseControl
 				key={`${label}`}
 				label={`${__('Custom CSS for', 'maxi-blocks')} ${label}`}
 				className={`maxi-additional__css maxi-additional__css-${labelForCss}`}
 			>
+				<Button
+					aria-label={__('Validate', 'maxi-blocks')}
+					className='maxi-default-styles-control__button'
+				>
+					{__('Validate', 'maxi-blocks')}
+				</Button>
 				<CodeEditor
 					language='css'
 					value={getValue()}
-					onChange={evn => {
+					onChange={textarea => {
 						const newCustomCss = !isEmpty(customCssValue)
 							? cloneDeep(customCssValue)
 							: {};
 						if (isEmpty(newCustomCss[category]))
 							newCustomCss[category] = {};
 
-						newCustomCss[category][index] = evn.target.value;
+						newCustomCss[category][index] = textarea.target.value;
 						setAttributes({
 							[`custom-css-${breakpoint}`]: newCustomCss,
 						});
 					}}
-					onBlur={evn => {
-						async function check() {
-							const validMessage = await validateCSS(
-								evn.target.value
-							);
-							const messageDiv = document.getElementById(id);
-							if (
-								typeof validMessage === 'string' &&
-								messageDiv
-							) {
-								messageDiv.innerHTML = validMessage;
-							} else if (messageDiv) messageDiv.innerHTML = '';
-						}
-						check();
+					onBlur={textarea => {
+						validateCss(textarea);
 					}}
 				/>
 				<div className='maxi-additional__css-error' id={id} />

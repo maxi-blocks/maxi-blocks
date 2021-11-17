@@ -41,10 +41,9 @@ const ImageLayerSettings = props => {
 		prefix = '',
 		breakpoint,
 		isGeneral = false,
-		isLayer = false,
+		getDefaultAttr,
 		moreSettings,
 		setMoreSettings,
-		getDefaultAttr,
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
@@ -701,6 +700,8 @@ const ImageLayer = props => {
 
 	const imageOptions = cloneDeep(props.imageOptions);
 
+	const [moreSettings, setMoreSettings] = useState(false);
+
 	const getDefaultAttr = target => {
 		if (isLayer) return getDefaultLayerAttr('imageOptions', target);
 
@@ -781,6 +782,8 @@ const ImageLayer = props => {
 								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<ImageLayerSettings
 										getDefaultAttr={getDefaultAttr}
+										moreSettings={moreSettings}
+										setMoreSettings={setMoreSettings}
 										{...props}
 									/>
 								</ResponsiveTabsControl>
@@ -917,23 +920,6 @@ const ImageLayer = props => {
 				/>
 			)}
 		</>
-	);
-};
-
-const ImageLayer = props => {
-	const { breakpoint, hideSettings = false, ...rest } = props;
-
-	const [moreSettings, setMoreSettings] = useState(false);
-
-	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<ImageLayerContent
-				hideSettings={hideSettings}
-				moreSettings={moreSettings}
-				setMoreSettings={setMoreSettings}
-				{...rest}
-			/>
-		</ResponsiveTabsControl>
 	);
 };
 

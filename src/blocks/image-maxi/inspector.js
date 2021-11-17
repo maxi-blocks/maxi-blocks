@@ -503,7 +503,7 @@ const Inspector = memo(
 												props,
 												prefix: 'image-',
 												isImage: true,
-												hideWith: true,
+												hideWidth: true,
 											}),
 											...inspectorTabs.marginPadding({
 												props,

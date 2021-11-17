@@ -1,7 +1,7 @@
-import { getPrefixedAttributes } from '../../../extensions/styles';
-import margin from '../../styles/defaults/margin';
-import boxShadowHover from '../../styles/defaults/boxShadowHover';
-import { borderWidth } from '../../styles/defaults/border';
+import { getPrefixedAttributes } from '..';
+import margin from '../defaults/margin';
+import boxShadowHover from '../defaults/boxShadowHover';
+import { borderWidth } from '../defaults/border';
 
 describe('getPrefixedAttributes', () => {
 	it('Returns prefixed object with default values', () => {

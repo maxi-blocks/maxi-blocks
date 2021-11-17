@@ -147,7 +147,7 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 		};
 
 		customCssCategories.forEach(category => {
-			const optionClass = !isEmptyObject(customCssValue[category])
+			const optionClass = !isEmptyObject(customCssValue?.[category])
 				? 'maxi-option__in-use'
 				: 'maxi-option__not-in-use';
 
@@ -161,47 +161,46 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	};
 
 	const generateComponent = (label, index, category) => {
-		const getValue = () => {
-			if (
-				customCssValue &&
-				customCssValue[category] &&
-				customCssValue[category][index]
-			)
-				return customCssValue[category][index];
-			return '';
-		};
-
 		const labelForCss = label.replaceAll(' ', '_');
 		const id = `maxi-additional__css-error-text__${labelForCss}`;
 
 		async function validateCss(textarea) {
-			const validMessage = await validateCSS(textarea.target.value);
 			const messageDiv = document.getElementById(id);
-			if (typeof validMessage === 'string' && messageDiv) {
-				messageDiv.innerHTML = validMessage;
-				messageDiv.classList.remove('valid');
-				messageDiv.classList.add('not-valid');
+			if (!isEmpty(textarea.target.value)) {
+				const validMessage = await validateCSS(textarea.target.value);
+				if (typeof validMessage === 'string' && messageDiv) {
+					messageDiv.innerHTML = validMessage;
+					messageDiv.classList.remove('valid');
+					messageDiv.classList.add('not-valid');
+				} else if (messageDiv) {
+					messageDiv.innerHTML = __('Valid', 'maxi-blocks');
+					messageDiv.classList.remove('not-valid');
+					messageDiv.classList.add('valid');
+				}
 			} else if (messageDiv) {
-				messageDiv.innerHTML = __('Valid', 'maxi-blocks');
+				messageDiv.innerHTML = '';
 				messageDiv.classList.remove('not-valid');
-				messageDiv.classList.add('valid');
+				messageDiv.classList.remove('valid');
 			}
 		}
+
 		return (
 			<BaseControl
 				key={`${label}`}
 				label={`${__('Custom CSS for', 'maxi-blocks')} ${label}`}
 				className={`maxi-additional__css maxi-additional__css-${labelForCss}`}
 			>
-				<Button
-					aria-label={__('Validate', 'maxi-blocks')}
-					className='maxi-default-styles-control__button'
-				>
-					{__('Validate', 'maxi-blocks')}
-				</Button>
+				{!isEmpty(customCssValue?.[category]?.[index]) && (
+					<Button
+						aria-label={__('Validate', 'maxi-blocks')}
+						className='maxi-default-styles-control__button'
+					>
+						{__('Validate', 'maxi-blocks')}
+					</Button>
+				)}
 				<CodeEditor
 					language='css'
-					value={getValue()}
+					value={customCssValue?.[category]?.[index]}
 					onChange={textarea => {
 						const newCustomCss = !isEmpty(customCssValue)
 							? cloneDeep(customCssValue)

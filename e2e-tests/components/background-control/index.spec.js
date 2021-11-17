@@ -21,13 +21,16 @@ import {
 } from '../../utils';
 
 describe('BackgroundControl', () => {
-	beforeAll(async () => {
+	/* beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
-	});
+	}); */
 
 	it('Check Background Color layer', async () => {
+		await createNewPost();
+		await insertBlock('Group Maxi');
+		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'color');
 
 		// change color
@@ -202,6 +205,7 @@ describe('BackgroundControl', () => {
 	it('Check Background image layer', async () => {
 		await changeResponsive(page, 'base');
 
+		await removeBackgroundLayers(page);
 		await addBackgroundLayer(page, 'image');
 
 		// opacity
@@ -214,21 +218,30 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('55');
 
 		// selectors
-		const backgroundSelectors = await page.$$(
-			'.maxi-tab-content--selected select'
-		);
-
 		// background size
-		await backgroundSelectors[0].select('contain');
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('contain');
 
 		// background repeat
-		await backgroundSelectors[1].select('repeat');
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('repeat');
 
 		// background position
-		await backgroundSelectors[2].select('left top');
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('left top');
 
 		// background attachment
-		await backgroundSelectors[3].select('fixed');
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
+
+		await attachmentSelector.select('fixed');
 
 		// more settings
 		await page.$eval(
@@ -236,15 +249,19 @@ describe('BackgroundControl', () => {
 			button => button.click()
 		);
 
-		const moreSettingsSelectors = await page.$$(
-			'.maxi-tab-content--selected select'
+		// background origin
+		const originSelector = await page.$(
+			'.maxi-background-control__image-layer__origin-selector select'
 		);
 
-		// background origin
-		await moreSettingsSelectors[4].select('border-box');
+		await originSelector.select('border-box');
 
 		// background clip
-		await moreSettingsSelectors[5].select('content-box');
+		const clipSelector = await page.$(
+			'.maxi-background-control__image-layer__clip-selector select'
+		);
+
+		await clipSelector.select('content-box');
 
 		// clip-path
 		await page.$eval(
@@ -265,138 +282,148 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 's');
 
 		// background size
-		const baseBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const baseBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundSize).toStrictEqual('contain');
 
 		// background repeat
-		const baseBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const baseBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundRepeat).toStrictEqual('repeat');
 
 		// background position
-		const baseBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const baseBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundPosition).toStrictEqual('left top');
 
 		// background attachment
-		const baseBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const baseBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundAttachment).toStrictEqual('fixed');
 
 		// selectors
-		const backgroundSelectors = await page.$$(
-			'.maxi-tab-content--selected select'
-		);
-
 		// background size
-		await backgroundSelectors[0].select('cover');
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('cover');
 
 		// background repeat
-		await backgroundSelectors[1].select('space');
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('space');
 
 		// background position
-		await backgroundSelectors[2].select('center top');
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('center top');
 
 		// background attachment
-		await backgroundSelectors[3].select('local');
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
+
+		await attachmentSelector.select('local');
 
 		// expect values
 		// background size
-		const sBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const sBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundSize).toStrictEqual('cover');
 
 		// background repeat
-		const sBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const sBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundRepeat).toStrictEqual('space');
 
 		// background position
-		const sBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const sBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundPosition).toStrictEqual('center top');
 
 		// background attachment
-		const sBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const sBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundAttachment).toStrictEqual('local');
 
 		await changeResponsive(page, 'xs');
-		const xsBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const xsBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundSize).toStrictEqual('cover');
 
 		// background repeat
-		const xsBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const xsBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundRepeat).toStrictEqual('space');
 
 		// background position
-		const xsBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const xsBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundPosition).toStrictEqual('center top');
 
 		// background attachment
-		const xsBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const xsBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundAttachment).toStrictEqual('local');
 
 		await changeResponsive(page, 'm');
-		const mBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const mBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundSize).toStrictEqual('contain');
 
 		// background repeat
-		const mBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const mBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundRepeat).toStrictEqual('repeat');
 
 		// background position
-		const mBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const mBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundPosition).toStrictEqual('left top');
 
 		// background attachment
-		const mBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const mBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundAttachment).toStrictEqual('fixed');
 	});
 
 	it('Check Background image layer hover', async () => {
 		await changeResponsive(page, 'base');
+
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -412,7 +439,7 @@ describe('BackgroundControl', () => {
 		// hover options
 		await page.$$eval(
 			'.maxi-background-layers_options .maxi-background-layer__arrow',
-			options => options[1].click()
+			options => options[0].click()
 		);
 
 		// opacity
@@ -424,45 +451,49 @@ describe('BackgroundControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('82');
 
-		// selectors
-		const backgroundSelectors = await page.$$(
-			'.maxi-tab-content--selected select'
-		);
-
 		// background size
-		await backgroundSelectors[0].select('cover');
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('cover');
 
 		// background repeat
-		await backgroundSelectors[1].select('repeat-x');
-
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('repeat-x');
 		// background position
-		await backgroundSelectors[2].select('center top');
-
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('center top');
 		// background attachment
-		await backgroundSelectors[3].select('local');
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
 
+		await attachmentSelector.select('local');
 		// more settings
 		await page.$eval(
 			'.maxi-tabs-content .maxi-background-image-more-settings--toggle input',
 			button => button.click()
 		);
 
-		const moreSettingsSelectors = await page.$$(
-			'.maxi-tab-content--selected select'
+		// background origin
+		const originSelector = await page.$(
+			'.maxi-background-control__image-layer__origin-selector select'
 		);
 
-		// background origin
-		await moreSettingsSelectors[4].select('content-box');
+		await originSelector.select('content box');
 
 		// background clip
-		await moreSettingsSelectors[5].select('padding-box');
-
-		// clip-path
-		await page.$eval(
-			'.maxi-clip-path-control .maxi-toggle-switch__toggle input',
-			buttons => buttons.click()
+		const clipSelector = await page.$(
+			'.maxi-background-control__image-layer__clip-selector select'
 		);
 
+		await clipSelector.select('border-box');
+
+		// clip-path
 		await page.$$eval('.clip-path-defaults button', buttons =>
 			buttons[3].click()
 		);
@@ -475,139 +506,146 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 's');
 
 		// background size
-		const baseBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const baseBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundSize).toStrictEqual('cover');
 
 		// background repeat
-		const baseBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const baseBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundRepeat).toStrictEqual('repeat-x');
 
 		// background position
-		const baseBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const baseBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundPosition).toStrictEqual('center top');
 
 		// background attachment
-		const baseBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const baseBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(baseBackgroundAttachment).toStrictEqual('local');
 
 		// change values in S responsive
-		// selectors
-		const backgroundSelectors = await page.$$(
-			'.maxi-tab-content--selected select'
-		);
-
 		// background size
-		await backgroundSelectors[0].select('contain');
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('contain');
 
 		// background repeat
-		await backgroundSelectors[1].select('repeat-y');
-
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('repeat-y');
 		// background position
-		await backgroundSelectors[2].select('left top');
-
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('left top');
 		// background attachment
-		await backgroundSelectors[3].select('scroll');
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
+
+		await attachmentSelector.select('scroll');
 
 		// expect values
 		// background size
-		const sBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const sBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundSize).toStrictEqual('contain');
 
 		// background repeat
-		const sBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const sBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundRepeat).toStrictEqual('repeat-y');
 
 		// background position
-		const sBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const sBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundPosition).toStrictEqual('left top');
 
 		// background attachment
-		const sBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const sBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(sBackgroundAttachment).toStrictEqual('scroll');
 
 		await changeResponsive(page, 'xs');
-		const xsBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const xsBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundSize).toStrictEqual('contain');
 
 		// background repeat
-		const xsBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const xsBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundRepeat).toStrictEqual('repeat-y');
 
 		// background position
-		const xsBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const xsBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundPosition).toStrictEqual('left top');
 
 		// background attachment
-		const xsBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const xsBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(xsBackgroundAttachment).toStrictEqual('scroll');
 
 		await changeResponsive(page, 'm');
-		const mBackgroundSize = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[0].value
+		const mBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundSize).toStrictEqual('cover');
 
 		// background repeat
-		const mBackgroundRepeat = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[1].value
+		const mBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundRepeat).toStrictEqual('repeat-x');
 
 		// background position
-		const mBackgroundPosition = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[2].value
+		const mBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundPosition).toStrictEqual('center top');
 
 		// background attachment
-		const mBackgroundAttachment = await page.$$eval(
-			'.maxi-tab-content--selected select',
-			selector => selector[3].value
+		const mBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
 		);
 		expect(mBackgroundAttachment).toStrictEqual('local');
 	});
 
 	it('Check Background video layer', async () => {
 		await changeResponsive(page, 'base');
+		await removeBackgroundLayers(page);
 		await addBackgroundLayer(page, 'video');
 
 		const video =
@@ -707,7 +745,7 @@ describe('BackgroundControl', () => {
 		// hover options
 		await page.$$eval(
 			'.maxi-background-layers_options .maxi-background-layer__arrow',
-			options => options[2].click()
+			options => options[0].click()
 		);
 
 		// video opacity
@@ -725,9 +763,10 @@ describe('BackgroundControl', () => {
 	it('Check Background video layer hover responsive', async () => {
 		// general
 		await changeResponsive(page, 's');
-		const backgroundOpacityBase = await page.$eval(
+
+		const backgroundOpacityBase = await page.$$eval(
 			'.maxi-background-control .maxi-opacity-control input',
-			input => input.value
+			input => input[0].value
 		);
 
 		expect(backgroundOpacityBase).toStrictEqual('82');
@@ -756,6 +795,7 @@ describe('BackgroundControl', () => {
 			input => input.value
 		);
 		expect(backgroundOpacityXs).toStrictEqual('45');
+
 		// expect M
 		await changeResponsive(page, 'm');
 		const backgroundOpacityM = await page.$eval(
@@ -767,6 +807,8 @@ describe('BackgroundControl', () => {
 	});
 	it('Check Background shape layer', async () => {
 		await changeResponsive(page, 'base');
+		await removeBackgroundLayers(page);
+		await addBackgroundLayer(page, 'shape');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -795,6 +837,7 @@ describe('BackgroundControl', () => {
 		await page.$eval('.maxi-background-layer__arrow', display =>
 			display.click()
 		);
+
 		// size
 		await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
@@ -820,7 +863,7 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 
-		expect(baseBackgroundOpacity).toStrictEqual('10');
+		expect(baseBackgroundOpacity).toStrictEqual('7');
 
 		await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
@@ -864,7 +907,7 @@ describe('BackgroundControl', () => {
 			selector => selector[0].value
 		);
 
-		expect(sBackgroundShapeSize).toStrictEqual('723');
+		expect(sBackgroundShapeSize).toStrictEqual('23');
 
 		// expect XS responsive
 		await changeResponsive(page, 'xs');
@@ -886,7 +929,7 @@ describe('BackgroundControl', () => {
 			selector => selector[0].value
 		);
 
-		expect(xsBackgroundShapeSize).toStrictEqual('723');
+		expect(xsBackgroundShapeSize).toStrictEqual('23');
 
 		// expect M responsive
 		await changeResponsive(page, 'm');
@@ -896,7 +939,7 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 
-		expect(mBackgroundOpacity).toStrictEqual('10');
+		expect(mBackgroundOpacity).toStrictEqual('7');
 
 		await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
@@ -1030,12 +1073,6 @@ describe('BackgroundControl', () => {
 
 		await addBackgroundLayer(page, 'color');
 
-		// change color
-		await page.$$eval(
-			'.maxi-background-layer__content .maxi-sc-color-palette__box',
-			colorPalette => colorPalette[4].click()
-		);
-
 		// hide layer
 		await page.$eval(
 			'.maxi-background-layer__title .maxi-background-layer__title__display',
@@ -1064,7 +1101,7 @@ describe('BackgroundControl', () => {
 
 		const deleteOption = await page.$$eval(
 			'.maxi-background-layer__title',
-			backgroundLayerTitle => backgroundLayerTitle[2].innerHTML
+			backgroundLayerTitle => backgroundLayerTitle[0].innerHTML
 		);
 
 		expect(deleteOption).toMatchSnapshot();

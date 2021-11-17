@@ -56,7 +56,7 @@ const ImageLayerContent = props => {
 	};
 
 	return (
-		<>
+		<div className='maxi-background-control__image-layer'>
 			<MediaUploaderControl
 				mediaID={getLastBreakpointAttribute(
 					`${prefix}background-image-mediaID`,
@@ -215,6 +215,7 @@ const ImageLayerContent = props => {
 											'Background size',
 											'maxi-blocks'
 										)}
+										className='maxi-background-control__image-layer__size-selector'
 										value={getLastBreakpointAttribute(
 											`${prefix}background-image-size`,
 											breakpoint,
@@ -330,6 +331,7 @@ const ImageLayerContent = props => {
 											'Background repeat',
 											'maxi-blocks'
 										)}
+										className='maxi-background-control__image-layer__repeat-selector'
 										value={getLastBreakpointAttribute(
 											`${prefix}background-image-repeat`,
 											breakpoint,
@@ -404,6 +406,7 @@ const ImageLayerContent = props => {
 											'Background position',
 											'maxi-blocks'
 										)}
+										className='maxi-background-control__image-layer__position-selector'
 										value={getLastBreakpointAttribute(
 											`${prefix}background-image-position`,
 											breakpoint,
@@ -701,6 +704,7 @@ const ImageLayerContent = props => {
 											'Background attachment',
 											'maxi-blocks'
 										)}
+										className='maxi-background-control__image-layer__attachment-selector'
 										value={getLastBreakpointAttribute(
 											`${prefix}background-image-attachment`,
 											breakpoint,
@@ -767,6 +771,7 @@ const ImageLayerContent = props => {
 													'Background origin',
 													'maxi-blocks'
 												)}
+												className='maxi-background-control__image-layer__origin-selector'
 												value={getLastBreakpointAttribute(
 													`${prefix}background-image-origin`,
 													breakpoint,
@@ -820,6 +825,7 @@ const ImageLayerContent = props => {
 													'Background clip',
 													'maxi-blocks'
 												)}
+												className='maxi-background-control__image-layer__clip-selector'
 												value={getLastBreakpointAttribute(
 													`${prefix}background-image-clip-path`,
 													breakpoint,
@@ -1004,11 +1010,13 @@ const ImageLayerContent = props => {
 					]}
 				/>
 			)}
-		</>
+		</div>
 	);
 };
 
 const ImageLayer = props => {
+	'';
+
 	const { breakpoint, hideSettings = false, ...rest } = props;
 
 	return (

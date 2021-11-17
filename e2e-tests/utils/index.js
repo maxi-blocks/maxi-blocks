@@ -1,5 +1,4 @@
 export { default as addBackgroundLayer } from './addBackgroundLayer';
-export { default as addBackgroundLayer } from './addBackgroundLayer';
 export { default as changeResponsive } from './changeResponsive';
 export { default as getBlockAttributes } from './getBlockAttributes';
 export { default as getBlockStyle } from './getBlockStyle';

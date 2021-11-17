@@ -21,16 +21,13 @@ import {
 } from '../../utils';
 
 describe('BackgroundControl', () => {
-	/* beforeAll(async () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
-	}); */
+	});
 
 	it('Check Background Color layer', async () => {
-		await createNewPost();
-		await insertBlock('Group Maxi');
-		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'color');
 
 		// change color

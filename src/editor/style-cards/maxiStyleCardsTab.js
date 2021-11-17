@@ -10,13 +10,12 @@ import { useState } from '@wordpress/element';
 import { processSCAttribute, getDefaultSCAttribute } from './utils';
 
 import {
-	SettingTabsControl,
 	AccordionControl,
 	Button,
 	ColorControl,
 	Icon,
+	SettingTabsControl,
 	TypographyControl,
-	ButtonGroupControl,
 } from '../../components';
 import {
 	getDefaultSCValue,
@@ -27,6 +26,7 @@ import {
  * Icons
  */
 import { reset } from '../../icons';
+import ToggleSwitch from '../../components/toggle-switch';
 
 /**
  * Component
@@ -47,20 +47,10 @@ const GlobalColor = props => {
 
 	return (
 		<>
-			<ButtonGroupControl
+			<ToggleSwitch
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
 				selected={processSCAttribute(SC, globalAttr, groupAttr)}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
 				onChange={val =>
 					onChangeValue(
 						{
@@ -84,7 +74,7 @@ const GlobalColor = props => {
 						groupAttr
 					)}
 					paletteOpacity={
-						processSCAttribute(SC, paletteOpacity, groupAttr) || 100
+						processSCAttribute(SC, paletteOpacity, groupAttr) || 1
 					}
 					color={processSCAttribute(SC, color, groupAttr)}
 					defaultColor={getDefaultSCValue({
@@ -159,6 +149,7 @@ const SCAccordion = props => {
 					color,
 				}) => (
 					<GlobalColor
+						key={`sc-accordion__h${label}`}
 						label={label}
 						globalAttr={globalAttr}
 						paletteStatus={paletteStatus}
@@ -352,6 +343,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	return (
 		<div className='maxi-tab-content__box'>
 			<AccordionControl
+				key='sc-accordion__quick-color-presets'
 				isSecondary
 				items={[
 					{
@@ -377,7 +369,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											}
 										>
 											<span
-												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
+												className={`maxi-style-cards__quick-color-presets__-item maxi-style-cards__quick-color-presets__-item__${item}`}
 												style={{
 													background: `rgba(${processSCAttribute(
 														SC,

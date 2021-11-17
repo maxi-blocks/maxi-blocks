@@ -68,19 +68,19 @@
 	}
 	.maxi-color-palette-control {
 		flex-direction: column-reverse;
-		.maxi-sc-color-palette {
+		.maxi-color-control__palette {
 			&__custom {
 				margin-bottom: 10px;
 			}
-			&__box {
+			&-box {
 				background-color: #52545f;
 				&__active,
 				&:hover {
 					border-color: #fff;
 				}
-				&__item {
-					border-color: #fff;
-				}
+			}
+			&-item {
+				border-color: #fff;
 			}
 		}
 	}

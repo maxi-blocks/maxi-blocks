@@ -40,11 +40,18 @@ const typography = ({
 				? 'button'
 				: textLevel;
 
-		const globalHoverStatus = receiveStyleCardValue(
+		const isActive = receiveStyleCardValue(
+			'hover-color-global',
+			parentBlockStyle,
+			type
+		);
+		const affectAll = receiveStyleCardValue(
 			'hover-color-all',
 			parentBlockStyle,
 			type
 		);
+
+		const globalHoverStatus = isActive && affectAll;
 
 		return { globalHoverStatus };
 	});

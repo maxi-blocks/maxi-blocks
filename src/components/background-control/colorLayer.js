@@ -137,9 +137,7 @@ const ColorLayerContent = props => {
 				}}
 				globalProps={
 					isButton && {
-						target: `${
-							isHover ? 'hover-' : ''
-						}background-color-global`,
+						target: `${isHover ? 'hover-' : ''}background`,
 						type: 'button',
 					}
 				}

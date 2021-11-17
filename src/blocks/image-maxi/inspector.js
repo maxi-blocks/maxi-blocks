@@ -520,7 +520,7 @@ const Inspector = memo(
 								<AccordionControl
 									isPrimary
 									items={[
-										...inspectorTabs.background({
+										...inspectorTabs.blockBackground({
 											props,
 										}),
 										...inspectorTabs.border({

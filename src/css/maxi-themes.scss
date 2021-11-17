@@ -159,53 +159,53 @@ body.maxi-blocks--active .edit-post-visual-editor {
 				text-decoration: var(
 					--maxi-#{$style}-button-text-decoration-general
 				);
-				&:visited,
-				&:hover,
-				&:active,
-				&:focus {
-					color: rgba(
-						var(
-							--maxi-#{$style}-button-hover-color,
-							var(
-								--maxi-#{$style}-button-hover-color-palette,
-								var(
-									--maxi-#{$style}-button-color,
-									var(--maxi-#{$style}-button-color-palette)
-								)
-							)
-						),
-						1
-					);
-					background-color: rgba(
-						var(
-							--maxi-#{$style}-button-background-hover-color-palette,
-							var(
-								--maxi-#{$style}-button-background-color,
-								var(
-									--maxi-#{$style}-button-background-color-palette
-								)
-							)
-						),
-						1
-					);
-					background-color: rgba(
-						var(
-							--maxi-#{$style}-button-background-color,
-							var(
-								--maxi-#{$style}-button-background-color-palette
-							)
-						),
-						1
-					);
-					background-color: rgba(
-						var(--maxi-#{$style}-button-background-color-palette),
-						1
-					);
-					border-color: rgba(
-						var(--maxi-#{$style}-button-border-color-palette),
-						1
-					);
-				}
+				// &:visited,
+				// &:hover,
+				// &:active,
+				// &:focus {
+				// 	color: rgba(
+				// 		var(
+				// 			--maxi-#{$style}-button-hover-color,
+				// 			var(
+				// 				--maxi-#{$style}-button-hover-color-palette,
+				// 				var(
+				// 					--maxi-#{$style}-button-color,
+				// 					var(--maxi-#{$style}-button-color-palette)
+				// 				)
+				// 			)
+				// 		),
+				// 		1
+				// 	);
+				// 	background-color: rgba(
+				// 		var(
+				// 			--maxi-#{$style}-button-background-hover-color-palette,
+				// 			var(
+				// 				--maxi-#{$style}-button-background-color,
+				// 				var(
+				// 					--maxi-#{$style}-button-background-color-palette
+				// 				)
+				// 			)
+				// 		),
+				// 		1
+				// 	);
+				// 	background-color: rgba(
+				// 		var(
+				// 			--maxi-#{$style}-button-background-color,
+				// 			var(
+				// 				--maxi-#{$style}-button-background-color-palette
+				// 			)
+				// 		),
+				// 		1
+				// 	);
+				// 	background-color: rgba(
+				// 		var(--maxi-#{$style}-button-background-color-palette),
+				// 		1
+				// 	);
+				// 	border-color: rgba(
+				// 		var(--maxi-#{$style}-button-border-color-palette),
+				// 		1
+				// 	);
+				// }
 			}
 		}
 	}

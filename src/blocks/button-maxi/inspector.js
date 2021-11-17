@@ -10,7 +10,6 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
-	BackgroundControl,
 	DefaultStylesControl,
 	Icon,
 	IconControl,
@@ -18,10 +17,7 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -429,146 +425,16 @@ const Inspector = memo(
 												hideAlignment: true,
 												disableCustomFormats: true,
 											}),
-											deviceType === 'general' && {
-												label: __(
-													'Button background',
-													'maxi-blocks'
-												),
-
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal state',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundGradient',
-																				],
-																				false,
-																				'button-'
-																			)}
-																			prefix='button-'
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			disableImage
-																			disableVideo
-																			disableClipPath
-																			disableSVG
-																			disableLayers
-																			clientId={
-																				clientId
-																			}
-																			isButton
-																		/>
-																	</>
-																),
-															},
-															{
-																label: __(
-																	'Hover state',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'button-background-hover-status'
-																				]
-																			}
-																			className='maxi-background-status-hover'
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
-																										false,
-																										'button-'
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
-																										true,
-																										'button-'
-																									),
-																								}
-																							)),
-																						'button-background-hover-status':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'button-background-hover-status'
-																		] && (
-																			<BackgroundControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'background',
-																						'backgroundColor',
-																						'backgroundGradient',
-																					],
-																					true,
-																					'button-'
-																				)}
-																				prefix='button-'
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				disableImage
-																				disableVideo
-																				disableClipPath
-																				disableSVG
-																				disableLayers
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																				isButton
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
+											...inspectorTabs.background({
+												label: 'Button',
+												props,
+												disableImage: true,
+												disableVideo: true,
+												disableClipPath: true,
+												disableSVG: true,
+												isButton: true,
+												prefix: 'button-',
+											}),
 											...inspectorTabs.border({
 												props,
 												prefix: 'button-',
@@ -596,7 +462,7 @@ const Inspector = memo(
 								<AccordionControl
 									isPrimary
 									items={[
-										...inspectorTabs.background({
+										...inspectorTabs.blockBackground({
 											props,
 										}),
 										...inspectorTabs.border({

@@ -199,7 +199,7 @@ const Inspector = memo(
 												hideAlignment: true,
 												allowLink: true,
 											}),
-											...inspectorTabs.background({
+											...inspectorTabs.blockBackground({
 												props,
 											}),
 											...inspectorTabs.border({

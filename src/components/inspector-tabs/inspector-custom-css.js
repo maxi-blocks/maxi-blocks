@@ -57,6 +57,7 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 	);
 	const customCssCategory = attributes['custom-css-category'];
 
+	// TODO: add other blocks with canvas here
 	const isCanvas = blockName.includes('button-maxi') === true;
 	const isCanvasBackgroundEnabled = !isEmpty(attributes['background-layers']);
 	const isIconEnabled = !isEmpty(attributes['icon-content']);

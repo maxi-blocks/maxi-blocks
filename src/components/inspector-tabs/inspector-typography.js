@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -22,9 +23,34 @@ const typography = ({
 	allowLink = false,
 }) => {
 	const { attributes, clientId, deviceType, setAttributes } = props;
-	const { parentBlockStyle, textLevel, isList } = attributes;
+	const {
+		parentBlockStyle,
+		textLevel,
+		isList,
+		'typography-status-hover': typographyHoverStatus,
+	} = attributes;
 
-	const bgHoverStatus = attributes['typography-status-hover'];
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const { globalHoverStatus } = useSelect(select => {
+		const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+		const { getBlockName } = select('core/block-editor');
+
+		const type =
+			getBlockName(clientId) === 'maxi-blocks/button-maxi'
+				? 'button'
+				: textLevel;
+
+		const globalHoverStatus = receiveStyleCardValue(
+			'hover-color-all',
+			parentBlockStyle,
+			type
+		);
+
+		return { globalHoverStatus };
+	});
+
+	const hoverStatus = typographyHoverStatus || globalHoverStatus;
+
 	const typographyTarget = allowLink ? ['typography', 'link'] : 'typography';
 
 	return {
@@ -63,14 +89,14 @@ const typography = ({
 										'Enable Typography Hover',
 										'maxi-blocks'
 									)}
-									selected={bgHoverStatus}
+									selected={hoverStatus}
 									onChange={val =>
 										setAttributes({
 											'typography-status-hover': val,
 										})
 									}
 								/>
-								{bgHoverStatus && (
+								{hoverStatus && (
 									<TypographyControl
 										{...getGroupAttributes(
 											attributes,

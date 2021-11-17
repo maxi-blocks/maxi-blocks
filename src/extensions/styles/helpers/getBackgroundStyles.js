@@ -93,8 +93,9 @@ export const getColorBackgroundObject = ({
 			);
 
 		if (isButton) {
+			// !!!
 			response[breakpoint].background = getColorRGBAString({
-				firstVar: `color${isHover ? '-hover' : ''}`,
+				firstVar: `button-background-color${isHover ? '-hover' : ''}`,
 				secondVar: `color-${bgPaletteColor}`,
 				opacity: bgPaletteOpacity,
 				blockStyle,

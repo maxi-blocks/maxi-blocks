@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
@@ -27,8 +32,20 @@ const getTypographyStyles = ({
 	parentBlockStyle,
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
+	disableGlobals = false,
 }) => {
-	if (isHover && !obj[`${prefix}typography-status-hover`]) return {};
+	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+
+	const globalHoverStatus = !disableGlobals
+		? receiveStyleCardValue('hover-color-all', parentBlockStyle, textLevel)
+		: false;
+
+	if (
+		isHover &&
+		!obj[`${prefix}typography-status-hover`] &&
+		!globalHoverStatus
+	)
+		return {};
 
 	const response = {};
 

@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -24,8 +25,11 @@ import { isEmpty } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, setAttributes, clientId } = props;
 	const { apiKey } = attributes;
+
+	const { getBlock } = select('core/block-editor');
+	const blockName = getBlock(clientId)?.name;
 
 	return (
 		<InspectorControls>
@@ -94,6 +98,11 @@ const Inspector = props => {
 											props,
 										}),
 									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										blockName,
+									}),
 									...inspectorTabs.transform({
 										props,
 									}),

@@ -2,6 +2,8 @@ import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getBoxShadowStyles,
+	getCustomCss,
+	getCustomStyles,
 	getDisplayStyles,
 	getMapStyles,
 	getMarginPaddingStyles,
@@ -62,6 +64,13 @@ const getNormalObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			'map',
+			0
+		),
 	};
 
 	return response;
@@ -91,6 +100,13 @@ const getHoverNormalObject = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			'map',
+			1
+		),
 	};
 
 	return response;
@@ -116,9 +132,30 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
+			':before': getCustomStyles(props, 'before map', 0),
+			':after': getCustomStyles(props, 'after map', 0),
 			':hover': getHoverNormalObject(props),
-			' .map-marker-info-window__title': getMapObject(props, 'title'),
-			' .map-marker-info-window__address': getMapObject(props, 'address'),
+			':hover:before': getCustomStyles(props, 'before map', 1),
+			':hover:after': getCustomStyles(props, 'after map', 1),
+			' .map-marker-info-window__title': [
+				getMapObject(props, 'title'),
+				getCustomStyles(props, 'title', 0),
+			],
+			':hover .map-marker-info-window__title': getCustomStyles(
+				props,
+				'title',
+				1
+			),
+
+			' .map-marker-info-window__address': [
+				getMapObject(props, 'address'),
+				getCustomStyles(props, 'address', 0),
+			],
+			':hover .map-marker-info-window__address': getCustomStyles(
+				props,
+				'address',
+				1
+			),
 		}),
 	};
 

@@ -15,6 +15,7 @@ import {
 	getBoxShadowStyles,
 	getColorBackgroundObject,
 	getCustomCss,
+	getCustomStyles,
 	getDisplayStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
@@ -35,20 +36,6 @@ import {
 import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-const getCustomStyles = (props, type, index) => {
-	const response = {
-		customCss: getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			type,
-			index
-		),
-	};
-
-	return response;
-};
 
 const getWrapperObject = props => {
 	const response = {

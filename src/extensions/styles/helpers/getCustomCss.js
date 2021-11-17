@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getGroupAttributes from '../getGroupAttributes';
 
 /**
  * General
@@ -13,23 +14,17 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block custom css properties
  */
-const getCustomCss = (obj, category, index) => {
+export const getCustomCss = (obj, category, index) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		let value;
 		const customCssValue = getLastBreakpointAttribute(
 			'custom-css',
 			breakpoint,
 			obj
 		);
 
-		if (
-			customCssValue &&
-			customCssValue[category] &&
-			customCssValue[category][index]
-		)
-			value = customCssValue[category][index];
+		const value = customCssValue?.[category]?.[index];
 
 		if (value)
 			response[breakpoint] = {
@@ -40,4 +35,16 @@ const getCustomCss = (obj, category, index) => {
 	return response;
 };
 
-export default getCustomCss;
+export const getCustomStyles = (props, type, index) => {
+	const response = {
+		customCss: getCustomCss(
+			{
+				...getGroupAttributes(props, 'customCss'),
+			},
+			type,
+			index
+		),
+	};
+
+	return response;
+};

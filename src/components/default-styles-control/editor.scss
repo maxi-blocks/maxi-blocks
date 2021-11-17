@@ -17,12 +17,15 @@
 			background-color: #f8fbfd;
 			border: 1px solid #dbdde6;
 			border-bottom: 2px solid var(--maxi-secondary-color);
-
+			path {
+				fill: var(--maxi-secondary-color);
+				// stroke: var(--maxi-secondary-color);
+			}
 			&:first-child,
 			&:nth-child-4 {
 				svg {
 					path {
-						fill: #007cba;
+						fill: var(--maxi-secondary-color);
 					}
 				}
 			}

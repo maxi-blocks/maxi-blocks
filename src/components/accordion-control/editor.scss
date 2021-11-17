@@ -75,5 +75,65 @@
 				}
 			}
 		}
+
+		&[data-name='hover effect'] {
+			.maxi-button-group-control__option {
+				&--selected {
+					path {
+						fill: var(--maxi-secondary-color) !important;
+					}
+					&[aria-label='text'] {
+						path {
+							fill: transparent !important;
+							stroke: var(--maxi-secondary-color) !important;
+						}
+					}
+				}
+			}
+		}
+
+		&[data-name='border'] {
+			.maxi-default-styles-control__button {
+				&--active {
+					&:nth-child(3),
+					&:nth-child(4) {
+						path {
+							stroke: var(--maxi-secondary-color) !important;
+						}
+					}
+				}
+			}
+		}
+
+		&[data-name='typography'] {
+			.maxi-typography-control__link-options {
+				.maxi-button-group-control__option {
+					&--selected {
+						font-weight: 700;
+					}
+				}
+			}
+		}
+
+		&[data-name='add css classes'] {
+			.maxi-base-control {
+				&__field {
+					display: block !important;
+				}
+				&__label {
+					margin-bottom: 5px;
+				}
+			}
+			.maxi-text-control__input {
+				display: block;
+				width: 100%;
+			}
+		}
+
+		&[data-name='dimension'] {
+			.components-range-control__wrapper {
+				margin-left: 7px !important;
+			}
+		}
 	}
 }

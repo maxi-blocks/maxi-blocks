@@ -16,10 +16,13 @@ const customClasses = ({ props }) => {
 	const { extraClassName } = attributes;
 
 	return {
-		label: __('Add CSS class', 'maxi-blocks'),
+		label: __('Add CSS classes', 'maxi-blocks'),
 		content: (
 			<TextControl
-				label={__('Add CSS classes', 'maxi-blocks')}
+				label={__(
+					'Attach custom CSS classes to target this element',
+					'maxi-blocks'
+				)}
 				className='maxi-additional__css-classes'
 				value={extraClassName}
 				onChange={extraClassName =>

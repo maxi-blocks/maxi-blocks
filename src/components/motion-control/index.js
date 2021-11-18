@@ -7,8 +7,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-// import RadioControl from '../radio-control';
 import Icon from '../icon';
+import ButtonGroupControl from '../button-group-control';
 import MotionUniqueControl from './motion-unique-control';
 import {
 	getDefaultAttribute,
@@ -115,7 +115,7 @@ const MotionControl = props => {
 					}
 				}}
 			/>
-			{/* <RadioControl
+			<ButtonGroupControl
 				fullWidthMode
 				selected={motionStatus}
 				options={motionOptions}
@@ -123,27 +123,24 @@ const MotionControl = props => {
 					onChange({ [`motion-active-${breakpoint}`]: val });
 					setMotionStatus(val);
 				}}
-			/> */}
+			/>
 			{motionTypes.map(type => {
 				const typeCapitalize =
 					type.charAt(0).toUpperCase() + type.slice(1);
 
 				return (
 					<div key={`maxi-motion-control-${type}-${breakpoint}`}>
-						{motionStatus === type &&
-							{
-								/* <RadioControl
+						{motionStatus === type && (
+							<ButtonGroupControl
 								label={__(
 									`Enable ${typeCapitalize}`,
 									'maxi-blocks'
 								)}
-								selected={
-									+getLastBreakpointAttribute(
-										`motion-status-${type}`,
-										breakpoint,
-										props
-									)
-								}
+								selected={getLastBreakpointAttribute(
+									`motion-status-${type}`,
+									breakpoint,
+									props
+								)}
 								options={[
 									{
 										label: __('Yes', 'maxi-blocks'),
@@ -157,11 +154,11 @@ const MotionControl = props => {
 								onChange={val =>
 									onChange({
 										[`motion-status-${type}-${breakpoint}`]:
-											!!+val,
+											val,
 									})
 								}
-							/> */
-							}}
+							/>
+						)}
 						{props[`motion-active-${breakpoint}`] === type &&
 							props[`motion-status-${type}-${breakpoint}`] && (
 								<>

@@ -79,12 +79,9 @@ class edit extends MaxiBlockComponent {
 
 		this.state = {
 			currentMotion: motionPreviewStatus,
+			isIconSelected: false,
 		};
 	}
-
-	state = {
-		isIconSelected: false,
-	};
 
 	typingTimeout = 0;
 
@@ -95,9 +92,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, setAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
-		const { currentMotion } = this.state;
-
-		const { isIconSelected } = this.state;
+		const { currentMotion, isIconSelected } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',

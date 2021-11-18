@@ -232,6 +232,11 @@ const Inspector = memo(
 													props,
 												}),
 											},
+											deviceType === 'general' && {
+												...inspectorTabs.anchor({
+													props,
+												}),
+											},
 											...inspectorTabs.motion({
 												props,
 											}),

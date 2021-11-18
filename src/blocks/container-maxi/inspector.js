@@ -47,6 +47,7 @@ const Inspector = props => {
 												'Shape divider',
 												'maxi-blocks'
 											),
+											disablePadding: true,
 											content: (
 												<ShapeDividerControl
 													{...getGroupAttributes(
@@ -89,6 +90,11 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
 											props,
 										}),
 									},

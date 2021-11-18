@@ -10,11 +10,10 @@ import { useState, useEffect, useRef, createRef } from '@wordpress/element';
  */
 import Inspector from './inspector';
 import {
-	BlockResizer,
-	Button,
+	getResizerSize,
 	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
+} from '../../extensions/maxi-block';
+import { BlockResizer, Button, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -114,24 +113,13 @@ const NumberCounter = attributes => {
 			<BlockResizer
 				className='maxi-number-counter__box'
 				lockAspectRatio
-				size={{
-					width: `${getLastBreakpointAttribute(
-						'width',
-						deviceType,
-						attributes
-					)}${getLastBreakpointAttribute(
-						'width-unit',
-						deviceType,
-						attributes
-					)}`,
-				}}
 				defaultSize={{
 					width: `${getLastBreakpointAttribute(
-						'width',
+						'number-counter-width',
 						deviceType,
 						attributes
 					)}${getLastBreakpointAttribute(
-						'width-unit',
+						'number-counter-width-unit',
 						deviceType,
 						attributes
 					)}`,
@@ -222,19 +210,20 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute(
-				'width',
+				'number-counter-width',
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
 			const svgWidthUnit = getLastBreakpointAttribute(
-				'width-unit',
+				'number-counter-width-unit',
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
+			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
-			if (this.resizableObject.current.state.width !== `${svgWidth}%`)
+			if (this.resizableObject.current.state.width !== fullWidthValue)
 				this.resizableObject.current.updateSize({
-					width: `${svgWidth}${svgWidthUnit}`,
+					width: fullWidthValue,
 				});
 		}
 	}
@@ -260,17 +249,19 @@ class edit extends MaxiBlockComponent {
 
 		const classes = 'maxi-number-counter-block';
 
-		const handleOnResizeStart = event => {
-			event.preventDefault();
-
-			setAttributes({
-				[`width-unit-${deviceType}`]: 'px',
-			});
-		};
-
 		const handleOnResizeStop = (event, direction, elt) => {
+			const widthUnit = getLastBreakpointAttribute(
+				'number-counter-width-unit',
+				deviceType,
+				attributes
+			);
+
 			setAttributes({
-				[`width-${deviceType}`]: elt.getBoundingClientRect().width,
+				[`number-counter-width-${deviceType}`]: getResizerSize(
+					elt,
+					this.blockRef,
+					widthUnit
+				),
 			});
 		};
 
@@ -294,7 +285,6 @@ class edit extends MaxiBlockComponent {
 						'size',
 					])}
 					resizerProps={{
-						onResizeStart: handleOnResizeStart,
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,
 						showHandle: isSelected,

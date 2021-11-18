@@ -10,7 +10,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import AxisControl from '../axis-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import TextareaControl from '../textarea-control';
@@ -57,7 +57,7 @@ const HoverEffectControl = props => {
 
 	return (
 		<div className={classes}>
-			<RadioControl
+			<ButtonGroupControl
 				label={__('Hover Animation', 'maxi-blocks')}
 				selected={props['hover-type']}
 				options={[
@@ -320,7 +320,7 @@ const HoverEffectControl = props => {
 							onChange({ 'hover-text-effect-type': val })
 						}
 					/>
-					<RadioControl
+					<ButtonGroupControl
 						selected={props['hover-text-preset']}
 						options={[
 							{

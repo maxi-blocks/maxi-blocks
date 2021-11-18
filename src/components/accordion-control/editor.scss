@@ -18,15 +18,9 @@
 			max-height: 24px;
 		}
 
-		// This many values are strange...
 		&__panel {
-			overflow-x: hidden;
-
 			&:not(.maxi-accordion-control__item__panel--disable-padding) {
-				padding-top: 15px !important;
-				padding-left: 12px !important;
-				padding-right: 12px !important;
-				padding-bottom: 10px !important;
+				padding: 8px 8px 0;
 				background-color: #fff;
 			}
 		}
@@ -58,7 +52,7 @@
 				margin-right: 8px;
 			}
 			&:after {
-				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" class="a"/></svg>');
+				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" /></svg>');
 				position: absolute;
 				top: 50%;
 				right: 10px;

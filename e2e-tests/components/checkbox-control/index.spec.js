@@ -8,7 +8,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('CheckBoxControl', () => {
-	it('checking the checkbox control', async () => {
+	it.skip('checking the checkbox control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebarTab(

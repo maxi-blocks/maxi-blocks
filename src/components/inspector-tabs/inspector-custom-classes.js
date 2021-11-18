@@ -16,7 +16,7 @@ const customClasses = ({ props }) => {
 	const { extraClassName } = attributes;
 
 	return {
-		label: __('Add CSS class/id', 'maxi-blocks'),
+		label: __('Add CSS class', 'maxi-blocks'),
 		content: (
 			<TextControl
 				label={__('Add CSS classes', 'maxi-blocks')}

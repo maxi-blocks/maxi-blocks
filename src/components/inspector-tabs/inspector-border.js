@@ -29,7 +29,7 @@ const border = ({ props, prefix }) => {
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal', 'maxi-blocks'),
+						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<BorderControl
 								{...getGroupAttributes(
@@ -49,7 +49,7 @@ const border = ({ props, prefix }) => {
 						),
 					},
 					{
-						label: __('Hover', 'maxi-blocks'),
+						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

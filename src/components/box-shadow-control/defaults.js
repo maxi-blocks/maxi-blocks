@@ -23,7 +23,7 @@ export const boxShadowTotal = prefix => {
 	let response = {};
 
 	response = {
-		[`${prefix}box-shadow-palette-opacity`]: 23,
+		[`${prefix}box-shadow-palette-opacity`]: 0.23,
 		[`${prefix}box-shadow-horizontal`]: 0,
 		[`${prefix}box-shadow-vertical`]: 30,
 		[`${prefix}box-shadow-blur`]: 50,
@@ -37,7 +37,7 @@ export const boxShadowBottom = prefix => {
 	let response = {};
 
 	response = {
-		[`${prefix}box-shadow-palette-opacity`]: 50,
+		[`${prefix}box-shadow-palette-opacity`]: 0.5,
 		[`${prefix}box-shadow-horizontal`]: 0,
 		[`${prefix}box-shadow-vertical`]: 30,
 		[`${prefix}box-shadow-blur`]: 50,
@@ -51,7 +51,7 @@ export const boxShadowSolid = prefix => {
 	let response = {};
 
 	response = {
-		[`${prefix}box-shadow-palette-opacity`]: 50,
+		[`${prefix}box-shadow-palette-opacity`]: 0.5,
 		[`${prefix}box-shadow-horizontal`]: 5,
 		[`${prefix}box-shadow-vertical`]: 6,
 		[`${prefix}box-shadow-blur`]: 0,

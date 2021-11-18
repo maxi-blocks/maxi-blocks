@@ -297,8 +297,8 @@ describe('AxisControl', () => {
 		await accordionPanel.$$(
 			'.maxi-axis-control__content__item .maxi-axis-control__content__item__checkbox input'
 		);
-		let topInput = await page.$$(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		let topInput = await page.$(
+			'.maxi-axis-control.maxi-axis-control__padding .maxi-axis-control__content__item__top input'
 		);
 
 		const marginS = await accordionPanel.$$eval(
@@ -340,8 +340,8 @@ describe('AxisControl', () => {
 		await page.waitForTimeout(100);
 
 		// set responsive value
-		topInput = await page.$$(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		topInput = await page.$(
+			'.maxi-axis-control.maxi-axis-control__padding .maxi-axis-control__content__item__top input'
 		);
 		await topInput[1].focus();
 	});

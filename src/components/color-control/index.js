@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import CustomColorControl from './customColorControl';
 import ColorPaletteControl from './paletteControl';
-import RadioControl from '../radio-control';
+import ToggleSwitch from '../toggle-switch';
 import { getBlockStyle, getColorRGBAParts } from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
 
@@ -58,7 +58,7 @@ const ColorControl = props => {
 		className
 	);
 
-	const showPalette = !disablePalette && +paletteStatus;
+	const showPalette = !disablePalette && paletteStatus;
 
 	/**
 	 * Creates an object with the color variables with RGBA format
@@ -77,6 +77,12 @@ const ColorControl = props => {
 			...obj,
 		});
 
+	/**
+	 * TODO: reset is working just on Custom Color and when pressing
+	 * the reset of the opacity, which is not much UX.
+	 *
+	 * https://github.com/yeahcan/UX-UI/issues/8
+	 */
 	const onReset = () => {
 		if (defaultColor) onChange(defaultColor);
 
@@ -88,13 +94,13 @@ const ColorControl = props => {
 				clientId,
 				paletteColor,
 				blockStyle
-			)},${paletteOpacity / 100 || 1})`,
+			)},1)`,
 		});
 	};
 
 	return (
 		<div className={classes}>
-			{!!+showPalette && (
+			{showPalette && (
 				<ColorPaletteControl
 					label={label}
 					value={paletteColor}
@@ -109,30 +115,25 @@ const ColorControl = props => {
 				/>
 			)}
 			{!disablePalette && (
-				<RadioControl
-					label={__('Custom Colour', 'maxi-blocks')}
-					className='maxi-sc-color-palette__custom'
-					selected={+paletteStatus}
-					options={[
-						{ label: __('Yes', 'maxi-blocks'), value: 0 },
-						{ label: __('No', 'maxi-blocks'), value: 1 },
-					]}
+				<ToggleSwitch
+					label={__('Set custom colour', 'maxi-blocks')}
+					selected={!paletteStatus}
 					onChange={val => {
 						onChangeValue({
-							paletteStatus: !!+val,
+							paletteStatus: !val,
 							// If palette is disabled, set custom color from palette one
-							...(!+val && {
+							...(val && {
 								color: `rgba(${getPaletteColor(
 									clientId,
 									paletteColor,
 									blockStyle
-								)},${paletteOpacity / 100 || 1})`,
+								)},${paletteOpacity || 1})`,
 							}),
 							// If palette is set, save the custom color opacity
 							...(!disableOpacity &&
-								+val && {
+								!val && {
 									paletteOpacity:
-										tinycolor(color).getAlpha() * 100 ||
+										tinycolor(color).getAlpha() ||
 										paletteOpacity,
 								}),
 						});

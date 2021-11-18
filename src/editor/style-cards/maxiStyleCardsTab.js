@@ -369,7 +369,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											}
 										>
 											<span
-												className={`maxi-style-cards__quick-color-presets__-item maxi-style-cards__quick-color-presets__-item__${item}`}
+												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
 												style={{
 													background: `rgba(${processSCAttribute(
 														SC,

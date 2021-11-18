@@ -7,7 +7,7 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import RadioControl from '../radio-control';
+import ButtonGroupControl from '../button-group-control';
 import SquareControl from './square-control';
 import RotateControl from './rotate-control';
 import {
@@ -94,7 +94,7 @@ const TransformControl = props => {
 
 	return (
 		<div className={classes}>
-			<RadioControl
+			<ButtonGroupControl
 				label=''
 				selected={transformStatus}
 				options={[

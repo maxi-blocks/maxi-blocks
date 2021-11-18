@@ -34,8 +34,8 @@ const position = {
 		type: 'number',
 	},
 	'position-sync-general': {
-		type: 'boolean',
-		default: false,
+		type: 'string',
+		default: 'all',
 	},
 	'position-unit-general': {
 		type: 'string',
@@ -54,7 +54,7 @@ const position = {
 		type: 'number',
 	},
 	'position-sync-xxl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'position-unit-xxl': {
 		type: 'string',
@@ -72,7 +72,7 @@ const position = {
 		type: 'number',
 	},
 	'position-sync-xl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'position-unit-xl': {
 		type: 'string',
@@ -90,7 +90,7 @@ const position = {
 		type: 'number',
 	},
 	'position-sync-l': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'position-unit-l': {
 		type: 'string',
@@ -108,7 +108,7 @@ const position = {
 		type: 'number',
 	},
 	'position-sync-m': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'position-unit-m': {
 		type: 'string',
@@ -126,7 +126,7 @@ const position = {
 		type: 'number',
 	},
 	'position-sync-s': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'position-unit-s': {
 		type: 'string',
@@ -144,7 +144,7 @@ const position = {
 		type: 'number',
 	},
 	'position-sync-xs': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'position-unit-xs': {
 		type: 'string',

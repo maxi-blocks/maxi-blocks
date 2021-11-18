@@ -16,7 +16,7 @@ import {
 	ColorControl,
 	Icon,
 	TypographyControl,
-	RadioControl,
+	ButtonGroupControl,
 } from '../../components';
 import {
 	getDefaultSCValue,
@@ -47,7 +47,7 @@ const GlobalColor = props => {
 
 	return (
 		<>
-			<RadioControl
+			<ButtonGroupControl
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
 				selected={processSCAttribute(SC, globalAttr, groupAttr)}

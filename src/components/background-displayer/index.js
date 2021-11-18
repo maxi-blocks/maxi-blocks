@@ -12,22 +12,25 @@ import VideoLayer from './videoLayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep, isEmpty } from 'lodash';
+import { compact, isEmpty } from 'lodash';
 
 /**
  * Styles
  */
+import './editor.scss';
 import './style.scss';
+import { getAttributeValue } from '../../extensions/styles';
 
 /**
  * Component
  */
 const BackgroundContent = props => {
-	const { wrapperRef, isHover = false } = props;
+	const { wrapperRef, prefix = '' } = props;
 
-	const layers = cloneDeep(
-		props[`background-layers${isHover ? '-hover' : ''}`]
-	);
+	const layers = compact([
+		...props['background-layers'],
+		...props['background-layers-hover'],
+	]);
 
 	if (layers) layers.sort((a, b) => a.id - b.id);
 
@@ -36,12 +39,11 @@ const BackgroundContent = props => {
 			{layers &&
 				layers.length > 0 &&
 				layers.map(layer => {
-					const { type, id } = layer;
+					const { type, id, isHover = false } = layer;
 
 					switch (type) {
 						case 'color':
 						case 'gradient':
-						case 'image':
 							return (
 								<div
 									key={`maxi-background-displayer__${type}-${id}${
@@ -53,6 +55,63 @@ const BackgroundContent = props => {
 									)}
 								/>
 							);
+						case 'image': {
+							const parallaxStatus = getAttributeValue({
+								target: 'background-image-parallax-status',
+								props: layer,
+								prefix,
+							});
+
+							if (!parallaxStatus)
+								return (
+									<div
+										key={`maxi-background-displayer__${type}-${id}${
+											isHover ? '--hover' : ''
+										}`}
+										className={classnames(
+											'maxi-background-displayer__layer',
+											`maxi-background-displayer__${id}`
+										)}
+									/>
+								);
+
+							const mediaURL = getAttributeValue({
+								target: 'background-image-mediaURL',
+								props: layer,
+								prefix,
+							});
+							const mediaID = getAttributeValue({
+								target: 'background-image-mediaID',
+								props: layer,
+								prefix,
+							});
+							const alt = getAttributeValue({
+								target: 'background-image-parallax-alt',
+								props: layer,
+								prefix,
+							});
+
+							if (!mediaURL) return null;
+
+							return (
+								<div
+									key={`maxi-background-displayer__${type}-${id}${
+										isHover ? '--hover' : ''
+									}`}
+									className={classnames(
+										'maxi-background-displayer__layer',
+										'maxi-background-displayer__parallax',
+										`maxi-background-displayer__${id}`
+									)}
+								>
+									<img
+										className={`wp-image-${mediaID}`}
+										src={mediaURL}
+										alt={alt}
+									/>
+								</div>
+							);
+						}
 						case 'video':
 							return (
 								<VideoLayer
@@ -93,7 +152,9 @@ const BackgroundContent = props => {
 const BackgroundDisplayer = props => {
 	const { className, isSave = false } = props;
 
-	const haveLayers = !isEmpty(props['background-layers']);
+	const haveLayers =
+		!isEmpty(props['background-layers']) ||
+		!isEmpty(props['background-layers-hover']);
 
 	if (!haveLayers) return null;
 
@@ -105,15 +166,8 @@ const BackgroundDisplayer = props => {
 	return (
 		<div ref={wrapperRef} className={classes}>
 			<BackgroundContent
-				key='maxi-background-displayer__content'
 				wrapperRef={wrapperRef}
 				isHover={false}
-				{...props}
-			/>
-			<BackgroundContent
-				key='maxi-background-displayer__content--hover'
-				wrapperRef={wrapperRef}
-				isHover
 				{...props}
 			/>
 		</div>

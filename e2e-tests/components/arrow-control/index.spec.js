@@ -40,7 +40,7 @@ describe('ArrowControl', () => {
 
 		for (let i = 0; i < values.length; i++) {
 			await page.$$eval(
-				'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option label',
+				'.maxi-arrow-control .maxi-button-group-control button',
 				(buttons, i) => buttons[i].click(),
 				i
 			);
@@ -82,37 +82,37 @@ describe('ArrowControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option label',
+			'.maxi-arrow-control .maxi-button-group-control button',
 			openArrowControl => openArrowControl[0].click()
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-radio-control input',
+			'.maxi-arrow-control .maxi-button-group-control button',
 			select => select[3].click()
 		);
 
 		const isItemChecked = await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-radio-control input',
-			select => select[3].checked
+			'.maxi-arrow-control .maxi-button-group-control button',
+			select => select[3].ariaPressed
 		);
 
-		expect(isItemChecked).toBeTruthy();
+		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-radio-control input',
+			'.maxi-arrow-control .maxi-button-group-control button',
 			select => select[2].click()
 		);
 
 		await page.waitForTimeout(100);
 		const responsiveSOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[2].checked
+			'.maxi-arrow-control .maxi-button-group-control button',
+			select => select[2].ariaPressed
 		);
 
-		expect(responsiveSOption).toBeTruthy();
+		expect(responsiveSOption).toBe('true');
 		const expectAttributes = await getBlockAttributes();
 		const position = expectAttributes['arrow-side-s'];
 
@@ -121,31 +121,31 @@ describe('ArrowControl', () => {
 		// responsive XS
 		await changeResponsive(page, 'xs');
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-radio-control input',
+			'.maxi-arrow-control .maxi-button-group-control button',
 			select => select[3].click()
 		);
 		await page.waitForTimeout(100);
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[3].checked
+			'.maxi-arrow-control .maxi-button-group-control button',
+			select => select[3].ariaPressed
 		);
 
-		expect(responsiveXsOption).toBeTruthy();
+		expect(responsiveXsOption).toBe('true');
 
 		// responsive M
 		await changeResponsive(page, 'm');
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-radio-control input',
+			'.maxi-arrow-control .maxi-button-group-control button',
 			select => select[2].click()
 		);
 		await page.waitForTimeout(100);
 		const responsiveMOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option input',
-			select => select[2].checked
+			'.maxi-arrow-control .maxi-button-group-control button',
+			select => select[2].ariaPressed
 		);
 
-		expect(responsiveMOption).toBeTruthy();
+		expect(responsiveMOption).toBe('true');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -11,7 +11,7 @@ import Button from '../../../button';
 import openSidebar from '../../../../extensions/dom';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
-import RadioControl from '../../../radio-control';
+import ButtonGroupControl from '../../../button-group-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -92,7 +92,7 @@ const ImageSize = props => {
 					onChange={imageSize => onChangeImageSize(imageSize)}
 				/>
 				{isFirstOnHierarchy && (
-					<RadioControl
+					<ButtonGroupControl
 						label={__('Full Width', 'maxi-blocks')}
 						selected={fullWidth}
 						options={[

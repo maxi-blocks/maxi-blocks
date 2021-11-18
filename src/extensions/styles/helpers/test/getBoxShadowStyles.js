@@ -73,7 +73,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-blur-general': 3,
 			'box-shadow-spread-general': 4,
 			'box-shadow-palette-color-l': 2,
-			'box-shadow-palette-opacity-l': 20,
+			'box-shadow-palette-opacity-l': 0.2,
 		};
 
 		const result = getBoxShadowStyles({

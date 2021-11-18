@@ -149,6 +149,7 @@ const VideoLayer = props => {
 	const { onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
+	const isLayerHover = videoOptions.isHover;
 
 	const [validationText, setValidationText] = useState(null);
 
@@ -157,134 +158,137 @@ const VideoLayer = props => {
 
 	return (
 		<div className='maxi-background-control__video'>
-			<TextControl
-				label='URL'
-				type='url'
-				// help={__('Add Video', 'maxi-blocks')}
-				value={getAttributeValue({
-					target: 'background-video-mediaURL',
-					props: videoOptions,
-					prefix,
-				})}
-				placeholder='Youtube, Vimeo, or Direct Link'
-				onChange={val => {
-					if (val && !videoUrlRegex.test(val)) {
-						setValidationText(
-							__('Invalid video URL', 'maxi-blocks')
-						);
-					} else {
-						setValidationText(null);
-					}
+			{(!isHover || (isHover && isLayerHover)) && (
+				<>
+					<TextControl
+						label='URL'
+						type='url'
+						value={getAttributeValue({
+							target: 'background-video-mediaURL',
+							props: videoOptions,
+							prefix,
+						})}
+						placeholder='Youtube, Vimeo, or Direct Link'
+						onChange={val => {
+							if (val && !videoUrlRegex.test(val)) {
+								setValidationText(
+									__('Invalid video URL', 'maxi-blocks')
+								);
+							} else {
+								setValidationText(null);
+							}
 
-					onChange({
-						[getAttributeKey(
-							'background-video-mediaURL',
-							isHover,
-							prefix
-						)]: val,
-					});
-				}}
-				validationText={validationText}
-			/>
-			<AdvancedNumberControl
-				label={__('Start Time (s)', 'maxi-blocks')}
-				value={getAttributeValue({
-					target: 'background-video-startTime',
-					props: videoOptions,
-					prefix,
-				})}
-				onChangeValue={val => {
-					onChange({
-						[getAttributeKey(
-							'background-video-startTime',
-							isHover,
-							prefix
-						)]: val !== undefined && val !== '' ? val : '',
-					});
-				}}
-				min={0}
-				max={999}
-				onReset={() =>
-					onChange({
-						[getAttributeKey(
-							'background-video-startTime',
-							isHover,
-							prefix
-						)]: '',
-					})
-				}
-			/>
-			<AdvancedNumberControl
-				label={__('End Time (s)', 'maxi-blocks')}
-				value={getAttributeValue({
-					target: 'background-video-endTime',
-					props: videoOptions,
-					prefix,
-				})}
-				onChangeValue={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-endTime',
-							isHover,
-							prefix
-						)]: val !== undefined && val !== '' ? val : '',
-					})
-				}
-				min={0}
-				max={999}
-				onReset={() =>
-					onChange({
-						[getAttributeKey(
-							'background-video-endTime',
-							isHover,
-							prefix
-						)]: '',
-					})
-				}
-			/>
-			<ToggleSwitch
-				className='video-loop'
-				label={__('Loop', 'maxi-blocks')}
-				selected={getAttributeValue({
-					target: 'background-video-loop',
-					props: videoOptions,
-					prefix,
-				})}
-				disabled={
-					+getAttributeValue({
-						target: 'background-video-endTime',
-						props: videoOptions,
-						prefix,
-					}) === 0
-				}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-loop',
-							isHover,
-							prefix
-						)]: val,
-					})
-				}
-			/>
-			<ToggleSwitch
-				className='video-reduce-border'
-				label={__('Reduce black borders', 'maxi-blocks')}
-				selected={getAttributeValue({
-					target: 'background-video-reduce-border',
-					props: videoOptions,
-					prefix,
-				})}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-reduce-border',
-							isHover,
-							prefix
-						)]: val,
-					})
-				}
-			/>
+							onChange({
+								[getAttributeKey(
+									'background-video-mediaURL',
+									false,
+									prefix
+								)]: val,
+							});
+						}}
+						validationText={validationText}
+					/>
+					<AdvancedNumberControl
+						label={__('Start Time (s)', 'maxi-blocks')}
+						value={getAttributeValue({
+							target: 'background-video-startTime',
+							props: videoOptions,
+							prefix,
+						})}
+						onChangeValue={val => {
+							onChange({
+								[getAttributeKey(
+									'background-video-startTime',
+									false,
+									prefix
+								)]: val !== undefined && val !== '' ? val : '',
+							});
+						}}
+						min={0}
+						max={999}
+						onReset={() =>
+							onChange({
+								[getAttributeKey(
+									'background-video-startTime',
+									false,
+									prefix
+								)]: '',
+							})
+						}
+					/>
+					<AdvancedNumberControl
+						label={__('End Time (s)', 'maxi-blocks')}
+						value={getAttributeValue({
+							target: 'background-video-endTime',
+							props: videoOptions,
+							prefix,
+						})}
+						onChangeValue={val =>
+							onChange({
+								[getAttributeKey(
+									'background-video-endTime',
+									false,
+									prefix
+								)]: val !== undefined && val !== '' ? val : '',
+							})
+						}
+						min={0}
+						max={999}
+						onReset={() =>
+							onChange({
+								[getAttributeKey(
+									'background-video-endTime',
+									false,
+									prefix
+								)]: '',
+							})
+						}
+					/>
+					<ToggleSwitch
+						className='video-loop'
+						label={__('Loop', 'maxi-blocks')}
+						selected={getAttributeValue({
+							target: 'background-video-loop',
+							props: videoOptions,
+							prefix,
+						})}
+						disabled={
+							+getAttributeValue({
+								target: 'background-video-endTime',
+								props: videoOptions,
+								prefix,
+							}) === 0
+						}
+						onChange={val =>
+							onChange({
+								[getAttributeKey(
+									'background-video-loop',
+									false,
+									prefix
+								)]: val,
+							})
+						}
+					/>
+					<ToggleSwitch
+						className='video-reduce-border'
+						label={__('Reduce black borders', 'maxi-blocks')}
+						selected={getAttributeValue({
+							target: 'background-video-reduce-border',
+							props: videoOptions,
+							prefix,
+						})}
+						onChange={val =>
+							onChange({
+								[getAttributeKey(
+									'background-video-reduce-border',
+									false,
+									prefix
+								)]: val,
+							})
+						}
+					/>
+				</>
+			)}
 			<ResponsiveTabsControl breakpoint={breakpoint}>
 				<VideoLayerContent
 					videoOptions={videoOptions}

@@ -26,6 +26,7 @@ import { isEmpty } from 'lodash';
 /**
  * Styles
  */
+import './style.scss';
 import './editor.scss';
 
 const WRAPPER_BLOCKS = [
@@ -51,6 +52,7 @@ const MainBlock = forwardRef(
 			disableBackground,
 			uniqueID,
 			isSave,
+			anchorLink,
 			...props
 		},
 		ref
@@ -58,6 +60,9 @@ const MainBlock = forwardRef(
 		if (isSave)
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
+					{!isEmpty(anchorLink) && (
+						<span id={anchorLink} className='maxi-block-anchor' />
+					)}
 					{disableBackground && (
 						<BackgroundDisplayer isSave {...background} />
 					)}
@@ -67,6 +72,7 @@ const MainBlock = forwardRef(
 
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
+				{!isEmpty(anchorLink) && <span id={anchorLink} />}
 				{disableBackground && <BackgroundDisplayer {...background} />}
 				{children}
 			</TagName>
@@ -82,6 +88,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		children,
 		blockStyle,
 		extraClassName,
+		anchorLink,
 		uniqueID,
 		className,
 		displayValue,
@@ -189,6 +196,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		id: uniqueID,
 		key: `maxi-block-${uniqueID}`,
 		uniqueID,
+		anchorLink,
 		background,
 		disableBackground: !disableBackground,
 		isSave,
@@ -236,6 +244,7 @@ export const getMaxiBlockBlockAttributes = props => {
 	const {
 		blockStyle,
 		extraClassName,
+		anchorLink,
 		uniqueID,
 		blockFullWidth,
 		linkSettings,
@@ -268,6 +277,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		blockName: name,
 		blockStyle,
 		extraClassName,
+		anchorLink,
 		uniqueID,
 		blockFullWidth,
 		displayValue,

@@ -65,7 +65,7 @@ const TextShadow = props => {
 		isEmpty(color) || !isPaletteActive ? 8 : +color
 	);
 	const [currentPaletteOpacity, setCurrentPaletteOpacity] = useState(
-		!isNil(opacity) ? +opacity * 100 : 100
+		!isNil(opacity) ? +opacity : 1
 	);
 	const [currentColor, setCurrentColor] = useState(
 		!isPaletteActive ? color : undefined
@@ -78,7 +78,7 @@ const TextShadow = props => {
 			setIsPaletteActive(color.toString().length === 1);
 			setCurrentPaletteColor(isPaletteActive ? color : undefined);
 		}
-		setCurrentPaletteOpacity(!isNil(opacity) ? +opacity * 100 : 100);
+		setCurrentPaletteOpacity(!isNil(opacity) ? +opacity : 1);
 		setCurrentColor(!isPaletteActive ? color : undefined);
 	}, [value]);
 
@@ -95,7 +95,7 @@ const TextShadow = props => {
 					opacity: paletteOpacity || currentPaletteOpacity,
 			  })
 			: `rgba(${color ?? currentColor},${
-					(paletteOpacity || currentPaletteOpacity) / 100
+					paletteOpacity || currentPaletteOpacity
 			  })`;
 
 	const getDefaultValue = ({ data, color }) =>
@@ -169,31 +169,31 @@ const TextShadow = props => {
 		{
 			light: {
 				data: '2px 4px 3px',
-				color: { paletteOpacity: 30 },
+				color: { paletteOpacity: 0.3 },
 			},
 			dark: {
 				data: '2px 2px 2px',
-				color: { paletteOpacity: 30 },
+				color: { paletteOpacity: 0.3 },
 			},
 		},
 		{
 			light: {
 				data: '2px 4px 3px',
-				color: { paletteOpacity: 50 },
+				color: { paletteOpacity: 0.5 },
 			},
 			dark: {
 				data: '2px 4px 3px',
-				color: { paletteOpacity: 50 },
+				color: { paletteOpacity: 0.5 },
 			},
 		},
 		{
 			light: {
 				data: '4px 4px 0px',
-				color: { paletteOpacity: 21 },
+				color: { paletteOpacity: 0.21 },
 			},
 			dark: {
 				data: '2px 2px 0px',
-				color: { paletteOpacity: 77 },
+				color: { paletteOpacity: 0.77 },
 			},
 		},
 	];
@@ -253,7 +253,7 @@ const TextShadow = props => {
 			{value !== 'none' && !isEmpty(value) && (
 				<>
 					<ColorControl
-						label={__('Text Shadow', 'maxi-blocks')}
+						label={__('Text shadow', 'maxi-blocks')}
 						paletteStatus={isPaletteActive}
 						paletteColor={currentPaletteColor}
 						paletteOpacity={currentPaletteOpacity}
@@ -321,7 +321,7 @@ const TextShadowControl = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				label={__('Text Shadow', 'maxi-blocks')}
+				label={__('Add text shadow', 'maxi-blocks')}
 				selected={showOptions}
 				onChange={val => {
 					changeShowOptions(val);

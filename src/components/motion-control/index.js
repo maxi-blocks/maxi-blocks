@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import RadioControl from '../radio-control';
+// import RadioControl from '../radio-control';
 import Icon from '../icon';
 import MotionUniqueControl from './motion-unique-control';
 import {
@@ -16,7 +16,7 @@ import {
 } from '../../extensions/styles';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import RangeSliderControl from '../range-slider-control';
+// import RangeSliderControl from '../range-slider-control';
 import ToggleSwitch from '../toggle-switch';
 import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
 
@@ -115,7 +115,7 @@ const MotionControl = props => {
 					}
 				}}
 			/>
-			<RadioControl
+			{/* <RadioControl
 				fullWidthMode
 				selected={motionStatus}
 				options={motionOptions}
@@ -123,15 +123,16 @@ const MotionControl = props => {
 					onChange({ [`motion-active-${breakpoint}`]: val });
 					setMotionStatus(val);
 				}}
-			/>
+			/> */}
 			{motionTypes.map(type => {
 				const typeCapitalize =
 					type.charAt(0).toUpperCase() + type.slice(1);
 
 				return (
 					<div key={`maxi-motion-control-${type}-${breakpoint}`}>
-						{motionStatus === type && (
-							<RadioControl
+						{motionStatus === type &&
+							{
+								/* <RadioControl
 								label={__(
 									`Enable ${typeCapitalize}`,
 									'maxi-blocks'
@@ -159,8 +160,8 @@ const MotionControl = props => {
 											!!+val,
 									})
 								}
-							/>
-						)}
+							/> */
+							}}
 						{props[`motion-active-${breakpoint}`] === type &&
 							props[`motion-status-${type}-${breakpoint}`] && (
 								<>
@@ -210,7 +211,7 @@ const MotionControl = props => {
 											`motion-speed-${type}-general`
 										)}
 									/>
-									<RangeSliderControl
+									{/* <RangeSliderControl
 										label={__('Viewport', 'maxi-blocks')}
 										type='viewport'
 										step={1}
@@ -243,7 +244,7 @@ const MotionControl = props => {
 													values[2],
 											})
 										}
-									/>
+									/> */}
 									{(type === 'vertical' ||
 										type === 'horizontal') && (
 										<MotionUniqueControl

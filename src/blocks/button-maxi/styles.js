@@ -264,11 +264,14 @@ const getHoverContentObject = props => {
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
-				...getGroupAttributes(props, 'typographyHover'),
+				...getGroupAttributes(props, 'typography', true),
 			},
 			isHover: true,
 			parentBlockStyle: props.parentBlockStyle,
 			textLevel: 'button',
+			normalTypography: {
+				...getGroupAttributes(props, 'typography'),
+			},
 		}),
 		transitionDuration: getTransitionStyles({
 			...getGroupAttributes(props, 'transitionDuration'),
@@ -288,7 +291,7 @@ const getIconSize = (obj, isHover = false) => {
 		response[breakpoint] = {};
 
 		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
-			response[breakpoint]['width'] = `${
+			response[breakpoint].width = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
 			}${getLastBreakpointAttribute(
 				'icon-width-unit',
@@ -296,7 +299,7 @@ const getIconSize = (obj, isHover = false) => {
 				obj,
 				isHover
 			)}`;
-			response[breakpoint]['height'] = `${
+			response[breakpoint].height = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
 			}${getLastBreakpointAttribute(
 				'icon-width-unit',
@@ -400,6 +403,8 @@ const getIconObject = (props, target) => {
 
 const getIconHoverObject = (props, target) => {
 	const iconHoverStatus = props['icon-status-hover'];
+	const iconHoverActiveMedia =
+		props['button-background-active-media-general-hover'];
 
 	const response = {
 		icon:
@@ -412,21 +417,24 @@ const getIconHoverObject = (props, target) => {
 				props['icon-inherit'],
 				true
 			),
-		background: {
-			...getColorBackgroundObject({
-				...getGroupAttributes(
-					props,
-					['icon', 'iconBackgroundColor'],
-					true
-				),
-				prefix: 'icon-',
-				blockStyle: props.parentBlockStyle,
-				isIconInherit: props['icon-inherit'],
-				isHover: true,
-				isIcon: true,
-			}),
-		},
+		background: iconHoverStatus &&
+			iconHoverActiveMedia === 'color' &&
+			target === 'iconHover' && {
+				...getColorBackgroundObject({
+					...getGroupAttributes(
+						props,
+						['icon', 'iconBackgroundColor'],
+						true
+					),
+					prefix: 'icon-',
+					blockStyle: props.parentBlockStyle,
+					isIconInherit: props['icon-inherit'],
+					isHover: true,
+					isIcon: true,
+				}),
+			},
 		gradient: iconHoverStatus &&
+			iconHoverActiveMedia === 'gradient' &&
 			target === 'iconHover' && {
 				...getGradientBackgroundObject({
 					...getGroupAttributes(

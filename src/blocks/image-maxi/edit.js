@@ -17,11 +17,11 @@ import motionData from '../../extensions/motions';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
 	Button,
 	HoverPreview,
-	MaxiBlockComponent,
 	Toolbar,
 	Placeholder,
 	RawHTML,
@@ -83,14 +83,12 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		const { 'motion-status': motionStatus } = this.props.attributes;
+		const { 'hover-type': hoverType } = this.props.attributes;
+		const hoverStatus = hoverType !== 'none';
 
 		return {
-			...(motionStatus && {
-				...getGroupAttributes(this.props.attributes, [
-					'motion',
-					'hover',
-				]),
+			...(hoverStatus && {
+				...getGroupAttributes(this.props.attributes, 'hover'),
 			}),
 		};
 	}
@@ -209,12 +207,6 @@ class edit extends MaxiBlockComponent {
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
-				{...(imageData && {
-					altOptions: {
-						wpAlt: imageData.alt_text,
-						titleAlt: imageData.title.rendered,
-					},
-				})}
 				{...this.props}
 				propsToAvoid={['captionContent', 'formatValue']}
 			/>,

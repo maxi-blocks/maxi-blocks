@@ -12,12 +12,12 @@ export const setBreakpointToLayer = ({
 	layer,
 	breakpoint,
 	isHover = false,
-	hoverStatus,
 }) => {
 	const response = {};
 
 	const sameLabelAttr = [
 		'type',
+		'isHover',
 		'background-video-mediaID',
 		'background-video-mediaURL',
 		'background-video-startTime',
@@ -27,6 +27,8 @@ export const setBreakpointToLayer = ({
 		'background-svg-SVGData',
 		'background-svg-SVGMediaID',
 		'background-svg-SVGMediaURL',
+		'background-image-mediaURL',
+		'background-image-mediaID',
 		'background-image-parallax-status',
 		'background-image-parallax-speed',
 		'background-image-parallax-direction',
@@ -53,18 +55,10 @@ export const setBreakpointToLayer = ({
 			}
 		} else response[key] = val;
 
-		if (key === 'display') {
-			if (isHover || breakpoint !== 'general')
-				response['display-general'] = 'none';
+		if (key === 'display' && (isHover || breakpoint !== 'general'))
+			response['display-general'] = 'none';
 
-			// In case hover status is enabled, makes the layers added
-			// on normal be hidden by default on hover
-			if (hoverStatus || breakpoint !== 'general')
-				response['display-general-hover'] = 'none';
-
-			if (!hoverStatus && breakpoint !== 'general')
-				response[`display-${breakpoint}-hover`] = 'block';
-		}
+		response.isHover = isHover;
 	});
 
 	return response;

@@ -6,12 +6,13 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
 import { openSidebarTab, getBlockStyle } from '../../utils';
 
-describe('Indicators', () => {
+describe.skip('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');

@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -48,12 +49,12 @@ describe('ShapeDividerControl', () => {
 
 		// divider style
 		await accordionPanel.$eval(
-			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector div',
+			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector button',
 			modal => modal.click()
 		);
 
 		await page.$$eval(
-			'.maxi-shapedividercontrol__shape-list label',
+			'.maxi-shapedividercontrol__shape-list button',
 			click => click[1].click()
 		);
 
@@ -80,7 +81,7 @@ describe('ShapeDividerControl', () => {
 
 		// color
 		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-color-palette-control .maxi-sc-color-palette button',
 			selectColor => selectColor[3].click()
 		);
 

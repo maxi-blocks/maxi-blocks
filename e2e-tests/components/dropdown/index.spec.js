@@ -24,12 +24,12 @@ describe('Dropdown', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector div',
+			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector button',
 			modal => modal.click()
 		);
 
 		await page.$$eval(
-			'.maxi-shapedividercontrol__shape-list label',
+			'.maxi-shapedividercontrol__shape-list button',
 			click => click[1].click()
 		);
 

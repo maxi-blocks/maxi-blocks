@@ -13,11 +13,11 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const zindex = ({
+const size = ({
 	props,
 	prefix = '',
 	block = false,
-	hideWith = false,
+	hideWidth = false,
 	hideMaxWidth = false,
 	isImage = false,
 }) => {
@@ -62,7 +62,7 @@ const zindex = ({
 					prefix={prefix}
 					onChange={obj => setAttributes(obj)}
 					breakpoint={deviceType}
-					hideWith={hideWith}
+					hideWidth={hideWidth}
 					hideMaxWidth={hideMaxWidth}
 				/>
 			</>
@@ -70,4 +70,4 @@ const zindex = ({
 	};
 };
 
-export default zindex;
+export default size;

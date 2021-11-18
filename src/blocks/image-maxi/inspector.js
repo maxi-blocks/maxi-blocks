@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { RangeControl, TextControl } from '@wordpress/components';
+import { RangeControl } from '@wordpress/components';
 import { memo } from '@wordpress/element';
 
 /**
@@ -13,6 +13,7 @@ import {
 	AccordionControl,
 	ClipPath,
 	HoverEffectControl,
+	ImageAltControl,
 	ImageCropControl,
 	ImageShape,
 	SelectControl,
@@ -205,14 +206,8 @@ const dimensionTab = props => {
  */
 const Inspector = memo(
 	props => {
-		const {
-			altOptions,
-			attributes,
-			clientId,
-			deviceType,
-			imageData,
-			setAttributes,
-		} = props;
+		const { attributes, clientId, deviceType, imageData, setAttributes } =
+			props;
 		const {
 			altSelector,
 			blockStyle,
@@ -222,34 +217,8 @@ const Inspector = memo(
 			parentBlockStyle,
 			SVGElement,
 			uniqueID,
+			mediaID,
 		} = attributes;
-		const { wpAlt, titleAlt } = altOptions || {};
-
-		const getImageAltOptions = () => {
-			const response = [
-				{
-					label: __('WordPress Alt', 'maxi-blocks'),
-					value: 'wordpress',
-				},
-				{
-					label: __('Custom', 'maxi-blocks'),
-					value: 'custom',
-				},
-				{
-					label: __('None', 'maxi-blocks'),
-					value: 'none',
-				},
-			];
-
-			if (titleAlt)
-				response.unshift({
-					label: __('Image Title', 'maxi-blocks'),
-					value: 'title',
-				});
-
-			return response;
-		};
-
 		const getCaptionOptions = () => {
 			const response = [
 				{ label: 'None', value: 'none' },
@@ -297,57 +266,18 @@ const Inspector = memo(
 														'maxi-blocks'
 													),
 													content: (
-														<>
-															<SelectControl
-																className='maxi-image-inspector__alt-tag'
-																label={__(
-																	'Image Alt Tag',
-																	'maxi-blocks'
-																)}
-																value={
-																	altSelector
-																}
-																options={getImageAltOptions()}
-																onChange={altSelector =>
-																	setAttributes(
-																		{
-																			altSelector,
-																			...(altSelector ===
-																				'wordpress' && {
-																				mediaAlt:
-																					wpAlt,
-																			}),
-																			...(altSelector ===
-																				'title' && {
-																				mediaAlt:
-																					titleAlt,
-																			}),
-																		}
-																	)
-																}
-															/>
-															{altSelector ===
-																'custom' && (
-																<TextControl
-																	className='maxi-image-inspector__custom-tag'
-																	placeholder={__(
-																		'Add Your Alt Tag Here',
-																		'maxi-blocks'
-																	)}
-																	value={
-																		mediaAlt ||
-																		''
-																	}
-																	onChange={mediaAlt =>
-																		setAttributes(
-																			{
-																				mediaAlt,
-																			}
-																		)
-																	}
-																/>
-															)}
-														</>
+														<ImageAltControl
+															mediaID={mediaID}
+															altSelector={
+																altSelector
+															}
+															mediaAlt={mediaAlt}
+															onChange={obj => {
+																setAttributes(
+																	obj
+																);
+															}}
+														/>
 													),
 												},
 											{
@@ -503,7 +433,7 @@ const Inspector = memo(
 												props,
 												prefix: 'image-',
 												isImage: true,
-												hideWith: true,
+												hideWidth: true,
 											}),
 											...inspectorTabs.marginPadding({
 												props,
@@ -553,6 +483,11 @@ const Inspector = memo(
 										items={[
 											deviceType === 'general' && {
 												...inspectorTabs.customClasses({
+													props,
+												}),
+											},
+											deviceType === 'general' && {
+												...inspectorTabs.anchor({
 													props,
 												}),
 											},

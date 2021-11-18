@@ -10,10 +10,10 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
+import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
 	BlockPlaceholder,
 	BlockResizer,
-	MaxiBlockComponent,
 	Toolbar,
 	InnerBlocks,
 } from '../../components';

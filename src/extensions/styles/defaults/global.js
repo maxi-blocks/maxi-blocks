@@ -20,6 +20,10 @@ const global = {
 		type: 'string',
 		default: '',
 	},
+	anchorLink: {
+		type: 'string',
+		default: '',
+	},
 	isFirstOnHierarchy: {
 		type: 'boolean',
 	},

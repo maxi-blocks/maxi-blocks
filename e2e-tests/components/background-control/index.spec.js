@@ -1064,22 +1064,6 @@ describe('BackgroundControl', () => {
 
 		expect(mBackgroundShapeSize).toStrictEqual('22');
 	});
-
-	it('generate a layer from hover and test the hider', async () => {
-		await removeBackgroundLayers(page);
-
-		await addBackgroundLayer(page, 'color');
-
-		// hide layer
-		await page.$eval(
-			'.maxi-background-layer__title .maxi-background-layer__title__display',
-			button => button.click()
-		);
-
-		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
-	});
-
 	it('generate a layer from hover on responsive and test that layers cannot be deleted from hover', async () => {
 		await removeBackgroundLayers(page);
 		await changeResponsive(page, 'l');
@@ -1104,5 +1088,30 @@ describe('BackgroundControl', () => {
 		expect(deleteOption).toMatchSnapshot();
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+	it('generate a layer from hover and test the hider', async () => {
+		debugger;
+		// hover
+
+		await addBackgroundLayer(page, 'color', true);
+		await addBackgroundLayer(page, 'image', true);
+		await addBackgroundLayer(page, 'video', true);
+		await addBackgroundLayer(page, 'shape', true);
+
+		// hide layer
+		await page.$eval(
+			'.maxi-background-layer__title .maxi-background-layer__title__display',
+			button => button.click()
+		);
+
+		const hideLayer = await page.$$eval(
+			'.maxi-background-layer__title .maxi-background-layer__title__display',
+			backgroundLayerTitle => backgroundLayerTitle.innerHTML
+		);
+
+		expect(hideLayer).toMatchSnapshot();
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers-hover']).toMatchSnapshot();
 	});
 });

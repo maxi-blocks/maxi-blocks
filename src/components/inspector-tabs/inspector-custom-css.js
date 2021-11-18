@@ -217,6 +217,10 @@ const customCss = ({ props, breakpoint = 'general', blockName }) => {
 					<Button
 						aria-label={__('Validate', 'maxi-blocks')}
 						className='maxi-default-styles-control__button'
+						onClick={el => {
+							console.log(el);
+							console.log(el.target);
+						}}
 					>
 						{__('Validate', 'maxi-blocks')}
 					</Button>

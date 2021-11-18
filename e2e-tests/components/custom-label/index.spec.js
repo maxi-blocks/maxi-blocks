@@ -16,7 +16,7 @@ describe('CustomLabel', () => {
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',
-			'add css class'
+			'add css classes'
 		);
 
 		await accordionPanel.$eval(

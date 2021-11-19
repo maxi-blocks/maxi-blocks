@@ -112,7 +112,7 @@ describe.skip('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-color-palette-control .maxi-color-control__palette div',
 			select => select[3].click()
 		);
 		await page.waitForTimeout(1000);
@@ -137,7 +137,7 @@ describe.skip('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
+			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 
@@ -460,7 +460,7 @@ describe.skip('BackgroundControl', () => {
 			click => click[1].click()
 		);
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
+			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 
@@ -512,7 +512,7 @@ describe.skip('BackgroundControl', () => {
 			select => select[0].click()
 		);
 		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-color-palette-control .maxi-color-control__palette div',
 			select => select[3].click()
 		);
 		await page.waitForTimeout(1000);
@@ -528,7 +528,7 @@ describe.skip('BackgroundControl', () => {
 		expect(bgLayerPaletteColor).toStrictEqual(expectedColor);
 
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
+			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 
@@ -619,7 +619,7 @@ describe.skip('BackgroundControl', () => {
 			click => click[1].click()
 		);
 		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-color-palette-control .maxi-color-control__palette div',
 			select => select[3].click()
 		);
 		await page.waitForTimeout(1000);
@@ -637,7 +637,7 @@ describe.skip('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-sc-color-palette__custom .maxi-button-group-control__option label',
+			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
 			select => select.click()
 		);
 

@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { memo } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,12 +22,13 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import { selectorsButton, categoriesButton } from '../../extensions/custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -72,6 +72,18 @@ const Inspector = memo(
 				...newDefaultPresets[`preset${number}`],
 			});
 		};
+
+		const isCanvasBackgroundEnabled = !isEmpty(
+			attributes['background-layers']
+		);
+		const isIconEnabled = !isEmpty(attributes['icon-content']);
+
+		let categoriesCss = categoriesButton;
+
+		!isCanvasBackgroundEnabled &&
+			(categoriesCss = without(categoriesCss, 'canvas background'));
+
+		!isIconEnabled && (categoriesCss = without(categoriesCss, 'icon'));
 
 		return (
 			<InspectorControls>
@@ -639,6 +651,8 @@ const Inspector = memo(
 										...inspectorTabs.customCss({
 											props,
 											breakpoint: deviceType,
+											selectors: selectorsButton,
+											categories: categoriesCss,
 										}),
 										...inspectorTabs.motion({
 											props,

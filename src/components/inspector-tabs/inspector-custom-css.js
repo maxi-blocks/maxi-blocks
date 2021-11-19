@@ -47,8 +47,13 @@ const validateCSS = async code => {
 /**
  * Component
  */
-const customCss = ({ props, breakpoint = 'general' }) => {
-	const { attributes, setAttributes, blockName } = props;
+const customCss = ({
+	props,
+	breakpoint = 'general',
+	selectors,
+	categories,
+}) => {
+	const { attributes, setAttributes } = props;
 
 	const customCssValue = getLastBreakpointAttribute(
 		'custom-css',
@@ -56,102 +61,6 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 		attributes
 	);
 	const customCssCategory = attributes['custom-css-category'];
-
-	const isCanvasBackgroundEnabled = !isEmpty(attributes['background-layers']);
-	const isIconEnabled = !isEmpty(attributes['icon-content']);
-
-	let selectorsCanvas;
-	let selectorsButton;
-	let selectorsCanvasBefore;
-	let selectorsCanvasAfter;
-	let selectorsButtonBefore;
-	let selectorsButtonAfter;
-	let selectorsCanvasBackground;
-	let selectorsIcon;
-	let selectorsContent;
-	let selectorsTitle;
-	let selectorsAddress;
-	let selectorsMap;
-	let selectorsMapBefore;
-	let selectorsMapAfter;
-
-	// TODO: add all blocks
-	switch (blockName) {
-		case 'maxi-blocks/button-maxi':
-			selectorsCanvas = ['', ':hover'];
-			selectorsButton = [
-				'.maxi-button-block__button',
-				'.maxi-button-block__button:hover',
-			];
-			selectorsContent = [
-				'.maxi-button-block__content',
-				'.maxi-button-block__content:hover',
-			];
-			selectorsCanvasBackground = ['', ':hover'];
-			selectorsIcon = [
-				'.maxi-button-block__icon',
-				'.maxi-button-block__icon svg',
-				'.maxi-button-block__icon svg > *',
-				'.maxi-button-block__icon svg path',
-				'.maxi-button-block__icon:hover',
-				'.maxi-button-block__icon:hover svg',
-				'.maxi-button-block__icon:hover svg > *',
-				'.maxi-button-block__icon:hover svg path',
-			];
-			selectorsCanvasBefore = [':before', ':hover:before'];
-			selectorsCanvasAfter = [':after', ':hover:after'];
-			selectorsButtonBefore = [
-				'.maxi-button-block__button:before',
-				'.maxi-button-block__button:hover:before',
-			];
-			selectorsButtonAfter = [
-				'.maxi-button-block__button:after',
-				'.maxi-button-block__button:hover:after',
-			];
-			break;
-		case 'maxi-blocks/map-maxi':
-			selectorsMap = ['', ':hover'];
-			selectorsMapBefore = [':before', ':hover:before'];
-			selectorsMapAfter = [':after', ':hover:after'];
-			selectorsTitle = [
-				' .map-marker-info-window__title',
-				':hover .map-marker-info-window__title',
-			];
-			selectorsAddress = [
-				'  .map-marker-info-window__address',
-				':hover .map-marker-info-window__address',
-			];
-			break;
-		default:
-			break;
-	}
-
-	let customCssCategories = [];
-
-	// TODO: add other blocks here
-	switch (blockName) {
-		case 'maxi-blocks/button-maxi':
-			customCssCategories.push('canvas', 'before canvas', 'after canvas');
-			isCanvasBackgroundEnabled &&
-				customCssCategories.push('canvas background');
-
-			customCssCategories.push('button', 'before button', 'after button');
-			isIconEnabled && customCssCategories.push('icon');
-
-			break;
-		case 'maxi-blocks/map-maxi':
-			customCssCategories.push(
-				'map',
-				'before map',
-				'after map',
-				'title',
-				'address'
-			);
-			break;
-
-		default:
-			customCssCategories = ['canvas', 'before canvas', 'after canvas'];
-	}
 
 	const getOptions = () => {
 		const options = [
@@ -169,7 +78,7 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 			return true;
 		};
 
-		customCssCategories.forEach(category => {
+		categories?.forEach(category => {
 			const optionClass = !isEmptyObject(customCssValue?.[category])
 				? 'maxi-option__in-use'
 				: 'maxi-option__not-in-use';
@@ -187,10 +96,10 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 		const labelForCss = label.replaceAll(' ', '_');
 		const id = `maxi-additional__css-error-text__${labelForCss}`;
 
-		async function validateCss(textarea) {
+		async function validateCss(code) {
 			const messageDiv = document.getElementById(id);
-			if (!isEmpty(textarea.target.value)) {
-				const validMessage = await validateCSS(textarea.target.value);
+			if (!isEmpty(code)) {
+				const validMessage = await validateCSS(code);
 				if (typeof validMessage === 'string' && messageDiv) {
 					messageDiv.innerHTML = validMessage;
 					messageDiv.classList.remove('valid');
@@ -210,7 +119,10 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 		return (
 			<BaseControl
 				key={`${label}`}
-				label={`${__('Custom CSS for', 'maxi-blocks')} ${label}`}
+				label={`${__('Custom CSS for', 'maxi-blocks')} ${__(
+					label,
+					'maxi-blocks'
+				)}`}
 				className={`maxi-additional__css maxi-additional__css-${labelForCss}`}
 			>
 				{!isEmpty(customCssValue?.[category]?.[index]) && (
@@ -218,8 +130,11 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 						aria-label={__('Validate', 'maxi-blocks')}
 						className='maxi-default-styles-control__button'
 						onClick={el => {
-							console.log(el);
-							console.log(el.target);
+							validateCss(
+								el?.target?.nextSibling?.getElementsByTagName(
+									'textarea'
+								)?.[0]?.value
+							);
 						}}
 					>
 						{__('Validate', 'maxi-blocks')}
@@ -235,13 +150,13 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 						if (isEmpty(newCustomCss[category]))
 							newCustomCss[category] = {};
 
-						newCustomCss[category][index] = textarea.target.value;
+						newCustomCss[category][index] = textarea?.target?.value;
 						setAttributes({
 							[`custom-css-${breakpoint}`]: newCustomCss,
 						});
 					}}
 					onBlur={textarea => {
-						validateCss(textarea);
+						validateCss(textarea?.target?.value);
 					}}
 				/>
 				<div className='maxi-additional__css-error' id={id} />
@@ -270,167 +185,18 @@ const customCss = ({ props, breakpoint = 'general' }) => {
 								});
 							}}
 						/>
-
-						{customCssCategory === 'canvas' &&
-							selectorsCanvas.map((element, index) => {
-								let label = element;
-								if (isEmpty(element)) label = ' canvas';
-								if (element === ':hover')
-									label = ' canvas on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'before canvas' &&
-							selectorsCanvasBefore.map((element, index) => {
-								let label = ' canvas :before';
-								if (element.includes(':hover'))
-									label = ' canvas :before on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'after canvas' &&
-							selectorsCanvasAfter.map((element, index) => {
-								let label = ' canvas :after';
-								if (element.includes(':hover'))
-									label = ' canvas :after on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'canvas background' &&
-							selectorsCanvasBackground.map((element, index) => {
-								let label = ' canvas background';
-								if (element.includes(':hover'))
-									label = ' canvas background on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'button' &&
-							selectorsButton.map((element, index) => {
-								let label = ' button';
-								if (element.includes(':hover'))
-									label = ' button on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'before button' &&
-							selectorsButtonBefore.map((element, index) => {
-								let label = ' button :before';
-								if (element.includes(':hover'))
-									label = ' button :before on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'after button' &&
-							selectorsButtonAfter.map((element, index) => {
-								let label = ' button :after';
-								if (element.includes(':hover'))
-									label = ' button :after on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'text' &&
-							selectorsContent.map((element, index) => {
-								let label = ' button text';
-								if (element.includes(':hover'))
-									label = ' button text on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'icon' &&
-							selectorsIcon.map((element, index) => {
-								let label = ' icon';
-								if (element.includes('icon:hover'))
-									label = ' icon on hover';
-								if (element.includes('svg'))
-									label = element.replace(
-										'.maxi-button-block__icon',
-										' '
+						{!isEmpty(selectors?.[customCssCategory]) &&
+							Object.entries(selectors?.[customCssCategory])?.map(
+								element => {
+									const label = element?.[1]?.label;
+									const index = element?.[0];
+									return generateComponent(
+										label,
+										index,
+										customCssCategory
 									);
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'map' &&
-							selectorsMap.map((element, index) => {
-								let label = ' map';
-								if (element.includes(':hover'))
-									label = ' map on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'before map' &&
-							selectorsMapBefore.map((element, index) => {
-								let label = ' map :before';
-								if (element.includes(':hover'))
-									label = ' map :before on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'after map' &&
-							selectorsMapAfter.map((element, index) => {
-								let label = ' map :after';
-								if (element.includes(':hover'))
-									label = ' map :after on hover';
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'title' &&
-							selectorsTitle.map((element, index) => {
-								let label = ` ${customCssCategory}`;
-								if (element.includes(':hover'))
-									label = ` ${customCssCategory} on hover`;
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
-						{customCssCategory === 'address' &&
-							selectorsAddress.map((element, index) => {
-								let label = ` ${customCssCategory}`;
-								if (element.includes(':hover'))
-									label = ` ${customCssCategory} on hover`;
-								return generateComponent(
-									label,
-									index,
-									customCssCategory
-								);
-							})}
+								}
+							)}
 					</>
 				</ResponsiveTabsControl>
 			</>

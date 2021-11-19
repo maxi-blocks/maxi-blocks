@@ -551,11 +551,11 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getWrapperObject(props),
-			':before': getCustomStyles(props, 'before canvas', 0),
-			':after': getCustomStyles(props, 'after canvas', 0),
+			':before': getCustomStyles(props, 'before canvas', 'normal'),
+			':after': getCustomStyles(props, 'after canvas', 'normal'),
 			':hover': getHoverWrapperObject(props),
-			':hover:before': getCustomStyles(props, 'before canvas', 1),
-			':hover:after': getCustomStyles(props, 'after canvas', 1),
+			':hover:before': getCustomStyles(props, 'before canvas', 'hover'),
+			':hover:after': getCustomStyles(props, 'after canvas', 'hover'),
 			' .maxi-button-block__button': getNormalObject(props),
 			' .maxi-button-block__button:before': getCustomStyles(
 				props,
@@ -619,9 +619,6 @@ const getStyles = props => {
 				],
 		}),
 	};
-
-	const allSelectors = Object?.keys(Object?.values(response)[0]);
-	if (!isEmpty(allSelectors)) props.customCssSelectors = allSelectors;
 
 	return response;
 };

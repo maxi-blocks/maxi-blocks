@@ -14,7 +14,7 @@ $color_set: '1', '2', '3', '4', '5', '6', '7', '8';
 */
 
 /* Frontend */
-body.maxi-blocks--active {
+body.maxi-blocks--active .edit-post-visual-editor {
 	@each $style in $styles {
 		/* Color Presets */
 		.maxi-#{$style} {
@@ -178,24 +178,31 @@ body.maxi-blocks--active {
 					);
 					background-color: rgba(
 						var(
-							--maxi-#{$style}-hover,
+							--maxi-#{$style}-button-background-hover-color-palette,
 							var(
-								--maxi-#{$style}-button-background-hover-color-palette,
+								--maxi-#{$style}-button-background-color,
 								var(
-									--maxi-#{$style}-button-background-color,
-									var(
-										--maxi-#{$style}-button-background-color-palette
-									)
+									--maxi-#{$style}-button-background-color-palette
 								)
 							)
 						),
 						1
 					);
-					border-color: rgba(
+					background-color: rgba(
 						var(
-							--maxi-#{$style}-hover,
-							var(--maxi-#{$style}-button-border-color-palette)
+							--maxi-#{$style}-button-background-color,
+							var(
+								--maxi-#{$style}-button-background-color-palette
+							)
 						),
+						1
+					);
+					background-color: rgba(
+						var(--maxi-#{$style}-button-background-color-palette),
+						1
+					);
+					border-color: rgba(
+						var(--maxi-#{$style}-button-border-color-palette),
 						1
 					);
 				}
@@ -212,9 +219,9 @@ body.maxi-blocks--active {
 		/* Palette */
 		div#editor .maxi-color-palette--#{$style} {
 			@each $color_number in $color_set {
-				.maxi-sc-color-palette
-					.maxi-sc-color-palette__box
-					.maxi-sc-color-palette__box__item__#{$color_number} {
+				.maxi-color-control__palette
+					.maxi-color-control__palette-box
+					.maxi-color-control__palette-item__#{$color_number} {
 					background-color: rgba(
 						var(--maxi-#{$style}-color-#{$color_number}),
 						1

@@ -10,6 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	DividerControl,
+	SelectControl,
 	ButtonGroupControl,
 	SettingTabsControl,
 } from '../../components';
@@ -42,13 +43,16 @@ const Inspector = props => {
 									isSecondary
 									items={[
 										deviceType === 'general' && {
-											label: __('Line', 'maxi-blocks'),
+											label: __(
+												'Alignment',
+												'maxi-blocks'
+											),
 											content: (
 												<>
-													<ButtonGroupControl
+													<SelectControl
 														fullWidthMode
 														label={__(
-															'Line Orientation',
+															'Line orientation',
 															'maxi-blocks'
 														)}
 														selected={
@@ -76,10 +80,10 @@ const Inspector = props => {
 															})
 														}
 													/>
-													<ButtonGroupControl
+													<SelectControl
 														fullWidthMode
 														label={__(
-															'Line Vertical Position',
+															'Line vertical position',
 															'maxi-blocks'
 														)}
 														selected={lineVertical}
@@ -112,10 +116,10 @@ const Inspector = props => {
 															})
 														}
 													/>
-													<ButtonGroupControl
+													<SelectControl
 														fullWidthMode
 														label={__(
-															'Line Horizontal Position',
+															'Line horizontal position',
 															'maxi-blocks'
 														)}
 														selected={
@@ -150,6 +154,16 @@ const Inspector = props => {
 															})
 														}
 													/>
+												</>
+											),
+										},
+										deviceType === 'general' && {
+											label: __(
+												'Line settings',
+												'maxi-blocks'
+											),
+											content: (
+												<>
 													<DividerControl
 														{...getGroupAttributes(
 															attributes,

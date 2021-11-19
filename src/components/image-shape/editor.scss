@@ -1,0 +1,9 @@
+.maxi-accordion-control {
+	&__item {
+		&[data-name='shape mask'] {
+			.maxi-library-modal__action-section {
+				margin-bottom: 8px;
+			}
+		}
+	}
+}

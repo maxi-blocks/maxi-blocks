@@ -5,16 +5,16 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getGroupAttributes from '../getGroupAttributes';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, cloneDeep } from 'lodash';
+
+/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-/**
- * Generates custom css object
- *
- * @param {Object} obj Block custom css properties
- */
-export const getCustomCss = (obj, category, index) => {
+const getCustomCss = (obj, category, index) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -35,7 +35,7 @@ export const getCustomCss = (obj, category, index) => {
 	return response;
 };
 
-export const getCustomStyles = (props, type, index) => {
+const getCustomStyles = (props, type, index) => {
 	const response = {
 		customCss: getCustomCss(
 			{
@@ -48,3 +48,22 @@ export const getCustomStyles = (props, type, index) => {
 
 	return response;
 };
+
+const getCustomCssObject = (selectors, props) => {
+	const response = {};
+
+	Object.entries(selectors)?.forEach(element => {
+		const category = element?.[0];
+		const targets = element?.[1];
+		Object.entries(targets)?.forEach(element => {
+			const index = element?.[0];
+			const target = element?.[1]?.target;
+			const css = getCustomStyles(props, category, index);
+			if (!isEmpty(css?.customCss)) response[target] = cloneDeep(css);
+		});
+	});
+
+	return response;
+};
+
+export default getCustomCssObject;

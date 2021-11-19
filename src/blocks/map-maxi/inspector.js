@@ -94,10 +94,6 @@ const Inspector = props => {
 											props,
 										}),
 									},
-									...inspectorTabs.customCss({
-										props,
-										breakpoint: deviceType,
-									}),
 									...inspectorTabs.transform({
 										props,
 									}),

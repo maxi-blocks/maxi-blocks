@@ -14,8 +14,7 @@ import {
 	getBorderStyles,
 	getBoxShadowStyles,
 	getColorBackgroundObject,
-	getCustomCss,
-	getCustomStyles,
+	getCustomCssObject,
 	getDisplayStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
@@ -29,11 +28,12 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsButton } from '../../extensions/custom-css';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, merge } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -93,13 +93,6 @@ const getWrapperObject = props => {
 				blockStyle: props.parentBlockStyle,
 			}),
 		},
-		customCss: getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			'canvas',
-			0
-		),
 	};
 
 	return response;
@@ -137,13 +130,6 @@ const getHoverWrapperObject = props => {
 				isHover: true,
 			}),
 		},
-		customCss: getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			'canvas',
-			1
-		),
 	};
 
 	return response;
@@ -226,13 +212,6 @@ const getNormalObject = props => {
 			},
 			prefix: 'button-',
 		}),
-		customCss: getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			'button',
-			0
-		),
 	};
 
 	return response;
@@ -278,13 +257,6 @@ const getHoverObject = props => {
 			isHover: true,
 			prefix: 'button-',
 		}),
-		customCss: getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			'button',
-			1
-		),
 	};
 
 	return response;
@@ -426,13 +398,6 @@ const getIconObject = (props, target) => {
 				prefix: 'icon-',
 				parentBlockStyle: props.parentBlockStyle,
 			}),
-		customCss: getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			'icon',
-			0
-		),
 	};
 
 	return response;
@@ -499,13 +464,6 @@ const getIconHoverObject = (props, target) => {
 				parentBlockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
-		customCss: getCustomCss(
-			{
-				...getGroupAttributes(props, 'customCss'),
-			},
-			'icon',
-			4
-		),
 	};
 
 	return response;
@@ -549,75 +507,45 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getWrapperObject(props),
-			':before': getCustomStyles(props, 'before canvas', 'normal'),
-			':after': getCustomStyles(props, 'after canvas', 'normal'),
-			':hover': getHoverWrapperObject(props),
-			':hover:before': getCustomStyles(props, 'before canvas', 'hover'),
-			':hover:after': getCustomStyles(props, 'after canvas', 'hover'),
-			' .maxi-button-block__button': getNormalObject(props),
-			' .maxi-button-block__button:before': getCustomStyles(
-				props,
-				'before button',
-				0
-			),
-			' .maxi-button-block__button:after': getCustomStyles(
-				props,
-				'after button',
-				0
-			),
-			' .maxi-button-block__icon': [
-				getIconObject(props, 'icon'),
-				getIconResponsive(props, 'icon'),
-			],
-			' .maxi-button-block__icon svg': [
-				getIconSize(props, false),
-				getCustomStyles(props, 'icon', 1),
-			],
-			' .maxi-button-block__icon svg > *': [
-				getIconObject(props, 'svg'),
-				getCustomStyles(props, 'icon', 2),
-			],
-			' .maxi-button-block__icon svg path': [
-				getIconPathStyles(props, false),
-				getCustomStyles(props, 'icon', 3),
-			],
-			' .maxi-button-block__content': getContentObject(props),
-			' .maxi-button-block__button:hover': getHoverObject(props),
-			' .maxi-button-block__button:hover:before': getCustomStyles(
-				props,
-				'before button',
-				1
-			),
-			' .maxi-button-block__button:hover:after': getCustomStyles(
-				props,
-				'after button',
-				1
-			),
-			' .maxi-button-block__button:hover .maxi-button-block__content':
-				getHoverContentObject(props),
+		[uniqueID]: stylesCleaner(
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getHoverWrapperObject(props),
+					' .maxi-button-block__button': getNormalObject(props),
+					' .maxi-button-block__icon': [
+						getIconObject(props, 'icon'),
+						getIconResponsive(props, 'icon'),
+					],
+					' .maxi-button-block__icon svg': getIconSize(props, false),
+					' .maxi-button-block__icon svg > *': getIconObject(
+						props,
+						'svg'
+					),
+					' .maxi-button-block__icon svg path': getIconPathStyles(
+						props,
+						false
+					),
+					' .maxi-button-block__content': getContentObject(props),
+					' .maxi-button-block__button:hover': getHoverObject(props),
+					' .maxi-button-block__button:hover .maxi-button-block__content':
+						getHoverContentObject(props),
 
-			' .maxi-button-block__button:hover .maxi-button-block__icon':
-				props['icon-status-hover'] &&
-				getIconHoverObject(props, 'iconHover'),
-			' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
-				[
-					props['icon-status-hover'] &&
+					' .maxi-button-block__button:hover .maxi-button-block__icon':
+						props['icon-status-hover'] &&
 						getIconHoverObject(props, 'iconHover'),
-					getCustomStyles(props, 'icon', 7),
-				],
-			' .maxi-button-block__button:hover .maxi-button-block__icon svg': [
-				props['icon-status-hover'] && getIconSize(props, true),
-				getCustomStyles(props, 'icon', 6),
-			],
-			' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
-				[
-					props['icon-status-hover'] &&
+					' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
+						props['icon-status-hover'] &&
+						getIconHoverObject(props, 'iconHover'),
+					' .maxi-button-block__button:hover .maxi-button-block__icon svg':
+						props['icon-status-hover'] && getIconSize(props, true),
+					' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
+						props['icon-status-hover'] &&
 						getIconPathStyles(props, true),
-					getCustomStyles(props, 'icon', 8),
-				],
-		}),
+				},
+				getCustomCssObject(selectorsButton, props)
+			)
+		),
 	};
 
 	return response;

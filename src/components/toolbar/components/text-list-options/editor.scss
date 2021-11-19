@@ -6,7 +6,7 @@
 		padding: 0 !important;
 		height: 1.25rem;
 
-		&[aria-pressed="true"] {
+		&[aria-pressed='true'] {
 			svg path {
 				stroke: #ff4a17;
 			}

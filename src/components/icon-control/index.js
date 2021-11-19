@@ -144,7 +144,7 @@ const IconControl = props => {
 									'Icon only (remove text)',
 									'maxi-blocks'
 								)}
-								className='maxi-sc-color-palette__custom'
+								className='maxi-color-control__palette__custom'
 								selected={props['icon-only']}
 								onChange={val =>
 									onChange({

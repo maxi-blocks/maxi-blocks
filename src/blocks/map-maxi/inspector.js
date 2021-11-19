@@ -25,11 +25,8 @@ import { isEmpty } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
+	const { attributes, deviceType, setAttributes } = props;
 	const { apiKey } = attributes;
-
-	const { getBlock } = select('core/block-editor');
-	const blockName = getBlock(clientId)?.name;
 
 	return (
 		<InspectorControls>
@@ -101,7 +98,6 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										blockName,
 									}),
 									...inspectorTabs.transform({
 										props,

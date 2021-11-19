@@ -56,9 +56,6 @@ const Inspector = memo(
 
 		const { parentBlockStyle } = attributes;
 
-		const { getBlock } = select('core/block-editor');
-		const blockName = getBlock(clientId)?.name;
-
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
 
@@ -642,7 +639,6 @@ const Inspector = memo(
 										...inspectorTabs.customCss({
 											props,
 											breakpoint: deviceType,
-											blockName,
 										}),
 										...inspectorTabs.motion({
 											props,

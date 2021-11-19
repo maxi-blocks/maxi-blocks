@@ -47,8 +47,8 @@ const validateCSS = async code => {
 /**
  * Component
  */
-const customCss = ({ props, breakpoint = 'general', blockName }) => {
-	const { attributes, setAttributes } = props;
+const customCss = ({ props, breakpoint = 'general' }) => {
+	const { attributes, setAttributes, blockName } = props;
 
 	const customCssValue = getLastBreakpointAttribute(
 		'custom-css',

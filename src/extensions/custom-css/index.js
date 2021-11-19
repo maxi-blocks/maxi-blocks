@@ -32,31 +32,31 @@ export const selectorsButton = {
 	button: {
 		normal: {
 			label: 'button',
-			target: '.maxi-button-block__button',
+			target: ' .maxi-button-block__button',
 		},
 		hover: {
 			label: 'button on hover',
-			target: '.maxi-button-block__button:hover',
+			target: ' .maxi-button-block__button:hover',
 		},
 	},
 	'before button': {
 		normal: {
 			label: 'button :before',
-			target: '.maxi-button-block__button:before',
+			target: ' .maxi-button-block__button:before',
 		},
 		hover: {
 			label: 'button :before on hover',
-			target: '.maxi-button-block__button:hover:before',
+			target: ' .maxi-button-block__button:hover:before',
 		},
 	},
 	'after button': {
 		normal: {
 			label: 'button :after',
-			target: '.maxi-button-block__button:after',
+			target: ' .maxi-button-block__button:after',
 		},
 		hover: {
 			label: 'button :after on hover',
-			target: '.maxi-button-block__button:hover:after',
+			target: ' .maxi-button-block__button:hover:after',
 		},
 	},
 	'canvas background': {
@@ -72,35 +72,35 @@ export const selectorsButton = {
 	icon: {
 		normal: {
 			label: 'icon',
-			target: '.maxi-button-block__icon',
+			target: ' .maxi-button-block__icon',
 		},
 		svg: {
 			label: "icon's svg",
-			target: '.maxi-button-block__icon svg',
+			target: ' .maxi-button-block__icon svg',
 		},
 		insideSvg: {
 			label: 'everything inside svg (svg > *)',
-			target: '.maxi-button-block__icon svg > *',
+			target: ' .maxi-button-block__icon svg > *',
 		},
 		path: {
 			label: "svg's path",
-			target: '.maxi-button-block__icon svg path',
+			target: ' .maxi-button-block__icon svg path',
 		},
 		hover: {
 			label: 'icon on hover',
-			target: '.maxi-button-block__icon:hover',
+			target: ' .maxi-button-block__icon:hover',
 		},
 		hoverSvg: {
 			label: "icon's svg on hover",
-			target: '.maxi-button-block__icon:hover svg',
+			target: ' .maxi-button-block__icon:hover svg',
 		},
 		hoverInsideSvg: {
 			label: 'everything inside svg on hover (:hover svg > *)',
-			target: '.maxi-button-block__icon:hover svg > *',
+			target: ' .maxi-button-block__icon:hover svg > *',
 		},
 		hoverPath: {
 			label: "svg's path on hover",
-			target: '.maxi-button-block__icon:hover svg path',
+			target: ' .maxi-button-block__icon:hover svg path',
 		},
 	},
 };

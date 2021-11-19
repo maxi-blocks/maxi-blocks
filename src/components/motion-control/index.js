@@ -97,7 +97,7 @@ const MotionControl = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				label={__('Preview', 'maxi-block')}
+				label={__('Enable live preview mode', 'maxi-block')}
 				selected={props['motion-preview-status']}
 				onChange={val => {
 					onChange({
@@ -133,7 +133,8 @@ const MotionControl = props => {
 						{motionStatus === type && (
 							<ButtonGroupControl
 								label={__(
-									`Enable ${typeCapitalize}`,
+									// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+									`Use ${typeCapitalize} scroll effect`,
 									'maxi-blocks'
 								)}
 								selected={getLastBreakpointAttribute(
@@ -163,7 +164,10 @@ const MotionControl = props => {
 							props[`motion-status-${type}-${breakpoint}`] && (
 								<>
 									<SelectControl
-										label={__('Easing', 'maxi-blocks')}
+										label={__(
+											'Easing function',
+											'maxi-blocks'
+										)}
 										value={getLastBreakpointAttribute(
 											`motion-easing-${type}`,
 											breakpoint,

@@ -10,7 +10,7 @@ import { useInstanceId } from '@wordpress/compose';
 import BaseControl from '../base-control';
 import Button from '../button';
 
-import { Range } from 'react-range';
+// import { Range } from 'react-range';
 
 /**
  * External dependencies
@@ -75,7 +75,7 @@ const RangeSliderControl = props => {
 					{reset}
 				</Button>
 			)}
-			<Range
+			{/* <Range
 				label={label}
 				step={step}
 				min={min}
@@ -112,7 +112,7 @@ const RangeSliderControl = props => {
 						/>
 					</div>
 				)}
-			/>
+			/> */}
 		</BaseControl>
 	);
 };

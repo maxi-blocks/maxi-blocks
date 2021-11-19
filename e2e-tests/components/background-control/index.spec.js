@@ -1090,7 +1090,6 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 	it('generate a layer from hover and test the hider', async () => {
-		debugger;
 		// hover
 
 		await addBackgroundLayer(page, 'color', true);

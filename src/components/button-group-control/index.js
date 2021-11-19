@@ -13,7 +13,6 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and Icons
@@ -27,6 +26,7 @@ const ButtonGroupControl = ({
 	label = '',
 	className,
 	selected,
+	help,
 	onChange,
 	options = [],
 	fullWidthMode = false,
@@ -41,26 +41,30 @@ const ButtonGroupControl = ({
 	);
 
 	return (
-		!isEmpty(options) && (
-			<BaseControl label={label} className={classes}>
-				{options.map(({ value, label }, index) => (
-					<Button
-						label={value}
-						tabIndex={0}
-						key={`${id}-${index}`}
-						aria-pressed={selected === value}
-						className={`maxi-button-group-control__option${
-							selected === value
-								? ' maxi-button-group-control__option--selected'
-								: ''
-						}`}
-						onClick={() => onChange(value)}
-					>
-						{label}
-					</Button>
-				))}
-			</BaseControl>
-		)
+		<BaseControl
+			label={label}
+			help={help}
+			className={classes}
+			aria-labelledby={label}
+			role='group'
+		>
+			{options.map(({ value, label, ...rest }, index) => (
+				<Button
+					label={value}
+					key={`${id}-${index}`}
+					aria-pressed={selected === value}
+					className={`maxi-button-group-control__option${
+						selected === value
+							? ' maxi-button-group-control__option--selected'
+							: ''
+					}`}
+					onClick={() => onChange(value)}
+					{...rest}
+				>
+					{label}
+				</Button>
+			))}
+		</BaseControl>
 	);
 };
 

@@ -149,7 +149,7 @@ describe('NumberCounterControl', () => {
 		);
 
 		const colors = await accordionPanel.$$(
-			'.maxi-color-palette-control .maxi-sc-color-palette'
+			'.maxi-color-palette-control .maxi-color-control__palette'
 		);
 
 		// Text colour

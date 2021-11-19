@@ -17,13 +17,15 @@ import { compact, isEmpty } from 'lodash';
 /**
  * Styles
  */
+import './editor.scss';
 import './style.scss';
+import { getAttributeValue } from '../../extensions/styles';
 
 /**
  * Component
  */
 const BackgroundContent = props => {
-	const { wrapperRef } = props;
+	const { wrapperRef, prefix = '' } = props;
 
 	const layers = compact([
 		...props['background-layers'],
@@ -42,7 +44,6 @@ const BackgroundContent = props => {
 					switch (type) {
 						case 'color':
 						case 'gradient':
-						case 'image':
 							return (
 								<div
 									key={`maxi-background-displayer__${type}-${id}${
@@ -54,6 +55,63 @@ const BackgroundContent = props => {
 									)}
 								/>
 							);
+						case 'image': {
+							const parallaxStatus = getAttributeValue({
+								target: 'background-image-parallax-status',
+								props: layer,
+								prefix,
+							});
+
+							if (!parallaxStatus)
+								return (
+									<div
+										key={`maxi-background-displayer__${type}-${id}${
+											isHover ? '--hover' : ''
+										}`}
+										className={classnames(
+											'maxi-background-displayer__layer',
+											`maxi-background-displayer__${id}`
+										)}
+									/>
+								);
+
+							const mediaURL = getAttributeValue({
+								target: 'background-image-mediaURL',
+								props: layer,
+								prefix,
+							});
+							const mediaID = getAttributeValue({
+								target: 'background-image-mediaID',
+								props: layer,
+								prefix,
+							});
+							const alt = getAttributeValue({
+								target: 'background-image-parallax-alt',
+								props: layer,
+								prefix,
+							});
+
+							if (!mediaURL) return null;
+
+							return (
+								<div
+									key={`maxi-background-displayer__${type}-${id}${
+										isHover ? '--hover' : ''
+									}`}
+									className={classnames(
+										'maxi-background-displayer__layer',
+										'maxi-background-displayer__parallax',
+										`maxi-background-displayer__${id}`
+									)}
+								>
+									<img
+										className={`wp-image-${mediaID}`}
+										src={mediaURL}
+										alt={alt}
+									/>
+								</div>
+							);
+						}
 						case 'video':
 							return (
 								<VideoLayer

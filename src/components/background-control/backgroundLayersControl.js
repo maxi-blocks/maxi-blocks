@@ -9,6 +9,7 @@ import { useState, RawHTML } from '@wordpress/element';
  */
 import {
 	getAttributeKey,
+	getAttributeValue,
 	getBlockStyle,
 	getColorRGBAString,
 	getLastBreakpointAttribute,
@@ -133,12 +134,10 @@ const LayerCard = props => {
 				};
 			}
 			case 'image': {
-				const bgImageURL = getLastBreakpointAttribute(
-					'background-image-mediaURL',
-					breakpoint,
-					layer,
-					isHover
-				);
+				const bgImageURL = getAttributeValue({
+					target: 'background-image-mediaURL',
+					props: layer,
+				});
 				const bgImageOpacity = getLastBreakpointAttribute(
 					'background-image-opacity',
 					breakpoint,

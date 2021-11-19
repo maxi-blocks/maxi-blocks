@@ -28,7 +28,7 @@ describe.skip('ColorControl', () => {
 		);
 
 		await page.$$eval(
-			'.maxi-background-control .maxi-base-control__field .maxi-sc-color-palette div',
+			'.maxi-background-control .maxi-base-control__field .maxi-color-control__palette div',
 			select => select[3].click()
 		);
 
@@ -40,7 +40,7 @@ describe.skip('ColorControl', () => {
 
 	it('Check Responsive color control', async () => {
 		const dataItem = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -55,11 +55,11 @@ describe.skip('ColorControl', () => {
 		await openSidebarTab(page, 'style', 'typography');
 
 		await page.$$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette div',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette div',
 			select => select[4].click()
 		);
 		const dataItemS = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 		const responsiveSOption = await dataItemS;
@@ -75,7 +75,7 @@ describe.skip('ColorControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const dataItemXs = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 		const responsiveXsOption = await dataItemXs;
@@ -86,7 +86,7 @@ describe.skip('ColorControl', () => {
 		await changeResponsive(page, 'm');
 
 		const dataItemM = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 		const responsiveMOption = await dataItemM;

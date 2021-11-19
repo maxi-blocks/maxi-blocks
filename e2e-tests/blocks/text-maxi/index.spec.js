@@ -601,8 +601,8 @@ describe('TextMaxi', () => {
 		await page.$eval('.toolbar-item__text-options--color', button =>
 			button.click()
 		);
-		await page.waitForSelector('.maxi-sc-color-palette__box');
-		await page.$$eval('.maxi-sc-color-palette__box', paletteButtons =>
+		await page.waitForSelector('.maxi-color-control__palette-box');
+		await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>
 			paletteButtons[3].click()
 		);
 

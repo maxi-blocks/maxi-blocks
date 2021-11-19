@@ -66,9 +66,9 @@ const ColorPaletteControl = props => {
 			return { globalStatus, globalPaletteColor, globalPaletteOpacity };
 		});
 
-	const paletteClasses = classnames(
-		'maxi-sc-color-palette',
-		globalStatus && 'palette-disabled'
+	const classes = classnames(
+		'maxi-color-control__palette',
+		globalStatus && 'maxi-color-control__palette--disabled'
 	);
 
 	const getIsActive = item => {
@@ -79,25 +79,25 @@ const ColorPaletteControl = props => {
 	};
 
 	return (
-		<>
+		<div className={classes}>
 			<BaseControl
-				className='maxi-color-palette-control__palette-label'
+				className='maxi-color-control__palette-label'
 				label={label ? `${label} colour` : ''}
 			>
-				<div className={paletteClasses}>
+				<div className='maxi-color-control__palette-container'>
 					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
 						<button
-							key={`maxi-sc-color-palette__box__${item}`}
+							key={`maxi-color-control__palette-box__${item}`}
 							type='button'
 							aria-label={sprintf(
 								__('Pallet box colour %s', 'maxi-blocks'),
 								item
 							)}
-							className={`maxi-sc-color-palette__box ${
-								getIsActive(item)
-									? 'maxi-sc-color-palette__box--active'
-									: ''
-							}`}
+							className={classnames(
+								'maxi-color-control__palette-box',
+								getIsActive(item) &&
+									'maxi-color-control__palette-box--active'
+							)}
 							data-item={item}
 							onClick={e =>
 								onChange({
@@ -106,7 +106,10 @@ const ColorPaletteControl = props => {
 							}
 						>
 							<span
-								className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
+								className={classnames(
+									'maxi-color-control__palette-item',
+									`maxi-color-control__palette-item__${item}`
+								)}
 							/>
 						</button>
 					))}
@@ -123,7 +126,7 @@ const ColorPaletteControl = props => {
 					}
 				/>
 			)}
-		</>
+		</div>
 	);
 };
 

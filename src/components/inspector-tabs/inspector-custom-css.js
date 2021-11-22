@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-
 import CustomCssControl from '../custom-css-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 

@@ -73,17 +73,17 @@ const Inspector = memo(
 			});
 		};
 
-		const isCanvasBackgroundEnabled = !isEmpty(
-			attributes['background-layers']
-		);
-		const isIconEnabled = !isEmpty(attributes['icon-content']);
-
-		let categoriesCss = categoriesButton;
-
-		!isCanvasBackgroundEnabled &&
-			(categoriesCss = without(categoriesCss, 'canvas background'));
-
-		!isIconEnabled && (categoriesCss = without(categoriesCss, 'icon'));
+		const getCategoriesCss = () => {
+			const {
+				'background-layers': bgLayers,
+				'icon-content': iconContent,
+			} = attributes;
+			return without(
+				categoriesButton,
+				!isEmpty(bgLayers) && 'canvas background',
+				!isEmpty(iconContent) && 'icon'
+			);
+		};
 
 		return (
 			<InspectorControls>
@@ -652,7 +652,7 @@ const Inspector = memo(
 											props,
 											breakpoint: deviceType,
 											selectors: selectorsButton,
-											categories: categoriesCss,
+											categories: getCategoriesCss(),
 										}),
 										...inspectorTabs.motion({
 											props,

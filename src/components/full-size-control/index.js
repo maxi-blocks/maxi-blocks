@@ -34,6 +34,7 @@ const FullSizeControl = props => {
 		className,
 		breakpoint,
 		hideWidth,
+		hideHeight,
 		hideMaxWidth,
 		prefix = '',
 	} = props;
@@ -112,6 +113,7 @@ const FullSizeControl = props => {
 					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
 			)}
+			{!hideHeight && currentBlockRoot && (
 			<AdvancedNumberControl
 				label={__('Height', 'maxi-blocks')}
 				enableUnit
@@ -144,6 +146,7 @@ const FullSizeControl = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw']}
 			/>
+			)}
 			<ToggleSwitch
 				label={__('Set custom min/max values', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}

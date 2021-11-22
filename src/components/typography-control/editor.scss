@@ -1,0 +1,13 @@
+.maxi-accordion-control {
+	&__item {
+		&[data-name='typography'] {
+			.maxi-typography-control__link-options {
+				.maxi-button-group-control__option {
+					&--selected {
+						font-weight: 700;
+					}
+				}
+			}
+		}
+	}
+}

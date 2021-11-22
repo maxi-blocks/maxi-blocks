@@ -36,6 +36,11 @@ import { isNumber } from 'lodash';
 import { styleNone, dashed, dotted, solid } from '../../icons';
 
 /**
+ * Styles and icons
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const BorderControl = props => {

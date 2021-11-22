@@ -1,0 +1,16 @@
+.maxi-accordion-control {
+	&__item {
+		&[data-name='border'] {
+			.maxi-default-styles-control__button {
+				&--active {
+					&:nth-child(3),
+					&:nth-child(4) {
+						path {
+							stroke: var(--maxi-secondary-color) !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}

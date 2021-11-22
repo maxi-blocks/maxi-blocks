@@ -1,0 +1,19 @@
+.maxi-accordion-control {
+	&__item {
+		&[data-name='hover effect'] {
+			.maxi-button-group-control__option {
+				&--selected {
+					path {
+						fill: var(--maxi-secondary-color) !important;
+					}
+					&[aria-label='text'] {
+						path {
+							fill: transparent !important;
+							stroke: var(--maxi-secondary-color) !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}

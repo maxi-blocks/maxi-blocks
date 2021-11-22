@@ -11,7 +11,6 @@ import {
 	AccordionControl,
 	DividerControl,
 	SelectControl,
-	ButtonGroupControl,
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';

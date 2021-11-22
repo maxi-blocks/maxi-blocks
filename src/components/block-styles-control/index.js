@@ -62,7 +62,7 @@ const BlockStylesControl = props => {
 			{isFirstOnHierarchy ? (
 				<SelectControl
 					label={__('Block tone', 'maxi-blocks')}
-					className={(classes, 'maxi-tone-control')}
+					className={classes}
 					value={blockStyle}
 					options={getSelectorOptions()}
 					onChange={blockStyle => {

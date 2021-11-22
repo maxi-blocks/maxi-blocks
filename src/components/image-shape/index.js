@@ -20,11 +20,6 @@ import {
 } from '../../extensions/svg';
 
 /**
- * Styles
- */
-import './editor.scss';
-
-/**
  * ImageShape
  */
 const ImageShape = props => {

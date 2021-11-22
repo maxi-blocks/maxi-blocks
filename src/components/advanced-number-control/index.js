@@ -33,6 +33,7 @@ const AdvancedNumberControl = props => {
 	const {
 		label,
 		className,
+		classNameAutoInput,
 		unit = 'px',
 		placeholder = '',
 		onChangeUnit,
@@ -121,6 +122,7 @@ const AdvancedNumberControl = props => {
 			{enableAuto && (
 				<ToggleSwitch
 					label={__('Auto', 'maxi-blocks')}
+					className={classNameAutoInput}
 					selected={value === 'auto'}
 					onChange={val => onChangeValue(val ? 'auto' : '')}
 				/>

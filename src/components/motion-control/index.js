@@ -131,9 +131,9 @@ const MotionControl = props => {
 				return (
 					<div key={`maxi-motion-control-${type}-${breakpoint}`}>
 						{motionStatus === type && (
-							<ButtonGroupControl
+							<ToggleSwitch
+								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 								label={__(
-									// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 									`Use ${typeCapitalize} scroll effect`,
 									'maxi-blocks'
 								)}
@@ -142,16 +142,6 @@ const MotionControl = props => {
 									breakpoint,
 									props
 								)}
-								options={[
-									{
-										label: __('Yes', 'maxi-blocks'),
-										value: 1,
-									},
-									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-								]}
 								onChange={val =>
 									onChange({
 										[`motion-status-${type}-${breakpoint}`]:
@@ -210,6 +200,37 @@ const MotionControl = props => {
 										}
 										initialPosition={getDefaultAttribute(
 											`motion-speed-${type}-general`
+										)}
+									/>
+									<AdvancedNumberControl
+										label={__('Delay', 'maxi-blocks')}
+										value={getLastBreakpointAttribute(
+											`motion-delay-${type}`,
+											breakpoint,
+											props
+										)}
+										onChangeValue={val => {
+											onChange({
+												[`motion-delay-${type}-${breakpoint}`]:
+													val !== undefined &&
+													val !== ''
+														? val
+														: '',
+											});
+										}}
+										min={0}
+										step={10}
+										max={1000}
+										onReset={() =>
+											onChange({
+												[`motion-delay-${type}-${breakpoint}`]:
+													getDefaultAttribute(
+														`motion-delay-${type}-general`
+													),
+											})
+										}
+										initialPosition={getDefaultAttribute(
+											`motion-delay-${type}-general`
 										)}
 									/>
 									{/* <RangeSliderControl

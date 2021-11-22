@@ -29,8 +29,18 @@ export const getColorBackgroundObject = ({
 	isIcon = false,
 	isIconInherit = false,
 	breakpoint = 'general',
+	scValues = {},
 	...props
 }) => {
+	const hoverStatus = props[`${prefix}background-hover-status`];
+	const {
+		'hover-background-color-global': isActive,
+		'hover-background-color-all': affectAll,
+	} = scValues;
+	const globalHoverStatus = isActive && affectAll;
+
+	if (isHover && !hoverStatus && !globalHoverStatus) return {};
+
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
 	const response = {
@@ -92,8 +102,7 @@ export const getColorBackgroundObject = ({
 				isHover
 			);
 
-		if (isButton) {
-			// !!!
+		if (isButton && (!isHover || hoverStatus || globalHoverStatus)) {
 			response[breakpoint].background = getColorRGBAString({
 				firstVar: `button-background-color${isHover ? '-hover' : ''}`,
 				secondVar: `color-${bgPaletteColor}`,
@@ -876,7 +885,8 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
-	if (isHover && !props[`${prefix}background-hover-status`]) return response;
+	if (isHover && !props[`${prefix}block-background-hover-status`])
+		return response;
 
 	const layers = compact([
 		...getAttributeValue({
@@ -923,6 +933,7 @@ export const getBackgroundStyles = ({
 	isButton = false,
 	blockStyle: rawBlockStyle,
 	isIconInherit = false,
+	scValues = {},
 	...props
 }) => {
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
@@ -944,7 +955,7 @@ export const getBackgroundStyles = ({
 				background: getColorBackgroundObject({
 					...getGroupAttributes(
 						props,
-						'backgroundColor',
+						['background', 'backgroundColor'],
 						isHover,
 						prefix
 					),
@@ -954,6 +965,7 @@ export const getBackgroundStyles = ({
 					isHover,
 					prefix,
 					isIconInherit,
+					scValues,
 				}),
 			}),
 			...(currentActiveMedia === 'gradient' && {

@@ -24,7 +24,7 @@ const blockBackground = ({
 }) => {
 	const { attributes, clientId, deviceType, setAttributes } = props;
 
-	const bgHoverStatus = attributes['background-hover-status'];
+	const bgHoverStatus = attributes['block-background-hover-status'];
 
 	return {
 		label: __('Background / Layer', 'maxi-blocks'),
@@ -65,7 +65,8 @@ const blockBackground = ({
 									className='maxi-background-status-hover'
 									onChange={val => {
 										setAttributes({
-											'background-hover-status': val,
+											'block-background-hover-status':
+												val,
 										});
 									}}
 								/>

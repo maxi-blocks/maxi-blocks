@@ -3,11 +3,12 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import { getIsValid } from '../utils';
 
 /**
  * External dependencies
  */
-import { isUndefined, isNumber } from 'lodash';
+import { isUndefined } from 'lodash';
 
 /**
  * General
@@ -25,7 +26,19 @@ const getBorderStyles = ({
 	prefix = '',
 	parentBlockStyle,
 	isButton = false,
+	scValues = {},
 }) => {
+	const response = {};
+
+	const hoverStatus = obj[`${prefix}border-status-hover`];
+	const {
+		'hover-border-color-global': isActive,
+		'hover-border-color-all': affectAll,
+	} = scValues;
+	const globalHoverStatus = isActive && affectAll;
+
+	if (isHover && !hoverStatus && !globalHoverStatus) return response;
+
 	const keyWords = [
 		'top-left',
 		'top-right',
@@ -36,8 +49,6 @@ const getBorderStyles = ({
 		'bottom',
 		'left',
 	];
-
-	const response = {};
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
@@ -50,6 +61,56 @@ const getBorderStyles = ({
 		);
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 
+		const getColorString = () => {
+			const paletteStatus = getLastBreakpointAttribute(
+				`${prefix}border-palette-color-status`,
+				breakpoint,
+				obj,
+				isHover
+			);
+			const paletteColor =
+				obj[
+					`${prefix}border-palette-color-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
+				];
+			const paletteOpacity =
+				obj[
+					`${prefix}border-palette-opacity-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
+				];
+			const color =
+				obj[
+					`${prefix}border-color-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
+				];
+
+			if (paletteStatus)
+				if (isButton && (!isHover || hoverStatus || globalHoverStatus))
+					return getColorRGBAString({
+						firstVar: `${isButton ? 'button-' : ''}border-color${
+							isHover ? '-hover' : ''
+						}`,
+						secondVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: parentBlockStyle,
+					});
+				else
+					return getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity:
+							obj[
+								`${prefix}border-palette-opacity-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							],
+						blockStyle: parentBlockStyle,
+					});
+			return color;
+		};
+
 		Object.entries(obj).forEach(([key, value]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
 			const includesBreakpoint =
@@ -58,7 +119,8 @@ const getBorderStyles = ({
 				newKey.length;
 
 			if (
-				(!!value || isNumber(value)) &&
+				(getIsValid(value, true) ||
+					(isHover && globalHoverStatus && key.includes('color'))) &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
@@ -75,60 +137,12 @@ const getBorderStyles = ({
 						response[breakpoint].border = 'none';
 					} else response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newLabel.includes(key))) {
-					if (key.includes('color') || key.includes('opacity')) {
-						const paletteStatus = getLastBreakpointAttribute(
-							`${prefix}border-palette-color-status`,
-							breakpoint,
-							obj,
-							isHover
-						);
-						const paletteColor =
-							obj[
-								`${prefix}border-palette-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`
-							];
-
-						if (!isBorderNone) {
-							if (paletteStatus && paletteColor)
-								if (isButton)
-									response[breakpoint]['border-color'] =
-										getColorRGBAString({
-											firstVar: `${
-												isButton ? 'button-' : ''
-											}border-color${
-												isHover ? '-hover' : ''
-											}`,
-											secondVar: `color-${paletteColor}`,
-											opacity:
-												obj[
-													`${prefix}border-palette-opacity-${breakpoint}${
-														isHover ? '-hover' : ''
-													}`
-												],
-											blockStyle: parentBlockStyle,
-										});
-								else
-									response[breakpoint]['border-color'] =
-										getColorRGBAString({
-											firstVar: `color-${paletteColor}`,
-											opacity:
-												obj[
-													`${prefix}border-palette-opacity-${breakpoint}${
-														isHover ? '-hover' : ''
-													}`
-												],
-											blockStyle: parentBlockStyle,
-										});
-							else
-								response[breakpoint]['border-color'] =
-									obj[
-										`${prefix}border-color-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`
-									];
-						}
-					} else response[breakpoint][newLabel] = `${value}`;
+					if (
+						(key.includes('color') || key.includes('opacity')) &&
+						(!isBorderNone || (isHover && globalHoverStatus))
+					)
+						response[breakpoint]['border-color'] = getColorString();
+					else response[breakpoint][newLabel] = `${value}`;
 				} else {
 					const unitKey = keyWords.filter(key =>
 						newLabel.includes(key)

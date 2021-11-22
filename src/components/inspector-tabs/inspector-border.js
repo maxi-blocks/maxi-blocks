@@ -17,10 +17,23 @@ import {
 /**
  * Component
  */
-const border = ({ props, prefix }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
+const border = ({ props, prefix, globalProps, hoverGlobalProps }) => {
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		setAttributes,
+		scValues = {},
+	} = props;
 
-	const hoverStatus = attributes[`${prefix}border-status-hover`];
+	const {
+		'hover-border-color-global': isActive,
+		'hover-border-color-all': affectAll,
+	} = scValues;
+	const globalHoverStatus = isActive && affectAll;
+
+	const hoverStatus =
+		attributes[`${prefix}border-status-hover`] || globalHoverStatus;
 
 	return {
 		label: __('Border', 'maxi-blocks'),
@@ -44,7 +57,7 @@ const border = ({ props, prefix }) => {
 								}}
 								breakpoint={deviceType}
 								clientId={clientId}
-								isButton
+								globalProps={globalProps}
 							/>
 						),
 					},
@@ -52,47 +65,49 @@ const border = ({ props, prefix }) => {
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
-								<ToggleSwitch
-									label={__(
-										'Enable Border Hover',
-										'maxi-blocks'
-									)}
-									selected={hoverStatus}
-									className='maxi-border-status-hover'
-									onChange={val =>
-										setAttributes({
-											...(val &&
-												setHoverAttributes(
-													{
-														...getGroupAttributes(
-															attributes,
-															[
-																'border',
-																'borderWidth',
-																'borderRadius',
-															],
-															false,
-															prefix
-														),
-													},
-													{
-														...getGroupAttributes(
-															attributes,
-															[
-																'border',
-																'borderWidth',
-																'borderRadius',
-															],
-															true,
-															prefix
-														),
-													}
-												)),
-											[`${prefix}border-status-hover`]:
-												val,
-										})
-									}
-								/>
+								{!globalHoverStatus && (
+									<ToggleSwitch
+										label={__(
+											'Enable Border Hover',
+											'maxi-blocks'
+										)}
+										selected={hoverStatus}
+										className='maxi-border-status-hover'
+										onChange={val =>
+											setAttributes({
+												...(val &&
+													setHoverAttributes(
+														{
+															...getGroupAttributes(
+																attributes,
+																[
+																	'border',
+																	'borderWidth',
+																	'borderRadius',
+																],
+																false,
+																prefix
+															),
+														},
+														{
+															...getGroupAttributes(
+																attributes,
+																[
+																	'border',
+																	'borderWidth',
+																	'borderRadius',
+																],
+																true,
+																prefix
+															),
+														}
+													)),
+												[`${prefix}border-status-hover`]:
+													val,
+											})
+										}
+									/>
+								)}
 								{hoverStatus && (
 									<BorderControl
 										{...getGroupAttributes(
@@ -110,7 +125,7 @@ const border = ({ props, prefix }) => {
 										breakpoint={deviceType}
 										isHover
 										clientId={clientId}
-										isButton
+										globalProps={hoverGlobalProps}
 									/>
 								)}
 							</>

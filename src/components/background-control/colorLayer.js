@@ -31,10 +31,10 @@ const ColorLayerContent = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
-		isButton = false,
 		breakpoint,
 		isGeneral = false,
 		isLayer = false,
+		globalProps,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -135,12 +135,7 @@ const ColorLayerContent = props => {
 						}),
 					});
 				}}
-				globalProps={
-					isButton && {
-						target: `${isHover ? 'hover-' : ''}background`,
-						type: 'button',
-					}
-				}
+				globalProps={globalProps}
 				isHover={isHover}
 				clientId={clientId}
 				deviceType={breakpoint}

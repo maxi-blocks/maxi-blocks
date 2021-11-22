@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -21,8 +20,16 @@ const typography = ({
 	hideAlignment = false,
 	disableCustomFormats = false,
 	allowLink = false,
+	globalProps,
+	hoverGlobalProps,
 }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		setAttributes,
+		scValues = {},
+	} = props;
 	const {
 		parentBlockStyle,
 		textLevel,
@@ -30,31 +37,9 @@ const typography = ({
 		'typography-status-hover': typographyHoverStatus,
 	} = attributes;
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const { globalHoverStatus } = useSelect(select => {
-		const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-		const { getBlockName } = select('core/block-editor');
-
-		const type =
-			getBlockName(clientId) === 'maxi-blocks/button-maxi'
-				? 'button'
-				: textLevel;
-
-		const isActive = receiveStyleCardValue(
-			'hover-color-global',
-			parentBlockStyle,
-			type
-		);
-		const affectAll = receiveStyleCardValue(
-			'hover-color-all',
-			parentBlockStyle,
-			type
-		);
-
-		const globalHoverStatus = isActive && affectAll;
-
-		return { globalHoverStatus };
-	});
+	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
+		scValues;
+	const globalHoverStatus = isActive && affectAll;
 
 	const hoverStatus = typographyHoverStatus || globalHoverStatus;
 
@@ -84,6 +69,7 @@ const typography = ({
 								textLevel={textLevel}
 								isList={isList}
 								allowLink={allowLink}
+								globalProps={globalProps}
 							/>
 						),
 					},
@@ -91,18 +77,20 @@ const typography = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
-								<ToggleSwitch
-									label={__(
-										'Enable Typography Hover',
-										'maxi-blocks'
-									)}
-									selected={hoverStatus}
-									onChange={val =>
-										setAttributes({
-											'typography-status-hover': val,
-										})
-									}
-								/>
+								{!globalHoverStatus && (
+									<ToggleSwitch
+										label={__(
+											'Enable Typography Hover',
+											'maxi-blocks'
+										)}
+										selected={hoverStatus}
+										onChange={val =>
+											setAttributes({
+												'typography-status-hover': val,
+											})
+										}
+									/>
+								)}
 								{hoverStatus && (
 									<TypographyControl
 										{...getGroupAttributes(
@@ -120,6 +108,7 @@ const typography = ({
 										}
 										blockStyle={parentBlockStyle}
 										styleCardPrefix={styleCardPrefix}
+										globalProps={hoverGlobalProps}
 									/>
 								)}
 							</>

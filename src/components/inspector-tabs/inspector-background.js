@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -28,35 +27,23 @@ const background = ({
 	disableColor = false,
 	disableSVG = false,
 	disableClipPath = false,
-	isButton = false,
+	globalProps,
+	hoverGlobalProps,
 	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
 }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
-	const { parentBlockStyle } = attributes;
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		setAttributes,
+		scValues = {},
+	} = props;
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const { globalHoverStatus } = useSelect(select => {
-		const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-
-		const isActive = isButton
-			? receiveStyleCardValue(
-					'hover-background-color-global',
-					parentBlockStyle,
-					'button'
-			  )
-			: false;
-		const affectAll = isButton
-			? receiveStyleCardValue(
-					'hover-background-color-all',
-					parentBlockStyle,
-					'button'
-			  )
-			: false;
-
-		const globalHoverStatus = isActive && affectAll;
-
-		return { globalHoverStatus };
-	});
+	const {
+		'hover-background-color-global': isActive,
+		'hover-background-color-all': affectAll,
+	} = scValues;
+	const globalHoverStatus = isActive && affectAll;
 
 	const hoverStatus =
 		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
@@ -87,8 +74,8 @@ const background = ({
 									disableSVG={disableSVG}
 									disableClipPath={disableClipPath}
 									clientId={clientId}
-									isButton={isButton}
 									breakpoint={deviceType}
+									globalProps={globalProps}
 								/>
 							</>
 						),
@@ -158,8 +145,8 @@ const background = ({
 										disableSVG
 										isHover
 										clientId={clientId}
-										isButton={isButton}
 										breakpoint={deviceType}
+										globalProps={hoverGlobalProps}
 									/>
 								)}
 							</>

@@ -424,6 +424,14 @@ const Inspector = memo(
 												styleCardPrefix: 'button',
 												hideAlignment: true,
 												disableCustomFormats: true,
+												globalProps: {
+													target: '',
+													type: 'button',
+												},
+												hoverGlobalProps: {
+													target: 'hover',
+													type: 'button',
+												},
 											}),
 											...inspectorTabs.background({
 												label: 'Button',
@@ -432,12 +440,27 @@ const Inspector = memo(
 												disableVideo: true,
 												disableClipPath: true,
 												disableSVG: true,
-												isButton: true,
 												prefix: 'button-',
+												globalProps: {
+													target: 'background',
+													type: 'button',
+												},
+												hoverGlobalProps: {
+													target: 'hover-background',
+													type: 'button',
+												},
 											}),
 											...inspectorTabs.border({
 												props,
 												prefix: 'button-',
+												globalProps: {
+													target: 'border',
+													type: 'button',
+												},
+												hoverGlobalProps: {
+													target: 'hover-border',
+													type: 'button',
+												},
 											}),
 											...inspectorTabs.boxShadow({
 												props,
@@ -547,13 +570,15 @@ const Inspector = memo(
 			propsToAvoid,
 			isSelected: wasSelected,
 			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
 		},
-		{ attributes: newAttr, isSelected, deviceType: breakpoint }
+		{ attributes: newAttr, isSelected, deviceType: breakpoint, scValues }
 	) => {
 		if (
 			!wasSelected ||
 			wasSelected !== isSelected ||
-			oldBreakpoint !== breakpoint
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
 		)
 			return false;
 

@@ -22,7 +22,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import { selectorsButton, categoriesButton } from '../../extensions/custom-css';
+import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**

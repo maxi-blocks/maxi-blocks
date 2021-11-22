@@ -28,7 +28,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsButton } from '../../extensions/custom-css';
+import { selectorsButton } from './custom-css';
 
 /**
  * External dependencies

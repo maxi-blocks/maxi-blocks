@@ -21,15 +21,8 @@ import SelectControl from '../select-control';
  * Component
  */
 const CustomCssControl = props => {
-	const {
-		breakpoint,
-		categories,
-		category,
-		selectors,
-		value,
-		onChange,
-		onChangeCode,
-	} = props;
+	const { breakpoint, categories, category, selectors, value, onChange } =
+		props;
 
 	const getOptions = () => {
 		const options = [
@@ -145,7 +138,7 @@ const CustomCssControl = props => {
 							newCustomCss[category] = {};
 
 						newCustomCss[category][index] = textarea?.target?.value;
-						onChangeCode(newCustomCss);
+						onChange(`custom-css-${breakpoint}`, newCustomCss);
 					}}
 					onBlur={textarea => {
 						validateCss(textarea?.target?.value);
@@ -168,7 +161,7 @@ const CustomCssControl = props => {
 					id='maxi-custom-css-control__category'
 					value={category || 'none'}
 					options={getOptions()}
-					onChange={val => onChange(val)}
+					onChange={val => onChange('custom-css-category', val)}
 				/>
 				{!isEmpty(selectors?.[category]) &&
 					Object.entries(selectors?.[category])?.map(element => {

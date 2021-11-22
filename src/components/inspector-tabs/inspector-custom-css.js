@@ -26,7 +26,7 @@ const customCss = ({
 		breakpoint,
 		attributes
 	);
-	const customCssCategory = attributes['custom-css-category'] || 'none';
+	const customCssCategory = attributes['custom-css-category'];
 
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
@@ -42,9 +42,9 @@ const customCss = ({
 						[`custom-css-${breakpoint}`]: val,
 					});
 				}}
-				onChange={val =>
+				onChange={(attr, val) =>
 					setAttributes({
-						'custom-css-category': val,
+						[attr]: val,
 					})
 				}
 			/>

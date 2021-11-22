@@ -9,9 +9,7 @@ import { RichText } from '@wordpress/block-editor';
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import motionData from '../../extensions/motions';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -69,7 +67,7 @@ const save = props => {
 					'maxi-block-motion')
 			}
 			{...motionData(props)}
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<HoverPreview

@@ -239,7 +239,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 	return <MainBlock {...blockProps}>{children}</MainBlock>;
 });
 
-export const getMaxiBlockBlockAttributes = props => {
+export const getMaxiBlockAttributes = props => {
 	const { name, deviceType, attributes, clientId } = props;
 	const {
 		blockStyle,

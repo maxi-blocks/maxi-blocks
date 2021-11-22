@@ -8,9 +8,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
  */
 import { ArrowDisplayer, ShapeDivider } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -32,7 +30,7 @@ const save = props => {
 		<MaxiBlock
 			tagName='section'
 			classes={classes}
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<ArrowDisplayer

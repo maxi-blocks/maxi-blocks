@@ -17,9 +17,7 @@ import {
 	Toolbar,
 	InnerBlocks,
 } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -114,7 +112,7 @@ class edit extends MaxiBlockComponent {
 							<MaxiBlock
 								key={`maxi-column--${uniqueID}`}
 								ref={this.blockRef}
-								{...getMaxiBlockBlockAttributes(this.props)}
+								{...getMaxiBlockAttributes(this.props)}
 								tagName={BlockResizer}
 								resizableObject={this.resizableObject}
 								classes={classnames(

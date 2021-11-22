@@ -15,9 +15,7 @@ import {
 import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -113,7 +111,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				classes={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				size={{
 					width: '100%',

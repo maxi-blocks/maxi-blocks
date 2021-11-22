@@ -13,9 +13,7 @@ import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
 import Inspector from './inspector';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
@@ -124,7 +122,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				{...motionData(this.props)}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 				disableBackground
 			>
 				<div data-align={fullWidth} className={buttonClasses}>

@@ -64,6 +64,7 @@ export const motion = (() => {
 		generateAttr(type, 'status', 'boolean', false);
 		generateAttr(type, 'easing', 'string', 'ease');
 		generateAttr(type, 'speed', 'number', 500);
+		generateAttr(type, 'delay', 'number', 0);
 		generateAttr(type, 'viewport-bottom', 'number', 0);
 		generateAttr(type, 'viewport-middle', 'number', 50);
 		generateAttr(type, 'viewport-top', 'number', 100);

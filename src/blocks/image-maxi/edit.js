@@ -14,9 +14,7 @@ import getStyles from './styles';
 import Inspector from './inspector';
 import { getGroupAttributes } from '../../extensions/styles';
 import motionData from '../../extensions/motions';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
@@ -223,7 +221,7 @@ class edit extends MaxiBlockComponent {
 				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...motionData(this.props)}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MediaUpload
 					onSelect={media => {

@@ -14,9 +14,7 @@ import {
 	MaxiBlockComponent,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Button, Toolbar } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -277,7 +275,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter
 					{...getGroupAttributes(attributes, [

@@ -7,9 +7,7 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import { Button } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import motionData from '../../extensions/motions';
 
 /**
@@ -48,7 +46,7 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 			disableBackground
 		>

@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { isNil, isEmpty, merge } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import {
@@ -29,11 +34,6 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsButton } from './custom-css';
-
-/**
- * External dependencies
- */
-import { isNil, isEmpty, merge } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

@@ -238,12 +238,12 @@ const AxisControlContent = props => {
 	);
 
 	const getSyncLabel = () => {
-		let label = type.toLowerCase();
-		let textSeparate = 'separate';
-		if (label === 'border radius') {
-			label = 'border radii';
-			textSeparate = 'separately';
-		}
+		const label =
+			type.toLowerCase() === 'border radius'
+				? 'border radii'
+				: type.toLowerCase();
+		const textSeparate =
+			label === 'border radius' ? 'separate' : 'separately';
 		switch (sync) {
 			case 'all':
 				return type

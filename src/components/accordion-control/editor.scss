@@ -75,20 +75,5 @@
 				}
 			}
 		}
-
-		&[data-name='add css classes'] {
-			.maxi-base-control {
-				&__field {
-					display: block !important;
-				}
-				&__label {
-					margin-bottom: 5px;
-				}
-			}
-			.maxi-text-control__input {
-				display: block;
-				width: 100%;
-			}
-		}
 	}
 }

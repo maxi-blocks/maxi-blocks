@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 
-import CustomCssControl from '../custom-css';
+import CustomCssControl from '../custom-css-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
@@ -37,11 +37,6 @@ const customCss = ({
 				category={customCssCategory}
 				selectors={selectors}
 				value={customCssValue}
-				onChangeCode={val => {
-					setAttributes({
-						[`custom-css-${breakpoint}`]: val,
-					});
-				}}
 				onChange={(attr, val) =>
 					setAttributes({
 						[attr]: val,

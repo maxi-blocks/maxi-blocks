@@ -18,6 +18,11 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const CustomCssControl = props => {

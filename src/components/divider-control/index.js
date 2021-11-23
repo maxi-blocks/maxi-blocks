@@ -119,9 +119,36 @@ const DividerControl = props => {
 					},
 				]}
 			/>
+			{!disableLineStyle && (
+				<SelectControl
+					label={__('Add border line', 'maxi-blocks')}
+					options={[
+						{ label: __('None', 'maxi-blocks'), value: 'none' },
+						{ label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
+						{ label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
+						{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
+						{ label: __('Double', 'maxi-blocks'), value: 'double' },
+					]}
+					value={props['divider-border-style']}
+					onChange={val => onChange({ 'divider-border-style': val })}
+				/>
+			)}
+			{props['divider-border-style'] !== 'none' &&
+				!disableBorderRadius &&
+				props['divider-border-style'] === 'solid' && (
+					<ToggleSwitch
+						label={__('Line radius', 'maxi-blocks')}
+						selected={props['divider-border-radius']}
+						onChange={val =>
+							onChange({
+								'divider-border-radius': val,
+							})
+						}
+					/>
+				)}
 			{props['divider-border-style'] !== 'none' && !disableColor && (
 				<ColorControl
-					label={__('Colour', 'maxi-blocks')}
+					label={__('Divider', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('divider-border-color')}
 					paletteColor={props['divider-palette-border-color']}
@@ -147,38 +174,11 @@ const DividerControl = props => {
 					clientId={clientId}
 				/>
 			)}
-			{!disableLineStyle && (
-				<SelectControl
-					label={__('Line Style', 'maxi-blocks')}
-					options={[
-						{ label: __('None', 'maxi-blocks'), value: 'none' },
-						{ label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
-						{ label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
-						{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
-						{ label: __('Double', 'maxi-blocks'), value: 'double' },
-					]}
-					value={props['divider-border-style']}
-					onChange={val => onChange({ 'divider-border-style': val })}
-				/>
-			)}
-			{props['divider-border-style'] !== 'none' &&
-				!disableBorderRadius &&
-				props['divider-border-style'] === 'solid' && (
-					<ToggleSwitch
-						label={__('Line Radius', 'maxi-blocks')}
-						selected={props['divider-border-radius']}
-						onChange={val =>
-							onChange({
-								'divider-border-radius': val,
-							})
-						}
-					/>
-				)}
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'horizontal' && (
 					<>
 						<AdvancedNumberControl
-							label={__('Line Size', 'maxi-blocks')}
+							label={__('Line size', 'maxi-blocks')}
 							enableUnit
 							unit={props['divider-width-unit']}
 							onChangeUnit={val =>
@@ -201,7 +201,7 @@ const DividerControl = props => {
 							minMaxSettings={minMaxSettings}
 						/>
 						<AdvancedNumberControl
-							label={__('Line Weight', 'maxi-blocks')}
+							label={__('Line weight', 'maxi-blocks')}
 							enableUnit
 							allowedUnits={['px', 'em', 'vw']}
 							unit={props['divider-border-top-unit']}

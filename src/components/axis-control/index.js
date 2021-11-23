@@ -242,16 +242,16 @@ const AxisControlContent = props => {
 			case 'all':
 				return type
 					? __(`Set ${type.toLowerCase()} equal`, 'maxi-blocks')
-					: __(`Set equal`, 'maxi-blocks');
+					: __('Set equal', 'maxi-blocks');
 			case 'axis':
 				return type
 					? __(`Set ${type.toLowerCase()} together`, 'maxi-blocks')
-					: __(`Set together`, 'maxi-blocks');
+					: __('Set together', 'maxi-blocks');
 			case 'none':
 			default:
 				return type
 					? __(`Set ${type.toLowerCase()} separate`, 'maxi-blocks')
-					: __(`Set separate`, 'maxi-blocks');
+					: __('Set separate', 'maxi-blocks');
 		}
 	};
 

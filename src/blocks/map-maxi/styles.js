@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
@@ -12,6 +15,7 @@ import {
 	getTransformStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsMap } from './custom-css';
 
 const getNormalObject = props => {
 	const response = {
@@ -114,12 +118,19 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover': getHoverNormalObject(props),
-			' .map-marker-info-window__title': getMapObject(props, 'title'),
-			' .map-marker-info-window__address': getMapObject(props, 'address'),
-		}),
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverNormalObject(props),
+				' .map-marker-info-window__title': getMapObject(props, 'title'),
+				' .map-marker-info-window__address': getMapObject(
+					props,
+					'address'
+				),
+			},
+			selectorsMap,
+			props
+		),
 	};
 
 	return response;

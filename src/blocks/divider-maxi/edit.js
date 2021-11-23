@@ -130,6 +130,9 @@ class edit extends MaxiBlockComponent {
 				showHandle={isSelected}
 				enable={{
 					bottom: true,
+					top: true,
+					left: true,
+					right: true
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}

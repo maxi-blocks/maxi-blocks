@@ -180,13 +180,13 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			outline: 2px solid transparent;
 		}
 	}
-	button.maxi-sc-color-palette__box,
+	button.maxi-color-control__palette-box,
 	button.maxi-button-group-control__option,
 	.maxi-components-button {
 		border-color: var(--maxi-accessibility-grey-1-color);
 	}
-	button.maxi-sc-color-palette__box--active,
-	button.maxi-sc-color-palette__box:focus,
+	button.maxi-color-control__palette-box--active,
+	button.maxi-color-control__palette-box:focus,
 	button.maxi-button-group-control__option-selected,
 	button.maxi-button-group-control__option:focus,
 	.maxi-components-button:focus:not(:disabled) {

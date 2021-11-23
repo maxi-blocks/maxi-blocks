@@ -82,7 +82,7 @@ describe('Image Maxi', () => {
 
 		// fontColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette button',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-control__palette button',
 			select => select[3].click()
 		);
 
@@ -228,7 +228,7 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-color .maxi-sc-color-palette button',
+			'.maxi-typography-link-color .maxi-color-control__palette button',
 			colors => colors[1].click()
 		);
 		await page.waitForTimeout(100);
@@ -241,7 +241,7 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-hover-color .maxi-sc-color-palette button',
+			'.maxi-typography-link-hover-color .maxi-color-control__palette button',
 			colors => colors[2].click()
 		);
 		await page.waitForTimeout(100);
@@ -254,7 +254,7 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-active-color .maxi-sc-color-palette button',
+			'.maxi-typography-link-active-color .maxi-color-control__palette button',
 			colors => colors[3].click()
 		);
 		await page.waitForTimeout(100);
@@ -267,7 +267,7 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(100);
 
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-visited-color .maxi-sc-color-palette button',
+			'.maxi-typography-link-visited-color .maxi-color-control__palette button',
 			colors => colors[4].click()
 		);
 		await page.waitForTimeout(100);

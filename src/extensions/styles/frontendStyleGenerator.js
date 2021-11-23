@@ -11,7 +11,8 @@ const getStyles = content => {
 	let response = '';
 
 	Object.entries(content).forEach(([key, val]) => {
-		response += `${key}:${val};`;
+		if (key.includes('css')) response += `${val}`;
+		else response += `${key}:${val};`;
 	});
 
 	return response;

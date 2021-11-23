@@ -437,7 +437,6 @@ const HoverEffectControl = props => {
 							'hoverBackgroundGradient',
 						])}
 						onChange={obj => onChange(obj)}
-						disableLayers
 						disableClipPath
 						disableImage
 						disableVideo

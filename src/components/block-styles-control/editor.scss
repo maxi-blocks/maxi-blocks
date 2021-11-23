@@ -1,25 +1,27 @@
-body.maxi-blocks--active .maxi-block-style-control {
-	.maxi-select-control__input {
-		padding-right: 24px;
+body.maxi-blocks--active {
+	.maxi-block-style-control {
+		.maxi-select-control__input {
+			padding-right: 24px;
+		}
 	}
-}
 
-.maxi-block-style-preview {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	.maxi-block-style-preview {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 
-	&__light {
-		background: #f2f2f2;
-		color: #1e1e1e !important;
-	}
-	&__dark {
-		background: #1e1e1e;
-		color: #fff !important;
-	}
-	span {
-		padding: 5px 10px;
-		border-radius: 5px;
-		text-transform: capitalize;
+		&__light {
+			background: #f2f2f2;
+			color: #1e1e1e !important;
+		}
+		&__dark {
+			background: #1e1e1e;
+			color: #fff !important;
+		}
+		span {
+			padding: 5px 10px;
+			border-radius: 5px;
+			text-transform: capitalize;
+		}
 	}
 }

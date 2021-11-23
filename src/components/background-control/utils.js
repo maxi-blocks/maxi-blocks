@@ -27,6 +27,8 @@ export const setBreakpointToLayer = ({
 		'background-svg-SVGData',
 		'background-svg-SVGMediaID',
 		'background-svg-SVGMediaURL',
+		'background-image-mediaURL',
+		'background-image-mediaID',
 		'background-image-parallax-status',
 		'background-image-parallax-speed',
 		'background-image-parallax-direction',

@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import getAttributeValue from '../getAttributeValue';
-import getBorderStyles from './getBorderStyles';
 import getColorRGBAString from '../getColorRGBAString';
 import getDisplayStyles from './getDisplayStyles';
 import getGroupAttributes from '../getGroupAttributes';
@@ -12,7 +11,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, round, isNumber, merge, compact } from 'lodash';
+import { isEmpty, isNil, isNumber, merge, compact } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -209,12 +208,21 @@ export const getImageBackgroundObject = ({
 	isHover = false,
 	prefix = '',
 	breakpoint,
+	isParallax = false,
 	...props
 }) => {
 	const response = {
 		label: 'Background Image',
 		[breakpoint]: {},
 	};
+
+	const bgImageUrl = getAttributeValue({
+		target: 'background-image-mediaURL',
+		props,
+		prefix,
+	});
+
+	if (isEmpty(bgImageUrl)) return {};
 
 	const getBgImageAttributeValue = target =>
 		getAttributeValue({
@@ -226,12 +234,6 @@ export const getImageBackgroundObject = ({
 		});
 	const getBgImageLastBreakpointAttribute = target =>
 		getLastBreakpointAttribute(prefix + target, breakpoint, props, isHover);
-
-	const bgImageUrl = getBgImageLastBreakpointAttribute(
-		'background-image-mediaURL'
-	);
-
-	if (isEmpty(bgImageUrl)) return {};
 
 	const bgImageSize = getLastBreakpointAttribute(
 		`${prefix}background-image-size`,
@@ -259,69 +261,103 @@ export const getImageBackgroundObject = ({
 		'background-image-clip-path'
 	);
 
-	// Image
-	if (bgImageSize === 'custom' && !isNil(bgImageCropOptions)) {
-		response[breakpoint][
-			'background-image'
-		] = `url('${bgImageCropOptions.image.source_url}')`;
-	} else if (
-		(bgImageSize === 'custom' && isNil(bgImageCropOptions)) ||
-		(bgImageSize !== 'custom' && !isNil(bgImageUrl))
-	) {
-		response[breakpoint]['background-image'] = `url('${bgImageUrl}')`;
-	}
+	if (!isParallax) {
+		// Image
+		if (breakpoint === 'general') {
+			if (bgImageSize === 'custom' && !isNil(bgImageCropOptions)) {
+				response[breakpoint][
+					'background-image'
+				] = `url('${bgImageCropOptions.image.source_url}')`;
+			} else if (
+				(bgImageSize === 'custom' && isNil(bgImageCropOptions)) ||
+				(bgImageSize !== 'custom' && !isNil(bgImageUrl))
+			) {
+				response[breakpoint][
+					'background-image'
+				] = `url('${bgImageUrl}')`;
+			}
+		}
 
-	// Size
-	if (bgImageSize !== 'custom') {
-		if (!isNil(response[breakpoint]['background-size']))
+		// Size
+		if (bgImageSize !== 'custom') {
+			if (!isNil(response[breakpoint]['background-size']))
+				response[breakpoint][
+					'background-size'
+				] = `${response[breakpoint]['background-size']},${bgImageSize}`;
+			else response[breakpoint]['background-size'] = bgImageSize;
+		} else if (!isNil(response[breakpoint]['background-size']))
 			response[breakpoint][
 				'background-size'
-			] = `${response[breakpoint]['background-size']},${bgImageSize}`;
-		else response[breakpoint]['background-size'] = bgImageSize;
-	} else if (!isNil(response[breakpoint]['background-size']))
-		response[breakpoint][
-			'background-size'
-		] = `${response[breakpoint]['background-size']},cover`;
-	else response[breakpoint]['background-size'] = 'cover';
+			] = `${response[breakpoint]['background-size']},cover`;
+		else response[breakpoint]['background-size'] = 'cover';
 
-	// Repeat
-	if (bgImageRepeat)
-		response[breakpoint]['background-repeat'] = bgImageRepeat;
+		// Repeat
+		if (bgImageRepeat)
+			response[breakpoint]['background-repeat'] = bgImageRepeat;
 
-	// Position
-	if (bgImagePosition !== 'custom')
-		response[breakpoint]['background-position'] = bgImagePosition;
-	else {
-		const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
-			'background-image-position-width'
-		);
-		const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
-			'background-image-position-width-unit'
-		);
-		const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
-			'background-image-position-height'
-		);
-		const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
-			'background-image-position-height-unit'
-		);
-		response[breakpoint][
-			'background-position'
-		] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
-	}
-	// Origin
-	if (bgImageOrigin)
-		response[breakpoint]['background-origin'] = bgImageOrigin;
-
-	// Clip
-	if (bgImageClip) response[breakpoint]['background-clip'] = bgImageClip;
-
-	// Attachment
-	if (bgImageAttachment) {
-		if (!isNil(response[breakpoint]['background-attachment']))
+		// Position
+		if (bgImagePosition !== 'custom')
+			response[breakpoint]['background-position'] = bgImagePosition;
+		else {
+			const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
+				'background-image-position-width'
+			);
+			const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-width-unit'
+			);
+			const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
+				'background-image-position-height'
+			);
+			const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-height-unit'
+			);
 			response[breakpoint][
-				'background-attachment'
-			] = `${response[breakpoint]['background-attachment']},${bgImageAttachment}`;
-		else response[breakpoint]['background-attachment'] = bgImageAttachment;
+				'background-position'
+			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
+		}
+
+		// Origin
+		if (bgImageOrigin)
+			response[breakpoint]['background-origin'] = bgImageOrigin;
+
+		// Clip
+		if (bgImageClip) response[breakpoint]['background-clip'] = bgImageClip;
+
+		// Attachment
+		if (bgImageAttachment) {
+			if (!isNil(response[breakpoint]['background-attachment']))
+				response[breakpoint][
+					'background-attachment'
+				] = `${response[breakpoint]['background-attachment']},${bgImageAttachment}`;
+			else
+				response[breakpoint]['background-attachment'] =
+					bgImageAttachment;
+		}
+	} else {
+		if (bgImageSize !== 'custom')
+			response[breakpoint]['object-fit'] = bgImageSize;
+		else response[breakpoint]['object-fit'] = 'cover';
+
+		// Position
+		if (bgImagePosition !== 'custom')
+			response[breakpoint]['object-position'] = bgImagePosition;
+		else {
+			const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
+				'background-image-position-width'
+			);
+			const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-width-unit'
+			);
+			const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
+				'background-image-position-height'
+			);
+			const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
+				'background-image-position-height-unit'
+			);
+			response[breakpoint][
+				'object-position'
+			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
+		}
 	}
 
 	// Opacity
@@ -589,36 +625,94 @@ const getBackgroundLayers = ({
 					},
 				};
 				break;
-			case 'image':
-				response[layerTarget] = {
-					...response[layerTarget],
-					[type]: {
-						...merge(
-							response?.[layerTarget]?.[type],
-							getImageBackgroundObject({
-								...getGroupAttributes(
-									layer,
-									'backgroundImage',
-									isHover
-								),
-								isHover,
-								prefix,
-								breakpoint,
-							}),
-							getDisplayStyles(
-								{
+			case 'image': {
+				const parallaxStatus = getAttributeValue({
+					target: 'background-image-parallax-status',
+					props: layer,
+					prefix,
+				});
+
+				if (!parallaxStatus)
+					response[layerTarget] = {
+						...response[layerTarget],
+						[type]: {
+							...merge(
+								response?.[layerTarget]?.[type],
+								getImageBackgroundObject({
 									...getGroupAttributes(
 										layer,
-										'display',
+										'backgroundImage',
 										isHover
 									),
-								},
-								isHover
-							)
-						),
-					},
-				};
+									isHover,
+									prefix,
+									breakpoint,
+									isParallax: parallaxStatus,
+								}),
+								getDisplayStyles(
+									{
+										...getGroupAttributes(
+											layer,
+											'display',
+											isHover
+										),
+									},
+									isHover
+								)
+							),
+						},
+					};
+				else {
+					response[layerTarget] = {
+						...response[layerTarget],
+						[type]: {
+							...merge(
+								response?.[layerTarget]?.[type],
+								getDisplayStyles(
+									{
+										...getGroupAttributes(
+											layer,
+											'display',
+											isHover
+										),
+									},
+									isHover
+								)
+							),
+						},
+					};
+					response[`${layerTarget} img`] = {
+						...response[`${layerTarget} img`],
+						[type]: {
+							...merge(
+								response?.[`${layerTarget} img`]?.[type],
+								getImageBackgroundObject({
+									...getGroupAttributes(
+										layer,
+										'backgroundImage',
+										isHover
+									),
+									isHover,
+									prefix,
+									breakpoint,
+									isParallax: parallaxStatus,
+								}),
+								getDisplayStyles(
+									{
+										...getGroupAttributes(
+											layer,
+											'display',
+											isHover
+										),
+									},
+									isHover
+								)
+							),
+						},
+					};
+				}
 				break;
+			}
 			case 'video':
 				response[layerTarget] = {
 					...response[layerTarget],
@@ -749,125 +843,6 @@ const getBackgroundLayers = ({
 	return response;
 };
 
-const getGeneralBackgroundStyles = (
-	props,
-	borderProps,
-	blockStyle,
-	isHover
-) => {
-	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-	const size = {};
-
-	breakpoints.forEach(breakpoint => {
-		const widthTop =
-			getLastBreakpointAttribute('border-top-width', breakpoint, props) ||
-			0;
-		const widthBottom =
-			getLastBreakpointAttribute(
-				'border-bottom-width',
-				breakpoint,
-				props
-			) || 0;
-		const widthLeft =
-			getLastBreakpointAttribute(
-				'border-left-width',
-				breakpoint,
-				props
-			) || 0;
-		const widthRight =
-			getLastBreakpointAttribute(
-				'border-right-width',
-				breakpoint,
-				props
-			) || 0;
-		const widthUnit =
-			getLastBreakpointAttribute(
-				'border-unit-width',
-				breakpoint,
-				props
-			) || 'px';
-		const horizontalWidth =
-			round(widthTop / 2, 2) - round(widthBottom / 2, 2);
-		const verticalWidth =
-			round(widthLeft / 2, 2) - round(widthRight / 2, 2);
-
-		if (!!verticalWidth || !!horizontalWidth || isHover)
-			size[breakpoint] = {
-				transform: `translate(calc(-50% - ${verticalWidth}${widthUnit}), calc(-50% - ${horizontalWidth}${widthUnit}))`,
-			};
-	});
-
-	const border = getBorderStyles({
-		obj: borderProps,
-		parentBlockStyle: blockStyle,
-		isHover,
-	});
-
-	breakpoints.forEach(breakpoint => {
-		if (border[breakpoint]['border-top-width'])
-			border[breakpoint]['border-top-style'] =
-				border[breakpoint]['border-style'];
-
-		if (border[breakpoint]['border-right-width'])
-			border[breakpoint]['border-right-style'] =
-				border[breakpoint]['border-style'];
-
-		if (border[breakpoint]['border-bottom-width'])
-			border[breakpoint]['border-bottom-style'] =
-				border[breakpoint]['border-style'];
-
-		if (border[breakpoint]['border-left-width'])
-			border[breakpoint]['border-left-style'] =
-				border[breakpoint]['border-style'];
-	});
-
-	delete border.general['border-style'];
-
-	// Clean size object
-	if (!isEmpty(size))
-		[...breakpoints].reverse().forEach(breakpoint => {
-			if (
-				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]
-					?.transform === size[breakpoint]?.transform
-			)
-				delete size[breakpoint];
-		});
-
-	return { border, ...(!isEmpty(size) && { size }) };
-};
-
-const getBasicResponseObject = ({
-	target,
-	isHover,
-	prefix,
-	blockStyle,
-	...props
-}) => {
-	const includeBorder =
-		!isHover || (isHover && props[`${prefix}border-status-hover`]);
-
-	const borderObj =
-		includeBorder &&
-		getGeneralBackgroundStyles(
-			props,
-			{
-				...getGroupAttributes(
-					props,
-					['border', 'borderRadius', 'borderWidth'],
-					isHover
-				),
-			},
-			blockStyle,
-			isHover
-		);
-
-	return {
-		...(includeBorder && {
-			[`${target} > .maxi-background-displayer`]: { ...borderObj },
-		}),
-	};
-};
-
 export const getBlockBackgroundStyles = ({
 	target: rawTarget,
 	isHover = false,
@@ -877,13 +852,7 @@ export const getBlockBackgroundStyles = ({
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
 
-	let response = getBasicResponseObject({
-		target,
-		isHover,
-		prefix,
-		blockStyle,
-		...props,
-	});
+	let response = {};
 
 	if (isHover && !props[`${prefix}block-background-hover-status`])
 		return response;

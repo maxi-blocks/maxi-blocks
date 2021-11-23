@@ -70,7 +70,7 @@ describe('getBackgroundStyles', () => {
 	});
 
 	it('Get correct block background styles for image layer with different values on different responsive stages', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -78,8 +78,8 @@ describe('getBackgroundStyles', () => {
 				{
 					type: 'image',
 					'display-general': 'block',
-					'background-image-mediaID-general': 302,
-					'background-image-mediaURL-general':
+					'background-image-mediaID': 302,
+					'background-image-mediaURL':
 						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
 					'background-image-size-general': 'cover',
 					'background-image-width-general': 470,
@@ -100,9 +100,6 @@ describe('getBackgroundStyles', () => {
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-image-opacity-general': 0.52,
 					id: 0,
-					'background-image-mediaID-xl': 302,
-					'background-image-mediaURL-xl':
-						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
 					'background-image-width-xl': 470,
 					'background-image-height-xl': 300,
 					'background-image-opacity-xl': 0.52,
@@ -114,9 +111,6 @@ describe('getBackgroundStyles', () => {
 					'background-image-clip-xl': 'padding-box',
 					'background-image-clip-path-xl':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					'background-image-mediaID-l': 227,
-					'background-image-mediaURL-l':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg',
 					'background-image-width-l': 2560,
 					'background-image-height-l': 1920,
 					'background-image-size-l': 'contain',
@@ -136,21 +130,90 @@ describe('getBackgroundStyles', () => {
 					'background-image-position-s': 'center top',
 					'background-image-clip-path-s':
 						'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
-					'background-image-mediaID-xs': 226,
-					'background-image-mediaURL-xs':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
 					'background-image-width-xs': 600,
 					'background-image-height-xs': 600,
 					'background-image-size-xs': 'auto',
 				},
 			],
-		};
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get correct block background styles for image layer with parallax and different values on different responsive stages', () => {
+		const result = getBlockBackgroundStyles({
+			target: 'maxi-test',
+			isHover: false,
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'image',
+					'display-general': 'block',
+					'background-image-parallax-status': true,
+					'background-image-mediaID': 302,
+					'background-image-mediaURL':
+						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
+					'background-image-size-general': 'cover',
+					'background-image-width-general': 470,
+					'background-image-width-unit-general': '%',
+					'background-image-height-general': 300,
+					'background-image-height-unit-general': '%',
+					'background-image-crop-options-general': null,
+					'background-image-repeat-general': 'repeat-x',
+					'background-image-position-general': 'left top',
+					'background-image-position-width-unit-general': '%',
+					'background-image-position-width-general': 0,
+					'background-image-position-height-unit-general': '%',
+					'background-image-position-height-general': 0,
+					'background-image-origin-general': 'border-box',
+					'background-image-clip-general': 'padding-box',
+					'background-image-attachment-general': 'local',
+					'background-image-clip-path-general':
+						'polygon(50% 0%, 0% 100%, 100% 100%)',
+					'background-image-opacity-general': 0.52,
+					id: 0,
+					'background-image-width-xl': 470,
+					'background-image-height-xl': 300,
+					'background-image-opacity-xl': 0.52,
+					'background-image-size-xl': 'cover',
+					'background-image-repeat-xl': 'repeat-x',
+					'background-image-position-xl': 'left top',
+					'background-image-attachment-xl': 'local',
+					'background-image-origin-xl': 'border-box',
+					'background-image-clip-xl': 'padding-box',
+					'background-image-clip-path-xl':
+						'polygon(50% 0%, 0% 100%, 100% 100%)',
+					'background-image-width-l': 2560,
+					'background-image-height-l': 1920,
+					'background-image-size-l': 'contain',
+					'background-image-repeat-l': 'space',
+					'background-image-position-l': 'right top',
+					'background-image-attachment-l': 'fixed',
+					'background-image-origin-l': 'content-box',
+					'background-image-clip-l': 'padding-box',
+					'background-image-clip-path-l':
+						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+					'background-image-opacity-m': 0.91,
+					'background-image-opacity-xxl': 0.11,
+					'background-image-clip-path-xxl':
+						'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+					'background-image-repeat-s': 'repeat-x',
+					'background-image-attachment-s': 'scroll',
+					'background-image-position-s': 'center top',
+					'background-image-clip-path-s':
+						'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
+					'background-image-width-xs': 600,
+					'background-image-height-xs': 600,
+					'background-image-size-xs': 'auto',
+				},
+			],
+		});
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for video layer with different values on different responsive stages', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -186,13 +249,13 @@ describe('getBackgroundStyles', () => {
 					'background-video-opacity-xs': 0.9,
 				},
 			],
-		};
+		});
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for gradient layer with different values on different responsive stages', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -226,13 +289,13 @@ describe('getBackgroundStyles', () => {
 						'polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)',
 				},
 			],
-		};
+		});
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for shape layer with different values on different responsive stages', () => {
-		const result = {
+		const result = getBlockBackgroundStyles({
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
@@ -285,7 +348,7 @@ describe('getBackgroundStyles', () => {
 					'background-svg-image-shape-scale-general': 72,
 				},
 			],
-		};
+		});
 
 		expect(result).toMatchSnapshot();
 	});
@@ -308,8 +371,8 @@ describe('getBackgroundStyles', () => {
 				{
 					type: 'image',
 					'display-general': 'block',
-					'background-image-mediaID-general': '',
-					'background-image-mediaURL-general': '',
+					'background-image-mediaID': '',
+					'background-image-mediaURL': '',
 					'background-image-size-general': '',
 					'background-image-width-general': 100,
 					'background-image-width-unit-general': '%',
@@ -332,8 +395,8 @@ describe('getBackgroundStyles', () => {
 				{
 					type: 'video',
 					'display-general': 'block',
-					'background-video-mediaID-general': null,
-					'background-video-mediaURL-general': '',
+					'background-video-mediaID': null,
+					'background-video-mediaURL': '',
 					'background-video-startTime-general': '',
 					'background-video-endTime-general': '',
 					'background-video-loop-general': false,
@@ -359,8 +422,8 @@ describe('getBackgroundStyles', () => {
 					'background-palette-svg-color-general': 5,
 					'background-svg-SVGElement-general': '',
 					'background-svg-SVGData-general': {},
-					'background-svg-SVGMediaID-general': null,
-					'background-svg-SVGMediaURL-general': '',
+					'background-svg-SVGMediaID': null,
+					'background-svg-SVGMediaURL': '',
 					'background-svg-top-unit-general': '%',
 					'background-svg-top-general': null,
 					'background-svg-left-unit-general': '%',
@@ -419,16 +482,6 @@ describe('getBackgroundStyles', () => {
 			'background-palette-opacity-m': 0.39,
 			'background-palette-opacity-s': 0.39,
 			'background-palette-opacity-xl': 0.39,
-		});
-
-		expect(result).toMatchSnapshot();
-	});
-
-	it('Get correct parallax background styles', () => {
-		const result = getBackgroundStyles({
-			target: 'maxi-test',
-			isHover: false,
-			blockStyle: 'light',
 		});
 
 		expect(result).toMatchSnapshot();
@@ -524,8 +577,8 @@ describe('getBackgroundStyles', () => {
 				{
 					type: 'image',
 					'display-general': 'block',
-					'background-image-mediaID-general': 302,
-					'background-image-mediaURL-general':
+					'background-image-mediaID': 302,
+					'background-image-mediaURL':
 						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
 					'background-image-size-general': 'cover',
 					'background-image-width-general': 470,
@@ -546,9 +599,6 @@ describe('getBackgroundStyles', () => {
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-image-opacity-general': 0.52,
 					id: 0,
-					'background-image-mediaID-xl': 302,
-					'background-image-mediaURL-xl':
-						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
 					'background-image-width-xl': 470,
 					'background-image-height-xl': 300,
 					'background-image-opacity-xl': 0.52,
@@ -560,9 +610,6 @@ describe('getBackgroundStyles', () => {
 					'background-image-clip-xl': 'padding-box',
 					'background-image-clip-path-xl':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					'background-image-mediaID-l': 227,
-					'background-image-mediaURL-l':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg',
 					'background-image-width-l': 2560,
 					'background-image-height-l': 1920,
 					'background-image-size-l': 'contain',
@@ -582,20 +629,11 @@ describe('getBackgroundStyles', () => {
 					'background-image-position-s': 'center top',
 					'background-image-clip-path-s':
 						'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
-					'background-image-mediaID-xs': 226,
-					'background-image-mediaURL-xs':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
 					'background-image-width-xs': 600,
 					'background-image-height-xs': 600,
 					'background-image-size-xs': 'auto',
-					'background-image-mediaID-xl-hover': 226,
-					'background-image-mediaURL-xl-hover':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
 					'background-image-width-xl-hover': 600,
 					'background-image-height-xl-hover': 600,
-					'background-image-mediaID-general-hover': 226,
-					'background-image-mediaURL-general-hover':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
 					'background-image-width-general-hover': 600,
 					'background-image-height-general-hover': 600,
 					'background-image-opacity-xl-hover': 0.17,
@@ -604,15 +642,9 @@ describe('getBackgroundStyles', () => {
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
 					'background-image-clip-path-general-hover':
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-					'background-image-mediaID-xxl-hover': 210,
-					'background-image-mediaURL-xxl-hover':
-						'http://localhost:8888/wp-content/uploads/2021/09/Captura-de-pantalla-2021-09-13-a-las-17.16.06.png',
 					'background-image-width-xxl-hover': 788,
 					'background-image-height-xxl-hover': 732,
 					'background-image-opacity-xxl-hover': 0.79,
-					'background-image-mediaID-l-hover': 302,
-					'background-image-mediaURL-l-hover':
-						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
 					'background-image-width-l-hover': 470,
 					'background-image-height-l-hover': 300,
 					'background-image-opacity-l-hover': 0.81,
@@ -921,9 +953,6 @@ describe('getBackgroundStyles', () => {
 					'display-general-hover': 'block',
 					'isHover-general': false,
 					'isHover-general-hover': false,
-					'background-image-mediaID-general-hover': 226,
-					'background-image-mediaURL-general-hover':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
 					'background-image-size-general': 'auto',
 					'background-image-size-general-hover': 'auto',
 					'background-image-width-general': 100,
@@ -958,9 +987,6 @@ describe('getBackgroundStyles', () => {
 					'background-image-parallax-speed': 4,
 					'background-image-parallax-direction': 'up',
 					id: 0,
-					'background-image-mediaID-xl-hover': 226,
-					'background-image-mediaURL-xl-hover':
-						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
 					'background-image-width-xl-hover': 600,
 					'background-image-height-xl-hover': 600,
 				},

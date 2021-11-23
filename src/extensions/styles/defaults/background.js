@@ -122,7 +122,13 @@ export const rawBackgroundImage = {
 	},
 	'background-image-parallax-direction': {
 		type: 'string',
-		default: 'up',
+		default: 'down',
+	},
+	'background-image-parallax-alt': {
+		type: 'string',
+	},
+	'background-image-parallax-alt-selector': {
+		type: 'string',
 	},
 };
 
@@ -246,6 +252,18 @@ const breakpointObjectCreator = obj => {
 
 	Object.entries(obj).forEach(([key, val]) => {
 		if (['background-layers'].includes(key)) return;
+		if (
+			[
+				'background-image-mediaURL',
+				'background-image-mediaID',
+				'background-image-parallax-alt',
+				'background-image-parallax-alt-selector',
+			].includes(key)
+		) {
+			response[key] = val;
+
+			return;
+		}
 
 		breakpoints.forEach(breakpoint => {
 			const newVal = { ...val };

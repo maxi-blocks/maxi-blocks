@@ -40,7 +40,7 @@ export default function TextareaControl({
 				id={id}
 				rows={rows}
 				onChange={onChangeValue}
-				aria-describedby={!!help ? id + '__help' : undefined}
+				aria-describedby={help ? `${id}__help` : undefined}
 				value={value}
 				{...props}
 			/>

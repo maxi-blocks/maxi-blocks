@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { Input } from 'postcss';
 /**
  * Internal dependencies
  */
@@ -67,7 +66,6 @@ describe('PositionControl', () => {
 	});
 
 	it('Check Responsive position control', async () => {
-		debugger;
 		await changeResponsive(page, 's');
 		const positionSelector = await page.$eval(
 			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',

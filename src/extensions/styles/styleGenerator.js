@@ -30,6 +30,10 @@ const getResponsiveStyles = styles => {
 const styleStringGenerator = (target, content, breakpoint) => {
 	let string = '';
 	let generalString = '';
+	let finalContent = content;
+
+	if (content.includes('css:'))
+		finalContent = content.replace('css: ', '').replace(';;', ';');
 
 	generalString += `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},`;
 	generalString += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
@@ -51,7 +55,7 @@ const styleStringGenerator = (target, content, breakpoint) => {
 		} while (breakpointPos >= 0);
 	}
 
-	string += content;
+	string += finalContent;
 	string += '}';
 
 	return string;
@@ -60,6 +64,11 @@ const styleStringGenerator = (target, content, breakpoint) => {
 const mediaStylesGenerator = (target, content, breakpoint, media) => {
 	let string = '';
 	let generalString = '';
+	let finalContent = content;
+
+	if (content.includes('css:')) {
+		finalContent = content.replaceAll('css: ', '').replaceAll(';;', ';');
+	}
 
 	generalString += `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},`;
 	generalString += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
@@ -70,7 +79,7 @@ const mediaStylesGenerator = (target, content, breakpoint, media) => {
 			breakpoint !== 'xxl' ? 'max-width' : 'min-width'
 		}: ${
 			breakpoint !== 'xxl' ? media : media + 1 // Ensures XXl doesn't affect XL
-		}px){${generalString}${content}}}`;
+		}px){${generalString}${finalContent}}}`;
 
 	return string;
 };

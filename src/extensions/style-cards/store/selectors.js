@@ -46,10 +46,10 @@ export const receiveStyleCardValue = (
 		const getSCValue = target => {
 			const selectedSCStyleCard = getActiveStyleCard(state.styleCards);
 			const styleCardEntry = {
-				...selectedSCStyleCard.value?.[blockStyle].defaultStyleCard[
+				...selectedSCStyleCard.value?.[blockStyle]?.defaultStyleCard[
 					SCEntry
 				],
-				...selectedSCStyleCard.value?.[blockStyle].styleCard[SCEntry],
+				...selectedSCStyleCard.value?.[blockStyle]?.styleCard[SCEntry],
 			};
 			const value = styleCardEntry?.[target];
 

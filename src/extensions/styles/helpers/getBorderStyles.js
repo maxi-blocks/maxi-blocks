@@ -142,7 +142,14 @@ const getBorderStyles = ({
 						(!isBorderNone || (isHover && globalHoverStatus))
 					)
 						response[breakpoint]['border-color'] = getColorString();
-					else response[breakpoint][newLabel] = `${value}`;
+					else if (
+						![
+							'border-palette-color-status',
+							'border-palette-color',
+							'border-palette-opacity',
+						].includes(newLabel)
+					)
+						response[breakpoint][newLabel] = `${value}`;
 				} else {
 					const unitKey = keyWords.filter(key =>
 						newLabel.includes(key)

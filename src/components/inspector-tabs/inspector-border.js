@@ -17,7 +17,7 @@ import {
 /**
  * Component
  */
-const border = ({ props, prefix, globalProps, hoverGlobalProps }) => {
+const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 	const {
 		attributes,
 		clientId,

@@ -31,6 +31,7 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 };
 
 const stylesCleaner = (obj, selectors, props) => {
+	// Process custom styles if they exist
 	if (!isEmpty(selectors)) {
 		const customCssObject = getCustomCssObject(selectors, props);
 		!isEmpty(customCssObject) && merge(obj, customCssObject);

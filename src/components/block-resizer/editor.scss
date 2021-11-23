@@ -38,10 +38,11 @@ body.maxi-blocks--active .maxi-block__resizer {
 			&-bottom {
 				bottom: 0 !important;
 				&:before {
-					top: 10px;
-					left: 10px;
-					transform: rotate(-225deg);
-					border-bottom: 10px solid var(--maxi-primary-color);
+					bottom: 0px;
+					left: 0px;
+					border-bottom: 5px solid var(--maxi-primary-color);
+					border-left: 0;
+					border-right: 0;
 				}
 			}
 			&-left {

@@ -37,7 +37,7 @@ const Inspector = props => {
 										...inspectorTabs.calloutArrow({
 											props,
 										}),
-										...inspectorTabs.background({
+										...inspectorTabs.blockBackground({
 											props,
 										}),
 										...inspectorTabs.border({

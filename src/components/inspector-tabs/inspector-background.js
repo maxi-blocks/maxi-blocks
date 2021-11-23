@@ -7,27 +7,49 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SettingTabsControl from '../setting-tabs-control';
-import BlockBackgroundControl from '../background-control/blockBackgroundControl';
+import BackgroundControl from '../background-control';
 import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 
 /**
  * Component
  */
 const background = ({
+	label = '',
 	props,
+	prefix = '',
 	disableImage = false,
 	disableVideo = false,
 	disableGradient = false,
 	disableColor = false,
 	disableSVG = false,
+	disableClipPath = false,
+	globalProps,
+	hoverGlobalProps,
+	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
 }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		setAttributes,
+		scValues = {},
+	} = props;
 
-	const bgHoverStatus = attributes['background-hover-status'];
+	const {
+		'hover-background-color-global': isActive,
+		'hover-background-color-all': affectAll,
+	} = scValues;
+	const globalHoverStatus = isActive && affectAll;
+
+	const hoverStatus =
+		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
 
 	return {
-		label: __('Background / Layer', 'maxi-blocks'),
+		label: __(`${label} background`, 'maxi-blocks'),
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
@@ -36,18 +58,24 @@ const background = ({
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<>
-								<BlockBackgroundControl
-									{...getGroupAttributes(attributes, [
-										'blockBackground',
-									])}
+								<BackgroundControl
+									{...getGroupAttributes(
+										attributes,
+										groupAttributes,
+										false,
+										prefix
+									)}
+									prefix={prefix}
 									onChange={obj => setAttributes(obj)}
+									disableColor={disableColor}
+									disableImage={disableImage}
+									disableGradient={disableGradient}
+									disableVideo={disableVideo}
+									disableSVG={disableSVG}
+									disableClipPath={disableClipPath}
 									clientId={clientId}
 									breakpoint={deviceType}
-									disableImage={disableImage}
-									disableVideo={disableVideo}
-									disableGradient={disableGradient}
-									disableColor={disableColor}
-									disableSVG={disableSVG}
+									globalProps={globalProps}
 								/>
 							</>
 						),
@@ -61,25 +89,64 @@ const background = ({
 										'Enable Background Hover',
 										'maxi-blocks'
 									)}
-									selected={bgHoverStatus}
+									selected={hoverStatus}
 									className='maxi-background-status-hover'
-									onChange={val => {
+									onChange={val =>
 										setAttributes({
-											'background-hover-status': val,
-										});
-									}}
+											...(val &&
+												setHoverAttributes(
+													{
+														...getGroupAttributes(
+															attributes,
+															[
+																'background',
+																'backgroundColor',
+																'backgroundGradient',
+															],
+															false,
+															prefix
+														),
+													},
+													{
+														...getGroupAttributes(
+															attributes,
+															[
+																'background',
+																'backgroundColor',
+																'backgroundGradient',
+															],
+															true,
+															prefix
+														),
+													}
+												)),
+											[`${prefix}background-hover-status`]:
+												val,
+										})
+									}
 								/>
-								{bgHoverStatus && (
-									<BlockBackgroundControl
+								{hoverStatus && (
+									<BackgroundControl
 										{...getGroupAttributes(
 											attributes,
-											'blockBackground',
-											true
+											[
+												'background',
+												'backgroundColor',
+												'backgroundGradient',
+											],
+											true,
+											prefix
 										)}
+										prefix={prefix}
 										onChange={obj => setAttributes(obj)}
+										disableImage
+										disableVideo
+										disableClipPath
+										disableSVG
 										isHover
 										clientId={clientId}
 										breakpoint={deviceType}
+										globalProps={hoverGlobalProps}
 									/>
 								)}
 							</>

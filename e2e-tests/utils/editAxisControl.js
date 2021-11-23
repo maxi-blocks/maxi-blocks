@@ -6,31 +6,15 @@
 import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 import { isNaN, isArray } from 'lodash';
 
-/**
- *
- * $1 		AxisControl Jest handle element
- * const axisControlInstance = accordion.$('.maxi-axis-control__margin'))
- *
- * array = [1, 2, 3, 4]
- */
-// syncOption = all, axis , none
 const editAxisControl = async ({
 	page,
 	instance,
 	syncOption,
 	values,
 	unit,
-	testReset = false,
 	resetAllBefore = false,
 	resetAllAfter = false,
-	// pressReset,
 }) => {
-	const pressReset = async page => {
-		await page.$eval('.maxi-axis-control__unit-header button', button =>
-			button.click()
-		);
-	};
-
 	if (syncOption) {
 		await instance.$eval(
 			`.maxi-axis-control__header button[aria-label="${syncOption}"]`,
@@ -75,9 +59,7 @@ const editAxisControl = async ({
 		if (!isNaN(+newValue)) await page.keyboard.type(newValue);
 	}
 
-	// if (testRest)
 	if (resetAllAfter)
-		// reset
 		await instance.$eval('.maxi-axis-control__unit-header button', button =>
 			button.click()
 		);

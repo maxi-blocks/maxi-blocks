@@ -23,6 +23,11 @@ import {
 } from '../../extensions/style-cards';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Icons
  */
 import { reset } from '../../icons';
@@ -384,11 +389,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
 										<div
 											key={`maxi-style-cards__quick-color-presets__box__${item}`}
-											className={`maxi-style-cards__quick-color-presets__box ${
-												quickColorPreset === item
-													? 'maxi-style-cards__quick-color-presets__box--active'
-													: ''
-											}`}
+											className={classnames(
+												'maxi-style-cards__quick-color-presets__box',
+												quickColorPreset === item &&
+													'maxi-style-cards__quick-color-presets__box--active'
+											)}
 											data-item={item}
 											onClick={e =>
 												setQuickColorPreset(
@@ -398,7 +403,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											}
 										>
 											<span
-												className={`maxi-style-cards__quick-color-presets__-item maxi-style-cards__quick-color-presets__-item__${item}`}
+												className={classnames(
+													'maxi-style-cards__quick-color-presets__box__item',
+													`maxi-style-cards__quick-color-presets__box__item__${item}`
+												)}
 												style={{
 													background: `rgba(${processSCAttribute(
 														SC,

@@ -122,8 +122,8 @@ export const borderWidth = {
 		type: 'number',
 	},
 	'border-sync-width-general': {
-		type: 'boolean',
-		default: true,
+		type: 'string',
+		default: 'all',
 	},
 	'border-unit-width-general': {
 		type: 'string',
@@ -142,7 +142,7 @@ export const borderWidth = {
 		type: 'number',
 	},
 	'border-sync-width-xxl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-width-xxl': {
 		type: 'string',
@@ -160,7 +160,7 @@ export const borderWidth = {
 		type: 'number',
 	},
 	'border-sync-width-xl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-width-xl': {
 		type: 'string',
@@ -178,7 +178,7 @@ export const borderWidth = {
 		type: 'number',
 	},
 	'border-sync-width-l': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-width-l': {
 		type: 'string',
@@ -196,7 +196,7 @@ export const borderWidth = {
 		type: 'number',
 	},
 	'border-sync-width-m': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-width-m': {
 		type: 'string',
@@ -214,7 +214,7 @@ export const borderWidth = {
 		type: 'number',
 	},
 	'border-sync-width-s': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-width-s': {
 		type: 'string',
@@ -232,7 +232,7 @@ export const borderWidth = {
 		type: 'number',
 	},
 	'border-sync-width-xs': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-width-xs': {
 		type: 'string',
@@ -253,8 +253,8 @@ export const borderRadius = {
 		type: 'number',
 	},
 	'border-sync-radius-general': {
-		type: 'boolean',
-		default: true,
+		type: 'string',
+		default: 'all',
 	},
 	'border-unit-radius-general': {
 		type: 'string',
@@ -273,7 +273,7 @@ export const borderRadius = {
 		type: 'number',
 	},
 	'border-sync-radius-xxl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-radius-xxl': {
 		type: 'string',
@@ -291,7 +291,7 @@ export const borderRadius = {
 		type: 'number',
 	},
 	'border-sync-radius-xl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-radius-xl': {
 		type: 'string',
@@ -309,7 +309,7 @@ export const borderRadius = {
 		type: 'number',
 	},
 	'border-sync-radius-l': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-radius-l': {
 		type: 'string',
@@ -327,7 +327,7 @@ export const borderRadius = {
 		type: 'number',
 	},
 	'border-sync-radius-m': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-radius-m': {
 		type: 'string',
@@ -345,7 +345,7 @@ export const borderRadius = {
 		type: 'number',
 	},
 	'border-sync-radius-s': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-radius-s': {
 		type: 'string',
@@ -363,7 +363,7 @@ export const borderRadius = {
 		type: 'number',
 	},
 	'border-sync-radius-xs': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'border-unit-radius-xs': {
 		type: 'string',

@@ -12,16 +12,8 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-general': {
-		type: 'boolean',
-		default: false,
-	},
-	'margin-sync-horizontal-general': {
-		type: 'boolean',
-		default: false,
-	},
-	'margin-sync-vertical-general': {
-		type: 'boolean',
-		default: false,
+		type: 'string',
+		default: 'all',
 	},
 	'margin-unit-general': {
 		type: 'string',
@@ -40,13 +32,7 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-xxl': {
-		type: 'boolean',
-	},
-	'margin-sync-horizontal-xxl': {
-		type: 'boolean',
-	},
-	'margin-sync-vertical-xxl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'margin-unit-xxl': {
 		type: 'string',
@@ -64,13 +50,7 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-xl': {
-		type: 'boolean',
-	},
-	'margin-sync-horizontal-xl': {
-		type: 'boolean',
-	},
-	'margin-sync-vertical-xl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'margin-unit-xl': {
 		type: 'string',
@@ -88,13 +68,7 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-l': {
-		type: 'boolean',
-	},
-	'margin-sync-horizontal-l': {
-		type: 'boolean',
-	},
-	'margin-sync-vertical-l': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'margin-unit-l': {
 		type: 'string',
@@ -112,13 +86,7 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-m': {
-		type: 'boolean',
-	},
-	'margin-sync-horizontal-m': {
-		type: 'boolean',
-	},
-	'margin-sync-vertical-m': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'margin-unit-m': {
 		type: 'string',
@@ -136,13 +104,7 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-s': {
-		type: 'boolean',
-	},
-	'margin-sync-horizontal-s': {
-		type: 'boolean',
-	},
-	'margin-sync-vertical-s': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'margin-unit-s': {
 		type: 'string',
@@ -160,13 +122,7 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-xs': {
-		type: 'boolean',
-	},
-	'margin-sync-horizontal-xs': {
-		type: 'boolean',
-	},
-	'margin-sync-vertical-xs': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'margin-unit-xs': {
 		type: 'string',

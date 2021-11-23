@@ -12,16 +12,8 @@ const padding = {
 		type: 'number',
 	},
 	'padding-sync-general': {
-		type: 'boolean',
-		default: false,
-	},
-	'padding-sync-horizontal-general': {
-		type: 'boolean',
-		default: false,
-	},
-	'padding-sync-vertical-general': {
-		type: 'boolean',
-		default: false,
+		type: 'string',
+		default: 'all',
 	},
 	'padding-unit-general': {
 		type: 'string',
@@ -40,13 +32,7 @@ const padding = {
 		type: 'number',
 	},
 	'padding-sync-xxl': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-xxl': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-xxl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'padding-unit-xxl': {
 		type: 'string',
@@ -64,13 +50,7 @@ const padding = {
 		type: 'number',
 	},
 	'padding-sync-xl': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-xl': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-xl': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'padding-unit-xl': {
 		type: 'string',
@@ -88,13 +68,7 @@ const padding = {
 		type: 'number',
 	},
 	'padding-sync-l': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-l': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-l': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'padding-unit-l': {
 		type: 'string',
@@ -112,13 +86,7 @@ const padding = {
 		type: 'number',
 	},
 	'padding-sync-m': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-m': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-m': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'padding-unit-m': {
 		type: 'string',
@@ -136,13 +104,7 @@ const padding = {
 		type: 'number',
 	},
 	'padding-sync-s': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-s': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-s': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'padding-unit-s': {
 		type: 'string',
@@ -160,13 +122,7 @@ const padding = {
 		type: 'number',
 	},
 	'padding-sync-xs': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-xs': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-xs': {
-		type: 'boolean',
+		type: 'string',
 	},
 	'padding-unit-xs': {
 		type: 'string',

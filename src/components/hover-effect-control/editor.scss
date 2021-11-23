@@ -1,6 +1,6 @@
 .maxi-accordion-control {
 	&__item {
-		&[data-name='hover effect'] {
+		.maxi-hover-effect-control {
 			.maxi-button-group-control__option {
 				&--selected {
 					path {

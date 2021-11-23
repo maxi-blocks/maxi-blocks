@@ -329,7 +329,7 @@ body .toolbar-item__popover {
 
 .maxi-accordion-control {
 	&__item {
-		&[data-name='dimension'] {
+		.maxi-image-inspector__dimension-width {
 			.components-range-control__wrapper {
 				margin-left: 7px !important;
 			}

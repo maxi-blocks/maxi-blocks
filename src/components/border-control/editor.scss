@@ -1,6 +1,6 @@
 .maxi-accordion-control {
 	&__item {
-		&[data-name='border'] {
+		.maxi-border-control {
 			.maxi-default-styles-control__button {
 				&--active {
 					&:nth-child(3),

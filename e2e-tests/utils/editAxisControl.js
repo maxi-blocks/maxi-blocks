@@ -32,8 +32,9 @@ const editAxisControl = async ({
 	};
 
 	if (syncOption) {
-		await instance.$$eval('.maxi-axis-control__header button', button =>
-			button[`${syncOption}`].click()
+		await instance.$eval(
+			`.maxi-axis-control__header button[aria-label="${syncOption}"]`,
+			button => button.click()
 		);
 	}
 

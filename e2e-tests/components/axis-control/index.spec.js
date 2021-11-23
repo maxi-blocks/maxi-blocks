@@ -128,7 +128,6 @@ describe('AxisControl', () => {
 		);
 		expect(positionMUnit).toStrictEqual('%');
 	});
-
 	it('Checking AxisControl auto', async () => {
 		await changeResponsive(page, 'base');
 
@@ -165,23 +164,25 @@ describe('AxisControl', () => {
 
 		expect(marginAttributes).toStrictEqual(expectMargin);
 	});
-
-	/* it('Checking AxisControl async buttons', async () => {
+	it('Checking AxisControl async buttons', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		await openSidebarTab(page, 'style', 'margin padding');
 		const axisControlInstance = await page.$('.maxi-axis-control__margin');
 
 		await editAxisControl({
 			page,
 			instance: axisControlInstance,
-			syncOption: 1,
-			values: '66',
+			syncOption: 'axis',
+			values: ['66', '77'],
 			unit: '%',
 		});
 
 		const expectMargin = {
-			'margin-top-general': '66',
-			'margin-bottom-general': '66',
-			'margin-left-general': '66',
-			'margin-right-general': '66',
+			'margin-top-general': 66,
+			'margin-bottom-general': 66,
+			'margin-left-general': 77,
+			'margin-right-general': 77,
 			'margin-unit-general': '%',
 		};
 
@@ -201,5 +202,38 @@ describe('AxisControl', () => {
 		}))(pageAttributes);
 
 		expect(marginAttributes).toStrictEqual(expectMargin);
-	}); */
+
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			syncOption: 'none',
+			values: ['66', '77', '55', '33'],
+			unit: 'px',
+		});
+
+		const expectSyncMargin = {
+			'margin-top-general': 66,
+			'margin-bottom-general': 55,
+			'margin-left-general': 33,
+			'margin-right-general': 77,
+			'margin-unit-general': 'px',
+		};
+
+		const pageSyncAttributes = await getBlockAttributes();
+		const marginSyncAttributes = (({
+			'margin-unit-general': marginUnit,
+			'margin-top-general': marginTop,
+			'margin-bottom-general': marginBottom,
+			'margin-left-general': marginLeft,
+			'margin-right-general': marginRight,
+		}) => ({
+			'margin-unit-general': marginUnit,
+			'margin-top-general': marginTop,
+			'margin-bottom-general': marginBottom,
+			'margin-left-general': marginLeft,
+			'margin-right-general': marginRight,
+		}))(pageSyncAttributes);
+
+		expect(marginSyncAttributes).toStrictEqual(expectSyncMargin);
+	});
 });

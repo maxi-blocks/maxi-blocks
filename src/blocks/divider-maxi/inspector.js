@@ -199,7 +199,7 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									...inspectorTabs.background({
+									...inspectorTabs.blockBackground({
 										props,
 									}),
 									...inspectorTabs.border({

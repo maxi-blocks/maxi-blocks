@@ -302,7 +302,7 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									...inspectorTabs.background({
+									...inspectorTabs.blockBackground({
 										props,
 										disableImage: true,
 										disableVideo: true,

@@ -169,7 +169,9 @@ const Inspector = props => {
 												</>
 											),
 										},
-										...inspectorTabs.background({ props }),
+										...inspectorTabs.blockBackground({
+											props,
+										}),
 										...inspectorTabs.border({
 											props,
 										}),

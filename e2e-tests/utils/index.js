@@ -1,3 +1,4 @@
+export { default as editAxisControl } from './editAxisControl';
 export { default as getClientId } from './getClientId';
 export { default as getBlockAttributes } from './getBlockAttributes';
 export { default as modalMock } from './modalMock';

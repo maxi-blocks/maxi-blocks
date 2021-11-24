@@ -53,7 +53,7 @@ const generateUniqueAttributes = (
 	breakpoint = 'general'
 ) => {
 	generateAttr(type, `${attr}-start`, 'number', defaults[0], breakpoint);
-	generateAttr(type, `${attr}-middle`, 'number', defaults[1], breakpoint);
+	generateAttr(type, `${attr}-mid`, 'number', defaults[1], breakpoint);
 	generateAttr(type, `${attr}-end`, 'number', defaults[2], breakpoint);
 
 	return null;

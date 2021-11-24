@@ -3,12 +3,20 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useInstanceId } from '@wordpress/compose';
+import { lowerCase } from 'lodash';
 
 /**
  * Internal dependencies
  */
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import BaseControl from '../base-control';
 import Button from '../button';
+import SettingTabsControl from '../setting-tabs-control';
+import SelectControl from '../select-control';
+import AdvancedNumberControl from '../advanced-number-control';
 
 /**
  * External dependencies
@@ -30,12 +38,14 @@ const MotionUniqueControl = props => {
 		className,
 		min = -4000,
 		max = 4000,
-		step = 1,
 		values,
 		onChange,
-		defaultValues = [0, 0, 0],
-		disableReset = false,
+		breakpoint = 'general',
 	} = props;
+
+	console.log('MotionUniqueControl is loaded');
+
+	console.log(values);
 
 	const classes = classnames(
 		'maxi-advanced-number-control maxi-motion-unique-control',
@@ -50,57 +60,97 @@ const MotionUniqueControl = props => {
 	const minimum = type === 'fade' ? 0 : min;
 	const maximum = type === 'fade' ? 100 : max;
 
-	const labels = ['Starting', 'Mid', 'End'];
+	const labels = ['Start', 'Mid', 'End'];
+
+	const viewportOptions = [
+		{
+			label: __('Top of screen', 'maxi-blocks'),
+			value: 'sun-effect',
+		},
+		{
+			label: __('Middle of screen', 'maxi-blocks'),
+			value: 'clockwise',
+		},
+		{
+			label: __('Bottom of screen', 'maxi-blocks'),
+			value: 'counterclockwise',
+		},
+	];
 
 	return (
 		<div className={classes}>
-			{values.map((value, key) => {
-				return (
-					<BaseControl
-						// eslint-disable-next-line react/no-array-index-key
-						key={key}
-						id={motionUniqueControlId}
-						label={__(
-							`${labels[key]} ${inputLabel}`,
-							'maxi-blocks'
-						)}
-					>
-						<input
-							className='maxi-motion-unique-control__content__item__input'
-							type='number'
-							value={value}
-							onChange={val => {
-								const newValues = [];
-								newValues[key] = parseInt(val.target.value);
-								onChange({ ...values, ...newValues });
-							}}
-							step={step}
-							min={minimum}
-							max={maximum}
-						/>
-						{!disableReset && (
-							<Button
-								className='components-maxi-control__reset-button'
-								onClick={e => {
-									e.preventDefault();
-									const newValues = [];
-									newValues[key] = defaultValues[key];
-									onChange({ ...values, ...newValues });
-								}}
-								isSmall
-								aria-label={sprintf(
-									/* translators: %s: a textual label  */
-									__('Reset %s settings', 'maxi-blocks'),
-									label.toLowerCase()
+			<SettingTabsControl
+				items={labels.map((label, key) => {
+					return {
+						label: __(`${label} zone`, 'maxi-blocks'),
+						content: (
+							<>
+								<SelectControl
+									label={__('Viewport entry', 'maxi-blocks')}
+									value={getLastBreakpointAttribute(
+										`motion-viewport-bottom-${type}`,
+										breakpoint,
+										values
+									)}
+									onChange={val =>
+										onChange({
+											[`motion-viewport-bottom-${type}-${breakpoint}`]:
+												val,
+										})
+									}
+									options={viewportOptions}
+								/>
+								{type === 'rotate' && (
+									<AdvancedNumberControl
+										label={__(
+											`${label} angle`,
+											'maxi-blocks'
+										)}
+										value={getLastBreakpointAttribute(
+											`motion-rotate-${lowerCase(
+												label
+											)}-${type}`,
+											breakpoint,
+											values
+										)}
+										onChangeValue={val => {
+											onChange({
+												[`motion-rotate-${lowerCase(
+													label
+												)}-${type}-${breakpoint}`]:
+													val !== undefined &&
+													val !== ''
+														? val
+														: '',
+											});
+										}}
+										min={0}
+										step={1}
+										max={360}
+										onReset={() =>
+											onChange({
+												[`motion-rotate-${lowerCase(
+													label
+												)}-${type}-${breakpoint}`]:
+													getDefaultAttribute(
+														`motion-rotate-${lowerCase(
+															label
+														)}-${type}-general`
+													),
+											})
+										}
+										initialPosition={getDefaultAttribute(
+											`motion-rotate-${lowerCase(
+												label
+											)}-${type}-general`
+										)}
+									/>
 								)}
-								type='reset'
-							>
-								{reset}
-							</Button>
-						)}
-					</BaseControl>
-				);
-			})}
+							</>
+						),
+					};
+				})}
+			/>
 		</div>
 	);
 };

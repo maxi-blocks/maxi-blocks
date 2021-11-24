@@ -16,7 +16,6 @@ import {
 } from '../../extensions/styles';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-// import RangeSliderControl from '../range-slider-control';
 import ToggleSwitch from '../toggle-switch';
 import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
 
@@ -24,6 +23,7 @@ import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty, pickBy } from 'lodash';
 
 /**
  * Styles and icons
@@ -94,6 +94,47 @@ const MotionControl = props => {
 		},
 	];
 
+	const getShortcutEffect = type => {
+		let response = {};
+		switch (type) {
+			case 'rotate':
+				response = [
+					{
+						label: __('Sun effect', 'maxi-blocks'),
+						value: 'sun-effect',
+					},
+					{
+						label: __('Clockwise', 'maxi-blocks'),
+						value: 'clockwise',
+					},
+					{
+						label: __('Counterclockwise', 'maxi-blocks'),
+						value: 'counterclockwise',
+					},
+				];
+				break;
+
+			default:
+				response = [
+					{
+						label: __('Placeholder effect', 'maxi-blocks'),
+						value: 'placeholder-effect',
+					},
+					{
+						label: __('another', 'maxi-blocks'),
+						value: 'another',
+					},
+				];
+				break;
+		}
+
+		return response;
+	};
+
+	const motionProps = pickBy(props, (val, key) => {
+		return key.includes('motion-');
+	});
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch
@@ -153,6 +194,24 @@ const MotionControl = props => {
 						{props[`motion-active-${breakpoint}`] === type &&
 							props[`motion-status-${type}-${breakpoint}`] && (
 								<>
+									<SelectControl
+										label={__(
+											'Shortcut effect',
+											'maxi-blocks'
+										)}
+										value={getLastBreakpointAttribute(
+											`motion-shortcut-${type}`,
+											breakpoint,
+											props
+										)}
+										onChange={val =>
+											onChange({
+												[`motion-shortcut-${type}-${breakpoint}`]:
+													val,
+											})
+										}
+										options={getShortcutEffect(type)}
+									/>
 									<SelectControl
 										label={__(
 											'Easing function',
@@ -233,42 +292,8 @@ const MotionControl = props => {
 											`motion-delay-${type}-general`
 										)}
 									/>
-									{/* <RangeSliderControl
-										label={__('Viewport', 'maxi-blocks')}
-										type='viewport'
-										step={1}
-										min={0}
-										max={100}
-										values={[
-											getLastBreakpointAttribute(
-												`motion-viewport-bottom-${type}`,
-												breakpoint,
-												props
-											),
-											getLastBreakpointAttribute(
-												`motion-viewport-middle-${type}`,
-												breakpoint,
-												props
-											),
-											getLastBreakpointAttribute(
-												`motion-viewport-top-${type}`,
-												breakpoint,
-												props
-											),
-										]}
-										onChange={values =>
-											onChange({
-												[`motion-viewport-bottom-${type}-${breakpoint}`]:
-													values[0],
-												[`motion-viewport-middle-${type}-${breakpoint}`]:
-													values[1],
-												[`motion-viewport-top-${type}-${breakpoint}`]:
-													values[2],
-											})
-										}
-									/> */}
-									{(type === 'vertical' ||
-										type === 'horizontal') && (
+									{/* {(type === 'vertical' ||
+										type === 'horizontal') &&
 										<MotionUniqueControl
 											label={__('Offset', 'maxi-blocks')}
 											type='offset'
@@ -311,55 +336,21 @@ const MotionControl = props => {
 														values[2],
 												})
 											}
-										/>
-									)}
+										/> } */}
 									{type === 'rotate' && (
 										<MotionUniqueControl
 											label={__('Rotate', 'maxi-blocks')}
 											type='rotate'
-											step={1}
-											values={[
-												getLastBreakpointAttribute(
-													`motion-rotate-start-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-rotate-middle-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-rotate-end-${type}`,
-													breakpoint,
-													props
-												),
-											]}
-											defaultValues={[
-												getDefaultAttribute(
-													`motion-rotate-start-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-rotate-middle-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-rotate-end-${type}-general`
-												),
-											]}
+											values={motionProps}
 											onChange={values =>
-												onChange({
-													[`motion-rotate-start-${type}-${breakpoint}`]:
-														values[0],
-													[`motion-rotate-middle-${type}-${breakpoint}`]:
-														values[1],
-													[`motion-rotate-end-${type}-${breakpoint}`]:
-														values[2],
-												})
+												onChange({ values })
 											}
 										/>
 									)}
-									{type === 'scale' && (
-										<MotionUniqueControl
+									{/*
+									{type === 'scale' &&
+										{
+											/* <MotionUniqueControl
 											label={__('Scale', 'maxi-blocks')}
 											type='scale'
 											step={1}
@@ -401,10 +392,10 @@ const MotionControl = props => {
 														values[2],
 												})
 											}
-										/>
-									)}
-									{type === 'fade' && (
-										<MotionUniqueControl
+										/> }
+									{type === 'fade' &&
+										{
+											/* <MotionUniqueControl
 											label={__('Fade', 'maxi-blocks')}
 											type='fade'
 											step={1}
@@ -446,10 +437,10 @@ const MotionControl = props => {
 														values[2],
 												})
 											}
-										/>
-									)}
-									{type === 'blur' && (
-										<MotionUniqueControl
+										/>}
+									{type === 'blur' &&
+										{
+											/* <MotionUniqueControl
 											label={__('Blur', 'maxi-blocks')}
 											type='blur'
 											step={1}
@@ -491,11 +482,11 @@ const MotionControl = props => {
 														values[2],
 												})
 											}
-										/>
-									)}
+										/> */}
+
 									<ToggleSwitch
 										label={__(
-											'Enable reverse animation',
+											'Reverse scroll playback',
 											'maxi-blocks'
 										)}
 										selected={

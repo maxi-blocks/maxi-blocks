@@ -48,16 +48,17 @@ const ButtonGroupControl = ({
 			aria-labelledby={label}
 			role='group'
 		>
-			{options.map(({ value, label, ...rest }, index) => (
+			{options.map(({ value, label, className, ...rest }, index) => (
 				<Button
 					label={value}
 					key={`${id}-${index}`}
 					aria-pressed={selected === value}
-					className={`maxi-button-group-control__option${
-						selected === value
-							? ' maxi-button-group-control__option--selected'
-							: ''
-					}`}
+					className={classnames(
+						'maxi-button-group-control__option',
+						selected === value &&
+							'maxi-button-group-control__option--selected',
+						className
+					)}
 					onClick={() => onChange(value)}
 					{...rest}
 				>

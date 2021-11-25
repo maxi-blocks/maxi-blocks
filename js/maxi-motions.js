@@ -69,7 +69,7 @@ const applyStyle = (el, type, value) => {
 const getMotionSetting = (data, element) => {
 	const response = {};
 
-	const dataMotionVerticalArray = data.trim().split(' ');
+	const dataMotionArray = data.trim().split(' ');
 
 	const getViewportValue = viewport => {
 		switch (viewport) {
@@ -84,9 +84,9 @@ const getMotionSetting = (data, element) => {
 		}
 	};
 
-	response.viewportTop = getViewportValue(dataMotionVerticalArray[4]);
-	response.viewportMid = getViewportValue(dataMotionVerticalArray[3]);
-	response.viewportBottom = getViewportValue(dataMotionVerticalArray[2]);
+	response.viewportTop = getViewportValue(dataMotionArray[5]);
+	response.viewportMid = getViewportValue(dataMotionArray[4]);
+	response.viewportBottom = getViewportValue(dataMotionArray[3]);
 
 	response.viewportMidPercent = Math.round(
 		(element.offsetHeight / 100) * response.viewportMid
@@ -98,15 +98,15 @@ const getMotionSetting = (data, element) => {
 		(element.offsetHeight / 100) * response.viewportTop
 	);
 
-	response.speedValue = parseFloat(dataMotionVerticalArray[0]) || 200;
+	response.speedValue = parseFloat(dataMotionArray[0]) || 200;
+	response.delayValue = parseFloat(dataMotionArray[1]) || 0;
+	response.easingValue = dataMotionArray[2] || 'ease';
 
-	response.reverseMotion = dataMotionVerticalArray[5] || true;
+	response.reverseMotion = dataMotionArray[6] || true;
 
-	response.start = parseInt(dataMotionVerticalArray[6]);
-	response.mid = parseInt(dataMotionVerticalArray[7]);
-	response.end = parseInt(dataMotionVerticalArray[8]);
-
-	response.easingValue = dataMotionVerticalArray[1] || 'ease';
+	response.start = parseInt(dataMotionArray[7]);
+	response.mid = parseInt(dataMotionArray[8]);
+	response.end = parseInt(dataMotionArray[9]);
 
 	return response;
 };
@@ -356,29 +356,29 @@ const startingMotion = () => {
 
 		motionTypeArray.map(type => {
 			const dataMotion = getMotionData(element, type);
-			const { speedValue, easingValue } = getMotionSetting(
+			const { speedValue, easingValue, delayValue } = getMotionSetting(
 				dataMotion,
 				parent
 			);
 
 			switch (type) {
 				case 'vertical':
-					transition += `top ${speedValue}ms ${easingValue} 0s, `;
+					transition += `top ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 					break;
 				case 'horizontal':
-					transition += `left ${speedValue}ms ${easingValue} 0s, `;
+					transition += `left ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 					break;
 				case 'rotate':
-					transition += `transform ${speedValue}ms ${easingValue} 0s, `;
+					transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 					break;
 				case 'scale':
-					transition += `transform ${speedValue}ms ${easingValue} 0s, `;
+					transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 					break;
 				case 'fade':
-					transition += `opacity ${speedValue}ms ${easingValue} 0s, `;
+					transition += `opacity ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 					break;
 				case 'blur':
-					transition += `filter ${speedValue}ms ${easingValue} 0s, `;
+					transition += `filter ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 					break;
 				default:
 					break;

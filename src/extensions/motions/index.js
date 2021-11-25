@@ -6,6 +6,7 @@ const motionData = props => {
 
 	const motionSettingsShared = [
 		'speed',
+		'delay',
 		'easing',
 		'viewport-bottom',
 		'viewport-middle',

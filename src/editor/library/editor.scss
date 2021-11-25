@@ -15,9 +15,9 @@
 			flex: 5;
 
 			&__load-library {
-				background: #edeff0;
-				border: 1px dashed #cfd3d7;
-				color: #464a53 !important;
+				background: var(--maxi-light-blue-1-color);
+				border: 1px dashed var(--maxi-grey-9-color);
+				color: var(--maxi-black-2-color) !important;
 				display: flex;
 				align-items: center;
 				justify-content: center;

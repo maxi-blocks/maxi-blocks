@@ -58,7 +58,7 @@ const background = ({
 							<>
 								<ToggleSwitch
 									label={__(
-										'Enable Background Hover',
+										'Enable background hover',
 										'maxi-blocks'
 									)}
 									selected={bgHoverStatus}

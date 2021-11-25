@@ -144,7 +144,7 @@ export const getGradientBackgroundObject = ({
 	...props
 }) => {
 	const response = {
-		label: 'Background Gradient',
+		label: 'Background gradient',
 		[breakpoint]: {},
 	};
 

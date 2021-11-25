@@ -48,7 +48,7 @@ const GradientLayerContent = props => {
 	return (
 		<>
 			<GradientControl
-				label={__('Background Gradient', 'maxi-blocks')}
+				label={__('Background gradient', 'maxi-blocks')}
 				gradient={getLastBreakpointAttribute(
 					`${prefix}background-gradient`,
 					breakpoint,

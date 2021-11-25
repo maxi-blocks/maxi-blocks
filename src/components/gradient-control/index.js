@@ -42,14 +42,14 @@ const GradientControl = props => {
 		<div className={classes}>
 			<BaseControl
 				className='maxi-gradient-control__display'
-				label={`${label} ${__('Colour', 'maxi-blocks')}`}
+				label={`${label} ${__('colour', 'maxi-blocks')}`}
 			>
 				<div className='maxi-gradient-control__display__color'>
 					<span style={{ background: gradient }} />
 				</div>
 			</BaseControl>
 			<OpacityControl
-				label={__('Gradient Opacity', 'maxi-blocks')}
+				label={__('Gradient opacity', 'maxi-blocks')}
 				opacity={gradientOpacity}
 				onChange={val => onChangeOpacity(val)}
 			/>

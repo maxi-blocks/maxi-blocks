@@ -92,7 +92,7 @@ const MaxiModal = props => {
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
 					>
-						{__('Load Shape Library', 'maxi-blocks')}
+						{__('Load shape library', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'button-icon' && (

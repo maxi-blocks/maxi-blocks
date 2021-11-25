@@ -323,9 +323,10 @@ body .toolbar-item__popover {
 	}
 }
 
-.maxi-accordion-control {
+body.maxi-blocks--active .maxi-sidebar .maxi-accordion-control {
 	&__item {
 		.maxi-image-inspector__dimension-width {
+			margin-bottom: 8px !important;
 			.components-range-control__wrapper {
 				margin-left: 7px !important;
 			}

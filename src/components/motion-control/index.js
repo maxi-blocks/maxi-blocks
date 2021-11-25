@@ -390,53 +390,16 @@ const MotionControl = props => {
 														values[2],
 												})
 											}
-										/> }
-									{type === 'fade' &&
-										{
-											/* <MotionUniqueControl
+										/> } */}
+									{type === 'fade' && (
+										<MotionUniqueControl
 											label={__('Fade', 'maxi-blocks')}
 											type='fade'
-											step={1}
-											values={[
-												getLastBreakpointAttribute(
-													`motion-opacity-start-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-opacity-middle-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-opacity-end-${type}`,
-													breakpoint,
-													props
-												),
-											]}
-											defaultValues={[
-												getDefaultAttribute(
-													`motion-opacity-start-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-opacity-middle-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-opacity-end-${type}-general`
-												),
-											]}
-											onChange={values =>
-												onChange({
-													[`motion-opacity-start-${type}-${breakpoint}`]:
-														values[0],
-													[`motion-opacity-middle-${type}-${breakpoint}`]:
-														values[1],
-													[`motion-opacity-end-${type}-${breakpoint}`]:
-														values[2],
-												})
-											}
-										/>}
-									{type === 'blur' &&
+											values={motionProps}
+											onChange={value => onChange(value)}
+										/>
+									)}
+									{/* {type === 'blur' &&
 										{
 											/* <MotionUniqueControl
 											label={__('Blur', 'maxi-blocks')}

@@ -9,7 +9,7 @@ const motionData = props => {
 		'delay',
 		'easing',
 		'viewport-bottom',
-		'viewport-middle',
+		'viewport-mid',
 		'viewport-top',
 		'status-reverse',
 	];
@@ -17,7 +17,7 @@ const motionData = props => {
 	const motionSettingsVertical = [
 		...motionSettingsShared,
 		'offset-start',
-		'offset-middle',
+		'offset-mid',
 		'offset-end',
 	];
 
@@ -31,21 +31,21 @@ const motionData = props => {
 	const motionSettingsFade = [
 		...motionSettingsShared,
 		'opacity-start',
-		'opacity-middle',
+		'opacity-mid',
 		'opacity-end',
 	];
 
 	const motionSettingsBlur = [
 		...motionSettingsShared,
 		'blur-start',
-		'blur-middle',
+		'blur-mid',
 		'blur-end',
 	];
 
 	const motionSettingsScale = [
 		...motionSettingsShared,
 		'scale-start',
-		'scale-middle',
+		'scale-mid',
 		'scale-end',
 	];
 

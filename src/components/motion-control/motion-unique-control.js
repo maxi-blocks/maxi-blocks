@@ -147,6 +147,44 @@ const MotionUniqueControl = props => {
 										)}
 									/>
 								)}
+								{type === 'fade' && (
+									<AdvancedNumberControl
+										label={__(
+											`${label} opacity`,
+											'maxi-blocks'
+										)}
+										value={getLastBreakpointAttribute(
+											`motion-opacity-${specialAttrLabel}-${type}`,
+											breakpoint,
+											values
+										)}
+										onChangeValue={val => {
+											onChange({
+												[`motion-opacity-${specialAttrLabel}-${type}-${breakpoint}`]:
+													val !== undefined &&
+													val !== ''
+														? val
+														: '',
+											});
+										}}
+										min={0}
+										step={1}
+										max={100}
+										onReset={() =>
+											onChange({
+												[`motion-opacity-${specialAttrLabel}-${type}-${breakpoint}`]:
+													getDefaultAttribute(
+														`motion-opacity-${lowerCase(
+															label
+														)}-${type}-general`
+													),
+											})
+										}
+										initialPosition={getDefaultAttribute(
+											`motion-opacity-${specialAttrLabel}-${type}-general`
+										)}
+									/>
+								)}
 							</>
 						),
 					};

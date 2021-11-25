@@ -13,6 +13,7 @@ import {
  * Internal dependencies
  */
 import {
+	getAttributes,
 	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
@@ -288,18 +289,12 @@ describe('TypographyControl', () => {
 		);
 		await decorationSelector.select('overline');
 
-		const styleAttributes = await getBlockAttributes();
-		const typographyAttributes = (({
-			'font-style-general': fontStyle,
-			'font-weight-general': fontWeight,
-			'text-decoration-general': textDecoration,
-			'text-transform-general': textTransform,
-		}) => ({
-			'font-style-general': fontStyle,
-			'font-weight-general': fontWeight,
-			'text-decoration-general': textDecoration,
-			'text-transform-general': textTransform,
-		}))(styleAttributes);
+		const typographyResult = await getAttributes([
+			'font-style-general',
+			'font-weight-general',
+			'text-decoration-general',
+			'text-transform-general',
+		]);
 
 		const expectedAttributesTwo = {
 			'font-style-general': 'italic',
@@ -308,7 +303,7 @@ describe('TypographyControl', () => {
 			'text-transform-general': 'capitalize',
 		};
 
-		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
+		expect(typographyResult).toStrictEqual(expectedAttributesTwo);
 	});
 
 	it('Check responsive font-weight', async () => {
@@ -592,17 +587,11 @@ describe('TypographyControl', () => {
 		);
 		await page.keyboard.type('10');
 
-		const stylesAttributes = await getBlockAttributes();
-
-		const expectedResult = (({
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
-			'font-size-m': fontSize,
-		}) => ({
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
-			'font-size-m': fontSize,
-		}))(stylesAttributes);
+		const attributeResult = await getAttributes([
+			'line-height-m',
+			'letter-spacing-m',
+			'font-size-m',
+		]);
 
 		const expectedAttributes = {
 			'line-height-m': 4,
@@ -610,7 +599,7 @@ describe('TypographyControl', () => {
 			'font-size-m': 19,
 		};
 
-		expect(expectedResult).toStrictEqual(expectedAttributes);
+		expect(attributeResult).toStrictEqual(expectedAttributes);
 	});
 
 	it('Check responsive font-size', async () => {

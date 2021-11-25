@@ -9,7 +9,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+} from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {
@@ -71,26 +76,17 @@ describe('NumberCounterControl', () => {
 		await page.keyboard.type('19');
 
 		// expect
-		const styleAttributes = await getBlockAttributes();
-		const numberCounterAttributes = (({
-			'number-counter-width-general': width,
-			'number-counter-width-unit-general': widthUnit,
-			'number-counter-duration': counterDuration,
-			'number-counter-end': counterEnd,
-			'number-counter-start': counterStart,
-			'number-counter-stroke': counterStroke,
-			'number-counter-title-font-size': counterTitle,
-		}) => ({
-			'number-counter-width-general': width,
-			'number-counter-width-unit-general': widthUnit,
-			'number-counter-duration': counterDuration,
-			'number-counter-end': counterEnd,
-			'number-counter-start': counterStart,
-			'number-counter-stroke': counterStroke,
-			'number-counter-title-font-size': counterTitle,
-		}))(styleAttributes);
+		const numberResult = await getAttributes([
+			'number-counter-width-general',
+			'number-counter-width-unit-general',
+			'number-counter-duration',
+			'number-counter-end',
+			'number-counter-start',
+			'number-counter-stroke',
+			'number-counter-title-font-size',
+		]);
 
-		const expectedAttributes = {
+		const expectAttributes = {
 			'number-counter-width-general': 100,
 			'number-counter-width-unit-general': '%',
 			'number-counter-duration': 100,
@@ -100,7 +96,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-title-font-size': 19,
 		};
 
-		expect(numberCounterAttributes).toStrictEqual(expectedAttributes);
+		expect(numberResult).toStrictEqual(expectAttributes);
 
 		// Show Percentage Sign
 		await accordionPanel.$eval(
@@ -162,16 +158,11 @@ describe('NumberCounterControl', () => {
 		await colors[2].$$eval('button', click => click[1].click());
 
 		// expect
-		const colorAttributes = await getBlockAttributes();
-		const colorsAttributes = (({
-			'number-counter-palette-text-color': textColor,
-			'number-counter-palette-circle-bar-color': circleColor,
-			'number-counter-palette-circle-background-color': backgroundColor,
-		}) => ({
-			'number-counter-palette-text-color': textColor,
-			'number-counter-palette-circle-bar-color': circleColor,
-			'number-counter-palette-circle-background-color': backgroundColor,
-		}))(colorAttributes);
+		const colorResult = await getAttributes([
+			'number-counter-palette-text-color',
+			'number-counter-palette-circle-bar-color',
+			'number-counter-palette-circle-background-color',
+		]);
 
 		const expectedColorAttributes = {
 			'number-counter-palette-text-color': 4,
@@ -179,7 +170,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-palette-circle-background-color': 3,
 		};
 
-		expect(colorsAttributes).toStrictEqual(expectedColorAttributes);
+		expect(colorResult).toStrictEqual(expectedColorAttributes);
 
 		// font family
 		const fontFamilySelector = await accordionPanel.$(

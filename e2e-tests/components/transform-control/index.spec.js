@@ -10,6 +10,7 @@ import {
  * Internal dependencies
  */
 import {
+	getAttributes,
 	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
@@ -129,16 +130,11 @@ describe('TransformControl', () => {
 		await page.keyboard.type('100');
 
 		// expect
-		const styleAttributes = await getBlockAttributes();
-		const rotateAttributes = (({
-			'transform-rotate-x-general': transformRotateX,
-			'transform-rotate-y-general': transformRotateY,
-			'transform-rotate-z-general': transformRotateZ,
-		}) => ({
-			'transform-rotate-x-general': transformRotateX,
-			'transform-rotate-y-general': transformRotateY,
-			'transform-rotate-z-general': transformRotateZ,
-		}))(styleAttributes);
+		const colorResult = await getAttributes([
+			'transform-rotate-x-general',
+			'transform-rotate-y-general',
+			'transform-rotate-z-general',
+		]);
 
 		const expectedAttributes = {
 			'transform-rotate-x-general': 150,
@@ -146,7 +142,7 @@ describe('TransformControl', () => {
 			'transform-rotate-z-general': 100,
 		};
 
-		expect(rotateAttributes).toStrictEqual(expectedAttributes);
+		expect(colorResult).toStrictEqual(expectedAttributes);
 
 		// Origin
 		await buttons[3].click();

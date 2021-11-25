@@ -10,7 +10,6 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
-	BackgroundControl,
 	DefaultStylesControl,
 	Icon,
 	IconControl,
@@ -18,16 +17,14 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
+import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -70,6 +67,18 @@ const Inspector = memo(
 			setAttributes({
 				...newDefaultPresets[`preset${number}`],
 			});
+		};
+
+		const getCategoriesCss = () => {
+			const {
+				'background-layers': bgLayers,
+				'icon-content': iconContent,
+			} = attributes;
+			return without(
+				categoriesButton,
+				!isEmpty(bgLayers) && 'canvas background',
+				!isEmpty(iconContent) && 'icon'
+			);
 		};
 
 		return (
@@ -428,6 +437,31 @@ const Inspector = memo(
 												styleCardPrefix: 'button',
 												hideAlignment: true,
 												disableCustomFormats: true,
+												globalProps: {
+													target: '',
+													type: 'button',
+												},
+												hoverGlobalProps: {
+													target: 'hover',
+													type: 'button',
+												},
+											}),
+											...inspectorTabs.background({
+												label: 'Button',
+												props,
+												disableImage: true,
+												disableVideo: true,
+												disableClipPath: true,
+												disableSVG: true,
+												prefix: 'button-',
+												globalProps: {
+													target: 'background',
+													type: 'button',
+												},
+												hoverGlobalProps: {
+													target: 'hover-background',
+													type: 'button',
+												},
 											}),
 											deviceType === 'general' && {
 												label: __(
@@ -572,6 +606,14 @@ const Inspector = memo(
 											...inspectorTabs.border({
 												props,
 												prefix: 'button-',
+												globalProps: {
+													target: 'border',
+													type: 'button',
+												},
+												hoverGlobalProps: {
+													target: 'hover-border',
+													type: 'button',
+												},
 											}),
 											...inspectorTabs.boxShadow({
 												props,
@@ -596,7 +638,7 @@ const Inspector = memo(
 								<AccordionControl
 									isPrimary
 									items={[
-										...inspectorTabs.background({
+										...inspectorTabs.blockBackground({
 											props,
 										}),
 										...inspectorTabs.border({
@@ -635,6 +677,12 @@ const Inspector = memo(
 												props,
 											}),
 										},
+										...inspectorTabs.customCss({
+											props,
+											breakpoint: deviceType,
+											selectors: selectorsButton,
+											categories: getCategoriesCss(),
+										}),
 										...inspectorTabs.motion({
 											props,
 										}),
@@ -681,13 +729,15 @@ const Inspector = memo(
 			propsToAvoid,
 			isSelected: wasSelected,
 			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
 		},
-		{ attributes: newAttr, isSelected, deviceType: breakpoint }
+		{ attributes: newAttr, isSelected, deviceType: breakpoint, scValues }
 	) => {
 		if (
 			!wasSelected ||
 			wasSelected !== isSelected ||
-			oldBreakpoint !== breakpoint
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
 		)
 			return false;
 

@@ -1,18 +1,19 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	editAxisControl,
+	getBlockAttributes,
+} from '../../utils';
 
-describe.skip('Indicators', () => {
+describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
@@ -26,24 +27,41 @@ describe.skip('Indicators', () => {
 			'margin padding'
 		);
 
-		const selectPadding = await accordionPanel.$$(
-			'.maxi-axis-control .maxi-axis-control__content'
+		const axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
 		);
 
-		await selectPadding[1].$$eval(
-			'.maxi-axis-control__content__item input',
-			select => select[0].focus()
-		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '12',
+			unit: '%',
+		});
 
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('50');
+		const expectPadding = {
+			'padding-top-general': 12,
+			'padding-bottom-general': 12,
+			'padding-left-general': 12,
+			'padding-right-general': 12,
+			'padding-unit-general': '%',
+		};
 
-		const maxiIndicator = await page.$eval(
-			'.maxi-container-block .maxi-indicators',
-			indicators => indicators.innerHTML
-		);
+		const pageAttributes = await getBlockAttributes();
+		const paddingAttributes = (({
+			'padding-unit-general': paddingUnit,
+			'padding-top-general': paddingTop,
+			'padding-bottom-general': paddingBottom,
+			'padding-left-general': paddingLeft,
+			'padding-right-general': paddingRight,
+		}) => ({
+			'padding-unit-general': paddingUnit,
+			'padding-top-general': paddingTop,
+			'padding-bottom-general': paddingBottom,
+			'padding-left-general': paddingLeft,
+			'padding-right-general': paddingRight,
+		}))(pageAttributes);
 
-		expect(maxiIndicator).toMatchSnapshot();
+		expect(paddingAttributes).toStrictEqual(expectPadding);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

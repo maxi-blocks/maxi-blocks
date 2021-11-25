@@ -19,6 +19,11 @@ export const backgroundHover = (() => {
 		response[newKey] = value;
 	});
 
+	response['background-hover-status'] = {
+		type: 'boolean',
+		default: false,
+	};
+
 	return response;
 })();
 

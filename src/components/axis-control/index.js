@@ -61,11 +61,14 @@ const AxisInput = props => {
 	return (
 		<AdvancedNumberControl
 			label={__(capitalize(label), 'maxi-blocks')}
-			className={`maxi-axis-control__content__item maxi-axis-control__content__item__${replace(
-				label,
-				' / ',
-				'-'
-			).toLowerCase()}`}
+			className={classnames(
+				'maxi-axis-control__content__item',
+				`maxi-axis-control__content__item__${replace(
+					label,
+					' / ',
+					'-'
+				).toLowerCase()}`
+			)}
 			placeholder={lastValue}
 			value={value}
 			onChangeValue={val =>
@@ -73,6 +76,7 @@ const AxisInput = props => {
 			}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
+			classNameAutoInput='maxi-axis-control__item-auto'
 			disableReset
 		/>
 	);
@@ -265,7 +269,7 @@ const AxisControlContent = props => {
 		<>
 			<BaseControl
 				label={__(type, 'maxi-blocks')}
-				className='maxi-axis-control__header'
+				className='maxi-axis-control__unit-header'
 			>
 				<SelectControl
 					className='maxi-axis-control__units'
@@ -312,6 +316,7 @@ const AxisControlContent = props => {
 				options={[
 					{
 						value: 'all',
+						className: 'maxi-axis-control__sync-all',
 						label:
 							type === 'Margin'
 								? marginSyncAllIcon
@@ -319,6 +324,7 @@ const AxisControlContent = props => {
 					},
 					{
 						value: 'axis',
+						className: 'maxi-axis-control__sync-axis',
 						label:
 							type === 'Margin'
 								? marginSyncDirectionIcon
@@ -326,6 +332,7 @@ const AxisControlContent = props => {
 					},
 					{
 						value: 'none',
+						className: 'maxi-axis-control__sync-none',
 						icon:
 							type === 'Margin'
 								? marginSeparateIcon

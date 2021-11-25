@@ -79,7 +79,7 @@ const attributes = {
 	},
 	...attributesData.typographyHover,
 	...{
-		...getPrefixedAttributes(attributesData.background, prefix),
+		...getPrefixedAttributes(attributesData.rawBackground, prefix),
 		[`${prefix}background-active-media-general`]: {
 			type: 'string',
 			default: 'color',
@@ -197,6 +197,7 @@ const attributes = {
 	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
+	...attributesData.customCss,
 };
 
 export default attributes;

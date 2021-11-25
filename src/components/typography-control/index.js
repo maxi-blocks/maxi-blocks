@@ -456,6 +456,7 @@ const TypographyControl = withFormatValue(props => {
 		styleCardPrefix,
 		allowLink = false,
 		blockStyle,
+		globalProps,
 	} = props;
 
 	const typography =
@@ -723,15 +724,7 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}
-					globalProps={{
-						target: isHover ? 'hover-' : '',
-						type:
-							select('core/block-editor').getBlockName(
-								clientId
-							) === 'maxi-blocks/button-maxi'
-								? 'button'
-								: textLevel,
-					}}
+					globalProps={globalProps}
 					textLevel={textLevel}
 					isHover={isHover}
 					deviceType={breakpoint}

@@ -142,6 +142,8 @@ class MaxiBlockComponent extends Component {
 				return true;
 			}
 		}
+		// Force rendering the block when SC related values change
+		if (!isEqual(this.props.scValues, nextProps.scValues)) return true;
 
 		// Ensures rendering when selecting or unselecting
 		if (
@@ -197,6 +199,9 @@ class MaxiBlockComponent extends Component {
 
 			return isEqual(oldAttributes, newAttributes);
 		}
+
+		// Force render styles when changing scValues
+		if (!isEqual(prevProps.scValues, this.props.scValues)) return false;
 
 		if (this.maxiBlockGetSnapshotBeforeUpdate)
 			this.maxiBlockGetSnapshotBeforeUpdate();

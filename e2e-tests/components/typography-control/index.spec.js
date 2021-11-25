@@ -42,11 +42,9 @@ describe('TypographyControl', () => {
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 
-		const attributes = await getBlockAttributes();
-		const fontFamily = attributes['font-family-general'];
-		const expectedFontFamily = 'Montserrat';
-
-		expect(fontFamily).toStrictEqual(expectedFontFamily);
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			'Montserrat'
+		);
 	});
 
 	it('Checking the responsive font family', async () => {
@@ -82,10 +80,7 @@ describe('TypographyControl', () => {
 		);
 		expect(typographyInputS).toStrictEqual('Arial');
 
-		const attributes = await getBlockAttributes();
-		const height = attributes['font-family-s'];
-
-		expect(height).toStrictEqual('Arial');
+		expect(await getAttributes('font-family-s')).toStrictEqual('Arial');
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -135,11 +130,9 @@ describe('TypographyControl', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(500);
 
-		const colorAttributes = await getBlockAttributes();
-		const color = colorAttributes['color-general'];
-		const expectedColor = 'rgb(250,250,3)';
-
-		expect(color).toStrictEqual(expectedColor);
+		expect(await getAttributes('color-general')).toStrictEqual(
+			'rgb(250,250,3)'
+		);
 	});
 
 	it('Check responsive palette opacity', async () => {
@@ -183,10 +176,7 @@ describe('TypographyControl', () => {
 
 		expect(responsiveSOption).toStrictEqual('54');
 
-		const attributes = await getBlockAttributes();
-		const opacity = attributes['palette-opacity-s'];
-
-		expect(opacity).toStrictEqual(0.54);
+		expect(await getAttributes('palette-opacity-s')).toStrictEqual(0.54);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -230,10 +220,9 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		const attributesS = await getBlockAttributes();
-		const colorStatusS = attributesS['palette-color-status-s'];
-
-		expect(colorStatusS).toStrictEqual(false);
+		expect(await getAttributes('palette-color-status-s')).toStrictEqual(
+			false
+		);
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -243,10 +232,9 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		const attributesXs = await getBlockAttributes();
-		const colorStatusXs = attributesXs['palette-color-status-s'];
-
-		expect(colorStatusXs).toStrictEqual(false);
+		expect(await getAttributes('palette-color-status-s')).toStrictEqual(
+			false
+		);
 
 		// m
 		await changeResponsive(page, 'm');
@@ -255,10 +243,9 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		const attributesM = await getBlockAttributes();
-		const colorStatusM = attributesM['palette-color-status-s'];
-
-		expect(colorStatusM).toStrictEqual(false);
+		expect(await getAttributes('palette-color-status-s')).toStrictEqual(
+			false
+		);
 	});
 
 	it('Checking the Weight, Transform, Style and Decoration', async () => {
@@ -332,10 +319,7 @@ describe('TypographyControl', () => {
 		);
 		expect(weightSNumber).toStrictEqual(4);
 
-		const attributes = await getBlockAttributes();
-		const fontUnit = attributes['font-weight-s'];
-
-		expect(fontUnit).toStrictEqual('500');
+		expect(await getAttributes('font-weight-s')).toStrictEqual('500');
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -386,10 +370,9 @@ describe('TypographyControl', () => {
 
 		expect(transformSNumber).toStrictEqual(2);
 
-		const attributes = await getBlockAttributes();
-		const fontUnit = attributes['text-transform-s'];
-
-		expect(fontUnit).toStrictEqual('uppercase');
+		expect(await getAttributes('text-transform-s')).toStrictEqual(
+			'uppercase'
+		);
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -439,10 +422,7 @@ describe('TypographyControl', () => {
 
 		expect(styleSNumber).toStrictEqual(2);
 
-		const attributes = await getBlockAttributes();
-		const fontUnit = attributes['font-style-s'];
-
-		expect(fontUnit).toStrictEqual('oblique');
+		expect(await getAttributes('font-style-s')).toStrictEqual('oblique');
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -492,10 +472,9 @@ describe('TypographyControl', () => {
 
 		expect(decorationSSelection).toStrictEqual(3);
 
-		const attributes = await getBlockAttributes();
-		const decoration = attributes['text-decoration-s'];
-
-		expect(decoration).toStrictEqual('underline');
+		expect(await getAttributes('text-decoration-s')).toStrictEqual(
+			'underline'
+		);
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -639,10 +618,7 @@ describe('TypographyControl', () => {
 		);
 		expect(sizeSNumber).toStrictEqual('11');
 
-		const attributes = await getBlockAttributes();
-		const size = attributes['font-size-s'];
-
-		expect(size).toStrictEqual(11);
+		expect(await getAttributes('font-size-s')).toStrictEqual(11);
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -697,10 +673,7 @@ describe('TypographyControl', () => {
 
 		expect(unitS).toStrictEqual(3);
 
-		const attributes = await getBlockAttributes();
-		const fontUnit = attributes['font-size-unit-s'];
-
-		expect(fontUnit).toStrictEqual('%');
+		expect(await getAttributes('font-size-unit-s')).toStrictEqual('%');
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -758,10 +731,7 @@ describe('TypographyControl', () => {
 
 		expect(heightSNumber).toStrictEqual('43');
 
-		const attributes = await getBlockAttributes();
-		const height = attributes['line-height-s'];
-
-		expect(height).toStrictEqual(43);
+		expect(await getAttributes('line-height-s')).toStrictEqual(43);
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -816,10 +786,7 @@ describe('TypographyControl', () => {
 
 		expect(heightSNumber).toStrictEqual(3);
 
-		const attributes = await getBlockAttributes();
-		const fontUnit = attributes['line-height-unit-s'];
-
-		expect(fontUnit).toStrictEqual('%');
+		expect(await getAttributes('line-height-unit-s')).toStrictEqual('%');
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -878,10 +845,7 @@ describe('TypographyControl', () => {
 		);
 		expect(letterSpacingSNumber).toStrictEqual('23');
 
-		const attributes = await getBlockAttributes();
-		const letterSpacing = attributes['letter-spacing-s'];
-
-		expect(letterSpacing).toStrictEqual(23);
+		expect(await getAttributes('letter-spacing-s')).toStrictEqual(23);
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -937,10 +901,9 @@ describe('TypographyControl', () => {
 		);
 		expect(letterSpaceSNumber).toStrictEqual(2);
 
-		const attributes = await getBlockAttributes();
-		const fontUnit = attributes['letter-spacing-unit-s'];
-
-		expect(fontUnit).toStrictEqual('vw');
+		expect(await getAttributes('letter-spacing-unit-s')).toStrictEqual(
+			'vw'
+		);
 
 		// xs
 		await changeResponsive(page, 'xs');

@@ -43,12 +43,10 @@ describe('BorderControl', () => {
 		);
 
 		await borderType.select('groove');
-		const expectBorderType = 'groove';
 
-		const attributes = await getBlockAttributes();
-		const borderAttribute = attributes['border-style-general'];
-
-		expect(borderAttribute).toStrictEqual(expectBorderType);
+		expect(await getAttributes('border-style-general')).toStrictEqual(
+			'groove'
+		);
 
 		// color
 		await page.$$eval(
@@ -56,23 +54,18 @@ describe('BorderControl', () => {
 			clickDiv => clickDiv[4].click()
 		);
 
-		const expectedColorResult = 5;
-
-		const colorAttributes = await getBlockAttributes();
-		const borderColor = colorAttributes['border-palette-color-general'];
-
-		expect(borderColor).toStrictEqual(expectedColorResult);
+		expect(
+			await getAttributes('border-palette-color-general')
+		).toStrictEqual(5);
 
 		const selector = await borderAccordion.$(
 			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select'
 		);
 		await selector.select('dotted');
 
-		const expectResult = 'dotted';
-		const borderAttributes = await getBlockAttributes();
-		const style = borderAttributes['border-style-general'];
-
-		expect(style).toStrictEqual(expectResult);
+		expect(await getAttributes('border-style-general')).toStrictEqual(
+			'dotted'
+		);
 	});
 
 	it('Check Responsive border control', async () => {

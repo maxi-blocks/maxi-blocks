@@ -10,10 +10,10 @@ import {
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('OpacityControl', () => {
@@ -35,11 +35,7 @@ describe('OpacityControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('19');
 
-		const attributes = await getBlockAttributes();
-		const opacity = attributes['opacity-general'];
-		const expectResult = 0.19;
-
-		expect(opacity).toStrictEqual(expectResult);
+		expect(await getAttributes('opacity-general')).toStrictEqual(0.19);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -75,10 +71,7 @@ describe('OpacityControl', () => {
 
 		expect(responsiveSOption).toStrictEqual('55');
 
-		const attributes = await getBlockAttributes();
-		const opacity = attributes['opacity-s'];
-
-		expect(opacity).toStrictEqual(0.55);
+		expect(await getAttributes('opacity-s')).toStrictEqual(0.55);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

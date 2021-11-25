@@ -29,12 +29,9 @@ describe('NumberCounterControl', () => {
 
 		await animation.select('view-scroll');
 
-		const expectAnimation = 'view-scroll';
-		const animationAttributes = await getBlockAttributes();
-		const styleAttribute =
-			animationAttributes['number-counter-start-animation'];
-
-		expect(styleAttribute).toStrictEqual(expectAnimation);
+		expect(
+			await getAttributes('number-counter-start-animation')
+		).toStrictEqual('view-scroll');
 
 		// Width, Start Number, End Number, Duration, Radius, Stroke, Title Font Size
 		const inputs = await accordionPanel.$$(
@@ -104,12 +101,9 @@ describe('NumberCounterControl', () => {
 			click => click.click()
 		);
 
-		const showPercentage = true;
-		const percentageAttributes = await getBlockAttributes();
-		const showPercentageAttribute =
-			percentageAttributes['number-counter-percentage-sign-status'];
-
-		expect(showPercentageAttribute).toStrictEqual(showPercentage);
+		expect(
+			await getAttributes('number-counter-percentage-sign-status')
+		).toStrictEqual(true);
 
 		// Rounded Bar
 		await accordionPanel.$eval(
@@ -117,12 +111,9 @@ describe('NumberCounterControl', () => {
 			click => click.click()
 		);
 
-		const roundedBar = true;
-		const roundedAttributes = await getBlockAttributes();
-		const roundedBarAttribute =
-			roundedAttributes['number-counter-rounded-status'];
-
-		expect(roundedBarAttribute).toStrictEqual(roundedBar);
+		expect(
+			await getAttributes('number-counter-rounded-status')
+		).toStrictEqual(true);
 
 		// Hide Circle
 		await accordionPanel.$eval(
@@ -130,12 +121,9 @@ describe('NumberCounterControl', () => {
 			click => click.click()
 		);
 
-		const hideCircle = true;
-		const circleAttributes = await getBlockAttributes();
-		const hideCircleAttribute =
-			circleAttributes['number-counter-circle-status'];
-
-		expect(hideCircleAttribute).toStrictEqual(hideCircle);
+		expect(
+			await getAttributes('number-counter-circle-status')
+		).toStrictEqual(true);
 
 		// Text colour, Circle Background Colour, Circle Bar Colour
 		// Return circle to be shown
@@ -181,11 +169,9 @@ describe('NumberCounterControl', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
-		const attributes = await getBlockAttributes();
-		const fontFamily = attributes['number-counter-title-font-family'];
-		const expectedFontFamily = 'Montserrat';
-
-		expect(fontFamily).toStrictEqual(expectedFontFamily);
+		expect(
+			await getAttributes('number-counter-title-font-family')
+		).toStrictEqual('Montserrat');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -171,15 +171,6 @@ const scrollTransform = (element, type) => {
 		reverseMotion,
 	} = getMotionSetting(dataMotion, element);
 
-	// console.log('viewportTop');
-	// console.log(viewportTop);
-
-	// console.log('viewportMid');
-	// console.log(viewportMid);
-
-	// console.log('viewportBottom');
-	// console.log(viewportBottom);
-
 	// console.log('viewportTopPercent');
 	// console.log(viewportTopPercent);
 

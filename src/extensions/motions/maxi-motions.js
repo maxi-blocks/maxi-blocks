@@ -183,14 +183,14 @@ const scrollTransform = (element, type) => {
 		reverseMotion,
 	} = getMotionSetting(dataMotion, element);
 
-	console.log('viewportTopPercent');
-	console.log(viewportTopPercent);
+	// console.log('viewportTopPercent');
+	// console.log(viewportTopPercent);
 
-	console.log('viewportMidPercent');
-	console.log(viewportMidPercent);
+	// console.log('viewportMidPercent');
+	// console.log(viewportMidPercent);
 
-	console.log('viewportBottomPercent');
-	console.log(viewportBottomPercent);
+	// console.log('viewportBottomPercent');
+	// console.log(viewportBottomPercent);
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;

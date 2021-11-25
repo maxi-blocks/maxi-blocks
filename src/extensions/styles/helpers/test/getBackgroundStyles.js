@@ -492,7 +492,7 @@ describe('getBackgroundStyles', () => {
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
-			'background-hover-status': true,
+			'block-background-hover-status': true,
 			'background-layers': [
 				{
 					type: 'color',
@@ -572,7 +572,7 @@ describe('getBackgroundStyles', () => {
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
-			'background-hover-status': true,
+			'block-background-hover-status': true,
 			'background-layers': [
 				{
 					type: 'image',
@@ -662,7 +662,7 @@ describe('getBackgroundStyles', () => {
 			target: 'maxi-test',
 			isHover: false,
 			blockStyle: 'light',
-			'background-hover-status': true,
+			'block-background-hover-status': true,
 			'background-layers': [
 				{
 					type: 'video',

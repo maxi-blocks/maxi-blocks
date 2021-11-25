@@ -55,8 +55,8 @@ const BackgroundControl = props => {
 		prefix = '',
 		disablePalette,
 		clientId,
-		isButton = false,
 		breakpoint = 'general',
+		globalProps,
 	} = props;
 
 	const backgroundActiveMedia = getLastBreakpointAttribute(
@@ -148,8 +148,8 @@ const BackgroundControl = props => {
 						prefix={prefix}
 						disablePalette={disablePalette}
 						clientId={clientId}
-						isButton={isButton}
 						breakpoint={breakpoint}
+						globalProps={globalProps}
 					/>
 				)}
 				{!disableImage && backgroundActiveMedia === 'image' && (

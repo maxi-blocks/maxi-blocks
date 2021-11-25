@@ -1,11 +1,13 @@
 export { default as alignment } from './inspector-alignment';
 export { default as anchor } from './inspector-anchor';
 export { default as background } from './inspector-background';
+export { default as blockBackground } from './inspector-block-background';
 export { default as blockSettings } from './inspector-block-settings';
 export { default as border } from './inspector-border';
 export { default as boxShadow } from './inspector-box-shadow';
 export { default as calloutArrow } from './inspector-callout-arrow';
 export { default as customClasses } from './inspector-custom-classes';
+export { default as customCss } from './inspector-custom-css';
 export { default as display } from './inspector-display';
 export { default as marginPadding } from './inspector-margin-padding';
 export { default as motion } from './inspector-motion';

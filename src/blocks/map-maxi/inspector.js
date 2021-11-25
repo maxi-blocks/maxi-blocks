@@ -5,6 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import {
@@ -13,12 +18,8 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
+import { selectorsMap, categoriesMap } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * Inspector
@@ -94,6 +95,12 @@ const Inspector = props => {
 											props,
 										}),
 									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsMap,
+										categories: categoriesMap,
+									}),
 									...inspectorTabs.transform({
 										props,
 									}),

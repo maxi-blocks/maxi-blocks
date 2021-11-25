@@ -23,7 +23,7 @@ const motionData = props => {
 	const motionSettingsRotate = [
 		...motionSettingsShared,
 		'rotate-start',
-		'rotate-middle',
+		'rotate-mid',
 		'rotate-end',
 	];
 

@@ -65,9 +65,9 @@ export const motion = (() => {
 		generateAttr(type, 'easing', 'string', 'ease');
 		generateAttr(type, 'speed', 'number', 500);
 		generateAttr(type, 'delay', 'number', 0);
-		generateAttr(type, 'viewport-bottom', 'number', 0);
-		generateAttr(type, 'viewport-middle', 'number', 50);
-		generateAttr(type, 'viewport-top', 'number', 100);
+		generateAttr(type, 'viewport-bottom', 'string', 'bottom'); // 0
+		generateAttr(type, 'viewport-middle', 'string', 'mid'); // 50
+		generateAttr(type, 'viewport-top', 'string', 'top'); // 100
 		generateAttr(type, 'status-reverse', 'boolean', true);
 
 		if (type === 'vertical') {

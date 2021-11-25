@@ -342,9 +342,7 @@ const MotionControl = props => {
 											label={__('Rotate', 'maxi-blocks')}
 											type='rotate'
 											values={motionProps}
-											onChange={values =>
-												onChange({ values })
-											}
+											onChange={value => onChange(value)}
 										/>
 									)}
 									{/*

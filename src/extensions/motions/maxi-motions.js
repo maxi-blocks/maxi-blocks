@@ -81,9 +81,22 @@ const getMotionSetting = (data, element) => {
 
 	const dataMotionVerticalArray = data.trim().split(' ');
 
-	response.viewportTop = parseInt(dataMotionVerticalArray[4]);
-	response.viewportMid = parseInt(dataMotionVerticalArray[3]);
-	response.viewportBottom = parseInt(dataMotionVerticalArray[2]);
+	const getViewportValue = viewport => {
+		switch (viewport) {
+			case 'top':
+				return 100;
+			case 'mid':
+				return 50;
+			case 'bottom':
+				return 0;
+			default:
+				return 0;
+		}
+	};
+
+	response.viewportTop = getViewportValue(dataMotionVerticalArray[4]);
+	response.viewportMid = getViewportValue(dataMotionVerticalArray[3]);
+	response.viewportBottom = getViewportValue(dataMotionVerticalArray[2]);
 
 	response.viewportMidPercent = Math.round(
 		(element.offsetHeight / 100) * response.viewportMid
@@ -168,23 +181,14 @@ const scrollTransform = (element, type) => {
 		reverseMotion,
 	} = getMotionSetting(dataMotion, element);
 
-	// console.log('viewportTop');
-	// console.log(viewportTop);
+	console.log('viewportTopPercent');
+	console.log(viewportTopPercent);
 
-	// console.log('viewportMid');
-	// console.log(viewportMid);
+	console.log('viewportMidPercent');
+	console.log(viewportMidPercent);
 
-	// console.log('viewportBottom');
-	// console.log(viewportBottom);
-
-	// console.log('viewportTopPercent');
-	// console.log(viewportTopPercent);
-
-	// console.log('viewportMidPercent');
-	// console.log(viewportMidPercent);
-
-	// console.log('viewportBottomPercent');
-	// console.log(viewportBottomPercent);
+	console.log('viewportBottomPercent');
+	console.log(viewportBottomPercent);
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;

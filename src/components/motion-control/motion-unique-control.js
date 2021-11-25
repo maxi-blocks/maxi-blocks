@@ -43,37 +43,25 @@ const MotionUniqueControl = props => {
 		breakpoint = 'general',
 	} = props;
 
-	console.log('MotionUniqueControl is loaded');
-
-	console.log(values);
-
 	const classes = classnames(
 		'maxi-advanced-number-control maxi-motion-unique-control',
 		className
 	);
-
-	const motionUniqueControlId = `maxi-advanced-number-control__${useInstanceId(
-		MotionUniqueControl
-	)}`;
-
-	const inputLabel = type === 'fade' ? 'opacity' : label;
-	const minimum = type === 'fade' ? 0 : min;
-	const maximum = type === 'fade' ? 100 : max;
 
 	const labels = ['Start', 'Mid', 'End'];
 
 	const viewportOptions = [
 		{
 			label: __('Top of screen', 'maxi-blocks'),
-			value: 'sun-effect',
+			value: 'top',
 		},
 		{
 			label: __('Middle of screen', 'maxi-blocks'),
-			value: 'clockwise',
+			value: 'mid',
 		},
 		{
 			label: __('Bottom of screen', 'maxi-blocks'),
-			value: 'counterclockwise',
+			value: 'bottom',
 		},
 	];
 
@@ -81,6 +69,27 @@ const MotionUniqueControl = props => {
 		<div className={classes}>
 			<SettingTabsControl
 				items={labels.map((label, key) => {
+					const viewportAttrLabel = () => {
+						switch (label) {
+							case 'Start':
+								return 'top';
+							case 'Mid':
+								return 'middle';
+							case 'End':
+								return 'bottom';
+							default:
+								return 'none';
+						}
+					};
+					console.log(`viwportLabel: ${viewportAttrLabel()}`);
+					console.log(
+						`value ${getLastBreakpointAttribute(
+							`motion-viewport-${viewportAttrLabel()}-${type}`,
+							breakpoint,
+							values
+						)}`
+					);
+					const specialAttrLabel = lowerCase(label);
 					return {
 						label: __(`${label} zone`, 'maxi-blocks'),
 						content: (
@@ -88,13 +97,13 @@ const MotionUniqueControl = props => {
 								<SelectControl
 									label={__('Viewport entry', 'maxi-blocks')}
 									value={getLastBreakpointAttribute(
-										`motion-viewport-bottom-${type}`,
+										`motion-viewport-${viewportAttrLabel()}-${type}`,
 										breakpoint,
 										values
 									)}
 									onChange={val =>
 										onChange({
-											[`motion-viewport-bottom-${type}-${breakpoint}`]:
+											[`motion-viewport-${viewportAttrLabel()}-${type}-${breakpoint}`]:
 												val,
 										})
 									}
@@ -107,17 +116,13 @@ const MotionUniqueControl = props => {
 											'maxi-blocks'
 										)}
 										value={getLastBreakpointAttribute(
-											`motion-rotate-${lowerCase(
-												label
-											)}-${type}`,
+											`motion-rotate-${specialAttrLabel}-${type}`,
 											breakpoint,
 											values
 										)}
 										onChangeValue={val => {
 											onChange({
-												[`motion-rotate-${lowerCase(
-													label
-												)}-${type}-${breakpoint}`]:
+												[`motion-rotate-${specialAttrLabel}-${type}-${breakpoint}`]:
 													val !== undefined &&
 													val !== ''
 														? val
@@ -129,9 +134,7 @@ const MotionUniqueControl = props => {
 										max={360}
 										onReset={() =>
 											onChange({
-												[`motion-rotate-${lowerCase(
-													label
-												)}-${type}-${breakpoint}`]:
+												[`motion-rotate-${specialAttrLabel}-${type}-${breakpoint}`]:
 													getDefaultAttribute(
 														`motion-rotate-${lowerCase(
 															label
@@ -140,9 +143,7 @@ const MotionUniqueControl = props => {
 											})
 										}
 										initialPosition={getDefaultAttribute(
-											`motion-rotate-${lowerCase(
-												label
-											)}-${type}-general`
+											`motion-rotate-${specialAttrLabel}-${type}-general`
 										)}
 									/>
 								)}

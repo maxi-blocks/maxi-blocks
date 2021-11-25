@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import { isEmpty, cloneDeep, capitalize } from 'lodash';
+// eslint-disable-next-line import/no-unresolved
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import cssValidator from 'w3c-css-validator';
 

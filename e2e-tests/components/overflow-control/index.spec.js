@@ -5,11 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	changeResponsive,
-} from '../../utils';
+import { openSidebarTab, changeResponsive, getAttributes } from '../../utils';
 
 describe('OverflowControl', () => {
 	it('Checking the overflow control', async () => {
@@ -21,18 +17,14 @@ describe('OverflowControl', () => {
 
 		await selectorX[0].select('hidden');
 
-		const attributes = await getBlockAttributes();
-		const generalOverflow = attributes['overflow-x-general'];
-
-		expect(generalOverflow).toStrictEqual('hidden');
+		expect(await getAttributes('overflow-x-general')).toStrictEqual(
+			'hidden'
+		);
 
 		const selectorY = await page.$$('.maxi-overflow-control select');
 		await selectorY[1].select('auto');
 
-		const generalAttributes = await getBlockAttributes();
-		const generalYOverflow = generalAttributes['overflow-y-general'];
-
-		expect(generalYOverflow).toStrictEqual('auto');
+		expect(await getAttributes('overflow-y-general')).toStrictEqual('auto');
 	});
 
 	/* it('Checking the overflow responsive', async () => {

@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, getBlockStyle } from '../../utils';
+import { getBlockStyle, getAttributes } from '../../utils';
 
 describe('ImageURL', () => {
 	beforeEach(async () => {
@@ -34,11 +34,7 @@ describe('ImageURL', () => {
 			submitUrl => submitUrl[0].click()
 		);
 
-		const expectResult = linkImage;
-		const getImageUrl = await getBlockAttributes();
-		const getImage = getImageUrl.externalUrl;
-
-		expect(getImage).toStrictEqual(expectResult);
+		expect(await getAttributes('externalUrl')).toStrictEqual(linkImage);
 	});
 
 	it('Check invalid imageUrl', async () => {

@@ -6,11 +6,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 	editAxisControl,
+	getAttributes,
 } from '../../utils';
 
 describe('PositionControl', () => {
@@ -47,22 +47,15 @@ describe('PositionControl', () => {
 			'position-unit-general': '%',
 		};
 
-		const pageAttributes = await getBlockAttributes();
-		const positionAttributes = (({
-			'position-unit-general': positionUnit,
-			'position-top-general': positionTop,
-			'position-bottom-general': positionBottom,
-			'position-left-general': positionLeft,
-			'position-right-general': positionRight,
-		}) => ({
-			'position-unit-general': positionUnit,
-			'position-top-general': positionTop,
-			'position-bottom-general': positionBottom,
-			'position-left-general': positionLeft,
-			'position-right-general': positionRight,
-		}))(pageAttributes);
+		const positionResult = await getAttributes([
+			'position-top-general',
+			'position-bottom-general',
+			'position-left-general',
+			'position-right-general',
+			'position-unit-general',
+		]);
 
-		expect(positionAttributes).toStrictEqual(expectPosition);
+		expect(positionResult).toStrictEqual(expectPosition);
 	});
 
 	it('Check Responsive position control', async () => {

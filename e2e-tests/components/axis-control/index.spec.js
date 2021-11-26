@@ -6,10 +6,10 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	editAxisControl,
+	getAttributes,
 } from '../../utils';
 
 describe('AxisControl', () => {
@@ -39,23 +39,15 @@ describe('AxisControl', () => {
 			'margin-right-general': 66,
 			'margin-unit-general': '%',
 		};
+		const marginResult = await getAttributes([
+			'margin-unit-general',
+			'margin-top-general',
+			'margin-bottom-general',
+			'margin-left-general',
+			'margin-right-general',
+		]);
 
-		const pageAttributes = await getBlockAttributes();
-		const marginAttributes = (({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}) => ({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}))(pageAttributes);
-
-		expect(marginAttributes).toStrictEqual(expectMargin);
+		expect(marginResult).toStrictEqual(expectMargin);
 	});
 
 	it('Checking responsive axisControl', async () => {
@@ -147,22 +139,15 @@ describe('AxisControl', () => {
 			'margin-unit-general': 'px',
 		};
 
-		const pageAttributes = await getBlockAttributes();
-		const marginAttributes = (({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}) => ({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}))(pageAttributes);
+		const result = await getAttributes([
+			'margin-unit-general',
+			'margin-top-general',
+			'margin-bottom-general',
+			'margin-left-general',
+			'margin-right-general',
+		]);
 
-		expect(marginAttributes).toStrictEqual(expectMargin);
+		expect(result).toStrictEqual(expectMargin);
 	});
 	it('Checking AxisControl async buttons', async () => {
 		await createNewPost();
@@ -178,7 +163,7 @@ describe('AxisControl', () => {
 			unit: '%',
 		});
 
-		const expectMargin = {
+		const expectAxisMargin = {
 			'margin-top-general': 66,
 			'margin-bottom-general': 66,
 			'margin-left-general': 77,
@@ -186,22 +171,15 @@ describe('AxisControl', () => {
 			'margin-unit-general': '%',
 		};
 
-		const pageAttributes = await getBlockAttributes();
-		const marginAttributes = (({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}) => ({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}))(pageAttributes);
+		const resultAxis = await getAttributes([
+			'margin-top-general',
+			'margin-bottom-general',
+			'margin-left-general',
+			'margin-right-general',
+			'margin-unit-general',
+		]);
 
-		expect(marginAttributes).toStrictEqual(expectMargin);
+		expect(resultAxis).toStrictEqual(expectAxisMargin);
 
 		await editAxisControl({
 			page,
@@ -211,7 +189,7 @@ describe('AxisControl', () => {
 			unit: 'px',
 		});
 
-		const expectSyncMargin = {
+		const expectSyncOptionNone = {
 			'margin-top-general': 66,
 			'margin-bottom-general': 55,
 			'margin-left-general': 33,
@@ -219,21 +197,14 @@ describe('AxisControl', () => {
 			'margin-unit-general': 'px',
 		};
 
-		const pageSyncAttributes = await getBlockAttributes();
-		const marginSyncAttributes = (({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}) => ({
-			'margin-unit-general': marginUnit,
-			'margin-top-general': marginTop,
-			'margin-bottom-general': marginBottom,
-			'margin-left-general': marginLeft,
-			'margin-right-general': marginRight,
-		}))(pageSyncAttributes);
+		const resultSyncOptionNone = await getAttributes([
+			'margin-unit-general',
+			'margin-top-general',
+			'margin-bottom-general',
+			'margin-left-general',
+			'margin-right-general',
+		]);
 
-		expect(marginSyncAttributes).toStrictEqual(expectSyncMargin);
+		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
 	});
 });

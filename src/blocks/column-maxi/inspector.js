@@ -151,7 +151,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										...inspectorTabs.background({
+										...inspectorTabs.blockBackground({
 											props,
 											disableVideo: true,
 										}),

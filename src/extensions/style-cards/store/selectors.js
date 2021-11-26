@@ -36,18 +36,34 @@ export const receiveStyleCardsList = state => {
 	return false;
 };
 
-export const receiveStyleCardValue = (state, target, blockStyle, SCEntry) => {
+export const receiveStyleCardValue = (
+	state,
+	rawTarget,
+	blockStyle,
+	SCEntry
+) => {
 	if (state.styleCards) {
-		const selectedSCStyleCard = getActiveStyleCard(state.styleCards);
-		const styleCardEntry = {
-			...selectedSCStyleCard.value?.[blockStyle].defaultStyleCard[
-				SCEntry
-			],
-			...selectedSCStyleCard.value?.[blockStyle].styleCard[SCEntry],
-		};
-		const value = styleCardEntry?.[target];
+		const getSCValue = target => {
+			const selectedSCStyleCard = getActiveStyleCard(state.styleCards);
+			const styleCardEntry = {
+				...selectedSCStyleCard.value?.[blockStyle]?.defaultStyleCard[
+					SCEntry
+				],
+				...selectedSCStyleCard.value?.[blockStyle]?.styleCard[SCEntry],
+			};
+			const value = styleCardEntry?.[target];
 
-		return getIsValid(value, true) ? value : false;
+			return getIsValid(value, true) ? value : false;
+		};
+
+		if (typeof rawTarget === 'string') return getSCValue(rawTarget);
+
+		const response = {};
+		rawTarget.forEach(target => {
+			response[target] = getSCValue(target);
+		});
+
+		return response;
 	}
 	return false;
 };

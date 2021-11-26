@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
-import { isObject, isEmpty } from 'lodash';
+import { isObject, isEmpty, merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import { getCustomCssObject } from './helpers';
 
 const hoverStylesCleaner = (normalObj, hoverObj) => {
 	if (normalObj)
@@ -25,7 +30,13 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 	return hoverObj;
 };
 
-const stylesCleaner = obj => {
+const stylesCleaner = (obj, selectors, props) => {
+	// Process custom styles if they exist
+	if (!isEmpty(selectors)) {
+		const customCssObject = getCustomCssObject(selectors, props);
+		!isEmpty(customCssObject) && merge(obj, customCssObject);
+	}
+
 	Object.entries(obj).forEach(([key, val]) => {
 		// Clean non-object ones
 		Object.entries(val).forEach(([typeKey, typeVal]) => {

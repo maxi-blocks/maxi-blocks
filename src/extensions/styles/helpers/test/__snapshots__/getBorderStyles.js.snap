@@ -26,10 +26,78 @@ Object {
 }
 `;
 
-exports[`getBorderStyles Return a border hover styles object with changes on custom color 1`] = `
+exports[`getBorderStyles Return a border styles object based on Button Maxi 1`] = `
 Object {
   "general": Object {
-    "border-color": "rgba(var(--maxi-light-color-5),1)",
+    "border-bottom-left-radius": "10px",
+    "border-bottom-right-radius": "10px",
+    "border-bottom-width": "20px",
+    "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-2),1))",
+    "border-left-width": "20px",
+    "border-right-width": "20px",
+    "border-style": "solid",
+    "border-top-left-radius": "10px",
+    "border-top-right-radius": "10px",
+    "border-top-width": "20px",
+  },
+  "l": Object {
+    "border-bottom-width": "2px",
+    "border-color": "rgba(114,52,118,0.46)",
+    "border-left-width": "2px",
+    "border-right-width": "2px",
+    "border-style": "dashed",
+    "border-top-width": "2px",
+  },
+  "m": Object {
+    "border-bottom-width": "50px",
+    "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-7),0.46))",
+    "border-left-width": "50px",
+    "border-right-width": "50px",
+    "border-top-width": "50px",
+  },
+  "s": Object {
+    "border-bottom-width": "5px",
+    "border-left-width": "5px",
+    "border-right-width": "5px",
+    "border-top-width": "5px",
+  },
+  "xl": Object {
+    "border-bottom-left-radius": "100px",
+    "border-bottom-right-radius": "100px",
+    "border-color": "rgba(197,26,209,0.46)",
+    "border-left-width": "90px",
+    "border-right-width": "90px",
+    "border-top-left-radius": "100px",
+    "border-top-right-radius": "100px",
+  },
+  "xs": Object {
+    "border-bottom-left-radius": "0px",
+    "border-bottom-right-radius": "0px",
+    "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-2),0.46))",
+    "border-top-left-radius": "0px",
+    "border-top-right-radius": "0px",
+  },
+  "xxl": Object {
+    "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-3),0.46))",
+    "border-left-width": "0px",
+    "border-right-width": "0px",
+  },
+}
+`;
+
+exports[`getBorderStyles Return a border styles object based on Button Maxi with hover active and non global SC settings enabled 1`] = `
+Object {
+  "general": Object {
+    "border-bottom-left-radius": "10px",
+    "border-bottom-right-radius": "10px",
+    "border-bottom-width": "20px",
+    "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-2),1))",
+    "border-left-width": "20px",
+    "border-right-width": "20px",
+    "border-style": "solid",
+    "border-top-left-radius": "10px",
+    "border-top-right-radius": "10px",
+    "border-top-width": "20px",
   },
   "l": Object {},
   "m": Object {},
@@ -40,23 +108,21 @@ Object {
 }
 `;
 
-exports[`getBorderStyles Return a border styles object with changes on custom color 1`] = `
+exports[`getBorderStyles Return a border styles object based on Button Maxi with hover disabled and global SC settings enabled 1`] = `
 Object {
   "general": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgba(var(--maxi-light-color-1),1)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
+    "border-bottom-left-radius": "10px",
+    "border-bottom-right-radius": "10px",
+    "border-bottom-width": "20px",
+    "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-2),1))",
+    "border-left-width": "20px",
+    "border-right-width": "20px",
     "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
+    "border-top-left-radius": "10px",
+    "border-top-right-radius": "10px",
+    "border-top-width": "20px",
   },
-  "l": Object {
-    "border-color": "rgb(255, 99, 71)",
-  },
+  "l": Object {},
   "m": Object {},
   "s": Object {},
   "xl": Object {},
@@ -65,116 +131,109 @@ Object {
 }
 `;
 
-exports[`getBorderStyles Return a border styles object with changes on palette color 1`] = `
+exports[`getBorderStyles Return a border styles object with hover options 1`] = `
 Object {
   "general": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgba(var(--maxi-light-color-1),0.2)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
-    "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
+    "border-bottom-left-radius": "0px",
+    "border-bottom-right-radius": "0px",
+    "border-bottom-width": "20px",
+    "border-color": "rgba(var(--maxi-light-color-6),0.31)",
+    "border-left-width": "20px",
+    "border-right-width": "20px",
+    "border-style": "dashed",
+    "border-top-left-radius": "0px",
+    "border-top-right-radius": "0px",
+    "border-top-width": "20px",
   },
   "l": Object {
-    "border-color": "rgba(var(--maxi-light-color-1),1)",
+    "border-bottom-width": "0px",
+    "border-color": "rgba(23, 63, 194, 0.38)",
+    "border-left-width": "30px",
+    "border-right-width": "0px",
+    "border-top-width": "20px",
   },
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+  "m": Object {
+    "border-bottom-width": "0px",
+    "border-left-width": "0px",
+    "border-right-width": "0px",
+    "border-top-width": "0px",
+  },
+  "s": Object {
+    "border-color": "rgba(51,54,62,0.38)",
+  },
+  "xl": Object {
+    "border-bottom-left-radius": "50px",
+    "border-bottom-right-radius": "50px",
+    "border-bottom-width": "30px",
+    "border-left-width": "1px",
+    "border-top-left-radius": "50px",
+    "border-top-right-radius": "50px",
+    "border-top-width": "1px",
+  },
+  "xs": Object {
+    "border-bottom-width": "3px",
+    "border-color": "rgba(var(--maxi-light-color-5),0.94)",
+    "border-left-width": "4px",
+    "border-right-width": "2px",
+    "border-top-width": "1px",
+  },
+  "xxl": Object {
+    "border-color": "rgba(213,14,227,0.31)",
+    "border-left-width": "6px",
+    "border-right-width": "6px",
+  },
 }
 `;
 
 exports[`getBorderStyles Return border styles object with all the settings 1`] = `
 Object {
   "general": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgb(255, 99, 71)",
-    "border-left-width": "4px",
+    "border-bottom-width": "2px",
+    "border-color": "rgba(var(--maxi-light-color-2),1)",
+    "border-left-width": "2px",
     "border-right-width": "2px",
     "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
+    "border-top-width": "2px",
   },
   "l": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgb(255, 99, 71)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
-    "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
+    "border-bottom-width": "0px",
+    "border-color": "rgba(23, 63, 194, 0.38)",
+    "border-left-width": "30px",
+    "border-right-width": "0px",
+    "border-top-width": "20px",
   },
-  "m": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgb(255, 99, 71)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
-    "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
-  },
+  "m": Object {},
   "s": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgb(255, 99, 71)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
-    "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
+    "border-color": "rgba(51,54,62,0.38)",
   },
   "xl": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
+    "border-bottom-left-radius": "50px",
+    "border-bottom-right-radius": "50px",
     "border-bottom-width": "3px",
-    "border-color": "rgb(255, 99, 71)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
-    "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
+    "border-left-width": "1px",
+    "border-top-left-radius": "50px",
+    "border-top-right-radius": "50px",
     "border-top-width": "1px",
   },
   "xs": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgb(255, 99, 71)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
-    "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
+    "border-color": "rgba(var(--maxi-light-color-5),0.94)",
   },
   "xxl": Object {
-    "border-bottom-left-radius": "4px",
-    "border-bottom-right-radius": "3px",
-    "border-bottom-width": "3px",
-    "border-color": "rgb(255, 99, 71)",
-    "border-left-width": "4px",
-    "border-right-width": "2px",
-    "border-style": "solid",
-    "border-top-left-radius": "1px",
-    "border-top-right-radius": "2px",
-    "border-top-width": "1px",
+    "border-color": "rgba(var(--maxi-light-color-5),1)",
+    "border-left-width": "6px",
+    "border-right-width": "6px",
   },
+}
+`;
+
+exports[`getBorderStyles Test simple and default border attributes 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
 }
 `;

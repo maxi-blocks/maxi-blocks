@@ -27,10 +27,17 @@ const getTypographyStyles = ({
 	parentBlockStyle,
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
+	scValues = {},
 }) => {
-	if (isHover && !obj[`${prefix}typography-status-hover`]) return {};
-
 	const response = {};
+
+	const hoverStatus = obj[`${prefix}typography-status-hover`];
+	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
+		scValues;
+
+	const globalHoverStatus = isActive && affectAll;
+
+	if (isHover && !hoverStatus && !globalHoverStatus) return response;
 
 	const isCustomFormat = !!customFormatTypography;
 
@@ -53,6 +60,43 @@ const getTypographyStyles = ({
 				isHover
 			)
 		);
+	};
+
+	const getColorString = breakpoint => {
+		const paletteStatus = getPaletteColorStatus(breakpoint);
+		const paletteColor = obj[getName('palette-color', breakpoint)];
+		const paletteOpacity = obj[getName('palette-opacity', breakpoint)];
+		const color = obj[getName('color', breakpoint)];
+
+		if (paletteStatus && (!isHover || hoverStatus || globalHoverStatus))
+			return {
+				...(!isNil(paletteColor) && {
+					color: getColorRGBAString({
+						firstVar: `${textLevel}-color${
+							isHover ? '-hover' : ''
+						}`,
+						secondVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: parentBlockStyle,
+					}),
+				}),
+			};
+		if (paletteStatus)
+			return {
+				...(!isNil(paletteColor) && {
+					color: getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: parentBlockStyle,
+					}),
+				}),
+			};
+
+		return {
+			...(!isNil(color) && {
+				color,
+			}),
+		};
 	};
 
 	// As sometimes creators just change the value and not the unit, we need to
@@ -78,29 +122,7 @@ const getTypographyStyles = ({
 			...(!isNil(obj[getName('font-family', breakpoint)]) && {
 				'font-family': obj[getName('font-family', breakpoint)],
 			}),
-			...(getPaletteColorStatus(breakpoint)
-				? {
-						...(!isNil(
-							obj[getName('palette-color', breakpoint)]
-						) && {
-							color: getColorRGBAString({
-								firstVar: `${textLevel}-color${
-									isHover ? '-hover' : ''
-								}`,
-								secondVar: `color-${
-									obj[getName('palette-color', breakpoint)]
-								}`,
-								opacity:
-									obj[getName('palette-opacity', breakpoint)],
-								blockStyle: parentBlockStyle,
-							}),
-						}),
-				  }
-				: {
-						...(!isNil(obj[getName('color', breakpoint)]) && {
-							color: obj[getName('color', breakpoint)],
-						}),
-				  }),
+			...getColorString(breakpoint),
 			...(!isNil(obj[getName('font-size', breakpoint)]) && {
 				'font-size': `${
 					obj[getName('font-size', breakpoint)]

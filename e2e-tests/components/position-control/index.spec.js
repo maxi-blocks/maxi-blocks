@@ -10,56 +10,52 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	editAxisControl,
 } from '../../utils';
 
-describe.skip('PositionControl', () => {
-	it('Checking the position control', async () => {
+describe('PositionControl', () => {
+	it('Checking position control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi');
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',
 			'position'
 		);
-
 		const selectPosition = await accordionPanel.$(
 			'.maxi-position-control .maxi-base-control__field select'
 		);
 		await selectPosition.select('relative');
 
-		const attributes = await getBlockAttributes();
-		const position = attributes['position-general'];
-		const expectSelectPosition = 'relative';
-
-		expect(position).toStrictEqual(expectSelectPosition);
-
-		// Set value to inputs
-		const inputs = await accordionPanel.$$(
-			'.maxi-axis-control .maxi-axis-control__content .maxi-axis-control__content__item__input'
+		const axisControlInstance = await page.$(
+			'.maxi-position-control .maxi-axis-control'
 		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			syncOption: 'all',
+			values: '56',
+			unit: '%',
+		});
 
-		/* eslint-disable no-await-in-loop */
-		for (let j = 0; j < inputs.length; j += 1) {
-			const input = inputs[j];
-
-			await input.focus();
-			await page.keyboard.press((j + 1).toString());
-		}
 		const expectPosition = {
-			'position-top-general': 1,
-			'position-bottom-general': 2,
-			'position-left-general': 3,
-			'position-right-general': 4,
+			'position-top-general': 56,
+			'position-bottom-general': 56,
+			'position-left-general': 56,
+			'position-right-general': 56,
+			'position-unit-general': '%',
 		};
 
 		const pageAttributes = await getBlockAttributes();
 		const positionAttributes = (({
+			'position-unit-general': positionUnit,
 			'position-top-general': positionTop,
 			'position-bottom-general': positionBottom,
 			'position-left-general': positionLeft,
 			'position-right-general': positionRight,
 		}) => ({
+			'position-unit-general': positionUnit,
 			'position-top-general': positionTop,
 			'position-bottom-general': positionBottom,
 			'position-left-general': positionLeft,
@@ -67,75 +63,112 @@ describe.skip('PositionControl', () => {
 		}))(pageAttributes);
 
 		expect(positionAttributes).toStrictEqual(expectPosition);
-
-		// unit selector
-		const unitSelector = await accordionPanel.$(
-			'.maxi-axis-control .maxi-axis-control__header .maxi-axis-control__units select'
-		);
-
-		await unitSelector.select('%');
-
-		const unitAttributes = await getBlockAttributes();
-		const unit = unitAttributes['position-unit-general'];
-		const expectUnit = '%';
-
-		expect(unit).toStrictEqual(expectUnit);
 	});
 
 	it('Check Responsive position control', async () => {
 		await changeResponsive(page, 's');
-		await page.$eval('.maxi-text-block', block => block.focus());
-
 		const positionSelector = await page.$eval(
 			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
-			button => button.selectedOptions[0].innerHTML
+			input => input.value
 		);
 
-		expect(positionSelector).toStrictEqual('Relative');
+		expect(positionSelector).toStrictEqual('relative');
+
+		const positionGeneralValue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			input => input[0].placeholder
+		);
+
+		expect(positionGeneralValue).toStrictEqual('56');
+
+		const positionGeneralUnit = await page.$eval(
+			'.maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionGeneralUnit).toStrictEqual('%');
 
 		// responsive S
-		const accordionPanel = await openSidebarTab(
+		const selectSPosition = await page.$(
+			'.maxi-position-control .maxi-base-control__field select'
+		);
+		await selectSPosition.select('fixed');
+
+		const axisControlInstance = await page.$(
+			'.maxi-position-control .maxi-axis-control'
+		);
+		await editAxisControl({
 			page,
-			'advanced',
-			'position'
-		);
-		await changeResponsive(page, 's');
+			instance: axisControlInstance,
+			syncOption: 'all',
+			values: '87',
+			unit: 'px',
+		});
 
-		const selector = await accordionPanel.$(
-			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input '
-		);
-		await selector.select('absolute');
-
-		const responsiveSOption = await page.$eval(
+		const positionSSelector = await page.$eval(
 			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+			input => input.value
 		);
 
-		expect(responsiveSOption).toStrictEqual('Absolute');
+		expect(positionSSelector).toStrictEqual('fixed');
 
-		const positionAttributes = await getBlockAttributes();
-		const positionSAttribute = positionAttributes['position-s'];
-		expect(positionSAttribute).toStrictEqual('absolute');
+		const positionSGeneralValue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			input => input[0].placeholder
+		);
+
+		expect(positionSGeneralValue).toStrictEqual('87');
+
+		const positionSGeneralUnit = await page.$eval(
+			'.maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionSGeneralUnit).toStrictEqual('px');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
-		const responsiveXsOption = await page.$eval(
+		const positionXsSelector = await page.$eval(
 			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+			input => input.value
 		);
 
-		expect(responsiveXsOption).toStrictEqual('Absolute');
+		expect(positionXsSelector).toStrictEqual('fixed');
+
+		const positionXsGeneralValue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			input => input[0].placeholder
+		);
+
+		expect(positionXsGeneralValue).toStrictEqual('87');
+
+		const positionXsGeneralUnit = await page.$eval(
+			'.maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionXsGeneralUnit).toStrictEqual('px');
 
 		// responsive M
 		await changeResponsive(page, 'm');
 
-		const responsiveMOption = await page.$eval(
+		const positionMSelector = await page.$eval(
 			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+			input => input.value
 		);
 
-		expect(responsiveMOption).toStrictEqual('Relative');
+		expect(positionMSelector).toStrictEqual('relative');
+
+		const positionMGeneralValue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			input => input[0].placeholder
+		);
+
+		expect(positionMGeneralValue).toStrictEqual('56');
+
+		const positionMGeneralUnit = await page.$eval(
+			'.maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionMGeneralUnit).toStrictEqual('%');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

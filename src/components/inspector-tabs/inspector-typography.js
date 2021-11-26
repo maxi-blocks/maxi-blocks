@@ -20,11 +20,29 @@ const typography = ({
 	hideAlignment = false,
 	disableCustomFormats = false,
 	allowLink = false,
+	globalProps,
+	hoverGlobalProps,
 }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
-	const { parentBlockStyle, textLevel, isList } = attributes;
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		setAttributes,
+		scValues = {},
+	} = props;
+	const {
+		parentBlockStyle,
+		textLevel,
+		isList,
+		'typography-status-hover': typographyHoverStatus,
+	} = attributes;
 
-	const bgHoverStatus = attributes['typography-status-hover'];
+	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
+		scValues;
+	const globalHoverStatus = isActive && affectAll;
+
+	const hoverStatus = typographyHoverStatus || globalHoverStatus;
+
 	const typographyTarget = allowLink ? ['typography', 'link'] : 'typography';
 
 	return {
@@ -51,6 +69,7 @@ const typography = ({
 								textLevel={textLevel}
 								isList={isList}
 								allowLink={allowLink}
+								globalProps={globalProps}
 							/>
 						),
 					},
@@ -58,19 +77,21 @@ const typography = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
-								<ToggleSwitch
-									label={__(
-										'Enable Typography Hover',
-										'maxi-blocks'
-									)}
-									selected={bgHoverStatus}
-									onChange={val =>
-										setAttributes({
-											'typography-status-hover': val,
-										})
-									}
-								/>
-								{bgHoverStatus && (
+								{!globalHoverStatus && (
+									<ToggleSwitch
+										label={__(
+											'Enable Typography Hover',
+											'maxi-blocks'
+										)}
+										selected={hoverStatus}
+										onChange={val =>
+											setAttributes({
+												'typography-status-hover': val,
+											})
+										}
+									/>
+								)}
+								{hoverStatus && (
 									<TypographyControl
 										{...getGroupAttributes(
 											attributes,
@@ -87,6 +108,7 @@ const typography = ({
 										}
 										blockStyle={parentBlockStyle}
 										styleCardPrefix={styleCardPrefix}
+										globalProps={hoverGlobalProps}
 									/>
 								)}
 							</>

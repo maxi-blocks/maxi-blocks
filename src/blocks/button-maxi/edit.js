@@ -80,7 +80,9 @@ class edit extends MaxiBlockComponent {
 	typingTimeout = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		const { attributes, scValues } = this.props;
+
+		return getStyles(attributes, scValues);
 	}
 
 	render() {
@@ -165,11 +167,31 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
+const editSelect = withSelect((select, ownProps) => {
+	const {
+		attributes: { parentBlockStyle },
+	} = ownProps;
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+	const scElements = [
+		'hover-border-color-global',
+		'hover-border-color-all',
+		'hover-color-global',
+		'hover-color-all',
+		'hover-background-color-global',
+		'hover-background-color-all',
+	];
+	const scValues = receiveStyleCardValue(
+		scElements,
+		parentBlockStyle,
+		'button'
+	);
 
 	return {
 		deviceType,
+		scValues,
 	};
 });
 

@@ -613,7 +613,7 @@ const ImageLayerSettings = props => {
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
 								value={getLastBreakpointAttribute(
-									`${prefix}background-image-clip-path`,
+									`${prefix}background-image-clip`,
 									breakpoint,
 									imageOptions,
 									isHover

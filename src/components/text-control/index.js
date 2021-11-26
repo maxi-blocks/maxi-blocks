@@ -30,13 +30,18 @@ export default function TextControl({
 	onChange,
 	type = 'text',
 	validationText,
+	ifFullwidth,
 	...props
 }) {
 	const instanceId = useInstanceId(TextControl);
 	const id = `inspector-text-control-${instanceId}`;
 	const onChangeValue = event => onChange(event.target.value);
 
-	const classes = classnames('maxi-text-control', className);
+	const classes = classnames(
+		'maxi-text-control',
+		ifFullwidth && ' maxi-text-control--fullwidth',
+		className
+	);
 
 	return (
 		<BaseControl

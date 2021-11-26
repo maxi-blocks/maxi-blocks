@@ -47,8 +47,6 @@ import {
 	alignRightBottom,
 } from '../../icons';
 
-import './editor.scss';
-
 /**
  * Component
  */

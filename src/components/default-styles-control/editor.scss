@@ -28,6 +28,12 @@
 					}
 				}
 			}
+			&:nth-child(3),
+			&:nth-child(4) {
+				path {
+					stroke: var(--maxi-secondary-color);
+				}
+			}
 		}
 		&:hover {
 			background-color: var(--maxi-grey-3-color);

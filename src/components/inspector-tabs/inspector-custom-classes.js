@@ -19,6 +19,7 @@ const customClasses = ({ props }) => {
 		label: __('Add CSS classes', 'maxi-blocks'),
 		content: (
 			<TextControl
+				ifFullwidth
 				label={__(
 					'Attach custom CSS classes to target this element',
 					'maxi-blocks'

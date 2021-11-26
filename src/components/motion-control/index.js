@@ -346,13 +346,13 @@ const MotionControl = props => {
 											'maxi-blocks'
 										)}
 										value={getLastBreakpointAttribute(
-											`motion-viewport-start-${type}`,
+											`motion-viewport-top-${type}`,
 											breakpoint,
 											props
 										)}
 										onChange={val =>
 											onChange({
-												[`motion-viewport-start-${type}-${breakpoint}`]:
+												[`motion-viewport-top-${type}-${breakpoint}`]:
 													val,
 											})
 										}

@@ -67,7 +67,7 @@ export const motion = (() => {
 		generateAttr(type, 'delay', 'number', 0);
 		generateAttr(type, 'viewport-bottom', 'string', 'bottom'); // 0
 		generateAttr(type, 'viewport-middle', 'string', 'mid'); // 50
-		generateAttr(type, 'viewport-top', 'string', 'top'); // 100
+		generateAttr(type, 'viewport-top', 'string', 'mid'); // 100
 		generateAttr(type, 'status-reverse', 'boolean', true);
 
 		if (type === 'vertical') {

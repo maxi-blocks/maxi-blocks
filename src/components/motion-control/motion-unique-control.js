@@ -32,16 +32,7 @@ import { reset } from '../../icons';
  * Component
  */
 const MotionUniqueControl = props => {
-	const {
-		type,
-		label,
-		className,
-		min = -4000,
-		max = 4000,
-		values,
-		onChange,
-		breakpoint = 'general',
-	} = props;
+	const { type, className, values, onChange, breakpoint = 'general' } = props;
 
 	const classes = classnames(
 		'maxi-advanced-number-control maxi-motion-unique-control',
@@ -81,14 +72,14 @@ const MotionUniqueControl = props => {
 								return 'none';
 						}
 					};
-					console.log(`viwportLabel: ${viewportAttrLabel()}`);
-					console.log(
-						`value ${getLastBreakpointAttribute(
-							`motion-viewport-${viewportAttrLabel()}-${type}`,
-							breakpoint,
-							values
-						)}`
-					);
+					// console.log(`viwportLabel: ${viewportAttrLabel()}`);
+					// console.log(
+					// 	`value ${getLastBreakpointAttribute(
+					// 		`motion-viewport-${viewportAttrLabel()}-${type}`,
+					// 		breakpoint,
+					// 		values
+					// 	)}`
+					// );
 					const specialAttrLabel = lowerCase(label);
 					return {
 						label: __(`${label} zone`, 'maxi-blocks'),

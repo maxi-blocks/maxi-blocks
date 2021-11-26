@@ -14,6 +14,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { motionTypes } from '../../extensions/styles/defaults/motion';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
@@ -23,7 +24,7 @@ import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, pickBy } from 'lodash';
+import { capitalize, pickBy } from 'lodash';
 
 /**
  * Styles and icons
@@ -45,15 +46,6 @@ import { useState } from 'react';
  */
 const MotionControl = props => {
 	const { className, onChange, breakpoint = 'general', uniqueID } = props;
-
-	const motionTypes = [
-		'vertical',
-		'horizontal',
-		'rotate',
-		'scale',
-		'fade',
-		'blur',
-	];
 
 	const classes = classnames('maxi-motion-control', className);
 
@@ -292,159 +284,15 @@ const MotionControl = props => {
 											`motion-delay-${type}-general`
 										)}
 									/>
-									{/* {(type === 'vertical' ||
-										type === 'horizontal') &&
-										<MotionUniqueControl
-											label={__('Offset', 'maxi-blocks')}
-											type='offset'
-											step={1}
-											values={[
-												getLastBreakpointAttribute(
-													`motion-offset-start-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-offset-middle-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-offset-end-${type}`,
-													breakpoint,
-													props
-												),
-											]}
-											defaultValues={[
-												getDefaultAttribute(
-													`motion-offset-start-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-offset-middle-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-offset-end-${type}-general`
-												),
-											]}
-											onChange={values =>
-												onChange({
-													[`motion-offset-start-${type}-${breakpoint}`]:
-														values[0],
-													[`motion-offset-middle-${type}-${breakpoint}`]:
-														values[1],
-													[`motion-offset-end-${type}-${breakpoint}`]:
-														values[2],
-												})
-											}
-										/> } */}
-									{type === 'rotate' && (
-										<MotionUniqueControl
-											label={__('Rotate', 'maxi-blocks')}
-											type='rotate'
-											values={motionProps}
-											onChange={value => onChange(value)}
-										/>
-									)}
-									{/*
-									{type === 'scale' &&
-										{
-											/* <MotionUniqueControl
-											label={__('Scale', 'maxi-blocks')}
-											type='scale'
-											step={1}
-											values={[
-												getLastBreakpointAttribute(
-													`motion-scale-start-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-scale-middle-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-scale-end-${type}`,
-													breakpoint,
-													props
-												),
-											]}
-											defaultValues={[
-												getDefaultAttribute(
-													`motion-scale-start-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-scale-middle-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-scale-end-${type}-general`
-												),
-											]}
-											onChange={values =>
-												onChange({
-													[`motion-scale-start-${type}-${breakpoint}`]:
-														values[0],
-													[`motion-scale-middle-${type}-${breakpoint}`]:
-														values[1],
-													[`motion-scale-end-${type}-${breakpoint}`]:
-														values[2],
-												})
-											}
-										/> } */}
-									{type === 'fade' && (
-										<MotionUniqueControl
-											label={__('Fade', 'maxi-blocks')}
-											type='fade'
-											values={motionProps}
-											onChange={value => onChange(value)}
-										/>
-									)}
-									{/* {type === 'blur' &&
-										{
-											/* <MotionUniqueControl
-											label={__('Blur', 'maxi-blocks')}
-											type='blur'
-											step={1}
-											values={[
-												getLastBreakpointAttribute(
-													`motion-blur-start-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-blur-middle-${type}`,
-													breakpoint,
-													props
-												),
-												getLastBreakpointAttribute(
-													`motion-blur-end-${type}`,
-													breakpoint,
-													props
-												),
-											]}
-											defaultValues={[
-												getDefaultAttribute(
-													`motion-blur-start-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-blur-middle-${type}-general`
-												),
-												getDefaultAttribute(
-													`motion-blur-end-${type}-general`
-												),
-											]}
-											onChange={values =>
-												onChange({
-													[`motion-blur-start-${type}-${breakpoint}`]:
-														values[0],
-													[`motion-blur-middle-${type}-${breakpoint}`]:
-														values[1],
-													[`motion-blur-end-${type}-${breakpoint}`]:
-														values[2],
-												})
-											}
-										/> */}
-
+									<MotionUniqueControl
+										label={__(
+											`${capitalize(type)}`,
+											'maxi-blocks'
+										)}
+										type={type}
+										values={motionProps}
+										onChange={value => onChange(value)}
+									/>
 									<ToggleSwitch
 										label={__(
 											'Reverse scroll playback',

@@ -1,4 +1,4 @@
-const motionTypes = [
+export const motionTypes = [
 	'vertical',
 	'horizontal',
 	'rotate',

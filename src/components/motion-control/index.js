@@ -19,12 +19,13 @@ import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
+import * as defaultShortcuts from './shortcuts';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { capitalize, pickBy } from 'lodash';
+import { capitalize, pickBy, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -92,6 +93,10 @@ const MotionControl = props => {
 			case 'rotate':
 				response = [
 					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 'none',
+					},
+					{
 						label: __('Sun effect', 'maxi-blocks'),
 						value: 'sun-effect',
 					},
@@ -109,11 +114,15 @@ const MotionControl = props => {
 			default:
 				response = [
 					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 'none',
+					},
+					{
 						label: __('Placeholder effect', 'maxi-blocks'),
 						value: 'placeholder-effect',
 					},
 					{
-						label: __('another', 'maxi-blocks'),
+						label: __('Another', 'maxi-blocks'),
 						value: 'another',
 					},
 				];
@@ -142,6 +151,37 @@ const MotionControl = props => {
 		},
 	];
 
+	const globalShortcutsOptions = [
+		{
+			label: __('Choose', 'maxi-blocks'),
+			value: 0,
+		},
+		{
+			label: __('Rotate clockwise and Fade out', 'maxi-blocks'),
+			value: 1,
+		},
+		{
+			label: __('Shortcut 2', 'maxi-blocks'),
+			value: 2,
+		},
+		{
+			label: __('Shortcut 3', 'maxi-blocks'),
+			value: 3,
+		},
+		{
+			label: __('Shortcut 4', 'maxi-blocks'),
+			value: 4,
+		},
+	];
+
+	const onChangeShortcut = number => {
+		const newDefaultShortcuts = cloneDeep({ ...defaultShortcuts });
+
+		onChange({
+			...newDefaultShortcuts[`shortcut${number}`],
+		});
+	};
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch
@@ -151,10 +191,6 @@ const MotionControl = props => {
 					onChange({
 						'motion-preview-status': val,
 					});
-					// console.log(`val: ${val}`);
-					// console.log(`currentMotion on change: ${currentMotion}`);
-					// setCurrentMotion(val);
-					// console.log(`currentMotion after change: ${currentMotion}`);
 					if (val) {
 						removeMotion(uniqueID);
 						addMotion();
@@ -162,6 +198,11 @@ const MotionControl = props => {
 						removeMotion(uniqueID);
 					}
 				}}
+			/>
+			<SelectControl
+				label={__('Shortcut effect', 'maxi-blocks')}
+				onChange={val => onChange(onChangeShortcut(val))}
+				options={globalShortcutsOptions}
 			/>
 			<ButtonGroupControl
 				fullWidthMode

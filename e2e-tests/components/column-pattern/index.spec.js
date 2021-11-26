@@ -10,6 +10,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('ColumnPattern', () => {
@@ -35,10 +36,7 @@ describe('ColumnPattern', () => {
 			click => click[0].click()
 		);
 
-		const rowPattern = await getBlockAttributes();
-		const rowAttribute = rowPattern['row-pattern-general'];
-
-		expect(rowAttribute).toStrictEqual('1-1');
+		expect(await getAttributes('row-pattern-general')).toStrictEqual('1-1');
 
 		// remove Gap
 		await accordionControl.$eval(
@@ -46,11 +44,7 @@ describe('ColumnPattern', () => {
 			click => click.click()
 		);
 
-		const removeGapAttributes = await getBlockAttributes();
-		const gapAttribute = removeGapAttributes.removeColumnGap;
-		const expectGap = true;
-
-		expect(gapAttribute).toStrictEqual(expectGap);
+		expect(await getAttributes('removeColumnGap')).toStrictEqual(true);
 	});
 
 	it('Check responsive row-pattern', async () => {
@@ -89,10 +83,7 @@ describe('ColumnPattern', () => {
 
 		expect(buttonClick).toBeTruthy();
 
-		const rowPattern = await getBlockAttributes();
-		const rowAttribute = rowPattern['row-pattern-s'];
-
-		expect(rowAttribute).toStrictEqual('1-3');
+		expect(await getAttributes('row-pattern-s')).toStrictEqual('1-3');
 
 		// xs
 		await changeResponsive(page, 'xs');

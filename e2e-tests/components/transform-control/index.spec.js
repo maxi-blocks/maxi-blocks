@@ -10,7 +10,7 @@ import {
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
+	getAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
@@ -39,11 +39,9 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('55');
 
-		const transformScaleY = await getBlockAttributes();
-		const scaleY = transformScaleY['transform-scale-y-general'];
-		const expectY = 55;
-
-		expect(scaleY).toStrictEqual(expectY);
+		expect(await getAttributes('transform-scale-y-general')).toStrictEqual(
+			55
+		);
 
 		// X
 		await accordionPanel.$eval(
@@ -53,11 +51,9 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('44');
 
-		const transformScaleX = await getBlockAttributes();
-		const scaleX = transformScaleX['transform-scale-x-general'];
-		const expectX = 44;
-
-		expect(scaleX).toStrictEqual(expectX);
+		expect(await getAttributes('transform-scale-x-general')).toStrictEqual(
+			44
+		);
 
 		// translate
 		await buttons[1].click();
@@ -74,17 +70,13 @@ describe('TransformControl', () => {
 		);
 		await selectYUnit.select('px');
 
-		const transformTranslateY = await getBlockAttributes();
-		const translateY = transformTranslateY['transform-translate-y-general'];
-		const expectTranslateY = 55;
+		expect(
+			await getAttributes('transform-translate-y-general')
+		).toStrictEqual(55);
 
-		expect(translateY).toStrictEqual(expectTranslateY);
-
-		const translateYUnit =
-			transformTranslateY['transform-translate-y-unit-general'];
-		const expectTranslateYUnit = 'px';
-
-		expect(translateYUnit).toStrictEqual(expectTranslateYUnit);
+		expect(
+			await getAttributes('transform-translate-y-unit-general')
+		).toStrictEqual('px');
 
 		// X
 		await accordionPanel.$eval(
@@ -98,17 +90,13 @@ describe('TransformControl', () => {
 		);
 		await selectXUnit.select('px');
 
-		const transformTranslateX = await getBlockAttributes();
-		const translateX = transformTranslateX['transform-translate-x-general'];
-		const expectTranslateX = 66;
+		expect(
+			await getAttributes('transform-translate-x-general')
+		).toStrictEqual(66);
 
-		expect(translateX).toStrictEqual(expectTranslateX);
-
-		const translateXUnit =
-			transformTranslateX['transform-translate-x-unit-general'];
-		const expectTranslateXUnit = 'px';
-
-		expect(translateXUnit).toStrictEqual(expectTranslateXUnit);
+		expect(
+			await getAttributes('transform-translate-x-unit-general')
+		).toStrictEqual('px');
 
 		// Rotate
 		await buttons[2].click();
@@ -129,16 +117,11 @@ describe('TransformControl', () => {
 		await page.keyboard.type('100');
 
 		// expect
-		const styleAttributes = await getBlockAttributes();
-		const rotateAttributes = (({
-			'transform-rotate-x-general': transformRotateX,
-			'transform-rotate-y-general': transformRotateY,
-			'transform-rotate-z-general': transformRotateZ,
-		}) => ({
-			'transform-rotate-x-general': transformRotateX,
-			'transform-rotate-y-general': transformRotateY,
-			'transform-rotate-z-general': transformRotateZ,
-		}))(styleAttributes);
+		const colorResult = await getAttributes([
+			'transform-rotate-x-general',
+			'transform-rotate-y-general',
+			'transform-rotate-z-general',
+		]);
 
 		const expectedAttributes = {
 			'transform-rotate-x-general': 150,
@@ -146,7 +129,7 @@ describe('TransformControl', () => {
 			'transform-rotate-z-general': 100,
 		};
 
-		expect(rotateAttributes).toStrictEqual(expectedAttributes);
+		expect(colorResult).toStrictEqual(expectedAttributes);
 
 		// Origin
 		await buttons[3].click();
@@ -158,11 +141,9 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('80');
 
-		const transformOriginY = await getBlockAttributes();
-		const originY = transformOriginY['transform-origin-y-general'];
-		const expectYOrigin = '80';
-
-		expect(originY).toStrictEqual(expectYOrigin);
+		expect(await getAttributes('transform-origin-y-general')).toStrictEqual(
+			'80'
+		);
 
 		// X
 		await accordionPanel.$eval(
@@ -172,11 +153,9 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('20');
 
-		const transformOriginX = await getBlockAttributes();
-		const originX = transformOriginX['transform-origin-x-general'];
-		const expectXOrigin = '20';
-
-		expect(originX).toStrictEqual(expectXOrigin);
+		expect(await getAttributes('transform-origin-x-general')).toStrictEqual(
+			'20'
+		);
 	});
 
 	it('Check Responsive transform control', async () => {
@@ -211,10 +190,7 @@ describe('TransformControl', () => {
 
 		expect(responsiveSOption).toStrictEqual('57');
 
-		const attributes = await getBlockAttributes();
-		const transformScale = attributes['transform-scale-y-s'];
-
-		expect(transformScale).toStrictEqual(57);
+		expect(await getAttributes('transform-scale-y-s')).toStrictEqual(57);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -260,10 +236,9 @@ describe('TransformControl', () => {
 
 		expect(translateSOption).toStrictEqual('53');
 
-		const translateAttributes = await getBlockAttributes();
-		const translate = translateAttributes['transform-translate-y-s'];
-
-		expect(translate).toStrictEqual(53);
+		expect(await getAttributes('transform-translate-y-s')).toStrictEqual(
+			53
+		);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -309,10 +284,7 @@ describe('TransformControl', () => {
 
 		expect(rotateSOption).toStrictEqual('15');
 
-		const rotateAttributes = await getBlockAttributes();
-		const rotate = rotateAttributes['transform-rotate-x-s'];
-
-		expect(rotate).toStrictEqual(15);
+		expect(await getAttributes('transform-rotate-x-s')).toStrictEqual(15);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -358,10 +330,7 @@ describe('TransformControl', () => {
 
 		expect(originSOption).toStrictEqual('88');
 
-		const originAttributes = await getBlockAttributes();
-		const origin = originAttributes['transform-origin-y-s'];
-
-		expect(origin).toStrictEqual('88');
+		expect(await getAttributes('transform-origin-y-s')).toStrictEqual('88');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

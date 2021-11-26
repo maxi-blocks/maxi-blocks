@@ -11,6 +11,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('BorderControl', () => {
@@ -42,12 +43,10 @@ describe('BorderControl', () => {
 		);
 
 		await borderType.select('groove');
-		const expectBorderType = 'groove';
 
-		const attributes = await getBlockAttributes();
-		const borderAttribute = attributes['border-style-general'];
-
-		expect(borderAttribute).toStrictEqual(expectBorderType);
+		expect(await getAttributes('border-style-general')).toStrictEqual(
+			'groove'
+		);
 
 		// color
 		await page.$$eval(
@@ -55,23 +54,18 @@ describe('BorderControl', () => {
 			clickDiv => clickDiv[4].click()
 		);
 
-		const expectedColorResult = 5;
-
-		const colorAttributes = await getBlockAttributes();
-		const borderColor = colorAttributes['border-palette-color-general'];
-
-		expect(borderColor).toStrictEqual(expectedColorResult);
+		expect(
+			await getAttributes('border-palette-color-general')
+		).toStrictEqual(5);
 
 		const selector = await borderAccordion.$(
 			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select'
 		);
 		await selector.select('dotted');
 
-		const expectResult = 'dotted';
-		const borderAttributes = await getBlockAttributes();
-		const style = borderAttributes['border-style-general'];
-
-		expect(style).toStrictEqual(expectResult);
+		expect(await getAttributes('border-style-general')).toStrictEqual(
+			'dotted'
+		);
 	});
 
 	it('Check Responsive border control', async () => {
@@ -150,7 +144,7 @@ describe('BorderControl', () => {
 			buttons => buttons[0].click()
 		);
 
-		const expectChanges = {
+		const expectBorder = {
 			'border-color-general': undefined,
 			'border-color-general-hover': undefined,
 			'border-style-general': undefined,
@@ -165,37 +159,22 @@ describe('BorderControl', () => {
 			'border-left-width-general-hover': 2,
 		};
 
-		const borderAttributes = await getBlockAttributes();
+		const borderResult = await getAttributes([
+			'border-color-general',
+			'border-color-general-hover',
+			'border-style-general',
+			'border-style-general-hover',
+			'border-top-width-general',
+			'border-top-width-general-hover',
+			'border-right-width-general',
+			'border-right-width-general-hover',
+			'border-bottom-width-general',
+			'border-bottom-width-general-hover',
+			'border-left-width-general',
+			'border-left-width-general-hover',
+		]);
 
-		const border = (({
-			'border-color-general': borderColor,
-			'border-color-general-hover': borderColorHover,
-			'border-style-general': borderStyle,
-			'border-style-general-hover': borderStyleHover,
-			'border-top-width-general': borderTopWidth,
-			'border-top-width-general-hover': borderTopWidthHover,
-			'border-right-width-general': borderRightWidth,
-			'border-right-width-general-hover': borderRightWidthHover,
-			'border-bottom-width-general': borderBottomWidth,
-			'border-bottom-width-general-hover': borderBottomWidthHover,
-			'border-left-width-general': borderLeftWidth,
-			'border-left-width-general-hover': borderLeftWidthHover,
-		}) => ({
-			'border-color-general': borderColor,
-			'border-color-general-hover': borderColorHover,
-			'border-style-general': borderStyle,
-			'border-style-general-hover': borderStyleHover,
-			'border-top-width-general': borderTopWidth,
-			'border-top-width-general-hover': borderTopWidthHover,
-			'border-right-width-general': borderRightWidth,
-			'border-right-width-general-hover': borderRightWidthHover,
-			'border-bottom-width-general': borderBottomWidth,
-			'border-bottom-width-general-hover': borderBottomWidthHover,
-			'border-left-width-general': borderLeftWidth,
-			'border-left-width-general-hover': borderLeftWidthHover,
-		}))(borderAttributes);
-
-		expect(border).toStrictEqual(expectChanges);
+		expect(borderResult).toStrictEqual(expectBorder);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

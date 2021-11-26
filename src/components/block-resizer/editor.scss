@@ -24,6 +24,8 @@ body.maxi-blocks--active .maxi-block__resizer {
 					top: -10px;
 					left: 0px;
 					border-bottom: 1px solid var(--maxi-primary-color);
+					border-left: 0;
+					border-right: 0;
 				}
 			}
 			&-right {
@@ -32,6 +34,8 @@ body.maxi-blocks--active .maxi-block__resizer {
 					top: 0;
 					right: -10px !important;
 					border-left: 1px solid var(--maxi-primary-color);
+					border-top: 0;
+					border-bottom: 0;
 				}
 			}
 			&-bottom {
@@ -40,6 +44,8 @@ body.maxi-blocks--active .maxi-block__resizer {
 					bottom: -10px;
 					left: 0px;
 					border-top: 1px solid var(--maxi-primary-color);
+					border-left: 0;
+					border-right: 0;
 				}
 			}
 			&-left {
@@ -48,6 +54,8 @@ body.maxi-blocks--active .maxi-block__resizer {
 					top: 0;
 					left: -10px;
 					border-right: 1px solid var(--maxi-primary-color);
+					border-top: 0;
+					border-bottom: 0;
 				}
 			}
 			&-topleft {

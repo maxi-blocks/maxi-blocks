@@ -117,6 +117,45 @@ const MotionUniqueControl = props => {
 										)}
 									/>
 								)}
+								{(type === 'horizontal' ||
+									type === 'vertical') && (
+									<AdvancedNumberControl
+										label={__(
+											`${label} position`,
+											'maxi-blocks'
+										)}
+										value={getLastBreakpointAttribute(
+											`motion-offset-${specialAttrLabel}-${type}`,
+											breakpoint,
+											values
+										)}
+										onChangeValue={val => {
+											onChange({
+												[`motion-offset-${specialAttrLabel}-${type}-${breakpoint}`]:
+													val !== undefined &&
+													val !== ''
+														? val
+														: '',
+											});
+										}}
+										min={-4000}
+										step={1}
+										max={4000}
+										onReset={() =>
+											onChange({
+												[`motion-offset-${specialAttrLabel}-${type}-${breakpoint}`]:
+													getDefaultAttribute(
+														`motion-offset-${lowerCase(
+															label
+														)}-${type}-general`
+													),
+											})
+										}
+										initialPosition={getDefaultAttribute(
+											`motion-opacity-${specialAttrLabel}-${type}-general`
+										)}
+									/>
+								)}
 							</>
 						),
 					};

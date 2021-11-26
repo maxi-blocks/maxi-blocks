@@ -127,6 +127,21 @@ const MotionControl = props => {
 		return key.includes('motion-');
 	});
 
+	const viewportOptions = [
+		{
+			label: __('Top of screen', 'maxi-blocks'),
+			value: 'top',
+		},
+		{
+			label: __('Middle of screen', 'maxi-blocks'),
+			value: 'mid',
+		},
+		{
+			label: __('Bottom of screen', 'maxi-blocks'),
+			value: 'bottom',
+		},
+	];
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch
@@ -283,6 +298,24 @@ const MotionControl = props => {
 										initialPosition={getDefaultAttribute(
 											`motion-delay-${type}-general`
 										)}
+									/>
+									<SelectControl
+										label={__(
+											'Viewport entry',
+											'maxi-blocks'
+										)}
+										value={getLastBreakpointAttribute(
+											`motion-viewport-start-${type}`,
+											breakpoint,
+											props
+										)}
+										onChange={val =>
+											onChange({
+												[`motion-viewport-start-${type}-${breakpoint}`]:
+													val,
+											})
+										}
+										options={viewportOptions}
 									/>
 									<MotionUniqueControl
 										label={__(

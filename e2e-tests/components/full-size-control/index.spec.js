@@ -14,6 +14,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
@@ -31,11 +32,7 @@ describe('FullSizeControl', () => {
 			use => use.click()
 		);
 
-		const expectResult = 'full';
-		const expectAttributes = await getBlockAttributes();
-		const width = expectAttributes.blockFullWidth;
-
-		expect(width).toStrictEqual(expectResult);
+		expect(await getAttributes('blockFullWidth')).toStrictEqual('full');
 	});
 
 	it('Check Responsive full size control', async () => {
@@ -61,10 +58,7 @@ describe('FullSizeControl', () => {
 
 		expect(generalHeight).toStrictEqual('330');
 
-		const attributes = await getBlockAttributes();
-		const heightAttribute = attributes['height-general'];
-
-		expect(heightAttribute).toStrictEqual(330);
+		expect(await getAttributes('height-general')).toStrictEqual(330);
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -79,10 +73,7 @@ describe('FullSizeControl', () => {
 		);
 		expect(heightS).toStrictEqual('399');
 
-		const attributesS = await getBlockAttributes();
-		const sHeight = attributesS['height-s'];
-
-		expect(sHeight).toStrictEqual(399);
+		expect(await getAttributes('height-s')).toStrictEqual(399);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

@@ -10,7 +10,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, modalMock } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	modalMock,
+	getAttributes,
+} from '../../utils';
 
 describe('IconControl', () => {
 	it('Check Icon Control', async () => {
@@ -33,29 +38,20 @@ describe('IconControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40');
 
-		const widthAttributes = await getBlockAttributes();
-		const width = widthAttributes['icon-width-general'];
-
-		expect(width).toStrictEqual(340);
+		expect(await getAttributes('icon-width-general')).toStrictEqual(340);
 
 		// stroke width
 		await inputs[2].click();
 		await page.keyboard.type('5');
 
-		const strokeAttributes = await getBlockAttributes();
-		const stroke = strokeAttributes['icon-stroke-general'];
-
-		expect(stroke).toStrictEqual(5);
+		expect(await getAttributes('icon-stroke-general')).toStrictEqual(5);
 
 		// icon spacing
 		await inputs[4].click();
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('66');
 
-		const spacingAttributes = await getBlockAttributes();
-		const spacing = spacingAttributes['icon-spacing-general'];
-
-		expect(spacing).toStrictEqual(66);
+		expect(await getAttributes('icon-spacing-general')).toStrictEqual(66);
 
 		// icon position
 		const iconPosition = await page.$$('.maxi-button-group-control button');
@@ -74,10 +70,8 @@ describe('IconControl', () => {
 		);
 
 		// expects
-		const expectBorder = 'dashed';
-		const borderAttributes = await getBlockAttributes();
-		const border = borderAttributes['icon-border-style-general'];
-
-		expect(border).toStrictEqual(expectBorder);
+		expect(await getAttributes('icon-border-style-general')).toStrictEqual(
+			'dashed'
+		);
 	});
 });

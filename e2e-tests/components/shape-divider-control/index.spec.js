@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
@@ -28,11 +28,9 @@ describe('ShapeDividerControl', () => {
 			click => click.click()
 		);
 
-		const expectedTopStatus = true;
-		const attributes = await getBlockAttributes();
-		const shapeTopStatus = attributes['shape-divider-top-status'];
-
-		expect(shapeTopStatus).toStrictEqual(expectedTopStatus);
+		expect(await getAttributes('shape-divider-top-status')).toStrictEqual(
+			true
+		);
 
 		// effects
 		await accordionPanel.$eval(
@@ -40,12 +38,9 @@ describe('ShapeDividerControl', () => {
 			click => click.click()
 		);
 
-		const expectedTopEffectStatus = true;
-		const shapeAttributes = await getBlockAttributes();
-		const effectTopStatus =
-			shapeAttributes['shape-divider-top-effects-status'];
-
-		expect(effectTopStatus).toStrictEqual(expectedTopEffectStatus);
+		expect(
+			await getAttributes('shape-divider-top-effects-status')
+		).toStrictEqual(true);
 
 		// divider style
 		await accordionPanel.$eval(
@@ -58,11 +53,9 @@ describe('ShapeDividerControl', () => {
 			click => click[1].click()
 		);
 
-		const shapeStyle = 'waves-top';
-		const shapeStyleAttribute = await getBlockAttributes();
-		const style = shapeStyleAttribute['shape-divider-top-shape-style'];
-
-		expect(style).toStrictEqual(shapeStyle);
+		expect(
+			await getAttributes('shape-divider-top-shape-style')
+		).toStrictEqual('waves-top');
 
 		// opacity
 		await accordionPanel.$eval(
@@ -73,11 +66,9 @@ describe('ShapeDividerControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		const expectedOpacity = 0.5;
-		const shapeOpacityAttribute = await getBlockAttributes();
-		const shapeOpacity = shapeOpacityAttribute['shape-divider-top-opacity'];
-
-		expect(shapeOpacity).toStrictEqual(expectedOpacity);
+		expect(await getAttributes('shape-divider-top-opacity')).toStrictEqual(
+			0.5
+		);
 
 		// color
 		await accordionPanel.$$eval(
@@ -85,12 +76,9 @@ describe('ShapeDividerControl', () => {
 			selectColor => selectColor[3].click()
 		);
 
-		const expectedShapeColor = 4;
-		const shapeColorAttribute = await getBlockAttributes();
-		const shapeColor =
-			shapeColorAttribute['shape-divider-palette-top-color'];
-
-		expect(shapeColor).toStrictEqual(expectedShapeColor);
+		expect(
+			await getAttributes('shape-divider-palette-top-color')
+		).toStrictEqual(4);
 
 		// divider height
 		await accordionPanel.$$eval(
@@ -100,11 +88,9 @@ describe('ShapeDividerControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('200');
 
-		const expectedTopHeight = 200;
-		const shapeHeightAttribute = await getBlockAttributes();
-		const shapeTopHeight = shapeHeightAttribute['shape-divider-top-height'];
-
-		expect(shapeTopHeight).toStrictEqual(expectedTopHeight);
+		expect(await getAttributes('shape-divider-top-height')).toStrictEqual(
+			200
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

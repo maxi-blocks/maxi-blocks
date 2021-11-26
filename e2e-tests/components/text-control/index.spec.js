@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab } from '../../utils';
+import { openSidebarTab, getAttributes } from '../../utils';
 
 describe('TextControl', () => {
 	it('Check test control', async () => {
@@ -26,10 +26,6 @@ describe('TextControl', () => {
 
 		await page.keyboard.type('title');
 
-		const attributes = await getBlockAttributes();
-		const className = attributes.extraClassName;
-		const additionalClass = 'title';
-
-		expect(className).toStrictEqual(additionalClass);
+		expect(await getAttributes('extraClassName')).toStrictEqual('title');
 	});
 });

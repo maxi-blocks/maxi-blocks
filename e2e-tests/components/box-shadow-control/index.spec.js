@@ -9,7 +9,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+} from '../../utils';
 
 describe('BoxShadowControl', () => {
 	beforeEach(async () => {
@@ -136,7 +141,7 @@ describe('BoxShadowControl', () => {
 			click[0].click()
 		);
 
-		const expectChanges = {
+		const expectBoxShadow = {
 			'box-shadow-blur-general': undefined,
 			'box-shadow-blur-general-hover': 50,
 			'box-shadow-horizontal-general': undefined,
@@ -147,29 +152,18 @@ describe('BoxShadowControl', () => {
 			'box-shadow-vertical-general-hover': 30,
 		};
 
-		const shadowAttributes = await getBlockAttributes();
+		const boxShadowResult = await getAttributes([
+			'box-shadow-blur-general',
+			'box-shadow-blur-general-hover',
+			'box-shadow-horizontal-general',
+			'box-shadow-horizontal-general-hover',
+			'box-shadow-spread-general',
+			'box-shadow-spread-general-hover',
+			'box-shadow-vertical-general',
+			'box-shadow-vertical-general-hover',
+		]);
 
-		const boxShadow = (({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-blur-general-hover': boxShadowBlurHover,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-horizontal-general-hover': boxShadowHorizontalHover,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-spread-general-hover': boxShadowSpreadHover,
-			'box-shadow-vertical-general': boxShadowVertical,
-			'box-shadow-vertical-general-hover': boxShadowVerticalHover,
-		}) => ({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-blur-general-hover': boxShadowBlurHover,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-horizontal-general-hover': boxShadowHorizontalHover,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-spread-general-hover': boxShadowSpreadHover,
-			'box-shadow-vertical-general': boxShadowVertical,
-			'box-shadow-vertical-general-hover': boxShadowVerticalHover,
-		}))(shadowAttributes);
-
-		expect(boxShadow).toStrictEqual(expectChanges);
+		expect(boxShadowResult).toStrictEqual(expectBoxShadow);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

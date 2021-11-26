@@ -5,7 +5,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+} from '../../utils';
 
 describe('FontFamilySelector', () => {
 	it('Checking the font family selector', async () => {
@@ -27,11 +32,9 @@ describe('FontFamilySelector', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
-		const attributes = await getBlockAttributes();
-		const fontFamily = attributes['font-family-general'];
-		const expectedResult = 'Montserrat';
-
-		expect(fontFamily).toStrictEqual(expectedResult);
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			'Montserrat'
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

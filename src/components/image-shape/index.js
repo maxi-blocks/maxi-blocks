@@ -81,50 +81,50 @@ const ImageShape = props => {
 								options={[
 									{
 										label: __(
-											'Center Center',
+											'Center center',
 											'maxi-blocks'
 										),
 										value: 'xMidYMid',
 									},
 									{
-										label: __('Left Center', 'maxi-blocks'),
+										label: __('Left center', 'maxi-blocks'),
 										value: 'xMinYMid',
 									},
 									{
 										label: __(
-											'Right Center',
+											'Right center',
 											'maxi-blocks'
 										),
 										value: 'xMaxYMid',
 									},
 									{
-										label: __('Center Top', 'maxi-blocks'),
+										label: __('Center top', 'maxi-blocks'),
 										value: 'xMidYMax',
 									},
 									{
 										label: __(
-											'Center Bottom',
+											'Center bottom',
 											'maxi-blocks'
 										),
 										value: 'xMidYMin',
 									},
 									{
-										label: __('Left Bottom', 'maxi-blocks'),
+										label: __('Left bottom', 'maxi-blocks'),
 										value: 'xMinYMin',
 									},
 									{
 										label: __(
-											'Right Bottom',
+											'Right bottom',
 											'maxi-blocks'
 										),
 										value: 'xMaxYMin',
 									},
 									{
-										label: __('Left Top', 'maxi-blocks'),
+										label: __('Left top', 'maxi-blocks'),
 										value: 'xMinYMax',
 									},
 									{
-										label: __('Right Top', 'maxi-blocks'),
+										label: __('Right top', 'maxi-blocks'),
 										value: 'xMaxYMax',
 									},
 								]}

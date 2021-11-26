@@ -10,7 +10,7 @@ import {
 	openSidebarTab,
 	getBlockStyle,
 	editAxisControl,
-	getBlockAttributes,
+	getAttributes,
 } from '../../utils';
 
 describe('Indicators', () => {
@@ -46,22 +46,15 @@ describe('Indicators', () => {
 			'padding-unit-general': '%',
 		};
 
-		const pageAttributes = await getBlockAttributes();
-		const paddingAttributes = (({
-			'padding-unit-general': paddingUnit,
-			'padding-top-general': paddingTop,
-			'padding-bottom-general': paddingBottom,
-			'padding-left-general': paddingLeft,
-			'padding-right-general': paddingRight,
-		}) => ({
-			'padding-unit-general': paddingUnit,
-			'padding-top-general': paddingTop,
-			'padding-bottom-general': paddingBottom,
-			'padding-left-general': paddingLeft,
-			'padding-right-general': paddingRight,
-		}))(pageAttributes);
+		const paddingResult = await getAttributes([
+			'padding-top-general',
+			'padding-bottom-general',
+			'padding-left-general',
+			'padding-right-general',
+			'padding-unit-general',
+		]);
 
-		expect(paddingAttributes).toStrictEqual(expectPadding);
+		expect(paddingResult).toStrictEqual(expectPadding);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

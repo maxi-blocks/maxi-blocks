@@ -42,11 +42,11 @@ const ImageLayerSettings = props => {
 		breakpoint,
 		isGeneral = false,
 		getDefaultAttr,
+		moreSettings,
+		setMoreSettings,
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
-
-	const [moreSettings, setMoreSettings] = useState(false);
 
 	const parallaxStatus = getAttributeValue({
 		target: 'background-image-parallax-status',
@@ -613,7 +613,7 @@ const ImageLayerSettings = props => {
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
 								value={getLastBreakpointAttribute(
-									`${prefix}background-image-clip-path`,
+									`${prefix}background-image-clip`,
 									breakpoint,
 									imageOptions,
 									isHover
@@ -700,6 +700,8 @@ const ImageLayer = props => {
 
 	const imageOptions = cloneDeep(props.imageOptions);
 
+	const [moreSettings, setMoreSettings] = useState(false);
+
 	const getDefaultAttr = target => {
 		if (isLayer) return getDefaultLayerAttr('imageOptions', target);
 
@@ -780,6 +782,8 @@ const ImageLayer = props => {
 								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<ImageLayerSettings
 										getDefaultAttr={getDefaultAttr}
+										moreSettings={moreSettings}
+										setMoreSettings={setMoreSettings}
 										{...props}
 									/>
 								</ResponsiveTabsControl>

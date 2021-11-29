@@ -21,13 +21,16 @@ describe('ColorControl', () => {
 			'button background'
 		);
 
-		const backGroundColor = await accordionPanel.$('.maxi-color-control');
+		const backGroundColor = await accordionPanel.$(
+			'.maxi-background-control .maxi-tabs-content'
+		);
 
 		await editColorControl({
 			page,
 			instance: backGroundColor,
+			paletteStatus: true,
 			colorPalette: 3,
-			paletteOpacity: '45',
+			opacity: '45',
 		});
 
 		const attributes = await getBlockAttributes();
@@ -54,8 +57,9 @@ describe('ColorControl', () => {
 		await editColorControl({
 			page,
 			instance: backGroundColor,
+			paletteStatus: false,
 			customColor: '#8E2727',
-			customOpacity: '67',
+			opacity: '67',
 		});
 
 		const customColorAttributes = await getBlockAttributes();
@@ -87,7 +91,8 @@ describe('ColorControl', () => {
 		await editColorControl({
 			page,
 			instance: backGroundColor,
-			paletteOpacity: '250',
+			paletteStatus: false,
+			opacity: '250',
 		});
 
 		const maxOpacityAttributes = await getBlockAttributes();
@@ -99,7 +104,8 @@ describe('ColorControl', () => {
 		await editColorControl({
 			page,
 			instance: backGroundColor,
-			paletteOpacity: '-23',
+			paletteStatus: false,
+			opacity: '-23',
 		});
 
 		const minOpacityAttributes = await getBlockAttributes();

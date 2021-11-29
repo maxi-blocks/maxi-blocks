@@ -11,6 +11,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	getBlockStyle,
+	editColorControl,
 } from '../../utils';
 
 describe('BorderControl', () => {
@@ -50,17 +51,19 @@ describe('BorderControl', () => {
 		expect(borderAttribute).toStrictEqual(expectBorderType);
 
 		// color
-		await page.$$eval(
-			'.maxi-border-control .maxi-color-palette-control .maxi-color-control__palette-box',
-			clickDiv => clickDiv[4].click()
-		);
+		const backGroundColor = await page.$('.maxi-border-control');
 
-		const expectedColorResult = 5;
+		await editColorControl({
+			page,
+			instance: backGroundColor,
+			paletteStatus: true,
+			colorPalette: 4,
+		});
 
 		const colorAttributes = await getBlockAttributes();
-		const borderColor = colorAttributes['border-palette-color-general'];
+		const colorPalette = colorAttributes['border-palette-color-general'];
 
-		expect(borderColor).toStrictEqual(expectedColorResult);
+		expect(colorPalette).toStrictEqual(4);
 
 		const selector = await borderAccordion.$(
 			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select'

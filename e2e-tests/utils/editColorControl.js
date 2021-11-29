@@ -1,37 +1,30 @@
-/* eslint-disable no-await-in-loop */
+/**
+ * WordPress dependencies
+ */
+import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * External dependencies
  */
-import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 import { isNumber } from 'lodash';
 
 const editColorControl = async ({
 	page,
 	instance,
+	paletteStatus = true,
 	colorPalette,
-	paletteOpacity,
 	customColor,
-	customOpacity,
+	opacity,
 }) => {
-	if (isNumber(colorPalette)) {
-		await page.$eval(
-			`.maxi-background-control .maxi-color-control button[data-item="${colorPalette}"]`,
+	// select colorPalette
+	if (paletteStatus && isNumber(colorPalette))
+		await instance.$eval(
+			`.maxi-color-palette-control .maxi-color-control__palette-container button[data-item="${colorPalette}"]`,
 			button => button.click()
 		);
-	}
 
-	if (paletteOpacity) {
-		// change unit
-		await instance.$eval('.maxi-opacity-control input', input =>
-			input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(paletteOpacity);
-	}
-
-	if (customColor) {
+	// select customColor
+	if (!paletteStatus && customColor) {
 		await instance.$eval('.maxi-opacity-control button', button =>
 			button.click()
 		);
@@ -49,17 +42,18 @@ const editColorControl = async ({
 		await page.keyboard.type(customColor);
 
 		await page.waitForTimeout(150);
+	}
 
-		if (customOpacity) {
-			await page.$$eval(
-				'.maxi-color-control .maxi-opacity-control input',
-				input => input[2].focus()
-			);
+	// change opacity
+	if (opacity) {
+		await page.$$eval(
+			'.maxi-color-control .maxi-opacity-control input',
+			input => input[2].focus()
+		);
 
-			await page.waitForTimeout(150);
-			await pressKeyWithModifier('primary', 'a');
-			await page.keyboard.type(customOpacity);
-		}
+		await page.waitForTimeout(150);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type(opacity);
 	}
 };
 

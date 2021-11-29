@@ -7,6 +7,7 @@
 		border: 1px solid #fff;
 		&[aria-pressed='true'] {
 			border: 2px solid #ff4a17;
+			font-weight: 400;
 		}
 	}
 }

@@ -9,12 +9,6 @@
 		}
 	}
 
-	.maxi-advanced-number-control
-		.maxi-base-control__field
-		.maxi-base-control__label {
-		text-transform: capitalize;
-	}
-
 	.maxi-button-group-control__option--selected {
 		svg path {
 			stroke: var(--maxi-secondary-color);

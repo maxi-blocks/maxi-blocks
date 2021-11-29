@@ -10,12 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getAttributes,
-	openSidebarTab,
-	getBlockStyle,
-	editColorControl
-} from '../../utils';
+import { getAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {

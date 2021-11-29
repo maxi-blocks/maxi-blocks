@@ -65,6 +65,11 @@ if (!class_exists('MaxiBlocks_Core')):
             );
 
             wp_enqueue_script(
+                'maxi-waypoints-js',
+                plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+            );
+
+            wp_enqueue_script(
                 'maxi-front-scripts-js',
                 plugins_url('/js/front-scripts.js', dirname(__FILE__)),
                 [],

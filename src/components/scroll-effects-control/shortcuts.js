@@ -23,6 +23,10 @@ export const shortcut1 = {
 	'motion-viewport-middle-fade-general': 'mid',
 	'motion-viewport-start-fade-general': 'mid',
 	'motion-viewport-top-fade-general': 'top',
+	'motion-status-vertical-general': false,
+	'motion-status-horizontal-general': false,
+	'motion-status-scale-general': false,
+	'motion-status-blur-general': false,
 };
 export const shortcut2 = {};
 export const shortcut3 = {};

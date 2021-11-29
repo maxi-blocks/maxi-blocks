@@ -182,6 +182,16 @@ const ScrollEffectsControl = props => {
 		});
 	};
 
+	const getActiveEffects = () => {
+		const response = [];
+		motionTypes.forEach(type => {
+			if (props[`motion-status-${type}-${breakpoint}`])
+				response.push(type);
+		});
+
+		return response;
+	};
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch
@@ -212,11 +222,9 @@ const ScrollEffectsControl = props => {
 					onChange({ [`motion-active-${breakpoint}`]: val });
 					setMotionStatus(val);
 				}}
+				active={getActiveEffects()}
 			/>
 			{motionTypes.map(type => {
-				const typeCapitalize =
-					type.charAt(0).toUpperCase() + type.slice(1);
-
 				return (
 					<div
 						key={`maxi-scroll-effects-control-${type}-${breakpoint}`}
@@ -225,7 +233,7 @@ const ScrollEffectsControl = props => {
 							<ToggleSwitch
 								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 								label={__(
-									`Use ${typeCapitalize} scroll effect`,
+									`Use ${capitalize(type)} scroll effect`,
 									'maxi-blocks'
 								)}
 								selected={getLastBreakpointAttribute(

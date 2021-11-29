@@ -35,6 +35,11 @@ import classnames from 'classnames';
 import { isNil, isBoolean, isNumber } from 'lodash';
 
 /**
+ * Styles and icons
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const TextOptions = props => {

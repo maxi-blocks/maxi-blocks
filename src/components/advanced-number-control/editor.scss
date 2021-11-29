@@ -27,5 +27,10 @@
 		.components-range-control {
 			margin-left: 0 !important;
 		}
+
+		.components-range-control__root {
+			margin-left: 7px !important;
+			width: calc(100% - 16px);
+		}
 	}
 }

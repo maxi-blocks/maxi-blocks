@@ -19,7 +19,6 @@ import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
-// import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
 import { setBreakpointToLayer } from './utils';
@@ -355,11 +354,6 @@ const BackgroundLayersControl = ({
 	layersHoverOptions,
 	isHover = false,
 	onChange,
-	disableImage = false,
-	disableVideo = false,
-	disableGradient = false,
-	disableColor = false,
-	disableSVG = false,
 	clientId,
 	breakpoint,
 }) => {
@@ -431,42 +425,6 @@ const BackgroundLayersControl = ({
 
 		return false;
 	};
-
-	// const getOptions = () => {
-	// 	const options = [];
-
-	// 	!disableColor &&
-	// 		options.push({
-	// 			label: __('Background Colour', 'maxi-blocks'),
-	// 			value: 'color',
-	// 		});
-
-	// 	!disableImage &&
-	// 		options.push({
-	// 			label: __('Background Image', 'maxi-blocks'),
-	// 			value: 'image',
-	// 		});
-
-	// 	!disableVideo &&
-	// 		options.push({
-	// 			label: __('Background Video', 'maxi-blocks'),
-	// 			value: 'video',
-	// 		});
-
-	// 	!disableGradient &&
-	// 		options.push({
-	// 			label: __('Background Gradient', 'maxi-blocks'),
-	// 			value: 'gradient',
-	// 		});
-
-	// 	!disableSVG &&
-	// 		options.push({
-	// 			label: __('Background Shape', 'maxi-blocks'),
-	// 			value: 'shape',
-	// 		});
-
-	// 	return options;
-	// };
 
 	const onLayersDrag = (fromIndex, toIndex) => {
 		const layer = allLayers.splice(fromIndex, 1)[0];
@@ -570,18 +528,6 @@ const BackgroundLayersControl = ({
 						</div>
 					</ReactDragListView>
 				)}
-				{/* <LoaderControl
-					options={getOptions()}
-					buttonText={__('Add new layer', 'maxi-blocks')}
-					onClick={value => {
-						const newLayer = getObject(value);
-						onAddLayer(newLayer);
-
-						changeSelector(newLayer.id);
-					}}
-					forwards
-					buttonLess
-				/> */}
 				<SelectControl
 					className='maxi-background-control__add-layer'
 					value='Add new layer'

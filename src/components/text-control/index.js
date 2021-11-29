@@ -30,7 +30,7 @@ export default function TextControl({
 	onChange,
 	type = 'text',
 	validationText,
-	ifFullwidth,
+	isFullwidth,
 	...props
 }) {
 	const instanceId = useInstanceId(TextControl);
@@ -39,7 +39,7 @@ export default function TextControl({
 
 	const classes = classnames(
 		'maxi-text-control',
-		ifFullwidth && ' maxi-text-control--fullwidth',
+		isFullwidth && ' maxi-text-control--fullwidth',
 		className
 	);
 

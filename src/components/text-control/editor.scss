@@ -20,4 +20,16 @@
 		width: 100%;
 		text-align: right;
 	}
+	&--fullwidth {
+		.maxi-base-control__field {
+			display: block !important;
+		}
+		.maxi-base-control__label {
+			margin-bottom: 5px;
+		}
+		.maxi-text-control__input {
+			display: block;
+			width: 100%;
+		}
+	}
 }

@@ -298,7 +298,7 @@ function startCounter() {
 	}, frameDuration);
 }
 
-// Motion Effects
+// Scroll effects
 const motionElements = document.querySelectorAll('.maxi-motion-effect');
 motionElements.forEach(function (elem) {
 	if (!maxi_custom_data.custom_data) return;

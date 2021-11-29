@@ -6,22 +6,22 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import MotionControl from '../motion-control';
+import ScrollEffectsControl from '../scroll-effects-control';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Component
  */
-const motion = ({ props }) => {
+const scrollEffects = ({ props }) => {
 	const { attributes, setAttributes, blockStyle, clientId, deviceType } =
 		props;
 
 	const { uniqueID } = attributes;
 
 	return {
-		label: __('Motion Effects', 'maxi-blocks'),
+		label: __('Scroll effects', 'maxi-blocks'),
 		content: (
-			<MotionControl
+			<ScrollEffectsControl
 				uniqueID={uniqueID}
 				{...getGroupAttributes(attributes, 'motion')}
 				onChange={obj => setAttributes(obj)}
@@ -33,4 +33,4 @@ const motion = ({ props }) => {
 	};
 };
 
-export default motion;
+export default scrollEffects;

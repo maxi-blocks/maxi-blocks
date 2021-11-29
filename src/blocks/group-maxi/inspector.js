@@ -74,7 +74,7 @@ const Inspector = props => {
 											props,
 										}),
 									},
-									...inspectorTabs.motion({
+									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({

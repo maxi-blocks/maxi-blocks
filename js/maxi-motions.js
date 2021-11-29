@@ -388,7 +388,7 @@ const startingMotion = () => {
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
 document.addEventListener('DOMContentLoaded', function motionsOnLoad(event) {
-	// Motion Effects
+	// Scroll effects
 	startingMotion();
 });
 

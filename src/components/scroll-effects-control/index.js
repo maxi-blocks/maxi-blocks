@@ -45,10 +45,10 @@ import { useState } from 'react';
 /**
  * Component
  */
-const MotionControl = props => {
+const ScrollEffectsControl = props => {
 	const { className, onChange, breakpoint = 'general', uniqueID } = props;
 
-	const classes = classnames('maxi-motion-control', className);
+	const classes = classnames('maxi-scroll-effects-control', className);
 
 	const [motionStatus, setMotionStatus] = useState(
 		getLastBreakpointAttribute('motion-active', breakpoint, props) || 'none'
@@ -218,7 +218,9 @@ const MotionControl = props => {
 					type.charAt(0).toUpperCase() + type.slice(1);
 
 				return (
-					<div key={`maxi-motion-control-${type}-${breakpoint}`}>
+					<div
+						key={`maxi-scroll-effects-control-${type}-${breakpoint}`}
+					>
 						{motionStatus === type && (
 							<ToggleSwitch
 								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
@@ -395,4 +397,4 @@ const MotionControl = props => {
 	);
 };
 
-export default MotionControl;
+export default ScrollEffectsControl;

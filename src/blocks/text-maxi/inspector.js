@@ -245,7 +245,7 @@ const Inspector = memo(
 													props,
 												}),
 											},
-											...inspectorTabs.motion({
+											...inspectorTabs.scrollEffects({
 												props,
 											}),
 											...inspectorTabs.transform({

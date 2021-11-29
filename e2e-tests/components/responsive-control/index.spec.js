@@ -9,11 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	changeResponsive,
-} from '../../utils';
+import { openSidebarTab, changeResponsive, getAttributes } from '../../utils';
 
 describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
@@ -33,10 +29,7 @@ describe('ResponsiveControl', () => {
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('50');
 
-		const attributes = await getBlockAttributes();
-		const breakpoint = attributes['breakpoints-xs'];
-
-		expect(breakpoint).toStrictEqual(450);
+		expect(await getAttributes('breakpoints-xs')).toStrictEqual(450);
 	});
 
 	/* it('Check Responsive to responsive control', async () => {

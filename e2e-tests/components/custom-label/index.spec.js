@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab } from '../../utils';
+import { openSidebarTab, getAttributes } from '../../utils';
 
 describe('CustomLabel', () => {
 	it('Checking the custom label', async () => {
@@ -16,7 +16,7 @@ describe('CustomLabel', () => {
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',
-			'add css class'
+			'add css classes'
 		);
 
 		await accordionPanel.$eval(
@@ -26,10 +26,6 @@ describe('CustomLabel', () => {
 
 		await page.keyboard.type('Column');
 
-		const attributes = await getBlockAttributes();
-		const className = attributes.extraClassName;
-		const additionalClass = 'Column';
-
-		expect(className).toStrictEqual(additionalClass);
+		expect(await getAttributes('extraClassName')).toStrictEqual('Column');
 	});
 });

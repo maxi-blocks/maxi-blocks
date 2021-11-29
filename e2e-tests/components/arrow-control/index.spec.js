@@ -15,6 +15,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('ArrowControl', () => {
@@ -58,20 +59,14 @@ describe('ArrowControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('9');
 
-		const expectPosition = 59;
-		const attributes = await getBlockAttributes();
-		const arrowAttribute = attributes['arrow-position-general'];
-		expect(arrowAttribute).toStrictEqual(expectPosition);
+		expect(await getAttributes('arrow-position-general')).toStrictEqual(59);
 
 		// Use Arrow Size
 		await selectInput[2].focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('120');
 
-		const expectSize = 120;
-		const sizeAttributes = await getBlockAttributes();
-		const arrowSizeAttribute = sizeAttributes['arrow-width-general'];
-		expect(arrowSizeAttribute).toStrictEqual(expectSize);
+		expect(await getAttributes('arrow-width-general')).toStrictEqual(120);
 	});
 
 	it('Check the responsive arrow control', async () => {
@@ -113,10 +108,8 @@ describe('ArrowControl', () => {
 		);
 
 		expect(responsiveSOption).toBe('true');
-		const expectAttributes = await getBlockAttributes();
-		const position = expectAttributes['arrow-side-s'];
 
-		expect(position).toStrictEqual('right');
+		expect(await getAttributes('arrow-side-s')).toStrictEqual('right');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

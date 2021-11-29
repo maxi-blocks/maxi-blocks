@@ -7,6 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
+	getAttributes,
 	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
@@ -117,10 +118,7 @@ describe('AlignmentControl', () => {
 
 		expect(responsiveSOption).toBe('true');
 
-		const expectAttributes = await getBlockAttributes();
-		const position = expectAttributes['alignment-s'];
-
-		expect(position).toStrictEqual('right');
+		expect(await getAttributes('alignment-s')).toStrictEqual('right');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

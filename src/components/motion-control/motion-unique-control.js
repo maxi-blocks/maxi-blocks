@@ -32,130 +32,92 @@ const MotionUniqueControl = props => {
 
 	const labels = ['Start', 'Mid', 'End'];
 
+	const getSpecialLabels = (type, label) => {
+		const labelLowCase = lowerCase(label);
+		const response = {};
+		switch (type) {
+			case 'vertical':
+				response.label = `${label} position`;
+				response.attr = `offset-${labelLowCase}`;
+				response.min = -4000;
+				response.max = 4000;
+				break;
+			case 'horizontal':
+				response.label = `${label} position`;
+				response.attr = `offset-${labelLowCase}`;
+				response.min = -4000;
+				response.max = 4000;
+				break;
+			case 'rotate':
+				response.label = `${label} angle`;
+				response.attr = `rotate-${labelLowCase}`;
+				response.min = 0;
+				response.max = 360;
+				break;
+			case 'scale':
+				response.label = `${label} scale`;
+				response.attr = `scale-${labelLowCase}`;
+				response.min = 0;
+				response.max = 1000;
+				break;
+			case 'fade':
+				response.label = `${label} opacity`;
+				response.attr = `opacity-${labelLowCase}`;
+				response.min = 0;
+				response.max = 100;
+				break;
+			case 'blur':
+				response.label = `${label} blur`;
+				response.attr = `blur-${labelLowCase}`;
+				response.min = 0;
+				response.max = 20;
+				break;
+
+			default:
+				break;
+		}
+		return response;
+	};
+
 	return (
 		<div className={classes}>
 			<SettingTabsControl
 				items={labels.map((label, key) => {
-					const specialAttrLabel = lowerCase(label);
+					const special = getSpecialLabels(type, label);
 					return {
 						label: __(`${label} zone`, 'maxi-blocks'),
 						content: (
 							<>
-								{type === 'rotate' && (
-									<AdvancedNumberControl
-										label={__(
-											`${label} angle`,
-											'maxi-blocks'
-										)}
-										value={getLastBreakpointAttribute(
-											`motion-rotate-${specialAttrLabel}-${type}`,
-											breakpoint,
-											values
-										)}
-										onChangeValue={val => {
-											onChange({
-												[`motion-rotate-${specialAttrLabel}-${type}-${breakpoint}`]:
-													val !== undefined &&
-													val !== ''
-														? val
-														: '',
-											});
-										}}
-										min={0}
-										step={1}
-										max={360}
-										onReset={() =>
-											onChange({
-												[`motion-rotate-${specialAttrLabel}-${type}-${breakpoint}`]:
-													getDefaultAttribute(
-														`motion-rotate-${lowerCase(
-															label
-														)}-${type}-general`
-													),
-											})
-										}
-										initialPosition={getDefaultAttribute(
-											`motion-rotate-${specialAttrLabel}-${type}-general`
-										)}
-									/>
-								)}
-								{type === 'fade' && (
-									<AdvancedNumberControl
-										label={__(
-											`${label} opacity`,
-											'maxi-blocks'
-										)}
-										value={getLastBreakpointAttribute(
-											`motion-opacity-${specialAttrLabel}-${type}`,
-											breakpoint,
-											values
-										)}
-										onChangeValue={val => {
-											onChange({
-												[`motion-opacity-${specialAttrLabel}-${type}-${breakpoint}`]:
-													val !== undefined &&
-													val !== ''
-														? val
-														: '',
-											});
-										}}
-										min={0}
-										step={1}
-										max={100}
-										onReset={() =>
-											onChange({
-												[`motion-opacity-${specialAttrLabel}-${type}-${breakpoint}`]:
-													getDefaultAttribute(
-														`motion-opacity-${lowerCase(
-															label
-														)}-${type}-general`
-													),
-											})
-										}
-										initialPosition={getDefaultAttribute(
-											`motion-opacity-${specialAttrLabel}-${type}-general`
-										)}
-									/>
-								)}
-								{(type === 'horizontal' ||
-									type === 'vertical') && (
-									<AdvancedNumberControl
-										label={__(
-											`${label} position`,
-											'maxi-blocks'
-										)}
-										value={getLastBreakpointAttribute(
-											`motion-offset-${specialAttrLabel}-${type}`,
-											breakpoint,
-											values
-										)}
-										onChangeValue={val => {
-											onChange({
-												[`motion-offset-${specialAttrLabel}-${type}-${breakpoint}`]:
-													val !== undefined &&
-													val !== ''
-														? val
-														: '',
-											});
-										}}
-										min={-4000}
-										step={1}
-										max={4000}
-										onReset={() =>
-											onChange({
-												[`motion-offset-${specialAttrLabel}-${type}-${breakpoint}`]:
-													getDefaultAttribute(
-														`motion-offset-${lowerCase(
-															label
-														)}-${type}-general`
-													),
-											})
-										}
-										initialPosition={getDefaultAttribute(
-											`motion-opacity-${specialAttrLabel}-${type}-general`
-										)}
-									/>
-								)}
+								<AdvancedNumberControl
+									label={__(special?.label, 'maxi-blocks')}
+									value={getLastBreakpointAttribute(
+										`motion-${special?.attr}-${type}`,
+										breakpoint,
+										values
+									)}
+									onChangeValue={val => {
+										onChange({
+											[`motion-${special?.attr}-${type}-${breakpoint}`]:
+												val !== undefined && val !== ''
+													? val
+													: '',
+										});
+									}}
+									min={special?.min}
+									step={1}
+									max={special?.max}
+									onReset={() =>
+										onChange({
+											[`motion-${special?.attr}-${type}-${breakpoint}`]:
+												getDefaultAttribute(
+													`motion-${special?.attr}-${type}-general`
+												),
+										})
+									}
+									initialPosition={getDefaultAttribute(
+										`motion-${special?.attr}-${type}-general`
+									)}
+								/>
 							</>
 						),
 					};

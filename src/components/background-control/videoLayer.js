@@ -41,7 +41,7 @@ const VideoLayerContent = props => {
 	return (
 		<>
 			<OpacityControl
-				label={__('Video Opacity', 'maxi-blocks')}
+				label={__('Video opacity', 'maxi-blocks')}
 				opacity={getLastBreakpointAttribute(
 					`${prefix}background-video-opacity`,
 					breakpoint,
@@ -73,7 +73,7 @@ const VideoLayerContent = props => {
 			/>
 			<MediaUploaderControl
 				className='maxi-mediauploader-control__video-fallback'
-				placeholder={__('Background Fallback')}
+				placeholder={__('Background fallback')}
 				mediaID={getLastBreakpointAttribute(
 					`${prefix}background-video-fallbackID`,
 					breakpoint,
@@ -189,7 +189,7 @@ const VideoLayer = props => {
 						validationText={validationText}
 					/>
 					<AdvancedNumberControl
-						label={__('Start Time (s)', 'maxi-blocks')}
+						label={__('Start time (s)', 'maxi-blocks')}
 						value={getAttributeValue({
 							target: 'background-video-startTime',
 							props: videoOptions,
@@ -217,7 +217,7 @@ const VideoLayer = props => {
 						}
 					/>
 					<AdvancedNumberControl
-						label={__('End Time (s)', 'maxi-blocks')}
+						label={__('End time (s)', 'maxi-blocks')}
 						value={getAttributeValue({
 							target: 'background-video-endTime',
 							props: videoOptions,

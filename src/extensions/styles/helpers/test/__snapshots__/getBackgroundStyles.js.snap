@@ -302,7 +302,7 @@ Object {
         "opacity": 1,
       },
       "l": Object {},
-      "label": "Background Gradient",
+      "label": "Background gradient",
       "m": Object {},
       "s": Object {},
       "xl": Object {},
@@ -387,7 +387,7 @@ Object {
         "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
         "opacity": 0.8,
       },
-      "label": "Background Gradient",
+      "label": "Background gradient",
       "m": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
       },
@@ -429,7 +429,7 @@ Object {
         "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
         "opacity": 0.8,
       },
-      "label": "Background Gradient",
+      "label": "Background gradient",
       "m": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
       },
@@ -911,7 +911,7 @@ Object {
       "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(155,81,224) 100%)",
       "opacity": 0.29,
     },
-    "label": "Background Gradient",
+    "label": "Background gradient",
     "m": Object {
       "background-color": "rgba(var(--maxi-light-color-4),0.39)",
     },

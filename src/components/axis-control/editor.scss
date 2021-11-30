@@ -11,6 +11,7 @@
 
 	.maxi-button-group-control__option--selected {
 		svg path {
+			fill: transparent;
 			stroke: var(--maxi-secondary-color);
 		}
 	}

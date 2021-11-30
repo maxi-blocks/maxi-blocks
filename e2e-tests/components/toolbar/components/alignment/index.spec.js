@@ -46,10 +46,10 @@ describe('AlignmentControl', () => {
 
 	it('Checking alignment in toolbar responsive', async () => {
 		// check general
-		const expectAttributes = await getBlockAttributes();
-		const position = expectAttributes['text-alignment-general'];
 
-		expect(position).toStrictEqual('left');
+		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+			'left'
+		);
 
 		// responsive s
 		await changeResponsive(page, 's');

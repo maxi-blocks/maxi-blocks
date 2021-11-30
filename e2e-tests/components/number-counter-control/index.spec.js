@@ -9,12 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	getBlockStyle,
-	getAttributes,
-} from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {

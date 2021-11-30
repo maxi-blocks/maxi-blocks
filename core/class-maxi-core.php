@@ -85,7 +85,7 @@ if (!class_exists('MaxiBlocks_Core')):
             );
             wp_enqueue_script(
                 'maxi-motions-js',
-                plugins_url('/js/maxi-motions.js', dirname(__FILE__)),
+                plugins_url('/js/maxi-scroll-effects.js', dirname(__FILE__)),
             );
         }
 

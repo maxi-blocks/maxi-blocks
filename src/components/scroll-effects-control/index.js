@@ -51,11 +51,11 @@ const ScrollEffectsControl = props => {
 	const classes = classnames('maxi-scroll-effects-control', className);
 
 	const [motionStatus, setMotionStatus] = useState(
-		getLastBreakpointAttribute('motion-active', breakpoint, props) || 'none'
+		getLastBreakpointAttribute('motion-active', breakpoint, props) ||
+			'vertical'
 	);
 
 	const motionOptions = [
-		{ label: <Icon icon={styleNone} />, value: 'none' },
 		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
 		{ label: <Icon icon={motionHorizontal} />, value: 'horizontal' },
 		{ label: <Icon icon={motionRotate} />, value: 'rotate' },

@@ -84,17 +84,8 @@ const getMotionSetting = (data, element) => {
 		}
 	};
 
-	response.viewportTop = getViewportValue(dataMotionArray[5]);
-	response.viewportMid = getViewportValue(dataMotionArray[4]);
-	response.viewportBottom = getViewportValue(dataMotionArray[3]);
-
-	response.viewportMidPercent = Math.round(
-		(element.offsetHeight / 100) * response.viewportMid
-	);
+	response.viewportTop = getViewportValue(dataMotionArray[3]);
 	response.viewportTopPercent = Math.round(
-		(element.offsetHeight / 100) * response.viewportTop
-	);
-	response.viewportBottomPercent = Math.round(
 		(element.offsetHeight / 100) * response.viewportTop
 	);
 
@@ -102,17 +93,17 @@ const getMotionSetting = (data, element) => {
 	response.delayValue = parseFloat(dataMotionArray[1]) || 0;
 	response.easingValue = dataMotionArray[2] || 'ease';
 
-	response.reverseMotion = dataMotionArray[6] || true;
+	response.reverseMotion = dataMotionArray[4] || true;
 
-	response.start = parseInt(dataMotionArray[7]);
-	response.mid = parseInt(dataMotionArray[8]);
-	response.end = parseInt(dataMotionArray[9]);
+	response.start = parseInt(dataMotionArray[5]);
+	response.mid = parseInt(dataMotionArray[6]);
+	response.end = parseInt(dataMotionArray[7]);
 
 	return response;
 };
 
 const getMotionData = (el, type) => {
-	return el.getAttribute(`data-motion-${type}-general`);
+	return el.getAttribute(`data-scroll-effect-${type}-general`);
 };
 
 const getParent = el => {
@@ -161,24 +152,8 @@ const scrollTransform = (element, type) => {
 
 	if (!dataMotion) return;
 
-	const {
-		viewportTopPercent,
-		viewportMidPercent,
-		viewportBottomPercent,
-		start,
-		mid,
-		end,
-		reverseMotion,
-	} = getMotionSetting(dataMotion, element);
-
-	// console.log('viewportTopPercent');
-	// console.log(viewportTopPercent);
-
-	// console.log('viewportMidPercent');
-	// console.log(viewportMidPercent);
-
-	// console.log('viewportBottomPercent');
-	// console.log(viewportBottomPercent);
+	const { viewportTopPercent, start, mid, end, reverseMotion } =
+		getMotionSetting(dataMotion, element);
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
@@ -187,60 +162,19 @@ const scrollTransform = (element, type) => {
 	const elementHalfHeight = elementHeight / 2;
 
 	let elementTopInViewCoordinate = Math.round(rect.top - windowHalfHeight);
-	let elementBottomInViewCoordinate = Math.round(
+	const elementBottomInViewCoordinate = Math.round(
 		rect.bottom - windowHalfHeight
 	);
-	let elementMidInViewCoordinate = Math.round(
+	const elementMidInViewCoordinate = Math.round(
 		elementTopInViewCoordinate + elementHalfHeight
 	);
-
-	// console.log('elementTopInViewCoordinate');
-	// console.log(elementTopInViewCoordinate);
-
-	// console.log('elementBottomInViewCoordinate');
-	// console.log(elementBottomInViewCoordinate);
-
-	// console.log('elementMidInViewCoordinate');
-	// console.log(elementMidInViewCoordinate);
 
 	// Top shift
 	const topShiftPx =
 		viewportTopPercent -
 		Math.abs(elementTopInViewCoordinate - elementBottomInViewCoordinate);
 
-	// console.log(' topShiftPx ');
-	// console.log(topShiftPx);
-
 	if (topShiftPx !== 0) elementTopInViewCoordinate -= topShiftPx;
-
-	// Mid shift
-	const midShiftPx =
-		viewportMidPercent -
-		Math.abs(elementTopInViewCoordinate - elementMidInViewCoordinate);
-
-	// console.log(' midShiftPx ');
-	// console.log(midShiftPx);
-
-	if (midShiftPx !== 0) elementMidInViewCoordinate -= midShiftPx;
-
-	// Bottom shift
-	const bottomShiftPx =
-		viewportBottomPercent -
-		Math.abs(elementBottomInViewCoordinate - elementTopInViewCoordinate);
-
-	// console.log(' bottomShiftPx ');
-	// console.log(bottomShiftPx);
-
-	if (bottomShiftPx !== 0) elementBottomInViewCoordinate -= bottomShiftPx;
-
-	// console.log('elementTopInViewCoordinate after');
-	// console.log(elementTopInViewCoordinate);
-
-	// console.log('elementBottomInViewCoordinate after');
-	// console.log(elementBottomInViewCoordinate);
-
-	// console.log('elementMidInViewCoordinate after');
-	// console.log(elementMidInViewCoordinate);
 
 	const scrollDirection = getScrollDirection();
 
@@ -323,7 +257,7 @@ const scrollMotion = () => {
 	);
 
 	elements.forEach(function motionOnScroll(element, index) {
-		const motionType = element.getAttribute('data-motion-type');
+		const motionType = element.getAttribute('data-scroll-effect-type');
 
 		const motionTypeArray = motionType.trim().split(' ');
 
@@ -340,7 +274,7 @@ const startingMotion = () => {
 	);
 
 	elements.forEach(function maxiMotion(element, index) {
-		const motionType = element.getAttribute('data-motion-type');
+		const motionType = element.getAttribute('data-scroll-effect-type');
 		const motionTypeArray = motionType.trim().split(' ');
 		const parent = getParent(element);
 		let transition = '';

@@ -50,11 +50,10 @@ describe('BorderControl', () => {
 		);
 
 		// color
-		const backGroundColor = await page.$('.maxi-border-control');
 
 		await editColorControl({
 			page,
-			instance: backGroundColor,
+			instance: await page.$('.maxi-border-control'),
 			paletteStatus: true,
 			colorPalette: 4,
 		});

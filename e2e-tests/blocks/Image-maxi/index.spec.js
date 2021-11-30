@@ -12,7 +12,12 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebarTab, openPreviewPage, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	openPreviewPage,
+	getAttributes,
+	editColorControl,
+} from '../../utils';
 
 describe('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
@@ -74,10 +79,12 @@ describe('Image Maxi', () => {
 		);
 
 		// fontColor
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-control__palette button',
-			select => select[3].click()
-		);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-control__color'),
+			paletteStatus: true,
+			colorPalette: 4,
+		});
 
 		expect(await getAttributes('link-palette-color-general')).toStrictEqual(
 			4
@@ -199,56 +206,54 @@ describe('Image Maxi', () => {
 		}
 
 		// LinkColor
+
 		await accordionPanel.$$eval(
 			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[0].click()
 		);
-		await page.waitForTimeout(100);
 
-		await accordionPanel.$$eval(
-			'.maxi-typography-link-color .maxi-color-control__palette button',
-			colors => colors[1].click()
-		);
-		await page.waitForTimeout(100);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-color'),
+			paletteStatus: true,
+			colorPalette: 2,
+		});
 
 		// LinkHoverColor
 		await accordionPanel.$$eval(
 			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[1].click()
 		);
-		await page.waitForTimeout(100);
-
-		await accordionPanel.$$eval(
-			'.maxi-typography-link-hover-color .maxi-color-control__palette button',
-			colors => colors[2].click()
-		);
-		await page.waitForTimeout(100);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-hover-color'),
+			paletteStatus: true,
+			colorPalette: 3,
+		});
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
 			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[2].click()
 		);
-		await page.waitForTimeout(100);
-
-		await accordionPanel.$$eval(
-			'.maxi-typography-link-active-color .maxi-color-control__palette button',
-			colors => colors[3].click()
-		);
-		await page.waitForTimeout(100);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-active-color'),
+			paletteStatus: true,
+			colorPalette: 4,
+		});
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
 			'.maxi-button-group-control.maxi-typography-control__link-options button',
 			tabs => tabs[3].click()
 		);
-		await page.waitForTimeout(100);
-
-		await accordionPanel.$$eval(
-			'.maxi-typography-link-visited-color .maxi-color-control__palette button',
-			colors => colors[4].click()
-		);
-		await page.waitForTimeout(100);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-visited-color'),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
 
 		const expectedValues = {
 			'link-palette-color-general': 2,

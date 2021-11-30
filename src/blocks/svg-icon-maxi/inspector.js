@@ -21,6 +21,9 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
+
+import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
@@ -42,6 +45,16 @@ const Inspector = props => {
 		parentBlockStyle,
 		svgType,
 	} = attributes;
+
+	const getCategoriesCss = () => {
+		const {
+			'background-layers': bgLayers,
+		} = attributes;
+		return without (
+			categoriesSvgIcon,
+			isEmpty(bgLayers) && 'canvas background'
+		);
+	};
 
 	return (
 		<InspectorControls>
@@ -346,6 +359,12 @@ const Inspector = props => {
 												props,
 											}),
 										},
+										...inspectorTabs.customCss({
+											props,
+											breakpoint: deviceType,
+											selectors: selectorsSvgIcon,
+											categories: getCategoriesCss(),
+										}),
 										...inspectorTabs.motion({
 											props,
 										}),

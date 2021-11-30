@@ -16,6 +16,7 @@ import {
 	getContainerStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsContainer } from './custom-css';
 
 const getNormalObject = props => {
 	const response = {
@@ -221,7 +222,10 @@ const getStyles = props => {
 				blockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
-		}),
+		},
+		selectorsContainer,
+		props
+		),
 	};
 
 	return response;

@@ -17,11 +17,12 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsText, categoriesText } from './custom-css';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, without} from 'lodash';
 
 /**
  * Inspector
@@ -31,6 +32,17 @@ const Inspector = memo(
 		const { attributes, deviceType, setAttributes } = props;
 		const { isList, listReversed, listStart, textLevel, typeOfList } =
 			attributes;
+
+			
+	const getCategoriesCss = () => {
+		const {
+			'background-layers': bgLayers,
+		} = attributes;
+		return without (
+			categoriesText,
+			isEmpty(bgLayers) && 'canvas background'
+		);
+	};
 
 		return (
 			<InspectorControls>
@@ -245,6 +257,12 @@ const Inspector = memo(
 													props,
 												}),
 											},
+											...inspectorTabs.customCss({
+												props,
+												breakpoint: deviceType,
+												selectors: selectorsText,
+												categories: getCategoriesCss(),
+											}),
 											...inspectorTabs.motion({
 												props,
 											}),

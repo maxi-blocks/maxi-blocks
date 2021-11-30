@@ -9,6 +9,16 @@ export const selectorsButton = {
 			target: ':hover',
 		},
 	},
+	'canvas background': {
+		normal: {
+			label: 'canvas background',
+			target: '',
+		},
+		hover: {
+			label: 'canvas background on hover',
+			target: ':hover',
+		},
+	},
 	'before canvas': {
 		normal: {
 			label: 'canvas :before',
@@ -57,16 +67,6 @@ export const selectorsButton = {
 		hover: {
 			label: 'button :after on hover',
 			target: ' .maxi-button-block__button:hover:after',
-		},
-	},
-	'canvas background': {
-		normal: {
-			label: 'canvas background',
-			target: '',
-		},
-		hover: {
-			label: 'canvas background on hover',
-			target: ':hover',
 		},
 	},
 	icon: {

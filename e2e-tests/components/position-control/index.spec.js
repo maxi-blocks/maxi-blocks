@@ -28,12 +28,9 @@ describe('PositionControl', () => {
 		);
 		await selectPosition.select('relative');
 
-		const axisControlInstance = await page.$(
-			'.maxi-position-control .maxi-axis-control'
-		);
 		await editAxisControl({
 			page,
-			instance: axisControlInstance,
+			instance: await page.$('.maxi-position-control .maxi-axis-control'),
 			syncOption: 'all',
 			values: '56',
 			unit: '%',
@@ -86,12 +83,9 @@ describe('PositionControl', () => {
 		);
 		await selectSPosition.select('fixed');
 
-		const axisControlInstance = await page.$(
-			'.maxi-position-control .maxi-axis-control'
-		);
 		await editAxisControl({
 			page,
-			instance: axisControlInstance,
+			instance: await page.$('.maxi-position-control .maxi-axis-control'),
 			syncOption: 'all',
 			values: '87',
 			unit: 'px',

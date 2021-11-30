@@ -13,7 +13,7 @@ import { createRef } from '@wordpress/element';
 import getStyles from './styles';
 import Inspector from './inspector';
 import { getGroupAttributes } from '../../extensions/styles';
-import motionData from '../../extensions/motions';
+import scrollEffectData from '../../extensions/motions';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
@@ -220,7 +220,7 @@ class edit extends MaxiBlockComponent {
 				tagName='figure'
 				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...motionData(this.props)}
+				{...scrollEffectData(this.props)}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MediaUpload

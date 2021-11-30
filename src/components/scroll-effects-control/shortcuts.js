@@ -1,4 +1,5 @@
 export const shortcut1 = {
+	// Rotate clockwise and fade out
 	'motion-delay-rotate-general': 0,
 	'motion-easing-rotate-general': 'ease',
 	'motion-rotate-end-rotate-general': 360,
@@ -28,16 +29,39 @@ export const shortcut1 = {
 	'motion-status-scale-general': false,
 	'motion-status-blur-general': false,
 };
-export const shortcut2 = {};
+export const shortcut2 = {
+	// disable all
+	'motion-status-vertical-general': false,
+	'motion-status-horizontal-general': false,
+	'motion-status-rotate-general': false,
+	'motion-status-scale-general': false,
+	'motion-status-fade-general': false,
+	'motion-status-blur-general': false,
+};
 export const shortcut3 = {};
 
 export const rotate = {
 	shortcut1: {
+		// clockwise
 		'motion-delay-rotate-general': 0,
 		'motion-easing-rotate-general': 'ease',
 		'motion-rotate-end-rotate-general': 360,
 		'motion-rotate-mid-rotate-general': 180,
 		'motion-rotate-start-rotate-general': 0,
+		'motion-speed-rotate-general': 500,
+		'motion-status-reverse-rotate-general': true,
+		'motion-status-rotate-general': true,
+		'motion-viewport-bottom-rotate-general': 'bottom',
+		'motion-viewport-middle-rotate-general': 'mid',
+		'motion-viewport-top-rotate-general': 'top',
+	},
+	shortcut2: {
+		// counter-clockwise
+		'motion-delay-rotate-general': 0,
+		'motion-easing-rotate-general': 'ease',
+		'motion-rotate-end-rotate-general': 0,
+		'motion-rotate-mid-rotate-general': 180,
+		'motion-rotate-start-rotate-general': 360,
 		'motion-speed-rotate-general': 500,
 		'motion-status-reverse-rotate-general': true,
 		'motion-status-rotate-general': true,

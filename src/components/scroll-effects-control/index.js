@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
  */
 import Icon from '../icon';
 import ButtonGroupControl from '../button-group-control';
-import MotionUniqueControl from './motion-unique-control';
+import ScrollEffectUniqueControl from './scroll-effect-unique-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -93,19 +93,19 @@ const ScrollEffectsControl = props => {
 				response = [
 					{
 						label: __('Choose', 'maxi-blocks'),
-						value: 'none',
-					},
-					{
-						label: __('Sun effect', 'maxi-blocks'),
-						value: 'sun-effect',
+						value: 0,
 					},
 					{
 						label: __('Clockwise', 'maxi-blocks'),
-						value: 'clockwise',
+						value: 1,
 					},
 					{
 						label: __('Counterclockwise', 'maxi-blocks'),
-						value: 'counterclockwise',
+						value: 2,
+					},
+					{
+						label: __('Test', 'maxi-blocks'),
+						value: 0,
 					},
 				];
 				break;
@@ -160,7 +160,7 @@ const ScrollEffectsControl = props => {
 			value: 1,
 		},
 		{
-			label: __('Shortcut 2', 'maxi-blocks'),
+			label: __('Disable all', 'maxi-blocks'),
 			value: 2,
 		},
 		{
@@ -173,12 +173,17 @@ const ScrollEffectsControl = props => {
 		},
 	];
 
-	const onChangeShortcut = number => {
+	const onChangeShortcut = (number, type) => {
 		const newDefaultShortcuts = cloneDeep({ ...defaultShortcuts });
 
-		onChange({
-			...newDefaultShortcuts[`shortcut${number}`],
-		});
+		if (type)
+			onChange({
+				...newDefaultShortcuts?.[type]?.[`shortcut${number}`],
+			});
+		else
+			onChange({
+				...newDefaultShortcuts?.[`shortcut${number}`],
+			});
 	};
 
 	const getActiveEffects = () => {
@@ -256,17 +261,17 @@ const ScrollEffectsControl = props => {
 											'Shortcut effect',
 											'maxi-blocks'
 										)}
-										value={getLastBreakpointAttribute(
-											`motion-shortcut-${type}`,
-											breakpoint,
-											props
-										)}
 										onChange={val =>
-											onChange({
-												[`motion-shortcut-${type}-${breakpoint}`]:
-													val,
-											})
+											onChange(
+												onChangeShortcut(val, type)
+											)
 										}
+										// onChange={val =>
+										// 	onChange({
+										// 		[`motion-shortcut-${type}-${breakpoint}`]:
+										// 			val,
+										// 	})
+										// }
 										options={getShortcutEffect(type)}
 									/>
 									<SelectControl
@@ -367,7 +372,7 @@ const ScrollEffectsControl = props => {
 										}
 										options={viewportOptions}
 									/>
-									<MotionUniqueControl
+									<ScrollEffectUniqueControl
 										label={__(
 											`${capitalize(type)}`,
 											'maxi-blocks'

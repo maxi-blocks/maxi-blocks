@@ -8,7 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import motionData from '../../extensions/motions';
+import scrollEffectData from '../../extensions/motions';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
@@ -66,7 +66,7 @@ const save = props => {
 				!isEmpty(attributes['motion-active-general']) &&
 					'maxi-block-motion')
 			}
-			{...motionData(props)}
+			{...scrollEffectData(props)}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>

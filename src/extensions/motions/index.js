@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 
-const motionData = props => {
+const scrollEffectData = props => {
 	const response = {};
 	const { attributes } = props;
 
@@ -123,4 +123,4 @@ const motionData = props => {
 	return response;
 };
 
-export default motionData;
+export default scrollEffectData;

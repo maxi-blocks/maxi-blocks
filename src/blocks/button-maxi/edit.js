@@ -17,7 +17,7 @@ import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
-import motionData from '../../extensions/motions';
+import scrollEffectData from '../../extensions/motions';
 
 /**
  * External dependencies
@@ -123,7 +123,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
-				{...motionData(this.props)}
+				{...scrollEffectData(this.props)}
 				{...getMaxiBlockAttributes(this.props)}
 				disableBackground
 			>

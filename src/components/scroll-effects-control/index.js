@@ -31,7 +31,6 @@ import { capitalize, pickBy, cloneDeep } from 'lodash';
  * Styles and icons
  */
 import {
-	styleNone,
 	motionHorizontal,
 	motionVertical,
 	motionFade,

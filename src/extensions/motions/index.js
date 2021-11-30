@@ -8,8 +8,6 @@ const motionData = props => {
 		'speed',
 		'delay',
 		'easing',
-		'viewport-bottom',
-		'viewport-mid',
 		'viewport-top',
 		'status-reverse',
 	];
@@ -72,7 +70,7 @@ const motionData = props => {
 	const enabledMotions = dataMotionTypeValue();
 
 	if (!isEmpty(enabledMotions)) {
-		response['data-motion-type'] = enabledMotions;
+		response['data-scroll-effect-type'] = enabledMotions;
 
 		motionTypes.map(type => {
 			if (enabledMotions.includes(type)) {
@@ -112,7 +110,7 @@ const motionData = props => {
 				});
 
 				if (!isEmpty(responseString))
-					response[`data-motion-${type}-general`] =
+					response[`data-scroll-effect-${type}-general`] =
 						responseString.trim();
 			}
 

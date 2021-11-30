@@ -257,11 +257,11 @@ const scrollMotion = () => {
 	);
 
 	elements.forEach(function motionOnScroll(element, index) {
-		const motionType = element.getAttribute('data-scroll-effect-type');
+		const motionType = element?.getAttribute('data-scroll-effect-type');
 
-		const motionTypeArray = motionType.trim().split(' ');
+		const motionTypeArray = motionType?.trim()?.split(' ');
 
-		motionTypeArray.map(type => {
+		motionTypeArray?.map(type => {
 			scrollTransform(element, type);
 			return null;
 		});
@@ -274,12 +274,12 @@ const startingMotion = () => {
 	);
 
 	elements.forEach(function maxiMotion(element, index) {
-		const motionType = element.getAttribute('data-scroll-effect-type');
-		const motionTypeArray = motionType.trim().split(' ');
+		const motionType = element?.getAttribute('data-scroll-effect-type');
+		const motionTypeArray = motionType?.trim()?.split(' ');
 		const parent = getParent(element);
 		let transition = '';
 
-		motionTypeArray.map(type => {
+		motionTypeArray?.map(type => {
 			const dataMotion = getMotionData(element, type);
 			const { speedValue, easingValue, delayValue } = getMotionSetting(
 				dataMotion,

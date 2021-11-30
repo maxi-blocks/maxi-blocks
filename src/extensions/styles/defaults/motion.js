@@ -107,20 +107,6 @@ export const motion = (() => {
 
 			generateAttr(
 				type,
-				'viewport-bottom',
-				'number',
-				'noDefault',
-				breakpoint
-			);
-			generateAttr(
-				type,
-				'viewport-middle',
-				'number',
-				'noDefault',
-				breakpoint
-			);
-			generateAttr(
-				type,
 				'viewport-top',
 				'number',
 				'noDefault',

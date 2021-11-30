@@ -124,7 +124,7 @@ const getMotionSetting = (data, element) => {
 };
 
 const getMotionData = (el, type) => {
-	return el.getAttribute(`data-motion-${type}-general`);
+	return el.getAttribute(`data-scroll-effect-${type}-general`);
 };
 
 const getParent = el => {
@@ -335,7 +335,7 @@ export const startingMotion = () => {
 	);
 
 	elements.forEach(function maxiMotion(element, index) {
-		const motionType = element.getAttribute('data-motion-type');
+		const motionType = element.getAttribute('data-scroll-effect-type');
 		const motionTypeArray = motionType?.trim().split(' ');
 		const parent = getParent(element);
 		let transition = '';
@@ -387,7 +387,7 @@ export const scrollMotion = () => {
 	);
 
 	elements.forEach(function motionOnScroll(element, index) {
-		const motionType = element.getAttribute('data-motion-type');
+		const motionType = element.getAttribute('data-scroll-effect-type');
 
 		const motionTypeArray = motionType?.trim().split(' ');
 

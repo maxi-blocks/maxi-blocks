@@ -38,7 +38,14 @@ export const getColorBackgroundObject = ({
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
-	if (isHover && !hoverStatus && !globalHoverStatus) return {};
+	if (
+		isHover &&
+		!isNil(hoverStatus) &&
+		!hoverStatus &&
+		!isNil(globalHoverStatus) &&
+		!globalHoverStatus
+	)
+		return {};
 
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
 

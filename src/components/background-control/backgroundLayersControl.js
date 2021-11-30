@@ -493,7 +493,6 @@ const BackgroundLayersControl = ({
 			if (lay.id === layer.id) {
 				const index = findIndex(newLayers, { id: layer.id });
 
-				layer.id = i + 1;
 				newLayers[index] = layer;
 			}
 		});

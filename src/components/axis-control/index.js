@@ -507,19 +507,13 @@ const AxisControl = props => {
 	) => {
 		let newValue = '';
 
-		if (optionType === 'number') {
-			if (isEmpty(val)) {
-				newValue = val;
-			} else {
-				newValue = +val;
-			}
-		} else if (isEmpty(val) && !isNumber(val)) {
-			newValue = '';
-		} else if (val === 'auto') {
-			newValue = 'auto';
-		} else {
-			newValue = val;
-		}
+		if (optionType === 'number')
+			if (isEmpty(val)) newValue = val;
+			else newValue = +val;
+		else if (isEmpty(val) && !isNumber(val)) newValue = '';
+		else if (val === 'auto') newValue = 'auto';
+		else if (optionType === 'string') newValue = val.toString();
+		else newValue = val;
 
 		if (target === 'padding' && newValue < 0) newValue = 0;
 

@@ -5,11 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	editColorControl,
-} from '../../utils';
+import { openSidebarTab, editColorControl, getAttributes } from '../../utils';
 
 describe('ColorControl', () => {
 	it('Checking the palette color control', async () => {
@@ -33,16 +29,13 @@ describe('ColorControl', () => {
 			opacity: '45',
 		});
 
-		const attributes = await getBlockAttributes();
-		const opacity = attributes['button-background-palette-opacity-general'];
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(0.45);
 
-		expect(opacity).toStrictEqual(0.45);
-
-		const colorAttributes = await getBlockAttributes();
-		const colorPalette =
-			colorAttributes['button-background-palette-color-general'];
-
-		expect(colorPalette).toStrictEqual(3);
+		expect(
+			await getAttributes('button-background-palette-color-general')
+		).toStrictEqual(3);
 	});
 
 	it('Checking the custom color control', async () => {
@@ -62,19 +55,13 @@ describe('ColorControl', () => {
 			opacity: '67',
 		});
 
-		const customColorAttributes = await getBlockAttributes();
-		const customColor =
-			customColorAttributes['button-background-color-general'];
+		expect(
+			await getAttributes('button-background-color-general')
+		).toStrictEqual('rgba(142, 39, 39, 0.67)');
 
-		expect(customColor).toStrictEqual('rgba(142, 39, 39, 0.67)');
-
-		const customOpacityAttributes = await getBlockAttributes();
-		const customOpacity =
-			customOpacityAttributes[
-				'button-background-palette-opacity-general'
-			];
-
-		expect(customOpacity).toStrictEqual(0.67);
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(0.67);
 	});
 
 	it('Checking the opacity is never under 0 or more than 100', async () => {
@@ -95,11 +82,9 @@ describe('ColorControl', () => {
 			opacity: '250',
 		});
 
-		const maxOpacityAttributes = await getBlockAttributes();
-		const maxOpacity =
-			maxOpacityAttributes['button-background-palette-opacity-general'];
-
-		expect(maxOpacity).toStrictEqual(1);
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(1);
 
 		await editColorControl({
 			page,
@@ -108,10 +93,8 @@ describe('ColorControl', () => {
 			opacity: '-23',
 		});
 
-		const minOpacityAttributes = await getBlockAttributes();
-		const minOpacity =
-			minOpacityAttributes['button-background-palette-opacity-general'];
-
-		expect(minOpacity).toStrictEqual(0.23);
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(0.23);
 	});
 });

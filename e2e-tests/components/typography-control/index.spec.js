@@ -14,7 +14,6 @@ import {
  */
 import {
 	getAttributes,
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
@@ -207,10 +206,9 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 
-		const attributes = await getBlockAttributes();
-		const colorStatus = attributes['palette-color-status-general'];
-
-		expect(colorStatus).toStrictEqual(true);
+		expect(
+			await getAttributes('palette-color-status-general')
+		).toStrictEqual(true);
 
 		// s
 		await changeResponsive(page, 's');
@@ -529,9 +527,9 @@ describe('TypographyControl', () => {
 			);
 			await page.waitForTimeout(200);
 
-			const shadowAttributes = await getBlockAttributes();
-			const textShadow = shadowAttributes['text-shadow-general'];
-			expect(textShadow).toStrictEqual(setting);
+			expect(await getAttributes('text-shadow-general')).toStrictEqual(
+				setting
+			);
 		}
 	});
 

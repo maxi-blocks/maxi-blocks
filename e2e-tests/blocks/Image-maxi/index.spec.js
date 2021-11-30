@@ -12,11 +12,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	openPreviewPage,
-} from '../../utils';
+import { openSidebarTab, openPreviewPage, getAttributes } from '../../utils';
 
 describe('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
@@ -60,10 +56,9 @@ describe('Image Maxi', () => {
 		await text.click();
 		await page.keyboard.type('Testing Caption', { delay: 100 });
 
-		const captionAttributes = await getBlockAttributes();
-		const expectedText = 'Testing Caption';
-
-		expect(captionAttributes.captionContent).toStrictEqual(expectedText);
+		expect(await getAttributes('captionContent')).toStrictEqual(
+			'Testing Caption'
+		);
 
 		// fontFamily
 		const fontFamilySelector = await accordionPanel.$(
@@ -74,11 +69,9 @@ describe('Image Maxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(200);
 
-		const attributes = await getBlockAttributes();
-		const fontFamily = attributes['font-family-general'];
-		const expectedFontFamily = 'Montserrat';
-
-		expect(fontFamily).toStrictEqual(expectedFontFamily);
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			'Montserrat'
+		);
 
 		// fontColor
 		await accordionPanel.$$eval(
@@ -86,11 +79,9 @@ describe('Image Maxi', () => {
 			select => select[3].click()
 		);
 
-		const colorAttributes = await getBlockAttributes();
-		const color = colorAttributes['link-palette-color-general'];
-		const expectedColor = 4;
-
-		expect(color).toStrictEqual(expectedColor);
+		expect(await getAttributes('link-palette-color-general')).toStrictEqual(
+			4
+		);
 
 		// alignment
 		await accordionPanel.$$eval(
@@ -98,11 +89,9 @@ describe('Image Maxi', () => {
 			alignment => alignment[1].click()
 		);
 
-		const alignmentAttributes = await getBlockAttributes();
-		const textAlignment = alignmentAttributes['text-alignment-general'];
-		const expectedAlignment = 'center';
-
-		expect(textAlignment).toStrictEqual(expectedAlignment);
+		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+			'center'
+		);
 
 		// size, line-height, letter-spacing
 		const inputs = await accordionPanel.$$(
@@ -126,16 +115,11 @@ describe('Image Maxi', () => {
 			tab => tab.innerText.toLowerCase()
 		);
 
-		const styleAttributes = await getBlockAttributes();
-		const typographyAttributes = (({
-			[`font-size-${responsiveStage}`]: fontSize,
-			[`line-height-${responsiveStage}`]: lineHeight,
-			[`letter-spacing-${responsiveStage}`]: letterSpacing,
-		}) => ({
-			[`font-size-${responsiveStage}`]: fontSize,
-			[`line-height-${responsiveStage}`]: lineHeight,
-			[`letter-spacing-${responsiveStage}`]: letterSpacing,
-		}))(styleAttributes);
+		const attributes = await getAttributes([
+			[`font-size-${responsiveStage}`],
+			[`line-height-${responsiveStage}`],
+			[`letter-spacing-${responsiveStage}`],
+		]);
 
 		const expectedAttributesTwo = {
 			[`font-size-${responsiveStage}`]: 19,
@@ -143,7 +127,7 @@ describe('Image Maxi', () => {
 			[`letter-spacing-${responsiveStage}`]: 11,
 		};
 
-		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
+		expect(attributes).toStrictEqual(expectedAttributesTwo);
 
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(
@@ -166,18 +150,12 @@ describe('Image Maxi', () => {
 		);
 		await decorationSelector.select('overline');
 
-		const fontAttributes = await getBlockAttributes();
-		const textAttributes = (({
-			'font-style-general': fontStyle,
-			'font-weight-general': fontWeight,
-			'text-decoration-general': textDecoration,
-			'text-transform-general': textTransform,
-		}) => ({
-			'font-style-general': fontStyle,
-			'font-weight-general': fontWeight,
-			'text-decoration-general': textDecoration,
-			'text-transform-general': textTransform,
-		}))(fontAttributes);
+		const result = await getAttributes([
+			'font-style-general',
+			'font-weight-general',
+			'text-decoration-general',
+			'text-transform-general',
+		]);
 
 		const expectedAttributes = {
 			'font-style-general': 'italic',
@@ -186,7 +164,7 @@ describe('Image Maxi', () => {
 			'text-transform-general': 'capitalize',
 		};
 
-		expect(textAttributes).toStrictEqual(expectedAttributes);
+		expect(result).toStrictEqual(expectedAttributes);
 
 		// Text shadow
 		await accordionPanel.$eval(
@@ -215,9 +193,9 @@ describe('Image Maxi', () => {
 			);
 			await page.waitForTimeout(200);
 
-			const shadowAttributes = await getBlockAttributes();
-			const textShadow = shadowAttributes['text-shadow-general'];
-			expect(textShadow).toStrictEqual(setting);
+			expect(await getAttributes('text-shadow-general')).toStrictEqual(
+				setting
+			);
 		}
 
 		// LinkColor
@@ -272,25 +250,19 @@ describe('Image Maxi', () => {
 		);
 		await page.waitForTimeout(100);
 
-		const linkColorAttributes = await getBlockAttributes();
-		const linkAttributes = (({
-			'link-palette-color-general': linkColor,
-			'link-hover-palette-color-general': linkHover,
-			'link-active-palette-color-general': linkActive,
-			'link-visited-palette-color-general': linkVisited,
-		}) => ({
-			'link-palette-color-general': linkColor,
-			'link-hover-palette-color-general': linkHover,
-			'link-active-palette-color-general': linkActive,
-			'link-visited-palette-color-general': linkVisited,
-		}))(linkColorAttributes);
-
 		const expectedValues = {
 			'link-palette-color-general': 2,
 			'link-hover-palette-color-general': 3,
 			'link-active-palette-color-general': 4,
 			'link-visited-palette-color-general': 5,
 		};
+
+		const linkAttributes = await getAttributes([
+			'link-palette-color-general',
+			'link-hover-palette-color-general',
+			'link-active-palette-color-general',
+			'link-visited-palette-color-general',
+		]);
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
 	});
@@ -307,8 +279,7 @@ describe('Image Maxi', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('60');
 
-		const imageWidth = await getBlockAttributes();
-		expect(imageWidth.imgWidth).toStrictEqual(60);
+		expect(await getAttributes('imgWidth')).toStrictEqual(60);
 
 		// reset width
 		const button = await page.$(
@@ -316,16 +287,14 @@ describe('Image Maxi', () => {
 		);
 		await button.click();
 
-		const imageWidthReset = await getBlockAttributes();
-		expect(imageWidthReset.imgWidth).toStrictEqual(100);
+		expect(await getAttributes('imgWidth')).toStrictEqual(100);
 
 		// imageRatio
 		const selector = await page.$('.maxi-image-inspector__ratio select');
 
 		await selector.select('ar11');
 
-		const ratio = await getBlockAttributes();
-		expect(ratio.imageRatio).toStrictEqual('ar11');
+		expect(await getAttributes('imageRatio')).toStrictEqual('ar11');
 
 		const checkFrontend = await page.$eval(
 			'.maxi-image-block .maxi-image-ratio__ar11',
@@ -348,8 +317,7 @@ describe('Image Maxi', () => {
 
 		await page.keyboard.type('Image Tag');
 
-		const altTag = await getBlockAttributes();
-		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
+		expect(await getAttributes('mediaAlt')).toStrictEqual('Image Tag');
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');

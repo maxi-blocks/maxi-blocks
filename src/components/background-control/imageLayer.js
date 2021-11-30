@@ -57,7 +57,7 @@ const ImageLayerSettings = props => {
 	return (
 		<>
 			<OpacityControl
-				label={__('Background Opacity', 'maxi-blocks')}
+				label={__('Background opacity', 'maxi-blocks')}
 				opacity={getLastBreakpointAttribute(
 					`${prefix}background-image-opacity`,
 					breakpoint,
@@ -84,7 +84,7 @@ const ImageLayerSettings = props => {
 				}
 			/>
 			<SelectControl
-				label={__('Background size', 'maxi-blocks')}
+				label={__('Size', 'maxi-blocks')}
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-size`,
 					breakpoint,
@@ -205,7 +205,7 @@ const ImageLayerSettings = props => {
 			)}
 			{!parallaxStatus && (
 				<SelectControl
-					label={__('Background repeat', 'maxi-blocks')}
+					label={__('Repeat', 'maxi-blocks')}
 					value={getLastBreakpointAttribute(
 						`${prefix}background-image-repeat`,
 						breakpoint,
@@ -259,7 +259,7 @@ const ImageLayerSettings = props => {
 				/>
 			)}
 			<SelectControl
-				label={__('Background position', 'maxi-blocks')}
+				label={__('Position', 'maxi-blocks')}
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-position`,
 					breakpoint,
@@ -519,7 +519,7 @@ const ImageLayerSettings = props => {
 			{!parallaxStatus && (
 				<>
 					<SelectControl
-						label={__('Background attachment', 'maxi-blocks')}
+						label={__('Attachment', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-attachment`,
 							breakpoint,
@@ -561,7 +561,7 @@ const ImageLayerSettings = props => {
 					/>
 					<ToggleSwitch
 						className='maxi-background-image-more-settings--toggle'
-						label={__('More Settings', 'maxi-blocks')}
+						label={__('More settings', 'maxi-blocks')}
 						selected={moreSettings}
 						onChange={val => {
 							setMoreSettings(val);

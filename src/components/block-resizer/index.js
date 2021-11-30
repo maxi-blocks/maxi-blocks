@@ -99,8 +99,7 @@ const BlockResizer = forwardRef((props, ref) => {
 						handleClassName,
 						showHandlesClassName,
 						cornerHandleClassName,
-						'maxi-resizable__handle-top',
-						'maxi-resizable__handle-left'
+						'maxi-resizable__handle-topleft'
 					),
 				topRight:
 					enable.topRight &&
@@ -108,8 +107,7 @@ const BlockResizer = forwardRef((props, ref) => {
 						handleClassName,
 						showHandlesClassName,
 						cornerHandleClassName,
-						'maxi-resizable__handle-top',
-						'maxi-resizable__handle-right'
+						'maxi-resizable__handle-topright'
 					),
 				bottomRight:
 					enable.bottomRight &&
@@ -117,8 +115,7 @@ const BlockResizer = forwardRef((props, ref) => {
 						handleClassName,
 						showHandlesClassName,
 						cornerHandleClassName,
-						'maxi-resizable__handle-bottom',
-						'maxi-resizable__handle-right'
+						'maxi-resizable__handle-bottomright'
 					),
 				bottomLeft:
 					enable.bottomLeft &&
@@ -126,8 +123,7 @@ const BlockResizer = forwardRef((props, ref) => {
 						handleClassName,
 						showHandlesClassName,
 						cornerHandleClassName,
-						'maxi-resizable__handle-bottom',
-						'maxi-resizable__handle-left'
+						'maxi-resizable__handle-bottomleft'
 					),
 			}}
 		>

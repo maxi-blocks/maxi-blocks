@@ -9,11 +9,11 @@
 	}
 	.components-range-control {
 		width: 100%;
-		flex: 100% !important;
-		margin: 8px 0 0 !important;
+		flex: 100%;
+		margin: 8px 0 0;
 	}
 	.maxi-base-control__label {
-		flex: 2 !important;
+		flex: 2;
 	}
 	.maxi-base-control__field,
 	.components-base-control__field {
@@ -25,11 +25,11 @@
 		.maxi-base-control__label,
 		.components-base-control__label,
 		.components-range-control {
-			margin-left: 0 !important;
+			margin-left: 0;
 		}
 
 		.components-range-control__root {
-			margin-left: 7px !important;
+			margin-left: 7px;
 			width: calc(100% - 16px);
 		}
 	}

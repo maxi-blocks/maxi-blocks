@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { ButtonBlockAppender } from '@wordpress/block-editor';
-import { useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -19,9 +19,17 @@ import './editor.scss';
  * Component
  */
 const BlockPlaceholder = props => {
-	const { clientId, className, content = '' } = props;
+	const { className, content = '' } = props;
 
 	const classes = classnames('maxi-block-placeholder', className);
+
+	const { clientId } = useSelect(select => {
+		const { getSelectedBlockClientId } = select('core/block-editor');
+
+		const clientId = getSelectedBlockClientId();
+
+		return { clientId };
+	});
 
 	const { selectBlock } = useDispatch('core/block-editor');
 

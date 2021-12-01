@@ -34,13 +34,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			blockFullWidth,
-			clientId,
-			deviceType,
-			hasInnerBlock,
-		} = this.props;
+		const { attributes, blockFullWidth, deviceType, hasInnerBlock } =
+			this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -85,8 +80,8 @@ class edit extends MaxiBlockComponent {
 					className='maxi-group-block__group'
 					renderAppender={
 						!hasInnerBlock
-							? () => <BlockPlaceholder clientId={clientId} />
-							: () => <InnerBlocks.ButtonBlockAppender />
+							? BlockPlaceholder
+							: InnerBlocks.ButtonBlockAppender
 					}
 				/>
 			</MaxiBlock>,

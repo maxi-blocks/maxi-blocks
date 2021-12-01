@@ -1,44 +1,4 @@
 export const selectorsText = {
-	canvas: {
-		normal: {
-			label: 'canvas',
-			target: '',
-		},
-		hover: {
-			label: 'canvas on hover',
-			target: ':hover',
-		},
-	},
-	'before canvas': {
-		normal: {
-			label: 'canvas ::before',
-			target: ':before',
-		},
-		hover: {
-			label: 'canvas ::before on hover',
-			target: ':hover::before',
-		},
-	},
-	'after canvas': {
-		normal: {
-			label: 'canvas ::after',
-			target: ':after',
-		},
-		hover: {
-			label: 'canvas ::after on hover',
-			target: ':hover::after',
-		},
-	},
-	'canvas background': {
-		normal: {
-			label: 'canvas background',
-			target: '',
-		},
-		hover: {
-			label: 'canvas background on hover',
-			target: ':hover',
-		},
-	},
 	text: {
 		normal: {
 			label: 'text',
@@ -92,10 +52,6 @@ export const selectorsText = {
 };
 
 export const categoriesText = [
-	'canvas',
-	'before canvas',
-	'after canvas',
-	'canvas background',
 	'text',
 	'links',
 	'lists',

@@ -22,7 +22,7 @@ import { selectorsText, categoriesText } from './custom-css';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, without} from 'lodash';
+import { isEmpty, isEqual, cloneDeep} from 'lodash';
 
 /**
  * Inspector
@@ -32,17 +32,6 @@ const Inspector = memo(
 		const { attributes, deviceType, setAttributes } = props;
 		const { isList, listReversed, listStart, textLevel, typeOfList } =
 			attributes;
-
-			
-	const getCategoriesCss = () => {
-		const {
-			'background-layers': bgLayers,
-		} = attributes;
-		return without (
-			categoriesText,
-			isEmpty(bgLayers) && 'canvas background'
-		);
-	};
 
 		return (
 			<InspectorControls>
@@ -261,7 +250,7 @@ const Inspector = memo(
 												props,
 												breakpoint: deviceType,
 												selectors: selectorsText,
-												categories: getCategoriesCss(),
+												categories: categoriesText,
 											}),
 											...inspectorTabs.motion({
 												props,

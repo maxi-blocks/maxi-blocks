@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab } from '../../utils';
+import { openSidebarTab, getAttributes } from '../../utils';
 
 describe('Dropdown', () => {
 	it('Check dropdown', async () => {
@@ -33,10 +33,8 @@ describe('Dropdown', () => {
 			click => click[1].click()
 		);
 
-		const shapeStyle = 'waves-top';
-		const shapeStyleAttribute = await getBlockAttributes();
-		const style = shapeStyleAttribute['shape-divider-top-shape-style'];
-
-		expect(style).toStrictEqual(shapeStyle);
+		expect(
+			await getAttributes('shape-divider-top-shape-style')
+		).toStrictEqual('waves-top');
 	});
 });

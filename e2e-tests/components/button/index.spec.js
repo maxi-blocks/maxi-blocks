@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 describe('Button', () => {
 	it('Check button', async () => {
@@ -17,11 +17,9 @@ describe('Button', () => {
 			click[1].click()
 		);
 
-		const alignment = 'center';
-		const attributes = await getBlockAttributes();
-		const attribute = attributes['text-alignment-general'];
-
-		expect(attribute).toStrictEqual(alignment);
+		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+			'center'
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

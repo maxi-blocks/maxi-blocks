@@ -41,7 +41,7 @@ const VideoLayerContent = props => {
 	return (
 		<>
 			<OpacityControl
-				label={__('Video Opacity', 'maxi-blocks')}
+				label={__('Video opacity', 'maxi-blocks')}
 				opacity={getLastBreakpointAttribute(
 					`${prefix}background-video-opacity`,
 					breakpoint,
@@ -73,7 +73,7 @@ const VideoLayerContent = props => {
 			/>
 			<MediaUploaderControl
 				className='maxi-mediauploader-control__video-fallback'
-				placeholder={__('Background Fallback')}
+				placeholder={__('Background fallback')}
 				mediaID={getLastBreakpointAttribute(
 					`${prefix}background-video-fallbackID`,
 					breakpoint,

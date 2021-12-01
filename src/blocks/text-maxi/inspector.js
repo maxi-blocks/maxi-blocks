@@ -198,8 +198,16 @@ const Inspector = memo(
 												styleCardPrefix: '',
 												hideAlignment: true,
 												allowLink: true,
+												globalProps: {
+													target: '',
+													type: textLevel,
+												},
+												hoverGlobalProps: {
+													target: 'hover',
+													type: textLevel,
+												},
 											}),
-											...inspectorTabs.background({
+											...inspectorTabs.blockBackground({
 												props,
 											}),
 											...inspectorTabs.border({

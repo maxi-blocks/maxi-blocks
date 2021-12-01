@@ -11,11 +11,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	changeResponsive,
-} from '../../utils';
+import { getAttributes, openSidebarTab, changeResponsive } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
@@ -36,11 +32,7 @@ describe('Advanced Number Control', () => {
 		);
 		await page.keyboard.type('31');
 
-		const maxAttributes = await getBlockAttributes();
-		const maxAttribute = maxAttributes['letter-spacing-m'];
-		const expectMaxNum = 30;
-
-		expect(maxAttribute).toStrictEqual(expectMaxNum);
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(30);
 
 		// Min value
 		await accordionPanel.$eval(
@@ -55,11 +47,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('4');
 
-		const minAttributes = await getBlockAttributes();
-		const minAttribute = minAttributes['letter-spacing-m'];
-		const expectMinNum = -3;
-
-		expect(minAttribute).toStrictEqual(expectMinNum);
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-3);
 
 		// reset value
 		await accordionPanel.$eval(
@@ -74,10 +62,6 @@ describe('Advanced Number Control', () => {
 			click => click.click()
 		);
 
-		const resetAttributes = await getBlockAttributes();
-		const resetAttribute = resetAttributes['letter-spacing-m'];
-		const expectAuto = '';
-
-		expect(resetAttribute).toStrictEqual(expectAuto);
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual('');
 	});
 });

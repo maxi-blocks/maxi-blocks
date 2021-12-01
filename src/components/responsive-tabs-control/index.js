@@ -76,9 +76,6 @@ const ResponsiveTabsControl = props => {
 	};
 
 	const showNotification = customBreakpoint => {
-		if (breakpoint !== 'general')
-			return breakpoint === customBreakpoint.toLowerCase();
-
 		return getWinBreakpoint() === customBreakpoint.toLowerCase();
 	};
 
@@ -95,7 +92,12 @@ const ResponsiveTabsControl = props => {
 					showNotification: showNotification(breakpoint),
 					callback: () =>
 						!disableCallback
-							? setMaxiDeviceType(breakpoint.toLowerCase())
+							? setMaxiDeviceType(
+									getWinBreakpoint() ===
+										breakpoint.toLowerCase()
+										? 'general'
+										: breakpoint.toLowerCase()
+							  )
 							: null,
 				};
 			})}

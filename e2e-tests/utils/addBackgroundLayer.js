@@ -8,17 +8,9 @@ const addBackgroundLayer = async (page, type, isHover = false) => {
 		isHover
 	);
 
-	await page.$eval(
-		'.maxi-background-control .maxi-loader-control__dropdown-selector-title',
-		button => button.click()
-	);
+	const selector = await page.$('.maxi-background-control select');
 
-	await page.waitForTimeout(250);
-
-	const addLayer = await page.$eval(
-		`.components-popover__content .maxi-loader-content .maxi-loader-control__content-item-${type}`,
-		button => button.click()
-	);
+	const addLayer = await selector.select(type);
 
 	return addLayer;
 };

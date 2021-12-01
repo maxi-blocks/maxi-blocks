@@ -84,6 +84,7 @@ const ImageLayerSettings = props => {
 				}
 			/>
 			<SelectControl
+				className='maxi-background-control__image-layer__size-selector'
 				label={__('Size', 'maxi-blocks')}
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-size`,
@@ -205,6 +206,7 @@ const ImageLayerSettings = props => {
 			)}
 			{!parallaxStatus && (
 				<SelectControl
+					className='maxi-background-control__image-layer__repeat-selector'
 					label={__('Repeat', 'maxi-blocks')}
 					value={getLastBreakpointAttribute(
 						`${prefix}background-image-repeat`,
@@ -259,6 +261,7 @@ const ImageLayerSettings = props => {
 				/>
 			)}
 			<SelectControl
+				className='maxi-background-control__image-layer__position-selector'
 				label={__('Position', 'maxi-blocks')}
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-position`,
@@ -519,6 +522,7 @@ const ImageLayerSettings = props => {
 			{!parallaxStatus && (
 				<>
 					<SelectControl
+						className='maxi-background-control__image-layer__attachment-selector'
 						label={__('Attachment', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-attachment`,
@@ -571,6 +575,7 @@ const ImageLayerSettings = props => {
 						<div className='maxi-background-image-more-settings'>
 							<SelectControl
 								label={__('Background origin', 'maxi-blocks')}
+								className='maxi-background-control__image-layer__origin-selector'
 								value={getLastBreakpointAttribute(
 									`${prefix}background-image-origin`,
 									breakpoint,
@@ -612,6 +617,7 @@ const ImageLayerSettings = props => {
 							/>
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
+								className='maxi-background-control__image-layer__clip-selector'
 								value={getLastBreakpointAttribute(
 									`${prefix}background-image-clip`,
 									breakpoint,
@@ -717,7 +723,7 @@ const ImageLayer = props => {
 	});
 
 	return (
-		<>
+		<div>
 			{!isHover && (
 				<MediaUploaderControl
 					mediaID={mediaID}

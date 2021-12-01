@@ -18,6 +18,7 @@ import {
 	modalMock,
 	changeResponsive,
 	removeBackgroundLayers,
+	editAxisControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -32,7 +33,7 @@ describe('BackgroundControl', () => {
 
 		// change color
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-sc-color-palette__box',
+			'.maxi-background-layer__content .maxi-color-control__palette-container button',
 			colorPalette => colorPalette[4].click()
 		);
 
@@ -64,7 +65,7 @@ describe('BackgroundControl', () => {
 
 		// expect general
 		const baseColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -72,13 +73,13 @@ describe('BackgroundControl', () => {
 
 		// modify s responsive
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-sc-color-palette__box',
+			'.maxi-background-layer__content .maxi-color-control__palette-box',
 			colorPalette => colorPalette[5].click()
 		);
 
 		// expect s
 		const sColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 		expect(sColorSelected).toStrictEqual('6');
@@ -87,7 +88,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const xsColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -97,7 +98,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'm');
 
 		const mColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -106,7 +107,7 @@ describe('BackgroundControl', () => {
 
 	it('Check Background Color layer hover', async () => {
 		await changeResponsive(page, 'base');
-
+		debugger;
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -133,7 +134,7 @@ describe('BackgroundControl', () => {
 
 		// change color
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-sc-color-palette__box',
+			'.maxi-background-layer__content .maxi-color-control__palette-container button',
 			colorPalette => colorPalette[1].click()
 		);
 
@@ -159,7 +160,7 @@ describe('BackgroundControl', () => {
 
 		// expect base value
 		const baseColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -167,13 +168,13 @@ describe('BackgroundControl', () => {
 
 		// modify s responsive
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-sc-color-palette__box',
+			'.maxi-background-layer__content .maxi-color-control__palette-container button',
 			colorPalette => colorPalette[3].click()
 		);
 
 		// expect s
 		const sColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 		expect(sColorSelected).toStrictEqual('4');
@@ -182,7 +183,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const xsColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -192,7 +193,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'm');
 
 		const mColorSelected = await page.$eval(
-			'.maxi-sc-color-palette__box--active',
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -952,6 +953,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background shape layer hover', async () => {
+		debugger;
 		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
@@ -971,10 +973,15 @@ describe('BackgroundControl', () => {
 			options => options[0].click()
 		);
 
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-background-control__svg-layer--size'),
+			values: '66',
+		});
 		// sync button
-		await page.$$eval('.maxi-axis-control__middle-part button', input =>
+		/* await page.$$eval('.maxi-axis-control__middle-part button', input =>
 			input[0].click()
-		);
+		); 
 
 		// position top
 		const positionTop = await page.$$(
@@ -982,7 +989,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await positionTop[0].focus();
-		await page.keyboard.type('25');
+		await page.keyboard.type('25'); */
 
 		// size
 		await page.$$eval(

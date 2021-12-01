@@ -52,6 +52,7 @@ const attributes = {
 	...attributesData.opacity,
 	...attributesData.overflow,
 	...attributesData.zIndex,
+	...attributesData.customCss,
 };
 
 export default attributes;

@@ -11,6 +11,7 @@ import {
 	getOpacityStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsColumn } from './custom-css';
 
 /**
  * External dependencies
@@ -107,7 +108,7 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
+			' .maxi-column-block': getNormalObject(props),
 			':hover': getHoverObject(props),
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -132,7 +133,10 @@ const getStyles = props => {
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
-		}),
+		},
+		selectorsColumn,
+		props
+		),
 	};
 
 	return response;

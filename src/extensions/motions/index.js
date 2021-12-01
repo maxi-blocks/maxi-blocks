@@ -58,13 +58,11 @@ const scrollEffectData = props => {
 
 	const dataMotionTypeValue = () => {
 		let responseString = '';
-		motionTypes.map(type => {
+		motionTypes.forEach(type => {
 			if (attributes[`motion-status-${type}-general`])
 				responseString += `${type} `;
-
-			return null;
 		});
-		return responseString.trim();
+		return responseString?.trim();
 	};
 
 	const enabledMotions = dataMotionTypeValue();

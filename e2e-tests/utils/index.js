@@ -7,3 +7,4 @@ export { default as getAttributes } from './getAttributes';
 export { default as openSidebarTab } from './openSidebarTab';
 export { default as openPreviewPage } from './openPreviewPage';
 export { default as changeResponsive } from './changeResponsive';
+export { default as editColorControl } from './editColorControl';

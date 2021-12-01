@@ -27,9 +27,11 @@ const attributes = {
 	},
 	content: {
 		type: 'string',
+		default: '',
 	},
 	textLevel: {
 		type: 'string',
+		default: 'p',
 	},
 	isList: {
 		type: 'boolean',

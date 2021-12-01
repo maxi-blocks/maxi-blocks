@@ -84,8 +84,8 @@ const ImageLayerSettings = props => {
 				}
 			/>
 			<SelectControl
+				label={__('Background size', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__size-selector'
-				label={__('Size', 'maxi-blocks')}
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-size`,
 					breakpoint,
@@ -206,8 +206,8 @@ const ImageLayerSettings = props => {
 			)}
 			{!parallaxStatus && (
 				<SelectControl
+					label={__('Background repeat', 'maxi-blocks')}
 					className='maxi-background-control__image-layer__repeat-selector'
-					label={__('Repeat', 'maxi-blocks')}
 					value={getLastBreakpointAttribute(
 						`${prefix}background-image-repeat`,
 						breakpoint,
@@ -261,8 +261,8 @@ const ImageLayerSettings = props => {
 				/>
 			)}
 			<SelectControl
+				label={__('Background position', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__position-selector'
-				label={__('Position', 'maxi-blocks')}
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-position`,
 					breakpoint,
@@ -522,8 +522,8 @@ const ImageLayerSettings = props => {
 			{!parallaxStatus && (
 				<>
 					<SelectControl
+						label={__('Background attachment', 'maxi-blocks')}
 						className='maxi-background-control__image-layer__attachment-selector'
-						label={__('Attachment', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-attachment`,
 							breakpoint,
@@ -723,7 +723,7 @@ const ImageLayer = props => {
 	});
 
 	return (
-		<div>
+		<div className='maxi-background-control__image-layer'>
 			{!isHover && (
 				<MediaUploaderControl
 					mediaID={mediaID}

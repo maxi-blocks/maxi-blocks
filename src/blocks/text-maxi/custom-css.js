@@ -15,7 +15,7 @@ export const selectorsText = {
 			target: ' .maxi-text-block__content::before',
 		},
 		hover: {
-			label: 'text :before on hover',
+			label: 'text ::before on hover',
 			target: ' .maxi-text-block__content:hover::before',
 		},
 	},
@@ -25,7 +25,7 @@ export const selectorsText = {
 			target: ' .maxi-text-block__content::after',
 		},
 		hover: {
-			label: 'text :after on hover',
+			label: 'text ::after on hover',
 			target: ' .maxi-text-block__content:hover::after',
 		},
 	},

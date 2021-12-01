@@ -11,12 +11,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getAttributes,
-	getBlockAttributes,
-	openSidebarTab,
-	changeResponsive,
-} from '../../utils';
+import { getAttributes, openSidebarTab, changeResponsive } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {

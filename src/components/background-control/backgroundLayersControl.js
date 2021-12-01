@@ -19,10 +19,10 @@ import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
-import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
 import { setBreakpointToLayer } from './utils';
+import SelectControl from '../select-control';
 
 /**
  * External dependencies
@@ -34,7 +34,7 @@ import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
 /**
  * Icons
  */
-import { moveRight, toolbarSizing, toolbarShow } from '../../icons';
+import { moveRight, toolbarDrop, toolbarShow } from '../../icons';
 
 /**
  * Component
@@ -181,15 +181,15 @@ const LayerCard = props => {
 	const getTitle = type => {
 		switch (type) {
 			case 'color':
-				return __('Background Colour', 'maxi-blocks');
+				return __('Background colour', 'maxi-blocks');
 			case 'image':
-				return __('Background Image', 'maxi-blocks');
+				return __('Background image', 'maxi-blocks');
 			case 'video':
-				return __('Background Video', 'maxi-blocks');
+				return __('Background video', 'maxi-blocks');
 			case 'gradient':
-				return __('Background Gradient', 'maxi-blocks');
+				return __('Background gradient', 'maxi-blocks');
 			case 'shape':
-				return __('Background Shape', 'maxi-blocks');
+				return __('Background shape', 'maxi-blocks');
 			default:
 				return null;
 		}
@@ -314,7 +314,7 @@ const LayerCard = props => {
 								'maxi-background-layer__ignore-open'
 							)}
 						>
-							<Icon icon={toolbarSizing} />
+							<Icon icon={toolbarDrop} />
 						</span>
 					)}
 					<span
@@ -354,11 +354,6 @@ const BackgroundLayersControl = ({
 	layersHoverOptions,
 	isHover = false,
 	onChange,
-	disableImage = false,
-	disableVideo = false,
-	disableGradient = false,
-	disableColor = false,
-	disableSVG = false,
 	clientId,
 	breakpoint,
 }) => {
@@ -429,42 +424,6 @@ const BackgroundLayersControl = ({
 		}
 
 		return false;
-	};
-
-	const getOptions = () => {
-		const options = [];
-
-		!disableColor &&
-			options.push({
-				label: __('Background Colour', 'maxi-blocks'),
-				value: 'color',
-			});
-
-		!disableImage &&
-			options.push({
-				label: __('Background Image', 'maxi-blocks'),
-				value: 'image',
-			});
-
-		!disableVideo &&
-			options.push({
-				label: __('Background Video', 'maxi-blocks'),
-				value: 'video',
-			});
-
-		!disableGradient &&
-			options.push({
-				label: __('Background Gradient', 'maxi-blocks'),
-				value: 'gradient',
-			});
-
-		!disableSVG &&
-			options.push({
-				label: __('Background Shape', 'maxi-blocks'),
-				value: 'shape',
-			});
-
-		return options;
 	};
 
 	const onLayersDrag = (fromIndex, toIndex) => {
@@ -569,17 +528,41 @@ const BackgroundLayersControl = ({
 						</div>
 					</ReactDragListView>
 				)}
-				<LoaderControl
-					options={getOptions()}
-					buttonText={__('Add New Layer', 'maxi-blocks')}
-					onClick={value => {
-						const newLayer = getObject(value);
+				<SelectControl
+					className='maxi-background-control__add-layer'
+					value='Add new layer'
+					options={[
+						{
+							label: __('Add new layer', 'maxi-blocks'),
+							value: 'normal',
+						},
+						{
+							label: __('Background color', 'maxi-blocks'),
+							value: 'color',
+						},
+						{
+							label: __('Background image', 'maxi-blocks'),
+							value: 'image',
+						},
+						{
+							label: __('Background video', 'maxi-blocks'),
+							value: 'video',
+						},
+						{
+							label: __('Background gradient', 'maxi-blocks'),
+							value: 'gradient',
+						},
+						{
+							label: __('Background shape', 'maxi-blocks'),
+							value: 'shape',
+						},
+					]}
+					onChange={val => {
+						const newLayer = getObject(val);
 						onAddLayer(newLayer);
 
 						changeSelector(newLayer.id);
 					}}
-					forwards
-					buttonLess
 				/>
 			</div>
 		</div>

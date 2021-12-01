@@ -9,12 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	getBlockStyle,
-	getAttributes,
-} from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 describe('BoxShadowControl', () => {
 	beforeEach(async () => {
@@ -41,23 +36,14 @@ describe('BoxShadowControl', () => {
 			'box-shadow-vertical-general': 30,
 		};
 
-		const attributes = await getBlockAttributes();
-
-		const typographyAttributes = (({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-color-general': boxShadowColor,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-status-hover': boxShadowStatus,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}) => ({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-color-general': boxShadowColor,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-status-hover': boxShadowStatus,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}))(attributes);
+		const typographyAttributes = await getAttributes([
+			'box-shadow-blur-general',
+			'box-shadow-color-general',
+			'box-shadow-horizontal-general',
+			'box-shadow-spread-general',
+			'box-shadow-status-hover',
+			'box-shadow-vertical-general',
+		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);
 
@@ -97,21 +83,14 @@ describe('BoxShadowControl', () => {
 			'box-shadow-vertical-general': 40,
 		};
 
-		const shadowAttributes = await getBlockAttributes();
+		const boxShadowAttributes = await getAttributes([
+			'box-shadow-blur-general',
+			'box-shadow-horizontal-general',
+			'box-shadow-spread-general',
+			'box-shadow-vertical-general',
+		]);
 
-		const boxShadow = (({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}) => ({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}))(shadowAttributes);
-
-		expect(boxShadow).toStrictEqual(expectChanges);
+		expect(boxShadowAttributes).toStrictEqual(expectChanges);
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {

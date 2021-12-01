@@ -40,7 +40,7 @@ Object {
     "l": Object {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
     },
-    "label": "Background Gradient",
+    "label": "Background gradient",
     "m": Object {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
     },

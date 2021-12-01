@@ -242,19 +242,25 @@ const AxisControlContent = props => {
 	);
 
 	const getSyncLabel = () => {
+		const label =
+			type.toLowerCase() === 'border radius'
+				? 'border radii'
+				: type.toLowerCase();
+		const textSeparate =
+			label === 'border radius' ? 'separate' : 'separately';
 		switch (sync) {
 			case 'all':
 				return type
-					? __(`Set ${type.toLowerCase()} equal`, 'maxi-blocks')
+					? __(`Set ${label} equal`, 'maxi-blocks')
 					: __('Set equal', 'maxi-blocks');
 			case 'axis':
 				return type
-					? __(`Set ${type.toLowerCase()} together`, 'maxi-blocks')
+					? __(`Set ${label} together`, 'maxi-blocks')
 					: __('Set together', 'maxi-blocks');
 			case 'none':
 			default:
 				return type
-					? __(`Set ${type.toLowerCase()} separate`, 'maxi-blocks')
+					? __(`Set ${label} ${textSeparate}`, 'maxi-blocks')
 					: __('Set separate', 'maxi-blocks');
 		}
 	};
@@ -561,7 +567,14 @@ const AxisControl = props => {
 			case 'axis': {
 				if (singleTarget === 'horizontal') {
 					inputsArray.forEach(key => {
-						if (key === 'left' || key === 'right') {
+						if (
+							[
+								'left',
+								'right',
+								'bottom-left',
+								'top-right',
+							].includes(key)
+						) {
 							response[
 								getAttributeKey(
 									getKey(key),
@@ -584,7 +597,14 @@ const AxisControl = props => {
 					});
 				} else if (singleTarget === 'vertical') {
 					inputsArray.forEach(key => {
-						if (key === 'top' || key === 'bottom') {
+						if (
+							[
+								'top',
+								'bottom',
+								'top-left',
+								'bottom-right',
+							].includes(key)
+						) {
 							response[
 								getAttributeKey(
 									getKey(key),

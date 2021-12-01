@@ -83,3 +83,12 @@
 		margin: auto;
 	}
 }
+
+body.maxi-blocks--active
+	.block-editor__container
+	.maxi-image-inspector__dimension-width {
+	margin-bottom: 8px;
+	.components-range-control__wrapper {
+		margin-left: 7px;
+	}
+}

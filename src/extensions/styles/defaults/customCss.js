@@ -1,7 +1,6 @@
 const customCss = {
 	'custom-css-general': {
 		type: 'object',
-		default: {},
 	},
 	'custom-css-xxl': {
 		type: 'object',

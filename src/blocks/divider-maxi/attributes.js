@@ -19,7 +19,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.divider,
 	customLabel: {
 		type: 'string',
 		default: __('Divider', 'maxi-blocks'),
@@ -44,6 +43,7 @@ const attributes = {
 		type: 'string',
 		default: 'row',
 	},
+	...attributesData.divider,
 	...getPrefixedAttributes(attributesData.boxShadow, prefix),
 	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
 	...getPrefixedAttributes(attributesData.margin, prefix),

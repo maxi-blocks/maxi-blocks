@@ -14,7 +14,6 @@ export const block = {
 		'link-visited-palette-color-status-general': true,
 		parentBlockStyle: 'light',
 		blockStyle: 'maxi-light',
-		blockStyleBackground: 1,
 		defaultBlockStyle: 'maxi-def-light',
 		extraClassName: '',
 		isFirstOnHierarchy: true,

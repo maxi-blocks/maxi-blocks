@@ -1,4 +1,4 @@
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+import breakpointObjectCreator from '../breakpointObjectCreator';
 
 export const blockBackground = {
 	'background-layers': {
@@ -247,42 +247,32 @@ export const rawBackgroundSVG = {
 	},
 };
 
-const breakpointObjectCreator = obj => {
-	const response = {};
+export const background = breakpointObjectCreator({
+	obj: rawBackground,
+});
 
-	Object.entries(obj).forEach(([key, val]) => {
-		if (['background-layers'].includes(key)) return;
-		if (
-			[
-				'background-image-mediaURL',
-				'background-image-mediaID',
-				'background-image-parallax-alt',
-				'background-image-parallax-alt-selector',
-			].includes(key)
-		) {
-			response[key] = val;
+export const backgroundColor = breakpointObjectCreator({
+	obj: rawBackgroundColor,
+});
 
-			return;
-		}
+export const backgroundImage = breakpointObjectCreator({
+	obj: rawBackgroundImage,
+	noBreakpointAttr: [
+		'background-image-mediaURL',
+		'background-image-mediaID',
+		'background-image-parallax-alt',
+		'background-image-parallax-alt-selector',
+	],
+});
 
-		breakpoints.forEach(breakpoint => {
-			const newVal = { ...val };
-			if (breakpoint !== 'general') delete newVal.default;
+export const backgroundVideo = breakpointObjectCreator({
+	obj: rawBackgroundVideo,
+});
 
-			const newKey = `${key}-${breakpoint}`;
+export const backgroundGradient = breakpointObjectCreator({
+	obj: rawBackgroundGradient,
+});
 
-			response[newKey] = newVal;
-		});
-	});
-
-	return response;
-};
-
-export const background = breakpointObjectCreator(rawBackground);
-export const backgroundColor = breakpointObjectCreator(rawBackgroundColor);
-export const backgroundImage = breakpointObjectCreator(rawBackgroundImage);
-export const backgroundVideo = breakpointObjectCreator(rawBackgroundVideo);
-export const backgroundGradient = breakpointObjectCreator(
-	rawBackgroundGradient
-);
-export const backgroundSVG = breakpointObjectCreator(rawBackgroundSVG);
+export const backgroundSVG = breakpointObjectCreator({
+	obj: rawBackgroundSVG,
+});

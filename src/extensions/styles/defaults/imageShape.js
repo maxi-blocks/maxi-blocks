@@ -1,4 +1,4 @@
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+import breakpointObjectCreator from '../breakpointObjectCreator';
 
 export const rawImageShape = {
 	'image-shape-scale': {
@@ -15,23 +15,6 @@ export const rawImageShape = {
 	},
 };
 
-const breakpointObjectCreator = obj => {
-	const response = {};
-
-	Object.entries(obj).forEach(([key, val]) => {
-		if (['background-layers'].includes(key)) return;
-
-		breakpoints.forEach(breakpoint => {
-			const newVal = { ...val };
-			if (breakpoint !== 'general') delete newVal.default;
-
-			const newKey = `${key}-${breakpoint}`;
-
-			response[newKey] = newVal;
-		});
-	});
-
-	return response;
-};
-
-export const imageShape = breakpointObjectCreator(rawImageShape);
+export const imageShape = breakpointObjectCreator({
+	obj: rawImageShape,
+});

@@ -17,7 +17,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.container,
 	customLabel: {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
@@ -30,11 +29,8 @@ const attributes = {
 		type: 'string',
 		default: 'maxi-light',
 	},
-	updateStyleCard: {
-		type: 'number',
-		default: 0,
-	},
 	...attributesData.arrow,
+	...attributesData.container,
 	...attributesData.shapeDivider,
 	...{
 		...attributesData.blockBackground,

@@ -37,7 +37,6 @@ Object {
   "background-video-opacity": 100,
   "background-video-playOnMobile": false,
   "blockStyle": "maxi-parent",
-  "blockStyleBackground": 1,
   "border-palette-color-general": 2,
   "border-palette-color-general-hover": 6,
   "border-palette-color-status-general": true,

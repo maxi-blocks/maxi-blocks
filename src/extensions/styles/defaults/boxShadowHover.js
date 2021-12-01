@@ -12,11 +12,6 @@ const boxShadowHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...boxShadow[key] };
 
-		if (
-			key !== 'box-shadow-palette-color-status-general' &&
-			'default' in value
-		)
-			value.default = '';
 		if (key === 'box-shadow-palette-color-general') value.default = 6;
 
 		response[newKey] = value;

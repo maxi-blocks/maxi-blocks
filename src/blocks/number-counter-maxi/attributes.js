@@ -19,11 +19,11 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.numberCounter,
 	customLabel: {
 		type: 'string',
 		default: __('Number Counter', 'maxi-blocks'),
 	},
+	...attributesData.numberCounter,
 	...getPrefixedAttributes(attributesData.border, prefix),
 	...getPrefixedAttributes(attributesData.borderHover, prefix),
 	...getPrefixedAttributes(attributesData.borderRadius, prefix),

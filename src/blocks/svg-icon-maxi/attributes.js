@@ -19,7 +19,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.svg,
 	customLabel: {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),
@@ -33,8 +32,8 @@ const attributes = {
 	},
 	content: {
 		type: 'string',
-		default: '',
 	},
+	...attributesData.svg,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

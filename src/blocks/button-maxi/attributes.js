@@ -29,7 +29,6 @@ const attributes = {
 	},
 	buttonContent: {
 		type: 'string',
-		default: '',
 	},
 	...attributesData.icon,
 	...attributesData.iconHover,

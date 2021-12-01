@@ -1,8 +1,9 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
-import { __experimentalGradientPicker } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { __experimentalGradientPicker as GradientPicker } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
@@ -54,7 +55,7 @@ const GradientControl = props => {
 				onChange={val => onChangeOpacity(val)}
 			/>
 			<div className='maxi-gradient-control__gradient'>
-				<__experimentalGradientPicker
+				<GradientPicker
 					value={currentGradient}
 					onChange={gradient => {
 						setCurrentGradient(gradient);

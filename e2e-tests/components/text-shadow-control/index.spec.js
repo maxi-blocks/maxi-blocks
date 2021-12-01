@@ -10,7 +10,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	getBlockStyle,
+	changeResponsive,
+} from '../../utils';
 
 describe('TextShadowControl', () => {
 	it('Checking the text shadow control', async () => {
@@ -81,5 +86,102 @@ describe('TextShadowControl', () => {
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Checking the text shadow control in responsive', async () => {
+		await changeResponsive(page, 's');
+
+		// expect values
+		// S
+		const baseSValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[2].value
+		);
+		expect(baseSValue).toStrictEqual('34');
+
+		// Y
+		const baseYValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[4].value
+		);
+		expect(baseYValue).toStrictEqual('12');
+
+		// Blur
+		const baseBlurValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[6].value
+		);
+		expect(baseBlurValue).toStrictEqual('54');
+
+		// change values in S responsive
+		const editTextShadow = await page.$$(
+			'.maxi-textshadow-control .maxi-advanced-number-control'
+		);
+
+		// change X
+		await editTextShadow[1].$eval('input', input => input.focus());
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('67');
+
+		// 	change Y
+		await editTextShadow[2].$eval('input', input => input.focus());
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('15');
+
+		// change Blur
+		await editTextShadow[3].$eval('input', input => input.focus());
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('48');
+
+		// expect in Xs
+		await changeResponsive(page, 'xs');
+
+		// S
+		const xsSValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[2].value
+		);
+		expect(xsSValue).toStrictEqual('67');
+
+		// Y
+		const xsYValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[4].value
+		);
+		expect(xsYValue).toStrictEqual('15');
+
+		// Blur
+		const xsBlurValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[6].value
+		);
+		expect(xsBlurValue).toStrictEqual('48');
+
+		// expect in M
+		await changeResponsive(page, 'm');
+
+		// S
+		const mSValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[2].value
+		);
+		expect(mSValue).toStrictEqual('34');
+
+		// Y
+		const mYValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[4].value
+		);
+		expect(mYValue).toStrictEqual('12');
+
+		// Blur
+		const mBlurValue = await page.$$eval(
+			'.maxi-textshadow-control .maxi-advanced-number-control input',
+			input => input[6].value
+		);
+		expect(mBlurValue).toStrictEqual('54');
 	});
 });

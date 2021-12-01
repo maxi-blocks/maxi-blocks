@@ -11,22 +11,22 @@ export const selectorsDivider = {
 	},
 	'before canvas': {
 		normal: {
-			label: 'canvas :before',
-			target: ':before',
+			label: 'canvas ::before',
+			target: '::before',
 		},
 		hover: {
-			label: 'canvas :before on hover',
-			target: ':hover:before',
+			label: 'canvas ::before on hover',
+			target: ':hover::before',
 		},
 	},
 	'after canvas': {
 		normal: {
-			label: 'canvas :after',
-			target: ':after',
+			label: 'canvas ::after',
+			target: '::after',
 		},
 		hover: {
-			label: 'canvas :after on hover',
-			target: ':hover:after',
+			label: 'canvas ::after on hover',
+			target: ':hover::after',
 		},
 	},
 	divider: {
@@ -42,21 +42,21 @@ export const selectorsDivider = {
 	'before divider': {
 		normal: {
 			label: 'divider :before',
-			target: ' .maxi-divider-block__divider:before',
+			target: ' .maxi-divider-block__divider::before',
 		},
 		hover: {
 			label: 'divider :before on hover',
-			target: ' .maxi-divider-block__divider:hover:before',
+			target: ' .maxi-divider-block__divider:hover::before',
 		},
 	},
 	'after divider': {
 		normal: {
 			label: 'divider :after',
-			target: ' .maxi-divider-block__divider:after',
+			target: ' .maxi-divider-block__divider::after',
 		},
 		hover: {
 			label: 'divider :after on hover',
-			target: ' .maxi-divider-block__divider:hover:after',
+			target: ' .maxi-divider-block__divider:hover::after',
 		},
 	},
 	'canvas background': {

@@ -11,22 +11,22 @@ export const selectorsSvgIcon = {
 	},
 	'before canvas': {
 		normal: {
-			label: 'canvas :before',
+			label: 'canvas ::before',
 			target: ':before',
 		},
 		hover: {
-			label: 'canvas :before on hover',
+			label: 'canvas ::before on hover',
 			target: ':hover:before',
 		},
 	},
 	'after canvas': {
 		normal: {
-			label: 'canvas :after',
+			label: 'canvas ::after',
 			target: ':after',
 		},
 		hover: {
-			label: 'canvas :after on hover',
-			target: ':hover:after',
+			label: 'canvas ::after on hover',
+			target: ':hover::after',
 		},
 	},
 	svg: {

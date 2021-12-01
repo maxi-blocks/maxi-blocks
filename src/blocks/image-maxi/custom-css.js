@@ -11,22 +11,22 @@ export const selectorsImage = {
 	},
 	'before canvas': {
 		normal: {
-			label: 'canvas :before',
-			target: ':before',
+			label: 'canvas ::before',
+			target: '::before',
 		},
 		hover: {
-			label: 'canvas :before on hover',
-			target: ':hover:before',
+			label: 'canvas ::before on hover',
+			target: ':hover::before',
 		},
 	},
 	'after canvas': {
 		normal: {
-			label: 'canvas :after',
-			target: ':after',
+			label: 'canvas ::after',
+			target: '::after',
 		},
 		hover: {
-			label: 'canvas :after on hover',
-			target: ':hover:after',
+			label: 'canvas ::after on hover',
+			target: ':hover::after',
 		},
 	},
 	image: {
@@ -51,12 +51,12 @@ export const selectorsImage = {
 	},
 	'after image': {
 		normal: {
-			label: 'image :after',
-			target: ' .maxi-image-block__image:after',
+			label: 'image ::after',
+			target: ' .maxi-image-block__image::after',
 		},
 		hover: {
-			label: 'image :after on hover',
-			target: ' .maxi-image-block__image:hover:after',
+			label: 'image ::after on hover',
+			target: ' .maxi-image-block__image:hover::after',
 		},
 	},
 	'canvas background': {

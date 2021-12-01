@@ -21,22 +21,22 @@ export const selectorsButton = {
 	},
 	'before canvas': {
 		normal: {
-			label: 'canvas :before',
-			target: ':before',
+			label: 'canvas ::before',
+			target: '::before',
 		},
 		hover: {
-			label: 'canvas :before on hover',
-			target: ':hover:before',
+			label: 'canvas ::before on hover',
+			target: ':hover::before',
 		},
 	},
 	'after canvas': {
 		normal: {
-			label: 'canvas :after',
-			target: ':after',
+			label: 'canvas ::after',
+			target: '::after',
 		},
 		hover: {
-			label: 'canvas :after on hover',
-			target: ':hover:after',
+			label: 'canvas ::after on hover',
+			target: ':hover::after',
 		},
 	},
 	button: {
@@ -51,22 +51,22 @@ export const selectorsButton = {
 	},
 	'before button': {
 		normal: {
-			label: 'button :before',
-			target: ' .maxi-button-block__button:before',
+			label: 'button ::before',
+			target: ' .maxi-button-block__button::before',
 		},
 		hover: {
 			label: 'button :before on hover',
-			target: ' .maxi-button-block__button:hover:before',
+			target: ' .maxi-button-block__button:hover::before',
 		},
 	},
 	'after button': {
 		normal: {
-			label: 'button :after',
-			target: ' .maxi-button-block__button:after',
+			label: 'button ::after',
+			target: ' .maxi-button-block__button::after',
 		},
 		hover: {
-			label: 'button :after on hover',
-			target: ' .maxi-button-block__button:hover:after',
+			label: 'button ::after on hover',
+			target: ' .maxi-button-block__button:hover::after',
 		},
 	},
 	icon: {

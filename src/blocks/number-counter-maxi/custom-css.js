@@ -11,22 +11,22 @@ export const selectorsNumberCounter = {
 	},
 	'before canvas': {
 		normal: {
-			label: 'canvas :before',
-			target: ':before',
+			label: 'canvas ::before',
+			target: '::before',
 		},
 		hover: {
-			label: 'canvas :before on hover',
-			target: ':hover:before',
+			label: 'canvas ::before on hover',
+			target: ':hover::before',
 		},
 	},
 	'after canvas': {
 		normal: {
-			label: 'canvas :after',
-			target: ':after',
+			label: 'canvas ::after',
+			target: '::after',
 		},
 		hover: {
-			label: 'canvas :after on hover',
-			target: ':hover:after',
+			label: 'canvas ::after on hover',
+			target: ':hover::after',
 		},
 	},
 	circle: {
@@ -51,22 +51,22 @@ export const selectorsNumberCounter = {
 	},
 	'before number': {
 		normal: {
-			label: 'number :before',
-			target: ' .maxi-number-counter__box__text::before',
+			label: 'number ::before',
+			target: ' .maxi-number-counter__box__text:::before',
 		},
 		hover: {
-			label: 'number :before on hover',
-			target: ' .maxi-number-counter__box__text:hover::before',
+			label: 'number ::before on hover',
+			target: ' .maxi-number-counter__box__text:hover:::before',
 		},
 	},
 	'after number': {
 		normal: {
-			label: 'number :after',
-			target: ' .maxi-number-counter__box__text:after',
+			label: 'number ::after',
+			target: ' .maxi-number-counter__box__text::after',
 		},
 		hover: {
-			label: 'number :after on hover',
-			target: ' .maxi-number-counter__box__text:hover:after',
+			label: 'number ::after on hover',
+			target: ' .maxi-number-counter__box__text:hover::after',
 		},
 	},
 	'canvas background': {

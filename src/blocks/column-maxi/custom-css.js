@@ -2,31 +2,31 @@ export const selectorsColumn = {
 	'column': {
 		normal: {
 			label: 'column',
-			target: '',
+			target: '.maxi-column-block',
 		},
 		hover: {
 			label: 'column on hover',
-			target: ' :hover',
+			target: '.maxi-column-block:hover',
 		},
 	},
 	'before column': {
 		normal: {
 			label: 'column :before',
-			target: ' ::before',
+			target: '.maxi-column-block::before',
 		},
 		hover: {
 			label: 'column :before on hover',
-			target: ' :hover::before',
+			target: '.maxi-column-block:hover::before',
 		},
 	},
 	'after column': {
 		normal: {
 			label: 'column :after',
-			target: ' ::after',
+			target: '.maxi-column-block::after',
 		},
 		hover: {
 			label: 'column :after on hover',
-			target: ' :hover::after',
+			target: '.maxi-column-block:hover::after',
 		},
 	},
 };

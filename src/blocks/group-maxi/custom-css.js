@@ -2,31 +2,31 @@ export const selectorsGroup = {
 	'group': {
 		normal: {
 			label: 'group',
-			target: '',
+			target: '.maxi-group-block',
 		},
 		hover: {
 			label: 'group on hover',
-			target: ' :hover',
+			target: '.maxi-group-block:hover',
 		},
 	},
 	'before group': {
 		normal: {
 			label: 'group :before',
-			target: ' ::before',
+			target: '.maxi-group-block::before',
 		},
 		hover: {
 			label: 'group :before on hover',
-			target: ' :hover::before',
+			target: '.maxi-group-block:hover::before',
 		},
 	},
 	'after group': {
 		normal: {
-			label: 'group :after',
-			target: ' ::after',
+			label: 'group ::after',
+			target: '.maxi-group-block::after',
 		},
 		hover: {
 			label: 'group :after on hover',
-			target: ' :hover::after',
+			target: '.maxi-group-block:hover::after',
 		},
 	},
 };

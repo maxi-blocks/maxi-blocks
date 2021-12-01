@@ -108,10 +108,8 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
+			' .maxi-column-block': getNormalObject(props),
 			':hover': getHoverObject(props),
-			'.maxi-column-block__resizer': getNormalObject(props),
-			'.maxi-column-block__resizer:hover': getHoverObject(props),
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'blockBackground',

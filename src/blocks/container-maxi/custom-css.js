@@ -11,17 +11,17 @@ export const selectorsContainer = {
 	},
 	'before container': {
 		normal: {
-			label: 'container :before',
+			label: 'container ::before',
 			target: ' .maxi-container-block__container::before',
 		},
 		hover: {
-			label: 'container :before on hover',
-			target: ' .maxi-container-block__container::before',
+			label: 'container ::before on hover',
+			target: ' .maxi-container-block__container:hover::before',
 		},
 	},
 	'after container': {
 		normal: {
-			label: 'container :after',
+			label: 'container ::after',
 			target: ' .maxi-container-block__container::after',
 		},
 		hover: {

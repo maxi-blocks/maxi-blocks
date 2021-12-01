@@ -13,6 +13,7 @@ import {
 	getTransformStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsNumberCounter } from './custom-css';
 
 const getWrapperObject = props => {
 	const response = {
@@ -231,7 +232,11 @@ const getStyles = props => {
 				target: '.maxi-number-counter__box',
 				blockStyle,
 			}),
-		}),
+		},
+		selectorsNumberCounter,
+		props
+		
+		),
 	};
 	return response;
 };

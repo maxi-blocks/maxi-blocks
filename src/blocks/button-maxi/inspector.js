@@ -76,8 +76,8 @@ const Inspector = memo(
 			} = attributes;
 			return without(
 				categoriesButton,
-				!isEmpty(bgLayers) && 'canvas background',
-				!isEmpty(iconContent) && 'icon'
+				isEmpty(bgLayers) && 'canvas background',
+				isEmpty(iconContent) && 'icon'
 			);
 		};
 

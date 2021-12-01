@@ -23,6 +23,9 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 
+/**
+* External dependencies
+**/
 import { isEmpty, without } from 'lodash';
 
 /**

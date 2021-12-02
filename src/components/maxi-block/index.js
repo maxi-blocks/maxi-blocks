@@ -27,7 +27,6 @@ import { isEmpty } from 'lodash';
 /**
  * Styles
  */
-import './style.scss';
 import './editor.scss';
 
 const WRAPPER_BLOCKS = [

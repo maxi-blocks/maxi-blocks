@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+import { getBlockStyle } from '../../utils';
 
 describe('Number Counter Maxi', () => {
 	it('Number Counter Maxi does not break', async () => {
@@ -13,5 +14,7 @@ describe('Number Counter Maxi', () => {
 		await insertBlock('Number Counter Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -1,7 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getBackgroundStyles Get correct block background styles for color layer with border 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-left-radius": "180px",
+        "border-bottom-right-radius": "180px",
+        "border-bottom-style": "solid",
+        "border-bottom-width": "2px",
+        "border-color": "rgba(var(--maxi-light-color-5),1)",
+        "border-left-style": "solid",
+        "border-left-width": "2px",
+        "border-right-style": "solid",
+        "border-right-width": "2px",
+        "border-top-left-radius": "180px",
+        "border-top-right-radius": "180px",
+        "border-top-style": "solid",
+        "border-top-width": "2px",
+      },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+    "size": Object {
+      "general": Object {
+        "left": "-2px",
+        "top": "-2px",
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+    },
+  },
+}
+`;
+
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
@@ -41,6 +122,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages and hover 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
@@ -80,6 +172,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for different layers, onces created on normal and other on hover 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
     "color": Object {
       "general": Object {
@@ -226,6 +329,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for general responsive stage 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
@@ -302,7 +416,7 @@ Object {
         "opacity": 1,
       },
       "l": Object {},
-      "label": "Background Gradient",
+      "label": "Background gradient",
       "m": Object {},
       "s": Object {},
       "xl": Object {},
@@ -374,6 +488,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
       "general": Object {
@@ -387,7 +512,7 @@ Object {
         "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
         "opacity": 0.8,
       },
-      "label": "Background Gradient",
+      "label": "Background gradient",
       "m": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
       },
@@ -416,6 +541,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
       "general": Object {
@@ -429,7 +565,7 @@ Object {
         "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
         "opacity": 0.8,
       },
-      "label": "Background Gradient",
+      "label": "Background gradient",
       "m": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
       },
@@ -458,6 +594,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -521,6 +668,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -584,6 +742,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with parallax and different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -639,6 +808,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
       "general": Object {
@@ -747,6 +927,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
       "general": Object {
@@ -811,6 +1002,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
       "general": Object {
@@ -857,6 +1059,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
       "general": Object {
@@ -911,7 +1124,7 @@ Object {
       "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(155,81,224) 100%)",
       "opacity": 0.29,
     },
-    "label": "Background Gradient",
+    "label": "Background gradient",
     "m": Object {
       "background-color": "rgba(var(--maxi-light-color-4),0.39)",
     },

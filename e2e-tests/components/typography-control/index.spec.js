@@ -14,10 +14,10 @@ import {
  */
 import {
 	getAttributes,
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	editColorControl,
 } from '../../utils';
 
 describe('TypographyControl', () => {
@@ -108,27 +108,14 @@ describe('TypographyControl', () => {
 
 	it('Checking the font color', async () => {
 		await changeResponsive(page, 'base');
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'style', 'typography');
+
+		await editColorControl({
 			page,
-			'style',
-			'typography'
-		);
-		await accordionPanel.$eval(
-			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
-			select => select.click()
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			select => select.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await pressKeyTimes('Backspace', '1');
-		await page.waitForTimeout(500);
-		await page.keyboard.type('#FAFA03');
-		await page.keyboard.press('Enter');
-		await page.waitForTimeout(500);
+			instance: await page.$('.maxi-typography-control__color'),
+			paletteStatus: false,
+			customColor: '#FAFA03',
+		});
 
 		expect(await getAttributes('color-general')).toStrictEqual(
 			'rgb(250,250,3)'
@@ -141,6 +128,7 @@ describe('TypographyControl', () => {
 			'style',
 			'typography'
 		);
+
 		await accordionPanel.$$eval(
 			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
 			select => select[0].click()
@@ -207,10 +195,9 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 
-		const attributes = await getBlockAttributes();
-		const colorStatus = attributes['palette-color-status-general'];
-
-		expect(colorStatus).toStrictEqual(true);
+		expect(
+			await getAttributes('palette-color-status-general')
+		).toStrictEqual(true);
 
 		// s
 		await changeResponsive(page, 's');
@@ -529,9 +516,9 @@ describe('TypographyControl', () => {
 			);
 			await page.waitForTimeout(200);
 
-			const shadowAttributes = await getBlockAttributes();
-			const textShadow = shadowAttributes['text-shadow-general'];
-			expect(textShadow).toStrictEqual(setting);
+			expect(await getAttributes('text-shadow-general')).toStrictEqual(
+				setting
+			);
 		}
 	});
 

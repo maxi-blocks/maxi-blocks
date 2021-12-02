@@ -89,7 +89,7 @@ const ArrowControl = props => {
 					links={[
 						{
 							title: __('Background colour', 'maxi-blocks'),
-							panel: 'background',
+							panel: 'background layer',
 						},
 					]}
 				/>

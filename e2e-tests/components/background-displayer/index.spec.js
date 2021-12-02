@@ -107,7 +107,7 @@ describe.skip('BackgroundDisplayerControl', () => {
 		expect(backgroundVideo).toMatchSnapshot();
 	});
 
-	it('Check Background Gradient', async () => {
+	it('Check Background gradient', async () => {
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

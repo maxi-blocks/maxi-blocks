@@ -22,34 +22,76 @@ body.maxi-blocks--active .maxi-block__resizer {
 				top: 0 !important;
 				&:before {
 					top: -10px;
-					left: -10px !important;
-					transform: rotate(45deg) !important;
-					border-right: 10px solid var(--maxi-primary-color);
-					border-bottom: 10px solid transparent !important;
+					left: 0px;
+					border-bottom: 1px solid var(--maxi-primary-color);
+					border-left: 0;
+					border-right: 0;
 				}
 			}
 			&-right {
 				right: 0 !important;
 				&:before {
-					left: 10px !important;
-					transform: rotate(-225deg) !important;
+					top: 0;
+					right: -10px !important;
+					border-left: 1px solid var(--maxi-primary-color);
+					border-top: 0;
+					border-bottom: 0;
 				}
 			}
 			&-bottom {
 				bottom: 0 !important;
 				&:before {
-					top: 10px;
-					left: 10px;
-					transform: rotate(-225deg);
-					border-bottom: 10px solid var(--maxi-primary-color);
+					bottom: -10px;
+					left: 0px;
+					border-top: 1px solid var(--maxi-primary-color);
+					border-left: 0;
+					border-right: 0;
 				}
 			}
 			&-left {
 				left: 0 !important;
 				&:before {
+					top: 0;
 					left: -10px;
-					transform: rotate(-135deg);
+					border-right: 1px solid var(--maxi-primary-color);
+					border-top: 0;
+					border-bottom: 0;
+				}
+			}
+			&-topleft {
+				left: 0 !important;
+				&:before {
+					left: 0;
+					border-top: 10px solid var(--maxi-primary-color);
+					top: 5px;
+					border-left: 10px solid var(--maxi-primary-color);
+				}
+			}
+			&-topright {
+				right: 0 !important;
+				&:before {
+					right: 0;
+					border-top: 10px solid var(--maxi-primary-color);
+					top: 5px;
+					border-right: 10px solid var(--maxi-primary-color);
+				}
+			}
+			&-bottomleft {
+				left: 0 !important;
+				&:before {
+					left: 0;
 					border-bottom: 10px solid var(--maxi-primary-color);
+					bottom: 5px;
+					border-left: 10px solid var(--maxi-primary-color);
+				}
+			}
+			&-bottomright {
+				right: 0 !important;
+				&:before {
+					right: 0;
+					border-bottom: 10px solid var(--maxi-primary-color);
+					bottom: 5px;
+					border-right: 10px solid var(--maxi-primary-color);
 				}
 			}
 		}
@@ -60,7 +102,6 @@ body.maxi-blocks--active .maxi-block__resizer {
 				&:active,
 				&:hover {
 					&:before {
-						animation: horiz-line-motion 0.1s ease-out 0s;
 						opacity: 1 !important;
 					}
 				}
@@ -75,7 +116,6 @@ body.maxi-blocks--active .maxi-block__resizer {
 				&:active,
 				&:hover {
 					&:before {
-						animation: vert-line-motion 0.1s ease-out 0s;
 						opacity: 1 !important;
 					}
 				}

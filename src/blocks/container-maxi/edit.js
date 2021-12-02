@@ -58,13 +58,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			clientId,
-			deviceType,
-			hasInnerBlocks,
-			setAttributes,
-		} = this.props;
+		const { attributes, deviceType, hasInnerBlocks, setAttributes } =
+			this.props;
 		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
 		return [
@@ -118,8 +113,8 @@ class edit extends MaxiBlockComponent {
 					orientation='horizontal'
 					renderAppender={
 						!hasInnerBlocks
-							? () => <BlockPlaceholder clientId={clientId} />
-							: () => <InnerBlocks.ButtonBlockAppender />
+							? BlockPlaceholder
+							: InnerBlocks.ButtonBlockAppender
 					}
 				/>
 				{attributes['shape-divider-bottom-status'] && (

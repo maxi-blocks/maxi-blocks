@@ -76,6 +76,7 @@ const AxisInput = props => {
 			}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
+			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			disableReset
 		/>

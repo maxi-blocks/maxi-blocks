@@ -47,6 +47,7 @@ const AdvancedNumberControl = props => {
 		onChangeValue,
 		disableReset = false,
 		enableAuto = false,
+		autoLabel,
 		onReset,
 		allowedUnits = ['px', 'em', 'vw', '%', '-'],
 		minMaxSettings = {
@@ -121,7 +122,7 @@ const AdvancedNumberControl = props => {
 		<>
 			{enableAuto && (
 				<ToggleSwitch
-					label={__(`Auto ${label}`, 'maxi-blocks')}
+					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
 					onChange={val => onChangeValue(val ? 'auto' : '')}

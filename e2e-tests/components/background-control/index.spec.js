@@ -107,7 +107,6 @@ describe('BackgroundControl', () => {
 
 	it('Check Background Color layer hover', async () => {
 		await changeResponsive(page, 'base');
-		debugger;
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -499,6 +498,7 @@ describe('BackgroundControl', () => {
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
+
 	it('Check Background image layer hover responsive', async () => {
 		// general expects in S responsive
 		await changeResponsive(page, 's');
@@ -726,6 +726,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityM).toStrictEqual('44');
 	});
+
 	it('Check Background video layer hover', async () => {
 		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
@@ -758,6 +759,7 @@ describe('BackgroundControl', () => {
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
+
 	it('Check Background video layer hover responsive', async () => {
 		// general
 		await changeResponsive(page, 's');
@@ -803,6 +805,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityM).toStrictEqual('82');
 	});
+
 	it('Check Background shape layer', async () => {
 		await changeResponsive(page, 'base');
 		await removeBackgroundLayers(page);
@@ -953,7 +956,6 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background shape layer hover', async () => {
-		debugger;
 		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
@@ -978,18 +980,6 @@ describe('BackgroundControl', () => {
 			instance: await page.$('.maxi-background-control__svg-layer--size'),
 			values: '66',
 		});
-		// sync button
-		/* await page.$$eval('.maxi-axis-control__middle-part button', input =>
-			input[0].click()
-		); 
-
-		// position top
-		const positionTop = await page.$$(
-			'.maxi-axis-control__content__item__top input'
-		);
-
-		await positionTop[0].focus();
-		await page.keyboard.type('25'); */
 
 		// size
 		await page.$$eval(
@@ -1071,6 +1061,7 @@ describe('BackgroundControl', () => {
 
 		expect(mBackgroundShapeSize).toStrictEqual('22');
 	});
+
 	it('generate a layer from hover on responsive and test that layers cannot be deleted from hover', async () => {
 		await removeBackgroundLayers(page);
 		await changeResponsive(page, 'l');
@@ -1096,6 +1087,7 @@ describe('BackgroundControl', () => {
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
+
 	it('generate a layer from hover and test the hider', async () => {
 		// hover
 

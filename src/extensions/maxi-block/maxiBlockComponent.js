@@ -33,7 +33,7 @@ import { loadFonts } from '../text/fonts';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, uniqueId, isEqual, cloneDeep, inRange } from 'lodash';
 
 /**
  * Style Component
@@ -112,8 +112,57 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
+	updateBreakpointAttributes() {
+		const response = {};
+
+		const getWinBreakpoint = () => {
+			const { receiveMaxiSettings, receiveMaxiBreakpoints } =
+				select('maxiBlocks');
+
+			const winWidth =
+				receiveMaxiSettings().window?.width || window.innerWidth;
+
+			const maxiBreakpoints =
+				receiveMaxiBreakpoints() || this.getBreakpoints();
+
+			if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
+
+			if (winWidth > maxiBreakpoints.xl) return 'xxl';
+
+			const response = Object.entries(maxiBreakpoints).reduce(
+				([prevKey, prevValue], [currKey, currValue]) => {
+					if (!prevValue) return [prevKey];
+					if (inRange(winWidth, prevValue, currValue + 1))
+						return [currKey];
+
+					return [prevKey, prevValue];
+				}
+			)[0];
+
+			return response.toLowerCase();
+		};
+
+		Object.entries(this.props.attributes).forEach(([key, value]) => {
+			if (key.includes('-general')) {
+				const newKey = key.replace(
+					'-general',
+					`-${getWinBreakpoint()}`
+				);
+
+				response[newKey] = value;
+			}
+		});
+
+		console.log(response);
+
+		this.props.setAttributes(response);
+	}
+
 	componentDidMount() {
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
+
+		// Needs to check if its first time
+		this.updateBreakpointAttributes();
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 	}

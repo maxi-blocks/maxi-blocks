@@ -16,8 +16,6 @@ import { Toolbar } from '../../components';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
-import scrollEffectData from '../../extensions/motions';
 
 /**
  * External dependencies
@@ -72,11 +70,7 @@ class edit extends MaxiBlockComponent {
 
 		this.iconRef = createRef(null);
 
-		const motionPreviewStatus =
-			this.props.attributes['motion-preview-status'];
-
 		this.state = {
-			currentMotion: motionPreviewStatus,
 			isIconSelected: false,
 		};
 	}
@@ -92,7 +86,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, setAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
-		const { currentMotion, isIconSelected } = this.state;
+		const { isIconSelected } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -101,11 +95,8 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-left',
 			attributes['icon-content'] &&
 				attributes['icon-position'] === 'right' &&
-				'maxi-button-block__button--icon-right',
-			currentMotion && 'maxi-block-motion'
+				'maxi-button-block__button--icon-right'
 		);
-
-		currentMotion ? addMotion() : removeMotion(uniqueID);
 
 		return [
 			<Inspector
@@ -123,7 +114,6 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
-				// {...scrollEffectData(this.props)}
 				{...getMaxiBlockAttributes(this.props)}
 				disableBackground
 			>

@@ -95,8 +95,6 @@ const PositionControl = props => {
 			) && (
 				<AxisControl
 					{...props}
-					min={minMaxSettings.px.min}
-					max={minMaxSettings.px.max}
 					target='position'
 					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}

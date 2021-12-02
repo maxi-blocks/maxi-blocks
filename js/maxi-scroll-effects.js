@@ -66,10 +66,10 @@ const applyStyle = (el, type, value) => {
 	return null;
 };
 
-const getMotionSetting = (data, element) => {
+const getScrollSetting = (data, element) => {
 	const response = {};
 
-	const dataMotionArray = data.trim().split(' ');
+	const dataScrollArray = data.trim().split(' ');
 
 	const getViewportValue = viewport => {
 		switch (viewport) {
@@ -84,25 +84,25 @@ const getMotionSetting = (data, element) => {
 		}
 	};
 
-	response.viewportTop = getViewportValue(dataMotionArray[3]);
+	response.viewportTop = getViewportValue(dataScrollArray[3]);
 	response.viewportTopPercent = Math.round(
 		(element.offsetHeight / 100) * response.viewportTop
 	);
 
-	response.speedValue = parseFloat(dataMotionArray[0]) || 200;
-	response.delayValue = parseFloat(dataMotionArray[1]) || 0;
-	response.easingValue = dataMotionArray[2] || 'ease';
+	response.speedValue = parseFloat(dataScrollArray[0]) || 200;
+	response.delayValue = parseFloat(dataScrollArray[1]) || 0;
+	response.easingValue = dataScrollArray[2] || 'ease';
 
-	response.reverseMotion = dataMotionArray[4] || true;
+	response.reverseScroll = dataScrollArray[4] || true;
 
-	response.start = parseInt(dataMotionArray[5]);
-	response.mid = parseInt(dataMotionArray[6]);
-	response.end = parseInt(dataMotionArray[7]);
+	response.start = parseInt(dataScrollArray[5]);
+	response.mid = parseInt(dataScrollArray[6]);
+	response.end = parseInt(dataScrollArray[7]);
 
 	return response;
 };
 
-const getMotionData = (el, type) => {
+const getScrollData = (el, type) => {
 	return el.getAttribute(`data-scroll-effect-${type}-general`);
 };
 
@@ -114,11 +114,11 @@ const getParent = el => {
 };
 
 const startingTransform = (element, type) => {
-	const dataMotion = getMotionData(element, type);
-	if (!dataMotion) return null;
+	const dataScroll = getScrollData(element, type);
+	if (!dataScroll) return null;
 
 	const parent = getParent(element);
-	const { start } = getMotionSetting(dataMotion, parent);
+	const { start } = getScrollSetting(dataScroll, parent);
 
 	applyStyle(element, type, start);
 
@@ -148,12 +148,12 @@ let newMidDown = 0;
 let newEndDown = 0;
 
 const scrollTransform = (element, type) => {
-	const dataMotion = getMotionData(element, type);
+	const dataScroll = getScrollData(element, type);
 
-	if (!dataMotion) return;
+	if (!dataScroll) return;
 
-	const { viewportTopPercent, start, mid, end, reverseMotion } =
-		getMotionSetting(dataMotion, element);
+	const { viewportTopPercent, start, mid, end, reverseScroll } =
+		getScrollSetting(dataScroll, element);
 
 	const rect = element.getBoundingClientRect();
 	const windowHeight = window.innerHeight;
@@ -213,7 +213,7 @@ const scrollTransform = (element, type) => {
 		}
 	}
 	if (
-		reverseMotion === 'true' &&
+		reverseScroll === 'true' &&
 		scrollDirection === 'up' &&
 		elementBottomInViewCoordinate >= 0
 	) {
@@ -251,38 +251,38 @@ const scrollTransform = (element, type) => {
 	}
 };
 
-const scrollMotion = () => {
+const scrollScroll = () => {
 	const elements = Array.from(
-		document.getElementsByClassName('maxi-block-motion')
+		document.getElementsByClassName('maxi-scroll-effect')
 	);
 
-	elements.forEach(function motionOnScroll(element, index) {
-		const motionType = element?.getAttribute('data-scroll-effect-type');
+	elements.forEach(function scrollOnScroll(element, index) {
+		const scrollType = element?.getAttribute('data-scroll-effect-type');
 
-		const motionTypeArray = motionType?.trim()?.split(' ');
+		const scrollTypeArray = scrollType?.trim()?.split(' ');
 
-		motionTypeArray?.map(type => {
+		scrollTypeArray?.map(type => {
 			scrollTransform(element, type);
 			return null;
 		});
 	});
 };
 
-const startingMotion = () => {
+const startingScroll = () => {
 	const elements = Array.from(
-		document.getElementsByClassName('maxi-block-motion')
+		document.getElementsByClassName('maxi-scroll-effect')
 	);
 
-	elements.forEach(function maxiMotion(element, index) {
-		const motionType = element?.getAttribute('data-scroll-effect-type');
-		const motionTypeArray = motionType?.trim()?.split(' ');
+	elements.forEach(function maxiScroll(element, index) {
+		const scrollType = element?.getAttribute('data-scroll-effect-type');
+		const scrollTypeArray = scrollType?.trim()?.split(' ');
 		const parent = getParent(element);
 		let transition = '';
 
-		motionTypeArray?.map(type => {
-			const dataMotion = getMotionData(element, type);
-			const { speedValue, easingValue, delayValue } = getMotionSetting(
-				dataMotion,
+		scrollTypeArray?.map(type => {
+			const dataScroll = getScrollData(element, type);
+			const { speedValue, easingValue, delayValue } = getScrollSetting(
+				dataScroll,
 				parent
 			);
 
@@ -321,10 +321,10 @@ const startingMotion = () => {
 };
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
-document.addEventListener('DOMContentLoaded', function motionsOnLoad(event) {
+document.addEventListener('DOMContentLoaded', function scrollsOnLoad(event) {
 	// Scroll effects
-	startingMotion();
+	startingScroll();
 });
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
-window.addEventListener('scroll', () => scrollMotion());
+window.addEventListener('scroll', () => scrollScroll());

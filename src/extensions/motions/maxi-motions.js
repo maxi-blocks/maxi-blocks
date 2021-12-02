@@ -331,7 +331,7 @@ const scrollTransform = (element, type) => {
 
 export const startingMotion = () => {
 	const elements = Array.from(
-		document.getElementsByClassName('maxi-block-motion')
+		document.getElementsByClassName('maxi-scroll-effect')
 	);
 
 	elements.forEach(function maxiMotion(element, index) {
@@ -383,7 +383,7 @@ export const startingMotion = () => {
 
 export const scrollMotion = () => {
 	const elements = Array.from(
-		document.getElementsByClassName('maxi-block-motion')
+		document.getElementsByClassName('maxi-scroll-effect')
 	);
 
 	elements.forEach(function motionOnScroll(element, index) {
@@ -417,7 +417,7 @@ export const removeMotion = uniqueID => {
 		`.maxi-block--backend[uniqueid='${uniqueID}']`
 	)[0];
 	if (!isEmpty(el)) {
-		el.classList.remove('maxi-block-motion');
+		el.classList.remove('maxi-scroll-effect');
 		el.style.removeProperty('top');
 		el.style.removeProperty('left');
 		el.style.removeProperty('filter');

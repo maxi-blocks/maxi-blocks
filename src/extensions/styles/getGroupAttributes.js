@@ -23,11 +23,6 @@ const getGroupAttributes = (
 		const defaultAttributes =
 			defaults[`${target}${isHover ? 'Hover' : ''}`] || defaults[target];
 
-		console.log(`defaultAttributes: ${defaultAttributes}`);
-
-		console.log('defaults');
-		console.log(defaults);
-
 		if (defaultAttributes)
 			Object?.keys(defaultAttributes)?.forEach(key => {
 				if (getIsValid(attributes[`${prefix}${key}`], cleaned))

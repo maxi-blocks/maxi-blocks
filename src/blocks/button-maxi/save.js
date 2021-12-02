@@ -8,7 +8,6 @@ import { RawHTML } from '@wordpress/element';
  */
 import { Button } from '../../components';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
-import scrollEffectData from '../../extensions/motions';
 
 /**
  * External dependencies
@@ -52,7 +51,6 @@ const save = props => {
 		>
 			<Button
 				className={buttonClasses}
-				{...scrollEffectData(props)}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!attributes['icon-only'] && (

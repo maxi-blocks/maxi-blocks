@@ -18,7 +18,7 @@ import { scrollTypes } from '../../extensions/styles/defaults/scroll';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
-import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
+// import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
 import * as defaultShortcuts from './shortcuts';
 
 /**
@@ -206,10 +206,10 @@ const ScrollEffectsControl = props => {
 						'scroll-preview-status': val,
 					});
 					if (val) {
-						removeMotion(uniqueID);
-						addMotion();
+						// removeMotion(uniqueID);
+						// addMotion();
 					} else {
-						removeMotion(uniqueID);
+						//	removeMotion(uniqueID);
 					}
 				}}
 			/>
@@ -266,12 +266,6 @@ const ScrollEffectsControl = props => {
 												onChangeShortcut(val, type)
 											)
 										}
-										// onChange={val =>
-										// 	onChange({
-										// 		[`scroll-shortcut-${type}-${breakpoint}`]:
-										// 			val,
-										// 	})
-										// }
 										options={getShortcutEffect(type)}
 									/>
 									<SelectControl

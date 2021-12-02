@@ -13,7 +13,6 @@ import { createRef } from '@wordpress/element';
 import getStyles from './styles';
 import Inspector from './inspector';
 import { getGroupAttributes } from '../../extensions/styles';
-import scrollEffectData from '../../extensions/motions';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
@@ -30,7 +29,6 @@ import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
-import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
 
 /**
  * External dependencies
@@ -120,7 +118,7 @@ class edit extends MaxiBlockComponent {
 			currentMotion && 'maxi-block-motion'
 		);
 
-		currentMotion ? addMotion() : removeMotion(uniqueID);
+		// currentMotion ? addMotion() : removeMotion(uniqueID);
 
 		const wrapperClassName = classnames(
 			'maxi-image-block-wrapper',

@@ -9,5 +9,4 @@ import './styles';
 import './text';
 import './style-cards';
 import './column-templates';
-import './motions';
 import './svg';

@@ -41,8 +41,13 @@ const BLOCKS_MAX_WIDTH = [
  * Size
  */
 const Size = props => {
-	const { blockName, breakpoint, fullWidth, isFirstOnHierarchy, onChange } =
-		props;
+	const {
+		blockName,
+		breakpoint,
+		blockFullWidth,
+		isFirstOnHierarchy,
+		onChange,
+	} = props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 
@@ -62,7 +67,7 @@ const Size = props => {
 					blockName === 'maxi-blocks/row-maxi') && (
 					<ButtonGroupControl
 						label={__('Full Width', 'maxi-blocks')}
-						selected={fullWidth}
+						selected={blockFullWidth}
 						options={[
 							{
 								label: __('Yes', 'maxi-blocks'),
@@ -73,7 +78,9 @@ const Size = props => {
 								value: 'normal',
 							},
 						]}
-						onChange={fullWidth => onChange({ fullWidth })}
+						onChange={blockFullWidth =>
+							onChange({ blockFullWidth })
+						}
 					/>
 				)}
 

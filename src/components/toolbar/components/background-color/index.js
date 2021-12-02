@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
+import { colorOptions as colorLayerAttr } from '../../../background-control/layers';
 import ButtonGroupControl from '../../../button-group-control';
 import {
 	getBlockStyle,
@@ -18,12 +19,13 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep, findIndex, isEqual } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
+import { setBreakpointToLayer } from '../../../background-control/utils';
 
 /**
  * BackgroundColor
@@ -34,7 +36,7 @@ const BackgroundColor = props => {
 		onChange,
 		clientId,
 		breakpoint,
-		'background-layers': backgroundLayers,
+		'background-layers': backgroundLayers = [],
 	} = props;
 
 	if (
@@ -90,6 +92,13 @@ const BackgroundColor = props => {
 		};
 	};
 
+	const getNewLayerId = () =>
+		backgroundLayers && !isEmpty(backgroundLayers)
+			? backgroundLayers.reduce((layerA, layerB) =>
+					layerA.id > layerB.id ? layerA : layerB
+			  ).id + 1
+			: 1;
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
@@ -121,15 +130,11 @@ const BackgroundColor = props => {
 								'background-layers': [
 									...backgroundLayers,
 									{
-										type: 'color',
-										'display-general': 'block',
-										'background-palette-color-status-general': true,
-										'background-palette-color-general': 1,
-										'background-palette-opacity': 100,
-										'background-color-general': '',
-										'background-color-clip-path-general':
-											'',
-										id: backgroundLayers.length,
+										...setBreakpointToLayer({
+											layer: colorLayerAttr,
+											breakpoint,
+										}),
+										id: getNewLayerId(),
 									},
 								],
 							});
@@ -149,7 +154,25 @@ const BackgroundColor = props => {
 					<ColorLayer
 						key={`background-color-layer--${layer.id}`}
 						colorOptions={layer}
-						onChange={obj => onChange({ ...layer, ...obj })}
+						onChange={obj => {
+							const newLayer = { ...layer, ...obj };
+							const newLayers = cloneDeep(backgroundLayers);
+
+							backgroundLayers.forEach((lay, i) => {
+								if (lay.id === newLayer.id) {
+									const index = findIndex(newLayers, {
+										id: newLayer.id,
+									});
+
+									newLayers[index] = newLayer;
+								}
+							});
+
+							if (!isEqual(newLayers, backgroundLayers))
+								onChange({
+									'background-layers': newLayers,
+								});
+						}}
 						breakpoint={breakpoint}
 					/>
 				)}

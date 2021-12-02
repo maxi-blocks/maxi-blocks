@@ -105,6 +105,7 @@ const MaxiToolbar = memo(
 			changeSVGStrokeWidth,
 		} = props;
 		const {
+			blockFullwidth,
 			content,
 			customLabel,
 			fullWidth,
@@ -369,7 +370,7 @@ const MaxiToolbar = memo(
 							<BackgroundColor
 								{...getGroupAttributes(
 									attributes,
-									'background'
+									'blockBackground'
 								)}
 								blockName={name}
 								breakpoint={breakpoint}
@@ -459,8 +460,8 @@ const MaxiToolbar = memo(
 							)}
 							<Size
 								blockName={name}
+								blockFullwidth={blockFullwidth}
 								{...getGroupAttributes(attributes, 'size')}
-								fullWidth={fullWidth}
 								isFirstOnHierarchy={isFirstOnHierarchy}
 								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}

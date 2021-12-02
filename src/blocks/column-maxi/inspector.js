@@ -20,6 +20,7 @@ import {
 } from '../../extensions/styles';
 import { getColumnDefaultValue } from '../../extensions/column-templates';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsColumn, categoriesColumn } from './custom-css';
 
 /**
  * Inspector
@@ -185,6 +186,15 @@ const Inspector = props => {
 											props,
 										}),
 									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsColumn,
+										categories: categoriesColumn,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
 									...inspectorTabs.transform({
 										props,
 									}),

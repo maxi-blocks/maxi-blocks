@@ -17,6 +17,7 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsText, categoriesText } from './custom-css';
 
 /**
  * External dependencies
@@ -245,6 +246,12 @@ const Inspector = memo(
 													props,
 												}),
 											},
+											...inspectorTabs.customCss({
+												props,
+												breakpoint: deviceType,
+												selectors: selectorsText,
+												categories: categoriesText,
+											}),
 											...inspectorTabs.scrollEffects({
 												props,
 											}),

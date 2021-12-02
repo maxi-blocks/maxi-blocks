@@ -23,6 +23,7 @@ import {
 	getMotionStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsImage } from './custom-css';
 
 /**
  * External dependencies
@@ -412,7 +413,10 @@ const getStyles = props => {
 				[' figcaption.maxi-image-block__caption a'],
 				props.parentBlockStyle
 			),
-		}),
+		},
+		selectorsImage,
+		props
+		),
 	};
 
 	return response;

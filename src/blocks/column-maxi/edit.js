@@ -65,7 +65,6 @@ class edit extends MaxiBlockComponent {
 			setAttributes,
 			updateRowPattern,
 			hasInnerBlocks,
-			clientId,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -157,14 +156,8 @@ class edit extends MaxiBlockComponent {
 									orientation='horizontal'
 									renderAppender={
 										!hasInnerBlocks
-											? () => (
-													<BlockPlaceholder
-														clientId={clientId}
-													/>
-											  )
-											: () => (
-													<InnerBlocks.ButtonBlockAppender />
-											  )
+											? BlockPlaceholder
+											: InnerBlocks.ButtonBlockAppender
 									}
 								/>
 							</MaxiBlock>

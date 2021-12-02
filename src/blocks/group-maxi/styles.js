@@ -13,6 +13,7 @@ import {
 	getMarginPaddingStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsGroup } from './custom-css';
 
 const getNormalObject = props => {
 	const response = {
@@ -151,7 +152,10 @@ const getStyles = props => {
 				blockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
-		}),
+		},
+		selectorsGroup,
+		props
+		),
 	};
 
 	return response;

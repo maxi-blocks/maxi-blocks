@@ -25,11 +25,19 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsImage, categoriesImage } from './custom-css';
 
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isEqual, cloneDeep } from 'lodash';
+import {
+	capitalize,
+	isEmpty,
+	isNil,
+	isEqual,
+	cloneDeep,
+	without,
+} from 'lodash';
 
 /**
  * Dimension tab
@@ -232,6 +240,14 @@ const Inspector = memo(
 				response.splice(1, 0, newCaption);
 			}
 			return response;
+		};
+
+		const getCategoriesCss = () => {
+			const { 'background-layers': bgLayers } = attributes;
+			return without(
+				categoriesImage,
+				isEmpty(bgLayers) && 'canvas background'
+			);
 		};
 
 		return (
@@ -491,6 +507,12 @@ const Inspector = memo(
 													props,
 												}),
 											},
+											...inspectorTabs.customCss({
+												props,
+												breakpoint: deviceType,
+												selectors: selectorsImage,
+												categories: getCategoriesCss(),
+											}),
 											...inspectorTabs.scrollEffects({
 												props,
 											}),

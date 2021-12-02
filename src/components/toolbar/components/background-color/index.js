@@ -139,14 +139,11 @@ const BackgroundColor = props => {
 								],
 							});
 						} else {
-							onChange({
-								'background-layers': backgroundLayers.map(
-									bgLayer => {
-										if (bgLayer.id !== layer.id)
-											return bgLayer;
-									}
-								),
-							});
+							const newBGLayers = backgroundLayers.filter(
+								bgLayer => bgLayer.id !== layer.id
+							);
+
+							onChange({ 'background-layers': newBGLayers });
 						}
 					}}
 				/>

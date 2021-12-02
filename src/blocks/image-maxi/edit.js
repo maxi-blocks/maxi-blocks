@@ -220,7 +220,7 @@ class edit extends MaxiBlockComponent {
 				tagName='figure'
 				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...scrollEffectData(this.props)}
+				// {...scrollEffectData(this.props)}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MediaUpload

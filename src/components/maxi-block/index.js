@@ -265,6 +265,13 @@ export const getMaxiBlockAttributes = props => {
 		]),
 	};
 
+	const scrollEffects = {
+		...getGroupAttributes(attributes, ['scroll']),
+	};
+
+	console.log('scrollEffects');
+	console.log(scrollEffects);
+
 	const background = {
 		...getGroupAttributes(attributes, ['blockBackground']),
 	};
@@ -285,6 +292,7 @@ export const getMaxiBlockAttributes = props => {
 		background,
 		hasArrow,
 		hasLink,
+		scrollEffects,
 	};
 };
 

@@ -123,7 +123,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
-				{...scrollEffectData(this.props)}
+				// {...scrollEffectData(this.props)}
 				{...getMaxiBlockAttributes(this.props)}
 				disableBackground
 			>

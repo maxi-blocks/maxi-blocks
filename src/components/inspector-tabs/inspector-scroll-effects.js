@@ -23,7 +23,7 @@ const scrollEffects = ({ props }) => {
 		content: (
 			<ScrollEffectsControl
 				uniqueID={uniqueID}
-				{...getGroupAttributes(attributes, 'motion')}
+				{...getGroupAttributes(attributes, 'scroll')}
 				onChange={obj => setAttributes(obj)}
 				blockStyle={blockStyle}
 				clientId={clientId}

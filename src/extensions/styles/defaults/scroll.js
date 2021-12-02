@@ -1,4 +1,4 @@
-export const motionTypes = [
+export const scrollTypes = [
 	'vertical',
 	'horizontal',
 	'rotate',
@@ -10,14 +10,14 @@ export const motionTypes = [
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const response = {
-	'motion-active-general': {
+	'scroll-active-general': {
 		type: 'string',
 	},
-	'motion-preset-status-general': {
+	'scroll-preset-status-general': {
 		type: 'boolean',
 		default: false,
 	},
-	'motion-preview-status': {
+	'scroll-preview-status': {
 		type: 'boolean',
 		default: false,
 	},
@@ -30,7 +30,7 @@ const generateAttr = (
 	defaultValue,
 	breakpoint = 'general'
 ) => {
-	const key = `motion-${attr}-${motionType}-${breakpoint}`;
+	const key = `scroll-${attr}-${motionType}-${breakpoint}`;
 	const value =
 		defaultValue !== 'noDefault'
 			? {
@@ -59,8 +59,8 @@ const generateUniqueAttributes = (
 	return null;
 };
 
-export const motion = (() => {
-	Object.values(motionTypes).forEach(type => {
+export const scroll = (() => {
+	Object.values(scrollTypes).forEach(type => {
 		generateAttr(type, 'status', 'boolean', false);
 		generateAttr(type, 'easing', 'string', 'ease');
 		generateAttr(type, 'speed', 'number', 500);
@@ -94,13 +94,13 @@ export const motion = (() => {
 	});
 
 	Object.values(breakpoints).forEach(breakpoint => {
-		const activeKey = `motion-active-${breakpoint}`;
+		const activeKey = `scroll-active-${breakpoint}`;
 		const activeValue = {
 			type: 'string',
 		};
 		response[activeKey] = activeValue;
 
-		Object.values(motionTypes).forEach(type => {
+		Object.values(scrollTypes).forEach(type => {
 			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
 			generateAttr(type, 'easing', 'string', 'noDefault', breakpoint);
 			generateAttr(type, 'speed', 'number', 'noDefault', breakpoint);
@@ -165,4 +165,4 @@ export const motion = (() => {
 	return response;
 })();
 
-export default motion;
+export default scroll;

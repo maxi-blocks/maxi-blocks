@@ -47,7 +47,7 @@ const scrollEffectData = props => {
 		'scale-end',
 	];
 
-	const motionTypes = [
+	const scrollTypes = [
 		'vertical',
 		'horizontal',
 		'rotate',
@@ -58,7 +58,7 @@ const scrollEffectData = props => {
 
 	const dataMotionTypeValue = () => {
 		let responseString = '';
-		motionTypes.forEach(type => {
+		scrollTypes.forEach(type => {
 			if (attributes[`motion-status-${type}-general`])
 				responseString += `${type} `;
 		});
@@ -70,7 +70,7 @@ const scrollEffectData = props => {
 	if (!isEmpty(enabledMotions)) {
 		response['data-scroll-effect-type'] = enabledMotions;
 
-		motionTypes.map(type => {
+		scrollTypes.map(type => {
 			if (enabledMotions.includes(type)) {
 				let responseString = '';
 				let motionSettings;

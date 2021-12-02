@@ -100,7 +100,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		paletteClasses,
 		hasArrow,
 		hasLink,
-		hasScrollEffects,
 		...extraProps
 	} = props;
 
@@ -176,7 +175,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 			motion['motion-status'] ||
 			(getHasParallax(background['background-layers']) &&
 				`maxi-motion-effect-${uniqueID}`),
-		hasScrollEffects && 'maxi-scroll-effect',
 		blockStyle,
 		extraClassName,
 		uniqueID,
@@ -267,10 +265,6 @@ export const getMaxiBlockAttributes = props => {
 	const hasLink =
 		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
 
-	const hasScrollEffects = !isEmpty(
-		props.attributes['scroll-active-general']
-	);
-
 	const scrollSettingsShared = [
 		'speed',
 		'delay',
@@ -338,7 +332,6 @@ export const getMaxiBlockAttributes = props => {
 
 	if (!isEmpty(enabledScrolls)) {
 		scroll['data-scroll-effect-type'] = enabledScrolls;
-
 		scrollTypes.forEach(type => {
 			if (enabledScrolls.includes(type)) {
 				let responseString = '';
@@ -402,7 +395,6 @@ export const getMaxiBlockAttributes = props => {
 		background,
 		hasArrow,
 		hasLink,
-		hasScrollEffects,
 		...scroll,
 	};
 };

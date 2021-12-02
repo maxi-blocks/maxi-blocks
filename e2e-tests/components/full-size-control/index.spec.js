@@ -10,7 +10,6 @@ import {
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,

@@ -61,10 +61,7 @@ describe('AlignmentControl', () => {
 
 		expect(responsiveSOption).toBe('true');
 
-		const expectAttributes = await getBlockAttributes();
-		const position = expectAttributes['text-alignment-s'];
-
-		expect(position).toStrictEqual('center');
+		expect(await getAttributes('text-alignment-s')).toStrictEqual('center');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

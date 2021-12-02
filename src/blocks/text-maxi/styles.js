@@ -17,6 +17,8 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsText } from './custom-css';
+
 
 const getNormalObject = props => {
 	const response = {
@@ -227,7 +229,10 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content a`],
 				props.parentBlockStyle
 			),
-		}),
+		},
+		selectorsText,
+		props
+		),
 	};
 };
 

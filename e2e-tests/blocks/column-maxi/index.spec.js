@@ -10,11 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	changeResponsive,
-} from '../../utils';
+import { openSidebarTab, changeResponsive, getAttributes } from '../../utils';
 
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
@@ -24,14 +20,15 @@ describe('Column Maxi', () => {
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
 	it('check column settings', async () => {
-		await page.$eval(
-			'.block-editor-block-list__layout .block-editor-inserter',
-			select => select.click()
-		);
+		const column = await page.$('.maxi-column-block');
+		// need an offset as if not click on the appender and opens the menu
+		await column.click({ offset: { x: 0, y: 0 } });
+
 		await openSidebarTab(page, 'style', 'column settings');
 
 		await page.$eval(
@@ -40,20 +37,17 @@ describe('Column Maxi', () => {
 		);
 
 		await pressKeyTimes('Backspace', '3');
+
 		await page.keyboard.type('50');
 
-		const attributes = await getBlockAttributes();
-		const columnSize = attributes['column-size-general'];
-
-		expect(columnSize).toStrictEqual(50);
+		expect(await getAttributes('column-size-general')).toStrictEqual(50);
 
 		const selector = await page.$(
 			'.maxi-accordion-control__item__panel .maxi-base-control__field select'
 		);
 		await selector.select('center');
 
-		const verticalAttributes = await getBlockAttributes();
-		expect(verticalAttributes.verticalAlign).toStrictEqual('center');
+		expect(await getAttributes('verticalAlign')).toStrictEqual('center');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -79,10 +73,7 @@ describe('Column Maxi', () => {
 
 		expect(responsiveSOption).toStrictEqual('19');
 
-		const expectAttributes = await getBlockAttributes();
-		const position = expectAttributes['column-size-s'];
-
-		expect(position).toStrictEqual(19);
+		expect(await getAttributes('column-size-s')).toStrictEqual(19);
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
@@ -116,10 +107,7 @@ describe('Column Maxi', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		const attributes = await getBlockAttributes();
-		const columnSize = attributes['column-size-general'];
-
-		expect(columnSize).toStrictEqual(50);
+		expect(await getAttributes('column-size-general')).toStrictEqual(50);
 
 		// responsive m
 		await changeResponsive(page, 'm');
@@ -142,10 +130,7 @@ describe('Column Maxi', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('7');
 
-		const responsiveMAttributes = await getBlockAttributes();
-		const columnSizeM = responsiveMAttributes['column-size-s'];
-
-		expect(columnSizeM).toStrictEqual(17);
+		expect(await getAttributes('column-size-s')).toStrictEqual(17);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

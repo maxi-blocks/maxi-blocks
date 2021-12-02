@@ -573,7 +573,14 @@ const AxisControl = props => {
 			case 'axis': {
 				if (singleTarget === 'horizontal') {
 					inputsArray.forEach(key => {
-						if (key === 'left' || key === 'right') {
+						if (
+							[
+								'left',
+								'right',
+								'bottom-left',
+								'top-right',
+							].includes(key)
+						) {
 							response[
 								getAttributeKey(
 									getKey(key),
@@ -596,7 +603,14 @@ const AxisControl = props => {
 					});
 				} else if (singleTarget === 'vertical') {
 					inputsArray.forEach(key => {
-						if (key === 'top' || key === 'bottom') {
+						if (
+							[
+								'top',
+								'bottom',
+								'top-left',
+								'bottom-right',
+							].includes(key)
+						) {
 							response[
 								getAttributeKey(
 									getKey(key),

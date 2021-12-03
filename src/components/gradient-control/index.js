@@ -34,11 +34,7 @@ const GradientControl = props => {
 		onChangeOpacity,
 	} = props;
 
-	const [currentGradient, setCurrentGradient] = useState(
-		'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)'
-	);
-
-	console.log(gradient);
+	const [currentGradient, setCurrentGradient] = useState(gradient);
 
 	const classes = classnames('maxi-gradient-control', className);
 
@@ -49,7 +45,7 @@ const GradientControl = props => {
 				label={`${label} ${__('colour', 'maxi-blocks')}`}
 			>
 				<div className='maxi-gradient-control__display__color'>
-					<span style={{ background: currentGradient }} />
+					<span style={{ background: gradient }} />
 				</div>
 			</BaseControl>
 			<OpacityControl

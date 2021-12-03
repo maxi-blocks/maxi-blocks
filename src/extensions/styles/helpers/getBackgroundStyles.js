@@ -179,6 +179,12 @@ export const getGradientBackgroundObject = ({
 		props,
 		isHover
 	);
+	const bgColor = getLastBreakpointAttribute(
+		`${prefix}background-color`,
+		breakpoint,
+		props,
+		isHover
+	);
 	const bgGradientClipPath = getAttributeValue({
 		target: 'background-gradient-clip-path',
 		props,
@@ -202,7 +208,11 @@ export const getGradientBackgroundObject = ({
 	} else if (!isIcon) {
 		if (isNumber(bgGradientOpacity))
 			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+		if (!isEmpty(bgGradient) && bgGradient !== 'undefined') {
+			response[breakpoint].background = bgGradient;
+		} else {
+			response[breakpoint].background = bgColor;
+		}
 		if (!isNil(bgGradientClipPath))
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
@@ -1081,6 +1091,7 @@ export const getBackgroundStyles = ({
 					...getGroupAttributes(
 						props,
 						'backgroundGradient',
+						'backgroundColor',
 						isHover,
 						prefix
 					),

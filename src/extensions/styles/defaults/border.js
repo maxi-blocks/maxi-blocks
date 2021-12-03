@@ -1,21 +1,21 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
 const rawBorder = {
-	'border-palette-color-status-general': {
+	'border-palette-color-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'border-palette-color-general': {
+	'border-palette-color': {
 		type: 'number',
 		default: 2,
 	},
-	'border-palette-opacity-general': {
+	'border-palette-opacity': {
 		type: 'number',
 	},
-	'border-color-general': {
+	'border-color': {
 		type: 'string',
 	},
-	'border-style-general': {
+	'border-style': {
 		type: 'string',
 	},
 };
@@ -44,34 +44,34 @@ const rawBorderWidth = {
 };
 
 const rawBorderRadius = {
-	'border-top-left-radius-general': {
+	'border-top-left-radius': {
 		type: 'number',
 	},
-	'border-top-right-radius-general': {
+	'border-top-right-radius': {
 		type: 'number',
 	},
-	'border-bottom-right-radius-general': {
+	'border-bottom-right-radius': {
 		type: 'number',
 	},
-	'border-bottom-left-radius-general': {
+	'border-bottom-left-radius': {
 		type: 'number',
 	},
-	'border-sync-radius-general': {
+	'border-sync-radius': {
 		type: 'string',
 		default: 'all',
 	},
-	'border-unit-radius-general': {
+	'border-unit-radius': {
 		type: 'string',
 		default: 'px',
 	},
 };
 
 export const border = breakpointObjectCreator({
-	obj: rawBorder
+	obj: rawBorder,
 });
 export const borderWidth = breakpointObjectCreator({
-	obj: rawBorderWidth
+	obj: rawBorderWidth,
 });
 export const borderRadius = breakpointObjectCreator({
-	obj: rawBorderRadius
+	obj: rawBorderRadius,
 });

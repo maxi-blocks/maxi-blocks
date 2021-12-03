@@ -2,437 +2,195 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { withSelect, dispatch } from '@wordpress/data';
-import { MediaUpload, RichText } from '@wordpress/block-editor';
-import { isURL } from '@wordpress/url';
-import { createRef } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
+import { withSelect } from '@wordpress/data';
+import { RichText } from '@wordpress/block-editor';
+import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import getStyles from './styles';
 import Inspector from './inspector';
-import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
-import {
-	BlockResizer,
-	Button,
-	HoverPreview,
-	Toolbar,
-	Placeholder,
-	RawHTML,
-	ImageURL,
-} from '../../components';
-import { generateDataObject, injectImgSVG } from '../../extensions/svg';
-import {
-	getHasNativeFormat,
-	setCustomFormatsWhenPaste,
-} from '../../extensions/text/formats';
+import { Toolbar } from '../../components';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import getStyles from './styles';
+import IconToolbar from '../../components/toolbar/iconToolbar';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round } from 'lodash';
-import DOMPurify from 'dompurify';
-
-/**
- * Icons
- */
-import { toolbarReplaceImage, placeholderImage } from '../../icons';
-import CaptionToolbar from '../../components/toolbar/captionToolbar';
 
 /**
  * Content
  */
+const IconWrapper = forwardRef((props, ref) => {
+	const { children, className, changeIsSelected, uniqueID } = props;
+
+	useEffect(() => {
+		const handleClickOutside = event => {
+			if (ref.current && !ref.current.contains(event.target)) {
+				changeIsSelected(
+					document
+						.querySelector(`.${uniqueID}`)
+						.classList.contains('is-selected')
+				);
+			}
+		};
+
+		// Bind the event listener
+		ref.current.ownerDocument.addEventListener(
+			'mousedown',
+			handleClickOutside
+		);
+
+		return () => {
+			// Unbind the event listener on clean up
+			ref.current.ownerDocument.removeEventListener(
+				'mousedown',
+				handleClickOutside
+			);
+		};
+	}, [ref]);
+
+	return (
+		<div
+			onClick={() => changeIsSelected(true)}
+			ref={ref}
+			className={className}
+		>
+			{children}
+		</div>
+	);
+});
 class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
 
-		const { isImageUrl } = this.props.attributes;
-		const motionPreviewStatus =
-			this.props.attributes['motion-preview-status'];
-		this.state = {
-			isExternalClass: isImageUrl,
-			currentMotion: motionPreviewStatus,
-		};
-
-		this.textRef = createRef(null);
+		this.iconRef = createRef(null);
 	}
 
-	propsToAvoidRendering = ['formatValue'];
+	state = {
+		isIconSelected: false,
+	};
 
-	typingTimeoutFormatValue = 0;
-
-	typingTimeoutContent = 0;
-
-	get getWrapperWidth() {
-		const target = document.getElementById(`block-${this.props.clientId}`);
-		if (target) return target.getBoundingClientRect().width;
-
-		return false;
-	}
+	typingTimeout = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
-	}
+		const { attributes, scValues } = this.props;
 
-	get getMaxiCustomData() {
-		const { 'hover-type': hoverType } = this.props.attributes;
-		const hoverStatus = hoverType !== 'none';
-
-		return {
-			...(hoverStatus && {
-				...getGroupAttributes(this.props.attributes, 'hover'),
-			}),
-		};
+		return getStyles(attributes, scValues);
 	}
 
 	render() {
-		const { attributes, imageData, setAttributes, clientId, isSelected } =
-			this.props;
-		const {
-			'hover-preview': hoverPreview,
-			'hover-type': hoverType,
-			blockFullWidth,
-			captionContent,
-			captionType,
-			externalUrl,
-			fullWidth,
-			imageRatio,
-			imgWidth,
-			mediaAlt,
-			mediaHeight,
-			mediaID,
-			mediaURL,
-			mediaWidth,
-			SVGElement,
-			uniqueID,
-		} = attributes;
-		const { isExternalClass, currentMotion } = this.state;
+		const { attributes, setAttributes } = this.props;
+		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
-		const classes = classnames(
-			'maxi-image-block',
-			fullWidth === 'full' && 'alignfull',
-			currentMotion && 'maxi-block-motion'
+		const { isIconSelected } = this.state;
+
+		const buttonClasses = classnames(
+			'maxi-button-block__button',
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'left' &&
+				'maxi-button-block__button--icon-left',
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'right' &&
+				'maxi-button-block__button--icon-right'
 		);
-
-		const wrapperClassName = classnames(
-			'maxi-image-block-wrapper',
-			'maxi-image-ratio',
-			!SVGElement && `maxi-image-ratio__${imageRatio}`
-		);
-
-		const hoverClasses = classnames(
-			hoverType === 'basic' &&
-				hoverPreview &&
-				`maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
-			hoverType === 'text' &&
-				hoverPreview &&
-				`maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
-			hoverType !== 'none' &&
-				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
-		);
-
-		const onChangeRichText = ({ value: formatValue }) => {
-			/**
-			 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-			 * and add some coding manually
-			 * This next script will check if there is any format directly related with
-			 * any native format and if it's so, will format it in Maxi Blocks way
-			 */
-			const hasNativeFormat = getHasNativeFormat(formatValue);
-
-			if (hasNativeFormat) {
-				const { captionContent: content } = attributes;
-
-				const cleanCustomProps = setCustomFormatsWhenPaste({
-					formatValue,
-					typography: getGroupAttributes(attributes, 'typography'),
-					isList: false,
-					content,
-					textLevel: 'p',
-				});
-
-				delete cleanCustomProps.formatValue;
-
-				setAttributes(cleanCustomProps);
-			}
-
-			if (this.typingTimeoutFormatValue) {
-				clearTimeout(this.typingTimeoutFormatValue);
-			}
-
-			this.typingTimeoutFormatValue = setTimeout(() => {
-				dispatch('maxiBlocks/text').sendFormatValue(
-					formatValue,
-					clientId
-				);
-			}, 100);
-		};
-
-		/**
-		 * Prevents losing general link format when the link is affecting whole content
-		 *
-		 * In case we add a whole link format, Gutenberg doesn't keep it when creators write new content.
-		 * This method fixes it
-		 */
-		const processContent = captionContent => {
-			const isWholeLink =
-				captionContent.split('</a>').length === 2 &&
-				captionContent.startsWith('<a') &&
-				captionContent.indexOf('</a>') === captionContent.length - 5;
-
-			if (isWholeLink) {
-				const newContent = captionContent.replace('</a>', '');
-				setAttributes({ captionContent: `${newContent}</a>` });
-			} else {
-				if (this.typingTimeoutContent) {
-					clearTimeout(this.typingTimeoutContent);
-				}
-
-				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ captionContent });
-				}, 100);
-			}
-		};
 
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				propsToAvoid={['captionContent', 'formatValue']}
+				propsToAvoid={['buttonContent', 'formatValue']}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
-				propsToAvoid={['captionContent', 'formatValue']}
+				propsToAvoid={['buttonContent', 'formatValue']}
 			/>,
 			<MaxiBlock
-				key={`maxi-image--${uniqueID}`}
+				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
-				tagName='figure'
 				blockFullWidth={blockFullWidth}
-				className={classes}
 				{...getMaxiBlockAttributes(this.props)}
+				disableBackground
 			>
-				<MediaUpload
-					onSelect={media => {
-						setAttributes({
-							mediaID: media.id,
-							mediaURL: media.url,
-							mediaWidth: media.width,
-							mediaHeight: media.height,
-							isImageUrl: false,
-						});
+				<div data-align={fullWidth} className={buttonClasses}>
+					{!attributes['icon-only'] && (
+						<RichText
+							className='maxi-button-block__content'
+							value={attributes.buttonContent}
+							identifier='content'
+							onChange={buttonContent => {
+								if (this.typingTimeout) {
+									clearTimeout(this.typingTimeout);
+								}
 
-						this.setState({ isExternalClass: false });
-
-						if (!isEmpty(attributes.SVGData)) {
-							const cleanedContent =
-								DOMPurify.sanitize(SVGElement);
-
-							const svg = document
-								.createRange()
-								.createContextualFragment(
-									cleanedContent
-								).firstElementChild;
-
-							const resData = generateDataObject('', svg);
-
-							const SVGValue = resData;
-							const el = Object.keys(SVGValue)[0];
-
-							SVGValue[el].imageID = media.id;
-							SVGValue[el].imageURL = media.url;
-
-							const resEl = injectImgSVG(svg, resData);
-							setAttributes({
-								SVGElement: resEl.outerHTML,
-								SVGData: SVGValue,
-							});
-						}
-					}}
-					allowedTypes='image'
-					value={mediaID}
-					render={({ open }) => (
+								this.typingTimeout = setTimeout(() => {
+									setAttributes({ buttonContent });
+								}, 100);
+							}}
+							placeholder={__('Set some text…', 'maxi-blocks')}
+							withoutInteractiveFormatting
+							__unstableDisableFormats
+						/>
+					)}
+					{attributes['icon-content'] && (
 						<>
-							{(!isNil(mediaID) && imageData) || mediaURL ? (
-								<>
-									<BlockResizer
-										key={uniqueID}
-										className='maxi-block__resizer maxi-image-block__resizer'
-										size={{ width: `${imgWidth}%` }}
-										showHandle={isSelected}
-										maxWidth='100%'
-										enable={{
-											topRight: true,
-											bottomRight: true,
-											bottomLeft: true,
-											topLeft: true,
-										}}
-										onResizeStop={(
-											event,
-											direction,
-											elt,
-											delta
-										) => {
-											setAttributes({
-												imgWidth: +round(
-													elt.style.width.replace(
-														/[^0-9.]/g,
-														''
-													),
-													1
-												),
-											});
-										}}
-									>
-										<div className='maxi-image-block__settings'>
-											<Button
-												className='maxi-image-block__settings__upload-button'
-												label={__(
-													'Upload / Add from Media Library',
-													'maxi-blocks'
-												)}
-												showTooltip='true'
-												onClick={open}
-												icon={toolbarReplaceImage}
-											/>
-											<ImageURL
-												url={externalUrl}
-												onChange={url => {
-													setAttributes({
-														externalUrl: url,
-													});
-												}}
-												onSubmit={url => {
-													if (isURL(url)) {
-														setAttributes({
-															isImageUrl: true,
-															externalUrl: url,
-															mediaURL: url,
-														});
-														this.setState({
-															isExternalClass: true,
-														});
-													}
-												}}
-											/>
-										</div>
-										<HoverPreview
-											key={`hover-preview-${uniqueID}`}
-											wrapperClassName={wrapperClassName}
-											hoverClassName={hoverClasses}
-											isSVG={!!SVGElement}
-											{...getGroupAttributes(attributes, [
-												'hover',
-												'hoverTitleTypography',
-												'hoverContentTypography',
-											])}
-										>
-											{SVGElement ? (
-												<RawHTML>{SVGElement}</RawHTML>
-											) : (
-												<img
-													className={
-														isExternalClass
-															? 'maxi-image-block__image wp-image-external'
-															: `maxi-image-block__image wp-image-${mediaID}`
-													}
-													src={mediaURL}
-													width={mediaWidth}
-													height={mediaHeight}
-													alt={mediaAlt}
-												/>
-											)}
-										</HoverPreview>
-										{captionType !== 'none' && (
-											<>
-												<CaptionToolbar
-													key={`caption-toolbar-${uniqueID}`}
-													ref={this.textRef}
-													{...this.props}
-													propsToAvoid={[
-														'captionContent',
-														'formatValue',
-													]}
-												/>
-												<RichText
-													ref={this.textRef}
-													className='maxi-image-block__caption'
-													value={captionContent}
-													onChange={processContent}
-													tagName='figcaption'
-													placeholder={__(
-														'Set your Image Maxi caption here…',
-														'maxi-blocks'
-													)}
-													__unstableEmbedURLOnPaste
-													__unstableAllowPrefixTransformations
-												>
-													{onChangeRichText}
-												</RichText>
-											</>
-										)}
-									</BlockResizer>
-								</>
-							) : (
-								<div className='maxi-image-block__placeholder'>
-									<Placeholder
-										icon={placeholderImage}
-										label=''
-									/>
-									<Button
-										className='maxi-image-block__settings__upload-button'
-										label={__(
-											'Upload / Add from Media Library',
-											'maxi-blocks'
-										)}
-										showTooltip='true'
-										onClick={open}
-										icon={toolbarReplaceImage}
-									/>
-									<ImageURL
-										url={externalUrl}
-										onChange={url => {
-											setAttributes({
-												externalUrl: url,
-											});
-										}}
-										onSubmit={url => {
-											if (isURL(url)) {
-												// TODO: fetch url and check for the code and type
-												setAttributes({
-													isImageUrl: true,
-													externalUrl: url,
-													mediaURL: url,
-												});
-												this.setState({
-													isExternalClass: true,
-												});
-											}
-										}}
-									/>
-								</div>
-							)}
+							<IconToolbar
+								key={`icon-toolbar-${uniqueID}`}
+								ref={this.iconRef}
+								{...this.props}
+								propsToAvoid={['buttonContent', 'formatValue']}
+								isSelected={isIconSelected}
+							/>
+							<IconWrapper
+								ref={this.iconRef}
+								uniqueID={uniqueID}
+								className='maxi-button-block__icon'
+								changeIsSelected={isIconSelected =>
+									this.setState({ isIconSelected })
+								}
+							>
+								<RawHTML>{attributes['icon-content']}</RawHTML>
+							</IconWrapper>
 						</>
 					)}
-				/>
+				</div>
 			</MaxiBlock>,
 		];
 	}
 }
 
-export default withSelect((select, ownProps) => {
-	const { mediaID } = ownProps.attributes;
-	const imageData = select('core').getMedia(mediaID);
+const editSelect = withSelect((select, ownProps) => {
+	const {
+		attributes: { parentBlockStyle },
+	} = ownProps;
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
+	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+	const scElements = [
+		'hover-border-color-global',
+		'hover-border-color-all',
+		'hover-color-global',
+		'hover-color-all',
+		'hover-background-color-global',
+		'hover-background-color-all',
+	];
+	const scValues = receiveStyleCardValue(
+		scElements,
+		parentBlockStyle,
+		'button'
+	);
+
 	return {
-		imageData,
 		deviceType,
+		scValues,
 	};
-})(edit);
+});
+
+export default compose(editSelect)(edit);

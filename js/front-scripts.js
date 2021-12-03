@@ -186,11 +186,6 @@ class Parallax {
 			this.wrapperClip();
 			this.imgStyles();
 		}
-		return (
-			document.documentElement ||
-			document.body.parentNode ||
-			document.body
-		).scrollTop;
 	}
 
 	onScroll() {
@@ -211,6 +206,21 @@ class Parallax {
 		this.imgEl.style.cssText = this.options.img.styles;
 	}
 }
+
+const getDeviceType = () => {
+	const ua = navigator.userAgent;
+	if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+		return 'tablet';
+	}
+	if (
+		/Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+			ua
+		)
+	) {
+		return 'mobile';
+	}
+	return 'desktop';
+};
 
 // Map
 window.onload = () => {
@@ -277,30 +287,9 @@ window.initMap = function () {
 	});
 };
 
-function startCounter() {
-	const interval = setInterval(() => {
-		count += 1;
-
-		if (count >= endCountValue) {
-			count = endCountValue;
-			clearInterval(interval);
-		}
-
-		numberCounterElemText.innerHTML = `${parseInt(
-			(count / 360) * 100
-		)}<sup>${countPercentageSign ? '%' : ''}</sup>`;
-
-		numberCounterElemCircle &&
-			numberCounterElemCircle.setAttribute(
-				'stroke-dasharray',
-				`${parseInt((count / 360) * circumference)} ${circumference}`
-			);
-	}, frameDuration);
-}
-
-// Scroll effects
-const motionElements = document.querySelectorAll('.maxi-motion-effect');
-motionElements.forEach(function (elem) {
+// Motion Effects
+const motionElems = document.querySelectorAll('.maxi-motion-effect');
+motionElems.forEach(function (elem) {
 	if (!maxi_custom_data.custom_data) return;
 
 	const motionID = elem.id;
@@ -401,28 +390,22 @@ motionElements.forEach(function (elem) {
 				if (
 					motionData['hover-type'] === 'text' ||
 					motionData['hover-basic-effect-type'] === 'zoom-in' ||
-					motionData['hover-basic-effect-type'] ===
-						'zoom-out' ||
+					motionData['hover-basic-effect-type'] === 'zoom-out' ||
 					motionData['hover-basic-effect-type'] === 'slide' ||
 					motionData['hover-basic-effect-type'] === 'rotate' ||
 					motionData['hover-basic-effect-type'] === 'blur' ||
 					motionData['hover-basic-effect-type'] === 'sepia' ||
-					motionData['hover-basic-effect-type'] ===
-						'clear-sepia' ||
-					motionData['hover-basic-effect-type'] ===
-						'grey-scale' ||
+					motionData['hover-basic-effect-type'] === 'clear-sepia' ||
+					motionData['hover-basic-effect-type'] === 'grey-scale' ||
 					motionData['hover-basic-effect-type'] ===
 						'clear-greay-scale'
 				) {
 					e.target.style.transitionDuration = `${motionData['hover-transition-duration']}s`;
 					e.target.style.transitionTimingFunction = `
 					${
-						motionData['hover-transition-easing'] !==
-						'cubic-bezier'
+						motionData['hover-transition-easing'] !== 'cubic-bezier'
 							? motionData['hover-transition-easing']
-							: motionData[
-									'hover-transition-easing-cubic-bezier'
-							  ]
+							: motionData['hover-transition-easing-cubic-bezier']
 							? `cubic-bezier(${motionData[
 									'hover-transition-easing-cubic-bezier'
 							  ].join()})`
@@ -432,27 +415,17 @@ motionElements.forEach(function (elem) {
 				}
 
 				if (motionData['hover-type'] === 'basic') {
-					if (
-						motionData['hover-basic-effect-type'] ===
-						'zoom-in'
-					)
+					if (motionData['hover-basic-effect-type'] === 'zoom-in')
 						e.target.style.transform = `scale(${motionData['hover-basic-zoom-in-value']})`;
-					else if (
-						motionData['hover-basic-effect-type'] === 'rotate'
-					)
+					else if (motionData['hover-basic-effect-type'] === 'rotate')
 						e.target.style.transform = `rotate(${motionData['hover-basic-rotate-value']}deg)`;
 					else if (
-						motionData['hover-basic-effect-type'] ===
-						'zoom-out'
+						motionData['hover-basic-effect-type'] === 'zoom-out'
 					)
 						e.target.style.transform = 'scale(1)';
-					else if (
-						motionData['hover-basic-effect-type'] === 'slide'
-					)
+					else if (motionData['hover-basic-effect-type'] === 'slide')
 						e.target.style.marginLeft = `${motionData['hover-basic-slide-value']}px`;
-					else if (
-						motionData['hover-basic-effect-type'] === 'blur'
-					)
+					else if (motionData['hover-basic-effect-type'] === 'blur')
 						e.target.style.filter = `blur(${motionData['hover-basic-blur-value']}px)`;
 					else {
 						e.target.style.transform = '';
@@ -464,27 +437,17 @@ motionElements.forEach(function (elem) {
 
 			hoverElem.addEventListener('mouseleave', e => {
 				if (motionData['hover-type'] === 'basic') {
-					if (
-						motionData['hover-basic-effect-type'] ===
-						'zoom-in'
-					)
+					if (motionData['hover-basic-effect-type'] === 'zoom-in')
 						e.target.style.transform = 'scale(1)';
-					else if (
-						motionData['hover-basic-effect-type'] === 'rotate'
-					)
+					else if (motionData['hover-basic-effect-type'] === 'rotate')
 						e.target.style.transform = 'rotate(0)';
 					else if (
-						motionData['hover-basic-effect-type'] ===
-						'zoom-out'
+						motionData['hover-basic-effect-type'] === 'zoom-out'
 					)
 						e.target.style.transform = `scale(${motionData['hover-basic-zoom-out-value']})`;
-					else if (
-						motionData['hover-basic-effect-type'] === 'slide'
-					)
+					else if (motionData['hover-basic-effect-type'] === 'slide')
 						e.target.style.marginLeft = 0;
-					else if (
-						motionData['hover-basic-effect-type'] === 'blur'
-					)
+					else if (motionData['hover-basic-effect-type'] === 'blur')
 						e.target.style.filter = 'blur(0)';
 					else {
 						e.target.style.transform = '';

@@ -51,11 +51,9 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		const { isImageUrl } = this.props.attributes;
-		const motionPreviewStatus =
-			this.props.attributes['motion-preview-status'];
+
 		this.state = {
 			isExternalClass: isImageUrl,
-			currentMotion: motionPreviewStatus,
 		};
 
 		this.textRef = createRef(null);
@@ -110,15 +108,12 @@ class edit extends MaxiBlockComponent {
 			SVGElement,
 			uniqueID,
 		} = attributes;
-		const { isExternalClass, currentMotion } = this.state;
+		const { isExternalClass } = this.state;
 
 		const classes = classnames(
 			'maxi-image-block',
-			fullWidth === 'full' && 'alignfull',
-			currentMotion && 'maxi-block-motion'
+			fullWidth === 'full' && 'alignfull'
 		);
-
-		// currentMotion ? addMotion() : removeMotion(uniqueID);
 
 		const wrapperClassName = classnames(
 			'maxi-image-block-wrapper',

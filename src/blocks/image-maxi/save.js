@@ -60,11 +60,7 @@ const save = props => {
 	return (
 		<MaxiBlock
 			tagName='figure'
-			className={
-				(fullWidth === 'full' && 'alignfull',
-				!isEmpty(attributes['motion-active-general']) &&
-					'maxi-block-motion')
-			}
+			className={fullWidth === 'full' && 'alignfull'}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>

@@ -39,8 +39,7 @@ const save = props => {
 			'maxi-button-block__button--icon-left',
 		attributes['icon-content'] &&
 			attributes['icon-position'] === 'right' &&
-			'maxi-button-block__button--icon-right',
-		attributes['motion-active-general'] && 'maxi-block-motion'
+			'maxi-button-block__button--icon-right'
 	);
 
 	return (

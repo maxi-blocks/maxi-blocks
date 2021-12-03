@@ -5,7 +5,7 @@
 			.toolbar-wrapper {
 				top: -35px !important;
 				.toolbar-block-custom-label {
-					top: -25px !important;
+					// top: -25px !important;
 				}
 			}
 		}
@@ -22,8 +22,9 @@
 			top: -10px;
 			left: 50%;
 			transform: translateX(-50%);
-			box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
-			border-radius: 5px;
+			box-shadow: 0px 6px 6px 0 rgb(0 0 0 / 16%);
+			border-radius: 0;
+			border: 1px solid #dbdde6;
 
 			&.icon-toolbar {
 				top: 5px;
@@ -36,15 +37,15 @@
 			}
 			.toolbar-block-custom-label {
 				font-size: 13px;
-				font-weight: bold;
-				background: #232533;
+				font-weight: 400;
+				background: #ff4a17;
 				color: #fff;
 				width: auto;
 				display: inline-block;
-				padding: 0 0.5rem;
+				padding: 5px;
 				border-radius: 5px;
 				position: absolute;
-				top: -25px;
+				top: -33px;
 				left: 0;
 
 				& + .toolbar-item {
@@ -67,7 +68,7 @@
 			> button {
 				width: 2rem;
 				height: 2rem;
-				background-color: #232533;
+				background-color: #fff;
 				padding: 0;
 				cursor: pointer;
 				border-radius: 0;
@@ -78,9 +79,9 @@
 					position: absolute;
 					top: 50%;
 					right: 0;
-					width: 2px;
-					height: 70%;
-					background-color: #616161;
+					width: 1px;
+					height: 100%;
+					background-color: #dbdde6;
 					transform: translateY(-50%);
 					padding-left: 2px;
 				}
@@ -125,11 +126,14 @@
 					padding: 0;
 				}
 				&__icon {
+					path {
+						fill: #141516;
+					}
 					display: block;
 					width: 1rem;
 					height: 1rem;
 					margin: auto;
-					fill: #fff;
+					fill: #141516;
 				}
 				&__move {
 					cursor: move;

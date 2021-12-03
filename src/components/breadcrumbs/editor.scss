@@ -11,14 +11,15 @@
 	border-radius: 5px;
 	margin: 0 !important;
 	padding: 3px 8px !important;
-	background: #232533;
+	background: #ff4a17;
 
 	&__item {
 		display: inline;
 		min-width: max-content;
 		list-style: none;
 		font-size: 13px;
-		font-weight: bold;
+		font-weight: 400;
+		margin-bottom: 0;
 
 		&:not(:last-child):after {
 			content: '>';

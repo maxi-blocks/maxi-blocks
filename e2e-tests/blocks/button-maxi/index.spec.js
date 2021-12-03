@@ -10,7 +10,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { getBlockStyle, openSidebarTab } from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
@@ -21,6 +21,8 @@ describe('Button Maxi', () => {
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Button Style', async () => {
@@ -30,6 +32,8 @@ describe('Button Maxi', () => {
 		await buttons[4].click();
 
 		await expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	/*

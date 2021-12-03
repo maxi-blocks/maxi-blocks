@@ -10,7 +10,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { modalMock } from '../../utils';
+import { getBlockStyle, modalMock } from '../../utils';
 
 describe('Svg Icon Maxi', () => {
 	it('Svg Icon Maxi does not break', async () => {
@@ -20,5 +20,7 @@ describe('Svg Icon Maxi', () => {
 		await modalMock(page, { type: 'svg' });
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

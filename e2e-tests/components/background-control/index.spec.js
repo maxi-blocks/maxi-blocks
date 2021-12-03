@@ -849,10 +849,6 @@ describe('BackgroundControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('77');
 
-		await page.$eval('.maxi-background-layer__arrow', display =>
-			display.click()
-		);
-
 		// size
 		await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
@@ -879,7 +875,7 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 
-		expect(baseBackgroundOpacity).toStrictEqual('7');
+		expect(baseBackgroundOpacity).toStrictEqual('77');
 
 		await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
@@ -955,7 +951,7 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 
-		expect(mBackgroundOpacity).toStrictEqual('7');
+		expect(mBackgroundOpacity).toStrictEqual('77');
 
 		await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',

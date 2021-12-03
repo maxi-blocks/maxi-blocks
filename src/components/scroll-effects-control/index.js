@@ -210,10 +210,15 @@ const ScrollEffectsControl = props => {
 		};
 
 		if (action === 'run') {
-			script.src =
-				'/wp-content/plugins/maxi-blocks-master/js/maxi-scroll-effects.js';
+			// eslint-disable-next-line no-undef
+			script.src = `${maxi_vars.plugin_path}js/maxi-scroll-effects.js`;
 			script.id = 'maxi-scroll-effects-script';
-			document.body.appendChild(script);
+			const element = document.getElementById(
+				'maxi-scroll-effects-script'
+			);
+			if (typeof element === 'undefined' || element === null) {
+				document.body.appendChild(script);
+			}
 
 			editorWindow?.addEventListener('scroll', scrollListener);
 			editorWindow?.scroll({

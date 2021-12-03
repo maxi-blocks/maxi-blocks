@@ -60,7 +60,7 @@ export const applyEffect = (type, uniqueID, viewport) => {
 	const effectSettings = data => {
 		const response = {};
 
-		const dataScrollArray = data.trim().split(' ');
+		const dataScrollArray = data?.trim().split(' ');
 
 		response.speedValue = parseFloat(dataScrollArray[0]) || 200;
 		response.delayValue = parseFloat(dataScrollArray[1]) || 0;

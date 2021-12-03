@@ -43,7 +43,7 @@ const divider = {
 	},
 	'divider-width-unit': {
 		type: 'string',
-		default: '%',
+		default: 'px',
 	},
 	'divider-height': {
 		type: 'number',

@@ -19,6 +19,7 @@ import {
 	changeResponsive,
 	removeBackgroundLayers,
 	editAxisControl,
+	getBlockStyle,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -58,6 +59,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background Color layer responsive', async () => {
@@ -103,6 +105,7 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(mColorSelected).toStrictEqual('5');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background Color layer hover', async () => {
@@ -152,6 +155,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background Color layer hover responsive', async () => {
@@ -197,6 +201,7 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(mColorSelected).toStrictEqual('2');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background image layer', async () => {
@@ -272,6 +277,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background image layer responsive', async () => {
@@ -416,6 +422,7 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 		expect(mBackgroundAttachment).toStrictEqual('fixed');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background image layer hover', async () => {
@@ -497,6 +504,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background image layer hover responsive', async () => {
@@ -639,6 +647,7 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 		expect(mBackgroundAttachment).toStrictEqual('local');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background video layer', async () => {
@@ -682,7 +691,9 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
 	it('Check Background video layer responsive', async () => {
 		// general
 		await changeResponsive(page, 's');
@@ -725,6 +736,7 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(backgroundOpacityM).toStrictEqual('44');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background video layer hover', async () => {
@@ -758,6 +770,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background video layer hover responsive', async () => {
@@ -804,6 +817,7 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(backgroundOpacityM).toStrictEqual('82');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background shape layer', async () => {
@@ -854,6 +868,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background shape layer responsive', async () => {
@@ -953,6 +968,7 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(mBackgroundShapeSize).toStrictEqual('77');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background shape layer hover', async () => {
@@ -997,6 +1013,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Background shape layer hover responsive', async () => {
@@ -1060,6 +1077,7 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(mBackgroundShapeSize).toStrictEqual('22');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('generate a layer from hover on responsive and test that layers cannot be deleted from hover', async () => {
@@ -1086,6 +1104,7 @@ describe('BackgroundControl', () => {
 		expect(deleteOption).toMatchSnapshot();
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('generate a layer from hover and test the hider', async () => {
@@ -1111,5 +1130,6 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers-hover']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

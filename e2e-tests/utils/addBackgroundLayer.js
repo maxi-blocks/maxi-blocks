@@ -10,9 +10,7 @@ const addBackgroundLayer = async (page, type, isHover = false) => {
 
 	const selector = await page.$('.maxi-background-control select');
 
-	const addLayer = await selector.select(type);
-
-	return addLayer;
+	await selector.select(type);
 };
 
 export default addBackgroundLayer;

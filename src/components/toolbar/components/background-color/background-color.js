@@ -8,49 +8,45 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
-import { colorOptions as colorLayerAttr } from '../../../background-control/layers';
 import ButtonGroupControl from '../../../button-group-control';
 import {
+	getAttributeKey,
 	getBlockStyle,
 	getColorRGBAString,
+	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-
-/**
- * External dependencies
- */
-import { isEmpty, cloneDeep, findIndex, isEqual } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { setBreakpointToLayer } from '../../../background-control/utils';
 
 /**
  * BackgroundColor
  */
+
+const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi'];
+
 const BackgroundColor = props => {
 	const {
 		blockName,
 		onChange,
 		clientId,
 		breakpoint,
-		'background-layers': backgroundLayers = [],
+		prefix = '',
+		globalProps,
+		advancedOptions = 'background',
 	} = props;
 
-	if (
-		blockName === 'maxi-blocks/divider-maxi' ||
-		blockName === 'maxi-blocks/text-maxi'
-	)
-		return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	const colorLayers =
-		backgroundLayers &&
-		backgroundLayers.filter(layer => layer.type === 'color');
-	const layer = colorLayers ? colorLayers[colorLayers.length - 1] : null;
-
-	const isBackgroundColor = !isEmpty(layer);
+	const activeMedia = getLastBreakpointAttribute(
+		`${prefix}background-active-media`,
+		breakpoint,
+		props
+	);
+	const isBackgroundColor = activeMedia === 'color';
 
 	const getStyle = () => {
 		if (!isBackgroundColor)
@@ -61,24 +57,24 @@ const BackgroundColor = props => {
 			};
 
 		const bgPaletteStatus = getLastBreakpointAttribute(
-			'background-palette-color-status',
+			`${prefix}background-palette-color-status`,
 			breakpoint,
-			layer
+			props
 		);
 		const bgPaletteColor = getLastBreakpointAttribute(
-			'background-palette-color',
+			`${prefix}background-palette-color`,
 			breakpoint,
-			layer
+			props
 		);
 		const bgPaletteOpacity = getLastBreakpointAttribute(
-			'background-palette-opacity',
+			`${prefix}background-palette-opacity`,
 			breakpoint,
-			layer
+			props
 		);
 		const bgColor = getLastBreakpointAttribute(
-			'background-color',
+			`${prefix}background-color`,
 			breakpoint,
-			layer
+			props
 		);
 
 		return {
@@ -92,17 +88,10 @@ const BackgroundColor = props => {
 		};
 	};
 
-	const getNewLayerId = () =>
-		backgroundLayers && !isEmpty(backgroundLayers)
-			? backgroundLayers.reduce((layerA, layerB) =>
-					layerA.id > layerB.id ? layerA : layerB
-			  ).id + 1
-			: 1;
-
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
-			advancedOptions='background'
+			advancedOptions={advancedOptions}
 			tooltip={
 				!isBackgroundColor
 					? __('Background Colour Disabled', 'maxi-blocks')
@@ -124,53 +113,34 @@ const BackgroundColor = props => {
 							value: 0,
 						},
 					]}
-					onChange={val => {
-						if (val) {
-							onChange({
-								'background-layers': [
-									...backgroundLayers,
-									{
-										...setBreakpointToLayer({
-											layer: colorLayerAttr,
-											breakpoint,
-										}),
-										id: getNewLayerId(),
-									},
-								],
-							});
-						} else {
-							const newBGLayers = backgroundLayers.filter(
-								bgLayer => bgLayer.id !== layer.id
-							);
-
-							onChange({ 'background-layers': newBGLayers });
-						}
-					}}
+					onChange={val =>
+						onChange({
+							[getAttributeKey(
+								'background-active-media',
+								false,
+								prefix,
+								breakpoint
+							)]: val ? 'color' : 'none',
+						})
+					}
 				/>
 				{isBackgroundColor && (
 					<ColorLayer
-						key={`background-color-layer--${layer.id}`}
-						colorOptions={layer}
-						onChange={obj => {
-							const newLayer = { ...layer, ...obj };
-							const newLayers = cloneDeep(backgroundLayers);
-
-							backgroundLayers.forEach((lay, i) => {
-								if (lay.id === newLayer.id) {
-									const index = findIndex(newLayers, {
-										id: newLayer.id,
-									});
-
-									newLayers[index] = newLayer;
-								}
-							});
-
-							if (!isEqual(newLayers, backgroundLayers))
-								onChange({
-									'background-layers': newLayers,
-								});
+						colorOptions={{
+							...getGroupAttributes(
+								props,
+								'backgroundColor',
+								false,
+								prefix
+							),
 						}}
+						key={`background-color-layer--${clientId}`}
+						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
+						globalProps={globalProps}
+						prefix={prefix}
+						clientId={clientId}
+						disableClipPath
 					/>
 				)}
 			</div>

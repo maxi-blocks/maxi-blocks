@@ -19,6 +19,7 @@ import Breadcrumbs from '../breadcrumbs';
 import {
 	Alignment,
 	BackgroundColor,
+	BlockBackgroundColor,
 	Border,
 	BoxShadow,
 	ColumnMover,
@@ -94,6 +95,7 @@ const MaxiToolbar = memo(
 	forwardRef((props, ref) => {
 		const {
 			attributes,
+			backgroundAdvancedOptions,
 			changeSVGContent,
 			clientId,
 			isSelected,
@@ -103,6 +105,8 @@ const MaxiToolbar = memo(
 			rowPattern,
 			changeSVGSize,
 			changeSVGStrokeWidth,
+			prefix = '',
+			backgroundGlobalProps,
 		} = props;
 		const {
 			blockFullwidth,
@@ -368,6 +372,25 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 							/>
 							<BackgroundColor
+								{...getGroupAttributes(
+									attributes,
+									[
+										'background',
+										'backgroundColor',
+										'backgroundGradient',
+									],
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								advancedOptions={backgroundAdvancedOptions}
+								globalProps={backgroundGlobalProps}
+								blockName={name}
+								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+							/>
+							<BlockBackgroundColor
 								{...getGroupAttributes(
 									attributes,
 									'blockBackground'

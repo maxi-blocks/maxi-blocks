@@ -13,6 +13,7 @@ import {
 	getTransformStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsDivider } from './custom-css';
 
 const getWrapperObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
@@ -200,7 +201,10 @@ const getStyles = props => {
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
-		}),
+		},
+		selectorsDivider,
+		props
+		),
 	};
 
 	return response;

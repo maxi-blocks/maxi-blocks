@@ -10,7 +10,12 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebarTab, changeResponsive, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	changeResponsive,
+	getAttributes,
+	getBlockStyle,
+} from '../../utils';
 
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
@@ -20,14 +25,15 @@ describe('Column Maxi', () => {
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
 	it('check column settings', async () => {
-		await page.$eval(
-			'.block-editor-block-list__layout .block-editor-inserter',
-			select => select.click()
-		);
+		const column = await page.$('.maxi-column-block');
+		// need an offset as if not click on the appender and opens the menu
+		await column.click({ offset: { x: 0, y: 0 } });
+
 		await openSidebarTab(page, 'style', 'column settings');
 
 		await page.$eval(
@@ -36,6 +42,7 @@ describe('Column Maxi', () => {
 		);
 
 		await pressKeyTimes('Backspace', '3');
+
 		await page.keyboard.type('50');
 
 		expect(await getAttributes('column-size-general')).toStrictEqual(50);
@@ -159,5 +166,7 @@ describe('Column Maxi', () => {
 		);
 
 		expect(responsiveL).toStrictEqual('50');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

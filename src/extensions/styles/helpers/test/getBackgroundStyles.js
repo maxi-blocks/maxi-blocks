@@ -1039,4 +1039,46 @@ describe('getBackgroundStyles', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get correct block background styles for color layer with border', () => {
+		const result = getBlockBackgroundStyles({
+			target: 'maxi-test',
+			isHover: false,
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-color-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity-general': 0.07,
+					'background-color-general': '',
+					'background-color-clip-path-general':
+						'polygon(50% 0%, 0% 100%, 100% 100%)',
+					id: 0,
+				},
+			],
+			'border-bottom-left-radius-general': 180,
+			'border-bottom-right-radius-general': 180,
+			'border-bottom-width-general': 2,
+			'border-left-width-general': 2,
+			'border-palette-color-general': 5,
+			'border-palette-color-general-hover': 6,
+			'border-palette-color-status-general': true,
+			'border-palette-color-status-general-hover': true,
+			'border-right-width-general': 2,
+			'border-status-hover': false,
+			'border-style-general': 'solid',
+			'border-sync-radius-general': 'all',
+			'border-sync-width-general': 'all',
+			'border-top-left-radius-general': 180,
+			'border-top-right-radius-general': 180,
+			'border-top-width-general': 2,
+			'border-unit-radius-general': 'px',
+			'border-unit-radius-general-hover': 'px',
+			'border-unit-width-general': 'px',
+		});
+
+		expect(result).toMatchSnapshot();
+	});
 });

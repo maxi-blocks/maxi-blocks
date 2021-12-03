@@ -1,26 +1,14 @@
-const columnSize = {
-	'column-size-general': {
+import breakpointObjectCreator from '../breakpointObjectCreator';
+
+const rawColumnSize = {
+	'column-size': {
 		type: 'number',
 		default: 90,
 	},
-	'column-size-xxl': {
-		type: 'number',
-	},
-	'column-size-xl': {
-		type: 'number',
-	},
-	'column-size-l': {
-		type: 'number',
-	},
-	'column-size-m': {
-		type: 'number',
-	},
-	'column-size-s': {
-		type: 'number',
-	},
-	'column-size-xs': {
-		type: 'number',
-	},
 };
+
+const columnSize = breakpointObjectCreator({
+	obj: rawColumnSize
+});
 
 export default columnSize;

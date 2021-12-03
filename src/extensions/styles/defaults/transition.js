@@ -1,26 +1,16 @@
-const transitionDuration = {
-	'transition-duration-general': {
+import breakpointObjectCreator from '../breakpointObjectCreator';
+
+const rawTransitionDuration = {
+	'transition-duration': {
 		type: 'number',
 		default: 0.3,
 	},
-	'transition-duration-xxl': {
-		type: 'number',
-	},
-	'transition-duration-xl': {
-		type: 'number',
-	},
-	'transition-duration-l': {
-		type: 'number',
-	},
-	'transition-duration-m': {
-		type: 'number',
-	},
-	'transition-duration-s': {
-		type: 'number',
-	},
-	'transition-duration-xs': {
-		type: 'number',
-	},
 };
+
+const transitionDuration = breakpointObjectCreator({
+	obj: rawTransitionDuration,
+	addBreakpoint: true,
+});
+
 
 export default transitionDuration;

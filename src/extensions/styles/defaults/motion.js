@@ -1,4 +1,6 @@
-const motion = {
+import breakpointObjectCreator from '../breakpointObjectCreator';
+
+const rawMotion = {
 	'motion-status': {
 		type: 'boolean',
 		default: false,
@@ -39,5 +41,9 @@ const motion = {
 		default: true,
 	},
 };
+
+const motion = breakpointObjectCreator({
+	obj: rawMotion
+});
 
 export default motion;

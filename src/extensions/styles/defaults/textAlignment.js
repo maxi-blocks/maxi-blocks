@@ -1,25 +1,14 @@
-const textAlignment = {
-	'text-alignment-general': {
+import breakpointObjectCreator from '../breakpointObjectCreator';
+
+const rawTextAlignment = {
+	'text-alignment': {
 		type: 'string',
-	},
-	'text-alignment-xxl': {
-		type: 'string',
-	},
-	'text-alignment-xl': {
-		type: 'string',
-	},
-	'text-alignment-l': {
-		type: 'string',
-	},
-	'text-alignment-m': {
-		type: 'string',
-	},
-	'text-alignment-s': {
-		type: 'string',
-	},
-	'text-alignment-xs': {
-		type: 'string',
-	},
+	}
 };
+
+const textAlignment = breakpointObjectCreator({
+	obj: rawTextAlignment,
+	addBreakpoint: true,
+});
 
 export default textAlignment;

@@ -1,25 +1,13 @@
-const display = {
-	'display-general': {
+import breakpointObjectCreator from '../breakpointObjectCreator';
+
+const rawDisplay = {
+	'display': {
 		type: 'string',
-	},
-	'display-xxl': {
-		type: 'string',
-	},
-	'display-xl': {
-		type: 'string',
-	},
-	'display-l': {
-		type: 'string',
-	},
-	'display-m': {
-		type: 'string',
-	},
-	'display-s': {
-		type: 'string',
-	},
-	'display-xs': {
-		type: 'string',
-	},
+	}
 };
+
+const display = breakpointObjectCreator({
+	obj: rawDisplay
+});
 
 export default display;

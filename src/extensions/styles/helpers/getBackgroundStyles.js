@@ -159,6 +159,10 @@ export const getGradientBackgroundObject = ({
 	prefix = '',
 	breakpoint = 'general',
 	isIcon = false,
+	blockStyle,
+	isButton,
+	isIconInherit,
+	scValues,
 	...props
 }) => {
 	const response = {
@@ -175,12 +179,6 @@ export const getGradientBackgroundObject = ({
 	});
 	const bgGradient = getLastBreakpointAttribute(
 		`${prefix}background-gradient`,
-		breakpoint,
-		props,
-		isHover
-	);
-	const bgColor = getLastBreakpointAttribute(
-		`${prefix}background-color`,
 		breakpoint,
 		props,
 		isHover
@@ -211,7 +209,25 @@ export const getGradientBackgroundObject = ({
 		if (!isEmpty(bgGradient) && bgGradient !== 'undefined') {
 			response[breakpoint].background = bgGradient;
 		} else {
-			response[breakpoint].background = bgColor;
+			const test = getColorBackgroundObject({
+				...getGroupAttributes(
+					props,
+					['background', 'backgroundColor'],
+					isHover,
+					prefix
+				),
+				blockStyle,
+				isButton,
+				breakpoint,
+				isHover,
+				prefix,
+				isIconInherit,
+				scValues,
+			});
+
+			response[breakpoint].background =
+				test[breakpoint].background ??
+				test[breakpoint]['background-color'];
 		}
 		if (!isNil(bgGradientClipPath))
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
@@ -1090,14 +1106,17 @@ export const getBackgroundStyles = ({
 				background: getGradientBackgroundObject({
 					...getGroupAttributes(
 						props,
-						'backgroundGradient',
-						'backgroundColor',
+						['backgroundColor', 'backgroundGradient'],
 						isHover,
 						prefix
 					),
+					blockStyle,
+					isButton,
 					breakpoint,
 					isHover,
 					prefix,
+					isIconInherit,
+					scValues,
 				}),
 			}),
 		});

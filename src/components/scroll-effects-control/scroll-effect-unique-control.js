@@ -13,6 +13,7 @@ import {
 } from '../../extensions/styles';
 import SettingTabsControl from '../setting-tabs-control';
 import AdvancedNumberControl from '../advanced-number-control';
+import { applyEffect } from './scroll-effect-preview';
 
 /**
  * External dependencies
@@ -23,7 +24,15 @@ import classnames from 'classnames';
  * Component
  */
 const ScrollEffectsUniqueControl = props => {
-	const { type, className, values, onChange, breakpoint = 'general' } = props;
+	const {
+		type,
+		className,
+		values,
+		onChange,
+		breakpoint = 'general',
+		uniqueID,
+		isPreviewEnabled,
+	} = props;
 
 	const classes = classnames(
 		'maxi-advanced-number-control maxi-scroll-unique-control',
@@ -102,18 +111,28 @@ const ScrollEffectsUniqueControl = props => {
 													? val
 													: '',
 										});
+										isPreviewEnabled &&
+											applyEffect(type, uniqueID, val);
 									}}
 									min={special?.min}
 									step={1}
 									max={special?.max}
-									onReset={() =>
+									onReset={() => {
 										onChange({
 											[`scroll-${special?.attr}-${type}-${breakpoint}`]:
 												getDefaultAttribute(
 													`scroll-${special?.attr}-${type}-general`
 												),
-										})
-									}
+										});
+										isPreviewEnabled &&
+											applyEffect(
+												type,
+												uniqueID,
+												getDefaultAttribute(
+													`scroll-${special?.attr}-${type}-general`
+												)
+											);
+									}}
 									initialPosition={getDefaultAttribute(
 										`scroll-${special?.attr}-${type}-general`
 									)}

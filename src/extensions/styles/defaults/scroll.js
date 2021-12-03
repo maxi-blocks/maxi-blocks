@@ -17,10 +17,6 @@ const response = {
 		type: 'boolean',
 		default: false,
 	},
-	'scroll-preview-status': {
-		type: 'boolean',
-		default: false,
-	},
 };
 
 const generateAttr = (
@@ -62,6 +58,7 @@ const generateUniqueAttributes = (
 export const scroll = (() => {
 	Object.values(scrollTypes).forEach(type => {
 		generateAttr(type, 'status', 'boolean', false);
+		generateAttr(type, 'preview-status', 'boolean', false);
 		generateAttr(type, 'easing', 'string', 'ease');
 		generateAttr(type, 'speed', 'number', 500);
 		generateAttr(type, 'delay', 'number', 0);

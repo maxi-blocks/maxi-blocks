@@ -8,6 +8,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import Icon from '../icon';
+import BaseControl from '../base-control';
+import Button from '../button';
 import ButtonGroupControl from '../button-group-control';
 import ScrollEffectUniqueControl from './scroll-effect-unique-control';
 import {
@@ -18,8 +20,8 @@ import { scrollTypes } from '../../extensions/styles/defaults/scroll';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
-// import { addMotion, removeMotion } from '../../extensions/motions/maxi-motions';
 import * as defaultShortcuts from './shortcuts';
+import { applyEffect, removeEffect } from './scroll-effect-preview';
 
 /**
  * External dependencies
@@ -196,23 +198,67 @@ const ScrollEffectsControl = props => {
 		return response;
 	};
 
+	const effectsOnScroll = action => {
+		const script = document.createElement('script');
+		const editorWindow = document.getElementsByClassName(
+			'interface-interface-skeleton__content'
+		)[0];
+
+		const scrollListener = () => {
+			// eslint-disable-next-line no-undef, no-new
+			new ScrollEffects();
+		};
+
+		if (action === 'run') {
+			script.src =
+				'/wp-content/plugins/maxi-blocks-master/js/maxi-scroll-effects.js';
+			script.id = 'maxi-scroll-effects-script';
+			document.body.appendChild(script);
+
+			editorWindow?.addEventListener('scroll', scrollListener);
+			editorWindow?.scroll({
+				top: 10000,
+				behavior: 'smooth',
+			});
+			editorWindow?.scroll({
+				top: 0,
+				behavior: 'smooth',
+			});
+		}
+
+		if (action === 'stop') {
+			document.getElementById('maxi-scroll-effects-script').outerHTML =
+				'';
+			editorWindow.removeEventListener('scroll', scrollListener);
+		}
+	};
+
 	return (
 		<div className={classes}>
-			<ToggleSwitch
-				label={__('Enable live preview mode', 'maxi-block')}
-				selected={props['scroll-preview-status']}
-				onChange={val => {
-					onChange({
-						'scroll-preview-status': val,
-					});
-					if (val) {
-						// removeMotion(uniqueID);
-						// addMotion();
-					} else {
-						//	removeMotion(uniqueID);
-					}
-				}}
-			/>
+			<BaseControl
+				label={__('Play all effects on scroll', 'maxi-blocks')}
+			>
+				<Button
+					className='maxi-button-group-control__option'
+					label={__('Play all effects on scroll', 'maxi-blocks')}
+					onClick={() => {
+						effectsOnScroll('run');
+
+						// document.body.removeChild(script);
+					}}
+				>
+					{__('Play', 'maxi-blocks')}
+				</Button>
+				{/* <Button
+					className='maxi-button-group-control__option'
+					label={__('Stop all effects on scroll', 'maxi-blocks')}
+					onClick={() => {
+						effectsOnScroll('stop');
+					}}
+				>
+					{__('Stop', 'maxi-blocks')}
+				</Button> */}
+			</BaseControl>
 			<SelectControl
 				label={__('Shortcut effect', 'maxi-blocks')}
 				onChange={val => onChange(onChangeShortcut(val))}
@@ -229,6 +275,11 @@ const ScrollEffectsControl = props => {
 				active={getActiveEffects()}
 			/>
 			{scrollTypes.map(type => {
+				const isPreviewEnabled = getLastBreakpointAttribute(
+					`scroll-preview-status-${type}`,
+					breakpoint,
+					props
+				);
 				return (
 					<div
 						key={`maxi-scroll-effects-control-${type}-${breakpoint}`}
@@ -245,17 +296,46 @@ const ScrollEffectsControl = props => {
 									breakpoint,
 									props
 								)}
-								onChange={val =>
+								onChange={val => {
 									onChange({
 										[`scroll-status-${type}-${breakpoint}`]:
 											val,
-									})
-								}
+									});
+									val &&
+										isPreviewEnabled &&
+										applyEffect(type, uniqueID, 'Start');
+									!val &&
+										removeEffect(type, uniqueID) &&
+										onChange({
+											[`scroll-preview-status-${type}-general`]: false,
+										});
+								}}
 							/>
 						)}
 						{props[`scroll-active-${breakpoint}`] === type &&
 							props[`scroll-status-${type}-${breakpoint}`] && (
 								<>
+									<ToggleSwitch
+										label={__(
+											'Enable live preview mode',
+											'maxi-block'
+										)}
+										selected={isPreviewEnabled}
+										onChange={val => {
+											onChange({
+												[`scroll-preview-status-${type}-general`]:
+													val,
+											});
+											val &&
+												applyEffect(
+													type,
+													uniqueID,
+													'Start'
+												);
+											!val &&
+												removeEffect(type, uniqueID);
+										}}
+									/>
 									<SelectControl
 										label={__(
 											'Shortcut effect',
@@ -374,6 +454,8 @@ const ScrollEffectsControl = props => {
 										type={type}
 										values={motionProps}
 										onChange={value => onChange(value)}
+										uniqueID={uniqueID}
+										isPreviewEnabled={isPreviewEnabled}
 									/>
 									<ToggleSwitch
 										label={__(

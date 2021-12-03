@@ -324,7 +324,11 @@ motionElems.forEach(function (elem) {
 			const startCountValue = Math.ceil((motionCounterStart * 360) / 100);
 			const endCountValue = Math.ceil((motionCounterEnd * 360) / 100);
 
-			const frameDuration = motionCounterDuration / 60;
+			const frameDuration =
+				(1 /
+					((endCountValue - startCountValue) /
+						motionCounterDuration)) *
+				1000;
 
 			let count = startCountValue;
 

@@ -293,7 +293,7 @@ class ScrollEffects {
 	// eslint-disable-next-line class-methods-use-this
 	startingEffect() {
 		const elements = Array.from(
-			document.getElementsByClassName('maxi-scroll-effect')
+			document.querySelectorAll('[data-scroll-effect-type]')
 		);
 
 		elements.forEach((element, index) => {

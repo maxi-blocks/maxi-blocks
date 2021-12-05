@@ -53,3 +53,11 @@ html body.maxi-blocks--active .maxi-row-block[data-align='full'] {
 	max-width: 100% !important;
 	width: 100% !important;
 }
+
+.edit-post-visual-editor {
+	.maxi-row-block {
+		&.is-selected {
+			outline: 1px solid #ff4a17 !important;
+		}
+	}
+}

@@ -10,7 +10,12 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebarTab, changeResponsive, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	changeResponsive,
+	getAttributes,
+	getBlockStyle,
+} from '../../utils';
 
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
@@ -161,5 +166,7 @@ describe('Column Maxi', () => {
 		);
 
 		expect(responsiveL).toStrictEqual('50');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -8,8 +8,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import Icon from '../icon';
-import BaseControl from '../base-control';
-import Button from '../button';
 import ButtonGroupControl from '../button-group-control';
 import ScrollEffectUniqueControl from './scroll-effect-unique-control';
 import {
@@ -198,72 +196,8 @@ const ScrollEffectsControl = props => {
 		return response;
 	};
 
-	const effectsOnScroll = action => {
-		const script = document.createElement('script');
-		const editorWindow = document.getElementsByClassName(
-			'interface-interface-skeleton__content'
-		)[0];
-
-		const scrollListener = () => {
-			// eslint-disable-next-line no-undef, no-new
-			new ScrollEffects();
-		};
-
-		if (action === 'run') {
-			// eslint-disable-next-line no-undef
-			script.src = `${maxi_vars.plugin_path}js/maxi-scroll-effects.js`;
-			script.id = 'maxi-scroll-effects-script';
-			const element = document.getElementById(
-				'maxi-scroll-effects-script'
-			);
-			if (typeof element === 'undefined' || element === null) {
-				document.body.appendChild(script);
-			}
-
-			editorWindow?.addEventListener('scroll', scrollListener);
-			editorWindow?.scroll({
-				top: 10000,
-				behavior: 'smooth',
-			});
-			editorWindow?.scroll({
-				top: 0,
-				behavior: 'smooth',
-			});
-		}
-
-		if (action === 'stop') {
-			document.getElementById('maxi-scroll-effects-script').outerHTML =
-				'';
-			editorWindow.removeEventListener('scroll', scrollListener);
-		}
-	};
-
 	return (
 		<div className={classes}>
-			<BaseControl
-				label={__('Play all effects on scroll', 'maxi-blocks')}
-			>
-				<Button
-					className='maxi-button-group-control__option'
-					label={__('Play all effects on scroll', 'maxi-blocks')}
-					onClick={() => {
-						effectsOnScroll('run');
-
-						// document.body.removeChild(script);
-					}}
-				>
-					{__('Play', 'maxi-blocks')}
-				</Button>
-				{/* <Button
-					className='maxi-button-group-control__option'
-					label={__('Stop all effects on scroll', 'maxi-blocks')}
-					onClick={() => {
-						effectsOnScroll('stop');
-					}}
-				>
-					{__('Stop', 'maxi-blocks')}
-				</Button> */}
-			</BaseControl>
 			<SelectControl
 				label={__('Shortcut effect', 'maxi-blocks')}
 				onChange={val => onChange(onChangeShortcut(val))}

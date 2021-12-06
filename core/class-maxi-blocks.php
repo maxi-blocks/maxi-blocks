@@ -61,13 +61,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 $script_asset['version'],
             );
 
-            wp_localize_script(
-                'maxi-blocks-block-editor',
-                'maxi_vars',
-                array(
-                'plugin_path' =>plugin_dir_url(__DIR__))
-            );
-
             $editor_css = 'build/index.css';
             wp_register_style(
                 'maxi-blocks-block-editor',

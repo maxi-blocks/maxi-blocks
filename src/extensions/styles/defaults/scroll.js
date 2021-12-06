@@ -12,6 +12,7 @@ const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 const response = {
 	'scroll-active-general': {
 		type: 'string',
+		default: 'vertical',
 	},
 	'scroll-preset-status-general': {
 		type: 'boolean',

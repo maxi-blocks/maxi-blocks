@@ -50,8 +50,7 @@ const ScrollEffectsControl = props => {
 	const classes = classnames('maxi-scroll-effects-control', className);
 
 	const [motionStatus, setMotionStatus] = useState(
-		getLastBreakpointAttribute('scroll-active', breakpoint, props) ||
-			'vertical'
+		getLastBreakpointAttribute('scroll-active', breakpoint, props)
 	);
 
 	const motionOptions = [

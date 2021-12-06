@@ -163,7 +163,6 @@ class edit extends MaxiBlockComponent {
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
 						__unstableEmbedURLOnPaste
-						__unstableAllowPrefixTransformations
 					>
 						{onChangeRichText}
 					</RichText>

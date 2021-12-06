@@ -19,8 +19,7 @@ import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
 /**
  * External dependencies
  */
- import { isEmpty, without } from 'lodash';
-
+import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
@@ -29,10 +28,8 @@ const Inspector = props => {
 	const { attributes, deviceType, setAttributes } = props;
 
 	const getCategoriesCss = () => {
-		const {
-			'background-layers': bgLayers,
-		} = attributes;
-		return without (
+		const { 'background-layers': bgLayers } = attributes;
+		return without(
 			categoriesNumberCounter,
 			isEmpty(bgLayers) && 'canvas background'
 		);

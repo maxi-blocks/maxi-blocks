@@ -15,7 +15,7 @@ import { castArray, first, last } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { toolbarMove, moveUp, moveDown } from '../../../../icons';
+import { toolbarDrop, moveUp, moveDown } from '../../../../icons';
 
 /**
  * Mover
@@ -125,7 +125,7 @@ const Mover = props => {
 							>
 								<Icon
 									className='toolbar-item__icon'
-									icon={toolbarMove}
+									icon={toolbarDrop}
 								/>
 							</Button>
 						</div>

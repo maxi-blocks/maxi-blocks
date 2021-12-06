@@ -220,22 +220,22 @@ const getStyles = props => {
 	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getWrapperObject(props),
-			':hover': getHoverWrapperObject(props),
-			':hover .maxi-number-counter__box': getHoverBoxObject(props),
-			' .maxi-number-counter__box': getBoxObject(props),
-			...getNumberCounterStyles({
-				obj: {
-					...getGroupAttributes(props, 'numberCounter'),
-				},
-				target: '.maxi-number-counter__box',
-				blockStyle,
-			}),
-		},
-		selectorsNumberCounter,
-		props
-		
+		[uniqueID]: stylesCleaner(
+			{
+				'': getWrapperObject(props),
+				':hover': getHoverWrapperObject(props),
+				':hover .maxi-number-counter__box': getHoverBoxObject(props),
+				' .maxi-number-counter__box': getBoxObject(props),
+				...getNumberCounterStyles({
+					obj: {
+						...getGroupAttributes(props, 'numberCounter'),
+					},
+					target: '.maxi-number-counter__box',
+					blockStyle,
+				}),
+			},
+			selectorsNumberCounter,
+			props
 		),
 	};
 	return response;

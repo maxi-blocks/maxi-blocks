@@ -33,10 +33,10 @@ describe('AxisControl', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': 66,
-			'margin-bottom-general': 66,
-			'margin-left-general': 66,
-			'margin-right-general': 66,
+			'margin-top-general': '66',
+			'margin-bottom-general': '66',
+			'margin-left-general': '66',
+			'margin-right-general': '66',
 			'margin-unit-general': '%',
 		};
 		const marginResult = await getAttributes([
@@ -164,10 +164,10 @@ describe('AxisControl', () => {
 		});
 
 		const expectAxisMargin = {
-			'margin-top-general': 66,
-			'margin-bottom-general': 66,
-			'margin-left-general': 77,
-			'margin-right-general': 77,
+			'margin-top-general': '66',
+			'margin-bottom-general': '66',
+			'margin-left-general': '77',
+			'margin-right-general': '77',
 			'margin-unit-general': '%',
 		};
 
@@ -190,10 +190,10 @@ describe('AxisControl', () => {
 		});
 
 		const expectSyncOptionNone = {
-			'margin-top-general': 66,
-			'margin-bottom-general': 55,
-			'margin-left-general': 33,
-			'margin-right-general': 77,
+			'margin-top-general': '66',
+			'margin-bottom-general': '55',
+			'margin-left-general': '33',
+			'margin-right-general': '77',
 			'margin-unit-general': 'px',
 		};
 

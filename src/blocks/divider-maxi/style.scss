@@ -6,6 +6,7 @@ body.maxi-blocks--active .maxi-divider-block {
 	&--horizontal {
 		hr {
 			margin: 0.5rem 0;
+			max-width: unset;
 		}
 	}
 	&--vertical {

@@ -53,6 +53,7 @@ const AxisInput = props => {
 		onChangeValue,
 		isGeneral,
 		minMaxSettings,
+		currentUnit,
 	} = props;
 
 	const value = getValue(target, breakpoint);
@@ -79,6 +80,8 @@ const AxisInput = props => {
 			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			disableReset
+			min={minMaxSettings[currentUnit].min || 0}
+			max={minMaxSettings[currentUnit].max || 999}
 		/>
 	);
 };
@@ -656,7 +659,7 @@ const AxisControl = props => {
 				<ResponsiveTabsControl breakpoint={breakpoint}>
 					<AxisControlContent
 						{...props}
-						key='AxisControlContent__1'
+						key='AxisControlContent__responsive'
 						label={label}
 						getOptions={getOptions}
 						currentUnit={currentUnit}
@@ -678,7 +681,7 @@ const AxisControl = props => {
 			{!useResponsiveTabs && (
 				<AxisControlContent
 					{...props}
-					key='AxisControlContent__2'
+					key='AxisControlContent__non-responsive'
 					label={label}
 					getOptions={getOptions}
 					currentUnit={currentUnit}

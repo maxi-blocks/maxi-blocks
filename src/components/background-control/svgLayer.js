@@ -70,6 +70,7 @@ const SVGLayerContent = props => {
 		<>
 			<SettingTabsControl
 				disablePadding
+				className='maxi-background-control__svg-layer--size'
 				items={[
 					{
 						label: __('Position', 'maxi-blocks'),

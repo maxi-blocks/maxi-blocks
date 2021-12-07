@@ -103,13 +103,13 @@ const MaxiToolbar = memo(
 			setAttributes,
 			toggleHandlers,
 			rowPattern,
-			changeSVGSize,
 			changeSVGStrokeWidth,
 			prefix = '',
 			backgroundGlobalProps,
+			resizableObject,
 		} = props;
 		const {
-			blockFullwidth,
+			blockFullWidth,
 			content,
 			customLabel,
 			fullWidth,
@@ -128,6 +128,7 @@ const MaxiToolbar = memo(
 			parentBlockStyle,
 			svgType,
 		} = attributes;
+
 		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
 				select('maxiBlocks');
@@ -442,11 +443,11 @@ const MaxiToolbar = memo(
 											setAttributes(obj);
 										}}
 										breakpoint={breakpoint}
-										changeSVGSize={changeSVGSize}
 										changeSVGStrokeWidth={
 											changeSVGStrokeWidth
 										}
 										type={svgType}
+										resizableObject={resizableObject}
 									/>
 								</>
 							)}
@@ -483,8 +484,14 @@ const MaxiToolbar = memo(
 							)}
 							<Size
 								blockName={name}
-								blockFullwidth={blockFullwidth}
-								{...getGroupAttributes(attributes, 'size')}
+								blockFullWidth={blockFullWidth}
+								fullWidth={fullWidth}
+								{...getGroupAttributes(
+									attributes,
+									'size',
+									false,
+									prefix
+								)}
 								isFirstOnHierarchy={isFirstOnHierarchy}
 								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}

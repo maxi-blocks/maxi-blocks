@@ -135,6 +135,7 @@ class edit extends MaxiBlockComponent {
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
 					propsToAvoid={['resizableObject']}
+					resizableObject={this.resizableObject}
 					{...this.props}
 				/>
 			),

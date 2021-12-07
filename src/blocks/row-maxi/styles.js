@@ -13,6 +13,7 @@ import {
 	getOpacityStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsRow } from './custom-css';
 
 /**
  * External dependencies
@@ -163,7 +164,10 @@ const getStyles = props => {
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
-		}),
+		},
+		selectorsRow,
+		props
+		),
 	};
 
 	return response;

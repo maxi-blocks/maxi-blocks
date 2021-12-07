@@ -17,6 +17,7 @@ import {
 	openPreviewPage,
 	getAttributes,
 	editColorControl,
+	getBlockStyle,
 } from '../../utils';
 
 describe('Image Maxi', () => {
@@ -332,5 +333,7 @@ describe('Image Maxi', () => {
 			alterative => alterative.alt
 		);
 		expect(expectAlt).toStrictEqual('Image Tag');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

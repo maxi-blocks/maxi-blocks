@@ -11,22 +11,22 @@ export const selectorsMap = {
 	},
 	'before map': {
 		normal: {
-			label: 'map :before',
-			target: ':before',
+			label: 'map ::before',
+			target: '::before',
 		},
 		hover: {
-			label: 'map :before on hover',
-			target: ':hover:before',
+			label: 'map ::before on hover',
+			target: ':hover::before',
 		},
 	},
 	'after map': {
 		normal: {
-			label: 'map :after',
-			target: ':after',
+			label: 'map ::after',
+			target: '::after',
 		},
 		hover: {
-			label: 'map :after on hover',
-			target: ':hover:after',
+			label: 'map ::after on hover',
+			target: ':hover::after',
 		},
 	},
 	title: {

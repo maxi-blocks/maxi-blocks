@@ -86,5 +86,6 @@ const attributes = {
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,
+	...attributesData.customCss,
 };
 export default attributes;

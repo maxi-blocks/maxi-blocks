@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+import { getBlockStyle } from '../../utils';
 
 describe('Divider Maxi', () => {
 	it('Divider Maxi does not break', async () => {
@@ -13,5 +14,7 @@ describe('Divider Maxi', () => {
 		await insertBlock('Divider Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

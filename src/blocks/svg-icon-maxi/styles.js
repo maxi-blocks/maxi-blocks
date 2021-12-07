@@ -15,6 +15,7 @@ import {
 	getOverflowStyles,
 	getSVGWidthStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsSvgIcon } from './custom-css';
 
 const getWrapperObject = props => {
 	const response = {
@@ -212,7 +213,10 @@ const getStyles = props => {
 				isHover: true,
 				blockStyle,
 			}),
-		}),
+		},
+		selectorsSvgIcon,
+		props
+		),
 	};
 
 	return response;

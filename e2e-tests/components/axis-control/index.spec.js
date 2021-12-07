@@ -133,7 +133,6 @@ describe('AxisControl', () => {
 			'style',
 			'margin padding'
 		);
-		debugger;
 
 		await page.waitForTimeout(150);
 
@@ -144,7 +143,7 @@ describe('AxisControl', () => {
 		});
 		await page.waitForTimeout(150);
 
-		expect(await getAttributes('margin-top-general')).toStrictEqual(3);
+		expect(await getAttributes('margin-top-general')).toStrictEqual('3');
 
 		const input = await accordionPanel.$$(
 			'.maxi-axis-control__content__item input'
@@ -153,7 +152,7 @@ describe('AxisControl', () => {
 		await input[0].focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('margin-top-general')).toStrictEqual(0);
+		expect(await getAttributes('margin-top-general')).toStrictEqual('0');
 	});
 	it('Checking AxisControl auto', async () => {
 		await changeResponsive(page, 'base');

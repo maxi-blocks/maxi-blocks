@@ -92,7 +92,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
 	useEffect(() => {
-		updateSCOnEditor(selectedSCValue);
+		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
 
 	const canBeReset = keySC => {

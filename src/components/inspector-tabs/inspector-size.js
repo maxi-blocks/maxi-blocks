@@ -18,7 +18,6 @@ const size = ({
 	prefix = '',
 	block = false,
 	hideWidth = false,
-	hideHeight = false,
 	hideMaxWidth = false,
 	isImage = false,
 }) => {
@@ -64,7 +63,6 @@ const size = ({
 					onChange={obj => setAttributes(obj)}
 					breakpoint={deviceType}
 					hideWidth={hideWidth}
-					hideHeight={hideHeight}
 					hideMaxWidth={hideMaxWidth}
 				/>
 			</>

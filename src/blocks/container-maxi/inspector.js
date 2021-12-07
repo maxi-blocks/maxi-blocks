@@ -14,13 +14,15 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsContainer, categoriesContainer } from './custom-css';
+
 
 /**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes } = props;
-
+	
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -60,7 +62,7 @@ const Inspector = props => {
 												/>
 											),
 										},
-										...inspectorTabs.background({
+										...inspectorTabs.blockBackground({
 											props,
 										}),
 										...inspectorTabs.border({
@@ -98,6 +100,12 @@ const Inspector = props => {
 											props,
 										}),
 									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsContainer,
+										categories: categoriesContainer,
+									}),
 									...inspectorTabs.motion({
 										props,
 									}),

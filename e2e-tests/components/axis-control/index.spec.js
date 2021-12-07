@@ -1,263 +1,243 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab } from '../../utils';
+import {
+	openSidebarTab,
+	changeResponsive,
+	editAxisControl,
+	getAttributes,
+	getBlockAttributes,
+} from '../../utils';
 
-describe.skip('AxisControl', () => {
-	it('Checking the axis control', async () => {
+describe('AxisControl', () => {
+	it('Checking AxisControl util', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		const axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '66',
+			unit: '%',
+		});
+
+		const expectMargin = {
+			'margin-top-general': '66',
+			'margin-bottom-general': '66',
+			'margin-left-general': '66',
+			'margin-right-general': '66',
+			'margin-unit-general': '%',
+		};
+		const marginResult = await getAttributes([
+			'margin-unit-general',
+			'margin-top-general',
+			'margin-bottom-general',
+			'margin-left-general',
+			'margin-right-general',
+		]);
+
+		expect(marginResult).toStrictEqual(expectMargin);
+	});
+
+	it('Checking responsive axisControl', async () => {
+		await changeResponsive(page, 's');
+
+		const positionGeneralValue = await page.$$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
+			input => input[0].placeholder
+		);
+
+		expect(positionGeneralValue).toStrictEqual('66');
+
+		const positionGeneralUnit = await page.$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionGeneralUnit).toStrictEqual('%');
+
+		// change s responsive
+		const axisControlInstance = await page.$('.maxi-axis-control__margin');
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '89',
+			unit: 'px',
+		});
+
+		const positionSValue = await page.$$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
+			input => input[0].placeholder
+		);
+
+		expect(positionSValue).toStrictEqual('89');
+
+		const positionSUnit = await page.$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionSUnit).toStrictEqual('px');
+
+		// Xs responsive
+		await changeResponsive(page, 'xs');
+
+		const positionXsValue = await page.$$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
+			input => input[0].placeholder
+		);
+
+		expect(positionXsValue).toStrictEqual('89');
+
+		const positionXsUnit = await page.$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionXsUnit).toStrictEqual('px');
+
+		// M responsive
+		await changeResponsive(page, 'm');
+
+		const positionMValue = await page.$$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
+			input => input[0].placeholder
+		);
+
+		expect(positionMValue).toStrictEqual('66');
+
+		const positionMUnit = await page.$eval(
+			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
+			input => input.value
+		);
+		expect(positionMUnit).toStrictEqual('%');
+	});
+	it('Check the arrows in input', async () => {
+		await changeResponsive(page, 'base');
 
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
 			'margin padding'
 		);
-		const axisControls = await accordionPanel.$$('.maxi-axis-control');
-		const instances = ['padding', 'margin'];
 
-		/* eslint-disable no-await-in-loop */
-		for (let i = 0; i < axisControls.length; i += 1) {
-			const axisControl = await axisControls[i];
-			const inputs = await axisControl.$$(
-				'.maxi-axis-control__content__item__input'
-			);
+		await page.waitForTimeout(150);
 
-			// Set value to inputs
-			for (let j = 0; j < inputs.length; j += 1) {
-				const input = inputs[j];
-				await input.focus();
-				await page.keyboard.press((j + 1).toString());
-			}
+		await editAxisControl({
+			page,
+			instance: await accordionPanel.$('.maxi-axis-control__margin'),
+			values: '3',
+		});
+		await page.waitForTimeout(150);
 
-			// Change unit selector
-			const unitSelector = await axisControl.$(
-				'.maxi-axis-control__units select'
-			);
+		expect(await getAttributes('margin-top-general')).toStrictEqual('3');
 
-			await unitSelector.$$('options');
-			await unitSelector.select('%');
-			const firstAttributes = await getBlockAttributes();
-			const expectedAttributes = {
-				[`${instances[i]}-top-general`]: '1',
-				[`${instances[i]}-bottom-general`]: '2',
-				[`${instances[i]}-left-general`]: '3',
-				[`${instances[i]}-right-general`]: '4',
-				[`${instances[i]}-unit-general`]: '%',
-			};
-			Object.entries(expectedAttributes).forEach(([key, value]) => {
-				expect(firstAttributes[key].toString()).toBe(value);
-			});
-
-			// Synchronizing inputs
-			const syncSelector = await axisControl.$$(
-				'.maxi-axis-control__content__item__sync button'
-			);
-			await syncSelector[1].click();
-
-			const topInputs = inputs[0];
-			await topInputs.focus();
-
-			await page.keyboard.press('ArrowUp');
-
-			const secondAttributes = await getBlockAttributes();
-			Object.keys(expectedAttributes).forEach(key => {
-				if (key !== `${instances[i]}-unit-general`)
-					expect(secondAttributes[key].toString()).toBe('2');
-			});
-
-			// Resetting values
-			const resetButton = await axisControl.$(
-				'.maxi-axis-control .maxi-axis-control__header button'
-			);
-
-			await resetButton.click();
-			const thirdAttributes = await getBlockAttributes();
-
-			Object.keys(expectedAttributes).forEach(key => {
-				if (key !== `${instances[i]}-unit-general`)
-					expect(thirdAttributes[key]).toBe(undefined);
-				else expect(thirdAttributes[key]).toBe('px');
-			});
-		}
-
-		const marginControl = axisControls[1];
-		const checkBoxes = await marginControl.$$(
-			'.maxi-axis-control__content__item .maxi-axis-control__content__item__checkbox input'
+		const input = await accordionPanel.$$(
+			'.maxi-axis-control__content__item input'
 		);
 
-		for (const checkBox of checkBoxes) {
-			await checkBox.click();
-		}
-		const marginKeys = [
+		await input[0].focus();
+		await pressKeyTimes('ArrowDown', '5');
+
+		expect(await getAttributes('margin-top-general')).toStrictEqual('0');
+	});
+	it('Checking AxisControl auto', async () => {
+		await changeResponsive(page, 'base');
+
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-axis-control__margin'),
+			values: 'auto',
+			unit: 'px',
+		});
+
+		const expectMargin = {
+			'margin-top-general': 'auto',
+			'margin-bottom-general': 'auto',
+			'margin-left-general': 'auto',
+			'margin-right-general': 'auto',
+			'margin-unit-general': 'px',
+		};
+
+		const result = await getAttributes([
+			'margin-unit-general',
 			'margin-top-general',
 			'margin-bottom-general',
 			'margin-left-general',
 			'margin-right-general',
-		];
+		]);
 
-		const fourthAttributes = await getBlockAttributes();
+		expect(result).toStrictEqual(expectMargin);
+	});
+	it('Checking AxisControl async buttons', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		await openSidebarTab(page, 'style', 'margin padding');
+		const axisControlInstance = await page.$('.maxi-axis-control__margin');
 
-		const areAllAuto = marginKeys.every(key => {
-			return fourthAttributes[key] === 'auto';
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			syncOption: 'axis',
+			values: ['66', '77'],
+			unit: '%',
 		});
 
-		expect(areAllAuto).toStrictEqual(true);
-
-		// Padding can't be lower than 0 and sync
-		const syncButton = await page.$$(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
-		);
-		let topInput = await page.$(
-			'.maxi-axis-control.maxi-axis-control__padding .maxi-axis-control__content__item__top input'
-		);
-
-		await syncButton[1].click();
-		await topInput.focus();
-
-		await page.keyboard.type('-5');
-
-		const expectChanges = 0;
-		const attributes = await getBlockAttributes();
-		const styleAttributes = attributes['padding-bottom-general'];
-
-		expect(styleAttributes).toStrictEqual(expectChanges);
-
-		// value in general and responsive
-		// set value
-
-		await topInput.focus();
-
-		await page.keyboard.press('Backspace');
-		await page.keyboard.type('13');
-
-		// responsive
-		await page.$eval(
-			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout__button',
-			button => button.click()
-		);
-
-		await page.$$eval('.maxi-responsive-selector button', button =>
-			button[2].click()
-		);
-
-		// set responsive value
-		topInput = await page.$(
-			'.maxi-axis-control.maxi-axis-control__padding .maxi-axis-control__content__item__top input'
-		);
-		await topInput.focus();
-
-		await page.keyboard.type('0');
-
-		const expectResponsivePadding = {
-			'padding-bottom-xl': 0,
-			'padding-left-xl': 0,
-			'padding-right-xl': 0,
-			'padding-top-xl': 0,
+		const expectAxisMargin = {
+			'margin-top-general': '66',
+			'margin-bottom-general': '66',
+			'margin-left-general': '77',
+			'margin-right-general': '77',
+			'margin-unit-general': '%',
 		};
 
-		const responsivePaddingAttributes = await getBlockAttributes();
+		const resultAxis = await getAttributes([
+			'margin-top-general',
+			'margin-bottom-general',
+			'margin-left-general',
+			'margin-right-general',
+			'margin-unit-general',
+		]);
 
-		const responsiveBlockPadding = (({
-			'padding-bottom-xl': paddingBottom,
-			'padding-left-xl': paddingLeft,
-			'padding-right-xl': paddingRight,
-			'padding-top-xl': paddingTop,
-		}) => ({
-			'padding-bottom-xl': paddingBottom,
-			'padding-left-xl': paddingLeft,
-			'padding-right-xl': paddingRight,
-			'padding-top-xl': paddingTop,
-		}))(responsivePaddingAttributes);
+		expect(resultAxis).toStrictEqual(expectAxisMargin);
 
-		expect(responsiveBlockPadding).toStrictEqual(expectResponsivePadding);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			syncOption: 'none',
+			values: ['66', '77', '55', '33'],
+			unit: 'px',
+		});
 
-		const syncButtonTop = await page.$(
-			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button'
-		);
+		const expectSyncOptionNone = {
+			'margin-top-general': '66',
+			'margin-bottom-general': '55',
+			'margin-left-general': '33',
+			'margin-right-general': '77',
+			'margin-unit-general': 'px',
+		};
 
-		const syncButtonBottom = await page.$(
-			'.maxi-axis-control__bottom-part .maxi-axis-control__content__item__sync button'
-		);
+		const resultSyncOptionNone = await getAttributes([
+			'margin-unit-general',
+			'margin-top-general',
+			'margin-bottom-general',
+			'margin-left-general',
+			'margin-right-general',
+		]);
 
-		const syncButtonMiddle = await page.$$(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
-		);
-
-		// Pressed-top and Pressed-bottom true
-		await syncButtonTop.click();
-		await syncButtonBottom.click();
-
-		const pressedTop = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[1].innerHTML
-		);
-
-		const pressedBottom = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[3].innerHTML
-		);
-
-		expect(pressedTop).toMatchSnapshot();
-		expect(pressedBottom).toMatchSnapshot();
-
-		// Pressed-top and Pressed-bottom False Pressed-middle True
-		await syncButtonMiddle[1].click();
-
-		const pressedMiddleTrue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[2].innerHTML
-		);
-
-		const pressedTopFalse = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[1].innerHTML
-		);
-
-		const pressedBottomFalse = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[3].innerHTML
-		);
-
-		expect(pressedTopFalse).toMatchSnapshot();
-		expect(pressedBottomFalse).toMatchSnapshot();
-		expect(pressedMiddleTrue).toMatchSnapshot();
-
-		// Pressed-top True Pressed-middle False
-		await syncButtonTop.click();
-
-		const pressedMiddleFalse = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[2].innerHTML
-		);
-
-		const pressedTopTrue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[1].innerHTML
-		);
-
-		expect(pressedMiddleFalse).toMatchSnapshot();
-		expect(pressedTopTrue).toMatchSnapshot();
-
-		// Pressed-bottom True Pressed-middle False
-		await syncButtonMiddle[1].click();
-		await syncButtonBottom.click();
-
-		const pressedMiddle = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[2].innerHTML
-		);
-
-		const pressedBottomTrue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[3].innerHTML
-		);
-
-		expect(pressedMiddle).toMatchSnapshot();
-		expect(pressedBottomTrue).toMatchSnapshot();
+		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
 	});
 });

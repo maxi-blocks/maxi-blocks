@@ -48,7 +48,7 @@ const BorderControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
-		isButton = false,
+		globalProps,
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -155,7 +155,7 @@ const BorderControl = props => {
 			/>
 			{!disableAdvanced && (
 				<SelectControl
-					label={__('Border Type', 'maxi-blocks')}
+					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
 					options={[
@@ -238,14 +238,7 @@ const BorderControl = props => {
 					isHover={isHover}
 					deviceType={breakpoint}
 					clientId={clientId}
-					globalProps={
-						isButton && {
-							target: `${
-								isHover ? 'hover-' : ''
-							}border-color-global`,
-							type: 'button',
-						}
-					}
+					globalProps={globalProps}
 				/>
 			)}
 			{!disableAdvanced &&

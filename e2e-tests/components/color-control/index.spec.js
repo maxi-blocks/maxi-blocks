@@ -5,94 +5,90 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	changeResponsive,
-	getBlockStyle,
-} from '../../utils';
+import { openSidebarTab, editColorControl, getAttributes } from '../../utils';
 
-describe.skip('ColorControl', () => {
-	it('Checking the color control', async () => {
+describe('ColorControl', () => {
+	it('Checking the palette color control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
-			'background'
+			'button background'
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-button-group-control label',
-			fancyRadioControls => fancyRadioControls[2].click()
-		);
+		await editColorControl({
+			page,
+			instance: await accordionPanel.$(
+				'.maxi-background-control .maxi-tabs-content'
+			),
+			paletteStatus: true,
+			colorPalette: 3,
+			opacity: '45',
+		});
 
-		await page.$$eval(
-			'.maxi-background-control .maxi-base-control__field .maxi-color-control__palette div',
-			select => select[3].click()
-		);
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(0.45);
 
-		const attributes = await getBlockAttributes();
-		const backgroundColor = attributes['background-palette-color-general'];
-
-		expect(backgroundColor).toStrictEqual(4);
+		expect(
+			await getAttributes('button-background-palette-color-general')
+		).toStrictEqual(3);
 	});
 
-	it('Check Responsive color control', async () => {
-		const dataItem = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
-			select => select.getAttribute('data-item')
+	it('Checking the custom color control', async () => {
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'button background'
 		);
 
-		await changeResponsive(page, 's');
-		await page.$eval('.maxi-text-block', block => block.focus());
+		await editColorControl({
+			page,
+			instance: await accordionPanel.$('.maxi-color-control'),
+			paletteStatus: false,
+			customColor: '#8E2727',
+			opacity: '67',
+		});
 
-		const backgroundColor = await dataItem;
-		expect(backgroundColor).toStrictEqual('3');
+		expect(
+			await getAttributes('button-background-color-general')
+		).toStrictEqual('rgba(142, 39, 39, 0.67)');
 
-		// responsive S
-		await changeResponsive(page, 's');
-		await openSidebarTab(page, 'style', 'typography');
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(0.67);
+	});
 
-		await page.$$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette div',
-			select => select[4].click()
+	it('Checking the opacity is never under 0 or more than 100', async () => {
+		await createNewPost();
+		await insertBlock('Button Maxi');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'button background'
 		);
-		const dataItemS = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
-			select => select.getAttribute('data-item')
-		);
-		const responsiveSOption = await dataItemS;
 
-		expect(responsiveSOption).toStrictEqual('5');
+		await editColorControl({
+			page,
+			instance: await accordionPanel.$('.maxi-color-control'),
+			paletteStatus: false,
+			opacity: '250',
+		});
 
-		const attributes = await getBlockAttributes();
-		const color = attributes['palette-color-s'];
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(1);
 
-		expect(color).toStrictEqual(5);
+		await editColorControl({
+			page,
+			instance: await accordionPanel.$('.maxi-color-control'),
+			paletteStatus: false,
+			opacity: '-23',
+		});
 
-		// responsive XS
-		await changeResponsive(page, 'xs');
-
-		const dataItemXs = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
-			select => select.getAttribute('data-item')
-		);
-		const responsiveXsOption = await dataItemXs;
-
-		expect(responsiveXsOption).toStrictEqual('5');
-
-		// responsive M
-		await changeResponsive(page, 'm');
-
-		const dataItemM = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-color-control__palette-box--active',
-			select => select.getAttribute('data-item')
-		);
-		const responsiveMOption = await dataItemM;
-
-		expect(responsiveMOption).toStrictEqual('3');
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(
+			await getAttributes('button-background-palette-opacity-general')
+		).toStrictEqual(0.23);
 	});
 });

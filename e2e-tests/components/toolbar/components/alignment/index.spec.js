@@ -6,7 +6,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, changeResponsive } from '../../../../utils';
+import {
+	getBlockAttributes,
+	changeResponsive,
+	getAttributes,
+} from '../../../../utils';
 
 describe('AlignmentControl', () => {
 	it('Checking alignment in toolbar', async () => {
@@ -42,10 +46,10 @@ describe('AlignmentControl', () => {
 
 	it('Checking alignment in toolbar responsive', async () => {
 		// check general
-		const expectAttributes = await getBlockAttributes();
-		const position = expectAttributes['text-alignment-general'];
 
-		expect(position).toStrictEqual('left');
+		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+			'left'
+		);
 
 		// responsive s
 		await changeResponsive(page, 's');
@@ -55,10 +59,7 @@ describe('AlignmentControl', () => {
 			button => button[1].click()
 		);
 
-		const expectSAttributes = await getBlockAttributes();
-		const positionS = expectSAttributes['text-alignment-s'];
-
-		expect(positionS).toStrictEqual('center');
+		expect(await getAttributes('text-alignment-s')).toStrictEqual('center');
 
 		// responsive xs
 		await changeResponsive(page, 'xs');

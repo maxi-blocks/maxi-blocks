@@ -35,6 +35,11 @@ import classnames from 'classnames';
 import { isNil, isBoolean, isNumber } from 'lodash';
 
 /**
+ * Styles and icons
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const TextOptions = props => {
@@ -451,6 +456,7 @@ const TypographyControl = withFormatValue(props => {
 		styleCardPrefix,
 		allowLink = false,
 		blockStyle,
+		globalProps,
 	} = props;
 
 	const typography =
@@ -718,15 +724,7 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}
-					globalProps={{
-						target: isHover ? 'hover-' : '',
-						type:
-							select('core/block-editor').getBlockName(
-								clientId
-							) === 'maxi-blocks/button-maxi'
-								? 'button'
-								: textLevel,
-					}}
+					globalProps={globalProps}
 					textLevel={textLevel}
 					isHover={isHover}
 					deviceType={breakpoint}

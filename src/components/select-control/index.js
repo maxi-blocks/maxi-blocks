@@ -65,6 +65,7 @@ export default function SelectControl({
 							key={`${option.label}-${option.value}-${index}`}
 							value={option.value}
 							disabled={option.disabled}
+							className={option.className}
 						>
 							{option.label}
 						</option>

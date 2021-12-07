@@ -6,10 +6,10 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('DisplayControl', () => {
@@ -27,11 +27,7 @@ describe('DisplayControl', () => {
 			button[1].click()
 		);
 
-		const attributes = await getBlockAttributes();
-		const display = attributes['display-general'];
-		const expectResult = 'none';
-
-		expect(display).toStrictEqual(expectResult);
+		expect(await getAttributes('display-general')).toStrictEqual('none');
 	});
 
 	it('Check Responsive display control', async () => {
@@ -56,10 +52,7 @@ describe('DisplayControl', () => {
 
 		expect(responsiveSOption).toBe('true');
 
-		const expectAttributes = await getBlockAttributes();
-		const display = expectAttributes['display-s'];
-
-		expect(display).toStrictEqual('flex');
+		expect(await getAttributes('display-s')).toStrictEqual('flex');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

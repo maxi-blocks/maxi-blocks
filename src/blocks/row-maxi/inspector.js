@@ -14,6 +14,12 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsRow, categoriesRow } from './custom-css';
+
+/**
+ * External dependencies
+ */
+
 
 /**
  * Inspector
@@ -169,7 +175,9 @@ const Inspector = props => {
 												</>
 											),
 										},
-										...inspectorTabs.background({ props }),
+										...inspectorTabs.blockBackground({
+											props,
+										}),
 										...inspectorTabs.border({
 											props,
 										}),
@@ -204,6 +212,12 @@ const Inspector = props => {
 											props,
 										}),
 									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsRow,
+										categories: categoriesRow,
+									}),
 									...inspectorTabs.transform({
 										props,
 									}),

@@ -167,7 +167,7 @@ const NumberCounterControl = props => {
 			<AdvancedNumberControl
 				label={__('Duration', 'maxi-blocks')}
 				min={1}
-				max={9999}
+				max={10}
 				initial={1}
 				step={1}
 				value={props['number-counter-duration']}

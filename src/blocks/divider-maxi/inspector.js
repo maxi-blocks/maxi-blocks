@@ -10,11 +10,18 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	DividerControl,
-	ButtonGroupControl,
+	SelectControl,
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsDivider, categoriesDivider } from './custom-css';
+
+/**
+ * External dependencies
+ */
+ import { isEmpty, without } from 'lodash';
+
 
 /**
  * Inspector
@@ -22,6 +29,17 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
+
+
+	const getCategoriesCss = () => {
+		const {
+			'background-layers': bgLayers,
+		} = attributes;
+		return without (
+			categoriesDivider,
+			isEmpty(bgLayers) && 'canvas background'
+		);
+	};
 
 	return (
 		<InspectorControls>
@@ -42,13 +60,16 @@ const Inspector = props => {
 									isSecondary
 									items={[
 										deviceType === 'general' && {
-											label: __('Line', 'maxi-blocks'),
+											label: __(
+												'Alignment',
+												'maxi-blocks'
+											),
 											content: (
 												<>
-													<ButtonGroupControl
+													<SelectControl
 														fullWidthMode
 														label={__(
-															'Line Orientation',
+															'Line orientation',
 															'maxi-blocks'
 														)}
 														selected={
@@ -76,10 +97,10 @@ const Inspector = props => {
 															})
 														}
 													/>
-													<ButtonGroupControl
+													<SelectControl
 														fullWidthMode
 														label={__(
-															'Line Vertical Position',
+															'Line vertical position',
 															'maxi-blocks'
 														)}
 														selected={lineVertical}
@@ -112,10 +133,10 @@ const Inspector = props => {
 															})
 														}
 													/>
-													<ButtonGroupControl
+													<SelectControl
 														fullWidthMode
 														label={__(
-															'Line Horizontal Position',
+															'Line horizontal position',
 															'maxi-blocks'
 														)}
 														selected={
@@ -150,6 +171,16 @@ const Inspector = props => {
 															})
 														}
 													/>
+												</>
+											),
+										},
+										deviceType === 'general' && {
+											label: __(
+												'Line settings',
+												'maxi-blocks'
+											),
+											content: (
+												<>
 													<DividerControl
 														{...getGroupAttributes(
 															attributes,
@@ -186,7 +217,7 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									...inspectorTabs.background({
+									...inspectorTabs.blockBackground({
 										props,
 									}),
 									...inspectorTabs.border({
@@ -227,6 +258,12 @@ const Inspector = props => {
 												props,
 											}),
 										},
+										...inspectorTabs.customCss({
+											props,
+											breakpoint: deviceType,
+											selectors: selectorsDivider,
+											categories: getCategoriesCss(),
+										}),
 										...inspectorTabs.motion({
 											props,
 										}),

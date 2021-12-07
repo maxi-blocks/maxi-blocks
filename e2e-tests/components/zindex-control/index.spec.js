@@ -10,10 +10,10 @@ import {
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('ZIndexControl', () => {
@@ -34,10 +34,7 @@ describe('ZIndexControl', () => {
 
 		await page.keyboard.type('20');
 
-		const attributes = await getBlockAttributes();
-		const zIndex = attributes['z-index-general'];
-
-		expect(zIndex).toStrictEqual(20);
+		expect(await getAttributes('z-index-general')).toStrictEqual(20);
 	});
 	it('Check Responsive zIndex control', async () => {
 		const input = await page.$('.maxi-zIndex-control input');
@@ -54,10 +51,7 @@ describe('ZIndexControl', () => {
 
 		expect(zIndexS).toStrictEqual('29');
 
-		const attributes = await getBlockAttributes();
-		const zIndex = attributes['z-index-s'];
-
-		expect(zIndex).toStrictEqual(29);
+		expect(await getAttributes('z-index-s')).toStrictEqual(29);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

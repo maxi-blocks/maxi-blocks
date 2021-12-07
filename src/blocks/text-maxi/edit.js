@@ -164,12 +164,7 @@ class edit extends MaxiBlockComponent {
 						onReplace={onReplace}
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
-						placeholder={__(
-							'Set your Maxi Text here…',
-							'maxi-blocks'
-						)}
 						__unstableEmbedURLOnPaste
-						__unstableAllowPrefixTransformations
 					>
 						{onChangeRichText}
 					</RichText>

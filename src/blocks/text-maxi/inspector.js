@@ -17,11 +17,12 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsText, categoriesText } from './custom-css';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep} from 'lodash';
 
 /**
  * Inspector
@@ -198,8 +199,16 @@ const Inspector = memo(
 												styleCardPrefix: '',
 												hideAlignment: true,
 												allowLink: true,
+												globalProps: {
+													target: '',
+													type: textLevel,
+												},
+												hoverGlobalProps: {
+													target: 'hover',
+													type: textLevel,
+												},
 											}),
-											...inspectorTabs.background({
+											...inspectorTabs.blockBackground({
 												props,
 											}),
 											...inspectorTabs.border({
@@ -237,6 +246,12 @@ const Inspector = memo(
 													props,
 												}),
 											},
+											...inspectorTabs.customCss({
+												props,
+												breakpoint: deviceType,
+												selectors: selectorsText,
+												categories: categoriesText,
+											}),
 											...inspectorTabs.motion({
 												props,
 											}),

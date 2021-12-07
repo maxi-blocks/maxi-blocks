@@ -3,6 +3,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: flex-start;
+		margin-bottom: 8px;
 
 		&__items__none {
 			display: flex;
@@ -10,26 +11,66 @@
 			justify-content: center;
 		}
 		&__items {
-			cursor: pointer;
-			border: 2px solid #dddfe1;
-			border-radius: 5px;
-			margin: 0 5px 5px 0;
-			height: calc(48px - 4px);
-			width: calc(48px - 4px);
+			position: relative;
+			width: calc(100% / 8);
+			height: 32.75px;
+			display: flex;
+			justify-content: center;
+			margin: 0;
 			padding: 0;
-			&:nth-child(6n) {
-				margin-right: 0;
+			border: 1px solid #dddfe1;
+			border-top: 0;
+			border-left: 0;
+			border-radius: 0;
+			cursor: pointer;
+
+			&:nth-child(-n + 8) {
+				border-top: 1px solid #dddfe1;
+			}
+
+			&:nth-child(8n + 1) {
+				border-left: 1px solid #dddfe1;
+			}
+
+			&::after {
+				content: '';
+				display: block;
+				background-color: var(--maxi-secondary-color);
+				position: absolute;
+				bottom: -1px;
+				left: -1px;
+				height: 0;
+				right: -1px;
 			}
 			&[aria-pressed='true'],
 			&:hover {
-				background-color: #f2f2f2;
+				&::after {
+					height: 2px;
+				}
+
+				.clip-path-defaults__clip-path {
+					background-color: var(--maxi-secondary-color);
+				}
+
+				path {
+					fill: var(--maxi-secondary-color);
+				}
 			}
 		}
 		&__clip-path {
-			width: 28px;
-			height: 28px;
-			background-color: #464a53;
+			width: 20px;
+			height: 20px;
+			transform: translateZ(0);
 			margin: auto;
+			background-color: #000;
+		}
+
+		svg {
+			width: 20px;
+			height: 20px;
+			path {
+				fill: #000;
+			}
 		}
 	}
 
@@ -89,6 +130,7 @@
 	.maxi-clip-path-visual-editor {
 		position: relative;
 		width: 100%;
+		margin: 5px 0px;
 		min-height: 291px;
 
 		&__preview {
@@ -129,23 +171,6 @@
 
 		&__hidden-tooltip {
 			display: block;
-		}
-	}
-}
-.maxi-background-control__layers {
-	.maxi-clip-path-control {
-		.clip-path-defaults {
-			&__items {
-				height: calc(48px - 1px);
-				width: calc(48px - 1px);
-
-				&:nth-child(5n) {
-					margin-right: 0;
-				}
-				&:nth-child(6n) {
-					margin-right: 5px;
-				}
-			}
 		}
 	}
 }

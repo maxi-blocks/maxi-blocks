@@ -53,6 +53,7 @@ const AxisInput = props => {
 		onChangeValue,
 		isGeneral,
 		minMaxSettings,
+		currentUnit,
 	} = props;
 
 	const value = getValue(target, breakpoint);
@@ -61,11 +62,14 @@ const AxisInput = props => {
 	return (
 		<AdvancedNumberControl
 			label={__(capitalize(label), 'maxi-blocks')}
-			className={`maxi-axis-control__content__item maxi-axis-control__content__item__${replace(
-				label,
-				' / ',
-				'-'
-			).toLowerCase()}`}
+			className={classnames(
+				'maxi-axis-control__content__item',
+				`maxi-axis-control__content__item__${replace(
+					label,
+					' / ',
+					'-'
+				).toLowerCase()}`
+			)}
 			placeholder={lastValue}
 			value={value}
 			onChangeValue={val =>
@@ -73,7 +77,11 @@ const AxisInput = props => {
 			}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
+			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
+			classNameAutoInput='maxi-axis-control__item-auto'
 			disableReset
+			min={minMaxSettings[currentUnit].min || 0}
+			max={minMaxSettings[currentUnit].max || 999}
 		/>
 	);
 };
@@ -238,20 +246,26 @@ const AxisControlContent = props => {
 	);
 
 	const getSyncLabel = () => {
+		const label =
+			type.toLowerCase() === 'border radius'
+				? 'border radii'
+				: type.toLowerCase();
+		const textSeparate =
+			label === 'border radius' ? 'separate' : 'separately';
 		switch (sync) {
 			case 'all':
 				return type
-					? __(`Set ${type.toLowerCase()} equal`, 'maxi-blocks')
-					: __(`Set equal`, 'maxi-blocks');
+					? __(`Set ${label} equal`, 'maxi-blocks')
+					: __('Set equal', 'maxi-blocks');
 			case 'axis':
 				return type
-					? __(`Set ${type.toLowerCase()} together`, 'maxi-blocks')
-					: __(`Set together`, 'maxi-blocks');
+					? __(`Set ${label} together`, 'maxi-blocks')
+					: __('Set together', 'maxi-blocks');
 			case 'none':
 			default:
 				return type
-					? __(`Set ${type.toLowerCase()} separate`, 'maxi-blocks')
-					: __(`Set separate`, 'maxi-blocks');
+					? __(`Set ${label} ${textSeparate}`, 'maxi-blocks')
+					: __('Set separate', 'maxi-blocks');
 		}
 	};
 
@@ -259,7 +273,7 @@ const AxisControlContent = props => {
 		<>
 			<BaseControl
 				label={__(type, 'maxi-blocks')}
-				className='maxi-axis-control__header'
+				className='maxi-axis-control__unit-header'
 			>
 				<SelectControl
 					className='maxi-axis-control__units'
@@ -306,6 +320,7 @@ const AxisControlContent = props => {
 				options={[
 					{
 						value: 'all',
+						className: 'maxi-axis-control__sync-all',
 						label:
 							type === 'Margin'
 								? marginSyncAllIcon
@@ -313,6 +328,7 @@ const AxisControlContent = props => {
 					},
 					{
 						value: 'axis',
+						className: 'maxi-axis-control__sync-axis',
 						label:
 							type === 'Margin'
 								? marginSyncDirectionIcon
@@ -320,6 +336,7 @@ const AxisControlContent = props => {
 					},
 					{
 						value: 'none',
+						className: 'maxi-axis-control__sync-none',
 						icon:
 							type === 'Margin'
 								? marginSeparateIcon
@@ -494,19 +511,13 @@ const AxisControl = props => {
 	) => {
 		let newValue = '';
 
-		if (optionType === 'number') {
-			if (isEmpty(val)) {
-				newValue = val;
-			} else {
-				newValue = +val;
-			}
-		} else if (isEmpty(val) && !isNumber(val)) {
-			newValue = '';
-		} else if (val === 'auto') {
-			newValue = 'auto';
-		} else {
-			newValue = val;
-		}
+		if (optionType === 'number')
+			if (isEmpty(val)) newValue = val;
+			else newValue = +val;
+		else if (isEmpty(val) && !isNumber(val)) newValue = '';
+		else if (val === 'auto') newValue = 'auto';
+		else if (optionType === 'string') newValue = val.toString();
+		else newValue = val;
 
 		if (target === 'padding' && newValue < 0) newValue = 0;
 
@@ -554,7 +565,14 @@ const AxisControl = props => {
 			case 'axis': {
 				if (singleTarget === 'horizontal') {
 					inputsArray.forEach(key => {
-						if (key === 'left' || key === 'right') {
+						if (
+							[
+								'left',
+								'right',
+								'bottom-left',
+								'top-right',
+							].includes(key)
+						) {
 							response[
 								getAttributeKey(
 									getKey(key),
@@ -577,7 +595,14 @@ const AxisControl = props => {
 					});
 				} else if (singleTarget === 'vertical') {
 					inputsArray.forEach(key => {
-						if (key === 'top' || key === 'bottom') {
+						if (
+							[
+								'top',
+								'bottom',
+								'top-left',
+								'bottom-right',
+							].includes(key)
+						) {
 							response[
 								getAttributeKey(
 									getKey(key),
@@ -634,7 +659,7 @@ const AxisControl = props => {
 				<ResponsiveTabsControl breakpoint={breakpoint}>
 					<AxisControlContent
 						{...props}
-						key='AxisControlContent__1'
+						key='AxisControlContent__responsive'
 						label={label}
 						getOptions={getOptions}
 						currentUnit={currentUnit}
@@ -656,7 +681,7 @@ const AxisControl = props => {
 			{!useResponsiveTabs && (
 				<AxisControlContent
 					{...props}
-					key='AxisControlContent__2'
+					key='AxisControlContent__non-responsive'
 					label={label}
 					getOptions={getOptions}
 					currentUnit={currentUnit}

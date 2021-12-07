@@ -462,7 +462,7 @@ const IconControl = props => {
 					{iconBackgroundActiveMedia === 'gradient' && (
 						<GradientControl
 							label={__(
-								'Icon Background Gradient',
+								'Icon Background gradient',
 								'maxi-blocks'
 							)}
 							gradient={getLastBreakpointAttribute(

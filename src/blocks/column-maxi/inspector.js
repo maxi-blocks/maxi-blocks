@@ -20,6 +20,7 @@ import {
 } from '../../extensions/styles';
 import { getColumnDefaultValue } from '../../extensions/column-templates';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsColumn, categoriesColumn } from './custom-css';
 
 /**
  * Inspector
@@ -27,6 +28,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
 		props;
+
 
 	return (
 		<InspectorControls>
@@ -151,7 +153,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										...inspectorTabs.background({
+										...inspectorTabs.blockBackground({
 											props,
 											disableVideo: true,
 										}),
@@ -185,6 +187,12 @@ const Inspector = props => {
 											props,
 										}),
 									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsColumn,
+										categories: categoriesColumn,
+									}),
 									...inspectorTabs.transform({
 										props,
 									}),

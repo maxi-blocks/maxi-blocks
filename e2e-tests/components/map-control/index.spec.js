@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 console.error = jest.fn();
 
@@ -27,19 +27,13 @@ describe('MapControl', () => {
 		await pressKeyTimes('Backspace', '9');
 		await page.keyboard.type('52.555');
 
-		const expectLatitude = '52.555';
-		const mapAttributes = await getBlockAttributes();
-		const latitudeAttribute = mapAttributes['map-latitude'];
-		expect(latitudeAttribute).toStrictEqual(expectLatitude);
+		expect(await getAttributes('map-latitude')).toStrictEqual('52.555');
 
 		await inputs[1].focus();
 		await pressKeyTimes('Backspace', '9');
 		await page.keyboard.type('13.444');
 
-		const expectLongitude = '13.444';
-		const mapAttribute = await getBlockAttributes();
-		const longitudeAttribute = mapAttribute['map-longitude'];
-		expect(longitudeAttribute).toStrictEqual(expectLongitude);
+		expect(await getAttributes('map-longitude')).toStrictEqual('13.444');
 
 		// zoom
 		const zoom = await accordionPanel.$$(
@@ -50,10 +44,7 @@ describe('MapControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('8');
 
-		const expectZoom = 8;
-		const mapZoomAttribute = await getBlockAttributes();
-		const mapZoom = mapZoomAttribute['map-zoom'];
-		expect(mapZoom).toStrictEqual(expectZoom);
+		expect(await getAttributes('map-zoom')).toStrictEqual(8);
 
 		// map icon
 		await accordionPanel.$$eval(
@@ -61,10 +52,7 @@ describe('MapControl', () => {
 			selectIcon => selectIcon[2].click()
 		);
 
-		const expectMarker = 3;
-		const mapMarkerAttribute = await getBlockAttributes();
-		const mapMarker = mapMarkerAttribute['map-marker'];
-		expect(mapMarker).toStrictEqual(expectMarker);
+		expect(await getAttributes('map-marker')).toStrictEqual(3);
 
 		// Marker Opacity
 		const opacity = await accordionPanel.$('.maxi-opacity-control input');
@@ -73,11 +61,7 @@ describe('MapControl', () => {
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('50');
 
-		const expectOpacity = 0.5;
-		const mapOpacityAttribute = await getBlockAttributes();
-		const mapOpacity = mapOpacityAttribute['map-marker-opacity'];
-
-		expect(mapOpacity).toStrictEqual(expectOpacity);
+		expect(await getAttributes('map-marker-opacity')).toStrictEqual(0.5);
 
 		// Marker Scale
 		const scale = await accordionPanel.$$(
@@ -88,10 +72,7 @@ describe('MapControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('5');
 
-		const expectScale = 5;
-		const mapScaleAttribute = await getBlockAttributes();
-		const mapScale = mapScaleAttribute['map-marker-scale'];
-		expect(mapScale).toStrictEqual(expectScale);
+		expect(await getAttributes('map-marker-scale')).toStrictEqual(5);
 
 		// custom color
 		await accordionPanel.$eval(
@@ -107,10 +88,9 @@ describe('MapControl', () => {
 		await page.keyboard.type('081219');
 		await page.keyboard.press('Enter');
 
-		const expectColor = '#081219';
-		const mapColorAttribute = await getBlockAttributes();
-		const mapColor = mapColorAttribute['map-marker-stroke-color'];
-		expect(mapColor).toStrictEqual(expectColor);
+		expect(await getAttributes('map-marker-stroke-color')).toStrictEqual(
+			'#081219'
+		);
 
 		// Marker text
 		const marker = await accordionPanel.$$(
@@ -121,10 +101,9 @@ describe('MapControl', () => {
 		await pressKeyTimes('Backspace', '5');
 		await page.keyboard.type('test');
 
-		const expectText = 'Marker test';
-		const mapTextAttribute = await getBlockAttributes();
-		const mapText = mapTextAttribute['map-marker-text'];
-		expect(mapText).toStrictEqual(expectText);
+		expect(await getAttributes('map-marker-text')).toStrictEqual(
+			'Marker test'
+		);
 
 		// Marker text color
 		await accordionPanel.$$eval(
@@ -132,11 +111,9 @@ describe('MapControl', () => {
 			color => color[4].click()
 		);
 
-		const expectColorText = 5;
-		const mapColorTextAttribute = await getBlockAttributes();
-		const mapColorText =
-			mapColorTextAttribute['map-marker-palette-text-color'];
-		expect(mapColorText).toStrictEqual(expectColorText);
+		expect(
+			await getAttributes('map-marker-palette-text-color')
+		).toStrictEqual(5);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

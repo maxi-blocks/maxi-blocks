@@ -5,6 +5,7 @@ export { default as boxShadowHover } from './boxShadowHover';
 export { default as breakpoints } from './breakpoints';
 export { default as columnSize } from './columnSize';
 export { default as container } from './container';
+export { default as customCss } from './customCss';
 export { default as display } from './display';
 export { default as displayHover } from './displayHover';
 export { default as divider } from './divider';

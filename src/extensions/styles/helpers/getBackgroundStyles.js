@@ -209,7 +209,7 @@ export const getGradientBackgroundObject = ({
 		if (!isEmpty(bgGradient) && bgGradient !== 'undefined') {
 			response[breakpoint].background = bgGradient;
 		} else {
-			const test = getColorBackgroundObject({
+			const colorBackground = getColorBackgroundObject({
 				...getGroupAttributes(
 					props,
 					['background', 'backgroundColor'],
@@ -225,9 +225,11 @@ export const getGradientBackgroundObject = ({
 				scValues,
 			});
 
-			response[breakpoint].background =
-				test[breakpoint].background ??
-				test[breakpoint]['background-color'];
+			const background =
+				colorBackground[breakpoint].background ??
+				colorBackground[breakpoint]['background-color'];
+
+			if (background) response[breakpoint].background = background;
 		}
 		if (!isNil(bgGradientClipPath))
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
@@ -643,6 +645,7 @@ const getBackgroundLayers = ({
 								),
 								isHover,
 								prefix,
+								blockStyle,
 								breakpoint,
 							}),
 							getDisplayStyles(

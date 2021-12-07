@@ -15,6 +15,7 @@ import {
 	changeResponsive,
 	getAttributes,
 	getBlockStyle,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Column Maxi', () => {

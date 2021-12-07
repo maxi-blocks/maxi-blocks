@@ -10,7 +10,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockStyle, openSidebarTab } from '../../utils';
+import { getBlockStyle, openSidebarTab, addCustomCSS } from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
@@ -35,6 +35,10 @@ describe('Button Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('Button Custom CSS', async () => {
+		expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 
 	/*
 	it('Check Button Icon', async () => {

@@ -55,7 +55,7 @@ describe('NumberCounterControl', () => {
 
 		// Duration
 		await inputs[3].focus();
-		await page.keyboard.type('00');
+		await page.keyboard.type('0');
 
 		// Stroke
 		await inputs[4].focus();
@@ -81,7 +81,7 @@ describe('NumberCounterControl', () => {
 		const expectAttributes = {
 			'number-counter-width-general': 100,
 			'number-counter-width-unit-general': '%',
-			'number-counter-duration': 100,
+			'number-counter-duration': 10,
 			'number-counter-end': 50,
 			'number-counter-start': 20,
 			'number-counter-stroke': 50,

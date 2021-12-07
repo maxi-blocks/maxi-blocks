@@ -1,3 +1,11 @@
 .toolbar-item__row-settings__popover {
 	min-width: 270px;
 }
+.maxi-resizable__handle.maxi-resizable__handle--show.maxi-resizable__handle-right {
+	border-left: 5px solid #ddd;
+	width: 5px !important;
+}
+.maxi-resizable__handle.maxi-resizable__handle--show.maxi-resizable__handle-left {
+	border-right: 5px solid #ddd;
+	width: 5px !important;
+}

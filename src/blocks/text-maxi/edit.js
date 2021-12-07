@@ -155,7 +155,6 @@ class edit extends MaxiBlockComponent {
 						tagName={textLevel}
 						onReplace={onReplace}
 						onMerge={forward => onMerge(this.props, forward)}
-						preserveWhiteSpace
 						__unstableEmbedURLOnPaste
 					>
 						{onChangeRichText}
@@ -170,7 +169,6 @@ class edit extends MaxiBlockComponent {
 						tagName={typeOfList}
 						onChange={processContent}
 						value={content}
-						placeholder={__('Write list…', 'maxi-blocks')}
 						onSplit={value => {
 							if (!value) {
 								return createBlock(name, {

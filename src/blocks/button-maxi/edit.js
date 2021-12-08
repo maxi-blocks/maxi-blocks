@@ -111,6 +111,12 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				prefix='button-'
+				backgroundGlobalProps={{
+					target: 'background',
+					type: 'button',
+				}}
+				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
 			/>,
 			<MaxiBlock

@@ -159,6 +159,10 @@ export const getGradientBackgroundObject = ({
 	prefix = '',
 	breakpoint = 'general',
 	isIcon = false,
+	blockStyle,
+	isButton,
+	isIconInherit,
+	scValues,
 	...props
 }) => {
 	const response = {
@@ -202,7 +206,31 @@ export const getGradientBackgroundObject = ({
 	} else if (!isIcon) {
 		if (isNumber(bgGradientOpacity))
 			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+		if (!isEmpty(bgGradient) && bgGradient !== 'undefined') {
+			response[breakpoint].background = bgGradient;
+		} else {
+			const colorBackground = getColorBackgroundObject({
+				...getGroupAttributes(
+					props,
+					['background', 'backgroundColor'],
+					isHover,
+					prefix
+				),
+				blockStyle,
+				isButton,
+				breakpoint,
+				isHover,
+				prefix,
+				isIconInherit,
+				scValues,
+			});
+
+			const background =
+				colorBackground[breakpoint].background ??
+				colorBackground[breakpoint]['background-color'];
+
+			if (background) response[breakpoint].background = background;
+		}
 		if (!isNil(bgGradientClipPath))
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
@@ -617,6 +645,7 @@ const getBackgroundLayers = ({
 								),
 								isHover,
 								prefix,
+								blockStyle,
 								breakpoint,
 							}),
 							getDisplayStyles(
@@ -1080,13 +1109,17 @@ export const getBackgroundStyles = ({
 				background: getGradientBackgroundObject({
 					...getGroupAttributes(
 						props,
-						'backgroundGradient',
+						['backgroundColor', 'backgroundGradient'],
 						isHover,
 						prefix
 					),
+					blockStyle,
+					isButton,
 					breakpoint,
 					isHover,
 					prefix,
+					isIconInherit,
+					scValues,
 				}),
 			}),
 		});

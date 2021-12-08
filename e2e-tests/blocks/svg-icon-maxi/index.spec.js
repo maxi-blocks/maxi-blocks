@@ -20,9 +20,8 @@ describe('Svg Icon Maxi', () => {
 		await modalMock(page, { type: 'svg' });
 		await page.waitForTimeout(150);
 
-		await page.$$eval(
-			'.components-modal__screen-overlay .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
-			button => button[0].click()
+		await page.$eval('button[aria-label="Close dialog"]', button =>
+			button.click()
 		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

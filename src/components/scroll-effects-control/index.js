@@ -1,8 +1,8 @@
-/* eslint-disable @wordpress/no-global-event-listener */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -39,7 +39,6 @@ import {
 	motionScale,
 } from '../../icons';
 import './editor.scss';
-import { useState } from 'react';
 
 /**
  * Component

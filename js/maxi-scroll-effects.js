@@ -296,13 +296,13 @@ class ScrollEffects {
 			document.querySelectorAll('[data-scroll-effect-type]')
 		);
 
-		elements.forEach((element, index) => {
+		elements.forEach(element => {
 			const scrollType = element?.getAttribute('data-scroll-effect-type');
 			const scrollTypeArray = scrollType?.trim()?.split(' ');
 			const parent = this.getParent(element);
 			let transition = '';
 
-			scrollTypeArray?.map(type => {
+			scrollTypeArray?.forEach(type => {
 				const dataScroll = this.getScrollData(element, type);
 				const { speedValue, easingValue, delayValue } =
 					this.getScrollSetting(dataScroll, parent);
@@ -330,7 +330,6 @@ class ScrollEffects {
 						break;
 				}
 				this.startingTransform(element, type);
-				return null;
 			});
 
 			if (transition !== '')

@@ -91,7 +91,7 @@ const ScrollEffectsUniqueControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
-				items={labels.map((label, key) => {
+				items={labels.map(label => {
 					const special = getSpecialLabels(type, label);
 					return {
 						label: __(`${label} zone`, 'maxi-blocks'),

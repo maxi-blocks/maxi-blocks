@@ -396,6 +396,24 @@ const Inspector = memo(
 																		deviceType,
 																		attributes
 																	)}
+																	minMaxSettings={{
+																		px: {
+																			min: 0,
+																			max: 999,
+																		},
+																		em: {
+																			min: 0,
+																			max: 99,
+																		},
+																		vw: {
+																			min: 0,
+																			max: 99,
+																		},
+																		'%': {
+																			min: 0,
+																			max: 100,
+																		},
+																	}}
 																	onChangeUnit={val =>
 																		setAttributes(
 																			{

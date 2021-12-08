@@ -18,7 +18,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isNumber } from 'lodash';
 
 /**
  * Styles
@@ -43,12 +43,14 @@ const FullSizeControl = props => {
 	const onChangeValue = (target, val) => {
 		const response = {};
 
+		const value = !isNil(val) && isNumber(val) ? val : '';
+
 		if (Array.isArray(target)) {
 			target.forEach(el => {
-				response[`${el}-${breakpoint}`] = (!isNil(val) && val) || '';
+				response[`${el}-${breakpoint}`] = value;
 			});
 		} else {
-			response[`${target}-${breakpoint}`] = (!isNil(val) && val) || '';
+			response[`${target}-${breakpoint}`] = value;
 		}
 		onChange(response);
 	};

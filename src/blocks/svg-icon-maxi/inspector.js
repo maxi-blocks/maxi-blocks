@@ -24,8 +24,8 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 
 /**
-* External dependencies
-**/
+ * External dependencies
+ */
 import { isEmpty, without } from 'lodash';
 
 /**
@@ -50,10 +50,8 @@ const Inspector = props => {
 	} = attributes;
 
 	const getCategoriesCss = () => {
-		const {
-			'background-layers': bgLayers,
-		} = attributes;
-		return without (
+		const { 'background-layers': bgLayers } = attributes;
+		return without(
 			categoriesSvgIcon,
 			isEmpty(bgLayers) && 'canvas background'
 		);

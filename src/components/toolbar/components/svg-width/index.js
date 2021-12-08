@@ -24,9 +24,9 @@ const SvgWidth = props => {
 		blockName,
 		onChange,
 		breakpoint,
-		changeSVGSize,
 		changeSVGStrokeWidth,
 		type,
+		resizableObject,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
@@ -42,9 +42,11 @@ const SvgWidth = props => {
 					{...props}
 					onChange={obj => {
 						onChange(obj);
-						changeSVGSize(obj[`svg-width-${breakpoint}`]);
 					}}
+					prefix='svg-'
 					breakpoint={breakpoint}
+					resizableObject={resizableObject}
+					enableResponsive
 				/>
 				{type !== 'Shape' && (
 					<SvgStrokeWidthControl
@@ -56,6 +58,7 @@ const SvgWidth = props => {
 							);
 						}}
 						breakpoint={breakpoint}
+						prefix='svg-'
 					/>
 				)}
 			</div>

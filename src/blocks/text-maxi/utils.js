@@ -1,10 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createBlock } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
-import { split } from '@wordpress/rich-text';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Internal dependencies
@@ -14,17 +11,6 @@ import {
 	fromTextToList,
 	getFormatsOnMerge,
 } from '../../extensions/text/formats';
-import flatFormatsWithClass from '../../extensions/text/formats/flatFormatsWithClass';
-import getCurrentFormatClassName from '../../extensions/text/formats/getCurrentFormatClassName';
-import getCustomFormat from '../../extensions/text/formats/getCustomFormat';
-import getHasCustomFormat from '../../extensions/text/formats/getHasCustomFormat';
-
-/**
- * External dependencies
- */
-import { cloneDeep } from 'lodash';
-
-const name = 'maxi-blocks/text-maxi';
 
 const {
 	getNextBlockClientId,
@@ -35,7 +21,7 @@ const {
 
 const { removeBlock, updateBlockAttributes } = dispatch('core/block-editor');
 
-export const onMerge = (props, forward) => {
+const onMerge = (props, forward) => {
 	const { attributes, clientId, setAttributes } = props;
 	const { isList, content, 'custom-formats': customFormats } = attributes;
 
@@ -113,49 +99,4 @@ export const onMerge = (props, forward) => {
 	}
 };
 
-export const onSplit = (
-	attributes,
-	splitContent,
-	isExistentBlock,
-	clientId
-) => {
-	const formatValue = select('maxiBlocks/text').getFormatValue(clientId);
-
-	const hasCustomFormats = getHasCustomFormat(formatValue);
-
-	if (!hasCustomFormats)
-		return createBlock(name, {
-			...attributes,
-			content: splitContent,
-		});
-
-	const styleCard = select(
-		'maxiBlocks/style-cards'
-	).receiveMaxiSelectedStyleCard();
-
-	const typography = cloneDeep(getGroupAttributes(attributes, 'typography'));
-
-	const { isList, textLevel, parentBlockStyle } = attributes;
-
-	const cleanedFormatValue = split(formatValue)[isExistentBlock ? 0 : 1];
-
-	const formatClassName = getCurrentFormatClassName(cleanedFormatValue);
-	const value = getCustomFormat(formatClassName) || {};
-
-	const { typography: newTypography, content: newContent } =
-		flatFormatsWithClass({
-			formatValue: cleanedFormatValue,
-			typography,
-			content: splitContent,
-			isList,
-			textLevel,
-			value,
-			styleCard: styleCard[parentBlockStyle],
-		});
-
-	return createBlock(name, {
-		...attributes,
-		...newTypography,
-		content: newContent,
-	});
-};
+export default onMerge;

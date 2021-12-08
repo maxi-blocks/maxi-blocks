@@ -53,6 +53,7 @@ const AxisInput = props => {
 		onChangeValue,
 		isGeneral,
 		minMaxSettings,
+		currentUnit,
 	} = props;
 
 	const value = getValue(target, breakpoint);
@@ -76,8 +77,11 @@ const AxisInput = props => {
 			}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
+			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			disableReset
+			min={minMaxSettings[currentUnit].min || 0}
+			max={minMaxSettings[currentUnit].max || 999}
 		/>
 	);
 };
@@ -507,19 +511,13 @@ const AxisControl = props => {
 	) => {
 		let newValue = '';
 
-		if (optionType === 'number') {
-			if (isEmpty(val)) {
-				newValue = val;
-			} else {
-				newValue = +val;
-			}
-		} else if (isEmpty(val) && !isNumber(val)) {
-			newValue = '';
-		} else if (val === 'auto') {
-			newValue = 'auto';
-		} else {
-			newValue = val;
-		}
+		if (optionType === 'number')
+			if (isEmpty(val)) newValue = val;
+			else newValue = +val;
+		else if (isEmpty(val) && !isNumber(val)) newValue = '';
+		else if (val === 'auto') newValue = 'auto';
+		else if (optionType === 'string') newValue = val.toString();
+		else newValue = val;
 
 		if (target === 'padding' && newValue < 0) newValue = 0;
 
@@ -661,7 +659,7 @@ const AxisControl = props => {
 				<ResponsiveTabsControl breakpoint={breakpoint}>
 					<AxisControlContent
 						{...props}
-						key='AxisControlContent__1'
+						key='AxisControlContent__responsive'
 						label={label}
 						getOptions={getOptions}
 						currentUnit={currentUnit}
@@ -683,7 +681,7 @@ const AxisControl = props => {
 			{!useResponsiveTabs && (
 				<AxisControlContent
 					{...props}
-					key='AxisControlContent__2'
+					key='AxisControlContent__non-responsive'
 					label={label}
 					getOptions={getOptions}
 					currentUnit={currentUnit}

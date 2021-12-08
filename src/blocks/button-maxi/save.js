@@ -20,7 +20,7 @@ import { isNil, isEmpty } from 'lodash';
  */
 const save = props => {
 	const { attributes } = props;
-	const { linkSettings, buttonContent } = attributes;
+	const { fullWidth, linkSettings, buttonContent } = attributes;
 
 	const name = 'maxi-blocks/button-maxi';
 
@@ -50,6 +50,7 @@ const save = props => {
 		>
 			<Button
 				className={buttonClasses}
+				data-align={fullWidth}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!attributes['icon-only'] && (

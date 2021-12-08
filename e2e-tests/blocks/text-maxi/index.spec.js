@@ -39,6 +39,10 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
+	it('Text Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
+
 	it('Test Text Maxi on pressing enter', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
@@ -638,7 +642,4 @@ describe('TextMaxi', () => {
 
 		expect(inputValue).toStrictEqual('10');
 	});
-	it('Text Maxi Custom CSS', async () => {
-		await expect(await addCustomCSS(page)).toMatchSnapshot();
-	}, 500000);
 });

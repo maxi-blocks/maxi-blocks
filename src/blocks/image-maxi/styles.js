@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	stylesCleaner,
+} from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -310,6 +314,38 @@ const getFigcaptionObject = props => {
 		...(props.imgWidth && {
 			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
+		...(() => {
+			const response = { captionMargin: {} };
+			const { captionPosition } = props;
+
+			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+				breakpoint => {
+					const num = getLastBreakpointAttribute(
+						'caption-gap',
+						breakpoint,
+						props
+					);
+					const unit = getLastBreakpointAttribute(
+						'caption-gap-unit',
+						breakpoint,
+						props
+					);
+
+					if (!isNil(num) && !isNil(unit)) {
+						const marginType =
+							captionPosition === 'bottom'
+								? 'margin-top'
+								: 'margin-bottom';
+
+						response.captionMargin[breakpoint] = {
+							[marginType]: num + unit,
+						};
+					}
+				}
+			);
+
+			return response;
+		})(),
 	};
 
 	return response;

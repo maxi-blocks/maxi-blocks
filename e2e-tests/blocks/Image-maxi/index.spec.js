@@ -18,6 +18,7 @@ import {
 	getAttributes,
 	editColorControl,
 	getBlockStyle,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Image Maxi', () => {
@@ -309,6 +310,9 @@ describe('Image Maxi', () => {
 
 		expect(checkFrontend).toMatchSnapshot();
 	});
+	it('Image Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 
 	it('Image alt tag', async () => {
 		await openSidebarTab(page, 'style', 'alt tag');

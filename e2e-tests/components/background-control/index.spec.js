@@ -30,7 +30,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background Color layer', async () => {
-		await addBackgroundLayer(page, 'color');
+		await addBackgroundLayer(page, 'style', 'color');
 
 		// change color
 		await page.$$eval(
@@ -208,7 +208,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'base');
 
 		await removeBackgroundLayers(page);
-		await addBackgroundLayer(page, 'image');
+		await addBackgroundLayer(page, 'style', 'image');
 
 		// opacity
 		await page.$$eval(
@@ -653,7 +653,7 @@ describe('BackgroundControl', () => {
 	it('Check Background video layer', async () => {
 		await changeResponsive(page, 'base');
 		await removeBackgroundLayers(page);
-		await addBackgroundLayer(page, 'video');
+		await addBackgroundLayer(page, 'style', 'video');
 
 		const video =
 			'https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp';
@@ -823,7 +823,7 @@ describe('BackgroundControl', () => {
 	it('Check Background shape layer', async () => {
 		await changeResponsive(page, 'base');
 		await removeBackgroundLayers(page);
-		await addBackgroundLayer(page, 'shape');
+		await addBackgroundLayer(page, 'style', 'shape');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -1079,7 +1079,7 @@ describe('BackgroundControl', () => {
 	it('generate a layer from hover on responsive and test that layers cannot be deleted from hover', async () => {
 		await removeBackgroundLayers(page);
 		await changeResponsive(page, 'l');
-		await addBackgroundLayer(page, 'color');
+		await addBackgroundLayer(page, 'style', 'color');
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -1106,10 +1106,10 @@ describe('BackgroundControl', () => {
 	it('generate a layer from hover and test the hider', async () => {
 		// hover
 
-		await addBackgroundLayer(page, 'color', true);
-		await addBackgroundLayer(page, 'image', true);
-		await addBackgroundLayer(page, 'video', true);
-		await addBackgroundLayer(page, 'shape', true);
+		await addBackgroundLayer(page, 'style', 'color', true);
+		await addBackgroundLayer(page, 'style', 'image', true);
+		await addBackgroundLayer(page, 'style', 'video', true);
+		await addBackgroundLayer(page, 'style', 'shape', true);
 
 		// hide layer
 		await page.$eval(

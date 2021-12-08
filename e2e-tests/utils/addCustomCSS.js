@@ -42,7 +42,7 @@ const addCustomCSS = async page => {
 		await checkCSS({ page, cssInstances });
 	}
 
-	return getBlockStyle(page); // !!!!!!!
+	return getBlockStyle(page);
 };
 
 export default addCustomCSS;

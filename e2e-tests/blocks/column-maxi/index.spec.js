@@ -170,4 +170,7 @@ describe('Column Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Column Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

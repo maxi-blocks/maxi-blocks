@@ -6,7 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-import { getBlockStyle } from '../../utils';
+import { getBlockStyle, addCustomCSS } from '../../utils';
 
 describe('Container Maxi', () => {
 	it('Container Maxi does not break', async () => {
@@ -17,4 +17,8 @@ describe('Container Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('Container Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

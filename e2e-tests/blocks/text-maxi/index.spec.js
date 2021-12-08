@@ -23,6 +23,7 @@ import {
 	getBlockAttributes,
 	getBlockStyle,
 	openPreviewPage,
+	addCustomCSS,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -689,4 +690,7 @@ describe('TextMaxi', () => {
 
 		expect(inputValue).toStrictEqual('10');
 	});
+	it('Text Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

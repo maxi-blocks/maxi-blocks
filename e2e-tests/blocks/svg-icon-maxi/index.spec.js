@@ -10,7 +10,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockStyle, modalMock } from '../../utils';
+import { getBlockStyle, modalMock, addCustomCSS } from '../../utils';
 
 describe('Svg Icon Maxi', () => {
 	it('Svg Icon Maxi does not break', async () => {
@@ -18,9 +18,18 @@ describe('Svg Icon Maxi', () => {
 		await insertBlock('SVG Icon Maxi');
 
 		await modalMock(page, { type: 'svg' });
+		await page.waitForTimeout(150);
+
+		await page.$$eval(
+			'.components-modal__screen-overlay .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
+			button => button[0].click()
+		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Svg Icon Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

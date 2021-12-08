@@ -6,7 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-import { getBlockStyle } from '../../utils';
+import { getBlockStyle, addCustomCSS } from '../../utils';
 
 describe('Row Maxi', () => {
 	it('Row Maxi does not break', async () => {
@@ -20,4 +20,8 @@ describe('Row Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('Row Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

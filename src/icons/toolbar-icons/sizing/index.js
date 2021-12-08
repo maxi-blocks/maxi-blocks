@@ -4,17 +4,40 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarSizing = (
-	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
-		<Path
-			fill='#fff'
-			d='M19.6 8.3L19 9l2.5 2.5h-8.1v.9h8.1L19 15l.7.7 3.7-3.7-3.8-3.7zm-9 4.2v-.9H2.5l2.9-2.9-.7-.7-4 4 3.7 3.7.6-.7-2.5-2.5h8.1zm1.9 9v-8.1h-.9v8.1L9 19l-.7.7 3.7 3.7 4-4-.7-.7-2.8 2.8zm-1-19v8.1h.9V2.5L15 5l.7-.7L12 .7 8.3 4.4 9 5l2.5-2.5z'
-		/>
-		<path
-			fill='none'
-			stroke='#fff'
-			strokeMiterlimit='10'
-			d='M19.6 8.3L19 9l2.5 2.5h-8.1v.9h8.1L19 15l.7.7 3.7-3.7-3.8-3.7zm-9 4.2v-.9H2.5l2.9-2.9-.7-.7-4 4 3.7 3.7.6-.7-2.5-2.5h8.1zm1.9 9v-8.1h-.9v8.1L9 19l-.7.7 3.7 3.7 4-4-.7-.7-2.8 2.8zm-1-19v8.1h.9V2.5L15 5l.7-.7L12 .7 8.3 4.4 9 5l2.5-2.5z'
-		/>
+	<SVG version='1.1' id='Layer_1' x='0px' y='0px' viewBox='0 0 16 16'>
+		<g>
+			<Path
+				class='st0'
+				d='M5.2,13.7V2.3c0-0.8,0.7-1.5,1.5-1.5h2.7c0.8,0,1.5,0.7,1.5,1.5v11.4c0,0.8-0.7,1.5-1.5,1.5H6.7 C5.9,15.2,5.2,14.5,5.2,13.7z'
+			/>
+			<g>
+				<g>
+					<g>
+						<Path class='st0' d='M12.6,8' />
+						<polyline
+							className='st0'
+							points='12.6,10.4 15.1,8 12.6,5.6 				'
+						/>
+						<line
+							className='st0'
+							x1='0.9'
+							y1='8'
+							x2='15.1'
+							y2='8'
+						/>
+					</g>
+				</g>
+				<g>
+					<g>
+						<Path class='st0' d='M3.4,8' />
+						<polyline
+							className='st0'
+							points='3.4,10.4 0.9,8 3.4,5.6 				'
+						/>
+					</g>
+				</g>
+			</g>
+		</g>
 	</SVG>
 );
 

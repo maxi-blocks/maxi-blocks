@@ -126,8 +126,12 @@
 					padding: 0;
 				}
 				&__icon {
+					line,
+					rect,
+					polyline,
 					path {
-						fill: #141516;
+						fill: transparent;
+						stroke: #141516;
 					}
 					display: block;
 					width: 1rem;
@@ -144,6 +148,7 @@
 }
 
 body .toolbar-item__popover {
+	margin-top: 0 !important;
 	.components-maxi-control__reset-button {
 		border: 2px solid #80828a;
 		svg {
@@ -232,11 +237,12 @@ body .toolbar-item__popover {
 		border-left-color: transparent !important;
 		border-right-color: transparent !important;
 		z-index: -1;
+		display: none;
 	}
 	.maxi-base-control,
 	.components-base-control {
 		&__field {
-			color: #fff;
+			color: #141516;
 			margin-bottom: 0;
 			.components-range-control__slider {
 				& + span {
@@ -248,27 +254,27 @@ body .toolbar-item__popover {
 					span {
 						background-color: #fff !important;
 						&:before {
-							border-color: #fff !important;
+							border-color: #232533 !important;
 						}
 					}
 				}
 			}
 			.components-range-control__tooltip {
-				border: 2px solid #80828a;
+				border: 2px solid #707070;
 				background-color: #232433;
-				color: #fff;
+				color: #141516;
 				&:after {
-					border-top-color: #fff;
+					border-top-color: #232533;
 				}
 			}
 			.components-range-control__number {
 				background-color: transparent;
-				color: #fff;
+				color: #141516;
 				border-color: #80828a !important;
 			}
 			.maxi-select-control__input {
 				background-color: transparent !important;
-				color: #fff !important;
+				color: #141516 !important;
 				border: 2px solid #80828a !important;
 				option {
 					color: #000 !important;
@@ -282,22 +288,22 @@ body .toolbar-item__popover {
 						background-color: transparent !important;
 					}
 					svg {
-						fill: #fff !important;
+						fill: #141516 !important;
 					}
 				}
 			}
 		}
 		&__label {
-			color: #fff;
+			color: #141516;
 		}
 	}
 
 	.components-popover__content {
-		background-color: #232433;
-		border-radius: 5px;
-		border: none;
+		background-color: #fff;
+		border: 1px solid #dbdde6;
+		border-radius: 0;
 		min-width: auto;
-		padding: 15px;
+		padding: 8px 8px 0;
 		overflow: visible;
 		.maxi-color-control {
 			margin-bottom: 10px;
@@ -423,17 +429,18 @@ body .toolbar-item__popover {
 
 	&__advanced-button {
 		position: absolute;
-		top: 0 !important;
-		left: 100% !important;
-		transform: translate(0, -100%);
+		top: -20px !important;
+		right: -19px !important;
+		transform: translate(0, 0);
 		background-color: #ff4a17;
 		border-radius: 50%;
-		min-width: 32px !important;
+		min-width: 22px !important;
 		padding: 0 !important;
-		height: 32px;
+		height: 22px;
+		left: auto !important;
 		svg {
 			fill: #fff;
-			width: 20px;
+			width: 16px;
 		}
 	}
 

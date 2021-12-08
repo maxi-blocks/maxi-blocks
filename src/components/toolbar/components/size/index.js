@@ -8,7 +8,8 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
-import ButtonGroupControl from '../../../button-group-control';
+// import ButtonGroupControl from '../../../button-group-control';
+import ToggleSwitch from '../../../toggle-switch';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
@@ -41,8 +42,15 @@ const BLOCKS_MAX_WIDTH = [
  * Size
  */
 const Size = props => {
-	const { blockName, breakpoint, fullWidth, isFirstOnHierarchy, onChange } =
-		props;
+	const {
+		blockName,
+		breakpoint,
+		fullWidth,
+		// blockFullWidth,
+		isFirstOnHierarchy,
+		onChange,
+		// setAttributes,
+	} = props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 
@@ -53,28 +61,24 @@ const Size = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__size'
-			tooltip={__('Size', 'maxi-blocks')}
+			tooltip={__('Size (full width)', 'maxi-blocks')}
 			icon={toolbarSizing}
 			advancedOptions='width height'
 		>
 			<div className='toolbar-item__size__popover'>
 				{(isFirstOnHierarchy ||
 					blockName === 'maxi-blocks/row-maxi') && (
-					<ButtonGroupControl
-						label={__('Full Width', 'maxi-blocks')}
-						selected={fullWidth}
-						options={[
-							{
-								label: __('Yes', 'maxi-blocks'),
-								value: 'full',
-							},
-							{
-								label: __('No', 'maxi-blocks'),
-								value: 'normal',
-							},
-						]}
-						onChange={fullWidth => onChange({ fullWidth })}
-					/>
+					<div>
+						<ToggleSwitch
+							label={__('Enable full width', 'maxi-blocks')}
+							selected={fullWidth === 'full'}
+							onChange={val => {
+								// onChange(val ? 'full' : 'normal');
+								const full = val ? 'full' : 'normal';
+								onChange({ fullWidth: full });
+							}}
+						/>
+					</div>
 				)}
 
 				{currentBlockRoot && (

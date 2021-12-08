@@ -4,11 +4,10 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const moveUp = (
-	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15.094 9.375'>
-		<Path
-			fill='#fff'
-			d='M14.765 9.013a.889.889 0 01-.7.351H.996a.958.958 0 01-.7-.293v-.058a.991.991 0 010-1.465L6.858.341V.282a.922.922 0 011.348 0l6.562 7.266a.993.993 0 010 1.465z'
-		/>
+	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 8'>
+		<g id='Group_207' transform='translate(-841.125 -229.125)'>
+			<Path fill='#fff' d='M849.1,229.9l-7.1,5.9h14.2L849.1,229.9z' />
+		</g>
 	</SVG>
 );
 

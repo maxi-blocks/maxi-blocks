@@ -29,7 +29,6 @@ const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
 		props;
 
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}

@@ -213,8 +213,35 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 							/>
-							<ReusableBlocks clientId={clientId} />
 							<ColumnMover clientId={clientId} blockName={name} />
+							<BackgroundColor
+								{...getGroupAttributes(
+									attributes,
+									'background'
+								)}
+								blockName={name}
+								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+							/>
+							<Size
+								blockName={name}
+								{...getGroupAttributes(attributes, 'size')}
+								fullWidth={fullWidth}
+								isFirstOnHierarchy={isFirstOnHierarchy}
+								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
+							/>
+							<Link
+								blockName={name}
+								linkSettings={linkSettings}
+								onChange={linkSettings =>
+									setAttributes({ linkSettings })
+								}
+								textLevel={textLevel}
+							/>
+							<Duplicate clientId={clientId} blockName={name} />
+							<ReusableBlocks clientId={clientId} />
 							<DividerColor
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
@@ -338,14 +365,6 @@ const MaxiToolbar = memo(
 								toggleHandlers={toggleHandlers}
 								blockName={name}
 							/>
-							<Link
-								blockName={name}
-								linkSettings={linkSettings}
-								onChange={linkSettings =>
-									setAttributes({ linkSettings })
-								}
-								textLevel={textLevel}
-							/>
 							<TextLink
 								{...getGroupAttributes(
 									attributes,
@@ -365,16 +384,6 @@ const MaxiToolbar = memo(
 								isList={isList}
 								typeOfList={typeOfList}
 								onChange={obj => setAttributes(obj)}
-							/>
-							<BackgroundColor
-								{...getGroupAttributes(
-									attributes,
-									'background'
-								)}
-								blockName={name}
-								breakpoint={breakpoint}
-								onChange={obj => setAttributes(obj)}
-								clientId={clientId}
 							/>
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
@@ -457,14 +466,6 @@ const MaxiToolbar = memo(
 									}
 								/>
 							)}
-							<Size
-								blockName={name}
-								{...getGroupAttributes(attributes, 'size')}
-								fullWidth={fullWidth}
-								isFirstOnHierarchy={isFirstOnHierarchy}
-								breakpoint={breakpoint}
-								onChange={obj => setAttributes(obj)}
-							/>
 							<ColumnSize
 								clientId={clientId}
 								blockName={name}
@@ -503,7 +504,6 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 							/>
-							<Duplicate clientId={clientId} blockName={name} />
 							<Delete clientId={clientId} blockName={name} />
 							<ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}

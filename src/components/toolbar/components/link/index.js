@@ -4,7 +4,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { __experimentalLinkControl } from '@wordpress/block-editor';
+import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -53,7 +53,8 @@ const Link = props => {
 			}
 		>
 			<>
-				<__experimentalLinkControl
+				<LinkControl
+					searchInputPlaceholder='Search here...'
 					value={linkSettings}
 					onChange={value => onChange(value)}
 					settings={[
@@ -63,15 +64,15 @@ const Link = props => {
 						},
 						{
 							id: 'noFollow',
-							title: __('Add "nofollow" rel', 'maxi-blocks'),
+							title: __('"nofollow"', 'maxi-blocks'),
 						},
 						{
 							id: 'sponsored',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
+							title: __('"sponsored"', 'maxi-blocks'),
 						},
 						{
 							id: 'ugc',
-							title: __('Add "UGC" rel', 'maxi-blocks'),
+							title: __('"UGC"', 'maxi-blocks'),
 						},
 					]}
 				/>

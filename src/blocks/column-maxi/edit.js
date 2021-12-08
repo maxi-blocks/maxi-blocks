@@ -91,6 +91,12 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => {
@@ -112,6 +118,8 @@ class edit extends MaxiBlockComponent {
 								key={`maxi-column--${uniqueID}`}
 								ref={this.blockRef}
 								{...getMaxiBlockAttributes(this.props)}
+								isOverflowHidden={getIsOverflowHidden()}
+								disableMotion
 								tagName={BlockResizer}
 								resizableObject={this.resizableObject}
 								classes={classnames(

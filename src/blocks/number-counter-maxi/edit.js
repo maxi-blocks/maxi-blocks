@@ -96,6 +96,12 @@ const NumberCounter = attributes => {
 		stroke,
 	]);
 
+	const getIsOverflowHidden = () =>
+		getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+			'hidden' &&
+		getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+			'hidden';
+
 	return (
 		<>
 			<Button
@@ -109,6 +115,7 @@ const NumberCounter = attributes => {
 			/>
 			<BlockResizer
 				className='maxi-number-counter__box'
+				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
 				defaultSize={{
 					width: `${getLastBreakpointAttribute(

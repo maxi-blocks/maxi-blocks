@@ -23,10 +23,15 @@ const BlockResizer = forwardRef((props, ref) => {
 		className,
 		showHandle = false,
 		resizableObject,
+		isOverflowHidden = false,
 		...rest
 	} = props;
 
-	const classes = classnames('maxi-block__resizer', className);
+	const classes = classnames(
+		'maxi-block__resizer',
+		isOverflowHidden && 'maxi-block__resizer--overflow',
+		className
+	);
 	const cornerHandleClassName = 'maxi-resizable__corner-handle';
 	const handleClassName = 'maxi-resizable__handle';
 	const showHandlesClassName = showHandle && 'maxi-resizable__handle--show';

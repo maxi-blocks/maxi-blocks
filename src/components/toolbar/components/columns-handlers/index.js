@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Tooltip } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -31,13 +32,24 @@ const ColumnsHandlers = props => {
 		className
 	);
 
+
+	const [isActive, setActive] = useState("false");
+
+	const toggleClass = () => {
+		setActive(!isActive);
+	};
+
 	return (
 		<Tooltip
 			text={__('Columns Handlers', 'maxi-blocks')}
 			position='bottom center'
 		>
 			<div>
-				<Button className={classes} onClick={toggleHandlers}>
+				<Button 
+				className={classes} 
+				onClick={() => { toggleHandlers(), toggleClass() }}
+				aria-pressed={!isActive}
+				>
 					<Icon className='toolbar-item__icon' icon={handlers} />
 				</Button>
 			</div>

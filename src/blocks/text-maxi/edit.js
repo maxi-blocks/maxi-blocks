@@ -23,7 +23,7 @@ import MaxiBlock, {
 } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import { onMerge, onSplit } from './utils';
+import onMerge from './utils';
 import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
@@ -153,19 +153,9 @@ class edit extends MaxiBlockComponent {
 						value={content}
 						onChange={processContent}
 						tagName={textLevel}
-						onSplit={(value, isExistentBlock) =>
-							onSplit(
-								this.props.attributes,
-								value,
-								isExistentBlock,
-								clientId
-							)
-						}
 						onReplace={onReplace}
 						onMerge={forward => onMerge(this.props, forward)}
-						onRemove={onRemove}
 						__unstableEmbedURLOnPaste
-						__unstableAllowPrefixTransformations
 					>
 						{onChangeRichText}
 					</RichText>
@@ -179,7 +169,6 @@ class edit extends MaxiBlockComponent {
 						tagName={typeOfList}
 						onChange={processContent}
 						value={content}
-						placeholder={__('Write list…', 'maxi-blocks')}
 						onSplit={value => {
 							if (!value) {
 								return createBlock(name, {

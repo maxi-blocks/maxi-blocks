@@ -498,32 +498,6 @@ describe('TextMaxi', () => {
 		expect(content).toMatchSnapshot();
 	});
 
-	it('Testing Text Maxi with custom formats when split', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi Bold', { delay: 100 });
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-item__bold', button => button.click());
-		await page.waitForTimeout(150);
-		await page.keyboard.press('ArrowLeft');
-		await page.waitForTimeout(150);
-		await page.keyboard.press('Enter');
-
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
-		const selectMaxiTextP = await selectMaxiTextDiv.$(
-			'.block-editor-rich-text__editable'
-		);
-		await selectMaxiTextP.focus();
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
-
 	it('Testing Text Maxi with custom formats when split a word at middle', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
@@ -545,32 +519,6 @@ describe('TextMaxi', () => {
 			'.block-editor-rich-text__editable'
 		);
 		await selectMaxiTextP.focus();
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
-
-	it('Testing Text Maxi with custom formats when merge from top block to bottom one', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi.', { delay: 100 });
-		await page.keyboard.press('Enter');
-		await page.keyboard.type('.Bold', { delay: 100 });
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await page.waitForTimeout(150);
-
-		await page.$eval('.toolbar-item__bold', button => button.click());
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
-		const selectMaxiTextP = await selectMaxiTextDiv.$(
-			'.block-editor-rich-text__editable'
-		);
-		await selectMaxiTextP.focus();
-		await pressKeyTimes('ArrowRight', '18');
-		await page.keyboard.press('Delete');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 

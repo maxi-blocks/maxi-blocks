@@ -148,8 +148,8 @@ body.maxi-blocks--active .edit-post-visual-editor {
 				}
 			}
 
-			&.maxi-button-block .maxi-button-block__button,
-			.maxi-button-block .maxi-button-block__button {
+			&.maxi-button-block .maxi-button-block__content,
+			.maxi-button-block .maxi-button-block__content {
 				font-family: var(--maxi-#{$style}-button-font-family-general);
 				font-weight: var(--maxi-#{$style}-button-font-weight-general);
 				font-style: var(--maxi-#{$style}-button-font-style-general);
@@ -242,7 +242,7 @@ body.maxi-blocks--active {
 							}
 						}
 					}
-					.maxi-button-block__button {
+					.maxi-button-block__content {
 						font-size: var(
 							--maxi-#{$style}-button-font-size-#{$responsive_size}
 						);
@@ -343,7 +343,7 @@ body.maxi-blocks--active {
 						);
 					}
 				}
-				.maxi-button-block__button {
+				.maxi-button-block__content {
 					font-size: var(
 						--maxi-#{$style}-button-font-size-#{$current_responsive_stage}
 					);

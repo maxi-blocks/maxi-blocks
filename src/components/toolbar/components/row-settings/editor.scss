@@ -1,18 +1,3 @@
 .toolbar-item__row-settings__popover {
 	min-width: 270px;
 }
-.maxi-resizable__handle.maxi-resizable__handle--show.maxi-resizable__handle-right {
-	outline: 1px solid var(--maxi-primary-color);
-	width: 1px !important;
-}
-.maxi-resizable__handle.maxi-resizable__handle--show.maxi-resizable__handle-left {
-	outline: 1px solid var(--maxi-primary-color);
-	width: 1px !important;
-}
-button {
-	&[aria-pressed='true'] {
-		svg path {
-			stroke: var(--maxi-primary-color);
-		}
-	}
-}

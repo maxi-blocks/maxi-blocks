@@ -19,6 +19,8 @@ import classnames from 'classnames';
 /**
  * Styles and icons
  */
+
+import './editor.scss';
 import { handlers } from '../../../../icons';
 
 const ColumnsHandlers = props => {
@@ -33,11 +35,8 @@ const ColumnsHandlers = props => {
 	);
 
 
-	const [isActive, setActive] = useState("false");
+	const [isActive, setActive] = useState(false);
 
-	const toggleClass = () => {
-		setActive(!isActive);
-	};
 
 	return (
 		<Tooltip
@@ -47,8 +46,11 @@ const ColumnsHandlers = props => {
 			<div>
 				<Button 
 				className={classes} 
-				onClick={() => { toggleHandlers(), toggleClass() }}
-				aria-pressed={!isActive}
+				onClick={() => {
+					toggleHandlers();
+					setActive(!isActive);
+				}}
+				aria-pressed={isActive}
 				>
 					<Icon className='toolbar-item__icon' icon={handlers} />
 				</Button>

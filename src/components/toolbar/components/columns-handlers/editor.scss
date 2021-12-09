@@ -1,0 +1,7 @@
+button {
+	&[aria-pressed='true'] {
+		svg path {
+			stroke: var(--maxi-primary-color);
+		}
+	}
+}

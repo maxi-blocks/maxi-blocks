@@ -14,7 +14,7 @@ import {
 	changeResponsive,
 	editAxisControl,
 	getAttributes,
-	getBlockAttributes,
+	getBlockStyle,
 } from '../../utils';
 
 describe('AxisControl', () => {
@@ -53,6 +53,28 @@ describe('AxisControl', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
+
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-axis-control__padding'),
+			values: '34',
+			unit: '%',
+		});
+
+		const paddingType = await page.$eval(
+			'.maxi-axis-control__padding .maxi-axis-control__content__item__padding input',
+			input => input.type
+		);
+		const paddingTypeOf = typeof paddingType;
+
+		expect(paddingTypeOf).toStrictEqual('number');
+
+		const marginType = await page.$(
+			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input'
+		);
+		const marginTypeOf = typeof marginType;
+
+		expect(marginTypeOf).toStrictEqual('object');
 	});
 
 	it('Checking responsive axisControl', async () => {
@@ -239,5 +261,6 @@ describe('AxisControl', () => {
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -36,12 +36,12 @@ const marginPadding = ({ props, prefix }) => {
 						em: {
 							min: -999,
 							max: 999,
-							step: 1,
+							step: 0.1,
 						},
 						vw: {
 							min: -999,
 							max: 999,
-							step: 1,
+							step: 0.1,
 						},
 						'%': {
 							min: -999,

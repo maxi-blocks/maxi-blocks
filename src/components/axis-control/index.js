@@ -370,12 +370,12 @@ const AxisControl = props => {
 			em: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
-				step: 1,
+				step: 0.1,
 			},
 			vw: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
-				step: 1,
+				step: 0.1,
 			},
 			'%': {
 				min: 0,

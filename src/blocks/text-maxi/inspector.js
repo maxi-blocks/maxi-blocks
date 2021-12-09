@@ -15,14 +15,17 @@ import {
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsText, categoriesText } from './custom-css';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, capitalize } from 'lodash';
 
 /**
  * Inspector
@@ -30,8 +33,83 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
 const Inspector = memo(
 	props => {
 		const { attributes, deviceType, setAttributes } = props;
-		const { isList, listReversed, listStart, textLevel, typeOfList } =
-			attributes;
+		const {
+			isList,
+			listReversed,
+			listStart,
+			textLevel,
+			typeOfList,
+			listPosition,
+			listStyle,
+		} = attributes;
+
+		const getListStyleOptions = () =>
+			[
+				'none',
+				'disc',
+				'circle',
+				'square',
+				'decimal',
+				'cjk-decimal',
+				'decimal-leading-zero',
+				'lower-roman',
+				'upper-roman',
+				'lower-greek',
+				'lower-alpha',
+				'lower-latin',
+				'upper-alpha',
+				'upper-latin',
+				'arabic-indic',
+				'armenian',
+				'bengali',
+				'cambodian',
+				'khmer',
+				'cjk-earthly-branch',
+				'cjk-heavenly-stem',
+				'cjk-ideographic',
+				'trad-chinese-informal',
+				'devanagari',
+				'ethiopic-numeric',
+				'georgian',
+				'gujarati',
+				'gurmukhi',
+				'hebrew',
+				'hiragana',
+				'hiragana-iroha',
+				'japanese-formal',
+				'japanese-informal',
+				'kannada',
+				'katakana',
+				'katakana-iroha',
+				'korean-hangul-formal',
+				'korean-hanja-formal',
+				'korean-hanja-informal',
+				'lao',
+				'lower-armenian',
+				'malayalam',
+				'mongolian',
+				'myanmar',
+				'oriya',
+				'persian',
+				'simp-chinese-formal',
+				'simp-chinese-informal',
+				'tamil',
+				'telugu',
+				'thai',
+				'tibetan',
+				'trad-chinese-formal',
+				'trad-chinese-informal',
+				'upper-armenian',
+				'disclosure-open',
+				'details',
+				'disclosure-closed',
+				'details',
+			].map(style => {
+				return {
+					label: __(`${capitalize(style)}`, 'maxi-blocks'),
+					value: style,
+				};
+			});
 
 		return (
 			<InspectorControls>
@@ -81,6 +159,96 @@ const Inspector = memo(
 													),
 													content: (
 														<>
+															<SelectControl
+																label={__(
+																	'List position',
+																	'maxi-blocks'
+																)}
+																className='maxi-image-inspector__list-position'
+																value={
+																	listPosition
+																}
+																options={[
+																	{
+																		label: __(
+																			'Inside',
+																			'maxi-blocks'
+																		),
+																		value: 'inside',
+																	},
+																	{
+																		label: __(
+																			'Outside',
+																			'maxi-blocks'
+																		),
+																		value: 'outside',
+																	},
+																]}
+																onChange={listPosition =>
+																	setAttributes(
+																		{
+																			listPosition,
+																		}
+																	)
+																}
+															/>
+															<AdvancedNumberControl
+																label={__(
+																	'List gap',
+																	'maxi-blocks'
+																)}
+																className='maxi-image-inspector__list-gap'
+																placeholder={getLastBreakpointAttribute(
+																	'list-gap',
+																	deviceType,
+																	attributes
+																)}
+																value={
+																	attributes[
+																		`list-gap-${deviceType}`
+																	]
+																}
+																onChangeValue={val =>
+																	setAttributes(
+																		{
+																			[`list-gap-${deviceType}`]:
+																				val,
+																		}
+																	)
+																}
+																enableUnit
+																unit={getLastBreakpointAttribute(
+																	'list-gap-unit',
+																	deviceType,
+																	attributes
+																)}
+																minMaxSettings={{
+																	px: {
+																		min: 0,
+																		max: 999,
+																	},
+																	em: {
+																		min: 0,
+																		max: 99,
+																	},
+																	vw: {
+																		min: 0,
+																		max: 99,
+																	},
+																	'%': {
+																		min: 0,
+																		max: 100,
+																	},
+																}}
+																onChangeUnit={val =>
+																	setAttributes(
+																		{
+																			[`list-gap-unit-${deviceType}`]:
+																				val,
+																		}
+																	)
+																}
+															/>
 															<SelectControl
 																label={__(
 																	'Type of list',
@@ -186,6 +354,27 @@ const Inspector = memo(
 																		}}
 																	/>
 																</>
+															)}
+															{typeOfList ===
+																'ul' && (
+																<SelectControl
+																	label={__(
+																		'Style',
+																		'maxi-blocks'
+																	)}
+																	value={
+																		listStyle ||
+																		'disc'
+																	}
+																	options={getListStyleOptions()}
+																	onChange={listStyle =>
+																		setAttributes(
+																			{
+																				listStyle,
+																			}
+																		)
+																	}
+																/>
 															)}
 														</>
 													),

@@ -48,6 +48,30 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
+	listStyle: {
+		type: 'string',
+	},
+	listPosition: {
+		type: 'string',
+	},
+	// TODO: replace with future breakpointObjectCreator
+	// https://github.com/yeahcan/maxi-blocks/blob/b384ce2226e0181226817f5eda4723d1733a2f6a/src/extensions/styles/breakpointObjectCreator.js#L7
+	...(() => {
+		const response = {};
+
+		['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+			response[`list-gap-${breakpoint}`] = {
+				type: 'number',
+				...(breakpoint === 'general' && { default: 1 }),
+			};
+			response[`list-gap-unit-${breakpoint}`] = {
+				type: 'string',
+				...(breakpoint === 'general' && { default: 'em' }),
+			};
+		});
+
+		return response;
+	})(),
 	...attributesData.container,
 	...attributesData.link,
 	...attributesData.textAlignment,

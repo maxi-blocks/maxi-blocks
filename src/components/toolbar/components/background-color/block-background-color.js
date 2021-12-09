@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
+import { colorOptions as colorLayerAttr } from '../../../background-control/layers';
 import ButtonGroupControl from '../../../button-group-control';
 import {
 	getBlockStyle,
@@ -18,12 +19,13 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep, findIndex, isEqual } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
+import { setBreakpointToLayer } from '../../../background-control/utils';
 
 /**
  * Icons
@@ -33,20 +35,23 @@ import { backgroundColor } from '../../../../icons';
 /**
  * BackgroundColor
  */
-const BackgroundColor = props => {
+const ALLOWED_BLOCKS = [
+	'maxi-blocks/container-maxi',
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/group-maxi',
+];
+
+const BlockBackgroundColor = props => {
 	const {
 		blockName,
 		onChange,
 		clientId,
 		breakpoint,
-		'background-layers': backgroundLayers,
+		'background-layers': backgroundLayers = [],
 	} = props;
 
-	if (
-		blockName === 'maxi-blocks/divider-maxi' ||
-		blockName === 'maxi-blocks/text-maxi'
-	)
-		return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
 	const colorLayers =
 		backgroundLayers &&
@@ -95,10 +100,17 @@ const BackgroundColor = props => {
 		};
 	};
 
+	const getNewLayerId = () =>
+		backgroundLayers && !isEmpty(backgroundLayers)
+			? backgroundLayers.reduce((layerA, layerB) =>
+					layerA.id > layerB.id ? layerA : layerB
+			  ).id + 1
+			: 1;
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
-			advancedOptions='background'
+			advancedOptions='background layer'
 			tooltip={
 				!isBackgroundColor
 					? __('Background Colour Disabled', 'maxi-blocks')
@@ -127,27 +139,20 @@ const BackgroundColor = props => {
 								'background-layers': [
 									...backgroundLayers,
 									{
-										type: 'color',
-										'display-general': 'block',
-										'background-palette-color-status-general': true,
-										'background-palette-color-general': 1,
-										'background-palette-opacity': 100,
-										'background-color-general': '',
-										'background-color-clip-path-general':
-											'',
-										id: backgroundLayers.length,
+										...setBreakpointToLayer({
+											layer: colorLayerAttr,
+											breakpoint,
+										}),
+										id: getNewLayerId(),
 									},
 								],
 							});
 						} else {
-							onChange({
-								'background-layers': backgroundLayers.map(
-									bgLayer => {
-										if (bgLayer.id !== layer.id)
-											return bgLayer;
-									}
-								),
-							});
+							const newBGLayers = backgroundLayers.filter(
+								bgLayer => bgLayer.id !== layer.id
+							);
+
+							onChange({ 'background-layers': newBGLayers });
 						}
 					}}
 				/>
@@ -155,7 +160,25 @@ const BackgroundColor = props => {
 					<ColorLayer
 						key={`background-color-layer--${layer.id}`}
 						colorOptions={layer}
-						onChange={obj => onChange({ ...layer, ...obj })}
+						onChange={obj => {
+							const newLayer = { ...layer, ...obj };
+							const newLayers = cloneDeep(backgroundLayers);
+
+							backgroundLayers.forEach((lay, i) => {
+								if (lay.id === newLayer.id) {
+									const index = findIndex(newLayers, {
+										id: newLayer.id,
+									});
+
+									newLayers[index] = newLayer;
+								}
+							});
+
+							if (!isEqual(newLayers, backgroundLayers))
+								onChange({
+									'background-layers': newLayers,
+								});
+						}}
 						breakpoint={breakpoint}
 					/>
 				)}
@@ -164,4 +187,4 @@ const BackgroundColor = props => {
 	);
 };
 
-export default BackgroundColor;
+export default BlockBackgroundColor;

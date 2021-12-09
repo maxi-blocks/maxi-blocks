@@ -12,7 +12,10 @@ import { createRef } from '@wordpress/element';
  */
 import getStyles from './styles';
 import Inspector from './inspector';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -58,6 +61,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		this.textRef = createRef(null);
+		this.resizableObject = createRef();
 	}
 
 	propsToAvoidRendering = ['formatValue'];
@@ -89,8 +93,14 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, imageData, setAttributes, clientId, isSelected } =
-			this.props;
+		const {
+			attributes,
+			imageData,
+			setAttributes,
+			clientId,
+			isSelected,
+			deviceType,
+		} = this.props;
 		const {
 			'hover-preview': hoverPreview,
 			'hover-type': hoverType,
@@ -196,6 +206,12 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -262,6 +278,8 @@ class edit extends MaxiBlockComponent {
 									<BlockResizer
 										key={uniqueID}
 										className='maxi-block__resizer maxi-image-block__resizer'
+										resizableObject={this.resizableObject}
+										isOverflowHidden={getIsOverflowHidden()}
 										size={{ width: `${imgWidth}%` }}
 										showHandle={isSelected}
 										maxWidth='100%'

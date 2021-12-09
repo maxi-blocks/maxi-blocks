@@ -30,7 +30,14 @@ import { selectorsImage, categoriesImage } from './custom-css';
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isEqual, cloneDeep, without } from 'lodash';
+import {
+	capitalize,
+	isEmpty,
+	isNil,
+	isEqual,
+	cloneDeep,
+	without,
+} from 'lodash';
 
 /**
  * Dimension tab
@@ -236,15 +243,12 @@ const Inspector = memo(
 		};
 
 		const getCategoriesCss = () => {
-			const {
-				'background-layers': bgLayers
-			} = attributes;
+			const { 'background-layers': bgLayers } = attributes;
 			return without(
 				categoriesImage,
 				isEmpty(bgLayers) && 'canvas background'
 			);
 		};
-
 
 		return (
 			<InspectorControls>

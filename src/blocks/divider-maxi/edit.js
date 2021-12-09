@@ -101,6 +101,12 @@ class edit extends MaxiBlockComponent {
 			...(position && { position }),
 		};
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -115,6 +121,7 @@ class edit extends MaxiBlockComponent {
 				classes={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				tagName={BlockResizer}
+				isOverflowHidden={getIsOverflowHidden()}
 				size={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
@@ -129,7 +136,7 @@ class edit extends MaxiBlockComponent {
 				}}
 				showHandle={isSelected}
 				enable={{
-					bottom: true
+					bottom: true,
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}

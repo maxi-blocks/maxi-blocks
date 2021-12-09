@@ -19,6 +19,7 @@ import Breadcrumbs from '../breadcrumbs';
 import {
 	Alignment,
 	BackgroundColor,
+	BlockBackgroundColor,
 	Border,
 	BoxShadow,
 	ColumnMover,
@@ -95,6 +96,7 @@ const MaxiToolbar = memo(
 	forwardRef((props, ref) => {
 		const {
 			attributes,
+			backgroundAdvancedOptions,
 			changeSVGContent,
 			clientId,
 			isSelected,
@@ -102,10 +104,13 @@ const MaxiToolbar = memo(
 			setAttributes,
 			toggleHandlers,
 			rowPattern,
-			changeSVGSize,
 			changeSVGStrokeWidth,
+			prefix = '',
+			backgroundGlobalProps,
+			resizableObject,
 		} = props;
 		const {
+			blockFullWidth,
 			content,
 			customLabel,
 			fullWidth,
@@ -124,6 +129,7 @@ const MaxiToolbar = memo(
 			parentBlockStyle,
 			svgType,
 		} = attributes;
+
 		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
 				select('maxiBlocks');
@@ -428,11 +434,11 @@ const MaxiToolbar = memo(
 											setAttributes(obj);
 										}}
 										breakpoint={breakpoint}
-										changeSVGSize={changeSVGSize}
 										changeSVGStrokeWidth={
 											changeSVGStrokeWidth
 										}
 										type={svgType}
+										resizableObject={resizableObject}
 									/>
 								</>
 							)}

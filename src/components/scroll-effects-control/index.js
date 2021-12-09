@@ -247,27 +247,6 @@ const ScrollEffectsControl = props => {
 						{motionStatus === type &&
 							props[`scroll-status-${type}-${breakpoint}`] && (
 								<>
-									<ToggleSwitch
-										label={__(
-											'Enable live preview mode',
-											'maxi-block'
-										)}
-										selected={isPreviewEnabled}
-										onChange={val => {
-											onChange({
-												[`scroll-preview-status-${type}-general`]:
-													val,
-											});
-											val &&
-												applyEffect(
-													type,
-													uniqueID,
-													'Start'
-												);
-											!val &&
-												removeEffect(type, uniqueID);
-										}}
-									/>
 									<SelectControl
 										label={__(
 											'Shortcut effect',
@@ -377,6 +356,28 @@ const ScrollEffectsControl = props => {
 											})
 										}
 										options={viewportOptions}
+									/>
+									<ToggleSwitch
+										// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+										label={__(
+											`Preview ${type} settings`,
+											'maxi-block'
+										)}
+										selected={isPreviewEnabled}
+										onChange={val => {
+											onChange({
+												[`scroll-preview-status-${type}-general`]:
+													val,
+											});
+											val &&
+												applyEffect(
+													type,
+													uniqueID,
+													'Start'
+												);
+											!val &&
+												removeEffect(type, uniqueID);
+										}}
 									/>
 									<ScrollEffectUniqueControl
 										label={__(

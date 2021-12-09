@@ -48,9 +48,7 @@ const ScrollEffectsControl = props => {
 
 	const classes = classnames('maxi-scroll-effects-control', className);
 
-	const [motionStatus, setMotionStatus] = useState(
-		getLastBreakpointAttribute('scroll-active', breakpoint, props)
-	);
+	const [motionStatus, setMotionStatus] = useState('vertical');
 
 	const motionOptions = [
 		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
@@ -205,10 +203,7 @@ const ScrollEffectsControl = props => {
 				fullWidthMode
 				selected={motionStatus}
 				options={motionOptions}
-				onChange={val => {
-					onChange({ [`scroll-active-${breakpoint}`]: val });
-					setMotionStatus(val);
-				}}
+				onChange={val => setMotionStatus(val)}
 				active={getActiveEffects()}
 			/>
 			{scrollTypes.map(type => {
@@ -249,7 +244,7 @@ const ScrollEffectsControl = props => {
 								}}
 							/>
 						)}
-						{props[`scroll-active-${breakpoint}`] === type &&
+						{motionStatus === type &&
 							props[`scroll-status-${type}-${breakpoint}`] && (
 								<>
 									<ToggleSwitch

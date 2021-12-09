@@ -10,10 +10,6 @@ export const scrollTypes = [
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const response = {
-	'scroll-active-general': {
-		type: 'string',
-		default: 'vertical',
-	},
 	'scroll-preset-status-general': {
 		type: 'boolean',
 		default: false,
@@ -92,12 +88,6 @@ export const scroll = (() => {
 	});
 
 	Object.values(breakpoints).forEach(breakpoint => {
-		const activeKey = `scroll-active-${breakpoint}`;
-		const activeValue = {
-			type: 'string',
-		};
-		response[activeKey] = activeValue;
-
 		Object.values(scrollTypes).forEach(type => {
 			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
 			generateAttr(type, 'easing', 'string', 'noDefault', breakpoint);

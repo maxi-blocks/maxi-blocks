@@ -11,7 +11,6 @@ export const shortcut1 = {
 	'scroll-viewport-bottom-rotate-general': 'bottom',
 	'scroll-viewport-middle-rotate-general': 'mid',
 	'scroll-viewport-top-rotate-general': 'top',
-	'scroll-active-general': 'fade',
 	'scroll-delay-fade-general': 100,
 	'scroll-easing-fade-general': 'ease',
 	'scroll-opacity-end-fade-general': 0,

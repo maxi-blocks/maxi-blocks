@@ -405,20 +405,26 @@ const Inspector = memo(
 																			min: 0,
 																			max: 99,
 																		},
-																		vw: {
-																			min: 0,
-																			max: 99,
-																		},
-																		'%': {
-																			min: 0,
-																			max: 100,
-																		},
 																	}}
 																	onChangeUnit={val =>
 																		setAttributes(
 																			{
 																				[`caption-gap-unit-${deviceType}`]:
 																					val,
+																			}
+																		)
+																	}
+																	onReset={() =>
+																		setAttributes(
+																			{
+																				[`caption-gap-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-${deviceType}`
+																					),
+																				[`caption-gap-unit-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-unit-${deviceType}`
+																					),
 																			}
 																		)
 																	}

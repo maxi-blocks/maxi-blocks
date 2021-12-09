@@ -138,17 +138,7 @@ const attributes = {
 	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
 	...getPrefixedAttributes(attributesData.boxShadow, prefix),
 	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
-	...{
-		...getPrefixedAttributes(attributesData.size, prefix),
-		[`${prefix}height-general`]: {
-			type: 'number',
-			default: 100,
-		},
-		[`${prefix}height-unit-general`]: {
-			type: 'string',
-			default: '%',
-		},
-	},
+	...getPrefixedAttributes(attributesData.size, prefix),
 	...getPrefixedAttributes(attributesData.padding, prefix),
 
 	/**

@@ -307,9 +307,7 @@ const TextShadowControl = props => {
 		breakpoint,
 	} = props;
 
-	const [showOptions, changeShowOptions] = useState(
-		!isEmpty(textShadow) ? 1 : 0
-	);
+	const [showOptions, changeShowOptions] = useState(!isEmpty(textShadow));
 	const [lastValue, changeLastValue] = useState(textShadow);
 
 	useEffect(() => {
@@ -325,13 +323,14 @@ const TextShadowControl = props => {
 				selected={showOptions}
 				onChange={val => {
 					changeShowOptions(val);
+
 					if (val) {
 						changeLastValue(textShadow);
-						onChange('');
-					} else onChange(lastValue);
+						onChange(lastValue);
+					} else onChange('');
 				}}
 			/>
-			{!!showOptions && (
+			{showOptions && (
 				<TextShadow
 					value={lastValue}
 					onChange={val => {

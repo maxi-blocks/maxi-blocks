@@ -6,9 +6,8 @@ import { isNil, chunk } from 'lodash';
 /**
  * Check for the requested format type positions
  *
- * @param {Object} formatValue 			RichText format value
- * @param {string} formatName 			RichText format type
- *
+ * @param {Object} formatValue RichText format value
+ * @param {string} formatName  RichText format type
  * @returns {Array} Array with pairs of position for start and end
  */
 const getInstancePositions = (

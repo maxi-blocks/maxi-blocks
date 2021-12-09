@@ -9,12 +9,13 @@ const getFormatPosition = ({
 	formatClassName,
 	formatAttributes,
 }) => {
-	const positions = getInstancePositions(
-		formatValue,
-		formatName,
-		formatClassName,
-		formatAttributes
-	);
+	const positions =
+		getInstancePositions(
+			formatValue,
+			formatName,
+			formatClassName,
+			formatAttributes
+		) ?? [];
 
 	const { start, end } = formatValue;
 

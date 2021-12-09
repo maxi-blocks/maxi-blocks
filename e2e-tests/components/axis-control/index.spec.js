@@ -67,7 +67,7 @@ describe('AxisControl', () => {
 		);
 		const paddingTypeOf = typeof paddingType;
 
-		expect(paddingTypeOf).toStrictEqual('number');
+		expect(paddingTypeOf).toStrictEqual('string');
 
 		const marginType = await page.$(
 			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input'

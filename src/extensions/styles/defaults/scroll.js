@@ -9,12 +9,7 @@ export const scrollTypes = [
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const response = {
-	'scroll-preset-status-general': {
-		type: 'boolean',
-		default: false,
-	},
-};
+const response = {};
 
 const generateAttr = (
 	motionType,

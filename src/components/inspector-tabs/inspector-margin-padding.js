@@ -12,22 +12,34 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const marginPadding = ({ props, prefix }) => {
+const marginPadding = ({
+	props,
+	prefix,
+	customLabel,
+	disableMargin = false,
+}) => {
 	const { attributes, deviceType, setAttributes } = props;
 
 	return {
-		label: __('Margin / Padding', 'maxi-blocks'),
+		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
 		content: (
 			<>
-				<AxisControl
-					{...getGroupAttributes(attributes, 'margin', false, prefix)}
-					prefix={prefix}
-					label={__('Margin', 'maxi-blocks')}
-					onChange={obj => setAttributes(obj)}
-					breakpoint={deviceType}
-					target='margin'
-					optionType='string'
-				/>
+				{!disableMargin && (
+					<AxisControl
+						{...getGroupAttributes(
+							attributes,
+							'margin',
+							false,
+							prefix
+						)}
+						prefix={prefix}
+						label={__('Margin', 'maxi-blocks')}
+						onChange={obj => setAttributes(obj)}
+						breakpoint={deviceType}
+						target='margin'
+						optionType='string'
+					/>
+				)}
 				<AxisControl
 					{...getGroupAttributes(
 						attributes,

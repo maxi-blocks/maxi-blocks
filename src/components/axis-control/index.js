@@ -21,7 +21,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber, replace } from 'lodash';
+import { isEmpty, capitalize, isNumber, replace, round } from 'lodash';
 
 /**
  * Styles and icons
@@ -237,6 +237,8 @@ const AxisControlContent = props => {
 		getKey,
 		isGeneral,
 		onChangeSync,
+		minMaxSettings,
+		inputsArray,
 	} = props;
 
 	const sync = getLastBreakpointAttribute(
@@ -270,6 +272,46 @@ const AxisControlContent = props => {
 		}
 	};
 
+	const onChangeUnit = val => {
+		const response = {};
+
+		inputsArray.forEach(input => {
+			if (
+				input.includes('top') ||
+				input.includes('left') ||
+				input.includes('bottom') ||
+				input.includes('right')
+			) {
+				const key = getAttributeKey(
+					getKey(input),
+					isHover,
+					false,
+					breakpoint
+				);
+				const value = getLastBreakpointAttribute(
+					getKey(input),
+					breakpoint,
+					props,
+					isHover
+				);
+
+				response[key] = round(
+					value,
+					minMaxSettings[currentUnit].step / 0.5
+				);
+			}
+		});
+
+		onChange({
+			[getAttributeKey(getKey('unit'), isHover, false, breakpoint)]: val,
+			...(isGeneral && {
+				[getAttributeKey(getKey('unit'), isHover, false, 'general')]:
+					val,
+			}),
+			...response,
+		});
+	};
+
 	return (
 		<>
 			<BaseControl
@@ -282,24 +324,25 @@ const AxisControlContent = props => {
 					label={__('Unit', 'maxi-blocks')}
 					options={getOptions()}
 					value={currentUnit}
-					onChange={val =>
-						onChange({
-							[getAttributeKey(
-								getKey('unit'),
-								isHover,
-								false,
-								breakpoint
-							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									getKey('unit'),
-									isHover,
-									false,
-									'general'
-								)]: val,
-							}),
-						})
-					}
+					// onChange={val =>
+					// 	onChange({
+					// 		[getAttributeKey(
+					// 			getKey('unit'),
+					// 			isHover,
+					// 			false,
+					// 			breakpoint
+					// 		)]: val,
+					// 		...(isGeneral && {
+					// 			[getAttributeKey(
+					// 				getKey('unit'),
+					// 				isHover,
+					// 				false,
+					// 				'general'
+					// 			)]: val,
+					// 		}),
+					// 	})
+					// }
+					onChange={onChangeUnit}
 				/>
 				<Button
 					className='components-maxi-control__reset-button'

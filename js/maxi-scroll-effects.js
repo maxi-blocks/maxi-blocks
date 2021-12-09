@@ -1,5 +1,6 @@
 class ScrollEffects {
 	constructor() {
+		this.scrollData = this.getElements();
 		this.init();
 	}
 
@@ -8,14 +9,35 @@ class ScrollEffects {
 		this.effectsOnScroll();
 
 		// eslint-disable-next-line @wordpress/no-global-event-listener
-		document.addEventListener(
-			'DOMContentLoaded',
-			this.startingEffect.bind(this)
-		);
+		document.addEventListener('DOMContentLoaded', [
+			this.getElements.bind(this),
+			this.startingEffect.bind(this),
+		]);
 
 		// eslint-disable-next-line @wordpress/no-global-event-listener
 		window.addEventListener('scroll', this.effectsOnScroll.bind(this));
 	}
+
+	getElements = () => {
+		console.log('fire getElements');
+		const response = {};
+		const elements = Array.from(
+			document.querySelectorAll('[data-scroll-effect-type]')
+		);
+
+		elements.forEach(element => {
+			const { id } = element;
+			response[id] = {};
+			const scrollType = element?.getAttribute('data-scroll-effect-type');
+			const scrollTypeArray = scrollType?.trim()?.split(' ');
+
+			scrollTypeArray.forEach(type => {
+				response[id][type] = this.getScrollData(element, type);
+			});
+		});
+
+		return response;
+	};
 
 	setTransform = (el, transform, type) => {
 		const oldTransform = el.style.transform;
@@ -86,7 +108,7 @@ class ScrollEffects {
 		return null;
 	}
 
-	getScrollSetting = (data, element) => {
+	getScrollSetting = data => {
 		const response = {};
 
 		const dataScrollArray = data.trim().split(' ');
@@ -106,10 +128,6 @@ class ScrollEffects {
 
 		response.trigger = getTriggerValue(dataScrollArray[3]);
 
-		response.triggerPx = Math.round(
-			(element.offsetHeight / 100) * response.trigger
-		);
-
 		response.speedValue = parseFloat(dataScrollArray[0]) || 200;
 		response.delayValue = parseFloat(dataScrollArray[1]) || 0;
 		response.easingValue = dataScrollArray[2] || 'ease';
@@ -127,21 +145,11 @@ class ScrollEffects {
 		return el.getAttribute(`data-scroll-effect-${type}-general`);
 	};
 
-	getParent = el => {
-		if (el)
-			return (
-				el.parentNode.closest('.maxi-container-block') ||
-				el.parentNode.closest('article')
-			);
-		return null;
-	};
-
 	startingTransform(element, type) {
 		const dataScroll = this.getScrollData(element, type);
 		if (!dataScroll || !element) return null;
 
-		const parent = this.getParent(element);
-		const { start } = this.getScrollSetting(dataScroll, parent);
+		const { start } = this.getScrollSetting(dataScroll);
 
 		this.applyStyle(element, type, start);
 
@@ -173,7 +181,7 @@ class ScrollEffects {
 		if (!dataScroll) return;
 
 		const { trigger, start, mid, end, reverseScroll } =
-			this.getScrollSetting(dataScroll, element);
+			this.getScrollSetting(dataScroll);
 
 		const rect = element.getBoundingClientRect();
 		const windowHeight = window.innerHeight;
@@ -287,7 +295,7 @@ class ScrollEffects {
 			document.querySelectorAll('[data-scroll-effect-type]')
 		);
 
-		elements.forEach((element, index) => {
+		elements.forEach(element => {
 			const scrollType = element?.getAttribute('data-scroll-effect-type');
 
 			const scrollTypeArray = scrollType?.trim()?.split(' ');
@@ -300,6 +308,9 @@ class ScrollEffects {
 
 	// eslint-disable-next-line class-methods-use-this
 	startingEffect() {
+		console.log('this.scrollData 2');
+		console.log(this.scrollData);
+
 		const elements = Array.from(
 			document.querySelectorAll('[data-scroll-effect-type]')
 		);
@@ -307,13 +318,12 @@ class ScrollEffects {
 		elements.forEach(element => {
 			const scrollType = element?.getAttribute('data-scroll-effect-type');
 			const scrollTypeArray = scrollType?.trim()?.split(' ');
-			const parent = this.getParent(element);
 			let transition = '';
 
 			scrollTypeArray?.forEach(type => {
 				const dataScroll = this.getScrollData(element, type);
 				const { speedValue, easingValue, delayValue } =
-					this.getScrollSetting(dataScroll, parent);
+					this.getScrollSetting(dataScroll);
 
 				switch (type) {
 					case 'vertical':
@@ -350,7 +360,7 @@ class ScrollEffects {
 }
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
-window.addEventListener('scroll', () => {
+window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-new
 	new ScrollEffects();
 });

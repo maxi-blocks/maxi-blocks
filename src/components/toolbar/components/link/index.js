@@ -54,7 +54,6 @@ const Link = props => {
 		>
 			<>
 				<LinkControl
-					searchInputPlaceholder='Search here...'
 					value={linkSettings}
 					onChange={value => onChange(value)}
 					settings={[

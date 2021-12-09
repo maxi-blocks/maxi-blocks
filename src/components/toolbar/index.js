@@ -49,6 +49,7 @@ import {
 	ToolbarColumnPattern,
 	TextOptions,
 	TextGenerator,
+	MoreSettings,
 } from './components';
 
 /**
@@ -516,6 +517,10 @@ const MaxiToolbar = memo(
 								}
 							/>
 							<CopyPaste clientId={clientId} blockName={name} />
+							<MoreSettings
+								clientId={clientId}
+								blockName={name}
+							/>
 						</div>
 					</Popover>
 				)}

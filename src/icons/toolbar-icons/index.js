@@ -49,3 +49,4 @@ export { default as toolbarUnderline } from './underline';
 export { default as toolbarUnorderedList } from './unordered-list';
 export { default as toolbarLoremIpsum } from './lorem-ipsum';
 export { default as toolbarDrop } from './drag';
+export { default as toolbarMoreSettings } from './more-settings';

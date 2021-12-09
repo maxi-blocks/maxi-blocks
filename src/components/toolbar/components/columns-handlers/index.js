@@ -31,6 +31,7 @@ const ColumnsHandlers = props => {
 	const classes = classnames(
 		'toolbar-item',
 		'toolbar-item__button',
+		'toolbar-item__columns-handler',
 		className
 	);
 

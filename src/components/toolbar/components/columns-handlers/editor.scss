@@ -1,4 +1,4 @@
-button {
+.toolbar-item__columns-handler {
 	&[aria-pressed='true'] {
 		svg path {
 			stroke: var(--maxi-primary-color);

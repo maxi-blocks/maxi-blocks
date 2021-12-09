@@ -324,24 +324,6 @@ const AxisControlContent = props => {
 					label={__('Unit', 'maxi-blocks')}
 					options={getOptions()}
 					value={currentUnit}
-					// onChange={val =>
-					// 	onChange({
-					// 		[getAttributeKey(
-					// 			getKey('unit'),
-					// 			isHover,
-					// 			false,
-					// 			breakpoint
-					// 		)]: val,
-					// 		...(isGeneral && {
-					// 			[getAttributeKey(
-					// 				getKey('unit'),
-					// 				isHover,
-					// 				false,
-					// 				'general'
-					// 			)]: val,
-					// 		}),
-					// 	})
-					// }
 					onChange={onChangeUnit}
 				/>
 				<Button

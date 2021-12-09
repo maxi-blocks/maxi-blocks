@@ -82,6 +82,7 @@ const AxisInput = props => {
 			disableReset
 			min={minMaxSettings[currentUnit].min || 0}
 			max={minMaxSettings[currentUnit].max || 999}
+			step={minMaxSettings[currentUnit].step || 1}
 		/>
 	);
 };
@@ -364,18 +365,22 @@ const AxisControl = props => {
 			px: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 1,
 			},
 			em: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 1,
 			},
 			vw: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 1,
 			},
 			'%': {
 				min: 0,
 				max: 999,
+				step: 0.1,
 			},
 		},
 		auxTarget = false,

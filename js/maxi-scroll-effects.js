@@ -91,7 +91,7 @@ class ScrollEffects {
 
 		const dataScrollArray = data.trim().split(' ');
 
-		const getViewportValue = viewport => {
+		const getTriggerValue = viewport => {
 			switch (viewport) {
 				case 'top':
 					return 100;
@@ -104,9 +104,10 @@ class ScrollEffects {
 			}
 		};
 
-		response.viewportTop = getViewportValue(dataScrollArray[3]);
-		response.viewportTopPercent = Math.round(
-			(element.offsetHeight / 100) * response.viewportTop
+		response.trigger = getTriggerValue(dataScrollArray[3]);
+
+		response.triggerPx = Math.round(
+			(element.offsetHeight / 100) * response.trigger
 		);
 
 		response.speedValue = parseFloat(dataScrollArray[0]) || 200;
@@ -171,7 +172,7 @@ class ScrollEffects {
 
 		if (!dataScroll) return;
 
-		const { viewportTopPercent, start, mid, end, reverseScroll } =
+		const { trigger, start, mid, end, reverseScroll } =
 			this.getScrollSetting(dataScroll, element);
 
 		const rect = element.getBoundingClientRect();
@@ -180,31 +181,38 @@ class ScrollEffects {
 		const elementHeight = element.offsetHeight;
 		const elementHalfHeight = elementHeight / 2;
 
-		let elementTopInViewCoordinate = Math.round(
-			rect.top - windowHalfHeight
-		);
-		const elementBottomInViewCoordinate = Math.round(
-			rect.bottom - windowHalfHeight
-		);
-		const elementMidInViewCoordinate = Math.round(
-			elementTopInViewCoordinate + elementHalfHeight
-		);
-
 		// Top shift
-		const topShiftPx =
-			viewportTopPercent -
-			Math.abs(
-				elementTopInViewCoordinate - elementBottomInViewCoordinate
-			);
+		let topShiftPx = 0; // top
 
-		if (topShiftPx !== 0) elementTopInViewCoordinate -= topShiftPx;
+		switch (trigger) {
+			case 50: // mid
+				topShiftPx = windowHalfHeight;
+				break;
+			case 0: // bottom
+				topShiftPx = windowHeight;
+				break;
+			default:
+				break;
+		}
+
+		let elementTopInCoordinate = Math.round(rect.top);
+		let elementBottomInCoordinate = Math.round(rect.bottom);
+
+		if (topShiftPx !== 0) {
+			elementTopInCoordinate -= topShiftPx;
+			elementBottomInCoordinate -= topShiftPx;
+		}
+
+		const elementMidInCoordinate = Math.round(
+			elementTopInCoordinate + elementHalfHeight
+		);
 
 		const scrollDirection = this.getScrollDirection();
 
-		if (scrollDirection === 'down' && elementTopInViewCoordinate <= 0) {
+		if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
 			newEndUp = 0;
 			newMidUp = 0;
-			if (elementMidInViewCoordinate >= 0) {
+			if (elementMidInCoordinate >= 0) {
 				// from starting to middle
 				const stepMid = Math.abs(
 					(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
@@ -238,11 +246,11 @@ class ScrollEffects {
 		if (
 			reverseScroll === 'true' &&
 			scrollDirection === 'up' &&
-			elementBottomInViewCoordinate >= 0
+			elementBottomInCoordinate >= 0
 		) {
 			newEndDown = 0;
 			newMidDown = 0;
-			if (elementMidInViewCoordinate <= 0) {
+			if (elementMidInCoordinate <= 0) {
 				const stepEnd = Math.abs(
 					(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
 				);

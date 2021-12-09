@@ -7,8 +7,10 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import Button from '../button';
+import ButtonGroupControl from '../button-group-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
@@ -21,7 +23,15 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber, replace, round } from 'lodash';
+import {
+	isEmpty,
+	capitalize,
+	isNumber,
+	replace,
+	round,
+	isNil,
+	isNaN,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -36,7 +46,6 @@ import {
 	paddingSyncDirection as paddingSyncDirectionIcon,
 	reset,
 } from '../../icons';
-import { ButtonGroupControl, AdvancedNumberControl } from '..';
 
 /**
  * Component
@@ -295,10 +304,11 @@ const AxisControlContent = props => {
 					isHover
 				);
 
-				response[key] = round(
-					value,
-					minMaxSettings[currentUnit].step / 0.5
-				);
+				if (!isNil(value) && !isNaN(value))
+					response[key] = round(
+						value,
+						minMaxSettings[currentUnit].step / 0.5
+					);
 			}
 		});
 

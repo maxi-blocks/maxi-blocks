@@ -18,7 +18,7 @@ const generateAttr = (
 	defaultValue,
 	breakpoint = 'general'
 ) => {
-	const key = `scroll-${attr}-${motionType}-${breakpoint}`;
+	const key = `scroll-${motionType}-${attr}-${breakpoint}`;
 	const value =
 		defaultValue !== 'noDefault'
 			? {

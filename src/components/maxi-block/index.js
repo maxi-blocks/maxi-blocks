@@ -320,7 +320,7 @@ export const getMaxiBlockAttributes = props => {
 	const dataScrollTypeValue = () => {
 		let responseString = '';
 		scrollTypes.forEach(type => {
-			if (attributes[`scroll-status-${type}-general`])
+			if (attributes[`scroll-${type}-status-general`])
 				responseString += `${type} `;
 		});
 		return responseString?.trim();
@@ -362,7 +362,7 @@ export const getMaxiBlockAttributes = props => {
 
 				scrollSettings.forEach(setting => {
 					const scrollSettingValue =
-						attributes[`scroll-${setting}-${type}-general`];
+						attributes[`scroll-${type}-${setting}-general`];
 
 					responseString += `${scrollSettingValue} `;
 				});

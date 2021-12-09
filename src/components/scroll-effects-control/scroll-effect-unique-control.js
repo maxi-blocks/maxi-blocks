@@ -100,13 +100,13 @@ const ScrollEffectsUniqueControl = props => {
 								<AdvancedNumberControl
 									label={__(special?.label, 'maxi-blocks')}
 									value={getLastBreakpointAttribute(
-										`scroll-${special?.attr}-${type}`,
+										`scroll-${type}-${special?.attr}`,
 										breakpoint,
 										values
 									)}
 									onChangeValue={val => {
 										onChange({
-											[`scroll-${special?.attr}-${type}-${breakpoint}`]:
+											[`scroll-${type}-${special?.attr}-${breakpoint}`]:
 												val !== undefined && val !== ''
 													? val
 													: '',
@@ -119,9 +119,9 @@ const ScrollEffectsUniqueControl = props => {
 									max={special?.max}
 									onReset={() => {
 										onChange({
-											[`scroll-${special?.attr}-${type}-${breakpoint}`]:
+											[`scroll-${type}-${special?.attr}-${breakpoint}`]:
 												getDefaultAttribute(
-													`scroll-${special?.attr}-${type}-general`
+													`scroll-${type}-${special?.attr}-general`
 												),
 										});
 										isPreviewEnabled &&
@@ -129,12 +129,12 @@ const ScrollEffectsUniqueControl = props => {
 												type,
 												uniqueID,
 												getDefaultAttribute(
-													`scroll-${special?.attr}-${type}-general`
+													`scroll-${type}-${special?.attr}-general`
 												)
 											);
 									}}
 									initialPosition={getDefaultAttribute(
-										`scroll-${special?.attr}-${type}-general`
+										`scroll-${type}-${special?.attr}-general`
 									)}
 								/>
 							</>

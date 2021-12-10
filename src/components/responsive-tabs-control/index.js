@@ -24,7 +24,13 @@ import './editor.scss';
  * Component
  */
 const ResponsiveTabsControl = props => {
-	const { className, children, breakpoint, disableCallback = false } = props;
+	const {
+		className,
+		children,
+		breakpoint,
+		disableCallback = false,
+		active = [],
+	} = props;
 
 	const { winWidth, maxiBreakpoints } = useSelect(select => {
 		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
@@ -99,6 +105,7 @@ const ResponsiveTabsControl = props => {
 							: null,
 				};
 			})}
+			active={active}
 			forceTab={getTextOptionsTab()}
 		/>
 	);

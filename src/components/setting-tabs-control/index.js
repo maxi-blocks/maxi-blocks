@@ -30,6 +30,7 @@ const SettingTabsControl = props => {
 		returnValue,
 		callback,
 		target,
+		active,
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -57,6 +58,9 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
 	);
 
+	console.log('final active');
+	console.log(active);
+
 	return (
 		<div className={classes}>
 			<div className={classesControl}>
@@ -65,7 +69,11 @@ const SettingTabsControl = props => {
 						return (
 							<Button
 								key={`maxi-tabs-control__button-${item.label}`}
-								className='maxi-tabs-control__button'
+								className={classnames(
+									'maxi-tabs-control__button',
+									active?.includes(item.label) &&
+										'maxi-button-group-control__option--active'
+								)}
 								onClick={() => {
 									setTab(i);
 

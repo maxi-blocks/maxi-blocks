@@ -49,7 +49,7 @@ const listTab = props => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [listStyleSource, setListStyleSource] = useState(
 		(isURL(listStyleCustom) && 'url') ||
-			(listStyleCustom.includes('<svg ') && 'icon') ||
+			(listStyleCustom?.includes('<svg ') && 'icon') ||
 			'text'
 	);
 

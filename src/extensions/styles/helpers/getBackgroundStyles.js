@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getAttributeValue from '../getAttributeValue';
+import getBorderStyles from './getBorderStyles';
 import getColorRGBAString from '../getColorRGBAString';
 import getDisplayStyles from './getDisplayStyles';
 import getGroupAttributes from '../getGroupAttributes';
@@ -11,7 +12,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isNumber, merge, compact } from 'lodash';
+import { isEmpty, isNil, isNumber, merge, compact, round } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -38,7 +39,14 @@ export const getColorBackgroundObject = ({
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
-	if (isHover && !hoverStatus && !globalHoverStatus) return {};
+	if (
+		isHover &&
+		!isNil(hoverStatus) &&
+		!hoverStatus &&
+		!isNil(globalHoverStatus) &&
+		!globalHoverStatus
+	)
+		return {};
 
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
@@ -151,6 +159,10 @@ export const getGradientBackgroundObject = ({
 	prefix = '',
 	breakpoint = 'general',
 	isIcon = false,
+	blockStyle,
+	isButton,
+	isIconInherit,
+	scValues,
 	...props
 }) => {
 	const response = {
@@ -194,7 +206,31 @@ export const getGradientBackgroundObject = ({
 	} else if (!isIcon) {
 		if (isNumber(bgGradientOpacity))
 			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+		if (!isEmpty(bgGradient) && bgGradient !== 'undefined') {
+			response[breakpoint].background = bgGradient;
+		} else {
+			const colorBackground = getColorBackgroundObject({
+				...getGroupAttributes(
+					props,
+					['background', 'backgroundColor'],
+					isHover,
+					prefix
+				),
+				blockStyle,
+				isButton,
+				breakpoint,
+				isHover,
+				prefix,
+				isIconInherit,
+				scValues,
+			});
+
+			const background =
+				colorBackground[breakpoint].background ??
+				colorBackground[breakpoint]['background-color'];
+
+			if (background) response[breakpoint].background = background;
+		}
 		if (!isNil(bgGradientClipPath))
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
@@ -609,6 +645,7 @@ const getBackgroundLayers = ({
 								),
 								isHover,
 								prefix,
+								blockStyle,
 								breakpoint,
 							}),
 							getDisplayStyles(
@@ -843,6 +880,131 @@ const getBackgroundLayers = ({
 	return response;
 };
 
+const getGeneralBackgroundStyles = (
+	props,
+	borderProps,
+	blockStyle,
+	isHover
+) => {
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const size = {};
+
+	breakpoints.forEach(breakpoint => {
+		const widthTop =
+			getLastBreakpointAttribute('border-top-width', breakpoint, props) ||
+			0;
+		const widthBottom =
+			getLastBreakpointAttribute(
+				'border-bottom-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthLeft =
+			getLastBreakpointAttribute(
+				'border-left-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthRight =
+			getLastBreakpointAttribute(
+				'border-right-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthUnit =
+			getLastBreakpointAttribute(
+				'border-unit-width',
+				breakpoint,
+				props
+			) || 'px';
+		const horizontalWidth =
+			round(widthTop / 2, 2) + round(widthBottom / 2, 2);
+		const verticalWidth =
+			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
+
+		size[breakpoint] = {
+			...((!!horizontalWidth || isHover) && {
+				top: -horizontalWidth + widthUnit,
+			}),
+			...((!!verticalWidth || isHover) && {
+				left: -verticalWidth + widthUnit,
+			}),
+		};
+	});
+
+	const border = getBorderStyles({
+		obj: borderProps,
+		parentBlockStyle: blockStyle,
+		isHover,
+	});
+
+	breakpoints.forEach(breakpoint => {
+		if (border[breakpoint]['border-top-width'])
+			border[breakpoint]['border-top-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-right-width'])
+			border[breakpoint]['border-right-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-bottom-width'])
+			border[breakpoint]['border-bottom-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-left-width'])
+			border[breakpoint]['border-left-style'] =
+				border[breakpoint]['border-style'];
+	});
+
+	delete border.general['border-style'];
+
+	// Clean size object
+	if (!isEmpty(size))
+		[...breakpoints].reverse().forEach(breakpoint => {
+			if (
+				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]?.top ===
+					size[breakpoint]?.top ||
+				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]?.left ===
+					size[breakpoint]?.left
+			)
+				delete size[breakpoint];
+		});
+
+	return { border, ...(!isEmpty(size) && { size }) };
+};
+
+const getBasicResponseObject = ({
+	target,
+	isHover,
+	prefix,
+	blockStyle,
+	...props
+}) => {
+	const includeBorder =
+		!isHover || (isHover && props[`${prefix}border-status-hover`]);
+
+	const borderObj =
+		includeBorder &&
+		getGeneralBackgroundStyles(
+			props,
+			{
+				...getGroupAttributes(
+					props,
+					['border', 'borderRadius', 'borderWidth'],
+					isHover
+				),
+			},
+			blockStyle,
+			isHover
+		);
+
+	return {
+		...(includeBorder && {
+			[`${target} > .maxi-background-displayer`]: { ...borderObj },
+		}),
+	};
+};
+
 export const getBlockBackgroundStyles = ({
 	target: rawTarget,
 	isHover = false,
@@ -852,7 +1014,13 @@ export const getBlockBackgroundStyles = ({
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
 
-	let response = {};
+	let response = getBasicResponseObject({
+		target,
+		isHover,
+		prefix,
+		blockStyle,
+		...props,
+	});
 
 	if (isHover && !props[`${prefix}block-background-hover-status`])
 		return response;
@@ -941,13 +1109,17 @@ export const getBackgroundStyles = ({
 				background: getGradientBackgroundObject({
 					...getGroupAttributes(
 						props,
-						'backgroundGradient',
+						['backgroundColor', 'backgroundGradient'],
 						isHover,
 						prefix
 					),
+					blockStyle,
+					isButton,
 					breakpoint,
 					isHover,
 					prefix,
+					isIconInherit,
+					scValues,
 				}),
 			}),
 		});

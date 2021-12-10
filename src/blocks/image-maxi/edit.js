@@ -12,7 +12,10 @@ import { createRef } from '@wordpress/element';
  */
 import getStyles from './styles';
 import Inspector from './inspector';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -58,6 +61,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		this.textRef = createRef(null);
+		this.resizableObject = createRef();
 	}
 
 	propsToAvoidRendering = ['formatValue'];
@@ -89,8 +93,14 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, imageData, setAttributes, clientId, isSelected } =
-			this.props;
+		const {
+			attributes,
+			imageData,
+			setAttributes,
+			clientId,
+			isSelected,
+			deviceType,
+		} = this.props;
 		const {
 			'hover-preview': hoverPreview,
 			'hover-type': hoverType,
@@ -108,6 +118,7 @@ class edit extends MaxiBlockComponent {
 			mediaWidth,
 			SVGElement,
 			uniqueID,
+			captionPosition,
 		} = attributes;
 		const { isExternalClass } = this.state;
 
@@ -196,6 +207,12 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -262,6 +279,8 @@ class edit extends MaxiBlockComponent {
 									<BlockResizer
 										key={uniqueID}
 										className='maxi-block__resizer maxi-image-block__resizer'
+										resizableObject={this.resizableObject}
+										isOverflowHidden={getIsOverflowHidden()}
 										size={{ width: `${imgWidth}%` }}
 										showHandle={isSelected}
 										maxWidth='100%'
@@ -320,6 +339,37 @@ class edit extends MaxiBlockComponent {
 												}}
 											/>
 										</div>
+										{captionType !== 'none' &&
+											captionPosition === 'top' && (
+												<>
+													<CaptionToolbar
+														key={`caption-toolbar-${uniqueID}`}
+														ref={this.textRef}
+														{...this.props}
+														propsToAvoid={[
+															'captionContent',
+															'formatValue',
+														]}
+													/>
+													<RichText
+														ref={this.textRef}
+														className='maxi-image-block__caption'
+														value={captionContent}
+														onChange={
+															processContent
+														}
+														tagName='figcaption'
+														placeholder={__(
+															'Set your Image Maxi caption here…',
+															'maxi-blocks'
+														)}
+														__unstableEmbedURLOnPaste
+														__unstableAllowPrefixTransformations
+													>
+														{onChangeRichText}
+													</RichText>
+												</>
+											)}
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
 											wrapperClassName={wrapperClassName}
@@ -347,34 +397,37 @@ class edit extends MaxiBlockComponent {
 												/>
 											)}
 										</HoverPreview>
-										{captionType !== 'none' && (
-											<>
-												<CaptionToolbar
-													key={`caption-toolbar-${uniqueID}`}
-													ref={this.textRef}
-													{...this.props}
-													propsToAvoid={[
-														'captionContent',
-														'formatValue',
-													]}
-												/>
-												<RichText
-													ref={this.textRef}
-													className='maxi-image-block__caption'
-													value={captionContent}
-													onChange={processContent}
-													tagName='figcaption'
-													placeholder={__(
-														'Set your Image Maxi caption here…',
-														'maxi-blocks'
-													)}
-													__unstableEmbedURLOnPaste
-													__unstableAllowPrefixTransformations
-												>
-													{onChangeRichText}
-												</RichText>
-											</>
-										)}
+										{captionType !== 'none' &&
+											captionPosition === 'bottom' && (
+												<>
+													<CaptionToolbar
+														key={`caption-toolbar-${uniqueID}`}
+														ref={this.textRef}
+														{...this.props}
+														propsToAvoid={[
+															'captionContent',
+															'formatValue',
+														]}
+													/>
+													<RichText
+														ref={this.textRef}
+														className='maxi-image-block__caption'
+														value={captionContent}
+														onChange={
+															processContent
+														}
+														tagName='figcaption'
+														placeholder={__(
+															'Set your Image Maxi caption here…',
+															'maxi-blocks'
+														)}
+														__unstableEmbedURLOnPaste
+														__unstableAllowPrefixTransformations
+													>
+														{onChangeRichText}
+													</RichText>
+												</>
+											)}
 									</BlockResizer>
 								</>
 							) : (

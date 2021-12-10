@@ -19,7 +19,11 @@ import {
  * Internal dependencies
  */
 import pasteHTML from './pasteExamples';
-import { getBlockAttributes, openPreviewPage } from '../../utils';
+import {
+	getBlockAttributes,
+	getBlockStyle,
+	openPreviewPage,
+} from '../../utils';
 
 const linkExample = 'test.com';
 describe('TextMaxi', () => {
@@ -30,6 +34,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi on pressing enter', async () => {
@@ -39,6 +45,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi split', async () => {
@@ -49,6 +57,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi on merge from top', async () => {
@@ -61,6 +71,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Delete');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Test Text Maxi on merge from bottom', async () => {
 		await createNewPost();
@@ -72,6 +84,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Backspace');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi merge from bottom to top with Custom Formats', async () => {
@@ -105,6 +119,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi merge from top to bottom with Custom Formats', async () => {
@@ -138,6 +154,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link in whole content', async () => {
@@ -151,6 +169,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
@@ -181,6 +201,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link in whole content, and being modifiable from the end', async () => {
@@ -230,6 +252,8 @@ describe('TextMaxi', () => {
 		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link in whole content, and then removing a part', async () => {
@@ -259,6 +283,8 @@ describe('TextMaxi', () => {
 		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
 		const editorPage = page;
@@ -297,6 +323,8 @@ describe('TextMaxi', () => {
 		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link in part of the content', async () => {
@@ -320,6 +348,8 @@ describe('TextMaxi', () => {
 			)
 		).toStrictEqual(`${linkExample}(opens in a new tab)`);
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
 		const editorPage = page;
@@ -354,6 +384,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(200);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link with all option on frontend', async () => {
@@ -379,6 +411,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(200);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
 		const editorPage = page;
@@ -425,6 +459,8 @@ describe('TextMaxi', () => {
 		// Check content with multiple and different urls
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
 		await selectMaxiTextP.focus();
 		await pressKeyTimes('ArrowRight', '6');
 		await page.waitForTimeout(150);
@@ -448,6 +484,8 @@ describe('TextMaxi', () => {
 		// Check content after changing one link
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
 		// Check frontend
 		const editorPage = page;
 		const previewPage = await openPreviewPage(editorPage);
@@ -458,30 +496,6 @@ describe('TextMaxi', () => {
 			contentWrapper => contentWrapper.innerHTML.trim()
 		);
 		expect(content).toMatchSnapshot();
-	});
-
-	it('Testing Text Maxi with custom formats when split', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi Bold', { delay: 100 });
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-item__bold', button => button.click());
-		await page.waitForTimeout(150);
-		await page.keyboard.press('ArrowLeft');
-		await page.waitForTimeout(150);
-		await page.keyboard.press('Enter');
-
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
-		const selectMaxiTextP = await selectMaxiTextDiv.$(
-			'.block-editor-rich-text__editable'
-		);
-		await selectMaxiTextP.focus();
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
 	it('Testing Text Maxi with custom formats when split a word at middle', async () => {
@@ -507,30 +521,8 @@ describe('TextMaxi', () => {
 		await selectMaxiTextP.focus();
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
-	});
 
-	it('Testing Text Maxi with custom formats when merge from top block to bottom one', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi.', { delay: 100 });
-		await page.keyboard.press('Enter');
-		await page.keyboard.type('.Bold', { delay: 100 });
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await page.waitForTimeout(150);
-
-		await page.$eval('.toolbar-item__bold', button => button.click());
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
-		const selectMaxiTextP = await selectMaxiTextDiv.$(
-			'.block-editor-rich-text__editable'
-		);
-		await selectMaxiTextP.focus();
-		await pressKeyTimes('ArrowRight', '18');
-		await page.keyboard.press('Delete');
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Testing Text Maxi with custom formats when merge from bottom block to top one', async () => {
@@ -554,6 +546,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Backspace');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Test Text Maxi when pasting headings', async () => {
 		await insertBlock('Text Maxi');
@@ -562,6 +556,8 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('primary', 'v');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi on List mode and changing the font color', async () => {

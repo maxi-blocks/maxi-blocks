@@ -45,7 +45,7 @@ const rawDivider = {
 	},
 	'divider-width-unit': {
 		type: 'string',
-		default: 'px',
+		default: '%',
 	},
 	'divider-height': {
 		type: 'number',

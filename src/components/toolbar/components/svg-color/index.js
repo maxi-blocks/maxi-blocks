@@ -42,11 +42,6 @@ const SvgColorToolbar = props => {
 			  })
 			: attr[`svg-${type}-color`];
 
-	const typeNumber = {
-		fill: 'fill',
-		line: 'stroke',
-	};
-
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
@@ -70,7 +65,21 @@ const SvgColorToolbar = props => {
 					onChange={obj => {
 						onChange(obj);
 
-						changeSVGContent(getColor(obj), typeNumber[type]);
+						const colorStr = getColorRGBAString({
+							firstVar: `icon-${type}`,
+							secondVar: `color-${
+								obj[`svg-palette-${type}-color`]
+							}`,
+							opacity: obj[`svg-palette-${type}-opacity`],
+							blockStyle: parentBlockStyle,
+						});
+
+						changeSVGContent(
+							obj[`svg-palette-${type}-color-status`]
+								? colorStr
+								: obj[`svg-${type}-color`],
+							type
+						);
 					}}
 				/>
 			</div>

@@ -47,6 +47,7 @@ const AdvancedNumberControl = props => {
 		onChangeValue,
 		disableReset = false,
 		enableAuto = false,
+		autoLabel,
 		onReset,
 		allowedUnits = ['px', 'em', 'vw', '%', '-'],
 		minMaxSettings = {
@@ -121,7 +122,7 @@ const AdvancedNumberControl = props => {
 		<>
 			{enableAuto && (
 				<ToggleSwitch
-					label={__('Auto', 'maxi-blocks')}
+					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
 					onChange={val => onChangeValue(val ? 'auto' : '')}
@@ -203,7 +204,13 @@ const AdvancedNumberControl = props => {
 					<RangeControl
 						label={label}
 						value={
-							value || defaultValue || initial || placeholder || 0
+							+(
+								value ||
+								defaultValue ||
+								initial ||
+								placeholder ||
+								0
+							)
 						}
 						onChange={val => {
 							onChangeValue(+val);

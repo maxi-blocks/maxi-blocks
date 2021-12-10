@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+import { getBlockStyle } from '../../utils';
 
 describe('Row Maxi', () => {
 	it('Row Maxi does not break', async () => {
@@ -16,5 +17,7 @@ describe('Row Maxi', () => {
 			button[1].click()
 		);
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

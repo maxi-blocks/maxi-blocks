@@ -6,12 +6,15 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockStyle, openSidebarTab } from '../../utils';
+import { getBlockStyle, openSidebarTab, addCustomCSS } from '../../utils';
 
 describe('Custom-Css-Control', () => {
-	it('Checking the custom-css Validation', async () => {
+	it('Checking the custom-css', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
+	it('Checking the custom-css Validation', async () => {
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',

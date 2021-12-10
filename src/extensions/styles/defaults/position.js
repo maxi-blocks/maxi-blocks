@@ -1,8 +1,7 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
 const rawPosition = {
-	label: 'Position',
-	'position': {
+	position: {
 		type: 'string',
 	},
 	'position-top': {
@@ -28,7 +27,7 @@ const rawPosition = {
 };
 
 const position = breakpointObjectCreator({
-	obj: rawPosition
+	obj: rawPosition,
 });
 
 export default position;

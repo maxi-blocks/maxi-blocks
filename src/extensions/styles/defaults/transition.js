@@ -1,16 +1,12 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
-const rawTransitionDuration = {
-	'transition-duration': {
-		type: 'number',
-		default: 0.3,
-	},
-};
-
 const transitionDuration = breakpointObjectCreator({
-	obj: rawTransitionDuration,
-	addBreakpoint: true,
+	obj: {
+		'transition-duration': {
+			type: 'number',
+			default: 0.3,
+		},
+	},
 });
-
 
 export default transitionDuration;

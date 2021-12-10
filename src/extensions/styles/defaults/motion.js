@@ -43,7 +43,7 @@ const rawMotion = {
 };
 
 const motion = breakpointObjectCreator({
-	obj: rawMotion
+	obj: rawMotion,
 });
 
 export default motion;

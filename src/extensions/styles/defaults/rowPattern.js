@@ -1,13 +1,11 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
-const rawRowPattern = {
-	'row-pattern': {
-		type: 'string',
-	}
-};
-
 const rowPattern = breakpointObjectCreator({
-	obj: rawRowPattern
+	obj: {
+		'row-pattern': {
+			type: 'string',
+		},
+	},
 });
 
 export default rowPattern;

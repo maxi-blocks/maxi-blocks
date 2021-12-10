@@ -17,6 +17,9 @@ export const borderNone = (prefix = '', isHover) => {
 		: defaultBorderWidth;
 
 	response = {
+		[`${prefix}border-palette-color-status`]:
+			currentDefaultBorder[`${prefix}border-palette-color-status-general`]
+				.default,
 		[`${prefix}border-palette-color`]:
 			currentDefaultBorder[`${prefix}border-palette-color-general`]
 				.default,

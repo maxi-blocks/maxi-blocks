@@ -1,13 +1,11 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
-const rawDisplay = {
-	'display': {
-		type: 'string',
-	}
-};
-
 const display = breakpointObjectCreator({
-	obj: rawDisplay
+	obj: {
+		display: {
+			type: 'string',
+		},
+	},
 });
 
 export default display;

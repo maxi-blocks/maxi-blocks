@@ -20,11 +20,11 @@ const rawMargin = {
 	'margin-unit': {
 		type: 'string',
 		default: 'px',
-	}
+	},
 };
 
 const margin = breakpointObjectCreator({
-	obj: rawMargin
+	obj: rawMargin,
 });
 
 export default margin;

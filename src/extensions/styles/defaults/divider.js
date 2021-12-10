@@ -1,6 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
-
-const rawDivider = {
+const divider = {
 	'divider-palette-border-color-status': {
 		type: 'boolean',
 		default: true,
@@ -52,9 +50,5 @@ const rawDivider = {
 		default: 100,
 	},
 };
-
-const divider = breakpointObjectCreator({
-	obj: rawDivider
-});
 
 export default divider;

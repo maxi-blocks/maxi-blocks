@@ -48,8 +48,17 @@ const rawSvg = {
 };
 
 const svg = breakpointObjectCreator({
-	obj: rawSvg
+	obj: rawSvg,
+	noBreakpointAttr: [
+		'svg-palette-fill-color-status',
+		'svg-palette-fill-color',
+		'svg-palette-fill-opacity',
+		'svg-fill-color',
+		'svg-palette-line-color-status',
+		'svg-palette-line-color',
+		'svg-palette-line-opacity',
+		'svg-line-color',
+	],
 });
-
 
 export default svg;

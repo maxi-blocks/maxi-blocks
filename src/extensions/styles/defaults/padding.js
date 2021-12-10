@@ -25,7 +25,6 @@ const rawPadding = {
 
 const padding = breakpointObjectCreator({
 	obj: rawPadding,
-	addBreakpoint: true,
 });
 
 export default padding;

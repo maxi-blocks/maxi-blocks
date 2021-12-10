@@ -36,7 +36,8 @@ const attributes = {
 	...{
 		...attributesData.iconBackgroundColor,
 		'icon-background-palette-color-status-general': {
-			type: 'boolean'
+			type: 'boolean',
+			default: true,
 		},
 		'icon-background-palette-color-general': {
 			type: 'number',

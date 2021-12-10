@@ -29,7 +29,7 @@ const rawBoxShadow = {
 	},
 };
 const boxShadow = breakpointObjectCreator({
-	obj: rawBoxShadow
+	obj: rawBoxShadow,
 });
 
 export default boxShadow;

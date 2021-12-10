@@ -61,7 +61,6 @@ const rawLink = {
 
 const link = breakpointObjectCreator({
 	obj: rawLink,
-	addBreakpoint: true,
 });
 
 export default link;

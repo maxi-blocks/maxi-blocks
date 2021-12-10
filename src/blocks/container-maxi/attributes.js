@@ -40,8 +40,9 @@ const attributes = {
 				{
 					type: 'color',
 					'display-general': 'block',
+					'background-palette-color-status-general': true,
 					'background-palette-color-general': 1,
-					'background-palette-opacity': 100,
+					'background-palette-opacity': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					id: 0,

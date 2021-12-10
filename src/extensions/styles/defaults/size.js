@@ -16,7 +16,7 @@ const rawSize = {
 		type: 'string',
 		default: 'px',
 	},
-	'width': {
+	width: {
 		type: 'number',
 	},
 	'min-width-unit': {
@@ -37,7 +37,7 @@ const rawSize = {
 		type: 'string',
 		default: 'px',
 	},
-	'height': {
+	height: {
 		type: 'number',
 	},
 	'min-height-unit': {
@@ -46,12 +46,12 @@ const rawSize = {
 	},
 	'min-height': {
 		type: 'number',
-	}
+	},
 };
 
 const size = breakpointObjectCreator({
 	obj: rawSize,
-	addBreakpoint: true,
+	noBreakpointAttr: ['size-advanced-options'],
 });
 
 export default size;

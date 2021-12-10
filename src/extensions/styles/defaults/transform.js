@@ -47,8 +47,7 @@ const rawTransform = {
 };
 
 const transform = breakpointObjectCreator({
-	obj: rawTransform
+	obj: rawTransform,
 });
-
 
 export default transform;

@@ -1,13 +1,11 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
-const rawZindex = {
-	'z-index': {
-		type: 'number',
-	}
-};
-
 const zIndex = breakpointObjectCreator({
-	obj: rawZindex
+	obj: {
+		'z-index': {
+			type: 'number',
+		},
+	},
 });
 
 export default zIndex;

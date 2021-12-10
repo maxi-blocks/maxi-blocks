@@ -1,7 +1,6 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
 const rawOverflow = {
-	label: 'Overflow',
 	'overflow-x': {
 		type: 'string',
 	},
@@ -12,7 +11,6 @@ const rawOverflow = {
 
 const overflow = breakpointObjectCreator({
 	obj: rawOverflow,
-	addBreakpoint: true,
 });
 
 export default overflow;

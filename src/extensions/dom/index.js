@@ -261,7 +261,9 @@ wp.domReady(() => {
 
 const openSidebar = item => {
 	const sidebar = document.querySelector('.maxi-sidebar');
-	const wrapperElement = document.querySelector(``);
+	const wrapperElement = document.querySelector(
+		`.maxi-accordion-control__item[data-name="${item}"]`
+	);
 	const button = wrapperElement.querySelector(
 		'.maxi-accordion-control__item__button'
 	);

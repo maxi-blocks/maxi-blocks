@@ -26,6 +26,7 @@ const ButtonGroupControl = ({
 	label = '',
 	className,
 	selected,
+	active,
 	help,
 	onChange,
 	options = [],
@@ -57,6 +58,8 @@ const ButtonGroupControl = ({
 						'maxi-button-group-control__option',
 						selected === value &&
 							'maxi-button-group-control__option--selected',
+						active?.includes(value) &&
+							'maxi-button-group-control__option--active',
 						className
 					)}
 					onClick={() => onChange(value)}

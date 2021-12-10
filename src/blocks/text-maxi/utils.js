@@ -100,3 +100,21 @@ const onMerge = (props, forward) => {
 };
 
 export default onMerge;
+
+export const getSVGListStyle = svg => {
+	if (!svg) return '';
+
+	let cleanedSVG = svg
+		.replace(/"/g, "'")
+		.replace(/>\s{1,}</g, '><')
+		.replace(/\s{2,}/g, ' ');
+
+	if (cleanedSVG.indexOf('http://www.w3.org/2000/svg') < 0) {
+		cleanedSVG = cleanedSVG.replace(
+			/<svg/g,
+			"<svg xmlns='http://www.w3.org/2000/svg'"
+		);
+	}
+
+	return cleanedSVG.replace(/[\r\n%#()<>?[\\\]^`{|}]/g, encodeURIComponent);
+};

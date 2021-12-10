@@ -51,6 +51,9 @@ const attributes = {
 	listStyle: {
 		type: 'string',
 	},
+	listStyleCustom: {
+		type: 'string',
+	},
 	listPosition: {
 		type: 'string',
 	},

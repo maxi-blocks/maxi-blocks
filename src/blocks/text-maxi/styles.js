@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { isURL } from '@wordpress/url';
+
+/**
  * Internal dependencies
  */
 import {
@@ -30,6 +35,7 @@ import { selectorsText } from './custom-css';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import { getSVGListStyle } from './utils';
 
 const getNormalObject = props => {
 	const response = {
@@ -156,13 +162,30 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStyle, listPosition } = props;
+	const { listStyle, listPosition, listStyleCustom } = props;
 
 	const response = {
 		...(listStyle && {
 			listStyle: {
 				general: {
-					'list-style-type': listStyle,
+					...((listStyle !== 'custom' || !listStyleCustom) && {
+						'list-style-type': listStyle,
+					}),
+					...(listStyle === 'custom' &&
+						listStyleCustom && {
+							...(isURL(listStyleCustom) && {
+								'list-style-image': `url('${listStyleCustom}')`,
+							}),
+							...(listStyleCustom.includes('</svg>') && {
+								'list-style-image': `url("data:image/svg+xml,${getSVGListStyle(
+									listStyleCustom
+								)}")`,
+							}),
+							...(!isURL(listStyleCustom) &&
+								!listStyleCustom.includes('</svg>') && {
+									'list-style-type': listStyleCustom,
+								}),
+						}),
 				},
 			},
 		}),

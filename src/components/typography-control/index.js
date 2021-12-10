@@ -27,12 +27,13 @@ import {
 	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isBoolean, isNumber, cloneDeep, upperCase } from 'lodash';
+import { isNil, isBoolean, isNumber } from 'lodash';
 
 /**
  * Styles and icons
@@ -469,29 +470,6 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	console.log('typography');
-	console.log(typography);
-
-	const definedTypography = cloneDeep(typography);
-	console.log('definedTypography');
-	console.log(definedTypography);
-
-	Object.keys(definedTypography).forEach(
-		key =>
-			definedTypography[key] === undefined &&
-			delete definedTypography[key]
-	);
-
-	const active = [];
-
-	Object.keys(definedTypography).forEach(key => {
-		const screenSize = key?.split('-')?.pop();
-		screenSize !== 'general' && active?.push(upperCase(screenSize));
-	});
-
-	console.log('active');
-	console.log(active);
-
 	const { styleCard } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
@@ -771,7 +749,7 @@ const TypographyControl = withFormatValue(props => {
 			<ResponsiveTabsControl
 				className='maxi-typography-control__text-options-tabs'
 				breakpoint={breakpoint}
-				active={active}
+				active={getActiveAttributes(typography, 'typography')}
 			>
 				<TextOptions
 					getValue={getValue}

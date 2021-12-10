@@ -19,7 +19,6 @@ class ScrollEffects {
 	}
 
 	getElements = () => {
-		console.log('fire getElements');
 		const response = {};
 		const elements = Array.from(
 			document.querySelectorAll('[data-scroll-effect-type]')
@@ -126,14 +125,11 @@ class ScrollEffects {
 			}
 		};
 
-		response.trigger = getTriggerValue(dataScrollArray[3]);
-
 		response.speedValue = parseFloat(dataScrollArray[0]) || 200;
 		response.delayValue = parseFloat(dataScrollArray[1]) || 0;
 		response.easingValue = dataScrollArray[2] || 'ease';
-
+		response.trigger = getTriggerValue(dataScrollArray[3]);
 		response.reverseScroll = dataScrollArray[4] || true;
-
 		response.start = parseInt(dataScrollArray[5]);
 		response.mid = parseInt(dataScrollArray[6]);
 		response.end = parseInt(dataScrollArray[7]);
@@ -291,16 +287,9 @@ class ScrollEffects {
 	};
 
 	effectsOnScroll = () => {
-		const elements = Array.from(
-			document.querySelectorAll('[data-scroll-effect-type]')
-		);
-
-		elements.forEach(element => {
-			const scrollType = element?.getAttribute('data-scroll-effect-type');
-
-			const scrollTypeArray = scrollType?.trim()?.split(' ');
-
-			scrollTypeArray?.forEach(type => {
+		Object.entries(this.scrollData).forEach(([id, effect]) => {
+			const element = document.getElementById(id);
+			Object.entries(effect).forEach(([type]) => {
 				this.scrollTransform(element, type);
 			});
 		});
@@ -308,22 +297,12 @@ class ScrollEffects {
 
 	// eslint-disable-next-line class-methods-use-this
 	startingEffect() {
-		console.log('this.scrollData 2');
-		console.log(this.scrollData);
-
-		const elements = Array.from(
-			document.querySelectorAll('[data-scroll-effect-type]')
-		);
-
-		elements.forEach(element => {
-			const scrollType = element?.getAttribute('data-scroll-effect-type');
-			const scrollTypeArray = scrollType?.trim()?.split(' ');
+		Object.entries(this.scrollData).forEach(([id, effect]) => {
 			let transition = '';
-
-			scrollTypeArray?.forEach(type => {
-				const dataScroll = this.getScrollData(element, type);
+			const element = document.getElementById(id);
+			Object.entries(effect).forEach(([type, data]) => {
 				const { speedValue, easingValue, delayValue } =
-					this.getScrollSetting(dataScroll);
+					this.getScrollSetting(data);
 
 				switch (type) {
 					case 'vertical':
@@ -349,7 +328,6 @@ class ScrollEffects {
 				}
 				this.startingTransform(element, type);
 			});
-
 			if (transition !== '')
 				element.style.transition = transition.substring(
 					0,

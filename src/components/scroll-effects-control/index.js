@@ -48,7 +48,18 @@ const ScrollEffectsControl = props => {
 
 	const classes = classnames('maxi-scroll-effects-control', className);
 
-	const [motionStatus, setMotionStatus] = useState('vertical');
+	const getActiveEffects = () => {
+		const response = [];
+		scrollTypes.forEach(type => {
+			if (props[`scroll-${type}-status-${breakpoint}`])
+				response.push(type);
+		});
+
+		return response;
+	};
+
+	const firstActiveEffect = getActiveEffects()?.[0] || 'vertical';
+	const [motionStatus, setMotionStatus] = useState(firstActiveEffect);
 
 	const motionOptions = [
 		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
@@ -180,16 +191,6 @@ const ScrollEffectsControl = props => {
 			onChange({
 				...newDefaultShortcuts?.[`shortcut${number}`],
 			});
-	};
-
-	const getActiveEffects = () => {
-		const response = [];
-		scrollTypes.forEach(type => {
-			if (props[`scroll-${type}-status-${breakpoint}`])
-				response.push(type);
-		});
-
-		return response;
 	};
 
 	return (

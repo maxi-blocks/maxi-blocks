@@ -109,7 +109,7 @@ export const icon = {
 	'icon-stroke-xs': {
 		type: 'number',
 	},
-	'icon-palette-color-status': {
+	'icon-palette-status': {
 		type: 'boolean',
 		default: true,
 	},

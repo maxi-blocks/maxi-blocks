@@ -57,26 +57,26 @@ Object {
   "background-palette-color-s-hover": Object {
     "type": "number",
   },
-  "background-palette-color-status-general-hover": Object {
+  "background-palette-status-general-hover": Object {
     "default": true,
     "type": "boolean",
   },
-  "background-palette-color-status-l-hover": Object {
+  "background-palette-status-l-hover": Object {
     "type": "boolean",
   },
-  "background-palette-color-status-m-hover": Object {
+  "background-palette-status-m-hover": Object {
     "type": "boolean",
   },
-  "background-palette-color-status-s-hover": Object {
+  "background-palette-status-s-hover": Object {
     "type": "boolean",
   },
-  "background-palette-color-status-xl-hover": Object {
+  "background-palette-status-xl-hover": Object {
     "type": "boolean",
   },
-  "background-palette-color-status-xs-hover": Object {
+  "background-palette-status-xs-hover": Object {
     "type": "boolean",
   },
-  "background-palette-color-status-xxl-hover": Object {
+  "background-palette-status-xxl-hover": Object {
     "type": "boolean",
   },
   "background-palette-color-xl-hover": Object {

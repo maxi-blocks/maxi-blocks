@@ -22,8 +22,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 
 	breakpoints.forEach(breakpoint => {
 		if (
-			isBoolean(obj[`link-palette-color-status-${breakpoint}`]) &&
-			!obj[`link-palette-color-status-${breakpoint}`]
+			isBoolean(obj[`link-palette-status-${breakpoint}`]) &&
+			!obj[`link-palette-status-${breakpoint}`]
 		) {
 			response[target].link[breakpoint] = {};
 
@@ -40,8 +40,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 			});
 		}
 		if (
-			isBoolean(obj[`link-hover-palette-color-status-${breakpoint}`]) &&
-			!obj[`link-hover-palette-color-status-${breakpoint}`]
+			isBoolean(obj[`link-hover-palette-status-${breakpoint}`]) &&
+			!obj[`link-hover-palette-status-${breakpoint}`]
 		) {
 			response[`${target}:hover`].link[breakpoint] = {};
 			response[`${target}:hover span`].link[breakpoint] = {};
@@ -64,8 +64,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 			response[`${target}:hover span`].link[breakpoint] = { color };
 		}
 		if (
-			isBoolean(obj[`link-active-palette-color-status-${breakpoint}`]) &&
-			!obj[`link-active-palette-color-status-${breakpoint}`]
+			isBoolean(obj[`link-active-palette-status-${breakpoint}`]) &&
+			!obj[`link-active-palette-status-${breakpoint}`]
 		) {
 			response[`${target}:active span`].link[breakpoint] = {};
 			response[`${target}:active`].link[breakpoint] = {};
@@ -88,8 +88,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 			response[`${target}:active`].link[breakpoint] = { color };
 		}
 		if (
-			isBoolean(obj[`link-visited-palette-color-status-${breakpoint}`]) &&
-			!obj[`link-visited-palette-color-status-${breakpoint}`]
+			isBoolean(obj[`link-visited-palette-status-${breakpoint}`]) &&
+			!obj[`link-visited-palette-status-${breakpoint}`]
 		) {
 			response[`${target}:visited`].link[breakpoint] = {};
 			response[`${target}:visited span`].link[breakpoint] = {};

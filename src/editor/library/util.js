@@ -122,44 +122,40 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 
 	if (!currentAttributes) return false;
 
-	const fillColor = !currentAttributes[`${target}-palette-fill-color-status`]
+	const fillColor = !currentAttributes[`${target}-fill-palette-status`]
 		? currentAttributes[`${target}-fill-color`]
 		: getColorRGBAString({
 				firstVar: 'icon-fill',
 				secondVar: `color-${
-					currentAttributes[`${target}-palette-fill-color`]
+					currentAttributes[`${target}-fill-palette-color`]
 				}`,
-				opacity: currentAttributes[`${target}-palette-fill-opacity`],
+				opacity: currentAttributes[`${target}-fill-palette-opacity`],
 				blockStyle,
 		  }) || '';
 
-	const lineColor = !currentAttributes[`${target}-palette-line-color-status`]
+	const lineColor = !currentAttributes[`${target}-line-palette-status`]
 		? currentAttributes[`${target}-line-color`]
 		: getColorRGBAString({
 				firstVar: 'icon-line',
 				secondVar: `color-${
-					currentAttributes[`${target}-palette-line-color`]
+					currentAttributes[`${target}-line-palette-color`]
 				}`,
-				opacity: currentAttributes[`${target}-palette-line-opacity`],
+				opacity: currentAttributes[`${target}-line-palette-opacity`],
 				blockStyle,
 		  }) || '';
 
-	const shapeFillColor = !currentAttributes[
-		`${target}-palette-fill-color-status`
-	]
+	const shapeFillColor = !currentAttributes[`${target}-fill-palette-status`]
 		? currentAttributes[`${target}-fill-color`]
 		: getColorRGBAString({
 				firstVar: 'shape-fill',
 				secondVar: `color-${
-					currentAttributes[`${target}-palette-fill-color`]
+					currentAttributes[`${target}-fill-palette-color`]
 				}`,
 				opacity: 100,
 				blockStyle,
 		  }) || '';
 
-	const iconNoInheritColor = !currentAttributes[
-		`${target}-palette-color-status`
-	]
+	const iconNoInheritColor = !currentAttributes[`${target}-palette-status`]
 		? currentAttributes[`${target}-color`]
 		: getColorRGBAString({
 				firstVar: 'color',
@@ -170,7 +166,7 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 				blockStyle,
 		  }) || '';
 
-	const iconInheritColor = !currentAttributes['palette-color-status-general']
+	const iconInheritColor = !currentAttributes['palette-status-general']
 		? currentAttributes['color-general']
 		: getColorRGBAString({
 				firstVar: 'color',
@@ -253,7 +249,7 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 		target === 'icon' ? '' : target === 'svg' ? '-line' : '-fill';
 
 	const iconInheritColor = currentAttributes['icon-inherit']
-		? !currentAttributes['palette-color-status-general']
+		? !currentAttributes['palette-status-general']
 			? rgbToHex(currentAttributes['color-general'])
 			: rgbToHex(
 					`rgba(${getVarValue(
@@ -263,7 +259,7 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 		: '';
 
 	const currentColor = !currentAttributes[
-		`${target}-palette${colorType}-color-status`
+		`${target}-${colorType}-palette-status`
 	]
 		? rgbToHex(currentAttributes[`${target}${colorType}-color`])
 		: rgbToHex(

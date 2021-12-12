@@ -56,7 +56,7 @@ export const getColorBackgroundObject = ({
 	};
 
 	const bgPaletteStatus = getLastBreakpointAttribute(
-		`${prefix}background-palette-color-status`,
+		`${prefix}background-palette-status`,
 		breakpoint,
 		props,
 		isHover
@@ -546,7 +546,7 @@ const getSVGBackgroundObject = ({
 	};
 
 	const bgSVGPaletteStatus = getLastBreakpointAttribute(
-		'background-palette-svg-color-status',
+		'background-svg-palette-status',
 		breakpoint,
 		props,
 		isHover
@@ -554,13 +554,13 @@ const getSVGBackgroundObject = ({
 
 	if (bgSVGPaletteStatus) {
 		const bgSVGPaletteColor = getLastBreakpointAttribute(
-			'background-palette-svg-color',
+			'background-svg-palette-color',
 			breakpoint,
 			props,
 			isHover
 		);
 		const bgSVGPaletteOpacity = getLastBreakpointAttribute(
-			'background-palette-svg-opacity',
+			'background-svg-palette-opacity',
 			breakpoint,
 			props,
 			isHover

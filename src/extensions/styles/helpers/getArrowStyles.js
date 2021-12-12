@@ -93,7 +93,7 @@ export const getArrowColorObject = (
 		response[breakpoint] = {};
 
 		const backgroundPaletteStatus = getLastBreakpointAttribute(
-			'background-palette-color-status',
+			'background-palette-status',
 			breakpoint,
 			layer,
 			isHover

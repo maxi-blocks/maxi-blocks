@@ -7,8 +7,8 @@ Object {
   "button-border-left-width-general": 2,
   "button-border-palette-color-general": 2,
   "button-border-palette-color-general-hover": 6,
-  "button-border-palette-color-status-general": true,
-  "button-border-palette-color-status-general-hover": true,
+  "button-border-palette-status-general": true,
+  "button-border-palette-status-general-hover": true,
   "button-border-right-width-general": 2,
   "button-border-status-hover": false,
   "button-border-style-general": "solid",
@@ -22,8 +22,8 @@ Object {
   "button-box-shadow-horizontal-general": 0,
   "button-box-shadow-palette-color-general": 8,
   "button-box-shadow-palette-color-general-hover": 6,
-  "button-box-shadow-palette-color-status-general": true,
-  "button-box-shadow-palette-color-status-general-hover": true,
+  "button-box-shadow-palette-status-general": true,
+  "button-box-shadow-palette-status-general-hover": true,
   "button-box-shadow-palette-opacity-general": 23,
   "button-box-shadow-spread-general": 0,
   "button-box-shadow-status-hover": false,
@@ -268,26 +268,26 @@ Object {
   "button-box-shadow-palette-color-s-hover": Object {
     "type": "number",
   },
-  "button-box-shadow-palette-color-status-general-hover": Object {
+  "button-box-shadow-palette-status-general-hover": Object {
     "default": true,
     "type": "boolean",
   },
-  "button-box-shadow-palette-color-status-l-hover": Object {
+  "button-box-shadow-palette-status-l-hover": Object {
     "type": "boolean",
   },
-  "button-box-shadow-palette-color-status-m-hover": Object {
+  "button-box-shadow-palette-status-m-hover": Object {
     "type": "boolean",
   },
-  "button-box-shadow-palette-color-status-s-hover": Object {
+  "button-box-shadow-palette-status-s-hover": Object {
     "type": "boolean",
   },
-  "button-box-shadow-palette-color-status-xl-hover": Object {
+  "button-box-shadow-palette-status-xl-hover": Object {
     "type": "boolean",
   },
-  "button-box-shadow-palette-color-status-xs-hover": Object {
+  "button-box-shadow-palette-status-xs-hover": Object {
     "type": "boolean",
   },
-  "button-box-shadow-palette-color-status-xxl-hover": Object {
+  "button-box-shadow-palette-status-xxl-hover": Object {
     "type": "boolean",
   },
   "button-box-shadow-palette-color-xl-hover": Object {

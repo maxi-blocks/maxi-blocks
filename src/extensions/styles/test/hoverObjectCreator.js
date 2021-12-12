@@ -5,7 +5,7 @@ describe('hoverObjectCreator', () => {
 	it('Returns a color bg object', () => {
 		const result = hoverObjectCreator({
 			obj: backgroundColor,
-			sameValAttr: ['background-palette-color-status-general'],
+			sameValAttr: ['background-palette-status-general'],
 			diffValAttr: { 'background-palette-color-general': 6 },
 		});
 

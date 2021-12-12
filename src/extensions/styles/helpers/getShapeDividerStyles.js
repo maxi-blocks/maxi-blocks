@@ -32,12 +32,12 @@ export const getShapeDividerSVGStyles = (obj, location, parentBlockStyle) => {
 	};
 
 	if (
-		!obj[`shape-divider-palette-${location}-color-status`] &&
+		!obj[`shape-divider-${location}-palette-status`] &&
 		!isEmpty(obj[`shape-divider-${location}-color`])
 	)
 		response.general.fill = obj[`shape-divider-${location}-color`];
 	else if (
-		obj[`shape-divider-palette-${location}-color-status`] &&
+		obj[`shape-divider-${location}-palette-status`] &&
 		isNumber(obj[`shape-divider-palette-${location}-color`])
 	) {
 		response.general.fill = getColorRGBAString({

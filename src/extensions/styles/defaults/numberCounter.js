@@ -39,11 +39,11 @@ const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
-	'number-counter-palette-text-color-status': {
+	'number-counter-text-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'number-counter-palette-text-color': {
+	'number-counter-text-palette-color': {
 		type: 'number',
 		default: 4,
 	},
@@ -53,29 +53,29 @@ const numberCounter = {
 	'number-counter-text-color': {
 		type: 'string',
 	},
-	'number-counter-palette-circle-background-color-status': {
+	'number-counter-circle-background-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'number-counter-palette-circle-background-color': {
+	'number-counter-circle-background-palette-color': {
 		type: 'number',
 		default: 2,
 	},
-	'number-counter-palette-circle-background-opacity': {
+	'number-counter-circle-background-palette-opacity': {
 		type: 'number',
 	},
 	'number-counter-circle-background-color': {
 		type: 'string',
 	},
-	'number-counter-palette-circle-bar-color-status': {
+	'number-counter-circle-bar-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'number-counter-palette-circle-bar-color': {
+	'number-counter-circle-bar-palette-color': {
 		type: 'number',
 		default: 4,
 	},
-	'number-counter-palette-circle-bar-opacity': {
+	'number-counter-circle-bar-palette-opacity': {
 		type: 'number',
 	},
 	'number-counter-circle-bar-color': {

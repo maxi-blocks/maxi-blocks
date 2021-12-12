@@ -15,17 +15,17 @@ const getCircleBarStyles = (obj, blockStyle) => {
 	};
 
 	if (
-		!obj['number-counter-palette-circle-bar-color-status'] &&
+		!obj['number-counter-circle-bar-palette-status'] &&
 		!isNil(obj['number-counter-circle-bar-color'])
 	)
 		response.general.stroke = obj['number-counter-circle-bar-color'];
 	else if (
-		obj['number-counter-palette-circle-bar-color-status'] &&
-		obj['number-counter-palette-circle-bar-color']
+		obj['number-counter-circle-bar-palette-status'] &&
+		obj['number-counter-circle-bar-palette-color']
 	)
 		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${obj['number-counter-palette-circle-bar-color']}`,
-			opacity: obj['number-counter-palette-circle-bar-opacity'],
+			firstVar: `color-${obj['number-counter-circle-bar-palette-color']}`,
+			opacity: obj['number-counter-circle-bar-palette-opacity'],
 			blockStyle,
 		});
 
@@ -39,17 +39,17 @@ const getCircleBackgroundStyles = (obj, blockStyle) => {
 	};
 
 	if (
-		!obj['number-counter-palette-circle-background-color-status'] &&
+		!obj['number-counter-circle-background-palette-status'] &&
 		!isNil(obj['number-counter-circle-background-color'])
 	)
 		response.general.stroke = obj['number-counter-circle-background-color'];
 	else if (
-		obj['number-counter-palette-circle-background-color-status'] &&
-		obj['number-counter-palette-circle-background-color']
+		obj['number-counter-circle-background-palette-status'] &&
+		obj['number-counter-circle-background-palette-color']
 	)
 		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${obj['number-counter-palette-circle-background-color']}`,
-			opacity: obj['number-counter-palette-circle-background-opacity'],
+			firstVar: `color-${obj['number-counter-circle-background-palette-color']}`,
+			opacity: obj['number-counter-circle-background-palette-opacity'],
 			blockStyle,
 		});
 
@@ -63,20 +63,20 @@ const getTextStyles = (obj, blockStyle) => {
 	};
 
 	if (
-		!obj['number-counter-palette-text-color-status'] &&
+		!obj['number-counter-text-palette-status'] &&
 		!isNil(obj['number-counter-text-color'])
 	)
 		response.general[
 			obj['number-counter-circle-status'] ? 'color' : 'fill'
 		] = obj['number-counter-text-color'];
 	else if (
-		obj['number-counter-palette-text-color-status'] &&
-		obj['number-counter-palette-text-color']
+		obj['number-counter-text-palette-status'] &&
+		obj['number-counter-text-palette-color']
 	)
 		response.general[
 			obj['number-counter-circle-status'] ? 'color' : 'fill'
 		] = getColorRGBAString({
-			firstVar: `color-${obj['number-counter-palette-text-color']}`,
+			firstVar: `color-${obj['number-counter-text-palette-color']}`,
 			opacity: obj['number-counter-palette-text-opacity'],
 			blockStyle,
 		});

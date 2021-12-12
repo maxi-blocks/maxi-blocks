@@ -20,7 +20,7 @@ export const backgroundHover = hoverObjectCreator({
 
 export const backgroundColorHover = hoverObjectCreator({
 	obj: backgroundColor,
-	sameValAttr: ['background-palette-color-status-general'],
+	sameValAttr: ['background-palette-status-general'],
 	diffValAttr: { 'background-palette-color-general': 6 },
 });
 
@@ -38,6 +38,6 @@ export const backgroundGradientHover = hoverObjectCreator({
 
 export const backgroundSVGHover = hoverObjectCreator({
 	obj: backgroundSVG,
-	sameValAttr: ['background-palette-svg-color-status-general'],
-	diffValAttr: { 'background-palette-svg-color-general': 6 },
+	sameValAttr: ['background-svg-color-palette-general'],
+	diffValAttr: { 'background-svg-palette-color-general': 6 },
 });

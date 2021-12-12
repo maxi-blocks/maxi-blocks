@@ -41,11 +41,11 @@ const map = {
 		type: 'string',
 		default: __('Marker Title', 'maxi-blocks'),
 	},
-	'map-marker-palette-text-color-status': {
+	'map-marker-text-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'map-marker-palette-text-color': {
+	'map-marker-text-palette-color': {
 		type: 'number',
 		default: 4,
 	},
@@ -59,11 +59,11 @@ const map = {
 		type: 'string',
 		default: __('Marker Address', 'maxi-blocks'),
 	},
-	'map-marker-palette-address-color-status': {
+	'map-marker-address-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'map-marker-palette-address-color': {
+	'map-marker-address-palette-color': {
 		type: 'number',
 		default: 5,
 	},

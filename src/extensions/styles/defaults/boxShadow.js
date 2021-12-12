@@ -1,7 +1,7 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
 const rawBoxShadow = {
-	'box-shadow-palette-color-status': {
+	'box-shadow-palette-status': {
 		type: 'boolean',
 		default: true,
 	},

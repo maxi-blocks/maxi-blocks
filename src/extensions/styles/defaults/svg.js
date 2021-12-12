@@ -1,29 +1,29 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
 const rawSvg = {
-	'svg-palette-fill-color-status': {
+	'svg-fill-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'svg-palette-fill-color': {
+	'svg-fill-palette-color': {
 		type: 'number',
 		default: 4,
 	},
-	'svg-palette-fill-opacity': {
+	'svg-fill-palette-opacity': {
 		type: 'number',
 	},
 	'svg-fill-color': {
 		type: 'string',
 	},
-	'svg-palette-line-color-status': {
+	'svg-line-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'svg-palette-line-color': {
+	'svg-line-palette-color': {
 		type: 'number',
 		default: 7,
 	},
-	'svg-palette-line-opacity': {
+	'svg-line-palette-opacity': {
 		type: 'number',
 	},
 	'svg-line-color': {
@@ -50,13 +50,13 @@ const rawSvg = {
 const svg = breakpointObjectCreator({
 	obj: rawSvg,
 	noBreakpointAttr: [
-		'svg-palette-fill-color-status',
-		'svg-palette-fill-color',
-		'svg-palette-fill-opacity',
+		'svg-fill-palette-status',
+		'svg-fill-palette-color',
+		'svg-fill-palette-opacity',
 		'svg-fill-color',
-		'svg-palette-line-color-status',
-		'svg-palette-line-color',
-		'svg-palette-line-opacity',
+		'svg-line-palette-status',
+		'svg-line-palette-color',
+		'svg-line-palette-opacity',
 		'svg-line-color',
 	],
 });

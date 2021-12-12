@@ -37,11 +37,11 @@ const DividerColor = props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background: props['divider-palette-border-color-status']
+						background: props['divider-border-palette-status']
 							? getColorRGBAString({
-									firstVal: `color-${props['divider-palette-border-color']}`,
+									firstVal: `color-${props['divider-border-palette-color']}`,
 									opacity:
-										props['divider-palette-border-opacity'],
+										props['divider-border-palette-opacity'],
 									blockStyle: getBlockStyle(clientId),
 							  })
 							: props['divider-color'],
@@ -62,14 +62,13 @@ const DividerColor = props => {
 					label={__('Divider', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('border-color')}
-					paletteColor={props['divider-palette-border-color']}
-					paletteStatus={props['divider-palette-border-color-status']}
+					paletteColor={props['divider-border-palette-color']}
+					paletteStatus={props['divider-border-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) =>
 						onChange({
 							'divider-border-color': color,
-							'divider-palette-border-color': paletteColor,
-							'divider-palette-border-color-status':
-								paletteStatus,
+							'divider-border-palette-color': paletteColor,
+							'divider-border-palette-status': paletteStatus,
 						})
 					}
 					disableGradient

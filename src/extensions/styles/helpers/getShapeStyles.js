@@ -24,17 +24,14 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 	}
 
 	if (target === 'path') {
-		if (
-			obj['shape-palette-fill-color-status'] &&
-			obj['shape-palette-fill-color']
-		)
+		if (obj['shape-fill-palette-status'] && obj['shape-fill-palette-color'])
 			response.general.fill = getColorRGBAString({
-				firstVar: `color-${obj['shape-palette-fill-color']}`,
-				opacity: obj['shape-palette-fill-opacity'],
+				firstVar: `color-${obj['shape-fill-palette-color']}`,
+				opacity: obj['shape-fill-palette-opacity'],
 				blockStyle: parentBlockStyle,
 			});
 		else if (
-			!obj['shape-palette-fill-color-status'] &&
+			!obj['shape-fill-palette-status'] &&
 			!isNil(obj['shape-fill-color'])
 		)
 			response.general.fill = obj['shape-fill-color'];

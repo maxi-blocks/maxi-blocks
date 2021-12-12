@@ -23,7 +23,7 @@ export const iconHover = (() => {
 })();
 
 export const iconBackgroundColorHover = {
-	'icon-background-palette-color-status-general-hover': {
+	'icon-background-palette-status-general-hover': {
 		type: 'boolean',
 		default: true,
 	},

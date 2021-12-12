@@ -20,13 +20,13 @@ const getIconStyles = (
 	};
 
 	if (
-		!obj[`icon-palette-color-status${isHover ? '-hover' : ''}`] &&
+		!obj[`icon-palette-status${isHover ? '-hover' : ''}`] &&
 		!isNil(obj[`icon-color${isHover ? '-hover' : ''}`])
 	) {
 		response.general.fill = 'none';
 		response.general.stroke = obj[`icon-color${isHover ? '-hover' : ''}`];
 	} else if (
-		obj[`icon-palette-color-status${isHover ? '-hover' : ''}`] &&
+		obj[`icon-palette-status${isHover ? '-hover' : ''}`] &&
 		obj[`icon-palette-color${isHover ? '-hover' : ''}`]
 	) {
 		response.general.fill = 'none';
@@ -40,11 +40,11 @@ const getIconStyles = (
 	}
 
 	if (isIconInherit) {
-		if (!obj['palette-color-status-general'] && obj['color-general']) {
+		if (!obj['palette-status-general'] && obj['color-general']) {
 			response.general.fill = 'none';
 			response.general.stroke = obj['color-general'];
 		} else if (
-			obj['palette-color-status-general'] &&
+			obj['palette-status-general'] &&
 			obj['palette-color-general']
 		) {
 			response.general.fill = 'none';

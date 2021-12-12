@@ -1,13 +1,13 @@
 const divider = {
-	'divider-palette-border-color-status': {
+	'divider-border-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'divider-palette-border-color': {
+	'divider-border-palette-color': {
 		type: 'number',
 		default: 4,
 	},
-	'divider-palette-border-opacity': {
+	'divider-border-palette-opacity': {
 		type: 'number',
 	},
 	'divider-border-color': {

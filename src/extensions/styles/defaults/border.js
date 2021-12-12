@@ -1,7 +1,7 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
 const rawBorder = {
-	'border-palette-color-status': {
+	'border-palette-status': {
 		type: 'boolean',
 		default: true,
 	},

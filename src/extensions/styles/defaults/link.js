@@ -1,7 +1,7 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
 const rawLink = {
-	'link-palette-color-status': {
+	'link-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
@@ -15,7 +15,7 @@ const rawLink = {
 	'link-color': {
 		type: 'string',
 	},
-	'link-hover-palette-color-status': {
+	'link-hover-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
@@ -29,7 +29,7 @@ const rawLink = {
 	'link-hover-color': {
 		type: 'string',
 	},
-	'link-active-palette-color-status': {
+	'link-active-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
@@ -43,7 +43,7 @@ const rawLink = {
 	'link-active-color': {
 		type: 'string',
 	},
-	'link-visited-palette-color-status': {
+	'link-visited-palette-status': {
 		type: 'boolean',
 		default: true,
 	},

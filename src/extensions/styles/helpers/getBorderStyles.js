@@ -63,7 +63,7 @@ const getBorderStyles = ({
 
 		const getColorString = () => {
 			const paletteStatus = getLastBreakpointAttribute(
-				`${prefix}border-palette-color-status`,
+				`${prefix}border-palette-status`,
 				breakpoint,
 				obj,
 				isHover
@@ -144,7 +144,7 @@ const getBorderStyles = ({
 						response[breakpoint]['border-color'] = getColorString();
 					else if (
 						![
-							'border-palette-color-status',
+							'border-palette-status',
 							'border-palette-color',
 							'border-palette-opacity',
 						].includes(newLabel)

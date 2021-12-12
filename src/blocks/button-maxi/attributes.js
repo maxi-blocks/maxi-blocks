@@ -35,7 +35,7 @@ const attributes = {
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,
-		'icon-background-palette-color-status-general': {
+		'icon-background-palette-status-general': {
 			type: 'boolean',
 			default: true,
 		},

@@ -19,17 +19,17 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 			response.general['border-style'] = obj['divider-border-style'];
 
 		if (
-			obj['divider-palette-border-color-status'] &&
-			isNumber(obj['divider-palette-border-color'])
+			obj['divider-border-palette-status'] &&
+			isNumber(obj['divider-border-palette-color'])
 		)
 			response.general['border-color'] = getColorRGBAString({
 				firstVar: 'divider-color',
-				secondVar: `color-${obj['divider-palette-border-color']}`,
-				opacity: obj['divider-palette-border-opacity'],
+				secondVar: `color-${obj['divider-border-palette-color']}`,
+				opacity: obj['divider-border-palette-opacity'],
 				blockStyle: parentBlockStyle,
 			});
 		else if (
-			!obj['divider-palette-border-color-status'] &&
+			!obj['divider-border-palette-status'] &&
 			!isNil(obj['divider-border-color'])
 		)
 			response.general['border-color'] = obj['divider-border-color'];

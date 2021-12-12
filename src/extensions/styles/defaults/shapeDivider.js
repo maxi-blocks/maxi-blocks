@@ -18,11 +18,11 @@ const shapeDivider = {
 	'shape-divider-top-shape-style': {
 		type: 'string',
 	},
-	'shape-divider-palette-top-color-status': {
+	'shape-divider-top-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'shape-divider-palette-top-color': {
+	'shape-divider-top-palette-color': {
 		type: 'number',
 		default: 5,
 	},
@@ -55,15 +55,15 @@ const shapeDivider = {
 	'shape-divider-bottom-shape-style': {
 		type: 'string',
 	},
-	'shape-divider-palette-bottom-color-status': {
+	'shape-divider-bottom-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'shape-divider-palette-bottom-color': {
+	'shape-divider-bottom-palette-color': {
 		type: 'number',
 		default: 5,
 	},
-	'shape-divider-palette-bottom-opacity': {
+	'shape-divider-bottom-palette-opacity': {
 		type: 'number',
 	},
 	'shape-divider-bottom-color': {

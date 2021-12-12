@@ -1,9 +1,9 @@
 const shape = {
-	'shape-palette-fill-color-status': {
+	'shape-fill-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'shape-palette-fill-color': {
+	'shape-fill-palette-color': {
 		type: 'number',
 		default: 4,
 	},

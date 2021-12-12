@@ -13,10 +13,10 @@ jest.mock('@wordpress/data', () => {
 describe('getSVGStyles', () => {
 	it('Returns correct styles', () => {
 		const obj = {
-			'svg-palette-fill-color-status': true,
-			'svg-palette-fill-color': 4,
-			'svg-palette-line-color-status': true,
-			'svg-palette-line-color': 7,
+			'svg-fill-palette-status': true,
+			'svg-fill-palette-color': 4,
+			'svg-line-palette-status': true,
+			'svg-line-palette-color': 7,
 			'svg-stroke-general': 2,
 			'svg-width-general': 64,
 			'svg-width-unit-general': 'px',

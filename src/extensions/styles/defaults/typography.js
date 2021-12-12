@@ -4,7 +4,7 @@ export const typography = {
 	'font-family-general': {
 		type: 'string',
 	},
-	'palette-color-status-general': {
+	'palette-status-general': {
 		type: 'boolean',
 		default: true,
 	},
@@ -60,7 +60,7 @@ export const typography = {
 	'font-family-xxl': {
 		type: 'string',
 	},
-	'palette-color-status-xxl': {
+	'palette-status-xxl': {
 		type: 'boolean',
 	},
 	'palette-color-xxl': {
@@ -111,7 +111,7 @@ export const typography = {
 	'font-family-xl': {
 		type: 'string',
 	},
-	'palette-color-status-xl': {
+	'palette-status-xl': {
 		type: 'boolean',
 	},
 	'palette-color-xl': {
@@ -162,7 +162,7 @@ export const typography = {
 	'font-family-l': {
 		type: 'string',
 	},
-	'palette-color-status-l': {
+	'palette-status-l': {
 		type: 'boolean',
 	},
 	'palette-color-l': {
@@ -213,7 +213,7 @@ export const typography = {
 	'font-family-m': {
 		type: 'string',
 	},
-	'palette-color-status-m': {
+	'palette-status-m': {
 		type: 'boolean',
 	},
 	'palette-color-m': {
@@ -264,7 +264,7 @@ export const typography = {
 	'font-family-s': {
 		type: 'string',
 	},
-	'palette-color-status-s': {
+	'palette-status-s': {
 		type: 'boolean',
 	},
 	'palette-color-s': {
@@ -315,7 +315,7 @@ export const typography = {
 	'font-family-xs': {
 		type: 'string',
 	},
-	'palette-color-status-xs': {
+	'palette-status-xs': {
 		type: 'boolean',
 	},
 	'palette-color-xs': {

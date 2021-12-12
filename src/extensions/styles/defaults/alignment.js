@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const alignment = breakpointObjectCreator({
+const alignment = breakpointAttributesCreator({
 	obj: {
 		alignment: {
 			type: 'string',

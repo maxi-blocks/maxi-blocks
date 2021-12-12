@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawMargin = {
 	'margin-top': {
@@ -23,7 +23,7 @@ const rawMargin = {
 	},
 };
 
-const margin = breakpointObjectCreator({
+const margin = breakpointAttributesCreator({
 	obj: rawMargin,
 });
 

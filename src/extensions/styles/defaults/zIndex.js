@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const zIndex = breakpointObjectCreator({
+const zIndex = breakpointAttributesCreator({
 	obj: {
 		'z-index': {
 			type: 'number',

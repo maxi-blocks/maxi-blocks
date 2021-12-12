@@ -1,10 +1,13 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const rawSize = {
+export const rawSize = {
 	'size-advanced-options': {
 		type: 'boolean',
 		default: false,
 	},
+};
+
+export const rawMaxWidth = {
 	'max-width-unit': {
 		type: 'string',
 		default: 'px',
@@ -12,6 +15,9 @@ const rawSize = {
 	'max-width': {
 		type: 'number',
 	},
+};
+
+export const rawWidth = {
 	'width-unit': {
 		type: 'string',
 		default: 'px',
@@ -19,6 +25,9 @@ const rawSize = {
 	width: {
 		type: 'number',
 	},
+};
+
+export const rawMinWidth = {
 	'min-width-unit': {
 		type: 'string',
 		default: 'px',
@@ -26,6 +35,9 @@ const rawSize = {
 	'min-width': {
 		type: 'number',
 	},
+};
+
+export const rawMaxHeight = {
 	'max-height-unit': {
 		type: 'string',
 		default: 'px',
@@ -33,6 +45,9 @@ const rawSize = {
 	'max-height': {
 		type: 'number',
 	},
+};
+
+export const rawHeight = {
 	'height-unit': {
 		type: 'string',
 		default: 'px',
@@ -40,6 +55,9 @@ const rawSize = {
 	height: {
 		type: 'number',
 	},
+};
+
+export const rawMinHeight = {
 	'min-height-unit': {
 		type: 'string',
 		default: 'px',
@@ -49,9 +67,21 @@ const rawSize = {
 	},
 };
 
-const size = breakpointObjectCreator({
-	obj: rawSize,
-	noBreakpointAttr: ['size-advanced-options'],
-});
+export const maxWidth = breakpointAttributesCreator({ obj: rawMaxWidth });
+export const width = breakpointAttributesCreator({ obj: rawWidth });
+export const minWidth = breakpointAttributesCreator({ obj: rawMinWidth });
+export const maxHeight = breakpointAttributesCreator({ obj: rawMaxHeight });
+export const height = breakpointAttributesCreator({ obj: rawHeight });
+export const minHeight = breakpointAttributesCreator({ obj: rawMinHeight });
+
+const size = {
+	...rawSize,
+	...maxWidth,
+	...width,
+	...minWidth,
+	...maxHeight,
+	...height,
+	...minHeight,
+};
 
 export default size;

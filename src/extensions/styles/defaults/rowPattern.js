@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const rowPattern = breakpointObjectCreator({
+const rowPattern = breakpointAttributesCreator({
 	obj: {
 		'row-pattern': {
 			type: 'string',

@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 export const rawImageShape = {
 	'image-shape-scale': {
@@ -15,6 +15,6 @@ export const rawImageShape = {
 	},
 };
 
-export const imageShape = breakpointObjectCreator({
+export const imageShape = breakpointAttributesCreator({
 	obj: rawImageShape,
 });

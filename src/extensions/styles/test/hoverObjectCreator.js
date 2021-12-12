@@ -1,9 +1,9 @@
 import { background, backgroundColor } from '../defaults/background';
-import hoverObjectCreator from '../hoverObjectCreator';
+import hoverAttributesCreator from '../hoverAttributesCreator';
 
-describe('hoverObjectCreator', () => {
+describe('hoverAttributesCreator', () => {
 	it('Returns a color bg object', () => {
-		const result = hoverObjectCreator({
+		const result = hoverAttributesCreator({
 			obj: backgroundColor,
 			sameValAttr: ['background-palette-status-general'],
 			diffValAttr: { 'background-palette-color-general': 6 },
@@ -13,7 +13,7 @@ describe('hoverObjectCreator', () => {
 	});
 
 	it('Returns basic background object', () => {
-		const result = hoverObjectCreator({
+		const result = hoverAttributesCreator({
 			obj: background,
 			newAttr: {
 				'background-hover-status': {

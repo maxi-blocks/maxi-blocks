@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`breakpointObjectCreator Returns an image bg object 1`] = `
+exports[`breakpointAttributesCreator Returns an image bg object 1`] = `
 Object {
   "background-image-attachment-general": Object {
     "default": "scroll",

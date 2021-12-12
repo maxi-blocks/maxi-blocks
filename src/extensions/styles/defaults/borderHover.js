@@ -1,61 +1,23 @@
+import hoverAttributesCreator from '../hoverAttributesCreator';
 import { border, borderWidth, borderRadius } from './border';
 
-export const borderHover = (() => {
-	const response = {
+export const borderHover = hoverAttributesCreator({
+	obj: border,
+	sameValAttr: ['border-palette-status-general'],
+	diffValAttr: { 'border-palette-color-general': 6 },
+	newAttr: {
 		'border-status-hover': {
 			type: 'boolean',
 			default: false,
 		},
-	};
+	},
+});
 
-	Object.keys(border).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...border[key] };
+export const borderWidthHover = hoverAttributesCreator({
+	obj: borderWidth,
+});
 
-		if (key !== 'border-palette-status-general' && 'default' in value)
-			delete value.default;
-		if (key === 'border-palette-color-general') value.default = 6;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const borderWidthHover = (() => {
-	const response = {};
-
-	Object.keys(borderWidth).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...borderWidth[key] };
-
-		if ('default' in value) delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const borderRadiusHover = (() => {
-	let response = {};
-
-	Object.keys(borderRadius).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...borderRadius[key] };
-
-		if ('default' in value) delete value.default;
-
-		response[newKey] = value;
-	});
-
-	response = {
-		...response,
-		'border-unit-radius-general-hover': {
-			type: 'string',
-			default: 'px',
-		},
-	};
-
-	return response;
-})();
+export const borderRadiusHover = hoverAttributesCreator({
+	obj: borderRadius,
+	diffValAttr: { 'border-unit-radius-general-hover': 'px' },
+});

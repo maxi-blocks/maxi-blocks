@@ -1,20 +1,10 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
+const prefix = 'border-';
 
 const rawBorder = {
-	'border-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'border-palette-color': {
-		type: 'number',
-		default: 2,
-	},
-	'border-palette-opacity': {
-		type: 'number',
-	},
-	'border-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix, palette: 2 }),
 	'border-style': {
 		type: 'string',
 	},
@@ -66,12 +56,12 @@ const rawBorderRadius = {
 	},
 };
 
-export const border = breakpointObjectCreator({
+export const border = breakpointAttributesCreator({
 	obj: rawBorder,
 });
-export const borderWidth = breakpointObjectCreator({
+export const borderWidth = breakpointAttributesCreator({
 	obj: rawBorderWidth,
 });
-export const borderRadius = breakpointObjectCreator({
+export const borderRadius = breakpointAttributesCreator({
 	obj: rawBorderRadius,
 });

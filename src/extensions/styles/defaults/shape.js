@@ -1,15 +1,7 @@
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
 const shape = {
-	'shape-fill-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'shape-fill-palette-color': {
-		type: 'number',
-		default: 4,
-	},
-	'shape-fill-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix: 'shape-fill-', palette: 4 }),
 	'shape-width': {
 		type: 'number',
 		default: 64,

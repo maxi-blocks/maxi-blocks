@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const customCss = breakpointObjectCreator({
+const customCss = breakpointAttributesCreator({
 	obj: {
 		'custom-css': {
 			type: 'object',

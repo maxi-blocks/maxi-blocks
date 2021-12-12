@@ -2,7 +2,7 @@
  * TODO: implement on the rest of default attributes 👍
  */
 
-const breakpointObjectCreator = ({
+const hoverAttributesCreator = ({
 	obj,
 	sameValAttr = [],
 	diffValAttr = {},
@@ -13,7 +13,7 @@ const breakpointObjectCreator = ({
 
 	Object.entries(obj).forEach(([key, val]) => {
 		const newKey = `${key}-hover`;
-		const value = { ...obj[key] };
+		const value = { ...val };
 
 		if (diffValAttrKeys.includes(key)) value.default = diffValAttr[key];
 		else if (!sameValAttr.includes(key) && 'default' in value)
@@ -25,4 +25,4 @@ const breakpointObjectCreator = ({
 	return { ...response, ...newAttr };
 };
 
-export default breakpointObjectCreator;
+export default hoverAttributesCreator;

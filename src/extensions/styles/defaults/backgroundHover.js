@@ -1,4 +1,4 @@
-import hoverObjectCreator from '../hoverObjectCreator';
+import hoverAttributesCreator from '../hoverAttributesCreator';
 import {
 	background,
 	backgroundColor,
@@ -8,7 +8,7 @@ import {
 	backgroundSVG,
 } from './background';
 
-export const backgroundHover = hoverObjectCreator({
+export const backgroundHover = hoverAttributesCreator({
 	obj: background,
 	newAttr: {
 		'background-hover-status': {
@@ -18,26 +18,26 @@ export const backgroundHover = hoverObjectCreator({
 	},
 });
 
-export const backgroundColorHover = hoverObjectCreator({
+export const backgroundColorHover = hoverAttributesCreator({
 	obj: backgroundColor,
 	sameValAttr: ['background-palette-status-general'],
 	diffValAttr: { 'background-palette-color-general': 6 },
 });
 
-export const backgroundImageHover = hoverObjectCreator({
+export const backgroundImageHover = hoverAttributesCreator({
 	obj: backgroundImage,
 });
 
-export const backgroundVideoHover = hoverObjectCreator({
+export const backgroundVideoHover = hoverAttributesCreator({
 	obj: backgroundVideo,
 });
 
-export const backgroundGradientHover = hoverObjectCreator({
+export const backgroundGradientHover = hoverAttributesCreator({
 	obj: backgroundGradient,
 });
 
-export const backgroundSVGHover = hoverObjectCreator({
+export const backgroundSVGHover = hoverAttributesCreator({
 	obj: backgroundSVG,
-	sameValAttr: ['background-svg-color-palette-general'],
+	sameValAttr: ['background-svg-palette-status-general'],
 	diffValAttr: { 'background-svg-palette-color-general': 6 },
 });

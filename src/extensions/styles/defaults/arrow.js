@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawArrow = {
 	'arrow-status': {
@@ -19,7 +19,7 @@ const rawArrow = {
 	},
 };
 
-const arrow = breakpointObjectCreator({
+const arrow = breakpointAttributesCreator({
 	obj: rawArrow,
 	noBreakpointAttr: ['arrow-status'],
 });

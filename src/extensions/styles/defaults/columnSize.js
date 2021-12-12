@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const columnSize = breakpointObjectCreator({
+const columnSize = breakpointAttributesCreator({
 	obj: {
 		'column-size': {
 			type: 'number',

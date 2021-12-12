@@ -1,9 +1,9 @@
 import { rawBackgroundImage } from '../defaults/background';
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-describe('breakpointObjectCreator', () => {
+describe('breakpointAttributesCreator', () => {
 	it('Returns an image bg object', () => {
-		const result = breakpointObjectCreator({
+		const result = breakpointAttributesCreator({
 			obj: rawBackgroundImage,
 			noBreakpointAttr: [
 				'background-image-mediaURL',

@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawOverflow = {
 	'overflow-x': {
@@ -9,7 +9,7 @@ const rawOverflow = {
 	},
 };
 
-const overflow = breakpointObjectCreator({
+const overflow = breakpointAttributesCreator({
 	obj: rawOverflow,
 });
 

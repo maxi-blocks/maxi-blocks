@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const map = {
 	'map-latitude': {
@@ -41,38 +42,12 @@ const map = {
 		type: 'string',
 		default: __('Marker Title', 'maxi-blocks'),
 	},
-	'map-marker-text-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'map-marker-text-palette-color': {
-		type: 'number',
-		default: 4,
-	},
-	'map-marker-palette-text-opacity': {
-		type: 'number',
-	},
-	'map-marker-text-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix: 'max-marker-text-', palette: 4 }),
 	'map-marker-address': {
 		type: 'string',
 		default: __('Marker Address', 'maxi-blocks'),
 	},
-	'map-marker-address-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'map-marker-address-palette-color': {
-		type: 'number',
-		default: 5,
-	},
-	'map-marker-palette-address-opacity': {
-		type: 'number',
-	},
-	'map-marker-address-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix: 'max-marker-adress-', palette: 5 }),
 };
 
 export default map;

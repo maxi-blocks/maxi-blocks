@@ -1,65 +1,14 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const rawLink = {
-	'link-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'link-palette-color': {
-		type: 'number',
-		default: 4,
-	},
-	'link-palette-opacity': {
-		type: 'number',
-	},
-	'link-color': {
-		type: 'string',
-	},
-	'link-hover-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'link-hover-palette-color': {
-		type: 'number',
-		default: 6,
-	},
-	'link-hover-palette-opacity': {
-		type: 'number',
-	},
-	'link-hover-color': {
-		type: 'string',
-	},
-	'link-active-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'link-active-palette-color': {
-		type: 'number',
-		default: 6,
-	},
-	'link-active-palette-opacity': {
-		type: 'number',
-	},
-	'link-active-color': {
-		type: 'string',
-	},
-	'link-visited-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'link-visited-palette-color': {
-		type: 'number',
-		default: 6,
-	},
-	'link-visited-palette-opacity': {
-		type: 'number',
-	},
-	'link-visited-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix: 'link-', palette: 4 }),
+	...paletteAttributesCreator({ prefix: 'link-hover', palette: 6 }),
+	...paletteAttributesCreator({ prefix: 'link-active', palette: 6 }),
+	...paletteAttributesCreator({ prefix: 'link-visited', palette: 6 }),
 };
 
-const link = breakpointObjectCreator({
+const link = breakpointAttributesCreator({
 	obj: rawLink,
 });
 

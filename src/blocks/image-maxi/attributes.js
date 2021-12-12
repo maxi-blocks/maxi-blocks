@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { getPrefixedAttributes } from '../../extensions/styles';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -56,8 +56,8 @@ const attributes = {
 		type: 'string',
 		default: 'bottom',
 	},
-	// TODO: replace with future breakpointObjectCreator
-	// https://github.com/yeahcan/maxi-blocks/blob/b384ce2226e0181226817f5eda4723d1733a2f6a/src/extensions/styles/breakpointObjectCreator.js#L7
+	// TODO: replace with future breakpointAttributesCreator
+	// https://github.com/yeahcan/maxi-blocks/blob/b384ce2226e0181226817f5eda4723d1733a2f6a/src/extensions/styles/breakpointAttributesCreator.js#L7
 	...(() => {
 		const response = {};
 
@@ -130,16 +130,22 @@ const attributes = {
 	...attributesData.hoverMargin,
 	...attributesData.hoverPadding,
 	...attributesData.hoverTitleTypography,
-	...getPrefixedAttributes(attributesData.border, prefix),
-	...getPrefixedAttributes(attributesData.borderHover, prefix),
-	...getPrefixedAttributes(attributesData.borderRadius, prefix),
-	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
-	...getPrefixedAttributes(attributesData.borderWidth, prefix),
-	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
-	...getPrefixedAttributes(attributesData.boxShadow, prefix),
-	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
-	...getPrefixedAttributes(attributesData.size, prefix),
-	...getPrefixedAttributes(attributesData.padding, prefix),
+	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderRadiusHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderWidthHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 
 	/**
 	 * Canvas styles

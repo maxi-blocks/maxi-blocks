@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawPadding = {
 	'padding-top': {
@@ -23,7 +23,7 @@ const rawPadding = {
 	},
 };
 
-const padding = breakpointObjectCreator({
+const padding = breakpointAttributesCreator({
 	obj: rawPadding,
 });
 

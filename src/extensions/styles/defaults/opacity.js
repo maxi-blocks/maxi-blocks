@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const opacity = breakpointObjectCreator({
+const opacity = breakpointAttributesCreator({
 	obj: {
 		opacity: {
 			type: 'number',

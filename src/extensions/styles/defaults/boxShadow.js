@@ -1,20 +1,10 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
+const prefix = 'box-shadow-';
 
 const rawBoxShadow = {
-	'box-shadow-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'box-shadow-palette-color': {
-		type: 'number',
-		default: 8,
-	},
-	'box-shadow-palette-opacity': {
-		type: 'number',
-	},
-	'box-shadow-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix, palette: 8 }),
 	'box-shadow-horizontal': {
 		type: 'number',
 	},
@@ -28,7 +18,7 @@ const rawBoxShadow = {
 		type: 'number',
 	},
 };
-const boxShadow = breakpointObjectCreator({
+const boxShadow = breakpointAttributesCreator({
 	obj: rawBoxShadow,
 });
 

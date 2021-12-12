@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawTransform = {
 	'transform-scale-x': {
@@ -46,7 +46,7 @@ const rawTransform = {
 	},
 };
 
-const transform = breakpointObjectCreator({
+const transform = breakpointAttributesCreator({
 	obj: rawTransform,
 });
 

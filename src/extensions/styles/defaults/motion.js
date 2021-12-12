@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawMotion = {
 	'motion-status': {
@@ -42,7 +42,7 @@ const rawMotion = {
 	},
 };
 
-const motion = breakpointObjectCreator({
+const motion = breakpointAttributesCreator({
 	obj: rawMotion,
 });
 

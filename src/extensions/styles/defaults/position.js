@@ -1,4 +1,4 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawPosition = {
 	position: {
@@ -26,7 +26,7 @@ const rawPosition = {
 	},
 };
 
-const position = breakpointObjectCreator({
+const position = breakpointAttributesCreator({
 	obj: rawPosition,
 });
 

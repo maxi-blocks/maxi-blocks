@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const display = breakpointObjectCreator({
+const display = breakpointAttributesCreator({
 	obj: {
 		display: {
 			type: 'string',

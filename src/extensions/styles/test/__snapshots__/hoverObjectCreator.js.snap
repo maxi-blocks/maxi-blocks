@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`hoverObjectCreator Returns a color bg object 1`] = `
+exports[`hoverAttributesCreator Returns a color bg object 1`] = `
 Object {
   "background-color-clip-path-general-hover": Object {
     "type": "string",
@@ -112,7 +112,7 @@ Object {
 }
 `;
 
-exports[`hoverObjectCreator Returns basic background object 1`] = `
+exports[`hoverAttributesCreator Returns basic background object 1`] = `
 Object {
   "background-active-media-general-hover": Object {
     "type": "string",

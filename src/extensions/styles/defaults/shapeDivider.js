@@ -1,3 +1,5 @@
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
 const shapeDivider = {
 	'shape-divider-top-status': {
 		type: 'boolean',
@@ -18,20 +20,7 @@ const shapeDivider = {
 	'shape-divider-top-shape-style': {
 		type: 'string',
 	},
-	'shape-divider-top-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'shape-divider-top-palette-color': {
-		type: 'number',
-		default: 5,
-	},
-	'shape-divider-palette-top-opacity': {
-		type: 'number',
-	},
-	'shape-divider-top-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix: 'shape-divider-top-', palette: 5 }),
 	'shape-divider-top-effects-status': {
 		type: 'boolean',
 		default: false,
@@ -55,20 +44,10 @@ const shapeDivider = {
 	'shape-divider-bottom-shape-style': {
 		type: 'string',
 	},
-	'shape-divider-bottom-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'shape-divider-bottom-palette-color': {
-		type: 'number',
-		default: 5,
-	},
-	'shape-divider-bottom-palette-opacity': {
-		type: 'number',
-	},
-	'shape-divider-bottom-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({
+		prefix: 'shape-divider-bottom-',
+		palette: 5,
+	}),
 	'shape-divider-bottom-effects-status': {
 		type: 'boolean',
 		default: false,

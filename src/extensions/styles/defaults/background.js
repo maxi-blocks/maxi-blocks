@@ -1,4 +1,5 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const prefix = 'background-';
 
@@ -22,21 +23,7 @@ export const rawBackground = {
 };
 
 export const rawBackgroundColor = {
-	...paletteObjectCreator(),
-	'background-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'background-palette-color': {
-		type: 'number',
-		default: 1,
-	},
-	'background-palette-opacity': {
-		type: 'number',
-	},
-	'background-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix, palette: 1 }),
 	'background-color-clip-path': {
 		type: 'string',
 	},
@@ -189,17 +176,7 @@ export const rawBackgroundGradient = {
 };
 
 export const rawBackgroundSVG = {
-	'background-svg-palette-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'background-svg-palette-color': {
-		type: 'number',
-		default: 5,
-	},
-	'background-svg-palette-opacity': {
-		type: 'number',
-	},
+	...paletteAttributesCreator({ prefix: 'background-svg', palette: 5 }),
 	'background-svg-SVGElement': {
 		type: 'string',
 	},
@@ -250,15 +227,15 @@ export const rawBackgroundSVG = {
 	},
 };
 
-export const background = breakpointObjectCreator({
+export const background = breakpointAttributesCreator({
 	obj: rawBackground,
 });
 
-export const backgroundColor = breakpointObjectCreator({
+export const backgroundColor = breakpointAttributesCreator({
 	obj: rawBackgroundColor,
 });
 
-export const backgroundImage = breakpointObjectCreator({
+export const backgroundImage = breakpointAttributesCreator({
 	obj: rawBackgroundImage,
 	noBreakpointAttr: [
 		'background-image-mediaURL',
@@ -268,14 +245,14 @@ export const backgroundImage = breakpointObjectCreator({
 	],
 });
 
-export const backgroundVideo = breakpointObjectCreator({
+export const backgroundVideo = breakpointAttributesCreator({
 	obj: rawBackgroundVideo,
 });
 
-export const backgroundGradient = breakpointObjectCreator({
+export const backgroundGradient = breakpointAttributesCreator({
 	obj: rawBackgroundGradient,
 });
 
-export const backgroundSVG = breakpointObjectCreator({
+export const backgroundSVG = breakpointAttributesCreator({
 	obj: rawBackgroundSVG,
 });

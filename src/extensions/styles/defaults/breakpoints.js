@@ -1,6 +1,6 @@
-import breakpointObjectCreator from '../breakpointObjectCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const breakpoints = breakpointObjectCreator({
+const breakpoints = breakpointAttributesCreator({
 	obj: {
 		breakpoints: {
 			type: 'number',

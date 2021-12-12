@@ -1,5 +1,7 @@
 import breakpointObjectCreator from '../breakpointObjectCreator';
 
+const prefix = 'background-';
+
 export const blockBackground = {
 	'background-layers': {
 		type: 'array',
@@ -20,7 +22,8 @@ export const rawBackground = {
 };
 
 export const rawBackgroundColor = {
-	'background-palette-color-status': {
+	...paletteObjectCreator(),
+	'background-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
@@ -186,15 +189,15 @@ export const rawBackgroundGradient = {
 };
 
 export const rawBackgroundSVG = {
-	'background-palette-svg-color-status': {
+	'background-svg-palette-status': {
 		type: 'boolean',
 		default: true,
 	},
-	'background-palette-svg-color': {
+	'background-svg-palette-color': {
 		type: 'number',
 		default: 5,
 	},
-	'background-palette-svg-opacity': {
+	'background-svg-palette-opacity': {
 		type: 'number',
 	},
 	'background-svg-SVGElement': {

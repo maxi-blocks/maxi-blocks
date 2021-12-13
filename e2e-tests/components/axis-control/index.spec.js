@@ -53,7 +53,9 @@ describe('AxisControl', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
+	});
 
+	it('Checking attributes type', async () => {
 		await editAxisControl({
 			page,
 			instance: await page.$('.maxi-axis-control__padding'),

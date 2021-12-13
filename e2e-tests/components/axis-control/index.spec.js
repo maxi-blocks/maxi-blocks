@@ -14,6 +14,7 @@ import {
 	changeResponsive,
 	editAxisControl,
 	getAttributes,
+	getBlockStyle,
 } from '../../utils';
 
 describe('AxisControl', () => {
@@ -52,6 +53,23 @@ describe('AxisControl', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
+	});
+
+	it('Check padding attributes are numbers and margin strings', async () => {
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-axis-control__padding'),
+			values: '34',
+			unit: '%',
+		});
+
+		expect(
+			typeof (await getAttributes('padding-bottom-general'))
+		).toStrictEqual('number');
+
+		expect(
+			typeof (await getAttributes('margin-bottom-general'))
+		).toStrictEqual('string');
 	});
 
 	it('Checking responsive axisControl', async () => {
@@ -238,6 +256,7 @@ describe('AxisControl', () => {
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check padding min is never below 0', async () => {

@@ -55,7 +55,7 @@ describe('AxisControl', () => {
 		expect(marginResult).toStrictEqual(expectMargin);
 	});
 
-	it('check padding attributes are numbers and margin strings', async () => {
+	it('Check padding attributes are numbers and margin strings', async () => {
 		await editAxisControl({
 			page,
 			instance: await page.$('.maxi-axis-control__padding'),

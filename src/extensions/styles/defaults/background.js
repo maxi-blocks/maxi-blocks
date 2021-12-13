@@ -176,7 +176,7 @@ export const rawBackgroundGradient = {
 };
 
 export const rawBackgroundSVG = {
-	...paletteAttributesCreator({ prefix: 'background-svg', palette: 5 }),
+	...paletteAttributesCreator({ prefix: 'background-svg-', palette: 5 }),
 	'background-svg-SVGElement': {
 		type: 'string',
 	},

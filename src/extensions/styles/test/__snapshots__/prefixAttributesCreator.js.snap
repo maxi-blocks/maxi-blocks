@@ -340,28 +340,6 @@ Object {
   "button-box-shadow-palette-color-s-hover": Object {
     "type": "number",
   },
-  "button-box-shadow-palette-status-general-hover": Object {
-    "default": true,
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-l-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-m-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-s-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-xl-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-xs-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-xxl-hover": Object {
-    "type": "boolean",
-  },
   "button-box-shadow-palette-color-xl-hover": Object {
     "type": "number",
   },

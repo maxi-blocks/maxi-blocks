@@ -1,3 +1,4 @@
+import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import alignment from './alignment';
@@ -56,18 +57,10 @@ export const typography = breakpointAttributesCreator({
 	noBreakpointAttr: ['custom-formats'],
 });
 
-// TODO: apply prefixAttributesCreator
-export const typographyAlignment = (function typographyGenerator() {
-	const response = {};
-
-	Object.entries(alignment).forEach(([key, value]) => {
-		const newKey = key.replace('alignment-', 'typography-alignment-');
-
-		if (key.includes('-general')) value.default = 'left';
-		else delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
+export const typographyAlignment = prefixAttributesCreator({
+	obj: alignment,
+	prefix: 'typography-',
+	diffValAttr: {
+		'typography-alignment-general': 'left',
+	},
+});

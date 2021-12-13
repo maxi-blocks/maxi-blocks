@@ -57,28 +57,6 @@ Object {
   "background-palette-color-s-hover": Object {
     "type": "number",
   },
-  "background-palette-status-general-hover": Object {
-    "default": true,
-    "type": "boolean",
-  },
-  "background-palette-status-l-hover": Object {
-    "type": "boolean",
-  },
-  "background-palette-status-m-hover": Object {
-    "type": "boolean",
-  },
-  "background-palette-status-s-hover": Object {
-    "type": "boolean",
-  },
-  "background-palette-status-xl-hover": Object {
-    "type": "boolean",
-  },
-  "background-palette-status-xs-hover": Object {
-    "type": "boolean",
-  },
-  "background-palette-status-xxl-hover": Object {
-    "type": "boolean",
-  },
   "background-palette-color-xl-hover": Object {
     "type": "number",
   },
@@ -108,6 +86,28 @@ Object {
   },
   "background-palette-opacity-xxl-hover": Object {
     "type": "number",
+  },
+  "background-palette-status-general-hover": Object {
+    "default": true,
+    "type": "boolean",
+  },
+  "background-palette-status-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xxl-hover": Object {
+    "type": "boolean",
   },
 }
 `;

@@ -1,5 +1,15 @@
 import getLinkStyles from '../getLinkStyles';
 
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
+
 describe('getLinkStyles', () => {
 	it('Returns a correct object', () => {
 		const obj = {

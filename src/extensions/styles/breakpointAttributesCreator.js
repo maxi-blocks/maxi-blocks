@@ -1,7 +1,3 @@
-/**
- * TODO: implement on the rest of default attributes 👍
- */
-
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const breakpointAttributesCreator = ({

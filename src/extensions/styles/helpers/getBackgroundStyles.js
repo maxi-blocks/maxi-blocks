@@ -509,42 +509,21 @@ const getSVGBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgSVGPaletteStatus = getLastBreakpointAttribute(
-		'background-svg-palette-status',
-		breakpoint,
-		props,
-		isHover
-	);
-
-	if (bgSVGPaletteStatus) {
-		const bgSVGPaletteColor = getLastBreakpointAttribute(
-			'background-svg-palette-color',
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj: props,
+			prefix: 'background-svg-',
+			isHover,
 			breakpoint,
-			props,
-			isHover
-		);
-		const bgSVGPaletteOpacity = getLastBreakpointAttribute(
-			'background-svg-palette-opacity',
-			breakpoint,
-			props,
-			isHover
-		);
+		});
 
+	if (paletteStatus)
 		response[breakpoint].fill = getColorRGBAString({
-			firstVar: `color-${bgSVGPaletteColor}`,
-			opacity: bgSVGPaletteOpacity,
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
 			blockStyle,
 		});
-	} else {
-		const bgSVGColor = getLastBreakpointAttribute(
-			'background-svg-color',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		response[breakpoint].fill = bgSVGColor;
-	}
+	else response[breakpoint].fill = color;
 
 	return response;
 };

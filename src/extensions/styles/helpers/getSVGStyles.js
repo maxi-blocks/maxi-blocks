@@ -3,6 +3,7 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
@@ -70,15 +71,17 @@ const getSVGPathFillStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	if (obj['svg-fill-palette-status'] && obj['svg-fill-palette-color'])
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({ obj, prefix: 'svg-fill-' });
+
+	if (paletteStatus && paletteColor)
 		response.general.fill = getColorRGBAString({
 			firstVar: 'icon-fill',
-			secondVar: `color-${obj['svg-fill-palette-color']}`,
-			opacity: obj['svg-fill-palette-opacity'],
+			secondVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
 			blockStyle,
 		});
-	else if (!obj['svg-fill-palette-status'] && !isNil(obj['svg-fill-color']))
-		response.general.fill = obj['svg-fill-color'];
+	else if (!paletteStatus && !isNil(color)) response.general.fill = color;
 
 	return { SVGPathFill: response };
 };
@@ -89,15 +92,17 @@ const getSVGPathStrokeStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	if (obj['svg-line-palette-status'] && obj['svg-line-palette-color'])
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({ obj, prefix: 'svg-line-' });
+
+	if (paletteStatus && paletteColor)
 		response.general.stroke = getColorRGBAString({
 			firstVar: 'icon-line',
-			secondVar: `color-${obj['svg-line-palette-color']}`,
-			opacity: obj['svg-line-palette-opacity'],
+			secondVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
 			blockStyle,
 		});
-	else if (!obj['svg-line-palette-status'] && !isNil(obj['svg-line-color']))
-		response.general.stroke = obj['svg-line-color'];
+	else if (!paletteStatus && !isNil(color)) response.general.stroke = color;
 
 	return { SVGPathStroke: response };
 };

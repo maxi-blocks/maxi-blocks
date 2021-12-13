@@ -37,18 +37,17 @@ const getCircleBackgroundStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	if (
-		!obj['number-counter-circle-background-palette-status'] &&
-		!isNil(obj['number-counter-circle-background-color'])
-	)
-		response.general.stroke = obj['number-counter-circle-background-color'];
-	else if (
-		obj['number-counter-circle-background-palette-status'] &&
-		obj['number-counter-circle-background-palette-color']
-	)
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj,
+			prefix: 'number-counter-circle-background-',
+		});
+
+	if (!paletteStatus && !isNil(color)) response.general.stroke = color;
+	else if (paletteStatus && paletteColor)
 		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${obj['number-counter-circle-background-palette-color']}`,
-			opacity: obj['number-counter-circle-background-palette-opacity'],
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
 			blockStyle,
 		});
 
@@ -61,22 +60,16 @@ const getTextStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	if (
-		!obj['number-counter-text-palette-status'] &&
-		!isNil(obj['number-counter-text-color'])
-	)
-		response.general[
-			obj['number-counter-circle-status'] ? 'color' : 'fill'
-		] = obj['number-counter-text-color'];
-	else if (
-		obj['number-counter-text-palette-status'] &&
-		obj['number-counter-text-palette-color']
-	)
-		response.general[
-			obj['number-counter-circle-status'] ? 'color' : 'fill'
-		] = getColorRGBAString({
-			firstVar: `color-${obj['number-counter-text-palette-color']}`,
-			opacity: obj['number-counter-palette-text-opacity'],
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({ obj, prefix: 'number-counter-text-' });
+
+	const typeOfStyle = obj['number-counter-circle-status'] ? 'color' : 'fill';
+
+	if (!paletteStatus && !isNil(color)) response.general[typeOfStyle] = color;
+	else if (paletteStatus && paletteColor)
+		response.general[typeOfStyle] = getColorRGBAString({
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
 			blockStyle,
 		});
 

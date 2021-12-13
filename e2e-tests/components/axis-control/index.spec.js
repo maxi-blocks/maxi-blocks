@@ -61,20 +61,13 @@ describe('AxisControl', () => {
 			unit: '%',
 		});
 
-		const paddingType = await page.$eval(
-			'.maxi-axis-control__padding .maxi-axis-control__content__item__padding input',
-			input => input.type
-		);
-		const paddingTypeOf = typeof paddingType;
+		expect(
+			typeof (await getAttributes('padding-bottom-general'))
+		).toStrictEqual('number');
 
-		expect(paddingTypeOf).toStrictEqual('string');
-
-		const marginType = await page.$(
-			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input'
-		);
-		const marginTypeOf = typeof marginType;
-
-		expect(marginTypeOf).toStrictEqual('object');
+		expect(
+			typeof (await getAttributes('margin-bottom-general'))
+		).toStrictEqual('string');
 	});
 
 	it('Checking responsive axisControl', async () => {

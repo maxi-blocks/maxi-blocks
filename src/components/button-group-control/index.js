@@ -56,10 +56,10 @@ const ButtonGroupControl = ({
 					aria-pressed={selected === value}
 					className={classnames(
 						'maxi-button-group-control__option',
-						selected === value &&
-							'maxi-button-group-control__option--selected',
 						active?.includes(value) &&
 							'maxi-button-group-control__option--active',
+						selected === value &&
+							'maxi-button-group-control__option--selected',
 						className
 					)}
 					onClick={() => onChange(value)}

@@ -16,7 +16,6 @@ import BaseControl from '../base-control';
 import Button from '../button';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-
 /**
  * Styles
  */
@@ -26,8 +25,15 @@ import './editor.scss';
  * Component
  */
 const CustomCssControl = props => {
-	const { breakpoint, categories, category, selectors, value, onChange } =
-		props;
+	const {
+		breakpoint,
+		categories,
+		category,
+		selectors,
+		value,
+		onChange,
+		active,
+	} = props;
 
 	const getOptions = () => {
 		const options = [
@@ -158,6 +164,7 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-typography-control__text-options-tabs'
 			breakpoint={breakpoint}
+			active={active}
 		>
 			<>
 				<SelectControl

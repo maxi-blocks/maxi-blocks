@@ -1,7 +1,7 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { border, borderWidth, borderRadius } from './border';
 
-const prefix = 'border-';
+const prefix = 'icon-';
 
 export const iconBorder = prefixAttributesCreator({
 	obj: border,

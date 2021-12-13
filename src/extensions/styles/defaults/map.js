@@ -42,12 +42,12 @@ const map = {
 		type: 'string',
 		default: __('Marker Title', 'maxi-blocks'),
 	},
-	...paletteAttributesCreator({ prefix: 'max-marker-text-', palette: 4 }),
+	...paletteAttributesCreator({ prefix: 'map-marker-text-', palette: 4 }),
 	'map-marker-address': {
 		type: 'string',
 		default: __('Marker Address', 'maxi-blocks'),
 	},
-	...paletteAttributesCreator({ prefix: 'max-marker-adress-', palette: 5 }),
+	...paletteAttributesCreator({ prefix: 'map-marker-address-', palette: 5 }),
 };
 
 export default map;

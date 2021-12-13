@@ -164,10 +164,10 @@ const MapControl = props => {
 			/>
 			<ColorControl
 				label={__('Marker Text', 'maxi-blocks')}
+				paletteStatus={props['map-marker-text-palette-status']}
+				paletteColor={props['map-marker-text-palette-color']}
 				color={props['map-marker-text-color']}
 				defaultColor={getDefaultAttribute('map-marker-text-color')}
-				paletteColor={props['map-marker-text-palette-color']}
-				paletteStatus={props['map-marker-text-palette-status']}
 				onChange={({ color, paletteColor, paletteStatus }) =>
 					onChange({
 						'map-marker-text-color': color,

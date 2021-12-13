@@ -13,6 +13,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  * External dependencies
  */
 import { isEmpty, isNil, isNumber, merge, compact, round } from 'lodash';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -55,30 +56,14 @@ export const getColorBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgPaletteStatus = getLastBreakpointAttribute(
-		`${prefix}background-palette-status`,
-		breakpoint,
-		props,
-		isHover
-	);
-	const currentBgPaletteColor = getLastBreakpointAttribute(
-		`${prefix}background-palette-color`,
-		breakpoint,
-		props,
-		isHover
-	);
-	const currentBgPaletteOpacity = getLastBreakpointAttribute(
-		`${prefix}background-palette-opacity`,
-		breakpoint,
-		props,
-		isHover
-	);
-	const bgColor = getLastBreakpointAttribute(
-		`${prefix}background-color`,
-		breakpoint,
-		props,
-		isHover
-	);
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj: props,
+			prefix: `${prefix}background-`,
+			isHover,
+			breakpoint,
+		});
+
 	const bgClipPath = getLastBreakpointAttribute(
 		`${prefix}background-color-clip-path`,
 		breakpoint,
@@ -86,65 +71,44 @@ export const getColorBackgroundObject = ({
 		isHover
 	);
 
-	if (!bgPaletteStatus && !isEmpty(bgColor)) {
-		response[breakpoint]['background-color'] = bgColor;
-	} else if (
-		bgPaletteStatus &&
-		(currentBgPaletteColor || currentBgPaletteOpacity)
-	) {
-		const bgPaletteColor =
-			currentBgPaletteColor ||
-			getLastBreakpointAttribute(
-				`${prefix}background-palette-color`,
-				breakpoint,
-				props,
-				isHover
-			);
-		const bgPaletteOpacity =
-			currentBgPaletteOpacity ||
-			getLastBreakpointAttribute(
-				`${prefix}background-palette-opacity`,
-				breakpoint,
-				props,
-				isHover
-			);
-
-		if (isButton && (!isHover || hoverStatus || globalHoverStatus)) {
+	if (!paletteStatus && !isEmpty(color))
+		response[breakpoint]['background-color'] = color;
+	else if (paletteStatus && (paletteColor || paletteOpacity)) {
+		if (isButton && (!isHover || hoverStatus || globalHoverStatus))
 			response[breakpoint].background = getColorRGBAString({
 				firstVar: `button-background-color${isHover ? '-hover' : ''}`,
-				secondVar: `color-${bgPaletteColor}`,
-				opacity: bgPaletteOpacity,
+				secondVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
 				blockStyle,
 			});
-		} else
+		else
 			response[breakpoint]['background-color'] = getColorRGBAString({
-				firstVar: `color-${bgPaletteColor}`,
-				opacity: bgPaletteOpacity,
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
 				blockStyle,
 			});
 	}
 
 	if (isIconInherit) {
 		response[breakpoint]['background-color'] =
-			props['background-active-media'] !== '' && bgPaletteStatus
+			props['background-active-media'] !== '' && paletteStatus
 				? getColorRGBAString({
 						firstVar: `button-background-color${
 							isHover ? '-hover' : ''
 						}`,
-						secondVar: `color-${currentBgPaletteColor}`,
-						opacity: currentBgPaletteOpacity,
+						secondVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
 						blockStyle,
 				  })
-				: bgColor;
+				: color;
 	}
 
-	if (!isIconInherit && isIcon) {
+	if (!isIconInherit && isIcon)
 		response[breakpoint].background = getColorRGBAString({
-			firstVar: `color-${currentBgPaletteColor}`,
-			opacity: currentBgPaletteOpacity,
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
 			blockStyle,
 		});
-	}
 
 	if (!isNil(bgClipPath))
 		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)

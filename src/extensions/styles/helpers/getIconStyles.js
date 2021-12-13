@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
@@ -19,38 +20,38 @@ const getIconStyles = (
 		general: {},
 	};
 
-	if (
-		!obj[`icon-palette-status${isHover ? '-hover' : ''}`] &&
-		!isNil(obj[`icon-color${isHover ? '-hover' : ''}`])
-	) {
-		response.general.fill = 'none';
-		response.general.stroke = obj[`icon-color${isHover ? '-hover' : ''}`];
-	} else if (
-		obj[`icon-palette-status${isHover ? '-hover' : ''}`] &&
-		obj[`icon-palette-color${isHover ? '-hover' : ''}`]
-	) {
-		response.general.fill = 'none';
-		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${
-				obj[`icon-palette-color${isHover ? '-hover' : ''}`]
-			}`,
-			opacity: obj[`icon-palette-opacity${isHover ? '-hover' : ''}`],
-			blockStyle: parentBlockStyle,
-		});
-	}
-
 	if (isIconInherit) {
-		if (!obj['palette-status-general'] && obj['color-general']) {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: '',
+				isHover,
+				breakpoint: 'general',
+			});
+
+		if (!paletteStatus && color) {
 			response.general.fill = 'none';
-			response.general.stroke = obj['color-general'];
-		} else if (
-			obj['palette-status-general'] &&
-			obj['palette-color-general']
-		) {
+			response.general.stroke = color;
+		} else if (paletteStatus && paletteColor) {
 			response.general.fill = 'none';
 			response.general.stroke = getColorRGBAString({
-				firstVar: `color-${obj['palette-color-general']}`, // not sure about this values...
-				opacity: obj['palette-opacity-general'], // not sure about this values...
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle: parentBlockStyle,
+			});
+		}
+	} else {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({ obj, prefix: 'icon-', isHover });
+
+		if (!paletteStatus && !isNil(color)) {
+			response.general.fill = 'none';
+			response.general.stroke = color;
+		} else if (paletteStatus && paletteColor) {
+			response.general.fill = 'none';
+			response.general.stroke = getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: obj[paletteOpacity],
 				blockStyle: parentBlockStyle,
 			});
 		}

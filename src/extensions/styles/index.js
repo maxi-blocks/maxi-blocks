@@ -11,6 +11,7 @@ export { default as getGroupAttributes } from './getGroupAttributes';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';
 export { default as paletteAttributesCreator } from './paletteAttributesCreator';
 export { default as prefixAttributesCreator } from './prefixAttributesCreator';
+export { default as getPaletteAttributes } from './getPaletteAttributes';
 export { default as hoverAttributesCreator } from './hoverAttributesCreator';
 export { default as setHoverAttributes } from './setHoverAttributes';
 export { default as styleGenerator } from './styleGenerator';

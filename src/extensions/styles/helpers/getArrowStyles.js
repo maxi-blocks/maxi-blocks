@@ -5,6 +5,7 @@ import getBoxShadowStyles from './getBoxShadowStyles';
 import getColorRGBAString from '../getColorRGBAString';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
@@ -92,41 +93,21 @@ export const getArrowColorObject = (
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const backgroundPaletteStatus = getLastBreakpointAttribute(
-			'background-palette-status',
-			breakpoint,
-			layer,
-			isHover
-		);
-
-		if (backgroundPaletteStatus) {
-			const paletteColor = getLastBreakpointAttribute(
-				'background-palette-color',
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj: layer,
+				prefix: 'background-',
+				isHover,
 				breakpoint,
-				layer,
-				isHover
-			);
-			const paletteOpacity = getLastBreakpointAttribute(
-				'background-palette-opacity',
-				breakpoint,
-				layer,
-				isHover
-			);
+			});
 
+		if (paletteStatus)
 			response[breakpoint]['background-color'] = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
 				blockStyle,
 			});
-		} else {
-			const backgroundColor = getLastBreakpointAttribute(
-				'background-color',
-				breakpoint,
-				layer,
-				isHover
-			);
-			response[breakpoint]['background-color'] = backgroundColor;
-		}
+		else response[breakpoint]['background-color'] = color;
 	});
 
 	return response;

@@ -41,13 +41,13 @@ const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
-	...paletteAttributesCreator({ prefix: 'number-counter-text', palette: 4 }),
+	...paletteAttributesCreator({ prefix: 'number-counter-text-', palette: 4 }),
 	...paletteAttributesCreator({
-		prefix: 'number-counter-circle-background',
+		prefix: 'number-counter-circle-background-',
 		palette: 2,
 	}),
 	...paletteAttributesCreator({
-		prefix: 'number-counter-circle-bar',
+		prefix: 'number-counter-circle-bar-',
 		palette: 4,
 	}),
 	'number-counter-title-font-size': {

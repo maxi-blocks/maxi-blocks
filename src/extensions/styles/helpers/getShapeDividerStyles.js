@@ -2,11 +2,12 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty, isNumber } from 'lodash';
+import { isNil } from 'lodash';
 
 export const getShapeDividerStyles = (obj, location) => {
 	const response = {
@@ -31,18 +32,18 @@ export const getShapeDividerSVGStyles = (obj, location, parentBlockStyle) => {
 		general: {},
 	};
 
-	if (
-		!obj[`shape-divider-${location}-palette-status`] &&
-		!isEmpty(obj[`shape-divider-${location}-color`])
-	)
-		response.general.fill = obj[`shape-divider-${location}-color`];
-	else if (
-		obj[`shape-divider-${location}-palette-status`] &&
-		isNumber(obj[`shape-divider-palette-${location}-color`])
-	) {
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj,
+			prefix: `shape-divider-${location}-`,
+		});
+
+	if (!paletteStatus && !isNil(color)) {
+		response.general.fill = color;
+	} else if (paletteStatus && paletteColor) {
 		response.general.fill = getColorRGBAString({
-			firstVar: `color-${obj[`shape-divider-palette-${location}-color`]}`,
-			opacity: obj[`shape-divider-palette-${location}-opacity`],
+			firstVar: `color-${paletteColor}`,
+			opacity: obj[paletteOpacity],
 			blockStyle: parentBlockStyle,
 		});
 	}

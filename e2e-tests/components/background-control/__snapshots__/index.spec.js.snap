@@ -7,10 +7,10 @@ Array [
     "background-color-clip-path-m": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
     "background-palette-color-general": 5,
     "background-palette-color-m": 5,
-    "background-palette-status-general": true,
-    "background-palette-status-m": true,
     "background-palette-opacity-general": 0.45,
     "background-palette-opacity-m": 0.45,
+    "background-palette-status-general": true,
+    "background-palette-status-m": true,
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -33,16 +33,16 @@ Array [
     "background-palette-color-m": 5,
     "background-palette-color-m-hover": 2,
     "background-palette-color-s": 6,
-    "background-palette-status-general": true,
-    "background-palette-status-general-hover": true,
-    "background-palette-status-m": true,
-    "background-palette-status-m-hover": true,
-    "background-palette-status-s": true,
     "background-palette-opacity-general": 0.45,
     "background-palette-opacity-general-hover": 0.45,
     "background-palette-opacity-m": 0.45,
     "background-palette-opacity-m-hover": 0.45,
     "background-palette-opacity-s": 0.45,
+    "background-palette-status-general": true,
+    "background-palette-status-general-hover": true,
+    "background-palette-status-m": true,
+    "background-palette-status-m-hover": true,
+    "background-palette-status-s": true,
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -162,10 +162,6 @@ exports[`BackgroundControl Check Background image layer responsive 1`] = `"<styl
 exports[`BackgroundControl Check Background shape layer 1`] = `
 Array [
   Object {
-    "background-svg-palette-color": 5,
-    "background-svg-palette-status": true,
-    "background-svg-palette-opacity-general": 0.77,
-    "background-svg-palette-opacity-m": 0.77,
     "background-svg-SVGData": Object {
       "container-maxi-4748__226": Object {
         "color": "",
@@ -179,6 +175,10 @@ Array [
     "background-svg-SVGMediaURL": "",
     "background-svg-left": null,
     "background-svg-left--unit": "%",
+    "background-svg-palette-color": 5,
+    "background-svg-palette-opacity-general": 0.77,
+    "background-svg-palette-opacity-m": 0.77,
+    "background-svg-palette-status": true,
     "background-svg-size": 100,
     "background-svg-size--unit": "%",
     "background-svg-size-general": 77,
@@ -196,11 +196,6 @@ exports[`BackgroundControl Check Background shape layer 2`] = `"<style>body.maxi
 exports[`BackgroundControl Check Background shape layer hover 1`] = `
 Array [
   Object {
-    "background-svg-palette-color": 5,
-    "background-svg-palette-status": true,
-    "background-svg-palette-opacity-general": 0.77,
-    "background-svg-palette-opacity-m": 0.77,
-    "background-svg-palette-opacity-s": 0.54,
     "background-svg-SVGData": Object {
       "container-maxi-4748__226": Object {
         "color": "",
@@ -215,6 +210,11 @@ Array [
     "background-svg-SVGMediaURL": "",
     "background-svg-left": null,
     "background-svg-left--unit": "%",
+    "background-svg-palette-color": 5,
+    "background-svg-palette-opacity-general": 0.77,
+    "background-svg-palette-opacity-m": 0.77,
+    "background-svg-palette-opacity-s": 0.54,
+    "background-svg-palette-status": true,
     "background-svg-size": 100,
     "background-svg-size--unit": "%",
     "background-svg-size-general": 77,

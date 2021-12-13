@@ -19,5 +19,5 @@ export const borderWidthHover = hoverAttributesCreator({
 
 export const borderRadiusHover = hoverAttributesCreator({
 	obj: borderRadius,
-	diffValAttr: { 'border-unit-radius-general-hover': 'px' },
+	diffValAttr: { 'border-unit-radius-general': 'px' },
 });

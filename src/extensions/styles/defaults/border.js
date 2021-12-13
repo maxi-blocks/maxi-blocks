@@ -3,14 +3,14 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const prefix = 'border-';
 
-const rawBorder = {
+export const rawBorder = {
 	...paletteAttributesCreator({ prefix, palette: 2 }),
 	'border-style': {
 		type: 'string',
 	},
 };
 
-const rawBorderWidth = {
+export const rawBorderWidth = {
 	'border-top-width': {
 		type: 'number',
 	},
@@ -33,7 +33,7 @@ const rawBorderWidth = {
 	},
 };
 
-const rawBorderRadius = {
+export const rawBorderRadius = {
 	'border-top-left-radius': {
 		type: 'number',
 	},

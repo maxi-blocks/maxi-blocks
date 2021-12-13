@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
@@ -14,20 +15,18 @@ const getCircleBarStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	if (
-		!obj['number-counter-circle-bar-palette-status'] &&
-		!isNil(obj['number-counter-circle-bar-color'])
-	)
-		response.general.stroke = obj['number-counter-circle-bar-color'];
-	else if (
-		obj['number-counter-circle-bar-palette-status'] &&
-		obj['number-counter-circle-bar-palette-color']
-	)
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({ obj, prefix: 'number-counter-circle-bar-' });
+
+	if (!paletteStatus && !isNil(color)) {
+		response.general.stroke = color;
+	} else if (paletteStatus && paletteColor) {
 		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${obj['number-counter-circle-bar-palette-color']}`,
-			opacity: obj['number-counter-circle-bar-palette-opacity'],
+			firstVar: `color-${paletteColor}`,
+			opacity: obj[paletteOpacity],
 			blockStyle,
 		});
+	}
 
 	return { numberCounterCircleBar: response };
 };

@@ -37,6 +37,13 @@ export const icon = {
 			},
 		},
 	}),
+	...prefixAttributesCreator({
+		obj: width,
+		prefix,
+		diffValAttr: {
+			'icon-width-general': 32,
+		},
+	}),
 	...paletteAttributesCreator({ prefix, palette: 1 }),
 };
 
@@ -44,14 +51,6 @@ export const iconBackground = prefixAttributesCreator({
 	obj: background,
 	prefix,
 	diffValAttr: { 'icon-background-active-media-general': 'none' },
-});
-
-export const iconWidth = prefixAttributesCreator({
-	obj: width,
-	prefix,
-	diffValAttr: {
-		'icon-width-general': 32,
-	},
 });
 
 export const iconPadding = prefixAttributesCreator({

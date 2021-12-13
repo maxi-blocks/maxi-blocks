@@ -58,9 +58,6 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
 	);
 
-	console.log('final active');
-	console.log(active);
-
 	return (
 		<div className={classes}>
 			<div className={classesControl}>

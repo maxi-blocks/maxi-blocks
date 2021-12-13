@@ -33,7 +33,7 @@ import getActiveAttributes from '../../extensions/active-indicators';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isBoolean, isNumber } from 'lodash';
+import { isNil, isBoolean, isNumber, pickBy } from 'lodash';
 
 /**
  * Styles and icons
@@ -470,6 +470,10 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
+	const typographyLink = pickBy(typography, (value, key) =>
+		key.includes('link-')
+	);
+
 	const { styleCard } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
@@ -891,6 +895,7 @@ const TypographyControl = withFormatValue(props => {
 					isHover={isHover}
 					clientId={clientId}
 					getOpacityValue={getOpacityValue}
+					active={getActiveAttributes(typographyLink, 'link', props)}
 				/>
 			)}
 		</div>

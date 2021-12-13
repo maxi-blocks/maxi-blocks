@@ -51,6 +51,7 @@ import {
 	TextOptions,
 	TextGenerator,
 	MoreSettings,
+	Help,
 } from './components';
 
 /**
@@ -207,13 +208,13 @@ const MaxiToolbar = memo(
 						{...stickyProps}
 					>
 						<div className='toolbar-wrapper'>
-							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<div className='toolbar-block-custom-label'>
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${parentBlockStyle}`}
 								</span>
 							</div>
+							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<Mover clientId={clientId} blockName={name} />
 							<TextGenerator
 								clientId={clientId}
@@ -224,7 +225,26 @@ const MaxiToolbar = memo(
 							<BackgroundColor
 								{...getGroupAttributes(
 									attributes,
-									'background'
+									[
+										'background',
+										'backgroundColor',
+										'backgroundGradient',
+									],
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								advancedOptions={backgroundAdvancedOptions}
+								globalProps={backgroundGlobalProps}
+								blockName={name}
+								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+							/>
+							<BlockBackgroundColor
+								{...getGroupAttributes(
+									attributes,
+									'blockBackground'
 								)}
 								blockName={name}
 								breakpoint={breakpoint}
@@ -233,8 +253,14 @@ const MaxiToolbar = memo(
 							/>
 							<Size
 								blockName={name}
-								{...getGroupAttributes(attributes, 'size')}
+								blockFullWidth={blockFullWidth}
 								fullWidth={fullWidth}
+								{...getGroupAttributes(
+									attributes,
+									'size',
+									false,
+									prefix
+								)}
 								isFirstOnHierarchy={isFirstOnHierarchy}
 								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
@@ -248,7 +274,10 @@ const MaxiToolbar = memo(
 								textLevel={textLevel}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
-							<ReusableBlocks clientId={clientId} />
+							<ReusableBlocks
+								clientId={clientId}
+								blockName={name}
+							/>
 							<DividerColor
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
@@ -516,6 +545,8 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, 'display')}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
+								clientId={clientId}
+								blockName={name}
 								defaultDisplay={
 									flexBlocks.includes(name)
 										? 'flex'
@@ -523,6 +554,7 @@ const MaxiToolbar = memo(
 								}
 							/>
 							<CopyPaste clientId={clientId} blockName={name} />
+							<Help />
 							<MoreSettings
 								clientId={clientId}
 								blockName={name}

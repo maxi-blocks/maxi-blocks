@@ -14,12 +14,12 @@ import Icon from '../../../icon';
 /**
  * Icons
  */
-import { toolbarMoreSettings } from '../../../../icons';
+import { toolbarHelp } from '../../../../icons';
 
 /**
  * Duplicate
  */
-const MoreSettings = props => {
+const Help = props => {
 	const { blockName } = props;
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
@@ -28,14 +28,11 @@ const MoreSettings = props => {
 		<Tooltip text={__('Help', 'maxi-blocks')} position='bottom center'>
 			<div className='toolbar-item toolbar-item__help'>
 				<Button href='#'>
-					<Icon
-						className='toolbar-item__icon'
-						icon={toolbarMoreSettings}
-					/>
+					<Icon className='toolbar-item__icon' icon={toolbarHelp} />
 				</Button>
 			</div>
 		</Tooltip>
 	);
 };
 
-export default MoreSettings;
+export default Help;

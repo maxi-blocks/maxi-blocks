@@ -270,6 +270,11 @@ const CopyPasteContent = props => {
 };
 
 const CopyPaste = props => {
+	const { blockName, isCaptionToolbar = false } = props;
+
+	if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
+		return null;
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__copy-paste'

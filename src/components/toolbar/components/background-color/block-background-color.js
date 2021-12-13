@@ -9,12 +9,13 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
 import { colorOptions as colorLayerAttr } from '../../../background-control/layers';
-import ButtonGroupControl from '../../../button-group-control';
-import {
-	getBlockStyle,
-	getColorRGBAString,
-	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+// import ButtonGroupControl from '../../../button-group-control';
+import ToggleSwitch from '../../../toggle-switch';
+// import {
+// 	getBlockStyle,
+// 	getColorRGBAString,
+// 	getLastBreakpointAttribute,
+// } from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -46,7 +47,7 @@ const BlockBackgroundColor = props => {
 	const {
 		blockName,
 		onChange,
-		clientId,
+		// clientId,
 		breakpoint,
 		'background-layers': backgroundLayers = [],
 	} = props;
@@ -60,45 +61,45 @@ const BlockBackgroundColor = props => {
 
 	const isBackgroundColor = !isEmpty(layer);
 
-	const getStyle = () => {
-		// if (!isBackgroundColor)
-		// 	return {
-		// 		background: '#fff',
-		// 		clipPath:
-		// 			'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
-		// 	};
+	// const getStyle = () => {
+	// 	if (!isBackgroundColor)
+	// 		return {
+	// 			background: '#fff',
+	// 			clipPath:
+	// 				'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
+	// 		};
 
-		const bgPaletteStatus = getLastBreakpointAttribute(
-			'background-palette-color-status',
-			breakpoint,
-			layer
-		);
-		const bgPaletteColor = getLastBreakpointAttribute(
-			'background-palette-color',
-			breakpoint,
-			layer
-		);
-		const bgPaletteOpacity = getLastBreakpointAttribute(
-			'background-palette-opacity',
-			breakpoint,
-			layer
-		);
-		const bgColor = getLastBreakpointAttribute(
-			'background-color',
-			breakpoint,
-			layer
-		);
+	// 	const bgPaletteStatus = getLastBreakpointAttribute(
+	// 		'background-palette-color-status',
+	// 		breakpoint,
+	// 		layer
+	// 	);
+	// 	const bgPaletteColor = getLastBreakpointAttribute(
+	// 		'background-palette-color',
+	// 		breakpoint,
+	// 		layer
+	// 	);
+	// 	const bgPaletteOpacity = getLastBreakpointAttribute(
+	// 		'background-palette-opacity',
+	// 		breakpoint,
+	// 		layer
+	// 	);
+	// 	const bgColor = getLastBreakpointAttribute(
+	// 		'background-color',
+	// 		breakpoint,
+	// 		layer
+	// 	);
 
-		return {
-			background: bgPaletteStatus
-				? getColorRGBAString({
-						firstVar: `color-${bgPaletteColor}`,
-						opacity: bgPaletteOpacity,
-						blockStyle: getBlockStyle(clientId),
-				  })
-				: bgColor,
-		};
-	};
+	// 	return {
+	// 		background: bgPaletteStatus
+	// 			? getColorRGBAString({
+	// 					firstVar: `color-${bgPaletteColor}`,
+	// 					opacity: bgPaletteOpacity,
+	// 					blockStyle: getBlockStyle(clientId),
+	// 			  })
+	// 			: bgColor,
+	// 	};
+	// };
 
 	const getNewLayerId = () =>
 		backgroundLayers && !isEmpty(backgroundLayers)
@@ -120,7 +121,7 @@ const BlockBackgroundColor = props => {
 			icon={backgroundColor}
 		>
 			<div className='toolbar-item__background__popover'>
-				<ButtonGroupControl
+				{/* <ButtonGroupControl
 					label={__('Enable Background Colour', 'maxi-blocks')}
 					selected={isBackgroundColor}
 					options={[
@@ -155,9 +156,36 @@ const BlockBackgroundColor = props => {
 							onChange({ 'background-layers': newBGLayers });
 						}
 					}}
+				/> */}
+				<ToggleSwitch
+					label={__('Enable background colour', 'maxi-blocks')}
+					selected={isBackgroundColor}
+					onChange={val => {
+						if (val) {
+							onChange({
+								'background-layers': [
+									...backgroundLayers,
+									{
+										...setBreakpointToLayer({
+											layer: colorLayerAttr,
+											breakpoint,
+										}),
+										id: getNewLayerId(),
+									},
+								],
+							});
+						} else {
+							const newBGLayers = backgroundLayers.filter(
+								bgLayer => bgLayer.id !== layer.id
+							);
+
+							onChange({ 'background-layers': newBGLayers });
+						}
+					}}
 				/>
 				{isBackgroundColor && (
 					<ColorLayer
+						disableClipPath
 						key={`background-color-layer--${layer.id}`}
 						colorOptions={layer}
 						onChange={obj => {

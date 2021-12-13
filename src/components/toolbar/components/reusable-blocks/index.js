@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * Internal dependencies
  */
@@ -22,9 +23,12 @@ import { toolbarReusableBlock } from '../../../../icons';
  * DividerAlignment
  */
 const ReusableBlocks = props => {
-	const { clientId } = props;
+	const { blockName, clientId, isCaptionToolbar = false } = props;
 
 	const [title, setTitle] = useState('');
+
+	if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
+		return null;
 
 	const { __experimentalConvertBlocksToReusable: convertBlocksToReusable } =
 		useDispatch('maxiBlocks/reusable-blocks');

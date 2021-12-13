@@ -13,6 +13,15 @@
 		svg {
 			width: 15px !important;
 			height: 8px !important;
+			path {
+				transition: 0.3s;
+			}
+		}
+		&:hover {
+			path {
+				fill: var(--maxi-secondary-color) !important;
+				stroke: var(--maxi-secondary-color) !important;
+			}
 		}
 	}
 }

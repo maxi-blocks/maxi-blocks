@@ -25,7 +25,16 @@ import { toolbarHide, toolbarShow } from '../../../../icons';
  * Toggle Block
  */
 const ToggleBlock = props => {
-	const { breakpoint, onChange, defaultDisplay = 'inherit' } = props;
+	const {
+		breakpoint,
+		onChange,
+		defaultDisplay = 'inherit',
+		blockName,
+		isCaptionToolbar = false,
+	} = props;
+
+	if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
+		return null;
 
 	const isHide = () => {
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

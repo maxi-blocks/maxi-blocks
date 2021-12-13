@@ -1,5 +1,16 @@
 .toolbar-item__background__popover {
 	min-width: 300px;
+	.maxi-tabs-control {
+		display: none;
+	}
+	.maxi-tabs-content {
+		padding-top: 0 !important;
+		.maxi-color-control__palette-label {
+			.maxi-base-control__label {
+				display: none;
+			}
+		}
+	}
 }
 .toolbar-item__background-content {
 	.components-color-picker__swatch {

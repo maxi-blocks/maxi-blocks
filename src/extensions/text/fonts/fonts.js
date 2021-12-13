@@ -7751,6 +7751,30 @@ const fontsJSON = {
         "files": {
             "400": "https://fonts.gstatic.com/s/bahianita/v2/yYLr0hTb3vuqqsBUgxWtxTvV2NJPcA.ttf"
         }
+    },
+    "Marcellus": {
+        "value": "Marcellus",
+        "files": {
+            "400": "http://fonts.gstatic.com/s/marcellus/v4/UjiLZzumxWC9whJ86UtaYw.ttf"
+        }
+    },
+    "Karla": {
+        "value": "Karla",
+        "files": {
+            "400": "http://fonts.gstatic.com/s/karla/v5/78UgGRwJFkhqaoFimqoKpQ.ttf"
+        }
+    },
+     "Proza Libre": {
+        "value": "Proza Libre",
+        "files": {
+            "400": "http://fonts.gstatic.com/s/prozalibre/v1/Hg11OrfE1P_U6mKmrZPknKCWcynf_cDxXwCLxiixG1c.ttf"
+        }
+    },
+    "Muli": {
+        "value": "Muli",
+        "files": {
+            "400": "http://fonts.gstatic.com/s/muli/v10/KJiP6KznxbALQgfJcDdPAw.ttf"
+        }
     }
 };
 

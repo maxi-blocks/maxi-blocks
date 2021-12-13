@@ -38,6 +38,28 @@ const marginPadding = ({
 						breakpoint={deviceType}
 						target='margin'
 						optionType='string'
+						minMaxSettings={{
+							px: {
+								min: -999,
+								max: 999,
+								step: 1,
+							},
+							em: {
+								min: -999,
+								max: 999,
+								step: 0.1,
+							},
+							vw: {
+								min: -999,
+								max: 999,
+								step: 0.1,
+							},
+							'%': {
+								min: -999,
+								max: 999,
+								step: 0.1,
+							},
+						}}
 					/>
 				)}
 				<AxisControl

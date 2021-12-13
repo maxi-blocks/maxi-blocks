@@ -14,7 +14,7 @@ import {
 	changeResponsive,
 	editAxisControl,
 	getAttributes,
-	getBlockAttributes,
+	getBlockStyle,
 } from '../../utils';
 
 describe('AxisControl', () => {
@@ -53,6 +53,23 @@ describe('AxisControl', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
+	});
+
+	it('Check padding attributes are numbers and margin strings', async () => {
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-axis-control__padding'),
+			values: '34',
+			unit: '%',
+		});
+
+		expect(
+			typeof (await getAttributes('padding-bottom-general'))
+		).toStrictEqual('number');
+
+		expect(
+			typeof (await getAttributes('margin-bottom-general'))
+		).toStrictEqual('string');
 	});
 
 	it('Checking responsive axisControl', async () => {
@@ -125,7 +142,7 @@ describe('AxisControl', () => {
 		);
 		expect(positionMUnit).toStrictEqual('%');
 	});
-	it('Check the arrows in input', async () => {
+	it('Check the arrows in input and %% 0.1 steps', async () => {
 		await changeResponsive(page, 'base');
 
 		const accordionPanel = await openSidebarTab(
@@ -152,7 +169,7 @@ describe('AxisControl', () => {
 		await input[0].focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('margin-top-general')).toStrictEqual('0');
+		expect(await getAttributes('margin-top-general')).toStrictEqual('2.5');
 	});
 	it('Checking AxisControl auto', async () => {
 		await changeResponsive(page, 'base');
@@ -239,5 +256,27 @@ describe('AxisControl', () => {
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check padding min is never below 0', async () => {
+		await openSidebarTab(page, 'style', 'margin padding');
+		const axisControlInstance = await page.$('.maxi-axis-control__padding');
+
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '1',
+			unit: 'px',
+		});
+
+		const input = await axisControlInstance.$$(
+			'.maxi-axis-control__content__item input'
+		);
+
+		await input[0].focus();
+		await pressKeyTimes('ArrowDown', '5');
+
+		expect(await getAttributes('padding-top-general')).toStrictEqual(0);
 	});
 });

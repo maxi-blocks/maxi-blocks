@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import TransformControl from '../transform-control';
 import { getGroupAttributes } from '../../extensions/styles';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -23,6 +24,11 @@ const transform = ({ props }) => {
 				onChange={obj => setAttributes(obj)}
 				uniqueID={uniqueID}
 				breakpoint={deviceType}
+				active={getActiveAttributes(
+					getGroupAttributes(attributes, 'transform'),
+					'transform',
+					props.attributes
+				)}
 			/>
 		),
 	};

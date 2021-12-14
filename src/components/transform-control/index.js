@@ -32,7 +32,13 @@ import './editor.scss';
  * Component
  */
 const TransformControl = props => {
-	const { className, onChange, breakpoint = 'general', uniqueID } = props;
+	const {
+		className,
+		onChange,
+		breakpoint = 'general',
+		uniqueID,
+		active = [],
+	} = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
@@ -111,6 +117,7 @@ const TransformControl = props => {
 					},
 				]}
 				onChange={val => setTransformStatus(val)}
+				active={active}
 			/>
 			{transformStatus === 'scale' && (
 				<SquareControl

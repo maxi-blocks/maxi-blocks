@@ -35,7 +35,7 @@ const getActiveAttributes = (attributes, type, props) => {
 	}
 
 	if (type === 'custom-css') {
-		Object.keys(attributes).forEach(key => {
+		Object.keys(attributes)?.forEach(key => {
 			const breakpoint = key?.split('-')?.pop();
 			breakpoint !== 'general' &&
 				breakpoint !== 'category' &&
@@ -43,6 +43,22 @@ const getActiveAttributes = (attributes, type, props) => {
 		});
 	}
 
+	if (type === 'transform') {
+		Object.keys(attributes)?.forEach(key => {
+			let tab;
+			const value = props[key];
+			const defaultValue = getDefaultAttribute(key);
+			if (value !== undefined && value !== defaultValue) {
+				if (key.includes('scale')) tab = 'scale';
+				else if (key.includes('rotate')) tab = 'rotate';
+				else if (key.includes('translate')) tab = 'translate';
+				else tab = 'origin';
+			}
+
+			if (tab) response.push(tab);
+		});
+	}
+	console.log(`type: ${type}`);
 	console.log(uniq(response));
 
 	return uniq(response);

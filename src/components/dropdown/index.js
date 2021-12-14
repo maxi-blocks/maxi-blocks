@@ -9,6 +9,11 @@ import classnames from 'classnames';
 import { useRef, useEffect, useState } from '@wordpress/element';
 import { Popover } from '@wordpress/components';
 
+/**
+ * Styles
+ */
+import './editor.scss';
+
 function useObservableState(initialState, onStateChange) {
 	const [state, setState] = useState(initialState);
 	return [

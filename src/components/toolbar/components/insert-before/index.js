@@ -20,7 +20,7 @@ import Button from '../../../button';
 /**
  * Delete
  */
-const Delete = props => {
+const InsertBefore = props => {
 	const { clientId, blockName } = props;
 
 	if (
@@ -29,19 +29,21 @@ const Delete = props => {
 	)
 		return null;
 
-	const { removeBlock } = useDispatch('core/block-editor');
+	const { insertBlock } = useDispatch('core/block-editor');
 
 	return (
-		<Tooltip text={__('Delete', 'maxi-blocks')} position='bottom center'>
+		<Tooltip
+			text={__('Insert before', 'maxi-blocks')}
+			position='bottom center'
+		>
 			<div className='toolbar-item toolbar-item__delete'>
-				<Button onClick={() => removeBlock(clientId)}>
-					{/* <Icon className='toolbar-item__icon' icon={toolbarDelete} /> */}
-					{__('Remove block', 'maxi-blocks')}
-					<span>Ctrl+Z</span>
+				<Button onClick={() => insertBlock(clientId)}>
+					{__('Insert before', 'maxi-blocks')}
+					<span>Ctrl+Alt+T</span>
 				</Button>
 			</div>
 		</Tooltip>
 	);
 };
 
-export default Delete;
+export default InsertBefore;

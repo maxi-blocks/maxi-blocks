@@ -28,3 +28,50 @@
 		}
 	}
 }
+
+.maxi-dropdown__content {
+	&.maxi-dropdown__reusable-content {
+		.components-popover__content {
+			width: 239px;
+			padding: 8px;
+			.maxi-base-control {
+				&__field {
+					margin-bottom: 0;
+				}
+				&__label {
+					&::after {
+						content: '';
+						display: block;
+						height: 1px;
+						background-color: #dbdde6;
+						bottom: 0;
+						margin: 8px -8px;
+					}
+					font-weight: 500;
+				}
+				input {
+					&:focus {
+						box-shadow: none;
+					}
+					border-color: #dbdde6;
+					border-radius: 0;
+					min-height: 0;
+					height: 28px;
+					font-weight: 400;
+				}
+			}
+			.components-button {
+				background-color: #e5f2f8;
+				width: auto;
+				float: right;
+				position: absolute;
+				bottom: 1px;
+				right: 2px;
+				font-weight: 700;
+				color: #007cba;
+				height: 26px;
+				padding: 0px 12px;
+			}
+		}
+	}
+}

@@ -38,3 +38,4 @@ export { default as ToggleBlock } from './toggle-block';
 export { default as ToolbarColumnPattern } from './column-pattern';
 export { default as MoreSettings } from './more-settings';
 export { default as Help } from './help';
+export { default as InsertBefore } from './insert-before';

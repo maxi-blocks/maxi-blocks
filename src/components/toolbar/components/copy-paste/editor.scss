@@ -56,14 +56,28 @@
 			}
 		}
 		&__button {
-			color: #fff;
+			color: #1e1e1e;
 			display: flex;
-			border-bottom: 2px solid #616161;
+			// border-bottom: 2px solid #616161;
 			width: 100%;
 			text-align: left;
-			padding: 0;
+			// padding: 0;
 			border-radius: 0;
 			box-shadow: none;
+			&.toolbar-item__copy-nested-block__popover__button {
+				&::before {
+					content: '';
+					display: block;
+					height: 1px;
+					background-color: #dbdde6;
+					bottom: 0;
+					margin: 0;
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+				}
+			}
 			svg {
 				width: 20px;
 			}
@@ -81,7 +95,7 @@
 				border-bottom: none;
 			}
 			&:hover {
-				color: #fff;
+				color: #007cba;
 			}
 		}
 	}

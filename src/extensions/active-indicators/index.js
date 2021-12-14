@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { upperCase, uniq } from 'lodash';
+import { upperCase, uniq, isEmpty } from 'lodash';
 
 import { getDefaultAttribute } from '../styles';
 
@@ -54,6 +54,17 @@ const getActiveAttributes = (attributes, type, props) => {
 				else if (key.includes('translate')) tab = 'translate';
 				else tab = 'origin';
 			}
+
+			if (tab) response.push(tab);
+		});
+	}
+
+	if (type === 'icon') {
+		Object.keys(attributes).forEach(key => {
+			let tab;
+			if (key.includes('-hover') && !!attributes[key])
+				tab = 'Hover state';
+			else if (!isEmpty(attributes[key])) tab = 'Normal state';
 
 			if (tab) response.push(tab);
 		});

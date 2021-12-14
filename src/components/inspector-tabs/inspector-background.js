@@ -13,6 +13,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -53,6 +54,23 @@ const background = ({
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
+				active={getActiveAttributes(
+					{
+						...getGroupAttributes(
+							attributes,
+							['background'],
+							false,
+							prefix
+						),
+						...getGroupAttributes(
+							attributes,
+							['background'],
+							true,
+							prefix
+						),
+					},
+					'simple-background'
+				)}
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),

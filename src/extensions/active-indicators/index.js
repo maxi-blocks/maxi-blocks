@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { upperCase, uniq, isEmpty } from 'lodash';
+import { upperCase, uniq, isEmpty, remove } from 'lodash';
 
 import { getDefaultAttribute } from '../styles';
 
@@ -69,8 +69,21 @@ const getActiveAttributes = (attributes, type, props) => {
 			if (tab) response.push(tab);
 		});
 	}
-	console.log(`type: ${type}`);
-	console.log(uniq(response));
+
+	if (type === 'simple-background') {
+		Object.keys(attributes).forEach(key => {
+			let tab;
+			if (key.includes('-hover') && !!attributes[key])
+				tab = 'Hover state';
+			else if (attributes[key] !== 'none') tab = 'Normal state';
+			else remove(tab, 'Normal state');
+
+			if (tab) response.push(tab);
+		});
+
+		console.log(`type: ${type}`);
+		console.log(uniq(response));
+	}
 
 	return uniq(response);
 };

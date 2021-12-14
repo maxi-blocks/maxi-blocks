@@ -1,25 +1,26 @@
 /**
  * External dependencies
  */
-import { upperCase, uniq, isEmpty, remove } from 'lodash';
+import { upperCase, uniq, isEmpty, remove, cloneDeep } from 'lodash';
 
 import { getDefaultAttribute } from '../styles';
 
 const getActiveAttributes = (attributes, type, props) => {
 	const response = [];
-	Object.keys(attributes).forEach(
-		key => attributes[key] === undefined && delete attributes[key]
-	);
+	const attr = cloneDeep(attributes);
+	Object.keys(attr).forEach(key => {
+		if (attr[key] === undefined) delete attr[key];
+	});
 
-	if (type === 'typography') {
-		Object.keys(attributes).forEach(key => {
+	if (type === 'breakpoints') {
+		Object.keys(attr).forEach(key => {
 			const breakpoint = key?.split('-')?.pop();
 			breakpoint !== 'general' && response?.push(upperCase(breakpoint));
 		});
 	}
 
 	if (type === 'link') {
-		Object.keys(attributes).forEach(key => {
+		Object.keys(attr).forEach(key => {
 			let tab;
 			const value = props[key];
 			const defaultValue = getDefaultAttribute(key);
@@ -35,7 +36,7 @@ const getActiveAttributes = (attributes, type, props) => {
 	}
 
 	if (type === 'custom-css') {
-		Object.keys(attributes)?.forEach(key => {
+		Object.keys(attr)?.forEach(key => {
 			const breakpoint = key?.split('-')?.pop();
 			breakpoint !== 'general' &&
 				breakpoint !== 'category' &&
@@ -44,7 +45,7 @@ const getActiveAttributes = (attributes, type, props) => {
 	}
 
 	if (type === 'transform') {
-		Object.keys(attributes)?.forEach(key => {
+		Object.keys(attr)?.forEach(key => {
 			let tab;
 			const value = props[key];
 			const defaultValue = getDefaultAttribute(key);
@@ -60,22 +61,20 @@ const getActiveAttributes = (attributes, type, props) => {
 	}
 
 	if (type === 'icon') {
-		Object.keys(attributes).forEach(key => {
+		Object.keys(attr).forEach(key => {
 			let tab;
-			if (key.includes('-hover') && !!attributes[key])
-				tab = 'Hover state';
-			else if (!isEmpty(attributes[key])) tab = 'Normal state';
+			if (key.includes('-hover') && !!attr[key]) tab = 'Hover state';
+			else if (!isEmpty(attr[key])) tab = 'Normal state';
 
 			if (tab) response.push(tab);
 		});
 	}
 
 	if (type === 'simple-background') {
-		Object.keys(attributes).forEach(key => {
+		Object.keys(attr).forEach(key => {
 			let tab;
-			if (key.includes('-hover') && !!attributes[key])
-				tab = 'Hover state';
-			else if (attributes[key] !== 'none') tab = 'Normal state';
+			if (key.includes('-hover') && !!attr[key]) tab = 'Hover state';
+			else if (attr[key] !== 'none') tab = 'Normal state';
 			else remove(tab, 'Normal state');
 
 			if (tab) response.push(tab);
@@ -83,16 +82,16 @@ const getActiveAttributes = (attributes, type, props) => {
 	}
 
 	if (type === 'border') {
-		Object.keys(attributes).forEach(key => {
+		Object.keys(attr).forEach(key => {
 			let tab;
 			if (
 				key.includes('border-style-') &&
 				!key.includes('hover') &&
-				!!attributes[key]
+				!!attr[key]
 			)
 				tab = 'Normal state';
 
-			if (key.includes('-status-hover') && !!attributes[key]) {
+			if (key.includes('-status-hover') && !!attr[key]) {
 				tab = 'Hover state';
 			}
 
@@ -101,15 +100,15 @@ const getActiveAttributes = (attributes, type, props) => {
 	}
 
 	if (type === 'box-shadow') {
-		Object.keys(attributes).forEach(key => {
+		Object.keys(attr).forEach(key => {
 			let tab;
 			if (
 				key.includes('box-shadow-blur') &&
 				!key.includes('hover') &&
-				!!attributes[key]
+				!!attr[key]
 			)
 				tab = 'Normal state';
-			if (key.includes('-status-hover') && !!attributes[key])
+			if (key.includes('-status-hover') && !!attr[key])
 				tab = 'Hover state';
 
 			if (tab) response.push(tab);

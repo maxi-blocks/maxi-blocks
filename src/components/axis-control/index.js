@@ -18,6 +18,7 @@ import {
 	getDefaultAttribute,
 	getAttributeKey,
 } from '../../extensions/styles';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -696,7 +697,10 @@ const AxisControl = props => {
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (
-				<ResponsiveTabsControl breakpoint={breakpoint}>
+				<ResponsiveTabsControl
+					breakpoint={breakpoint}
+					active={getActiveAttributes(props, 'breakpoints')}
+				>
 					<AxisControlContent
 						{...props}
 						key='AxisControlContent__responsive'

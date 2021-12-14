@@ -363,10 +363,6 @@ const BackgroundLayersControl = ({
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
 
-	console.log('bg');
-	console.log(layers);
-	console.log(layersHover);
-
 	allLayers.sort((a, b) => a.id - b.id);
 
 	const [selector, changeSelector] = useState(null);

@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Tooltip } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -18,6 +19,8 @@ import classnames from 'classnames';
 /**
  * Styles and icons
  */
+
+import './editor.scss';
 import { handlers } from '../../../../icons';
 
 const ColumnsHandlers = props => {
@@ -28,8 +31,13 @@ const ColumnsHandlers = props => {
 	const classes = classnames(
 		'toolbar-item',
 		'toolbar-item__button',
+		'toolbar-item__columns-handler',
 		className
 	);
+
+
+	const [isActive, setActive] = useState(false);
+
 
 	return (
 		<Tooltip
@@ -37,7 +45,14 @@ const ColumnsHandlers = props => {
 			position='bottom center'
 		>
 			<div>
-				<Button className={classes} onClick={toggleHandlers}>
+				<Button 
+				className={classes} 
+				onClick={() => {
+					toggleHandlers();
+					setActive(!isActive);
+				}}
+				aria-pressed={isActive}
+				>
 					<Icon className='toolbar-item__icon' icon={handlers} />
 				</Button>
 			</div>

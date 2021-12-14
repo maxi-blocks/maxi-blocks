@@ -49,6 +49,7 @@ const LayerCard = props => {
 		clientId,
 		breakpoint,
 		isHover,
+		active,
 	} = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
@@ -230,6 +231,7 @@ const LayerCard = props => {
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
+				active={active}
 			/>
 		),
 		image: (
@@ -360,6 +362,10 @@ const BackgroundLayersControl = ({
 	const layers = cloneDeep(layersOptions);
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
+
+	console.log('bg');
+	console.log(layers);
+	console.log(layersHover);
 
 	allLayers.sort((a, b) => a.id - b.id);
 

@@ -753,7 +753,9 @@ const TypographyControl = withFormatValue(props => {
 			<ResponsiveTabsControl
 				className='maxi-typography-control__text-options-tabs'
 				breakpoint={breakpoint}
-				active={getActiveAttributes(typography, 'typography')}
+				active={
+					!styleCards && getActiveAttributes(typography, 'typography')
+				}
 			>
 				<TextOptions
 					getValue={getValue}

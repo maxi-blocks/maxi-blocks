@@ -1,12 +1,21 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockStyle, openSidebarTab, addCustomCSS } from '../../utils';
+import {
+	getBlockStyle,
+	openSidebarTab,
+	addCustomCSS,
+	changeResponsive,
+} from '../../utils';
 
 describe('Custom-Css-Control', () => {
 	it('Checking the custom-css', async () => {
@@ -14,6 +23,45 @@ describe('Custom-Css-Control', () => {
 		await insertBlock('Group Maxi');
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
+
+	it('Checking the custom-css responsive', async () => {
+		await changeResponsive(page, 's');
+
+		// check base value in S responsive
+		const baseValue = await page.$$eval(
+			'.w-tc-editor textarea',
+			input => input[0].value
+		);
+
+		expect(baseValue).toStrictEqual('background: red');
+
+		// change S value
+		await page.$eval('.w-tc-editor textarea', input => input.focus());
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('background: blue');
+
+		// change xs responsive
+		await changeResponsive(page, 'xs');
+
+		const xsValue = await page.$$eval(
+			'.w-tc-editor textarea',
+			input => input[0].value
+		);
+
+		expect(xsValue).toStrictEqual('background: blue');
+
+		// change m responsive
+		await changeResponsive(page, 'm');
+
+		const mValue = await page.$$eval(
+			'.w-tc-editor textarea',
+			input => input[0].value
+		);
+
+		expect(mValue).toStrictEqual('background: red');
+	});
+
 	it('Checking the custom-css Validation', async () => {
 		const accordionPanel = await openSidebarTab(
 			page,

@@ -80,15 +80,34 @@ const getActiveAttributes = (attributes, type, props) => {
 
 			if (tab) response.push(tab);
 		});
-
-		console.log(`type: ${type}`);
-		console.log(uniq(response));
 	}
 
 	if (type === 'border') {
 		Object.keys(attributes).forEach(key => {
 			let tab;
-			if (key.includes('border-style-') && !!attributes[key])
+			if (
+				key.includes('border-style-') &&
+				!key.includes('hover') &&
+				!!attributes[key]
+			)
+				tab = 'Normal state';
+
+			if (key.includes('-status-hover') && !!attributes[key]) {
+				tab = 'Hover state';
+			}
+
+			if (tab) response.push(tab);
+		});
+	}
+
+	if (type === 'box-shadow') {
+		Object.keys(attributes).forEach(key => {
+			let tab;
+			if (
+				key.includes('box-shadow-blur') &&
+				!key.includes('hover') &&
+				!!attributes[key]
+			)
 				tab = 'Normal state';
 			if (key.includes('-status-hover') && !!attributes[key])
 				tab = 'Hover state';

@@ -85,6 +85,18 @@ const getActiveAttributes = (attributes, type, props) => {
 		console.log(uniq(response));
 	}
 
+	if (type === 'border') {
+		Object.keys(attributes).forEach(key => {
+			let tab;
+			if (key.includes('border-style-') && !!attributes[key])
+				tab = 'Normal state';
+			if (key.includes('-status-hover') && !!attributes[key])
+				tab = 'Hover state';
+
+			if (tab) response.push(tab);
+		});
+	}
+
 	return uniq(response);
 };
 

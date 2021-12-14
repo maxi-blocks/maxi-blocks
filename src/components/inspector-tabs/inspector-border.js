@@ -13,6 +13,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -40,6 +41,23 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
+				active={getActiveAttributes(
+					{
+						...getGroupAttributes(
+							attributes,
+							['border', 'borderWidth', 'borderRadius'],
+							false,
+							prefix
+						),
+						...getGroupAttributes(
+							attributes,
+							['border', 'borderWidth', 'borderRadius'],
+							true,
+							prefix
+						),
+					},
+					'border'
+				)}
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),

@@ -754,7 +754,8 @@ const TypographyControl = withFormatValue(props => {
 				className='maxi-typography-control__text-options-tabs'
 				breakpoint={breakpoint}
 				active={
-					!styleCards && getActiveAttributes(typography, 'typography')
+					!styleCards &&
+					getActiveAttributes(typography, 'breakpoints')
 				}
 			>
 				<TextOptions

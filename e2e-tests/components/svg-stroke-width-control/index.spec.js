@@ -43,9 +43,9 @@ describe('Svg stroke width control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('3.5');
+		await page.keyboard.type('3');
 
-		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3.5);
+		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
@@ -62,7 +62,7 @@ describe('Svg stroke width control', () => {
 			'.maxi-advanced-number-control input',
 			input => input[1].value
 		);
-		expect(baseStrokeValue).toStrictEqual('3.5');
+		expect(baseStrokeValue).toStrictEqual('3');
 
 		await accordionPanel.$$eval(
 			'.maxi-advanced-number-control input',
@@ -70,7 +70,7 @@ describe('Svg stroke width control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1.5');
+		await page.keyboard.type('1');
 
 		await changeResponsive(page, 'xs');
 
@@ -78,7 +78,7 @@ describe('Svg stroke width control', () => {
 			'.maxi-advanced-number-control input',
 			input => input[1].value
 		);
-		expect(sStrokeValue).toStrictEqual('1.5');
+		expect(sStrokeValue).toStrictEqual('1');
 
 		await changeResponsive(page, 'm');
 
@@ -86,6 +86,6 @@ describe('Svg stroke width control', () => {
 			'.maxi-advanced-number-control input',
 			input => input[1].value
 		);
-		expect(mStrokeValue).toStrictEqual('3.5');
+		expect(mStrokeValue).toStrictEqual('3');
 	});
 });

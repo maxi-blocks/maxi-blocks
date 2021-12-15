@@ -15,6 +15,8 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
+import getActiveAttributes from '../../extensions/active-indicators';
+
 /**
  * External dependencies
  */
@@ -172,13 +174,13 @@ const ColorLayerContent = props => {
 };
 
 const ColorLayer = props => {
-	const { breakpoint, active, ...rest } = props;
-
-	console.log('props in color layer');
-	console.log(props);
+	const { breakpoint, ...rest } = props;
 
 	return (
-		<ResponsiveTabsControl breakpoint={breakpoint} active={active}>
+		<ResponsiveTabsControl
+			breakpoint={breakpoint}
+			active={getActiveAttributes(props, 'background-breakpoints')}
+		>
 			<ColorLayerContent {...rest} />
 		</ResponsiveTabsControl>
 	);

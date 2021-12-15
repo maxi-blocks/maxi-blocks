@@ -26,8 +26,7 @@ const transform = ({ props }) => {
 				breakpoint={deviceType}
 				active={getActiveAttributes(
 					getGroupAttributes(attributes, 'transform'),
-					'transform',
-					props.attributes
+					'transform'
 				)}
 			/>
 		),

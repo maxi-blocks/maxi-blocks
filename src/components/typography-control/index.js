@@ -898,7 +898,7 @@ const TypographyControl = withFormatValue(props => {
 					isHover={isHover}
 					clientId={clientId}
 					getOpacityValue={getOpacityValue}
-					active={getActiveAttributes(typographyLink, 'link', props)}
+					active={getActiveAttributes(typographyLink, 'link')}
 				/>
 			)}
 		</div>

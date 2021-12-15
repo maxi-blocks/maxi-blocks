@@ -5,24 +5,60 @@ import { upperCase, uniq, isEmpty, remove, cloneDeep } from 'lodash';
 
 import { getDefaultAttribute } from '../styles';
 
-const getActiveAttributes = (attributes, type, props) => {
+const getActiveAttributes = (attributes, type) => {
 	const response = [];
 	const attr = cloneDeep(attributes);
+
 	Object.keys(attr).forEach(key => {
 		if (attr[key] === undefined) delete attr[key];
 	});
 
 	if (type === 'breakpoints') {
 		Object.keys(attr).forEach(key => {
-			const breakpoint = key?.split('-')?.pop();
-			breakpoint !== 'general' && response?.push(upperCase(breakpoint));
+			let breakpoint;
+			if (key.includes('-')) {
+				breakpoint = key?.split('-')?.pop();
+				breakpoint &&
+					breakpoint !== 'general' &&
+					response?.push(upperCase(breakpoint));
+			}
+		});
+	}
+
+	if (type === 'background-breakpoints') {
+		// console.log(attr);
+		const breakpoint = attr?.breakpoint;
+		Object.keys(attr?.colorOptions).forEach(key => {
+			const value = attr?.colorOptions?.[key];
+			console.log(`key: ${key}`);
+			console.log(`value: ${value}`);
+			const defaultValue = getDefaultAttribute(key);
+			console.log(`defaultValue: ${defaultValue}`);
+			key.includes('background') &&
+				value !== undefined &&
+				response?.push(upperCase(breakpoint));
+		});
+	}
+
+	if (type === 'typography') {
+		Object.keys(attr).forEach(key => {
+			let tab;
+			const value = attr[key];
+			const defaultValue = getDefaultAttribute(key);
+			if (key.includes('-hover') && !!value && value !== defaultValue)
+				tab = 'Hover state';
+			else if (value !== undefined && value !== defaultValue)
+				tab = 'Normal state';
+			else remove(tab, 'Normal state');
+
+			if (tab) response.push(tab);
 		});
 	}
 
 	if (type === 'link') {
 		Object.keys(attr).forEach(key => {
 			let tab;
-			const value = props[key];
+			const value = attr[key];
 			const defaultValue = getDefaultAttribute(key);
 			if (value !== undefined && value !== defaultValue) {
 				if (key.includes('active')) tab = 'active_link';
@@ -47,7 +83,7 @@ const getActiveAttributes = (attributes, type, props) => {
 	if (type === 'transform') {
 		Object.keys(attr)?.forEach(key => {
 			let tab;
-			const value = props[key];
+			const value = attr[key];
 			const defaultValue = getDefaultAttribute(key);
 			if (value !== undefined && value !== defaultValue) {
 				if (key.includes('scale')) tab = 'scale';
@@ -114,6 +150,10 @@ const getActiveAttributes = (attributes, type, props) => {
 			if (tab) response.push(tab);
 		});
 	}
+	console.log('========================');
+	console.log(type);
+	console.log(uniq(response));
+	console.log('========================');
 
 	return uniq(response);
 };

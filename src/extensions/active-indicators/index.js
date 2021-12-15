@@ -68,11 +68,11 @@ const getActiveAttributes = (attributes, type) => {
 	}
 
 	if (type === 'link') {
-		Object.keys(attr).forEach(key => {
+		Object.entries(attr).forEach(entry => {
 			let tab;
-			const value = attr[key];
+			const [key, value] = entry;
 			const defaultValue = getDefaultAttribute(key);
-			if (value !== undefined && value !== defaultValue) {
+			if (value !== defaultValue) {
 				if (key.includes('active')) tab = 'active_link';
 				else if (key.includes('hover')) tab = 'hover_link';
 				else if (key.includes('visited')) tab = 'visited_link';
@@ -93,9 +93,9 @@ const getActiveAttributes = (attributes, type) => {
 	}
 
 	if (type === 'transform') {
-		Object.keys(attr)?.forEach(key => {
+		Object.entries(attr)?.forEach(entry => {
 			let tab;
-			const value = attr[key];
+			const [key, value] = entry;
 			const defaultValue = getDefaultAttribute(key);
 			if (value && value !== defaultValue) {
 				if (key.includes('scale')) tab = 'scale';
@@ -172,9 +172,9 @@ const getActiveAttributes = (attributes, type) => {
 	}
 
 	if (type === 'image-parallax') {
-		Object.keys(attr).forEach(key => {
+		Object.entries(attr).forEach(entry => {
 			let tab;
-			const value = attr[key];
+			const [key, value] = entry;
 			const defaultValue = getDefaultAttribute(key);
 			if (
 				value &&
@@ -192,9 +192,9 @@ const getActiveAttributes = (attributes, type) => {
 	}
 
 	if (type === 'svg-position') {
-		Object.keys(attr).forEach(key => {
+		Object.entries(attr).forEach(entry => {
 			let tab;
-			const value = attr[key];
+			const [key, value] = entry;
 			const defaultValue = getDefaultAttribute(key);
 			if (value && value !== defaultValue) {
 				if (key.includes('position') && !key.includes('size'))
@@ -212,8 +212,8 @@ const getActiveAttributes = (attributes, type) => {
 		const svgData = Object.values(attr)[0];
 
 		!isEmpty(svgData) &&
-			Object.keys(svgData).forEach(key => {
-				const value = svgData[key];
+			Object.entries(svgData).forEach(entry => {
+				const [key, value] = entry;
 				if (
 					key.includes('color') &&
 					(typeof value === 'undefined' || !isEmpty(value)) // undefined is a component's bug for palette colors

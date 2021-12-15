@@ -12,12 +12,14 @@ import { isURL } from '@wordpress/url';
 import {
 	AccordionControl,
 	AdvancedNumberControl,
+	ColorControl,
 	FontLevelControl,
 	SelectControl,
 	SettingTabsControl,
 	TextControl,
 } from '../../components';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -29,6 +31,7 @@ import { selectorsText, categoriesText } from './custom-css';
  */
 import { isEmpty, isEqual, cloneDeep, capitalize } from 'lodash';
 import MaxiModal from '../../editor/library/modal';
+import { setSVGColor } from '../../extensions/svg';
 
 /**
  * Inspector
@@ -44,6 +47,9 @@ const listTab = props => {
 		listPosition,
 		listStyle,
 		listStyleCustom,
+		listSVGColor,
+		listSize,
+		listSizeUnit,
 	} = attributes;
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -149,6 +155,62 @@ const listTab = props => {
 							}
 						/>
 						<AdvancedNumberControl
+							label={__('Indent', 'maxi-blocks')}
+							className='maxi-image-inspector__list-indeng'
+							placeholder={getLastBreakpointAttribute(
+								'list-indent',
+								deviceType,
+								attributes
+							)}
+							value={attributes[`list-indent-${deviceType}`]}
+							onChangeValue={val =>
+								setAttributes({
+									[`list-indent-${deviceType}`]: val,
+								})
+							}
+							enableUnit
+							unit={getLastBreakpointAttribute(
+								'list-indent-unit',
+								deviceType,
+								attributes
+							)}
+							minMaxSettings={{
+								px: {
+									min: -999,
+									max: 999,
+								},
+								em: {
+									min: -99,
+									max: 99,
+								},
+								vw: {
+									min: -99,
+									max: 99,
+								},
+								'%': {
+									min: -100,
+									max: 100,
+								},
+							}}
+							onChangeUnit={val =>
+								setAttributes({
+									[`list-indent-unit-${deviceType}`]: val,
+								})
+							}
+							onReset={() => {
+								setAttributes({
+									[`list-indent-${deviceType}`]:
+										getDefaultAttribute(
+											`list-indent-${deviceType}`
+										),
+									[`list-indent-unit-${deviceType}`]:
+										getDefaultAttribute(
+											`list-indent-unit-${deviceType}`
+										),
+								});
+							}}
+						/>
+						<AdvancedNumberControl
 							label={__('List gap', 'maxi-blocks')}
 							className='maxi-image-inspector__list-gap'
 							placeholder={getLastBreakpointAttribute(
@@ -189,6 +251,63 @@ const listTab = props => {
 							onChangeUnit={val =>
 								setAttributes({
 									[`list-gap-unit-${deviceType}`]: val,
+								})
+							}
+							onReset={() => {
+								setAttributes({
+									[`list-gap-${deviceType}`]:
+										getDefaultAttribute(
+											`list-gap-${deviceType}`
+										),
+									[`list-gap-unit-${deviceType}`]:
+										getDefaultAttribute(
+											`list-gap-unit-${deviceType}`
+										),
+								});
+							}}
+						/>
+						<AdvancedNumberControl
+							label={__('Marker size', 'maxi-blocks')}
+							className='maxi-image-inspector__list-size'
+							value={listSize}
+							onChangeValue={val => {
+								setAttributes({
+									listSize:
+										val !== undefined && val !== ''
+											? val
+											: '',
+								});
+							}}
+							enableUnit
+							unit={listSizeUnit}
+							onChangeUnit={listSizeUnit =>
+								setAttributes({
+									listSizeUnit,
+								})
+							}
+							minMaxSettings={{
+								px: {
+									min: 0,
+									max: 999,
+								},
+								em: {
+									min: 0,
+									max: 99,
+								},
+								vw: {
+									min: 0,
+									max: 99,
+								},
+								'%': {
+									min: 0,
+									max: 999,
+								},
+							}}
+							onReset={() =>
+								setAttributes({
+									listSize: getDefaultAttribute('listSize'),
+									listSizeUnit:
+										getDefaultAttribute('listSizeUnit'),
 								})
 							}
 						/>
@@ -316,24 +435,51 @@ const listTab = props => {
 											/>
 										)}
 										{listStyleSource === 'icon' && (
-											<MaxiModal
-												type='image-shape'
-												style={
-													parentBlockStyle || 'light'
-												}
-												onSelect={obj =>
-													setAttributes({
-														listStyleCustom:
-															obj.SVGElement,
-													})
-												}
-												onRemove={() =>
-													setAttributes({
-														listStyleCustom: '',
-													})
-												}
-												icon={listStyleCustom}
-											/>
+											<>
+												<MaxiModal
+													type='image-shape'
+													style={
+														parentBlockStyle ||
+														'light'
+													}
+													onSelect={obj =>
+														setAttributes({
+															listStyleCustom:
+																obj.SVGElement,
+														})
+													}
+													onRemove={() =>
+														setAttributes({
+															listStyleCustom: '',
+														})
+													}
+													icon={listStyleCustom}
+												/>
+												{listStyleCustom?.includes(
+													'<svg '
+												) && (
+													<ColorControl
+														disablePalette
+														color={listSVGColor}
+														onChange={({
+															color,
+														}) => {
+															setAttributes({
+																listSVGColor:
+																	color,
+																listStyleCustom:
+																	setSVGColor(
+																		{
+																			svg: listStyleCustom,
+																			color,
+																			type: 'fill',
+																		}
+																	),
+															});
+														}}
+													/>
+												)}
+											</>
 										)}
 									</>
 								)}

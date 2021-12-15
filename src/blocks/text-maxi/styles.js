@@ -34,7 +34,7 @@ import { selectorsText } from './custom-css';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isNumber } from 'lodash';
 import { getSVGListStyle } from './utils';
 
 const getNormalObject = props => {
@@ -162,33 +162,34 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStyle, listPosition, listStyleCustom } = props;
+	const { listStyle, listPosition, listStyleCustom, typeOfList } = props;
 
 	const response = {
-		...(listStyle && {
-			listStyle: {
-				general: {
-					...((listStyle !== 'custom' || !listStyleCustom) && {
-						'list-style-type': listStyle,
-					}),
-					...(listStyle === 'custom' &&
-						listStyleCustom && {
-							...(isURL(listStyleCustom) && {
-								'list-style-image': `url('${listStyleCustom}')`,
-							}),
-							...(listStyleCustom.includes('</svg>') && {
-								'list-style-image': `url("data:image/svg+xml,${getSVGListStyle(
-									listStyleCustom
-								)}")`,
-							}),
-							...(!isURL(listStyleCustom) &&
-								!listStyleCustom.includes('</svg>') && {
-									'list-style-type': listStyleCustom,
-								}),
+		...(listStyle &&
+			typeOfList === 'ul' && {
+				listStyle: {
+					general: {
+						...((listStyle !== 'custom' || !listStyleCustom) && {
+							'list-style-type': listStyle,
 						}),
+						...(listStyle === 'custom' &&
+							listStyleCustom && {
+								...(isURL(listStyleCustom) && {
+									'list-style-image': `url('${listStyleCustom}')`,
+								}),
+								...(listStyleCustom.includes('</svg>') && {
+									'list-style-image': `url("data:image/svg+xml,${getSVGListStyle(
+										listStyleCustom
+									)}")`,
+								}),
+								...(!isURL(listStyleCustom) &&
+									!listStyleCustom.includes('</svg>') && {
+										'list-style-type': listStyleCustom,
+									}),
+							}),
+					},
 				},
-			},
-		}),
+			}),
 		...(listPosition && {
 			listPosition: {
 				general: {
@@ -197,24 +198,43 @@ const getListObject = props => {
 			},
 		}),
 		...(() => {
-			const response = { listGap: {} };
+			const response = { listGap: {}, textIndent: {} };
 
 			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
 				breakpoint => {
-					const num = getLastBreakpointAttribute(
+					// List gap
+					const gapNum = getLastBreakpointAttribute(
 						'list-gap',
 						breakpoint,
 						props
 					);
-					const unit = getLastBreakpointAttribute(
+					const gapUnit = getLastBreakpointAttribute(
 						'list-gap-unit',
 						breakpoint,
 						props
 					);
 
-					if (!isNil(num) && !isNil(unit)) {
+					if (!isNil(gapNum) && !isNil(gapUnit)) {
 						response.listGap[breakpoint] = {
-							'padding-left': num + unit,
+							'padding-left': gapNum + gapUnit,
+						};
+					}
+
+					// List indent
+					const indentNum = getLastBreakpointAttribute(
+						'list-indent',
+						breakpoint,
+						props
+					);
+					const indentUnit = getLastBreakpointAttribute(
+						'list-indent-unit',
+						breakpoint,
+						props
+					);
+
+					if (!isNil(indentNum) && !isNil(indentUnit)) {
+						response.textIndent[breakpoint] = {
+							'text-indent': indentNum + indentUnit,
 						};
 					}
 				}
@@ -225,6 +245,27 @@ const getListObject = props => {
 	};
 
 	return response;
+};
+
+const getMarkerObject = props => {
+	const { typeOfList, listSize, listSizeUnit, listStyle, listStyleCustom } =
+		props;
+
+	if (!isNumber(listSize)) return {};
+
+	return {
+		listSize: {
+			general: {
+				'font-size': `${listSize}${listSizeUnit ?? 'px'}`,
+				...((typeOfList === 'ol' ||
+					(listStyle === 'custom' &&
+						!listStyleCustom.includes('</svg>')) ||
+					listStyle !== 'custom') && {
+					'line-height': `${listSize}${listSizeUnit ?? 'px'}`,
+				}),
+			},
+		},
+	};
 };
 
 const getStyles = props => {
@@ -251,6 +292,8 @@ const getStyles = props => {
 						getTypographyObject(props),
 					[` ${element}.maxi-text-block__content li:hover`]:
 						getTypographyHoverObject(props),
+					[` ${element}.maxi-text-block__content li::marker`]:
+						getMarkerObject(props),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

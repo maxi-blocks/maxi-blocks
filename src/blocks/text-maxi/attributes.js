@@ -57,6 +57,15 @@ const attributes = {
 	listPosition: {
 		type: 'string',
 	},
+	listSVGColor: {
+		type: 'string',
+	},
+	listSize: {
+		type: 'number',
+	},
+	listSizeUnit: {
+		type: 'string',
+	},
 	// TODO: replace with future breakpointObjectCreator
 	// https://github.com/yeahcan/maxi-blocks/blob/b384ce2226e0181226817f5eda4723d1733a2f6a/src/extensions/styles/breakpointObjectCreator.js#L7
 	...(() => {
@@ -70,6 +79,13 @@ const attributes = {
 			response[`list-gap-unit-${breakpoint}`] = {
 				type: 'string',
 				...(breakpoint === 'general' && { default: 'em' }),
+			};
+			response[`list-indent-${breakpoint}`] = {
+				type: 'number',
+			};
+			response[`list-indent-unit-${breakpoint}`] = {
+				type: 'string',
+				...(breakpoint === 'general' && { default: 'px' }),
 			};
 		});
 

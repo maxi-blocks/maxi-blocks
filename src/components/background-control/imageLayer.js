@@ -782,6 +782,10 @@ const ImageLayer = props => {
 			)}
 			{!hideSettings && (
 				<SettingTabsControl
+					active={getActiveAttributes(
+						props.imageOptions,
+						'image-parallax'
+					)}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),

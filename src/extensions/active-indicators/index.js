@@ -175,6 +175,26 @@ const getActiveAttributes = (attributes, type) => {
 		if (tab) response.push(tab);
 	}
 
+	if (type === 'image-parallax') {
+		Object.keys(attr).forEach(key => {
+			let tab;
+			const value = attr[key];
+			const defaultValue = getDefaultAttribute(key);
+			if (
+				value &&
+				key.includes('background') &&
+				!key.includes('parallax') &&
+				value !== defaultValue
+			)
+				tab = 'Settings';
+
+			if (key === 'background-image-parallax-status' && value)
+				tab = 'Parallax';
+
+			if (tab) response.push(tab);
+		});
+	}
+
 	return uniq(response);
 };
 

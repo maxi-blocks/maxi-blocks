@@ -211,6 +211,24 @@ const getActiveAttributes = (attributes, type) => {
 		});
 	}
 
+	if (type === 'svg-fill') {
+		let tab;
+		const svgData = Object.values(attr)[0];
+
+		!isEmpty(svgData) &&
+			Object.keys(svgData).forEach(key => {
+				const value = svgData[key];
+				if (
+					key.includes('color') &&
+					(typeof value === 'undefined' || !isEmpty(value)) // undefined is a components bug for palette colors
+				)
+					tab = 'Colour';
+				if (key.includes('image') && !isEmpty(value)) tab = 'Image';
+
+				if (tab) response.push(tab);
+			});
+	}
+
 	return uniq(response);
 };
 

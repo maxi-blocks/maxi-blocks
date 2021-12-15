@@ -22,6 +22,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { ResponsiveTabsControl } from '..';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -146,6 +147,7 @@ const SVGFillControl = props => {
 	const getFillItem = ([id, value]) => {
 		return (
 			<SettingTabsControl
+				active={getActiveAttributes(SVGData, 'svg-fill')}
 				disablePadding
 				callback={(item, i) => {
 					const isColorSelected = i === 0;

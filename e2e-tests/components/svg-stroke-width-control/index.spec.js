@@ -43,7 +43,7 @@ describe('Svg stroke width control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('3,5');
+		await page.keyboard.type('3.5');
 
 		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3.5);
 

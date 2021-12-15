@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { upperCase, uniq, isEmpty, remove, cloneDeep } from 'lodash';
+import { upperCase, uniq, isEmpty, remove, cloneDeep, isEqual } from 'lodash';
 
 import { getDefaultAttribute } from '../styles';
 
@@ -143,6 +143,25 @@ const getActiveAttributes = (attributes, type) => {
 			)
 				tab = 'Normal state';
 			if (key.includes('-status-hover') && !!attr[key])
+				tab = 'Hover state';
+
+			if (tab) response.push(tab);
+		});
+	}
+
+	if (type === 'background') {
+		Object.keys(attr).forEach(key => {
+			let tab;
+			const layers = cloneDeep(attr[key]);
+			const defaultLayers = getDefaultAttribute(key);
+			if (
+				key.includes('background-layers') &&
+				!isEmpty(layers) &&
+				!isEqual(layers, defaultLayers)
+			)
+				tab = 'Normal state';
+
+			if (key.includes('background-hover-status') && !!attr[key])
 				tab = 'Hover state';
 
 			if (tab) response.push(tab);

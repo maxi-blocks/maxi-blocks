@@ -279,7 +279,7 @@ const ScrollEffectsControl = props => {
 										options={easingOptions}
 									/>
 									<AdvancedNumberControl
-										label={__('Speed', 'maxi-blocks')}
+										label={__('Speed (ms)', 'maxi-blocks')}
 										value={getLastBreakpointAttribute(
 											`scroll-${type}-speed`,
 											breakpoint,
@@ -310,7 +310,7 @@ const ScrollEffectsControl = props => {
 										)}
 									/>
 									<AdvancedNumberControl
-										label={__('Delay', 'maxi-blocks')}
+										label={__('Delay (ms)', 'maxi-blocks')}
 										value={getLastBreakpointAttribute(
 											`scroll-${type}-delay`,
 											breakpoint,

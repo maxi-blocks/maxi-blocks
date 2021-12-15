@@ -46,37 +46,37 @@ const ScrollEffectsUniqueControl = props => {
 		const response = {};
 		switch (type) {
 			case 'vertical':
-				response.label = `${label} position`;
+				response.label = `${label} position (px)`;
 				response.attr = `offset-${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;
 			case 'horizontal':
-				response.label = `${label} position`;
+				response.label = `${label} position (px)`;
 				response.attr = `offset-${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;
 			case 'rotate':
-				response.label = `${label} angle`;
+				response.label = `${label} angle (degrees)`;
 				response.attr = `rotate-${labelLowCase}`;
 				response.min = 0;
 				response.max = 360;
 				break;
 			case 'scale':
-				response.label = `${label} scale`;
+				response.label = `${label} scale (%)`;
 				response.attr = `scale-${labelLowCase}`;
 				response.min = 0;
 				response.max = 1000;
 				break;
 			case 'fade':
-				response.label = `${label} opacity`;
+				response.label = `${label} opacity (%)`;
 				response.attr = `opacity-${labelLowCase}`;
 				response.min = 0;
 				response.max = 100;
 				break;
 			case 'blur':
-				response.label = `${label} blur`;
+				response.label = `${label} blur (px)`;
 				response.attr = `blur-${labelLowCase}`;
 				response.min = 0;
 				response.max = 20;

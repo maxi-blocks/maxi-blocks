@@ -794,7 +794,7 @@ const ImageLayer = props => {
 									breakpoint={breakpoint}
 									active={getActiveAttributes(
 										props.imageOptions,
-										'background-breakpoints'
+										'breakpoints'
 									)}
 								>
 									<ImageLayerSettings

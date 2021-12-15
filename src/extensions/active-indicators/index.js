@@ -18,23 +18,14 @@ const getActiveAttributes = (attributes, type) => {
 	if (type === 'breakpoints') {
 		Object.keys(attr).forEach(key => {
 			let breakpoint;
+			const value = attr?.[key];
+			const defaultValue = getDefaultAttribute(key);
 			if (key.includes('-')) {
 				breakpoint = key?.split('-')?.pop();
 				breakpoints.includes(upperCase(breakpoint)) &&
+					value !== defaultValue &&
 					response?.push(upperCase(breakpoint));
 			}
-		});
-	}
-
-	if (type === 'background-breakpoints') {
-		Object.keys(attr).forEach(key => {
-			const value = attr?.[key];
-			const defaultValue = getDefaultAttribute(key);
-			const breakpoint = key?.split('-')?.pop();
-
-			breakpoints.includes(upperCase(breakpoint)) &&
-				value !== defaultValue &&
-				response?.push(upperCase(breakpoint));
 		});
 	}
 
@@ -43,10 +34,9 @@ const getActiveAttributes = (attributes, type) => {
 			let tab;
 			const value = attr[key];
 			const defaultValue = getDefaultAttribute(key);
-			if (key.includes('-hover') && !!value && value !== defaultValue)
+			if (key.includes('-hover') && value !== defaultValue)
 				tab = 'Hover state';
-			else if (value !== undefined && value !== defaultValue)
-				tab = 'Normal state';
+			else if (value !== defaultValue) tab = 'Normal state';
 			else remove(tab, 'Normal state');
 
 			if (tab) response.push(tab);
@@ -83,7 +73,7 @@ const getActiveAttributes = (attributes, type) => {
 			let tab;
 			const value = attr[key];
 			const defaultValue = getDefaultAttribute(key);
-			if (value !== undefined && value !== defaultValue) {
+			if (value && value !== defaultValue) {
 				if (key.includes('scale')) tab = 'scale';
 				else if (key.includes('rotate')) tab = 'rotate';
 				else if (key.includes('translate')) tab = 'translate';
@@ -115,35 +105,17 @@ const getActiveAttributes = (attributes, type) => {
 		});
 	}
 
-	if (type === 'border') {
+	if (type === 'border' || type === 'box-shadow') {
 		Object.keys(attr).forEach(key => {
 			let tab;
-			if (
-				key.includes('border-style-') &&
-				!key.includes('hover') &&
-				!!attr[key]
-			)
+			const check =
+				type === 'border' ? 'border-style-' : 'box-shadow-blur';
+			if (key.includes(check) && !key.includes('hover') && !!attr[key])
 				tab = 'Normal state';
 
 			if (key.includes('-status-hover') && !!attr[key]) {
 				tab = 'Hover state';
 			}
-
-			if (tab) response.push(tab);
-		});
-	}
-
-	if (type === 'box-shadow') {
-		Object.keys(attr).forEach(key => {
-			let tab;
-			if (
-				key.includes('box-shadow-blur') &&
-				!key.includes('hover') &&
-				!!attr[key]
-			)
-				tab = 'Normal state';
-			if (key.includes('-status-hover') && !!attr[key])
-				tab = 'Hover state';
 
 			if (tab) response.push(tab);
 		});
@@ -220,7 +192,7 @@ const getActiveAttributes = (attributes, type) => {
 				const value = svgData[key];
 				if (
 					key.includes('color') &&
-					(typeof value === 'undefined' || !isEmpty(value)) // undefined is a components bug for palette colors
+					(typeof value === 'undefined' || !isEmpty(value)) // undefined is a component's bug for palette colors
 				)
 					tab = 'Colour';
 				if (key.includes('image') && !isEmpty(value)) tab = 'Image';

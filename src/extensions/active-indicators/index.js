@@ -68,18 +68,20 @@ const getActiveAttributes = (attributes, type) => {
 	}
 
 	if (type === 'link') {
-		Object.entries(attr).forEach(entry => {
-			let tab;
-			const [key, value] = entry;
-			const defaultValue = getDefaultAttribute(key);
-			if (value !== defaultValue) {
-				if (key.includes('active')) tab = 'active_link';
-				else if (key.includes('hover')) tab = 'hover_link';
-				else if (key.includes('visited')) tab = 'visited_link';
-				else tab = 'normal_link';
-			}
+		Object.keys(attr).forEach(key => {
+			if (key.includes('link-')) {
+				let tab;
+				const value = attr[key];
+				const defaultValue = getDefaultAttribute(key);
+				if (value !== defaultValue) {
+					if (key.includes('active')) tab = 'active_link';
+					else if (key.includes('hover')) tab = 'hover_link';
+					else if (key.includes('visited')) tab = 'visited_link';
+					else tab = 'normal_link';
+				}
 
-			if (tab) response.push(tab);
+				if (tab) response.push(tab);
+			}
 		});
 	}
 

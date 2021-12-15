@@ -24,6 +24,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -785,7 +786,13 @@ const ImageLayer = props => {
 						{
 							label: __('Settings', 'maxi-blocks'),
 							content: (
-								<ResponsiveTabsControl breakpoint={breakpoint}>
+								<ResponsiveTabsControl
+									breakpoint={breakpoint}
+									active={getActiveAttributes(
+										props.imageOptions,
+										'background-breakpoints'
+									)}
+								>
 									<ImageLayerSettings
 										getDefaultAttr={getDefaultAttr}
 										moreSettings={moreSettings}

@@ -13,29 +13,27 @@ const getActiveAttributes = (attributes, type) => {
 		if (attr[key] === undefined) delete attr[key];
 	});
 
+	const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
+
 	if (type === 'breakpoints') {
 		Object.keys(attr).forEach(key => {
 			let breakpoint;
 			if (key.includes('-')) {
 				breakpoint = key?.split('-')?.pop();
-				breakpoint &&
-					breakpoint !== 'general' &&
+				breakpoints.includes(upperCase(breakpoint)) &&
 					response?.push(upperCase(breakpoint));
 			}
 		});
 	}
 
 	if (type === 'background-breakpoints') {
-		// console.log(attr);
-		const breakpoint = attr?.breakpoint;
-		Object.keys(attr?.colorOptions).forEach(key => {
-			const value = attr?.colorOptions?.[key];
-			console.log(`key: ${key}`);
-			console.log(`value: ${value}`);
+		Object.keys(attr).forEach(key => {
+			const value = attr?.[key];
 			const defaultValue = getDefaultAttribute(key);
-			console.log(`defaultValue: ${defaultValue}`);
-			key.includes('background') &&
-				value !== undefined &&
+			const breakpoint = key?.split('-')?.pop();
+
+			breakpoints.includes(upperCase(breakpoint)) &&
+				value !== defaultValue &&
 				response?.push(upperCase(breakpoint));
 		});
 	}
@@ -150,10 +148,6 @@ const getActiveAttributes = (attributes, type) => {
 			if (tab) response.push(tab);
 		});
 	}
-	console.log('========================');
-	console.log(type);
-	console.log(uniq(response));
-	console.log('========================');
 
 	return uniq(response);
 };

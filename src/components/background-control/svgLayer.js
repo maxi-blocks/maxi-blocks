@@ -18,6 +18,7 @@ import {
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
 import { getDefaultLayerAttr } from './utils';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -241,7 +242,13 @@ const SVGLayer = props => {
 							breakpoint={breakpoint}
 						/>
 					)}
-					<ResponsiveTabsControl breakpoint={breakpoint}>
+					<ResponsiveTabsControl
+						breakpoint={breakpoint}
+						active={getActiveAttributes(
+							SVGOptions,
+							'background-breakpoints'
+						)}
+					>
 						<SVGLayerContent
 							SVGOptions={SVGOptions}
 							onChange={onChange}

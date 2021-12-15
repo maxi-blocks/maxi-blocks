@@ -61,6 +61,7 @@ import {
 	cloudTopOpacity,
 	cloudBottomOpacity,
 } from '../../icons';
+import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -210,6 +211,7 @@ const ShapeDividerControl = props => {
 	return (
 		<div className='maxi-shapedividercontrol'>
 			<SettingTabsControl
+				active={getActiveAttributes(props, 'shape-divider')}
 				items={[
 					{
 						label: __('Top shape divider', 'maxi-blocks'),

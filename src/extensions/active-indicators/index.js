@@ -17,8 +17,8 @@ const getActiveAttributes = (attributes, type) => {
 
 	if (type === 'global') {
 		Object.entries(attr).forEach(entry => {
-			let tabLabel;
 			const [tab, attributes] = entry;
+			let tabLabel;
 			Object.entries(attributes).forEach(attribute => {
 				const [key, value] = attribute;
 				const defaultValue = getDefaultAttribute(key);
@@ -38,9 +38,12 @@ const getActiveAttributes = (attributes, type) => {
 	if (type === 'breakpoints') {
 		Object.keys(attr).forEach(key => {
 			let breakpoint;
-			const value = attr?.[key];
-			const defaultValue = getDefaultAttribute(key);
+			let value;
+			let defaultValue;
+
 			if (key.includes('-')) {
+				value = attr?.[key];
+				defaultValue = getDefaultAttribute(key);
 				breakpoint = key?.split('-')?.pop();
 				breakpoints.includes(upperCase(breakpoint)) &&
 					value !== defaultValue &&
@@ -50,14 +53,15 @@ const getActiveAttributes = (attributes, type) => {
 	}
 
 	if (type === 'typography') {
-		Object.keys(attr).forEach(key => {
-			let tab;
-			const value = attr[key];
+		Object.entries(attr).forEach(entry => {
+			const [key, value] = entry;
 			const defaultValue = getDefaultAttribute(key);
-			if (key.includes('-hover') && value !== defaultValue)
-				tab = 'Hover state';
-			else if (value !== defaultValue) tab = 'Normal state';
-			else remove(tab, 'Normal state');
+			let tab;
+
+			if (value !== defaultValue) {
+				if (key.includes('-status-hover')) tab = 'Hover state';
+				else tab = 'Normal state';
+			}
 
 			if (tab) response.push(tab);
 		});

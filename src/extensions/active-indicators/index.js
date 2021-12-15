@@ -15,6 +15,26 @@ const getActiveAttributes = (attributes, type) => {
 
 	const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
 
+	if (type === 'global') {
+		Object.entries(attr).forEach(entry => {
+			let tabLabel;
+			const [tab, attributes] = entry;
+			Object.entries(attributes).forEach(attribute => {
+				const [key, value] = attribute;
+				const defaultValue = getDefaultAttribute(key);
+				if (typeof value === 'object' && !isEmpty(value)) {
+					tabLabel = tab;
+				} else if (
+					typeof value !== 'object' &&
+					value !== defaultValue
+				) {
+					tabLabel = tab;
+				}
+			});
+			if (tabLabel) response.push(tabLabel);
+		});
+	}
+
 	if (type === 'breakpoints') {
 		Object.keys(attr).forEach(key => {
 			let breakpoint;

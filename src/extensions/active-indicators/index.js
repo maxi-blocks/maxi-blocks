@@ -195,6 +195,22 @@ const getActiveAttributes = (attributes, type) => {
 		});
 	}
 
+	if (type === 'svg-position') {
+		Object.keys(attr).forEach(key => {
+			let tab;
+			const value = attr[key];
+			const defaultValue = getDefaultAttribute(key);
+			if (value && value !== defaultValue) {
+				if (key.includes('position') && !key.includes('size'))
+					tab = 'Position';
+				if (!key.includes('position') && key.includes('size'))
+					tab = 'Size';
+			}
+
+			if (tab) response.push(tab);
+		});
+	}
+
 	return uniq(response);
 };
 

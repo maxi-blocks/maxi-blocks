@@ -36,3 +36,9 @@ body.maxi-blocks--active .maxi-block {
 body.maxi-blocks--active .maxi-block[data-align="full"] {
 	width: auto;
 }
+
+/*Fixes button hover border and underline for Twenty Twenty One & Twenty Twenty*/
+body.maxi-blocks--active .maxi-button-block__button {
+	border: none;
+	text-decoration: none;
+}

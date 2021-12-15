@@ -7,8 +7,10 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import Button from '../button';
+import ButtonGroupControl from '../button-group-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
@@ -21,7 +23,15 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber, replace } from 'lodash';
+import {
+	isEmpty,
+	capitalize,
+	isNumber,
+	replace,
+	round,
+	isNil,
+	isNaN,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -36,7 +46,6 @@ import {
 	paddingSyncDirection as paddingSyncDirectionIcon,
 	reset,
 } from '../../icons';
-import { ButtonGroupControl, AdvancedNumberControl } from '..';
 
 /**
  * Component
@@ -82,6 +91,7 @@ const AxisInput = props => {
 			disableReset
 			min={minMaxSettings[currentUnit].min || 0}
 			max={minMaxSettings[currentUnit].max || 999}
+			step={minMaxSettings[currentUnit].step || 1}
 		/>
 	);
 };
@@ -236,6 +246,8 @@ const AxisControlContent = props => {
 		getKey,
 		isGeneral,
 		onChangeSync,
+		minMaxSettings,
+		inputsArray,
 	} = props;
 
 	const sync = getLastBreakpointAttribute(
@@ -269,6 +281,47 @@ const AxisControlContent = props => {
 		}
 	};
 
+	const onChangeUnit = val => {
+		const response = {};
+
+		inputsArray.forEach(input => {
+			if (
+				input.includes('top') ||
+				input.includes('left') ||
+				input.includes('bottom') ||
+				input.includes('right')
+			) {
+				const key = getAttributeKey(
+					getKey(input),
+					isHover,
+					false,
+					breakpoint
+				);
+				const value = getLastBreakpointAttribute(
+					getKey(input),
+					breakpoint,
+					props,
+					isHover
+				);
+
+				if (!isNil(value) && !isNaN(value))
+					response[key] = round(
+						value,
+						minMaxSettings[currentUnit].step / 0.5
+					);
+			}
+		});
+
+		onChange({
+			[getAttributeKey(getKey('unit'), isHover, false, breakpoint)]: val,
+			...(isGeneral && {
+				[getAttributeKey(getKey('unit'), isHover, false, 'general')]:
+					val,
+			}),
+			...response,
+		});
+	};
+
 	return (
 		<>
 			<BaseControl
@@ -281,24 +334,7 @@ const AxisControlContent = props => {
 					label={__('Unit', 'maxi-blocks')}
 					options={getOptions()}
 					value={currentUnit}
-					onChange={val =>
-						onChange({
-							[getAttributeKey(
-								getKey('unit'),
-								isHover,
-								false,
-								breakpoint
-							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									getKey('unit'),
-									isHover,
-									false,
-									'general'
-								)]: val,
-							}),
-						})
-					}
+					onChange={onChangeUnit}
 				/>
 				<Button
 					className='components-maxi-control__reset-button'
@@ -364,18 +400,22 @@ const AxisControl = props => {
 			px: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 1,
 			},
 			em: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 0.1,
 			},
 			vw: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 0.1,
 			},
 			'%': {
 				min: 0,
 				max: 999,
+				step: 0.1,
 			},
 		},
 		auxTarget = false,

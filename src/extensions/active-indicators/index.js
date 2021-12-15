@@ -168,6 +168,13 @@ const getActiveAttributes = (attributes, type) => {
 		});
 	}
 
+	if (type === 'shape-divider') {
+		let tab;
+		if (attr['shape-divider-top-status']) tab = 'Top shape divider';
+		if (attr['shape-divider-bottom-status']) tab = 'Bottom shape divider';
+		if (tab) response.push(tab);
+	}
+
 	return uniq(response);
 };
 

@@ -245,10 +245,7 @@ const SVGLayer = props => {
 					)}
 					<ResponsiveTabsControl
 						breakpoint={breakpoint}
-						active={getActiveAttributes(
-							SVGOptions,
-							'background-breakpoints'
-						)}
+						active={getActiveAttributes(SVGOptions, 'breakpoints')}
 					>
 						<SVGLayerContent
 							SVGOptions={SVGOptions}

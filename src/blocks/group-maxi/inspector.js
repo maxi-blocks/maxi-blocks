@@ -11,7 +11,6 @@ import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsGroup, categoriesGroup } from './custom-css';
 
-
 /**
  * Inspector
  */
@@ -82,7 +81,7 @@ const Inspector = props => {
 										selectors: selectorsGroup,
 										categories: categoriesGroup,
 									}),
-									...inspectorTabs.motion({
+									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({

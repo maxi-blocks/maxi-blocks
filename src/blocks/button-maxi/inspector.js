@@ -651,7 +651,7 @@ const Inspector = memo(
 											selectors: selectorsButton,
 											categories: getCategoriesCss(),
 										}),
-										...inspectorTabs.motion({
+										...inspectorTabs.scrollEffects({
 											props,
 										}),
 										...inspectorTabs.transform({

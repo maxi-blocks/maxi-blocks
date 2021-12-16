@@ -16,9 +16,7 @@ import {
 	Toolbar,
 	InnerBlocks,
 } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -73,8 +71,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
-				{...getMaxiBlockBlockAttributes(this.props)}
-				disableMotion
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider

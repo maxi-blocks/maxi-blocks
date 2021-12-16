@@ -18,9 +18,8 @@ import './editor.scss';
  */
 const MaxiBreadcrumbs = () => {
 	const { originalNestedBlocks } = useSelect(select => {
-		const { getSelectedBlockClientId, getBlockParents } = select(
-			'core/block-editor'
-		);
+		const { getSelectedBlockClientId, getBlockParents } =
+			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
 		const originalNestedBlocks = clientId ? getBlockParents(clientId) : [];
 		if (!originalNestedBlocks.includes(clientId))
@@ -37,13 +36,11 @@ const MaxiBreadcrumbs = () => {
 	return (
 		<ul className='maxi-breadcrumbs'>
 			{originalNestedBlocks.map(blockId => {
-				const blockName = select('core/block-editor').getBlockName(
-					blockId
-				);
+				const blockName =
+					select('core/block-editor').getBlockName(blockId);
 				if (!isNil(blockName)) {
-					const blockType = select('core/blocks').getBlockType(
-						blockName
-					);
+					const blockType =
+						select('core/blocks').getBlockType(blockName);
 					const { title } = blockType;
 
 					return (

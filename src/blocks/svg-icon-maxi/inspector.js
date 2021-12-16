@@ -366,7 +366,7 @@ const Inspector = props => {
 											selectors: selectorsSvgIcon,
 											categories: getCategoriesCss(),
 										}),
-										...inspectorTabs.motion({
+										...inspectorTabs.scrollEffects({
 											props,
 										}),
 										...inspectorTabs.transform({

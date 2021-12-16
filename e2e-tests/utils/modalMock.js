@@ -128,7 +128,7 @@ const modalMock = async (
 		clientId,
 		response
 	);
-	await page.waitForTimeout(100);
+	await page.waitForTimeout(200);
 };
 
 export default modalMock;

@@ -8,9 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -64,7 +62,7 @@ const save = props => {
 		<MaxiBlock
 			tagName='figure'
 			className={fullWidth === 'full' && 'alignfull'}
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
 			{captionType !== 'none' &&

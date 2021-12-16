@@ -252,7 +252,7 @@ const Inspector = memo(
 												selectors: selectorsText,
 												categories: categoriesText,
 											}),
-											...inspectorTabs.motion({
+											...inspectorTabs.scrollEffects({
 												props,
 											}),
 											...inspectorTabs.transform({

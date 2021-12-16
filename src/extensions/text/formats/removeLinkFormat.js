@@ -44,7 +44,7 @@ const removeLinkFormat = ({
 		formatName: 'maxi-blocks/text-link',
 		formatClassName: null,
 		formatAttributes: attributes,
-	});
+	}) || [];
 	if (start === end)
 		[newStart, newEnd] = [linkPositionStart, linkPositionEnd] || [
 			0,

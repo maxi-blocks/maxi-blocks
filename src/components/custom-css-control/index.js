@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 /**
  * External dependencies
  */
@@ -28,6 +29,8 @@ import './editor.scss';
 const CustomCssControl = props => {
 	const { breakpoint, categories, category, selectors, value, onChange } =
 		props;
+
+	const [notValidCode, setNotValidCode] = useState({});
 
 	const getOptions = () => {
 		const options = [
@@ -88,15 +91,25 @@ const CustomCssControl = props => {
 		const labelForCss = label.replaceAll(' ', '_');
 		const id = `maxi-additional__css-error-text__${labelForCss}`;
 
-		const onChangeCssCode = code => {
+		const onChangeCssCode = (code, valid = true) => {
 			const newCustomCss = !isEmpty(value) ? cloneDeep(value) : {};
+
+			if (!valid) setNotValidCode(cloneDeep(newCustomCss));
+			else {
+				delete notValidCode?.[category]?.[index];
+				if (isEmpty(notValidCode[category]))
+					delete notValidCode[category];
+
+				setNotValidCode(notValidCode);
+			}
+
 			if (!isEmpty(code)) {
 				if (isEmpty(newCustomCss[category]))
 					newCustomCss[category] = {};
 
 				newCustomCss[category][index] = code;
 			} else {
-				delete newCustomCss[category][index];
+				delete newCustomCss?.[category]?.[index];
 				if (isEmpty(newCustomCss[category]))
 					delete newCustomCss[category];
 			}
@@ -106,16 +119,13 @@ const CustomCssControl = props => {
 
 		async function validateCss(code) {
 			const messageDiv = document.getElementById(id);
-			console.log(`category: ${category}`);
-			console.log(`index: ${index}`);
-			console.log(`value: ${JSON.stringify(value)}`);
 			if (!isEmpty(code)) {
 				const validMessage = await validateCSS(code);
 				if (typeof validMessage === 'string' && messageDiv) {
 					messageDiv.innerHTML = validMessage;
 					messageDiv.classList.remove('valid');
 					messageDiv.classList.add('not-valid');
-					onChangeCssCode('');
+					onChangeCssCode('', false);
 				} else if (messageDiv) {
 					messageDiv.innerHTML = __('Valid', 'maxi-blocks');
 					messageDiv.classList.remove('not-valid');
@@ -127,6 +137,13 @@ const CustomCssControl = props => {
 				messageDiv.classList.remove('valid');
 			}
 		}
+
+		const getValue = () => {
+			const notValidValue = notValidCode?.[category]?.[index];
+			const validValue = value?.[category]?.[index];
+
+			return !isEmpty(notValidValue) ? notValidValue : validValue;
+		};
 
 		return (
 			<BaseControl
@@ -154,7 +171,7 @@ const CustomCssControl = props => {
 				)}
 				<CodeEditor
 					language='css'
-					value={value?.[category]?.[index]}
+					value={getValue()}
 					onChange={textarea =>
 						onChangeCssCode(textarea?.target?.value)
 					}

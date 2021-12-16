@@ -11,9 +11,7 @@ import { withSelect } from '@wordpress/data';
 import Inspector from './inspector';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { defaultMarkers } from './defaultMarkers';
@@ -124,7 +122,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				className='maxi-map-block'
 				blockFullWidth={blockFullWidth}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				{apiKey ? (
 					<div

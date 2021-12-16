@@ -57,10 +57,10 @@ const Link = props => {
 					value={linkSettings}
 					onChange={value => onChange(value)}
 					settings={[
-						{
-							id: 'opensInNewTab',
-							title: __('Open in new tab', 'maxi-blocks'),
-						},
+						// {
+						// 	id: 'opensInNewTab',
+						// 	title: __('Open in new tab', 'maxi-blocks'),
+						// },
 						{
 							id: 'noFollow',
 							title: __('"nofollow"', 'maxi-blocks'),

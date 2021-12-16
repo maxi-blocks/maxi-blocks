@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
-// import ButtonGroupControl from '../../../button-group-control';
 import ToggleSwitch from '../../../toggle-switch';
 import ToolbarPopover from '../toolbar-popover';
 import {
@@ -55,15 +54,7 @@ const BLOCKS_MAX_WIDTH = [
  * Size
  */
 const Size = props => {
-	const {
-		blockName,
-		breakpoint,
-		fullWidth,
-		// blockFullWidth,
-		isFirstOnHierarchy,
-		onChange,
-		// setAttributes,
-	} = props;
+	const { blockName, breakpoint, isFirstOnHierarchy, onChange } = props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 
@@ -75,9 +66,9 @@ const Size = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__size'
-			tooltip={__('Size (full width)', 'maxi-blocks')}
+			tooltip={__('Size', 'maxi-blocks')}
 			icon={toolbarSizing}
-			advancedOptions='width height'
+			advancedOptions='height width'
 		>
 			<div className='toolbar-item__size__popover'>
 				{(isFirstOnHierarchy ||
@@ -85,11 +76,11 @@ const Size = props => {
 					<div>
 						<ToggleSwitch
 							label={__('Enable full width', 'maxi-blocks')}
-							selected={fullWidth === 'full'}
+							selected={props[attrLabel] === 'full'}
 							onChange={val => {
 								// onChange(val ? 'full' : 'normal');
 								const full = val ? 'full' : 'normal';
-								onChange({ fullWidth: full });
+								onChange({ [attrLabel]: full });
 							}}
 						/>
 					</div>

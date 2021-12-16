@@ -29,7 +29,7 @@ const InsertBefore = props => {
 	)
 		return null;
 
-	const { insertBlock } = useDispatch('core/block-editor');
+	const { InsertBefore } = useDispatch('core/block-editor');
 
 	return (
 		<Tooltip
@@ -37,7 +37,7 @@ const InsertBefore = props => {
 			position='bottom center'
 		>
 			<div className='toolbar-item toolbar-item__delete'>
-				<Button onClick={() => insertBlock(clientId)}>
+				<Button onClick={() => InsertBefore(clientId)}>
 					{__('Insert before', 'maxi-blocks')}
 					<span>Ctrl+Alt+T</span>
 				</Button>

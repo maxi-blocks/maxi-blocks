@@ -91,13 +91,100 @@
 			color: #5f6063;
 		}
 	}
-	.block-editor-link-control__search-submit {
-		svg {
-			fill: #5f6063 !important;
+	.block-editor-link-control {
+		&__search-submit {
+			background-color: #e5f2f8;
+			width: auto;
+			float: right;
+			font-weight: 700;
+			color: #007cba;
+			height: 26px;
+			padding: 0px 12px;
+			box-shadow: none !important;
+			svg {
+				display: none;
+			}
+			&::before {
+				content: 'Search';
+				display: block;
+			}
+		}
+		&__settings {
+			border-top: 0;
+			padding: 0 18px 15px 18px;
+		}
+
+		&__search-input-wrapper {
+			input {
+				margin: 0 !important;
+				width: 100% !important;
+				border-color: #dbdde6 !important;
+				border-radius: 0 !important;
+				min-height: 0;
+				height: 28px;
+				font-weight: 400;
+				padding: 8px !important;
+				box-shadow: none !important;
+				color: #141516 !important;
+				border-width: 1px !important;
+			}
+		}
+		&__search-actions {
+			position: absolute;
+			top: 2px;
+			right: 2px;
+		}
+		&__settings {
+			padding: 0 !important;
+			margin: 8px 0 8px;
+			display: flex;
+			justify-content: space-between;
+			.components-base-control {
+				margin-bottom: 0;
+			}
+		}
+		&__search-item {
+			background-color: #eaf2f6 !important;
+			border: 1px solid #dbdde6;
+			border-radius: 0;
+			padding: 8px;
+			&-action {
+				background-color: #ff4a17;
+				box-shadow: none !important;
+				padding: 4px 17px;
+				height: 24px;
+				border-radius: 0;
+				&:hover {
+					background-color: #fff;
+					color: #ff4a17;
+				}
+			}
+		}
+		&__search-results-wrapper {
+			margin-top: 0;
+		}
+		&__search-results {
+			padding: 8px 0 0px;
+		}
+		&__search-item {
+			margin-bottom: 0;
+		}
+		&__search-item-type {
+			background-color: #ff4a17;
+			padding: 4px 17px;
+			height: 24px;
+			border-radius: 0;
+		}
+		&__search-item-icon {
+			fill: #ff4a17;
 		}
 	}
-	.block-editor-link-control__settings {
-		border-top: 0;
-		padding: 0 18px 15px 18px;
+	.toolbar-popover-link-destroyer {
+		background-color: #ff4a17 !important;
+		margin-bottom: 8px;
+		width: 100%;
+		text-align: center;
+		color: #fff;
+		display: block;
 	}
 }

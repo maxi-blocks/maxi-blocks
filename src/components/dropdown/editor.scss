@@ -6,6 +6,7 @@
 
 .maxi-dropdown__content {
 	margin-top: 0 !important;
+	z-index: 9999999;
 	&.maxi-dropdown__child-content {
 		margin: -37px 0 0 110px !important;
 	}

@@ -24,8 +24,6 @@ describe('Svg stroke width control', () => {
 		await insertBlock('SVG Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
-		await page.waitForTimeout(200);
-
 		await page.$$eval(
 			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
 			svg => svg[0].click()

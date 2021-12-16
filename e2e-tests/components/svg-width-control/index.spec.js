@@ -23,8 +23,7 @@ describe('Svg width control', () => {
 		await insertBlock('SVG Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
-		await page.waitForTimeout(200);
-
+		// select icon
 		await page.$$eval(
 			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
 			svg => svg[0].click()
@@ -36,6 +35,7 @@ describe('Svg width control', () => {
 			'height width'
 		);
 
+		// change width and unit
 		await accordionPanel.$$eval(
 			'.maxi-advanced-number-control input',
 			input => input[0].focus()

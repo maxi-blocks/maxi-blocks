@@ -165,6 +165,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
@@ -189,7 +190,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -212,7 +215,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -223,19 +228,8 @@ describe('TextMaxi', () => {
 		await page.waitForSelector('.toolbar-item__text-link');
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 
-		// Ensures toolbar link content is open
-		const isOpened = await page.$('.components-popover__content');
-
-		if (!isOpened) {
-			await selectMaxiTextP.focus();
-			await page.waitForTimeout(150);
-			await page.waitForSelector('.toolbar-item__text-link');
-			await page.$eval('.toolbar-item__text-link', button =>
-				button.click()
-			);
-		}
-
 		await page.waitForSelector('a.components-external-link');
+
 		const isLinkModifiable = await page.$eval(
 			'a.components-external-link',
 			link => link.href.length > 0
@@ -251,7 +245,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -276,7 +272,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -317,7 +315,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -351,7 +351,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		// Check no undefined title
 		expect(
@@ -388,6 +390,7 @@ describe('TextMaxi', () => {
 		await page.waitForSelector('.toolbar-item__text-link');
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(200);
 		await page.waitForSelector('.toolbar-popover-link-destroyer');
@@ -409,7 +412,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(200);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		await page.$$eval(
 			'.block-editor-link-control__setting',
@@ -451,7 +456,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample, { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(

@@ -142,6 +142,9 @@ const Inspector = props => {
 										selectors: selectorsNumberCounter,
 										categories: getCategoriesCss(),
 									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
 									...inspectorTabs.transform({
 										props,
 									}),

@@ -16,13 +16,12 @@ import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsContainer, categoriesContainer } from './custom-css';
 
-
 /**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes } = props;
-	
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -106,7 +105,7 @@ const Inspector = props => {
 										selectors: selectorsContainer,
 										categories: categoriesContainer,
 									}),
-									...inspectorTabs.motion({
+									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({

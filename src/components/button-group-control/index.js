@@ -62,6 +62,8 @@ const ButtonGroupControl = ({
 							'maxi-button-group-control__option--active',
 						selected === value &&
 							'maxi-button-group-control__option--selected',
+						active?.includes(value) &&
+							'maxi-button-group-control__option--active',
 						className
 					)}
 					onClick={() => onChange(value)}

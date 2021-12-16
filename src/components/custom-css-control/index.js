@@ -88,14 +88,34 @@ const CustomCssControl = props => {
 		const labelForCss = label.replaceAll(' ', '_');
 		const id = `maxi-additional__css-error-text__${labelForCss}`;
 
+		const onChangeCssCode = code => {
+			const newCustomCss = !isEmpty(value) ? cloneDeep(value) : {};
+			if (!isEmpty(code)) {
+				if (isEmpty(newCustomCss[category]))
+					newCustomCss[category] = {};
+
+				newCustomCss[category][index] = code;
+			} else {
+				delete newCustomCss[category][index];
+				if (isEmpty(newCustomCss[category]))
+					delete newCustomCss[category];
+			}
+
+			onChange(`custom-css-${breakpoint}`, newCustomCss);
+		};
+
 		async function validateCss(code) {
 			const messageDiv = document.getElementById(id);
+			console.log(`category: ${category}`);
+			console.log(`index: ${index}`);
+			console.log(`value: ${JSON.stringify(value)}`);
 			if (!isEmpty(code)) {
 				const validMessage = await validateCSS(code);
 				if (typeof validMessage === 'string' && messageDiv) {
 					messageDiv.innerHTML = validMessage;
 					messageDiv.classList.remove('valid');
 					messageDiv.classList.add('not-valid');
+					onChangeCssCode('');
 				} else if (messageDiv) {
 					messageDiv.innerHTML = __('Valid', 'maxi-blocks');
 					messageDiv.classList.remove('not-valid');
@@ -135,16 +155,9 @@ const CustomCssControl = props => {
 				<CodeEditor
 					language='css'
 					value={value?.[category]?.[index]}
-					onChange={textarea => {
-						const newCustomCss = !isEmpty(value)
-							? cloneDeep(value)
-							: {};
-						if (isEmpty(newCustomCss[category]))
-							newCustomCss[category] = {};
-
-						newCustomCss[category][index] = textarea?.target?.value;
-						onChange(`custom-css-${breakpoint}`, newCustomCss);
-					}}
+					onChange={textarea =>
+						onChangeCssCode(textarea?.target?.value)
+					}
 					onBlur={textarea => {
 						validateCss(textarea?.target?.value);
 					}}

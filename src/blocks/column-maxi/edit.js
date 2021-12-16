@@ -119,7 +119,6 @@ class edit extends MaxiBlockComponent {
 								ref={this.blockRef}
 								{...getMaxiBlockAttributes(this.props)}
 								isOverflowHidden={getIsOverflowHidden()}
-								disableMotion
 								tagName={BlockResizer}
 								resizableObject={this.resizableObject}
 								classes={classnames(

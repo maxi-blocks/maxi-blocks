@@ -7,7 +7,11 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getColorRGBAString, getBlockStyle } from '../../extensions/styles';
+import {
+	getColorRGBAString,
+	getBlockStyle,
+	getPaletteAttributes,
+} from '../../extensions/styles';
 
 export const rgbToHex = color => {
 	const rgb = color.match(
@@ -248,25 +252,32 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const colorType =
 		target === 'icon' ? '' : target === 'svg' ? '-line' : '-fill';
 
+	const { iconPaletteStatus, iconPaletteColor, iconColor } =
+		getPaletteAttributes({
+			obj: currentAttributes,
+			prefix: '',
+		});
+
 	const iconInheritColor = currentAttributes['icon-inherit']
-		? !currentAttributes['palette-status-general']
-			? rgbToHex(currentAttributes['color-general'])
+		? !iconPaletteStatus
+			? rgbToHex(iconColor)
 			: rgbToHex(
 					`rgba(${getVarValue(
-						`var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})`
+						`var(--maxi-${blockStyle}-color-${iconPaletteColor})`
 					)}, 1)`
 			  )
 		: '';
 
-	const currentColor = !currentAttributes[
-		`${target}-${colorType}-palette-status`
-	]
-		? rgbToHex(currentAttributes[`${target}${colorType}-color`])
+	const { paletteStatus, paletteColor, color } = getPaletteAttributes({
+		obj: currentAttributes,
+		prefix: `${target}${colorType}-`,
+	});
+
+	const currentColor = !paletteStatus
+		? rgbToHex(color)
 		: rgbToHex(
 				`rgba(${getVarValue(
-					`var(--maxi-${blockStyle}-color-${
-						currentAttributes[`${target}-palette${colorType}-color`]
-					})`
+					`var(--maxi-${blockStyle}-color-${paletteColor})`
 				)},1)`
 		  );
 

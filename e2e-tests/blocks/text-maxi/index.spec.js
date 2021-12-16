@@ -227,6 +227,19 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.toolbar-item__text-link');
 		await page.$eval('.toolbar-item__text-link', button => button.click());
+
+		// Ensures toolbar link content is open
+		const isOpened = await page.$('.components-popover__content');
+
+		if (!isOpened) {
+			await selectMaxiTextP.focus();
+			await page.waitForTimeout(150);
+			await page.waitForSelector('.toolbar-item__text-link');
+			await page.$eval('.toolbar-item__text-link', button =>
+				button.click()
+			);
+		}
+
 		await page.waitForSelector('a.components-external-link');
 		const isLinkModifiable = await page.$eval(
 			'a.components-external-link',

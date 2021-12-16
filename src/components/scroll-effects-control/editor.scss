@@ -1,0 +1,24 @@
+.maxi-scroll-effects-control {
+	.maxi-base-control {
+		flex: 1;
+		&__help {
+			color: #999;
+			font-size: 12px;
+		}
+	}
+	.components-button {
+		box-shadow: none;
+		transition: all 0.5s;
+
+		&:hover:enabled {
+			opacity: 0.8;
+		}
+	}
+	.maxi-tab-content {
+		.maxi-base-control {
+			.maxi-select-control__input {
+				flex: 2;
+			}
+		}
+	}
+}

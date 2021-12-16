@@ -167,7 +167,7 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.blockBackground,
-	...attributesData.motion,
+	...attributesData.scroll,
 	...attributesData.transform,
 	...attributesData.transitionDuration,
 	...attributesData.display,

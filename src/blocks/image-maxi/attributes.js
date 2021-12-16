@@ -169,7 +169,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
-	...attributesData.motion,
+	...attributesData.scroll,
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,

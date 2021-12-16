@@ -2,7 +2,6 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { createBlock } from '@wordpress/blocks';
 import { withSelect, dispatch } from '@wordpress/data';
@@ -156,6 +155,7 @@ class edit extends MaxiBlockComponent {
 						onReplace={onReplace}
 						onMerge={forward => onMerge(this.props, forward)}
 						__unstableEmbedURLOnPaste
+						preserveWhiteSpace
 					>
 						{onChangeRichText}
 					</RichText>

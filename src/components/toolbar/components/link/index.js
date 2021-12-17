@@ -43,55 +43,57 @@ const Link = props => {
 	};
 
 	return (
-		<ToolbarPopover
-			icon={toolbarLink}
-			tooltip={__('Link', 'maxi-blocks')}
-			className={
-				!isNil(linkSettings) &&
-				!isEmpty(linkSettings.url) &&
-				'toolbar-item__link--active'
-			}
-		>
-			<>
-				<LinkControl
-					value={linkSettings}
-					onChange={value => onChange(value)}
-					settings={[
-						// {
-						// 	id: 'opensInNewTab',
-						// 	title: __('Open in new tab', 'maxi-blocks'),
-						// },
-						{
-							id: 'noFollow',
-							title: __('"nofollow"', 'maxi-blocks'),
-						},
-						{
-							id: 'sponsored',
-							title: __('"sponsored"', 'maxi-blocks'),
-						},
-						{
-							id: 'ugc',
-							title: __('"UGC"', 'maxi-blocks'),
-						},
-					]}
-				/>
-				{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
-					<ToolbarContext.Consumer>
-						{context => (
-							<Button
-								className='toolbar-popover-link-destroyer'
-								onClick={() => {
-									removeLinkHandle();
-									context.onClose();
-								}}
-							>
-								{__('Remove link', 'maxi-blocks')}
-							</Button>
-						)}
-					</ToolbarContext.Consumer>
-				)}
-			</>
-		</ToolbarPopover>
+		<div className='toolbar-item toolbar-item__link'>
+			<ToolbarPopover
+				icon={toolbarLink}
+				tooltip={__('Link', 'maxi-blocks')}
+				className={
+					!isNil(linkSettings) &&
+					!isEmpty(linkSettings.url) &&
+					'toolbar-item__link--active'
+				}
+			>
+				<>
+					<LinkControl
+						value={linkSettings}
+						onChange={value => onChange(value)}
+						settings={[
+							// {
+							// 	id: 'opensInNewTab',
+							// 	title: __('Open in new tab', 'maxi-blocks'),
+							// },
+							{
+								id: 'noFollow',
+								title: __('"nofollow"', 'maxi-blocks'),
+							},
+							{
+								id: 'sponsored',
+								title: __('"sponsored"', 'maxi-blocks'),
+							},
+							{
+								id: 'ugc',
+								title: __('"UGC"', 'maxi-blocks'),
+							},
+						]}
+					/>
+					{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
+						<ToolbarContext.Consumer>
+							{context => (
+								<Button
+									className='toolbar-popover-link-destroyer'
+									onClick={() => {
+										removeLinkHandle();
+										context.onClose();
+									}}
+								>
+									{__('Remove link', 'maxi-blocks')}
+								</Button>
+							)}
+						</ToolbarContext.Consumer>
+					)}
+				</>
+			</ToolbarPopover>
+		</div>
 	);
 };
 

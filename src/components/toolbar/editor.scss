@@ -167,6 +167,7 @@
 						transition: 0.3s;
 						fill: transparent;
 						stroke: #000;
+						stroke-width: 1.3px;
 					}
 					display: block;
 					width: 1rem;
@@ -317,6 +318,7 @@ body .toolbar-item__popover {
 		min-width: auto;
 		padding: 8px 8px 0;
 		overflow: visible;
+		// box-shadow: 0 3px 6px 0px rgb(0,0,0,0.16);
 		.maxi-color-control {
 			margin-bottom: 10px;
 			color: #fff;

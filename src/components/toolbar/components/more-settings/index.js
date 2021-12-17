@@ -24,7 +24,6 @@ import { toolbarMoreSettings } from '../../../../icons';
 /**
  * Style
  */
-import 'react-dropdown/style.css';
 import './editor.scss';
 
 /**

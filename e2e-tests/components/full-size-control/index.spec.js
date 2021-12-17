@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -35,12 +36,15 @@ describe('FullSizeControl', () => {
 	});
 
 	it('Check Responsive full size control', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
 			'height width'
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const inputs = await accordionPanel.$$(
@@ -93,5 +97,40 @@ describe('FullSizeControl', () => {
 		expect(heightM).toStrictEqual('330');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Checking fullSizeControl unit selector', async () => {
+		await changeResponsive(page, 'base');
+
+		await page.$$eval(
+			'.maxi-full-size-control .maxi-toggle-switch input',
+			button => button[0].click()
+		);
+
+		const selector = await page.$$(
+			'.maxi-full-size-control .maxi-dimensions-control__units select'
+		);
+
+		for (let i = 0; i < selector.length; i += 1) {
+			const selection = selector[i];
+
+			await selection.select('em');
+		}
+
+		const expectSize = {
+			'max-height-unit-general': 'em',
+			'max-width-unit-general': 'em',
+			'min-height-unit-general': 'em',
+			'min-width-unit-general': 'em',
+		};
+
+		const result = await getAttributes([
+			'max-height-unit-general',
+			'max-width-unit-general',
+			'min-height-unit-general',
+			'min-width-unit-general',
+		]);
+
+		expect(result).toStrictEqual(expectSize);
 	});
 });

@@ -16,9 +16,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
@@ -56,6 +54,7 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		const { isImageUrl } = this.props.attributes;
+
 		this.state = {
 			isExternalClass: isImageUrl,
 		};
@@ -118,6 +117,7 @@ class edit extends MaxiBlockComponent {
 			mediaWidth,
 			SVGElement,
 			uniqueID,
+			captionPosition,
 		} = attributes;
 		const { isExternalClass } = this.state;
 
@@ -230,7 +230,7 @@ class edit extends MaxiBlockComponent {
 				tagName='figure'
 				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MediaUpload
 					onSelect={media => {
@@ -338,6 +338,37 @@ class edit extends MaxiBlockComponent {
 												}}
 											/>
 										</div>
+										{captionType !== 'none' &&
+											captionPosition === 'top' && (
+												<>
+													<CaptionToolbar
+														key={`caption-toolbar-${uniqueID}`}
+														ref={this.textRef}
+														{...this.props}
+														propsToAvoid={[
+															'captionContent',
+															'formatValue',
+														]}
+													/>
+													<RichText
+														ref={this.textRef}
+														className='maxi-image-block__caption'
+														value={captionContent}
+														onChange={
+															processContent
+														}
+														tagName='figcaption'
+														placeholder={__(
+															'Set your Image Maxi caption here…',
+															'maxi-blocks'
+														)}
+														__unstableEmbedURLOnPaste
+														__unstableAllowPrefixTransformations
+													>
+														{onChangeRichText}
+													</RichText>
+												</>
+											)}
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
 											wrapperClassName={wrapperClassName}
@@ -365,34 +396,37 @@ class edit extends MaxiBlockComponent {
 												/>
 											)}
 										</HoverPreview>
-										{captionType !== 'none' && (
-											<>
-												<CaptionToolbar
-													key={`caption-toolbar-${uniqueID}`}
-													ref={this.textRef}
-													{...this.props}
-													propsToAvoid={[
-														'captionContent',
-														'formatValue',
-													]}
-												/>
-												<RichText
-													ref={this.textRef}
-													className='maxi-image-block__caption'
-													value={captionContent}
-													onChange={processContent}
-													tagName='figcaption'
-													placeholder={__(
-														'Set your Image Maxi caption here…',
-														'maxi-blocks'
-													)}
-													__unstableEmbedURLOnPaste
-													__unstableAllowPrefixTransformations
-												>
-													{onChangeRichText}
-												</RichText>
-											</>
-										)}
+										{captionType !== 'none' &&
+											captionPosition === 'bottom' && (
+												<>
+													<CaptionToolbar
+														key={`caption-toolbar-${uniqueID}`}
+														ref={this.textRef}
+														{...this.props}
+														propsToAvoid={[
+															'captionContent',
+															'formatValue',
+														]}
+													/>
+													<RichText
+														ref={this.textRef}
+														className='maxi-image-block__caption'
+														value={captionContent}
+														onChange={
+															processContent
+														}
+														tagName='figcaption'
+														placeholder={__(
+															'Set your Image Maxi caption here…',
+															'maxi-blocks'
+														)}
+														__unstableEmbedURLOnPaste
+														__unstableAllowPrefixTransformations
+													>
+														{onChangeRichText}
+													</RichText>
+												</>
+											)}
 									</BlockResizer>
 								</>
 							) : (

@@ -9,7 +9,6 @@
 		justify-content: space-between;
 		margin-right: 7px;
 		width: 100%;
-		margin-bottom: 8px;
 
 		&__buttons {
 			width: 100%;
@@ -664,6 +663,9 @@
 			}
 		}
 	}
+}
+.maxi-accordion-control__item__panel .maxi-library-modal__action-section {
+		margin-bottom: 8px;
 }
 @media only screen and (max-width: 1920px) {
 	.maxi-library-modal {

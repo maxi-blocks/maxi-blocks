@@ -11,6 +11,7 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
+	AdvancedNumberControl,
 	ClipPath,
 	HoverEffectControl,
 	ImageAltControl,
@@ -23,6 +24,7 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsImage, categoriesImage } from './custom-css';
@@ -226,7 +228,9 @@ const Inspector = memo(
 			SVGElement,
 			uniqueID,
 			mediaID,
+			captionPosition,
 		} = attributes;
+
 		const getCaptionOptions = () => {
 			const response = [
 				{ label: 'None', value: 'none' },
@@ -328,44 +332,142 @@ const Inspector = memo(
 														/>
 														{captionType !==
 															'none' && (
-															<TypographyControl
-																{...getGroupAttributes(
-																	attributes,
-																	[
-																		'typography',
-																		'textAlignment',
-																		'link',
-																	]
-																)}
-																textLevel='p'
-																onChange={obj => {
-																	if (
-																		'content' in
-																		obj
-																	) {
-																		const newCaptionContent =
-																			obj.content;
-
-																		delete obj.content;
-																		obj.captionContent =
-																			newCaptionContent;
+															<>
+																<SelectControl
+																	label={__(
+																		'Caption position',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-image-inspector__caption-position'
+																	value={
+																		captionPosition
 																	}
+																	options={[
+																		{
+																			label: __(
+																				'Top',
+																				'maxi-blocks'
+																			),
+																			value: 'top',
+																		},
+																		{
+																			label: __(
+																				'Bottom',
+																				'maxi-blocks'
+																			),
+																			value: 'bottom',
+																		},
+																	]}
+																	onChange={captionPosition =>
+																		setAttributes(
+																			{
+																				captionPosition,
+																			}
+																		)
+																	}
+																/>
+																<AdvancedNumberControl
+																	label={__(
+																		'Caption gap',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-image-inspector__caption-gap'
+																	placeholder={getLastBreakpointAttribute(
+																		'caption-gap',
+																		deviceType,
+																		attributes
+																	)}
+																	value={
+																		attributes[
+																			`caption-gap-${deviceType}`
+																		]
+																	}
+																	onChangeValue={val =>
+																		setAttributes(
+																			{
+																				[`caption-gap-${deviceType}`]:
+																					val,
+																			}
+																		)
+																	}
+																	enableUnit
+																	unit={getLastBreakpointAttribute(
+																		'caption-gap-unit',
+																		deviceType,
+																		attributes
+																	)}
+																	minMaxSettings={{
+																		px: {
+																			min: 0,
+																			max: 999,
+																		},
+																		em: {
+																			min: 0,
+																			max: 99,
+																		},
+																	}}
+																	onChangeUnit={val =>
+																		setAttributes(
+																			{
+																				[`caption-gap-unit-${deviceType}`]:
+																					val,
+																			}
+																		)
+																	}
+																	onReset={() =>
+																		setAttributes(
+																			{
+																				[`caption-gap-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-${deviceType}`
+																					),
+																				[`caption-gap-unit-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-unit-${deviceType}`
+																					),
+																			}
+																		)
+																	}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		[
+																			'typography',
+																			'textAlignment',
+																			'link',
+																		]
+																	)}
+																	textLevel='p'
+																	onChange={obj => {
+																		if (
+																			'content' in
+																			obj
+																		) {
+																			const newCaptionContent =
+																				obj.content;
 
-																	setAttributes(
-																		obj
-																	);
-																}}
-																breakpoint={
-																	deviceType
-																}
-																clientId={
-																	clientId
-																}
-																blockStyle={
-																	parentBlockStyle
-																}
-																allowLink
-															/>
+																			delete obj.content;
+																			obj.captionContent =
+																				newCaptionContent;
+																		}
+
+																		setAttributes(
+																			obj
+																		);
+																	}}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																	blockStyle={
+																		parentBlockStyle
+																	}
+																	allowLink
+																/>
+															</>
 														)}
 													</>
 												),
@@ -454,6 +556,11 @@ const Inspector = memo(
 											...inspectorTabs.marginPadding({
 												props,
 												prefix: 'image-',
+												customLabel: __(
+													'Padding',
+													'maxi-blocks'
+												),
+												disableMargin: true,
 											}),
 										]}
 									/>
@@ -513,7 +620,7 @@ const Inspector = memo(
 												selectors: selectorsImage,
 												categories: getCategoriesCss(),
 											}),
-											...inspectorTabs.motion({
+											...inspectorTabs.scrollEffects({
 												props,
 											}),
 											...inspectorTabs.transform({

@@ -20,8 +20,7 @@ import { selectorsDivider, categoriesDivider } from './custom-css';
 /**
  * External dependencies
  */
- import { isEmpty, without } from 'lodash';
-
+import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
@@ -30,12 +29,9 @@ const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
 
-
 	const getCategoriesCss = () => {
-		const {
-			'background-layers': bgLayers,
-		} = attributes;
-		return without (
+		const { 'background-layers': bgLayers } = attributes;
+		return without(
 			categoriesDivider,
 			isEmpty(bgLayers) && 'canvas background'
 		);
@@ -264,7 +260,7 @@ const Inspector = props => {
 											selectors: selectorsDivider,
 											categories: getCategoriesCss(),
 										}),
-										...inspectorTabs.motion({
+										...inspectorTabs.scrollEffects({
 											props,
 										}),
 										...inspectorTabs.transform({

@@ -52,6 +52,28 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	captionPosition: {
+		type: 'string',
+		default: 'bottom',
+	},
+	// TODO: replace with future breakpointObjectCreator
+	// https://github.com/yeahcan/maxi-blocks/blob/b384ce2226e0181226817f5eda4723d1733a2f6a/src/extensions/styles/breakpointObjectCreator.js#L7
+	...(() => {
+		const response = {};
+
+		['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+			response[`caption-gap-${breakpoint}`] = {
+				type: 'number',
+				...(breakpoint === 'general' && { default: 1 }),
+			};
+			response[`caption-gap-unit-${breakpoint}`] = {
+				type: 'string',
+				...(breakpoint === 'general' && { default: 'em' }),
+			};
+		});
+
+		return response;
+	})(),
 	imageSize: {
 		type: 'string',
 		default: 'full',
@@ -117,7 +139,6 @@ const attributes = {
 	...getPrefixedAttributes(attributesData.boxShadow, prefix),
 	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
 	...getPrefixedAttributes(attributesData.size, prefix),
-	...getPrefixedAttributes(attributesData.margin, prefix),
 	...getPrefixedAttributes(attributesData.padding, prefix),
 
 	/**
@@ -145,7 +166,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
-	...attributesData.motion,
+	...attributesData.scroll,
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,

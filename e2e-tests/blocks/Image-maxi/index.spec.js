@@ -7,6 +7,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -55,6 +56,33 @@ describe('Image Maxi', () => {
 			'.maxi-image-caption-type select'
 		);
 		await selector.select('custom');
+
+		// Caption position
+		const positionSelector = await page.$(
+			'.maxi-image-inspector__caption-position select'
+		);
+
+		await positionSelector.select('top');
+		expect(await getAttributes('captionPosition')).toStrictEqual('top');
+
+		// Caption gap
+		await page.$$eval('.maxi-image-inspector__caption-gap input', input =>
+			input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('5');
+
+		expect(await getAttributes('caption-gap-general')).toStrictEqual(5);
+
+		const gapSelector = await page.$(
+			'.maxi-image-inspector__caption-gap select'
+		);
+
+		await gapSelector.select('px');
+		expect(await getAttributes('caption-gap-unit-general')).toStrictEqual(
+			'px'
+		);
 
 		// insert text
 		await page.waitForSelector('.maxi-image-block__caption span');
@@ -309,8 +337,7 @@ describe('Image Maxi', () => {
 		expect(checkFrontend).toMatchSnapshot();
 	});
 
-	// TODO: fix this test
-	it.skip('Image alt tag', async () => {
+	it('Image alt tag', async () => {
 		await openSidebarTab(page, 'style', 'alt tag');
 
 		// select custom alt tag
@@ -329,7 +356,7 @@ describe('Image Maxi', () => {
 		await previewPage.waitForSelector('.entry-content');
 
 		const expectAlt = await previewPage.$eval(
-			'figure div img',
+			'.entry-content .maxi-image-block__image',
 			alterative => alterative.alt
 		);
 		expect(expectAlt).toStrictEqual('Image Tag');

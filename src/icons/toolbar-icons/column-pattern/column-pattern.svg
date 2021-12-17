@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 26.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 19 19" style="enable-background:new 0 0 19 19;" xml:space="preserve">
+	 viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#141516;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+	.st0{fill:#141516;}
 </style>
 <g id="Group_594" transform="translate(-470.624 -310.344)">
-	<rect id="Rectangle_334" x="472.1" y="311.8" class="st0" width="3.4" height="16"/>
-	<rect id="Rectangle_335" x="478.4" y="311.8" class="st0" width="3.4" height="16"/>
-	<rect id="Rectangle_336" x="484.7" y="311.8" class="st0" width="3.4" height="16"/>
+	<path class="st0" d="M474.4699,326.2734h-3.0703c-0.4141,0-0.75-0.3359-0.75-0.75v-14.3589c0-0.4141,0.3359-0.75,0.75-0.75h3.0703
+		c0.4141,0,0.75,0.3359,0.75,0.75v14.3589C475.2199,325.9375,474.884,326.2734,474.4699,326.2734z M472.1496,324.7734h1.5703
+		v-12.8589h-1.5703V324.7734z"/>
+	<path class="st0" d="M480.1589,326.2734h-3.0703c-0.4141,0-0.75-0.3359-0.75-0.75v-14.3589c0-0.4141,0.3359-0.75,0.75-0.75h3.0703
+		c0.4141,0,0.75,0.3359,0.75,0.75v14.3589C480.9089,325.9375,480.573,326.2734,480.1589,326.2734z M477.8386,324.7734h1.5703
+		v-12.8589h-1.5703V324.7734z"/>
+	<path class="st0" d="M485.8484,326.2734h-3.0703c-0.4141,0-0.75-0.3359-0.75-0.75v-14.3589c0-0.4141,0.3359-0.75,0.75-0.75h3.0703
+		c0.4141,0,0.75,0.3359,0.75,0.75v14.3589C486.5984,325.9375,486.2624,326.2734,485.8484,326.2734z M483.528,324.7734h1.5703
+		v-12.8589h-1.5703V324.7734z"/>
 </g>
 </svg>

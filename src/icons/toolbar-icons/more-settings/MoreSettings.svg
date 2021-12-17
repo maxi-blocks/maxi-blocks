@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 26.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#081219;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st0{fill:#081219;}
 </style>
 <g>
-	<circle class="st0" cx="8" cy="13.5" r="1.7"/>
-	<circle class="st0" cx="8" cy="8" r="1.7"/>
-	<circle class="st0" cx="8" cy="2.5" r="1.7"/>
+	<path class="st0" d="M8,15.9502c-1.3511,0-2.4502-1.0996-2.4502-2.4502S6.6489,11.0498,8,11.0498
+		c1.3506,0,2.4502,1.0996,2.4502,2.4502S9.3506,15.9502,8,15.9502z M8,12.5498c-0.5239,0-0.9502,0.4258-0.9502,0.9502
+		S7.4761,14.4502,8,14.4502S8.9502,14.0244,8.9502,13.5S8.5239,12.5498,8,12.5498z"/>
+	<path class="st0" d="M8,10.4502C6.6489,10.4502,5.5498,9.351,5.5498,8S6.6489,5.5498,8,5.5498
+		c1.3506,0,2.4502,1.0991,2.4502,2.4502S9.3506,10.4502,8,10.4502z M8,7.0498C7.4761,7.0498,7.0498,7.476,7.0498,8
+		S7.4761,8.9502,8,8.9502S8.9502,8.5239,8.9502,8S8.5239,7.0498,8,7.0498z"/>
+	<path class="st0" d="M8,4.9502c-1.3511,0-2.4502-1.0991-2.4502-2.4502S6.6489,0.0498,8,0.0498
+		c1.3506,0,2.4502,1.0991,2.4502,2.4502S9.3506,4.9502,8,4.9502z M8,1.5498c-0.5239,0-0.9502,0.4263-0.9502,0.9502
+		S7.4761,3.4502,8,3.4502S8.9502,3.0239,8.9502,2.5S8.5239,1.5498,8,1.5498z"/>
 </g>
 </svg>

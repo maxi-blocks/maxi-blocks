@@ -1,3 +1,13 @@
 .toolbar-item__column-pattern__popover {
 	min-width: 300px;
 }
+
+.toolbar-item__columns-handler {
+	.toolbar-item__icon {
+		path {
+			&:nth-child(2) {
+				fill: transparent !important;
+			}
+		}
+	}
+}

@@ -231,7 +231,7 @@ const LayerCard = props => {
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
-				active={active}
+				activeTabs={activeTabs}
 			/>
 		),
 		image: (

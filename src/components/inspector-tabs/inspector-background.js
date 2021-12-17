@@ -54,7 +54,7 @@ const background = ({
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
-				active={getActiveAttributes(
+				activeTabs={getActiveAttributes(
 					{
 						...getGroupAttributes(
 							attributes,

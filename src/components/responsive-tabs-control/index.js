@@ -29,7 +29,7 @@ const ResponsiveTabsControl = props => {
 		children,
 		breakpoint,
 		disableCallback = false,
-		active = [],
+		activeTabs = [],
 	} = props;
 
 	const { winWidth, maxiBreakpoints } = useSelect(select => {
@@ -105,7 +105,7 @@ const ResponsiveTabsControl = props => {
 							: null,
 				};
 			})}
-			active={active}
+			activeTabs={activeTabs}
 			forceTab={getTextOptionsTab()}
 		/>
 	);

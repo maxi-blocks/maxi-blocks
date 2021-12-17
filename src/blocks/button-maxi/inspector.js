@@ -184,7 +184,7 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
-					active={getActiveAttributes(activeAttributes, 'global')}
+					activeTabs={getActiveAttributes(activeAttributes, 'global')}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
@@ -412,7 +412,7 @@ const Inspector = memo(
 												disablePadding: true,
 												content: (
 													<SettingTabsControl
-														active={getActiveAttributes(
+														activeTabs={getActiveAttributes(
 															pickBy(
 																attributes,
 																(value, key) =>

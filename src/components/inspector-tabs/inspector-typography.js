@@ -51,11 +51,8 @@ const typography = ({
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
-				active={getActiveAttributes(
-					{
-						...getGroupAttributes(attributes, typographyTarget),
-						...getGroupAttributes(attributes, 'typography', true),
-					},
+				activeTabs={getActiveAttributes(
+					getGroupAttributes(attributes, 'typography', true),
 					'typography'
 				)}
 				items={[

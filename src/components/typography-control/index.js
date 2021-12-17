@@ -239,7 +239,7 @@ const LinkOptions = props => {
 		breakpoint,
 		textLevel,
 		clientId,
-		active,
+		activeTabs,
 	} = props;
 
 	const [linkStatus, setLinkStatus] = useState('normal_link');
@@ -249,7 +249,7 @@ const LinkOptions = props => {
 			<ButtonGroupControl
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
-				active={active}
+				activeTabs={activeTabs}
 				options={[
 					{
 						label: __('Link', 'maxi-block'),
@@ -749,7 +749,7 @@ const TypographyControl = withFormatValue(props => {
 			<ResponsiveTabsControl
 				className='maxi-typography-control__text-options-tabs'
 				breakpoint={breakpoint}
-				active={
+				activeTabs={
 					!styleCards &&
 					getActiveAttributes(typography, 'breakpoints')
 				}
@@ -894,7 +894,7 @@ const TypographyControl = withFormatValue(props => {
 					isHover={isHover}
 					clientId={clientId}
 					getOpacityValue={getOpacityValue}
-					active={getActiveAttributes(typography, 'link')}
+					activeTabs={getActiveAttributes(typography, 'link')}
 				/>
 			)}
 		</div>

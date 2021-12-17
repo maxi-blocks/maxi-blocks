@@ -294,7 +294,7 @@ const VideoLayer = props => {
 			)}
 			<ResponsiveTabsControl
 				breakpoint={breakpoint}
-				active={getActiveAttributes(videoOptions, 'breakpoints')}
+				activeTabs={getActiveAttributes(videoOptions, 'breakpoints')}
 			>
 				<VideoLayerContent
 					videoOptions={videoOptions}

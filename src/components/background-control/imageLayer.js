@@ -782,7 +782,7 @@ const ImageLayer = props => {
 			)}
 			{!hideSettings && (
 				<SettingTabsControl
-					active={getActiveAttributes(
+					activeTabs={getActiveAttributes(
 						props.imageOptions,
 						'image-parallax'
 					)}
@@ -792,7 +792,7 @@ const ImageLayer = props => {
 							content: (
 								<ResponsiveTabsControl
 									breakpoint={breakpoint}
-									active={getActiveAttributes(
+									activeTabs={getActiveAttributes(
 										props.imageOptions,
 										'breakpoints'
 									)}

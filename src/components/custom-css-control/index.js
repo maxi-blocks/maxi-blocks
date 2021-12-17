@@ -33,7 +33,7 @@ const CustomCssControl = props => {
 		selectors,
 		value,
 		onChange,
-		active,
+		activeTabs,
 	} = props;
 
 	const [notValidCode, setNotValidCode] = useState({});
@@ -194,7 +194,7 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-typography-control__text-options-tabs'
 			breakpoint={breakpoint}
-			active={active}
+			activeTabs={activeTabs}
 		>
 			<>
 				<SelectControl

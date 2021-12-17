@@ -32,7 +32,7 @@ const blockBackground = ({
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
-				active={getActiveAttributes(
+				activeTabs={getActiveAttributes(
 					{
 						...getGroupAttributes(attributes, ['blockBackground']),
 						...getGroupAttributes(

@@ -211,7 +211,7 @@ const ShapeDividerControl = props => {
 	return (
 		<div className='maxi-shapedividercontrol'>
 			<SettingTabsControl
-				active={getActiveAttributes(props, 'shape-divider')}
+				activeTabs={getActiveAttributes(props, 'shape-divider')}
 				items={[
 					{
 						label: __('Top shape divider', 'maxi-blocks'),

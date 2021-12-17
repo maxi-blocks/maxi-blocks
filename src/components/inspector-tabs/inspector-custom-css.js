@@ -46,7 +46,7 @@ const customCss = ({
 				category={customCssCategory}
 				selectors={selectors}
 				value={customCssValue}
-				active={getActiveAttributes(customCssAttr, 'custom-css')}
+				activeTabs={getActiveAttributes(customCssAttr, 'custom-css')}
 				onChange={(attr, val) =>
 					setAttributes({
 						[attr]: val,

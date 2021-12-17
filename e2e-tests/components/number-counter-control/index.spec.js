@@ -142,15 +142,15 @@ describe('NumberCounterControl', () => {
 
 		// expect
 		const colorResult = await getAttributes([
-			'number-counter-palette-text-color',
-			'number-counter-palette-circle-bar-color',
-			'number-counter-palette-circle-background-color',
+			'number-counter-text-palette-color',
+			'number-counter-circle-bar-palette-color',
+			'number-counter-circle-background-palette-color',
 		]);
 
 		const expectedColorAttributes = {
-			'number-counter-palette-text-color': 4,
-			'number-counter-palette-circle-bar-color': 2,
-			'number-counter-palette-circle-background-color': 3,
+			'number-counter-text-palette-color': 4,
+			'number-counter-circle-bar-palette-color': 2,
+			'number-counter-circle-background-palette-color': 3,
 		};
 
 		expect(colorResult).toStrictEqual(expectedColorAttributes);

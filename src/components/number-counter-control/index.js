@@ -275,10 +275,8 @@ const NumberCounterControl = props => {
 			<hr />
 			<ColorControl
 				label={__('Text', 'maxi-blocks')}
-				paletteStatus={
-					props['number-counter-palette-text-color-status']
-				}
-				paletteColor={props['number-counter-palette-text-color']}
+				paletteStatus={props['number-counter-text-palette-status']}
+				paletteColor={props['number-counter-text-palette-color']}
 				paletteOpacity={props['number-counter-palette-text-opacity']}
 				color={props['number-counter-text-color']}
 				defaultColor={getDefaultAttribute('number-counter-text-color')}
@@ -289,9 +287,8 @@ const NumberCounterControl = props => {
 					color,
 				}) =>
 					onChange({
-						'number-counter-palette-text-color-status':
-							paletteStatus,
-						'number-counter-palette-text-color': paletteColor,
+						'number-counter-text-palette-status': paletteStatus,
+						'number-counter-text-palette-color': paletteColor,
 						'number-counter-palette-text-opacity': paletteOpacity,
 						'number-counter-text-color': color,
 					})
@@ -304,17 +301,17 @@ const NumberCounterControl = props => {
 						label={__('Circle Background', 'maxi-blocks')}
 						paletteStatus={
 							props[
-								'number-counter-palette-circle-background-color-status'
+								'number-counter-circle-background-palette-status'
 							]
 						}
 						paletteColor={
 							props[
-								'number-counter-palette-circle-background-color'
+								'number-counter-circle-background-palette-color'
 							]
 						}
 						paletteOpacity={
 							props[
-								'number-counter-palette-circle-background-opacity'
+								'number-counter-circle-background-palette-opacity'
 							]
 						}
 						color={props['number-counter-circle-background-color']}
@@ -328,11 +325,11 @@ const NumberCounterControl = props => {
 							color,
 						}) =>
 							onChange({
-								'number-counter-palette-circle-background-color-status':
+								'number-counter-circle-background-palette-status':
 									paletteStatus,
-								'number-counter-palette-circle-background-color':
+								'number-counter-circle-background-palette-color':
 									paletteColor,
-								'number-counter-palette-circle-background-opacity':
+								'number-counter-circle-background-palette-opacity':
 									paletteOpacity,
 								'number-counter-circle-background-color': color,
 							})
@@ -342,15 +339,13 @@ const NumberCounterControl = props => {
 					<ColorControl
 						label={__('Circle Bar', 'maxi-blocks')}
 						paletteStatus={
-							props[
-								'number-counter-palette-circle-bar-color-status'
-							]
+							props['number-counter-circle-bar-palette-status']
 						}
 						paletteColor={
-							props['number-counter-palette-circle-bar-color']
+							props['number-counter-circle-bar-palette-color']
 						}
 						paletteOpacity={
-							props['number-counter-palette-circle-bar-opacity']
+							props['number-counter-circle-bar-palette-opacity']
 						}
 						color={props['number-counter-circle-bar-color']}
 						defaultColor={getDefaultAttribute(
@@ -363,11 +358,11 @@ const NumberCounterControl = props => {
 							color,
 						}) =>
 							onChange({
-								'number-counter-palette-circle-bar-color-status':
+								'number-counter-circle-bar-palette-status':
 									paletteStatus,
-								'number-counter-palette-circle-bar-color':
+								'number-counter-circle-bar-palette-color':
 									paletteColor,
-								'number-counter-palette-circle-bar-opacity':
+								'number-counter-circle-bar-palette-opacity':
 									paletteOpacity,
 								'number-counter-circle-bar-color': color,
 							})

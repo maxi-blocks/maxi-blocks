@@ -1,3 +1,4 @@
+import hoverAttributesCreator from '../hoverAttributesCreator';
 import {
 	background,
 	backgroundColor,
@@ -7,107 +8,36 @@ import {
 	backgroundSVG,
 } from './background';
 
-export const backgroundHover = (() => {
-	const response = {};
+export const backgroundHover = hoverAttributesCreator({
+	obj: background,
+	newAttr: {
+		'background-hover-status': {
+			type: 'boolean',
+			default: false,
+		},
+	},
+});
 
-	Object.keys(background).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...background[key] };
+export const backgroundColorHover = hoverAttributesCreator({
+	obj: backgroundColor,
+	sameValAttr: ['background-palette-status-general'],
+	diffValAttr: { 'background-palette-color-general': 6 },
+});
 
-		if ('default' in value) delete value.default;
+export const backgroundImageHover = hoverAttributesCreator({
+	obj: backgroundImage,
+});
 
-		response[newKey] = value;
-	});
+export const backgroundVideoHover = hoverAttributesCreator({
+	obj: backgroundVideo,
+});
 
-	response['background-hover-status'] = {
-		type: 'boolean',
-		default: false,
-	};
+export const backgroundGradientHover = hoverAttributesCreator({
+	obj: backgroundGradient,
+});
 
-	return response;
-})();
-
-export const backgroundColorHover = (() => {
-	const response = {};
-
-	Object.keys(backgroundColor).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...backgroundColor[key] };
-
-		if (key === 'background-palette-color-general') value.default = 6;
-		else if (
-			key !== 'background-palette-color-status-general' &&
-			'default' in value
-		)
-			delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const backgroundImageHover = (() => {
-	const response = {};
-
-	Object.keys(backgroundImage).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...backgroundImage[key] };
-
-		if ('default' in value) delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const backgroundVideoHover = (() => {
-	const response = {};
-
-	Object.keys(backgroundVideo).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...backgroundVideo[key] };
-
-		if ('default' in value) delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const backgroundGradientHover = (() => {
-	const response = {};
-
-	Object.keys(backgroundGradient).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...backgroundGradient[key] };
-
-		if ('default' in value) delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const backgroundSVGHover = (() => {
-	const response = {};
-
-	Object.keys(backgroundSVG).forEach(key => {
-		const newKey = `${key}-hover`;
-		const value = { ...backgroundSVG[key] };
-
-		if (key === 'background-palette-svg-color-general') value.default = 6;
-		else if (
-			key !== 'background-palette-svg-color-status-general' &&
-			'default' in value
-		)
-			delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
+export const backgroundSVGHover = hoverAttributesCreator({
+	obj: backgroundSVG,
+	sameValAttr: ['background-svg-palette-status-general'],
+	diffValAttr: { 'background-svg-palette-color-general': 6 },
+});

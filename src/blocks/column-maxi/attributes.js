@@ -29,10 +29,6 @@ const attributes = {
 		type: 'string',
 		default: 'stretch',
 	},
-	extraStyles: {
-		type: 'string',
-		default: '',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

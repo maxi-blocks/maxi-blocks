@@ -138,7 +138,10 @@ const GradientLayer = props => {
 	return (
 		<ResponsiveTabsControl
 			breakpoint={breakpoint}
-			active={getActiveAttributes(props?.gradientOptions, 'breakpoints')}
+			activeTabs={getActiveAttributes(
+				props?.gradientOptions,
+				'breakpoints'
+			)}
 		>
 			<GradientLayerContent {...rest} />
 		</ResponsiveTabsControl>

@@ -24,7 +24,7 @@ const transform = ({ props }) => {
 				onChange={obj => setAttributes(obj)}
 				uniqueID={uniqueID}
 				breakpoint={deviceType}
-				active={getActiveAttributes(
+				activeTabs={getActiveAttributes(
 					getGroupAttributes(attributes, 'transform'),
 					'transform'
 				)}

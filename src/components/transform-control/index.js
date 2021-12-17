@@ -37,7 +37,7 @@ const TransformControl = props => {
 		onChange,
 		breakpoint = 'general',
 		uniqueID,
-		active = [],
+		activeTabs = [],
 	} = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
@@ -117,7 +117,7 @@ const TransformControl = props => {
 					},
 				]}
 				onChange={val => setTransformStatus(val)}
-				active={active}
+				activeTabs={activeTabs}
 			/>
 			{transformStatus === 'scale' && (
 				<SquareControl

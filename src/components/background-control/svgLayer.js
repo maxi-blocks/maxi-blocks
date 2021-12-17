@@ -70,7 +70,7 @@ const SVGLayerContent = props => {
 	return (
 		<>
 			<SettingTabsControl
-				active={getActiveAttributes(SVGOptions, 'svg-position')}
+				activeTabs={getActiveAttributes(SVGOptions, 'svg-position')}
 				disablePadding
 				className='maxi-background-control__svg-layer--size'
 				items={[
@@ -245,7 +245,10 @@ const SVGLayer = props => {
 					)}
 					<ResponsiveTabsControl
 						breakpoint={breakpoint}
-						active={getActiveAttributes(SVGOptions, 'breakpoints')}
+						activeTabs={getActiveAttributes(
+							SVGOptions,
+							'breakpoints'
+						)}
 					>
 						<SVGLayerContent
 							SVGOptions={SVGOptions}

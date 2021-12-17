@@ -12,7 +12,6 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -31,7 +30,7 @@ const SettingTabsControl = props => {
 		returnValue,
 		callback,
 		target,
-		active = [],
+		activeTabs = [],
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -69,8 +68,7 @@ const SettingTabsControl = props => {
 								key={`maxi-tabs-control__button-${item.label}`}
 								className={classnames(
 									'maxi-tabs-control__button',
-									!isEmpty(active) &&
-										active?.includes(item.label) &&
+									activeTabs?.includes(item.label) &&
 										'maxi-button-group-control__option--active'
 								)}
 								onClick={() => {

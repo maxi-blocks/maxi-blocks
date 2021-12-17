@@ -699,7 +699,7 @@ const AxisControl = props => {
 			{useResponsiveTabs && (
 				<ResponsiveTabsControl
 					breakpoint={breakpoint}
-					active={getActiveAttributes(props, 'breakpoints')}
+					activeTabs={getActiveAttributes(props, 'breakpoints')}
 				>
 					<AxisControlContent
 						{...props}

@@ -28,7 +28,7 @@ const boxShadow = ({ props, prefix = '' }) => {
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
-				active={getActiveAttributes(
+				activeTabs={getActiveAttributes(
 					{
 						...getGroupAttributes(
 							attributes,

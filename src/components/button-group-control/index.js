@@ -13,7 +13,6 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and Icons
@@ -27,7 +26,7 @@ const ButtonGroupControl = ({
 	label = '',
 	className,
 	selected,
-	active = [],
+	activeTabs = [],
 	help,
 	onChange,
 	options = [],
@@ -57,13 +56,10 @@ const ButtonGroupControl = ({
 					aria-pressed={selected === value}
 					className={classnames(
 						'maxi-button-group-control__option',
-						!isEmpty(active) &&
-							active?.includes(value) &&
+						activeTabs?.includes(value) &&
 							'maxi-button-group-control__option--active',
 						selected === value &&
 							'maxi-button-group-control__option--selected',
-						active?.includes(value) &&
-							'maxi-button-group-control__option--active',
 						className
 					)}
 					onClick={() => onChange(value)}

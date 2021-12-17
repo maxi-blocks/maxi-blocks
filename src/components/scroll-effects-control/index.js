@@ -205,7 +205,7 @@ const ScrollEffectsControl = props => {
 				selected={motionStatus}
 				options={motionOptions}
 				onChange={val => setMotionStatus(val)}
-				active={getActiveEffects()}
+				activeTabs={getActiveEffects()}
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute(

@@ -78,7 +78,6 @@ const Size = props => {
 							label={__('Enable full width', 'maxi-blocks')}
 							selected={props[attrLabel] === 'full'}
 							onChange={val => {
-								// onChange(val ? 'full' : 'normal');
 								const full = val ? 'full' : 'normal';
 								onChange({ [attrLabel]: full });
 							}}

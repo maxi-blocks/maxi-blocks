@@ -4,9 +4,6 @@
 		.components-popover__content {
 			.toolbar-wrapper {
 				top: -35px !important;
-				.toolbar-block-custom-label {
-					// top: -25px !important;
-				}
 			}
 		}
 	}
@@ -175,12 +172,6 @@
 
 body .toolbar-item__popover {
 	margin-top: 0 !important;
-	.components-maxi-control__reset-button {
-		// border: 2px solid #80828a;
-		svg {
-			// fill: #fff !important;
-		}
-	}
 
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
@@ -269,7 +260,6 @@ body .toolbar-item__popover {
 	.components-base-control {
 		&__field {
 			color: var(--maxi-black-1-color);
-			// margin-bottom: 0;
 			.components-range-control__track {
 				& + span {
 					span {
@@ -280,23 +270,12 @@ body .toolbar-item__popover {
 					}
 				}
 			}
-			// .components-range-control__tooltip {
-			// 	border: 2px solid #707070;
-			// 	background-color: #232433;
-			// 	color: var(--maxi-black-1-color);
-			// 	&:after {
-			// 		border-top-color: #232533;
-			// 	}
-			// }
 			.components-range-control__number {
 				background-color: transparent;
 				color: var(--maxi-black-1-color);
 				border-color: #80828a !important;
 			}
 			.maxi-select-control__input {
-				// background-color: transparent !important;
-				// color: var(--maxi-black-1-color) !important;
-				// border: 2px solid #80828a !important;
 				option {
 					color: #000 !important;
 				}

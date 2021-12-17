@@ -58,10 +58,8 @@
 		&__button {
 			color: #1e1e1e;
 			display: flex;
-			// border-bottom: 2px solid #616161;
 			width: 100%;
 			text-align: left;
-			// padding: 0;
 			border-radius: 0;
 			box-shadow: none;
 			&.toolbar-item__copy-nested-block__popover__button {
@@ -69,7 +67,7 @@
 					content: '';
 					display: block;
 					height: 1px;
-					background-color: #dbdde6;
+					background-color: var(--maxi-grey-1-color);
 					bottom: 0;
 					margin: 0;
 					position: absolute;
@@ -83,7 +81,7 @@
 			}
 			&--special {
 				color: #fff;
-				background: #ff4a17;
+				background: var(--maxi-primary-color);
 				border-radius: 5px;
 				text-align: center;
 				height: 30px;
@@ -95,7 +93,7 @@
 				border-bottom: none;
 			}
 			&:hover {
-				color: #007cba;
+				color: var(--maxi-secondary-color);
 			}
 		}
 	}

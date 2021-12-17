@@ -11,7 +11,6 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../../../button';
 import Icon from '../../../icon';
 import Dropdown from '../../../dropdown';
-// import Breadcrumbs from '../../../breadcrumbs';
 import CopyPaste from '../copy-paste';
 import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
@@ -57,10 +56,6 @@ const MoreSettings = props => {
 					renderContent={() => (
 						<div>
 							<CopyPaste clientId={clientId} blockName={name} />
-							<InsertBefore
-								clientId={clientId}
-								blockName={name}
-							/>
 							<ReusableBlocks
 								clientId={clientId}
 								blockName={name}
@@ -69,31 +64,6 @@ const MoreSettings = props => {
 						</div>
 					)}
 				/>
-				{/* <Dropdown
-					className='maxi-shapedividercontrol__shape-selector'
-					contentClassName='maxi-shapedividercontrol_popover'
-					position='bottom center'
-					renderToggle={({ isOpen, onToggle }) => (
-						<Button onClick={onToggle}>
-							<Icon
-								className='toolbar-item__icon'
-								icon={toolbarMoreSettings}
-							/>
-						</Button>
-					)}
-					renderContent={() => (
-						<ButtonGroupControl
-							className='maxi-shapedividercontrol__shape-list'
-							selected={props['shape-divider-top-shape-style']}
-							options={shapeItemsTop}
-							onChange={shapeStyle =>
-								onChange({
-									'shape-divider-top-shape-style': shapeStyle,
-								})
-							}
-						/>
-					)}
-				/> */}
 			</div>
 		</Tooltip>
 	);

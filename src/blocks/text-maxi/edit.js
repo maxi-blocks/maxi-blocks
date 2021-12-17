@@ -22,7 +22,7 @@ import MaxiBlock, {
 } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import onMerge from './utils';
+import onMerge, { onSplit, onReplaceBlocks } from './utils';
 import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
@@ -33,6 +33,8 @@ import {
  */
 class edit extends MaxiBlockComponent {
 	propsToAvoidRendering = ['formatValue'];
+
+	formatValue = {};
 
 	typingTimeoutFormatValue = 0;
 
@@ -93,6 +95,8 @@ class edit extends MaxiBlockComponent {
 				clearTimeout(this.typingTimeoutFormatValue);
 			}
 
+			this.formatValue = formatValue;
+
 			this.typingTimeoutFormatValue = setTimeout(() => {
 				dispatch('maxiBlocks/text').sendFormatValue(
 					formatValue,
@@ -149,10 +153,35 @@ class edit extends MaxiBlockComponent {
 				{!isList && (
 					<RichText
 						className='maxi-text-block__content'
+						identifier='content'
 						value={content}
 						onChange={processContent}
 						tagName={textLevel}
-						onReplace={onReplace}
+						onSplit={(value, isOriginal) =>
+							onSplit(value, isOriginal, clientId)
+						}
+						onReplace={(blocks, indexToSelect, initialPosition) => {
+							const { blocks: cleanBlocks } = onReplaceBlocks(
+								blocks,
+								clientId,
+								content
+							);
+
+							onReplace(
+								cleanBlocks,
+								indexToSelect,
+								initialPosition
+							);
+
+							// Ensures caret position
+							const { start, end } = this.formatValue;
+							dispatch('core/block-editor').selectionChange(
+								clientId,
+								'content',
+								start + 1,
+								end + 1
+							);
+						}}
 						onMerge={forward => onMerge(this.props, forward)}
 						__unstableEmbedURLOnPaste
 						preserveWhiteSpace

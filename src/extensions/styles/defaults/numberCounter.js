@@ -1,3 +1,5 @@
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
 const numberCounter = {
 	'number-counter-status': {
 		type: 'boolean',
@@ -39,48 +41,15 @@ const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
-	'number-counter-palette-text-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'number-counter-palette-text-color': {
-		type: 'number',
-		default: 4,
-	},
-	'number-counter-palette-text-opacity': {
-		type: 'number',
-	},
-	'number-counter-text-color': {
-		type: 'string',
-	},
-	'number-counter-palette-circle-background-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'number-counter-palette-circle-background-color': {
-		type: 'number',
-		default: 2,
-	},
-	'number-counter-palette-circle-background-opacity': {
-		type: 'number',
-	},
-	'number-counter-circle-background-color': {
-		type: 'string',
-	},
-	'number-counter-palette-circle-bar-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'number-counter-palette-circle-bar-color': {
-		type: 'number',
-		default: 4,
-	},
-	'number-counter-palette-circle-bar-opacity': {
-		type: 'number',
-	},
-	'number-counter-circle-bar-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix: 'number-counter-text-', palette: 4 }),
+	...paletteAttributesCreator({
+		prefix: 'number-counter-circle-background-',
+		palette: 2,
+	}),
+	...paletteAttributesCreator({
+		prefix: 'number-counter-circle-bar-',
+		palette: 4,
+	}),
 	'number-counter-title-font-size': {
 		type: 'number',
 		default: 40,

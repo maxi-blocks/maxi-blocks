@@ -47,14 +47,14 @@ const getTypographyStyles = ({
 		}`;
 
 	const getPaletteColorStatus = breakpoint => {
-		const propName = getName('palette-color-status', breakpoint);
+		const propName = getName('palette-status', breakpoint);
 
 		if (isBoolean(obj[propName])) return obj[propName];
 
 		return (
 			isCustomFormat &&
 			getLastBreakpointAttribute(
-				'palette-color-status',
+				'palette-status',
 				breakpoint,
 				customFormatTypography,
 				isHover

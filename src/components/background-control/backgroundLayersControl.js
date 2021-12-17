@@ -49,7 +49,7 @@ const LayerCard = props => {
 		clientId,
 		breakpoint,
 		isHover,
-		active,
+		activeTabs,
 	} = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;

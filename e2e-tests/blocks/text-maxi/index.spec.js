@@ -541,7 +541,7 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.skip('Test Text Maxi when pasting headings', async () => {
+	it('Test Text Maxi when pasting headings', async () => {
 		await setClipboardData({ html: pasteHTML });
 		await pressKeyWithModifier('primary', 'v');
 		await page.waitForTimeout(150);
@@ -571,7 +571,9 @@ describe('TextMaxi', () => {
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
-		await selectMaxiTextP.focus();
+		await selectMaxiTextP.click();
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.press('ArrowLeft');
 		await pressKeyTimes('ArrowRight', '8');
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);

@@ -12,6 +12,11 @@ import {
 	getFormatsOnMerge,
 } from '../../extensions/text/formats';
 
+/**
+ * External dependencies
+ */
+import { compact, findIndex, isNil, isEmpty } from 'lodash';
+
 const {
 	getNextBlockClientId,
 	getPreviousBlockClientId,
@@ -97,6 +102,73 @@ const onMerge = (props, forward) => {
 			removeBlock(clientId);
 		}
 	}
+};
+
+export const onSplit = (value, isOriginal, clientId) => {
+	const currentBlock = getBlock(clientId);
+
+	if (isOriginal) {
+		currentBlock.attributes.content = value;
+
+		return null;
+	}
+
+	currentBlock.attributes.content += `\n${value}`;
+
+	return currentBlock;
+};
+
+export const onReplaceBlocks = (blocks, clientId, oldContent) => {
+	const currentBlockIndex = findIndex(blocks, { clientId });
+	const currentBlockExists = currentBlockIndex >= 0;
+	const currentBlock = getBlock(clientId);
+
+	const rawBlocks = compact([
+		...(!currentBlockExists && [currentBlock]),
+		...blocks,
+	]);
+
+	if (rawBlocks.length === 0) return false;
+
+	const firstBlockContent = rawBlocks[0].attributes.content;
+	const firstBlockEmpty =
+		isNil(firstBlockContent) || isEmpty(firstBlockContent);
+
+	// Ensures no empty value on first block
+	if (firstBlockEmpty) rawBlocks.shift();
+
+	const cleanBlocks = [];
+	if (rawBlocks.length > 1)
+		rawBlocks.reduce((currentBlock, nextBlock, i) => {
+			const {
+				textLevel: currentTextLevel,
+				isList: currentIsList,
+				typeOfList: currentTypeOfList,
+			} = currentBlock.attributes;
+			const { content, textLevel, isList, typeOfList } =
+				nextBlock.attributes;
+
+			if (
+				textLevel === currentTextLevel ||
+				(currentIsList && isList && currentTypeOfList === typeOfList)
+			) {
+				currentBlock.attributes.content += content;
+
+				if (rawBlocks.length === i + 1)
+					cleanBlocks.push(currentBlock, nextBlock);
+
+				return currentBlock;
+			}
+
+			cleanBlocks.push(currentBlock);
+
+			if (rawBlocks.length === i + 1) cleanBlocks.push(nextBlock);
+
+			return nextBlock;
+		});
+	else cleanBlocks.push(rawBlocks[0]);
+
+	return { blocks: cleanBlocks };
 };
 
 export default onMerge;

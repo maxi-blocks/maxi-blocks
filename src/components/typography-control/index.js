@@ -278,7 +278,7 @@ const LinkOptions = props => {
 					)}
 					paletteColor={getValue(`${prefix}link-palette-color`)}
 					paletteOpacity={
-						getValue(`${prefix}link-palette-opacity`) || 100
+						getValue(`${prefix}link-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,
@@ -317,7 +317,7 @@ const LinkOptions = props => {
 					)}
 					paletteColor={getValue(`${prefix}link-hover-palette-color`)}
 					paletteOpacity={
-						getValue(`${prefix}link-hover-palette-opacity`) || 100
+						getValue(`${prefix}link-hover-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,
@@ -359,7 +359,7 @@ const LinkOptions = props => {
 						`${prefix}link-active-palette-color`
 					)}
 					paletteOpacity={
-						getValue(`${prefix}link-active-palette-opacity`) || 100
+						getValue(`${prefix}link-active-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,
@@ -401,7 +401,7 @@ const LinkOptions = props => {
 						`${prefix}link-visited-palette-color`
 					)}
 					paletteOpacity={
-						getValue(`${prefix}link-visited-palette-opacity`) || 100
+						getValue(`${prefix}link-visited-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,

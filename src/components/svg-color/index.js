@@ -15,6 +15,7 @@ const SvgColor = props => {
 			{type === 'line' ? (
 				<ColorControl
 					label={label}
+					className='maxi-color-control__SVG-line-color'
 					color={props['svg-line-color']}
 					defaultColor={getDefaultAttribute('svg-line-color')}
 					paletteColor={props['svg-palette-line-color']}
@@ -32,6 +33,7 @@ const SvgColor = props => {
 			) : (
 				<ColorControl
 					label={label}
+					className='maxi-color-control__SVG-fill-color'
 					color={props['svg-fill-color']}
 					defaultColor={getDefaultAttribute('svg-fill-color')}
 					paletteColor={props['svg-palette-fill-color']}

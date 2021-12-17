@@ -4,14 +4,12 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarColumnPattern = (
-	<SVG x='0px' y='0px' viewBox='0 0 24 24' xmlSpace='preserve'>
-		<Path
-			d='M16.6 1.3H23v21.5h-6.4V1.3zM1 1.3h6.4v21.5H1V1.3zm7.9 0h6.4v21.5H8.9V1.3z'
-			fill='none'
-			stroke='#fff'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-		/>
+	<SVG version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 19 19">
+		<g id="Group_594" transform="translate(-470.624 -310.344)">
+			<rect id="Rectangle_334" x="472.1" y="311.8" class="st0" width="3.4" height="16"/>
+			<rect id="Rectangle_335" x="478.4" y="311.8" class="st0" width="3.4" height="16"/>
+			<rect id="Rectangle_336" x="484.7" y="311.8" class="st0" width="3.4" height="16"/>
+		</g>
 	</SVG>
 );
 

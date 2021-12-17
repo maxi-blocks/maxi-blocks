@@ -1,9 +1,10 @@
 .components-column-pattern {
+	width: 392px;
 	&__icon {
 		width: 100%;
 		height: 100%;
 		path {
-			fill: #ffffff;
+			fill: var(--maxi-black-2-color);
 			stroke: #464a53;
 			stroke-width: 2px;
 		}
@@ -11,10 +12,16 @@
 
 	&__templates {
 		margin-bottom: 5px;
+		text-align: center;
 	}
 	&__template-button {
-		width: 33.3333333333%;
-		padding: 0 5px;
+		width: 18.8%;
+		padding: 0;
+		height: 26px;
+		margin-right: 1.5%;
+		&:nth-child(5n+5){
+			margin-right: 0;
+		}
 
 		&:hover {
 			svg path {
@@ -31,19 +38,19 @@
 		&--toolbar {
 			&:hover {
 				svg path {
-					fill: #ff4a17;
+					fill: #fff;
 				}
 			}
 
 			&[aria-pressed='true'] {
 				svg path {
-					fill: #ff4a17;
+					fill: #fff;
 				}
 			}
 
 			svg path {
 				stroke: unset;
-				stroke-width: unset;
+				stroke-width: 2px;
 			}
 		}
 	}

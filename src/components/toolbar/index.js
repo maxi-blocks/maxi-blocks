@@ -251,6 +251,20 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 							/>
+							<ToolbarColumnPattern
+								clientId={clientId}
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'rowPattern'
+								)}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+							/>
+							<ColumnsHandlers
+								toggleHandlers={toggleHandlers}
+								blockName={name}
+							/>
 							<Size
 								blockName={name}
 								blockFullWidth={blockFullWidth}
@@ -274,10 +288,10 @@ const MaxiToolbar = memo(
 								textLevel={textLevel}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
-							<ReusableBlocks
+							{/* <ReusableBlocks
 								clientId={clientId}
 								blockName={name}
-							/>
+							/> */}
 							<DividerColor
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
@@ -381,26 +395,12 @@ const MaxiToolbar = memo(
 								breakpoint={breakpoint}
 								styleCard={styleCard}
 							/>
-							<RowSettings
+							{/* <RowSettings
 								blockName={name}
 								horizontalAlign={attributes.horizontalAlign}
 								verticalAlign={attributes.verticalAlign}
 								onChange={obj => setAttributes(obj)}
-							/>
-							<ToolbarColumnPattern
-								clientId={clientId}
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'rowPattern'
-								)}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-							/>
-							<ColumnsHandlers
-								toggleHandlers={toggleHandlers}
-								blockName={name}
-							/>
+							/> */}
 							<TextLink
 								{...getGroupAttributes(
 									attributes,
@@ -540,7 +540,7 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 							/>
-							<Delete clientId={clientId} blockName={name} />
+							{/* <Delete clientId={clientId} blockName={name} /> */}
 							<ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}
 								onChange={obj => setAttributes(obj)}
@@ -553,7 +553,7 @@ const MaxiToolbar = memo(
 										: 'inherit'
 								}
 							/>
-							<CopyPaste clientId={clientId} blockName={name} />
+							{/* <CopyPaste clientId={clientId} blockName={name} /> */}
 							<Help />
 							<MoreSettings
 								clientId={clientId}

@@ -140,6 +140,16 @@
 						&::after {
 							height: 2px;
 						}
+						.toolbar-item__icon {
+							ellipse,
+							circle,
+							line,
+							rect,
+							polyline,
+							path {
+								stroke: var(--maxi-secondary-color);
+							}
+						}
 					}
 					&:focus,
 					&:visited {
@@ -148,11 +158,13 @@
 					}
 				}
 				&__icon {
+					ellipse,
 					circle,
 					line,
 					rect,
 					polyline,
 					path {
+						transition: 0.3s;
 						fill: transparent;
 						stroke: #000;
 					}

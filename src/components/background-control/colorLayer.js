@@ -179,7 +179,7 @@ const ColorLayer = props => {
 	return (
 		<ResponsiveTabsControl
 			breakpoint={breakpoint}
-			active={getActiveAttributes(props?.colorOptions, 'breakpoints')}
+			activeTabs={getActiveAttributes(props?.colorOptions, 'breakpoints')}
 		>
 			<ColorLayerContent {...rest} />
 		</ResponsiveTabsControl>

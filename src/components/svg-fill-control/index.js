@@ -172,7 +172,7 @@ const SVGFillControl = props => {
 					});
 				}}
 				items={[
-					{
+					!getSVGHasImage(SVGElement) && {
 						label: __('Colour', 'maxi-blocks'),
 						content: (
 							<ResponsiveTabsControl breakpoint={breakpoint}>

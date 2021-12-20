@@ -13,10 +13,6 @@ const getGeneralColumnAttributes = ({
 			'margin-top-m': '2.5',
 			'margin-unit-m': '%',
 		}),
-		...(isFirst && {
-			'margin-top-m': '',
-			'margin-unit-m': '',
-		}),
 		...(columnPosition.columnsNumber === 1 && {
 			'column-size-general': 100,
 		}),

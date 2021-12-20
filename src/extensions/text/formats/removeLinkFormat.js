@@ -19,11 +19,10 @@ import getFormattedString from './getFormattedString';
 /**
  * Removes the link and custom formats
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
- *
+ * @param {Object} [$0]             Optional named arguments.
+ * @param {Object} [$0.formatValue] RichText format value
+ * @param {Object} [$0.typography]  MaxiBlocks typography
+ * @param {Object} [$0.isList]      Text Maxi block has list mode active
  * @returns {Object} Returns cleaned and formatted typography and content
  */
 const removeLinkFormat = ({
@@ -39,12 +38,13 @@ const removeLinkFormat = ({
 	const formatLength = formatValue.formats.length;
 	let newStart = start;
 	let newEnd = end;
-	const [linkPositionStart, linkPositionEnd] = getFormatPosition({
-		formatValue,
-		formatName: 'maxi-blocks/text-link',
-		formatClassName: null,
-		formatAttributes: attributes,
-	}) || [];
+	const [linkPositionStart, linkPositionEnd] =
+		getFormatPosition({
+			formatValue,
+			formatName: 'maxi-blocks/text-link',
+			formatClassName: null,
+			formatAttributes: attributes,
+		}) || [];
 	if (start === end)
 		[newStart, newEnd] = [linkPositionStart, linkPositionEnd] || [
 			0,

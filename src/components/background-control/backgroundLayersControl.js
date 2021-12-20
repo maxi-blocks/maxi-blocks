@@ -61,13 +61,13 @@ const LayerCard = props => {
 
 	const regexLineToChange = new RegExp('fill=".+?(?=")');
 	const colorStr = getColorRGBAString({
-		firstVal: `color-${layer['background-palette-svg-color']}`,
-		opacity: layer['background-palette-svg-opacity'],
+		firstVal: `color-${layer['background-svg-palette-color']}`,
+		opacity: layer['background-svg-palette-opacity'],
 		blockStyle: getBlockStyle(clientId),
 	});
 	const changeTo = `fill="${colorStr}"`;
 
-	const newSvgElement = layer['background-palette-svg-color-status']
+	const newSvgElement = layer['background-svg-palette-status']
 		? layer['background-svg-SVGElement']?.replace(
 				regexLineToChange,
 				changeTo
@@ -78,7 +78,7 @@ const LayerCard = props => {
 		switch (type) {
 			case 'color': {
 				const paletteStatus = getLastBreakpointAttribute(
-					'background-palette-color-status',
+					'background-palette-status',
 					breakpoint,
 					layer,
 					isHover

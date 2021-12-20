@@ -122,7 +122,7 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverNormalObject(props),
-				' .map-marker-info-window__title': getMapObject(props, 'title'),
+				' .map-marker-info-window__title': getMapObject(props, 'text'),
 				' .map-marker-info-window__address': getMapObject(
 					props,
 					'address'

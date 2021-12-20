@@ -2673,24 +2673,24 @@ body.maxi-blocks--active .maxi-block__resizer {
  *
  * Moved common styles to './src/css'
  */
-.maxi-motion-control__timeline-item-settings__setting {
+.maxi-scroll-effects-control__timeline-item-settings__setting {
   height: 40px;
   display: -ms-flexbox;
   display: flex; }
-  .maxi-motion-control__timeline-item-settings__setting .components-range-control {
+  .maxi-scroll-effects-control__timeline-item-settings__setting .components-range-control {
     -ms-flex: 3 !important;
         flex: 3 !important; }
 
-.maxi-motion-control .components-base-control {
+.maxi-scroll-effects-control .components-base-control {
   -ms-flex: 1;
       flex: 1; }
-  .maxi-motion-control .components-base-control__field {
+  .maxi-scroll-effects-control .components-base-control__field {
     margin: 0 5px 0 0 !important; }
-  .maxi-motion-control .components-base-control__help {
+  .maxi-scroll-effects-control .components-base-control__help {
     color: #999;
     font-size: 12px; }
 
-.maxi-motion-control .components-button {
+.maxi-scroll-effects-control .components-button {
   -webkit-box-shadow: none;
           box-shadow: none;
   border-radius: 5px;
@@ -2701,38 +2701,38 @@ body.maxi-blocks--active .maxi-block__resizer {
   -o-transition: all 0.5s;
   transition: all 0.5s;
   margin-right: 5px; }
-  .maxi-motion-control .components-button:hover:enabled {
+  .maxi-scroll-effects-control .components-button:hover:enabled {
     opacity: 0.8; }
 
-.maxi-motion-control input[type='text'],
-.maxi-motion-control input[type='number'] {
+.maxi-scroll-effects-control input[type='text'],
+.maxi-scroll-effects-control input[type='number'] {
   margin-right: 5px; }
 
-.maxi-motion-control__preset__load {
+.maxi-scroll-effects-control__preset__load {
   display: -ms-flexbox;
   display: flex; }
-  .maxi-motion-control__preset__load:last-of-type {
+  .maxi-scroll-effects-control__preset__load:last-of-type {
     margin-right: 0; }
-  .maxi-motion-control__preset__load--delete {
+  .maxi-scroll-effects-control__preset__load--delete {
     background-color: #e74c3c !important; }
 
-.maxi-motion-control__preset__save {
+.maxi-scroll-effects-control__preset__save {
   display: -ms-flexbox;
   display: flex; }
 
-.maxi-motion-control__add-timeline {
+.maxi-scroll-effects-control__add-timeline {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: justify;
       justify-content: space-between;
   -ms-flex-align: center;
       align-items: center; }
-  .maxi-motion-control__add-timeline .components-button {
+  .maxi-scroll-effects-control__add-timeline .components-button {
     margin-right: 0; }
-  .maxi-motion-control__add-timeline .components-base-control {
+  .maxi-scroll-effects-control__add-timeline .components-base-control {
     margin-bottom: 0 !important; }
 
-.maxi-motion-control__timeline {
+.maxi-scroll-effects-control__timeline {
   margin: 10px 0 0 auto;
   width: 85%;
   min-height: 400px;
@@ -2748,7 +2748,7 @@ body.maxi-blocks--active .maxi-block__resizer {
   border: 2px solid #e2e4e5;
   border-radius: 5px;
   padding: 8px; }
-  .maxi-motion-control__timeline__no-effects {
+  .maxi-scroll-effects-control__timeline__no-effects {
     display: -ms-flexbox;
     display: flex;
     height: 400px;
@@ -2757,12 +2757,12 @@ body.maxi-blocks--active .maxi-block__resizer {
     -ms-flex-align: center;
         align-items: center;
     text-align: center; }
-    .maxi-motion-control__timeline__no-effects p {
+    .maxi-scroll-effects-control__timeline__no-effects p {
       color: #9c9c9c; }
-  .maxi-motion-control__timeline__group {
+  .maxi-scroll-effects-control__timeline__group {
     position: relative;
     width: 100%; }
-    .maxi-motion-control__timeline__group__position {
+    .maxi-scroll-effects-control__timeline__group__position {
       position: absolute;
       top: 50%;
       left: -52px;
@@ -2772,7 +2772,7 @@ body.maxi-blocks--active .maxi-block__resizer {
       text-align: left;
       display: inline-block;
       width: 48px; }
-      .maxi-motion-control__timeline__group__position:after {
+      .maxi-scroll-effects-control__timeline__group__position:after {
         content: '';
         width: 10px;
         height: 10px;
@@ -2784,7 +2784,7 @@ body.maxi-blocks--active .maxi-block__resizer {
         -webkit-transform: translateY(-50%);
             -ms-transform: translateY(-50%);
                 transform: translateY(-50%); }
-    .maxi-motion-control__timeline__group__item {
+    .maxi-scroll-effects-control__timeline__group__item {
       border-radius: 5px;
       background: #e2e4e5;
       padding: 6px;
@@ -2796,10 +2796,10 @@ body.maxi-blocks--active .maxi-block__resizer {
       -ms-flex-align: center;
           align-items: center;
       margin-bottom: 1px; }
-      .maxi-motion-control__timeline__group__item--alert {
+      .maxi-scroll-effects-control__timeline__group__item--alert {
         position: relative;
         cursor: help; }
-        .maxi-motion-control__timeline__group__item--alert:before {
+        .maxi-scroll-effects-control__timeline__group__item--alert:before {
           content: '!';
           position: absolute;
           top: 50%;
@@ -2818,25 +2818,25 @@ body.maxi-blocks--active .maxi-block__resizer {
               justify-content: center;
           background-color: #fbbd08;
           color: #fff; }
-      .maxi-motion-control__timeline__group__item--active-item {
+      .maxi-scroll-effects-control__timeline__group__item--active-item {
         background-color: #ff4a16; }
-        .maxi-motion-control__timeline__group__item--active-item svg path {
+        .maxi-scroll-effects-control__timeline__group__item--active-item svg path {
           stroke: #fff !important; }
-        .maxi-motion-control__timeline__group__item--active-item span {
+        .maxi-scroll-effects-control__timeline__group__item--active-item span {
           color: #fff; }
-        .maxi-motion-control__timeline__group__item--active-item ~ .maxi-motion-control__timeline__group__position:after {
+        .maxi-scroll-effects-control__timeline__group__item--active-item ~ .maxi-scroll-effects-control__timeline__group__position:after {
           background-color: #ff4a16; }
-      .maxi-motion-control__timeline__group__item__actions {
+      .maxi-scroll-effects-control__timeline__group__item__actions {
         display: -ms-flexbox;
         display: flex;
         -ms-flex-align: center;
             align-items: center; }
-        .maxi-motion-control__timeline__group__item__actions i {
+        .maxi-scroll-effects-control__timeline__group__item__actions i {
           width: 16px;
           height: 16px;
           margin-left: 5px;
           cursor: pointer; }
-          .maxi-motion-control__timeline__group__item__actions i svg path {
+          .maxi-scroll-effects-control__timeline__group__item__actions i svg path {
             stroke: #464a53; }
 /**
  * Leave blank due to bug on CGB. Check it on:

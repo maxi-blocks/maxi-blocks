@@ -1,17 +1,9 @@
+import hoverAttributesCreator from '../hoverAttributesCreator';
 import display from './display';
 
-export const displayHover = (() => {
-	const response = {};
-
-	Object.entries(display).forEach(([key, val]) => {
-		const newKey = `${key}-hover`;
-
-		if ('default' in val) delete val.default;
-
-		response[newKey] = val;
-	});
-
-	return response;
-})();
+const displayHover = hoverAttributesCreator({
+	obj: display,
+	diffValAttr: { 'box-shadow-palette-color-general': 6 },
+});
 
 export default displayHover;

@@ -167,7 +167,7 @@ const BoxShadowControl = props => {
 							}`
 						)}
 						paletteStatus={getLastBreakpointAttribute(
-							`${prefix}box-shadow-palette-color-status`,
+							`${prefix}box-shadow-palette-status`,
 							breakpoint,
 							props,
 							isHover
@@ -191,7 +191,7 @@ const BoxShadowControl = props => {
 							paletteOpacity,
 						}) => {
 							onChange({
-								[`${prefix}box-shadow-palette-color-status-${breakpoint}${
+								[`${prefix}box-shadow-palette-status-${breakpoint}${
 									isHover ? '-hover' : ''
 								}`]: paletteStatus,
 								[`${prefix}box-shadow-palette-color-${breakpoint}${

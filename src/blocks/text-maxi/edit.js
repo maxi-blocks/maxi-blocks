@@ -16,9 +16,7 @@ import {
 import Inspector from './inspector';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import onMerge, { onReplaceBlocks } from './utils';
@@ -151,7 +149,7 @@ class edit extends MaxiBlockComponent {
 				classes={`${isList ? 'maxi-list-block' : ''}`}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				{!isList && (
 					<RichText

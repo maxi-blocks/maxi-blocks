@@ -19,7 +19,6 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsText } from './custom-css';
 
-
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -157,81 +156,83 @@ const getStyles = props => {
 	const element = isList ? typeOfList : textLevel;
 
 	return {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			' .maxi-text-block--link, .maxi-text-block--link span':
-				getLinkObject(props),
-			':hover': getHoverObject(props),
-			...(!isList && {
-				[` ${element}.maxi-text-block__content`]: getTypographyObject(
-					props,
-					isList
-				),
-				[` ${element}.maxi-text-block__content:hover`]:
-					getTypographyHoverObject(props),
-			}),
-			...(isList && {
-				[` ${element}.maxi-text-block__content li`]:
-					getTypographyObject(props),
-				[` ${element}.maxi-text-block__content li:hover`]:
-					getTypographyHoverObject(props),
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, [
-					'blockBackground',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(
-					props,
-					[
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				' .maxi-text-block--link, .maxi-text-block--link span':
+					getLinkObject(props),
+				':hover': getHoverObject(props),
+				...(!isList && {
+					[` ${element}.maxi-text-block__content`]:
+						getTypographyObject(props, isList),
+					[` ${element}.maxi-text-block__content:hover`]:
+						getTypographyHoverObject(props),
+				}),
+				...(isList && {
+					[` ${element}.maxi-text-block__content li`]:
+						getTypographyObject(props),
+					[` ${element}.maxi-text-block__content li:hover`]:
+						getTypographyHoverObject(props),
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
 						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-					],
-					true
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getCustomFormatsStyles(
+					!isList
+						? ' .maxi-text-block__content'
+						: ' .maxi-text-block__content li',
+					props['custom-formats'],
+					false,
+					{ ...getGroupAttributes(props, 'typography') },
+					props.textLevel,
+					props.parentBlockStyle
 				),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getCustomFormatsStyles(
-				!isList
-					? ' .maxi-text-block__content'
-					: ' .maxi-text-block__content li',
-				props['custom-formats'],
-				false,
-				{ ...getGroupAttributes(props, 'typography') },
-				props.textLevel,
-				props.parentBlockStyle
-			),
-			...getCustomFormatsStyles(
-				!isList
-					? ':hover .maxi-text-block__content'
-					: ':hover .maxi-text-block__content li',
-				props['custom-formats-hover'],
-				true,
-				getGroupAttributes(props, ['typography', 'typographyHover']),
-				props.textLevel,
-				props.parentBlockStyle
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` a ${element}.maxi-text-block__content`],
-				props.parentBlockStyle
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
-				props.parentBlockStyle
-			),
-		},
-		selectorsText,
-		props
+				...getCustomFormatsStyles(
+					!isList
+						? ':hover .maxi-text-block__content'
+						: ':hover .maxi-text-block__content li',
+					props['custom-formats-hover'],
+					true,
+					getGroupAttributes(props, [
+						'typography',
+						'typographyHover',
+					]),
+					props.textLevel,
+					props.parentBlockStyle
+				),
+				...getLinkStyles(
+					{ ...getGroupAttributes(props, 'link') },
+					[` a ${element}.maxi-text-block__content`],
+					props.parentBlockStyle
+				),
+				...getLinkStyles(
+					{ ...getGroupAttributes(props, 'link') },
+					[` ${element}.maxi-text-block__content a`],
+					props.parentBlockStyle
+				),
+			},
+			selectorsText,
+			props
 		),
 	};
 };

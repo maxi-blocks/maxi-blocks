@@ -16,7 +16,6 @@ import {
 	getHasParallax,
 } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
-import MotionPreview from '../motion-preview';
 
 /**
  * External dependencies
@@ -95,7 +94,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		blockFullWidth,
 		motion,
 		background,
-		disableMotion = false,
 		disableBackground = false,
 		isSave = false,
 		classes: customClasses,
@@ -237,17 +235,10 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	if (!disableMotion && !isSave)
-		return (
-			<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
-				<MainBlock {...blockProps}>{children}</MainBlock>
-			</MotionPreview>
-		);
-
 	return <MainBlock {...blockProps}>{children}</MainBlock>;
 });
 
-export const getMaxiBlockBlockAttributes = props => {
+export const getMaxiBlockAttributes = props => {
 	const { name, deviceType, attributes, clientId } = props;
 	const {
 		blockStyle,
@@ -257,13 +248,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		blockFullWidth,
 		linkSettings,
 	} = attributes;
-	const displayValue = getLastBreakpointAttribute(
-		'display',
-		deviceType,
-		attributes,
-		false,
-		true
-	);
+
 	const motion = {
 		...getGroupAttributes(attributes, [
 			'motion',
@@ -280,6 +265,123 @@ export const getMaxiBlockBlockAttributes = props => {
 	const hasLink =
 		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
 
+	const scrollSettingsShared = [
+		'speed',
+		'delay',
+		'easing',
+		'viewport-top',
+		'status-reverse',
+	];
+
+	const scrollSettingsVertical = [
+		...scrollSettingsShared,
+		'offset-start',
+		'offset-mid',
+		'offset-end',
+	];
+
+	const scrollSettingsRotate = [
+		...scrollSettingsShared,
+		'rotate-start',
+		'rotate-mid',
+		'rotate-end',
+	];
+
+	const scrollSettingsFade = [
+		...scrollSettingsShared,
+		'opacity-start',
+		'opacity-mid',
+		'opacity-end',
+	];
+
+	const scrollSettingsBlur = [
+		...scrollSettingsShared,
+		'blur-start',
+		'blur-mid',
+		'blur-end',
+	];
+
+	const scrollSettingsScale = [
+		...scrollSettingsShared,
+		'scale-start',
+		'scale-mid',
+		'scale-end',
+	];
+
+	const scrollTypes = [
+		'vertical',
+		'horizontal',
+		'rotate',
+		'scale',
+		'fade',
+		'blur',
+	];
+
+	const dataScrollTypeValue = () => {
+		let responseString = '';
+		scrollTypes.forEach(type => {
+			if (attributes[`scroll-${type}-status-general`])
+				responseString += `${type} `;
+		});
+		return responseString?.trim();
+	};
+
+	const enabledScrolls = dataScrollTypeValue();
+
+	const scroll = {};
+
+	if (!isEmpty(enabledScrolls)) {
+		scroll['data-scroll-effect-type'] = enabledScrolls;
+		scrollTypes.forEach(type => {
+			if (enabledScrolls.includes(type)) {
+				let responseString = '';
+				let scrollSettings;
+
+				switch (type) {
+					case 'vertical':
+						scrollSettings = scrollSettingsVertical;
+						break;
+					case 'horizontal':
+						scrollSettings = scrollSettingsVertical;
+						break;
+					case 'rotate':
+						scrollSettings = scrollSettingsRotate;
+						break;
+					case 'fade':
+						scrollSettings = scrollSettingsFade;
+						break;
+					case 'blur':
+						scrollSettings = scrollSettingsBlur;
+						break;
+					case 'scale':
+						scrollSettings = scrollSettingsScale;
+						break;
+					default:
+						break;
+				}
+
+				scrollSettings.forEach(setting => {
+					const scrollSettingValue =
+						attributes[`scroll-${type}-${setting}-general`];
+
+					responseString += `${scrollSettingValue} `;
+				});
+
+				if (!isEmpty(responseString))
+					scroll[`data-scroll-effect-${type}-general`] =
+						responseString.trim();
+			}
+		});
+	}
+
+	const displayValue = getLastBreakpointAttribute(
+		'display',
+		deviceType,
+		attributes,
+		false,
+		true
+	);
+
 	return {
 		clientId,
 		blockName: name,
@@ -293,6 +395,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		background,
 		hasArrow,
 		hasLink,
+		...scroll,
 	};
 };
 

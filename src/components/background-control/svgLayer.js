@@ -203,6 +203,9 @@ const SVGLayer = props => {
 
 	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];
 
+	console.log('SVGOptions');
+	console.log(SVGOptions);
+
 	return (
 		<>
 			{(!isHover || (isHover && isLayerHover)) && (

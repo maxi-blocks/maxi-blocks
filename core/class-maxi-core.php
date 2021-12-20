@@ -58,12 +58,6 @@ if (!class_exists('MaxiBlocks_Core')):
 
         public function enqueue_scripts_styles()
         {
-            wp_enqueue_style(
-                'maxi-animations-styles',
-                plugins_url('/css/animate.min.css', dirname(__FILE__)),
-                false,
-            );
-
             wp_enqueue_script(
                 'maxi-waypoints-js',
                 plugins_url('/js/waypoints.min.js', dirname(__FILE__)),

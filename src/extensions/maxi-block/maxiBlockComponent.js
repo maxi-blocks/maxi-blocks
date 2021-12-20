@@ -240,19 +240,13 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
-		const {
-			uniqueID,
-			'background-layers': bgLayers,
-			'motion-status': motionStatus,
-		} = this.props.attributes;
+		const { uniqueID, 'background-layers': bgLayers } =
+			this.props.attributes;
 
 		const bgParallaxLayers = getParallaxLayers(bgLayers);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, ['motion']),
-				}),
 				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},

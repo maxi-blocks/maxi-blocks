@@ -171,7 +171,6 @@ const SVGFillControl = props => {
 							props.SVGOptions['background-svg-palette-status'],
 					});
 				}}
-				forceTab={+getSVGHasImage(SVGElement)}
 				items={[
 					{
 						label: __('Colour', 'maxi-blocks'),

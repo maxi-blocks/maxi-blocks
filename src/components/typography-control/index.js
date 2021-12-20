@@ -273,12 +273,10 @@ const LinkOptions = props => {
 					className='maxi-typography-link-color'
 					color={getValue(`${prefix}link-color`)}
 					defaultColor={getDefault(`${prefix}link-color`)}
-					paletteStatus={getValue(
-						`${prefix}link-palette-color-status`
-					)}
+					paletteStatus={getValue(`${prefix}link-palette-status`)}
 					paletteColor={getValue(`${prefix}link-palette-color`)}
 					paletteOpacity={
-						getValue(`${prefix}link-palette-opacity`) || 100
+						getValue(`${prefix}link-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,
@@ -288,8 +286,7 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-palette-color-status`]:
-									paletteStatus,
+								[`${prefix}link-palette-status`]: paletteStatus,
 								[`${prefix}link-palette-color`]: paletteColor,
 								[`${prefix}link-palette-opacity`]:
 									paletteOpacity,
@@ -313,11 +310,11 @@ const LinkOptions = props => {
 					color={getValue(`${prefix}link-hover-color`)}
 					defaultColor={getDefault(`${prefix}link-hover-color`)}
 					paletteStatus={getValue(
-						`${prefix}link-hover-palette-color-status`
+						`${prefix}link-hover-palette-status`
 					)}
 					paletteColor={getValue(`${prefix}link-hover-palette-color`)}
 					paletteOpacity={
-						getValue(`${prefix}link-hover-palette-opacity`) || 100
+						getValue(`${prefix}link-hover-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,
@@ -327,7 +324,7 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-hover-palette-color-status`]:
+								[`${prefix}link-hover-palette-status`]:
 									paletteStatus,
 								[`${prefix}link-hover-palette-color`]:
 									paletteColor,
@@ -353,13 +350,13 @@ const LinkOptions = props => {
 					color={getValue(`${prefix}link-active-color`)}
 					defaultColor={getDefault(`${prefix}link-active-color`)}
 					paletteStatus={getValue(
-						`${prefix}link-active-palette-color-status`
+						`${prefix}link-active-palette-status`
 					)}
 					paletteColor={getValue(
 						`${prefix}link-active-palette-color`
 					)}
 					paletteOpacity={
-						getValue(`${prefix}link-active-palette-opacity`) || 100
+						getValue(`${prefix}link-active-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,
@@ -369,7 +366,7 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-active-palette-color-status`]:
+								[`${prefix}link-active-palette-status`]:
 									paletteStatus,
 								[`${prefix}link-active-palette-color`]:
 									paletteColor,
@@ -395,13 +392,13 @@ const LinkOptions = props => {
 					color={getValue(`${prefix}link-visited-color`)}
 					defaultColor={getDefault(`${prefix}link-visited-color`)}
 					paletteStatus={getValue(
-						`${prefix}link-visited-palette-color-status`
+						`${prefix}link-visited-palette-status`
 					)}
 					paletteColor={getValue(
 						`${prefix}link-visited-palette-color`
 					)}
 					paletteOpacity={
-						getValue(`${prefix}link-visited-palette-opacity`) || 100
+						getValue(`${prefix}link-visited-palette-opacity`) || 1
 					}
 					onChange={({
 						paletteColor,
@@ -411,7 +408,7 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-visited-palette-color-status`]:
+								[`${prefix}link-visited-palette-status`]:
 									paletteStatus,
 								[`${prefix}link-visited-palette-color`]:
 									paletteColor,
@@ -710,7 +707,7 @@ const TypographyControl = withFormatValue(props => {
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
 					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
-					paletteStatus={getValue(`${prefix}palette-color-status`)}
+					paletteStatus={getValue(`${prefix}palette-status`)}
 					onChange={({
 						color,
 						paletteColor,
@@ -720,7 +717,7 @@ const TypographyControl = withFormatValue(props => {
 						onChangeFormat({
 							[`${prefix}color`]: color,
 							[`${prefix}palette-color`]: paletteColor,
-							[`${prefix}palette-color-status`]: paletteStatus,
+							[`${prefix}palette-status`]: paletteStatus,
 							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}

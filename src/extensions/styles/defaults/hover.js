@@ -6,6 +6,8 @@ import margin from './margin';
 import padding from './padding';
 import { typography } from './typography';
 
+import prefixAttributesCreator from '../prefixAttributesCreator';
+
 export const hover = {
 	'hover-type': {
 		type: 'string',
@@ -64,137 +66,85 @@ export const hover = {
 	},
 };
 
-export const hoverBorder = (() => {
-	const response = {
+const prefix = 'hover-';
+
+export const hoverBorder = prefixAttributesCreator({
+	obj: border,
+	prefix,
+	newAttr: {
 		'hover-border-status': {
 			type: 'boolean',
 			default: false,
 		},
-	};
+	},
+});
 
-	Object.keys(border).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...border[key] };
+export const hoverBorderWidth = prefixAttributesCreator({
+	obj: borderWidth,
+	prefix,
+});
 
-		response[newKey] = value;
-	});
+export const hoverBorderRadius = prefixAttributesCreator({
+	obj: borderRadius,
+	prefix,
+});
 
-	return response;
-})();
-
-export const hoverBorderWidth = (() => {
-	const response = {};
-
-	Object.keys(borderWidth).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...borderWidth[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const hoverBorderRadius = (() => {
-	const response = {};
-
-	Object.keys(borderRadius).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...borderRadius[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const hoverBackground = (() => {
-	const response = {
+export const hoverBackground = prefixAttributesCreator({
+	obj: background,
+	prefix,
+	diffValAttr: { 'hover-background-active-media': 'color' },
+	newAttr: {
 		'hover-background-status': {
 			type: 'boolean',
 			default: false,
 		},
-	};
+	},
+});
 
-	Object.keys(background).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...background[key] };
+export const hoverBackgroundColor = prefixAttributesCreator({
+	obj: backgroundColor,
+	prefix,
+	diffValAttr: {
+		'hover-background-palette-color': 5,
+		'hover-background-palette-opacity': 60,
+	},
+});
 
-		if (key === 'background-active-media') value.default = 'color';
+export const hoverBackgroundGradient = prefixAttributesCreator({
+	obj: backgroundGradient,
+	prefix,
+});
 
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const hoverBackgroundColor = (() => {
-	const response = {};
-
-	Object.keys(backgroundColor).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...backgroundColor[key] };
-
-		if (key === 'background-palette-color') value.default = 5;
-		if (key === 'background-palette-opacity') value.default = 60;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const hoverBackgroundGradient = (() => {
-	const response = {};
-
-	Object.keys(backgroundGradient).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...backgroundGradient[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const hoverMargin = (() => {
-	const response = {
+export const hoverMargin = prefixAttributesCreator({
+	obj: margin,
+	prefix,
+	newAttr: {
 		'hover-margin-status': {
 			type: 'boolean',
 			default: false,
 		},
-	};
+	},
+});
 
-	Object.keys(margin).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...margin[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const hoverPadding = (() => {
-	const response = {
+export const hoverPadding = prefixAttributesCreator({
+	obj: padding,
+	prefix,
+	newAttr: {
 		'hover-padding-status': {
 			type: 'boolean',
 			default: false,
 		},
-	};
+	},
+});
 
-	Object.keys(padding).forEach(key => {
-		const newKey = `hover-${key}`;
-		const value = { ...padding[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const hoverTitleTypography = (() => {
-	const response = {
+export const hoverTitleTypography = prefixAttributesCreator({
+	obj: typography,
+	prefix: 'hover-title-',
+	diffValAttr: {
+		'hover-title-font-size-general': 30,
+		'hover-title-palette-color-general': 1,
+	},
+	newAttr: {
 		'hover-title-typography-status': {
 			type: 'boolean',
 			default: false,
@@ -203,23 +153,17 @@ export const hoverTitleTypography = (() => {
 			type: 'string',
 			default: __('Add your Hover Title here', 'maxi-blocks'),
 		},
-	};
+	},
+});
 
-	Object.keys(typography).forEach(key => {
-		const newKey = `hover-title-${key}`;
-		const value = { ...typography[key] };
-
-		response[newKey] = value;
-	});
-
-	response['hover-title-font-size-general'].default = 30;
-	response['hover-title-palette-color-general'].default = 1;
-
-	return response;
-})();
-
-export const hoverContentTypography = (() => {
-	const response = {
+export const hoverContentTypography = prefixAttributesCreator({
+	obj: typography,
+	prefix: 'hover-content-',
+	diffValAttr: {
+		'hover-content-font-size-general': 18,
+		'hover-content-palette-color-general': 1,
+	},
+	newAttr: {
 		'hover-content-typography-status': {
 			type: 'boolean',
 			default: false,
@@ -228,17 +172,5 @@ export const hoverContentTypography = (() => {
 			type: 'string',
 			default: __('Add your Hover Title here', 'maxi-blocks'),
 		},
-	};
-
-	Object.keys(typography).forEach(key => {
-		const newKey = `hover-content-${key}`;
-		const value = { ...typography[key] };
-
-		response[newKey] = value;
-	});
-
-	response['hover-content-font-size-general'].default = 18;
-	response['hover-content-palette-color-general'].default = 1;
-
-	return response;
-})();
+	},
+});

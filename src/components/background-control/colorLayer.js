@@ -59,7 +59,7 @@ const ColorLayerContent = props => {
 				)}
 				defaultColor={getDefaultAttr('background-color')}
 				paletteStatus={getLastBreakpointAttribute(
-					`${prefix}background-palette-color-status`,
+					`${prefix}background-palette-status`,
 					breakpoint,
 					colorOptions,
 					isHover
@@ -84,7 +84,7 @@ const ColorLayerContent = props => {
 				}) => {
 					onChange({
 						[getAttributeKey(
-							'background-palette-color-status',
+							'background-palette-status',
 							isHover,
 							prefix,
 							breakpoint
@@ -109,7 +109,7 @@ const ColorLayerContent = props => {
 						)]: color,
 						...(isGeneral && {
 							[getAttributeKey(
-								'background-palette-color-status',
+								'background-palette-status',
 								isHover,
 								prefix,
 								'general'

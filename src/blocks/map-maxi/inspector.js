@@ -101,6 +101,9 @@ const Inspector = props => {
 										selectors: selectorsMap,
 										categories: categoriesMap,
 									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
 									...inspectorTabs.transform({
 										props,
 									}),

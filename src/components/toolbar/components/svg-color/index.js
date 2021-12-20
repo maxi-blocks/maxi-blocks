@@ -33,7 +33,7 @@ const SvgColorToolbar = props => {
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
 	const getColor = attr =>
-		attr[`svg-palette-${type}-color-status`]
+		attr[`svg-${type}-palette-status`]
 			? getColorRGBAString({
 					firstVar: `icon-${type}`,
 					secondVar: `color-${attr[`svg-palette-${type}-color`]}`,
@@ -75,7 +75,7 @@ const SvgColorToolbar = props => {
 						});
 
 						changeSVGContent(
-							obj[`svg-palette-${type}-color-status`]
+							obj[`svg-${type}-palette-status`]
 								? colorStr
 								: obj[`svg-${type}-color`],
 							type

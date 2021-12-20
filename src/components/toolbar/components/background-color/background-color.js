@@ -57,7 +57,7 @@ const BackgroundColor = props => {
 			};
 
 		const bgPaletteStatus = getLastBreakpointAttribute(
-			`${prefix}background-palette-color-status`,
+			`${prefix}background-palette-status`,
 			breakpoint,
 			props
 		);

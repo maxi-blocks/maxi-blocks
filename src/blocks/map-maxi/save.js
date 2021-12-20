@@ -1,9 +1,7 @@
 /**
  * Internal dependencies
  */
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * Save
@@ -18,7 +16,7 @@ const save = props => {
 		<MaxiBlock
 			className={classes}
 			id={uniqueID}
-			{...getMaxiBlockBlockAttributes(props)}
+			{...getMaxiBlockAttributes(props)}
 			isSave
 		>
 			<div

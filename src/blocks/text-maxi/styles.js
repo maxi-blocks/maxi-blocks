@@ -30,12 +30,12 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsText } from './custom-css';
+import { getSVGListStyle } from './utils';
 
 /**
  * External dependencies
  */
 import { isNil, isNumber } from 'lodash';
-import { getSVGListStyle } from './utils';
 
 const getNormalObject = props => {
 	const response = {

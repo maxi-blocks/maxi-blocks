@@ -40,19 +40,19 @@ const ColorContent = ({
 	<ColorControl
 		label={__('Fill', 'maxi-blocks')}
 		paletteStatus={getLastBreakpointAttribute(
-			'background-palette-svg-color-status',
+			'background-svg-palette-status',
 			breakpoint,
 			SVGOptions,
 			isHover
 		)}
 		paletteColor={getLastBreakpointAttribute(
-			'background-palette-svg-color',
+			'background-svg-palette-color',
 			breakpoint,
 			SVGOptions,
 			isHover
 		)}
 		paletteOpacity={getLastBreakpointAttribute(
-			'background-palette-svg-opacity',
+			'background-svg-palette-opacity',
 			breakpoint,
 			SVGOptions,
 			isHover
@@ -69,50 +69,50 @@ const ColorContent = ({
 				).outerHTML,
 				'background-svg-SVGData': SVGData,
 				[getAttributeKey(
-					'background-palette-svg-color-status',
+					'background-svg-palette-status',
 					isHover,
 					false,
 					breakpoint
 				)]: paletteStatus,
 				[getAttributeKey(
-					'background-palette-svg-color',
+					'background-svg-palette-color',
 					isHover,
 					false,
 					breakpoint
 				)]: paletteColor,
 				[getAttributeKey(
-					'background-palette-svg-opacity',
+					'background-svg-palette-opacity',
 					isHover,
 					false,
 					breakpoint
 				)]: paletteOpacity,
 				[getAttributeKey(
-					'background-palette-svg-opacity',
+					'background-svg-palette-opacity',
 					isHover,
 					false,
 					breakpoint
 				)]: paletteOpacity,
 				...(isGeneral && {
 					[getAttributeKey(
-						'background-palette-svg-color-status',
+						'background-svg-palette-status',
 						isHover,
 						false,
 						'general'
 					)]: paletteStatus,
 					[getAttributeKey(
-						'background-palette-svg-color',
+						'background-svg-palette-color',
 						isHover,
 						false,
 						'general'
 					)]: paletteColor,
 					[getAttributeKey(
-						'background-palette-svg-opacity',
+						'background-svg-palette-opacity',
 						isHover,
 						false,
 						'general'
 					)]: paletteOpacity,
 					[getAttributeKey(
-						'background-palette-svg-opacity',
+						'background-svg-palette-opacity',
 						isHover,
 						false,
 						'general'
@@ -165,12 +165,10 @@ const SVGFillControl = props => {
 					onChange({
 						'background-svg-SVGElement': resEl.outerHTML,
 						'background-svg-SVGData': SVGData,
-						'background-palette-svg-color':
-							props.SVGOptions['background-palette-svg-color'],
-						'background-palette-svg-color-status':
-							props.SVGOptions[
-								'background-palette-svg-color-status'
-							],
+						'background-svg-palette-color':
+							props.SVGOptions['background-svg-palette-color'],
+						'background-svg-palette-status':
+							props.SVGOptions['background-svg-palette-status'],
 					});
 				}}
 				forceTab={+getSVGHasImage(SVGElement)}
@@ -211,13 +209,13 @@ const SVGFillControl = props => {
 											'background-svg-SVGElement':
 												resEl.outerHTML,
 											'background-svg-SVGData': SVGData,
-											'background-palette-svg-color':
+											'background-svg-palette-color':
 												props.SVGOptions[
-													'background-palette-svg-color'
+													'background-svg-palette-color'
 												],
-											'background-palette-svg-color-status':
+											'background-svg-palette-status':
 												props.SVGOptions[
-													'background-palette-svg-color-status'
+													'background-svg-palette-status'
 												],
 										});
 									}}
@@ -235,13 +233,13 @@ const SVGFillControl = props => {
 											'background-svg-SVGElement':
 												resEl.outerHTML,
 											'background-svg-SVGData': SVGData,
-											'background-palette-svg-color':
+											'background-svg-palette-color':
 												props.SVGOptions[
-													'background-palette-svg-color'
+													'background-svg-palette-color'
 												],
-											'background-palette-svg-color-status':
+											'background-svg-palette-status':
 												props.SVGOptions[
-													'background-palette-svg-color-status'
+													'background-svg-palette-status'
 												],
 										});
 									}}

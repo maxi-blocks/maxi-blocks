@@ -58,14 +58,6 @@ if (!class_exists('MaxiBlocks_Core')):
 
         public function enqueue_scripts_styles()
         {
-            wp_enqueue_script(
-                'jquery',
-                'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js',
-                [],
-                null,
-                true,
-            );
-
             wp_enqueue_style(
                 'maxi-animations-styles',
                 plugins_url('/css/animate.min.css', dirname(__FILE__)),
@@ -84,17 +76,23 @@ if (!class_exists('MaxiBlocks_Core')):
                 false,
                 true,
             );
-			wp_localize_script( 'maxi-front-scripts-js', 'google_map_api_options',
-				array(
-					'google_api_key' => get_option('google_api_key_option'),
-				)
-			);
+            wp_localize_script(
+                'maxi-front-scripts-js',
+                'google_map_api_options',
+                array(
+                    'google_api_key' => get_option('google_api_key_option'),
+                )
+            );
+            wp_enqueue_script(
+                'maxi-motions-js',
+                plugins_url('/js/maxi-scroll-effects.js', dirname(__FILE__)),
+            );
         }
 
         public function maxi_blocks_body_class($classes)
         {
             $MBClassAccessibilityClass = get_option('accessibility_option') ? ' maxi-blocks--accessibility ' : '';
-			$MBClass = " maxi-blocks--active $MBClassAccessibilityClass";
+            $MBClass = " maxi-blocks--active $MBClassAccessibilityClass";
 
             if (gettype($classes) === 'string') {
                 $classes .= $MBClass;

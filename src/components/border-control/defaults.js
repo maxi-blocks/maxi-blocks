@@ -3,22 +3,22 @@ import {
 	borderWidth as defaultBorderWidth,
 } from '../../extensions/styles/defaults/border';
 
-import { getPrefixedAttributes } from '../../extensions/styles';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 export const borderNone = (prefix = '', isHover) => {
 	let response = {};
 
 	const currentDefaultBorder = prefix
-		? getPrefixedAttributes(defaultBorder, prefix)
+		? prefixAttributesCreator({ obj: defaultBorder, prefix })
 		: defaultBorder;
 
 	const currentDefaultBorderWidth = prefix
-		? getPrefixedAttributes(defaultBorderWidth, prefix)
+		? prefixAttributesCreator({ obj: defaultBorderWidth, prefix })
 		: defaultBorderWidth;
 
 	response = {
-		[`${prefix}border-palette-color-status`]:
-			currentDefaultBorder[`${prefix}border-palette-color-status-general`]
+		[`${prefix}border-palette-status`]:
+			currentDefaultBorder[`${prefix}border-palette-status-general`]
 				.default,
 		[`${prefix}border-palette-color`]:
 			currentDefaultBorder[`${prefix}border-palette-color-general`]

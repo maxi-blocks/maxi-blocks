@@ -8,21 +8,15 @@ const global = {
 	blockStyle: {
 		type: 'string',
 	},
-	blockStyleBackground: {
-		type: 'number',
-		default: 1,
-	},
 	defaultBlockStyle: {
 		type: 'string',
 		default: 'maxi-def-light',
 	},
 	extraClassName: {
 		type: 'string',
-		default: '',
 	},
 	anchorLink: {
 		type: 'string',
-		default: '',
 	},
 	isFirstOnHierarchy: {
 		type: 'boolean',

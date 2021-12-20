@@ -1,51 +1,15 @@
-import { border, borderWidth, borderRadius } from './border';
+import hoverAttributesCreator from '../hoverAttributesCreator';
+import { iconBorder, iconBorderWidth, iconBorderRadius } from './iconBorder';
 
-export const iconBorderHover = (() => {
-	const response = {};
+export const iconBorderHover = hoverAttributesCreator({
+	obj: iconBorder,
+});
 
-	Object.keys(border).forEach(key => {
-		const newKey = `icon-${key}-hover`;
-		const value = { ...border[key] };
+export const iconBorderWidthHover = hoverAttributesCreator({
+	obj: iconBorderWidth,
+});
 
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const iconBorderWidthHover = (() => {
-	const response = {};
-
-	Object.keys(borderWidth).forEach(key => {
-		const newKey = `icon-${key}-hover`;
-		const value = { ...borderWidth[key] };
-
-		if ('default' in value) delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const iconBorderRadiusHover = (() => {
-	let response = {};
-
-	Object.keys(borderRadius).forEach(key => {
-		const newKey = `icon-${key}-hover`;
-		const value = { ...borderRadius[key] };
-
-		if ('default' in value) delete value.default;
-
-		response[newKey] = value;
-	});
-
-	response = {
-		...response,
-		'icon-border-unit-radius-general-hover': {
-			type: 'string',
-			default: 'px',
-		},
-	};
-	return response;
-})();
+export const iconBorderRadiusHover = hoverAttributesCreator({
+	obj: iconBorderRadius,
+	diffValAttr: { 'icon-iconBorder-unit-radius-general-hover': 'px' },
+});

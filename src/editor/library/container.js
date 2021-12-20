@@ -176,7 +176,7 @@ const LibraryContainer = props => {
 	);
 
 	useEffect(() => {
-		updateSCOnEditor(selectedSCValue);
+		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
 
 	const searchClient = algoliasearch(

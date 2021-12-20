@@ -151,9 +151,9 @@ const DividerControl = props => {
 					label={__('Divider', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('divider-border-color')}
-					paletteColor={props['divider-palette-border-color']}
-					paletteOpacity={props['divider-palette-border-opacity']}
-					paletteStatus={props['divider-palette-border-color-status']}
+					paletteColor={props['divider-border-palette-color']}
+					paletteOpacity={props['divider-border-palette-opacity']}
+					paletteStatus={props['divider-border-palette-status']}
 					onChange={({
 						color,
 						paletteColor,
@@ -162,10 +162,9 @@ const DividerControl = props => {
 					}) =>
 						onChange({
 							'divider-border-color': color,
-							'divider-palette-border-color': paletteColor,
-							'divider-palette-border-color-status':
-								paletteStatus,
-							'divider-palette-border-opacity': paletteOpacity,
+							'divider-border-palette-color': paletteColor,
+							'divider-border-palette-status': paletteStatus,
+							'divider-border-palette-opacity': paletteOpacity,
 						})
 					}
 					disableGradient

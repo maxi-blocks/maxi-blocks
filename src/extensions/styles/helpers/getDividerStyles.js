@@ -7,6 +7,7 @@ import getColorRGBAString from '../getColorRGBAString';
  * External dependencies
  */
 import { isNil, isNumber } from 'lodash';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 const getDividerStyles = (obj, target, parentBlockStyle) => {
 	const response = {
@@ -18,21 +19,21 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 		if (!isNil(obj['divider-border-style']))
 			response.general['border-style'] = obj['divider-border-style'];
 
-		if (
-			obj['divider-palette-border-color-status'] &&
-			isNumber(obj['divider-palette-border-color'])
-		)
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: 'divider-border-',
+			});
+
+		if (paletteStatus && isNumber(paletteColor))
 			response.general['border-color'] = getColorRGBAString({
 				firstVar: 'divider-color',
-				secondVar: `color-${obj['divider-palette-border-color']}`,
-				opacity: obj['divider-palette-border-opacity'],
+				secondVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
 				blockStyle: parentBlockStyle,
 			});
-		else if (
-			!obj['divider-palette-border-color-status'] &&
-			!isNil(obj['divider-border-color'])
-		)
-			response.general['border-color'] = obj['divider-border-color'];
+		else if (!paletteStatus && !isNil(color))
+			response.general['border-color'] = color;
 
 		if (obj.lineOrientation === 'horizontal') {
 			response.general['border-right'] = 'none';

@@ -89,15 +89,15 @@ const Inspector = props => {
 													obj;
 
 												const {
-													'svg-palette-fill-color':
+													'svg-fill-palette-color':
 														svgPaletteFillColor,
-													'svg-palette-fill-opacity':
+													'svg-fill-palette-opacity':
 														svgPaletteFillOpacity,
 													'svg-fill-color':
 														svgFillColor,
-													'svg-palette-line-color':
+													'svg-line-palette-color':
 														svgPaletteLineColor,
-													'svg-palette-line-opacity':
+													'svg-line-palette-opacity':
 														svgPaletteLineOpacity,
 													'svg-line-color':
 														svgLineColor,
@@ -124,12 +124,12 @@ const Inspector = props => {
 
 												changeSVGContentWithBlockStyle(
 													attributes[
-														'svg-palette-fill-color-status'
+														'svg-fill-palette-status'
 													]
 														? fillColorStr
 														: svgFillColor,
 													attributes[
-														'svg-palette-line-color-status'
+														'svg-line-palette-status'
 													]
 														? lineColorStr
 														: svgLineColor
@@ -173,10 +173,10 @@ const Inspector = props => {
 																			{
 																				firstVar:
 																					'icon-fill',
-																				secondVar: `color-${obj['svg-palette-fill-color']}`,
+																				secondVar: `color-${obj['svg-fill-palette-color']}`,
 																				opacity:
 																					obj[
-																						'svg-palette-fill-opacity'
+																						'svg-fill-palette-opacity'
 																					],
 																				blockStyle:
 																					parentBlockStyle,
@@ -185,7 +185,7 @@ const Inspector = props => {
 
 																	changeSVGContent(
 																		obj[
-																			'svg-palette-fill-color-status'
+																			'svg-fill-palette-status'
 																		]
 																			? fillColorStr
 																			: obj[
@@ -222,10 +222,10 @@ const Inspector = props => {
 																		{
 																			firstVar:
 																				'icon-line',
-																			secondVar: `color-${obj['svg-palette-line-color']}`,
+																			secondVar: `color-${obj['svg-line-palette-color']}`,
 																			opacity:
 																				obj[
-																					'svg-palette-line-opacity'
+																					'svg-line-palette-opacity'
 																				],
 																			blockStyle:
 																				parentBlockStyle,
@@ -234,7 +234,7 @@ const Inspector = props => {
 
 																changeSVGContent(
 																	obj[
-																		'svg-palette-line-color-status'
+																		'svg-line-palette-status'
 																	]
 																		? lineColorStr
 																		: obj[

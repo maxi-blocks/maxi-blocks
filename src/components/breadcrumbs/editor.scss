@@ -6,7 +6,7 @@
 	font-family: 'Roboto', sans-serif !important;
 	display: flex;
 	position: absolute;
-	bottom: -44px;
+	bottom: -7px;
 	left: 0;
 	border-radius: 3px;
 	margin: 0 !important;
@@ -15,7 +15,7 @@
 	z-index: 9;
 	transition: 0.3s;
 	transform: scaleY(0);
-	transform-origin: top center;
+	transform-origin: bottom center;
 	&:hover {
 		transform: scaleY(1);
 		.maxi-breadcrumbs__item {

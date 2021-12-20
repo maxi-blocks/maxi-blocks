@@ -2,16 +2,23 @@
  * WordPress dependencies
  */
 import { createBlock, getBlockAttributes } from '@wordpress/blocks';
-import { select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
+import { insert } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
  */
 import {
 	generateFormatValue,
+	getFormattedString,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
 import { getGroupAttributes } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import { cloneDeep, isEmpty } from 'lodash';
 
 const name = 'maxi-blocks/text-maxi';
 
@@ -128,6 +135,79 @@ const transforms = {
 				return createBlock(name, newAttributes);
 			},
 			priority: 1,
+		},
+		{
+			type: 'enter',
+			regExp: /[\s\S]*/,
+			transform: () => {
+				const {
+					getSelectedBlockClientId,
+					getBlock,
+					getSelectionStart,
+					getSelectionEnd,
+				} = select('core/block-editor');
+
+				const clientId = getSelectedBlockClientId();
+				const block = getBlock(clientId);
+
+				if (block.name !== 'maxi-blocks/text-maxi') return [{}];
+
+				const { attributes } = block;
+				const newAttributes = cloneDeep(attributes);
+
+				const { updateBlockAttributes, selectionChange } =
+					dispatch('core/block-editor');
+				const { getFormatValue } = select('maxiBlocks/text');
+				const { sendFormatValue } = dispatch('maxiBlocks/text');
+
+				const formatValue = getFormatValue();
+
+				let newFormatValue;
+				let newContent;
+
+				if (!isEmpty(formatValue)) {
+					newFormatValue = insert(formatValue, '\n');
+					newContent = getFormattedString({
+						formatValue: newFormatValue,
+						isList: newAttributes.isList,
+					});
+				} else {
+					const end = getSelectionEnd().offset;
+					const { content } = newAttributes;
+
+					const splitContent = content.slice(end);
+					const lastIndex = content.lastIndexOf(splitContent);
+
+					if (lastIndex === -1) {
+						newContent = content;
+					} else {
+						const beginString = content.substring(0, lastIndex);
+						const endString = content.substring(
+							lastIndex + splitContent.length
+						);
+
+						newContent = `${beginString}\n${splitContent}${endString}`;
+					}
+				}
+
+				updateBlockAttributes(clientId, { content: newContent });
+				if (newFormatValue && !isEmpty(newFormatValue))
+					sendFormatValue(newFormatValue, clientId);
+
+				// Ensures caret ends on correct place
+				const { start, end } = newFormatValue || {
+					start: getSelectionStart().offset,
+					end: getSelectionEnd().offset,
+				};
+				const needPlus =
+					newFormatValue?.text.length ?? newContent.length === end
+						? 1
+						: 0;
+
+				selectionChange(clientId, 'content', start + needPlus, end);
+
+				return [{}];
+			},
 		},
 	],
 };

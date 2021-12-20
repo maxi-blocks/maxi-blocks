@@ -104,21 +104,7 @@ const onMerge = (props, forward) => {
 	}
 };
 
-export const onSplit = (value, isOriginal, clientId) => {
-	const currentBlock = getBlock(clientId);
-
-	if (isOriginal) {
-		currentBlock.attributes.content = value;
-
-		return null;
-	}
-
-	currentBlock.attributes.content += `\n${value}`;
-
-	return currentBlock;
-};
-
-export const onReplaceBlocks = (blocks, clientId, oldContent) => {
+export const onReplaceBlocks = (blocks, clientId) => {
 	const currentBlockIndex = findIndex(blocks, { clientId });
 	const currentBlockExists = currentBlockIndex >= 0;
 	const currentBlock = getBlock(clientId);

@@ -3,7 +3,6 @@
  * WordPress dependencies
  */
 import { compose } from '@wordpress/compose';
-import { createBlock } from '@wordpress/blocks';
 import { withSelect, dispatch } from '@wordpress/data';
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import {
@@ -22,11 +21,16 @@ import MaxiBlock, {
 } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import onMerge, { onSplit, onReplaceBlocks } from './utils';
+import onMerge, { onReplaceBlocks } from './utils';
 import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, compact, flatten } from 'lodash';
 
 /**
  * Content
@@ -50,7 +54,6 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			clientId,
 			isSelected,
-			name,
 			onRemove,
 			onReplace,
 			setAttributes,
@@ -157,30 +160,30 @@ class edit extends MaxiBlockComponent {
 						value={content}
 						onChange={processContent}
 						tagName={textLevel}
-						onSplit={(value, isOriginal) =>
-							onSplit(value, isOriginal, clientId)
-						}
+						// Needs to stay: if there's no `onSplit` function, `onReplace` function
+						// is not called when pasting content with blocks; is called with plainText
+						// Check `packages/block-editor/src/components/rich-text/use-enter.js` on Gutenberg
+						onSplit={() => null}
 						onReplace={(blocks, indexToSelect, initialPosition) => {
+							if (
+								!blocks ||
+								isEmpty(compact(blocks)) ||
+								flatten(blocks).every(block => isEmpty(block))
+							)
+								return;
+
 							const { blocks: cleanBlocks } = onReplaceBlocks(
 								blocks,
 								clientId,
 								content
 							);
 
-							onReplace(
-								cleanBlocks,
-								indexToSelect,
-								initialPosition
-							);
-
-							// Ensures caret position
-							const { start, end } = this.formatValue;
-							dispatch('core/block-editor').selectionChange(
-								clientId,
-								'content',
-								start + 1,
-								end + 1
-							);
+							if (!isEmpty(compact(cleanBlocks)))
+								onReplace(
+									cleanBlocks,
+									indexToSelect,
+									initialPosition
+								);
 						}}
 						onMerge={forward => onMerge(this.props, forward)}
 						__unstableEmbedURLOnPaste
@@ -198,23 +201,31 @@ class edit extends MaxiBlockComponent {
 						tagName={typeOfList}
 						onChange={processContent}
 						value={content}
-						onSplit={value => {
-							if (!value) {
-								return createBlock(name, {
-									...this.props.attributes,
-									isList: false,
-								});
-							}
+						// Needs to stay: if there's no `onSplit` function, `onReplace` function
+						// is not called when pasting content with blocks; is called with plainText
+						// Check `packages/block-editor/src/components/rich-text/use-enter.js` on Gutenberg
+						onSplit={() => null}
+						onReplace={(blocks, indexToSelect, initialPosition) => {
+							if (
+								!blocks ||
+								isEmpty(compact(blocks)) ||
+								flatten(blocks).every(block => isEmpty(block))
+							)
+								return;
 
-							return createBlock(name, {
-								...this.props.attributes,
-								content: value,
-							});
+							const { blocks: cleanBlocks } = onReplaceBlocks(
+								blocks,
+								clientId,
+								content
+							);
+
+							if (!isEmpty(compact(cleanBlocks)))
+								onReplace(
+									cleanBlocks,
+									indexToSelect,
+									initialPosition
+								);
 						}}
-						__unstableOnSplitMiddle={() =>
-							createBlock('maxi-blocks/text-maxi')
-						}
-						onReplace={blocks => onReplace(this.props, blocks)}
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
 						start={listStart}

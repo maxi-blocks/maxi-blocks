@@ -237,7 +237,6 @@ const SVGLayer = props => {
 							breakpoint={breakpoint}
 						/>
 					)}
-					{/* <ResponsiveTabsControl breakpoint={breakpoint}> */}
 					<SVGLayerContent
 						SVGOptions={SVGOptions}
 						onChange={onChange}
@@ -246,7 +245,6 @@ const SVGLayer = props => {
 						isLayer={isLayer}
 						breakpoint={breakpoint}
 					/>
-					{/* </ResponsiveTabsControl> */}
 				</>
 			)}
 		</>

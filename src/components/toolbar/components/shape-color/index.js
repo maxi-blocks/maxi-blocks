@@ -35,11 +35,11 @@ const ShapeColor = props => {
 				<div
 					className='toolbar-item__icon'
 					style={{
-						background: props['shape-palette-fill-color-status']
+						background: props['shape-fill-palette-status']
 							? getColorRGBAString({
-									firstVar: `color-${props['shape-palette-fill-color']}`,
+									firstVar: `color-${props['shape-fill-palette-color']}`,
 									opacity:
-										props['shape-palette-fill-opacity'],
+										props['shape-fill-palette-opacity'],
 									blockStyle: getBlockStyle(clientId),
 							  })
 							: props['shape-fill-color'],
@@ -53,13 +53,13 @@ const ShapeColor = props => {
 					label={__('Shape', 'maxi-blocks')}
 					color={props['shape-fill-color']}
 					defaultColor={getDefaultAttribute('shape-fill-color')}
-					paletteColor={props['shape-palette-fill-color']}
-					paletteStatus={props['shape-palette-fill-color-status']}
+					paletteColor={props['shape-fill-palette-color']}
+					paletteStatus={props['shape-fill-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
 							'shape-fill-color': color,
-							'shape-palette-fill-color': paletteColor,
-							'shape-palette-fill-color-status': paletteStatus,
+							'shape-fill-palette-color': paletteColor,
+							'shape-fill-palette-status': paletteStatus,
 						});
 					}}
 					disableOpacity

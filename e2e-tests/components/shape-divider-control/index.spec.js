@@ -77,7 +77,7 @@ describe('ShapeDividerControl', () => {
 		);
 
 		expect(
-			await getAttributes('shape-divider-palette-top-color')
+			await getAttributes('shape-divider-top-palette-color')
 		).toStrictEqual(4);
 
 		// divider height

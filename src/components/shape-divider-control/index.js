@@ -243,6 +243,7 @@ const ShapeDividerControl = props => {
 												<button
 													className='maxi-shapedividercontrol__shape-selector__display'
 													onClick={onToggle}
+													type='button'
 												>
 													{showShapes('top')}
 												</button>
@@ -292,12 +293,12 @@ const ShapeDividerControl = props => {
 											)}
 											paletteColor={
 												props[
-													'shape-divider-palette-top-color'
+													'shape-divider-top-palette-color'
 												]
 											}
 											paletteStatus={
 												props[
-													'shape-divider-palette-top-color-status'
+													'shape-divider-top-palette-status'
 												]
 											}
 											onChange={({
@@ -308,9 +309,9 @@ const ShapeDividerControl = props => {
 												onChange({
 													'shape-divider-top-color':
 														color,
-													'shape-divider-palette-top-color':
+													'shape-divider-top-palette-color':
 														paletteColor,
-													'shape-divider-palette-top-color-status':
+													'shape-divider-top-palette-status':
 														paletteStatus,
 												})
 											}
@@ -413,6 +414,7 @@ const ShapeDividerControl = props => {
 												<button
 													className='maxi-shapedividercontrol__shape-selector__display'
 													onClick={onToggle}
+													type='button'
 												>
 													{showShapes('bottom')}
 												</button>
@@ -464,12 +466,12 @@ const ShapeDividerControl = props => {
 											)}
 											paletteColor={
 												props[
-													'shape-divider-palette-bottom-color'
+													'shape-divider-bottom-palette-color'
 												]
 											}
 											paletteStatus={
 												props[
-													'shape-divider-palette-bottom-color-status'
+													'shape-divider-bottom-palette-status'
 												]
 											}
 											onChange={({
@@ -480,9 +482,9 @@ const ShapeDividerControl = props => {
 												onChange({
 													'shape-divider-bottom-color':
 														color,
-													'shape-divider-palette-bottom-color':
+													'shape-divider-bottom-palette-color':
 														paletteColor,
-													'shape-divider-palette-bottom-color-status':
+													'shape-divider-bottom-palette-status':
 														paletteStatus,
 												})
 											}

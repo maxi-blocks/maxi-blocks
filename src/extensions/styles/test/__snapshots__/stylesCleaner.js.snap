@@ -18,10 +18,6 @@ Object {
         "box-shadow": "0px 0px 0px 0px var(--maxi-light-color-1)",
       },
     },
-    "margin": Object {},
-    "opacity": Object {},
-    "padding": Object {},
-    "size": Object {},
   },
   " .maxi-container-arrow": Object {
     "shadow": Object {
@@ -29,10 +25,6 @@ Object {
         "filter": "drop-shadow(0px 0px 0px var(--maxi-light-color-1))",
       },
     },
-  },
-  " .maxi-container-arrow .maxi-container-arrow--content": Object {},
-  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
-    "background": Object {},
   },
   " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
@@ -77,24 +69,6 @@ Object {
     },
     "size": Object {
       "general": Object {
-        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
-      },
-      "l": Object {
-        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
-      },
-      "m": Object {
-        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
-      },
-      "s": Object {
-        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
-      },
-      "xl": Object {
-        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
-      },
-      "xs": Object {
-        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
-      },
-      "xxl": Object {
         "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
       },
     },

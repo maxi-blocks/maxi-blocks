@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-// import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
 import {
@@ -204,6 +203,9 @@ const SVGLayer = props => {
 	const isLayerHover = SVGOptions.isHover;
 
 	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];
+
+	console.log('SVGOptions');
+	console.log(SVGOptions);
 
 	return (
 		<>

@@ -45,6 +45,7 @@ describe('TextMaxi', () => {
 
 	it('Test Text Maxi on pressing enter', async () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
@@ -55,7 +56,9 @@ describe('TextMaxi', () => {
 
 	it('Test Text Maxi split', async () => {
 		await page.keyboard.type('Testing Text Maxi...onSplit', { delay: 100 });
+		await page.waitForTimeout(150);
 		await pressKeyTimes('ArrowLeft', '7');
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 

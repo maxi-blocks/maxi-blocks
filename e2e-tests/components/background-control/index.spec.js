@@ -1025,7 +1025,7 @@ describe('BackgroundControl', () => {
 			selector => selector[0].value
 		);
 
-		expect(baseBackgroundShapeSize).toStrictEqual('22');
+		expect(baseBackgroundShapeSize).toStrictEqual('23');
 
 		// size
 		const sizeInput = await page.$$(
@@ -1072,7 +1072,7 @@ describe('BackgroundControl', () => {
 			selector => selector[0].value
 		);
 
-		expect(mBackgroundShapeSize).toStrictEqual('22');
+		expect(mBackgroundShapeSize).toStrictEqual('77');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

@@ -235,17 +235,29 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
-		const selectMaxiTextP = await selectMaxiTextDiv.$(
-			'.block-editor-rich-text__editable'
-		);
-		await selectMaxiTextP.focus();
+		await page.keyboard.press('Escape');
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.toolbar-item__text-link');
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.waitForTimeout(150);
 
-		await page.waitForSelector('a.components-external-link');
+		await page
+			.waitForSelector('a.components-external-link')
+			.catch(async () => {
+				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const selectMaxiTextP = await selectMaxiTextDiv.$(
+					'.block-editor-rich-text__editable'
+				);
+				await selectMaxiTextP.focus();
+				await page.waitForTimeout(150);
+				await page.waitForSelector('.toolbar-item__text-link');
+				await page.$eval('.toolbar-item__text-link', button =>
+					button.click()
+				);
+				await page.waitForTimeout(150);
+
+				await page.waitForSelector('a.components-external-link');
+			});
 
 		const isLinkModifiable = await page.$eval(
 			'a.components-external-link',
@@ -272,6 +284,24 @@ describe('TextMaxi', () => {
 		await selectMaxiTextP.focus();
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
+		await page
+			.waitForSelector('.toolbar-popover-link-destroyer')
+			.catch(async () => {
+				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const selectMaxiTextP = await selectMaxiTextDiv.$(
+					'.block-editor-rich-text__editable'
+				);
+				await selectMaxiTextP.focus();
+				await page.waitForTimeout(150);
+				await page.waitForSelector('.toolbar-item__text-link');
+				await page.$eval('.toolbar-item__text-link', button =>
+					button.click()
+				);
+				await page.waitForTimeout(150);
+
+				await page.waitForSelector('.toolbar-popover-link-destroyer');
+			});
+
 		await page.$eval('.toolbar-popover-link-destroyer', button =>
 			button.click()
 		);
@@ -414,7 +444,31 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
-		await page.waitForSelector('.toolbar-popover-link-destroyer');
+		await page
+			.waitForSelector('.toolbar-popover-link-destroyer')
+			.catch(async () => {
+				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const selectMaxiTextP = await selectMaxiTextDiv.$(
+					'.block-editor-rich-text__editable'
+				);
+				await selectMaxiTextP.focus();
+				await page.waitForTimeout(150);
+				await pressKeyTimes('ArrowLeft', 5);
+				await page.waitForTimeout(150);
+				await pressKeyWithModifier('shift', 'ArrowLeft');
+				await pressKeyWithModifier('shift', 'ArrowLeft');
+				await pressKeyWithModifier('shift', 'ArrowLeft');
+				await pressKeyWithModifier('shift', 'ArrowLeft');
+				await page.waitForTimeout(150);
+				await page.waitForSelector('.toolbar-item__text-link');
+				await page.$eval('.toolbar-item__text-link', button =>
+					button.click()
+				);
+				await page.waitForTimeout(150);
+
+				await page.waitForSelector('.toolbar-popover-link-destroyer');
+			});
+
 		await page.$eval('.toolbar-popover-link-destroyer', button =>
 			button.click()
 		);

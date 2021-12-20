@@ -77,9 +77,11 @@ const SVGLayerContent = props => {
 						content: (
 							<AxisControl
 								{...SVGOptions}
+								label='Position'
 								target='background-svg-position'
 								breakpoint={isGeneral ? 'general' : breakpoint}
 								onChange={obj => onChange(obj)}
+								type='position'
 								optionType='string'
 							/>
 						),

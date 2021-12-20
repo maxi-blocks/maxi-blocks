@@ -195,8 +195,11 @@ describe('Image Maxi', () => {
 		for (let i = 0; i < shadowStyles.length; i += 1) {
 			const setting = shadowStyles[i];
 
+			await page.waitForSelector(
+				'.maxi-typography-control__text-shadow .maxi-default-styles-control button'
+			);
 			await accordionPanel.$$eval(
-				'.maxi-textshadow-control.maxi-typography-control__text-shadow .maxi-default-styles-control button',
+				'.maxi-typography-control__text-shadow .maxi-default-styles-control button',
 				(buttons, i) => buttons[i].click(),
 				i
 			);

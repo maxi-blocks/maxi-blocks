@@ -1,25 +1,11 @@
-const rowPattern = {
-	'row-pattern-general': {
-		type: 'string',
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+
+const rowPattern = breakpointAttributesCreator({
+	obj: {
+		'row-pattern': {
+			type: 'string',
+		},
 	},
-	'row-pattern-xxl': {
-		type: 'string',
-	},
-	'row-pattern-xl': {
-		type: 'string',
-	},
-	'row-pattern-l': {
-		type: 'string',
-	},
-	'row-pattern-m': {
-		type: 'string',
-	},
-	'row-pattern-s': {
-		type: 'string',
-	},
-	'row-pattern-xs': {
-		type: 'string',
-	},
-};
+});
 
 export default rowPattern;

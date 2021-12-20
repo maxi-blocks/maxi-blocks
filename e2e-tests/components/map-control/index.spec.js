@@ -112,7 +112,7 @@ describe('MapControl', () => {
 		);
 
 		expect(
-			await getAttributes('map-marker-palette-text-color')
+			await getAttributes('map-marker-text-palette-color')
 		).toStrictEqual(5);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

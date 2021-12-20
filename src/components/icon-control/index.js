@@ -289,7 +289,7 @@ const IconControl = props => {
 									}
 									paletteStatus={
 										props[
-											`icon-palette-color-status${
+											`icon-palette-status${
 												isHover ? '-hover' : ''
 											}`
 										]
@@ -307,7 +307,7 @@ const IconControl = props => {
 											[`icon-palette-color${
 												isHover ? '-hover' : ''
 											}`]: paletteColor,
-											[`icon-palette-color-status${
+											[`icon-palette-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
 											[`icon-palette-opacity${
@@ -373,7 +373,7 @@ const IconControl = props => {
 								<ColorControl
 									label={__('Icon background', 'maxi-blocks')}
 									paletteStatus={getLastBreakpointAttribute(
-										'icon-background-palette-color-status',
+										'icon-background-palette-status',
 										breakpoint,
 										props,
 										isHover
@@ -412,7 +412,7 @@ const IconControl = props => {
 									}) => {
 										onChange({
 											[getAttributeKey(
-												'background-palette-color-status',
+												'background-palette-status',
 												isHover,
 												'icon-',
 												breakpoint

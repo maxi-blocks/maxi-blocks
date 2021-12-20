@@ -195,9 +195,9 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 
-		expect(
-			await getAttributes('palette-color-status-general')
-		).toStrictEqual(true);
+		expect(await getAttributes('palette-status-general')).toStrictEqual(
+			true
+		);
 
 		// s
 		await changeResponsive(page, 's');
@@ -207,9 +207,7 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		expect(await getAttributes('palette-color-status-s')).toStrictEqual(
-			false
-		);
+		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -219,9 +217,7 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		expect(await getAttributes('palette-color-status-s')).toStrictEqual(
-			false
-		);
+		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
 
 		// m
 		await changeResponsive(page, 'm');
@@ -230,9 +226,7 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		expect(await getAttributes('palette-color-status-s')).toStrictEqual(
-			false
-		);
+		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
 	});
 
 	it('Checking the Weight, Transform, Style and Decoration', async () => {

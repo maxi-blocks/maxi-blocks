@@ -220,12 +220,6 @@ const SVGLayer = props => {
 								`${prefix}background-svg-SVGElement`
 							];
 							delete SVGOptions[
-								`${prefix}background-svg-SVGMediaID`
-							];
-							delete SVGOptions[
-								`${prefix}background-svg-SVGMediaURL`
-							];
-							delete SVGOptions[
 								`${prefix}background-svg-SVGData`
 							];
 						}

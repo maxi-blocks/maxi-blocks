@@ -1,371 +1,67 @@
-export const border = {
-	'border-palette-color-status-general': {
-		type: 'boolean',
-		default: true,
-	},
-	'border-palette-color-general': {
-		type: 'number',
-		default: 2,
-	},
-	'border-palette-opacity-general': {
-		type: 'number',
-	},
-	'border-color-general': {
-		type: 'string',
-	},
-	'border-style-general': {
-		type: 'string',
-	},
-	'border-palette-color-status-xxl': {
-		type: 'boolean',
-	},
-	'border-palette-color-xxl': {
-		type: 'number',
-	},
-	'border-palette-opacity-xxl': {
-		type: 'number',
-	},
-	'border-color-xxl': {
-		type: 'string',
-	},
-	'border-style-xxl': {
-		type: 'string',
-	},
-	'border-palette-color-status-xl': {
-		type: 'boolean',
-	},
-	'border-palette-color-xl': {
-		type: 'number',
-	},
-	'border-palette-opacity-xl': {
-		type: 'number',
-	},
-	'border-color-xl': {
-		type: 'string',
-	},
-	'border-style-xl': {
-		type: 'string',
-	},
-	'border-palette-color-status-l': {
-		type: 'boolean',
-	},
-	'border-palette-color-l': {
-		type: 'number',
-	},
-	'border-palette-opacity-l': {
-		type: 'number',
-	},
-	'border-color-l': {
-		type: 'string',
-	},
-	'border-style-l': {
-		type: 'string',
-	},
-	'border-palette-color-status-m': {
-		type: 'boolean',
-	},
-	'border-palette-color-m': {
-		type: 'number',
-	},
-	'border-palette-opacity-m': {
-		type: 'number',
-	},
-	'border-color-m': {
-		type: 'string',
-	},
-	'border-style-m': {
-		type: 'string',
-	},
-	'border-palette-color-status-s': {
-		type: 'boolean',
-	},
-	'border-palette-color-s': {
-		type: 'number',
-	},
-	'border-palette-opacity-s': {
-		type: 'number',
-	},
-	'border-color-s': {
-		type: 'string',
-	},
-	'border-style-s': {
-		type: 'string',
-	},
-	'border-palette-color-status-xs': {
-		type: 'boolean',
-	},
-	'border-palette-color-xs': {
-		type: 'number',
-	},
-	'border-palette-opacity-xs': {
-		type: 'number',
-	},
-	'border-color-xs': {
-		type: 'string',
-	},
-	'border-style-xs': {
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
+const prefix = 'border-';
+
+export const rawBorder = {
+	...paletteAttributesCreator({ prefix, palette: 2 }),
+	'border-style': {
 		type: 'string',
 	},
 };
 
-export const borderWidth = {
-	'border-top-width-general': {
+export const rawBorderWidth = {
+	'border-top-width': {
 		type: 'number',
 	},
-	'border-right-width-general': {
+	'border-right-width': {
 		type: 'number',
 	},
-	'border-bottom-width-general': {
+	'border-bottom-width': {
 		type: 'number',
 	},
-	'border-left-width-general': {
+	'border-left-width': {
 		type: 'number',
 	},
-	'border-sync-width-general': {
+	'border-sync-width': {
 		type: 'string',
 		default: 'all',
 	},
-	'border-unit-width-general': {
+	'border-unit-width': {
 		type: 'string',
 		default: 'px',
-	},
-	'border-top-width-xxl': {
-		type: 'number',
-	},
-	'border-right-width-xxl': {
-		type: 'number',
-	},
-	'border-bottom-width-xxl': {
-		type: 'number',
-	},
-	'border-left-width-xxl': {
-		type: 'number',
-	},
-	'border-sync-width-xxl': {
-		type: 'string',
-	},
-	'border-unit-width-xxl': {
-		type: 'string',
-	},
-	'border-top-width-xl': {
-		type: 'number',
-	},
-	'border-right-width-xl': {
-		type: 'number',
-	},
-	'border-bottom-width-xl': {
-		type: 'number',
-	},
-	'border-left-width-xl': {
-		type: 'number',
-	},
-	'border-sync-width-xl': {
-		type: 'string',
-	},
-	'border-unit-width-xl': {
-		type: 'string',
-	},
-	'border-top-width-l': {
-		type: 'number',
-	},
-	'border-right-width-l': {
-		type: 'number',
-	},
-	'border-bottom-width-l': {
-		type: 'number',
-	},
-	'border-left-width-l': {
-		type: 'number',
-	},
-	'border-sync-width-l': {
-		type: 'string',
-	},
-	'border-unit-width-l': {
-		type: 'string',
-	},
-	'border-top-width-m': {
-		type: 'number',
-	},
-	'border-right-width-m': {
-		type: 'number',
-	},
-	'border-bottom-width-m': {
-		type: 'number',
-	},
-	'border-left-width-m': {
-		type: 'number',
-	},
-	'border-sync-width-m': {
-		type: 'string',
-	},
-	'border-unit-width-m': {
-		type: 'string',
-	},
-	'border-top-width-s': {
-		type: 'number',
-	},
-	'border-right-width-s': {
-		type: 'number',
-	},
-	'border-bottom-width-s': {
-		type: 'number',
-	},
-	'border-left-width-s': {
-		type: 'number',
-	},
-	'border-sync-width-s': {
-		type: 'string',
-	},
-	'border-unit-width-s': {
-		type: 'string',
-	},
-	'border-top-width-xs': {
-		type: 'number',
-	},
-	'border-right-width-xs': {
-		type: 'number',
-	},
-	'border-bottom-width-xs': {
-		type: 'number',
-	},
-	'border-left-width-xs': {
-		type: 'number',
-	},
-	'border-sync-width-xs': {
-		type: 'string',
-	},
-	'border-unit-width-xs': {
-		type: 'string',
 	},
 };
 
-export const borderRadius = {
-	'border-top-left-radius-general': {
+export const rawBorderRadius = {
+	'border-top-left-radius': {
 		type: 'number',
 	},
-	'border-top-right-radius-general': {
+	'border-top-right-radius': {
 		type: 'number',
 	},
-	'border-bottom-right-radius-general': {
+	'border-bottom-right-radius': {
 		type: 'number',
 	},
-	'border-bottom-left-radius-general': {
+	'border-bottom-left-radius': {
 		type: 'number',
 	},
-	'border-sync-radius-general': {
+	'border-sync-radius': {
 		type: 'string',
 		default: 'all',
 	},
-	'border-unit-radius-general': {
+	'border-unit-radius': {
 		type: 'string',
 		default: 'px',
 	},
-	'border-top-left-radius-xxl': {
-		type: 'number',
-	},
-	'border-top-right-radius-xxl': {
-		type: 'number',
-	},
-	'border-bottom-right-radius-xxl': {
-		type: 'number',
-	},
-	'border-bottom-left-radius-xxl': {
-		type: 'number',
-	},
-	'border-sync-radius-xxl': {
-		type: 'string',
-	},
-	'border-unit-radius-xxl': {
-		type: 'string',
-	},
-	'border-top-left-radius-xl': {
-		type: 'number',
-	},
-	'border-top-right-radius-xl': {
-		type: 'number',
-	},
-	'border-bottom-right-radius-xl': {
-		type: 'number',
-	},
-	'border-bottom-left-radius-xl': {
-		type: 'number',
-	},
-	'border-sync-radius-xl': {
-		type: 'string',
-	},
-	'border-unit-radius-xl': {
-		type: 'string',
-	},
-	'border-top-left-radius-l': {
-		type: 'number',
-	},
-	'border-top-right-radius-l': {
-		type: 'number',
-	},
-	'border-bottom-right-radius-l': {
-		type: 'number',
-	},
-	'border-bottom-left-radius-l': {
-		type: 'number',
-	},
-	'border-sync-radius-l': {
-		type: 'string',
-	},
-	'border-unit-radius-l': {
-		type: 'string',
-	},
-	'border-top-left-radius-m': {
-		type: 'number',
-	},
-	'border-top-right-radius-m': {
-		type: 'number',
-	},
-	'border-bottom-right-radius-m': {
-		type: 'number',
-	},
-	'border-bottom-left-radius-m': {
-		type: 'number',
-	},
-	'border-sync-radius-m': {
-		type: 'string',
-	},
-	'border-unit-radius-m': {
-		type: 'string',
-	},
-	'border-top-left-radius-s': {
-		type: 'number',
-	},
-	'border-top-right-radius-s': {
-		type: 'number',
-	},
-	'border-bottom-right-radius-s': {
-		type: 'number',
-	},
-	'border-bottom-left-radius-s': {
-		type: 'number',
-	},
-	'border-sync-radius-s': {
-		type: 'string',
-	},
-	'border-unit-radius-s': {
-		type: 'string',
-	},
-	'border-top-left-radius-xs': {
-		type: 'number',
-	},
-	'border-top-right-radius-xs': {
-		type: 'number',
-	},
-	'border-bottom-right-radius-xs': {
-		type: 'number',
-	},
-	'border-bottom-left-radius-xs': {
-		type: 'number',
-	},
-	'border-sync-radius-xs': {
-		type: 'string',
-	},
-	'border-unit-radius-xs': {
-		type: 'string',
-	},
 };
+
+export const border = breakpointAttributesCreator({
+	obj: rawBorder,
+});
+export const borderWidth = breakpointAttributesCreator({
+	obj: rawBorderWidth,
+});
+export const borderRadius = breakpointAttributesCreator({
+	obj: rawBorderRadius,
+});

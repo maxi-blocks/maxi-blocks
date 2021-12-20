@@ -86,7 +86,7 @@ const getBoxShadowStyles = ({
 
 		// Palette
 		const paletteStatus = getLastBreakpointAttribute(
-			`${prefix}box-shadow-palette-color-status`,
+			`${prefix}box-shadow-palette-status`,
 			breakpoint,
 			obj,
 			isHover

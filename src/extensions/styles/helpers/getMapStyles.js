@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
@@ -14,39 +15,19 @@ const getMapStyles = (obj, target, parentBlockStyle) => {
 		general: {},
 	};
 
-	if (target === 'title') {
-		if (
-			!obj['map-marker-palette-text-color-status'] &&
-			!isNil(obj['map-marker-text-color'])
-		)
-			response.general.color = obj['map-marker-text-color'];
-		else if (
-			obj['map-marker-palette-text-color-status'] &&
-			obj['map-marker-palette-text-color']
-		)
-			response.general.color = getColorRGBAString({
-				firstVar: `color-${obj['map-marker-palette-text-color']}`,
-				opacity: obj['map-marker-palette-text-opacity'],
-				blockStyle: parentBlockStyle,
-			});
-	}
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj,
+			prefix: `map-marker-${target}-`,
+		});
 
-	if (target === 'address') {
-		if (
-			!obj['map-marker-palette-address-color-status'] &&
-			!isNil(obj['map-marker-address-color'])
-		)
-			response.general.color = obj['map-marker-address-color'];
-		else if (
-			obj['map-marker-palette-address-color-status'] &&
-			obj['map-marker-palette-address-color']
-		)
-			response.general.color = getColorRGBAString({
-				firstVar: `color-${obj['map-marker-palette-address-color']}`,
-				opacity: obj['map-marker-palette-address-opacity'],
-				blockStyle: parentBlockStyle,
-			});
-	}
+	if (!paletteStatus && !isNil(color)) response.general.color = color;
+	else if (paletteStatus && paletteColor)
+		response.general.color = getColorRGBAString({
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
+			blockStyle: parentBlockStyle,
+		});
 
 	return response;
 };

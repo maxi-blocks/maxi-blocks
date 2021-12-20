@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { getPrefixedAttributes } from '../../extensions/styles';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -19,7 +19,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.svg,
 	customLabel: {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),
@@ -33,8 +32,8 @@ const attributes = {
 	},
 	content: {
 		type: 'string',
-		default: '',
 	},
+	...attributesData.svg,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -42,16 +41,22 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...getPrefixedAttributes(attributesData.border, prefix),
-	...getPrefixedAttributes(attributesData.borderHover, prefix),
-	...getPrefixedAttributes(attributesData.borderRadius, prefix),
-	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
-	...getPrefixedAttributes(attributesData.borderWidth, prefix),
-	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
-	...getPrefixedAttributes(attributesData.boxShadow, prefix),
-	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
-	...getPrefixedAttributes(attributesData.margin, prefix),
-	...getPrefixedAttributes(attributesData.padding, prefix),
+	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderRadiusHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderWidthHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 
 	/**
 	 * Canvas styles
@@ -77,7 +82,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
-	...attributesData.motion,
+	...attributesData.scroll,
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,

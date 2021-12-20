@@ -16,9 +16,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
@@ -56,6 +54,7 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		const { isImageUrl } = this.props.attributes;
+
 		this.state = {
 			isExternalClass: isImageUrl,
 		};
@@ -231,7 +230,7 @@ class edit extends MaxiBlockComponent {
 				tagName='figure'
 				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MediaUpload
 					onSelect={media => {

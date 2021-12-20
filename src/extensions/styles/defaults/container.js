@@ -1,165 +1,60 @@
-/**
- * General
- */
-const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import prefixAttributesCreator from '../prefixAttributesCreator';
+import {
+	rawMaxWidth,
+	rawWidth,
+	rawMinWidth,
+	rawMaxHeight,
+	rawHeight,
+	rawMinHeight,
+} from './size';
 
-const container = (() => {
-	let response = {};
-	breakpoints.forEach(breakpoint => {
-		response = {
-			...response,
-			[`container-min-width-unit-${breakpoint}`]: {
-				type: 'string',
-			},
-			[`container-min-width-${breakpoint}`]: {
-				type: 'number',
-			},
-			[`container-max-height-unit-${breakpoint}`]: {
-				type: 'string',
-			},
-			[`container-max-height-${breakpoint}`]: {
-				type: 'number',
-			},
-			[`container-height-unit-${breakpoint}`]: {
-				type: 'string',
-			},
-			[`container-height-${breakpoint}`]: {
-				type: 'number',
-			},
-			[`container-min-height-unit-${breakpoint}`]: {
-				type: 'string',
-			},
-			[`container-min-height-${breakpoint}`]: {
-				type: 'number',
-			},
-		};
-	});
+const prefix = 'container-';
 
-	response = {
-		...response,
-		'container-size-advanced-options': {
-			type: 'boolean',
-			default: false,
+const rawContainer = {
+	'container-size-advanced-options': {
+		type: 'boolean',
+		default: false,
+	},
+	...prefixAttributesCreator({
+		prefix,
+		obj: {
+			...rawMaxWidth,
+			...rawWidth,
+			...rawMinWidth,
+			...rawMaxHeight,
+			...rawHeight,
+			...rawMinHeight,
 		},
-		'container-min-width-unit-general': {
-			type: 'string',
-			default: 'px',
-		},
-		'container-min-width-general': {
-			type: 'number',
-		},
-		'container-max-height-unit-general': {
-			type: 'string',
-			default: 'px',
-		},
-		'container-max-height-general': {
-			type: 'number',
-		},
-		'container-height-unit-general': {
-			type: 'string',
-			default: 'px',
-		},
-		'container-height-general': {
-			type: 'number',
-		},
-		'container-min-height-unit-general': {
-			type: 'string',
-			default: 'px',
-		},
-		'container-min-height-general': {
-			type: 'number',
-		},
-		'container-max-width-general': {
-			type: 'number',
-			default: 1170,
-		},
-		'container-max-width-xxl': {
-			type: 'number',
-			default: 1790,
-		},
-		'container-max-width-xl': {
-			type: 'number',
-			default: 1170,
-		},
-		'container-max-width-l': {
-			type: 'number',
-			default: 90,
-		},
-		'container-max-width-m': {
-			type: 'number',
-			default: 90,
-		},
-		'container-max-width-s': {
-			type: 'number',
-			default: 90,
-		},
-		'container-max-width-xs': {
-			type: 'number',
-			default: 90,
-		},
-		'container-max-width-unit-general': {
-			type: 'number',
-			default: 'px',
-		},
-		'container-max-width-unit-xxl': {
-			type: 'number',
-			default: 'px',
-		},
-		'container-max-width-unit-xl': {
-			type: 'number',
-			default: 'px',
-		},
-		'container-max-width-unit-l': {
-			type: 'number',
-			default: '%',
-		},
-		'container-max-width-unit-m': {
-			type: 'number',
-			default: '%',
-		},
-		'container-max-width-unit-s': {
-			type: 'number',
-			default: '%',
-		},
-		'container-max-width-unit-xs': {
-			type: 'number',
-			default: '%',
-		},
-		'container-width-l': {
-			type: 'number',
-			default: 1170,
-		},
-		'container-width-unit-l': {
-			type: 'number',
-			default: 'px',
-		},
-		'container-width-m': {
-			type: 'number',
-			default: 1000,
-		},
-		'container-width-unit-m': {
-			type: 'number',
-			default: 'px',
-		},
-		'container-width-s': {
-			type: 'number',
-			default: 700,
-		},
-		'container-width-unit-s': {
-			type: 'number',
-			default: 'px',
-		},
-		'container-width-xs': {
-			type: 'number',
-			default: 460,
-		},
-		'container-width-unit-xs': {
-			type: 'number',
-			default: 'px',
-		},
-	};
+		diffValAttr: { 'container-max-width': 1170 },
+	}),
+};
 
-	return response;
-})();
+const container = breakpointAttributesCreator({
+	obj: rawContainer,
+	noBreakpointAttr: ['container-size-advanced-options'],
+	diffValAttr: {
+		'container-max-width-xxl': 1790,
+		'container-max-width-xl': 1170,
+		'container-max-width-l': 90,
+		'container-max-width-m': 90,
+		'container-max-width-s': 90,
+		'container-max-width-xs': 90,
+		'container-max-width-unit-xxl': 'px',
+		'container-max-width-unit-xl': 'px',
+		'container-max-width-unit-l': '%',
+		'container-max-width-unit-m': '%',
+		'container-max-width-unit-s': '%',
+		'container-max-width-unit-xs': '%',
+		'container-width-l': 1170,
+		'container-width-m': 1000,
+		'container-width-s': 700,
+		'container-width-xs': 460,
+		'container-width-unit-l': 'px',
+		'container-width-unit-m': 'px',
+		'container-width-unit-s': 'px',
+		'container-width-unit-xs': 'px',
+	},
+});
 
 export default container;

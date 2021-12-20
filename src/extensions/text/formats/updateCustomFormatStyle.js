@@ -85,7 +85,7 @@ export const styleObjectManipulator = ({
 
 	// Ensures palette color is cleaned to avoid unnecessary Custom Formats
 	if (
-		isNil(style[`palette-color-status-${breakpoint}`]) &&
+		isNil(style[`palette-status-${breakpoint}`]) &&
 		!isEmpty(style[`color-${breakpoint}`])
 	)
 		delete style[`color-${breakpoint}`];

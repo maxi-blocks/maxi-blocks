@@ -51,7 +51,6 @@ const HoverPreview = props => {
 			target.style.transform = '';
 			target.style.marginLeft = '';
 			target.style.filter = '';
-			target.style.transitionDuration = `${hoverTransitionDuration}s`;
 			target.style.transitionTimingFunction = `${
 				hoverTransitionEasing !== 'cubic-bezier'
 					? hoverTransitionEasing

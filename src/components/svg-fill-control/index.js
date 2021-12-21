@@ -189,60 +189,65 @@ const SVGFillControl = props => {
 							</ResponsiveTabsControl>
 						),
 					},
-					{
+					(!isHover || getSVGHasImage(SVGElement)) && {
 						label: __('Image', 'maxi-blocks'),
 						content: (
 							<>
-								<MediaUploaderControl
-									allowedTypes={['image']}
-									mediaID={value.imageID}
-									onSelectImage={imageData => {
-										SVGData[id].imageID = imageData.id;
-										SVGData[id].imageURL = imageData.url;
-										const resEl = injectImgSVG(
-											SVGElement,
-											SVGData
-										);
+								{!isHover && (
+									<MediaUploaderControl
+										allowedTypes={['image']}
+										mediaID={value.imageID}
+										onSelectImage={imageData => {
+											SVGData[id].imageID = imageData.id;
+											SVGData[id].imageURL =
+												imageData.url;
+											const resEl = injectImgSVG(
+												SVGElement,
+												SVGData
+											);
 
-										onChange({
-											'background-svg-SVGElement':
-												resEl.outerHTML,
-											'background-svg-SVGData': SVGData,
-											'background-svg-palette-color':
-												props.SVGOptions[
-													'background-svg-palette-color'
-												],
-											'background-svg-palette-status':
-												props.SVGOptions[
-													'background-svg-palette-status'
-												],
-										});
-									}}
-									onRemoveImage={() => {
-										SVGData[id].imageID = '';
-										SVGData[id].imageURL = '';
+											onChange({
+												'background-svg-SVGElement':
+													resEl.outerHTML,
+												'background-svg-SVGData':
+													SVGData,
+												'background-svg-palette-color':
+													props.SVGOptions[
+														'background-svg-palette-color'
+													],
+												'background-svg-palette-status':
+													props.SVGOptions[
+														'background-svg-palette-status'
+													],
+											});
+										}}
+										onRemoveImage={() => {
+											SVGData[id].imageID = '';
+											SVGData[id].imageURL = '';
 
-										const resEl = injectImgSVG(
-											SVGElement,
-											SVGData,
-											true
-										);
+											const resEl = injectImgSVG(
+												SVGElement,
+												SVGData,
+												true
+											);
 
-										onChange({
-											'background-svg-SVGElement':
-												resEl.outerHTML,
-											'background-svg-SVGData': SVGData,
-											'background-svg-palette-color':
-												props.SVGOptions[
-													'background-svg-palette-color'
-												],
-											'background-svg-palette-status':
-												props.SVGOptions[
-													'background-svg-palette-status'
-												],
-										});
-									}}
-								/>
+											onChange({
+												'background-svg-SVGElement':
+													resEl.outerHTML,
+												'background-svg-SVGData':
+													SVGData,
+												'background-svg-palette-color':
+													props.SVGOptions[
+														'background-svg-palette-color'
+													],
+												'background-svg-palette-status':
+													props.SVGOptions[
+														'background-svg-palette-status'
+													],
+											});
+										}}
+									/>
+								)}
 								{getSVGHasImage(SVGElement) && (
 									<ResponsiveTabsControl
 										breakpoint={breakpoint}

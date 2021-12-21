@@ -227,15 +227,13 @@ const SVGLayer = props => {
 			)}
 			{!isEmpty(SVGElement) && (
 				<>
-					{(!isHover || (isHover && isLayerHover)) && (
-						<SVGFillControl
-							SVGOptions={SVGOptions}
-							onChange={obj => onChange(obj)}
-							clientId={clientId}
-							isHover={isHover}
-							breakpoint={breakpoint}
-						/>
-					)}
+					<SVGFillControl
+						SVGOptions={SVGOptions}
+						onChange={obj => onChange(obj)}
+						clientId={clientId}
+						isHover={isHover}
+						breakpoint={breakpoint}
+					/>
 					<SVGLayerContent
 						SVGOptions={SVGOptions}
 						onChange={onChange}

@@ -125,106 +125,108 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover': getHoverObject(props),
-			' > .maxi-container-block__container': getContainerObject(props),
-			' .maxi-shape-divider__top': {
-				shapeDivider: {
-					...getShapeDividerStyles(
-						{
-							...getGroupAttributes(props, 'shapeDivider'),
-						},
-						'top'
-					),
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+				' > .maxi-container-block__container':
+					getContainerObject(props),
+				' .maxi-shape-divider__top': {
+					shapeDivider: {
+						...getShapeDividerStyles(
+							{
+								...getGroupAttributes(props, 'shapeDivider'),
+							},
+							'top'
+						),
+					},
 				},
-			},
-			' .maxi-shape-divider__top svg': {
-				shapeDivider: {
-					...getShapeDividerSVGStyles(
-						{
-							...getGroupAttributes(props, ['shapeDivider']),
-						},
-						'top',
-						props.parentBlockStyle
-					),
+				' .maxi-shape-divider__top svg': {
+					shapeDivider: {
+						...getShapeDividerSVGStyles(
+							{
+								...getGroupAttributes(props, ['shapeDivider']),
+							},
+							'top',
+							props.parentBlockStyle
+						),
+					},
 				},
-			},
-			' .maxi-shape-divider__bottom': {
-				shapeDivider: {
-					...getShapeDividerStyles(
-						{
-							...getGroupAttributes(props, 'shapeDivider'),
-						},
-						'bottom'
-					),
+				' .maxi-shape-divider__bottom': {
+					shapeDivider: {
+						...getShapeDividerStyles(
+							{
+								...getGroupAttributes(props, 'shapeDivider'),
+							},
+							'bottom'
+						),
+					},
 				},
-			},
-			' .maxi-shape-divider__bottom svg': {
-				shapeDivider: {
-					...getShapeDividerSVGStyles(
-						{
-							...getGroupAttributes(props, ['shapeDivider']),
-						},
-						'bottom',
-						props.parentBlockStyle
-					),
+				' .maxi-shape-divider__bottom svg': {
+					shapeDivider: {
+						...getShapeDividerSVGStyles(
+							{
+								...getGroupAttributes(props, ['shapeDivider']),
+							},
+							'bottom',
+							props.parentBlockStyle
+						),
+					},
 				},
-			},
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, [
-					'blockBackground',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(
-					props,
-					[
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
 						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-					],
-					true
-				),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getArrowStyles({
-				...getGroupAttributes(props, [
-					'arrow',
-					'border',
-					'borderWidth',
-					'borderRadius',
-					'blockBackground',
-					'boxShadow',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getArrowStyles({
-				...getGroupAttributes(
-					props,
-					[
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(props, [
 						'arrow',
 						'border',
 						'borderWidth',
 						'borderRadius',
 						'blockBackground',
 						'boxShadow',
-					],
-					true
-				),
-				...getGroupAttributes(props, ['arrow']),
-				blockStyle: props.parentBlockStyle,
-				isHover: true,
-			}),
-		},
-		selectorsContainer,
-		props
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'arrow',
+							'border',
+							'borderWidth',
+							'borderRadius',
+							'blockBackground',
+							'boxShadow',
+						],
+						true
+					),
+					...getGroupAttributes(props, ['arrow']),
+					blockStyle: props.parentBlockStyle,
+					isHover: true,
+				}),
+			},
+			selectorsContainer,
+			props
 		),
 	};
 

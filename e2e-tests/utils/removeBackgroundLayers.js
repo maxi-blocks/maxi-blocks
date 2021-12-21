@@ -1,17 +1,6 @@
-import getClientId from './getClientId';
+import setAttributes from './setAttributes';
 
-const removeBackgroundLayers = async page => {
-	const clientId = await getClientId();
-
-	await page.evaluate(
-		(clientId, response) => {
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, response);
-		},
-		clientId,
-		{ 'background-layers': [] }
-	);
-};
+const removeBackgroundLayers = async page =>
+	setAttributes(page, { 'background-layers': [] });
 
 export default removeBackgroundLayers;

@@ -71,7 +71,7 @@ const Border = props => {
 								  ),
 						borderWidth: '1px',
 						borderColor: props[
-							`${prefix}border-palette-color-status-${breakpoint}`
+							`${prefix}border-palette-status-${breakpoint}`
 						]
 							? getColorRGBAString({
 									firstVal: `color-${

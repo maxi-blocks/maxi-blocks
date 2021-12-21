@@ -117,7 +117,7 @@ class Parallax {
 		// Scroll distance
 		let scrollDist = 0;
 
-		if (0 > speed) {
+		if (speed < 0) {
 			scrollDist = speed * Math.max(rawHeight, winHeight);
 
 			if (winHeight < rawHeight) {
@@ -130,9 +130,9 @@ class Parallax {
 		// Height
 		let height = rawHeight;
 
-		if (1 < speed) {
+		if (speed > 1) {
 			height = Math.abs(scrollDist - winHeight);
-		} else if (0 > speed) {
+		} else if (speed < 0) {
 			height = scrollDist / speed + Math.abs(scrollDist);
 		} else {
 			height += (winHeight - rawHeight) * (1 - speed);
@@ -146,7 +146,7 @@ class Parallax {
 		// Transform
 		const fromViewportCenter =
 			1 - 2 * ((winHeight - top) / (winHeight + rawHeight));
-		let positionY = scrollDist * fromViewportCenter;
+		const positionY = scrollDist * fromViewportCenter;
 
 		return `
 		 height: ${height}px;
@@ -164,7 +164,7 @@ class Parallax {
 		const { height: winHeight, width: winWidth } = this.winValues;
 
 		return (
-			0 <= bottom && 0 <= right && top <= winHeight && left <= winWidth
+			bottom >= 0 && right >= 0 && top <= winHeight && left <= winWidth
 		);
 	}
 
@@ -334,7 +334,7 @@ motionElems.forEach(function (elem) {
 
 			function startCounter() {
 				const interval = setInterval(() => {
-					count = count + 1;
+					count += 1;
 
 					if (count >= endCountValue) {
 						count = endCountValue;
@@ -365,9 +365,9 @@ motionElems.forEach(function (elem) {
 			}
 
 			if (startAnimation === 'view-scroll') {
-				let waypoint = new Waypoint({
+				const waypoint = new Waypoint({
 					element: numberCounterElem,
-					handler: function () {
+					handler() {
 						startCounter();
 					},
 					offset: '100%',
@@ -525,119 +525,6 @@ motionElems.forEach(function (elem) {
 				});
 			});
 		}
-
-		// Motion Effects
-		const interactionStatus = motionData['motion-status'];
-		const motionMobileStatus = motionData['motion-mobile-status'];
-		const motionTabletStatus = motionData['motion-tablet-status'];
-		const xAxis = motionData['motion-transform-origin-x'];
-		const yAxis = motionData['motion-transform-origin-y'];
-
-		/*
-		if (
-			!!interactionStatus &&
-			((!!motionMobileStatus && getDeviceType() === 'mobile') ||
-				(!!motionTabletStatus && getDeviceType() === 'tablet') ||
-				getDeviceType() === 'desktop')
-		) {
-			Object.entries(motionData['motion-time-line']).forEach(
-				([key, value], index, array) => {
-					let actions = {};
-					value.forEach(act => {
-						switch (act.type) {
-							case 'move':
-								actions = {
-									...actions,
-									x:
-										act.settings.unit !== ''
-											? `${act.settings.x}${act.settings.unitX}`
-											: act.settings.x,
-									y:
-										act.settings.unit !== ''
-											? `${act.settings.y}${act.settings.unitY}`
-											: act.settings.y,
-									z:
-										act.settings.unit !== ''
-											? `${act.settings.z}${act.settings.unitZ}`
-											: act.settings.z,
-									transformPerspective: 1000,
-									transformStyle: 'preserve-3d',
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-							case 'rotate':
-								actions = {
-									...actions,
-									rotationX: act.settings.x,
-									rotationY: act.settings.y,
-									rotationZ: act.settings.z,
-									transformPerspective: 1000,
-									transformStyle: 'preserve-3d',
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-
-							case 'scale':
-								actions = {
-									...actions,
-									scaleX: act.settings.x,
-									scaleY: act.settings.y,
-									scaleZ: act.settings.z,
-									transformPerspective: 1000,
-									transformStyle: 'preserve-3d',
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-							case 'skew':
-								actions = {
-									...actions,
-									skewX: act.settings.x,
-									skewY: act.settings.y,
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-							case 'opacity':
-								actions = {
-									...actions,
-									autoAlpha: act.settings.opacity,
-								};
-								break;
-							case 'blur':
-								actions = {
-									...actions,
-									webkitFilter:
-										'blur(' + act.settings.blur + 'px)',
-									filter: 'blur(' + act.settings.blur + 'px)',
-								};
-								break;
-							default:
-								return;
-						}
-					});
-
-					const startTime = Number(key);
-					const endTime = !!array[index + 1]
-						? Number(array[index + 1][0])
-						: null;
-
-					endTime !== null &&
-						ScrollTrigger.create({
-							trigger: document.body,
-							start: `${startTime}% ${startTime}%`,
-							end: `${endTime}% ${endTime}%`,
-							animation: gsap
-								.timeline({
-									paused: true,
-									reversed: true,
-								})
-								.to(`#${motionID}`, actions),
-							scrub: true,
-							markers: false,
-						});
-				}
-			);
-		}
-		*/
 	}
 });
 
@@ -701,7 +588,7 @@ videoPlayerElements.forEach(videoPlayerElement => {
 			);
 
 			if (vimeoIsMounted === -1) {
-				let script = document.createElement('script');
+				const script = document.createElement('script');
 				script.src = 'https://player.vimeo.com/api/player.js';
 				script.id = 'maxi-vimeo-sdk';
 				script.async = true;

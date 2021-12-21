@@ -28,7 +28,7 @@ const IconBackground = props => {
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
 	const getColor = attr =>
-		attr['icon-background-palette-color-status']
+		attr['icon-background-palette-status']
 			? getColorRGBAString({
 					firstVar: 'icon',
 					secondVar: `color-${attr['icon-background-palette-color']}`,
@@ -87,15 +87,12 @@ const IconBackground = props => {
 							'icon-background-color'
 						)}
 						paletteColor={props['icon-background-palette-color']}
-						paletteStatus={
-							props['icon-background-palette-color-status']
-						}
+						paletteStatus={props['icon-background-palette-status']}
 						onChange={({ color, paletteColor, paletteStatus }) => {
 							onChange({
 								'icon-background-color': color,
 								'icon-background-palette-color': paletteColor,
-								'icon-background-palette-color-status':
-									paletteStatus,
+								'icon-background-palette-status': paletteStatus,
 							});
 						}}
 					/>

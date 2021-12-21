@@ -2,6 +2,8 @@
  * WordPress dependencies
  */
 import { useState, useEffect } from '@wordpress/element';
+import { getBlockAttributes } from '@wordpress/blocks';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,10 +19,47 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import { getPropsFromChildren } from '../../extensions/styles';
 
 /**
  * Component
  */
+const getIsActiveTab = (attributes, breakpoint) => {
+	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
+
+	const block = getBlock(getSelectedBlockClientId());
+	const { name, attributes: currentAttributes } = block;
+
+	const defaultAttributes = getBlockAttributes(name);
+
+	const excludedAttributes = [
+		'blockStyle',
+		'parentBlockStyle',
+		'isFirstOnHierarchy',
+		'uniqueID',
+	];
+
+	return !attributes.every(attribute => {
+		if (excludedAttributes.includes(attribute)) return true;
+		if (!(attribute in defaultAttributes)) return true;
+		if (breakpoint) {
+			if (
+				attribute.lastIndexOf(`-${breakpoint}`) ===
+				attribute.length - `-${breakpoint}`.length
+			)
+				return (
+					currentAttributes[attribute] ===
+					defaultAttributes[attribute]
+				);
+		} else
+			return (
+				currentAttributes[attribute] === defaultAttributes[attribute]
+			);
+
+		return true;
+	});
+};
+
 const SettingTabsControl = props => {
 	const {
 		items,
@@ -30,7 +69,6 @@ const SettingTabsControl = props => {
 		returnValue,
 		callback,
 		target,
-		activeTabs = [],
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -68,7 +106,10 @@ const SettingTabsControl = props => {
 								key={`maxi-tabs-control__button-${item.label}`}
 								className={classnames(
 									'maxi-tabs-control__button',
-									activeTabs?.includes(item.label) &&
+									getIsActiveTab(
+										getPropsFromChildren(item),
+										item.breakpoint
+									) &&
 										'maxi-button-group-control__option--active'
 								)}
 								onClick={() => {

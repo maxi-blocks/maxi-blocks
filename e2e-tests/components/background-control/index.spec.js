@@ -994,15 +994,18 @@ describe('BackgroundControl', () => {
 		});
 
 		// size
-		await page.$$eval('.maxi-tabs-control button', sizeButton =>
-			sizeButton[1].click()
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
 		);
 
-		const sizeInput = await page.$$('.maxi-advanced-number-control input');
+		const sizeInput = await page.$$(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
+		);
 
 		await sizeInput[0].focus();
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('23');
+		await page.keyboard.type('22');
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -1012,19 +1015,22 @@ describe('BackgroundControl', () => {
 	it('Check Background shape layer hover responsive', async () => {
 		await changeResponsive(page, 's');
 
-		await page.$$eval('.maxi-tabs-control button', sizeButton =>
-			sizeButton[1].click()
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
 		);
 
 		const baseBackgroundShapeSize = await page.$$eval(
-			'.maxi-advanced-number-control input',
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
 			selector => selector[0].value
 		);
 
-		expect(baseBackgroundShapeSize).toStrictEqual('100');
+		expect(baseBackgroundShapeSize).toStrictEqual('22');
 
 		// size
-		const sizeInput = await page.$$('.maxi-advanced-number-control input');
+		const sizeInput = await page.$$(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
+		);
 
 		await sizeInput[0].focus();
 		await pressKeyWithModifier('primary', 'a');
@@ -1032,39 +1038,41 @@ describe('BackgroundControl', () => {
 
 		// expect S responsive
 		const sBackgroundShapeSize = await page.$$eval(
-			'.maxi-advanced-number-control input',
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
 			selector => selector[0].value
 		);
 
-		expect(sBackgroundShapeSize).toStrictEqual('100');
+		expect(sBackgroundShapeSize).toStrictEqual('12');
 
 		// expect XS responsive
 		await changeResponsive(page, 'xs');
 
-		await page.$$eval('.maxi-tabs-control button', sizeButton =>
-			sizeButton[1].click()
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
 		);
 
 		const xsBackgroundShapeSize = await page.$$eval(
-			'.maxi-advanced-number-control input',
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
 			selector => selector[0].value
 		);
 
-		expect(xsBackgroundShapeSize).toStrictEqual('100');
+		expect(xsBackgroundShapeSize).toStrictEqual('12');
 
 		// expect M responsive
 		await changeResponsive(page, 'm');
 
-		await page.$$eval('.maxi-tabs-control button', sizeButton =>
-			sizeButton[1].click()
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
 		);
 
 		const mBackgroundShapeSize = await page.$$eval(
-			'.maxi-advanced-number-control input',
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
 			selector => selector[0].value
 		);
 
-		expect(mBackgroundShapeSize).toStrictEqual('100');
+		expect(mBackgroundShapeSize).toStrictEqual('22');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

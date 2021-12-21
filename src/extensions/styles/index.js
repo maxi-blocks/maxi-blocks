@@ -9,6 +9,7 @@ export { default as getColorRGBAString } from './getColorRGBAString';
 export { default as getDefaultAttribute } from './getDefaultAttribute';
 export { default as getGroupAttributes } from './getGroupAttributes';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';
+export { default as getPropsFromChildren } from './getPropsFromChildren';
 export { default as paletteAttributesCreator } from './paletteAttributesCreator';
 export { default as prefixAttributesCreator } from './prefixAttributesCreator';
 export { default as getPaletteAttributes } from './getPaletteAttributes';

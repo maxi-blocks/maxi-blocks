@@ -82,101 +82,6 @@ const Inspector = memo(
 			);
 		};
 
-		const settingsAttr = {
-			...getGroupAttributes(attributes, [
-				'icon',
-				'alignment',
-				'typography',
-			]),
-			...getGroupAttributes(
-				attributes,
-				[
-					'size',
-					'marginPadding',
-					'background',
-					'border',
-					'boxShadow',
-					'marginPadding',
-				],
-				false,
-				'button-'
-			),
-			...getGroupAttributes(
-				attributes,
-				['icon', 'alignment', 'typography'],
-				true
-			),
-			...getGroupAttributes(
-				attributes,
-				[
-					'size',
-					'marginPadding',
-					'background',
-					'border',
-					'boxShadow',
-					'marginPadding',
-				],
-				true,
-				'button-'
-			),
-		};
-
-		const canvasAttr = {
-			...getGroupAttributes(attributes, [
-				'blockBackground',
-				'border',
-				'boxShadow',
-				'opacity',
-				'size',
-				'marginPadding',
-			]),
-			...getGroupAttributes(
-				attributes,
-				[
-					'blockBackground',
-					'border',
-					'boxShadow',
-					'opacity',
-					'size',
-					'marginPadding',
-				],
-				true
-			),
-		};
-		const advancedAttr = {
-			...getGroupAttributes(attributes, [
-				'customClasses',
-				'anchor',
-				'customCss',
-				'motion',
-				'transform',
-				'transition',
-				'display',
-				'position',
-				'responsive',
-				'overflow',
-				'zIndex',
-			]),
-		};
-
-		Object.keys(settingsAttr).forEach(key => {
-			if (settingsAttr[key] === undefined) delete settingsAttr[key];
-		});
-
-		Object.keys(canvasAttr).forEach(key => {
-			if (canvasAttr[key] === undefined) delete canvasAttr[key];
-		});
-
-		Object.keys(advancedAttr).forEach(key => {
-			if (advancedAttr[key] === undefined) delete advancedAttr[key];
-		});
-
-		const activeAttributes = {
-			Settings: settingsAttr,
-			Canvas: canvasAttr,
-			Advanced: advancedAttr,
-		};
-
 		return (
 			<InspectorControls>
 				{inspectorTabs.responsiveInfoBox({ props })}
@@ -184,7 +89,6 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
-					activeTabs={getActiveAttributes(activeAttributes, 'global')}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),

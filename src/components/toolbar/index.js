@@ -17,7 +17,7 @@ import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
  */
 import Breadcrumbs from '../breadcrumbs';
 import {
-	Alignment,
+	// Alignment,
 	BackgroundColor,
 	BlockBackgroundColor,
 	Border,
@@ -251,6 +251,26 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 							/>
+							<Border
+								blockName={name}
+								{...getGroupAttributes(attributes, [
+									'border',
+									'borderWidth',
+									'borderRadius',
+								])}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								clientId={clientId}
+							/>
+							<BoxShadow
+								blockName={name}
+								{...getGroupAttributes(attributes, [
+									'boxShadow',
+								])}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+								breakpoint={breakpoint}
+							/>
 							<ToolbarColumnPattern
 								clientId={clientId}
 								blockName={name}
@@ -353,7 +373,7 @@ const MaxiToolbar = memo(
 								textLevel={textLevel}
 								styleCard={styleCard}
 							/>
-							<Alignment
+							{/* <Alignment
 								blockName={name}
 								{...getGroupAttributes(attributes, [
 									'alignment',
@@ -361,7 +381,7 @@ const MaxiToolbar = memo(
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
-							/>
+							/> */}
 							<TextLevel
 								{...getGroupAttributes(attributes, [
 									'typography',
@@ -471,17 +491,6 @@ const MaxiToolbar = memo(
 									/>
 								</>
 							)}
-							<Border
-								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'border',
-									'borderWidth',
-									'borderRadius',
-								])}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-								clientId={clientId}
-							/>
 							{breakpoint === 'general' && (
 								<ImageSize
 									blockName={name}
@@ -520,15 +529,6 @@ const MaxiToolbar = memo(
 										'columnSize'
 									),
 								}}
-							/>
-							<BoxShadow
-								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'boxShadow',
-								])}
-								onChange={obj => setAttributes(obj)}
-								clientId={clientId}
-								breakpoint={breakpoint}
 							/>
 							<PaddingMargin
 								blockName={name}

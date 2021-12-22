@@ -1,5 +1,15 @@
+.is-sidebar-opened {
+	.maxi-toolbar__popover {
+		left: 0 !important;
+		width: calc(100% - 300px);
+		transform-origin: bottom center !important;
+	}
+}
 .maxi-toolbar__popover {
 	z-index: 29;
+	left: 0 !important;
+	width: 100%;
+	transform-origin: bottom center !important;
 	&--has-breadcrumb {
 		.components-popover__content {
 			.toolbar-wrapper {
@@ -33,7 +43,7 @@
 				padding-left: 2px;
 			}
 			.toolbar-block-custom-label {
-				font-size: 8px;
+				font-size: 10px;
 				font-weight: 400;
 				background: var(--maxi-primary-color);
 				color: #fff;
@@ -70,17 +80,22 @@
 				cursor: pointer;
 				border-radius: 0;
 				position: relative;
-				padding-right: 2px;
-				&:after {
-					content: '';
-					position: absolute;
-					top: 50%;
-					right: 0;
-					width: 1px;
-					height: 100%;
-					background-color: var(--maxi-grey-1-color);
-					transform: translateY(-50%);
-					padding-left: 2px;
+				padding-right: 0;
+				border-right: 1px solid var(--maxi-grey-1-color);
+				// &:after {
+				// 	content: '';
+				// 	position: absolute;
+				// 	top: 50%;
+				// 	right: 0;
+				// 	width: 1px;
+				// 	height: 100%;
+				// 	background-color: var(--maxi-grey-1-color);
+				// 	transform: translateY(-50%);
+				// 	padding-left: 2px;
+				// }
+				&.toolbar-item__help,
+				&.toolbar-item__more-settings {
+					border-right: none;
 				}
 				&:last-child {
 					&:after {
@@ -108,10 +123,10 @@
 						display: flex;
 						justify-content: center;
 						align-items: center;
-						svg {
-							width: 10px;
-							height: auto;
-						}
+						// svg {
+						// 	width: 10px;
+						// 	height: auto;
+						// }
 					}
 				}
 				&__more-settings .components-button,
@@ -184,10 +199,20 @@
 	}
 }
 
+body .is-sidebar-opened {
+	~ .popover-slot {
+		.toolbar-item__popover {
+			left: 0 !important;
+			width: calc(100% - 300px);
+			transform-origin: bottom center !important;
+		}
+	}
+}
+
 body .toolbar-item__popover {
 	margin-top: 0 !important;
 	left: 0 !important;
-	width: calc(100% - 300px);
+	width: 100%;
 	transform-origin: bottom center !important;
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {

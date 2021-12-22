@@ -6,7 +6,7 @@
 	font-family: 'Roboto', sans-serif !important;
 	display: flex;
 	position: absolute;
-	bottom: -7px;
+	bottom: -25px;
 	left: 0;
 	border-radius: 3px;
 	margin: 0 !important;
@@ -14,10 +14,10 @@
 	background: var(--maxi-primary-color);
 	z-index: 9;
 	transition: 0.3s;
-	transform: scaleY(0);
-	transform-origin: bottom center;
+	transform: scaleX(0);
+	transform-origin: left center;
 	&:hover {
-		transform: scaleY(1);
+		transform: scaleX(1);
 		.maxi-breadcrumbs__item {
 			transition-delay: 0.2s;
 			opacity: 1;
@@ -27,7 +27,7 @@
 		display: inline;
 		min-width: max-content;
 		list-style: none;
-		font-size: 8px;
+		font-size: 10px;
 		font-weight: 400;
 		margin-bottom: 0;
 		line-height: 100%;

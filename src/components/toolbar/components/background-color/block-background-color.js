@@ -31,6 +31,7 @@ import { backgroundColor } from '../../../../icons';
  * BackgroundColor
  */
 const ALLOWED_BLOCKS = [
+	'maxi-blocks/image-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',

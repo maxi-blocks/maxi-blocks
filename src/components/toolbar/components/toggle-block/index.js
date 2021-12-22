@@ -33,7 +33,13 @@ const ToggleBlock = props => {
 		isCaptionToolbar = false,
 	} = props;
 
-	if ((blockName === 'maxi-blocks/container-maxi' || blockName === 'maxi-blocks/row-maxi')  && !isCaptionToolbar)
+	if (
+		(blockName === 'maxi-blocks/column-maxi' ||
+			blockName === 'maxi-blocks/image-maxi' ||
+			blockName === 'maxi-blocks/container-maxi' ||
+			blockName === 'maxi-blocks/row-maxi') &&
+		!isCaptionToolbar
+	)
 		return null;
 
 	const isHide = () => {

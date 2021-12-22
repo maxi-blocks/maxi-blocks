@@ -11,5 +11,10 @@
 			width: 11px !important;
 			height: 11px !important;
 		}
+		&:hover {
+			path {
+				fill: var(--maxi-secondary-color) !important;
+			}
+		}
 	}
 }

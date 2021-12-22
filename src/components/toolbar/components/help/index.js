@@ -17,6 +17,11 @@ import Icon from '../../../icon';
 import { toolbarHelp } from '../../../../icons';
 
 /**
+ * Style
+ */
+import './editor.scss';
+
+/**
  * Duplicate
  */
 const Help = props => {

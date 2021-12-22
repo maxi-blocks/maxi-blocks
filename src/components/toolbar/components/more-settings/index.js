@@ -14,7 +14,7 @@ import Dropdown from '../../../dropdown';
 import CopyPaste from '../copy-paste';
 import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
-import InsertBefore from '../insert-before';
+// import InsertBefore from '../insert-before';
 
 /**
  * Icons
@@ -43,7 +43,7 @@ const MoreSettings = props => {
 				<Dropdown
 					className='maxi-moresettings_settings-selector'
 					contentClassName='maxi-moresettings_popover'
-					position='bottom right'
+					position='right bottom'
 					renderToggle={({ isOpen, onToggle }) => (
 						<Button onClick={onToggle}>
 							<Icon

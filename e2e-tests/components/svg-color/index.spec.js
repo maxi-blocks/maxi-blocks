@@ -1,5 +1,5 @@
 /**
- * WordPress
+ * WordPress dependencies
  */
 import {
 	createNewPost,
@@ -8,7 +8,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 /**
- * Interactive dependencies
+ * Internal dependencies
  */
 import {
 	modalMock,
@@ -18,7 +18,7 @@ import {
 } from '../../utils';
 
 describe('Svg Color', () => {
-	it('Svg Color Control', async () => {
+	it('Check Svg Color', async () => {
 		await createNewPost();
 		await insertBlock('SVG Icon Maxi');
 		await modalMock(page, { type: 'svg' });

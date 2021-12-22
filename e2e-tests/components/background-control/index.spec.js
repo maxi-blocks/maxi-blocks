@@ -9,7 +9,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 /**
- * Interactive dependencies
+ * Internal dependencies
  */
 import {
 	getBlockAttributes,
@@ -820,6 +820,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
+	// Here are the tests of svg-fill-control
 	it('Check Background shape layer', async () => {
 		await changeResponsive(page, 'base');
 		await removeBackgroundLayers(page);

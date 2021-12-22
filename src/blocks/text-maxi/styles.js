@@ -162,38 +162,15 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStyle, listPosition, listStyleCustom, typeOfList } = props;
+	const { listStart, listReversed } = props;
 
 	const response = {
-		...(listStyle &&
-			typeOfList === 'ul' && {
-				listStyle: {
-					general: {
-						...((listStyle !== 'custom' || !listStyleCustom) && {
-							'list-style-type': listStyle,
-						}),
-						...(listStyle === 'custom' &&
-							listStyleCustom && {
-								...(isURL(listStyleCustom) && {
-									'list-style-image': `url('${listStyleCustom}')`,
-								}),
-								...(listStyleCustom.includes('</svg>') && {
-									'list-style-image': `url("data:image/svg+xml,${getSVGListStyle(
-										listStyleCustom
-									)}")`,
-								}),
-								...(!isURL(listStyleCustom) &&
-									!listStyleCustom.includes('</svg>') && {
-										'list-style-type': listStyleCustom,
-									}),
-							}),
-					},
-				},
-			}),
-		...(listPosition && {
-			listPosition: {
+		...(isNumber(listStart) && {
+			listStart: {
 				general: {
-					'list-style-position': listPosition,
+					'counter-reset': `li ${
+						listStart + (listReversed ? 1 : -1)
+					}`,
 				},
 			},
 		}),
@@ -247,24 +224,148 @@ const getListObject = props => {
 	return response;
 };
 
-const getMarkerObject = props => {
-	const { typeOfList, listSize, listSizeUnit, listStyle, listStyleCustom } =
-		props;
-
-	if (!isNumber(listSize)) return {};
+const getListItemObject = props => {
+	const { listReversed } = props;
 
 	return {
-		listSize: {
-			general: {
-				'font-size': `${listSize}${listSizeUnit ?? 'px'}`,
-				...((typeOfList === 'ol' ||
-					(listStyle === 'custom' &&
-						!listStyleCustom.includes('</svg>')) ||
-					listStyle !== 'custom') && {
-					'line-height': `${listSize}${listSizeUnit ?? 'px'}`,
-				}),
+		...(listReversed && {
+			listReversed: {
+				general: {
+					'counter-increment': 'li -1',
+				},
 			},
-		},
+		}),
+	};
+};
+
+const getMarkerObject = props => {
+	const { typeOfList, listStyle, listStyleCustom } = props;
+
+	return {
+		...(typeOfList === 'ol' && {
+			listContent: {
+				general: {
+					content: `counters(li, "."${
+						listStyle ? `, ${listStyle}` : ''
+					})`,
+				},
+			},
+		}),
+		...(typeOfList === 'ul' && {
+			listContent: {
+				general: {
+					content: `counter(li${
+						listStyle && listStyle === 'custom' && listStyleCustom
+							? `, ${listStyle}`
+							: ', disc'
+					})`,
+				},
+			},
+		}),
+		...(listStyle &&
+			typeOfList === 'ol' && {
+				listStyle: {
+					general: {
+						'list-style-type': listStyle,
+					},
+				},
+			}),
+		...(listStyle &&
+			typeOfList === 'ul' && {
+				listStyle: {
+					general: {
+						...(listStyle === 'custom' &&
+							listStyleCustom && {
+								...(isURL(listStyleCustom) && {
+									content: `url('${listStyleCustom}')`,
+								}),
+								...(listStyleCustom.includes('</svg>') && {
+									content: `url("data:image/svg+xml,${getSVGListStyle(
+										listStyleCustom
+									)}")`,
+								}),
+								...(!isURL(listStyleCustom) &&
+									!listStyleCustom.includes('</svg>') && {
+										content: listStyleCustom,
+									}),
+							}),
+					},
+				},
+			}),
+		...(() => {
+			const response = { listSize: {} };
+
+			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+				breakpoint => {
+					// List indent
+					const indentNum =
+						getLastBreakpointAttribute(
+							'list-indent',
+							breakpoint,
+							props
+						) || 0;
+					const indentUnit =
+						getLastBreakpointAttribute(
+							'list-indent-unit',
+							breakpoint,
+							props
+						) || 'px';
+
+					// List size
+					const sizeNum =
+						getLastBreakpointAttribute(
+							'list-size',
+							breakpoint,
+							props
+						) || 0;
+					const sizeUnit =
+						getLastBreakpointAttribute(
+							'list-size-unit',
+							breakpoint,
+							props
+						) || 'px';
+
+					// List position
+					const position =
+						getLastBreakpointAttribute(
+							'list-position',
+							breakpoint,
+							props
+						) || false;
+
+					// Text position
+					const textPosition =
+						getLastBreakpointAttribute(
+							'list-text-position',
+							breakpoint,
+							props
+						) || false;
+
+					response.listSize[breakpoint] = {
+						'font-size': sizeNum + sizeUnit,
+						...(position === 'outside' && {
+							'margin-left': '-1em',
+						}),
+						...(Math.sign(indentNum) === -1 && {
+							'margin-right': `calc(${
+								indentNum + indentUnit
+							} + 1em)`,
+							'padding-left': `calc(${
+								Math.abs(indentNum) + indentUnit
+							} + 1em)`,
+						}),
+						...(listStyle === 'none' && {
+							'padding-right': '1em',
+						}),
+						...(textPosition && {
+							'vertical-align': textPosition,
+						}),
+					};
+				}
+			);
+
+			return response;
+		})(),
 	};
 };
 
@@ -288,11 +389,13 @@ const getStyles = props => {
 				...(isList && {
 					[` ${element}.maxi-text-block__content`]:
 						getListObject(props),
-					[` ${element}.maxi-text-block__content li`]:
-						getTypographyObject(props),
+					[` ${element}.maxi-text-block__content li`]: {
+						...getTypographyObject(props),
+						...getListItemObject(props),
+					},
 					[` ${element}.maxi-text-block__content li:hover`]:
 						getTypographyHoverObject(props),
-					[` ${element}.maxi-text-block__content li::marker`]:
+					[` ${element}.maxi-text-block__content li::before`]:
 						getMarkerObject(props),
 				}),
 				...getBlockBackgroundStyles({

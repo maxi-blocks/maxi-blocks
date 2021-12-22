@@ -8,9 +8,7 @@ const getPropsFromChildren = items => {
 		'clientId',
 		'onChange',
 		'items',
-		'className',
 		'breakpoint',
-		'label',
 		'inputsArray',
 		'minMaxSettings',
 	];
@@ -23,7 +21,7 @@ const getPropsFromChildren = items => {
 			if ('items' in item.props) getProps(item.props.items);
 
 			Object.entries(item.props).forEach(([key, val]) => {
-				if (isObject(val))
+				if (!excludedEntries.includes(key) && isObject(val))
 					Object.keys(val).forEach(subKey => response.push(subKey));
 				else if (
 					!excludedEntries.includes(key) &&
@@ -36,6 +34,8 @@ const getPropsFromChildren = items => {
 	};
 
 	Object.values(items).forEach(val => getProps(val));
+
+	console.log(compact(uniq(response)));
 
 	return compact(uniq(response));
 };

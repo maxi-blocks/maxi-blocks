@@ -30,10 +30,11 @@ const getIsActiveTab = (attributes, breakpoint) => {
 	const block = getBlock(getSelectedBlockClientId());
 	const { name, attributes: currentAttributes } = block;
 
+	console.log(`block: ${name}`);
+
 	const defaultAttributes = getBlockAttributes(name);
 
 	const excludedAttributes = [
-		'blockStyle',
 		'parentBlockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',

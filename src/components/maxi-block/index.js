@@ -161,21 +161,16 @@ const MaxiBlock = forwardRef((props, ref) => {
 		'maxi-block',
 		!isSave && 'maxi-block--backend',
 		blockName && getBlockClassName(blockName),
-		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
-			motion['shape-divider-top-status'] ||
-			motion['shape-divider-bottom-status'] ||
-			motion['motion-status'] ||
-			getHasParallax(background['background-layers'])) &&
-			'maxi-motion-effect',
-		(motion['hover-type'] && motion['hover-type'] !== 'none') ||
-			motion['shape-divider-top-status'] ||
-			motion['shape-divider-bottom-status'] ||
-			motion['number-counter-status'] ||
-			motion['motion-status'] ||
-			(getHasParallax(background['background-layers']) &&
-				`maxi-motion-effect-${uniqueID}`),
+		motion['hover-type'] &&
+			motion['hover-type'] !== 'none' &&
+			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
+		getHasParallax(background['background-layers']) &&
+			`maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,
 		motion['number-counter-status'] &&
 			`maxi-nc-effect maxi-nc-effect-${uniqueID}`,
+		(motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status']) &&
+			`maxi-sd-effect maxi-sd-effect-${uniqueID}`,
 		blockStyle,
 		extraClassName,
 		uniqueID,

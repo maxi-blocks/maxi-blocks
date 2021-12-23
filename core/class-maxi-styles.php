@@ -45,7 +45,7 @@ class MaxiBlocks_Styles
             $this->enqueue_fonts($fonts);
         }
 
-        wp_localize_script('maxi-motion-effects', 'maxi_custom_data', [
+        wp_localize_script('maxi-hover-effects', 'maxi_custom_data', [
             'custom_data' => $this->customMeta(),
         ]);
 
@@ -57,7 +57,7 @@ class MaxiBlocks_Styles
             'custom_data' => $this->customMeta(),
         ]);
 
-        wp_localize_script('maxi-front-scripts', 'maxi_custom_data', [
+        wp_localize_script('maxi-parallax', 'maxi_custom_data', [
             'custom_data' => $this->customMeta(),
         ]);
     }

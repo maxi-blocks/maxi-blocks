@@ -80,8 +80,8 @@ if (!class_exists('MaxiBlocks_Core')):
             );
             
             wp_enqueue_script(
-                'maxi-motion-effects',
-                plugins_url('/js/maxi-motion-effects.js', dirname(__FILE__)),
+                'maxi-hover-effects',
+                plugins_url('/js/maxi-hover-effects.js', dirname(__FILE__)),
             );
 
             wp_enqueue_script(
@@ -92,6 +92,11 @@ if (!class_exists('MaxiBlocks_Core')):
             wp_enqueue_script(
                 'maxi-bg-video',
                 plugins_url('/js/maxi-bg-video.js', dirname(__FILE__)),
+            );
+
+            wp_enqueue_script(
+                'maxi-parallax',
+                plugins_url('/js/maxi-parallax.js', dirname(__FILE__)),
             );
            
             wp_enqueue_script(

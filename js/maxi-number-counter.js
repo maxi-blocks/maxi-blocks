@@ -1,50 +1,50 @@
 // Number Counter Effects
 const numberCounterEffect = () => {
-	const motionElements = document.querySelectorAll('.maxi-nc-effect');
-	motionElements.forEach(elem => {
+	const numberElements = document.querySelectorAll('.maxi-nc-effect');
+	numberElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
 		if (!maxi_custom_data.custom_data) return;
 
-		const motionID = elem.id;
+		const numberID = elem.id;
 
-		const motionData =
+		const numberData =
 			// eslint-disable-next-line no-undef
-			maxi_custom_data.custom_data[motionID] !== undefined
+			maxi_custom_data.custom_data[numberID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxi_custom_data.custom_data[motionID]
+				  maxi_custom_data.custom_data[numberID]
 				: null;
 
-		if (motionData !== null) {
+		if (numberData !== null) {
 			// Number Counter
-			if ('number-counter-status' in motionData) {
+			if ('number-counter-status' in numberData) {
 				const numberCounterElem = document.querySelector(
-					`#${motionID} .maxi-number-counter__box`
+					`#${numberID} .maxi-number-counter__box`
 				);
 				const numberCounterElemText = document.querySelector(
-					`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__text`
+					`#${numberID} .maxi-number-counter__box .maxi-number-counter__box__text`
 				);
 				const numberCounterElemCircle = document.querySelector(
-					`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__circle`
+					`#${numberID} .maxi-number-counter__box .maxi-number-counter__box__circle`
 				);
 
 				const radius = 90;
 				const circumference = 2 * Math.PI * radius;
 				const {
-					'number-counter-start': motionCounterStart,
-					'number-counter-end': motionCounterEnd,
-					'number-counter-duration': motionCounterDuration,
+					'number-counter-start': numberCounterStart,
+					'number-counter-end': numberCounterEnd,
+					'number-counter-duration': numberCounterDuration,
 					'number-counter-percentage-sign-status': usePercentage,
 					'number-counter-start-animation': startAnimation,
-				} = motionData;
+				} = numberData;
 				const startCountValue = Math.ceil(
-					(motionCounterStart * 360) / 100
+					(numberCounterStart * 360) / 100
 				);
-				const endCountValue = Math.ceil((motionCounterEnd * 360) / 100);
+				const endCountValue = Math.ceil((numberCounterEnd * 360) / 100);
 
 				const frameDuration =
 					(1 /
 						((endCountValue - startCountValue) /
-							motionCounterDuration)) *
+							numberCounterDuration)) *
 					1000;
 
 				let count = startCountValue;

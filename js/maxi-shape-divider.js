@@ -7,27 +7,27 @@ const shapeDivider = () => {
 		// eslint-disable-next-line no-undef
 		if (!maxi_custom_data.custom_data) return;
 
-		const motionID = elem.id;
+		const shapeID = elem.id;
 
-		const motionData =
+		const shapeData =
 			// eslint-disable-next-line no-undef
-			maxi_custom_data.custom_data[motionID] !== undefined
+			maxi_custom_data.custom_data[shapeID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxi_custom_data.custom_data[motionID]
+				  maxi_custom_data.custom_data[shapeID]
 				: null;
 
-		if (motionData !== null) {
+		if (shapeData !== null) {
 			// Shape Divider
 			if (
-				motionData['shape-divider-top-effects-status'] &&
-				motionData['shape-divider-top-status']
+				shapeData['shape-divider-top-effects-status'] &&
+				shapeData['shape-divider-top-status']
 			) {
 				const shapeDividerTopHeight =
-					motionData['shape-divider-top-height'];
+					shapeData['shape-divider-top-height'];
 				const shapeDividerTopHeightUnit =
-					motionData['shape-divider-top-height-unit'];
+					shapeData['shape-divider-top-height-unit'];
 				const target = document.querySelector(
-					`#${motionID} > .maxi-shape-divider.maxi-shape-divider__top`
+					`#${shapeID} > .maxi-shape-divider.maxi-shape-divider__top`
 				);
 
 				// eslint-disable-next-line @wordpress/no-global-event-listener
@@ -41,15 +41,15 @@ const shapeDivider = () => {
 			}
 
 			if (
-				motionData['shape-divider-bottom-effects-status'] &&
-				motionData['shape-divider-bottom-status']
+				shapeData['shape-divider-bottom-effects-status'] &&
+				shapeData['shape-divider-bottom-status']
 			) {
 				const shapeDividerBottomHeight =
-					motionData['shape-divider-bottom-height'];
+					shapeData['shape-divider-bottom-height'];
 				const shapeDividerBottomHeightUnit =
-					motionData['shape-divider-bottom-height-unit'];
+					shapeData['shape-divider-bottom-height-unit'];
 				const target = document.querySelector(
-					`#${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`
+					`#${shapeID} > .maxi-shape-divider.maxi-shape-divider__bottom`
 				);
 				// eslint-disable-next-line @wordpress/no-global-event-listener
 				window.addEventListener('scroll', () => {

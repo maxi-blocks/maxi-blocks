@@ -191,25 +191,25 @@ class Parallax {
 	}
 }
 
-// Motion Effects
-const parallaxElements = document.querySelectorAll('.maxi-motion-effect');
+// parallax Effects
+const parallaxElements = document.querySelectorAll('.maxi-parallax-effect');
 parallaxElements.forEach(elem => {
 	// eslint-disable-next-line no-undef
 	if (!maxi_custom_data.custom_data) return;
 
-	const motionID = elem.id;
+	const parallaxID = elem.id;
 
-	const motionData =
+	const parallaxData =
 		// eslint-disable-next-line no-undef
-		maxi_custom_data.custom_data[motionID] !== undefined
+		maxi_custom_data.custom_data[parallaxID] !== undefined
 			? // eslint-disable-next-line no-undef
-			  maxi_custom_data.custom_data[motionID]
+			  maxi_custom_data.custom_data[parallaxID]
 			: null;
 
-	if (motionData !== null) {
+	if (parallaxData !== null) {
 		// Parallax Effect
-		if ('bgParallaxLayers' in motionData) {
-			motionData.bgParallaxLayers.forEach(layer => {
+		if ('bgParallaxLayers' in parallaxData) {
+			parallaxData.bgParallaxLayers.forEach(layer => {
 				const {
 					id,
 					'background-image-parallax-speed': parallaxSpeed,
@@ -217,7 +217,7 @@ parallaxElements.forEach(elem => {
 				} = layer;
 
 				const parallaxElem = document.querySelector(
-					`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
+					`#${parallaxID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
 				);
 
 				const direction = parallaxDirection === 'up' ? 1 : -1;

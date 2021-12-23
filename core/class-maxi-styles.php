@@ -41,6 +41,10 @@ class MaxiBlocks_Styles {
 			$this->enqueue_fonts($fonts);
 		}
 
+		wp_localize_script('maxi-motion-effects-js', 'maxi_custom_data', [
+			'custom_data' => $this->customMeta(),
+		]);
+
 		wp_localize_script('maxi-front-scripts-js', 'maxi_custom_data', [
 			'custom_data' => $this->customMeta(),
 		]);

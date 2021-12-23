@@ -2325,13 +2325,13 @@ body.maxi-blocks--active figure.maxi-image-block {
   body.maxi-blocks--active figure.maxi-image-block .maxi-hover-effect__basic__greay-scale:hover img {
     -webkit-filter: grayscale(100%);
             filter: grayscale(100%); }
-  body.maxi-blocks--active figure.maxi-image-block .maxi-hover-effect__basic__clear-greay-scale img {
+  body.maxi-blocks--active figure.maxi-image-block .maxi-hover-effect__basic__clear-grey-scale img {
     -webkit-filter: grayscale(100%);
             filter: grayscale(100%);
     -webkit-transition: 0.3s ease-in-out;
     -o-transition: 0.3s ease-in-out;
     transition: 0.3s ease-in-out; }
-  body.maxi-blocks--active figure.maxi-image-block .maxi-hover-effect__basic__clear-greay-scale:hover img {
+  body.maxi-blocks--active figure.maxi-image-block .maxi-hover-effect__basic__clear-grey-scale:hover img {
     -webkit-filter: grayscale(0);
             filter: grayscale(0); }
   body.maxi-blocks--active figure.maxi-image-block .maxi-hover-effect__basic__sepia img {

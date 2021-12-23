@@ -70,6 +70,10 @@ if (!class_exists('MaxiBlocks_Core')):
                 false,
                 true,
             );
+            wp_enqueue_script(
+                'maxi-motion-effects-js',
+                plugins_url('/js/maxi-motion-effects.js', dirname(__FILE__)),
+            );
             wp_localize_script(
                 'maxi-front-scripts-js',
                 'google_map_api_options',

@@ -64,15 +64,15 @@ if (!class_exists('MaxiBlocks_Core')):
             );
 
             wp_enqueue_script(
-                'maxi-front-scripts',
-                plugins_url('/js/front-scripts.js', dirname(__FILE__)),
+                'maxi-map',
+                plugins_url('/js/maxi-map.js', dirname(__FILE__)),
                 [],
                 false,
                 true,
             );
 
             wp_localize_script(
-                'maxi-front-scripts',
+                'maxi-map',
                 'google_map_api_options',
                 array(
                     'google_api_key' => get_option('google_api_key_option'),
@@ -87,6 +87,11 @@ if (!class_exists('MaxiBlocks_Core')):
             wp_enqueue_script(
                 'maxi-number-counter',
                 plugins_url('/js/maxi-number-counter.js', dirname(__FILE__)),
+            );
+
+            wp_enqueue_script(
+                'maxi-bg-video',
+                plugins_url('/js/maxi-bg-video.js', dirname(__FILE__)),
             );
            
             wp_enqueue_script(

@@ -53,6 +53,10 @@ class MaxiBlocks_Styles
             'custom_data' => $this->customMeta(),
         ]);
 
+        wp_localize_script('maxi-bg-video', 'maxi_custom_data', [
+            'custom_data' => $this->customMeta(),
+        ]);
+
         wp_localize_script('maxi-front-scripts', 'maxi_custom_data', [
             'custom_data' => $this->customMeta(),
         ]);

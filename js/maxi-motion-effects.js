@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-global-event-listener */
 // Parallax
 class Parallax {
 	constructor(el, speed) {
@@ -19,6 +20,9 @@ class Parallax {
 	}
 
 	getDeviceHeight() {
+		// a dummy 100vh deviceHelper to get correct inner height of the windows
+		// help in cases when the console is opened or if there is n a mobile top/bottom bar
+		// eslint-disable-next-line no-unused-expressions
 		this.deviceHelper;
 
 		if (!this.deviceHelper && document.body) {
@@ -45,6 +49,7 @@ class Parallax {
 		};
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	getBoundingClientRect(element) {
 		const { top, right, bottom, left, width, height, x, y } =
 			element.getBoundingClientRect();
@@ -192,13 +197,16 @@ class Parallax {
 const motions = () => {
 	const motionElements = document.querySelectorAll('.maxi-motion-effect');
 	motionElements.forEach(elem => {
+		// eslint-disable-next-line no-undef
 		if (!maxi_custom_data.custom_data) return;
 
 		const motionID = elem.id;
 
 		const motionData =
+			// eslint-disable-next-line no-undef
 			maxi_custom_data.custom_data[motionID] !== undefined
-				? maxi_custom_data.custom_data[motionID]
+				? // eslint-disable-next-line no-undef
+				  maxi_custom_data.custom_data[motionID]
 				: null;
 
 		if (motionData !== null) {

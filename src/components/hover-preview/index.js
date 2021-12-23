@@ -34,7 +34,7 @@ const HoverPreview = props => {
 		'sepia',
 		'clear-sepia',
 		'grey-scale',
-		'clear-greay-scale',
+		'clear-grey-scale',
 	];
 
 	const classes = classnames(

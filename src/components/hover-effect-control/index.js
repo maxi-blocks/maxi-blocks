@@ -93,7 +93,7 @@ const HoverEffectControl = props => {
 					props['hover-basic-effect-type'] === 'clear-sepia' ||
 					props['hover-basic-effect-type'] === 'grey-scale' ||
 					props['hover-basic-effect-type'] ===
-						'clear-greay-scale') && (
+						'clear-grey-scale') && (
 					<AdvancedNumberControl
 						label={__('Duration(s)', 'maxi-blocks')}
 						value={props['hover-transition-duration']}
@@ -130,7 +130,7 @@ const HoverEffectControl = props => {
 					props['hover-basic-effect-type'] === 'clear-sepia' ||
 					props['hover-basic-effect-type'] === 'grey-scale' ||
 					props['hover-basic-effect-type'] ===
-						'clear-greay-scale') && (
+						'clear-grey-scale') && (
 					<SelectControl
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}
@@ -219,7 +219,7 @@ const HoverEffectControl = props => {
 							},
 							{
 								label: __('Clear Gray Scale', 'maxi-blocks'),
-								value: 'clear-greay-scale',
+								value: 'clear-grey-scale',
 							},
 							{
 								label: __('Shine', 'maxi-blocks'),

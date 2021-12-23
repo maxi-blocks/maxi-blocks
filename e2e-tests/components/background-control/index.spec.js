@@ -825,6 +825,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'base');
 		await removeBackgroundLayers(page);
 		await addBackgroundLayer(page, 'shape');
+
 		const accordion = await openSidebarTab(
 			page,
 			'style',
@@ -861,11 +862,13 @@ describe('BackgroundControl', () => {
 		);
 
 		await sizeInput[0].focus();
-		await page.keyboard.type('77');
+		await page.keyboard.type('43');
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+		debugger;
 	});
 
 	it('Check Background shape layer responsive', async () => {
@@ -888,7 +891,7 @@ describe('BackgroundControl', () => {
 			selector => selector[0].value
 		);
 
-		expect(baseBackgroundShapeSize).toStrictEqual('77');
+		expect(baseBackgroundShapeSize).toStrictEqual('43');
 
 		// opacity and size
 		const opacityInput = await page.$$(
@@ -964,7 +967,7 @@ describe('BackgroundControl', () => {
 			selector => selector[0].value
 		);
 
-		expect(mBackgroundShapeSize).toStrictEqual('77');
+		expect(mBackgroundShapeSize).toStrictEqual('43');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

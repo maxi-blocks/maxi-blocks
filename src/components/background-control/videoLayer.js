@@ -18,7 +18,6 @@ import {
 	getAttributeValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -292,10 +291,7 @@ const VideoLayer = props => {
 					/>
 				</>
 			)}
-			<ResponsiveTabsControl
-				breakpoint={breakpoint}
-				activeTabs={getActiveAttributes(videoOptions, 'breakpoints')}
-			>
+			<ResponsiveTabsControl breakpoint={breakpoint}>
 				<VideoLayerContent
 					videoOptions={videoOptions}
 					onChange={onChange}

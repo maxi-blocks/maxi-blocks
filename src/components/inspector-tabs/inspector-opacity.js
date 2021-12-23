@@ -11,6 +11,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { opacity as opacityAttr } from '../../extensions/styles/defaults';
 
 /**
  * Component
@@ -32,6 +33,7 @@ const opacity = ({ props }) => {
 				}
 			/>
 		),
+		extraIndicators: Object.keys(opacityAttr),
 	};
 };
 

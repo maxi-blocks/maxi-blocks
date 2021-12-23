@@ -24,7 +24,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -782,21 +781,11 @@ const ImageLayer = props => {
 			)}
 			{!hideSettings && (
 				<SettingTabsControl
-					activeTabs={getActiveAttributes(
-						props.imageOptions,
-						'image-parallax'
-					)}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
 							content: (
-								<ResponsiveTabsControl
-									breakpoint={breakpoint}
-									activeTabs={getActiveAttributes(
-										props.imageOptions,
-										'breakpoints'
-									)}
-								>
+								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<ImageLayerSettings
 										getDefaultAttr={getDefaultAttr}
 										moreSettings={moreSettings}

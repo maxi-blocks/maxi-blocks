@@ -13,7 +13,6 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -28,23 +27,6 @@ const boxShadow = ({ props, prefix = '' }) => {
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
-				activeTabs={getActiveAttributes(
-					{
-						...getGroupAttributes(
-							attributes,
-							'boxShadow',
-							false,
-							prefix
-						),
-						...getGroupAttributes(
-							attributes,
-							'boxShadow',
-							true,
-							prefix
-						),
-					},
-					'box-shadow'
-				)}
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
@@ -117,6 +99,7 @@ const boxShadow = ({ props, prefix = '' }) => {
 								)}
 							</>
 						),
+						extraIndicators: [`${prefix}box-shadow-status-hover`],
 					},
 				]}
 			/>

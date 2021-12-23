@@ -18,7 +18,6 @@ import {
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
 import { getDefaultLayerAttr } from './utils';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -70,7 +69,6 @@ const SVGLayerContent = props => {
 	return (
 		<>
 			<SettingTabsControl
-				activeTabs={getActiveAttributes(SVGOptions, 'svg-position')}
 				disablePadding
 				className='maxi-background-control__svg-layer--size'
 				items={[
@@ -243,13 +241,7 @@ const SVGLayer = props => {
 							breakpoint={breakpoint}
 						/>
 					)}
-					<ResponsiveTabsControl
-						breakpoint={breakpoint}
-						activeTabs={getActiveAttributes(
-							SVGOptions,
-							'breakpoints'
-						)}
-					>
+					<ResponsiveTabsControl breakpoint={breakpoint}>
 						<SVGLayerContent
 							SVGOptions={SVGOptions}
 							onChange={onChange}

@@ -1,8 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
-import { getBlockAttributes } from '@wordpress/blocks';
+import {
+	useState,
+	useEffect,
+	cloneElement,
+	renderToString,
+} from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -19,47 +23,14 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { getPropsFromChildren } from '../../extensions/styles';
+import {
+	getIsActiveTab,
+	getMaxiAttrsFromChildren,
+} from '../../extensions/indicators';
 
 /**
  * Component
  */
-const getIsActiveTab = (attributes, breakpoint) => {
-	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
-
-	const block = getBlock(getSelectedBlockClientId());
-	const { name, attributes: currentAttributes } = block;
-
-	const defaultAttributes = getBlockAttributes(name);
-
-	const excludedAttributes = [
-		'blockStyle',
-		'parentBlockStyle',
-		'isFirstOnHierarchy',
-		'uniqueID',
-	];
-
-	return !attributes.every(attribute => {
-		if (excludedAttributes.includes(attribute)) return true;
-		if (!(attribute in defaultAttributes)) return true;
-		if (breakpoint) {
-			if (
-				attribute.lastIndexOf(`-${breakpoint}`) ===
-				attribute.length - `-${breakpoint}`.length
-			)
-				return (
-					currentAttributes[attribute] ===
-					defaultAttributes[attribute]
-				);
-		} else
-			return (
-				currentAttributes[attribute] === defaultAttributes[attribute]
-			);
-
-		return true;
-	});
-};
-
 const SettingTabsControl = props => {
 	const {
 		items,
@@ -69,7 +40,11 @@ const SettingTabsControl = props => {
 		returnValue,
 		callback,
 		target,
+		blockName,
 	} = props;
+
+	const { getBlockName, getSelectedBlockClientId } =
+		select('core/block-editor');
 
 	const [tab, setTab] = useState(0);
 
@@ -107,8 +82,16 @@ const SettingTabsControl = props => {
 								className={classnames(
 									'maxi-tabs-control__button',
 									getIsActiveTab(
-										getPropsFromChildren(item),
-										item.breakpoint
+										getMaxiAttrsFromChildren({
+											items: cloneElement(item.content),
+											blockName:
+												blockName ??
+												getBlockName(
+													getSelectedBlockClientId()
+												),
+										}),
+										item.breakpoint,
+										item.extraIndicators
 									) &&
 										'maxi-button-group-control__option--active'
 								)}

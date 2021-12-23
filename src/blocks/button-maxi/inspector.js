@@ -20,12 +20,11 @@ import * as defaultPresets from './defaults';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, without, pickBy } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -316,17 +315,6 @@ const Inspector = memo(
 												disablePadding: true,
 												content: (
 													<SettingTabsControl
-														activeTabs={getActiveAttributes(
-															pickBy(
-																attributes,
-																(value, key) =>
-																	key ===
-																		'icon-content' ||
-																	key ===
-																		'icon-status-hover'
-															),
-															'icon'
-														)}
 														items={[
 															{
 																label: __(

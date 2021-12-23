@@ -4,16 +4,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import { pickBy } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import CustomCssControl from '../custom-css-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import getActiveAttributes from '../../extensions/active-indicators';
+import { customCss as customCssAttr } from '../../extensions/styles/defaults';
 
 /**
  * Component
@@ -33,10 +28,6 @@ const customCss = ({
 	);
 	const customCssCategory = attributes['custom-css-category'];
 
-	const customCssAttr = pickBy(attributes, (value, key) =>
-		key?.includes('custom-css-')
-	);
-
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
 		content: (
@@ -46,7 +37,6 @@ const customCss = ({
 				category={customCssCategory}
 				selectors={selectors}
 				value={customCssValue}
-				activeTabs={getActiveAttributes(customCssAttr, 'custom-css')}
 				onChange={(attr, val) =>
 					setAttributes({
 						[attr]: val,
@@ -54,6 +44,7 @@ const customCss = ({
 				}
 			/>
 		),
+		extraIndicators: Object.keys(customCssAttr),
 	};
 };
 

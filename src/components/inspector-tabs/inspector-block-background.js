@@ -10,7 +10,6 @@ import SettingTabsControl from '../setting-tabs-control';
 import BlockBackgroundControl from '../background-control/blockBackgroundControl';
 import ToggleSwitch from '../toggle-switch';
 import { getGroupAttributes } from '../../extensions/styles';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -32,17 +31,6 @@ const blockBackground = ({
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
-				activeTabs={getActiveAttributes(
-					{
-						...getGroupAttributes(attributes, ['blockBackground']),
-						...getGroupAttributes(
-							attributes,
-							'blockBackground',
-							true
-						),
-					},
-					'background'
-				)}
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
@@ -97,6 +85,7 @@ const blockBackground = ({
 								)}
 							</>
 						),
+						extraIndicators: ['block-background-hover-status'],
 					},
 				]}
 			/>

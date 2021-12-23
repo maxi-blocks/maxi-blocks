@@ -64,25 +64,33 @@ if (!class_exists('MaxiBlocks_Core')):
             );
 
             wp_enqueue_script(
-                'maxi-front-scripts-js',
+                'maxi-front-scripts',
                 plugins_url('/js/front-scripts.js', dirname(__FILE__)),
                 [],
                 false,
                 true,
             );
-            wp_enqueue_script(
-                'maxi-motion-effects-js',
-                plugins_url('/js/maxi-motion-effects.js', dirname(__FILE__)),
-            );
+
             wp_localize_script(
-                'maxi-front-scripts-js',
+                'maxi-front-scripts',
                 'google_map_api_options',
                 array(
                     'google_api_key' => get_option('google_api_key_option'),
                 )
             );
+            
             wp_enqueue_script(
-                'maxi-scroll-js',
+                'maxi-motion-effects',
+                plugins_url('/js/maxi-motion-effects.js', dirname(__FILE__)),
+            );
+
+            wp_enqueue_script(
+                'maxi-number-counter',
+                plugins_url('/js/maxi-number-counter.js', dirname(__FILE__)),
+            );
+           
+            wp_enqueue_script(
+                'maxi-scroll',
                 plugins_url('/js/maxi-scroll-effects.js', dirname(__FILE__)),
             );
         }

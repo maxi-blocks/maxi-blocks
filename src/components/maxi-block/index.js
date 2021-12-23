@@ -164,7 +164,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||
-			motion['number-counter-status'] ||
 			motion['motion-status'] ||
 			getHasParallax(background['background-layers'])) &&
 			'maxi-motion-effect',
@@ -175,6 +174,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 			motion['motion-status'] ||
 			(getHasParallax(background['background-layers']) &&
 				`maxi-motion-effect-${uniqueID}`),
+		motion['number-counter-status'] &&
+			`maxi-nc-effect maxi-nc-effect-${uniqueID}`,
 		blockStyle,
 		extraClassName,
 		uniqueID,

@@ -27,7 +27,6 @@ import {
 	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -746,10 +745,6 @@ const TypographyControl = withFormatValue(props => {
 			<ResponsiveTabsControl
 				className='maxi-typography-control__text-options-tabs'
 				breakpoint={breakpoint}
-				activeTabs={
-					!styleCards &&
-					getActiveAttributes(typography, 'breakpoints')
-				}
 			>
 				<TextOptions
 					getValue={getValue}
@@ -891,7 +886,6 @@ const TypographyControl = withFormatValue(props => {
 					isHover={isHover}
 					clientId={clientId}
 					getOpacityValue={getOpacityValue}
-					activeTabs={getActiveAttributes(typography, 'link')}
 				/>
 			)}
 		</div>

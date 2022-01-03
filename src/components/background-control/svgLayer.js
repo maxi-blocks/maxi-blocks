@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
 import {
@@ -234,14 +235,15 @@ const SVGLayer = props => {
 						isHover={isHover}
 						breakpoint={breakpoint}
 					/>
-					<SVGLayerContent
-						SVGOptions={SVGOptions}
-						onChange={onChange}
-						prefix={prefix}
-						isHover={isHover}
-						isLayer={isLayer}
-						breakpoint={breakpoint}
-					/>
+					<ResponsiveTabsControl breakpoint={breakpoint}>
+						<SVGLayerContent
+							SVGOptions={SVGOptions}
+							onChange={onChange}
+							prefix={prefix}
+							isHover={isHover}
+							isLayer={isLayer}
+						/>
+					</ResponsiveTabsControl>
 				</>
 			)}
 		</>

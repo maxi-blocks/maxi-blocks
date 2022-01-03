@@ -15,7 +15,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * External dependencies
@@ -136,13 +135,7 @@ const GradientLayer = props => {
 	const { breakpoint, ...rest } = props;
 
 	return (
-		<ResponsiveTabsControl
-			breakpoint={breakpoint}
-			activeTabs={getActiveAttributes(
-				props?.gradientOptions,
-				'breakpoints'
-			)}
-		>
+		<ResponsiveTabsControl breakpoint={breakpoint}>
 			<GradientLayerContent {...rest} />
 		</ResponsiveTabsControl>
 	);

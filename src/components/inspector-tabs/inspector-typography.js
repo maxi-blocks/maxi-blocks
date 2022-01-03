@@ -10,7 +10,6 @@ import SettingTabsControl from '../setting-tabs-control';
 import TypographyControl from '../typography-control';
 import ToggleSwitch from '../toggle-switch';
 import { getGroupAttributes } from '../../extensions/styles';
-import getActiveAttributes from '../../extensions/active-indicators';
 
 /**
  * Component
@@ -51,10 +50,6 @@ const typography = ({
 		disablePadding: true,
 		content: (
 			<SettingTabsControl
-				activeTabs={getActiveAttributes(
-					getGroupAttributes(attributes, 'typography', true),
-					'typography'
-				)}
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
@@ -118,6 +113,7 @@ const typography = ({
 								)}
 							</>
 						),
+						extraIndicators: ['typography-status-hover'],
 					},
 				]}
 			/>

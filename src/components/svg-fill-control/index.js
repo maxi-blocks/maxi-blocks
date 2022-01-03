@@ -172,7 +172,7 @@ const SVGFillControl = props => {
 
 						onChange({
 							'background-svg-SVGElement': resEl.outerHTML,
-							'background-svg-SVGData': SVGData,
+							'background-svg-SVGData': tempSVGData,
 							'background-svg-palette-color':
 								props.SVGOptions[
 									'background-svg-palette-color'

@@ -15,7 +15,8 @@ import FontFamilySelector from '../font-family-selector';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
+
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -244,10 +245,11 @@ const LinkOptions = props => {
 
 	return (
 		<>
-			<ButtonGroupControl
+			<SettingTabsControl
+				type='buttons'
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
-				options={[
+				items={[
 					{
 						label: __('Link', 'maxi-block'),
 						value: 'normal_link',

@@ -6,6 +6,7 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import Button from '../button';
 
 /**
@@ -34,6 +35,8 @@ const SettingTabsControl = props => {
 		onChange,
 		type = 'tabs',
 		selected,
+		label,
+		help,
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -61,17 +64,17 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
 	);
 
-	return (
-		<div className={classes}>
+	const getChildren = () => {
+		return (
 			<div className={classesControl}>
 				{items.map((item, i) => {
 					if (item) {
-						const label = !isEmpty(item.label)
+						const buttonLabel = !isEmpty(item.label)
 							? item.label
 							: item.value;
 						return (
 							<Button
-								key={`maxi-tabs-control__button-${label}`}
+								key={`maxi-tabs-control__button-${buttonLabel}`}
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
@@ -113,13 +116,26 @@ const SettingTabsControl = props => {
 					return null;
 				})}
 			</div>
+		);
+	};
+
+	return (
+		<div className={classes}>
+			{type === 'buttons' && label && (
+				<BaseControl
+					label={label}
+					help={help}
+					aria-labelledby={label}
+					className={classesControl}
+					role='group'
+				>
+					{getChildren()}
+				</BaseControl>
+			)}
+			{type === 'tabs' && getChildren()}
 			{type === 'tabs' && (
 				<div className={classesContent}>
 					{items.map((item, i) => {
-						const label = !isEmpty(item.label)
-							? item.label
-							: item.value;
-
 						if (item && i === tab) {
 							const classesItemContent = classnames(
 								'maxi-tab-content',
@@ -128,7 +144,7 @@ const SettingTabsControl = props => {
 
 							return (
 								<div
-									key={`maxi-tab-content-${label}`}
+									key={`maxi-tab-content-${item.label}`}
 									className={classesItemContent}
 								>
 									{item.content}

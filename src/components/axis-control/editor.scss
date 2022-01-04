@@ -30,7 +30,7 @@
 
 	.maxi-tabs-control__button--selected,
 	.maxi-tabs-control__button--selected {
-		svg path {
+		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
 			stroke: var(--maxi-secondary-color);
 		}

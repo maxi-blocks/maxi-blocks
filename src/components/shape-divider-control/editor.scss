@@ -31,8 +31,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 				width: 100% !important;
 			}
 			&:focus,
-			&--selected,
-			&--pressed {
+			&--selected {
 				border: none;
 				background-color: var(--maxi-white-4-color) !important;
 				box-shadow: none;

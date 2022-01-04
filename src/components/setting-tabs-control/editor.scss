@@ -45,7 +45,7 @@
 			&:active {
 				background-color: var(--maxi-grey-3-color);
 			}
-			&[aria-pressed='true'] {
+			&[aria-pressed='true']:not(.maxi-tabs-control__button--selected) {
 				border-bottom: 2px solid var(--maxi-primary-color);
 				background-color: var(--maxi-white-3-color);
 				font-weight: 700;

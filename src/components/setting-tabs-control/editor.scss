@@ -88,6 +88,21 @@
 				flex: 4;
 			}
 		}
+
+		&__full-width {
+			width: 100%;
+			.maxi-base-control {
+				&__field {
+					flex-wrap: wrap;
+				}
+				&__label {
+					display: block;
+					flex: 100% !important;
+					width: 100%;
+					margin: 0 0 8px 0 !important;
+				}
+			}
+		}
 	}
 
 	.maxi-tabs-content {

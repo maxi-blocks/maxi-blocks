@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
@@ -209,13 +209,14 @@ const IconControl = props => {
 							/>
 							{breakpoint === 'general' && (
 								<>
-									<ButtonGroupControl
+									<SettingTabsControl
 										label={__(
 											'Icon Position',
 											'maxi-block'
 										)}
+										type='buttons'
 										selected={props['icon-position']}
-										options={[
+										items={[
 											{
 												label: __('Left', 'maxi-block'),
 												value: 'left',
@@ -250,11 +251,12 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					<ButtonGroupControl
+					<SettingTabsControl
 						label=''
+						type='buttons'
 						fullWidthMode
 						selected={iconStyle}
-						options={getOptions()}
+						items={getOptions()}
 						onChange={val => setIconStyle(val)}
 					/>
 					{iconStyle === 'color' && (
@@ -351,11 +353,11 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					<ButtonGroupControl
+					<SettingTabsControl
+						type='buttons'
 						fullWidthMode
 						selected={iconBackgroundActiveMedia || 'none'}
-						options={getBackgroundOptions()}
-						optionType='string'
+						items={getBackgroundOptions()}
 						onChange={val =>
 							onChange({
 								[getAttributeKey(

@@ -820,6 +820,41 @@ const ImageLayer = props => {
 										'background-image-parallax-status'
 									] && (
 										<>
+											<SettingTabsControl
+												className='parallax-direction'
+												type='buttons'
+												label={__(
+													'Direction',
+													'maxi-blocks'
+												)}
+												selected={
+													imageOptions[
+														'background-image-parallax-direction'
+													]
+												}
+												items={[
+													{
+														label: __(
+															'Up',
+															'maxi-blocks'
+														),
+														value: 'up',
+													},
+													{
+														label: __(
+															'Down',
+															'maxi-blocks'
+														),
+														value: 'down',
+													},
+												]}
+												onChange={val =>
+													onChange({
+														'background-image-parallax-direction':
+															val,
+													})
+												}
+											/>
 											<ButtonGroupControl
 												className='parallax-direction'
 												label={__(

@@ -50,17 +50,6 @@
 				background-color: var(--maxi-white-3-color);
 				font-weight: 700;
 			}
-			&--active:before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 10px;
-				height: 10px;
-				z-index: 1;
-				border-top: 2px solid var(--maxi-green-1-color);
-				border-left: 2px solid var(--maxi-green-1-color);
-			}
 			svg {
 				display: block;
 				width: 20px;
@@ -68,15 +57,28 @@
 				margin: 0;
 				fill: var(--maxi-grey-5-color);
 			}
-			&__notification {
-				position: absolute;
-				z-index: 8;
-				top: 0;
-				right: 0;
-				width: 9px;
-				height: 9px;
-			}
 		}
+		&--active:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 10px;
+			height: 10px;
+			z-index: 1;
+			border-top: 2px solid var(--maxi-green-1-color);
+			border-left: 2px solid var(--maxi-green-1-color);
+		}
+
+		&__notification {
+			position: absolute;
+			z-index: 8;
+			top: 0;
+			right: 0;
+			width: 9px;
+			height: 9px;
+		}
+
 		.maxi-base-control {
 			&__field {
 				width: 100%;
@@ -86,45 +88,46 @@
 				flex: 4;
 			}
 		}
-		.maxi-tabs-content {
-			&:not(.maxi-tabs-content--disable-padding) {
-				padding: 8px 8px 0;
+	}
+
+	.maxi-tabs-content {
+		&:not(.maxi-tabs-content--disable-padding) {
+			padding: 8px 8px 0;
+			background-color: #fff;
+		}
+
+		.maxi-tab-content {
+			display: none;
+			background: #fff;
+
+			&__box {
+				position: relative;
+				padding: 8px;
+				border-top: 1px solid var(--maxi-grey-1-color);
+				border-bottom: 8px solid var(--maxi-grey-8-color);
 				background-color: #fff;
+
+				&:after {
+					content: '';
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					height: 1px;
+					background: var(--maxi-grey-1-color);
+				}
+				& > *:last-child {
+					.maxi-base-control__field {
+						margin-bottom: 0 !important;
+					}
+				}
+				.components-base-control__label {
+					flex: none;
+					width: 50%;
+				}
 			}
-
-			.maxi-tab-content {
-				display: none;
-				background: #fff;
-
-				&__box {
-					position: relative;
-					padding: 8px;
-					border-top: 1px solid var(--maxi-grey-1-color);
-					border-bottom: 8px solid var(--maxi-grey-8-color);
-					background-color: #fff;
-
-					&:after {
-						content: '';
-						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						height: 1px;
-						background: var(--maxi-grey-1-color);
-					}
-					& > *:last-child {
-						.maxi-base-control__field {
-							margin-bottom: 0 !important;
-						}
-					}
-					.components-base-control__label {
-						flex: none;
-						width: 50%;
-					}
-				}
-				&--selected {
-					display: block;
-				}
+			&--selected {
+				display: block;
 			}
 		}
 	}

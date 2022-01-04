@@ -123,7 +123,7 @@ const SettingTabsControl = props => {
 
 	return (
 		<div className={classes}>
-			{type === 'buttons' && label && (
+			{type === 'buttons' && (
 				<BaseControl
 					label={label}
 					help={help}

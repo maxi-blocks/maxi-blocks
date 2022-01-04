@@ -50,7 +50,7 @@
 				background-color: var(--maxi-white-3-color);
 				font-weight: 700;
 			}
-			svg {
+			svg:not(.maxi-tabs-control__notification) {
 				display: block;
 				width: 20px;
 				height: 100%;

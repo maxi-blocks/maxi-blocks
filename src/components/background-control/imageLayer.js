@@ -8,7 +8,6 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ButtonGroupControl from '../button-group-control';
 import ClipPath from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
@@ -848,41 +847,6 @@ const ImageLayer = props => {
 														value: 'down',
 													},
 												]}
-												onChange={val =>
-													onChange({
-														'background-image-parallax-direction':
-															val,
-													})
-												}
-											/>
-											<ButtonGroupControl
-												className='parallax-direction'
-												label={__(
-													'Direction',
-													'maxi-blocks'
-												)}
-												selected={
-													imageOptions[
-														'background-image-parallax-direction'
-													]
-												}
-												options={[
-													{
-														label: __(
-															'Up',
-															'maxi-blocks'
-														),
-														value: 'up',
-													},
-													{
-														label: __(
-															'Down',
-															'maxi-blocks'
-														),
-														value: 'down',
-													},
-												]}
-												optionType='string'
 												onChange={val =>
 													onChange({
 														'background-image-parallax-direction':

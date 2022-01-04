@@ -73,7 +73,6 @@ const AlignmentControl = props => {
 	return (
 		<SettingTabsControl
 			type='buttons'
-			disablePadding
 			className={classes}
 			items={getOptions()}
 			selected={

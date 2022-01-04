@@ -15,7 +15,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 }
 .maxi-shapedividercontrol {
 	&__shape-list {
-		.maxi-base-control__field {
+		.maxi-tabs-control {
 			display: flex;
 			flex-wrap: wrap;
 			width: 271px;
@@ -23,14 +23,16 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			overflow-y: scroll;
 		}
 
-		.maxi-button-group-control__option {
+		.maxi-tabs-control__button {
 			width: 100%;
+			flex-direction: row;
 
 			svg {
 				width: 100% !important;
 			}
 			&:focus,
-			&--selected {
+			&--selected,
+			&--pressed {
 				border: none;
 				background-color: var(--maxi-white-4-color) !important;
 				box-shadow: none;

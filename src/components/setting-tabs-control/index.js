@@ -12,6 +12,7 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -30,6 +31,9 @@ const SettingTabsControl = props => {
 		returnValue,
 		callback,
 		target,
+		onChange,
+		type = 'tabs',
+		selected,
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -61,20 +65,31 @@ const SettingTabsControl = props => {
 		<div className={classes}>
 			<div className={classesControl}>
 				{items.map((item, i) => {
-					if (item)
+					if (item) {
+						const label = !isEmpty(item.label)
+							? item.label
+							: item.value;
 						return (
 							<Button
-								key={`maxi-tabs-control__button-${item.label}`}
+								key={`maxi-tabs-control__button-${label}`}
+								label={item.value}
 								className='maxi-tabs-control__button'
 								onClick={() => {
 									setTab(i);
 
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
+
+									type === 'buttons' && onChange(item.value);
 								}}
-								aria-pressed={tab === i}
+								aria-pressed={
+									type === 'tabs'
+										? tab === i
+										: selected === item.value
+								}
 							>
-								{item.label}
+								{!isEmpty(item.label) && item.label}
+								{!isEmpty(item.icon) && item.icon}
 								{item.showNotification && (
 									<svg
 										className='maxi-tabs-control__notification'
@@ -89,31 +104,38 @@ const SettingTabsControl = props => {
 								)}
 							</Button>
 						);
-
-					return null;
-				})}
-			</div>
-			<div className={classesContent}>
-				{items.map((item, i) => {
-					if (item && i === tab) {
-						const classesItemContent = classnames(
-							'maxi-tab-content',
-							tab === i ? 'maxi-tab-content--selected' : ''
-						);
-
-						return (
-							<div
-								key={`maxi-tab-content-${item.label}`}
-								className={classesItemContent}
-							>
-								{item.content}
-							</div>
-						);
 					}
 
 					return null;
 				})}
 			</div>
+			{type === 'tabs' && (
+				<div className={classesContent}>
+					{items.map((item, i) => {
+						const label = !isEmpty(item.label)
+							? item.label
+							: item.value;
+
+						if (item && i === tab) {
+							const classesItemContent = classnames(
+								'maxi-tab-content',
+								tab === i ? 'maxi-tab-content--selected' : ''
+							);
+
+							return (
+								<div
+									key={`maxi-tab-content-${label}`}
+									className={classesItemContent}
+								>
+									{item.content}
+								</div>
+							);
+						}
+
+						return null;
+					})}
+				</div>
+			)}
 		</div>
 	);
 };

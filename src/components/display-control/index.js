@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ButtonGroupControl from '../button-group-control';
 import SettingTabsControl from '../setting-tabs-control';
 
 /**

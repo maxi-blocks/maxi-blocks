@@ -52,6 +52,7 @@ const ButtonGroupControl = ({
 			{options.map(({ value, label, className, ...rest }, index) => (
 				<Button
 					label={value}
+					// eslint-disable-next-line react/no-array-index-key
 					key={`${id}-${index}`}
 					aria-pressed={selected === value}
 					className={classnames(

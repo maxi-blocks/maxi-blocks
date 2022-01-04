@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
 
 /**
@@ -39,25 +39,25 @@ const AlignmentControl = props => {
 
 		!disableLeft &&
 			options.push({
-				label: <Icon icon={alignLeft} />,
+				icon: <Icon icon={alignLeft} />,
 				value: 'left',
 			});
 
 		!disableCenter &&
 			options.push({
-				label: <Icon icon={alignCenter} />,
+				icon: <Icon icon={alignCenter} />,
 				value: 'center',
 			});
 
 		!disableRight &&
 			options.push({
-				label: <Icon icon={alignRight} />,
+				icon: <Icon icon={alignRight} />,
 				value: 'right',
 			});
 
 		!disableJustify &&
 			options.push({
-				label: <Icon icon={alignJustify} />,
+				icon: <Icon icon={alignJustify} />,
 				value: 'justify',
 			});
 
@@ -71,9 +71,11 @@ const AlignmentControl = props => {
 	);
 
 	return (
-		<ButtonGroupControl
-			label={label}
+		<SettingTabsControl
+			type='buttons'
+			disablePadding
 			className={classes}
+			items={getOptions()}
 			selected={
 				getLastBreakpointAttribute(
 					type === 'text' ? 'text-alignment' : 'alignment',
@@ -82,7 +84,6 @@ const AlignmentControl = props => {
 					isHover
 				) || getOptions()[0].value
 			}
-			options={getOptions()}
 			onChange={val =>
 				onChange(
 					type === 'text'

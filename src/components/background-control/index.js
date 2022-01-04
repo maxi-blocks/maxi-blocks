@@ -17,6 +17,7 @@ import Icon from '../icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -35,7 +36,6 @@ import {
 	shape,
 } from '../../icons';
 import './editor.scss';
-import { SettingTabsControl } from '..';
 
 /**
  * Components

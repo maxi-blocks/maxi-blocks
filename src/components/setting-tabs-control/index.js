@@ -37,6 +37,7 @@ const SettingTabsControl = props => {
 		selected,
 		label,
 		help,
+		fullWidthMode,
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -56,7 +57,8 @@ const SettingTabsControl = props => {
 	const classesControl = classnames(
 		'maxi-tabs-control',
 		target && `maxi-tabs-control__${target}`,
-		disablePadding ? 'maxi-tabs-control--disable-padding' : null
+		disablePadding ? 'maxi-tabs-control--disable-padding' : null,
+		fullWidthMode && 'maxi-tabs-control__full-width'
 	);
 
 	const classesContent = classnames(

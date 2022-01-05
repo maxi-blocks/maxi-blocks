@@ -61,6 +61,10 @@ const SettingTabsControl = props => {
 		fullWidthMode && 'maxi-tabs-control__full-width'
 	);
 
+	const classesBase = classnames(
+		fullWidthMode && 'maxi-tabs-control__full-width'
+	);
+
 	const classesContent = classnames(
 		'maxi-tabs-content',
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
@@ -128,7 +132,7 @@ const SettingTabsControl = props => {
 					label={label}
 					help={help}
 					aria-labelledby={label}
-					className={classesControl}
+					className={classesBase}
 					role='group'
 				>
 					{getChildren()}

@@ -113,26 +113,24 @@ const BackgroundControl = props => {
 	return (
 		<div className={classes}>
 			{getOptions().length > 1 && (
-				<>
-					<SettingTabsControl
-						label={__('Background', 'maxi-blocks')}
-						type='buttons'
-						className='maxi-background-control__simple'
-						fullWidthMode
-						selected={backgroundActiveMedia || 'none'}
-						items={getOptions()}
-						onChange={val =>
-							onChange({
-								[getAttributeKey(
-									'background-active-media',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-					/>
-				</>
+				<SettingTabsControl
+					label={__('Background', 'maxi-blocks')}
+					type='buttons'
+					className='maxi-background-control__simple'
+					fullWidthMode
+					selected={backgroundActiveMedia || 'none'}
+					items={getOptions()}
+					onChange={val =>
+						onChange({
+							[getAttributeKey(
+								'background-active-media',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val,
+						})
+					}
+				/>
 			)}
 			<>
 				{!disableColor && backgroundActiveMedia === 'color' && (

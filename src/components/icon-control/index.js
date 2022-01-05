@@ -64,12 +64,12 @@ const IconControl = props => {
 		const options = [];
 
 		options.push({
-			label: <Icon icon={smileIcon} />,
+			icon: <Icon icon={smileIcon} />,
 			value: 'color',
 		});
 
 		options.push({
-			label: <Icon icon={solid} />,
+			icon: <Icon icon={solid} />,
 			value: 'border',
 		});
 
@@ -80,17 +80,17 @@ const IconControl = props => {
 		const options = [];
 
 		options.push({
-			label: <Icon icon={styleNone} />,
+			icon: <Icon icon={styleNone} />,
 			value: 'none',
 		});
 
 		options.push({
-			label: <Icon icon={backgroundColor} />,
+			icon: <Icon icon={backgroundColor} />,
 			value: 'background-color',
 		});
 
 		options.push({
-			label: <Icon icon={backgroundGradient} />,
+			icon: <Icon icon={backgroundGradient} />,
 			value: 'gradient',
 		});
 
@@ -121,6 +121,10 @@ const IconControl = props => {
 		breakpoint,
 		props,
 		isHover
+	);
+
+	const [iconBgActive, setIconBgActive] = useState(
+		iconBackgroundActiveMedia || 'none'
 	);
 
 	return (
@@ -356,9 +360,10 @@ const IconControl = props => {
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode
-						selected={iconBackgroundActiveMedia || 'none'}
+						selected={iconBgActive}
 						items={getBackgroundOptions()}
-						onChange={val =>
+						onChange={val => {
+							setIconBgActive(val);
 							onChange({
 								[getAttributeKey(
 									'background-active-media',
@@ -366,10 +371,10 @@ const IconControl = props => {
 									'icon-',
 									breakpoint
 								)]: val,
-							})
-						}
+							});
+						}}
 					/>
-					{iconBackgroundActiveMedia === 'background-color' && (
+					{iconBgActive === 'background-color' && (
 						<>
 							{!props['icon-inherit'] ? (
 								<ColorControl
@@ -461,7 +466,7 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{iconBackgroundActiveMedia === 'gradient' && (
+					{iconBgActive === 'gradient' && (
 						<GradientControl
 							label={__(
 								'Icon Background gradient',

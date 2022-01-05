@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
-import ButtonGroupControl from '../../../button-group-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
@@ -73,10 +73,11 @@ const Size = props => {
 			<div className='toolbar-item__size__popover'>
 				{(isFirstOnHierarchy ||
 					blockName === 'maxi-blocks/row-maxi') && (
-					<ButtonGroupControl
+					<SettingTabsControl
 						label={__('Full Width', 'maxi-blocks')}
+						type='buttons'
 						selected={props[attrLabel]}
-						options={[
+						items={[
 							{
 								label: __('Yes', 'maxi-blocks'),
 								value: 'full',

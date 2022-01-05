@@ -73,6 +73,7 @@ const AlignmentControl = props => {
 	return (
 		<SettingTabsControl
 			type='buttons'
+			fullWidthMode
 			className={classes}
 			items={getOptions()}
 			selected={

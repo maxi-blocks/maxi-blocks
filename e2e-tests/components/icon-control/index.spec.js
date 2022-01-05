@@ -54,7 +54,7 @@ describe('IconControl', () => {
 		expect(await getAttributes('icon-spacing-general')).toStrictEqual(66);
 
 		// icon position
-		const iconPosition = await page.$$('.maxi-button-group-control button');
+		const iconPosition = await page.$$('.maxi-tabs-control button');
 
 		await iconPosition[1].click();
 		const { 'icon-position': position } = await getBlockAttributes();

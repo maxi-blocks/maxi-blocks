@@ -247,6 +247,7 @@ const LinkOptions = props => {
 		<>
 			<SettingTabsControl
 				type='buttons'
+				fullWidthMode
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
 				items={[

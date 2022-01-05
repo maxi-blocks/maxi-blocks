@@ -41,7 +41,7 @@ describe('ArrowControl', () => {
 
 		for (let i = 0; i < values.length; i++) {
 			await page.$$eval(
-				'.maxi-arrow-control .maxi-tabs-control button',
+				'.maxi-arrow-control .maxi-settingstab-control button',
 				(buttons, i) => buttons[i].click(),
 				i
 			);
@@ -77,17 +77,17 @@ describe('ArrowControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			openArrowControl => openArrowControl[0].click()
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].click()
 		);
 
 		const isItemChecked = await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].ariaPressed
 		);
 
@@ -97,13 +97,13 @@ describe('ArrowControl', () => {
 		await changeResponsive(page, 's');
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].click()
 		);
 
 		await page.waitForTimeout(100);
 		const responsiveSOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].ariaPressed
 		);
 
@@ -114,12 +114,12 @@ describe('ArrowControl', () => {
 		// responsive XS
 		await changeResponsive(page, 'xs');
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].click()
 		);
 		await page.waitForTimeout(100);
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].ariaPressed
 		);
 
@@ -129,12 +129,12 @@ describe('ArrowControl', () => {
 		await changeResponsive(page, 'm');
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].click()
 		);
 		await page.waitForTimeout(100);
 		const responsiveMOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-tabs-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].ariaPressed
 		);
 

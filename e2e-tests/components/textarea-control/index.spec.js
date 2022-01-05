@@ -22,7 +22,7 @@ describe('TextareaControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-hover-effect-control .maxi-tabs-control button',
+			'.maxi-hover-effect-control .maxi-settingstab-control button',
 			buttons => buttons[2].click()
 		);
 

@@ -104,6 +104,7 @@ const ArrowControl = props => {
 					<SettingTabsControl
 						label=''
 						type='buttons'
+						fullWidthMode
 						selected={getLastBreakpointAttribute(
 							'arrow-side',
 							breakpoint,

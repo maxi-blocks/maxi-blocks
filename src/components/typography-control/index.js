@@ -239,6 +239,7 @@ const LinkOptions = props => {
 		breakpoint,
 		textLevel,
 		clientId,
+		activeTabs,
 	} = props;
 
 	const [linkStatus, setLinkStatus] = useState('normal_link');
@@ -250,6 +251,7 @@ const LinkOptions = props => {
 				fullWidthMode
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
+				activeTabs={activeTabs}
 				items={[
 					{
 						label: __('Link', 'maxi-block'),

@@ -697,7 +697,7 @@ const AxisControl = props => {
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (
-				<ResponsiveTabsControl breakpoint={breakpoint}>
+				<ResponsiveTabsControl breakpoint={breakpoint} target={target}>
 					<AxisControlContent
 						{...props}
 						key='AxisControlContent__responsive'

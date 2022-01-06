@@ -218,6 +218,7 @@ const IconControl = props => {
 											'Icon Position',
 											'maxi-block'
 										)}
+										className='maxi-icon-position-control'
 										type='buttons'
 										selected={props['icon-position']}
 										items={[
@@ -257,6 +258,7 @@ const IconControl = props => {
 					)}
 					<SettingTabsControl
 						label=''
+						className='maxi-icon-styles-control'
 						type='buttons'
 						fullWidthMode
 						selected={iconStyle}

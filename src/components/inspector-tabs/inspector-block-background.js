@@ -85,6 +85,7 @@ const blockBackground = ({
 								)}
 							</>
 						),
+						extraIndicators: ['block-background-hover-status'],
 					},
 				]}
 			/>

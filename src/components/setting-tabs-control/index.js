@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, cloneElement } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -19,6 +20,10 @@ import { isEmpty } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import {
+	getIsActiveTab,
+	getMaxiAttrsFromChildren,
+} from '../../extensions/indicators';
 
 /**
  * Component
@@ -38,7 +43,11 @@ const SettingTabsControl = props => {
 		label,
 		help,
 		fullWidthMode,
+		blockName,
 	} = props;
+
+	const { getBlockName, getSelectedBlockClientId } =
+		select('core/block-editor');
 
 	const [tab, setTab] = useState(0);
 
@@ -78,6 +87,10 @@ const SettingTabsControl = props => {
 						const buttonLabel = !isEmpty(item.label)
 							? item.label
 							: item.value;
+						const itemsIndicators = !isEmpty(item.content)
+							? cloneElement(item.content)
+							: item.value;
+
 						return (
 							<Button
 								key={`maxi-tabs-control__button-${buttonLabel}`}
@@ -85,7 +98,19 @@ const SettingTabsControl = props => {
 								className={classnames(
 									'maxi-tabs-control__button',
 									selected === item.value &&
-										'maxi-tabs-control__button--selected'
+										'maxi-tabs-control__button--selected',
+									getIsActiveTab(
+										getMaxiAttrsFromChildren({
+											items: itemsIndicators,
+											blockName:
+												blockName ??
+												getBlockName(
+													getSelectedBlockClientId()
+												),
+										}),
+										item.breakpoint,
+										item.extraIndicators
+									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
 									setTab(i);

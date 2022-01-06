@@ -34,7 +34,7 @@ const getGroupAttributes = (
 				defaults[`${el}${isHover ? 'Hover' : ''}`] || defaults[el];
 
 			if (defaultAttributes)
-				Object?.keys(defaultAttributes)?.forEach(key => {
+				Object.keys(defaultAttributes).forEach(key => {
 					if (getIsValid(attributes[`${prefix}${key}`], cleaned))
 						response[`${prefix}${key}`] =
 							attributes[`${prefix}${key}`];

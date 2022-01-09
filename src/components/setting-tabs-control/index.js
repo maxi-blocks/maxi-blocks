@@ -89,7 +89,7 @@ const SettingTabsControl = props => {
 							: item.value;
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
-							: item.value;
+							: item;
 
 						return (
 							<Button
@@ -109,7 +109,8 @@ const SettingTabsControl = props => {
 												),
 										}),
 										item.breakpoint,
-										item.extraIndicators
+										item.extraIndicators,
+										item.extraIndicatorsResponsive
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {

@@ -4,7 +4,12 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 
-const getIsActiveTab = (attributes, breakpoint, extraIndicators = []) => {
+const getIsActiveTab = (
+	attributes,
+	breakpoint,
+	extraIndicators = [],
+	extraIndicatorsResponsive = []
+) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
 	const block = getBlock(getSelectedBlockClientId());
@@ -19,7 +24,11 @@ const getIsActiveTab = (attributes, breakpoint, extraIndicators = []) => {
 		'uniqueID',
 	];
 
-	return ![...attributes, ...extraIndicators].every(attribute => {
+	return ![
+		...attributes,
+		...extraIndicators,
+		...extraIndicatorsResponsive,
+	].every(attribute => {
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
 		if (breakpoint) {

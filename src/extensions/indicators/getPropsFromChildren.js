@@ -18,6 +18,8 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 	const response = [];
 	const keyResponse = [];
 
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 	const getProps = item => {
 		if (!isObject(item)) return;
 
@@ -25,6 +27,16 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 		// with other label. Just need to be set on the lowest level of the tab item
 		if ('extraIndicators' in item)
 			item.extraIndicators.forEach(indicator => response.push(indicator));
+
+		if ('extraIndicatorsResponsive' in item) {
+			console.log('extra!!!');
+			item.extraIndicatorsResponsive.forEach(indicator => {
+				console.log(`extra: ${indicator}`);
+				breakpoints.forEach(breakpoint =>
+					response.push(`${indicator}-${breakpoint}`)
+				);
+			});
+		}
 
 		if ('props' in item) {
 			if ('content' in item) getProps(item.content);
@@ -48,6 +60,8 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 
 	getProps(items);
 
+	console.log(`response: ${compact(uniq(response))}`);
+
 	return compact(uniq(response));
 };
 
@@ -56,18 +70,8 @@ export const getMaxiAttrsFromChildren = ({
 	blockName,
 	excludedEntries,
 }) => {
-	// console.log(typeof items);
 	const blockAttributesKeys = Object.keys(getBlockAttributes(blockName));
 	const blockPropsKeys = getPropsFromChildren(items, excludedEntries);
-
-	if (
-		intersection(blockAttributesKeys, blockPropsKeys).includes(
-			'transform-scale-x-general'
-		)
-	) {
-		console.log('return');
-		console.log(intersection(blockAttributesKeys, blockPropsKeys));
-	}
 
 	return intersection(blockAttributesKeys, blockPropsKeys);
 };

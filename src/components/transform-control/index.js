@@ -32,13 +32,7 @@ import './editor.scss';
  * Component
  */
 const TransformControl = props => {
-	const {
-		className,
-		onChange,
-		breakpoint = 'general',
-		uniqueID,
-		activeTabs = [],
-	} = props;
+	const { className, onChange, breakpoint = 'general', uniqueID } = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
@@ -101,232 +95,206 @@ const TransformControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
-				// type='buttons'
 				label=''
+				type='buttons'
 				selected={transformStatus}
 				items={[
 					{
 						label: __('Scale', 'maxi-blocks'),
 						value: 'scale',
-						content: (
-							<SquareControl
-								x={getLastBreakpointAttribute(
-									'transform-scale-x',
-									breakpoint,
-									props
-								)}
-								defaultX={getDefaultAttribute(
-									'transform-scale-x'
-								)}
-								y={getLastBreakpointAttribute(
-									'transform-scale-y',
-									breakpoint,
-									props
-								)}
-								defaultY={getDefaultAttribute(
-									'transform-scale-y'
-								)}
-								onChange={(x, y) => {
-									onChangeTransform({
-										'transform-scale-x': x,
-										'transform-scale-y': y,
-									});
-									forceStyles();
-								}}
-								onSave={(x, y) => {
-									onChangeTransform({
-										'transform-scale-x': x,
-										'transform-scale-y': y,
-									});
-									onChange({
-										[`transform-scale-x-${breakpoint}`]: x,
-										[`transform-scale-y-${breakpoint}`]: y,
-									});
-									forceStyles();
-								}}
-							/>
-						),
+						extraIndicatorsResponsive: [
+							'transform-scale-x',
+							'transform-scale-y',
+						],
 					},
 					{
 						label: __('Translate', 'maxi-blocks'),
 						value: 'translate',
-						content: (
-							<SquareControl
-								type='drag'
-								x={getLastBreakpointAttribute(
-									'transform-translate-x',
-									breakpoint,
-									props
-								)}
-								defaultX={getDefaultAttribute(
-									'transform-translate-x'
-								)}
-								y={getLastBreakpointAttribute(
-									'transform-translate-y',
-									breakpoint,
-									props
-								)}
-								defaultY={getDefaultAttribute(
-									'transform-translate-y'
-								)}
-								xUnit={getLastBreakpointAttribute(
-									'transform-translate-x-unit',
-									breakpoint,
-									props
-								)}
-								yUnit={getLastBreakpointAttribute(
-									'transform-translate-y-unit',
-									breakpoint,
-									props
-								)}
-								onChange={(x, y, xUnit, yUnit) => {
-									onChangeTransform({
-										'transform-translate-x': x,
-										'transform-translate-x-unit': xUnit,
-										'transform-translate-y': y,
-										'transform-translate-y-unit': yUnit,
-									});
-									forceStyles();
-								}}
-								onSave={(x, y, xUnit, yUnit) => {
-									onChangeTransform({
-										'transform-translate-x': x,
-										'transform-translate-x-unit': xUnit,
-										'transform-translate-y': y,
-										'transform-translate-y-unit': yUnit,
-									});
-									onChange({
-										[`transform-translate-x-${breakpoint}`]:
-											x,
-										[`transform-translate-x-unit-${breakpoint}`]:
-											xUnit,
-										[`transform-translate-y-${breakpoint}`]:
-											y,
-										[`transform-translate-y-unit-${breakpoint}`]:
-											yUnit,
-									});
-									forceStyles();
-								}}
-							/>
-						),
 					},
-					{
-						label: __('Rotate', 'maxi-blocks'),
-						value: 'rotate',
-						content: (
-							<RotateControl
-								x={getLastBreakpointAttribute(
-									'transform-rotate-x',
-									breakpoint,
-									props
-								)}
-								defaultX={getDefaultAttribute(
-									'transform-rotate-x'
-								)}
-								y={getLastBreakpointAttribute(
-									'transform-rotate-y',
-									breakpoint,
-									props
-								)}
-								defaultY={getDefaultAttribute(
-									'transform-rotate-y'
-								)}
-								z={getLastBreakpointAttribute(
-									'transform-rotate-z',
-									breakpoint,
-									props
-								)}
-								defaultZ={getDefaultAttribute(
-									'transform-rotate-z'
-								)}
-								onChange={(x, y, z) => {
-									onChangeTransform({
-										'transform-rotate-x': x,
-										'transform-rotate-y': y,
-										'transform-rotate-z': z,
-									});
-									onChange({
-										[`transform-rotate-x-${breakpoint}`]: x,
-										[`transform-rotate-y-${breakpoint}`]: y,
-										[`transform-rotate-z-${breakpoint}`]: z,
-									});
-									forceStyles();
-								}}
-							/>
-						),
-					},
+					{ label: __('Rotate', 'maxi-blocks'), value: 'rotate' },
 					{
 						label: __('Origin', 'maxi-blocks'),
 						value: 'origin',
 						hidden: !isTransformed(),
-						content: (
-							<SquareControl
-								type='origin'
-								x={
-									getLastBreakpointAttribute(
-										'transform-origin-x',
-										breakpoint,
-										props
-									) || 'center'
-								}
-								defaultX={getDefaultAttribute(
-									'transform-origin-x'
-								)}
-								y={
-									getLastBreakpointAttribute(
-										'transform-origin-y',
-										breakpoint,
-										props
-									) || 'middle'
-								}
-								defaultY={getDefaultAttribute(
-									'transform-origin-y'
-								)}
-								xUnit={getLastBreakpointAttribute(
-									'transform-origin-x-unit',
-									breakpoint,
-									props
-								)}
-								yUnit={getLastBreakpointAttribute(
-									'transform-origin-y-unit',
-									breakpoint,
-									props
-								)}
-								onChange={(x, y, xUnit, yUnit) => {
-									onChangeTransform({
-										'transform-origin-x': x,
-										'transform-origin-x-unit': xUnit,
-										'transform-origin-y': y,
-										'transform-origin-y-unit': yUnit,
-									});
-									forceStyles();
-								}}
-								onSave={(x, y, xUnit, yUnit) => {
-									onChangeTransform({
-										'transform-origin-x': x,
-										'transform-origin-x-unit': xUnit,
-										'transform-origin-y': y,
-										'transform-origin-y-unit': yUnit,
-									});
-									onChange({
-										[`transform-origin-x-${breakpoint}`]: x,
-										[`transform-origin-x-unit-${breakpoint}`]:
-											xUnit,
-										[`transform-origin-y-${breakpoint}`]: y,
-										[`transform-origin-y-unit-${breakpoint}`]:
-											yUnit,
-									});
-									forceStyles();
-								}}
-							/>
-						),
 					},
 				]}
-				onChange={val => {
-					setTransformStatus(val);
-				}}
-				activeTabs={activeTabs}
+				onChange={val => setTransformStatus(val)}
 			/>
+			{transformStatus === 'scale' && (
+				<SquareControl
+					x={getLastBreakpointAttribute(
+						'transform-scale-x',
+						breakpoint,
+						props
+					)}
+					defaultX={getDefaultAttribute('transform-scale-x')}
+					y={getLastBreakpointAttribute(
+						'transform-scale-y',
+						breakpoint,
+						props
+					)}
+					defaultY={getDefaultAttribute('transform-scale-y')}
+					onChange={(x, y) => {
+						onChangeTransform({
+							'transform-scale-x': x,
+							'transform-scale-y': y,
+						});
+						forceStyles();
+					}}
+					onSave={(x, y) => {
+						onChangeTransform({
+							'transform-scale-x': x,
+							'transform-scale-y': y,
+						});
+						onChange({
+							[`transform-scale-x-${breakpoint}`]: x,
+							[`transform-scale-y-${breakpoint}`]: y,
+						});
+						forceStyles();
+					}}
+				/>
+			)}
+			{transformStatus === 'translate' && (
+				<SquareControl
+					type='drag'
+					x={getLastBreakpointAttribute(
+						'transform-translate-x',
+						breakpoint,
+						props
+					)}
+					defaultX={getDefaultAttribute('transform-translate-x')}
+					y={getLastBreakpointAttribute(
+						'transform-translate-y',
+						breakpoint,
+						props
+					)}
+					defaultY={getDefaultAttribute('transform-translate-y')}
+					xUnit={getLastBreakpointAttribute(
+						'transform-translate-x-unit',
+						breakpoint,
+						props
+					)}
+					yUnit={getLastBreakpointAttribute(
+						'transform-translate-y-unit',
+						breakpoint,
+						props
+					)}
+					onChange={(x, y, xUnit, yUnit) => {
+						onChangeTransform({
+							'transform-translate-x': x,
+							'transform-translate-x-unit': xUnit,
+							'transform-translate-y': y,
+							'transform-translate-y-unit': yUnit,
+						});
+						forceStyles();
+					}}
+					onSave={(x, y, xUnit, yUnit) => {
+						onChangeTransform({
+							'transform-translate-x': x,
+							'transform-translate-x-unit': xUnit,
+							'transform-translate-y': y,
+							'transform-translate-y-unit': yUnit,
+						});
+						onChange({
+							[`transform-translate-x-${breakpoint}`]: x,
+							[`transform-translate-x-unit-${breakpoint}`]: xUnit,
+							[`transform-translate-y-${breakpoint}`]: y,
+							[`transform-translate-y-unit-${breakpoint}`]: yUnit,
+						});
+						forceStyles();
+					}}
+				/>
+			)}
+			{transformStatus === 'rotate' && (
+				<RotateControl
+					x={getLastBreakpointAttribute(
+						'transform-rotate-x',
+						breakpoint,
+						props
+					)}
+					defaultX={getDefaultAttribute('transform-rotate-x')}
+					y={getLastBreakpointAttribute(
+						'transform-rotate-y',
+						breakpoint,
+						props
+					)}
+					defaultY={getDefaultAttribute('transform-rotate-y')}
+					z={getLastBreakpointAttribute(
+						'transform-rotate-z',
+						breakpoint,
+						props
+					)}
+					defaultZ={getDefaultAttribute('transform-rotate-z')}
+					onChange={(x, y, z) => {
+						onChangeTransform({
+							'transform-rotate-x': x,
+							'transform-rotate-y': y,
+							'transform-rotate-z': z,
+						});
+						onChange({
+							[`transform-rotate-x-${breakpoint}`]: x,
+							[`transform-rotate-y-${breakpoint}`]: y,
+							[`transform-rotate-z-${breakpoint}`]: z,
+						});
+						forceStyles();
+					}}
+				/>
+			)}
+			{transformStatus === 'origin' && (
+				<SquareControl
+					type='origin'
+					x={
+						getLastBreakpointAttribute(
+							'transform-origin-x',
+							breakpoint,
+							props
+						) || 'center'
+					}
+					defaultX={getDefaultAttribute('transform-origin-x')}
+					y={
+						getLastBreakpointAttribute(
+							'transform-origin-y',
+							breakpoint,
+							props
+						) || 'middle'
+					}
+					defaultY={getDefaultAttribute('transform-origin-y')}
+					xUnit={getLastBreakpointAttribute(
+						'transform-origin-x-unit',
+						breakpoint,
+						props
+					)}
+					yUnit={getLastBreakpointAttribute(
+						'transform-origin-y-unit',
+						breakpoint,
+						props
+					)}
+					onChange={(x, y, xUnit, yUnit) => {
+						onChangeTransform({
+							'transform-origin-x': x,
+							'transform-origin-x-unit': xUnit,
+							'transform-origin-y': y,
+							'transform-origin-y-unit': yUnit,
+						});
+						forceStyles();
+					}}
+					onSave={(x, y, xUnit, yUnit) => {
+						onChangeTransform({
+							'transform-origin-x': x,
+							'transform-origin-x-unit': xUnit,
+							'transform-origin-y': y,
+							'transform-origin-y-unit': yUnit,
+						});
+						onChange({
+							[`transform-origin-x-${breakpoint}`]: x,
+							[`transform-origin-x-unit-${breakpoint}`]: xUnit,
+							[`transform-origin-y-${breakpoint}`]: y,
+							[`transform-origin-y-unit-${breakpoint}`]: yUnit,
+						});
+						forceStyles();
+					}}
+				/>
+			)}
 		</div>
 	);
 };

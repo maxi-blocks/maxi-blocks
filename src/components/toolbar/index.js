@@ -253,6 +253,18 @@ const MaxiToolbar = memo(
 							/>
 							<Border
 								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									['border', 'borderWidth', 'borderRadius'],
+									prefix
+								)}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								clientId={clientId}
+								prefix={prefix}
+							/>
+							<Border
+								blockName={name}
 								{...getGroupAttributes(attributes, [
 									'border',
 									'borderWidth',

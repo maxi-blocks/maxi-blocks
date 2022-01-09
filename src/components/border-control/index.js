@@ -63,12 +63,17 @@ const BorderControl = props => {
 		onChange(response);
 	};
 
+	console.log(`${prefix}border-style`);
+	console.log(breakpoint);
+
 	const borderStyleValue = getLastBreakpointAttribute(
 		`${prefix}border-style`,
 		breakpoint,
 		props,
 		isHover
 	);
+
+	console.log(`borderStyleValue ${borderStyleValue}`);
 
 	const axisItems = [
 		`${prefix}border-top-width`,

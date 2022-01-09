@@ -105,7 +105,8 @@ const Border = props => {
 									'iconBorderWidth',
 									'iconBorderRadius',
 							  ]
-							: ['border', 'borderWidth', 'borderRadius']
+							: ['border', 'borderWidth', 'borderRadius'],
+						prefix
 					)}
 					onChange={value => onChange(value)}
 					breakpoint={breakpoint}

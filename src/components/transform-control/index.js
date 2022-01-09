@@ -110,12 +110,28 @@ const TransformControl = props => {
 					{
 						label: __('Translate', 'maxi-blocks'),
 						value: 'translate',
+						extraIndicatorsResponsive: [
+							'transform-translate-x',
+							'transform-translate-y',
+						],
 					},
-					{ label: __('Rotate', 'maxi-blocks'), value: 'rotate' },
+					{
+						label: __('Rotate', 'maxi-blocks'),
+						value: 'rotate',
+						extraIndicatorsResponsive: [
+							'transform-rotate-x',
+							'transform-rotate-y',
+							'transform-rotate-z',
+						],
+					},
 					{
 						label: __('Origin', 'maxi-blocks'),
 						value: 'origin',
 						hidden: !isTransformed(),
+						extraIndicatorsResponsive: [
+							'transform-origin-x',
+							'transform-origin-y',
+						],
 					},
 				]}
 				onChange={val => setTransformStatus(val)}

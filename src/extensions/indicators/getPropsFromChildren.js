@@ -29,9 +29,7 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 			item.extraIndicators.forEach(indicator => response.push(indicator));
 
 		if ('extraIndicatorsResponsive' in item) {
-			console.log('extra!!!');
 			item.extraIndicatorsResponsive.forEach(indicator => {
-				console.log(`extra: ${indicator}`);
 				breakpoints.forEach(breakpoint =>
 					response.push(`${indicator}-${breakpoint}`)
 				);
@@ -59,8 +57,6 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 	};
 
 	getProps(items);
-
-	console.log(`response: ${compact(uniq(response))}`);
 
 	return compact(uniq(response));
 };

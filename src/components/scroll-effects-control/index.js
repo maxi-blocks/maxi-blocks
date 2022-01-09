@@ -62,12 +62,36 @@ const ScrollEffectsControl = props => {
 	const [motionStatus, setMotionStatus] = useState(firstActiveEffect);
 
 	const motionOptions = [
-		{ icon: <Icon icon={motionVertical} />, value: 'vertical' },
-		{ icon: <Icon icon={motionHorizontal} />, value: 'horizontal' },
-		{ icon: <Icon icon={motionRotate} />, value: 'rotate' },
-		{ icon: <Icon icon={motionScale} />, value: 'scale' },
-		{ icon: <Icon icon={motionFade} />, value: 'fade' },
-		{ icon: <Icon icon={motionBlur} />, value: 'blur' },
+		{
+			icon: <Icon icon={motionVertical} />,
+			value: 'vertical',
+			extraIndicatorsResponsive: ['scroll-vertical-status'],
+		},
+		{
+			icon: <Icon icon={motionHorizontal} />,
+			value: 'horizontal',
+			extraIndicatorsResponsive: ['scroll-horizontal-status'],
+		},
+		{
+			icon: <Icon icon={motionRotate} />,
+			value: 'rotate',
+			extraIndicatorsResponsive: ['scroll-rotate-status'],
+		},
+		{
+			icon: <Icon icon={motionScale} />,
+			value: 'scale',
+			extraIndicatorsResponsive: ['scroll-scale-status'],
+		},
+		{
+			icon: <Icon icon={motionFade} />,
+			value: 'fade',
+			extraIndicatorsResponsive: ['scroll-fade-status'],
+		},
+		{
+			icon: <Icon icon={motionBlur} />,
+			value: 'blur',
+			extraIndicatorsResponsive: ['scroll-blur-status'],
+		},
 	];
 
 	const easingOptions = [
@@ -206,7 +230,6 @@ const ScrollEffectsControl = props => {
 				selected={motionStatus}
 				items={motionOptions}
 				onChange={val => setMotionStatus(val)}
-				activeTabs={getActiveEffects()}
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute(

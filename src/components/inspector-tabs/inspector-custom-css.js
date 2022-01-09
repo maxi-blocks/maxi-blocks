@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import CustomCssControl from '../custom-css-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import { customCss as customCssAttr } from '../../extensions/styles/defaults';
 
 /**
  * Component
@@ -44,7 +43,6 @@ const customCss = ({
 				}
 			/>
 		),
-		extraIndicators: Object.keys(customCssAttr),
 	};
 };
 

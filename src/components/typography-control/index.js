@@ -239,7 +239,6 @@ const LinkOptions = props => {
 		breakpoint,
 		textLevel,
 		clientId,
-		activeTabs,
 	} = props;
 
 	const [linkStatus, setLinkStatus] = useState('normal_link');
@@ -251,23 +250,46 @@ const LinkOptions = props => {
 				fullWidthMode
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
-				activeTabs={activeTabs}
 				items={[
 					{
 						label: __('Link', 'maxi-block'),
 						value: 'normal_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-color`,
+							`${prefix}link-palette-color`,
+							`${prefix}link-palette-opacity`,
+							`${prefix}link-palette-status`,
+						],
 					},
 					{
 						label: __('Hover', 'maxi-block'),
 						value: 'hover_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-hover-color`,
+							`${prefix}link-hover-palette-color`,
+							`${prefix}link-hover-palette-opacity`,
+							`${prefix}link-hover-palette-status`,
+						],
 					},
 					{
 						label: __('Active', 'maxi-block'),
 						value: 'active_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-active-color`,
+							`${prefix}link-active-palette-color`,
+							`${prefix}link-active-palette-opacity`,
+							`${prefix}link-active-palette-status`,
+						],
 					},
 					{
 						label: __('Visited', 'maxi-block'),
 						value: 'visited_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-visited-color`,
+							`${prefix}link-visited-palette-color`,
+							`${prefix}link-visited-palette-opacity`,
+							`${prefix}link-visited-palette-status`,
+						],
 					},
 				]}
 				onChange={val => setLinkStatus(val)}

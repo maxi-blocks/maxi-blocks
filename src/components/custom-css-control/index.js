@@ -26,15 +26,8 @@ import './editor.scss';
  * Component
  */
 const CustomCssControl = props => {
-	const {
-		breakpoint,
-		categories,
-		category,
-		selectors,
-		value,
-		onChange,
-		activeTabs,
-	} = props;
+	const { breakpoint, categories, category, selectors, value, onChange } =
+		props;
 
 	const [notValidCode, setNotValidCode] = useState({});
 
@@ -194,7 +187,6 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-typography-control__text-options-tabs'
 			breakpoint={breakpoint}
-			activeTabs={activeTabs}
 		>
 			<>
 				<SelectControl

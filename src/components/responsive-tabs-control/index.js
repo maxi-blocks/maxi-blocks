@@ -29,7 +29,6 @@ const ResponsiveTabsControl = props => {
 		children,
 		breakpoint,
 		disableCallback = false,
-		activeTabs = [],
 		target,
 	} = props;
 
@@ -107,7 +106,6 @@ const ResponsiveTabsControl = props => {
 					breakpoint: breakpoint.toLowerCase(),
 				};
 			})}
-			activeTabs={activeTabs}
 			forceTab={getTextOptionsTab()}
 			target={target}
 		/>

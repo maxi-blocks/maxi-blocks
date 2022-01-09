@@ -379,6 +379,7 @@ const ShapeDividerControl = props => {
 								)}
 							</>
 						),
+						extraIndicators: ['shape-divider-top-status'],
 					},
 					{
 						label: __('Bottom shape divider', 'maxi-blocks'),
@@ -553,6 +554,7 @@ const ShapeDividerControl = props => {
 								)}
 							</>
 						),
+						extraIndicators: ['shape-divider-bottom-status'],
 					},
 				]}
 			/>

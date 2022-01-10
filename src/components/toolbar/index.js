@@ -661,6 +661,7 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, 'alignment')}
 								blockName={name}
 								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
 							/>
 						</div>
 					</Popover>

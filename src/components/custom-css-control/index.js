@@ -187,6 +187,7 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-typography-control__text-options-tabs'
 			breakpoint={breakpoint}
+			target='custom-css'
 		>
 			<>
 				<SelectControl

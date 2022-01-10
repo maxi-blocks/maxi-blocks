@@ -1,16 +1,19 @@
 /**
  * WordPress dependencies
  */
-import { Popover } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { Popover, Tooltip } from '@wordpress/components';
 import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 import { getScrollContainer } from '@wordpress/dom';
+import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import DOMPurify from 'dompurify';
 
 /**
  * Utils
@@ -34,24 +37,25 @@ import {
 	ImageSize,
 	Link,
 	Mover,
-	PaddingMargin,
+	// PaddingMargin,
 	// ReusableBlocks,
 	// RowSettings,
 	Size,
 	SvgColor,
 	SvgWidth,
-	TextBold,
+	// TextBold,
 	TextColor,
-	TextItalic,
-	TextLevel,
+	// TextItalic,
+	// TextLevel,
 	TextLink,
-	TextListOptions,
+	// TextListOptions,
 	ToggleBlock,
 	ToolbarColumnPattern,
 	TextOptions,
-	TextGenerator,
+	// TextGenerator,
 	MoreSettings,
 	Help,
+	VerticalAlign,
 } from './components';
 
 /**
@@ -59,6 +63,7 @@ import {
  */
 import './editor.scss';
 import { getGroupAttributes } from '../../extensions/styles';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 
 /**
  * General
@@ -215,12 +220,115 @@ const MaxiToolbar = memo(
 								</span>
 							</div>
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
+							{name === 'maxi-blocks/image-maxi' && (
+								<MediaUpload
+									onSelect={media => {
+										setAttributes({
+											mediaID: media.id,
+											mediaURL: media.url,
+											mediaWidth: media.width,
+											mediaHeight: media.height,
+											isImageUrl: false,
+										});
+
+										this.setState({
+											isExternalClass: false,
+										});
+
+										if (!isEmpty(attributes.SVGData)) {
+											const cleanedContent =
+												DOMPurify.sanitize(SVGElement);
+
+											const svg = document
+												.createRange()
+												.createContextualFragment(
+													cleanedContent
+												).firstElementChild;
+
+											const resData = generateDataObject(
+												'',
+												svg
+											);
+
+											const SVGValue = resData;
+											const el = Object.keys(SVGValue)[0];
+
+											SVGValue[el].imageID = media.id;
+											SVGValue[el].imageURL = media.url;
+
+											const resEl = injectImgSVG(
+												svg,
+												resData
+											);
+											setAttributes({
+												SVGElement: resEl.outerHTML,
+												SVGData: SVGValue,
+											});
+										}
+									}}
+									allowedTypes='image'
+									value='image'
+									render={({ open }) => (
+										<Tooltip
+											text={__(
+												'Edit image',
+												'maxi-blocks'
+											)}
+										>
+											<div className='toolbar-item toolbar-item__replace-image'>
+												<button
+													className='components-button toolbar-item__button'
+													type='button'
+													onClick={open}
+												>
+													{__(
+														'Replace',
+														'maxi-blocks'
+													)}
+												</button>
+											</div>
+										</Tooltip>
+									)}
+								/>
+							)}
+							<TextColor
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								node={anchorRef}
+								isList={isList}
+								typeOfList={typeOfList}
+								clientId={clientId}
+								textLevel={textLevel}
+								styleCard={styleCard}
+							/>
+							<TextOptions
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+								node={anchorRef}
+								content={content}
+								breakpoint={breakpoint}
+								isList={isList}
+								typeOfList={typeOfList}
+								textLevel={textLevel}
+								styleCard={styleCard}
+								clientId={clientId}
+								blockStyle={parentBlockStyle}
+							/>
 							<Mover clientId={clientId} blockName={name} />
-							<TextGenerator
+							{/* <TextGenerator
 								clientId={clientId}
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
-							/>
+							/> */}
 							<ColumnMover clientId={clientId} blockName={name} />
 							<BackgroundColor
 								{...getGroupAttributes(
@@ -299,6 +407,25 @@ const MaxiToolbar = memo(
 								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
 							/>
+							<ColumnSize
+								clientId={clientId}
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'columnSize'
+								)}
+								verticalAlign={attributes.verticalAlign}
+								uniqueID={uniqueID}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								rowPattern={rowPattern}
+								columnSize={{
+									...getGroupAttributes(
+										attributes,
+										'columnSize'
+									),
+								}}
+							/>
 							<Link
 								blockName={name}
 								linkSettings={linkSettings}
@@ -306,6 +433,24 @@ const MaxiToolbar = memo(
 									setAttributes({ linkSettings })
 								}
 								textLevel={textLevel}
+							/>
+							<TextLink
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+								isList={isList}
+								linkSettings={linkSettings}
+								breakpoint={breakpoint}
+								textLevel={textLevel}
+								blockStyle={parentBlockStyle}
+								styleCard={styleCard}
+							/>
+							<VerticalAlign
+								clientId={clientId}
+								blockName={name}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
 							{/* <ReusableBlocks
@@ -341,38 +486,6 @@ const MaxiToolbar = memo(
 									setAttributes({ lineVertical })
 								}
 							/>
-							<TextOptions
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => setAttributes(obj)}
-								node={anchorRef}
-								content={content}
-								breakpoint={breakpoint}
-								isList={isList}
-								typeOfList={typeOfList}
-								textLevel={textLevel}
-								styleCard={styleCard}
-								clientId={clientId}
-								blockStyle={parentBlockStyle}
-							/>
-							<TextColor
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-								node={anchorRef}
-								isList={isList}
-								typeOfList={typeOfList}
-								clientId={clientId}
-								textLevel={textLevel}
-								styleCard={styleCard}
-							/>
 							{/* <Alignment
 								blockName={name}
 								{...getGroupAttributes(attributes, [
@@ -382,7 +495,7 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 							/> */}
-							<TextLevel
+							{/* <TextLevel
 								{...getGroupAttributes(attributes, [
 									'typography',
 									'typographyHover',
@@ -391,8 +504,8 @@ const MaxiToolbar = memo(
 								textLevel={textLevel}
 								isList={isList}
 								onChange={obj => setAttributes(obj)}
-							/>
-							<TextBold
+							/> */}
+							{/* <TextBold
 								{...getGroupAttributes(
 									attributes,
 									'typography'
@@ -403,8 +516,8 @@ const MaxiToolbar = memo(
 								breakpoint={breakpoint}
 								textLevel={textLevel}
 								styleCard={styleCard}
-							/>
-							<TextItalic
+							/> */}
+							{/* <TextItalic
 								{...getGroupAttributes(
 									attributes,
 									'typography'
@@ -414,33 +527,19 @@ const MaxiToolbar = memo(
 								isList={isList}
 								breakpoint={breakpoint}
 								styleCard={styleCard}
-							/>
+							/> */}
 							{/* <RowSettings
 								blockName={name}
 								horizontalAlign={attributes.horizontalAlign}
 								verticalAlign={attributes.verticalAlign}
 								onChange={obj => setAttributes(obj)}
 							/> */}
-							<TextLink
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => setAttributes(obj)}
-								isList={isList}
-								linkSettings={linkSettings}
-								breakpoint={breakpoint}
-								textLevel={textLevel}
-								blockStyle={parentBlockStyle}
-								styleCard={styleCard}
-							/>
-							<TextListOptions
+							{/* <TextListOptions
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
 								onChange={obj => setAttributes(obj)}
-							/>
+							/> */}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
 									{svgType !== 'Line' && (
@@ -511,26 +610,7 @@ const MaxiToolbar = memo(
 									}
 								/>
 							)}
-							<ColumnSize
-								clientId={clientId}
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'columnSize'
-								)}
-								verticalAlign={attributes.verticalAlign}
-								uniqueID={uniqueID}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-								rowPattern={rowPattern}
-								columnSize={{
-									...getGroupAttributes(
-										attributes,
-										'columnSize'
-									),
-								}}
-							/>
-							<PaddingMargin
+							{/* <PaddingMargin
 								blockName={name}
 								{...getGroupAttributes(attributes, [
 									'margin',
@@ -539,7 +619,7 @@ const MaxiToolbar = memo(
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
-							/>
+							/> */}
 							{/* <Delete clientId={clientId} blockName={name} /> */}
 							<ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}
@@ -557,7 +637,9 @@ const MaxiToolbar = memo(
 							<Help />
 							<MoreSettings
 								clientId={clientId}
+								{...getGroupAttributes(attributes, 'alignment')}
 								blockName={name}
+								breakpoint={breakpoint}
 							/>
 						</div>
 					</Popover>

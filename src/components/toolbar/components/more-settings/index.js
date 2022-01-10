@@ -4,6 +4,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Tooltip } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -14,6 +20,9 @@ import Dropdown from '../../../dropdown';
 import CopyPaste from '../copy-paste';
 import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
+import PaddingMargin from '../padding-margin';
+import Alignment from '../alignment';
+import TextGenerator from '../text-generator';
 // import InsertBefore from '../insert-before';
 
 /**
@@ -25,14 +34,23 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Duplicate
  */
 const MoreSettings = props => {
-	const { blockName, clientId, name } = props;
+	const { clientId, blockName, attributes, setAttributes } = props;
 
-	if (blockName === 'maxi-blocks/column-maxi') return null;
+	// const { breakpoint } = useSelect(select => {
+	// 	const { receiveMaxiDeviceType } = select('maxiBlocks');
+
+	// 	const breakpoint = receiveMaxiDeviceType();
+
+	// 	return {
+	// 		breakpoint,
+	// 	};
+	// });
 
 	return (
 		<Tooltip
@@ -54,12 +72,40 @@ const MoreSettings = props => {
 					)}
 					renderContent={() => (
 						<div>
-							<CopyPaste clientId={clientId} blockName={name} />
+							<CopyPaste
+								clientId={clientId}
+								blockName={blockName}
+							/>
+							{blockName === 'maxi-blocks/text-maxi' && (
+								<TextGenerator
+									clientId={clientId}
+									blockName={blockName}
+									onChange={obj => setAttributes(obj)}
+								/>
+							)}
+							{blockName === 'maxi-blocks/button-maxi' && (
+								<div>
+									<PaddingMargin
+										clientId={clientId}
+										blockName={blockName}
+									/>
+									<Alignment
+										clientId={clientId}
+										blockName={blockName}
+										// {...getGroupAttributes(attributes, [
+										// 	'alignment',
+										// 	'textAlignment',
+										// ])}
+										// onChange={obj => setAttributes(obj)}
+										// breakpoint={breakpoint}
+									/>
+								</div>
+							)}
 							<ReusableBlocks
 								clientId={clientId}
-								blockName={name}
+								blockName={blockName}
 							/>
-							<Delete clientId={clientId} blockName={name} />
+							<Delete clientId={clientId} blockName={blockName} />
 						</div>
 					)}
 				/>

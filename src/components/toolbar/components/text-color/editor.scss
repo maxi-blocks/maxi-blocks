@@ -3,10 +3,34 @@
 }
 .toolbar-item {
 	&__text-options {
-		.toolbar-item__icon {
-			border-width: 1px;
-			border-color: #fff;
-			border-style: solid;
+		background-color: transparent !important;
+		padding-left: 8px !important;
+		&::after {
+			display: none !important;
 		}
+		.toolbar-item__icon {
+			// border-width: 1px;
+			// border-color: #fff;
+			// border-style: solid;
+			path {
+				fill: transparent !important;
+				stroke: #fff !important;
+			}
+		}
+		&:hover {
+			.toolbar-item__icon {
+				path {
+					stroke: var(--wp-admin-theme-color) !important;
+				}
+			}
+		}
+	}
+	&__text-color {
+		& > div {
+			width: 100%;
+			height: 100%;
+		}
+		border-right: 0 !important;
+		width: auto !important;
 	}
 }

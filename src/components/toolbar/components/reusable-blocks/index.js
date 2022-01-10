@@ -28,8 +28,8 @@ const ReusableBlocks = props => {
 
 	const [title, setTitle] = useState('');
 
-	if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
-		return null;
+	// if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
+	// 	return null;
 
 	const { __experimentalConvertBlocksToReusable: convertBlocksToReusable } =
 		useDispatch('maxiBlocks/reusable-blocks');

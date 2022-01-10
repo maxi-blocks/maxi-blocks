@@ -7,9 +7,15 @@
 	.components-button {
 		padding: 0;
 		display: inline-block;
-		svg {
-			width: 11px !important;
-			height: 11px !important;
+		&:first-child {
+			svg {
+				transform: rotate(-90deg);
+			}
+		}
+		&:last-child {
+			svg {
+				transform: rotate(90deg);
+			}
 		}
 		&:hover {
 			path {

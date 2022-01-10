@@ -13,7 +13,8 @@ import { create, insert } from '@wordpress/rich-text';
 
 import Button from '../../../button';
 import TextControl from '../../../text-control';
-import ToolbarPopover from '../toolbar-popover';
+// import ToolbarPopover from '../toolbar-popover';
+import Dropdown from '../../../dropdown';
 import { withFormatValue } from '../../../../extensions/text/formats';
 
 /**
@@ -27,7 +28,7 @@ import { LoremIpsum } from 'react-lorem-ipsum';
  */
 
 import './editor.scss';
-import { toolbarLoremIpsum } from '../../../../icons';
+// import { toolbarLoremIpsum } from '../../../../icons';
 
 const TextGenerator = withFormatValue(props => {
 	const {
@@ -101,44 +102,91 @@ const TextGenerator = withFormatValue(props => {
 	};
 
 	return (
-		<ToolbarPopover
-			className='toolbar-item__text-generator-blocks'
-			tooltip={__('Lorem Ipsum Text', 'maxi-blocks')}
-			icon={toolbarLoremIpsum}
-		>
-			<div className='toolbar-item__text-generator-blocks__popover'>
-				<TextControl
-					label={__('Words per a sentence', 'maxi-blocks')}
-					value={averageWordsLength}
-					onChange={val => setAverageWordsLength(val)}
-					type='number'
-					min='1'
-				/>
-				<TextControl
-					label={__('Sentences', 'maxi-blocks')}
-					value={averageSentencesLength}
-					onChange={val => setAverageSentencesLength(val)}
-					type='number'
-					min='1'
-				/>
-				<Button
-					type='button'
-					onClick={obj =>
-						replaceText(averageSentencesLength, averageWordsLength)
-					}
-				>
-					{__('Replace', 'maxi-blocks')}
+		// <ToolbarPopover
+		// 	className='toolbar-item__text-generator-blocks'
+		// 	tooltip={__('Lorem Ipsum Text', 'maxi-blocks')}
+		// 	icon={toolbarLoremIpsum}
+		// >
+		// 	<div className='toolbar-item__text-generator-blocks__popover'>
+		// 		<TextControl
+		// 			label={__('Words per a sentence', 'maxi-blocks')}
+		// 			value={averageWordsLength}
+		// 			onChange={val => setAverageWordsLength(val)}
+		// 			type='number'
+		// 			min='1'
+		// 		/>
+		// 		<TextControl
+		// 			label={__('Sentences', 'maxi-blocks')}
+		// 			value={averageSentencesLength}
+		// 			onChange={val => setAverageSentencesLength(val)}
+		// 			type='number'
+		// 			min='1'
+		// 		/>
+		// 		<Button
+		// 			type='button'
+		// 			onClick={obj =>
+		// 				replaceText(averageSentencesLength, averageWordsLength)
+		// 			}
+		// 		>
+		// 			{__('Replace', 'maxi-blocks')}
+		// 		</Button>
+		// 		<Button
+		// 			type='button'
+		// 			onClick={obj =>
+		// 				addText(averageSentencesLength, averageWordsLength)
+		// 			}
+		// 		>
+		// 			{__('Add', 'maxi-blocks')}
+		// 		</Button>
+		// 	</div>
+		// </ToolbarPopover>
+		<Dropdown
+			className='maxi-copypaste__copy-selector'
+			contentClassName='maxi-dropdown__child-content'
+			position='right top'
+			renderToggle={({ isOpen, onToggle }) => (
+				<Button onClick={onToggle} text='Copy'>
+					{__('Text generator', 'maxi-blocks')}
 				</Button>
-				<Button
-					type='button'
-					onClick={obj =>
-						addText(averageSentencesLength, averageWordsLength)
-					}
-				>
-					{__('Add', 'maxi-blocks')}
-				</Button>
-			</div>
-		</ToolbarPopover>
+			)}
+			renderContent={() => (
+				<div className='toolbar-item__text-generator-blocks__popover'>
+					<TextControl
+						label={__('Words per a sentence', 'maxi-blocks')}
+						value={averageWordsLength}
+						onChange={val => setAverageWordsLength(val)}
+						type='number'
+						min='1'
+					/>
+					<TextControl
+						label={__('Sentences', 'maxi-blocks')}
+						value={averageSentencesLength}
+						onChange={val => setAverageSentencesLength(val)}
+						type='number'
+						min='1'
+					/>
+					<Button
+						type='button'
+						onClick={obj =>
+							replaceText(
+								averageSentencesLength,
+								averageWordsLength
+							)
+						}
+					>
+						{__('Replace', 'maxi-blocks')}
+					</Button>
+					<Button
+						type='button'
+						onClick={obj =>
+							addText(averageSentencesLength, averageWordsLength)
+						}
+					>
+						{__('Add', 'maxi-blocks')}
+					</Button>
+				</div>
+			)}
+		/>
 	);
 });
 

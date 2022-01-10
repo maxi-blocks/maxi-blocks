@@ -173,6 +173,13 @@
 						outline: 0;
 					}
 				}
+				&__replace-image {
+					width: 80px !important;
+					.components-button {
+						font-weight: 700;
+						display: inline-block;
+					}
+				}
 				&__icon {
 					ellipse,
 					circle,
@@ -346,8 +353,10 @@ body .toolbar-item__popover {
 		min-width: auto;
 		padding: 8px 8px 0;
 		overflow: visible;
-		font-family: 'Roboto', sans-serif !important;
 		box-shadow: 0 -2px 6px 0px rgb(0, 0, 0, 0.1);
+		& * {
+			font-family: 'Roboto', sans-serif !important;
+		}
 		.maxi-color-control {
 			margin-bottom: 10px;
 			color: #fff;

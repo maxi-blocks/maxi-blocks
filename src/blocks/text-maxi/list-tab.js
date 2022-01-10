@@ -456,9 +456,17 @@ const listTab = props => {
 										value: 'icon',
 									},
 								]}
-								onChange={listStyleSource =>
-									setListStyleSource(listStyleSource)
-								}
+								onChange={listStyleSource => {
+									setListStyleSource(listStyleSource);
+
+									if (listStyleCustoms[listStyleSource])
+										setAttributes({
+											listStyleCustom:
+												listStyleCustoms[
+													listStyleSource
+												],
+										});
+								}}
 							/>
 							{listStyleSource !== 'icon' && (
 								<TextControl
@@ -483,17 +491,30 @@ const listTab = props => {
 									<MaxiModal
 										type='image-shape'
 										style={parentBlockStyle || 'light'}
-										onSelect={obj =>
+										onSelect={obj => {
 											setAttributes({
 												listStyleCustom: obj.SVGElement,
-											})
-										}
-										onRemove={() =>
+											});
+											setListStyleCustoms({
+												...listStyleCustoms,
+												[listStyleSource]:
+													obj.SVGElement,
+											});
+										}}
+										onRemove={() => {
 											setAttributes({
 												listStyleCustom: '',
-											})
+											});
+											setListStyleCustoms({
+												...listStyleCustoms,
+												[listStyleSource]: '',
+											});
+										}}
+										icon={
+											listStyleCustom?.includes('<svg ')
+												? listStyleCustom
+												: false
 										}
-										icon={listStyleCustom}
 									/>
 									{listStyleCustom?.includes('<svg ') && (
 										<ColorControl

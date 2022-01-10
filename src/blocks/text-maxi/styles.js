@@ -286,7 +286,7 @@ const getMarkerObject = props => {
 								}),
 								...(!isURL(listStyleCustom) &&
 									!listStyleCustom.includes('</svg>') && {
-										content: listStyleCustom,
+										content: `"${listStyleCustom}"`,
 									}),
 							}),
 					},

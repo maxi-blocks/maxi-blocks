@@ -40,6 +40,7 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 			if ('content' in item) getProps(item.content);
 			if ('children' in item.props)
 				getProps(Children.toArray(item.props.children));
+
 			if ('items' in item.props) getProps(item.props.items);
 
 			Object.entries(item.props).forEach(([key, val]) => {

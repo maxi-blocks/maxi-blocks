@@ -23,11 +23,7 @@ import Button from '../../../button';
 const Delete = props => {
 	const { clientId, blockName } = props;
 
-	if (
-		blockName === 'maxi-blocks/column-maxi' ||
-		blockName === 'maxi-blocks/container-maxi'
-	)
-		return null;
+	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const { removeBlock } = useDispatch('core/block-editor');
 

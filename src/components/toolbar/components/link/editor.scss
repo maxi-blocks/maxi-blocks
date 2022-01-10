@@ -1,4 +1,7 @@
 .toolbar-item__popover {
+	.block-editor-link-control {
+		width: 320px;
+	}
 	.components-form-toggle {
 		position: relative;
 		display: flex;
@@ -137,10 +140,11 @@
 			padding: 0 !important;
 			margin: 8px 0 8px;
 			display: flex;
-			justify-content: space-between;
+			// justify-content: space-between;
 			flex-wrap: wrap;
 			.components-base-control {
 				margin-bottom: 0;
+				width: 160px;
 				&:nth-child(1),
 				&:nth-child(2) {
 					margin-bottom: 8px;

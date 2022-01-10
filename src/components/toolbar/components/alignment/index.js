@@ -12,6 +12,8 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import Button from '../../../button';
+import Dropdown from '../../../dropdown';
 
 /**
  * Styles & Icons
@@ -27,12 +29,7 @@ import {
 /**
  * Alignment
  */
-const ALLOWED_BLOCKS = [
-	'maxi-blocks/text-maxi',
-	'maxi-blocks/button-maxi',
-	'maxi-blocks/image-maxi',
-	'maxi-blocks/svg-icon-maxi',
-];
+const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi'];
 
 const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];
 
@@ -59,28 +56,50 @@ const Alignment = props => {
 	};
 
 	return (
-		<ToolbarPopover
+		// <ToolbarPopover
+		// 	className='toolbar-item__alignment'
+		// 	tooltip={__('Alignment', 'maxi-blocks')}
+		// 	icon={alignIcon(
+		// 		getLastBreakpointAttribute(
+		// 			isText ? 'text-alignment' : 'alignment',
+		// 			breakpoint,
+		// 			props
+		// 		)
+		// 	)}
+		// >
+		// 	<AlignmentControl
+		// 		{...getGroupAttributes(
+		// 			props,
+		// 			isText ? 'textAlignment' : 'alignment'
+		// 		)}
+		// 		onChange={obj => onChange(obj)}
+		// 		disableJustify={!isText}
+		// 		breakpoint={breakpoint}
+		// 		type={isText && 'text'}
+		// 	/>
+		// </ToolbarPopover>
+		<Dropdown
 			className='toolbar-item__alignment'
-			tooltip={__('Alignment', 'maxi-blocks')}
-			icon={alignIcon(
-				getLastBreakpointAttribute(
-					isText ? 'text-alignment' : 'alignment',
-					breakpoint,
-					props
-				)
+			contentClassName='maxi-dropdown__child-content'
+			position='right top'
+			renderToggle={({ isOpen, onToggle }) => (
+				<Button onClick={onToggle} text='Copy'>
+					{__('Align', 'maxi-blocks')}
+				</Button>
 			)}
-		>
-			<AlignmentControl
-				{...getGroupAttributes(
-					props,
-					isText ? 'textAlignment' : 'alignment'
-				)}
-				onChange={obj => onChange(obj)}
-				disableJustify={!isText}
-				breakpoint={breakpoint}
-				type={isText && 'text'}
-			/>
-		</ToolbarPopover>
+			renderContent={() => (
+				<AlignmentControl
+					{...getGroupAttributes(
+						props,
+						isText ? 'textAlignment' : 'alignment'
+					)}
+					onChange={obj => onChange(obj)}
+					disableJustify={!isText}
+					breakpoint={breakpoint}
+					type={isText && 'text'}
+				/>
+			)}
+		/>
 	);
 };
 

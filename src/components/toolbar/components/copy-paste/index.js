@@ -258,10 +258,10 @@ const CopyPasteContent = props => {
 };
 
 const CopyPaste = props => {
-	const { blockName, isCaptionToolbar = false } = props;
+	// const { blockName, isCaptionToolbar = false } = props;
 
-	if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
-		return null;
+	// if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
+	// 	return null;
 
 	return (
 		<Dropdown

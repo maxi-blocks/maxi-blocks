@@ -11,8 +11,8 @@ import ColorLayer from '../../../background-control/colorLayer';
 import ButtonGroupControl from '../../../button-group-control';
 import {
 	getAttributeKey,
-	getBlockStyle,
-	getColorRGBAString,
+	// getBlockStyle,
+	// getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -21,6 +21,11 @@ import {
  * Styles
  */
 import './editor.scss';
+
+/**
+ * Icons
+ */
+import { backgroundColor } from '../../../../icons';
 
 /**
  * BackgroundColor
@@ -48,45 +53,45 @@ const BackgroundColor = props => {
 	);
 	const isBackgroundColor = activeMedia === 'color';
 
-	const getStyle = () => {
-		if (!isBackgroundColor)
-			return {
-				background: '#fff',
-				clipPath:
-					'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
-			};
+	// const getStyle = () => {
+	// 	if (!isBackgroundColor)
+	// 		return {
+	// 			background: '#fff',
+	// 			clipPath:
+	// 				'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
+	// 		};
 
-		const bgPaletteStatus = getLastBreakpointAttribute(
-			`${prefix}background-palette-status`,
-			breakpoint,
-			props
-		);
-		const bgPaletteColor = getLastBreakpointAttribute(
-			`${prefix}background-palette-color`,
-			breakpoint,
-			props
-		);
-		const bgPaletteOpacity = getLastBreakpointAttribute(
-			`${prefix}background-palette-opacity`,
-			breakpoint,
-			props
-		);
-		const bgColor = getLastBreakpointAttribute(
-			`${prefix}background-color`,
-			breakpoint,
-			props
-		);
+	// 	const bgPaletteStatus = getLastBreakpointAttribute(
+	// 		`${prefix}background-palette-status`,
+	// 		breakpoint,
+	// 		props
+	// 	);
+	// 	const bgPaletteColor = getLastBreakpointAttribute(
+	// 		`${prefix}background-palette-color`,
+	// 		breakpoint,
+	// 		props
+	// 	);
+	// 	const bgPaletteOpacity = getLastBreakpointAttribute(
+	// 		`${prefix}background-palette-opacity`,
+	// 		breakpoint,
+	// 		props
+	// 	);
+	// 	const bgColor = getLastBreakpointAttribute(
+	// 		`${prefix}background-color`,
+	// 		breakpoint,
+	// 		props
+	// 	);
 
-		return {
-			background: bgPaletteStatus
-				? getColorRGBAString({
-						firstVar: `color-${bgPaletteColor}`,
-						opacity: bgPaletteOpacity,
-						blockStyle: getBlockStyle(clientId),
-				  })
-				: bgColor,
-		};
-	};
+	// 	return {
+	// 		background: bgPaletteStatus
+	// 			? getColorRGBAString({
+	// 					firstVar: `color-${bgPaletteColor}`,
+	// 					opacity: bgPaletteOpacity,
+	// 					blockStyle: getBlockStyle(clientId),
+	// 			  })
+	// 			: bgColor,
+	// 	};
+	// };
 
 	return (
 		<ToolbarPopover
@@ -97,7 +102,7 @@ const BackgroundColor = props => {
 					? __('Background Colour Disabled', 'maxi-blocks')
 					: __('Background Colour', 'maxi-blocks')
 			}
-			icon={<div className='toolbar-item__icon' style={getStyle()} />}
+			icon={backgroundColor}
 		>
 			<div className='toolbar-item__background__popover'>
 				<ButtonGroupControl

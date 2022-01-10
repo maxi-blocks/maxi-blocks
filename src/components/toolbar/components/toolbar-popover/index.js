@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { dispatch } from '@wordpress/data';
 import { Component, createRef } from '@wordpress/element';
 import { Icon, Popover, Tooltip } from '@wordpress/components';
@@ -76,6 +77,7 @@ class ToolbarPopover extends Component {
 
 	render() {
 		const {
+			text,
 			className,
 			tooltip,
 			icon,
@@ -104,6 +106,7 @@ class ToolbarPopover extends Component {
 							action='popup'
 						>
 							<Icon className='toolbar-item__icon' icon={icon} />
+							{__(text, 'maxi-blocks')}
 						</Button>
 					</Tooltip>
 					{isOpen && children && (

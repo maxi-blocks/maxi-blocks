@@ -94,48 +94,50 @@ const TextColor = withFormatValue(props => {
 	};
 
 	return (
-		<ToolbarPopover
-			className='toolbar-item__text-options toolbar-item__text-options--color'
-			tooltip={__('Text Colour', 'maxi-blocks')}
-			icon={
-				<div
-					className='toolbar-item__text-options__icon'
-					style={{
-						background: colorPaletteStatus
-							? getColorRGBAString({
-									firstVar: `color-${colorPalette}`,
-									opacity: colorOpacity,
-									blockStyle: getBlockStyle(clientId),
-							  })
-							: color,
-					}}
-				>
-					<Icon
-						className='toolbar-item__text-options__inner-icon'
-						icon={toolbarType}
+		<div className='toolbar-item toolbar-item__text-color'>
+			<ToolbarPopover
+				className='toolbar-item__text-options toolbar-item__text-options--color'
+				tooltip={__('Text Colour', 'maxi-blocks')}
+				icon={
+					<div
+						className='toolbar-item__text-options__icon'
+						style={{
+							background: colorPaletteStatus
+								? getColorRGBAString({
+										firstVar: `color-${colorPalette}`,
+										opacity: colorOpacity,
+										blockStyle: getBlockStyle(clientId),
+								  })
+								: color,
+						}}
+					>
+						<Icon
+							className='toolbar-item__text-options__inner-icon'
+							icon={toolbarType}
+						/>
+					</div>
+				}
+			>
+				<div className='toolbar-item__text-color__popover'>
+					<ColorControl
+						label={__('Text', 'maxi-blocks')}
+						defaultColor={getDefaultAttribute('color')}
+						color={color}
+						paletteColor={colorPalette}
+						paletteStatus={colorPaletteStatus}
+						onChange={({ color, paletteColor, paletteStatus }) =>
+							onChangeFormat({
+								color,
+								'palette-color': paletteColor,
+								'palette-status': paletteStatus,
+							})
+						}
+						globalProps={{ target: '', type: textLevel }}
+						textLevel={textLevel}
 					/>
 				</div>
-			}
-		>
-			<div className='toolbar-item__text-color__popover'>
-				<ColorControl
-					label={__('Text', 'maxi-blocks')}
-					defaultColor={getDefaultAttribute('color')}
-					color={color}
-					paletteColor={colorPalette}
-					paletteStatus={colorPaletteStatus}
-					onChange={({ color, paletteColor, paletteStatus }) =>
-						onChangeFormat({
-							color,
-							'palette-color': paletteColor,
-							'palette-status': paletteStatus,
-						})
-					}
-					globalProps={{ target: '', type: textLevel }}
-					textLevel={textLevel}
-				/>
-			</div>
-		</ToolbarPopover>
+			</ToolbarPopover>
+		</div>
 	);
 });
 

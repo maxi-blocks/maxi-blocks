@@ -41,3 +41,4 @@ export { default as Help } from './help';
 export { default as InsertBefore } from './insert-before';
 export { default as VerticalAlign } from './vertical-align';
 export { default as ToolbarMediaUpload } from './media-upload';
+export { default as TextMargin } from './text-margin';

@@ -56,6 +56,7 @@ import {
 	MoreSettings,
 	Help,
 	VerticalAlign,
+	TextMargin,
 } from './components';
 
 /**
@@ -425,6 +426,14 @@ const MaxiToolbar = memo(
 										'columnSize'
 									),
 								}}
+							/>
+							<TextMargin
+								blockName={name}
+								linkSettings={linkSettings}
+								onChange={linkSettings =>
+									setAttributes({ linkSettings })
+								}
+								textLevel={textLevel}
 							/>
 							<Link
 								blockName={name}

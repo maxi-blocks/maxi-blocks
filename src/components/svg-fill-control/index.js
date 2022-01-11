@@ -18,7 +18,7 @@ import { injectImgSVG, getSVGHasImage } from '../../extensions/svg';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep, isEmpty, isNil } from 'lodash';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
@@ -148,26 +148,42 @@ const SVGFillControl = props => {
 	const bgImage = Object.values(SVGData)[0]?.imageURL;
 	const [useImage, changeUseImage] = useState(!isEmpty(bgImage));
 
+	const [oldImageID, changeOldImageID] = useState(0);
+	const [oldImageURL, changeOldImageURL] = useState('');
+
 	const getFillItem = ([id, value]) => {
 		return (
 			<>
 				<ToggleSwitch
-					label={__('Use image', 'maxi-blocks')}
+					label={__('Use background image', 'maxi-blocks')}
 					selected={useImage}
 					onChange={val => {
 						changeUseImage(val);
-						const isColorSelected = !val;
 						const tempSVGData = cloneDeep(SVGData);
 
-						if (isColorSelected) {
+						if (!val) {
+							!isNil(tempSVGData[id].imageID) &&
+								changeOldImageID(tempSVGData[id].imageID);
+							!isEmpty(tempSVGData[id].imageURL) &&
+								changeOldImageURL(tempSVGData[id].imageURL);
+
 							tempSVGData[id].imageID = '';
 							tempSVGData[id].imageURL = '';
+						}
+
+						if (val) {
+							tempSVGData[id].imageID = !isNil(oldImageID)
+								? oldImageID
+								: 0;
+							tempSVGData[id].imageURL = !isEmpty(oldImageURL)
+								? oldImageURL
+								: '';
 						}
 
 						const resEl = injectImgSVG(
 							SVGElement,
 							tempSVGData,
-							isColorSelected
+							!val
 						);
 
 						onChange({

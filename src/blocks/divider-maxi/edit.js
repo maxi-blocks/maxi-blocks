@@ -110,6 +110,7 @@ class edit extends MaxiBlockComponent {
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
+				prefix='divider-'
 				{...this.props}
 			/>,
 			<MaxiBlock

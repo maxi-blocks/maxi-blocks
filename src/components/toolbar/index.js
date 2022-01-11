@@ -375,11 +375,12 @@ const MaxiToolbar = memo(
 							/>
 							<BoxShadow
 								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'boxShadow',
+								{...getGroupAttributes(
+									attributes,
+									['boxShadow'],
 									false,
-									prefix,
-								])}
+									prefix
+								)}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 								breakpoint={breakpoint}

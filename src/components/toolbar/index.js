@@ -365,33 +365,27 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(
 									attributes,
 									['border', 'borderWidth', 'borderRadius'],
-									prefix
+									false,
+									'button-'
 								)}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
-								prefix={prefix}
-							/>
-							<Border
-								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'border',
-									'borderWidth',
-									'borderRadius',
-								])}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-								clientId={clientId}
+								prefix='button-'
 							/>
 							<BoxShadow
 								blockName={name}
 								{...getGroupAttributes(attributes, [
 									'boxShadow',
+									false,
+									'button-',
 								])}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 								breakpoint={breakpoint}
+								prefix='button-'
 							/>
+
 							<ToolbarColumnPattern
 								clientId={clientId}
 								blockName={name}

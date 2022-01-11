@@ -1,6 +1,6 @@
 .toolbar-item__popover {
 	.block-editor-link-control {
-		width: 320px;
+		width: 280px;
 	}
 	.components-form-toggle {
 		position: relative;
@@ -148,6 +148,9 @@
 				&:nth-child(1),
 				&:nth-child(2) {
 					margin-bottom: 8px;
+				}
+				&:nth-child(2n + 3) {
+					width: 120px;
 				}
 			}
 		}

@@ -306,6 +306,9 @@ body .toolbar-item__popover {
 	}
 	.maxi-base-control,
 	.components-base-control {
+		.components-range-control {
+			display: none;
+		}
 		&__field {
 			color: var(--maxi-black-1-color);
 			.components-range-control__track {
@@ -354,6 +357,7 @@ body .toolbar-item__popover {
 		padding: 8px 8px 0;
 		overflow: visible;
 		box-shadow: 0 -2px 6px 0px rgb(0, 0, 0, 0.1);
+		margin-left: -2px;
 		& * {
 			font-family: 'Roboto', sans-serif !important;
 		}
@@ -422,6 +426,7 @@ body .toolbar-item__popover {
 	input[type='number'] {
 		border: 1px solid var(--maxi-grey-1-color);
 		color: var(--maxi-grey-5-color);
+		flex: 2;
 		&::placeholder {
 			color: #fff;
 		}
@@ -519,18 +524,16 @@ body .toolbar-item__popover {
 		width: 100%;
 		&__button {
 			background: transparent;
-			color: #fff;
-			border: 2px solid #5b5d68;
+			color: #141516;
+			border: 1px solid #dbdde6;
 			border-right: none;
 			padding-top: 5px;
 			padding-bottom: 5px;
-			&:last-of-type {
-				border: 2px solid #5b5d68;
-			}
+			font-weight: 700;
 			&[aria-pressed='true'] {
-				background: #4c4e59;
-				border: 3px solid #dddfe1;
-				border-bottom: 3px solid var(--maxi-primary-color);
+				color: #007cba;
+				background: #eaf2f6;
+				border-bottom: 3px solid #007cba;
 			}
 		}
 	}

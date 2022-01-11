@@ -6,9 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import BoxShadowControl from '../../../box-shadow-control';
+// import BoxShadowControl from '../../../box-shadow-control';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
+import marginPadding from '../../../inspector-tabs/inspector-margin-padding';
 
 /**
  * Icons
@@ -31,11 +32,11 @@ const TextMargin = props => {
 			className='toolbar-item__text-margin'
 			tooltip={__('Drop shadow', 'maxi-blocks')}
 			icon={toolbarTextMargin}
-			advancedOptions='box shadow'
+			advancedOptions='margin padding'
 		>
 			<div className='toolbar-item__text-margin__popover'>
-				<BoxShadowControl
-					{...getGroupAttributes(props, 'boxShadow')}
+				<marginPadding
+					{...getGroupAttributes(props)}
 					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					clientId={clientId}

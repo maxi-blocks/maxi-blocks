@@ -467,6 +467,9 @@ const MaxiToolbar = memo(
 							<VerticalAlign
 								clientId={clientId}
 								blockName={name}
+								verticalAlign={attributes.verticalAlign}
+								uniqueID={uniqueID}
+								onChange={obj => setAttributes(obj)}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
 							{/* <ReusableBlocks

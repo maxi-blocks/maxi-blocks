@@ -40,7 +40,7 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, attributes, setAttributes } = props;
+	const { clientId, blockName, attributes, onChange } = props;
 
 	// const { breakpoint } = useSelect(select => {
 	// 	const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -80,7 +80,7 @@ const MoreSettings = props => {
 								<TextGenerator
 									clientId={clientId}
 									blockName={blockName}
-									onChange={obj => setAttributes(obj)}
+									onChange={onChange}
 								/>
 							)}
 							{blockName === 'maxi-blocks/button-maxi' && (

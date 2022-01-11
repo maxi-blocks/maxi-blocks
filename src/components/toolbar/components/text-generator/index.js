@@ -142,7 +142,7 @@ const TextGenerator = withFormatValue(props => {
 		// </ToolbarPopover>
 		<Dropdown
 			className='maxi-copypaste__copy-selector'
-			contentClassName='maxi-dropdown__child-content'
+			contentClassName='maxi-dropdown__child-content maxi-dropdown__text-generator-child-content'
 			position='right top'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>
@@ -152,7 +152,7 @@ const TextGenerator = withFormatValue(props => {
 			renderContent={() => (
 				<div className='toolbar-item__text-generator-blocks__popover'>
 					<TextControl
-						label={__('Words per a sentence', 'maxi-blocks')}
+						label={__('Words per sentence', 'maxi-blocks')}
 						value={averageWordsLength}
 						onChange={val => setAverageWordsLength(val)}
 						type='number'
@@ -168,6 +168,14 @@ const TextGenerator = withFormatValue(props => {
 					<Button
 						type='button'
 						onClick={obj =>
+							addText(averageSentencesLength, averageWordsLength)
+						}
+					>
+						{__('Add', 'maxi-blocks')}
+					</Button>
+					<Button
+						type='button'
+						onClick={obj =>
 							replaceText(
 								averageSentencesLength,
 								averageWordsLength
@@ -175,14 +183,6 @@ const TextGenerator = withFormatValue(props => {
 						}
 					>
 						{__('Replace', 'maxi-blocks')}
-					</Button>
-					<Button
-						type='button'
-						onClick={obj =>
-							addText(averageSentencesLength, averageWordsLength)
-						}
-					>
-						{__('Add', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}

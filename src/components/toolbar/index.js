@@ -460,6 +460,9 @@ const MaxiToolbar = memo(
 							<VerticalAlign
 								clientId={clientId}
 								blockName={name}
+								verticalAlign={attributes.verticalAlign}
+								uniqueID={uniqueID}
+								onChange={obj => setAttributes(obj)}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
 							{/* <ReusableBlocks
@@ -649,6 +652,7 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, 'alignment')}
 								blockName={name}
 								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
 							/>
 						</div>
 					</Popover>

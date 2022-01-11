@@ -1,5 +1,5 @@
 .toolbar-item__background__popover {
-	min-width: 300px;
+	min-width: 256px;
 	.maxi-tabs-control {
 		display: none;
 	}
@@ -9,6 +9,12 @@
 			.maxi-base-control__label {
 				display: none;
 			}
+			.maxi-color-control__palette-container {
+				justify-content: flex-start;
+			}
+		}
+		.maxi-opacity-control {
+			line-height: 1em;
 		}
 	}
 }

@@ -1,6 +1,16 @@
 .toolbar-item__popover {
 	.toolbar-item__popover__font-options {
-		&__extra-text-options {
+		margin: -8px -8px 0;
+		&__wrap {
+			display: flex;
+			align-items: center;
+			.maxi-base-control {
+				.components-range-control {
+					display: none;
+				}
+			}
+		}
+		.toolbar-item__typography-control__extra-text-options {
 			display: flex;
 			align-items: center;
 
@@ -16,31 +26,34 @@
 				padding: 5px;
 				font-family: 'Roboto', sans-serif !important;
 				font-weight: 700;
-
+				color: #141516;
+				path {
+					fill: #000;
+				}
 				&:hover {
 					background-color: #4c4f59;
 				}
 			}
 		}
-		&__typography-tabs {
+		.toolbar-item__typography-control__typography-tabs {
 			.maxi-tabs-control {
-				&__button {
-					&:first-child {
-						border-top-left-radius: 3px;
-						border-bottom-left-radius: 3px;
-					}
-					&:last-child {
-						border-top-right-radius: 3px;
-						border-bottom-right-radius: 3px;
-					}
-					&:hover {
-						background-color: #4c4f59;
-						color: #fff;
-					}
-				}
+				margin: 0;
+				// &__button {
+				// 	&:first-child {
+				// 		border-top-left-radius: 3px;
+				// 		border-bottom-left-radius: 3px;
+				// 	}
+				// 	&:last-child {
+				// 		border-top-right-radius: 3px;
+				// 		border-bottom-right-radius: 3px;
+				// 	}
+				// 	&:hover {
+				// 		background-color: #4c4f59;
+				// 		color: #fff;
+				// 	}
+				// }
 			}
 			.maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
-				background: #232333 !important;
 				padding-left: 0 !important;
 				padding-right: 0 !important;
 			}
@@ -51,7 +64,7 @@
 		left: 105% !important;
 	}
 	&__font-options {
-		min-width: 310px;
+		min-width: 478px;
 		&__font {
 			display: flex;
 			width: 100%;

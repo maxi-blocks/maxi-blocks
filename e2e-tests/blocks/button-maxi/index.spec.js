@@ -1,5 +1,5 @@
 /**
- * WordPress
+ * WordPress dependencies
  */
 import {
 	createNewPost,
@@ -8,7 +8,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 /**
- * Interactive dependencies
+ * Internal dependencies
  */
 import { getBlockStyle, openSidebarTab } from '../../utils';
 

@@ -106,6 +106,7 @@ const Border = props => {
 									'iconBorderRadius',
 							  ]
 							: ['border', 'borderWidth', 'borderRadius'],
+						false,
 						prefix
 					)}
 					onChange={value => onChange(value)}

@@ -366,24 +366,24 @@ const MaxiToolbar = memo(
 									attributes,
 									['border', 'borderWidth', 'borderRadius'],
 									false,
-									'button-'
+									prefix
 								)}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
-								prefix='button-'
+								prefix={prefix}
 							/>
 							<BoxShadow
 								blockName={name}
 								{...getGroupAttributes(attributes, [
 									'boxShadow',
 									false,
-									'button-',
+									prefix,
 								])}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 								breakpoint={breakpoint}
-								prefix='button-'
+								prefix={prefix}
 							/>
 
 							<ToolbarColumnPattern

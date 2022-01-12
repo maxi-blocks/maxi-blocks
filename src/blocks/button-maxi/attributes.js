@@ -63,6 +63,10 @@ const attributes = {
 	...attributesData.textAlignment,
 	...{
 		...attributesData.typography,
+		'font-size-general': {
+			type: 'number',
+			default: '16',
+		},
 		'line-height-unit-general': {
 			type: 'string',
 			default: '%',

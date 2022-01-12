@@ -12,7 +12,7 @@ import getSVGPosition from './getSVGPosition';
  * External dependencies
  */
 import { isObject, isEmpty, isElement } from 'lodash';
-import { getSVGRatio } from '.';
+import getSVGRatio from './getSVGRatio';
 
 /**
  * Utils

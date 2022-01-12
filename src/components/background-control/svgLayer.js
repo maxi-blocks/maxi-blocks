@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import AxisControl from '../axis-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
@@ -23,7 +24,6 @@ import { getDefaultLayerAttr } from './utils';
  * External dependencies
  */
 import { isEmpty, cloneDeep } from 'lodash';
-import { AxisControl } from '..';
 
 /**
  * Component
@@ -77,6 +77,7 @@ const SVGLayerContent = props => {
 						content: (
 							<AxisControl
 								{...SVGOptions}
+								label='Position'
 								target='background-svg-position'
 								breakpoint={isGeneral ? 'general' : breakpoint}
 								onChange={obj => onChange(obj)}
@@ -215,12 +216,6 @@ const SVGLayer = props => {
 								`${prefix}background-svg-SVGElement`
 							];
 							delete SVGOptions[
-								`${prefix}background-svg-SVGMediaID`
-							];
-							delete SVGOptions[
-								`${prefix}background-svg-SVGMediaURL`
-							];
-							delete SVGOptions[
 								`${prefix}background-svg-SVGData`
 							];
 						}
@@ -232,15 +227,13 @@ const SVGLayer = props => {
 			)}
 			{!isEmpty(SVGElement) && (
 				<>
-					{(!isHover || (isHover && isLayerHover)) && (
-						<SVGFillControl
-							SVGOptions={SVGOptions}
-							onChange={obj => onChange(obj)}
-							clientId={clientId}
-							isHover={isHover}
-							breakpoint={breakpoint}
-						/>
-					)}
+					<SVGFillControl
+						SVGOptions={SVGOptions}
+						onChange={obj => onChange(obj)}
+						clientId={clientId}
+						isHover={isHover}
+						breakpoint={breakpoint}
+					/>
 					<ResponsiveTabsControl breakpoint={breakpoint}>
 						<SVGLayerContent
 							SVGOptions={SVGOptions}

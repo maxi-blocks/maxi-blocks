@@ -140,6 +140,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					propsToAvoid={['resizableObject']}
 					resizableObject={this.resizableObject}
+					prefix='svg-'
 					{...this.props}
 				/>
 			),

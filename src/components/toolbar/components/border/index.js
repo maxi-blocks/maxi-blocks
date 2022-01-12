@@ -25,7 +25,11 @@ import {
 /**
  * Border
  */
-const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
+const ALLOWED_BLOCKS = [
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/svg-icon-maxi',
+];
 
 /**
  * Component
@@ -105,7 +109,9 @@ const Border = props => {
 									'iconBorderWidth',
 									'iconBorderRadius',
 							  ]
-							: ['border', 'borderWidth', 'borderRadius']
+							: ['border', 'borderWidth', 'borderRadius'],
+						false,
+						prefix
 					)}
 					onChange={value => onChange(value)}
 					breakpoint={breakpoint}

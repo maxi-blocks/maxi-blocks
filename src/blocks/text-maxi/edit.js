@@ -195,7 +195,6 @@ class edit extends MaxiBlockComponent {
 						className='maxi-text-block__content'
 						identifier='content'
 						multiline='li'
-						__unstableMultilineRootTag={typeOfList}
 						tagName={typeOfList}
 						onChange={processContent}
 						value={content}
@@ -227,7 +226,7 @@ class edit extends MaxiBlockComponent {
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
 						start={listStart}
-						reversed={!!listReversed}
+						reversed={listReversed}
 						type={typeOfList}
 					>
 						{({ value: formatValue, onChange }) => {

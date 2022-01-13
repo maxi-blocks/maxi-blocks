@@ -1,22 +1,22 @@
-.is-sidebar-opened {
-	.maxi-toolbar__popover {
-		left: 0 !important;
-		width: calc(100% - 300px);
-		transform-origin: bottom center !important;
-	}
-}
+// .is-sidebar-opened {
+// 	.maxi-toolbar__popover {
+// 		left: 0 !important;
+// 		width: calc(100% - 300px);
+// 		transform-origin: bottom center !important;
+// 	}
+// }
 .maxi-toolbar__popover {
 	z-index: 29;
-	left: 0 !important;
-	width: 100%;
-	transform-origin: bottom center !important;
-	&--has-breadcrumb {
-		.components-popover__content {
-			.toolbar-wrapper {
-				top: -35px !important;
-			}
-		}
-	}
+	// left: 0 !important;
+	// width: 100%;
+	// transform-origin: bottom center !important;
+	// &--has-breadcrumb {
+	// 	.components-popover__content {
+	// 		.toolbar-wrapper {
+	// 			top: -35px !important;
+	// 		}
+	// 	}
+	// }
 	.components-popover__content {
 		background-color: transparent;
 		border: none;
@@ -209,18 +209,18 @@
 body .is-sidebar-opened {
 	~ .popover-slot {
 		.toolbar-item__popover {
-			left: 0 !important;
-			width: calc(100% - 300px);
-			transform-origin: bottom center !important;
+			// left: 0 !important;
+			// width: calc(100% - 300px);
+			// transform-origin: bottom center !important;
 		}
 	}
 }
 
 body .toolbar-item__popover {
 	margin-top: 0 !important;
-	left: 0 !important;
-	width: 100%;
-	transform-origin: bottom center !important;
+	// left: 0 !important;
+	// width: 100%;
+	// transform-origin: bottom center !important;
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&:before {

@@ -20,7 +20,7 @@ import DOMPurify from 'dompurify';
  */
 import Breadcrumbs from '../breadcrumbs';
 import {
-	// Alignment,
+	Alignment,
 	BackgroundColor,
 	BlockBackgroundColor,
 	Border,
@@ -504,7 +504,7 @@ const MaxiToolbar = memo(
 									setAttributes({ lineVertical })
 								}
 							/>
-							{/* <Alignment
+							<Alignment
 								blockName={name}
 								{...getGroupAttributes(attributes, [
 									'alignment',
@@ -512,7 +512,7 @@ const MaxiToolbar = memo(
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
-							/> */}
+							/>
 							{/* <TextLevel
 								{...getGroupAttributes(attributes, [
 									'typography',
@@ -655,7 +655,10 @@ const MaxiToolbar = memo(
 							<Help />
 							<MoreSettings
 								clientId={clientId}
-								{...getGroupAttributes(attributes, 'alignment')}
+								{...getGroupAttributes(attributes, [
+									'alignment',
+									'textAlignment',
+								])}
 								blockName={name}
 								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}

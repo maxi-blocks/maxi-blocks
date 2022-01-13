@@ -270,7 +270,7 @@ const CopyPaste = props => {
 			position='right top'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>
-					{__('Copy', 'maxi-blocks')}
+					{__('Copy / Paste', 'maxi-blocks')}
 				</Button>
 			)}
 			renderContent={() => <CopyPasteContent {...props} />}

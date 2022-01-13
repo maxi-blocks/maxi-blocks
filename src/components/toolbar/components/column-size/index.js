@@ -9,13 +9,17 @@ import { __ } from '@wordpress/i18n';
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 import AdvancedNumberControl from '../../../advanced-number-control';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 
 /**
  * External dependencies
  */
-import { round } from 'lodash';
+// import { round } from 'lodash';
 
 /**
  * Styles & Icons
@@ -32,10 +36,12 @@ const ColumnSize = props => {
 		blockName,
 		verticalAlign,
 		onChange,
-		breakpoint,
+		// breakpoint,
 		attributes,
 		rowPattern,
-		columnSize,
+		// columnSize,
+		deviceType,
+		setAttributes,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
@@ -46,8 +52,46 @@ const ColumnSize = props => {
 			tooltip={__('ColumnSize', 'maxi-blocks')}
 			icon={toolbarSizing}
 			advancedOptions='column settings'
+			deviceType={deviceType}
 		>
 			<div className='toolbar-item__column-size__popover'>
+				<AdvancedNumberControl
+					label={__('Column Size (%)', 'maxi-blocks')}
+					value={getLastBreakpointAttribute(
+						'column-size',
+						deviceType,
+						attributes
+					)}
+					onChangeValue={val => {
+						setAttributes({
+							[`column-size-${deviceType}`]:
+								val !== undefined && val !== '' ? val : '',
+						});
+					}}
+					min={0}
+					max={100}
+					step={0.1}
+					onReset={() =>
+						setAttributes({
+							[`column-size-${deviceType}`]:
+								getColumnDefaultValue(
+									rowPattern,
+									{
+										...getGroupAttributes(
+											attributes,
+											'columnSize'
+										),
+									},
+									clientId,
+									deviceType
+								),
+						})
+					}
+					initialPosition={getDefaultAttribute(
+						`column-size-${deviceType}`,
+						clientId
+					)}
+				/>
 				<SelectControl
 					label={__('Vertical align', 'maxi-blocks')}
 					value={verticalAlign}

@@ -40,7 +40,7 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, attributes, onChange } = props;
+	const { clientId, blockName, attributes, onChange, breakpoint } = props;
 
 	// const { breakpoint } = useSelect(select => {
 	// 	const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -92,12 +92,14 @@ const MoreSettings = props => {
 									<Alignment
 										clientId={clientId}
 										blockName={blockName}
+										// attributes
+										// getGroupAttributes
 										// {...getGroupAttributes(attributes, [
 										// 	'alignment',
 										// 	'textAlignment',
 										// ])}
-										// onChange={obj => setAttributes(obj)}
-										// breakpoint={breakpoint}
+										onChange={onChange}
+										// breakpoint
 									/>
 								</div>
 							)}

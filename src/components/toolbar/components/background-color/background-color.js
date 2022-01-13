@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
-import ButtonGroupControl from '../../../button-group-control';
 import {
 	getAttributeKey,
 	// getBlockStyle,
@@ -16,6 +15,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import ToggleSwitch from '../../../toggle-switch';
 
 /**
  * Styles
@@ -105,20 +105,10 @@ const BackgroundColor = props => {
 			icon={backgroundColor}
 		>
 			<div className='toolbar-item__background__popover'>
-				<ButtonGroupControl
-					label={__('Enable Background Colour', 'maxi-blocks')}
+				<ToggleSwitch
+					label={__('Enable background colour', 'maxi-blocks')}
 					selected={isBackgroundColor}
-					options={[
-						{
-							label: __('Yes', 'maxi-blocks'),
-							value: 1,
-						},
-						{
-							label: __('No', 'maxi-blocks'),
-							value: 0,
-						},
-					]}
-					onChange={val =>
+					onChange={val => {
 						onChange({
 							[getAttributeKey(
 								'background-active-media',
@@ -126,8 +116,8 @@ const BackgroundColor = props => {
 								prefix,
 								breakpoint
 							)]: val ? 'color' : 'none',
-						})
-					}
+						});
+					}}
 				/>
 				{isBackgroundColor && (
 					<ColorLayer

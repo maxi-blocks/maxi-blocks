@@ -1,5 +1,6 @@
 export const preset1 = {
 	'icon-only': false,
+	'button-background-active-media-general': 'color',
 	'button-border-bottom-width-general': '',
 	'button-border-color-general': '',
 	'button-border-left-width-general': '',
@@ -90,6 +91,7 @@ export const preset1 = {
 
 export const preset2 = {
 	'icon-only': false,
+	'button-background-active-media-general': 'none',
 	'button-border-bottom-width-general': 2,
 	'button-border-color-general': '',
 	'button-border-left-width-general': 2,
@@ -179,6 +181,7 @@ export const preset2 = {
 
 export const preset3 = {
 	'icon-only': false,
+	'button-background-active-media-general': 'none',
 	'button-border-bottom-width-general': 2,
 	'button-border-color-general': '',
 	'button-border-left-width-general': 2,
@@ -278,6 +281,7 @@ export const preset3 = {
 
 export const preset4 = {
 	'icon-only': false,
+	'button-background-active-media-general': 'color',
 	'button-border-bottom-left-radius-general': 8,
 	'button-border-bottom-right-radius-general': 8,
 	'button-border-bottom-width-general': '',
@@ -388,6 +392,7 @@ export const preset4 = {
 
 export const preset5 = {
 	'icon-only': false,
+	'button-background-active-media-general': 'none',
 	'button-border-bottom-left-radius-general': 50,
 	'button-border-bottom-right-radius-general': 50,
 	'button-border-bottom-width-general': '2',
@@ -502,6 +507,7 @@ export const preset5 = {
 
 export const preset6 = {
 	'icon-only': false,
+	'button-background-active-media-general': 'none',
 	'button-border-style-general': 'none',
 	'button-padding-top-general': 3,
 	'button-padding-right-general': 6,
@@ -572,6 +578,7 @@ export const preset6 = {
 
 export const preset7 = {
 	'icon-only': true,
+	'button-background-active-media-general': 'none',
 	'button-border-style-general': 'none',
 	'button-padding-bottom-general': 0,
 	'button-padding-left-general': 0,
@@ -632,6 +639,7 @@ export const preset7 = {
 
 export const preset8 = {
 	'icon-only': true,
+	'button-background-active-media-general': 'none',
 	'button-border-style-general': 'none',
 	'button-padding-bottom-general': 0,
 	'button-padding-left-general': 0,
@@ -712,6 +720,7 @@ export const preset8 = {
 
 export const preset9 = {
 	'icon-only': true,
+	'button-background-active-media-general': 'color',
 	'button-border-style-general': 'none',
 	'button-padding-bottom-general': 0,
 	'button-padding-left-general': 0,
@@ -784,6 +793,7 @@ export const preset9 = {
 
 export const preset10 = {
 	'icon-only': true,
+	'button-background-active-media-general': 'none',
 	'button-border-style-general': 'none',
 	'button-padding-bottom-general': 0,
 	'button-padding-left-general': 0,
@@ -865,6 +875,7 @@ export const preset10 = {
 
 export const preset11 = {
 	'icon-only': true,
+	'button-background-active-media-general': 'color',
 	'button-border-style-general': 'none',
 	'button-padding-bottom-general': 0,
 	'button-padding-left-general': 0,

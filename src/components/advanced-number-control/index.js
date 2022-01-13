@@ -208,9 +208,8 @@ const AdvancedNumberControl = props => {
 								value ||
 								defaultValue ||
 								initial ||
-								placeholder ||
-								0
-							)
+								placeholder
+							) || 0
 						}
 						onChange={val => {
 							onChangeValue(+val);

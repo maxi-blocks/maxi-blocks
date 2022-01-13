@@ -1,5 +1,31 @@
 import getNumberCounterStyles from '../getNumberCounterStyles';
 
+jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
+	return jest.fn(() => {
+		return {
+			value: {
+				name: 'Maxi (Default)',
+				status: 'active',
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						color: {
+							1: '255,255,255',
+							2: '242,249,253',
+							3: '155,155,155',
+							4: '255,74,23',
+							5: '0,0,0',
+							6: '201,52,10',
+							7: '8,18,25',
+							8: '150,176,203',
+						},
+					},
+				},
+			},
+		};
+	});
+});
+
 describe('getNumberCounterStyles', () => {
 	it('Returns correct styles', () => {
 		const obj = {

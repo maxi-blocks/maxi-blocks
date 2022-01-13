@@ -102,7 +102,7 @@ const TransformControl = props => {
 					{
 						label: __('Scale', 'maxi-blocks'),
 						value: 'scale',
-						extraResponsiveIndicators: [
+						extraIndicatorsResponsive: [
 							'transform-scale-x',
 							'transform-scale-y',
 						],
@@ -110,7 +110,7 @@ const TransformControl = props => {
 					{
 						label: __('Translate', 'maxi-blocks'),
 						value: 'translate',
-						extraResponsiveIndicators: [
+						extraIndicatorsResponsive: [
 							'transform-translate-x',
 							'transform-translate-y',
 						],
@@ -118,7 +118,7 @@ const TransformControl = props => {
 					{
 						label: __('Rotate', 'maxi-blocks'),
 						value: 'rotate',
-						extraResponsiveIndicators: [
+						extraIndicatorsResponsive: [
 							'transform-rotate-x',
 							'transform-rotate-y',
 							'transform-rotate-z',
@@ -128,7 +128,7 @@ const TransformControl = props => {
 						label: __('Origin', 'maxi-blocks'),
 						value: 'origin',
 						hidden: !isTransformed(),
-						extraResponsiveIndicators: [
+						extraIndicatorsResponsive: [
 							'transform-origin-x',
 							'transform-origin-y',
 						],

@@ -30,8 +30,8 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 		if ('extraIndicators' in item)
 			item.extraIndicators.forEach(indicator => response.push(indicator));
 
-		if ('extraResponsiveIndicators' in item) {
-			item.extraResponsiveIndicators.forEach(indicator =>
+		if ('extraIndicatorsResponsive' in item) {
+			item.extraIndicatorsResponsive.forEach(indicator =>
 				response.push(`${indicator}-${currentBreakpoint}`)
 			);
 		}

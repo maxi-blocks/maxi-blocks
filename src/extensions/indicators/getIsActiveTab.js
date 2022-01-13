@@ -8,7 +8,7 @@ const getIsActiveTab = (
 	attributes,
 	breakpoint,
 	extraIndicators = [],
-	extraIndicatorsResponsive = []
+	extraResponsiveIndicators = []
 ) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
@@ -27,10 +27,18 @@ const getIsActiveTab = (
 	return ![
 		...attributes,
 		...extraIndicators,
-		...extraIndicatorsResponsive,
+		...extraResponsiveIndicators,
 	].every(attribute => {
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
+
+		if (currentAttributes[attribute] === undefined) return true;
+		if (
+			attribute.includes('scroll-') &&
+			currentAttributes[attribute] === false
+		)
+			return true;
+
 		if (breakpoint) {
 			if (
 				attribute.lastIndexOf(`-${breakpoint}`) ===

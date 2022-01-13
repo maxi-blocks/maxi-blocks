@@ -3,6 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { Children } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -18,7 +19,8 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 	const response = [];
 	const keyResponse = [];
 
-	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const currentBreakpoint =
+		select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 
 	const getProps = item => {
 		if (!isObject(item)) return;
@@ -28,12 +30,10 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 		if ('extraIndicators' in item)
 			item.extraIndicators.forEach(indicator => response.push(indicator));
 
-		if ('extraIndicatorsResponsive' in item) {
-			item.extraIndicatorsResponsive.forEach(indicator => {
-				breakpoints.forEach(breakpoint =>
-					response.push(`${indicator}-${breakpoint}`)
-				);
-			});
+		if ('extraResponsiveIndicators' in item) {
+			item.extraResponsiveIndicators.forEach(indicator =>
+				response.push(`${indicator}-${currentBreakpoint}`)
+			);
 		}
 
 		if ('props' in item) {

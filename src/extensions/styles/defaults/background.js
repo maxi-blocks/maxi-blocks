@@ -183,12 +183,6 @@ export const rawBackgroundSVG = {
 	'background-svg-SVGData': {
 		type: 'object',
 	},
-	'background-svg-SVGMediaID': {
-		type: 'number',
-	},
-	'background-svg-SVGMediaURL': {
-		type: 'string',
-	},
 	'background-svg-top-unit': {
 		type: 'string',
 		default: '%',

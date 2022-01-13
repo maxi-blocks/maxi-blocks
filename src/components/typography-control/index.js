@@ -254,7 +254,7 @@ const LinkOptions = props => {
 					{
 						label: __('Link', 'maxi-block'),
 						value: 'normal_link',
-						extraIndicatorsResponsive: [
+						extraResponsiveIndicators: [
 							`${prefix}link-color`,
 							`${prefix}link-palette-color`,
 							`${prefix}link-palette-opacity`,
@@ -264,7 +264,7 @@ const LinkOptions = props => {
 					{
 						label: __('Hover', 'maxi-block'),
 						value: 'hover_link',
-						extraIndicatorsResponsive: [
+						extraResponsiveIndicators: [
 							`${prefix}link-hover-color`,
 							`${prefix}link-hover-palette-color`,
 							`${prefix}link-hover-palette-opacity`,
@@ -274,7 +274,7 @@ const LinkOptions = props => {
 					{
 						label: __('Active', 'maxi-block'),
 						value: 'active_link',
-						extraIndicatorsResponsive: [
+						extraResponsiveIndicators: [
 							`${prefix}link-active-color`,
 							`${prefix}link-active-palette-color`,
 							`${prefix}link-active-palette-opacity`,
@@ -284,7 +284,7 @@ const LinkOptions = props => {
 					{
 						label: __('Visited', 'maxi-block'),
 						value: 'visited_link',
-						extraIndicatorsResponsive: [
+						extraResponsiveIndicators: [
 							`${prefix}link-visited-color`,
 							`${prefix}link-visited-palette-color`,
 							`${prefix}link-visited-palette-opacity`,

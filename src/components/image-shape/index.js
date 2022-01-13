@@ -159,7 +159,7 @@ const ImageShape = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Rotate shape', 'maxi-blocks')}
-						value={shapeRotate}
+						value={shapeRotate || null}
 						min={0}
 						max={360}
 						step={1}

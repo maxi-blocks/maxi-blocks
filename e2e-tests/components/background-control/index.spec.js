@@ -994,7 +994,7 @@ describe('BackgroundControl', () => {
 
 		// size
 		await page.$$eval(
-			'.maxi-responsive-tabs-control .maxi-settingstab-control .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 

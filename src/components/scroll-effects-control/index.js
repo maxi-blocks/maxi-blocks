@@ -65,32 +65,32 @@ const ScrollEffectsControl = props => {
 		{
 			icon: <Icon icon={motionVertical} />,
 			value: 'vertical',
-			extraResponsiveIndicators: ['scroll-vertical-status'],
+			extraIndicatorsResponsive: ['scroll-vertical-status'],
 		},
 		{
 			icon: <Icon icon={motionHorizontal} />,
 			value: 'horizontal',
-			extraResponsiveIndicators: ['scroll-horizontal-status'],
+			extraIndicatorsResponsive: ['scroll-horizontal-status'],
 		},
 		{
 			icon: <Icon icon={motionRotate} />,
 			value: 'rotate',
-			extraResponsiveIndicators: ['scroll-rotate-status'],
+			extraIndicatorsResponsive: ['scroll-rotate-status'],
 		},
 		{
 			icon: <Icon icon={motionScale} />,
 			value: 'scale',
-			extraResponsiveIndicators: ['scroll-scale-status'],
+			extraIndicatorsResponsive: ['scroll-scale-status'],
 		},
 		{
 			icon: <Icon icon={motionFade} />,
 			value: 'fade',
-			extraResponsiveIndicators: ['scroll-fade-status'],
+			extraIndicatorsResponsive: ['scroll-fade-status'],
 		},
 		{
 			icon: <Icon icon={motionBlur} />,
 			value: 'blur',
-			extraResponsiveIndicators: ['scroll-blur-status'],
+			extraIndicatorsResponsive: ['scroll-blur-status'],
 		},
 	];
 

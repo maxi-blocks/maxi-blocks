@@ -1,4 +1,6 @@
 <?php
+include('class-maxi-api.php');
+
 class MaxiBlocks_Styles
 {
     /**
@@ -169,13 +171,16 @@ class MaxiBlocks_Styles
             return;
         }
 
-        $custom_data = get_option("mb_custom_data_{$post->ID}");
+        $MaxiBlocks_API = new MaxiBlocks_API();
+        $custom_data = $MaxiBlocks_API->get_maxi_blocks_current_custom_data($post->ID);
 
         if (!$custom_data) {
             return;
         }
 
-        $result = $custom_data['custom_data'];
+        $resultArr = (array)$custom_data[0];
+        $resultString = $resultArr['custom_data_value'];
+        $result = maybe_unserialize($resultString)['custom_data'];
 
         if (!$result || empty($result)) {
             return;

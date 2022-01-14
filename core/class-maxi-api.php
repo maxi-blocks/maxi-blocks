@@ -535,19 +535,20 @@ if (!class_exists('MaxiBlocks_API')):
             }
         }
 
-        public function get_maxi_blocks_current_custom_data($data)
+        public function get_maxi_blocks_current_custom_data($id)
         {
-            $this->mb_register_custom_data_option($data['id']);
+            // $this->mb_register_custom_data_option($data['id']);
+
+            if (gettype($id) === 'object') {
+                $id=$id['id'];
+            }
 
             global $wpdb;
-            $results = $wpdb->get_results("SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$data['id']}", OBJECT);
+            $response = $wpdb->get_results(
+                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$id}",
+                OBJECT
+            );
 
-            $this->write_log('results1');
-            $this->write_log($results);
-
-            $response = get_option("mb_custom_data_{$data['id']}")[
-                'custom_data'
-            ];
             if (!$response) {
                 $response = '';
             }
@@ -557,29 +558,35 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function set_maxi_blocks_current_custom_data($data)
         {
-            $this->mb_register_custom_data_option($data['id']);
+            $id = $data['id'];
+            $update = $data['update'];
+            $dataVal = $data['data'];
+            $this->mb_register_custom_data_option($id);
 
             global $wpdb;
-            $results = $wpdb->get_results("SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$data['id']}", OBJECT);
 
-            $this->write_log('results2');
-            $this->write_log($results);
+            $custom_data=$this->get_maxi_blocks_current_custom_data($id);
 
-            $custom_data = get_option("mb_custom_data_{$data['id']}");
-
-            if ($data['update']) {
+            if ($update) {
                 $this->write_log('UPD!');
-                $custom_data = serialize(['custom_data' => $data['data']]);
+                $new_custom_data = serialize(['custom_data' =>  $dataVal]);
 
                 $this->write_log($custom_data);
 
-                $wpdb->insert("{$wpdb->prefix}maxi_blocks_custom_data", array(
-                    'post_id' => $data['id'],
-                    'prev_custom_data_value' => $custom_data,
-                    'custom_data_value' => $custom_data,
+                if ($custom_data === '') {
+                    $wpdb->insert("{$wpdb->prefix}maxi_blocks_custom_data", array(
+                    'post_id' => $id,
+                    'prev_custom_data_value' =>  $new_custom_data,
+                    'custom_data_value' =>  $new_custom_data,
                 ));
-
-                update_option("mb_custom_data_{$data['id']}", $custom_data);
+                } else {
+                    $wpdb->update("{$wpdb->prefix}maxi_blocks_custom_data", array(
+                        'post_id' => $id,
+                        'prev_custom_data_value' =>  $new_custom_data,
+                        'custom_data_value' =>  $new_custom_data,
+                    ), ['post_id' => $id]);
+                }
+                // update_option("mb_custom_data_{$data['id']}", $custom_data);
             }
 
             return $custom_data;

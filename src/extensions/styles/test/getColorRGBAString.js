@@ -35,7 +35,7 @@ describe('getColorRGBAString', () => {
 		});
 
 		expect(result).toStrictEqual(
-			'rgba(var(--maxi-light-color-4, 255,74,23),0.5)'
+			'rgba(var(--maxi-light-color-4,255,74,23),0.5)'
 		);
 	});
 
@@ -48,7 +48,7 @@ describe('getColorRGBAString', () => {
 		});
 
 		expect(result).toStrictEqual(
-			'var(--maxi-light-test-color,rgba(var(--maxi-light-color-4, 255,74,23),0.5))'
+			'var(--maxi-light-test-color,rgba(var(--maxi-light-color-4,255,74,23),0.5))'
 		);
 	});
 });

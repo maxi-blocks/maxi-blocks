@@ -14,7 +14,7 @@ const getVarWithColor = ({ blockStyle, variable }) => {
 			? `,${getPaletteColor({
 					blockStyle,
 					color: variable.replace('color-', ''),
-			  }).replaceAll(' ', '')}`
+			  }).replace(/ /g, '')}`
 			: ''
 	})`;
 };

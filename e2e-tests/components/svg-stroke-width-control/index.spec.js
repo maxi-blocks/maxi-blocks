@@ -15,7 +15,6 @@ import {
 	modalMock,
 	openSidebarTab,
 	getAttributes,
-	changeResponsive,
 	addResponsiveTest,
 } from '../../utils';
 
@@ -52,7 +51,7 @@ describe('Svg stroke width control', () => {
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
-		// check responsive
+		// check responsive svg stroke
 		const responsiveResult = await addResponsiveTest({
 			page,
 			instance: '.maxi-advanced-number-control input',
@@ -64,43 +63,4 @@ describe('Svg stroke width control', () => {
 
 		expect(responsiveResult).toBeTruthy();
 	});
-
-	/* it('Check responsive svg stroke width control', async () => {
-		await changeResponsive(page, 's');
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'icon line width'
-		);
-
-		const baseStrokeValue = await accordionPanel.$$eval(
-			'.maxi-advanced-number-control input',
-			input => input[1].value
-		);
-		expect(baseStrokeValue).toStrictEqual('3');
-
-		await accordionPanel.$$eval(
-			'.maxi-advanced-number-control input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1');
-
-		await changeResponsive(page, 'xs');
-
-		const sStrokeValue = await accordionPanel.$$eval(
-			'.maxi-advanced-number-control input',
-			input => input[1].value
-		);
-		expect(sStrokeValue).toStrictEqual('1');
-
-		await changeResponsive(page, 'm');
-
-		const mStrokeValue = await accordionPanel.$$eval(
-			'.maxi-advanced-number-control input',
-			input => input[1].value
-		);
-		expect(mStrokeValue).toStrictEqual('3');
-	}); */
 });

@@ -46,9 +46,8 @@ describe('ColumnPattern', () => {
 
 		expect(await getAttributes('removeColumnGap')).toStrictEqual(true);
 
-		// test responsive util
-		debugger;
-		await addResponsiveTest({
+		// check responsive column
+		const responsiveColumn = await addResponsiveTest({
 			page,
 			instance:
 				'.components-column-pattern .maxi-base-control__field input',
@@ -57,6 +56,7 @@ describe('ColumnPattern', () => {
 			xsExpect: '55',
 			newValue: '55',
 		});
+		expect(responsiveColumn).toBeTruthy();
 	});
 
 	it('Check responsive row-pattern', async () => {

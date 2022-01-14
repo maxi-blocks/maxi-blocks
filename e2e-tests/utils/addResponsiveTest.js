@@ -67,22 +67,6 @@ const addResponsiveTest = async ({
 	}
 
 	if (needSelectIndex) {
-		const testing = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
-			selector => selector.value
-		);
-
-		const testInstance = instance;
-
-		/** baseExpect, instance, selectInstance, newValue, xsExpect */
-		// base responsive
-		await page.waitForSelector(instance);
-
-		// const checkBaseResponsive = await page.$eval(
-		// 	testInstance,
-		// 	selector => selector.selectedOptions[0].value
-		// );
-
 		const CheckBaseSelect = await page.$eval(
 			instance,
 			selector => selector.selectedOptions[0].value

@@ -27,9 +27,9 @@ describe('Svg Color', () => {
 		await page.waitForSelector(
 			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container'
 		);
-		await page.$$eval(
-			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
-			svg => svg[0].click()
+		await page.$eval(
+			'.components-modal__content .components-modal__header button',
+			svg => svg.click()
 		);
 
 		await openSidebarTab(page, 'style', 'colour');

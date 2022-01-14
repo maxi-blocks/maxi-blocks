@@ -7,13 +7,13 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	changeResponsive,
 	getBlockAttributes,
 	openSidebarTab,
 	getBlockStyle,
 	editColorControl,
 	getAttributes,
 	editAxisControl,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('BorderControl', () => {
@@ -98,9 +98,22 @@ describe('BorderControl', () => {
 		expect(await getAttributes('border-style-general')).toStrictEqual(
 			'dotted'
 		);
+
+		// test responsive util
+		await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			selectInstance:
+				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			needSelectIndex: true,
+			baseExpect: 'dotted',
+			xsExpect: 'groove',
+			newValue: 'groove',
+		});
 	});
 
-	it('Check Responsive border control', async () => {
+	/* it('Check Responsive border control', async () => {
 		// Dotted bottom enabled
 		await changeResponsive(page, 's');
 		await page.$eval('.maxi-text-block', block => block.focus());
@@ -146,7 +159,7 @@ describe('BorderControl', () => {
 		);
 
 		expect(responsiveMOption).toStrictEqual('Dotted');
-	});
+	}); */
 
 	it('Check hover values kept after setting normal border to none', async () => {
 		await createNewPost();

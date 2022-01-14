@@ -6,7 +6,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
+	addResponsiveTest,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
@@ -45,6 +45,18 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(await getAttributes('removeColumnGap')).toStrictEqual(true);
+
+		// test responsive util
+		debugger;
+		await addResponsiveTest({
+			page,
+			instance:
+				'.components-column-pattern .maxi-base-control__field input',
+			needFocus: true,
+			baseExpect: '2',
+			xsExpect: '55',
+			newValue: '55',
+		});
 	});
 
 	it('Check responsive row-pattern', async () => {

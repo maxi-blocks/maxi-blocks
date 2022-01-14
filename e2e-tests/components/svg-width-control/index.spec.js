@@ -15,6 +15,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	changeResponsive,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('Svg width control', () => {
@@ -58,9 +59,33 @@ describe('Svg width control', () => {
 		expect(await getAttributes('svg-width-unit-general')).toStrictEqual(
 			'%'
 		);
+
+		// check responsive
+		/* const responsiveResult = await addResponsiveTest({
+			page,
+			instance: '.maxi-advanced-number-control input',
+			needFocus: true,
+			baseExpect: '37',
+			xsExpect: '12',
+			newValue: '12',
+		});
+
+		expect(responsiveResult).toBeTruthy(); */
+
+		const responsiveSelectResult = await addResponsiveTest({
+			page,
+			instance: '.maxi-advanced-number-control select',
+			SelectInstance: '.maxi-advanced-number-control select',
+			needSelectIndex: true,
+			baseExpect: '%',
+			xsExpect: 'px',
+			newValue: 'px',
+		});
+
+		expect(responsiveSelectResult).toBeTruthy();
 	});
 
-	it('Check responsive svg width control', async () => {
+	/* it('Check responsive svg width control', async () => {
 		await changeResponsive(page, 's');
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -125,5 +150,5 @@ describe('Svg width control', () => {
 			input => input.value
 		);
 		expect(xsWidthUnit).toStrictEqual('%');
-	});
+	}); */
 });

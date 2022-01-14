@@ -12,6 +12,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('AlignmentControl', () => {
@@ -36,9 +37,22 @@ describe('AlignmentControl', () => {
 			const attribute = attributes['text-alignment-general'];
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
+
+		// test responsive util
+		debugger;
+		await addResponsiveTest({
+			page,
+			instance: '.maxi-alignment-control button',
+			selectInstance: '.maxi-alignment-control button',
+			needAreaPressed: true,
+			baseExpect: 'true',
+			xsExpect: 'true',
+			ariaBaseSelect: '0',
+			ariaXsSelect: '1',
+		});
 	});
 
-	it('Check Responsive text-alignment control', async () => {
+	/* it('Check Responsive text-alignment control', async () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		const isItemChecked = await page.$$eval(
@@ -84,7 +98,7 @@ describe('AlignmentControl', () => {
 		expect(responsiveMOption).toBe('true');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
+	}); */
 
 	it('Check Responsive alignment control', async () => {
 		await createNewPost();

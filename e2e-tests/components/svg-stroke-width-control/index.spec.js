@@ -26,7 +26,7 @@ describe('Svg stroke width control', () => {
 
 		// Close model opened automatically by the block
 		await page.waitForSelector(
-			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container'
+			'.components-modal__content .components-modal__header button'
 		);
 		await page.$eval(
 			'.components-modal__content .components-modal__header button',

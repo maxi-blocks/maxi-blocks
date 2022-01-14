@@ -11,10 +11,10 @@ import { isNumber } from 'lodash';
 const getVarWithColor = ({ blockStyle, variable }) => {
 	return `var(--maxi-${blockStyle}-${variable}${
 		variable.includes('color-')
-			? `, ${getPaletteColor({
+			? `,${getPaletteColor({
 					blockStyle,
 					color: variable.replace('color-', ''),
-			  })}`
+			  }).replaceAll(' ', '')}`
 			: ''
 	})`;
 };

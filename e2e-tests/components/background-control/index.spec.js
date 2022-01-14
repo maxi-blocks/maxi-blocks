@@ -117,9 +117,8 @@ describe('BackgroundControl', () => {
 		);
 
 		// hover
-		await accordion.$$eval(
-			'.maxi-tabs-control--disable-padding button',
-			button => button[1].click()
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
 		);
 
 		// enable hover
@@ -435,9 +434,8 @@ describe('BackgroundControl', () => {
 		);
 
 		// hover
-		await accordion.$$eval(
-			'.maxi-tabs-control--disable-padding button',
-			button => button[1].click()
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
 		);
 
 		// hover options
@@ -748,9 +746,8 @@ describe('BackgroundControl', () => {
 		);
 
 		// hover
-		await accordion.$$eval(
-			'.maxi-tabs-control--disable-padding button',
-			button => button[1].click()
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
 		);
 
 		// hover options
@@ -832,9 +829,8 @@ describe('BackgroundControl', () => {
 			'background layer'
 		);
 
-		await accordion.$$eval(
-			'.maxi-tabs-control--disable-padding button',
-			button => button[0].click()
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[0].click()
 		);
 
 		await modalMock(page, { type: 'bg-shape', isBGLayers: true });
@@ -853,7 +849,7 @@ describe('BackgroundControl', () => {
 
 		// size
 		await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -882,7 +878,7 @@ describe('BackgroundControl', () => {
 		expect(baseBackgroundOpacity).toStrictEqual('77');
 
 		await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -936,7 +932,7 @@ describe('BackgroundControl', () => {
 		expect(xsBackgroundOpacity).toStrictEqual('54');
 
 		await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -958,7 +954,7 @@ describe('BackgroundControl', () => {
 		expect(mBackgroundOpacity).toStrictEqual('77');
 
 		await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -980,9 +976,8 @@ describe('BackgroundControl', () => {
 		);
 
 		// hover
-		await accordion.$$eval(
-			'.maxi-tabs-control--disable-padding button',
-			button => button[1].click()
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
 		);
 
 		// hover options
@@ -999,7 +994,7 @@ describe('BackgroundControl', () => {
 
 		// size
 		await page.$$eval(
-			'.maxi-responsive-tabs-control .maxi-settingstab-control .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -1020,7 +1015,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 's');
 
 		await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -1052,7 +1047,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'xs');
 
 		await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -1067,7 +1062,7 @@ describe('BackgroundControl', () => {
 		await changeResponsive(page, 'm');
 
 		await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-tabs-control button',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
 			sizeButton => sizeButton[1].click()
 		);
 
@@ -1091,9 +1086,8 @@ describe('BackgroundControl', () => {
 		);
 
 		// hover
-		await accordion.$$eval(
-			'.maxi-tabs-control--disable-padding button',
-			button => button[1].click()
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
 		);
 
 		const deleteOption = await page.$$eval(

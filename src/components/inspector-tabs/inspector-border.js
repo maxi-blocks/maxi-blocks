@@ -130,6 +130,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 								)}
 							</>
 						),
+						extraIndicators: [`${prefix}border-status-hover`],
 					},
 				]}
 			/>

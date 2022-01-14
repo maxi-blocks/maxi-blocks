@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import Icon from '../icon';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import ScrollEffectUniqueControl from './scroll-effect-unique-control';
 import {
 	getDefaultAttribute,
@@ -62,12 +62,36 @@ const ScrollEffectsControl = props => {
 	const [motionStatus, setMotionStatus] = useState(firstActiveEffect);
 
 	const motionOptions = [
-		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
-		{ label: <Icon icon={motionHorizontal} />, value: 'horizontal' },
-		{ label: <Icon icon={motionRotate} />, value: 'rotate' },
-		{ label: <Icon icon={motionScale} />, value: 'scale' },
-		{ label: <Icon icon={motionFade} />, value: 'fade' },
-		{ label: <Icon icon={motionBlur} />, value: 'blur' },
+		{
+			icon: <Icon icon={motionVertical} />,
+			value: 'vertical',
+			extraIndicatorsResponsive: ['scroll-vertical-status'],
+		},
+		{
+			icon: <Icon icon={motionHorizontal} />,
+			value: 'horizontal',
+			extraIndicatorsResponsive: ['scroll-horizontal-status'],
+		},
+		{
+			icon: <Icon icon={motionRotate} />,
+			value: 'rotate',
+			extraIndicatorsResponsive: ['scroll-rotate-status'],
+		},
+		{
+			icon: <Icon icon={motionScale} />,
+			value: 'scale',
+			extraIndicatorsResponsive: ['scroll-scale-status'],
+		},
+		{
+			icon: <Icon icon={motionFade} />,
+			value: 'fade',
+			extraIndicatorsResponsive: ['scroll-fade-status'],
+		},
+		{
+			icon: <Icon icon={motionBlur} />,
+			value: 'blur',
+			extraIndicatorsResponsive: ['scroll-blur-status'],
+		},
 	];
 
 	const easingOptions = [
@@ -200,12 +224,12 @@ const ScrollEffectsControl = props => {
 				onChange={val => onChange(onChangeShortcut(val))}
 				options={globalShortcutsOptions}
 			/>
-			<ButtonGroupControl
+			<SettingTabsControl
+				type='buttons'
 				fullWidthMode
 				selected={motionStatus}
-				options={motionOptions}
+				items={motionOptions}
 				onChange={val => setMotionStatus(val)}
-				active={getActiveEffects()}
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute(

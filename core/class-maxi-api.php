@@ -527,18 +527,8 @@ if (!class_exists('MaxiBlocks_API')):
             }
         }
 
-
-        public function mb_register_custom_data_option($id)
-        {
-            if (!get_option("mb_custom_data_$id")) {
-                add_option("mb_custom_data_$id", ['custom_data' => '']);
-            }
-        }
-
         public function get_maxi_blocks_current_custom_data($id)
         {
-            // $this->mb_register_custom_data_option($data['id']);
-
             if (gettype($id) === 'object') {
                 $id=$id['id'];
             }

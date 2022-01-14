@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import InfoBox from '../info-box';
 import {
@@ -101,14 +101,16 @@ const ArrowControl = props => {
 			/>
 			{props['arrow-status'] && (
 				<>
-					<ButtonGroupControl
+					<SettingTabsControl
 						label=''
+						type='buttons'
+						fullWidthMode
 						selected={getLastBreakpointAttribute(
 							'arrow-side',
 							breakpoint,
 							props
 						)}
-						options={getOptions()}
+						items={getOptions()}
 						onChange={val =>
 							onChange({ [`arrow-side-${breakpoint}`]: val })
 						}

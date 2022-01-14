@@ -67,6 +67,9 @@ const size = ({
 				/>
 			</>
 		),
+		extraIndicators: [
+			...(isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth'),
+		],
 	};
 };
 

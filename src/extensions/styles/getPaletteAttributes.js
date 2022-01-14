@@ -24,7 +24,6 @@ const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
 			isHover && isBoolean(rawPaletteStatus)
 				? rawPaletteStatus
 				: nonHoverPaletteStatus;
-
 		return { paletteStatus, paletteColor, paletteOpacity, color };
 	}
 

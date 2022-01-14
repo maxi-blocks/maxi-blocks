@@ -145,7 +145,7 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...prefixAttributesCreator({ obj: attributesData.opacity, prefix }),
+	...attributesData.opacity,
 	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
 	...prefixAttributesCreator({

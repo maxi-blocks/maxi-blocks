@@ -50,7 +50,26 @@
 				background-color: var(--maxi-white-3-color);
 				font-weight: 700;
 			}
+			svg:not(.maxi-tabs-control__notification) {
+				display: block;
+				width: 20px;
+				height: 100%;
+				margin: 0;
+				fill: var(--maxi-grey-5-color);
+			}
+			&--active:before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 10px;
+				height: 10px;
+				z-index: 1;
+				border-top: 2px solid var(--maxi-green-1-color);
+				border-left: 2px solid var(--maxi-green-1-color);
+			}
 		}
+		
 
 		&__notification {
 			position: absolute;
@@ -60,7 +79,33 @@
 			width: 9px;
 			height: 9px;
 		}
+
+		.maxi-base-control {
+			&__field {
+				width: 100%;
+				margin-bottom: 0;
+			}
+			&__label {
+				flex: 4;
+			}
+		}
+
+		&__full-width {
+			width: 100%;
+			.maxi-base-control {
+				&__field {
+					flex-wrap: wrap;
+				}
+				&__label {
+					display: block;
+					flex: 100% !important;
+					width: 100%;
+					margin: 0 0 8px 0 !important;
+				}
+			}
+		}
 	}
+
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
 			padding: 8px 8px 0;

@@ -17,7 +17,6 @@ import BaseControl from '../base-control';
 import Button from '../button';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-
 /**
  * Styles
  */
@@ -188,6 +187,7 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-typography-control__text-options-tabs'
 			breakpoint={breakpoint}
+			target='custom-css'
 		>
 			<>
 				<SelectControl

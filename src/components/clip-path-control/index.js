@@ -14,8 +14,8 @@ import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
-import ButtonGroupControl from '../button-group-control';
 import ToggleSwitch from '../toggle-switch';
+import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -393,10 +393,11 @@ const ClipPathControl = props => {
 								]}
 								onChange={value => onChangeType(value)}
 							/>
-							<ButtonGroupControl
+							<SettingTabsControl
 								fullWidthMode
+								type='buttons'
 								selected={customMode}
-								options={[
+								items={[
 									{
 										label: __('Visual', 'maxi-blocks'),
 										value: 'visual',

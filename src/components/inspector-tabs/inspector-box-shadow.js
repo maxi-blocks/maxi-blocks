@@ -99,6 +99,7 @@ const boxShadow = ({ props, prefix = '' }) => {
 								)}
 							</>
 						),
+						extraIndicators: [`${prefix}box-shadow-status-hover`],
 					},
 				]}
 			/>

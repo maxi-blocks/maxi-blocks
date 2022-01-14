@@ -18,8 +18,9 @@ describe('SettingsTabsControl', () => {
 
 		const firstContent = await page.$('.maxi-sidebar .maxi-tab-content');
 
-		await page.$$eval('.maxi-sidebar .maxi-tabs-control button', tabs =>
-			tabs[1].click()
+		await page.$$eval(
+			'.maxi-sidebar .maxi-settingstab-control button',
+			tabs => tabs[1].click()
 		);
 
 		const secondContent = await page.$('.maxi-sidebar .maxi-tab-content');

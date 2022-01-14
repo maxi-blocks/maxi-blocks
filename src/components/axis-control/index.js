@@ -10,7 +10,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import Button from '../button';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
@@ -349,15 +349,16 @@ const AxisControlContent = props => {
 					{reset}
 				</Button>
 			</BaseControl>
-			<ButtonGroupControl
+			<SettingTabsControl
 				label={getSyncLabel()}
+				type='buttons'
 				className='maxi-axis-control__header'
 				selected={sync}
-				options={[
+				items={[
 					{
 						value: 'all',
 						className: 'maxi-axis-control__sync-all',
-						label:
+						icon:
 							type === 'Margin'
 								? marginSyncAllIcon
 								: paddingSyncAllIcon,
@@ -365,7 +366,7 @@ const AxisControlContent = props => {
 					{
 						value: 'axis',
 						className: 'maxi-axis-control__sync-axis',
-						label:
+						icon:
 							type === 'Margin'
 								? marginSyncDirectionIcon
 								: paddingSyncDirectionIcon,
@@ -696,7 +697,7 @@ const AxisControl = props => {
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (
-				<ResponsiveTabsControl breakpoint={breakpoint}>
+				<ResponsiveTabsControl breakpoint={breakpoint} target={target}>
 					<AxisControlContent
 						{...props}
 						key='AxisControlContent__responsive'

@@ -63,7 +63,6 @@ const Inspector = props => {
 											content: (
 												<>
 													<SelectControl
-														fullWidthMode
 														label={__(
 															'Line orientation',
 															'maxi-blocks'
@@ -94,7 +93,6 @@ const Inspector = props => {
 														}
 													/>
 													<SelectControl
-														fullWidthMode
 														label={__(
 															'Line vertical position',
 															'maxi-blocks'
@@ -130,7 +128,6 @@ const Inspector = props => {
 														}
 													/>
 													<SelectControl
-														fullWidthMode
 														label={__(
 															'Line horizontal position',
 															'maxi-blocks'

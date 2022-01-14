@@ -181,14 +181,14 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 	}
 	button.maxi-color-control__palette-box,
-	button.maxi-button-group-control__option,
+	button.maxi-tabs-control__button,
 	.maxi-components-button {
 		border-color: var(--maxi-accessibility-grey-1-color);
 	}
 	button.maxi-color-control__palette-box--active,
 	button.maxi-color-control__palette-box:focus,
-	button.maxi-button-group-control__option-selected,
-	button.maxi-button-group-control__option:focus,
+	button.maxi-tabs-control__button--selected,
+	button.maxi-tabs-control__button:focus,
 	.maxi-components-button:focus:not(:disabled) {
 		z-index: 2;
 		border-color: var(--maxi-secondary-color);

@@ -79,7 +79,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_css_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						post_id bigint(20) NOT NULL,
+						post_id bigint(20) UNIQUE NOT NULL,
 						prev_css_value longtext,
 						css_value longtext,
 						prev_active_custom_data BIT,
@@ -97,7 +97,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_custom_data_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						post_id bigint(20) NOT NULL,
+						post_id bigint(20) UNIQUE NOT NULL,
 						prev_custom_data_value longtext,
 						custom_data_value longtext,
 						UNIQUE (id)

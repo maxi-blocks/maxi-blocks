@@ -447,6 +447,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									disablePalette
 								/>
 								<Button
+									disabled={
+										processSCAttribute(
+											SC,
+											quickColorPreset,
+											'color'
+										) ===
+										SC.defaultStyleCard.color[
+											quickColorPreset
+										]
+									}
 									className='maxi-style-cards__quick-color-presets__reset-button'
 									onClick={() =>
 										onChangeValue(

@@ -52,7 +52,7 @@ if (!class_exists('MaxiBlocks_DB')):
 
             $db_custom_prefix = 'maxi_blocks_';
             $db_general_table_name = $wpdb->prefix . $db_custom_prefix . 'general';
-            $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'css';
+            $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles';
             $db_custom_data_table_name = $wpdb->prefix . $db_custom_prefix . 'custom_data';
            
             $charset_collate = $wpdb->get_charset_collate();
@@ -82,6 +82,8 @@ if (!class_exists('MaxiBlocks_DB')):
 						post_id bigint(20) UNIQUE NOT NULL,
 						prev_css_value longtext,
 						css_value longtext,
+                        prev_fonts_value longtext,
+						fonts_value longtext,
 						prev_active_custom_data BIT,
 						UNIQUE (id)
 				) $charset_collate;";

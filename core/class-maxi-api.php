@@ -323,28 +323,12 @@ if (!class_exists('MaxiBlocks_API')):
             $styles = $meta['styles'];
             $fonts = implode(",", $meta['fonts']);
 
-            $this->write_log('fonts');
-            $this->write_log($fonts);
-
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
             $exists = $wpdb->get_results(
                 "SELECT * FROM {$table} WHERE post_id = {$id}",
                 OBJECT
             );
-
-            // $this->write_log('inserting');
-            // $this->write_log($exists);
-
-            // if ($data['update']) {
-            //     $post['css_value'] = $styles;
-            //     $post['prev_css_value'] = $styles;
-            //     $post['fonts_value'] = $fonts;
-            //     $post['prev_fonts_value'] = $fonts;
-            // } else {
-            //     $post['prev_css_value'] = $styles;
-            //     $post['prev_fonts_value'] = $fonts;
-            // }
 
             if (!empty($exists)) {
                 if ($data['update']) {
@@ -551,15 +535,6 @@ if (!class_exists('MaxiBlocks_API')):
                 'maxi_motion_interaction_presets',
                 $result['presets'],
             );
-        }
-
-        public function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
         }
 
         public function get_maxi_blocks_current_custom_data($id)

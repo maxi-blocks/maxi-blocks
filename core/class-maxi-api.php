@@ -50,23 +50,6 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
-         * Register post options for REST API
-         */
-        public function mb_register_post_options($id)
-        {
-            // Post API
-            $default_array = [
-                '_maxi_blocks_styles' => '',
-                '_maxi_blocks_styles_preview' => '',
-                '_maxi_blocks_fonts' => '',
-                '_maxi_blocks_fonts_preview' => '',
-            ];
-            if (!get_option("mb_post_api_$id")) {
-                add_option("mb_post_api_$id", $default_array);
-            }
-        }
-
-        /**
          * Register SC options for REST API
          */
         public function mb_register_sc_options()
@@ -315,11 +298,12 @@ if (!class_exists('MaxiBlocks_API')):
         {
             $id = $data['id'];
 
-            $this->mb_register_post_options($id);
+            global $wpdb;
+            $response = $wpdb->get_results(
+                "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$id}",
+                OBJECT
+            );
 
-            $response = get_option("mb_post_api_{$id}")[
-                '_maxi_blocks_styles_preview'
-            ];
             if (!$response) {
                 $response = '';
             }
@@ -332,26 +316,74 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function post_maxi_blocks_post($data)
         {
+            global $wpdb;
+            
             $id = $data['id'];
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
             $fonts = $meta['fonts'];
 
-            $this->mb_register_post_options($id);
+            $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
-            $post = get_option("mb_post_api_{$id}");
+            $exists = $wpdb->get_results(
+                "SELECT * FROM {$table} WHERE post_id = {$id}",
+                OBJECT
+            );
 
-            if ($data['update']) {
-                $post['_maxi_blocks_styles'] = $styles;
-                $post['_maxi_blocks_styles_preview'] = $styles;
-                $post['_maxi_blocks_fonts'] = $fonts;
-                $post['_maxi_blocks_fonts_preview'] = $fonts;
+            $this->write_log('inserting');
+            $this->write_log($exists);
+
+            // if ($data['update']) {
+            //     $post['css_value'] = $styles;
+            //     $post['prev_css_value'] = $styles;
+            //     $post['fonts_value'] = $fonts;
+            //     $post['prev_fonts_value'] = $fonts;
+            // } else {
+            //     $post['prev_css_value'] = $styles;
+            //     $post['prev_fonts_value'] = $fonts;
+            // }
+
+            if (!empty($exists)) {
+                if ($data['update']) {
+                    $wpdb->update("{$table}", array(
+                        'post_id' => $id,
+                        'prev_css_value' =>  $styles,
+                        'css_value' =>  $styles,
+                        'prev_fonts_value' =>  $fonts,
+                        'fonts_value' =>  $fonts,
+                    ), ['post_id' => $id]);
+                } else {
+                    $wpdb->update("{$table}", array(
+                        'post_id' => $id,
+                        'prev_css_value' =>  $styles,
+                        'prev_fonts_value' =>  $fonts,
+                    ), ['post_id' => $id]);
+                }
             } else {
-                $post['_maxi_blocks_styles_preview'] = $styles;
-                $post['_maxi_blocks_fonts_preview'] = $fonts;
+                if ($data['update']) {
+                    $wpdb->insert("{$table}", array(
+                        'post_id' => $id,
+                        'prev_css_value' =>  $styles,
+                        'css_value' =>  $styles,
+                        'prev_fonts_value' =>  $fonts,
+                        'fonts_value' =>  $fonts,
+                    ));
+                } else {
+                    $wpdb->insert("{$table}", array(
+                        'post_id' => $id,
+                        'prev_css_value' =>  $styles,
+                        'prev_fonts_value' =>  $fonts,
+                    ));
+                }
             }
 
-            update_option("mb_post_api_{$id}", $post);
+            $post = (array)$wpdb->get_results(
+                "SELECT * FROM {$table} WHERE post_id = {$id}",
+                OBJECT
+            )[0];
+         
+
+            //update_option("mb_post_api_{$id}", $post);
 
             return $post;
         }
@@ -551,17 +583,14 @@ if (!class_exists('MaxiBlocks_API')):
             $id = $data['id'];
             $update = $data['update'];
             $dataVal = $data['data'];
-            $this->mb_register_custom_data_option($id);
+            // $this->mb_register_custom_data_option($id);
 
             global $wpdb;
 
             $custom_data=$this->get_maxi_blocks_current_custom_data($id);
 
             if ($update) {
-                $this->write_log('UPD!');
                 $new_custom_data = serialize(['custom_data' =>  $dataVal]);
-
-                $this->write_log($custom_data);
 
                 if ($custom_data === '') {
                     $wpdb->insert("{$wpdb->prefix}maxi_blocks_custom_data", array(
@@ -576,7 +605,6 @@ if (!class_exists('MaxiBlocks_API')):
                         'custom_data_value' =>  $new_custom_data,
                     ), ['post_id' => $id]);
                 }
-                // update_option("mb_custom_data_{$data['id']}", $custom_data);
             }
 
             return $custom_data;

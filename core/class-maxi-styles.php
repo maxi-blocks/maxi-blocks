@@ -130,7 +130,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        return $fonts;
+        return  explode(',', $fonts);
     }
 
     /**

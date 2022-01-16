@@ -321,7 +321,10 @@ if (!class_exists('MaxiBlocks_API')):
             $id = $data['id'];
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
-            $fonts = $meta['fonts'];
+            $fonts = implode(",", $meta['fonts']);
+
+            $this->write_log('fonts');
+            $this->write_log($fonts);
 
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
@@ -330,8 +333,8 @@ if (!class_exists('MaxiBlocks_API')):
                 OBJECT
             );
 
-            $this->write_log('inserting');
-            $this->write_log($exists);
+            // $this->write_log('inserting');
+            // $this->write_log($exists);
 
             // if ($data['update']) {
             //     $post['css_value'] = $styles;

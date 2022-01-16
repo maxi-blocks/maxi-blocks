@@ -64,6 +64,15 @@ class MaxiBlocks_Styles
         ]);
     }
 
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+
     /**
      * Gets post meta content
      */
@@ -75,12 +84,18 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        $post_content = get_option("mb_post_api_{$post->ID}");
+        // $post_content = get_option("mb_post_api_{$post->ID}");
+
+        global $wpdb;
+        $post_content = (array)$wpdb->get_results(
+            "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
+            OBJECT
+        )[0];
 
         if (!$post_content) {
             return false;
         }
-
+        
         return $post_content;
     }
 
@@ -91,8 +106,8 @@ class MaxiBlocks_Styles
     {
         $style =
             is_preview() || is_admin()
-                ? $post_content['_maxi_blocks_styles_preview']
-                : $post_content['_maxi_blocks_styles'];
+                ? $post_content['prev_css_value']
+                : $post_content['css_value'];
 
         if (!$style || empty($style)) {
             return false;
@@ -108,8 +123,8 @@ class MaxiBlocks_Styles
     {
         $fonts =
             is_preview() || is_admin()
-                ? $post_content['_maxi_blocks_fonts_preview']
-                : $post_content['_maxi_blocks_fonts'];
+                ? $post_content['prev_fonts_value']
+                : $post_content['fonts_value'];
 
         if (!$fonts || empty($fonts)) {
             return false;

@@ -24,10 +24,14 @@ export const validateOriginValue = val => {
 	return false;
 };
 
-export const getParallaxLayers = bgLayers =>
-	bgLayers?.filter(
+export const getParallaxLayers = (uniqueID, bgLayers) => {
+	const response = bgLayers?.filter(
 		layer =>
 			layer.type === 'image' && layer['background-image-parallax-status']
 	);
+
+	if (!response || isEmpty(response)) return null;
+	return { [uniqueID]: response };
+};
 
 export const getHasParallax = bgLayers => !isEmpty(getParallaxLayers(bgLayers));

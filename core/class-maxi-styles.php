@@ -47,21 +47,49 @@ class MaxiBlocks_Styles
             $this->enqueue_fonts($fonts);
         }
 
-        wp_localize_script('maxi-hover-effects', 'maxi_custom_data', [
-            'custom_data' => $this->customMeta(),
-        ]);
+        wp_enqueue_script(
+            'maxi-waypoints-js',
+            plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+        );
+        
+        wp_enqueue_script(
+            'maxi-hover-effects',
+            plugins_url('/js/maxi-hover-effects.js', dirname(__FILE__)),
+        );
 
-        wp_localize_script('maxi-number-counter', 'maxi_custom_data', [
-            'custom_data' => $this->customMeta(),
-        ]);
+        wp_enqueue_script(
+            'maxi-bg-video',
+            plugins_url('/js/maxi-bg-video.js', dirname(__FILE__)),
+        );
 
-        wp_localize_script('maxi-bg-video', 'maxi_custom_data', [
-            'custom_data' => $this->customMeta(),
-        ]);
+        wp_enqueue_script(
+            'maxi-parallax',
+            plugins_url('/js/maxi-parallax.js', dirname(__FILE__)),
+        );
+       
+        wp_enqueue_script(
+            'maxi-scroll',
+            plugins_url('/js/maxi-scroll-effects.js', dirname(__FILE__)),
+        );
 
-        wp_localize_script('maxi-parallax', 'maxi_custom_data', [
-            'custom_data' => $this->customMeta(),
-        ]);
+        wp_localize_script('maxi-hover-effects', 'maxiHoverEffects', $this->customMeta('hover-effects'));
+
+        $numberCounterMeta = $this->customMeta('number_counter');
+
+        $this->write_log($numberCounterMeta);
+
+        if (!empty($numberCounterMeta)) {
+            wp_enqueue_script(
+                'maxi-number-counter',
+                plugins_url('/js/maxi-number-counter.js', dirname(__FILE__)),
+            );
+            
+            wp_localize_script('maxi-number-counter', 'maxiNumberCounter', $numberCounterMeta);
+        }
+
+        wp_localize_script('maxi-bg-video', 'maxiBgVideo', $this->customMeta('bg_video'));
+
+        wp_localize_script('maxi-parallax', 'maxiParallax', $this->customMeta('parallax'));
     }
 
     /**
@@ -167,13 +195,22 @@ class MaxiBlocks_Styles
         }
     }
 
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+
     /**
      * Custom Meta
      */
-    public function customMeta()
+    public function customMeta($meta)
     {
         global $post;
-        if (!$post || !isset($post->ID)) {
+        if (!$post || !isset($post->ID) || empty($meta)) {
             return;
         }
 
@@ -186,12 +223,18 @@ class MaxiBlocks_Styles
 
         $resultArr = (array)$custom_data[0];
         $resultString = $resultArr['custom_data_value'];
-        $result = maybe_unserialize($resultString)['custom_data'];
-
+        $result = maybe_unserialize($resultString);
+       
         if (!$result || empty($result)) {
             return;
         }
 
-        return json_decode($result);
+        $resultDecoded = json_decode($result, true)[$meta];
+
+        if (!$resultDecoded || empty($resultDecoded)) {
+            return;
+        }
+
+        return $resultDecoded;
     }
 }

@@ -561,14 +561,17 @@ if (!class_exists('MaxiBlocks_API')):
             $id = $data['id'];
             $update = $data['update'];
             $dataVal = $data['data'];
-            // $this->mb_register_custom_data_option($id);
 
+            if (empty($dataVal)) {
+                return;
+            }
+            
             global $wpdb;
 
             $custom_data=$this->get_maxi_blocks_current_custom_data($id);
 
             if ($update) {
-                $new_custom_data = serialize(['custom_data' =>  $dataVal]);
+                $new_custom_data = serialize($dataVal);
 
                 if ($custom_data === '') {
                     $wpdb->insert("{$wpdb->prefix}maxi_blocks_custom_data", array(

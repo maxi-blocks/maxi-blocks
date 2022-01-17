@@ -244,13 +244,13 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID, 'background-layers': bgLayers } =
 			this.props.attributes;
 
-		const bgParallaxLayers = getParallaxLayers(bgLayers);
+		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 
 		return {
-			[uniqueID]: {
-				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
-				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
-			},
+			...(!isEmpty(bgParallaxLayers) && {
+				parallax: bgParallaxLayers,
+			}),
+			...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 		};
 	}
 

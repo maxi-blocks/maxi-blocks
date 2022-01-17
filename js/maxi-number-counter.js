@@ -3,15 +3,15 @@ const numberCounterEffect = () => {
 	const numberElements = document.querySelectorAll('.maxi-nc-effect');
 	numberElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
-		if (!maxi_custom_data.custom_data) return;
+		if (!maxiNumberCounter) return;
 
 		const numberID = elem.id;
 
 		const numberData =
 			// eslint-disable-next-line no-undef
-			maxi_custom_data.custom_data[numberID] !== undefined
+			maxiNumberCounter[numberID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxi_custom_data.custom_data[numberID]
+				  maxiNumberCounter[numberID]
 				: null;
 
 		if (numberData !== null) {

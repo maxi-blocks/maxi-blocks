@@ -38,8 +38,6 @@ if (!class_exists('MaxiBlocks_Core')):
          */
         public function __construct()
         {
-            // Enqueue scripts and styles
-            add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts_styles']);
 
             // Add MaxiBlocks classes on body element
             add_filter('body_class', [$this, 'maxi_blocks_body_class'], 99);
@@ -54,55 +52,6 @@ if (!class_exists('MaxiBlocks_Core')):
                 ));
                 }
             });
-        }
-
-        public function enqueue_scripts_styles()
-        {
-            wp_enqueue_script(
-                'maxi-waypoints-js',
-                plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
-            );
-
-            wp_enqueue_script(
-                'maxi-map',
-                plugins_url('/js/maxi-map.js', dirname(__FILE__)),
-                [],
-                false,
-                true,
-            );
-
-            wp_localize_script(
-                'maxi-map',
-                'google_map_api_options',
-                array(
-                    'google_api_key' => get_option('google_api_key_option'),
-                )
-            );
-            
-            wp_enqueue_script(
-                'maxi-hover-effects',
-                plugins_url('/js/maxi-hover-effects.js', dirname(__FILE__)),
-            );
-
-            wp_enqueue_script(
-                'maxi-number-counter',
-                plugins_url('/js/maxi-number-counter.js', dirname(__FILE__)),
-            );
-
-            wp_enqueue_script(
-                'maxi-bg-video',
-                plugins_url('/js/maxi-bg-video.js', dirname(__FILE__)),
-            );
-
-            wp_enqueue_script(
-                'maxi-parallax',
-                plugins_url('/js/maxi-parallax.js', dirname(__FILE__)),
-            );
-           
-            wp_enqueue_script(
-                'maxi-scroll',
-                plugins_url('/js/maxi-scroll-effects.js', dirname(__FILE__)),
-            );
         }
 
         public function maxi_blocks_body_class($classes)

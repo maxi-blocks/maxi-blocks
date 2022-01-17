@@ -6,7 +6,6 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	addResponsiveTest,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
@@ -45,18 +44,6 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(await getAttributes('removeColumnGap')).toStrictEqual(true);
-
-		// check responsive column
-		const responsiveColumn = await addResponsiveTest({
-			page,
-			instance:
-				'.components-column-pattern .maxi-base-control__field input',
-			needFocus: true,
-			baseExpect: '2',
-			xsExpect: '55',
-			newValue: '55',
-		});
-		expect(responsiveColumn).toBeTruthy();
 	});
 
 	it('Check responsive row-pattern', async () => {

@@ -16,6 +16,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	addResponsiveTest,
+	changeResponsive,
 } from '../../utils';
 
 describe('Svg stroke width control', () => {
@@ -50,17 +51,43 @@ describe('Svg stroke width control', () => {
 		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
-
-		// check responsive svg stroke
-		const responsiveResult = await addResponsiveTest({
+	});
+	it('Check responsive svg stroke width control', async () => {
+		await changeResponsive(page, 's');
+		const accordionPanel = await openSidebarTab(
 			page,
-			instance: '.maxi-advanced-number-control input',
-			needFocus: true,
-			baseExpect: '3',
-			xsExpect: '1',
-			newValue: '1',
-		});
+			'style',
+			'icon line width'
+		);
 
-		expect(responsiveResult).toBeTruthy();
+		const baseStrokeValue = await accordionPanel.$eval(
+			'.maxi-advanced-number-control input',
+			input => input.placeholder
+		);
+		expect(baseStrokeValue).toStrictEqual('3');
+
+		await accordionPanel.$eval(
+			'.maxi-advanced-number-control input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('1');
+
+		await changeResponsive(page, 'xs');
+
+		const sStrokeValue = await accordionPanel.$eval(
+			'.maxi-advanced-number-control input',
+			input => input.placeholder
+		);
+		expect(sStrokeValue).toStrictEqual('1');
+
+		await changeResponsive(page, 'm');
+
+		const mStrokeValue = await accordionPanel.$eval(
+			'.maxi-advanced-number-control input',
+			input => input.placeholder
+		);
+		expect(mStrokeValue).toStrictEqual('3');
 	});
 });

@@ -95,7 +95,6 @@ describe('TypographyControl', () => {
 
 		// m
 		await changeResponsive(page, 'm');
-		// await closeAccordion[2].click();
 		await openSidebarTab(page, 'style', 'typography');
 
 		const typographyInputM = await accordionPanel.$$eval(

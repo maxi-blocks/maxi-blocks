@@ -6,9 +6,7 @@ import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * External dependencies
  */
-import openSidebarTab from './openSidebarTab';
 import changeResponsive from './changeResponsive';
-import getAttributes from './getAttributes';
 
 const addResponsiveTest = async ({
 	page,
@@ -19,10 +17,6 @@ const addResponsiveTest = async ({
 	newValue,
 	needFocus,
 	needSelectIndex,
-	expectType,
-	needAriaPressed,
-	ariaClick,
-	ariaSelect,
 }) => {
 	if (needFocus) {
 		// base responsive
@@ -72,7 +66,7 @@ const addResponsiveTest = async ({
 			selector => selector.selectedOptions[0].value
 		);
 
-		const lastTest = await page.$eval(instance, selector => selector.value);
+		await page.$eval(instance, selector => selector.value);
 
 		if (CheckBaseSelect !== baseExpect) return false;
 
@@ -104,111 +98,6 @@ const addResponsiveTest = async ({
 
 		return true;
 	}
-
-	/* if (needDataItem) {
-		await openSidebarTab(page, 'style', 'typography');
-
-		// base responsive
-		const checkBaseResponsive = await page.$eval(`${instance}`, button =>
-			button.selectedOptions.getAttribute('data-item')
-		);
-
-		const test1 = checkBaseResponsive === baseExpect;
-
-		// change responsive s
-		await changeResponsive(page, 's');
-
-		await page.$eval(`${instance}`, changeValue => changeValue.click());
-
-		const changeSSelect = await page.$(`${selectInstance}`);
-
-		await changeSSelect.select(`${newValue}`);
-
-		// change responsive xs
-		await changeResponsive(page, 'xs');
-
-		const checkXsResponsive = await page.$eval(`${instance}`, button =>
-			button.selectedOptions.getAttribute('data-item')
-		);
-
-		const test2 = checkXsResponsive === xsExpect;
-
-		// change responsive m
-		await changeResponsive(page, 'm');
-		const checkMResponsive = await page.$eval(`${instance}`, button =>
-			button.selectedOptions.getAttribute('data-item')
-		);
-
-		const test3 = checkMResponsive === baseExpect;
-	}
-
-	if (needAriaPressed) {
-		await openSidebarTab(page, 'style', 'typography');
-
-		// base responsive
-		const checkBaseResponsive = await page.$$eval(
-			`${instance}`,
-			select => select[ariaBaseSelect].ariaPressed
-		);
-
-		const test1 = checkBaseResponsive === baseExpect;
-
-		// change responsive s
-		await changeResponsive(page, 's');
-		await accordionPanel.$$eval('.maxi-alignment-control button', button =>
-			button[1].click()
-		);
-
-		const responsiveSOption = await page.$$eval(
-			'.maxi-alignment-control button',
-			select => select[1].ariaPressed
-		);
-
-		expect(responsiveSOption).toBe('true');
-
-		expect(await getAttributes('text-alignment-s')).toStrictEqual('center');
-
-		// change responsive s
-		await changeResponsive(page, 's');
-
-		await page.$$eval(`${instance}`, changeValue =>
-			changeValue[ariaClick].click()
-		);
-
-		// change responsive xs
-		await changeResponsive(page, 'xs');
-
-		const checkXsResponsive = await page.$$eval(
-			`${instance}`,
-			select => select[ariaXsSelect].ariaPressed
-		);
-
-		const test2 = checkXsResponsive === xsExpect;
-
-		// change responsive m
-		await changeResponsive(page, 'm');
-		const checkMResponsive = await page.$$eval(
-			`${instance}`,
-			select => select[ariaBaseSelect].ariaPressed
-		);
-
-		const test3 = checkMResponsive === baseExpect;
-	} */
 };
-
-/** 	it('test', async () => {
-  await addResponsiveTest({
-  page,
-  instance: '.maxi-opacity-control .maxi-base-control__field input'
-  typeExpect, = value, InnerHTML, placeholder, getAttribute('data-item')
-  baseExpect: ej.'45'
-  xsExpect: ej.'64'
-  newValue, (newXsValue)ej.64
-  needFocus, (TRUE or false)
-  needSelect, (TRUE or false)
-  newSelect,  ()
-  });
-  }); 
- */
 
 export default addResponsiveTest;

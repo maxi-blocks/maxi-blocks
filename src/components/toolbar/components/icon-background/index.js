@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import ButtonGroupControl from '../../../button-group-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import {
 	getColorRGBAString,
 	getDefaultAttribute,
@@ -53,13 +53,14 @@ const IconBackground = props => {
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-background__popover'>
-				<ButtonGroupControl
+				<SettingTabsControl
 					label={__(
-						'Inherit Colour/Backgrond from Button',
+						'Inherit Colour/Background from Button',
 						'maxi-block'
 					)}
+					type='buttons'
 					selected={props['icon-inherit']}
-					options={[
+					items={[
 						{
 							label: __('Yes', 'maxi-block'),
 							value: 1,

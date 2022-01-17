@@ -54,15 +54,21 @@ describe('IconControl', () => {
 		expect(await getAttributes('icon-spacing-general')).toStrictEqual(66);
 
 		// icon position
-		const iconPosition = await page.$$('.maxi-button-group-control button');
+		const iconPosition = await page.$$(
+			'.maxi-settingstab-control.maxi-icon-position-control button'
+		);
 
-		await iconPosition[1].click();
+		await iconPosition[0].click();
 		const { 'icon-position': position } = await getBlockAttributes();
 
-		expect(position).toStrictEqual('right');
+		expect(position).toStrictEqual('left');
 
 		// Icon Border
-		await iconPosition[3].click();
+		const iconBorder = await page.$$(
+			'.maxi-settingstab-control.maxi-icon-styles-control button'
+		);
+
+		await iconBorder[1].click();
 
 		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',

@@ -18,7 +18,7 @@ describe('TransformControl', () => {
 		);
 
 		const buttons = await accordionPanel.$$(
-			'.maxi-transform-control .maxi-button-group-control button'
+			'.maxi-transform-control .maxi-settingstab-control button'
 		);
 
 		// Scale

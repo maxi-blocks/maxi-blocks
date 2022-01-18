@@ -247,10 +247,12 @@ class MaxiBlockComponent extends Component {
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 
 		return {
-			...(!isEmpty(bgParallaxLayers) && {
-				parallax: bgParallaxLayers,
-			}),
-			...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
+			[uniqueID]: {
+				...(!isEmpty(bgParallaxLayers) && {
+					...{ parallax: bgParallaxLayers },
+				}),
+				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
+			},
 		};
 	}
 

@@ -47,7 +47,7 @@ class MaxiBlocks_Styles
             $this->enqueue_fonts($fonts);
         }
 
-        $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter'];
+        $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];
 
         foreach ($scripts as &$script) {
             $jsVar = str_replace('-', '_', $script);
@@ -57,6 +57,7 @@ class MaxiBlocks_Styles
 
             $meta = $this->customMeta($jsVar);
 
+            $this->write_log('$meta');
             $this->write_log($meta);
 
             if (!empty($meta)) {
@@ -190,10 +191,11 @@ class MaxiBlocks_Styles
     /**
      * Custom Meta
      */
-    public function customMeta($meta)
+    public function customMeta($metaJs)
     {
+        $this->write_log($metaJs);
         global $post;
-        if (!$post || !isset($post->ID) || empty($meta)) {
+        if (!$post || !isset($post->ID) || empty($metaJs)) {
             return;
         }
 
@@ -208,11 +210,13 @@ class MaxiBlocks_Styles
         $resultString = $resultArr['custom_data_value'];
         $result = maybe_unserialize($resultString);
        
+        $this->write_log('$result');
+        $this->write_log($result);
         if (!$result || empty($result)) {
             return;
         }
 
-        $resultDecoded = json_decode($result, true)[$meta];
+        $resultDecoded = $result[$metaJs];
 
         if (!$resultDecoded || empty($resultDecoded)) {
             return;

@@ -556,6 +556,15 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
+        public function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public function set_maxi_blocks_current_custom_data($data)
         {
             $id = $data['id'];
@@ -571,7 +580,8 @@ if (!class_exists('MaxiBlocks_API')):
             $custom_data=$this->get_maxi_blocks_current_custom_data($id);
 
             if ($update) {
-                $new_custom_data = serialize($dataVal);
+                $arrayNewData = json_decode($dataVal, true);
+                $new_custom_data = serialize(array_merge_recursive(...array_values($arrayNewData)));
 
                 if ($custom_data === '') {
                     $wpdb->insert("{$wpdb->prefix}maxi_blocks_custom_data", array(
@@ -580,10 +590,11 @@ if (!class_exists('MaxiBlocks_API')):
                     'custom_data_value' =>  $new_custom_data,
                 ));
                 } else {
+                    //  $merged_custom_data = serialize(array_merge_recursive($custom_data, array($dataVal)));
                     $wpdb->update("{$wpdb->prefix}maxi_blocks_custom_data", array(
                         'post_id' => $id,
-                        'prev_custom_data_value' =>  $new_custom_data,
-                        'custom_data_value' =>  $new_custom_data,
+                        'prev_custom_data_value' =>   $new_custom_data,
+                        'custom_data_value' =>   $new_custom_data,
                     ), ['post_id' => $id]);
                 }
             }

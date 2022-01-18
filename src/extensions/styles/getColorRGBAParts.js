@@ -22,7 +22,8 @@ const getColorRGBAParts = (value, advancedSplit = false) => {
 			.replace('var(--maxi-light-color-', '')
 			.replace('var(--maxi-dark-color-', '')
 			.replace(')', '');
-		const opacity = +decomposedValue[1]?.replace(')', '') || 1;
+		const opacity =
+			+decomposedValue[decomposedValue.length - 1]?.replace(')', '') || 1;
 
 		return { color, opacity };
 	}

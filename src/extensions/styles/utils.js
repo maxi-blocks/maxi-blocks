@@ -39,9 +39,6 @@ export const getHasParallax = bgLayers => !isEmpty(getParallaxLayers(bgLayers));
 const getVideoLayers = (uniqueID, bgLayers) => {
 	const response = bgLayers?.filter(layer => layer.type === 'video');
 
-	console.log('response');
-	console.log(response);
-
 	if (!response || isEmpty(response)) return null;
 	return { [uniqueID]: response };
 };

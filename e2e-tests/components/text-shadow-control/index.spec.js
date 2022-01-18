@@ -39,9 +39,9 @@ describe('TextShadowControl', () => {
 
 		const shadowStyles = [
 			'none',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.5)',
-			'4px 4px 0px rgba(var(--maxi-light-color-8),0.21)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.3)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.5)',
+			'4px 4px 0px rgba(var(--maxi-light-color-8,150,176,203),0.21)',
 		];
 
 		for (let i = 0; i < shadowStyles.length; i += 1) {
@@ -75,6 +75,7 @@ describe('TextShadowControl', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('12');
+
 		// change Blur
 		await editTextShadow[3].$eval('input', input => input.focus());
 
@@ -82,7 +83,7 @@ describe('TextShadowControl', () => {
 		await page.keyboard.type('54');
 
 		expect(await getAttributes('text-shadow-general')).toStrictEqual(
-			'34px 12px 54px rgba(var(--maxi-light-color-8),0.21)'
+			'34px 12px 54px rgba(var(--maxi-light-color-8,150,176,203),0.21)'
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

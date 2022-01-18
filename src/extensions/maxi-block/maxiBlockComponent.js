@@ -26,6 +26,7 @@ import {
 	getGroupAttributes,
 	getBlockStyle,
 	getParallaxLayers,
+	getHasVideo,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
@@ -245,12 +246,14 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes;
 
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
+		const hasVideo = getHasVideo(uniqueID, bgLayers);
 
 		return {
 			[uniqueID]: {
 				...(!isEmpty(bgParallaxLayers) && {
 					...{ parallax: bgParallaxLayers },
 				}),
+				...(hasVideo && { bg_video: true }),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};

@@ -74,14 +74,14 @@ const Border = props => {
 							`${prefix}border-palette-status-${breakpoint}`
 						]
 							? getColorRGBAString({
-									firstVal: `color-${
+									firstVar: `color-${
 										props[
 											`${prefix}border-palette-color-${breakpoint}`
 										]
 									}`,
 									opacity:
 										props[
-											`${prefix}border-palette-color-${breakpoint}`
+											`${prefix}border-palette-opacity-${breakpoint}`
 										],
 									blockStyle: getBlockStyle(clientId),
 							  })

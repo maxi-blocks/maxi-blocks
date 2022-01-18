@@ -60,7 +60,7 @@ const LayerCard = props => {
 
 	const regexLineToChange = new RegExp('fill=".+?(?=")');
 	const colorStr = getColorRGBAString({
-		firstVal: `color-${layer['background-svg-palette-color']}`,
+		firstVar: `color-${layer['background-svg-palette-color']}`,
 		opacity: layer['background-svg-palette-opacity'],
 		blockStyle: getBlockStyle(clientId),
 	});

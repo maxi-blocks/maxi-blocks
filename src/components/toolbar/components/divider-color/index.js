@@ -39,7 +39,7 @@ const DividerColor = props => {
 					style={{
 						background: props['divider-border-palette-status']
 							? getColorRGBAString({
-									firstVal: `color-${props['divider-border-palette-color']}`,
+									firstVar: `color-${props['divider-border-palette-color']}`,
 									opacity:
 										props['divider-border-palette-opacity'],
 									blockStyle: getBlockStyle(clientId),

@@ -44,7 +44,14 @@ const TextShadow = props => {
 		const x = +valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0];
 		const y = +valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0];
 		const blur = +valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0];
-		const { color, opacity } = getColorRGBAParts(valueDecomposed[3]);
+		const { color, opacity } = getColorRGBAParts(
+			val && val.includes('--var')
+				? val
+						.replace(`${x}px `, '')
+						.replace(`${y}px `, '')
+						.replace(`${blur}px `, '')
+				: valueDecomposed[3]
+		);
 
 		return {
 			valueDecomposed,
@@ -123,7 +130,17 @@ const TextShadow = props => {
 			valueDecomposed[2] === '0px'
 		)
 			onChange('none');
-		else onChange(valueDecomposed.join(' '));
+		else {
+			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${
+				valueDecomposed[2]
+			} ${getColorRGBAString({
+				firstVar: `color-${color}`,
+				opacity: currentPaletteOpacity,
+				blockStyle,
+			})}`;
+
+			onChange(newValue);
+		}
 	};
 
 	const onChangeDefault = val => {

@@ -556,15 +556,6 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
-        public function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         public function set_maxi_blocks_current_custom_data($data)
         {
             $id = $data['id'];

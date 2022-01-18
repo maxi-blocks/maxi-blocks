@@ -1,5 +1,4 @@
 <?php
-include('class-maxi-api.php');
 
 class MaxiBlocks_Styles
 {
@@ -33,7 +32,7 @@ class MaxiBlocks_Styles
      */
     public function enqueue_styles()
     {
-        $post_content = $this->getPostMeta();
+        $post_content = $this->getPostContent();
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
 
@@ -57,9 +56,6 @@ class MaxiBlocks_Styles
 
             $meta = $this->customMeta($jsVar);
 
-            $this->write_log('$meta');
-            $this->write_log($meta);
-
             if (!empty($meta)) {
                 if ($script === 'hover-effects') {
                     wp_enqueue_script(
@@ -79,9 +75,9 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Gets post meta content
+     * Gets post content
      */
-    public function getPostMeta()
+    public function getPostContent()
     {
         global $post;
 
@@ -100,6 +96,30 @@ class MaxiBlocks_Styles
         }
         
         return $post_content;
+    }
+
+    /**
+     * Gets post meta
+     */
+    public function getPostMeta($id)
+    {
+        global $post;
+
+        if (!$post || !isset($post->ID)) {
+            return false;
+        }
+
+        global $wpdb;
+        $response = $wpdb->get_results(
+            "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$id}",
+            OBJECT
+        );
+
+        if (!$response) {
+            $response = '';
+        }
+
+        return $response;
     }
 
     /**
@@ -179,28 +199,17 @@ class MaxiBlocks_Styles
         }
     }
 
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-
     /**
      * Custom Meta
      */
     public function customMeta($metaJs)
     {
-        $this->write_log($metaJs);
         global $post;
         if (!$post || !isset($post->ID) || empty($metaJs)) {
             return;
         }
 
-        $MaxiBlocks_API = new MaxiBlocks_API();
-        $custom_data = $MaxiBlocks_API->get_maxi_blocks_current_custom_data($post->ID);
+        $custom_data = $this->getPostMeta($post->ID);
 
         if (!$custom_data) {
             return;
@@ -210,15 +219,18 @@ class MaxiBlocks_Styles
         $resultString = $resultArr['custom_data_value'];
         $result = maybe_unserialize($resultString);
        
-        $this->write_log('$result');
-        $this->write_log($result);
+       
         if (!$result || empty($result)) {
             return;
         }
 
+        if (!isset($result[$metaJs])) {
+            return;
+        }
+        
         $resultDecoded = $result[$metaJs];
 
-        if (!$resultDecoded || empty($resultDecoded)) {
+        if (empty($resultDecoded)) {
             return;
         }
 

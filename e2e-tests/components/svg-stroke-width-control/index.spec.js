@@ -15,7 +15,6 @@ import {
 	modalMock,
 	openSidebarTab,
 	getAttributes,
-	addResponsiveTest,
 	changeResponsive,
 } from '../../utils';
 

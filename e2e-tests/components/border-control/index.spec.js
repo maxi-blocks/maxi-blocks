@@ -112,6 +112,8 @@ describe('BorderControl', () => {
 			newValue: 'groove',
 		});
 		expect(responsiveBorder).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {

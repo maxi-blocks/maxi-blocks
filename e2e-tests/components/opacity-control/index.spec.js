@@ -11,7 +11,6 @@ import {
  */
 import {
 	openSidebarTab,
-	changeResponsive,
 	getBlockStyle,
 	getAttributes,
 	addResponsiveTest,
@@ -51,5 +50,7 @@ describe('OpacityControl', () => {
 		});
 
 		expect(responsiveResult).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

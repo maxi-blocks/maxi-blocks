@@ -15,7 +15,6 @@ import {
 	changeResponsive,
 	getAttributes,
 	getBlockStyle,
-	addResponsiveTest,
 } from '../../utils';
 
 describe('Column Maxi', () => {
@@ -100,5 +99,7 @@ describe('Column Maxi', () => {
 		);
 
 		expect(responsiveMOption).toStrictEqual('100');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

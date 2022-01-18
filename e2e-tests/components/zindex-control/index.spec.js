@@ -5,7 +5,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes, addResponsiveTest } from '../../utils';
+import {
+	openSidebarTab,
+	getAttributes,
+	addResponsiveTest,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ZIndexControl', () => {
 	it('Checking the z-index control', async () => {
@@ -39,5 +44,7 @@ describe('ZIndexControl', () => {
 		});
 
 		expect(responsiveResultOrigin).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -1,12 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -59,6 +54,8 @@ describe('FullSizeControl', () => {
 			newValue: '200',
 		});
 		expect(responsiveResult).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Checking fullSizeControl unit selector', async () => {

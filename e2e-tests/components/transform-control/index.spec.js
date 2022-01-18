@@ -5,7 +5,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab, addResponsiveTest } from '../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	addResponsiveTest,
+	getBlockStyle,
+} from '../../utils';
 
 describe('TransformControl', () => {
 	it('Check transform control', async () => {
@@ -207,5 +212,7 @@ describe('TransformControl', () => {
 		});
 
 		expect(responsiveResultOrigin).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

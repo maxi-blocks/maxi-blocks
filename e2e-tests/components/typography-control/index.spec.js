@@ -18,6 +18,7 @@ import {
 	changeResponsive,
 	editColorControl,
 	addResponsiveTest,
+	getBlockStyle,
 } from '../../utils';
 
 describe('TypographyControl', () => {
@@ -274,6 +275,8 @@ describe('TypographyControl', () => {
 			newValue: 'underline',
 		});
 		expect(responsiveTextDecoration).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Size, line height and letter spacing', async () => {
@@ -384,5 +387,7 @@ describe('TypographyControl', () => {
 			newValue: '23',
 		});
 		expect(responsiveLetterSpacing).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

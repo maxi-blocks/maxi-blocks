@@ -47,49 +47,34 @@ class MaxiBlocks_Styles
             $this->enqueue_fonts($fonts);
         }
 
-        wp_enqueue_script(
-            'maxi-waypoints-js',
-            plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
-        );
-        
-        wp_enqueue_script(
-            'maxi-hover-effects',
-            plugins_url('/js/maxi-hover-effects.js', dirname(__FILE__)),
-        );
+        $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter'];
 
-        wp_enqueue_script(
-            'maxi-bg-video',
-            plugins_url('/js/maxi-bg-video.js', dirname(__FILE__)),
-        );
+        foreach ($scripts as &$script) {
+            $jsVar = str_replace('-', '_', $script);
+            $jsVarToPass = 'maxi'.str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
+            $jsScriptName = 'maxi-'.$script;
+            $jsScriptPath = '//js//'.$jsScriptName.'.js';
 
-        wp_enqueue_script(
-            'maxi-parallax',
-            plugins_url('/js/maxi-parallax.js', dirname(__FILE__)),
-        );
-       
-        wp_enqueue_script(
-            'maxi-scroll',
-            plugins_url('/js/maxi-scroll-effects.js', dirname(__FILE__)),
-        );
+            $meta = $this->customMeta($jsVar);
 
-        wp_localize_script('maxi-hover-effects', 'maxiHoverEffects', $this->customMeta('hover-effects'));
+            $this->write_log($meta);
 
-        $numberCounterMeta = $this->customMeta('number_counter');
+            if (!empty($meta)) {
+                if ($script === 'hover-effects') {
+                    wp_enqueue_script(
+                        'maxi-waypoints-js',
+                        plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+                    );
+                }
 
-        $this->write_log($numberCounterMeta);
-
-        if (!empty($numberCounterMeta)) {
-            wp_enqueue_script(
-                'maxi-number-counter',
-                plugins_url('/js/maxi-number-counter.js', dirname(__FILE__)),
-            );
-            
-            wp_localize_script('maxi-number-counter', 'maxiNumberCounter', $numberCounterMeta);
+                wp_enqueue_script(
+                    $jsScriptName,
+                    plugins_url($jsScriptPath, dirname(__FILE__)),
+                );
+                
+                wp_localize_script($jsScriptName, $jsVarToPass, $meta);
+            }
         }
-
-        wp_localize_script('maxi-bg-video', 'maxiBgVideo', $this->customMeta('bg_video'));
-
-        wp_localize_script('maxi-parallax', 'maxiParallax', $this->customMeta('parallax'));
     }
 
     /**
@@ -102,8 +87,6 @@ class MaxiBlocks_Styles
         if (!$post || !isset($post->ID)) {
             return false;
         }
-
-        // $post_content = get_option("mb_post_api_{$post->ID}");
 
         global $wpdb;
         $post_content = (array)$wpdb->get_results(

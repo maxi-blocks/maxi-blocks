@@ -32,6 +32,24 @@ const breakpointResizer = (
 	}
 };
 
+const updateOpenedBlocksSettings = (objState, objAction) => {
+	let newSettings = objState;
+	const keySetting = Object.keys(objAction)[0]; // BlockId
+	const newValue = Object.values(objAction)[0]; // Value
+
+	switch (objAction.type) {
+		case 'tab':
+			const oldAccordionValue =
+				(objState[keySetting] && objState[keySetting][1]) || undefined;
+			newSettings[keySetting] = [newValue, oldAccordionValue];
+		case 'accordion':
+			const oldATabValue =
+				(objState[keySetting] && objState[keySetting][0]) || 0;
+			newSettings[keySetting] = [oldATabValue, newValue];
+	}
+	return newSettings;
+};
+
 const reducer = (
 	state = {
 		settings: {},
@@ -40,6 +58,7 @@ const reducer = (
 		presets: '',
 		copiedStyles: {},
 		copiedBlocks: {},
+		openedBlocksSettings: {}, // { clientId: [0, 02] } tab 0 , accordion 2
 	},
 	action
 ) => {
@@ -101,6 +120,16 @@ const reducer = (
 			return {
 				...state,
 				copiedBlocks: action.copiedBlocks,
+			};
+		case 'UPDATE_OPENED_BLOCKS_SETTING':
+			const newSettings = updateOpenedBlocksSettings(
+				state.openedBlocksSettings,
+				action.newBlocksSettings
+			);
+
+			return {
+				...state,
+				newSettings,
 			};
 		default:
 			return state;

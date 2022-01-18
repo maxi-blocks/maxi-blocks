@@ -90,5 +90,11 @@ const actions = {
 			copiedBlocks,
 		};
 	},
+	updateOpenedBlocksSettings(newBlocksSettings) {
+		return {
+			type: 'UPDATE_OPENED_BLOCKS_SETTING',
+			newBlocksSettings,
+		};
+	},
 };
 export default actions;

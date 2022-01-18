@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
-
+import { useEffect, useState } from '@wordpress/element';
+import { select, useDispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
@@ -47,15 +47,37 @@ const AccordionControl = props => {
 		isSecondary && 'is-secondary'
 	);
 
-	const [currentOpen, setCurrentOpen] = useState('');
+	const { getSelectedBlockClientId } = select('core/block-editor');
+	const { receiveOpenedSettings } = select('maxiBlocks');
+	const { updateOpenedBlocksSettings } = useDispatch('maxiBlocks');
+
+	const blockId = getSelectedBlockClientId();
+
+	const openedBlocksSettingsObj = receiveOpenedSettings();
+	const savedAccordiant =
+		openedBlocksSettingsObj && openedBlocksSettingsObj[blockId]
+			? openedBlocksSettingsObj[blockId][1]
+			: undefined;
+
+	const savedTab =
+		openedBlocksSettingsObj && openedBlocksSettingsObj[blockId]
+			? openedBlocksSettingsObj[blockId][0]
+			: undefined;
+
+	const setCurrentOpen = accordionId => {
+		updateOpenedBlocksSettings({
+			[blockId]:
+				accordionId === savedAccordiant ? undefined : accordionId,
+			type: 'accordion',
+		});
+	};
 
 	return (
 		<Accordion
 			className={classes}
 			allowMultipleExpanded={allowMultipleExpanded}
 			allowZeroExpanded={allowZeroExpanded}
-			preExpanded={currentOpen}
-			onChange={value => setCurrentOpen(value)}
+			preExpanded={[savedAccordiant]}
 		>
 			{items.map((item, id) => {
 				if (!item) return null;
@@ -76,12 +98,19 @@ const AccordionControl = props => {
 						: ''
 				);
 
+				const accordionUid =
+					lowerCase(`${item.label}${savedTab || 0}`).replace(
+						/\s/g,
+						''
+					) || undefined;
+
 				return (
 					<AccordionItem
-						uuid={item.uuid ? item.uuid : undefined}
+						uuid={accordionUid}
 						className={classesItem}
 						data-name={lowerCase(item.label)}
 						key={`maxi-accordion-control__item-${id}`}
+						onClick={() => setCurrentOpen(accordionUid)}
 					>
 						<AccordionItemHeading className={classesItemHeading}>
 							<AccordionItemButton className='maxi-accordion-control__item__button'>

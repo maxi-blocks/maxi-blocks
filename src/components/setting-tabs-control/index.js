@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, cloneElement } from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -49,9 +49,21 @@ const SettingTabsControl = props => {
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
 
+	const { receiveOpenedSettings } = select('maxiBlocks');
 	const [tab, setTab] = useState(0);
+	const blockId = getSelectedBlockClientId();
+
+	const openedBlocksSettingsObj = receiveOpenedSettings();
+	const savedTab =
+		openedBlocksSettingsObj && openedBlocksSettingsObj[blockId]
+			? openedBlocksSettingsObj[blockId][0]
+			: 0;
 
 	useEffect(() => {
+		if (savedTab || savedTab === 0) {
+			setTab(savedTab);
+			return;
+		}
 		if (forceTab || forceTab === 0) {
 			setTab(forceTab);
 		}
@@ -60,6 +72,13 @@ const SettingTabsControl = props => {
 	useEffect(() => {
 		if (returnValue) returnValue(items[tab]);
 	}, [tab]);
+
+	const { updateOpenedBlocksSettings } = useDispatch('maxiBlocks');
+
+	const setActiveTab = tab => {
+		setTab(tab);
+		updateOpenedBlocksSettings({ [blockId]: tab, type: 'tab' });
+	};
 
 	const classes = classnames('maxi-settingstab-control', className);
 
@@ -114,8 +133,7 @@ const SettingTabsControl = props => {
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
-									setTab(i);
-
+									setActiveTab(i);
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 

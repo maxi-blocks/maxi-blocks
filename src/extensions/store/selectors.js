@@ -34,6 +34,10 @@ const selectors = {
 		if (state) return state.copiedBlocks;
 		return false;
 	},
+	receiveOpenedSettings(state) {
+		if (state) return state.openedBlocksSettings;
+		return false;
+	},
 };
 
 export default selectors;

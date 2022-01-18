@@ -1,5 +1,5 @@
 /**
- * WordPress
+ * WordPress dependencies
  */
 import {
 	createNewPost,
@@ -9,7 +9,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 /**
- * Interactive dependencies
+ * Internal dependencies
  */
 import {
 	modalMock,
@@ -26,11 +26,11 @@ describe('Svg stroke width control', () => {
 
 		// Close model opened automatically by the block
 		await page.waitForSelector(
-			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container'
+			'.components-modal__content .components-modal__header button'
 		);
-		await page.$$eval(
-			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
-			svg => svg[0].click()
+		await page.$eval(
+			'.components-modal__content .components-modal__header button',
+			svg => svg.click()
 		);
 
 		const accordionPanel = await openSidebarTab(

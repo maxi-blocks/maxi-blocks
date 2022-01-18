@@ -42,6 +42,7 @@ const ATTRIBUTES = [
 	'backgroundGradient',
 	'backgroundGradientHover',
 	'backgroundHover',
+	'blockBackground',
 	'border',
 	'borderHover',
 	'borderRadius',
@@ -126,7 +127,6 @@ const CopyPasteContent = props => {
 
 		const blockValues = getBlock(clientId);
 		const blockAttributes = cleanStyleAttributes(blockValues.attributes);
-
 		const { innerBlocks } = blockValues;
 		const hasInnerBlocks = !isEmpty(innerBlocks);
 

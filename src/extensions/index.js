@@ -10,3 +10,4 @@ import './text';
 import './style-cards';
 import './column-templates';
 import './svg';
+import './indicators';

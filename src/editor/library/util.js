@@ -252,11 +252,14 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const colorType =
 		target === 'icon' ? '' : target === 'svg' ? '-line' : '-fill';
 
-	const { iconPaletteStatus, iconPaletteColor, iconColor } =
-		getPaletteAttributes({
-			obj: currentAttributes,
-			prefix: '',
-		});
+	const iconPaletteAttr = getPaletteAttributes({
+		obj: currentAttributes,
+		prefix: 'icon-',
+	});
+
+	const iconPaletteStatus = iconPaletteAttr.paletteStatus;
+	const iconPaletteColor = iconPaletteAttr.paletteColor;
+	const iconColor = iconPaletteAttr.color;
 
 	const iconInheritColor = currentAttributes['icon-inherit']
 		? !iconPaletteStatus

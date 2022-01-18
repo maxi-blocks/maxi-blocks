@@ -5,15 +5,15 @@ const shapeDivider = () => {
 	const shapeDividerElements = document.querySelectorAll('.maxi-sd-effect');
 	shapeDividerElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
-		if (!maxi_custom_data.custom_data) return;
+		if (!maxiShapeDivider) return;
 
 		const shapeID = elem.id;
 
 		const shapeData =
 			// eslint-disable-next-line no-undef
-			maxi_custom_data.custom_data[shapeID] !== undefined
+			maxiShapeDivider[shapeID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxi_custom_data.custom_data[shapeID]
+				  maxiShapeDivider[shapeID]
 				: null;
 
 		if (shapeData !== null) {

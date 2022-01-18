@@ -5,15 +5,15 @@ const hovers = () => {
 	const hoverElements = document.querySelectorAll('.maxi-hover-effect');
 	hoverElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
-		if (!maxi_custom_data.custom_data) return;
+		if (!maxiHoverEffects) return;
 
 		const hoverID = elem.id;
 
 		const hoverData =
 			// eslint-disable-next-line no-undef
-			maxi_custom_data.custom_data[hoverID] !== undefined
+			maxiHoverEffects[hoverID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxi_custom_data.custom_data[hoverID]
+				  maxiHoverEffects[hoverID]
 				: null;
 
 		if (hoverData !== null) {

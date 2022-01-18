@@ -58,7 +58,7 @@ const reducer = (
 		presets: '',
 		copiedStyles: {},
 		copiedBlocks: {},
-		openedBlocksSettings: {}, // { clientId: [0, 02] } tab 0 , accordion 2
+		openedBlocksSettings: {},
 	},
 	action
 ) => {

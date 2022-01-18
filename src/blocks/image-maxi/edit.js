@@ -81,12 +81,16 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		const { 'hover-type': hoverType } = this.props.attributes;
+		const { 'hover-type': hoverType, uniqueID } = this.props.attributes;
 		const hoverStatus = hoverType !== 'none';
 
 		return {
 			...(hoverStatus && {
-				...getGroupAttributes(this.props.attributes, 'hover'),
+				hover_effects: {
+					[uniqueID]: {
+						...getGroupAttributes(this.props.attributes, 'hover'),
+					},
+				},
 			}),
 		};
 	}

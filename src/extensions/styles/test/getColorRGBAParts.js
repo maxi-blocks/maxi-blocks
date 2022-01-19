@@ -28,6 +28,15 @@ describe('getColorRGBAParts', () => {
 		expect(result).toStrictEqual(expectedResult);
 	});
 
+	it('Returns a decomposed RGBA color with variable and backup', () => {
+		const color = 'rgba(var(--maxi-light-color-8, 255,255,255),0.3)';
+
+		const result = getColorRGBAParts(color);
+		const expectedResult = { color: 8, opacity: 0.3 };
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
 	it('Returns a decomposed RGBA with advanced division', () => {
 		const color = 'rgba(255,0,0,0.3)';
 

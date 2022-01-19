@@ -161,9 +161,9 @@ describe('Image Maxi', () => {
 
 		const shadowStyles = [
 			'none',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.5)',
-			'4px 4px 0px rgba(var(--maxi-light-color-8),0.21)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.3)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.5)',
+			'4px 4px 0px rgba(var(--maxi-light-color-8,150,176,203),0.21)',
 		];
 
 		for (let i = 0; i < shadowStyles.length; i += 1) {

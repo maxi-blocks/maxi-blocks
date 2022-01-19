@@ -67,7 +67,9 @@ export const getMaxiAttrsFromChildren = ({
 	blockName,
 	excludedEntries,
 }) => {
-	const blockAttributesKeys = Object.keys(getBlockAttributes(blockName));
+	if (!blockName) return null;
+
+	const blockAttributesKeys = Object?.keys(getBlockAttributes(blockName));
 	const blockPropsKeys = getPropsFromChildren(items, excludedEntries);
 
 	return intersection(blockAttributesKeys, blockPropsKeys);

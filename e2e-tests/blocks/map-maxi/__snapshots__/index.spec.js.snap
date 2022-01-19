@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Map Maxi Map Maxi does not break 1`] = `
-"<!-- wp:maxi-blocks/map-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"map-maxi-12\\"} -->
-<div class=\\"wp-block-maxi-blocks-map-maxi maxi-block maxi-light map-maxi-12 maxi-map-block\\" data-align=\\"normal\\" id=\\"map-maxi-12\\"><div class=\\"maxi-map-container\\" id=\\"map-container-map-maxi-12\\"></div></div>
-<!-- /wp:maxi-blocks/map-maxi -->"
-`;
-
-exports[`Map Maxi Map Maxi does not break 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.map-maxi-12,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.map-maxi-12{ height: 300px;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.map-maxi-12 .map-marker-info-window__title,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.map-maxi-12 .map-marker-info-window__title{ color: rgba(var(--maxi-light-color-4,255,74,23),1);}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.map-maxi-12 .map-marker-info-window__address,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.map-maxi-12 .map-marker-info-window__address{ color: rgba(var(--maxi-light-color-5,0,0,0),1);}</style>"`;

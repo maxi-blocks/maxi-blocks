@@ -39,6 +39,11 @@ class MaxiBlocks_StyleCards {
 
 			$this->enqueue_fonts($vars);
 		}
+		else {
+			wp_register_style('maxi-blocks-sc-vars', false);
+			wp_enqueue_style('maxi-blocks-sc-vars');
+			wp_add_inline_style('maxi-blocks-sc-vars', 'Murphy is here!');
+		}
 	}
 
 	/**

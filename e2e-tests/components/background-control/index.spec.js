@@ -20,6 +20,7 @@ import {
 	removeBackgroundLayers,
 	editAxisControl,
 	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -816,7 +817,31 @@ describe('BackgroundControl', () => {
 		expect(backgroundOpacityM).toStrictEqual('82');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Check gradient layer', async () => {
+		debugger;
+		await changeResponsive(page, 'base');
+		await removeBackgroundLayers(page);
+		await addBackgroundLayer(page, 'gradient');
 
+		await openSidebarTab(page, 'style', 'background layer');
+
+		await page.$eval(
+			'.maxi-gradient-control .maxi-opacity-control input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('50');
+
+		const selector = await page.$(
+			'.maxi-gradient-control .components-custom-gradient-picker select'
+		);
+
+		await selector.select('radial-gradient');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
 	// Here are the tests of svg-fill-control
 	it('Check Background shape layer', async () => {
 		await changeResponsive(page, 'base');
@@ -864,7 +889,6 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
-		debugger;
 	});
 
 	it('Check Background shape layer responsive', async () => {

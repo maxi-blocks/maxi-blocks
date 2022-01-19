@@ -285,6 +285,21 @@ exports[`BackgroundControl Check Background video layer hover responsive 1`] = `
 
 exports[`BackgroundControl Check Background video layer responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.44; display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.32;}</style>"`;
 
+exports[`BackgroundControl Check gradient layer 1`] = `
+Array [
+  Object {
+    "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-m": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-opacity-general": 0.5,
+    "background-gradient-opacity-m": 0.5,
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "gradient",
+  },
+]
+`;
+
 exports[`BackgroundControl generate a layer from hover and test the hider 1`] = `undefined`;
 
 exports[`BackgroundControl generate a layer from hover and test the hider 2`] = `

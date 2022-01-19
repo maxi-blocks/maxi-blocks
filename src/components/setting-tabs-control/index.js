@@ -44,26 +44,33 @@ const SettingTabsControl = props => {
 		help,
 		fullWidthMode,
 		blockName,
+		isRootTab,
 	} = props;
 
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
-
 	const { receiveOpenedSettings } = select('maxiBlocks');
-	const [tab, setTab] = useState(0);
+	const { updateOpenedBlocksSettings } = useDispatch('maxiBlocks');
 	const blockId = getSelectedBlockClientId();
 
-	const openedBlocksSettingsObj = receiveOpenedSettings();
-	const savedTab =
-		openedBlocksSettingsObj && openedBlocksSettingsObj[blockId]
-			? openedBlocksSettingsObj[blockId][0]
-			: 0;
+	const openedBlocksSettings = receiveOpenedSettings();
+	const { activeTab, activeAccordion } = openedBlocksSettings[blockId] || 0;
+	const [tab, setTab] = useState(0);
+
+	const setActiveTab = tab => {
+		setTab(tab);
+		if (isRootTab) {
+			updateOpenedBlocksSettings({
+				[blockId]: { activeTab: tab, activeAccordion: activeAccordion },
+			});
+		}
+	};
 
 	useEffect(() => {
-		if (savedTab || savedTab === 0) {
-			setTab(savedTab);
-			return;
+		if (activeTab || activeTab === 0) {
+			setTab(activeTab);
 		}
+
 		if (forceTab || forceTab === 0) {
 			setTab(forceTab);
 		}
@@ -72,13 +79,6 @@ const SettingTabsControl = props => {
 	useEffect(() => {
 		if (returnValue) returnValue(items[tab]);
 	}, [tab]);
-
-	const { updateOpenedBlocksSettings } = useDispatch('maxiBlocks');
-
-	const setActiveTab = tab => {
-		setTab(tab);
-		updateOpenedBlocksSettings({ [blockId]: tab, type: 'tab' });
-	};
 
 	const classes = classnames('maxi-settingstab-control', className);
 
@@ -134,6 +134,7 @@ const SettingTabsControl = props => {
 								)}
 								onClick={() => {
 									setActiveTab(i);
+
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 

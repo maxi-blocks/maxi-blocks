@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { memo } from '@wordpress/element';
-
 /**
  * Internal dependencies
  */
@@ -38,6 +37,7 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
+					isRootTab={true} // to limit saving only root inspector setttings tabs [Settings, Canvas, Advanced ...]
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),

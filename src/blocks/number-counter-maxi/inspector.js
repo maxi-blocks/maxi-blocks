@@ -42,6 +42,7 @@ const Inspector = props => {
 				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				isRootTab={true}
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),

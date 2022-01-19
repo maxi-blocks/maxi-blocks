@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useState } from '@wordpress/element';
 import { select, useDispatch } from '@wordpress/data';
 /**
  * Internal dependencies
@@ -50,25 +49,18 @@ const AccordionControl = props => {
 	const { getSelectedBlockClientId } = select('core/block-editor');
 	const { receiveOpenedSettings } = select('maxiBlocks');
 	const { updateOpenedBlocksSettings } = useDispatch('maxiBlocks');
-
+	const openedBlocksSettings = receiveOpenedSettings();
 	const blockId = getSelectedBlockClientId();
-
-	const openedBlocksSettingsObj = receiveOpenedSettings();
-	const savedAccordiant =
-		openedBlocksSettingsObj && openedBlocksSettingsObj[blockId]
-			? openedBlocksSettingsObj[blockId][1]
-			: undefined;
-
-	const savedTab =
-		openedBlocksSettingsObj && openedBlocksSettingsObj[blockId]
-			? openedBlocksSettingsObj[blockId][0]
-			: undefined;
+	const { activeTab, activeAccordion } = openedBlocksSettings[blockId] || 0;
 
 	const setCurrentOpen = accordionId => {
 		updateOpenedBlocksSettings({
-			[blockId]:
-				accordionId === savedAccordiant ? undefined : accordionId,
-			type: 'accordion',
+			[blockId]: {
+				activeTab: activeTab,
+				activeAccordion:
+					// toggle accordion, but it will re-rendred if change an option inside accordion => will fixe it
+					accordionId === activeAccordion ? undefined : accordionId,
+			},
 		});
 	};
 
@@ -77,7 +69,7 @@ const AccordionControl = props => {
 			className={classes}
 			allowMultipleExpanded={allowMultipleExpanded}
 			allowZeroExpanded={allowZeroExpanded}
-			preExpanded={[savedAccordiant]}
+			preExpanded={[activeAccordion]}
 		>
 			{items.map((item, id) => {
 				if (!item) return null;
@@ -99,7 +91,7 @@ const AccordionControl = props => {
 				);
 
 				const accordionUid =
-					lowerCase(`${item.label}${savedTab || 0}`).replace(
+					lowerCase(`${item.label}${activeTab || 0}`).replace(
 						/\s/g,
 						''
 					) || undefined;

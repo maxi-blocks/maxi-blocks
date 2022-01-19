@@ -7,6 +7,7 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import Icon from '../icon';
 import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import Button from '../button';
@@ -44,6 +45,7 @@ import {
 	paddingSeparate as paddingSeparateIcon,
 	paddingSyncAll as paddingSyncAllIcon,
 	paddingSyncDirection as paddingSyncDirectionIcon,
+	borderWidth,
 	reset,
 } from '../../icons';
 
@@ -109,7 +111,9 @@ const AxisContent = props => {
 		isGeneral,
 		minMaxSettings,
 		currentUnit,
+		disableSync = false,
 		label: type,
+		onReset,
 	} = props;
 
 	const sync = getLastBreakpointAttribute(
@@ -121,7 +125,8 @@ const AxisContent = props => {
 
 	return (
 		<div>
-			{sync === 'all' && (
+			{disableSync && <Icon icon={borderWidth} />}
+			{(sync === 'all' || disableSync) && (
 				<>
 					<AxisInput
 						label={type}
@@ -138,7 +143,7 @@ const AxisContent = props => {
 					/>
 				</>
 			)}
-			{sync === 'axis' && (
+			{sync === 'axis' && !disableSync && (
 				<>
 					<AxisInput
 						label={`${inputsArray[0]} / ${inputsArray[2]}`}
@@ -170,7 +175,7 @@ const AxisContent = props => {
 					/>
 				</>
 			)}
-			{sync === 'none' && (
+			{sync === 'none' && !disableSync && (
 				<>
 					<AxisInput
 						label={inputsArray[0]}
@@ -230,6 +235,24 @@ const AxisContent = props => {
 					/>
 				</>
 			)}
+			{disableSync && (
+				<>
+					<BaseControl className='maxi-axis-control__unit-header'>
+						<Button
+							className='components-maxi-control__reset-button'
+							onClick={() => onReset(isGeneral, breakpoint)}
+							aria-label={sprintf(
+								__('Reset %s settings', 'maxi-blocks'),
+								type.toLowerCase()
+							)}
+							action='reset'
+							type='reset'
+						>
+							{reset}
+						</Button>
+					</BaseControl>
+				</>
+			)}
 		</div>
 	);
 };
@@ -248,6 +271,7 @@ const AxisControlContent = props => {
 		onChangeSync,
 		minMaxSettings,
 		inputsArray,
+		disableSync = false,
 	} = props;
 
 	const sync = getLastBreakpointAttribute(
@@ -324,64 +348,71 @@ const AxisControlContent = props => {
 
 	return (
 		<>
-			<BaseControl
-				label={__(type, 'maxi-blocks')}
-				className='maxi-axis-control__unit-header'
-			>
-				<SelectControl
-					className='maxi-axis-control__units'
-					hideLabelFromVision
-					label={__('Unit', 'maxi-blocks')}
-					options={getOptions()}
-					value={currentUnit}
-					onChange={onChangeUnit}
-				/>
-				<Button
-					className='components-maxi-control__reset-button'
-					onClick={() => onReset(isGeneral, breakpoint)}
-					aria-label={sprintf(
-						__('Reset %s settings', 'maxi-blocks'),
-						type.toLowerCase()
-					)}
-					action='reset'
-					type='reset'
-				>
-					{reset}
-				</Button>
-			</BaseControl>
-			<ButtonGroupControl
-				label={getSyncLabel()}
-				className='maxi-axis-control__header'
-				selected={sync}
-				options={[
-					{
-						value: 'all',
-						className: 'maxi-axis-control__sync-all',
-						label:
-							type === 'Margin'
-								? marginSyncAllIcon
-								: paddingSyncAllIcon,
-					},
-					{
-						value: 'axis',
-						className: 'maxi-axis-control__sync-axis',
-						label:
-							type === 'Margin'
-								? marginSyncDirectionIcon
-								: paddingSyncDirectionIcon,
-					},
-					{
-						value: 'none',
-						className: 'maxi-axis-control__sync-none',
-						icon:
-							type === 'Margin'
-								? marginSeparateIcon
-								: paddingSeparateIcon,
-					},
-				]}
-				onChange={val => onChangeSync(val, isGeneral, breakpoint)}
-			/>
-			<AxisContent {...props} />
+			{!disableSync && (
+				<>
+					<BaseControl
+						label={__(type, 'maxi-blocks')}
+						className='maxi-axis-control__unit-header'
+					>
+						<SelectControl
+							className='maxi-axis-control__units'
+							hideLabelFromVision
+							label={__('Unit', 'maxi-blocks')}
+							options={getOptions()}
+							value={currentUnit}
+							onChange={onChangeUnit}
+						/>
+						<Button
+							className='components-maxi-control__reset-button'
+							onClick={() => onReset(isGeneral, breakpoint)}
+							aria-label={sprintf(
+								__('Reset %s settings', 'maxi-blocks'),
+								type.toLowerCase()
+							)}
+							action='reset'
+							type='reset'
+						>
+							{reset}
+						</Button>
+					</BaseControl>
+					<ButtonGroupControl
+						label={getSyncLabel()}
+						className='maxi-axis-control__header'
+						selected={sync}
+						options={[
+							{
+								value: 'all',
+								className: 'maxi-axis-control__sync-all',
+								label:
+									type === 'Margin'
+										? marginSyncAllIcon
+										: paddingSyncAllIcon,
+							},
+							{
+								value: 'axis',
+								className: 'maxi-axis-control__sync-axis',
+								label:
+									type === 'Margin'
+										? marginSyncDirectionIcon
+										: paddingSyncDirectionIcon,
+							},
+							{
+								value: 'none',
+								className: 'maxi-axis-control__sync-none',
+								icon:
+									type === 'Margin'
+										? marginSeparateIcon
+										: paddingSeparateIcon,
+							},
+						]}
+						onChange={val =>
+							onChangeSync(val, isGeneral, breakpoint)
+						}
+					/>
+					<AxisContent {...props} />
+				</>
+			)}
+			{disableSync && <AxisContent {...props} />}
 		</>
 	);
 };

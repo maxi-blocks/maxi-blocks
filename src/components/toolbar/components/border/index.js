@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import BorderControl from '../../../border-control';
+import ToolbarBorderControl from '../toolbar-border-control';
 import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
 
@@ -25,11 +25,7 @@ import {
 /**
  * Border
  */
-const ALLOWED_BLOCKS = [
-	'maxi-blocks/button-maxi',
-	'maxi-blocks/image-maxi',
-	'maxi-blocks/svg-icon-maxi',
-];
+const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
 
 /**
  * Component
@@ -78,14 +74,14 @@ const Border = props => {
 							`${prefix}border-palette-status-${breakpoint}`
 						]
 							? getColorRGBAString({
-									firstVal: `color-${
+									firstVar: `color-${
 										props[
 											`${prefix}border-palette-color-${breakpoint}`
 										]
 									}`,
 									opacity:
 										props[
-											`${prefix}border-palette-color-${breakpoint}`
+											`${prefix}border-palette-opacity-${breakpoint}`
 										],
 									blockStyle: getBlockStyle(clientId),
 							  })
@@ -100,7 +96,7 @@ const Border = props => {
 			}
 		>
 			<div className='toolbar-item__border__popover'>
-				<BorderControl
+				<ToolbarBorderControl
 					{...getGroupAttributes(
 						props,
 						isIconToolbar

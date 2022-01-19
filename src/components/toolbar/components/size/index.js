@@ -35,6 +35,7 @@ const EXCLUDED_BLOCKS = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
+	'maxi-blocks/button-maxi',
 ];
 const ELEMENT_BLOCKS = [
 	{
@@ -44,7 +45,7 @@ const ELEMENT_BLOCKS = [
 	},
 ];
 const BLOCKS_MAX_WIDTH = [
-	'maxi-blocks/button-maxi',
+	// 'maxi-blocks/button-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/map-maxi',

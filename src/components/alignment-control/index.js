@@ -25,6 +25,7 @@ const AlignmentControl = props => {
 		className,
 		onChange,
 		label = '',
+		disableIcon = false,
 		disableLeft = false,
 		disableCenter = false,
 		disableRight = false,
@@ -39,19 +40,19 @@ const AlignmentControl = props => {
 
 		!disableLeft &&
 			options.push({
-				label: <Icon icon={alignLeft} />,
+				label: !disableIcon ? <Icon icon={alignLeft} /> : 'Left',
 				value: 'left',
 			});
 
 		!disableCenter &&
 			options.push({
-				label: <Icon icon={alignCenter} />,
+				label: !disableIcon ? <Icon icon={alignCenter} /> : 'Center',
 				value: 'center',
 			});
 
 		!disableRight &&
 			options.push({
-				label: <Icon icon={alignRight} />,
+				label: !disableIcon ? <Icon icon={alignRight} /> : 'Right',
 				value: 'right',
 			});
 

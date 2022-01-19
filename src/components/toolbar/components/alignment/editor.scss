@@ -1,10 +1,14 @@
-.toolbar-item__popover {
+.maxi-dropdown__alignment-content {
+	.components-popover__content {
+		width: 75px;
+	}
 	.maxi-alignment-control {
+		.maxi-base-control__field {
+			display: block !important;
+			margin-bottom: 0;
+		}
 		.maxi-button-group-control__option {
-			border-color: #7a7c85;
-			svg {
-				fill: #fff;
-			}
+			display: block;
 		}
 	}
 }

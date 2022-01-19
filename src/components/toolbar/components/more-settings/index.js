@@ -4,12 +4,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Tooltip } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
+// import { useSelect } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+// import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -20,10 +21,11 @@ import Dropdown from '../../../dropdown';
 import CopyPaste from '../copy-paste';
 import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
-import PaddingMargin from '../padding-margin';
+// import PaddingMargin from '../padding-margin';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
 // import InsertBefore from '../insert-before';
+import openSidebar from '../../../../extensions/dom';
 
 /**
  * Icons
@@ -34,13 +36,13 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../../../extensions/styles';
+// import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, attributes, onChange, breakpoint } = props;
+	const { clientId, blockName, onChange } = props;
 
 	// const { breakpoint } = useSelect(select => {
 	// 	const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -51,6 +53,7 @@ const MoreSettings = props => {
 	// 		breakpoint,
 	// 	};
 	// });
+	const { openGeneralSidebar } = dispatch('core/edit-post');
 
 	return (
 		<Tooltip
@@ -85,10 +88,35 @@ const MoreSettings = props => {
 							)}
 							{blockName === 'maxi-blocks/button-maxi' && (
 								<div>
-									<PaddingMargin
-										clientId={clientId}
-										blockName={blockName}
-									/>
+									{/* <PaddingMargin
+										 clientId={clientId}
+										 blockName={blockName}
+									 /> */}
+									<Button
+										onClick={() =>
+											openGeneralSidebar(
+												'edit-post/block'
+											).then(() =>
+												openSidebar('height width')
+											)
+										}
+									>
+										{__('Button width', 'maxi-blocks')}
+									</Button>
+									<Button
+										onClick={() =>
+											openGeneralSidebar(
+												'edit-post/block'
+											).then(() =>
+												openSidebar('margin padding')
+											)
+										}
+									>
+										{__(
+											'Button padding/margin',
+											'maxi-blocks'
+										)}
+									</Button>
 									<Alignment
 										clientId={clientId}
 										blockName={blockName}

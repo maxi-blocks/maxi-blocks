@@ -432,26 +432,26 @@ body .toolbar-item__popover {
 		}
 	}
 
-	.maxi-default-styles-control__button {
-		background: #232533;
-		border: 1px solid #5b5d68;
-		&--active {
-			border: 2px solid #fff;
-			background-color: #4f515c;
-		}
-		&:focus {
-			outline: none;
-			box-shadow: none;
-		}
-		svg {
-			fill: #fff;
-		}
-		&:not(:first-of-type) {
-			svg path {
-				stroke: #fff;
-			}
-		}
-	}
+	// .maxi-default-styles-control__button {
+	// 	background: #232533;
+	// 	border: 1px solid #5b5d68;
+	// 	&--active {
+	// 		border: 2px solid #fff;
+	// 		background-color: #4f515c;
+	// 	}
+	// 	&:focus {
+	// 		outline: none;
+	// 		box-shadow: none;
+	// 	}
+	// 	svg {
+	// 		fill: #fff;
+	// 	}
+	// 	&:not(:first-of-type) {
+	// 		svg path {
+	// 			stroke: #fff;
+	// 		}
+	// 	}
+	// }
 
 	.maxi-dimensions-control {
 		color: #fff;

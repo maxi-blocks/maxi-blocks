@@ -1,3 +1,42 @@
 .toolbar-item__border__popover {
 	min-width: 300px;
+	.maxi-axis-control__button-border {
+		width: 119px;
+		display: inline-block;
+		vertical-align: middle;
+		& > div {
+			display: flex;
+			align-items: center;
+			& > svg {
+				margin-right: 4px;
+			}
+		}
+		.maxi-base-control__field {
+			margin-bottom: 0;
+			.maxi-base-control__label {
+				flex: none;
+			}
+		}
+	}
+	.maxi-default-styles-control {
+		width: 181px;
+		display: inline-block;
+		vertical-align: middle;
+		&__button {
+			display: inline-block !important;
+			vertical-align: middle;
+			&:not(:first-child) {
+				padding: 0 5px;
+			}
+		}
+	}
+
+	.maxi-color-control {
+		.maxi-opacity-control {
+			line-height: 100%;
+			input {
+				flex: 1;
+			}
+		}
+	}
 }

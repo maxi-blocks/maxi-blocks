@@ -22,9 +22,14 @@ const getPaletteColor = ({ clientId, color, blockStyle }) => {
 		)
 	) {
 		string += 'colour variable on root is empty and may not exist: ';
-		string += document.querySelector(
-			'#maxi-blocks-sc-vars-inline-css'
-		).innerText;
+		string += document.querySelector('#maxi-blocks-sc-vars-inline-css')
+			? 'doesnt exist ||'
+			: 'exist ||';
+		string += document
+			.querySelector('#maxi-blocks-sc-vars-inline-css')
+			.includes('--maxi-light-color')
+			? 'has the variable'
+			: 'hasnt the variable';
 	}
 
 	return string;

@@ -15,7 +15,6 @@ export { default as BorderControl } from './border-control';
 export { default as BoxShadowControl } from './box-shadow-control';
 export { default as Breadcrumbs } from './breadcrumbs';
 export { default as Button } from './button';
-export { default as ButtonGroupControl } from './button-group-control';
 export { default as CheckBoxControl } from './checkbox-control';
 export { default as ClipPath } from './clip-path-control';
 export { default as ColorControl } from './color-control';

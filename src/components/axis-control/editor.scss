@@ -7,10 +7,30 @@
 		.maxi-base-control__field {
 			margin-bottom: 0;
 		}
+		.maxi-tabs-control {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+	.maxi-tabs-control__button {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+		min-width: 32px;
+		height: 32px;
+		padding: 0;
+		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 0;
+		margin-bottom: 0;
+		opacity: 1 !important;
+		transition: all 0.5s;
+		cursor: pointer;
 	}
 
-	.maxi-button-group-control__option--selected {
-		svg path {
+	.maxi-tabs-control__button--selected,
+	.maxi-tabs-control__button--selected {
+		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
 			stroke: var(--maxi-secondary-color);
 		}

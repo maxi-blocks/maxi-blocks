@@ -12,12 +12,12 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import ColorLayer from './colorLayer';
-import ButtonGroupControl from '../button-group-control';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -73,37 +73,37 @@ const BackgroundControl = props => {
 
 		!disableNoneStyle &&
 			options.push({
-				label: <Icon icon={styleNone} />,
+				icon: <Icon icon={styleNone} />,
 				value: 'none',
 			});
 
 		!disableColor &&
 			options.push({
-				label: <Icon icon={backgroundColor} />,
+				icon: <Icon icon={backgroundColor} />,
 				value: 'color',
 			});
 
 		!disableImage &&
 			options.push({
-				label: <Icon icon={backgroundImage} />,
+				icon: <Icon icon={backgroundImage} />,
 				value: 'image',
 			});
 
 		!disableVideo &&
 			options.push({
-				label: <Icon icon={backgroundVideo} />,
+				icon: <Icon icon={backgroundVideo} />,
 				value: 'video',
 			});
 
 		!disableGradient &&
 			options.push({
-				label: <Icon icon={backgroundGradient()} />,
+				icon: <Icon icon={backgroundGradient()} />,
 				value: 'gradient',
 			});
 
 		!disableSVG &&
 			options.push({
-				label: <Icon icon={shape} />,
+				icon: <Icon icon={shape} />,
 				value: 'svg',
 			});
 
@@ -113,12 +113,13 @@ const BackgroundControl = props => {
 	return (
 		<div className={classes}>
 			{getOptions().length > 1 && (
-				<ButtonGroupControl
+				<SettingTabsControl
 					label={__('Background', 'maxi-blocks')}
+					type='buttons'
 					className='maxi-background-control__simple'
 					fullWidthMode
 					selected={backgroundActiveMedia || 'none'}
-					options={getOptions()}
+					items={getOptions()}
 					onChange={val =>
 						onChange({
 							[getAttributeKey(

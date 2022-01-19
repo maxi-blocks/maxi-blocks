@@ -1,15 +1,5 @@
 import getCustomFormatsStyles from '../getCustomFormatsStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
-});
-
 describe('getCustomFormatsStyles', () => {
 	it('Get a correct custom formats styles', () => {
 		const object = {

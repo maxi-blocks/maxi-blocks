@@ -186,9 +186,9 @@ describe('Image Maxi', () => {
 
 		const shadowStyles = [
 			'none',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.5)',
-			'4px 4px 0px rgba(var(--maxi-light-color-8),0.21)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.3)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.5)',
+			'4px 4px 0px rgba(var(--maxi-light-color-8,150,176,203),0.21)',
 		];
 
 		for (let i = 0; i < shadowStyles.length; i += 1) {
@@ -211,7 +211,7 @@ describe('Image Maxi', () => {
 
 		// LinkColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[0].click()
 		);
 
@@ -224,7 +224,7 @@ describe('Image Maxi', () => {
 
 		// LinkHoverColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[1].click()
 		);
 		await editColorControl({
@@ -236,7 +236,7 @@ describe('Image Maxi', () => {
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[2].click()
 		);
 		await editColorControl({
@@ -248,7 +248,7 @@ describe('Image Maxi', () => {
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[3].click()
 		);
 		await editColorControl({

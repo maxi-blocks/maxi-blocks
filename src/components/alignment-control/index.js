@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
 
 /**
@@ -58,7 +58,7 @@ const AlignmentControl = props => {
 
 		!disableJustify &&
 			options.push({
-				label: <Icon icon={alignJustify} />,
+				icon: <Icon icon={alignJustify} />,
 				value: 'justify',
 			});
 
@@ -72,9 +72,11 @@ const AlignmentControl = props => {
 	);
 
 	return (
-		<ButtonGroupControl
-			label={label}
+		<SettingTabsControl
+			type='buttons'
+			fullWidthMode
 			className={classes}
+			items={getOptions()}
 			selected={
 				getLastBreakpointAttribute(
 					type === 'text' ? 'text-alignment' : 'alignment',
@@ -83,7 +85,6 @@ const AlignmentControl = props => {
 					isHover
 				) || getOptions()[0].value
 			}
-			options={getOptions()}
 			onChange={val =>
 				onChange(
 					type === 'text'

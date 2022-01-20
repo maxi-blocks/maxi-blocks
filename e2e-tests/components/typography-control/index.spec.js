@@ -234,7 +234,13 @@ describe('TypographyControl', () => {
 		await changeResponsive(page, 'base');
 		await openSidebarTab(page, 'style', 'typography');
 
-		await addTypographyStyle(page);
+		await addTypographyStyle({
+			page,
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+		});
 
 		const typographyResult = await getAttributes([
 			'font-style-general',
@@ -500,6 +506,9 @@ describe('TypographyControl', () => {
 		await addTypographyOptions({
 			page,
 			instance: await openSidebarTab(page, 'style', 'typography'),
+			size: '11',
+			lineHeight: '22',
+			letterSpacing: '30',
 		});
 
 		const attributeResult = await getAttributes([

@@ -109,6 +109,9 @@ describe('Image Maxi', () => {
 			instance: await page.$(
 				'.maxi-typography-control__text-options-tabs'
 			),
+			size: '11',
+			lineHeight: '22',
+			letterSpacing: '30',
 		});
 
 		const responsiveStage = await accordionPanel.$eval(
@@ -131,7 +134,13 @@ describe('Image Maxi', () => {
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
 
 		// Weight, Transform, Style, Decoration
-		await addTypographyStyle(page);
+		await addTypographyStyle({
+			page,
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+		});
 
 		const result = await getAttributes([
 			'font-style-general',

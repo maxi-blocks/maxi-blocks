@@ -126,6 +126,7 @@ const BlockBackgroundColor = props => {
 								});
 						}}
 						breakpoint={breakpoint}
+						isToolbar
 					/>
 				)}
 			</div>

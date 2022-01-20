@@ -136,6 +136,7 @@ const BackgroundColor = props => {
 						prefix={prefix}
 						clientId={clientId}
 						disableClipPath
+						isToolbar
 					/>
 				)}
 			</div>

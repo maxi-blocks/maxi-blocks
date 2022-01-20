@@ -44,6 +44,7 @@ const ColorControl = props => {
 		blockStyle: rawBlockStyle,
 		disableOpacity = false,
 		disableColorDisplay = false,
+		isToolbar = false,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -149,6 +150,7 @@ const ColorControl = props => {
 					disableColorDisplay={disableColorDisplay}
 					disableOpacity={disableOpacity}
 					clientId={clientId}
+					isToolbar={isToolbar}
 				/>
 			)}
 		</div>

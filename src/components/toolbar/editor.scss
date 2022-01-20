@@ -37,11 +37,11 @@
 				top: 5px;
 			}
 
-			& > div:not(.toolbar-block-custom-label):first-child {
-				border-top-left-radius: 5px;
-				border-bottom-left-radius: 5px;
-				padding-left: 2px;
-			}
+			// & > div:not(.toolbar-block-custom-label):first-child {
+			// 	border-top-left-radius: 5px;
+			// 	border-bottom-left-radius: 5px;
+			// 	padding-left: 2px;
+			// }
 			.toolbar-block-custom-label {
 				font-size: 10px;
 				font-weight: 400;
@@ -360,6 +360,10 @@ body .toolbar-item__popover {
 		margin-left: -2px;
 		& * {
 			font-family: 'Roboto', sans-serif !important;
+		}
+		.maxi-color-control__disable {
+			opacity: 0.3;
+			pointer-events: none;
 		}
 		.maxi-color-control {
 			margin-bottom: 10px;

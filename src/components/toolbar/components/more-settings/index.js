@@ -4,8 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Tooltip } from '@wordpress/components';
-// import { useSelect } from '@wordpress/data';
-import { dispatch } from '@wordpress/data';
+import { useSelect, dispatch } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -36,7 +35,7 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
-// import { getGroupAttributes } from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Duplicate
@@ -44,15 +43,15 @@ import './editor.scss';
 const MoreSettings = props => {
 	const { clientId, blockName, onChange } = props;
 
-	// const { breakpoint } = useSelect(select => {
-	// 	const { receiveMaxiDeviceType } = select('maxiBlocks');
+	const { breakpoint } = useSelect(select => {
+		const { receiveMaxiDeviceType } = select('maxiBlocks');
 
-	// 	const breakpoint = receiveMaxiDeviceType();
+		const breakpoint = receiveMaxiDeviceType();
 
-	// 	return {
-	// 		breakpoint,
-	// 	};
-	// });
+		return {
+			breakpoint,
+		};
+	});
 	const { openGeneralSidebar } = dispatch('core/edit-post');
 
 	return (
@@ -88,10 +87,6 @@ const MoreSettings = props => {
 							)}
 							{blockName === 'maxi-blocks/button-maxi' && (
 								<div>
-									{/* <PaddingMargin
-										 clientId={clientId}
-										 blockName={blockName}
-									 /> */}
 									<Button
 										onClick={() =>
 											openGeneralSidebar(
@@ -120,14 +115,13 @@ const MoreSettings = props => {
 									<Alignment
 										clientId={clientId}
 										blockName={blockName}
-										// attributes
-										// getGroupAttributes
-										// {...getGroupAttributes(attributes, [
-										// 	'alignment',
-										// 	'textAlignment',
-										// ])}
+										getGroupAttributes
+										{...getGroupAttributes(props, [
+											'alignment',
+											'textAlignment',
+										])}
 										onChange={onChange}
-										// breakpoint
+										breakpoint={breakpoint}
 									/>
 								</div>
 							)}

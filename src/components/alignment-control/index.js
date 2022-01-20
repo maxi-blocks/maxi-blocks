@@ -31,36 +31,62 @@ const AlignmentControl = props => {
 		disableRight = false,
 		disableJustify = false,
 		breakpoint = 'general',
-		type,
+		type = '',
 		isHover = false,
 	} = props;
 
 	const getOptions = () => {
 		const options = [];
 
-		!disableLeft &&
-			options.push({
-				label: !disableIcon ? <Icon icon={alignLeft} /> : 'Left',
-				value: 'left',
-			});
+		if (disableIcon) {
+			!disableLeft &&
+				options.push({
+					label: 'Left',
+					value: 'left',
+				});
 
-		!disableCenter &&
-			options.push({
-				label: !disableIcon ? <Icon icon={alignCenter} /> : 'Center',
-				value: 'center',
-			});
+			!disableCenter &&
+				options.push({
+					label: 'Center',
+					value: 'center',
+				});
 
-		!disableRight &&
-			options.push({
-				label: !disableIcon ? <Icon icon={alignRight} /> : 'Right',
-				value: 'right',
-			});
+			!disableRight &&
+				options.push({
+					label: 'Right',
+					value: 'right',
+				});
 
-		!disableJustify &&
-			options.push({
-				icon: <Icon icon={alignJustify} />,
-				value: 'justify',
-			});
+			!disableJustify &&
+				options.push({
+					label: 'Justify',
+					value: 'justify',
+				});
+		} else {
+			!disableLeft &&
+				options.push({
+					icon: <Icon icon={alignLeft} />,
+					value: 'left',
+				});
+
+			!disableCenter &&
+				options.push({
+					icon: <Icon icon={alignCenter} />,
+					value: 'center',
+				});
+
+			!disableRight &&
+				options.push({
+					icon: <Icon icon={alignRight} />,
+					value: 'right',
+				});
+
+			!disableJustify &&
+				options.push({
+					icon: <Icon icon={alignJustify} />,
+					value: 'justify',
+				});
+		}
 
 		return options;
 	};

@@ -152,8 +152,22 @@ const ToolbarBoxShadowControl = props => {
 			/>
 			<div className='maxi-shadow-control__spread'>
 				<div>
-					{disableAdvanced && <Icon icon={boxShadow} />}
+					{disableAdvanced && (
+						<Icon
+							className={
+								getIsActive(boxShadowNone, 'none')
+									? 'maxi-icon__disable'
+									: ''
+							}
+							icon={boxShadow}
+						/>
+					)}
 					<AdvancedNumberControl
+						className={
+							getIsActive(boxShadowNone, 'none')
+								? 'maxi-base-control__disable'
+								: ''
+						}
 						label={__('', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}box-shadow-spread`,
@@ -187,7 +201,11 @@ const ToolbarBoxShadowControl = props => {
 			</div>
 			<ColorControl
 				// label={__('Box Shadow', 'maxi-blocks')}
-				className='maxi-shadow-control__color'
+				className={
+					getIsActive(boxShadowNone, 'none')
+						? 'maxi-color-control__disable'
+						: ''
+				}
 				color={getLastBreakpointAttribute(
 					`${prefix}box-shadow-color`,
 					breakpoint,

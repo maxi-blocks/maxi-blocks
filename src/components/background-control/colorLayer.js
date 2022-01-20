@@ -35,6 +35,7 @@ const ColorLayerContent = props => {
 		isGeneral = false,
 		isLayer = false,
 		globalProps,
+		isToolbar = false,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -50,6 +51,7 @@ const ColorLayerContent = props => {
 	return (
 		<>
 			<ColorControl
+				isToolbar={isToolbar}
 				label={__('Background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute(
 					`${prefix}background-color`,
@@ -173,11 +175,11 @@ const ColorLayerContent = props => {
 };
 
 const ColorLayer = props => {
-	const { breakpoint, ...rest } = props;
+	const { isToolbar = false, breakpoint, ...rest } = props;
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<ColorLayerContent {...rest} />
+			<ColorLayerContent isToolbar={isToolbar} {...rest} />
 		</ResponsiveTabsControl>
 	);
 };

@@ -1,4 +1,20 @@
 .maxi-color-control {
+	&__wrap {
+		margin-bottom: 8px;
+		display: flex;
+		align-items: center;
+		& * {
+			margin-bottom: 0;
+		}
+		.maxi-color-control__display {
+			width: 150px;
+			margin-right: 8px;
+		}
+		.maxi-advanced-number-control__value {
+			width: 64px !important;
+			margin-left: 6px;
+		}
+	}
 	.chrome-picker {
 		width: 100% !important;
 		box-shadow: none !important;

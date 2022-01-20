@@ -18,6 +18,7 @@ import {
  * Styles
  */
 import './editor.scss';
+import { toolbarShapeColor } from '../../../../icons';
 
 /**
  * Component
@@ -27,29 +28,30 @@ const IconColor = props => {
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
-	const getColor = attr =>
-		attr['icon-palette-status']
-			? getColorRGBAString({
-					firstVar: 'icon',
-					secondVar: `color-${attr['icon-palette-color']}`,
-					blockStyle: parentBlockStyle,
-					opacity: attr['icon-palette-opacity'],
-			  })
-			: attr['icon-color'];
+	// const getColor = attr =>
+	// 	attr['icon-palette-status']
+	// 		? getColorRGBAString({
+	// 				firstVar: 'icon',
+	// 				secondVar: `color-${attr['icon-palette-color']}`,
+	// 				blockStyle: parentBlockStyle,
+	// 				opacity: attr['icon-palette-opacity'],
+	// 		  })
+	// 		: attr['icon-color'];
 
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
 			tooltip={__('Icon Colour', 'maxi-blocks')}
-			icon={
-				<div
-					className='toolbar-item__icon'
-					style={{
-						background: getColor(props),
-						border: '1px solid #fff',
-					}}
-				/>
-			}
+			icon={toolbarShapeColor}
+			// icon={
+			// 	<div
+			// 		className='toolbar-item__icon'
+			// 		style={{
+			// 			background: getColor(props),
+			// 			border: '1px solid #fff',
+			// 		}}
+			// 	/>
+			// }
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-color__popover'>

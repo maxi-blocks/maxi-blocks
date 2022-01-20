@@ -463,6 +463,8 @@ const AxisControl = props => {
 			'sync-vertical',
 		],
 		optionType = 'number',
+		disableSync = false,
+		isGeneral,
 	} = props;
 
 	const classes = classnames(
@@ -724,7 +726,7 @@ const AxisControl = props => {
 
 		onChange(response);
 	};
-
+	disableSync && onChangeSync('all', isGeneral, breakpoint);
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (

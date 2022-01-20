@@ -15,7 +15,7 @@ import { getBlockStyle, openSidebarTab } from './utils';
 describe('DB optimization test', () => {
 	it('test', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertBlock('Text Maxi');
 
 		const el = await page.$('#maxi-blocks-sc-vars-inline-css');
 

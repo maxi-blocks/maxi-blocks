@@ -5,6 +5,18 @@ import {
 
 import { prefixAttributesCreator } from '../../extensions/styles';
 
+const getDefaultBorderWidth = (
+	prefix,
+	{ BorderTopWidth, BorderRightWidth, BorderBottomWidth, BorderLeftWidth }
+) => {
+	return {
+		[`${prefix}border-top-width`]: BorderTopWidth || 2,
+		[`${prefix}border-right-width`]: BorderRightWidth || 2,
+		[`${prefix}border-bottom-width`]: BorderBottomWidth || 2,
+		[`${prefix}border-left-width`]: BorderLeftWidth || 2,
+	};
+};
+
 export const borderNone = (prefix = '', isHover) => {
 	let response = {};
 
@@ -51,53 +63,35 @@ export const borderNone = (prefix = '', isHover) => {
 	return response;
 };
 
-export const borderSolid = (
-	prefix,
-	{ bordertopwidth, borderrightwidth, borderbottomwidth, borderleftwidth }
-) => {
+export const borderSolid = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
 		[`${prefix}border-style`]: 'solid',
-		[`${prefix}border-top-width`]: bordertopwidth || 2,
-		[`${prefix}border-right-width`]: borderrightwidth || 2,
-		[`${prefix}border-bottom-width`]: borderbottomwidth || 2,
-		[`${prefix}border-left-width`]: borderleftwidth || 2,
 		[`${prefix}border-sync-width`]: 'all',
 		[`${prefix}border-unit-width`]: 'px',
+		...getDefaultBorderWidth(prefix, defaultWidthValue),
 	};
 	return response;
 };
 
-export const borderDashed = (
-	prefix,
-	{ bordertopwidth, borderrightwidth, borderbottomwidth, borderleftwidth }
-) => {
+export const borderDashed = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
 		[`${prefix}border-style`]: 'dashed',
-		[`${prefix}border-top-width`]: bordertopwidth || 2,
-		[`${prefix}border-right-width`]: borderrightwidth || 2,
-		[`${prefix}border-bottom-width`]: borderbottomwidth || 2,
-		[`${prefix}border-left-width`]: borderleftwidth || 2,
 		[`${prefix}border-sync-width`]: 'all',
 		[`${prefix}border-unit-width`]: 'px',
+		...getDefaultBorderWidth(prefix, defaultWidthValue),
 	};
 	return response;
 };
 
-export const borderDotted = (
-	prefix,
-	{ bordertopwidth, borderrightwidth, borderbottomwidth, borderleftwidth }
-) => {
+export const borderDotted = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
 		[`${prefix}border-style`]: 'dotted',
-		[`${prefix}border-top-width`]: bordertopwidth || 2,
-		[`${prefix}border-right-width`]: borderrightwidth || 2,
-		[`${prefix}border-bottom-width`]: borderbottomwidth || 2,
-		[`${prefix}border-left-width`]: borderleftwidth || 2,
 		[`${prefix}border-sync-width`]: 'all',
 		[`${prefix}border-unit-width`]: 'px',
+		...getDefaultBorderWidth(prefix, defaultWidthValue),
 	};
 	return response;
 };

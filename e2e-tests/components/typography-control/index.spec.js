@@ -270,9 +270,9 @@ describe('TypographyControl', () => {
 		await addTypographyOptions({
 			page,
 			instance: await openSidebarTab(page, 'style', 'typography'),
-			size: '11',
+			size: '19',
 			lineHeight: '22',
-			letterSpacing: '30',
+			letterSpacing: '10',
 		});
 
 		const attributeResult = await getAttributes([
@@ -283,8 +283,8 @@ describe('TypographyControl', () => {
 
 		const expectedAttributes = {
 			'line-height-xl': 22,
-			'letter-spacing-xl': 30,
-			'font-size-xl': 11,
+			'letter-spacing-xl': 10,
+			'font-size-xl': 19,
 		};
 
 		expect(attributeResult).toStrictEqual(expectedAttributes);

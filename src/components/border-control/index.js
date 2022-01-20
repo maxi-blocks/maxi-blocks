@@ -55,7 +55,6 @@ const BorderControl = props => {
 
 	const onChangeDefault = defaultProp => {
 		const response = {};
-
 		Object.entries(defaultProp).forEach(([key, value]) => {
 			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
 		});
@@ -69,6 +68,27 @@ const BorderControl = props => {
 		props,
 		isHover
 	);
+
+	const borderItems = [
+		'border-top-width',
+		'border-right-width',
+		'border-bottom-width',
+		'border-left-width',
+	];
+
+	const borderWidthLastValue = () => {
+		let response = {};
+		borderItems.forEach(item => {
+			const itemKey = item.replaceAll('-', '');
+			response[itemKey] = getLastBreakpointAttribute(
+				`${prefix}${item}`,
+				breakpoint,
+				props,
+				isHover
+			);
+		});
+		return response;
+	};
 
 	const axisItems = [
 		`${prefix}border-top-width`,
@@ -129,7 +149,10 @@ const BorderControl = props => {
 								icon={solid}
 							/>
 						),
-						onChange: () => onChangeDefault(borderSolid(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderSolid(prefix, borderWidthLastValue())
+							),
 					},
 					{
 						activeItem: getIsActive() === 'dashed',
@@ -139,7 +162,10 @@ const BorderControl = props => {
 								icon={dashed}
 							/>
 						),
-						onChange: () => onChangeDefault(borderDashed(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderDashed(prefix, borderWidthLastValue())
+							),
 					},
 					{
 						activeItem: getIsActive() === 'dotted',
@@ -149,7 +175,10 @@ const BorderControl = props => {
 								icon={dotted}
 							/>
 						),
-						onChange: () => onChangeDefault(borderDotted(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderDotted(prefix, borderWidthLastValue())
+							),
 					},
 				]}
 			/>

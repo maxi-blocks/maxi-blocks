@@ -6,7 +6,6 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,

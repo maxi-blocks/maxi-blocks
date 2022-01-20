@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+
 import AxisControl from '../axis-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
@@ -28,7 +29,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber } from 'lodash';
+import { isNumber, capitalize } from 'lodash';
 
 /**
  * Icons
@@ -69,23 +70,16 @@ const BorderControl = props => {
 		isHover
 	);
 
-	const borderItems = [
-		'border-top-width',
-		'border-right-width',
-		'border-bottom-width',
-		'border-left-width',
-	];
-
 	const borderWidthLastValue = () => {
-		let response = {};
-		borderItems.forEach(item => {
-			const itemKey = item.replaceAll('-', '');
-			response[itemKey] = getLastBreakpointAttribute(
-				`${prefix}${item}`,
-				breakpoint,
-				props,
-				isHover
-			);
+		const response = {};
+		['top', 'right', 'bottom', 'left'].forEach(item => {
+			response[`Border${capitalize(item)}Width`] =
+				getLastBreakpointAttribute(
+					`${prefix}border-${item}-width`,
+					breakpoint,
+					props,
+					isHover
+				);
 		});
 		return response;
 	};

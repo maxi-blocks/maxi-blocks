@@ -111,6 +111,17 @@ const getBorderStyles = ({
 					'gm'
 				);
 				const newLabel = newKey.replace(replacer, '');
+				const unitKey = keyWords.filter(key =>
+					newLabel.includes(key)
+				)[0];
+
+				const unit =
+					getLastBreakpointAttribute(
+						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
+						breakpoint,
+						obj,
+						isHover
+					) || 'px';
 				if (key.includes('style')) {
 					if (isHover && isBorderNone) {
 						response[breakpoint].border = 'none';
@@ -129,19 +140,17 @@ const getBorderStyles = ({
 						].includes(newLabel)
 					)
 						response[breakpoint][newLabel] = `${value}`;
+				} else if (
+					[
+						'border-top-width',
+						'border-right-width',
+						'border-left-width',
+						'border-bottom-width',
+					].includes(newLabel)
+				) {
+					if (isBorderNone) return;
+					response[breakpoint][newLabel] = `${value}${unit}`;
 				} else {
-					const unitKey = keyWords.filter(key =>
-						newLabel.includes(key)
-					)[0];
-
-					const unit =
-						getLastBreakpointAttribute(
-							`${prefix}${newLabel.replace(unitKey, 'unit')}`,
-							breakpoint,
-							obj,
-							isHover
-						) || 'px';
-
 					response[breakpoint][newLabel] = `${value}${unit}`;
 				}
 			}

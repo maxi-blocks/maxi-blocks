@@ -17,6 +17,8 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	editColorControl,
+	addTypographyOptions,
+	addTypographyStyle,
 	addResponsiveTest,
 	getBlockStyle,
 } from '../../utils';
@@ -178,31 +180,15 @@ describe('TypographyControl', () => {
 
 	it('Checking the Weight, Transform, Style and Decoration', async () => {
 		await changeResponsive(page, 'base');
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'style', 'typography');
+
+		await addTypographyStyle({
 			page,
-			'style',
-			'typography'
-		);
-
-		const weightSelector = await accordionPanel.$(
-			'.maxi-typography-control__weight .maxi-base-control__field select'
-		);
-		await weightSelector.select('300');
-
-		const transformSelector = await accordionPanel.$(
-			'.maxi-typography-control__transform .maxi-base-control__field select'
-		);
-		await transformSelector.select('capitalize');
-
-		const fontStyleSelector = await accordionPanel.$(
-			'.maxi-typography-control__font-style .maxi-base-control__field select'
-		);
-		await fontStyleSelector.select('italic');
-
-		const decorationSelector = await accordionPanel.$(
-			'.maxi-typography-control__decoration .maxi-base-control__field select'
-		);
-		await decorationSelector.select('overline');
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+		});
 
 		const typographyResult = await getAttributes([
 			'font-style-general',
@@ -280,46 +266,25 @@ describe('TypographyControl', () => {
 	});
 
 	it('Check Size, line height and letter spacing', async () => {
-		await changeResponsive(page, 'm');
-
-		const accordionPanel = await openSidebarTab(
+		await changeResponsive(page, 'xl');
+		await addTypographyOptions({
 			page,
-			'style',
-			'typography'
-		);
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-			select => select[0].focus()
-		);
-
-		await page.keyboard.type('19');
-
-		// line-height
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-			select => select[2].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('4');
-
-		// letter-spacing
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-			select => select[4].focus()
-		);
-		await page.keyboard.type('10');
+			instance: await openSidebarTab(page, 'style', 'typography'),
+			size: '19',
+			lineHeight: '22',
+			letterSpacing: '10',
+		});
 
 		const attributeResult = await getAttributes([
-			'line-height-m',
-			'letter-spacing-m',
-			'font-size-m',
+			'line-height-xl',
+			'letter-spacing-xl',
+			'font-size-xl',
 		]);
 
 		const expectedAttributes = {
-			'line-height-m': 4,
-			'letter-spacing-m': 10,
-			'font-size-m': 19,
+			'line-height-xl': 22,
+			'letter-spacing-xl': 10,
+			'font-size-xl': 19,
 		};
 
 		expect(attributeResult).toStrictEqual(expectedAttributes);
@@ -357,7 +322,9 @@ describe('TypographyControl', () => {
 		);
 
 		await input[0].focus();
-		await page.keyboard.type('5');
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('45');
 
 		const responsiveLineHeight = await addResponsiveTest({
 			page,

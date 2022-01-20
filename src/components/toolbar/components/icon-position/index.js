@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SettingTabsControl from '../../../setting-tabs-control';
+import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -30,6 +31,25 @@ const IconPosition = props => {
 			icon={toolbarIconAlign}
 		>
 			<div className='toolbar-item__icon-position__popover'>
+				{/* <SelectControl
+					className='maxi-background-control__add-layer'
+					value='Icon Position'
+					options={[
+						{
+							label: __('Left', 'maxi-blocks'),
+							value: 'left',
+						},
+						{
+							label: __('Right', 'maxi-blocks'),
+							value: 'right',
+						},
+					]}
+					onChange={val => {
+						onChange({
+							'icon-position': val,
+						});
+					}}
+				/> */}
 				<SettingTabsControl
 					label={__('Icon Position', 'maxi-block')}
 					type='buttons'

@@ -18,6 +18,7 @@ import {
  * Styles
  */
 import './editor.scss';
+import { backgroundColor } from '../../../../icons';
 
 /**
  * Component
@@ -41,15 +42,16 @@ const IconBackground = props => {
 		<ToolbarPopover
 			className='toolbar-item__background'
 			tooltip={__('Icon Background', 'maxi-blocks')}
-			icon={
-				<div
-					className='toolbar-item__background'
-					style={{
-						background: getColor(props),
-						border: '1px solid #fff',
-					}}
-				/>
-			}
+			icon={backgroundColor}
+			// icon={
+			// 	<div
+			// 		className='toolbar-item__background'
+			// 		style={{
+			// 			background: getColor(props),
+			// 			border: '1px solid #fff',
+			// 		}}
+			// 	/>
+			// }
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-background__popover'>

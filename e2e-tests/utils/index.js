@@ -1,4 +1,5 @@
 export { default as addBackgroundLayer } from './addBackgroundLayer';
+export { default as addResponsiveTest } from './addResponsiveTest';
 export { default as editAxisControl } from './editAxisControl';
 export { default as editColorControl } from './editColorControl';
 export { default as getBlockAttributes } from './getBlockAttributes';

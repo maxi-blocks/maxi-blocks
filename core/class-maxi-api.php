@@ -376,6 +376,14 @@ if (!class_exists('MaxiBlocks_API')):
 
             if (!$response) {
                 $response = '';
+                $empty_sc_string = [
+                    '_maxi_blocks_style_card' =>'',
+                    '_maxi_blocks_style_card_preview' => '',
+                ];
+                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+                    'id' => 'sc_string',
+                    'object' =>  serialize($empty_sc_string),
+                ));
             }
 
             return $response;

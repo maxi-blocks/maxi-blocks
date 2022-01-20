@@ -61,10 +61,10 @@ class MaxiBlocks_StyleCards
             $table_name .
             ' where id = "sc_string"';
         
-        $style_card =  maybe_unserialize($wpdb->get_var($query));
+        $style_card = maybe_unserialize($wpdb->get_var($query));
 
         if (!$style_card) {
-            return 'no style_card on maybe_unserialize';
+            return false;
         }
 
         $style =
@@ -80,7 +80,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$style || empty($style)) {
-            return 'empty($style)';
+            return false;
         }
 
         return $style;

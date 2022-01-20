@@ -818,7 +818,6 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Check gradient layer', async () => {
-		debugger;
 		await changeResponsive(page, 'base');
 		await removeBackgroundLayers(page);
 		await addBackgroundLayer(page, 'gradient');
@@ -842,6 +841,7 @@ describe('BackgroundControl', () => {
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
+
 	// Here are the tests of svg-fill-control
 	it('Check Background shape layer', async () => {
 		await changeResponsive(page, 'base');

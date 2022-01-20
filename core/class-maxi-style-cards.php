@@ -41,7 +41,7 @@ class MaxiBlocks_StyleCards
             wp_enqueue_style('maxi-blocks-sc-vars');
             wp_add_inline_style('maxi-blocks-sc-vars', $vars);
 
-            $this->enqueue_fonts($vars);
+        // $this->enqueue_fonts($vars);
         } else {
             wp_register_style('maxi-blocks-sc-vars', false);
             wp_enqueue_style('maxi-blocks-sc-vars');
@@ -64,7 +64,7 @@ class MaxiBlocks_StyleCards
         $style_card =  maybe_unserialize($wpdb->get_var($query));
 
         if (!$style_card) {
-            return false;
+            return 'no style_card on maybe_unserialize';
         }
 
         $style =
@@ -80,7 +80,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$style || empty($style)) {
-            return false;
+            return 'empty($style)';
         }
 
         return $style;

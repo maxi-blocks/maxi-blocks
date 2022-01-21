@@ -7,8 +7,10 @@ import { isURL } from '@wordpress/url';
  * Internal dependencies
  */
 import {
+	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteAttributes,
 	stylesCleaner,
 } from '../../extensions/styles';
 import {
@@ -162,18 +164,18 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStart, listReversed } = props;
+	const { listStart, listReversed, content } = props;
 
 	const response = {
-		...(isNumber(listStart) && {
-			listStart: {
-				general: {
-					'counter-reset': `li ${
-						listStart + (listReversed ? 1 : -1)
-					}`,
-				},
+		listStart: {
+			general: {
+				'counter-reset': `li ${
+					isNumber(listStart)
+						? listStart + (listReversed ? 1 : -1)
+						: content.match(/<li>/g).length + 1 ?? ''
+				}`,
 			},
-		}),
+		},
 		...(() => {
 			const response = { listGap: {}, textIndent: {} };
 
@@ -239,9 +241,26 @@ const getListItemObject = props => {
 };
 
 const getMarkerObject = props => {
-	const { typeOfList, listStyle, listStyleCustom } = props;
+	const { typeOfList, listStyle, listStyleCustom, parentBlockStyle } = props;
+
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj: props,
+			prefix: 'list-',
+		});
 
 	return {
+		color: {
+			general: {
+				color: paletteStatus
+					? getColorRGBAString({
+							firstVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle: parentBlockStyle,
+					  })
+					: color,
+			},
+		},
 		...(typeOfList === 'ol' && {
 			listContent: {
 				general: {
@@ -256,8 +275,8 @@ const getMarkerObject = props => {
 				general: {
 					content: `counter(li${
 						listStyle && listStyle === 'custom' && listStyleCustom
-							? `, ${listStyle}`
-							: ', disc'
+							? `, ${listStyleCustom}`
+							: `, ${listStyle}`
 					})`,
 				},
 			},

@@ -327,6 +327,42 @@ const listTab = props => {
 							})
 						}
 					/>
+					<ColorControl
+						label={__('Marker colour', 'maxi-blocks')}
+						color={attributes['list-color']}
+						defaultColor={getDefaultAttribute('list-color')}
+						paletteStatus={attributes['list-palette-status']}
+						paletteColor={attributes['list-palette-color']}
+						paletteOpacity={attributes['list-palette-opacity']}
+						onChange={({
+							paletteStatus,
+							paletteColor,
+							paletteOpacity,
+							color,
+						}) => {
+							const colorStr = paletteStatus
+								? getColorRGBAString({
+										firstVar: `color-${paletteColor}`,
+										opacity: paletteOpacity,
+										blockStyle: parentBlockStyle,
+								  })
+								: color;
+
+							setAttributes({
+								'list-palette-status': paletteStatus,
+								'list-palette-color': paletteColor,
+								'list-palette-opacity': paletteOpacity,
+								'list-color': color,
+								...(listStyleCustom?.includes('<svg ') && {
+									listStyleCustom: setSVGColor({
+										svg: listStyleCustom,
+										color: colorStr,
+										type: 'fill',
+									}),
+								}),
+							});
+						}}
+					/>
 					<SelectControl
 						label={__('Text position', 'maxi-blocks')}
 						className='maxi-image-inspector__list-style'
@@ -391,6 +427,17 @@ const listTab = props => {
 							})
 						}
 					/>
+					<SelectControl
+						label={__('Style', 'maxi-blocks')}
+						className='maxi-image-inspector__list-style'
+						value={listStyle || 'disc'}
+						options={getListStyleOptions(typeOfList)}
+						onChange={listStyle =>
+							setAttributes({
+								listStyle,
+							})
+						}
+					/>
 					{typeOfList === 'ol' && (
 						<>
 							<AdvancedNumberControl
@@ -425,17 +472,6 @@ const listTab = props => {
 							/>
 						</>
 					)}
-					<SelectControl
-						label={__('Style', 'maxi-blocks')}
-						className='maxi-image-inspector__list-style'
-						value={listStyle || 'disc'}
-						options={getListStyleOptions(typeOfList)}
-						onChange={listStyle =>
-							setAttributes({
-								listStyle,
-							})
-						}
-					/>
 					{typeOfList === 'ul' && listStyle === 'custom' && (
 						<>
 							<SelectControl
@@ -516,65 +552,6 @@ const listTab = props => {
 												: false
 										}
 									/>
-									{listStyleCustom?.includes('<svg ') && (
-										<ColorControl
-											label={__(
-												'Background',
-												'maxi-blocks'
-											)}
-											color={attributes['list-svg-color']}
-											defaultColor={getDefaultAttribute(
-												'list-svg-color'
-											)}
-											paletteStatus={
-												attributes[
-													'list-svg-palette-status'
-												]
-											}
-											paletteColor={
-												attributes[
-													'list-svg-palette-color'
-												]
-											}
-											paletteOpacity={
-												attributes[
-													'list-svg-palette-opacity'
-												]
-											}
-											onChange={({
-												paletteStatus,
-												paletteColor,
-												paletteOpacity,
-												color,
-											}) => {
-												const colorStr = paletteStatus
-													? getColorRGBAString({
-															firstVar: `color-${paletteColor}`,
-															opacity:
-																paletteOpacity,
-															blockStyle:
-																parentBlockStyle,
-													  })
-													: color;
-
-												setAttributes({
-													'list-svg-palette-status':
-														paletteStatus,
-													'list-svg-palette-color':
-														paletteColor,
-													'list-svg-palette-opacity':
-														paletteOpacity,
-													'list-svg-color': color,
-													listStyleCustom:
-														setSVGColor({
-															svg: listStyleCustom,
-															color: colorStr,
-															type: 'fill',
-														}),
-												});
-											}}
-										/>
-									)}
 								</>
 							)}
 						</>

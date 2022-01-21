@@ -71,7 +71,7 @@ class edit extends MaxiBlockComponent {
 			const { paletteStatus, paletteColor, paletteOpacity } =
 				getPaletteAttributes({
 					obj: attributes,
-					prefix: 'list-svg-',
+					prefix: 'list-',
 				});
 
 			if (paletteStatus) {
@@ -360,7 +360,7 @@ const editSelect = withSelect((select, ownProps) => {
 	) {
 		const { paletteStatus, paletteColor } = getPaletteAttributes({
 			obj: attributes,
-			prefix: 'list-svg-',
+			prefix: 'list-',
 		});
 
 		if (paletteStatus) {

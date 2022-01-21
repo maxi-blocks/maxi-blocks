@@ -94,7 +94,7 @@ const attributes = {
 	listStyleCustom: {
 		type: 'string',
 	},
-	...paletteAttributesCreator({ prefix: 'list-svg-', palette: 4 }),
+	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
 	...attributesData.container,
 	...attributesData.link,
 	...attributesData.textAlignment,

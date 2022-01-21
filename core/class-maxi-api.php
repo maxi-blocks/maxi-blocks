@@ -377,6 +377,15 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
+        public function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         /**
          * Post the posts
          */
@@ -385,16 +394,23 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $style_card = $this->get_maxi_blocks_sc_string();
 
+            if (!$style_card || $style_card === '' || empty($style_card)) {
+                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+                    'id' => 'sc_string',
+                    'object' =>  '',
+                ));
+            }
+
             if ($data['update']) {
                 $new_style_card = [
                     '_maxi_blocks_style_card' => $data['meta'],
                     '_maxi_blocks_style_card_preview' => $data['meta'],
                 ];
             } else {
-                $new_style_card['_maxi_blocks_style_card_preview'] = $data['meta'];
-                if ($style_card !== '') {
-                    $new_style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card'];
-                }
+                $new_style_card = [
+                    '_maxi_blocks_style_card' => '',
+                    '_maxi_blocks_style_card_preview' => $data['meta'],
+                ];
             }
 
             $wpdb->replace("{$wpdb->prefix}maxi_blocks_general", array(

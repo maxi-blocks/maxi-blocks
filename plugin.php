@@ -106,9 +106,12 @@ require_once MAXI_PLUGIN_DIR_PATH . 'src/options.php';
 // MaxiBlocks clean on deactivation
 //======================================================================
 
-register_deactivation_hook(__FILE__, 'maxi_blocks_deactivate');
+//register_deactivation_hook(__FILE__, 'maxi_blocks_deactivate');
 
 function maxi_blocks_deactivate()
 {
-    delete_option('mb_sc_string');
+    global $wpdb;
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}maxi_blocks_general");
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}maxi_blocks_custom_data");
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}maxi_blocks_styles");
 }

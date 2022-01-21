@@ -54,6 +54,10 @@ if (!class_exists('MaxiBlocks_DB')):
             $db_general_table_name = $wpdb->prefix . $db_custom_prefix . 'general';
             $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles';
             $db_custom_data_table_name = $wpdb->prefix . $db_custom_prefix . 'custom_data';
+
+            $wpdb->query("DROP TABLE IF EXISTS {$db_general_table_name}");
+            $wpdb->query("DROP TABLE IF EXISTS {$db_custom_data_table_name}");
+            $wpdb->query("DROP TABLE IF EXISTS {$db_css_table_name}");
            
             $charset_collate = $wpdb->get_charset_collate();
 

@@ -17,6 +17,8 @@ describe('DB optimization test', () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 
+		await page.waitForTimeout(1000);
+
 		const el = await page.$('#maxi-blocks-sc-vars-inline-css');
 
 		const elExist = !!el;

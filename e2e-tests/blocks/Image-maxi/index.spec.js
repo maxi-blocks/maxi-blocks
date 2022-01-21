@@ -49,6 +49,32 @@ describe('Image Maxi', () => {
 			submitUrl => submitUrl[0].click()
 		);
 
+		expect(await getAttributes('externalUrl')).toStrictEqual(
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg'
+		);
+	});
+
+	it('Image Dimension', async () => {
+		await openSidebarTab(page, 'style', 'dimension');
+
+		// imageRatio
+		const selectorRatio = await page.$(
+			'.maxi-image-inspector__ratio select'
+		);
+
+		await selectorRatio.select('ar11');
+
+		expect(await getAttributes('imageRatio')).toStrictEqual('ar11');
+
+		const checkFrontend = await page.$eval(
+			'.maxi-image-block .maxi-image-ratio__ar11',
+			div => div.innerHTML
+		);
+
+		expect(checkFrontend).toMatchSnapshot();
+	});
+
+	it('check title position', async () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'caption');
 
 		// Custom caption
@@ -64,6 +90,22 @@ describe('Image Maxi', () => {
 
 		await positionSelector.select('top');
 		expect(await getAttributes('captionPosition')).toStrictEqual('top');
+
+		const caption = await page.$eval(
+			'.maxi-image-block__resizer figcaption',
+			input => input.focus()
+		);
+
+		await page.keyboard.type('Image test caption');
+
+		const htmlCaption = await page.$eval(
+			'.maxi-image-block__resizer figcaption',
+			content => content.innerText
+		);
+
+		expect(htmlCaption).toMatchSnapshot();
+
+		debugger;
 
 		// Caption gap
 		await page.$$eval('.maxi-image-inspector__caption-gap input', input =>
@@ -84,20 +126,11 @@ describe('Image Maxi', () => {
 			'px'
 		);
 
-		// insert text
-		await page.waitForSelector('.maxi-image-block__caption span');
-		const text = await page.$('.maxi-image-block__caption span');
-		await text.click();
-		await page.keyboard.type('Testing Caption', { delay: 100 });
-
-		expect(await getAttributes('captionContent')).toStrictEqual(
-			'Testing Caption'
-		);
-
 		// fontFamily
 		const fontFamilySelector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
+
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat', { delay: 100 });
 		await page.keyboard.press('Enter');
@@ -298,43 +331,6 @@ describe('Image Maxi', () => {
 		]);
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
-	});
-
-	it('Image Dimension', async () => {
-		await openSidebarTab(page, 'style', 'dimension');
-
-		// width
-		await page.$eval(
-			'.maxi-image-inspector__dimension-width .components-input-control__input',
-			input => input.focus()
-		);
-
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('60');
-
-		expect(await getAttributes('imgWidth')).toStrictEqual(60);
-
-		// reset width
-		const button = await page.$(
-			'.maxi-image-inspector__dimension-width button'
-		);
-		await button.click();
-
-		expect(await getAttributes('imgWidth')).toStrictEqual(100);
-
-		// imageRatio
-		const selector = await page.$('.maxi-image-inspector__ratio select');
-
-		await selector.select('ar11');
-
-		expect(await getAttributes('imageRatio')).toStrictEqual('ar11');
-
-		const checkFrontend = await page.$eval(
-			'.maxi-image-block .maxi-image-ratio__ar11',
-			div => div.innerHTML
-		);
-
-		expect(checkFrontend).toMatchSnapshot();
 	});
 
 	it('Image alt tag', async () => {

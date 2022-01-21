@@ -98,7 +98,7 @@ const BorderControl = props => {
 			);
 		});
 
-		if (hasBorderWidth) return borderStyleValue;
+		if (hasBorderWidth) return borderStyleValue || 'none';
 		return 'none';
 	};
 

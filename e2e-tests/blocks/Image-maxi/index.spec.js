@@ -18,6 +18,8 @@ import {
 	getAttributes,
 	editColorControl,
 	getBlockStyle,
+	addTypographyOptions,
+	addTypographyStyle,
 } from '../../utils';
 
 describe('Image Maxi', () => {
@@ -102,21 +104,15 @@ describe('Image Maxi', () => {
 		);
 
 		// size, line-height, letter-spacing
-		const inputs = await accordionPanel.$$(
-			'.maxi-advanced-number-control .maxi-base-control__field input'
-		);
-
-		await inputs[4].focus();
-		await page.keyboard.type('19');
-		await page.waitForTimeout(200);
-
-		await inputs[6].focus();
-		await page.keyboard.type('4');
-		await page.waitForTimeout(200);
-
-		await inputs[8].focus();
-		await page.keyboard.type('11');
-		await page.waitForTimeout(200);
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-typography-control__text-options-tabs'
+			),
+			size: '11',
+			lineHeight: '22',
+			letterSpacing: '30',
+		});
 
 		const responsiveStage = await accordionPanel.$eval(
 			'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
@@ -130,33 +126,21 @@ describe('Image Maxi', () => {
 		]);
 
 		const expectedAttributesTwo = {
-			[`font-size-${responsiveStage}`]: 19,
-			[`line-height-${responsiveStage}`]: 4,
-			[`letter-spacing-${responsiveStage}`]: 11,
+			[`font-size-${responsiveStage}`]: 11,
+			[`line-height-${responsiveStage}`]: 22,
+			[`letter-spacing-${responsiveStage}`]: 30,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
 
 		// Weight, Transform, Style, Decoration
-		const weightSelector = await accordionPanel.$(
-			'.maxi-typography-control__weight .maxi-base-control__field select'
-		);
-		await weightSelector.select('300');
-
-		const transformSelector = await accordionPanel.$(
-			'.maxi-typography-control__transform .maxi-base-control__field select'
-		);
-		await transformSelector.select('capitalize');
-
-		const fontStyleSelector = await accordionPanel.$(
-			'.maxi-typography-control__font-style .maxi-base-control__field select'
-		);
-		await fontStyleSelector.select('italic');
-
-		const decorationSelector = await accordionPanel.$(
-			'.maxi-typography-control__decoration .maxi-base-control__field select'
-		);
-		await decorationSelector.select('overline');
+		await addTypographyStyle({
+			page,
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+		});
 
 		const result = await getAttributes([
 			'font-style-general',

@@ -54,29 +54,6 @@ describe('Image Maxi', () => {
 		expect(await getAttributes('externalUrl')).toStrictEqual(
 			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg'
 		);
-	});
-
-	it('Image Dimension', async () => {
-		await openSidebarTab(page, 'style', 'dimension');
-
-		// imageRatio
-		const selectorRatio = await page.$(
-			'.maxi-image-inspector__ratio select'
-		);
-
-		await selectorRatio.select('ar11');
-
-		expect(await getAttributes('imageRatio')).toStrictEqual('ar11');
-
-		const checkFrontend = await page.$eval(
-			'.maxi-image-block .maxi-image-ratio__ar11',
-			div => div.innerHTML
-		);
-
-		expect(checkFrontend).toMatchSnapshot();
-	});
-
-	it('check title position', async () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'caption');
 
 		// Custom caption
@@ -93,21 +70,15 @@ describe('Image Maxi', () => {
 		await positionSelector.select('top');
 		expect(await getAttributes('captionPosition')).toStrictEqual('top');
 
-		const caption = await page.$eval(
-			'.maxi-image-block__resizer figcaption',
-			input => input.focus()
+		// insert text
+		await page.waitForSelector('.maxi-image-block__caption span');
+		const text = await page.$('.maxi-image-block__caption span');
+		await text.click();
+		await page.keyboard.type('Testing Caption', { delay: 100 });
+
+		expect(await getAttributes('captionContent')).toStrictEqual(
+			'Testing Caption'
 		);
-
-		await page.keyboard.type('Image test caption');
-
-		const htmlCaption = await page.$eval(
-			'.maxi-image-block__resizer figcaption',
-			content => content.innerText
-		);
-
-		expect(htmlCaption).toMatchSnapshot();
-
-		debugger;
 
 		// Caption gap
 		await page.$$eval('.maxi-image-inspector__caption-gap input', input =>
@@ -117,22 +88,10 @@ describe('Image Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('5');
 
-		expect(await getAttributes('caption-gap-general')).toStrictEqual(5);
-
-		const gapSelector = await page.$(
-			'.maxi-image-inspector__caption-gap select'
-		);
-
-		await gapSelector.select('px');
-		expect(await getAttributes('caption-gap-unit-general')).toStrictEqual(
-			'px'
-		);
-
 		// fontFamily
 		const fontFamilySelector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
-
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat', { delay: 100 });
 		await page.keyboard.press('Enter');
@@ -168,11 +127,11 @@ describe('Image Maxi', () => {
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
-				'.maxi-typography-control__text-options-tabs'
+				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-tabs-content'
 			),
-			size: '11',
-			lineHeight: '22',
-			letterSpacing: '30',
+			size: '19',
+			lineHeight: '4',
+			letterSpacing: '11',
 		});
 
 		const responsiveStage = await accordionPanel.$eval(
@@ -187,9 +146,9 @@ describe('Image Maxi', () => {
 		]);
 
 		const expectedAttributesTwo = {
-			[`font-size-${responsiveStage}`]: 11,
-			[`line-height-${responsiveStage}`]: 22,
-			[`letter-spacing-${responsiveStage}`]: 30,
+			[`font-size-${responsiveStage}`]: 19,
+			[`line-height-${responsiveStage}`]: 4,
+			[`letter-spacing-${responsiveStage}`]: 11,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
@@ -320,6 +279,53 @@ describe('Image Maxi', () => {
 		expect(linkAttributes).toStrictEqual(expectedValues);
 	});
 
+	it('Image Dimension', async () => {
+		await openSidebarTab(page, 'style', 'dimension');
+
+		// width
+		await page.$eval(
+			'.maxi-image-inspector__dimension-width .components-input-control__input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('60');
+
+		expect(await getAttributes('imgWidth')).toStrictEqual(60);
+
+		// reset width
+		const button = await page.$(
+			'.maxi-image-inspector__dimension-width button'
+		);
+		await button.click();
+
+		expect(await getAttributes('imgWidth')).toStrictEqual(100);
+
+		// imageRatio
+		const selector = await page.$('.maxi-image-inspector__ratio select');
+
+		await selector.select('ar11');
+
+		expect(await getAttributes('imageRatio')).toStrictEqual('ar11');
+
+		const checkFrontend = await page.$eval(
+			'.maxi-image-block .maxi-image-ratio__ar11',
+			div => div.innerHTML
+		);
+
+		expect(checkFrontend).toMatchSnapshot();
+		expect(await getAttributes('caption-gap-general')).toStrictEqual(5);
+
+		const gapSelector = await page.$(
+			'.maxi-image-inspector__caption-gap select'
+		);
+
+		await gapSelector.select('px');
+		expect(await getAttributes('caption-gap-unit-general')).toStrictEqual(
+			'px'
+		);
+	});
+
 	it('Image alt tag', async () => {
 		await openSidebarTab(page, 'style', 'alt tag');
 
@@ -331,18 +337,20 @@ describe('Image Maxi', () => {
 			input.focus()
 		);
 
-		await page.keyboard.type('Image Tag');
+		await page.keyboard.type('Image Custom Tag');
 
-		expect(await getAttributes('mediaAlt')).toStrictEqual('Image Tag');
+		expect(await getAttributes('mediaAlt')).toStrictEqual(
+			'Image Custom Tag'
+		);
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
 		const expectAlt = await previewPage.$eval(
-			'.entry-content .maxi-image-block__image',
+			'figure div img',
 			alterative => alterative.alt
 		);
-		expect(expectAlt).toStrictEqual('Image Tag');
+		expect(expectAlt).toStrictEqual('Image Custom Tag');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -100,15 +100,3 @@ require_once plugin_dir_path(__FILE__) . 'src/init.php';
  * TODO: After creating dashboard plugin we should remove this file
  */
 require_once MAXI_PLUGIN_DIR_PATH . 'src/options.php';
-
-
-//======================================================================
-// MaxiBlocks clean on deactivation
-//======================================================================
-
-register_deactivation_hook(__FILE__, 'maxi_blocks_deactivate');
-
-function maxi_blocks_deactivate()
-{
-    delete_option('mb_sc_string');
-}

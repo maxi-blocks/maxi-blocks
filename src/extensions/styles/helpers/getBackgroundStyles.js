@@ -835,25 +835,25 @@ const getGeneralBackgroundStyles = (
 	breakpoints.forEach(breakpoint => {
 		const widthTop =
 			getLastBreakpointAttribute('border-top-width', breakpoint, props) ||
-			0;
+			2;
 		const widthBottom =
 			getLastBreakpointAttribute(
 				'border-bottom-width',
 				breakpoint,
 				props
-			) || 0;
+			) || 2;
 		const widthLeft =
 			getLastBreakpointAttribute(
 				'border-left-width',
 				breakpoint,
 				props
-			) || 0;
+			) || 2;
 		const widthRight =
 			getLastBreakpointAttribute(
 				'border-right-width',
 				breakpoint,
 				props
-			) || 0;
+			) || 2;
 		const widthUnit =
 			getLastBreakpointAttribute(
 				'border-unit-width',

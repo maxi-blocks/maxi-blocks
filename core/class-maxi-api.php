@@ -372,19 +372,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $table_name .
                 ' where id = "sc_string"';
             
-            $response =  maybe_unserialize($wpdb->get_var($query));
-
-            if (!$response) {
-                $response = '';
-                $empty_sc_string = [
-                    '_maxi_blocks_style_card' =>'',
-                    '_maxi_blocks_style_card_preview' => '',
-                ];
-                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
-                    'id' => 'sc_string',
-                    'object' =>  serialize($empty_sc_string),
-                ));
-            }
+            $response = maybe_unserialize($wpdb->get_var($query));
 
             return $response;
         }
@@ -409,18 +397,11 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
-            if ($style_card === '') {
-                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+            $wpdb->replace("{$wpdb->prefix}maxi_blocks_general", array(
                 'id' => 'sc_string',
                 'object' =>  serialize($new_style_card),
             ));
-            } else {
-                $wpdb->update("{$wpdb->prefix}maxi_blocks_general", array(
-                    'id' => 'sc_string',
-                    'object' =>  serialize($new_style_card),
-                ), [ 'id' => 'sc_string']);
-            }
-
+            
             return $new_style_card;
         }
 

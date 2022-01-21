@@ -27,6 +27,7 @@ import {
 	getBlockStyle,
 	getParallaxLayers,
 	getHasVideo,
+	getHasScrollEffects,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
@@ -245,8 +246,17 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID, 'background-layers': bgLayers } =
 			this.props.attributes;
 
+		const scroll = getGroupAttributes(
+			this.props.attributes,
+			'scroll',
+			false,
+			'',
+			true
+		);
+
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
+		const hasScrollEffects = getHasScrollEffects(uniqueID, scroll);
 
 		return {
 			[uniqueID]: {
@@ -254,6 +264,7 @@ class MaxiBlockComponent extends Component {
 					...{ parallax: bgParallaxLayers },
 				}),
 				...(hasVideo && { bg_video: true }),
+				...(hasScrollEffects && { scroll_effects: true }),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};

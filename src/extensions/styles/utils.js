@@ -43,5 +43,23 @@ const getVideoLayers = (uniqueID, bgLayers) => {
 	return { [uniqueID]: response };
 };
 
+const getScrollEffects = (uniqueID, scroll) => {
+	const response = Object.fromEntries(
+		Object.entries(scroll).filter(
+			([key]) =>
+				key.includes('-status-') &&
+				!key.includes('reverse') &&
+				!key.includes('preview') &&
+				scroll[key]
+		)
+	);
+
+	if (!response || isEmpty(response)) return null;
+	return { [uniqueID]: response };
+};
+
 export const getHasVideo = (uniqueID, bgLayers) =>
 	!isEmpty(getVideoLayers(uniqueID, bgLayers));
+
+export const getHasScrollEffects = (uniqueID, scroll) =>
+	!isEmpty(getScrollEffects(uniqueID, scroll));

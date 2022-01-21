@@ -382,39 +382,62 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function get_maxi_blocks_sc_string()
         {
-            $this->mb_register_sc_options();
-
-            $response = get_option('mb_sc_string')[
-                '_maxi_blocks_styles_preview'
-            ];
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+            $query = 'SELECT object FROM ' .
+                     $table_name .
+                     ' where id = "sc_string"';
+        
+            $response =  maybe_unserialize($wpdb->get_var($query));
+        
             if (!$response) {
                 $response = '';
+                $empty_sc_string = [
+                            '_maxi_blocks_style_card' =>'',
+                            '_maxi_blocks_style_card_preview' => '',
+                        ];
+                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+                            'id' => 'sc_string',
+                            'object' =>  serialize($empty_sc_string),
+                        ));
             }
-
+        
             return $response;
         }
-
+        
         /**
          * Post the posts
          */
         public function post_maxi_blocks_sc_string($data)
         {
-            $this->mb_register_sc_options();
-
-            $style_card = get_option('mb_sc_string');
-
+            global $wpdb;
+            $style_card = $this->get_maxi_blocks_sc_string();
+        
             if ($data['update']) {
-                $style_card = [
-                    '_maxi_blocks_style_card' => $data['meta'],
-                    '_maxi_blocks_style_card_preview' => $data['meta'],
-                ];
+                $new_style_card = [
+                            '_maxi_blocks_style_card' => $data['meta'],
+                            '_maxi_blocks_style_card_preview' => $data['meta'],
+                        ];
             } else {
-                $style_card['_maxi_blocks_style_card_preview'] = $data['meta'];
+                $new_style_card['_maxi_blocks_style_card_preview'] = $data['meta'];
+                if ($style_card !== '') {
+                    $new_style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card'];
+                }
             }
-
-            update_option('mb_sc_string', $style_card);
-
-            return $style_card;
+        
+            if ($style_card === '') {
+                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+                        'id' => 'sc_string',
+                        'object' =>  serialize($new_style_card),
+                    ));
+            } else {
+                $wpdb->update("{$wpdb->prefix}maxi_blocks_general", array(
+                            'id' => 'sc_string',
+                            'object' =>  serialize($new_style_card),
+                        ), [ 'id' => 'sc_string']);
+            }
+        
+            return $new_style_card;
         }
 
         public function get_maxi_blocks_breakpoints()

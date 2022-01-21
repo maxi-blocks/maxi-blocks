@@ -19,6 +19,8 @@ import {
 	getAttributes,
 	editColorControl,
 	getBlockStyle,
+	addTypographyOptions,
+	addTypographyStyle,
 } from '../../utils';
 
 describe('Image Maxi', () => {
@@ -163,21 +165,15 @@ describe('Image Maxi', () => {
 		);
 
 		// size, line-height, letter-spacing
-		const inputs = await accordionPanel.$$(
-			'.maxi-advanced-number-control .maxi-base-control__field input'
-		);
-
-		await inputs[4].focus();
-		await page.keyboard.type('19');
-		await page.waitForTimeout(200);
-
-		await inputs[6].focus();
-		await page.keyboard.type('4');
-		await page.waitForTimeout(200);
-
-		await inputs[8].focus();
-		await page.keyboard.type('11');
-		await page.waitForTimeout(200);
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-typography-control__text-options-tabs'
+			),
+			size: '11',
+			lineHeight: '22',
+			letterSpacing: '30',
+		});
 
 		const responsiveStage = await accordionPanel.$eval(
 			'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
@@ -191,33 +187,21 @@ describe('Image Maxi', () => {
 		]);
 
 		const expectedAttributesTwo = {
-			[`font-size-${responsiveStage}`]: 19,
-			[`line-height-${responsiveStage}`]: 4,
-			[`letter-spacing-${responsiveStage}`]: 11,
+			[`font-size-${responsiveStage}`]: 11,
+			[`line-height-${responsiveStage}`]: 22,
+			[`letter-spacing-${responsiveStage}`]: 30,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
 
 		// Weight, Transform, Style, Decoration
-		const weightSelector = await accordionPanel.$(
-			'.maxi-typography-control__weight .maxi-base-control__field select'
-		);
-		await weightSelector.select('300');
-
-		const transformSelector = await accordionPanel.$(
-			'.maxi-typography-control__transform .maxi-base-control__field select'
-		);
-		await transformSelector.select('capitalize');
-
-		const fontStyleSelector = await accordionPanel.$(
-			'.maxi-typography-control__font-style .maxi-base-control__field select'
-		);
-		await fontStyleSelector.select('italic');
-
-		const decorationSelector = await accordionPanel.$(
-			'.maxi-typography-control__decoration .maxi-base-control__field select'
-		);
-		await decorationSelector.select('overline');
+		await addTypographyStyle({
+			page,
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+		});
 
 		const result = await getAttributes([
 			'font-style-general',
@@ -247,16 +231,19 @@ describe('Image Maxi', () => {
 
 		const shadowStyles = [
 			'none',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.5)',
-			'4px 4px 0px rgba(var(--maxi-light-color-8),0.21)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.3)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.5)',
+			'4px 4px 0px rgba(var(--maxi-light-color-8,150,176,203),0.21)',
 		];
 
 		for (let i = 0; i < shadowStyles.length; i += 1) {
 			const setting = shadowStyles[i];
 
+			await page.waitForSelector(
+				'.maxi-typography-control__text-shadow .maxi-default-styles-control button'
+			);
 			await accordionPanel.$$eval(
-				'.maxi-textshadow-control.maxi-typography-control__text-shadow .maxi-default-styles-control button',
+				'.maxi-typography-control__text-shadow .maxi-default-styles-control button',
 				(buttons, i) => buttons[i].click(),
 				i
 			);
@@ -269,7 +256,7 @@ describe('Image Maxi', () => {
 
 		// LinkColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[0].click()
 		);
 
@@ -282,7 +269,7 @@ describe('Image Maxi', () => {
 
 		// LinkHoverColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[1].click()
 		);
 		await editColorControl({
@@ -294,7 +281,7 @@ describe('Image Maxi', () => {
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[2].click()
 		);
 		await editColorControl({
@@ -306,7 +293,7 @@ describe('Image Maxi', () => {
 
 		// LinkActiveColor
 		await accordionPanel.$$eval(
-			'.maxi-button-group-control.maxi-typography-control__link-options button',
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
 			tabs => tabs[3].click()
 		);
 		await editColorControl({

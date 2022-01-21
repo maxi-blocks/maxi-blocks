@@ -47,7 +47,7 @@ describe('ClipPathOption', () => {
 
 		// Edit the square
 		await accordionPanel.$$eval(
-			'.maxi-clip-path-control__handles .maxi-button-group-control button',
+			'.maxi-clip-path-control__handles .maxi-settingstab-control button',
 			use => use[1].click()
 		);
 

@@ -176,7 +176,7 @@ const LibraryContainer = props => {
 	);
 
 	useEffect(() => {
-		updateSCOnEditor(selectedSCValue);
+		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
 
 	const searchClient = algoliasearch(
@@ -443,8 +443,6 @@ const LibraryContainer = props => {
 
 				onSelect({
 					'background-svg-SVGElement': resEl.outerHTML,
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
 					'background-svg-SVGData': resData,
 				});
 

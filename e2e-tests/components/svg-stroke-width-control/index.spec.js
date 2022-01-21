@@ -1,5 +1,5 @@
 /**
- * WordPress
+ * WordPress dependencies
  */
 import {
 	createNewPost,
@@ -9,7 +9,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 /**
- * Interactive dependencies
+ * Internal dependencies
  */
 import {
 	modalMock,
@@ -24,9 +24,13 @@ describe('Svg stroke width control', () => {
 		await insertBlock('SVG Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
-		await page.$$eval(
-			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
-			svg => svg[0].click()
+		// Close model opened automatically by the block
+		await page.waitForSelector(
+			'.components-modal__content .components-modal__header button'
+		);
+		await page.$eval(
+			'.components-modal__content .components-modal__header button',
+			svg => svg.click()
 		);
 
 		const accordionPanel = await openSidebarTab(
@@ -47,7 +51,6 @@ describe('Svg stroke width control', () => {
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
-
 	it('Check responsive svg stroke width control', async () => {
 		await changeResponsive(page, 's');
 		const accordionPanel = await openSidebarTab(
@@ -56,15 +59,15 @@ describe('Svg stroke width control', () => {
 			'icon line width'
 		);
 
-		const baseStrokeValue = await accordionPanel.$$eval(
+		const baseStrokeValue = await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
-			input => input[1].value
+			input => input.placeholder
 		);
 		expect(baseStrokeValue).toStrictEqual('3');
 
-		await accordionPanel.$$eval(
+		await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
-			input => input[0].focus()
+			input => input.focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
@@ -72,17 +75,17 @@ describe('Svg stroke width control', () => {
 
 		await changeResponsive(page, 'xs');
 
-		const sStrokeValue = await accordionPanel.$$eval(
+		const sStrokeValue = await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
-			input => input[1].value
+			input => input.placeholder
 		);
 		expect(sStrokeValue).toStrictEqual('1');
 
 		await changeResponsive(page, 'm');
 
-		const mStrokeValue = await accordionPanel.$$eval(
+		const mStrokeValue = await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
-			input => input[1].value
+			input => input.placeholder
 		);
 		expect(mStrokeValue).toStrictEqual('3');
 	});

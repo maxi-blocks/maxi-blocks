@@ -1,25 +1,11 @@
-const opacity = {
-	'opacity-general': {
-		type: 'number',
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+
+const opacity = breakpointAttributesCreator({
+	obj: {
+		opacity: {
+			type: 'number',
+		},
 	},
-	'opacity-xxl': {
-		type: 'number',
-	},
-	'opacity-xl': {
-		type: 'number',
-	},
-	'opacity-l': {
-		type: 'number',
-	},
-	'opacity-m': {
-		type: 'number',
-	},
-	'opacity-s': {
-		type: 'number',
-	},
-	'opacity-xs': {
-		type: 'number',
-	},
-};
+});
 
 export default opacity;

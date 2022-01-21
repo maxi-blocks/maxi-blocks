@@ -33,6 +33,7 @@ const customClasses = ({ props }) => {
 				}
 			/>
 		),
+		extraIndicators: ['extraClassName'],
 	};
 };
 

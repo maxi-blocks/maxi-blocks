@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
-import ButtonGroupControl from '../../../button-group-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import {
 	getAttributeKey,
 	getBlockStyle,
@@ -57,7 +57,7 @@ const BackgroundColor = props => {
 			};
 
 		const bgPaletteStatus = getLastBreakpointAttribute(
-			`${prefix}background-palette-color-status`,
+			`${prefix}background-palette-status`,
 			breakpoint,
 			props
 		);
@@ -100,10 +100,11 @@ const BackgroundColor = props => {
 			icon={<div className='toolbar-item__icon' style={getStyle()} />}
 		>
 			<div className='toolbar-item__background__popover'>
-				<ButtonGroupControl
+				<SettingTabsControl
 					label={__('Enable Background Colour', 'maxi-blocks')}
+					type='buttons'
 					selected={isBackgroundColor}
-					options={[
+					items={[
 						{
 							label: __('Yes', 'maxi-blocks'),
 							value: 1,

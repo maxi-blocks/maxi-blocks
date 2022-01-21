@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { getPrefixedAttributes } from '../../extensions/styles';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -19,32 +19,35 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.numberCounter,
 	customLabel: {
 		type: 'string',
 		default: __('Number Counter', 'maxi-blocks'),
 	},
-	...getPrefixedAttributes(attributesData.border, prefix),
-	...getPrefixedAttributes(attributesData.borderHover, prefix),
-	...getPrefixedAttributes(attributesData.borderRadius, prefix),
-	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
-	...getPrefixedAttributes(attributesData.borderWidth, prefix),
-	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
-	...getPrefixedAttributes(attributesData.boxShadow, prefix),
-	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
-	...{
-		...getPrefixedAttributes(attributesData.size, prefix),
-		[`${prefix}width-general`]: {
-			type: 'number',
-			default: 250,
+	...attributesData.numberCounter,
+	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderRadiusHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderWidthHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.size,
+		prefix,
+		diffValAttr: {
+			[`${prefix}width-general`]: 250,
+			[`${prefix}width-unit-general`]: 'px',
 		},
-		[`${prefix}width-unit-general`]: {
-			type: 'string',
-			default: 'px',
-		},
-	},
-	...getPrefixedAttributes(attributesData.margin, prefix),
-	...getPrefixedAttributes(attributesData.padding, prefix),
+	}),
+	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 
 	/**
 	 * Canvas styles

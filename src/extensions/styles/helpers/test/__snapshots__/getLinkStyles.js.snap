@@ -5,49 +5,175 @@ Object {
   " p.maxi-text-block__content a": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4),1))",
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
     },
   },
   " p.maxi-text-block__content a:active": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3),1))",
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
     },
   },
   " p.maxi-text-block__content a:active span": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3),1))",
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
     },
   },
   " p.maxi-text-block__content a:hover": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4),0.2))",
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
       },
     },
   },
   " p.maxi-text-block__content a:hover span": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4),0.2))",
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
       },
     },
   },
   " p.maxi-text-block__content a:visited": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3),1))",
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
     },
   },
   " p.maxi-text-block__content a:visited span": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3),1))",
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
     },
   },
@@ -61,11 +187,47 @@ Object {
       "general": Object {
         "color": "rgba(57,189,39,1)",
       },
+      "l": Object {
+        "color": "rgba(57,189,39,1)",
+      },
+      "m": Object {
+        "color": "rgba(57,189,39,1)",
+      },
+      "s": Object {
+        "color": "rgba(57,189,39,1)",
+      },
+      "xl": Object {
+        "color": "rgba(57,189,39,1)",
+      },
+      "xs": Object {
+        "color": "rgba(57,189,39,1)",
+      },
+      "xxl": Object {
+        "color": "rgba(57,189,39,1)",
+      },
     },
   },
   " p.maxi-text-block__content a:active": Object {
     "link": Object {
       "general": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "l": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "m": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "s": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "xl": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "xs": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "xxl": Object {
         "color": "rgba(221,32,32,1)",
       },
     },
@@ -75,11 +237,47 @@ Object {
       "general": Object {
         "color": "rgba(221,32,32,1)",
       },
+      "l": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "m": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "s": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "xl": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "xs": Object {
+        "color": "rgba(221,32,32,1)",
+      },
+      "xxl": Object {
+        "color": "rgba(221,32,32,1)",
+      },
     },
   },
   " p.maxi-text-block__content a:hover": Object {
     "link": Object {
       "general": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "l": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "m": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "s": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xl": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xs": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xxl": Object {
         "color": "rgba(191,192,86,1)",
       },
     },
@@ -89,6 +287,24 @@ Object {
       "general": Object {
         "color": "rgba(191,192,86,1)",
       },
+      "l": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "m": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "s": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xl": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xs": Object {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xxl": Object {
+        "color": "rgba(191,192,86,1)",
+      },
     },
   },
   " p.maxi-text-block__content a:visited": Object {
@@ -96,11 +312,47 @@ Object {
       "general": Object {
         "color": "rgba(27,109,168,1)",
       },
+      "l": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "m": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "s": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "xl": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "xs": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "xxl": Object {
+        "color": "rgba(27,109,168,1)",
+      },
     },
   },
   " p.maxi-text-block__content a:visited span": Object {
     "link": Object {
       "general": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "l": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "m": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "s": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "xl": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "xs": Object {
+        "color": "rgba(27,109,168,1)",
+      },
+      "xxl": Object {
         "color": "rgba(27,109,168,1)",
       },
     },

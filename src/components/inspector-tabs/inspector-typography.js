@@ -113,6 +113,7 @@ const typography = ({
 								)}
 							</>
 						),
+						extraIndicators: ['typography-status-hover'],
 					},
 				]}
 			/>

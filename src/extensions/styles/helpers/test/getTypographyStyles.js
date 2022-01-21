@@ -1,13 +1,29 @@
 import getTypographyStyles from '../getTypographyStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
+jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
+	return jest.fn(() => {
+		return {
+			value: {
+				name: 'Maxi (Default)',
+				status: 'active',
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						color: {
+							1: '255,255,255',
+							2: '242,249,253',
+							3: '155,155,155',
+							4: '255,74,23',
+							5: '0,0,0',
+							6: '201,52,10',
+							7: '8,18,25',
+							8: '150,176,203',
+						},
+					},
+				},
+			},
+		};
+	});
 });
 
 describe('getTypographyStyles', () => {
@@ -128,14 +144,14 @@ describe('getTypographyStyles', () => {
 			isList: false,
 			typeOfList: 'ul',
 			listReversed: 0,
-			'link-palette-color-status-general': true,
+			'link-palette-status-general': true,
 			'link-palette-color-general': 4,
 
-			'link-active-palette-color-status-general': true,
+			'link-active-palette-status-general': true,
 			'link-active-palette-color-general': 6,
-			'link-visited-palette-color-status-general': true,
+			'link-visited-palette-status-general': true,
 			'link-visited-palette-color-general': 6,
-			'palette-color-status-general': true,
+			'palette-status-general': true,
 			'palette-color-general': 4,
 			'font-size-unit-general': 'px',
 			'line-height-unit-general': 'px',
@@ -238,13 +254,13 @@ describe('getTypographyStyles', () => {
 			'vertical-align-xs': 'none',
 			'custom-formats': 'object',
 			'palette-opacity-general': 1,
-			'link-hover-palette-color-status-general': true,
+			'link-hover-palette-status-general': true,
 			'link-hover-palette-color-general': 6,
 			'link-hover-palette-color-l': 3,
 		};
 		const hoverObj = {
 			'typography-status-hover': true,
-			'palette-color-status-general-hover': true,
+			'palette-status-general-hover': true,
 			'palette-color-general-hover': 3,
 			'palette-color-l-hover': 6,
 			'palette-opacity-general-hover': 1,

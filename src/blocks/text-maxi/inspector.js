@@ -10,14 +10,13 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
-	AdvancedNumberControl,
 	FontLevelControl,
-	SelectControl,
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsText, categoriesText } from './custom-css';
+import listTab from './list-tab';
 
 /**
  * External dependencies
@@ -30,8 +29,7 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
 const Inspector = memo(
 	props => {
 		const { attributes, deviceType, setAttributes } = props;
-		const { isList, listReversed, listStart, textLevel, typeOfList } =
-			attributes;
+		const { isList, textLevel } = attributes;
 
 		return (
 			<InspectorControls>
@@ -73,123 +71,9 @@ const Inspector = memo(
 														/>
 													),
 												},
-											deviceType === 'general' &&
-												isList && {
-													label: __(
-														'List options',
-														'maxi-blocks'
-													),
-													content: (
-														<>
-															<SelectControl
-																label={__(
-																	'Type of list',
-																	'maxi-blocks'
-																)}
-																value={
-																	typeOfList
-																}
-																options={[
-																	{
-																		label: __(
-																			'Unorganized',
-																			'maxi-blocks'
-																		),
-																		value: 'ul',
-																	},
-																	{
-																		label: __(
-																			'Organized',
-																			'maxi-blocks'
-																		),
-																		value: 'ol',
-																	},
-																]}
-																onChange={typeOfList =>
-																	setAttributes(
-																		{
-																			typeOfList,
-																		}
-																	)
-																}
-															/>
-															{typeOfList ===
-																'ol' && (
-																<>
-																	<AdvancedNumberControl
-																		label={__(
-																			'Start From',
-																			'maxi-blocks'
-																		)}
-																		value={
-																			listStart
-																		}
-																		onChangeValue={val => {
-																			setAttributes(
-																				{
-																					listStart:
-																						val !==
-																							undefined &&
-																						val !==
-																							''
-																							? val
-																							: '',
-																				}
-																			);
-																		}}
-																		min={
-																			-99
-																		}
-																		max={99}
-																		onReset={() =>
-																			setAttributes(
-																				{
-																					listStart:
-																						'',
-																				}
-																			)
-																		}
-																	/>
-																	<SelectControl
-																		label={__(
-																			'Reverse order',
-																			'maxi-blocks'
-																		)}
-																		value={
-																			listReversed
-																		}
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={value => {
-																			setAttributes(
-																				{
-																					listReversed:
-																						Number(
-																							value
-																						),
-																				}
-																			);
-																		}}
-																	/>
-																</>
-															)}
-														</>
-													),
-												},
+											...(deviceType === 'general' &&
+												isList &&
+												listTab(props)),
 											...inspectorTabs.alignment({
 												props,
 												isTextAlignment: true,

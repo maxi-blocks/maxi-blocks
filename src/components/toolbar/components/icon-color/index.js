@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import ButtonGroupControl from '../../../button-group-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import {
 	getColorRGBAString,
 	getDefaultAttribute,
@@ -28,7 +28,7 @@ const IconColor = props => {
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
 	const getColor = attr =>
-		attr['icon-palette-color-status']
+		attr['icon-palette-status']
 			? getColorRGBAString({
 					firstVar: 'icon',
 					secondVar: `color-${attr['icon-palette-color']}`,
@@ -53,13 +53,14 @@ const IconColor = props => {
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-color__popover'>
-				<ButtonGroupControl
+				<SettingTabsControl
 					label={__(
-						'Inherit Colour/Backgrond from Button',
+						'Inherit Colour/Background from Button',
 						'maxi-block'
 					)}
+					type='buttons'
 					selected={props['icon-inherit']}
-					options={[
+					items={[
 						{
 							label: __('Yes', 'maxi-block'),
 							value: 1,
@@ -85,12 +86,12 @@ const IconColor = props => {
 						color={props['icon-color']}
 						defaultColor={getDefaultAttribute('icon-color')}
 						paletteColor={props['icon-palette-color']}
-						paletteStatus={props['icon-palette-color-status']}
+						paletteStatus={props['icon-palette-status']}
 						onChange={({ color, paletteColor, paletteStatus }) => {
 							onChange({
 								'icon-color': color,
 								'icon-palette-color': paletteColor,
-								'icon-palette-color-status': paletteStatus,
+								'icon-palette-status': paletteStatus,
 							});
 						}}
 						disableOpacity

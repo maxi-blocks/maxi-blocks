@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { getPrefixedAttributes } from '../../extensions/styles';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -29,14 +29,13 @@ const attributes = {
 	},
 	buttonContent: {
 		type: 'string',
-		default: '',
 	},
 	...attributesData.icon,
 	...attributesData.iconHover,
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,
-		'icon-background-palette-color-status-general': {
+		'icon-background-palette-status-general': {
 			type: 'boolean',
 			default: true,
 		},
@@ -78,56 +77,58 @@ const attributes = {
 		},
 	},
 	...attributesData.typographyHover,
-	...{
-		...getPrefixedAttributes(attributesData.rawBackground, prefix),
-		[`${prefix}background-active-media-general`]: {
-			type: 'string',
-			default: 'color',
+	...prefixAttributesCreator({
+		obj: attributesData.background,
+		prefix,
+		diffValAttr: {
+			[`${prefix}background-active-media-general`]: 'color',
 		},
-	},
-	...{
-		...getPrefixedAttributes(attributesData.backgroundColor, prefix),
-		[`${prefix}background-palette-color-general`]: {
-			type: 'number',
-			default: 4,
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundColor,
+		prefix,
+		diffValAttr: { [`${prefix}background-palette-color-general`]: 4 },
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundGradient,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.backgroundHover, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundColorHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundGradientHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderRadius,
+		prefix,
+		diffValAttr: {
+			[`${prefix}border-top-left-radius-general`]: 10,
+			[`${prefix}border-top-right-radius-general`]: 10,
+			[`${prefix}border-bottom-left-radius-general`]: 10,
+			[`${prefix}border-bottom-right-radius-general`]: 10,
 		},
-	},
-	...getPrefixedAttributes(attributesData.backgroundGradient, prefix),
-	...getPrefixedAttributes(attributesData.backgroundHover, prefix),
-	...getPrefixedAttributes(attributesData.backgroundColorHover, prefix),
-	...getPrefixedAttributes(attributesData.backgroundGradientHover, prefix),
-	...getPrefixedAttributes(attributesData.border, prefix),
-	...getPrefixedAttributes(attributesData.borderWidth, prefix),
-	...{
-		...getPrefixedAttributes(attributesData.borderRadius, prefix),
-		[`${prefix}border-top-left-radius-general`]: {
-			type: 'number',
-			default: 10,
-		},
-		[`${prefix}border-top-right-radius-general`]: {
-			type: 'number',
-			default: 10,
-		},
-		[`${prefix}border-bottom-left-radius-general`]: {
-			type: 'number',
-			default: 10,
-		},
-		[`${prefix}border-bottom-right-radius-general`]: {
-			type: 'number',
-			default: 10,
-		},
-	},
-	...{
-		...getPrefixedAttributes(attributesData.borderHover, prefix),
-		[`${prefix}border-status-hover`]: {
-			type: 'boolean',
-			default: false,
-		},
-	},
-	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
-	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
-	...getPrefixedAttributes(attributesData.boxShadow, prefix),
-	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.borderHover,
+		prefix,
+		diffValAttr: { [`${prefix}border-status-hover`]: false },
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.borderWidthHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.borderRadiusHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
 
 	/**
 	 * Canvas styles
@@ -144,44 +145,23 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...getPrefixedAttributes(attributesData.opacity, prefix),
-	...getPrefixedAttributes(attributesData.size, prefix),
-	...getPrefixedAttributes(attributesData.margin, prefix),
-	...{
-		...getPrefixedAttributes(attributesData.padding, prefix),
-		[`${prefix}padding-top-xxl`]: {
-			type: 'number',
-			default: 23,
+	...attributesData.opacity,
+	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.padding,
+		prefix,
+		diffValAttr: {
+			[`${prefix}padding-top-xxl`]: 23,
+			[`${prefix}padding-right-xxl`]: 55,
+			[`${prefix}padding-bottom-xxl`]: 23,
+			[`${prefix}padding-left-xxl`]: 55,
+			[`${prefix}padding-top-xl`]: 15,
+			[`${prefix}padding-right-xl`]: 36,
+			[`${prefix}padding-bottom-xl`]: 15,
+			[`${prefix}padding-left-xl`]: 36,
 		},
-		[`${prefix}padding-right-xxl`]: {
-			type: 'number',
-			default: 55,
-		},
-		[`${prefix}padding-bottom-xxl`]: {
-			type: 'number',
-			default: 23,
-		},
-		[`${prefix}padding-left-xxl`]: {
-			type: 'number',
-			default: 55,
-		},
-		[`${prefix}padding-top-xl`]: {
-			type: 'number',
-			default: 15,
-		},
-		[`${prefix}padding-right-xl`]: {
-			type: 'number',
-			default: 36,
-		},
-		[`${prefix}padding-bottom-xl`]: {
-			type: 'number',
-			default: 15,
-		},
-		[`${prefix}padding-left-xl`]: {
-			type: 'number',
-			default: 36,
-		},
-	},
+	}),
 
 	/**
 	 * Advanced

@@ -39,4 +39,5 @@ export * from './iconHover';
 export * from './iconBorder';
 export * from './iconBorderHover';
 export * from './imageShape';
+export * from './size';
 export * from './typography';

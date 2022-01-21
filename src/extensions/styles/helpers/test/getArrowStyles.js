@@ -1,14 +1,29 @@
-// import '@wordpress/block-editor';
 import getArrowStyles from '../getArrowStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
+jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
+	return jest.fn(() => {
+		return {
+			value: {
+				name: 'Maxi (Default)',
+				status: 'active',
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						color: {
+							1: '255,255,255',
+							2: '242,249,253',
+							3: '155,155,155',
+							4: '255,74,23',
+							5: '0,0,0',
+							6: '201,52,10',
+							7: '8,18,25',
+							8: '150,176,203',
+						},
+					},
+				},
+			},
+		};
+	});
 });
 
 describe('getArrowStyles', () => {
@@ -42,14 +57,14 @@ describe('getArrowStyles', () => {
 				{
 					type: 'color',
 					'display-general': 'block',
-					'background-palette-color-status-general': true,
+					'background-palette-status-general': true,
 					'background-palette-color-general': 1,
 					'background-palette-opacity-general': 0.07,
 					'background-color-general': '',
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					id: 0,
-					'background-palette-color-status-xl': true,
+					'background-palette-status-xl': true,
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
 					'background-color-xl': '',
@@ -57,23 +72,23 @@ describe('getArrowStyles', () => {
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-color-clip-path-xxl':
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-					'background-palette-color-status-xxl': true,
+					'background-palette-status-xxl': true,
 					'background-palette-color-xxl': 2,
 					'background-palette-opacity-xxl': 0.2,
 					'background-color-xxl': '',
-					'background-palette-color-status-l': true,
+					'background-palette-status-l': true,
 					'background-palette-color-l': 4,
 					'background-palette-opacity-l': 0.3,
 					'background-color-l': '',
 					'background-color-clip-path-l':
 						'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-					'background-palette-color-status-m': true,
+					'background-palette-status-m': true,
 					'background-palette-color-m': 5,
 					'background-palette-opacity-m': 0.59,
 					'background-color-m': '',
 					'background-color-clip-path-m':
 						'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)',
-					'background-palette-color-status-s': false,
+					'background-palette-status-s': false,
 					'background-palette-color-s': 5,
 					'background-palette-opacity-s': 0.59,
 					'background-color-s': 'rgba(204,68,68,0.59)',
@@ -83,7 +98,7 @@ describe('getArrowStyles', () => {
 						'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
 				},
 			],
-			'border-palette-color-status-general': true,
+			'border-palette-status-general': true,
 			'border-palette-color-general': 4,
 			'border-style-general': 'solid',
 			'border-top-width-general': 1,
@@ -91,7 +106,7 @@ describe('getArrowStyles', () => {
 			'border-bottom-width-general': 1,
 			'border-left-width-general': 1,
 			'border-unit-width-general': 'px',
-			'border-palette-color-status-m': false,
+			'border-palette-status-m': false,
 			'border-color-m': 'rgba(61,133,209)',
 			'border-style-m': 'solid',
 			'border-top-width-m': 3,
@@ -113,23 +128,23 @@ describe('getArrowStyles', () => {
 			blockStyle: 'light',
 			'arrow-status': true,
 			'background-active-media-general': 'color',
-			'box-shadow-palette-color-status-general': true,
+			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 2,
 			'box-shadow-palette-opacity-general': 0.2,
 			'box-shadow-status-hover': true,
-			'box-shadow-palette-color-status-general-hover': true,
+			'box-shadow-palette-status-general-hover': true,
 			'box-shadow-palette-color-general-hover': 4,
 			'box-shadow-palette-opacity-general-hover': 0.2,
 			'box-shadow-horizontal-general-hover': 1,
 			'box-shadow-vertical-general-hover': 2,
 			'box-shadow-blur-general-hover': 3,
 			'box-shadow-spread-general-hover': 4,
-			'border-palette-color-status-general': true,
+			'border-palette-status-general': true,
 			'border-palette-color-general': 4,
 			'border-palette-opacity-general': 0.2,
 			'border-style-general': 'solid',
 			'border-status-hover': true,
-			'border-palette-color-status-general-hover': true,
+			'border-palette-status-general-hover': true,
 			'border-palette-color-general-hover': 1,
 			'border-palette-opacity-general-hover': 0.2,
 			'border-style-general-hover': 'solid',
@@ -145,11 +160,11 @@ describe('getArrowStyles', () => {
 			'border-bottom-left-radius-general-hover': 4,
 			'border-sync-radius-general-hover': true,
 			'border-unit-radius-general-hover': 'px',
-			'background-palette-color-status-general': true,
+			'background-palette-status-general': true,
 			'background-palette-color-general': 5,
 			'background-hover-status': true,
 			'background-active-media-general-hover': 'color',
-			'background-palette-color-status-general-hover': true,
+			'background-palette-status-general-hover': true,
 			'background-palette-color-general-hover': 1,
 		};
 
@@ -163,23 +178,23 @@ describe('getArrowStyles', () => {
 			isHover: true,
 			blockStyle: 'light',
 			'arrow-status': true,
-			'box-shadow-palette-color-status-general': true,
+			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 2,
 			'box-shadow-palette-opacity-general': 0.2,
 			'box-shadow-status-hover': true,
-			'box-shadow-palette-color-status-general-hover': false,
+			'box-shadow-palette-status-general-hover': false,
 			'box-shadow-color-general-hover': 'rgba(61,133,209)',
 			'box-shadow-palette-opacity-general-hover': 0.2,
 			'box-shadow-horizontal-general-hover': 1,
 			'box-shadow-vertical-general-hover': 2,
 			'box-shadow-blur-general-hover': 3,
 			'box-shadow-spread-general-hover': 4,
-			'border-palette-color-status-general': true,
+			'border-palette-status-general': true,
 			'border-palette-color-general': 4,
 			'border-palette-opacity-general': 0.2,
 			'border-style-general': 'solid',
 			'border-status-hover': true,
-			'border-palette-color-status-general-hover': false,
+			'border-palette-status-general-hover': false,
 			'border-color-general-hover': 'rgba(150,200,90)',
 			'border-palette-opacity-general-hover': 0.2,
 			'border-style-general-hover': 'solid',
@@ -195,13 +210,13 @@ describe('getArrowStyles', () => {
 			'border-bottom-left-radius-general-hover': 4,
 			'border-sync-radius-general-hover': true,
 			'border-unit-radius-general-hover': 'px',
-			'background-palette-color-status-general': true,
+			'background-palette-status-general': true,
 			'background-palette-color-general': 5,
 			'background-layers': [
 				{
 					type: 'color',
 					'display-general': 'block',
-					'background-palette-color-status-general': false,
+					'background-palette-status-general': false,
 					'background-palette-color-general': 1,
 					'background-palette-opacity-general': 0.07,
 					'background-color-general': 'rgba(150,200,90)',

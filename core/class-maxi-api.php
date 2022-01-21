@@ -411,17 +411,11 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
         
-            if ($style_card === '') {
-                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
-                        'id' => 'sc_string',
-                        'object' =>  serialize($new_style_card),
-                    ));
-            } else {
-                $wpdb->update("{$wpdb->prefix}maxi_blocks_general", array(
-                            'id' => 'sc_string',
-                            'object' =>  serialize($new_style_card),
-                        ), [ 'id' => 'sc_string']);
-            }
+            $wpdb->replace("{$wpdb->prefix}maxi_blocks_general", array(
+                'id' => 'sc_string',
+                'object' =>  serialize($new_style_card),
+            ));
+            
         
             return $new_style_card;
         }
@@ -602,23 +596,15 @@ if (!class_exists('MaxiBlocks_API')):
                 $this-> write_log('$new_custom_data');
                 $this-> write_log($new_custom_data);
 
-                if ($new_custom_data === '') {
-                    return $custom_data;
+                if ($new_custom_data === '' && $custom_data === '') {
+                    return;
                 }
 
-                if ($custom_data === '') {
-                    $wpdb->insert("{$wpdb->prefix}maxi_blocks_custom_data", array(
+                $wpdb->replace("{$wpdb->prefix}maxi_blocks_custom_data", array(
                     'post_id' => $id,
                     'prev_custom_data_value' =>  $new_custom_data,
                     'custom_data_value' =>  $new_custom_data,
                 ));
-                } else {
-                    $wpdb->update("{$wpdb->prefix}maxi_blocks_custom_data", array(
-                        'post_id' => $id,
-                        'prev_custom_data_value' =>   $new_custom_data,
-                        'custom_data_value' =>   $new_custom_data,
-                    ), ['post_id' => $id]);
-                }
             }
 
             return $new_custom_data;

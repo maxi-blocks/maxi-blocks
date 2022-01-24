@@ -648,7 +648,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background video layer', async () => {
+	it.skip('Check Background video layer', async () => {
 		await changeResponsive(page, 'base');
 		await removeBackgroundLayers(page);
 		await addBackgroundLayer(page, 'video');
@@ -692,7 +692,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background video layer responsive', async () => {
+	it.skip('Check Background video layer responsive', async () => {
 		// general
 		await changeResponsive(page, 's');
 		const backgroundOpacityBase = await page.$eval(
@@ -737,7 +737,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background video layer hover', async () => {
+	it.skip('Check Background video layer hover', async () => {
 		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
@@ -770,7 +770,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background video layer hover responsive', async () => {
+	it.skip('Check Background video layer hover responsive', async () => {
 		// general
 		await changeResponsive(page, 's');
 

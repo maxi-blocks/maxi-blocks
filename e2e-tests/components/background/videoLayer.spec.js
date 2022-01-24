@@ -2,16 +2,16 @@
 /**
  * WordPress dependencies
  */
-/* import {
+import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils'; */
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-/* import {
+import {
 	getBlockAttributes,
 	openSidebarTab,
 	addBackgroundLayer,
@@ -19,13 +19,12 @@
 	getBlockStyle,
 } from '../../utils';
 
- describe('BackgroundControl', () => {
+describe.skip('BackgroundControl', () => {
 	it('Check Background video layer', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'video');
-		debugger;
 		await page.waitForTimeout(150);
 
 		const video =
@@ -204,4 +203,4 @@
 		expect(backgroundOpacityM).toStrictEqual('82');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
-}); */
+});

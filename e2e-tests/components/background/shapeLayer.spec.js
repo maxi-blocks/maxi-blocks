@@ -17,7 +17,6 @@ import {
 	addBackgroundLayer,
 	modalMock,
 	changeResponsive,
-	removeBackgroundLayers,
 	editAxisControl,
 	getBlockStyle,
 } from '../../utils';

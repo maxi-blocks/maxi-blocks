@@ -38,6 +38,7 @@ import { getSVGListStyle } from './utils';
  * External dependencies
  */
 import { isNil, isNumber } from 'lodash';
+import parse from 'html-react-parser';
 
 const getNormalObject = props => {
 	const response = {
@@ -166,14 +167,15 @@ const getTypographyHoverObject = props => {
 const getListObject = props => {
 	const { listStart, listReversed, content } = props;
 
+	let counterReset;
+	if (isNumber(listStart)) counterReset = listStart + (listReversed ? 1 : -1);
+	else if (listReversed) counterReset = parse(content).length + 1;
+	else counterReset = 0;
+
 	const response = {
 		listStart: {
 			general: {
-				'counter-reset': `li ${
-					isNumber(listStart)
-						? listStart + (listReversed ? 1 : -1)
-						: content.match(/<li>/g).length + 1 ?? ''
-				}`,
+				'counter-reset': `li ${counterReset}`,
 			},
 		},
 		...(() => {

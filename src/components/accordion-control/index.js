@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useState } from '@wordpress/element';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -38,7 +39,11 @@ const AccordionControl = props => {
 		isPrimary = false,
 		isSecondary = false,
 		disablePadding = false,
+		depth,
 	} = props;
+
+	const { receiveInspectorPath } = select('maxiBlocks');
+	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
 	const classes = classnames(
 		'maxi-accordion-control',
@@ -47,6 +52,13 @@ const AccordionControl = props => {
 		isSecondary && 'is-secondary'
 	);
 
+	const setAccordiont = accordiontId => {
+		updateInspectorPath({ depth: depth, value: accordiontId });
+	};
+
+	const activeAccordiont = receiveInspectorPath();
+	const { value } = activeAccordiont[1];
+
 	const [currentOpen, setCurrentOpen] = useState('');
 
 	return (
@@ -54,7 +66,7 @@ const AccordionControl = props => {
 			className={classes}
 			allowMultipleExpanded={allowMultipleExpanded}
 			allowZeroExpanded={allowZeroExpanded}
-			preExpanded={currentOpen}
+			preExpanded={[value]}
 			onChange={value => setCurrentOpen(value)}
 		>
 			{items.map((item, id) => {
@@ -78,10 +90,13 @@ const AccordionControl = props => {
 
 				return (
 					<AccordionItem
-						uuid={item.uuid ? item.uuid : undefined}
+						uuid={lowerCase(item.label)}
 						className={classesItem}
 						data-name={lowerCase(item.label)}
 						key={`maxi-accordion-control__item-${id}`}
+						onClick={() => {
+							setAccordiont(lowerCase(item.label));
+						}}
 					>
 						<AccordionItemHeading className={classesItemHeading}>
 							<AccordionItemButton className='maxi-accordion-control__item__button'>

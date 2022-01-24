@@ -40,6 +40,12 @@ const reducer = (
 		presets: '',
 		copiedStyles: {},
 		copiedBlocks: {},
+		inspectorPath: [
+			{
+				type: 'tabs',
+				value: 0,
+			},
+		],
 	},
 	action
 ) => {
@@ -101,6 +107,14 @@ const reducer = (
 			return {
 				...state,
 				copiedBlocks: action.copiedBlocks,
+			};
+		case 'UPDATE_INSPECTOR_PATH':
+			const { depth } = action.inspectorPath;
+			return {
+				...state,
+				inspectorPath: Object.assign([], state.inspectorPath, {
+					[depth]: action.inspectorPath,
+				}),
 			};
 		default:
 			return state;

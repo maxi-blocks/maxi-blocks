@@ -34,6 +34,10 @@ const selectors = {
 		if (state) return state.copiedBlocks;
 		return false;
 	},
+	receiveInspectorPath(state) {
+		if (state) return state.inspectorPath;
+		return false;
+	},
 };
 
 export default selectors;

@@ -49,7 +49,6 @@ if (!class_exists('MaxiBlocks_API')):
             add_action('before_delete_post', [$this, 'mb_delete_register']);
         }
 
-
         /**
          * Register REST API routes
          */
@@ -309,6 +308,10 @@ if (!class_exists('MaxiBlocks_API')):
             $styles = $meta['styles'];
             $fonts = implode(",", $meta['fonts']);
 
+            if (empty($styles) && empty($fonts)) {
+                return;
+            }
+
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
             $exists = $wpdb->get_results(
@@ -354,7 +357,6 @@ if (!class_exists('MaxiBlocks_API')):
                 "SELECT * FROM {$table} WHERE post_id = {$id}",
                 OBJECT
             )[0];
-         
             return $post;
         }
 
@@ -367,25 +369,27 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
             $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-            $query =
-                'SELECT object FROM ' .
-                $table_name .
-                ' where id = "sc_string"';
-            
-            $response = maybe_unserialize($wpdb->get_var($query));
-
+            $query = 'SELECT object FROM ' .
+                     $table_name .
+                     ' where id = "sc_string"';
+        
+            $response =  maybe_unserialize($wpdb->get_var($query));
+        
+            if (!$response) {
+                $response = '';
+                $empty_sc_string = [
+                            '_maxi_blocks_style_card' =>'',
+                            '_maxi_blocks_style_card_preview' => '',
+                        ];
+                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+                            'id' => 'sc_string',
+                            'object' =>  serialize($empty_sc_string),
+                        ));
+            }
+        
             return $response;
         }
-
-        public function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
+        
         /**
          * Post the posts
          */
@@ -393,31 +397,25 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
             $style_card = $this->get_maxi_blocks_sc_string();
-
-            if (!$style_card || $style_card === '' || empty($style_card)) {
-                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
-                    'id' => 'sc_string',
-                    'object' =>  '',
-                ));
-            }
-
+        
             if ($data['update']) {
                 $new_style_card = [
-                    '_maxi_blocks_style_card' => $data['meta'],
-                    '_maxi_blocks_style_card_preview' => $data['meta'],
-                ];
+                            '_maxi_blocks_style_card' => $data['meta'],
+                            '_maxi_blocks_style_card_preview' => $data['meta'],
+                        ];
             } else {
-                $new_style_card = [
-                    '_maxi_blocks_style_card' => '',
-                    '_maxi_blocks_style_card_preview' => $data['meta'],
-                ];
+                $new_style_card['_maxi_blocks_style_card_preview'] = $data['meta'];
+                if ($style_card !== '') {
+                    $new_style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card'];
+                }
             }
-
+        
             $wpdb->replace("{$wpdb->prefix}maxi_blocks_general", array(
                 'id' => 'sc_string',
                 'object' =>  serialize($new_style_card),
             ));
             
+        
             return $new_style_card;
         }
 
@@ -434,7 +432,14 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function mb_delete_register($postId)
         {
-            delete_option("mb_post_api$postId");
+            global $wpdb;
+
+            $table_styles =  $wpdb->prefix . 'maxi_blocks_styles';
+            $table_custom_meta =  $wpdb->prefix . 'maxi_blocks_custom_data';
+
+            $wpdb->query("DELETE FROM {$table_styles} WHERE post_id={$postId}");
+
+            $wpdb->query("DELETE FROM {$table_custom_meta} WHERE post_id={$postId}");
         }
 
         public function get_maxi_blocks_current_style_cards()
@@ -560,13 +565,22 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
+        public function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public function set_maxi_blocks_current_custom_data($data)
         {
             $id = $data['id'];
             $update = $data['update'];
             $dataVal = $data['data'];
 
-            if (empty($dataVal)) {
+            if (empty($dataVal) || $dataVal === '{}') {
                 return;
             }
             
@@ -578,22 +592,21 @@ if (!class_exists('MaxiBlocks_API')):
                 $arrayNewData = json_decode($dataVal, true);
                 $new_custom_data = serialize(array_merge_recursive(...array_values($arrayNewData)));
 
-                if ($custom_data === '') {
-                    $wpdb->insert("{$wpdb->prefix}maxi_blocks_custom_data", array(
+                $this-> write_log('$new_custom_data');
+                $this-> write_log($new_custom_data);
+
+                if ($new_custom_data === '' && $custom_data === '') {
+                    return;
+                }
+
+                $wpdb->replace("{$wpdb->prefix}maxi_blocks_custom_data", array(
                     'post_id' => $id,
                     'prev_custom_data_value' =>  $new_custom_data,
                     'custom_data_value' =>  $new_custom_data,
                 ));
-                } else {
-                    $wpdb->update("{$wpdb->prefix}maxi_blocks_custom_data", array(
-                        'post_id' => $id,
-                        'prev_custom_data_value' =>   $new_custom_data,
-                        'custom_data_value' =>   $new_custom_data,
-                    ), ['post_id' => $id]);
-                }
             }
 
-            return $custom_data;
+            return $new_custom_data;
         }
     }
 endif;

@@ -56,11 +56,10 @@ class MaxiBlocks_StyleCards
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-        $query =
-            'SELECT object FROM ' .
-            $table_name .
-            ' where id = "sc_string"';
-        
+        $query = 'SELECT object FROM ' .
+                 $table_name .
+                 ' where id = "sc_string"';
+
         $style_card = maybe_unserialize($wpdb->get_var($query));
 
         if (!$style_card) {
@@ -85,6 +84,7 @@ class MaxiBlocks_StyleCards
 
         return $style;
     }
+
 
     public function get_maxi_blocks_current_style_cards()
     {

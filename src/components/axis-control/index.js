@@ -7,8 +7,10 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import Button from '../button';
+import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
@@ -21,7 +23,15 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber, replace } from 'lodash';
+import {
+	isEmpty,
+	capitalize,
+	isNumber,
+	replace,
+	round,
+	isNil,
+	isNaN,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -36,7 +46,6 @@ import {
 	paddingSyncDirection as paddingSyncDirectionIcon,
 	reset,
 } from '../../icons';
-import { ButtonGroupControl, AdvancedNumberControl } from '..';
 
 /**
  * Component
@@ -53,6 +62,7 @@ const AxisInput = props => {
 		onChangeValue,
 		isGeneral,
 		minMaxSettings,
+		currentUnit,
 	} = props;
 
 	const value = getValue(target, breakpoint);
@@ -76,8 +86,12 @@ const AxisInput = props => {
 			}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
+			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			disableReset
+			min={minMaxSettings[currentUnit].min || 0}
+			max={minMaxSettings[currentUnit].max || 999}
+			step={minMaxSettings[currentUnit].step || 1}
 		/>
 	);
 };
@@ -232,6 +246,8 @@ const AxisControlContent = props => {
 		getKey,
 		isGeneral,
 		onChangeSync,
+		minMaxSettings,
+		inputsArray,
 	} = props;
 
 	const sync = getLastBreakpointAttribute(
@@ -265,6 +281,47 @@ const AxisControlContent = props => {
 		}
 	};
 
+	const onChangeUnit = val => {
+		const response = {};
+
+		inputsArray.forEach(input => {
+			if (
+				input.includes('top') ||
+				input.includes('left') ||
+				input.includes('bottom') ||
+				input.includes('right')
+			) {
+				const key = getAttributeKey(
+					getKey(input),
+					isHover,
+					false,
+					breakpoint
+				);
+				const value = getLastBreakpointAttribute(
+					getKey(input),
+					breakpoint,
+					props,
+					isHover
+				);
+
+				if (!isNil(value) && !isNaN(value))
+					response[key] = round(
+						value,
+						minMaxSettings[currentUnit].step / 0.5
+					);
+			}
+		});
+
+		onChange({
+			[getAttributeKey(getKey('unit'), isHover, false, breakpoint)]: val,
+			...(isGeneral && {
+				[getAttributeKey(getKey('unit'), isHover, false, 'general')]:
+					val,
+			}),
+			...response,
+		});
+	};
+
 	return (
 		<>
 			<BaseControl
@@ -277,24 +334,7 @@ const AxisControlContent = props => {
 					label={__('Unit', 'maxi-blocks')}
 					options={getOptions()}
 					value={currentUnit}
-					onChange={val =>
-						onChange({
-							[getAttributeKey(
-								getKey('unit'),
-								isHover,
-								false,
-								breakpoint
-							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									getKey('unit'),
-									isHover,
-									false,
-									'general'
-								)]: val,
-							}),
-						})
-					}
+					onChange={onChangeUnit}
 				/>
 				<Button
 					className='components-maxi-control__reset-button'
@@ -309,15 +349,16 @@ const AxisControlContent = props => {
 					{reset}
 				</Button>
 			</BaseControl>
-			<ButtonGroupControl
+			<SettingTabsControl
 				label={getSyncLabel()}
+				type='buttons'
 				className='maxi-axis-control__header'
 				selected={sync}
-				options={[
+				items={[
 					{
 						value: 'all',
 						className: 'maxi-axis-control__sync-all',
-						label:
+						icon:
 							type === 'Margin'
 								? marginSyncAllIcon
 								: paddingSyncAllIcon,
@@ -325,7 +366,7 @@ const AxisControlContent = props => {
 					{
 						value: 'axis',
 						className: 'maxi-axis-control__sync-axis',
-						label:
+						icon:
 							type === 'Margin'
 								? marginSyncDirectionIcon
 								: paddingSyncDirectionIcon,
@@ -360,18 +401,22 @@ const AxisControl = props => {
 			px: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 1,
 			},
 			em: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 0.1,
 			},
 			vw: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 0.1,
 			},
 			'%': {
 				min: 0,
 				max: 999,
+				step: 0.1,
 			},
 		},
 		auxTarget = false,
@@ -507,19 +552,13 @@ const AxisControl = props => {
 	) => {
 		let newValue = '';
 
-		if (optionType === 'number') {
-			if (isEmpty(val)) {
-				newValue = val;
-			} else {
-				newValue = +val;
-			}
-		} else if (isEmpty(val) && !isNumber(val)) {
-			newValue = '';
-		} else if (val === 'auto') {
-			newValue = 'auto';
-		} else {
-			newValue = val;
-		}
+		if (optionType === 'number')
+			if (isEmpty(val)) newValue = val;
+			else newValue = +val;
+		else if (isEmpty(val) && !isNumber(val)) newValue = '';
+		else if (val === 'auto') newValue = 'auto';
+		else if (optionType === 'string') newValue = val.toString();
+		else newValue = val;
 
 		if (target === 'padding' && newValue < 0) newValue = 0;
 
@@ -658,10 +697,10 @@ const AxisControl = props => {
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (
-				<ResponsiveTabsControl breakpoint={breakpoint}>
+				<ResponsiveTabsControl breakpoint={breakpoint} target={target}>
 					<AxisControlContent
 						{...props}
-						key='AxisControlContent__1'
+						key='AxisControlContent__responsive'
 						label={label}
 						getOptions={getOptions}
 						currentUnit={currentUnit}
@@ -683,7 +722,7 @@ const AxisControl = props => {
 			{!useResponsiveTabs && (
 				<AxisControlContent
 					{...props}
-					key='AxisControlContent__2'
+					key='AxisControlContent__non-responsive'
 					label={label}
 					getOptions={getOptions}
 					currentUnit={currentUnit}

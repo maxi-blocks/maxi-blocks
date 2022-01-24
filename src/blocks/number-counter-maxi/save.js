@@ -6,9 +6,7 @@ eslint-disable react/no-unknown-property
 /**
  * Internal dependencies
  */
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -36,7 +34,7 @@ const save = props => {
 		<MaxiBlock
 			className={classes}
 			id={uniqueID}
-			{...getMaxiBlockBlockAttributes(props)}
+			{...getMaxiBlockAttributes(props)}
 			isSave
 		>
 			<div className='maxi-number-counter__box'>

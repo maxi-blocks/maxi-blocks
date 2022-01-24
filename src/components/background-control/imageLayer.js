@@ -8,7 +8,6 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ButtonGroupControl from '../button-group-control';
 import ClipPath from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
@@ -84,7 +83,8 @@ const ImageLayerSettings = props => {
 				}
 			/>
 			<SelectControl
-				label={__('Size', 'maxi-blocks')}
+				label={__('Background size', 'maxi-blocks')}
+				className='maxi-background-control__image-layer__size-selector'
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-size`,
 					breakpoint,
@@ -205,7 +205,8 @@ const ImageLayerSettings = props => {
 			)}
 			{!parallaxStatus && (
 				<SelectControl
-					label={__('Repeat', 'maxi-blocks')}
+					label={__('Background repeat', 'maxi-blocks')}
+					className='maxi-background-control__image-layer__repeat-selector'
 					value={getLastBreakpointAttribute(
 						`${prefix}background-image-repeat`,
 						breakpoint,
@@ -259,7 +260,8 @@ const ImageLayerSettings = props => {
 				/>
 			)}
 			<SelectControl
-				label={__('Position', 'maxi-blocks')}
+				label={__('Background position', 'maxi-blocks')}
+				className='maxi-background-control__image-layer__position-selector'
 				value={getLastBreakpointAttribute(
 					`${prefix}background-image-position`,
 					breakpoint,
@@ -519,7 +521,8 @@ const ImageLayerSettings = props => {
 			{!parallaxStatus && (
 				<>
 					<SelectControl
-						label={__('Attachment', 'maxi-blocks')}
+						label={__('Background attachment', 'maxi-blocks')}
+						className='maxi-background-control__image-layer__attachment-selector'
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-attachment`,
 							breakpoint,
@@ -571,6 +574,7 @@ const ImageLayerSettings = props => {
 						<div className='maxi-background-image-more-settings'>
 							<SelectControl
 								label={__('Background origin', 'maxi-blocks')}
+								className='maxi-background-control__image-layer__origin-selector'
 								value={getLastBreakpointAttribute(
 									`${prefix}background-image-origin`,
 									breakpoint,
@@ -612,6 +616,7 @@ const ImageLayerSettings = props => {
 							/>
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
+								className='maxi-background-control__image-layer__clip-selector'
 								value={getLastBreakpointAttribute(
 									`${prefix}background-image-clip`,
 									breakpoint,
@@ -717,7 +722,7 @@ const ImageLayer = props => {
 	});
 
 	return (
-		<>
+		<div className='maxi-background-control__image-layer'>
 			{!isHover && (
 				<MediaUploaderControl
 					mediaID={mediaID}
@@ -814,8 +819,9 @@ const ImageLayer = props => {
 										'background-image-parallax-status'
 									] && (
 										<>
-											<ButtonGroupControl
+											<SettingTabsControl
 												className='parallax-direction'
+												type='buttons'
 												label={__(
 													'Direction',
 													'maxi-blocks'
@@ -825,7 +831,7 @@ const ImageLayer = props => {
 														'background-image-parallax-direction'
 													]
 												}
-												options={[
+												items={[
 													{
 														label: __(
 															'Up',
@@ -841,7 +847,6 @@ const ImageLayer = props => {
 														value: 'down',
 													},
 												]}
-												optionType='string'
 												onChange={val =>
 													onChange({
 														'background-image-parallax-direction':
@@ -919,7 +924,7 @@ const ImageLayer = props => {
 					]}
 				/>
 			)}
-		</>
+		</div>
 	);
 };
 

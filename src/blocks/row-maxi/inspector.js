@@ -20,7 +20,6 @@ import { selectorsRow, categoriesRow } from './custom-css';
  * External dependencies
  */
 
-
 /**
  * Inspector
  */
@@ -217,6 +216,9 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors: selectorsRow,
 										categories: categoriesRow,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
 									}),
 									...inspectorTabs.transform({
 										props,

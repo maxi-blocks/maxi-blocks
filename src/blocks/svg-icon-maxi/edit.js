@@ -15,9 +15,7 @@ import {
 } from '../../extensions/maxi-block';
 import { Toolbar, BlockResizer, RawHTML } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 
@@ -122,6 +120,12 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			!isEmptyContent && (
 				<Inspector
@@ -135,6 +139,7 @@ class edit extends MaxiBlockComponent {
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
 					propsToAvoid={['resizableObject']}
+					resizableObject={this.resizableObject}
 					{...this.props}
 				/>
 			),
@@ -142,7 +147,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<>
 					<MaxiModal
@@ -159,6 +164,7 @@ class edit extends MaxiBlockComponent {
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'
 							resizableObject={this.resizableObject}
+							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
 							maxWidth={
 								getLastBreakpointAttribute(

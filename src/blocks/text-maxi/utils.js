@@ -1,10 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createBlock } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
-import { split } from '@wordpress/rich-text';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Internal dependencies
@@ -14,17 +11,11 @@ import {
 	fromTextToList,
 	getFormatsOnMerge,
 } from '../../extensions/text/formats';
-import flatFormatsWithClass from '../../extensions/text/formats/flatFormatsWithClass';
-import getCurrentFormatClassName from '../../extensions/text/formats/getCurrentFormatClassName';
-import getCustomFormat from '../../extensions/text/formats/getCustomFormat';
-import getHasCustomFormat from '../../extensions/text/formats/getHasCustomFormat';
 
 /**
  * External dependencies
  */
-import { cloneDeep } from 'lodash';
-
-const name = 'maxi-blocks/text-maxi';
+import { compact, findIndex, isNil, isEmpty } from 'lodash';
 
 const {
 	getNextBlockClientId,
@@ -35,7 +26,7 @@ const {
 
 const { removeBlock, updateBlockAttributes } = dispatch('core/block-editor');
 
-export const onMerge = (props, forward) => {
+const onMerge = (props, forward) => {
 	const { attributes, clientId, setAttributes } = props;
 	const { isList, content, 'custom-formats': customFormats } = attributes;
 
@@ -113,49 +104,75 @@ export const onMerge = (props, forward) => {
 	}
 };
 
-export const onSplit = (
-	attributes,
-	splitContent,
-	isExistentBlock,
-	clientId
-) => {
-	const formatValue = select('maxiBlocks/text').getFormatValue(clientId);
+export const onReplaceBlocks = (blocks, clientId) => {
+	const currentBlockIndex = findIndex(blocks, { clientId });
+	const currentBlockExists = currentBlockIndex >= 0;
+	const currentBlock = getBlock(clientId);
 
-	const hasCustomFormats = getHasCustomFormat(formatValue);
+	const rawBlocks = compact([
+		...(!currentBlockExists && [currentBlock]),
+		...blocks,
+	]);
 
-	if (!hasCustomFormats)
-		return createBlock(name, {
-			...attributes,
-			content: splitContent,
+	if (rawBlocks.length === 0) return false;
+
+	const firstBlockContent = rawBlocks[0].attributes.content;
+	const firstBlockEmpty =
+		isNil(firstBlockContent) || isEmpty(firstBlockContent);
+
+	// Ensures no empty value on first block
+	if (firstBlockEmpty) rawBlocks.shift();
+
+	const cleanBlocks = [];
+	if (rawBlocks.length > 1)
+		rawBlocks.reduce((currentBlock, nextBlock, i) => {
+			const {
+				textLevel: currentTextLevel,
+				isList: currentIsList,
+				typeOfList: currentTypeOfList,
+			} = currentBlock.attributes;
+			const { content, textLevel, isList, typeOfList } =
+				nextBlock.attributes;
+
+			if (
+				textLevel === currentTextLevel ||
+				(currentIsList && isList && currentTypeOfList === typeOfList)
+			) {
+				currentBlock.attributes.content += content;
+
+				if (rawBlocks.length === i + 1)
+					cleanBlocks.push(currentBlock, nextBlock);
+
+				return currentBlock;
+			}
+
+			cleanBlocks.push(currentBlock);
+
+			if (rawBlocks.length === i + 1) cleanBlocks.push(nextBlock);
+
+			return nextBlock;
 		});
+	else cleanBlocks.push(rawBlocks[0]);
 
-	const styleCard = select(
-		'maxiBlocks/style-cards'
-	).receiveMaxiSelectedStyleCard();
+	return { blocks: cleanBlocks };
+};
 
-	const typography = cloneDeep(getGroupAttributes(attributes, 'typography'));
+export default onMerge;
 
-	const { isList, textLevel, parentBlockStyle } = attributes;
+export const getSVGListStyle = svg => {
+	if (!svg) return '';
 
-	const cleanedFormatValue = split(formatValue)[isExistentBlock ? 0 : 1];
+	let cleanedSVG = svg
+		.replace(/"/g, "'")
+		.replace(/>\s{1,}</g, '><')
+		.replace(/\s{2,}/g, ' ');
 
-	const formatClassName = getCurrentFormatClassName(cleanedFormatValue);
-	const value = getCustomFormat(formatClassName) || {};
+	if (cleanedSVG.indexOf('http://www.w3.org/2000/svg') < 0) {
+		cleanedSVG = cleanedSVG.replace(
+			/<svg/g,
+			"<svg xmlns='http://www.w3.org/2000/svg'"
+		);
+	}
 
-	const { typography: newTypography, content: newContent } =
-		flatFormatsWithClass({
-			formatValue: cleanedFormatValue,
-			typography,
-			content: splitContent,
-			isList,
-			textLevel,
-			value,
-			styleCard: styleCard[parentBlockStyle],
-		});
-
-	return createBlock(name, {
-		...attributes,
-		...newTypography,
-		content: newContent,
-	});
+	return cleanedSVG.replace(/[\r\n%#()<>?[\\\]^`{|}]/g, encodeURIComponent);
 };

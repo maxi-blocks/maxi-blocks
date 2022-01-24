@@ -215,6 +215,7 @@ class MaxiBlockComponent extends Component {
 				delete newAttributes[prop];
 			});
 
+			// eslint-disable-next-line no-constant-condition
 			if (!isEqual(oldAttributes, newAttributes) && false)
 				// Just for debugging 👍
 				this.difference(oldAttributes, newAttributes);

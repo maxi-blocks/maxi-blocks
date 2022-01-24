@@ -15,9 +15,7 @@ import {
 import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -101,6 +99,12 @@ class edit extends MaxiBlockComponent {
 			...(position && { position }),
 		};
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -113,8 +117,9 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				classes={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
+				isOverflowHidden={getIsOverflowHidden()}
 				size={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
@@ -129,12 +134,11 @@ class edit extends MaxiBlockComponent {
 				}}
 				showHandle={isSelected}
 				enable={{
-					bottom: true
+					bottom: true,
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 				style={style}
-				disableMotion
 			>
 				{attributes['divider-border-style'] !== 'none' && (
 					<hr

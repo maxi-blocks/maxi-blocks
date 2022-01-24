@@ -1,21 +1,102 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages 1`] = `
+exports[`getBackgroundStyles Get correct block background styles for color layer with border 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-left-radius": "180px",
+        "border-bottom-right-radius": "180px",
+        "border-bottom-style": "solid",
+        "border-bottom-width": "2px",
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "border-left-style": "solid",
+        "border-left-width": "2px",
+        "border-right-style": "solid",
+        "border-right-width": "2px",
+        "border-top-left-radius": "180px",
+        "border-top-right-radius": "180px",
+        "border-top-style": "solid",
+        "border-top-width": "2px",
+      },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+    "size": Object {
+      "general": Object {
+        "left": "-2px",
+        "top": "-2px",
+      },
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
       },
       "l": Object {
-        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+      },
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",
         "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
       },
       "label": "Background Color",
       "m": Object {
-        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+        "background-color": "rgba(var(--maxi-light-color-5,0,0,0),0.59)",
         "clip-path": "polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)",
       },
       "s": Object {
@@ -23,7 +104,7 @@ Object {
         "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
       "xl": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "xs": Object {
@@ -31,7 +112,7 @@ Object {
         "clip-path": "polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)",
       },
       "xxl": Object {
-        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+        "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.2)",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
       },
     },
@@ -41,20 +122,31 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages and hover 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
       },
       "l": Object {
-        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",
         "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
       },
       "label": "Background Color",
       "m": Object {
-        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+        "background-color": "rgba(var(--maxi-light-color-5,0,0,0),0.59)",
         "clip-path": "polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)",
       },
       "s": Object {
@@ -62,7 +154,7 @@ Object {
         "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
       "xl": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "xs": Object {
@@ -70,7 +162,7 @@ Object {
         "clip-path": "polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)",
       },
       "xxl": Object {
-        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+        "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.2)",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
       },
     },
@@ -80,30 +172,41 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for different layers, onces created on normal and other on hover 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
     "color": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
       "l": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "label": "Background Color",
       "m": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "s": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "xl": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "xs": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "xxl": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
     },
   },
@@ -171,26 +274,26 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 svg *": Object {
     "shape": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-color-4),1)",
+        "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "l": Object {
-        "fill": "rgba(var(--maxi-light-color-4),1)",
+        "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "label": "SVG Background",
       "m": Object {
-        "fill": "rgba(var(--maxi-light-color-4),1)",
+        "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "s": Object {
-        "fill": "rgba(var(--maxi-light-color-4),1)",
+        "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "xl": Object {
-        "fill": "rgba(var(--maxi-light-color-4),1)",
+        "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "xs": Object {
-        "fill": "rgba(var(--maxi-light-color-4),1)",
+        "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "xxl": Object {
-        "fill": "rgba(var(--maxi-light-color-4),1)",
+        "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
     },
   },
@@ -226,36 +329,47 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for general responsive stage 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "clip-path": "none",
         "display": "block",
       },
       "l": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "clip-path": "none",
       },
       "label": "Background Color",
       "m": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "clip-path": "none",
       },
       "s": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "clip-path": "none",
       },
       "xl": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "clip-path": "none",
       },
       "xs": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "clip-path": "none",
       },
       "xxl": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "clip-path": "none",
       },
     },
@@ -346,26 +460,26 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
     "shape": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "l": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "label": "SVG Background",
       "m": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "s": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xl": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xs": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xxl": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
     },
   },
@@ -374,6 +488,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
       "general": Object {
@@ -416,6 +541,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
       "general": Object {
@@ -458,6 +594,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -521,6 +668,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -584,6 +742,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with parallax and different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
       "general": Object {
@@ -639,6 +808,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
       "general": Object {
@@ -719,26 +899,26 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
     "shape": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "l": Object {
-        "fill": "rgba(var(--maxi-light-color-3),0.37)",
+        "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
       "label": "SVG Background",
       "m": Object {
-        "fill": "rgba(var(--maxi-light-color-3),0.37)",
+        "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
       "s": Object {
-        "fill": "rgba(var(--maxi-light-color-7),0.37)",
+        "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
       "xl": Object {
-        "fill": "rgba(var(--maxi-light-color-2),0.37)",
+        "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
       },
       "xs": Object {
-        "fill": "rgba(var(--maxi-light-color-7),0.37)",
+        "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
       "xxl": Object {
-        "fill": "rgba(var(--maxi-light-color-2),0.37)",
+        "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
       },
     },
   },
@@ -747,6 +927,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
       "general": Object {
@@ -783,26 +974,26 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
     "shape": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-color-5),1)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "l": Object {
-        "fill": "rgba(var(--maxi-light-color-3),0.37)",
+        "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
       "label": "SVG Background",
       "m": Object {
-        "fill": "rgba(var(--maxi-light-color-3),0.37)",
+        "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
       "s": Object {
-        "fill": "rgba(var(--maxi-light-color-7),0.37)",
+        "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
       "xl": Object {
-        "fill": "rgba(var(--maxi-light-color-2),0.37)",
+        "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
       },
       "xs": Object {
-        "fill": "rgba(var(--maxi-light-color-7),0.37)",
+        "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
       "xxl": Object {
-        "fill": "rgba(var(--maxi-light-color-2),0.37)",
+        "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
       },
     },
   },
@@ -811,6 +1002,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
       "general": Object {
@@ -857,6 +1059,17 @@ Object {
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages and hovers 1`] = `
 Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
       "general": Object {
@@ -905,7 +1118,7 @@ exports[`getBackgroundStyles Get correct simple background styles 1`] = `
 Object {
   "background": Object {
     "general": Object {
-      "background-color": "rgba(var(--maxi-light-color-1),0.39)",
+      "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.39)",
     },
     "l": Object {
       "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(155,81,224) 100%)",
@@ -913,19 +1126,19 @@ Object {
     },
     "label": "Background gradient",
     "m": Object {
-      "background-color": "rgba(var(--maxi-light-color-4),0.39)",
+      "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.39)",
     },
     "s": Object {
       "background-color": "rgba(43,43,179,0.39)",
     },
     "xl": Object {
-      "background-color": "rgba(var(--maxi-light-color-1),0.39)",
+      "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.39)",
     },
     "xs": Object {
       "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(102,186,223) 67%,rgb(155,81,224) 100%)",
     },
     "xxl": Object {
-      "background-color": "rgba(var(--maxi-light-color-2),0.39)",
+      "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.39)",
     },
   },
 }

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 /**
  * External dependencies
  */
@@ -16,7 +17,6 @@ import BaseControl from '../base-control';
 import Button from '../button';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-
 /**
  * Styles
  */
@@ -28,6 +28,8 @@ import './editor.scss';
 const CustomCssControl = props => {
 	const { breakpoint, categories, category, selectors, value, onChange } =
 		props;
+
+	const [notValidCode, setNotValidCode] = useState({});
 
 	const getOptions = () => {
 		const options = [
@@ -88,6 +90,32 @@ const CustomCssControl = props => {
 		const labelForCss = label.replaceAll(' ', '_');
 		const id = `maxi-additional__css-error-text__${labelForCss}`;
 
+		const onChangeCssCode = (code, valid = true) => {
+			const newCustomCss = !isEmpty(value) ? cloneDeep(value) : {};
+
+			if (!valid) setNotValidCode(cloneDeep(newCustomCss));
+			else {
+				delete notValidCode?.[category]?.[index];
+				if (isEmpty(notValidCode[category]))
+					delete notValidCode[category];
+
+				setNotValidCode(notValidCode);
+			}
+
+			if (!isEmpty(code)) {
+				if (isEmpty(newCustomCss[category]))
+					newCustomCss[category] = {};
+
+				newCustomCss[category][index] = code;
+			} else {
+				delete newCustomCss?.[category]?.[index];
+				if (isEmpty(newCustomCss[category]))
+					delete newCustomCss[category];
+			}
+
+			onChange(`custom-css-${breakpoint}`, newCustomCss);
+		};
+
 		async function validateCss(code) {
 			const messageDiv = document.getElementById(id);
 			if (!isEmpty(code)) {
@@ -96,6 +124,7 @@ const CustomCssControl = props => {
 					messageDiv.innerHTML = validMessage;
 					messageDiv.classList.remove('valid');
 					messageDiv.classList.add('not-valid');
+					onChangeCssCode('', false);
 				} else if (messageDiv) {
 					messageDiv.innerHTML = __('Valid', 'maxi-blocks');
 					messageDiv.classList.remove('not-valid');
@@ -107,6 +136,13 @@ const CustomCssControl = props => {
 				messageDiv.classList.remove('valid');
 			}
 		}
+
+		const getValue = () => {
+			const notValidValue = notValidCode?.[category]?.[index];
+			const validValue = value?.[category]?.[index];
+
+			return !isEmpty(notValidValue) ? notValidValue : validValue;
+		};
 
 		return (
 			<BaseControl
@@ -134,17 +170,10 @@ const CustomCssControl = props => {
 				)}
 				<CodeEditor
 					language='css'
-					value={value?.[category]?.[index]}
-					onChange={textarea => {
-						const newCustomCss = !isEmpty(value)
-							? cloneDeep(value)
-							: {};
-						if (isEmpty(newCustomCss[category]))
-							newCustomCss[category] = {};
-
-						newCustomCss[category][index] = textarea?.target?.value;
-						onChange(`custom-css-${breakpoint}`, newCustomCss);
-					}}
+					value={getValue()}
+					onChange={textarea =>
+						onChangeCssCode(textarea?.target?.value)
+					}
 					onBlur={textarea => {
 						validateCss(textarea?.target?.value);
 					}}
@@ -158,6 +187,7 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-typography-control__text-options-tabs'
 			breakpoint={breakpoint}
+			target='custom-css'
 		>
 			<>
 				<SelectControl

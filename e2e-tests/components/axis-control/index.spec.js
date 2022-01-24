@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -10,6 +14,7 @@ import {
 	changeResponsive,
 	editAxisControl,
 	getAttributes,
+	getBlockStyle,
 } from '../../utils';
 
 describe('AxisControl', () => {
@@ -33,10 +38,10 @@ describe('AxisControl', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': 66,
-			'margin-bottom-general': 66,
-			'margin-left-general': 66,
-			'margin-right-general': 66,
+			'margin-top-general': '66',
+			'margin-bottom-general': '66',
+			'margin-left-general': '66',
+			'margin-right-general': '66',
 			'margin-unit-general': '%',
 		};
 		const marginResult = await getAttributes([
@@ -48,6 +53,23 @@ describe('AxisControl', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
+	});
+
+	it('Check padding attributes are numbers and margin strings', async () => {
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-axis-control__padding'),
+			values: '34',
+			unit: '%',
+		});
+
+		expect(
+			typeof (await getAttributes('padding-bottom-general'))
+		).toStrictEqual('number');
+
+		expect(
+			typeof (await getAttributes('margin-bottom-general'))
+		).toStrictEqual('string');
 	});
 
 	it('Checking responsive axisControl', async () => {
@@ -120,13 +142,41 @@ describe('AxisControl', () => {
 		);
 		expect(positionMUnit).toStrictEqual('%');
 	});
+	it('Check the arrows in input and %% 0.1 steps', async () => {
+		await changeResponsive(page, 'base');
+
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		await page.waitForTimeout(150);
+
+		await editAxisControl({
+			page,
+			instance: await accordionPanel.$('.maxi-axis-control__margin'),
+			values: '3',
+		});
+		await page.waitForTimeout(150);
+
+		expect(await getAttributes('margin-top-general')).toStrictEqual('3');
+
+		const input = await accordionPanel.$$(
+			'.maxi-axis-control__content__item input'
+		);
+
+		await input[0].focus();
+		await pressKeyTimes('ArrowDown', '5');
+
+		expect(await getAttributes('margin-top-general')).toStrictEqual('2.5');
+	});
 	it('Checking AxisControl auto', async () => {
 		await changeResponsive(page, 'base');
 
-		const axisControlInstance = await page.$('.maxi-axis-control__margin');
 		await editAxisControl({
 			page,
-			instance: axisControlInstance,
+			instance: await page.$('.maxi-axis-control__margin'),
 			values: 'auto',
 			unit: 'px',
 		});
@@ -164,10 +214,10 @@ describe('AxisControl', () => {
 		});
 
 		const expectAxisMargin = {
-			'margin-top-general': 66,
-			'margin-bottom-general': 66,
-			'margin-left-general': 77,
-			'margin-right-general': 77,
+			'margin-top-general': '66',
+			'margin-bottom-general': '66',
+			'margin-left-general': '77',
+			'margin-right-general': '77',
 			'margin-unit-general': '%',
 		};
 
@@ -190,10 +240,10 @@ describe('AxisControl', () => {
 		});
 
 		const expectSyncOptionNone = {
-			'margin-top-general': 66,
-			'margin-bottom-general': 55,
-			'margin-left-general': 33,
-			'margin-right-general': 77,
+			'margin-top-general': '66',
+			'margin-bottom-general': '55',
+			'margin-left-general': '33',
+			'margin-right-general': '77',
 			'margin-unit-general': 'px',
 		};
 
@@ -206,5 +256,27 @@ describe('AxisControl', () => {
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check padding min is never below 0', async () => {
+		await openSidebarTab(page, 'style', 'margin padding');
+		const axisControlInstance = await page.$('.maxi-axis-control__padding');
+
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '1',
+			unit: 'px',
+		});
+
+		const input = await axisControlInstance.$$(
+			'.maxi-axis-control__content__item input'
+		);
+
+		await input[0].focus();
+		await pressKeyTimes('ArrowDown', '5');
+
+		expect(await getAttributes('padding-top-general')).toStrictEqual(0);
 	});
 });

@@ -1,22 +1,38 @@
 import getBorderStyles from '../getBorderStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
+jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
+	return jest.fn(() => {
+		return {
+			value: {
+				name: 'Maxi (Default)',
+				status: 'active',
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						color: {
+							1: '255,255,255',
+							2: '242,249,253',
+							3: '155,155,155',
+							4: '255,74,23',
+							5: '0,0,0',
+							6: '201,52,10',
+							7: '8,18,25',
+							8: '150,176,203',
+						},
+					},
+				},
+			},
+		};
+	});
 });
 
 describe('getBorderStyles', () => {
 	it('Test simple and default border attributes', async () => {
 		const object = {
-			'border-palette-color-status-general': true,
+			'border-palette-status-general': true,
 			'border-palette-color-general': 2,
 			'border-status-hover': false,
-			'border-palette-color-status-general-hover': true,
+			'border-palette-status-general-hover': true,
 			'border-palette-color-general-hover': 6,
 			'border-sync-radius-general': 'all',
 			'border-unit-radius-general': 'px',
@@ -34,10 +50,10 @@ describe('getBorderStyles', () => {
 
 	it('Return border styles object with all the settings', () => {
 		const object = {
-			'border-palette-color-status-general': true,
+			'border-palette-status-general': true,
 			'border-palette-color-general': 2,
 			'border-status-hover': false,
-			'border-palette-color-status-general-hover': true,
+			'border-palette-status-general-hover': true,
 			'border-palette-color-general-hover': 6,
 			'border-sync-radius-general': 'all',
 			'border-unit-radius-general': 'px',
@@ -52,7 +68,7 @@ describe('getBorderStyles', () => {
 			'border-sync-width-xxl': 'axis',
 			'border-right-width-xxl': 6,
 			'border-left-width-xxl': 6,
-			'border-palette-color-status-xxl': true,
+			'border-palette-status-xxl': true,
 			'border-palette-color-xxl': 5,
 			'border-sync-width-xl': 'none',
 			'border-top-width-xl': 1,
@@ -63,7 +79,7 @@ describe('getBorderStyles', () => {
 			'border-top-right-radius-xl': 50,
 			'border-bottom-right-radius-xl': 50,
 			'border-bottom-left-radius-xl': 50,
-			'border-palette-color-status-l': false,
+			'border-palette-status-l': false,
 			'border-palette-color-l': 5,
 			'border-color-l': 'rgba(23, 63, 194, 0.38)',
 			'border-palette-opacity-l': 0.38,
@@ -72,11 +88,11 @@ describe('getBorderStyles', () => {
 			'border-bottom-width-l': 0,
 			'border-left-width-l': 30,
 			'border-unit-radius-l': '%',
-			'border-palette-color-status-s': false,
+			'border-palette-status-s': false,
 			'border-palette-color-s': 5,
 			'border-palette-opacity-s': 0.38,
 			'border-color-s': 'rgba(51,54,62,0.38)',
-			'border-palette-color-status-xs': true,
+			'border-palette-status-xs': true,
 			'border-palette-color-xs': 5,
 			'border-palette-opacity-xs': 0.94,
 			'border-color-xs': 'rgba(51, 54, 62, 0.94)',
@@ -91,10 +107,10 @@ describe('getBorderStyles', () => {
 
 	it('Return a border styles object with hover options', () => {
 		const object = {
-			'border-palette-color-status-general': true,
+			'border-palette-status-general': true,
 			'border-palette-color-general': 2,
 			'border-status-hover': true,
-			'border-palette-color-status-general-hover': true,
+			'border-palette-status-general-hover': true,
 			'border-palette-color-general-hover': 6,
 			'border-sync-radius-general': 'all',
 			'border-unit-radius-general': 'px',
@@ -109,7 +125,7 @@ describe('getBorderStyles', () => {
 			'border-sync-width-xxl': 'axis',
 			'border-right-width-xxl': 6,
 			'border-left-width-xxl': 6,
-			'border-palette-color-status-xxl': true,
+			'border-palette-status-xxl': true,
 			'border-palette-color-xxl': 5,
 			'border-sync-width-xl': 'none',
 			'border-top-width-xl': 1,
@@ -120,7 +136,7 @@ describe('getBorderStyles', () => {
 			'border-top-right-radius-xl': 50,
 			'border-bottom-right-radius-xl': 50,
 			'border-bottom-left-radius-xl': 50,
-			'border-palette-color-status-l': false,
+			'border-palette-status-l': false,
 			'border-palette-color-l': 5,
 			'border-color-l': 'rgba(23, 63, 194, 0.38)',
 			'border-palette-opacity-l': 0.38,
@@ -129,26 +145,26 @@ describe('getBorderStyles', () => {
 			'border-bottom-width-l': 0,
 			'border-left-width-l': 30,
 			'border-unit-radius-l': '%',
-			'border-palette-color-status-s': false,
+			'border-palette-status-s': false,
 			'border-palette-color-s': 5,
 			'border-palette-opacity-s': 0.38,
 			'border-color-s': 'rgba(51,54,62,0.38)',
-			'border-palette-color-status-xs': true,
+			'border-palette-status-xs': true,
 			'border-palette-color-xs': 5,
 			'border-palette-opacity-xs': 0.94,
 			'border-color-xs': 'rgba(51, 54, 62, 0.94)',
 			'border-style-general-hover': 'dashed',
-			'border-palette-color-status-xxl-hover': false,
+			'border-palette-status-xxl-hover': false,
 			'border-palette-color-xxl-hover': 5,
-			'border-palette-color-status-l-hover': false,
+			'border-palette-status-l-hover': false,
 			'border-palette-color-l-hover': 5,
 			'border-palette-opacity-l-hover': 0.38,
 			'border-color-l-hover': 'rgba(23, 63, 194, 0.38)',
-			'border-palette-color-status-s-hover': false,
+			'border-palette-status-s-hover': false,
 			'border-palette-color-s-hover': 5,
 			'border-palette-opacity-s-hover': 0.38,
 			'border-color-s-hover': 'rgba(51,54,62,0.38)',
-			'border-palette-color-status-xs-hover': true,
+			'border-palette-status-xs-hover': true,
 			'border-palette-color-xs-hover': 5,
 			'border-palette-opacity-xs-hover': 0.94,
 			'border-color-xs-hover': 'rgba(51, 54, 62, 0.94)',
@@ -205,7 +221,7 @@ describe('getBorderStyles', () => {
 
 	it('Ensures 0 is accepted on responsive stages', () => {
 		const object = {
-			'border-palette-color-status-general': true,
+			'border-palette-status-general': true,
 			'border-palette-color-general': 7,
 			'border-style-general': 'solid',
 			'border-top-width-general': 2,
@@ -234,7 +250,7 @@ describe('getBorderStyles', () => {
 
 	it('Return a border styles object based on Button Maxi', async () => {
 		const object = {
-			'button-border-palette-color-status-general': true,
+			'button-border-palette-status-general': true,
 			'button-border-palette-color-general': 2,
 			'button-border-sync-width-general': 'all',
 			'button-border-unit-width-general': 'px',
@@ -245,7 +261,7 @@ describe('getBorderStyles', () => {
 			'button-border-sync-radius-general': 'all',
 			'button-border-unit-radius-general': 'px',
 			'button-border-status-hover': false,
-			'button-border-palette-color-status-general-hover': true,
+			'button-border-palette-status-general-hover': true,
 			'button-border-palette-color-general-hover': 6,
 			'button-border-unit-radius-general-hover': 'px',
 			'button-border-style-general': 'solid',
@@ -253,7 +269,7 @@ describe('getBorderStyles', () => {
 			'button-border-right-width-general': 20,
 			'button-border-bottom-width-general': 20,
 			'button-border-left-width-general': 20,
-			'button-border-palette-color-status-xxl': true,
+			'button-border-palette-status-xxl': true,
 			'button-border-palette-color-xxl': 3,
 			'button-border-palette-opacity-xxl': 0.46,
 			'button-border-sync-width-xxl': 'axis',
@@ -261,7 +277,7 @@ describe('getBorderStyles', () => {
 			'button-border-left-width-xxl': 0,
 			'button-border-right-width-xl': 90,
 			'button-border-left-width-xl': 90,
-			'button-border-palette-color-status-xl': false,
+			'button-border-palette-status-xl': false,
 			'button-border-palette-color-xl': 3,
 			'button-border-palette-opacity-xl': 0.46,
 			'button-border-color-xl': 'rgba(197,26,209,0.46)',
@@ -274,13 +290,13 @@ describe('getBorderStyles', () => {
 			'button-border-right-width-l': 2,
 			'button-border-bottom-width-l': 2,
 			'button-border-left-width-l': 2,
-			'button-border-palette-color-status-l': false,
+			'button-border-palette-status-l': false,
 			'button-border-palette-color-l': 3,
 			'button-border-palette-opacity-l': 0.46,
 			'button-border-color-l': 'rgba(114,52,118,0.46)',
 			'button-border-style-l': 'dashed',
 			'button-border-unit-width-l': 'px',
-			'button-border-palette-color-status-m': true,
+			'button-border-palette-status-m': true,
 			'button-border-palette-color-m': 7,
 			'button-border-palette-opacity-m': 0.46,
 			'button-border-color-m': 'rgba(114,52,118,0.46)',
@@ -296,7 +312,7 @@ describe('getBorderStyles', () => {
 			'button-border-top-right-radius-xs': 0,
 			'button-border-bottom-right-radius-xs': 0,
 			'button-border-bottom-left-radius-xs': 0,
-			'button-border-palette-color-status-xs': true,
+			'button-border-palette-status-xs': true,
 			'button-border-palette-color-xs': 2,
 			'button-border-palette-opacity-xs': 0.46,
 			'button-border-color-xs': 'rgba(114,52,118,0.46)',
@@ -313,7 +329,7 @@ describe('getBorderStyles', () => {
 
 	it('Return a border styles object based on Button Maxi with hover active and non global SC settings enabled', async () => {
 		const object = {
-			'button-border-palette-color-status-general': true,
+			'button-border-palette-status-general': true,
 			'button-border-palette-color-general': 2,
 			'button-border-sync-width-general': 'all',
 			'button-border-unit-width-general': 'px',
@@ -324,7 +340,7 @@ describe('getBorderStyles', () => {
 			'button-border-sync-radius-general': 'all',
 			'button-border-unit-radius-general': 'px',
 			'button-border-status-hover': true,
-			'button-border-palette-color-status-general-hover': true,
+			'button-border-palette-status-general-hover': true,
 			'button-border-palette-color-general-hover': 6,
 			'button-border-unit-radius-general-hover': 'px',
 			'button-border-style-general': 'solid',
@@ -357,7 +373,7 @@ describe('getBorderStyles', () => {
 
 	it('Return a border styles object based on Button Maxi with hover disabled and global SC settings enabled', async () => {
 		const object = {
-			'button-border-palette-color-status-general': true,
+			'button-border-palette-status-general': true,
 			'button-border-palette-color-general': 2,
 			'button-border-sync-width-general': 'all',
 			'button-border-unit-width-general': 'px',
@@ -368,7 +384,7 @@ describe('getBorderStyles', () => {
 			'button-border-sync-radius-general': 'all',
 			'button-border-unit-radius-general': 'px',
 			'button-border-status-hover': false,
-			'button-border-palette-color-status-general-hover': true,
+			'button-border-palette-status-general-hover': true,
 			'button-border-palette-color-general-hover': 6,
 			'button-border-unit-radius-general-hover': 'px',
 			'button-border-style-general': 'solid',

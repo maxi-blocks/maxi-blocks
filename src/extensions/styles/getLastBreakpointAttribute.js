@@ -2,6 +2,10 @@
  * WordPress dependencies
  */
 import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
 import getAttributeValue from './getAttributeValue';
 
 /**
@@ -34,8 +38,12 @@ const getLastBreakpointAttributeSingle = (
 	isHover,
 	avoidXXL
 ) => {
-	const { getBlockAttributes, getSelectedBlockClientId } =
-		select('core/block-editor');
+	const { getBlockAttributes, getSelectedBlockClientId } = select(
+		'core/block-editor'
+	) || {
+		getBlockAttributes: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
+		getSelectedBlockClientId: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
+	};
 
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
@@ -152,7 +160,9 @@ const getLastBreakpointAttribute = (
 	forceSingle = false,
 	avoidXXL = false
 ) => {
-	const { getSelectedBlockCount } = select('core/block-editor');
+	const { getSelectedBlockCount } = select('core/block-editor') || {
+		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
+	};
 
 	const breakpoint =
 		rawBreakpoint === 'general' ? getWinBreakpoint() : rawBreakpoint;

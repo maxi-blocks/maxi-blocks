@@ -8,9 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -38,6 +36,7 @@ const save = props => {
 		'hover-type': hoverType,
 		'hover-preview': hoverPreview,
 		isImageUrl,
+		captionPosition,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
@@ -63,9 +62,18 @@ const save = props => {
 		<MaxiBlock
 			tagName='figure'
 			className={fullWidth === 'full' && 'alignfull'}
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
+			{captionType !== 'none' &&
+				!isEmpty(captionContent) &&
+				captionPosition === 'top' && (
+					<RichText.Content
+						className='maxi-image-block__caption'
+						value={captionContent}
+						tagName='figcaption'
+					/>
+				)}
 			<HoverPreview
 				key={`hover-preview-${uniqueID}`}
 				wrapperClassName={wrapperClassName}
@@ -93,13 +101,15 @@ const save = props => {
 					/>
 				)}
 			</HoverPreview>
-			{captionType !== 'none' && !isEmpty(captionContent) && (
-				<RichText.Content
-					className='maxi-image-block__caption'
-					value={captionContent}
-					tagName='figcaption'
-				/>
-			)}
+			{captionType !== 'none' &&
+				!isEmpty(captionContent) &&
+				captionPosition === 'bottom' && (
+					<RichText.Content
+						className='maxi-image-block__caption'
+						value={captionContent}
+						tagName='figcaption'
+					/>
+				)}
 		</MaxiBlock>
 	);
 };

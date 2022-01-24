@@ -17,9 +17,7 @@ import {
 	Toolbar,
 	InnerBlocks,
 } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -93,6 +91,12 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => {
@@ -113,8 +117,8 @@ class edit extends MaxiBlockComponent {
 							<MaxiBlock
 								key={`maxi-column--${uniqueID}`}
 								ref={this.blockRef}
-								{...getMaxiBlockBlockAttributes(this.props)}
-								disableMotion
+								{...getMaxiBlockAttributes(this.props)}
+								isOverflowHidden={getIsOverflowHidden()}
 								tagName={BlockResizer}
 								resizableObject={this.resizableObject}
 								classes={classnames(

@@ -90,11 +90,11 @@ const ColorControl = props => {
 			paletteStatus,
 			paletteColor,
 			paletteOpacity,
-			color: `rgba(${getPaletteColor(
+			color: `rgba(${getPaletteColor({
 				clientId,
 				paletteColor,
-				blockStyle
-			)},1)`,
+				blockStyle,
+			})},1)`,
 		});
 	};
 
@@ -123,11 +123,11 @@ const ColorControl = props => {
 							paletteStatus: !val,
 							// If palette is disabled, set custom color from palette one
 							...(val && {
-								color: `rgba(${getPaletteColor(
+								color: `rgba(${getPaletteColor({
 									clientId,
 									paletteColor,
-									blockStyle
-								)},${paletteOpacity || 1})`,
+									blockStyle,
+								})},${paletteOpacity || 1})`,
 							}),
 							// If palette is set, save the custom color opacity
 							...(!disableOpacity &&

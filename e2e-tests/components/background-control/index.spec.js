@@ -5,676 +5,1125 @@
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 /**
- * Interactive dependencies
+ * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	addBackgroundLayer,
+	modalMock,
+	changeResponsive,
+	removeBackgroundLayers,
+	editAxisControl,
+	getBlockStyle,
+} from '../../utils';
 
-describe.skip('BackgroundControl', () => {
-	beforeEach(async () => {
+describe('BackgroundControl', () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await openSidebarTab(page, 'style', 'background layer');
 	});
 
-	it('Check Background Color Clip Path', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'background'
+	it('Check Background Color layer', async () => {
+		await addBackgroundLayer(page, 'color');
+
+		// change color
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-color-control__palette-container button',
+			colorPalette => colorPalette[4].click()
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-background-control__simple label',
-			select => select[2].click()
+		// opacity
+		await page.$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity.focus()
 		);
 
-		await accordionPanel.$eval(
-			'.maxi-clip-path-control .maxi-toggle-switch .maxi-base-control__label',
-			use => use.click()
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('45');
+
+		// clip-path
+		await page.$eval(
+			'.maxi-clip-path-control .maxi-toggle-switch__toggle input',
+			input => input.click()
 		);
 
-		await accordionPanel.$$eval('.clip-path-defaults button', click =>
-			click[1].click()
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[3].click()
 		);
 
-		await page.waitForTimeout(1000);
-
-		const bgColorClipPathAttributes = await getBlockAttributes();
-		const bgColorClipPathResult =
-			bgColorClipPathAttributes['background-color-clip-path-general'];
-		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-
-		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
-	});
-
-	it('Check Background Color Layer Clip Path', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'background'
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-tabs-content .maxi-background-control .maxi-toggle-switch .maxi-base-control__label',
-			use => use.click()
-		);
-
-		const selectLayer = await accordionPanel.$(
-			'.maxi-tabs-content .maxi-background-control .maxi-loader-control .maxi-base-control__field select'
-		);
-
-		const addNewLayer = await accordionPanel.$(
-			'.maxi-tabs-content .maxi-background-control .maxi-loader-control button'
-		);
-
-		await selectLayer.select('color');
-		await addNewLayer.click();
-
-		await accordionPanel.$$eval(
-			'.maxi-background-layers_options .maxi-background-layer span',
-			select => select[0].click()
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-clip-path-control .maxi-toggle-switch .maxi-base-control__label',
-			use => use.click()
-		);
-
-		await accordionPanel.$$eval('.clip-path-defaults button', click =>
-			click[1].click()
-		);
-
-		await page.waitForTimeout(1000);
-
-		const bgColorClipPathAttributes = await getBlockAttributes();
-		const bgColorClipPathResult =
-			bgColorClipPathAttributes['background-layers'][0][
-				'background-color-clip-path-general'
-			];
-		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-
-		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
-	});
-
-	it('Check Background Color', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'background'
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[3].click()
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette div',
-			select => select[3].click()
-		);
-		await page.waitForTimeout(1000);
-
-		const colorAttributes = await getBlockAttributes();
-		const result = colorAttributes['background-palette-color-general'];
-		const expectedColor = 4;
-
-		expect(result).toStrictEqual(expectedColor);
-	});
-
-	it('Check Background Custom Color', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'background'
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[3].click()
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
-			select => select.click()
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-color-control__color input',
-			colorInput => colorInput.focus()
-		);
-
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('000000');
-		await page.keyboard.press('Enter');
-
-		await page.waitForTimeout(500);
-
-		const colorAttributes = await getBlockAttributes();
-		const result = colorAttributes['background-color-general'];
-		const expectedColor = 'rgb(0,0,0)';
-
-		expect(result).toStrictEqual(expectedColor);
-	});
-
-	it('Check Background Image', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'background'
-		);
-		await accordionPanel.$$eval(
-			'.maxi-background-control__simple label',
-			select => select[3].click()
-		);
-
-		// background options
-		const selectors = await accordionPanel.$$(
-			'.maxi-tabs-content .maxi-background-control .maxi-base-control select'
-		);
-
-		const [size, repeat, position, attachment] = selectors;
-
-		await size.select('cover');
-		await repeat.select('repeat-x');
-		await position.select('left center');
-		await attachment.select('fixed');
-
-		// more settings
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-background-image-more-settings--toggle label',
-			click => click[1].click()
-		);
-
-		// background more options
-		const moreOptions = await accordionPanel.$$(
-			'.maxi-tabs-content .maxi-background-control .maxi-background-image-more-settings .maxi-base-control select'
-		);
-
-		const [origin, clip] = moreOptions;
-
-		await origin.select('border-box');
-		await clip.select('padding-box');
-
-		const expectAttributes = {
-			'background-image-attachment': 'fixed',
-			'background-image-size': 'cover',
-			'background-image-clip': 'padding-box',
-			'background-image-origin': 'border-box',
-			'background-image-position': 'left center',
-			'background-image-repeat': 'repeat-x',
-		};
-
-		const pageAttributes = await getBlockAttributes();
-		const backgroundAttributes = (({
-			'background-image-attachment-general': imageAttachment,
-			'background-image-size-general': imageSize,
-			'background-image-clip-general': imageClipPath,
-			'background-image-origin-general': imageOrigin,
-			'background-image-position-general': imagePosition,
-			'background-image-repeat-general': imageRepeat,
-		}) => ({
-			'background-image-attachment': imageAttachment,
-			'background-image-size': imageSize,
-			'background-image-clip': imageClipPath,
-			'background-image-origin': imageOrigin,
-			'background-image-position': imagePosition,
-			'background-image-repeat': imageRepeat,
-		}))(pageAttributes);
-
-		expect(backgroundAttributes).toStrictEqual(expectAttributes);
-	});
-
-	it('Check Background Video', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'background'
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
-		);
-
-		// insert URL
-		const VideoUrl = 'https://youtu.be/hM7Eh0gGNKA';
-
-		await accordionPanel.$eval(
-			'.maxi-tabs-content .maxi-background-control__video .maxi-text-control input',
-			url => url.focus()
-		);
-		await page.keyboard.type(VideoUrl);
-		await page.keyboard.press('Enter');
-
-		const inputs = await accordionPanel.$$(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-advanced-number-control .maxi-base-control__field input'
-		);
-
-		// start Time
-		await inputs[2].focus();
-		await page.keyboard.type('1');
-		await page.keyboard.press('Enter');
-
-		// end time
-		await inputs[4].focus();
-		await page.keyboard.type('3');
-		await page.keyboard.press('Enter');
-
-		const expectVideo = await getBlockAttributes();
-		expect(expectVideo['background-video-mediaURL-general']).toStrictEqual(
-			VideoUrl
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-background-control__video .maxi-toggle-switch.video-loop .maxi-base-control__label',
-			use => use.click()
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-background-control__video .maxi-toggle-switch.video-play-mobile .maxi-base-control__label',
-			use => use.click()
-		);
-
-		const expectAttribute = await getBlockAttributes();
-		const backgroundSettings = 'video';
-
-		expect(
-			expectAttribute['background-active-media-general']
-		).toStrictEqual(backgroundSettings);
-	});
-
-	// TODO: needs to be fixed with #1931
-	// it('Check Background Gradient', async () => {
-	// 	await setBrowserViewport('large');
-	// 	const accordionPanel = await openSidebarTab(page,'style', 'background');
-	// 	await accordionPanel.$$eval(
-	// 		'.maxi-background-control .maxi-button-group-control--full-width .maxi-base-control__field input',
-	// 		select => select[4].click()
-	// 	);
-
-	// 	await page.$eval('.maxi-sidebar', sideBar =>
-	// 		sideBar.scrollTo(0, sideBar.scrollHeight)
-	// 	);
-
-	// 	const { x, y } = await page.$eval(
-	// 		'.maxi-background-control .maxi-gradient-control .maxi-gradient-control__gradient .components-custom-gradient-picker__markers-container',
-	// 		gradientBar => {
-	// 			const { x, y, width, height } =
-	// 				gradientBar.getBoundingClientRect();
-
-	// 			const xPos = x + width / 2;
-	// 			const yPos = y + height / 2;
-
-	// 			return { x: xPos, y: yPos };
-	// 		}
-	// 	);
-
-	// 	await page.mouse.click(x, y, { delay: 1000 });
-
-	// 	await page.waitForSelector(
-	// 		'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover'
-	// 	);
-
-	// 	const colorPickerPopover = await page.$(
-	// 		'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover'
-	// 	);
-
-	// 	await colorPickerPopover.$eval(
-	// 		'.components-color-picker__inputs-fields input',
-	// 		select => select.focus()
-	// 	);
-	// 	await pressKeyTimes('Backspace', '6');
-	// 	await page.keyboard.type('24a319');
-	// 	await page.keyboard.press('Enter');
-
-	// 	await page.waitForTimeout(500);
-
-	// 	const expectAttribute = await getBlockAttributes();
-	// 	const gradient = expectAttribute['background-gradient'];
-	// 	const expectGradient =
-	// 		'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(36,163,25) 46%,rgb(155,81,224) 100%)';
-
-	// 	expect(gradient).toStrictEqual(expectGradient);
-	// });
-
-	it('Background hover attributes are kept after setting none to normal background settings', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'background'
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[3].click()
-		);
-
-		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
-			buttons[1].click()
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-background-status-hover.maxi-toggle-switch .maxi-base-control__label',
-			use => use.click()
-		);
-
-		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
-			buttons[0].click()
-		);
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[2].click()
-		);
-
-		const expectChanges = {
-			'background-active-media': '',
-			'background-active-media-hover': 'color',
-		};
-
-		const backgroundAttributes = await getBlockAttributes();
-
-		const background = (({
-			'background-active-media-general': backgroundActiveMedia,
-			'background-active-media-general-hover': backgroundActiveMediaHover,
-		}) => ({
-			'background-active-media': backgroundActiveMedia,
-			'background-active-media-hover': backgroundActiveMediaHover,
-		}))(backgroundAttributes);
-
-		expect(background).toStrictEqual(expectChanges);
-
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	/* it('Check BackgroundShape', async () => {
-		const { uniqueID } = await getBlockAttributes();
+	it('Check Background Color layer responsive', async () => {
+		await changeResponsive(page, 's');
 
-		const accordionPanel = await openSidebarTab(page,'style', 'background');
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-button-group-control--full-width .maxi-base-control__field input',
-			select => select[5].click()
+		// expect general
+		const baseColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
-			click => click[0].click()
+		expect(baseColorSelected).toStrictEqual('5');
+
+		// modify s responsive
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-color-control__palette-box',
+			colorPalette => colorPalette[5].click()
 		);
 
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('angle 10');
-		await page.waitForTimeout(1000);
-		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector(
-			'.maxi-cloud-masonry-card__svg-container__button'
+		// expect s
+		const sColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
 		);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
-		);
+		expect(sColorSelected).toStrictEqual('6');
 
-		const expectShape = `
-	<svg viewBox="0 0 36.1 36.1" class="angle-10-maxi-svg" data-stroke="" data-item="${uniqueID}__svg"><path fill="" data-fill="" d="M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z"></path></svg>`;
+		// expect xs
+		await changeResponsive(page, 'xs');
 
-		const attributes = await getBlockAttributes();
-
-		expect(
-			attributes['background-svg-SVGElement']
-				.replace(/(\r\n|\n|\r)/g, '')
-				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
-	}); */
-
-	/* it('Check Background Shape Custom Color', async () => {
-		const accordionPanel = await openSidebarTab(page,'style', 'background');
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-button-group-control--full-width .maxi-base-control__field input',
-			select => select[5].click()
+		const xsColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
-			click => click[0].click()
+		expect(xsColorSelected).toStrictEqual('6');
+
+		// expect m
+		await changeResponsive(page, 'm');
+
+		const mColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
 		);
 
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('angle 10');
-		await page.waitForTimeout(1000);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
+		expect(mColorSelected).toStrictEqual('5');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Background Color layer hover', async () => {
+		await changeResponsive(page, 'base');
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-settingstab-control .maxi-tabs-control button',
-			click => click[1].click()
-		);
-		await accordionPanel.$eval(
-			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
-			select => select.click()
+		// hover
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
 		);
 
-		await accordionPanel.$eval(
-			'.maxi-color-control__color input',
-			colorInput => colorInput.focus()
-		);
-
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('000000');
-		await page.keyboard.press('Enter');
-
-		await page.waitForTimeout(500);
-
-		const colorAttributes = await getBlockAttributes();
-
-		const result =
-			colorAttributes['background-svg-SVGData'][
-				`${Object.keys(colorAttributes['background-svg-SVGData'])[0]}`
-			].color;
-
-		const expectedColor = 'rgba(0,0,0,1)';
-
-		expect(result).toStrictEqual(expectedColor);
-	}); */
-
-	/* it('Check Background Layers', async () => {
-		const accordionPanel = await openSidebarTab(page,'style', 'background');
-
-		// add color layer
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-background-control .maxi-base-control label',
-			selectLayers => selectLayers[1].click()
-		);
-
-		const selectLayer = await accordionPanel.$(
-			'.maxi-tabs-content .maxi-background-control .maxi-loader-control .maxi-base-control__field select'
-		);
-
-		const addNewLayer = await accordionPanel.$(
-			'.maxi-tabs-content .maxi-background-control .maxi-loader-control button'
-		);
-
-		await selectLayer.select('color');
-		await addNewLayer.click();
-
-		await accordionPanel.$$eval(
-			'.maxi-background-layers_options .maxi-background-layer span',
-			select => select[0].click()
-		);
-		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette div',
-			select => select[3].click()
-		);
-		await page.waitForTimeout(1000);
-
-		const expectAttribute = await getBlockAttributes();
-		const layers = expectAttribute['background-active-media'];
-		const bgLayerPaletteColor =
-			expectAttribute['background-layers'][0]['background-palette-color'];
-		const expectLayers = 'layers';
-		const expectedColor = 4;
-
-		expect(layers).toStrictEqual(expectLayers);
-		expect(bgLayerPaletteColor).toStrictEqual(expectedColor);
-
-		await accordionPanel.$eval(
-			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
-			select => select.click()
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-color-control__color input',
-			colorInput => colorInput.focus()
-		);
-
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('000000');
-		await page.keyboard.press('Enter');
-
-		await page.waitForTimeout(500);
-
-		const colorAttributes = await getBlockAttributes();
-		const bgLayerCustomColor =
-			colorAttributes['background-layers'][0]['background-color'];
-		const expectedBackgroundCustomColor = 'rgba(0,0,0,1)';
-
-		expect(bgLayerCustomColor).toStrictEqual(expectedBackgroundCustomColor);
-
-		// remove layer test
-		await accordionPanel.$$eval(
-			'.maxi-background-layers_options .maxi-background-layer span',
-			select => select[5].click()
-		);
-
-		const expectLayer = await getBlockAttributes();
-		const none = expectLayer['background-active-media'];
-		const expectMedia = 'none';
-
-		expect(none).toStrictEqual(expectMedia);
-
-		// add all layers
-		await selectLayer.select('color');
-		await addNewLayer.click();
-
-		await selectLayer.select('image');
-		await addNewLayer.click();
-
-		await selectLayer.select('video');
-		await addNewLayer.click();
-		await accordionPanel.$$eval(
-			'.maxi-background-layers_options .maxi-background-layer span',
-			select => select[12].click()
-		);
-
+		// enable hover
 		await page.$eval(
-			'.maxi-background-layer__content .maxi-text-control input',
-			select => select.focus()
-		);
-		await page.keyboard.type('https://youtu.be/hM7Eh0gGNKA');
-
-		await selectLayer.select('gradient');
-		await addNewLayer.click();
-
-		await selectLayer.select('shape');
-		await addNewLayer.click();
-
-		await accordionPanel.$$eval(
-			'.maxi-background-layers_options .maxi-background-layer span',
-			select => select[50].click()
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
-			click => click[0].click()
-		);
-
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('angle 10');
-		await page.waitForTimeout(1000);
-		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector(
-			'.maxi-cloud-masonry-card__svg-container__button'
-		);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
+			'.maxi-background-status-hover .maxi-toggle-switch__toggle input',
 			button => button.click()
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-settingstab-control .maxi-tabs-control button',
-			click => click[1].click()
-		);
-		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette div',
-			select => select[3].click()
-		);
-		await page.waitForTimeout(1000);
-
-		const expectShapeLayerAttribute = await getBlockAttributes();
-
-		const bgShapeLayerPaletteColor =
-			expectShapeLayerAttribute['background-layers'][4][
-				'background-palette-svg-color'
-			];
-		const expectedShapePaletteColor = 4;
-
-		expect(bgShapeLayerPaletteColor).toStrictEqual(
-			expectedShapePaletteColor
+		// hover options
+		await page.$eval(
+			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			options => options.click()
 		);
 
-		await accordionPanel.$eval(
-			'.maxi-color-control__palette__custom .maxi-button-group-control__option label',
-			select => select.click()
+		// change color
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-color-control__palette-container button',
+			colorPalette => colorPalette[1].click()
 		);
 
-		await accordionPanel.$eval(
-			'.maxi-color-control__color input',
-			colorInput => colorInput.focus()
+		// opacity
+		await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input[type="number"]',
+			opacity => opacity.focus()
+		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('45');
+
+		// clip-path
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[2].click()
 		);
 
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('000000');
-		await page.keyboard.press('Enter');
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
 
-		await page.waitForTimeout(500);
+	it('Check Background Color layer hover responsive', async () => {
+		await changeResponsive(page, 's');
 
-		const shapeColorAttributes = await getBlockAttributes();
-		const bgShapeLayerCustomColor =
-			shapeColorAttributes['background-layers'][4][
-				'background-svg-SVGData'
-			][
-				`${
-					Object.keys(
-						shapeColorAttributes['background-layers'][4][
-							'background-svg-SVGData'
-						]
-					)[0]
-				}`
-			].color;
-
-		const expectedShapeBackgroundCustomColor = 'rgba(0,0,0,1)';
-
-		expect(bgShapeLayerCustomColor).toStrictEqual(
-			expectedShapeBackgroundCustomColor
+		// expect base value
+		const baseColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
 		);
 
-		const expectBackgroundLayers = await getBlockAttributes();
-		const allLayers = expectBackgroundLayers['background-layers'];
+		expect(baseColorSelected).toStrictEqual('2');
 
-		expect(allLayers).toMatchSnapshot();
-	}); */
+		// modify s responsive
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-color-control__palette-container button',
+			colorPalette => colorPalette[3].click()
+		);
+
+		// expect s
+		const sColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
+		);
+		expect(sColorSelected).toStrictEqual('4');
+
+		// expect xs
+		await changeResponsive(page, 'xs');
+
+		const xsColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
+		);
+
+		expect(xsColorSelected).toStrictEqual('4');
+
+		// expect m
+		await changeResponsive(page, 'm');
+
+		const mColorSelected = await page.$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
+		);
+
+		expect(mColorSelected).toStrictEqual('2');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Background image layer', async () => {
+		await changeResponsive(page, 'base');
+
+		await removeBackgroundLayers(page);
+		await addBackgroundLayer(page, 'image');
+
+		// opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('55');
+
+		// selectors
+		// background size
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('contain');
+
+		// background repeat
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('repeat');
+
+		// background position
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('left top');
+
+		// background attachment
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
+
+		await attachmentSelector.select('fixed');
+
+		// more settings
+		await page.$eval(
+			'.maxi-tabs-content .maxi-background-image-more-settings--toggle input',
+			button => button.click()
+		);
+
+		// background origin
+		const originSelector = await page.$(
+			'.maxi-background-control__image-layer__origin-selector select'
+		);
+
+		await originSelector.select('border-box');
+
+		// background clip
+		const clipSelector = await page.$(
+			'.maxi-background-control__image-layer__clip-selector select'
+		);
+
+		await clipSelector.select('content-box');
+
+		// clip-path
+		await page.$eval(
+			'.maxi-clip-path-control .maxi-toggle-switch__toggle input',
+			input => input.click()
+		);
+
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[3].click()
+		);
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Background image layer responsive', async () => {
+		// general expects in S responsive
+		await changeResponsive(page, 's');
+
+		// background size
+		const baseBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundSize).toStrictEqual('contain');
+
+		// background repeat
+		const baseBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundRepeat).toStrictEqual('repeat');
+
+		// background position
+		const baseBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundPosition).toStrictEqual('left top');
+
+		// background attachment
+		const baseBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundAttachment).toStrictEqual('fixed');
+
+		// selectors
+		// background size
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('cover');
+
+		// background repeat
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('space');
+
+		// background position
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('center top');
+
+		// background attachment
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
+
+		await attachmentSelector.select('local');
+
+		// expect values
+		// background size
+		const sBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundSize).toStrictEqual('cover');
+
+		// background repeat
+		const sBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundRepeat).toStrictEqual('space');
+
+		// background position
+		const sBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundPosition).toStrictEqual('center top');
+
+		// background attachment
+		const sBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundAttachment).toStrictEqual('local');
+
+		await changeResponsive(page, 'xs');
+		const xsBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundSize).toStrictEqual('cover');
+
+		// background repeat
+		const xsBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundRepeat).toStrictEqual('space');
+
+		// background position
+		const xsBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundPosition).toStrictEqual('center top');
+
+		// background attachment
+		const xsBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundAttachment).toStrictEqual('local');
+
+		await changeResponsive(page, 'm');
+		const mBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundSize).toStrictEqual('contain');
+
+		// background repeat
+		const mBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundRepeat).toStrictEqual('repeat');
+
+		// background position
+		const mBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundPosition).toStrictEqual('left top');
+
+		// background attachment
+		const mBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundAttachment).toStrictEqual('fixed');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Background image layer hover', async () => {
+		await changeResponsive(page, 'base');
+
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
+
+		// hover
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
+		);
+
+		// hover options
+		await page.$$eval(
+			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			options => options[0].click()
+		);
+
+		// opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('82');
+
+		// background size
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('cover');
+
+		// background repeat
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('repeat-x');
+		// background position
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('center top');
+		// background attachment
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
+
+		await attachmentSelector.select('local');
+		// more settings
+		await page.$eval(
+			'.maxi-tabs-content .maxi-background-image-more-settings--toggle input',
+			button => button.click()
+		);
+
+		// background origin
+		const originSelector = await page.$(
+			'.maxi-background-control__image-layer__origin-selector select'
+		);
+
+		await originSelector.select('content box');
+
+		// background clip
+		const clipSelector = await page.$(
+			'.maxi-background-control__image-layer__clip-selector select'
+		);
+
+		await clipSelector.select('border-box');
+
+		// clip-path
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[3].click()
+		);
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Background image layer hover responsive', async () => {
+		// general expects in S responsive
+		await changeResponsive(page, 's');
+
+		// background size
+		const baseBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundSize).toStrictEqual('cover');
+
+		// background repeat
+		const baseBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundRepeat).toStrictEqual('repeat-x');
+
+		// background position
+		const baseBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundPosition).toStrictEqual('center top');
+
+		// background attachment
+		const baseBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(baseBackgroundAttachment).toStrictEqual('local');
+
+		// change values in S responsive
+		// background size
+		const sizeSelector = await page.$(
+			'.maxi-background-control__image-layer__size-selector select'
+		);
+		await sizeSelector.select('contain');
+
+		// background repeat
+		const repeatSelector = await page.$(
+			'.maxi-background-control__image-layer__repeat-selector select'
+		);
+		await repeatSelector.select('repeat-y');
+		// background position
+		const positionSelector = await page.$(
+			'.maxi-background-control__image-layer__position-selector select'
+		);
+		await positionSelector.select('left top');
+		// background attachment
+		const attachmentSelector = await page.$(
+			'.maxi-background-control__image-layer__attachment-selector select'
+		);
+
+		await attachmentSelector.select('scroll');
+
+		// expect values
+		// background size
+		const sBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundSize).toStrictEqual('contain');
+
+		// background repeat
+		const sBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundRepeat).toStrictEqual('repeat-y');
+
+		// background position
+		const sBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundPosition).toStrictEqual('left top');
+
+		// background attachment
+		const sBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(sBackgroundAttachment).toStrictEqual('scroll');
+
+		await changeResponsive(page, 'xs');
+		const xsBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundSize).toStrictEqual('contain');
+
+		// background repeat
+		const xsBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundRepeat).toStrictEqual('repeat-y');
+
+		// background position
+		const xsBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundPosition).toStrictEqual('left top');
+
+		// background attachment
+		const xsBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(xsBackgroundAttachment).toStrictEqual('scroll');
+
+		await changeResponsive(page, 'm');
+		const mBackgroundSize = await page.$eval(
+			'.maxi-background-control__image-layer__size-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundSize).toStrictEqual('cover');
+
+		// background repeat
+		const mBackgroundRepeat = await page.$eval(
+			'.maxi-background-control__image-layer__repeat-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundRepeat).toStrictEqual('repeat-x');
+
+		// background position
+		const mBackgroundPosition = await page.$eval(
+			'.maxi-background-control__image-layer__position-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundPosition).toStrictEqual('center top');
+
+		// background attachment
+		const mBackgroundAttachment = await page.$eval(
+			'.maxi-background-control__image-layer__attachment-selector select',
+			selector => selector.value
+		);
+		expect(mBackgroundAttachment).toStrictEqual('local');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it.skip('Check Background video layer', async () => {
+		await changeResponsive(page, 'base');
+		await removeBackgroundLayers(page);
+		await addBackgroundLayer(page, 'video');
+
+		const video =
+			'https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp';
+
+		// add VideoURL
+		await page.$eval(
+			'.maxi-background-control__video .maxi-text-control input',
+			input => input.focus()
+		);
+		await page.keyboard.type(video);
+
+		// edit start time
+		await page.$eval('.maxi-background-video-start-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('55');
+
+		// edit end time
+		await page.$eval('.maxi-background-video-end-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('77');
+
+		// add loop
+		await page.$eval('.video-loop input', button => button.click());
+
+		// video opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('44');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it.skip('Check Background video layer responsive', async () => {
+		// general
+		await changeResponsive(page, 's');
+		const backgroundOpacityBase = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityBase).toStrictEqual('44');
+
+		// change opacity S
+		await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('32');
+
+		// expect s
+		const backgroundOpacityS = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityS).toStrictEqual('32');
+
+		// expect Xs
+		await changeResponsive(page, 'xs');
+		const backgroundOpacityXs = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+		expect(backgroundOpacityXs).toStrictEqual('32');
+		// expect M
+		await changeResponsive(page, 'm');
+		const backgroundOpacityM = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityM).toStrictEqual('44');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it.skip('Check Background video layer hover', async () => {
+		await changeResponsive(page, 'base');
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
+
+		// hover
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
+		);
+
+		// hover options
+		await page.$$eval(
+			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			options => options[0].click()
+		);
+
+		// video opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('82');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it.skip('Check Background video layer hover responsive', async () => {
+		// general
+		await changeResponsive(page, 's');
+
+		const backgroundOpacityBase = await page.$$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input[0].value
+		);
+
+		expect(backgroundOpacityBase).toStrictEqual('82');
+
+		// change opacity S
+		await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('45');
+
+		// expect s
+		const backgroundOpacityS = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityS).toStrictEqual('45');
+
+		// expect Xs
+		await changeResponsive(page, 'xs');
+		const backgroundOpacityXs = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+		expect(backgroundOpacityXs).toStrictEqual('45');
+
+		// expect M
+		await changeResponsive(page, 'm');
+		const backgroundOpacityM = await page.$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			input => input.value
+		);
+
+		expect(backgroundOpacityM).toStrictEqual('82');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	// Here are the tests of svg-fill-control
+	it('Check Background shape layer', async () => {
+		await changeResponsive(page, 'base');
+		await removeBackgroundLayers(page);
+		await addBackgroundLayer(page, 'shape');
+
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
+
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[0].click()
+		);
+
+		await modalMock(page, { type: 'bg-shape', isBGLayers: true });
+		await page.$eval('.maxi-background-layer__arrow', display =>
+			display.click()
+		);
+
+		// opacity
+		const opacityInput = await page.$$(
+			'.maxi-color-control .maxi-advanced-number-control input'
+		);
+
+		await opacityInput[0].focus();
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('77');
+
+		// size
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const sizeInput = await page.$$(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
+		);
+
+		await sizeInput[0].focus();
+		await page.keyboard.type('43');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+		debugger;
+	});
+
+	it('Check Background shape layer responsive', async () => {
+		await changeResponsive(page, 's');
+
+		const baseBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(baseBackgroundOpacity).toStrictEqual('77');
+
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const baseBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(baseBackgroundShapeSize).toStrictEqual('43');
+
+		// opacity and size
+		const opacityInput = await page.$$(
+			'.maxi-color-control .maxi-advanced-number-control input'
+		);
+
+		await opacityInput[0].focus();
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('54');
+
+		const sizeInput = await page.$$(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
+		);
+
+		await sizeInput[0].focus();
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('23');
+
+		// expect S responsive
+		const sBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(sBackgroundOpacity).toStrictEqual('54');
+
+		const sBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(sBackgroundShapeSize).toStrictEqual('23');
+
+		// expect XS responsive
+		await changeResponsive(page, 'xs');
+
+		const xsBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(xsBackgroundOpacity).toStrictEqual('54');
+
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const xsBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(xsBackgroundShapeSize).toStrictEqual('23');
+
+		// expect M responsive
+		await changeResponsive(page, 'm');
+
+		const mBackgroundOpacity = await page.$eval(
+			'.maxi-color-control .maxi-advanced-number-control input',
+			selector => selector.value
+		);
+
+		expect(mBackgroundOpacity).toStrictEqual('77');
+
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const mBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(mBackgroundShapeSize).toStrictEqual('43');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Background shape layer hover', async () => {
+		await changeResponsive(page, 'base');
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
+
+		// hover
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
+		);
+
+		// hover options
+		await page.$$eval(
+			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			options => options[0].click()
+		);
+
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-background-control__svg-layer--size'),
+			values: '66',
+		});
+
+		// size
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const sizeInput = await page.$$(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
+		);
+
+		await sizeInput[0].focus();
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('22');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Background shape layer hover responsive', async () => {
+		await changeResponsive(page, 's');
+
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const baseBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(baseBackgroundShapeSize).toStrictEqual('22');
+
+		// size
+		const sizeInput = await page.$$(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
+		);
+
+		await sizeInput[0].focus();
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('12');
+
+		// expect S responsive
+		const sBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(sBackgroundShapeSize).toStrictEqual('12');
+
+		// expect XS responsive
+		await changeResponsive(page, 'xs');
+
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const xsBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(xsBackgroundShapeSize).toStrictEqual('12');
+
+		// expect M responsive
+		await changeResponsive(page, 'm');
+
+		await page.$$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
+			sizeButton => sizeButton[1].click()
+		);
+
+		const mBackgroundShapeSize = await page.$$eval(
+			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+			selector => selector[0].value
+		);
+
+		expect(mBackgroundShapeSize).toStrictEqual('22');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('generate a layer from hover on responsive and test that layers cannot be deleted from hover', async () => {
+		await removeBackgroundLayers(page);
+		await changeResponsive(page, 'l');
+		await addBackgroundLayer(page, 'color');
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
+
+		// hover
+		await accordion.$$eval('.maxi-tabs-control button', button =>
+			button[1].click()
+		);
+
+		const deleteOption = await page.$$eval(
+			'.maxi-background-layer__title',
+			backgroundLayerTitle => backgroundLayerTitle[0].innerHTML
+		);
+
+		expect(deleteOption).toMatchSnapshot();
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('generate a layer from hover and test the hider', async () => {
+		// hover
+
+		await addBackgroundLayer(page, 'color', true);
+		await addBackgroundLayer(page, 'image', true);
+		await addBackgroundLayer(page, 'video', true);
+		await addBackgroundLayer(page, 'shape', true);
+
+		// hide layer
+		await page.$eval(
+			'.maxi-background-layer__title .maxi-background-layer__title__display',
+			button => button.click()
+		);
+
+		const hideLayer = await page.$$eval(
+			'.maxi-background-layer__title .maxi-background-layer__title__display',
+			backgroundLayerTitle => backgroundLayerTitle.innerHTML
+		);
+
+		expect(hideLayer).toMatchSnapshot();
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers-hover']).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
 });

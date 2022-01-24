@@ -1,22 +1,29 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, cloneElement } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import Button from '../button';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
+import {
+	getIsActiveTab,
+	getMaxiAttrsFromChildren,
+} from '../../extensions/indicators';
 
 /**
  * Component
@@ -30,7 +37,17 @@ const SettingTabsControl = props => {
 		returnValue,
 		callback,
 		target,
+		onChange,
+		type = 'tabs',
+		selected,
+		label,
+		help,
+		fullWidthMode,
+		blockName,
 	} = props;
+
+	const { getBlockName, getSelectedBlockClientId } =
+		select('core/block-editor');
 
 	const [tab, setTab] = useState(0);
 
@@ -49,7 +66,12 @@ const SettingTabsControl = props => {
 	const classesControl = classnames(
 		'maxi-tabs-control',
 		target && `maxi-tabs-control__${target}`,
-		!disablePadding ? 'maxi-tabs-control--disable-padding' : null
+		disablePadding ? 'maxi-tabs-control--disable-padding' : null,
+		fullWidthMode && 'maxi-tabs-control__full-width'
+	);
+
+	const classesBase = classnames(
+		fullWidthMode && 'maxi-tabs-control__full-width'
 	);
 
 	const classesContent = classnames(
@@ -57,24 +79,56 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
 	);
 
-	return (
-		<div className={classes}>
+	const getChildren = () => {
+		return (
 			<div className={classesControl}>
 				{items.map((item, i) => {
-					if (item)
+					if (item) {
+						const buttonLabel = !isEmpty(item.label)
+							? item.label
+							: item.value;
+						const itemsIndicators = !isEmpty(item.content)
+							? cloneElement(item.content)
+							: item;
+
 						return (
 							<Button
-								key={`maxi-tabs-control__button-${item.label}`}
-								className='maxi-tabs-control__button'
+								key={`maxi-tabs-control__button-${buttonLabel}`}
+								label={item.value}
+								className={classnames(
+									'maxi-tabs-control__button',
+									selected === item.value &&
+										'maxi-tabs-control__button--selected',
+									getIsActiveTab(
+										getMaxiAttrsFromChildren({
+											items: itemsIndicators,
+											blockName:
+												blockName ??
+												getBlockName(
+													getSelectedBlockClientId()
+												),
+										}),
+										item.breakpoint,
+										item.extraIndicators,
+										item.extraIndicatorsResponsive
+									) && 'maxi-tabs-control__button--active'
+								)}
 								onClick={() => {
 									setTab(i);
 
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
+
+									type === 'buttons' && onChange(item.value);
 								}}
-								aria-pressed={tab === i}
+								aria-pressed={
+									type === 'tabs'
+										? tab === i
+										: selected === item.value
+								}
 							>
-								{item.label}
+								{!isEmpty(item.label) && item.label}
+								{!isEmpty(item.icon) && item.icon}
 								{item.showNotification && (
 									<svg
 										className='maxi-tabs-control__notification'
@@ -89,31 +143,51 @@ const SettingTabsControl = props => {
 								)}
 							</Button>
 						);
-
-					return null;
-				})}
-			</div>
-			<div className={classesContent}>
-				{items.map((item, i) => {
-					if (item && i === tab) {
-						const classesItemContent = classnames(
-							'maxi-tab-content',
-							tab === i ? 'maxi-tab-content--selected' : ''
-						);
-
-						return (
-							<div
-								key={`maxi-tab-content-${item.label}`}
-								className={classesItemContent}
-							>
-								{item.content}
-							</div>
-						);
 					}
 
 					return null;
 				})}
 			</div>
+		);
+	};
+
+	return (
+		<div className={classes}>
+			{type === 'buttons' && (
+				<BaseControl
+					label={label}
+					help={help}
+					aria-labelledby={label}
+					className={classesBase}
+					role='group'
+				>
+					{getChildren()}
+				</BaseControl>
+			)}
+			{type === 'tabs' && getChildren()}
+			{type === 'tabs' && (
+				<div className={classesContent}>
+					{items.map((item, i) => {
+						if (item && i === tab) {
+							const classesItemContent = classnames(
+								'maxi-tab-content',
+								tab === i ? 'maxi-tab-content--selected' : ''
+							);
+
+							return (
+								<div
+									key={`maxi-tab-content-${item.label}`}
+									className={classesItemContent}
+								>
+									{item.content}
+								</div>
+							);
+						}
+
+						return null;
+					})}
+				</div>
+			)}
 		</div>
 	);
 };

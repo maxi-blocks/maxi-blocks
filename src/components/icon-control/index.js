@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
@@ -64,12 +64,12 @@ const IconControl = props => {
 		const options = [];
 
 		options.push({
-			label: <Icon icon={smileIcon} />,
+			icon: <Icon icon={smileIcon} />,
 			value: 'color',
 		});
 
 		options.push({
-			label: <Icon icon={solid} />,
+			icon: <Icon icon={solid} />,
 			value: 'border',
 		});
 
@@ -80,17 +80,17 @@ const IconControl = props => {
 		const options = [];
 
 		options.push({
-			label: <Icon icon={styleNone} />,
+			icon: <Icon icon={styleNone} />,
 			value: 'none',
 		});
 
 		options.push({
-			label: <Icon icon={backgroundColor} />,
+			icon: <Icon icon={backgroundColor} />,
 			value: 'background-color',
 		});
 
 		options.push({
-			label: <Icon icon={backgroundGradient} />,
+			icon: <Icon icon={backgroundGradient} />,
 			value: 'gradient',
 		});
 
@@ -121,6 +121,10 @@ const IconControl = props => {
 		breakpoint,
 		props,
 		isHover
+	);
+
+	const [iconBgActive, setIconBgActive] = useState(
+		iconBackgroundActiveMedia || 'none'
 	);
 
 	return (
@@ -209,13 +213,15 @@ const IconControl = props => {
 							/>
 							{breakpoint === 'general' && (
 								<>
-									<ButtonGroupControl
+									<SettingTabsControl
 										label={__(
 											'Icon Position',
 											'maxi-block'
 										)}
+										className='maxi-icon-position-control'
+										type='buttons'
 										selected={props['icon-position']}
-										options={[
+										items={[
 											{
 												label: __('Left', 'maxi-block'),
 												value: 'left',
@@ -250,11 +256,13 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					<ButtonGroupControl
+					<SettingTabsControl
 						label=''
+						className='maxi-icon-styles-control'
+						type='buttons'
 						fullWidthMode
 						selected={iconStyle}
-						options={getOptions()}
+						items={getOptions()}
 						onChange={val => setIconStyle(val)}
 					/>
 					{iconStyle === 'color' && (
@@ -289,7 +297,7 @@ const IconControl = props => {
 									}
 									paletteStatus={
 										props[
-											`icon-palette-color-status${
+											`icon-palette-status${
 												isHover ? '-hover' : ''
 											}`
 										]
@@ -307,7 +315,7 @@ const IconControl = props => {
 											[`icon-palette-color${
 												isHover ? '-hover' : ''
 											}`]: paletteColor,
-											[`icon-palette-color-status${
+											[`icon-palette-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
 											[`icon-palette-opacity${
@@ -351,12 +359,13 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					<ButtonGroupControl
+					<SettingTabsControl
+						type='buttons'
 						fullWidthMode
-						selected={iconBackgroundActiveMedia || 'none'}
-						options={getBackgroundOptions()}
-						optionType='string'
-						onChange={val =>
+						selected={iconBgActive}
+						items={getBackgroundOptions()}
+						onChange={val => {
+							setIconBgActive(val);
 							onChange({
 								[getAttributeKey(
 									'background-active-media',
@@ -364,16 +373,16 @@ const IconControl = props => {
 									'icon-',
 									breakpoint
 								)]: val,
-							})
-						}
+							});
+						}}
 					/>
-					{iconBackgroundActiveMedia === 'background-color' && (
+					{iconBgActive === 'background-color' && (
 						<>
 							{!props['icon-inherit'] ? (
 								<ColorControl
 									label={__('Icon background', 'maxi-blocks')}
 									paletteStatus={getLastBreakpointAttribute(
-										'icon-background-palette-color-status',
+										'icon-background-palette-status',
 										breakpoint,
 										props,
 										isHover
@@ -412,7 +421,7 @@ const IconControl = props => {
 									}) => {
 										onChange({
 											[getAttributeKey(
-												'background-palette-color-status',
+												'background-palette-status',
 												isHover,
 												'icon-',
 												breakpoint
@@ -459,7 +468,7 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{iconBackgroundActiveMedia === 'gradient' && (
+					{iconBgActive === 'gradient' && (
 						<GradientControl
 							label={__(
 								'Icon Background gradient',

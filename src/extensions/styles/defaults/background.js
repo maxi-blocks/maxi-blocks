@@ -1,4 +1,7 @@
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
+const prefix = 'background-';
 
 export const blockBackground = {
 	'background-layers': {
@@ -20,20 +23,7 @@ export const rawBackground = {
 };
 
 export const rawBackgroundColor = {
-	'background-palette-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'background-palette-color': {
-		type: 'number',
-		default: 1,
-	},
-	'background-palette-opacity': {
-		type: 'number',
-	},
-	'background-color': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix, palette: 1 }),
 	'background-color-clip-path': {
 		type: 'string',
 	},
@@ -186,28 +176,12 @@ export const rawBackgroundGradient = {
 };
 
 export const rawBackgroundSVG = {
-	'background-palette-svg-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'background-palette-svg-color': {
-		type: 'number',
-		default: 5,
-	},
-	'background-palette-svg-opacity': {
-		type: 'number',
-	},
+	...paletteAttributesCreator({ prefix: 'background-svg-', palette: 5 }),
 	'background-svg-SVGElement': {
 		type: 'string',
 	},
 	'background-svg-SVGData': {
 		type: 'object',
-	},
-	'background-svg-SVGMediaID': {
-		type: 'number',
-	},
-	'background-svg-SVGMediaURL': {
-		type: 'string',
 	},
 	'background-svg-top-unit': {
 		type: 'string',
@@ -247,42 +221,32 @@ export const rawBackgroundSVG = {
 	},
 };
 
-const breakpointObjectCreator = obj => {
-	const response = {};
+export const background = breakpointAttributesCreator({
+	obj: rawBackground,
+});
 
-	Object.entries(obj).forEach(([key, val]) => {
-		if (['background-layers'].includes(key)) return;
-		if (
-			[
-				'background-image-mediaURL',
-				'background-image-mediaID',
-				'background-image-parallax-alt',
-				'background-image-parallax-alt-selector',
-			].includes(key)
-		) {
-			response[key] = val;
+export const backgroundColor = breakpointAttributesCreator({
+	obj: rawBackgroundColor,
+});
 
-			return;
-		}
+export const backgroundImage = breakpointAttributesCreator({
+	obj: rawBackgroundImage,
+	noBreakpointAttr: [
+		'background-image-mediaURL',
+		'background-image-mediaID',
+		'background-image-parallax-alt',
+		'background-image-parallax-alt-selector',
+	],
+});
 
-		breakpoints.forEach(breakpoint => {
-			const newVal = { ...val };
-			if (breakpoint !== 'general') delete newVal.default;
+export const backgroundVideo = breakpointAttributesCreator({
+	obj: rawBackgroundVideo,
+});
 
-			const newKey = `${key}-${breakpoint}`;
+export const backgroundGradient = breakpointAttributesCreator({
+	obj: rawBackgroundGradient,
+});
 
-			response[newKey] = newVal;
-		});
-	});
-
-	return response;
-};
-
-export const background = breakpointObjectCreator(rawBackground);
-export const backgroundColor = breakpointObjectCreator(rawBackgroundColor);
-export const backgroundImage = breakpointObjectCreator(rawBackgroundImage);
-export const backgroundVideo = breakpointObjectCreator(rawBackgroundVideo);
-export const backgroundGradient = breakpointObjectCreator(
-	rawBackgroundGradient
-);
-export const backgroundSVG = breakpointObjectCreator(rawBackgroundSVG);
+export const backgroundSVG = breakpointAttributesCreator({
+	obj: rawBackgroundSVG,
+});

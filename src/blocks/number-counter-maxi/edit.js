@@ -14,9 +14,7 @@ import {
 	MaxiBlockComponent,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Button, Toolbar } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -45,18 +43,16 @@ const NumberCounter = attributes => {
 		'number-counter-preview': preview,
 		'number-counter-title-font-size': fontSize,
 		'number-counter-percentage-sign-status': usePercentage,
+		'number-counter-start': startNumber,
+		'number-counter-end': endNumber,
 		deviceType,
 		resizerProps,
 	} = attributes;
 
 	const countRef = useRef(null);
 
-	const startCountValue = Math.ceil(
-		(attributes['number-counter-start'] * 360) / 100
-	);
-	const endCountValue = Math.ceil(
-		(attributes['number-counter-end'] * 360) / 100
-	);
+	const startCountValue = Math.ceil((startNumber * 360) / 100);
+	const endCountValue = Math.ceil((endNumber * 360) / 100);
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -64,7 +60,8 @@ const NumberCounter = attributes => {
 
 	const circumference = 2 * Math.PI * radius;
 
-	const frameDuration = countDuration / 60;
+	const frameDuration =
+		(1 / ((endCountValue - startCountValue) / countDuration)) * 1000;
 
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replyStatus) {
@@ -99,6 +96,12 @@ const NumberCounter = attributes => {
 		stroke,
 	]);
 
+	const getIsOverflowHidden = () =>
+		getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+			'hidden' &&
+		getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+			'hidden';
+
 	return (
 		<>
 			<Button
@@ -112,6 +115,7 @@ const NumberCounter = attributes => {
 			/>
 			<BlockResizer
 				className='maxi-number-counter__box'
+				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
 				defaultSize={{
 					width: `${getLastBreakpointAttribute(
@@ -277,7 +281,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter
 					{...getGroupAttributes(attributes, [

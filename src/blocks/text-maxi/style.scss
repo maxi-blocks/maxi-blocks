@@ -5,12 +5,67 @@ body.maxi-blocks--active .maxi-text-block {
 		ol,
 		ul {
 			list-style-position: inside;
+			list-style-type: none;
+			counter-reset: li;
+			margin: 0;
+
+			li {
+				counter-increment: li;
+
+				&::before {
+					content: '';
+					display: inline-block;
+					position: static;
+					min-width: 1em;
+					height: 1em;
+					line-height: 1;
+				}
+
+				&::marker {
+					content: '';
+				}
+
+				// Ensures indented numbers are not negative
+				ol,
+				ul {
+					li {
+						counter-increment: li !important;
+					}
+				}
+
+				ul li {
+					min-width: 1em !important;
+				}
+			}
+		}
+
+		> ol li {
+			@mixin listSelectors($times) {
+				$ulChain: '';
+				$olChain: '';
+				@for $i from 1 through $times {
+					$olChain: $olChain + ' > ol > li';
+				}
+
+				#{$ulChain}::before,
+				#{$olChain}::before {
+					@content;
+				}
+			}
+
+			@for $i from 1 through 20 {
+				@include listSelectors($i) {
+					min-width: 1 + ($i * 0.75) + em;
+					margin-left: 0 !important;
+				}
+			}
 		}
 	}
 	&__content {
 		position: relative;
 		display: block;
 		margin: 0;
+		border: 2px dotted var(--maxi-grey-7-color);
 	}
 	p:not(&__content) {
 		margin-left: auto;

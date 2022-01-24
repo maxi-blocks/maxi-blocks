@@ -10,12 +10,12 @@ import AdvancedNumberControl from '../advanced-number-control';
 import AxisControl from '../axis-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import ButtonGroupControl from '../button-group-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import TextareaControl from '../textarea-control';
 import ToggleSwitch from '../toggle-switch';
 import TypographyControl from '../typography-control';
+import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -57,13 +57,14 @@ const HoverEffectControl = props => {
 
 	return (
 		<div className={classes}>
-			<ButtonGroupControl
+			<SettingTabsControl
 				label={__('Hover Animation', 'maxi-blocks')}
+				type='buttons'
 				selected={props['hover-type']}
-				options={[
-					{ label: <Icon icon={hoverNone} />, value: 'none' },
-					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
-					{ label: <Icon icon={hoverText} />, value: 'text' },
+				items={[
+					{ icon: <Icon icon={hoverNone} />, value: 'none' },
+					{ icon: <Icon icon={hoverBasic} />, value: 'basic' },
+					{ icon: <Icon icon={hoverText} />, value: 'text' },
 				]}
 				onChange={val => {
 					onChange({
@@ -93,7 +94,7 @@ const HoverEffectControl = props => {
 					props['hover-basic-effect-type'] === 'clear-sepia' ||
 					props['hover-basic-effect-type'] === 'grey-scale' ||
 					props['hover-basic-effect-type'] ===
-						'clear-greay-scale') && (
+						'clear-grey-scale') && (
 					<AdvancedNumberControl
 						label={__('Duration(s)', 'maxi-blocks')}
 						value={props['hover-transition-duration']}
@@ -130,7 +131,7 @@ const HoverEffectControl = props => {
 					props['hover-basic-effect-type'] === 'clear-sepia' ||
 					props['hover-basic-effect-type'] === 'grey-scale' ||
 					props['hover-basic-effect-type'] ===
-						'clear-greay-scale') && (
+						'clear-grey-scale') && (
 					<SelectControl
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}
@@ -215,11 +216,11 @@ const HoverEffectControl = props => {
 							},
 							{
 								label: __('Gray Scale', 'maxi-blocks'),
-								value: 'greay-scale',
+								value: 'grey-scale',
 							},
 							{
 								label: __('Clear Gray Scale', 'maxi-blocks'),
-								value: 'clear-greay-scale',
+								value: 'clear-grey-scale',
 							},
 							{
 								label: __('Shine', 'maxi-blocks'),
@@ -320,27 +321,29 @@ const HoverEffectControl = props => {
 							onChange({ 'hover-text-effect-type': val })
 						}
 					/>
-					<ButtonGroupControl
+					<SettingTabsControl
+						type='buttons'
+						fullWidthMode
 						selected={props['hover-text-preset']}
-						options={[
+						items={[
 							{
-								label: <Icon icon={alignLeftTop} />,
+								icon: <Icon icon={alignLeftTop} />,
 								value: 'left-top',
 							},
 							{
-								label: <Icon icon={alignRightTop} />,
+								icon: <Icon icon={alignRightTop} />,
 								value: 'right-top',
 							},
 							{
-								label: <Icon icon={alignCenterCenter} />,
+								icon: <Icon icon={alignCenterCenter} />,
 								value: 'center-center',
 							},
 							{
-								label: <Icon icon={alignLeftBottom} />,
+								icon: <Icon icon={alignLeftBottom} />,
 								value: 'left-bottom',
 							},
 							{
-								label: <Icon icon={alignRightBottom} />,
+								icon: <Icon icon={alignRightBottom} />,
 								value: 'right-bottom',
 							},
 						]}

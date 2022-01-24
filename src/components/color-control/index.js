@@ -9,7 +9,12 @@ import { __ } from '@wordpress/i18n';
 import CustomColorControl from './customColorControl';
 import ColorPaletteControl from './paletteControl';
 import ToggleSwitch from '../toggle-switch';
-import { getBlockStyle, getColorRGBAParts } from '../../extensions/styles';
+import {
+	getBlockStyle,
+	getColorRGBAParts,
+	getAttributeKey,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
 
 /**
@@ -44,6 +49,7 @@ const ColorControl = props => {
 		blockStyle: rawBlockStyle,
 		disableOpacity = false,
 		disableColorDisplay = false,
+		prefix,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -84,17 +90,76 @@ const ColorControl = props => {
 	 * https://github.com/yeahcan/UX-UI/issues/8
 	 */
 	const onReset = () => {
-		if (defaultColor) onChange(defaultColor);
+		let defColor = defaultColor || null;
+		if (!defColor) {
+			defColor = {};
+			defColor.paletteStatus = getDefaultAttribute(
+				getAttributeKey(
+					'',
+					isHover,
+					`${prefix}palette-status`,
+					'general'
+				)
+			);
+			defColor.paletteColor = getDefaultAttribute(
+				getAttributeKey(
+					'',
+					isHover,
+					`${prefix}palette-color`,
+					'general'
+				)
+			);
+			defColor.paletteOpacity = getDefaultAttribute(
+				getAttributeKey(
+					'',
+					isHover,
+					`${prefix}palette-opacity`,
+					'general'
+				)
+			);
+			defColor.color = getDefaultAttribute(
+				getAttributeKey('', isHover, `${prefix}color`, 'general')
+			);
+		}
+		if (showPalette)
+			onChange({
+				paletteStatus: defColor.paletteStatus,
+				paletteColor: defColor.paletteColor,
+				paletteOpacity: paletteOpacity || 1,
+				color,
+			});
+		else {
+			onChange({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color: `rgba(${getPaletteColor({
+					clientId,
+					color: paletteColor || defColor.paletteColor,
+					blockStyle,
+				})},${paletteOpacity || 1})`,
+			});
+		}
+	};
 
+	const onResetOpacity = () => {
+		let opacity = 1;
+		if (defaultColor) opacity = defaultColor.paletteOpacity;
+		else {
+			opacity = getDefaultAttribute(
+				getAttributeKey(
+					'',
+					isHover,
+					`${prefix}palette-opacity`,
+					'general'
+				)
+			);
+		}
 		onChange({
 			paletteStatus,
 			paletteColor,
-			paletteOpacity,
-			color: `rgba(${getPaletteColor({
-				clientId,
-				paletteColor,
-				blockStyle,
-			})},1)`,
+			paletteOpacity: opacity,
+			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
 		});
 	};
 
@@ -112,6 +177,8 @@ const ColorControl = props => {
 					disableOpacity={disableOpacity}
 					opacity={paletteOpacity}
 					className={className}
+					onReset={onReset}
+					onResetOpacity={onResetOpacity}
 				/>
 			)}
 			{!disablePalette && (
@@ -125,7 +192,7 @@ const ColorControl = props => {
 							...(val && {
 								color: `rgba(${getPaletteColor({
 									clientId,
-									paletteColor,
+									color: paletteColor,
 									blockStyle,
 								})},${paletteOpacity || 1})`,
 							}),
@@ -146,6 +213,7 @@ const ColorControl = props => {
 					color={getRGBA(color)}
 					onChangeValue={onChangeValue}
 					onReset={onReset}
+					onResetOpacity={onResetOpacity}
 					disableColorDisplay={disableColorDisplay}
 					disableOpacity={disableOpacity}
 					clientId={clientId}

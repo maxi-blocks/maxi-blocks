@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackgroundControl Check Background video layer 1`] = `
+Array [
+  Object {
+    "background-video-endTime": 77,
+    "background-video-loop": true,
+    "background-video-mediaURL": "https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp",
+    "background-video-opacity-general": 0.44,
+    "background-video-opacity-m": 0.44,
+    "background-video-playOnMobile-general": false,
+    "background-video-reduce-border-general": false,
+    "background-video-startTime": 55,
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "video",
+  },
+]
+`;
+
+exports[`BackgroundControl Check Background video layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.44; display: block;}</style>"`;
+
+exports[`BackgroundControl Check Background video layer hover 1`] = `
+Array [
+  Object {
+    "background-video-endTime": 77,
+    "background-video-loop": true,
+    "background-video-mediaURL": "https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp",
+    "background-video-opacity-general": 0.44,
+    "background-video-opacity-general-hover": 0.82,
+    "background-video-opacity-m": 0.44,
+    "background-video-opacity-m-hover": 0.82,
+    "background-video-opacity-s": 0.32,
+    "background-video-playOnMobile-general": false,
+    "background-video-reduce-border-general": false,
+    "background-video-startTime": 55,
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "video",
+  },
+]
+`;
+
+exports[`BackgroundControl Check Background video layer hover 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.44; display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.82;}@media only screen and (max-width: 768px){body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.32;}}</style>"`;
+
+exports[`BackgroundControl Check Background video layer hover responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.44; display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.82;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.32;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.45;}</style>"`;
+
+exports[`BackgroundControl Check Background video layer responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.44; display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.32;}</style>"`;

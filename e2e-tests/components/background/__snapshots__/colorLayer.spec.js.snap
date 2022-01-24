@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check Background Color layer 1`] = `
+Array [
+  Object {
+    "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-clip-path-m": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-palette-color-general": 5,
+    "background-palette-color-m": 5,
+    "background-palette-opacity-general": 0.45,
+    "background-palette-opacity-m": 0.45,
+    "background-palette-status-general": true,
+    "background-palette-status-m": true,
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "color",
+  },
+]
+`;
+
+exports[`Check Background Color layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}</style>"`;
+
+exports[`Check Background Color layer hover 1`] = `
+Array [
+  Object {
+    "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-clip-path-general-hover": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+    "background-color-clip-path-m": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-clip-path-m-hover": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+    "background-palette-color-general": 5,
+    "background-palette-color-general-hover": 2,
+    "background-palette-color-m": 5,
+    "background-palette-color-m-hover": 2,
+    "background-palette-color-s": 6,
+    "background-palette-opacity-general": 0.45,
+    "background-palette-opacity-general-hover": 0.45,
+    "background-palette-opacity-m": 0.45,
+    "background-palette-opacity-m-hover": 0.45,
+    "background-palette-opacity-s": 0.45,
+    "background-palette-status-general": true,
+    "background-palette-status-general-hover": true,
+    "background-palette-status-m": true,
+    "background-palette-status-m-hover": true,
+    "background-palette-status-s": true,
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "color",
+  },
+]
+`;
+
+exports[`Check Background Color layer hover 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-2,242,249,253),0.45); clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);}@media only screen and (max-width: 768px){body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-6,201,52,10),0.45);}}</style>"`;
+
+exports[`Check Background Color layer hover responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-2,242,249,253),0.45); clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-6,201,52,10),0.45);}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-4,255,74,23),0.45);}</style>"`;
+
+exports[`Check Background Color layer responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-6,201,52,10),0.45);}</style>"`;

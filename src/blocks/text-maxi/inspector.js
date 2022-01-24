@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { memo } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -38,6 +39,7 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
+					depth={0}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
@@ -48,6 +50,7 @@ const Inspector = memo(
 									})}
 									<AccordionControl
 										isSecondary
+										depth={1}
 										items={[
 											deviceType === 'general' &&
 												!isList && {

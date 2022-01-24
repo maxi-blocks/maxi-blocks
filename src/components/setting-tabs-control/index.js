@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, cloneElement } from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -44,14 +44,26 @@ const SettingTabsControl = props => {
 		help,
 		fullWidthMode,
 		blockName,
+		depth,
 	} = props;
-
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
 
+	const { receiveInspectorPath } = select('maxiBlocks');
+	const { updateInspectorPath } = useDispatch('maxiBlocks');
+
 	const [tab, setTab] = useState(0);
 
+	const activeTab = receiveInspectorPath();
+	const { value } = activeTab[0];
+
+	console.log(activeTab);
+
 	useEffect(() => {
+		if (value || value === 0) {
+			setTab(value);
+		}
+
 		if (forceTab || forceTab === 0) {
 			setTab(forceTab);
 		}
@@ -79,6 +91,11 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
 	);
 
+	const setActiveTab = tab => {
+		setTab(tab);
+		updateInspectorPath({ depth: depth, value: tab });
+	};
+
 	const getChildren = () => {
 		return (
 			<div className={classesControl}>
@@ -90,7 +107,6 @@ const SettingTabsControl = props => {
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;
-
 						return (
 							<Button
 								key={`maxi-tabs-control__button-${buttonLabel}`}
@@ -114,8 +130,8 @@ const SettingTabsControl = props => {
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
-									setTab(i);
-
+									setActiveTab(i);
+									currentELe(itemsIndicators, item);
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 

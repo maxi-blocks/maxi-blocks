@@ -111,7 +111,6 @@ const IconBackground = props => {
 								'icon-background-palette-status': paletteStatus,
 							});
 						}}
-						disableOpacity
 					/>
 				)}
 			</div>

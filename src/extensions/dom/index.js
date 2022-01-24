@@ -245,10 +245,13 @@ wp.domReady(() => {
 			'maxiBlocks/style-cards'
 		).receiveMaxiActiveStyleCard();
 		if (SC && !isEmpty(SC)) {
+			console.log('SCVarsUpdate');
 			updateSCOnEditor(SC.value);
 			const SCList = select(
 				'maxiBlocks/style-cards'
 			).receiveStyleCardsList();
+
+			console.log(SC?.key);
 			const SCListCount = Object.keys(SCList).length;
 
 			if (SCListCount === 1 && SC.key === 'sc_maxi')

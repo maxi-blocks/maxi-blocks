@@ -13,9 +13,11 @@ import { getSCVariablesObject, createSCStyleString } from '../updateSCOnEditor';
  */
 const controls = {
 	async RECEIVE_STYLE_CARDS() {
-		return apiFetch({ path: '/maxi-blocks/v1.0/style-cards/' }).then(sc =>
-			JSON.parse(sc)
-		);
+		return apiFetch({ path: '/maxi-blocks/v1.0/style-cards/' })
+			.then(sc => JSON.parse(sc))
+			.catch(err => {
+				console.error('Error receiving Style Card. Code error: ', err);
+			});
 	},
 	async SAVE_STYLE_CARDS(styleCards) {
 		await apiFetch({
@@ -39,6 +41,8 @@ const controls = {
 				meta: parsedSC,
 				update: isUpdate,
 			},
+		}).catch(err => {
+			console.error('Error updating Style Card. Code error: ', err);
 		});
 	},
 	async RESET_STYLE_CARDS() {

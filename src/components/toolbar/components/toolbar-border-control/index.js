@@ -270,6 +270,7 @@ const ToolbarBorderControl = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				globalProps={globalProps}
+				isToolbar
 			/>
 		</div>
 	);

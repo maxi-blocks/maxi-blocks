@@ -112,6 +112,7 @@ const AxisContent = props => {
 		minMaxSettings,
 		currentUnit,
 		disableSync = false,
+		disableIcon = false,
 		label: type,
 		onReset,
 	} = props;
@@ -125,7 +126,7 @@ const AxisContent = props => {
 
 	return (
 		<div>
-			{disableSync && <Icon icon={borderWidth} />}
+			{disableSync && !disableIcon && <Icon icon={borderWidth} />}
 			{(sync === 'all' || disableSync) && (
 				<>
 					<AxisInput

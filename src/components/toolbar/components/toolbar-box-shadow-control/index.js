@@ -262,6 +262,7 @@ const ToolbarBoxShadowControl = props => {
 				isHover={isHover}
 				deviceType={breakpoint}
 				clientId={clientId}
+				isToolbar
 			/>
 			{!getIsActive(boxShadowNone, 'none') && (
 				<>

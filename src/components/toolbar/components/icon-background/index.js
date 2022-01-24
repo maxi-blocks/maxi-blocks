@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import SettingTabsControl from '../../../setting-tabs-control';
+import ToggleSwitch from '../../../toggle-switch';
 import {
 	getColorRGBAString,
 	getDefaultAttribute,
@@ -55,7 +56,19 @@ const IconBackground = props => {
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-background__popover'>
-				<SettingTabsControl
+				<ToggleSwitch
+					label={__(
+						'Inherit Colour/Background from Button',
+						'maxi-blocks'
+					)}
+					selected={props['icon-inherit']}
+					onChange={val => {
+						onChange({
+							'icon-inherit': val,
+						});
+					}}
+				/>
+				{/* <SettingTabsControl
 					label={__(
 						'Inherit Colour/Background from Button',
 						'maxi-block'
@@ -74,7 +87,7 @@ const IconBackground = props => {
 							'icon-inherit': val,
 						})
 					}
-				/>
+				/> */}
 				{props['icon-inherit'] ? (
 					<p className='toolbar-item__icon-background__popover__warning'>
 						{__(
@@ -98,6 +111,7 @@ const IconBackground = props => {
 								'icon-background-palette-status': paletteStatus,
 							});
 						}}
+						disableOpacity
 					/>
 				)}
 			</div>

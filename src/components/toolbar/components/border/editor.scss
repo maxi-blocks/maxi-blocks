@@ -1,9 +1,15 @@
 .toolbar-item__border__popover {
 	min-width: 300px;
+	.maxi-color-control__wrap {
+		.maxi-color-control__display {
+			width: 171px;
+		}
+	}
 	.maxi-axis-control__disable {
 		opacity: 0.3;
 		pointer-events: none;
 	}
+	.maxi-axis-control__icon-border,
 	.maxi-axis-control__button-border {
 		width: 119px;
 		display: inline-block;

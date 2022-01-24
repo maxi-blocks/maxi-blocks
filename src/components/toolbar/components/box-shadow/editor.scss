@@ -3,6 +3,15 @@
 		min-width: 300px;
 	}
 	.maxi-shadow-control {
+		.maxi-icon__disable {
+			opacity: 0.3;
+			pointer-events: none;
+		}
+		.maxi-color-control__wrap {
+			.maxi-color-control__display {
+				width: 171px;
+			}
+		}
 		.maxi-shadow-control__spread {
 			width: 119px;
 			display: inline-block;

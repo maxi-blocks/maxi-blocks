@@ -1,14 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-	pressKeyWithModifier,
-	activatePlugin,
-	deactivatePlugin,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -17,9 +10,6 @@ import { getBlockStyle, openSidebarTab } from './utils';
 
 describe('DB optimization test', () => {
 	it('test', async () => {
-		await deactivatePlugin('maxi-blocks-last-github-version');
-		await activatePlugin('maxi-blocks-last-github-version');
-
 		await createNewPost();
 		await insertBlock('Button Maxi');
 

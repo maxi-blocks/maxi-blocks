@@ -38,6 +38,10 @@ const selectors = {
 		if (state) return state.inspectorPath;
 		return false;
 	},
+	receiveTabsPath(state) {
+		if (state) return state.tabsPath;
+		return false;
+	},
 };
 
 export default selectors;

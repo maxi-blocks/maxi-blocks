@@ -29,7 +29,7 @@ import './editor.scss';
 /**
  * Alignment
  */
-const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi'];
+const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/svg-icon-maxi'];
 
 const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];
 

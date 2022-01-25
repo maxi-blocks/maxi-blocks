@@ -330,6 +330,56 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 							/> */}
+							{name === 'maxi-blocks/svg-icon-maxi' && (
+								<>
+									{svgType !== 'Line' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='fill'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
+									{svgType !== 'Shape' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='line'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
+									<SvgWidth
+										{...getGroupAttributes(
+											attributes,
+											'svg'
+										)}
+										blockName={name}
+										onChange={obj => {
+											setAttributes(obj);
+										}}
+										breakpoint={breakpoint}
+										changeSVGStrokeWidth={
+											changeSVGStrokeWidth
+										}
+										type={svgType}
+										resizableObject={resizableObject}
+									/>
+								</>
+							)}
 							<ColumnMover clientId={clientId} blockName={name} />
 							<BackgroundColor
 								{...getGroupAttributes(
@@ -558,56 +608,6 @@ const MaxiToolbar = memo(
 								typeOfList={typeOfList}
 								onChange={obj => setAttributes(obj)}
 							/> */}
-							{name === 'maxi-blocks/svg-icon-maxi' && (
-								<>
-									{svgType !== 'Line' && (
-										<SvgColor
-											{...getGroupAttributes(
-												attributes,
-												'svg'
-											)}
-											blockName={name}
-											onChange={obj => {
-												setAttributes(obj);
-											}}
-											changeSVGContent={changeSVGContent}
-											type='fill'
-											parentBlockStyle={parentBlockStyle}
-										/>
-									)}
-									{svgType !== 'Shape' && (
-										<SvgColor
-											{...getGroupAttributes(
-												attributes,
-												'svg'
-											)}
-											blockName={name}
-											onChange={obj => {
-												setAttributes(obj);
-											}}
-											changeSVGContent={changeSVGContent}
-											type='line'
-											parentBlockStyle={parentBlockStyle}
-										/>
-									)}
-									<SvgWidth
-										{...getGroupAttributes(
-											attributes,
-											'svg'
-										)}
-										blockName={name}
-										onChange={obj => {
-											setAttributes(obj);
-										}}
-										breakpoint={breakpoint}
-										changeSVGStrokeWidth={
-											changeSVGStrokeWidth
-										}
-										type={svgType}
-										resizableObject={resizableObject}
-									/>
-								</>
-							)}
 							{breakpoint === 'general' && (
 								<ImageSize
 									blockName={name}

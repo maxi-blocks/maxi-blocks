@@ -35,6 +35,7 @@ const ToggleBlock = props => {
 
 	if (
 		(blockName === 'maxi-blocks/column-maxi' ||
+			blockName === 'maxi-blocks/svg-icon-maxi' ||
 			blockName === 'maxi-blocks/button-maxi' ||
 			blockName === 'maxi-blocks/text-maxi' ||
 			blockName === 'maxi-blocks/image-maxi' ||

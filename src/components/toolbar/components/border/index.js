@@ -99,13 +99,7 @@ const Border = props => {
 				<ToolbarBorderControl
 					{...getGroupAttributes(
 						props,
-						isIconToolbar
-							? [
-									'iconBorder',
-									'iconBorderWidth',
-									'iconBorderRadius',
-							  ]
-							: ['border', 'borderWidth', 'borderRadius'],
+						['border', 'borderWidth', 'borderRadius'],
 						false,
 						prefix
 					)}

@@ -155,7 +155,9 @@ const ToolbarBorderControl = props => {
 			/>
 			<AxisControl
 				className={
-					!borderStyleValue ? 'maxi-axis-control__disable' : ''
+					!borderStyleValue || borderStyleValue === 'none'
+						? 'maxi-axis-control__disable'
+						: ''
 				}
 				{...getGroupAttributes(props, 'borderWidth', isHover, prefix)}
 				target={`${prefix}border`}
@@ -210,7 +212,9 @@ const ToolbarBorderControl = props => {
 			)} */}
 			<ColorControl
 				className={
-					!borderStyleValue ? 'maxi-color-control__disable' : ''
+					!borderStyleValue || borderStyleValue === 'none'
+						? 'maxi-color-control__disable'
+						: ''
 				}
 				// label={__('Border', 'maxi-blocks')}
 				color={getLastBreakpointAttribute(

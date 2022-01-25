@@ -125,6 +125,21 @@ const MoreSettings = props => {
 									/>
 								</div>
 							)}
+							{blockName === 'maxi-blocks/svg-icon-maxi' && (
+								<>
+									<Alignment
+										clientId={clientId}
+										blockName={blockName}
+										getGroupAttributes
+										{...getGroupAttributes(props, [
+											'alignment',
+											'textAlignment',
+										])}
+										onChange={onChange}
+										breakpoint={breakpoint}
+									/>
+								</>
+							)}
 							<ReusableBlocks
 								clientId={clientId}
 								blockName={blockName}

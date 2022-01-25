@@ -154,6 +154,7 @@ const background = ({
 						extraIndicators: [`${prefix}background-hover-status`],
 					},
 				]}
+				depth={2}
 			/>
 		),
 	};

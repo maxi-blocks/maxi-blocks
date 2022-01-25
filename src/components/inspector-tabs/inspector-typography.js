@@ -116,6 +116,7 @@ const typography = ({
 						extraIndicators: ['typography-status-hover'],
 					},
 				]}
+				depth={2}
 			/>
 		),
 	};

@@ -88,6 +88,7 @@ const blockBackground = ({
 						extraIndicators: ['block-background-hover-status'],
 					},
 				]}
+				depth={2}
 			/>
 		),
 	};

@@ -1,5 +1,5 @@
 import controls from './controls';
-
+import { omit } from 'lodash';
 const breakpointResizer = (
 	size,
 	breakpoints,
@@ -40,12 +40,7 @@ const reducer = (
 		presets: '',
 		copiedStyles: {},
 		copiedBlocks: {},
-		inspectorPath: [
-			{
-				type: 'tabs',
-				value: 0,
-			},
-		],
+		inspectorPath: [],
 	},
 	action
 ) => {
@@ -110,10 +105,11 @@ const reducer = (
 			};
 		case 'UPDATE_INSPECTOR_PATH':
 			const { depth } = action.inspectorPath;
+			const newValue = omit(action.inspectorPath, ['depth']);
 			return {
 				...state,
 				inspectorPath: Object.assign([], state.inspectorPath, {
-					[depth]: action.inspectorPath,
+					[depth]: newValue,
 				}),
 			};
 		default:

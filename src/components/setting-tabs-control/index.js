@@ -54,14 +54,18 @@ const SettingTabsControl = props => {
 
 	const [tab, setTab] = useState(0);
 
-	const activeTab = receiveInspectorPath();
-	const { value } = activeTab[0];
+	const getForcedTabFromPath = () => {
+		const activeTab = receiveInspectorPath();
+		const { name } = activeTab[depth] || {};
+		const tabIndex = items?.findIndex(item => item.label === name);
+		return tabIndex > 0 ? tabIndex : 0;
+	};
 
-	console.log(activeTab);
+	const currentForcedTab = getForcedTabFromPath();
 
 	useEffect(() => {
-		if (value || value === 0) {
-			setTab(value);
+		if (currentForcedTab || currentForcedTab === 0) {
+			setTab(currentForcedTab);
 		}
 
 		if (forceTab || forceTab === 0) {
@@ -91,9 +95,9 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
 	);
 
-	const setActiveTab = tab => {
+	const setActiveTab = (tab, name) => {
 		setTab(tab);
-		updateInspectorPath({ depth: depth, value: tab });
+		updateInspectorPath({ depth: depth, name: name, value: tab });
 	};
 
 	const getChildren = () => {
@@ -130,8 +134,7 @@ const SettingTabsControl = props => {
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
-									setActiveTab(i);
-									currentELe(itemsIndicators, item);
+									setActiveTab(i, item.label);
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 

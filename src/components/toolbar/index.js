@@ -520,11 +520,6 @@ const MaxiToolbar = memo(
 								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
 							/>
-							<Duplicate clientId={clientId} blockName={name} />
-							{/* <ReusableBlocks
-								clientId={clientId}
-								blockName={name}
-							/> */}
 							<DividerColor
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
@@ -554,6 +549,11 @@ const MaxiToolbar = memo(
 									setAttributes({ lineVertical })
 								}
 							/>
+							<Duplicate clientId={clientId} blockName={name} />
+							{/* <ReusableBlocks
+								clientId={clientId}
+								blockName={name}
+							/> */}
 							{/* <Alignment
 								blockName={name}
 								{...getGroupAttributes(attributes, [

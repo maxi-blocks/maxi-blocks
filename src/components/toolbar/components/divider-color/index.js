@@ -19,7 +19,7 @@ import {
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarDividerSetting } from '../../../../icons';
+import { toolbarShapeLineColor } from '../../../../icons';
 
 /**
  * DividerColor
@@ -31,35 +31,35 @@ const DividerColor = props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__text-options'
-			tooltip={__('Divider color', 'maxi-blocks')}
+			className='toolbar-item__divider'
+			tooltip={__('Divider line colour', 'maxi-blocks')}
 			icon={
 				<div
-					className='toolbar-item__text-options__icon'
-					style={{
-						background: props['divider-border-palette-status']
-							? getColorRGBAString({
-									firstVar: `color-${props['divider-border-palette-color']}`,
-									opacity:
-										props['divider-border-palette-opacity'],
-									blockStyle: getBlockStyle(clientId),
-							  })
-							: props['divider-color'],
-						borderWidth: '1px',
-						borderColor: '#fff',
-						borderStyle: 'solid',
-					}}
+					className='toolbar-item__divider__icon'
+					// style={{
+					// 	background: props['divider-border-palette-status']
+					// 		? getColorRGBAString({
+					// 				firstVar: `color-${props['divider-border-palette-color']}`,
+					// 				opacity:
+					// 					props['divider-border-palette-opacity'],
+					// 				blockStyle: getBlockStyle(clientId),
+					// 		  })
+					// 		: props['divider-color'],
+					// 	borderWidth: '1px',
+					// 	borderColor: '#fff',
+					// 	borderStyle: 'solid',
+					// }}
 				>
 					<Icon
-						className='toolbar-item__text-options__inner-icon'
-						icon={toolbarDividerSetting}
+						className='toolbar-item__divider-icon'
+						icon={toolbarShapeLineColor}
 					/>
 				</div>
 			}
 		>
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl
-					label={__('Divider', 'maxi-blocks')}
+					label={__('', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('border-color')}
 					paletteColor={props['divider-border-palette-color']}

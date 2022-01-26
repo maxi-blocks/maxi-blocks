@@ -4,10 +4,13 @@
 	}
 	.maxi-alignment-control {
 		.maxi-tabs-control__button {
-			border-color: #7a7c85;
-			svg {
-				fill: #fff;
-			}
+			border: 1px solid #dbdde6;
+			// svg {
+			// 	fill: #fff;
+			// }
+		}
+		.maxi-tabs-control {
+			margin-bottom: 0;
 		}
 	}
 }

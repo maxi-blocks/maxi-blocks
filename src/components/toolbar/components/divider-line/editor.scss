@@ -1,3 +1,37 @@
 .toolbar-item__divider-line__popover {
 	min-width: 280px;
+	.divider-border__weight-disable {
+		opacity: 0.3;
+		pointer-events: none;
+	}
+	.divider-border__weight-wrap {
+		width: 119px;
+		display: inline-block;
+		vertical-align: middle;
+		& > div {
+			display: flex;
+			align-items: center;
+			& > svg {
+				margin-right: 4px;
+			}
+		}
+		.maxi-base-control__field {
+			margin-bottom: 0;
+			.maxi-base-control__label {
+				flex: none;
+			}
+		}
+	}
+	.maxi-default-styles-control {
+		width: 181px;
+		display: inline-block;
+		vertical-align: middle;
+		&__button {
+			display: inline-block !important;
+			vertical-align: middle;
+			&:not(:first-child) {
+				padding: 0 5px;
+			}
+		}
+	}
 }

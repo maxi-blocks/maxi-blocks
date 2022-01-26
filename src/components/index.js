@@ -70,3 +70,4 @@ export { default as TypographyControl } from './typography-control';
 export { default as ZIndexControl } from './zindex-control';
 export { default as ToolbarBorderControl } from './toolbar/components/toolbar-border-control';
 export { default as ToolbarBoxShadowControl } from './toolbar/components/toolbar-box-shadow-control';
+export { default as ToolbarDividerControl } from './toolbar/components/toolbar-divider-control';

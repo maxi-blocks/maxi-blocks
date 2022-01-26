@@ -7,14 +7,14 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import DividerControl from '../../../divider-control';
+import ToolbarDividerControl from '../toolbar-divider-control';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarDividerSetting } from '../../../../icons';
+import { toolbarBorder } from '../../../../icons';
 
 /**
  * Divider
@@ -28,12 +28,12 @@ const Divider = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__divider-line'
-			tooltip={__('Divider', 'maxi-blocks')}
-			icon={toolbarDividerSetting}
-			advancedOptions='line'
+			tooltip={__('Divider style', 'maxi-blocks')}
+			icon={toolbarBorder}
+			advancedOptions='line settings'
 		>
 			<div className='toolbar-item__divider-line__popover'>
-				<DividerControl
+				<ToolbarDividerControl
 					{...getGroupAttributes(props, ['divider', 'size'])}
 					onChange={obj => {
 						onChange(obj);

@@ -565,15 +565,6 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
-        public function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         public function set_maxi_blocks_current_custom_data($data)
         {
             $id = $data['id'];
@@ -584,13 +575,13 @@ if (!class_exists('MaxiBlocks_API')):
 
             if (empty($dataVal) || $dataVal === '{}') {
                 $wpdb->update("{$wpdb->prefix}maxi_blocks_styles", array(
-                    'prev_active_custom_data' =>  false,
-                    'active_custom_data' =>  false,
+                    'prev_active_custom_data' =>  null,
+                    'active_custom_data' =>  null,
                 ), ['post_id' => $id]);
 
                 $wpdb->query("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id={$id}");
 
-                return;
+                return '{}';
             }
             
             $custom_data=$this->get_maxi_blocks_current_custom_data($id);
@@ -599,19 +590,9 @@ if (!class_exists('MaxiBlocks_API')):
                 $arrayNewData = json_decode($dataVal, true);
                 $new_custom_data = serialize(array_merge_recursive(...array_values($arrayNewData)));
 
-                if ($new_custom_data === '' && $custom_data === '') {
-                    $wpdb->update("{$wpdb->prefix}maxi_blocks_styles", array(
-                        'prev_active_custom_data' =>  false,
-                        'active_custom_data' =>  false,
-                    ), ['post_id' => $id]);
-                    
-                    $wpdb->query("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id={$id}");
-                    return;
-                }
-
                 $wpdb->update("{$wpdb->prefix}maxi_blocks_styles", array(
-                    'prev_active_custom_data' =>  true,
-                    'active_custom_data' =>  true,
+                    'prev_active_custom_data' =>  1,
+                    'active_custom_data' =>  1,
                 ), ['post_id' => $id]);
 
                 $wpdb->replace("{$wpdb->prefix}maxi_blocks_custom_data", array(

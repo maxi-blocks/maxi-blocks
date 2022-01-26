@@ -46,10 +46,6 @@ class MaxiBlocks_Styles
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
 
-        $needCustomMeta = $post_content['prev_active_custom_data'] === true || $post_content['active_custom_data'] === true;
-
-        $this->write_log($needCustomMeta);
-
         if ($styles) {
             // Inline styles
             wp_register_style('maxi-blocks', false);
@@ -60,30 +56,41 @@ class MaxiBlocks_Styles
             $this->enqueue_fonts($fonts);
         }
 
-        $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];
 
-        foreach ($scripts as &$script) {
-            $jsVar = str_replace('-', '_', $script);
-            $jsVarToPass = 'maxi'.str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
-            $jsScriptName = 'maxi-'.$script;
-            $jsScriptPath = '//js//'.$jsScriptName.'.min.js';
+        $needCustomMeta = false;
 
-            $meta = $this->customMeta($jsVar);
+        if ((int)$post_content['prev_active_custom_data'] === 1 || (int)$post_content['active_custom_data'] === 1) {
+            $needCustomMeta = true;
+        }
 
-            if (!empty($meta)) {
-                if ($script === 'hover-effects') {
+        $this->write_log('needCustomMeta '.$needCustomMeta);
+
+        if ($needCustomMeta) {
+            $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];
+
+            foreach ($scripts as &$script) {
+                $jsVar = str_replace('-', '_', $script);
+                $jsVarToPass = 'maxi'.str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
+                $jsScriptName = 'maxi-'.$script;
+                $jsScriptPath = '//js//'.$jsScriptName.'.min.js';
+
+                $meta = $this->customMeta($jsVar);
+
+                if (!empty($meta)) {
+                    if ($script === 'hover-effects') {
+                        wp_enqueue_script(
+                            'maxi-waypoints-js',
+                            plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+                        );
+                    }
+
                     wp_enqueue_script(
-                        'maxi-waypoints-js',
-                        plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+                        $jsScriptName,
+                        plugins_url($jsScriptPath, dirname(__FILE__)),
                     );
-                }
-
-                wp_enqueue_script(
-                    $jsScriptName,
-                    plugins_url($jsScriptPath, dirname(__FILE__)),
-                );
                 
-                wp_localize_script($jsScriptName, $jsVarToPass, $meta);
+                    wp_localize_script($jsScriptName, $jsVarToPass, $meta);
+                }
             }
         }
     }

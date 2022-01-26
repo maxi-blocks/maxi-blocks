@@ -385,6 +385,7 @@ const getMarkerObject = props => {
 					response.listSize[breakpoint] = {
 						...(typeOfList === 'ul' &&
 						listStyle === 'custom' &&
+						listStyleCustom &&
 						listStyleCustom.includes('</svg>')
 							? {
 									width: sizeNum + sizeUnit,

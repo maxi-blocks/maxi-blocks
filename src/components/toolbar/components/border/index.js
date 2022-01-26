@@ -51,42 +51,42 @@ const Border = props => {
 			icon={
 				<div
 					className='toolbar-item__border__icon'
-					style={{
-						borderStyle: getLastBreakpointAttribute(
-							`${prefix}border-style`,
-							breakpoint,
-							props
-						),
-						background:
-							getLastBreakpointAttribute(
-								`${prefix}border-style`,
-								breakpoint,
-								props
-							) === 'none'
-								? 'transparent'
-								: getLastBreakpointAttribute(
-										`${prefix}border-style`,
-										breakpoint,
-										props
-								  ),
-						borderWidth: '1px',
-						borderColor: props[
-							`${prefix}border-palette-status-${breakpoint}`
-						]
-							? getColorRGBAString({
-									firstVar: `color-${
-										props[
-											`${prefix}border-palette-color-${breakpoint}`
-										]
-									}`,
-									opacity:
-										props[
-											`${prefix}border-palette-opacity-${breakpoint}`
-										],
-									blockStyle: getBlockStyle(clientId),
-							  })
-							: props[`${prefix}border-color-${breakpoint}`],
-					}}
+					// style={{
+					// 	borderStyle: getLastBreakpointAttribute(
+					// 		`${prefix}border-style`,
+					// 		breakpoint,
+					// 		props
+					// 	),
+					// 	background:
+					// 		getLastBreakpointAttribute(
+					// 			`${prefix}border-style`,
+					// 			breakpoint,
+					// 			props
+					// 		) === 'none'
+					// 			? 'transparent'
+					// 			: getLastBreakpointAttribute(
+					// 					`${prefix}border-style`,
+					// 					breakpoint,
+					// 					props
+					// 			  ),
+					// 	borderWidth: '1px',
+					// 	borderColor: props[
+					// 		`${prefix}border-palette-status-${breakpoint}`
+					// 	]
+					// 		? getColorRGBAString({
+					// 				firstVar: `color-${
+					// 					props[
+					// 						`${prefix}border-palette-color-${breakpoint}`
+					// 					]
+					// 				}`,
+					// 				opacity:
+					// 					props[
+					// 						`${prefix}border-palette-opacity-${breakpoint}`
+					// 					],
+					// 				blockStyle: getBlockStyle(clientId),
+					// 		  })
+					// 		: props[`${prefix}border-color-${breakpoint}`],
+					// }}
 				>
 					<Icon
 						className='toolbar-item__border__inner-icon'

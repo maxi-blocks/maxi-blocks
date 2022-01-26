@@ -25,7 +25,13 @@ import {
 /**
  * Icons
  */
-import { styleNone, dashed, dotted, solid } from '../../../../icons';
+import {
+	styleNone,
+	dashed,
+	dotted,
+	solid,
+	borderWidth,
+} from '../../../../icons';
 
 /**
  * Component
@@ -118,138 +124,135 @@ const ToolbarDividerControl = props => {
 					},
 				]}
 			/>
-			{props['divider-border-style'] !== 'none' &&
-				!disableBorderRadius &&
-				props['divider-border-style'] === 'solid' && (
-					<ToggleSwitch
-						label={__('Line radius', 'maxi-blocks')}
-						selected={props['divider-border-radius']}
-						onChange={val =>
+			{lineOrientation === 'horizontal' && (
+				<>
+					<div className='divider-border__weight-wrap'>
+						<div
+							className={
+								props['divider-border-style'] === 'none' &&
+								'divider-border__weight-disable'
+							}
+						>
+							{disableLineStyle && <Icon icon={borderWidth} />}
+							<AdvancedNumberControl
+								label={__('', 'maxi-blocks')}
+								unit={props['divider-border-top-unit']}
+								onChange={val =>
+									onChange({
+										'divider-border-top-width': val,
+									})
+								}
+								value={props['divider-border-top-width']}
+								onChangeValue={val =>
+									onChange({
+										'divider-border-top-width': val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										'divider-border-top-width':
+											getDefaultAttribute(
+												'divider-border-top-width'
+											),
+										'divider-border-top-unit':
+											getDefaultAttribute(
+												'divider-border-top-unit'
+											),
+									})
+								}
+								minMaxSettings={minMaxSettings}
+							/>
+						</div>
+					</div>
+					<AdvancedNumberControl
+						className={
+							props['divider-border-style'] === 'none' &&
+							'divider-border__size-disable'
+						}
+						label={__('Line size', 'maxi-blocks')}
+						value={props['divider-width']}
+						onChangeValue={val =>
+							onChange({ 'divider-width': val })
+						}
+						onReset={() =>
 							onChange({
-								'divider-border-radius': val,
+								'divider-width':
+									getDefaultAttribute('divider-width'),
+								'divider-width-unit':
+									getDefaultAttribute('divider-width-unit'),
 							})
 						}
+						minMaxSettings={minMaxSettings}
 					/>
-				)}
-			{props['divider-border-style'] !== 'none' &&
-				lineOrientation === 'horizontal' && (
-					<>
-						<AdvancedNumberControl
-							label={__('Line size', 'maxi-blocks')}
-							value={props['divider-width']}
-							onChangeValue={val =>
-								onChange({ 'divider-width': val })
+				</>
+			)}
+			{lineOrientation === 'vertical' && (
+				<>
+					<div className='divider-border__weight-wrap'>
+						<div
+							className={
+								props['divider-border-style'] === 'none' &&
+								'divider-border__weight-disable'
 							}
-							onReset={() =>
-								onChange({
-									'divider-width':
-										getDefaultAttribute('divider-width'),
-									'divider-width-unit':
-										getDefaultAttribute(
-											'divider-width-unit'
-										),
-								})
-							}
-							minMaxSettings={minMaxSettings}
-						/>
-						<div className='divider-border__weight-wrap'>
-							<div
-								className={
-									props['divider-border-style'] === 'none' &&
-									'divider-border__weight-disable'
+						>
+							{disableLineStyle && <Icon icon={borderWidth} />}
+							<AdvancedNumberControl
+								label={__('', 'maxi-blocks')}
+								value={props['divider-border-right-width']}
+								onChangeValue={val => {
+									onChange({
+										'divider-border-right-width':
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+								}}
+								min={0}
+								max={100}
+								onReset={() =>
+									onChange({
+										'divider-border-right-width':
+											getDefaultAttribute(
+												'divider-border-right-width'
+											),
+									})
 								}
-							>
-								{disableLineStyle && <Icon icon={styleNone} />}
-								<AdvancedNumberControl
-									label={__('', 'maxi-blocks')}
-									unit={props['divider-border-top-unit']}
-									onChange={val =>
-										onChange({
-											'divider-border-top-width': val,
-										})
-									}
-									value={props['divider-border-top-width']}
-									onChangeValue={val =>
-										onChange({
-											'divider-border-top-width': val,
-										})
-									}
-									onReset={() =>
-										onChange({
-											'divider-border-top-width':
-												getDefaultAttribute(
-													'divider-border-top-width'
-												),
-											'divider-border-top-unit':
-												getDefaultAttribute(
-													'divider-border-top-unit'
-												),
-										})
-									}
-									minMaxSettings={minMaxSettings}
-								/>
-							</div>
+								initialPosition={getDefaultAttribute(
+									'divider-border-right-width'
+								)}
+							/>
 						</div>
-					</>
-				)}
-			{props['divider-border-style'] !== 'none' &&
-				lineOrientation === 'vertical' && (
-					<>
-						<AdvancedNumberControl
-							label={__('Size', 'maxi-blocks')}
-							value={
-								props['divider-height'] !== undefined &&
-								props['divider-height'] !== ''
-									? props['divider-height']
-									: ''
-							}
-							onChangeValue={val => {
-								onChange({
-									'divider-height':
-										val !== undefined && val !== ''
-											? val
-											: '',
-								});
-							}}
-							min={0}
-							max={100}
-							onReset={() =>
-								onChange({
-									'divider-height':
-										getDefaultAttribute('divider-height'),
-								})
-							}
-							initialPosition={getDefaultAttribute(
-								'divider-height'
-							)}
-						/>
-						<AdvancedNumberControl
-							label={__('Weight', 'maxi-blocks')}
-							value={props['divider-border-right-width']}
-							onChangeValue={val => {
-								onChange({
-									'divider-border-right-width':
-										val !== undefined && val !== ''
-											? val
-											: '',
-								});
-							}}
-							min={0}
-							max={100}
-							onReset={() =>
-								onChange({
-									'divider-border-right-width':
-										getDefaultAttribute(
-											'divider-border-right-width'
-										),
-								})
-							}
-							initialPosition={getDefaultAttribute(
-								'divider-border-right-width'
-							)}
-						/>
-					</>
-				)}
+					</div>
+					<AdvancedNumberControl
+						className={
+							props['divider-border-style'] === 'none' &&
+							'divider-border__size-disable'
+						}
+						label={__('Size', 'maxi-blocks')}
+						value={
+							props['divider-height'] !== undefined &&
+							props['divider-height'] !== ''
+								? props['divider-height']
+								: ''
+						}
+						onChangeValue={val => {
+							onChange({
+								'divider-height':
+									val !== undefined && val !== '' ? val : '',
+							});
+						}}
+						min={0}
+						max={100}
+						onReset={() =>
+							onChange({
+								'divider-height':
+									getDefaultAttribute('divider-height'),
+							})
+						}
+						initialPosition={getDefaultAttribute('divider-height')}
+					/>
+				</>
+			)}
 		</>
 	);
 };

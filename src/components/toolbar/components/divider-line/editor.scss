@@ -1,16 +1,21 @@
 .toolbar-item__divider-line__popover {
-	min-width: 280px;
+	min-width: 302px;
+	.divider-border__size-disable,
 	.divider-border__weight-disable {
 		opacity: 0.3;
 		pointer-events: none;
 	}
 	.divider-border__weight-wrap {
-		width: 119px;
+		width: 121px;
 		display: inline-block;
 		vertical-align: middle;
+		margin-bottom: 8px;
 		& > div {
 			display: flex;
 			align-items: center;
+			input {
+				width: 64px;
+			}
 			& > svg {
 				margin-right: 4px;
 			}
@@ -32,6 +37,12 @@
 			&:not(:first-child) {
 				padding: 0 5px;
 			}
+		}
+	}
+	& > .maxi-base-control {
+		input {
+			width: 62px !important;
+			flex: none !important;
 		}
 	}
 }

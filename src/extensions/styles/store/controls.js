@@ -14,8 +14,6 @@ import frontendStyleGenerator from '../frontendStyleGenerator';
  */
 const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
-		console.log('styles');
-		console.log(styles);
 		const id = select('core/editor').getCurrentPostId();
 		const parsedStyles = frontendStyleGenerator(styles);
 		const fonts = select('maxiBlocks/text').getPostFonts();
@@ -31,6 +29,8 @@ const controls = {
 				}),
 				update: isUpdate,
 			},
+		}).catch(err => {
+			console.error('Error saving styles. Code error: ', err);
 		});
 	},
 };

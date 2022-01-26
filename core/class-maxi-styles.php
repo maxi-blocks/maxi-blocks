@@ -27,15 +27,6 @@ class MaxiBlocks_Styles
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
     }
 
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-        
 
     /**
      * Enqueuing styles
@@ -62,8 +53,6 @@ class MaxiBlocks_Styles
         if ((int)$post_content['prev_active_custom_data'] === 1 || (int)$post_content['active_custom_data'] === 1) {
             $needCustomMeta = true;
         }
-
-        $this->write_log('needCustomMeta '.$needCustomMeta);
 
         if ($needCustomMeta) {
             $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];

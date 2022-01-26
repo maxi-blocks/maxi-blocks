@@ -85,6 +85,7 @@ if (!class_exists('MaxiBlocks_DB')):
                         prev_fonts_value longtext,
 						fonts_value longtext,
 						prev_active_custom_data BIT,
+                        active_custom_data BIT,
 						UNIQUE (id)
 				) $charset_collate;";
 

@@ -27,6 +27,16 @@ class MaxiBlocks_Styles
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
     }
 
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+        
+
     /**
      * Enqueuing styles
      */
@@ -35,6 +45,10 @@ class MaxiBlocks_Styles
         $post_content = $this->getPostContent();
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
+
+        $needCustomMeta = $post_content['prev_active_custom_data'] === true || $post_content['active_custom_data'] === true;
+
+        $this->write_log($needCustomMeta);
 
         if ($styles) {
             // Inline styles

@@ -296,15 +296,6 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
-        public function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         /**
          * Post the posts
          */
@@ -317,14 +308,12 @@ if (!class_exists('MaxiBlocks_API')):
             $styles = $meta['styles'];
             $fonts = implode(",", $meta['fonts']);
 
-            $this->write_log('$styles');
-            $this->write_log($styles);
-
-            if (empty($styles) && empty($fonts)) {
-                return;
-            }
-
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
+
+            if (empty($styles) || $styles === '{}') {
+                $wpdb->query("DELETE FROM {$table} WHERE post_id={$id}");
+                return '{}';
+            }
 
             $exists = $wpdb->get_results(
                 "SELECT * FROM {$table} WHERE post_id = {$id}",

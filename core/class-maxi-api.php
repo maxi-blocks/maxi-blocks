@@ -296,6 +296,15 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
+        public function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         /**
          * Post the posts
          */
@@ -307,6 +316,9 @@ if (!class_exists('MaxiBlocks_API')):
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
             $fonts = implode(",", $meta['fonts']);
+
+            $this->write_log('$styles');
+            $this->write_log($styles);
 
             if (empty($styles) && empty($fonts)) {
                 return;

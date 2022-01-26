@@ -523,9 +523,7 @@ const listTab = props => {
 												'maxi-blocks'
 											)}
 											color={attributes['list-svg-color']}
-											defaultColor={getDefaultAttribute(
-												'list-svg-color'
-											)}
+											prefix='list-svg-'
 											paletteStatus={
 												attributes[
 													'list-svg-palette-status'

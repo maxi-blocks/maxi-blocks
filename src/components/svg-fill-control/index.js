@@ -41,6 +41,8 @@ const ColorContent = ({
 }) => (
 	<ColorControl
 		label={__('Fill', 'maxi-blocks')}
+		prefix='background-svg-'
+		useBreakpoint
 		paletteStatus={getLastBreakpointAttribute(
 			'background-svg-palette-status',
 			breakpoint,

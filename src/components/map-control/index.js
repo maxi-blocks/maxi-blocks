@@ -133,6 +133,7 @@ const MapControl = props => {
 						label={__('Marker Fill', 'maxi-blocks')}
 						disableOpacity
 						color={props['map-marker-fill-color']}
+						prefix='map-marker-fill-'
 						defaultColor={getDefaultAttribute(
 							'map-marker-fill-color'
 						)}
@@ -145,6 +146,7 @@ const MapControl = props => {
 						label={__('Marker Stroke', 'maxi-blocks')}
 						disableOpacity
 						color={props['map-marker-stroke-color']}
+						prefix='map-marker-stroke-'
 						defaultColor={getDefaultAttribute(
 							'map-marker-stroke-color'
 						)}
@@ -167,7 +169,7 @@ const MapControl = props => {
 				paletteStatus={props['map-marker-text-palette-status']}
 				paletteColor={props['map-marker-text-palette-color']}
 				color={props['map-marker-text-color']}
-				defaultColor={getDefaultAttribute('map-marker-text-color')}
+				prefix='map-marker-text-'
 				onChange={({ color, paletteColor, paletteStatus }) =>
 					onChange({
 						'map-marker-text-color': color,
@@ -186,7 +188,7 @@ const MapControl = props => {
 			<ColorControl
 				label={__('Marker Address', 'maxi-blocks')}
 				color={props['map-marker-address-color']}
-				defaultColor={getDefaultAttribute('map-marker-address-color')}
+				prefix='map-marker-address-'
 				paletteColor={props['map-marker-address-palette-color']}
 				paletteStatus={props['map-marker-address-palette-status']}
 				onChange={({ color, paletteColor, paletteStatus }) =>

@@ -188,11 +188,8 @@ const BorderControl = props => {
 						props,
 						isHover
 					)}
-					defaultColor={getDefaultAttribute(
-						`${prefix}border-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					)}
+					prefix={`${prefix}border-`}
+					useBreakpoint
 					paletteStatus={getLastBreakpointAttribute(
 						`${prefix}border-palette-status`,
 						breakpoint,

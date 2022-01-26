@@ -38,7 +38,9 @@ const ColorLayerContent = props => {
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
-	const getDefaultAttr = prefix => {
+	const getDefaultAttr = () => {
+		const prefix = 'background-';
+
 		if (isLayer) {
 			const defaultColor = {};
 			defaultColor.paletteStatus = getDefaultLayerAttr(
@@ -57,8 +59,10 @@ const ColorLayerContent = props => {
 				'colorOptions',
 				`${prefix}color`
 			);
+
 			return defaultColor;
 		}
+
 		return null;
 	};
 
@@ -73,7 +77,8 @@ const ColorLayerContent = props => {
 					isHover
 				)}
 				prefix={`${prefix}background-`}
-				defaultColor={getDefaultAttr('background-')}
+				useBreakpoint
+				defaultColor={getDefaultAttr()}
 				paletteStatus={getLastBreakpointAttribute(
 					`${prefix}background-palette-status`,
 					breakpoint,

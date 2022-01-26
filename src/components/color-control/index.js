@@ -39,6 +39,7 @@ const ColorControl = props => {
 		paletteColor,
 		paletteOpacity,
 		color,
+		defaultColorAttributes,
 		defaultColor,
 		globalProps,
 		onChange,
@@ -49,7 +50,8 @@ const ColorControl = props => {
 		blockStyle: rawBlockStyle,
 		disableOpacity = false,
 		disableColorDisplay = false,
-		prefix,
+		prefix = '',
+		useBreakpoint = false,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -83,48 +85,56 @@ const ColorControl = props => {
 			...obj,
 		});
 
-	/**
-	 * TODO: reset is working just on Custom Color and when pressing
-	 * the reset of the opacity, which is not much UX.
-	 *
-	 * https://github.com/yeahcan/UX-UI/issues/8
-	 */
 	const onReset = () => {
-		let defColor = defaultColor || null;
-		if (!defColor) {
-			defColor = {};
-			defColor.paletteStatus = getDefaultAttribute(
-				getAttributeKey(
-					'',
-					isHover,
-					`${prefix}palette-status`,
-					'general'
-				)
-			);
-			defColor.paletteColor = getDefaultAttribute(
-				getAttributeKey(
-					'',
-					isHover,
-					`${prefix}palette-color`,
-					'general'
-				)
-			);
-			defColor.paletteOpacity = getDefaultAttribute(
-				getAttributeKey(
-					'',
-					isHover,
-					`${prefix}palette-opacity`,
-					'general'
-				)
-			);
-			defColor.color = getDefaultAttribute(
-				getAttributeKey('', isHover, `${prefix}color`, 'general')
-			);
+		let defaultColorAttr = defaultColorAttributes || null;
+
+		if (!defaultColorAttr) {
+			if (disablePalette) {
+				if (defaultColor)
+					onChange({
+						color: defaultColor,
+					});
+			} else {
+				defaultColorAttr = {};
+				defaultColorAttr.paletteStatus = getDefaultAttribute(
+					getAttributeKey(
+						'',
+						isHover,
+						`${prefix}palette-status`,
+						useBreakpoint ? 'general' : ''
+					)
+				);
+				defaultColorAttr.paletteColor = getDefaultAttribute(
+					getAttributeKey(
+						'',
+						isHover,
+						`${prefix}palette-color`,
+						useBreakpoint ? 'general' : ''
+					)
+				);
+				defaultColorAttr.paletteOpacity = getDefaultAttribute(
+					getAttributeKey(
+						'',
+						isHover,
+						`${prefix}palette-opacity`,
+						useBreakpoint ? 'general' : ''
+					)
+				);
+				defaultColorAttr.color = getDefaultAttribute(
+					getAttributeKey(
+						'',
+						isHover,
+						`${prefix}color`,
+						useBreakpoint ? 'general' : ''
+					)
+				);
+			}
 		}
+
 		if (showPalette)
 			onChange({
-				paletteStatus: defColor.paletteStatus,
-				paletteColor: defColor.paletteColor,
+				paletteStatus: defaultColorAttr.paletteStatus,
+				paletteColor: defaultColorAttr.paletteColor,
 				paletteOpacity: paletteOpacity || 1,
 				color,
 			});
@@ -135,7 +145,7 @@ const ColorControl = props => {
 				paletteOpacity,
 				color: `rgba(${getPaletteColor({
 					clientId,
-					color: paletteColor || defColor.paletteColor,
+					color: paletteColor || defaultColorAttr.paletteColor,
 					blockStyle,
 				})},${paletteOpacity || 1})`,
 			});
@@ -143,18 +153,17 @@ const ColorControl = props => {
 	};
 
 	const onResetOpacity = () => {
-		let opacity = 1;
-		if (defaultColor) opacity = defaultColor.paletteOpacity;
-		else {
-			opacity = getDefaultAttribute(
-				getAttributeKey(
-					'',
-					isHover,
-					`${prefix}palette-opacity`,
-					'general'
-				)
-			);
-		}
+		const opacity =
+			defaultColorAttributes && defaultColorAttributes.paletteOpacity
+				? defaultColorAttributes.paletteOpacity
+				: getDefaultAttribute(
+						getAttributeKey(
+							'',
+							isHover,
+							`${prefix}palette-opacity`,
+							'general'
+						)
+				  );
 		onChange({
 			paletteStatus,
 			paletteColor,

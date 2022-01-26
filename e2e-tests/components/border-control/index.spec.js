@@ -7,13 +7,13 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	changeResponsive,
 	getBlockAttributes,
 	openSidebarTab,
 	getBlockStyle,
 	editColorControl,
 	getAttributes,
 	editAxisControl,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('BorderControl', () => {
@@ -98,54 +98,22 @@ describe('BorderControl', () => {
 		expect(await getAttributes('border-style-general')).toStrictEqual(
 			'dotted'
 		);
-	});
 
-	it('Check Responsive border control', async () => {
-		// Dotted bottom enabled
-		await changeResponsive(page, 's');
-		await page.$eval('.maxi-text-block', block => block.focus());
+		// check responsive border
+		const responsiveBorder = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			selectInstance:
+				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			needSelectIndex: true,
+			baseExpect: 'dotted',
+			xsExpect: 'groove',
+			newValue: 'groove',
+		});
+		expect(responsiveBorder).toBeTruthy();
 
-		const dottedButton = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			button => button.selectedOptions[0].innerHTML
-		);
-
-		expect(dottedButton).toStrictEqual('Dotted');
-
-		// responsive S
-		const accordionPanel = await openSidebarTab(page, 'style', 'border');
-
-		const selector = await accordionPanel.$(
-			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select'
-		);
-		await selector.select('dashed');
-
-		const responsiveSOption = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
-		);
-
-		expect(responsiveSOption).toStrictEqual('Dashed');
-
-		// responsive XS
-		await changeResponsive(page, 'xs');
-
-		const responsiveXsOption = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
-		);
-
-		expect(responsiveXsOption).toStrictEqual('Dashed');
-
-		// responsive M
-		await changeResponsive(page, 'm');
-
-		const responsiveMOption = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
-		);
-
-		expect(responsiveMOption).toStrictEqual('Dotted');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {

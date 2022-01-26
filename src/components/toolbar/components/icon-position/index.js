@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ButtonGroupControl from '../../../button-group-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -30,10 +30,11 @@ const IconPosition = props => {
 			icon={toolbarIconAlign}
 		>
 			<div className='toolbar-item__icon-position__popover'>
-				<ButtonGroupControl
+				<SettingTabsControl
 					label={__('Icon Position', 'maxi-block')}
+					type='buttons'
 					selected={props['icon-position']}
-					options={[
+					items={[
 						{
 							label: __('Right', 'maxi-block'),
 							value: 'right',

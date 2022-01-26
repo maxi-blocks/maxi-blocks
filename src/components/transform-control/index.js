@@ -7,7 +7,7 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import SquareControl from './square-control';
 import RotateControl from './rotate-control';
 import {
@@ -94,20 +94,44 @@ const TransformControl = props => {
 
 	return (
 		<div className={classes}>
-			<ButtonGroupControl
+			<SettingTabsControl
 				label=''
+				type='buttons'
 				selected={transformStatus}
-				options={[
-					{ label: __('Scale', 'maxi-blocks'), value: 'scale' },
+				items={[
+					{
+						label: __('Scale', 'maxi-blocks'),
+						value: 'scale',
+						extraIndicatorsResponsive: [
+							'transform-scale-x',
+							'transform-scale-y',
+						],
+					},
 					{
 						label: __('Translate', 'maxi-blocks'),
 						value: 'translate',
+						extraIndicatorsResponsive: [
+							'transform-translate-x',
+							'transform-translate-y',
+						],
 					},
-					{ label: __('Rotate', 'maxi-blocks'), value: 'rotate' },
+					{
+						label: __('Rotate', 'maxi-blocks'),
+						value: 'rotate',
+						extraIndicatorsResponsive: [
+							'transform-rotate-x',
+							'transform-rotate-y',
+							'transform-rotate-z',
+						],
+					},
 					{
 						label: __('Origin', 'maxi-blocks'),
 						value: 'origin',
 						hidden: !isTransformed(),
+						extraIndicatorsResponsive: [
+							'transform-origin-x',
+							'transform-origin-y',
+						],
 					},
 				]}
 				onChange={val => setTransformStatus(val)}

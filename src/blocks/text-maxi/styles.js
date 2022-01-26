@@ -346,14 +346,6 @@ const getMarkerObject = props => {
 							props
 						) || 'px';
 
-					// List position
-					const position =
-						getLastBreakpointAttribute(
-							'list-position',
-							breakpoint,
-							props
-						) || false;
-
 					// Text position
 					const textPosition =
 						getLastBreakpointAttribute(
@@ -362,19 +354,49 @@ const getMarkerObject = props => {
 							props
 						) || false;
 
+					// Marker indent
+					const indentMarkerNum =
+						getLastBreakpointAttribute(
+							'list-marker-indent',
+							breakpoint,
+							props
+						) || 0;
+					const indentMarkerUnit =
+						getLastBreakpointAttribute(
+							'list-marker-indent-unit',
+							breakpoint,
+							props
+						) || 'px';
+
+					// Marker line-height
+					const lineHeightMarkerNum =
+						getLastBreakpointAttribute(
+							'list-marker-line-height',
+							breakpoint,
+							props
+						) || 0;
+					const lineHeightMarkerUnit =
+						getLastBreakpointAttribute(
+							'list-marker-line-height-unit',
+							breakpoint,
+							props
+						) || 'px';
+
 					response.listSize[breakpoint] = {
-						'font-size': sizeNum + sizeUnit,
-						...(position === 'outside' && {
-							'margin-left': '-1em',
-						}),
-						...(Math.sign(indentNum) === -1 && {
-							'margin-right': `calc(${
-								indentNum + indentUnit
-							} + 1em)`,
-							'padding-left': `calc(${
-								Math.abs(indentNum) + indentUnit
-							} + 1em)`,
-						}),
+						...(typeOfList === 'ul' &&
+						listStyle === 'custom' &&
+						listStyleCustom.includes('</svg>')
+							? {
+									width: sizeNum + sizeUnit,
+							  }
+							: { 'font-size': sizeNum + sizeUnit }),
+						'line-height':
+							lineHeightMarkerNum +
+							(lineHeightMarkerUnit !== '-'
+								? lineHeightMarkerUnit
+								: ''),
+						'margin-right': indentMarkerNum + indentMarkerUnit,
+						'margin-left': indentNum + indentUnit,
 						...(listStyle === 'none' && {
 							'padding-right': '1em',
 						}),

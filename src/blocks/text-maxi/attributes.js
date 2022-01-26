@@ -57,9 +57,6 @@ const attributes = {
 	},
 	...breakpointAttributesCreator({
 		obj: {
-			'list-position': {
-				type: 'string',
-			},
 			'list-gap': {
 				type: 'number',
 				default: 1,
@@ -83,8 +80,25 @@ const attributes = {
 				type: 'number',
 				default: 'em',
 			},
+			'list-marker-indent': {
+				type: 'number',
+				default: 0.5,
+			},
+			'list-marker-indent-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-marker-line-height': {
+				type: 'number',
+				default: 0.5,
+			},
+			'list-marker-line-height-unit': {
+				type: 'string',
+				default: 'em',
+			},
 			'list-text-position': {
 				type: 'string',
+				default: 'middle',
 			},
 		},
 	}),

@@ -131,32 +131,8 @@ const listTab = props => {
 			label: __('List options', 'maxi-blocks'),
 			content: (
 				<>
-					<SelectControl
-						label={__('List position', 'maxi-blocks')}
-						className='maxi-image-inspector__list-position'
-						value={getLastBreakpointAttribute(
-							'list-position',
-							deviceType,
-							attributes
-						)}
-						options={[
-							{
-								label: __('Inside', 'maxi-blocks'),
-								value: 'inside',
-							},
-							{
-								label: __('Outside', 'maxi-blocks'),
-								value: 'outside',
-							},
-						]}
-						onChange={val =>
-							setAttributes({
-								[`list-position-${deviceType}`]: val,
-							})
-						}
-					/>
 					<AdvancedNumberControl
-						label={__('Indent', 'maxi-blocks')}
+						label={__('Text indent', 'maxi-blocks')}
 						className='maxi-image-inspector__list-indent'
 						placeholder={getLastBreakpointAttribute(
 							'list-indent',
@@ -326,6 +302,105 @@ const listTab = props => {
 									),
 							})
 						}
+					/>
+					<AdvancedNumberControl
+						label={__('Marker line-height', 'maxi-blocks')}
+						className='maxi-image-inspector__list-marker-line-height'
+						placeholder={getLastBreakpointAttribute(
+							'list-marker-line-height',
+							deviceType,
+							attributes
+						)}
+						value={
+							attributes[`list-marker-line-height-${deviceType}`]
+						}
+						onChangeValue={val =>
+							setAttributes({
+								[`list-marker-line-height-${deviceType}`]: val,
+							})
+						}
+						enableUnit
+						unit={getLastBreakpointAttribute(
+							'list-marker-line-height-unit',
+							deviceType,
+							attributes
+						)}
+						onChangeUnit={val =>
+							setAttributes({
+								[`list-marker-line-height-unit-${deviceType}`]:
+									val,
+							})
+						}
+						onReset={() => {
+							setAttributes({
+								[`list-marker-line-height-${deviceType}`]:
+									getDefaultAttribute(
+										`list-marker-line-height-${deviceType}`
+									),
+								[`list-marker-line-height-unit-${deviceType}`]:
+									getDefaultAttribute(
+										`list-marker-line-height-unit-${deviceType}`
+									),
+							});
+						}}
+						allowedUnits={['px', 'em', 'vw', '%', '-']}
+					/>
+					<AdvancedNumberControl
+						label={__('Marker indent', 'maxi-blocks')}
+						className='maxi-image-inspector__list-marker-indent'
+						placeholder={getLastBreakpointAttribute(
+							'list-marker-indent',
+							deviceType,
+							attributes
+						)}
+						value={attributes[`list-marker-indent-${deviceType}`]}
+						onChangeValue={val =>
+							setAttributes({
+								[`list-marker-indent-${deviceType}`]: val,
+							})
+						}
+						enableUnit
+						unit={getLastBreakpointAttribute(
+							'list-marker-indent-unit',
+							deviceType,
+							attributes
+						)}
+						onChangeUnit={val =>
+							setAttributes({
+								[`list-marker-indent-unit-${deviceType}`]: val,
+							})
+						}
+						breakpoint={deviceType}
+						minMaxSettings={{
+							px: {
+								min: -999,
+								max: 999,
+							},
+							em: {
+								min: -99,
+								max: 99,
+							},
+							vw: {
+								min: -99,
+								max: 99,
+							},
+							'%': {
+								min: -100,
+								max: 100,
+							},
+						}}
+						onReset={() => {
+							setAttributes({
+								[`list-marker-indent-${deviceType}`]:
+									getDefaultAttribute(
+										`list-marker-indent-${deviceType}`
+									),
+								[`list-marker-indent-unit-${deviceType}`]:
+									getDefaultAttribute(
+										`list-marker-indent-unit-${deviceType}`
+									),
+							});
+						}}
 					/>
 					<ColorControl
 						label={__('Marker colour', 'maxi-blocks')}

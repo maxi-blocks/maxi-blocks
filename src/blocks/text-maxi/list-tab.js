@@ -247,6 +247,69 @@ const listTab = props => {
 						}}
 					/>
 					<AdvancedNumberControl
+						label={__('Paragraph spacing', 'maxi-blocks')}
+						className='maxi-image-inspector__list-paragraph-spacing'
+						placeholder={getLastBreakpointAttribute(
+							'list-paragraph-spacing',
+							deviceType,
+							attributes
+						)}
+						value={
+							attributes[`list-paragraph-spacing-${deviceType}`]
+						}
+						onChangeValue={val =>
+							setAttributes({
+								[`list-paragraph-spacing-${deviceType}`]: val,
+							})
+						}
+						enableUnit
+						unit={getLastBreakpointAttribute(
+							'list-paragraph-spacing-unit',
+							deviceType,
+							attributes
+						)}
+						minMaxSettings={{
+							px: {
+								min: 0,
+								max: 999,
+								step: 1,
+							},
+							em: {
+								min: 0,
+								max: 99,
+								step: 1,
+							},
+							vw: {
+								min: 0,
+								max: 99,
+								step: 1,
+							},
+							'%': {
+								min: 0,
+								max: 100,
+								step: 1,
+							},
+						}}
+						onChangeUnit={val =>
+							setAttributes({
+								[`list-paragraph-spacing-unit-${deviceType}`]:
+									val,
+							})
+						}
+						onReset={() => {
+							setAttributes({
+								[`list-paragraph-spacing-${deviceType}`]:
+									getDefaultAttribute(
+										`list-paragraph-spacing-${deviceType}`
+									),
+								[`list-paragraph-spacing-unit-${deviceType}`]:
+									getDefaultAttribute(
+										`list-paragraph-spacing-unit-${deviceType}`
+									),
+							});
+						}}
+					/>
+					<AdvancedNumberControl
 						label={__('Marker size', 'maxi-blocks')}
 						className='maxi-image-inspector__list-size'
 						value={getLastBreakpointAttribute(

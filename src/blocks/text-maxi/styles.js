@@ -242,6 +242,44 @@ const getListItemObject = props => {
 	};
 };
 
+const getListParagraphObject = props => {
+	const response = {
+		...(() => {
+			const response = { paragraphSpacing: {} };
+
+			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+				breakpoint => {
+					// List gap
+					const paragraphSpacingNum = getLastBreakpointAttribute(
+						'list-paragraph-spacing',
+						breakpoint,
+						props
+					);
+					const paragraphSpacingUnit = getLastBreakpointAttribute(
+						'list-paragraph-spacing-unit',
+						breakpoint,
+						props
+					);
+
+					if (
+						!isNil(paragraphSpacingNum) &&
+						!isNil(paragraphSpacingUnit)
+					) {
+						response.paragraphSpacing[breakpoint] = {
+							'margin-top':
+								paragraphSpacingNum + paragraphSpacingUnit,
+						};
+					}
+				}
+			);
+
+			return response;
+		})(),
+	};
+
+	return response;
+};
+
 const getMarkerObject = props => {
 	const { typeOfList, listStyle, listStyleCustom, parentBlockStyle } = props;
 
@@ -437,6 +475,8 @@ const getStyles = props => {
 						...getTypographyObject(props),
 						...getListItemObject(props),
 					},
+					[` ${element}.maxi-text-block__content li:not(:first-child)`]:
+						{ ...getListParagraphObject(props) },
 					[` ${element}.maxi-text-block__content li:hover`]:
 						getTypographyHoverObject(props),
 					[` ${element}.maxi-text-block__content li::before`]:

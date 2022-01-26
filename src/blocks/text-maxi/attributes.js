@@ -65,6 +65,13 @@ const attributes = {
 				type: 'string',
 				default: 'em',
 			},
+			'list-paragraph-spacing': {
+				type: 'number',
+			},
+			'list-paragraph-spacing-unit': {
+				type: 'string',
+				default: 'em',
+			},
 			'list-indent': {
 				type: 'number',
 			},

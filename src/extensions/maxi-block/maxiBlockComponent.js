@@ -221,8 +221,7 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		const obj = this.getStylesObject;
-
-		styleResolver(obj, true);
+		styleResolver('', obj, true);
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID

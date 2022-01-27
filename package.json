@@ -15,7 +15,8 @@
 		"test:e2e": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js",
 		"test:e2e-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js --puppeteer-interactive",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
-		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive"
+		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
+		"minify:frontend": "for FILE in ./js/*; do FILENAME=$(basename -- $FILE); minify $FILE > ./js/${FILENAME%.*}.min.js; done"
 	},
 	"dependencies": {
 		"@googlemaps/js-api-loader": "^1.11.4",

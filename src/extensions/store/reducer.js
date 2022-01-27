@@ -1,5 +1,3 @@
-import controls from './controls';
-
 const breakpointResizer = (
 	size,
 	breakpoints,
@@ -52,21 +50,10 @@ const reducer = (
 					...action.settings,
 				},
 			};
-		case 'SEND_MOTION_PRESETS':
-			return {
-				...state,
-				presets: action.presets,
-			};
 		case 'SEND_BREAKPOINTS':
 			return {
 				...state,
 				breakpoints: action.breakpoints,
-			};
-		case 'SAVE_MOTION_PRESETS':
-			controls.SAVE_MOTION_PRESETS(action);
-			return {
-				...state,
-				presets: action.presets,
 			};
 		case 'SEND_DEVICE_TYPE':
 			return {

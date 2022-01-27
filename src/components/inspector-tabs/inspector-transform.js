@@ -12,9 +12,8 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const transform = ({ props }) => {
+const transform = ({ props, depth }) => {
 	const { attributes, deviceType, uniqueID, setAttributes } = props;
-
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		content: (
@@ -23,6 +22,7 @@ const transform = ({ props }) => {
 				onChange={obj => setAttributes(obj)}
 				uniqueID={uniqueID}
 				breakpoint={deviceType}
+				depth={depth}
 			/>
 		),
 	};

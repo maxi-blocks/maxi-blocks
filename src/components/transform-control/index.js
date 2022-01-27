@@ -3,6 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
+import { select } from '@wordpress/data';
+import { toLower } from 'lodash';
 
 /**
  * Internal dependencies
@@ -16,6 +18,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
+import { getActiveTabName } from '../../extensions/inspectorPath';
 
 /**
  * External dependencies
@@ -32,11 +35,19 @@ import './editor.scss';
  * Component
  */
 const TransformControl = props => {
-	const { className, onChange, breakpoint = 'general', uniqueID } = props;
+	const {
+		className,
+		onChange,
+		breakpoint = 'general',
+		uniqueID,
+		depth,
+	} = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
 	);
+
+	const activeTabName = getActiveTabName(depth);
 
 	const isTransformed = () =>
 		Object.entries(transformOptions).some(([key, val]) => {
@@ -90,6 +101,12 @@ const TransformControl = props => {
 		}
 	};
 
+	useEffect(() => {
+		if (activeTabName) {
+			setTransformStatus(toLower(activeTabName));
+		}
+	});
+
 	useEffect(forceStyles);
 
 	return (
@@ -135,6 +152,7 @@ const TransformControl = props => {
 					},
 				]}
 				onChange={val => setTransformStatus(val)}
+				depth={2}
 			/>
 			{transformStatus === 'scale' && (
 				<SquareControl

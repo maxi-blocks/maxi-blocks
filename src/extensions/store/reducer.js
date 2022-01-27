@@ -40,7 +40,7 @@ const reducer = (
 		presets: '',
 		copiedStyles: {},
 		copiedBlocks: {},
-		inspectorPath: [],
+		inspectorPath: [{ name: 'Settings', value: 0 }],
 	},
 	action
 ) => {
@@ -104,13 +104,28 @@ const reducer = (
 				copiedBlocks: action.copiedBlocks,
 			};
 		case 'UPDATE_INSPECTOR_PATH':
-			const { depth } = action.inspectorPath;
+			const { depth, value } = action.inspectorPath;
 			const newValue = omit(action.inspectorPath, ['depth']);
+			const newInspectorPath = state.inspectorPath;
+
+			if (depth === newInspectorPath.length) {
+				newInspectorPath.push(newValue);
+			} else if (depth < newInspectorPath.length) {
+				newInspectorPath[depth] = newValue;
+
+				for (let i = depth + 1; i <= newInspectorPath.length; i++) {
+					newInspectorPath.splice(i, 1);
+				}
+
+				// In case of Accordiont return undefined
+				if (value === undefined) {
+					newInspectorPath.splice(depth, 1);
+				}
+			}
+
 			return {
 				...state,
-				inspectorPath: Object.assign([], state.inspectorPath, {
-					[depth]: newValue,
-				}),
+				inspectorPath: newInspectorPath,
 			};
 		default:
 			return state;

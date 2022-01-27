@@ -24,6 +24,7 @@ import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
 } from '../../extensions/indicators';
+import { getForcedTabFromPath } from '../../extensions/inspectorPath';
 
 /**
  * Component
@@ -49,34 +50,11 @@ const SettingTabsControl = props => {
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
 
-	const { receiveInspectorPath } = select('maxiBlocks');
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
 	const [tab, setTab] = useState(0);
 
-	const getForcedTabFromPath = () => {
-		const activeTab = receiveInspectorPath();
-		const { name } = activeTab[depth] || {};
-		const tabIndex = items?.findIndex(item => item.label === name);
-		return tabIndex > 0 ? tabIndex : 0;
-	};
-
-	const currentForcedTab = getForcedTabFromPath();
-
-	useEffect(() => {
-		if (currentForcedTab || currentForcedTab === 0) {
-			setTab(currentForcedTab);
-		}
-
-		if (forceTab || forceTab === 0) {
-			setTab(forceTab);
-		}
-	}, [forceTab]);
-
-	useEffect(() => {
-		if (returnValue) returnValue(items[tab]);
-	}, [tab]);
-
+	const currentForcedTab = getForcedTabFromPath(items, depth);
 	const classes = classnames('maxi-settingstab-control', className);
 
 	const classesControl = classnames(
@@ -99,6 +77,20 @@ const SettingTabsControl = props => {
 		setTab(tab);
 		updateInspectorPath({ depth: depth, name: name, value: tab });
 	};
+
+	useEffect(() => {
+		if (currentForcedTab || currentForcedTab === 0) {
+			setTab(currentForcedTab);
+		}
+
+		if (forceTab || forceTab === 0) {
+			setTab(forceTab);
+		}
+	}, [forceTab, currentForcedTab]);
+
+	useEffect(() => {
+		if (returnValue) returnValue(items[tab]);
+	}, [tab]);
 
 	const getChildren = () => {
 		return (
@@ -134,7 +126,7 @@ const SettingTabsControl = props => {
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
-									setActiveTab(i, item.label);
+									setActiveTab(i, item.label || item.value);
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 

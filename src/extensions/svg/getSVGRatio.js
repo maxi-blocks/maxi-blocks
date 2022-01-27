@@ -1,6 +1,6 @@
 import getSVGAspectRatio from './getSVGAspectRatio';
 
-const getSVGPosition = icon =>
-	getSVGAspectRatio(icon)?.includes('slice') ? 'slice' : 'meet';
+const getSVGRatio = icon =>
+	getSVGAspectRatio(icon)?.includes('meet') ? 'meet' : 'slice';
 
-export default getSVGPosition;
+export default getSVGRatio;

@@ -78,7 +78,7 @@ const ColorLayerContent = props => {
 				)}
 				prefix={`${prefix}background-`}
 				useBreakpoint
-				defaultColor={getDefaultAttr()}
+				defaultColorAttributes={getDefaultAttr()}
 				paletteStatus={getLastBreakpointAttribute(
 					`${prefix}background-palette-status`,
 					breakpoint,

@@ -50,6 +50,7 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
 
+	console.log(getBlockAttributes(blockName));
 	// Check default value on block
 	if (blockName && blockName.includes('maxi-blocks'))
 		response = getBlockAttributes(blockName)[prop];
@@ -60,6 +61,7 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 		if (prop in defaultAttrs) response = defaultAttrs[prop].default;
 	});
 
+	console.log(defaults);
 	return response;
 };
 

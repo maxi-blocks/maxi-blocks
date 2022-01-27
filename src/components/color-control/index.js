@@ -22,7 +22,7 @@ import { getPaletteColor } from '../../extensions/style-cards';
  */
 import classnames from 'classnames';
 import tinycolor from 'tinycolor2';
-
+import isEmpty from 'lodash';
 /**
  * Styles
  */
@@ -40,7 +40,6 @@ const ColorControl = props => {
 		paletteOpacity,
 		color,
 		defaultColorAttributes,
-		defaultColor,
 		globalProps,
 		onChange,
 		isHover,
@@ -86,49 +85,42 @@ const ColorControl = props => {
 		});
 
 	const onReset = () => {
-		let defaultColorAttr = defaultColorAttributes || null;
+		let defaultColorAttr = defaultColorAttributes;
 
 		if (!defaultColorAttr) {
-			if (disablePalette) {
-				if (defaultColor)
-					onChange({
-						color: defaultColor,
-					});
-			} else {
-				defaultColorAttr = {};
-				defaultColorAttr.paletteStatus = getDefaultAttribute(
-					getAttributeKey(
-						'',
-						isHover,
-						`${prefix}palette-status`,
-						useBreakpoint ? 'general' : ''
-					)
-				);
-				defaultColorAttr.paletteColor = getDefaultAttribute(
-					getAttributeKey(
-						'',
-						isHover,
-						`${prefix}palette-color`,
-						useBreakpoint ? 'general' : ''
-					)
-				);
-				defaultColorAttr.paletteOpacity = getDefaultAttribute(
-					getAttributeKey(
-						'',
-						isHover,
-						`${prefix}palette-opacity`,
-						useBreakpoint ? 'general' : ''
-					)
-				);
-				defaultColorAttr.color = getDefaultAttribute(
-					getAttributeKey(
-						'',
-						isHover,
-						`${prefix}color`,
-						useBreakpoint ? 'general' : ''
-					)
-				);
-			}
+			defaultColorAttr = {};
+			defaultColorAttr.paletteStatus = getDefaultAttribute(
+				getAttributeKey(
+					'palette-status',
+					isHover,
+					prefix,
+					useBreakpoint ? 'general' : ''
+				)
+			);
+			defaultColorAttr.paletteColor = getDefaultAttribute(
+				getAttributeKey(
+					'palette-color',
+					isHover,
+					prefix,
+					useBreakpoint ? 'general' : ''
+				)
+			);
+			defaultColorAttr.paletteOpacity = getDefaultAttribute(
+				getAttributeKey(
+					'palette-opacity',
+					isHover,
+					prefix,
+					useBreakpoint ? 'general' : ''
+				)
+			);
+			defaultColorAttr.color = getDefaultAttribute(
+				getAttributeKey(
+					'color',
+					isHover,
+					prefix,
+					useBreakpoint ? 'general' : ''
+				)
+			);
 		}
 
 		if (showPalette)
@@ -154,16 +146,15 @@ const ColorControl = props => {
 
 	const onResetOpacity = () => {
 		const opacity =
-			defaultColorAttributes && defaultColorAttributes.paletteOpacity
-				? defaultColorAttributes.paletteOpacity
-				: getDefaultAttribute(
-						getAttributeKey(
-							'',
-							isHover,
-							`${prefix}palette-opacity`,
-							'general'
-						)
-				  );
+			defaultColorAttributes?.paletteOpacity ??
+			getDefaultAttribute(
+				getAttributeKey(
+					'palette-opacity',
+					isHover,
+					`${prefix}`,
+					'general'
+				)
+			);
 		onChange({
 			paletteStatus,
 			paletteColor,

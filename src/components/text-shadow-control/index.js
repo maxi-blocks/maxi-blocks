@@ -278,16 +278,14 @@ const TextShadow = props => {
 						onChange={value => {
 							onChangeValue(3, value);
 						}}
-						defaultColorAttributes={
-							defaultColor || {
-								paletteStatus: isPaletteActive,
-								paletteColor: 8,
-								paletteOpacity: 1,
-								color: !isPaletteActive
-									? getCurrentColor()
-									: '',
-							}
-						}
+						defaultColorAttributes={{
+							paletteStatus: isPaletteActive,
+							paletteColor: 8,
+							paletteOpacity: 1,
+							color: !isPaletteActive
+								? `rgba(${getCurrentColor()},1)`
+								: '',
+						}}
 						disableGradient
 						disableGradientAboveBackground
 					/>

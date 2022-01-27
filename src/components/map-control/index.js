@@ -134,9 +134,6 @@ const MapControl = props => {
 						disableOpacity
 						color={props['map-marker-fill-color']}
 						prefix='map-marker-fill-'
-						defaultColor={getDefaultAttribute(
-							'map-marker-fill-color'
-						)}
 						onChange={({ color }) =>
 							onChange({ 'map-marker-fill-color': color })
 						}
@@ -147,9 +144,6 @@ const MapControl = props => {
 						disableOpacity
 						color={props['map-marker-stroke-color']}
 						prefix='map-marker-stroke-'
-						defaultColor={getDefaultAttribute(
-							'map-marker-stroke-color'
-						)}
 						onChange={({ color }) =>
 							onChange({ 'map-marker-stroke-color': color })
 						}

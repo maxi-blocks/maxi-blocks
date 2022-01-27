@@ -162,7 +162,7 @@ const BoxShadowControl = props => {
 							isHover
 						)}
 						prefix={`${prefix}box-shadow-`}
-						useBreakpoint
+						useBreakpointForDefault
 						paletteStatus={getLastBreakpointAttribute(
 							`${prefix}box-shadow-palette-status`,
 							breakpoint,

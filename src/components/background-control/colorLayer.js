@@ -77,7 +77,7 @@ const ColorLayerContent = props => {
 					isHover
 				)}
 				prefix={`${prefix}background-`}
-				useBreakpoint
+				useBreakpointForDefault
 				defaultColorAttributes={getDefaultAttr()}
 				paletteStatus={getLastBreakpointAttribute(
 					`${prefix}background-palette-status`,

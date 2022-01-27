@@ -403,7 +403,7 @@ const IconControl = props => {
 										isHover
 									)}
 									prefix='icon-background-'
-									useBreakpoint
+									useBreakpointForDefault
 									onChange={({
 										paletteStatus,
 										paletteColor,

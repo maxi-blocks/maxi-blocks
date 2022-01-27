@@ -189,7 +189,7 @@ const BorderControl = props => {
 						isHover
 					)}
 					prefix={`${prefix}border-`}
-					useBreakpoint
+					useBreakpointForDefault
 					paletteStatus={getLastBreakpointAttribute(
 						`${prefix}border-palette-status`,
 						breakpoint,

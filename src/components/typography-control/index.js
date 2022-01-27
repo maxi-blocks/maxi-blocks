@@ -299,7 +299,7 @@ const LinkOptions = props => {
 					className='maxi-typography-link-color'
 					color={getValue(`${prefix}link-color`)}
 					prefix={`${prefix}link-`}
-					useBreakpoint
+					useBreakpointForDefaultForDefault
 					paletteStatus={getValue(`${prefix}link-palette-status`)}
 					paletteColor={getValue(`${prefix}link-palette-color`)}
 					paletteOpacity={
@@ -336,7 +336,7 @@ const LinkOptions = props => {
 					className='maxi-typography-link-hover-color'
 					color={getValue(`${prefix}link-hover-color`)}
 					prefix={`${prefix}link-hover-`}
-					useBreakpoint
+					useBreakpointForDefault
 					paletteStatus={getValue(
 						`${prefix}link-hover-palette-status`
 					)}
@@ -377,7 +377,7 @@ const LinkOptions = props => {
 					className='maxi-typography-link-active-color'
 					color={getValue(`${prefix}link-active-color`)}
 					prefix={`${prefix}link-active-`}
-					useBreakpoint
+					useBreakpointForDefault
 					paletteStatus={getValue(
 						`${prefix}link-active-palette-status`
 					)}
@@ -420,7 +420,7 @@ const LinkOptions = props => {
 					className='maxi-typography-link-visited-color'
 					color={getValue(`${prefix}link-visited-color`)}
 					prefix={`${prefix}link-visited-`}
-					useBreakpoint
+					useBreakpointForDefault
 					paletteStatus={getValue(
 						`${prefix}link-visited-palette-status`
 					)}

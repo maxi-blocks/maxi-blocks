@@ -14,6 +14,7 @@ import {
 	getColorRGBAParts,
 	getAttributeKey,
 	getDefaultAttribute,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
 
@@ -22,7 +23,6 @@ import { getPaletteColor } from '../../extensions/style-cards';
  */
 import classnames from 'classnames';
 import tinycolor from 'tinycolor2';
-import isEmpty from 'lodash';
 /**
  * Styles
  */
@@ -50,7 +50,7 @@ const ColorControl = props => {
 		disableOpacity = false,
 		disableColorDisplay = false,
 		prefix = '',
-		useBreakpoint = false,
+		useBreakpointForDefault = false,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -84,43 +84,69 @@ const ColorControl = props => {
 			...obj,
 		});
 
+	const getDefaultBlockAttributes = target => {
+		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		const response = {};
+
+		breakpoints.forEach(breakpoint => {
+			response[getAttributeKey(target, isHover, prefix, breakpoint)] =
+				getDefaultAttribute(
+					getAttributeKey(target, isHover, prefix, breakpoint)
+				);
+		});
+
+		return response;
+	};
+
 	const onReset = () => {
 		let defaultColorAttr = defaultColorAttributes;
 
 		if (!defaultColorAttr) {
 			defaultColorAttr = {};
-			defaultColorAttr.paletteStatus = getDefaultAttribute(
-				getAttributeKey(
-					'palette-status',
-					isHover,
-					prefix,
-					useBreakpoint ? 'general' : ''
-				)
-			);
-			defaultColorAttr.paletteColor = getDefaultAttribute(
-				getAttributeKey(
-					'palette-color',
-					isHover,
-					prefix,
-					useBreakpoint ? 'general' : ''
-				)
-			);
-			defaultColorAttr.paletteOpacity = getDefaultAttribute(
-				getAttributeKey(
-					'palette-opacity',
-					isHover,
-					prefix,
-					useBreakpoint ? 'general' : ''
-				)
-			);
-			defaultColorAttr.color = getDefaultAttribute(
-				getAttributeKey(
-					'color',
-					isHover,
-					prefix,
-					useBreakpoint ? 'general' : ''
-				)
-			);
+			defaultColorAttr.paletteStatus =
+				(useBreakpointForDefault &&
+					getLastBreakpointAttribute(
+						`${prefix}palette-status`,
+						deviceType,
+						getDefaultBlockAttributes('palette-status'),
+						isHover
+					)) ||
+				getDefaultAttribute(
+					getAttributeKey('palette-status', isHover, prefix, null)
+				);
+			defaultColorAttr.paletteColor =
+				(useBreakpointForDefault &&
+					getLastBreakpointAttribute(
+						`${prefix}palette-color`,
+						deviceType,
+						getDefaultBlockAttributes('palette-color'),
+						isHover
+					)) ||
+				getDefaultAttribute(
+					getAttributeKey('palette-color', isHover, prefix, null)
+				);
+			defaultColorAttr.paletteOpacity =
+				(useBreakpointForDefault &&
+					getLastBreakpointAttribute(
+						`${prefix}palette-opacity`,
+						deviceType,
+						getDefaultBlockAttributes('palette-opacity'),
+						isHover
+					)) ||
+				getDefaultAttribute(
+					getAttributeKey('palette-opacity', isHover, prefix, null)
+				);
+			defaultColorAttr.color =
+				(useBreakpointForDefault &&
+					getLastBreakpointAttribute(
+						`${prefix}color`,
+						deviceType,
+						getDefaultBlockAttributes('color'),
+						isHover
+					)) ||
+				getDefaultAttribute(
+					getAttributeKey('color', isHover, prefix, null)
+				);
 		}
 
 		if (showPalette)
@@ -147,14 +173,16 @@ const ColorControl = props => {
 	const onResetOpacity = () => {
 		const opacity =
 			defaultColorAttributes?.paletteOpacity ??
-			getDefaultAttribute(
-				getAttributeKey(
-					'palette-opacity',
-					isHover,
-					`${prefix}`,
-					'general'
-				)
-			);
+			((useBreakpointForDefault &&
+				getLastBreakpointAttribute(
+					`${prefix}palette-opacity`,
+					deviceType,
+					getDefaultBlockAttributes('palette-opacity'),
+					isHover
+				)) ||
+				getDefaultAttribute(
+					getAttributeKey('palette-opacity', isHover, prefix, null)
+				));
 		onChange({
 			paletteStatus,
 			paletteColor,

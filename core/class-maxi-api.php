@@ -160,27 +160,6 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
-            register_rest_route($this->namespace, '/motion-presets', [
-                'methods' => 'GET',
-                'callback' => [
-                    $this,
-                    'get_maxi_blocks_current_global_motion_presets',
-                ],
-                'permission_callback' => function () {
-                    return current_user_can('edit_posts');
-                },
-            ]);
-            register_rest_route($this->namespace, '/motion-presets', [
-                'methods' => 'POST',
-                'callback' => [
-                    $this,
-                    'set_maxi_blocks_current_global_motion_presets',
-                ],
-                'permission_callback' => function () {
-                    return current_user_can('edit_posts');
-                },
-            ]);
-
             register_rest_route($this->namespace, '/custom-data/(?P<id>\d+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_current_custom_data'],
@@ -443,6 +422,28 @@ if (!class_exists('MaxiBlocks_API')):
             $wpdb->query("DELETE FROM {$table_custom_meta} WHERE post_id={$postId}");
         }
 
+        public function get_api_response($response)
+        {
+            // Retrieve information
+            $response_code = wp_remote_retrieve_response_code($response);
+            $response_message = wp_remote_retrieve_response_message($response);
+            $response_body = wp_remote_retrieve_body($response);
+ 
+            if (!is_wp_error($response)) {
+                return new WP_REST_Response([
+                     'status' => $response_code,
+                     'response' => $response_message,
+                     'body_response' => $response_body,
+                 ]);
+            } else {
+                return new WP_Error(
+                    $response_code,
+                    $response_message,
+                    $response_body,
+                );
+            }
+        }
+
         public function get_maxi_blocks_current_style_cards()
         {
             global $wpdb;
@@ -486,16 +487,7 @@ if (!class_exists('MaxiBlocks_API')):
                 'object' => $defaultStyleCard,
             ]);
 
-            // Retrieve information
-            $response_code = wp_remote_retrieve_response_code($response);
-            $response_message = wp_remote_retrieve_response_message($response);
-            $response_body = wp_remote_retrieve_body($response);
-
-            return new WP_REST_Response([
-                'status' => $response_code,
-                'response' => $response_message,
-                'body_response' => $response_body,
-            ]);
+            return get_api_response($response);
         }
 
         public function set_maxi_blocks_current_style_cards($request)
@@ -510,41 +502,7 @@ if (!class_exists('MaxiBlocks_API')):
                 'object' => $request_result['styleCards'],
             ]);
 
-            // Retrieve information
-            $response_code = wp_remote_retrieve_response_code($response);
-            $response_message = wp_remote_retrieve_response_message($response);
-            $response_body = wp_remote_retrieve_body($response);
-
-            if (!is_wp_error($response)) {
-                return new WP_REST_Response([
-                    'status' => $response_code,
-                    'response' => $response_message,
-                    'body_response' => $response_body,
-                ]);
-            } else {
-                return new WP_Error(
-                    $response_code,
-                    $response_message,
-                    $response_body,
-                );
-            }
-        }
-
-        public function get_maxi_blocks_current_global_motion_presets()
-        {
-            return get_option('maxi_motion_interaction_presets');
-        }
-
-        public function set_maxi_blocks_current_global_motion_presets(
-            $request
-        ) {
-            $request_result = $request->get_json_params();
-            $result = $request_result;
-
-            return update_option(
-                'maxi_motion_interaction_presets',
-                $result['presets'],
-            );
+            return get_api_response($response);
         }
 
         public function get_maxi_blocks_current_custom_data($id)

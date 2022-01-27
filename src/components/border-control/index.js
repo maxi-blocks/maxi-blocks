@@ -72,8 +72,9 @@ const BorderControl = props => {
 
 	const borderWidthLastValue = () => {
 		const response = {};
+
 		['top', 'right', 'bottom', 'left'].forEach(item => {
-			response[`Border${capitalize(item)}Width`] =
+			response[`border${capitalize(item)}Width`] =
 				getLastBreakpointAttribute(
 					`${prefix}border-${item}-width`,
 					breakpoint,
@@ -81,6 +82,7 @@ const BorderControl = props => {
 					isHover
 				);
 		});
+
 		return response;
 	};
 

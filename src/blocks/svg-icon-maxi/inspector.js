@@ -369,9 +369,11 @@ const Inspector = props => {
 										}),
 										...inspectorTabs.scrollEffects({
 											props,
+											depth: 2,
 										}),
 										...inspectorTabs.transform({
 											props,
+											depth: 2,
 										}),
 										...inspectorTabs.display({
 											props,

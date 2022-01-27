@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { memo } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -141,9 +140,11 @@ const Inspector = memo(
 											}),
 											...inspectorTabs.scrollEffects({
 												props,
+												depth: 2,
 											}),
 											...inspectorTabs.transform({
 												props,
+												depth: 2,
 											}),
 											...inspectorTabs.transition({
 												props,

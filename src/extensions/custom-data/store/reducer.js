@@ -6,9 +6,8 @@ import controls from './controls';
 /**
  * Reducer managing the customData
  *
- * @param {Object} customData  Current customData.
- * @param {Object} action Dispatched action.
- *
+ * @param {Object} customData Current customData.
+ * @param {Object} action     Dispatched action.
  * @return {Object} Updated customData.
  */
 function reducer(state = { customData: {}, isUpdate: null }, action) {

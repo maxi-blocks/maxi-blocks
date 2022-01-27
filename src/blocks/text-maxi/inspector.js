@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { memo } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies

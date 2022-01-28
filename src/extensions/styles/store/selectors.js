@@ -2,7 +2,6 @@
  * Returns post styles.
  *
  * @param {Object} state Data state.
- *
  * @return {Array} Format types.
  */
 export const getPostStyles = state => {
@@ -14,7 +13,6 @@ export const getPostStyles = state => {
  * Returns the block styles.
  *
  * @param {Object} state Data state.
- *
  * @return {Array} Format types.
  */
 export const getBlockStyles = (state, target) => {

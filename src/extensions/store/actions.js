@@ -14,23 +14,6 @@ const actions = {
 			type: 'RECEIVE_BREAKPOINTS',
 		};
 	},
-	sendMaxiMotionPresets(presets) {
-		return {
-			type: 'SEND_MOTION_PRESETS',
-			presets,
-		};
-	},
-	receiveMaxiMotionPresets() {
-		return {
-			type: 'RECEIVE_MOTION_PRESETS',
-		};
-	},
-	saveMaxiMotionPresets(presets) {
-		return {
-			type: 'SAVE_MOTION_PRESETS',
-			presets,
-		};
-	},
 	sendMaxiSettings(settings) {
 		return {
 			type: 'SEND_GLOBAL_SETTINGS',

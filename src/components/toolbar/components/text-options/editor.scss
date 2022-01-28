@@ -89,9 +89,13 @@
 				}
 			}
 		}
-
 		.toolbar-item[aria-pressed='true'] svg path {
 			fill: #ff4a17;
+		}
+		&_inputs {
+			svg path {
+				fill: red;
+			}
 		}
 	}
 }

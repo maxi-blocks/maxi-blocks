@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
+// import ToolbarPopover from '../toolbar-popover';
 import AxisControl from '../../../axis-control';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -14,14 +14,14 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  * Styles & Icons
  */
 // import './editor.scss';
-import { toolbarPadding } from '../../../../icons';
+// import { toolbarPadding } from '../../../../icons';
 
 /**
  * PaddingMargin
  */
 const TextMarginControl = props => {
 	const {
-		blockName,
+		// blockName,
 		breakpoint,
 		disableMargin = false,
 		disablePadding = false,
@@ -54,10 +54,13 @@ const TextMarginControl = props => {
 				<AxisControl
 					{...getGroupAttributes(props, 'margin')}
 					label={__('Margin', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					breakpoint={breakpoint}
 					target={marginTarget}
 					optionType='string'
+					disableSync
+					disableIcon
+					disableAuto
 				/>
 			)}
 		</div>

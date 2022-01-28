@@ -10,6 +10,7 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
 import TextMarginControl from '../text-margin-control';
+import AxisControl from '../../../axis-control';
 
 /**
  * Icons
@@ -36,14 +37,6 @@ const TextMargin = props => {
 			advancedOptions='margin padding'
 		>
 			<div className='toolbar-item__text-margin__popover'>
-				{/* <TextMarginControl
-					blockName={name}
-					{...getGroupAttributes(props, 'margin')}
-					onChange={onChange}
-					breakpoint={breakpoint}
-					disableMargin
-					marginTarget='margin'
-				/> */}
 				<TextMarginControl
 					blockName={name}
 					{...getGroupAttributes(props, 'margin')}
@@ -52,6 +45,17 @@ const TextMargin = props => {
 					disablePadding
 					marginTarget=''
 				/>
+				{/* <AxisControl
+					{...getGroupAttributes(props, 'margin')}
+					label={__('Margin', 'maxi-blocks')}
+					onChange={obj => onChange(obj)}
+					breakpoint={breakpoint}
+					target=''
+					optionType='string'
+					disableSync
+					disableIcon
+					disableAuto
+				/> */}
 			</div>
 		</ToolbarPopover>
 	);

@@ -7,6 +7,7 @@ import { useSelect, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import Icon from '../../../icon';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
@@ -33,7 +34,7 @@ import {
  * Styles and icons
  */
 import './editor.scss';
-// import { toolbarType } from '../../../../icons';
+import { toolbarTextSize } from '../../../../icons';
 import { ResponsiveTabsControl } from '../../..';
 
 /**
@@ -53,9 +54,13 @@ const TextOptions = props => {
 
 	return (
 		<>
+			<Icon
+				className='toolbar-item__text-size-icon'
+				icon={toolbarTextSize}
+			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__size'
-				label={__('Size', 'maxi-blocks')}
+				label={__('', 'maxi-blocks')}
 				// enableUnit
 				unit={getValue(`${prefix}font-size-unit`, breakpoint, avoidXXL)}
 				defaultUnit={getDefault(`${prefix}font-size-unit`, breakpoint)}
@@ -215,6 +220,7 @@ const TypographyControl = withFormatValue(props => {
 		isHover = false,
 		styleCardPrefix,
 		isCaptionToolbar = false,
+		name,
 	} = props;
 	// const { textLevel } = attributes;
 
@@ -362,7 +368,7 @@ const TypographyControl = withFormatValue(props => {
 							breakpoint={breakpoint}
 						>
 							<div>
-								<div className='toolbar-item__popover__font-options__wrap'>
+								<div className='toolbar-item__popover__font-options__wrap toolbar-item__popover__font-options__wrap_inputs'>
 									{/* <TextLevel
 										// {...getGroupAttributes(attributes, [
 										// 	'typography',
@@ -407,7 +413,8 @@ const TypographyControl = withFormatValue(props => {
 												props,
 												'typography'
 											)}
-											// blockName={name}
+											formatValue={formatValue}
+											blockName={name}
 											onChange={obj => onChange(obj)}
 											isList={isList}
 											breakpoint={breakpoint}

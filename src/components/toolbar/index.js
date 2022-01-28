@@ -639,7 +639,7 @@ const MaxiToolbar = memo(
 								breakpoint={breakpoint}
 							/> */}
 							{/* <Delete clientId={clientId} blockName={name} /> */}
-							<ToggleBlock
+							{/* <ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
@@ -650,7 +650,7 @@ const MaxiToolbar = memo(
 										? 'flex'
 										: 'inherit'
 								}
-							/>
+							/> */}
 							{/* <CopyPaste clientId={clientId} blockName={name} /> */}
 							<Help />
 							<MoreSettings

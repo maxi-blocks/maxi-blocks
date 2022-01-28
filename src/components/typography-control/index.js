@@ -658,6 +658,8 @@ const TypographyControl = withFormatValue(props => {
 					response.push(weightOption);
 				}
 			});
+			console.log('response:');
+			console.log(response);
 			return response;
 		}
 		return null;

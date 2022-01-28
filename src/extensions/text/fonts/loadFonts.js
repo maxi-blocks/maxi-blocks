@@ -43,14 +43,14 @@ const loadFonts = font => {
 		Object.entries(files).forEach(variant => {
 			const style = getFontStyle(variant[0]);
 
-			console.log(`style: ${JSON.stringify(style)}`);
+			//	console.log(`style: ${JSON.stringify(style)}`);
 			const fontLoad = new FontFace(font, `url(${variant[1]})`, style);
 			document.fonts.add(fontLoad);
 			fontLoad.loaded.catch(err => {
 				console.error(__(`Font hasn't been able to download: ${err}`));
 			});
 		});
-
+		console.log(`font: ${JSON.stringify(font)}`);
 		dispatch('maxiBlocks/text').updateFonts(font);
 	}
 };

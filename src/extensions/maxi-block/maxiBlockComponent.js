@@ -26,6 +26,8 @@ import {
 	getGroupAttributes,
 	getBlockStyle,
 	getParallaxLayers,
+	getHasVideo,
+	getHasScrollEffects,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
@@ -219,8 +221,7 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		const obj = this.getStylesObject;
-
-		styleResolver(obj, true);
+		styleResolver('', obj, true);
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
@@ -241,20 +242,28 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
-		const {
-			uniqueID,
-			'background-layers': bgLayers,
-			'motion-status': motionStatus,
-		} = this.props.attributes;
+		const { uniqueID, 'background-layers': bgLayers } =
+			this.props.attributes;
 
-		const bgParallaxLayers = getParallaxLayers(bgLayers);
+		const scroll = getGroupAttributes(
+			this.props.attributes,
+			'scroll',
+			false,
+			'',
+			true
+		);
+
+		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
+		const hasVideo = getHasVideo(uniqueID, bgLayers);
+		const hasScrollEffects = getHasScrollEffects(uniqueID, scroll);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, ['motion']),
+				...(!isEmpty(bgParallaxLayers) && {
+					...{ parallax: bgParallaxLayers },
 				}),
-				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
+				...(hasVideo && { bg_video: true }),
+				...(hasScrollEffects && { scroll_effects: true }),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};

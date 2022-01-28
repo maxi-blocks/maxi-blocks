@@ -238,12 +238,17 @@ class edit extends MaxiBlockComponent {
 
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 
-		return {
-			...{
-				...getGroupAttributes(attributes, 'numberCounter'),
+		const response = {
+			number_counter: {
+				[uniqueID]: {
+					...getGroupAttributes(attributes, 'numberCounter'),
+				},
 			},
 		};
+
+		return response;
 	}
 
 	render() {

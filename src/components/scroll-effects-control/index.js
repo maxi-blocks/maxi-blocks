@@ -59,7 +59,7 @@ const ScrollEffectsControl = props => {
 	};
 
 	const firstActiveEffect = getActiveEffects()?.[0] || 'vertical';
-	const [motionStatus, setMotionStatus] = useState(firstActiveEffect);
+	const [scrollStatus, setScrollStatus] = useState(firstActiveEffect);
 
 	const motionOptions = [
 		{
@@ -227,9 +227,9 @@ const ScrollEffectsControl = props => {
 			<SettingTabsControl
 				type='buttons'
 				fullWidthMode
-				selected={motionStatus}
+				selected={scrollStatus}
 				items={motionOptions}
-				onChange={val => setMotionStatus(val)}
+				onChange={val => setScrollStatus(val)}
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute(
@@ -241,7 +241,7 @@ const ScrollEffectsControl = props => {
 					<div
 						key={`maxi-scroll-effects-control-${type}-${breakpoint}`}
 					>
-						{motionStatus === type && (
+						{scrollStatus === type && (
 							<ToggleSwitch
 								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 								label={__(
@@ -269,7 +269,7 @@ const ScrollEffectsControl = props => {
 								}}
 							/>
 						)}
-						{motionStatus === type &&
+						{scrollStatus === type &&
 							props[`scroll-${type}-status-${breakpoint}`] && (
 								<>
 									<SelectControl

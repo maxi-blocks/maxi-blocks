@@ -29,6 +29,8 @@ const controls = {
 				}),
 				update: isUpdate,
 			},
+		}).catch(err => {
+			console.error('Error saving styles. Code error: ', err);
 		});
 	},
 };

@@ -18,6 +18,7 @@ import {
 	getBlockStyle,
 	changeResponsive,
 	addResponsiveTest,
+	openPreviewPage,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -120,5 +121,13 @@ describe('BackgroundControl', () => {
 		});
 		expect(responsiveResult).toBeTruthy();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+	it('Check Background Gradient layer display', async () => {
+		const previewPage = await openPreviewPage(page);
+		const backgroundPreviewPage = await previewPage.$(
+			'.maxi-background-displayer'
+		);
+
+		expect(backgroundPreviewPage).toMatchSnapshot();
 	});
 });

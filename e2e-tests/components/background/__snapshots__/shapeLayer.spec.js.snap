@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`BackgroundControl Check Background Shape layer display 1`] = `null`;
+
 exports[`BackgroundControl Check Background shape layer 1`] = `
 Array [
   Object {

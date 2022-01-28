@@ -16,6 +16,7 @@ import {
 	openSidebarTab,
 	addBackgroundLayer,
 	changeResponsive,
+	openPreviewPage,
 	getBlockStyle,
 } from '../../utils';
 
@@ -470,5 +471,13 @@ describe('BackgroundControl', () => {
 		);
 		expect(mBackgroundAttachment).toStrictEqual('local');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+	it('Check Background Image layer display', async () => {
+		const previewPage = await openPreviewPage(page);
+		const backgroundPreviewPage = await previewPage.$(
+			'.maxi-background-displayer'
+		);
+
+		expect(backgroundPreviewPage).toMatchSnapshot();
 	});
 });

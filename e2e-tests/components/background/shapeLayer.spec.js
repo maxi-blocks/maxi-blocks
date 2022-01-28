@@ -19,6 +19,7 @@ import {
 	changeResponsive,
 	editAxisControl,
 	getBlockStyle,
+	openPreviewPage,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -283,5 +284,13 @@ describe('BackgroundControl', () => {
 
 		expect(mBackgroundShapeSize).toStrictEqual('22');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+	it('Check Background Shape layer display', async () => {
+		const previewPage = await openPreviewPage(page);
+		const backgroundPreviewPage = await previewPage.$(
+			'.maxi-background-displayer'
+		);
+
+		expect(backgroundPreviewPage).toMatchSnapshot();
 	});
 });

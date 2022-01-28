@@ -1,235 +1,249 @@
 <?php
-class MaxiBlocks_Styles {
-	/**
-	 * This plugin's instance.
-	 *
-	 * @var MaxiBlocks_Styles
-	 */
-	private static $instance;
 
-	/**
-	 * Registers the plugin.
-	 */
-	public static function register() {
-		if (null === self::$instance) {
-			self::$instance = new MaxiBlocks_Styles();
-		}
-	}
+class MaxiBlocks_Styles
+{
+    /**
+     * This plugin's instance.
+     *
+     * @var MaxiBlocks_Styles
+     */
+    private static $instance;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-	}
+    /**
+     * Registers the plugin.
+     */
+    public static function register()
+    {
+        if (null === self::$instance) {
+            self::$instance = new MaxiBlocks_Styles();
+        }
+    }
 
-	/**
-	 * Enqueuing styles
-	 */
-	public function enqueue_styles() {
-		$post_content = $this->getPostMeta();
-		$styles = $this->getStyles($post_content);
-		$fonts = $this->getFonts($post_content);
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+    }
 
-		if ($styles) {
-			// Inline styles
-			wp_register_style('maxi-blocks', false);
-			wp_enqueue_style('maxi-blocks');
-			wp_add_inline_style('maxi-blocks', $styles);
-		}
-		if ($fonts) {
-			$this->enqueue_fonts($fonts);
-		}
 
-		wp_localize_script('maxi-front-scripts-js', 'maxi_custom_data', [
-			'custom_data' => $this->customMeta(),
-		]);
-	}
+    /**
+     * Enqueuing styles
+     */
+    public function enqueue_styles()
+    {
+        $post_content = $this->getPostContent();
+        $styles = $this->getStyles($post_content);
+        $fonts = $this->getFonts($post_content);
 
-	/**
-	 * Gets post meta content
-	 */
-	public function getPostMeta() {
-		global $post;
+        if ($styles) {
+            // Inline styles
+            wp_register_style('maxi-blocks', false);
+            wp_enqueue_style('maxi-blocks');
+            wp_add_inline_style('maxi-blocks', $styles);
+        }
+        if ($fonts) {
+            $this->enqueue_fonts($fonts);
+        }
 
-		if (!$post || !isset($post->ID)) {
-			return false;
-		}
 
-		$post_content = get_option("mb_post_api_{$post->ID}");
+        $needCustomMeta = false;
 
-		if (!$post_content) {
-			return false;
-		}
+        if ((int)$post_content['prev_active_custom_data'] === 1 || (int)$post_content['active_custom_data'] === 1) {
+            $needCustomMeta = true;
+        }
 
-		return $post_content;
-	}
+        if ($needCustomMeta) {
+            $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];
 
-	/**
-	 * Gets post styles content
-	 */
-	public function getStyles($post_content) {
-		$style =
-			is_preview() || is_admin()
-				? $post_content['_maxi_blocks_styles_preview']
-				: $post_content['_maxi_blocks_styles'];
+            foreach ($scripts as &$script) {
+                $jsVar = str_replace('-', '_', $script);
+                $jsVarToPass = 'maxi'.str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
+                $jsScriptName = 'maxi-'.$script;
+                $jsScriptPath = '//js//'.$jsScriptName.'.min.js';
 
-		if (!$style || empty($style)) {
-			return false;
-		}
+                $meta = $this->customMeta($jsVar);
 
-		$style = $this->update_color_palette_backups($style);
+                if (!empty($meta)) {
+                    if ($script === 'hover-effects') {
+                        wp_enqueue_script(
+                            'maxi-waypoints-js',
+                            plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+                        );
+                    }
 
-		return $style;
-	}
+                    wp_enqueue_script(
+                        $jsScriptName,
+                        plugins_url($jsScriptPath, dirname(__FILE__)),
+                    );
 
-	/**
-	 * Gets post styles content
-	 */
-	public function getFonts($post_content) {
-		$fonts =
-			is_preview() || is_admin()
-				? $post_content['_maxi_blocks_fonts_preview']
-				: $post_content['_maxi_blocks_fonts'];
+                    wp_localize_script($jsScriptName, $jsVarToPass, $meta);
+                }
+            }
+        }
+    }
 
-		if (!$fonts || empty($fonts)) {
-			return false;
-		}
+    /**
+     * Gets post content
+     */
+    public function getPostContent()
+    {
+        global $post;
 
-		return $fonts;
-	}
+        if (!$post || !isset($post->ID)) {
+            return false;
+        }
 
-	/**
-	 * Returns default breakpoints values in case breakpoints are not set
-	 */
-	public function getBreakpoints($breakpoints) {
-		if (!empty((array) $breakpoints)) {
-			return $breakpoints;
-		}
+        global $wpdb;
+        $post_content = (array)$wpdb->get_results(
+            "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
+            OBJECT
+        )[0];
 
-		// It may connect to the API to centralize the default values there
-		return (object) [
-			'xs' => 480,
-			's' => 768,
-			'm' => 1024,
-			'l' => 1366,
-			'xl' => 1920,
-		];
-	}
+        if (!$post_content) {
+            return false;
+        }
 
-	/**
-	 * Post fonts
-	 *
-	 * @return object   Font name with font options
-	 */
+        return $post_content;
+    }
 
-	public function enqueue_fonts($fonts) {
-		if (!is_array($fonts)) {
-			$fonts = [];
-		}
+    /**
+     * Gets post meta
+     */
+    public function getPostMeta($id)
+    {
+        global $post;
 
-		if (!array_key_exists('Roboto', $fonts)) {
-			array_push($fonts, 'Roboto');
-		}
+        if (!$post || !isset($post->ID)) {
+            return false;
+        }
 
-		foreach ($fonts as $font) {
-			wp_enqueue_style(
-				$font,
-				"https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
-			);
-		}
-	}
+        global $wpdb;
+        $response = $wpdb->get_results(
+            "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$id}",
+            OBJECT
+        );
 
-	/**
-	 * Custom Meta
-	 */
-	public function customMeta() {
-		global $post;
-		if (!$post || !isset($post->ID)) {
-			return;
-		}
+        if (!$response) {
+            $response = '';
+        }
 
-		$custom_data = get_option("mb_custom_data_{$post->ID}");
+        return $response;
+    }
 
-		if (!$custom_data) {
-			return;
-		}
+    /**
+     * Gets post styles content
+     */
+    public function getStyles($post_content)
+    {
+        $style =
+            is_preview() || is_admin()
+                ? $post_content['prev_css_value']
+                : $post_content['css_value'];
 
-		$result = $custom_data['custom_data'];
+        if (!$style || empty($style)) {
+            return false;
+        }
 
-		if (!$result || empty($result)) {
-			return;
-		}
+        return $style;
+    }
 
-		return json_decode($result);
-	}
+    /**
+     * Gets post styles content
+     */
+    public function getFonts($post_content)
+    {
+        $fonts =
+            is_preview() || is_admin()
+                ? $post_content['prev_fonts_value']
+                : $post_content['fonts_value'];
 
-	public function update_color_palette_backups($style) {
-		// Get used colors on the post style
-		$needle = 'rgba(var(--maxi-';
-		$lastPos = 0;
-		$colors = array();
+        if (!$fonts || empty($fonts)) {
+            return false;
+        }
 
-		while (($lastPos = strpos($style, $needle, $lastPos))!== false) {
-			$endPos = strpos($style, ')', $lastPos);
-			$colorStr = substr($style, $lastPos, $endPos - $lastPos + 1);
+        return  explode(',', $fonts);
+    }
 
-			if(!in_array($colorStr, $colors))
-				$colors[] = $colorStr;
+    /**
+     * Returns default breakpoints values in case breakpoints are not set
+     */
+    public function getBreakpoints($breakpoints)
+    {
+        if (!empty((array) $breakpoints)) {
+            return $breakpoints;
+        }
 
-			$lastPos = $lastPos + strlen($needle);
-		}
+        // It may connect to the API to centralize the default values there
+        return (object) [
+            'xs' => 480,
+            's' => 768,
+            'm' => 1024,
+            'l' => 1366,
+            'xl' => 1920,
+        ];
+    }
 
-		// Get color values from the SC considering the used on post style
-		$colorVars = array();
+    /**
+     * Post fonts
+     *
+     * @return object   Font name with font options
+     */
 
-		foreach ($colors as $color) {
-			$color = str_replace('rgba(var(', '', $color);
-			$colorVar = explode(',', $color)[0];
-			$colorContent = str_replace($colorVar, '', $color);
-			$colorContent = str_replace(')', '', $colorContent);
-			$colorContent = ltrim($colorContent,',');
+    public function enqueue_fonts($fonts)
+    {
+        if (!is_array($fonts)) {
+            $fonts = [];
+        }
 
-			if(!in_array($colorVar , $colorVars))
-				$colorVars[$colorVar] = $colorContent;
-		}
+        if (!array_key_exists('Roboto', $fonts)) {
+            array_push($fonts, 'Roboto');
+        }
 
-		$changedSCColors = array();
+        foreach ($fonts as $font) {
+            wp_enqueue_style(
+                $font,
+                "https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
+            );
+        }
+    }
 
-		$style_card = get_option('mb_sc_string');
-		$style_card = is_preview() || is_admin()
-			? $style_card['_maxi_blocks_style_card_preview']
-			: $style_card['_maxi_blocks_style_card'];
+    /**
+     * Custom Meta
+     */
+    public function customMeta($metaJs)
+    {
+        global $post;
+        if (!$post || !isset($post->ID) || empty($metaJs)) {
+            return;
+        }
 
-		foreach ($colorVars as $colorKey => $colorValue) {
-			$startPos = strpos($style_card, $colorKey);
-			$endPos = strpos($style_card, ';--', $startPos);
-			$colorSCValue = substr($style_card, $startPos + strlen($colorKey) + 1, $endPos - $startPos - strlen($colorKey) - 1);
+        $custom_data = $this->getPostMeta($post->ID);
 
-			if($colorSCValue !== $colorValue)
-				$changedSCColors[$colorKey] = $colorSCValue;
-		}
+        if (!$custom_data) {
+            return;
+        }
 
-		// In case there are changes, fix them
-		if(empty($changedSCColors))
-			return $style;
-		else {
-			$new_style = $style;
+        $resultArr = (array)$custom_data[0];
+        $resultString = $resultArr['custom_data_value'];
+        $result = maybe_unserialize($resultString);
 
-			foreach ($changedSCColors as $colorKey => $colorValue) {
-				$old_color_str = "rgba(var($colorKey," . $colorVars[$colorKey] . ')';
-				$new_color_str = "rgba(var($colorKey," . $colorValue . ')';
 
-				$new_style = str_replace($old_color_str, $new_color_str, $new_style);
-			}
+        if (!$result || empty($result)) {
+            return;
+        }
 
-			/**
-			 * Onces done, would be good to save the styles to the DB
-			 * to avoid future loops. Not urgent at all
-			 *
-			 * Waiting for #2482 to do it 👍
-			 */
-			return $new_style;
-		}
-	}
+        if (!isset($result[$metaJs])) {
+            return;
+        }
+
+        $resultDecoded = $result[$metaJs];
+
+        if (empty($resultDecoded)) {
+            return;
+        }
+
+        return $resultDecoded;
+    }
 }

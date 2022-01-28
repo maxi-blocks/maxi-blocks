@@ -50,7 +50,7 @@ const loadFonts = font => {
 				console.error(__(`Font hasn't been able to download: ${err}`));
 			});
 		});
-		console.log(`font: ${JSON.stringify(font)}`);
+		//	console.log(`font: ${JSON.stringify(font)}`);
 		dispatch('maxiBlocks/text').updateFonts(font);
 	}
 };

@@ -487,7 +487,7 @@ if (!class_exists('MaxiBlocks_API')):
                 'object' => $defaultStyleCard,
             ]);
 
-            return get_api_response($response);
+            return $this->get_api_response($response);
         }
 
         public function set_maxi_blocks_current_style_cards($request)
@@ -502,7 +502,7 @@ if (!class_exists('MaxiBlocks_API')):
                 'object' => $request_result['styleCards'],
             ]);
 
-            return get_api_response($response);
+            return $this->get_api_response($response);
         }
 
         public function get_maxi_blocks_current_custom_data($id)
@@ -542,8 +542,6 @@ if (!class_exists('MaxiBlocks_API')):
 
                 return '{}';
             }
-            
-            $custom_data=$this->get_maxi_blocks_current_custom_data($id);
 
             if ($update) {
                 $arrayNewData = json_decode($dataVal, true);

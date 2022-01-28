@@ -315,11 +315,10 @@ class MaxiBlockComponent extends Component {
 		// Ensures Roboto is fully accessible from the editor
 		loadFonts('Roboto');
 
-		console.log(this.typography);
+		//	console.log(this.typography);
 
 		Object.entries(this.typography).forEach(([key, val]) => {
-			if (key.includes('font-family') && !isEmpty(val))
-				console.log(key, val);
+			if (key.includes('font-') && !isEmpty(val)) console.log(key, val);
 			if (key.includes('font-family')) loadFonts(val);
 		});
 	}

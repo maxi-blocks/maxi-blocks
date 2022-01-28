@@ -84,7 +84,7 @@ const attributes = {
 				default: 1,
 			},
 			'list-size-unit': {
-				type: 'number',
+				type: 'string',
 				default: 'em',
 			},
 			'list-marker-indent': {

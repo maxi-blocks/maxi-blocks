@@ -20,6 +20,7 @@ import {
 	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
+	getPaletteAttributes,
 } from '../../extensions/styles';
 import { setSVGColor } from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
@@ -465,42 +466,44 @@ const listTab = props => {
 							});
 						}}
 					/>
-					<ColorControl
-						label={__('Marker colour', 'maxi-blocks')}
-						color={attributes['list-color']}
-						defaultColor={getDefaultAttribute('list-color')}
-						paletteStatus={attributes['list-palette-status']}
-						paletteColor={attributes['list-palette-color']}
-						paletteOpacity={attributes['list-palette-opacity']}
-						onChange={({
-							paletteStatus,
-							paletteColor,
-							paletteOpacity,
-							color,
-						}) => {
-							const colorStr = paletteStatus
-								? getColorRGBAString({
-										firstVar: `color-${paletteColor}`,
-										opacity: paletteOpacity,
-										blockStyle: parentBlockStyle,
-								  })
-								: color;
+					{deviceType === 'general' && (
+						<ColorControl
+							label={__('Marker colour', 'maxi-blocks')}
+							color={attributes['list-color']}
+							defaultColor={getDefaultAttribute('list-color')}
+							paletteStatus={attributes['list-palette-status']}
+							paletteColor={attributes['list-palette-color']}
+							paletteOpacity={attributes['list-palette-opacity']}
+							onChange={({
+								paletteStatus,
+								paletteColor,
+								paletteOpacity,
+								color,
+							}) => {
+								const colorStr = paletteStatus
+									? getColorRGBAString({
+											firstVar: `color-${paletteColor}`,
+											opacity: paletteOpacity,
+											blockStyle: parentBlockStyle,
+									  })
+									: color;
 
-							setAttributes({
-								'list-palette-status': paletteStatus,
-								'list-palette-color': paletteColor,
-								'list-palette-opacity': paletteOpacity,
-								'list-color': color,
-								...(listStyleCustom?.includes('<svg ') && {
-									listStyleCustom: setSVGColor({
-										svg: listStyleCustom,
-										color: colorStr,
-										type: 'fill',
+								setAttributes({
+									'list-palette-status': paletteStatus,
+									'list-palette-color': paletteColor,
+									'list-palette-opacity': paletteOpacity,
+									'list-color': color,
+									...(listStyleCustom?.includes('<svg ') && {
+										listStyleCustom: setSVGColor({
+											svg: listStyleCustom,
+											color: colorStr,
+											type: 'fill',
+										}),
 									}),
-								}),
-							});
-						}}
-					/>
+								});
+							}}
+						/>
+					)}
 					<SelectControl
 						label={__('Text position', 'maxi-blocks')}
 						className='maxi-image-inspector__list-style'
@@ -543,153 +546,224 @@ const listTab = props => {
 							})
 						}
 					/>
-					<SelectControl
-						label={__('Type of list', 'maxi-blocks')}
-						className='maxi-image-inspector__list-type'
-						value={typeOfList}
-						options={[
-							{
-								label: __('Unorganized', 'maxi-blocks'),
-								value: 'ul',
-							},
-							{
-								label: __('Organized', 'maxi-blocks'),
-								value: 'ol',
-							},
-						]}
-						onChange={typeOfList =>
-							setAttributes({
-								typeOfList,
-								listStyle:
-									getListStyleOptions(typeOfList)[0].value,
-							})
-						}
-					/>
-					<SelectControl
-						label={__('Style', 'maxi-blocks')}
-						className='maxi-image-inspector__list-style'
-						value={listStyle || 'disc'}
-						options={getListStyleOptions(typeOfList)}
-						onChange={listStyle =>
-							setAttributes({
-								listStyle,
-							})
-						}
-					/>
-					{typeOfList === 'ol' && (
+					{deviceType === 'general' && (
+						<SelectControl
+							label={__('Type of list', 'maxi-blocks')}
+							className='maxi-image-inspector__list-type'
+							value={typeOfList}
+							options={[
+								{
+									label: __('Unorganized', 'maxi-blocks'),
+									value: 'ul',
+								},
+								{
+									label: __('Organized', 'maxi-blocks'),
+									value: 'ol',
+								},
+							]}
+							onChange={typeOfList =>
+								setAttributes({
+									typeOfList,
+									listStyle:
+										getListStyleOptions(typeOfList)[0]
+											.value,
+								})
+							}
+						/>
+					)}
+					{deviceType === 'general' && (
 						<>
-							<AdvancedNumberControl
-								label={__('Start From', 'maxi-blocks')}
-								className='maxi-image-inspector__list-start'
-								value={listStart}
-								onChangeValue={val => {
+							<SelectControl
+								label={__('Style', 'maxi-blocks')}
+								className='maxi-image-inspector__list-style'
+								value={listStyle || 'disc'}
+								options={getListStyleOptions(typeOfList)}
+								onChange={listStyle =>
 									setAttributes({
-										listStart:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-99}
-								max={99}
-								onReset={() =>
-									setAttributes({
-										listStart: '',
+										listStyle,
 									})
 								}
 							/>
-							<ToggleSwitch
-								label={__('Reverse order', 'maxi-blocks')}
-								className='maxi-image-inspector__list-reverse'
-								selected={listReversed}
-								onChange={val => {
-									setAttributes({
-										listReversed: val,
-									});
-								}}
-							/>
-						</>
-					)}
-					{typeOfList === 'ul' && listStyle === 'custom' && (
-						<>
-							<SelectControl
-								label={__('Source', 'maxi-blocks')}
-								className='maxi-image-inspector__list-source-selector'
-								value={listStyleSource}
-								options={[
-									{
-										label: __('Text', 'maxi-blocks'),
-										value: 'text',
-									},
-									{
-										label: __('URL', 'maxi-blocks'),
-										value: 'url',
-									},
-									{
-										label: __('Icon', 'maxi-blocks'),
-										value: 'icon',
-									},
-								]}
-								onChange={listStyleSource => {
-									setListStyleSource(listStyleSource);
-
-									if (listStyleCustoms[listStyleSource])
-										setAttributes({
-											listStyleCustom:
-												listStyleCustoms[
-													listStyleSource
-												],
-										});
-								}}
-							/>
-							{listStyleSource !== 'icon' && (
-								<TextControl
-									className='maxi-image-inspector__list-source-text'
-									value={
-										listStyleCustoms[listStyleSource] ?? ''
-									}
-									onChange={listStyleCustom => {
-										setAttributes({
-											listStyleCustom,
-										});
-
-										setListStyleCustoms({
-											...listStyleCustoms,
-											[listStyleSource]: listStyleCustom,
-										});
-									}}
-								/>
-							)}
-							{listStyleSource === 'icon' && (
+							{typeOfList === 'ol' && (
 								<>
-									<MaxiModal
-										type='image-shape'
-										style={parentBlockStyle || 'light'}
-										onSelect={obj => {
+									<AdvancedNumberControl
+										label={__('Start From', 'maxi-blocks')}
+										className='maxi-image-inspector__list-start'
+										value={
+											!['decimal', 'details'].includes(
+												listStyle
+											) && listStart < 0
+												? 0
+												: listStart
+										}
+										onChangeValue={val => {
 											setAttributes({
-												listStyleCustom: obj.SVGElement,
-											});
-											setListStyleCustoms({
-												...listStyleCustoms,
-												[listStyleSource]:
-													obj.SVGElement,
+												listStart:
+													val !== undefined &&
+													val !== ''
+														? val
+														: '',
 											});
 										}}
-										onRemove={() => {
+										min={
+											['decimal', 'details'].includes(
+												listStyle
+											)
+												? -99
+												: 0
+										}
+										max={99}
+										onReset={() =>
 											setAttributes({
-												listStyleCustom: '',
-											});
-											setListStyleCustoms({
-												...listStyleCustoms,
-												[listStyleSource]: '',
-											});
-										}}
-										icon={
-											listStyleCustom?.includes('<svg ')
-												? listStyleCustom
-												: false
+												listStart: '',
+											})
 										}
 									/>
+									<ToggleSwitch
+										label={__(
+											'Reverse order',
+											'maxi-blocks'
+										)}
+										className='maxi-image-inspector__list-reverse'
+										selected={listReversed}
+										onChange={val => {
+											setAttributes({
+												listReversed: val,
+											});
+										}}
+									/>
+								</>
+							)}
+							{typeOfList === 'ul' && listStyle === 'custom' && (
+								<>
+									<SelectControl
+										label={__('Source', 'maxi-blocks')}
+										className='maxi-image-inspector__list-source-selector'
+										value={listStyleSource}
+										options={[
+											{
+												label: __(
+													'Text',
+													'maxi-blocks'
+												),
+												value: 'text',
+											},
+											{
+												label: __('URL', 'maxi-blocks'),
+												value: 'url',
+											},
+											{
+												label: __(
+													'Icon',
+													'maxi-blocks'
+												),
+												value: 'icon',
+											},
+										]}
+										onChange={listStyleSource => {
+											setListStyleSource(listStyleSource);
+
+											if (
+												listStyleCustoms[
+													listStyleSource
+												]
+											)
+												setAttributes({
+													listStyleCustom:
+														listStyleCustoms[
+															listStyleSource
+														],
+												});
+										}}
+									/>
+									{listStyleSource !== 'icon' && (
+										<TextControl
+											className='maxi-image-inspector__list-source-text'
+											value={
+												listStyleCustoms[
+													listStyleSource
+												] ?? ''
+											}
+											onChange={listStyleCustom => {
+												setAttributes({
+													listStyleCustom,
+												});
+
+												setListStyleCustoms({
+													...listStyleCustoms,
+													[listStyleSource]:
+														listStyleCustom,
+												});
+											}}
+										/>
+									)}
+									{listStyleSource === 'icon' && (
+										<>
+											<MaxiModal
+												type='image-shape'
+												style={
+													parentBlockStyle || 'light'
+												}
+												onSelect={obj => {
+													const {
+														paletteStatus,
+														paletteColor,
+														paletteOpacity,
+														color,
+													} = getPaletteAttributes({
+														obj: attributes,
+														prefix: 'list-',
+													});
+
+													const colorStr =
+														paletteStatus
+															? getColorRGBAString(
+																	{
+																		firstVar: `color-${paletteColor}`,
+																		opacity:
+																			paletteOpacity,
+																		blockStyle:
+																			parentBlockStyle,
+																	}
+															  )
+															: color;
+
+													const SVGElement =
+														setSVGColor({
+															svg: obj.SVGElement,
+															color: colorStr,
+															type: 'fill',
+														});
+
+													setAttributes({
+														listStyleCustom:
+															SVGElement,
+													});
+													setListStyleCustoms({
+														...listStyleCustoms,
+														[listStyleSource]:
+															SVGElement,
+													});
+												}}
+												onRemove={() => {
+													setAttributes({
+														listStyleCustom: '',
+													});
+													setListStyleCustoms({
+														...listStyleCustoms,
+														[listStyleSource]: '',
+													});
+												}}
+												icon={
+													listStyleCustom?.includes(
+														'<svg '
+													)
+														? listStyleCustom
+														: false
+												}
+											/>
+										</>
+									)}
 								</>
 							)}
 						</>

@@ -146,6 +146,8 @@ class MaxiBlocks_Styles
             return false;
         }
 
+		$style = $this->update_color_palette_backups($style);
+
         return $style;
     }
 
@@ -246,4 +248,67 @@ class MaxiBlocks_Styles
 
         return $resultDecoded;
     }
+
+	public function update_color_palette_backups($style) {
+		// Get used colors on the post style
+		$needle = 'rgba(var(--maxi-';
+		$lastPos = 0;
+		$colors = array();
+
+		while (($lastPos = strpos($style, $needle, $lastPos))!== false) {
+			$endPos = strpos($style, ')', $lastPos);
+			$colorStr = substr($style, $lastPos, $endPos - $lastPos + 1);
+
+			if(!in_array($colorStr, $colors))
+				$colors[] = $colorStr;
+
+			$lastPos = $lastPos + strlen($needle);
+		}
+
+		// Get color values from the SC considering the used on post style
+		$colorVars = array();
+
+		foreach ($colors as $color) {
+			$color = str_replace('rgba(var(', '', $color);
+			$colorVar = explode(',', $color)[0];
+			$colorContent = str_replace($colorVar, '', $color);
+			$colorContent = str_replace(')', '', $colorContent);
+			$colorContent = ltrim($colorContent,',');
+
+			if(!in_array($colorVar , $colorVars))
+				$colorVars[$colorVar] = $colorContent;
+		}
+
+		$changedSCColors = array();
+
+		$style_card = get_option('mb_sc_string');
+		$style_card = is_preview() || is_admin()
+			? $style_card['_maxi_blocks_style_card_preview']
+			: $style_card['_maxi_blocks_style_card'];
+
+		foreach ($colorVars as $colorKey => $colorValue) {
+			$startPos = strpos($style_card, $colorKey);
+			$endPos = strpos($style_card, ';--', $startPos);
+			$colorSCValue = substr($style_card, $startPos + strlen($colorKey) + 1, $endPos - $startPos - strlen($colorKey) - 1);
+
+			if($colorSCValue !== $colorValue)
+				$changedSCColors[$colorKey] = $colorSCValue;
+		}
+
+		// In case there are changes, fix them
+		if(empty($changedSCColors))
+			return $style;
+		else {
+			$new_style = $style;
+
+			foreach ($changedSCColors as $colorKey => $colorValue) {
+				$old_color_str = "rgba(var($colorKey," . $colorVars[$colorKey] . ')';
+				$new_color_str = "rgba(var($colorKey," . $colorValue . ')';
+
+				$new_style = str_replace($old_color_str, $new_color_str, $new_style);
+			}
+
+			return $new_style;
+		}
+	}
 }

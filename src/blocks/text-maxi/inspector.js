@@ -71,9 +71,7 @@ const Inspector = memo(
 														/>
 													),
 												},
-											...(deviceType === 'general' &&
-												isList &&
-												listTab(props)),
+											...(isList && listTab(props)),
 											...inspectorTabs.alignment({
 												props,
 												isTextAlignment: true,

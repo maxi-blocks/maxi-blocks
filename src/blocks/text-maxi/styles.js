@@ -165,11 +165,18 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStart, listReversed, content } = props;
+	const { listStyle, listStart, listReversed, content } = props;
 
 	let counterReset;
-	if (isNumber(listStart)) counterReset = listStart + (listReversed ? 1 : -1);
-	else if (listReversed) counterReset = parse(content).length + 1;
+	if (isNumber(listStart)) {
+		counterReset =
+			listStart < 0 && ['decimal', 'details'].includes(listStyle)
+				? listStart
+				: 0;
+		counterReset += listStart > 0 ? listStart : 0;
+		counterReset += listReversed ? parse(content).length : 1;
+		counterReset += listReversed ? 1 : -1;
+	} else if (listReversed) counterReset = parse(content).length + 1;
 	else counterReset = 0;
 
 	const response = {
@@ -316,7 +323,7 @@ const getMarkerObject = props => {
 					content: `counter(li${
 						listStyle && listStyle === 'custom' && listStyleCustom
 							? `, ${listStyleCustom}`
-							: `, ${listStyle}`
+							: `, ${listStyle ?? 'disc'}`
 					})`,
 				},
 			},

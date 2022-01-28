@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ColorControl from '../../../color-control';
+// import ColorControl from '../../../color-control';
 import DefaultStylesControl from '../../../default-styles-control';
-import ToggleSwitch from '../../../toggle-switch';
+// import ToggleSwitch from '../../../toggle-switch';
 import Icon from '../../../icon';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
@@ -40,11 +40,11 @@ const ToolbarDividerControl = props => {
 	const {
 		onChange,
 		lineOrientation,
-		disableColor = false,
+		// disableColor = false,
 		disableLineStyle = false,
-		disableBorderRadius = false,
-		isHover = false,
-		clientId,
+		// disableBorderRadius = false,
+		// isHover = false,
+		// clientId,
 	} = props;
 
 	const minMaxSettings = {

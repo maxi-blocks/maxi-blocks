@@ -16,7 +16,7 @@ import {
 /**
  * External dependencies
  */
-import { capitalize } from 'lodash';
+// import { capitalize } from 'lodash';
 
 /**
  * Styles
@@ -33,15 +33,15 @@ const SvgColorToolbar = props => {
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
-	const getColor = attr =>
-		attr[`svg-${type}-palette-status`]
-			? getColorRGBAString({
-					firstVar: `icon-${type}`,
-					secondVar: `color-${attr[`svg-palette-${type}-color`]}`,
-					opacity: attr[`svg-palette-${type}-opacity`],
-					blockStyle: parentBlockStyle,
-			  })
-			: attr[`svg-${type}-color`];
+	// const getColor = attr =>
+	// 	attr[`svg-${type}-palette-status`]
+	// 		? getColorRGBAString({
+	// 				firstVar: `icon-${type}`,
+	// 				secondVar: `color-${attr[`svg-palette-${type}-color`]}`,
+	// 				opacity: attr[`svg-palette-${type}-opacity`],
+	// 				blockStyle: parentBlockStyle,
+	// 		  })
+	// 		: attr[`svg-${type}-color`];
 
 	return (
 		<ToolbarPopover
@@ -61,6 +61,7 @@ const SvgColorToolbar = props => {
 						: toolbarShapeLineColor}
 				</div>
 			}
+			advancedOptions='colour'
 		>
 			<div className='toolbar-item__svg-color__popover'>
 				<SvgColor

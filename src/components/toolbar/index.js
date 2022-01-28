@@ -46,9 +46,9 @@ import {
 	// TextBold,
 	TextColor,
 	// TextItalic,
-	// TextLevel,
+	TextLevel,
 	TextLink,
-	// TextListOptions,
+	TextListOptions,
 	ToggleBlock,
 	ToolbarColumnPattern,
 	TextOptions,
@@ -325,6 +325,22 @@ const MaxiToolbar = memo(
 								blockStyle={parentBlockStyle}
 							/>
 							<Mover clientId={clientId} blockName={name} />
+							<TextLevel
+								{...getGroupAttributes(attributes, [
+									'typography',
+									'typographyHover',
+								])}
+								blockName={name}
+								textLevel={textLevel}
+								isList={isList}
+								onChange={obj => setAttributes(obj)}
+							/>
+							<TextListOptions
+								blockName={name}
+								isList={isList}
+								typeOfList={typeOfList}
+								onChange={obj => setAttributes(obj)}
+							/>
 							{/* <TextGenerator
 								clientId={clientId}
 								blockName={name}
@@ -563,16 +579,6 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 							/> */}
-							{/* <TextLevel
-								{...getGroupAttributes(attributes, [
-									'typography',
-									'typographyHover',
-								])}
-								blockName={name}
-								textLevel={textLevel}
-								isList={isList}
-								onChange={obj => setAttributes(obj)}
-							/> */}
 							{/* <TextBold
 								{...getGroupAttributes(
 									attributes,
@@ -600,12 +606,6 @@ const MaxiToolbar = memo(
 								blockName={name}
 								horizontalAlign={attributes.horizontalAlign}
 								verticalAlign={attributes.verticalAlign}
-								onChange={obj => setAttributes(obj)}
-							/> */}
-							{/* <TextListOptions
-								blockName={name}
-								isList={isList}
-								typeOfList={typeOfList}
 								onChange={obj => setAttributes(obj)}
 							/> */}
 							{breakpoint === 'general' && (

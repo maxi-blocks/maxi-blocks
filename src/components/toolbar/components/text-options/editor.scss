@@ -98,7 +98,7 @@
 
 .maxi-toolbar__popover {
 	.toolbar-item__typography-control {
-		width: 66px !important;
+		width: 40px !important;
 		& > div {
 			width: 100%;
 			height: 100%;
@@ -106,10 +106,10 @@
 		.components-button {
 			font-family: 'Roboto', sans-serif !important;
 			font-weight: 700;
-			background-color: transparent !important;
-			&::after {
-				display: none !important;
-			}
+			// background-color: transparent !important;
+			// &::after {
+			// 	display: none !important;
+			// }
 		}
 	}
 }

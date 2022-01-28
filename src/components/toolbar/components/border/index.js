@@ -17,9 +17,9 @@ import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
 import {
 	getGroupAttributes,
-	getLastBreakpointAttribute,
-	getBlockStyle,
-	getColorRGBAString,
+	// getLastBreakpointAttribute,
+	// getBlockStyle,
+	// getColorRGBAString,
 } from '../../../../extensions/styles';
 
 /**

@@ -1,15 +1,38 @@
 .toolbar-item__popover__list-options {
 	display: flex;
-
+	margin: -8px -8px 0;
 	&__button {
-		color: #fff;
-		padding: 0 !important;
-		height: 1.25rem;
-
+		// color: #fff;
+		// padding: 0 !important;
+		// height: 1.25rem;
+		font-weight: 700;
+		font-size: 15px;
+		border-right: 1px solid var(--maxi-grey-1-color);
+		&:last-child {
+			border-right: none;
+		}
+		svg path {
+			fill: transparent;
+			stroke: #000;
+			stroke-width: 1;
+		}
 		&[aria-pressed='true'] {
+			border-bottom: 2px solid var(--maxi-secondary-color);
 			svg path {
-				stroke: #ff4a17;
+				stroke: var(--maxi-secondary-color);
 			}
+		}
+	}
+}
+
+.components-popover
+	.components-popover__content
+	.toolbar-wrapper
+	.toolbar-item {
+	&__list-options {
+		svg path {
+			fill: transparent;
+			stroke: #000;
 		}
 	}
 }

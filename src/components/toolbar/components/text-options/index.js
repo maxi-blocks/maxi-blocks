@@ -16,7 +16,7 @@ import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
 import AdvancedNumberControl from '../../../advanced-number-control';
-import TextLevel from '../text-level';
+// import TextLevel from '../text-level';
 import TextBold from '../text-bold';
 import {
 	setFormat,
@@ -352,7 +352,7 @@ const TypographyControl = withFormatValue(props => {
 			<ToolbarPopover
 				tooltip={__('Edit text', 'maxi-blocks')}
 				// icon={toolbarType}
-				text={__('Edit text', 'maxi-blocks')}
+				text={__('Edit', 'maxi-blocks')}
 				advancedOptions='typography'
 			>
 				<div className='toolbar-item__popover__font-options'>
@@ -363,7 +363,7 @@ const TypographyControl = withFormatValue(props => {
 						>
 							<div>
 								<div className='toolbar-item__popover__font-options__wrap'>
-									<TextLevel
+									{/* <TextLevel
 										// {...getGroupAttributes(attributes, [
 										// 	'typography',
 										// 	'typographyHover',
@@ -372,7 +372,7 @@ const TypographyControl = withFormatValue(props => {
 										textLevel={textLevel}
 										isList={isList}
 										onChange={onChange}
-									/>
+									/> */}
 									<TextOptions
 										getValue={getValue}
 										getDefault={getDefault}

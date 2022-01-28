@@ -36,6 +36,7 @@ const SvgWidth = props => {
 			className='toolbar-item__svg-size'
 			tooltip={__('Icon size', 'maxi-blocks')}
 			icon={toolbarIconSize}
+			advancedOptions='icon line width'
 		>
 			<div className='toolbar-item__svg-size__popover'>
 				<SvgWidthControl

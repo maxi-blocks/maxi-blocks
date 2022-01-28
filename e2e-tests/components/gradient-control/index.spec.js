@@ -1,0 +1,49 @@
+/**
+ * WordPress dependencies
+ */
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
+import { openSidebarTab, getAttributes } from '../../utils';
+
+describe('GradientControl', () => {
+	it('Button background', async () => {
+		await createNewPost();
+		await insertBlock('Button Maxi');
+		await openSidebarTab(page, 'style', 'button background');
+
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-background-control__simple .maxi-tabs-control__full-width button',
+			button => button[2].click()
+		);
+
+		await page.$eval(
+			'.maxi-gradient-control .maxi-opacity-control input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('50');
+
+		const selector = await page.$(
+			'.maxi-gradient-control .components-custom-gradient-picker select'
+		);
+
+		await selector.select('radial-gradient');
+
+		expect(
+			await getAttributes('button-background-gradient-general')
+		).toStrictEqual(
+			'radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)'
+		);
+
+		expect(
+			await getAttributes('button-background-active-media-general')
+		).toStrictEqual('gradient');
+	});
+});

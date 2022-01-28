@@ -18,6 +18,9 @@ const controls = {
 		const parsedStyles = frontendStyleGenerator(styles);
 		const fonts = select('maxiBlocks/text').getPostFonts();
 
+		console.log('FONTS:');
+		console.log(fonts);
+
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/post',
 			method: 'POST',

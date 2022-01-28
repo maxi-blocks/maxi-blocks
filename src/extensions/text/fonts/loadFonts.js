@@ -42,6 +42,8 @@ const loadFonts = font => {
 		// FontFace API
 		Object.entries(files).forEach(variant => {
 			const style = getFontStyle(variant[0]);
+
+			console.log(`style: ${JSON.stringify(style)}`);
 			const fontLoad = new FontFace(font, `url(${variant[1]})`, style);
 			document.fonts.add(fontLoad);
 			fontLoad.loaded.catch(err => {

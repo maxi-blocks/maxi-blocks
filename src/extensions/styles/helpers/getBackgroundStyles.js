@@ -104,11 +104,13 @@ export const getColorBackgroundObject = ({
 	}
 
 	if (!isIconInherit && isIcon)
-		response[breakpoint].background = getColorRGBAString({
-			firstVar: `color-${paletteColor}`,
-			opacity: paletteOpacity,
-			blockStyle,
-		});
+		response[breakpoint].background = paletteStatus
+			? getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+			  })
+			: color;
 
 	if (!isNil(bgClipPath))
 		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)

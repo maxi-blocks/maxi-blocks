@@ -5,7 +5,7 @@ Object {
   "content": "Testing <span class=\\"maxi-text-block--has-custom-format maxi-text-block__custom-format--0\\">Text</span> MaxiWhen <span class=\\"maxi-text-block--has-custom-format maxi-text-block__custom-format--1\\">merging</span>",
   "custom-formats": Object {
     "maxi-text-block__custom-format--0": Object {
-      "font-weight-general": 800,
+      "font-weight-general": '800',
     },
     "maxi-text-block__custom-format--1": Object {
       "font-style-general": "italic",

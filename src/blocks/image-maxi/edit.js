@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { withSelect, dispatch } from '@wordpress/data';
+import { withSelect, dispatch, select } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
 import { isURL } from '@wordpress/url';
 import { createRef } from '@wordpress/element';
@@ -115,6 +115,7 @@ class edit extends MaxiBlockComponent {
 			imageRatio,
 			imgWidth,
 			mediaAlt,
+			altSelector,
 			mediaHeight,
 			mediaID,
 			mediaURL,
@@ -238,12 +239,29 @@ class edit extends MaxiBlockComponent {
 			>
 				<MediaUpload
 					onSelect={media => {
+						const { getMedia } = select('core');
+
+						const mediaData = getMedia(media.id) ?? {
+							alt_text: { wpAlt: '' },
+							title: { rendered: { titleAlt: '' } },
+						};
+
+						const {
+							alt_text: wpAlt,
+							title: { rendered: titleAlt },
+						} = mediaData;
+
+						const alt =
+							(altSelector === 'wordpress' && wpAlt) ||
+							(altSelector === 'title' && titleAlt);
+
 						setAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
 							isImageUrl: false,
+							mediaAlt: alt,
 						});
 
 						this.setState({ isExternalClass: false });

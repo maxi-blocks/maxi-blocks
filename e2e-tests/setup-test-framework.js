@@ -10,6 +10,8 @@ import {
 	enablePageDialogAccept,
 	isOfflineMode,
 	setBrowserViewport,
+	deactivatePlugin,
+	activatePlugin,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -17,7 +19,7 @@ import {
  *
  * @type {string|undefined}
  */
-const PUPPETEER_TIMEOUT = process.env.PUPPETEER_TIMEOUT;
+const { PUPPETEER_TIMEOUT } = process.env;
 
 /**
  * Set of console logging types observed to protect against unexpected yet
@@ -153,6 +155,8 @@ beforeAll(async () => {
 	enablePageDialogAccept();
 	observeConsoleLogging();
 	await setupBrowser();
+	await deactivatePlugin('maxi-blocks-last-github-version');
+	await activatePlugin('maxi-blocks-last-github-version');
 });
 
 afterEach(async () => {

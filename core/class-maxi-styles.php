@@ -1,164 +1,249 @@
 <?php
-class MaxiBlocks_Styles {
-	/**
-	 * This plugin's instance.
-	 *
-	 * @var MaxiBlocks_Styles
-	 */
-	private static $instance;
 
-	/**
-	 * Registers the plugin.
-	 */
-	public static function register() {
-		if (null === self::$instance) {
-			self::$instance = new MaxiBlocks_Styles();
-		}
-	}
+class MaxiBlocks_Styles
+{
+    /**
+     * This plugin's instance.
+     *
+     * @var MaxiBlocks_Styles
+     */
+    private static $instance;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-	}
+    /**
+     * Registers the plugin.
+     */
+    public static function register()
+    {
+        if (null === self::$instance) {
+            self::$instance = new MaxiBlocks_Styles();
+        }
+    }
 
-	/**
-	 * Enqueuing styles
-	 */
-	public function enqueue_styles() {
-		$post_content = $this->getPostMeta();
-		$styles = $this->getStyles($post_content);
-		$fonts = $this->getFonts($post_content);
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+    }
 
-		if ($styles) {
-			// Inline styles
-			wp_register_style('maxi-blocks', false);
-			wp_enqueue_style('maxi-blocks');
-			wp_add_inline_style('maxi-blocks', $styles);
-		}
-		if ($fonts) {
-			$this->enqueue_fonts($fonts);
-		}
 
-		wp_localize_script('maxi-front-scripts-js', 'maxi_custom_data', [
-			'custom_data' => $this->customMeta(),
-		]);
-	}
+    /**
+     * Enqueuing styles
+     */
+    public function enqueue_styles()
+    {
+        $post_content = $this->getPostContent();
+        $styles = $this->getStyles($post_content);
+        $fonts = $this->getFonts($post_content);
 
-	/**
-	 * Gets post meta content
-	 */
-	public function getPostMeta() {
-		global $post;
+        if ($styles) {
+            // Inline styles
+            wp_register_style('maxi-blocks', false);
+            wp_enqueue_style('maxi-blocks');
+            wp_add_inline_style('maxi-blocks', $styles);
+        }
+        if ($fonts) {
+            $this->enqueue_fonts($fonts);
+        }
 
-		if (!$post || !isset($post->ID)) {
-			return false;
-		}
 
-		$post_content = get_option("mb_post_api_{$post->ID}");
+        $needCustomMeta = false;
 
-		if (!$post_content) {
-			return false;
-		}
+        if ((int)$post_content['prev_active_custom_data'] === 1 || (int)$post_content['active_custom_data'] === 1) {
+            $needCustomMeta = true;
+        }
 
-		return $post_content;
-	}
+        if ($needCustomMeta) {
+            $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];
 
-	/**
-	 * Gets post styles content
-	 */
-	public function getStyles($post_content) {
-		$style =
-			is_preview() || is_admin()
-				? $post_content['_maxi_blocks_styles_preview']
-				: $post_content['_maxi_blocks_styles'];
+            foreach ($scripts as &$script) {
+                $jsVar = str_replace('-', '_', $script);
+                $jsVarToPass = 'maxi'.str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
+                $jsScriptName = 'maxi-'.$script;
+                $jsScriptPath = '//js//'.$jsScriptName.'.min.js';
 
-		if (!$style || empty($style)) {
-			return false;
-		}
+                $meta = $this->customMeta($jsVar);
 
-		return $style;
-	}
+                if (!empty($meta)) {
+                    if ($script === 'hover-effects') {
+                        wp_enqueue_script(
+                            'maxi-waypoints-js',
+                            plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+                        );
+                    }
 
-	/**
-	 * Gets post styles content
-	 */
-	public function getFonts($post_content) {
-		$fonts =
-			is_preview() || is_admin()
-				? $post_content['_maxi_blocks_fonts_preview']
-				: $post_content['_maxi_blocks_fonts'];
+                    wp_enqueue_script(
+                        $jsScriptName,
+                        plugins_url($jsScriptPath, dirname(__FILE__)),
+                    );
+                
+                    wp_localize_script($jsScriptName, $jsVarToPass, $meta);
+                }
+            }
+        }
+    }
 
-		if (!$fonts || empty($fonts)) {
-			return false;
-		}
+    /**
+     * Gets post content
+     */
+    public function getPostContent()
+    {
+        global $post;
 
-		return $fonts;
-	}
+        if (!$post || !isset($post->ID)) {
+            return false;
+        }
 
-	/**
-	 * Returns default breakpoints values in case breakpoints are not set
-	 */
-	public function getBreakpoints($breakpoints) {
-		if (!empty((array) $breakpoints)) {
-			return $breakpoints;
-		}
+        global $wpdb;
+        $post_content = (array)$wpdb->get_results(
+            "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
+            OBJECT
+        )[0];
 
-		// It may connect to the API to centralize the default values there
-		return (object) [
-			'xs' => 480,
-			's' => 768,
-			'm' => 1024,
-			'l' => 1366,
-			'xl' => 1920,
-		];
-	}
+        if (!$post_content) {
+            return false;
+        }
+        
+        return $post_content;
+    }
 
-	/**
-	 * Post fonts
-	 *
-	 * @return object   Font name with font options
-	 */
+    /**
+     * Gets post meta
+     */
+    public function getPostMeta($id)
+    {
+        global $post;
 
-	public function enqueue_fonts($fonts) {
-		if (!is_array($fonts)) {
-			$fonts = [];
-		}
+        if (!$post || !isset($post->ID)) {
+            return false;
+        }
 
-		if (!array_key_exists('Roboto', $fonts)) {
-			array_push($fonts, 'Roboto');
-		}
+        global $wpdb;
+        $response = $wpdb->get_results(
+            "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$id}",
+            OBJECT
+        );
 
-		foreach ($fonts as $font) {
-			wp_enqueue_style(
-				$font,
-				"https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
-			);
-		}
-	}
+        if (!$response) {
+            $response = '';
+        }
 
-	/**
-	 * Custom Meta
-	 */
-	public function customMeta() {
-		global $post;
-		if (!$post || !isset($post->ID)) {
-			return;
-		}
+        return $response;
+    }
 
-		$custom_data = get_option("mb_custom_data_{$post->ID}");
+    /**
+     * Gets post styles content
+     */
+    public function getStyles($post_content)
+    {
+        $style =
+            is_preview() || is_admin()
+                ? $post_content['prev_css_value']
+                : $post_content['css_value'];
 
-		if (!$custom_data) {
-			return;
-		}
+        if (!$style || empty($style)) {
+            return false;
+        }
 
-		$result = $custom_data['custom_data'];
+        return $style;
+    }
 
-		if (!$result || empty($result)) {
-			return;
-		}
+    /**
+     * Gets post styles content
+     */
+    public function getFonts($post_content)
+    {
+        $fonts =
+            is_preview() || is_admin()
+                ? $post_content['prev_fonts_value']
+                : $post_content['fonts_value'];
 
-		return json_decode($result);
-	}
+        if (!$fonts || empty($fonts)) {
+            return false;
+        }
+
+        return  explode(',', $fonts);
+    }
+
+    /**
+     * Returns default breakpoints values in case breakpoints are not set
+     */
+    public function getBreakpoints($breakpoints)
+    {
+        if (!empty((array) $breakpoints)) {
+            return $breakpoints;
+        }
+
+        // It may connect to the API to centralize the default values there
+        return (object) [
+            'xs' => 480,
+            's' => 768,
+            'm' => 1024,
+            'l' => 1366,
+            'xl' => 1920,
+        ];
+    }
+
+    /**
+     * Post fonts
+     *
+     * @return object   Font name with font options
+     */
+
+    public function enqueue_fonts($fonts)
+    {
+        if (!is_array($fonts)) {
+            $fonts = [];
+        }
+
+        if (!array_key_exists('Roboto', $fonts)) {
+            array_push($fonts, 'Roboto');
+        }
+
+        foreach ($fonts as $font) {
+            wp_enqueue_style(
+                $font,
+                "https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
+            );
+        }
+    }
+
+    /**
+     * Custom Meta
+     */
+    public function customMeta($metaJs)
+    {
+        global $post;
+        if (!$post || !isset($post->ID) || empty($metaJs)) {
+            return;
+        }
+
+        $custom_data = $this->getPostMeta($post->ID);
+
+        if (!$custom_data) {
+            return;
+        }
+
+        $resultArr = (array)$custom_data[0];
+        $resultString = $resultArr['custom_data_value'];
+        $result = maybe_unserialize($resultString);
+       
+       
+        if (!$result || empty($result)) {
+            return;
+        }
+
+        if (!isset($result[$metaJs])) {
+            return;
+        }
+        
+        $resultDecoded = $result[$metaJs];
+
+        if (empty($resultDecoded)) {
+            return;
+        }
+
+        return $resultDecoded;
+    }
 }

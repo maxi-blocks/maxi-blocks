@@ -41,6 +41,7 @@ class edit extends MaxiBlockComponent {
 
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 		const {
 			'shape-divider-top-status': shapeDividerTopStatus,
 			'shape-divider-bottom-status': shapeDividerBottomStatus,
@@ -50,7 +51,11 @@ class edit extends MaxiBlockComponent {
 
 		return {
 			...(shapeStatus && {
-				...getGroupAttributes(attributes, 'shapeDivider'),
+				shape_divider: {
+					[uniqueID]: {
+						...getGroupAttributes(attributes, 'shapeDivider'),
+					},
+				},
 			}),
 		};
 	}

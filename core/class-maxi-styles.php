@@ -190,24 +190,40 @@ class MaxiBlocks_Styles
      *
      * @return object   Font name with font options
      */
-
+    
     public function enqueue_fonts($fonts)
     {
-        if (!is_array($fonts)) {
-            $fonts = [];
-        }
-
-        if (!array_key_exists('Roboto', $fonts)) {
-            array_push($fonts, 'Roboto');
+        if (empty($fonts) || !is_array($fonts)) {
+            return;
         }
 
         foreach ($fonts as $font) {
-            wp_enqueue_style(
-                $font,
-                "https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
-            );
+            $fontData = json_decode($font, true);
+            $fontName = array_keys($fontData)[0];
+            $fontInfo = $fontData[$fontName];
+    
+            $fontWeight = array_key_exists('weight', $fontInfo) ? $fontInfo['weight'] : false;
+            $fontStyle = array_key_exists('style', $fontInfo) ? $fontInfo['style'] : false;
+        
+            if (!empty($fontName)) {
+                $fontUrl = "https://fonts.googleapis.com/css2?family=$fontName:";
+                if ($fontStyle === 'italic') {
+                    $fontUrl = $fontUrl.'ital,';
+                }
+
+                if ($fontWeight) {
+                    $fontUrl = $fontUrl.'wght@'.$fontWeight;
+                } else {
+                    $fontUrl = $fontUrl.'wght@400';
+                }
+                wp_enqueue_style(
+                    sanitize_title_with_dashes($fontName),
+                    $fontUrl
+                );
+            }
         }
     }
+
 
     /**
      * Custom Meta

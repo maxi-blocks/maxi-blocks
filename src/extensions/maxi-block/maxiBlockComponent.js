@@ -312,15 +312,49 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		// Ensures Roboto is fully accessible from the editor
-		loadFonts('Roboto');
+		let fontName = 'Roboto';
+		const fontWeight = [];
+		const fontStyle = [];
 
-		//	console.log(this.typography);
+		const getAllFonts = obj => {
+			Object.entries(obj).forEach(([key, val]) => {
+				if (key.includes('font-family') && !isEmpty(val))
+					fontName = val;
+				if (key.includes('font-weight') && !isEmpty(val)) {
+					fontWeight.push(val);
+				}
+				if (key.includes('font-style') && !isEmpty(val))
+					fontStyle.push(val);
 
-		Object.entries(this.typography).forEach(([key, val]) => {
-			if (key.includes('font-') && !isEmpty(val)) console.log(key, val);
-			if (key.includes('font-family')) loadFonts(val);
-		});
+				if (key.includes('custom-formats') && !isEmpty(val)) {
+					let customFonts = {};
+					Object.values(val).forEach(customVal => {
+						customFonts = { ...customFonts, ...customVal };
+					});
+
+					getAllFonts(customFonts);
+				}
+			});
+		};
+
+		getAllFonts(this.typography);
+
+		const response = {};
+
+		if (!isEmpty(fontName)) {
+			response[fontName] = {};
+			if (!isEmpty(fontWeight))
+				response[fontName].weight = fontWeight.join();
+			if (!isEmpty(fontStyle))
+				response[fontName].style = fontStyle.join();
+		}
+
+		if (!isEmpty(response)) {
+			// console.log('===========================================');
+			// console.log('response');
+			// console.log(response);
+			loadFonts(response);
+		}
 	}
 
 	getParentStyle() {

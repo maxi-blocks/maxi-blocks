@@ -15,7 +15,16 @@ import { isEmpty } from 'lodash';
  * Styles and Icons
  */
 import './editor.scss';
-import { alignLeft, alignCenter, alignRight, alignJustify } from '../../icons';
+import {
+	alignLeft,
+	alignCenter,
+	alignRight,
+	alignJustify,
+	toolbarAlignCenter,
+	toolbarAlignLeft,
+	toolbarAlignRight,
+	toolbarAlignJustify,
+} from '../../icons';
 
 /**
  * Component
@@ -33,6 +42,7 @@ const AlignmentControl = props => {
 		breakpoint = 'general',
 		type = '',
 		isHover = false,
+		isToolbar = false,
 	} = props;
 
 	const getOptions = () => {
@@ -65,25 +75,41 @@ const AlignmentControl = props => {
 		} else {
 			!disableLeft &&
 				options.push({
-					icon: <Icon icon={alignLeft} />,
+					icon: !isToolbar ? (
+						<Icon icon={alignLeft} />
+					) : (
+						<Icon icon={toolbarAlignLeft} />
+					),
 					value: 'left',
 				});
 
 			!disableCenter &&
 				options.push({
-					icon: <Icon icon={alignCenter} />,
+					icon: !isToolbar ? (
+						<Icon icon={alignCenter} />
+					) : (
+						<Icon icon={toolbarAlignCenter} />
+					),
 					value: 'center',
 				});
 
 			!disableRight &&
 				options.push({
-					icon: <Icon icon={alignRight} />,
+					icon: !isToolbar ? (
+						<Icon icon={alignRight} />
+					) : (
+						<Icon icon={toolbarAlignRight} />
+					),
 					value: 'right',
 				});
 
 			!disableJustify &&
 				options.push({
-					icon: <Icon icon={alignJustify} />,
+					icon: !isToolbar ? (
+						<Icon icon={alignJustify} />
+					) : (
+						<Icon icon={toolbarAlignJustify} />
+					),
 					value: 'justify',
 				});
 		}

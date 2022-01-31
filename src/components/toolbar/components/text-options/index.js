@@ -12,13 +12,14 @@ import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
 import TextFormatUnderline from '../text-format-underline';
-import TextFormatOverline from '../text-format-overline';
+// import TextFormatOverline from '../text-format-overline';
 import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
-import TextFormatCode from '../text-format-code';
+// import TextFormatCode from '../text-format-code';
 import AdvancedNumberControl from '../../../advanced-number-control';
-// import TextLevel from '../text-level';
+import TextAlignment from '../text-alignment';
 import TextBold from '../text-bold';
+import TextItalic from '../text-italic';
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -34,7 +35,11 @@ import {
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarTextSize } from '../../../../icons';
+import {
+	toolbarTextSize,
+	toolbarTextLineHeight,
+	toolbarTextLetterSpacing,
+} from '../../../../icons';
 import { ResponsiveTabsControl } from '../../..';
 
 /**
@@ -98,9 +103,13 @@ const TextOptions = props => {
 				minMaxSettings={minMaxSettings}
 				// allowedUnits={['px', 'em', 'vw', '%']}
 			/>
+			<Icon
+				className='toolbar-item__text-size-icon'
+				icon={toolbarTextLineHeight}
+			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__line-height'
-				label={__('Line Height', 'maxi-blocks')}
+				label={__('', 'maxi-blocks')}
 				// enableUnit
 				unit={
 					getValue(
@@ -147,9 +156,13 @@ const TextOptions = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
 			/>
+			<Icon
+				className='toolbar-item__text-size-icon'
+				icon={toolbarTextLetterSpacing}
+			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__letter-spacing'
-				label={__('Letter Spacing', 'maxi-blocks')}
+				label={__('', 'maxi-blocks')}
 				// enableUnit
 				// allowedUnits={['px', 'em', 'vw']}
 				unit={getValue(
@@ -368,30 +381,7 @@ const TypographyControl = withFormatValue(props => {
 							breakpoint={breakpoint}
 						>
 							<div>
-								<div className='toolbar-item__popover__font-options__wrap toolbar-item__popover__font-options__wrap_inputs'>
-									{/* <TextLevel
-										// {...getGroupAttributes(attributes, [
-										// 	'typography',
-										// 	'typographyHover',
-										// ])}
-										blockName={blockName}
-										textLevel={textLevel}
-										isList={isList}
-										onChange={onChange}
-									/> */}
-									<TextOptions
-										getValue={getValue}
-										getDefault={getDefault}
-										onChangeFormat={onChangeFormat}
-										prefix={prefix}
-										minMaxSettings={minMaxSettings}
-										minMaxSettingsLetterSpacing={
-											minMaxSettingsLetterSpacing
-										}
-										avoidXXL={!styleCards}
-									/>
-								</div>
-								<div className='toolbar-item__popover__font-options__wrap'>
+								<div className='toolbar-item__popover__font-options__wrap toolbar-item__popover__font-options__wrap_family'>
 									<div className='toolbar-item__popover__font-options__font'>
 										<FontFamilySelector
 											className='toolbar-item__popover__font-options__font__selector'
@@ -408,6 +398,19 @@ const TypographyControl = withFormatValue(props => {
 										/>
 									</div>
 									<div className='toolbar-item__typography-control__extra-text-options'>
+										<TextAlignment
+											clientId={clientId}
+											blockName={blockName}
+											getGroupAttributes
+											{...getGroupAttributes(props, [
+												'alignment',
+												'textAlignment',
+											])}
+											onChange={onChange}
+											breakpoint={breakpoint}
+											// textLevel={textLevel}
+											// styleCard={styleCard}
+										/>
 										<TextBold
 											{...getGroupAttributes(
 												props,
@@ -420,8 +423,23 @@ const TypographyControl = withFormatValue(props => {
 											breakpoint={breakpoint}
 											textLevel={textLevel}
 											styleCard={styleCard}
+											isCaptionToolbar
 										/>
-										<TextFormatOverline
+										<TextItalic
+											{...getGroupAttributes(
+												props,
+												'typography'
+											)}
+											formatValue={formatValue}
+											blockName={name}
+											onChange={obj => onChange(obj)}
+											isList={isList}
+											breakpoint={breakpoint}
+											textLevel={textLevel}
+											styleCard={styleCard}
+											isCaptionToolbar
+										/>
+										<TextFormatUnderline
 											{...getGroupAttributes(
 												props,
 												'typography'
@@ -445,7 +463,7 @@ const TypographyControl = withFormatValue(props => {
 											textLevel={textLevel}
 											styleCard={styleCard}
 										/>
-										<TextFormatUnderline
+										{/* <TextFormatOverline
 											{...getGroupAttributes(
 												props,
 												'typography'
@@ -456,7 +474,7 @@ const TypographyControl = withFormatValue(props => {
 											breakpoint={breakpoint}
 											textLevel={textLevel}
 											styleCard={styleCard}
-										/>
+										/> */}
 										<TextFormatSubscript
 											{...getGroupAttributes(
 												props,
@@ -481,7 +499,7 @@ const TypographyControl = withFormatValue(props => {
 											textLevel={textLevel}
 											styleCard={styleCard}
 										/>
-										<TextFormatCode
+										{/* <TextFormatCode
 											onChange={content =>
 												onChange({ content })
 											}
@@ -489,8 +507,31 @@ const TypographyControl = withFormatValue(props => {
 											formatValue={formatValue}
 											textLevel={textLevel}
 											styleCard={styleCard}
-										/>
+										/> */}
 									</div>
+								</div>
+								<div className='toolbar-item__popover__font-options__wrap toolbar-item__popover__font-options__wrap_inputs'>
+									{/* <TextLevel
+										// {...getGroupAttributes(attributes, [
+										// 	'typography',
+										// 	'typographyHover',
+										// ])}
+										blockName={blockName}
+										textLevel={textLevel}
+										isList={isList}
+										onChange={onChange}
+									/> */}
+									<TextOptions
+										getValue={getValue}
+										getDefault={getDefault}
+										onChangeFormat={onChangeFormat}
+										prefix={prefix}
+										minMaxSettings={minMaxSettings}
+										minMaxSettingsLetterSpacing={
+											minMaxSettingsLetterSpacing
+										}
+										avoidXXL={!styleCards}
+									/>
 								</div>
 							</div>
 						</ResponsiveTabsControl>

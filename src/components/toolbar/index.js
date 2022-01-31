@@ -49,7 +49,7 @@ import {
 	TextLevel,
 	TextLink,
 	TextListOptions,
-	ToggleBlock,
+	// ToggleBlock,
 	ToolbarColumnPattern,
 	TextOptions,
 	// TextGenerator,
@@ -83,18 +83,18 @@ const allowedBlocks = [
 	'maxi-blocks/text-maxi',
 ];
 
-const flexBlocks = [
-	'maxi-blocks/button-maxi',
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/divider-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/image-maxi',
-	'maxi-blocks/map-maxi',
-	'maxi-blocks/number-counter-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/svg-icon-maxi',
-];
+// const flexBlocks = [
+// 	'maxi-blocks/button-maxi',
+// 	'maxi-blocks/column-maxi',
+// 	'maxi-blocks/container-maxi',
+// 	'maxi-blocks/divider-maxi',
+// 	'maxi-blocks/group-maxi',
+// 	'maxi-blocks/image-maxi',
+// 	'maxi-blocks/map-maxi',
+// 	'maxi-blocks/number-counter-maxi',
+// 	'maxi-blocks/row-maxi',
+// 	'maxi-blocks/svg-icon-maxi',
+// ];
 
 /**
  * Component

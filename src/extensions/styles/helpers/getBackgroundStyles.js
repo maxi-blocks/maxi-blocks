@@ -832,28 +832,43 @@ const getGeneralBackgroundStyles = (
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const size = {};
 
+	const isAssigned = value => value !== undefined && value !== '';
+
+	const border = getBorderStyles({
+		obj: borderProps,
+		parentBlockStyle: blockStyle,
+		isHover,
+	});
+
 	breakpoints.forEach(breakpoint => {
-		const widthTop =
-			getLastBreakpointAttribute('border-top-width', breakpoint, props) ||
-			0;
-		const widthBottom =
-			getLastBreakpointAttribute(
-				'border-bottom-width',
-				breakpoint,
-				props
-			) || 0;
-		const widthLeft =
-			getLastBreakpointAttribute(
-				'border-left-width',
-				breakpoint,
-				props
-			) || 0;
-		const widthRight =
-			getLastBreakpointAttribute(
-				'border-right-width',
-				breakpoint,
-				props
-			) || 0;
+		const widthTop = isAssigned(
+			getLastBreakpointAttribute('border-top-width', breakpoint, props)
+		)
+			? getLastBreakpointAttribute('border-top-width', breakpoint, props)
+			: 2;
+		const widthBottom = isAssigned(
+			getLastBreakpointAttribute('border-bottom-width', breakpoint, props)
+		)
+			? getLastBreakpointAttribute(
+					'border-bottom-width',
+					breakpoint,
+					props
+			  )
+			: 2;
+		const widthLeft = isAssigned(
+			getLastBreakpointAttribute('border-left-width', breakpoint, props)
+		)
+			? getLastBreakpointAttribute('border-left-width', breakpoint, props)
+			: 2;
+		const widthRight = isAssigned(
+			getLastBreakpointAttribute('border-right-width', breakpoint, props)
+		)
+			? getLastBreakpointAttribute(
+					'border-right-width',
+					breakpoint,
+					props
+			  )
+			: 2;
 		const widthUnit =
 			getLastBreakpointAttribute(
 				'border-unit-width',
@@ -865,20 +880,16 @@ const getGeneralBackgroundStyles = (
 		const verticalWidth =
 			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
 
-		size[breakpoint] = {
-			...((!!horizontalWidth || isHover) && {
-				top: -horizontalWidth + widthUnit,
-			}),
-			...((!!verticalWidth || isHover) && {
-				left: -verticalWidth + widthUnit,
-			}),
-		};
-	});
-
-	const border = getBorderStyles({
-		obj: borderProps,
-		parentBlockStyle: blockStyle,
-		isHover,
+		if (border[breakpoint]['border-style']) {
+			size[breakpoint] = {
+				...((!!horizontalWidth || isHover) && {
+					top: -horizontalWidth + widthUnit,
+				}),
+				...((!!verticalWidth || isHover) && {
+					left: -verticalWidth + widthUnit,
+				}),
+			};
+		}
 	});
 
 	breakpoints.forEach(breakpoint => {

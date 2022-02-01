@@ -199,6 +199,12 @@ describe('Background Color Layer', () => {
 	});
 
 	it('Check Background Color layer displayer', async () => {
+		const checkEditor = await page.$eval(
+			'.maxi-background-displayer',
+			el => el.innerHTML
+		);
+
+		expect(checkEditor).toBeTruthy();
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 		const backgroundPreviewPage = await previewPage.$(

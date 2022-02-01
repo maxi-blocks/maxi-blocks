@@ -204,6 +204,13 @@ describe.skip('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Check Background Shape layer display', async () => {
+		const checkEditor = await page.$eval(
+			'.maxi-background-displayer',
+			el => el.innerHTML
+		);
+
+		expect(checkEditor).toMatchSnapshot();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 

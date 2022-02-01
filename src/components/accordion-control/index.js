@@ -94,9 +94,6 @@ const AccordionControl = props => {
 						className={classesItem}
 						data-name={lowerCase(item.label)}
 						key={`maxi-accordion-control__item-${id}`}
-						onClick={() => {
-							setAccordiontValue(accordionUid);
-						}}
 					>
 						<AccordionItemHeading className={classesItemHeading}>
 							<AccordionItemButton className='maxi-accordion-control__item__button'>

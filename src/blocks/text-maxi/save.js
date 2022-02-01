@@ -6,7 +6,8 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
 
 /**
  * Save

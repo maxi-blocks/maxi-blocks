@@ -364,6 +364,8 @@ const TypographyControl = withFormatValue(props => {
 							});
 						}}
 						theme='dark'
+						fontWeight={getValue(`${prefix}font-weight`)}
+						fontStyle={getValue(`${prefix}font-style`)}
 					/>
 				</div>
 				<>

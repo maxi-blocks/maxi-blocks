@@ -217,7 +217,7 @@ class MaxiBlocks_Styles
                     $fontUrl = $fontUrl.'wght@400';
                 }
                 wp_enqueue_style(
-                    sanitize_title_with_dashes($fontName),
+                    'maxi-'.sanitize_title_with_dashes($fontName),
                     $fontUrl
                 );
             }

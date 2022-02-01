@@ -349,12 +349,7 @@ class MaxiBlockComponent extends Component {
 				response[fontName].style = fontStyle.join();
 		}
 
-		if (!isEmpty(response)) {
-			// console.log('===========================================');
-			// console.log('response');
-			// console.log(response);
-			loadFonts(response);
-		}
+		if (!isEmpty(response)) loadFonts(response);
 	}
 
 	getParentStyle() {

@@ -26,7 +26,8 @@ import './editor.scss';
  * Component
  */
 const FontFamilySelector = props => {
-	const { font, onChange, className, defaultValue } = props;
+	const { font, onChange, className, defaultValue, fontWeight, fontStyle } =
+		props;
 
 	const { options } = useSelect(select => {
 		const { getFonts } = select('maxiBlocks/text');
@@ -50,7 +51,12 @@ const FontFamilySelector = props => {
 	const onFontChange = newFont => {
 		onChange(newFont);
 
-		loadFonts(newFont.value, newFont.files);
+		const objFont = { [newFont.value]: {} };
+
+		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
+		if (fontStyle) objFont[newFont.value].style = fontStyle;
+
+		loadFonts(objFont);
 
 		setValue({ label: newFont.value, value: newFont.value });
 	};

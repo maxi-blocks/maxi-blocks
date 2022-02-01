@@ -724,6 +724,8 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}font-options`]: font.files,
 						});
 					}}
+					fontWeight={getValue(`${prefix}font-weight`)}
+					fontStyle={getValue(`${prefix}font-style`)}
 				/>
 			)}
 			{!disableColor && !styleCards && (

@@ -71,6 +71,7 @@ const ImageAltControl = ({ mediaID, altSelector, mediaAlt, onChange }) => {
 						...(altSelector === 'title' && {
 							mediaAlt: titleAlt,
 						}),
+						...(altSelector === 'none' && { mediaAlt: null }),
 					})
 				}
 			/>

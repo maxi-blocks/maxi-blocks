@@ -203,4 +203,15 @@ describe.skip('BackgroundControl', () => {
 		expect(backgroundOpacityM).toStrictEqual('82');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Check Background Shape layer display', async () => {
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+
+		const backgroundPreviewPage = await previewPage.$eval(
+			'.maxi-background-displayer',
+			el => el.innerHTML
+		);
+
+		expect(backgroundPreviewPage).toMatchSnapshot();
+	});
 });

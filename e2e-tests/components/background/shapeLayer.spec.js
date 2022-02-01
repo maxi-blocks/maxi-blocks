@@ -286,9 +286,19 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Check Background Shape layer display', async () => {
+		const checkEditor = await page.$eval(
+			'.maxi-background-displayer',
+			el => el.innerHTML
+		);
+
+		expect(checkEditor).toMatchSnapshot();
+
 		const previewPage = await openPreviewPage(page);
-		const backgroundPreviewPage = await previewPage.$(
-			'.maxi-background-displayer'
+		await previewPage.waitForSelector('.entry-content');
+
+		const backgroundPreviewPage = await previewPage.$eval(
+			'.maxi-background-displayer',
+			el => el.innerHTML
 		);
 
 		expect(backgroundPreviewPage).toMatchSnapshot();

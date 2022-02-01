@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BackgroundControl Check Background Gradient layer display 1`] = `null`;
-
 exports[`BackgroundControl Check Background gradient layer 1`] = `
 Array [
   Object {

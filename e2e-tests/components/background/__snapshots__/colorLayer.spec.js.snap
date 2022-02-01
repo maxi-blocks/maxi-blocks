@@ -21,8 +21,6 @@ Array [
 
 exports[`Background Color Layer Check Background Color layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}</style>"`;
 
-exports[`Background Color Layer Check Background Color layer displayer 1`] = `null`;
-
 exports[`Background Color Layer Check Background Color layer hover 1`] = `
 Array [
   Object {

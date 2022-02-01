@@ -286,15 +286,20 @@ const getImageObject = props => {
 		...(props.clipPath && {
 			image: { general: { 'clip-path': props.clipPath } },
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
-		}),
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'image-'),
 			},
 			'image-'
 		),
+	};
+};
+
+const getImageRatioResizeObject = props => {
+	return {
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		}),
 	};
 };
 
@@ -381,6 +386,7 @@ const getStyles = props => {
 				' .maxi-image-block-wrapper > svg:first-child pattern image':
 					getImageShapeObject('image', props),
 				' .maxi-image-block-wrapper img': getImageObject(props),
+				' .maxi-image-ratio-resized': getImageRatioResizeObject(props),
 				' figcaption': getFigcaptionObject(props),
 				' .maxi-hover-details .maxi-hover-details__content h4':
 					getHoverEffectTitleTextObject(props),

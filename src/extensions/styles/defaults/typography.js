@@ -30,7 +30,7 @@ export const rawTypography = {
 		type: 'number',
 	},
 	'font-weight': {
-		type: 'number',
+		type: 'string',
 	},
 	'text-transform': {
 		type: 'string',

@@ -92,10 +92,10 @@ const reducer = (
 				...state,
 				copiedBlocks: action.copiedBlocks,
 			};
-		case 'UPDATE_INSPECTOR_PATH':
+		case 'UPDATE_INSPECTOR_PATH': {
 			const { depth, value } = action.inspectorPath;
 			const newValue = omit(action.inspectorPath, ['depth']);
-			const newInspectorPath = state.inspectorPath;
+			const newInspectorPath = [...state.inspectorPath];
 
 			if (depth === newInspectorPath.length) {
 				newInspectorPath.push(newValue);
@@ -106,7 +106,7 @@ const reducer = (
 					newInspectorPath.splice(i, 1);
 				}
 
-				// In case of Accordiont return undefined
+				// In case of accordion return undefined
 				if (value === undefined) {
 					newInspectorPath.splice(depth, 1);
 				}
@@ -116,6 +116,7 @@ const reducer = (
 				...state,
 				inspectorPath: newInspectorPath,
 			};
+		}
 		default:
 			return state;
 	}

@@ -3,8 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
-import { select } from '@wordpress/data';
-import { toLower } from 'lodash';
 
 /**
  * Internal dependencies
@@ -18,13 +16,13 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
-import { getActiveTabName } from '../../extensions/inspectorPath';
+import { getActiveTabName } from '../../extensions/inspector-path';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, toLower } from 'lodash';
 
 /**
  * Styles and icons

@@ -12,7 +12,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const transform = ({ props, depth }) => {
+const transform = ({ props, depth = 2 }) => {
 	const { attributes, deviceType, uniqueID, setAttributes } = props;
 	return {
 		label: __('Transform', 'maxi-blocks'),

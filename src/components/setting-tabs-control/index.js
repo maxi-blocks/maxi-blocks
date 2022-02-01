@@ -24,7 +24,7 @@ import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
 } from '../../extensions/indicators';
-import { getForcedTabFromPath } from '../../extensions/inspectorPath';
+import { getForcedTabFromPath } from '../../extensions/inspector-path';
 
 /**
  * Component

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { select } from '@wordpress/data';
 import { toLower } from 'lodash';
 /**
  * Internal dependencies
@@ -21,7 +20,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
-import { getActiveTabName } from '../../extensions/inspectorPath';
+import { getActiveTabName } from '../../extensions/inspector-path';
 
 /**
  * External dependencies
@@ -229,7 +228,7 @@ const ScrollEffectsControl = props => {
 
 	useEffect(() => {
 		if (activeTabName) {
-			setMotionStatus(toLower(activeTabName));
+			setScrollStatus(toLower(activeTabName));
 		}
 	});
 
@@ -245,7 +244,7 @@ const ScrollEffectsControl = props => {
 				fullWidthMode
 				selected={scrollStatus}
 				items={motionOptions}
-				onChange={val => setMotionStatus(val)}
+				onChange={val => setScrollStatus(val)}
 				depth={depth}
 			/>
 			{scrollTypes.map(type => {

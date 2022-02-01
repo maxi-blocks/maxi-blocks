@@ -50,7 +50,6 @@ const Inspector = memo(
 									})}
 									<AccordionControl
 										isSecondary
-										depth={1}
 										items={[
 											deviceType === 'general' &&
 												!isList && {
@@ -141,11 +140,9 @@ const Inspector = memo(
 											}),
 											...inspectorTabs.scrollEffects({
 												props,
-												depth: 2,
 											}),
 											...inspectorTabs.transform({
 												props,
-												depth: 2,
 											}),
 											...inspectorTabs.transition({
 												props,

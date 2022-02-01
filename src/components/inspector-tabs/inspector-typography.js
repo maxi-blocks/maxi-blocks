@@ -22,6 +22,7 @@ const typography = ({
 	allowLink = false,
 	globalProps,
 	hoverGlobalProps,
+	depth = 2,
 }) => {
 	const {
 		attributes,
@@ -116,7 +117,7 @@ const typography = ({
 						extraIndicators: ['typography-status-hover'],
 					},
 				]}
-				depth={2}
+				depth={depth}
 			/>
 		),
 	};

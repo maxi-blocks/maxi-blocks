@@ -590,8 +590,10 @@ const listTab = props => {
 										label={__('Start From', 'maxi-blocks')}
 										className='maxi-image-inspector__list-start'
 										value={
-											!['decimal', 'details'].includes(
-												listStyle
+											!(
+												['decimal', 'details'].includes(
+													listStyle
+												) || !listStyle
 											) && listStart < 0
 												? 0
 												: listStart
@@ -608,7 +610,7 @@ const listTab = props => {
 										min={
 											['decimal', 'details'].includes(
 												listStyle
-											)
+											) || !listStyle
 												? -99
 												: 0
 										}

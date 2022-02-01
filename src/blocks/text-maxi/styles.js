@@ -170,12 +170,14 @@ const getListObject = props => {
 	let counterReset;
 	if (isNumber(listStart)) {
 		counterReset =
-			listStart < 0 && ['decimal', 'details'].includes(listStyle)
+			listStart < 0 &&
+			(['decimal', 'details'].includes(listStyle) || !listStyle)
 				? listStart
 				: 0;
 		counterReset += listStart > 0 ? listStart : 0;
 		counterReset += listReversed ? parse(content).length : 1;
 		counterReset += listReversed ? 1 : -1;
+		counterReset -= 1;
 	} else if (listReversed) counterReset = parse(content).length + 1;
 	else counterReset = 0;
 

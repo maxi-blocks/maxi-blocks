@@ -16,6 +16,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
+import { loadFonts } from '../../extensions/text/fonts';
 
 import {
 	setFormat,
@@ -795,6 +796,15 @@ const TypographyControl = withFormatValue(props => {
 				options={getWeightOptions()}
 				onChange={val => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
+					const fontName =
+						getValue(`${prefix}font-family`) || 'Roboto';
+					const fontStyle = getValue(`${prefix}font-style`);
+					const objFont = { [fontName]: {} };
+
+					objFont[fontName].weight = val.toString();
+					if (fontStyle) objFont[fontName].style = fontStyle;
+
+					loadFonts(objFont);
 				}}
 			/>
 			<SelectControl

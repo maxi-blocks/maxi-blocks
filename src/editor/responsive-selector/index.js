@@ -42,9 +42,12 @@ const ResponsiveButton = ({
 	target,
 	breakpoints,
 }) => {
-	const classes = classnames('maxi-responsive-selector__button-wrapper');
-
 	const isWinBreakpoint = winBreakpoint === target;
+
+	const classes = classnames(
+		'maxi-responsive-selector__button-wrapper',
+		isWinBreakpoint && 'maxi-responsive-selector__base'
+	);
 
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 

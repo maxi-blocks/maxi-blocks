@@ -25,7 +25,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, handleSetAttributes } = props;
 	const { apiKey } = attributes;
 
 	return (
@@ -55,7 +55,7 @@ const Inspector = props => {
 														'map'
 													)}
 													onChange={obj =>
-														setAttributes(obj)
+														handleSetAttributes(obj)
 													}
 													hasApiKey={!isEmpty(apiKey)}
 												/>

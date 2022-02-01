@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { memo } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -25,7 +24,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, without, inRange } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -47,51 +46,10 @@ import {
 /**
  * Inspector
  */
-const getWinBreakpoint = () => {
-	const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-		select('maxiBlocks');
-
-	const winWidth = receiveMaxiSettings().window?.width || null;
-
-	const maxiBreakpoints = receiveMaxiBreakpoints();
-
-	if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
-
-	if (winWidth > maxiBreakpoints.xl) return 'xxl';
-
-	const response = Object.entries(maxiBreakpoints).reduce(
-		([prevKey, prevValue], [currKey, currValue]) => {
-			if (!prevValue) return [prevKey];
-			if (inRange(winWidth, prevValue, currValue + 1)) return [currKey];
-
-			return [prevKey, prevValue];
-		}
-	)[0];
-
-	return response.toLowerCase();
-};
-
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes, clientId } = props;
+		const { attributes, deviceType, handleSetAttributes, clientId } = props;
 		const { parentBlockStyle } = attributes;
-
-		const handleSetAttributes = obj => {
-			const response = { ...obj };
-
-			Object.entries(obj).forEach(([key, value]) => {
-				if (key.includes('-general')) {
-					const newKey = key.replace(
-						'-general',
-						`-${getWinBreakpoint()}`
-					);
-
-					response[newKey] = value;
-				}
-			});
-
-			setAttributes(response);
-		};
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -137,7 +95,6 @@ const Inspector = memo(
 									{inspectorTabs.blockSettings({
 										props: {
 											...props,
-											setAttributes: handleSetAttributes,
 										},
 									})}
 									<AccordionControl
@@ -465,8 +422,6 @@ const Inspector = memo(
 											...inspectorTabs.alignment({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 												isAlignment: true,
 												isTextAlignment: true,
@@ -483,8 +438,6 @@ const Inspector = memo(
 											...inspectorTabs.typography({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 												styleCardPrefix: 'button',
 												hideAlignment: true,
@@ -502,8 +455,6 @@ const Inspector = memo(
 												label: 'Button',
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 												disableImage: true,
 												disableVideo: true,
@@ -522,8 +473,6 @@ const Inspector = memo(
 											...inspectorTabs.border({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 												prefix: 'button-',
 												globalProps: {
@@ -538,24 +487,18 @@ const Inspector = memo(
 											...inspectorTabs.boxShadow({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 												prefix: 'button-',
 											}),
 											...inspectorTabs.size({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 												prefix: 'button-',
 											}),
 											...inspectorTabs.marginPadding({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 												prefix: 'button-',
 											}),
@@ -573,44 +516,32 @@ const Inspector = memo(
 										...inspectorTabs.blockBackground({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.border({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.boxShadow({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.opacity({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.size({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 											block: true,
 										}),
 										...inspectorTabs.marginPadding({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 									]}
@@ -627,8 +558,6 @@ const Inspector = memo(
 											...inspectorTabs.customClasses({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 											}),
 										},
@@ -636,16 +565,12 @@ const Inspector = memo(
 											...inspectorTabs.anchor({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 											}),
 										},
 										...inspectorTabs.customCss({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 											breakpoint: deviceType,
 											selectors: selectorsButton,
@@ -654,22 +579,16 @@ const Inspector = memo(
 										...inspectorTabs.scrollEffects({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.transform({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.transition({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 											label: __(
 												'Hover transition',
@@ -679,38 +598,28 @@ const Inspector = memo(
 										...inspectorTabs.display({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.position({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										deviceType !== 'general' && {
 											...inspectorTabs.responsive({
 												props: {
 													...props,
-													setAttributes:
-														handleSetAttributes,
 												},
 											}),
 										},
 										...inspectorTabs.overflow({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 										...inspectorTabs.zindex({
 											props: {
 												...props,
-												setAttributes:
-													handleSetAttributes,
 											},
 										}),
 									]}

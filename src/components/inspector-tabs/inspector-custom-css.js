@@ -18,7 +18,7 @@ const customCss = ({
 	selectors,
 	categories,
 }) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, handleSetAttributes } = props;
 
 	const customCssValue = getLastBreakpointAttribute(
 		'custom-css',
@@ -37,7 +37,7 @@ const customCss = ({
 				selectors={selectors}
 				value={customCssValue}
 				onChange={(attr, val) =>
-					setAttributes({
+					handleSetAttributes({
 						[attr]: val,
 					})
 				}

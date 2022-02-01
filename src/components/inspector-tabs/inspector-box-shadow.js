@@ -18,7 +18,7 @@ import {
  * Component
  */
 const boxShadow = ({ props, prefix = '' }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
+	const { attributes, clientId, deviceType, handleSetAttributes } = props;
 
 	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
 
@@ -39,7 +39,7 @@ const boxShadow = ({ props, prefix = '' }) => {
 									prefix
 								)}
 								prefix={prefix}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => handleSetAttributes(obj)}
 								breakpoint={deviceType}
 								clientId={clientId}
 							/>
@@ -57,7 +57,7 @@ const boxShadow = ({ props, prefix = '' }) => {
 									selected={hoverStatus}
 									className='maxi-box-shadow-status-hover'
 									onChange={val =>
-										setAttributes({
+										handleSetAttributes({
 											...(val &&
 												setHoverAttributes(
 													{
@@ -91,7 +91,9 @@ const boxShadow = ({ props, prefix = '' }) => {
 											prefix
 										)}
 										prefix={prefix}
-										onChange={obj => setAttributes(obj)}
+										onChange={obj =>
+											handleSetAttributes(obj)
+										}
 										breakpoint={deviceType}
 										isHover
 										clientId={clientId}

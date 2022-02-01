@@ -13,14 +13,14 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const zindex = ({ props }) => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, handleSetAttributes } = props;
 
 	return {
 		label: __('Z-index', 'maxi-blocks'),
 		content: (
 			<ZIndexControl
 				{...getGroupAttributes(attributes, 'zIndex')}
-				onChange={obj => setAttributes(obj)}
+				onChange={obj => handleSetAttributes(obj)}
 				breakpoint={deviceType}
 			/>
 		),

@@ -29,8 +29,11 @@ describe('BackgroundControl', () => {
 		await openSidebarTab(page, 'style', 'background layer');
 	});
 
-	it('Check Background Color layer', async () => {
+	it.only('Check Background Color layer', async () => {
+		debugger;
 		await addBackgroundLayer(page, 'color');
+
+		debugger;
 
 		// change color
 		await page.$$eval(

@@ -14,7 +14,7 @@ import {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -54,7 +54,7 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			onRemove,
 			onReplace,
-			setAttributes,
+			handleSetAttributes,
 		} = this.props;
 		const {
 			content,
@@ -89,7 +89,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				setAttributes(cleanCustomProps);
+				handleSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -120,14 +120,14 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
-				setAttributes({ content: `${newContent}</a>` });
+				handleSetAttributes({ content: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ content });
+					handleSetAttributes({ content });
 				}, 100);
 			}
 		};
@@ -301,4 +301,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

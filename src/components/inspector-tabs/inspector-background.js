@@ -35,7 +35,7 @@ const background = ({
 		attributes,
 		clientId,
 		deviceType,
-		setAttributes,
+		handleSetAttributes,
 		scValues = {},
 	} = props;
 
@@ -66,7 +66,7 @@ const background = ({
 										prefix
 									)}
 									prefix={prefix}
-									onChange={obj => setAttributes(obj)}
+									onChange={obj => handleSetAttributes(obj)}
 									disableColor={disableColor}
 									disableImage={disableImage}
 									disableGradient={disableGradient}
@@ -92,7 +92,7 @@ const background = ({
 									selected={hoverStatus}
 									className='maxi-background-status-hover'
 									onChange={val =>
-										setAttributes({
+										handleSetAttributes({
 											...(val &&
 												setHoverAttributes(
 													{
@@ -138,7 +138,9 @@ const background = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChange={obj => setAttributes(obj)}
+										onChange={obj =>
+											handleSetAttributes(obj)
+										}
 										disableImage
 										disableVideo
 										disableClipPath

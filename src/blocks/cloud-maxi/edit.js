@@ -22,7 +22,7 @@ import { isEmpty } from 'lodash';
 
 export default class Edit extends Component {
 	render() {
-		const { attributes, clientId, setAttributes } = this.props;
+		const { attributes, clientId, handleSetAttributes } = this.props;
 
 		const { content, openFirstTime } = attributes;
 
@@ -47,9 +47,9 @@ export default class Edit extends Component {
 							clientId={clientId}
 							type='patterns'
 							openFirstTime={openFirstTime}
-							onOpen={obj => setAttributes(obj)}
-							onSelect={obj => setAttributes(obj)}
-							onRemove={obj => setAttributes(obj)}
+							onOpen={obj => handleSetAttributes(obj)}
+							onSelect={obj => handleSetAttributes(obj)}
+							onRemove={obj => handleSetAttributes(obj)}
 							{...this.props}
 						/>
 					</Placeholder>

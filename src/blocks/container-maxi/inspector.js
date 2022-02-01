@@ -20,7 +20,7 @@ import { selectorsContainer, categoriesContainer } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, handleSetAttributes } = props;
 
 	return (
 		<InspectorControls>
@@ -56,7 +56,7 @@ const Inspector = props => {
 														'shapeDivider'
 													)}
 													onChange={obj =>
-														setAttributes(obj)
+														handleSetAttributes(obj)
 													}
 												/>
 											),

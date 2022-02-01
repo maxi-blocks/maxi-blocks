@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	breakpointAttributesCreator,
 	paletteAttributesCreator,
+	updateBreakpointAttributes,
 } from '../../extensions/styles';
 
 /**
@@ -127,4 +128,4 @@ const attributes = {
 	...attributesData.customCss,
 };
 
-export default attributes;
+export default updateBreakpointAttributes(attributes);

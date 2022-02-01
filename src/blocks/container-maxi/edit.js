@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
 	BlockPlaceholder,
@@ -61,7 +62,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, setAttributes } =
+		const { attributes, deviceType, hasInnerBlocks, handleSetAttributes } =
 			this.props;
 		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
@@ -101,7 +102,7 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
-							onChange={obj => setAttributes(obj)}
+							onChange={obj => handleSetAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 					</>
@@ -130,7 +131,7 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
 	const hasInnerBlocks = !isEmpty(
@@ -142,4 +143,6 @@ export default withSelect((select, ownProps) => {
 		hasInnerBlocks,
 		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

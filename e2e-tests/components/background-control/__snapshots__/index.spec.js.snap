@@ -4,13 +4,13 @@ exports[`BackgroundControl Check Background Color layer 1`] = `
 Array [
   Object {
     "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
-    "background-color-clip-path-m": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-clip-path-xl": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
     "background-palette-color-general": 5,
-    "background-palette-color-m": 5,
+    "background-palette-color-xl": 5,
     "background-palette-opacity-general": 0.45,
-    "background-palette-opacity-m": 0.45,
+    "background-palette-opacity-xl": 0.45,
     "background-palette-status-general": true,
-    "background-palette-status-m": true,
+    "background-palette-status-xl": true,
     "display-general": "block",
     "id": 1,
     "isHover": false,

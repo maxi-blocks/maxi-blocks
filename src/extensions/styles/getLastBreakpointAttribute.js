@@ -11,15 +11,7 @@ import getAttributeValue from './getAttributeValue';
 /**
  * External dependencies
  */
-import {
-	isNil,
-	isEmpty,
-	isBoolean,
-	isNumber,
-	isString,
-	uniq,
-	inRange,
-} from 'lodash';
+import { isNil, isEmpty, isBoolean, isNumber, isString, uniq } from 'lodash';
 
 /**
  * Breakpoints
@@ -128,33 +120,9 @@ const getLastBreakpointAttributeGroup = (
 	return null;
 };
 
-const getWinBreakpoint = () => {
-	const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-		select('maxiBlocks');
-
-	const winWidth = receiveMaxiSettings().window?.width || null;
-
-	const maxiBreakpoints = receiveMaxiBreakpoints();
-
-	if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
-
-	if (winWidth > maxiBreakpoints.xl) return 'xxl';
-
-	const response = Object.entries(maxiBreakpoints).reduce(
-		([prevKey, prevValue], [currKey, currValue]) => {
-			if (!prevValue) return [prevKey];
-			if (inRange(winWidth, prevValue, currValue + 1)) return [currKey];
-
-			return [prevKey, prevValue];
-		}
-	)[0];
-
-	return response.toLowerCase();
-};
-
 const getLastBreakpointAttribute = (
 	target,
-	rawBreakpoint,
+	breakpoint,
 	attributes = null,
 	isHover = false,
 	forceSingle = false,
@@ -163,9 +131,6 @@ const getLastBreakpointAttribute = (
 	const { getSelectedBlockCount } = select('core/block-editor') || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
 	};
-
-	const breakpoint =
-		rawBreakpoint === 'general' ? getWinBreakpoint() : rawBreakpoint;
 
 	if (getSelectedBlockCount() > 1 && !forceSingle)
 		return getLastBreakpointAttributeGroup(

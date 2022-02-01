@@ -10,7 +10,7 @@ import { Button, Icon, withFocusOutside } from '@wordpress/components';
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar, InnerBlocks } from '../../components';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
@@ -57,7 +57,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			instanceId,
 			selectOnClick,
-			setAttributes,
+			handleSetAttributes,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -111,12 +111,14 @@ class edit extends MaxiBlockComponent {
 														)}
 														className='maxi-row-block__template__button'
 														onClick={() => {
-															setAttributes({
-																'row-pattern-general':
-																	template.name,
-																'row-pattern-m':
-																	template.responsiveLayout,
-															});
+															handleSetAttributes(
+																{
+																	'row-pattern-general':
+																		template.name,
+																	'row-pattern-m':
+																		template.responsiveLayout,
+																}
+															);
 															loadColumnsTemplate(
 																template.name,
 																attributes.removeColumnGap,
@@ -181,5 +183,6 @@ const editDispatch = withDispatch(dispatch => {
 export default compose(
 	editSelect,
 	editDispatch,
-	withInstanceId
+	withInstanceId,
+	withMaxiProps
 )(withFocusOutside(edit));

@@ -9,7 +9,7 @@ import { withSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -161,4 +161,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

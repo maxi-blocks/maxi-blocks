@@ -12,6 +12,7 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { Toolbar, BlockResizer, RawHTML } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
@@ -78,7 +79,7 @@ class edit extends MaxiBlockComponent {
 				}
 
 				if (!isEmpty(newContent))
-					this.props.setAttributes({
+					this.props.handleSetAttributes({
 						content: newContent,
 					});
 			}
@@ -94,8 +95,13 @@ class edit extends MaxiBlockComponent {
 	};
 
 	render() {
-		const { attributes, clientId, deviceType, setAttributes, isSelected } =
-			this.props;
+		const {
+			attributes,
+			clientId,
+			deviceType,
+			handleSetAttributes,
+			isSelected,
+		} = this.props;
 		const {
 			blockFullWidth,
 			content,
@@ -111,7 +117,7 @@ class edit extends MaxiBlockComponent {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
 
-			setAttributes({
+			handleSetAttributes({
 				[`svg-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
@@ -156,9 +162,9 @@ class edit extends MaxiBlockComponent {
 						empty={isEmptyContent}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}
-						onOpen={obj => setAttributes(obj)}
-						onSelect={obj => setAttributes(obj)}
-						onRemove={obj => setAttributes(obj)}
+						onOpen={obj => handleSetAttributes(obj)}
+						onSelect={obj => handleSetAttributes(obj)}
+						onRemove={obj => handleSetAttributes(obj)}
 					/>
 					{!isEmptyContent && (
 						<BlockResizer
@@ -204,7 +210,7 @@ const editSelect = withSelect(select => {
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
 		attributes: { content },
-		setAttributes,
+		handleSetAttributes,
 	} = ownProps;
 
 	const changeSVGStrokeWidth = width => {
@@ -222,7 +228,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				.replace(regexLineToChange, changeTo)
 				.replace(regexLineToChange2, changeTo2);
 
-			setAttributes({
+			handleSetAttributes({
 				content: newContent,
 			});
 		}
@@ -247,7 +253,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(strokeRegExp, strokeStr)
 			.replace(strokeRegExp2, strokeStr2);
 
-		setAttributes({ content: newContent });
+		handleSetAttributes({ content: newContent });
 	};
 
 	const changeSVGContent = (color, type) => {
@@ -261,7 +267,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
-		setAttributes({ content: newContent });
+		handleSetAttributes({ content: newContent });
 	};
 
 	return {
@@ -271,4 +277,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect, withMaxiProps, editDispatch)(edit);

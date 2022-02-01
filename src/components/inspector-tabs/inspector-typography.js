@@ -27,7 +27,7 @@ const typography = ({
 		attributes,
 		clientId,
 		deviceType,
-		setAttributes,
+		handleSetAttributes,
 		scValues = {},
 	} = props;
 	const {
@@ -59,7 +59,7 @@ const typography = ({
 									attributes,
 									typographyTarget
 								)}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => handleSetAttributes(obj)}
 								hideAlignment={hideAlignment}
 								breakpoint={deviceType}
 								clientId={clientId}
@@ -85,7 +85,7 @@ const typography = ({
 										)}
 										selected={hoverStatus}
 										onChange={val =>
-											setAttributes({
+											handleSetAttributes({
 												'typography-status-hover': val,
 											})
 										}
@@ -98,7 +98,9 @@ const typography = ({
 											'typography',
 											true
 										)}
-										onChange={obj => setAttributes(obj)}
+										onChange={obj =>
+											handleSetAttributes(obj)
+										}
 										hideAlignment={hideAlignment}
 										breakpoint={deviceType}
 										isHover

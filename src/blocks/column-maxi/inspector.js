@@ -26,8 +26,13 @@ import { selectorsColumn, categoriesColumn } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
-		props;
+	const {
+		attributes,
+		deviceType,
+		handleSetAttributes,
+		clientId,
+		rowPattern,
+	} = props;
 
 	return (
 		<InspectorControls>
@@ -65,33 +70,38 @@ const Inspector = props => {
 															attributes
 														)}
 														onChangeValue={val => {
-															setAttributes({
-																[`column-size-${deviceType}`]:
-																	val !==
-																		undefined &&
-																	val !== ''
-																		? val
-																		: '',
-															});
+															handleSetAttributes(
+																{
+																	[`column-size-${deviceType}`]:
+																		val !==
+																			undefined &&
+																		val !==
+																			''
+																			? val
+																			: '',
+																}
+															);
 														}}
 														min={0}
 														max={100}
 														step={0.1}
 														onReset={() =>
-															setAttributes({
-																[`column-size-${deviceType}`]:
-																	getColumnDefaultValue(
-																		rowPattern,
-																		{
-																			...getGroupAttributes(
-																				attributes,
-																				'columnSize'
-																			),
-																		},
-																		clientId,
-																		deviceType
-																	),
-															})
+															handleSetAttributes(
+																{
+																	[`column-size-${deviceType}`]:
+																		getColumnDefaultValue(
+																			rowPattern,
+																			{
+																				...getGroupAttributes(
+																					attributes,
+																					'columnSize'
+																				),
+																			},
+																			clientId,
+																			deviceType
+																		),
+																}
+															)
 														}
 														initialPosition={getDefaultAttribute(
 															`column-size-${deviceType}`,
@@ -144,9 +154,11 @@ const Inspector = props => {
 															},
 														]}
 														onChange={verticalAlign =>
-															setAttributes({
-																verticalAlign,
-															})
+															handleSetAttributes(
+																{
+																	verticalAlign,
+																}
+															)
 														}
 													/>
 												</>

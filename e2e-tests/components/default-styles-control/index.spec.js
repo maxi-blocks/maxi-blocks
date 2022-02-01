@@ -33,6 +33,7 @@ describe('DefaultStylesControl', () => {
 			expect(borderAttribute).toStrictEqual(expectAttributes[i]);
 		}
 
+		debugger;
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -6,6 +6,7 @@ import { withSelect, dispatch } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
 import { isURL } from '@wordpress/url';
 import { createRef } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -17,7 +18,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
 	Button,
@@ -99,7 +100,7 @@ class edit extends MaxiBlockComponent {
 		const {
 			attributes,
 			imageData,
-			setAttributes,
+			handleSetAttributes,
 			clientId,
 			isSelected,
 			deviceType,
@@ -169,7 +170,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				setAttributes(cleanCustomProps);
+				handleSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -198,14 +199,14 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = captionContent.replace('</a>', '');
-				setAttributes({ captionContent: `${newContent}</a>` });
+				handleSetAttributes({ captionContent: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ captionContent });
+					handleSetAttributes({ captionContent });
 				}, 100);
 			}
 		};
@@ -238,7 +239,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<MediaUpload
 					onSelect={media => {
-						setAttributes({
+						handleSetAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
@@ -267,7 +268,7 @@ class edit extends MaxiBlockComponent {
 							SVGValue[el].imageURL = media.url;
 
 							const resEl = injectImgSVG(svg, resData);
-							setAttributes({
+							handleSetAttributes({
 								SVGElement: resEl.outerHTML,
 								SVGData: SVGValue,
 							});
@@ -299,7 +300,7 @@ class edit extends MaxiBlockComponent {
 											elt,
 											delta
 										) => {
-											setAttributes({
+											handleSetAttributes({
 												imgWidth: +round(
 													elt.style.width.replace(
 														/[^0-9.]/g,
@@ -324,13 +325,13 @@ class edit extends MaxiBlockComponent {
 											<ImageURL
 												url={externalUrl}
 												onChange={url => {
-													setAttributes({
+													handleSetAttributes({
 														externalUrl: url,
 													});
 												}}
 												onSubmit={url => {
 													if (isURL(url)) {
-														setAttributes({
+														handleSetAttributes({
 															isImageUrl: true,
 															externalUrl: url,
 															mediaURL: url,
@@ -452,14 +453,14 @@ class edit extends MaxiBlockComponent {
 									<ImageURL
 										url={externalUrl}
 										onChange={url => {
-											setAttributes({
+											handleSetAttributes({
 												externalUrl: url,
 											});
 										}}
 										onSubmit={url => {
 											if (isURL(url)) {
 												// TODO: fetch url and check for the code and type
-												setAttributes({
+												handleSetAttributes({
 													isImageUrl: true,
 													externalUrl: url,
 													mediaURL: url,
@@ -480,7 +481,7 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 	const imageData = select('core').getMedia(mediaID);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
@@ -489,4 +490,6 @@ export default withSelect((select, ownProps) => {
 		imageData,
 		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

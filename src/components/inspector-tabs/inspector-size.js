@@ -21,7 +21,7 @@ const size = ({
 	hideMaxWidth = false,
 	isImage = false,
 }) => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, handleSetAttributes } = props;
 	const { fullWidth, blockFullWidth, isFirstOnHierarchy } = attributes;
 
 	return {
@@ -34,7 +34,7 @@ const size = ({
 							label={__('Set full-width', 'maxi-blocks')}
 							selected={blockFullWidth === 'full'}
 							onChange={val =>
-								setAttributes({
+								handleSetAttributes({
 									blockFullWidth: val ? 'full' : 'normal',
 								})
 							}
@@ -45,13 +45,13 @@ const size = ({
 							selected={fullWidth === 'full'}
 							onChange={val =>
 								isImage
-									? setAttributes({
+									? handleSetAttributes({
 											imageRatio: 'original',
 											imageSize: 'full',
 											imgWidth: 100,
 											fullWidth: val ? 'full' : 'normal',
 									  })
-									: setAttributes({
+									: handleSetAttributes({
 											fullWidth: val ? 'full' : 'normal',
 									  })
 							}
@@ -60,7 +60,7 @@ const size = ({
 				<FullSizeControl
 					{...getGroupAttributes(attributes, 'size', false, prefix)}
 					prefix={prefix}
-					onChange={obj => setAttributes(obj)}
+					onChange={obj => handleSetAttributes(obj)}
 					breakpoint={deviceType}
 					hideWidth={hideWidth}
 					hideMaxWidth={hideMaxWidth}

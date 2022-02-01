@@ -11,7 +11,7 @@ import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
@@ -84,7 +84,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, handleSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
@@ -136,7 +136,7 @@ class edit extends MaxiBlockComponent {
 								}
 
 								this.typingTimeout = setTimeout(() => {
-									setAttributes({ buttonContent });
+									handleSetAttributes({ buttonContent });
 								}, 100);
 							}}
 							placeholder={__('Set some text…', 'maxi-blocks')}
@@ -199,4 +199,4 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

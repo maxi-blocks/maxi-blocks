@@ -13,8 +13,13 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const scrollEffects = ({ props }) => {
-	const { attributes, setAttributes, blockStyle, clientId, deviceType } =
-		props;
+	const {
+		attributes,
+		handleSetAttributes,
+		blockStyle,
+		clientId,
+		deviceType,
+	} = props;
 
 	const { uniqueID } = attributes;
 
@@ -24,7 +29,7 @@ const scrollEffects = ({ props }) => {
 			<ScrollEffectsControl
 				uniqueID={uniqueID}
 				{...getGroupAttributes(attributes, 'scroll')}
-				onChange={obj => setAttributes(obj)}
+				onChange={obj => handleSetAttributes(obj)}
 				blockStyle={blockStyle}
 				clientId={clientId}
 				breakpoint={deviceType}

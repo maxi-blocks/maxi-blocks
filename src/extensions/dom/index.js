@@ -7,6 +7,7 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import blockContent from '../../blocks/group-maxi/group-maxi';
 import { updateSCOnEditor } from '../style-cards';
 
 /**

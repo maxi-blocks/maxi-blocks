@@ -27,7 +27,7 @@ const {
 const { removeBlock, updateBlockAttributes } = dispatch('core/block-editor');
 
 const onMerge = (props, forward) => {
-	const { attributes, clientId, setAttributes } = props;
+	const { attributes, clientId, handleSetAttributes } = props;
 	const { isList, content, 'custom-formats': customFormats } = attributes;
 
 	if (forward) {
@@ -58,7 +58,7 @@ const onMerge = (props, forward) => {
 					}
 				);
 
-			setAttributes({
+			handleSetAttributes({
 				content: newContent,
 				'custom-formats': newCustomFormats,
 			});

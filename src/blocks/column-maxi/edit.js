@@ -10,7 +10,7 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import {
 	BlockPlaceholder,
 	BlockResizer,
@@ -62,7 +62,7 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			originalNestedColumns,
 			rowBlockId,
-			setAttributes,
+			handleSetAttributes,
 			updateRowPattern,
 			hasInnerBlocks,
 		} = this.props;
@@ -151,7 +151,7 @@ class edit extends MaxiBlockComponent {
 										context.rowPattern
 									);
 
-									setAttributes({
+									handleSetAttributes({
 										[`column-size-${deviceType}`]: round(
 											+elt.style.width.replace('%', '')
 										),
@@ -207,4 +207,4 @@ const editDispatch = withDispatch(dispatch => {
 	};
 });
 
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect, editDispatch, withMaxiProps)(edit);

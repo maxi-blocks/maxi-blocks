@@ -28,7 +28,7 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes } = props;
+		const { attributes, deviceType, handleSetAttributes } = props;
 		const { isList, textLevel } = attributes;
 
 		return (
@@ -64,7 +64,7 @@ const Inspector = memo(
 															)}
 															value={textLevel}
 															onChange={obj =>
-																setAttributes(
+																handleSetAttributes(
 																	obj
 																)
 															}

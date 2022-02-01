@@ -13,14 +13,14 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const display = ({ props }) => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, handleSetAttributes } = props;
 
 	return {
 		label: __('Show/hide block', 'maxi-blocks'),
 		content: (
 			<DisplayControl
 				{...getGroupAttributes(attributes, 'display')}
-				onChange={obj => setAttributes(obj)}
+				onChange={obj => handleSetAttributes(obj)}
 				breakpoint={deviceType}
 				defaultDisplay='flex'
 			/>

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { updateBreakpointAttributes } from '../../extensions/styles';
 
 /**
  * Imports
@@ -52,4 +53,4 @@ const attributes = {
 	...attributesData.customCss,
 };
 
-export default attributes;
+export default updateBreakpointAttributes(attributes);

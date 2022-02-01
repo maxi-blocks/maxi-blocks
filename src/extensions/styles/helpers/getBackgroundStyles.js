@@ -832,7 +832,15 @@ const getGeneralBackgroundStyles = (
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const size = {};
 
-	const isAssigned = value => value !== undefined && value !== '';
+	const getBorderValue = (target, breakpoint) => {
+		const lastValue = getLastBreakpointAttribute(
+			`border-${target}-width`,
+			breakpoint,
+			props
+		);
+
+		return isNumber(lastValue) ? lastValue : 2;
+	};
 
 	const border = getBorderStyles({
 		obj: borderProps,
@@ -841,34 +849,10 @@ const getGeneralBackgroundStyles = (
 	});
 
 	breakpoints.forEach(breakpoint => {
-		const widthTop = isAssigned(
-			getLastBreakpointAttribute('border-top-width', breakpoint, props)
-		)
-			? getLastBreakpointAttribute('border-top-width', breakpoint, props)
-			: 2;
-		const widthBottom = isAssigned(
-			getLastBreakpointAttribute('border-bottom-width', breakpoint, props)
-		)
-			? getLastBreakpointAttribute(
-					'border-bottom-width',
-					breakpoint,
-					props
-			  )
-			: 2;
-		const widthLeft = isAssigned(
-			getLastBreakpointAttribute('border-left-width', breakpoint, props)
-		)
-			? getLastBreakpointAttribute('border-left-width', breakpoint, props)
-			: 2;
-		const widthRight = isAssigned(
-			getLastBreakpointAttribute('border-right-width', breakpoint, props)
-		)
-			? getLastBreakpointAttribute(
-					'border-right-width',
-					breakpoint,
-					props
-			  )
-			: 2;
+		const widthTop = getBorderValue('top', breakpoint);
+		const widthBottom = getBorderValue('bottom', breakpoint);
+		const widthLeft = getBorderValue('left', breakpoint);
+		const widthRight = getBorderValue('right', breakpoint);
 		const widthUnit =
 			getLastBreakpointAttribute(
 				'border-unit-width',

@@ -12,7 +12,7 @@ import {
 import { openSidebarTab, getAttributes } from '../../utils';
 
 describe('GradientControl', () => {
-	it('Button background', async () => {
+	it('Check gradient in button background', async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'style', 'button background');

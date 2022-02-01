@@ -299,7 +299,7 @@ const LinkOptions = props => {
 					className='maxi-typography-link-color'
 					color={getValue(`${prefix}link-color`)}
 					prefix={`${prefix}link-`}
-					useBreakpointForDefaultForDefault
+					useBreakpointForDefault
 					paletteStatus={getValue(`${prefix}link-palette-status`)}
 					paletteColor={getValue(`${prefix}link-palette-color`)}
 					paletteOpacity={

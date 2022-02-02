@@ -129,8 +129,10 @@ const getBorderStyles = ({
 					} else response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newLabel.includes(key))) {
 					if (
-						(key.includes('color') || key.includes('opacity')) &&
-						(!isBorderNone || (isHover && globalHoverStatus))
+						((key.includes('color') || key.includes('opacity')) &&
+							(!isBorderNone ||
+								(isHover && globalHoverStatus))) ||
+						!key.includes('color')
 					)
 						response[breakpoint]['border-color'] = getColorString();
 					else if (

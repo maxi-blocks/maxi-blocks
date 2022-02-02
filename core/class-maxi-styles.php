@@ -163,7 +163,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        return  explode(',', $fonts);
+        return json_decode($fonts, true);
     }
 
     /**
@@ -190,6 +190,16 @@ class MaxiBlocks_Styles
      *
      * @return object   Font name with font options
      */
+
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+
     
     public function enqueue_fonts($fonts)
     {
@@ -197,27 +207,30 @@ class MaxiBlocks_Styles
             return;
         }
 
-        foreach ($fonts as $font) {
-            $fontData = json_decode($font, true);
-            $fontName = array_keys($fontData)[0];
-            $fontInfo = $fontData[$fontName];
-    
-            $fontWeight = array_key_exists('weight', $fontInfo) ? $fontInfo['weight'] : false;
-            $fontStyle = array_key_exists('style', $fontInfo) ? $fontInfo['style'] : false;
-        
-            if (!empty($fontName)) {
-                $fontUrl = "https://fonts.googleapis.com/css2?family=$fontName:";
-                if ($fontStyle === 'italic') {
-                    $fontUrl = $fontUrl.'ital,';
-                }
+        foreach ($fonts as $font => $fontData) {
+            if ($font) {
+                $this->write_log($font);
+                $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
+                if (!empty($fontData)) {
+                    $this->write_log($fontData);
+                    $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
+                    $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
 
-                if ($fontWeight) {
-                    $fontUrl = $fontUrl.'wght@'.$fontWeight;
+                    if ($fontStyle === 'italic') {
+                        $fontUrl = $fontUrl.'ital,';
+                    }
+    
+                    if ($fontWeight) {
+                        $fontUrl = $fontUrl.'wght@'.$fontWeight;
+                    } else {
+                        $fontUrl = $fontUrl.'wght@400';
+                    }
                 } else {
                     $fontUrl = $fontUrl.'wght@400';
                 }
+                
                 wp_enqueue_style(
-                    'maxi-'.sanitize_title_with_dashes($fontName),
+                    'maxi-'.sanitize_title_with_dashes($font),
                     $fontUrl
                 );
             }

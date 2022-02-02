@@ -103,8 +103,6 @@ export const handleSetAttributes = ({
 		response[attrLabelOnWinBreakpoint] = attributes[attrLabelOnGeneral];
 	});
 
-	console.table(response);
-
 	onChange(response);
 };
 

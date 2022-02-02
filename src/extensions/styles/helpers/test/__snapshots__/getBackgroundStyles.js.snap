@@ -331,7 +331,9 @@ exports[`getBackgroundStyles Get correct block background styles for general res
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "general": Object {
+        "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
+      },
       "l": Object {},
       "m": Object {},
       "s": Object {},

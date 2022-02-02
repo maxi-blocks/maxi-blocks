@@ -33,10 +33,6 @@ const ImageAltControl = ({ mediaID, altSelector, mediaAlt, onChange }) => {
 	const getImageAltOptions = () => {
 		const response = [
 			{
-				label: __('WordPress Alt', 'maxi-blocks'),
-				value: 'wordpress',
-			},
-			{
 				label: __('Custom', 'maxi-blocks'),
 				value: 'custom',
 			},
@@ -50,6 +46,12 @@ const ImageAltControl = ({ mediaID, altSelector, mediaAlt, onChange }) => {
 			response.unshift({
 				label: __('Image Title', 'maxi-blocks'),
 				value: 'title',
+			});
+
+		if (wpAlt)
+			response.unshift({
+				label: __('WordPress Alt', 'maxi-blocks'),
+				value: 'wordpress',
 			});
 
 		return response;

@@ -25,6 +25,7 @@ import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
 // import InsertBefore from '../insert-before';
 import openSidebar from '../../../../extensions/dom';
+import CaptionToolbar from '../../captionToolbar';
 
 /**
  * Icons
@@ -125,7 +126,8 @@ const MoreSettings = props => {
 									/>
 								</div>
 							)}
-							{blockName === 'maxi-blocks/svg-icon-maxi' && (
+							{(blockName === 'maxi-blocks/svg-icon-maxi' ||
+								blockName === 'maxi-blocks/image-maxi') && (
 								<>
 									<Alignment
 										clientId={clientId}

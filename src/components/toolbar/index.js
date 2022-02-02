@@ -34,7 +34,7 @@ import {
 	DividerAlignment,
 	DividerColor,
 	Duplicate,
-	ImageSize,
+	// ImageSize,
 	Link,
 	Mover,
 	// PaddingMargin,
@@ -57,6 +57,7 @@ import {
 	Help,
 	VerticalAlign,
 	TextMargin,
+	ToolbarMediaUpload,
 } from './components';
 
 /**
@@ -221,6 +222,18 @@ const MaxiToolbar = memo(
 								</span>
 							</div>
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
+							{/* <ToolbarMediaUpload
+								blockName={name}
+								setAttributes
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								clientId={clientId}
+								mediaID={mediaID}
+							/> */}
 							{name === 'maxi-blocks/image-maxi' && (
 								<MediaUpload
 									onSelect={media => {
@@ -608,7 +621,7 @@ const MaxiToolbar = memo(
 								verticalAlign={attributes.verticalAlign}
 								onChange={obj => setAttributes(obj)}
 							/> */}
-							{breakpoint === 'general' && (
+							{/* {breakpoint === 'general' && (
 								<ImageSize
 									blockName={name}
 									imgWidth={imgWidth}
@@ -627,7 +640,7 @@ const MaxiToolbar = memo(
 										setAttributes({ captionType })
 									}
 								/>
-							)}
+							)} */}
 							{/* <PaddingMargin
 								blockName={name}
 								{...getGroupAttributes(attributes, [

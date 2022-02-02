@@ -11,12 +11,13 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
+	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 
 /**
  * External dependencies

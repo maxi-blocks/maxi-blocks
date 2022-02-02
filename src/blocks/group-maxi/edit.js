@@ -8,14 +8,18 @@ import { compose } from '@wordpress/compose';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
 	BlockPlaceholder,
 	Toolbar,
 	InnerBlocks,
 } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 

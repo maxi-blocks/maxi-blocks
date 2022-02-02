@@ -17,8 +17,13 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import {
+	getMaxiBlockAttributes,
+	MaxiBlockComponent,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+
 import {
 	BlockResizer,
 	Button,

@@ -13,9 +13,11 @@ import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
+	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Button, Toolbar } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,

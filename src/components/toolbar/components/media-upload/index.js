@@ -24,7 +24,7 @@ import ToolbarPopover from '../toolbar-popover';
  * Delete
  */
 const ToolbarMediaUpload = props => {
-	const { blockName, attributes, setAttributes, mediaID } = props;
+	const { blockName, attributes, setAttributes } = props;
 
 	if (blockName !== 'maxi-blocks/image-maxi') return null;
 
@@ -32,66 +32,66 @@ const ToolbarMediaUpload = props => {
 
 	return (
 		<div className='toolbar-item toolbar-item__replace-image'>
-			{/* <ToolbarPopover
+			<ToolbarPopover
 				tooltip={__('Replace', 'maxi-blocks')}
 				// icon={toolbarType}
 				text={__('Replace', 'maxi-blocks')}
-				advancedOptions='typography'
-			> */}
-			<MediaUpload
-				onSelect={media => {
-					setAttributes({
-						mediaID: media.id,
-						mediaURL: media.url,
-						mediaWidth: media.width,
-						mediaHeight: media.height,
-						isImageUrl: false,
-					});
-
-					const newLocal = this;
-					newLocal.setState({
-						isExternalClass: false,
-					});
-
-					if (!isEmpty(attributes.SVGData)) {
-						const cleanedContent = DOMPurify.sanitize(SVGElement);
-
-						const svg = document
-							.createRange()
-							.createContextualFragment(
-								cleanedContent
-							).firstElementChild;
-
-						const resData = generateDataObject('', svg);
-
-						const SVGValue = resData;
-						const el = Object.keys(SVGValue)[0];
-
-						SVGValue[el].imageID = media.id;
-						SVGValue[el].imageURL = media.url;
-
-						const resEl = injectImgSVG(svg, resData);
+			>
+				<MediaUpload
+					onSelect={media => {
 						setAttributes({
-							SVGElement: resEl.outerHTML,
-							SVGData: SVGValue,
+							mediaID: media.id,
+							mediaURL: media.url,
+							mediaWidth: media.width,
+							mediaHeight: media.height,
+							isImageUrl: false,
 						});
-					}
-				}}
-				allowedTypes='image'
-				value='image'
-				render={({ open }) => (
-					<div className='toolbar-item toolbar-item__replace-image'>
-						<Button
-							className='components-button'
-							type='button'
-							onClick={open}
-						>
-							{__('Upload', 'maxi-blocks')}
-						</Button>
-					</div>
-				)}
-			/>
-			{/* </ToolbarPopover> */}
+
+						const newLocal = this;
+						newLocal.setState({
+							isExternalClass: false,
+						});
+
+						if (!isEmpty(attributes.SVGData)) {
+							const cleanedContent =
+								DOMPurify.sanitize(SVGElement);
+
+							const svg = document
+								.createRange()
+								.createContextualFragment(
+									cleanedContent
+								).firstElementChild;
+
+							const resData = generateDataObject('', svg);
+
+							const SVGValue = resData;
+							const el = Object.keys(SVGValue)[0];
+
+							SVGValue[el].imageID = media.id;
+							SVGValue[el].imageURL = media.url;
+
+							const resEl = injectImgSVG(svg, resData);
+							setAttributes({
+								SVGElement: resEl.outerHTML,
+								SVGData: SVGValue,
+							});
+						}
+					}}
+					allowedTypes='image'
+					value='image'
+					render={({ open }) => (
+						<div className='toolbar-item toolbar-item__replace-image'>
+							<Button
+								className='components-button'
+								type='button'
+								onClick={open}
+							>
+								{__('Upload', 'maxi-blocks')}
+							</Button>
+						</div>
+					)}
+				/>
+			</ToolbarPopover>
 		</div>
 	);
 };

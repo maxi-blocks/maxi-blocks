@@ -7,11 +7,6 @@ import { Tooltip } from '@wordpress/components';
 import { useSelect, dispatch } from '@wordpress/data';
 
 /**
- * External dependencies
- */
-// import { isEmpty } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import Button from '../../../button';
@@ -20,12 +15,9 @@ import Dropdown from '../../../dropdown';
 import CopyPaste from '../copy-paste';
 import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
-// import PaddingMargin from '../padding-margin';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
-// import InsertBefore from '../insert-before';
 import openSidebar from '../../../../extensions/dom';
-import CaptionToolbar from '../../captionToolbar';
 
 /**
  * Icons
@@ -125,6 +117,30 @@ const MoreSettings = props => {
 										breakpoint={breakpoint}
 									/>
 								</div>
+							)}
+							{blockName === 'maxi-blocks/image-maxi' && (
+								<>
+									<Button
+										onClick={() =>
+											openGeneralSidebar(
+												'edit-post/block'
+											).then(() =>
+												openSidebar('dimension')
+											)
+										}
+									>
+										{__('Image dimension', 'maxi-blocks')}
+									</Button>
+									<Button
+										onClick={() =>
+											openGeneralSidebar(
+												'edit-post/block'
+											).then(() => openSidebar('caption'))
+										}
+									>
+										{__('Caption', 'maxi-blocks')}
+									</Button>
+								</>
 							)}
 							{(blockName === 'maxi-blocks/svg-icon-maxi' ||
 								blockName === 'maxi-blocks/image-maxi') && (

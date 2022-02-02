@@ -222,7 +222,7 @@ const MaxiToolbar = memo(
 								</span>
 							</div>
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
-							{/* <ToolbarMediaUpload
+							<ToolbarMediaUpload
 								blockName={name}
 								setAttributes
 								{...getGroupAttributes(
@@ -233,8 +233,8 @@ const MaxiToolbar = memo(
 								breakpoint={breakpoint}
 								clientId={clientId}
 								mediaID={mediaID}
-							/> */}
-							{name === 'maxi-blocks/image-maxi' && (
+							/>
+							{/* {name === 'maxi-blocks/image-maxi' && (
 								<MediaUpload
 									onSelect={media => {
 										setAttributes({
@@ -304,7 +304,7 @@ const MaxiToolbar = memo(
 										</Tooltip>
 									)}
 								/>
-							)}
+							)} */}
 							<TextColor
 								blockName={name}
 								{...getGroupAttributes(

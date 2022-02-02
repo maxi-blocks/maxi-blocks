@@ -183,4 +183,6 @@ const attributes = {
 	...attributesData.customCss,
 };
 
-export default updateBreakpointAttributes(attributes);
+// export default updateBreakpointAttributes(attributes);
+
+export default attributes;

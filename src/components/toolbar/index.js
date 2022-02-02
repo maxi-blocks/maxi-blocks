@@ -1,19 +1,19 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { Popover, Tooltip } from '@wordpress/components';
+// import { __ } from '@wordpress/i18n';
+import { Popover } from '@wordpress/components';
 import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 import { getScrollContainer } from '@wordpress/dom';
-import { MediaUpload } from '@wordpress/block-editor';
+// import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
-import DOMPurify from 'dompurify';
+// import DOMPurify from 'dompurify';
 
 /**
  * Utils
@@ -65,7 +65,7 @@ import {
  */
 import './editor.scss';
 import { getGroupAttributes } from '../../extensions/styles';
-import { generateDataObject, injectImgSVG } from '../../extensions/svg';
+// import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 
 /**
  * General
@@ -122,8 +122,8 @@ const MaxiToolbar = memo(
 			content,
 			customLabel,
 			fullWidth,
-			imageSize,
-			imgWidth,
+			// imageSize,
+			// imgWidth,
 			isFirstOnHierarchy,
 			isList,
 			lineHorizontal,

@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackgroundControl Check Background gradient layer 1`] = `
+Array [
+  Object {
+    "background-svg-palette-color-general": 5,
+    "background-svg-palette-status-general": true,
+    "background-svg-position-bottom-general": 0,
+    "background-svg-position-left-general": 0,
+    "background-svg-position-right-general": 0,
+    "background-svg-position-sync-general": "all",
+    "background-svg-position-top-general": 0,
+    "background-svg-position-unit-general": "%",
+    "background-svg-size-general": 100,
+    "background-svg-size-unit-general": "%",
+    "background-svg-top-unit-general": "%",
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "shape",
+  },
+  Object {
+    "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-m": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-opacity-general": 0.5,
+    "background-gradient-opacity-m": 0.5,
+    "display-general": "block",
+    "id": 2,
+    "isHover": false,
+    "type": "gradient",
+  },
+]
+`;
+
+exports[`BackgroundControl Check Background gradient layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ width: 100%; top: 0%; right: 0%; bottom: 0%; left: 0%; display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1 svg *,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1 svg *{ fill: rgba(var(--maxi-light-color-5,0,0,0),1);}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2{ opacity: 0.5; background: radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%); display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"m\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2{ opacity: 0.5;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2{ opacity: 0.88;}</style>"`;
+
+exports[`BackgroundControl Check Background gradient layer hover 1`] = `
+Array [
+  Object {
+    "background-svg-palette-color-general": 5,
+    "background-svg-palette-status-general": true,
+    "background-svg-position-bottom-general": 0,
+    "background-svg-position-left-general": 0,
+    "background-svg-position-right-general": 0,
+    "background-svg-position-sync-general": "all",
+    "background-svg-position-top-general": 0,
+    "background-svg-position-unit-general": "%",
+    "background-svg-size-general": 100,
+    "background-svg-size-unit-general": "%",
+    "background-svg-top-unit-general": "%",
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "shape",
+  },
+  Object {
+    "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-m": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-opacity-general": 0.5,
+    "background-gradient-opacity-m": 0.5,
+    "background-gradient-opacity-s": 0.88,
+    "display-general": "block",
+    "id": 2,
+    "isHover": false,
+    "type": "gradient",
+  },
+  Object {
+    "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-m": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
+    "background-gradient-opacity-general": 0.5,
+    "background-gradient-opacity-m": 0.5,
+    "display-general": "block",
+    "id": 3,
+    "isHover": false,
+    "type": "gradient",
+  },
+]
+`;
+
+exports[`BackgroundControl Check Background gradient layer hover 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ width: 100%; top: 0%; right: 0%; bottom: 0%; left: 0%; display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1 svg *,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1 svg *{ fill: rgba(var(--maxi-light-color-5,0,0,0),1);}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2{ opacity: 0.5; background: radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%); display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__3,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__3{ opacity: 0.5; background: radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%); display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"m\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2{ opacity: 0.5;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"m\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__3,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__3,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__3{ opacity: 0.5;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__2{ opacity: 0.88;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__3,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__3{ opacity: 0.88;}</style>"`;

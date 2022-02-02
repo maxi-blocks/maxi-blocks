@@ -9,7 +9,7 @@ import { RichText } from '@wordpress/block-editor';
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { WithRatioResized } from './withRatioResized';
+
 /**
  * External dependencies
  */
@@ -116,5 +116,12 @@ const save = props => {
 		</MaxiBlock>
 	);
 };
+
+const WithRatioResized = ({ isResized, children }) =>
+	isResized ? (
+		<div className='maxi-image-ratio-wrapper'>{children}</div>
+	) : (
+		children
+	);
 
 export default save;

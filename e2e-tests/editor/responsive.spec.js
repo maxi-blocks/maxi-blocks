@@ -34,6 +34,11 @@ describe('Responsive attributes mechanisms', () => {
 			'border-right-width-general': 2,
 			'border-bottom-width-general': 2,
 			'border-left-width-general': 2,
+			'border-style-xl': undefined,
+			'border-top-width-xl': undefined,
+			'border-right-width-xl': undefined,
+			'border-bottom-width-xl': undefined,
+			'border-left-width-xl': undefined,
 		};
 
 		const borderResult = await getAttributes([
@@ -42,9 +47,56 @@ describe('Responsive attributes mechanisms', () => {
 			'border-right-width-general',
 			'border-bottom-width-general',
 			'border-left-width-general',
+			'border-style-xl',
+			'border-top-width-xl',
+			'border-right-width-xl',
+			'border-bottom-width-xl',
+			'border-left-width-xl',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('On change attributes from base responsive multiple times, just "general" attributes change', async () => {
+		const borderAccordion = await openSidebarTab(page, 'style', 'border');
+		const selector = await borderAccordion.$(
+			'.maxi-border-control__type select'
+		);
+		await selector.select('solid');
+
+		await borderAccordion.$$eval(
+			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
+			select => select[0].click()
+		);
+
+		const firstExpect = {
+			'border-palette-status-general': false,
+		};
+
+		const firstResult = await getAttributes([
+			'border-palette-status-general',
+		]);
+
+		expect(firstResult).toStrictEqual(firstExpect);
+
+		await borderAccordion.$$eval(
+			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
+			select => select[0].click()
+		);
+
+		const secondExpect = {
+			'border-palette-status-general': true,
+			'border-palette-status-xl': undefined,
+		};
+
+		const secondResult = await getAttributes([
+			'border-palette-status-general',
+			'border-palette-status-xl',
+		]);
+
+		expect(secondResult).toStrictEqual(secondExpect);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

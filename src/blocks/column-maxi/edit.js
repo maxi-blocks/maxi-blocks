@@ -62,7 +62,7 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			originalNestedColumns,
 			rowBlockId,
-			handleSetAttributes,
+			maxiSetAttributes,
 			updateRowPattern,
 			hasInnerBlocks,
 		} = this.props;
@@ -151,7 +151,7 @@ class edit extends MaxiBlockComponent {
 										context.rowPattern
 									);
 
-									handleSetAttributes({
+									maxiSetAttributes({
 										[`column-size-${deviceType}`]: round(
 											+elt.style.width.replace('%', '')
 										),

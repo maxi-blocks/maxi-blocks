@@ -13,14 +13,14 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const position = ({ props }) => {
-	const { attributes, deviceType, handleSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
 		label: __('Position', 'maxi-blocks'),
 		content: (
 			<PositionControl
 				{...getGroupAttributes(attributes, 'position')}
-				onChange={obj => handleSetAttributes(obj)}
+				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
 			/>
 		),

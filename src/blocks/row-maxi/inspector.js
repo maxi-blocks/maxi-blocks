@@ -24,7 +24,7 @@ import { selectorsRow, categoriesRow } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, handleSetAttributes, clientId } = props;
+	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 	const { horizontalAlign, verticalAlign } = attributes;
 
 	return (
@@ -62,7 +62,7 @@ const Inspector = props => {
 															attributes.removeColumnGap
 														}
 														onChange={obj =>
-															handleSetAttributes(
+															maxiSetAttributes(
 																obj
 															)
 														}
@@ -112,11 +112,9 @@ const Inspector = props => {
 															},
 														]}
 														onChange={horizontalAlign =>
-															handleSetAttributes(
-																{
-																	horizontalAlign,
-																}
-															)
+															maxiSetAttributes({
+																horizontalAlign,
+															})
 														}
 													/>
 													<SelectControl
@@ -170,11 +168,9 @@ const Inspector = props => {
 															},
 														]}
 														onChange={verticalAlign =>
-															handleSetAttributes(
-																{
-																	verticalAlign,
-																}
-															)
+															maxiSetAttributes({
+																verticalAlign,
+															})
 														}
 													/>
 												</>

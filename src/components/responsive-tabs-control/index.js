@@ -92,9 +92,12 @@ const ResponsiveTabsControl = props => {
 				return {
 					label: breakpoint,
 					content: cloneElement(children, {
-						breakpoint: breakpoint.toLowerCase(),
-						isGeneral: props.breakpoint === 'general',
+						breakpoint:
+							getWinBreakpoint() === breakpoint.toLowerCase()
+								? 'general'
+								: breakpoint.toLowerCase(),
 					}),
+					// content: children,
 					showNotification: showNotification(breakpoint),
 					callback: () =>
 						!disableCallback

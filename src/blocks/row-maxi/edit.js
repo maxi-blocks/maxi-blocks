@@ -57,7 +57,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			instanceId,
 			selectOnClick,
-			handleSetAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -111,14 +111,12 @@ class edit extends MaxiBlockComponent {
 														)}
 														className='maxi-row-block__template__button'
 														onClick={() => {
-															handleSetAttributes(
-																{
-																	'row-pattern-general':
-																		template.name,
-																	'row-pattern-m':
-																		template.responsiveLayout,
-																}
-															);
+															maxiSetAttributes({
+																'row-pattern-general':
+																	template.name,
+																'row-pattern-m':
+																	template.responsiveLayout,
+															});
 															loadColumnsTemplate(
 																template.name,
 																attributes.removeColumnGap,

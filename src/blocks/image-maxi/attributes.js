@@ -10,7 +10,6 @@ import * as attributesData from '../../extensions/styles/defaults/index';
 import {
 	breakpointAttributesCreator,
 	prefixAttributesCreator,
-	updateBreakpointAttributes,
 } from '../../extensions/styles';
 
 /**
@@ -179,4 +178,4 @@ const attributes = {
 	...attributesData.customCss,
 };
 
-export default updateBreakpointAttributes(attributes);
+export default attributes;

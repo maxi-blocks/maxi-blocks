@@ -26,7 +26,7 @@ import { isEmpty, without } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, handleSetAttributes, clientId } = props;
+	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
 
 	const getCategoriesCss = () => {
@@ -87,11 +87,9 @@ const Inspector = props => {
 															},
 														]}
 														onChange={lineOrientation =>
-															handleSetAttributes(
-																{
-																	lineOrientation,
-																}
-															)
+															maxiSetAttributes({
+																lineOrientation,
+															})
 														}
 													/>
 													<SelectControl
@@ -124,11 +122,9 @@ const Inspector = props => {
 															},
 														]}
 														onChange={lineVertical =>
-															handleSetAttributes(
-																{
-																	lineVertical,
-																}
-															)
+															maxiSetAttributes({
+																lineVertical,
+															})
 														}
 													/>
 													<SelectControl
@@ -163,11 +159,9 @@ const Inspector = props => {
 															},
 														]}
 														onChange={lineHorizontal =>
-															handleSetAttributes(
-																{
-																	lineHorizontal,
-																}
-															)
+															maxiSetAttributes({
+																lineHorizontal,
+															})
 														}
 													/>
 												</>
@@ -186,7 +180,7 @@ const Inspector = props => {
 															['divider', 'size']
 														)}
 														onChange={obj =>
-															handleSetAttributes(
+															maxiSetAttributes(
 																obj
 															)
 														}

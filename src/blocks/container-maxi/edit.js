@@ -62,7 +62,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, handleSetAttributes } =
+		const { attributes, deviceType, hasInnerBlocks, maxiSetAttributes } =
 			this.props;
 		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
@@ -102,7 +102,7 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
-							onChange={obj => handleSetAttributes(obj)}
+							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 					</>

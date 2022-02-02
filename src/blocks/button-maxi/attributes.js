@@ -7,10 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import {
-	prefixAttributesCreator,
-	updateBreakpointAttributes,
-} from '../../extensions/styles';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -182,7 +179,5 @@ const attributes = {
 	...attributesData.padding,
 	...attributesData.customCss,
 };
-
-// export default updateBreakpointAttributes(attributes);
 
 export default attributes;

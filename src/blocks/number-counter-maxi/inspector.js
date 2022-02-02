@@ -25,7 +25,7 @@ import { isEmpty, without } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, handleSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	const getCategoriesCss = () => {
 		const { 'background-layers': bgLayers } = attributes;
@@ -68,7 +68,7 @@ const Inspector = props => {
 														'number-counter-'
 													)}
 													onChange={obj =>
-														handleSetAttributes(obj)
+														maxiSetAttributes(obj)
 													}
 													breakpoint={deviceType}
 												/>

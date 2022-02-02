@@ -61,6 +61,7 @@ const addResponsiveTest = async ({
 	}
 
 	if (needSelectIndex) {
+		debugger;
 		const CheckBaseSelect = await page.$eval(
 			instance,
 			selector => selector.selectedOptions[0].value
@@ -68,6 +69,7 @@ const addResponsiveTest = async ({
 
 		await page.$eval(instance, selector => selector.value);
 
+		debugger;
 		if (CheckBaseSelect !== baseExpect) return false;
 
 		// change responsive s
@@ -85,6 +87,7 @@ const addResponsiveTest = async ({
 			selector => selector.selectedOptions[0].value
 		);
 
+		debugger;
 		if (checkXsSelect !== xsExpect) return false;
 
 		// change responsive m
@@ -94,8 +97,10 @@ const addResponsiveTest = async ({
 			selector => selector.selectedOptions[0].value
 		);
 
+		debugger;
 		if (checkMSelect !== baseExpect) return false;
 
+		debugger;
 		return true;
 	}
 };

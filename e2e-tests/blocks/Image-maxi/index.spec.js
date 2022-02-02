@@ -114,21 +114,21 @@ describe('Image Maxi', () => {
 			letterSpacing: '30',
 		});
 
-		const responsiveStage = await accordionPanel.$eval(
-			'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
-			tab => tab.innerText.toLowerCase()
-		);
+		// const responsiveStage = await accordionPanel.$eval(
+		// 	'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
+		// 	tab => tab.innerText.toLowerCase()
+		// );
 
 		const attributes = await getAttributes([
-			[`font-size-${responsiveStage}`],
-			[`line-height-${responsiveStage}`],
-			[`letter-spacing-${responsiveStage}`],
+			['font-size-general'],
+			['line-height-general'],
+			['letter-spacing-general'],
 		]);
 
 		const expectedAttributesTwo = {
-			[`font-size-${responsiveStage}`]: 11,
-			[`line-height-${responsiveStage}`]: 22,
-			[`letter-spacing-${responsiveStage}`]: 30,
+			'font-size-general': 11,
+			'line-height-general': 22,
+			'letter-spacing-general': 30,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);

@@ -45,7 +45,7 @@ import {
  * Dimension tab
  */
 const dimensionTab = props => {
-	const { attributes, clientId, imageData, handleSetAttributes } = props;
+	const { attributes, clientId, imageData, maxiSetAttributes } = props;
 	const {
 		cropOptions,
 		imageRatio,
@@ -121,7 +121,7 @@ const dimensionTab = props => {
 										mediaWidth,
 										mediaHeight,
 									} = getSizeResponse(imageSize);
-									handleSetAttributes({
+									maxiSetAttributes({
 										imageSize,
 										mediaURL,
 										mediaWidth,
@@ -134,7 +134,7 @@ const dimensionTab = props => {
 									mediaID={mediaID}
 									cropOptions={cropOptions}
 									onChange={cropOptions => {
-										handleSetAttributes({
+										maxiSetAttributes({
 											cropOptions,
 											mediaURL:
 												cropOptions.image.source_url,
@@ -153,11 +153,11 @@ const dimensionTab = props => {
 					value={attributes.imgWidth}
 					onChange={val => {
 						if (!isNil(val))
-							handleSetAttributes({
+							maxiSetAttributes({
 								imgWidth: val,
 							});
 						else
-							handleSetAttributes({
+							maxiSetAttributes({
 								imgWidth: getDefaultAttribute(
 									'imgWidth',
 									clientId
@@ -200,7 +200,7 @@ const dimensionTab = props => {
 							},
 						]}
 						onChange={imageRatio =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								imageRatio,
 							})
 						}
@@ -221,7 +221,7 @@ const Inspector = memo(
 			clientId,
 			deviceType,
 			imageData,
-			handleSetAttributes,
+			maxiSetAttributes,
 		} = props;
 		const {
 			altSelector,
@@ -298,7 +298,7 @@ const Inspector = memo(
 															}
 															mediaAlt={mediaAlt}
 															onChange={obj => {
-																handleSetAttributes(
+																maxiSetAttributes(
 																	obj
 																);
 															}}
@@ -317,7 +317,7 @@ const Inspector = memo(
 															className='maxi-image-caption-type'
 															options={getCaptionOptions()}
 															onChange={captionType => {
-																handleSetAttributes(
+																maxiSetAttributes(
 																	{
 																		captionType,
 																	}
@@ -327,7 +327,7 @@ const Inspector = memo(
 																	captionType ===
 																		'attachment'
 																)
-																	handleSetAttributes(
+																	maxiSetAttributes(
 																		{
 																			captionContent:
 																				imageData
@@ -366,7 +366,7 @@ const Inspector = memo(
 																		},
 																	]}
 																	onChange={captionPosition =>
-																		handleSetAttributes(
+																		maxiSetAttributes(
 																			{
 																				captionPosition,
 																			}
@@ -390,7 +390,7 @@ const Inspector = memo(
 																		]
 																	}
 																	onChangeValue={val =>
-																		handleSetAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-${deviceType}`]:
 																					val,
@@ -414,7 +414,7 @@ const Inspector = memo(
 																		},
 																	}}
 																	onChangeUnit={val =>
-																		handleSetAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-unit-${deviceType}`]:
 																					val,
@@ -422,7 +422,7 @@ const Inspector = memo(
 																		)
 																	}
 																	onReset={() =>
-																		handleSetAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-${deviceType}`]:
 																					getDefaultAttribute(
@@ -459,7 +459,7 @@ const Inspector = memo(
 																				newCaptionContent;
 																		}
 
-																		handleSetAttributes(
+																		maxiSetAttributes(
 																			obj
 																		);
 																	}}
@@ -504,7 +504,7 @@ const Inspector = memo(
 															]
 														)}
 														onChange={obj =>
-															handleSetAttributes(
+															maxiSetAttributes(
 																obj
 															)
 														}
@@ -525,7 +525,7 @@ const Inspector = memo(
 															'imageShape'
 														)}
 														onChange={obj => {
-															handleSetAttributes(
+															maxiSetAttributes(
 																obj
 															);
 														}}
@@ -543,11 +543,9 @@ const Inspector = memo(
 													<ClipPath
 														clipPath={clipPath}
 														onChange={clipPath =>
-															handleSetAttributes(
-																{
-																	clipPath,
-																}
-															)
+															maxiSetAttributes({
+																clipPath,
+															})
 														}
 													/>
 												),

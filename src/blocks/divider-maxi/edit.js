@@ -38,7 +38,7 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			isSelected,
 			onDeviceTypeChange,
-			handleSetAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
 			attributes;
@@ -66,7 +66,7 @@ class edit extends MaxiBlockComponent {
 			);
 
 			if (sizeUnit === 'em')
-				handleSetAttributes({
+				maxiSetAttributes({
 					[`height-unit-${deviceType}`]: 'px',
 				});
 		};
@@ -78,7 +78,7 @@ class edit extends MaxiBlockComponent {
 				attributes
 			);
 
-			handleSetAttributes({
+			maxiSetAttributes({
 				[`height-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,

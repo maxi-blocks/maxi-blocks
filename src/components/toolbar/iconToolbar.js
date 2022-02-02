@@ -33,7 +33,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const IconToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, handleSetAttributes, name, isSelected } =
+		const { attributes, clientId, maxiSetAttributes, name, isSelected } =
 			props;
 		const { uniqueID, parentBlockStyle } = attributes;
 
@@ -84,7 +84,7 @@ const IconToolbar = memo(
 				obj.captionContent = newCaptionContent;
 			}
 
-			handleSetAttributes(obj);
+			maxiSetAttributes(obj);
 		};
 
 		return (
@@ -136,7 +136,7 @@ const IconToolbar = memo(
 									'iconBorderWidth',
 									'iconBorderRadius',
 								])}
-								onChange={obj => handleSetAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
 								isIconToolbar
@@ -148,7 +148,7 @@ const IconToolbar = memo(
 									attributes,
 									'iconPadding'
 								)}
-								onChange={obj => handleSetAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								disableMargin
 								paddingTarget='icon-padding'

@@ -29,11 +29,8 @@ describe('BackgroundControl', () => {
 		await openSidebarTab(page, 'style', 'background layer');
 	});
 
-	it.only('Check Background Color layer', async () => {
-		debugger;
+	it('Check Background Color layer', async () => {
 		await addBackgroundLayer(page, 'color');
-
-		debugger;
 
 		// change color
 		await page.$$eval(
@@ -206,7 +203,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background image layer', async () => {
+	it.only('Check Background image layer', async () => {
 		await changeResponsive(page, 'base');
 
 		await removeBackgroundLayers(page);
@@ -282,7 +279,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background image layer responsive', async () => {
+	it.only('Check Background image layer responsive', async () => {
 		// general expects in S responsive
 		await changeResponsive(page, 's');
 
@@ -427,7 +424,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background image layer hover', async () => {
+	it.only('Check Background image layer hover', async () => {
 		await changeResponsive(page, 'base');
 
 		const accordion = await openSidebarTab(
@@ -508,7 +505,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background image layer hover responsive', async () => {
+	it.only('Check Background image layer hover responsive', async () => {
 		// general expects in S responsive
 		await changeResponsive(page, 's');
 

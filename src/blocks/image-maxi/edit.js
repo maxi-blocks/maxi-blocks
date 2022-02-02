@@ -100,7 +100,7 @@ class edit extends MaxiBlockComponent {
 		const {
 			attributes,
 			imageData,
-			handleSetAttributes,
+			maxiSetAttributes,
 			clientId,
 			isSelected,
 			deviceType,
@@ -170,7 +170,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				handleSetAttributes(cleanCustomProps);
+				maxiSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -199,14 +199,14 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = captionContent.replace('</a>', '');
-				handleSetAttributes({ captionContent: `${newContent}</a>` });
+				maxiSetAttributes({ captionContent: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					handleSetAttributes({ captionContent });
+					maxiSetAttributes({ captionContent });
 				}, 100);
 			}
 		};
@@ -239,7 +239,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<MediaUpload
 					onSelect={media => {
-						handleSetAttributes({
+						maxiSetAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
@@ -268,7 +268,7 @@ class edit extends MaxiBlockComponent {
 							SVGValue[el].imageURL = media.url;
 
 							const resEl = injectImgSVG(svg, resData);
-							handleSetAttributes({
+							maxiSetAttributes({
 								SVGElement: resEl.outerHTML,
 								SVGData: SVGValue,
 							});
@@ -300,7 +300,7 @@ class edit extends MaxiBlockComponent {
 											elt,
 											delta
 										) => {
-											handleSetAttributes({
+											maxiSetAttributes({
 												imgWidth: +round(
 													elt.style.width.replace(
 														/[^0-9.]/g,
@@ -325,13 +325,13 @@ class edit extends MaxiBlockComponent {
 											<ImageURL
 												url={externalUrl}
 												onChange={url => {
-													handleSetAttributes({
+													maxiSetAttributes({
 														externalUrl: url,
 													});
 												}}
 												onSubmit={url => {
 													if (isURL(url)) {
-														handleSetAttributes({
+														maxiSetAttributes({
 															isImageUrl: true,
 															externalUrl: url,
 															mediaURL: url,
@@ -453,14 +453,14 @@ class edit extends MaxiBlockComponent {
 									<ImageURL
 										url={externalUrl}
 										onChange={url => {
-											handleSetAttributes({
+											maxiSetAttributes({
 												externalUrl: url,
 											});
 										}}
 										onSubmit={url => {
 											if (isURL(url)) {
 												// TODO: fetch url and check for the code and type
-												handleSetAttributes({
+												maxiSetAttributes({
 													isImageUrl: true,
 													externalUrl: url,
 													mediaURL: url,

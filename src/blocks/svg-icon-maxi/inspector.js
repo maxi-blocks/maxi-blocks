@@ -39,7 +39,7 @@ const Inspector = props => {
 		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
-		handleSetAttributes,
+		maxiSetAttributes,
 	} = props;
 	const {
 		blockStyle,
@@ -74,7 +74,7 @@ const Inspector = props => {
 										<CustomLabel
 											customLabel={customLabel}
 											onChange={customLabel =>
-												handleSetAttributes({
+												maxiSetAttributes({
 													customLabel,
 												})
 											}
@@ -85,7 +85,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => {
-												handleSetAttributes(obj);
+												maxiSetAttributes(obj);
 
 												const { parentBlockStyle } =
 													obj;
@@ -166,7 +166,7 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																onChange={obj => {
-																	handleSetAttributes(
+																	maxiSetAttributes(
 																		obj
 																	);
 
@@ -215,7 +215,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															)}
 															onChange={obj => {
-																handleSetAttributes(
+																maxiSetAttributes(
 																	obj
 																);
 
@@ -264,7 +264,7 @@ const Inspector = props => {
 														)}
 														prefix='svg-'
 														onChange={obj => {
-															handleSetAttributes(
+															maxiSetAttributes(
 																obj
 															);
 															changeSVGStrokeWidth(
@@ -297,9 +297,7 @@ const Inspector = props => {
 														'svg'
 													)}
 													onChange={obj => {
-														handleSetAttributes(
-															obj
-														);
+														maxiSetAttributes(obj);
 													}}
 													breakpoint={deviceType}
 													prefix='svg-'

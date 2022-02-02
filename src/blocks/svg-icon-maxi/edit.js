@@ -79,7 +79,7 @@ class edit extends MaxiBlockComponent {
 				}
 
 				if (!isEmpty(newContent))
-					this.props.handleSetAttributes({
+					this.props.maxiSetAttributes({
 						content: newContent,
 					});
 			}
@@ -99,7 +99,7 @@ class edit extends MaxiBlockComponent {
 			attributes,
 			clientId,
 			deviceType,
-			handleSetAttributes,
+			maxiSetAttributes,
 			isSelected,
 		} = this.props;
 		const {
@@ -117,7 +117,7 @@ class edit extends MaxiBlockComponent {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
 
-			handleSetAttributes({
+			maxiSetAttributes({
 				[`svg-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
@@ -162,9 +162,9 @@ class edit extends MaxiBlockComponent {
 						empty={isEmptyContent}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}
-						onOpen={obj => handleSetAttributes(obj)}
-						onSelect={obj => handleSetAttributes(obj)}
-						onRemove={obj => handleSetAttributes(obj)}
+						onOpen={obj => maxiSetAttributes(obj)}
+						onSelect={obj => maxiSetAttributes(obj)}
+						onRemove={obj => maxiSetAttributes(obj)}
 					/>
 					{!isEmptyContent && (
 						<BlockResizer
@@ -210,7 +210,7 @@ const editSelect = withSelect(select => {
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
 		attributes: { content },
-		handleSetAttributes,
+		maxiSetAttributes,
 	} = ownProps;
 
 	const changeSVGStrokeWidth = width => {
@@ -228,7 +228,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				.replace(regexLineToChange, changeTo)
 				.replace(regexLineToChange2, changeTo2);
 
-			handleSetAttributes({
+			maxiSetAttributes({
 				content: newContent,
 			});
 		}
@@ -253,7 +253,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(strokeRegExp, strokeStr)
 			.replace(strokeRegExp2, strokeStr2);
 
-		handleSetAttributes({ content: newContent });
+		maxiSetAttributes({ content: newContent });
 	};
 
 	const changeSVGContent = (color, type) => {
@@ -267,7 +267,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
-		handleSetAttributes({ content: newContent });
+		maxiSetAttributes({ content: newContent });
 	};
 
 	return {

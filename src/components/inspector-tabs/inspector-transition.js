@@ -13,14 +13,14 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const transition = ({ props, label = '' }) => {
-	const { attributes, deviceType, handleSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
 		label,
 		content: (
 			<TransitionControl
 				{...getGroupAttributes(attributes, 'transitionDuration')}
-				onChange={obj => handleSetAttributes(obj)}
+				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
 			/>
 		),

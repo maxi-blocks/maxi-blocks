@@ -54,7 +54,7 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			onRemove,
 			onReplace,
-			handleSetAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const {
 			content,
@@ -89,7 +89,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				handleSetAttributes(cleanCustomProps);
+				maxiSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -120,14 +120,14 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
-				handleSetAttributes({ content: `${newContent}</a>` });
+				maxiSetAttributes({ content: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					handleSetAttributes({ content });
+					maxiSetAttributes({ content });
 				}, 100);
 			}
 		};

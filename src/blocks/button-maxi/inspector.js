@@ -48,7 +48,7 @@ import {
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, handleSetAttributes, clientId } = props;
+		const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 		const { parentBlockStyle } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
@@ -63,7 +63,7 @@ const Inspector = memo(
 				newDefaultPresets[`preset${number}`]['icon-content'] =
 					attributes['icon-content'];
 
-			handleSetAttributes({
+			maxiSetAttributes({
 				...newDefaultPresets[`preset${number}`],
 			});
 		};
@@ -337,7 +337,7 @@ const Inspector = memo(
 																			]
 																		)}
 																		onChange={obj => {
-																			handleSetAttributes(
+																			maxiSetAttributes(
 																				obj
 																			);
 																		}}
@@ -371,7 +371,7 @@ const Inspector = memo(
 																				]
 																			}
 																			onChange={val =>
-																				handleSetAttributes(
+																				maxiSetAttributes(
 																					{
 																						'icon-status-hover':
 																							val,
@@ -396,7 +396,7 @@ const Inspector = memo(
 																					true
 																				)}
 																				onChange={obj => {
-																					handleSetAttributes(
+																					maxiSetAttributes(
 																						obj
 																					);
 																				}}

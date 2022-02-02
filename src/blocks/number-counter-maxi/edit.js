@@ -253,7 +253,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, handleSetAttributes, deviceType, isSelected } =
+		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
 		const { uniqueID, blockFullWidth } = attributes;
 
@@ -266,7 +266,7 @@ class edit extends MaxiBlockComponent {
 				attributes
 			);
 
-			handleSetAttributes({
+			maxiSetAttributes({
 				[`number-counter-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,

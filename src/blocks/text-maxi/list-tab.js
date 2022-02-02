@@ -33,7 +33,7 @@ import { capitalize } from 'lodash';
  * Inspector
  */
 const listTab = props => {
-	const { attributes, deviceType, handleSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 	const {
 		parentBlockStyle,
 		listReversed,
@@ -150,7 +150,7 @@ const listTab = props => {
 							},
 						]}
 						onChange={val =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-position-${deviceType}`]: val,
 							})
 						}
@@ -165,7 +165,7 @@ const listTab = props => {
 						)}
 						value={attributes[`list-indent-${deviceType}`]}
 						onChangeValue={val =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-indent-${deviceType}`]: val,
 							})
 						}
@@ -194,12 +194,12 @@ const listTab = props => {
 							},
 						}}
 						onChangeUnit={val =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-indent-unit-${deviceType}`]: val,
 							})
 						}
 						onReset={() => {
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-indent-${deviceType}`]:
 									getDefaultAttribute(
 										`list-indent-${deviceType}`
@@ -221,7 +221,7 @@ const listTab = props => {
 						)}
 						value={attributes[`list-gap-${deviceType}`]}
 						onChangeValue={val =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-gap-${deviceType}`]: val,
 							})
 						}
@@ -254,12 +254,12 @@ const listTab = props => {
 							},
 						}}
 						onChangeUnit={val =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-gap-unit-${deviceType}`]: val,
 							})
 						}
 						onReset={() => {
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-gap-${deviceType}`]: getDefaultAttribute(
 									`list-gap-${deviceType}`
 								),
@@ -279,7 +279,7 @@ const listTab = props => {
 							attributes
 						)}
 						onChangeValue={val => {
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-size-${deviceType}`]:
 									val !== undefined && val !== '' ? val : '',
 							});
@@ -291,7 +291,7 @@ const listTab = props => {
 							attributes
 						)}
 						onChangeUnit={val =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-size-unit-${deviceType}`]: val,
 							})
 						}
@@ -315,7 +315,7 @@ const listTab = props => {
 							},
 						}}
 						onReset={() =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-size-${deviceType}`]:
 									getDefaultAttribute(
 										`list-size-${deviceType}`
@@ -364,7 +364,7 @@ const listTab = props => {
 							},
 						]}
 						onChange={val =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								[`list-text-position-${deviceType}`]: val,
 							})
 						}
@@ -384,7 +384,7 @@ const listTab = props => {
 							},
 						]}
 						onChange={typeOfList =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								typeOfList,
 								listStyle:
 									getListStyleOptions(typeOfList)[0].value,
@@ -398,7 +398,7 @@ const listTab = props => {
 								className='maxi-image-inspector__list-start'
 								value={listStart}
 								onChangeValue={val => {
-									handleSetAttributes({
+									maxiSetAttributes({
 										listStart:
 											val !== undefined && val !== ''
 												? val
@@ -408,7 +408,7 @@ const listTab = props => {
 								min={-99}
 								max={99}
 								onReset={() =>
-									handleSetAttributes({
+									maxiSetAttributes({
 										listStart: '',
 									})
 								}
@@ -418,7 +418,7 @@ const listTab = props => {
 								className='maxi-image-inspector__list-reverse'
 								selected={listReversed}
 								onChange={val => {
-									handleSetAttributes({
+									maxiSetAttributes({
 										listReversed: val,
 									});
 								}}
@@ -431,7 +431,7 @@ const listTab = props => {
 						value={listStyle || 'disc'}
 						options={getListStyleOptions(typeOfList)}
 						onChange={listStyle =>
-							handleSetAttributes({
+							maxiSetAttributes({
 								listStyle,
 							})
 						}
@@ -460,7 +460,7 @@ const listTab = props => {
 									setListStyleSource(listStyleSource);
 
 									if (listStyleCustoms[listStyleSource])
-										handleSetAttributes({
+										maxiSetAttributes({
 											listStyleCustom:
 												listStyleCustoms[
 													listStyleSource
@@ -475,7 +475,7 @@ const listTab = props => {
 										listStyleCustoms[listStyleSource] ?? ''
 									}
 									onChange={listStyleCustom => {
-										handleSetAttributes({
+										maxiSetAttributes({
 											listStyleCustom,
 										});
 
@@ -492,7 +492,7 @@ const listTab = props => {
 										type='image-shape'
 										style={parentBlockStyle || 'light'}
 										onSelect={obj => {
-											handleSetAttributes({
+											maxiSetAttributes({
 												listStyleCustom: obj.SVGElement,
 											});
 											setListStyleCustoms({
@@ -502,7 +502,7 @@ const listTab = props => {
 											});
 										}}
 										onRemove={() => {
-											handleSetAttributes({
+											maxiSetAttributes({
 												listStyleCustom: '',
 											});
 											setListStyleCustoms({
@@ -557,7 +557,7 @@ const listTab = props => {
 													  })
 													: color;
 
-												handleSetAttributes({
+												maxiSetAttributes({
 													'list-svg-palette-status':
 														paletteStatus,
 													'list-svg-palette-color':

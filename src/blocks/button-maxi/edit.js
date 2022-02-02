@@ -84,7 +84,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, handleSetAttributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
@@ -136,7 +136,7 @@ class edit extends MaxiBlockComponent {
 								}
 
 								this.typingTimeout = setTimeout(() => {
-									handleSetAttributes({ buttonContent });
+									maxiSetAttributes({ buttonContent });
 								}, 100);
 							}}
 							placeholder={__('Set some text…', 'maxi-blocks')}

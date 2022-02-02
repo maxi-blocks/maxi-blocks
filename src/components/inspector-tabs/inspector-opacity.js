@@ -17,7 +17,7 @@ import { opacity as opacityAttr } from '../../extensions/styles/defaults';
  * Component
  */
 const opacity = ({ props }) => {
-	const { attributes, deviceType, handleSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
 		label: __('Opacity', 'maxi-blocks'),
@@ -29,7 +29,7 @@ const opacity = ({ props }) => {
 					getGroupAttributes(attributes, 'opacity')
 				)}
 				onChange={val =>
-					handleSetAttributes({ [`opacity-${deviceType}`]: val })
+					maxiSetAttributes({ [`opacity-${deviceType}`]: val })
 				}
 			/>
 		),

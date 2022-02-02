@@ -22,7 +22,7 @@ const blockBackground = ({
 	disableColor = false,
 	disableSVG = false,
 }) => {
-	const { attributes, clientId, deviceType, handleSetAttributes } = props;
+	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
 
 	const bgHoverStatus = attributes['block-background-hover-status'];
 
@@ -40,7 +40,7 @@ const blockBackground = ({
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
 									])}
-									onChange={obj => handleSetAttributes(obj)}
+									onChange={obj => maxiSetAttributes(obj)}
 									clientId={clientId}
 									breakpoint={deviceType}
 									disableImage={disableImage}
@@ -64,7 +64,7 @@ const blockBackground = ({
 									selected={bgHoverStatus}
 									className='maxi-background-status-hover'
 									onChange={val => {
-										handleSetAttributes({
+										maxiSetAttributes({
 											'block-background-hover-status':
 												val,
 										});
@@ -77,9 +77,7 @@ const blockBackground = ({
 											'blockBackground',
 											true
 										)}
-										onChange={obj =>
-											handleSetAttributes(obj)
-										}
+										onChange={obj => maxiSetAttributes(obj)}
 										isHover
 										clientId={clientId}
 										breakpoint={deviceType}

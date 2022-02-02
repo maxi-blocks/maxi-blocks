@@ -13,14 +13,14 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const responsive = ({ props }) => {
-	const { attributes, deviceType, handleSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
 		label: __('Breakpoint', 'maxi-blocks'),
 		content: (
 			<ResponsiveControl
 				{...getGroupAttributes(attributes, 'breakpoints')}
-				onChange={obj => handleSetAttributes(obj)}
+				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
 			/>
 		),

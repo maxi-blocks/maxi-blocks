@@ -12,7 +12,7 @@ import TextControl from '../text-control';
  * Component
  */
 const anchor = ({ props }) => {
-	const { attributes, handleSetAttributes } = props;
+	const { attributes, maxiSetAttributes } = props;
 	const { anchorLink } = attributes;
 
 	const validateAnchor = text => {
@@ -32,7 +32,7 @@ const anchor = ({ props }) => {
 				value={anchorLink}
 				onChange={anchorLink => {
 					const link = validateAnchor(anchorLink);
-					handleSetAttributes({
+					maxiSetAttributes({
 						anchorLink: link,
 					});
 				}}

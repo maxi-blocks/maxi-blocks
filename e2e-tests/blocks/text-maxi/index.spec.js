@@ -177,7 +177,7 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.only('Test Text Maxi toolbar Link in whole content', async () => {
+	it('Test Text Maxi toolbar Link in whole content', async () => {
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
@@ -190,8 +190,6 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
-
-		debugger;
 
 		// Check frontend
 		const previewPage = await openPreviewPage(page);

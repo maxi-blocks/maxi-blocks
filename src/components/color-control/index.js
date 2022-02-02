@@ -14,7 +14,6 @@ import {
 	getColorRGBAParts,
 	getAttributeKey,
 	getDefaultAttribute,
-	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
 

@@ -49,6 +49,8 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 	else if (isArray(clientIds)) blockName = getBlocksName(clientIds);
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
+	console.log(getBlockAttributes(blockName));
+	console.log(defaults);
 
 	// Check default value on block
 	if (blockName && blockName.includes('maxi-blocks'))

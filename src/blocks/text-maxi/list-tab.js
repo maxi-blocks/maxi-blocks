@@ -634,27 +634,6 @@ const listTab = props => {
 											});
 										}}
 									/>
-									{listStyleCustom?.includes('<svg ') && (
-										<ColorControl
-											label={__(
-												'Background',
-												'maxi-blocks'
-											)}
-											color={attributes['list-svg-color']}
-											prefix='list-svg-'
-											paletteStatus={
-												attributes[
-													'list-svg-palette-status'
-												]
-											}
-											paletteColor={
-												attributes[
-													'list-svg-palette-color'
-												]
-											}
-											paletteOpacity={
-												attributes[
-													'list-svg-palette-opacity'
 								</>
 							)}
 							{typeOfList === 'ul' && listStyle === 'custom' && (

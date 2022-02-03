@@ -134,11 +134,6 @@ describe('Image Maxi', () => {
 			letterSpacing: '11',
 		});
 
-		// const responsiveStage = await accordionPanel.$eval(
-		// 	'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
-		// 	tab => tab.innerText.toLowerCase()
-		// );
-
 		const attributes = await getAttributes([
 			'font-size-general',
 			'line-height-general',

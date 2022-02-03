@@ -33,7 +33,6 @@ describe('ZIndexControl', () => {
 		expect(await getAttributes('z-index-general')).toStrictEqual(20);
 
 		// check responsive origin
-		debugger;
 		const responsiveResultOrigin = await addResponsiveTest({
 			page,
 			instance: '.maxi-zIndex-control .maxi-base-control__field input',

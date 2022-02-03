@@ -16,7 +16,6 @@ import MaxiStyleCardsEditorPopUp from '../style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import { inRange, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -89,19 +88,19 @@ const ResponsiveSelector = props => {
 
 	const { insertBlock } = useDispatch('core/block-editor');
 
-	const { deviceType, breakpoints, winWidth } = useSelect(select => {
+	const { deviceType, breakpoints, winBreakpoint } = useSelect(select => {
 		const {
 			receiveMaxiDeviceType,
 			receiveMaxiBreakpoints,
-			receiveMaxiSettings,
+			receiveWinBreakpoint,
 		} = select('maxiBlocks');
 
-		const winWidth = receiveMaxiSettings().window?.width || null;
+		const winBreakpoint = receiveWinBreakpoint();
 
 		return {
 			deviceType: receiveMaxiDeviceType(),
 			breakpoints: receiveMaxiBreakpoints(),
-			winWidth,
+			winBreakpoint,
 		};
 	});
 
@@ -110,24 +109,6 @@ const ResponsiveSelector = props => {
 	};
 
 	const classes = classnames('maxi-responsive-selector', className);
-
-	const getWinBreakpoint = () => {
-		if (!breakpoints || isEmpty(breakpoints)) return null;
-
-		if (winWidth > breakpoints.xl) return 'xxl';
-
-		const response = Object.entries(breakpoints).reduce(
-			([prevKey, prevValue], [currKey, currValue]) => {
-				if (!prevValue) return [prevKey];
-				if (inRange(winWidth, prevValue, currValue + 1))
-					return [currKey];
-
-				return [prevKey, prevValue];
-			}
-		)[0];
-
-		return response.toLowerCase();
-	};
 
 	return (
 		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
@@ -138,42 +119,42 @@ const ResponsiveSelector = props => {
 				icon={xllMode}
 				target='xxl'
 				breakpoint={deviceType}
-				winBreakpoint={getWinBreakpoint()}
+				winBreakpoint={winBreakpoint}
 				breakpoints={breakpoints}
 			/>
 			<ResponsiveButton
 				icon={xlMode}
 				target='xl'
 				breakpoint={deviceType}
-				winBreakpoint={getWinBreakpoint()}
+				winBreakpoint={winBreakpoint}
 				breakpoints={breakpoints}
 			/>
 			<ResponsiveButton
 				icon={largeMode}
 				target='l'
 				breakpoint={deviceType}
-				winBreakpoint={getWinBreakpoint()}
+				winBreakpoint={winBreakpoint}
 				breakpoints={breakpoints}
 			/>
 			<ResponsiveButton
 				icon={mediumMode}
 				target='m'
 				breakpoint={deviceType}
-				winBreakpoint={getWinBreakpoint()}
+				winBreakpoint={winBreakpoint}
 				breakpoints={breakpoints}
 			/>
 			<ResponsiveButton
 				icon={smallMode}
 				target='s'
 				breakpoint={deviceType}
-				winBreakpoint={getWinBreakpoint()}
+				winBreakpoint={winBreakpoint}
 				breakpoints={breakpoints}
 			/>
 			<ResponsiveButton
 				icon={xsMode}
 				target='xs'
 				breakpoint={deviceType}
-				winBreakpoint={getWinBreakpoint()}
+				winBreakpoint={winBreakpoint}
 				breakpoints={breakpoints}
 			/>
 			<div className='action-buttons'>

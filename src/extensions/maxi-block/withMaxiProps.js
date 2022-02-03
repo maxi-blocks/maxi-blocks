@@ -21,6 +21,8 @@ export const handleSetAttributes = ({
 	Object.entries(obj).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
+		if (!breakpoint) return;
+
 		const isHigherBreakpoint =
 			breakpoints.indexOf(breakpoint) <
 			breakpoints.indexOf(winBreakpoint);
@@ -77,11 +79,9 @@ export const handleSetAttributes = ({
 
 		if (!attrExistOnGeneral) return;
 
-		// Needs defaultattributes compatibility!
-		const defaultGeneralAttribute = getDefaultAttribute(
-			attrLabelOnGeneral,
-			clientId
-		);
+		const defaultGeneralAttribute =
+			defaultAttributes?.[attrLabelOnGeneral] ??
+			getDefaultAttribute(attrLabelOnGeneral, clientId);
 
 		if (
 			(breakpoint === 'general' ||
@@ -103,7 +103,7 @@ export const handleSetAttributes = ({
 		response[attrLabelOnWinBreakpoint] = attributes[attrLabelOnGeneral];
 	});
 
-	onChange(response);
+	return onChange(response);
 };
 
 const withMaxiProps = createHigherOrderComponent(

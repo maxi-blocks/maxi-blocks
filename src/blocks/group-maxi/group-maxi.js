@@ -28,7 +28,7 @@ import { groupIcon } from '../../icons';
  * Block
  */
 
-const blockContent = {
+registerBlockType('maxi-blocks/group-maxi', {
 	title: __('Group Maxi', 'maxi-blocks'),
 	icon: groupIcon,
 	description: 'Group of blocks composed with a similar style or layout',
@@ -49,8 +49,4 @@ const blockContent = {
 	},
 	edit,
 	save,
-};
-
-registerBlockType('maxi-blocks/group-maxi', blockContent);
-
-export default blockContent;
+});

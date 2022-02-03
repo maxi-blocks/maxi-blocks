@@ -240,10 +240,9 @@ class edit extends MaxiBlockComponent {
 				<MediaUpload
 					onSelect={media => {
 						const alt =
-							(altSelector === 'wordpress' &&
-								(media?.alt ?? '')) ||
-							(altSelector === 'title' && media.title) ||
-							'';
+							(altSelector === 'wordpress' && media?.alt) ||
+							(altSelector === 'title' && media?.title) ||
+							null;
 
 						setAttributes({
 							mediaID: media.id,
@@ -252,9 +251,9 @@ class edit extends MaxiBlockComponent {
 							mediaHeight: media.height,
 							isImageUrl: false,
 							...(altSelector === 'wordpress' &&
-								isEmpty(alt) && { altSelector: 'title' }),
+								!alt && { altSelector: 'title' }),
 							mediaAlt:
-								altSelector === 'wordpress' && isEmpty(alt)
+								altSelector === 'wordpress' && !alt
 									? media.title
 									: alt,
 						});

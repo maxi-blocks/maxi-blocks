@@ -24,7 +24,7 @@ import { selectorsRow, categoriesRow } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
+	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 	const { horizontalAlign, verticalAlign } = attributes;
 
 	return (
@@ -62,7 +62,9 @@ const Inspector = props => {
 															attributes.removeColumnGap
 														}
 														onChange={obj =>
-															setAttributes(obj)
+															maxiSetAttributes(
+																obj
+															)
 														}
 														breakpoint={deviceType}
 													/>
@@ -110,7 +112,7 @@ const Inspector = props => {
 															},
 														]}
 														onChange={horizontalAlign =>
-															setAttributes({
+															maxiSetAttributes({
 																horizontalAlign,
 															})
 														}
@@ -166,7 +168,7 @@ const Inspector = props => {
 															},
 														]}
 														onChange={verticalAlign =>
-															setAttributes({
+															maxiSetAttributes({
 																verticalAlign,
 															})
 														}

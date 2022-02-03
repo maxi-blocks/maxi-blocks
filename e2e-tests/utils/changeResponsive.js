@@ -4,14 +4,19 @@ const changeResponsive = async (page, size) => {
 		button => button.click()
 	);
 
-	const responsive = ['base', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-	const sizeIndex = responsive.indexOf(size);
+	if (size !== 'base') {
+		const responsive = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+		const sizeIndex = responsive.indexOf(size);
 
-	await page.$$eval(
-		'.maxi-responsive-selector button',
-		(buttons, _sizeIndex) => buttons[_sizeIndex].click(),
-		sizeIndex
-	);
+		await page.$$eval(
+			'.maxi-responsive-selector button',
+			(buttons, _sizeIndex) => buttons[_sizeIndex].click(),
+			sizeIndex
+		);
+	} else
+		await page.$eval('.maxi-responsive-selector__base button', button =>
+			button.click()
+		);
 
 	await page.$eval('.maxi-responsive-selector span', closeButton =>
 		closeButton.click()

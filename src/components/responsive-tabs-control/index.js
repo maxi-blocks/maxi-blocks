@@ -13,7 +13,6 @@ import SettingTabsControl from '../setting-tabs-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { inRange, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -32,17 +31,13 @@ const ResponsiveTabsControl = props => {
 		target,
 	} = props;
 
-	const { winWidth, maxiBreakpoints } = useSelect(select => {
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-			wp.data.select('maxiBlocks');
+	const { winBreakpoint } = useSelect(select => {
+		const { receiveWinBreakpoint } = wp.data.select('maxiBlocks');
 
-		const winWidth = receiveMaxiSettings().window?.width || null;
-
-		const maxiBreakpoints = receiveMaxiBreakpoints();
+		const winBreakpoint = receiveWinBreakpoint();
 
 		return {
-			winWidth,
-			maxiBreakpoints,
+			winBreakpoint,
 		};
 	});
 
@@ -52,40 +47,17 @@ const ResponsiveTabsControl = props => {
 
 	const classes = classnames('maxi-responsive-tabs-control', className);
 
-	const getWinBreakpoint = () => {
-		if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
-
-		if (winWidth > maxiBreakpoints.xl) return 'xxl';
-
-		const response = Object.entries(maxiBreakpoints).reduce(
-			([prevKey, prevValue], [currKey, currValue]) => {
-				if (!prevValue) return [prevKey];
-				if (inRange(winWidth, prevValue, currValue + 1))
-					return [currKey];
-
-				return [prevKey, prevValue];
-			}
-		)[0];
-
-		return response.toLowerCase();
-	};
-
 	const getTextOptionsTab = () => {
 		if (breakpoint !== 'general')
 			return breakpoints.indexOf(breakpoint.toUpperCase());
 
-		const userBreakpoint = getWinBreakpoint();
+		if (!winBreakpoint) return null;
 
-		if (!userBreakpoint) return null;
-
-		return breakpoints.indexOf(userBreakpoint.toUpperCase());
+		return breakpoints.indexOf(winBreakpoint.toUpperCase());
 	};
 
 	const showNotification = customBreakpoint => {
-		if (breakpoint !== 'general')
-			return breakpoint === customBreakpoint.toLowerCase();
-
-		return getWinBreakpoint() === customBreakpoint.toLowerCase();
+		return winBreakpoint === customBreakpoint.toLowerCase();
 	};
 
 	return (
@@ -95,13 +67,20 @@ const ResponsiveTabsControl = props => {
 				return {
 					label: breakpoint,
 					content: cloneElement(children, {
-						breakpoint: breakpoint.toLowerCase(),
-						isGeneral: props.breakpoint === 'general',
+						breakpoint:
+							winBreakpoint === breakpoint.toLowerCase()
+								? 'general'
+								: breakpoint.toLowerCase(),
 					}),
+					// content: children,
 					showNotification: showNotification(breakpoint),
 					callback: () =>
 						!disableCallback
-							? setMaxiDeviceType(breakpoint.toLowerCase())
+							? setMaxiDeviceType(
+									winBreakpoint === breakpoint.toLowerCase()
+										? 'general'
+										: breakpoint.toLowerCase()
+							  )
 							: null,
 					breakpoint: breakpoint.toLowerCase(),
 				};

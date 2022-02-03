@@ -12,6 +12,7 @@ import Inspector from './inspector';
 import {
 	MaxiBlockComponent,
 	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
@@ -164,4 +165,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

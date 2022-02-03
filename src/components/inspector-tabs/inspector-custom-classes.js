@@ -12,7 +12,7 @@ import TextControl from '../text-control';
  * Component
  */
 const customClasses = ({ props }) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, maxiSetAttributes } = props;
 	const { extraClassName } = attributes;
 
 	return {
@@ -27,7 +27,7 @@ const customClasses = ({ props }) => {
 				className='maxi-additional__css-classes'
 				value={extraClassName}
 				onChange={extraClassName =>
-					setAttributes({
+					maxiSetAttributes({
 						extraClassName,
 					})
 				}

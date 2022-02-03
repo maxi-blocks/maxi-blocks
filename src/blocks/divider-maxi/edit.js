@@ -11,11 +11,13 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -37,7 +39,7 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			isSelected,
 			onDeviceTypeChange,
-			setAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
 			attributes;
@@ -65,7 +67,7 @@ class edit extends MaxiBlockComponent {
 			);
 
 			if (sizeUnit === 'em')
-				setAttributes({
+				maxiSetAttributes({
 					[`height-unit-${deviceType}`]: 'px',
 				});
 		};
@@ -77,7 +79,7 @@ class edit extends MaxiBlockComponent {
 				attributes
 			);
 
-			setAttributes({
+			maxiSetAttributes({
 				[`height-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
@@ -190,4 +192,4 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 	};
 });
 
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect, editDispatch, withMaxiProps)(edit);

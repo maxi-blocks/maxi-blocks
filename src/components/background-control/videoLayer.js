@@ -28,13 +28,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayerContent = props => {
-	const {
-		onChange,
-		isHover = false,
-		prefix = '',
-		breakpoint,
-		isGeneral = false,
-	} = props;
+	const { onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
@@ -57,16 +51,6 @@ const VideoLayerContent = props => {
 							breakpoint
 						)
 					] = opacity;
-
-					if (isGeneral)
-						videoOptions[
-							getAttributeKey(
-								'background-video-opacity',
-								isHover,
-								prefix,
-								'general'
-							)
-						] = opacity;
 
 					onChange(videoOptions);
 				}}
@@ -94,20 +78,6 @@ const VideoLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: val.url,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-video-fallbackID',
-								isHover,
-								prefix,
-								'general'
-							)]: val.id,
-							[getAttributeKey(
-								'background-video-fallbackURL',
-								isHover,
-								prefix,
-								'general'
-							)]: val.url,
-						}),
 					})
 				}
 				onRemoveImage={() =>
@@ -124,20 +94,6 @@ const VideoLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: '',
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-video-fallbackID',
-								isHover,
-								prefix,
-								'general'
-							)]: '',
-							[getAttributeKey(
-								'background-video-fallbackURL',
-								isHover,
-								prefix,
-								'general'
-							)]: '',
-						}),
 					})
 				}
 			/>

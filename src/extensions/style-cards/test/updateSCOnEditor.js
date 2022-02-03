@@ -47,6 +47,7 @@ describe('getSCVariablesObject', () => {
 						'font-size-xl': 16,
 						'font-size-unit-xl': 'px',
 						'line-height-xxl': 1.5,
+						'line-height-xl': 1.625,
 						'font-weight-general': 400,
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',

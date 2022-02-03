@@ -35,6 +35,7 @@ import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
  * Icons
  */
 import { moveRight, toolbarDrop, toolbarShow } from '../../icons';
+import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
 
 /**
  * Component
@@ -49,6 +50,7 @@ const LayerCard = props => {
 		clientId,
 		breakpoint,
 		isHover,
+		handleOnChangeLayer,
 	} = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
@@ -226,7 +228,9 @@ const LayerCard = props => {
 			<ColorLayer
 				key={`background-color-layer--${layer.id}`}
 				colorOptions={layer}
-				onChange={obj => onChange({ ...layer, ...obj })}
+				onChange={obj =>
+					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
+				}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -236,7 +240,9 @@ const LayerCard = props => {
 			<ImageLayer
 				key={`background-image-layer--${layer.id}`}
 				imageOptions={layer}
-				onChange={obj => onChange({ ...layer, ...obj })}
+				onChange={obj =>
+					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
+				}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -246,7 +252,9 @@ const LayerCard = props => {
 			<VideoLayer
 				key={`background-video-layer--${layer.id}`}
 				videoOptions={layer}
-				onChange={obj => onChange({ ...layer, ...obj })}
+				onChange={obj =>
+					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
+				}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -256,7 +264,9 @@ const LayerCard = props => {
 			<GradientLayer
 				key={`background-gradient-layer--${layer.id}`}
 				gradientOptions={layer}
-				onChange={obj => onChange({ ...layer, ...obj })}
+				onChange={obj =>
+					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
+				}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -266,7 +276,9 @@ const LayerCard = props => {
 			<SVGLayer
 				key={`background-SVG-layer--${layer.id}`}
 				SVGOptions={layer}
-				onChange={obj => onChange({ ...layer, ...obj })}
+				onChange={obj =>
+					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
+				}
 				layerId={layerId}
 				breakpoint={breakpoint}
 				isHover={isHover}
@@ -372,58 +384,32 @@ const BackgroundLayersControl = ({
 			  ).id + 1
 			: 1;
 
-	const getObject = type => {
+	const getLayerLabel = type => {
 		switch (type) {
 			case 'color':
-				return {
-					...setBreakpointToLayer({
-						layer: backgroundLayers.colorOptions,
-						breakpoint,
-						isHover,
-					}),
-					id: getNewLayerId(),
-				};
+				return 'colorOptions';
 			case 'image':
-				return {
-					...setBreakpointToLayer({
-						layer: backgroundLayers.imageOptions,
-						breakpoint,
-						isHover,
-					}),
-					id: getNewLayerId(),
-				};
+				return 'imageOptions';
 			case 'video':
-				return {
-					...setBreakpointToLayer({
-						layer: backgroundLayers.videoOptions,
-						breakpoint,
-						isHover,
-					}),
-					id: getNewLayerId(),
-				};
+				return 'videoOptions';
 			case 'gradient':
-				return {
-					...setBreakpointToLayer({
-						layer: backgroundLayers.gradientOptions,
-						breakpoint,
-						isHover,
-					}),
-					id: getNewLayerId(),
-				};
+				return 'gradientOptions';
 			case 'shape':
-				return {
-					...setBreakpointToLayer({
-						layer: backgroundLayers.SVGOptions,
-						breakpoint,
-						isHover,
-					}),
-					id: getNewLayerId(),
-				};
+				return 'SVGOptions';
 			default:
-				break;
+				return false;
 		}
+	};
 
-		return false;
+	const getObject = type => {
+		return {
+			...setBreakpointToLayer({
+				layer: backgroundLayers[getLayerLabel(type)],
+				breakpoint,
+				isHover,
+			}),
+			id: getNewLayerId(),
+		};
 	};
 
 	const onLayersDrag = (fromIndex, toIndex) => {
@@ -443,6 +429,18 @@ const BackgroundLayersControl = ({
 			'background-layers-hover': hoverLayers,
 		});
 	};
+
+	const handleOnChangeLayer = (layer, currentLayer) =>
+		handleSetAttributes({
+			obj: layer,
+			attributes: currentLayer,
+			onChange: result => result,
+			defaultAttributes: setBreakpointToLayer({
+				layer: backgroundLayers[getLayerLabel(currentLayer.type)],
+				breakpoint,
+				isHover,
+			}),
+		});
 
 	const onChangeLayer = layer => {
 		const isHoverLayer = layer.isHover;
@@ -521,6 +519,9 @@ const BackgroundLayersControl = ({
 											onRemoveLayer(layer);
 										}}
 										breakpoint={breakpoint}
+										handleOnChangeLayer={
+											handleOnChangeLayer
+										}
 									/>
 								)
 							)}

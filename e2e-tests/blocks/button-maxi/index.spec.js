@@ -35,7 +35,6 @@ describe('Button Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
-
 	/*
 	it('Check Button Icon', async () => {
 		await insertBlock('Button Maxi');

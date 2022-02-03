@@ -836,7 +836,8 @@ const getGeneralBackgroundStyles = (
 		const lastValue = getLastBreakpointAttribute(
 			`border-${target}-width`,
 			breakpoint,
-			props
+			props,
+			isHover
 		);
 
 		return isNumber(lastValue) ? lastValue : 2;

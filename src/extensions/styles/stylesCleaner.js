@@ -6,7 +6,7 @@ import { getCustomCssObject } from './helpers';
 /**
  * External dependencies
  */
-import { isObject, isEmpty, merge, cloneDeep } from 'lodash';
+import { isObject, isEmpty, merge, cloneDeep, isEqual, isNil } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].reverse();
 
@@ -27,7 +27,9 @@ const repeatedBreakpointCleaner = obj => {
 		obj[breakpoint] &&
 			Object.entries(obj[breakpoint]).forEach(([key, val]) => {
 				const prevBreakpoint =
-					BREAKPOINTS[BREAKPOINTS.indexOf(breakpoint) + 1];
+					breakpoint !== 'xl' // Ensures we jump XXL on XL breakpoint
+						? BREAKPOINTS[BREAKPOINTS.indexOf(breakpoint) + 1]
+						: 'general';
 
 				if (
 					obj?.[prevBreakpoint]?.[key] &&
@@ -35,6 +37,40 @@ const repeatedBreakpointCleaner = obj => {
 				)
 					delete response[breakpoint][key];
 			});
+	});
+
+	return response;
+};
+
+const generalBreakpointCleaner = obj => {
+	const response = cloneDeep(obj);
+
+	Object.entries(response).forEach(([key, val]) => {
+		if (key === 'general') return;
+
+		const breakpointIndex = BREAKPOINTS.indexOf(key);
+		// Is last breakpoint before general
+		const isLast = cloneDeep(BREAKPOINTS)
+			.splice(breakpointIndex)
+			.every(breakpoint => {
+				if (breakpoint === 'general' || breakpoint === key) return true;
+				if (!(breakpoint in response) || isEmpty(response[breakpoint]))
+					return true;
+
+				return false;
+			});
+
+		if (isLast) {
+			Object.entries(val).forEach(([prop, value]) => {
+				if (
+					prop !== 'label' &&
+					'general' in response &&
+					!isNil(response.general[prop]) &&
+					isEqual(value, response.general[prop])
+				)
+					delete response[key][prop];
+			});
+		}
 	});
 
 	return response;
@@ -90,6 +126,12 @@ const stylesCleaner = (obj, selectors, props) => {
 		Object.entries(val).forEach(([typeKey, typeVal]) => {
 			if (Object.keys(typeVal).length > 1)
 				response[target][typeKey] = repeatedBreakpointCleaner(typeVal);
+		});
+
+		// Clean non-necessary breakpoint values when is same than general
+		Object.entries(val).forEach(([typeKey, typeVal]) => {
+			if (Object.keys(typeVal).length > 1)
+				response[target][typeKey] = generalBreakpointCleaner(typeVal);
 		});
 
 		// Clean hover values

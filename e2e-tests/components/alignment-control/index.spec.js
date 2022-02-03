@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-return-await */
 /**
  * WordPress dependencies
@@ -27,7 +28,7 @@ describe('AlignmentControl', () => {
 		);
 
 		const alignments = ['center', 'right', 'justify', 'left'];
-		for (let i = 0; i < alignmentSettings.length; i++) {
+		for (let i = 0; i < alignmentSettings.length; i += 1) {
 			const setting = alignmentSettings[i !== 3 ? i + 1 : 0];
 
 			await setting.click();

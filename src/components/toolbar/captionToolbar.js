@@ -35,7 +35,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const CaptionToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, setAttributes } = props;
+		const { attributes, clientId, maxiSetAttributes } = props;
 		const {
 			captionContent: content,
 			isList = false,
@@ -105,7 +105,7 @@ const CaptionToolbar = memo(
 				obj.captionContent = newCaptionContent;
 			}
 
-			setAttributes(obj);
+			maxiSetAttributes(obj);
 		};
 
 		return (

@@ -912,7 +912,7 @@ Object {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
       "xl": Object {
-        "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xs": Object {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
@@ -987,7 +987,7 @@ Object {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
       "xl": Object {
-        "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xs": Object {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",

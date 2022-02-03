@@ -31,7 +31,6 @@ const GradientLayerContent = props => {
 		isHover = false,
 		prefix = '',
 		breakpoint,
-		isGeneral = false,
 		isLayer = false,
 	} = props;
 
@@ -70,14 +69,6 @@ const GradientLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-gradient',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 				onChangeOpacity={val =>
@@ -88,14 +79,6 @@ const GradientLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-gradient-opacity',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
@@ -115,14 +98,6 @@ const GradientLayerContent = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-gradient-clip-path',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						})
 					}
 				/>

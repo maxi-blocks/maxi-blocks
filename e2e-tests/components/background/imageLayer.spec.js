@@ -243,7 +243,6 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background image layer hover', async () => {
-		debugger;
 		await changeResponsive(page, 'base');
 
 		const accordion = await openSidebarTab(

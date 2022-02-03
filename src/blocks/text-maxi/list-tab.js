@@ -34,7 +34,7 @@ import { capitalize } from 'lodash';
  * Inspector
  */
 const listTab = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 	const {
 		parentBlockStyle,
 		listReversed,
@@ -142,7 +142,7 @@ const listTab = props => {
 						)}
 						value={attributes[`list-indent-${deviceType}`]}
 						onChangeValue={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-indent-${deviceType}`]: val,
 							})
 						}
@@ -171,12 +171,12 @@ const listTab = props => {
 							},
 						}}
 						onChangeUnit={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-indent-unit-${deviceType}`]: val,
 							})
 						}
 						onReset={() => {
-							setAttributes({
+							maxiSetAttributes({
 								[`list-indent-${deviceType}`]:
 									getDefaultAttribute(
 										`list-indent-${deviceType}`
@@ -198,7 +198,7 @@ const listTab = props => {
 						)}
 						value={attributes[`list-gap-${deviceType}`]}
 						onChangeValue={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-gap-${deviceType}`]: val,
 							})
 						}
@@ -231,12 +231,12 @@ const listTab = props => {
 							},
 						}}
 						onChangeUnit={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-gap-unit-${deviceType}`]: val,
 							})
 						}
 						onReset={() => {
-							setAttributes({
+							maxiSetAttributes({
 								[`list-gap-${deviceType}`]: getDefaultAttribute(
 									`list-gap-${deviceType}`
 								),
@@ -259,7 +259,7 @@ const listTab = props => {
 							attributes[`list-paragraph-spacing-${deviceType}`]
 						}
 						onChangeValue={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-paragraph-spacing-${deviceType}`]: val,
 							})
 						}
@@ -292,13 +292,13 @@ const listTab = props => {
 							},
 						}}
 						onChangeUnit={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-paragraph-spacing-unit-${deviceType}`]:
 									val,
 							})
 						}
 						onReset={() => {
-							setAttributes({
+							maxiSetAttributes({
 								[`list-paragraph-spacing-${deviceType}`]:
 									getDefaultAttribute(
 										`list-paragraph-spacing-${deviceType}`
@@ -319,7 +319,7 @@ const listTab = props => {
 							attributes
 						)}
 						onChangeValue={val => {
-							setAttributes({
+							maxiSetAttributes({
 								[`list-size-${deviceType}`]:
 									val !== undefined && val !== '' ? val : '',
 							});
@@ -331,7 +331,7 @@ const listTab = props => {
 							attributes
 						)}
 						onChangeUnit={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-size-unit-${deviceType}`]: val,
 							})
 						}
@@ -355,7 +355,7 @@ const listTab = props => {
 							},
 						}}
 						onReset={() =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-size-${deviceType}`]:
 									getDefaultAttribute(
 										`list-size-${deviceType}`
@@ -379,7 +379,7 @@ const listTab = props => {
 							attributes[`list-marker-line-height-${deviceType}`]
 						}
 						onChangeValue={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-marker-line-height-${deviceType}`]: val,
 							})
 						}
@@ -390,13 +390,13 @@ const listTab = props => {
 							attributes
 						)}
 						onChangeUnit={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-marker-line-height-unit-${deviceType}`]:
 									val,
 							})
 						}
 						onReset={() => {
-							setAttributes({
+							maxiSetAttributes({
 								[`list-marker-line-height-${deviceType}`]:
 									getDefaultAttribute(
 										`list-marker-line-height-${deviceType}`
@@ -419,7 +419,7 @@ const listTab = props => {
 						)}
 						value={attributes[`list-marker-indent-${deviceType}`]}
 						onChangeValue={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-marker-indent-${deviceType}`]: val,
 							})
 						}
@@ -430,7 +430,7 @@ const listTab = props => {
 							attributes
 						)}
 						onChangeUnit={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-marker-indent-unit-${deviceType}`]: val,
 							})
 						}
@@ -454,7 +454,7 @@ const listTab = props => {
 							},
 						}}
 						onReset={() => {
-							setAttributes({
+							maxiSetAttributes({
 								[`list-marker-indent-${deviceType}`]:
 									getDefaultAttribute(
 										`list-marker-indent-${deviceType}`
@@ -488,7 +488,7 @@ const listTab = props => {
 									  })
 									: color;
 
-								setAttributes({
+								maxiSetAttributes({
 									'list-palette-status': paletteStatus,
 									'list-palette-color': paletteColor,
 									'list-palette-opacity': paletteOpacity,
@@ -541,7 +541,7 @@ const listTab = props => {
 							},
 						]}
 						onChange={val =>
-							setAttributes({
+							maxiSetAttributes({
 								[`list-text-position-${deviceType}`]: val,
 							})
 						}
@@ -562,7 +562,7 @@ const listTab = props => {
 								},
 							]}
 							onChange={typeOfList =>
-								setAttributes({
+								maxiSetAttributes({
 									typeOfList,
 									listStyle:
 										getListStyleOptions(typeOfList)[0]
@@ -579,7 +579,7 @@ const listTab = props => {
 								value={listStyle || 'disc'}
 								options={getListStyleOptions(typeOfList)}
 								onChange={listStyle =>
-									setAttributes({
+									maxiSetAttributes({
 										listStyle,
 									})
 								}
@@ -599,7 +599,7 @@ const listTab = props => {
 												: listStart
 										}
 										onChangeValue={val => {
-											setAttributes({
+											maxiSetAttributes({
 												listStart:
 													val !== undefined &&
 													val !== ''
@@ -616,7 +616,7 @@ const listTab = props => {
 										}
 										max={99}
 										onReset={() =>
-											setAttributes({
+											maxiSetAttributes({
 												listStart: '',
 											})
 										}
@@ -629,7 +629,7 @@ const listTab = props => {
 										className='maxi-image-inspector__list-reverse'
 										selected={listReversed}
 										onChange={val => {
-											setAttributes({
+											maxiSetAttributes({
 												listReversed: val,
 											});
 										}}
@@ -670,7 +670,7 @@ const listTab = props => {
 													listStyleSource
 												]
 											)
-												setAttributes({
+												maxiSetAttributes({
 													listStyleCustom:
 														listStyleCustoms[
 															listStyleSource
@@ -687,7 +687,7 @@ const listTab = props => {
 												] ?? ''
 											}
 											onChange={listStyleCustom => {
-												setAttributes({
+												maxiSetAttributes({
 													listStyleCustom,
 												});
 
@@ -737,7 +737,7 @@ const listTab = props => {
 															type: 'fill',
 														});
 
-													setAttributes({
+													maxiSetAttributes({
 														listStyleCustom:
 															SVGElement,
 													});
@@ -748,7 +748,7 @@ const listTab = props => {
 													});
 												}}
 												onRemove={() => {
-													setAttributes({
+													maxiSetAttributes({
 														listStyleCustom: '',
 													});
 													setListStyleCustoms({

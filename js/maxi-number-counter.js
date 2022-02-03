@@ -2,8 +2,6 @@
 const numberCounterEffect = () => {
 	const numberElements = document.querySelectorAll('.maxi-nc-effect');
 	numberElements.forEach(elem => {
-		// console.log('maxiNumberCounter');
-		// console.log(maxiNumberCounter);
 		// eslint-disable-next-line no-undef
 		if (!maxiNumberCounter) return;
 

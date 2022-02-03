@@ -16,7 +16,7 @@ import {
 	editAxisControl,
 	getBlockStyle,
 	openPreviewPage,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -42,7 +42,7 @@ describe('BackgroundControl', () => {
 		);
 
 		// opacity
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-color-control .maxi-advanced-number-control input',
 			newNumber: '77',
@@ -54,7 +54,7 @@ describe('BackgroundControl', () => {
 			sizeButton => sizeButton[1].click()
 		);
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
@@ -90,13 +90,13 @@ describe('BackgroundControl', () => {
 		expect(baseBackgroundShapeSize).toStrictEqual('43');
 
 		// opacity and size
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-color-control .maxi-advanced-number-control input',
 			newNumber: '54',
 		});
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
@@ -201,7 +201,7 @@ describe('BackgroundControl', () => {
 			sizeButton => sizeButton[1].click()
 		);
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
@@ -229,7 +229,7 @@ describe('BackgroundControl', () => {
 		expect(baseBackgroundShapeSize).toStrictEqual('22');
 
 		// size
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',

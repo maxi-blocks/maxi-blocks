@@ -14,7 +14,7 @@ import {
 	changeResponsive,
 	openPreviewPage,
 	getBlockStyle,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -25,7 +25,7 @@ describe('BackgroundControl', () => {
 		await addBackgroundLayer(page, 'image');
 
 		// opacity
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control .maxi-advanced-number-control input',
@@ -265,7 +265,7 @@ describe('BackgroundControl', () => {
 		);
 
 		// opacity
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control .maxi-advanced-number-control input',

@@ -14,7 +14,7 @@ import {
 	getAttributes,
 	openSidebarTab,
 	getBlockStyle,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('ShapeDividerControl', () => {
@@ -86,7 +86,7 @@ describe('ShapeDividerControl', () => {
 		).toStrictEqual(4);
 
 		// divider height
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-shapedividercontrol .maxi-divider-height input',
 			newNumber: '200',

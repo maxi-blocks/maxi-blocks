@@ -10,7 +10,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	addResponsiveTest,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Svg width control', () => {
@@ -35,7 +35,7 @@ describe('Svg width control', () => {
 		);
 
 		// change width and unit
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-advanced-number-control .maxi-base-control__field input',

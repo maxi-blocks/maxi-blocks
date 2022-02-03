@@ -15,7 +15,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	changeResponsive,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Svg stroke width control', () => {
@@ -35,7 +35,7 @@ describe('Svg stroke width control', () => {
 
 		await openSidebarTab(page, 'style', 'icon line width');
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-advanced-number-control input',
 			newNumber: '3',
@@ -59,7 +59,7 @@ describe('Svg stroke width control', () => {
 		);
 		expect(baseStrokeValue).toStrictEqual('3');
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-advanced-number-control input',
 			newNumber: '1',

@@ -14,7 +14,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	openPreviewPage,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Background Color Layer', () => {
@@ -31,7 +31,7 @@ describe('Background Color Layer', () => {
 		);
 
 		// opacity
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control .maxi-advanced-number-control input',
@@ -131,7 +131,7 @@ describe('Background Color Layer', () => {
 		);
 
 		// opacity
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-background-control .maxi-opacity-control input[type="number"]',

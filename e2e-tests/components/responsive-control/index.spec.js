@@ -9,7 +9,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	getAttributes,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('ResponsiveControl', () => {
@@ -19,7 +19,7 @@ describe('ResponsiveControl', () => {
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'advanced', 'breakpoint');
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-responsive-control input',
 			newNumber: '450',

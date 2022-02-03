@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -19,7 +15,7 @@ import {
 	changeResponsive,
 	addResponsiveTest,
 	openPreviewPage,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -32,7 +28,7 @@ describe('BackgroundControl', () => {
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'gradient');
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-gradient-control .maxi-opacity-control input',
 			newNumber: '50',
@@ -87,7 +83,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await addBackgroundLayer(page, 'gradient');
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-gradient-control .maxi-opacity-control input',
 			newNumber: '50',

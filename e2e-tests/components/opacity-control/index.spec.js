@@ -10,7 +10,7 @@ import {
 	getBlockStyle,
 	getAttributes,
 	addResponsiveTest,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('OpacityControl', () => {
@@ -20,7 +20,7 @@ describe('OpacityControl', () => {
 		await page.keyboard.type('Testing Text Maxi');
 		await openSidebarTab(page, 'advanced', 'opacity');
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-opacity-control .maxi-base-control__field input',
 			newNumber: '19',

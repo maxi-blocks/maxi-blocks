@@ -7,7 +7,7 @@ import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
  * External dependencies
  */
 
-const getAdvancedNumberControl = async ({
+const editAdvancedNumberControl = async ({
 	page,
 	instance,
 	newNumber,
@@ -25,4 +25,4 @@ const getAdvancedNumberControl = async ({
 	}
 };
 
-export default getAdvancedNumberControl;
+export default editAdvancedNumberControl;

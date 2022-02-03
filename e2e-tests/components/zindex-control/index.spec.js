@@ -10,7 +10,7 @@ import {
 	getAttributes,
 	addResponsiveTest,
 	getBlockStyle,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('ZIndexControl', () => {
@@ -20,7 +20,7 @@ describe('ZIndexControl', () => {
 		await page.keyboard.type('Testing Text Maxi');
 		await openSidebarTab(page, 'advanced', 'z index');
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance: '.maxi-zIndex-control .maxi-base-control__field input',
 			newNumber: '20',

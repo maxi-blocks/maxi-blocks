@@ -57,14 +57,18 @@ const attributes = {
 	},
 	...breakpointAttributesCreator({
 		obj: {
-			'list-position': {
-				type: 'string',
-			},
 			'list-gap': {
 				type: 'number',
 				default: 1,
 			},
 			'list-gap-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-paragraph-spacing': {
+				type: 'number',
+			},
+			'list-paragraph-spacing-unit': {
 				type: 'string',
 				default: 'em',
 			},
@@ -80,11 +84,28 @@ const attributes = {
 				default: 1,
 			},
 			'list-size-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-marker-indent': {
 				type: 'number',
+				default: 0.5,
+			},
+			'list-marker-indent-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-marker-line-height': {
+				type: 'number',
+				default: 0.5,
+			},
+			'list-marker-line-height-unit': {
+				type: 'string',
 				default: 'em',
 			},
 			'list-text-position': {
 				type: 'string',
+				default: 'middle',
 			},
 		},
 	}),
@@ -94,7 +115,7 @@ const attributes = {
 	listStyleCustom: {
 		type: 'string',
 	},
-	...paletteAttributesCreator({ prefix: 'list-svg-', palette: 4 }),
+	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
 	...attributesData.container,
 	...attributesData.link,
 	...attributesData.textAlignment,

@@ -77,6 +77,7 @@ const TextShadow = props => {
 	const [currentColor, setCurrentColor] = useState(
 		!isPaletteActive ? color : undefined
 	);
+	const defaultPaletteColor = 8;
 
 	useEffect(() => {
 		const { color, opacity } = decomposeValue();
@@ -278,8 +279,14 @@ const TextShadow = props => {
 						onChange={value => {
 							onChangeValue(3, value);
 						}}
-						prefix='text-shadow'
-						useBreakpointForDefault
+						defaultColorAttributes={{
+							paletteStatus: isPaletteActive,
+							paletteColor: defaultPaletteColor,
+							paletteOpacity: 1,
+							color: !isPaletteActive
+								? `rgba(${getCurrentColor()},1)`
+								: '',
+						}}
 						disableGradient
 						disableGradientAboveBackground
 					/>

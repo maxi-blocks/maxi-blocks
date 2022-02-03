@@ -5,7 +5,6 @@ import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
-	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -16,6 +15,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	changeResponsive,
+	getAdvancedNumberControl,
 } from '../../utils';
 
 describe('Svg stroke width control', () => {
@@ -33,19 +33,13 @@ describe('Svg stroke width control', () => {
 			svg => svg.click()
 		);
 
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'style', 'icon line width');
+
+		await getAdvancedNumberControl({
 			page,
-			'style',
-			'icon line width'
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-advanced-number-control input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('3');
+			instance: '.maxi-advanced-number-control input',
+			newNumber: '3',
+		});
 
 		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3);
 
@@ -65,13 +59,11 @@ describe('Svg stroke width control', () => {
 		);
 		expect(baseStrokeValue).toStrictEqual('3');
 
-		await accordionPanel.$eval(
-			'.maxi-advanced-number-control input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1');
+		await getAdvancedNumberControl({
+			page,
+			instance: '.maxi-advanced-number-control input',
+			newNumber: '1',
+		});
 
 		await changeResponsive(page, 'xs');
 

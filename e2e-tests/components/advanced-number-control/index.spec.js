@@ -11,7 +11,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab, changeResponsive } from '../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	changeResponsive,
+	getAdvancedNumberControl,
+} from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
@@ -26,11 +31,12 @@ describe('Advanced Number Control', () => {
 		await changeResponsive(page, 'm');
 
 		// Max value
-		await accordionPanel.$eval(
-			'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
-			select => select.focus()
-		);
-		await page.keyboard.type('31');
+		await getAdvancedNumberControl({
+			page,
+			instance:
+				'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
+			newNumber: '31',
+		});
 
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(30);
 
@@ -50,12 +56,12 @@ describe('Advanced Number Control', () => {
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-3);
 
 		// reset value
-		await accordionPanel.$eval(
-			'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
-			select => select.focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('10');
+		await getAdvancedNumberControl({
+			page,
+			instance:
+				'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
+			newNumber: '10',
+		});
 
 		await accordionPanel.$eval(
 			'.maxi-typography-control__letter-spacing .components-maxi-control__reset-button',

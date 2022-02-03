@@ -1,33 +1,29 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, changeResponsive, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	changeResponsive,
+	getAttributes,
+	getAdvancedNumberControl,
+} from '../../utils';
 
 describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
 		await createNewPost();
 		await changeResponsive(page, 'xs');
 		await insertBlock('Button Maxi');
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'advanced', 'breakpoint');
+
+		await getAdvancedNumberControl({
 			page,
-			'advanced',
-			'breakpoint'
-		);
-
-		await accordionPanel.$eval('.maxi-responsive-control input', input =>
-			input.focus()
-		);
-
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('50');
+			instance: '.maxi-responsive-control input',
+			newNumber: '450',
+		});
 
 		expect(await getAttributes('breakpoints-xs')).toStrictEqual(450);
 	});

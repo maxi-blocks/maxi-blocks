@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -14,6 +10,7 @@ import {
 	getBlockStyle,
 	getAttributes,
 	addResponsiveTest,
+	getAdvancedNumberControl,
 } from '../../utils';
 
 describe('OpacityControl', () => {
@@ -21,19 +18,13 @@ describe('OpacityControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'advanced', 'opacity');
+
+		await getAdvancedNumberControl({
 			page,
-			'advanced',
-			'opacity'
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-opacity-control .maxi-base-control__field input',
-			input => input.focus()
-		);
-
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('19');
+			instance: '.maxi-opacity-control .maxi-base-control__field input',
+			newNumber: '19',
+		});
 
 		expect(await getAttributes('opacity-general')).toStrictEqual(0.19);
 

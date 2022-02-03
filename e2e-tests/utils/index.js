@@ -2,6 +2,7 @@ export { default as addBackgroundLayer } from './addBackgroundLayer';
 export { default as addTypographyOptions } from './addTypographyOptions';
 export { default as addTypographyStyle } from './addTypographyStyle';
 export { default as addResponsiveTest } from './addResponsiveTest';
+export { default as getAdvancedNumberControl } from './getAdvancedNumberControl';
 export { default as editAxisControl } from './editAxisControl';
 export { default as editColorControl } from './editColorControl';
 export { default as getBlockAttributes } from './getBlockAttributes';

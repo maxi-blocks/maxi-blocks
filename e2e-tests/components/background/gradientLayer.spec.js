@@ -19,6 +19,7 @@ import {
 	changeResponsive,
 	addResponsiveTest,
 	openPreviewPage,
+	getAdvancedNumberControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -28,20 +29,14 @@ describe('BackgroundControl', () => {
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'shape');
 
-		const accordion = await openSidebarTab(
-			page,
-			'style',
-			'background layer'
-		);
+		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'gradient');
 
-		await accordion.$eval(
-			'.maxi-gradient-control .maxi-opacity-control input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await getAdvancedNumberControl({
+			page,
+			instance: '.maxi-gradient-control .maxi-opacity-control input',
+			newNumber: '50',
+		});
 
 		const selector = await page.$(
 			'.maxi-gradient-control .components-custom-gradient-picker select'
@@ -92,14 +87,11 @@ describe('BackgroundControl', () => {
 		);
 
 		await addBackgroundLayer(page, 'gradient');
-
-		await accordion.$eval(
-			'.maxi-gradient-control .maxi-opacity-control input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await getAdvancedNumberControl({
+			page,
+			instance: '.maxi-gradient-control .maxi-opacity-control input',
+			newNumber: '50',
+		});
 
 		const selector = await page.$(
 			'.maxi-gradient-control .components-custom-gradient-picker select'

@@ -10,7 +10,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	getBlockStyle,
+	getAdvancedNumberControl,
+} from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
@@ -81,12 +86,11 @@ describe('ShapeDividerControl', () => {
 		).toStrictEqual(4);
 
 		// divider height
-		await accordionPanel.$$eval(
-			'.maxi-shapedividercontrol .maxi-advanced-number-control input',
-			input => input[2].focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('200');
+		await getAdvancedNumberControl({
+			page,
+			instance: '.maxi-shapedividercontrol .maxi-divider-height input',
+			newNumber: '200',
+		});
 
 		expect(await getAttributes('shape-divider-top-height')).toStrictEqual(
 			200

@@ -16,6 +16,7 @@ import {
 	changeResponsive,
 	getBlockStyle,
 	getAttributes,
+	getAdvancedNumberControl,
 } from '../../utils';
 
 describe('ArrowControl', () => {
@@ -55,9 +56,12 @@ describe('ArrowControl', () => {
 			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
 
-		await selectInput[0].focus();
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
+		await getAdvancedNumberControl({
+			page,
+			instance:
+				'.maxi-advanced-number-control .maxi-base-control__field input',
+			newNumber: '9',
+		});
 
 		expect(await getAttributes('arrow-position-general')).toStrictEqual(59);
 

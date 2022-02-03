@@ -13,6 +13,7 @@ import RowContext from './context';
 import {
 	MaxiBlockComponent,
 	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { Toolbar, InnerBlocks } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
@@ -60,7 +61,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			instanceId,
 			selectOnClick,
-			setAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -114,7 +115,7 @@ class edit extends MaxiBlockComponent {
 														)}
 														className='maxi-row-block__template__button'
 														onClick={() => {
-															setAttributes({
+															maxiSetAttributes({
 																'row-pattern-general':
 																	template.name,
 																'row-pattern-m':
@@ -184,5 +185,6 @@ const editDispatch = withDispatch(dispatch => {
 export default compose(
 	editSelect,
 	editDispatch,
-	withInstanceId
+	withInstanceId,
+	withMaxiProps
 )(withFocusOutside(edit));

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -10,6 +11,7 @@ import Inspector from './inspector';
 import {
 	MaxiBlockComponent,
 	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
@@ -90,16 +92,18 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const hasInnerBlock = !isEmpty(
+	const hasInnerBlocks = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		hasInnerBlock,
+		hasInnerBlocks,
 		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

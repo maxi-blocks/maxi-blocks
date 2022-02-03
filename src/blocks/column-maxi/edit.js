@@ -13,6 +13,7 @@ import RowContext from '../row-maxi/context';
 import {
 	MaxiBlockComponent,
 	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import {
 	BlockPlaceholder,
@@ -65,7 +66,7 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			originalNestedColumns,
 			rowBlockId,
-			setAttributes,
+			maxiSetAttributes,
 			updateRowPattern,
 			hasInnerBlocks,
 		} = this.props;
@@ -154,7 +155,7 @@ class edit extends MaxiBlockComponent {
 										context.rowPattern
 									);
 
-									setAttributes({
+									maxiSetAttributes({
 										[`column-size-${deviceType}`]: round(
 											+elt.style.width.replace('%', '')
 										),
@@ -210,4 +211,4 @@ const editDispatch = withDispatch(dispatch => {
 	};
 });
 
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect, editDispatch, withMaxiProps)(edit);

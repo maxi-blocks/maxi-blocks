@@ -17,6 +17,7 @@ import Inspector from './inspector';
 import {
 	MaxiBlockComponent,
 	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import {
@@ -104,7 +105,7 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			onRemove,
 			onReplace,
-			setAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const {
 			content,
@@ -139,7 +140,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				setAttributes(cleanCustomProps);
+				maxiSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -170,14 +171,14 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
-				setAttributes({ content: `${newContent}</a>` });
+				maxiSetAttributes({ content: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ content });
+					maxiSetAttributes({ content });
 				}, 100);
 			}
 		};
@@ -387,4 +388,4 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

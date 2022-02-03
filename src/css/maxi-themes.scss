@@ -201,6 +201,9 @@ body.maxi-blocks--active {
 							@each $level in $levels {
 								#{$level} {
 									&.maxi-text-block__content {
+										font-family: var(
+											--maxi-#{$style}-#{$level}-font-family-#{$responsive_size}
+										);
 										font-size: var(
 											--maxi-#{$style}-#{$level}-font-size-#{$responsive_size}
 										);
@@ -230,6 +233,9 @@ body.maxi-blocks--active {
 						&.maxi-text-block li,
 						.maxi-text-block li {
 							&.maxi-text-block__content {
+								font-family: var(
+									--maxi-#{$style}-p-font-family-#{$responsive_size}
+								);
 								font-size: var(
 									--maxi-#{$style}-p-font-size-#{$responsive_size}
 								);
@@ -306,6 +312,9 @@ body.maxi-blocks--active {
 					.maxi-button-block {
 						@each $level in $levels {
 							#{$level} {
+								font-family: var(
+									--maxi-#{$style}-#{$level}-font-family-#{$current_responsive_stage}
+								);
 								font-size: var(
 									--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage}
 								);
@@ -332,6 +341,9 @@ body.maxi-blocks--active {
 					}
 					&.maxi-text-block li,
 					.maxi-text-block li {
+						font-family: var(
+							--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+						);
 						font-size: var(
 							--maxi-#{$style}-p-font-size-#{$current_responsive_stage}
 						);

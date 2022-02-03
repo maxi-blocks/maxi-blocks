@@ -178,44 +178,45 @@ const getStyles = props => {
 	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getWrapperObject(props),
-			':hover': getWrapperObjectHover(props),
-			' .maxi-svg-icon-block__icon': getNormalObject(props),
-			' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-			...getSVGStyles({
-				obj: {
-					...getGroupAttributes(props, 'svg'),
-				},
-				target: ' .maxi-svg-icon-block__icon',
-				blockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, [
-					'blockBackground',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(
-					props,
-					[
+		[uniqueID]: stylesCleaner(
+			{
+				'': getWrapperObject(props),
+				':hover': getWrapperObjectHover(props),
+				' .maxi-svg-icon-block__icon': getNormalObject(props),
+				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
+				...getSVGStyles({
+					obj: {
+						...getGroupAttributes(props, 'svg'),
+					},
+					target: ' .maxi-svg-icon-block__icon',
+					blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
 						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-					],
-					true
-				),
-				isHover: true,
-				blockStyle,
-			}),
-		},
-		selectorsSvgIcon,
-		props
+					]),
+					blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle,
+				}),
+			},
+			selectorsSvgIcon,
+			props
 		),
 	};
 

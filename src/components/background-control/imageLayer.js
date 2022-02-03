@@ -39,7 +39,6 @@ const ImageLayerSettings = props => {
 		isHover = false,
 		prefix = '',
 		breakpoint,
-		isGeneral = false,
 		getDefaultAttr,
 		moreSettings,
 		setMoreSettings,
@@ -71,14 +70,6 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-image-opacity',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
@@ -141,14 +132,6 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-image-size',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
@@ -185,20 +168,6 @@ const ImageLayerSettings = props => {
 								prefix,
 								breakpoint
 							)]: cropOptions.image.source_url,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-image-crop-options',
-									isHover,
-									prefix,
-									'general'
-								)]: cropOptions,
-								[getAttributeKey(
-									'background-image-mediaURL',
-									isHover,
-									prefix,
-									'general'
-								)]: cropOptions.image.source_url,
-							}),
 						})
 					}
 				/>
@@ -247,14 +216,6 @@ const ImageLayerSettings = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-image-repeat',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						})
 					}
 				/>
@@ -318,14 +279,6 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-image-position',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
@@ -353,14 +306,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-width-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 						value={getLastBreakpointAttribute(
@@ -377,14 +322,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-width',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 						onReset={() =>
@@ -405,24 +342,6 @@ const ImageLayerSettings = props => {
 								)]: getDefaultAttr(
 									'background-image-position-width-unit'
 								),
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-width',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-width'
-									),
-									[getAttributeKey(
-										'background-image-position-width-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-width-unit'
-									),
-								}),
 							})
 						}
 					/>
@@ -443,14 +362,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-height-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 						value={getLastBreakpointAttribute(
@@ -467,14 +378,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-height',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 						onReset={() =>
@@ -495,24 +398,6 @@ const ImageLayerSettings = props => {
 								)]: getDefaultAttr(
 									'background-image-position-height-unit'
 								),
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-height',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-height'
-									),
-									[getAttributeKey(
-										'background-image-position-height-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-height-unit'
-									),
-								}),
 							})
 						}
 					/>
@@ -551,14 +436,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-attachment',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 					/>
@@ -603,14 +480,6 @@ const ImageLayerSettings = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-image-origin',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									})
 								}
 							/>
@@ -645,14 +514,6 @@ const ImageLayerSettings = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-image-clip',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									})
 								}
 							/>
@@ -677,14 +538,6 @@ const ImageLayerSettings = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-image-clip-path',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						})
 					}
 				/>

@@ -71,9 +71,7 @@ const Inspector = memo(
 														/>
 													),
 												},
-											...(deviceType === 'general' &&
-												isList &&
-												listTab(props)),
+											...(isList && listTab(props)),
 											...inspectorTabs.alignment({
 												props,
 												isTextAlignment: true,
@@ -186,13 +184,15 @@ const Inspector = memo(
 			propsToAvoid,
 			isSelected: wasSelected,
 			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
 		},
-		{ attributes: newAttr, isSelected, deviceType: breakpoint }
+		{ attributes: newAttr, isSelected, deviceType: breakpoint, scValues }
 	) => {
 		if (
 			!wasSelected ||
 			wasSelected !== isSelected ||
-			oldBreakpoint !== breakpoint
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
 		)
 			return false;
 

@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { isEmpty, inRange } from 'lodash';
+
 const selectors = {
 	receiveMaxiSettings(state) {
 		if (state) return state.settings;
@@ -33,6 +38,33 @@ const selectors = {
 	receiveCopiedBlocks(state) {
 		if (state) return state.copiedBlocks;
 		return false;
+	},
+	receiveWinBreakpoint(state) {
+		if (!state) return false;
+
+		const winWidth = state?.settings?.window?.width ?? window.innerWidth;
+
+		const breakpoints = !isEmpty(state.breakpoints)
+			? state.breakpoints
+			: {
+					xs: 480,
+					s: 768,
+					m: 1024,
+					l: 1366,
+					xl: 1920,
+			  };
+
+		if (winWidth > breakpoints.xl) return 'xxl';
+
+		return Object.entries(breakpoints)
+			.reduce(([prevKey, prevValue], [currKey, currValue]) => {
+				if (!prevValue) return [prevKey];
+				if (inRange(winWidth, prevValue, currValue + 1))
+					return [currKey];
+
+				return [prevKey, prevValue];
+			})[0]
+			.toLowerCase();
 	},
 };
 

@@ -228,6 +228,9 @@ const getHoverImageWrapperObject = props => {
 				prefix: 'image-',
 			}),
 		}),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		}),
 	};
 
 	return response;
@@ -275,6 +278,9 @@ const getImageWrapperObject = props => {
 				...getGroupAttributes(props, 'padding', false, 'image-'),
 			},
 			prefix: 'image-',
+		}),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
 	};
 

@@ -8,7 +8,8 @@ import { InnerBlocks } from '@wordpress/block-editor';
  */
 import { ArrowDisplayer } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
 
 /**
  * Save

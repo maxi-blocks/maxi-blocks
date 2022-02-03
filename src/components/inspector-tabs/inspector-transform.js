@@ -13,14 +13,14 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const transform = ({ props }) => {
-	const { attributes, deviceType, uniqueID, setAttributes } = props;
+	const { attributes, deviceType, uniqueID, maxiSetAttributes } = props;
 
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		content: (
 			<TransformControl
 				{...getGroupAttributes(attributes, 'transform')}
-				onChange={obj => setAttributes(obj)}
+				onChange={obj => maxiSetAttributes(obj)}
 				uniqueID={uniqueID}
 				breakpoint={deviceType}
 			/>

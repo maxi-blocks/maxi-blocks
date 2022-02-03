@@ -12,13 +12,13 @@ const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 const response = {};
 
 const generateAttr = (
-	motionType,
+	scrollType,
 	attr,
 	valueType = 'number',
 	defaultValue,
 	breakpoint = 'general'
 ) => {
-	const key = `scroll-${motionType}-${attr}-${breakpoint}`;
+	const key = `scroll-${scrollType}-${attr}-${breakpoint}`;
 	const value =
 		defaultValue !== 'noDefault'
 			? {

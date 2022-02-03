@@ -2,12 +2,17 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
 	BlockPlaceholder,
@@ -16,7 +21,7 @@ import {
 	Toolbar,
 	InnerBlocks,
 } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -41,6 +46,7 @@ class edit extends MaxiBlockComponent {
 
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 		const {
 			'shape-divider-top-status': shapeDividerTopStatus,
 			'shape-divider-bottom-status': shapeDividerBottomStatus,
@@ -50,13 +56,17 @@ class edit extends MaxiBlockComponent {
 
 		return {
 			...(shapeStatus && {
-				...getGroupAttributes(attributes, 'shapeDivider'),
+				shape_divider: {
+					[uniqueID]: {
+						...getGroupAttributes(attributes, 'shapeDivider'),
+					},
+				},
 			}),
 		};
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, setAttributes } =
+		const { attributes, deviceType, hasInnerBlocks, maxiSetAttributes } =
 			this.props;
 		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
@@ -96,7 +106,7 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
-							onChange={obj => setAttributes(obj)}
+							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 					</>
@@ -125,7 +135,7 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
 	const hasInnerBlocks = !isEmpty(
@@ -137,4 +147,6 @@ export default withSelect((select, ownProps) => {
 		hasInnerBlocks,
 		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

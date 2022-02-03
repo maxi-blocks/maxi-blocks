@@ -34,28 +34,21 @@ import {
 /**
  * Components
  */
-const ResponsiveSelector = props => {
-	const { className, isOpen, onClose } = props;
+const ResponsiveButton = ({
+	winBreakpoint,
+	icon,
+	breakpoint,
+	target,
+	breakpoints,
+}) => {
+	const isWinBreakpoint = winBreakpoint === target;
 
-	const { insertBlock } = useDispatch('core/block-editor');
-
-	const { deviceType, breakpoints } = useSelect(select => {
-		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } =
-			select('maxiBlocks');
-
-		return {
-			deviceType: receiveMaxiDeviceType(),
-			breakpoints: receiveMaxiBreakpoints(),
-		};
-	});
+	const classes = classnames(
+		'maxi-responsive-selector__button-wrapper',
+		isWinBreakpoint && 'maxi-responsive-selector__base'
+	);
 
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
-
-	const addCloudLibrary = () => {
-		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
-	};
-
-	const classes = classnames('maxi-responsive-selector', className);
 
 	const setScreenSize = size => {
 		const xxlSize = select('maxiBlocks').receiveXXLSize();
@@ -68,60 +61,102 @@ const ResponsiveSelector = props => {
 			);
 	};
 
+	const getIsPressed = () => {
+		if (breakpoint === 'general') return winBreakpoint === target;
+
+		return breakpoint === target;
+	};
+
 	return (
-		<div className={classes} style={{ display: isOpen ? 'block' : 'none' }}>
+		<div className={classes}>
+			<Button
+				className='maxi-responsive-selector__button-item'
+				onClick={() =>
+					setScreenSize(isWinBreakpoint ? 'general' : target)
+				}
+				aria-pressed={getIsPressed()}
+			>
+				{icon}
+			</Button>
+			{isWinBreakpoint && <div>Your base</div>}
+		</div>
+	);
+};
+
+const ResponsiveSelector = props => {
+	const { className, isOpen, onClose } = props;
+
+	const { insertBlock } = useDispatch('core/block-editor');
+
+	const { deviceType, breakpoints, winBreakpoint } = useSelect(select => {
+		const {
+			receiveMaxiDeviceType,
+			receiveMaxiBreakpoints,
+			receiveWinBreakpoint,
+		} = select('maxiBlocks');
+
+		const winBreakpoint = receiveWinBreakpoint();
+
+		return {
+			deviceType: receiveMaxiDeviceType(),
+			breakpoints: receiveMaxiBreakpoints(),
+			winBreakpoint,
+		};
+	});
+
+	const addCloudLibrary = () => {
+		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+	};
+
+	const classes = classnames('maxi-responsive-selector', className);
+
+	return (
+		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
 			<span className='maxi-responsive-selector__close' onClick={onClose}>
 				X
 			</span>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('general')}
-				aria-pressed={deviceType === 'general'}
-			>
-				{__('Base', 'maxi-blocks')}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('xxl')}
-				aria-pressed={deviceType === 'xxl'}
-			>
-				{xllMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('xl')}
-				aria-pressed={deviceType === 'xl'}
-			>
-				{xlMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('l')}
-				aria-pressed={deviceType === 'l'}
-			>
-				{largeMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('m')}
-				aria-pressed={deviceType === 'm'}
-			>
-				{mediumMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('s')}
-				aria-pressed={deviceType === 's'}
-			>
-				{smallMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('xs')}
-				aria-pressed={deviceType === 'xs'}
-			>
-				{xsMode}
-			</Button>
+			<ResponsiveButton
+				icon={xllMode}
+				target='xxl'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={xlMode}
+				target='xl'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={largeMode}
+				target='l'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={mediumMode}
+				target='m'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={smallMode}
+				target='s'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={xsMode}
+				target='xs'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
 			<div className='action-buttons'>
 				<Button
 					className='action-buttons__button'

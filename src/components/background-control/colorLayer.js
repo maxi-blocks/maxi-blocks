@@ -31,7 +31,6 @@ const ColorLayerContent = props => {
 		prefix = '',
 		clientId,
 		breakpoint,
-		isGeneral = false,
 		isLayer = false,
 		globalProps,
 	} = props;
@@ -128,32 +127,6 @@ const ColorLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: color,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-palette-status',
-								isHover,
-								prefix,
-								'general'
-							)]: paletteStatus,
-							[getAttributeKey(
-								'background-palette-color',
-								isHover,
-								prefix,
-								'general'
-							)]: paletteColor,
-							[getAttributeKey(
-								'background-palette-opacity',
-								isHover,
-								prefix,
-								'general'
-							)]: paletteOpacity,
-							[getAttributeKey(
-								'background-color',
-								isHover,
-								prefix,
-								'general'
-							)]: color,
-						}),
 					});
 				}}
 				globalProps={globalProps}
@@ -177,14 +150,6 @@ const ColorLayerContent = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-color-clip-path',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						});
 					}}
 				/>

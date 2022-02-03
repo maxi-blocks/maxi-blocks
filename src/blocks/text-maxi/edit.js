@@ -14,10 +14,18 @@ import {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getColorRGBAString,
+	getGroupAttributes,
+	getPaletteAttributes,
+} from '../../extensions/styles';
+import MaxiBlock from '../../components/maxi-block';
 import getStyles from './styles';
 import onMerge, { onReplaceBlocks } from './utils';
 import {
@@ -29,6 +37,7 @@ import {
  * External dependencies
  */
 import { isEmpty, compact, flatten } from 'lodash';
+import { setSVGColor } from '../../extensions/svg';
 
 /**
  * Content
@@ -46,6 +55,48 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	maxiBlockDidUpdate() {
+		const { attributes, setAttributes } = this.props;
+		const {
+			parentBlockStyle,
+			isList,
+			typeOfList,
+			listStyle,
+			listStyleCustom,
+		} = attributes;
+
+		// Ensures svg list markers change the colour when SC color changes
+		if (
+			isList &&
+			typeOfList === 'ul' &&
+			listStyle === 'custom' &&
+			listStyleCustom?.includes('<svg ')
+		) {
+			const { paletteStatus, paletteColor, paletteOpacity } =
+				getPaletteAttributes({
+					obj: attributes,
+					prefix: 'list-',
+				});
+
+			if (paletteStatus) {
+				const newColor = getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle: parentBlockStyle,
+				});
+
+				if (!listStyleCustom.includes(newColor))
+					setAttributes({
+						listStyleCustom: setSVGColor({
+							svg: listStyleCustom,
+							color: newColor,
+							type: 'fill',
+						}),
+					});
+			}
+		}
+	}
+
 	render() {
 		const {
 			attributes,
@@ -54,7 +105,7 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			onRemove,
 			onReplace,
-			setAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const {
 			content,
@@ -89,7 +140,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				setAttributes(cleanCustomProps);
+				maxiSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -120,14 +171,14 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
-				setAttributes({ content: `${newContent}</a>` });
+				maxiSetAttributes({ content: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ content });
+					maxiSetAttributes({ content });
 				}, 100);
 			}
 		};
@@ -293,12 +344,48 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
+const editSelect = withSelect((select, ownProps) => {
+	const { attributes } = ownProps;
+	const { parentBlockStyle, isList, typeOfList, listStyle, listStyleCustom } =
+		attributes;
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	/**
+	 * Ensures svg list markers change the colour when SC color changes.
+	 * This changes will update the block, which will trigger maxiBlockDidUpdate
+	 * where the script will finish the task of updating the colour
+	 */
+	if (
+		isList &&
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom?.includes('<svg ')
+	) {
+		const { paletteStatus, paletteColor } = getPaletteAttributes({
+			obj: attributes,
+			prefix: 'list-',
+		});
+
+		if (paletteStatus) {
+			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+			const scElements = paletteColor.toString();
+			const scValues = receiveStyleCardValue(
+				scElements,
+				parentBlockStyle,
+				'color'
+			);
+
+			return {
+				deviceType,
+				scValues,
+			};
+		}
+	}
 
 	return {
 		deviceType,
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

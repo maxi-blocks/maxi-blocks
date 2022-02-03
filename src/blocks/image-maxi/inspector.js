@@ -45,7 +45,7 @@ import {
  * Dimension tab
  */
 const dimensionTab = props => {
-	const { attributes, clientId, imageData, setAttributes } = props;
+	const { attributes, clientId, imageData, maxiSetAttributes } = props;
 	const {
 		cropOptions,
 		imageRatio,
@@ -121,7 +121,7 @@ const dimensionTab = props => {
 										mediaWidth,
 										mediaHeight,
 									} = getSizeResponse(imageSize);
-									setAttributes({
+									maxiSetAttributes({
 										imageSize,
 										mediaURL,
 										mediaWidth,
@@ -134,7 +134,7 @@ const dimensionTab = props => {
 									mediaID={mediaID}
 									cropOptions={cropOptions}
 									onChange={cropOptions => {
-										setAttributes({
+										maxiSetAttributes({
 											cropOptions,
 											mediaURL:
 												cropOptions.image.source_url,
@@ -153,11 +153,11 @@ const dimensionTab = props => {
 					value={attributes.imgWidth}
 					onChange={val => {
 						if (!isNil(val))
-							setAttributes({
+							maxiSetAttributes({
 								imgWidth: val,
 							});
 						else
-							setAttributes({
+							maxiSetAttributes({
 								imgWidth: getDefaultAttribute(
 									'imgWidth',
 									clientId
@@ -200,7 +200,7 @@ const dimensionTab = props => {
 							},
 						]}
 						onChange={imageRatio =>
-							setAttributes({
+							maxiSetAttributes({
 								imageRatio,
 							})
 						}
@@ -216,8 +216,13 @@ const dimensionTab = props => {
  */
 const Inspector = memo(
 	props => {
-		const { attributes, clientId, deviceType, imageData, setAttributes } =
-			props;
+		const {
+			attributes,
+			clientId,
+			deviceType,
+			imageData,
+			maxiSetAttributes,
+		} = props;
 		const {
 			altSelector,
 			blockStyle,
@@ -293,7 +298,7 @@ const Inspector = memo(
 															}
 															mediaAlt={mediaAlt}
 															onChange={obj => {
-																setAttributes(
+																maxiSetAttributes(
 																	obj
 																);
 															}}
@@ -312,15 +317,17 @@ const Inspector = memo(
 															className='maxi-image-caption-type'
 															options={getCaptionOptions()}
 															onChange={captionType => {
-																setAttributes({
-																	captionType,
-																});
+																maxiSetAttributes(
+																	{
+																		captionType,
+																	}
+																);
 																if (
 																	imageData &&
 																	captionType ===
 																		'attachment'
 																)
-																	setAttributes(
+																	maxiSetAttributes(
 																		{
 																			captionContent:
 																				imageData
@@ -359,7 +366,7 @@ const Inspector = memo(
 																		},
 																	]}
 																	onChange={captionPosition =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				captionPosition,
 																			}
@@ -383,7 +390,7 @@ const Inspector = memo(
 																		]
 																	}
 																	onChangeValue={val =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-${deviceType}`]:
 																					val,
@@ -407,7 +414,7 @@ const Inspector = memo(
 																		},
 																	}}
 																	onChangeUnit={val =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-unit-${deviceType}`]:
 																					val,
@@ -415,7 +422,7 @@ const Inspector = memo(
 																		)
 																	}
 																	onReset={() =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-${deviceType}`]:
 																					getDefaultAttribute(
@@ -452,7 +459,7 @@ const Inspector = memo(
 																				newCaptionContent;
 																		}
 
-																		setAttributes(
+																		maxiSetAttributes(
 																			obj
 																		);
 																	}}
@@ -497,7 +504,9 @@ const Inspector = memo(
 															]
 														)}
 														onChange={obj =>
-															setAttributes(obj)
+															maxiSetAttributes(
+																obj
+															)
 														}
 														blockStyle={blockStyle}
 														clientId={clientId}
@@ -516,7 +525,9 @@ const Inspector = memo(
 															'imageShape'
 														)}
 														onChange={obj => {
-															setAttributes(obj);
+															maxiSetAttributes(
+																obj
+															);
 														}}
 														icon={SVGElement}
 														breakpoint={deviceType}
@@ -532,7 +543,7 @@ const Inspector = memo(
 													<ClipPath
 														clipPath={clipPath}
 														onChange={clipPath =>
-															setAttributes({
+															maxiSetAttributes({
 																clipPath,
 															})
 														}

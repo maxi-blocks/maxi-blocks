@@ -50,35 +50,38 @@
 		z-index: 99;
 	}
 	&__button {
-		display: inline-block;
-		vertical-align: top;
-		border-radius: 5px;
-		margin: 0 0 0 8px;
-		background-color: #f8f8f8;
-		border: 2px solid #f8f8f8;
-		transition: border-color 0.5s;
-		height: 40px;
-		width: 55px;
-		padding: 2px 6px !important;
+		&-item {
+			display: inline-block;
+			vertical-align: top;
+			border-radius: 5px;
+			margin: 0 0 0 8px;
+			background-color: #f8f8f8;
+			border: 2px solid #f8f8f8;
+			transition: border-color 0.5s;
+			height: 40px;
+			width: 55px;
+			padding: 2px 6px !important;
 
-		svg {
-			width: 90%;
-			height: 90%;
-		}
-		&:hover {
-			border-color: #e8eaeb;
-			color: #464a53 !important;
-		}
-		&:first-of-type {
-			margin-left: 0;
-			font-size: 1rem;
-		}
-		&[aria-pressed='true'] {
-			border-color: #e8eaeb;
-			border-bottom-color: #ff4a17;
-			background-color: #fff;
-			border-bottom-left-radius: 0;
-			border-bottom-right-radius: 0;
+			svg {
+				width: 90%;
+				height: 90%;
+			}
+			&:hover {
+				border-color: #e8eaeb;
+				color: #464a53 !important;
+			}
+			&:first-of-type {
+				margin-left: 0;
+				font-size: 1rem;
+			}
+
+			&[aria-pressed='true'] {
+				border-color: #e8eaeb;
+				border-bottom-color: #ff4a17;
+				background-color: #fff;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
 		}
 	}
 }

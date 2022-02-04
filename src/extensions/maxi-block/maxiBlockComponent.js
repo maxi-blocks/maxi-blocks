@@ -327,10 +327,13 @@ class MaxiBlockComponent extends Component {
 					fontStyle.push(val);
 
 				if (key.includes('custom-formats') && !isEmpty(val)) {
+					console.log('custom!!!');
 					let customFonts = {};
 					Object.values(val).forEach(customVal => {
 						customFonts = { ...customFonts, ...customVal };
 					});
+
+					console.log(customFonts);
 
 					getAllFonts(customFonts);
 				}
@@ -348,6 +351,9 @@ class MaxiBlockComponent extends Component {
 			if (!isEmpty(fontStyle))
 				response[fontName].style = fontStyle.join();
 		}
+
+		console.log('response');
+		console.log(response);
 
 		if (!isEmpty(response)) loadFonts(response);
 	}

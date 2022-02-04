@@ -52,7 +52,7 @@ const ShapeColor = props => {
 				<ColorControl
 					label={__('Shape', 'maxi-blocks')}
 					color={props['shape-fill-color']}
-					defaultColor={getDefaultAttribute('shape-fill-color')}
+					prefix='shape-fill-'
 					paletteColor={props['shape-fill-palette-color']}
 					paletteStatus={props['shape-fill-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {

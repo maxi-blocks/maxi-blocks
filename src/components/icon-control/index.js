@@ -277,10 +277,7 @@ const IconControl = props => {
 											}`
 										]
 									}
-									defaultColor={getDefaultAttribute(
-										'icon-color',
-										isHover
-									)}
+									prefix='icon-'
 									paletteColor={
 										props[
 											`icon-palette-color${
@@ -405,14 +402,8 @@ const IconControl = props => {
 										props,
 										isHover
 									)}
-									defaultColor={getDefaultAttribute(
-										getAttributeKey(
-											'background-color',
-											isHover,
-											'icon-',
-											breakpoint
-										)
-									)}
+									prefix='icon-background-'
+									useBreakpointForDefault
 									onChange={({
 										paletteStatus,
 										paletteColor,

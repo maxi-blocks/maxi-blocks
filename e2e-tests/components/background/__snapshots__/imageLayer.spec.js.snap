@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackgroundControl Check Background image layer 1`] = `
+Array [
+  Object {
+    "background-image-attachment-general": "fixed",
+    "background-image-clip-general": "content-box",
+    "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-image-height-general": 100,
+    "background-image-height-unit-general": "%",
+    "background-image-opacity-general": 0.55,
+    "background-image-origin-general": "border-box",
+    "background-image-parallax-direction": "down",
+    "background-image-parallax-speed": 4,
+    "background-image-parallax-status": false,
+    "background-image-position-general": "left top",
+    "background-image-position-height-general": 0,
+    "background-image-position-height-unit-general": "%",
+    "background-image-position-width-general": 0,
+    "background-image-position-width-unit-general": "%",
+    "background-image-repeat-general": "repeat",
+    "background-image-size-general": "contain",
+    "background-image-width-general": 100,
+    "background-image-width-unit-general": "%",
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "image",
+  },
+]
+`;
+
+exports[`BackgroundControl Check Background image layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;
+
+exports[`BackgroundControl Check Background image layer hover 1`] = `
+Array [
+  Object {
+    "background-image-attachment-general": "fixed",
+    "background-image-attachment-general-hover": "local",
+    "background-image-attachment-s": "local",
+    "background-image-clip-general": "content-box",
+    "background-image-clip-general-hover": "border-box",
+    "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-image-height-general": 100,
+    "background-image-height-unit-general": "%",
+    "background-image-opacity-general": 0.55,
+    "background-image-opacity-general-hover": 0.82,
+    "background-image-origin-general": "border-box",
+    "background-image-origin-general-hover": "",
+    "background-image-parallax-direction": "down",
+    "background-image-parallax-speed": 4,
+    "background-image-parallax-status": false,
+    "background-image-position-general": "left top",
+    "background-image-position-general-hover": "center top",
+    "background-image-position-height-general": 0,
+    "background-image-position-height-unit-general": "%",
+    "background-image-position-s": "center top",
+    "background-image-position-width-general": 0,
+    "background-image-position-width-unit-general": "%",
+    "background-image-repeat-general": "repeat",
+    "background-image-repeat-general-hover": "repeat-x",
+    "background-image-repeat-s": "space",
+    "background-image-size-general": "contain",
+    "background-image-size-general-hover": "cover",
+    "background-image-size-s": "cover",
+    "background-image-width-general": 100,
+    "background-image-width-unit-general": "%",
+    "display-general": "block",
+    "id": 1,
+    "isHover": false,
+    "type": "image",
+  },
+]
+`;
+
+exports[`BackgroundControl Check Background image layer hover 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;
+
+exports[`BackgroundControl Check Background image layer hover responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;
+
+exports[`BackgroundControl Check Background image layer responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;

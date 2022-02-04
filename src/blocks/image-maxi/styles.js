@@ -228,6 +228,9 @@ const getHoverImageWrapperObject = props => {
 				prefix: 'image-',
 			}),
 		}),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		}),
 	};
 
 	return response;
@@ -276,6 +279,9 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		}),
 	};
 
 	return response;
@@ -285,9 +291,6 @@ const getImageObject = props => {
 	return {
 		...(props.clipPath && {
 			image: { general: { 'clip-path': props.clipPath } },
-		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
 		size: getSizeStyles(
 			{

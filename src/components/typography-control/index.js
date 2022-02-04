@@ -51,9 +51,14 @@ const TextOptions = props => {
 		prefix,
 		minMaxSettings,
 		minMaxSettingsLetterSpacing,
-		breakpoint,
+		breakpoint: rawBreakpoint,
 		avoidXXL,
 	} = props;
+
+	const breakpoint =
+		rawBreakpoint !== 'general'
+			? rawBreakpoint
+			: select('maxiBlocks').receiveWinBreakpoint();
 
 	return (
 		<>
@@ -68,7 +73,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}font-size-unit`]: val,
 						},
-						breakpoint
+						rawBreakpoint
 					);
 				}}
 				placeholder={getValue(
@@ -88,7 +93,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}font-size`]: val,
 						},
-						breakpoint
+						rawBreakpoint
 					);
 				}}
 				onReset={() =>
@@ -101,7 +106,7 @@ const TextOptions = props => {
 								`${prefix}font-size`
 							),
 						},
-						breakpoint
+						rawBreakpoint
 					)
 				}
 				minMaxSettings={minMaxSettings}
@@ -131,7 +136,7 @@ const TextOptions = props => {
 									minMaxSettings['-'].max,
 							}),
 						},
-						breakpoint
+						rawBreakpoint
 					);
 				}}
 				placeholder={getValue(
@@ -151,7 +156,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}line-height`]: val,
 						},
-						breakpoint
+						rawBreakpoint
 					);
 				}}
 				onReset={() =>
@@ -164,7 +169,7 @@ const TextOptions = props => {
 								`${prefix}line-height`
 							),
 						},
-						breakpoint
+						rawBreakpoint
 					)
 				}
 				minMaxSettings={minMaxSettings}
@@ -189,7 +194,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}letter-spacing-unit`]: val,
 						},
-						breakpoint
+						rawBreakpoint
 					);
 				}}
 				placeholder={getValue(
@@ -209,7 +214,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}letter-spacing`]: val,
 						},
-						breakpoint
+						rawBreakpoint
 					);
 				}}
 				onReset={() =>
@@ -220,7 +225,7 @@ const TextOptions = props => {
 							),
 							[`${prefix}letter-spacing`]: '',
 						},
-						breakpoint
+						rawBreakpoint
 					)
 				}
 				minMaxSettings={minMaxSettingsLetterSpacing}

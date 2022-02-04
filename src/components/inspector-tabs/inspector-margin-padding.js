@@ -18,7 +18,7 @@ const marginPadding = ({
 	customLabel,
 	disableMargin = false,
 }) => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
 		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
@@ -34,7 +34,7 @@ const marginPadding = ({
 						)}
 						prefix={prefix}
 						label={__('Margin', 'maxi-blocks')}
-						onChange={obj => setAttributes(obj)}
+						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
 						target='margin'
 						optionType='string'
@@ -71,7 +71,7 @@ const marginPadding = ({
 					)}
 					prefix={prefix}
 					label={__('Padding', 'maxi-blocks')}
-					onChange={obj => setAttributes(obj)}
+					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
 					target='padding'
 					disableAuto

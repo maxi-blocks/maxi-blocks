@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -39,7 +40,7 @@ describe('ArrowControl', () => {
 
 		const values = ['top', 'bottom', 'right', 'left'];
 
-		for (let i = 0; i < values.length; i++) {
+		for (let i = 0; i < values.length; i += 1) {
 			await page.$$eval(
 				'.maxi-arrow-control .maxi-settingstab-control button',
 				(buttons, i) => buttons[i].click(),

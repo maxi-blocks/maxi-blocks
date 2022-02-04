@@ -88,4 +88,5 @@ const attributes = {
 	...attributesData.zIndex,
 	...attributesData.customCss,
 };
+
 export default attributes;

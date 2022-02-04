@@ -22,7 +22,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 		attributes,
 		clientId,
 		deviceType,
-		setAttributes,
+		maxiSetAttributes,
 		scValues = {},
 		depth = 2,
 	} = props;
@@ -54,7 +54,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 								)}
 								prefix={prefix}
 								onChange={obj => {
-									setAttributes(obj);
+									maxiSetAttributes(obj);
 								}}
 								breakpoint={deviceType}
 								clientId={clientId}
@@ -75,7 +75,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 										selected={hoverStatus}
 										className='maxi-border-status-hover'
 										onChange={val =>
-											setAttributes({
+											maxiSetAttributes({
 												...(val &&
 													setHoverAttributes(
 														{
@@ -122,7 +122,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 											prefix
 										)}
 										prefix={prefix}
-										onChange={obj => setAttributes(obj)}
+										onChange={obj => maxiSetAttributes(obj)}
 										breakpoint={deviceType}
 										isHover
 										clientId={clientId}

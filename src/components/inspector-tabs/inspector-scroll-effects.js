@@ -24,7 +24,7 @@ const scrollEffects = ({ props, depth = 2 }) => {
 			<ScrollEffectsControl
 				uniqueID={uniqueID}
 				{...getGroupAttributes(attributes, 'scroll')}
-				onChange={obj => setAttributes(obj)}
+				onChange={obj => maxiSetAttributes(obj)}
 				blockStyle={blockStyle}
 				clientId={clientId}
 				breakpoint={deviceType}

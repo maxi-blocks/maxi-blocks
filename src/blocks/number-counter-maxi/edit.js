@@ -12,9 +12,12 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
+	withMaxiProps,
+	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Button, Toolbar } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -252,7 +255,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, setAttributes, deviceType, isSelected } =
+		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
 		const { uniqueID, blockFullWidth } = attributes;
 
@@ -265,7 +268,7 @@ class edit extends MaxiBlockComponent {
 				attributes
 			);
 
-			setAttributes({
+			maxiSetAttributes({
 				[`number-counter-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
@@ -313,4 +316,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

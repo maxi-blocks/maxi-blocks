@@ -46,6 +46,7 @@ const selectors = {
 	receiveTabsPath(state) {
 		if (state) return state.tabsPath;
 		return false;
+	},
 	receiveWinBreakpoint(state) {
 		if (!state) return false;
 

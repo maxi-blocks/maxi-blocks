@@ -30,6 +30,7 @@ const background = ({
 	globalProps,
 	hoverGlobalProps,
 	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
+	depth = 2,
 }) => {
 	const {
 		attributes,
@@ -154,6 +155,7 @@ const background = ({
 						extraIndicators: [`${prefix}background-hover-status`],
 					},
 				]}
+				depth={depth}
 			/>
 		),
 	};

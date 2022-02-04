@@ -87,6 +87,7 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
+					depth={0}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),

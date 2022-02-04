@@ -33,8 +33,7 @@ describe('Advanced Number Control', () => {
 		// Max value
 		await editAdvancedNumberControl({
 			page,
-			instance:
-				'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
+			instance: '.maxi-typography-control__letter-spacing',
 			newNumber: '31',
 		});
 
@@ -58,8 +57,7 @@ describe('Advanced Number Control', () => {
 		// reset value
 		await editAdvancedNumberControl({
 			page,
-			instance:
-				'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
+			instance: '.maxi-typography-control__letter-spacing',
 			newNumber: '10',
 		});
 

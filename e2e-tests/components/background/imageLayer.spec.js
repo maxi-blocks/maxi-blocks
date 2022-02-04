@@ -27,8 +27,7 @@ describe('BackgroundControl', () => {
 		// opacity
 		await editAdvancedNumberControl({
 			page,
-			instance:
-				'.maxi-background-control .maxi-advanced-number-control input',
+			instance: '.maxi-background-control ',
 			newNumber: '55',
 		});
 
@@ -267,8 +266,7 @@ describe('BackgroundControl', () => {
 		// opacity
 		await editAdvancedNumberControl({
 			page,
-			instance:
-				'.maxi-background-control .maxi-advanced-number-control input',
+			instance: '.maxi-background-control',
 			newNumber: '82',
 		});
 

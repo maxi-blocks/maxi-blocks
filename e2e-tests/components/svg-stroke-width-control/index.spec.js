@@ -37,7 +37,7 @@ describe('Svg stroke width control', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-advanced-number-control input',
+			instance: '.maxi-advanced-number-control',
 			newNumber: '3',
 		});
 
@@ -61,7 +61,7 @@ describe('Svg stroke width control', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-advanced-number-control input',
+			instance: '.maxi-advanced-number-control',
 			newNumber: '1',
 		});
 

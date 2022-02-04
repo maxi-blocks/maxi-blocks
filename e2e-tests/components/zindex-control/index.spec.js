@@ -22,7 +22,7 @@ describe('ZIndexControl', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-zIndex-control .maxi-base-control__field input',
+			instance: '.maxi-zIndex-control .maxi-base-control__field',
 			newNumber: '20',
 		});
 

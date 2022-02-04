@@ -88,7 +88,7 @@ describe('ShapeDividerControl', () => {
 		// divider height
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-shapedividercontrol .maxi-divider-height input',
+			instance: '.maxi-shapedividercontrol .maxi-divider-height',
 			newNumber: '200',
 		});
 

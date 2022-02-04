@@ -21,7 +21,7 @@ describe('ResponsiveControl', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-responsive-control input',
+			instance: '.maxi-responsive-control',
 			newNumber: '450',
 		});
 

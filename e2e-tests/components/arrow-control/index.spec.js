@@ -58,8 +58,7 @@ describe('ArrowControl', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance:
-				'.maxi-advanced-number-control .maxi-base-control__field input',
+			instance: '.maxi-advanced-number-control .maxi-base-control__field',
 			newNumber: '59',
 		});
 

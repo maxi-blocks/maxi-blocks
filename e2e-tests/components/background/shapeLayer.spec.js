@@ -44,7 +44,7 @@ describe('BackgroundControl', () => {
 		// opacity
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-color-control .maxi-advanced-number-control input',
+			instance: '.maxi-color-control .maxi-advanced-number-control',
 			newNumber: '77',
 		});
 
@@ -57,7 +57,7 @@ describe('BackgroundControl', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance:
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control',
 			newNumber: '43',
 		});
 
@@ -92,14 +92,14 @@ describe('BackgroundControl', () => {
 		// opacity and size
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-color-control .maxi-advanced-number-control input',
+			instance: '.maxi-color-control .maxi-advanced-number-control',
 			newNumber: '54',
 		});
 
 		await editAdvancedNumberControl({
 			page,
 			instance:
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control',
 			newNumber: '23',
 		});
 
@@ -204,7 +204,7 @@ describe('BackgroundControl', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance:
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control',
 			newNumber: '22',
 		});
 
@@ -232,7 +232,7 @@ describe('BackgroundControl', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance:
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control',
 			newNumber: '12',
 		});
 

@@ -33,8 +33,7 @@ describe('Background Color Layer', () => {
 		// opacity
 		await editAdvancedNumberControl({
 			page,
-			instance:
-				'.maxi-background-control .maxi-advanced-number-control input',
+			instance: '.maxi-background-control ',
 			newNumber: '45',
 		});
 
@@ -133,8 +132,7 @@ describe('Background Color Layer', () => {
 		// opacity
 		await editAdvancedNumberControl({
 			page,
-			instance:
-				'.maxi-background-control .maxi-opacity-control input[type="number"]',
+			instance: '.maxi-background-control .maxi-opacity-control ',
 			newNumber: '45',
 		});
 

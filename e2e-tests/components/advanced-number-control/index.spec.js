@@ -15,7 +15,7 @@ import {
 	getAttributes,
 	openSidebarTab,
 	changeResponsive,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Advanced Number Control', () => {
@@ -31,7 +31,7 @@ describe('Advanced Number Control', () => {
 		await changeResponsive(page, 'm');
 
 		// Max value
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
@@ -56,7 +56,7 @@ describe('Advanced Number Control', () => {
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-3);
 
 		// reset value
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',

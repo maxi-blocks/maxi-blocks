@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -10,7 +14,6 @@ import {
 	openSidebarTab,
 	getAttributes,
 	addResponsiveTest,
-	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Svg width control', () => {
@@ -35,20 +38,14 @@ describe('Svg width control', () => {
 		);
 
 		// change width and unit
-		await editAdvancedNumberControl({
-			page,
-			instance:
-				'.maxi-advanced-number-control .maxi-base-control__field input',
-			newNumber: '37',
-		});
 
-		/* await accordionPanel.$$eval(
+		await accordionPanel.$$eval(
 			'.maxi-advanced-number-control input',
 			input => input[0].focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('37'); */
+		await page.keyboard.type('37');
 
 		expect(await getAttributes('svg-width-general')).toStrictEqual(37);
 

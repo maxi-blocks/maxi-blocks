@@ -16,7 +16,7 @@ import {
 	changeResponsive,
 	getBlockStyle,
 	getAttributes,
-	getAdvancedNumberControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('ArrowControl', () => {
@@ -56,7 +56,7 @@ describe('ArrowControl', () => {
 			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
 
-		await getAdvancedNumberControl({
+		await editAdvancedNumberControl({
 			page,
 			instance:
 				'.maxi-advanced-number-control .maxi-base-control__field input',

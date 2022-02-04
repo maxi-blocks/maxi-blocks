@@ -60,7 +60,7 @@ describe('ArrowControl', () => {
 			page,
 			instance:
 				'.maxi-advanced-number-control .maxi-base-control__field input',
-			newNumber: '9',
+			newNumber: '59',
 		});
 
 		expect(await getAttributes('arrow-position-general')).toStrictEqual(59);

@@ -18,8 +18,7 @@ import {
  * Component
  */
 const boxShadow = ({ props, prefix = '', depth = 2 }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
-
+	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
 
 	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
 

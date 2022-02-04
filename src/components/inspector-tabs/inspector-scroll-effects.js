@@ -13,7 +13,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const scrollEffects = ({ props, depth = 2 }) => {
-	const { attributes, setAttributes, blockStyle, clientId, deviceType } =
+	const { attributes, maxiSetAttributes, blockStyle, clientId, deviceType } =
 		props;
 
 	const { uniqueID } = attributes;

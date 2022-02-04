@@ -13,9 +13,9 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const transform = ({ props, depth = 2 }) => {
-	const { attributes, deviceType, uniqueID, setAttributes } = props;
+	const { attributes, deviceType, uniqueID, maxiSetAttributes } = props;
 
-return {
+	return {
 		label: __('Transform', 'maxi-blocks'),
 		content: (
 			<TransformControl

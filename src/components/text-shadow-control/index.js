@@ -63,13 +63,15 @@ const TextShadow = props => {
 		};
 	};
 
+	const defaultPaletteColor = 8;
+
 	const { valueDecomposed, x, y, blur, color, opacity } = decomposeValue();
 
 	const [isPaletteActive, setIsPaletteActive] = useState(
 		isEmpty(color) || color.toString().length === 1
 	);
 	const [currentPaletteColor, setCurrentPaletteColor] = useState(
-		isEmpty(color) || !isPaletteActive ? 8 : +color
+		isEmpty(color) || !isPaletteActive ? defaultPaletteColor : +color
 	);
 	const [currentPaletteOpacity, setCurrentPaletteOpacity] = useState(
 		!isNil(opacity) ? +opacity : 1
@@ -77,7 +79,6 @@ const TextShadow = props => {
 	const [currentColor, setCurrentColor] = useState(
 		!isPaletteActive ? color : undefined
 	);
-	const defaultPaletteColor = 8;
 
 	useEffect(() => {
 		const { color, opacity } = decomposeValue();

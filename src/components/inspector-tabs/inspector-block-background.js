@@ -21,6 +21,7 @@ const blockBackground = ({
 	disableGradient = false,
 	disableColor = false,
 	disableSVG = false,
+	depth = 2,
 }) => {
 	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
 
@@ -88,6 +89,7 @@ const blockBackground = ({
 						extraIndicators: ['block-background-hover-status'],
 					},
 				]}
+				depth={depth}
 			/>
 		),
 	};

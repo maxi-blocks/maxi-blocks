@@ -111,6 +111,22 @@ export const getColorBackgroundObject = ({
 					blockStyle,
 			  })
 			: color;
+	else if (isIcon) {
+		const { paletteColor, paletteOpacity, color } = getPaletteAttributes({
+			obj: props,
+			prefix: 'button-background-',
+			isHover,
+			breakpoint,
+		});
+
+		response[breakpoint].background = paletteStatus
+			? getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+			  })
+			: color;
+	}
 
 	if (!isNil(bgClipPath))
 		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)

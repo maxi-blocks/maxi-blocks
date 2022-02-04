@@ -15,6 +15,7 @@ import {
 
 describe('Responsive attributes mechanisms', () => {
 	beforeEach(async () => {
+		// Base responsive is "M"
 		await setBrowserViewport('large');
 
 		await createNewPost();
@@ -144,28 +145,12 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-top-width-xxl': 2,
-			'border-right-width-xxl': 2,
-			'border-bottom-width-xxl': 2,
-			'border-left-width-xxl': 2,
 			'border-style-general': 'solid',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-xxl',
-			'border-top-width-xxl',
-			'border-right-width-xxl',
-			'border-bottom-width-xxl',
-			'border-left-width-xxl',
 			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -266,32 +251,12 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xl': 'dashed',
-			'border-top-width-xl': 2,
-			'border-right-width-xl': 2,
-			'border-bottom-width-xl': 2,
-			'border-left-width-xl': 2,
-			'border-sync-width-xl': 'all',
-			'border-unit-width-xl': 'px',
 			'border-style-m': 'solid',
-			'border-top-width-m': 2,
-			'border-right-width-m': 2,
-			'border-bottom-width-m': 2,
-			'border-left-width-m': 2,
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-xl',
-			'border-top-width-xl',
-			'border-right-width-xl',
-			'border-bottom-width-xl',
-			'border-left-width-xl',
-			'border-sync-width-xl',
-			'border-unit-width-xl',
 			'border-style-m',
-			'border-top-width-m',
-			'border-right-width-m',
-			'border-bottom-width-m',
-			'border-left-width-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -326,60 +291,16 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-top-width-xxl': 2,
-			'border-right-width-xxl': 2,
-			'border-bottom-width-xxl': 2,
-			'border-left-width-xxl': 2,
-			'border-sync-width-xxl': 'all',
-			'border-unit-width-xxl': 'px',
 			'border-style-xl': 'dashed',
-			'border-top-width-xl': 2,
-			'border-right-width-xl': 2,
-			'border-bottom-width-xl': 2,
-			'border-left-width-xl': 2,
-			'border-sync-width-xl': 'all',
-			'border-unit-width-xl': 'px',
 			'border-style-general': 'dotted',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
-			'border-sync-width-general': 'all',
-			'border-unit-width-general': 'px',
 			'border-style-m': 'dotted',
-			'border-top-width-m': 2,
-			'border-right-width-m': 2,
-			'border-bottom-width-m': 2,
-			'border-left-width-m': 2,
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-xxl',
-			'border-top-width-xxl',
-			'border-right-width-xxl',
-			'border-bottom-width-xxl',
-			'border-left-width-xxl',
-			'border-sync-width-xxl',
-			'border-unit-width-xxl',
 			'border-style-xl',
-			'border-top-width-xl',
-			'border-right-width-xl',
-			'border-bottom-width-xl',
-			'border-left-width-xl',
-			'border-sync-width-xl',
-			'border-unit-width-xl',
 			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
-			'border-sync-width-general',
-			'border-unit-width-general',
 			'border-style-m',
-			'border-top-width-m',
-			'border-right-width-m',
-			'border-bottom-width-m',
-			'border-left-width-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -398,19 +319,9 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xl': 'solid',
-			'border-top-width-xl': 2,
-			'border-right-width-xl': 2,
-			'border-bottom-width-xl': 2,
-			'border-left-width-xl': 2,
 		};
 
-		const borderResult = await getAttributes([
-			'border-style-xl',
-			'border-top-width-xl',
-			'border-right-width-xl',
-			'border-bottom-width-xl',
-			'border-left-width-xl',
-		]);
+		const borderResult = await getAttributes(['border-style-xl']);
 
 		expect(borderResult).toStrictEqual(expectBorder);
 
@@ -434,28 +345,12 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-general': 'dashed',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
 			'border-style-m': 'dashed',
-			'border-top-width-m': 2,
-			'border-right-width-m': 2,
-			'border-bottom-width-m': 2,
-			'border-left-width-m': 2,
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
 			'border-style-m',
-			'border-top-width-m',
-			'border-right-width-m',
-			'border-bottom-width-m',
-			'border-left-width-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);

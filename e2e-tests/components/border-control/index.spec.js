@@ -148,13 +148,13 @@ describe('BorderControl', () => {
 			'border-color-general-hover': undefined,
 			'border-style-general': undefined,
 			'border-style-general-hover': 'solid',
-			'border-top-width-general': undefined,
+			'border-top-width-general': 2,
 			'border-top-width-general-hover': 2,
-			'border-right-width-general': undefined,
+			'border-right-width-general': 2,
 			'border-right-width-general-hover': 2,
-			'border-bottom-width-general': undefined,
+			'border-bottom-width-general': 2,
 			'border-bottom-width-general-hover': 2,
-			'border-left-width-general': undefined,
+			'border-left-width-general': 2,
 			'border-left-width-general-hover': 2,
 		};
 

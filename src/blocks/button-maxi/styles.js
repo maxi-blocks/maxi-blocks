@@ -376,6 +376,7 @@ const getIconObject = (props, target) => {
 			...getGradientBackgroundObject({
 				...getGroupAttributes(props, [
 					'icon',
+					'iconBackground',
 					'iconBackgroundGradient',
 				]),
 				prefix: 'icon-',

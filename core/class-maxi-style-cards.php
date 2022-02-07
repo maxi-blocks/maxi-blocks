@@ -41,7 +41,7 @@ class MaxiBlocks_StyleCards
             wp_enqueue_style('maxi-blocks-sc-vars');
             wp_add_inline_style('maxi-blocks-sc-vars', $vars);
 
-            $this->enqueue_fonts($vars);
+            //  $this->enqueue_fonts($vars);
         }
     }
 

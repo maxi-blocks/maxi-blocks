@@ -218,6 +218,10 @@ class MaxiBlocks_Styles
                     $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
                     $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
 
+                    if (is_array($fontWeight)) {
+                        $fontWeight = implode(',', $fontWeight);
+                    }
+
                     if ($fontStyle === 'italic') {
                         $fontUrl .= 'ital,';
                     }
@@ -226,20 +230,37 @@ class MaxiBlocks_Styles
 
                     if (strpos($fontWeight, ',') !== false) {
                         $fontWeightArr = explode(',', $fontWeight);
+                        sort($fontWeightArr);
                         $this->write_log($fontWeightArr);
                         $fontUrl .= 'wght@';
-                        foreach ($fontWeightArr as $fw) {
-                            $this->write_log($fw);
-                            $fontUrl .= '1,'.$fw.';';
+                        if ($fontStyle === 'italic') {
+                            foreach ($fontWeightArr as $fw) {
+                                $fontUrl .= '0,'.$fw.';';
+                            }
+                            foreach ($fontWeightArr as $fw) {
+                                $fontUrl .= '1,'.$fw.';';
+                            }
+                        } else {
+                            foreach ($fontWeightArr as $fw) {
+                                $fontUrl .= $fw.';';
+                            }
                         }
                         $fontUrl = rtrim($fontUrl, ';');
                     } elseif ($fontWeight) {
-                        $fontUrl .= 'wght@'.$fontWeight;
+                        if ($fontStyle === 'italic') {
+                            $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
+                        } else {
+                            $fontUrl .= 'wght@'.$fontWeight;
+                        }
                     } else {
-                        $fontUrl .= 'wght@400';
+                        if ($fontStyle === 'italic') {
+                            $fontUrl .= 'wght@0,400;1,400';
+                        } else {
+                            $fontUrl .= 'wght@400';
+                        }
                     }
                 } else {
-                    $fontUrl = $fontUrl.'wght@400';
+                    $fontUrl = $fontUrl.'wght@0,400';
                 }
                 
                 wp_enqueue_style(

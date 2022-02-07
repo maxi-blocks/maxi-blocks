@@ -24,6 +24,9 @@ const loadFonts = font => {
 
 			let fontWeightArr = [];
 
+			if (Array.isArray(fontWeight))
+				font[fontName].weight = fontWeight.join();
+
 			if (fontWeight?.includes(',')) {
 				fontWeightArr = fontWeight.split(',');
 				fontData = { ...val, ...{ weight: uniq(fontWeight) } };

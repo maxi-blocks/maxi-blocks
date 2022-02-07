@@ -312,7 +312,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		let fontName = 'Roboto';
+		let fontName = '';
 		const fontWeight = [];
 		const fontStyle = [];
 

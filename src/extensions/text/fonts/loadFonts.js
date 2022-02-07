@@ -33,12 +33,23 @@ const loadFonts = font => {
 
 			if (!isEmpty(fontWeightArr)) {
 				fontWeightArr.forEach(weight => {
+					let weightFile = weight;
+					if (!(Number(weight) in files)) {
+						weightFile = '400';
+						const newFontWeightArr = fontWeightArr.filter(value => {
+							return value !== weight;
+						});
+
+						if (!(weightFile in newFontWeightArr))
+							newFontWeightArr.push(weightFile);
+
+						const newFontWeight = uniq(newFontWeightArr).join();
+						font[fontName].weight = newFontWeight;
+					}
+
 					Object.entries(files).forEach(variant => {
-						// console.log('variant');
-						// console.log(variant);
-						if (variant[0] === weight) {
-							fontData = { ...val, ...{ weight } };
-							//	console.log(fontData);
+						if (variant[0].toString() === weightFile) {
+							fontData = { ...val, ...{ weight: weightFile } };
 							const fontLoad = new FontFace(
 								fontName,
 								`url(${variant[1]})`,
@@ -57,8 +68,13 @@ const loadFonts = font => {
 				});
 			} else
 				Object.entries(files).forEach(variant => {
-					if (variant[0] === fontWeight) {
-						// console.log(variant[0]);
+					let weightFile = fontWeight;
+					if (!(Number(fontWeight) in files)) {
+						weightFile = '400';
+						font[fontName].weight = '400';
+					}
+
+					if (variant[0] === weightFile) {
 						const fontLoad = new FontFace(
 							fontName,
 							`url(${variant[1]})`,

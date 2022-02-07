@@ -1,13 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
+import Button from '../button';
 
 /**
  * External dependencies
@@ -15,6 +16,12 @@ import OpacityControl from '../opacity-control';
 import ChromePicker from 'react-color';
 import tinycolor from 'tinycolor2';
 import { isEmpty } from 'lodash';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -26,7 +33,9 @@ const CustomColorControl = props => {
 		onChangeValue,
 		disableColorDisplay,
 		disableOpacity,
+		disableReset,
 		onReset,
+		onResetOpacity,
 	} = props;
 
 	return (
@@ -43,6 +52,24 @@ const CustomColorControl = props => {
 							}}
 						/>
 					</div>
+					{!disableReset && (
+						<Button
+							className='components-maxi-control__reset-button'
+							onClick={e => {
+								e.preventDefault();
+								onReset();
+							}}
+							isSmall
+							aria-label={sprintf(
+								/* translators: %s: a textual label  */
+								__('Reset %s settings', 'maxi-blocks'),
+								label.toLowerCase()
+							)}
+							type='reset'
+						>
+							{reset}
+						</Button>
+					)}
 				</BaseControl>
 			)}
 			{!disableOpacity && (
@@ -59,7 +86,7 @@ const CustomColorControl = props => {
 							});
 						}
 					}}
-					onReset={onReset}
+					onReset={onResetOpacity}
 				/>
 			)}
 			<div className='maxi-color-control__color'>

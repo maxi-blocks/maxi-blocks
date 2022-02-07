@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, cloneElement } from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -24,6 +24,7 @@ import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
 } from '../../extensions/indicators';
+import { getForcedTabFromPath } from '../../extensions/inspector-path';
 
 /**
  * Component
@@ -44,23 +45,16 @@ const SettingTabsControl = props => {
 		help,
 		fullWidthMode,
 		blockName,
+		depth,
 	} = props;
-
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
 
+	const { updateInspectorPath } = useDispatch('maxiBlocks');
+
 	const [tab, setTab] = useState(0);
 
-	useEffect(() => {
-		if (forceTab || forceTab === 0) {
-			setTab(forceTab);
-		}
-	}, [forceTab]);
-
-	useEffect(() => {
-		if (returnValue) returnValue(items[tab]);
-	}, [tab]);
-
+	const currentForcedTab = getForcedTabFromPath(items, depth);
 	const classes = classnames('maxi-settingstab-control', className);
 
 	const classesControl = classnames(
@@ -79,6 +73,25 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null
 	);
 
+	const setActiveTab = (tab, name) => {
+		setTab(tab);
+		updateInspectorPath({ depth: depth, name: name, value: tab });
+	};
+
+	useEffect(() => {
+		if (currentForcedTab || currentForcedTab === 0) {
+			setTab(currentForcedTab);
+		}
+
+		if (forceTab || forceTab === 0) {
+			setTab(forceTab);
+		}
+	}, [forceTab, currentForcedTab]);
+
+	useEffect(() => {
+		if (returnValue) returnValue(items[tab]);
+	}, [tab]);
+
 	const getChildren = () => {
 		return (
 			<div className={classesControl}>
@@ -90,7 +103,6 @@ const SettingTabsControl = props => {
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;
-
 						return (
 							<Button
 								key={`maxi-tabs-control__button-${buttonLabel}`}
@@ -114,8 +126,7 @@ const SettingTabsControl = props => {
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
-									setTab(i);
-
+									setActiveTab(i, item.label || item.value);
 									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 

@@ -12,7 +12,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const transform = ({ props }) => {
+const transform = ({ props, depth = 2 }) => {
 	const { attributes, deviceType, uniqueID, maxiSetAttributes } = props;
 
 	return {
@@ -23,6 +23,7 @@ const transform = ({ props }) => {
 				onChange={obj => maxiSetAttributes(obj)}
 				uniqueID={uniqueID}
 				breakpoint={deviceType}
+				depth={depth}
 			/>
 		),
 	};

@@ -73,5 +73,11 @@ const actions = {
 			copiedBlocks,
 		};
 	},
+	updateInspectorPath(inspectorPath) {
+		return {
+			type: 'UPDATE_INSPECTOR_PATH',
+			inspectorPath,
+		};
+	},
 };
 export default actions;

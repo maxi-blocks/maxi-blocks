@@ -5,6 +5,20 @@ import {
 
 import { prefixAttributesCreator } from '../../extensions/styles';
 
+const getBorderDefault = (
+	prefix,
+	{ borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth }
+) => {
+	return {
+		[`${prefix}border-sync-width`]: 'all',
+		[`${prefix}border-unit-width`]: 'px',
+		[`${prefix}border-top-width`]: borderTopWidth || 2,
+		[`${prefix}border-right-width`]: borderRightWidth || 2,
+		[`${prefix}border-bottom-width`]: borderBottomWidth || 2,
+		[`${prefix}border-left-width`]: borderLeftWidth || 2,
+	};
+};
+
 export const borderNone = (prefix = '', isHover) => {
 	let response = {};
 
@@ -51,44 +65,29 @@ export const borderNone = (prefix = '', isHover) => {
 	return response;
 };
 
-export const borderSolid = prefix => {
+export const borderSolid = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
 		[`${prefix}border-style`]: 'solid',
-		[`${prefix}border-top-width`]: 2,
-		[`${prefix}border-right-width`]: 2,
-		[`${prefix}border-bottom-width`]: 2,
-		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: 'all',
-		[`${prefix}border-unit-width`]: 'px',
+		...getBorderDefault(prefix, defaultWidthValue),
 	};
 	return response;
 };
 
-export const borderDashed = prefix => {
+export const borderDashed = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
 		[`${prefix}border-style`]: 'dashed',
-		[`${prefix}border-top-width`]: 2,
-		[`${prefix}border-right-width`]: 2,
-		[`${prefix}border-bottom-width`]: 2,
-		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: 'all',
-		[`${prefix}border-unit-width`]: 'px',
+		...getBorderDefault(prefix, defaultWidthValue),
 	};
 	return response;
 };
 
-export const borderDotted = prefix => {
+export const borderDotted = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
 		[`${prefix}border-style`]: 'dotted',
-		[`${prefix}border-top-width`]: 2,
-		[`${prefix}border-right-width`]: 2,
-		[`${prefix}border-bottom-width`]: 2,
-		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: 'all',
-		[`${prefix}border-unit-width`]: 'px',
+		...getBorderDefault(prefix, defaultWidthValue),
 	};
 	return response;
 };

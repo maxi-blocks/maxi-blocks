@@ -220,7 +220,7 @@ export const createSCStyleString = SCObject => {
 };
 
 const updateSCOnEditor = styleCards => {
-	console.log('updateSCOnEditor');
+	console.log('================= updateSCOnEditor ===================');
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
 

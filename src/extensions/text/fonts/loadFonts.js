@@ -35,11 +35,11 @@ const loadFonts = font => {
 			if (!isEmpty(fontWeightArr)) {
 				fontWeightArr.forEach(weight => {
 					Object.entries(files).forEach(variant => {
-						console.log('variant');
-						console.log(variant);
+						// console.log('variant');
+						// console.log(variant);
 						if (variant[0] === weight) {
 							fontData = { ...val, ...{ weight } };
-							console.log(fontData);
+							//	console.log(fontData);
 							const fontLoad = new FontFace(
 								fontName,
 								`url(${variant[1]})`,

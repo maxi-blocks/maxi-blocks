@@ -20,7 +20,6 @@ const loadFonts = font => {
 		Object.entries(font).forEach(([key, val]) => {
 			const fontName = key;
 			const fontWeight = val?.weight || '400';
-			const fontStyle = val?.style;
 			let fontData = val;
 
 			let fontWeightArr = [];

@@ -34,6 +34,16 @@ describe('ColorControl', () => {
 		expect(
 			await getAttributes('button-background-palette-color-general')
 		).toStrictEqual(3);
+
+		// check reset button
+		await accordionPanel.$eval(
+			'.maxi-base-control__field .components-maxi-control__reset-button',
+			resetButton => resetButton.click()
+		);
+
+		expect(
+			await getAttributes('button-background-palette-color-general')
+		).toStrictEqual(4);
 	});
 
 	it('Checking the custom color control', async () => {
@@ -58,6 +68,16 @@ describe('ColorControl', () => {
 		expect(
 			await getAttributes('button-background-palette-opacity-general')
 		).toStrictEqual(0.67);
+
+		// check reset button
+		await accordionPanel.$eval(
+			'.maxi-base-control__field .components-maxi-control__reset-button',
+			resetButton => resetButton.click()
+		);
+
+		expect(
+			await getAttributes('button-background-color-general')
+		).toStrictEqual('rgba(255,74,23,0.67)');
 	});
 
 	it('Checking the opacity is never under 0 or more than 100', async () => {

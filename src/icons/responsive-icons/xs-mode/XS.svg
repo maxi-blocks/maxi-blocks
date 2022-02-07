@@ -1,15 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12.726" height="19.856" viewBox="0 0 12.726 19.856">
-  <defs>
-    <clipPath id="clip-path">
-      <rect id="Rectangle_493" data-name="Rectangle 493" width="12.726" height="19.856" transform="translate(0 0)" fill="none"/>
-    </clipPath>
-  </defs>
-  <g id="Group_992" data-name="Group 992" transform="translate(0 0)">
-    <g id="Mask_Group_991" data-name="Mask Group 991" clip-path="url(#clip-path)">
-      <path id="Path_278" data-name="Path 278" d="M.759,1.584V18.271a.817.817,0,0,0,.834.835h9.549a.984.984,0,0,0,.835-.835V1.584a.8.8,0,0,0-.279-.556A.794.794,0,0,0,11.142.75h-9.6a.8.8,0,0,0-.556.278A.555.555,0,0,0,.759,1.584Z" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-      <path id="Path_279" data-name="Path 279" d="M3.846,9.155l2.5-3.018L3.892,3.172" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-      <path id="Path_280" data-name="Path 280" d="M8.8,3.171,6.349,6.136,8.844,9.154" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-      <path id="Path_281" data-name="Path 281" d="M7.821,11.751c-1.566-1.419-3.317.453-2.253,1.4.709.546,1.526.521,2.287.946a1.343,1.343,0,0,1-.09,2.343c-.845.6-3.115.416-3.29-1.363" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-    </g>
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#081219;}
+</style>
+<g>
+	<path class="st0" d="M16.4,1.6c0-0.4-0.2-0.8-0.5-1c-0.3-0.3-0.6-0.5-1.1-0.5L5.2,0c-0.4,0-0.8,0.2-1,0.5C3.8,0.8,3.6,1.2,3.7,1.7
+		v16.6c0,0.4,0.2,0.8,0.4,1.1c0.3,0.3,0.7,0.5,1.1,0.5h9.5c0,0,0.1,0,0.1,0c0.8-0.1,1.4-0.7,1.5-1.5c0,0,0-0.1,0-0.1L16.4,1.6z
+		 M14.9,18.2c0,0.1-0.1,0.1-0.2,0.2H5.2l-0.1-0.1V1.6c0,0,0,0,0,0c0,0,0,0,0,0l9.6,0c0,0,0.1,0,0.1,0.1V18.2z"/>
+	<path class="st0" d="M11,6.2L13,3.7c0.3-0.3,0.2-0.8-0.1-1.1c-0.3-0.3-0.8-0.2-1.1,0.1L10,5L8.1,2.7C7.9,2.4,7.4,2.4,7.1,2.6
+		C6.7,2.9,6.7,3.4,7,3.7L9,6.2L6.9,8.7C6.7,9,6.7,9.5,7,9.8c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.6-0.3L10,7.4l1.9,2.3
+		c0.1,0.2,0.4,0.3,0.6,0.3c0.2,0,0.3-0.1,0.5-0.2c0.3-0.3,0.4-0.7,0.1-1.1L11,6.2z"/>
+	<path class="st0" d="M11.9,13.5c-0.4-0.2-0.8-0.3-1.2-0.4c-0.4-0.1-0.7-0.2-1-0.4c-0.1-0.1-0.1-0.1-0.1-0.2c0-0.1,0.2-0.3,0.4-0.4
+		c0.3-0.1,0.6,0,0.9,0.3c0.3,0.3,0.8,0.3,1.1-0.1c0.3-0.3,0.3-0.8-0.1-1.1c-0.7-0.6-1.6-0.9-2.4-0.6c-0.7,0.2-1.3,0.8-1.4,1.5
+		c-0.1,0.6,0.1,1.2,0.6,1.6c0.5,0.4,1,0.5,1.5,0.7c0.3,0.1,0.6,0.2,0.9,0.3c0.2,0.1,0.2,0.2,0.2,0.3c0,0.2-0.1,0.5-0.4,0.7
+		c-0.3,0.2-0.9,0.3-1.5,0c-0.4-0.2-0.6-0.4-0.6-0.8c0-0.4-0.4-0.7-0.8-0.7c-0.4,0-0.7,0.4-0.7,0.8c0.1,0.9,0.6,1.7,1.5,2.1
+		c0.4,0.2,0.9,0.3,1.4,0.3c0.6,0,1.2-0.2,1.6-0.4c0.7-0.5,1.1-1.3,1-2.1C12.9,14.4,12.5,13.8,11.9,13.5z"/>
+</g>
 </svg>

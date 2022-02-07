@@ -7,7 +7,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, uniq } from 'lodash';
 /**
  * Loads the font on background using JS FontFace API
  * FontFaceSet API uses check() to check if a font exists, but needs to compare with some exact value:
@@ -19,22 +19,15 @@ const loadFonts = font => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([key, val]) => {
 			const fontName = key;
-			let fontWeight = val?.weight || '400';
+			const fontWeight = val?.weight || '400';
 			const fontStyle = val?.style;
 			let fontData = val;
-
-			// console.log('fontWeight');
-			console.log(fontWeight);
-
-			// console.log('fontName');
-			// console.log(fontName);
 
 			let fontWeightArr = [];
 
 			if (fontWeight?.includes(',')) {
 				fontWeightArr = fontWeight.split(',');
-				fontWeight = fontWeight.substr(0, fontWeight.indexOf(','));
-				fontData = { ...val, ...{ weight: fontWeight } };
+				fontData = { ...val, ...{ weight: uniq(fontWeight) } };
 			}
 
 			const { files } = select('maxiBlocks/text').getFont(fontName);
@@ -42,10 +35,11 @@ const loadFonts = font => {
 			if (!isEmpty(fontWeightArr)) {
 				fontWeightArr.forEach(weight => {
 					Object.entries(files).forEach(variant => {
+						console.log('variant');
+						console.log(variant);
 						if (variant[0] === weight) {
-							console.log('Array!');
-							console.log(variant[0]);
 							fontData = { ...val, ...{ weight } };
+							console.log(fontData);
 							const fontLoad = new FontFace(
 								fontName,
 								`url(${variant[1]})`,
@@ -65,7 +59,7 @@ const loadFonts = font => {
 			} else
 				Object.entries(files).forEach(variant => {
 					if (variant[0] === fontWeight) {
-						console.log(variant[0]);
+						// console.log(variant[0]);
 						const fontLoad = new FontFace(
 							fontName,
 							`url(${variant[1]})`,

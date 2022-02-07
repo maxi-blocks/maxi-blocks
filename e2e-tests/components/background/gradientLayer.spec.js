@@ -30,7 +30,9 @@ describe('BackgroundControl', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-gradient-control .maxi-opacity-control',
+			instance: await page.$(
+				'.maxi-gradient-control .maxi-opacity-control'
+			),
 			newNumber: '50',
 		});
 
@@ -85,7 +87,9 @@ describe('BackgroundControl', () => {
 		await addBackgroundLayer(page, 'gradient');
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-gradient-control .maxi-opacity-control',
+			instance: await page.$(
+				'.maxi-gradient-control .maxi-opacity-control'
+			),
 			newNumber: '50',
 		});
 

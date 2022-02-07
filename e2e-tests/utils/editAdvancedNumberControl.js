@@ -12,17 +12,14 @@ const editAdvancedNumberControl = async ({
 	instance,
 	newNumber,
 	newValue,
-	valueInstance,
 }) => {
-	await page.$eval(`${instance} input`, select => select.focus());
+	await instance.$eval('input', select => select.focus());
 
 	await pressKeyWithModifier('primary', 'a');
 	await page.keyboard.type(newNumber);
 
-	if (valueInstance) {
-		const selector = await page.$(
-			`.maxi-advanced-number-control ${valueInstance} select`
-		);
+	if (newValue) {
+		const selector = await instance.$('select');
 		await selector.select(newValue);
 	}
 };

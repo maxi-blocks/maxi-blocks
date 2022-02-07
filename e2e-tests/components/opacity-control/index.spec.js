@@ -22,7 +22,9 @@ describe('OpacityControl', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: '.maxi-opacity-control .maxi-base-control__field',
+			instance: await page.$(
+				'.maxi-opacity-control .maxi-base-control__field'
+			),
 			newNumber: '19',
 		});
 

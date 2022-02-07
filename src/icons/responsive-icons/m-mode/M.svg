@@ -1,8 +1,13 @@
-<svg id="Layer_1" data-name="Layer 1"
-	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.1 18.8">
-	<defs>
-		<style>.cls-1{fill:none;stroke:#464a53;stroke-linecap:round;stroke-linejoin:round;}.cls-2{fill:#464a53;}</style>
-	</defs>
-	<path id="Layer0_0_1_STROKES" data-name="Layer0 0 1 STROKES" class="cls-1" d="M4,4V20a.6.6,0,0,0,.3.6.86.86,0,0,0,.6.3h14.3a1.06,1.06,0,0,0,.9-.9V4a.86.86,0,0,0-.3-.6.86.86,0,0,0-.6-.3H4.85a.86.86,0,0,0-.6.3A.71.71,0,0,0,4,4Z" transform="translate(-3.45 -2.6)"/>
-	<path class="cls-2" d="M9.38,7.45l2.63,7,2.61-7h2.05v9.1H15.09v-3l.16-4-2.69,7H11.43l-2.68-7,.16,4v3H7.33V7.45Z" transform="translate(-3.45 -2.6)"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18.887" height="20.007" viewBox="0 0 18.887 20.007">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_502" data-name="Rectangle 502" width="18.887" height="20.007" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_1010" data-name="Group 1010" transform="translate(0 0)">
+    <g id="Group_1009" data-name="Group 1009" clip-path="url(#clip-path)">
+      <path id="Path_310" data-name="Path 310" d="M.755,1.686V18.321a.617.617,0,0,0,.324.624.941.941,0,0,0,.648.312H17.165a1.124,1.124,0,0,0,.972-.936V1.686a.884.884,0,0,0-.324-.624A.941.941,0,0,0,17.165.75H1.673a.941.941,0,0,0-.648.312A.727.727,0,0,0,.755,1.686Z" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_311" data-name="Path 311" d="M4.774,14.553v-9.1l4.68,7,4.66-7v9.1" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </g>
+  </g>
 </svg>

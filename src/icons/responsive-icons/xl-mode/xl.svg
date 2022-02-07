@@ -1,9 +1,15 @@
-<svg id="Layer_1" data-name="Layer 1"
-	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.75 17.95">
-	<defs>
-		<style>.cls-1{fill:none;stroke:#464a53;stroke-linecap:round;stroke-linejoin:round;}.cls-2{fill:#464a53;}</style>
-	</defs>
-	<path id="Layer0_0_1_STROKES" data-name="Layer0 0 1 STROKES" class="cls-1" d="M14.72,17.47h7.75a.89.89,0,0,0,.66-.25.82.82,0,0,0,.25-.59V4.38a.82.82,0,0,0-.25-.6.89.89,0,0,0-.66-.25h-21a.82.82,0,0,0-.6.25.82.82,0,0,0-.25.6V16.63a.82.82,0,0,0,.25.59.82.82,0,0,0,.6.25H14.72v2.61H16c.09,0,.14.06.14.2s-.05.19-.14.19H8c-.14,0-.21-.06-.21-.19s.07-.2.21-.2H9.28V17.47m5,0v2.61H9.67V17.47" transform="translate(-0.12 -3.03)"/>
-	<path class="cls-2" d="M8.56,9.15l1.91-3.29H12.3L9.55,10.37,12.36,15H10.52l-2-3.34L6.6,15H4.76l2.82-4.59L4.82,5.86H6.65Z" transform="translate(-0.12 -3.03)"/>
-	<path class="cls-2" d="M15.11,13.7h4.13V15H13.53V5.86h1.58Z" transform="translate(-0.12 -3.03)"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21.998" height="16.583" viewBox="0 0 21.998 16.583">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_500" data-name="Rectangle 500" width="21.998" height="16.583" transform="translate(0 0)" fill="none" stroke="#007cba" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Group_1006" data-name="Group 1006" transform="translate(0 0)">
+    <g id="Group_1005" data-name="Group 1005" clip-path="url(#clip-path)">
+      <path id="Path_304" data-name="Path 304" d="M8.681,15.833V13.164m5.741,2.669h-6.8m5.593-2.669h7.306a.673.673,0,0,0,.527-.222.763.763,0,0,0,.2-.534V1.507a.759.759,0,0,0-.2-.533.67.67,0,0,0-.527-.223H1.44a.726.726,0,0,0-.69.756v10.9a.726.726,0,0,0,.69.756H13.211v2.669" fill="none" stroke="#007cba" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_305" data-name="Path 305" d="M16.649,9.75H12.405V4.091" fill="none" stroke="#007cba" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_306" data-name="Path 306" d="M5.358,9.652,7.684,6.846,5.4,4.091" fill="none" stroke="#007cba" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_307" data-name="Path 307" d="M9.96,4.09,7.684,6.846,10,9.651" fill="none" stroke="#007cba" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </g>
+  </g>
 </svg>

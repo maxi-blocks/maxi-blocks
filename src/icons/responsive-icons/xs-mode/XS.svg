@@ -1,9 +1,15 @@
-<svg id="Layer_1" data-name="Layer 1"
-	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.1 20.8">
-	<defs>
-		<style>.cls-1{fill:none;stroke:#464a53;stroke-linecap:round;stroke-linejoin:round;}.cls-2{fill:#464a53;}</style>
-	</defs>
-	<path id="Layer0_0_1_STROKES" data-name="Layer0 0 1 STROKES" class="cls-1" d="M6,3V21a.6.6,0,0,0,.3.6.86.86,0,0,0,.6.3h10.3a1.06,1.06,0,0,0,.9-.9V3a.86.86,0,0,0-.3-.6.86.86,0,0,0-.6-.3H6.85a.86.86,0,0,0-.6.3A.6.6,0,0,0,6,3Z" transform="translate(-5.45 -1.6)"/>
-	<path class="cls-2" d="M12,6.36l1.64-2.83h1.57L12.85,7.41l2.42,3.95H13.68L12,8.49l-1.69,2.87H8.73l2.43-3.95L8.79,3.53h1.57Z" transform="translate(-5.45 -1.6)"/>
-	<path class="cls-2" d="M13.56,18.35a1,1,0,0,0-.36-.8A4.69,4.69,0,0,0,11.89,17a6,6,0,0,1-1.51-.64A2,2,0,0,1,9.31,14.6,1.92,1.92,0,0,1,10.08,13a3.15,3.15,0,0,1,2-.61,3.36,3.36,0,0,1,1.45.3,2.43,2.43,0,0,1,1,.86,2.21,2.21,0,0,1,.36,1.23H13.56a1.21,1.21,0,0,0-.39-1,1.57,1.57,0,0,0-1.09-.34,1.67,1.67,0,0,0-1,.28,1,1,0,0,0-.37.8.84.84,0,0,0,.4.71,4.64,4.64,0,0,0,1.31.56,6.06,6.06,0,0,1,1.47.62,2.3,2.3,0,0,1,.81.8,2,2,0,0,1,.26,1.05,1.85,1.85,0,0,1-.75,1.55,3.23,3.23,0,0,1-2,.58,3.85,3.85,0,0,1-1.56-.31,2.61,2.61,0,0,1-1.1-.87A2.13,2.13,0,0,1,9.07,18h1.36a1.27,1.27,0,0,0,.44,1,2,2,0,0,0,1.26.37,1.69,1.69,0,0,0,1.07-.29A.93.93,0,0,0,13.56,18.35Z" transform="translate(-5.45 -1.6)"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12.726" height="19.856" viewBox="0 0 12.726 19.856">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_493" data-name="Rectangle 493" width="12.726" height="19.856" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_992" data-name="Group 992" transform="translate(0 0)">
+    <g id="Mask_Group_991" data-name="Mask Group 991" clip-path="url(#clip-path)">
+      <path id="Path_278" data-name="Path 278" d="M.759,1.584V18.271a.817.817,0,0,0,.834.835h9.549a.984.984,0,0,0,.835-.835V1.584a.8.8,0,0,0-.279-.556A.794.794,0,0,0,11.142.75h-9.6a.8.8,0,0,0-.556.278A.555.555,0,0,0,.759,1.584Z" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_279" data-name="Path 279" d="M3.846,9.155l2.5-3.018L3.892,3.172" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_280" data-name="Path 280" d="M8.8,3.171,6.349,6.136,8.844,9.154" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_281" data-name="Path 281" d="M7.821,11.751c-1.566-1.419-3.317.453-2.253,1.4.709.546,1.526.521,2.287.946a1.343,1.343,0,0,1-.09,2.343c-.845.6-3.115.416-3.29-1.363" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </g>
+  </g>
 </svg>

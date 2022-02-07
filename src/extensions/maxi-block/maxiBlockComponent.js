@@ -318,24 +318,21 @@ class MaxiBlockComponent extends Component {
 
 		const getAllFonts = obj => {
 			Object.entries(obj).forEach(([key, val]) => {
-				if (key.includes('font-family') && !isEmpty(val))
-					fontName = val;
-				if (key.includes('font-weight') && !isEmpty(val)) {
-					fontWeight.push(val);
-				}
-				if (key.includes('font-style') && !isEmpty(val))
-					fontStyle.push(val);
+				if (typeof val !== 'undefined') {
+					if (key.includes('font-family')) fontName = val;
+					if (key.includes('font-weight'))
+						fontWeight.push(val.toString());
 
-				if (key.includes('custom-formats') && !isEmpty(val)) {
-					console.log('custom!!!');
-					let customFonts = {};
-					Object.values(val).forEach(customVal => {
-						customFonts = { ...customFonts, ...customVal };
-					});
+					if (key.includes('font-style')) fontStyle.push(val);
 
-					console.log(customFonts);
+					if (key.includes('custom-formats')) {
+						let customFonts = {};
+						Object.values(val).forEach(customVal => {
+							customFonts = { ...customFonts, ...customVal };
+						});
 
-					getAllFonts(customFonts);
+						getAllFonts(customFonts);
+					}
 				}
 			});
 		};
@@ -346,14 +343,17 @@ class MaxiBlockComponent extends Component {
 
 		if (!isEmpty(fontName)) {
 			response[fontName] = {};
-			if (!isEmpty(fontWeight))
-				response[fontName].weight = fontWeight.join();
-			if (!isEmpty(fontStyle))
-				response[fontName].style = fontStyle.join();
+			if (!isEmpty(fontWeight)) {
+				// console.log('fontWeight');
+				// console.log(fontWeight);
+				response[fontName].weight = fontWeight.join(',');
+			}
+			if (!isEmpty(fontStyle)) {
+				// console.log('fontStyle');
+				// console.log(fontStyle);
+				response[fontName].style = fontStyle.join(',');
+			}
 		}
-
-		console.log('response');
-		console.log(response);
 
 		if (!isEmpty(response)) loadFonts(response);
 	}

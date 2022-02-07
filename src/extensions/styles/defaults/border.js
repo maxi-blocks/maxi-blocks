@@ -13,15 +13,19 @@ export const rawBorder = {
 export const rawBorderWidth = {
 	'border-top-width': {
 		type: 'number',
+		default: 2,
 	},
 	'border-right-width': {
 		type: 'number',
+		default: 2,
 	},
 	'border-bottom-width': {
 		type: 'number',
+		default: 2,
 	},
 	'border-left-width': {
 		type: 'number',
+		default: 2,
 	},
 	'border-sync-width': {
 		type: 'string',

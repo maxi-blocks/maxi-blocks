@@ -10,6 +10,7 @@ import { useSelect } from '@wordpress/data';
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
 import { getBlockStyle } from '../../extensions/styles';
+import Button from '../button';
 
 /**
  * External dependencies
@@ -20,6 +21,7 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -33,6 +35,9 @@ const ColorPaletteControl = props => {
 		disableOpacity,
 		opacity = 1,
 		clientId,
+		disableReset,
+		onReset,
+		onResetOpacity,
 	} = props;
 
 	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
@@ -114,6 +119,24 @@ const ColorPaletteControl = props => {
 						</button>
 					))}
 				</div>
+				{!disableReset && (
+					<Button
+						className='components-maxi-control__reset-button'
+						onClick={e => {
+							e.preventDefault();
+							onReset();
+						}}
+						isSmall
+						aria-label={sprintf(
+							/* translators: %s: a textual label  */
+							__('Reset %s settings', 'maxi-blocks'),
+							label.toLowerCase()
+						)}
+						type='reset'
+					>
+						{reset}
+					</Button>
+				)}
 			</BaseControl>
 			{!disableOpacity && (
 				<OpacityControl
@@ -124,6 +147,7 @@ const ColorPaletteControl = props => {
 							paletteOpacity: val,
 						})
 					}
+					onReset={onResetOpacity}
 				/>
 			)}
 		</div>

@@ -84,7 +84,7 @@ const IconColor = props => {
 					<ColorControl
 						label={__('Icon', 'maxi-blocks')}
 						color={props['icon-color']}
-						defaultColor={getDefaultAttribute('icon-color')}
+						prefix='icon-'
 						paletteColor={props['icon-palette-color']}
 						paletteStatus={props['icon-palette-status']}
 						onChange={({ color, paletteColor, paletteStatus }) => {

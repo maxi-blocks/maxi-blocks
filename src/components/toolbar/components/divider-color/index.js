@@ -61,7 +61,7 @@ const DividerColor = props => {
 				<ColorControl
 					label={__('Divider', 'maxi-blocks')}
 					color={props['divider-border-color']}
-					defaultColor={getDefaultAttribute('border-color')}
+					prefix='border-'
 					paletteColor={props['divider-border-palette-color']}
 					paletteStatus={props['divider-border-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) =>

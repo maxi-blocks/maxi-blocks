@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-
+import { useState, useEffect } from '@wordpress/element';
+import { toLower } from 'lodash';
 /**
  * Internal dependencies
  */
@@ -20,6 +20,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
+import { getActiveTabName } from '../../extensions/inspector-path';
 
 /**
  * External dependencies
@@ -44,9 +45,17 @@ import './editor.scss';
  * Component
  */
 const ScrollEffectsControl = props => {
-	const { className, onChange, breakpoint = 'general', uniqueID } = props;
+	const {
+		className,
+		onChange,
+		breakpoint = 'general',
+		uniqueID,
+		depth,
+	} = props;
 
 	const classes = classnames('maxi-scroll-effects-control', className);
+
+	const activeTabName = getActiveTabName(depth);
 
 	const getActiveEffects = () => {
 		const response = [];
@@ -217,6 +226,12 @@ const ScrollEffectsControl = props => {
 			});
 	};
 
+	useEffect(() => {
+		if (activeTabName) {
+			setScrollStatus(toLower(activeTabName));
+		}
+	});
+
 	return (
 		<div className={classes}>
 			<SelectControl
@@ -230,6 +245,7 @@ const ScrollEffectsControl = props => {
 				selected={scrollStatus}
 				items={motionOptions}
 				onChange={val => setScrollStatus(val)}
+				depth={depth}
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute(

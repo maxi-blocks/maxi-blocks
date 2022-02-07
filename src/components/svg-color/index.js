@@ -17,7 +17,7 @@ const SvgColor = props => {
 					label={label}
 					className='maxi-color-control__SVG-line-color'
 					color={props['svg-line-color']}
-					defaultColor={getDefaultAttribute('svg-line-color')}
+					prefix='svg-line-'
 					paletteColor={props['svg-line-palette-color']}
 					paletteStatus={props['svg-line-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {
@@ -35,7 +35,7 @@ const SvgColor = props => {
 					label={label}
 					className='maxi-color-control__SVG-fill-color'
 					color={props['svg-fill-color']}
-					defaultColor={getDefaultAttribute('svg-fill-color')}
+					prefix='svg-fill-'
 					paletteColor={props['svg-fill-palette-color']}
 					paletteStatus={props['svg-fill-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {

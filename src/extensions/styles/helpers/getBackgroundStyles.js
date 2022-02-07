@@ -832,28 +832,28 @@ const getGeneralBackgroundStyles = (
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const size = {};
 
+	const getBorderValue = (target, breakpoint) => {
+		const lastValue = getLastBreakpointAttribute(
+			`border-${target}-width`,
+			breakpoint,
+			props,
+			isHover
+		);
+
+		return isNumber(lastValue) ? lastValue : 2;
+	};
+
+	const border = getBorderStyles({
+		obj: borderProps,
+		parentBlockStyle: blockStyle,
+		isHover,
+	});
+
 	breakpoints.forEach(breakpoint => {
-		const widthTop =
-			getLastBreakpointAttribute('border-top-width', breakpoint, props) ||
-			0;
-		const widthBottom =
-			getLastBreakpointAttribute(
-				'border-bottom-width',
-				breakpoint,
-				props
-			) || 0;
-		const widthLeft =
-			getLastBreakpointAttribute(
-				'border-left-width',
-				breakpoint,
-				props
-			) || 0;
-		const widthRight =
-			getLastBreakpointAttribute(
-				'border-right-width',
-				breakpoint,
-				props
-			) || 0;
+		const widthTop = getBorderValue('top', breakpoint);
+		const widthBottom = getBorderValue('bottom', breakpoint);
+		const widthLeft = getBorderValue('left', breakpoint);
+		const widthRight = getBorderValue('right', breakpoint);
 		const widthUnit =
 			getLastBreakpointAttribute(
 				'border-unit-width',
@@ -865,20 +865,16 @@ const getGeneralBackgroundStyles = (
 		const verticalWidth =
 			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
 
-		size[breakpoint] = {
-			...((!!horizontalWidth || isHover) && {
-				top: -horizontalWidth + widthUnit,
-			}),
-			...((!!verticalWidth || isHover) && {
-				left: -verticalWidth + widthUnit,
-			}),
-		};
-	});
-
-	const border = getBorderStyles({
-		obj: borderProps,
-		parentBlockStyle: blockStyle,
-		isHover,
+		if (border[breakpoint]['border-style']) {
+			size[breakpoint] = {
+				...((!!horizontalWidth || isHover) && {
+					top: -horizontalWidth + widthUnit,
+				}),
+				...((!!verticalWidth || isHover) && {
+					left: -verticalWidth + widthUnit,
+				}),
+			};
+		}
 	});
 
 	breakpoints.forEach(breakpoint => {

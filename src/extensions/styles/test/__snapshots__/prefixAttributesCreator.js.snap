@@ -137,6 +137,7 @@ Object {
 exports[`prefixAttributesCreator Returns prefixed object with default values 1`] = `
 Object {
   "button-border-bottom-width-general": Object {
+    "default": 2,
     "type": "number",
   },
   "button-border-bottom-width-l": Object {
@@ -158,6 +159,7 @@ Object {
     "type": "number",
   },
   "button-border-left-width-general": Object {
+    "default": 2,
     "type": "number",
   },
   "button-border-left-width-l": Object {
@@ -179,6 +181,7 @@ Object {
     "type": "number",
   },
   "button-border-right-width-general": Object {
+    "default": 2,
     "type": "number",
   },
   "button-border-right-width-l": Object {
@@ -222,6 +225,7 @@ Object {
     "type": "string",
   },
   "button-border-top-width-general": Object {
+    "default": 2,
     "type": "number",
   },
   "button-border-top-width-l": Object {

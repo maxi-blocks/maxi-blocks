@@ -16,12 +16,13 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
+import { getActiveTabName } from '../../extensions/inspector-path';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, toLower } from 'lodash';
 
 /**
  * Styles and icons
@@ -32,11 +33,19 @@ import './editor.scss';
  * Component
  */
 const TransformControl = props => {
-	const { className, onChange, breakpoint = 'general', uniqueID } = props;
+	const {
+		className,
+		onChange,
+		breakpoint = 'general',
+		uniqueID,
+		depth,
+	} = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
 	);
+
+	const activeTabName = getActiveTabName(depth);
 
 	const isTransformed = () =>
 		Object.entries(transformOptions).some(([key, val]) => {
@@ -90,6 +99,12 @@ const TransformControl = props => {
 		}
 	};
 
+	useEffect(() => {
+		if (activeTabName) {
+			setTransformStatus(toLower(activeTabName));
+		}
+	});
+
 	useEffect(forceStyles);
 
 	return (
@@ -135,6 +150,7 @@ const TransformControl = props => {
 					},
 				]}
 				onChange={val => setTransformStatus(val)}
+				depth={2}
 			/>
 			{transformStatus === 'scale' && (
 				<SquareControl

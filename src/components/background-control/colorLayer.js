@@ -10,7 +10,6 @@ import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
-	getDefaultAttribute,
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -38,12 +37,32 @@ const ColorLayerContent = props => {
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
-	const getDefaultAttr = target => {
-		if (isLayer) return getDefaultLayerAttr('colorOptions', target);
+	const getDefaultAttr = () => {
+		const prefix = 'background-';
 
-		return getDefaultAttribute(
-			getAttributeKey(target, isHover, prefix, breakpoint)
-		);
+		if (isLayer) {
+			const defaultColor = {};
+			defaultColor.paletteStatus = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}palette-status`
+			);
+			defaultColor.paletteColor = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}palette-color`
+			);
+			defaultColor.paletteOpacity = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}palette-opacity`
+			);
+			defaultColor.color = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}color`
+			);
+
+			return defaultColor;
+		}
+
+		return null;
 	};
 
 	return (
@@ -56,7 +75,9 @@ const ColorLayerContent = props => {
 					colorOptions,
 					isHover
 				)}
-				defaultColor={getDefaultAttr('background-color')}
+				prefix={`${prefix}background-`}
+				useBreakpointForDefault
+				defaultColorAttributes={getDefaultAttr()}
 				paletteStatus={getLastBreakpointAttribute(
 					`${prefix}background-palette-status`,
 					breakpoint,

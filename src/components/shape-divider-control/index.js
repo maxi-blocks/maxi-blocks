@@ -286,9 +286,7 @@ const ShapeDividerControl = props => {
 											color={
 												props['shape-divider-top-color']
 											}
-											defaultColor={getDefaultAttribute(
-												'shape-divider-top-color'
-											)}
+											prefix='shape-divider-top-'
 											paletteColor={
 												props[
 													'shape-divider-top-palette-color'
@@ -461,9 +459,7 @@ const ShapeDividerControl = props => {
 													'shape-divider-bottom-color'
 												]
 											}
-											defaultColor={getDefaultAttribute(
-												'shape-divider-bottom-color'
-											)}
+											prefix='shape-divider-bottom-'
 											paletteColor={
 												props[
 													'shape-divider-bottom-palette-color'

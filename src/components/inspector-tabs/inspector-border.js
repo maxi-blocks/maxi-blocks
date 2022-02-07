@@ -24,6 +24,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 		deviceType,
 		maxiSetAttributes,
 		scValues = {},
+		depth = 2,
 	} = props;
 
 	const {
@@ -133,6 +134,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 						extraIndicators: [`${prefix}border-status-hover`],
 					},
 				]}
+				depth={depth}
 			/>
 		),
 	};

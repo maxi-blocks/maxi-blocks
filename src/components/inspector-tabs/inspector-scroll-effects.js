@@ -12,7 +12,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const scrollEffects = ({ props }) => {
+const scrollEffects = ({ props, depth = 2 }) => {
 	const { attributes, maxiSetAttributes, blockStyle, clientId, deviceType } =
 		props;
 
@@ -28,6 +28,7 @@ const scrollEffects = ({ props }) => {
 				blockStyle={blockStyle}
 				clientId={clientId}
 				breakpoint={deviceType}
+				depth={depth}
 			/>
 		),
 	};

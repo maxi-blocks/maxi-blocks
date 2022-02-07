@@ -63,13 +63,15 @@ const TextShadow = props => {
 		};
 	};
 
+	const defaultPaletteColor = 8;
+
 	const { valueDecomposed, x, y, blur, color, opacity } = decomposeValue();
 
 	const [isPaletteActive, setIsPaletteActive] = useState(
 		isEmpty(color) || color.toString().length === 1
 	);
 	const [currentPaletteColor, setCurrentPaletteColor] = useState(
-		isEmpty(color) || !isPaletteActive ? 8 : +color
+		isEmpty(color) || !isPaletteActive ? defaultPaletteColor : +color
 	);
 	const [currentPaletteOpacity, setCurrentPaletteOpacity] = useState(
 		!isNil(opacity) ? +opacity : 1
@@ -278,7 +280,14 @@ const TextShadow = props => {
 						onChange={value => {
 							onChangeValue(3, value);
 						}}
-						onReset={() => onChangeValue(3, defaultColor)}
+						defaultColorAttributes={{
+							paletteStatus: isPaletteActive,
+							paletteColor: defaultPaletteColor,
+							paletteOpacity: 1,
+							color: !isPaletteActive
+								? `rgba(${getCurrentColor()},1)`
+								: '',
+						}}
 						disableGradient
 						disableGradientAboveBackground
 					/>

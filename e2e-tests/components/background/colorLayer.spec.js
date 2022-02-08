@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	pressKeyWithModifier,
-	insertBlock,
-	createNewPost,
-} from '@wordpress/e2e-test-utils';
+import { insertBlock, createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -18,6 +14,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	openPreviewPage,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Background Color Layer', () => {
@@ -34,13 +31,11 @@ describe('Background Color Layer', () => {
 		);
 
 		// opacity
-		await page.$eval(
-			'.maxi-background-control .maxi-advanced-number-control input',
-			opacity => opacity.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('45');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-background-control'),
+			newNumber: '45',
+		});
 
 		// clip-path
 		await page.$eval(
@@ -135,12 +130,13 @@ describe('Background Color Layer', () => {
 		);
 
 		// opacity
-		await page.$eval(
-			'.maxi-background-control .maxi-opacity-control input[type="number"]',
-			opacity => opacity.focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('45');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-background-control .maxi-opacity-control'
+			),
+			newNumber: '45',
+		});
 
 		// clip-path
 		await page.$$eval('.clip-path-defaults button', buttons =>

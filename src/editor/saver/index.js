@@ -8,6 +8,7 @@ import { useDispatch, useSelect, select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getAllFonts, loadFonts } from '../../extensions/text/fonts';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -43,12 +44,16 @@ const BlockStylesSaver = () => {
 
 		const getBlockFonts = blocks => {
 			Object.entries(blocks).forEach(([key, block]) => {
-				const { attributes, innerBlocks } = block;
+				const { attributes, innerBlocks, name } = block;
 
-				if (!isEmpty(attributes)) {
+				if (name.includes('maxi') && !isEmpty(attributes)) {
+					const typography = {
+						...getGroupAttributes(attributes, 'typography'),
+					};
+
 					response = {
 						...response,
-						...getAllFonts(attributes),
+						...getAllFonts(typography),
 					};
 				}
 

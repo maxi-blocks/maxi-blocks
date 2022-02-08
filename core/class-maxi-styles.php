@@ -193,16 +193,6 @@ class MaxiBlocks_Styles
      * @return object   Font name with font options
      */
 
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-
-    
     public function enqueue_fonts($fonts)
     {
         if (empty($fonts) || !is_array($fonts)) {
@@ -211,10 +201,8 @@ class MaxiBlocks_Styles
 
         foreach ($fonts as $font => $fontData) {
             if ($font) {
-                $this->write_log($font);
                 $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
                 if (!empty($fontData)) {
-                    //  $this->write_log($fontData);
                     $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
                     $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
 
@@ -226,12 +214,9 @@ class MaxiBlocks_Styles
                         $fontUrl .= 'ital,';
                     }
 
-                    $this->write_log($fontWeight);
-
                     if (strpos($fontWeight, ',') !== false) {
                         $fontWeightArr = explode(',', $fontWeight);
                         sort($fontWeightArr);
-                        $this->write_log($fontWeightArr);
                         $fontUrl .= 'wght@';
                         if ($fontStyle === 'italic') {
                             foreach ($fontWeightArr as $fw) {

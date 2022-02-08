@@ -31,6 +31,7 @@ const attributes = {
 		type: 'string',
 	},
 	...attributesData.icon,
+	...attributesData.iconBackground,
 	...attributesData.iconHover,
 	...attributesData.iconPadding,
 	...{

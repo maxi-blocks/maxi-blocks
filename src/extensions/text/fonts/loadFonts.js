@@ -15,7 +15,7 @@ import { isEmpty, uniq } from 'lodash';
  *
  * @param {string} font Name of the selected font
  */
-const loadFonts = font => {
+const loadFonts = (font, backendOnly = false) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([key, val]) => {
 			const fontName = key;
@@ -93,7 +93,8 @@ const loadFonts = font => {
 				});
 		});
 
-		dispatch('maxiBlocks/text').updateFonts(JSON.stringify(font));
+		if (!backendOnly)
+			dispatch('maxiBlocks/text').updateFonts(JSON.stringify(font));
 	}
 
 	return null;

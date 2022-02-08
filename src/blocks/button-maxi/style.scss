@@ -1,8 +1,12 @@
 body.maxi-blocks--active .maxi-button-block {
-	display: flex;
+	display: flex !important;
 	flex-direction: column;
-	width: 100%;
+	text-align: center;
 
+	&[data-align='full'] {
+		width: 100%;
+		text-align: center;
+	}
 	&__icon {
 		box-sizing: content-box;
 
@@ -19,11 +23,11 @@ body.maxi-blocks--active .maxi-button-block {
 	}
 	&__content {
 		position: relative;
+		z-index: 1;
 		display: block;
 		order: 1;
 		width: 100%;
 		min-width: 1px;
-		z-index: 1;
 	}
 	&__button {
 		position: relative;
@@ -31,13 +35,16 @@ body.maxi-blocks--active .maxi-button-block {
 		align-items: center;
 		height: auto;
 
+		&[data-align='full'] {
+			width: 100%;
+			text-align: center;
+		}
 		&--icon-left {
 			.maxi-button-block__icon {
 				order: 0;
 				margin-right: 5px;
 			}
 		}
-
 		&--icon-right {
 			.maxi-button-block__icon {
 				order: 2;

@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
@@ -119,30 +119,9 @@ const DividerControl = props => {
 					},
 				]}
 			/>
-			{props['divider-border-style'] !== 'none' && !disableColor && (
-				<ColorControl
-					label={__('Colour', 'maxi-blocks')}
-					color={props['divider-border-color']}
-					defaultColor={getDefaultAttribute('divider-border-color')}
-					paletteColor={props['divider-palette-border-color']}
-					paletteStatus={props['divider-palette-border-color-status']}
-					onChange={({ color, paletteColor, paletteStatus }) =>
-						onChange({
-							'divider-border-color': color,
-							'divider-palette-border-color': paletteColor,
-							'divider-palette-border-color-status':
-								paletteStatus,
-						})
-					}
-					disableGradient
-					globalProps={{ target: '', type: 'divider' }}
-					isHover={isHover}
-					clientId={clientId}
-				/>
-			)}
 			{!disableLineStyle && (
 				<SelectControl
-					label={__('Line Style', 'maxi-blocks')}
+					label={__('Add border line', 'maxi-blocks')}
 					options={[
 						{ label: __('None', 'maxi-blocks'), value: 'none' },
 						{ label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
@@ -157,26 +136,48 @@ const DividerControl = props => {
 			{props['divider-border-style'] !== 'none' &&
 				!disableBorderRadius &&
 				props['divider-border-style'] === 'solid' && (
-					<FancyRadioControl
-						label={__('Line Radius', 'maxi-blocks')}
+					<ToggleSwitch
+						label={__('Line radius', 'maxi-blocks')}
 						selected={props['divider-border-radius']}
-						options={[
-							{
-								label: __('Yes', 'maxi-blocks'),
-								value: 1,
-							},
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
 						onChange={val =>
-							onChange({ 'divider-border-radius': val })
+							onChange({
+								'divider-border-radius': val,
+							})
 						}
 					/>
 				)}
+			{props['divider-border-style'] !== 'none' && !disableColor && (
+				<ColorControl
+					label={__('Divider', 'maxi-blocks')}
+					color={props['divider-border-color']}
+					prefix='divider-border-'
+					paletteColor={props['divider-border-palette-color']}
+					paletteOpacity={props['divider-border-palette-opacity']}
+					paletteStatus={props['divider-border-palette-status']}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
+						onChange({
+							'divider-border-color': color,
+							'divider-border-palette-color': paletteColor,
+							'divider-border-palette-status': paletteStatus,
+							'divider-border-palette-opacity': paletteOpacity,
+						})
+					}
+					disableGradient
+					globalProps={{ target: '', type: 'divider' }}
+					isHover={isHover}
+					clientId={clientId}
+				/>
+			)}
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'horizontal' && (
 					<>
 						<AdvancedNumberControl
-							label={__('Line Size', 'maxi-blocks')}
+							label={__('Line size', 'maxi-blocks')}
 							enableUnit
 							unit={props['divider-width-unit']}
 							onChangeUnit={val =>
@@ -199,7 +200,7 @@ const DividerControl = props => {
 							minMaxSettings={minMaxSettings}
 						/>
 						<AdvancedNumberControl
-							label={__('Line Weight', 'maxi-blocks')}
+							label={__('Line weight', 'maxi-blocks')}
 							enableUnit
 							allowedUnits={['px', 'em', 'vw']}
 							unit={props['divider-border-top-unit']}

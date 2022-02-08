@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import FancyRadioControl from '../../../fancy-radio-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import {
 	getColorRGBAString,
 	getDefaultAttribute,
@@ -28,7 +28,7 @@ const IconBackground = props => {
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
 	const getColor = attr =>
-		attr['icon-background-palette-color-status']
+		attr['icon-background-palette-status']
 			? getColorRGBAString({
 					firstVar: 'icon',
 					secondVar: `color-${attr['icon-background-palette-color']}`,
@@ -53,13 +53,14 @@ const IconBackground = props => {
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-background__popover'>
-				<FancyRadioControl
+				<SettingTabsControl
 					label={__(
-						'Inherit Colour/Backgrond from Button',
+						'Inherit Colour/Background from Button',
 						'maxi-block'
 					)}
+					type='buttons'
 					selected={props['icon-inherit']}
-					options={[
+					items={[
 						{
 							label: __('Yes', 'maxi-block'),
 							value: 1,
@@ -83,19 +84,14 @@ const IconBackground = props => {
 					<ColorControl
 						label={__('Icon Background', 'maxi-blocks')}
 						color={props['icon-background-color']}
-						defaultColor={getDefaultAttribute(
-							'icon-background-color'
-						)}
+						prefix='icon-background-'
 						paletteColor={props['icon-background-palette-color']}
-						paletteStatus={
-							props['icon-background-palette-color-status']
-						}
+						paletteStatus={props['icon-background-palette-status']}
 						onChange={({ color, paletteColor, paletteStatus }) => {
 							onChange({
 								'icon-background-color': color,
 								'icon-background-palette-color': paletteColor,
-								'icon-background-palette-color-status':
-									paletteStatus,
+								'icon-background-palette-status': paletteStatus,
 							});
 						}}
 					/>

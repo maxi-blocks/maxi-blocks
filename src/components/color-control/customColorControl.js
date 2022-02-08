@@ -1,20 +1,27 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
+import OpacityControl from '../opacity-control';
+import Button from '../button';
 
 /**
  * External dependencies
  */
 import ChromePicker from 'react-color';
 import tinycolor from 'tinycolor2';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -24,9 +31,11 @@ const CustomColorControl = props => {
 		label,
 		color,
 		onChangeValue,
-		onReset,
 		disableColorDisplay,
 		disableOpacity,
+		disableReset,
+		onReset,
+		onResetOpacity,
 	} = props;
 
 	return (
@@ -34,7 +43,7 @@ const CustomColorControl = props => {
 			{!disableColorDisplay && (
 				<BaseControl
 					className='maxi-color-control__display'
-					label={`${label} ${__('Colour', 'maxi-blocks')}`}
+					label={`${label} ${__('colour', 'maxi-blocks')}`}
 				>
 					<div className='maxi-color-control__display__color'>
 						<span
@@ -43,28 +52,41 @@ const CustomColorControl = props => {
 							}}
 						/>
 					</div>
+					{!disableReset && (
+						<Button
+							className='components-maxi-control__reset-button'
+							onClick={e => {
+								e.preventDefault();
+								onReset();
+							}}
+							isSmall
+							aria-label={sprintf(
+								/* translators: %s: a textual label  */
+								__('Reset %s settings', 'maxi-blocks'),
+								label.toLowerCase()
+							)}
+							type='reset'
+						>
+							{reset}
+						</Button>
+					)}
 				</BaseControl>
 			)}
 			{!disableOpacity && (
-				<AdvancedNumberControl
-					label={__('Colour Opacity', 'maxi-blocks')}
-					value={color.a * 100}
-					onChangeValue={val => {
-						const value = !isNil(val) ? +val : 0;
-
+				<OpacityControl
+					label={__('Colour opacity', 'maxi-blocks')}
+					opacity={color.a}
+					onChange={val => {
 						if (!isEmpty(color)) {
-							color.a = value / 100;
+							color.a = val;
 
 							onChangeValue({
 								color: tinycolor(color).toRgbString(),
-								paletteOpacity: value,
+								paletteOpacity: val,
 							});
 						}
 					}}
-					min={0}
-					max={100}
-					initialPosition={100}
-					onReset={() => onReset()}
+					onReset={onResetOpacity}
 				/>
 			)}
 			<div className='maxi-color-control__color'>

@@ -1,37 +1,35 @@
-export const background = {
-	'background-active-media': {
-		type: 'string',
-	},
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
+const prefix = 'background-';
+
+export const blockBackground = {
 	'background-layers': {
 		type: 'array',
 	},
-	'background-layers-status': {
+	'background-layers-hover': {
+		type: 'array',
+	},
+	'block-background-hover-status': {
 		type: 'boolean',
 		default: false,
 	},
 };
 
-export const backgroundColor = {
-	'background-palette-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'background-palette-color': {
-		type: 'number',
-		default: 1,
-	},
-	'background-palette-opacity': {
-		type: 'number',
-	},
-	'background-color': {
+export const rawBackground = {
+	'background-active-media': {
 		type: 'string',
 	},
+};
+
+export const rawBackgroundColor = {
+	...paletteAttributesCreator({ prefix, palette: 1 }),
 	'background-color-clip-path': {
 		type: 'string',
 	},
 };
 
-export const backgroundImage = {
+export const rawBackgroundImage = {
 	'background-image-mediaID': {
 		type: 'number',
 	},
@@ -104,9 +102,27 @@ export const backgroundImage = {
 		type: 'number',
 		default: 1,
 	},
+	'background-image-parallax-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'background-image-parallax-speed': {
+		type: 'number',
+		default: 4,
+	},
+	'background-image-parallax-direction': {
+		type: 'string',
+		default: 'down',
+	},
+	'background-image-parallax-alt': {
+		type: 'string',
+	},
+	'background-image-parallax-alt-selector': {
+		type: 'string',
+	},
 };
 
-export const backgroundVideo = {
+export const rawBackgroundVideo = {
 	'background-video-mediaID': {
 		type: 'number',
 	},
@@ -138,11 +154,15 @@ export const backgroundVideo = {
 	},
 	'background-video-opacity': {
 		type: 'number',
-		default: 100,
+		default: 1,
+	},
+	'background-video-reduce-border': {
+		type: 'boolean',
+		default: false,
 	},
 };
 
-export const backgroundGradient = {
+export const rawBackgroundGradient = {
 	'background-gradient': {
 		type: 'string',
 	},
@@ -155,49 +175,78 @@ export const backgroundGradient = {
 	},
 };
 
-export const backgroundSVG = {
-	'background-palette-svg-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'background-palette-svg-color': {
-		type: 'number',
-		default: 5,
-	},
+export const rawBackgroundSVG = {
+	...paletteAttributesCreator({ prefix: 'background-svg-', palette: 5 }),
 	'background-svg-SVGElement': {
 		type: 'string',
 	},
 	'background-svg-SVGData': {
 		type: 'object',
 	},
-	'background-svg-SVGMediaID': {
-		type: 'number',
-	},
-	'background-svg-SVGMediaURL': {
-		type: 'string',
-	},
-	'background-svg-top--unit': {
+	'background-svg-top-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-svg-top': {
+	'background-svg-position-top': {
 		type: 'number',
 		default: 0,
 	},
-	'background-svg-left--unit': {
+	'background-svg-position-right': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-bottom': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-left': {
+		type: 'number',
+		default: 0,
+	},
+	'background-svg-position-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-svg-left': {
-		type: 'number',
-		default: 50,
+	'background-svg-position-sync': {
+		type: 'string',
+		default: 'all',
 	},
 	'background-svg-size': {
 		type: 'number',
 		default: 100,
 	},
-	'background-svg-size--unit': {
+	'background-svg-size-unit': {
 		type: 'string',
 		default: '%',
 	},
 };
+
+export const background = breakpointAttributesCreator({
+	obj: rawBackground,
+});
+
+export const backgroundColor = breakpointAttributesCreator({
+	obj: rawBackgroundColor,
+});
+
+export const backgroundImage = breakpointAttributesCreator({
+	obj: rawBackgroundImage,
+	noBreakpointAttr: [
+		'background-image-mediaURL',
+		'background-image-mediaID',
+		'background-image-parallax-alt',
+		'background-image-parallax-alt-selector',
+	],
+});
+
+export const backgroundVideo = breakpointAttributesCreator({
+	obj: rawBackgroundVideo,
+});
+
+export const backgroundGradient = breakpointAttributesCreator({
+	obj: rawBackgroundGradient,
+});
+
+export const backgroundSVG = breakpointAttributesCreator({
+	obj: rawBackgroundSVG,
+});

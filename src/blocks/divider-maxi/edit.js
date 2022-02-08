@@ -8,21 +8,22 @@ import { withSelect, withDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
 import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+	getResizerSize,
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+import { BlockResizer, Toolbar } from '../../components';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Content
@@ -32,29 +33,16 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-				}),
-			},
-		};
-	}
-
 	render() {
 		const {
 			attributes,
 			deviceType,
 			isSelected,
 			onDeviceTypeChange,
-			setAttributes,
+			maxiSetAttributes,
 		} = this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
+			attributes;
 
 		onDeviceTypeChange();
 
@@ -71,14 +59,33 @@ class edit extends MaxiBlockComponent {
 
 		const handleOnResizeStart = event => {
 			event.preventDefault();
-			setAttributes({
-				[`height-unit-${deviceType}`]: 'px',
-			});
+
+			const sizeUnit = getLastBreakpointAttribute(
+				'height-unit',
+				deviceType,
+				attributes
+			);
+
+			if (sizeUnit === 'em')
+				maxiSetAttributes({
+					[`height-unit-${deviceType}`]: 'px',
+				});
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
-			setAttributes({
-				[`height-${deviceType}`]: elt.getBoundingClientRect().height,
+			const sizeUnit = getLastBreakpointAttribute(
+				'height-unit',
+				deviceType,
+				attributes
+			);
+
+			maxiSetAttributes({
+				[`height-${deviceType}`]: getResizerSize(
+					elt,
+					this.blockRef,
+					sizeUnit,
+					'height'
+				),
 			});
 		};
 
@@ -94,6 +101,12 @@ class edit extends MaxiBlockComponent {
 			...(position && { position }),
 		};
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -104,9 +117,11 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				classes={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
+				isOverflowHidden={getIsOverflowHidden()}
 				size={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
@@ -126,10 +141,12 @@ class edit extends MaxiBlockComponent {
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 				style={style}
-				disableMotion
 			>
 				{attributes['divider-border-style'] !== 'none' && (
-					<hr className='maxi-divider-block__divider' />
+					<hr
+						data-align={fullWidth}
+						className='maxi-divider-block__divider'
+					/>
 				)}
 			</MaxiBlock>,
 		];
@@ -175,4 +192,4 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 	};
 });
 
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect, editDispatch, withMaxiProps)(edit);

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { RangeControl, TextControl } from '@wordpress/components';
+import { RangeControl } from '@wordpress/components';
 import { memo } from '@wordpress/element';
 
 /**
@@ -11,44 +11,205 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
-	AlignmentControl,
-	AxisControl,
-	BackgroundControl,
-	BlockStylesControl,
-	BorderControl,
-	BoxShadowControl,
+	AdvancedNumberControl,
 	ClipPath,
-	CustomLabel,
-	DisplayControl,
-	FancyRadioControl,
-	FullSizeControl,
 	HoverEffectControl,
+	ImageAltControl,
 	ImageCropControl,
-	MotionControl,
-	OpacityControl,
-	PositionControl,
-	ResponsiveControl,
+	ImageShape,
 	SelectControl,
 	SettingTabsControl,
-	TransformControl,
 	TypographyControl,
-	InfoBox,
-	ZIndexControl,
 } from '../../components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
-	setHoverAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import MaxiModal from '../../editor/library/modal';
+import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsImage, categoriesImage } from './custom-css';
 
 /**
  * External dependencies
  */
+import {
+	capitalize,
+	isEmpty,
+	isNil,
+	isEqual,
+	cloneDeep,
+	without,
+} from 'lodash';
+
 /**
- * External dependencies
+ * Dimension tab
  */
-import { capitalize, isEmpty, isNil, isEqual, cloneDeep } from 'lodash';
+const dimensionTab = props => {
+	const { attributes, clientId, imageData, maxiSetAttributes } = props;
+	const {
+		cropOptions,
+		imageRatio,
+		imageSize,
+		isImageUrl,
+		mediaID,
+		SVGElement,
+	} = attributes;
+
+	const getSizeOptions = () => {
+		const response = [];
+		if (imageData) {
+			let { sizes } = imageData.media_details;
+			sizes = Object.entries(sizes).sort((a, b) => {
+				return a[1].width - b[1].width;
+			});
+			sizes.forEach(size => {
+				const name = capitalize(size[0]);
+				const val = size[1];
+				response.push({
+					label: `${name} - ${val.width}x${val.height}`,
+					value: size[0],
+				});
+			});
+		}
+		response.push({
+			label: 'Custom',
+			value: 'custom',
+		});
+
+		return response;
+	};
+
+	const getSizeResponse = imageSize => {
+		if (cropOptions && imageSize === 'custom') {
+			const {
+				source_url: mediaURL,
+				width: mediaWidth,
+				height: mediaHeight,
+			} = cropOptions;
+			return { mediaURL, mediaWidth, mediaHeight };
+		}
+		if (imageData && imageSize !== 'custom') {
+			const {
+				source_url: mediaURL,
+				width: mediaWidth,
+				height: mediaHeight,
+			} = imageData.media_details.sizes[imageSize];
+
+			return { mediaURL, mediaWidth, mediaHeight };
+		}
+		return { mediaURL: null, mediaWidth: null, mediaHeight: null };
+	};
+
+	return {
+		label: __('Dimension', 'maxi-blocks'),
+		content: (
+			<>
+				{!isImageUrl ||
+					(!SVGElement && (
+						<>
+							<SelectControl
+								label={__('Image Size', 'maxi-blocks')}
+								value={
+									imageSize || imageSize === 'custom'
+										? imageSize
+										: 'full'
+								} // is still necessary?
+								options={getSizeOptions()}
+								onChange={imageSize => {
+									const {
+										mediaURL,
+										mediaWidth,
+										mediaHeight,
+									} = getSizeResponse(imageSize);
+									maxiSetAttributes({
+										imageSize,
+										mediaURL,
+										mediaWidth,
+										mediaHeight,
+									});
+								}}
+							/>
+							{imageSize === 'custom' && (
+								<ImageCropControl
+									mediaID={mediaID}
+									cropOptions={cropOptions}
+									onChange={cropOptions => {
+										maxiSetAttributes({
+											cropOptions,
+											mediaURL:
+												cropOptions.image.source_url,
+											mediaHeight:
+												cropOptions.image.height,
+											mediaWidth: cropOptions.image.width,
+										});
+									}}
+								/>
+							)}
+						</>
+					))}
+				<RangeControl
+					className='maxi-image-inspector__dimension-width'
+					label={__('Width', 'maxi-blocks')}
+					value={attributes.imgWidth}
+					onChange={val => {
+						if (!isNil(val))
+							maxiSetAttributes({
+								imgWidth: val,
+							});
+						else
+							maxiSetAttributes({
+								imgWidth: getDefaultAttribute(
+									'imgWidth',
+									clientId
+								),
+							});
+					}}
+					max={100}
+					allowReset
+					initialPosition={getDefaultAttribute('imgWidth', clientId)}
+				/>
+				{!SVGElement && (
+					<SelectControl
+						className='maxi-image-inspector__ratio'
+						label={__('Image Ratio', 'maxi-blocks')}
+						value={imageRatio}
+						options={[
+							{
+								label: __('Original Size', 'maxi-blocks'),
+								value: 'original',
+							},
+							{
+								label: __('1:1 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar11',
+							},
+							{
+								label: __('2:3 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar23',
+							},
+							{
+								label: __('3:2 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar32',
+							},
+							{
+								label: __('4:3 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar43',
+							},
+							{
+								label: __('16:9 Aspect Ratio', 'maxi-blocks'),
+								value: 'ar169',
+							},
+						]}
+						onChange={imageRatio =>
+							maxiSetAttributes({
+								imageRatio,
+							})
+						}
+					/>
+				)}
+			</>
+		),
+	};
+};
 
 /**
  * Inspector
@@ -57,81 +218,23 @@ const Inspector = memo(
 	props => {
 		const {
 			attributes,
-			imageData,
 			clientId,
 			deviceType,
-			setAttributes,
-			altOptions,
+			imageData,
+			maxiSetAttributes,
 		} = props;
 		const {
-			customLabel,
-			uniqueID,
-			isFirstOnHierarchy,
-			blockStyle,
-			imageSize,
-			cropOptions,
-			fullWidth,
-			captionType,
-			mediaID,
-			extraClassName,
-			mediaAlt,
 			altSelector,
+			blockStyle,
+			captionType,
 			clipPath,
-			imageRatio,
-			isImageUrl,
+			mediaAlt,
 			parentBlockStyle,
 			SVGElement,
+			uniqueID,
+			mediaID,
+			captionPosition,
 		} = attributes;
-		const { wpAlt, titleAlt } = altOptions || {};
-
-		const getImageAltOptions = () => {
-			const response = [
-				{
-					label: __('WordPress Alt', 'maxi-blocks'),
-					value: 'wordpress',
-				},
-				{
-					label: __('Custom', 'maxi-blocks'),
-					value: 'custom',
-				},
-				{
-					label: __('None', 'maxi-blocks'),
-					value: 'none',
-				},
-			];
-
-			if (titleAlt)
-				response.unshift({
-					label: __('Image Title', 'maxi-blocks'),
-					value: 'title',
-				});
-
-			return response;
-		};
-
-		const getSizeOptions = () => {
-			const response = [];
-			if (imageData) {
-				let { sizes } = imageData.media_details;
-				sizes = Object.entries(sizes).sort((a, b) => {
-					return a[1].width - b[1].width;
-				});
-				sizes.forEach(size => {
-					const name = capitalize(size[0]);
-					const val = size[1];
-					response.push({
-						label: `${name} - ${val.width}x${val.height}`,
-						value: size[0],
-					});
-				});
-			}
-			response.push({
-				label: 'Custom',
-				value: 'custom',
-			});
-
-			return response;
-		};
 
 		const getCaptionOptions = () => {
 			const response = [
@@ -148,309 +251,62 @@ const Inspector = memo(
 			return response;
 		};
 
-		const getSizeResponse = imageSize => {
-			if (cropOptions && imageSize === 'custom') {
-				const {
-					source_url: mediaURL,
-					width: mediaWidth,
-					height: mediaHeight,
-				} = cropOptions;
-				return { mediaURL, mediaWidth, mediaHeight };
-			}
-			if (imageData && imageSize !== 'custom') {
-				const {
-					source_url: mediaURL,
-					width: mediaWidth,
-					height: mediaHeight,
-				} = imageData.media_details.sizes[imageSize];
-
-				return { mediaURL, mediaWidth, mediaHeight };
-			}
-			return { mediaURL: null, mediaWidth: null, mediaHeight: null };
+		const getCategoriesCss = () => {
+			const { 'background-layers': bgLayers } = attributes;
+			return without(
+				categoriesImage,
+				isEmpty(bgLayers) && 'canvas background'
+			);
 		};
 
 		return (
 			<InspectorControls>
-				{deviceType !== 'general' && (
-					<InfoBox
-						message={__(
-							'You are currently in responsive editing mode. Select Base to continue editing general settings.',
-							'maxi-blocks'
-						)}
-					/>
-				)}
+				{inspectorTabs.responsiveInfoBox({ props })}
 				<SettingTabsControl
+					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
+					depth={0}
 					items={[
 						{
-							label: __('Style', 'maxi-blocks'),
+							label: __('Settings', 'maxi-blocks'),
 							content: (
 								<>
-									{deviceType === 'general' && (
-										<div className='maxi-tab-content__box'>
-											<CustomLabel
-												customLabel={customLabel}
-												onChange={customLabel =>
-													setAttributes({
-														customLabel,
-													})
-												}
-											/>
-											<hr />
-											<BlockStylesControl
-												blockStyle={blockStyle}
-												isFirstOnHierarchy={
-													isFirstOnHierarchy
-												}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												clientId={clientId}
-											/>
-										</div>
-									)}
+									{inspectorTabs.blockSettings({
+										props,
+									})}
 									<AccordionControl
 										isSecondary
 										items={[
-											{
-												label: __(
-													'Alignment',
-													'maxi-blocks'
-												),
-												content: (
-													<AlignmentControl
-														{...getGroupAttributes(
-															attributes,
-															'alignment'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														disableJustify
-													/>
-												),
-											},
-											deviceType === 'general' && {
-												label: __(
-													'Image Dimension',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{!isImageUrl && (
-															<SelectControl
-																label={__(
-																	'Image Size',
-																	'maxi-blocks'
-																)}
-																value={
-																	imageSize ||
-																	imageSize ===
-																		'custom'
-																		? imageSize
-																		: 'full'
-																} // is still necessary?
-																options={getSizeOptions()}
-																onChange={imageSize => {
-																	const {
-																		mediaURL,
-																		mediaWidth,
-																		mediaHeight,
-																	} =
-																		getSizeResponse(
-																			imageSize
-																		);
-																	setAttributes(
-																		{
-																			imageSize,
-																			mediaURL,
-																			mediaWidth,
-																			mediaHeight,
-																		}
-																	);
-																}}
-															/>
-														)}
-														{!isImageUrl &&
-															imageSize ===
-																'custom' && (
-																<ImageCropControl
-																	mediaID={
-																		mediaID
-																	}
-																	cropOptions={
-																		cropOptions
-																	}
-																	onChange={cropOptions => {
-																		setAttributes(
-																			{
-																				cropOptions,
-																				mediaURL:
-																					cropOptions
-																						.image
-																						.source_url,
-																				mediaHeight:
-																					cropOptions
-																						.image
-																						.height,
-																				mediaWidth:
-																					cropOptions
-																						.image
-																						.width,
-																			}
-																		);
-																	}}
-																/>
-															)}
-														<RangeControl
-															label={__(
-																'Width',
-																'maxi-blocks'
-															)}
-															value={
-																attributes.imgWidth
+											deviceType === 'general' &&
+												dimensionTab(props),
+											...inspectorTabs.alignment({
+												props,
+												isAlignment: true,
+												disableJustify: true,
+											}),
+											deviceType === 'general' &&
+												!SVGElement && {
+													label: __(
+														'Alt tag',
+														'maxi-blocks'
+													),
+													content: (
+														<ImageAltControl
+															mediaID={mediaID}
+															altSelector={
+																altSelector
 															}
-															onChange={val => {
-																if (!isNil(val))
-																	setAttributes(
-																		{
-																			imgWidth:
-																				val,
-																		}
-																	);
-																else
-																	setAttributes(
-																		{
-																			imgWidth:
-																				getDefaultAttribute(
-																					'imgWidth',
-																					clientId
-																				),
-																		}
-																	);
+															mediaAlt={mediaAlt}
+															onChange={obj => {
+																maxiSetAttributes(
+																	obj
+																);
 															}}
-															max={100}
-															allowReset
-															initialPosition={getDefaultAttribute(
-																'imgWidth',
-																clientId
-															)}
 														/>
-														<SelectControl
-															label={__(
-																'Image Ratio',
-																'maxi-blocks'
-															)}
-															value={imageRatio}
-															options={[
-																{
-																	label: __(
-																		'Original Size',
-																		'maxi-blocks'
-																	),
-																	value: 'original',
-																},
-																{
-																	label: __(
-																		'1:1 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar11',
-																},
-																{
-																	label: __(
-																		'2:3 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar23',
-																},
-																{
-																	label: __(
-																		'3:2 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar32',
-																},
-																{
-																	label: __(
-																		'4:3 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar43',
-																},
-																{
-																	label: __(
-																		'16:9 Aspect Ratio',
-																		'maxi-blocks'
-																	),
-																	value: 'ar169',
-																},
-															]}
-															onChange={imageRatio =>
-																setAttributes({
-																	imageRatio,
-																})
-															}
-														/>
-													</>
-												),
-											},
-											deviceType === 'general' && {
-												label: __(
-													'Image Alt Tag',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														<SelectControl
-															label={__(
-																'Image Alt Tag',
-																'maxi-blocks'
-															)}
-															value={altSelector}
-															options={getImageAltOptions()}
-															onChange={altSelector =>
-																setAttributes({
-																	altSelector,
-																	...(altSelector ===
-																		'wordpress' && {
-																		mediaAlt:
-																			wpAlt,
-																	}),
-																	...(altSelector ===
-																		'title' && {
-																		mediaAlt:
-																			titleAlt,
-																	}),
-																})
-															}
-														/>
-														{altSelector ===
-															'custom' && (
-															<TextControl
-																placeholder={__(
-																	'Add Your Alt Tag Here',
-																	'maxi-blocks'
-																)}
-																value={
-																	mediaAlt ||
-																	''
-																}
-																onChange={mediaAlt =>
-																	setAttributes(
-																		{
-																			mediaAlt,
-																		}
-																	)
-																}
-															/>
-														)}
-													</>
-												),
-											},
-											deviceType === 'general' && {
+													),
+												},
+											{
 												label: __(
 													'Caption',
 													'maxi-blocks'
@@ -462,15 +318,17 @@ const Inspector = memo(
 															className='maxi-image-caption-type'
 															options={getCaptionOptions()}
 															onChange={captionType => {
-																setAttributes({
-																	captionType,
-																});
+																maxiSetAttributes(
+																	{
+																		captionType,
+																	}
+																);
 																if (
 																	imageData &&
 																	captionType ===
 																		'attachment'
 																)
-																	setAttributes(
+																	maxiSetAttributes(
 																		{
 																			captionContent:
 																				imageData
@@ -482,646 +340,149 @@ const Inspector = memo(
 														/>
 														{captionType !==
 															'none' && (
-															<TypographyControl
-																{...getGroupAttributes(
-																	attributes,
-																	[
-																		'typography',
-																		'textAlignment',
-																		'link',
-																	]
-																)}
-																textLevel='p'
-																onChange={obj => {
-																	if (
-																		'content' in
-																		obj
-																	) {
-																		const newCaptionContent =
-																			obj.content;
-
-																		delete obj.content;
-																		obj.captionContent =
-																			newCaptionContent;
+															<>
+																<SelectControl
+																	label={__(
+																		'Caption position',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-image-inspector__caption-position'
+																	value={
+																		captionPosition
 																	}
-
-																	setAttributes(
-																		obj
-																	);
-																}}
-																breakpoint={
-																	deviceType
-																}
-																clientId={
-																	clientId
-																}
-																blockStyle={
-																	parentBlockStyle
-																}
-																allowLink
-															/>
-														)}
-													</>
-												),
-											},
-											deviceType === 'general' && {
-												label: __(
-													'Background',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundImage',
-																					'backgroundVideo',
-																					'backgroundGradient',
-																					'backgroundSVG',
-																				]
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	</>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<FancyRadioControl
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'background-status-hover'
-																				]
-																			}
-																			className='maxi-background-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										]
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
-																										true
-																									),
-																								}
-																							)),
-																						'background-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'background-status-hover'
-																		] && (
-																			<BackgroundControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'backgroundHover',
-																						'backgroundColorHover',
-																						'backgroundGradientHover',
-																					]
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				disableImage
-																				disableVideo
-																				disableSVG
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Border',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<BorderControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'border',
-																				'borderWidth',
-																				'borderRadius',
-																			]
-																		)}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																	/>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<FancyRadioControl
-																			label={__(
-																				'Enable Border Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'border-status-hover'
-																				]
-																			}
-																			className='maxi-border-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'border',
-																											'borderWidth',
-																											'borderRadius',
-																										]
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'border',
-																											'borderWidth',
-																											'borderRadius',
-																										],
-																										true
-																									),
-																								}
-																							)),
-																						'border-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'border-status-hover'
-																		] && (
-																			<BorderControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'border',
-																						'borderWidth',
-																						'borderRadius',
-																					],
-																					true
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				breakpoint={
-																					deviceType
-																				}
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Width / Height',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{isFirstOnHierarchy && (
-															<FancyRadioControl
-																label={__(
-																	'Full Width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth
-																}
-																options={[
-																	{
-																		label: __(
-																			'Yes',
-																			'maxi-blocks'
-																		),
-																		value: 'full',
-																	},
-																	{
-																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value: 'normal',
-																	},
-																]}
-																optionType='string'
-																onChange={fullWidth =>
-																	setAttributes(
+																	options={[
 																		{
-																			fullWidth,
-																		}
-																	)
-																}
-															/>
-														)}
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															hideWith
-														/>
-													</>
-												),
-											},
-											{
-												label: __(
-													'Box Shadow',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<BoxShadowControl
-																		{...getGroupAttributes(
-																			attributes,
-																			'boxShadow'
-																		)}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																	/>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<FancyRadioControl
-																			label={__(
-																				'Enable Box Shadow Hover',
+																			label: __(
+																				'Top',
 																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'box-shadow-status-hover'
-																				]
+																			),
+																			value: 'top',
+																		},
+																		{
+																			label: __(
+																				'Bottom',
+																				'maxi-blocks'
+																			),
+																			value: 'bottom',
+																		},
+																	]}
+																	onChange={captionPosition =>
+																		maxiSetAttributes(
+																			{
+																				captionPosition,
 																			}
-																			className='maxi-box-shadow-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										'boxShadow'
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										'boxShadow',
-																										true
-																									),
-																								}
-																							)),
-																						'box-shadow-status-hover':
-																							val,
-																					}
-																				)
+																		)
+																	}
+																/>
+																<AdvancedNumberControl
+																	label={__(
+																		'Caption gap',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-image-inspector__caption-gap'
+																	placeholder={getLastBreakpointAttribute(
+																		'caption-gap',
+																		deviceType,
+																		attributes
+																	)}
+																	value={
+																		attributes[
+																			`caption-gap-${deviceType}`
+																		]
+																	}
+																	onChangeValue={val =>
+																		maxiSetAttributes(
+																			{
+																				[`caption-gap-${deviceType}`]:
+																					val,
 																			}
-																		/>
-																		{attributes[
-																			'box-shadow-status-hover'
-																		] && (
-																			<BoxShadowControl
-																				{...getGroupAttributes(
-																					attributes,
-																					'boxShadowHover'
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				breakpoint={
-																					deviceType
-																				}
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Padding & Margin',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														<AxisControl
-															{...getGroupAttributes(
-																attributes,
-																'padding'
-															)}
-															label={__(
-																'Padding',
-																'maxi-blocks'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															target='padding'
-															disableAuto
-														/>
-														<AxisControl
-															{...getGroupAttributes(
-																attributes,
-																'margin'
-															)}
-															label={__(
-																'Margin',
-																'maxi-blocks'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															target='margin'
-															optionType='string'
-														/>
+																		)
+																	}
+																	enableUnit
+																	unit={getLastBreakpointAttribute(
+																		'caption-gap-unit',
+																		deviceType,
+																		attributes
+																	)}
+																	minMaxSettings={{
+																		px: {
+																			min: 0,
+																			max: 999,
+																		},
+																		em: {
+																			min: 0,
+																			max: 99,
+																		},
+																	}}
+																	onChangeUnit={val =>
+																		maxiSetAttributes(
+																			{
+																				[`caption-gap-unit-${deviceType}`]:
+																					val,
+																			}
+																		)
+																	}
+																	onReset={() =>
+																		maxiSetAttributes(
+																			{
+																				[`caption-gap-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-${deviceType}`
+																					),
+																				[`caption-gap-unit-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-unit-${deviceType}`
+																					),
+																			}
+																		)
+																	}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		[
+																			'typography',
+																			'textAlignment',
+																			'link',
+																		]
+																	)}
+																	textLevel='p'
+																	onChange={obj => {
+																		if (
+																			'content' in
+																			obj
+																		) {
+																			const newCaptionContent =
+																				obj.content;
+
+																			delete obj.content;
+																			obj.captionContent =
+																				newCaptionContent;
+																		}
+
+																		maxiSetAttributes(
+																			obj
+																		);
+																	}}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																	blockStyle={
+																		parentBlockStyle
+																	}
+																	allowLink
+																/>
+															</>
+														)}
 													</>
 												),
 											},
-										]}
-									/>
-								</>
-							),
-						},
-						{
-							label: __('Advanced', 'maxi-blocks'),
-							content: (
-								<>
-									<AccordionControl
-										isPrimary
-										items={[
-											deviceType === 'general' && {
-												label: __(
-													'Custom Classes',
-													'maxi-blocks'
-												),
-												content: (
-													<TextControl
-														label={__(
-															'Additional CSS Classes',
-															'maxi-blocks'
-														)}
-														className='maxi-additional__css-classes'
-														value={extraClassName}
-														onChange={extraClassName =>
-															setAttributes({
-																extraClassName,
-															})
-														}
-													/>
-												),
-											},
 											{
 												label: __(
-													'Clip-Path',
-													'maxi-blocks'
-												),
-												content: (
-													<ClipPath
-														clipPath={clipPath}
-														onChange={clipPath =>
-															setAttributes({
-																clipPath,
-															})
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Shape',
-													'maxi-blocks'
-												),
-												content: (
-													<MaxiModal
-														type='image-shape'
-														onSelect={obj => {
-															setAttributes(obj);
-														}}
-														onRemove={obj => {
-															setAttributes(obj);
-														}}
-														icon={SVGElement}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Motion Effects',
-													'maxi-blocks'
-												),
-												content: (
-													<MotionControl
-														{...getGroupAttributes(
-															attributes,
-															'motion'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Hover Effects',
+													'Hover effect',
 													'maxi-blocks'
 												),
 												content: (
@@ -1144,7 +505,9 @@ const Inspector = memo(
 															]
 														)}
 														onChange={obj =>
-															setAttributes(obj)
+															maxiSetAttributes(
+																obj
+															)
 														}
 														blockStyle={blockStyle}
 														clientId={clientId}
@@ -1153,113 +516,145 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Transform',
+													'Shape mask',
 													'maxi-blocks'
 												),
 												content: (
-													<TransformControl
+													<ImageShape
 														{...getGroupAttributes(
 															attributes,
-															'transform'
+															'imageShape'
 														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														uniqueID={uniqueID}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+														}}
+														icon={SVGElement}
 														breakpoint={deviceType}
 													/>
 												),
 											},
 											{
 												label: __(
-													'Display',
+													'Clip-path',
 													'maxi-blocks'
 												),
 												content: (
-													<DisplayControl
-														{...getGroupAttributes(
-															attributes,
-															'display'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
+													<ClipPath
+														clipPath={clipPath}
+														onChange={clipPath =>
+															maxiSetAttributes({
+																clipPath,
+															})
 														}
-														breakpoint={deviceType}
 													/>
 												),
 											},
-											{
-												label: __(
-													'Position',
+											...inspectorTabs.border({
+												props,
+												prefix: 'image-',
+											}),
+											...inspectorTabs.boxShadow({
+												props,
+												prefix: 'image-',
+											}),
+											...inspectorTabs.size({
+												props,
+												prefix: 'image-',
+												isImage: true,
+												hideWidth: true,
+											}),
+											...inspectorTabs.marginPadding({
+												props,
+												prefix: 'image-',
+												customLabel: __(
+													'Padding',
 													'maxi-blocks'
 												),
-												content: (
-													<PositionControl
-														{...getGroupAttributes(
-															attributes,
-															'position'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
+												disableMargin: true,
+											}),
+										]}
+									/>
+								</>
+							),
+						},
+						{
+							label: __('Canvas', 'maxi-blocks'),
+							content: (
+								<AccordionControl
+									isPrimary
+									items={[
+										...inspectorTabs.blockBackground({
+											props,
+										}),
+										...inspectorTabs.border({
+											props,
+										}),
+										...inspectorTabs.boxShadow({
+											props,
+										}),
+										...inspectorTabs.opacity({
+											props,
+										}),
+										...inspectorTabs.size({
+											props,
+											block: true,
+										}),
+										...inspectorTabs.marginPadding({
+											props,
+										}),
+									]}
+								/>
+							),
+						},
+
+						{
+							label: __('Advanced', 'maxi-blocks'),
+							content: (
+								<>
+									<AccordionControl
+										isPrimary
+										items={[
+											deviceType === 'general' && {
+												...inspectorTabs.customClasses({
+													props,
+												}),
 											},
+											deviceType === 'general' && {
+												...inspectorTabs.anchor({
+													props,
+												}),
+											},
+											...inspectorTabs.customCss({
+												props,
+												breakpoint: deviceType,
+												selectors: selectorsImage,
+												categories: getCategoriesCss(),
+											}),
+											...inspectorTabs.scrollEffects({
+												props,
+											}),
+											...inspectorTabs.transform({
+												props,
+											}),
+											...inspectorTabs.display({
+												props,
+											}),
+											...inspectorTabs.position({
+												props,
+											}),
 											deviceType !== 'general' && {
-												label: __(
-													'Breakpoint',
-													'maxi-blocks'
-												),
-												content: (
-													<ResponsiveControl
-														{...getGroupAttributes(
-															attributes,
-															'breakpoints'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
+												...inspectorTabs.responsive({
+													props,
+												}),
 											},
-											{
-												label: __(
-													'Z-index',
-													'maxi-blocks'
-												),
-												content: (
-													<ZIndexControl
-														{...getGroupAttributes(
-															attributes,
-															'zIndex'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Opacity',
-													'maxi-blocks'
-												),
-												content: (
-													<OpacityControl
-														{...getGroupAttributes(
-															attributes,
-															'opacity'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
+											...inspectorTabs.overflow({
+												props,
+											}),
+											...inspectorTabs.zindex({
+												props,
+											}),
 										]}
 									/>
 								</>

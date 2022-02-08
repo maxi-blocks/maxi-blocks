@@ -1,19 +1,17 @@
+import prefixAttributesCreator from '../prefixAttributesCreator';
+import { rawBorder } from './border';
+
+const prefix = 'divider-';
+
 const divider = {
-	'divider-palette-border-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'divider-palette-border-color': {
-		type: 'number',
-		default: 4,
-	},
-	'divider-border-color': {
-		type: 'string',
-	},
-	'divider-border-style': {
-		type: 'string',
-		default: 'solid',
-	},
+	...prefixAttributesCreator({
+		prefix,
+		obj: rawBorder,
+		diffValAttr: {
+			'divider-border-palette-color': 4,
+			'divider-border-style': 'solid',
+		},
+	}),
 	'divider-border-top-width': {
 		type: 'number',
 		default: 2,
@@ -40,7 +38,7 @@ const divider = {
 	},
 	'divider-width-unit': {
 		type: 'string',
-		default: 'px',
+		default: '%',
 	},
 	'divider-height': {
 		type: 'number',

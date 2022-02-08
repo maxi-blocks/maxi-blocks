@@ -2,14 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
 import Icon from '../icon';
 
@@ -34,27 +34,62 @@ const TextShadow = props => {
 
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
-	const valueDecomposed =
-		!isEmpty(value) && value !== 'none'
-			? value.split(' ')
-			: `0px 0px 0px ${defaultColor || ''}`.split(' ');
-	const x = +valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0];
-	const y = +valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0];
-	const blur = +valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0];
-	const { color, opacity } = getColorRGBAParts(valueDecomposed[3]);
+	const decomposeValue = rawVal => {
+		const val = rawVal ?? value;
+
+		const valueDecomposed =
+			!isEmpty(val) && val !== 'none'
+				? val.split(' ')
+				: `0px 0px 0px ${defaultColor || ''}`.split(' ');
+		const x = +valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0];
+		const y = +valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0];
+		const blur = +valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0];
+		const { color, opacity } = getColorRGBAParts(
+			val && val.includes('--var')
+				? val
+						.replace(`${x}px `, '')
+						.replace(`${y}px `, '')
+						.replace(`${blur}px `, '')
+				: valueDecomposed[3]
+		);
+
+		return {
+			valueDecomposed,
+			x,
+			y,
+			blur,
+			color,
+			opacity,
+		};
+	};
+
+	const defaultPaletteColor = 8;
+
+	const { valueDecomposed, x, y, blur, color, opacity } = decomposeValue();
 
 	const [isPaletteActive, setIsPaletteActive] = useState(
 		isEmpty(color) || color.toString().length === 1
 	);
 	const [currentPaletteColor, setCurrentPaletteColor] = useState(
-		isEmpty(color) || !isPaletteActive ? 8 : +color
+		isEmpty(color) || !isPaletteActive ? defaultPaletteColor : +color
 	);
 	const [currentPaletteOpacity, setCurrentPaletteOpacity] = useState(
-		!isNil(opacity) ? +opacity * 100 : 100
+		!isNil(opacity) ? +opacity : 1
 	);
 	const [currentColor, setCurrentColor] = useState(
 		!isPaletteActive ? color : undefined
 	);
+
+	useEffect(() => {
+		const { color, opacity } = decomposeValue();
+
+		if (color) {
+			setIsPaletteActive(color.toString().length === 1);
+			setCurrentPaletteColor(isPaletteActive ? color : undefined);
+		}
+		setCurrentPaletteOpacity(!isNil(opacity) ? +opacity : 1);
+		setCurrentColor(!isPaletteActive ? color : undefined);
+	}, [value]);
 
 	const getCurrentColor = ({
 		paletteStatus,
@@ -69,7 +104,7 @@ const TextShadow = props => {
 					opacity: paletteOpacity || currentPaletteOpacity,
 			  })
 			: `rgba(${color ?? currentColor},${
-					(paletteOpacity || currentPaletteOpacity) / 100
+					paletteOpacity || currentPaletteOpacity
 			  })`;
 
 	const getDefaultValue = ({ data, color }) =>
@@ -97,7 +132,17 @@ const TextShadow = props => {
 			valueDecomposed[2] === '0px'
 		)
 			onChange('none');
-		else onChange(valueDecomposed.join(' '));
+		else {
+			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${
+				valueDecomposed[2]
+			} ${getColorRGBAString({
+				firstVar: `color-${color}`,
+				opacity: currentPaletteOpacity,
+				blockStyle,
+			})}`;
+
+			onChange(newValue);
+		}
 	};
 
 	const onChangeDefault = val => {
@@ -143,31 +188,31 @@ const TextShadow = props => {
 		{
 			light: {
 				data: '2px 4px 3px',
-				color: { paletteOpacity: 30 },
+				color: { paletteOpacity: 0.3 },
 			},
 			dark: {
 				data: '2px 2px 2px',
-				color: { paletteOpacity: 30 },
+				color: { paletteOpacity: 0.3 },
 			},
 		},
 		{
 			light: {
 				data: '2px 4px 3px',
-				color: { paletteOpacity: 50 },
+				color: { paletteOpacity: 0.5 },
 			},
 			dark: {
 				data: '2px 4px 3px',
-				color: { paletteOpacity: 50 },
+				color: { paletteOpacity: 0.5 },
 			},
 		},
 		{
 			light: {
 				data: '4px 4px 0px',
-				color: { paletteOpacity: 21 },
+				color: { paletteOpacity: 0.21 },
 			},
 			dark: {
 				data: '2px 2px 0px',
-				color: { paletteOpacity: 77 },
+				color: { paletteOpacity: 0.77 },
 			},
 		},
 	];
@@ -227,7 +272,7 @@ const TextShadow = props => {
 			{value !== 'none' && !isEmpty(value) && (
 				<>
 					<ColorControl
-						label={__('Text Shadow', 'maxi-blocks')}
+						label={__('Text shadow', 'maxi-blocks')}
 						paletteStatus={isPaletteActive}
 						paletteColor={currentPaletteColor}
 						paletteOpacity={currentPaletteOpacity}
@@ -235,49 +280,40 @@ const TextShadow = props => {
 						onChange={value => {
 							onChangeValue(3, value);
 						}}
-						onReset={() => onChangeValue(3, defaultColor)}
+						defaultColorAttributes={{
+							paletteStatus: isPaletteActive,
+							paletteColor: defaultPaletteColor,
+							paletteOpacity: 1,
+							color: !isPaletteActive
+								? `rgba(${getCurrentColor()},1)`
+								: '',
+						}}
 						disableGradient
 						disableGradientAboveBackground
 					/>
-					<AdvancedNumberControl
-						label={__('X', 'maxi-blocks')}
-						value={+trim(x)}
-						onChangeValue={val => {
-							onChangeValue(
-								0,
-								val !== undefined && val !== '' ? val : ''
-							);
-						}}
-						min={0}
-						max={100}
-						onReset={() => onChangeValue(0, 0)}
-					/>
-					<AdvancedNumberControl
-						label={__('Y', 'maxi-blocks')}
-						value={+trim(y)}
-						onChangeValue={val => {
-							onChangeValue(
-								1,
-								val !== undefined && val !== '' ? val : ''
-							);
-						}}
-						min={0}
-						max={100}
-						onReset={() => onChangeValue(1, 0)}
-					/>
-					<AdvancedNumberControl
-						label={__('Blur', 'maxi-blocks')}
-						value={+trim(blur)}
-						onChangeValue={val => {
-							onChangeValue(
-								2,
-								val !== undefined && val !== '' ? val : ''
-							);
-						}}
-						min={0}
-						max={100}
-						onReset={() => onChangeValue(2, 0)}
-					/>
+					{[
+						{ label: __('X', 'maxi-blocks'), value: +trim(x) },
+						{ label: __('Y', 'maxi-blocks'), value: +trim(y) },
+						{
+							label: __('Blur', 'maxi-blocks'),
+							value: +trim(blur),
+						},
+					].map(({ label, value }, index) => (
+						<AdvancedNumberControl
+							key={`maxi-text-shadow-control__${label.toLocaleLowerCase()}`}
+							label={label}
+							value={value}
+							onChangeValue={val => {
+								onChangeValue(
+									index,
+									val !== undefined && val !== '' ? val : ''
+								);
+							}}
+							min={0}
+							max={100}
+							onReset={() => onChangeValue(index, 0)}
+						/>
+					))}
 				</>
 			)}
 		</>
@@ -288,34 +324,39 @@ const TextShadow = props => {
  * Control
  */
 const TextShadowControl = props => {
-	const { textShadow, onChange, defaultColor, className, blockStyle } = props;
+	const {
+		textShadow,
+		onChange,
+		defaultColor,
+		className,
+		blockStyle,
+		breakpoint,
+	} = props;
 
-	const [showOptions, changeShowOptions] = useState(
-		!isEmpty(textShadow) ? 1 : 0
-	);
+	const [showOptions, changeShowOptions] = useState(!isEmpty(textShadow));
 	const [lastValue, changeLastValue] = useState(textShadow);
+
+	useEffect(() => {
+		changeLastValue(textShadow);
+	}, [breakpoint]);
 
 	const classes = classnames('maxi-textshadow-control', className);
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
-				label={__('Text Shadow', 'maxi-blocks')}
+			<ToggleSwitch
+				label={__('Add text shadow', 'maxi-blocks')}
 				selected={showOptions}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={() => {
-					changeShowOptions(!showOptions);
-					if (showOptions) {
+				onChange={val => {
+					changeShowOptions(val);
+
+					if (val) {
 						changeLastValue(textShadow);
-						onChange('');
-					} else onChange(lastValue);
+						onChange(lastValue);
+					} else onChange('');
 				}}
 			/>
-
-			{!!showOptions && (
+			{showOptions && (
 				<TextShadow
 					value={lastValue}
 					onChange={val => {
@@ -324,6 +365,7 @@ const TextShadowControl = props => {
 					}}
 					defaultColor={defaultColor}
 					blockStyle={blockStyle}
+					breakpoint={breakpoint}
 				/>
 			)}
 		</div>

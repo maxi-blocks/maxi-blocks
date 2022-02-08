@@ -9,17 +9,19 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getArrowStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsGroup } from './custom-css';
 
 const getNormalObject = props => {
 	const response = {
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -54,6 +56,9 @@ const getNormalObject = props => {
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 
@@ -96,30 +101,20 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
+					'blockBackground',
 					'border',
 					'borderWidth',
 					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(
 					props,
 					[
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
+						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
@@ -135,9 +130,7 @@ const getStyles = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
+					'blockBackground',
 					'boxShadow',
 				]),
 				blockStyle: props.parentBlockStyle,
@@ -146,12 +139,11 @@ const getStyles = props => {
 				...getGroupAttributes(
 					props,
 					[
+						'arrow',
 						'border',
 						'borderWidth',
 						'borderRadius',
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
+						'blockBackground',
 						'boxShadow',
 					],
 					true
@@ -160,7 +152,10 @@ const getStyles = props => {
 				blockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
-		}),
+		},
+		selectorsGroup,
+		props
+		),
 	};
 
 	return response;

@@ -1,5 +1,31 @@
 import getNumberCounterStyles from '../getNumberCounterStyles';
 
+jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
+	return jest.fn(() => {
+		return {
+			value: {
+				name: 'Maxi (Default)',
+				status: 'active',
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						color: {
+							1: '255,255,255',
+							2: '242,249,253',
+							3: '155,155,155',
+							4: '255,74,23',
+							5: '0,0,0',
+							6: '201,52,10',
+							7: '8,18,25',
+							8: '150,176,203',
+						},
+					},
+				},
+			},
+		};
+	});
+});
+
 describe('getNumberCounterStyles', () => {
 	it('Returns correct styles', () => {
 		const obj = {
@@ -14,12 +40,12 @@ describe('getNumberCounterStyles', () => {
 			'number-counter-stroke': 20,
 			'number-counter-duration': 1,
 			'number-counter-start-animation': 'page-load',
-			'number-counter-palette-text-color-status': true,
-			'number-counter-palette-text-color': 5,
-			'number-counter-palette-circle-background-color-status': true,
-			'number-counter-palette-circle-background-color': 2,
-			'number-counter-palette-circle-bar-color-status': true,
-			'number-counter-palette-circle-bar-color': 4,
+			'number-counter-text-palette-status': true,
+			'number-counter-text-palette-color': 5,
+			'number-counter-circle-background-palette-status': true,
+			'number-counter-circle-background-palette-color': 2,
+			'number-counter-circle-bar-palette-status': true,
+			'number-counter-circle-bar-palette-color': 4,
 			'number-counter-title-font-size': 40,
 			'number-counter-title-font-family': 'Roboto',
 		};

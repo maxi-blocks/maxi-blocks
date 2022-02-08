@@ -1,4 +1,12 @@
+import prefixAttributesCreator from '../prefixAttributesCreator';
+import { background, backgroundColor, backgroundGradient } from './background';
+import { width } from './size';
 import padding from './padding';
+
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
+const prefix = 'icon-';
 
 export const icon = {
 	'icon-inherit': {
@@ -17,146 +25,47 @@ export const icon = {
 		type: 'string',
 		default: 'right',
 	},
-	'icon-width-general': {
-		type: 'number',
-		default: 32,
-	},
-	'icon-width-xxl': {
-		type: 'number',
-	},
-	'icon-width-xl': {
-		type: 'number',
-	},
-	'icon-width-l': {
-		type: 'number',
-	},
-	'icon-width-m': {
-		type: 'number',
-	},
-	'icon-width-s': {
-		type: 'number',
-	},
-	'icon-width-xs': {
-		type: 'number',
-	},
-	'icon-width-unit-general': {
-		type: 'string',
-		default: 'px',
-	},
-	'icon-width-unit-xxl': {
-		type: 'string',
-	},
-	'icon-width-unit-xl': {
-		type: 'string',
-	},
-	'icon-width-unit-l': {
-		type: 'string',
-	},
-	'icon-width-unit-m': {
-		type: 'string',
-	},
-	'icon-width-unit-s': {
-		type: 'string',
-	},
-	'icon-width-unit-xs': {
-		type: 'string',
-	},
-	'icon-spacing-general': {
-		type: 'number',
-		default: 5,
-	},
-	'icon-spacing-xxl': {
-		type: 'number',
-	},
-	'icon-spacing-xl': {
-		type: 'number',
-	},
-	'icon-spacing-l': {
-		type: 'number',
-	},
-	'icon-spacing-m': {
-		type: 'number',
-	},
-	'icon-spacing-s': {
-		type: 'number',
-	},
-	'icon-spacing-xs': {
-		type: 'number',
-	},
-	'icon-stroke-general': {
-		type: 'number',
-		default: 2,
-	},
-	'icon-stroke-xxl': {
-		type: 'number',
-	},
-	'icon-stroke-xl': {
-		type: 'number',
-	},
-	'icon-stroke-l': {
-		type: 'number',
-	},
-	'icon-stroke-m': {
-		type: 'number',
-	},
-	'icon-stroke-s': {
-		type: 'number',
-	},
-	'icon-stroke-xs': {
-		type: 'number',
-	},
-	'icon-palette-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'icon-palette-color': {
-		type: 'number',
-		default: 1,
-	},
-	'icon-palette-opacity': {
-		type: 'number',
-	},
-	'icon-color': {
-		type: 'string',
-	},
+	...breakpointAttributesCreator({
+		obj: {
+			'icon-spacing': {
+				type: 'number',
+				default: 5,
+			},
+			'icon-stroke': {
+				type: 'number',
+				default: 2,
+			},
+		},
+	}),
+	...prefixAttributesCreator({
+		obj: width,
+		prefix,
+		diffValAttr: {
+			'icon-width-general': 32,
+		},
+	}),
+	...paletteAttributesCreator({ prefix, palette: 1 }),
 };
 
-export const iconPadding = (() => {
-	const response = {};
+export const iconBackground = prefixAttributesCreator({
+	obj: background,
+	prefix,
+	diffValAttr: { 'icon-background-active-media-general': 'none' },
+});
 
-	Object.keys(padding).forEach(key => {
-		const newKey = `icon-${key}`;
-		const value = { ...padding[key] };
+export const iconPadding = prefixAttributesCreator({
+	obj: padding,
+	prefix,
+});
 
-		response[newKey] = value;
-	});
+export const iconBackgroundColor = prefixAttributesCreator({
+	obj: backgroundColor,
+	prefix,
+	exclAttr: ['background-color-clip-path'],
+});
 
-	return response;
-})();
-
-export const iconBackgroundColor = {
-	'icon-background-palette-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'icon-background-palette-color': {
-		type: 'number',
-		default: 4,
-	},
-	'icon-background-palette-opacity': {
-		type: 'number',
-	},
-	'icon-background-color': {
-		type: 'string',
-	},
-};
-
-export const iconGradient = {
-	'icon-background-gradient': {
-		type: 'string',
-	},
-	'icon-background-gradient-opacity': {
-		type: 'number',
-		default: 1,
-	},
-};
+export const iconBackgroundGradient = prefixAttributesCreator({
+	obj: backgroundGradient,
+	prefix,
+	exclAttr: ['background-gradient-clip-path'],
+});

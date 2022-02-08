@@ -1,5 +1,5 @@
-import { isEmpty, has } from 'lodash';
 import getActiveStyleCard from '../getActiveStyleCard';
+import { getIsValid } from '../../styles';
 
 export const receiveMaxiStyleCards = state => {
 	if (state.styleCards) return state.styleCards;
@@ -36,15 +36,34 @@ export const receiveStyleCardsList = state => {
 	return false;
 };
 
-export const receiveStyleCardValue = (state, target, blockStyle, SCEntry) => {
+export const receiveStyleCardValue = (
+	state,
+	rawTarget,
+	blockStyle,
+	SCEntry
+) => {
 	if (state.styleCards) {
-		const selectedSCStyleCard =
-			state.styleCards.sc_maxi?.[blockStyle]?.styleCard;
+		const getSCValue = target => {
+			const selectedSCStyleCard = getActiveStyleCard(state.styleCards);
+			const styleCardEntry = {
+				...selectedSCStyleCard.value?.[blockStyle]?.defaultStyleCard[
+					SCEntry
+				],
+				...selectedSCStyleCard.value?.[blockStyle]?.styleCard[SCEntry],
+			};
+			const value = styleCardEntry?.[target];
 
-		return !isEmpty(selectedSCStyleCard) &&
-			has(selectedSCStyleCard[SCEntry], target)
-			? selectedSCStyleCard[SCEntry][target]
-			: false;
+			return getIsValid(value, true) ? value : false;
+		};
+
+		if (typeof rawTarget === 'string') return getSCValue(rawTarget);
+
+		const response = {};
+		rawTarget.forEach(target => {
+			response[target] = getSCValue(target);
+		});
+
+		return response;
 	}
 	return false;
 };

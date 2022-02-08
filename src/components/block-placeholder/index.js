@@ -2,13 +2,12 @@
  * WordPress dependencies
  */
 import { ButtonBlockAppender } from '@wordpress/block-editor';
-import { useDispatch } from '@wordpress/data';
+import { useRef, useEffect, useState } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNull } from 'lodash';
 
 /**
  * Styles
@@ -19,23 +18,26 @@ import './editor.scss';
  * Component
  */
 const BlockPlaceholder = props => {
-	const { clientId, className, content = '' } = props;
+	const { className, content = '' } = props;
 
 	const classes = classnames('maxi-block-placeholder', className);
 
-	const { selectBlock } = useDispatch('core/block-editor');
+	const [clientId, setClientId] = useState(null);
+
+	const ref = useRef(null);
+
+	useEffect(() => {
+		if (ref.current) {
+			const blockClientId = ref.current
+				.closest('.maxi-block')
+				.getAttribute('data-block');
+
+			if (blockClientId) setClientId(blockClientId);
+		}
+	}, [ref.current]);
 
 	return (
-		<div
-			className={classes}
-			onClick={e => {
-				e.preventDefault();
-
-				!isNull(
-					e.target.querySelector('.maxi-block-placeholder__button')
-				) && selectBlock(clientId);
-			}}
-		>
+		<div ref={ref} className={classes}>
 			<p className='maxi-block-placeholder__text'>{content}</p>
 			<ButtonBlockAppender
 				rootClientId={clientId}

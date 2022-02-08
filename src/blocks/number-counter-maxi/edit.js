@@ -10,14 +10,14 @@ import { useState, useEffect, useRef, createRef } from '@wordpress/element';
  */
 import Inspector from './inspector';
 import {
-	BlockResizer,
-	Button,
+	getResizerSize,
 	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+	withMaxiProps,
+	getMaxiBlockAttributes,
+} from '../../extensions/maxi-block';
+import { BlockResizer, Button, Toolbar } from '../../components';
+import MaxiBlock from '../../components/maxi-block';
+
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -27,7 +27,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { round } from 'lodash';
 
 /**
  * Icons
@@ -45,18 +45,17 @@ const NumberCounter = attributes => {
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
 		'number-counter-title-font-size': fontSize,
+		'number-counter-percentage-sign-status': usePercentage,
+		'number-counter-start': startNumber,
+		'number-counter-end': endNumber,
 		deviceType,
 		resizerProps,
 	} = attributes;
 
 	const countRef = useRef(null);
 
-	const startCountValue = Math.ceil(
-		(attributes['number-counter-start'] * 360) / 100
-	);
-	const endCountValue = Math.ceil(
-		(attributes['number-counter-end'] * 360) / 100
-	);
+	const startCountValue = Math.ceil((startNumber * 360) / 100);
+	const endCountValue = Math.ceil((endNumber * 360) / 100);
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -64,7 +63,8 @@ const NumberCounter = attributes => {
 
 	const circumference = 2 * Math.PI * radius;
 
-	const frameDuration = countDuration / 60;
+	const frameDuration =
+		(1 / ((endCountValue - startCountValue) / countDuration)) * 1000;
 
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replyStatus) {
@@ -77,6 +77,7 @@ const NumberCounter = attributes => {
 				setCount(count + 1);
 			}, frameDuration);
 
+			// eslint-disable-next-line consistent-return
 			return () => clearInterval(countRef.current);
 		}
 	}, [count, replyStatus, preview, endCountValue]);
@@ -98,6 +99,12 @@ const NumberCounter = attributes => {
 		stroke,
 	]);
 
+	const getIsOverflowHidden = () =>
+		getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+			'hidden' &&
+		getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+			'hidden';
+
 	return (
 		<>
 			<Button
@@ -111,25 +118,15 @@ const NumberCounter = attributes => {
 			/>
 			<BlockResizer
 				className='maxi-number-counter__box'
+				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
-				size={{
-					width: `${getLastBreakpointAttribute(
-						'width',
-						deviceType,
-						attributes
-					)}${getLastBreakpointAttribute(
-						'width-unit',
-						deviceType,
-						attributes
-					)}`,
-				}}
 				defaultSize={{
 					width: `${getLastBreakpointAttribute(
-						'width',
+						'number-counter-width',
 						deviceType,
 						attributes
 					)}${getLastBreakpointAttribute(
-						'width-unit',
+						'number-counter-width-unit',
 						deviceType,
 						attributes
 					)}`,
@@ -182,19 +179,26 @@ const NumberCounter = attributes => {
 								(count / 360) * circumference
 							)} ${circumference}`}
 						/>
+						<text
+							className='maxi-number-counter__box__text'
+							textAnchor='middle'
+							x='50%'
+							y='50%'
+							dy={`${round(fontSize / 4, 2)}px`}
+						>
+							{`${parseInt((count / 360) * 100)}`}
+							{usePercentage && (
+								<tspan baselineShift='super'>%</tspan>
+							)}
+						</text>
 					</svg>
 				)}
-				<span className='maxi-number-counter__box__text'>
-					{`${parseInt((count / 360) * 100)}`}
-
-					{attributes['number-counter-percentage-sign-status'] && (
-						<sup>
-							{attributes['number-counter-percentage-sign-status']
-								? '%'
-								: ''}
-						</sup>
-					)}
-				</span>
+				{circleStatus && (
+					<span className='maxi-number-counter__box__text'>
+						{`${parseInt((count / 360) * 100)}`}
+						{usePercentage && <sup>%</sup>}
+					</span>
+				)}
 			</BlockResizer>
 		</>
 	);
@@ -213,19 +217,20 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute(
-				'width',
+				'number-counter-width',
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
 			const svgWidthUnit = getLastBreakpointAttribute(
-				'width-unit',
+				'number-counter-width-unit',
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
+			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
-			if (this.resizableObject.current.state.width !== `${svgWidth}%`)
+			if (this.resizableObject.current.state.width !== fullWidthValue)
 				this.resizableObject.current.updateSize({
-					width: `${svgWidth}${svgWidthUnit}`,
+					width: fullWidthValue,
 				});
 		}
 	}
@@ -234,38 +239,41 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 
-		return {
-			[uniqueID]: {
-				...{
-					...getGroupAttributes(
-						this.props.attributes,
-						'numberCounter'
-					),
+		const response = {
+			number_counter: {
+				[uniqueID]: {
+					...getGroupAttributes(attributes, 'numberCounter'),
 				},
 			},
 		};
+
+		return response;
 	}
 
 	render() {
-		const { attributes, setAttributes, deviceType, isSelected } =
+		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, blockFullWidth } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
-		const handleOnResizeStart = event => {
-			event.preventDefault();
-			setAttributes({
-				[`width-unit-${deviceType}`]: 'px',
-			});
-		};
-
 		const handleOnResizeStop = (event, direction, elt) => {
-			setAttributes({
-				[`width-${deviceType}`]: elt.getBoundingClientRect().width,
+			const widthUnit = getLastBreakpointAttribute(
+				'number-counter-width-unit',
+				deviceType,
+				attributes
+			);
+
+			maxiSetAttributes({
+				[`number-counter-width-${deviceType}`]: getResizerSize(
+					elt,
+					this.blockRef,
+					widthUnit
+				),
 			});
 		};
 
@@ -279,8 +287,9 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter
 					{...getGroupAttributes(attributes, [
@@ -288,7 +297,6 @@ class edit extends MaxiBlockComponent {
 						'size',
 					])}
 					resizerProps={{
-						onResizeStart: handleOnResizeStart,
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,
 						showHandle: isSelected,
@@ -308,4 +316,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hoverAttributesCreator Returns a color bg object 1`] = `
+Object {
+  "background-color-clip-path-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-palette-color-general-hover": Object {
+    "default": 6,
+    "type": "number",
+  },
+  "background-palette-color-l-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-m-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-s-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-xl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-xs-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-xxl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-general-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-l-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-m-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-s-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-xl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-xs-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-xxl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-status-general-hover": Object {
+    "default": true,
+    "type": "boolean",
+  },
+  "background-palette-status-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xxl-hover": Object {
+    "type": "boolean",
+  },
+}
+`;
+
+exports[`hoverAttributesCreator Returns basic background object 1`] = `
+Object {
+  "background-active-media-general-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-l-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-m-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-s-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-xl-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-xs-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-hover-status": Object {
+    "default": false,
+    "type": "boolean",
+  },
+}
+`;

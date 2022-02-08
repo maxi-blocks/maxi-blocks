@@ -48,13 +48,13 @@ const getParsedObj = obj => {
 
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
-	Object.entries(getTypographyStyles({ obj: typographyObj })).forEach(
-		([breakpoint, value]) => {
-			Object.entries(value).forEach(([key, val]) => {
-				newObj[`${key}-${breakpoint}`] = val;
-			});
-		}
-	);
+	Object.entries(
+		getTypographyStyles({ obj: typographyObj, disableGlobals: true })
+	).forEach(([breakpoint, value]) => {
+		Object.entries(value).forEach(([key, val]) => {
+			newObj[`${key}-${breakpoint}`] = val;
+		});
+	});
 
 	return newObj;
 };
@@ -139,42 +139,26 @@ export const getSCVariablesObject = styleCards => {
 				);
 			switch (element) {
 				case 'button':
-					if (
-						obj['background-color-global'] &&
-						!isEmpty(obj['background-color'])
-					)
+					if (obj['background-color-global'])
 						response[
 							`--maxi-${style}-${element}-background-color`
-						] = obj['background-color'];
+						] = getColorString(obj, 'background', style);
 
-					if (
-						obj['hover-background-color-global'] &&
-						!isEmpty(obj['hover-background-color'])
-					)
+					if (obj['hover-background-color-global'])
 						response[
 							`--maxi-${style}-${element}-background-color-hover`
-						] = obj['hover-background-color'];
-
-					if (
-						obj['hover-color-global'] &&
-						!isEmpty(obj['hover-color'])
-					)
+						] = getColorString(obj, 'hover-background', style);
+					if (obj['hover-color-global'])
 						response[`--maxi-${style}-${element}-color-hover`] =
-							obj['hover-color'];
+							getColorString(obj, 'hover', style);
 
-					if (
-						obj['border-color-global'] &&
-						!isEmpty(obj['border-color'])
-					)
+					if (obj['border-color-global'])
 						response[`--maxi-${style}-${element}-border-color`] =
-							obj['border-color'];
-					if (
-						obj['hover-border-color-global'] &&
-						!isEmpty(obj['hover-border-color'])
-					)
+							getColorString(obj, 'border', style);
+					if (obj['hover-border-color-global'])
 						response[
 							`--maxi-${style}-${element}-border-color-hover`
-						] = obj['hover-border-color'];
+						] = getColorString(obj, 'hover-border', style);
 
 					break;
 

@@ -7,12 +7,18 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
  */
+const prefix = 'svg-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),
@@ -21,17 +27,13 @@ const attributes = {
 		type: 'boolean',
 		default: true,
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	svgType: {
 		type: 'string',
 	},
 	content: {
 		type: 'string',
-		default: '',
 	},
+	...attributesData.svg,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -39,10 +41,31 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...attributesData.background,
-	...attributesData.backgroundColor,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundHover,
+	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderRadiusHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderWidthHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -51,16 +74,21 @@ const attributes = {
 	...attributesData.borderWidthHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...attributesData.display,
-	...attributesData.margin,
-	...attributesData.motion,
 	...attributesData.opacity,
-	...attributesData.padding,
-	...attributesData.position,
 	...attributesData.size,
-	...attributesData.svg,
+	...attributesData.margin,
+	...attributesData.padding,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.scroll,
 	...attributesData.transform,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.overflow,
 	...attributesData.zIndex,
+	...attributesData.customCss,
 };
 
 export default attributes;

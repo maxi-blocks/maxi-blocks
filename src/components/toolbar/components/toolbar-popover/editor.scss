@@ -1,5 +1,5 @@
 .toolbar-item__popover {
-	.maxi-fancy-radio-control {
+	.maxi-button-group-control {
 		.maxi-base-control__field {
 			justify-content: space-between;
 			border-radius: 5px;
@@ -7,7 +7,7 @@
 				flex: 3 !important;
 			}
 		}
-		.maxi-radio-control__option {
+		.maxi-tabs-control__button {
 			opacity: 1 !important;
 			min-width: 40px;
 			height: 30px;
@@ -68,29 +68,24 @@
 	}
 	.maxi-color-palette-control {
 		flex-direction: column-reverse;
-		.maxi-sc-color-palette {
+		.maxi-color-control__palette {
 			&__custom {
 				margin-bottom: 10px;
 			}
-			&__box {
+			&-box {
 				background-color: #52545f;
 				&__active,
 				&:hover {
 					border-color: #fff;
 				}
-				&__item {
-					border-color: #fff;
-				}
+			}
+			&-item {
+				border-color: #fff;
 			}
 		}
 	}
 	.components-color-picker__inputs-toggle {
 		border: 0;
-
-		&:focus {
-			outline: none !important;
-			box-shadow: none !important;
-		}
 
 		svg {
 			fill: #fff;

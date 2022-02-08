@@ -58,7 +58,7 @@ const TextColor = withFormatValue(props => {
 	const colorPaletteStatus = getCustomFormatValue({
 		typography,
 		formatValue,
-		prop: 'palette-color-status',
+		prop: 'palette-status',
 		breakpoint,
 		textLevel,
 		styleCard,
@@ -120,7 +120,6 @@ const TextColor = withFormatValue(props => {
 			<div className='toolbar-item__text-color__popover'>
 				<ColorControl
 					label={__('Text', 'maxi-blocks')}
-					defaultColor={getDefaultAttribute('color')}
 					color={color}
 					paletteColor={colorPalette}
 					paletteStatus={colorPaletteStatus}
@@ -128,7 +127,7 @@ const TextColor = withFormatValue(props => {
 						onChangeFormat({
 							color,
 							'palette-color': paletteColor,
-							'palette-color-status': paletteStatus,
+							'palette-status': paletteStatus,
 						})
 					}
 					globalProps={{ target: '', type: textLevel }}

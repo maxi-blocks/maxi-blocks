@@ -2,9 +2,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { createBlock } from '@wordpress/blocks';
 import { withSelect, dispatch } from '@wordpress/data';
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import {
@@ -16,13 +14,20 @@ import {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, Toolbar } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+import { Toolbar } from '../../components';
+import {
+	getColorRGBAString,
+	getGroupAttributes,
+	getPaletteAttributes,
+} from '../../extensions/styles';
+import MaxiBlock from '../../components/maxi-block';
 import getStyles from './styles';
-import { onMerge, onSplit } from './utils';
+import onMerge, { onReplaceBlocks } from './utils';
 import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
@@ -31,13 +36,16 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, compact, flatten } from 'lodash';
+import { setSVGColor } from '../../extensions/svg';
 
 /**
  * Content
  */
 class edit extends MaxiBlockComponent {
 	propsToAvoidRendering = ['formatValue'];
+
+	formatValue = {};
 
 	typingTimeoutFormatValue = 0;
 
@@ -47,41 +55,66 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+	maxiBlockDidUpdate() {
+		const { attributes, setAttributes } = this.props;
+		const {
+			parentBlockStyle,
+			isList,
+			typeOfList,
+			listStyle,
+			listStyleCustom,
+		} = attributes;
 
-		const motionStatus = !!this.props.attributes['motion-status'];
+		// Ensures svg list markers change the colour when SC color changes
+		if (
+			isList &&
+			typeOfList === 'ul' &&
+			listStyle === 'custom' &&
+			listStyleCustom?.includes('<svg ')
+		) {
+			const { paletteStatus, paletteColor, paletteOpacity } =
+				getPaletteAttributes({
+					obj: attributes,
+					prefix: 'list-',
+				});
 
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
-				}),
-			},
-		};
+			if (paletteStatus) {
+				const newColor = getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle: parentBlockStyle,
+				});
+
+				if (!listStyleCustom.includes(newColor))
+					setAttributes({
+						listStyleCustom: setSVGColor({
+							svg: listStyleCustom,
+							color: newColor,
+							type: 'fill',
+						}),
+					});
+			}
+		}
 	}
 
 	render() {
 		const {
 			attributes,
-			isSelected,
-			setAttributes,
-			onReplace,
-			onRemove,
+			blockFullWidth,
 			clientId,
-			name,
+			isSelected,
+			onRemove,
+			onReplace,
+			maxiSetAttributes,
 		} = this.props;
 		const {
-			uniqueID,
-			textLevel,
 			content,
 			isList,
-			typeOfList,
-			listStart,
 			listReversed,
+			listStart,
+			textLevel,
+			typeOfList,
+			uniqueID,
 		} = attributes;
 
 		const onChangeRichText = ({ value: formatValue }) => {
@@ -107,12 +140,14 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				setAttributes(cleanCustomProps);
+				maxiSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
 				clearTimeout(this.typingTimeoutFormatValue);
 			}
+
+			this.formatValue = formatValue;
 
 			this.typingTimeoutFormatValue = setTimeout(() => {
 				dispatch('maxiBlocks/text').sendFormatValue(
@@ -136,14 +171,14 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
-				setAttributes({ content: `${newContent}</a>` });
+				maxiSetAttributes({ content: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ content });
+					maxiSetAttributes({ content });
 				}, 100);
 			}
 		};
@@ -163,32 +198,45 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
 				classes={`${isList ? 'maxi-list-block' : ''}`}
+				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				{!isList && (
 					<RichText
 						className='maxi-text-block__content'
+						identifier='content'
 						value={content}
 						onChange={processContent}
 						tagName={textLevel}
-						onSplit={(value, isExistentBlock) =>
-							onSplit(
-								this.props.attributes,
-								value,
-								isExistentBlock,
-								clientId
+						// Needs to stay: if there's no `onSplit` function, `onReplace` function
+						// is not called when pasting content with blocks; is called with plainText
+						// Check `packages/block-editor/src/components/rich-text/use-enter.js` on Gutenberg
+						onSplit={() => null}
+						onReplace={(blocks, indexToSelect, initialPosition) => {
+							if (
+								!blocks ||
+								isEmpty(compact(blocks)) ||
+								flatten(blocks).every(block => isEmpty(block))
 							)
-						}
-						onReplace={onReplace}
+								return;
+
+							const { blocks: cleanBlocks } = onReplaceBlocks(
+								blocks,
+								clientId,
+								content
+							);
+
+							if (!isEmpty(compact(cleanBlocks)))
+								onReplace(
+									cleanBlocks,
+									indexToSelect,
+									initialPosition
+								);
+						}}
 						onMerge={forward => onMerge(this.props, forward)}
-						onRemove={onRemove}
-						placeholder={__(
-							'Set your Maxi Text here…',
-							'maxi-blocks'
-						)}
 						__unstableEmbedURLOnPaste
-						__unstableAllowPrefixTransformations
+						preserveWhiteSpace
 					>
 						{onChangeRichText}
 					</RichText>
@@ -198,32 +246,38 @@ class edit extends MaxiBlockComponent {
 						className='maxi-text-block__content'
 						identifier='content'
 						multiline='li'
-						__unstableMultilineRootTag={typeOfList}
 						tagName={typeOfList}
 						onChange={processContent}
 						value={content}
-						placeholder={__('Write list…', 'maxi-blocks')}
-						onSplit={value => {
-							if (!value) {
-								return createBlock(name, {
-									...this.props.attributes,
-									isList: false,
-								});
-							}
+						// Needs to stay: if there's no `onSplit` function, `onReplace` function
+						// is not called when pasting content with blocks; is called with plainText
+						// Check `packages/block-editor/src/components/rich-text/use-enter.js` on Gutenberg
+						onSplit={() => null}
+						onReplace={(blocks, indexToSelect, initialPosition) => {
+							if (
+								!blocks ||
+								isEmpty(compact(blocks)) ||
+								flatten(blocks).every(block => isEmpty(block))
+							)
+								return;
 
-							return createBlock(name, {
-								...this.props.attributes,
-								content: value,
-							});
+							const { blocks: cleanBlocks } = onReplaceBlocks(
+								blocks,
+								clientId,
+								content
+							);
+
+							if (!isEmpty(compact(cleanBlocks)))
+								onReplace(
+									cleanBlocks,
+									indexToSelect,
+									initialPosition
+								);
 						}}
-						__unstableOnSplitMiddle={() =>
-							createBlock('maxi-blocks/text-maxi')
-						}
-						onReplace={blocks => onReplace(this.props, blocks)}
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
 						start={listStart}
-						reversed={!!listReversed}
+						reversed={listReversed}
 						type={typeOfList}
 					>
 						{({ value: formatValue, onChange }) => {
@@ -290,12 +344,48 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
+const editSelect = withSelect((select, ownProps) => {
+	const { attributes } = ownProps;
+	const { parentBlockStyle, isList, typeOfList, listStyle, listStyleCustom } =
+		attributes;
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	/**
+	 * Ensures svg list markers change the colour when SC color changes.
+	 * This changes will update the block, which will trigger maxiBlockDidUpdate
+	 * where the script will finish the task of updating the colour
+	 */
+	if (
+		isList &&
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom?.includes('<svg ')
+	) {
+		const { paletteStatus, paletteColor } = getPaletteAttributes({
+			obj: attributes,
+			prefix: 'list-',
+		});
+
+		if (paletteStatus) {
+			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+			const scElements = paletteColor.toString();
+			const scValues = receiveStyleCardValue(
+				scElements,
+				parentBlockStyle,
+				'color'
+			);
+
+			return {
+				deviceType,
+				scValues,
+			};
+		}
+	}
 
 	return {
 		deviceType,
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

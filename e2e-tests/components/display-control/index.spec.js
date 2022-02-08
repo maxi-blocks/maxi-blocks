@@ -6,9 +6,10 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
+	getBlockStyle,
+	getAttributes,
 } from '../../utils';
 
 describe('DisplayControl', () => {
@@ -16,67 +17,63 @@ describe('DisplayControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'display');
-
-		await accordionPanel.$$eval(
-			'.maxi-display-control .maxi-base-control__field label',
-			button => button[2].click()
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'show hide block'
 		);
 
-		const attributes = await getBlockAttributes();
-		const display = attributes['display-general'];
-		const expectResult = 'none';
+		await accordionPanel.$$eval('.maxi-display-control button', button =>
+			button[1].click()
+		);
 
-		expect(display).toStrictEqual(expectResult);
+		expect(await getAttributes('display-general')).toStrictEqual('none');
 	});
 
 	it('Check Responsive display control', async () => {
-		await openAdvancedSidebar(page, 'display');
-		const displayButtons = await page.$$(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option'
-		);
+		await openSidebarTab(page, 'advanced', 'show hide block');
+		const displayButtons = await page.$$('.maxi-display-control button');
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
-			select => select[1].checked
+			'.maxi-display-control button',
+			select => select[1].ariaPressed
 		);
 
-		expect(isItemChecked).toBeTruthy();
+		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
 		await displayButtons[0].click();
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
-			select => select[0].checked
+			'.maxi-display-control button',
+			select => select[0].ariaPressed
 		);
 
-		expect(responsiveSOption).toBeTruthy();
+		expect(responsiveSOption).toBe('true');
 
-		const expectAttributes = await getBlockAttributes();
-		const display = expectAttributes['display-s'];
-
-		expect(display).toStrictEqual('inherit');
+		expect(await getAttributes('display-s')).toStrictEqual('flex');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
-			select => select[0].checked
+			'.maxi-display-control button',
+			select => select[0].ariaPressed
 		);
 
-		expect(responsiveXsOption).toBeTruthy();
+		expect(responsiveXsOption).toBe('true');
 
 		// responsive M
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
-			select => select[1].checked
+			'.maxi-display-control button',
+			select => select[1].ariaPressed
 		);
 
-		expect(responsiveMOption).toBeTruthy();
+		expect(responsiveMOption).toBe('true');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

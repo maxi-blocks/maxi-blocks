@@ -34,7 +34,7 @@ const HoverPreview = props => {
 		'sepia',
 		'clear-sepia',
 		'grey-scale',
-		'clear-greay-scale',
+		'clear-grey-scale',
 	];
 
 	const classes = classnames(
@@ -51,7 +51,6 @@ const HoverPreview = props => {
 			target.style.transform = '';
 			target.style.marginLeft = '';
 			target.style.filter = '';
-			target.style.transitionDuration = `${hoverTransitionDuration}s`;
 			target.style.transitionTimingFunction = `${
 				hoverTransitionEasing !== 'cubic-bezier'
 					? hoverTransitionEasing

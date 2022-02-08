@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -18,7 +18,6 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -45,10 +44,10 @@ const FullSizeControl = props => {
 
 		if (Array.isArray(target)) {
 			target.forEach(el => {
-				response[`${el}-${breakpoint}`] = (!isNil(val) && val) || '';
+				response[`${el}-${breakpoint}`] = val;
 			});
 		} else {
-			response[`${target}-${breakpoint}`] = (!isNil(val) && val) || '';
+			response[`${target}-${breakpoint}`] = val;
 		}
 		onChange(response);
 	};
@@ -142,18 +141,16 @@ const FullSizeControl = props => {
 					);
 				}}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%']}
+				allowedUnits={['px', 'em', 'vw']}
 			/>
-			<FancyRadioControl
-				label={__('Advanced Width/Height', 'maxi-blocks')}
+			<ToggleSwitch
+				label={__('Set custom min/max values', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
 				onChange={val => {
-					onChange({ [`${prefix}size-advanced-options`]: val });
-					if (!+val) {
+					onChange({
+						[`${prefix}size-advanced-options`]: val,
+					});
+					if (props[`${prefix}size-advanced-options`]) {
 						onChangeValue(
 							[
 								'min-width',
@@ -180,7 +177,7 @@ const FullSizeControl = props => {
 				<>
 					{!hideMaxWidth && (
 						<AdvancedNumberControl
-							label={__('Max Width', 'maxi-blocks')}
+							label={__('Maximum width', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute(
 								`${prefix}max-width-unit`,
@@ -217,7 +214,7 @@ const FullSizeControl = props => {
 						/>
 					)}
 					<AdvancedNumberControl
-						label={__('Min Width', 'maxi-blocks')}
+						label={__('Minimum width', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-width-unit`,
@@ -253,7 +250,7 @@ const FullSizeControl = props => {
 						allowedUnits={['px', 'em', 'vw', '%']}
 					/>
 					<AdvancedNumberControl
-						label={__('Max Height', 'maxi-blocks')}
+						label={__('Maximum height', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}max-height-unit`,
@@ -286,10 +283,10 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', '%']}
+						allowedUnits={['px', 'em', 'vw']}
 					/>
 					<AdvancedNumberControl
-						label={__('Min Height', 'maxi-blocks')}
+						label={__('Minimum height', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-height-unit`,
@@ -322,7 +319,7 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', '%']}
+						allowedUnits={['px', 'em', 'vw']}
 					/>
 				</>
 			)}

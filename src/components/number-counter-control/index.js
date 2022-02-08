@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import FontFamilySelector from '../font-family-selector';
 import SelectControl from '../select-control';
 
@@ -40,10 +40,6 @@ const NumberCounterControl = props => {
 			min: 0,
 			max: 3999,
 		},
-		em: {
-			min: 0,
-			max: 999,
-		},
 		vw: {
 			min: 0,
 			max: 999,
@@ -61,38 +57,45 @@ const NumberCounterControl = props => {
 				className='maxi-number-counter-control__width'
 				enableUnit
 				unit={getLastBreakpointAttribute(
-					'width-unit',
+					'number-counter-width-unit',
 					breakpoint,
 					props
 				)}
 				onChangeUnit={val =>
-					onChange({ [`width-unit-${breakpoint}`]: val })
+					onChange({
+						[`number-counter-width-unit-${breakpoint}`]: val,
+					})
 				}
-				value={getLastBreakpointAttribute('width', breakpoint, props)}
+				value={getLastBreakpointAttribute(
+					'number-counter-width',
+					breakpoint,
+					props
+				)}
 				onChangeValue={val =>
-					onChange({ [`width-${breakpoint}`]: val })
+					onChange({ [`number-counter-width-${breakpoint}`]: val })
 				}
 				onReset={() =>
 					onChange({
-						[`width-${breakpoint}`]: getDefaultAttribute(
-							`width-${breakpoint}`
-						),
-						[`width-unit-${breakpoint}`]: getDefaultAttribute(
-							`width-unit-${breakpoint}`
-						),
+						[`number-counter-width-${breakpoint}`]:
+							getDefaultAttribute(
+								`number-counter-width-${breakpoint}`
+							),
+						[`number-counter-width-unit-${breakpoint}`]:
+							getDefaultAttribute(
+								`number-counter-width-unit-${breakpoint}`
+							),
 					})
 				}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
-				onChange={val => onChange({ 'number-counter-preview': val })}
+				onChange={val =>
+					onChange({
+						'number-counter-preview': val,
+					})
+				}
 			/>
 			<SelectControl
 				label={__('Start Animation', 'maxi-blocks')}
@@ -122,7 +125,7 @@ const NumberCounterControl = props => {
 			<AdvancedNumberControl
 				label={__('Start Number', 'maxi-blocks')}
 				min={0}
-				max={100}
+				max={props['number-counter-end']}
 				initial={0}
 				step={1}
 				value={props['number-counter-start']}
@@ -150,10 +153,21 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			{!props['number-counter-circle-status'] &&
+				props['number-counter-end'] >= 100 && (
+					<div className='maxi-number-counter-control__alert-warning'>
+						<i>
+							{__(
+								"End Number can't be grater than 100 when circle is enabled",
+								'maxi-blocks'
+							)}
+						</i>
+					</div>
+				)}
 			<AdvancedNumberControl
 				label={__('Duration', 'maxi-blocks')}
 				min={1}
-				max={9999}
+				max={10}
 				initial={1}
 				step={1}
 				value={props['number-counter-duration']}
@@ -168,24 +182,26 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<AdvancedNumberControl
-				label={__('Stroke', 'maxi-blocks')}
-				min={1}
-				max={99}
-				initial={8}
-				step={1}
-				value={props['number-counter-stroke']}
-				onChangeValue={val =>
-					onChange({ 'number-counter-stroke': val })
-				}
-				onReset={() =>
-					onChange({
-						'number-counter-stroke': getDefaultAttribute(
-							'number-counter-stroke'
-						),
-					})
-				}
-			/>
+			{!props['number-counter-circle-status'] && (
+				<AdvancedNumberControl
+					label={__('Stroke', 'maxi-blocks')}
+					min={1}
+					max={99}
+					initial={8}
+					step={1}
+					value={props['number-counter-stroke']}
+					onChangeValue={val =>
+						onChange({ 'number-counter-stroke': val })
+					}
+					onReset={() =>
+						onChange({
+							'number-counter-stroke': getDefaultAttribute(
+								'number-counter-stroke'
+							),
+						})
+					}
+				/>
+			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
 				defaultValue={getDefaultAttribute(
@@ -200,8 +216,8 @@ const NumberCounterControl = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Title Font Size', 'maxi-blocks')}
-				min={32}
-				max={999}
+				min={0}
+				max={99}
 				initial={32}
 				step={1}
 				value={props['number-counter-title-font-size']}
@@ -216,107 +232,140 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
+				className='number-counter-percentage-sign-status'
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
 				onChange={val =>
-					onChange({ 'number-counter-percentage-sign-status': val })
+					onChange({
+						'number-counter-percentage-sign-status': val,
+					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
+				className='number-counter-circle-status'
 				label={__('Hide Circle', 'maxi-block')}
 				selected={props['number-counter-circle-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
 				onChange={val => {
-					onChange({ 'number-counter-circle-status': val });
-
-					if (!val && props['number-counter-end'] > 100)
-						onChange({ 'number-counter-end': 100 });
+					onChange({
+						'number-counter-circle-status': val,
+						...(!val && {
+							...(props['number-counter-end'] > 100 && {
+								'number-counter-end': 100,
+							}),
+							...(props['number-counter-start'] > 100 && {
+								'number-counter-start': 100,
+							}),
+						}),
+					});
 				}}
 			/>
 			{!props['number-counter-circle-status'] && (
-				<FancyRadioControl
+				<ToggleSwitch
+					className='number-counter-rounded-status'
 					label={__('Rounded Bar', 'maxi-block')}
 					selected={props['number-counter-rounded-status']}
-					options={[
-						{ label: __('Yes', 'maxi-block'), value: 1 },
-						{ label: __('No', 'maxi-block'), value: 0 },
-					]}
 					onChange={val =>
-						onChange({ 'number-counter-rounded-status': val })
+						onChange({
+							'number-counter-rounded-status': val,
+						})
 					}
 				/>
 			)}
 			<hr />
 			<ColorControl
 				label={__('Text', 'maxi-blocks')}
+				paletteStatus={props['number-counter-text-palette-status']}
+				paletteColor={props['number-counter-text-palette-color']}
+				paletteOpacity={props['number-counter-palette-text-opacity']}
 				color={props['number-counter-text-color']}
-				defaultColor={getDefaultAttribute('number-counter-text-color')}
-				paletteColor={props['number-counter-palette-text-color']}
-				paletteStatus={
-					props['number-counter-palette-text-color-status']
-				}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				prefix='number-counter-text-'
+				onChange={({
+					paletteStatus,
+					paletteColor,
+					paletteOpacity,
+					color,
+				}) =>
 					onChange({
+						'number-counter-text-palette-status': paletteStatus,
+						'number-counter-text-palette-color': paletteColor,
+						'number-counter-palette-text-opacity': paletteOpacity,
 						'number-counter-text-color': color,
-						'number-counter-palette-text-color': paletteColor,
-						'number-counter-palette-text-color-status':
-							paletteStatus,
 					})
 				}
 			/>
 			<hr />
-			<ColorControl
-				label={__('Circle Background', 'maxi-blocks')}
-				color={props['number-counter-circle-background-color']}
-				defaultColor={getDefaultAttribute(
-					'number-counter-circle-background-color'
-				)}
-				paletteColor={
-					props['number-counter-palette-circle-background-color']
-				}
-				paletteStatus={
-					props[
-						'number-counter-palette-circle-background-color-status'
-					]
-				}
-				onChange={({ color, paletteColor, paletteStatus }) =>
-					onChange({
-						'number-counter-circle-background-color': color,
-						'number-counter-palette-circle-background-color':
+			{!props['number-counter-circle-status'] && (
+				<>
+					<ColorControl
+						label={__('Circle Background', 'maxi-blocks')}
+						paletteStatus={
+							props[
+								'number-counter-circle-background-palette-status'
+							]
+						}
+						paletteColor={
+							props[
+								'number-counter-circle-background-palette-color'
+							]
+						}
+						paletteOpacity={
+							props[
+								'number-counter-circle-background-palette-opacity'
+							]
+						}
+						color={props['number-counter-circle-background-color']}
+						prefix='number-counter-circle-background-'
+						onChange={({
+							paletteStatus,
 							paletteColor,
-						'number-counter-palette-circle-background-color-status':
+							paletteOpacity,
+							color,
+						}) =>
+							onChange({
+								'number-counter-circle-background-palette-status':
+									paletteStatus,
+								'number-counter-circle-background-palette-color':
+									paletteColor,
+								'number-counter-circle-background-palette-opacity':
+									paletteOpacity,
+								'number-counter-circle-background-color': color,
+							})
+						}
+					/>
+					<hr />
+					<ColorControl
+						label={__('Circle Bar', 'maxi-blocks')}
+						paletteStatus={
+							props['number-counter-circle-bar-palette-status']
+						}
+						paletteColor={
+							props['number-counter-circle-bar-palette-color']
+						}
+						paletteOpacity={
+							props['number-counter-circle-bar-palette-opacity']
+						}
+						color={props['number-counter-circle-bar-color']}
+						prefix='number-counter-circle-bar-'
+						onChange={({
 							paletteStatus,
-					})
-				}
-			/>
-			<hr />
-			<ColorControl
-				label={__('Circle Bar', 'maxi-blocks')}
-				color={props['number-counter-circle-bar-color']}
-				defaultColor={getDefaultAttribute(
-					'number-counter-circle-bar-color'
-				)}
-				paletteColor={props['number-counter-palette-circle-bar-color']}
-				paletteStatus={
-					props['number-counter-palette-circle-bar-color-status']
-				}
-				onChange={({ color, paletteColor, paletteStatus }) =>
-					onChange({
-						'number-counter-circle-bar-color': color,
-						'number-counter-palette-circle-bar-color': paletteColor,
-						'number-counter-palette-circle-bar-color-status':
-							paletteStatus,
-					})
-				}
-			/>
+							paletteColor,
+							paletteOpacity,
+							color,
+						}) =>
+							onChange({
+								'number-counter-circle-bar-palette-status':
+									paletteStatus,
+								'number-counter-circle-bar-palette-color':
+									paletteColor,
+								'number-counter-circle-bar-palette-opacity':
+									paletteOpacity,
+								'number-counter-circle-bar-color': color,
+							})
+						}
+					/>
+				</>
+			)}
 		</div>
 	);
 };

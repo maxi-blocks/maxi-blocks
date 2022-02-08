@@ -6,9 +6,8 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
 
 /**
  * Save
@@ -22,7 +21,7 @@ const save = props => {
 	return (
 		<MaxiBlock
 			classes={`${isList ? 'maxi-list-block' : ''}`}
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<RichText.Content

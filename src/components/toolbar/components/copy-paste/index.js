@@ -42,6 +42,7 @@ const ATTRIBUTES = [
 	'backgroundGradient',
 	'backgroundGradientHover',
 	'backgroundHover',
+	'blockBackground',
 	'border',
 	'borderHover',
 	'borderRadius',
@@ -126,7 +127,6 @@ const CopyPasteContent = props => {
 
 		const blockValues = getBlock(clientId);
 		const blockAttributes = cleanStyleAttributes(blockValues.attributes);
-
 		const { innerBlocks } = blockValues;
 		const hasInnerBlocks = !isEmpty(innerBlocks);
 
@@ -157,8 +157,9 @@ const CopyPasteContent = props => {
 	const onCopyStyles = () => copyStyles(blockAttributes);
 	const onPasteStyles = () => updateBlockAttributes(clientId, copiedStyles);
 
-	const onCopyBlocks = () => copyNestedBlocks(cleanInnerBlocks(innerBlocks));
-	const onPasteBlocks = () => replaceInnerBlocks(clientId, copiedBlocks);
+	const onCopyBlocks = () => copyNestedBlocks(innerBlocks);
+	const onPasteBlocks = () =>
+		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
 
 	const handleSpecialPaste = attr => {
 		const newSpecialPaste = specialPaste.includes(attr)

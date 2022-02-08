@@ -13,6 +13,10 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Column', 'maxi-blocks'),
@@ -25,39 +29,26 @@ const attributes = {
 		type: 'string',
 		default: 'stretch',
 	},
-	extraClassName: {
-		type: 'string',
-		default: '',
-	},
-	extraStyles: {
-		type: 'string',
-		default: '',
-	},
-	...attributesData.columnSize,
-	...attributesData.opacity,
-	...attributesData.background,
-	...attributesData.backgroundColor,
-	...attributesData.backgroundImage,
-	...attributesData.backgroundVideo,
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundSVG,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundImageHover,
-	...attributesData.backgroundVideoHover,
-	...attributesData.backgroundGradientHover,
-	...attributesData.backgroundSVGHover,
+	...attributesData.blockBackground,
 	...attributesData.border,
-	...attributesData.borderWidth,
-	...attributesData.borderRadius,
 	...attributesData.borderHover,
+	...attributesData.borderRadius,
+	...attributesData.borderWidth,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.columnSize,
 	...attributesData.margin,
 	...attributesData.padding,
-	...attributesData.display,
+
+	/**
+	 * Advanced
+	 */
 	...attributesData.transform,
+	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.overflow,
 	...attributesData.zIndex,
+	...attributesData.customCss,
 };
 
 export default attributes;

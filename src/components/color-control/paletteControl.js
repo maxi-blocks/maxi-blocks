@@ -1,26 +1,27 @@
 /**
  * Wordpress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
+import OpacityControl from '../opacity-control';
 import { getBlockStyle } from '../../extensions/styles';
+import Button from '../button';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -32,9 +33,11 @@ const ColorPaletteControl = props => {
 		onChange,
 		globalProps,
 		disableOpacity,
-		opacity = 100,
-		defaultOpacity = 100,
+		opacity = 1,
 		clientId,
+		disableReset,
+		onReset,
+		onResetOpacity,
 	} = props;
 
 	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
@@ -68,9 +71,9 @@ const ColorPaletteControl = props => {
 			return { globalStatus, globalPaletteColor, globalPaletteOpacity };
 		});
 
-	const paletteClasses = classnames(
-		'maxi-sc-color-palette',
-		globalStatus && 'palette-disabled'
+	const classes = classnames(
+		'maxi-color-control__palette',
+		globalStatus && 'maxi-color-control__palette--disabled'
 	);
 
 	const getIsActive = item => {
@@ -81,20 +84,25 @@ const ColorPaletteControl = props => {
 	};
 
 	return (
-		<>
+		<div className={classes}>
 			<BaseControl
-				className='maxi-color-palette-control__palette-label'
-				label={label ? `${label} Colour` : ''}
+				className='maxi-color-control__palette-label'
+				label={label ? `${label} colour` : ''}
 			>
-				<div className={paletteClasses}>
+				<div className='maxi-color-control__palette-container'>
 					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-						<div
-							key={`maxi-sc-color-palette__box__${item}`}
-							className={`maxi-sc-color-palette__box ${
-								getIsActive(item)
-									? 'maxi-sc-color-palette__box--active'
-									: ''
-							}`}
+						<button
+							key={`maxi-color-control__palette-box__${item}`}
+							type='button'
+							aria-label={sprintf(
+								__('Pallet box colour %s', 'maxi-blocks'),
+								item
+							)}
+							className={classnames(
+								'maxi-color-control__palette-box',
+								getIsActive(item) &&
+									'maxi-color-control__palette-box--active'
+							)}
 							data-item={item}
 							onClick={e =>
 								onChange({
@@ -103,34 +111,46 @@ const ColorPaletteControl = props => {
 							}
 						>
 							<span
-								className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
+								className={classnames(
+									'maxi-color-control__palette-item',
+									`maxi-color-control__palette-item__${item}`
+								)}
 							/>
-						</div>
+						</button>
 					))}
 				</div>
+				{!disableReset && (
+					<Button
+						className='components-maxi-control__reset-button'
+						onClick={e => {
+							e.preventDefault();
+							onReset();
+						}}
+						isSmall
+						aria-label={sprintf(
+							/* translators: %s: a textual label  */
+							__('Reset %s settings', 'maxi-blocks'),
+							label.toLowerCase()
+						)}
+						type='reset'
+					>
+						{reset}
+					</Button>
+				)}
 			</BaseControl>
 			{!disableOpacity && (
-				<AdvancedNumberControl
-					label={__('Colour Opacity', 'maxi-blocks')}
-					value={globalStatus ? globalPaletteOpacity : opacity}
-					onChangeValue={val => {
-						const value = !isNil(val) ? +val : 0;
-
+				<OpacityControl
+					label={__('Colour opacity', 'maxi-blocks')}
+					opacity={globalStatus ? globalPaletteOpacity : opacity}
+					onChange={val =>
 						onChange({
-							paletteOpacity: value,
-						});
-					}}
-					min={0}
-					max={100}
-					initialPosition={defaultOpacity}
-					onReset={() =>
-						onChange({
-							paletteOpacity: defaultOpacity,
+							paletteOpacity: val,
 						})
 					}
+					onReset={onResetOpacity}
 				/>
 			)}
-		</>
+		</div>
 	);
 };
 

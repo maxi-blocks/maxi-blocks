@@ -2,79 +2,55 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/blockEditor';
-import { TextControl } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import {
 	AccordionControl,
-	AxisControl,
-	BlockStylesControl,
-	CustomLabel,
-	DisplayControl,
 	NumberCounterControl,
-	OpacityControl,
-	PositionControl,
-	ResponsiveControl,
 	SettingTabsControl,
-	TransformControl,
-	InfoBox,
-	ZIndexControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
+import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
-	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
-		blockStyle,
-		extraClassName,
-	} = attributes;
+	const { attributes, deviceType, maxiSetAttributes } = props;
+
+	const getCategoriesCss = () => {
+		const { 'background-layers': bgLayers } = attributes;
+		return without(
+			categoriesNumberCounter,
+			isEmpty(bgLayers) && 'canvas background'
+		);
+	};
 
 	return (
 		<InspectorControls>
-			{deviceType !== 'general' && (
-				<InfoBox
-					message={__(
-						'You are currently in responsive editing mode. Select Base to continue editing general settings.',
-						'maxi-blocks'
-					)}
-				/>
-			)}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
+				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
-						label: __('Style', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<>
-								{deviceType === 'general' && (
-									<div className='maxi-tab-content__box'>
-										<CustomLabel
-											customLabel={customLabel}
-											onChange={customLabel =>
-												setAttributes({ customLabel })
-											}
-										/>
-										<hr />
-										<BlockStylesControl
-											blockStyle={blockStyle}
-											isFirstOnHierarchy={
-												isFirstOnHierarchy
-											}
-											onChange={obj => setAttributes(obj)}
-											clientId={clientId}
-										/>
-									</div>
-								)}
+								{inspectorTabs.blockSettings({
+									props,
+								})}
 								<AccordionControl
 									isPrimary
 									items={[
@@ -84,63 +60,65 @@ const Inspector = props => {
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
-														[
-															'numberCounter',
-															'size',
-														]
+														'numberCounter'
+													)}
+													{...getGroupAttributes(
+														attributes,
+														'size',
+														false,
+														'number-counter-'
 													)}
 													onChange={obj =>
-														setAttributes(obj)
+														maxiSetAttributes(obj)
 													}
 													breakpoint={deviceType}
 												/>
 											),
 										},
-										{
-											label: __(
-												'Padding & Margin',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'padding'
-														)}
-														label={__(
-															'Padding',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='padding'
-														disableAuto
-													/>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'margin'
-														)}
-														label={__(
-															'Margin',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='margin'
-														optionType='string'
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.border({
+											props,
+											prefix: 'number-counter-',
+										}),
+										...inspectorTabs.boxShadow({
+											props,
+											prefix: 'number-counter-',
+										}),
+										...inspectorTabs.marginPadding({
+											props,
+											prefix: 'number-counter-',
+										}),
 									]}
 								/>
 							</>
+						),
+					},
+					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{
@@ -150,117 +128,44 @@ const Inspector = props => {
 								isPrimary
 								items={[
 									deviceType === 'general' && {
-										label: __(
-											'Custom Classes',
-											'maxi-blocks'
-										),
-										content: (
-											<TextControl
-												label={__(
-													'Additional CSS Classes',
-													'maxi-blocks'
-												)}
-												className='maxi-additional__css-classes'
-												value={extraClassName}
-												onChange={extraClassName =>
-													setAttributes({
-														extraClassName,
-													})
-												}
-											/>
-										),
+										...inspectorTabs.customClasses({
+											props,
+										}),
 									},
-									{
-										label: __('Transform', 'maxi-blocks'),
-										content: (
-											<TransformControl
-												{...getGroupAttributes(
-													attributes,
-													'transform'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												uniqueID={uniqueID}
-												breakpoint={deviceType}
-											/>
-										),
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
 									},
-									{
-										label: __('Display', 'maxi-blocks'),
-										content: (
-											<DisplayControl
-												{...getGroupAttributes(
-													attributes,
-													'display'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Position', 'maxi-blocks'),
-										content: (
-											<PositionControl
-												{...getGroupAttributes(
-													attributes,
-													'position'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsNumberCounter,
+										categories: getCategoriesCss(),
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
 									deviceType !== 'general' && {
-										label: __('Breakpoint', 'maxi-blocks'),
-										content: (
-											<ResponsiveControl
-												{...getGroupAttributes(
-													attributes,
-													'breakpoints'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
+										...inspectorTabs.responsive({
+											props,
+										}),
 									},
-									{
-										label: __('Z-index', 'maxi-blocks'),
-										content: (
-											<ZIndexControl
-												{...getGroupAttributes(
-													attributes,
-													'zIndex'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Opacity', 'maxi-blocks'),
-										content: (
-											<OpacityControl
-												{...getGroupAttributes(
-													attributes,
-													'opacity'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
 								]}
 							/>
 						),

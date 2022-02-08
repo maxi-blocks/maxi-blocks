@@ -13,11 +13,15 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'full',
 	},
@@ -25,31 +29,27 @@ const attributes = {
 		type: 'string',
 		default: 'maxi-light',
 	},
-	updateStyleCard: {
-		type: 'number',
-		default: 0,
-	},
+	...attributesData.arrow,
 	...attributesData.container,
+	...attributesData.shapeDivider,
 	...{
-		...attributesData.background,
-		'background-active-media': {
-			type: 'string',
-			default: 'color',
+		...attributesData.blockBackground,
+		'background-layers': {
+			type: 'array',
+			default: [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity': 1,
+					'background-color-general': '',
+					'background-color-clip-path-general': '',
+					id: 0,
+				},
+			],
 		},
 	},
-	...attributesData.backgroundColor,
-	...attributesData.backgroundImage,
-	...attributesData.backgroundVideo,
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundSVG,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundImageHover,
-	...attributesData.backgroundVideoHover,
-	...attributesData.backgroundGradientHover,
-	...attributesData.backgroundSVGHover,
-	...attributesData.size,
-	...attributesData.opacity,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -58,6 +58,7 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.size,
 	...attributesData.margin,
 	...{
 		...attributesData.padding,
@@ -70,14 +71,18 @@ const attributes = {
 			default: 20,
 		},
 	},
-	...attributesData.arrow,
-	...attributesData.shapeDivider,
-	...attributesData.motion,
-	...attributesData.parallax,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.scroll,
 	...attributesData.transform,
 	...attributesData.display,
+	...attributesData.opacity,
 	...attributesData.position,
+	...attributesData.overflow,
 	...attributesData.zIndex,
+	...attributesData.customCss,
 };
 
 export default attributes;

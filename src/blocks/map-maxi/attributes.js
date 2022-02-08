@@ -13,15 +13,27 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
+	...attributesData.map,
 	customLabel: {
 		type: 'string',
 		default: __('Map', 'maxi-blocks'),
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
-	...attributesData.map,
+	...attributesData.border,
+	...attributesData.borderHover,
+	...attributesData.borderRadius,
+	...attributesData.borderRadiusHover,
+	...attributesData.borderWidth,
+	...attributesData.borderWidthHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
 		'height-general': {
@@ -35,11 +47,17 @@ const attributes = {
 	},
 	...attributesData.margin,
 	...attributesData.padding,
-	...attributesData.opacity,
-	...attributesData.position,
+
+	/**
+	 * Advanced
+	 */
 	...attributesData.transform,
 	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.position,
+	...attributesData.overflow,
 	...attributesData.zIndex,
+	...attributesData.customCss,
 };
 
 export default attributes;

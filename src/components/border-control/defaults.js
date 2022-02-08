@@ -3,21 +3,41 @@ import {
 	borderWidth as defaultBorderWidth,
 } from '../../extensions/styles/defaults/border';
 
-import {
-	iconBorder as defaultIconBorder,
-	iconBorderWidth as defaultIconBorderWidth,
-} from '../../extensions/styles/defaults/iconBorder';
+import { prefixAttributesCreator } from '../../extensions/styles';
+
+const getBorderDefault = (
+	prefix,
+	{ borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth }
+) => {
+	return {
+		[`${prefix}border-sync-width`]: 'all',
+		[`${prefix}border-unit-width`]: 'px',
+		[`${prefix}border-top-width`]: borderTopWidth || 2,
+		[`${prefix}border-right-width`]: borderRightWidth || 2,
+		[`${prefix}border-bottom-width`]: borderBottomWidth || 2,
+		[`${prefix}border-left-width`]: borderLeftWidth || 2,
+	};
+};
 
 export const borderNone = (prefix = '', isHover) => {
 	let response = {};
 
-	const currentDefaultBorder =
-		prefix === 'icon-' ? defaultIconBorder : defaultBorder;
+	const currentDefaultBorder = prefix
+		? prefixAttributesCreator({ obj: defaultBorder, prefix })
+		: defaultBorder;
 
-	const currentDefaultBorderWidth =
-		prefix === 'icon-' ? defaultIconBorderWidth : defaultBorderWidth;
+	const currentDefaultBorderWidth = prefix
+		? prefixAttributesCreator({ obj: defaultBorderWidth, prefix })
+		: defaultBorderWidth;
 
 	response = {
+		[`${prefix}border-palette-status`]:
+			currentDefaultBorder[`${prefix}border-palette-status-general`]
+				.default,
+		[`${prefix}border-palette-color`]:
+			currentDefaultBorder[`${prefix}border-palette-color-general`]
+				.default,
+		[`${prefix}border-palette-opacity`]: 1,
 		[`${prefix}border-color`]:
 			currentDefaultBorder[`${prefix}border-color-general`].default,
 		[`${prefix}border-style`]: isHover
@@ -45,47 +65,29 @@ export const borderNone = (prefix = '', isHover) => {
 	return response;
 };
 
-export const borderSolid = prefix => {
+export const borderSolid = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'solid',
-		[`${prefix}border-top-width`]: 2,
-		[`${prefix}border-right-width`]: 2,
-		[`${prefix}border-bottom-width`]: 2,
-		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: true,
-		[`${prefix}border-unit-width`]: 'px',
+		...getBorderDefault(prefix, defaultWidthValue),
 	};
 	return response;
 };
 
-export const borderDashed = prefix => {
+export const borderDashed = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'dashed',
-		[`${prefix}border-top-width`]: 2,
-		[`${prefix}border-right-width`]: 2,
-		[`${prefix}border-bottom-width`]: 2,
-		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: true,
-		[`${prefix}border-unit-width`]: 'px',
+		...getBorderDefault(prefix, defaultWidthValue),
 	};
 	return response;
 };
 
-export const borderDotted = prefix => {
+export const borderDotted = (prefix, defaultWidthValue) => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'dotted',
-		[`${prefix}border-top-width`]: 2,
-		[`${prefix}border-right-width`]: 2,
-		[`${prefix}border-bottom-width`]: 2,
-		[`${prefix}border-left-width`]: 2,
-		[`${prefix}border-sync-width`]: true,
-		[`${prefix}border-unit-width`]: 'px',
+		...getBorderDefault(prefix, defaultWidthValue),
 	};
 	return response;
 };

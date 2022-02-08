@@ -6,13 +6,15 @@
 		display: block !important;
 	}
 
+	&.maxi-number-counter-block,
 	&.maxi-column-block,
 	&.maxi-divider-block,
 	&.maxi-image-block,
 	&.maxi-svg-icon-block,
 	&.maxi-shape-block,
 	&.maxi-row-block,
-	&.maxi-button-block {
+	&.maxi-button-block,
+	&.maxi-group-block {
 		display: flex !important;
 	}
 	& * {

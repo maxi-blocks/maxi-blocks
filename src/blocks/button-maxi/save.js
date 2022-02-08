@@ -7,9 +7,8 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import { Button } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
 
 /**
  * External dependencies
@@ -22,7 +21,7 @@ import { isNil, isEmpty } from 'lodash';
  */
 const save = props => {
 	const { attributes } = props;
-	const { linkSettings, buttonContent } = attributes;
+	const { fullWidth, linkSettings, buttonContent } = attributes;
 
 	const name = 'maxi-blocks/button-maxi';
 
@@ -46,12 +45,13 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 			disableBackground
 		>
 			<Button
 				className={buttonClasses}
+				data-align={fullWidth}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!attributes['icon-only'] && (

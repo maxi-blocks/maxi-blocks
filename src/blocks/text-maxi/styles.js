@@ -1,21 +1,44 @@
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+/**
+ * WordPress dependencies
+ */
+import { isURL } from '@wordpress/url';
+
+/**
+ * Internal dependencies
+ */
 import {
-	getBorderStyles,
-	getSizeStyles,
-	getBoxShadowStyles,
-	getOpacityStyles,
-	getZIndexStyles,
-	getPositionStyles,
-	getDisplayStyles,
-	getTransformStyles,
-	getBackgroundStyles,
-	getMarginPaddingStyles,
-	getTypographyStyles,
-	getTransitionStyles,
-	getCustomFormatsStyles,
+	getColorRGBAString,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getPaletteAttributes,
+	stylesCleaner,
+} from '../../extensions/styles';
+import {
 	getAlignmentTextStyles,
+	getBlockBackgroundStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
+	getCustomFormatsStyles,
+	getDisplayStyles,
 	getLinkStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
+	getOverflowStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
+	getTransitionStyles,
+	getTypographyStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsText } from './custom-css';
+import { getSVGListStyle } from './utils';
+
+/**
+ * External dependencies
+ */
+import { isNil, isNumber } from 'lodash';
+import parse from 'html-react-parser';
 
 const getNormalObject = props => {
 	const response = {
@@ -54,13 +77,16 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'transform'),
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 
@@ -106,7 +132,7 @@ const getLinkObject = props => {
 	return response;
 };
 
-const getTypographyObject = (props, isList = false) => {
+const getTypographyObject = props => {
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
@@ -114,14 +140,6 @@ const getTypographyObject = (props, isList = false) => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			textLevel: props.textLevel,
-		}),
-		...(isList && {
-			listAlignment: getAlignmentTextStyles(
-				{
-					...getGroupAttributes(props, 'textAlignment'),
-				},
-				'list'
-			),
 		}),
 	};
 
@@ -146,87 +164,393 @@ const getTypographyHoverObject = props => {
 	return response;
 };
 
+const getListObject = props => {
+	const { listStyle, listStart, listReversed, content } = props;
+
+	let counterReset;
+	if (isNumber(listStart)) {
+		counterReset =
+			listStart < 0 &&
+			(['decimal', 'details'].includes(listStyle) || !listStyle)
+				? listStart
+				: 0;
+		counterReset += listStart > 0 ? listStart : 0;
+		counterReset += listReversed ? parse(content).length : 1;
+		counterReset += listReversed ? 1 : -1;
+		counterReset -= 1;
+	} else if (listReversed) counterReset = parse(content).length + 1;
+	else counterReset = 0;
+
+	const response = {
+		listStart: {
+			general: {
+				'counter-reset': `li ${counterReset}`,
+			},
+		},
+		...(() => {
+			const response = { listGap: {}, textIndent: {} };
+
+			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+				breakpoint => {
+					// List gap
+					const gapNum = getLastBreakpointAttribute(
+						'list-gap',
+						breakpoint,
+						props
+					);
+					const gapUnit = getLastBreakpointAttribute(
+						'list-gap-unit',
+						breakpoint,
+						props
+					);
+
+					if (!isNil(gapNum) && !isNil(gapUnit)) {
+						response.listGap[breakpoint] = {
+							'padding-left': gapNum + gapUnit,
+						};
+					}
+
+					// List indent
+					const indentNum = getLastBreakpointAttribute(
+						'list-indent',
+						breakpoint,
+						props
+					);
+					const indentUnit = getLastBreakpointAttribute(
+						'list-indent-unit',
+						breakpoint,
+						props
+					);
+
+					if (!isNil(indentNum) && !isNil(indentUnit)) {
+						response.textIndent[breakpoint] = {
+							'text-indent': indentNum + indentUnit,
+						};
+					}
+				}
+			);
+
+			return response;
+		})(),
+	};
+
+	return response;
+};
+
+const getListItemObject = props => {
+	const { listReversed } = props;
+
+	return {
+		...(listReversed && {
+			listReversed: {
+				general: {
+					'counter-increment': 'li -1',
+				},
+			},
+		}),
+	};
+};
+
+const getListParagraphObject = props => {
+	const response = {
+		...(() => {
+			const response = { paragraphSpacing: {} };
+
+			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+				breakpoint => {
+					// List gap
+					const paragraphSpacingNum = getLastBreakpointAttribute(
+						'list-paragraph-spacing',
+						breakpoint,
+						props
+					);
+					const paragraphSpacingUnit = getLastBreakpointAttribute(
+						'list-paragraph-spacing-unit',
+						breakpoint,
+						props
+					);
+
+					if (
+						!isNil(paragraphSpacingNum) &&
+						!isNil(paragraphSpacingUnit)
+					) {
+						response.paragraphSpacing[breakpoint] = {
+							'margin-top':
+								paragraphSpacingNum + paragraphSpacingUnit,
+						};
+					}
+				}
+			);
+
+			return response;
+		})(),
+	};
+
+	return response;
+};
+
+const getMarkerObject = props => {
+	const { typeOfList, listStyle, listStyleCustom, parentBlockStyle } = props;
+
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj: props,
+			prefix: 'list-',
+		});
+
+	return {
+		color: {
+			general: {
+				color: paletteStatus
+					? getColorRGBAString({
+							firstVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle: parentBlockStyle,
+					  })
+					: color,
+			},
+		},
+		...(typeOfList === 'ol' && {
+			listContent: {
+				general: {
+					content: `counters(li, "."${
+						listStyle ? `, ${listStyle}` : ''
+					})`,
+				},
+			},
+		}),
+		...(typeOfList === 'ul' && {
+			listContent: {
+				general: {
+					content: `counter(li${
+						listStyle && listStyle === 'custom' && listStyleCustom
+							? `, ${listStyleCustom}`
+							: `, ${listStyle ?? 'disc'}`
+					})`,
+				},
+			},
+		}),
+		...(listStyle &&
+			typeOfList === 'ol' && {
+				listStyle: {
+					general: {
+						'list-style-type': listStyle,
+					},
+				},
+			}),
+		...(listStyle &&
+			typeOfList === 'ul' && {
+				listStyle: {
+					general: {
+						...(listStyle === 'custom' &&
+							listStyleCustom && {
+								...(isURL(listStyleCustom) && {
+									content: `url('${listStyleCustom}')`,
+								}),
+								...(listStyleCustom.includes('</svg>') && {
+									content: `url("data:image/svg+xml,${getSVGListStyle(
+										listStyleCustom
+									)}")`,
+								}),
+								...(!isURL(listStyleCustom) &&
+									!listStyleCustom.includes('</svg>') && {
+										content: `"${listStyleCustom}"`,
+									}),
+							}),
+					},
+				},
+			}),
+		...(() => {
+			const response = { listSize: {} };
+
+			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+				breakpoint => {
+					// List indent
+					const indentNum =
+						getLastBreakpointAttribute(
+							'list-indent',
+							breakpoint,
+							props
+						) || 0;
+					const indentUnit =
+						getLastBreakpointAttribute(
+							'list-indent-unit',
+							breakpoint,
+							props
+						) || 'px';
+
+					// List size
+					const sizeNum =
+						getLastBreakpointAttribute(
+							'list-size',
+							breakpoint,
+							props
+						) || 0;
+					const sizeUnit =
+						getLastBreakpointAttribute(
+							'list-size-unit',
+							breakpoint,
+							props
+						) || 'px';
+
+					// Text position
+					const textPosition =
+						getLastBreakpointAttribute(
+							'list-text-position',
+							breakpoint,
+							props
+						) || false;
+
+					// Marker indent
+					const indentMarkerNum =
+						getLastBreakpointAttribute(
+							'list-marker-indent',
+							breakpoint,
+							props
+						) || 0;
+					const indentMarkerUnit =
+						getLastBreakpointAttribute(
+							'list-marker-indent-unit',
+							breakpoint,
+							props
+						) || 'px';
+
+					// Marker line-height
+					const lineHeightMarkerNum =
+						getLastBreakpointAttribute(
+							'list-marker-line-height',
+							breakpoint,
+							props
+						) || 0;
+					const lineHeightMarkerUnit =
+						getLastBreakpointAttribute(
+							'list-marker-line-height-unit',
+							breakpoint,
+							props
+						) || 'px';
+
+					response.listSize[breakpoint] = {
+						...(typeOfList === 'ul' &&
+						listStyle === 'custom' &&
+						listStyleCustom &&
+						listStyleCustom.includes('</svg>')
+							? {
+									width: sizeNum + sizeUnit,
+							  }
+							: { 'font-size': sizeNum + sizeUnit }),
+						'line-height':
+							lineHeightMarkerNum +
+							(lineHeightMarkerUnit !== '-'
+								? lineHeightMarkerUnit
+								: ''),
+						'margin-right': indentMarkerNum + indentMarkerUnit,
+						'margin-left': indentNum + indentUnit,
+						...(listStyle === 'none' && {
+							'padding-right': '1em',
+						}),
+						...(textPosition && {
+							'vertical-align': textPosition,
+						}),
+					};
+				}
+			);
+
+			return response;
+		})(),
+	};
+};
+
 const getStyles = props => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
 
 	return {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			' .maxi-text-block--link, .maxi-text-block--link span':
-				getLinkObject(props),
-			':hover': getHoverObject(props),
-			...(!isList && {
-				[` ${element}.maxi-text-block__content`]: getTypographyObject(
-					props,
-					isList
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				' .maxi-text-block--link, .maxi-text-block--link span':
+					getLinkObject(props),
+				':hover': getHoverObject(props),
+				...(!isList && {
+					[` ${element}.maxi-text-block__content`]:
+						getTypographyObject(props, isList),
+					[` ${element}.maxi-text-block__content:hover`]:
+						getTypographyHoverObject(props),
+				}),
+				...(isList && {
+					[` ${element}.maxi-text-block__content`]:
+						getListObject(props),
+					[` ${element}.maxi-text-block__content li`]: {
+						...getTypographyObject(props),
+						...getListItemObject(props),
+					},
+					[` ${element}.maxi-text-block__content li:not(:first-child)`]:
+						{ ...getListParagraphObject(props) },
+					[` ${element}.maxi-text-block__content li:hover`]:
+						getTypographyHoverObject(props),
+					[` ${element}.maxi-text-block__content li::before`]:
+						getMarkerObject(props),
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getCustomFormatsStyles(
+					!isList
+						? ' .maxi-text-block__content'
+						: ' .maxi-text-block__content li',
+					props['custom-formats'],
+					false,
+					{ ...getGroupAttributes(props, 'typography') },
+					props.textLevel,
+					props.parentBlockStyle
 				),
-				[` ${element}.maxi-text-block__content:hover`]:
-					getTypographyHoverObject(props),
-			}),
-			...(isList && {
-				[` ${element}.maxi-text-block__content li`]:
-					getTypographyObject(props),
-				[` ${element}.maxi-text-block__content li:hover`]:
-					getTypographyHoverObject(props),
-			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getCustomFormatsStyles(
-				!isList
-					? ' .maxi-text-block__content'
-					: ' .maxi-text-block__content li',
-				props['custom-formats'],
-				false,
-				{ ...getGroupAttributes(props, 'typography') },
-				props.textLevel,
-				props.parentBlockStyle
-			),
-			...getCustomFormatsStyles(
-				!isList
-					? ':hover .maxi-text-block__content'
-					: ':hover .maxi-text-block__content li',
-				props['custom-formats-hover'],
-				true,
-				getGroupAttributes(props, ['typography', 'typographyHover']),
-				props.textLevel,
-				props.parentBlockStyle
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` a ${element}.maxi-text-block__content`],
-				props.parentBlockStyle
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
-				props.parentBlockStyle
-			),
-		}),
+				...getCustomFormatsStyles(
+					!isList
+						? ':hover .maxi-text-block__content'
+						: ':hover .maxi-text-block__content li',
+					props['custom-formats-hover'],
+					true,
+					getGroupAttributes(props, [
+						'typography',
+						'typographyHover',
+					]),
+					props.textLevel,
+					props.parentBlockStyle
+				),
+				...getLinkStyles(
+					{ ...getGroupAttributes(props, 'link') },
+					[` a ${element}.maxi-text-block__content`],
+					props.parentBlockStyle
+				),
+				...getLinkStyles(
+					{ ...getGroupAttributes(props, 'link') },
+					[` ${element}.maxi-text-block__content a`],
+					props.parentBlockStyle
+				),
+			},
+			selectorsText,
+			props
+		),
 	};
 };
 

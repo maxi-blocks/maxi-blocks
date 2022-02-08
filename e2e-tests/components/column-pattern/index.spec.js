@@ -5,13 +5,22 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	openSidebarTab,
+	changeResponsive,
+	getBlockStyle,
+	getAttributes,
+} from '../../utils';
 
 describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-		const accordionControl = await openSidebar(page, 'row settings');
+		const accordionControl = await openSidebarTab(
+			page,
+			'style',
+			'column picker'
+		);
 
 		// select column
 		await accordionControl.$eval(
@@ -26,26 +35,23 @@ describe('ColumnPattern', () => {
 			click => click[0].click()
 		);
 
-		const rowPattern = await getBlockAttributes();
-		const rowAttribute = rowPattern['row-pattern-general'];
-
-		expect(rowAttribute).toStrictEqual('1-1');
+		expect(await getAttributes('row-pattern-general')).toStrictEqual('1-1');
 
 		// remove Gap
 		await accordionControl.$eval(
-			'.components-column-pattern__gap .maxi-radio-control__option label',
+			'.components-column-pattern__gap .maxi-toggle-switch .maxi-base-control__label',
 			click => click.click()
 		);
 
-		const removeGapAttributes = await getBlockAttributes();
-		const gapAttribute = removeGapAttributes.removeColumnGap;
-		const expectGap = true;
-
-		expect(gapAttribute).toStrictEqual(expectGap);
+		expect(await getAttributes('removeColumnGap')).toStrictEqual(true);
 	});
 
 	it('Check responsive row-pattern', async () => {
-		const accordionControl = await openSidebar(page, 'row settings');
+		const accordionControl = await openSidebarTab(
+			page,
+			'style',
+			'column picker'
+		);
 
 		// general
 		await accordionControl.$eval(
@@ -76,10 +82,7 @@ describe('ColumnPattern', () => {
 
 		expect(buttonClick).toBeTruthy();
 
-		const rowPattern = await getBlockAttributes();
-		const rowAttribute = rowPattern['row-pattern-s'];
-
-		expect(rowAttribute).toStrictEqual('1-3');
+		expect(await getAttributes('row-pattern-s')).toStrictEqual('1-3');
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -100,5 +103,7 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(rowSelectedL).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

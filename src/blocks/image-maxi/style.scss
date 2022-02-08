@@ -25,12 +25,12 @@ body.maxi-blocks--active figure.maxi-image-block {
 			}
 		}
 		img {
-			height: 100% !important;
-			max-height: initial !important;
+			max-height: initial;
 			object-fit: cover;
 			position: absolute;
 			top: 0;
 			left: 0;
+			height: 100%;
 		}
 	}
 	.maxi-image-block-shape-wrapper {
@@ -43,11 +43,16 @@ body.maxi-blocks--active figure.maxi-image-block {
 		width: 100%;
 		overflow: hidden;
 		position: relative;
+
+		> svg:first-child pattern image {
+			transform-origin: 50% 50%;
+		}
 	}
 	.maxi-image-block {
 		&__caption {
 			position: relative;
-			margin-top: 1rem;
+			margin: 0;
+			text-align: left;
 		}
 	}
 	.maxi-hover-details {
@@ -644,7 +649,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 					}
 				}
 			}
-			&__clear-greay-scale {
+			&__clear-grey-scale {
 				img,
 				svg {
 					filter: grayscale(100%);

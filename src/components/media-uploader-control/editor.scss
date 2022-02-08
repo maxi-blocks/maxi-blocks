@@ -17,15 +17,12 @@
 		display: block;
 		text-align: center;
 		box-shadow: none !important;
-		border: 2px solid #dddfe2;
-		border-radius: 5px;
-		color: #464a53;
+		border: 1px solid var(--maxi-grey-9-color);
+		border-radius: 0;
+		color: var(--maxi-black-2-color);
 		transition: all 0.5s;
-		&.is-destructive {
-			color: #cc1818;
-		}
 		&:hover {
-			border: 2px solid #dddfe2;
+			border: 1px solid #dddfe2;
 			color: #464a53;
 			background-color: #f2f2f2;
 		}
@@ -34,9 +31,11 @@
 		display: block;
 		width: 100%;
 		min-height: 90px;
-		background-color: #f0f0f0;
+		background: var(--maxi-light-blue-1-color);
+		border: 1px dashed var(--maxi-grey-9-color);
+		color: var(--maxi-black-2-color) !important;
 		line-height: 20px;
-		border-radius: 2px;
+		border-radius: 0;
 		padding: 8px 0;
 		text-align: center;
 		margin-right: 0px !important;
@@ -47,6 +46,11 @@
 		height: auto;
 		padding: 0;
 		transition: all 0.1s ease-out;
-		margin-bottom: 10px;
+		margin-bottom: 8px;
+	}
+
+	img {
+		display: block;
+		width: 100%;
 	}
 }

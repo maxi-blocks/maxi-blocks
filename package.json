@@ -15,10 +15,12 @@
 		"test:e2e": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js",
 		"test:e2e-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js --puppeteer-interactive",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
-		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive"
+		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
+		"minify:frontend": "for FILE in ./js/*; do FILENAME=$(basename -- $FILE); minify $FILE > ./js/${FILENAME%.*}.min.js; done"
 	},
 	"dependencies": {
 		"@googlemaps/js-api-loader": "^1.11.4",
+		"@uiw/react-textarea-code-editor": "^1.4.14",
 		"@wordpress/block-editor": "^7.0.0",
 		"@wordpress/blocks": "^11.0.0",
 		"@wordpress/components": "^15.0.0",
@@ -59,7 +61,8 @@
 		"react-select": "^4.1.0",
 		"react-tilt": "^0.1.4",
 		"tilt.js": "^1.2.1",
-		"tinycolor2": "^1.4.2"
+		"tinycolor2": "^1.4.2",
+		"w3c-css-validator": "^1.2.0"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-class-properties": "^7.13.0",

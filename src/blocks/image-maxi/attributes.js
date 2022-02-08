@@ -7,15 +7,35 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import {
+	breakpointAttributesCreator,
+	prefixAttributesCreator,
+} from '../../extensions/styles';
 
 /**
  * Attributes
  */
+const prefix = 'image-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),
+	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...{
+		...attributesData.alignment,
+		'alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
 	},
 	imageRatio: {
 		type: 'string',
@@ -27,19 +47,6 @@ const attributes = {
 	SVGData: {
 		type: 'object',
 	},
-	SVGMediaID: {
-		type: 'number',
-	},
-	SVGMediaURL: {
-		type: 'string',
-	},
-	imageSize: {
-		type: 'string',
-		default: 'full',
-	},
-	cropOptions: {
-		type: 'object',
-	},
 	captionType: {
 		type: 'string',
 		default: 'none',
@@ -48,9 +55,28 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	fullWidth: {
+	captionPosition: {
 		type: 'string',
-		default: 'normal',
+		default: 'bottom',
+	},
+	...breakpointAttributesCreator({
+		obj: {
+			'caption-gap': {
+				type: 'number',
+				default: 1,
+			},
+			'caption-gap-unit': {
+				type: 'string',
+				default: 'em',
+			},
+		},
+	}),
+	imageSize: {
+		type: 'string',
+		default: 'full',
+	},
+	cropOptions: {
+		type: 'object',
 	},
 	isImageUrl: {
 		type: 'boolean',
@@ -86,29 +112,10 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...attributesData.alignment,
-	...attributesData.background,
-	...attributesData.backgroundColor,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundGradientHover,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundImage,
-	...attributesData.backgroundImageHover,
-	...attributesData.backgroundSVG,
-	...attributesData.backgroundSVGHover,
-	...attributesData.backgroundVideo,
-	...attributesData.backgroundVideoHover,
-	...attributesData.border,
-	...attributesData.borderHover,
-	...attributesData.borderRadius,
-	...attributesData.borderRadiusHover,
-	...attributesData.borderWidth,
-	...attributesData.borderWidthHover,
-	...attributesData.boxShadow,
-	...attributesData.boxShadowHover,
-	...attributesData.container,
-	...attributesData.display,
+	...attributesData.link,
+	...attributesData.textAlignment,
+	...attributesData.typography,
+	...attributesData.imageShape,
 	...attributesData.hover,
 	...attributesData.hoverBackground,
 	...attributesData.hoverBackgroundColor,
@@ -120,25 +127,55 @@ const attributes = {
 	...attributesData.hoverMargin,
 	...attributesData.hoverPadding,
 	...attributesData.hoverTitleTypography,
-	...attributesData.link,
-	...attributesData.margin,
-	...attributesData.motion,
-	...attributesData.opacity,
-	...attributesData.padding,
-	...attributesData.parallax,
-	...attributesData.position,
-	...attributesData.size,
-	...attributesData.textAlignment,
-	...attributesData.transform,
-	...attributesData.typography,
-	...attributesData.zIndex,
-	...{
-		...attributesData.alignment,
-		'alignment-general': {
-			type: 'string',
-			default: 'center',
-		},
+	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderRadiusHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderWidthHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
 	},
+	...attributesData.container,
+	...attributesData.blockBackground,
+	...attributesData.border,
+	...attributesData.borderHover,
+	...attributesData.borderRadius,
+	...attributesData.borderRadiusHover,
+	...attributesData.borderWidth,
+	...attributesData.borderWidthHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.opacity,
+	...attributesData.size,
+	...attributesData.margin,
+	...attributesData.padding,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.scroll,
+	...attributesData.transform,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.overflow,
+	...attributesData.zIndex,
+	...attributesData.customCss,
 };
 
 export default attributes;

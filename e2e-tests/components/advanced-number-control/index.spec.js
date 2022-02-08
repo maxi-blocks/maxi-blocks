@@ -5,17 +5,25 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getAttributes, openSidebarTab, changeResponsive } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'typography');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
+
+		await changeResponsive(page, 'm');
 
 		// Max value
 		await accordionPanel.$eval(
@@ -24,32 +32,29 @@ describe('Advanced Number Control', () => {
 		);
 		await page.keyboard.type('31');
 
-		const maxAttributes = await getBlockAttributes();
-		const maxAttribute = maxAttributes['letter-spacing-m'];
-		const expectMaxNum = 30;
-
-		expect(maxAttribute).toStrictEqual(expectMaxNum);
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(30);
 
 		// Min value
 		await accordionPanel.$eval(
 			'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
 			select => select.focus()
 		);
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('-4');
+		await pressKeyWithModifier('primary', 'a');
+		// TODO: AdvancedNumberControl doesn't allow to empty the input and write '-' (minus),
+		// so, made a cheat to test negative values
+		await page.keyboard.type('0');
+		await page.keyboard.press('ArrowDown');
+		await pressKeyTimes('Backspace', 2);
+		await page.keyboard.type('4');
 
-		const minAttributes = await getBlockAttributes();
-		const minAttribute = minAttributes['letter-spacing-m'];
-		const expectMinNum = -3;
-
-		expect(minAttribute).toStrictEqual(expectMinNum);
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-3);
 
 		// reset value
 		await accordionPanel.$eval(
 			'.maxi-typography-control__letter-spacing .maxi-advanced-number-control__value',
 			select => select.focus()
 		);
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('10');
 
 		await accordionPanel.$eval(
@@ -57,10 +62,6 @@ describe('Advanced Number Control', () => {
 			click => click.click()
 		);
 
-		const resetAttributes = await getBlockAttributes();
-		const resetAttribute = resetAttributes['letter-spacing-m'];
-		const expectAuto = '';
-
-		expect(resetAttribute).toStrictEqual(expectAuto);
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual('');
 	});
 });

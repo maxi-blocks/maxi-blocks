@@ -1,35 +1,77 @@
 /**
  * Internal dependencies
  */
-import getColorRGBAString from '../getColorRGBAString';
+import getGroupAttributes from '../getGroupAttributes';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import {
+	getColorBackgroundObject,
+	getGradientBackgroundObject,
+} from './getBackgroundStyles';
+
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 	const response = {
 		general: {},
 	};
 
-	if (props['hover-background-active-media'] === 'color') {
-		if (!props['hover-background-palette-color-status'])
-			response.general['background-color'] =
-				props['hover-background-color'];
-		else
-			response.general['background-color'] = getColorRGBAString({
-				firstVar: `color-${props['hover-background-palette-color']}`,
-				opacity: props['hover-background-palette-opacity'],
-				blockStyle: parentBlockStyle,
-			});
-	}
+	breakpoints.forEach(breakpoint => {
+		const currentActiveMedia = getLastBreakpointAttribute(
+			'hover-background-active-media',
+			breakpoint,
+			props
+		);
 
-	if (props['hover-background-active-media'] === 'gradient') {
-		const newhoverBackgroundGradient = props['hover-background-gradient']
-			?.replace(/rgb\(/g, 'rgba(')
-			.replace(
-				/\((\d+),(\d+),(\d+)\)/g,
-				`($1,$2,$3,${props['hover-background-gradient-opacity'] || 1})`
-			);
+		if (!currentActiveMedia) return;
 
-		response.general.background = newhoverBackgroundGradient;
-	}
+		merge(response, {
+			...(currentActiveMedia === 'color' && {
+				background: getColorBackgroundObject({
+					...getGroupAttributes(
+						props,
+						'backgroundColor',
+						false,
+						'hover-'
+					),
+					blockStyle: parentBlockStyle,
+					breakpoint,
+					prefix: 'hover-',
+				}),
+			}),
+			...(currentActiveMedia === 'gradient' && {
+				background: getGradientBackgroundObject({
+					...getGroupAttributes(
+						props,
+						'backgroundGradient',
+						false,
+						'hover-'
+					),
+					breakpoint,
+					prefix: 'hover-',
+				}),
+			}),
+		});
+
+		if (
+			currentActiveMedia === 'gradient' &&
+			response.background?.[breakpoint]?.background
+		)
+			response.background[breakpoint].background = response.background[
+				breakpoint
+			].background
+				.replace(/rgb\(/g, 'rgba(')
+				.replace(
+					/\((\d+),(\d+),(\d+)\)/g,
+					`($1,$2,$3,${
+						props['hover-background-gradient-opacity'] || 1
+					})`
+				);
+	});
 
 	return response;
 };

@@ -162,7 +162,7 @@ body .toolbar-item__popover {
 				flex: 3 !important;
 			}
 		}
-		.maxi-radio-control__option {
+		.maxi-tabs-control__button {
 			opacity: 1 !important;
 			min-width: 40px;
 			height: 30px;
@@ -325,7 +325,7 @@ body .toolbar-item__popover {
 			}
 			&__items {
 				color: #fff;
-				.maxi-radio-control__option {
+				.maxi-tabs-control__button {
 					border-color: #80828a;
 					background-color: #242433;
 				}
@@ -487,7 +487,7 @@ body .toolbar-item__popover {
 }
 
 body.rtl .toolbar-item__popover {
-	.maxi-radio-control__option {
+	.maxi-tabs-control__button {
 		&:first-of-type {
 			input {
 				& ~ label {

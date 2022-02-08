@@ -9,34 +9,24 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	AlignmentControl,
-	AxisControl,
-	BackgroundControl,
 	BlockStylesControl,
-	BorderControl,
-	BoxShadowControl,
 	CustomLabel,
-	DisplayControl,
-	FancyRadioControl,
-	FullSizeControl,
-	MotionControl,
-	OpacityControl,
-	PositionControl,
-	ResponsiveControl,
 	SettingTabsControl,
 	SvgColor,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
-	TextControl,
-	TransformControl,
-	InfoBox,
-	ZIndexControl,
 } from '../../components';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
-	setHoverAttributes,
 } from '../../extensions/styles';
+import * as inspectorTabs from '../../components/inspector-tabs';
+import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
@@ -49,35 +39,35 @@ const Inspector = props => {
 		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
-		setAttributes,
+		maxiSetAttributes,
 	} = props;
 	const {
 		blockStyle,
 		customLabel,
-		extraClassName,
 		isFirstOnHierarchy,
-		uniqueID,
-		fullWidth,
 		parentBlockStyle,
 		svgType,
 	} = attributes;
 
+	const getCategoriesCss = () => {
+		const { 'background-layers': bgLayers } = attributes;
+		return without(
+			categoriesSvgIcon,
+			isEmpty(bgLayers) && 'canvas background'
+		);
+	};
+
 	return (
 		<InspectorControls>
-			{deviceType !== 'general' && (
-				<InfoBox
-					message={__(
-						'You are currently in responsive editing mode. Select Base to continue editing general settings.',
-						'maxi-blocks'
-					)}
-				/>
-			)}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
+				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
-						label: __('Style', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<>
 								{deviceType === 'general' && (
@@ -85,31 +75,32 @@ const Inspector = props => {
 										<CustomLabel
 											customLabel={customLabel}
 											onChange={customLabel =>
-												setAttributes({ customLabel })
+												maxiSetAttributes({
+													customLabel,
+												})
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
 												isFirstOnHierarchy
 											}
 											onChange={obj => {
-												setAttributes(obj);
+												maxiSetAttributes(obj);
 
 												const { parentBlockStyle } =
 													obj;
 
 												const {
-													'svg-palette-fill-color':
+													'svg-fill-palette-color':
 														svgPaletteFillColor,
-													'svg-palette-fill-opacity':
+													'svg-fill-palette-opacity':
 														svgPaletteFillOpacity,
 													'svg-fill-color':
 														svgFillColor,
-													'svg-palette-line-color':
+													'svg-line-palette-color':
 														svgPaletteLineColor,
-													'svg-palette-line-opacity':
+													'svg-line-palette-opacity':
 														svgPaletteLineOpacity,
 													'svg-line-color':
 														svgLineColor,
@@ -136,12 +127,12 @@ const Inspector = props => {
 
 												changeSVGContentWithBlockStyle(
 													attributes[
-														'svg-palette-fill-color-status'
+														'svg-fill-palette-status'
 													]
 														? fillColorStr
 														: svgFillColor,
 													attributes[
-														'svg-palette-line-color-status'
+														'svg-line-palette-status'
 													]
 														? lineColorStr
 														: svgLineColor
@@ -154,81 +145,13 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										isFirstOnHierarchy && {
-											label: __(
-												'Width / Height',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													{isFirstOnHierarchy && (
-														<FancyRadioControl
-															label={__(
-																'Full Width',
-																'maxi-blocks'
-															)}
-															selected={fullWidth}
-															options={[
-																{
-																	label: __(
-																		'Yes',
-																		'maxi-blocks'
-																	),
-																	value: 'full',
-																},
-																{
-																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value: 'normal',
-																},
-															]}
-															optionType='string'
-															onChange={fullWidth =>
-																setAttributes({
-																	fullWidth,
-																})
-															}
-														/>
-													)}
-													<FullSizeControl
-														{...getGroupAttributes(
-															attributes,
-															'size'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												</>
-											),
-										},
-										{
-											label: __(
-												'Alignment',
-												'maxi-blocks'
-											),
-											content: (
-												<AlignmentControl
-													{...getGroupAttributes(
-														attributes,
-														'alignment'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-													disableJustify
-												/>
-											),
-										},
+										...inspectorTabs.alignment({
+											props,
+											isAlignment: true,
+											disableJustify: true,
+										}),
 										attributes.content && {
-											label: __(
-												'SVG Colors',
-												'maxi-blocks'
-											),
+											label: __('Colour', 'maxi-blocks'),
 											content: (
 												<>
 													{svgType !== 'Line' && (
@@ -244,7 +167,7 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																onChange={obj => {
-																	setAttributes(
+																	maxiSetAttributes(
 																		obj
 																	);
 
@@ -253,10 +176,10 @@ const Inspector = props => {
 																			{
 																				firstVar:
 																					'icon-fill',
-																				secondVar: `color-${obj['svg-palette-fill-color']}`,
+																				secondVar: `color-${obj['svg-fill-palette-color']}`,
 																				opacity:
 																					obj[
-																						'svg-palette-fill-opacity'
+																						'svg-fill-palette-opacity'
 																					],
 																				blockStyle:
 																					parentBlockStyle,
@@ -265,7 +188,7 @@ const Inspector = props => {
 
 																	changeSVGContent(
 																		obj[
-																			'svg-palette-fill-color-status'
+																			'svg-fill-palette-status'
 																		]
 																			? fillColorStr
 																			: obj[
@@ -293,7 +216,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															)}
 															onChange={obj => {
-																setAttributes(
+																maxiSetAttributes(
 																	obj
 																);
 
@@ -302,10 +225,10 @@ const Inspector = props => {
 																		{
 																			firstVar:
 																				'icon-line',
-																			secondVar: `color-${obj['svg-palette-line-color']}`,
+																			secondVar: `color-${obj['svg-line-palette-color']}`,
 																			opacity:
 																				obj[
-																					'svg-palette-line-opacity'
+																					'svg-line-palette-opacity'
 																				],
 																			blockStyle:
 																				parentBlockStyle,
@@ -314,7 +237,7 @@ const Inspector = props => {
 
 																changeSVGContent(
 																	obj[
-																		'svg-palette-line-color-status'
+																		'svg-line-palette-status'
 																	]
 																		? lineColorStr
 																		: obj[
@@ -331,7 +254,7 @@ const Inspector = props => {
 										attributes.content &&
 											svgType !== 'Shape' && {
 												label: __(
-													'SVG Line Width',
+													'Icon line width',
 													'maxi-blocks'
 												),
 												content: (
@@ -340,8 +263,11 @@ const Inspector = props => {
 															attributes,
 															'svg'
 														)}
+														prefix='svg-'
 														onChange={obj => {
-															setAttributes(obj);
+															maxiSetAttributes(
+																obj
+															);
 															changeSVGStrokeWidth(
 																obj[
 																	`svg-stroke-${deviceType}`
@@ -352,9 +278,17 @@ const Inspector = props => {
 													/>
 												),
 											},
+										...inspectorTabs.border({
+											props,
+											prefix: 'svg-',
+										}),
+										...inspectorTabs.boxShadow({
+											props,
+											prefix: 'svg-',
+										}),
 										attributes.content && {
 											label: __(
-												'SVG Width',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
@@ -364,463 +298,54 @@ const Inspector = props => {
 														'svg'
 													)}
 													onChange={obj => {
-														setAttributes(obj);
+														maxiSetAttributes(obj);
 													}}
 													breakpoint={deviceType}
+													prefix='svg-'
+													enableResponsive
 												/>
 											),
 										},
-										{
-											label: __(
-												'Background',
-												'maxi-blocks'
-											),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<BackgroundControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'background',
-																				'backgroundColor',
-																			]
-																		)}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		disableImage
-																		disableVideo
-																		disableGradient
-																		disableSVG
-																		disableClipPath
-																		clientId={
-																			clientId
-																		}
-																	/>
-																</>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Background Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			attributes[
-																				'background-status-hover'
-																			]
-																		}
-																		className='maxi-background-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val =>
-																			setAttributes(
-																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									]
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									],
-																									true
-																								),
-																							}
-																						)),
-																					'background-status-hover':
-																						val,
-																				}
-																			)
-																		}
-																	/>
-																	{attributes[
-																		'background-status-hover'
-																	] && (
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																				],
-																				true
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			disableColor={
-																				!!attributes[
-																					'background-Highlight'
-																				]
-																			}
-																			disableImage
-																			disableVideo
-																			disableGradient
-																			disableSVG
-																			disableClipPath
-																			isHover
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	)}
-																</>
-															),
-														},
-													]}
-												/>
-											),
-										},
-										{
-											label: __('Border', 'maxi-blocks'),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<BorderControl
-																	{...getGroupAttributes(
-																		attributes,
-																		[
-																			'border',
-																			'borderWidth',
-																			'borderRadius',
-																		]
-																	)}
-																	onChange={obj => {
-																		setAttributes(
-																			obj
-																		);
-																	}}
-																	breakpoint={
-																		deviceType
-																	}
-																	clientId={
-																		clientId
-																	}
-																/>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Border Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			attributes[
-																				'border-status-hover'
-																			]
-																		}
-																		className='maxi-border-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val =>
-																			setAttributes(
-																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'border',
-																										'borderWidth',
-																										'borderRadius',
-																									]
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'border',
-																										'borderWidth',
-																										'borderRadius',
-																									],
-																									true
-																								),
-																							}
-																						)),
-																					'border-status-hover':
-																						val,
-																				}
-																			)
-																		}
-																	/>
-																	{attributes[
-																		'border-status-hover'
-																	] && (
-																		<BorderControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'border',
-																					'borderWidth',
-																					'borderRadius',
-																				],
-																				true
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			breakpoint={
-																				deviceType
-																			}
-																			isHover
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	)}
-																</>
-															),
-														},
-													]}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Box Shadow',
-												'maxi-blocks'
-											),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<BoxShadowControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'boxShadow'
-																	)}
-																	onChange={obj =>
-																		setAttributes(
-																			obj
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																	clientId={
-																		clientId
-																	}
-																/>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Box Shadow Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			attributes[
-																				'box-shadow-status-hover'
-																			]
-																		}
-																		className='maxi-box-shadow-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val =>
-																			setAttributes(
-																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									'boxShadow'
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									'boxShadow',
-																									true
-																								),
-																							}
-																						)),
-																					'box-shadow-status-hover':
-																						val,
-																				}
-																			)
-																		}
-																	/>
-																	{attributes[
-																		'box-shadow-status-hover'
-																	] && (
-																		<BoxShadowControl
-																			{...getGroupAttributes(
-																				attributes,
-																				'boxShadowHover'
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			breakpoint={
-																				deviceType
-																			}
-																			isHover
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	)}
-																</>
-															),
-														},
-													]}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Padding / Margin',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'padding'
-														)}
-														label={__(
-															'Padding',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='padding'
-														disableAuto
-													/>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'margin'
-														)}
-														label={__(
-															'Margin',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='margin'
-														optionType='string'
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.marginPadding({
+											props,
+											prefix: 'svg-',
+										}),
 									]}
 								/>
 							</>
+						),
+					},
+					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.blockBackground({
+										props,
+										disableImage: true,
+										disableVideo: true,
+										disableGradient: true,
+										disableSVG: true,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{
@@ -831,144 +356,44 @@ const Inspector = props => {
 									isPrimary
 									items={[
 										deviceType === 'general' && {
-											label: __(
-												'Custom Classes',
-												'maxi-blocks'
-											),
-											content: (
-												<TextControl
-													label={__(
-														'Additional CSS Classes',
-														'maxi-blocks'
-													)}
-													className='maxi-additional__css-classes'
-													value={extraClassName}
-													onChange={extraClassName =>
-														setAttributes({
-															extraClassName,
-														})
-													}
-												/>
-											),
+											...inspectorTabs.customClasses({
+												props,
+											}),
 										},
-										{
-											label: __(
-												'Motion Effects',
-												'maxi-blocks'
-											),
-											content: (
-												<MotionControl
-													{...getGroupAttributes(
-														attributes,
-														'motion'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
+										deviceType === 'general' && {
+											...inspectorTabs.anchor({
+												props,
+											}),
 										},
-										{
-											label: __(
-												'Transform',
-												'maxi-blocks'
-											),
-											content: (
-												<TransformControl
-													{...getGroupAttributes(
-														attributes,
-														'transform'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													uniqueID={uniqueID}
-													breakpoint={deviceType}
-												/>
-											),
-										},
-										{
-											label: __('Display', 'maxi-blocks'),
-											content: (
-												<DisplayControl
-													{...getGroupAttributes(
-														attributes,
-														'display'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-													defaultDisplay='flex'
-												/>
-											),
-										},
-										{
-											label: __(
-												'Position',
-												'maxi-blocks'
-											),
-											content: (
-												<PositionControl
-													{...getGroupAttributes(
-														attributes,
-														'position'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										...inspectorTabs.customCss({
+											props,
+											breakpoint: deviceType,
+											selectors: selectorsSvgIcon,
+											categories: getCategoriesCss(),
+										}),
+										...inspectorTabs.scrollEffects({
+											props,
+										}),
+										...inspectorTabs.transform({
+											props,
+										}),
+										...inspectorTabs.display({
+											props,
+										}),
+										...inspectorTabs.position({
+											props,
+										}),
 										deviceType !== 'general' && {
-											label: __(
-												'Breakpoint',
-												'maxi-blocks'
-											),
-											content: (
-												<ResponsiveControl
-													{...getGroupAttributes(
-														attributes,
-														'breakpoints'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
-											),
+											...inspectorTabs.responsive({
+												props,
+											}),
 										},
-										{
-											label: __('Z-index', 'maxi-blocks'),
-											content: (
-												<ZIndexControl
-													{...getGroupAttributes(
-														attributes,
-														'zIndex'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
-											),
-										},
-										{
-											label: __('Opacity', 'maxi-blocks'),
-											content: (
-												<OpacityControl
-													{...getGroupAttributes(
-														attributes,
-														'opacity'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										...inspectorTabs.overflow({
+											props,
+										}),
+										...inspectorTabs.zindex({
+											props,
+										}),
 									]}
 								/>
 							</>

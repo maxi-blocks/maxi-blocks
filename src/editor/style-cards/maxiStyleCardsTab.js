@@ -10,13 +10,12 @@ import { useState } from '@wordpress/element';
 import { processSCAttribute, getDefaultSCAttribute } from './utils';
 
 import {
-	SettingTabsControl,
 	AccordionControl,
 	Button,
 	ColorControl,
 	Icon,
+	SettingTabsControl,
 	TypographyControl,
-	FancyRadioControl,
 } from '../../components';
 import {
 	getDefaultSCValue,
@@ -24,9 +23,15 @@ import {
 } from '../../extensions/style-cards';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Icons
  */
 import { reset } from '../../icons';
+import ToggleSwitch from '../../components/toggle-switch';
 
 /**
  * Component
@@ -35,6 +40,7 @@ const GlobalColor = props => {
 	const {
 		label,
 		globalAttr,
+		globalAllAttr = false,
 		paletteStatus,
 		paletteColor,
 		paletteOpacity,
@@ -47,20 +53,10 @@ const GlobalColor = props => {
 
 	return (
 		<>
-			<FancyRadioControl
+			<ToggleSwitch
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
 				selected={processSCAttribute(SC, globalAttr, groupAttr)}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
 				onChange={val =>
 					onChangeValue(
 						{
@@ -71,47 +67,69 @@ const GlobalColor = props => {
 				}
 			/>
 			{processSCAttribute(SC, globalAttr, groupAttr) && (
-				<ColorControl
-					className={`maxi-style-cards-control__sc__link--${SCStyle}`}
-					paletteStatus={processSCAttribute(
-						SC,
-						paletteStatus,
-						groupAttr
+				<>
+					{globalAllAttr && (
+						<ToggleSwitch
+							// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+							label={__(`Apply to all ${label}`, 'maxi-blocks')}
+							selected={processSCAttribute(
+								SC,
+								globalAllAttr,
+								groupAttr
+							)}
+							onChange={val =>
+								onChangeValue(
+									{
+										[globalAllAttr]: val,
+									},
+									groupAttr
+								)
+							}
+						/>
 					)}
-					paletteColor={processSCAttribute(
-						SC,
-						paletteColor,
-						groupAttr
-					)}
-					paletteOpacity={
-						processSCAttribute(SC, paletteOpacity, groupAttr) || 100
-					}
-					color={processSCAttribute(SC, color, groupAttr)}
-					defaultColor={getDefaultSCValue({
-						target: color,
-						SC,
-						SCStyle,
-						groupAttr,
-					})}
-					onChange={({
-						paletteStatus: newPaletteStatus,
-						paletteColor: newPaletteColor,
-						paletteOpacity: newPaletteOpacity,
-						color: newColor,
-					}) =>
-						onChangeValue(
-							{
-								[paletteStatus]: newPaletteStatus,
-								[paletteColor]: newPaletteColor,
-								[paletteOpacity]: newPaletteOpacity,
-								[color]: newColor,
-							},
+					<ColorControl
+						className={`maxi-style-cards-control__sc__link--${SCStyle}`}
+						paletteStatus={processSCAttribute(
+							SC,
+							paletteStatus,
 							groupAttr
-						)
-					}
-					blockStyle={SCStyle}
-					disableGradient
-				/>
+						)}
+						paletteColor={processSCAttribute(
+							SC,
+							paletteColor,
+							groupAttr
+						)}
+						paletteOpacity={
+							processSCAttribute(SC, paletteOpacity, groupAttr) ||
+							1
+						}
+						color={processSCAttribute(SC, color, groupAttr)}
+						defaultColor={getDefaultSCValue({
+							target: color,
+							SC,
+							SCStyle,
+							groupAttr,
+						})}
+						onChange={({
+							paletteStatus: newPaletteStatus,
+							paletteColor: newPaletteColor,
+							paletteOpacity: newPaletteOpacity,
+							color: newColor,
+						}) =>
+							onChangeValue(
+								{
+									[paletteStatus]: newPaletteStatus,
+									[paletteColor]: newPaletteColor,
+									[paletteOpacity]: newPaletteOpacity,
+									[color]: newColor,
+								},
+								groupAttr
+							)
+						}
+						blockStyle={SCStyle}
+						disableGradient
+					/>
+				</>
 			)}
 		</>
 	);
@@ -153,14 +171,17 @@ const SCAccordion = props => {
 				({
 					label,
 					globalAttr,
+					globalAllAttr,
 					paletteStatus,
 					paletteColor,
 					paletteOpacity,
 					color,
 				}) => (
 					<GlobalColor
+						key={`sc-accordion__h${label}`}
 						label={label}
 						globalAttr={globalAttr}
+						globalAllAttr={globalAllAttr}
 						paletteStatus={paletteStatus}
 						paletteColor={paletteColor}
 						paletteOpacity={paletteOpacity}
@@ -185,6 +206,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				label: __(`H${item}`, 'maxi-blocks'),
 				content: (
 					<SCAccordion
+						key={`sc-accordion__h${item}`}
 						colorContent={[
 							{
 								label: __(`H${item}`, 'maxi-blocks'),
@@ -229,6 +251,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: __('Button Background Hover', 'maxi-blocks'),
 				globalAttr: 'hover-background-color-global',
+				globalAllAttr: 'hover-background-color-all',
 				paletteStatus: 'hover-background-palette-status',
 				paletteColor: 'hover-background-palette-color',
 				paletteOpacity: 'hover-background-palette-opacity',
@@ -237,6 +260,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: __('Button Text Hover', 'maxi-blocks'),
 				globalAttr: 'hover-color-global',
+				globalAllAttr: 'hover-color-all',
 				paletteStatus: 'hover-palette-status',
 				paletteColor: 'hover-palette-color',
 				paletteOpacity: 'hover-palette-opacity',
@@ -253,6 +277,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: __('Button Border Hover', 'maxi-blocks'),
 				globalAttr: 'hover-border-color-global',
+				globalAllAttr: 'hover-border-color-all',
 				paletteStatus: 'hover-border-palette-status',
 				paletteColor: 'hover-border-palette-color',
 				paletteOpacity: 'hover-border-palette-opacity',
@@ -289,6 +314,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: 'Hover',
 				globalAttr: 'hover-color-global',
+				globalAllAttr: 'hover-color-all',
 				paletteStatus: 'hover-palette-status',
 				paletteColor: 'hover-palette-color',
 				paletteOpacity: 'hover-palette-opacity',
@@ -352,6 +378,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	return (
 		<div className='maxi-tab-content__box'>
 			<AccordionControl
+				key='sc-accordion__quick-color-presets'
 				isSecondary
 				items={[
 					{
@@ -364,11 +391,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
 										<div
 											key={`maxi-style-cards__quick-color-presets__box__${item}`}
-											className={`maxi-style-cards__quick-color-presets__box ${
-												quickColorPreset === item
-													? 'maxi-style-cards__quick-color-presets__box--active'
-													: ''
-											}`}
+											className={classnames(
+												'maxi-style-cards__quick-color-presets__box',
+												quickColorPreset === item &&
+													'maxi-style-cards__quick-color-presets__box--active'
+											)}
 											data-item={item}
 											onClick={e =>
 												setQuickColorPreset(
@@ -378,7 +405,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											}
 										>
 											<span
-												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
+												className={classnames(
+													'maxi-style-cards__quick-color-presets__box__item',
+													`maxi-style-cards__quick-color-presets__box__item__${item}`
+												)}
 												style={{
 													background: `rgba(${processSCAttribute(
 														SC,
@@ -419,6 +449,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									disablePalette
 								/>
 								<Button
+									disabled={
+										processSCAttribute(
+											SC,
+											quickColorPreset,
+											'color'
+										) ===
+										SC.defaultStyleCard.color[
+											quickColorPreset
+										]
+									}
 									className='maxi-style-cards__quick-color-presets__reset-button'
 									onClick={() =>
 										onChangeValue(
@@ -453,6 +493,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						classNameItem: 'maxi-blocks-sc__type--button',
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${buttonTabs.label}`}
 								{...buttonTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -466,6 +507,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						classNameItem: 'maxi-blocks-sc__type--paragraph',
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${pTabs.label}`}
 								{...pTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -478,6 +520,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: linkTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${linkTabs.label}`}
 								{...linkTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -496,6 +539,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: iconTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${iconTabs.label}`}
 								{...iconTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -509,6 +553,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: dividerTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${dividerTabs.label}`}
 								{...dividerTabs}
 								breakpoint={breakpoint}
 								SC={SC}

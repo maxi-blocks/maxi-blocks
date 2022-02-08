@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockStyle, getAttributes } from '../../utils';
 
 describe('BlockStylesControl', () => {
 	it('Checking the block styles control', async () => {
@@ -24,10 +24,8 @@ describe('BlockStylesControl', () => {
 		);
 		await input.select('maxi-dark');
 
-		const expectAttribute = 'maxi-dark';
-		const attributes = await getBlockAttributes();
-		const styleAttributes = attributes.blockStyle;
+		expect(await getAttributes('blockStyle')).toStrictEqual('maxi-dark');
 
-		expect(styleAttributes).toStrictEqual(expectAttribute);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

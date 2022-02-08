@@ -8,8 +8,13 @@ import { __ } from '@wordpress/i18n';
  */
 import CustomColorControl from './customColorControl';
 import ColorPaletteControl from './paletteControl';
-import FancyRadioControl from '../fancy-radio-control';
-import { getBlockStyle, getColorRGBAParts } from '../../extensions/styles';
+import ToggleSwitch from '../toggle-switch';
+import {
+	getBlockStyle,
+	getColorRGBAParts,
+	getAttributeKey,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
 
 /**
@@ -17,7 +22,6 @@ import { getPaletteColor } from '../../extensions/style-cards';
  */
 import classnames from 'classnames';
 import tinycolor from 'tinycolor2';
-
 /**
  * Styles
  */
@@ -34,7 +38,7 @@ const ColorControl = props => {
 		paletteColor,
 		paletteOpacity,
 		color,
-		defaultColor,
+		defaultColorAttributes,
 		globalProps,
 		onChange,
 		isHover,
@@ -44,6 +48,8 @@ const ColorControl = props => {
 		blockStyle: rawBlockStyle,
 		disableOpacity = false,
 		disableColorDisplay = false,
+		prefix = '',
+		useBreakpointForDefault = false,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -78,17 +84,82 @@ const ColorControl = props => {
 		});
 
 	const onReset = () => {
-		if (defaultColor) onChange(defaultColor);
+		let defaultColorAttr = defaultColorAttributes;
 
+		if (!defaultColorAttr) {
+			defaultColorAttr = {};
+
+			defaultColorAttr.paletteStatus = getDefaultAttribute(
+				getAttributeKey(
+					'palette-status',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+			defaultColorAttr.paletteColor = getDefaultAttribute(
+				getAttributeKey(
+					'palette-color',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+			defaultColorAttr.paletteOpacity = getDefaultAttribute(
+				getAttributeKey(
+					'palette-opacity',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+			defaultColorAttr.color = getDefaultAttribute(
+				getAttributeKey(
+					'color',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+		}
+
+		if (showPalette)
+			onChange({
+				paletteStatus: defaultColorAttr.paletteStatus,
+				paletteColor: defaultColorAttr.paletteColor,
+				paletteOpacity: paletteOpacity || 1,
+				color,
+			});
+		else {
+			onChange({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color: `rgba(${getPaletteColor({
+					clientId,
+					color: paletteColor || defaultColorAttr.paletteColor,
+					blockStyle,
+				})},${paletteOpacity || 1})`,
+			});
+		}
+	};
+
+	const onResetOpacity = () => {
+		const opacity =
+			defaultColorAttributes?.paletteOpacity ??
+			getDefaultAttribute(
+				getAttributeKey(
+					'palette-opacity',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
 		onChange({
 			paletteStatus,
 			paletteColor,
-			paletteOpacity,
-			color: `rgba(${getPaletteColor(
-				clientId,
-				paletteColor,
-				blockStyle
-			)},${paletteOpacity / 100 || 1})`,
+			paletteOpacity: opacity,
+			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
 		});
 	};
 
@@ -106,33 +177,30 @@ const ColorControl = props => {
 					disableOpacity={disableOpacity}
 					opacity={paletteOpacity}
 					className={className}
+					onReset={onReset}
+					onResetOpacity={onResetOpacity}
 				/>
 			)}
 			{!disablePalette && (
-				<FancyRadioControl
-					label={__('Custom Colour', 'maxi-blocks')}
-					className='maxi-sc-color-palette__custom'
-					selected={paletteStatus}
-					options={[
-						{ label: __('Yes', 'maxi-blocks'), value: 0 },
-						{ label: __('No', 'maxi-blocks'), value: 1 },
-					]}
+				<ToggleSwitch
+					label={__('Set custom colour', 'maxi-blocks')}
+					selected={!paletteStatus}
 					onChange={val => {
 						onChangeValue({
-							paletteStatus: val,
+							paletteStatus: !val,
 							// If palette is disabled, set custom color from palette one
-							...(!val && {
-								color: `rgba(${getPaletteColor(
+							...(val && {
+								color: `rgba(${getPaletteColor({
 									clientId,
-									paletteColor,
-									blockStyle
-								)},${paletteOpacity / 100 || 1})`,
+									color: paletteColor,
+									blockStyle,
+								})},${paletteOpacity || 1})`,
 							}),
 							// If palette is set, save the custom color opacity
 							...(!disableOpacity &&
-								val && {
+								!val && {
 									paletteOpacity:
-										tinycolor(color).getAlpha() * 100 ||
+										tinycolor(color).getAlpha() ||
 										paletteOpacity,
 								}),
 						});
@@ -145,6 +213,7 @@ const ColorControl = props => {
 					color={getRGBA(color)}
 					onChangeValue={onChangeValue}
 					onReset={onReset}
+					onResetOpacity={onResetOpacity}
 					disableColorDisplay={disableColorDisplay}
 					disableOpacity={disableOpacity}
 					clientId={clientId}

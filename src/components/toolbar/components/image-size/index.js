@@ -11,7 +11,7 @@ import Button from '../../../button';
 import openSidebar from '../../../../extensions/dom';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
-import FancyRadioControl from '../../../fancy-radio-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -92,10 +92,11 @@ const ImageSize = props => {
 					onChange={imageSize => onChangeImageSize(imageSize)}
 				/>
 				{isFirstOnHierarchy && (
-					<FancyRadioControl
+					<SettingTabsControl
 						label={__('Full Width', 'maxi-blocks')}
+						type='buttons'
 						selected={fullWidth}
-						options={[
+						items={[
 							{
 								label: __('Yes', 'maxi-blocks'),
 								value: 'full',
@@ -105,7 +106,6 @@ const ImageSize = props => {
 								value: 'normal',
 							},
 						]}
-						optionType='string'
 						onChange={fullWidth => onChangeFullWidth(fullWidth)}
 					/>
 				)}

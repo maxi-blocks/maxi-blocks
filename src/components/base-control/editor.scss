@@ -1,19 +1,18 @@
 .maxi-base-control {
-	margin-bottom: 7px;
-
 	&__field {
 		display: flex !important;
 		align-items: center;
 		margin-bottom: 8px;
+		.maxi-base-control__field {
+			margin-bottom: 0;
+		}
 	}
 
 	&__label {
 		display: inline-block;
 		flex: 1;
-		width: 50%;
 		min-height: 18px;
-		margin-right: 10px;
-		margin-bottom: 0;
+		margin: 0;
 	}
 
 	&__help {

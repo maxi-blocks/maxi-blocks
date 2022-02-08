@@ -1,38 +1,40 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	openSidebarTab,
+	changeResponsive,
+	getBlockStyle,
+	getAttributes,
+	addResponsiveTest,
+} from '../../utils';
 
 describe('FullSizeControl', () => {
 	it('Checking the full size control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'width height');
-
-		await accordionPanel.$$eval(
-			'.maxi-fancy-radio-control .maxi-base-control__field label',
-			click => click[1].click()
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'height width'
 		);
 
-		const expectResult = 'full';
-		const expectAttributes = await getBlockAttributes();
-		const width = expectAttributes.fullWidth;
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
+		);
 
-		expect(width).toStrictEqual(expectResult);
-	});
+		expect(await getAttributes('blockFullWidth')).toStrictEqual('full');
 
-	it('Check Responsive full size control', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'width height');
+		// responsive
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
+		);
 
 		const inputs = await accordionPanel.$$(
 			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value'
@@ -41,52 +43,53 @@ describe('FullSizeControl', () => {
 		await inputs[0].focus();
 		await page.keyboard.type('330', { delay: 100 });
 
-		const generalHeight = await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
-			button => button.value
+		// check responsive
+		const responsiveResult = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
+			needFocus: true,
+			baseExpect: '330',
+			xsExpect: '200',
+			newValue: '200',
+		});
+		expect(responsiveResult).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Checking fullSizeControl unit selector', async () => {
+		await changeResponsive(page, 'base');
+
+		await page.$$eval(
+			'.maxi-full-size-control .maxi-toggle-switch input',
+			button => button[0].click()
 		);
 
-		expect(generalHeight).toStrictEqual('330');
-
-		const attributes = await getBlockAttributes();
-		const heightAttribute = attributes['height-general'];
-
-		expect(heightAttribute).toStrictEqual(330);
-
-		// responsive S
-		await changeResponsive(page, 's');
-
-		await inputs[0].focus();
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('99', { delay: 100 });
-
-		const heightS = await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
-			button => button.value
+		const selector = await page.$$(
+			'.maxi-full-size-control .maxi-dimensions-control__units select'
 		);
-		expect(heightS).toStrictEqual('399');
 
-		const attributesS = await getBlockAttributes();
-		const sHeight = attributesS['height-s'];
+		for (let i = 0; i < selector.length; i += 1) {
+			const selection = selector[i];
 
-		expect(sHeight).toStrictEqual(399);
+			await selection.select('em');
+		}
 
-		// responsive XS
-		await changeResponsive(page, 'xs');
+		const expectSize = {
+			'max-height-unit-general': 'em',
+			'max-width-unit-general': 'em',
+			'min-height-unit-general': 'em',
+			'min-width-unit-general': 'em',
+		};
 
-		const heightXs = await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
-			button => button.value
-		);
-		expect(heightXs).toStrictEqual('399');
+		const result = await getAttributes([
+			'max-height-unit-general',
+			'max-width-unit-general',
+			'min-height-unit-general',
+			'min-width-unit-general',
+		]);
 
-		// responsive M
-		await changeResponsive(page, 'm');
-
-		const heightM = await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
-			button => button.value
-		);
-		expect(heightM).toStrictEqual('330');
+		expect(result).toStrictEqual(expectSize);
 	});
 });

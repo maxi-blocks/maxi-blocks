@@ -8,7 +8,13 @@ import { __ } from '@wordpress/i18n';
  */
 import GradientControl from '../gradient-control';
 import ClipPath from '../clip-path-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import { getDefaultLayerAttr } from './utils';
 
 /**
  * External dependencies
@@ -18,37 +24,50 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
-const GradientLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix } = props;
+const GradientLayerContent = props => {
+	const {
+		onChange,
+		disableClipPath,
+		isHover = false,
+		prefix = '',
+		breakpoint,
+		isLayer = false,
+	} = props;
+
 	const gradientOptions = cloneDeep(props.gradientOptions);
+
+	const getDefaultAttr = target => {
+		if (isLayer) return getDefaultLayerAttr('colorOptions', target);
+
+		return getDefaultAttribute(
+			getAttributeKey(target, isHover, prefix, breakpoint)
+		);
+	};
 
 	return (
 		<>
 			<GradientControl
-				label={__('Background Gradient', 'maxi-blocks')}
-				gradient={
-					gradientOptions[
-						getAttributeKey('background-gradient', isHover, prefix)
-					]
-				}
-				gradientOpacity={
-					gradientOptions[
-						getAttributeKey(
-							'background-gradient-opacity',
-							isHover,
-							prefix
-						)
-					]
-				}
-				defaultGradient={getDefaultAttribute(
-					getAttributeKey('background-gradient', isHover, prefix)
+				label={__('Background gradient', 'maxi-blocks')}
+				gradient={getLastBreakpointAttribute(
+					`${prefix}background-gradient`,
+					breakpoint,
+					gradientOptions,
+					isHover
 				)}
+				gradientOpacity={getLastBreakpointAttribute(
+					`${prefix}background-gradient-opacity`,
+					breakpoint,
+					gradientOptions,
+					isHover
+				)}
+				defaultGradient={getDefaultAttr('background-gradient')}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(
 							'background-gradient',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val,
 					})
 				}
@@ -57,34 +76,43 @@ const GradientLayer = props => {
 						[getAttributeKey(
 							'background-gradient-opacity',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val,
 					})
 				}
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={
-						gradientOptions[
-							getAttributeKey(
-								'background-gradient-clip-path',
-								isHover,
-								prefix
-							)
-						]
-					}
+					clipPath={getLastBreakpointAttribute(
+						`${prefix}background-gradient-clip-path`,
+						breakpoint,
+						gradientOptions,
+						isHover
+					)}
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
 								'background-gradient-clip-path',
 								isHover,
-								prefix
+								prefix,
+								breakpoint
 							)]: val,
 						})
 					}
 				/>
 			)}
 		</>
+	);
+};
+
+const GradientLayer = props => {
+	const { breakpoint, ...rest } = props;
+
+	return (
+		<ResponsiveTabsControl breakpoint={breakpoint}>
+			<GradientLayerContent {...rest} />
+		</ResponsiveTabsControl>
 	);
 };
 

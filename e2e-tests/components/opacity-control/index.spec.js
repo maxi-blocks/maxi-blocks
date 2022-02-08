@@ -9,14 +9,23 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+	addResponsiveTest,
+} from '../../utils';
 
 describe('OpacityControl', () => {
 	it('Checking the opacity control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'opacity'
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-opacity-control .maxi-base-control__field input',
@@ -26,10 +35,22 @@ describe('OpacityControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('19');
 
-		const attributes = await getBlockAttributes();
-		const opacity = attributes['opacity-general'];
-		const expectResult = 0.19;
+		expect(await getAttributes('opacity-general')).toStrictEqual(0.19);
 
-		expect(opacity).toStrictEqual(expectResult);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// check responsive opacity control
+		const responsiveResult = await addResponsiveTest({
+			page,
+			instance: '.maxi-opacity-control .maxi-base-control__field input',
+			needFocus: true,
+			baseExpect: '19',
+			xsExpect: '55',
+			newValue: '55',
+		});
+
+		expect(responsiveResult).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

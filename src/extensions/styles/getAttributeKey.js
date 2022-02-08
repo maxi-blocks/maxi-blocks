@@ -1,8 +1,11 @@
-const getAttributeKey = (key, isHover = false, prefix = false) => {
-	const newKey = !prefix ? key : `${prefix}${key}`;
-
-	if (!isHover) return newKey;
-	return `${newKey}-hover`;
-};
+const getAttributeKey = (
+	key,
+	isHover = false,
+	prefix = false,
+	breakpoint = false
+) =>
+	`${prefix || ''}${key}${breakpoint ? `-${breakpoint}` : ''}${
+		isHover ? '-hover' : ''
+	}`;
 
 export default getAttributeKey;

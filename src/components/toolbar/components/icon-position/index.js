@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FancyRadioControl from '../../../fancy-radio-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -30,17 +30,17 @@ const IconPosition = props => {
 			icon={toolbarIconAlign}
 		>
 			<div className='toolbar-item__icon-position__popover'>
-				<FancyRadioControl
+				<SettingTabsControl
 					label={__('Icon Position', 'maxi-block')}
+					type='buttons'
 					selected={props['icon-position']}
-					options={[
+					items={[
 						{
 							label: __('Right', 'maxi-block'),
 							value: 'right',
 						},
 						{ label: __('Left', 'maxi-block'), value: 'left' },
 					]}
-					optionType='string'
 					onChange={val =>
 						onChange({
 							'icon-position': val,

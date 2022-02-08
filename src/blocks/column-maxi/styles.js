@@ -6,10 +6,12 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getMarginPaddingStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsColumn } from './custom-css';
 
 /**
  * External dependencies
@@ -35,10 +37,10 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -57,6 +59,9 @@ const getNormalObject = props => {
 				...getGroupAttributes(props, 'columnSize'),
 			}),
 		},
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 		...(!isEmpty(props.verticalAlign) && {
 			column: {
 				general: {
@@ -102,36 +107,37 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover': getHoverObject(props),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-		}),
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
+			},
+			selectorsColumn,
+			props
+		),
 	};
 
 	return response;

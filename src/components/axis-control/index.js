@@ -1,104 +1,373 @@
+/* eslint-disable @wordpress/i18n-no-collapsible-whitespace */
 /**
  * WordPress dependencies
  */
-import { useInstanceId } from '@wordpress/compose';
 import { __, sprintf } from '@wordpress/i18n';
-import { Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import Button from '../button';
+import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber } from 'lodash';
+import {
+	isEmpty,
+	capitalize,
+	isNumber,
+	replace,
+	round,
+	isNil,
+	isNaN,
+} from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import { reset, sync } from '../../icons';
+import {
+	marginSeparate as marginSeparateIcon,
+	marginSyncAll as marginSyncAllIcon,
+	marginSyncDirection as marginSyncDirectionIcon,
+	paddingSeparate as paddingSeparateIcon,
+	paddingSyncAll as paddingSyncAllIcon,
+	paddingSyncDirection as paddingSyncDirectionIcon,
+	reset,
+} from '../../icons';
 
 /**
  * Component
  */
-const AxisSync = props => {
-	const { text, ariaLabel, isPrimary, ariaPressed, onClick } = props;
+const AxisInput = props => {
+	const {
+		label,
+		target,
+		singleTarget = null,
+		getValue,
+		getLastBreakpointValue,
+		breakpoint,
+		disableAuto,
+		onChangeValue,
+		minMaxSettings,
+		currentUnit,
+	} = props;
+
+	const value = getValue(target, breakpoint);
+	const lastValue = getLastBreakpointValue(target);
 
 	return (
-		<div className='maxi-axis-control__content__item__sync'>
-			<Tooltip text={text}>
-				<Button
-					aria-label={ariaLabel}
-					isPrimary={isPrimary}
-					aria-pressed={ariaPressed}
-					onClick={onClick}
-					isSmall
-				>
-					{sync}
-				</Button>
-			</Tooltip>
+		<AdvancedNumberControl
+			label={__(capitalize(label), 'maxi-blocks')}
+			className={classnames(
+				'maxi-axis-control__content__item',
+				`maxi-axis-control__content__item__${replace(
+					label,
+					' / ',
+					'-'
+				).toLowerCase()}`
+			)}
+			placeholder={lastValue}
+			value={value}
+			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
+			minMaxSettings={minMaxSettings}
+			enableAuto={!disableAuto}
+			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
+			classNameAutoInput='maxi-axis-control__item-auto'
+			disableReset
+			min={minMaxSettings[currentUnit].min || 0}
+			max={minMaxSettings[currentUnit].max || 999}
+			step={minMaxSettings[currentUnit].step || 1}
+		/>
+	);
+};
+
+const AxisContent = props => {
+	const {
+		getKey,
+		breakpoint,
+		isHover,
+		inputsArray,
+		getValue,
+		getLastBreakpointValue,
+		disableAuto,
+		onChangeValue,
+		minMaxSettings,
+		currentUnit,
+		label: type,
+	} = props;
+
+	const sync = getLastBreakpointAttribute(
+		getKey('sync'),
+		breakpoint,
+		props,
+		isHover
+	);
+
+	return (
+		<div>
+			{sync === 'all' && (
+				<>
+					<AxisInput
+						label={type}
+						target={inputsArray[0]}
+						getValue={getValue}
+						getLastBreakpointValue={getLastBreakpointValue}
+						breakpoint={breakpoint}
+						disableAuto={disableAuto}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						currentUnit={currentUnit}
+						type={type}
+					/>
+				</>
+			)}
+			{sync === 'axis' && (
+				<>
+					<AxisInput
+						label={`${inputsArray[0]} / ${inputsArray[2]}`}
+						target={inputsArray[0]}
+						singleTarget='vertical'
+						getValue={getValue}
+						getLastBreakpointValue={getLastBreakpointValue}
+						breakpoint={breakpoint}
+						disableAuto={disableAuto}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						currentUnit={currentUnit}
+						type={type}
+					/>
+					<AxisInput
+						label={`${inputsArray[3]} / ${inputsArray[1]}`}
+						target={inputsArray[1]}
+						singleTarget='horizontal'
+						getValue={getValue}
+						getLastBreakpointValue={getLastBreakpointValue}
+						breakpoint={breakpoint}
+						disableAuto={disableAuto}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						currentUnit={currentUnit}
+						type={type}
+					/>
+				</>
+			)}
+			{sync === 'none' && (
+				<>
+					<AxisInput
+						label={inputsArray[0]}
+						target={inputsArray[0]}
+						singleTarget={inputsArray[0]}
+						getValue={getValue}
+						getLastBreakpointValue={getLastBreakpointValue}
+						breakpoint={breakpoint}
+						disableAuto={disableAuto}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						currentUnit={currentUnit}
+						type={type}
+					/>
+					<AxisInput
+						label={inputsArray[1]}
+						target={inputsArray[1]}
+						singleTarget={inputsArray[1]}
+						getValue={getValue}
+						getLastBreakpointValue={getLastBreakpointValue}
+						breakpoint={breakpoint}
+						disableAuto={disableAuto}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						currentUnit={currentUnit}
+						type={type}
+					/>
+					<AxisInput
+						label={inputsArray[2]}
+						target={inputsArray[2]}
+						singleTarget={inputsArray[2]}
+						getValue={getValue}
+						getLastBreakpointValue={getLastBreakpointValue}
+						breakpoint={breakpoint}
+						disableAuto={disableAuto}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						currentUnit={currentUnit}
+						type={type}
+					/>
+					<AxisInput
+						label={inputsArray[3]}
+						target={inputsArray[3]}
+						singleTarget={inputsArray[3]}
+						getValue={getValue}
+						getLastBreakpointValue={getLastBreakpointValue}
+						breakpoint={breakpoint}
+						disableAuto={disableAuto}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						currentUnit={currentUnit}
+						type={type}
+					/>
+				</>
+			)}
 		</div>
 	);
 };
 
-const AxisInput = props => {
+const AxisControlContent = props => {
 	const {
-		placeholder,
-		value,
+		label: type,
+		getOptions,
+		currentUnit,
+		breakpoint,
+		isHover,
 		onChange,
-		label,
-		ariaLabel,
-		min,
-		max,
-		disableAuto,
-		checked,
-		onChangeCheckbox,
+		onReset,
+		getKey,
+		onChangeSync,
+		minMaxSettings,
+		inputsArray,
 	} = props;
 
-	const instanceId = useInstanceId(AxisInput);
+	const sync = getLastBreakpointAttribute(
+		getKey('sync'),
+		breakpoint,
+		props,
+		isHover
+	);
+
+	const getSyncLabel = () => {
+		const label =
+			type.toLowerCase() === 'border radius'
+				? 'border radii'
+				: type.toLowerCase();
+		const textSeparate =
+			label === 'border radius' ? 'separate' : 'separately';
+		switch (sync) {
+			case 'all':
+				return type
+					? __(`Set ${label} equal`, 'maxi-blocks')
+					: __('Set equal', 'maxi-blocks');
+			case 'axis':
+				return type
+					? __(`Set ${label} together`, 'maxi-blocks')
+					: __('Set together', 'maxi-blocks');
+			case 'none':
+			default:
+				return type
+					? __(`Set ${label} ${textSeparate}`, 'maxi-blocks')
+					: __('Set separate', 'maxi-blocks');
+		}
+	};
+
+	const onChangeUnit = val => {
+		const response = {};
+
+		inputsArray.forEach(input => {
+			if (
+				input.includes('top') ||
+				input.includes('left') ||
+				input.includes('bottom') ||
+				input.includes('right')
+			) {
+				const key = getAttributeKey(
+					getKey(input),
+					isHover,
+					false,
+					breakpoint
+				);
+				const value = getLastBreakpointAttribute(
+					getKey(input),
+					breakpoint,
+					props,
+					isHover
+				);
+
+				if (!isNil(value) && !isNaN(value))
+					response[key] = round(
+						value,
+						minMaxSettings[currentUnit].step / 0.5
+					);
+			}
+		});
+
+		onChange({
+			[getAttributeKey(getKey('unit'), isHover, false, breakpoint)]: val,
+			...response,
+		});
+	};
 
 	return (
-		<div
-			className={`maxi-axis-control__content__item maxi-axis-control__content__item__${label}`}
-		>
-			<p className='maxi-axis-control__content__item__label'>
-				{__(capitalize(label), 'maxi-blocks')}
-			</p>
-			<input
-				className='maxi-axis-control__content__item__input'
-				type={disableAuto || value !== 'auto' ? 'number' : null}
-				placeholder={placeholder}
-				value={value}
-				onChange={onChange}
-				aria-label={ariaLabel}
-				min={min}
-				max={max}
-			/>
-			{!disableAuto && (
-				<label
-					className='maxi-axis-control__content__item__checkbox'
-					htmlFor={`${instanceId}-${label.toLowerCase()}`}
+		<>
+			<BaseControl
+				label={__(type, 'maxi-blocks')}
+				className='maxi-axis-control__unit-header'
+			>
+				<SelectControl
+					className='maxi-axis-control__units'
+					hideLabelFromVision
+					label={__('Unit', 'maxi-blocks')}
+					options={getOptions()}
+					value={currentUnit}
+					onChange={onChangeUnit}
+				/>
+				<Button
+					className='components-maxi-control__reset-button'
+					onClick={() => onReset(breakpoint)}
+					aria-label={sprintf(
+						__('Reset %s settings', 'maxi-blocks'),
+						type.toLowerCase()
+					)}
+					action='reset'
+					type='reset'
 				>
-					<input
-						type='checkbox'
-						checked={checked}
-						onChange={onChangeCheckbox}
-						id={`${instanceId}-${label.toLowerCase()}`}
-					/>
-					{__('auto', 'maxi-blocks')}
-				</label>
-			)}
-		</div>
+					{reset}
+				</Button>
+			</BaseControl>
+			<SettingTabsControl
+				label={getSyncLabel()}
+				type='buttons'
+				className='maxi-axis-control__header'
+				selected={sync}
+				items={[
+					{
+						value: 'all',
+						className: 'maxi-axis-control__sync-all',
+						icon:
+							type === 'Margin'
+								? marginSyncAllIcon
+								: paddingSyncAllIcon,
+					},
+					{
+						value: 'axis',
+						className: 'maxi-axis-control__sync-axis',
+						icon:
+							type === 'Margin'
+								? marginSyncDirectionIcon
+								: paddingSyncDirectionIcon,
+					},
+					{
+						value: 'none',
+						className: 'maxi-axis-control__sync-none',
+						icon:
+							type === 'Margin'
+								? marginSeparateIcon
+								: paddingSeparateIcon,
+					},
+				]}
+				onChange={val => onChangeSync(val, breakpoint)}
+			/>
+			<AxisContent {...props} />
+		</>
 	);
 };
 
@@ -111,22 +380,27 @@ const AxisControl = props => {
 		disableAuto = false,
 		allowedUnits = ['px', 'em', 'vw', '%'],
 		target,
+		prefix = '',
 		minMaxSettings = {
 			px: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 1,
 			},
 			em: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 0.1,
 			},
 			vw: {
 				min: target === 'padding' ? 0 : -999,
 				max: 999,
+				step: 0.1,
 			},
 			'%': {
 				min: 0,
 				max: 999,
+				step: 0.1,
 			},
 		},
 		auxTarget = false,
@@ -146,9 +420,12 @@ const AxisControl = props => {
 
 	const classes = classnames(
 		'maxi-axis-control',
+		target && `maxi-axis-control__${target}`,
 		disableAuto && 'maxi-axis-control__disable-auto',
 		className
 	);
+
+	const useResponsiveTabs = ['margin', 'padding'].includes(target);
 
 	const getOptions = () => {
 		const options = [];
@@ -163,7 +440,7 @@ const AxisControl = props => {
 	};
 
 	const getKey = key => {
-		return `${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
+		return `${prefix}${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
 	};
 
 	const getLastBreakpointValue = key => {
@@ -171,63 +448,63 @@ const AxisControl = props => {
 			getKey(key),
 			breakpoint,
 			props,
-			isHover
+			isHover,
+			false,
+			true
 		);
 
 		return inputValue;
 	};
 
-	const getValue = key => {
+	const getValue = (key, customBreakpoint) => {
 		const value =
-			props[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`];
+			props[
+				getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			];
 
 		if (isNumber(value) || value) return value;
 
 		return '';
 	};
 
-	const onReset = () => {
+	const onReset = customBreakpoint => {
 		const response = {};
 
 		inputsArray.forEach(key => {
-			response[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`] =
-				getDefaultAttribute(
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-				);
+			response[
+				getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			] = getDefaultAttribute(
+				getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			);
 		});
 
 		onChange(response);
 	};
 
-	const onChangeSync = key => {
+	const onChangeSync = (value, customBreakpoint) => {
 		const response = {
-			[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`]:
-				!getLastBreakpointAttribute(
-					getKey(key),
-					breakpoint,
-					props,
-					isHover
-				),
+			[getAttributeKey(
+				getKey('sync'),
+				isHover,
+				false,
+				customBreakpoint ?? breakpoint
+			)]: value,
 		};
-
-		const syncArray = ['sync-horizontal', 'sync-vertical'];
-		if (key === 'sync-vertical' || key === 'sync-horizontal') {
-			const syncKey = `${getKey('sync')}-${breakpoint}${
-				isHover ? '-hover' : ''
-			}`;
-			const newSyncValue =
-				breakpoint === 'general' ? getDefaultAttribute(syncKey) : false;
-
-			response[syncKey] = newSyncValue;
-		} else if (target === 'padding' || target === 'margin') {
-			syncArray.forEach(key => {
-				response[
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-				] = getDefaultAttribute(
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-				);
-			});
-		}
 
 		onChange(response);
 	};
@@ -240,302 +517,159 @@ const AxisControl = props => {
 			isHover
 		) || 'px';
 
-	const onChangeValue = (val, singleTarget) => {
+	const onChangeValue = (val, singleTarget, customBreakpoint) => {
 		let newValue = '';
 
-		if (optionType === 'number') {
-			if (isEmpty(val)) {
-				newValue = val;
-			} else {
-				newValue = +val;
-			}
-		} else if (isEmpty(val)) {
-			newValue = '';
-		} else if (val === 'auto') {
-			newValue = 'auto';
-		} else {
-			newValue = val;
-		}
+		if (optionType === 'number')
+			if (isEmpty(val)) newValue = val;
+			else newValue = +val;
+		else if (isEmpty(val) && !isNumber(val)) newValue = '';
+		else if (val === 'auto') newValue = 'auto';
+		else if (optionType === 'string') newValue = val.toString();
+		else newValue = val;
 
 		if (target === 'padding' && newValue < 0) newValue = 0;
 
-		if (
-			getLastBreakpointAttribute(
-				getKey('sync'),
-				breakpoint,
-				props,
-				isHover
-			)
-		) {
-			const response = {};
+		const sync = getLastBreakpointAttribute(
+			getKey('sync'),
+			breakpoint,
+			props,
+			isHover
+		);
 
-			inputsArray.forEach(key => {
-				if (
-					key.includes('top') ||
-					key.includes('left') ||
-					key.includes('bottom') ||
-					key.includes('right')
-				)
-					response[
-						`${target}-${key}${
-							auxTarget ? `-${auxTarget}` : ''
-						}-${breakpoint}${isHover ? '-hover' : ''}`
-					] = newValue;
-			});
+		let response = {};
 
-			onChange(response);
-		} else if (
-			(singleTarget === 'left' || singleTarget === 'right') &&
-			getLastBreakpointAttribute(
-				getKey('sync-horizontal'),
-				breakpoint,
-				props,
-				isHover
-			)
-		) {
-			const response = {};
+		switch (sync) {
+			case 'all': {
+				inputsArray.forEach(key => {
+					if (
+						key.includes('top') ||
+						key.includes('left') ||
+						key.includes('bottom') ||
+						key.includes('right')
+					) {
+						response[
+							getAttributeKey(
+								getKey(key),
+								isHover,
+								false,
+								customBreakpoint ?? breakpoint
+							)
+						] = newValue;
+					}
+				});
 
-			inputsArray.forEach(key => {
-				if (key === 'left' || key === 'right')
-					response[
-						`${target}-${key}${
-							auxTarget ? `-${auxTarget}` : ''
-						}-${breakpoint}${isHover ? '-hover' : ''}`
-					] = newValue;
-			});
+				break;
+			}
+			case 'axis': {
+				if (singleTarget === 'horizontal') {
+					inputsArray.forEach(key => {
+						if (
+							[
+								'left',
+								'right',
+								'bottom-left',
+								'top-right',
+							].includes(key)
+						) {
+							response[
+								getAttributeKey(
+									getKey(key),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)
+							] = newValue;
+						}
+					});
+				} else if (singleTarget === 'vertical') {
+					inputsArray.forEach(key => {
+						if (
+							[
+								'top',
+								'bottom',
+								'top-left',
+								'bottom-right',
+							].includes(key)
+						) {
+							response[
+								getAttributeKey(
+									getKey(key),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)
+							] = newValue;
+						}
+					});
+				}
 
-			onChange(response);
-		} else if (
-			(singleTarget === 'top' || singleTarget === 'bottom') &&
-			getLastBreakpointAttribute(
-				getKey('sync-vertical'),
-				breakpoint,
-				props,
-				isHover
-			)
-		) {
-			const response = {};
+				break;
+			}
+			case 'none':
+			default: {
+				response = {
+					[getAttributeKey(
+						getKey(singleTarget),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)]: newValue,
+				};
 
-			inputsArray.forEach(key => {
-				if (key === 'top' || key === 'bottom')
-					response[
-						`${target}-${key}${
-							auxTarget ? `-${auxTarget}` : ''
-						}-${breakpoint}${isHover ? '-hover' : ''}`
-					] = newValue;
-			});
-
-			onChange(response);
-		} else {
-			onChange({
-				[`${target}-${singleTarget}${
-					auxTarget ? `-${auxTarget}` : ''
-				}-${breakpoint}${isHover ? '-hover' : ''}`]: newValue,
-			});
+				break;
+			}
 		}
+
+		onChange(response);
 	};
 
 	return (
 		<div className={classes}>
-			<BaseControl
-				label={__(label, 'maxi-blocks')}
-				className='maxi-axis-control__header'
-			>
-				<SelectControl
-					className='maxi-axis-control__units'
-					options={getOptions()}
-					value={currentUnit}
-					onChange={val =>
-						onChange({
-							[`${target}-unit${
-								auxTarget ? `-${auxTarget}` : ''
-							}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
-						})
-					}
-				/>
-				<Button
-					className='components-maxi-control__reset-button'
-					onClick={onReset}
-					aria-label={sprintf(
-						__('Reset %s settings', 'maxi-blocks'),
-						label.toLowerCase()
-					)}
-					action='reset'
-					type='reset'
-				>
-					{reset}
-				</Button>
-			</BaseControl>
-			<div className='maxi-axis-control__content maxi-axis-control__top-part'>
-				<AxisInput
-					label='top'
-					placeholder={getLastBreakpointValue(inputsArray[0])}
-					value={getValue(inputsArray[0])}
-					onChange={e =>
-						onChangeValue(e.target.value, inputsArray[0])
-					}
-					ariaLabel={sprintf(__('%s Top', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
-					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[0]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[0]
-						)
-					}
-				/>
-				{(target === 'padding' || target === 'margin') && (
-					<AxisSync
-						text={
-							getLastBreakpointAttribute(
-								getKey('sync-horizontal'),
-								breakpoint,
-								props,
-								isHover
-							)
-								? __('Unsync top and bottom', 'maxi-blocks')
-								: __('Sync top and bottom', 'maxi-blocks')
-						}
-						ariaLabel={__(
-							'Sync top and bottom Units',
-							'maxi-blocks'
-						)}
-						isPrimary={getLastBreakpointAttribute(
-							getKey('sync-vertical'),
-							breakpoint,
-							props,
-							isHover
-						)}
-						ariaPressed={getLastBreakpointAttribute(
-							getKey('sync-vertical'),
-							breakpoint,
-							props,
-							isHover
-						)}
-						onClick={() => onChangeSync('sync-vertical')}
+			{useResponsiveTabs && (
+				<ResponsiveTabsControl breakpoint={breakpoint} target={target}>
+					<AxisControlContent
+						{...props}
+						key='AxisControlContent__responsive'
+						label={label}
+						getOptions={getOptions}
+						currentUnit={currentUnit}
+						target={target}
+						isHover={isHover}
+						onChange={onChange}
+						onReset={onReset}
+						inputsArray={inputsArray}
+						getLastBreakpointValue={getLastBreakpointValue}
+						getValue={getValue}
+						onChangeValue={onChangeValue}
+						minMaxSettings={minMaxSettings}
+						disableAuto={disableAuto}
+						getKey={getKey}
+						onChangeSync={onChangeSync}
 					/>
-				)}
-				<AxisInput
-					label='bottom'
-					placeholder={getLastBreakpointValue(inputsArray[2])}
-					value={getValue(inputsArray[2])}
-					onChange={e =>
-						onChangeValue(e.target.value, inputsArray[2])
-					}
-					ariaLabel={sprintf(__('%s Bottom', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
+				</ResponsiveTabsControl>
+			)}
+			{!useResponsiveTabs && (
+				<AxisControlContent
+					{...props}
+					key='AxisControlContent__non-responsive'
+					label={label}
+					getOptions={getOptions}
+					currentUnit={currentUnit}
+					target={target}
+					isHover={isHover}
+					onChange={onChange}
+					onReset={onReset}
+					inputsArray={inputsArray}
+					getLastBreakpointValue={getLastBreakpointValue}
+					getValue={getValue}
+					onChangeValue={onChangeValue}
+					minMaxSettings={minMaxSettings}
 					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[2]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[2]
-						)
-					}
+					getKey={getKey}
+					onChangeSync={onChangeSync}
 				/>
-			</div>
-			<div className='maxi-axis-control__middle-part'>
-				<AxisSync
-					text={
-						getLastBreakpointAttribute(
-							getKey('sync'),
-							breakpoint,
-							props,
-							isHover
-						)
-							? __('Unsync all 4', 'maxi-blocks')
-							: __('Sync all 4', 'maxi-blocks')
-					}
-					ariaLabel={__('Sync all 4 Units', 'maxi-blocks')}
-					isPrimary={getLastBreakpointAttribute(
-						getKey('sync'),
-						breakpoint,
-						props,
-						isHover
-					)}
-					ariaPressed={getLastBreakpointAttribute(
-						getKey('sync'),
-						breakpoint,
-						props,
-						isHover
-					)}
-					onClick={() => onChangeSync('sync')}
-				/>
-			</div>
-			<div className='maxi-axis-control__content maxi-axis-control__bottom-part'>
-				<AxisInput
-					label='left'
-					placeholder={getLastBreakpointValue(inputsArray[3])}
-					value={getValue(inputsArray[3])}
-					onChange={e =>
-						onChangeValue(e.target.value, inputsArray[3])
-					}
-					ariaLabel={sprintf(__('%s Left', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
-					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[3]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[3]
-						)
-					}
-				/>
-				{(target === 'padding' || target === 'margin') && (
-					<AxisSync
-						text={
-							getLastBreakpointAttribute(
-								getKey('sync-horizontal'),
-								breakpoint,
-								props,
-								isHover
-							)
-								? __('Unsync left and right', 'maxi-blocks')
-								: __('Sync left and right', 'maxi-blocks')
-						}
-						ariaLabel={__(
-							'Sync Left and Right Units',
-							'maxi-blocks'
-						)}
-						isPrimary={getLastBreakpointAttribute(
-							getKey('sync-horizontal'),
-							breakpoint,
-							props,
-							isHover
-						)}
-						ariaPressed={getLastBreakpointAttribute(
-							getKey('sync-horizontal'),
-							breakpoint,
-							props,
-							isHover
-						)}
-						onClick={() => onChangeSync('sync-horizontal')}
-					/>
-				)}
-				<AxisInput
-					label='right'
-					placeholder={getLastBreakpointValue(inputsArray[1])}
-					value={getValue(inputsArray[1])}
-					onChange={e =>
-						onChangeValue(e.target.value, inputsArray[1])
-					}
-					ariaLabel={sprintf(__('%s Right', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit]?.min}
-					max={minMaxSettings[currentUnit]?.max}
-					disableAuto={disableAuto}
-					checked={getLastBreakpointValue(inputsArray[1]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[1]
-						)
-					}
-				/>
-			</div>
+			)}
 		</div>
 	);
 };

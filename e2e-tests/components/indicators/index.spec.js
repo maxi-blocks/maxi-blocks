@@ -1,44 +1,61 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { openSidebar } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	editAxisControl,
+	getAttributes,
+} from '../../utils';
 
 describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);
 
-		const accordionPanel = await openSidebar(page, 'padding margin');
-
-		const selectPadding = await accordionPanel.$$(
-			'.maxi-axis-control .maxi-axis-control__content'
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
 		);
 
-		await selectPadding[1].$$eval(
-			'.maxi-axis-control__content__item input',
-			select => select[0].focus()
+		const axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
 		);
 
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('50');
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '12',
+			unit: '%',
+		});
 
-		const maxiIndicator = await page.$eval(
-			'.maxi-container-block .maxi-indicators',
-			indicators => indicators.innerHTML
-		);
+		const expectPadding = {
+			'padding-top-general': 12,
+			'padding-bottom-general': 12,
+			'padding-left-general': 12,
+			'padding-right-general': 12,
+			'padding-unit-general': '%',
+		};
 
-		expect(maxiIndicator).toMatchSnapshot();
+		const paddingResult = await getAttributes([
+			'padding-top-general',
+			'padding-bottom-general',
+			'padding-left-general',
+			'padding-right-general',
+			'padding-unit-general',
+		]);
+
+		expect(paddingResult).toStrictEqual(expectPadding);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

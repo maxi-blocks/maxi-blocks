@@ -4,9 +4,14 @@
 import { select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import getAttributeValue from './getAttributeValue';
+
+/**
  * External dependencies
  */
-import { isNil, isEmpty, isBoolean, isNumber, uniq } from 'lodash';
+import { isNil, isEmpty, isBoolean, isNumber, isString, uniq } from 'lodash';
 
 /**
  * Breakpoints
@@ -25,17 +30,34 @@ const getLastBreakpointAttributeSingle = (
 	isHover,
 	avoidXXL
 ) => {
-	const { getBlockAttributes, getSelectedBlockClientId } =
-		select('core/block-editor');
+	const { getBlockAttributes, getSelectedBlockClientId } = select(
+		'core/block-editor'
+	) || {
+		getBlockAttributes: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
+		getSelectedBlockClientId: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
+	};
 
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
 	if (isNil(attr)) return false;
+	if (isNil(breakpoint))
+		return getAttributeValue({
+			target,
+			props: attr,
+			isHover,
+			breakpoint,
+		});
 
 	const attrFilter = attr =>
-		!isNil(attr) && (isNumber(attr) || isBoolean(attr) || !isEmpty(attr));
+		!isNil(attr) &&
+		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
-	let currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
+	let currentAttr =
+		attr[
+			`${!isEmpty(target) ? `${target}-` : ''}${breakpoint}${
+				isHover ? '-hover' : ''
+			}`
+		];
 
 	if (attrFilter(currentAttr)) return currentAttr;
 
@@ -46,13 +68,14 @@ const getLastBreakpointAttributeSingle = (
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr =
 				attr[
-					`${target}-${breakpoints[breakpointPosition]}${
-						isHover ? '-hover' : ''
-					}`
+					`${!isEmpty(target) ? `${target}-` : ''}${
+						breakpoints[breakpointPosition]
+					}${isHover ? '-hover' : ''}`
 				];
 	} while (
 		breakpointPosition > 0 &&
 		!isNumber(currentAttr) &&
+		!isBoolean(currentAttr) &&
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	);
 
@@ -103,9 +126,11 @@ const getLastBreakpointAttribute = (
 	attributes = null,
 	isHover = false,
 	forceSingle = false,
-	avoidXXL = false
+	avoidXXL = true
 ) => {
-	const { getSelectedBlockCount } = select('core/block-editor');
+	const { getSelectedBlockCount } = select('core/block-editor') || {
+		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
+	};
 
 	if (getSelectedBlockCount() > 1 && !forceSingle)
 		return getLastBreakpointAttributeGroup(

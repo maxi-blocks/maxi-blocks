@@ -14,7 +14,8 @@ import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
+import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -240,7 +241,7 @@ const ClipPathControl = props => {
 	useEffect(() => {
 		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
 			changeClipPathOptions(deconstructCP());
-	}, [clipPathOptions, deconstructCP]);
+	}, [clipPath, clipPathOptions]);
 
 	const generateCP = clipPath => {
 		const { type, content } = clipPath;
@@ -271,6 +272,8 @@ const ClipPathControl = props => {
 		const newCP = `${type}(${newContent})`;
 
 		onChange(newCP);
+
+		changeClipPathOptions(clipPath);
 	};
 
 	const onChangeType = newType => {
@@ -308,24 +311,17 @@ const ClipPathControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
-				label={__('Use Clip-path', 'maxi-blocks')}
+			<ToggleSwitch
+				label={__('Use clip-path', 'maxi-blocks')}
 				selected={hasClipPath}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val => changeHasClipPath(+val)}
+				onChange={val => changeHasClipPath(val)}
 			/>
 			{hasClipPath && (
 				<>
-					<FancyRadioControl
+					<ToggleSwitch
+						className='clip-path-custom'
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
 						onChange={val => changeIsCustom(val)}
 					/>
 					{!isCustom && (
@@ -397,10 +393,11 @@ const ClipPathControl = props => {
 								]}
 								onChange={value => onChangeType(value)}
 							/>
-							<FancyRadioControl
+							<SettingTabsControl
 								fullWidthMode
+								type='buttons'
 								selected={customMode}
-								options={[
+								items={[
 									{
 										label: __('Visual', 'maxi-blocks'),
 										value: 'visual',
@@ -410,7 +407,6 @@ const ClipPathControl = props => {
 										value: 'data',
 									},
 								]}
-								optionType='string'
 								onChange={val => setCustomMode(val)}
 							/>
 							{customMode === 'visual' && (

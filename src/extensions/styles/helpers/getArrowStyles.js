@@ -5,11 +5,14 @@ import getBoxShadowStyles from './getBoxShadowStyles';
 import getColorRGBAString from '../getColorRGBAString';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const getArrowObject = props => {
 	const response = {};
@@ -72,43 +75,51 @@ export const getArrowObject = props => {
 	return response;
 };
 
-export const getArrowColorObject = (props, blockStyle, isHover = false) => {
+export const getArrowColorObject = (
+	backgroundLayers,
+	blockStyle,
+	isHover = false
+) => {
 	const response = {
 		label: 'Arrow Color',
 		general: {},
 	};
 
-	if (
-		props[`background-active-media${isHover ? '-hover' : ''}`] ===
-		'gradient'
-	) {
-		response.general.background =
-			props[`background-gradient${isHover ? '-hover' : ''}`];
-	}
+	const colorLayers = backgroundLayers.filter(
+		layer => layer.type === 'color'
+	);
+	const layer = colorLayers ? colorLayers[colorLayers.length - 1] : null;
 
-	if (!props[`background-layers-status${isHover ? '-hover' : ''}`])
-		if (
-			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
-		) {
-			const paletteColor =
-				props[`background-palette-color${isHover ? '-hover' : ''}`];
-			const paletteOpacity =
-				props[`background-palette-opacity${isHover ? '-hover' : ''}`];
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
 
-			response.general['background-color'] = getColorRGBAString({
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj: layer,
+				prefix: 'background-',
+				isHover,
+				breakpoint,
+			});
+
+		if (paletteStatus)
+			response[breakpoint]['background-color'] = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
 				blockStyle,
 			});
-		} else
-			response.general['background-color'] =
-				props[`background-color${isHover ? '-hover' : ''}`];
+		else response[breakpoint]['background-color'] = color;
+	});
 
 	return response;
 };
 
 const getArrowStyles = props => {
-	const { target = '', blockStyle, isHover = false } = props;
+	const {
+		target = '',
+		blockStyle,
+		isHover = false,
+		'background-layers': backgroundLayers,
+	} = props;
 
 	// Checks if border is active on some responsive stage
 	const isBorderActive = Object.entries(props).some(([key, val]) => {
@@ -133,9 +144,13 @@ const getArrowStyles = props => {
 		return true;
 	});
 
+	const isBackgroundColor = !isEmpty(backgroundLayers)
+		? backgroundLayers.some(layer => layer.type === 'color')
+		: false;
+
 	if (
 		!props['arrow-status'] ||
-		props['background-active-media'] !== 'color' ||
+		!isBackgroundColor ||
 		(isBorderActive && !isCorrectBorder)
 	)
 		return {};
@@ -173,61 +188,27 @@ const getArrowStyles = props => {
 		[`${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
 			{
 				background: {
-					...getArrowColorObject(
-						getGroupAttributes(props, [
-							'background',
-							'backgroundColor',
-							'backgroundGradient',
-						]),
-						blockStyle
-					),
+					...getArrowColorObject(backgroundLayers, blockStyle),
 				},
 			},
 		[`${target} .maxi-container-arrow:before`]: {
 			background: {
-				...getArrowColorObject(
-					getGroupAttributes(props, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-					]),
-					blockStyle
-				),
+				...getArrowColorObject(backgroundLayers, blockStyle),
 			},
 		},
-		...(props['background-status-hover'] && {
+		...(props['block-background-hover-status'] && {
 			[`${target}:hover .maxi-container-arrow:before`]: {
 				background: {
-					...getArrowColorObject(
-						getGroupAttributes(
-							props,
-							[
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-							],
-							true
-						),
-						blockStyle,
-						true
-					),
+					...getArrowColorObject(backgroundLayers, blockStyle, true),
 				},
 			},
 		}),
-		...(props['background-status-hover'] && {
+		...(props['block-background-hover-status'] && {
 			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
 				{
 					background: {
 						...getArrowColorObject(
-							getGroupAttributes(
-								props,
-								[
-									'background',
-									'backgroundColor',
-									'backgroundGradient',
-								],
-								isHover
-							),
+							backgroundLayers,
 							blockStyle,
 							isHover
 						),

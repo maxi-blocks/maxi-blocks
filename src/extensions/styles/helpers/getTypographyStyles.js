@@ -27,10 +27,17 @@ const getTypographyStyles = ({
 	parentBlockStyle,
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
+	scValues = {},
 }) => {
-	if (isHover && !obj[`${prefix}typography-status-hover`]) return {};
-
 	const response = {};
+
+	const hoverStatus = obj[`${prefix}typography-status-hover`];
+	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
+		scValues;
+
+	const globalHoverStatus = isActive && affectAll;
+
+	if (isHover && !hoverStatus && !globalHoverStatus) return response;
 
 	const isCustomFormat = !!customFormatTypography;
 
@@ -40,14 +47,14 @@ const getTypographyStyles = ({
 		}`;
 
 	const getPaletteColorStatus = breakpoint => {
-		const propName = getName('palette-color-status', breakpoint);
+		const propName = getName('palette-status', breakpoint);
 
 		if (isBoolean(obj[propName])) return obj[propName];
 
 		return (
 			isCustomFormat &&
 			getLastBreakpointAttribute(
-				'palette-color-status',
+				'palette-status',
 				breakpoint,
 				customFormatTypography,
 				isHover
@@ -55,23 +62,53 @@ const getTypographyStyles = ({
 		);
 	};
 
+	const getColorString = breakpoint => {
+		const paletteStatus = getPaletteColorStatus(breakpoint);
+		const paletteColor = obj[getName('palette-color', breakpoint)];
+		const paletteOpacity = obj[getName('palette-opacity', breakpoint)];
+		const color = obj[getName('color', breakpoint)];
+
+		if (paletteStatus && (!isHover || hoverStatus || globalHoverStatus))
+			return {
+				...(!isNil(paletteColor) && {
+					color: getColorRGBAString({
+						firstVar: `${textLevel}-color${
+							isHover ? '-hover' : ''
+						}`,
+						secondVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: parentBlockStyle,
+					}),
+				}),
+			};
+		if (paletteStatus)
+			return {
+				...(!isNil(paletteColor) && {
+					color: getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: parentBlockStyle,
+					}),
+				}),
+			};
+
+		return {
+			...(!isNil(color) && {
+				color,
+			}),
+		};
+	};
+
 	// As sometimes creators just change the value and not the unit, we need to
 	// be able to request the non-hover unit
 	const getUnitValue = (prop, breakpoint) => {
-		if (!normalTypography)
-			return getLastBreakpointAttribute(
-				`${prefix}${prop}`,
-				breakpoint,
-				isCustomFormat ? customFormatTypography : obj
-			);
-
-		const hoverUnit = getLastBreakpointAttribute(
+		const unit = getLastBreakpointAttribute(
 			`${prefix}${prop}`,
 			breakpoint,
 			isCustomFormat ? customFormatTypography : obj
 		);
 
-		if (hoverUnit) return hoverUnit;
+		if (!normalTypography || unit) return unit === '-' ? '' : unit;
 
 		return getLastBreakpointAttribute(
 			`${prefix}${prop}`,
@@ -85,29 +122,7 @@ const getTypographyStyles = ({
 			...(!isNil(obj[getName('font-family', breakpoint)]) && {
 				'font-family': obj[getName('font-family', breakpoint)],
 			}),
-			...(getPaletteColorStatus(breakpoint)
-				? {
-						...(!isNil(
-							obj[getName('palette-color', breakpoint)]
-						) && {
-							color: getColorRGBAString({
-								firstVar: `${textLevel}-color${
-									isHover ? '-hover' : ''
-								}`,
-								secondVar: `color-${
-									obj[getName('palette-color', breakpoint)]
-								}`,
-								opacity:
-									obj[getName('palette-opacity', breakpoint)],
-								blockStyle: parentBlockStyle,
-							}),
-						}),
-				  }
-				: {
-						...(!isNil(obj[getName('color', breakpoint)]) && {
-							color: obj[getName('color', breakpoint)],
-						}),
-				  }),
+			...getColorString(breakpoint),
 			...(!isNil(obj[getName('font-size', breakpoint)]) && {
 				'font-size': `${
 					obj[getName('font-size', breakpoint)]
@@ -115,21 +130,13 @@ const getTypographyStyles = ({
 			}),
 			...(!isNil(obj[getName('line-height', breakpoint)]) && {
 				'line-height': `${obj[getName('line-height', breakpoint)]}${
-					getLastBreakpointAttribute(
-						`${prefix}line-height-unit`,
-						breakpoint,
-						isCustomFormat ? customFormatTypography : obj
-					) || ''
+					getUnitValue(`${prefix}line-height-unit`, breakpoint) || ''
 				}`,
 			}),
 			...(!isNil(obj[getName('letter-spacing', breakpoint)]) && {
 				'letter-spacing': `${
 					obj[getName('letter-spacing', breakpoint)]
-				}${getLastBreakpointAttribute(
-					`${prefix}letter-spacing-unit`,
-					breakpoint,
-					isCustomFormat ? customFormatTypography : obj
-				)}`,
+				}${getUnitValue(`${prefix}letter-spacing-unit`, breakpoint)}`,
 			}),
 			...(!isNil(obj[getName('font-weight', breakpoint)]) && {
 				'font-weight': obj[getName('font-weight', breakpoint)],

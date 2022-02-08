@@ -6,58 +6,56 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import { getAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 		await page.$eval('.maxi-container-block', select => select.focus());
-		const accordionPanel = await openAdvancedSidebar(page, 'shape divider');
-
-		await accordionPanel.$$eval(
-			'.maxi-shapedividercontrol .maxi-base-control label',
-			click => click[3].click()
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'shape divider'
 		);
 
-		const expectedTopStatus = true;
-		const attributes = await getBlockAttributes();
-		const shapeTopStatus = attributes['shape-divider-top-status'];
+		await accordionPanel.$eval(
+			'.maxi-shapedividercontrol .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
+			click => click.click()
+		);
 
-		expect(shapeTopStatus).toStrictEqual(expectedTopStatus);
+		expect(await getAttributes('shape-divider-top-status')).toStrictEqual(
+			true
+		);
 
 		// effects
-		await accordionPanel.$$eval(
-			'.maxi-shapedividercontrol .maxi-base-control label',
-			click => click[6].click()
+		await accordionPanel.$eval(
+			'.maxi-shapedividercontrol .maxi-toggle-switch.shape-divider-top-effects-status .maxi-base-control__label',
+			click => click.click()
 		);
 
-		const expectedTopEffectStatus = true;
-		const shapeAttributes = await getBlockAttributes();
-		const effectTopStatus =
-			shapeAttributes['shape-divider-top-effects-status'];
-
-		expect(effectTopStatus).toStrictEqual(expectedTopEffectStatus);
+		expect(
+			await getAttributes('shape-divider-top-effects-status')
+		).toStrictEqual(true);
 
 		// divider style
 		await accordionPanel.$eval(
-			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector div',
+			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector button',
 			modal => modal.click()
 		);
 
 		await page.$$eval(
-			'.maxi-shapedividercontrol__shape-list label',
+			'.maxi-shapedividercontrol__shape-list button',
 			click => click[1].click()
 		);
 
-		const shapeStyle = 'waves-top';
-		const shapeStyleAttribute = await getBlockAttributes();
-		const style = shapeStyleAttribute['shape-divider-top-shape-style'];
-
-		expect(style).toStrictEqual(shapeStyle);
+		expect(
+			await getAttributes('shape-divider-top-shape-style')
+		).toStrictEqual('waves-top');
 
 		// opacity
 		await accordionPanel.$eval(
@@ -68,24 +66,19 @@ describe('ShapeDividerControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		const expectedOpacity = 0.5;
-		const shapeOpacityAttribute = await getBlockAttributes();
-		const shapeOpacity = shapeOpacityAttribute['shape-divider-top-opacity'];
-
-		expect(shapeOpacity).toStrictEqual(expectedOpacity);
+		expect(await getAttributes('shape-divider-top-opacity')).toStrictEqual(
+			0.5
+		);
 
 		// color
 		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			'.maxi-color-palette-control .maxi-color-control__palette button',
 			selectColor => selectColor[3].click()
 		);
 
-		const expectedShapeColor = 4;
-		const shapeColorAttribute = await getBlockAttributes();
-		const shapeColor =
-			shapeColorAttribute['shape-divider-palette-top-color'];
-
-		expect(shapeColor).toStrictEqual(expectedShapeColor);
+		expect(
+			await getAttributes('shape-divider-top-palette-color')
+		).toStrictEqual(4);
 
 		// divider height
 		await accordionPanel.$$eval(
@@ -95,10 +88,10 @@ describe('ShapeDividerControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('200');
 
-		const expectedTopHeight = 200;
-		const shapeHeightAttribute = await getBlockAttributes();
-		const shapeTopHeight = shapeHeightAttribute['shape-divider-top-height'];
+		expect(await getAttributes('shape-divider-top-height')).toStrictEqual(
+			200
+		);
 
-		expect(shapeTopHeight).toStrictEqual(expectedTopHeight);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

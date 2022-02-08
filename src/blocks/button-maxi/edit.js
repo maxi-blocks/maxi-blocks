@@ -11,11 +11,13 @@ import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, Toolbar } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+import { Toolbar } from '../../components';
+import MaxiBlock from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 
@@ -23,7 +25,6 @@ import IconToolbar from '../../components/toolbar/iconToolbar';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -81,26 +82,14 @@ class edit extends MaxiBlockComponent {
 	typingTimeout = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
-	}
+		const { attributes, scValues } = this.props;
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-				}),
-			},
-		};
+		return getStyles(attributes, scValues);
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
-		const { uniqueID } = attributes;
+		const { attributes, maxiSetAttributes } = this.props;
+		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
 
@@ -124,15 +113,22 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				prefix='button-'
+				backgroundGlobalProps={{
+					target: 'background',
+					type: 'button',
+				}}
+				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				blockFullWidth={blockFullWidth}
+				{...getMaxiBlockAttributes(this.props)}
 				disableBackground
 			>
-				<div className={buttonClasses}>
+				<div data-align={fullWidth} className={buttonClasses}>
 					{!attributes['icon-only'] && (
 						<RichText
 							className='maxi-button-block__content'
@@ -144,7 +140,7 @@ class edit extends MaxiBlockComponent {
 								}
 
 								this.typingTimeout = setTimeout(() => {
-									setAttributes({ buttonContent });
+									maxiSetAttributes({ buttonContent });
 								}, 100);
 							}}
 							placeholder={__('Set some text…', 'maxi-blocks')}
@@ -179,12 +175,32 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
+const editSelect = withSelect((select, ownProps) => {
+	const {
+		attributes: { parentBlockStyle },
+	} = ownProps;
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+	const scElements = [
+		'hover-border-color-global',
+		'hover-border-color-all',
+		'hover-color-global',
+		'hover-color-all',
+		'hover-background-color-global',
+		'hover-background-color-all',
+	];
+	const scValues = receiveStyleCardValue(
+		scElements,
+		parentBlockStyle,
+		'button'
+	);
 
 	return {
 		deviceType,
+		scValues,
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

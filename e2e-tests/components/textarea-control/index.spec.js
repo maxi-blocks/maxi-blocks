@@ -9,16 +9,20 @@ import {
 /**
  * Internal dependencies
  */
-import { openAdvancedSidebar } from '../../utils';
+import { openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('TextareaControl', () => {
 	it('Check textarea control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'hover effects');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'hover effect'
+		);
 
 		await accordionPanel.$$eval(
-			'.maxi-hover-effect-control .maxi-radio-control input',
+			'.maxi-hover-effect-control .maxi-settingstab-control button',
 			buttons => buttons[2].click()
 		);
 
@@ -36,5 +40,7 @@ describe('TextareaControl', () => {
 		);
 
 		expect(expectText).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

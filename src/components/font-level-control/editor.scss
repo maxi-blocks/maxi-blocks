@@ -1,21 +1,30 @@
 .maxi-font-level-control {
 	display: flex;
 	flex-wrap: nowrap;
+	margin-bottom: 8px;
+
 	&__button {
-		display: block;
-		width: 100%;
-		min-width: 2rem;
-		min-height: 2rem;
-		margin: 0 0.1rem;
-		padding: 0;
-		background: #f8f8f8;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: calc(100% / 7);
+		height: 32px;
+		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 0;
+		background-color: #fff;
+		transition: all 0.5s;
+
 		&:hover {
-			box-shadow: none;
-			outline: none;
-			color: inherit;
+			background-color: var(--maxi-grey-3-color);
+		}
+		&:focus {
+			background-color: var(--maxi-grey-4-color);
 		}
 		&[aria-pressed='true'] {
-			border: 2px solid #bdbdbd;
+			border-bottom: 2px solid var(--maxi-secondary-color);
+			color: var(--maxi-secondary-color);
+			background-color: var(--maxi-white-4-color);
+			font-weight: 700;
 		}
 	}
 }

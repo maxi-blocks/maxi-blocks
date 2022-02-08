@@ -1,14 +1,101 @@
+body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
+	.maxi-font-family-selector {
+		.maxi-font-family-selector__control {
+			border-color: var(--maxi-accessibility-grey-1-color);
+
+			&--is-focused,
+			&:focus {
+				border-color: var(--maxi-secondary-color);
+				box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+				outline: 2px solid transparent;
+			}
+		}
+	}
+}
 .maxi-font-family-selector {
+	z-index: 9;
 	display: block;
 	width: 100%;
-	margin-bottom: 10px;
-	z-index: 9;
+	margin-bottom: 8px;
 
-	input[type='text'] {
-		&:focus {
-			border: none !important;
-			box-shadow: none !important;
-			outline: none !important;
+	.maxi-font-family-selector__control {
+		&__menu {
+			border: 1px solid var(--maxi-grey-1-color);
+			border-radius: 0;
+			box-shadow: none;
+		}
+		&__menu-list {
+			padding: 0;
+		}
+		&__option {
+			&--is-focused {
+				color: #fff;
+				background-color: var(--maxi-secondary-color);
+				cursor: pointer;
+			}
+		}
+		&__control {
+			border-color: var(--maxi-grey-1-color);
+			padding: 8px;
+			border-radius: 0;
+
+			&:focus,
+			&:hover {
+				border-color: var(--maxi-grey-6-color);
+			}
+			&--is-focused {
+				border-color: var(--maxi-grey-6-color);
+				box-shadow: none;
+				outline: none;
+			}
+		}
+		&__single-value {
+			margin: 0;
+			color: var(--maxi-black-1-color);
+
+			& + div {
+				margin: 0;
+				padding: 0;
+			}
+		}
+		&__value-container {
+			padding: 0;
+		}
+		&__clear-indicator {
+			width: 16px;
+			height: 16px;
+			padding: 0;
+			cursor: pointer;
+			transition: 0.5s all;
+
+			&:hover {
+				opacity: 0.8;
+			}
+			svg {
+				width: 100%;
+				height: 100%;
+				fill: var(--maxi-black-1-color);
+			}
+		}
+		&__dropdown-indicator {
+			width: 20px;
+			height: 20px;
+			padding: 0;
+			cursor: pointer;
+			transition: 0.5s all;
+
+			&:hover {
+				opacity: 0.8;
+			}
+			svg {
+				fill: var(--maxi-black-1-color);
+			}
+		}
+		&__indicator-separator {
+			width: 2px;
+			height: 80%;
+			margin: auto 2px;
+			background-color: var(--maxi-grey-1-color);
 		}
 	}
 }

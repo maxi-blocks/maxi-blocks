@@ -1,25 +1,32 @@
 body.maxi-blocks--active select.maxi-select-control__input {
-	background: #fff
-		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjEuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNCA4IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNCA4OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2VuYWJsZS1iYWNrZ3JvdW5kOm5ldyAgICA7fQoJLnN0MXtmaWxsOiM0NjRBNTM7fQo8L3N0eWxlPgo8ZyBjbGFzcz0ic3QwIj4KCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xMi4yLDAuNGMxLDAsMS40LDEuMiwwLjgsMS44TDcuNiw3LjVjLTAuNCwwLjQtMS4xLDAuNC0xLjUsMEwwLjgsMi4yQzAuMSwxLjUsMC42LDAuNCwxLjUsMC40SDEyLjJ6Ii8+CjwvZz4KPC9zdmc+Cg==)
-		no-repeat right 7px top 50%;
-	background-size: 9px 9px !important;
-	border-radius: 5px !important;
+	flex: 1;
+	width: 100%;
+	min-width: 50px;
+	max-width: 25rem;
 	min-height: unset;
 	max-height: unset !important;
-	color: #464a53;
-	font-weight: 500;
-	height: 31px;
+	padding: 8px;
+	border: 1px solid var(--maxi-grey-1-color);
+	border-radius: 0 !important;
 	margin: 0;
-	padding: 0 24px 0px 10px !important;
-	opacity: 1 !important;
-	border: 2px solid #dddfe1;
-	font-size: 13px;
-	flex: 1;
-	cursor: pointer;
+	color: var(--maxi-grey-5-color);
+	background: #fff
+		url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>')
+		no-repeat right 8px top 50%;
+	background-size: 9px 9px;
+	font-size: 12px;
+	line-height: 14px;
 	vertical-align: middle;
-	max-width: 25rem;
 	-webkit-appearance: none;
-	outline: 0;
-	width: 100%;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+	cursor: pointer;
+	opacity: 1;
+	outline: 0;
+
+	.maxi-option {
+		&__in-use {
+			color: var(--maxi-green-1-color);
+			font-weight: 500;
+		}
+	}
 }

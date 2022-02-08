@@ -15,15 +15,16 @@ const SvgColor = props => {
 			{type === 'line' ? (
 				<ColorControl
 					label={label}
+					className='maxi-color-control__SVG-line-color'
 					color={props['svg-line-color']}
-					defaultColor={getDefaultAttribute('svg-line-color')}
-					paletteColor={props['svg-palette-line-color']}
-					paletteStatus={props['svg-palette-line-color-status']}
+					prefix='svg-line-'
+					paletteColor={props['svg-line-palette-color']}
+					paletteStatus={props['svg-line-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
 							'svg-line-color': color,
-							'svg-palette-line-color': paletteColor,
-							'svg-palette-line-color-status': paletteStatus,
+							'svg-line-palette-color': paletteColor,
+							'svg-line-palette-status': paletteStatus,
 						});
 					}}
 					globalProps={{ target: 'line', type: 'icon' }}
@@ -32,15 +33,16 @@ const SvgColor = props => {
 			) : (
 				<ColorControl
 					label={label}
+					className='maxi-color-control__SVG-fill-color'
 					color={props['svg-fill-color']}
-					defaultColor={getDefaultAttribute('svg-fill-color')}
-					paletteColor={props['svg-palette-fill-color']}
-					paletteStatus={props['svg-palette-fill-color-status']}
+					prefix='svg-fill-'
+					paletteColor={props['svg-fill-palette-color']}
+					paletteStatus={props['svg-fill-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
 							'svg-fill-color': color,
-							'svg-palette-fill-color': paletteColor,
-							'svg-palette-fill-color-status': paletteStatus,
+							'svg-fill-palette-color': paletteColor,
+							'svg-fill-palette-status': paletteStatus,
 						});
 					}}
 					globalProps={{ target: 'fill', type: 'icon' }}

@@ -1,12 +1,7 @@
 .toolbar-item__popover {
 	.maxi-alignment-control {
-		.maxi-radio-control__option {
+		.maxi-tabs-control__button {
 			border-color: #7a7c85;
-			.maxi-radio-control__input {
-				&:checked ~ label {
-					background-color: #4f515c;
-				}
-			}
 			svg {
 				fill: #fff;
 			}

@@ -1,5 +1,5 @@
 /**
- * WordPress
+ * WordPress dependencies
  */
 import {
 	createNewPost,
@@ -8,22 +8,32 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 /**
- * Interactive dependencies
+ * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockStyle, openSidebarTab } from '../../utils';
 
 describe('Button Maxi', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('Button Maxi does not break', async () => {
+		await createNewPost();
 		await insertBlock('Button Maxi');
 
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Button Style', async () => {
+		await openSidebarTab(page, 'style', 'style shortcut');
+
+		const buttons = await page.$$('.maxi-button-default-styles button');
+		await buttons[4].click();
+
+		await expect(await getEditedPostContent()).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	/*
 	it('Check Button Icon', async () => {
@@ -31,7 +41,7 @@ describe('Button Maxi', () => {
 
 		await page.keyboard.type('Hello');
 
-		const accordionPanel = await openSidebar(page, 'icon');
+		const accordionPanel = await openSidebarTab(page, 'style', 'icon');
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
@@ -59,6 +69,6 @@ describe('Button Maxi', () => {
 			attributes['icon-content']
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, '')); 
+		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
 	}); */
 });

@@ -2,21 +2,24 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+import {
 	ArrowDisplayer,
 	BlockPlaceholder,
-	MaxiBlockComponent,
 	Toolbar,
 	InnerBlocks,
 } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -28,33 +31,14 @@ import { isEmpty } from 'lodash';
 /**
  * Edit
  */
-
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!!this.props.attributes['parallax-status'];
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
-				}),
-			},
-		};
-	}
-
 	render() {
-		const { attributes, deviceType, hasInnerBlock, clientId } = this.props;
+		const { attributes, blockFullWidth, deviceType, hasInnerBlock } =
+			this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -79,14 +63,16 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 			/>,
 			<MaxiBlock
+				className={hasInnerBlock && 'has-child'}
 				key={`maxi-group--${uniqueID}`}
+				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
 					{...getGroupAttributes(
 						attributes,
-						['background', 'arrow', 'border'],
+						['blockBackground', 'arrow', 'border'],
 						true
 					)}
 					breakpoint={deviceType}
@@ -97,8 +83,8 @@ class edit extends MaxiBlockComponent {
 					className='maxi-group-block__group'
 					renderAppender={
 						!hasInnerBlock
-							? () => <BlockPlaceholder clientId={clientId} />
-							: () => <InnerBlocks.ButtonBlockAppender />
+							? BlockPlaceholder
+							: InnerBlocks.ButtonBlockAppender
 					}
 				/>
 			</MaxiBlock>,
@@ -106,16 +92,18 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const hasInnerBlock = !isEmpty(
+	const hasInnerBlocks = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		hasInnerBlock,
+		hasInnerBlocks,
 		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

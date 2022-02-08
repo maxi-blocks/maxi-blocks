@@ -8,9 +8,8 @@ import { InnerBlocks } from '@wordpress/block-editor';
  */
 import { ArrowDisplayer } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
 
 /**
  * Save
@@ -21,11 +20,11 @@ const save = props => {
 	const name = 'maxi-blocks/group-maxi';
 
 	return (
-		<MaxiBlock {...getMaxiBlockBlockAttributes({ ...props, name })} isSave>
+		<MaxiBlock {...getMaxiBlockAttributes({ ...props, name })} isSave>
 			<ArrowDisplayer
 				{...getGroupAttributes(
 					attributes,
-					['background', 'arrow', 'border'],
+					['blockBackground', 'arrow', 'border'],
 					true
 				)}
 			/>

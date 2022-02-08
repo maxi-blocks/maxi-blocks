@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 describe('BoxShadowControl', () => {
 	beforeEach(async () => {
@@ -17,7 +17,11 @@ describe('BoxShadowControl', () => {
 		await insertBlock('Text Maxi');
 	});
 	it('Checking the boxShadow control', async () => {
-		const accordionPanel = await openSidebar(page, 'box shadow');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'box shadow'
+		);
 
 		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
 			click[1].click()
@@ -32,23 +36,14 @@ describe('BoxShadowControl', () => {
 			'box-shadow-vertical-general': 30,
 		};
 
-		const attributes = await getBlockAttributes();
-
-		const typographyAttributes = (({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-color-general': boxShadowColor,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-status-hover': boxShadowStatus,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}) => ({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-color-general': boxShadowColor,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-status-hover': boxShadowStatus,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}))(attributes);
+		const typographyAttributes = await getAttributes([
+			'box-shadow-blur-general',
+			'box-shadow-color-general',
+			'box-shadow-horizontal-general',
+			'box-shadow-spread-general',
+			'box-shadow-status-hover',
+			'box-shadow-vertical-general',
+		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);
 
@@ -88,25 +83,22 @@ describe('BoxShadowControl', () => {
 			'box-shadow-vertical-general': 40,
 		};
 
-		const shadowAttributes = await getBlockAttributes();
+		const boxShadowAttributes = await getAttributes([
+			'box-shadow-blur-general',
+			'box-shadow-horizontal-general',
+			'box-shadow-spread-general',
+			'box-shadow-vertical-general',
+		]);
 
-		const boxShadow = (({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}) => ({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-vertical-general': boxShadowVertical,
-		}))(shadowAttributes);
-
-		expect(boxShadow).toStrictEqual(expectChanges);
+		expect(boxShadowAttributes).toStrictEqual(expectChanges);
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {
-		const accordionPanel = await openSidebar(page, 'box shadow');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'box shadow'
+		);
 		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
 			click[1].click()
 		);
@@ -115,9 +107,9 @@ describe('BoxShadowControl', () => {
 			buttons[1].click()
 		);
 
-		await page.$$eval(
-			'.maxi-box-shadow-status-hover .maxi-radio-control__option',
-			buttons => buttons[0].querySelector('label').click()
+		await page.$eval(
+			'.maxi-box-shadow-status-hover.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
@@ -128,7 +120,7 @@ describe('BoxShadowControl', () => {
 			click[0].click()
 		);
 
-		const expectChanges = {
+		const expectBoxShadow = {
 			'box-shadow-blur-general': undefined,
 			'box-shadow-blur-general-hover': 50,
 			'box-shadow-horizontal-general': undefined,
@@ -139,28 +131,19 @@ describe('BoxShadowControl', () => {
 			'box-shadow-vertical-general-hover': 30,
 		};
 
-		const shadowAttributes = await getBlockAttributes();
+		const boxShadowResult = await getAttributes([
+			'box-shadow-blur-general',
+			'box-shadow-blur-general-hover',
+			'box-shadow-horizontal-general',
+			'box-shadow-horizontal-general-hover',
+			'box-shadow-spread-general',
+			'box-shadow-spread-general-hover',
+			'box-shadow-vertical-general',
+			'box-shadow-vertical-general-hover',
+		]);
 
-		const boxShadow = (({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-blur-general-hover': boxShadowBlurHover,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-horizontal-general-hover': boxShadowHorizontalHover,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-spread-general-hover': boxShadowSpreadHover,
-			'box-shadow-vertical-general': boxShadowVertical,
-			'box-shadow-vertical-general-hover': boxShadowVerticalHover,
-		}) => ({
-			'box-shadow-blur-general': boxShadowBlur,
-			'box-shadow-blur-general-hover': boxShadowBlurHover,
-			'box-shadow-horizontal-general': boxShadowHorizontal,
-			'box-shadow-horizontal-general-hover': boxShadowHorizontalHover,
-			'box-shadow-spread-general': boxShadowSpread,
-			'box-shadow-spread-general-hover': boxShadowSpreadHover,
-			'box-shadow-vertical-general': boxShadowVertical,
-			'box-shadow-vertical-general-hover': boxShadowVerticalHover,
-		}))(shadowAttributes);
+		expect(boxShadowResult).toStrictEqual(expectBoxShadow);
 
-		expect(boxShadow).toStrictEqual(expectChanges);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

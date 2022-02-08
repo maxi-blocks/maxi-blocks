@@ -9,33 +9,31 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 describe('ClipPathOption', () => {
 	it('Checking the clip-path control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'clip path');
+		const accordionPanel = await openSidebarTab(page, 'style', 'clip path');
 
 		// Use clip-path to create a triangle
 		await accordionPanel.$eval(
-			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			'.maxi-clip-path-control .maxi-toggle-switch .maxi-base-control__label',
 			use => use.click()
 		);
 		await accordionPanel.$$eval('.clip-path-defaults button', click =>
 			click[1].click()
 		);
 
-		const triangleExpect = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-		const triangleAttributes = await getBlockAttributes();
-		const triangleClipPath = triangleAttributes.clipPath;
-
-		expect(triangleClipPath).toStrictEqual(triangleExpect);
+		expect(await getAttributes('clipPath')).toStrictEqual(
+			'polygon(50% 0%, 0% 100%, 100% 100%)'
+		);
 
 		// Transform the triangle into a square
-		await accordionPanel.$$eval(
-			'.maxi-base-control__field .maxi-radio-control__option label',
-			use => use[2].click()
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch.clip-path-custom .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const selectType = await accordionPanel.$(
@@ -43,15 +41,13 @@ describe('ClipPathOption', () => {
 		);
 		await selectType.select('inset');
 
-		const squareExpect = 'inset(15% 5% 15% 5%)';
-		const squareAttributes = await getBlockAttributes();
-		const squareClipPath = squareAttributes.clipPath;
-
-		expect(squareClipPath).toStrictEqual(squareExpect);
+		expect(await getAttributes('clipPath')).toStrictEqual(
+			'inset(15% 5% 15% 5%)'
+		);
 
 		// Edit the square
 		await accordionPanel.$$eval(
-			'.maxi-clip-path-control__handles .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			'.maxi-clip-path-control__handles .maxi-settingstab-control button',
 			use => use[1].click()
 		);
 
@@ -77,10 +73,10 @@ describe('ClipPathOption', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('64');
 
-		const customAttributes = await getBlockAttributes();
-		const customClipPath = customAttributes.clipPath;
-		const customExpect = 'inset(28% 5% 15% 64%)';
+		expect(await getAttributes('clipPath')).toStrictEqual(
+			'inset(28% 5% 15% 64%)'
+		);
 
-		expect(customClipPath).toStrictEqual(customExpect);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

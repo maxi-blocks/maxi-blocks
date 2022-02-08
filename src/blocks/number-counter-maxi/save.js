@@ -6,29 +6,36 @@ eslint-disable react/no-unknown-property
 /**
  * Internal dependencies
  */
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
+
+/**
+ * External dependencies
+ */
+import { round } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const {
+		uniqueID,
+		'number-counter-stroke': stroke,
+		'number-counter-circle-status': circleStatus,
+		'number-counter-title-font-size': fontSize,
+		'number-counter-rounded-status': roundedStatus,
+	} = attributes;
 
 	const classes = 'maxi-number-counter-block';
 
 	const radius = 90;
-	const stroke = attributes['number-counter-stroke'];
-	const circleStatus = attributes['number-counter-circle-status'];
-	const roundedStatus = attributes['number-counter-rounded-status'];
 
 	return (
 		<MaxiBlock
 			className={classes}
 			id={uniqueID}
-			{...getMaxiBlockBlockAttributes(props)}
+			{...getMaxiBlockAttributes(props)}
 			isSave
 		>
 			<div className='maxi-number-counter__box'>
@@ -56,9 +63,18 @@ const save = props => {
 							stroke-linecap={roundedStatus ? 'round' : ''}
 							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
 						/>
+						<text
+							className='maxi-number-counter__box__text'
+							text-anchor='middle'
+							x='50%'
+							y='50%'
+							dy={`${round(fontSize / 4, 2)}px`}
+						/>
 					</svg>
 				)}
-				<span className='maxi-number-counter__box__text' />
+				{circleStatus && (
+					<span className='maxi-number-counter__box__text' />
+				)}
 			</div>
 		</MaxiBlock>
 	);

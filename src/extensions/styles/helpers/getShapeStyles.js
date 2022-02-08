@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
@@ -24,20 +25,16 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 	}
 
 	if (target === 'path') {
-		if (
-			obj['shape-palette-fill-color-status'] &&
-			obj['shape-palette-fill-color']
-		)
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({ obj, prefix: 'shape-fill-' });
+
+		if (paletteStatus && paletteColor)
 			response.general.fill = getColorRGBAString({
-				firstVar: `color-${obj['shape-palette-fill-color']}`,
-				opacity: obj['shape-palette-fill-opacity'],
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
 				blockStyle: parentBlockStyle,
 			});
-		else if (
-			!obj['shape-palette-fill-color-status'] &&
-			!isNil(obj['shape-fill-color'])
-		)
-			response.general.fill = obj['shape-fill-color'];
+		else if (!paletteStatus && !isNil(color)) response.general.fill = color;
 	}
 
 	return response;

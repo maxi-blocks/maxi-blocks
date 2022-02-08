@@ -2,23 +2,26 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+import {
 	ArrowDisplayer,
 	BlockPlaceholder,
 	Indicators,
-	MaxiBlockComponent,
 	ShapeDivider,
 	Toolbar,
 	InnerBlocks,
 } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -41,44 +44,31 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
+		const {
+			'shape-divider-top-status': shapeDividerTopStatus,
+			'shape-divider-bottom-status': shapeDividerBottomStatus,
+		} = attributes;
 
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!!this.props.attributes['parallax-status'];
-
-		const shapeStatus =
-			!!this.props.attributes['shape-divider-top-status'] ||
-			!!this.props.attributes['shape-divider-bottom-status'];
+		const shapeStatus = shapeDividerTopStatus || shapeDividerBottomStatus;
 
 		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
-				}),
-				...(shapeStatus && {
-					...getGroupAttributes(
-						this.props.attributes,
-						'shapeDivider'
-					),
-				}),
-			},
+			...(shapeStatus && {
+				shape_divider: {
+					[uniqueID]: {
+						...getGroupAttributes(attributes, 'shapeDivider'),
+					},
+				},
+			}),
 		};
 	}
 
 	render() {
-		const {
-			attributes,
-			clientId,
-			deviceType,
-			hasInnerBlocks,
-			setAttributes,
-		} = this.props;
-		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
+		const { attributes, deviceType, hasInnerBlocks, maxiSetAttributes } =
+			this.props;
+		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -90,8 +80,8 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
-				{...getMaxiBlockBlockAttributes(this.props)}
-				disableMotion
+				blockFullWidth={blockFullWidth}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider
@@ -99,12 +89,12 @@ class edit extends MaxiBlockComponent {
 						location='top'
 					/>
 				)}
-				{isFirstOnHierarchy && fullWidth && (
+				{isFirstOnHierarchy && blockFullWidth === 'full' && (
 					<>
 						<ArrowDisplayer
 							{...getGroupAttributes(
 								attributes,
-								['background', 'arrow', 'border'],
+								['blockBackground', 'arrow', 'border'],
 								true
 							)}
 							breakpoint={deviceType}
@@ -116,7 +106,7 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
-							onChange={obj => setAttributes(obj)}
+							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 					</>
@@ -130,8 +120,8 @@ class edit extends MaxiBlockComponent {
 					orientation='horizontal'
 					renderAppender={
 						!hasInnerBlocks
-							? () => <BlockPlaceholder clientId={clientId} />
-							: () => <InnerBlocks.ButtonBlockAppender />
+							? BlockPlaceholder
+							: InnerBlocks.ButtonBlockAppender
 					}
 				/>
 				{attributes['shape-divider-bottom-status'] && (
@@ -145,7 +135,7 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
 	const hasInnerBlocks = !isEmpty(
@@ -157,4 +147,6 @@ export default withSelect((select, ownProps) => {
 		hasInnerBlocks,
 		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

@@ -9,8 +9,9 @@ import { TextControl } from '@wordpress/components';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
+import InfoBox from '../info-box';
 import OpacityControl from '../opacity-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -29,29 +30,26 @@ import * as mapMarkers from '../../icons/map-icons';
  * Component
  */
 const MapControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, hasApiKey = false } = props;
 
 	const classes = classnames('maxi-map-control', className);
 
 	return (
 		<div className={classes}>
-			<TextControl
-				className='maxi-map-control__full-width-text'
-				label={__('API Key', 'maxi-blocks')}
-				value={props['map-api-key']}
-				onChange={val => onChange({ 'map-api-key': val })}
-			/>
-			<p className='maxi-map-control__help'>
-				{__('Please create your own API key on the ', 'maxi-blocks')}
-				<a
-					href='https://console.developers.google.com'
-					target='_blank'
-					rel='noreferrer'
-				>
-					{__('Google Console ', 'maxi-blocks')}
-				</a>
-				{__('This is a requirement enforced by Google.', 'maxi-blocks')}
-			</p>
+			{!hasApiKey && (
+				<InfoBox
+					message={__(
+						'You have not set your Google map API key, please navigate to the Maxi Block Options and set it',
+						'maxi-blocks'
+					)}
+					links={[
+						{
+							title: __('Maxi Block Options', 'maxi-blocks'),
+							href: '/wp-admin/admin.php?page=maxi-blocks.php',
+						},
+					]}
+				/>
+			)}
 			<TextControl
 				label={__('Latitude', 'maxi-blocks')}
 				value={props['map-latitude']}
@@ -120,15 +118,13 @@ const MapControl = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
-				label={__('Custom Marker Colours', 'maxi-block')}
+			<ToggleSwitch
+				label={__('Custom Maker Colours', 'maxi-block')}
 				selected={props['map-marker-custom-color-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
 				onChange={val =>
-					onChange({ 'map-marker-custom-color-status': val })
+					onChange({
+						'map-marker-custom-color-status': val,
+					})
 				}
 			/>
 			{props['map-marker-custom-color-status'] && (
@@ -137,9 +133,7 @@ const MapControl = props => {
 						label={__('Marker Fill', 'maxi-blocks')}
 						disableOpacity
 						color={props['map-marker-fill-color']}
-						defaultColor={getDefaultAttribute(
-							'map-marker-fill-color'
-						)}
+						prefix='map-marker-fill-'
 						onChange={({ color }) =>
 							onChange({ 'map-marker-fill-color': color })
 						}
@@ -149,9 +143,7 @@ const MapControl = props => {
 						label={__('Marker Stroke', 'maxi-blocks')}
 						disableOpacity
 						color={props['map-marker-stroke-color']}
-						defaultColor={getDefaultAttribute(
-							'map-marker-stroke-color'
-						)}
+						prefix='map-marker-stroke-'
 						onChange={({ color }) =>
 							onChange({ 'map-marker-stroke-color': color })
 						}
@@ -168,15 +160,15 @@ const MapControl = props => {
 			/>
 			<ColorControl
 				label={__('Marker Text', 'maxi-blocks')}
+				paletteStatus={props['map-marker-text-palette-status']}
+				paletteColor={props['map-marker-text-palette-color']}
 				color={props['map-marker-text-color']}
-				defaultColor={getDefaultAttribute('map-marker-text-color')}
-				paletteColor={props['map-marker-palette-text-color']}
-				paletteStatus={props['map-marker-palette-text-color-status']}
+				prefix='map-marker-text-'
 				onChange={({ color, paletteColor, paletteStatus }) =>
 					onChange({
 						'map-marker-text-color': color,
-						'map-marker-palette-text-color': paletteColor,
-						'map-marker-palette-text-color-status': paletteStatus,
+						'map-marker-text-palette-color': paletteColor,
+						'map-marker-text-palette-status': paletteStatus,
 					})
 				}
 				disableOpacity
@@ -190,15 +182,14 @@ const MapControl = props => {
 			<ColorControl
 				label={__('Marker Address', 'maxi-blocks')}
 				color={props['map-marker-address-color']}
-				defaultColor={getDefaultAttribute('map-marker-address-color')}
-				paletteColor={props['map-marker-palette-address-color']}
-				paletteStatus={props['map-marker-palette-address-color-status']}
+				prefix='map-marker-address-'
+				paletteColor={props['map-marker-address-palette-color']}
+				paletteStatus={props['map-marker-address-palette-status']}
 				onChange={({ color, paletteColor, paletteStatus }) =>
 					onChange({
 						'map-marker-address-color': color,
-						'map-marker-palette-address-color': paletteColor,
-						'map-marker-palette-address-color-status':
-							paletteStatus,
+						'map-marker-address-palette-color': paletteColor,
+						'map-marker-address-palette-status': paletteStatus,
 					})
 				}
 				disableOpacity

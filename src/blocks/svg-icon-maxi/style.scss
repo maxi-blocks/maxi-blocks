@@ -8,17 +8,20 @@ body.maxi-blocks--active .maxi-svg-icon-block {
 	}
 
 	.maxi-svg-icon-block__icon {
-		height: 100%;
-	}
-
-	svg {
-		position: relative;
-		display: block;
+		display: flex;
 		width: 100%;
 		height: 100%;
-		margin: auto;
-		z-index: 20;
+
+		svg {
+			position: relative;
+			z-index: 20;
+			display: block;
+			width: 100%;
+			height: 100%;
+			margin: auto;
+		}
 	}
+
 	.maxi-background-displayer {
 		z-index: 10;
 	}

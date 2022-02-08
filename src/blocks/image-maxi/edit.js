@@ -6,27 +6,34 @@ import { withSelect, dispatch } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
 import { isURL } from '@wordpress/url';
 import { createRef } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import getStyles from './styles';
 import Inspector from './inspector';
-import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import MaxiBlock from '../../components/maxi-block';
+import {
+	getMaxiBlockAttributes,
+	MaxiBlockComponent,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+
 import {
 	BlockResizer,
 	Button,
 	HoverPreview,
-	MaxiBlockComponent,
 	Toolbar,
 	Placeholder,
 	RawHTML,
 	ImageURL,
 } from '../../components';
-import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
@@ -53,11 +60,13 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		const { isImageUrl } = this.props.attributes;
+
 		this.state = {
 			isExternalClass: isImageUrl,
 		};
 
 		this.textRef = createRef(null);
+		this.resizableObject = createRef();
 	}
 
 	propsToAvoidRendering = ['formatValue'];
@@ -77,42 +86,49 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
-
-		const motionStatus = !!this.props.attributes['motion-status'];
+	get getMaxiCustomData() {
+		const { 'hover-type': hoverType, uniqueID } = this.props.attributes;
+		const hoverStatus = hoverType !== 'none';
 
 		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'hover',
-					]),
-				}),
-			},
+			...(hoverStatus && {
+				hover_effects: {
+					[uniqueID]: {
+						...getGroupAttributes(this.props.attributes, 'hover'),
+					},
+				},
+			}),
 		};
 	}
 
 	render() {
-		const { attributes, imageData, setAttributes, clientId, isSelected } =
-			this.props;
 		const {
-			uniqueID,
-			fullWidth,
-			captionType,
+			attributes,
+			imageData,
+			maxiSetAttributes,
+			clientId,
+			isSelected,
+			deviceType,
+		} = this.props;
+		const {
+			'hover-preview': hoverPreview,
+			'hover-type': hoverType,
+			blockFullWidth,
 			captionContent,
-			mediaID,
+			captionType,
+			externalUrl,
+			fullWidth,
+			imageRatio,
+			imgWidth,
 			mediaAlt,
+			altSelector,
+			mediaHeight,
+			mediaID,
 			mediaURL,
 			mediaWidth,
-			mediaHeight,
 			SVGElement,
-			imgWidth,
-			imageRatio,
-			'hover-type': hoverType,
-			'hover-preview': hoverPreview,
-			externalUrl,
+			uniqueID,
+			captionPosition,
 		} = attributes;
 		const { isExternalClass } = this.state;
 
@@ -124,7 +140,7 @@ class edit extends MaxiBlockComponent {
 		const wrapperClassName = classnames(
 			'maxi-image-block-wrapper',
 			'maxi-image-ratio',
-			`maxi-image-ratio__${imageRatio}`
+			!SVGElement && `maxi-image-ratio__${imageRatio}`
 		);
 
 		const hoverClasses = classnames(
@@ -160,7 +176,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				setAttributes(cleanCustomProps);
+				maxiSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -189,27 +205,27 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = captionContent.replace('</a>', '');
-				setAttributes({ captionContent: `${newContent}</a>` });
+				maxiSetAttributes({ captionContent: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ captionContent });
+					maxiSetAttributes({ captionContent });
 				}, 100);
 			}
 		};
 
+		const getIsOverflowHidden = () =>
+			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
+				'hidden' &&
+			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
+				'hidden';
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
-				{...(imageData && {
-					altOptions: {
-						wpAlt: imageData.alt_text,
-						titleAlt: imageData.title.rendered,
-					},
-				})}
 				{...this.props}
 				propsToAvoid={['captionContent', 'formatValue']}
 			/>,
@@ -223,23 +239,37 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-image--${uniqueID}`}
 				ref={this.blockRef}
 				tagName='figure'
+				blockFullWidth={blockFullWidth}
 				className={classes}
-				{...getMaxiBlockBlockAttributes(this.props)}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MediaUpload
 					onSelect={media => {
-						setAttributes({
+						const alt =
+							(altSelector === 'wordpress' && media?.alt) ||
+							(altSelector === 'title' && media?.title) ||
+							null;
+
+						maxiSetAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
 							isImageUrl: false,
+							...(altSelector === 'wordpress' &&
+								!alt && { altSelector: 'title' }),
+							mediaAlt:
+								altSelector === 'wordpress' && !alt
+									? media.title
+									: alt,
 						});
+
 						this.setState({ isExternalClass: false });
+
 						if (!isEmpty(attributes.SVGData)) {
-							const cleanedContent = DOMPurify.sanitize(
-								attributes.SVGElement
-							);
+							const cleanedContent =
+								DOMPurify.sanitize(SVGElement);
+
 							const svg = document
 								.createRange()
 								.createContextualFragment(
@@ -255,10 +285,8 @@ class edit extends MaxiBlockComponent {
 							SVGValue[el].imageURL = media.url;
 
 							const resEl = injectImgSVG(svg, resData);
-							setAttributes({
+							maxiSetAttributes({
 								SVGElement: resEl.outerHTML,
-								SVGMediaID: null,
-								SVGMediaURL: null,
 								SVGData: SVGValue,
 							});
 						}
@@ -272,6 +300,8 @@ class edit extends MaxiBlockComponent {
 									<BlockResizer
 										key={uniqueID}
 										className='maxi-block__resizer maxi-image-block__resizer'
+										resizableObject={this.resizableObject}
+										isOverflowHidden={getIsOverflowHidden()}
 										size={{ width: `${imgWidth}%` }}
 										showHandle={isSelected}
 										maxWidth='100%'
@@ -287,7 +317,7 @@ class edit extends MaxiBlockComponent {
 											elt,
 											delta
 										) => {
-											setAttributes({
+											maxiSetAttributes({
 												imgWidth: +round(
 													elt.style.width.replace(
 														/[^0-9.]/g,
@@ -312,13 +342,13 @@ class edit extends MaxiBlockComponent {
 											<ImageURL
 												url={externalUrl}
 												onChange={url => {
-													setAttributes({
+													maxiSetAttributes({
 														externalUrl: url,
 													});
 												}}
 												onSubmit={url => {
 													if (isURL(url)) {
-														setAttributes({
+														maxiSetAttributes({
 															isImageUrl: true,
 															externalUrl: url,
 															mediaURL: url,
@@ -330,6 +360,37 @@ class edit extends MaxiBlockComponent {
 												}}
 											/>
 										</div>
+										{captionType !== 'none' &&
+											captionPosition === 'top' && (
+												<>
+													<CaptionToolbar
+														key={`caption-toolbar-${uniqueID}`}
+														ref={this.textRef}
+														{...this.props}
+														propsToAvoid={[
+															'captionContent',
+															'formatValue',
+														]}
+													/>
+													<RichText
+														ref={this.textRef}
+														className='maxi-image-block__caption'
+														value={captionContent}
+														onChange={
+															processContent
+														}
+														tagName='figcaption'
+														placeholder={__(
+															'Set your Image Maxi caption here…',
+															'maxi-blocks'
+														)}
+														__unstableEmbedURLOnPaste
+														__unstableAllowPrefixTransformations
+													>
+														{onChangeRichText}
+													</RichText>
+												</>
+											)}
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
 											wrapperClassName={wrapperClassName}
@@ -357,34 +418,37 @@ class edit extends MaxiBlockComponent {
 												/>
 											)}
 										</HoverPreview>
-										{captionType !== 'none' && (
-											<>
-												<CaptionToolbar
-													key={`caption-toolbar-${uniqueID}`}
-													ref={this.textRef}
-													{...this.props}
-													propsToAvoid={[
-														'captionContent',
-														'formatValue',
-													]}
-												/>
-												<RichText
-													ref={this.textRef}
-													className='maxi-image-block__caption'
-													value={captionContent}
-													onChange={processContent}
-													tagName='figcaption'
-													placeholder={__(
-														'Set your Image Maxi caption here…',
-														'maxi-blocks'
-													)}
-													__unstableEmbedURLOnPaste
-													__unstableAllowPrefixTransformations
-												>
-													{onChangeRichText}
-												</RichText>
-											</>
-										)}
+										{captionType !== 'none' &&
+											captionPosition === 'bottom' && (
+												<>
+													<CaptionToolbar
+														key={`caption-toolbar-${uniqueID}`}
+														ref={this.textRef}
+														{...this.props}
+														propsToAvoid={[
+															'captionContent',
+															'formatValue',
+														]}
+													/>
+													<RichText
+														ref={this.textRef}
+														className='maxi-image-block__caption'
+														value={captionContent}
+														onChange={
+															processContent
+														}
+														tagName='figcaption'
+														placeholder={__(
+															'Set your Image Maxi caption here…',
+															'maxi-blocks'
+														)}
+														__unstableEmbedURLOnPaste
+														__unstableAllowPrefixTransformations
+													>
+														{onChangeRichText}
+													</RichText>
+												</>
+											)}
 									</BlockResizer>
 								</>
 							) : (
@@ -406,14 +470,14 @@ class edit extends MaxiBlockComponent {
 									<ImageURL
 										url={externalUrl}
 										onChange={url => {
-											setAttributes({
+											maxiSetAttributes({
 												externalUrl: url,
 											});
 										}}
 										onSubmit={url => {
 											if (isURL(url)) {
 												// TODO: fetch url and check for the code and type
-												setAttributes({
+												maxiSetAttributes({
 													isImageUrl: true,
 													externalUrl: url,
 													mediaURL: url,
@@ -434,7 +498,7 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 	const imageData = select('core').getMedia(mediaID);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
@@ -443,4 +507,6 @@ export default withSelect((select, ownProps) => {
 		imageData,
 		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

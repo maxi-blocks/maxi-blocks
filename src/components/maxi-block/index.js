@@ -10,12 +10,8 @@ import { select, useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import {
-	getLastBreakpointAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getHasParallax } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
-import MotionPreview from '../motion-preview';
 
 /**
  * External dependencies
@@ -51,6 +47,7 @@ const MainBlock = forwardRef(
 			disableBackground,
 			uniqueID,
 			isSave,
+			anchorLink,
 			...props
 		},
 		ref
@@ -58,11 +55,11 @@ const MainBlock = forwardRef(
 		if (isSave)
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
+					{!isEmpty(anchorLink) && (
+						<span id={anchorLink} className='maxi-block-anchor' />
+					)}
 					{disableBackground && (
-						<BackgroundDisplayer
-							{...background}
-							blockClassName={uniqueID}
-						/>
+						<BackgroundDisplayer isSave {...background} />
 					)}
 					{children}
 				</TagName>
@@ -70,12 +67,8 @@ const MainBlock = forwardRef(
 
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
-				{disableBackground && (
-					<BackgroundDisplayer
-						{...background}
-						blockClassName={uniqueID}
-					/>
-				)}
+				{!isEmpty(anchorLink) && <span id={anchorLink} />}
+				{disableBackground && <BackgroundDisplayer {...background} />}
 				{children}
 			</TagName>
 		);
@@ -90,13 +83,13 @@ const MaxiBlock = forwardRef((props, ref) => {
 		children,
 		blockStyle,
 		extraClassName,
+		anchorLink,
 		uniqueID,
 		className,
 		displayValue,
-		fullWidth,
+		blockFullWidth,
 		motion,
 		background,
-		disableMotion = false,
 		disableBackground = false,
 		isSave = false,
 		classes: customClasses,
@@ -162,22 +155,18 @@ const MaxiBlock = forwardRef((props, ref) => {
 
 	const classes = classnames(
 		'maxi-block',
-		blockName && getBlockClassName(blockName),
 		!isSave && 'maxi-block--backend',
-		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
-			motion['shape-divider-top-status'] ||
-			motion['shape-divider-bottom-status'] ||
-			motion['parallax-status'] ||
-			motion['number-counter-status'] ||
-			motion['motion-status']) &&
-			'maxi-motion-effect',
-		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
-			motion['shape-divider-top-status'] ||
-			motion['shape-divider-bottom-status'] ||
-			motion['parallax-status'] ||
-			motion['number-counter-status'] ||
-			motion['motion-status']) &&
-			`maxi-motion-effect-${uniqueID}`,
+		blockName && getBlockClassName(blockName),
+		motion['hover-type'] &&
+			motion['hover-type'] !== 'none' &&
+			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
+		getHasParallax(background['background-layers']) &&
+			`maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,
+		motion['number-counter-status'] &&
+			`maxi-nc-effect maxi-nc-effect-${uniqueID}`,
+		(motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status']) &&
+			`maxi-sd-effect maxi-sd-effect-${uniqueID}`,
 		blockStyle,
 		extraClassName,
 		uniqueID,
@@ -193,11 +182,12 @@ const MaxiBlock = forwardRef((props, ref) => {
 	const blockProps = {
 		tagName,
 		className: classes,
-		'data-align': fullWidth,
+		'data-align': blockFullWidth,
 		ref,
 		id: uniqueID,
 		key: `maxi-block-${uniqueID}`,
 		uniqueID,
+		anchorLink,
 		background,
 		disableBackground: !disableBackground,
 		isSave,
@@ -237,70 +227,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	if (!disableMotion && !isSave)
-		return (
-			<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
-				<MainBlock {...blockProps}>{children}</MainBlock>
-			</MotionPreview>
-		);
-
 	return <MainBlock {...blockProps}>{children}</MainBlock>;
 });
-
-export const getMaxiBlockBlockAttributes = props => {
-	const { name, deviceType, attributes, clientId } = props;
-	const { blockStyle, extraClassName, uniqueID, fullWidth, linkSettings } =
-		attributes;
-	const displayValue = getLastBreakpointAttribute(
-		'display',
-		deviceType,
-		attributes,
-		false,
-		true
-	);
-	const motion = {
-		...getGroupAttributes(attributes, [
-			'motion',
-			'numberCounter',
-			'parallax',
-			'shapeDivider',
-			'hover',
-		]),
-	};
-
-	const background = {
-		...getGroupAttributes(attributes, [
-			'background',
-			'backgroundColor',
-			'backgroundImage',
-			'backgroundVideo',
-			'backgroundGradient',
-			'backgroundSVG',
-			'backgroundHover',
-			'backgroundColorHover',
-			'backgroundImageHover',
-			'backgroundVideoHover',
-			'backgroundGradientHover',
-			'backgroundSVGHover',
-		]),
-	};
-	const hasArrow = props.attributes['arrow-status'] || false;
-	const hasLink =
-		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
-
-	return {
-		clientId,
-		blockName: name,
-		blockStyle,
-		extraClassName,
-		uniqueID,
-		fullWidth,
-		displayValue,
-		motion,
-		background,
-		hasArrow,
-		hasLink,
-	};
-};
 
 export default MaxiBlock;

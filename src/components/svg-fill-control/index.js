@@ -2,79 +2,196 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
+import ImageShape from '../image-shape';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
-import { injectImgSVG } from '../../extensions/svg/utils';
+import ToggleSwitch from '../toggle-switch';
+import { injectImgSVG, getSVGHasImage } from '../../extensions/svg';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty, isNil } from 'lodash';
+import {
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import { ResponsiveTabsControl } from '..';
 
 /**
  * Component
  */
+const ColorContent = ({
+	SVGOptions,
+	SVGData,
+	breakpoint,
+	isHover,
+	id,
+	value,
+	onChange,
+	clientId,
+}) => (
+	<ColorControl
+		label={__('Fill', 'maxi-blocks')}
+		prefix='background-svg-'
+		useBreakpointForDefault
+		paletteStatus={getLastBreakpointAttribute(
+			'background-svg-palette-status',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		paletteColor={getLastBreakpointAttribute(
+			'background-svg-palette-color',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		paletteOpacity={getLastBreakpointAttribute(
+			'background-svg-palette-opacity',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		color={getLastBreakpointAttribute('color', breakpoint, value, isHover)}
+		onChange={({ paletteStatus, paletteColor, paletteOpacity, color }) => {
+			SVGData[id][getAttributeKey('color', isHover, false, breakpoint)] =
+				color;
+
+			onChange({
+				'background-svg-SVGElement': injectImgSVG(
+					SVGOptions['background-svg-SVGElement'],
+					SVGData
+				).outerHTML,
+				'background-svg-SVGData': SVGData,
+				[getAttributeKey(
+					'background-svg-palette-status',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteStatus,
+				[getAttributeKey(
+					'background-svg-palette-color',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteColor,
+				[getAttributeKey(
+					'background-svg-palette-opacity',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteOpacity,
+				[getAttributeKey(
+					'background-svg-palette-opacity',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteOpacity,
+			});
+		}}
+		isHover={isHover}
+		clientId={clientId}
+	/>
+);
+
 const SVGFillControl = props => {
-	const { onChange, className, clientId, isHover, SVGOptions } = props;
+	const {
+		onChange,
+		className,
+		clientId,
+		isHover,
+		SVGOptions,
+		breakpoint = '',
+	} = props;
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
-	const SVGData = cloneDeep(SVGOptions['background-svg-SVGData']);
+	const SVGElement = SVGOptions['background-svg-SVGElement'];
+	const SVGData = cloneDeep(
+		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)] ||
+			SVGOptions['background-svg-SVGData']
+	);
+
+	const bgImage = Object.values(SVGData)[0]?.imageURL;
+	const [useImage, changeUseImage] = useState(!isEmpty(bgImage));
+
+	const [oldImageID, changeOldImageID] = useState(0);
+	const [oldImageURL, changeOldImageURL] = useState('');
 
 	const getFillItem = ([id, value]) => {
 		return (
-			<SettingTabsControl
-				disablePadding
-				items={[
-					{
-						label: __('Colour', 'maxi-blocks'),
-						content: (
-							<ColorControl
-								label={__('Fill', 'maxi-blocks')}
-								color={value.color}
-								onChange={({
-									color,
-									paletteColor,
-									paletteStatus,
-								}) => {
-									SVGData[id].color = color;
+			<>
+				<ToggleSwitch
+					label={__('Use background image', 'maxi-blocks')}
+					selected={useImage}
+					onChange={val => {
+						changeUseImage(val);
+						const tempSVGData = cloneDeep(SVGData);
 
-									onChange({
-										SVGElement: injectImgSVG(
-											SVGOptions[
-												'background-svg-SVGElement'
-											],
-											SVGData
-										).outerHTML,
-										SVGData,
-										'background-palette-svg-color':
-											paletteColor,
-										'background-palette-svg-color-status':
-											paletteStatus,
-									});
-								}}
-								paletteColor={
-									SVGOptions['background-palette-svg-color']
-								}
-								paletteStatus={
-									SVGOptions[
-										'background-palette-svg-color-status'
-									]
-								}
-								isHover={isHover}
-								clientId={clientId}
-							/>
-						),
-					},
-					{
-						label: __('Image', 'maxi-blocks'),
-						content: (
+						if (!val) {
+							!isNil(tempSVGData[id].imageID) &&
+								changeOldImageID(tempSVGData[id].imageID);
+							!isEmpty(tempSVGData[id].imageURL) &&
+								changeOldImageURL(tempSVGData[id].imageURL);
+
+							tempSVGData[id].imageID = '';
+							tempSVGData[id].imageURL = '';
+						}
+
+						if (val) {
+							tempSVGData[id].imageID = !isNil(oldImageID)
+								? oldImageID
+								: 0;
+							tempSVGData[id].imageURL = !isEmpty(oldImageURL)
+								? oldImageURL
+								: '';
+						}
+
+						const resEl = injectImgSVG(
+							SVGElement,
+							tempSVGData,
+							!val
+						);
+
+						onChange({
+							'background-svg-SVGElement': resEl.outerHTML,
+							'background-svg-SVGData': tempSVGData,
+							'background-svg-palette-color':
+								props.SVGOptions[
+									'background-svg-palette-color'
+								],
+							'background-svg-palette-status':
+								props.SVGOptions[
+									'background-svg-palette-status'
+								],
+						});
+					}}
+				/>
+				{!useImage && (
+					<ResponsiveTabsControl breakpoint={breakpoint}>
+						<ColorContent
+							breakpoint={breakpoint}
+							SVGOptions={SVGOptions}
+							SVGData={SVGData}
+							isHover={isHover}
+							id={id}
+							value={value}
+							onChange={onChange}
+							clientId={clientId}
+						/>
+					</ResponsiveTabsControl>
+				)}
+				{useImage && (
+					<>
+						{!isHover && (
 							<MediaUploaderControl
 								allowedTypes={['image']}
 								mediaID={value.imageID}
@@ -82,20 +199,21 @@ const SVGFillControl = props => {
 									SVGData[id].imageID = imageData.id;
 									SVGData[id].imageURL = imageData.url;
 									const resEl = injectImgSVG(
-										SVGOptions['background-svg-SVGElement'],
+										SVGElement,
 										SVGData
 									);
 
 									onChange({
-										SVGElement: resEl.outerHTML,
-										SVGData,
-										'background-palette-svg-color':
+										'background-svg-SVGElement':
+											resEl.outerHTML,
+										'background-svg-SVGData': SVGData,
+										'background-svg-palette-color':
 											props.SVGOptions[
-												'background-palette-svg-color'
+												'background-svg-palette-color'
 											],
-										'background-palette-svg-color-status':
+										'background-svg-palette-status':
 											props.SVGOptions[
-												'background-palette-svg-color-status'
+												'background-svg-palette-status'
 											],
 									});
 								}}
@@ -104,29 +222,56 @@ const SVGFillControl = props => {
 									SVGData[id].imageURL = '';
 
 									const resEl = injectImgSVG(
-										SVGOptions['background-svg-SVGElement'],
+										SVGElement,
 										SVGData,
 										true
 									);
 
 									onChange({
-										SVGElement: resEl.outerHTML,
-										SVGData,
-										'background-palette-svg-color':
+										'background-svg-SVGElement':
+											resEl.outerHTML,
+										'background-svg-SVGData': SVGData,
+										'background-svg-palette-color':
 											props.SVGOptions[
-												'background-palette-svg-color'
+												'background-svg-palette-color'
 											],
-										'background-palette-svg-color-status':
+										'background-svg-palette-status':
 											props.SVGOptions[
-												'background-palette-svg-color-status'
+												'background-svg-palette-status'
 											],
 									});
 								}}
 							/>
-						),
-					},
-				]}
-			/>
+						)}
+						{getSVGHasImage(SVGElement) && (
+							<ResponsiveTabsControl breakpoint={breakpoint}>
+								<ImageShape
+									{...SVGOptions}
+									onChange={obj => {
+										['SVGElement', 'SVGData'].forEach(
+											el => {
+												if (el in obj) {
+													obj[
+														`background-svg-${el}`
+													] = obj[el];
+
+													delete obj[el];
+												}
+											}
+										);
+
+										onChange(obj);
+									}}
+									icon={SVGElement}
+									breakpoint={breakpoint}
+									prefix='background-svg-'
+									disableModal
+								/>
+							</ResponsiveTabsControl>
+						)}
+					</>
+				)}
+			</>
 		);
 	};
 

@@ -5,22 +5,28 @@
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyWithModifier,
 	getEditedPostContent,
+	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import {
+	openSidebarTab,
+	openPreviewPage,
+	getAttributes,
+	editColorControl,
+	getBlockStyle,
+	addTypographyOptions,
+	addTypographyStyle,
+} from '../../utils';
 
 describe('Image Maxi', () => {
-	beforeEach(async () => {
+	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-	});
-
-	it('Image Maxi does not break', async () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
@@ -45,7 +51,10 @@ describe('Image Maxi', () => {
 			submitUrl => submitUrl[0].click()
 		);
 
-		const accordionPanel = await openSidebar(page, 'caption');
+		expect(await getAttributes('externalUrl')).toStrictEqual(
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg'
+		);
+		const accordionPanel = await openSidebarTab(page, 'style', 'caption');
 
 		// Custom caption
 		const selector = await accordionPanel.$(
@@ -53,129 +62,107 @@ describe('Image Maxi', () => {
 		);
 		await selector.select('custom');
 
+		// Caption position
+		const positionSelector = await page.$(
+			'.maxi-image-inspector__caption-position select'
+		);
+
+		await positionSelector.select('top');
+		expect(await getAttributes('captionPosition')).toStrictEqual('top');
+
 		// insert text
 		await page.waitForSelector('.maxi-image-block__caption span');
 		const text = await page.$('.maxi-image-block__caption span');
 		await text.click();
 		await page.keyboard.type('Testing Caption', { delay: 100 });
 
-		const captionAttributes = await getBlockAttributes();
-		const expectedText = 'Testing Caption';
+		expect(await getAttributes('captionContent')).toStrictEqual(
+			'Testing Caption'
+		);
 
-		expect(captionAttributes.captionContent).toStrictEqual(expectedText);
+		// Caption gap
+		await page.$$eval('.maxi-image-inspector__caption-gap input', input =>
+			input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('5');
 
 		// fontFamily
 		const fontFamilySelector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await page.keyboard.type('Montserrat');
+		await page.keyboard.type('Montserrat', { delay: 100 });
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(200);
 
-		const attributes = await getBlockAttributes();
-		const fontFamily = attributes['font-family-general'];
-		const expectedFontFamily = 'Montserrat';
-
-		expect(fontFamily).toStrictEqual(expectedFontFamily);
-
-		// fontColor
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette div',
-			select => select[3].click()
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			'Montserrat'
 		);
 
-		const colorAttributes = await getBlockAttributes();
-		const color = colorAttributes['link-palette-color-general'];
-		const expectedColor = 4;
+		// fontColor
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-control__color'),
+			paletteStatus: true,
+			colorPalette: 4,
+		});
 
-		expect(color).toStrictEqual(expectedColor);
+		expect(await getAttributes('link-palette-color-general')).toStrictEqual(
+			4
+		);
 
 		// alignment
 		await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field label',
-			alignment => alignment[2].click()
+			'.maxi-alignment-control button',
+			alignment => alignment[1].click()
 		);
 
-		const alignmentAttributes = await getBlockAttributes();
-		const textAlignment = alignmentAttributes['text-alignment-general'];
-		const expectedAlignment = 'center';
-
-		expect(textAlignment).toStrictEqual(expectedAlignment);
+		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+			'center'
+		);
 
 		// size, line-height, letter-spacing
-		const inputs = await accordionPanel.$$(
-			'.maxi-advanced-number-control .maxi-base-control__field input'
-		);
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-tabs-content'
+			),
+			size: '19',
+			lineHeight: '4',
+			letterSpacing: '11',
+		});
 
-		await inputs[2].focus();
-		await page.waitForTimeout(200);
-		await page.keyboard.press('Backspace');
-		await page.waitForTimeout(200);
-		await page.keyboard.type('9');
-		await page.waitForTimeout(200);
-
-		await inputs[4].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.waitForTimeout(200);
-		await page.keyboard.type('4');
-
-		await inputs[6].focus();
-		await page.keyboard.type('11');
-		await page.waitForTimeout(200);
-
-		const styleAttributes = await getBlockAttributes();
-		const typographyAttributes = (({
-			'font-size-m': fontSize,
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
-		}) => ({
-			'font-size-m': fontSize,
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
-		}))(styleAttributes);
+		const attributes = await getAttributes([
+			'font-size-general',
+			'line-height-general',
+			'letter-spacing-general',
+		]);
 
 		const expectedAttributesTwo = {
-			'font-size-m': 19,
-			'line-height-m': 4,
-			'letter-spacing-m': 11,
+			'font-size-general': 19,
+			'line-height-general': 4,
+			'letter-spacing-general': 11,
 		};
 
-		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
+		expect(attributes).toStrictEqual(expectedAttributesTwo);
 
 		// Weight, Transform, Style, Decoration
-		const weightSelector = await accordionPanel.$(
-			'.maxi-typography-control__weight .maxi-base-control__field select'
-		);
-		await weightSelector.select('300');
+		await addTypographyStyle({
+			page,
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+		});
 
-		const transformSelector = await accordionPanel.$(
-			'.maxi-typography-control__transform .maxi-base-control__field select'
-		);
-		await transformSelector.select('capitalize');
-
-		const fontStyleSelector = await accordionPanel.$(
-			'.maxi-typography-control__font-style .maxi-base-control__field select'
-		);
-		await fontStyleSelector.select('italic');
-
-		const decorationSelector = await accordionPanel.$(
-			'.maxi-typography-control__decoration .maxi-base-control__field select'
-		);
-		await decorationSelector.select('overline');
-
-		const fontAttributes = await getBlockAttributes();
-		const textAttributes = (({
-			'font-style-general': fontStyle,
-			'font-weight-general': fontWeight,
-			'text-decoration-general': textDecoration,
-			'text-transform-general': textTransform,
-		}) => ({
-			'font-style-general': fontStyle,
-			'font-weight-general': fontWeight,
-			'text-decoration-general': textDecoration,
-			'text-transform-general': textTransform,
-		}))(fontAttributes);
+		const result = await getAttributes([
+			'font-style-general',
+			'font-weight-general',
+			'text-decoration-general',
+			'text-transform-general',
+		]);
 
 		const expectedAttributes = {
 			'font-style-general': 'italic',
@@ -184,12 +171,12 @@ describe('Image Maxi', () => {
 			'text-transform-general': 'capitalize',
 		};
 
-		expect(textAttributes).toStrictEqual(expectedAttributes);
+		expect(result).toStrictEqual(expectedAttributes);
 
 		// Text shadow
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-textshadow-control .maxi-base-control__field label',
-			select => select[1].click()
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-textshadow-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$(
@@ -198,60 +185,77 @@ describe('Image Maxi', () => {
 
 		const shadowStyles = [
 			'none',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
-			'2px 4px 3px rgba(var(--maxi-light-color-8),0.5)',
-			'4px 4px 0px rgba(var(--maxi-light-color-8),0.21)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.3)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8,150,176,203),0.5)',
+			'4px 4px 0px rgba(var(--maxi-light-color-8,150,176,203),0.21)',
 		];
 
 		for (let i = 0; i < shadowStyles.length; i += 1) {
 			const setting = shadowStyles[i];
 
+			await page.waitForSelector(
+				'.maxi-typography-control__text-shadow .maxi-default-styles-control button'
+			);
 			await accordionPanel.$$eval(
-				'.maxi-textshadow-control.maxi-typography-control__text-shadow .maxi-default-styles-control button',
+				'.maxi-typography-control__text-shadow .maxi-default-styles-control button',
 				(buttons, i) => buttons[i].click(),
 				i
 			);
 			await page.waitForTimeout(200);
 
-			const shadowAttributes = await getBlockAttributes();
-			const textShadow = shadowAttributes['text-shadow-general'];
-			expect(textShadow).toStrictEqual(setting);
+			expect(await getAttributes('text-shadow-general')).toStrictEqual(
+				setting
+			);
 		}
 
-		// Colors: LinkColor, LinkHoverColor, LinkActiveColor, LinkVisitedColor
 		// LinkColor
 		await accordionPanel.$$eval(
-			'.maxi-typography-link-color .maxi-sc-color-palette div',
-			colors => colors[1].click()
-		);
-		// LinkHoverColor
-		await accordionPanel.$$eval(
-			'.maxi-typography-link-hover-color .maxi-sc-color-palette div',
-			colors => colors[2].click()
-		);
-		// LinkActiveColor
-		await accordionPanel.$$eval(
-			'.maxi-typography-link-active-color .maxi-sc-color-palette div',
-			colors => colors[3].click()
-		);
-		// LinkVisitedColor
-		await accordionPanel.$$eval(
-			'.maxi-typography-link-visited-color .maxi-sc-color-palette div',
-			colors => colors[4].click()
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
+			tabs => tabs[0].click()
 		);
 
-		const linkColorAttributes = await getBlockAttributes();
-		const linkAttributes = (({
-			'link-palette-color-general': linkColor,
-			'link-hover-palette-color-general': linkHover,
-			'link-active-palette-color-general': linkActive,
-			'link-visited-palette-color-general': linkVisited,
-		}) => ({
-			'link-palette-color-general': linkColor,
-			'link-hover-palette-color-general': linkHover,
-			'link-active-palette-color-general': linkActive,
-			'link-visited-palette-color-general': linkVisited,
-		}))(linkColorAttributes);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-color'),
+			paletteStatus: true,
+			colorPalette: 2,
+		});
+
+		// LinkHoverColor
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
+			tabs => tabs[1].click()
+		);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-hover-color'),
+			paletteStatus: true,
+			colorPalette: 3,
+		});
+
+		// LinkActiveColor
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
+			tabs => tabs[2].click()
+		);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-active-color'),
+			paletteStatus: true,
+			colorPalette: 4,
+		});
+
+		// LinkActiveColor
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control.maxi-typography-control__link-options button',
+			tabs => tabs[3].click()
+		);
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-link-visited-color'),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
 
 		const expectedValues = {
 			'link-palette-color-general': 2,
@@ -260,6 +264,89 @@ describe('Image Maxi', () => {
 			'link-visited-palette-color-general': 5,
 		};
 
+		const linkAttributes = await getAttributes([
+			'link-palette-color-general',
+			'link-hover-palette-color-general',
+			'link-active-palette-color-general',
+			'link-visited-palette-color-general',
+		]);
+
 		expect(linkAttributes).toStrictEqual(expectedValues);
+	});
+
+	it('Image Dimension', async () => {
+		await openSidebarTab(page, 'style', 'dimension');
+
+		// width
+		await page.$eval(
+			'.maxi-image-inspector__dimension-width .components-input-control__input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('60');
+
+		expect(await getAttributes('imgWidth')).toStrictEqual(60);
+
+		// reset width
+		const button = await page.$(
+			'.maxi-image-inspector__dimension-width button'
+		);
+		await button.click();
+
+		expect(await getAttributes('imgWidth')).toStrictEqual(100);
+
+		// imageRatio
+		const selector = await page.$('.maxi-image-inspector__ratio select');
+
+		await selector.select('ar11');
+
+		expect(await getAttributes('imageRatio')).toStrictEqual('ar11');
+
+		const checkFrontend = await page.$eval(
+			'.maxi-image-block .maxi-image-ratio__ar11',
+			div => div.innerHTML
+		);
+
+		expect(checkFrontend).toMatchSnapshot();
+		expect(await getAttributes('caption-gap-general')).toStrictEqual(5);
+
+		const gapSelector = await page.$(
+			'.maxi-image-inspector__caption-gap select'
+		);
+
+		await gapSelector.select('px');
+		expect(await getAttributes('caption-gap-unit-general')).toStrictEqual(
+			'px'
+		);
+	});
+
+	it('Image alt tag', async () => {
+		await openSidebarTab(page, 'style', 'alt tag');
+
+		// select custom alt tag
+		const selector = await page.$('.maxi-image-inspector__alt-tag select');
+		await selector.select('custom');
+
+		await page.$eval('.maxi-image-inspector__custom-tag input', input =>
+			input.focus()
+		);
+
+		await page.keyboard.type('Image Custom Tag');
+
+		expect(await getAttributes('mediaAlt')).toStrictEqual(
+			'Image Custom Tag'
+		);
+
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+
+		const expectAlt = await previewPage.$eval(
+			'figure div img',
+			alterative => alterative.alt
+		);
+		expect(expectAlt).toStrictEqual('Image Custom Tag');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

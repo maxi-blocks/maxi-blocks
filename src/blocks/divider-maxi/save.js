@@ -1,9 +1,8 @@
 /**
  * Internal dependencies
  */
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
 
 /**
  * External dependencies
@@ -28,7 +27,7 @@ const save = props => {
 	return (
 		<MaxiBlock
 			classes={classes}
-			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
 			{attributes['divider-border-style'] !== 'none' && (

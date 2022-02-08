@@ -9,7 +9,7 @@ Object {
     "font-style": "bold",
     "font-weight": 3,
     "letter-spacing": "2px",
-    "line-height": "1px",
+    "line-height": "1",
     "text-decoration": "underline",
     "text-shadow": "none",
     "text-transform": "none",
@@ -61,7 +61,7 @@ Object {
     "font-style": "bold",
     "font-weight": 4,
     "letter-spacing": "3px",
-    "line-height": "2px",
+    "line-height": "2",
     "text-decoration": "underline",
     "text-shadow": "none",
     "text-transform": "none",
@@ -92,6 +92,32 @@ Object {
     "text-shadow": "none",
     "text-transform": "none",
     "vertical-align": "none",
+  },
+}
+`;
+
+exports[`getTypographyStyles Get a correct typography styles with hover 1`] = `
+Object {
+  "general": Object {
+    "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-3,155,155,155),1))",
+    "font-style": "italic",
+    "font-weight": "500",
+    "text-decoration": "overline",
+    "text-transform": "uppercase",
+  },
+  "l": Object {
+    "font-size": "10px",
+    "font-style": "oblique",
+    "font-weight": "200",
+    "letter-spacing": "2px",
+    "line-height": "40px",
+    "text-decoration": "underline",
+    "text-transform": "lowercase",
+  },
+  "xl": Object {
+    "font-size": "22px",
+    "letter-spacing": "24.2px",
+    "line-height": "4px",
   },
 }
 `;

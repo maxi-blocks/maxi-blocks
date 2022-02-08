@@ -1,176 +1,30 @@
-const padding = {
-	'padding-top-general': {
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+
+const rawPadding = {
+	'padding-top': {
 		type: 'number',
 	},
-	'padding-right-general': {
+	'padding-right': {
 		type: 'number',
 	},
-	'padding-bottom-general': {
+	'padding-bottom': {
 		type: 'number',
 	},
-	'padding-left-general': {
+	'padding-left': {
 		type: 'number',
 	},
-	'padding-sync-general': {
-		type: 'boolean',
-		default: false,
+	'padding-sync': {
+		type: 'string',
+		default: 'all',
 	},
-	'padding-sync-horizontal-general': {
-		type: 'boolean',
-		default: false,
-	},
-	'padding-sync-vertical-general': {
-		type: 'boolean',
-		default: false,
-	},
-	'padding-unit-general': {
+	'padding-unit': {
 		type: 'string',
 		default: 'px',
 	},
-	'padding-top-xxl': {
-		type: 'number',
-	},
-	'padding-right-xxl': {
-		type: 'number',
-	},
-	'padding-bottom-xxl': {
-		type: 'number',
-	},
-	'padding-left-xxl': {
-		type: 'number',
-	},
-	'padding-sync-xxl': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-xxl': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-xxl': {
-		type: 'boolean',
-	},
-	'padding-unit-xxl': {
-		type: 'string',
-	},
-	'padding-top-xl': {
-		type: 'number',
-	},
-	'padding-right-xl': {
-		type: 'number',
-	},
-	'padding-bottom-xl': {
-		type: 'number',
-	},
-	'padding-left-xl': {
-		type: 'number',
-	},
-	'padding-sync-xl': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-xl': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-xl': {
-		type: 'boolean',
-	},
-	'padding-unit-xl': {
-		type: 'string',
-	},
-	'padding-top-l': {
-		type: 'number',
-	},
-	'padding-right-l': {
-		type: 'number',
-	},
-	'padding-bottom-l': {
-		type: 'number',
-	},
-	'padding-left-l': {
-		type: 'number',
-	},
-	'padding-sync-l': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-l': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-l': {
-		type: 'boolean',
-	},
-	'padding-unit-l': {
-		type: 'string',
-	},
-	'padding-top-m': {
-		type: 'number',
-	},
-	'padding-right-m': {
-		type: 'number',
-	},
-	'padding-bottom-m': {
-		type: 'number',
-	},
-	'padding-left-m': {
-		type: 'number',
-	},
-	'padding-sync-m': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-m': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-m': {
-		type: 'boolean',
-	},
-	'padding-unit-m': {
-		type: 'string',
-	},
-	'padding-top-s': {
-		type: 'number',
-	},
-	'padding-right-s': {
-		type: 'number',
-	},
-	'padding-bottom-s': {
-		type: 'number',
-	},
-	'padding-left-s': {
-		type: 'number',
-	},
-	'padding-sync-s': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-s': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-s': {
-		type: 'boolean',
-	},
-	'padding-unit-s': {
-		type: 'string',
-	},
-	'padding-top-xs': {
-		type: 'number',
-	},
-	'padding-right-xs': {
-		type: 'number',
-	},
-	'padding-bottom-xs': {
-		type: 'number',
-	},
-	'padding-left-xs': {
-		type: 'number',
-	},
-	'padding-sync-xs': {
-		type: 'boolean',
-	},
-	'padding-sync-horizontal-xs': {
-		type: 'boolean',
-	},
-	'padding-sync-vertical-xs': {
-		type: 'boolean',
-	},
-	'padding-unit-xs': {
-		type: 'string',
-	},
 };
+
+const padding = breakpointAttributesCreator({
+	obj: rawPadding,
+});
 
 export default padding;

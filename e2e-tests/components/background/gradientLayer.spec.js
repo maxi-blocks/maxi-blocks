@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -19,6 +15,7 @@ import {
 	changeResponsive,
 	addResponsiveTest,
 	openPreviewPage,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -28,20 +25,16 @@ describe('BackgroundControl', () => {
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'shape');
 
-		const accordion = await openSidebarTab(
-			page,
-			'style',
-			'background layer'
-		);
+		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'gradient');
 
-		await accordion.$eval(
-			'.maxi-gradient-control .maxi-opacity-control input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-gradient-control .maxi-opacity-control'
+			),
+			newNumber: '50',
+		});
 
 		const selector = await page.$(
 			'.maxi-gradient-control .components-custom-gradient-picker select'
@@ -92,14 +85,13 @@ describe('BackgroundControl', () => {
 		);
 
 		await addBackgroundLayer(page, 'gradient');
-
-		await accordion.$eval(
-			'.maxi-gradient-control .maxi-opacity-control input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-gradient-control .maxi-opacity-control'
+			),
+			newNumber: '50',
+		});
 
 		const selector = await page.$(
 			'.maxi-gradient-control .components-custom-gradient-picker select'

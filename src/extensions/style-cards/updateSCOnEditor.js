@@ -254,7 +254,7 @@ const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
 
 	const allSCFonts = getSCFontsData(SCObject);
-	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);
+	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, true);
 
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
 

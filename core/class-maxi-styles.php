@@ -260,7 +260,7 @@ class MaxiBlocks_Styles
                         }
                     }
                 } else {
-                    $fontUrl = $fontUrl.'wght@0,400';
+                    $fontUrl = rtrim($fontUrl, ':');
                 }
                 
                 wp_enqueue_style(

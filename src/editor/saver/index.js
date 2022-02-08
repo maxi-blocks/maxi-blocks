@@ -2,7 +2,17 @@
  * WordPress dependencies
  */
 import { useEffect } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { getAllFonts, loadFonts } from '../../extensions/text/fonts';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 /**
  * Component
@@ -27,8 +37,35 @@ const BlockStylesSaver = () => {
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 	const { saveSCStyles } = useDispatch('maxiBlocks/style-cards');
 
+	const getPageFonts = () => {
+		const { getBlocks } = select('core/block-editor');
+		let response = {};
+
+		const getBlockFonts = blocks => {
+			Object.entries(blocks).forEach(([key, block]) => {
+				const { attributes, innerBlocks } = block;
+
+				if (!isEmpty(attributes)) {
+					response = {
+						...response,
+						...getAllFonts(attributes),
+					};
+				}
+
+				if (!isEmpty(innerBlocks)) getBlockFonts(innerBlocks);
+			});
+
+			return null;
+		};
+
+		getBlockFonts(getBlocks());
+
+		return response;
+	};
+
 	useEffect(() => {
 		if (isSaving) {
+			loadFonts(getPageFonts());
 			if (!isPreviewing && !isDraft) {
 				saveStyles(true);
 				saveCustomData(true);

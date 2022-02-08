@@ -30,7 +30,7 @@ import {
 	getHasScrollEffects,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import { loadFonts } from '../text/fonts';
+import { loadFonts, getAllFonts } from '../text/fonts';
 
 /**
  * External dependencies
@@ -312,50 +312,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		let fontName = '';
-		const fontWeight = [];
-		const fontStyle = [];
+		const response = getAllFonts(this.typography, 'custom-formats');
 
-		const getAllFonts = obj => {
-			Object.entries(obj).forEach(([key, val]) => {
-				if (typeof val !== 'undefined') {
-					if (key.includes('font-family')) fontName = val;
-					if (key.includes('font-weight'))
-						fontWeight.push(val.toString());
-
-					if (key.includes('font-style')) fontStyle.push(val);
-
-					if (key.includes('custom-formats')) {
-						let customFonts = {};
-						Object.values(val).forEach(customVal => {
-							customFonts = { ...customFonts, ...customVal };
-						});
-
-						getAllFonts(customFonts);
-					}
-				}
-			});
-		};
-
-		getAllFonts(this.typography);
-
-		const response = {};
-
-		if (!isEmpty(fontName)) {
-			response[fontName] = {};
-			if (!isEmpty(fontWeight)) {
-				// console.log('fontWeight');
-				// console.log(fontWeight);
-				response[fontName].weight = fontWeight.join(',');
-			}
-			if (!isEmpty(fontStyle)) {
-				// console.log('fontStyle');
-				// console.log(fontStyle);
-				response[fontName].style = fontStyle.join(',');
-			}
-		}
-
-		if (!isEmpty(response)) loadFonts(response);
+		if (!isEmpty(response)) loadFonts(response, true);
 	}
 
 	getParentStyle() {

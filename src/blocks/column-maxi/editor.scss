@@ -9,7 +9,7 @@
 }
 .edit-post-visual-editor {
 	.maxi-column-block__resizer.maxi-column-block {
-		outline: 1px solid #81bdda !important;
+		// outline: 1px solid #81bdda !important;
 		vertical-align: top;
 
 		&.has-child-selected,
@@ -17,6 +17,16 @@
 			outline: 2px solid #ff4a17 !important;
 			&:focus {
 				box-shadow: none !important;
+			}
+		}
+
+		&::after {
+			box-shadow: none !important;
+			transform: 0.3s;
+		}
+		&:hover {
+			&::after {
+				outline: 1px solid red !important;
 			}
 		}
 	}

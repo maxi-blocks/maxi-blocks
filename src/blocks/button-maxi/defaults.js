@@ -185,6 +185,7 @@ export const preset3 = {
 	'button-box-shadow-horizontal-general': 3,
 	'button-box-shadow-spread-general': 0,
 	'button-box-shadow-vertical-general': 3,
+	'button-box-shadow-palette-opacity-general': 1,
 	'palette-color-general': 4,
 	'palette-status-general': true,
 	// icon

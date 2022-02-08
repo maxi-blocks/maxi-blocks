@@ -4,7 +4,7 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 const prefix = 'box-shadow-';
 
 const rawBoxShadow = {
-	...paletteAttributesCreator({ prefix, palette: 4 }),
+	...paletteAttributesCreator({ prefix, palette: 8 }),
 	'box-shadow-horizontal': {
 		type: 'number',
 	},

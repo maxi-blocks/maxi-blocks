@@ -4,7 +4,7 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 const prefix = 'border-';
 
 export const rawBorder = {
-	...paletteAttributesCreator({ prefix, palette: 4 }),
+	...paletteAttributesCreator({ prefix, palette: 2 }),
 	'border-style': {
 		type: 'string',
 	},

@@ -4,7 +4,7 @@
 import { SVG, Path, G } from '@wordpress/primitives';
 
 const cloudLib = (
-	<SVG width={19.666} height={19.8} viewBox='0 0 19.666 19.8'>
+	<SVG width={26} height={28} viewBox='0 0 19.666 19.8'>
 		<G>
 			<Path
 				transform='translate(1.332 19.2)'

@@ -4,7 +4,7 @@
 import { SVG, Path, G } from '@wordpress/primitives';
 
 const helpIcon = (
-	<SVG width={11.244} height={11.244} viewBox='0 0 11.244 11.244'>
+	<SVG width={13} height={13} viewBox='0 0 13 13'>
 		<G
 			fill='none'
 			stroke='#081219'

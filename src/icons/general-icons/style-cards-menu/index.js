@@ -4,7 +4,7 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const styleCardMenu = (
-	<SVG width={18.539} height={19.43} viewBox='0 0 18.539 19.43'>
+	<SVG width={24} height={24} viewBox='0 0 18.539 19.43'>
 		<g>
 			<g>
 				<Path

@@ -132,6 +132,9 @@ const ResponsiveSelector = props => {
 
 	return (
 		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
+			<span className='maxi-responsive-selector__close' onClick={onClose}>
+				<Icon icon={closeIcon} />
+			</span>
 			<ResponsiveButton
 				icon={xllMode}
 				target='xxl'
@@ -188,9 +191,6 @@ const ResponsiveSelector = props => {
 			<Button className='action-buttons__help' href='#'>
 				<Icon className='toolbar-item__icon' icon={helpIcon} /> Help
 			</Button>
-			<span className='maxi-responsive-selector__close' onClick={onClose}>
-				<Icon icon={closeIcon} />
-			</span>
 		</div>
 	);
 };

@@ -43,7 +43,10 @@ const BlockPlaceholder = props => {
 		<div
 			ref={ref}
 			className={classes}
-			onClick={() => clientId && selectBlock(clientId)}
+			onClick={({ target }) => {
+				if (target.classList.contains('block-editor-inserter'))
+					clientId && selectBlock(clientId);
+			}}
 		>
 			<p className='maxi-block-placeholder__text'>{content}</p>
 			<ButtonBlockAppender

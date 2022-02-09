@@ -7,7 +7,7 @@ const helpIcon = (
 	<SVG width={11.244} height={11.244} viewBox='0 0 11.244 11.244'>
 		<G
 			fill='none'
-			stroke='#007cba'
+			stroke='#081219'
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			strokeWidth={1.5}

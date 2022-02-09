@@ -4,17 +4,17 @@
 import { SVG, Path, G } from '@wordpress/primitives';
 
 const closeIcon = (
-	<SVG width={14.828} height={14.828} viewBox='0 0 14.828 14.828'>
+	<SVG width={9.121} height={9.121} viewBox='0 0 9.121 9.121'>
 		<G
-			transform='translate(-1558.586 -334.136) translate(1560 335.55)'
+			transform='translate(-1558.939 -334.489) translate(1560 335.55)'
 			fill='none'
 			stroke='#141516'
 			strokeLinecap='round'
 			strokeLinejoin='round'
-			strokeWidth={2}
+			strokeWidth={1.5}
 		>
-			<Path data-name='Line 74' d='M0 0L12 12' />
-			<Path data-name='Line 75' d='M12 0L0 12' />
+			<Path data-name='Line 74' d='M0 0L7 7' />
+			<Path data-name='Line 75' d='M7 0L0 7' />
 		</G>
 	</SVG>
 );

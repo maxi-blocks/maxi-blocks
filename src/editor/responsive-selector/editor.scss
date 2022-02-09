@@ -39,33 +39,62 @@
 				position: absolute;
 				bottom: -1px;
 				left: 0;
-				background-color: #007cba;
+				background-color: #081219;
 				width: 100%;
 				height: 0;
 				transition: 0.3s;
 			}
 			&:hover {
+				background-color: #f9f9f9;
 				&::after {
 					height: 2px;
 				}
 			}
 		}
 		&__help {
-			background-color: #e5f2f8;
 			border-radius: 0;
-			padding: 4px 4px;
-			height: auto;
+			padding: 0;
+			height: 31px;
 			margin-left: 9px;
 			font-size: 11px;
-			color: #007cba;
+			color: #081219;
 			font-family: Roboto, sans-serif;
 			vertical-align: middle;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			line-height: 100%;
+			font-weight: 500;
+			transition: 0.3s;
+			position: relative;
+			box-shadow: none;
+			&::after {
+				content: '';
+				display: block;
+				position: absolute;
+				bottom: -1px;
+				left: 0;
+				background-color: #007cba;
+				width: 100%;
+				height: 0;
+				transition: 0.3s;
+			}
+			&:hover {
+				color: #007cba;
+				&::after {
+					height: 2px;
+				}
+				svg {
+					g {
+						stroke: #007cba;
+					}
+				}
+			}
 			svg {
 				margin-right: 2px;
+				g {
+					transition: 0.3s;
+				}
 			}
 		}
 	}
@@ -75,7 +104,19 @@
 		align-items: center;
 		cursor: pointer;
 		z-index: 99;
-		padding: 0 9px 0 6px;
+		padding: 0 7px 0 9px;
+		svg {
+			g {
+				transition: 0.3s;
+			}
+		}
+		&:hover {
+			svg {
+				g {
+					stroke: #007cba;
+				}
+			}
+		}
 	}
 	&__button {
 		&-item {
@@ -113,24 +154,26 @@
 				position: absolute;
 				bottom: -1px;
 				left: 0;
-				background-color: #007cba;
+				background-color: #081219;
 				width: 100%;
 				height: 0;
 				transition: 0.3s;
 			}
 			&[aria-pressed='true'] {
 				// border-bottom: 2px solid #007cba;
-				background-color: #eaf2f6;
+				background-color: #eaf2f6 !important;
 				border-bottom-left-radius: 0;
 				border-bottom-right-radius: 0;
 				&::after {
 					height: 2px;
+					background-color: #007cba;
 				}
 				svg {
 					color: var(--wp-admin-theme-color);
 				}
 			}
 			&:hover {
+				background-color: #f9f9f9;
 				&::after {
 					height: 2px;
 				}

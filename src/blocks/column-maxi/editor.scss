@@ -9,24 +9,28 @@
 }
 .edit-post-visual-editor {
 	.maxi-column-block__resizer.maxi-column-block {
-		// outline: 1px solid #81bdda !important;
 		vertical-align: top;
 
+		&::after {
+			box-shadow: none !important;
+			transition: 0.3s;
+			border-radius: 0;
+			border: 1px solid rgba(0, 124, 186, 0.5) !important;
+			opacity: 0;
+		}
 		&.has-child-selected,
 		&.is-selected {
-			outline: 2px solid #ff4a17 !important;
+			&::after {
+				opacity: 1;
+				border-color: #ff4a17 !important;
+			}
 			&:focus {
 				box-shadow: none !important;
 			}
 		}
-
-		&::after {
-			box-shadow: none !important;
-			transform: 0.3s;
-		}
 		&:hover {
 			&::after {
-				outline: 1px solid red !important;
+				opacity: 1;
 			}
 		}
 	}

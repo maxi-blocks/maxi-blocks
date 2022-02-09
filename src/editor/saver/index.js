@@ -2,18 +2,12 @@
  * WordPress dependencies
  */
 import { useEffect } from '@wordpress/element';
-import { useDispatch, useSelect, select } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { getAllFonts, loadFonts } from '../../extensions/text/fonts';
-import { getGroupAttributes } from '../../extensions/styles';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
+import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
 
 /**
  * Component
@@ -37,36 +31,6 @@ const BlockStylesSaver = () => {
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 	const { saveSCStyles } = useDispatch('maxiBlocks/style-cards');
-
-	const getPageFonts = () => {
-		const { getBlocks } = select('core/block-editor');
-		let response = {};
-
-		const getBlockFonts = blocks => {
-			Object.entries(blocks).forEach(([key, block]) => {
-				const { attributes, innerBlocks, name } = block;
-
-				if (name.includes('maxi') && !isEmpty(attributes)) {
-					const typography = {
-						...getGroupAttributes(attributes, 'typography'),
-					};
-
-					response = {
-						...response,
-						...getAllFonts(typography),
-					};
-				}
-
-				if (!isEmpty(innerBlocks)) getBlockFonts(innerBlocks);
-			});
-
-			return null;
-		};
-
-		getBlockFonts(getBlocks());
-
-		return response;
-	};
 
 	useEffect(() => {
 		if (isSaving) {

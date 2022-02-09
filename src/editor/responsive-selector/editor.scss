@@ -199,6 +199,13 @@
 						height: 20px;
 					}
 				}
+				.maxi-components-button {
+					&[aria-pressed='true'] {
+						.maxi-responsive-selector__button-current-size {
+							color: #007cba;
+						}
+					}
+				}
 			}
 		}
 		&-current-size {
@@ -206,6 +213,7 @@
 			font-size: 8px;
 			line-height: 100%;
 			margin-top: 2px;
+			font-weight: 500;
 		}
 	}
 }

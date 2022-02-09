@@ -10,6 +10,7 @@ import {
 	getAttributes,
 	addResponsiveTest,
 	getBlockStyle,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('ZIndexControl', () => {
@@ -17,18 +18,15 @@ describe('ZIndexControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'advanced', 'z index');
+
+		await editAdvancedNumberControl({
 			page,
-			'advanced',
-			'z index'
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-zIndex-control .maxi-base-control__field input',
-			input => input.focus()
-		);
-
-		await page.keyboard.type('20');
+			instance: await page.$(
+				'.maxi-zIndex-control .maxi-base-control__field'
+			),
+			newNumber: '20',
+		});
 
 		expect(await getAttributes('z-index-general')).toStrictEqual(20);
 

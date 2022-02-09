@@ -225,7 +225,7 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.only('Test Text Maxi toolbar Link in whole content, and being modifiable from the end', async () => {
+	it('Test Text Maxi toolbar Link in whole content, and being modifiable from the end', async () => {
 		await page.keyboard.type('Test Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());

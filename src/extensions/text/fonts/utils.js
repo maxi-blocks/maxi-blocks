@@ -160,8 +160,6 @@ export const getAllFonts = (
 		}
 	}
 
-	console.log(response);
-
 	return response;
 };
 

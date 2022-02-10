@@ -44,7 +44,7 @@ export const getFontsObj = obj => {
 	return response;
 };
 
-export const getAllFonts = (attr, recursiveKey = false) => {
+export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
 	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
 	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
@@ -54,15 +54,20 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 
 	const getAllFontsRecursively = obj => {
 		Object.entries(obj).forEach(([key, val]) => {
-			const breakpoint = key.split('-').pop();
+			const breakpoint = key
+				.replace(/-hover/g, '')
+				.split('-')
+				.pop();
 
 			if (key.includes('font-family')) {
+				console.log(key, val);
 				if (typeof val !== 'undefined') fontName = val;
 				else
 					fontName = getCustomFormatValue({
 						typography: { ...obj },
 						prop: 'font-family',
 						breakpoint,
+						isHover,
 						styleCard,
 					});
 			}
@@ -75,6 +80,7 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 						typography: { ...obj },
 						prop: 'font-weight',
 						breakpoint,
+						isHover,
 						styleCard,
 					});
 					if (weightSC !== 400)
@@ -83,6 +89,7 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 								typography: { ...obj },
 								prop: 'font-weight',
 								breakpoint,
+								isHover,
 								styleCard,
 							})?.toString()
 						);
@@ -96,6 +103,7 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 						typography: { ...obj },
 						prop: 'font-style',
 						breakpoint,
+						isHover,
 						styleCard,
 					});
 					if (styleSC !== 'normal')
@@ -104,11 +112,15 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 								typography: { ...obj },
 								prop: 'font-style',
 								breakpoint,
+								isHover,
 								styleCard,
 							})
 						);
 				}
 			}
+
+			console.log('fontName');
+			console.log(fontName);
 
 			if (
 				typeof val !== 'undefined' &&
@@ -142,9 +154,8 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 		}
 	}
 
-	// console.log('response');
-	// console.log(response);
-	// console.log('=======================');
+	console.log('response');
+	console.log(response);
 
 	return response;
 };
@@ -158,14 +169,62 @@ export const getPageFonts = () => {
 		Object.entries(blocks).forEach(([key, block]) => {
 			const { attributes, innerBlocks, name } = block;
 
-			if (name.includes('maxi') && !isEmpty(attributes)) {
-				const typography = {
-					...getGroupAttributes(attributes, 'typography'),
-				};
+			console.log(block);
+
+			if (name.includes('maxi-blocks') && !isEmpty(attributes)) {
+				let typography = {};
+				let typographyHover = {};
+				const prefix = '';
+				switch (name) {
+					case 'maxi-blocks/number-counter-maxi':
+						typography = {
+							...getGroupAttributes(attributes, 'numberCounter'),
+						};
+						break;
+					case 'maxi-blocks/button-maxi':
+						typography = {
+							...getGroupAttributes(
+								attributes,
+								'typography',
+								false,
+								'button-'
+							),
+						};
+						typographyHover = {
+							...getGroupAttributes(
+								attributes,
+								'typography',
+								true,
+								'button-'
+							),
+						};
+
+						break;
+
+					default:
+						typography = {
+							...getGroupAttributes(attributes, 'typography'),
+						};
+						typographyHover = {
+							...getGroupAttributes(
+								attributes,
+								'typographyHover'
+							),
+						};
+						break;
+				}
+
+				// console.log('typography');
+				// console.log(typography);
+				// console.log('=======================');
+				// console.log('typography Hover');
+				// console.log(typographyHover);
+				// console.log('=======================');
 
 				response = {
 					...response,
-					...getAllFonts(typography),
+					...getAllFonts(typography, false, false),
+					...getAllFonts(typographyHover, false, true),
 				};
 			}
 

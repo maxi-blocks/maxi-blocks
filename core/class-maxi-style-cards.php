@@ -362,6 +362,7 @@ class MaxiBlocks_StyleCards {
 							"line-height-xxl": 40,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 30,
+							"line-height-unit-xl": "px",
 							"line-height-unit-l": "px",
 							"line-height-m": 28,
 							"line-height-unit-m": "px",

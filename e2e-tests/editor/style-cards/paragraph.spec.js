@@ -7,6 +7,8 @@ import {
 	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
 
+import { getStyleCardEditor } from '../../utils';
+
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
 		return wp.data
@@ -20,20 +22,10 @@ describe('StyleCards Paragraph', () => {
 		await createNewPost();
 		await setBrowserViewport('large');
 
-		await page.$eval('.maxi-toolbar-layout button', button =>
-			button.click()
-		);
-
-		await page.$eval(
-			'.maxi-responsive-selector .style-card-button',
-			button => button.click()
-		);
-		await page.waitForTimeout(500);
-
-		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-accordion-control__item__button',
-			accordion => accordion.click()
-		);
+		await getStyleCardEditor({
+			page,
+			accordion: 'paragraph',
+		});
 
 		// screen size L
 		await page.$$eval(

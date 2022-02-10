@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+import {
+	addTypographyOptions,
+	addTypographyStyle,
+	getStyleCardEditor,
+} from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -19,75 +24,37 @@ describe('StyleCards headings', () => {
 			height: 1800,
 		});
 
-		await page.$eval('.maxi-toolbar-layout button', button =>
-			button.click()
-		);
-
-		await page.$eval(
-			'.maxi-responsive-selector .style-card-button',
-			button => button.click()
-		);
-		await page.waitForTimeout(500);
-
-		await page.$eval(
-			'.maxi-blocks-sc__type--heading .maxi-accordion-control__item__button',
-			accordion => accordion.click()
-		);
+		await getStyleCardEditor({
+			page,
+			accordion: 'heading',
+		});
 
 		// screen size L
 		await page.$$eval(
 			'.maxi-blocks-sc__type--heading .maxi-tabs-control button',
 			screenSize => screenSize[1].click()
 		);
+		// size, line-height, letter-spacing
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+			size: '20',
+			lineHeight: '0',
+			letterSpacing: '5',
+		});
 		// Size
-		await page.$eval(
-			'.maxi-blocks-sc__type--heading .maxi-typography-control__size input',
-			size => size.focus()
-		);
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('20');
-
-		// Line Height
-		await page.$eval(
-			'.maxi-blocks-sc__type--heading .maxi-typography-control__line-height input',
-			size => size.focus()
-		);
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('0');
-
-		// Letter Spacing
-		await page.$eval(
-			'.maxi-blocks-sc__type--heading .maxi-typography-control__letter-spacing input',
-			size => size.focus()
-		);
-		await page.keyboard.type('5');
 
 		// Selectors
-
-		// Weight
-		const weightSelector = await page.$(
-			'.maxi-blocks-sc__type--heading .maxi-typography-control__weight select'
-		);
-
-		// Transform
-		const transformSelector = await page.$(
-			'.maxi-blocks-sc__type--heading .maxi-typography-control__transform select'
-		);
-
-		// Style
-		const styleSelector = await page.$(
-			'.maxi-blocks-sc__type--heading .maxi-typography-control__font-style select'
-		);
-
-		// Decoration
-		const decorationSelector = await page.$(
-			'.maxi-blocks-sc__type--heading .maxi-typography-control__decoration select'
-		);
-
-		await weightSelector.select('300');
-		await transformSelector.select('capitalize');
-		await styleSelector.select('italic');
-		await decorationSelector.select('overline');
+		// Weight, Transform, Style, Decoration
+		await addTypographyStyle({
+			page,
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+		});
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {

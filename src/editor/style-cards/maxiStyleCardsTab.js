@@ -384,7 +384,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
 						classNameItem:
-							'maxi-blocks-sc__type--quick-color-presets',
+							'maxi-blocks-sc__type--quick-color-presets maxi-blocks-sc__type--color',
 						content: (
 							<>
 								<div className='maxi-style-cards__quick-color-presets'>
@@ -518,6 +518,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: linkTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--link',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${linkTabs.label}`}
@@ -537,6 +538,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					breakpoint === 'general' && {
 						label: iconTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--SVG',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${iconTabs.label}`}
@@ -551,6 +553,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					breakpoint === 'general' && {
 						label: dividerTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--divider',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${dividerTabs.label}`}

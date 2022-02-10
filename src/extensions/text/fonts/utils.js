@@ -44,7 +44,12 @@ export const getFontsObj = obj => {
 	return response;
 };
 
-export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
+export const getAllFonts = (
+	attr,
+	recursiveKey = false,
+	isHover = false,
+	textLevel = 'p'
+) => {
 	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
 	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
@@ -60,7 +65,6 @@ export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
 				.pop();
 
 			if (key.includes('font-family')) {
-				console.log(key, val);
 				if (typeof val !== 'undefined') fontName = val;
 				else
 					fontName = getCustomFormatValue({
@@ -68,6 +72,7 @@ export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
 						prop: 'font-family',
 						breakpoint,
 						isHover,
+						textLevel,
 						styleCard,
 					});
 			}
@@ -81,6 +86,7 @@ export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
 						prop: 'font-weight',
 						breakpoint,
 						isHover,
+						textLevel,
 						styleCard,
 					});
 					if (weightSC !== 400)
@@ -90,6 +96,7 @@ export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
 								prop: 'font-weight',
 								breakpoint,
 								isHover,
+								textLevel,
 								styleCard,
 							})?.toString()
 						);
@@ -104,6 +111,7 @@ export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
 						prop: 'font-style',
 						breakpoint,
 						isHover,
+						textLevel,
 						styleCard,
 					});
 					if (styleSC !== 'normal')
@@ -113,14 +121,15 @@ export const getAllFonts = (attr, recursiveKey = false, isHover = false) => {
 								prop: 'font-style',
 								breakpoint,
 								isHover,
+								textLevel,
 								styleCard,
 							})
 						);
 				}
 			}
 
-			console.log('fontName');
-			console.log(fontName);
+			// console.log('fontName');
+			// console.log(fontName);
 
 			if (
 				typeof val !== 'undefined' &&
@@ -174,7 +183,8 @@ export const getPageFonts = () => {
 			if (name.includes('maxi-blocks') && !isEmpty(attributes)) {
 				let typography = {};
 				let typographyHover = {};
-				const prefix = '';
+				let textLevel = attributes?.textLevel || 'p';
+				console.log(`textLevel ${textLevel}`);
 				switch (name) {
 					case 'maxi-blocks/number-counter-maxi':
 						typography = {
@@ -198,7 +208,7 @@ export const getPageFonts = () => {
 								'button-'
 							),
 						};
-
+						textLevel = 'button';
 						break;
 
 					default:
@@ -223,8 +233,8 @@ export const getPageFonts = () => {
 
 				response = {
 					...response,
-					...getAllFonts(typography, false, false),
-					...getAllFonts(typographyHover, false, true),
+					...getAllFonts(typography, false, false, textLevel),
+					...getAllFonts(typographyHover, false, true, textLevel),
 				};
 			}
 

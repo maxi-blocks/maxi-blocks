@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isString, uniq } from 'lodash';
+import { isEmpty, isString, uniq, merge } from 'lodash';
 
 /**
  * Internal dependencies
@@ -128,9 +128,6 @@ export const getAllFonts = (
 				}
 			}
 
-			// console.log('fontName');
-			// console.log(fontName);
-
 			if (
 				typeof val !== 'undefined' &&
 				isString(recursiveKey) &&
@@ -163,7 +160,6 @@ export const getAllFonts = (
 		}
 	}
 
-	console.log('response');
 	console.log(response);
 
 	return response;
@@ -178,13 +174,10 @@ export const getPageFonts = () => {
 		Object.entries(blocks).forEach(([key, block]) => {
 			const { attributes, innerBlocks, name } = block;
 
-			console.log(block);
-
 			if (name.includes('maxi-blocks') && !isEmpty(attributes)) {
 				let typography = {};
 				let typographyHover = {};
 				let textLevel = attributes?.textLevel || 'p';
-				console.log(`textLevel ${textLevel}`);
 				switch (name) {
 					case 'maxi-blocks/number-counter-maxi':
 						typography = {
@@ -193,24 +186,16 @@ export const getPageFonts = () => {
 						break;
 					case 'maxi-blocks/button-maxi':
 						typography = {
-							...getGroupAttributes(
-								attributes,
-								'typography',
-								false,
-								'button-'
-							),
+							...getGroupAttributes(attributes, 'typography'),
 						};
 						typographyHover = {
 							...getGroupAttributes(
 								attributes,
-								'typography',
-								true,
-								'button-'
+								'typographyHover'
 							),
 						};
 						textLevel = 'button';
 						break;
-
 					default:
 						typography = {
 							...getGroupAttributes(attributes, 'typography'),
@@ -224,17 +209,19 @@ export const getPageFonts = () => {
 						break;
 				}
 
-				// console.log('typography');
-				// console.log(typography);
-				// console.log('=======================');
-				// console.log('typography Hover');
-				// console.log(typographyHover);
-				// console.log('=======================');
-
 				response = {
-					...response,
-					...getAllFonts(typography, false, false, textLevel),
-					...getAllFonts(typographyHover, false, true, textLevel),
+					...merge(
+						{ ...response },
+						{ ...getAllFonts(typography, false, false, textLevel) },
+						{
+							...getAllFonts(
+								typographyHover,
+								false,
+								true,
+								textLevel
+							),
+						}
+					),
 				};
 			}
 

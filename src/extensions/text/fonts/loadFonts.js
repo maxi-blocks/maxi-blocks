@@ -30,7 +30,9 @@ const loadFonts = (font, backendOnly = false) => {
 			if (fontWeight?.includes(',')) {
 				fontWeightArr = fontWeight.split(',');
 				fontData = { ...val, ...{ weight: uniq(fontWeight) } };
-			}
+			} else fontData = { ...val, ...{ weight: fontWeight } };
+
+			if (isEmpty(fontData.style)) delete fontData.style;
 
 			const { files } = select('maxiBlocks/text').getFont(fontName);
 
@@ -71,10 +73,11 @@ const loadFonts = (font, backendOnly = false) => {
 				});
 			} else
 				Object.entries(files).forEach(variant => {
-					let weightFile = fontWeight;
-					if (!(Number(fontWeight) in files)) {
+					let weightFile = fontWeight.toString();
+					if (isEmpty(fontWeight) || !(Number(fontWeight) in files)) {
 						weightFile = '400';
-						font[fontName].weight = '400';
+						font[fontName].weight = weightFile;
+						fontData.weight = weightFile;
 					}
 
 					if (variant[0] === weightFile) {

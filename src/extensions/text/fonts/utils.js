@@ -55,39 +55,60 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 	const getAllFontsRecursively = obj => {
 		Object.entries(obj).forEach(([key, val]) => {
 			const breakpoint = key.split('-').pop();
-			if (key.includes('font-family'))
-				typeof val !== 'undefined'
-					? (fontName = val)
-					: (fontName = getCustomFormatValue({
-							typography: { obj },
-							prop: 'font-family',
-							breakpoint,
-							styleCard,
-					  }));
 
-			if (key.includes('font-weight'))
-				typeof val !== 'undefined'
-					? fontWeight.push(val.toString())
-					: fontWeight.push(
+			if (key.includes('font-family')) {
+				if (typeof val !== 'undefined') fontName = val;
+				else
+					fontName = getCustomFormatValue({
+						typography: { ...obj },
+						prop: 'font-family',
+						breakpoint,
+						styleCard,
+					});
+			}
+
+			if (key.includes('font-weight')) {
+				if (typeof val !== 'undefined')
+					fontWeight.push(val?.toString());
+				else {
+					const weightSC = getCustomFormatValue({
+						typography: { ...obj },
+						prop: 'font-weight',
+						breakpoint,
+						styleCard,
+					});
+					if (weightSC !== 400)
+						fontWeight.push(
 							getCustomFormatValue({
-								typography: { obj },
+								typography: { ...obj },
 								prop: 'font-weight',
 								breakpoint,
 								styleCard,
 							})?.toString()
-					  );
+						);
+				}
+			}
 
-			if (key.includes('font-style'))
-				typeof val !== 'undefined'
-					? fontStyle.push(val)
-					: fontStyle.push(
+			if (key.includes('font-style')) {
+				if (typeof val !== 'undefined') fontStyle.push(val);
+				else {
+					const styleSC = getCustomFormatValue({
+						typography: { ...obj },
+						prop: 'font-style',
+						breakpoint,
+						styleCard,
+					});
+					if (styleSC !== 'normal')
+						fontStyle.push(
 							getCustomFormatValue({
-								typography: { obj },
+								typography: { ...obj },
 								prop: 'font-style',
 								breakpoint,
 								styleCard,
 							})
-					  );
+						);
+				}
+			}
 
 			if (
 				typeof val !== 'undefined' &&
@@ -121,7 +142,9 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 		}
 	}
 
-	console.log(response);
+	// console.log('response');
+	// console.log(response);
+	// console.log('=======================');
 
 	return response;
 };
@@ -139,9 +162,6 @@ export const getPageFonts = () => {
 				const typography = {
 					...getGroupAttributes(attributes, 'typography'),
 				};
-
-				console.log('typography');
-				console.log(typography);
 
 				response = {
 					...response,

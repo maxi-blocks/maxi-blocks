@@ -12,6 +12,7 @@ import { isEmpty, isString, uniq } from 'lodash';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../../styles';
+import { getCustomFormatValue } from '../formats';
 
 export const getFontsObj = obj => {
 	const response = {};
@@ -44,32 +45,64 @@ export const getFontsObj = obj => {
 };
 
 export const getAllFonts = (attr, recursiveKey = false) => {
+	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
+	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+
 	let fontName = '';
 	const fontWeight = [];
 	const fontStyle = [];
 
 	const getAllFontsRecursively = obj => {
 		Object.entries(obj).forEach(([key, val]) => {
-			if (typeof val !== 'undefined') {
-				if (key.includes('font-family')) {
-					fontName = val;
-				}
-				if (key.includes('font-weight'))
-					fontWeight.push(val.toString());
+			const breakpoint = key.split('-').pop();
+			if (key.includes('font-family'))
+				typeof val !== 'undefined'
+					? (fontName = val)
+					: (fontName = getCustomFormatValue({
+							typography: { obj },
+							prop: 'font-family',
+							breakpoint,
+							styleCard,
+					  }));
 
-				if (key.includes('font-style')) fontStyle.push(val);
+			if (key.includes('font-weight'))
+				typeof val !== 'undefined'
+					? fontWeight.push(val.toString())
+					: fontWeight.push(
+							getCustomFormatValue({
+								typography: { obj },
+								prop: 'font-weight',
+								breakpoint,
+								styleCard,
+							})?.toString()
+					  );
 
-				if (isString(recursiveKey) && key.includes(recursiveKey)) {
-					let recursiveFonts = {};
-					Object.values(val).forEach(recursiveVal => {
-						recursiveFonts = {
-							...recursiveFonts,
-							...recursiveVal,
-						};
-					});
+			if (key.includes('font-style'))
+				typeof val !== 'undefined'
+					? fontStyle.push(val)
+					: fontStyle.push(
+							getCustomFormatValue({
+								typography: { obj },
+								prop: 'font-style',
+								breakpoint,
+								styleCard,
+							})
+					  );
 
-					getAllFontsRecursively(recursiveFonts);
-				}
+			if (
+				typeof val !== 'undefined' &&
+				isString(recursiveKey) &&
+				key.includes(recursiveKey)
+			) {
+				let recursiveFonts = {};
+				Object.values(val)?.forEach(recursiveVal => {
+					recursiveFonts = {
+						...recursiveFonts,
+						...recursiveVal,
+					};
+				});
+
+				getAllFontsRecursively(recursiveFonts);
 			}
 		});
 	};
@@ -81,18 +114,21 @@ export const getAllFonts = (attr, recursiveKey = false) => {
 	if (!isEmpty(fontName)) {
 		response[fontName] = {};
 		if (!isEmpty(fontWeight)) {
-			response[fontName].weight = fontWeight.join(',');
+			response[fontName].weight = uniq(fontWeight).join(',');
 		}
 		if (!isEmpty(fontStyle)) {
-			response[fontName].style = fontStyle.join(',');
+			response[fontName].style = uniq(fontStyle).join(',');
 		}
 	}
+
+	console.log(response);
 
 	return response;
 };
 
 export const getPageFonts = () => {
 	const { getBlocks } = select('core/block-editor');
+
 	let response = {};
 
 	const getBlockFonts = blocks => {
@@ -103,6 +139,9 @@ export const getPageFonts = () => {
 				const typography = {
 					...getGroupAttributes(attributes, 'typography'),
 				};
+
+				console.log('typography');
+				console.log(typography);
 
 				response = {
 					...response,

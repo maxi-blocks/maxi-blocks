@@ -27,7 +27,6 @@ import { isEmpty, without } from 'lodash';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
 
 	const getCategoriesCss = () => {
 		const { 'background-layers': bgLayers } = attributes;
@@ -56,7 +55,7 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Alignment',
 												'maxi-blocks'
@@ -68,8 +67,10 @@ const Inspector = props => {
 															'Line orientation',
 															'maxi-blocks'
 														)}
-														selected={
-															lineOrientation
+														value={
+															attributes[
+																`line-orientation-${deviceType}`
+															] || 'horizontal'
 														}
 														options={[
 															{
@@ -87,9 +88,10 @@ const Inspector = props => {
 																value: 'vertical',
 															},
 														]}
-														onChange={lineOrientation =>
+														onChange={val =>
 															maxiSetAttributes({
-																lineOrientation,
+																[`line-orientation-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
@@ -98,7 +100,11 @@ const Inspector = props => {
 															'Line vertical position',
 															'maxi-blocks'
 														)}
-														selected={lineVertical}
+														value={
+															attributes[
+																`line-vertical-${deviceType}`
+															] || 'flex-start'
+														}
 														options={[
 															{
 																label: __(
@@ -122,9 +128,10 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														onChange={lineVertical =>
+														onChange={val =>
 															maxiSetAttributes({
-																lineVertical,
+																[`line-vertical-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
@@ -133,8 +140,10 @@ const Inspector = props => {
 															'Line horizontal position',
 															'maxi-blocks'
 														)}
-														selected={
-															lineHorizontal
+														value={
+															attributes[
+																`line-horizontal-${deviceType}`
+															] || 'flex-start'
 														}
 														options={[
 															{
@@ -159,16 +168,17 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														onChange={lineHorizontal =>
+														onChange={val =>
 															maxiSetAttributes({
-																lineHorizontal,
+																[`line-horizontal-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
 												</>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Line settings',
 												'maxi-blocks'
@@ -186,7 +196,9 @@ const Inspector = props => {
 															)
 														}
 														lineOrientation={
-															lineOrientation
+															attributes[
+																`line-orientation-${deviceType}`
+															]
 														}
 														breakpoint={deviceType}
 														clientId={clientId}

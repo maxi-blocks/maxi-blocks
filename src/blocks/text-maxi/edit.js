@@ -157,6 +157,11 @@ class edit extends MaxiBlockComponent {
 			}, 100);
 		};
 
+		const emptyTextClass =
+			content === ''
+				? 'maxi-text-block__empty'
+				: 'maxi-text-block__has-text';
+
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *
@@ -197,7 +202,8 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
-				classes={`${isList ? 'maxi-list-block' : ''}`}
+				classes={emptyTextClass}
+				// classes={(emptyTextClass, `${isList ? 'maxi-list-block' : ''}`)}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}

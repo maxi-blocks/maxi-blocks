@@ -1,0 +1,17 @@
+.maxi-text-block {
+	&__content {
+		transition: 0.3s;
+		border: 1px dashed rgba(0, 124, 186, 0.5) !important;
+	}
+	&__has-text {
+		&:hover,
+		&.is-selected {
+			.maxi-text-block__content {
+				border: 1px dashed rgba(0, 124, 186, 0.5) !important;
+			}
+		}
+		.maxi-text-block__content {
+			border: 1px dashed transparent !important;
+		}
+	}
+}

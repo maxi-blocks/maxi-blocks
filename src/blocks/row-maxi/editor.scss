@@ -3,7 +3,7 @@
 	width: 100%;
 	margin: auto;
 	padding: 0;
-	outline: 1px solid #81bdda !important;
+	// outline: 1px solid #81bdda !important;
 	z-index: 2;
 
 	&__container {
@@ -49,6 +49,32 @@
 				stroke: #151617;
 				display: block;
 			}
+		}
+	}
+	&::after {
+		box-shadow: none !important;
+		transition: 0.3s;
+		border-radius: 0 !important;
+		top: -2px !important;
+		left: -2px !important;
+		right: -2px !important;
+		bottom: -2px !important;
+		border: 1px solid rgba(0, 124, 186, 0.5) !important;
+		opacity: 0;
+	}
+	&.has-child-selected,
+	&.is-selected {
+		// &::after {
+		// 	opacity: 1;
+		// }
+		&:focus {
+			box-shadow: none !important;
+		}
+	}
+	&__empty,
+	&:hover {
+		&::after {
+			opacity: 1;
 		}
 	}
 }

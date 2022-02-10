@@ -36,12 +36,19 @@
 			position: absolute;
 			top: 0;
 			right: 0;
-			background: #232533;
+			background: #fff;
+			box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
+			border-radius: 0;
 
 			svg {
-				fill: #fff;
+				fill: #007cba;
 				width: 20px;
 				height: 20px;
+			}
+			&:hover{
+				svg{
+					fill: #FF4A17
+				}
 			}
 		}
 	}

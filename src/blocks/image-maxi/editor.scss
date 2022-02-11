@@ -45,9 +45,9 @@
 				width: 20px;
 				height: 20px;
 			}
-			&:hover{
-				svg{
-					fill: #FF4A17
+			&:hover {
+				svg {
+					fill: #ff4a17;
 				}
 			}
 		}
@@ -88,6 +88,30 @@
 		height: inherit;
 		max-height: 100%;
 		margin: auto;
+	}
+
+	&::after {
+		box-shadow: none !important;
+		transition: 0.3s;
+		border-radius: 0;
+		border: 1px solid rgba(0, 124, 186, 0.5) !important;
+		opacity: 0;
+	}
+
+	&.is-selected {
+		&::after {
+			opacity: 1;
+			border-color: #ff4a17 !important;
+		}
+		&:focus {
+			box-shadow: none !important;
+		}
+	}
+
+	&:hover {
+		&::after {
+			opacity: 1;
+		}
 	}
 }
 

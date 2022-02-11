@@ -354,6 +354,7 @@ class MaxiBlockComponent extends Component {
 			if (!wrapper) {
 				wrapper = document.createElement('div');
 				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
+				wrapper.classList.add('maxi-blocks__styles');
 				document.head.appendChild(wrapper);
 			}
 
@@ -366,6 +367,37 @@ class MaxiBlockComponent extends Component {
 				/>,
 				wrapper
 			);
+
+			const iframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+
+			if (iframe) {
+				const iframeDocument = iframe.contentDocument;
+
+				if (iframeDocument.head) {
+					let iframeWrapper = iframeDocument.querySelector(
+						`#maxi-blocks__styles--${uniqueID}`
+					);
+
+					if (!iframeWrapper) {
+						iframeWrapper = iframeDocument.createElement('div');
+						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+						iframeWrapper.classList.add('maxi-blocks__styles');
+						iframeDocument.head.appendChild(iframeWrapper);
+					}
+
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+						/>,
+						iframeWrapper
+					);
+				}
+			}
 		}
 	}
 }

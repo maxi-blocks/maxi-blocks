@@ -290,9 +290,9 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
+			'border-style-general': 'dotted',
 			'border-style-xxl': 'solid',
 			'border-style-xl': 'dashed',
-			'border-style-general': 'dotted',
 			'border-style-m': 'dotted',
 		};
 

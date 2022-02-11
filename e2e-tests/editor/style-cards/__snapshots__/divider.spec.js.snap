@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SC Link Checking link accordion 1`] = `
+exports[`SC Divider Checking divider accordion 1`] = `
 Object {
   "color": Object {
     "4": "42,23,255",
@@ -8,7 +8,11 @@ Object {
     "6": "10,201,86",
   },
   "divider": Object {
+    "color": "",
     "color-global": true,
+    "palette-color": 4,
+    "palette-opacity": 1,
+    "palette-status": true,
   },
   "icon": Object {
     "fill": "rgba(undefined,1)",
@@ -21,18 +25,6 @@ Object {
     "line-palette-color": 6,
     "line-palette-opacity": 1,
     "line-palette-status": true,
-  },
-  "link": Object {
-    "hover-color": "",
-    "hover-color-global": false,
-    "hover-palette-color": 5,
-    "hover-palette-opacity": 1,
-    "hover-palette-status": true,
-    "link-color": "",
-    "link-color-global": false,
-    "link-palette-color": 4,
-    "link-palette-opacity": 1,
-    "link-palette-status": true,
   },
 }
 `;

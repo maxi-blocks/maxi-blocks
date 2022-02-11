@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	setBrowserViewport,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 
 import { editColorControl, getStyleCardEditor } from '../../utils';
 
@@ -29,22 +33,26 @@ describe('StyleCards ColorPresets', () => {
 			buttons => buttons[3].click()
 		);
 
-		const colorInput = await page.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input.value
+		await page.$$eval(
+			'.maxi-color-palette-control .maxi-color-control__palette-container button',
+			input => input[2].click()
 		);
 
-		expect(colorInput).toStrictEqual('#FF4A17');
+		const colorInput = await page.$eval(
+			'.maxi-color-palette-control .maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			input => input.ariaLabel
+		);
+
+		expect(colorInput).toStrictEqual('Pallet box colour 3');
 
 		// ColorControl check custom-color
-		await editColorControl({
-			page,
-			instance: await page.$(
-				'.maxi-color-control .maxi-color-control__color input'
-			),
-			paletteStatus: false,
-			customColor: '106D3C',
-		});
+		await page.$(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('106D3C');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {

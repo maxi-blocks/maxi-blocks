@@ -4,7 +4,7 @@
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
 	<style type="text/css">
-	0{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+	0{fill:none;stroke:#FFFFFF;stroke-width:2;strokeLinecap:round;stroke-linejoin:round;}
 		> m="matrix( 1, 0, 0, 1, 0,0) ">
 
 			"Layer0_0_1_STROKES" class="st0" d="M22.1,7.4V2h-4.8 M22.1,17v5.4h-4.8 M18.6,9.1V5.7h-3.1 M5.8,9.1V5.7h3 M2.3,7.4V2

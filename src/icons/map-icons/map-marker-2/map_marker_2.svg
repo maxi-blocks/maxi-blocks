@@ -4,7 +4,7 @@
 	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
 
 <g>
-	<path fill="#FF4A17" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M18.1,16.2l-5.5,5.5c-0.3,0.3-0.9,0.3-1.2,0l-5.5-5.5C2.6,12.8,2.6,7.4,5.9,4l0,0C9.3,0.6,14.7,0.6,18,4l0,0
+	<path fill="#FF4A17" stroke="#081219" stroke-width="2" strokeLinecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M18.1,16.2l-5.5,5.5c-0.3,0.3-0.9,0.3-1.2,0l-5.5-5.5C2.6,12.8,2.6,7.4,5.9,4l0,0C9.3,0.6,14.7,0.6,18,4l0,0
 		C21.4,7.4,21.4,12.8,18.1,16.2z"/>
 </g>
 </svg>

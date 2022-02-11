@@ -19,7 +19,7 @@ function GxWithTab(props) {
 				</clipPath>
 				<style>
 					{
-						'.prefix__cls-3{fill:none;stroke:#464a53;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px}'
+						'.prefix__cls-3{fill:none;stroke:#464a53;strokeLinecap:round;stroke-linejoin:round;stroke-width:2px}'
 					}
 				</style>
 			</defs>

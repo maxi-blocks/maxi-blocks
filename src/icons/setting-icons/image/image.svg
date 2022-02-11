@@ -2,7 +2,7 @@
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 21.15 21.15">
 	<defs>
-		<style>.cls-1,.cls-3{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#464a53;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
+		<style>.cls-1,.cls-3{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#464a53;strokeLinecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
 		<clipPath id="clip-path" transform="translate(0 0)">
 			<rect class="cls-1" width="21.15" height="21.15"/>
 		</clipPath>

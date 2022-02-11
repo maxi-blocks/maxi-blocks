@@ -20,9 +20,13 @@ const getBlockStyle = clientId => {
 		getBlockHierarchyRootClientId,
 		getBlockAttributes,
 		getSelectedBlockClientId,
+		getFirstMultiSelectedBlockClientId,
 	} = select('core/block-editor');
 
-	const id = clientId || getSelectedBlockClientId();
+	const id =
+		clientId ||
+		getSelectedBlockClientId() ||
+		getFirstMultiSelectedBlockClientId();
 
 	const { blockStyle: currentBlockStyle } = getBlockAttributes(id);
 

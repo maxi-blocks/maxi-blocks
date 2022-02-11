@@ -64,6 +64,8 @@ body {
 	.maxi-container-block {
 		.maxi-container-block__container {
 			& > .block-list-appender {
+				width: 100%;
+				max-width: none;
 				margin: 0;
 			}
 		}

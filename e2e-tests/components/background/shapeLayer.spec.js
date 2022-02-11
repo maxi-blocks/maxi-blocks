@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -20,6 +16,7 @@ import {
 	editAxisControl,
 	getBlockStyle,
 	openPreviewPage,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -45,13 +42,13 @@ describe('BackgroundControl', () => {
 		);
 
 		// opacity
-		const opacityInput = await page.$$(
-			'.maxi-color-control .maxi-advanced-number-control input'
-		);
-
-		await opacityInput[0].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('77');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-color-control .maxi-advanced-number-control'
+			),
+			newNumber: '77',
+		});
 
 		// size
 		await page.$$eval(
@@ -59,12 +56,13 @@ describe('BackgroundControl', () => {
 			sizeButton => sizeButton[1].click()
 		);
 
-		const sizeInput = await page.$$(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
-		);
-
-		await sizeInput[0].focus();
-		await page.keyboard.type('43');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
+			),
+			newNumber: '43',
+		});
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -95,21 +93,21 @@ describe('BackgroundControl', () => {
 		expect(baseBackgroundShapeSize).toStrictEqual('43');
 
 		// opacity and size
-		const opacityInput = await page.$$(
-			'.maxi-color-control .maxi-advanced-number-control input'
-		);
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-color-control .maxi-advanced-number-control'
+			),
+			newNumber: '54',
+		});
 
-		await opacityInput[0].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('54');
-
-		const sizeInput = await page.$$(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
-		);
-
-		await sizeInput[0].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('23');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
+			),
+			newNumber: '23',
+		});
 
 		// expect S responsive
 		const sBackgroundOpacity = await page.$eval(
@@ -209,13 +207,13 @@ describe('BackgroundControl', () => {
 			sizeButton => sizeButton[1].click()
 		);
 
-		const sizeInput = await page.$$(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
-		);
-
-		await sizeInput[0].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
+			),
+			newNumber: '22',
+		});
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -238,13 +236,13 @@ describe('BackgroundControl', () => {
 		expect(baseBackgroundShapeSize).toStrictEqual('22');
 
 		// size
-		const sizeInput = await page.$$(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input'
-		);
-
-		await sizeInput[0].focus();
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('12');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
+			),
+			newNumber: '12',
+		});
 
 		// expect S responsive
 		const sBackgroundShapeSize = await page.$$eval(

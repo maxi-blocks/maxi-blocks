@@ -21,7 +21,7 @@ import {
 	AccordionItemPanel,
 } from 'react-accessible-accordion';
 
-import { getActiveaccordion } from '../../extensions/inspector-path';
+import { getActiveAccordion } from '../../extensions/inspector-path';
 
 /**
  * Styles
@@ -51,7 +51,7 @@ const AccordionControl = props => {
 		isSecondary && 'is-secondary'
 	);
 
-	const currentaccordion = getActiveaccordion(1);
+	const currentAccordion = getActiveAccordion(1);
 
 	const accordionChange = accordionId => {
 		updateInspectorPath({ depth: 1, value: accordionId[0] });
@@ -62,7 +62,7 @@ const AccordionControl = props => {
 			className={classes}
 			allowMultipleExpanded={allowMultipleExpanded}
 			allowZeroExpanded={allowZeroExpanded}
-			preExpanded={[currentaccordion]}
+			preExpanded={[currentAccordion]}
 			onChange={value => accordionChange(value)}
 		>
 			{items.map((item, id) => {

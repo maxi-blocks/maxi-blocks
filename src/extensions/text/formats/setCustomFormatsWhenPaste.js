@@ -215,7 +215,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/bold',
-			value: { 'font-weight': '800' },
+			value: { 'font-weight': '700' },
 			isList,
 			textLevel,
 		});

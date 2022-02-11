@@ -252,10 +252,6 @@ const getSCFontsData = obj => {
 
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
-
-	const allSCFonts = getSCFontsData(SCObject);
-	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, true);
-
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
 
 	if (!SCStyle) {
@@ -267,6 +263,9 @@ const updateSCOnEditor = styleCards => {
 		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 		saveSCStyles(false);
 	} else SCStyle.innerHTML = createSCStyleString(SCObject);
+
+	const allSCFonts = getSCFontsData(SCObject);
+	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, true);
 };
 
 export default updateSCOnEditor;

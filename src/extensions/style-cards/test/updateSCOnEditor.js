@@ -1,14 +1,3 @@
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-		registerStore: jest.fn(),
-	};
-});
-
 jest.mock('@wordpress/blocks', () => {
 	return {
 		getBlockAttributes: jest.fn(),
@@ -19,6 +8,7 @@ jest.mock('@wordpress/blocks', () => {
  * Internal dependencies
  */
 import { getSCVariablesObject } from '../updateSCOnEditor';
+import '@wordpress/rich-text';
 
 describe('getSCVariablesObject', () => {
 	it('Return an object with variables ready to update on `document.documentElement`', () => {

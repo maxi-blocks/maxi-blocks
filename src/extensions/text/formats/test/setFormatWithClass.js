@@ -44,7 +44,7 @@ const styleCard = {
 				'font-size-xl': 16,
 				'font-size-unit-xl': 'px',
 				'line-height-xxl': 1.5,
-				'font-weight-general': 400,
+				'font-weight-general': '400',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -73,7 +73,7 @@ const styleCard = {
 				'line-height-xl': 1.1,
 				'line-height-l': 1.22,
 				'line-height-m': 1.27,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -102,7 +102,7 @@ const styleCard = {
 				'line-height-xl': 1.05,
 				'line-height-l': 1.26,
 				'line-height-m': 1.33,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -127,7 +127,7 @@ const styleCard = {
 				'line-height-xl': 1.3,
 				'line-height-l': 1.23,
 				'line-height-m': 1.16,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -152,7 +152,7 @@ const styleCard = {
 				'line-height-xl': 1.24,
 				'line-height-l': 1.38,
 				'line-height-m': 1.42,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -175,7 +175,7 @@ const styleCard = {
 				'line-height-xl': 1.26,
 				'line-height-l': 1.45,
 				'line-height-m': 1.5,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -198,7 +198,7 @@ const styleCard = {
 				'line-height-xl': 1.29,
 				'line-height-l': 1.5,
 				'line-height-m': 1.56,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -225,7 +225,7 @@ const styleCard = {
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'font-weight-general': 400,
+				'font-weight-general': '400',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'text-decoration-general': 'unset',
@@ -268,7 +268,7 @@ const styleCard = {
 				'font-size-unit-xl': 'px',
 				'line-height-xxl': 1.5,
 				'line-height-xl': 1.625,
-				'font-weight-general': 400,
+				'font-weight-general': '400',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -297,7 +297,7 @@ const styleCard = {
 				'line-height-xl': 1.1,
 				'line-height-l': 1.22,
 				'line-height-m': 1.27,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -326,7 +326,7 @@ const styleCard = {
 				'line-height-xl': 1.05,
 				'line-height-l': 1.26,
 				'line-height-m': 1.33,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -353,7 +353,7 @@ const styleCard = {
 				'line-height-xl': 1.3,
 				'line-height-l': 1.23,
 				'line-height-m': 1.16,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -379,7 +379,7 @@ const styleCard = {
 				'line-height-xl': 1.24,
 				'line-height-l': 1.38,
 				'line-height-m': 1.42,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -402,7 +402,7 @@ const styleCard = {
 				'line-height-xl': 1.26,
 				'line-height-l': 1.45,
 				'line-height-m': 1.5,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -425,7 +425,7 @@ const styleCard = {
 				'line-height-xl': 1.29,
 				'line-height-l': 1.5,
 				'line-height-m': 1.56,
-				'font-weight-general': 500,
+				'font-weight-general': '500',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -448,7 +448,7 @@ const styleCard = {
 				'font-size-unit-l': 'px',
 				'line-height-xxl': 1.5,
 				'line-height-xl': 1.625,
-				'font-weight-general': 400,
+				'font-weight-general': '400',
 				'text-transform-general': 'none',
 				'font-style-general': 'normal',
 				'letter-spacing-xxl': 0,
@@ -486,7 +486,7 @@ describe('setFormatWithClass', () => {
 		};
 		const typography = {};
 		const value = {
-			'font-weight': 800,
+			'font-weight': '800',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -502,7 +502,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 			content:
@@ -571,12 +571,12 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -648,7 +648,7 @@ describe('setFormatWithClass', () => {
 			},
 		};
 		const value = {
-			'font-weight': 800,
+			'font-weight': '800',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -668,7 +668,7 @@ describe('setFormatWithClass', () => {
 					'font-style-general': 'italic',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 			content:
@@ -742,12 +742,12 @@ describe('setFormatWithClass', () => {
 					'font-style-general': 'italic',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -835,7 +835,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
@@ -857,7 +857,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
@@ -938,7 +938,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
@@ -961,7 +961,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 			content:
@@ -1033,12 +1033,12 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 800,
+			'font-weight': '800',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -1055,7 +1055,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 			content:
@@ -1166,12 +1166,12 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -1188,7 +1188,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 			content:
@@ -1268,7 +1268,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
@@ -1290,10 +1290,10 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
@@ -1374,10 +1374,10 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
@@ -1401,14 +1401,14 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 				'maxi-text-block__custom-format--2': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'color-general': 'rgba(58,22,237,1)',
 					'palette-status-general': false,
 				},
@@ -1490,10 +1490,10 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
@@ -1516,7 +1516,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 			content:
@@ -1596,16 +1596,16 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -1702,21 +1702,21 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 				'maxi-text-block__custom-format--2': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'palette-status-general': false,
 					'color-general': 'rgba(51,12,247,1)',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -1801,7 +1801,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
@@ -1827,7 +1827,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'palette-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
@@ -1910,7 +1910,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'palette-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
@@ -1943,7 +1943,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'palette-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
@@ -2031,7 +2031,7 @@ describe('setFormatWithClass', () => {
 			'text-decoration-general': 'underline',
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'palette-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
@@ -2068,7 +2068,7 @@ describe('setFormatWithClass', () => {
 			'text-decoration-general': '',
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'palette-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
@@ -2199,10 +2199,10 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
@@ -2225,10 +2225,10 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
@@ -2349,16 +2349,16 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 					'font-style-general': 'italic',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -2445,16 +2445,16 @@ describe('setFormatWithClass', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'font-weight-general': 800,
+			'font-weight-general': '800',
 			'custom-formats': {
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -2469,14 +2469,14 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'font-weight-general': 800,
+			'font-weight-general': '800',
 			'custom-formats': {
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 400,
+					'font-weight-general': '400',
 				},
 			},
 			content:
@@ -2554,15 +2554,15 @@ describe('setFormatWithClass', () => {
 			],
 		};
 		const typography = {
-			'font-weight-general': 800,
+			'font-weight-general': '800',
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 400,
+					'font-weight-general': '400',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 800,
+			'font-weight': '800',
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -2577,7 +2577,7 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'font-weight-general': 800,
+			'font-weight-general': '800',
 			'custom-formats': {},
 			content: 'Testing Text Maxi',
 		};
@@ -2740,17 +2740,17 @@ describe('checkFormatCoincidence', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
 		const className = 'maxi-text-block__custom-format--1';
 		const breakpoint = 'general';
 		const value = {
-			'font-weight': 800,
+			'font-weight': '800',
 		};
 		const isHover = false;
 		const textLevel = 'p';

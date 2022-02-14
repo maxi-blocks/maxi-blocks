@@ -14,6 +14,6 @@ export const getForcedTabFromPath = (items, depth) => {
 	return tabIndex > 0 ? tabIndex : 0;
 };
 
-export const getActiveaccordion = depth => {
+export const getActiveAccordion = depth => {
 	return receiveInspectorPath()?.[depth]?.value || 0;
 };

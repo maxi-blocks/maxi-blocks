@@ -46,13 +46,20 @@ describe('StyleCards ColorPresets', () => {
 		expect(colorInput).toStrictEqual('Pallet box colour 3');
 
 		// ColorControl check custom-color
-		await page.$(
+		await page.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
 			input => input.focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('106D3C');
+
+		const customColor = await page.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.value
+		);
+
+		expect(customColor).toStrictEqual('106D3C');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {

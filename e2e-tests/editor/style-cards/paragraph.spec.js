@@ -56,7 +56,6 @@ describe('StyleCards Paragraph', () => {
 		await page.keyboard.type('5');
 
 		// Selectors
-
 		// Weight
 		const weightOptions = await page.$(
 			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__weight select'

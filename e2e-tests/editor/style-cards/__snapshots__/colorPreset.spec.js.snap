@@ -3,7 +3,28 @@
 exports[`StyleCards ColorPresets Check Quick Pick Colour Presets 1`] = `
 Object {
   "color": Object {
-    "1": "16,109,60",
+    "4": "16,109,60",
+    "5": "92,205,222",
+    "6": "10,201,86",
+  },
+  "divider": Object {
+    "color": "",
+    "color-global": true,
+    "palette-color": 3,
+    "palette-opacity": 1,
+    "palette-status": true,
+  },
+  "icon": Object {
+    "fill": "rgba(undefined,1)",
+    "fill-global": false,
+    "fill-palette-color": 2,
+    "fill-palette-opacity": 1,
+    "fill-palette-status": true,
+    "line": "rgba(undefined,1)",
+    "line-global": false,
+    "line-palette-color": 6,
+    "line-palette-opacity": 1,
+    "line-palette-status": true,
   },
 }
 `;

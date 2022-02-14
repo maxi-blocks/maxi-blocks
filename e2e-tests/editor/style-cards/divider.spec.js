@@ -20,7 +20,6 @@ describe('SC Divider', () => {
 	it('Checking divider accordion', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
-
 		await setBrowserViewport('large');
 
 		await getStyleCardEditor({

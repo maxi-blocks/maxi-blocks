@@ -39,6 +39,7 @@ import { isNil, isBoolean, isNumber } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**
  * Component
@@ -100,10 +101,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}font-size-unit`]: getDefault(
-								`${prefix}font-size-unit`
+								`${prefix}font-size-unit`,
+								breakpoint
 							),
 							[`${prefix}font-size`]: getDefault(
-								`${prefix}font-size`
+								`${prefix}font-size`,
+								breakpoint
 							),
 						},
 						rawBreakpoint
@@ -163,10 +166,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}line-height-unit`]: getDefault(
-								`${prefix}line-height-unit`
+								`${prefix}line-height-unit`,
+								breakpoint
 							),
 							[`${prefix}line-height`]: getDefault(
-								`${prefix}line-height`
+								`${prefix}line-height`,
+								breakpoint
 							),
 						},
 						rawBreakpoint
@@ -221,7 +226,8 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}letter-spacing-unit`]: getDefault(
-								`${prefix}letter-spacing-unit`
+								`${prefix}letter-spacing-unit`,
+								breakpoint
 							),
 							[`${prefix}letter-spacing`]: '',
 						},
@@ -673,10 +679,15 @@ const TypographyControl = withFormatValue(props => {
 
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
-		const defaultAttribute = getDefaultAttribute(
-			`${prop}-${currentBreakpoint}`,
-			clientId
-		);
+
+		const defaultAttribute = !styleCards
+			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
+			: getDefaultSCValue({
+					target: `${prop}-${currentBreakpoint}`,
+					SC: styleCard,
+					SCStyle: blockStyle,
+					groupAttr: textLevel,
+			  });
 
 		return defaultAttribute;
 	};

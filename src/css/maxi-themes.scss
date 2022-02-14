@@ -195,9 +195,7 @@ body.maxi-blocks--active {
 				.maxi-block--backend {
 					&.maxi-#{$style} {
 						&.maxi-text-block,
-						&.maxi-button-block,
-						.maxi-text-block,
-						.maxi-button-block {
+						.maxi-text-block {
 							@each $level in $levels {
 								#{$level} {
 									&.maxi-text-block__content {
@@ -247,29 +245,30 @@ body.maxi-blocks--active {
 								);
 							}
 						}
-					}
-					.maxi-button-block__content {
-						font-size: var(
-							--maxi-#{$style}-button-font-size-#{$responsive_size}
-						);
-						line-height: var(
-							--maxi-#{$style}-button-line-height-#{$responsive_size}
-						);
-						letter-spacing: var(
-							--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
-						);
-						font-weight: var(
-							--maxi-#{$style}-button-font-weight-#{$responsive_size}
-						);
-						text-transform: var(
-							--maxi-#{$style}-button-text-transform-#{$responsive_size}
-						);
-						font-style: var(
-							--maxi-#{$style}-button-font-style-#{$responsive_size}
-						);
-						text-decoration: var(
-							--maxi-#{$style}-button-text-decoration-#{$responsive_size}
-						);
+
+						.maxi-button-block__content {
+							font-size: var(
+								--maxi-#{$style}-button-font-size-#{$responsive_size}
+							);
+							line-height: var(
+								--maxi-#{$style}-button-line-height-#{$responsive_size}
+							);
+							letter-spacing: var(
+								--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
+							);
+							font-weight: var(
+								--maxi-#{$style}-button-font-weight-#{$responsive_size}
+							);
+							text-transform: var(
+								--maxi-#{$style}-button-text-transform-#{$responsive_size}
+							);
+							font-style: var(
+								--maxi-#{$style}-button-font-style-#{$responsive_size}
+							);
+							text-decoration: var(
+								--maxi-#{$style}-button-text-decoration-#{$responsive_size}
+							);
+						}
 					}
 				}
 			}

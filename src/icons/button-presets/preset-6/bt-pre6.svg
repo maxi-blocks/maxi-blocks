@@ -12,7 +12,7 @@
   </defs>
   <g fill="none" fill-rule="evenodd" filter="url(#a)" transform="translate(8 7)">
     <path fill="#FFF" fill-rule="nonzero" d="M4.352.5h62.3C68.775.5 70.5 2.533 70.5 5.042v16.382c0 2.508-1.725 4.542-3.852 4.542H4.352C2.225 25.965.5 23.932.5 21.424V5.042C.5 2.533 2.225.5 4.352.5Z"/>
-    <g stroke="#163247" strokeLinecap="round" stroke-linejoin="round" stroke-width="1.5">
+    <g stroke="#163247" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
       <path d="m61.383 10.5 2.7 2.662-2.7 2.738M64.084 13.162h-6.791"/>
     </g>
     <g fill="#163247" fill-rule="nonzero">

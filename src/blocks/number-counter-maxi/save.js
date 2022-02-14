@@ -60,7 +60,7 @@ const save = props => {
 							cx={radius + stroke / 2}
 							cy={radius + stroke / 2}
 							r={radius}
-							strokeLinecap={roundedStatus ? 'round' : ''}
+							stroke-linecap={roundedStatus ? 'round' : ''}
 							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
 						/>
 						<text

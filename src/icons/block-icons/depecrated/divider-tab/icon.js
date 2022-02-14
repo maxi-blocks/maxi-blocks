@@ -14,7 +14,7 @@ function GxDividerTab(props) {
 		>
 			<style>
 				{
-					'.prefix__st0{fill:none;stroke:#464a53;stroke-width:2;strokeLinecap:round;stroke-linejoin:round}'
+					'.prefix__st0{fill:none;stroke:#464a53;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
 				}
 			</style>
 			<g>

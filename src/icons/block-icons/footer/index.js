@@ -14,7 +14,7 @@ const footer = (
 	>
 		<style type='text/css'>
 			{
-				'.st0{fill:none;stroke:#ff4a17;stroke-width:1.5;strokeLinecap:round;stroke-linejoin:round;}'
+				'.st0{fill:none;stroke:#ff4a17;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}'
 			}
 		</style>
 		<g transform='matrix( 1, 0, 0, 1, 0,0) '>

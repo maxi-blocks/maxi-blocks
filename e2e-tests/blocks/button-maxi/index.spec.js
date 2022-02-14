@@ -61,7 +61,7 @@ describe('Button Maxi', () => {
 			button => button.click()
 		);
 		const expectShape =
-			'<svg stroke-linejoin="round" stroke-width="2" stroke="#081219" data-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="alert-maxi-svg"><g stroke-miterlimit="10"><path d="M11.157 3.995L2.521 19.037c-.372.648.096 1.456.843 1.456h17.272c.747 0 1.215-.808.843-1.456L12.843 3.995c-.373-.651-1.312-.651-1.685 0z"></path><path strokeLinecap="round" d="M12 9.615v5.003"></path></g><circle r=".202" cy="17.251" cx="12"></circle></svg>';
+			'<svg stroke-linejoin="round" stroke-width="2" stroke="#081219" data-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="alert-maxi-svg"><g stroke-miterlimit="10"><path d="M11.157 3.995L2.521 19.037c-.372.648.096 1.456.843 1.456h17.272c.747 0 1.215-.808.843-1.456L12.843 3.995c-.373-.651-1.312-.651-1.685 0z"></path><path stroke-linecap="round" d="M12 9.615v5.003"></path></g><circle r=".202" cy="17.251" cx="12"></circle></svg>';
 
 		const attributes = await getBlockAttributes();
 

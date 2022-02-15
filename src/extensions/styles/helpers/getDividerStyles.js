@@ -3,12 +3,12 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
  */
 import { isNil, isNumber } from 'lodash';
-import getPaletteAttributes from '../getPaletteAttributes';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -35,27 +35,34 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 					blockStyle: parentBlockStyle,
 				}),
 			};
-		else if (!paletteStatus && !isNil(color))
-			return { 'border-color': color };
+		if (!paletteStatus && !isNil(color)) return { 'border-color': color };
 	};
+
 	breakpoints.forEach(breakpoint => {
 		if (target === 'line') {
+			const isHorizontal =
+				getLastBreakpointAttribute(
+					'line-orientation',
+					breakpoint,
+					obj
+				) === 'horizontal';
+
+			const dividerBorderStyle = getLastBreakpointAttribute(
+				'divider-border-style',
+				breakpoint,
+				obj
+			);
+
 			response[breakpoint] = {
-				'border-top-style': !isNil(
-					obj[`divider-border-style-${breakpoint}`]
-				)
-					? obj[`divider-border-style-${breakpoint}`]
-					: getLastBreakpointAttribute(
-							'divider-border-style',
-							breakpoint,
-							obj
-					  ),
-				...(obj[`line-orientation-${breakpoint}`] === 'horizontal' && {
-					...getColor(breakpoint),
+				'border-top-style': dividerBorderStyle,
+				...getColor(breakpoint),
+				...(obj[`divider-border-radius-${breakpoint}`] &&
+					obj[`divider-border-style-${breakpoint}`] === 'solid' && {
+						'border-radius': '20px',
+					}),
+
+				...(isHorizontal && {
 					'border-right-style': 'none',
-					...(obj[`divider-border-radius-${breakpoint}`] &&
-						obj[`divider-border-style-${breakpoint}`] ===
-							'solid' && { 'border-radius': '20px' }),
 					width: !isNil(obj[`divider-width-${breakpoint}`])
 						? `${obj[`divider-width-${breakpoint}`]}${
 								obj[`divider-width-unit-${breakpoint}`]
@@ -73,22 +80,13 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 						  }
 						: { 'border-top-width': '2px' }),
 				}),
-				...(obj[`line-orientation-${breakpoint}`] === 'vertical' && {
-					'border-right-style': !isNil(
-						obj[`divider-border-style-${breakpoint}`]
-					)
-						? obj[`divider-border-style-${breakpoint}`]
-						: 'solid',
-					...getColor(breakpoint),
+
+				...(!isHorizontal && {
 					'border-top-style': 'none',
-					...(obj[`divider-border-radius-${breakpoint}`] &&
-						obj[`divider-border-style-${breakpoint}`] ===
-							'solid' && {
-							'border-radius': '20px',
-						}),
+					'border-right-style': dividerBorderStyle ?? 'solid',
 					...(!isNil(obj[`divider-border-right-width-${breakpoint}`])
 						? {
-								['border-right-width']: `${
+								'border-right-width': `${
 									obj[
 										`divider-border-right-width-${breakpoint}`
 									]

@@ -45,7 +45,7 @@ const DividerControl = props => {
 		clientId,
 		breakpoint,
 	} = props;
-	console.log(props);
+
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -183,45 +183,27 @@ const DividerControl = props => {
 				!disableColor && (
 					<ColorControl
 						label={__('Divider', 'maxi-blocks')}
-						color={
-							props[`divider-border-color-${breakpoint}`] ||
-							getLastBreakpointAttribute(
-								'divider-border-color',
-								breakpoint,
-								props
-							)
-						}
+						color={getLastBreakpointAttribute(
+							'divider-border-color',
+							breakpoint,
+							props
+						)}
 						prefix='divider-border-'
-						paletteColor={
-							props[
-								`divider-border-palette-color-${breakpoint}` ||
-									getLastBreakpointAttribute(
-										'divider-border-palette-color',
-										breakpoint,
-										props
-									)
-							]
-						}
-						paletteOpacity={
-							props[
-								`divider-border-palette-opacity-${breakpoint}` ||
-									getLastBreakpointAttribute(
-										'divider-border-palette-opacity',
-										breakpoint,
-										props
-									)
-							]
-						}
-						paletteStatus={
-							props[
-								`divider-border-palette-status-${breakpoint}`
-							] ||
-							getLastBreakpointAttribute(
-								'divider-border-palette-status',
-								breakpoint,
-								props
-							)
-						}
+						paletteColor={getLastBreakpointAttribute(
+							'divider-border-palette-color',
+							breakpoint,
+							props
+						)}
+						paletteOpacity={getLastBreakpointAttribute(
+							'divider-border-palette-opacity',
+							breakpoint,
+							props
+						)}
+						paletteStatus={getLastBreakpointAttribute(
+							'divider-border-palette-status',
+							breakpoint,
+							props
+						)}
 						onChange={({
 							color,
 							paletteColor,
@@ -251,13 +233,21 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Line size', 'maxi-blocks')}
 							enableUnit
-							unit={props[`divider-width-unit-${breakpoint}`]}
+							unit={getLastBreakpointAttribute(
+								'divider-width-unit',
+								breakpoint,
+								props
+							)}
 							onChangeUnit={val =>
 								onChange({
 									[`divider-width-unit-${breakpoint}`]: val,
 								})
 							}
-							value={props[`divider-width-${breakpoint}`]}
+							value={getLastBreakpointAttribute(
+								'divider-width',
+								breakpoint,
+								props
+							)}
 							onChangeValue={val =>
 								onChange({
 									[`divider-width-${breakpoint}`]: val,

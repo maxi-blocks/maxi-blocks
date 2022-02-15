@@ -467,27 +467,6 @@ class edit extends MaxiBlockComponent {
 										onClick={open}
 										icon={toolbarReplaceImage}
 									/>
-									<ImageURL
-										url={externalUrl}
-										onChange={url => {
-											maxiSetAttributes({
-												externalUrl: url,
-											});
-										}}
-										onSubmit={url => {
-											if (isURL(url)) {
-												// TODO: fetch url and check for the code and type
-												maxiSetAttributes({
-													isImageUrl: true,
-													externalUrl: url,
-													mediaURL: url,
-												});
-												this.setState({
-													isExternalClass: true,
-												});
-											}
-										}}
-									/>
 								</div>
 							)}
 						</>

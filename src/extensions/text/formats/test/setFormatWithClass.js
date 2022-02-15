@@ -506,7 +506,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">Maxi</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Maxi</span>',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -672,7 +672,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--1">Ma</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">xi</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">Ma</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">xi</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -768,7 +768,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text Ma<maxi-blocks/text-custom className="maxi-text-block__custom-format--0">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">i</maxi-blocks/text-custom>',
+				'Testing Text Ma<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -862,7 +862,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">Maxi</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Maxi</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -965,7 +965,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">Maxi</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Maxi</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1059,7 +1059,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">Text Maxi</maxi-blocks/text-custom>',
+				'Testing <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Text Maxi</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1192,7 +1192,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">i</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1298,7 +1298,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--1">Ma</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">xi</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">Ma</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">xi</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1414,7 +1414,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--1">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--2">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">i</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1520,7 +1520,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">Maxi</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Maxi</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1626,7 +1626,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--1">M</maxi-blocks/text-custom>axi',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">M</span>axi',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1741,7 +1741,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--1">M</maxi-blocks/text-custom>a<maxi-blocks/text-custom className="maxi-text-block__custom-format--2">x</maxi-blocks/text-custom>i',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">M</span>a<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">x</span>i',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1842,7 +1842,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">i</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -1962,7 +1962,7 @@ describe('setFormatWithClass', () => {
 			},
 			'text-decoration-general': 'underline',
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">i</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2083,7 +2083,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">i</maxi-blocks/text-custom>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2233,7 +2233,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">T</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ex</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">t M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ax</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">i</maxi-blocks/text-custom>',
+				'Testing <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">T</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">ex</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">t M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">ax</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2379,7 +2379,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing T<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ex</maxi-blocks/text-custom>t M<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ax</maxi-blocks/text-custom>i',
+				'Testing T<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">ex</span>t M<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">ax</span>i',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2480,7 +2480,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Te<maxi-blocks/text-custom className="maxi-text-block__custom-format--0">sting</maxi-blocks/text-custom> T<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ex</maxi-blocks/text-custom>t M<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ax</maxi-blocks/text-custom>i',
+				'Te<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">sting</span> T<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">ex</span>t M<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">ax</span>i',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2621,7 +2621,7 @@ describe('setFormatWithClass', () => {
 				},
 			},
 			content:
-				'Testing <maxi-blocks/text-custom-hover className="maxi-text-block__custom-format--0--hover">Text</maxi-blocks/text-custom-hover> Maxi',
+				'Testing <span class="maxi-text-block--has-custom-hover-format maxi-text-block__custom-format--0--hover">Text</span> Maxi',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2641,7 +2641,7 @@ describe('setFormatWithClass', () => {
 				,
 				[
 					{
-						type: 'maxi-blocks/text-custom-hover',
+						type: 'span',
 						attributes: {
 							className:
 								'maxi-text-block__custom-format--0--hover',
@@ -2651,7 +2651,7 @@ describe('setFormatWithClass', () => {
 				],
 				[
 					{
-						type: 'maxi-blocks/text-custom-hover',
+						type: 'span',
 						attributes: {
 							className:
 								'maxi-text-block__custom-format--0--hover',
@@ -2661,7 +2661,7 @@ describe('setFormatWithClass', () => {
 				],
 				[
 					{
-						type: 'maxi-blocks/text-custom-hover',
+						type: 'span',
 						attributes: {
 							className:
 								'maxi-text-block__custom-format--0--hover',
@@ -2671,7 +2671,7 @@ describe('setFormatWithClass', () => {
 				],
 				[
 					{
-						type: 'maxi-blocks/text-custom-hover',
+						type: 'span',
 						attributes: {
 							className:
 								'maxi-text-block__custom-format--0--hover',
@@ -2692,6 +2692,9 @@ describe('setFormatWithClass', () => {
 		};
 		const typography = {
 			'custom-formats-hover': {
+				'maxi-text-block__custom-format--1--hover': {
+					'font-weight-general': '800',
+				},
 				'maxi-text-block__custom-format--0--hover': {
 					'palette-status-general': false,
 					'color-general': 'rgba(220,34,34,1)',
@@ -2717,16 +2720,12 @@ describe('setFormatWithClass', () => {
 
 		const expectedResult = {
 			'custom-formats-hover': {
-				'maxi-text-block__custom-format--0--hover': {
-					'palette-status-general': false,
-					'color-general': 'rgba(220,34,34,1)',
-				},
-				'maxi-text-block__custom-format--1--hover': {
+				'maxi-text-block__custom-format--2--hover': {
 					'font-weight-general': '800',
 				},
 			},
 			content:
-				'Testing <maxi-blocks/text-custom-hover className="maxi-text-block__custom-format--0--hover">Text</maxi-blocks/text-custom-hover> <maxi-blocks/text-custom-hover className="maxi-text-block__custom-format--1--hover">Maxi</maxi-blocks/text-custom-hover>',
+				'Testing <span className="maxi-text-block__custom-format--0--hover">Text</span> <span class="maxi-text-block--has-custom-hover-format maxi-text-block__custom-format--2--hover">Maxi</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(

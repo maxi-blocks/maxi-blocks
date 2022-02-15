@@ -93,7 +93,7 @@ const ResponsiveButton = ({
 								/>
 							</svg>
 							<div className='maxi-responsive-selector__button-current-size'>
-								Your size
+								{__('Your size', 'maxi-blocks')}
 							</div>
 						</>
 					)}

@@ -206,6 +206,15 @@ class MaxiBlockComponent extends Component {
 		// Force render styles when changing scValues
 		if (!isEqual(prevProps.scValues, this.props.scValues)) return false;
 
+		// For render styles when there's no <style> element for the block
+		// Normally happens when duplicate the block
+		if (
+			!document.querySelector(
+				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+			)
+		)
+			return false;
+
 		if (this.maxiBlockGetSnapshotBeforeUpdate)
 			this.maxiBlockGetSnapshotBeforeUpdate();
 

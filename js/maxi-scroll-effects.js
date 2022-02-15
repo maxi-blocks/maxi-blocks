@@ -6,7 +6,6 @@ class ScrollEffects {
 
 	init() {
 		this.startingEffect();
-		// this.effectsOnScroll();
 
 		// eslint-disable-next-line @wordpress/no-global-event-listener
 		document.addEventListener('DOMContentLoaded', [
@@ -16,6 +15,7 @@ class ScrollEffects {
 
 		// eslint-disable-next-line @wordpress/no-global-event-listener
 		window.addEventListener('scroll', this.effectsOnScroll.bind(this));
+		// eslint-disable-next-line @wordpress/no-global-event-listener
 		window.addEventListener('scroll', this.getScrollDirection.bind(this));
 
 		this.scrollDirection = this.getScrollDirection();
@@ -161,20 +161,12 @@ class ScrollEffects {
 
 	getScrollDirection = () => {
 		const newValue = window.pageYOffset;
-
 		let currentDirection = '';
-		if (this.oldValue < newValue) {
-			// console.log(`window.pageYOffset: ${window.pageYOffset}`);
-			// console.log(`oldValue: ${this.oldValue}`);
-			// console.log(`newValue: ${newValue}`);
-			currentDirection = 'down';
-		} else {
-			currentDirection = 'up';
-		}
+
+		if (this.oldValue < newValue) currentDirection = 'down';
+		else currentDirection = 'up';
 
 		this.oldValue = newValue;
-
-		console.log(currentDirection);
 
 		return currentDirection;
 	};

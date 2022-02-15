@@ -13,7 +13,10 @@ import {
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
 
@@ -67,11 +70,11 @@ const Inspector = props => {
 															'Line orientation',
 															'maxi-blocks'
 														)}
-														value={
-															attributes[
-																`line-orientation-${deviceType}`
-															] || 'horizontal'
-														}
+														value={getLastBreakpointAttribute(
+															'line-orientation',
+															deviceType,
+															attributes
+														)}
 														options={[
 															{
 																label: __(
@@ -100,11 +103,11 @@ const Inspector = props => {
 															'Line vertical position',
 															'maxi-blocks'
 														)}
-														value={
-															attributes[
-																`line-vertical-${deviceType}`
-															] || 'flex-start'
-														}
+														value={getLastBreakpointAttribute(
+															'line-vertical',
+															deviceType,
+															attributes
+														)}
 														options={[
 															{
 																label: __(
@@ -140,11 +143,11 @@ const Inspector = props => {
 															'Line horizontal position',
 															'maxi-blocks'
 														)}
-														value={
-															attributes[
-																`line-horizontal-${deviceType}`
-															] || 'flex-start'
-														}
+														value={getLastBreakpointAttribute(
+															'line-horizontal',
+															deviceType,
+															attributes
+														)}
 														options={[
 															{
 																label: __(
@@ -195,11 +198,11 @@ const Inspector = props => {
 																obj
 															)
 														}
-														lineOrientation={
-															attributes[
-																`line-orientation-${deviceType}`
-															]
-														}
+														lineOrientation={getLastBreakpointAttribute(
+															'line-orientation',
+															deviceType,
+															attributes
+														)}
 														breakpoint={deviceType}
 														clientId={clientId}
 													/>

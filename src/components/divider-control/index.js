@@ -12,7 +12,10 @@ import ToggleSwitch from '../toggle-switch';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import {
 	dividerDashedHorizontal,
 	dividerDashedVertical,
@@ -42,7 +45,7 @@ const DividerControl = props => {
 		clientId,
 		breakpoint,
 	} = props;
-
+	console.log(props);
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -69,9 +72,7 @@ const DividerControl = props => {
 					{
 						activeItem:
 							props[`divider-border-style-${breakpoint}`] ===
-								'none' ||
-							props[`divider-border-style-${breakpoint}`] ===
-								undefined,
+							'none',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -83,7 +84,12 @@ const DividerControl = props => {
 					{
 						activeItem:
 							props[`divider-border-style-${breakpoint}`] ===
-							'solid',
+								'solid' ||
+							getLastBreakpointAttribute(
+								'divider-border-style',
+								breakpoint,
+								props
+							) === 'solid',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -99,7 +105,12 @@ const DividerControl = props => {
 					{
 						activeItem:
 							props[`divider-border-style-${breakpoint}`] ===
-							'dashed',
+								'dashed' ||
+							getLastBreakpointAttribute(
+								'divider-border-style',
+								breakpoint,
+								props
+							) === 'dashed',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -115,7 +126,12 @@ const DividerControl = props => {
 					{
 						activeItem:
 							props[`divider-border-style-${breakpoint}`] ===
-							'dotted',
+								'dotted' ||
+							getLastBreakpointAttribute(
+								'divider-border-style',
+								breakpoint,
+								props
+							) === 'dotted',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -167,18 +183,44 @@ const DividerControl = props => {
 				!disableColor && (
 					<ColorControl
 						label={__('Divider', 'maxi-blocks')}
-						color={props[`divider-border-color-${breakpoint}`]}
+						color={
+							props[`divider-border-color-${breakpoint}`] ||
+							getLastBreakpointAttribute(
+								'divider-border-color',
+								breakpoint,
+								props
+							)
+						}
 						prefix='divider-border-'
 						paletteColor={
-							props[`divider-border-palette-color-${breakpoint}`]
+							props[
+								`divider-border-palette-color-${breakpoint}` ||
+									getLastBreakpointAttribute(
+										'divider-border-palette-color',
+										breakpoint,
+										props
+									)
+							]
 						}
 						paletteOpacity={
 							props[
-								`divider-border-palette-opacity-${breakpoint}`
+								`divider-border-palette-opacity-${breakpoint}` ||
+									getLastBreakpointAttribute(
+										'divider-border-palette-opacity',
+										breakpoint,
+										props
+									)
 							]
 						}
 						paletteStatus={
-							props[`divider-border-palette-status-${breakpoint}`]
+							props[
+								`divider-border-palette-status-${breakpoint}`
+							] ||
+							getLastBreakpointAttribute(
+								'divider-border-palette-status',
+								breakpoint,
+								props
+							)
 						}
 						onChange={({
 							color,

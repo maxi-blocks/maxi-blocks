@@ -153,6 +153,7 @@
 
 	// RangeControl
 	.components-range-control {
+		overflow: hidden;
 		.components-range-control__root {
 			align-items: center;
 			margin: 0;
@@ -201,10 +202,12 @@
 				background: var(--maxi-secondary-color) !important;
 
 				& + span {
-					top: -8px;
+					top: -9px;
 					width: 16px;
 					height: 16px;
 					transform: translateX(0);
+					background-color: transparent;
+					margin-left: -9px;
 
 					span {
 						position: relative;

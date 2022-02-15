@@ -366,11 +366,11 @@ body .toolbar-item__popover {
 /*******************************
 * Style Card Editor Boat Icon
 *******************************/
-
+svg path#styleCardMenu_a,
 svg path#styleCardBoat_a {
 	fill: rgba(var(--maxi-light-color-4), 1);
 }
-
+svg path#styleCardMenu_b,
 svg path#styleCardBoat_b {
 	stroke: rgba(var(--maxi-light-color-7), 1);
 }

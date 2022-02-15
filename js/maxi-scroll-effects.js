@@ -6,7 +6,7 @@ class ScrollEffects {
 
 	init() {
 		this.startingEffect();
-		this.effectsOnScroll();
+		// this.effectsOnScroll();
 
 		// eslint-disable-next-line @wordpress/no-global-event-listener
 		document.addEventListener('DOMContentLoaded', [
@@ -16,6 +16,9 @@ class ScrollEffects {
 
 		// eslint-disable-next-line @wordpress/no-global-event-listener
 		window.addEventListener('scroll', this.effectsOnScroll.bind(this));
+		window.addEventListener('scroll', this.getScrollDirection.bind(this));
+
+		this.scrollDirection = this.getScrollDirection();
 	}
 
 	getElements = () => {
@@ -77,8 +80,12 @@ class ScrollEffects {
 	};
 
 	applyStyle(el, type, value) {
+		// if (type === 'rotate')
+		// 	console.log('==============ROTATE================');
+		// if (type === 'rotate') console.log(type, value);
 		switch (type) {
 			case 'rotate':
+				// console.log(`setTransform: ${value}deg`);
 				this.setTransform(el, `rotate(${value}deg)`, 'rotate');
 				break;
 			case 'fade':
@@ -153,18 +160,23 @@ class ScrollEffects {
 	}
 
 	getScrollDirection = () => {
-		let oldValue = 0;
 		const newValue = window.pageYOffset;
-		if (oldValue < newValue) {
-			oldValue = newValue;
-			return 'down';
-		}
-		if (oldValue >= newValue) {
-			oldValue = newValue;
-			return 'up';
+
+		let currentDirection = '';
+		if (this.oldValue < newValue) {
+			// console.log(`window.pageYOffset: ${window.pageYOffset}`);
+			// console.log(`oldValue: ${this.oldValue}`);
+			// console.log(`newValue: ${newValue}`);
+			currentDirection = 'down';
+		} else {
+			currentDirection = 'up';
 		}
 
-		return 0;
+		this.oldValue = newValue;
+
+		console.log(currentDirection);
+
+		return currentDirection;
 	};
 
 	scrollTransform = (element, type) => {
@@ -211,9 +223,9 @@ class ScrollEffects {
 			elementTopInCoordinate + elementHalfHeight
 		);
 
-		const scrollDirection = this.getScrollDirection();
+		//	console.log(this.scrollDirection);
 
-		if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
+		if (this.scrollDirection === 'down' && elementTopInCoordinate <= 0) {
 			newEndUp = 0;
 			newMidUp = 0;
 			if (elementMidInCoordinate >= 0) {
@@ -247,11 +259,16 @@ class ScrollEffects {
 				this.applyStyle(element, type, finalMidEnd);
 			}
 		}
+		// if (this.scrollDirection === 'up') {
+		// 	console.log(reverseScroll);
+		// 	console.log(elementBottomInCoordinate);
+		// }
 		if (
 			reverseScroll === 'true' &&
-			scrollDirection === 'up' &&
+			this.scrollDirection === 'up' &&
 			elementBottomInCoordinate >= 0
 		) {
+			//	console.log('REVERSE!!');
 			newEndDown = 0;
 			newMidDown = 0;
 			if (elementMidInCoordinate <= 0) {

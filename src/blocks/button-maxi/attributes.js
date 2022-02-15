@@ -102,7 +102,13 @@ const attributes = {
 		obj: attributesData.backgroundGradientHover,
 		prefix,
 	}),
-	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...{
+		...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+		[`${prefix}border-palette-color-general`]: {
+			type: 'number',
+			default: 4,
+		},
+	},
 	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
 	...prefixAttributesCreator({
 		obj: attributesData.borderRadius,
@@ -127,7 +133,13 @@ const attributes = {
 		obj: attributesData.borderRadiusHover,
 		prefix,
 	}),
-	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...{
+		...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+		[`${prefix}box-shadow-palette-color-general`]: {
+			type: 'number',
+			default: 4,
+		},
+	},
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
 
 	/**

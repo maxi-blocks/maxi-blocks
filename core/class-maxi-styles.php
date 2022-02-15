@@ -297,6 +297,17 @@ class MaxiBlocks_Styles
 
     public function update_color_palette_backups($style)
     {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_general';
+        $query =
+            'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
+
+        $style_card = maybe_unserialize($wpdb->get_var($query));
+
+        if (!$style_card) {
+            return $style;
+        }
+
         // Get used colors on the post style
         $needle = 'rgba(var(--maxi-';
         $lastPos = 0;
@@ -330,7 +341,6 @@ class MaxiBlocks_Styles
 
         $changedSCColors = array();
 
-        $style_card = get_option('mb_sc_string');
         $style_card = is_preview() || is_admin()
             ? $style_card['_maxi_blocks_style_card_preview']
             : $style_card['_maxi_blocks_style_card'];

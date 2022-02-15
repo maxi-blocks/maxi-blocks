@@ -221,7 +221,6 @@
 		display: block;
 		.action-buttons {
 			&__button {
-				margin: 0 0 8px 0;
 				svg {
 					margin-right: 0;
 				}
@@ -237,6 +236,38 @@
 	.action-buttons {
 		&__button span {
 			display: none;
+		}
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.maxi-responsive-selector {
+		padding-right: 18px;
+		.action-buttons {
+			&__help {
+				margin-left: 5px;
+				svg {
+					display: none;
+				}
+			}
+		}
+		&__button-current-size {
+			display: none;
+		}
+		&__button-wrapper {
+			.maxi-responsive-selector__button-item {
+				svg {
+					&:not(.maxi-tabs-control__notification) {
+						height: 20px;
+					}
+				}
+			}
+		}
+		&__button-item {
+			width: 31px;
+		}
+		&__close {
+			padding: 0 5px 0 5px;
 		}
 	}
 }

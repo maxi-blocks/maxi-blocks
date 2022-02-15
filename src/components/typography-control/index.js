@@ -562,14 +562,13 @@ const TypographyControl = withFormatValue(props => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
 		if (disableFormats || customDisableFormats)
-			return getLastBreakpointAttribute(
-				prop,
-				currentBreakpoint,
-				typography,
+			return getLastBreakpointAttribute({
+				target: prop,
+				breakpoint: currentBreakpoint,
+				attributes: typography,
 				isHover,
-				false,
-				avoidXXL
-			);
+				avoidXXL,
+			});
 
 		const nonHoverValue = getCustomFormatValue({
 			typography,
@@ -898,11 +897,11 @@ const TypographyControl = withFormatValue(props => {
 								[`${prefix}text-shadow`]: val,
 							});
 						}}
-						defaultColor={getLastBreakpointAttribute(
-							'color',
+						defaultColor={getLastBreakpointAttribute({
+							target: 'color',
 							breakpoint,
-							typography
-						)}
+							attributes: typography,
+						})}
 						blockStyle={blockStyle}
 						breakpoint={breakpoint}
 					/>

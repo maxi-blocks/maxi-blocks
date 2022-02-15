@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { toLower } from 'lodash';
+import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 /**
  * Internal dependencies
  */
@@ -26,7 +26,6 @@ import { getActiveTabName } from '../../extensions/inspector-path';
  * External dependencies
  */
 import classnames from 'classnames';
-import { capitalize, pickBy, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -248,11 +247,11 @@ const ScrollEffectsControl = props => {
 				depth={depth}
 			/>
 			{scrollTypes.map(type => {
-				const isPreviewEnabled = getLastBreakpointAttribute(
-					`scroll-${type}-preview-status`,
+				const isPreviewEnabled = getLastBreakpointAttribute({
+					target: `scroll-${type}-preview-status`,
 					breakpoint,
-					props
-				);
+					attributes: props,
+				});
 				return (
 					<div
 						key={`maxi-scroll-effects-control-${type}-${breakpoint}`}
@@ -264,11 +263,11 @@ const ScrollEffectsControl = props => {
 									`Use ${capitalize(type)} scroll effect`,
 									'maxi-blocks'
 								)}
-								selected={getLastBreakpointAttribute(
-									`scroll-${type}-status`,
+								selected={getLastBreakpointAttribute({
+									target: `scroll-${type}-status`,
 									breakpoint,
-									props
-								)}
+									attributes: props,
+								})}
 								onChange={val => {
 									onChange({
 										[`scroll-${type}-status-${breakpoint}`]:
@@ -305,11 +304,11 @@ const ScrollEffectsControl = props => {
 											'Easing function',
 											'maxi-blocks'
 										)}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-easing`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-easing`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChange={val =>
 											onChange({
 												[`scroll-${type}-easing-${breakpoint}`]:
@@ -320,11 +319,11 @@ const ScrollEffectsControl = props => {
 									/>
 									<AdvancedNumberControl
 										label={__('Speed (ms)', 'maxi-blocks')}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-speed`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-speed`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChangeValue={val => {
 											onChange({
 												[`scroll-${type}-speed-${breakpoint}`]:
@@ -351,11 +350,11 @@ const ScrollEffectsControl = props => {
 									/>
 									<AdvancedNumberControl
 										label={__('Delay (ms)', 'maxi-blocks')}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-delay`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-delay`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChangeValue={val => {
 											onChange({
 												[`scroll-${type}-delay-${breakpoint}`]:
@@ -385,11 +384,11 @@ const ScrollEffectsControl = props => {
 											'Viewport entry',
 											'maxi-blocks'
 										)}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-viewport-top`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-viewport-top`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChange={val =>
 											onChange({
 												[`scroll-${type}-viewport-top-${breakpoint}`]:
@@ -437,11 +436,11 @@ const ScrollEffectsControl = props => {
 											'maxi-blocks'
 										)}
 										selected={
-											+getLastBreakpointAttribute(
-												`scroll-${type}-status-reverse`,
+											+getLastBreakpointAttribute({
+												target: `scroll-${type}-status-reverse`,
 												breakpoint,
-												props
-											)
+												attributes: props,
+											})
 										}
 										onChange={val =>
 											onChange({

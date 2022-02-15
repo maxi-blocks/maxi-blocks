@@ -60,11 +60,11 @@ class edit extends MaxiBlockComponent {
 		const handleOnResizeStart = event => {
 			event.preventDefault();
 
-			const sizeUnit = getLastBreakpointAttribute(
-				'height-unit',
-				deviceType,
-				attributes
-			);
+			const sizeUnit = getLastBreakpointAttribute({
+				target: 'height-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
 
 			if (sizeUnit === 'em')
 				maxiSetAttributes({
@@ -73,11 +73,11 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
-			const sizeUnit = getLastBreakpointAttribute(
-				'height-unit',
-				deviceType,
-				attributes
-			);
+			const sizeUnit = getLastBreakpointAttribute({
+				target: 'height-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
 
 			maxiSetAttributes({
 				[`height-${deviceType}`]: getResizerSize(
@@ -89,11 +89,11 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
-		const position = getLastBreakpointAttribute(
-			'position',
-			deviceType,
-			attributes
-		);
+		const position = getLastBreakpointAttribute({
+			target: 'position',
+			breakpoint: deviceType,
+			attributes,
+		});
 
 		// BlockResizer component comes with inherit styles where position is 'relative',
 		// so we need to give style prop to change it when positioning is set 👌
@@ -102,10 +102,16 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

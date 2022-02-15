@@ -218,10 +218,16 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
 
 		return [
 			<Inspector

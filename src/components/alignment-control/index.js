@@ -77,12 +77,12 @@ const AlignmentControl = props => {
 			className={classes}
 			items={getOptions()}
 			selected={
-				getLastBreakpointAttribute(
-					type === 'text' ? 'text-alignment' : 'alignment',
+				getLastBreakpointAttribute({
+					target: type === 'text' ? 'text-alignment' : 'alignment',
 					breakpoint,
-					props,
-					isHover
-				) || getOptions()[0].value
+					attributes: props,
+					isHover,
+				}) || getOptions()[0].value
 			}
 			onChange={val =>
 				onChange(

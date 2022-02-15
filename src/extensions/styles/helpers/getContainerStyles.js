@@ -20,20 +20,20 @@ const getContainerStyles = obj => {
 			...(obj[`container-max-width-${breakpoint}`] && {
 				'max-width': `${
 					obj[`container-max-width-${breakpoint}`]
-				}${getLastBreakpointAttribute(
-					'container-max-width-unit',
+				}${getLastBreakpointAttribute({
+					target: 'container-max-width-unit',
 					breakpoint,
-					obj
-				)}`,
+					attributes: obj,
+				})}`,
 			}),
 			...(obj[`container-width-${breakpoint}`] && {
 				width: `${
 					obj[`container-width-${breakpoint}`]
-				}${getLastBreakpointAttribute(
-					'container-width-unit',
+				}${getLastBreakpointAttribute({
+					target: 'container-width-unit',
 					breakpoint,
-					obj
-				)}`,
+					attributes: obj,
+				})}`,
 			}),
 		};
 	});

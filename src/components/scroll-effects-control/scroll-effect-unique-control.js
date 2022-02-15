@@ -99,11 +99,11 @@ const ScrollEffectsUniqueControl = props => {
 							<>
 								<AdvancedNumberControl
 									label={__(special?.label, 'maxi-blocks')}
-									value={getLastBreakpointAttribute(
-										`scroll-${type}-${special?.attr}`,
+									value={getLastBreakpointAttribute({
+										target: `scroll-${type}-${special?.attr}`,
 										breakpoint,
-										values
-									)}
+										attributes: values,
+									})}
 									onChangeValue={val => {
 										onChange({
 											[`scroll-${type}-${special?.attr}-${breakpoint}`]:

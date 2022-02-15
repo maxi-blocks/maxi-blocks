@@ -105,11 +105,11 @@ const ArrowControl = props => {
 						label=''
 						type='buttons'
 						fullWidthMode
-						selected={getLastBreakpointAttribute(
-							'arrow-side',
+						selected={getLastBreakpointAttribute({
+							target: 'arrow-side',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						items={getOptions()}
 						onChange={val =>
 							onChange({ [`arrow-side-${breakpoint}`]: val })
@@ -117,11 +117,11 @@ const ArrowControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Position', 'maxi-blocks')}
-						value={getLastBreakpointAttribute(
-							'arrow-position',
+						value={getLastBreakpointAttribute({
+							target: 'arrow-position',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val => {
 							onChangeValue(
 								'arrow-position',
@@ -144,11 +144,11 @@ const ArrowControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Arrow Size', 'maxi-blocks')}
-						value={getLastBreakpointAttribute(
-							'arrow-width',
+						value={getLastBreakpointAttribute({
+							target: 'arrow-width',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val => {
 							const value = isNil(val)
 								? getDefaultAttribute(

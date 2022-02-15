@@ -54,12 +54,12 @@ const getBorderStyles = ({
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const borderStyle = getLastBreakpointAttribute(
-			`${prefix}border-style`,
+		const borderStyle = getLastBreakpointAttribute({
+			target: `${prefix}border-style`,
 			breakpoint,
-			obj,
-			isHover
-		);
+			attributes: obj,
+			isHover,
+		});
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 
 		const getColorString = () => {
@@ -116,12 +116,12 @@ const getBorderStyles = ({
 				)[0];
 
 				const unit =
-					getLastBreakpointAttribute(
-						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
+					getLastBreakpointAttribute({
+						target: `${prefix}${newLabel.replace(unitKey, 'unit')}`,
 						breakpoint,
-						obj,
-						isHover
-					) || 'px';
+						attributes: obj,
+						isHover,
+					}) || 'px';
 
 				if (key.includes('style')) {
 					if (isHover && isBorderNone) {

@@ -34,6 +34,16 @@ describe('ColorControl', () => {
 		expect(
 			await getAttributes('button-background-palette-color-general')
 		).toStrictEqual(3);
+
+		// reset color
+		await page.$eval(
+			'.maxi-background-control .maxi-color-control__palette-label .components-maxi-control__reset-button',
+			button => button.click()
+		);
+
+		expect(
+			await getAttributes('button-background-palette-color-general')
+		).toStrictEqual(4);
 	});
 
 	it('Checking the custom color control', async () => {

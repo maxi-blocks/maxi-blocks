@@ -577,16 +577,29 @@ const TypographyControl = withFormatValue(props => {
 				avoidXXL
 			);
 
-		const nonHoverValue = getCustomFormatValue({
-			typography,
-			formatValue,
-			prop,
-			breakpoint: currentBreakpoint,
-			textLevel,
-			styleCard,
-			styleCardPrefix,
-			avoidXXL,
-		});
+		const nonHoverValue =
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop,
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+			}) ??
+			// In cases like HoverEffectControl, where we want the SC 'p' value
+			// but requires a clean 'prop' value (no prefix)
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop: prop.replace(prefix, ''),
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+			});
 
 		if (!isHover) return nonHoverValue;
 

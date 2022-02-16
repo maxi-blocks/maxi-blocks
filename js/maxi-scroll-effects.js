@@ -168,13 +168,11 @@ class ScrollEffects {
 	};
 
 	scrollTransform = (element, type, scrollDirection) => {
-		let newMidUp = 0;
-		let newEndUp = 0;
-		let newMidDown = 0;
-		let newEndDown = 0;
 		const dataScroll = this.getScrollData(element, type);
 
 		if (!dataScroll) return;
+
+		const scrollOnPage = scrollDirection;
 
 		const { trigger, start, mid, end, reverseScroll } =
 			this.getScrollSetting(dataScroll);
@@ -211,75 +209,24 @@ class ScrollEffects {
 			elementTopInCoordinate + elementHalfHeight
 		);
 
-		if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
-			newEndUp = 0;
-			newMidUp = 0;
+		if (scrollOnPage === 'down' && elementTopInCoordinate <= 0) {
 			if (elementMidInCoordinate >= 0) {
 				// from starting to middle
-				const stepMid = Math.abs(
-					(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
-				);
-
-				if (start < mid) newMidDown += stepMid;
-				else newMidDown -= stepMid;
-
-				const finalStartMid =
-					Math.abs(Math.trunc(start + newMidDown)) < mid
-						? Math.trunc(start + newMidDown)
-						: mid;
-
-				this.applyStyle(element, type, finalStartMid);
+				this.applyStyle(element, type, mid);
 			} else {
-				const stepEnd = Math.abs(
-					(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
-				);
-
-				if (mid < end) newEndDown += stepEnd;
-				else newEndDown -= stepEnd;
-
-				const finalMidEnd =
-					Math.abs(Math.trunc(newEndDown + mid)) < end
-						? Math.trunc(newEndDown + mid)
-						: end;
-
-				this.applyStyle(element, type, finalMidEnd);
+				// from middle to the end
+				this.applyStyle(element, type, end);
 			}
 		}
 		if (
 			reverseScroll === 'true' &&
-			scrollDirection === 'up' &&
+			scrollOnPage === 'up' &&
 			elementBottomInCoordinate >= 0
 		) {
-			newEndDown = 0;
-			newMidDown = 0;
 			if (elementMidInCoordinate <= 0) {
-				const stepEnd = Math.abs(
-					(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
-				);
-
-				if (end < mid) newEndUp += stepEnd;
-				else newEndUp -= stepEnd;
-
-				const finalMidEnd =
-					Math.abs(Math.trunc(newEndUp + end)) < mid
-						? Math.trunc(newEndUp + end)
-						: mid;
-
-				this.applyStyle(element, type, finalMidEnd);
+				this.applyStyle(element, type, mid);
 			} else {
-				const stepMid = Math.abs(
-					(Math.abs(mid) - Math.abs(start)) / elementHalfHeight
-				);
-
-				if (mid > start) newMidUp -= stepMid;
-				else newMidUp += stepMid;
-
-				const finalMidStart =
-					Math.abs(Math.trunc(newMidUp + mid)) < start
-						? Math.trunc(newMidUp + mid)
-						: start;
-
-				this.applyStyle(element, type, finalMidStart);
+				this.applyStyle(element, type, start);
 			}
 		}
 	};

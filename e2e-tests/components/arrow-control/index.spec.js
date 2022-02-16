@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -16,6 +17,7 @@ import {
 	changeResponsive,
 	getBlockStyle,
 	getAttributes,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('ArrowControl', () => {
@@ -39,7 +41,7 @@ describe('ArrowControl', () => {
 
 		const values = ['top', 'bottom', 'right', 'left'];
 
-		for (let i = 0; i < values.length; i++) {
+		for (let i = 0; i < values.length; i += 1) {
 			await page.$$eval(
 				'.maxi-arrow-control .maxi-settingstab-control button',
 				(buttons, i) => buttons[i].click(),
@@ -55,9 +57,13 @@ describe('ArrowControl', () => {
 			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
 
-		await selectInput[0].focus();
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-advanced-number-control .maxi-base-control__field'
+			),
+			newNumber: '59',
+		});
 
 		expect(await getAttributes('arrow-position-general')).toStrictEqual(59);
 

@@ -254,7 +254,7 @@ describe('TextMaxi', () => {
 				await page.$eval('.toolbar-item__text-link', button =>
 					button.click()
 				);
-				await page.waitForTimeout(150);
+				await page.waitForTimeout(250);
 
 				await page.waitForSelector('a.components-external-link');
 			});
@@ -719,7 +719,8 @@ describe('TextMaxi', () => {
 		expect(expectedContent2 === expectedContent).toBeTruthy();
 	});
 
-	it('Testing changing custom format and showing the correct value', async () => {
+	// Toolbar related. Waiting for #2519
+	it.skip('Testing changing custom format and showing the correct value', async () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 

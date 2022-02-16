@@ -179,7 +179,6 @@ const ColorControl = props => {
 					className={className}
 					onReset={onReset}
 					onResetOpacity={onResetOpacity}
-					disableReset
 				/>
 			)}
 			{!disablePalette && (

@@ -78,7 +78,6 @@ describe('BorderControl', () => {
 		);
 
 		// color
-
 		await editColorControl({
 			page,
 			instance: await page.$('.maxi-border-control'),
@@ -176,5 +175,15 @@ describe('BorderControl', () => {
 		expect(borderResult).toStrictEqual(expectBorder);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// reset button
+		await page.$eval(
+			'.maxi-axis-control__border .maxi-axis-control__unit-header button',
+			button => button.click()
+		);
+
+		expect(await getAttributes('border-left-width-general')).toStrictEqual(
+			2
+		);
 	});
 });

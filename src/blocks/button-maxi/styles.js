@@ -515,10 +515,10 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
-				' .maxi-button-block__icon': [
-					getIconObject(props, 'icon'),
-					getIconResponsive(props, 'icon'),
-				],
+				' .maxi-button-block__icon': {
+					...getIconObject(props, 'icon'),
+					...getIconResponsive(props, 'icon'),
+				},
 				' .maxi-button-block__icon svg': getIconSize(props, false),
 				' .maxi-button-block__icon svg > *': getIconObject(
 					props,

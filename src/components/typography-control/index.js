@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { select, dispatch, useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
@@ -16,6 +16,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
+import Button from '../button';
 
 import {
 	setFormat,
@@ -39,6 +40,8 @@ import { isNil, isBoolean, isNumber } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import { reset } from '../../icons';
+import BaseControl from '../base-control';
 
 /**
  * Component
@@ -489,6 +492,7 @@ const TypographyControl = withFormatValue(props => {
 		allowLink = false,
 		blockStyle,
 		globalProps,
+		disableFontFamilyReset = false,
 	} = props;
 
 	const typography =
@@ -722,18 +726,41 @@ const TypographyControl = withFormatValue(props => {
 
 	return (
 		<div className={classes}>
-			{!disableFontFamily && (
-				<FontFamilySelector
-					className='maxi-typography-control__font-family'
-					font={getValue(`${prefix}font-family`)}
-					onChange={font => {
-						onChangeFormat({
-							[`${prefix}font-family`]: font.value,
-							[`${prefix}font-options`]: font.files,
-						});
-					}}
-				/>
-			)}
+			<BaseControl>
+				{!disableFontFamily && (
+					<FontFamilySelector
+						className='maxi-typography-control__font-family'
+						font={getValue(`${prefix}font-family`)}
+						onChange={font => {
+							onChangeFormat({
+								[`${prefix}font-family`]: font.value,
+								[`${prefix}font-options`]: font.files,
+							});
+						}}
+					/>
+				)}
+				{!disableFontFamilyReset && (
+					<Button
+						className='components-maxi-control__reset-button'
+						onClick={e => {
+							e.preventDefault();
+							onChangeFormat({
+								[`${prefix}font-family`]: getDefault(
+									`${prefix}font-family`
+								),
+							});
+						}}
+						aria-label={sprintf(
+							/* translators: %s: a textual label  */
+							__('Reset %s settings', 'maxi-blocks'),
+							'Font Family'.toLowerCase()
+						)}
+						type='reset'
+					>
+						{reset}
+					</Button>
+				)}
+			</BaseControl>
 			{!disableColor && !styleCards && (
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}

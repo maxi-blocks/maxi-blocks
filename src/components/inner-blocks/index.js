@@ -5,7 +5,7 @@
  */
 import {
 	InnerBlocks as WPInnerBlocks,
-	__experimentalUseInnerBlocksProps as useInnerBlocksProps,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import { forwardRef } from '@wordpress/element';
 

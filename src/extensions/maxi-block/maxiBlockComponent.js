@@ -206,6 +206,15 @@ class MaxiBlockComponent extends Component {
 		// Force render styles when changing scValues
 		if (!isEqual(prevProps.scValues, this.props.scValues)) return false;
 
+		// For render styles when there's no <style> element for the block
+		// Normally happens when duplicate the block
+		if (
+			!document.querySelector(
+				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+			)
+		)
+			return false;
+
 		if (this.maxiBlockGetSnapshotBeforeUpdate)
 			this.maxiBlockGetSnapshotBeforeUpdate();
 
@@ -354,6 +363,7 @@ class MaxiBlockComponent extends Component {
 			if (!wrapper) {
 				wrapper = document.createElement('div');
 				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
+				wrapper.classList.add('maxi-blocks__styles');
 				document.head.appendChild(wrapper);
 			}
 
@@ -366,6 +376,37 @@ class MaxiBlockComponent extends Component {
 				/>,
 				wrapper
 			);
+
+			const iframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+
+			if (iframe) {
+				const iframeDocument = iframe.contentDocument;
+
+				if (iframeDocument.head) {
+					let iframeWrapper = iframeDocument.querySelector(
+						`#maxi-blocks__styles--${uniqueID}`
+					);
+
+					if (!iframeWrapper) {
+						iframeWrapper = iframeDocument.createElement('div');
+						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+						iframeWrapper.classList.add('maxi-blocks__styles');
+						iframeDocument.head.appendChild(iframeWrapper);
+					}
+
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+						/>,
+						iframeWrapper
+					);
+				}
+			}
 		}
 	}
 }

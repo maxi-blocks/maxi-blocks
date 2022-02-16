@@ -172,8 +172,6 @@ class ScrollEffects {
 
 		if (!dataScroll) return;
 
-		const scrollOnPage = scrollDirection;
-
 		const { trigger, start, mid, end, reverseScroll } =
 			this.getScrollSetting(dataScroll);
 
@@ -209,7 +207,7 @@ class ScrollEffects {
 			elementTopInCoordinate + elementHalfHeight
 		);
 
-		if (scrollOnPage === 'down' && elementTopInCoordinate <= 0) {
+		if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
 			if (elementMidInCoordinate >= 0) {
 				// from starting to middle
 				this.applyStyle(element, type, mid);
@@ -220,7 +218,7 @@ class ScrollEffects {
 		}
 		if (
 			reverseScroll === 'true' &&
-			scrollOnPage === 'up' &&
+			scrollDirection === 'up' &&
 			elementBottomInCoordinate >= 0
 		) {
 			if (elementMidInCoordinate <= 0) {

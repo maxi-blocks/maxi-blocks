@@ -3,6 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { isNil } from 'lodash';
+const { useEffect } = wp.element;
 
 /**
  * Internal dependencies
@@ -38,6 +40,18 @@ const Inspector = props => {
 			isEmpty(bgLayers) && 'canvas background'
 		);
 	};
+
+	useEffect(() => {
+		if (isNil(props[`line-orientation-${deviceType}`])) {
+			maxiSetAttributes({
+				[`line-orientation-${deviceType}`]: getLastBreakpointAttribute(
+					'line-orientation',
+					deviceType,
+					attributes
+				),
+			});
+		}
+	}, [deviceType]);
 
 	return (
 		<InspectorControls>

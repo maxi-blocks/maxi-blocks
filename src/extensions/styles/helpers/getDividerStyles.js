@@ -41,45 +41,34 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 	breakpoints.forEach(breakpoint => {
 		if (target === 'line') {
 			response[breakpoint] = {
-				'border-top-style': !isNil(
-					obj[`divider-border-style-${breakpoint}`]
-				)
-					? obj[`divider-border-style-${breakpoint}`]
-					: getLastBreakpointAttribute(
-							'divider-border-style',
-							breakpoint,
-							obj
-					  ),
+				'border-style': getLastBreakpointAttribute(
+					'divider-border-style',
+					breakpoint,
+					obj
+				),
+				...getColor(breakpoint),
+
 				...(obj[`line-orientation-${breakpoint}`] === 'horizontal' && {
-					...getColor(breakpoint),
 					'border-right-style': 'none',
 					...(obj[`divider-border-radius-${breakpoint}`] &&
 						obj[`divider-border-style-${breakpoint}`] ===
 							'solid' && { 'border-radius': '20px' }),
-					width: !isNil(obj[`divider-width-${breakpoint}`])
-						? `${obj[`divider-width-${breakpoint}`]}${
-								obj[`divider-width-unit-${breakpoint}`]
-						  }`
-						: '50%',
-					...(!isNil(obj[`divider-border-top-width-${breakpoint}`])
-						? {
-								'border-top-width': `${
-									obj[
-										`divider-border-top-width-${breakpoint}`
-									]
-								}${
-									obj[`divider-border-top-unit-${breakpoint}`]
-								}`,
-						  }
-						: { 'border-top-width': '2px' }),
+					...(isNil(obj[`divider-width-${breakpoint}`]) && {
+						width: `${obj[`divider-width-${breakpoint}`]}${
+							obj[`divider-width-unit-${breakpoint}`]
+						}`,
+					}),
+					...(!isNil(
+						obj[`divider-border-top-width-${breakpoint}`]
+					) && {
+						'border-top-width': `${
+							obj[`divider-border-top-width-${breakpoint}`]
+						}${
+							obj[`divider-border-top-unit-${breakpoint}`] || 'px'
+						}`,
+					}),
 				}),
 				...(obj[`line-orientation-${breakpoint}`] === 'vertical' && {
-					'border-right-style': !isNil(
-						obj[`divider-border-style-${breakpoint}`]
-					)
-						? obj[`divider-border-style-${breakpoint}`]
-						: 'solid',
-					...getColor(breakpoint),
 					'border-top-style': 'none',
 					...(obj[`divider-border-radius-${breakpoint}`] &&
 						obj[`divider-border-style-${breakpoint}`] ===
@@ -112,39 +101,25 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 			};
 		} else {
 			response[breakpoint] = {
-				'flex-direction': obj[`line-align-${breakpoint}`] ?? 'row',
-				'align-items': 'center',
-				// row
-				...(obj[`line-align-${breakpoint}`] === 'row'
-					? {
-							...(!isNil(obj[`line-vertical-${breakpoint}`]) && {
-								'align-items':
-									obj[`line-vertical-${breakpoint}`] ??
-									'center',
-							},
-							!isNil(obj[`line-horizontal-${breakpoint}`]) && {
-								'justify-content':
-									obj[`line-horizontal-${breakpoint}`] ??
-									'center',
-							}),
-					  }
-					: {
-							...(!isNil(obj[`line-vertical-${breakpoint}`]) && {
-								'justify-content':
-									obj[`line-vertical-${breakpoint}`] ??
-									'center',
-							},
-							!isNil(obj[`line-horizontal-${breakpoint}`]) && {
-								'align-items':
-									obj[`line-horizontal-${breakpoint}`] ??
-									'center',
-							}),
-					  }),
+				'flex-direction': 'row',
+				'align-items': obj[`line-vertical-${breakpoint}`]
+					? obj[`line-vertical-${breakpoint}`]
+					: getLastBreakpointAttribute(
+							'line-vertical',
+							breakpoint,
+							obj
+					  ),
+				'justify-content': obj[`line-horizontal-${breakpoint}`]
+					? obj[`line-horizontal-${breakpoint}`]
+					: getLastBreakpointAttribute(
+							'line-horizontal',
+							breakpoint,
+							obj
+					  ),
 			};
 		}
 	});
 
-	console.log(response);
 	return response;
 };
 

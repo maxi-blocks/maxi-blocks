@@ -5,10 +5,6 @@ import { rawBorder } from './border';
 
 const prefix = 'divider-';
 const rawDivider = {
-	'divider-border-style': {
-		type: 'string',
-		default: 'solid',
-	},
 	'divider-border-top-width': {
 		type: 'number',
 		default: 2,

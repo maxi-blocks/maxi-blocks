@@ -4,10 +4,17 @@ exports[`Background Color Layer Check Background Color layer 1`] = `
 Array [
   Object {
     "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
-    "background-palette-color-general": 5,
-    "background-palette-opacity-general": 0.45,
+    "background-color-clip-path-xxl": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-palette-color-general": 1,
+    "background-palette-color-xl": 1,
+    "background-palette-color-xxl": 5,
+    "background-palette-opacity-general": 0.04,
+    "background-palette-opacity-xl": 0.04,
+    "background-palette-opacity-xxl": 0.45,
     "background-palette-status-general": true,
-    "display-general": "block",
+    "background-palette-status-xxl": true,
+    "display-general": "none",
+    "display-xxl": "block",
     "id": 1,
     "isHover": false,
     "type": "color",
@@ -15,7 +22,7 @@ Array [
 ]
 `;
 
-exports[`Background Color Layer Check Background Color layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}</style>"`;
+exports[`Background Color Layer Check Background Color layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ background-color: rgba(var(--maxi-light-color-1,255,255,255),0.04); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: none;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xxl\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: block; background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45);}</style>"`;
 
 exports[`Background Color Layer Check Background Color layer hover 1`] = `
 Array [

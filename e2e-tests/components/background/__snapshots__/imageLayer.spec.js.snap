@@ -3,26 +3,50 @@
 exports[`BackgroundControl Check Background image layer 1`] = `
 Array [
   Object {
-    "background-image-attachment-general": "fixed",
-    "background-image-clip-general": "content-box",
+    "background-image-attachment-general": "scroll",
+    "background-image-attachment-xl": "scroll",
+    "background-image-attachment-xxl": "fixed",
+    "background-image-clip-general": "border-box",
     "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-image-clip-path-xxl": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-image-clip-xl": "border-box",
+    "background-image-clip-xxl": "content-box",
     "background-image-height-general": 100,
     "background-image-height-unit-general": "%",
-    "background-image-opacity-general": 0.55,
-    "background-image-origin-general": "border-box",
+    "background-image-height-unit-xxl": "%",
+    "background-image-height-xxl": 100,
+    "background-image-opacity-general": 1,
+    "background-image-opacity-xl": 1,
+    "background-image-opacity-xxl": 0.55,
+    "background-image-origin-general": "padding-box",
+    "background-image-origin-xl": "padding-box",
+    "background-image-origin-xxl": "border-box",
     "background-image-parallax-direction": "down",
     "background-image-parallax-speed": 4,
     "background-image-parallax-status": false,
-    "background-image-position-general": "left top",
+    "background-image-position-general": "center center",
     "background-image-position-height-general": 0,
     "background-image-position-height-unit-general": "%",
+    "background-image-position-height-unit-xxl": "%",
+    "background-image-position-height-xxl": 0,
     "background-image-position-width-general": 0,
     "background-image-position-width-unit-general": "%",
-    "background-image-repeat-general": "repeat",
-    "background-image-size-general": "contain",
+    "background-image-position-width-unit-xxl": "%",
+    "background-image-position-width-xxl": 0,
+    "background-image-position-xl": "center center",
+    "background-image-position-xxl": "left top",
+    "background-image-repeat-general": "no-repeat",
+    "background-image-repeat-xl": "no-repeat",
+    "background-image-repeat-xxl": "repeat",
+    "background-image-size-general": "auto",
+    "background-image-size-xl": "auto",
+    "background-image-size-xxl": "contain",
     "background-image-width-general": 100,
     "background-image-width-unit-general": "%",
-    "display-general": "block",
+    "background-image-width-unit-xxl": "%",
+    "background-image-width-xxl": 100,
+    "display-general": "none",
+    "display-xxl": "block",
     "id": 1,
     "isHover": false,
     "type": "image",
@@ -30,7 +54,7 @@ Array [
 ]
 `;
 
-exports[`BackgroundControl Check Background image layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;
+exports[`BackgroundControl Check Background image layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: none;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xxl\\"] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;
 
 exports[`BackgroundControl Check Background image layer hover 1`] = `
 Array [

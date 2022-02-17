@@ -340,8 +340,10 @@
 					}
 				}
 				.ais-RefinementList-item {
+					display: flex;
+					justify-content: space-between;
 					&--selected {
-						.ais-RefinementList-label {
+						a {
 							border-bottom: 2px solid #ff4a17;
 
 							.ais-RefinementList-count,
@@ -350,7 +352,7 @@
 							}
 						}
 					}
-					.ais-RefinementList-label {
+					a {
 						font-weight: bold;
 						transition: color 0.5s;
 

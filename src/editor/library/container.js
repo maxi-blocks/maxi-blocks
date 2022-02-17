@@ -9,7 +9,7 @@ import { CheckboxControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Button from '../../components/button';
+import { Button, ToggleSwitch } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	imageUploader,
@@ -28,7 +28,7 @@ import {
 	InstantSearch,
 	SearchBox,
 	InfiniteHits,
-	RefinementList,
+	connectRefinementList,
 	ClearRefinements,
 	Menu,
 	HierarchicalMenu,
@@ -579,6 +579,30 @@ const LibraryContainer = props => {
 		);
 	};
 
+	const RefinementList = ({ items, refine }) => (
+		<ul>
+			{items.map(item => (
+				<li key={item.label} className='ais-RefinementList-item'>
+					<a
+						href='#'
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+						}}
+					>
+						{item.label} ({item.count})
+					</a>
+					<ToggleSwitch
+						selected={item.isRefined}
+						onChange={val => refine(item.value)}
+					/>
+				</li>
+			))}
+		</ul>
+	);
+
+	const CustomRefinementList = connectRefinementList(RefinementList);
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -749,10 +773,10 @@ const LibraryContainer = props => {
 								showLoadingIndicator
 							/>
 							<Accordion title={__('Colour', 'maxi-blocks')}>
-								<RefinementList attribute='taxonomies.sc_color' />
+								<CustomRefinementList attribute='taxonomies.sc_color' />
 							</Accordion>
 							<Accordion title={__('Style', 'maxi-blocks')}>
-								<RefinementList attribute='taxonomies.sc_style' />
+								<CustomRefinementList attribute='taxonomies.sc_style' />
 							</Accordion>
 							<ClearRefinements />
 						</div>

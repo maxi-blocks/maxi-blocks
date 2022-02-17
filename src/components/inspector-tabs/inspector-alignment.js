@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AlignmentControl from '../alignment-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -26,6 +27,11 @@ const alignment = ({
 		label: __('Alignment', 'maxi-blocks'),
 		content: (
 			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(attributes, 'alignment')}
+					{...getGroupAttributes(attributes, 'textAlignment')}
+					breakpoint={deviceType}
+				/>
 				{isAlignment && (
 					<AlignmentControl
 						label={alignmentLabel}

@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import TypographyControl from '../typography-control';
 import ToggleSwitch from '../toggle-switch';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -50,75 +51,85 @@ const typography = ({
 		label: __('Typography', 'maxi-blocks'),
 		disablePadding: true,
 		content: (
-			<SettingTabsControl
-				items={[
-					{
-						label: __('Normal state', 'maxi-blocks'),
-						content: (
-							<TypographyControl
-								{...getGroupAttributes(
-									attributes,
-									typographyTarget
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								hideAlignment={hideAlignment}
-								breakpoint={deviceType}
-								clientId={clientId}
-								disableCustomFormats={disableCustomFormats}
-								blockStyle={parentBlockStyle}
-								styleCardPrefix={styleCardPrefix}
-								textLevel={textLevel}
-								isList={isList}
-								allowLink={allowLink}
-								globalProps={globalProps}
-							/>
-						),
-					},
-					{
-						label: __('Hover state', 'maxi-blocks'),
-						content: (
-							<>
-								{!globalHoverStatus && (
-									<ToggleSwitch
-										label={__(
-											'Enable Typography Hover',
-											'maxi-blocks'
-										)}
-										selected={hoverStatus}
-										onChange={val =>
-											maxiSetAttributes({
-												'typography-status-hover': val,
-											})
-										}
-									/>
-								)}
-								{hoverStatus && (
-									<TypographyControl
-										{...getGroupAttributes(
-											attributes,
-											'typography',
-											true
-										)}
-										onChange={obj => maxiSetAttributes(obj)}
-										hideAlignment={hideAlignment}
-										breakpoint={deviceType}
-										isHover
-										clientId={clientId}
-										disableCustomFormats={
-											disableCustomFormats
-										}
-										blockStyle={parentBlockStyle}
-										styleCardPrefix={styleCardPrefix}
-										globalProps={hoverGlobalProps}
-									/>
-								)}
-							</>
-						),
-						extraIndicators: ['typography-status-hover'],
-					},
-				]}
-				depth={depth}
-			/>
+			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(attributes, 'typography', true)}
+					{...getGroupAttributes(attributes, typographyTarget, true)}
+					breakpoint={deviceType}
+				/>
+				<SettingTabsControl
+					items={[
+						{
+							label: __('Normal state', 'maxi-blocks'),
+							content: (
+								<TypographyControl
+									{...getGroupAttributes(
+										attributes,
+										typographyTarget
+									)}
+									onChange={obj => maxiSetAttributes(obj)}
+									hideAlignment={hideAlignment}
+									breakpoint={deviceType}
+									clientId={clientId}
+									disableCustomFormats={disableCustomFormats}
+									blockStyle={parentBlockStyle}
+									styleCardPrefix={styleCardPrefix}
+									textLevel={textLevel}
+									isList={isList}
+									allowLink={allowLink}
+									globalProps={globalProps}
+								/>
+							),
+						},
+						{
+							label: __('Hover state', 'maxi-blocks'),
+							content: (
+								<>
+									{!globalHoverStatus && (
+										<ToggleSwitch
+											label={__(
+												'Enable Typography Hover',
+												'maxi-blocks'
+											)}
+											selected={hoverStatus}
+											onChange={val =>
+												maxiSetAttributes({
+													'typography-status-hover':
+														val,
+												})
+											}
+										/>
+									)}
+									{hoverStatus && (
+										<TypographyControl
+											{...getGroupAttributes(
+												attributes,
+												'typography',
+												true
+											)}
+											onChange={obj =>
+												maxiSetAttributes(obj)
+											}
+											hideAlignment={hideAlignment}
+											breakpoint={deviceType}
+											isHover
+											clientId={clientId}
+											disableCustomFormats={
+												disableCustomFormats
+											}
+											blockStyle={parentBlockStyle}
+											styleCardPrefix={styleCardPrefix}
+											globalProps={hoverGlobalProps}
+										/>
+									)}
+								</>
+							),
+							extraIndicators: ['typography-status-hover'],
+						},
+					]}
+					depth={depth}
+				/>
+			</>
 		),
 	};
 };

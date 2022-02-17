@@ -9,6 +9,8 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BorderControl from '../border-control';
 import ToggleSwitch from '../toggle-switch';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+
 import {
 	getGroupAttributes,
 	setHoverAttributes,
@@ -40,102 +42,119 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 		label: __('Border', 'maxi-blocks'),
 		disablePadding: true,
 		content: (
-			<SettingTabsControl
-				items={[
-					{
-						label: __('Normal state', 'maxi-blocks'),
-						content: (
-							<BorderControl
-								{...getGroupAttributes(
-									attributes,
-									['border', 'borderWidth', 'borderRadius'],
-									false,
-									prefix
-								)}
-								prefix={prefix}
-								onChange={obj => {
-									maxiSetAttributes(obj);
-								}}
-								breakpoint={deviceType}
-								clientId={clientId}
-								globalProps={globalProps}
-							/>
-						),
-					},
-					{
-						label: __('Hover state', 'maxi-blocks'),
-						content: (
-							<>
-								{!globalHoverStatus && (
-									<ToggleSwitch
-										label={__(
-											'Enable Border Hover',
-											'maxi-blocks'
-										)}
-										selected={hoverStatus}
-										className='maxi-border-status-hover'
-										onChange={val =>
-											maxiSetAttributes({
-												...(val &&
-													setHoverAttributes(
-														{
-															...getGroupAttributes(
-																attributes,
-																[
-																	'border',
-																	'borderWidth',
-																	'borderRadius',
-																],
-																false,
-																prefix
-															),
-														},
-														{
-															...getGroupAttributes(
-																attributes,
-																[
-																	'border',
-																	'borderWidth',
-																	'borderRadius',
-																],
-																true,
-																prefix
-															),
-														}
-													)),
-												[`${prefix}border-status-hover`]:
-													val,
-											})
-										}
-									/>
-								)}
-								{hoverStatus && (
-									<BorderControl
-										{...getGroupAttributes(
-											attributes,
-											[
-												'border',
-												'borderWidth',
-												'borderRadius',
-											],
-											true,
-											prefix
-										)}
-										prefix={prefix}
-										onChange={obj => maxiSetAttributes(obj)}
-										breakpoint={deviceType}
-										isHover
-										clientId={clientId}
-										globalProps={hoverGlobalProps}
-									/>
-								)}
-							</>
-						),
-						extraIndicators: [`${prefix}border-status-hover`],
-					},
-				]}
-				depth={depth}
-			/>
+			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(
+						attributes,
+						['border', 'borderWidth', 'borderRadius'],
+						false,
+						prefix
+					)}
+					breakpoint={deviceType}
+				/>
+				<SettingTabsControl
+					items={[
+						{
+							label: __('Normal state', 'maxi-blocks'),
+							content: (
+								<BorderControl
+									{...getGroupAttributes(
+										attributes,
+										[
+											'border',
+											'borderWidth',
+											'borderRadius',
+										],
+										false,
+										prefix
+									)}
+									prefix={prefix}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+									}}
+									breakpoint={deviceType}
+									clientId={clientId}
+									globalProps={globalProps}
+								/>
+							),
+						},
+						{
+							label: __('Hover state', 'maxi-blocks'),
+							content: (
+								<>
+									{!globalHoverStatus && (
+										<ToggleSwitch
+											label={__(
+												'Enable Border Hover',
+												'maxi-blocks'
+											)}
+											selected={hoverStatus}
+											className='maxi-border-status-hover'
+											onChange={val =>
+												maxiSetAttributes({
+													...(val &&
+														setHoverAttributes(
+															{
+																...getGroupAttributes(
+																	attributes,
+																	[
+																		'border',
+																		'borderWidth',
+																		'borderRadius',
+																	],
+																	false,
+																	prefix
+																),
+															},
+															{
+																...getGroupAttributes(
+																	attributes,
+																	[
+																		'border',
+																		'borderWidth',
+																		'borderRadius',
+																	],
+																	true,
+																	prefix
+																),
+															}
+														)),
+													[`${prefix}border-status-hover`]:
+														val,
+												})
+											}
+										/>
+									)}
+									{hoverStatus && (
+										<BorderControl
+											{...getGroupAttributes(
+												attributes,
+												[
+													'border',
+													'borderWidth',
+													'borderRadius',
+												],
+												true,
+												prefix
+											)}
+											prefix={prefix}
+											onChange={obj =>
+												maxiSetAttributes(obj)
+											}
+											breakpoint={deviceType}
+											isHover
+											clientId={clientId}
+											globalProps={hoverGlobalProps}
+										/>
+									)}
+								</>
+							),
+							extraIndicators: [`${prefix}border-status-hover`],
+						},
+					]}
+					depth={depth}
+				/>
+			</>
 		),
 	};
 };

@@ -775,9 +775,6 @@ const LibraryContainer = props => {
 							<Accordion title={__('Colour', 'maxi-blocks')}>
 								<CustomRefinementList attribute='taxonomies.sc_color' />
 							</Accordion>
-							<Accordion title={__('Style', 'maxi-blocks')}>
-								<CustomRefinementList attribute='taxonomies.sc_style' />
-							</Accordion>
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__sc__content-sc'>

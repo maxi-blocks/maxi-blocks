@@ -10,9 +10,13 @@ import { Button, Icon, withFocusOutside } from '@wordpress/components';
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
 import { Toolbar, InnerBlocks } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
@@ -57,7 +61,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			instanceId,
 			selectOnClick,
-			setAttributes,
+			maxiSetAttributes,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -111,7 +115,7 @@ class edit extends MaxiBlockComponent {
 														)}
 														className='maxi-row-block__template__button'
 														onClick={() => {
-															setAttributes({
+															maxiSetAttributes({
 																'row-pattern-general':
 																	template.name,
 																'row-pattern-m':
@@ -181,5 +185,6 @@ const editDispatch = withDispatch(dispatch => {
 export default compose(
 	editSelect,
 	editDispatch,
-	withInstanceId
+	withInstanceId,
+	withMaxiProps
 )(withFocusOutside(edit));

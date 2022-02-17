@@ -34,7 +34,6 @@ const SVGLayerContent = props => {
 		isHover = false,
 		prefix = '',
 		breakpoint,
-		isGeneral = false,
 		isLayer = false,
 	} = props;
 
@@ -79,7 +78,7 @@ const SVGLayerContent = props => {
 								{...SVGOptions}
 								label='Position'
 								target='background-svg-position'
-								breakpoint={isGeneral ? 'general' : breakpoint}
+								breakpoint={breakpoint}
 								onChange={obj => onChange(obj)}
 								optionType='string'
 							/>
@@ -112,14 +111,6 @@ const SVGLayerContent = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-svg-size',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									});
 								}}
 								onChangeUnit={val =>
@@ -130,14 +121,6 @@ const SVGLayerContent = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-svg-size-unit',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									})
 								}
 								onReset={() =>
@@ -158,24 +141,6 @@ const SVGLayerContent = props => {
 										)]: getDefaultAttr(
 											'background-svg-size-unit'
 										),
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-svg-size',
-												isHover,
-												prefix,
-												'general'
-											)]: getDefaultAttr(
-												'background-svg-size'
-											),
-											[getAttributeKey(
-												'background-svg-size-unit',
-												isHover,
-												prefix,
-												'general'
-											)]: getDefaultAttr(
-												'background-svg-size-unit'
-											),
-										}),
 									})
 								}
 								minMaxSettings={minMaxSettings}

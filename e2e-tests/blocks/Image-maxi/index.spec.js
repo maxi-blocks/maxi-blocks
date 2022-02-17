@@ -7,6 +7,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -50,6 +51,9 @@ describe('Image Maxi', () => {
 			submitUrl => submitUrl[0].click()
 		);
 
+		expect(await getAttributes('externalUrl')).toStrictEqual(
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg'
+		);
 		const accordionPanel = await openSidebarTab(page, 'style', 'caption');
 
 		// Custom caption
@@ -57,6 +61,14 @@ describe('Image Maxi', () => {
 			'.maxi-image-caption-type select'
 		);
 		await selector.select('custom');
+
+		// Caption position
+		const positionSelector = await page.$(
+			'.maxi-image-inspector__caption-position select'
+		);
+
+		await positionSelector.select('top');
+		expect(await getAttributes('captionPosition')).toStrictEqual('top');
 
 		// insert text
 		await page.waitForSelector('.maxi-image-block__caption span');
@@ -67,6 +79,14 @@ describe('Image Maxi', () => {
 		expect(await getAttributes('captionContent')).toStrictEqual(
 			'Testing Caption'
 		);
+
+		// Caption gap
+		await page.$$eval('.maxi-image-inspector__caption-gap input', input =>
+			input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('5');
 
 		// fontFamily
 		const fontFamilySelector = await accordionPanel.$(
@@ -107,28 +127,23 @@ describe('Image Maxi', () => {
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
-				'.maxi-typography-control__text-options-tabs'
+				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-tabs-content'
 			),
-			size: '11',
-			lineHeight: '22',
-			letterSpacing: '30',
+			size: '19',
+			lineHeight: '4',
+			letterSpacing: '11',
 		});
 
-		const responsiveStage = await accordionPanel.$eval(
-			'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
-			tab => tab.innerText.toLowerCase()
-		);
-
 		const attributes = await getAttributes([
-			[`font-size-${responsiveStage}`],
-			[`line-height-${responsiveStage}`],
-			[`letter-spacing-${responsiveStage}`],
+			'font-size-general',
+			'line-height-general',
+			'letter-spacing-general',
 		]);
 
 		const expectedAttributesTwo = {
-			[`font-size-${responsiveStage}`]: 11,
-			[`line-height-${responsiveStage}`]: 22,
-			[`letter-spacing-${responsiveStage}`]: 30,
+			'font-size-general': 19,
+			'line-height-general': 4,
+			'letter-spacing-general': 11,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
@@ -294,10 +309,19 @@ describe('Image Maxi', () => {
 		);
 
 		expect(checkFrontend).toMatchSnapshot();
+		expect(await getAttributes('caption-gap-general')).toStrictEqual(5);
+
+		const gapSelector = await page.$(
+			'.maxi-image-inspector__caption-gap select'
+		);
+
+		await gapSelector.select('px');
+		expect(await getAttributes('caption-gap-unit-general')).toStrictEqual(
+			'px'
+		);
 	});
 
-	// TODO: fix this test
-	it.skip('Image alt tag', async () => {
+	it('Image alt tag', async () => {
 		await openSidebarTab(page, 'style', 'alt tag');
 
 		// select custom alt tag
@@ -308,9 +332,11 @@ describe('Image Maxi', () => {
 			input.focus()
 		);
 
-		await page.keyboard.type('Image Tag');
+		await page.keyboard.type('Image Custom Tag');
 
-		expect(await getAttributes('mediaAlt')).toStrictEqual('Image Tag');
+		expect(await getAttributes('mediaAlt')).toStrictEqual(
+			'Image Custom Tag'
+		);
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
@@ -319,7 +345,7 @@ describe('Image Maxi', () => {
 			'figure div img',
 			alterative => alterative.alt
 		);
-		expect(expectAlt).toStrictEqual('Image Tag');
+		expect(expectAlt).toStrictEqual('Image Custom Tag');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

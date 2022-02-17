@@ -25,7 +25,7 @@ import { isEmpty, without } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	const getCategoriesCss = () => {
 		const { 'background-layers': bgLayers } = attributes;
@@ -42,6 +42,7 @@ const Inspector = props => {
 				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),
@@ -68,7 +69,7 @@ const Inspector = props => {
 														'number-counter-'
 													)}
 													onChange={obj =>
-														setAttributes(obj)
+														maxiSetAttributes(obj)
 													}
 													breakpoint={deviceType}
 												/>

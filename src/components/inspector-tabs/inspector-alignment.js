@@ -20,7 +20,7 @@ const alignment = ({
 	textAlignmentLabel,
 	disableJustify = false,
 }) => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
 		label: __('Alignment', 'maxi-blocks'),
@@ -30,7 +30,7 @@ const alignment = ({
 					<AlignmentControl
 						label={alignmentLabel}
 						{...getGroupAttributes(attributes, 'alignment')}
-						onChange={obj => setAttributes(obj)}
+						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
 						disableJustify={disableJustify}
 					/>
@@ -39,7 +39,7 @@ const alignment = ({
 					<AlignmentControl
 						label={textAlignmentLabel}
 						{...getGroupAttributes(attributes, 'textAlignment')}
-						onChange={obj => setAttributes(obj)}
+						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
 						type='text'
 					/>

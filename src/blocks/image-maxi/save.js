@@ -8,7 +8,8 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
 
 /**
  * External dependencies
@@ -37,6 +38,7 @@ const save = props => {
 		'hover-preview': hoverPreview,
 		isImageUrl,
 		captionPosition,
+		imgWidth,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
@@ -65,53 +67,62 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
-			{captionType !== 'none' &&
-				!isEmpty(captionContent) &&
-				captionPosition === 'top' && (
-					<RichText.Content
-						className='maxi-image-block__caption'
-						value={captionContent}
-						tagName='figcaption'
-					/>
-				)}
-			<HoverPreview
-				key={`hover-preview-${uniqueID}`}
-				wrapperClassName={wrapperClassName}
-				hoverClassName={!SVGElement ? hoverClasses : null}
-				isSVG={!!SVGElement}
-				{...getGroupAttributes(attributes, [
-					'hover',
-					'hoverTitleTypography',
-					'hoverContentTypography',
-				])}
-			>
-				{SVGElement ? (
-					<RawHTML>{SVGElement}</RawHTML>
-				) : (
-					<img
-						className={
-							isImageUrl
-								? 'maxi-image-block__image wp-image-external'
-								: `maxi-image-block__image wp-image-${mediaID}`
-						}
-						src={mediaURL}
-						width={mediaWidth}
-						height={mediaHeight}
-						alt={mediaAlt}
-					/>
-				)}
-			</HoverPreview>
-			{captionType !== 'none' &&
-				!isEmpty(captionContent) &&
-				captionPosition === 'bottom' && (
-					<RichText.Content
-						className='maxi-image-block__caption'
-						value={captionContent}
-						tagName='figcaption'
-					/>
-				)}
+			<WithRatioResized isResized={imgWidth}>
+				{captionType !== 'none' &&
+					!isEmpty(captionContent) &&
+					captionPosition === 'top' && (
+						<RichText.Content
+							className='maxi-image-block__caption'
+							value={captionContent}
+							tagName='figcaption'
+						/>
+					)}
+				<HoverPreview
+					key={`hover-preview-${uniqueID}`}
+					wrapperClassName={wrapperClassName}
+					hoverClassName={!SVGElement ? hoverClasses : null}
+					isSVG={!!SVGElement}
+					{...getGroupAttributes(attributes, [
+						'hover',
+						'hoverTitleTypography',
+						'hoverContentTypography',
+					])}
+				>
+					{SVGElement ? (
+						<RawHTML>{SVGElement}</RawHTML>
+					) : (
+						<img
+							className={
+								isImageUrl
+									? 'maxi-image-block__image wp-image-external'
+									: `maxi-image-block__image wp-image-${mediaID}`
+							}
+							src={mediaURL}
+							width={mediaWidth}
+							height={mediaHeight}
+							alt={mediaAlt}
+						/>
+					)}
+				</HoverPreview>
+				{captionType !== 'none' &&
+					!isEmpty(captionContent) &&
+					captionPosition === 'bottom' && (
+						<RichText.Content
+							className='maxi-image-block__caption'
+							value={captionContent}
+							tagName='figcaption'
+						/>
+					)}
+			</WithRatioResized>
 		</MaxiBlock>
 	);
 };
+
+const WithRatioResized = ({ isResized, children }) =>
+	isResized ? (
+		<div className='maxi-image-ratio-wrapper'>{children}</div>
+	) : (
+		children
+	);
 
 export default save;

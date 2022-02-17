@@ -35,12 +35,13 @@ const ColorContent = ({
 	isHover,
 	id,
 	value,
-	isGeneral,
 	onChange,
 	clientId,
 }) => (
 	<ColorControl
 		label={__('Fill', 'maxi-blocks')}
+		prefix='background-svg-'
+		useBreakpointForDefault
 		paletteStatus={getLastBreakpointAttribute(
 			'background-svg-palette-status',
 			breakpoint,
@@ -94,32 +95,6 @@ const ColorContent = ({
 					false,
 					breakpoint
 				)]: paletteOpacity,
-				...(isGeneral && {
-					[getAttributeKey(
-						'background-svg-palette-status',
-						isHover,
-						false,
-						'general'
-					)]: paletteStatus,
-					[getAttributeKey(
-						'background-svg-palette-color',
-						isHover,
-						false,
-						'general'
-					)]: paletteColor,
-					[getAttributeKey(
-						'background-svg-palette-opacity',
-						isHover,
-						false,
-						'general'
-					)]: paletteOpacity,
-					[getAttributeKey(
-						'background-svg-palette-opacity',
-						isHover,
-						false,
-						'general'
-					)]: paletteOpacity,
-				}),
 			});
 		}}
 		isHover={isHover}

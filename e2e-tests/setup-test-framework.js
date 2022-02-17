@@ -38,7 +38,7 @@ const OBSERVED_CONSOLE_MESSAGE_TYPES = {
 jest.setTimeout(PUPPETEER_TIMEOUT || 100000);
 
 async function setupBrowser() {
-	await setBrowserViewport('large');
+	await setBrowserViewport({ width: 1425, height: 700 });
 }
 
 /**
@@ -123,6 +123,10 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Sometimes favicon is not found
+		if (message?._stackTraceLocations?.[0]?.url.includes('favicon.ico'))
+			return;
+
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of
@@ -145,6 +149,9 @@ function observeConsoleLogging() {
 
 		// eslint-disable-next-line no-console
 		console[logFunction](text);
+
+		// In case we want to debug the error
+		debugger;
 	});
 }
 

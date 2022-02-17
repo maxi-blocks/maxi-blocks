@@ -184,8 +184,8 @@ const LibraryContainer = props => {
 		'6ed8ae6d1c430c6a76e0720f74eab91c'
 	);
 
-	const Accordion = ({ children, title }) => {
-		const [isAccordionOpen, setAccordionOpen] = useState(false);
+	const Accordion = ({ children, title, openByDefault = false }) => {
+		const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
 
 		const accordionClasses = classnames(
 			'maxi-cloud-container__accordion',
@@ -772,7 +772,10 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<Accordion title={__('Colour', 'maxi-blocks')}>
+							<Accordion
+								title={__('Colour', 'maxi-blocks')}
+								openByDefault
+							>
 								<CustomRefinementList attribute='taxonomies.sc_color' />
 							</Accordion>
 							<ClearRefinements />

@@ -34,8 +34,6 @@ import {
 	Menu,
 	HierarchicalMenu,
 	Stats,
-	HitsPerPage,
-	MenuSelect,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId } from 'lodash';
@@ -604,34 +602,49 @@ const LibraryContainer = props => {
 
 	const CustomRefinementList = connectRefinementList(RefinementList);
 
-	const MenuSelect = ({ items, currentRefinement, refine }) => (
-		<div>
-			<button
-				type='button'
-				value=''
-				onClick={event => {
-					event.preventDefault();
-					refine('');
-				}}
-			>
-				{__('All icons', 'maxi-blocks')}
-			</button>
-			{items.map(item => (
+	const MenuSelect = ({ items, currentRefinement, refine }) => {
+		return (
+			<div>
+				<p>Current refinement: {currentRefinement}</p>
 				<button
 					type='button'
-					key={item.label}
-					value={item.isRefined ? currentRefinement : item.value}
+					value=''
+					className={classnames(
+						'maxi-cloud-container__content-svg-shape__button',
+						currentRefinement === '' &&
+							' maxi-cloud-container__content-svg-shape__button___pressed'
+					)}
 					onClick={event => {
 						event.preventDefault();
-						console.log(item);
-						refine(item.value);
+						refine('');
 					}}
 				>
-					{item.label}
+					{__('All', 'maxi-blocks')}
 				</button>
-			))}
-		</div>
-	);
+				{items.map(item => (
+					<button
+						type='button'
+						key={item.label}
+						className={classnames(
+							'maxi-cloud-container__content-svg-shape__button',
+							currentRefinement === item.value &&
+								' maxi-cloud-container__content-svg-shape__button___pressed'
+						)}
+						value={item.value}
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+							console.log(item.value);
+							console.log({ currentRefinement });
+							console.log(currentRefinement === item.value);
+						}}
+					>
+						{item.label}
+					</button>
+				))}
+			</div>
+		);
+	};
 
 	const CustomMenuSelect = connectMenu(MenuSelect);
 
@@ -661,17 +674,6 @@ const LibraryContainer = props => {
 								}}
 							/>
 							<Stats translations={resultsCount} />
-							<HitsPerPage
-								defaultRefinement={49}
-								items={[
-									{ value: 49, label: 'Show 50 per screen' },
-									{ value: 98, label: 'Show 100 per screen' },
-									{
-										value: 196,
-										label: 'Show 200 per screen',
-									},
-								]}
-							/>
 						</div>
 						<InfiniteHits hitComponent={svgResults} />
 					</div>

@@ -2,4 +2,18 @@
 	.maxi-tabs-control__button--selected svg path {
 		fill: var(--maxi-secondary-color);
 	}
+	&.maxi-settingstab-control {
+		.maxi-tabs-control {
+			margin-bottom: 0;
+			width: 100%;
+			&__button {
+				&:last-child {
+					border-right: 1px solid var(--maxi-grey-1-color);
+				}
+				&:first-child {
+					border-left: 1px solid var(--maxi-grey-1-color);
+				}
+			}
+		}
+	}
 }

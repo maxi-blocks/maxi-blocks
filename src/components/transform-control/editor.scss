@@ -134,6 +134,7 @@
 				position: relative;
 				right: 18px;
 				top: 18px;
+				margin-left: 4px;
 				@at-root .rtl #{&} {
 					left: 18px;
 					right: unset;
@@ -169,6 +170,7 @@
 			display: flex;
 			align-items: center;
 			margin-top: 5px;
+			margin-bottom: 8px;
 			&__value {
 				display: flex;
 				flex-direction: column;
@@ -192,7 +194,7 @@
 		}
 		&__sync {
 			position: absolute;
-			top: 180px;
+			top: 181px;
 			right: 0;
 			display: flex;
 			align-items: flex-end;
@@ -202,12 +204,15 @@
 				left: 0;
 			}
 
+			button[type='button'] {
+				margin-left: 5px;
+			}
 			button[type='button'],
 			button[type='reset'] {
 				border: 2px solid #dddfe1;
 				border-radius: 5px;
-				width: 31px;
-				height: 31px;
+				width: 32px;
+				height: 32px;
 				padding: 0;
 				display: inline-flex;
 				align-items: center;
@@ -257,6 +262,20 @@
 			}
 			& .maxi-maxi-control__reset-button {
 				margin-left: 5px;
+			}
+		}
+	}
+	.maxi-settingstab-control {
+		.maxi-tabs-control {
+			margin-bottom: 0;
+			width: 100%;
+			&__button {
+				&:last-child {
+					border-right: 1px solid var(--maxi-grey-1-color);
+				}
+				&:first-child {
+					border-left: 1px solid var(--maxi-grey-1-color);
+				}
 			}
 		}
 	}

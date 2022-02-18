@@ -30,9 +30,9 @@ import {
 	InfiniteHits,
 	connectRefinementList,
 	connectMenu,
+	connectHierarchicalMenu,
 	ClearRefinements,
 	Menu,
-	HierarchicalMenu,
 	Stats,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
@@ -130,6 +130,7 @@ const MasonryItem = props => {
 					>
 						{svgCode}
 					</RawHTML>
+					<span>{__('Load', 'maxi-block')}</span>
 				</div>
 			)}
 		</div>
@@ -610,7 +611,6 @@ const LibraryContainer = props => {
 	const MenuSelect = ({ items, currentRefinement, refine }) => {
 		return (
 			<div>
-				<p>Current refinement: {currentRefinement}</p>
 				<button
 					type='button'
 					value=''
@@ -652,6 +652,33 @@ const LibraryContainer = props => {
 
 	const CustomMenuSelect = connectMenu(MenuSelect);
 
+	const HierarchicalMenu = ({ items, refine }) => (
+		<ul>
+			{items.map(item => (
+				<li key={item.label} className='ais-HierarchicalMenu-item'>
+					<a
+						href='#'
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+						}}
+					>
+						{item.label} ({item.count})
+					</a>
+					<ToggleSwitch
+						selected={item.isRefined}
+						onChange={val => refine(item.value)}
+					/>
+					{item.items && (
+						<HierarchicalMenu items={item.items} refine={refine} />
+					)}
+				</li>
+			))}
+		</ul>
+	);
+
+	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -659,14 +686,27 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
+					<div className='maxi-cloud-container__sc__sidebar'>
+						<SearchBox
+							submit={__('Find', 'maxi-blocks')}
+							autoFocus
+							searchAsYouType
+							showLoadingIndicator
+						/>
+						<CustomHierarchicalMenu
+							attributes={[
+								'taxonomies_hierarchical.svg_tag.lvl0',
+								'taxonomies_hierarchical.svg_tag.lvl1',
+							]}
+							limit={10}
+							showMore
+							showLoadingIndicator
+							showMoreLimit={10}
+						/>
+						<ClearRefinements />
+					</div>
 					<div className='maxi-cloud-container__content-svg-shape'>
 						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
-							/>
 							<CustomMenuSelect
 								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='taxonomies.svg_category'
@@ -677,9 +717,11 @@ const LibraryContainer = props => {
 									),
 								}}
 							/>
-							<Stats translations={resultsCount} />
 						</div>
-						<InfiniteHits hitComponent={svgResults} />
+						<div className='maxi-cloud-container__sc__content-sc'>
+							<Stats translations={resultsCount} />
+							<InfiniteHits hitComponent={svgResults} />
+						</div>
 					</div>
 				</InstantSearch>
 			)}

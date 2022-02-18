@@ -9,7 +9,7 @@ import { CheckboxControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { Button, ToggleSwitch, SettingTabsControl } from '../../components';
+import { Button, ToggleSwitch } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	imageUploader,
@@ -550,13 +550,18 @@ const LibraryContainer = props => {
 	};
 
 	const resultsCount = {
-		stats(nbHits, nbSortedHits, areHitsSorted) {
+		stats(nbHits) {
+			const resultsString = nbHits.toLocaleString();
 			return (
-				type !== 'sc' &&
 				type !== 'patterns' && (
 					<span>
-						<strong>{nbHits.toLocaleString()}</strong>
-						<span>results</span>
+						<span>{__('Returned', 'maxi-blocks')}</span>
+						<strong>{` ${resultsString} `}</strong>
+						<span>
+							{nbHits === 1
+								? __('result', 'maxi-blocks')
+								: __('results', 'maxi-blocks')}
+						</span>
 					</span>
 				)
 			);

@@ -9,13 +9,13 @@ import getPaletteColor from '../style-cards/getPaletteColor';
 import { isNumber } from 'lodash';
 
 const getVarWithColor = ({ blockStyle, variable }) => {
+	const color = getPaletteColor({
+		blockStyle,
+		color: variable.replace('color-', ''),
+	}).replace(/ /g, '');
+
 	return `var(--maxi-${blockStyle}-${variable}${
-		variable.includes('color-')
-			? `,${getPaletteColor({
-					blockStyle,
-					color: variable.replace('color-', ''),
-			  }).replace(/ /g, '')}`
-			: ''
+		variable.includes('color-') && color ? `,${color}` : ''
 	})`;
 };
 

@@ -49,6 +49,7 @@ const MasonryItem = props => {
 		previewIMG,
 		demoUrl,
 		currentItemColorStatus = false,
+		taxonomies,
 	} = props;
 
 	const masonryCardClasses = classnames(
@@ -61,7 +62,53 @@ const MasonryItem = props => {
 
 	return (
 		<div className={masonryCardClasses}>
-			{(type === 'patterns' || type === 'sc') && (
+			{type === 'patterns' && (
+				<>
+					<div className='maxi-cloud-masonry-card__container'>
+						<div className='maxi-cloud-masonry-card__container__top-bar'>
+							<div className='maxi-cloud-masonry__serial-tag'>
+								{serial}
+							</div>
+							{taxonomies && (
+								<div className='maxi-cloud-masonry__category'>
+									{taxonomies}
+								</div>
+							)}
+						</div>
+					</div>
+					<div className='maxi-cloud-masonry-card__image'>
+						<img src={previewIMG} alt={`Preview for ${serial}`} />
+					</div>
+					<div className='maxi-cloud-masonry-card__buttons'>
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							href={demoUrl}
+							target='_blank'
+						>
+							{__('Preview', 'maxi-blocks')}
+						</Button>
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							onClick={onRequestInsert}
+						>
+							{__('Load', 'maxi-blocks')}
+						</Button>
+						<div className='maxi-cloud-masonry-card__tags'>
+							{isPro && (
+								<span className='maxi-cloud-masonry-card__tags__tag'>
+									{__('Pro', 'maxi-blocks')}
+								</span>
+							)}
+							{!isPro && (
+								<span className='maxi-cloud-masonry-card__tags__tag'>
+									{__('Free', 'maxi-blocks')}
+								</span>
+							)}
+						</div>
+					</div>
+				</>
+			)}
+			{type === 'sc' && (
 				<>
 					<div className='maxi-cloud-masonry-card__container'>
 						<div className='maxi-cloud-masonry-card__container__top-bar'>
@@ -337,6 +384,7 @@ const LibraryContainer = props => {
 					demoUrl={hit.demo_url}
 					previewIMG={hit.preview_image_url}
 					isPro={hit.taxonomies.cost === 'pro'}
+					taxonomies={hit.taxonomies?.category?.[0]}
 					serial={hit.post_number}
 					onRequestInsert={() =>
 						onRequestInsertPattern(hit.gutenberg_code, isChecked)
@@ -554,17 +602,15 @@ const LibraryContainer = props => {
 		stats(nbHits) {
 			const resultsString = nbHits.toLocaleString();
 			return (
-				type !== 'patterns' && (
+				<span>
+					<span>{__('Returned', 'maxi-blocks')}</span>
+					<strong>{` ${resultsString} `}</strong>
 					<span>
-						<span>{__('Returned', 'maxi-blocks')}</span>
-						<strong>{` ${resultsString} `}</strong>
-						<span>
-							{nbHits === 1
-								? __('result', 'maxi-blocks')
-								: __('results', 'maxi-blocks')}
-						</span>
+						{nbHits === 1
+							? __('result', 'maxi-blocks')
+							: __('results', 'maxi-blocks')}
 					</span>
-				)
+				</span>
 			);
 		},
 	};
@@ -784,52 +830,41 @@ const LibraryContainer = props => {
 						indexName='maxi_posts_post'
 						searchClient={searchClient}
 					>
+						<div className='maxi-cloud-container__patterns__top-menu'>
+							<CustomMenuSelect
+								className='maxi-cloud-container__content-patterns__cost'
+								attribute='taxonomies.cost'
+							/>
+							<Menu
+								attribute='taxonomies.gutenberg_type'
+								defaultRefinement='Block Patterns'
+							/>
+						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
+							<Menu
+								attribute='taxonomies.light_or_dark'
+								defaultRefinement='Light'
+								transformItems={items =>
+									items.map(item => ({
+										...item,
+										label: `${item.label} 
+											${__('tone', 'maxi-blocks')}`,
+									}))
+								}
+							/>
 							<SearchBox
 								autoFocus
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<Accordion
-								title={__(
-									'Placeholder for Images',
-									'maxi-blocks'
-								)}
-							>
-								<PlaceholderCheckboxControl />
-							</Accordion>
-							<Accordion
-								title={__('Block Patterns', 'maxi-blocks')}
-							>
-								<Menu
-									attribute='taxonomies.gutenberg_type'
-									defaultRefinement='Block Patterns'
-								/>
-							</Accordion>
-							<Accordion
-								title={__('Patterns Type', 'maxi-blocks')}
-							>
-								<CustomRefinementList attribute='taxonomies.cost' />
-							</Accordion>
-							<Accordion
-								title={__('Patterns Style', 'maxi-blocks')}
-							>
-								<CustomRefinementList
-									attribute='taxonomies.light_or_dark'
-									defaultRefinement={['Light']}
-								/>
-							</Accordion>
-							<Accordion
-								title={__('Patterns Category', 'maxi-blocks')}
-							>
-								<HierarchicalMenu
-									attributes={[
-										'taxonomies_hierarchical.category.lvl0',
-										'taxonomies_hierarchical.category.lvl1',
-										'taxonomies_hierarchical.category.lvl2',
-									]}
-								/>
-							</Accordion>
+							<PlaceholderCheckboxControl />
+							<CustomHierarchicalMenu
+								attributes={[
+									'taxonomies_hierarchical.category.lvl0',
+									'taxonomies_hierarchical.category.lvl1',
+									'taxonomies_hierarchical.category.lvl2',
+								]}
+							/>
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>

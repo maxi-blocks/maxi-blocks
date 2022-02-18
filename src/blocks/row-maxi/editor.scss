@@ -22,11 +22,13 @@
 	&__template {
 		display: flex;
 		flex-wrap: wrap;
-		background-color: #fff;
+		background-color: transparent;
 		width: 100%;
 		padding: 36px 1rem;
 		margin: 0 auto;
 		justify-content: center;
+		max-width: 1170px;
+		z-index: 1;
 
 		&__button {
 			width: auto;
@@ -53,14 +55,14 @@
 	}
 	&::after {
 		box-shadow: none !important;
-		transition: 0.3s;
 		border-radius: 0 !important;
-		top: -2px !important;
-		left: -2px !important;
-		right: -2px !important;
-		bottom: -2px !important;
-		border: 1px solid rgba(0, 124, 186, 0.5) !important;
+		top: -1px !important;
+		right: -1px !important;
+		bottom: -1px !important;
+		left: -1px !important;
+		border: 2px solid #7fbddc !important;
 		opacity: 0;
+		z-index: -1;
 	}
 	&.has-child-selected,
 	&.is-selected {

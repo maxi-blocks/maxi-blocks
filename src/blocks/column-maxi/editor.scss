@@ -13,9 +13,12 @@
 
 		&::after {
 			box-shadow: none !important;
-			transition: 0.3s;
 			border-radius: 0;
-			border: 1px solid rgba(0, 124, 186, 0.5) !important;
+			border: 2px solid #7FBDDC !important;
+			top: -1px !important;
+			right: -1px !important;
+			bottom: -1px !important;
+			left: -1px !important;
 			opacity: 0;
 		}
 

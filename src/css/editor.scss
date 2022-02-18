@@ -86,10 +86,12 @@ body {
 		}
 	}
 	&:hover {
-		.block-list-appender {
-			.block-editor-button-block-appender {
-				opacity: 1 !important;
-				visibility: visible !important;
+		& > .block-editor-block-list__layout {
+			& > .block-list-appender {
+				.block-editor-button-block-appender {
+					opacity: 1 !important;
+					visibility: visible !important;
+				}
 			}
 		}
 	}
@@ -101,16 +103,17 @@ body {
 			z-index: 21;
 			top: 100%;
 			left: 50%;
-			width: 1.5rem;
-			height: 1.5rem;
+			width: 16px;
+			height: 16px;
 			padding: 0;
 			margin: 0;
 			background: #ff4a17;
 			opacity: 0;
 			transform: translate(-50%, -50%);
-			transition: all 0.3s ease;
+			transition: all 0s ease;
 			visibility: hidden;
 			box-shadow: none;
+			border-radius: 0;
 
 			&:hover,
 			&:focus {
@@ -120,19 +123,19 @@ body {
 			}
 
 			svg {
-				min-width: 2rem;
-				min-height: 2rem;
+				min-width: 19px;
+				min-height: 19px;
 				fill: #fff;
 			}
 		}
 	}
 
-	.block-list-appender--show {
-		.block-editor-button-block-appender {
-			opacity: 1 !important;
-			visibility: visible !important;
-		}
-	}
+	// .block-list-appender--show {
+	// 	.block-editor-button-block-appender {
+	// 		opacity: 1 !important;
+	// 		visibility: visible !important;
+	// 	}
+	// }
 
 	&.maxi-block--has-link .maxi-text-block__content {
 		transition: color 0.3s ease;

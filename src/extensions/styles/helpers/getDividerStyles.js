@@ -35,68 +35,73 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 					blockStyle: parentBlockStyle,
 				}),
 			};
-		else if (!paletteStatus && !isNil(color))
-			return { 'border-color': color };
+
+		return { 'border-color': color };
 	};
 	breakpoints.forEach(breakpoint => {
 		if (target === 'line') {
-			response[breakpoint] = {
-				'border-style': getLastBreakpointAttribute(
-					'divider-border-style',
+			const isHorizontal =
+				getLastBreakpointAttribute(
+					'line-orientation',
 					breakpoint,
 					obj
-				),
-				...getColor(breakpoint),
+				) === 'horizontal';
 
-				...(obj[`line-orientation-${breakpoint}`] === 'horizontal' && {
-					'border-right-style': 'none',
-					...(obj[`divider-border-radius-${breakpoint}`] &&
-						obj[`divider-border-style-${breakpoint}`] ===
-							'solid' && { 'border-radius': '20px' }),
-					...(isNil(obj[`divider-width-${breakpoint}`]) && {
-						width: `${obj[`divider-width-${breakpoint}`]}${
-							obj[`divider-width-unit-${breakpoint}`]
-						}`,
+			const dividerBorderStyle = getLastBreakpointAttribute(
+				'divider-border-style',
+				breakpoint,
+				obj
+			);
+
+			const dividerLineWeight = isHorizontal
+				? obj[`divider-border-top-width-${breakpoint}`]
+				: obj[`divider-border-right-width-${breakpoint}`];
+			const dividerLineWeightUnit =
+				getLastBreakpointAttribute(
+					isHorizontal
+						? 'divider-border-top-unit'
+						: 'divider-border-right-unit',
+					breakpoint,
+					obj
+				) ?? 'px';
+
+			const dividerSize = isHorizontal
+				? obj[`divider-width-${breakpoint}`]
+				: obj[`divider-height-${breakpoint}`];
+			const dividerSizeUnit =
+				getLastBreakpointAttribute(
+					'divider-width-unit',
+					breakpoint,
+					obj
+				) ?? 'px';
+
+			response[breakpoint] = {
+				...getColor(breakpoint),
+				...(obj[`divider-border-radius-${breakpoint}`] &&
+					obj[`divider-border-style-${breakpoint}`] === 'solid' && {
+						'border-radius': '20px',
 					}),
-					...(!isNil(
-						obj[`divider-border-top-width-${breakpoint}`]
-					) && {
-						'border-top-width': `${
-							obj[`divider-border-top-width-${breakpoint}`]
-						}${
-							obj[`divider-border-top-unit-${breakpoint}`] || 'px'
-						}`,
+
+				...(isHorizontal && {
+					'border-top-style': dividerBorderStyle,
+					'border-right-style': 'none',
+					...(!isNil(dividerLineWeight) && {
+						'border-top-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						height: `${dividerLineWeight}${dividerLineWeightUnit}`,
+					}),
+					...(!isNil(dividerSize) && {
+						width: `${dividerSize}${dividerSizeUnit}`,
 					}),
 				}),
-				...(obj[`line-orientation-${breakpoint}`] === 'vertical' && {
+
+				...(!isHorizontal && {
 					'border-top-style': 'none',
-					...(obj[`divider-border-radius-${breakpoint}`] &&
-						obj[`divider-border-style-${breakpoint}`] ===
-							'solid' && {
-							'border-radius': '20px',
-						}),
-					...(!isNil(obj[`divider-border-right-width-${breakpoint}`])
-						? {
-								['border-right-width']: `${
-									obj[
-										`divider-border-right-width-${breakpoint}`
-									]
-								}${
-									obj[
-										`divider-border-right-unit-${breakpoint}`
-									]
-								}`,
-						  }
-						: {
-								'border-right-width': '2px',
-						  }),
-					...(!isNil(obj[`divider-height-${breakpoint}`])
-						? {
-								height: `${
-									obj[`divider-height-${breakpoint}`]
-								}%}`,
-						  }
-						: { height: '100%' }),
+					'border-right-style': dividerBorderStyle,
+					...(!isNil(dividerLineWeight) && {
+						'border-right-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						width: `${dividerLineWeight}${dividerLineWeightUnit}`,
+					}),
+					...(!isNil(dividerSize) && { height: `${dividerSize}%}` }),
 				}),
 			};
 		} else {

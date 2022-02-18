@@ -220,6 +220,8 @@ const getStyles = props => {
 		),
 	};
 
+	console.log(response);
+
 	return response;
 };
 

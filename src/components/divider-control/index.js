@@ -37,7 +37,6 @@ import { styleNone, dashed, dotted, solid } from '../../icons';
 const DividerControl = props => {
 	const {
 		onChange,
-		lineOrientation,
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
@@ -45,7 +44,7 @@ const DividerControl = props => {
 		clientId,
 		breakpoint,
 	} = props;
-	console.log(props);
+
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -65,19 +64,24 @@ const DividerControl = props => {
 		},
 	};
 
+	const lineOrientation = getLastBreakpointAttribute(
+		'line-orientation',
+		breakpoint,
+		props
+	);
+
+	const dividerBorderStyle = getLastBreakpointAttribute(
+		'divider-border-style',
+		breakpoint,
+		props
+	);
+
 	return (
 		<>
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem:
-							props[`divider-border-style-${breakpoint}`] ===
-								'none' ||
-							getLastBreakpointAttribute(
-								'divider-border-style',
-								breakpoint,
-								props
-							) === 'none',
+						activeItem: dividerBorderStyle === 'none',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -87,14 +91,7 @@ const DividerControl = props => {
 						onChange: () => onChange(dividerNone(breakpoint)),
 					},
 					{
-						activeItem:
-							props[`divider-border-style-${breakpoint}`] ===
-								'solid' ||
-							getLastBreakpointAttribute(
-								'divider-border-style',
-								breakpoint,
-								props
-							) === 'solid',
+						activeItem: dividerBorderStyle === 'solid',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -108,14 +105,7 @@ const DividerControl = props => {
 						},
 					},
 					{
-						activeItem:
-							props[`divider-border-style-${breakpoint}`] ===
-								'dashed' ||
-							getLastBreakpointAttribute(
-								'divider-border-style',
-								breakpoint,
-								props
-							) === 'dashed',
+						activeItem: dividerBorderStyle === 'dashed',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -129,14 +119,7 @@ const DividerControl = props => {
 						},
 					},
 					{
-						activeItem:
-							props[`divider-border-style-${breakpoint}`] ===
-								'dotted' ||
-							getLastBreakpointAttribute(
-								'divider-border-style',
-								breakpoint,
-								props
-							) === 'dotted',
+						activeItem: dividerBorderStyle === 'dotted',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -175,12 +158,12 @@ const DividerControl = props => {
 					}
 				/>
 			)}
-			{props[`divider-border-style-${breakpoint}`] !== 'none' &&
+			{dividerBorderStyle !== 'none' &&
 				!disableBorderRadius &&
-				props[`divider-border-style-${breakpoint}`] === 'solid' && (
+				dividerBorderStyle === 'solid' && (
 					<ToggleSwitch
 						label={__('Line radius', 'maxi-blocks')}
-						selected={props[`divider-border-style-${breakpoint}`]}
+						selected={dividerBorderStyle}
 						onChange={val =>
 							onChange({
 								[`divider-border-style-${breakpoint}`]: val,
@@ -188,54 +171,53 @@ const DividerControl = props => {
 						}
 					/>
 				)}
-			{props[`divider-border-style-${breakpoint}`] !== 'none' &&
-				!disableColor && (
-					<ColorControl
-						label={__('Divider', 'maxi-blocks')}
-						color={getLastBreakpointAttribute(
-							'divider-border-color',
-							breakpoint,
-							props
-						)}
-						prefix='divider-border-'
-						paletteColor={getLastBreakpointAttribute(
-							'divider-border-palette-color',
-							breakpoint,
-							props
-						)}
-						paletteOpacity={getLastBreakpointAttribute(
-							'divider-border-palette-opacity',
-							breakpoint,
-							props
-						)}
-						paletteStatus={getLastBreakpointAttribute(
-							'divider-border-palette-status',
-							breakpoint,
-							props
-						)}
-						onChange={({
-							color,
-							paletteColor,
-							paletteStatus,
-							paletteOpacity,
-						}) =>
-							onChange({
-								[`divider-border-color-${breakpoint}`]: color,
-								[`divider-border-palette-color-${breakpoint}`]:
-									paletteColor,
-								[`divider-border-palette-status-${breakpoint}`]:
-									paletteStatus,
-								[`divider-border-palette-opacity-${breakpoint}`]:
-									paletteOpacity,
-							})
-						}
-						disableGradient
-						globalProps={{ target: '', type: 'divider' }}
-						isHover={isHover}
-						clientId={clientId}
-					/>
-				)}
-			{props[`divider-border-style-${breakpoint}`] !== 'none' &&
+			{dividerBorderStyle !== 'none' && !disableColor && (
+				<ColorControl
+					label={__('Divider', 'maxi-blocks')}
+					color={getLastBreakpointAttribute(
+						'divider-border-color',
+						breakpoint,
+						props
+					)}
+					prefix='divider-border-'
+					paletteColor={getLastBreakpointAttribute(
+						'divider-border-palette-color',
+						breakpoint,
+						props
+					)}
+					paletteOpacity={getLastBreakpointAttribute(
+						'divider-border-palette-opacity',
+						breakpoint,
+						props
+					)}
+					paletteStatus={getLastBreakpointAttribute(
+						'divider-border-palette-status',
+						breakpoint,
+						props
+					)}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
+						onChange({
+							[`divider-border-color-${breakpoint}`]: color,
+							[`divider-border-palette-color-${breakpoint}`]:
+								paletteColor,
+							[`divider-border-palette-status-${breakpoint}`]:
+								paletteStatus,
+							[`divider-border-palette-opacity-${breakpoint}`]:
+								paletteOpacity,
+						})
+					}
+					disableGradient
+					globalProps={{ target: '', type: 'divider' }}
+					isHover={isHover}
+					clientId={clientId}
+				/>
+			)}
+			{dividerBorderStyle !== 'none' &&
 				(lineOrientation === 'horizontal' ||
 					lineOrientation === undefined) && (
 					<>
@@ -324,7 +306,7 @@ const DividerControl = props => {
 						/>
 					</>
 				)}
-			{props[`divider-border-style-${breakpoint}`] !== 'none' &&
+			{dividerBorderStyle !== 'none' &&
 				(lineOrientation === 'vertical' ||
 					lineOrientation === undefined) && (
 					<>

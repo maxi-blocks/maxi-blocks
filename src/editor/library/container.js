@@ -9,7 +9,7 @@ import { CheckboxControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { Button, ToggleSwitch } from '../../components';
+import { Button, ToggleSwitch, SettingTabsControl } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	imageUploader,
@@ -29,6 +29,7 @@ import {
 	SearchBox,
 	InfiniteHits,
 	connectRefinementList,
+	connectMenu,
 	ClearRefinements,
 	Menu,
 	HierarchicalMenu,
@@ -603,6 +604,37 @@ const LibraryContainer = props => {
 
 	const CustomRefinementList = connectRefinementList(RefinementList);
 
+	const MenuSelect = ({ items, currentRefinement, refine }) => (
+		<div>
+			<button
+				type='button'
+				value=''
+				onClick={event => {
+					event.preventDefault();
+					refine('');
+				}}
+			>
+				{__('All icons', 'maxi-blocks')}
+			</button>
+			{items.map(item => (
+				<button
+					type='button'
+					key={item.label}
+					value={item.isRefined ? currentRefinement : item.value}
+					onClick={event => {
+						event.preventDefault();
+						console.log(item);
+						refine(item.value);
+					}}
+				>
+					{item.label}
+				</button>
+			))}
+		</div>
+	);
+
+	const CustomMenuSelect = connectMenu(MenuSelect);
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -618,7 +650,7 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<MenuSelect
+							<CustomMenuSelect
 								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='taxonomies.svg_category'
 								translations={{
@@ -659,7 +691,7 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<RefinementList
+							<CustomRefinementList
 								className='hidden'
 								attribute='taxonomies.svg_category'
 								defaultRefinement={['Shape']}
@@ -685,7 +717,7 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<RefinementList
+							<CustomRefinementList
 								className='hidden'
 								attribute='taxonomies.svg_category'
 								defaultRefinement={['Line']}
@@ -729,12 +761,12 @@ const LibraryContainer = props => {
 							<Accordion
 								title={__('Patterns Type', 'maxi-blocks')}
 							>
-								<RefinementList attribute='taxonomies.cost' />
+								<CustomRefinementList attribute='taxonomies.cost' />
 							</Accordion>
 							<Accordion
 								title={__('Patterns Style', 'maxi-blocks')}
 							>
-								<RefinementList
+								<CustomRefinementList
 									attribute='taxonomies.light_or_dark'
 									defaultRefinement={['Light']}
 								/>

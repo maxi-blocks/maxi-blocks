@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { __experimentalGradientPicker } from '@wordpress/components';
+import { GradientPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -51,7 +51,7 @@ const GradientControl = props => {
 				onChange={val => onChangeOpacity(val)}
 			/>
 			<div className='maxi-gradient-control__gradient'>
-				<__experimentalGradientPicker
+				<GradientPicker
 					value={gradient}
 					onChange={gradient => {
 						onChange(gradient);

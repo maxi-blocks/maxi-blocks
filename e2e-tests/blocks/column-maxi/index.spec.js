@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 	pressKeyTimes,
+	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -30,9 +31,10 @@ describe('Column Maxi', () => {
 	});
 
 	it('check column settings', async () => {
-		const column = await page.$('.maxi-column-block');
-		// need an offset as if not click on the appender and opens the menu
-		await column.click({ offset: { x: 0, y: 0 } });
+		const columnClientId = await page.$eval('.maxi-column-block', column =>
+			column.getAttribute('data-block')
+		);
+		await selectBlockByClientId(columnClientId);
 
 		await openSidebarTab(page, 'style', 'column settings');
 

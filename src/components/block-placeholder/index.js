@@ -3,6 +3,7 @@
  */
 import { ButtonBlockAppender } from '@wordpress/block-editor';
 import { useRef, useEffect, useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -19,6 +20,8 @@ import './editor.scss';
  */
 const BlockPlaceholder = props => {
 	const { className, content = '' } = props;
+
+	const { selectBlock } = useDispatch('core/block-editor');
 
 	const classes = classnames('maxi-block-placeholder', className);
 
@@ -37,7 +40,14 @@ const BlockPlaceholder = props => {
 	}, [ref.current]);
 
 	return (
-		<div ref={ref} className={classes}>
+		<div
+			ref={ref}
+			className={classes}
+			onClick={({ target }) => {
+				if (target.classList.contains('block-editor-inserter'))
+					clientId && selectBlock(clientId);
+			}}
+		>
 			<p className='maxi-block-placeholder__text'>{content}</p>
 			<ButtonBlockAppender
 				rootClientId={clientId}

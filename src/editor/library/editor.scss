@@ -2,6 +2,7 @@
 	width: 80%;
 	min-height: 90%;
 	max-width: 90%;
+	overflow-y: auto;
 
 	&__action-section {
 		display: flex;
@@ -665,7 +666,7 @@
 	}
 }
 .maxi-accordion-control__item__panel .maxi-library-modal__action-section {
-		margin-bottom: 8px;
+	margin-bottom: 8px;
 }
 @media only screen and (max-width: 1920px) {
 	.maxi-library-modal {

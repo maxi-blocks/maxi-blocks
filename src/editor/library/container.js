@@ -616,12 +616,13 @@ const LibraryContainer = props => {
 					value=''
 					className={classnames(
 						'maxi-cloud-container__content-svg-shape__button',
-						currentRefinement === '' &&
+						isEmpty(currentRefinement) &&
 							' maxi-cloud-container__content-svg-shape__button___pressed'
 					)}
 					onClick={event => {
 						event.preventDefault();
 						refine('');
+						items[0].isRefined = true;
 					}}
 				>
 					{__('All', 'maxi-blocks')}
@@ -632,16 +633,14 @@ const LibraryContainer = props => {
 						key={item.label}
 						className={classnames(
 							'maxi-cloud-container__content-svg-shape__button',
-							currentRefinement === item.value &&
+							item.isRefined &&
 								' maxi-cloud-container__content-svg-shape__button___pressed'
 						)}
 						value={item.value}
 						onClick={event => {
 							event.preventDefault();
 							refine(item.value);
-							console.log(item.value);
-							console.log({ currentRefinement });
-							console.log(currentRefinement === item.value);
+							item.isRefined = true;
 						}}
 					>
 						{item.label}

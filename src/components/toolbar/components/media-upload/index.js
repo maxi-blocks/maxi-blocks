@@ -9,32 +9,27 @@ import { MediaUpload } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Button from '../../../button';
-import DOMPurify from 'dompurify';
-// import Icon from '../../../icon';
-import { generateDataObject, injectImgSVG } from '../../../../extensions/svg';
-import { isEmpty } from 'lodash';
 import ToolbarPopover from '../toolbar-popover';
+import { generateDataObject, injectImgSVG } from '../../../../extensions/svg';
 
 /**
- * Icons
+ * External dependencies
  */
-// import { toolbarDelete } from '../../../../icons';
+import DOMPurify from 'dompurify';
+import { isEmpty } from 'lodash';
 
 /**
- * Delete
+ * Component
  */
 const ToolbarMediaUpload = props => {
 	const { blockName, attributes, setAttributes } = props;
 
 	if (blockName !== 'maxi-blocks/image-maxi') return null;
 
-	// const { removeBlock } = useDispatch('core/block-editor');
-
 	return (
 		<div className='toolbar-item toolbar-item__replace-image'>
 			<ToolbarPopover
 				tooltip={__('Replace', 'maxi-blocks')}
-				// icon={toolbarType}
 				text={__('Replace', 'maxi-blocks')}
 			>
 				<MediaUpload
@@ -45,11 +40,6 @@ const ToolbarMediaUpload = props => {
 							mediaWidth: media.width,
 							mediaHeight: media.height,
 							isImageUrl: false,
-						});
-
-						const newLocal = this;
-						newLocal.setState({
-							isExternalClass: false,
 						});
 
 						if (!isEmpty(attributes.SVGData)) {

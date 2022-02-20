@@ -6,10 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-// import BoxShadowControl from '../../../box-shadow-control';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
-import TextMarginControl from '../text-margin-control';
 import AxisControl from '../../../axis-control';
 
 /**
@@ -24,8 +22,7 @@ import { toolbarTextMargin } from '../../../../icons';
 const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi'];
 
 const TextMargin = props => {
-	const { blockName, breakpoint, name, onChange } = props;
-	// const { uniqueID, parentBlockStyle } = attributes;
+	const { blockName, breakpoint, onChange } = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
@@ -36,26 +33,16 @@ const TextMargin = props => {
 			icon={toolbarTextMargin}
 			advancedOptions='margin padding'
 		>
-			<div className='toolbar-item__text-margin__popover'>
-				<TextMarginControl
-					blockName={name}
-					{...getGroupAttributes(props, 'margin')}
-					onChange={onChange}
-					breakpoint={breakpoint}
-					disablePadding
-					marginTarget=''
-				/>
-				{/* <AxisControl
+			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
+				<AxisControl
 					{...getGroupAttributes(props, 'margin')}
 					label={__('Margin', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					breakpoint={breakpoint}
-					target=''
 					optionType='string'
 					disableSync
-					disableIcon
 					disableAuto
-				/> */}
+				/>
 			</div>
 		</ToolbarPopover>
 	);

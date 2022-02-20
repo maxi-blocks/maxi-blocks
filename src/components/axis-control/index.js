@@ -7,7 +7,6 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Icon from '../icon';
 import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import Button from '../button';
@@ -45,7 +44,6 @@ import {
 	paddingSeparate as paddingSeparateIcon,
 	paddingSyncAll as paddingSyncAllIcon,
 	paddingSyncDirection as paddingSyncDirectionIcon,
-	borderWidth,
 	reset,
 } from '../../icons';
 
@@ -112,7 +110,6 @@ const AxisContent = props => {
 		minMaxSettings,
 		currentUnit,
 		disableSync = false,
-		disableIcon = false,
 		label: type,
 		onReset,
 	} = props;
@@ -126,7 +123,6 @@ const AxisContent = props => {
 
 	return (
 		<div>
-			{disableSync && !disableIcon && <Icon icon={borderWidth} />}
 			{(sync === 'all' || disableSync) && (
 				<>
 					<AxisInput

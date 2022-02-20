@@ -10,8 +10,6 @@ import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
 import {
 	getAttributeKey,
-	// getBlockStyle,
-	// getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -52,46 +50,6 @@ const BackgroundColor = props => {
 		props
 	);
 	const isBackgroundColor = activeMedia === 'color';
-
-	// const getStyle = () => {
-	// 	if (!isBackgroundColor)
-	// 		return {
-	// 			background: '#fff',
-	// 			clipPath:
-	// 				'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
-	// 		};
-
-	// 	const bgPaletteStatus = getLastBreakpointAttribute(
-	// 		`${prefix}background-palette-status`,
-	// 		breakpoint,
-	// 		props
-	// 	);
-	// 	const bgPaletteColor = getLastBreakpointAttribute(
-	// 		`${prefix}background-palette-color`,
-	// 		breakpoint,
-	// 		props
-	// 	);
-	// 	const bgPaletteOpacity = getLastBreakpointAttribute(
-	// 		`${prefix}background-palette-opacity`,
-	// 		breakpoint,
-	// 		props
-	// 	);
-	// 	const bgColor = getLastBreakpointAttribute(
-	// 		`${prefix}background-color`,
-	// 		breakpoint,
-	// 		props
-	// 	);
-
-	// 	return {
-	// 		background: bgPaletteStatus
-	// 			? getColorRGBAString({
-	// 					firstVar: `color-${bgPaletteColor}`,
-	// 					opacity: bgPaletteOpacity,
-	// 					blockStyle: getBlockStyle(clientId),
-	// 			  })
-	// 			: bgColor,
-	// 	};
-	// };
 
 	return (
 		<ToolbarPopover
@@ -137,6 +95,7 @@ const BackgroundColor = props => {
 						clientId={clientId}
 						disableClipPath
 						isToolbar
+						disableResponsiveTabs
 					/>
 				)}
 			</div>

@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-// import SettingTabsControl from '../../../setting-tabs-control';
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 
@@ -51,23 +50,6 @@ const IconPosition = props => {
 						});
 					}}
 				/>
-				{/* <SettingTabsControl
-					label={__('Icon Position', 'maxi-block')}
-					type='buttons'
-					selected={props['icon-position']}
-					items={[
-						{
-							label: __('Right', 'maxi-block'),
-							value: 'right',
-						},
-						{ label: __('Left', 'maxi-block'), value: 'left' },
-					]}
-					onChange={val =>
-						onChange({
-							'icon-position': val,
-						})
-					}
-				/> */}
 			</div>
 		</ToolbarPopover>
 	);

@@ -53,7 +53,6 @@ const PaddingMargin = props => {
 						target={paddingTarget}
 						disableAuto
 						disableSync
-						disableIcon
 					/>
 				)}
 				{!disableMargin && (

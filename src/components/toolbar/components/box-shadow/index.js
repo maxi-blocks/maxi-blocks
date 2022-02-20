@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarBoxShadowControl from '../toolbar-box-shadow-control';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -15,6 +14,7 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  */
 import './editor.scss';
 import { toolbarDropShadow } from '../../../../icons';
+import BoxShadowControl from '../../../box-shadow-control';
 
 /**
  * BoxShadow
@@ -34,13 +34,14 @@ const BoxShadow = props => {
 			advancedOptions='box shadow'
 		>
 			<div className='toolbar-item__box-shadow__popover'>
-				<ToolbarBoxShadowControl
+				<BoxShadowControl
 					{...getGroupAttributes(props, ['boxShadow'], false, prefix)}
 					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					clientId={clientId}
 					disableAdvanced
 					prefix={prefix}
+					isToolbar
 				/>
 			</div>
 		</ToolbarPopover>

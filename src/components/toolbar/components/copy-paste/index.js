@@ -257,25 +257,18 @@ const CopyPasteContent = props => {
 	);
 };
 
-const CopyPaste = props => {
-	// const { blockName, isCaptionToolbar = false } = props;
-
-	// if (blockName === 'maxi-blocks/container-maxi' && !isCaptionToolbar)
-	// 	return null;
-
-	return (
-		<Dropdown
-			className='maxi-copypaste__copy-selector'
-			contentClassName='maxi-dropdown__child-content'
-			position='right top'
-			renderToggle={({ isOpen, onToggle }) => (
-				<Button onClick={onToggle} text='Copy'>
-					{__('Copy / Paste', 'maxi-blocks')}
-				</Button>
-			)}
-			renderContent={() => <CopyPasteContent {...props} />}
-		/>
-	);
-};
+const CopyPaste = props => (
+	<Dropdown
+		className='maxi-copypaste__copy-selector'
+		contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
+		position='right top'
+		renderToggle={({ isOpen, onToggle }) => (
+			<Button onClick={onToggle} text='Copy'>
+				{__('Copy / Paste', 'maxi-blocks')}
+			</Button>
+		)}
+		renderContent={() => <CopyPasteContent {...props} />}
+	/>
+);
 
 export default CopyPaste;

@@ -28,7 +28,7 @@ import './editor.scss';
  */
 const ColorControl = props => {
 	const {
-		label,
+		label = '',
 		className,
 		paletteStatus,
 		paletteColor,

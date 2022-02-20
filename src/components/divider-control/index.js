@@ -31,16 +31,71 @@ import { styleNone, dashed, dotted, solid } from '../../icons';
 /**
  * Component
  */
+export const DefaultDividersControl = props => {
+	const { lineOrientation, onChange } = props;
+
+	return (
+		<DefaultStylesControl
+			items={[
+				{
+					activeItem: props['divider-border-style'] === 'none',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={styleNone}
+						/>
+					),
+					onChange: () => onChange(dividerNone),
+				},
+				{
+					activeItem: props['divider-border-style'] === 'solid',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={solid}
+						/>
+					),
+					onChange: () => {
+						if (lineOrientation === 'horizontal')
+							onChange(dividerSolidHorizontal);
+						else onChange(dividerSolidVertical);
+					},
+				},
+				{
+					activeItem: props['divider-border-style'] === 'dashed',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={dashed}
+						/>
+					),
+					onChange: () => {
+						if (lineOrientation === 'horizontal')
+							onChange(dividerDashedHorizontal);
+						else onChange(dividerDashedVertical);
+					},
+				},
+				{
+					activeItem: props['divider-border-style'] === 'dotted',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={dotted}
+						/>
+					),
+					onChange: () => {
+						if (lineOrientation === 'horizontal')
+							onChange(dividerDottedHorizontal);
+						else onChange(dividerDottedVertical);
+					},
+				},
+			]}
+		/>
+	);
+};
+
 const DividerControl = props => {
-	const {
-		onChange,
-		lineOrientation,
-		disableColor = false,
-		disableLineStyle = false,
-		disableBorderRadius = false,
-		isHover = false,
-		clientId,
-	} = props;
+	const { onChange, lineOrientation, isHover = false, clientId } = props;
 
 	const minMaxSettings = {
 		px: {
@@ -63,78 +118,23 @@ const DividerControl = props => {
 
 	return (
 		<>
-			<DefaultStylesControl
-				items={[
-					{
-						activeItem: props['divider-border-style'] === 'none',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={styleNone}
-							/>
-						),
-						onChange: () => onChange(dividerNone),
-					},
-					{
-						activeItem: props['divider-border-style'] === 'solid',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={solid}
-							/>
-						),
-						onChange: () => {
-							if (lineOrientation === 'horizontal')
-								onChange(dividerSolidHorizontal);
-							else onChange(dividerSolidVertical);
-						},
-					},
-					{
-						activeItem: props['divider-border-style'] === 'dashed',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={dashed}
-							/>
-						),
-						onChange: () => {
-							if (lineOrientation === 'horizontal')
-								onChange(dividerDashedHorizontal);
-							else onChange(dividerDashedVertical);
-						},
-					},
-					{
-						activeItem: props['divider-border-style'] === 'dotted',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={dotted}
-							/>
-						),
-						onChange: () => {
-							if (lineOrientation === 'horizontal')
-								onChange(dividerDottedHorizontal);
-							else onChange(dividerDottedVertical);
-						},
-					},
-				]}
+			<DefaultDividersControl
+				lineOrientation={lineOrientation}
+				onChange={onChange}
 			/>
-			{!disableLineStyle && (
-				<SelectControl
-					label={__('Add border line', 'maxi-blocks')}
-					options={[
-						{ label: __('None', 'maxi-blocks'), value: 'none' },
-						{ label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
-						{ label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
-						{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
-						{ label: __('Double', 'maxi-blocks'), value: 'double' },
-					]}
-					value={props['divider-border-style']}
-					onChange={val => onChange({ 'divider-border-style': val })}
-				/>
-			)}
+			<SelectControl
+				label={__('Add border line', 'maxi-blocks')}
+				options={[
+					{ label: __('None', 'maxi-blocks'), value: 'none' },
+					{ label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
+					{ label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
+					{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
+					{ label: __('Double', 'maxi-blocks'), value: 'double' },
+				]}
+				value={props['divider-border-style']}
+				onChange={val => onChange({ 'divider-border-style': val })}
+			/>
 			{props['divider-border-style'] !== 'none' &&
-				!disableBorderRadius &&
 				props['divider-border-style'] === 'solid' && (
 					<ToggleSwitch
 						label={__('Line radius', 'maxi-blocks')}
@@ -146,7 +146,7 @@ const DividerControl = props => {
 						}
 					/>
 				)}
-			{props['divider-border-style'] !== 'none' && !disableColor && (
+			{props['divider-border-style'] !== 'none' && (
 				<ColorControl
 					label={__('Divider', 'maxi-blocks')}
 					color={props['divider-border-color']}

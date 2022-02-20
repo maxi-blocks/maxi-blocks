@@ -125,6 +125,7 @@ const BlockBackgroundColor = props => {
 						}}
 						breakpoint={breakpoint}
 						isToolbar
+						disableResponsiveTabs
 					/>
 				)}
 			</div>

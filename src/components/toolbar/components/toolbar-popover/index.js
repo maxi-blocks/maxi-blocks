@@ -113,7 +113,10 @@ class ToolbarPopover extends Component {
 						<Popover
 							className='toolbar-item__popover'
 							noArrow={false}
-							anchorRef={this.ref.current}
+							// Toolbar node
+							anchorRef={this.ref?.current?.closest(
+								'.toolbar-wrapper'
+							)}
 							onClose={onClose}
 							position='top center'
 							isAlternate

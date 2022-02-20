@@ -8,12 +8,8 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-// import SettingTabsControl from '../../../setting-tabs-control';
 import ToggleSwitch from '../../../toggle-switch';
-import {
-	getColorRGBAString,
-	getDefaultAttribute,
-} from '../../../../extensions/styles';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -25,34 +21,15 @@ import { toolbarShapeColor } from '../../../../icons';
  * Component
  */
 const IconColor = props => {
-	const { blockName, onChange, parentBlockStyle } = props;
+	const { blockName, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
-
-	// const getColor = attr =>
-	// 	attr['icon-palette-status']
-	// 		? getColorRGBAString({
-	// 				firstVar: 'icon',
-	// 				secondVar: `color-${attr['icon-palette-color']}`,
-	// 				blockStyle: parentBlockStyle,
-	// 				opacity: attr['icon-palette-opacity'],
-	// 		  })
-	// 		: attr['icon-color'];
 
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
 			tooltip={__('Icon Colour', 'maxi-blocks')}
 			icon={toolbarShapeColor}
-			// icon={
-			// 	<div
-			// 		className='toolbar-item__icon'
-			// 		style={{
-			// 			background: getColor(props),
-			// 			border: '1px solid #fff',
-			// 		}}
-			// 	/>
-			// }
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-color__popover'>
@@ -68,26 +45,6 @@ const IconColor = props => {
 						});
 					}}
 				/>
-				{/* <SettingTabsControl
-					label={__(
-						'Inherit Colour/Background from Button',
-						'maxi-block'
-					)}
-					type='buttons'
-					selected={props['icon-inherit']}
-					items={[
-						{
-							label: __('Yes', 'maxi-block'),
-							value: 1,
-						},
-						{ label: __('No', 'maxi-block'), value: 0 },
-					]}
-					onChange={val =>
-						onChange({
-							'icon-inherit': val,
-						})
-					}
-				/> */}
 				{props['icon-inherit'] ? (
 					<p className='toolbar-item__icon-color__popover__warning'>
 						{__(

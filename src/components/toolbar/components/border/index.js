@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarBorderControl from '../toolbar-border-control';
 import Icon from '../../../icon';
+import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -15,12 +15,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
-import {
-	getGroupAttributes,
-	// getLastBreakpointAttribute,
-	// getBlockStyle,
-	// getColorRGBAString,
-} from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Border
@@ -49,45 +44,7 @@ const Border = props => {
 			advancedOptions={isIconToolbar ? 'icon' : 'border'}
 			tooltip={__('Border', 'maxi-blocks')}
 			icon={
-				<div
-					className='toolbar-item__border__icon'
-					// style={{
-					// 	borderStyle: getLastBreakpointAttribute(
-					// 		`${prefix}border-style`,
-					// 		breakpoint,
-					// 		props
-					// 	),
-					// 	background:
-					// 		getLastBreakpointAttribute(
-					// 			`${prefix}border-style`,
-					// 			breakpoint,
-					// 			props
-					// 		) === 'none'
-					// 			? 'transparent'
-					// 			: getLastBreakpointAttribute(
-					// 					`${prefix}border-style`,
-					// 					breakpoint,
-					// 					props
-					// 			  ),
-					// 	borderWidth: '1px',
-					// 	borderColor: props[
-					// 		`${prefix}border-palette-status-${breakpoint}`
-					// 	]
-					// 		? getColorRGBAString({
-					// 				firstVar: `color-${
-					// 					props[
-					// 						`${prefix}border-palette-color-${breakpoint}`
-					// 					]
-					// 				}`,
-					// 				opacity:
-					// 					props[
-					// 						`${prefix}border-palette-opacity-${breakpoint}`
-					// 					],
-					// 				blockStyle: getBlockStyle(clientId),
-					// 		  })
-					// 		: props[`${prefix}border-color-${breakpoint}`],
-					// }}
-				>
+				<div className='toolbar-item__border__icon'>
 					<Icon
 						className='toolbar-item__border__inner-icon'
 						icon={toolbarBorder}
@@ -96,7 +53,7 @@ const Border = props => {
 			}
 		>
 			<div className='toolbar-item__border__popover'>
-				<ToolbarBorderControl
+				<BorderControl
 					{...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
@@ -105,7 +62,7 @@ const Border = props => {
 					)}
 					onChange={value => onChange(value)}
 					breakpoint={breakpoint}
-					disableAdvanced
+					isToolbar
 					disableColor={disableColor}
 					clientId={clientId}
 					prefix={prefix}

@@ -1,5 +1,46 @@
 .toolbar-item__column-pattern__popover {
-	min-width: 300px;
+	min-width: 392px;
+
+	.components-column-pattern {
+		&__icon {
+			path {
+				fill: var(--maxi-black-2-color);
+			}
+		}
+
+		&__templates {
+			text-align: center;
+		}
+
+		&__template-button {
+			width: 18.8%;
+			padding: 0;
+			height: 26px;
+			margin-right: 1.5%;
+
+			&:nth-child(5n + 5) {
+				margin-right: 0;
+			}
+
+			&--toolbar {
+				&:hover {
+					svg path {
+						fill: #fff;
+					}
+				}
+
+				&[aria-pressed='true'] {
+					svg path {
+						fill: #fff;
+					}
+				}
+
+				svg path {
+					stroke-width: 2px;
+				}
+			}
+		}
+	}
 }
 
 .toolbar-item__columns-handler {

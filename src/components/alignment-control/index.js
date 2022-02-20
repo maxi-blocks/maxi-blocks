@@ -34,7 +34,6 @@ const AlignmentControl = props => {
 		className,
 		onChange,
 		label = '',
-		disableIcon = false,
 		disableLeft = false,
 		disableCenter = false,
 		disableRight = false,
@@ -48,71 +47,45 @@ const AlignmentControl = props => {
 	const getOptions = () => {
 		const options = [];
 
-		if (disableIcon) {
-			!disableLeft &&
-				options.push({
-					label: 'Left',
-					value: 'left',
-				});
+		!disableLeft &&
+			options.push({
+				icon: !isToolbar ? (
+					<Icon icon={alignLeft} />
+				) : (
+					<Icon icon={toolbarAlignLeft} />
+				),
+				value: 'left',
+			});
 
-			!disableCenter &&
-				options.push({
-					label: 'Center',
-					value: 'center',
-				});
+		!disableCenter &&
+			options.push({
+				icon: !isToolbar ? (
+					<Icon icon={alignCenter} />
+				) : (
+					<Icon icon={toolbarAlignCenter} />
+				),
+				value: 'center',
+			});
 
-			!disableRight &&
-				options.push({
-					label: 'Right',
-					value: 'right',
-				});
+		!disableRight &&
+			options.push({
+				icon: !isToolbar ? (
+					<Icon icon={alignRight} />
+				) : (
+					<Icon icon={toolbarAlignRight} />
+				),
+				value: 'right',
+			});
 
-			!disableJustify &&
-				options.push({
-					label: 'Justify',
-					value: 'justify',
-				});
-		} else {
-			!disableLeft &&
-				options.push({
-					icon: !isToolbar ? (
-						<Icon icon={alignLeft} />
-					) : (
-						<Icon icon={toolbarAlignLeft} />
-					),
-					value: 'left',
-				});
-
-			!disableCenter &&
-				options.push({
-					icon: !isToolbar ? (
-						<Icon icon={alignCenter} />
-					) : (
-						<Icon icon={toolbarAlignCenter} />
-					),
-					value: 'center',
-				});
-
-			!disableRight &&
-				options.push({
-					icon: !isToolbar ? (
-						<Icon icon={alignRight} />
-					) : (
-						<Icon icon={toolbarAlignRight} />
-					),
-					value: 'right',
-				});
-
-			!disableJustify &&
-				options.push({
-					icon: !isToolbar ? (
-						<Icon icon={alignJustify} />
-					) : (
-						<Icon icon={toolbarAlignJustify} />
-					),
-					value: 'justify',
-				});
-		}
+		!disableJustify &&
+			options.push({
+				icon: !isToolbar ? (
+					<Icon icon={alignJustify} />
+				) : (
+					<Icon icon={toolbarAlignJustify} />
+				),
+				value: 'justify',
+			});
 
 		return options;
 	};

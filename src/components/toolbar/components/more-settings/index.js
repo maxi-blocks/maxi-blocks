@@ -18,6 +18,7 @@ import Delete from '../delete';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
 import openSidebar from '../../../../extensions/dom';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Icons
@@ -28,7 +29,6 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Duplicate
@@ -54,8 +54,8 @@ const MoreSettings = props => {
 		>
 			<div className='toolbar-item toolbar-item__more-settings'>
 				<Dropdown
-					className='maxi-moresettings_settings-selector'
-					contentClassName='maxi-moresettings_popover'
+					className='maxi-more-settings__settings-selector'
+					contentClassName='maxi-more-settings__popover'
 					position='right bottom'
 					renderToggle={({ isOpen, onToggle }) => (
 						<Button onClick={onToggle}>

@@ -1,26 +1,22 @@
 /**
  * WordPress dependencies
  */
-// import { __ } from '@wordpress/i18n';
 import { Popover } from '@wordpress/components';
 import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 import { getScrollContainer } from '@wordpress/dom';
-// import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
-// import DOMPurify from 'dompurify';
 
 /**
  * Utils
  */
 import Breadcrumbs from '../breadcrumbs';
 import {
-	// Alignment,
 	BackgroundColor,
 	BlockBackgroundColor,
 	Border,
@@ -28,44 +24,33 @@ import {
 	ColumnMover,
 	ColumnsHandlers,
 	ColumnSize,
-	// CopyPaste,
-	// Delete,
 	Divider,
 	DividerAlignment,
 	DividerColor,
 	Duplicate,
-	// ImageSize,
 	Link,
 	Mover,
-	// PaddingMargin,
-	// ReusableBlocks,
-	// RowSettings,
 	Size,
 	SvgColor,
 	SvgWidth,
-	// TextBold,
 	TextColor,
-	// TextItalic,
 	TextLevel,
 	TextLink,
 	TextListOptions,
-	// ToggleBlock,
 	ToolbarColumnPattern,
 	TextOptions,
-	// TextGenerator,
 	MoreSettings,
 	Help,
 	VerticalAlign,
 	TextMargin,
 	ToolbarMediaUpload,
 } from './components';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../extensions/styles';
-// import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 
 /**
  * General
@@ -83,19 +68,6 @@ const allowedBlocks = [
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
 ];
-
-// const flexBlocks = [
-// 	'maxi-blocks/button-maxi',
-// 	'maxi-blocks/column-maxi',
-// 	'maxi-blocks/container-maxi',
-// 	'maxi-blocks/divider-maxi',
-// 	'maxi-blocks/group-maxi',
-// 	'maxi-blocks/image-maxi',
-// 	'maxi-blocks/map-maxi',
-// 	'maxi-blocks/number-counter-maxi',
-// 	'maxi-blocks/row-maxi',
-// 	'maxi-blocks/svg-icon-maxi',
-// ];
 
 /**
  * Component
@@ -122,8 +94,6 @@ const MaxiToolbar = memo(
 			content,
 			customLabel,
 			fullWidth,
-			// imageSize,
-			// imgWidth,
 			isFirstOnHierarchy,
 			isList,
 			lineHorizontal,
@@ -234,77 +204,6 @@ const MaxiToolbar = memo(
 								clientId={clientId}
 								mediaID={mediaID}
 							/>
-							{/* {name === 'maxi-blocks/image-maxi' && (
-								<MediaUpload
-									onSelect={media => {
-										setAttributes({
-											mediaID: media.id,
-											mediaURL: media.url,
-											mediaWidth: media.width,
-											mediaHeight: media.height,
-											isImageUrl: false,
-										});
-
-										this.setState({
-											isExternalClass: false,
-										});
-
-										if (!isEmpty(attributes.SVGData)) {
-											const cleanedContent =
-												DOMPurify.sanitize(SVGElement);
-
-											const svg = document
-												.createRange()
-												.createContextualFragment(
-													cleanedContent
-												).firstElementChild;
-
-											const resData = generateDataObject(
-												'',
-												svg
-											);
-
-											const SVGValue = resData;
-											const el = Object.keys(SVGValue)[0];
-
-											SVGValue[el].imageID = media.id;
-											SVGValue[el].imageURL = media.url;
-
-											const resEl = injectImgSVG(
-												svg,
-												resData
-											);
-											setAttributes({
-												SVGElement: resEl.outerHTML,
-												SVGData: SVGValue,
-											});
-										}
-									}}
-									allowedTypes='image'
-									value='image'
-									render={({ open }) => (
-										<Tooltip
-											text={__(
-												'Edit image',
-												'maxi-blocks'
-											)}
-										>
-											<div className='toolbar-item toolbar-item__replace-image'>
-												<button
-													className='components-button toolbar-item__button'
-													type='button'
-													onClick={open}
-												>
-													{__(
-														'Replace',
-														'maxi-blocks'
-													)}
-												</button>
-											</div>
-										</Tooltip>
-									)}
-								/>
-							)} */}
 							<TextColor
 								blockName={name}
 								{...getGroupAttributes(
@@ -354,11 +253,6 @@ const MaxiToolbar = memo(
 								typeOfList={typeOfList}
 								onChange={obj => setAttributes(obj)}
 							/>
-							{/* <TextGenerator
-								clientId={clientId}
-								blockName={name}
-								onChange={obj => setAttributes(obj)}
-							/> */}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
 									{svgType !== 'Line' && (
@@ -494,23 +388,16 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 							/>
 							<ColumnSize
-								clientId={clientId}
-								blockName={name}
 								{...getGroupAttributes(
 									attributes,
 									'columnSize'
 								)}
+								clientId={clientId}
+								blockName={name}
 								verticalAlign={attributes.verticalAlign}
-								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 								rowPattern={rowPattern}
-								columnSize={{
-									...getGroupAttributes(
-										attributes,
-										'columnSize'
-									),
-								}}
 							/>
 							<TextMargin
 								blockName={name}
@@ -579,92 +466,6 @@ const MaxiToolbar = memo(
 								}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
-							{/* <ReusableBlocks
-								clientId={clientId}
-								blockName={name}
-							/> */}
-							{/* <Alignment
-								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'alignment',
-									'textAlignment',
-								])}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-							/> */}
-							{/* <TextBold
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => setAttributes(obj)}
-								isList={isList}
-								breakpoint={breakpoint}
-								textLevel={textLevel}
-								styleCard={styleCard}
-							/> */}
-							{/* <TextItalic
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => setAttributes(obj)}
-								isList={isList}
-								breakpoint={breakpoint}
-								styleCard={styleCard}
-							/> */}
-							{/* <RowSettings
-								blockName={name}
-								horizontalAlign={attributes.horizontalAlign}
-								verticalAlign={attributes.verticalAlign}
-								onChange={obj => setAttributes(obj)}
-							/> */}
-							{/* {breakpoint === 'general' && (
-								<ImageSize
-									blockName={name}
-									imgWidth={imgWidth}
-									onChangeSize={obj => setAttributes(obj)}
-									imageSize={imageSize}
-									onChangeImageSize={imageSize =>
-										setAttributes({ imageSize })
-									}
-									mediaID={mediaID}
-									fullWidth={fullWidth}
-									onChangeFullWidth={fullWidth =>
-										setAttributes({ fullWidth })
-									}
-									isFirstOnHierarchy={isFirstOnHierarchy}
-									onChangeCaption={captionType =>
-										setAttributes({ captionType })
-									}
-								/>
-							)} */}
-							{/* <PaddingMargin
-								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'margin',
-									'padding',
-									'iconPadding',
-								])}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-							/> */}
-							{/* <Delete clientId={clientId} blockName={name} /> */}
-							{/* <ToggleBlock
-								{...getGroupAttributes(attributes, 'display')}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={breakpoint}
-								clientId={clientId}
-								blockName={name}
-								defaultDisplay={
-									flexBlocks.includes(name)
-										? 'flex'
-										: 'inherit'
-								}
-							/> */}
-							{/* <CopyPaste clientId={clientId} blockName={name} /> */}
 							<Help />
 							<MoreSettings
 								clientId={clientId}

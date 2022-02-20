@@ -45,7 +45,6 @@ const ELEMENT_BLOCKS = [
 	},
 ];
 const BLOCKS_MAX_WIDTH = [
-	// 'maxi-blocks/button-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/map-maxi',

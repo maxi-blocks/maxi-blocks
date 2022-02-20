@@ -9,11 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../../../color-control';
 import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
-import {
-	getDefaultAttribute,
-	getBlockStyle,
-	getColorRGBAString,
-} from '../../../../extensions/styles';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
@@ -25,7 +21,7 @@ import { toolbarShapeLineColor } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, clientId } = props;
+	const { blockName, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -34,22 +30,7 @@ const DividerColor = props => {
 			className='toolbar-item__divider'
 			tooltip={__('Divider line colour', 'maxi-blocks')}
 			icon={
-				<div
-					className='toolbar-item__divider__icon'
-					// style={{
-					// 	background: props['divider-border-palette-status']
-					// 		? getColorRGBAString({
-					// 				firstVar: `color-${props['divider-border-palette-color']}`,
-					// 				opacity:
-					// 					props['divider-border-palette-opacity'],
-					// 				blockStyle: getBlockStyle(clientId),
-					// 		  })
-					// 		: props['divider-color'],
-					// 	borderWidth: '1px',
-					// 	borderColor: '#fff',
-					// 	borderStyle: 'solid',
-					// }}
-				>
+				<div className='toolbar-item__divider__icon'>
 					<Icon
 						className='toolbar-item__divider-icon'
 						icon={toolbarShapeLineColor}
@@ -60,7 +41,6 @@ const DividerColor = props => {
 		>
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl
-					label={__('', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('border-color')}
 					paletteColor={props['divider-border-palette-color']}

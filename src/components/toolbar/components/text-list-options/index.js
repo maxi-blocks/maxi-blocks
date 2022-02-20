@@ -92,6 +92,7 @@ const TextListOptions = withFormatValue(props => {
 
 	const onChangeP = () => {
 		const content = getFormattedString({ formatValue, isList });
+
 		if (isList) {
 			onChange({
 				isList: false,
@@ -105,7 +106,6 @@ const TextListOptions = withFormatValue(props => {
 			className='toolbar-item__list-options'
 			tooltip={__('List styles', 'maxi-blocks')}
 			icon={toolbarUnorderedList}
-			// advancedOptions='list options'
 		>
 			<div className='toolbar-item__popover__list-options'>
 				<Button

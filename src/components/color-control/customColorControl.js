@@ -90,7 +90,6 @@ const CustomColorControl = props => {
 					</BaseControl>
 					<Icon icon={colorOpacity} />
 					<OpacityControl
-						label={__('', 'maxi-blocks')}
 						opacity={color.a}
 						onChange={val => {
 							if (!isEmpty(color)) {

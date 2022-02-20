@@ -51,7 +51,6 @@ const ColorLayerContent = props => {
 	return (
 		<>
 			<ColorControl
-				isToolbar={isToolbar}
 				label={__('Background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute(
 					`${prefix}background-color`,
@@ -141,6 +140,7 @@ const ColorLayerContent = props => {
 				isHover={isHover}
 				clientId={clientId}
 				deviceType={breakpoint}
+				isToolbar={isToolbar}
 			/>
 			{!disableClipPath && (
 				<ClipPath
@@ -175,11 +175,14 @@ const ColorLayerContent = props => {
 };
 
 const ColorLayer = props => {
-	const { isToolbar = false, breakpoint, ...rest } = props;
+	const { breakpoint, disableResponsiveTabs = false, ...rest } = props;
+
+	if (disableResponsiveTabs)
+		return <ColorLayerContent breakpoint={breakpoint} {...rest} />;
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<ColorLayerContent isToolbar={isToolbar} {...rest} />
+			<ColorLayerContent {...rest} />
 		</ResponsiveTabsControl>
 	);
 };

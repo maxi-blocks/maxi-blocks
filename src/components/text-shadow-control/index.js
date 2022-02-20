@@ -133,7 +133,7 @@ const TextShadow = props => {
 		)
 			onChange('none');
 		else {
-			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${valueDecomposed[2]} ${valueDecomposed[3]} `;
+			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${valueDecomposed[2]} ${valueDecomposed[3]}`;
 
 			onChange(newValue);
 		}

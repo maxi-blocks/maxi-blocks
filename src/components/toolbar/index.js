@@ -220,10 +220,10 @@ const MaxiToolbar = memo(
 								styleCard={styleCard}
 							/>
 							<TextOptions
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
+								{...getGroupAttributes(attributes, [
+									'typography',
+									'textAlignment',
+								])}
 								blockName={name}
 								onChange={obj => maxiSetAttributes(obj)}
 								node={anchorRef}

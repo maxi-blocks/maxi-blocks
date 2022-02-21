@@ -652,8 +652,10 @@
 					}
 					&:hover {
 						border-color: #007cba;
+						box-shadow: 0 0 0 1px #007cba;
 						.maxi-cloud-masonry-card__button {
 							border-color: #007cba;
+							box-shadow: 0 0 0 1px #007cba;
 							color: #007cba;
 						}
 					}

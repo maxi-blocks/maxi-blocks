@@ -21,13 +21,11 @@ import {
 	getDefaultSCValue,
 	getTypographyFromSC,
 } from '../../extensions/style-cards';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Icons
@@ -89,6 +87,7 @@ const GlobalColor = props => {
 						/>
 					)}
 					<ColorControl
+						label={label}
 						className={`maxi-style-cards-control__sc__link--${SCStyle}`}
 						paletteStatus={processSCAttribute(
 							SC,

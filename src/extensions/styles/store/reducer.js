@@ -8,7 +8,6 @@ import controls from './controls';
  *
  * @param {Object} state  Current state.
  * @param {Object} action Dispatched action.
- *
  * @return {Object} Updated state.
  */
 function reducer(state = { styles: {}, isUpdate: null }, action) {

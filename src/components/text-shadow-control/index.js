@@ -133,13 +133,7 @@ const TextShadow = props => {
 		)
 			onChange('none');
 		else {
-			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${
-				valueDecomposed[2]
-			} ${getColorRGBAString({
-				firstVar: `color-${color}`,
-				opacity: currentPaletteOpacity,
-				blockStyle,
-			})}`;
+			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${valueDecomposed[2]} ${valueDecomposed[3]}`;
 
 			onChange(newValue);
 		}

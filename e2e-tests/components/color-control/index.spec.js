@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -110,5 +114,78 @@ describe('ColorControl', () => {
 		expect(
 			await getAttributes('button-background-palette-opacity-general')
 		).toStrictEqual(0.23);
+	});
+
+	it('Checking the reset button', async () => {
+		await createNewPost();
+		await insertBlock('Button Maxi');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'button background'
+		);
+
+		await editColorControl({
+			page,
+			instance: await accordionPanel.$(
+				'.maxi-background-control .maxi-tabs-content'
+			),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
+
+		expect(
+			await getAttributes('button-background-palette-color-general')
+		).toStrictEqual(5);
+
+		// reset button
+		await page.$eval(
+			'.maxi-responsive-tabs-control .maxi-tabs-content .maxi-color-palette-control .components-maxi-control__reset-button',
+			input => input.click()
+		);
+
+		expect(
+			await getAttributes('button-background-palette-color-general')
+		).toStrictEqual(4);
+
+		// custom color
+		await page.$$eval(
+			'.maxi-color-palette-control .maxi-toggle-switch input',
+			input => input[1].click()
+		);
+		await page.waitForTimeout(150);
+
+		// check custom color is equal to palette color
+		const paletteColor = await page.$eval(
+			'.maxi-color-control .maxi-color-control__display .maxi-color-control__display__color span',
+			el =>
+				window.getComputedStyle(el).getPropertyValue('background-color')
+		);
+
+		expect(paletteColor).toStrictEqual('rgb(255, 74, 23)');
+
+		// change value
+		await page.$eval(
+			'.maxi-background-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('#9A5441');
+
+		expect(
+			await getAttributes('button-background-color-general')
+		).toStrictEqual('rgba(255,74,23,1)');
+
+		// check reset button
+		await accordionPanel.$eval(
+			'.maxi-color-control .maxi-color-control__display button',
+			resetButton => resetButton.click()
+		);
+		await page.waitForTimeout(250);
+
+		expect(
+			await getAttributes('button-background-color-general')
+		).toStrictEqual('rgb(154,84,65)');
 	});
 });

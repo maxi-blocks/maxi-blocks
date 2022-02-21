@@ -4,7 +4,6 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { check } from 'prettier';
 /**
  * Internal dependencies
  */
@@ -76,18 +75,12 @@ describe('AlignmentControl', () => {
 
 		await changeAlignment(page, 1);
 
-		debugger;
-
 		expect(await getAttributes('text-alignment-s')).toStrictEqual('center');
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
 
-		debugger;
-
 		expect(await checkAlignment(page, 1)).toBe('true');
-
-		debugger;
 
 		// responsive m
 		await changeResponsive(page, 'm');

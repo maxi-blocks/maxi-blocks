@@ -60,7 +60,6 @@ const AxisInput = props => {
 		breakpoint,
 		disableAuto,
 		onChangeValue,
-		isGeneral,
 		minMaxSettings,
 		currentUnit,
 	} = props;
@@ -81,9 +80,7 @@ const AxisInput = props => {
 			)}
 			placeholder={lastValue}
 			value={value}
-			onChangeValue={val =>
-				onChangeValue(val, singleTarget, isGeneral, breakpoint)
-			}
+			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
 			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
@@ -106,10 +103,8 @@ const AxisContent = props => {
 		getLastBreakpointValue,
 		disableAuto,
 		onChangeValue,
-		isGeneral,
 		minMaxSettings,
 		currentUnit,
-		disableSync = false,
 		label: type,
 		onReset,
 	} = props;
@@ -123,7 +118,7 @@ const AxisContent = props => {
 
 	return (
 		<div>
-			{(sync === 'all' || disableSync) && (
+			{sync === 'all' && (
 				<>
 					<AxisInput
 						label={type}
@@ -133,14 +128,13 @@ const AxisContent = props => {
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
 						onChangeValue={onChangeValue}
-						isGeneral={isGeneral}
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
 					/>
 				</>
 			)}
-			{sync === 'axis' && !disableSync && (
+			{sync === 'axis' && (
 				<>
 					<AxisInput
 						label={`${inputsArray[0]} / ${inputsArray[2]}`}
@@ -151,7 +145,6 @@ const AxisContent = props => {
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
 						onChangeValue={onChangeValue}
-						isGeneral={isGeneral}
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
@@ -165,14 +158,13 @@ const AxisContent = props => {
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
 						onChangeValue={onChangeValue}
-						isGeneral={isGeneral}
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
 					/>
 				</>
 			)}
-			{sync === 'none' && !disableSync && (
+			{sync === 'none' && (
 				<>
 					<AxisInput
 						label={inputsArray[0]}
@@ -183,7 +175,6 @@ const AxisContent = props => {
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
 						onChangeValue={onChangeValue}
-						isGeneral={isGeneral}
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
@@ -197,7 +188,6 @@ const AxisContent = props => {
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
 						onChangeValue={onChangeValue}
-						isGeneral={isGeneral}
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
@@ -211,7 +201,6 @@ const AxisContent = props => {
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
 						onChangeValue={onChangeValue}
-						isGeneral={isGeneral}
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
@@ -225,31 +214,26 @@ const AxisContent = props => {
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
 						onChangeValue={onChangeValue}
-						isGeneral={isGeneral}
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
 					/>
 				</>
 			)}
-			{disableSync && (
-				<>
-					<BaseControl className='maxi-axis-control__unit-header'>
-						<Button
-							className='components-maxi-control__reset-button'
-							onClick={() => onReset(isGeneral, breakpoint)}
-							aria-label={sprintf(
-								__('Reset %s settings', 'maxi-blocks'),
-								type.toLowerCase()
-							)}
-							action='reset'
-							type='reset'
-						>
-							{reset}
-						</Button>
-					</BaseControl>
-				</>
-			)}
+			<BaseControl className='maxi-axis-control__unit-header'>
+				<Button
+					className='components-maxi-control__reset-button'
+					onClick={() => onReset(breakpoint)}
+					aria-label={sprintf(
+						__('Reset %s settings', 'maxi-blocks'),
+						type.toLowerCase()
+					)}
+					action='reset'
+					type='reset'
+				>
+					{reset}
+				</Button>
+			</BaseControl>
 		</div>
 	);
 };
@@ -264,11 +248,9 @@ const AxisControlContent = props => {
 		onChange,
 		onReset,
 		getKey,
-		isGeneral,
 		onChangeSync,
 		minMaxSettings,
 		inputsArray,
-		disableSync = false,
 	} = props;
 
 	const sync = getLastBreakpointAttribute(
@@ -335,82 +317,71 @@ const AxisControlContent = props => {
 
 		onChange({
 			[getAttributeKey(getKey('unit'), isHover, false, breakpoint)]: val,
-			...(isGeneral && {
-				[getAttributeKey(getKey('unit'), isHover, false, 'general')]:
-					val,
-			}),
 			...response,
 		});
 	};
 
 	return (
 		<>
-			{!disableSync && (
-				<>
-					<BaseControl
-						label={__(type, 'maxi-blocks')}
-						className='maxi-axis-control__unit-header'
-					>
-						<SelectControl
-							className='maxi-axis-control__units'
-							hideLabelFromVision
-							label={__('Unit', 'maxi-blocks')}
-							options={getOptions()}
-							value={currentUnit}
-							onChange={onChangeUnit}
-						/>
-						<Button
-							className='components-maxi-control__reset-button'
-							onClick={() => onReset(isGeneral, breakpoint)}
-							aria-label={sprintf(
-								__('Reset %s settings', 'maxi-blocks'),
-								type.toLowerCase()
-							)}
-							action='reset'
-							type='reset'
-						>
-							{reset}
-						</Button>
-					</BaseControl>
-					<SettingTabsControl
-						label={getSyncLabel()}
-						type='buttons'
-						className='maxi-axis-control__header'
-						selected={sync}
-						items={[
-							{
-								value: 'all',
-								className: 'maxi-axis-control__sync-all',
-								icon:
-									type === 'Margin'
-										? marginSyncAllIcon
-										: paddingSyncAllIcon,
-							},
-							{
-								value: 'axis',
-								className: 'maxi-axis-control__sync-axis',
-								icon:
-									type === 'Margin'
-										? marginSyncDirectionIcon
-										: paddingSyncDirectionIcon,
-							},
-							{
-								value: 'none',
-								className: 'maxi-axis-control__sync-none',
-								icon:
-									type === 'Margin'
-										? marginSeparateIcon
-										: paddingSeparateIcon,
-							},
-						]}
-						onChange={val =>
-							onChangeSync(val, isGeneral, breakpoint)
-						}
-					/>
-					<AxisContent {...props} />
-				</>
-			)}
-			{disableSync && <AxisContent {...props} />}
+			<BaseControl
+				label={__(type, 'maxi-blocks')}
+				className='maxi-axis-control__unit-header'
+			>
+				<SelectControl
+					className='maxi-axis-control__units'
+					hideLabelFromVision
+					label={__('Unit', 'maxi-blocks')}
+					options={getOptions()}
+					value={currentUnit}
+					onChange={onChangeUnit}
+				/>
+				<Button
+					className='components-maxi-control__reset-button'
+					onClick={() => onReset(breakpoint)}
+					aria-label={sprintf(
+						__('Reset %s settings', 'maxi-blocks'),
+						type.toLowerCase()
+					)}
+					action='reset'
+					type='reset'
+				>
+					{reset}
+				</Button>
+			</BaseControl>
+			<SettingTabsControl
+				label={getSyncLabel()}
+				type='buttons'
+				className='maxi-axis-control__header'
+				selected={sync}
+				items={[
+					{
+						value: 'all',
+						className: 'maxi-axis-control__sync-all',
+						icon:
+							type === 'Margin'
+								? marginSyncAllIcon
+								: paddingSyncAllIcon,
+					},
+					{
+						value: 'axis',
+						className: 'maxi-axis-control__sync-axis',
+						icon:
+							type === 'Margin'
+								? marginSyncDirectionIcon
+								: paddingSyncDirectionIcon,
+					},
+					{
+						value: 'none',
+						className: 'maxi-axis-control__sync-none',
+						icon:
+							type === 'Margin'
+								? marginSeparateIcon
+								: paddingSeparateIcon,
+					},
+				]}
+				onChange={val => onChangeSync(val, breakpoint)}
+			/>
+			<AxisContent {...props} />
 		</>
 	);
 };
@@ -460,8 +431,6 @@ const AxisControl = props => {
 			'sync-vertical',
 		],
 		optionType = 'number',
-		disableSync = false,
-		isGeneral,
 	} = props;
 
 	const classes = classnames(
@@ -518,7 +487,7 @@ const AxisControl = props => {
 		return '';
 	};
 
-	const onReset = (isGeneral, customBreakpoint) => {
+	const onReset = customBreakpoint => {
 		const response = {};
 
 		inputsArray.forEach(key => {
@@ -537,19 +506,12 @@ const AxisControl = props => {
 					customBreakpoint ?? breakpoint
 				)
 			);
-
-			if (isGeneral)
-				response[
-					getAttributeKey(getKey(key), isHover, false, 'general')
-				] = getDefaultAttribute(
-					getAttributeKey(getKey(key), isHover, false, 'general')
-				);
 		});
 
 		onChange(response);
 	};
 
-	const onChangeSync = (value, isGeneral = false, customBreakpoint) => {
+	const onChangeSync = (value, customBreakpoint) => {
 		const response = {
 			[getAttributeKey(
 				getKey('sync'),
@@ -557,10 +519,6 @@ const AxisControl = props => {
 				false,
 				customBreakpoint ?? breakpoint
 			)]: value,
-			...(isGeneral && {
-				[getAttributeKey(getKey('sync'), isHover, false, 'general')]:
-					value,
-			}),
 		};
 
 		onChange(response);
@@ -574,12 +532,7 @@ const AxisControl = props => {
 			isHover
 		) || 'px';
 
-	const onChangeValue = (
-		val,
-		singleTarget,
-		isGeneral = false,
-		customBreakpoint
-	) => {
+	const onChangeValue = (val, singleTarget, customBreakpoint) => {
 		let newValue = '';
 
 		if (optionType === 'number')
@@ -618,16 +571,6 @@ const AxisControl = props => {
 								customBreakpoint ?? breakpoint
 							)
 						] = newValue;
-
-						if (isGeneral)
-							response[
-								getAttributeKey(
-									getKey(key),
-									isHover,
-									false,
-									'general'
-								)
-							] = newValue;
 					}
 				});
 
@@ -652,16 +595,6 @@ const AxisControl = props => {
 									customBreakpoint ?? breakpoint
 								)
 							] = newValue;
-
-							if (isGeneral)
-								response[
-									getAttributeKey(
-										getKey(key),
-										isHover,
-										false,
-										'general'
-									)
-								] = newValue;
 						}
 					});
 				} else if (singleTarget === 'vertical') {
@@ -682,16 +615,6 @@ const AxisControl = props => {
 									customBreakpoint ?? breakpoint
 								)
 							] = newValue;
-
-							if (isGeneral)
-								response[
-									getAttributeKey(
-										getKey(key),
-										isHover,
-										false,
-										'general'
-									)
-								] = newValue;
 						}
 					});
 				}
@@ -707,14 +630,6 @@ const AxisControl = props => {
 						false,
 						customBreakpoint ?? breakpoint
 					)]: newValue,
-					...(isGeneral && {
-						[getAttributeKey(
-							getKey(singleTarget),
-							isHover,
-							false,
-							'general'
-						)]: newValue,
-					}),
 				};
 
 				break;
@@ -723,7 +638,7 @@ const AxisControl = props => {
 
 		onChange(response);
 	};
-	disableSync && onChangeSync('all', isGeneral, breakpoint);
+
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (

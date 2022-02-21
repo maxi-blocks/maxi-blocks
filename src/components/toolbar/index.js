@@ -81,7 +81,7 @@ const MaxiToolbar = memo(
 			clientId,
 			isSelected,
 			name,
-			setAttributes,
+			maxiSetAttributes,
 			toggleHandlers,
 			rowPattern,
 			changeSVGStrokeWidth,
@@ -194,12 +194,12 @@ const MaxiToolbar = memo(
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<ToolbarMediaUpload
 								blockName={name}
-								setAttributes
+								maxiSetAttributes
 								{...getGroupAttributes(
 									attributes,
 									'typography'
 								)}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
 								mediaID={mediaID}
@@ -210,7 +210,7 @@ const MaxiToolbar = memo(
 									attributes,
 									'typography'
 								)}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								node={anchorRef}
 								isList={isList}
@@ -225,7 +225,7 @@ const MaxiToolbar = memo(
 									'typography'
 								)}
 								blockName={name}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								node={anchorRef}
 								content={content}
 								breakpoint={breakpoint}
@@ -245,13 +245,13 @@ const MaxiToolbar = memo(
 								blockName={name}
 								textLevel={textLevel}
 								isList={isList}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 							/>
 							<TextListOptions
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 							/>
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
@@ -263,7 +263,7 @@ const MaxiToolbar = memo(
 											)}
 											blockName={name}
 											onChange={obj => {
-												setAttributes(obj);
+												maxiSetAttributes(obj);
 											}}
 											changeSVGContent={changeSVGContent}
 											type='fill'
@@ -278,7 +278,7 @@ const MaxiToolbar = memo(
 											)}
 											blockName={name}
 											onChange={obj => {
-												setAttributes(obj);
+												maxiSetAttributes(obj);
 											}}
 											changeSVGContent={changeSVGContent}
 											type='line'
@@ -292,7 +292,7 @@ const MaxiToolbar = memo(
 										)}
 										blockName={name}
 										onChange={obj => {
-											setAttributes(obj);
+											maxiSetAttributes(obj);
 										}}
 										breakpoint={breakpoint}
 										changeSVGStrokeWidth={
@@ -320,7 +320,7 @@ const MaxiToolbar = memo(
 								globalProps={backgroundGlobalProps}
 								blockName={name}
 								breakpoint={breakpoint}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
 							/>
 							<BlockBackgroundColor
@@ -330,7 +330,7 @@ const MaxiToolbar = memo(
 								)}
 								blockName={name}
 								breakpoint={breakpoint}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
 							/>
 							<Border
@@ -341,7 +341,7 @@ const MaxiToolbar = memo(
 									false,
 									prefix
 								)}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
 								prefix={prefix}
@@ -354,7 +354,7 @@ const MaxiToolbar = memo(
 									false,
 									prefix
 								)}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
 								breakpoint={breakpoint}
 								prefix={prefix}
@@ -366,7 +366,7 @@ const MaxiToolbar = memo(
 									attributes,
 									'rowPattern'
 								)}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 							/>
 							<ColumnsHandlers
@@ -385,7 +385,7 @@ const MaxiToolbar = memo(
 								)}
 								isFirstOnHierarchy={isFirstOnHierarchy}
 								breakpoint={breakpoint}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 							/>
 							<ColumnSize
 								{...getGroupAttributes(
@@ -395,7 +395,7 @@ const MaxiToolbar = memo(
 								clientId={clientId}
 								blockName={name}
 								verticalAlign={attributes.verticalAlign}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								rowPattern={rowPattern}
 							/>
@@ -403,7 +403,7 @@ const MaxiToolbar = memo(
 								blockName={name}
 								linkSettings={linkSettings}
 								onChange={linkSettings =>
-									setAttributes({ linkSettings })
+									maxiSetAttributes({ linkSettings })
 								}
 								textLevel={textLevel}
 							/>
@@ -411,7 +411,7 @@ const MaxiToolbar = memo(
 								blockName={name}
 								linkSettings={linkSettings}
 								onChange={linkSettings =>
-									setAttributes({ linkSettings })
+									maxiSetAttributes({ linkSettings })
 								}
 								textLevel={textLevel}
 							/>
@@ -421,7 +421,7 @@ const MaxiToolbar = memo(
 									'typography'
 								)}
 								blockName={name}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								isList={isList}
 								linkSettings={linkSettings}
 								breakpoint={breakpoint}
@@ -434,20 +434,20 @@ const MaxiToolbar = memo(
 								blockName={name}
 								verticalAlign={attributes.verticalAlign}
 								uniqueID={uniqueID}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 							/>
 							<DividerColor
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
 								breakpoint={breakpoint}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
 							/>
 							<Divider
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
 								lineOrientation={lineOrientation}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 							/>
 							<DividerAlignment
 								{...getGroupAttributes(attributes, 'divider')}
@@ -456,13 +456,13 @@ const MaxiToolbar = memo(
 								lineHorizontal={lineHorizontal}
 								blockName={name}
 								onChangeOrientation={lineOrientation =>
-									setAttributes({ lineOrientation })
+									maxiSetAttributes({ lineOrientation })
 								}
 								onChangeHorizontal={lineHorizontal =>
-									setAttributes({ lineHorizontal })
+									maxiSetAttributes({ lineHorizontal })
 								}
 								onChangeVertical={lineVertical =>
-									setAttributes({ lineVertical })
+									maxiSetAttributes({ lineVertical })
 								}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
@@ -475,7 +475,7 @@ const MaxiToolbar = memo(
 								])}
 								blockName={name}
 								breakpoint={breakpoint}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 							/>
 						</div>
 					</Popover>

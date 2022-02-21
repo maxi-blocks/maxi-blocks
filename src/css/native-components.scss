@@ -201,9 +201,12 @@
 				background: var(--maxi-secondary-color) !important;
 
 				& + span {
-					top: -6px;
+					top: -9px;
 					width: 16px;
 					height: 16px;
+					transform: translateX(0);
+					background-color: transparent;
+					margin-left: -9px;
 
 					span {
 						position: relative;
@@ -211,6 +214,7 @@
 						height: 16px;
 						margin-right: -3px;
 						border: 2px solid var(--maxi-black-1-color);
+						background-color: #fff;
 
 						&:after {
 							content: '';
@@ -221,6 +225,9 @@
 							height: 8px;
 							border-radius: 50%;
 							background: var(--maxi-black-1-color);
+						}
+						&::before {
+							display: none !important;
 						}
 					}
 				}

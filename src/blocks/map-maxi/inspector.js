@@ -25,7 +25,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 	const { apiKey } = attributes;
 
 	return (
@@ -35,6 +35,7 @@ const Inspector = props => {
 				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),
@@ -55,7 +56,7 @@ const Inspector = props => {
 														'map'
 													)}
 													onChange={obj =>
-														setAttributes(obj)
+														maxiSetAttributes(obj)
 													}
 													hasApiKey={!isEmpty(apiKey)}
 												/>

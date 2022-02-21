@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import Icon from '../icon';
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
+import Button from '../button';
 
 /**
  * External dependencies
@@ -20,7 +21,8 @@ import { isEmpty } from 'lodash';
 /**
  * Icons
  */
-import { colorOpacity } from '../../icons';
+import './editor.scss';
+import { colorOpacity, reset } from '../../icons';
 
 /**
  * Component
@@ -33,7 +35,9 @@ const CustomColorControl = props => {
 		disableColorDisplay,
 		disableOpacity,
 		isToolbar = false,
+		disableReset,
 		onReset,
+		onResetOpacity,
 	} = props;
 
 	return (
@@ -53,6 +57,24 @@ const CustomColorControl = props => {
 									}}
 								/>
 							</div>
+							{!disableReset && (
+								<Button
+									className='components-maxi-control__reset-button'
+									onClick={e => {
+										e.preventDefault();
+										onReset();
+									}}
+									isSmall
+									aria-label={sprintf(
+										/* translators: %s: a textual label  */
+										__('Reset %s settings', 'maxi-blocks'),
+										label.toLowerCase()
+									)}
+									type='reset'
+								>
+									{reset}
+								</Button>
+							)}
 						</BaseControl>
 					)}
 					{!disableOpacity && (
@@ -101,7 +123,7 @@ const CustomColorControl = props => {
 								});
 							}
 						}}
-						onReset={onReset}
+						onReset={onResetOpacity}
 						disableLabel
 					/>
 				</div>

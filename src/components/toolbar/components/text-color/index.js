@@ -16,7 +16,6 @@ import {
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
-	getDefaultAttribute,
 	getBlockStyle,
 	getColorRGBAString,
 } from '../../../../extensions/styles';
@@ -121,7 +120,6 @@ const TextColor = withFormatValue(props => {
 				<div className='toolbar-item__text-color__popover'>
 					<ColorControl
 						label={__('Text', 'maxi-blocks')}
-						defaultColor={getDefaultAttribute('color')}
 						color={color}
 						paletteColor={colorPalette}
 						paletteStatus={colorPaletteStatus}

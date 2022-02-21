@@ -14,6 +14,7 @@ import Inspector from './inspector';
 import {
 	MaxiBlockComponent,
 	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
@@ -43,14 +44,14 @@ const IconWrapper = forwardRef((props, ref) => {
 		};
 
 		// Bind the event listener
-		ref.current.ownerDocument.addEventListener(
+		ref?.current?.ownerDocument.addEventListener(
 			'mousedown',
 			handleClickOutside
 		);
 
 		return () => {
 			// Unbind the event listener on clean up
-			ref.current.ownerDocument.removeEventListener(
+			ref?.current?.ownerDocument.removeEventListener(
 				'mousedown',
 				handleClickOutside
 			);
@@ -87,7 +88,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
@@ -139,7 +140,7 @@ class edit extends MaxiBlockComponent {
 								}
 
 								this.typingTimeout = setTimeout(() => {
-									setAttributes({ buttonContent });
+									maxiSetAttributes({ buttonContent });
 								}, 100);
 							}}
 							placeholder={__('Set some text…', 'maxi-blocks')}
@@ -202,4 +203,4 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

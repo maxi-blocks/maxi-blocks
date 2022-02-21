@@ -26,7 +26,7 @@ import { isEmpty, without } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
+	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
 
 	const getCategoriesCss = () => {
@@ -44,6 +44,7 @@ const Inspector = props => {
 				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),
@@ -87,7 +88,7 @@ const Inspector = props => {
 															},
 														]}
 														onChange={lineOrientation =>
-															setAttributes({
+															maxiSetAttributes({
 																lineOrientation,
 															})
 														}
@@ -122,7 +123,7 @@ const Inspector = props => {
 															},
 														]}
 														onChange={lineVertical =>
-															setAttributes({
+															maxiSetAttributes({
 																lineVertical,
 															})
 														}
@@ -159,7 +160,7 @@ const Inspector = props => {
 															},
 														]}
 														onChange={lineHorizontal =>
-															setAttributes({
+															maxiSetAttributes({
 																lineHorizontal,
 															})
 														}
@@ -180,7 +181,9 @@ const Inspector = props => {
 															['divider', 'size']
 														)}
 														onChange={obj =>
-															setAttributes(obj)
+															maxiSetAttributes(
+																obj
+															)
 														}
 														lineOrientation={
 															lineOrientation

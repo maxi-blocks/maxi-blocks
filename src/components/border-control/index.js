@@ -28,7 +28,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber } from 'lodash';
+import { isNumber, capitalize } from 'lodash';
 
 /**
  * Icons
@@ -160,6 +160,22 @@ const BorderControl = props => {
 		prefix = '',
 	} = props;
 
+	const borderWidthLastValue = () => {
+		const response = {};
+
+		['top', 'right', 'bottom', 'left'].forEach(item => {
+			response[`border${capitalize(item)}Width`] =
+				getLastBreakpointAttribute(
+					`${prefix}border-${item}-width`,
+					breakpoint,
+					props,
+					isHover
+				);
+		});
+
+		return response;
+	};
+
 	const borderStyleValue = getLastBreakpointAttribute(
 		`${prefix}border-style`,
 		breakpoint,
@@ -199,7 +215,7 @@ const BorderControl = props => {
 			);
 		});
 
-		if (hasBorderWidth) return borderStyleValue;
+		if (hasBorderWidth) return borderStyleValue || 'none';
 		return 'none';
 	};
 
@@ -244,7 +260,10 @@ const BorderControl = props => {
 								icon={solid}
 							/>
 						),
-						onChange: () => onChangeDefault(borderSolid(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderSolid(prefix, borderWidthLastValue())
+							),
 					},
 					{
 						activeItem: getIsActive() === 'dashed',
@@ -254,7 +273,10 @@ const BorderControl = props => {
 								icon={dashed}
 							/>
 						),
-						onChange: () => onChangeDefault(borderDashed(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderDashed(prefix, borderWidthLastValue())
+							),
 					},
 					{
 						activeItem: getIsActive() === 'dotted',
@@ -264,7 +286,10 @@ const BorderControl = props => {
 								icon={dotted}
 							/>
 						),
-						onChange: () => onChangeDefault(borderDotted(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderDotted(prefix, borderWidthLastValue())
+							),
 					},
 				]}
 			/>

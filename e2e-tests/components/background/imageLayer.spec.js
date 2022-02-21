@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -18,6 +14,7 @@ import {
 	changeResponsive,
 	openPreviewPage,
 	getBlockStyle,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('BackgroundControl', () => {
@@ -28,13 +25,11 @@ describe('BackgroundControl', () => {
 		await addBackgroundLayer(page, 'image');
 
 		// opacity
-		await page.$$eval(
-			'.maxi-background-control .maxi-advanced-number-control input',
-			opacity => opacity[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('55');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-background-control'),
+			newNumber: '55',
+		});
 
 		// selectors
 		// background size
@@ -243,7 +238,6 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background image layer hover', async () => {
-		debugger;
 		await changeResponsive(page, 'base');
 
 		const accordion = await openSidebarTab(
@@ -270,13 +264,11 @@ describe('BackgroundControl', () => {
 		);
 
 		// opacity
-		await page.$$eval(
-			'.maxi-background-control .maxi-advanced-number-control input',
-			opacity => opacity[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('82');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-background-control'),
+			newNumber: '82',
+		});
 
 		// background size
 		const sizeSelector = await page.$(

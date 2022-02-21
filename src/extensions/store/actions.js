@@ -47,7 +47,7 @@ const actions = {
 			(width >= 768 && 'Tablet') ||
 			(width < 768 && 'Mobile');
 
-		setPreviewDeviceType(gutenbergDeviceType);
+		if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
 
 		return {
 			type: 'SET_DEVICE_TYPE',
@@ -71,6 +71,12 @@ const actions = {
 		return {
 			type: 'COPY_BLOCKS',
 			copiedBlocks,
+		};
+	},
+	updateInspectorPath(inspectorPath) {
+		return {
+			type: 'UPDATE_INSPECTOR_PATH',
+			inspectorPath,
 		};
 	},
 };

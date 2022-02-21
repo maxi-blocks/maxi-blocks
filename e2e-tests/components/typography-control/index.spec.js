@@ -134,6 +134,8 @@ describe('TypographyControl', () => {
 			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
 			select => select[0].click()
 		);
+
+		await page.waitForTimeout(200);
 	});
 
 	it('Check responsive palette color', async () => {
@@ -276,15 +278,15 @@ describe('TypographyControl', () => {
 		});
 
 		const attributeResult = await getAttributes([
-			'line-height-xl',
-			'letter-spacing-xl',
-			'font-size-xl',
+			'line-height-general',
+			'letter-spacing-general',
+			'font-size-general',
 		]);
 
 		const expectedAttributes = {
-			'line-height-xl': 22,
-			'letter-spacing-xl': 10,
-			'font-size-xl': 19,
+			'line-height-general': 22,
+			'letter-spacing-general': 10,
+			'font-size-general': 19,
 		};
 
 		expect(attributeResult).toStrictEqual(expectedAttributes);

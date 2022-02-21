@@ -29,33 +29,28 @@ import {
 	mediumMode,
 	smallMode,
 	cloudLib,
+	closeIcon,
+	helpIcon,
 } from '../../icons';
 
 /**
  * Components
  */
-const ResponsiveSelector = props => {
-	const { className, isOpen, onClose } = props;
+const ResponsiveButton = ({
+	winBreakpoint,
+	icon,
+	breakpoint,
+	target,
+	breakpoints,
+}) => {
+	const isWinBreakpoint = winBreakpoint === target;
 
-	const { insertBlock } = useDispatch('core/block-editor');
-
-	const { deviceType, breakpoints } = useSelect(select => {
-		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } =
-			select('maxiBlocks');
-
-		return {
-			deviceType: receiveMaxiDeviceType(),
-			breakpoints: receiveMaxiBreakpoints(),
-		};
-	});
+	const classes = classnames(
+		'maxi-responsive-selector__button-wrapper',
+		isWinBreakpoint && 'maxi-responsive-selector__base'
+	);
 
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
-
-	const addCloudLibrary = () => {
-		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
-	};
-
-	const classes = classnames('maxi-responsive-selector', className);
 
 	const setScreenSize = size => {
 		const xxlSize = select('maxiBlocks').receiveXXLSize();
@@ -68,60 +63,120 @@ const ResponsiveSelector = props => {
 			);
 	};
 
+	const getIsPressed = () => {
+		if (breakpoint === 'general') return winBreakpoint === target;
+
+		return breakpoint === target;
+	};
+
 	return (
-		<div className={classes} style={{ display: isOpen ? 'block' : 'none' }}>
+		<div className={classes}>
+			<Button
+				className='maxi-responsive-selector__button-item'
+				onClick={() =>
+					setScreenSize(isWinBreakpoint ? 'general' : target)
+				}
+				aria-pressed={getIsPressed()}
+			>
+				<div>
+					{icon}
+					{isWinBreakpoint && (
+						<>
+							<svg
+								className='maxi-tabs-control__notification'
+								xmlns='http://www.w3.org/2000/svg'
+								viewBox='0 0 9 9'
+							>
+								<path
+									fill='#ff4a17'
+									d='M4.5 0H9v4.5A4.5 4.5 0 0 1 4.5 9 4.5 4.5 0 0 1 0 4.5 4.5 4.5 0 0 1 4.5 0Z'
+								/>
+							</svg>
+							<div className='maxi-responsive-selector__button-current-size'>
+								{__('Your size', 'maxi-blocks')}
+							</div>
+						</>
+					)}
+				</div>
+			</Button>
+		</div>
+	);
+};
+
+const ResponsiveSelector = props => {
+	const { className, isOpen, onClose } = props;
+
+	const { insertBlock } = useDispatch('core/block-editor');
+
+	const { deviceType, breakpoints, winBreakpoint } = useSelect(select => {
+		const {
+			receiveMaxiDeviceType,
+			receiveMaxiBreakpoints,
+			receiveWinBreakpoint,
+		} = select('maxiBlocks');
+
+		const winBreakpoint = receiveWinBreakpoint();
+
+		return {
+			deviceType: receiveMaxiDeviceType(),
+			breakpoints: receiveMaxiBreakpoints(),
+			winBreakpoint,
+		};
+	});
+
+	const addCloudLibrary = () => {
+		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+	};
+
+	const classes = classnames('maxi-responsive-selector', className);
+
+	return (
+		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
 			<span className='maxi-responsive-selector__close' onClick={onClose}>
-				X
+				<Icon icon={closeIcon} />
 			</span>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('general')}
-				aria-pressed={deviceType === 'general'}
-			>
-				{__('Base', 'maxi-blocks')}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('xxl')}
-				aria-pressed={deviceType === 'xxl'}
-			>
-				{xllMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('xl')}
-				aria-pressed={deviceType === 'xl'}
-			>
-				{xlMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('l')}
-				aria-pressed={deviceType === 'l'}
-			>
-				{largeMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('m')}
-				aria-pressed={deviceType === 'm'}
-			>
-				{mediumMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('s')}
-				aria-pressed={deviceType === 's'}
-			>
-				{smallMode}
-			</Button>
-			<Button
-				className='maxi-responsive-selector__button'
-				onClick={() => setScreenSize('xs')}
-				aria-pressed={deviceType === 'xs'}
-			>
-				{xsMode}
-			</Button>
+			<ResponsiveButton
+				icon={xllMode}
+				target='xxl'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={xlMode}
+				target='xl'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={largeMode}
+				target='l'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={mediumMode}
+				target='m'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={smallMode}
+				target='s'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
+			<ResponsiveButton
+				icon={xsMode}
+				target='xs'
+				breakpoint={deviceType}
+				winBreakpoint={winBreakpoint}
+				breakpoints={breakpoints}
+			/>
 			<div className='action-buttons'>
 				<Button
 					className='action-buttons__button'
@@ -133,6 +188,9 @@ const ResponsiveSelector = props => {
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp />
+			<Button className='action-buttons__help' href='#'>
+				<Icon className='toolbar-item__icon' icon={helpIcon} /> Help
+			</Button>
 		</div>
 	);
 };

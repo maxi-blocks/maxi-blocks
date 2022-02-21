@@ -221,11 +221,8 @@ const BoxShadowControl = props => {
 							props,
 							isHover
 						)}
-						defaultColor={getDefaultAttribute(
-							`${prefix}box-shadow-color-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-						)}
+						prefix={`${prefix}box-shadow-`}
+						useBreakpointForDefault
 						paletteStatus={getLastBreakpointAttribute(
 							`${prefix}box-shadow-palette-status`,
 							breakpoint,

@@ -9,7 +9,12 @@ import { __ } from '@wordpress/i18n';
 import CustomColorControl from './customColorControl';
 import ColorPaletteControl from './paletteControl';
 import ToggleSwitch from '../toggle-switch';
-import { getBlockStyle, getColorRGBAParts } from '../../extensions/styles';
+import {
+	getBlockStyle,
+	getColorRGBAParts,
+	getAttributeKey,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
 
 /**
@@ -17,7 +22,6 @@ import { getPaletteColor } from '../../extensions/style-cards';
  */
 import classnames from 'classnames';
 import tinycolor from 'tinycolor2';
-
 /**
  * Styles
  */
@@ -34,7 +38,7 @@ const ColorControl = props => {
 		paletteColor,
 		paletteOpacity,
 		color,
-		defaultColor,
+		defaultColorAttributes,
 		globalProps,
 		onChange,
 		isHover,
@@ -45,6 +49,8 @@ const ColorControl = props => {
 		disableOpacity = false,
 		disableColorDisplay = false,
 		isToolbar = false,
+		prefix = '',
+		useBreakpointForDefault = false,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -78,24 +84,83 @@ const ColorControl = props => {
 			...obj,
 		});
 
-	/**
-	 * TODO: reset is working just on Custom Color and when pressing
-	 * the reset of the opacity, which is not much UX.
-	 *
-	 * https://github.com/yeahcan/UX-UI/issues/8
-	 */
 	const onReset = () => {
-		if (defaultColor) onChange(defaultColor);
+		let defaultColorAttr = defaultColorAttributes;
 
+		if (!defaultColorAttr) {
+			defaultColorAttr = {};
+
+			defaultColorAttr.paletteStatus = getDefaultAttribute(
+				getAttributeKey(
+					'palette-status',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+			defaultColorAttr.paletteColor = getDefaultAttribute(
+				getAttributeKey(
+					'palette-color',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+			defaultColorAttr.paletteOpacity = getDefaultAttribute(
+				getAttributeKey(
+					'palette-opacity',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+			defaultColorAttr.color = getDefaultAttribute(
+				getAttributeKey(
+					'color',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
+		}
+
+		if (showPalette)
+			onChange({
+				paletteStatus: defaultColorAttr.paletteStatus,
+				paletteColor: defaultColorAttr.paletteColor,
+				paletteOpacity: paletteOpacity || 1,
+				color,
+			});
+		else {
+			onChange({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color: `rgba(${getPaletteColor({
+					clientId,
+					color: paletteColor || defaultColorAttr.paletteColor,
+					blockStyle,
+				})},${paletteOpacity || 1})`,
+			});
+		}
+	};
+
+	const onResetOpacity = () => {
+		const opacity =
+			defaultColorAttributes?.paletteOpacity ??
+			getDefaultAttribute(
+				getAttributeKey(
+					'palette-opacity',
+					isHover,
+					prefix,
+					useBreakpointForDefault ? deviceType : null
+				)
+			);
 		onChange({
 			paletteStatus,
 			paletteColor,
-			paletteOpacity,
-			color: `rgba(${getPaletteColor({
-				clientId,
-				paletteColor,
-				blockStyle,
-			})},1)`,
+			paletteOpacity: opacity,
+			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
 		});
 	};
 
@@ -113,6 +178,8 @@ const ColorControl = props => {
 					disableOpacity={disableOpacity}
 					opacity={paletteOpacity}
 					className={className}
+					onReset={onReset}
+					onResetOpacity={onResetOpacity}
 				/>
 			)}
 			{!disablePalette && (
@@ -126,7 +193,7 @@ const ColorControl = props => {
 							...(val && {
 								color: `rgba(${getPaletteColor({
 									clientId,
-									paletteColor,
+									color: paletteColor,
 									blockStyle,
 								})},${paletteOpacity || 1})`,
 							}),
@@ -147,6 +214,7 @@ const ColorControl = props => {
 					color={getRGBA(color)}
 					onChangeValue={onChangeValue}
 					onReset={onReset}
+					onResetOpacity={onResetOpacity}
 					disableColorDisplay={disableColorDisplay}
 					disableOpacity={disableOpacity}
 					clientId={clientId}

@@ -6,7 +6,6 @@ import {
 	insertBlock,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
-
 /**
  * Internal dependencies
  */
@@ -39,6 +38,7 @@ describe('Svg width control', () => {
 		);
 
 		// change width and unit
+
 		await accordionPanel.$$eval(
 			'.maxi-advanced-number-control input',
 			input => input[0].focus()

@@ -3,10 +3,11 @@
  */
 
 /**
- * Import dependencies.
+ * Internal dependencies.
  */
 import MaxiModal from '../../editor/library/modal';
 import { library } from '../../icons';
+import { withMaxiProps } from '../../extensions/maxi-block';
 
 /**
  * WordPress dependencies.
@@ -20,9 +21,9 @@ import { Placeholder } from '../../components';
  */
 import { isEmpty } from 'lodash';
 
-export default class Edit extends Component {
+class Edit extends Component {
 	render() {
-		const { attributes, clientId, setAttributes } = this.props;
+		const { attributes, clientId, maxiSetAttributes } = this.props;
 
 		const { content, openFirstTime } = attributes;
 
@@ -47,9 +48,9 @@ export default class Edit extends Component {
 							clientId={clientId}
 							type='patterns'
 							openFirstTime={openFirstTime}
-							onOpen={obj => setAttributes(obj)}
-							onSelect={obj => setAttributes(obj)}
-							onRemove={obj => setAttributes(obj)}
+							onOpen={obj => maxiSetAttributes(obj)}
+							onSelect={obj => maxiSetAttributes(obj)}
+							onRemove={obj => maxiSetAttributes(obj)}
 							{...this.props}
 						/>
 					</Placeholder>
@@ -59,3 +60,5 @@ export default class Edit extends Component {
 		];
 	}
 }
+
+export default withMaxiProps(Edit);

@@ -48,7 +48,7 @@ const TextGenerator = withFormatValue(props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		const newContent = `${formatValue.text} ${generatedText[0].props.children}`;
+		const newContent = `${formatValue.text}${generatedText[0].props.children}`;
 
 		const newFormatsArray = [];
 		const newReplacementsArray = [];

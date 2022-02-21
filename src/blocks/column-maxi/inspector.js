@@ -20,7 +20,7 @@ import { selectorsColumn, categoriesColumn } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
+	const { attributes, deviceType, maxiSetAttributes, clientId, rowPattern } =
 		props;
 	const { verticalAlign } = attributes;
 
@@ -31,6 +31,7 @@ const Inspector = props => {
 				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),
@@ -59,7 +60,7 @@ const Inspector = props => {
 													rowPattern={rowPattern}
 													clientId={clientId}
 													onChange={obj =>
-														setAttributes(obj)
+														maxiSetAttributes(obj)
 													}
 													breakpoint={deviceType}
 												/>

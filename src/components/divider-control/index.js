@@ -150,7 +150,7 @@ const DividerControl = props => {
 				<ColorControl
 					label={__('Divider', 'maxi-blocks')}
 					color={props['divider-border-color']}
-					defaultColor={getDefaultAttribute('divider-border-color')}
+					prefix='divider-border-'
 					paletteColor={props['divider-border-palette-color']}
 					paletteOpacity={props['divider-border-palette-opacity']}
 					paletteStatus={props['divider-border-palette-status']}

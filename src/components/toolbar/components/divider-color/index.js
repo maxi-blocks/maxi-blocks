@@ -42,7 +42,7 @@ const DividerColor = props => {
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl
 					color={props['divider-border-color']}
-					defaultColor={getDefaultAttribute('border-color')}
+					prefix='border-'
 					paletteColor={props['divider-border-palette-color']}
 					paletteStatus={props['divider-border-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) =>

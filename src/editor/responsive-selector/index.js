@@ -29,6 +29,8 @@ import {
 	mediumMode,
 	smallMode,
 	cloudLib,
+	closeIcon,
+	helpIcon,
 } from '../../icons';
 
 /**
@@ -76,9 +78,27 @@ const ResponsiveButton = ({
 				}
 				aria-pressed={getIsPressed()}
 			>
-				{icon}
+				<div>
+					{icon}
+					{isWinBreakpoint && (
+						<>
+							<svg
+								className='maxi-tabs-control__notification'
+								xmlns='http://www.w3.org/2000/svg'
+								viewBox='0 0 9 9'
+							>
+								<path
+									fill='#ff4a17'
+									d='M4.5 0H9v4.5A4.5 4.5 0 0 1 4.5 9 4.5 4.5 0 0 1 0 4.5 4.5 4.5 0 0 1 4.5 0Z'
+								/>
+							</svg>
+							<div className='maxi-responsive-selector__button-current-size'>
+								{__('Your size', 'maxi-blocks')}
+							</div>
+						</>
+					)}
+				</div>
 			</Button>
-			{isWinBreakpoint && <div>Your base</div>}
 		</div>
 	);
 };
@@ -113,7 +133,7 @@ const ResponsiveSelector = props => {
 	return (
 		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
 			<span className='maxi-responsive-selector__close' onClick={onClose}>
-				X
+				<Icon icon={closeIcon} />
 			</span>
 			<ResponsiveButton
 				icon={xllMode}
@@ -168,6 +188,9 @@ const ResponsiveSelector = props => {
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp />
+			<Button className='action-buttons__help' href='#'>
+				<Icon className='toolbar-item__icon' icon={helpIcon} /> Help
+			</Button>
 		</div>
 	);
 };

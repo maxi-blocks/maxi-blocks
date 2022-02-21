@@ -44,14 +44,14 @@ const IconWrapper = forwardRef((props, ref) => {
 		};
 
 		// Bind the event listener
-		ref.current.ownerDocument.addEventListener(
+		ref?.current?.ownerDocument.addEventListener(
 			'mousedown',
 			handleClickOutside
 		);
 
 		return () => {
 			// Unbind the event listener on clean up
-			ref.current.ownerDocument.removeEventListener(
+			ref?.current?.ownerDocument.removeEventListener(
 				'mousedown',
 				handleClickOutside
 			);

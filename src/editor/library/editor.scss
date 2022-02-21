@@ -635,8 +635,14 @@
 				.ais-InfiniteHits-item {
 					background: #fff;
 					border: 1px solid #dbdde6;
-					padding: 6px;
+					padding: 0;
 					transition: 0.3s;
+
+					&__button {
+						height: auto;
+						padding: 6px;
+						display: block;
+					}
 
 					.maxi-cloud-masonry-card__image {
 						background: #f0f2f4;
@@ -646,11 +652,8 @@
 					}
 					&:hover {
 						border-color: #007cba;
-						background: #edf6fa;
-						cursor: pointer;
 						.maxi-cloud-masonry-card__button {
 							border-color: #007cba;
-							box-shadow: 0 0 0 1px #007cba;
 							color: #007cba;
 						}
 					}

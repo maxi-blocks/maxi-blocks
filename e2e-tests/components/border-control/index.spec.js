@@ -2,7 +2,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -176,6 +180,58 @@ describe('BorderControl', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
+		// check that the values when changing the styles
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-border-control .maxi-default-styles-control button',
+			button => button[1].click()
+		);
+
+		await page.$$eval(
+			'.maxi-axis-control__content__item__border input',
+			input => input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('59');
+
+		expect(await getAttributes('border-left-width-general')).toStrictEqual(
+			59
+		);
+
+		// check border radius
+		await page.$$eval(
+			'.maxi-axis-control__content__item__border input',
+			input => input[2].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('26');
+
+		expect(
+			await getAttributes('border-bottom-left-radius-general')
+		).toStrictEqual(26);
+
+		// change style
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-border-control .maxi-default-styles-control button',
+			button => button[2].click()
+		);
+
+		// same value
+		const borderWidth = await page.$$eval(
+			'.maxi-axis-control__content__item__border input',
+			input => input[0].value
+		);
+		expect(borderWidth).toStrictEqual('59');
+
+		// check border radius
+		const borderRadius = await page.$$eval(
+			'.maxi-axis-control__content__item__border input',
+			input => input[2].value
+		);
+
+		expect(borderRadius).toStrictEqual('26');
+
 		// reset button
 		await page.$eval(
 			'.maxi-axis-control__border .maxi-axis-control__unit-header button',
@@ -185,5 +241,14 @@ describe('BorderControl', () => {
 		expect(await getAttributes('border-left-width-general')).toStrictEqual(
 			2
 		);
+
+		await page.$$eval(
+			'.maxi-axis-control__border .maxi-axis-control__unit-header button',
+			button => button[1].click()
+		);
+
+		expect(
+			await getAttributes('border-bottom-left-radius-general')
+		).toStrictEqual(undefined);
 	});
 });

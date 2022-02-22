@@ -804,8 +804,7 @@ const TypographyControl = withFormatValue(props => {
 				options={getWeightOptions()}
 				onChange={val => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
-					const fontName =
-						getValue(`${prefix}font-family`) || 'Roboto';
+					const fontName = getValue(`${prefix}font-family`);
 					const fontStyle = getValue(`${prefix}font-style`);
 					const objFont = { [fontName]: {} };
 

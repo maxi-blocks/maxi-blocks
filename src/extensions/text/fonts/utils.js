@@ -158,7 +158,6 @@ const mergeDeep = (target, source) => {
 	const isObject = obj => obj && typeof obj === 'object';
 
 	if (!isObject(target) || !isObject(source)) {
-		console.log('not object');
 		return source;
 	}
 
@@ -166,13 +165,18 @@ const mergeDeep = (target, source) => {
 		const targetValue = target[key];
 		const sourceValue = source[key];
 
+		console.log(typeof targetValue);
+		console.log(typeof sourceValue);
+
 		if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
 			target[key] = targetValue.concat(sourceValue);
+		} else if (typeof targetValue === 'undefined') {
+			target[key] = sourceValue;
 		} else if (isObject(targetValue) && isObject(sourceValue)) {
 			target[key] = mergeDeep({ ...targetValue }, { ...sourceValue });
 		} else if (isString(targetValue) && isString(sourceValue)) {
 			target[key] = `${targetValue},${sourceValue}`;
-		}
+		} else target[key] = sourceValue;
 	});
 
 	return target;
@@ -229,10 +233,14 @@ export const getPageFonts = () => {
 					getAllFonts(typographyHover, false, true, textLevel)
 				);
 
+				console.log(response);
+
 				mergedResponse = mergeDeep(
 					cloneDeep(oldResponse),
 					cloneDeep(response)
 				);
+
+				console.log(mergedResponse);
 
 				oldResponse = cloneDeep(response);
 			}
@@ -244,6 +252,8 @@ export const getPageFonts = () => {
 	};
 
 	getBlockFonts(getBlocks());
+
+	console.log(mergedResponse);
 
 	return mergedResponse;
 };

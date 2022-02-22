@@ -42,3 +42,8 @@ body.maxi-blocks--active .maxi-button-block__button {
 	border: none;
 	text-decoration: none;
 }
+
+/*Fixes container alignment for Twenty Nineteen*/
+body.maxi-blocks--active .maxi-container-block.wp-block.maxi-block.maxi-block--backend {
+	left: auto;
+}

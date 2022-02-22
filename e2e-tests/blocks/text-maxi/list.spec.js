@@ -20,7 +20,7 @@ import {
 } from '../../utils';
 
 describe('List in Text-maxi', () => {
-	it('Use list in Text Maxi Organized', async () => {
+	it('Use list options', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi List', { delay: 100 });
@@ -98,7 +98,9 @@ describe('List in Text-maxi', () => {
 		expect(
 			await getAttributes('list-marker-line-height-general')
 		).toStrictEqual(46);
+	});
 
+	it('Check text position, style, start from in organized', async () => {
 		// Select
 		// Text Position
 		const textPosition = await page.$(
@@ -109,6 +111,14 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('list-text-position-general')).toStrictEqual(
 			'sub'
 		);
+
+		// Start From input negative numbers
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-image-inspector__list-start '),
+			newNumber: '-23',
+		});
+		expect(await getAttributes('listStart')).toStrictEqual(-23);
 
 		// Style
 		const style = await page.$$('.maxi-image-inspector__list-style select');
@@ -148,7 +158,7 @@ describe('List in Text-maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Use list in Text Maxi Unorganized', async () => {
+	it('Check text position, style, Unorganized Custom', async () => {
 		// Select
 		// Type of list
 		const listType = await page.$(
@@ -158,7 +168,7 @@ describe('List in Text-maxi', () => {
 
 		expect(await getAttributes('typeOfList')).toStrictEqual('ul');
 
-		// style
+		// style default
 		const style = await page.$$('.maxi-image-inspector__list-style select');
 		await style[1].select('circle');
 
@@ -196,11 +206,13 @@ describe('List in Text-maxi', () => {
 			input => input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
+		debugger;
+
 		await page.keyboard.type('http://placekitten.com/20/20');
 		await page.waitForTimeout(500);
-		debugger; 
+		debugger;
 
-		 expect(await getAttributes('listStyleCustom')).toStrictEqual(
+		expect(await getAttributes('listStyleCustom')).toStrictEqual(
 			'http://placekitten.com/20/20'
 		); */
 

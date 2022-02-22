@@ -45,8 +45,8 @@ const loadFonts = (font, backendOnly = false) => {
 							return value !== weight;
 						});
 
-						if (!(weightFile in newFontWeightArr))
-							newFontWeightArr.push(weightFile);
+						// if (!(weightFile in newFontWeightArr))
+						newFontWeightArr.push(weightFile);
 
 						const newFontWeight = uniq(newFontWeightArr).join();
 						font[fontName].weight = newFontWeight;

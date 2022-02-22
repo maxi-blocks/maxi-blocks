@@ -34,6 +34,8 @@ const BlockStylesSaver = () => {
 
 	useEffect(() => {
 		if (isSaving) {
+			// console.log('getPageFonts()');
+			// console.log(getPageFonts());
 			loadFonts(getPageFonts());
 			if (!isPreviewing && !isDraft) {
 				saveStyles(true);

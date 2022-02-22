@@ -189,6 +189,13 @@
 		&__search-item-icon {
 			fill: var(--maxi-primary-color);
 		}
+		&__tools {
+			border: none;
+			padding: 0;
+		}
+		&__search-input {
+			margin: 0;
+		}
 	}
 	.toolbar-popover-link-destroyer {
 		background-color: var(--maxi-primary-color) !important;

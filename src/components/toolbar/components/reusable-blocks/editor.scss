@@ -36,7 +36,7 @@
 
 .maxi-dropdown__content.maxi-dropdown__reusable-content {
 	.components-popover__content {
-		width: 239px;
+		width: 239px !important;
 		padding: 8px;
 
 		.maxi-base-control {
@@ -70,17 +70,19 @@
 			}
 		}
 
-		.components-button {
-			float: right;
-			position: absolute;
-			right: 2px;
-			bottom: 1px;
-			width: auto;
-			height: 26px;
-			background-color: #e5f2f8;
-			font-weight: 700;
-			color: #007cba;
-			padding: 0px 12px;
+		form {
+			.components-button {
+				float: right;
+				position: absolute !important;
+				right: 2px;
+				bottom: 1px;
+				width: auto !important;
+				height: 26px !important;
+				background-color: #e5f2f8;
+				font-weight: 700;
+				color: #007cba;
+				padding: 0px 12px;
+			}
 		}
 	}
 }

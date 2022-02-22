@@ -43,7 +43,7 @@ const ReusableBlocks = props => {
 	return (
 		<Dropdown
 			className='maxi-reusableblocks__blocks-selector'
-			contentClassName='maxi-dropdown__child-content maxi-dropdown__reusable-content'
+			contentClassName='maxi-more-settings__popover maxi-dropdown__child-content maxi-dropdown__reusable-content'
 			position='right top'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>

@@ -22,7 +22,7 @@
 	z-index: 9999999;
 
 	&.maxi-dropdown__child-content {
-		margin: -24px 0 0 91px !important;
+		margin: -18px 0 0 91px !important;
 	}
 	.components-popover__content {
 		width: 190px;
@@ -46,6 +46,7 @@
 				}
 			}
 		}
+		.maxi-text-generator__generator,
 		.maxi-reusableblocks__blocks-selector {
 			.components-button {
 				&::before {

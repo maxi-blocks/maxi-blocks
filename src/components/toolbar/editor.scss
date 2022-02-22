@@ -480,8 +480,8 @@ body .toolbar-item__popover {
 			font-weight: 700;
 			&[aria-pressed='true'] {
 				color: #007cba;
-				background: #eaf2f6;
-				border-bottom: 3px solid #007cba;
+				background-color: #eaf2f6 !important;
+				border-bottom: 3px solid #007cba !important;
 			}
 		}
 	}

@@ -40,6 +40,7 @@ export { default as Indicators } from './indicators';
 export { default as InfoBox } from './info-box';
 export { default as InnerBlocks } from './inner-blocks';
 export { default as MapControl } from './map-control';
+export { default as MaxiPopoverButton } from './maxi-popover-button';
 export { default as ScrollEffectsControl } from './scroll-effects-control';
 export { default as MotionPreview } from './motion-preview';
 export { default as NumberCounterControl } from './number-counter-control';

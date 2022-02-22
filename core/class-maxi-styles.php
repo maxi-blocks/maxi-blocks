@@ -34,6 +34,13 @@ class MaxiBlocks_Styles
     public function enqueue_styles()
     {
         $post_content = $this->getPostContent();
+
+        if (!$post_content || empty($post_content)) {
+            return false;
+        }
+
+        $post_content = json_decode(json_encode($post_content), true);
+        
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
 
@@ -46,7 +53,6 @@ class MaxiBlocks_Styles
         if ($fonts) {
             $this->enqueue_fonts($fonts);
         }
-
 
         $needCustomMeta = false;
 
@@ -96,12 +102,18 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        $post_content = (array)$wpdb->get_results(
+        $post_content_array = (array)$wpdb->get_results(
             "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
             OBJECT
-        )[0];
+        );
 
-        if (!$post_content) {
+        if (!$post_content_array || empty($post_content_array)) {
+            return false;
+        }
+
+        $post_content = $post_content_array[0];
+
+        if (!$post_content || empty($post_content)) {
             return false;
         }
 

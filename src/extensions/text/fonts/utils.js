@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isString, uniq, merge } from 'lodash';
+import { isEmpty, isString, uniq, merge, cloneDeep, isObject } from 'lodash';
 
 /**
  * Internal dependencies
@@ -81,25 +81,16 @@ export const getAllFonts = (
 				if (typeof val !== 'undefined')
 					fontWeight.push(val?.toString());
 				else {
-					const weightSC = getCustomFormatValue({
-						typography: { ...obj },
-						prop: 'font-weight',
-						breakpoint,
-						isHover,
-						textLevel,
-						styleCard,
-					});
-					if (weightSC !== 400)
-						fontWeight.push(
-							getCustomFormatValue({
-								typography: { ...obj },
-								prop: 'font-weight',
-								breakpoint,
-								isHover,
-								textLevel,
-								styleCard,
-							})?.toString()
-						);
+					fontWeight.push(
+						getCustomFormatValue({
+							typography: { ...obj },
+							prop: 'font-weight',
+							breakpoint,
+							isHover,
+							textLevel,
+							styleCard,
+						})?.toString()
+					);
 				}
 			}
 
@@ -163,10 +154,36 @@ export const getAllFonts = (
 	return response;
 };
 
+const mergeDeep = (target, source) => {
+	const isObject = obj => obj && typeof obj === 'object';
+
+	if (!isObject(target) || !isObject(source)) {
+		console.log('not object');
+		return source;
+	}
+
+	Object.keys(source).forEach(key => {
+		const targetValue = target[key];
+		const sourceValue = source[key];
+
+		if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+			target[key] = targetValue.concat(sourceValue);
+		} else if (isObject(targetValue) && isObject(sourceValue)) {
+			target[key] = mergeDeep({ ...targetValue }, { ...sourceValue });
+		} else if (isString(targetValue) && isString(sourceValue)) {
+			target[key] = `${targetValue},${sourceValue}`;
+		}
+	});
+
+	return target;
+};
+
 export const getPageFonts = () => {
 	const { getBlocks } = select('core/block-editor');
 
 	let response = {};
+	let oldResponse = {};
+	let mergedResponse = {};
 
 	const getBlockFonts = blocks => {
 		Object.entries(blocks).forEach(([key, block]) => {
@@ -207,20 +224,17 @@ export const getPageFonts = () => {
 						break;
 				}
 
-				response = {
-					...merge(
-						{ ...response },
-						{ ...getAllFonts(typography, false, false, textLevel) },
-						{
-							...getAllFonts(
-								typographyHover,
-								false,
-								true,
-								textLevel
-							),
-						}
-					),
-				};
+				response = mergeDeep(
+					getAllFonts(typography, false, false, textLevel),
+					getAllFonts(typographyHover, false, true, textLevel)
+				);
+
+				mergedResponse = mergeDeep(
+					cloneDeep(oldResponse),
+					cloneDeep(response)
+				);
+
+				oldResponse = cloneDeep(response);
 			}
 
 			if (!isEmpty(innerBlocks)) getBlockFonts(innerBlocks);
@@ -231,5 +245,5 @@ export const getPageFonts = () => {
 
 	getBlockFonts(getBlocks());
 
-	return response;
+	return mergedResponse;
 };

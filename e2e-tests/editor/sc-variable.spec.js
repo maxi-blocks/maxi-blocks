@@ -7,14 +7,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openPreviewPage, getBlockStyle } from '../utils';
+import { openPreviewPage } from '../utils';
 
 describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
-		await page.waitForTimeout(150);
+		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
 
 		const scVariable = await page.$eval(
 			'#maxi-blocks-sc-vars-inline-css',
@@ -23,7 +21,18 @@ describe('sc-variable', () => {
 
 		expect(scVariable).toMatchSnapshot();
 
-		await openPreviewPage(page);
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		await insertBlock('Text Maxi');
+
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+
+		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
+
+		const scVariableFront = await page.$eval(
+			'#maxi-blocks-sc-vars-inline-css',
+			content => content.innerHTML
+		);
+
+		expect(scVariableFront).toMatchSnapshot();
 	});
 });

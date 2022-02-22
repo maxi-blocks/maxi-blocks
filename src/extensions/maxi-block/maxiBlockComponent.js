@@ -35,7 +35,7 @@ import { loadFonts } from '../text/fonts';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, uniqueId, isEqual, cloneDeep, isNil } from 'lodash';
 
 /**
  * Style Component
@@ -211,6 +211,11 @@ class MaxiBlockComponent extends Component {
 		if (
 			!document.querySelector(
 				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+			) ||
+			isNil(
+				select('maxiBlocks/styles').getBlockStyles(
+					this.props.attributes.uniqueID
+				)
 			)
 		)
 			return false;

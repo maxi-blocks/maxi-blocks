@@ -27,22 +27,6 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	lineVertical: {
-		type: 'string',
-		default: 'center',
-	},
-	lineHorizontal: {
-		type: 'string',
-		default: 'center',
-	},
-	lineOrientation: {
-		type: 'string',
-		default: 'horizontal',
-	},
-	lineAlign: {
-		type: 'string',
-		default: 'row',
-	},
 	...attributesData.divider,
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),

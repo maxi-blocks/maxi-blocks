@@ -25,11 +25,11 @@ const loadFonts = (font, backendOnly = false) => {
 			let fontWeightArr = [];
 
 			if (Array.isArray(fontWeight))
-				font[fontName].weight = fontWeight.join();
+				font[fontName].weight = uniq(fontWeight).join();
 
 			if (fontWeight?.includes(',')) {
-				fontWeightArr = fontWeight.split(',');
-				fontData = { ...val, ...{ weight: uniq(fontWeight) } };
+				fontWeightArr = uniq(fontWeight.split(','));
+				fontData = { ...val, ...{ weight: fontWeightArr.join() } };
 			} else fontData = { ...val, ...{ weight: fontWeight } };
 
 			if (isEmpty(fontData.style)) delete fontData.style;
@@ -41,11 +41,12 @@ const loadFonts = (font, backendOnly = false) => {
 					let weightFile = weight;
 					if (!(Number(weight) in files)) {
 						weightFile = '400';
-						const newFontWeightArr = fontWeightArr.filter(value => {
-							return value !== weight;
-						});
+						const newFontWeightArr = uniq(fontWeightArr).filter(
+							value => {
+								return value !== weight;
+							}
+						);
 
-						// if (!(weightFile in newFontWeightArr))
 						newFontWeightArr.push(weightFile);
 
 						const newFontWeight = uniq(newFontWeightArr).join();
@@ -55,6 +56,10 @@ const loadFonts = (font, backendOnly = false) => {
 					Object.entries(files).forEach(variant => {
 						if (variant[0].toString() === weightFile) {
 							fontData = { ...val, ...{ weight: weightFile } };
+							console.log(fontData);
+							if (fontData?.style === ',italic')
+								fontData.style = 'italic';
+							console.log(fontData);
 							const fontLoad = new FontFace(
 								fontName,
 								`url(${variant[1]})`,

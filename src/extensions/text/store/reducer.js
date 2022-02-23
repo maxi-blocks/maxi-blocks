@@ -43,7 +43,7 @@ function reducer(
 		case 'UPDATE_FONTS':
 			return {
 				...state,
-				postFonts: uniq([...state.postFonts, ...action.fonts]),
+				postFonts: uniq([...action.fonts]),
 			};
 		default:
 			return state;

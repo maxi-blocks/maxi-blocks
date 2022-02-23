@@ -163,9 +163,6 @@ const mergeDeep = (target, source) => {
 		const targetValue = target[key];
 		const sourceValue = source[key];
 
-		// console.log(typeof targetValue);
-		// console.log(typeof sourceValue);
-
 		if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
 			target[key] = targetValue.concat(sourceValue);
 		} else if (typeof targetValue === 'undefined') {
@@ -226,17 +223,20 @@ export const getPageFonts = () => {
 						break;
 				}
 
-				response = mergeDeep(
-					getAllFonts(typography, false, false, textLevel),
-					getAllFonts(typographyHover, false, true, textLevel)
-				);
+				if (typographyHover?.['typography-status-hover'])
+					response = mergeDeep(
+						getAllFonts(typography, false, false, textLevel),
+						getAllFonts(typographyHover, false, true, textLevel)
+					);
+				else
+					response = getAllFonts(typography, false, false, textLevel);
 
 				mergedResponse = mergeDeep(
 					cloneDeep(oldResponse),
 					cloneDeep(response)
 				);
 
-				oldResponse = cloneDeep(response);
+				oldResponse = cloneDeep(mergedResponse);
 			}
 
 			if (!isEmpty(innerBlocks)) getBlockFonts(innerBlocks);

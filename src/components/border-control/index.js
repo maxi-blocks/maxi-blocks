@@ -125,7 +125,14 @@ const BorderWidthControl = props => {
 			target={`${prefix}border`}
 			auxTarget='width'
 			{...(!isToolbar && { label: __('Border width', 'maxi-blocks') })}
-			onChange={obj => onChange(obj)}
+			onChange={obj => {
+				if (!isToolbar) onChange(obj);
+				else
+					onChange({
+						[`border-sync-width-${breakpoint}`]: 'all',
+						...obj,
+					});
+			}}
 			breakpoint={breakpoint}
 			allowedUnits={['px', 'em', 'vw']}
 			minMaxSettings={{

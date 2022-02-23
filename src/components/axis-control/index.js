@@ -440,6 +440,7 @@ const AxisControl = props => {
 			'sync-vertical',
 		],
 		optionType = 'number',
+		disableSync = false,
 	} = props;
 
 	const classes = classnames(
@@ -563,7 +564,7 @@ const AxisControl = props => {
 
 		let response = {};
 
-		switch (sync) {
+		switch (disableSync ? 'all' : sync) {
 			case 'all': {
 				inputsArray.forEach(key => {
 					if (

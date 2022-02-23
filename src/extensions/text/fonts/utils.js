@@ -183,12 +183,18 @@ export const getPageFonts = () => {
 	let response = {};
 	let oldResponse = {};
 	let mergedResponse = {};
+	const blocksWithFonts = [
+		'maxi-blocks/number-counter-maxi',
+		'maxi-blocks/button-maxi',
+		'maxi-blocks/text-maxi',
+		'maxi-blocks/image-maxi',
+	];
 
 	const getBlockFonts = blocks => {
 		Object.entries(blocks).forEach(([key, block]) => {
 			const { attributes, innerBlocks, name } = block;
 
-			if (name.includes('maxi-blocks') && !isEmpty(attributes)) {
+			if (blocksWithFonts.includes(name) && !isEmpty(attributes)) {
 				let typography = {};
 				let typographyHover = {};
 				let textLevel = attributes?.textLevel || 'p';

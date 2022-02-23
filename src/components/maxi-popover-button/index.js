@@ -2,80 +2,50 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { forwardRef, memo, useState, useEffect } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
-import { getScrollContainer } from '@wordpress/dom';
+import { forwardRef, useRef } from '@wordpress/element';
 
-/**
- * External dependencies
- */
-import { isEmpty, isNaN } from 'lodash';
+const MaxiPopoverButton = forwardRef((props, ref) => {
+	const { isSelected, attributes } = props;
+	const { uniqueID } = attributes;
 
-const MaxiPopoverButton = memo(
-	forwardRef((props, ref) => {
-		const { isSelected, attributes } = props;
-		const { uniqueID } = attributes;
-		const [anchorRef, setAnchorRef] = useState(ref.current);
+	const popoverRef = useRef(null);
 
-		useEffect(() => {
-			setAnchorRef(ref.current);
-		});
+	return (
+		<>
+			{isSelected && ref.current && (
+				<Popover
+					ref={popoverRef}
+					noArrow
+					animate={false}
+					focusOnMount={false}
+					getAnchorRect={() => {
+						const { x, y, width, height } =
+							ref.current.getBoundingClientRect();
 
-		const { editorVersion } = useSelect(select => {
-			const { receiveMaxiSettings, receiveMaxiDeviceType } =
-				select('maxiBlocks');
-			const { receiveMaxiSelectedStyleCard } = select(
-				'maxiBlocks/style-cards'
-			);
+						const { width: popoverWidth, height: popoverHeight } =
+							popoverRef.current
+								.querySelector(
+									'.maxi-image-block__settings__upload-button'
+								)
+								.getBoundingClientRect();
 
-			const maxiSettings = receiveMaxiSettings();
-			const version = !isEmpty(maxiSettings.editor)
-				? maxiSettings.editor.version
-				: null;
+						const newRect = DOMRect.fromRect({
+							x: x + width / 2 - popoverWidth / 2,
+							y: y + popoverHeight,
+							width,
+							height,
+						});
 
-			const breakpoint = receiveMaxiDeviceType();
-
-			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
-
-			return {
-				editorVersion: version,
-				breakpoint,
-				styleCard,
-			};
-		});
-		const boundaryElement =
-			document.defaultView.frameElement ||
-			getScrollContainer(anchorRef) ||
-			document.body;
-
-		const stickyProps = {
-			...((parseFloat(editorVersion) <= 9.2 && {
-				__unstableSticky: true,
-			}) ||
-				(anchorRef &&
-					!isNaN(parseFloat(editorVersion)) && {
-						__unstableStickyBoundaryElement: boundaryElement,
-					})),
-		};
-
-		return (
-			<>
-				{isSelected && anchorRef && (
-					<Popover
-						noArrow
-						animate={false}
-						focusOnMount={false}
-						anchorRef={anchorRef}
-						position='top right'
-						uniqueid={uniqueID}
-						{...stickyProps}
-					>
-						{props.children}
-					</Popover>
-				)}
-			</>
-		);
-	})
-);
+						return newRect;
+					}}
+					position='top right'
+					uniqueid={uniqueID}
+				>
+					{props.children}
+				</Popover>
+			)}
+		</>
+	);
+});
 
 export default MaxiPopoverButton;

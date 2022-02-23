@@ -6,4 +6,4 @@ exports[`Group Maxi Group Maxi does not break 1`] = `
 <!-- /wp:maxi-blocks/group-maxi -->"
 `;
 
-exports[`Group Maxi Group Maxi does not break 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12{ border-color: rgba(var(--maxi-light-color-2,242,249,253),1);}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12 > .maxi-background-displayer{ border-color: rgba(var(--maxi-light-color-2,242,249,253),1);}</style>"`;
+exports[`Group Maxi Group Maxi does not break 2`] = `"<style></style>"`;

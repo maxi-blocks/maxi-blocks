@@ -19,12 +19,24 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "l": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "m": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "s": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xl": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xs": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xxl": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
     },
     "size": Object {
       "general": Object {
@@ -331,9 +343,7 @@ exports[`getBackgroundStyles Get correct block background styles for general res
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
-        "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
-      },
+      "general": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},

@@ -228,9 +228,7 @@ Object {
 
 exports[`getBorderStyles Test simple and default border attributes 1`] = `
 Object {
-  "general": Object {
-    "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
-  },
+  "general": Object {},
   "l": Object {},
   "m": Object {},
   "s": Object {},

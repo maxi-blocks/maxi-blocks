@@ -219,7 +219,7 @@ class MaxiBlocks_Styles
                     $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
 
                     if (is_array($fontWeight)) {
-                        $fontWeight = implode(',', $fontWeight);
+                        $fontWeight = implode(',', array_unique($fontWeight));
                     }
 
                     if ($fontStyle === 'italic') {
@@ -227,7 +227,7 @@ class MaxiBlocks_Styles
                     }
 
                     if (strpos($fontWeight, ',') !== false) {
-                        $fontWeightArr = explode(',', $fontWeight);
+                        $fontWeightArr = array_unique(explode(',', $fontWeight));
                         sort($fontWeightArr);
                         $fontUrl .= 'wght@';
                         if ($fontStyle === 'italic') {

@@ -594,6 +594,11 @@
 			grid-column-gap: 0;
 			grid-template-columns: 194px 1fr;
 
+			.maxi-cloud-container__patterns__top-menu {
+				display: flex;
+				grid-column: span 3;
+			}
+
 			&__sidebar {
 				border-right: 1px solid #dbdde6;
 				border-left: 1px solid #dbdde6;
@@ -730,7 +735,7 @@
 					top: 55px;
 					right: 8px;
 
-					&__pro-tag {
+					&__tag {
 						position: relative;
 						display: inline-block;
 						padding: 4px 15px 4px 25px;

@@ -22,16 +22,9 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 						const { x, y, width, height } =
 							ref.current.getBoundingClientRect();
 
-						const { width: popoverWidth, height: popoverHeight } =
-							popoverRef.current
-								.querySelector(
-									'.maxi-image-block__settings__upload-button'
-								)
-								.getBoundingClientRect();
-
 						const newRect = DOMRect.fromRect({
-							x: x + width / 2 - popoverWidth / 2,
-							y: y + popoverHeight,
+							x: x + width / 2,
+							y: y,
 							width,
 							height,
 						});

@@ -1,9 +1,11 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
 import { withSelect, withDispatch, dispatch } from '@wordpress/data';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,11 +17,21 @@ import {
 	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { Toolbar, BlockResizer, RawHTML } from '../../components';
+import {
+	Toolbar,
+	BlockResizer,
+	RawHTML,
+	MaxiPopoverButton,
+} from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import MaxiBlock from '../../components/maxi-block';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
+
+/**
+ * Icons
+ */
+import { toolbarReplaceImage } from '../../icons';
 
 /**
  * External dependencies
@@ -34,6 +46,7 @@ class edit extends MaxiBlockComponent {
 		super(props);
 
 		this.resizableObject = createRef();
+		this.setState({ isOpen: props.openFirstTime });
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -92,7 +105,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	state = {
-		isOpen: false,
+		isOpen: true,
 	};
 
 	render() {
@@ -132,7 +145,11 @@ class edit extends MaxiBlockComponent {
 				'hidden' &&
 			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
 				'hidden';
+		const onClick = () => {
+			this.setState({ isOpen: !this.state.isOpen });
 
+			// if (onOpen) onOpen({ openFirstTime: !isOpen });
+		};
 		return [
 			!isEmptyContent && (
 				<Inspector
@@ -150,6 +167,31 @@ class edit extends MaxiBlockComponent {
 					{...this.props}
 				/>
 			),
+			<MaxiPopoverButton
+				key={`popover-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			>
+				{isEmptyContent && (
+					<div className='maxi-svg-icon-block__placeholder'>
+						<Button
+							isPrimary
+							key={`maxi-block-library__modal-button--${clientId}`}
+							className='maxi-block-library__modal-button'
+							onClick={onClick}
+						>
+							{__('Select SVG Icon', 'maxi-blocks')}
+						</Button>
+					</div>
+				)}
+				{!isEmptyContent && (
+					<Button
+						className='maxi-svg-icon-block__replace-icon'
+						onClick={onClick}
+						icon={toolbarReplaceImage}
+					/>
+				)}
+			</MaxiPopoverButton>,
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
@@ -160,6 +202,7 @@ class edit extends MaxiBlockComponent {
 					<MaxiModal
 						clientId={clientId}
 						type='svg'
+						isIconOpen
 						empty={isEmptyContent}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}

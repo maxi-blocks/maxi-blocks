@@ -303,28 +303,28 @@ class edit extends MaxiBlockComponent {
 								onClick={open}
 								icon={toolbarReplaceImage}
 							/>
-							<ImageURL
-								url={externalUrl}
-								onChange={url => {
-									maxiSetAttributes({
-										externalUrl: url,
-									});
-								}}
-								onSubmit={url => {
-									if (isURL(url)) {
-										maxiSetAttributes({
-											isImageUrl: true,
-											externalUrl: url,
-											mediaURL: url,
-										});
-										this.setState({
-											isExternalClass: true,
-										});
-									}
-								}}
-							/>
 						</div>
 					)}
+				/>
+				<ImageURL
+					url={externalUrl}
+					onChange={url => {
+						maxiSetAttributes({
+							externalUrl: url,
+						});
+					}}
+					onSubmit={url => {
+						if (isURL(url)) {
+							maxiSetAttributes({
+								isImageUrl: true,
+								externalUrl: url,
+								mediaURL: url,
+							});
+							this.setState({
+								isExternalClass: true,
+							});
+						}
+					}}
 				/>
 			</MaxiPopoverButton>,
 			<MaxiBlock

@@ -19,7 +19,7 @@ import { isEmpty } from 'lodash';
 /**
  * Icons
  */
-import { SCaddMore, toolbarReplaceImage, remove } from '../../icons';
+import { SCaddMore, remove } from '../../icons';
 
 /**
  * Layout modal window with tab panel.
@@ -28,7 +28,7 @@ const MaxiModal = props => {
 	const {
 		type,
 		clientId,
-		empty,
+		isIconOpen,
 		style,
 		openFirstTime,
 		onOpen = null,
@@ -66,25 +66,6 @@ const MaxiModal = props => {
 						<Icon icon={SCaddMore} />
 					</Button>
 				)}
-				{type === 'svg' && empty && (
-					<div className='maxi-svg-icon-block__placeholder'>
-						<Button
-							isPrimary
-							key={`maxi-block-library__modal-button--${clientId}`}
-							className='maxi-block-library__modal-button'
-							onClick={onClick}
-						>
-							{__('Select SVG Icon', 'maxi-blocks')}
-						</Button>
-					</div>
-				)}
-				{type === 'svg' && !empty && (
-					<Button
-						className='maxi-svg-icon-block__replace-icon'
-						onClick={onClick}
-						icon={toolbarReplaceImage}
-					/>
-				)}
 				{(type === 'bg-shape' ||
 					type === 'image-shape' ||
 					type === 'sidebar-block-shape') && (
@@ -105,7 +86,7 @@ const MaxiModal = props => {
 							: __('Replace Icon', 'maxi-blocks')}
 					</Button>
 				)}
-				{isOpen && (
+				{isIconOpen && (
 					<CloudLibrary
 						cloudType={type}
 						onClose={onClick}

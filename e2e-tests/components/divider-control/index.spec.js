@@ -11,7 +11,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes, getBlockStyle } from '../../utils';
 
 describe('DividerControl', () => {
-	it('Checking the style selector', async () => {
+	it.skip('Checking the style selector', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 		await page.$eval('.toolbar-item__divider-line', button =>
@@ -36,7 +36,7 @@ describe('DividerControl', () => {
 			await page.waitForTimeout(500);
 
 			const attributes = await getBlockAttributes();
-			const borderStyle = attributes['divider-border-style'];
+			const borderStyle = attributes['divider-border-style-general'];
 
 			expect(borderStyle).toStrictEqual(dividerStyle);
 		}

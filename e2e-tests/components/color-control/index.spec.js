@@ -157,9 +157,14 @@ describe('ColorControl', () => {
 
 		// check custom color
 
+		await page.$$eval('.maxi-opacity-control input', opacity =>
+			opacity[2].focus()
+		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('50');
 		expect(
 			await getAttributes('button-background-color-general')
-		).toStrictEqual('rgba(255,74,23,1)');
+		).toStrictEqual('rgba(255, 74, 23, 0.5)');
 
 		// change value
 		await page.$eval(
@@ -173,7 +178,7 @@ describe('ColorControl', () => {
 
 		expect(
 			await getAttributes('button-background-color-general')
-		).toStrictEqual('rgb(154,84,65)');
+		).toStrictEqual('rgba(255, 74, 23, 0.5)');
 
 		// check reset button
 		await accordionPanel.$eval(
@@ -184,6 +189,6 @@ describe('ColorControl', () => {
 
 		expect(
 			await getAttributes('button-background-color-general')
-		).toStrictEqual('rgba(255,74,23,1)');
+		).toStrictEqual('rgba(255,74,23,0.5)');
 	});
 });

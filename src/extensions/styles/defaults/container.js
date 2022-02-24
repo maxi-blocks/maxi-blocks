@@ -34,7 +34,7 @@ const container = breakpointAttributesCreator({
 	obj: rawContainer,
 	noBreakpointAttr: ['container-size-advanced-options'],
 	diffValAttr: {
-		'container-max-width-xxl': 1790,
+		'container-max-width-xxl': 1690,
 		'container-max-width-xl': 1170,
 		'container-max-width-l': 90,
 		'container-max-width-m': 90,

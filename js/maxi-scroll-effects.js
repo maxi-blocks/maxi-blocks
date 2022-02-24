@@ -2,11 +2,11 @@ class ScrollEffects {
 	constructor() {
 		this.scrollData = this.getElements();
 		this.init();
+		this.oldValue = 0;
 	}
 
 	init() {
 		this.startingEffect();
-		this.effectsOnScroll();
 
 		// eslint-disable-next-line @wordpress/no-global-event-listener
 		document.addEventListener('DOMContentLoaded', [
@@ -153,25 +153,21 @@ class ScrollEffects {
 	}
 
 	getScrollDirection = () => {
-		let oldValue = 0;
 		const newValue = window.pageYOffset;
-		if (oldValue < newValue) {
-			oldValue = newValue;
-			return 'down';
-		}
-		if (oldValue >= newValue) {
-			oldValue = newValue;
-			return 'up';
+		let currentDirection = '';
+
+		if (this.oldValue <= newValue) {
+			currentDirection = 'down';
+		} else {
+			currentDirection = 'up';
 		}
 
-		return 0;
+		this.oldValue = newValue;
+
+		return currentDirection;
 	};
 
-	scrollTransform = (element, type) => {
-		let newMidUp = 0;
-		let newEndUp = 0;
-		let newMidDown = 0;
-		let newEndDown = 0;
+	scrollTransform = (element, type, scrollDirection) => {
 		const dataScroll = this.getScrollData(element, type);
 
 		if (!dataScroll) return;
@@ -211,40 +207,13 @@ class ScrollEffects {
 			elementTopInCoordinate + elementHalfHeight
 		);
 
-		const scrollDirection = this.getScrollDirection();
-
 		if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
-			newEndUp = 0;
-			newMidUp = 0;
 			if (elementMidInCoordinate >= 0) {
 				// from starting to middle
-				const stepMid = Math.abs(
-					(Math.abs(start) - Math.abs(mid)) / elementHalfHeight
-				);
-
-				if (start < mid) newMidDown += stepMid;
-				else newMidDown -= stepMid;
-
-				const finalStartMid =
-					Math.abs(Math.trunc(start + newMidDown)) < mid
-						? Math.trunc(start + newMidDown)
-						: mid;
-
-				this.applyStyle(element, type, finalStartMid);
+				this.applyStyle(element, type, mid);
 			} else {
-				const stepEnd = Math.abs(
-					(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
-				);
-
-				if (mid < end) newEndDown += stepEnd;
-				else newEndDown -= stepEnd;
-
-				const finalMidEnd =
-					Math.abs(Math.trunc(newEndDown + mid)) < end
-						? Math.trunc(newEndDown + mid)
-						: end;
-
-				this.applyStyle(element, type, finalMidEnd);
+				// from middle to the end
+				this.applyStyle(element, type, end);
 			}
 		}
 		if (
@@ -252,45 +221,20 @@ class ScrollEffects {
 			scrollDirection === 'up' &&
 			elementBottomInCoordinate >= 0
 		) {
-			newEndDown = 0;
-			newMidDown = 0;
 			if (elementMidInCoordinate <= 0) {
-				const stepEnd = Math.abs(
-					(Math.abs(end) - Math.abs(mid)) / elementHalfHeight
-				);
-
-				if (end < mid) newEndUp += stepEnd;
-				else newEndUp -= stepEnd;
-
-				const finalMidEnd =
-					Math.abs(Math.trunc(newEndUp + end)) < mid
-						? Math.trunc(newEndUp + end)
-						: mid;
-
-				this.applyStyle(element, type, finalMidEnd);
+				this.applyStyle(element, type, mid);
 			} else {
-				const stepMid = Math.abs(
-					(Math.abs(mid) - Math.abs(start)) / elementHalfHeight
-				);
-
-				if (mid > start) newMidUp -= stepMid;
-				else newMidUp += stepMid;
-
-				const finalMidStart =
-					Math.abs(Math.trunc(newMidUp + mid)) < start
-						? Math.trunc(newMidUp + mid)
-						: start;
-
-				this.applyStyle(element, type, finalMidStart);
+				this.applyStyle(element, type, start);
 			}
 		}
 	};
 
 	effectsOnScroll = () => {
+		const scrollDirection = this.getScrollDirection();
 		Object.entries(this.scrollData).forEach(([id, effect]) => {
 			const element = document.getElementById(id);
 			Object.entries(effect).forEach(([type]) => {
-				this.scrollTransform(element, type);
+				this.scrollTransform(element, type, scrollDirection);
 			});
 		});
 	};

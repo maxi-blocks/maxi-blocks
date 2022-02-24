@@ -43,7 +43,6 @@ const AlignmentControl = props => {
 		isHover = false,
 		isToolbar = false,
 	} = props;
-
 	const getOptions = () => {
 		const options = [];
 

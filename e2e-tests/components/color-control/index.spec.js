@@ -155,14 +155,11 @@ describe('ColorControl', () => {
 		);
 		await page.waitForTimeout(150);
 
-		// check custom color is equal to palette color
-		const paletteColor = await page.$eval(
-			'.maxi-color-control .maxi-color-control__display .maxi-color-control__display__color span',
-			el =>
-				window.getComputedStyle(el).getPropertyValue('background-color')
-		);
+		// check custom color
 
-		expect(paletteColor).toStrictEqual('rgb(255, 74, 23)');
+		expect(
+			await getAttributes('button-background-color-general')
+		).toStrictEqual('rgba(255,74,23,1)');
 
 		// change value
 		await page.$eval(

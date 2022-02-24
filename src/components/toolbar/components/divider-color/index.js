@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../../../color-control';
 import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
@@ -21,7 +21,7 @@ import { toolbarShapeLineColor } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange } = props;
+	const { blockName, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -41,17 +41,43 @@ const DividerColor = props => {
 		>
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl
-					color={props['divider-border-color']}
+					color={getLastBreakpointAttribute(
+						'divider-border-color',
+						breakpoint,
+						props
+					)}
 					prefix='border-'
-					paletteColor={props['divider-border-palette-color']}
-					paletteStatus={props['divider-border-palette-status']}
-					onChange={({ color, paletteColor, paletteStatus }) =>
+					paletteColor={getLastBreakpointAttribute(
+						'divider-border-palette-color',
+						breakpoint,
+						props
+					)}
+					paletteOpacity={getLastBreakpointAttribute(
+						'divider-border-palette-opacity',
+						breakpoint,
+						props
+					)}
+					paletteStatus={getLastBreakpointAttribute(
+						'divider-border-palette-status',
+						breakpoint,
+						props
+					)}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) => {
 						onChange({
-							'divider-border-color': color,
-							'divider-border-palette-color': paletteColor,
-							'divider-border-palette-status': paletteStatus,
-						})
-					}
+							[`divider-border-color-${breakpoint}`]: color,
+							[`divider-border-palette-color-${breakpoint}`]:
+								paletteColor,
+							[`divider-border-palette-opacity-${breakpoint}`]:
+								paletteOpacity,
+							[`divider-border-palette-status-${breakpoint}`]:
+								paletteStatus,
+						});
+					}}
 					disableGradient
 					globalProps={{ target: '', type: 'divider' }}
 				/>

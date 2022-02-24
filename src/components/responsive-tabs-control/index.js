@@ -23,13 +23,7 @@ import './editor.scss';
  * Component
  */
 const ResponsiveTabsControl = props => {
-	const {
-		className,
-		children,
-		breakpoint,
-		disableCallback = false,
-		target,
-	} = props;
+	const { className, breakpoint, disableCallback = false, target } = props;
 
 	const { winBreakpoint } = useSelect(select => {
 		const { receiveWinBreakpoint } = wp.data.select('maxiBlocks');
@@ -49,15 +43,15 @@ const ResponsiveTabsControl = props => {
 
 	const getTextOptionsTab = () => {
 		if (breakpoint !== 'general')
-			return breakpoints.indexOf(breakpoint.toUpperCase());
+			return breakpoints?.indexOf(breakpoint?.toUpperCase());
 
 		if (!winBreakpoint) return null;
 
-		return breakpoints.indexOf(winBreakpoint.toUpperCase());
+		return breakpoints?.indexOf(winBreakpoint?.toUpperCase());
 	};
 
 	const showNotification = customBreakpoint => {
-		return winBreakpoint === customBreakpoint.toLowerCase();
+		return winBreakpoint === customBreakpoint?.toLowerCase();
 	};
 
 	return (
@@ -66,12 +60,7 @@ const ResponsiveTabsControl = props => {
 			items={breakpoints.map(breakpoint => {
 				return {
 					label: breakpoint,
-					content: cloneElement(children, {
-						breakpoint:
-							winBreakpoint === breakpoint.toLowerCase()
-								? 'general'
-								: breakpoint.toLowerCase(),
-					}),
+					content: cloneElement(<></>, props),
 					// content: children,
 					showNotification: showNotification(breakpoint),
 					callback: () =>

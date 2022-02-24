@@ -15,7 +15,6 @@ import cssValidator from 'w3c-css-validator';
  */
 import BaseControl from '../base-control';
 import Button from '../button';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 /**
  * Styles
@@ -184,28 +183,22 @@ const CustomCssControl = props => {
 	};
 
 	return (
-		<ResponsiveTabsControl
-			className='maxi-typography-control__text-options-tabs'
-			breakpoint={breakpoint}
-			target='custom-css'
-		>
-			<>
-				<SelectControl
-					label={__('Add CSS for', 'maxi-blocks')}
-					className='maxi-custom-css-control__category'
-					id='maxi-custom-css-control__category'
-					value={category || 'none'}
-					options={getOptions()}
-					onChange={val => onChange('custom-css-category', val)}
-				/>
-				{!isEmpty(selectors?.[category]) &&
-					Object.entries(selectors?.[category])?.map(element => {
-						const label = element?.[1]?.label;
-						const index = element?.[0];
-						return generateComponent(label, index, category);
-					})}
-			</>
-		</ResponsiveTabsControl>
+		<>
+			<SelectControl
+				label={__('Add CSS for', 'maxi-blocks')}
+				className='maxi-custom-css-control__category'
+				id='maxi-custom-css-control__category'
+				value={category || 'none'}
+				options={getOptions()}
+				onChange={val => onChange('custom-css-category', val)}
+			/>
+			{!isEmpty(selectors?.[category]) &&
+				Object.entries(selectors?.[category])?.map(element => {
+					const label = element?.[1]?.label;
+					const index = element?.[0];
+					return generateComponent(label, index, category);
+				})}
+		</>
 	);
 };
 

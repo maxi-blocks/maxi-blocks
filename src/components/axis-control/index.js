@@ -12,7 +12,6 @@ import BaseControl from '../base-control';
 import Button from '../button';
 import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -627,27 +626,25 @@ const AxisControl = props => {
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (
-				<ResponsiveTabsControl breakpoint={breakpoint} target={target}>
-					<AxisControlContent
-						{...props}
-						key='AxisControlContent__responsive'
-						label={label}
-						getOptions={getOptions}
-						currentUnit={currentUnit}
-						target={target}
-						isHover={isHover}
-						onChange={onChange}
-						onReset={onReset}
-						inputsArray={inputsArray}
-						getLastBreakpointValue={getLastBreakpointValue}
-						getValue={getValue}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						disableAuto={disableAuto}
-						getKey={getKey}
-						onChangeSync={onChangeSync}
-					/>
-				</ResponsiveTabsControl>
+				<AxisControlContent
+					{...props}
+					key='AxisControlContent__responsive'
+					label={label}
+					getOptions={getOptions}
+					currentUnit={currentUnit}
+					target={target}
+					isHover={isHover}
+					onChange={onChange}
+					onReset={onReset}
+					inputsArray={inputsArray}
+					getLastBreakpointValue={getLastBreakpointValue}
+					getValue={getValue}
+					onChangeValue={onChangeValue}
+					minMaxSettings={minMaxSettings}
+					disableAuto={disableAuto}
+					getKey={getKey}
+					onChangeSync={onChangeSync}
+				/>
 			)}
 			{!useResponsiveTabs && (
 				<AxisControlContent

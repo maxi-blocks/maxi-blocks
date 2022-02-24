@@ -12,7 +12,6 @@ import AdvancedNumberControl from '../advanced-number-control';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
@@ -775,20 +774,16 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
-			<ResponsiveTabsControl
-				className='maxi-typography-control__text-options-tabs'
-				breakpoint={breakpoint}
-			>
-				<TextOptions
-					getValue={getValue}
-					getDefault={getDefault}
-					onChangeFormat={onChangeFormat}
-					prefix={prefix}
-					minMaxSettings={minMaxSettings}
-					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
-					avoidXXL={!styleCards}
-				/>
-			</ResponsiveTabsControl>
+
+			<TextOptions
+				getValue={getValue}
+				getDefault={getDefault}
+				onChangeFormat={onChangeFormat}
+				prefix={prefix}
+				minMaxSettings={minMaxSettings}
+				minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
+				avoidXXL={!styleCards}
+			/>
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&

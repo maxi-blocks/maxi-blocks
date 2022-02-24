@@ -7,8 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import CustomCssControl from '../custom-css-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-
+import ResponsiveTabsControl from '../responsive-tabs-control';
+import {
+	getLastBreakpointAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 /**
  * Component
  */
@@ -30,18 +33,24 @@ const customCss = ({
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
 		content: (
-			<CustomCssControl
-				breakpoint={breakpoint}
-				categories={categories}
-				category={customCssCategory}
-				selectors={selectors}
-				value={customCssValue}
-				onChange={(attr, val) =>
-					maxiSetAttributes({
-						[attr]: val,
-					})
-				}
-			/>
+			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(attributes, 'customCss')}
+					breakpoint={breakpoint}
+				/>
+				<CustomCssControl
+					breakpoint={breakpoint}
+					categories={categories}
+					category={customCssCategory}
+					selectors={selectors}
+					value={customCssValue}
+					onChange={(attr, val) =>
+						maxiSetAttributes({
+							[attr]: val,
+						})
+					}
+				/>
+			</>
 		),
 	};
 };

@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import FullSizeControl from '../full-size-control';
 import ToggleSwitch from '../toggle-switch';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -28,6 +29,10 @@ const size = ({
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
 			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(attributes, 'size', false, prefix)}
+					breakpoint={deviceType}
+				/>
 				{isFirstOnHierarchy &&
 					(block ? (
 						<ToggleSwitch

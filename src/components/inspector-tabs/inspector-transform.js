@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import TransformControl from '../transform-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -18,13 +19,19 @@ const transform = ({ props, depth = 2 }) => {
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		content: (
-			<TransformControl
-				{...getGroupAttributes(attributes, 'transform')}
-				onChange={obj => maxiSetAttributes(obj)}
-				uniqueID={uniqueID}
-				breakpoint={deviceType}
-				depth={depth}
-			/>
+			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(attributes, 'transform')}
+					breakpoint={deviceType}
+				/>
+				<TransformControl
+					{...getGroupAttributes(attributes, 'transform')}
+					onChange={obj => maxiSetAttributes(obj)}
+					uniqueID={uniqueID}
+					breakpoint={deviceType}
+					depth={depth}
+				/>
+			</>
 		),
 	};
 };

@@ -7,6 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AxisControl from '../axis-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -24,6 +26,16 @@ const marginPadding = ({
 		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
 		content: (
 			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(attributes, 'margin', false, prefix)}
+					{...getGroupAttributes(
+						attributes,
+						'padding',
+						false,
+						prefix
+					)}
+					breakpoint={deviceType}
+				/>
 				{!disableMargin && (
 					<AxisControl
 						{...getGroupAttributes(

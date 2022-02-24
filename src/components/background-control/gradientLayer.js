@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import GradientControl from '../gradient-control';
 import ClipPath from '../clip-path-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getDefaultAttribute,
 	getAttributeKey,
@@ -24,7 +23,7 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
-const GradientLayerContent = props => {
+const GradientLayer = props => {
 	const {
 		onChange,
 		disableClipPath,
@@ -103,16 +102,6 @@ const GradientLayerContent = props => {
 				/>
 			)}
 		</>
-	);
-};
-
-const GradientLayer = props => {
-	const { breakpoint, ...rest } = props;
-
-	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<GradientLayerContent {...rest} />
-		</ResponsiveTabsControl>
 	);
 };
 

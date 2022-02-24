@@ -7,6 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import OpacityControl from '../opacity-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -22,16 +24,22 @@ const opacity = ({ props }) => {
 	return {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
-			<OpacityControl
-				opacity={getLastBreakpointAttribute(
-					'opacity',
-					deviceType,
-					getGroupAttributes(attributes, 'opacity')
-				)}
-				onChange={val =>
-					maxiSetAttributes({ [`opacity-${deviceType}`]: val })
-				}
-			/>
+			<>
+				<ResponsiveTabsControl
+					{...getGroupAttributes(attributes, 'opacity')}
+					breakpoint={deviceType}
+				/>
+				<OpacityControl
+					opacity={getLastBreakpointAttribute(
+						'opacity',
+						deviceType,
+						getGroupAttributes(attributes, 'opacity')
+					)}
+					onChange={val =>
+						maxiSetAttributes({ [`opacity-${deviceType}`]: val })
+					}
+				/>
+			</>
 		),
 		extraIndicators: Object.keys(opacityAttr),
 	};

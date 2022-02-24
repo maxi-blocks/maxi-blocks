@@ -14,6 +14,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 
+import ResponsiveTabsControl from '../responsive-tabs-control';
 /**
  * Component
  */
@@ -45,21 +46,40 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
-							<BorderControl
-								{...getGroupAttributes(
-									attributes,
-									['border', 'borderWidth', 'borderRadius'],
-									false,
-									prefix
-								)}
-								prefix={prefix}
-								onChange={obj => {
-									maxiSetAttributes(obj);
-								}}
-								breakpoint={deviceType}
-								clientId={clientId}
-								globalProps={globalProps}
-							/>
+							<>
+								<ResponsiveTabsControl
+									{...getGroupAttributes(
+										attributes,
+										[
+											'border',
+											'borderWidth',
+											'borderRadius',
+										],
+										false,
+										prefix
+									)}
+									breakpoint={deviceType}
+								/>
+								<BorderControl
+									{...getGroupAttributes(
+										attributes,
+										[
+											'border',
+											'borderWidth',
+											'borderRadius',
+										],
+										false,
+										prefix
+									)}
+									prefix={prefix}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+									}}
+									breakpoint={deviceType}
+									clientId={clientId}
+									globalProps={globalProps}
+								/>
+							</>
 						),
 					},
 					{

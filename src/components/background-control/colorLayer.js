@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
@@ -23,7 +22,7 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
-const ColorLayerContent = props => {
+const ColorLayer = props => {
 	const {
 		onChange,
 		disableClipPath,
@@ -155,16 +154,6 @@ const ColorLayerContent = props => {
 				/>
 			)}
 		</>
-	);
-};
-
-const ColorLayer = props => {
-	const { breakpoint, ...rest } = props;
-
-	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<ColorLayerContent {...rest} />
-		</ResponsiveTabsControl>
 	);
 };
 

@@ -116,7 +116,6 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			captionContent,
 			captionType,
-			// externalUrl,
 			fullWidth,
 			imageRatio,
 			imgWidth,

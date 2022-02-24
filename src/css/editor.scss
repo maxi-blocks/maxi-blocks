@@ -382,3 +382,38 @@ svg path#styleCardMenu_b,
 svg path#styleCardBoat_b {
 	stroke: rgba(var(--maxi-light-color-7), 1);
 }
+
+/*******************************
+* Grid lines
+*******************************/
+
+.maxi-block {
+	&::after {
+		border: 2px solid #7fbddc;
+		border-radius: 0;
+		box-shadow: none !important;
+		opacity: 0;
+		top: -1px !important;
+		right: -1px !important;
+		bottom: -1px !important;
+		left: -1px !important;
+	}
+
+	&:not(.is-selected) {
+		&:hover {
+			&::after {
+				opacity: 1;
+			}
+		}
+	}
+
+	&.is-selected {
+		&::after {
+			opacity: 1;
+			border-color: #ff4a17;
+		}
+		&:focus {
+			box-shadow: none;
+		}
+	}
+}

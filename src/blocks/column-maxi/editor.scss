@@ -10,32 +10,11 @@
 .edit-post-visual-editor {
 	.maxi-column-block__resizer.maxi-column-block {
 		vertical-align: top;
-
-		&::after {
-			box-shadow: none !important;
-			border-radius: 0;
-			border: 1.5px solid #7FBDDC !important;
-			top: -1px !important;
-			right: -1px !important;
-			bottom: -1px !important;
-			left: -1px !important;
-			opacity: 0;
-		}
-
-		&.has-child-selected,
-		&.is-selected {
+		z-index: 1;
+		&.has-child-selected {
 			&::after {
 				opacity: 1;
 				border-color: #ff4a17 !important;
-			}
-			&:focus {
-				box-shadow: none !important;
-			}
-		}
-		&__empty,
-		&:hover {
-			&::after {
-				opacity: 1;
 			}
 		}
 	}

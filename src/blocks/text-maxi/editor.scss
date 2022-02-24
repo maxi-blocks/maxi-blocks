@@ -13,4 +13,7 @@
 			border: 2px dashed transparent !important;
 		}
 	}
+	&::after {
+		display: none;
+	}
 }

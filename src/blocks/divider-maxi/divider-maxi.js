@@ -21,7 +21,6 @@ import save from './save';
 /**
  * Styles and icons
  */
-import './editor.scss';
 import './style.scss';
 import { dividerIcon } from '../../icons';
 

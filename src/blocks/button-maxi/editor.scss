@@ -57,32 +57,3 @@ body.maxi-blocks--active .maxi-controls {
 body.maxi-blocks--active .maxi-button-block__content.hidden {
 	display: none !important;
 }
-
-.maxi-button-block{
-		&::after {
-		box-shadow: none !important;
-		border-radius: 0;
-		border: 1.5px solid #7FBDDC !important;
-		opacity: 0;
-		top: -1px !important;
-		right: -1px !important;
-		bottom: -1px !important;
-		left: -1px !important;
-	}
-
-	&.is-selected {
-		&::after {
-			opacity: 1;
-			border-color: #ff4a17 !important;
-		}
-		&:focus {
-			box-shadow: none !important;
-		}
-	}
-
-	&:hover {
-		&::after {
-			opacity: 1;
-		}
-	}
-}

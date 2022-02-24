@@ -202,8 +202,8 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
-				classes={emptyTextClass}
-				// classes={(emptyTextClass, `${isList ? 'maxi-list-block' : ''}`)}
+				// classes={emptyTextClass}
+				classes={(emptyTextClass, `${isList ? 'maxi-list-block' : ''}`)}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}

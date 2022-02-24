@@ -31,8 +31,8 @@
 		&__upload-button {
 			opacity: 1;
 			visibility: visible;
-			width: 40px;
-			height: 40px;
+			width: 30px;
+			height: 30px;
 			position: absolute;
 			top: 0;
 			right: 0;
@@ -42,8 +42,8 @@
 
 			svg {
 				fill: #007cba;
-				width: 20px;
-				height: 20px;
+				width: 15px;
+				height: 15px;
 			}
 			&:hover {
 				svg {
@@ -93,7 +93,7 @@
 	&::after {
 		box-shadow: none !important;
 		border-radius: 0;
-		border: 2px solid #7FBDDC !important;
+		border: 1.5px solid #7FBDDC !important;
 		opacity: 0;
 		top: -1px !important;
 		right: -1px !important;

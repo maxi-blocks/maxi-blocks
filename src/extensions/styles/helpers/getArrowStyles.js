@@ -11,6 +11,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
+import { getIsValid } from '..';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -18,11 +19,14 @@ export const getArrowObject = props => {
 	const response = {};
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-	if (!props['arrow-status']) return response;
-
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const arrowStatus = getLastBreakpointAttribute(
+			'arrow-status',
+			breakpoint,
+			props
+		);
 		const arrowWidth = getLastBreakpointAttribute(
 			'arrow-width',
 			breakpoint,
@@ -39,8 +43,9 @@ export const getArrowObject = props => {
 			props
 		);
 
+		response[breakpoint].display = arrowStatus ? 'block' : 'none';
+
 		if (!isNil(arrowWidth)) {
-			response[breakpoint].display = 'block';
 			response[breakpoint].width = `${arrowWidth}px`;
 			response[breakpoint].height = `${arrowWidth}px`;
 		}
@@ -149,7 +154,10 @@ const getArrowStyles = props => {
 		: false;
 
 	if (
-		!props['arrow-status'] ||
+		!getIsValid(
+			getLastBreakpointAttribute('arrow-status', 'xs', props),
+			true
+		) ||
 		!isBackgroundColor ||
 		(isBorderActive && !isCorrectBorder)
 	)

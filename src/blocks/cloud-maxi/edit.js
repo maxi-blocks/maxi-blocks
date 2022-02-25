@@ -3,10 +3,11 @@
  */
 
 /**
- * Import dependencies.
+ * Internal dependencies.
  */
 import MaxiModal from '../../editor/library/modal';
 import { library } from '../../icons';
+import { withMaxiProps } from '../../extensions/maxi-block';
 
 /**
  * WordPress dependencies.
@@ -20,7 +21,7 @@ import { Placeholder } from '../../components';
  */
 import { isEmpty } from 'lodash';
 
-export default class Edit extends Component {
+class Edit extends Component {
 	render() {
 		const { attributes, clientId, maxiSetAttributes } = this.props;
 
@@ -59,3 +60,5 @@ export default class Edit extends Component {
 		];
 	}
 }
+
+export default withMaxiProps(Edit);

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { toLower } from 'lodash';
 /**
  * Internal dependencies
  */
@@ -26,7 +25,7 @@ import { getActiveTabName } from '../../extensions/inspector-path';
  * External dependencies
  */
 import classnames from 'classnames';
-import { capitalize, pickBy, cloneDeep } from 'lodash';
+import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons

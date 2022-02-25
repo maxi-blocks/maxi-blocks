@@ -341,40 +341,6 @@ const getIconPathStyles = (obj, isHover = false) => {
 	return { IconPath: response };
 };
 
-const getIconResponsive = obj => {
-	const response = {
-		label: 'Icon responsive',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(obj[`icon-spacing-${breakpoint}`]) &&
-			!isNil(obj['icon-position'])
-		) {
-			obj['icon-position'] === 'left'
-				? (response[breakpoint][
-						'margin-right'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
-						breakpoint,
-						obj
-				  )}px`)
-				: (response[breakpoint][
-						'margin-left'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
-						breakpoint,
-						obj
-				  )}px`);
-		}
-	});
-
-	return { IconResponsive: response };
-};
-
 const getIconObject = (props, target) => {
 	const response = {
 		icon: getIconStyles(
@@ -438,8 +404,39 @@ const getIconObject = (props, target) => {
 				prefix: 'icon-',
 				parentBlockStyle: props.parentBlockStyle,
 			}),
-		...getIconResponsive(props, 'icon'),
 	};
+
+	const responsive = {
+		label: 'Icon responsive',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		responsive[breakpoint] = {};
+
+		if (
+			!isNil(props[`icon-spacing-${breakpoint}`]) &&
+			!isNil(props['icon-position'])
+		) {
+			props['icon-position'] === 'left'
+				? (responsive[breakpoint][
+						'margin-right'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						props
+				  )}px`)
+				: (responsive[breakpoint][
+						'margin-left'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						props
+				  )}px`);
+		}
+	});
+
+	response.IconResponsive = responsive;
 
 	return response;
 };

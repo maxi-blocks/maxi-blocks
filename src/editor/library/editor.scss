@@ -643,10 +643,12 @@
 					padding: 0;
 					transition: 0.3s;
 
-					&__button {
-						height: auto;
-						padding: 6px;
-						display: block;
+					.maxi-cloud-masonry-card {
+						& > .maxi-components-button {
+							height: auto;
+							padding: 6px;
+							display: block;
+						}
 					}
 
 					.maxi-cloud-masonry-card__image {

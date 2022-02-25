@@ -63,10 +63,7 @@ const MasonryItem = props => {
 	return (
 		<div className={masonryCardClasses}>
 			{(type === 'patterns' || type === 'sc') && (
-				<Button
-					className='ais-InfiniteHits-item__button'
-					onClick={onRequestInsert}
-				>
+				<Button onClick={onRequestInsert}>
 					<div className='maxi-cloud-masonry-card__container'>
 						<div className='maxi-cloud-masonry-card__container__top-bar'>
 							<div className='maxi-cloud-masonry__serial-tag'>

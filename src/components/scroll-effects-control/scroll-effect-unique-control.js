@@ -60,7 +60,7 @@ const ScrollEffectsUniqueControl = props => {
 			case 'rotate':
 				response.label = `${label} angle (degrees)`;
 				response.attr = `rotate-${labelLowCase}`;
-				response.min = 0;
+				response.min = -360;
 				response.max = 360;
 				break;
 			case 'scale':

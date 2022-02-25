@@ -146,7 +146,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-		$style = $this->update_color_palette_backups($style);
+        $style = $this->update_color_palette_backups($style);
 
         return $style;
     }
@@ -249,66 +249,80 @@ class MaxiBlocks_Styles
         return $resultDecoded;
     }
 
-	public function update_color_palette_backups($style) {
-		// Get used colors on the post style
-		$needle = 'rgba(var(--maxi-';
-		$lastPos = 0;
-		$colors = array();
+    public function update_color_palette_backups($style)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_general';
+        $query =
+            'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
 
-		while (($lastPos = strpos($style, $needle, $lastPos))!== false) {
-			$endPos = strpos($style, ')', $lastPos);
-			$colorStr = substr($style, $lastPos, $endPos - $lastPos + 1);
+        $style_card = maybe_unserialize($wpdb->get_var($query));
 
-			if(!in_array($colorStr, $colors))
-				$colors[] = $colorStr;
+        if (!$style_card) {
+            return $style;
+        }
 
-			$lastPos = $lastPos + strlen($needle);
-		}
+        // Get used colors on the post style
+        $needle = 'rgba(var(--maxi-';
+        $lastPos = 0;
+        $colors = array();
 
-		// Get color values from the SC considering the used on post style
-		$colorVars = array();
+        while (($lastPos = strpos($style, $needle, $lastPos))!== false) {
+            $endPos = strpos($style, ')', $lastPos);
+            $colorStr = substr($style, $lastPos, $endPos - $lastPos + 1);
 
-		foreach ($colors as $color) {
-			$color = str_replace('rgba(var(', '', $color);
-			$colorVar = explode(',', $color)[0];
-			$colorContent = str_replace($colorVar, '', $color);
-			$colorContent = str_replace(')', '', $colorContent);
-			$colorContent = ltrim($colorContent,',');
+            if (!in_array($colorStr, $colors)) {
+                $colors[] = $colorStr;
+            }
 
-			if(!in_array($colorVar , $colorVars))
-				$colorVars[$colorVar] = $colorContent;
-		}
+            $lastPos = $lastPos + strlen($needle);
+        }
 
-		$changedSCColors = array();
+        // Get color values from the SC considering the used on post style
+        $colorVars = array();
 
-		$style_card = get_option('mb_sc_string');
-		$style_card = is_preview() || is_admin()
-			? $style_card['_maxi_blocks_style_card_preview']
-			: $style_card['_maxi_blocks_style_card'];
+        foreach ($colors as $color) {
+            $color = str_replace('rgba(var(', '', $color);
+            $colorVar = explode(',', $color)[0];
+            $colorContent = str_replace($colorVar, '', $color);
+            $colorContent = str_replace(')', '', $colorContent);
+            $colorContent = ltrim($colorContent, ',');
 
-		foreach ($colorVars as $colorKey => $colorValue) {
-			$startPos = strpos($style_card, $colorKey);
-			$endPos = strpos($style_card, ';--', $startPos);
-			$colorSCValue = substr($style_card, $startPos + strlen($colorKey) + 1, $endPos - $startPos - strlen($colorKey) - 1);
+            if (!in_array($colorVar, $colorVars)) {
+                $colorVars[$colorVar] = $colorContent;
+            }
+        }
 
-			if($colorSCValue !== $colorValue)
-				$changedSCColors[$colorKey] = $colorSCValue;
-		}
+        $changedSCColors = array();
 
-		// In case there are changes, fix them
-		if(empty($changedSCColors))
-			return $style;
-		else {
-			$new_style = $style;
+        $style_card = is_preview() || is_admin()
+            ? $style_card['_maxi_blocks_style_card_preview']
+            : $style_card['_maxi_blocks_style_card'];
 
-			foreach ($changedSCColors as $colorKey => $colorValue) {
-				$old_color_str = "rgba(var($colorKey," . $colorVars[$colorKey] . ')';
-				$new_color_str = "rgba(var($colorKey," . $colorValue . ')';
+        foreach ($colorVars as $colorKey => $colorValue) {
+            $startPos = strpos($style_card, $colorKey);
+            $endPos = strpos($style_card, ';--', $startPos);
+            $colorSCValue = substr($style_card, $startPos + strlen($colorKey) + 1, $endPos - $startPos - strlen($colorKey) - 1);
 
-				$new_style = str_replace($old_color_str, $new_color_str, $new_style);
-			}
+            if ($colorSCValue !== $colorValue) {
+                $changedSCColors[$colorKey] = $colorSCValue;
+            }
+        }
 
-			return $new_style;
-		}
-	}
+        // In case there are changes, fix them
+        if (empty($changedSCColors)) {
+            return $style;
+        } else {
+            $new_style = $style;
+
+            foreach ($changedSCColors as $colorKey => $colorValue) {
+                $old_color_str = "rgba(var($colorKey," . $colorVars[$colorKey] . ')';
+                $new_color_str = "rgba(var($colorKey," . $colorValue . ')';
+
+                $new_style = str_replace($old_color_str, $new_color_str, $new_style);
+            }
+
+            return $new_style;
+        }
+    }
 }

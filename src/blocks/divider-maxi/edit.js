@@ -56,7 +56,6 @@ class edit extends MaxiBlockComponent {
 				'is-selected': isSelected,
 			}
 		);
-
 		const handleOnResizeStart = event => {
 			event.preventDefault();
 

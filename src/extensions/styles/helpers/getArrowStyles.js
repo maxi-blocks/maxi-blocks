@@ -11,7 +11,6 @@ import getPaletteAttributes from '../getPaletteAttributes';
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
-import { getIsValid } from '..';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -154,9 +153,11 @@ const getArrowStyles = props => {
 		: false;
 
 	if (
-		!getIsValid(
-			getLastBreakpointAttribute('arrow-status', 'xs', props),
-			true
+		!Object.entries(getGroupAttributes(props, 'arrow')).some(
+			([key, val]) => {
+				if (key.includes('arrow-status') && val) return true;
+				return false;
+			}
 		) ||
 		!isBackgroundColor ||
 		(isBorderActive && !isCorrectBorder)

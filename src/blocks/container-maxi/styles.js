@@ -30,12 +30,9 @@ const getNormalObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 		}),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'container'),
-			},
-			'container-'
-		),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),

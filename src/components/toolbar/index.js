@@ -45,7 +45,10 @@ import {
 	TextMargin,
 	ToolbarMediaUpload,
 } from './components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Styles
@@ -96,9 +99,6 @@ const MaxiToolbar = memo(
 			fullWidth,
 			isFirstOnHierarchy,
 			isList,
-			lineHorizontal,
-			lineOrientation,
-			lineVertical,
 			linkSettings,
 			mediaID,
 			textLevel,
@@ -164,6 +164,12 @@ const MaxiToolbar = memo(
 						__unstableStickyBoundaryElement: boundaryElement,
 					})),
 		};
+
+		const lineOrientation = getLastBreakpointAttribute(
+			'line-orientation',
+			breakpoint,
+			attributes
+		);
 
 		return (
 			<>
@@ -446,23 +452,41 @@ const MaxiToolbar = memo(
 							<Divider
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
+								breakpoint={breakpoint}
 								lineOrientation={lineOrientation}
 								onChange={obj => maxiSetAttributes(obj)}
 							/>
 							<DividerAlignment
 								{...getGroupAttributes(attributes, 'divider')}
 								lineOrientation={lineOrientation}
-								lineVertical={lineVertical}
-								lineHorizontal={lineHorizontal}
+								lineVertical={getLastBreakpointAttribute(
+									'line-vertical',
+									breakpoint,
+									attributes
+								)}
+								lineHorizontal={getLastBreakpointAttribute(
+									'line-horizontal',
+									breakpoint,
+									attributes
+								)}
 								blockName={name}
 								onChangeOrientation={lineOrientation =>
-									maxiSetAttributes({ lineOrientation })
+									maxiSetAttributes({
+										[`line-orientation-${breakpoint}`]:
+											lineOrientation,
+									})
 								}
 								onChangeHorizontal={lineHorizontal =>
-									maxiSetAttributes({ lineHorizontal })
+									maxiSetAttributes({
+										[`line-horizontal-${breakpoint}`]:
+											lineHorizontal,
+									})
 								}
 								onChangeVertical={lineVertical =>
-									maxiSetAttributes({ lineVertical })
+									maxiSetAttributes({
+										[`line-vertical-${breakpoint}`]:
+											lineVertical,
+									})
 								}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />

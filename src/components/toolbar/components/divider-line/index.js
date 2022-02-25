@@ -72,6 +72,7 @@ const Divider = props => {
 				<DefaultDividersControl
 					lineOrientation={lineOrientation}
 					onChange={onChange}
+					breakpoint={breakpoint}
 				/>
 				{lineOrientation === 'horizontal' && (
 					<>

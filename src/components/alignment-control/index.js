@@ -33,7 +33,6 @@ const AlignmentControl = props => {
 		type,
 		isHover = false,
 	} = props;
-
 	const getOptions = () => {
 		const options = [];
 

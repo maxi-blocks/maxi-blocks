@@ -105,26 +105,26 @@ const getWrapperObjectHover = props => {
 
 const getNormalObject = props => {
 	const response = {
-		boxShadow: getBoxShadowStyles({
+		...getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'svg-'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
-		margin: getMarginPaddingStyles({
+		...getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin', false, 'svg-'),
 			},
 			prefix: 'svg-',
 		}),
-		padding: getMarginPaddingStyles({
+		...getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding', false, 'svg-'),
 			},
 			prefix: 'svg-',
 		}),
-		border: getBorderStyles({
+		...getBorderStyles({
 			obj: {
 				...getGroupAttributes(
 					props,
@@ -136,7 +136,7 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
-		width: getSVGWidthStyles(getGroupAttributes(props, 'svg')),
+		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
 	};
 
 	return response;

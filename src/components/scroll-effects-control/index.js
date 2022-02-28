@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 /**
  * Internal dependencies
  */
@@ -26,6 +25,7 @@ import { getActiveTabName } from '../../extensions/inspector-path';
  * External dependencies
  */
 import classnames from 'classnames';
+import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -336,7 +336,7 @@ const ScrollEffectsControl = props => {
 										}}
 										min={0}
 										step={10}
-										max={1000}
+										max={10000}
 										onReset={() =>
 											onChange({
 												[`scroll-${type}-speed-${breakpoint}`]:
@@ -367,7 +367,7 @@ const ScrollEffectsControl = props => {
 										}}
 										min={0}
 										step={10}
-										max={1000}
+										max={10000}
 										onReset={() =>
 											onChange({
 												[`scroll-${type}-delay-${breakpoint}`]:

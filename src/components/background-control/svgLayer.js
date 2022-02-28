@@ -199,15 +199,13 @@ const SVGLayer = props => {
 						isHover={isHover}
 						breakpoint={breakpoint}
 					/>
-					<ResponsiveTabsControl breakpoint={breakpoint}>
-						<SVGLayerContent
-							SVGOptions={SVGOptions}
-							onChange={onChange}
-							prefix={prefix}
-							isHover={isHover}
-							isLayer={isLayer}
-						/>
-					</ResponsiveTabsControl>
+					<SVGLayerContent
+						SVGOptions={SVGOptions}
+						onChange={onChange}
+						prefix={prefix}
+						isHover={isHover}
+						isLayer={isLayer}
+					/>
 				</>
 			)}
 		</>

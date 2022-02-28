@@ -13,7 +13,6 @@ import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
@@ -637,14 +636,12 @@ const ImageLayer = props => {
 						{
 							label: __('Settings', 'maxi-blocks'),
 							content: (
-								<ResponsiveTabsControl breakpoint={breakpoint}>
-									<ImageLayerSettings
-										getDefaultAttr={getDefaultAttr}
-										moreSettings={moreSettings}
-										setMoreSettings={setMoreSettings}
-										{...props}
-									/>
-								</ResponsiveTabsControl>
+								<ImageLayerSettings
+									getDefaultAttr={getDefaultAttr}
+									moreSettings={moreSettings}
+									setMoreSettings={setMoreSettings}
+									{...props}
+								/>
 							),
 						},
 						...(!isHover && {

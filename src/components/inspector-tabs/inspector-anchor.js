@@ -16,9 +16,9 @@ const anchor = ({ props }) => {
 	const { anchorLink } = attributes;
 
 	const validateAnchor = text => {
-		const regex = new RegExp('^[a-zA-Z0-9-_]+$');
+		const regex = new RegExp('^[a-zA-Z0-9-_/#]+$');
 		if (!regex.test(text)) {
-			return text.replace(/[^a-zA-Z0-9-_]/g, '');
+			return text.replace(/[^a-zA-Z0-9-_/#]/g, '');
 		}
 		return text;
 	};

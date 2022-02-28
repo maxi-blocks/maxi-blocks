@@ -97,6 +97,7 @@ const DisplayControl = props => {
 						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
 					})
 				}
+				className='maxi-settingstab-control_has-border-left-right'
 			/>
 		</div>
 	);

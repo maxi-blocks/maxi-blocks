@@ -1,27 +1,27 @@
-export const dividerSolidHorizontal = {
-	'divider-border-style': 'solid',
-};
+export const dividerSolidHorizontal = breakpoint => ({
+	[`divider-border-style-${breakpoint}`]: 'solid',
+});
 
-export const dividerDottedHorizontal = {
-	'divider-border-style': 'dotted',
-};
+export const dividerDottedHorizontal = breakpoint => ({
+	[`divider-border-style-${breakpoint}`]: 'dotted',
+});
 
-export const dividerDashedHorizontal = {
-	'divider-border-style': 'dashed',
-};
+export const dividerDashedHorizontal = breakpoint => ({
+	[`divider-border-style-${breakpoint}`]: 'dashed',
+});
 
-export const dividerSolidVertical = {
-	'divider-border-style': 'solid',
-};
+export const dividerSolidVertical = breakpoint => ({
+	[`divider-border-style-${breakpoint}`]: 'solid',
+});
 
-export const dividerDottedVertical = {
-	'divider-border-style': 'dotted',
-};
+export const dividerDottedVertical = breakpoint => ({
+	[`divider-border-style-${breakpoint}`]: 'dotted',
+});
 
-export const dividerDashedVertical = {
-	'divider-border-style': 'dashed',
-};
+export const dividerDashedVertical = breakpoint => ({
+	[`divider-border-style-${breakpoint}`]: 'dashed',
+});
 
-export const dividerNone = {
-	'divider-border-style': 'none',
-};
+export const dividerNone = breakpoint => ({
+	[`divider-border-style-${breakpoint}`]: 'none',
+});

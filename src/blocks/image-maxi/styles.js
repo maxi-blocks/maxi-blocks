@@ -228,8 +228,8 @@ const getHoverImageWrapperObject = props => {
 				prefix: 'image-',
 			}),
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		...(props.imgWidth === 100 && {
+			imgWidth: { general: { width: `100%` } },
 		}),
 	};
 
@@ -279,9 +279,6 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
-		}),
 	};
 
 	return response;
@@ -298,6 +295,9 @@ const getImageObject = props => {
 			},
 			'image-'
 		),
+		...(props.imgWidth === 100 && {
+			imgWidth: { general: { width: `100%` } },
+		}),
 	};
 };
 
@@ -453,7 +453,6 @@ const getStyles = props => {
 			props
 		),
 	};
-
 	return response;
 };
 

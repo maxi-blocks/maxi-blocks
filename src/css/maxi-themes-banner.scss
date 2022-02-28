@@ -42,3 +42,19 @@ body.maxi-blocks--active .maxi-button-block__button {
 	border: none;
 	text-decoration: none;
 }
+
+/*Fixes container alignment for Twenty Nineteen*/
+body.maxi-blocks--active .maxi-container-block.wp-block.maxi-block.maxi-block--backend {
+	left: auto;
+}
+
+/*Fixes container alignment for Twenty Twenty Two*/
+body.maxi-blocks--active #wpcontent .block-editor-block-list__layout.is-root-container .maxi-block[data-align="full"] {
+	margin: 0 auto !important;
+}
+body.maxi-blocks--active #wpcontent .is-root-container {
+	padding: 0;
+}
+body.maxi-blocks--active #wpcontent .editor-styles-wrapper {
+	padding: 5px;
+}

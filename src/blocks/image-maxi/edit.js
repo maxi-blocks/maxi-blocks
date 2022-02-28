@@ -43,7 +43,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round } from 'lodash';
+import { isEmpty, isNil, round, isNumber } from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -223,6 +223,23 @@ class edit extends MaxiBlockComponent {
 			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
 				'hidden';
 
+		const getMaxWidth = () => {
+			const maxWidth = getLastBreakpointAttribute(
+				'image-max-width',
+				deviceType,
+				attributes
+			);
+			const maxWidthUnit = getLastBreakpointAttribute(
+				'image-max-width-unit',
+				deviceType,
+				attributes
+			);
+
+			if (isNumber(maxWidth)) return `${maxWidth}${maxWidthUnit}`;
+
+			return '100%';
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -304,7 +321,7 @@ class edit extends MaxiBlockComponent {
 										isOverflowHidden={getIsOverflowHidden()}
 										size={{ width: `${imgWidth}%` }}
 										showHandle={isSelected}
-										maxWidth='100%'
+										maxWidth={getMaxWidth()}
 										enable={{
 											topRight: true,
 											bottomRight: true,

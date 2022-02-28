@@ -887,6 +887,75 @@ const TypographyControl = withFormatValue(props => {
 					});
 				}}
 			/>
+			<AdvancedNumberControl
+				className='maxi-typography-control__text-indent'
+				label={__('Text indent', 'maxi-blocks')}
+				enableUnit
+				unit={getValue(`${prefix}text-indent-unit`, breakpoint)}
+				defaultUnit={getDefault(
+					`${prefix}text-indent-unit`,
+					breakpoint
+				)}
+				onChangeUnit={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-indent-unit`]: val,
+						},
+						breakpoint,
+						true
+					);
+				}}
+				placeholder={getValue(`${prefix}text-indent`, breakpoint)}
+				value={getValue(
+					`${prefix}text-indent`,
+					breakpoint,
+					false,
+					true
+				)}
+				defaultValue={getDefault(`${prefix}text-indent`, breakpoint)}
+				onChangeValue={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-indent`]: val,
+						},
+						breakpoint,
+						true
+					);
+				}}
+				onReset={() =>
+					onChangeFormat(
+						{
+							[`${prefix}text-indent-unit`]: getDefault(
+								`${prefix}text-indent-unit`
+							),
+							[`${prefix}text-indent`]: getDefault(
+								`${prefix}text-indent`
+							),
+						},
+						breakpoint,
+						true
+					)
+				}
+				minMaxSettings={{
+					px: {
+						min: -99,
+						max: 99,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
+				allowedUnits={['px', 'em', 'vw', '%']}
+			/>
 			{!hideTextShadow && (
 				<>
 					<hr />

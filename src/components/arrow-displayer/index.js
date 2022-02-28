@@ -38,7 +38,9 @@ const ArrowDisplayer = props => {
 		? backgroundLayers.some(layer => layer.type === 'color')
 		: false;
 
-	const shouldDisplayBorder = !!props['arrow-status'] && backgroundLayer;
+	const shouldDisplayBorder =
+		!!getLastBreakpointAttribute('arrow-status', breakpoint, props) &&
+		backgroundLayer;
 
 	return (
 		shouldDisplayBorder && (

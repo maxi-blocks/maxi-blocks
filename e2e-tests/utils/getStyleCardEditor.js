@@ -11,8 +11,6 @@ const getStyleCardEditor = async ({ page, accordion }) => {
 	);
 
 	// maxi
-	// await page.$('.maxi-style-cards__sc');
-	// accordion == color, button, paragraph, link, headings, SVG
 	await page.$eval(
 		`.maxi-accordion-control .maxi-blocks-sc__type--${accordion} .maxi-accordion-control__item__button`,
 		button => button.click()

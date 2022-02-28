@@ -56,6 +56,7 @@ const GlobalColor = props => {
 			<ToggleSwitch
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
+				className={`maxi-style-cards-control__toggle-${globalAttr}`}
 				selected={processSCAttribute(SC, globalAttr, groupAttr)}
 				onChange={val =>
 					onChangeValue(

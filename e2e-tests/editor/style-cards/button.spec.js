@@ -7,6 +7,8 @@ import {
 	addTypographyOptions,
 	addTypographyStyle,
 	getStyleCardEditor,
+	getBlockStyle,
+	editGlobalStyles,
 } from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
@@ -61,5 +63,61 @@ describe('StyleCards, Buttons', () => {
 		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
+	});
+	it('Check Button global styles', async () => {
+		// text color
+		await editGlobalStyles({
+			page,
+			block: 'button',
+			type: '0',
+			paletteColor: '3',
+		});
+		await page.waitForTimeout(150);
+
+		// background color
+		await editGlobalStyles({
+			page,
+			block: 'button',
+			type: '1',
+			paletteColor: '3',
+		});
+
+		await page.waitForTimeout(150);
+
+		// background hover color
+		await editGlobalStyles({
+			page,
+			block: 'button',
+			type: '1',
+			paletteColor: '3',
+		});
+		await page.waitForTimeout(150);
+
+		// text hover color
+		await editGlobalStyles({
+			page,
+			block: 'button',
+			type: '1',
+			paletteColor: '3',
+		});
+		await page.waitForTimeout(150);
+
+		// border color
+		await editGlobalStyles({
+			page,
+			block: 'button',
+			type: '1',
+			paletteColor: '3',
+		});
+		await page.waitForTimeout(150);
+
+		// border hover color
+		await editGlobalStyles({
+			page,
+			block: 'button',
+			type: '1',
+			paletteColor: '3',
+		});
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

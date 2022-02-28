@@ -7,7 +7,7 @@ import {
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
-import { editColorControl, getStyleCardEditor } from '../../utils';
+import { getStyleCardEditor } from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {

@@ -7,7 +7,11 @@ import {
 	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
 
-import { getStyleCardEditor } from '../../utils';
+import {
+	getStyleCardEditor,
+	getBlockStyle,
+	editGlobalStyles,
+} from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -89,5 +93,16 @@ describe('StyleCards Paragraph', () => {
 		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
+	});
+	it('Check paragraph global styles', async () => {
+		// Paragraph Colour
+		await editGlobalStyles({
+			page,
+			block: 'paragraph',
+			numberCheckbox: '0',
+			paletteColor: '3',
+		});
+		await page.waitForTimeout(150);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -3,7 +3,11 @@
  */
 import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 
-import { getStyleCardEditor } from '../../utils';
+import {
+	getStyleCardEditor,
+	editGlobalStyles,
+	getBlockStyle,
+} from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -22,51 +26,38 @@ describe('SC Link', () => {
 			accordion: 'link',
 		});
 
-		const inputs = await page.$$(
-			'.maxi-blocks-sc__type--link .maxi-accordion-control__item__panel .maxi-toggle-switch'
-		);
+		await page.waitForTimeout(250);
+		// Link Colour
+		await editGlobalStyles({
+			page,
+			block: 'link',
+			type: 'link',
+		});
+		await page.waitForTimeout(250);
 
-		await inputs[0].click();
+		// hover Colour
+		await editGlobalStyles({
+			page,
+			block: 'link',
+			type: 'hover',
+		});
+		await page.waitForTimeout(250);
 
-		// ColorControl Global Link Colour
-		await page.$$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container button',
-			buttons => buttons[3].click()
-		);
-		await page.waitForTimeout(300);
+		// active Colour
+		await editGlobalStyles({
+			page,
+			block: 'link',
+			type: 'active',
+		});
+		await page.waitForTimeout(250);
 
-		const colorInput = await page.$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container .maxi-color-control__palette-box--active',
-			input => input.ariaLabel
-		);
-
-		await page.waitForTimeout(300);
-
-		expect(colorInput).toStrictEqual('Pallet box colour 4');
-
-		await inputs[0].click();
-
-		await page.waitForTimeout(300);
-
-		// ColorControl Global Hover Colour
-		await inputs[1].click();
-		await page.waitForTimeout(300);
-
-		await page.$$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container button',
-			buttons => buttons[4].click()
-		);
-		await page.waitForTimeout(300);
-
-		const colorHoverInput = await page.$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container .maxi-color-control__palette-box--active',
-			input => input.ariaLabel
-		);
-		await page.waitForTimeout(300);
-
-		expect(colorHoverInput).toStrictEqual('Pallet box colour 5');
-		await inputs[1].click();
-
+		// visited Colour
+		await editGlobalStyles({
+			page,
+			block: 'link',
+			type: 'visited',
+		});
+		debugger;
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {
 			value: {
@@ -76,4 +67,15 @@ describe('SC Link', () => {
 
 		expect(expectPresets).toMatchSnapshot();
 	});
+	/* it('Check link global styles', async () => {
+		// Paragraph Colour
+		await editGlobalStyles({
+			page,
+			block: 'link',
+			type: 'link',
+			paletteColor: '3',
+		});
+		await page.waitForTimeout(150);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	}); */
 });

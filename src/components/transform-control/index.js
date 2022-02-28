@@ -151,6 +151,7 @@ const TransformControl = props => {
 				]}
 				onChange={val => setTransformStatus(val)}
 				depth={2}
+				className='maxi-settingstab-control_has-border-left-right'
 			/>
 			{transformStatus === 'scale' && (
 				<SquareControl

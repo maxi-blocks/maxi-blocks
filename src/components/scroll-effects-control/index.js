@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { toLower } from 'lodash';
+import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 /**
  * Internal dependencies
  */
@@ -26,7 +26,6 @@ import { getActiveTabName } from '../../extensions/inspector-path';
  * External dependencies
  */
 import classnames from 'classnames';
-import { capitalize, pickBy, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -246,6 +245,7 @@ const ScrollEffectsControl = props => {
 				items={motionOptions}
 				onChange={val => setScrollStatus(val)}
 				depth={depth}
+				className='maxi-settingstab-control_has-border-left-right'
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute(

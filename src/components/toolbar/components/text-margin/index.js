@@ -38,6 +38,8 @@ const TextMargin = props => {
 					{...getGroupAttributes(props, 'margin')}
 					label={__('Margin', 'maxi-blocks')}
 					onChange={onChange}
+					target='margin'
+					noResponsiveTabs
 					breakpoint={breakpoint}
 					optionType='string'
 					disableSync

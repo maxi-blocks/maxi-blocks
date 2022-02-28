@@ -407,10 +407,13 @@ const MaxiToolbar = memo(
 							/>
 							<TextMargin
 								blockName={name}
-								linkSettings={linkSettings}
-								onChange={linkSettings =>
-									maxiSetAttributes({ linkSettings })
-								}
+								{...getGroupAttributes(
+									attributes,
+									'margin',
+									false,
+									prefix
+								)}
+								onChange={obj => maxiSetAttributes(obj)}
 								textLevel={textLevel}
 							/>
 							<Link

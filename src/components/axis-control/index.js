@@ -404,6 +404,7 @@ const AxisControl = props => {
 		disableAuto = false,
 		allowedUnits = ['px', 'em', 'vw', '%'],
 		target,
+		noResponsiveTabs,
 		prefix = '',
 		minMaxSettings = {
 			px: {
@@ -450,7 +451,8 @@ const AxisControl = props => {
 		className
 	);
 
-	const useResponsiveTabs = ['margin', 'padding'].includes(target);
+	const useResponsiveTabs =
+		!noResponsiveTabs && ['margin', 'padding'].includes(target);
 
 	const getOptions = () => {
 		const options = [];

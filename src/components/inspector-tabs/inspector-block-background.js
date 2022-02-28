@@ -35,9 +35,13 @@ const blockBackground = ({
 		content: (
 			<>
 				<ResponsiveTabsControl
-					{...getGroupAttributes(attributes, 'blockBackground', true)}
-					{...getGroupAttributes(attributes, ['blockBackground'])}
+					{...getGroupAttributes(attributes, [
+						'blockBackground',
+						'background-layers',
+					])}
 					breakpoint={deviceType}
+					tabType='back-respo'
+					extraIndicators={['background-layers']}
 				/>
 				<SettingTabsControl
 					items={[
@@ -48,6 +52,7 @@ const blockBackground = ({
 									<BlockBackgroundControl
 										{...getGroupAttributes(attributes, [
 											'blockBackground',
+											'background-layers',
 										])}
 										onChange={obj => maxiSetAttributes(obj)}
 										clientId={clientId}
@@ -60,6 +65,7 @@ const blockBackground = ({
 									/>
 								</>
 							),
+							extraIndicators: ['background-layers'],
 						},
 						{
 							label: __('Hover state', 'maxi-blocks'),

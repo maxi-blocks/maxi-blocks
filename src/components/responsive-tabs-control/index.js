@@ -23,7 +23,13 @@ import './editor.scss';
  * Component
  */
 const ResponsiveTabsControl = props => {
-	const { className, breakpoint, disableCallback = false, target } = props;
+	const {
+		className,
+		breakpoint,
+		disableCallback = false,
+		target,
+		extraIndicators,
+	} = props;
 
 	const { winBreakpoint } = useSelect(select => {
 		const { receiveWinBreakpoint } = wp.data.select('maxiBlocks');
@@ -72,6 +78,7 @@ const ResponsiveTabsControl = props => {
 							  )
 							: null,
 					breakpoint: breakpoint.toLowerCase(),
+					extraIndicators: extraIndicators,
 				};
 			})}
 			forceTab={getTextOptionsTab()}

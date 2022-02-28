@@ -35,8 +35,12 @@ const customCss = ({
 		content: (
 			<>
 				<ResponsiveTabsControl
-					{...getGroupAttributes(attributes, 'customCss')}
+					{...getGroupAttributes(
+						attributes,
+						`custom-css-${breakpoint}`
+					)}
 					breakpoint={breakpoint}
+					extraIndicators={[`custom-css-${breakpoint}`]}
 				/>
 				<CustomCssControl
 					breakpoint={breakpoint}
@@ -52,6 +56,7 @@ const customCss = ({
 				/>
 			</>
 		),
+		extraIndicators: [`custom-css-${breakpoint}`],
 	};
 };
 

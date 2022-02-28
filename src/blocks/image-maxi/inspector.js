@@ -208,6 +208,7 @@ const dimensionTab = props => {
 				)}
 			</>
 		),
+		extraIndicators: ['imageRatio', 'imgWidth'],
 	};
 };
 

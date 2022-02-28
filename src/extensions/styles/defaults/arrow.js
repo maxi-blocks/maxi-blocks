@@ -21,7 +21,6 @@ const rawArrow = {
 
 const arrow = breakpointAttributesCreator({
 	obj: rawArrow,
-	noBreakpointAttr: ['arrow-status'],
 });
 
 export default arrow;

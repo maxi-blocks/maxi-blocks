@@ -33,7 +33,7 @@ const IconPosition = props => {
 				<SelectControl
 					label={__('Icon Position', 'maxi-block')}
 					className='maxi-icon__position'
-					selected={props['icon-position']}
+					value={props['icon-position']}
 					options={[
 						{
 							label: __('Left', 'maxi-blocks'),

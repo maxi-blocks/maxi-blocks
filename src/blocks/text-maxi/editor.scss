@@ -1,0 +1,19 @@
+.maxi-text-block {
+	&__content {
+		border: 1.5px dashed #7fbddc !important;
+	}
+	&__has-text {
+		&:hover,
+		&.is-selected {
+			.maxi-text-block__content {
+				border: 2px dashed #7fbddc !important;
+			}
+		}
+		.maxi-text-block__content {
+			border: 2px dashed transparent !important;
+		}
+	}
+	&::after {
+		display: none;
+	}
+}

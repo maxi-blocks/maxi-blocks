@@ -61,7 +61,7 @@ const CustomCssControl = props => {
 		return options;
 	};
 
-	const validateCSS = async code => {
+	const validateCSSCode = async code => {
 		let responseFinal = '';
 		try {
 			const codeToCheck = `body {${code}}`;
@@ -81,6 +81,7 @@ const CustomCssControl = props => {
 			}
 			return true;
 		} catch (err) {
+			responseFinal = 0;
 			console.error(__(`Error validating css: ${err}`, 'maxi-blocks'));
 		}
 		return responseFinal;
@@ -119,16 +120,19 @@ const CustomCssControl = props => {
 		async function validateCss(code) {
 			const messageDiv = document.getElementById(id);
 			if (!isEmpty(code)) {
-				const validMessage = await validateCSS(code);
+				const validMessage = await validateCSSCode(code);
 				if (typeof validMessage === 'string' && messageDiv) {
 					messageDiv.innerHTML = validMessage;
 					messageDiv.classList.remove('valid');
 					messageDiv.classList.add('not-valid');
-					onChangeCssCode('', false);
-				} else if (messageDiv) {
+				} else if (validMessage !== 0 && messageDiv) {
 					messageDiv.innerHTML = __('Valid', 'maxi-blocks');
 					messageDiv.classList.remove('not-valid');
 					messageDiv.classList.add('valid');
+				} else {
+					messageDiv.innerHTML = 'Failed to check, Please try again';
+					messageDiv.classList.add('not-valid');
+					messageDiv.classList.remove('valid');
 				}
 			} else if (messageDiv) {
 				messageDiv.innerHTML = '';

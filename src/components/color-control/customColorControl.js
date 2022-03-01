@@ -91,7 +91,7 @@ const CustomColorControl = props => {
 									});
 								}
 							}}
-							onReset={onReset}
+							onReset={onResetOpacity}
 						/>
 					)}
 				</>

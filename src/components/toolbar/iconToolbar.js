@@ -121,6 +121,7 @@ const IconToolbar = memo(
 							/>
 							<IconBackground
 								blockName={name}
+								breakpoint={breakpoint}
 								{...getGroupAttributes(attributes, [
 									'icon',
 									'iconBackgroundColor',

@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import ToggleSwitch from '../../../toggle-switch';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -21,7 +24,7 @@ import { backgroundColor } from '../../../../icons';
  * Component
  */
 const IconBackground = props => {
-	const { blockName, onChange } = props;
+	const { blockName, onChange, breakpoint, isHover = false } = props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
@@ -55,15 +58,64 @@ const IconBackground = props => {
 				) : (
 					<ColorControl
 						label={__('Icon Background', 'maxi-blocks')}
-						color={props['icon-background-color']}
+						color={getLastBreakpointAttribute(
+							'icon-background-color',
+							breakpoint,
+							props,
+							isHover
+						)}
 						prefix='icon-background-'
-						paletteColor={props['icon-background-palette-color']}
-						paletteStatus={props['icon-background-palette-status']}
-						onChange={({ color, paletteColor, paletteStatus }) => {
+						paletteStatus={getLastBreakpointAttribute(
+							'icon-background-palette-status',
+							breakpoint,
+							props,
+							isHover
+						)}
+						paletteOpacity={getLastBreakpointAttribute(
+							'icon-background-palette-opacity',
+							breakpoint,
+							props,
+							isHover
+						)}
+						paletteColor={getLastBreakpointAttribute(
+							'icon-background-palette-color',
+							breakpoint,
+							props,
+							isHover
+						)}
+						deviceType={breakpoint}
+						useBreakpointForDefault
+						onChange={({
+							color,
+							paletteColor,
+							paletteStatus,
+							paletteOpacity,
+						}) => {
 							onChange({
-								'icon-background-color': color,
-								'icon-background-palette-color': paletteColor,
-								'icon-background-palette-status': paletteStatus,
+								[getAttributeKey(
+									'background-palette-status',
+									isHover,
+									'icon-',
+									breakpoint
+								)]: paletteStatus,
+								[getAttributeKey(
+									'background-palette-opacity',
+									isHover,
+									'icon-',
+									breakpoint
+								)]: paletteOpacity,
+								[getAttributeKey(
+									'background-palette-color',
+									isHover,
+									'icon-',
+									breakpoint
+								)]: paletteColor,
+								[getAttributeKey(
+									'background-color',
+									isHover,
+									'icon-',
+									breakpoint
+								)]: color,
 							});
 						}}
 					/>

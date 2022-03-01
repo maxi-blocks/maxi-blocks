@@ -81,7 +81,7 @@ export const handleSetAttributes = ({
 
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
-			getDefaultAttribute(attrLabelOnGeneral, clientId);
+			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (
 			(breakpoint === 'general' ||

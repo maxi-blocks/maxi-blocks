@@ -151,7 +151,6 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	...attributesData.container,
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

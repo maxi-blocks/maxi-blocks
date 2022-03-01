@@ -235,7 +235,7 @@ const ScrollEffectsControl = props => {
 		<div className={classes}>
 			<SelectControl
 				label={__('Shortcut effect', 'maxi-blocks')}
-				onChange={val => onChange(onChangeShortcut(val))}
+				onChange={val => onChangeShortcut(val)}
 				options={globalShortcutsOptions}
 			/>
 			<SettingTabsControl
@@ -293,9 +293,7 @@ const ScrollEffectsControl = props => {
 											'maxi-blocks'
 										)}
 										onChange={val =>
-											onChange(
-												onChangeShortcut(val, type)
-											)
+											onChangeShortcut(val, type)
 										}
 										options={getShortcutEffect(type)}
 									/>

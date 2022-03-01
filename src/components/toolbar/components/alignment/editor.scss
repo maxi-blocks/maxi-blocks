@@ -1,4 +1,7 @@
 .maxi-dropdown__alignment-content {
+	z-index: 99999999;
+	margin: -18px 0 0 91px !important;
+
 	.components-popover__content {
 		width: 75px;
 	}

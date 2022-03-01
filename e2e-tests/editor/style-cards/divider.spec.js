@@ -7,7 +7,7 @@ import {
 	insertBlock,
 } from '@wordpress/e2e-test-utils';
 
-import { getStyleCardEditor } from '../../utils';
+import { getStyleCardEditor, editGlobalStyles } from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -26,22 +26,11 @@ describe('SC Divider', () => {
 			page,
 			accordion: 'divider',
 		});
-		await page.$$eval(
-			'.maxi-blocks-sc__type--link .maxi-accordion-control__item__panel .maxi-toggle-switch',
-			input => input[0].click()
-		);
 
-		// ColorControl Global Link Colour
-		await page.$$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container button',
-			buttons => buttons[3].click()
-		);
-
-		const colorInput = await page.$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container .maxi-color-control__palette-box--active',
-			input => input.ariaLabel
-		);
-		expect(colorInput).toStrictEqual('Pallet box colour 4');
+		await editGlobalStyles({
+			page,
+			block: 'divider',
+		});
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {

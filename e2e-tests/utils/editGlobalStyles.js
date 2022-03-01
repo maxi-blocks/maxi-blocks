@@ -1,6 +1,8 @@
 const editGlobalStyles = async ({ page, block, type }) => {
-	await page.$eval(
-		`.maxi-blocks-sc__type--${block} .maxi-style-cards-control__toggle-${type}-color-global input`,
+	const inputSelector = await page.$eval(
+		`.maxi-blocks-sc__type--${block} .maxi-style-cards-control__toggle${
+			type ? `-${type}` : ''
+		}-color-global input`,
 		button => button.click()
 	);
 
@@ -9,10 +11,6 @@ const editGlobalStyles = async ({ page, block, type }) => {
 		button => button[3].click()
 	);
 
-	await page.$eval(
-		`.maxi-blocks-sc__type--${block} .maxi-style-cards-control__toggle-${type}-global input`,
-		button => button.click()
-	);
+	await inputSelector;
 };
-
 export default editGlobalStyles;

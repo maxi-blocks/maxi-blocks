@@ -10,6 +10,9 @@ const getStyleCardEditor = async ({ page, accordion }) => {
 		button.click()
 	);
 
+	await page.waitForSelector(
+		`.maxi-accordion-control .maxi-blocks-sc__type--${accordion} .maxi-accordion-control__item__button`
+	);
 	// maxi
 	await page.$eval(
 		`.maxi-accordion-control .maxi-blocks-sc__type--${accordion} .maxi-accordion-control__item__button`,

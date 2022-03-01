@@ -2,37 +2,15 @@
 
 exports[`SC Link Checking link accordion 1`] = `
 Object {
-  "color": Object {
-    "4": "42,23,255",
-    "5": "92,205,222",
-    "6": "10,201,86",
-  },
-  "divider": Object {
-    "color-global": true,
-  },
-  "icon": Object {
-    "fill": "rgba(undefined,1)",
-    "fill-global": false,
-    "fill-palette-color": 2,
-    "fill-palette-opacity": 1,
-    "fill-palette-status": true,
-    "line": "rgba(undefined,1)",
-    "line-global": false,
-    "line-palette-color": 6,
-    "line-palette-opacity": 1,
-    "line-palette-status": true,
-  },
   "link": Object {
-    "hover-color": "",
-    "hover-color-global": false,
-    "hover-palette-color": 5,
-    "hover-palette-opacity": 1,
-    "hover-palette-status": true,
+    "active-color-global": true,
+    "hover-color-global": true,
     "link-color": "",
-    "link-color-global": false,
+    "link-color-global": true,
     "link-palette-color": 4,
     "link-palette-opacity": 1,
     "link-palette-status": true,
+    "visited-color-global": true,
   },
 }
 `;

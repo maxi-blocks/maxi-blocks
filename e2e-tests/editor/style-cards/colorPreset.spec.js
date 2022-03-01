@@ -33,17 +33,12 @@ describe('StyleCards ColorPresets', () => {
 			buttons => buttons[3].click()
 		);
 
-		await page.$$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container button',
-			input => input[2].click()
-		);
-
 		const colorInput = await page.$eval(
-			'.maxi-color-palette-control .maxi-color-control__palette-container .maxi-color-control__palette-box--active',
-			input => input.ariaLabel
+			'.maxi-style-cards-control__sc__color-4-light input',
+			input => input.value
 		);
 
-		expect(colorInput).toStrictEqual('Pallet box colour 3');
+		expect(colorInput).toStrictEqual('#FF4A17');
 
 		// ColorControl check custom-color
 		await page.$eval(

@@ -1,13 +1,16 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	setBrowserViewport,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 
 import {
 	addTypographyOptions,
 	addTypographyStyle,
 	getStyleCardEditor,
-	getBlockStyle,
 	editGlobalStyles,
 } from '../../utils';
 
@@ -55,22 +58,20 @@ describe('StyleCards, Buttons', () => {
 			style: 'italic',
 		});
 
-		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const {
-			value: {
-				light: { styleCard: expectPresets },
-			},
-		} = await receiveSelectedMaxiStyle();
+		await page.$$eval(
+			'.maxi-blocks-sc__type--button .maxi-typography-control__text-indent input',
+			input => input[0].focus()
+		);
 
-		expect(expectPresets).toMatchSnapshot();
-	});
-	it('Check Button global styles', async () => {
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('44');
+
+		// Check Button global styles
+
 		// text color
 		await editGlobalStyles({
 			page,
 			block: 'button',
-			type: '0',
-			paletteColor: '3',
 		});
 		await page.waitForTimeout(150);
 
@@ -78,8 +79,7 @@ describe('StyleCards, Buttons', () => {
 		await editGlobalStyles({
 			page,
 			block: 'button',
-			type: '1',
-			paletteColor: '3',
+			type: 'background',
 		});
 
 		await page.waitForTimeout(150);
@@ -88,8 +88,7 @@ describe('StyleCards, Buttons', () => {
 		await editGlobalStyles({
 			page,
 			block: 'button',
-			type: '1',
-			paletteColor: '3',
+			type: 'hover-background',
 		});
 		await page.waitForTimeout(150);
 
@@ -97,8 +96,7 @@ describe('StyleCards, Buttons', () => {
 		await editGlobalStyles({
 			page,
 			block: 'button',
-			type: '1',
-			paletteColor: '3',
+			type: 'hover',
 		});
 		await page.waitForTimeout(150);
 
@@ -106,8 +104,7 @@ describe('StyleCards, Buttons', () => {
 		await editGlobalStyles({
 			page,
 			block: 'button',
-			type: '1',
-			paletteColor: '3',
+			type: 'border',
 		});
 		await page.waitForTimeout(150);
 
@@ -115,9 +112,17 @@ describe('StyleCards, Buttons', () => {
 		await editGlobalStyles({
 			page,
 			block: 'button',
-			type: '1',
-			paletteColor: '3',
+			type: 'hover-border',
 		});
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		await page.waitForTimeout(150);
+
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 });

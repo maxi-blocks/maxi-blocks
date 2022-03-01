@@ -1,11 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost } from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 import {
 	addTypographyOptions,
 	addTypographyStyle,
 	getStyleCardEditor,
+	editGlobalStyles,
 } from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
@@ -44,7 +45,6 @@ describe('StyleCards headings', () => {
 			lineHeight: '0',
 			letterSpacing: '5',
 		});
-		// Size
 
 		// Selectors
 		// Weight, Transform, Style, Decoration
@@ -55,32 +55,22 @@ describe('StyleCards headings', () => {
 			transform: 'capitalize',
 			style: 'italic',
 		});
-		/*
-		// Global color
-		await page.$eval(
-			'.maxi-blocks-sc__type--heading .maxi-tabs-content .maxi-toggle-switch .maxi-toggle-switch__toggle input',
-			input => input.click()
-		);
-
-		// ColorControl check palette-color
-		await page.$$eval(
-			'.maxi-blocks-sc__type--heading .maxi-accordion-control__item__panel .maxi-style-cards__quick-color-presets .maxi-style-cards__quick-color-presets__box',
-			buttons => buttons[3].click()
-		);
-		await page.waitForTimeout(300);
 
 		await page.$$eval(
-			'.maxi-blocks-sc__type--heading .maxi-color-palette-control .maxi-color-control__palette button',
-			input => input[2].click()
+			'.maxi-blocks-sc__type--button .maxi-typography-control__text-indent input',
+			input => input[0].focus()
 		);
 
-		const colorInput = await page.$eval(
-			'.maxi-blocks-sc__type--heading .maxi-color-palette-control .maxi-color-control__palette .maxi-color-control__palette-box--active',
-			input => input.ariaLabel
-		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('44');
 
-		expect(colorInput).toStrictEqual('Pallet box colour 5');
-*/
+		// Check paragraph global styles
+		// Paragraph Colour
+		await editGlobalStyles({
+			page,
+			block: 'heading',
+		});
+
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {
 			value: {

@@ -61,7 +61,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 $script_asset['version'],
             );
 
-            $editor_css = 'build/index.css';
+           $editor_css = 'build/index.css';
             wp_register_style(
                 'maxi-blocks-block-editor',
                 plugins_url($editor_css, dirname(__FILE__)),
@@ -69,19 +69,19 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 filemtime(MAXI_PLUGIN_DIR_PATH . "/$editor_css"),
             );
 
-            $style_css = 'build/style-index.css';
+            register_block_type('maxi-blocks/block-settings', [
+                'editor_script' => 'maxi-blocks-block-editor',
+                'editor_style' => 'maxi-blocks-block-editor',
+            ]);
+
+			$style_css = 'build/style-index.css';
             wp_register_style(
                 'maxi-blocks-block',
                 plugins_url($style_css, dirname(__FILE__)),
                 [],
                 filemtime(MAXI_PLUGIN_DIR_PATH . "/$style_css"),
             );
-
-            register_block_type('create-block/test-maxi-blocks', [
-                'editor_script' => 'maxi-blocks-block-editor',
-                'editor_style' => 'maxi-blocks-block-editor',
-                'style' => 'maxi-blocks-block',
-            ]);
+			wp_enqueue_style('maxi-blocks-block');
         }
 
         public function maxi_block_category($categories)

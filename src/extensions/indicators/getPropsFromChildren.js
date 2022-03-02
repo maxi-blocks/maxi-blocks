@@ -67,7 +67,7 @@ export const getMaxiAttrsFromChildren = ({
 	blockName,
 	excludedEntries,
 }) => {
-	if (!blockName) return null;
+	if (!blockName || !blockName.includes('maxi-blocks')) return null;
 
 	const blockAttributesKeys = Object?.keys(getBlockAttributes(blockName));
 	const blockPropsKeys = getPropsFromChildren(items, excludedEntries);

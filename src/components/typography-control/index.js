@@ -39,6 +39,7 @@ import { isNil, isBoolean, isNumber } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**
  * Component
@@ -100,10 +101,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}font-size-unit`]: getDefault(
-								`${prefix}font-size-unit`
+								`${prefix}font-size-unit`,
+								breakpoint
 							),
 							[`${prefix}font-size`]: getDefault(
-								`${prefix}font-size`
+								`${prefix}font-size`,
+								breakpoint
 							),
 						},
 						rawBreakpoint
@@ -163,10 +166,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}line-height-unit`]: getDefault(
-								`${prefix}line-height-unit`
+								`${prefix}line-height-unit`,
+								breakpoint
 							),
 							[`${prefix}line-height`]: getDefault(
-								`${prefix}line-height`
+								`${prefix}line-height`,
+								breakpoint
 							),
 						},
 						rawBreakpoint
@@ -221,7 +226,8 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}letter-spacing-unit`]: getDefault(
-								`${prefix}letter-spacing-unit`
+								`${prefix}letter-spacing-unit`,
+								breakpoint
 							),
 							[`${prefix}letter-spacing`]: '',
 						},
@@ -571,16 +577,29 @@ const TypographyControl = withFormatValue(props => {
 				avoidXXL
 			);
 
-		const nonHoverValue = getCustomFormatValue({
-			typography,
-			formatValue,
-			prop,
-			breakpoint: currentBreakpoint,
-			textLevel,
-			styleCard,
-			styleCardPrefix,
-			avoidXXL,
-		});
+		const nonHoverValue =
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop,
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+			}) ??
+			// In cases like HoverEffectControl, where we want the SC 'p' value
+			// but requires a clean 'prop' value (no prefix)
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop: prop.replace(prefix, ''),
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+			});
 
 		if (!isHover) return nonHoverValue;
 
@@ -673,10 +692,15 @@ const TypographyControl = withFormatValue(props => {
 
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
-		const defaultAttribute = getDefaultAttribute(
-			`${prop}-${currentBreakpoint}`,
-			clientId
-		);
+
+		const defaultAttribute = !styleCards
+			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
+			: getDefaultSCValue({
+					target: `${prop}-${currentBreakpoint}`,
+					SC: styleCard,
+					SCStyle: blockStyle,
+					groupAttr: textLevel,
+			  });
 
 		return defaultAttribute;
 	};
@@ -886,6 +910,75 @@ const TypographyControl = withFormatValue(props => {
 						[`${prefix}text-decoration`]: val,
 					});
 				}}
+			/>
+			<AdvancedNumberControl
+				className='maxi-typography-control__text-indent'
+				label={__('Text indent', 'maxi-blocks')}
+				enableUnit
+				unit={getValue(`${prefix}text-indent-unit`, breakpoint)}
+				defaultUnit={getDefault(
+					`${prefix}text-indent-unit`,
+					breakpoint
+				)}
+				onChangeUnit={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-indent-unit`]: val,
+						},
+						breakpoint,
+						true
+					);
+				}}
+				placeholder={getValue(`${prefix}text-indent`, breakpoint)}
+				value={getValue(
+					`${prefix}text-indent`,
+					breakpoint,
+					false,
+					true
+				)}
+				defaultValue={getDefault(`${prefix}text-indent`, breakpoint)}
+				onChangeValue={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-indent`]: val,
+						},
+						breakpoint,
+						true
+					);
+				}}
+				onReset={() =>
+					onChangeFormat(
+						{
+							[`${prefix}text-indent-unit`]: getDefault(
+								`${prefix}text-indent-unit`
+							),
+							[`${prefix}text-indent`]: getDefault(
+								`${prefix}text-indent`
+							),
+						},
+						breakpoint,
+						true
+					)
+				}
+				minMaxSettings={{
+					px: {
+						min: -99,
+						max: 99,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
+				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
 			{!hideTextShadow && (
 				<>

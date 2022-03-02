@@ -28,6 +28,25 @@ describe('ArrowControl', () => {
 			container.focus()
 		);
 
+		// change color
+		const backgroundPanel = await openSidebarTab(
+			page,
+			'style',
+			'background layer'
+		);
+
+		const colorSelector = await backgroundPanel.$(
+			'.maxi-background-control select'
+		);
+
+		await colorSelector.select('color');
+
+		await backgroundPanel.$$eval(
+			'.maxi-background-layer__content .maxi-color-control__palette-container button',
+			colorPalette => colorPalette[1].click()
+		);
+
+		// add arrow
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -115,6 +134,15 @@ describe('ArrowControl', () => {
 
 		expect(responsiveSOption).toBe('true');
 
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-advanced-number-control .maxi-base-control__field'
+			),
+			newNumber: '33',
+		});
+		expect(await getAttributes('arrow-position-s')).toStrictEqual(33);
+
 		expect(await getAttributes('arrow-side-s')).toStrictEqual('right');
 
 		// responsive XS
@@ -131,6 +159,14 @@ describe('ArrowControl', () => {
 
 		expect(responsiveXsOption).toBe('true');
 
+		// arrow position
+		const xsPosition = await page.$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			input => input.value
+		);
+
+		expect(xsPosition).toBe('33');
+
 		// responsive M
 		await changeResponsive(page, 'm');
 
@@ -145,6 +181,14 @@ describe('ArrowControl', () => {
 		);
 
 		expect(responsiveMOption).toBe('true');
+
+		// arrow position
+		const mPosition = await page.$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			input => input.value
+		);
+
+		expect(mPosition).toBe('59');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

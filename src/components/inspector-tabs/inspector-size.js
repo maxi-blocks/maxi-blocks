@@ -24,6 +24,8 @@ const size = ({
 	const { attributes, deviceType, maxiSetAttributes } = props;
 	const { fullWidth, blockFullWidth, isFirstOnHierarchy } = attributes;
 
+	const isBlockFullWidth = blockFullWidth === 'full';
+
 	return {
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
@@ -32,7 +34,7 @@ const size = ({
 					(block ? (
 						<ToggleSwitch
 							label={__('Set full-width', 'maxi-blocks')}
-							selected={blockFullWidth === 'full'}
+							selected={isBlockFullWidth}
 							onChange={val =>
 								maxiSetAttributes({
 									blockFullWidth: val ? 'full' : 'normal',
@@ -62,8 +64,8 @@ const size = ({
 					prefix={prefix}
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
-					hideWidth={hideWidth}
-					hideMaxWidth={hideMaxWidth}
+					hideWidth={hideWidth || isBlockFullWidth}
+					hideMaxWidth={hideMaxWidth || isBlockFullWidth}
 				/>
 			</>
 		),

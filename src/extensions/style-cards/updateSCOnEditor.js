@@ -15,7 +15,7 @@ import {
 /**
  * External dependencies
  */
-import { times, isEmpty, merge, cloneDeep } from 'lodash';
+import { times, merge, cloneDeep } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
@@ -163,11 +163,11 @@ export const getSCVariablesObject = styleCards => {
 					break;
 
 				case 'icon':
-					if (obj['line-global'] && !isEmpty(obj.line))
+					if (obj['line-global'])
 						response[`--maxi-${style}-${element}-line`] =
 							getColorString(obj, 'line', style);
 
-					if (obj['fill-global'] && !isEmpty(obj.fill))
+					if (obj['fill-global'])
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
 
@@ -230,8 +230,10 @@ const updateSCOnEditor = styleCards => {
 		SCStyle.innerHTML = createSCStyleString(SCObject);
 		document.head.appendChild(SCStyle);
 		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-		saveSCStyles(false);
-	} else if (SCObject) SCStyle.innerHTML = createSCStyleString(SCObject);
+
+		// Needs a delay, if not Redux returns error 3
+		setTimeout(() => saveSCStyles(false), 150);
+	} else SCStyle.innerHTML = createSCStyleString(SCObject);
 };
 
 export default updateSCOnEditor;

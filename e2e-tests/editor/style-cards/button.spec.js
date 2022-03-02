@@ -12,15 +12,9 @@ import {
 	addTypographyStyle,
 	getStyleCardEditor,
 	editGlobalStyles,
+	checkSCResult,
+	changeResponsive,
 } from '../../utils';
-
-const receiveSelectedMaxiStyle = async () => {
-	return page.evaluate(() => {
-		return wp.data
-			.select('maxiBlocks/style-cards')
-			.receiveMaxiSelectedStyleCard();
-	});
-};
 
 describe('StyleCards, Buttons', () => {
 	it('Check Button', async () => {
@@ -31,11 +25,7 @@ describe('StyleCards, Buttons', () => {
 			page,
 			accordion: 'button',
 		});
-		// screen size L
-		await page.$$eval(
-			'.maxi-blocks-sc__type--button .maxi-tabs-control button',
-			screenSize => screenSize[2].click()
-		);
+		await changeResponsive(page, 'l');
 
 		// size, line-height, letter-spacing
 		await addTypographyOptions({
@@ -73,7 +63,6 @@ describe('StyleCards, Buttons', () => {
 			page,
 			block: 'button',
 		});
-		await page.waitForTimeout(150);
 
 		// background color
 		await editGlobalStyles({
@@ -82,15 +71,12 @@ describe('StyleCards, Buttons', () => {
 			type: 'background',
 		});
 
-		await page.waitForTimeout(150);
-
 		// background hover color
 		await editGlobalStyles({
 			page,
 			block: 'button',
 			type: 'hover-background',
 		});
-		await page.waitForTimeout(150);
 
 		// text hover color
 		await editGlobalStyles({
@@ -98,7 +84,6 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'hover',
 		});
-		await page.waitForTimeout(150);
 
 		// border color
 		await editGlobalStyles({
@@ -106,7 +91,6 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'border',
 		});
-		await page.waitForTimeout(150);
 
 		// border hover color
 		await editGlobalStyles({
@@ -114,15 +98,7 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'hover-border',
 		});
-		await page.waitForTimeout(150);
 
-		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const {
-			value: {
-				light: { styleCard: expectPresets },
-			},
-		} = await receiveSelectedMaxiStyle();
-
-		expect(expectPresets).toMatchSnapshot();
+		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
 });

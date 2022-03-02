@@ -3,15 +3,8 @@
  */
 import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 
-import { getStyleCardEditor } from '../../utils';
+import { getStyleCardEditor, checkSCResult } from '../../utils';
 
-const receiveSelectedMaxiStyle = async () => {
-	return page.evaluate(() => {
-		return wp.data
-			.select('maxiBlocks/style-cards')
-			.receiveMaxiSelectedStyleCard();
-	});
-};
 describe('SC svg icon', () => {
 	it('Checking svg icon accordion', async () => {
 		await createNewPost();
@@ -44,13 +37,6 @@ describe('SC svg icon', () => {
 			button => button[4].click()
 		);
 
-		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const {
-			value: {
-				light: { styleCard: expectPresets },
-			},
-		} = await receiveSelectedMaxiStyle();
-
-		expect(expectPresets).toMatchSnapshot();
+		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
 });

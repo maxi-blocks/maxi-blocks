@@ -5,6 +5,7 @@ const editGlobalStyles = async ({ page, block, type }) => {
 		}-color-global input`,
 		button => button.click()
 	);
+	await page.waitForTimeout(150);
 
 	await page.$$eval(
 		'.maxi-color-control__palette .maxi-color-control__palette-container button',

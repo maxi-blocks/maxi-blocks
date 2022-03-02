@@ -52,7 +52,7 @@ Object {
     "text-decoration-general": "overline",
     "text-transform-general": "capitalize",
   },
-  "h2": Object {
+  "h1": Object {
     "color": "",
     "color-global": true,
     "palette-color": 4,

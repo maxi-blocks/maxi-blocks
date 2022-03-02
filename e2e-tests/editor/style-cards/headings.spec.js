@@ -7,15 +7,9 @@ import {
 	addTypographyStyle,
 	getStyleCardEditor,
 	editGlobalStyles,
+	checkSCResult,
+	changeResponsive,
 } from '../../utils';
-
-const receiveSelectedMaxiStyle = async () => {
-	return page.evaluate(() => {
-		return wp.data
-			.select('maxiBlocks/style-cards')
-			.receiveMaxiSelectedStyleCard();
-	});
-};
 
 describe('StyleCards headings', () => {
 	it('Check Headings', async () => {
@@ -30,11 +24,8 @@ describe('StyleCards headings', () => {
 			accordion: 'heading',
 		});
 
-		// screen size L
-		await page.$$eval(
-			'.maxi-blocks-sc__type--heading .maxi-tabs-control button',
-			screenSize => screenSize[1].click()
-		);
+		await changeResponsive(page, 'l');
+
 		// size, line-height, letter-spacing
 		await addTypographyOptions({
 			page,
@@ -71,13 +62,6 @@ describe('StyleCards headings', () => {
 			block: 'heading',
 		});
 
-		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const {
-			value: {
-				light: { styleCard: expectPresets },
-			},
-		} = await receiveSelectedMaxiStyle();
-
-		expect(expectPresets).toMatchSnapshot();
+		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
 });

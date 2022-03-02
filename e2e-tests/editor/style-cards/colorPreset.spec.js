@@ -7,15 +7,7 @@ import {
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
-import { getStyleCardEditor } from '../../utils';
-
-const receiveSelectedMaxiStyle = async () => {
-	return page.evaluate(() => {
-		return wp.data
-			.select('maxiBlocks/style-cards')
-			.receiveMaxiSelectedStyleCard();
-	});
-};
+import { getStyleCardEditor, checkSCResult } from '../../utils';
 
 describe('StyleCards ColorPresets', () => {
 	it('Check Quick Pick Colour Presets', async () => {
@@ -56,13 +48,7 @@ describe('StyleCards ColorPresets', () => {
 
 		expect(customColor).toStrictEqual('106D3C');
 
-		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const {
-			value: {
-				light: { styleCard: expectPresets },
-			},
-		} = await receiveSelectedMaxiStyle();
-
-		expect(expectPresets).toMatchSnapshot();
+		await page.waitForTimeout(150);
+		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
 });

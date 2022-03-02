@@ -15,5 +15,6 @@ export { default as modalMock } from './modalMock';
 export { default as openPreviewPage } from './openPreviewPage';
 export { default as openSidebarTab } from './openSidebarTab';
 export { default as removeBackgroundLayers } from './removeBackgroundLayers';
+export { default as checkSCResult } from './checkSCResult';
 export { default as changeResponsive } from './changeResponsive';
 export { default as setAttributes } from './setAttributes';

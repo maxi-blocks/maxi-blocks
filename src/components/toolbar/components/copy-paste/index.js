@@ -79,7 +79,13 @@ const CopyPasteContent = props => {
 		const response = {};
 
 		ATTRIBUTES.forEach(attr => {
-			const obj = getGroupAttributes(attributes, attr, false, '', true);
+			const obj = getGroupAttributes(
+				attributes,
+				attr,
+				false,
+				prefix,
+				true
+			);
 
 			if (!isEmpty(obj)) response[attr] = obj;
 		});
@@ -173,7 +179,7 @@ const CopyPasteContent = props => {
 			if (isSelected) res = { ...res, ...val };
 		});
 
-		onPasteStyles(res);
+		updateBlockAttributes(clientId, res);
 	};
 
 	return (

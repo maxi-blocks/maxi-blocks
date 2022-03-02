@@ -123,11 +123,18 @@ const TextColor = withFormatValue(props => {
 						color={color}
 						paletteColor={colorPalette}
 						paletteStatus={colorPaletteStatus}
-						onChange={({ color, paletteColor, paletteStatus }) =>
+						paletteOpacity={colorOpacity}
+						onChange={({
+							color,
+							paletteColor,
+							paletteStatus,
+							paletteOpacity,
+						}) =>
 							onChangeFormat({
 								color,
 								'palette-color': paletteColor,
 								'palette-status': paletteStatus,
+								'palette-opacity': paletteOpacity,
 							})
 						}
 						globalProps={{ target: '', type: textLevel }}

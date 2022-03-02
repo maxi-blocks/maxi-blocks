@@ -34,7 +34,7 @@ import './editor.scss';
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, onChange } = props;
+	const { clientId, blockName, onChange, prefix } = props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -70,6 +70,7 @@ const MoreSettings = props => {
 							<CopyPaste
 								clientId={clientId}
 								blockName={blockName}
+								prefix={prefix}
 							/>
 							{blockName === 'maxi-blocks/text-maxi' && (
 								<TextGenerator

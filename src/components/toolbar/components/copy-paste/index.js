@@ -70,7 +70,7 @@ const WRAPPER_BLOCKS = [
 ];
 
 const CopyPasteContent = props => {
-	const { clientId, blockName } = props;
+	const { clientId, blockName, prefix } = props;
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [specialPaste, setSpecialPaste] = useState([]);
@@ -93,7 +93,7 @@ const CopyPasteContent = props => {
 		ATTRIBUTES.forEach(typeAttr => {
 			response = {
 				...response,
-				...getGroupAttributes(attr, typeAttr, false, '', true),
+				...getGroupAttributes(attr, typeAttr, false, prefix, true),
 			};
 		});
 

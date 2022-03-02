@@ -502,6 +502,7 @@ const MaxiToolbar = memo(
 								])}
 								blockName={name}
 								breakpoint={breakpoint}
+								prefix={prefix}
 								onChange={obj => maxiSetAttributes(obj)}
 							/>
 						</div>

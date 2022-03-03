@@ -60,7 +60,7 @@ const ScrollEffectsUniqueControl = props => {
 			case 'rotate':
 				response.label = `${label} angle (degrees)`;
 				response.attr = `rotate-${labelLowCase}`;
-				response.min = 0;
+				response.min = -360;
 				response.max = 360;
 				break;
 			case 'scale':
@@ -99,11 +99,11 @@ const ScrollEffectsUniqueControl = props => {
 							<>
 								<AdvancedNumberControl
 									label={__(special?.label, 'maxi-blocks')}
-									value={getLastBreakpointAttribute(
-										`scroll-${type}-${special?.attr}`,
+									value={getLastBreakpointAttribute({
+										target: `scroll-${type}-${special?.attr}`,
 										breakpoint,
-										values
-									)}
+										attributes: values,
+									})}
 									onChangeValue={val => {
 										onChange({
 											[`scroll-${type}-${special?.attr}-${breakpoint}`]:

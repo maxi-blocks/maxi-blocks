@@ -3,7 +3,6 @@
 	width: 100%;
 	margin: auto;
 	padding: 0;
-	outline: 1px solid #81bdda !important;
 	z-index: 2;
 
 	&__container {
@@ -16,21 +15,25 @@
 		max-width: none;
 		margin: 0;
 		padding: 0;
-		z-index: 1;
+		z-index: 9999;
 	}
 
 	&__template {
 		display: flex;
 		flex-wrap: wrap;
-		background-color: #f7f8fc;
+		background-color: transparent;
 		width: 100%;
-		padding: 2rem 1rem;
+		padding: 36px 1rem;
 		margin: 0 auto;
+		justify-content: center;
+		max-width: 1170px;
+		z-index: 1;
 
 		&__button {
-			width: 20%;
-			height: 50px;
+			width: auto;
+			height: auto;
 			display: inline-block;
+			padding: 12px !important;
 
 			&:hover {
 				svg {
@@ -41,10 +44,23 @@
 			}
 
 			svg {
-				width: 100%;
-				height: 100%;
-				fill: #232433;
+				width: 152px;
+				height: 48px;
+				fill: #151617;
+				stroke: #151617;
+				display: block;
 			}
+		}
+	}
+
+	&__empty {
+		&.is-selected {
+			&::after {
+				border-color: #7fbddc !important;
+			}
+		}
+		&::after {
+			opacity: 1;
 		}
 	}
 }

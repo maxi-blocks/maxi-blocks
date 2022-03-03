@@ -11,6 +11,7 @@ import {
 	getAttributes,
 	openSidebarTab,
 	changeResponsive,
+	editAxisControl,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -354,6 +355,39 @@ describe('Responsive attributes mechanisms', () => {
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('On change number attributes from XXL responsive without General attribute, it changes on XXL and General all time', async () => {
+		await changeResponsive(page, 'xxl');
+
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		const axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '123',
+		});
+
+		const expectMargin = {
+			'margin-top-general': '123',
+			'margin-top-xxl': '123',
+		};
+
+		const marginResult = await getAttributes([
+			'margin-top-general',
+			'margin-top-xxl',
+		]);
+
+		expect(marginResult).toStrictEqual(expectMargin);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

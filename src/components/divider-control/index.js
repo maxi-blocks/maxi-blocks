@@ -12,7 +12,10 @@ import ToggleSwitch from '../toggle-switch';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import {
 	dividerDashedHorizontal,
 	dividerDashedVertical,
@@ -34,12 +37,12 @@ import { styleNone, dashed, dotted, solid } from '../../icons';
 const DividerControl = props => {
 	const {
 		onChange,
-		lineOrientation,
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
 		isHover = false,
 		clientId,
+		breakpoint,
 	} = props;
 
 	const minMaxSettings = {
@@ -61,22 +64,34 @@ const DividerControl = props => {
 		},
 	};
 
+	const lineOrientation = getLastBreakpointAttribute({
+		target: 'line-orientation',
+		breakpoint,
+		attributes: props,
+	});
+
+	const dividerBorderStyle = getLastBreakpointAttribute({
+		target: 'divider-border-style',
+		breakpoint,
+		attributes: props,
+	});
+
 	return (
 		<>
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: props['divider-border-style'] === 'none',
+						activeItem: dividerBorderStyle === 'none',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
 								icon={styleNone}
 							/>
 						),
-						onChange: () => onChange(dividerNone),
+						onChange: () => onChange(dividerNone(breakpoint)),
 					},
 					{
-						activeItem: props['divider-border-style'] === 'solid',
+						activeItem: dividerBorderStyle === 'solid',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -85,12 +100,12 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange(dividerSolidHorizontal);
-							else onChange(dividerSolidVertical);
+								onChange(dividerSolidHorizontal(breakpoint));
+							else onChange(dividerSolidVertical(breakpoint));
 						},
 					},
 					{
-						activeItem: props['divider-border-style'] === 'dashed',
+						activeItem: dividerBorderStyle === 'dashed',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -99,12 +114,12 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange(dividerDashedHorizontal);
-							else onChange(dividerDashedVertical);
+								onChange(dividerDashedHorizontal(breakpoint));
+							else onChange(dividerDashedVertical(breakpoint));
 						},
 					},
 					{
-						activeItem: props['divider-border-style'] === 'dotted',
+						activeItem: dividerBorderStyle === 'dotted',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -113,8 +128,8 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange(dividerDottedHorizontal);
-							else onChange(dividerDottedVertical);
+								onChange(dividerDottedHorizontal(breakpoint));
+							else onChange(dividerDottedVertical(breakpoint));
 						},
 					},
 				]}
@@ -129,31 +144,57 @@ const DividerControl = props => {
 						{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
 						{ label: __('Double', 'maxi-blocks'), value: 'double' },
 					]}
-					value={props['divider-border-style']}
-					onChange={val => onChange({ 'divider-border-style': val })}
+					value={
+						getLastBreakpointAttribute({
+							target: 'divider-border-style',
+							breakpoint,
+							attributes: props,
+						}) || 'none'
+					}
+					onChange={val =>
+						onChange({
+							[`divider-border-style-${breakpoint}`]: val,
+						})
+					}
 				/>
 			)}
-			{props['divider-border-style'] !== 'none' &&
+			{dividerBorderStyle !== 'none' &&
 				!disableBorderRadius &&
-				props['divider-border-style'] === 'solid' && (
+				dividerBorderStyle === 'solid' && (
 					<ToggleSwitch
 						label={__('Line radius', 'maxi-blocks')}
-						selected={props['divider-border-radius']}
+						selected={dividerBorderStyle}
 						onChange={val =>
 							onChange({
-								'divider-border-radius': val,
+								[`divider-border-style-${breakpoint}`]: val,
 							})
 						}
 					/>
 				)}
-			{props['divider-border-style'] !== 'none' && !disableColor && (
+			{dividerBorderStyle !== 'none' && !disableColor && (
 				<ColorControl
 					label={__('Divider', 'maxi-blocks')}
-					color={props['divider-border-color']}
+					color={getLastBreakpointAttribute({
+						target: 'divider-border-color',
+						breakpoint,
+						attributes: props,
+					})}
 					prefix='divider-border-'
-					paletteColor={props['divider-border-palette-color']}
-					paletteOpacity={props['divider-border-palette-opacity']}
-					paletteStatus={props['divider-border-palette-status']}
+					paletteColor={getLastBreakpointAttribute({
+						target: 'divider-border-palette-color',
+						breakpoint,
+						attributes: props,
+					})}
+					paletteOpacity={getLastBreakpointAttribute({
+						target: 'divider-border-palette-opacity',
+						breakpoint,
+						attributes: props,
+					})}
+					paletteStatus={getLastBreakpointAttribute({
+						target: 'divider-border-palette-status',
+						breakpoint,
+						attributes: props,
+					})}
 					onChange={({
 						color,
 						paletteColor,
@@ -161,10 +202,13 @@ const DividerControl = props => {
 						paletteOpacity,
 					}) =>
 						onChange({
-							'divider-border-color': color,
-							'divider-border-palette-color': paletteColor,
-							'divider-border-palette-status': paletteStatus,
-							'divider-border-palette-opacity': paletteOpacity,
+							[`divider-border-color-${breakpoint}`]: color,
+							[`divider-border-palette-color-${breakpoint}`]:
+								paletteColor,
+							[`divider-border-palette-status-${breakpoint}`]:
+								paletteStatus,
+							[`divider-border-palette-opacity-${breakpoint}`]:
+								paletteOpacity,
 						})
 					}
 					disableGradient
@@ -173,27 +217,42 @@ const DividerControl = props => {
 					clientId={clientId}
 				/>
 			)}
-			{props['divider-border-style'] !== 'none' &&
-				lineOrientation === 'horizontal' && (
+			{dividerBorderStyle !== 'none' &&
+				(lineOrientation === 'horizontal' ||
+					lineOrientation === undefined) && (
 					<>
 						<AdvancedNumberControl
 							label={__('Line size', 'maxi-blocks')}
 							enableUnit
-							unit={props['divider-width-unit']}
+							unit={getLastBreakpointAttribute({
+								target: 'divider-width-unit',
+								breakpoint,
+								attributes: props,
+							})}
 							onChangeUnit={val =>
-								onChange({ 'divider-width-unit': val })
+								onChange({
+									[`divider-width-unit-${breakpoint}`]: val,
+								})
 							}
-							value={props['divider-width']}
+							value={getLastBreakpointAttribute({
+								target: 'divider-width',
+								breakpoint,
+								attributes: props,
+							})}
 							onChangeValue={val =>
-								onChange({ 'divider-width': val })
+								onChange({
+									[`divider-width-${breakpoint}`]: val,
+								})
 							}
 							onReset={() =>
 								onChange({
-									'divider-width':
-										getDefaultAttribute('divider-width'),
-									'divider-width-unit':
+									[`divider-width-${breakpoint}`]:
 										getDefaultAttribute(
-											'divider-width-unit'
+											`divider-width-${breakpoint}`
+										),
+									[`divider-width-unit-${breakpoint}`]:
+										getDefaultAttribute(
+											`divider-width-unit-${breakpoint}`
 										),
 								})
 							}
@@ -203,26 +262,43 @@ const DividerControl = props => {
 							label={__('Line weight', 'maxi-blocks')}
 							enableUnit
 							allowedUnits={['px', 'em', 'vw']}
-							unit={props['divider-border-top-unit']}
+							unit={getLastBreakpointAttribute({
+								target: 'divider-border-top-unit',
+								breakpoint,
+								attributes: props,
+							})}
 							onChangeUnit={val =>
-								onChange({ 'divider-border-top-unit': val })
+								onChange({
+									[`divider-border-top-unit-${breakpoint}`]:
+										val,
+								})
 							}
 							onChange={val =>
-								onChange({ 'divider-border-top-width': val })
+								onChange({
+									[`divider-border-top-width-${breakpoint}`]:
+										val,
+								})
 							}
-							value={props['divider-border-top-width']}
+							value={getLastBreakpointAttribute({
+								target: 'divider-border-top-width',
+								breakpoint,
+								attributes: props,
+							})}
 							onChangeValue={val =>
-								onChange({ 'divider-border-top-width': val })
+								onChange({
+									[`divider-border-top-width-${breakpoint}`]:
+										val,
+								})
 							}
 							onReset={() =>
 								onChange({
-									'divider-border-top-width':
+									[`divider-border-top-width-${breakpoint}`]:
 										getDefaultAttribute(
-											'divider-border-top-width'
+											`divider-border-top-width-${breakpoint}`
 										),
-									'divider-border-top-unit':
+									[`divider-border-top-unit-${breakpoint}`]:
 										getDefaultAttribute(
-											'divider-border-top-unit'
+											`divider-border-top-unit-${breakpoint}`
 										),
 								})
 							}
@@ -230,20 +306,20 @@ const DividerControl = props => {
 						/>
 					</>
 				)}
-			{props['divider-border-style'] !== 'none' &&
-				lineOrientation === 'vertical' && (
+			{dividerBorderStyle !== 'none' &&
+				(lineOrientation === 'vertical' ||
+					lineOrientation === undefined) && (
 					<>
 						<AdvancedNumberControl
 							label={__('Size', 'maxi-blocks')}
-							value={
-								props['divider-height'] !== undefined &&
-								props['divider-height'] !== ''
-									? props['divider-height']
-									: ''
-							}
+							value={getLastBreakpointAttribute({
+								target: 'divider-height',
+								breakpoint,
+								attributes: props,
+							})}
 							onChangeValue={val => {
 								onChange({
-									'divider-height':
+									[`divider-height-${breakpoint}`]:
 										val !== undefined && val !== ''
 											? val
 											: '',
@@ -253,37 +329,43 @@ const DividerControl = props => {
 							max={100}
 							onReset={() =>
 								onChange({
-									'divider-height':
-										getDefaultAttribute('divider-height'),
-								})
-							}
-							initialPosition={getDefaultAttribute(
-								'divider-height'
-							)}
-						/>
-						<AdvancedNumberControl
-							label={__('Weight', 'maxi-blocks')}
-							value={props['divider-border-right-width']}
-							onChangeValue={val => {
-								onChange({
-									'divider-border-right-width':
-										val !== undefined && val !== ''
-											? val
-											: '',
-								});
-							}}
-							min={0}
-							max={100}
-							onReset={() =>
-								onChange({
-									'divider-border-right-width':
+									[`divider-height-${breakpoint}`]:
 										getDefaultAttribute(
-											'divider-border-right-width'
+											`divider-height-${breakpoint}`
 										),
 								})
 							}
 							initialPosition={getDefaultAttribute(
-								'divider-border-right-width'
+								`divider-height-${breakpoint}`
+							)}
+						/>
+						<AdvancedNumberControl
+							label={__('Weight', 'maxi-blocks')}
+							value={getLastBreakpointAttribute({
+								target: 'divider-border-right-width',
+								breakpoint,
+								attributes: props,
+							})}
+							onChangeValue={val => {
+								onChange({
+									[`divider-border-right-width-${breakpoint}`]:
+										val !== undefined && val !== ''
+											? val
+											: '',
+								});
+							}}
+							min={0}
+							max={100}
+							onReset={() =>
+								onChange({
+									[`divider-border-right-width-${breakpoint}`]:
+										getDefaultAttribute(
+											`divider-border-right-width-${breakpoint}`
+										),
+								})
+							}
+							initialPosition={getDefaultAttribute(
+								`divider-border-right-width-${breakpoint}`
 							)}
 						/>
 					</>

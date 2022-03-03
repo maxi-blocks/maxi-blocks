@@ -10,6 +10,7 @@
 }
 .maxi-block {
 	position: relative;
+	z-index: 0;
 
 	&[data-align='full'] {
 		width: 100% !important;

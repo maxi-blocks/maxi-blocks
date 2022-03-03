@@ -13,7 +13,10 @@ import {
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
 
@@ -27,10 +30,10 @@ import { isEmpty, without } from 'lodash';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
 
 	const getCategoriesCss = () => {
 		const { 'background-layers': bgLayers } = attributes;
+
 		return without(
 			categoriesDivider,
 			isEmpty(bgLayers) && 'canvas background'
@@ -56,7 +59,7 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Alignment',
 												'maxi-blocks'
@@ -68,9 +71,14 @@ const Inspector = props => {
 															'Line orientation',
 															'maxi-blocks'
 														)}
-														selected={
-															lineOrientation
-														}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-orientation',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
 														options={[
 															{
 																label: __(
@@ -87,9 +95,10 @@ const Inspector = props => {
 																value: 'vertical',
 															},
 														]}
-														onChange={lineOrientation =>
+														onChange={val =>
 															maxiSetAttributes({
-																lineOrientation,
+																[`line-orientation-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
@@ -98,7 +107,14 @@ const Inspector = props => {
 															'Line vertical position',
 															'maxi-blocks'
 														)}
-														selected={lineVertical}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-vertical',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
 														options={[
 															{
 																label: __(
@@ -122,9 +138,10 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														onChange={lineVertical =>
+														onChange={val =>
 															maxiSetAttributes({
-																lineVertical,
+																[`line-vertical-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
@@ -133,9 +150,14 @@ const Inspector = props => {
 															'Line horizontal position',
 															'maxi-blocks'
 														)}
-														selected={
-															lineHorizontal
-														}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-horizontal',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
 														options={[
 															{
 																label: __(
@@ -159,16 +181,17 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														onChange={lineHorizontal =>
+														onChange={val =>
 															maxiSetAttributes({
-																lineHorizontal,
+																[`line-horizontal-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
 												</>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Line settings',
 												'maxi-blocks'
@@ -184,9 +207,6 @@ const Inspector = props => {
 															maxiSetAttributes(
 																obj
 															)
-														}
-														lineOrientation={
-															lineOrientation
 														}
 														breakpoint={deviceType}
 														clientId={clientId}

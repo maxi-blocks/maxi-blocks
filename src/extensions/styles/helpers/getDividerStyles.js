@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -9,80 +10,120 @@ import getColorRGBAString from '../getColorRGBAString';
 import { isNil, isNumber } from 'lodash';
 import getPaletteAttributes from '../getPaletteAttributes';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getDividerStyles = (obj, target, parentBlockStyle) => {
 	const response = {
 		label: 'Divider',
 		general: {},
 	};
 
-	if (target === 'line') {
-		if (!isNil(obj['divider-border-style']))
-			response.general['border-style'] = obj['divider-border-style'];
-
+	const getColor = breakpoint => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
 				prefix: 'divider-border-',
+				breakpoint,
 			});
 
 		if (paletteStatus && isNumber(paletteColor))
-			response.general['border-color'] = getColorRGBAString({
-				firstVar: 'divider-color',
-				secondVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle: parentBlockStyle,
+			return {
+				'border-color': getColorRGBAString({
+					firstVar: 'divider-color',
+					secondVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle: parentBlockStyle,
+				}),
+			};
+
+		return { 'border-color': color };
+	};
+	breakpoints.forEach(breakpoint => {
+		if (target === 'line') {
+			const isHorizontal =
+				getLastBreakpointAttribute({
+					target: 'line-orientation',
+					breakpoint,
+					attributes: obj,
+				}) === 'horizontal';
+
+			const dividerBorderStyle = getLastBreakpointAttribute({
+				target: 'divider-border-style',
+				breakpoint,
+				attributes: obj,
 			});
-		else if (!paletteStatus && !isNil(color))
-			response.general['border-color'] = color;
 
-		if (obj.lineOrientation === 'horizontal') {
-			response.general['border-right'] = 'none';
+			const dividerLineWeight = isHorizontal
+				? obj[`divider-border-top-width-${breakpoint}`]
+				: obj[`divider-border-right-width-${breakpoint}`];
+			const dividerLineWeightUnit =
+				getLastBreakpointAttribute({
+					target: isHorizontal
+						? 'divider-border-top-unit'
+						: 'divider-border-right-unit',
+					breakpoint,
+					attributes: obj,
+				}) ?? 'px';
 
-			if (
-				obj['divider-border-radius'] &&
-				obj['divider-border-style'] === 'solid'
-			)
-				response.general['border-radius'] = '20px';
+			const dividerSize = isHorizontal
+				? obj[`divider-width-${breakpoint}`]
+				: obj[`divider-height-${breakpoint}`];
+			const dividerSizeUnit =
+				getLastBreakpointAttribute({
+					target: 'divider-width-unit',
+					breakpoint,
+					attributes: obj,
+				}) ?? 'px';
 
-			if (!isNil(obj['divider-width']))
-				response.general.width = `${obj['divider-width']}${obj['divider-width-unit']}`;
-			if (!isNil(obj['divider-border-top-width']))
-				response.general[
-					'border-top-width'
-				] = `${obj['divider-border-top-width']}${obj['divider-border-top-unit']}`;
-		}
+			response[breakpoint] = {
+				...getColor(breakpoint),
+				...(obj[`divider-border-radius-${breakpoint}`] &&
+					obj[`divider-border-style-${breakpoint}`] === 'solid' && {
+						'border-radius': '20px',
+					}),
 
-		if (obj.lineOrientation === 'vertical') {
-			response.general['border-top'] = 'none';
+				...(isHorizontal && {
+					'border-top-style': dividerBorderStyle,
+					'border-right-style': 'none',
+					...(!isNil(dividerLineWeight) && {
+						'border-top-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						height: `${dividerLineWeight}${dividerLineWeightUnit}`,
+					}),
+					...(!isNil(dividerSize) && {
+						width: `${dividerSize}${dividerSizeUnit}`,
+					}),
+				}),
 
-			if (
-				obj['divider-border-radius'] &&
-				obj['divider-border-style'] === 'solid'
-			)
-				response.general['border-radius'] = '20px';
-
-			if (!isNil(obj['divider-border-right-width']))
-				response.general[
-					'border-right-width'
-				] = `${obj['divider-border-right-width']}${obj['divider-border-right-unit']}`;
-			if (!isNil(obj['divider-height']))
-				response.general.height = `${obj['divider-height']}%}`;
-		}
-	} else if (!isNil(obj.lineAlign)) {
-		response.general['flex-direction'] = obj.lineAlign;
-
-		if (obj.lineAlign === 'row') {
-			if (!isNil(obj.lineVertical))
-				response.general['align-items'] = obj.lineVertical;
-			if (!isNil(obj.lineHorizontal))
-				response.general['justify-content'] = obj.lineHorizontal;
+				...(!isHorizontal && {
+					'border-top-style': 'none',
+					'border-right-style': dividerBorderStyle,
+					...(!isNil(dividerLineWeight) && {
+						'border-right-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						width: `${dividerLineWeight}${dividerLineWeightUnit}`,
+					}),
+					...(!isNil(dividerSize) && { height: `${dividerSize}%}` }),
+				}),
+			};
 		} else {
-			if (!isNil(obj.lineVertical))
-				response.general['justify-content'] = obj.lineVertical;
-			if (!isNil(obj.lineHorizontal))
-				response.general['align-items'] = obj.lineHorizontal;
+			response[breakpoint] = {
+				'flex-direction': 'row',
+				'align-items': obj[`line-vertical-${breakpoint}`]
+					? obj[`line-vertical-${breakpoint}`]
+					: getLastBreakpointAttribute({
+							target: 'line-vertical',
+							breakpoint,
+							attributes: obj,
+					  }),
+				'justify-content': obj[`line-horizontal-${breakpoint}`]
+					? obj[`line-horizontal-${breakpoint}`]
+					: getLastBreakpointAttribute({
+							target: 'line-horizontal',
+							breakpoint,
+							attributes: obj,
+					  }),
+			};
 		}
-	}
+	});
 
 	return response;
 };

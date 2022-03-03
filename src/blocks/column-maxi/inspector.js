@@ -71,7 +71,7 @@ const Inspector = props => {
 																	val !==
 																		undefined &&
 																	val !== ''
-																		? val
+																		? val.toString()
 																		: '',
 															});
 														}}
@@ -97,6 +97,11 @@ const Inspector = props => {
 														initialPosition={getDefaultAttribute(
 															`column-size-${deviceType}`,
 															clientId
+														)}
+														enableAuto
+														autoLabel={__(
+															'Fit content',
+															'maxi-blocks'
 														)}
 													/>
 													<SelectControl

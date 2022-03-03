@@ -117,7 +117,6 @@ class edit extends MaxiBlockComponent {
 			captionContent,
 			captionType,
 			fullWidth,
-			imageRatio,
 			imgWidth,
 			mediaAlt,
 			altSelector,
@@ -136,11 +135,7 @@ class edit extends MaxiBlockComponent {
 			fullWidth === 'full' && 'alignfull'
 		);
 
-		const wrapperClassName = classnames(
-			'maxi-image-block-wrapper',
-			'maxi-image-ratio',
-			!SVGElement && `maxi-image-ratio__${imageRatio}`
-		);
+		const wrapperClassName = classnames('maxi-image-block-wrapper');
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
@@ -318,8 +313,16 @@ class edit extends MaxiBlockComponent {
 										className='maxi-block__resizer maxi-image-block__resizer'
 										resizableObject={this.resizableObject}
 										isOverflowHidden={getIsOverflowHidden()}
-										size={{ width: `${imgWidth}%` }}
-										showHandle={isSelected}
+										size={{
+											width: `${
+												fullWidth !== 'full'
+													? imgWidth
+													: 100
+											}%`,
+										}}
+										showHandle={
+											isSelected && fullWidth !== 'full'
+										}
 										maxWidth={getMaxWidth()}
 										enable={{
 											topRight: true,

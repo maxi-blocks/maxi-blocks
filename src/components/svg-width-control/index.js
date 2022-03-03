@@ -30,11 +30,11 @@ const SvgWidthControl = props => {
 	const width =
 		props[`${prefix}width-${breakpoint}${isHover ? '-hover' : ''}`];
 	const defaultWidth = getDefaultAttribute(`${prefix}width-${breakpoint}`);
-	const widthUnit = getLastBreakpointAttribute(
-		`${prefix}width-unit`,
+	const widthUnit = getLastBreakpointAttribute({
+		target: `${prefix}width-unit`,
 		breakpoint,
-		props
-	);
+		attributes: props,
+	});
 	const defaultWidthUnit = getDefaultAttribute(
 		`${prefix}width-unit-${breakpoint}`
 	);
@@ -46,12 +46,11 @@ const SvgWidthControl = props => {
 				value={width || defaultWidth}
 				placeholder={
 					breakpoint !== 'general'
-						? getLastBreakpointAttribute(
-								`${prefix}width`,
+						? getLastBreakpointAttribute({
+								target: `${prefix}width`,
 								breakpoint,
-								false,
-								props
-						  )
+								attributes: props,
+						  })
 						: null
 				}
 				onChangeValue={val => {
@@ -102,12 +101,11 @@ const SvgWidthControl = props => {
 			{enableResponsive && (
 				<ToggleSwitch
 					label={__('Force responsive', 'maxi-blocks')}
-					selected={getLastBreakpointAttribute(
-						`${prefix}responsive`,
+					selected={getLastBreakpointAttribute({
+						target: `${prefix}responsive`,
 						breakpoint,
-						false,
-						props
-					)}
+						attributes: props,
+					})}
 					onChange={val =>
 						onChange({
 							[getAttributeKey(

@@ -21,26 +21,26 @@ export const getArrowObject = props => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const arrowStatus = getLastBreakpointAttribute(
-			'arrow-status',
+		const arrowStatus = getLastBreakpointAttribute({
+			target: 'arrow-status',
 			breakpoint,
-			props
-		);
-		const arrowWidth = getLastBreakpointAttribute(
-			'arrow-width',
+			attributes: props,
+		});
+		const arrowWidth = getLastBreakpointAttribute({
+			target: 'arrow-width',
 			breakpoint,
-			props
-		);
-		const arrowSide = getLastBreakpointAttribute(
-			'arrow-side',
+			attributes: props,
+		});
+		const arrowSide = getLastBreakpointAttribute({
+			target: 'arrow-side',
 			breakpoint,
-			props
-		);
-		const arrowPosition = getLastBreakpointAttribute(
-			'arrow-position',
+			attributes: props,
+		});
+		const arrowPosition = getLastBreakpointAttribute({
+			target: 'arrow-position',
 			breakpoint,
-			props
-		);
+			attributes: props,
+		});
 
 		response[breakpoint].display = arrowStatus ? 'block' : 'none';
 

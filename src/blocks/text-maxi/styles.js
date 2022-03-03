@@ -193,16 +193,16 @@ const getListObject = props => {
 			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
 				breakpoint => {
 					// List gap
-					const gapNum = getLastBreakpointAttribute(
-						'list-gap',
+					const gapNum = getLastBreakpointAttribute({
+						target: 'list-gap',
 						breakpoint,
-						props
-					);
-					const gapUnit = getLastBreakpointAttribute(
-						'list-gap-unit',
+						attributes: props,
+					});
+					const gapUnit = getLastBreakpointAttribute({
+						target: 'list-gap-unit',
 						breakpoint,
-						props
-					);
+						attributes: props,
+					});
 
 					if (!isNil(gapNum) && !isNil(gapUnit)) {
 						response.listGap[breakpoint] = {
@@ -211,16 +211,16 @@ const getListObject = props => {
 					}
 
 					// List indent
-					const indentNum = getLastBreakpointAttribute(
-						'list-indent',
+					const indentNum = getLastBreakpointAttribute({
+						target: 'list-indent',
 						breakpoint,
-						props
-					);
-					const indentUnit = getLastBreakpointAttribute(
-						'list-indent-unit',
+						attributes: props,
+					});
+					const indentUnit = getLastBreakpointAttribute({
+						target: 'list-indent-unit',
 						breakpoint,
-						props
-					);
+						attributes: props,
+					});
 
 					if (!isNil(indentNum) && !isNil(indentUnit)) {
 						response.textIndent[breakpoint] = {
@@ -259,16 +259,16 @@ const getListParagraphObject = props => {
 			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
 				breakpoint => {
 					// List gap
-					const paragraphSpacingNum = getLastBreakpointAttribute(
-						'list-paragraph-spacing',
+					const paragraphSpacingNum = getLastBreakpointAttribute({
+						target: 'list-paragraph-spacing',
 						breakpoint,
-						props
-					);
-					const paragraphSpacingUnit = getLastBreakpointAttribute(
-						'list-paragraph-spacing-unit',
+						attributes: props,
+					});
+					const paragraphSpacingUnit = getLastBreakpointAttribute({
+						target: 'list-paragraph-spacing-unit',
 						breakpoint,
-						props
-					);
+						attributes: props,
+					});
 
 					if (
 						!isNil(paragraphSpacingNum) &&
@@ -367,67 +367,67 @@ const getMarkerObject = props => {
 				breakpoint => {
 					// List indent
 					const indentNum =
-						getLastBreakpointAttribute(
-							'list-indent',
+						getLastBreakpointAttribute({
+							target: 'list-indent',
 							breakpoint,
-							props
-						) || 0;
+							attributes: props,
+						}) || 0;
 					const indentUnit =
-						getLastBreakpointAttribute(
-							'list-indent-unit',
+						getLastBreakpointAttribute({
+							target: 'list-indent-unit',
 							breakpoint,
-							props
-						) || 'px';
+							attributes: props,
+						}) || 'px';
 
 					// List size
 					const sizeNum =
-						getLastBreakpointAttribute(
-							'list-size',
+						getLastBreakpointAttribute({
+							target: 'list-size',
 							breakpoint,
-							props
-						) || 0;
+							attributes: props,
+						}) || 0;
 					const sizeUnit =
-						getLastBreakpointAttribute(
-							'list-size-unit',
+						getLastBreakpointAttribute({
+							target: 'list-size-unit',
 							breakpoint,
-							props
-						) || 'px';
+							attributes: props,
+						}) || 'px';
 
 					// Text position
 					const textPosition =
-						getLastBreakpointAttribute(
-							'list-text-position',
+						getLastBreakpointAttribute({
+							target: 'list-text-position',
 							breakpoint,
-							props
-						) || false;
+							attributes: props,
+						}) || false;
 
 					// Marker indent
 					const indentMarkerNum =
-						getLastBreakpointAttribute(
-							'list-marker-indent',
+						getLastBreakpointAttribute({
+							target: 'list-marker-indent',
 							breakpoint,
-							props
-						) || 0;
+							attributes: props,
+						}) || 0;
 					const indentMarkerUnit =
-						getLastBreakpointAttribute(
-							'list-marker-indent-unit',
+						getLastBreakpointAttribute({
+							target: 'list-marker-indent-unit',
 							breakpoint,
-							props
-						) || 'px';
+							attributes: props,
+						}) || 'px';
 
 					// Marker line-height
 					const lineHeightMarkerNum =
-						getLastBreakpointAttribute(
-							'list-marker-line-height',
+						getLastBreakpointAttribute({
+							target: 'list-marker-line-height',
 							breakpoint,
-							props
-						) || 0;
+							attributes: props,
+						}) || 0;
 					const lineHeightMarkerUnit =
-						getLastBreakpointAttribute(
-							'list-marker-line-height-unit',
+						getLastBreakpointAttribute({
+							target: 'list-marker-line-height-unit',
 							breakpoint,
-							props
-						) || 'px';
+							attributes: props,
+						}) || 'px';
 
 					response.listSize[breakpoint] = {
 						...(typeOfList === 'ul' &&

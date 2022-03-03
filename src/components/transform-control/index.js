@@ -154,17 +154,17 @@ const TransformControl = props => {
 			/>
 			{transformStatus === 'scale' && (
 				<SquareControl
-					x={getLastBreakpointAttribute(
-						'transform-scale-x',
+					x={getLastBreakpointAttribute({
+						target: 'transform-scale-x',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					defaultX={getDefaultAttribute('transform-scale-x')}
-					y={getLastBreakpointAttribute(
-						'transform-scale-y',
+					y={getLastBreakpointAttribute({
+						target: 'transform-scale-y',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					defaultY={getDefaultAttribute('transform-scale-y')}
 					onChange={(x, y) => {
 						onChangeTransform({
@@ -189,28 +189,28 @@ const TransformControl = props => {
 			{transformStatus === 'translate' && (
 				<SquareControl
 					type='drag'
-					x={getLastBreakpointAttribute(
-						'transform-translate-x',
+					x={getLastBreakpointAttribute({
+						target: 'transform-translate-x',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					defaultX={getDefaultAttribute('transform-translate-x')}
-					y={getLastBreakpointAttribute(
-						'transform-translate-y',
+					y={getLastBreakpointAttribute({
+						target: 'transform-translate-y',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					defaultY={getDefaultAttribute('transform-translate-y')}
-					xUnit={getLastBreakpointAttribute(
-						'transform-translate-x-unit',
+					xUnit={getLastBreakpointAttribute({
+						target: 'transform-translate-x-unit',
 						breakpoint,
-						props
-					)}
-					yUnit={getLastBreakpointAttribute(
-						'transform-translate-y-unit',
+						attributes: props,
+					})}
+					yUnit={getLastBreakpointAttribute({
+						target: 'transform-translate-y-unit',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					onChange={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
 							'transform-translate-x': x,
@@ -239,23 +239,23 @@ const TransformControl = props => {
 			)}
 			{transformStatus === 'rotate' && (
 				<RotateControl
-					x={getLastBreakpointAttribute(
-						'transform-rotate-x',
+					x={getLastBreakpointAttribute({
+						target: 'transform-rotate-x',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					defaultX={getDefaultAttribute('transform-rotate-x')}
-					y={getLastBreakpointAttribute(
-						'transform-rotate-y',
+					y={getLastBreakpointAttribute({
+						target: 'transform-rotate-y',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					defaultY={getDefaultAttribute('transform-rotate-y')}
-					z={getLastBreakpointAttribute(
-						'transform-rotate-z',
+					z={getLastBreakpointAttribute({
+						target: 'transform-rotate-z',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					defaultZ={getDefaultAttribute('transform-rotate-z')}
 					onChange={(x, y, z) => {
 						onChangeTransform({
@@ -276,31 +276,31 @@ const TransformControl = props => {
 				<SquareControl
 					type='origin'
 					x={
-						getLastBreakpointAttribute(
-							'transform-origin-x',
+						getLastBreakpointAttribute({
+							target: 'transform-origin-x',
 							breakpoint,
-							props
-						) || 'center'
+							attributes: props,
+						}) || 'center'
 					}
 					defaultX={getDefaultAttribute('transform-origin-x')}
 					y={
-						getLastBreakpointAttribute(
-							'transform-origin-y',
+						getLastBreakpointAttribute({
+							target: 'transform-origin-y',
 							breakpoint,
-							props
-						) || 'middle'
+							attributes: props,
+						}) || 'middle'
 					}
 					defaultY={getDefaultAttribute('transform-origin-y')}
-					xUnit={getLastBreakpointAttribute(
-						'transform-origin-x-unit',
+					xUnit={getLastBreakpointAttribute({
+						target: 'transform-origin-x-unit',
 						breakpoint,
-						props
-					)}
-					yUnit={getLastBreakpointAttribute(
-						'transform-origin-y-unit',
+						attributes: props,
+					})}
+					yUnit={getLastBreakpointAttribute({
+						target: 'transform-origin-y-unit',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					onChange={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
 							'transform-origin-x': x,

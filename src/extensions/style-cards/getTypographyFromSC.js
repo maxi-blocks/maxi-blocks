@@ -36,11 +36,11 @@ const getTypographyFromSC = (styleCard, type) => {
 	if (!isEmpty(SC[`font-family-${breakpoint}`])) return SC;
 
 	const pObj = getTypographyFromSC(selectedSC, 'p');
-	const fontFamily = getLastBreakpointAttribute(
-		'font-family',
+	const fontFamily = getLastBreakpointAttribute({
+		target: 'font-family',
 		breakpoint,
-		pObj
-	);
+		attributes: pObj,
+	});
 
 	return {
 		...SC,

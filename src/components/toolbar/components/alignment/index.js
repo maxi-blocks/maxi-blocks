@@ -63,11 +63,11 @@ const Alignment = props => {
 			className='toolbar-item__alignment'
 			tooltip={__('Alignment', 'maxi-blocks')}
 			icon={alignIcon(
-				getLastBreakpointAttribute(
-					isText ? 'text-alignment' : 'alignment',
+				getLastBreakpointAttribute({
+					target: isText ? 'text-alignment' : 'alignment',
 					breakpoint,
-					props
-				)
+					attributes: props,
+				})
 			)}
 		>
 			<AlignmentControl

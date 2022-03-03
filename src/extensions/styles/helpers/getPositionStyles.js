@@ -24,11 +24,11 @@ const getPositionStyles = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		const getValue = direction => {
-			const val = getLastBreakpointAttribute(
-				`position-${direction}`,
+			const val = getLastBreakpointAttribute({
+				target: `position-${direction}`,
 				breakpoint,
-				obj
-			);
+				attributes: obj,
+			});
 
 			return val;
 		};
@@ -38,11 +38,11 @@ const getPositionStyles = obj => {
 		const right = getValue('right');
 		const bottom = getValue('bottom');
 		const left = getValue('left');
-		const unit = getLastBreakpointAttribute(
-			'position-unit',
+		const unit = getLastBreakpointAttribute({
+			target: 'position-unit',
 			breakpoint,
-			obj
-		);
+			attributes: obj,
+		});
 
 		response[breakpoint] = {
 			...(position && { position }),

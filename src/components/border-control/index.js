@@ -20,7 +20,6 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getDefaultAttribute,
 	getAttributeKey,
 } from '../../extensions/styles';
 
@@ -68,23 +67,23 @@ const BorderControl = props => {
 
 		['top', 'right', 'bottom', 'left'].forEach(item => {
 			response[`border${capitalize(item)}Width`] =
-				getLastBreakpointAttribute(
-					`${prefix}border-${item}-width`,
+				getLastBreakpointAttribute({
+					target: `${prefix}border-${item}-width`,
 					breakpoint,
-					props,
-					isHover
-				);
+					attributes: props,
+					isHover,
+				});
 		});
 
 		return response;
 	};
 
-	const borderStyleValue = getLastBreakpointAttribute(
-		`${prefix}border-style`,
+	const borderStyleValue = getLastBreakpointAttribute({
+		target: `${prefix}border-style`,
 		breakpoint,
-		props,
-		isHover
-	);
+		attributes: props,
+		isHover,
+	});
 
 	const axisItems = [
 		`${prefix}border-top-width`,
@@ -96,7 +95,12 @@ const BorderControl = props => {
 	const getIsActive = () => {
 		const hasBorderWidth = axisItems.some(item => {
 			return isNumber(
-				getLastBreakpointAttribute(item, breakpoint, props, isHover)
+				getLastBreakpointAttribute({
+					target: item,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})
 			);
 		});
 
@@ -108,12 +112,12 @@ const BorderControl = props => {
 		const response = {};
 
 		axisItems.forEach(item => {
-			const value = getLastBreakpointAttribute(
-				item,
+			const value = getLastBreakpointAttribute({
+				target: item,
 				breakpoint,
-				props,
-				isHover
-			);
+				attributes: props,
+				isHover,
+			});
 
 			if (!value)
 				response[getAttributeKey(item, isHover, false, breakpoint)] = 2;
@@ -207,32 +211,32 @@ const BorderControl = props => {
 			{!disableColor && borderStyleValue && borderStyleValue !== 'none' && (
 				<ColorControl
 					label={__('Border', 'maxi-blocks')}
-					color={getLastBreakpointAttribute(
-						`${prefix}border-color`,
+					color={getLastBreakpointAttribute({
+						target: `${prefix}border-color`,
 						breakpoint,
-						props,
-						isHover
-					)}
+						attributes: props,
+						isHover,
+					})}
 					prefix={`${prefix}border-`}
 					useBreakpointForDefault
-					paletteStatus={getLastBreakpointAttribute(
-						`${prefix}border-palette-status`,
+					paletteStatus={getLastBreakpointAttribute({
+						target: `${prefix}border-palette-status`,
 						breakpoint,
-						props,
-						isHover
-					)}
-					paletteColor={getLastBreakpointAttribute(
-						`${prefix}border-palette-color`,
+						attributes: props,
+						isHover,
+					})}
+					paletteColor={getLastBreakpointAttribute({
+						target: `${prefix}border-palette-color`,
 						breakpoint,
-						props,
-						isHover
-					)}
-					paletteOpacity={getLastBreakpointAttribute(
-						`${prefix}border-palette-opacity`,
+						attributes: props,
+						isHover,
+					})}
+					paletteOpacity={getLastBreakpointAttribute({
+						target: `${prefix}border-palette-opacity`,
 						breakpoint,
-						props,
-						isHover
-					)}
+						attributes: props,
+						isHover,
+					})}
 					onChange={({
 						paletteColor,
 						paletteStatus,

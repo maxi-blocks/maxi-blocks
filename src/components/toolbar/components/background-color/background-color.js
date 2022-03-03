@@ -41,11 +41,11 @@ const BackgroundColor = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	const activeMedia = getLastBreakpointAttribute(
-		`${prefix}background-active-media`,
+	const activeMedia = getLastBreakpointAttribute({
+		target: `${prefix}background-active-media`,
 		breakpoint,
-		props
-	);
+		attributes: props,
+	});
 	const isBackgroundColor = activeMedia === 'color';
 
 	const getStyle = () => {
@@ -56,26 +56,26 @@ const BackgroundColor = props => {
 					'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
 			};
 
-		const bgPaletteStatus = getLastBreakpointAttribute(
-			`${prefix}background-palette-status`,
+		const bgPaletteStatus = getLastBreakpointAttribute({
+			target: `${prefix}background-palette-status`,
 			breakpoint,
-			props
-		);
-		const bgPaletteColor = getLastBreakpointAttribute(
-			`${prefix}background-palette-color`,
+			attributes: props,
+		});
+		const bgPaletteColor = getLastBreakpointAttribute({
+			target: `${prefix}background-palette-color`,
 			breakpoint,
-			props
-		);
-		const bgPaletteOpacity = getLastBreakpointAttribute(
-			`${prefix}background-palette-opacity`,
+			attributes: props,
+		});
+		const bgPaletteOpacity = getLastBreakpointAttribute({
+			target: `${prefix}background-palette-opacity`,
 			breakpoint,
-			props
-		);
-		const bgColor = getLastBreakpointAttribute(
-			`${prefix}background-color`,
+			attributes: props,
+		});
+		const bgColor = getLastBreakpointAttribute({
+			target: `${prefix}background-color`,
 			breakpoint,
-			props
-		);
+			attributes: props,
+		});
 
 		return {
 			background: bgPaletteStatus

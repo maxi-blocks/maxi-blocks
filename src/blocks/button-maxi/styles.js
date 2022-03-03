@@ -294,20 +294,20 @@ const getIconSize = (obj, isHover = false) => {
 		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
 			response[breakpoint].width = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute(
-				'icon-width-unit',
+			}${getLastBreakpointAttribute({
+				target: 'icon-width-unit',
 				breakpoint,
-				obj,
-				isHover
-			)}`;
+				attributes: obj,
+				isHover,
+			})}`;
 			response[breakpoint].height = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute(
-				'icon-width-unit',
+			}${getLastBreakpointAttribute({
+				target: 'icon-width-unit',
 				breakpoint,
-				obj,
-				isHover
-			)}`;
+				attributes: obj,
+				isHover,
+			})}`;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
@@ -491,18 +491,18 @@ const getIconResponsive = obj => {
 			obj['icon-position'] === 'left'
 				? (response[breakpoint][
 						'margin-right'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
 						breakpoint,
-						obj
-				  )}px`)
+						attributes: obj,
+				  })}px`)
 				: (response[breakpoint][
 						'margin-left'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
 						breakpoint,
-						obj
-				  )}px`);
+						attributes: obj,
+				  })}px`);
 		}
 	});
 

@@ -26,11 +26,11 @@ const ArrowDisplayer = props => {
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',
-		`maxi-container-arrow__${getLastBreakpointAttribute(
-			'arrow-side',
+		`maxi-container-arrow__${getLastBreakpointAttribute({
+			target: 'arrow-side',
 			breakpoint,
-			props
-		)}`,
+			attributes: props,
+		})}`,
 		className
 	);
 
@@ -39,8 +39,11 @@ const ArrowDisplayer = props => {
 		: false;
 
 	const shouldDisplayBorder =
-		!!getLastBreakpointAttribute('arrow-status', breakpoint, props) &&
-		backgroundLayer;
+		!!getLastBreakpointAttribute({
+			target: 'arrow-status',
+			breakpoint,
+			attributes: props,
+		}) && backgroundLayer;
 
 	return (
 		shouldDisplayBorder && (

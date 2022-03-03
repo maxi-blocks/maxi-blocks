@@ -7,7 +7,6 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import { updateSCOnEditor } from '../style-cards';
 
 /**
  * General
@@ -322,24 +321,6 @@ wp.domReady(() => {
 			observerSubscribe();
 		}
 	});
-
-	const SCVarsUpdate = setInterval(() => {
-		const SC = select(
-			'maxiBlocks/style-cards'
-		).receiveMaxiActiveStyleCard();
-		if (SC && !isEmpty(SC)) {
-			updateSCOnEditor(SC.value);
-			const SCList = select(
-				'maxiBlocks/style-cards'
-			).receiveStyleCardsList();
-			const SCListCount = Object.keys(SCList).length;
-
-			if (SCListCount === 1 && SC.key === 'sc_maxi')
-				dispatch('maxiBlocks/style-cards').saveSCStyles(true);
-
-			clearInterval(SCVarsUpdate);
-		}
-	}, 300);
 });
 
 const openSidebar = item => {

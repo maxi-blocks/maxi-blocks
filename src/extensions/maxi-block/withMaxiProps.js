@@ -1,8 +1,18 @@
+/**
+ * WordPress dependencies
+ */
 import { select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import { getDefaultAttribute } from '../styles';
 
+/**
+ * External dependencies
+ */
 import { isNil } from 'lodash';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -51,12 +61,19 @@ export const handleSetAttributes = ({
 		);
 		const attrExistOnObjOnGeneral = attrLabelOnGeneral in obj;
 
+		// When changing a number that needs more than 2 digits, it is saved digit by digit
+		// Need to make both be saved in same conditions
+		const needsGeneralAttr =
+			attributes[attrLabelOnGeneral] === attributes[key];
+
 		if (
-			!attrExistOnGeneral &&
+			(!attrExistOnGeneral || needsGeneralAttr) &&
 			!attrExistOnObjOnGeneral &&
 			breakpoint === 'xxl'
 		)
 			response[attrLabelOnGeneral] = value;
+
+		if (breakpoint === 'xxl' && needsGeneralAttr) return;
 
 		const existHigherBreakpointAttribute = breakpoints
 			.slice(0, breakpoints.indexOf(winBreakpoint))

@@ -741,7 +741,7 @@ const TypographyControl = withFormatValue(props => {
 				)}
 				{!disableFontFamilyReset && (
 					<Button
-						className='components-maxi-control__reset-button'
+						className='components-maxi-control__reset-button components-maxi-control__font-reset-button'
 						onClick={e => {
 							e.preventDefault();
 							onChangeFormat({

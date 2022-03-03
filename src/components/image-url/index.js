@@ -4,13 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { Button } from '@wordpress/components';
-import { link, check, close } from '@wordpress/icons';
+import { check, close } from '@wordpress/icons';
 import { URLInput } from '@wordpress/block-editor';
 import { isURL } from '@wordpress/url';
 
 /**
  * Styles and icons
  */
+import { toolbarImageUrl } from '../../icons';
 import './editor.scss';
 
 const ImageURL = props => {
@@ -50,7 +51,7 @@ const ImageURL = props => {
 	return (
 		<div className='maxi-editor-url-input__button'>
 			<Button
-				icon={link}
+				icon={toolbarImageUrl}
 				label={buttonLabel}
 				onClick={event => {
 					event.preventDefault();

@@ -116,12 +116,12 @@ const IconControl = props => {
 		},
 	};
 
-	const iconBackgroundActiveMedia = getLastBreakpointAttribute(
-		'icon-background-active-media',
+	const iconBackgroundActiveMedia = getLastBreakpointAttribute({
+		target: 'icon-background-active-media',
 		breakpoint,
-		props,
-		isHover
-	);
+		attributes: props,
+		isHover,
+	});
 
 	const [iconBgActive, setIconBgActive] = useState(
 		iconBackgroundActiveMedia || 'none'
@@ -378,30 +378,30 @@ const IconControl = props => {
 							{!props['icon-inherit'] ? (
 								<ColorControl
 									label={__('Icon background', 'maxi-blocks')}
-									paletteStatus={getLastBreakpointAttribute(
-										'icon-background-palette-status',
+									paletteStatus={getLastBreakpointAttribute({
+										target: 'icon-background-palette-status',
 										breakpoint,
-										props,
-										isHover
-									)}
-									paletteColor={getLastBreakpointAttribute(
-										'icon-background-palette-color',
+										attributes: props,
+										isHover,
+									})}
+									paletteColor={getLastBreakpointAttribute({
+										target: 'icon-background-palette-color',
 										breakpoint,
-										props,
-										isHover
-									)}
-									paletteOpacity={getLastBreakpointAttribute(
-										'icon-background-palette-opacity',
+										attributes: props,
+										isHover,
+									})}
+									paletteOpacity={getLastBreakpointAttribute({
+										target: 'icon-background-palette-opacity',
 										breakpoint,
-										props,
-										isHover
-									)}
-									color={getLastBreakpointAttribute(
-										'icon-background-color',
+										attributes: props,
+										isHover,
+									})}
+									color={getLastBreakpointAttribute({
+										target: 'icon-background-color',
 										breakpoint,
-										props,
-										isHover
-									)}
+										attributes: props,
+										isHover,
+									})}
 									prefix='icon-background-'
 									useBreakpointForDefault
 									onChange={({
@@ -465,18 +465,18 @@ const IconControl = props => {
 								'Icon Background gradient',
 								'maxi-blocks'
 							)}
-							gradient={getLastBreakpointAttribute(
-								'icon-background-gradient',
+							gradient={getLastBreakpointAttribute({
+								target: 'icon-background-gradient',
 								breakpoint,
-								props,
-								isHover
-							)}
-							gradientOpacity={getLastBreakpointAttribute(
-								'icon-background-gradient-opacity',
+								attributes: props,
+								isHover,
+							})}
+							gradientOpacity={getLastBreakpointAttribute({
+								target: 'icon-background-gradient-opacity',
 								breakpoint,
-								props,
-								isHover
-							)}
+								attributes: props,
+								isHover,
+							})}
 							defaultGradient={getDefaultAttribute(
 								getAttributeKey(
 									'background-gradient',

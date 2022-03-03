@@ -42,25 +42,30 @@ const ColorContent = ({
 		label={__('Fill', 'maxi-blocks')}
 		prefix='background-svg-'
 		useBreakpointForDefault
-		paletteStatus={getLastBreakpointAttribute(
-			'background-svg-palette-status',
+		paletteStatus={getLastBreakpointAttribute({
+			target: 'background-svg-palette-status',
 			breakpoint,
-			SVGOptions,
-			isHover
-		)}
-		paletteColor={getLastBreakpointAttribute(
-			'background-svg-palette-color',
+			attributes: SVGOptions,
+			isHover,
+		})}
+		paletteColor={getLastBreakpointAttribute({
+			target: 'background-svg-palette-color',
 			breakpoint,
-			SVGOptions,
-			isHover
-		)}
-		paletteOpacity={getLastBreakpointAttribute(
-			'background-svg-palette-opacity',
+			attributes: SVGOptions,
+			isHover,
+		})}
+		paletteOpacity={getLastBreakpointAttribute({
+			target: 'background-svg-palette-opacity',
 			breakpoint,
-			SVGOptions,
-			isHover
-		)}
-		color={getLastBreakpointAttribute('color', breakpoint, value, isHover)}
+			attributes: SVGOptions,
+			isHover,
+		})}
+		color={getLastBreakpointAttribute({
+			target: 'color',
+			breakpoint,
+			attributes: value,
+			isHover,
+		})}
 		onChange={({ paletteStatus, paletteColor, paletteOpacity, color }) => {
 			SVGData[id][getAttributeKey('color', isHover, false, breakpoint)] =
 				color;

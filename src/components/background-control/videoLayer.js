@@ -36,12 +36,12 @@ const VideoLayerContent = props => {
 		<>
 			<OpacityControl
 				label={__('Video opacity', 'maxi-blocks')}
-				opacity={getLastBreakpointAttribute(
-					`${prefix}background-video-opacity`,
+				opacity={getLastBreakpointAttribute({
+					target: `${prefix}background-video-opacity`,
 					breakpoint,
-					videoOptions,
-					isHover
-				)}
+					attributes: videoOptions,
+					isHover,
+				})}
 				onChange={opacity => {
 					videoOptions[
 						getAttributeKey(
@@ -58,12 +58,12 @@ const VideoLayerContent = props => {
 			<MediaUploaderControl
 				className='maxi-mediauploader-control__video-fallback'
 				placeholder={__('Background fallback')}
-				mediaID={getLastBreakpointAttribute(
-					`${prefix}background-video-fallbackID`,
+				mediaID={getLastBreakpointAttribute({
+					target: `${prefix}background-video-fallbackID`,
 					breakpoint,
-					videoOptions,
-					isHover
-				)}
+					attributes: videoOptions,
+					isHover,
+				})}
 				onSelectImage={val =>
 					onChange({
 						[getAttributeKey(

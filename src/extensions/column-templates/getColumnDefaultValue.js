@@ -20,13 +20,12 @@ const getColumnDefaultValue = (
 	const colPosition = columns.indexOf(clientId);
 
 	const template = getColumnTemplate(
-		getLastBreakpointAttribute(
-			'row-pattern',
+		getLastBreakpointAttribute({
+			target: 'row-pattern',
 			breakpoint,
-			rowPattern,
-			false,
-			true
-		),
+			attributes: rowPattern,
+			forceSingle: true,
+		}),
 		false,
 		breakpoint
 	);
@@ -35,7 +34,11 @@ const getColumnDefaultValue = (
 	delete cleanColumnSizes[`column-size-${breakpoint}`];
 	const values = { ...defaultColumnSizes, ...cleanColumnSizes };
 
-	return getLastBreakpointAttribute('column-size', breakpoint, values);
+	return getLastBreakpointAttribute({
+		target: 'column-size',
+		breakpoint,
+		attributes: values,
+	});
 };
 
 export default getColumnDefaultValue;

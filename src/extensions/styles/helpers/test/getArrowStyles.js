@@ -31,7 +31,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'arrow-side-general': 'top',
 			'arrow-position-general': 1,
 			'arrow-width-general': 2,
@@ -41,12 +41,14 @@ describe('getArrowStyles', () => {
 			'arrow-side-xl': 'top',
 			'arrow-position-xl': 2,
 			'arrow-width-xl': 3,
+			'arrow-status-l': false,
 			'arrow-side-l': 'top',
 			'arrow-position-l': 4,
 			'arrow-width-l': 1,
 			'arrow-side-m': 'bottom',
 			'arrow-position-m': 2,
 			'arrow-width-m': 3,
+			'arrow-status-s': true,
 			'arrow-side-s': 'bottom',
 			'arrow-position-s': 4,
 			'arrow-width-s': 1,
@@ -126,7 +128,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media-general': 'color',
 			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 2,
@@ -177,7 +179,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 2,
 			'box-shadow-palette-opacity-general': 0.2,
@@ -235,7 +237,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': false,
+			'arrow-status-general': false,
 		};
 
 		const result = getArrowStyles(object);
@@ -246,7 +248,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media': 'gradient',
 		};
 
@@ -258,7 +260,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media': 'color',
 			'border-style-general': undefined,
 			'border-style-s': 'dashed',
@@ -272,7 +274,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media': 'color',
 			'border-style-general': undefined,
 			'border-style-s': 'solid',

@@ -107,6 +107,10 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			}) === 'hidden';
 
+		const emptyColumnClass = !hasInnerBlocks
+			? 'maxi-column-block__empty'
+			: 'maxi-column-block__has-innerBlock';
+
 		return [
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => {
@@ -132,6 +136,7 @@ class edit extends MaxiBlockComponent {
 								tagName={BlockResizer}
 								resizableObject={this.resizableObject}
 								classes={classnames(
+									emptyColumnClass,
 									'maxi-block',
 									'maxi-block--backend',
 									'maxi-column-block__resizer',

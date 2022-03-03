@@ -31,7 +31,6 @@ const getMaxiBlockAttributes = props => {
 	const background = {
 		...getGroupAttributes(attributes, ['blockBackground']),
 	};
-	const hasArrow = props.attributes['arrow-status'] || false;
 	const hasLink =
 		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
 
@@ -162,7 +161,6 @@ const getMaxiBlockAttributes = props => {
 		displayValue,
 		motion,
 		background,
-		hasArrow,
 		hasLink,
 		...scroll,
 	};

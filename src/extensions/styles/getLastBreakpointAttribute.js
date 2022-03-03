@@ -88,6 +88,21 @@ const getLastBreakpointAttributeSingle = (
 			avoidXXL
 		);
 
+	// Helps responsive API: when breakpoint is general and the attribute is undefined,
+	// check for the win selected breakpoint
+	if (!currentAttr && breakpoint === 'general') {
+		const winBreakpoint = select('maxiBlocks')?.receiveWinBreakpoint();
+
+		if (winBreakpoint)
+			currentAttr = getLastBreakpointAttributeSingle(
+				target,
+				winBreakpoint,
+				attributes,
+				isHover,
+				avoidXXL
+			);
+	}
+
 	return currentAttr;
 };
 

@@ -64,17 +64,17 @@ const DividerControl = props => {
 		},
 	};
 
-	const lineOrientation = getLastBreakpointAttribute(
-		'line-orientation',
+	const lineOrientation = getLastBreakpointAttribute({
+		target: 'line-orientation',
 		breakpoint,
-		props
-	);
+		attributes: props,
+	});
 
-	const dividerBorderStyle = getLastBreakpointAttribute(
-		'divider-border-style',
+	const dividerBorderStyle = getLastBreakpointAttribute({
+		target: 'divider-border-style',
 		breakpoint,
-		props
-	);
+		attributes: props,
+	});
 
 	return (
 		<>
@@ -145,11 +145,11 @@ const DividerControl = props => {
 						{ label: __('Double', 'maxi-blocks'), value: 'double' },
 					]}
 					value={
-						getLastBreakpointAttribute(
-							'divider-border-style',
+						getLastBreakpointAttribute({
+							target: 'divider-border-style',
 							breakpoint,
-							props
-						) || 'none'
+							attributes: props,
+						}) || 'none'
 					}
 					onChange={val =>
 						onChange({
@@ -174,27 +174,27 @@ const DividerControl = props => {
 			{dividerBorderStyle !== 'none' && !disableColor && (
 				<ColorControl
 					label={__('Divider', 'maxi-blocks')}
-					color={getLastBreakpointAttribute(
-						'divider-border-color',
+					color={getLastBreakpointAttribute({
+						target: 'divider-border-color',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					prefix='divider-border-'
-					paletteColor={getLastBreakpointAttribute(
-						'divider-border-palette-color',
+					paletteColor={getLastBreakpointAttribute({
+						target: 'divider-border-palette-color',
 						breakpoint,
-						props
-					)}
-					paletteOpacity={getLastBreakpointAttribute(
-						'divider-border-palette-opacity',
+						attributes: props,
+					})}
+					paletteOpacity={getLastBreakpointAttribute({
+						target: 'divider-border-palette-opacity',
 						breakpoint,
-						props
-					)}
-					paletteStatus={getLastBreakpointAttribute(
-						'divider-border-palette-status',
+						attributes: props,
+					})}
+					paletteStatus={getLastBreakpointAttribute({
+						target: 'divider-border-palette-status',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					onChange={({
 						color,
 						paletteColor,
@@ -224,21 +224,21 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Line size', 'maxi-blocks')}
 							enableUnit
-							unit={getLastBreakpointAttribute(
-								'divider-width-unit',
+							unit={getLastBreakpointAttribute({
+								target: 'divider-width-unit',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeUnit={val =>
 								onChange({
 									[`divider-width-unit-${breakpoint}`]: val,
 								})
 							}
-							value={getLastBreakpointAttribute(
-								'divider-width',
+							value={getLastBreakpointAttribute({
+								target: 'divider-width',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val =>
 								onChange({
 									[`divider-width-${breakpoint}`]: val,
@@ -262,11 +262,11 @@ const DividerControl = props => {
 							label={__('Line weight', 'maxi-blocks')}
 							enableUnit
 							allowedUnits={['px', 'em', 'vw']}
-							unit={getLastBreakpointAttribute(
-								'divider-border-top-unit',
+							unit={getLastBreakpointAttribute({
+								target: 'divider-border-top-unit',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeUnit={val =>
 								onChange({
 									[`divider-border-top-unit-${breakpoint}`]:
@@ -279,11 +279,11 @@ const DividerControl = props => {
 										val,
 								})
 							}
-							value={getLastBreakpointAttribute(
-								'divider-border-top-width',
+							value={getLastBreakpointAttribute({
+								target: 'divider-border-top-width',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val =>
 								onChange({
 									[`divider-border-top-width-${breakpoint}`]:
@@ -312,11 +312,11 @@ const DividerControl = props => {
 					<>
 						<AdvancedNumberControl
 							label={__('Size', 'maxi-blocks')}
-							value={getLastBreakpointAttribute(
-								'divider-height',
+							value={getLastBreakpointAttribute({
+								target: 'divider-height',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val => {
 								onChange({
 									[`divider-height-${breakpoint}`]:
@@ -341,11 +341,11 @@ const DividerControl = props => {
 						/>
 						<AdvancedNumberControl
 							label={__('Weight', 'maxi-blocks')}
-							value={getLastBreakpointAttribute(
-								'divider-border-right-width',
+							value={getLastBreakpointAttribute({
+								target: 'divider-border-right-width',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val => {
 								onChange({
 									[`divider-border-right-width-${breakpoint}`]:

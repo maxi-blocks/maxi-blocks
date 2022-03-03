@@ -96,10 +96,20 @@ const ArrowControl = props => {
 			)}
 			<ToggleSwitch
 				label={__('Show Arrow', 'maxi-blocks')}
-				selected={props['arrow-status']}
-				onChange={val => onChange({ 'arrow-status': val })}
+				selected={getLastBreakpointAttribute({
+					target: 'arrow-status',
+					breakpoint,
+					attributes: props,
+				})}
+				onChange={val =>
+					onChange({ [`arrow-status-${breakpoint}`]: val })
+				}
 			/>
-			{props['arrow-status'] && (
+			{getLastBreakpointAttribute({
+				target: 'arrow-status',
+				breakpoint,
+				attributes: props,
+			}) && (
 				<>
 					<SettingTabsControl
 						label=''

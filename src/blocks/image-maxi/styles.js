@@ -331,16 +331,16 @@ const getFigcaptionObject = props => {
 
 			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
 				breakpoint => {
-					const num = getLastBreakpointAttribute(
-						'caption-gap',
+					const num = getLastBreakpointAttribute({
+						target: 'caption-gap',
 						breakpoint,
-						props
-					);
-					const unit = getLastBreakpointAttribute(
-						'caption-gap-unit',
+						attributes: props,
+					});
+					const unit = getLastBreakpointAttribute({
+						target: 'caption-gap-unit',
 						breakpoint,
-						props
-					);
+						attributes: props,
+					});
 
 					if (!isNil(num) && !isNil(unit)) {
 						const marginType =

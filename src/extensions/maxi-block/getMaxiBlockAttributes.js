@@ -143,13 +143,12 @@ const getMaxiBlockAttributes = props => {
 		});
 	}
 
-	const displayValue = getLastBreakpointAttribute(
-		'display',
-		deviceType,
+	const displayValue = getLastBreakpointAttribute({
+		target: 'display',
+		breakpoint: deviceType,
 		attributes,
-		false,
-		true
-	);
+		forceSingle: true,
+	});
 
 	return {
 		clientId,

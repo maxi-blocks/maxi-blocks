@@ -89,20 +89,20 @@ const SVGLayerContent = props => {
 						content: (
 							<AdvancedNumberControl
 								label={__('Size', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}background-svg-size`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}background-svg-size`,
 									breakpoint,
-									SVGOptions,
-									isHover
-								)}
+									attributes: SVGOptions,
+									isHover,
+								})}
 								allowedUnits={['px', 'em', 'vw', '%']}
 								enableUnit
-								unit={getLastBreakpointAttribute(
-									`${prefix}background-svg-size-unit`,
+								unit={getLastBreakpointAttribute({
+									target: `${prefix}background-svg-size-unit`,
 									breakpoint,
-									SVGOptions,
-									isHover
-								)}
+									attributes: SVGOptions,
+									isHover,
+								})}
 								onChangeValue={val => {
 									onChange({
 										[getAttributeKey(

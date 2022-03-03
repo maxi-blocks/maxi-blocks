@@ -56,12 +56,12 @@ const getBoxShadowStyles = ({
 					  ].default ||
 					  defaultBoxShadow[`box-shadow-${target}-${breakpoint}`]
 							.default
-					: getLastBreakpointAttribute(
-							`${prefix}box-shadow-${target}`,
-							getPrevBreakpoint(breakpoint),
-							obj,
-							isHover
-					  );
+					: getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-${target}`,
+							breakpoint: getPrevBreakpoint(breakpoint),
+							attributes: obj,
+							isHover,
+					  });
 
 			return {
 				value,
@@ -85,12 +85,12 @@ const getBoxShadowStyles = ({
 			getValue('spread');
 
 		// Palette
-		const paletteStatus = getLastBreakpointAttribute(
-			`${prefix}box-shadow-palette-status`,
+		const paletteStatus = getLastBreakpointAttribute({
+			target: `${prefix}box-shadow-palette-status`,
 			breakpoint,
-			obj,
-			isHover
-		);
+			attributes: obj,
+			isHover,
+		});
 
 		// Color
 		const { value: paletteColor, defaultValue: defaultColor } =

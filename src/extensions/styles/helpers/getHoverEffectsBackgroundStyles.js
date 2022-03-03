@@ -21,11 +21,11 @@ const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 	};
 
 	breakpoints.forEach(breakpoint => {
-		const currentActiveMedia = getLastBreakpointAttribute(
-			'hover-background-active-media',
+		const currentActiveMedia = getLastBreakpointAttribute({
+			target: 'hover-background-active-media',
 			breakpoint,
-			props
-		);
+			attributes: props,
+		});
 
 		if (!currentActiveMedia) return;
 

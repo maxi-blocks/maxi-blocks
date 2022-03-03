@@ -43,11 +43,11 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
-			const columnWidth = getLastBreakpointAttribute(
-				'column-size',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
+			const columnWidth = getLastBreakpointAttribute({
+				target: 'column-size',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
 
 			if (this.resizableObject.current.state.width !== `${columnWidth}%`)
 				this.resizableObject.current.updateSize({
@@ -73,11 +73,11 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID } = attributes;
 
 		const getColumnWidthDefault = () => {
-			const columnWidth = getLastBreakpointAttribute(
-				'column-size',
-				deviceType,
-				attributes
-			);
+			const columnWidth = getLastBreakpointAttribute({
+				target: 'column-size',
+				breakpoint: deviceType,
+				attributes,
+			});
 
 			if (columnWidth) return `${columnWidth}%`;
 
@@ -96,10 +96,16 @@ class edit extends MaxiBlockComponent {
 			);
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
 
 		const emptyColumnClass = !hasInnerBlocks
 			? 'maxi-column-block__empty'
@@ -135,13 +141,13 @@ class edit extends MaxiBlockComponent {
 									'maxi-block--backend',
 									'maxi-column-block__resizer',
 									`maxi-column-block__resizer__${uniqueID}`,
-									getLastBreakpointAttribute(
-										'display',
-										deviceType,
+									getLastBreakpointAttribute({
+										target: 'display',
+										breakpoint: deviceType,
 										attributes,
-										false,
-										true
-									) === 'none' && 'maxi-block-display-none'
+										isHover: false,
+										forceSingle: true,
+									}) === 'none' && 'maxi-block-display-none'
 								)}
 								defaultSize={{
 									width: getColumnWidthDefault(),

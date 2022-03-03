@@ -32,11 +32,11 @@ const TransitionControl = props => {
 			defaultValue={getDefaultAttribute(
 				`transition-duration-${breakpoint}`
 			)}
-			value={getLastBreakpointAttribute(
-				'transition-duration',
+			value={getLastBreakpointAttribute({
+				target: 'transition-duration',
 				breakpoint,
-				props
-			)}
+				attributes: props,
+			})}
 			onChangeValue={val => {
 				onChange({
 					[`transition-duration-${breakpoint}`]:

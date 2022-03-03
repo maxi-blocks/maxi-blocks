@@ -53,16 +53,16 @@ class edit extends MaxiBlockComponent {
 		}
 
 		if (this.resizableObject.current) {
-			const svgWidth = getLastBreakpointAttribute(
-				'svg-width',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
-			const svgWidthUnit = getLastBreakpointAttribute(
-				'svg-width-unit',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
+			const svgWidth = getLastBreakpointAttribute({
+				target: 'svg-width',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
+			const svgWidthUnit = getLastBreakpointAttribute({
+				target: 'svg-width-unit',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
 			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
 			if (this.resizableObject.current.state.width !== fullWidthValue) {
@@ -127,10 +127,16 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
 
 		return [
 			!isEmptyContent && (
@@ -173,11 +179,11 @@ class edit extends MaxiBlockComponent {
 							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
 							maxWidth={
-								getLastBreakpointAttribute(
-									'svg-responsive',
-									deviceType,
-									attributes
-								)
+								getLastBreakpointAttribute({
+									target: 'svg-responsive',
+									breakpoint: deviceType,
+									attributes,
+								})
 									? '100%'
 									: null
 							}

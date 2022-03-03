@@ -217,22 +217,28 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
 
 		const getMaxWidth = () => {
-			const maxWidth = getLastBreakpointAttribute(
-				'image-max-width',
-				deviceType,
-				attributes
-			);
-			const maxWidthUnit = getLastBreakpointAttribute(
-				'image-max-width-unit',
-				deviceType,
-				attributes
-			);
+			const maxWidth = getLastBreakpointAttribute({
+				target: 'image-max-width',
+				breakpoint: deviceType,
+				attributes,
+			});
+			const maxWidthUnit = getLastBreakpointAttribute({
+				target: 'image-max-width-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
 
 			if (isNumber(maxWidth)) return `${maxWidth}${maxWidthUnit}`;
 

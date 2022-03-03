@@ -344,7 +344,7 @@ const getIconSize = (obj, isHover = false) => {
 		}
 	});
 
-	return { IconSize: response, IconResponsive: responsive };
+	return { iconSize: response, iconResponsive: responsive };
 };
 
 const getIconPathStyles = (obj, isHover = false) => {
@@ -368,7 +368,7 @@ const getIconPathStyles = (obj, isHover = false) => {
 			delete response[breakpoint];
 	});
 
-	return { IconPath: response };
+	return { iconPath: response };
 };
 
 const getIconObject = (props, target) => {

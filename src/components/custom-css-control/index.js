@@ -130,7 +130,10 @@ const CustomCssControl = props => {
 					messageDiv.classList.remove('not-valid');
 					messageDiv.classList.add('valid');
 				} else {
-					messageDiv.innerHTML = 'Failed to check, Please try again';
+					messageDiv.innerHTML = __(
+						'Failed to check, please try again',
+						'maxi-blocks'
+					);
 					messageDiv.classList.add('not-valid');
 					messageDiv.classList.remove('valid');
 				}

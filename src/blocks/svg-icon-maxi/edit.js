@@ -184,8 +184,8 @@ class edit extends MaxiBlockComponent {
 							size={{
 								width: getLastBreakpointAttribute(
 									'svg-width',
-									this.props.deviceType || 'general',
-									this.props.attributes
+									deviceType || 'general',
+									attributes
 								),
 							}}
 							showHandle={isSelected}

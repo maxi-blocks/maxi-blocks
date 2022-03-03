@@ -113,7 +113,6 @@ class edit extends MaxiBlockComponent {
 		} = attributes;
 
 		const isEmptyContent = isEmpty(content);
-
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
@@ -182,6 +181,13 @@ class edit extends MaxiBlockComponent {
 									? '100%'
 									: null
 							}
+							size={{
+								width: getLastBreakpointAttribute(
+									'svg-width',
+									deviceType || 'general',
+									attributes
+								),
+							}}
 							showHandle={isSelected}
 							enable={{
 								topRight: true,

@@ -75,7 +75,7 @@ const SettingTabsControl = props => {
 
 	const setActiveTab = (tab, name) => {
 		setTab(tab);
-		updateInspectorPath({ depth, name, value: tab });
+		updateInspectorPath({ depth: depth, name: name, value: tab });
 	};
 
 	useEffect(() => {

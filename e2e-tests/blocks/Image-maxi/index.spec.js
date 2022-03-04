@@ -23,7 +23,7 @@ import {
 	addTypographyStyle,
 } from '../../utils';
 
-describe.skip('Image Maxi', () => {
+describe('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');

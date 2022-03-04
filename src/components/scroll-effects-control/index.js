@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 /**
  * Internal dependencies
  */
@@ -25,7 +26,6 @@ import { getActiveTabName } from '../../extensions/inspector-path';
  * External dependencies
  */
 import classnames from 'classnames';
-import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -235,7 +235,7 @@ const ScrollEffectsControl = props => {
 		<div className={classes}>
 			<SelectControl
 				label={__('Shortcut effect', 'maxi-blocks')}
-				onChange={val => onChangeShortcut(val)}
+				onChange={val => onChange(onChangeShortcut(val))}
 				options={globalShortcutsOptions}
 			/>
 			<SettingTabsControl
@@ -293,7 +293,9 @@ const ScrollEffectsControl = props => {
 											'maxi-blocks'
 										)}
 										onChange={val =>
-											onChangeShortcut(val, type)
+											onChange(
+												onChangeShortcut(val, type)
+											)
 										}
 										options={getShortcutEffect(type)}
 									/>

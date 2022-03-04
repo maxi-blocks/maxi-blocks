@@ -19,24 +19,12 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "l": Object {
-        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
-      },
-      "m": Object {
-        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
-      },
-      "s": Object {
-        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
-      },
-      "xl": Object {
-        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
-      },
-      "xs": Object {
-        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
-      },
-      "xxl": Object {
-        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
-      },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
     },
     "size": Object {
       "general": Object {

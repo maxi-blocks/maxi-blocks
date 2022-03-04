@@ -1,5 +1,5 @@
 export const selectorsRow = {
-	row: {
+	'row': {
 		normal: {
 			label: 'row',
 			target: '.maxi-row-block',
@@ -31,4 +31,8 @@ export const selectorsRow = {
 	},
 };
 
-export const categoriesRow = ['row', 'before row', 'after row'];
+export const categoriesRow = [
+	'row',
+	'before row',
+	'after row',
+];

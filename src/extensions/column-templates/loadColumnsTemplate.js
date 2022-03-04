@@ -17,7 +17,7 @@ import { cloneDeep, flatten, compact } from 'lodash';
 
 const loadTemplate = (template, clientId) => {
 	template.content.forEach(column => {
-		column[1].uniqueID = uniqueIDGenerator('column-maxi-');
+		column[1].uniqueID = uniqueIDGenerator('maxi-column-maxi-');
 	});
 
 	const newAttributes = template.attributes;

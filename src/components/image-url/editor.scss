@@ -13,37 +13,21 @@
 		button {
 			width: 40px;
 			height: 40px;
-			box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
-			border-radius: 0;
 		}
 		form,
 		button {
-			background: #fff;
-		}
-		button {
-			&:hover {
-				svg {
-					fill: #ff4a17;
-				}
-			}
-		}
-		form {
-			.block-editor-url-input,
-			button {
-				box-shadow: none;
-				border: 1px solid #d6d8de;
-			}
+			background: #232533;
 		}
 		svg {
 			width: 20px;
 			height: 20px;
-			fill: #007cba;
+			fill: #fff;
 		}
 		.components-base-control__field {
 			margin-bottom: 0;
 			input {
-				padding-top: 9px;
-				padding-bottom: 8px;
+				padding-top: 11px;
+				padding-bottom: 12px;
 				width: 300px;
 				font-size: 14px;
 			}

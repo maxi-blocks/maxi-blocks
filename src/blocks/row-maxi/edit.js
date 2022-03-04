@@ -67,10 +67,6 @@ class edit extends MaxiBlockComponent {
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
-		const emptyRowClass = !hasInnerBlocks
-			? 'maxi-row-block__empty'
-			: 'maxi-row-block__has-innerBlock';
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -95,7 +91,6 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					blockFullWidth={blockFullWidth}
 					{...getMaxiBlockAttributes(this.props)}
-					classes={emptyRowClass}
 				>
 					<InnerBlocks
 						className='maxi-row-block__container'

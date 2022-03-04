@@ -8,6 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import { processSCAttribute, getDefaultSCAttribute } from './utils';
+
 import {
 	AccordionControl,
 	Button,
@@ -15,7 +16,6 @@ import {
 	Icon,
 	SettingTabsControl,
 	TypographyControl,
-	ToggleSwitch,
 } from '../../components';
 import {
 	getDefaultSCValue,
@@ -31,6 +31,7 @@ import classnames from 'classnames';
  * Icons
  */
 import { reset } from '../../icons';
+import ToggleSwitch from '../../components/toggle-switch';
 
 /**
  * Component
@@ -87,7 +88,6 @@ const GlobalColor = props => {
 						/>
 					)}
 					<ColorControl
-						label={label}
 						className={`maxi-style-cards-control__sc__link--${SCStyle}`}
 						paletteStatus={processSCAttribute(
 							SC,

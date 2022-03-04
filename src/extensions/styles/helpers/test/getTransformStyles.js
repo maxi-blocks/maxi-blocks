@@ -1,5 +1,15 @@
 import getTransformStyles from '../getTransformStyles';
 
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
+
 describe('getTransformStyles', () => {
 	it('Get a correct transform styles', () => {
 		const object = {

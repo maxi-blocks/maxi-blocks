@@ -94,6 +94,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		isSave = false,
 		classes: customClasses,
 		paletteClasses,
+		hasArrow,
 		hasLink,
 		...extraProps
 	} = props;
@@ -173,6 +174,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		displayValue === 'none' && 'maxi-block-display-none',
 		customClasses,
 		paletteClasses,
+		hasArrow && 'maxi-block--has-arrow',
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over'
 	);

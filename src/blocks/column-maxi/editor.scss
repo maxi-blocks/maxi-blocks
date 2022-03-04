@@ -9,12 +9,14 @@
 }
 .edit-post-visual-editor {
 	.maxi-column-block__resizer.maxi-column-block {
+		outline: 1px solid #81bdda !important;
 		vertical-align: top;
-		z-index: 1;
-		&.has-child-selected {
-			&::after {
-				opacity: 1;
-				border-color: #ff4a17 !important;
+
+		&.has-child-selected,
+		&.is-selected {
+			outline: 2px solid #ff4a17 !important;
+			&:focus {
+				box-shadow: none !important;
 			}
 		}
 	}

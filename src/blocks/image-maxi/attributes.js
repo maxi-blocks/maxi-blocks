@@ -82,6 +82,9 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
+	externalUrl: {
+		type: 'string',
+	},
 	mediaID: {
 		type: 'number',
 	},
@@ -148,6 +151,7 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	...attributesData.container,
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

@@ -1,16 +1,7 @@
 /**
- * WordPress dependencies
- */
-import { select } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
-import { getLastBreakpointAttribute } from '../styles';
-
-/**
  * External dependencies
  */
+import { select } from '@wordpress/data';
 import { isEmpty, isNil, merge } from 'lodash';
 
 const getTypographyFromSC = (styleCard, type) => {
@@ -27,25 +18,7 @@ const getTypographyFromSC = (styleCard, type) => {
 		),
 	};
 
-	if (type !== 'button') return SC;
-
-	const { receiveMaxiDeviceType } = select('maxiBlocks');
-
-	const breakpoint = receiveMaxiDeviceType();
-
-	if (!isEmpty(SC[`font-family-${breakpoint}`])) return SC;
-
-	const pObj = getTypographyFromSC(selectedSC, 'p');
-	const fontFamily = getLastBreakpointAttribute(
-		'font-family',
-		breakpoint,
-		pObj
-	);
-
-	return {
-		...SC,
-		[`font-family-${breakpoint}`]: fontFamily,
-	};
+	return SC;
 };
 
 export default getTypographyFromSC;

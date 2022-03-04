@@ -105,7 +105,7 @@ describe('getBlockAttributes', () => {
 					'padding-bottom-general': 20,
 					'padding-sync-general': false,
 					'padding-unit-general': 'px',
-					'arrow-status-general': false,
+					'arrow-status': false,
 					'arrow-side-general': 'bottom',
 					'arrow-position-general': 50,
 					'arrow-width-general': 80,

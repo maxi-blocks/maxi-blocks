@@ -13,6 +13,7 @@ import {
 	getMarginPaddingStyles,
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
+	getContainerStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsContainer } from './custom-css';
@@ -96,13 +97,23 @@ const getHoverObject = props => {
 };
 
 const getContainerObject = props => {
-	const response = {
+	const { isFirstOnHierarchy, fullWidth } = props;
+
+	let response = {
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding'),
 			},
 		}),
 	};
+
+	if (isFirstOnHierarchy && fullWidth === 'full')
+		response = {
+			...response,
+			sizeContainer: getContainerStyles({
+				...getGroupAttributes(props, 'container'),
+			}),
+		};
 
 	return response;
 };

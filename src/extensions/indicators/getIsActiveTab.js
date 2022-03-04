@@ -13,12 +13,8 @@ const getIsActiveTab = (
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
 	const block = getBlock(getSelectedBlockClientId());
-
 	if (!block) return null;
-
 	const { name, attributes: currentAttributes } = block;
-
-	if (!name.includes('maxi-blocks')) return null;
 
 	const defaultAttributes = getBlockAttributes(name);
 

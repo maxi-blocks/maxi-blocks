@@ -34,7 +34,7 @@ export const handleSetAttributes = ({
 			key.lastIndexOf('-')
 		)}-${winBreakpoint}`;
 		const attrExistOnWinBreakpoint = !isNil(
-			attributes?.[attrLabelOnWinBreakpoint],
+			attributes[attrLabelOnWinBreakpoint],
 			true
 		);
 
@@ -45,10 +45,7 @@ export const handleSetAttributes = ({
 			key.lastIndexOf('-')
 		)}-general`;
 
-		const attrExistOnGeneral = !isNil(
-			attributes?.[attrLabelOnGeneral],
-			true
-		);
+		const attrExistOnGeneral = !isNil(attributes[attrLabelOnGeneral], true);
 		const attrExistOnObjOnGeneral = attrLabelOnGeneral in obj;
 
 		if (
@@ -63,7 +60,7 @@ export const handleSetAttributes = ({
 			.some(
 				breakpoint =>
 					!isNil(
-						attributes?.[
+						attributes[
 							`${key.slice(
 								0,
 								key.lastIndexOf('-')
@@ -84,11 +81,11 @@ export const handleSetAttributes = ({
 
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
-			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
+			getDefaultAttribute(attrLabelOnGeneral, clientId);
 
 		if (
 			(breakpoint === 'general' ||
-				attributes?.[attrLabelOnGeneral] === value) &&
+				attributes[attrLabelOnGeneral] === value) &&
 			defaultGeneralAttribute === value
 		)
 			return;
@@ -103,7 +100,7 @@ export const handleSetAttributes = ({
 			return;
 		}
 
-		response[attrLabelOnWinBreakpoint] = attributes?.[attrLabelOnGeneral];
+		response[attrLabelOnWinBreakpoint] = attributes[attrLabelOnGeneral];
 	});
 
 	return onChange(response);

@@ -388,11 +388,6 @@ const HoverEffectControl = props => {
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
-							globalProps={{
-								target: '',
-								type: 'h4',
-							}}
-							textLevel='h4'
 						/>
 					)}
 					<hr />
@@ -435,11 +430,6 @@ const HoverEffectControl = props => {
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
-							globalProps={{
-								target: '',
-								type: 'p',
-							}}
-							textLevel='p'
 						/>
 					)}
 					<hr />

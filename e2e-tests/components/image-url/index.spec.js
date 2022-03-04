@@ -7,12 +7,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockStyle, getAttributes } from '../../utils';
 
-describe.skip('ImageURL', () => {
+describe('ImageURL', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
 	});
-
 	it('Check imageUrl', async () => {
 		// select img
 		await page.$eval(

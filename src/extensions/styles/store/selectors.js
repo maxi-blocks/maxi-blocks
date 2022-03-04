@@ -16,7 +16,7 @@ export const getPostStyles = state => {
  * @return {Array} Format types.
  */
 export const getBlockStyles = (state, target) => {
-	if (state.styles && state.styles) return state.styles[target];
+	if (state.styles && state.styles) return state[target];
 
 	return false;
 };

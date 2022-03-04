@@ -22,7 +22,6 @@ import transforms from './transforms';
 /**
  * Styles and icons
  */
-import './editor.scss';
 import './style.scss';
 import { textIcon } from '../../icons';
 

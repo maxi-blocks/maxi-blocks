@@ -46,7 +46,6 @@ import {
 	alignRightTop,
 	alignRightBottom,
 } from '../../icons';
-import './editor.scss';
 
 /**
  * Component
@@ -73,7 +72,7 @@ const HoverEffectControl = props => {
 						'hover-transition-duration': 0.5,
 					});
 				}}
-				className='maxi-settingstab-control_has-border-left-right'
+				hasBorder
 			/>
 			<ToggleSwitch
 				label={__('Preview', 'maxi-blocks')}

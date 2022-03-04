@@ -73,8 +73,8 @@ const AlignmentControl = props => {
 		<SettingTabsControl
 			type='buttons'
 			fullWidthMode
-			// className={classes}
-			className={`${classes} ${'maxi-settingstab-control_has-border-left-right'}`}
+			className={classes}
+			hasBorder
 			items={getOptions()}
 			selected={
 				getLastBreakpointAttribute(

@@ -46,6 +46,7 @@ const SettingTabsControl = props => {
 		fullWidthMode,
 		blockName,
 		depth,
+		hasBorder = false,
 	} = props;
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
@@ -61,7 +62,8 @@ const SettingTabsControl = props => {
 		'maxi-tabs-control',
 		target && `maxi-tabs-control__${target}`,
 		disablePadding ? 'maxi-tabs-control--disable-padding' : null,
-		fullWidthMode && 'maxi-tabs-control__full-width'
+		fullWidthMode && 'maxi-tabs-control__full-width',
+		hasBorder && 'maxi-settingstab-control_has-border-left-right'
 	);
 
 	const classesBase = classnames(
@@ -75,7 +77,7 @@ const SettingTabsControl = props => {
 
 	const setActiveTab = (tab, name) => {
 		setTab(tab);
-		updateInspectorPath({ depth: depth, name: name, value: tab });
+		updateInspectorPath({ depth, name, value: tab });
 	};
 
 	useEffect(() => {

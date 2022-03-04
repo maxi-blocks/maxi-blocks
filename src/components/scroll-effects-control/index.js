@@ -245,7 +245,7 @@ const ScrollEffectsControl = props => {
 				items={motionOptions}
 				onChange={val => setScrollStatus(val)}
 				depth={depth}
-				className='maxi-settingstab-control_has-border-left-right'
+				hasBorder
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute(

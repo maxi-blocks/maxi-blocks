@@ -31,17 +31,24 @@
 		&__upload-button {
 			opacity: 1;
 			visibility: visible;
-			width: 40px;
-			height: 40px;
+			width: 30px;
+			height: 30px;
 			position: absolute;
 			top: 0;
 			right: 0;
-			background: #232533;
+			background: #fff;
+			box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
+			border-radius: 0;
 
 			svg {
-				fill: #fff;
-				width: 20px;
-				height: 20px;
+				fill: #007cba;
+				width: 15px;
+				height: 15px;
+			}
+			&:hover {
+				svg {
+					fill: #ff4a17;
+				}
 			}
 		}
 	}

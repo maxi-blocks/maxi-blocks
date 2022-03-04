@@ -39,6 +39,7 @@ import { isNil, isBoolean, isNumber } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**
  * Component
@@ -100,10 +101,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}font-size-unit`]: getDefault(
-								`${prefix}font-size-unit`
+								`${prefix}font-size-unit`,
+								breakpoint
 							),
 							[`${prefix}font-size`]: getDefault(
-								`${prefix}font-size`
+								`${prefix}font-size`,
+								breakpoint
 							),
 						},
 						rawBreakpoint
@@ -163,10 +166,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}line-height-unit`]: getDefault(
-								`${prefix}line-height-unit`
+								`${prefix}line-height-unit`,
+								breakpoint
 							),
 							[`${prefix}line-height`]: getDefault(
-								`${prefix}line-height`
+								`${prefix}line-height`,
+								breakpoint
 							),
 						},
 						rawBreakpoint
@@ -221,7 +226,8 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}letter-spacing-unit`]: getDefault(
-								`${prefix}letter-spacing-unit`
+								`${prefix}letter-spacing-unit`,
+								breakpoint
 							),
 							[`${prefix}letter-spacing`]: '',
 						},
@@ -562,25 +568,37 @@ const TypographyControl = withFormatValue(props => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
 		if (disableFormats || customDisableFormats)
-			return getLastBreakpointAttribute(
-				prop,
-				currentBreakpoint,
-				typography,
+			return getLastBreakpointAttribute({
+				target: prop,
+				breakpoint: currentBreakpoint,
+				attributes: typography,
 				isHover,
-				false,
-				avoidXXL
-			);
+				avoidXXL,
+			});
 
-		const nonHoverValue = getCustomFormatValue({
-			typography,
-			formatValue,
-			prop,
-			breakpoint: currentBreakpoint,
-			textLevel,
-			styleCard,
-			styleCardPrefix,
-			avoidXXL,
-		});
+		const nonHoverValue =
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop,
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+			}) ??
+			// In cases like HoverEffectControl, where we want the SC 'p' value
+			// but requires a clean 'prop' value (no prefix)
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop: prop.replace(prefix, ''),
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+			});
 
 		if (!isHover) return nonHoverValue;
 
@@ -673,10 +691,15 @@ const TypographyControl = withFormatValue(props => {
 
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
-		const defaultAttribute = getDefaultAttribute(
-			`${prop}-${currentBreakpoint}`,
-			clientId
-		);
+
+		const defaultAttribute = !styleCards
+			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
+			: getDefaultSCValue({
+					target: `${prop}-${currentBreakpoint}`,
+					SC: styleCard,
+					SCStyle: blockStyle,
+					groupAttr: textLevel,
+			  });
 
 		return defaultAttribute;
 	};
@@ -967,11 +990,11 @@ const TypographyControl = withFormatValue(props => {
 								[`${prefix}text-shadow`]: val,
 							});
 						}}
-						defaultColor={getLastBreakpointAttribute(
-							'color',
+						defaultColor={getLastBreakpointAttribute({
+							target: 'color',
 							breakpoint,
-							typography
-						)}
+							attributes: typography,
+						})}
 						blockStyle={blockStyle}
 						breakpoint={breakpoint}
 					/>

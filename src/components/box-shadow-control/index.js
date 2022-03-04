@@ -72,12 +72,12 @@ const BoxShadowControl = props => {
 		];
 
 		const hasBoxShadow = items.some(item => {
-			const itemValue = getLastBreakpointAttribute(
-				item,
+			const itemValue = getLastBreakpointAttribute({
+				target: item,
 				breakpoint,
-				props,
-				isHover
-			);
+				attributes: props,
+				isHover,
+			});
 
 			return !isNil(itemValue) && itemValue !== 0;
 		});
@@ -85,12 +85,12 @@ const BoxShadowControl = props => {
 		if (type === 'none') return false;
 
 		const isActive = !items.some(item => {
-			const itemValue = getLastBreakpointAttribute(
-				item,
+			const itemValue = getLastBreakpointAttribute({
+				target: item,
 				breakpoint,
-				props,
-				isHover
-			);
+				attributes: props,
+				isHover,
+			});
 
 			return itemValue !== typeObj[item];
 		});
@@ -155,32 +155,32 @@ const BoxShadowControl = props => {
 					<ColorControl
 						label={__('Box Shadow', 'maxi-blocks')}
 						className='maxi-shadow-control__color'
-						color={getLastBreakpointAttribute(
-							`${prefix}box-shadow-color`,
+						color={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-color`,
 							breakpoint,
-							props,
-							isHover
-						)}
+							attributes: props,
+							isHover,
+						})}
 						prefix={`${prefix}box-shadow-`}
 						useBreakpointForDefault
-						paletteStatus={getLastBreakpointAttribute(
-							`${prefix}box-shadow-palette-status`,
+						paletteStatus={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-palette-status`,
 							breakpoint,
-							props,
-							isHover
-						)}
-						paletteColor={getLastBreakpointAttribute(
-							`${prefix}box-shadow-palette-color`,
+							attributes: props,
+							isHover,
+						})}
+						paletteColor={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-palette-color`,
 							breakpoint,
-							props,
-							isHover
-						)}
-						paletteOpacity={getLastBreakpointAttribute(
-							`${prefix}box-shadow-palette-opacity`,
+							attributes: props,
+							isHover,
+						})}
+						paletteOpacity={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-palette-opacity`,
 							breakpoint,
-							props,
-							isHover
-						)}
+							attributes: props,
+							isHover,
+						})}
 						onChange={({
 							color,
 							paletteColor,
@@ -213,12 +213,12 @@ const BoxShadowControl = props => {
 						<>
 							<AdvancedNumberControl
 								label={__('Horizontal', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-horizontal`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-horizontal`,
 									breakpoint,
-									props,
-									isHover
-								)}
+									attributes: props,
+									isHover,
+								})}
 								onChangeValue={val => {
 									onChange({
 										[`${prefix}box-shadow-horizontal-${breakpoint}${
@@ -246,12 +246,12 @@ const BoxShadowControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Vertical', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-vertical`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-vertical`,
 									breakpoint,
-									props,
-									isHover
-								)}
+									attributes: props,
+									isHover,
+								})}
 								onChangeValue={val => {
 									onChange({
 										[`${prefix}box-shadow-vertical-${breakpoint}${
@@ -279,12 +279,12 @@ const BoxShadowControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Blur', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-blur`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-blur`,
 									breakpoint,
-									props,
-									isHover
-								)}
+									attributes: props,
+									isHover,
+								})}
 								onChangeValue={val => {
 									onChange({
 										[`${prefix}box-shadow-blur-${breakpoint}${
@@ -312,12 +312,12 @@ const BoxShadowControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Spread', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-spread`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-spread`,
 									breakpoint,
-									props,
-									isHover
-								)}
+									attributes: props,
+									isHover,
+								})}
 								onChangeValue={val => {
 									onChange({
 										[`${prefix}box-shadow-spread-${breakpoint}${

@@ -63,21 +63,21 @@ const VideoLayer = props => {
 		style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
 	}
 
-	const videoLoop = getLastBreakpointAttribute(
-		'background-video-loop',
+	const videoLoop = getLastBreakpointAttribute({
+		target: 'background-video-loop',
 		breakpoint,
-		videoOptions
-	);
-	const videoStartTime = getLastBreakpointAttribute(
-		'background-video-startTime',
+		attributes: videoOptions,
+	});
+	const videoStartTime = getLastBreakpointAttribute({
+		target: 'background-video-startTime',
 		breakpoint,
-		videoOptions
-	);
-	const videoEndTime = getLastBreakpointAttribute(
-		'background-video-endTime',
+		attributes: videoOptions,
+	});
+	const videoEndTime = getLastBreakpointAttribute({
+		target: 'background-video-endTime',
 		breakpoint,
-		videoOptions
-	);
+		attributes: videoOptions,
+	});
 
 	const parsedVideo = parseVideo(videoUrl);
 

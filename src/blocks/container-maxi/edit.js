@@ -89,7 +89,7 @@ class edit extends MaxiBlockComponent {
 						location='top'
 					/>
 				)}
-				{isFirstOnHierarchy && blockFullWidth === 'full' && (
+				{isFirstOnHierarchy && (
 					<>
 						<ArrowDisplayer
 							{...getGroupAttributes(

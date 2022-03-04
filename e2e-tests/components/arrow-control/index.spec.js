@@ -18,6 +18,7 @@ import {
 	getBlockStyle,
 	getAttributes,
 	editAdvancedNumberControl,
+	addBackgroundLayer,
 } from '../../utils';
 
 describe('ArrowControl', () => {
@@ -29,22 +30,9 @@ describe('ArrowControl', () => {
 		);
 
 		// change color
-		const backgroundPanel = await openSidebarTab(
-			page,
-			'style',
-			'background layer'
-		);
+		await openSidebarTab(page, 'style', 'background layer');
 
-		const colorSelector = await backgroundPanel.$(
-			'.maxi-background-control select'
-		);
-
-		await colorSelector.select('color');
-
-		await backgroundPanel.$$eval(
-			'.maxi-background-layer__content .maxi-color-control__palette-container button',
-			colorPalette => colorPalette[1].click()
-		);
+		await addBackgroundLayer(page, 'color');
 
 		// add arrow
 		const accordionPanel = await openSidebarTab(

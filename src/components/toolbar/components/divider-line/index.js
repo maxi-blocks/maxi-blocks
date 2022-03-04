@@ -73,6 +73,11 @@ const Divider = props => {
 					lineOrientation={lineOrientation}
 					onChange={onChange}
 					breakpoint={breakpoint}
+					dividerBorderStyle={getLastBreakpointAttribute(
+						'divider-border-style',
+						breakpoint,
+						props
+					)}
 				/>
 				{lineOrientation === 'horizontal' && (
 					<>

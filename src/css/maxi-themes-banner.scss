@@ -33,7 +33,7 @@ body.maxi-blocks--active .maxi-block {
 	}
 }
 
-body.maxi-blocks--active .maxi-block[data-align="full"] {
+body.maxi-blocks--active .maxi-block[data-align='full'] {
 	width: auto;
 }
 
@@ -44,13 +44,18 @@ body.maxi-blocks--active .maxi-button-block__button {
 }
 
 /*Fixes container alignment for Twenty Nineteen*/
-body.maxi-blocks--active .maxi-container-block.wp-block.maxi-block.maxi-block--backend {
+body.maxi-blocks--active
+	.maxi-container-block.wp-block.maxi-block.maxi-block--backend {
 	left: auto;
 }
 
 /*Fixes container alignment for Twenty Twenty Two*/
-body.maxi-blocks--active #wpcontent .block-editor-block-list__layout.is-root-container .maxi-block[data-align="full"] {
-	margin: 0 auto !important;
+body.maxi-blocks--active
+	#wpcontent
+	.block-editor-block-list__layout.is-root-container
+	.maxi-block[data-align='full'] {
+	margin-right: auto !important;
+	margin-left: auto !important;
 }
 body.maxi-blocks--active #wpcontent .is-root-container {
 	padding: 0;

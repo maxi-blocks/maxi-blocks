@@ -1,6 +1,6 @@
 import getClientId from './getClientId';
 
-const removeBackgroundLayers = async (page, response) => {
+const setAttributes = async (page, response) => {
 	const clientId = await getClientId();
 
 	await page.evaluate(
@@ -14,4 +14,4 @@ const removeBackgroundLayers = async (page, response) => {
 	);
 };
 
-export default removeBackgroundLayers;
+export default setAttributes;

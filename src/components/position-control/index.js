@@ -80,8 +80,11 @@ const PositionControl = props => {
 					{ label: 'Fixed', value: 'fixed' },
 				]}
 				value={
-					getLastBreakpointAttribute('position', breakpoint, props) ||
-					''
+					getLastBreakpointAttribute({
+						target: 'position',
+						breakpoint,
+						attributes: props,
+					}) || ''
 				}
 				onChange={val =>
 					onChange({
@@ -91,7 +94,11 @@ const PositionControl = props => {
 				}
 			/>
 			{!isEmpty(
-				getLastBreakpointAttribute('position', breakpoint, props)
+				getLastBreakpointAttribute({
+					target: 'position',
+					breakpoint,
+					attributes: props,
+				})
 			) && (
 				<AxisControl
 					{...props}

@@ -88,6 +88,21 @@ const getLastBreakpointAttributeSingle = (
 			avoidXXL
 		);
 
+	// Helps responsive API: when breakpoint is general and the attribute is undefined,
+	// check for the win selected breakpoint
+	if (!currentAttr && breakpoint === 'general') {
+		const winBreakpoint = select('maxiBlocks')?.receiveWinBreakpoint();
+
+		if (winBreakpoint)
+			currentAttr = getLastBreakpointAttributeSingle(
+				target,
+				winBreakpoint,
+				attributes,
+				isHover,
+				avoidXXL
+			);
+	}
+
 	return currentAttr;
 };
 
@@ -120,14 +135,14 @@ const getLastBreakpointAttributeGroup = (
 	return null;
 };
 
-const getLastBreakpointAttribute = (
+const getLastBreakpointAttribute = ({
 	target,
 	breakpoint,
 	attributes = null,
 	isHover = false,
 	forceSingle = false,
-	avoidXXL = true
-) => {
+	avoidXXL = true,
+}) => {
 	const { getSelectedBlockCount } = select('core/block-editor') || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
 	};

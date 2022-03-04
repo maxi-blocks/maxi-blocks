@@ -61,9 +61,12 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={getLastBreakpointAttribute(
-															'column-size',
-															deviceType,
-															attributes
+															{
+																target: 'column-size',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
 														)}
 														onChangeValue={val => {
 															maxiSetAttributes({

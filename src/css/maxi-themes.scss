@@ -78,7 +78,9 @@ body.maxi-blocks--active .edit-post-visual-editor {
 		/* Individual settings per a block type */
 		.maxi-#{$style}.maxi-block {
 			&.maxi-text-block,
-			.maxi-text-block {
+			.maxi-text-block,
+			&.maxi-image-block figcaption,
+			.maxi-image-block figcaption {
 				@each $level in $levels {
 					#{$level} {
 						font-family: var(
@@ -96,6 +98,13 @@ body.maxi-blocks--active .edit-post-visual-editor {
 						text-decoration: var(
 							--maxi-#{$style}-#{$level}-text-decoration-general
 						);
+
+						// Ensures link keeps same font-family than parent
+						a {
+							font-family: var(
+								--maxi-#{$style}-#{$level}-font-family-general
+							);
+						}
 					}
 				}
 			}
@@ -124,6 +133,7 @@ body.maxi-blocks--active .edit-post-visual-editor {
 					color: var(--maxi-#{$style}-link-visited);
 				}
 			}
+
 			&.maxi-text-block a.maxi-text-block--link,
 			.maxi-text-block a.maxi-text-block--link {
 				color: var(--maxi-#{$style}-link);
@@ -150,7 +160,10 @@ body.maxi-blocks--active .edit-post-visual-editor {
 
 			&.maxi-button-block .maxi-button-block__content,
 			.maxi-button-block .maxi-button-block__content {
-				font-family: var(--maxi-#{$style}-button-font-family-general);
+				font-family: var(
+					--maxi-#{$style}-button-font-family-general,
+					var(--maxi-#{$style}-p-font-family-general)
+				);
 				font-weight: var(--maxi-#{$style}-button-font-weight-general);
 				font-style: var(--maxi-#{$style}-button-font-style-general);
 				text-transform: var(
@@ -159,6 +172,33 @@ body.maxi-blocks--active .edit-post-visual-editor {
 				text-decoration: var(
 					--maxi-#{$style}-button-text-decoration-general
 				);
+			}
+
+			&.maxi-image-block .maxi-hover-details,
+			.maxi-image-block .maxi-hover-details {
+				h4 {
+					font-family: var(--maxi-#{$style}-h4-font-family-general);
+					font-weight: var(--maxi-#{$style}-h4-font-weight-general);
+					font-style: var(--maxi-#{$style}-h4-font-style-general);
+					text-transform: var(
+						--maxi-#{$style}-h4-text-transform-general
+					);
+					text-decoration: var(
+						--maxi-#{$style}-h4-text-decoration-general
+					);
+				}
+
+				p {
+					font-family: var(--maxi-#{$style}-p-font-family-general);
+					font-weight: var(--maxi-#{$style}-p-font-weight-general);
+					font-style: var(--maxi-#{$style}-p-font-style-general);
+					text-transform: var(
+						--maxi-#{$style}-p-text-transform-general
+					);
+					text-decoration: var(
+						--maxi-#{$style}-p-text-decoration-general
+					);
+				}
 			}
 		}
 	}
@@ -195,9 +235,7 @@ body.maxi-blocks--active {
 				.maxi-block--backend {
 					&.maxi-#{$style} {
 						&.maxi-text-block,
-						&.maxi-button-block,
-						.maxi-text-block,
-						.maxi-button-block {
+						.maxi-text-block {
 							@each $level in $levels {
 								#{$level} {
 									&.maxi-text-block__content {
@@ -247,29 +285,116 @@ body.maxi-blocks--active {
 								);
 							}
 						}
-					}
-					.maxi-button-block__content {
-						font-size: var(
-							--maxi-#{$style}-button-font-size-#{$responsive_size}
-						);
-						line-height: var(
-							--maxi-#{$style}-button-line-height-#{$responsive_size}
-						);
-						letter-spacing: var(
-							--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
-						);
-						font-weight: var(
-							--maxi-#{$style}-button-font-weight-#{$responsive_size}
-						);
-						text-transform: var(
-							--maxi-#{$style}-button-text-transform-#{$responsive_size}
-						);
-						font-style: var(
-							--maxi-#{$style}-button-font-style-#{$responsive_size}
-						);
-						text-decoration: var(
-							--maxi-#{$style}-button-text-decoration-#{$responsive_size}
-						);
+
+						.maxi-button-block__content {
+							font-size: var(
+								--maxi-#{$style}-button-font-size-#{$responsive_size}
+							);
+							line-height: var(
+								--maxi-#{$style}-button-line-height-#{$responsive_size}
+							);
+							letter-spacing: var(
+								--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
+							);
+							font-weight: var(
+								--maxi-#{$style}-button-font-weight-#{$responsive_size}
+							);
+							text-transform: var(
+								--maxi-#{$style}-button-text-transform-#{$responsive_size}
+							);
+							font-style: var(
+								--maxi-#{$style}-button-font-style-#{$responsive_size}
+							);
+							text-decoration: var(
+								--maxi-#{$style}-button-text-decoration-#{$responsive_size}
+							);
+						}
+
+						&.maxi-image-block,
+						.maxi-image-block {
+							figcaption {
+								font-family: var(
+									--maxi-#{$style}-p-font-family-#{$responsive_size}
+								);
+								font-size: var(
+									--maxi-#{$style}-p-font-size-#{$responsive_size}
+								);
+								line-height: var(
+									--maxi-#{$style}-p-line-height-#{$responsive_size}
+								);
+								letter-spacing: var(
+									--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
+								);
+								font-weight: var(
+									--maxi-#{$style}-p-font-weight-#{$responsive_size}
+								);
+								text-transform: var(
+									--maxi-#{$style}-p-text-transform-#{$responsive_size}
+								);
+								font-style: var(
+									--maxi-#{$style}-p-font-style-#{$responsive_size}
+								);
+								text-decoration: var(
+									--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+								);
+							}
+						}
+
+						.maxi-hover-details {
+							h4 {
+								font-family: var(
+									--maxi-#{$style}-h4-font-family-#{$responsive_size}
+								);
+								font-size: var(
+									--maxi-#{$style}-h4-font-size-#{$responsive_size}
+								);
+								line-height: var(
+									--maxi-#{$style}-h4-line-height-#{$responsive_size}
+								);
+								letter-spacing: var(
+									--maxi-#{$style}-h4-letter-spacing-#{$responsive_size}
+								);
+								font-weight: var(
+									--maxi-#{$style}-h4-font-weight-#{$responsive_size}
+								);
+								text-transform: var(
+									--maxi-#{$style}-h4-text-transform-#{$responsive_size}
+								);
+								font-style: var(
+									--maxi-#{$style}-h4-font-style-#{$responsive_size}
+								);
+								text-decoration: var(
+									--maxi-#{$style}-h4-text-decoration-#{$responsive_size}
+								);
+							}
+
+							p {
+								font-family: var(
+									--maxi-#{$style}-p-font-family-#{$responsive_size}
+								);
+								font-size: var(
+									--maxi-#{$style}-p-font-size-#{$responsive_size}
+								);
+								line-height: var(
+									--maxi-#{$style}-p-line-height-#{$responsive_size}
+								);
+								letter-spacing: var(
+									--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
+								);
+								font-weight: var(
+									--maxi-#{$style}-p-font-weight-#{$responsive_size}
+								);
+								text-transform: var(
+									--maxi-#{$style}-p-text-transform-#{$responsive_size}
+								);
+								font-style: var(
+									--maxi-#{$style}-p-font-style-#{$responsive_size}
+								);
+								text-decoration: var(
+									--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+								);
+							}
+						}
 					}
 				}
 			}
@@ -307,9 +432,7 @@ body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
 					&.maxi-text-block,
-					&.maxi-button-block,
-					.maxi-text-block,
-					.maxi-button-block {
+					.maxi-text-block {
 						@each $level in $levels {
 							#{$level} {
 								font-family: var(
@@ -339,6 +462,7 @@ body.maxi-blocks--active {
 							}
 						}
 					}
+
 					&.maxi-text-block li,
 					.maxi-text-block li {
 						font-family: var(
@@ -354,29 +478,116 @@ body.maxi-blocks--active {
 							--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage}
 						);
 					}
-				}
-				.maxi-button-block__content {
-					font-size: var(
-						--maxi-#{$style}-button-font-size-#{$current_responsive_stage}
-					);
-					line-height: var(
-						--maxi-#{$style}-button-line-height-#{$current_responsive_stage}
-					);
-					letter-spacing: var(
-						--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage}
-					);
-					font-weight: var(
-						--maxi-#{$style}-button-font-weight-#{$current_responsive_stage}
-					);
-					text-transform: var(
-						--maxi-#{$style}-button-text-transform-#{$current_responsive_stage}
-					);
-					font-style: var(
-						--maxi-#{$style}-button-font-style-#{$current_responsive_stage}
-					);
-					text-decoration: var(
-						--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage}
-					);
+
+					.maxi-button-block__content {
+						font-size: var(
+							--maxi-#{$style}-button-font-size-#{$current_responsive_stage}
+						);
+						line-height: var(
+							--maxi-#{$style}-button-line-height-#{$current_responsive_stage}
+						);
+						letter-spacing: var(
+							--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage}
+						);
+						font-weight: var(
+							--maxi-#{$style}-button-font-weight-#{$current_responsive_stage}
+						);
+						text-transform: var(
+							--maxi-#{$style}-button-text-transform-#{$current_responsive_stage}
+						);
+						font-style: var(
+							--maxi-#{$style}-button-font-style-#{$current_responsive_stage}
+						);
+						text-decoration: var(
+							--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage}
+						);
+					}
+
+					&.maxi-image-block,
+					.maxi-image-block {
+						figcaption {
+							font-family: var(
+								--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+							);
+							font-size: var(
+								--maxi-#{$style}-p-font-size-#{$current_responsive_stage}
+							);
+							line-height: var(
+								--maxi-#{$style}-p-line-height-#{$current_responsive_stage}
+							);
+							letter-spacing: var(
+								--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage}
+							);
+							font-weight: var(
+								--maxi-#{$style}-p-font-weight-#{$current_responsive_stage}
+							);
+							text-transform: var(
+								--maxi-#{$style}-p-text-transform-#{$current_responsive_stage}
+							);
+							font-style: var(
+								--maxi-#{$style}-p-font-style-#{$current_responsive_stage}
+							);
+							text-decoration: var(
+								--maxi-#{$style}-p-text-decoration-#{$current_responsive_stage}
+							);
+						}
+
+						.maxi-hover-details {
+							h4 {
+								font-family: var(
+									--maxi-#{$style}-h4-font-family-#{$current_responsive_stage}
+								);
+								font-size: var(
+									--maxi-#{$style}-h4-font-size-#{$current_responsive_stage}
+								);
+								line-height: var(
+									--maxi-#{$style}-h4-line-height-#{$current_responsive_stage}
+								);
+								letter-spacing: var(
+									--maxi-#{$style}-h4-letter-spacing-#{$current_responsive_stage}
+								);
+								font-weight: var(
+									--maxi-#{$style}-h4-font-weight-#{$current_responsive_stage}
+								);
+								text-transform: var(
+									--maxi-#{$style}-h4-text-transform-#{$current_responsive_stage}
+								);
+								font-style: var(
+									--maxi-#{$style}-h4-font-style-#{$current_responsive_stage}
+								);
+								text-decoration: var(
+									--maxi-#{$style}-h4-text-decoration-#{$current_responsive_stage}
+								);
+							}
+
+							p {
+								font-family: var(
+									--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+								);
+								font-size: var(
+									--maxi-#{$style}-p-font-size-#{$current_responsive_stage}
+								);
+								line-height: var(
+									--maxi-#{$style}-p-line-height-#{$current_responsive_stage}
+								);
+								letter-spacing: var(
+									--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage}
+								);
+								font-weight: var(
+									--maxi-#{$style}-p-font-weight-#{$current_responsive_stage}
+								);
+								text-transform: var(
+									--maxi-#{$style}-p-text-transform-#{$current_responsive_stage}
+								);
+								font-style: var(
+									--maxi-#{$style}-p-font-style-#{$current_responsive_stage}
+								);
+								text-decoration: var(
+									--maxi-#{$style}-p-text-decoration-#{$current_responsive_stage}
+								);
+							}
+						}
+					}
 				}
 			}
 		}

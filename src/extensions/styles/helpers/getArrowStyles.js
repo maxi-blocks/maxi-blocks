@@ -18,29 +18,33 @@ export const getArrowObject = props => {
 	const response = {};
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-	if (!props['arrow-status']) return response;
-
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const arrowWidth = getLastBreakpointAttribute(
-			'arrow-width',
+		const arrowStatus = getLastBreakpointAttribute({
+			target: 'arrow-status',
 			breakpoint,
-			props
-		);
-		const arrowSide = getLastBreakpointAttribute(
-			'arrow-side',
+			attributes: props,
+		});
+		const arrowWidth = getLastBreakpointAttribute({
+			target: 'arrow-width',
 			breakpoint,
-			props
-		);
-		const arrowPosition = getLastBreakpointAttribute(
-			'arrow-position',
+			attributes: props,
+		});
+		const arrowSide = getLastBreakpointAttribute({
+			target: 'arrow-side',
 			breakpoint,
-			props
-		);
+			attributes: props,
+		});
+		const arrowPosition = getLastBreakpointAttribute({
+			target: 'arrow-position',
+			breakpoint,
+			attributes: props,
+		});
+
+		response[breakpoint].display = arrowStatus ? 'block' : 'none';
 
 		if (!isNil(arrowWidth)) {
-			response[breakpoint].display = 'block';
 			response[breakpoint].width = `${arrowWidth}px`;
 			response[breakpoint].height = `${arrowWidth}px`;
 		}
@@ -149,7 +153,12 @@ const getArrowStyles = props => {
 		: false;
 
 	if (
-		!props['arrow-status'] ||
+		!Object.entries(getGroupAttributes(props, 'arrow')).some(
+			([key, val]) => {
+				if (key.includes('arrow-status') && val) return true;
+				return false;
+			}
+		) ||
 		!isBackgroundColor ||
 		(isBorderActive && !isCorrectBorder)
 	)

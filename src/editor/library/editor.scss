@@ -735,11 +735,18 @@
 					&__input-container {
 						margin-right: 5px;
 						margin-left: 8px;
+						svg {
+							width: 15px;
+							height: 15px;
+							left: 0;
+							top: 0;
+						}
 					}
 					&__input,
 					&__input-container {
 						width: 15px;
 						height: 15px;
+						box-shadow: none;
 					}
 					&__label {
 						color: #757575;

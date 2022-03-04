@@ -27,16 +27,16 @@ const getSizeStyles = (obj, prefix = '') => {
 				isNumber(obj[`${prefix}${target}-${breakpoint}`]) ||
 				obj[`${prefix}${target}-unit-${breakpoint}`]
 			) {
-				const num = getLastBreakpointAttribute(
-					`${prefix}${target}`,
+				const num = getLastBreakpointAttribute({
+					target: `${prefix}${target}`,
 					breakpoint,
-					obj
-				);
-				const unit = getLastBreakpointAttribute(
-					`${prefix}${target}-unit`,
+					attributes: obj,
+				});
+				const unit = getLastBreakpointAttribute({
+					target: `${prefix}${target}-unit`,
 					breakpoint,
-					obj
-				);
+					attributes: obj,
+				});
 
 				if (!isNil(num) && !isNil(unit))
 					return { [target]: num + unit };

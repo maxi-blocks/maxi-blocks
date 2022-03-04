@@ -30,26 +30,69 @@ const Indicators = props => {
 	const classes = classnames('maxi-indicators', className);
 
 	const margin = {
-		top: getLastBreakpointAttribute('margin-top', deviceType, props) || 0,
+		top:
+			getLastBreakpointAttribute({
+				target: 'margin-top',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 		right:
-			getLastBreakpointAttribute('margin-right', deviceType, props) || 0,
+			getLastBreakpointAttribute({
+				target: 'margin-right',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 		bottom:
-			getLastBreakpointAttribute('margin-bottom', deviceType, props) || 0,
-		left: getLastBreakpointAttribute('margin-left', deviceType, props) || 0,
-		unit: getLastBreakpointAttribute('margin-unit', deviceType, props) || 0,
+			getLastBreakpointAttribute({
+				target: 'margin-bottom',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
+		left:
+			getLastBreakpointAttribute({
+				target: 'margin-left',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
+		unit:
+			getLastBreakpointAttribute({
+				target: 'margin-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 	};
 
 	const padding = {
-		top: getLastBreakpointAttribute('padding-top', deviceType, props) || 0,
+		top:
+			getLastBreakpointAttribute({
+				target: 'padding-top',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 		right:
-			getLastBreakpointAttribute('padding-right', deviceType, props) || 0,
+			getLastBreakpointAttribute({
+				target: 'padding-right',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 		bottom:
-			getLastBreakpointAttribute('padding-bottom', deviceType, props) ||
-			0,
+			getLastBreakpointAttribute({
+				target: 'padding-bottom',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 		left:
-			getLastBreakpointAttribute('padding-left', deviceType, props) || 0,
+			getLastBreakpointAttribute({
+				target: 'padding-left',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 		unit:
-			getLastBreakpointAttribute('padding-unit', deviceType, props) || 0,
+			getLastBreakpointAttribute({
+				target: 'padding-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
 	};
 
 	const handleOnResizeStart = (type, e, dir) => {

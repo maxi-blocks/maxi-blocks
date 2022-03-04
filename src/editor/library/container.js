@@ -110,6 +110,16 @@ const MasonryItem = props => {
 					className='maxi-cloud-masonry-card__svg-container'
 					onClick={onRequestInsert}
 				>
+					<RawHTML
+						style={{
+							backgroundColor: currentItemColorStatus
+								? '#000000'
+								: '#ffffff',
+						}}
+						className='maxi-cloud-masonry-card__svg-container__code'
+					>
+						{svgCode}
+					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{target === 'button-icon' || target.includes('Line')
 							? serial.replace(' Line', '')
@@ -121,16 +131,6 @@ const MasonryItem = props => {
 							? serial.replace(' Shape', '')
 							: serial}
 					</div>
-					<RawHTML
-						style={{
-							backgroundColor: currentItemColorStatus
-								? '#000000'
-								: '#ffffff',
-						}}
-						className='maxi-cloud-masonry-card__svg-container__code'
-					>
-						{svgCode}
-					</RawHTML>
 					<span>{__('Load', 'maxi-block')}</span>
 				</div>
 			)}
@@ -682,48 +682,50 @@ const LibraryContainer = props => {
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
-				<InstantSearch
-					indexName='maxi_posts_svg_icon'
-					searchClient={searchClient}
-				>
-					<div className='maxi-cloud-container__sc__sidebar'>
-						<SearchBox
-							submit={__('Find', 'maxi-blocks')}
-							autoFocus
-							searchAsYouType
-							showLoadingIndicator
-						/>
-						<CustomHierarchicalMenu
-							attributes={[
-								'taxonomies_hierarchical.svg_tag.lvl0',
-								'taxonomies_hierarchical.svg_tag.lvl1',
-							]}
-							limit={10}
-							showMore
-							showLoadingIndicator
-							showMoreLimit={10}
-						/>
-						<ClearRefinements />
-					</div>
-					<div className='maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-							<CustomMenuSelect
-								className='maxi-cloud-container__content-svg-shape__categories'
-								attribute='taxonomies.svg_category'
-								translations={{
-									seeAllOption: __(
-										'All icons',
-										'maxi-blocks'
-									),
-								}}
+				<div className='maxi-cloud-container__svg-icon'>
+					<InstantSearch
+						indexName='maxi_posts_svg_icon'
+						searchClient={searchClient}
+					>
+						<div className='maxi-cloud-container__sc__sidebar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
 							/>
+							<CustomHierarchicalMenu
+								attributes={[
+									'taxonomies_hierarchical.svg_tag.lvl0',
+									'taxonomies_hierarchical.svg_tag.lvl1',
+								]}
+								limit={10}
+								showMore
+								showLoadingIndicator
+								showMoreLimit={10}
+							/>
+							<ClearRefinements />
 						</div>
-						<div className='maxi-cloud-container__sc__content-sc'>
-							<Stats translations={resultsCount} />
-							<InfiniteHits hitComponent={svgResults} />
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+								<CustomMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='taxonomies.svg_category'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							</div>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgResults} />
+							</div>
 						</div>
-					</div>
-				</InstantSearch>
+					</InstantSearch>
+				</div>
 			)}
 
 			{type.includes('shape') && (

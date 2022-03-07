@@ -129,15 +129,27 @@ class edit extends MaxiBlockComponent {
 				isOverflowHidden={getIsOverflowHidden()}
 				size={{
 					width: '100%',
-					height: `${attributes[`height-${deviceType}`]}${
-						attributes[`height-unit-${deviceType}`]
-					}`,
+					height: `${getLastBreakpointAttribute({
+						target: 'height',
+						breakpoint: deviceType,
+						attributes,
+					})}${getLastBreakpointAttribute({
+						target: 'height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}`,
 				}}
 				defaultSize={{
 					width: '100%',
-					height: `${attributes[`height-${deviceType}`]}${
-						attributes[`height-unit-${deviceType}`]
-					}`,
+					height: `${getLastBreakpointAttribute({
+						target: 'height',
+						breakpoint: deviceType,
+						attributes,
+					})}${getLastBreakpointAttribute({
+						target: 'height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}`,
 				}}
 				showHandle={isSelected}
 				enable={{

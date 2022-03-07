@@ -359,4 +359,41 @@ describe('TypographyControl', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('Check showed value on TypographyControl on custom format', async () => {
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+
+		const accordion = await openSidebarTab(page, 'style', 'typography');
+
+		await addTypographyOptions({
+			page,
+			instance: accordion,
+			size: '50',
+		});
+
+		await page.waitForTimeout(300);
+
+		let result = await accordion.$eval(
+			'.maxi-typography-control__size input',
+			input => input.value
+		);
+
+		expect(result).toStrictEqual('50');
+
+		await page.$eval('.maxi-text-block__content', block => block.focus());
+
+		await pressKeyTimes('ArrowLeft', '4');
+
+		await page.waitForTimeout(100);
+
+		result = await accordion.$eval(
+			'.maxi-typography-control__size input',
+			input => input.placeholder
+		);
+
+		expect(result).toStrictEqual('16');
+	});
 });

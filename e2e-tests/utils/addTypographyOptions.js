@@ -10,29 +10,34 @@ const addTypographyOptions = async ({
 	lineHeight,
 	letterSpacing,
 }) => {
-	// size, line-height, letter-spacing
-	await instance.$$eval(
-		'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-		select => select[0].focus()
-	);
-
-	await page.keyboard.type(size);
+	// size
+	if (size) {
+		await instance.$$eval(
+			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
+			select => select[0].focus()
+		);
+		await page.keyboard.type(size, { delay: 150 });
+	}
 
 	// line-height
-	await instance.$$eval(
-		'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-		select => select[2].focus()
-	);
+	if (lineHeight) {
+		await instance.$$eval(
+			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
+			select => select[2].focus()
+		);
 
-	await pressKeyWithModifier('primary', 'a');
-	await page.keyboard.type(lineHeight);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type(lineHeight, { delay: 150 });
+	}
 
 	// letter-spacing
-	await instance.$$eval(
-		'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-		select => select[4].focus()
-	);
-	await page.keyboard.type(letterSpacing);
+	if (letterSpacing) {
+		await instance.$$eval(
+			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
+			select => select[4].focus()
+		);
+		await page.keyboard.type(letterSpacing, { delay: 150 });
+	}
 };
 
 export default addTypographyOptions;

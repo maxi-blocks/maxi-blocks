@@ -54,8 +54,16 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 			});
 
 			const dividerLineWeight = isHorizontal
-				? obj[`divider-border-top-width-${breakpoint}`]
-				: obj[`divider-border-right-width-${breakpoint}`];
+				? getLastBreakpointAttribute({
+						target: 'divider-border-top-width',
+						breakpoint,
+						attributes: obj,
+				  })
+				: getLastBreakpointAttribute({
+						target: 'divider-border-right-width',
+						breakpoint,
+						attributes: obj,
+				  });
 			const dividerLineWeightUnit =
 				getLastBreakpointAttribute({
 					target: isHorizontal
@@ -66,8 +74,16 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 				}) ?? 'px';
 
 			const dividerSize = isHorizontal
-				? obj[`divider-width-${breakpoint}`]
-				: obj[`divider-height-${breakpoint}`];
+				? getLastBreakpointAttribute({
+						target: 'divider-width',
+						breakpoint,
+						attributes: obj,
+				  })
+				: getLastBreakpointAttribute({
+						target: 'divider-height',
+						breakpoint,
+						attributes: obj,
+				  });
 			const dividerSizeUnit =
 				getLastBreakpointAttribute({
 					target: 'divider-width-unit',

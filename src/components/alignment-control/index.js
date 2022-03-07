@@ -74,6 +74,7 @@ const AlignmentControl = props => {
 			type='buttons'
 			fullWidthMode
 			className={classes}
+			hasBorder
 			items={getOptions()}
 			selected={
 				getLastBreakpointAttribute({

@@ -21,7 +21,7 @@ describe('sc-variable', () => {
 
 		expect(scVariable).toMatchSnapshot();
 
-		await insertBlock('Text Maxi');
+		await insertBlock('Divider Maxi');
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');

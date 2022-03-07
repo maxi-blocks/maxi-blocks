@@ -27,11 +27,11 @@ export const getSVGWidthStyles = obj => {
 		if (!isNil(svgWidth))
 			response[
 				breakpoint
-			].width = `${svgWidth}${getLastBreakpointAttribute(
-				'svg-width-unit',
+			].width = `${svgWidth}${getLastBreakpointAttribute({
+				target: 'svg-width-unit',
 				breakpoint,
-				obj
-			)}`;
+				attributes: obj,
+			})}`;
 
 		if (isBoolean(svgResponsive))
 			response[breakpoint]['max-width'] = svgResponsive ? '100%' : 'none';

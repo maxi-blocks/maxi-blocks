@@ -96,26 +96,30 @@ const ArrowControl = props => {
 			)}
 			<ToggleSwitch
 				label={__('Show Arrow', 'maxi-blocks')}
-				selected={getLastBreakpointAttribute(
-					'arrow-status',
+				selected={getLastBreakpointAttribute({
+					target: 'arrow-status',
 					breakpoint,
-					props
-				)}
+					attributes: props,
+				})}
 				onChange={val =>
 					onChange({ [`arrow-status-${breakpoint}`]: val })
 				}
 			/>
-			{getLastBreakpointAttribute('arrow-status', breakpoint, props) && (
+			{getLastBreakpointAttribute({
+				target: 'arrow-status',
+				breakpoint,
+				attributes: props,
+			}) && (
 				<>
 					<SettingTabsControl
 						label=''
 						type='buttons'
 						fullWidthMode
-						selected={getLastBreakpointAttribute(
-							'arrow-side',
+						selected={getLastBreakpointAttribute({
+							target: 'arrow-side',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						items={getOptions()}
 						onChange={val =>
 							onChange({ [`arrow-side-${breakpoint}`]: val })
@@ -123,11 +127,11 @@ const ArrowControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Position', 'maxi-blocks')}
-						value={getLastBreakpointAttribute(
-							'arrow-position',
+						value={getLastBreakpointAttribute({
+							target: 'arrow-position',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val => {
 							onChangeValue(
 								'arrow-position',
@@ -150,11 +154,11 @@ const ArrowControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Arrow Size', 'maxi-blocks')}
-						value={getLastBreakpointAttribute(
-							'arrow-width',
+						value={getLastBreakpointAttribute({
+							target: 'arrow-width',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val => {
 							const value = isNil(val)
 								? getDefaultAttribute(

@@ -168,44 +168,42 @@ const dimensionTab = props => {
 					allowReset
 					initialPosition={getDefaultAttribute('imgWidth', clientId)}
 				/>
-				{!SVGElement && (
-					<SelectControl
-						className='maxi-image-inspector__ratio'
-						label={__('Image Ratio', 'maxi-blocks')}
-						value={imageRatio}
-						options={[
-							{
-								label: __('Original Size', 'maxi-blocks'),
-								value: 'original',
-							},
-							{
-								label: __('1:1 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar11',
-							},
-							{
-								label: __('2:3 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar23',
-							},
-							{
-								label: __('3:2 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar32',
-							},
-							{
-								label: __('4:3 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar43',
-							},
-							{
-								label: __('16:9 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar169',
-							},
-						]}
-						onChange={imageRatio =>
-							maxiSetAttributes({
-								imageRatio,
-							})
-						}
-					/>
-				)}
+				<SelectControl
+					className='maxi-image-inspector__ratio'
+					label={__('Image Ratio', 'maxi-blocks')}
+					value={imageRatio}
+					options={[
+						{
+							label: __('Original Size', 'maxi-blocks'),
+							value: 'original',
+						},
+						{
+							label: __('1:1 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar11',
+						},
+						{
+							label: __('2:3 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar23',
+						},
+						{
+							label: __('3:2 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar32',
+						},
+						{
+							label: __('4:3 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar43',
+						},
+						{
+							label: __('16:9 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar169',
+						},
+					]}
+					onChange={imageRatio =>
+						maxiSetAttributes({
+							imageRatio,
+						})
+					}
+				/>
 			</>
 		),
 	};
@@ -228,6 +226,7 @@ const Inspector = memo(
 			blockStyle,
 			captionType,
 			clipPath,
+			fullWidth,
 			mediaAlt,
 			parentBlockStyle,
 			SVGElement,
@@ -279,6 +278,7 @@ const Inspector = memo(
 										isSecondary
 										items={[
 											deviceType === 'general' &&
+												fullWidth !== 'full' &&
 												dimensionTab(props),
 											...inspectorTabs.alignment({
 												props,
@@ -381,9 +381,12 @@ const Inspector = memo(
 																	)}
 																	className='maxi-image-inspector__caption-gap'
 																	placeholder={getLastBreakpointAttribute(
-																		'caption-gap',
-																		deviceType,
-																		attributes
+																		{
+																			target: 'caption-gap',
+																			breakpoint:
+																				deviceType,
+																			attributes,
+																		}
 																	)}
 																	value={
 																		attributes[
@@ -400,9 +403,12 @@ const Inspector = memo(
 																	}
 																	enableUnit
 																	unit={getLastBreakpointAttribute(
-																		'caption-gap-unit',
-																		deviceType,
-																		attributes
+																		{
+																			target: 'caption-gap-unit',
+																			breakpoint:
+																				deviceType,
+																			attributes,
+																		}
 																	)}
 																	minMaxSettings={{
 																		px: {

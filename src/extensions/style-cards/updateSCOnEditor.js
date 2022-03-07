@@ -123,11 +123,11 @@ export const getSCVariablesObject = styleCards => {
 						)
 							response[
 								`--maxi-${style}-${element}-${setting}-${breakpoint}`
-							] = getLastBreakpointAttribute(
-								setting,
+							] = getLastBreakpointAttribute({
+								target: setting,
 								breakpoint,
-								obj
-							);
+								attributes: obj,
+							});
 					});
 				});
 

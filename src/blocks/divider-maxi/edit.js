@@ -159,7 +159,11 @@ class edit extends MaxiBlockComponent {
 				onResizeStop={handleOnResizeStop}
 				style={style}
 			>
-				{attributes['divider-border-style'] !== 'none' && (
+				{getLastBreakpointAttribute({
+					target: 'divider-border-style',
+					breakpoint: deviceType,
+					attributes,
+				}) !== 'none' && (
 					<hr
 						data-align={fullWidth}
 						className='maxi-divider-block__divider'

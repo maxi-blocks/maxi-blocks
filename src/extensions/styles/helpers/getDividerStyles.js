@@ -117,7 +117,7 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 						'border-right-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
 						width: `${dividerLineWeight}${dividerLineWeightUnit}`,
 					}),
-					...(!isNil(dividerSize) && { height: `${dividerSize}%}` }),
+					...(!isNil(dividerSize) && { height: `${dividerSize}%` }),
 				}),
 			};
 		} else {

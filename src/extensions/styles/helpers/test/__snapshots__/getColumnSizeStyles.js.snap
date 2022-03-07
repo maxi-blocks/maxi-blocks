@@ -7,8 +7,8 @@ Object {
     "width": "1%",
   },
   "l": Object {
-    "flex-basis": "4%",
-    "width": "4%",
+    "flex-basis": "fit-content",
+    "width": "fit-content",
   },
   "m": Object {
     "flex-basis": "1%",

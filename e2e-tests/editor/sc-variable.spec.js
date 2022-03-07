@@ -9,7 +9,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openPreviewPage } from '../utils';
 
-describe.skip('sc-variable', () => {
+describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
 		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');

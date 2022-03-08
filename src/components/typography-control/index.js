@@ -28,20 +28,18 @@ import {
 	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isBoolean, isNumber, isEmpty } from 'lodash';
+import { isNil, isBoolean, isNumber } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import { getDefaultSCValue } from '../../extensions/style-cards';
-import getCustomFormat from '../../extensions/text/formats/getCustomFormat';
-import getCurrentFormatClassName from '../../extensions/text/formats/getCurrentFormatClassName';
 
 /**
  * Component
@@ -720,28 +718,7 @@ const TypographyControl = withFormatValue(props => {
 		const newFormatValue = { ...obj.formatValue };
 		delete obj.formatValue;
 
-		// Ensures we save the formatValue just if CustomClasses has same class
-		const currentClassName = getCurrentFormatClassName(
-			newFormatValue,
-			isHover
-		);
-
-		if (currentClassName) {
-			const customFormat = getCustomFormat(
-				obj,
-				currentClassName,
-				isHover
-			);
-
-			if (customFormat && !isEmpty(customFormat))
-				// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
-				setTimeout(() => {
-					dispatch('maxiBlocks/text').sendFormatValue(
-						newFormatValue,
-						clientId
-					);
-				}, 300); // higher than the 150 of `onChangeRichText` method
-		}
+		dispatch('maxiBlocks/text').sendFormatValue(newFormatValue, clientId);
 
 		onChange(obj);
 	};

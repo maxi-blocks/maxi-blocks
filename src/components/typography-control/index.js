@@ -38,7 +38,6 @@ import { isNil, isBoolean, isNumber } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import BaseControl from '../base-control';
 import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**

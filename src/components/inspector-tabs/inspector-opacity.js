@@ -23,11 +23,11 @@ const opacity = ({ props }) => {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
 			<OpacityControl
-				opacity={getLastBreakpointAttribute(
-					'opacity',
-					deviceType,
-					getGroupAttributes(attributes, 'opacity')
-				)}
+				opacity={getLastBreakpointAttribute({
+					target: 'opacity',
+					breakpoint: deviceType,
+					attributes: getGroupAttributes(attributes, 'opacity'),
+				})}
 				onChange={val =>
 					maxiSetAttributes({ [`opacity-${deviceType}`]: val })
 				}

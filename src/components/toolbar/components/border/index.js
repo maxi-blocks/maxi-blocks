@@ -52,23 +52,23 @@ const Border = props => {
 				<div
 					className='toolbar-item__border__icon'
 					style={{
-						borderStyle: getLastBreakpointAttribute(
-							`${prefix}border-style`,
+						borderStyle: getLastBreakpointAttribute({
+							target: `${prefix}border-style`,
 							breakpoint,
-							props
-						),
+							attributes: props,
+						}),
 						background:
-							getLastBreakpointAttribute(
-								`${prefix}border-style`,
+							getLastBreakpointAttribute({
+								target: `${prefix}border-style`,
 								breakpoint,
-								props
-							) === 'none'
+								attributes: props,
+							}) === 'none'
 								? 'transparent'
-								: getLastBreakpointAttribute(
-										`${prefix}border-style`,
+								: getLastBreakpointAttribute({
+										target: `${prefix}border-style`,
 										breakpoint,
-										props
-								  ),
+										attributes: props,
+								  }),
 						borderWidth: '1px',
 						borderColor: props[
 							`${prefix}border-palette-status-${breakpoint}`

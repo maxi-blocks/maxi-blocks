@@ -361,6 +361,10 @@ describe('TypographyControl', () => {
 	});
 
 	it('Check showed value on TypographyControl on custom format', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
+
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');

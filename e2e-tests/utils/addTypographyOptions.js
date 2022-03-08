@@ -16,6 +16,7 @@ const addTypographyOptions = async ({
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[0].focus()
 		);
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(size, { delay: 150 });
 	}
 
@@ -36,6 +37,7 @@ const addTypographyOptions = async ({
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[4].focus()
 		);
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(letterSpacing, { delay: 150 });
 	}
 };

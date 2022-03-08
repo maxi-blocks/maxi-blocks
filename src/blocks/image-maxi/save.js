@@ -32,22 +32,16 @@ const save = props => {
 		mediaHeight,
 		mediaAlt,
 		SVGElement,
-		imageRatio,
 		fullWidth,
 		'hover-type': hoverType,
 		'hover-preview': hoverPreview,
 		isImageUrl,
 		captionPosition,
-		imgWidth,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
 
-	const wrapperClassName = classnames(
-		'maxi-image-block-wrapper',
-		'maxi-image-ratio',
-		!SVGElement && `maxi-image-ratio__${imageRatio}`
-	);
+	const wrapperClassName = classnames('maxi-image-block-wrapper');
 
 	const hoverClasses = classnames(
 		hoverType === 'basic' &&
@@ -67,7 +61,7 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
 		>
-			<WithRatioResized isResized={imgWidth}>
+			<>
 				{captionType !== 'none' &&
 					!isEmpty(captionContent) &&
 					captionPosition === 'top' && (
@@ -80,7 +74,7 @@ const save = props => {
 				<HoverPreview
 					key={`hover-preview-${uniqueID}`}
 					wrapperClassName={wrapperClassName}
-					hoverClassName={!SVGElement ? hoverClasses : null}
+					hoverClassName={hoverClasses}
 					isSVG={!!SVGElement}
 					{...getGroupAttributes(attributes, [
 						'hover',
@@ -113,16 +107,9 @@ const save = props => {
 							tagName='figcaption'
 						/>
 					)}
-			</WithRatioResized>
+			</>
 		</MaxiBlock>
 	);
 };
-
-const WithRatioResized = ({ isResized, children }) =>
-	isResized ? (
-		<div className='maxi-image-ratio-wrapper'>{children}</div>
-	) : (
-		children
-	);
 
 export default save;

@@ -2,7 +2,7 @@
 	input[type='range'] {
 		-webkit-appearance: none;
 		width: 100%;
-		height: 4px;
+		height: 2px;
 		border-radius: 0;
 		background: #dddfe1;
 		outline: none;
@@ -11,18 +11,22 @@
 		&::-webkit-slider-thumb {
 			-webkit-appearance: none;
 			appearance: none;
-			width: 12px;
-			height: 12px;
+			width: 16px;
+			height: 16px;
 			border-radius: 50%;
-			background: #464a53;
+			background: var(--maxi-black-1-color);
 			cursor: pointer;
+			box-shadow: inset 0 0 0 2px var(--maxi-black-1-color),
+				inset 0 0 0 4px #fff;
 		}
 		&::-moz-range-thumb {
-			width: 12px;
-			height: 12px;
+			width: 16px;
+			height: 16px;
 			border-radius: 50%;
-			background: #464a53;
+			background: var(--maxi-black-1-color);
 			cursor: pointer;
+			box-shadow: inset 0 0 0 2px var(--maxi-black-1-color),
+				inset 0 0 0 4px #fff;
 		}
 	}
 	&__square-control {
@@ -132,8 +136,9 @@
 
 			input[type='range'] {
 				position: relative;
-				right: 18px;
+				right: 16px;
 				top: 18px;
+				margin-left: 4px;
 				@at-root .rtl #{&} {
 					left: 18px;
 					right: unset;
@@ -144,9 +149,8 @@
 			}
 			&__value {
 				position: relative;
-				top: 50%;
+				top: -6px;
 				right: -85px;
-				transform: translateY(-50%);
 				@at-root .rtl #{&} {
 					left: -85px;
 					right: unset;
@@ -169,6 +173,7 @@
 			display: flex;
 			align-items: center;
 			margin-top: 5px;
+			margin-bottom: 8px;
 			&__value {
 				display: flex;
 				flex-direction: column;
@@ -192,7 +197,7 @@
 		}
 		&__sync {
 			position: absolute;
-			top: 180px;
+			top: 181px;
 			right: 0;
 			display: flex;
 			align-items: flex-end;
@@ -202,12 +207,15 @@
 				left: 0;
 			}
 
+			button[type='button'] {
+				margin-left: 5px;
+			}
 			button[type='button'],
 			button[type='reset'] {
 				border: 2px solid #dddfe1;
-				border-radius: 5px;
-				width: 31px;
-				height: 31px;
+				border-radius: 0;
+				width: 32px;
+				height: 32px;
 				padding: 0;
 				display: inline-flex;
 				align-items: center;

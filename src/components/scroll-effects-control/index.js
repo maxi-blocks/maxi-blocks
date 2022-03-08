@@ -245,6 +245,7 @@ const ScrollEffectsControl = props => {
 				items={motionOptions}
 				onChange={val => setScrollStatus(val)}
 				depth={depth}
+				hasBorder
 			/>
 			{scrollTypes.map(type => {
 				const isPreviewEnabled = getLastBreakpointAttribute({

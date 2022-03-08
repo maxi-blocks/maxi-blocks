@@ -23,6 +23,7 @@ import { imageBox } from '../../icons';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Block
@@ -49,4 +50,58 @@ registerBlockType('maxi-blocks/column-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [
+		{
+			isEligible(attributes) {
+				const columnSize = getGroupAttributes(attributes, 'columnSize');
+
+				return Object.values(columnSize).some(
+					column => typeof column === 'number'
+				);
+			},
+
+			attributes: {
+				...attributes,
+				'column-size-general': {
+					type: 'number',
+				},
+				'column-size-xxl': {
+					type: 'number',
+				},
+				'column-size-xl': {
+					type: 'number',
+				},
+				'column-size-l': {
+					type: 'number',
+				},
+				'column-size-m': {
+					type: 'number',
+				},
+				'column-size-s': {
+					type: 'number',
+				},
+				'column-size-xs': {
+					type: 'number',
+				},
+			},
+
+			migrate(oldAttributes) {
+				const columnSize = getGroupAttributes(
+					oldAttributes,
+					'columnSize'
+				);
+
+				Object.entries(columnSize).forEach(([key, val]) => {
+					if (typeof val === 'number')
+						oldAttributes[key] = val.toString();
+				});
+
+				return oldAttributes;
+			},
+
+			save(props) {
+				return save(props);
+			},
+		},
+	],
 });

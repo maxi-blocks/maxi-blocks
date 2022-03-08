@@ -49,6 +49,11 @@ body.maxi-blocks--active
 	left: auto;
 }
 
+/*Removes focus bacgkround for Twenty Twenty One*/
+#content .maxi-link-wrapper:focus {
+	background: unset;
+}
+
 /*Fixes container alignment for Twenty Twenty Two*/
 body.maxi-blocks--active
 	#wpcontent

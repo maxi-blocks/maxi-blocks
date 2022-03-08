@@ -141,6 +141,7 @@
 				left: auto;
 				top: 3px;
 				padding: 0;
+				box-shadow: none;
 				svg {
 					fill: #ff4a17;
 					width: 38px;
@@ -332,7 +333,7 @@
 				padding: 0;
 
 				ul {
-					margin: 0;
+					margin: 0 0 8px;
 				}
 				.use-placeholer-all-images {
 					margin-top: 1rem;
@@ -396,49 +397,6 @@
 								}
 							}
 						}
-					}
-				}
-				.ais-RefinementList-item {
-					display: flex;
-					justify-content: space-between;
-					margin: 8px 6px;
-					align-items: center;
-					&--selected {
-						a {
-							border-bottom: 2px solid #ff4a17;
-
-							.ais-RefinementList-count,
-							.ais-RefinementList-labelText {
-								color: #ff4a17;
-							}
-						}
-					}
-					a {
-						font-weight: 400;
-						transition: color 0.5s;
-						color: #151617;
-						text-decoration: none;
-						box-shadow: none;
-
-						&:hover {
-							color: #ff4a17;
-						}
-						.ais-RefinementList-checkbox {
-							display: none;
-						}
-						.ais-RefinementList-labelText {
-						}
-						.ais-RefinementList-count {
-							&:before {
-								content: '(';
-							}
-							&:after {
-								content: ')';
-							}
-						}
-					}
-					.maxi-toggle-switch {
-						margin-bottom: 0;
 					}
 				}
 			}
@@ -595,10 +553,6 @@
 						padding: 6px;
 						height: 100%;
 
-						&__light {
-							color: #fff;
-							background-color: #000;
-						}
 						&__image {
 							svg {
 								width: 50px;
@@ -641,6 +595,11 @@
 								opacity: 0;
 							}
 						}
+
+						&__light {
+							color: #fff;
+							background-color: #000;
+						}
 					}
 					&:hover {
 						z-index: 9;
@@ -668,12 +627,13 @@
 			}
 		}
 
-		.maxi-cloud-container__svg-icon {
+		&__svg-icon {
 			width: 100%;
 		}
-		.maxi-cloud-container__svg-icon,
-		.maxi-cloud-container__patterns,
-		.maxi-cloud-container__sc {
+		&__svg-shape,
+		&__svg-icon,
+		&__patterns,
+		&__sc {
 			display: grid;
 			grid-column-gap: 0;
 			grid-template-columns: 194px 1fr;
@@ -757,115 +717,74 @@
 						color: #bdbdbd;
 					}
 				}
-			}
-			.ais-InfiniteHits-list {
-				grid-template-columns: repeat(3, 1fr);
-				margin-top: 0;
-
-				.ais-InfiniteHits-item {
-					background: #fff;
-					border: 1px solid #dbdde6;
-					padding: 0;
-					transition: 0.3s;
-
-					.maxi-cloud-masonry-card {
-						& > .maxi-components-button {
-							height: auto;
-							padding: 6px;
-							display: block;
-							width: 100%;
-						}
-					}
-
-					.maxi-cloud-masonry-card__image {
-						background: #f0f2f4;
-						border: none;
-						padding: 0;
-						background: #fff;
-					}
-					&:hover {
-						border-color: #007cba;
-						box-shadow: 0 0 0 1px #007cba;
-						.maxi-cloud-masonry-card__button {
-							border-color: #007cba;
-							box-shadow: 0 0 0 1px #007cba;
-							color: #007cba;
-						}
-					}
-				}
-			}
-		}
-		.maxi-cloud-container__svg-icon {
-			.ais-InfiniteHits-list {
-				grid-template-columns: repeat(8, 1fr);
-			}
-		}
-		.maxi-cloud-container__patterns {
-			.ais-InfiniteHits-list {
-				.ais-InfiniteHits-item {
-					background: #f9f9f9;
-					&:hover {
-						border-color: #007cba;
-						box-shadow: 0 0 0 1px #007cba;
-						.maxi-cloud-masonry-card__button {
-							border-color: #007cba;
-							box-shadow: 0 0 0 1px #007cba;
-							color: #007cba;
-						}
-					}
-				}
-			}
-		}
-
-		.maxi-cloud-container__sc__sidebar,
-		.maxi-cloud-container__patterns__top-menu,
-		.maxi-cloud-container__patterns__sidebar {
-			.ais-HierarchicalMenu-item {
-				display: block;
-				border-bottom: 1px solid #dbdde6;
-				justify-content: space-between;
-				margin: 0;
-				padding: 8px 6px 0;
-				align-items: center;
-				&:first-child {
-					border-top: 1px solid #dbdde6;
-				}
-				a {
+				.ais-HierarchicalMenu-item,
+				.ais-RefinementList-item {
 					display: block;
-					color: #151617;
-					font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
-					font-weight: 400;
-					transition: color 0.5s;
-					text-decoration: none;
-					box-shadow: none;
-					padding-top: 3px;
-					float: left;
-
-					&:hover {
-						color: #ff4a17;
-					}
-				}
-				.maxi-toggle-switch {
-					margin-bottom: 8px;
-					float: right;
-				}
-				&:after {
-					content: '';
-					display: block;
-					clear: both;
-				}
-				& > ul {
-					clear: both;
-					background-color: #fff;
-					margin: 8px -6px 0;
+					justify-content: space-between;
+					margin: 0;
 					padding: 8px 6px 0;
-					border-top: 1px solid #dbdde6;
-					.ais-HierarchicalMenu-item {
-						border: none;
-						padding: 0;
-						margin-bottom: 5px;
-						&:last-child {
-							margin-bottom: 0;
+					align-items: center;
+					&--selected {
+						a {
+							border-bottom: 2px solid #ff4a17;
+
+							.ais-RefinementList-count,
+							.ais-RefinementList-labelText {
+								color: #ff4a17;
+							}
+						}
+					}
+					a {
+						color: #151617;
+						font-family: 'Roboto', Helvetica, Arial, Lucida,
+							sans-serif !important;
+						font-weight: 400;
+						transition: color 0.5s;
+						color: #151617;
+						text-decoration: none;
+						box-shadow: none;
+						padding-top: 3px;
+						float: left;
+
+						&:hover {
+							color: #ff4a17;
+						}
+						.ais-RefinementList-checkbox {
+							display: none;
+						}
+						.ais-RefinementList-labelText {
+						}
+						.ais-RefinementList-count {
+							&:before {
+								content: '(';
+							}
+							&:after {
+								content: ')';
+							}
+						}
+					}
+					.maxi-toggle-switch {
+						margin-bottom: 0;
+						float: right;
+					}
+					&:after {
+						content: '';
+						display: block;
+						clear: both;
+					}
+					& > ul {
+						clear: both;
+						background-color: #fff;
+						margin: 8px -6px 0;
+						padding: 8px 6px 0;
+						border-top: 1px solid #dbdde6;
+						.ais-HierarchicalMenu-item {
+							border: none;
+							padding: 0;
+							margin-bottom: 5px;
+							&:last-child {
+								margin-bottom: 0;
+							}
 						}
 					}
 				}
@@ -914,6 +833,86 @@
 					}
 				}
 			}
+			.ais-InfiniteHits-list {
+				grid-template-columns: repeat(3, 1fr);
+				margin-top: 0;
+
+				.ais-InfiniteHits-item {
+					background: #fff;
+					border: 1px solid #dbdde6;
+					padding: 0;
+					transition: 0.3s;
+
+					.maxi-cloud-masonry-card {
+						& > .maxi-components-button {
+							height: auto;
+							padding: 6px;
+							display: block;
+							width: 100%;
+						}
+					}
+
+					.maxi-cloud-masonry-card__image {
+						background: #f0f2f4;
+						border: none;
+						padding: 0;
+						background: #fff;
+					}
+					&:hover {
+						border-color: #007cba;
+						box-shadow: 0 0 0 1px #007cba;
+						.maxi-cloud-masonry-card__button {
+							border-color: #007cba;
+							box-shadow: 0 0 0 1px #007cba;
+							color: #007cba;
+						}
+					}
+				}
+			}
+		}
+		&__svg-shape,
+		&__svg-icon,
+		&__patterns {
+			&__sidebar {
+				.ais-RefinementList-item,
+				.ais-HierarchicalMenu-item {
+					border-bottom: 1px solid #dbdde6;
+					&:first-child {
+						border-top: 1px solid #dbdde6;
+					}
+					.maxi-toggle-switch {
+						margin-bottom: 8px;
+					}
+				}
+				ul {
+					margin: 0;
+				}
+			}
+		}
+		&__svg-shape,
+		&__svg-icon {
+			.ais-InfiniteHits-list {
+				grid-template-columns: repeat(8, 1fr);
+			}
+		}
+		&__patterns {
+			.ais-InfiniteHits-list {
+				.ais-InfiniteHits-item {
+					background: #f9f9f9;
+					&:hover {
+						border-color: #007cba;
+						box-shadow: 0 0 0 1px #007cba;
+						.maxi-cloud-masonry-card__button {
+							border-color: #007cba;
+							box-shadow: 0 0 0 1px #007cba;
+							color: #007cba;
+						}
+					}
+				}
+			}
+		}
+
+		&__patterns__top-menu {
 			.maxi-cloud-container__content-svg-shape__button {
 				color: #081219;
 				background-color: transparent;
@@ -937,7 +936,7 @@
 				margin: 0;
 			}
 		}
-		.maxi-cloud-container__patterns__top-menu {
+		&__patterns__top-menu {
 			.ais-Menu {
 				display: block;
 				position: absolute;
@@ -1137,6 +1136,15 @@
 		}
 		.maxi-cloud-container .maxi-cloud-container__sc .ais-InfiniteHits-list {
 			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.maxi-cloud-container {
+			&__svg-shape,
+			&__svg-icon {
+				.ais-InfiniteHits-list {
+					grid-template-columns: repeat(6, 1fr);
+				}
+			}
 		}
 	}
 }

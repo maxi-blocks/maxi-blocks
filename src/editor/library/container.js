@@ -502,6 +502,7 @@ const LibraryContainer = props => {
 			shapeType
 		);
 
+		console.log(hit.post_id);
 		return (
 			<MasonryItem
 				type='svg'
@@ -687,7 +688,7 @@ const LibraryContainer = props => {
 						indexName='maxi_posts_svg_icon'
 						searchClient={searchClient}
 					>
-						<div className='maxi-cloud-container__sc__sidebar'>
+						<div className='maxi-cloud-container__svg-icon__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
@@ -733,8 +734,8 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
@@ -747,9 +748,13 @@ const LibraryContainer = props => {
 								defaultRefinement={['Shape']}
 								showLoadingIndicator
 							/>
-							<Stats translations={resultsCount} />
 						</div>
-						<InfiniteHits hitComponent={svgShapeResults} />
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
+							</div>
+						</div>
 					</div>
 				</InstantSearch>
 			)}
@@ -759,8 +764,8 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
@@ -773,9 +778,13 @@ const LibraryContainer = props => {
 								defaultRefinement={['Line']}
 								showLoadingIndicator
 							/>
-							<Stats translations={resultsCount} />
 						</div>
-						<InfiniteHits hitComponent={svgShapeResults} />
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
+							</div>
+						</div>
 					</div>
 				</InstantSearch>
 			)}

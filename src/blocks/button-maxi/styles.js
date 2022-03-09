@@ -421,18 +421,18 @@ const getIconObject = (props, target) => {
 			props['icon-position'] === 'left'
 				? (responsive[breakpoint][
 						'margin-right'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
 						breakpoint,
-						props
-				  )}px`)
+						attributes: props,
+				  })}px`)
 				: (responsive[breakpoint][
 						'margin-left'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
 						breakpoint,
-						props
-				  )}px`);
+						attributes: props,
+				  })}px`);
 		}
 	});
 

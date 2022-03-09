@@ -502,7 +502,6 @@ const LibraryContainer = props => {
 			shapeType
 		);
 
-		console.log(hit.post_id);
 		return (
 			<MasonryItem
 				type='svg'

@@ -533,19 +533,6 @@
 					border: none !important;
 					box-shadow: none !important;
 
-					&:after {
-						content: '';
-						position: absolute;
-						left: 0;
-						right: 0;
-						top: 0;
-						bottom: 0;
-						display: block;
-						background-color: #f9f9f9;
-						border: 1px solid #dbdde6;
-						transition: 0.3s;
-						z-index: 0;
-					}
 					.maxi-cloud-masonry-card {
 						position: relative;
 						z-index: 1;
@@ -560,6 +547,8 @@
 							}
 						}
 						&__svg-container {
+							position: relative;
+							z-index: 1;
 							display: flex;
 							align-items: center;
 							flex-direction: column;
@@ -596,19 +585,30 @@
 							}
 						}
 
+						&:after {
+							content: '';
+							position: absolute;
+							left: 0;
+							right: 0;
+							top: 0;
+							bottom: 0;
+							display: block;
+							background-color: #f9f9f9;
+							border: 1px solid #dbdde6;
+							transition: 0.3s;
+							z-index: 0;
+						}
+
 						&__light {
-							color: #fff;
-							background-color: #000;
+							g[data-stroke],
+							path[data-stroke],
+							svg[data-stroke] {
+								stroke: #000;
+							}
 						}
 					}
 					&:hover {
 						z-index: 9;
-						&::after {
-							background-color: #edf6fa;
-							border-color: #007cba;
-							box-shadow: 0 0 0 1px #007cba;
-							transform: scale(1.2);
-						}
 						.maxi-cloud-masonry-card {
 							&__svg-container {
 								transform: translateY(0);
@@ -620,6 +620,12 @@
 									transition-delay: 0.3s;
 									opacity: 1;
 								}
+							}
+							&::after {
+								background-color: #edf6fa;
+								border-color: #007cba;
+								box-shadow: 0 0 0 1px #007cba;
+								transform: scale(1.2);
 							}
 						}
 					}

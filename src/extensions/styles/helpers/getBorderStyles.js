@@ -28,10 +28,10 @@ const getBorderStyles = ({
 	parentBlockStyle,
 	isButton = false,
 	scValues = {},
+	hoverStatus,
 }) => {
 	const response = {};
 
-	const hoverStatus = obj[`${prefix}border-status-hover`];
 	const {
 		'hover-border-color-global': isActive,
 		'hover-border-color-all': affectAll,

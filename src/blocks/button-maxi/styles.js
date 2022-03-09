@@ -412,7 +412,7 @@ const getIconObject = (props, target) => {
 const getIconHoverObject = (props, target) => {
 	const iconHoverStatus = props['icon-status-hover'];
 	const iconHoverActiveMedia =
-		props['button-background-active-media-general-hover'];
+		props['icon-background-active-media-general-hover'];
 
 	const response = {
 		icon:
@@ -426,7 +426,7 @@ const getIconHoverObject = (props, target) => {
 				true
 			),
 		background: iconHoverStatus &&
-			iconHoverActiveMedia === 'color' &&
+			iconHoverActiveMedia === 'background-color' &&
 			target === 'iconHover' && {
 				...getColorBackgroundObject({
 					...getGroupAttributes(
@@ -439,6 +439,7 @@ const getIconHoverObject = (props, target) => {
 					isIconInherit: props['icon-inherit'],
 					isHover: true,
 					isIcon: true,
+					hoverStatus: iconHoverStatus,
 				}),
 			},
 		gradient: iconHoverStatus &&

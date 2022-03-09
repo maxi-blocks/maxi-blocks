@@ -50,7 +50,8 @@ body.maxi-blocks--active
 }
 
 /*Removes focus bacgkround for Twenty Twenty One*/
-#content .maxi-link-wrapper:focus {
+body.maxi-blocks--active #content .maxi-text-block--link:focus,
+body.maxi-blocks--active #content .maxi-link-wrapper:focus {
 	background: unset;
 }
 

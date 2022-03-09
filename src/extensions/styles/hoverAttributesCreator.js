@@ -16,7 +16,11 @@ const hoverAttributesCreator = ({
 		const value = { ...val };
 
 		if (diffValAttrKeys.includes(key)) value.default = diffValAttr[key];
-		else if (!sameValAttr.includes(key) && 'default' in value)
+		else if (
+			sameValAttr.length !== 0 &&
+			!sameValAttr.includes(key) &&
+			'default' in value
+		)
 			delete value.default;
 
 		response[newKey] = value;

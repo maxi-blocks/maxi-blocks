@@ -314,7 +314,7 @@ const getIconSize = (obj, isHover = false) => {
 			delete response[breakpoint];
 	});
 
-	return { IconSize: response };
+	return { iconSize: response };
 };
 
 const getIconPathStyles = (obj, isHover = false) => {
@@ -338,7 +338,7 @@ const getIconPathStyles = (obj, isHover = false) => {
 			delete response[breakpoint];
 	});
 
-	return { IconPath: response };
+	return { iconPath: response };
 };
 
 const getIconObject = (props, target) => {
@@ -405,6 +405,38 @@ const getIconObject = (props, target) => {
 				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
+
+	const responsive = {
+		label: 'Icon responsive',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		responsive[breakpoint] = {};
+
+		if (
+			!isNil(props[`icon-spacing-${breakpoint}`]) &&
+			!isNil(props['icon-position'])
+		) {
+			props['icon-position'] === 'left'
+				? (responsive[breakpoint][
+						'margin-right'
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
+						breakpoint,
+						attributes: props,
+				  })}px`)
+				: (responsive[breakpoint][
+						'margin-left'
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
+						breakpoint,
+						attributes: props,
+				  })}px`);
+		}
+	});
+
+	response.iconResponsive = responsive;
 
 	return response;
 };
@@ -475,40 +507,6 @@ const getIconHoverObject = (props, target) => {
 	return response;
 };
 
-const getIconResponsive = obj => {
-	const response = {
-		label: 'Icon responsive',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(obj[`icon-spacing-${breakpoint}`]) &&
-			!isNil(obj['icon-position'])
-		) {
-			obj['icon-position'] === 'left'
-				? (response[breakpoint][
-						'margin-right'
-				  ] = `${getLastBreakpointAttribute({
-						target: 'icon-spacing',
-						breakpoint,
-						attributes: obj,
-				  })}px`)
-				: (response[breakpoint][
-						'margin-left'
-				  ] = `${getLastBreakpointAttribute({
-						target: 'icon-spacing',
-						breakpoint,
-						attributes: obj,
-				  })}px`);
-		}
-	});
-
-	return { IconResponsive: response };
-};
-
 const getStyles = (props, scValues) => {
 	const { uniqueID } = props;
 
@@ -522,10 +520,7 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
-				' .maxi-button-block__icon': [
-					getIconObject(props, 'icon'),
-					getIconResponsive(props, 'icon'),
-				],
+				' .maxi-button-block__icon': getIconObject(props, 'icon'),
 				' .maxi-button-block__icon svg': getIconSize(props, false),
 				' .maxi-button-block__icon svg > *': getIconObject(
 					props,

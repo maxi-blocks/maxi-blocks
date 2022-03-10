@@ -16,7 +16,6 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
-
 import {
 	setFormat,
 	getCustomFormatValue,

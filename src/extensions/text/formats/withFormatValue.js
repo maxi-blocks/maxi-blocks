@@ -18,6 +18,8 @@ const withFormatValue = createHigherOrderComponent(
 				return { formatValue };
 			});
 
+			// console.log(formatValue);
+
 			return <WrappedComponent formatValue={formatValue} {...props} />;
 		}),
 	'withFormatValue'

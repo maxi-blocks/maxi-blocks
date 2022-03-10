@@ -117,7 +117,7 @@ body {
 			}
 		}
 		.maxi-style-cards__sc {
-			padding: 10px;
+			padding: 10px 10px 2px;
 			background: #fff;
 
 			button,
@@ -248,14 +248,28 @@ body {
 			.maxi-tabs-content {
 				.maxi-tab-content__box {
 					padding: 0;
+					border: 0;
+					.maxi-accordion-control__item {
+						&:first-child {
+							.maxi-accordion-control__item__button {
+								border-top: 0;
+							}
+						}
+						&:last-child {
+							.maxi-accordion-control__item__button {
+								border-bottom: 0;
+							}
+						}
+						.maxi-accordion-control__item__panel {
+							padding-bottom: 8px;
+						}
+					}
 				}
 			}
 			.maxi-tabs-control {
 				margin-bottom: 0;
 
 				&__button {
-					border-bottom-width: 3px;
-
 					&__button[aria-pressed='true'] {
 						border-bottom-color: #ff4a17;
 					}

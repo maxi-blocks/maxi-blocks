@@ -609,24 +609,30 @@ const LibraryContainer = props => {
 	const CustomRefinementList = connectRefinementList(RefinementList);
 
 	const MenuSelect = ({ items, currentRefinement, refine }) => {
+		const buttonClassName =
+			items.length === 1
+				? ' maxi-cloud-container__content-svg-shape__button___pressed'
+				: '';
 		return (
 			<div>
-				<button
-					type='button'
-					value=''
-					className={classnames(
-						'maxi-cloud-container__content-svg-shape__button',
-						isEmpty(currentRefinement) &&
-							' maxi-cloud-container__content-svg-shape__button___pressed'
-					)}
-					onClick={event => {
-						event.preventDefault();
-						refine('');
-						items[0].isRefined = true;
-					}}
-				>
-					{__('All', 'maxi-blocks')}
-				</button>
+				{items.length > 2 && (
+					<button
+						type='button'
+						value=''
+						className={classnames(
+							'maxi-cloud-container__content-svg-shape__button',
+							isEmpty(currentRefinement) &&
+								' maxi-cloud-container__content-svg-shape__button___pressed'
+						)}
+						onClick={event => {
+							event.preventDefault();
+							refine('');
+							items[0].isRefined = true;
+						}}
+					>
+						{__('All', 'maxi-blocks')}
+					</button>
+				)}
 				{items.map(item => (
 					<button
 						type='button'
@@ -634,7 +640,8 @@ const LibraryContainer = props => {
 						className={classnames(
 							'maxi-cloud-container__content-svg-shape__button',
 							item.isRefined &&
-								' maxi-cloud-container__content-svg-shape__button___pressed'
+								' maxi-cloud-container__content-svg-shape__button___pressed',
+							buttonClassName
 						)}
 						value={item.value}
 						onClick={event => {

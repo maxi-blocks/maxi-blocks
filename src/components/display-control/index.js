@@ -97,6 +97,7 @@ const DisplayControl = props => {
 						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
 					})
 				}
+				hasBorder
 			/>
 		</div>
 	);

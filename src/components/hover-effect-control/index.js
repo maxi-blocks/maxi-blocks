@@ -72,6 +72,7 @@ const HoverEffectControl = props => {
 						'hover-transition-duration': 0.5,
 					});
 				}}
+				hasBorder
 			/>
 			<ToggleSwitch
 				label={__('Preview', 'maxi-blocks')}

@@ -120,6 +120,7 @@ class edit extends MaxiBlockComponent {
 			imgWidth,
 			mediaAlt,
 			altSelector,
+			useInitSize,
 			mediaHeight,
 			mediaID,
 			mediaURL,
@@ -229,13 +230,20 @@ class edit extends MaxiBlockComponent {
 				breakpoint: deviceType,
 				attributes,
 			});
+
+			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
+
 			const maxWidthUnit = getLastBreakpointAttribute({
 				target: 'image-max-width-unit',
 				breakpoint: deviceType,
 				attributes,
 			});
 
-			if (isNumber(maxWidth)) return `${maxWidth}${maxWidthUnit}`;
+			if (
+				(!useInitSize && isNumber(maxWidth)) ||
+				(useInitSize && maxWidth > mediaWidth)
+			)
+				return `${maxWidth}${maxWidthUnit}`;
 
 			return '100%';
 		};
@@ -321,13 +329,16 @@ class edit extends MaxiBlockComponent {
 										isOverflowHidden={getIsOverflowHidden()}
 										size={{
 											width: `${
-												fullWidth !== 'full'
+												fullWidth !== 'full' &&
+												!useInitSize
 													? imgWidth
 													: 100
 											}%`,
 										}}
 										showHandle={
-											isSelected && fullWidth !== 'full'
+											isSelected &&
+											fullWidth !== 'full' &&
+											!useInitSize
 										}
 										maxWidth={getMaxWidth()}
 										enable={{

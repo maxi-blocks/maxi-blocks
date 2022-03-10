@@ -229,6 +229,8 @@ const getHoverEffectContentTextObject = props => {
 };
 
 const getHoverImageWrapperObject = props => {
+	const { parentBlockStyle } = props;
+
 	const response = {
 		...(props['image-border-status-hover'] && {
 			border: getBorderStyles({
@@ -241,7 +243,7 @@ const getHoverImageWrapperObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				parentBlockStyle,
 				prefix: 'image-',
 			}),
 		}),
@@ -251,12 +253,9 @@ const getHoverImageWrapperObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				parentBlockStyle,
 				prefix: 'image-',
 			}),
-		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
 	};
 
@@ -264,6 +263,8 @@ const getHoverImageWrapperObject = props => {
 };
 
 const getImageWrapperObject = props => {
+	const { imgWidth, useInitSize, mediaWidth, parentBlockStyle } = props;
+
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
@@ -283,7 +284,7 @@ const getImageWrapperObject = props => {
 					'image-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			parentBlockStyle,
 			prefix: 'image-',
 		}),
 		boxShadow: getBoxShadowStyles({
@@ -291,7 +292,7 @@ const getImageWrapperObject = props => {
 				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
 			},
 			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
-			parentBlockStyle: props.parentBlockStyle,
+			parentBlockStyle,
 			prefix: 'image-',
 		}),
 		margin: getMarginPaddingStyles({
@@ -306,8 +307,12 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		...(imgWidth && {
+			imgWidth: {
+				general: {
+					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
+				},
+			},
 		}),
 	};
 

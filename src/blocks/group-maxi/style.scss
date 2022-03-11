@@ -6,14 +6,4 @@ body.maxi-blocks--active .maxi-group-block {
 	flex-direction: column;
 	padding: 0;
 	box-sizing: border-box;
-
-	&__group {
-		position: relative;
-		margin-right: auto;
-		margin-left: auto;
-	}
-
-	.maxi-group-block__group {
-		width: 100%;
-	}
 }

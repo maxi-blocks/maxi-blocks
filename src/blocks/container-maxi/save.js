@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { InnerBlocks } from '@wordpress/block-editor';
-
-/**
  * Internal dependencies
  */
 import { ArrowDisplayer, ShapeDivider } from '../../components';
@@ -33,6 +28,7 @@ const save = props => {
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
+			hasInnerBlocks
 		>
 			<ArrowDisplayer
 				{...getGroupAttributes(
@@ -47,13 +43,11 @@ const save = props => {
 					location='top'
 				/>
 			)}
-			<div className='maxi-container-block__container'>
-				<InnerBlocks.Content />
-			</div>
 			{attributes['shape-divider-bottom-status'] && (
 				<ShapeDivider
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='bottom'
+					afterInnerProps
 				/>
 			)}
 		</MaxiBlock>

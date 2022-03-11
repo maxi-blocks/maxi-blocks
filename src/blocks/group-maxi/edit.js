@@ -3,6 +3,7 @@
  */
 import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -13,12 +14,7 @@ import {
 	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import {
-	ArrowDisplayer,
-	BlockPlaceholder,
-	Toolbar,
-	InnerBlocks,
-} from '../../components';
+import { ArrowDisplayer, BlockPlaceholder, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
@@ -67,6 +63,14 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-group--${uniqueID}`}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
+				hasInnerBlocks
+				innerBlocksSettings={{
+					allowedBlocks: ALLOWED_BLOCKS,
+					templateLock: false,
+					renderAppender: !hasInnerBlock
+						? BlockPlaceholder
+						: InnerBlocks.ButtonBlockAppender,
+				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
@@ -76,16 +80,6 @@ class edit extends MaxiBlockComponent {
 						true
 					)}
 					breakpoint={deviceType}
-				/>
-				<InnerBlocks
-					allowedBlocks={ALLOWED_BLOCKS}
-					templateLock={false}
-					className='maxi-group-block__group'
-					renderAppender={
-						!hasInnerBlock
-							? BlockPlaceholder
-							: InnerBlocks.ButtonBlockAppender
-					}
 				/>
 			</MaxiBlock>,
 		];

@@ -3,8 +3,13 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
-import { forwardRef, useEffect, useState } from '@wordpress/element';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import {
+	forwardRef,
+	useEffect,
+	useState,
+	cloneElement,
+} from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 
 /**
@@ -17,7 +22,7 @@ import BackgroundDisplayer from '../background-displayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isArray, compact } from 'lodash';
 
 /**
  * Styles
@@ -75,6 +80,97 @@ const MainBlock = forwardRef(
 	}
 );
 
+const getInnerBlocksChild = ({
+	children,
+	background,
+	disableBackground,
+	innerBlocksChildren,
+	anchorLink,
+	isSave = false,
+}) => {
+	const needToSplit =
+		isArray(children) &&
+		children.some(child => child?.props?.afterInnerProps);
+
+	if (!needToSplit)
+		return [
+			...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+			...(disableBackground && (
+				<BackgroundDisplayer isSave={isSave} {...background} />
+			)),
+			...(children ?? children),
+			innerBlocksChildren,
+		];
+
+	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
+	const secondGroup = children
+		.filter(child => child?.props?.afterInnerProps)
+		.map(({ props: { afterInnerProps, ...restProps }, ...child }) =>
+			cloneElement({ ...child, props: restProps })
+		);
+
+	return [
+		...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+		...(disableBackground && (
+			<BackgroundDisplayer isSave={isSave} {...background} />
+		)),
+		...firstGroup,
+		innerBlocksChildren,
+		...secondGroup,
+	];
+};
+
+const InnerBlocksBlock = forwardRef(
+	(
+		{
+			tagName: TagName = 'div',
+			children,
+			background,
+			disableBackground,
+			uniqueID,
+			isSave,
+			anchorLink,
+			innerBlocksSettings,
+			...props
+		},
+		ref
+	) => {
+		const blockProps = isSave
+			? useBlockProps.save(props)
+			: useBlockProps({ ...props, ref });
+
+		const innerBlocksProps = isSave
+			? useInnerBlocksProps.save(blockProps)
+			: useInnerBlocksProps(blockProps, {
+					...innerBlocksSettings,
+					wrapperRef: ref,
+			  });
+
+		const { children: innerBlocksChildren, ...restInnerBlocksProps } =
+			innerBlocksProps;
+
+		const blockChildren = compact(
+			getInnerBlocksChild({
+				children,
+				background,
+				disableBackground,
+				innerBlocksChildren,
+				anchorLink,
+				isSave,
+			})
+		);
+
+		if (isSave)
+			return (
+				<TagName ref={ref} {...innerBlocksProps}>
+					{blockChildren}
+				</TagName>
+			);
+
+		return <TagName {...restInnerBlocksProps}>{blockChildren}</TagName>;
+	}
+);
+
 const MaxiBlock = forwardRef((props, ref) => {
 	const {
 		clientId,
@@ -95,6 +191,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		classes: customClasses,
 		paletteClasses,
 		hasLink,
+		hasInnerBlocks = false,
 		...extraProps
 	} = props;
 
@@ -225,7 +322,10 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	return <MainBlock {...blockProps}>{children}</MainBlock>;
+	if (!hasInnerBlocks)
+		return <MainBlock {...blockProps}>{children}</MainBlock>;
+
+	return <InnerBlocksBlock {...blockProps}>{children}</InnerBlocksBlock>;
 });
 
 export default MaxiBlock;

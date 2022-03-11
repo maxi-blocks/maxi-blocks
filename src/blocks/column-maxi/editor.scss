@@ -17,5 +17,9 @@
 				border-color: #ff4a17 !important;
 			}
 		}
+
+		& > .block-editor-block-list__layout {
+			height: 100%;
+		}
 	}
 }

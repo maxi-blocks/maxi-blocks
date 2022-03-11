@@ -84,6 +84,8 @@ body {
 }
 .maxi-block {
 	.block-editor-block-list__layout {
+		position: initial;
+
 		&:focus:after {
 			box-shadow: none !important;
 		}

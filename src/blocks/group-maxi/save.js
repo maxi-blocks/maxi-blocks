@@ -21,6 +21,7 @@ const save = props => {
 			hasInnerBlocks
 		>
 			<ArrowDisplayer
+				key={`maxi-arrow-displayer__${attributes.uniqueID}`}
 				{...getGroupAttributes(
 					attributes,
 					['blockBackground', 'arrow', 'border'],

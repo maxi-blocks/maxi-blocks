@@ -74,6 +74,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
+					key={`maxi-arrow-displayer__${uniqueID}`}
 					{...getGroupAttributes(
 						attributes,
 						['blockBackground', 'arrow', 'border'],

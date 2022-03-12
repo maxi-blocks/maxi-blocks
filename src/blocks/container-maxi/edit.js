@@ -95,6 +95,7 @@ class edit extends MaxiBlockComponent {
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider
+						key={`maxi-shape-divider-top__${uniqueID}`}
 						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='top'
 					/>
@@ -102,6 +103,7 @@ class edit extends MaxiBlockComponent {
 				{isFirstOnHierarchy && (
 					<>
 						<ArrowDisplayer
+							key={`maxi-arrow-displayer__${uniqueID}`}
 							{...getGroupAttributes(
 								attributes,
 								['blockBackground', 'arrow', 'border'],
@@ -123,6 +125,7 @@ class edit extends MaxiBlockComponent {
 				)}
 				{attributes['shape-divider-bottom-status'] && (
 					<ShapeDivider
+						key={`maxi-shape-divider-bottom__${uniqueID}`}
 						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='bottom'
 						afterInnerProps

@@ -16,7 +16,7 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { fullWidth } = attributes;
+	const { fullWidth, uniqueID } = attributes;
 
 	const name = 'maxi-blocks/container-maxi';
 
@@ -31,6 +31,7 @@ const save = props => {
 			hasInnerBlocks
 		>
 			<ArrowDisplayer
+				key={`maxi-arrow-displayer__${uniqueID}`}
 				{...getGroupAttributes(
 					attributes,
 					['blockBackground', 'arrow', 'border'],
@@ -39,12 +40,14 @@ const save = props => {
 			/>
 			{attributes['shape-divider-top-status'] && (
 				<ShapeDivider
+					key={`maxi-shape-divider-top__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='top'
 				/>
 			)}
 			{attributes['shape-divider-bottom-status'] && (
 				<ShapeDivider
+					key={`maxi-shape-divider-bottom__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='bottom'
 					afterInnerProps

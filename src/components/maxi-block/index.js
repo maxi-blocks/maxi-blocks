@@ -64,7 +64,11 @@ const MainBlock = forwardRef(
 						<span id={anchorLink} className='maxi-block-anchor' />
 					)}
 					{disableBackground && (
-						<BackgroundDisplayer isSave {...background} />
+						<BackgroundDisplayer
+							key={`maxi-background-displayer__${uniqueID}`}
+							isSave
+							{...background}
+						/>
 					)}
 					{children}
 				</TagName>
@@ -73,7 +77,12 @@ const MainBlock = forwardRef(
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
 				{!isEmpty(anchorLink) && <span id={anchorLink} />}
-				{disableBackground && <BackgroundDisplayer {...background} />}
+				{disableBackground && (
+					<BackgroundDisplayer
+						key={`maxi-background-displayer__${uniqueID}`}
+						{...background}
+					/>
+				)}
 				{children}
 			</TagName>
 		);
@@ -87,6 +96,7 @@ const getInnerBlocksChild = ({
 	innerBlocksChildren,
 	anchorLink,
 	isSave = false,
+	uniqueID,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -96,10 +106,16 @@ const getInnerBlocksChild = ({
 		return [
 			...(!isEmpty(anchorLink) && <span id={anchorLink} />),
 			...(disableBackground && (
-				<BackgroundDisplayer isSave={isSave} {...background} />
+				<BackgroundDisplayer
+					key={`maxi-background-displayer__${uniqueID}`}
+					isSave={isSave}
+					{...background}
+				/>
 			)),
 			...(children ?? children),
-			innerBlocksChildren,
+			...cloneElement(innerBlocksChildren, {
+				key: `maxi-inner-content__${uniqueID}`,
+			}),
 		];
 
 	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
@@ -112,10 +128,16 @@ const getInnerBlocksChild = ({
 	return [
 		...(!isEmpty(anchorLink) && <span id={anchorLink} />),
 		...(disableBackground && (
-			<BackgroundDisplayer isSave={isSave} {...background} />
+			<BackgroundDisplayer
+				key={`maxi-background-displayer__${uniqueID}`}
+				isSave={isSave}
+				{...background}
+			/>
 		)),
 		...firstGroup,
-		innerBlocksChildren,
+		...cloneElement(innerBlocksChildren, {
+			key: `maxi-inner-content__${uniqueID}`,
+		}),
 		...secondGroup,
 	];
 };
@@ -157,6 +179,7 @@ const InnerBlocksBlock = forwardRef(
 				innerBlocksChildren,
 				anchorLink,
 				isSave,
+				uniqueID,
 			})
 		);
 

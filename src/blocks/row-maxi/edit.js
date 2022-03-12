@@ -3,7 +3,7 @@
  */
 import { compose, withInstanceId } from '@wordpress/compose';
 import { withSelect, useDispatch } from '@wordpress/data';
-import { Button, Icon, withFocusOutside } from '@wordpress/components';
+import { Button, Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -83,8 +83,8 @@ class edit extends MaxiBlockComponent {
 		displayHandlers: false,
 	};
 
-	handleFocusOutside() {
-		if (this.state.displayHandlers) {
+	maxiBlockDidUpdate() {
+		if (this.state.displayHandlers && !this.props.isSelected) {
 			this.setState({
 				displayHandlers: false,
 			});
@@ -177,8 +177,4 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-export default compose(
-	editSelect,
-	withInstanceId,
-	withMaxiProps
-)(withFocusOutside(edit));
+export default compose(editSelect, withInstanceId, withMaxiProps)(edit);

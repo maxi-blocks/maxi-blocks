@@ -135,18 +135,6 @@ const getDividerObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'divider-',
 		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin', false, 'divider-'),
-			},
-			prefix: 'divider-',
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding', false, 'divider-'),
-			},
-			prefix: 'divider-',
-		}),
 	};
 
 	return response;

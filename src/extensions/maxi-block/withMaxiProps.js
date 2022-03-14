@@ -64,7 +64,7 @@ export const handleSetAttributes = ({
 		// When changing a number that needs more than 2 digits, it is saved digit by digit
 		// Need to make both be saved in same conditions
 		const needsGeneralAttr =
-			attributes[attrLabelOnGeneral] === attributes[key];
+			attributes?.[attrLabelOnGeneral] === attributes?.[key];
 
 		if (
 			(!attrExistOnGeneral || needsGeneralAttr) &&

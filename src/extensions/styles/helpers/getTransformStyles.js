@@ -26,71 +26,71 @@ const getTransformStyles = obj => {
 		let transformString = '';
 		let transformOriginString = '';
 
-		const scaleX = getLastBreakpointAttribute(
-			'transform-scale-x',
+		const scaleX = getLastBreakpointAttribute({
+			target: 'transform-scale-x',
 			breakpoint,
-			obj
-		);
-		const scaleY = getLastBreakpointAttribute(
-			'transform-scale-y',
+			attributes: obj,
+		});
+		const scaleY = getLastBreakpointAttribute({
+			target: 'transform-scale-y',
 			breakpoint,
-			obj
-		);
-		const translateX = getLastBreakpointAttribute(
-			'transform-translate-x',
+			attributes: obj,
+		});
+		const translateX = getLastBreakpointAttribute({
+			target: 'transform-translate-x',
 			breakpoint,
-			obj
-		);
-		const translateXUnit = getLastBreakpointAttribute(
-			'transform-translate-x-unit',
+			attributes: obj,
+		});
+		const translateXUnit = getLastBreakpointAttribute({
+			target: 'transform-translate-x-unit',
 			breakpoint,
-			obj
-		);
-		const translateY = getLastBreakpointAttribute(
-			'transform-translate-y',
+			attributes: obj,
+		});
+		const translateY = getLastBreakpointAttribute({
+			target: 'transform-translate-y',
 			breakpoint,
-			obj
-		);
-		const translateYUnit = getLastBreakpointAttribute(
-			'transform-translate-y-unit',
+			attributes: obj,
+		});
+		const translateYUnit = getLastBreakpointAttribute({
+			target: 'transform-translate-y-unit',
 			breakpoint,
-			obj
-		);
-		const rotateX = getLastBreakpointAttribute(
-			'transform-rotate-x',
+			attributes: obj,
+		});
+		const rotateX = getLastBreakpointAttribute({
+			target: 'transform-rotate-x',
 			breakpoint,
-			obj
-		);
-		const rotateY = getLastBreakpointAttribute(
-			'transform-rotate-y',
+			attributes: obj,
+		});
+		const rotateY = getLastBreakpointAttribute({
+			target: 'transform-rotate-y',
 			breakpoint,
-			obj
-		);
-		const rotateZ = getLastBreakpointAttribute(
-			'transform-rotate-z',
+			attributes: obj,
+		});
+		const rotateZ = getLastBreakpointAttribute({
+			target: 'transform-rotate-z',
 			breakpoint,
-			obj
-		);
-		const originX = getLastBreakpointAttribute(
-			'transform-origin-x',
+			attributes: obj,
+		});
+		const originX = getLastBreakpointAttribute({
+			target: 'transform-origin-x',
 			breakpoint,
-			obj
-		);
-		const originY = getLastBreakpointAttribute(
-			'transform-origin-y',
+			attributes: obj,
+		});
+		const originY = getLastBreakpointAttribute({
+			target: 'transform-origin-y',
 			breakpoint,
-			obj
-		);
-		const originXUnit = getLastBreakpointAttribute(
-			'transform-origin-x-unit',
+			attributes: obj,
+		});
+		const originXUnit = getLastBreakpointAttribute({
+			target: 'transform-origin-x-unit',
 			breakpoint,
-			obj
-		);
-		const originYUnit = getLastBreakpointAttribute(
-			'transform-origin-y-unit',
+			attributes: obj,
+		});
+		const originYUnit = getLastBreakpointAttribute({
+			target: 'transform-origin-y-unit',
 			breakpoint,
-			obj
-		);
+			attributes: obj,
+		});
 
 		const originValueToNumber = value => {
 			switch (validateOriginValue(value)) {

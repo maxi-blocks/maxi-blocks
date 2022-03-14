@@ -9,6 +9,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
  */
 import * as defaults from './defaults/index';
 import { getIsValid } from './utils';
+import getBreakpointFromAttribute from './getBreakpointFromAttribute';
 
 /**
  * External dependencies
@@ -38,7 +39,11 @@ const getBlocksName = clientIds => {
  * @param {string} clientId Block's client id
  * @param {string} prop     Claimed property to return
  */
-const getDefaultAttribute = (prop, clientIds = null) => {
+const getDefaultAttribute = (
+	prop,
+	clientIds = null,
+	avoidWinBreakpoint = false
+) => {
 	const { getBlockName, getSelectedBlockClientIds } =
 		select('core/block-editor');
 
@@ -59,6 +64,18 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 	Object.values(defaults).forEach(defaultAttrs => {
 		if (prop in defaultAttrs) response = defaultAttrs[prop].default;
 	});
+
+	if (
+		!avoidWinBreakpoint &&
+		isNil(response) &&
+		getBreakpointFromAttribute(prop) === 'general'
+	) {
+		const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+
+		response = getDefaultAttribute(
+			prop.replace('general', winBreakpoint, clientIds)
+		);
+	}
 
 	return response;
 };

@@ -10,7 +10,7 @@ const uniqueIDGenerator = name => {
 		!isEmpty(document.getElementsByClassName(newID)) ||
 		!isNil(document.getElementById(newID))
 	)
-		uniqueIDGenerator(name);
+		return uniqueIDGenerator(name);
 
 	return newID;
 };

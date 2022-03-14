@@ -20,11 +20,11 @@ const customCss = ({
 }) => {
 	const { attributes, maxiSetAttributes } = props;
 
-	const customCssValue = getLastBreakpointAttribute(
-		'custom-css',
+	const customCssValue = getLastBreakpointAttribute({
+		target: 'custom-css',
 		breakpoint,
-		attributes
-	);
+		attributes,
+	});
 	const customCssCategory = attributes['custom-css-category'];
 
 	return {

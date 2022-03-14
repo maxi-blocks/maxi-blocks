@@ -28,19 +28,16 @@ const getBlockStyle = clientId => {
 		getSelectedBlockClientId() ||
 		getFirstMultiSelectedBlockClientId();
 
-	const {
-		blockStyle: currentBlockStyle,
-		blockStyleOriginal: blockStyleOriginal,
-	} = getBlockAttributes(id);
+	const { blockStyle: currentBlockStyle } = getBlockAttributes(id);
 
 	if (currentBlockStyle !== 'maxi-parent')
-		return blockSwitcher(blockStyleOriginal);
+		return blockSwitcher(currentBlockStyle);
 
 	const rootClientId = getBlockHierarchyRootClientId(id);
 	const rootAttributes = getBlockAttributes(rootClientId);
-	const { blockStyleOriginal: rootBlockStyleOriginal } = rootAttributes;
+	const { blockStyle: parentBlockStyle } = rootAttributes;
 
-	return blockSwitcher(rootBlockStyleOriginal);
+	return blockSwitcher(parentBlockStyle);
 };
 
 export default getBlockStyle;

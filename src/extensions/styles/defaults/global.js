@@ -8,10 +8,6 @@ const global = {
 	blockStyle: {
 		type: 'string',
 	},
-	blockStyleOriginal: {
-		type: 'string',
-		default: 'maxi-light',
-	},
 	defaultBlockStyle: {
 		type: 'string',
 		default: 'maxi-def-light',

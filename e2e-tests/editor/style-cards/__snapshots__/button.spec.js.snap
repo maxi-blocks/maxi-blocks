@@ -15,7 +15,7 @@ Object {
     "border-palette-status": true,
     "color": "",
     "color-global": true,
-    "font-family-general": "Roboto",
+    "font-family-general": "",
     "font-family-l": "Roboto",
     "font-size-general": 24,
     "font-size-l": 20,

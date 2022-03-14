@@ -17,8 +17,6 @@ import { isEmpty, uniq } from 'lodash';
  */
 const loadFonts = (font, backendOnly = false) => {
 	if (typeof font === 'object' && font !== null) {
-		console.log('font object');
-		console.log(font);
 		Object.entries(font).forEach(([key, val]) => {
 			const fontName = key;
 
@@ -38,8 +36,6 @@ const loadFonts = (font, backendOnly = false) => {
 			} else fontData = { ...val, ...{ weight: fontWeight } };
 
 			if (isEmpty(fontData.style)) delete fontData.style;
-
-			console.log(`fontName ${fontName}`);
 
 			const { files } = select('maxiBlocks/text').getFont(fontName);
 

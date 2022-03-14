@@ -25,10 +25,10 @@ describe('StyleCards, Buttons', () => {
 			page,
 			accordion: 'button',
 		});
-		await changeResponsive(page, 'l');
+
+		await changeResponsive(page, 'm');
 
 		// size, line-height, letter-spacing
-		debugger;
 		await addTypographyOptions({
 			page,
 			instance: await page.$(

@@ -84,7 +84,7 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__)),
                     );
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, $meta);
+                    wp_localize_script($jsScriptName, $jsVarToPass, [$meta]);
                 }
             }
         }

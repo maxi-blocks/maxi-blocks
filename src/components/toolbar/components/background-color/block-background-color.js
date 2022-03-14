@@ -63,26 +63,26 @@ const BlockBackgroundColor = props => {
 					'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
 			};
 
-		const bgPaletteStatus = getLastBreakpointAttribute(
-			'background-palette-status',
+		const bgPaletteStatus = getLastBreakpointAttribute({
+			target: 'background-palette-status',
 			breakpoint,
-			layer
-		);
-		const bgPaletteColor = getLastBreakpointAttribute(
-			'background-palette-color',
+			attributes: layer,
+		});
+		const bgPaletteColor = getLastBreakpointAttribute({
+			target: 'background-palette-color',
 			breakpoint,
-			layer
-		);
-		const bgPaletteOpacity = getLastBreakpointAttribute(
-			'background-palette-opacity',
+			attributes: layer,
+		});
+		const bgPaletteOpacity = getLastBreakpointAttribute({
+			target: 'background-palette-opacity',
 			breakpoint,
-			layer
-		);
-		const bgColor = getLastBreakpointAttribute(
-			'background-color',
+			attributes: layer,
+		});
+		const bgColor = getLastBreakpointAttribute({
+			target: 'background-color',
 			breakpoint,
-			layer
-		);
+			attributes: layer,
+		});
 
 		return {
 			background: bgPaletteStatus

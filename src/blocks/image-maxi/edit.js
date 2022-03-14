@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect, dispatch } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
-import { isURL } from '@wordpress/url';
+// import { isURL } from '@wordpress/url';
 import { createRef } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 
@@ -31,7 +31,7 @@ import {
 	Toolbar,
 	Placeholder,
 	RawHTML,
-	ImageURL,
+	// ImageURL,
 } from '../../components';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import {
@@ -43,7 +43,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round } from 'lodash';
+import { isEmpty, isNil, round, isNumber } from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -116,7 +116,6 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			captionContent,
 			captionType,
-			externalUrl,
 			fullWidth,
 			imageRatio,
 			imgWidth,
@@ -218,10 +217,33 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
+
+		const getMaxWidth = () => {
+			const maxWidth = getLastBreakpointAttribute({
+				target: 'image-max-width',
+				breakpoint: deviceType,
+				attributes,
+			});
+			const maxWidthUnit = getLastBreakpointAttribute({
+				target: 'image-max-width-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
+
+			if (isNumber(maxWidth)) return `${maxWidth}${maxWidthUnit}`;
+
+			return '100%';
+		};
 
 		return [
 			<Inspector
@@ -304,7 +326,7 @@ class edit extends MaxiBlockComponent {
 										isOverflowHidden={getIsOverflowHidden()}
 										size={{ width: `${imgWidth}%` }}
 										showHandle={isSelected}
-										maxWidth='100%'
+										maxWidth={getMaxWidth()}
 										enable={{
 											topRight: true,
 											bottomRight: true,
@@ -338,26 +360,6 @@ class edit extends MaxiBlockComponent {
 												showTooltip='true'
 												onClick={open}
 												icon={toolbarReplaceImage}
-											/>
-											<ImageURL
-												url={externalUrl}
-												onChange={url => {
-													maxiSetAttributes({
-														externalUrl: url,
-													});
-												}}
-												onSubmit={url => {
-													if (isURL(url)) {
-														maxiSetAttributes({
-															isImageUrl: true,
-															externalUrl: url,
-															mediaURL: url,
-														});
-														this.setState({
-															isExternalClass: true,
-														});
-													}
-												}}
 											/>
 										</div>
 										{captionType !== 'none' &&
@@ -466,27 +468,6 @@ class edit extends MaxiBlockComponent {
 										showTooltip='true'
 										onClick={open}
 										icon={toolbarReplaceImage}
-									/>
-									<ImageURL
-										url={externalUrl}
-										onChange={url => {
-											maxiSetAttributes({
-												externalUrl: url,
-											});
-										}}
-										onSubmit={url => {
-											if (isURL(url)) {
-												// TODO: fetch url and check for the code and type
-												maxiSetAttributes({
-													isImageUrl: true,
-													externalUrl: url,
-													mediaURL: url,
-												});
-												this.setState({
-													isExternalClass: true,
-												});
-											}
-										}}
 									/>
 								</div>
 							)}

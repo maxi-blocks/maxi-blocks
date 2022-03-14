@@ -29,7 +29,7 @@ export const selectorsText = {
 			target: ' .maxi-text-block__content:hover::after',
 		},
 	},
-	'links': {
+	links: {
 		normal: {
 			label: 'links',
 			target: ' .maxi-text-block--link',
@@ -39,7 +39,7 @@ export const selectorsText = {
 			target: ' .maxi-text-block--link:hover',
 		},
 	},
-	'lists':{
+	lists: {
 		ordered: {
 			label: 'Ordered list',
 			target: ' ol.maxi-text-block__content',
@@ -55,4 +55,6 @@ export const categoriesText = [
 	'text',
 	'links',
 	'lists',
+	'before text',
+	'after text',
 ];

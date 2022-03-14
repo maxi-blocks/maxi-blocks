@@ -135,11 +135,11 @@ const listTab = props => {
 					<AdvancedNumberControl
 						label={__('Text indent', 'maxi-blocks')}
 						className='maxi-image-inspector__list-indent'
-						placeholder={getLastBreakpointAttribute(
-							'list-indent',
-							deviceType,
-							attributes
-						)}
+						placeholder={getLastBreakpointAttribute({
+							target: 'list-indent',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						value={attributes[`list-indent-${deviceType}`]}
 						onChangeValue={val =>
 							maxiSetAttributes({
@@ -147,11 +147,11 @@ const listTab = props => {
 							})
 						}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							'list-indent-unit',
-							deviceType,
-							attributes
-						)}
+						unit={getLastBreakpointAttribute({
+							target: 'list-indent-unit',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						minMaxSettings={{
 							px: {
 								min: -999,
@@ -191,11 +191,11 @@ const listTab = props => {
 					<AdvancedNumberControl
 						label={__('List gap', 'maxi-blocks')}
 						className='maxi-image-inspector__list-gap'
-						placeholder={getLastBreakpointAttribute(
-							'list-gap',
-							deviceType,
-							attributes
-						)}
+						placeholder={getLastBreakpointAttribute({
+							target: 'list-gap',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						value={attributes[`list-gap-${deviceType}`]}
 						onChangeValue={val =>
 							maxiSetAttributes({
@@ -203,11 +203,11 @@ const listTab = props => {
 							})
 						}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							'list-gap-unit',
-							deviceType,
-							attributes
-						)}
+						unit={getLastBreakpointAttribute({
+							target: 'list-gap-unit',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						minMaxSettings={{
 							px: {
 								min: 0,
@@ -250,11 +250,11 @@ const listTab = props => {
 					<AdvancedNumberControl
 						label={__('Paragraph spacing', 'maxi-blocks')}
 						className='maxi-image-inspector__list-paragraph-spacing'
-						placeholder={getLastBreakpointAttribute(
-							'list-paragraph-spacing',
-							deviceType,
-							attributes
-						)}
+						placeholder={getLastBreakpointAttribute({
+							target: 'list-paragraph-spacing',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						value={
 							attributes[`list-paragraph-spacing-${deviceType}`]
 						}
@@ -264,11 +264,11 @@ const listTab = props => {
 							})
 						}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							'list-paragraph-spacing-unit',
-							deviceType,
-							attributes
-						)}
+						unit={getLastBreakpointAttribute({
+							target: 'list-paragraph-spacing-unit',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						minMaxSettings={{
 							px: {
 								min: 0,
@@ -313,11 +313,11 @@ const listTab = props => {
 					<AdvancedNumberControl
 						label={__('Marker size', 'maxi-blocks')}
 						className='maxi-image-inspector__list-size'
-						value={getLastBreakpointAttribute(
-							'list-size',
-							deviceType,
-							attributes
-						)}
+						value={getLastBreakpointAttribute({
+							target: 'list-size',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						onChangeValue={val => {
 							maxiSetAttributes({
 								[`list-size-${deviceType}`]:
@@ -325,11 +325,11 @@ const listTab = props => {
 							});
 						}}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							'list-size-unit',
-							deviceType,
-							attributes
-						)}
+						unit={getLastBreakpointAttribute({
+							target: 'list-size-unit',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						onChangeUnit={val =>
 							maxiSetAttributes({
 								[`list-size-unit-${deviceType}`]: val,
@@ -370,11 +370,11 @@ const listTab = props => {
 					<AdvancedNumberControl
 						label={__('Marker line-height', 'maxi-blocks')}
 						className='maxi-image-inspector__list-marker-line-height'
-						placeholder={getLastBreakpointAttribute(
-							'list-marker-line-height',
-							deviceType,
-							attributes
-						)}
+						placeholder={getLastBreakpointAttribute({
+							target: 'list-marker-line-height',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						value={
 							attributes[`list-marker-line-height-${deviceType}`]
 						}
@@ -384,11 +384,11 @@ const listTab = props => {
 							})
 						}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							'list-marker-line-height-unit',
-							deviceType,
-							attributes
-						)}
+						unit={getLastBreakpointAttribute({
+							target: 'list-marker-line-height-unit',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						onChangeUnit={val =>
 							maxiSetAttributes({
 								[`list-marker-line-height-unit-${deviceType}`]:
@@ -412,11 +412,11 @@ const listTab = props => {
 					<AdvancedNumberControl
 						label={__('Marker indent', 'maxi-blocks')}
 						className='maxi-image-inspector__list-marker-indent'
-						placeholder={getLastBreakpointAttribute(
-							'list-marker-indent',
-							deviceType,
-							attributes
-						)}
+						placeholder={getLastBreakpointAttribute({
+							target: 'list-marker-indent',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						value={attributes[`list-marker-indent-${deviceType}`]}
 						onChangeValue={val =>
 							maxiSetAttributes({
@@ -424,11 +424,11 @@ const listTab = props => {
 							})
 						}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							'list-marker-indent-unit',
-							deviceType,
-							attributes
-						)}
+						unit={getLastBreakpointAttribute({
+							target: 'list-marker-indent-unit',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						onChangeUnit={val =>
 							maxiSetAttributes({
 								[`list-marker-indent-unit-${deviceType}`]: val,
@@ -507,11 +507,11 @@ const listTab = props => {
 					<SelectControl
 						label={__('Text position', 'maxi-blocks')}
 						className='maxi-image-inspector__list-style'
-						value={getLastBreakpointAttribute(
-							'list-text-position',
-							deviceType,
-							attributes
-						)}
+						value={getLastBreakpointAttribute({
+							target: 'list-text-position',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						options={[
 							{
 								label: __('Baseline', 'maxi-blocks'),

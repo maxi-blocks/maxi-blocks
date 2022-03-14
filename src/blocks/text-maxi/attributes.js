@@ -116,7 +116,6 @@ const attributes = {
 		type: 'string',
 	},
 	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
-	...attributesData.container,
 	...attributesData.link,
 	...attributesData.textAlignment,
 	...attributesData.typography,

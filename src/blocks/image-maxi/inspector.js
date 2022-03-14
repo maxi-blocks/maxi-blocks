@@ -381,9 +381,12 @@ const Inspector = memo(
 																	)}
 																	className='maxi-image-inspector__caption-gap'
 																	placeholder={getLastBreakpointAttribute(
-																		'caption-gap',
-																		deviceType,
-																		attributes
+																		{
+																			target: 'caption-gap',
+																			breakpoint:
+																				deviceType,
+																			attributes,
+																		}
 																	)}
 																	value={
 																		attributes[
@@ -400,9 +403,12 @@ const Inspector = memo(
 																	}
 																	enableUnit
 																	unit={getLastBreakpointAttribute(
-																		'caption-gap-unit',
-																		deviceType,
-																		attributes
+																		{
+																			target: 'caption-gap-unit',
+																			breakpoint:
+																				deviceType,
+																			attributes,
+																		}
 																	)}
 																	minMaxSettings={{
 																		px: {
@@ -473,6 +479,15 @@ const Inspector = memo(
 																	blockStyle={
 																		parentBlockStyle
 																	}
+																	globalProps={{
+																		target: '',
+																		type: 'p',
+																	}}
+																	hoverGlobalProps={{
+																		target: 'hover',
+																		type: 'p',
+																	}}
+																	styleCardPrefix=''
 																	allowLink
 																/>
 															</>

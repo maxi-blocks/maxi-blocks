@@ -3,37 +3,37 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	saveDraft,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import { openPreviewPage } from '../utils';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
 describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
+		await insertBlock('Divider Maxi');
 
+		await page.waitForTimeout(1000);
+		await saveDraft();
+		await page.waitForTimeout(1000);
+
+		await page.evaluate(() => window.location.reload());
+
+		await page.waitForTimeout(500);
 		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
-		let scVariable = '';
 
-		do {
-			await page.waitForTimeout(300);
-
-			scVariable = await page.$eval(
-				'#maxi-blocks-sc-vars-inline-css',
-				content => content.innerHTML
-			);
-		} while (isEmpty(scVariable));
+		const scVariable = await page.$eval(
+			'#maxi-blocks-sc-vars-inline-css',
+			content => content.innerHTML
+		);
 
 		expect(scVariable).toMatchSnapshot();
-
-		await insertBlock('Divider Maxi');
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');

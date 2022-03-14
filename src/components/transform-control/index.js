@@ -113,6 +113,7 @@ const TransformControl = props => {
 				label=''
 				type='buttons'
 				selected={transformStatus}
+				fullWidthMode
 				items={[
 					{
 						label: __('Scale', 'maxi-blocks'),
@@ -151,6 +152,7 @@ const TransformControl = props => {
 				]}
 				onChange={val => setTransformStatus(val)}
 				depth={2}
+				hasBorder
 			/>
 			{transformStatus === 'scale' && (
 				<SquareControl

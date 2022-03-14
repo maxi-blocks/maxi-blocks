@@ -41,6 +41,7 @@ class MaxiBlocks_Styles
 
         $post_content = json_decode(json_encode($post_content), true);
         
+
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
 

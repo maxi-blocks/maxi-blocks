@@ -26,7 +26,8 @@ describe('StyleCards, Buttons', () => {
 			accordion: 'button',
 		});
 
-		await changeResponsive(page, 'm');
+		await changeResponsive(page, 'l');
+		await page.waitForTimeout(100);
 
 		// size, line-height, letter-spacing
 		await addTypographyOptions({
@@ -41,6 +42,8 @@ describe('StyleCards, Buttons', () => {
 
 		// Selectors
 		// Weight, Transform, Style, Decoration
+		await page.waitForTimeout(100);
+
 		await addTypographyStyle({
 			page,
 			decoration: 'overline',
@@ -48,6 +51,7 @@ describe('StyleCards, Buttons', () => {
 			transform: 'capitalize',
 			style: 'italic',
 		});
+		await page.waitForTimeout(100);
 
 		await page.$$eval(
 			'.maxi-blocks-sc__type--button .maxi-typography-control__text-indent input',
@@ -64,6 +68,7 @@ describe('StyleCards, Buttons', () => {
 			page,
 			block: 'button',
 		});
+		await page.waitForTimeout(100);
 
 		// background color
 		await editGlobalStyles({
@@ -71,6 +76,7 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'background',
 		});
+		await page.waitForTimeout(100);
 
 		// background hover color
 		await editGlobalStyles({
@@ -78,6 +84,7 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'hover-background',
 		});
+		await page.waitForTimeout(100);
 
 		// text hover color
 		await editGlobalStyles({
@@ -85,6 +92,7 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'hover',
 		});
+		await page.waitForTimeout(100);
 
 		// border color
 		await editGlobalStyles({
@@ -92,6 +100,7 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'border',
 		});
+		await page.waitForTimeout(100);
 
 		// border hover color
 		await editGlobalStyles({

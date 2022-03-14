@@ -79,6 +79,46 @@ export const getArrowObject = props => {
 	return response;
 };
 
+export const getArrowBorder = (props, isHover) => {
+	const response = {
+		label: 'Arrow Border',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+		const borderRadiusUnit =
+			props[`border-unit-radius-${breakpoint}${isHover ? '-hover' : ''}`];
+		response[breakpoint]['border-top-left-radius'] = `${
+			props[
+				`border-top-left-radius-${breakpoint}${isHover ? '-hover' : ''}`
+			]
+		}${borderRadiusUnit}`;
+		response[breakpoint]['border-top-right-radius'] = `${
+			props[
+				`border-top-right-radius-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			]
+		}${borderRadiusUnit}`;
+		response[breakpoint]['border-bottom-left-radius'] = `${
+			props[
+				`border-bottom-left-radius-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			]
+		}${borderRadiusUnit}`;
+		response[breakpoint]['border-bottom-right-radius'] = `${
+			props[
+				`border-bottom-right-radius-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			]
+		}${borderRadiusUnit}`;
+	});
+	return response;
+};
+
 export const getArrowColorObject = (
 	backgroundLayers,
 	blockStyle,
@@ -203,6 +243,12 @@ const getArrowStyles = props => {
 		[`${target} .maxi-container-arrow:before`]: {
 			background: {
 				...getArrowColorObject(backgroundLayers, blockStyle),
+			},
+			borderRadius: {
+				...getArrowBorder(
+					getGroupAttributes(props, 'borderRadius', isHover),
+					false
+				),
 			},
 		},
 		...(props['block-background-hover-status'] && {

@@ -19,8 +19,8 @@ describe('BaseControl', () => {
 
 		// check base control label
 		const expectLabel = await accordionPanel.$eval(
-			'.maxi-base-control',
-			select => select.innerHTML
+			'.maxi-base-control.maxi-color-control__palette-label',
+			select => select.outerHTML
 		);
 
 		expect(expectLabel).toMatchSnapshot();

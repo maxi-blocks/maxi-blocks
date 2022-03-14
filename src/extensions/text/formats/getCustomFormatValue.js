@@ -40,6 +40,7 @@ const getCustomFormatValue = ({
 	styleCard,
 	styleCardPrefix,
 	avoidXXL = false,
+	avoidSC = false,
 }) => {
 	// Custom format value
 	if (formatValue) {
@@ -80,7 +81,7 @@ const getCustomFormatValue = ({
 		avoidXXL,
 	});
 
-	if (getIsValidValue(value)) return value;
+	if (getIsValidValue(value) || avoidSC) return value;
 
 	// Style Cards value
 	const rawSCStyle = blockStyle ? blockStyle.replace('maxi-', '') : undefined;

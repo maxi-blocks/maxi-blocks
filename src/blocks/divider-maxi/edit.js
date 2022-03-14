@@ -129,15 +129,27 @@ class edit extends MaxiBlockComponent {
 				isOverflowHidden={getIsOverflowHidden()}
 				size={{
 					width: '100%',
-					height: `${attributes[`height-${deviceType}`]}${
-						attributes[`height-unit-${deviceType}`]
-					}`,
+					height: `${getLastBreakpointAttribute({
+						target: 'height',
+						breakpoint: deviceType,
+						attributes,
+					})}${getLastBreakpointAttribute({
+						target: 'height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}`,
 				}}
 				defaultSize={{
 					width: '100%',
-					height: `${attributes[`height-${deviceType}`]}${
-						attributes[`height-unit-${deviceType}`]
-					}`,
+					height: `${getLastBreakpointAttribute({
+						target: 'height',
+						breakpoint: deviceType,
+						attributes,
+					})}${getLastBreakpointAttribute({
+						target: 'height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}`,
 				}}
 				showHandle={isSelected}
 				enable={{
@@ -147,7 +159,11 @@ class edit extends MaxiBlockComponent {
 				onResizeStop={handleOnResizeStop}
 				style={style}
 			>
-				{attributes['divider-border-style'] !== 'none' && (
+				{getLastBreakpointAttribute({
+					target: 'divider-border-style',
+					breakpoint: deviceType,
+					attributes,
+				}) !== 'none' && (
 					<hr
 						data-align={fullWidth}
 						className='maxi-divider-block__divider'

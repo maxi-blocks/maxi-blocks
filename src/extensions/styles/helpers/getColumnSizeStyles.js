@@ -6,16 +6,23 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * External dependencies
  */
-import { isNumber } from 'lodash';
+import { isFinite } from 'lodash';
 
 const getColumnSizeStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		if (isNumber(obj[`column-size-${breakpoint}`])) {
+		const column = obj[`column-size-${breakpoint}`];
+
+		if (isFinite(parseFloat(column))) {
 			response[breakpoint] = {
-				width: `${obj[`column-size-${breakpoint}`]}%`,
-				'flex-basis': `${obj[`column-size-${breakpoint}`]}%`,
+				width: `${parseFloat(column)}%`,
+				'flex-basis': `${parseFloat(column)}%`,
+			};
+		} else if (column === 'auto') {
+			response[breakpoint] = {
+				width: 'fit-content',
+				'flex-basis': 'fit-content',
 			};
 		}
 	});

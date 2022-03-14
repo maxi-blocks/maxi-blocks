@@ -47,7 +47,7 @@ describe('Column Maxi', () => {
 
 		await page.keyboard.type('50');
 
-		expect(await getAttributes('column-size-general')).toStrictEqual(50);
+		expect(await getAttributes('column-size-general')).toStrictEqual('50');
 
 		const selector = await page.$(
 			'.maxi-accordion-control__item__panel .maxi-base-control__field select'
@@ -80,7 +80,7 @@ describe('Column Maxi', () => {
 
 		expect(responsiveSOption).toStrictEqual('19');
 
-		expect(await getAttributes('column-size-s')).toStrictEqual(19);
+		expect(await getAttributes('column-size-s')).toStrictEqual('19');
 
 		// responsive xs
 		await changeResponsive(page, 'xs');

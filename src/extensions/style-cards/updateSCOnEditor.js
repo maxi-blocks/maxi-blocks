@@ -60,7 +60,6 @@ const getParsedObj = obj => {
 };
 
 export const getSCVariablesObject = styleCards => {
-	if (isEmpty(styleCards)) return false;
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [

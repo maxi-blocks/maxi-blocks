@@ -28,6 +28,7 @@ describe('StyleCards, Buttons', () => {
 		await changeResponsive(page, 'l');
 
 		// size, line-height, letter-spacing
+		debugger;
 		await addTypographyOptions({
 			page,
 			instance: await page.$(

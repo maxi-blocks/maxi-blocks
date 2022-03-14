@@ -13,6 +13,7 @@ const getStyleCardEditor = async ({ page, accordion }) => {
 	await page.waitForSelector(
 		`.maxi-accordion-control .maxi-blocks-sc__type--${accordion} .maxi-accordion-control__item__button`
 	);
+
 	// maxi
 	await page.$eval(
 		`.maxi-accordion-control .maxi-blocks-sc__type--${accordion} .maxi-accordion-control__item__button`,

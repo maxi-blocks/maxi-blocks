@@ -107,8 +107,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 			const total = 100 - gap * numberOfGaps;
 			newColumnsSizes.push({
 				withGap: {
-					[`column-size-${responsive}`]: (column * total).toString,
-					...(!isResponsive && { 'column-size-m': '100' }),
+					[`column-size-${responsive}`]: column * total,
+					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
 						'margin-unit-m': '%',
@@ -118,8 +118,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 						})),
 				},
 				withoutGap: {
-					[`column-size-${responsive}`]: (column * 100).toString(),
-					...(!isResponsive && { 'column-size-m': '100' }),
+					[`column-size-${responsive}`]: column * 100,
+					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
 						'margin-unit-m': '%',
@@ -133,8 +133,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 		if (columnsPositions[i].columnsNumber === 1) {
 			newColumnsSizes.push({
 				withGap: {
-					[`column-size-${responsive}`]: '100',
-					...(!isResponsive && { 'column-size-m': '100' }),
+					[`column-size-${responsive}`]: 100,
+					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
 						'margin-unit-m': '%',
@@ -144,8 +144,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 						})),
 				},
 				withoutGap: {
-					[`column-size-${responsive}`]: '100',
-					...(!isResponsive && { 'column-size-m': '100' }),
+					[`column-size-${responsive}`]: 100,
+					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
 						'margin-unit-m': '%',

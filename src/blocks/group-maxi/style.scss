@@ -1,18 +1,13 @@
 body.maxi-blocks--active .maxi-group-block {
+	display: flex;
+	flex-direction: column;
 	position: relative;
 	margin-top: 0;
 	margin-bottom: 0;
-	display: flex;
-	flex-direction: column;
 	padding: 0;
+	box-sizing: border-box;
 
-	&__group {
-		position: relative;
-		margin-right: auto;
-		margin-left: auto;
-	}
-
-	.maxi-group-block__group {
-		width: 100%;
+	> * {
+		z-index: inherit;
 	}
 }

@@ -1,5 +1,5 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import { icon, iconBackgroundColor } from './icon';
+import { icon, iconBackground, iconBackgroundColor } from './icon';
 
 export const iconHover = hoverAttributesCreator({
 	obj: icon,
@@ -13,6 +13,13 @@ export const iconHover = hoverAttributesCreator({
 			type: 'boolean',
 			default: false,
 		},
+	},
+});
+
+export const iconBackgroundHover = hoverAttributesCreator({
+	obj: iconBackground,
+	diffValAttr: {
+		'icon-background-active-media-general-hover': 'none',
 	},
 });
 

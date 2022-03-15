@@ -143,7 +143,7 @@ const FullSizeControl = props => {
 					);
 				}}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw']}
+				allowedUnits={['px', '%', 'em', 'vw']}
 			/>
 			<ToggleSwitch
 				label={__('Set custom min/max values', 'maxi-blocks')}

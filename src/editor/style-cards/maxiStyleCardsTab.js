@@ -528,7 +528,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: __('Headings', 'maxi-blocks'),
-						content: <SettingTabsControl items={headingItems()} />,
+						content: (
+							<SettingTabsControl
+								hasBorder
+								items={headingItems()}
+							/>
+						),
 					},
 					breakpoint === 'general' && {
 						label: iconTabs.label,

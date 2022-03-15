@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { InnerBlocks } from '@wordpress/block-editor';
-
-/**
  * Internal dependencies
  */
 import { ArrowDisplayer, ShapeDivider } from '../../components';
@@ -21,7 +16,7 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { fullWidth } = attributes;
+	const { fullWidth, uniqueID } = attributes;
 
 	const name = 'maxi-blocks/container-maxi';
 
@@ -33,8 +28,10 @@ const save = props => {
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
+			hasInnerBlocks
 		>
 			<ArrowDisplayer
+				key={`maxi-arrow-displayer__${uniqueID}`}
 				{...getGroupAttributes(
 					attributes,
 					['blockBackground', 'arrow', 'border'],
@@ -43,17 +40,17 @@ const save = props => {
 			/>
 			{attributes['shape-divider-top-status'] && (
 				<ShapeDivider
+					key={`maxi-shape-divider-top__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='top'
 				/>
 			)}
-			<div className='maxi-container-block__container'>
-				<InnerBlocks.Content />
-			</div>
 			{attributes['shape-divider-bottom-status'] && (
 				<ShapeDivider
+					key={`maxi-shape-divider-bottom__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='bottom'
+					afterInnerProps
 				/>
 			)}
 		</MaxiBlock>

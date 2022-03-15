@@ -26,6 +26,11 @@ import save from './save';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
+ * External dependencies
+ */
+import { isFinite } from 'lodash';
+
+/**
  * Block
  */
 
@@ -50,38 +55,39 @@ registerBlockType('maxi-blocks/column-maxi', {
 	},
 	edit,
 	save,
+	// Onces updated all posts on maxi-dress, this part can be removed
 	deprecated: [
 		{
 			isEligible(attributes) {
 				const columnSize = getGroupAttributes(attributes, 'columnSize');
 
 				return Object.values(columnSize).some(
-					column => typeof column === 'number'
+					column => typeof column === 'string'
 				);
 			},
 
 			attributes: {
 				...attributes,
 				'column-size-general': {
-					type: 'number',
+					type: 'string',
 				},
 				'column-size-xxl': {
-					type: 'number',
+					type: 'string',
 				},
 				'column-size-xl': {
-					type: 'number',
+					type: 'string',
 				},
 				'column-size-l': {
-					type: 'number',
+					type: 'string',
 				},
 				'column-size-m': {
-					type: 'number',
+					type: 'string',
 				},
 				'column-size-s': {
-					type: 'number',
+					type: 'string',
 				},
 				'column-size-xs': {
-					type: 'number',
+					type: 'string',
 				},
 			},
 
@@ -92,8 +98,8 @@ registerBlockType('maxi-blocks/column-maxi', {
 				);
 
 				Object.entries(columnSize).forEach(([key, val]) => {
-					if (typeof val === 'number')
-						oldAttributes[key] = val.toString();
+					if (isFinite(parseFloat(val)))
+						oldAttributes[key] = parseFloat(val);
 				});
 
 				return oldAttributes;

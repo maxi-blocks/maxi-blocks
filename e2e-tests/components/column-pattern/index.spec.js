@@ -16,6 +16,9 @@ describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+
+		await page.$eval('.maxi-row-block', row => row.focus());
+
 		const accordionControl = await openSidebarTab(
 			page,
 			'style',

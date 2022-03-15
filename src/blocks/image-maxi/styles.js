@@ -228,42 +228,8 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
-const getHoverImageWrapperObject = props => {
-	const { parentBlockStyle } = props;
-
-	const response = {
-		...(props['image-border-status-hover'] && {
-			border: getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						['border', 'borderWidth', 'borderRadius'],
-						true,
-						'image-'
-					),
-				},
-				isHover: true,
-				parentBlockStyle,
-				prefix: 'image-',
-			}),
-		}),
-		...(props['image-box-shadow-status-hover'] && {
-			boxShadow: getBoxShadowStyles({
-				obj: {
-					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
-				},
-				isHover: true,
-				parentBlockStyle,
-				prefix: 'image-',
-			}),
-		}),
-	};
-
-	return response;
-};
-
 const getImageWrapperObject = props => {
-	const { imgWidth, useInitSize, mediaWidth, parentBlockStyle } = props;
+	const { imgWidth, useInitSize, mediaWidth } = props;
 
 	const response = {
 		alignment: getAlignmentFlexStyles({
@@ -274,26 +240,6 @@ const getImageWrapperObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
-		}),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(
-					props,
-					['border', 'borderWidth', 'borderRadius'],
-					false,
-					'image-'
-				),
-			},
-			parentBlockStyle,
-			prefix: 'image-',
-		}),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
-			},
-			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
-			parentBlockStyle,
-			prefix: 'image-',
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -323,6 +269,26 @@ const getImageObject = props => {
 	const { imageRatio, clipPath } = props;
 
 	return {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					'image-'
+				),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'image-',
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+			},
+			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
+			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'image-',
+		}),
 		...(imageRatio && getAspectRatio(imageRatio)),
 		...(clipPath && {
 			image: { general: { 'clip-path': clipPath } },
@@ -333,6 +299,36 @@ const getImageObject = props => {
 			},
 			'image-'
 		),
+	};
+};
+
+const getHoverImageObject = props => {
+	return {
+		...(props['image-border-status-hover'] && {
+			border: getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true,
+						'image-'
+					),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+				prefix: 'image-',
+			}),
+		}),
+		...(props['image-box-shadow-status-hover'] && {
+			boxShadow: getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+				prefix: 'image-',
+			}),
+		}),
 	};
 };
 
@@ -416,20 +412,19 @@ const getStyles = props => {
 				'': getWrapperObject(props),
 				':hover': getHoverWrapperObject(props),
 				' .maxi-image-block-wrapper': getImageWrapperObject(props),
-				':hover .maxi-image-block-wrapper':
-					getHoverImageWrapperObject(props),
+				' .maxi-image-block-wrapper img': getImageObject(props),
+				':hover .maxi-image-block-wrapper img':
+					getHoverImageObject(props),
 				' .maxi-image-block-wrapper > svg:first-child':
 					getImageShapeObject('svg', props),
 				' .maxi-image-block-wrapper > svg:first-child pattern image':
 					getImageShapeObject('image', props),
-				' .maxi-image-block-wrapper img': getImageObject(props),
 				' figcaption': getFigcaptionObject(props),
 				' .maxi-hover-details .maxi-hover-details__content h4':
 					getHoverEffectTitleTextObject(props),
 				' .maxi-hover-details .maxi-hover-details__content p':
 					getHoverEffectContentTextObject(props),
 				' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
-				//
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

@@ -1,7 +1,12 @@
 body.maxi-blocks--active div.maxi-column-block {
-	position: relative;
 	display: inline-flex;
 	flex-direction: column;
+	position: relative;
 	height: auto;
 	margin: 0;
+	box-sizing: border-box;
+
+	> * {
+		z-index: inherit;
+	}
 }

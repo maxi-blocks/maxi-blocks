@@ -229,6 +229,8 @@ const getHoverEffectContentTextObject = props => {
 };
 
 const getImageWrapperObject = props => {
+	const { imgWidth, useInitSize, mediaWidth } = props;
+
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
@@ -251,8 +253,12 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		...(imgWidth && {
+			imgWidth: {
+				general: {
+					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
+				},
+			},
 		}),
 	};
 

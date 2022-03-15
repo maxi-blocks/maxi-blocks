@@ -178,13 +178,21 @@ class edit extends MaxiBlockComponent {
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
-							maxWidth='100%'
+							maxWidth={
+								getLastBreakpointAttribute({
+									target: 'svg-responsive',
+									breakpoint: deviceType,
+									attributes,
+								})
+									? '100%'
+									: null
+							}
 							size={{
-								width: `${getLastBreakpointAttribute(
-									'svg-width',
-									deviceType || 'general',
-									attributes
-								)}${svgWidthUnit}`,
+								width: `${getLastBreakpointAttribute({
+									target: 'svg-width',
+									breakpoint: deviceType || 'general',
+									attributes,
+								})}${svgWidthUnit}`,
 							}}
 							showHandle={isSelected}
 							enable={{

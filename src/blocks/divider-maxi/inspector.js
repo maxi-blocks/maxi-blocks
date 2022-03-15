@@ -218,10 +218,6 @@ const Inspector = props => {
 											props,
 											prefix: 'divider-',
 										}),
-										...inspectorTabs.marginPadding({
-											props,
-											prefix: 'divider-',
-										}),
 									]}
 								/>
 							</>

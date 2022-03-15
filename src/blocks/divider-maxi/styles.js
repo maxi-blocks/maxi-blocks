@@ -122,12 +122,6 @@ const getDividerObject = props => {
 			'line',
 			props.parentBlockStyle
 		),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'size', false, 'divider-'),
-			},
-			'divider-'
-		),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'divider-'),

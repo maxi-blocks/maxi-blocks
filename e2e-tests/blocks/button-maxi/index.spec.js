@@ -5,12 +5,18 @@ import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockStyle, openSidebarTab } from '../../utils';
+import {
+	getBlockStyle,
+	openSidebarTab,
+	getAttributes,
+	editColorControl,
+} from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
@@ -35,40 +41,72 @@ describe('Button Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
-	/*
+
 	it('Check Button Icon', async () => {
-		await insertBlock('Button Maxi');
+		await openSidebarTab(page, 'style', 'icon');
 
-		await page.keyboard.type('Hello');
+		// Width spacing
+		await page.$$eval(
+			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
+			select => select[0].focus()
+		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('343');
 
-		const accordionPanel = await openSidebarTab(page, 'style', 'icon');
-
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
-			click => click[0].click()
+		//  stroke Width
+		await page.$$eval(
+			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
+			select => select[2].focus()
 		);
 
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('alert');
-		await page.waitForTimeout(1000);
-		await page.waitForSelector('.alert-maxi-svg');
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('2');
+
+		// spacing
+		await page.$$eval(
+			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
+			select => select[4].focus()
 		);
-		const expectShape =
-			'<svg stroke-linejoin="round" stroke-width="2" stroke="#081219" data-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="alert-maxi-svg"><g stroke-miterlimit="10"><path d="M11.157 3.995L2.521 19.037c-.372.648.096 1.456.843 1.456h17.272c.747 0 1.215-.808.843-1.456L12.843 3.995c-.373-.651-1.312-.651-1.685 0z"></path><path stroke-linecap="round" d="M12 9.615v5.003"></path></g><circle r=".202" cy="17.251" cx="12"></circle></svg>';
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('14');
 
-		const attributes = await getBlockAttributes();
+		const attributes = await getAttributes([
+			'icon-width-general',
+			'icon-stroke-general',
+			'icon-spacing-general',
+		]);
 
+		const expectedAttributesTwo = {
+			'icon-width-general': 343,
+			'icon-stroke-general': 2,
+			'icon-spacing-general': 14,
+		};
+
+		expect(attributes).toStrictEqual(expectedAttributesTwo);
+
+		// icon color
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-color-palette-control'),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
+
+		await page.$$eval(
+			'.maxi-icon-styles-control .maxi-tabs-control__full-width button',
+			button => button[1].click()
+		);
+
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-color-palette-control'),
+			paletteStatus: true,
+			colorPalette: 6,
+		});
+
+		expect(await getAttributes('icon-palette-color')).toStrictEqual(5);
 		expect(
-			attributes['icon-content']
-				.replace(/(\r\n|\n|\r)/g, '')
-				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
-	}); */
+			await getAttributes('icon-border-palette-color-general')
+		).toStrictEqual(6);
+	});
 });

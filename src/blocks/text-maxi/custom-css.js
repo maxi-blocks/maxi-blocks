@@ -1,4 +1,14 @@
 export const selectorsText = {
+	'text wrapper': {
+		normal: {
+			label: 'text wrapper',
+			target: '',
+		},
+		hover: {
+			label: 'text wrapper on hover',
+			target: ':hover',
+		},
+	},
 	text: {
 		normal: {
 			label: 'text',
@@ -52,6 +62,7 @@ export const selectorsText = {
 };
 
 export const categoriesText = [
+	'text wrapper',
 	'text',
 	'links',
 	'lists',

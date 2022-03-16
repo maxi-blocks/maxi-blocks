@@ -55,32 +55,54 @@ const AdvancedNumberControl = props => {
 			px: {
 				min: 0,
 				max: 3999,
-				minRange: 0,
+				minRange: -1999,
 				maxRange: 1999,
 			},
 			em: {
 				min: 0,
 				max: 999,
-				minRange: 0,
+				minRange: -199,
 				maxRange: 199,
 			},
 			vw: {
 				min: 0,
 				max: 999,
-				minRange: 0,
+				minRange: -199,
 				maxRange: 199,
 			},
 			'%': {
 				min: 0,
 				max: 100,
-				minRange: 0,
+				minRange: -100,
 				maxRange: 100,
 			},
 			'-': {
 				min: 0,
 				max: 16,
-				minRange: 0,
+				minRange: -16,
 				maxRange: 16,
+			},
+		},
+		minMaxRangeSettings = {
+			px: {
+				min: -1999,
+				max: 1999,
+			},
+			em: {
+				min: -199,
+				max: 199,
+			},
+			vw: {
+				min: -199,
+				max: 199,
+			},
+			'%': {
+				min: -100,
+				max: 100,
+			},
+			'-': {
+				min: 0,
+				max: 16,
 			},
 		},
 	} = props;
@@ -111,16 +133,16 @@ const AdvancedNumberControl = props => {
 	const maxValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.max;
 
 	const minValueRange =
-		minMaxSettings[isEmpty(unit) ? '-' : unit]?.minRange < minValue ||
+		minMaxRangeSettings[isEmpty(unit) ? '-' : unit]?.min < minValue ||
 		disableInputsLimits
 			? minValue
-			: minMaxSettings[isEmpty(unit) ? '-' : unit]?.minRange;
+			: minMaxRangeSettings[isEmpty(unit) ? '-' : unit]?.min;
 
 	const maxValueRange =
-		minMaxSettings[isEmpty(unit) ? '-' : unit]?.maxRange > maxValue ||
+		minMaxRangeSettings[isEmpty(unit) ? '-' : unit]?.max > maxValue ||
 		disableInputsLimits
 			? maxValue
-			: minMaxSettings[isEmpty(unit) ? '-' : unit]?.maxRange;
+			: minMaxRangeSettings[isEmpty(unit) ? '-' : unit]?.max;
 
 	const getNewValueFromEmpty = e => {
 		const {
@@ -201,9 +223,9 @@ const AdvancedNumberControl = props => {
 							onChange={val => {
 								onChangeUnit(val);
 
-								if (value > minMaxSettings[val]?.maxRange)
+								if (value > minMaxRangeSettings[val]?.max)
 									onChangeValue(
-										minMaxSettings[val]?.maxRange
+										minMaxRangeSettings[val]?.max
 									);
 							}}
 						/>

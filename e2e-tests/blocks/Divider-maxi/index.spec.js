@@ -32,7 +32,7 @@ describe('Divider Maxi', () => {
 		await alignmentSelectors[2].select('flex-start');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
-		debugger;
+
 		// responsive
 		// responsive S
 		await changeResponsive(page, 's');
@@ -44,7 +44,6 @@ describe('Divider Maxi', () => {
 		await alignmentSelectors[2].select('flex-end');
 
 		// responsive XS
-
 		const alignmentOrientation = await accordionPanel.$$eval(
 			'.maxi-base-control select',
 			select => select[0].value

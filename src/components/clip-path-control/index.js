@@ -136,8 +136,9 @@ const ClipPathOption = props => {
 	);
 };
 
-const ClipPathControl = props => {
-	const { clipPath, className, onChange } = props;
+const ClipPath = props => {
+	const { clipPath, className, onChange, hasClipPath, onToggleClipPath } =
+		props;
 
 	const classes = classnames('maxi-clip-path-control', className);
 
@@ -230,7 +231,6 @@ const ClipPathControl = props => {
 
 	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
 
-	const [hasClipPath, changeHasClipPath] = useState(!isEmpty(clipPath));
 	const [isCustom, changeIsCustom] = useState(
 		!(
 			Object.values(clipPathDefaults).includes(clipPath) ||
@@ -314,7 +314,7 @@ const ClipPathControl = props => {
 			<ToggleSwitch
 				label={__('Use clip-path', 'maxi-blocks')}
 				selected={hasClipPath}
-				onChange={val => changeHasClipPath(val)}
+				onChange={val => onToggleClipPath(val)}
 			/>
 			{hasClipPath && (
 				<>
@@ -472,4 +472,4 @@ const ClipPathControl = props => {
 	);
 };
 
-export default ClipPathControl;
+export default ClipPath;

@@ -540,6 +540,33 @@ const ImageLayerSettings = props => {
 							)]: val,
 						})
 					}
+					hasClipPath={getLastBreakpointAttribute({
+						target: `${prefix}background-image-clip-path-active`,
+						breakpoint,
+						attributes: imageOptions,
+						isHover,
+					})}
+					onToggleClipPath={val => {
+						onChange({
+							[getAttributeKey(
+								'background-image-clip-path-active',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val,
+							...(!val && {
+								[getAttributeKey(
+									'background-image-clip-path',
+									isHover,
+									prefix,
+									breakpoint
+								)]: null,
+							}),
+						});
+					}}
+					isHover={isHover}
+					prefix={prefix}
+					deviceType={breakpoint}
 				/>
 			)}
 		</>

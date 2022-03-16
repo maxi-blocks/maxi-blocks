@@ -2,6 +2,27 @@
 
 exports[`hoverAttributesCreator Returns a color bg object 1`] = `
 Object {
+  "background-color-clip-path-active-general-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-active-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-active-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-active-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-active-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-active-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-active-xxl-hover": Object {
+    "type": "boolean",
+  },
   "background-color-clip-path-general-hover": Object {
     "type": "string",
   },

@@ -27,6 +27,10 @@ export const rawBackgroundColor = {
 	'background-color-clip-path': {
 		type: 'string',
 	},
+	'background-color-clip-path-active': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export const rawBackgroundImage = {
@@ -98,6 +102,10 @@ export const rawBackgroundImage = {
 	'background-image-clip-path': {
 		type: 'string',
 	},
+	'background-image-clip-path-active': {
+		type: 'boolean',
+		default: false,
+	},
 	'background-image-opacity': {
 		type: 'number',
 		default: 1,
@@ -142,6 +150,10 @@ export const rawBackgroundVideo = {
 	'background-video-clip-path': {
 		type: 'string',
 	},
+	'background-video-clip-path-active': {
+		type: 'boolean',
+		default: false,
+	},
 	'background-video-fallbackID': {
 		type: 'number',
 	},
@@ -172,6 +184,10 @@ export const rawBackgroundGradient = {
 	},
 	'background-gradient-clip-path': {
 		type: 'string',
+	},
+	'background-gradient-clip-path-active': {
+		type: 'boolean',
+		default: false,
 	},
 };
 

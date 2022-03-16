@@ -100,6 +100,30 @@ const GradientLayerContent = props => {
 							)]: val,
 						})
 					}
+					hasClipPath={getLastBreakpointAttribute({
+						target: `${prefix}background-gradient-clip-path-active`,
+						breakpoint,
+						attributes: gradientOptions,
+						isHover,
+					})}
+					onToggleClipPath={val => {
+						onChange({
+							[getAttributeKey(
+								'background-gradient-clip-path-active',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val,
+							...(!val && {
+								[getAttributeKey(
+									'background-gradient-clip-path',
+									isHover,
+									prefix,
+									breakpoint
+								)]: null,
+							}),
+						});
+					}}
 				/>
 			)}
 		</>

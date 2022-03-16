@@ -142,6 +142,12 @@ const ColorLayerContent = props => {
 						attributes: colorOptions,
 						isHover,
 					})}
+					hasClipPath={getLastBreakpointAttribute({
+						target: `${prefix}background-color-clip-path-active`,
+						breakpoint,
+						attributes: colorOptions,
+						isHover,
+					})}
 					onChange={val => {
 						onChange({
 							[getAttributeKey(
@@ -152,6 +158,27 @@ const ColorLayerContent = props => {
 							)]: val,
 						});
 					}}
+					onToggleClipPath={val => {
+						onChange({
+							[getAttributeKey(
+								'background-color-clip-path-active',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val,
+							...(!val && {
+								[getAttributeKey(
+									'background-color-clip-path',
+									isHover,
+									prefix,
+									breakpoint
+								)]: null,
+							}),
+						});
+					}}
+					isHover={isHover}
+					prefix={prefix}
+					deviceType={breakpoint}
 				/>
 			)}
 		</>

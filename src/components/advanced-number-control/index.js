@@ -38,6 +38,7 @@ const AdvancedNumberControl = props => {
 		placeholder = '',
 		onChangeUnit,
 		enableUnit = false,
+		disableInputsLimits = false,
 		min = 0,
 		max = 999,
 		initial = 0,
@@ -54,22 +55,32 @@ const AdvancedNumberControl = props => {
 			px: {
 				min: 0,
 				max: 3999,
+				minRange: 0,
+				maxRange: 1999,
 			},
 			em: {
 				min: 0,
 				max: 999,
+				minRange: 0,
+				maxRange: 199,
 			},
 			vw: {
 				min: 0,
 				max: 999,
+				minRange: 0,
+				maxRange: 199,
 			},
 			'%': {
 				min: 0,
 				max: 100,
+				minRange: 0,
+				maxRange: 100,
 			},
 			'-': {
 				min: 0,
 				max: 16,
+				minRange: 0,
+				maxRange: 16,
 			},
 		},
 	} = props;
@@ -98,6 +109,18 @@ const AdvancedNumberControl = props => {
 
 	const minValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.min;
 	const maxValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.max;
+
+	const minValueRange =
+		minMaxSettings[isEmpty(unit) ? '-' : unit]?.minRange < minValue ||
+		disableInputsLimits
+			? minValue
+			: minMaxSettings[isEmpty(unit) ? '-' : unit]?.minRange;
+
+	const maxValueRange =
+		minMaxSettings[isEmpty(unit) ? '-' : unit]?.maxRange > maxValue ||
+		disableInputsLimits
+			? maxValue
+			: minMaxSettings[isEmpty(unit) ? '-' : unit]?.maxRange;
 
 	const getNewValueFromEmpty = e => {
 		const {
@@ -178,8 +201,10 @@ const AdvancedNumberControl = props => {
 							onChange={val => {
 								onChangeUnit(val);
 
-								if (value > minMaxSettings[val]?.max)
-									onChangeValue(minMaxSettings[val]?.max);
+								if (value > minMaxSettings[val]?.maxRange)
+									onChangeValue(
+										minMaxSettings[val]?.maxRange
+									);
 							}}
 						/>
 					)}
@@ -214,8 +239,8 @@ const AdvancedNumberControl = props => {
 						onChange={val => {
 							onChangeValue(+val);
 						}}
-						min={enableUnit ? minValue : min}
-						max={enableUnit ? maxValue : max}
+						min={enableUnit ? minValueRange : min}
+						max={enableUnit ? maxValueRange : max}
 						step={stepValue}
 						withInputField={false}
 						initialPosition={value || initial}

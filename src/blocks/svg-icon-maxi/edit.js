@@ -167,7 +167,7 @@ class edit extends MaxiBlockComponent {
 						type='svg'
 						empty={isEmptyContent}
 						style={parentBlockStyle}
-						openFirstTime={openFirstTime}
+						openFirstTime={isSelected ? openFirstTime : false}
 						onOpen={obj => maxiSetAttributes(obj)}
 						onSelect={obj => maxiSetAttributes(obj)}
 						onRemove={obj => maxiSetAttributes(obj)}

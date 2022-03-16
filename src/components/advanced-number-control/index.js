@@ -29,40 +29,40 @@ import { getIsValid } from '../../extensions/styles';
 /**
  * Component
  */
-const minMaxSettingsDefault = {
-	px: {
-		min: 0,
-		max: 3999,
-		minRange: -1999,
-		maxRange: 1999,
-	},
-	em: {
-		min: 0,
-		max: 999,
-		minRange: -199,
-		maxRange: 199,
-	},
-	vw: {
-		min: 0,
-		max: 999,
-		minRange: -199,
-		maxRange: 199,
-	},
-	'%': {
-		min: 0,
-		max: 100,
-		minRange: -100,
-		maxRange: 100,
-	},
-	'-': {
-		min: 0,
-		max: 16,
-		minRange: 0,
-		maxRange: 16,
-	},
-};
-
 const AdvancedNumberControl = props => {
+	const minMaxSettingsDefault = {
+		px: {
+			min: 0,
+			max: 3999,
+			minRange: -1999,
+			maxRange: 1999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+			minRange: -199,
+			maxRange: 199,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+			minRange: -199,
+			maxRange: 199,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+			minRange: -100,
+			maxRange: 100,
+		},
+		'-': {
+			min: 0,
+			max: 16,
+			minRange: 0,
+			maxRange: 16,
+		},
+	};
+
 	const {
 		label,
 		className,

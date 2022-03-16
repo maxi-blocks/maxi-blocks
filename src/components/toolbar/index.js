@@ -100,7 +100,6 @@ const MaxiToolbar = memo(
 			isFirstOnHierarchy,
 			isList,
 			linkSettings,
-			mediaID,
 			textLevel,
 			typeOfList,
 			uniqueID,
@@ -200,7 +199,7 @@ const MaxiToolbar = memo(
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<ToolbarMediaUpload
 								blockName={name}
-								maxiSetAttributes
+								maxiSetAttributes={maxiSetAttributes}
 								{...getGroupAttributes(
 									attributes,
 									'typography'
@@ -208,7 +207,7 @@ const MaxiToolbar = memo(
 								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
-								mediaID={mediaID}
+								attributes={attributes}
 							/>
 							<TextColor
 								blockName={name}

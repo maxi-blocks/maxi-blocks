@@ -214,7 +214,11 @@ class MaxiBlocks_Styles
 
         foreach ($fonts as $font => $fontData) {
             if ($font) {
-                $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
+                if ((bool) get_option('local_fonts')) {
+                    $fontUrl = wp_upload_dir()['basedir'] . '/maxi/fonts/'.$font.':';
+                } else {
+                    $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
+                }
                 if (!empty($fontData)) {
                     $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
                     $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;

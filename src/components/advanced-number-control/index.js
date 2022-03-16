@@ -49,7 +49,7 @@ const AdvancedNumberControl = props => {
 		enableAuto = false,
 		autoLabel,
 		onReset,
-		allowedUnits = ['px', 'em', 'vw', '%', '-'],
+		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = {
 			px: {
 				min: 0,
@@ -60,6 +60,10 @@ const AdvancedNumberControl = props => {
 				max: 999,
 			},
 			vw: {
+				min: 0,
+				max: 999,
+			},
+			vh: {
 				min: 0,
 				max: 999,
 			},

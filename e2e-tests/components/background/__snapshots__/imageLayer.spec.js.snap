@@ -5,6 +5,7 @@ Array [
   Object {
     "background-image-attachment-general": "fixed",
     "background-image-clip-general": "content-box",
+    "background-image-clip-path-active-general": true,
     "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
     "background-image-height-general": 100,
     "background-image-height-unit-general": "%",
@@ -40,6 +41,7 @@ Array [
     "background-image-attachment-s": "local",
     "background-image-clip-general": "content-box",
     "background-image-clip-general-hover": "border-box",
+    "background-image-clip-path-active-general": true,
     "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
     "background-image-height-general": 100,
     "background-image-height-unit-general": "%",

@@ -20,6 +20,7 @@ Array [
     "type": "shape",
   },
   Object {
+    "background-gradient-clip-path-active-general": false,
     "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
     "background-gradient-opacity-general": 0.5,
     "display-general": "block",
@@ -52,6 +53,7 @@ Array [
     "type": "shape",
   },
   Object {
+    "background-gradient-clip-path-active-general": false,
     "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
     "background-gradient-opacity-general": 0.5,
     "background-gradient-opacity-s": 0.88,
@@ -61,6 +63,7 @@ Array [
     "type": "gradient",
   },
   Object {
+    "background-gradient-clip-path-active-general": false,
     "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
     "background-gradient-opacity-general": 0.5,
     "display-general": "block",

@@ -78,26 +78,26 @@ const LayerCard = props => {
 	const previewStyles = type => {
 		switch (type) {
 			case 'color': {
-				const paletteStatus = getLastBreakpointAttribute(
-					'background-palette-status',
+				const paletteStatus = getLastBreakpointAttribute({
+					target: 'background-palette-status',
 					breakpoint,
-					layer,
-					isHover
-				);
+					attributes: layer,
+					isHover,
+				});
 
 				if (paletteStatus) {
-					const paletteColor = getLastBreakpointAttribute(
-						'background-palette-color',
+					const paletteColor = getLastBreakpointAttribute({
+						target: 'background-palette-color',
 						breakpoint,
-						layer,
-						isHover
-					);
-					const paletteOpacity = getLastBreakpointAttribute(
-						'background-palette-opacity',
+						attributes: layer,
+						isHover,
+					});
+					const paletteOpacity = getLastBreakpointAttribute({
+						target: 'background-palette-opacity',
 						breakpoint,
-						layer,
-						isHover
-					);
+						attributes: layer,
+						isHover,
+					});
 
 					return {
 						background: getColorRGBAString({
@@ -109,27 +109,27 @@ const LayerCard = props => {
 				}
 
 				return {
-					background: getLastBreakpointAttribute(
-						'background-color',
+					background: getLastBreakpointAttribute({
+						target: 'background-color',
 						breakpoint,
-						layer,
-						isHover
-					),
+						attributes: layer,
+						isHover,
+					}),
 				};
 			}
 			case 'gradient': {
-				const bgGradient = getLastBreakpointAttribute(
-					'background-gradient',
+				const bgGradient = getLastBreakpointAttribute({
+					target: 'background-gradient',
 					breakpoint,
-					layer,
-					isHover
-				);
-				const bgGradientOpacity = getLastBreakpointAttribute(
-					'background-gradient-opacity',
+					attributes: layer,
+					isHover,
+				});
+				const bgGradientOpacity = getLastBreakpointAttribute({
+					target: 'background-gradient-opacity',
 					breakpoint,
-					layer,
-					isHover
-				);
+					attributes: layer,
+					isHover,
+				});
 				return {
 					background: bgGradient,
 					opacity: bgGradientOpacity,
@@ -140,12 +140,12 @@ const LayerCard = props => {
 					target: 'background-image-mediaURL',
 					props: layer,
 				});
-				const bgImageOpacity = getLastBreakpointAttribute(
-					'background-image-opacity',
+				const bgImageOpacity = getLastBreakpointAttribute({
+					target: 'background-image-opacity',
 					breakpoint,
-					layer,
-					isHover
-				);
+					attributes: layer,
+					isHover,
+				});
 
 				return {
 					background: !isEmpty(bgImageURL)
@@ -155,18 +155,18 @@ const LayerCard = props => {
 				};
 			}
 			case 'video': {
-				const bgFallbackUrl = getLastBreakpointAttribute(
-					'background-video-fallbackURL',
+				const bgFallbackUrl = getLastBreakpointAttribute({
+					target: 'background-video-fallbackURL',
 					breakpoint,
-					layer,
-					isHover
-				);
-				const bgVideoOpacity = getLastBreakpointAttribute(
-					'background-video-opacity',
+					attributes: layer,
+					isHover,
+				});
+				const bgVideoOpacity = getLastBreakpointAttribute({
+					target: 'background-video-opacity',
 					breakpoint,
-					layer,
-					isHover
-				);
+					attributes: layer,
+					isHover,
+				});
 
 				return {
 					background: !isEmpty(bgFallbackUrl)
@@ -198,12 +198,12 @@ const LayerCard = props => {
 	};
 
 	const onChangeDisplay = () => {
-		const currentDisplay = getLastBreakpointAttribute(
-			'display',
+		const currentDisplay = getLastBreakpointAttribute({
+			target: 'display',
 			breakpoint,
-			layer,
-			isHover
-		);
+			attributes: layer,
+			isHover,
+		});
 
 		onChange({
 			...layer,
@@ -213,12 +213,12 @@ const LayerCard = props => {
 	};
 
 	const getIsDisplayed = () => {
-		const currentDisplay = getLastBreakpointAttribute(
-			'display',
+		const currentDisplay = getLastBreakpointAttribute({
+			target: 'display',
 			breakpoint,
-			layer,
-			isHover
-		);
+			attributes: layer,
+			isHover,
+		});
 
 		return currentDisplay === 'block' ? 'block' : 'none';
 	};

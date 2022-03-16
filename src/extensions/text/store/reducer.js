@@ -6,14 +6,13 @@ import fonts from '../fonts/fonts';
 /**
  * External dependencies
  */
-import { sortedUniq } from 'lodash';
+import { sortedUniq, isEqual } from 'lodash';
 
 /**
  * Reducer managing the styles
  *
  * @param {Object} state  Current state.
  * @param {Object} action Dispatched action.
- *
  * @return {Object} Updated state.
  */
 function reducer(
@@ -31,13 +30,21 @@ function reducer(
 				clientId: action.clientId,
 			};
 		case 'SEND_FORMAT_VALUE':
-			return {
-				...state,
-				formatValues: {
-					...state.formatValues,
-					[action.clientId]: action.formatValue,
-				},
-			};
+			if (
+				!isEqual(
+					state.formatValues[action.clientID],
+					action.formatValue
+				)
+			)
+				return {
+					...state,
+					formatValues: {
+						...state.formatValues,
+						[action.clientId]: action.formatValue,
+					},
+				};
+
+			return state;
 		case 'REMOVE_FORMAT_VALUE':
 			delete state.formatValues[action.clientId];
 			return state;

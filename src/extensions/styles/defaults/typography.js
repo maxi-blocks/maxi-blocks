@@ -42,7 +42,7 @@ export const rawTypography = {
 		type: 'string',
 	},
 	'text-indent': {
-		type: 'string',
+		type: 'number',
 	},
 	'text-indent-unit': {
 		type: 'string',

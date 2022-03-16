@@ -59,12 +59,12 @@ const BackgroundControl = props => {
 		globalProps,
 	} = props;
 
-	const backgroundActiveMedia = getLastBreakpointAttribute(
-		`${prefix}background-active-media`,
+	const backgroundActiveMedia = getLastBreakpointAttribute({
+		target: `${prefix}background-active-media`,
 		breakpoint,
-		props,
-		isHover
-	);
+		attributes: props,
+		isHover,
+	});
 
 	const classes = classnames('maxi-background-control', className);
 

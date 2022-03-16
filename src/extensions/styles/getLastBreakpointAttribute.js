@@ -135,14 +135,14 @@ const getLastBreakpointAttributeGroup = (
 	return null;
 };
 
-const getLastBreakpointAttribute = (
+const getLastBreakpointAttribute = ({
 	target,
 	breakpoint,
 	attributes = null,
 	isHover = false,
 	forceSingle = false,
-	avoidXXL = true
-) => {
+	avoidXXL = true,
+}) => {
 	const { getSelectedBlockCount } = select('core/block-editor') || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
 	};

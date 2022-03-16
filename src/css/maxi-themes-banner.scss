@@ -11,7 +11,7 @@ body.maxi-blocks--active .maxi-block {
 	width: 100%;
 	min-width: inherit;
 	max-height: none;
-	height: inherit;
+	height: initial;
 	min-height: inherit;
 	border: none;
 	border-width: 0;
@@ -33,7 +33,7 @@ body.maxi-blocks--active .maxi-block {
 	}
 }
 
-body.maxi-blocks--active .maxi-block[data-align="full"] {
+body.maxi-blocks--active .maxi-block[data-align='full'] {
 	width: auto;
 }
 
@@ -44,13 +44,25 @@ body.maxi-blocks--active .maxi-button-block__button {
 }
 
 /*Fixes container alignment for Twenty Nineteen*/
-body.maxi-blocks--active .maxi-container-block.wp-block.maxi-block.maxi-block--backend {
+body.maxi-blocks--active
+	.maxi-container-block.wp-block.maxi-block.maxi-block--backend {
 	left: auto;
 }
 
+/*Removes focus bacgkround for Twenty Twenty One*/
+body.maxi-blocks--active #content .maxi-text-block--link:focus,
+body.maxi-blocks--active #content .maxi-link-wrapper:focus {
+	background: unset;
+}
+
 /*Fixes container alignment for Twenty Twenty Two*/
-body.maxi-blocks--active #wpcontent .block-editor-block-list__layout.is-root-container .maxi-block[data-align="full"] {
-	margin: 0 auto !important;
+body.maxi-blocks--active
+	#wpcontent
+	.block-editor-block-list__layout.is-root-container
+	.maxi-block[data-align='full'] {
+	width: 100%;
+	margin-right: auto !important;
+	margin-left: auto !important;
 }
 body.maxi-blocks--active #wpcontent .is-root-container {
 	padding: 0;

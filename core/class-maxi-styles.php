@@ -34,6 +34,11 @@ class MaxiBlocks_Styles
     public function enqueue_styles()
     {
         $post_content = $this->getPostContent();
+
+		if (!$post_content) {
+			return false;
+		}
+
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
 
@@ -96,16 +101,16 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        $post_content = (array)$wpdb->get_results(
+        $post_content = $wpdb->get_results(
             "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
             OBJECT
-        )[0];
+        );
 
         if (!$post_content) {
             return false;
         }
 
-        return $post_content;
+        return (array)$post_content[0];
     }
 
     /**

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { isURL } from '@wordpress/url';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -291,6 +292,7 @@ const getListParagraphObject = props => {
 
 const getMarkerObject = props => {
 	const { typeOfList, listStyle, listStyleCustom, parentBlockStyle } = props;
+	const { isRTL } = select('core/editor').getEditorSettings();
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -378,6 +380,7 @@ const getMarkerObject = props => {
 							breakpoint,
 							attributes: props,
 						}) || 'px';
+					const indentSum = indentNum + indentUnit;
 
 					// List size
 					const sizeNum =
@@ -414,6 +417,7 @@ const getMarkerObject = props => {
 							breakpoint,
 							attributes: props,
 						}) || 'px';
+					const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
 
 					// Marker line-height
 					const lineHeightMarkerNum =
@@ -443,8 +447,8 @@ const getMarkerObject = props => {
 							(lineHeightMarkerUnit !== '-'
 								? lineHeightMarkerUnit
 								: ''),
-						'margin-right': indentMarkerNum + indentMarkerUnit,
-						'margin-left': indentNum + indentUnit,
+						'margin-right': isRTL ? indentSum : indentMarkerSum,
+						'margin-left': isRTL ? indentMarkerSum : indentSum,
 						...(listStyle === 'none' && {
 							'padding-right': '1em',
 						}),

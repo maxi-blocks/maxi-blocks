@@ -23,7 +23,7 @@ const applyCustomFormat = ({ formatValue, formatName, isList, attributes }) => {
 	const newContent = toHTMLString({
 		value: newFormat,
 		multilineTag: isList ? 'li' : null,
-		preserveWhiteSpace: true,
+		preserveWhiteSpace: false,
 	});
 
 	return {

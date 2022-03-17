@@ -204,7 +204,7 @@ export const removeUnnecessaryFormats = ({
 				end: formatValue.end,
 			},
 			multilineTag: isList ? 'li' : null,
-			preserveWhiteSpace: true,
+			preserveWhiteSpace: false,
 		});
 
 	return {
@@ -266,7 +266,7 @@ const flatFormatsWithClass = ({
 			newContent = toHTMLString({
 				value: preformattedFormatValue,
 				multilineTag: isList ? 'li' : null,
-				preserveWhiteSpace: true,
+				preserveWhiteSpace: false,
 			});
 
 			newFormatValue = preformattedFormatValue;
@@ -310,7 +310,7 @@ const flatFormatsWithClass = ({
 	newContent = toHTMLString({
 		value: newFormatValue,
 		multilineTag: isList ? 'li' : null,
-		preserveWhiteSpace: true,
+		preserveWhiteSpace: false,
 	});
 
 	return {

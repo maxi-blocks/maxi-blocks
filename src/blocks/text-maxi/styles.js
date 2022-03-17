@@ -166,7 +166,7 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStyle, listStart, listReversed, content } = props;
+	const { listStyle, listStart, listReversed, content, isRTL } = props;
 
 	let counterReset;
 	if (isNumber(listStart)) {
@@ -206,9 +206,13 @@ const getListObject = props => {
 					});
 
 					if (!isNil(gapNum) && !isNil(gapUnit)) {
-						response.listGap[breakpoint] = {
-							'padding-left': gapNum + gapUnit,
-						};
+						response.listGap[breakpoint] = isRTL
+							? {
+									'padding-right': gapNum + gapUnit,
+							  }
+							: {
+									'padding-left': gapNum + gapUnit,
+							  };
 					}
 
 					// List indent
@@ -291,8 +295,8 @@ const getListParagraphObject = props => {
 };
 
 const getMarkerObject = props => {
-	const { typeOfList, listStyle, listStyleCustom, parentBlockStyle } = props;
-	const { isRTL } = select('core/editor').getEditorSettings();
+	const { typeOfList, listStyle, listStyleCustom, parentBlockStyle, isRTL } =
+		props;
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -467,6 +471,7 @@ const getMarkerObject = props => {
 const getStyles = props => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
+	const { isRTL } = select('core/editor').getEditorSettings();
 
 	return {
 		[uniqueID]: stylesCleaner(
@@ -482,8 +487,10 @@ const getStyles = props => {
 						getTypographyHoverObject(props),
 				}),
 				...(isList && {
-					[` ${element}.maxi-text-block__content`]:
-						getListObject(props),
+					[` ${element}.maxi-text-block__content`]: getListObject(
+						props,
+						isRTL
+					),
 					[` ${element}.maxi-text-block__content li`]: {
 						...getTypographyObject(props),
 						...getListItemObject(props),
@@ -493,7 +500,7 @@ const getStyles = props => {
 					[` ${element}.maxi-text-block__content li:hover`]:
 						getTypographyHoverObject(props),
 					[` ${element}.maxi-text-block__content li::before`]:
-						getMarkerObject(props),
+						getMarkerObject(props, isRTL),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

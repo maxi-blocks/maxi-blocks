@@ -92,6 +92,13 @@ const CustomColorControl = props => {
 			<div className='maxi-color-control__color'>
 				<ChromePicker
 					color={color}
+					onChange={val =>
+						onChange({
+							color: tinycolor(val.rgb)
+								.toRgbString()
+								.replace(/\s/g, ''),
+						})
+					}
 					onChangeComplete={val => {
 						onChangeValue({
 							color: tinycolor(val.rgb)

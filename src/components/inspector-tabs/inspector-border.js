@@ -17,7 +17,13 @@ import {
 /**
  * Component
  */
-const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
+const border = ({
+	props,
+	prefix = '',
+	globalProps,
+	hoverGlobalProps,
+	target,
+}) => {
 	const {
 		attributes,
 		clientId,
@@ -25,6 +31,7 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 		maxiSetAttributes,
 		scValues = {},
 		depth = 2,
+		insertInlineStyles,
 	} = props;
 
 	const {
@@ -54,6 +61,10 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 								)}
 								prefix={prefix}
 								onChange={obj => {
+									insertInlineStyles(target, obj);
+									maxiSetAttributes(obj);
+								}}
+								onChangeComplete={obj => {
 									maxiSetAttributes(obj);
 								}}
 								breakpoint={deviceType}

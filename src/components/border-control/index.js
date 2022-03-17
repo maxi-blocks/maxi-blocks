@@ -237,13 +237,16 @@ const BorderControl = props => {
 						attributes: props,
 						isHover,
 					})}
-					onChange={({
+					onChange={obj => {
+						onChange({ 'border-color': obj.color });
+					}}
+					onChangeComplete={({
 						paletteColor,
 						paletteStatus,
 						paletteOpacity,
 						color,
 					}) => {
-						onChange({
+						onChangeComplete({
 							[`${prefix}border-palette-status-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: paletteStatus,

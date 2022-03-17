@@ -3,6 +3,7 @@
  */
 import { select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -131,6 +132,8 @@ const withMaxiProps = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
 
+			const ref = useRef(null);
+
 			const maxiSetAttributes = obj =>
 				handleSetAttributes({
 					obj,
@@ -139,10 +142,30 @@ const withMaxiProps = createHigherOrderComponent(
 					onChange: setAttributes,
 				});
 
+			const insertInlineStyles = (target, styleObj) => {
+				// const el =
+				// 	ref?.current.edit.blockRef.current.querySelector(target);
+
+				// Object.entries(styleObj).forEach(([key, val]) => {
+				// 	el.style[key] = val;
+				// });
+
+				console.log(target, styleObj);
+			};
+
+			const cleanInlineStyles = target =>
+				ref?.current.edit.blockRef.current
+					.querySelector(target)
+					.removeAttributes('styles');
+
+			console.log(ref);
+
 			return (
 				<WrappedComponent
 					{...ownProps}
+					ref={ref}
 					maxiSetAttributes={maxiSetAttributes}
+					insertInlineStyles={insertInlineStyles}
 				/>
 			);
 		}),

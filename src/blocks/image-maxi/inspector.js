@@ -580,6 +580,7 @@ const Inspector = memo(
 											...inspectorTabs.border({
 												props,
 												prefix: 'image-',
+												target: ' .maxi-image-block-wrapper img',
 											}),
 											...inspectorTabs.boxShadow({
 												props,

@@ -41,7 +41,10 @@ const blockBackground = ({
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
 									])}
-									onChange={obj => maxiSetAttributes(obj)}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+										props.insertInlineStyles();
+									}}
 									clientId={clientId}
 									breakpoint={deviceType}
 									disableImage={disableImage}

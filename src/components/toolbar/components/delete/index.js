@@ -26,7 +26,7 @@ const Delete = props => {
 			<div className='toolbar-item toolbar-item__delete'>
 				<Button onClick={() => removeBlock(clientId)}>
 					{__('Remove block', 'maxi-blocks')}
-					<span>Ctrl+Z</span>
+					<span>Shift+Alt+Z</span>
 				</Button>
 			</div>
 		</Tooltip>

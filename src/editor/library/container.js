@@ -609,10 +609,6 @@ const LibraryContainer = props => {
 	const CustomRefinementList = connectRefinementList(RefinementList);
 
 	const MenuSelect = ({ items, currentRefinement, refine }) => {
-		const buttonClassName =
-			items.length === 1
-				? ' maxi-cloud-container__content-svg-shape__button___pressed'
-				: '';
 		return (
 			<div>
 				{items.length > 2 && (
@@ -639,9 +635,8 @@ const LibraryContainer = props => {
 						key={item.label}
 						className={classnames(
 							'maxi-cloud-container__content-svg-shape__button',
-							item.isRefined &&
-								' maxi-cloud-container__content-svg-shape__button___pressed',
-							buttonClassName
+							(item.isRefined || items.length === 1) &&
+								' maxi-cloud-container__content-svg-shape__button___pressed'
 						)}
 						value={item.value}
 						onClick={event => {

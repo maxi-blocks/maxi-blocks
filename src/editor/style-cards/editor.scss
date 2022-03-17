@@ -89,19 +89,18 @@ body {
 				}
 			}
 			&__box {
+				display: flex;
 				width: 13%;
 				height: 35px;
-				cursor: pointer;
-				transition: all 0.5s;
-				display: flex;
-				align-items: center;
-				justify-content: center;
 				padding: 0;
 				border: 1px solid var(--maxi-grey-1-color);
 				margin: 0;
 				background-color: #fff;
 				cursor: pointer;
 				transition: all 0.5s;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
 
 				&--active,
 				&:hover {

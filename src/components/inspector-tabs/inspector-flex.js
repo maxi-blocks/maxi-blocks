@@ -13,7 +13,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const flex = ({ props }) => {
-	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
+	const { attributes, deviceType, maxiSetAttributes, name, clientId } = props;
 
 	return {
 		label: __('Flex', 'maxi-blocks'),
@@ -24,6 +24,7 @@ const flex = ({ props }) => {
 					onChange={maxiSetAttributes}
 					breakpoint={deviceType}
 					clientId={clientId}
+					name={name}
 				/>
 			</>
 		),

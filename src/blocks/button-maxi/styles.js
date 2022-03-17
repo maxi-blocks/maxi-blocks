@@ -20,6 +20,7 @@ import {
 	getBoxShadowStyles,
 	getColorBackgroundObject,
 	getDisplayStyles,
+	getFlexStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
 	getMarginPaddingStyles,
@@ -92,6 +93,9 @@ const getWrapperObject = props => {
 				blockStyle: props.parentBlockStyle,
 			}),
 		},
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
 	};
 
 	return response;

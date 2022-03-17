@@ -67,3 +67,4 @@ export { default as TransformControl } from './transform-control';
 export { default as TransitionControl } from './transition-control';
 export { default as TypographyControl } from './typography-control';
 export { default as ZIndexControl } from './zindex-control';
+export { default as FLexSettingsControl } from './flex-settings-control';

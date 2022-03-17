@@ -165,6 +165,11 @@ const Inspector = memo(
 											...inspectorTabs.overflow({
 												props,
 											}),
+											...inspectorTabs.flex({
+												props,
+												maxiSetAttributes:
+													maxiSetAttributes,
+											}),
 											...inspectorTabs.zindex({
 												props,
 											}),

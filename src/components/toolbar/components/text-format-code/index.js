@@ -76,7 +76,7 @@ const TextFormatCode = withFormatValue(props => {
 		const newContent = toHTMLString({
 			value: newFormat,
 			multilineTag: isList ? 'li' : null,
-			preserveWhiteSpace: true,
+			preserveWhiteSpace: false,
 		});
 
 		onChange(newContent);

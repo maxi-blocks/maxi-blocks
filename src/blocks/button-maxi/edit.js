@@ -145,7 +145,6 @@ class edit extends MaxiBlockComponent {
 							}}
 							placeholder={__('Set some text…', 'maxi-blocks')}
 							withoutInteractiveFormatting
-							__unstableDisableFormats
 						/>
 					)}
 					{attributes['icon-content'] && (

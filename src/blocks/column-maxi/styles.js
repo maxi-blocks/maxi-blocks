@@ -12,6 +12,7 @@ import {
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 
 /**
  * External dependencies
@@ -104,7 +105,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, 'background-layers': bgLayers } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -135,7 +136,7 @@ const getStyles = props => {
 					blockStyle: props.parentBlockStyle,
 				}),
 			},
-			selectorsColumn,
+			{ ...selectorsColumn, ...getBgLayersSelectorsCss(bgLayers) },
 			props
 		),
 	};

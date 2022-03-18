@@ -22,6 +22,10 @@ import {
 import { getColumnDefaultValue } from '../../extensions/column-templates';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
+import {
+	getBgLayersCategoriesCss,
+	getBgLayersSelectorsCss,
+} from '../../components/background-displayer/utils';
 
 /**
  * Inspector
@@ -29,6 +33,7 @@ import { selectorsColumn, categoriesColumn } from './custom-css';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId, rowPattern } =
 		props;
+	const { 'background-layers': bgLayers } = attributes;
 
 	return (
 		<InspectorControls>
@@ -229,8 +234,18 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsColumn,
-										categories: categoriesColumn,
+										selectors: {
+											...selectorsColumn,
+											...getBgLayersSelectorsCss(
+												bgLayers
+											),
+										},
+										categories: [
+											...categoriesColumn,
+											...getBgLayersCategoriesCss(
+												bgLayers
+											),
+										],
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

@@ -10,7 +10,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isNumber } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -96,14 +96,17 @@ export const getArrowBorder = (props, isHover) => {
 
 		['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(
 			target => {
-				response[breakpoint][
-					`border-${target}-radius`
-				] = `${getLastBreakpointAttribute({
+				const val = getLastBreakpointAttribute({
 					target: `border-${target}-radius`,
 					breakpoint,
 					attributes: props,
 					isHover,
-				})}${borderRadiusUnit}`;
+				});
+
+				if (isNumber(val))
+					response[breakpoint][
+						`border-${target}-radius`
+					] = `${val}${borderRadiusUnit}`;
 			}
 		);
 	});

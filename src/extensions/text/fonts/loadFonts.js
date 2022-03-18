@@ -15,29 +15,44 @@ import { isEmpty, uniq } from 'lodash';
  *
  * @param {string} font Name of the selected font
  */
-const loadFonts = (font, backendOnly = false) => {
+const loadFonts = (font, backendOnly = true) => {
 	if (typeof font === 'object' && font !== null) {
-		Object.entries(font).forEach(([key, val]) => {
-			const fontName = key;
-
+		Object.entries(font).forEach(([fontName, fontData]) => {
 			if (isEmpty(fontName)) return;
 
-			const fontWeight = val?.weight || '400';
-			let fontData = val;
+			const fontWeight = fontData?.weight || '400';
 
 			let fontWeightArr = [];
+			let fontDataNew;
 
 			if (Array.isArray(fontWeight))
 				font[fontName].weight = uniq(fontWeight).join();
 
 			if (fontWeight?.includes(',')) {
 				fontWeightArr = uniq(fontWeight.split(','));
-				fontData = { ...val, ...{ weight: fontWeightArr.join() } };
-			} else fontData = { ...val, ...{ weight: fontWeight } };
+				fontDataNew = {
+					...fontData,
+					...{ weight: fontWeightArr.join() },
+				};
+			} else fontDataNew = { ...fontData, ...{ weight: fontWeight } };
 
-			if (isEmpty(fontData.style)) delete fontData.style;
+			if (isEmpty(fontDataNew.style)) delete fontDataNew.style;
 
 			const { files } = select('maxiBlocks/text').getFont(fontName);
+
+			const loadBackendFont = url => {
+				const fontLoad = new FontFace(
+					fontName,
+					`url(${url})`,
+					fontDataNew
+				);
+				document.fonts.add(fontLoad);
+				fontLoad.loaded.catch(err => {
+					console.error(
+						__(`Font hasn't been able to download: ${err}`)
+					);
+				});
+			};
 
 			if (!isEmpty(fontWeightArr)) {
 				fontWeightArr.forEach(weight => {
@@ -58,27 +73,17 @@ const loadFonts = (font, backendOnly = false) => {
 
 					Object.entries(files).forEach(variant => {
 						if (variant[0].toString() === weightFile) {
-							fontData = { ...val, ...{ weight: weightFile } };
+							fontDataNew = {
+								...fontData,
+								...{ weight: weightFile },
+							};
 							if (
-								fontData?.style === ',italic' ||
-								fontData?.style === 'normal,italic'
+								fontDataNew?.style === ',italic' ||
+								fontDataNew?.style === 'normal,italic'
 							)
-								fontData.style = 'italic';
+								fontDataNew.style = 'italic';
 
-							const fontLoad = new FontFace(
-								fontName,
-								`url(${variant[1]})`,
-								fontData
-							);
-
-							document.fonts.add(fontLoad);
-							fontLoad.loaded.catch(err => {
-								console.error(
-									__(
-										`Font hasn't been able to download: ${err}`
-									)
-								);
-							});
+							loadBackendFont(variant[1]);
 						}
 					});
 				});
@@ -91,19 +96,7 @@ const loadFonts = (font, backendOnly = false) => {
 						fontData.weight = weightFile;
 					}
 
-					if (variant[0] === weightFile) {
-						const fontLoad = new FontFace(
-							fontName,
-							`url(${variant[1]})`,
-							fontData
-						);
-						document.fonts.add(fontLoad);
-						fontLoad.loaded.catch(err => {
-							console.error(
-								__(`Font hasn't been able to download: ${err}`)
-							);
-						});
-					}
+					if (variant[0] === weightFile) loadBackendFont(variant[1]);
 				});
 		});
 

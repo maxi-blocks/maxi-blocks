@@ -57,7 +57,7 @@ body.maxi-blocks--active #content .maxi-link-wrapper:focus {
 
 /*Removes button focus outline for Twenty Twenty One*/
 body.maxi-blocks--active .maxi-button-block button:focus {
-	outline: none;
+	outline: none !important;
 }
 
 /*Fixes container alignment for Twenty Twenty Two*/

@@ -3,6 +3,8 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getPaletteAttributes from '../getPaletteAttributes';
+import getMarginPaddingStyles from './getMarginPaddingStyles';
+import getGroupAttributes from '../getGroupAttributes';
 
 /**
  * External dependencies
@@ -22,6 +24,24 @@ export const getShapeDividerStyles = (obj, location) => {
 		response.general.height = `${obj[`shape-divider-${location}-height`]}${
 			obj[`shape-divider-${location}-height-unit`]
 		}`;
+
+	const rawPositions = getMarginPaddingStyles({
+		obj: {
+			...getGroupAttributes(obj, 'padding'),
+		},
+	});
+
+	Object.entries(rawPositions).forEach(([breakpoint, value]) => {
+		const result = {};
+
+		Object.entries(value).forEach(([pos, val]) => {
+			result[pos.replace('padding-', '')] = `${
+				location === 'top' ? '-' : ''
+			}${val}`;
+		});
+
+		response[breakpoint] = { ...response[breakpoint], ...result };
+	});
 
 	return response;
 };

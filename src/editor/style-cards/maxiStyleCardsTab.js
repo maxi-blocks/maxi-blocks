@@ -157,9 +157,9 @@ const SCAccordion = props => {
 					textLevel={groupAttr}
 					breakpoint={breakpoint}
 					styleCards
-					onChange={obj =>
-						onChangeValue({ typography: obj }, groupAttr)
-					}
+					onChange={obj => {
+						onChangeValue({ typography: obj }, groupAttr);
+					}}
 					hideTextShadow
 					hideAlignment
 					blockStyle={SCStyle}
@@ -169,32 +169,33 @@ const SCAccordion = props => {
 					disableFontFamily={breakpoint !== 'general'}
 				/>
 			)}
-			{colorContent.map(
-				({
-					label,
-					globalAttr,
-					globalAllAttr,
-					paletteStatus,
-					paletteColor,
-					paletteOpacity,
-					color,
-				}) => (
-					<GlobalColor
-						key={`sc-accordion__h${label}`}
-						label={label}
-						globalAttr={globalAttr}
-						globalAllAttr={globalAllAttr}
-						paletteStatus={paletteStatus}
-						paletteColor={paletteColor}
-						paletteOpacity={paletteOpacity}
-						color={color}
-						groupAttr={groupAttr}
-						SC={SC}
-						onChangeValue={onChangeValue}
-						SCStyle={SCStyle}
-					/>
-				)
-			)}
+			{breakpoint === 'general' &&
+				colorContent.map(
+					({
+						label,
+						globalAttr,
+						globalAllAttr,
+						paletteStatus,
+						paletteColor,
+						paletteOpacity,
+						color,
+					}) => (
+						<GlobalColor
+							key={`sc-accordion__h${label}`}
+							label={label}
+							globalAttr={globalAttr}
+							globalAllAttr={globalAllAttr}
+							paletteStatus={paletteStatus}
+							paletteColor={paletteColor}
+							paletteOpacity={paletteOpacity}
+							color={color}
+							groupAttr={groupAttr}
+							SC={SC}
+							onChangeValue={onChangeValue}
+							SCStyle={SCStyle}
+						/>
+					)
+				)}
 		</>
 	);
 };
@@ -514,7 +515,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							/>
 						),
 					},
-					{
+					breakpoint === 'general' && {
 						label: linkTabs.label,
 						content: (
 							<SCAccordion
@@ -530,7 +531,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: __('Headings', 'maxi-blocks'),
-						content: <SettingTabsControl items={headingItems()} />,
+						content: (
+							<SettingTabsControl
+								hasBorder
+								items={headingItems()}
+							/>
+						),
 					},
 					breakpoint === 'general' && {
 						label: iconTabs.label,

@@ -5,21 +5,4 @@ body.maxi-blocks--active .maxi-container-block {
 	display: flex;
 	flex-direction: column;
 	padding: 0;
-
-	&__container {
-		margin-right: auto;
-		margin-left: auto;
-		position: relative;
-	}
-	.maxi-container-block__container {
-		width: 100%;
-	}
-}
-
-html body.maxi-blocks--active .maxi-container-block {
-	&.alignfull,
-	&.alignfull > .maxi-container-block__container {
-		max-width: 100% !important;
-		width: 100% !important;
-	}
 }

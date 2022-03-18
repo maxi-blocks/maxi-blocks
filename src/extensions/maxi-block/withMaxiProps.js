@@ -99,13 +99,25 @@ export const handleSetAttributes = ({
 
 		if (!attrExistOnGeneral) return;
 
+		const defaultOnWinBreakpointAttribute =
+			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
+			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
+
+		if (
+			breakpoint === 'general' &&
+			defaultOnWinBreakpointAttribute === value
+		) {
+			response[attrLabelOnWinBreakpoint] = value;
+
+			return;
+		}
+
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (
-			(breakpoint === 'general' ||
-				attributes?.[attrLabelOnGeneral] === value) &&
+			attributes?.[attrLabelOnGeneral] === value &&
 			defaultGeneralAttribute === value
 		)
 			return;

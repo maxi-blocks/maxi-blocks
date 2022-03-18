@@ -391,4 +391,94 @@ describe('Responsive attributes mechanisms', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', async () => {
+		let borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		await borderAccordion.$eval(
+			'.maxi-axis-control__content__item__border-radius input',
+			input => input.focus()
+		);
+		await page.keyboard.type('100', { delay: 100 });
+
+		const expectRadiusOnM = {
+			'border-top-left-radius-general': 100,
+			'border-top-left-radius-m': undefined,
+		};
+
+		const radiusOnM = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+		]);
+
+		expect(radiusOnM).toStrictEqual(expectRadiusOnM);
+
+		await changeResponsive(page, 'xl');
+
+		borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		await borderAccordion.$eval(
+			'.maxi-axis-control__content__item__border-radius input',
+			input => input.focus()
+		);
+		await page.keyboard.type('150', { delay: 100 });
+
+		const expectRadiusOnXl = {
+			'border-top-left-radius-general': 100,
+			'border-top-left-radius-m': 100,
+			'border-top-left-radius-xl': 150,
+		};
+
+		const radiusOnXl = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+			'border-top-left-radius-xl',
+		]);
+
+		expect(radiusOnXl).toStrictEqual(expectRadiusOnXl);
+
+		// Reset
+		await borderAccordion.$eval(
+			'.components-maxi-control__reset-button',
+			button => button.click()
+		);
+
+		const expectResetRadiusOnXl = {
+			'border-top-left-radius-general': 100,
+			'border-top-left-radius-m': 100,
+			'border-top-left-radius-xl': undefined,
+		};
+
+		const resetRadiusOnXl = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+			'border-top-left-radius-xl',
+		]);
+
+		expect(resetRadiusOnXl).toStrictEqual(expectResetRadiusOnXl);
+
+		await changeResponsive(page, 'm');
+
+		borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		// Reset
+		await borderAccordion.$eval(
+			'.components-maxi-control__reset-button',
+			button => button.click()
+		);
+
+		const expectResetRadiusOnM = {
+			'border-top-left-radius-general': undefined,
+			'border-top-left-radius-m': undefined,
+			'border-top-left-radius-xl': undefined,
+		};
+
+		const resetRadiusOnM = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+			'border-top-left-radius-xl',
+		]);
+
+		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
+	});
 });

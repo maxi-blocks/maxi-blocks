@@ -9,7 +9,7 @@ describe('BlockPlaceholder', () => {
 		await insertBlock('Group Maxi');
 
 		const groupPlaceholder = await page.$eval(
-			'.maxi-group-block__group .maxi-block-placeholder',
+			'.maxi-block-placeholder',
 			select => select.innerHTML
 		);
 

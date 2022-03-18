@@ -11,7 +11,7 @@ describe('Dropdown', () => {
 	it('Check dropdown', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-		await page.$eval('.maxi-container-block', select => select.focus());
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -19,17 +19,17 @@ describe('Dropdown', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-shapedividercontrol .maxi-toggle-switch .maxi-base-control__label',
+			'.maxi-shape-divider-control .maxi-toggle-switch .maxi-base-control__label',
 			use => use.click()
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector button',
+			'.maxi-dropdown.maxi-shape-divider-control__shape-selector button',
 			modal => modal.click()
 		);
 
 		await page.$$eval(
-			'.maxi-shapedividercontrol__shape-list button',
+			'.maxi-shape-divider-control__shape-list button',
 			click => click[1].click()
 		);
 

@@ -204,7 +204,6 @@ const getListObject = props => {
 						breakpoint,
 						attributes: props,
 					});
-
 					if (!isNil(gapNum) && !isNil(gapUnit)) {
 						response.listGap[breakpoint] = isRTL
 							? {
@@ -487,10 +486,10 @@ const getStyles = props => {
 						getTypographyHoverObject(props),
 				}),
 				...(isList && {
-					[` ${element}.maxi-text-block__content`]: getListObject(
-						props,
-						isRTL
-					),
+					[` ${element}.maxi-text-block__content`]: getListObject({
+						...props,
+						isRTL,
+					}),
 					[` ${element}.maxi-text-block__content li`]: {
 						...getTypographyObject(props),
 						...getListItemObject(props),
@@ -500,7 +499,7 @@ const getStyles = props => {
 					[` ${element}.maxi-text-block__content li:hover`]:
 						getTypographyHoverObject(props),
 					[` ${element}.maxi-text-block__content li::before`]:
-						getMarkerObject(props, isRTL),
+						getMarkerObject({ ...props, isRTL }),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

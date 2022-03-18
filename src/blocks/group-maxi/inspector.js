@@ -90,12 +90,12 @@ const Inspector = props => {
 												bgLayers
 											),
 										},
-										categories: {
+										categories: [
 											...categoriesGroup,
 											...getBgLayersCategoriesCss(
 												bgLayers
 											),
-										},
+										],
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

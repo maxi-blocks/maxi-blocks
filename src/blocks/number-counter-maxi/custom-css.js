@@ -78,5 +78,5 @@ export const categoriesNumberCounter = [
 	'number',
 	'before number',
 	'after number',
-	'circle'
+	'circle',
 ];

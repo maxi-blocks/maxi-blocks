@@ -13,6 +13,7 @@ import {
 	getMarginPaddingStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsGroup } from './custom-css';
 
 const getNormalObject = props => {
@@ -95,66 +96,67 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, 'background-layers': bgLayers } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover': getHoverObject(props),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, [
-					'blockBackground',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(
-					props,
-					[
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
 						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-					],
-					true
-				),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getArrowStyles({
-				...getGroupAttributes(props, [
-					'arrow',
-					'border',
-					'borderWidth',
-					'borderRadius',
-					'blockBackground',
-					'boxShadow',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getArrowStyles({
-				...getGroupAttributes(
-					props,
-					[
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(props, [
 						'arrow',
 						'border',
 						'borderWidth',
 						'borderRadius',
 						'blockBackground',
 						'boxShadow',
-					],
-					true
-				),
-				...getGroupAttributes(props, ['arrow']),
-				blockStyle: props.parentBlockStyle,
-				isHover: true,
-			}),
-		},
-		selectorsGroup,
-		props
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'arrow',
+							'border',
+							'borderWidth',
+							'borderRadius',
+							'blockBackground',
+							'boxShadow',
+						],
+						true
+					),
+					...getGroupAttributes(props, ['arrow']),
+					blockStyle: props.parentBlockStyle,
+					isHover: true,
+				}),
+			},
+			{ ...selectorsGroup, ...getBgLayersSelectorsCss(bgLayers) },
+			props
 		),
 	};
 

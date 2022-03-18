@@ -9,13 +9,18 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import {
+	getBgLayersCategoriesCss,
+	getBgLayersSelectorsCss,
+} from '../../components/background-displayer/utils';
 import { selectorsGroup, categoriesGroup } from './custom-css';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType } = props;
+	const { attributes, deviceType } = props;
+	const { 'background-layers': bgLayers } = attributes;
 
 	return (
 		<InspectorControls>
@@ -79,8 +84,18 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsGroup,
-										categories: categoriesGroup,
+										selectors: {
+											...selectorsGroup,
+											...getBgLayersSelectorsCss(
+												bgLayers
+											),
+										},
+										categories: {
+											...categoriesGroup,
+											...getBgLayersCategoriesCss(
+												bgLayers
+											),
+										},
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

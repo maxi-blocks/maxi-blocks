@@ -27,9 +27,7 @@ export default function parseVideo(url) {
 	};
 }
 
-export function getBgLayersSelectorsCss(attributes) {
-	const { 'background-layers': bgLayers } = attributes;
-
+export function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {};
 	bgLayers?.forEach(bgLayer => {
 		bgLayersSelectors[`background ${bgLayer.type} ${bgLayer.id + 1}`] = {
@@ -47,9 +45,7 @@ export function getBgLayersSelectorsCss(attributes) {
 	return bgLayersSelectors;
 }
 
-export function getBgLayersCategoriesCss(attributes) {
-	const { 'background-layers': bgLayers } = attributes;
-
+export function getBgLayersCategoriesCss(bgLayers) {
 	const bgLayersCategories = bgLayers?.map(
 		bgLayer => `background ${bgLayer.type} ${bgLayer.id + 1}`
 	);

@@ -25,9 +25,7 @@ import {
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
-
-	const bgLayersSelectors = getBgLayersSelectorsCss(attributes);
-	const bgLayersCategories = getBgLayersCategoriesCss(attributes);
+	const { 'background-layers': bgLayers } = attributes;
 
 	return (
 		<InspectorControls>
@@ -111,11 +109,15 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors: {
 											...selectorsContainer,
-											...bgLayersSelectors,
+											...getBgLayersSelectorsCss(
+												bgLayers
+											),
 										},
 										categories: [
 											...categoriesContainer,
-											...bgLayersCategories,
+											...getBgLayersCategoriesCss(
+												bgLayers
+											),
 										],
 									}),
 									...inspectorTabs.scrollEffects({

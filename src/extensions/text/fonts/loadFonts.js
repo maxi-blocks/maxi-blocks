@@ -40,6 +40,8 @@ const loadFonts = (font, backendOnly = true) => {
 
 			const { files } = select('maxiBlocks/text').getFont(fontName);
 
+			if (isEmpty(files)) return;
+
 			const loadBackendFont = url => {
 				const fontLoad = new FontFace(
 					fontName,

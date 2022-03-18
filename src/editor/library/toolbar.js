@@ -44,11 +44,13 @@ const LibraryToolbar = props => {
 		<div className='maxi-cloud-toolbar'>
 			<a className='maxi-cloud-toolbar__logo'>
 				{library}
-				{type === 'svg' && __('Maxi SVG Icons', 'maxi-blocks')}
-				{type === 'patterns' && __('Maxi Cloud Library', 'maxi-blocks')}
-				{type === 'sc' && __('Maxi Style Cards', 'maxi-blocks')}
+				{type === 'svg' && __('Maxi SVG icons', 'maxi-blocks')}
+				{type === 'patterns' && __('Template library', 'maxi-blocks')}
+				{type === 'sc' && __('Style cards', 'maxi-blocks')}
 				{type.includes('shape') &&
-					__('Maxi Cloud Shape Library', 'maxi-blocks')}
+					__('Maxi cloud shape library', 'maxi-blocks')}
+				{type.includes('button') &&
+					__('Maxi button icon library', 'maxi-blocks')}
 			</a>
 			{type === 'all' && (
 				<div>
@@ -63,8 +65,8 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 			<a className='maxi-cloud-toolbar__help-button'>
-				{__('Help', 'maxi-blocks')}
 				{help}
+				{__('Help', 'maxi-blocks')}
 			</a>
 		</div>
 	);

@@ -72,9 +72,12 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={getLastBreakpointAttribute(
-															'line-orientation',
-															deviceType,
-															attributes
+															{
+																target: 'line-orientation',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
 														)}
 														options={[
 															{
@@ -105,9 +108,12 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={getLastBreakpointAttribute(
-															'line-vertical',
-															deviceType,
-															attributes
+															{
+																target: 'line-vertical',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
 														)}
 														options={[
 															{
@@ -145,9 +151,12 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={getLastBreakpointAttribute(
-															'line-horizontal',
-															deviceType,
-															attributes
+															{
+																target: 'line-horizontal',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
 														)}
 														options={[
 															{
@@ -206,10 +215,6 @@ const Inspector = props => {
 											),
 										},
 										...inspectorTabs.boxShadow({
-											props,
-											prefix: 'divider-',
-										}),
-										...inspectorTabs.marginPadding({
 											props,
 											prefix: 'divider-',
 										}),

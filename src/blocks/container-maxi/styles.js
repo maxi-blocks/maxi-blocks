@@ -13,7 +13,6 @@ import {
 	getMarginPaddingStyles,
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
-	getContainerStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsContainer } from './custom-css';
@@ -30,12 +29,9 @@ const getNormalObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 		}),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'container'),
-			},
-			'container-'
-		),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
@@ -63,6 +59,11 @@ const getNormalObject = props => {
 		margin: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin'),
+			},
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding'),
 			},
 		}),
 	};
@@ -99,28 +100,6 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getContainerObject = props => {
-	const { isFirstOnHierarchy, fullWidth } = props;
-
-	let response = {
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding'),
-			},
-		}),
-	};
-
-	if (isFirstOnHierarchy && fullWidth === 'full')
-		response = {
-			...response,
-			sizeContainer: getContainerStyles({
-				...getGroupAttributes(props, 'container'),
-			}),
-		};
-
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -129,50 +108,62 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				' > .maxi-container-block__container':
-					getContainerObject(props),
-				' .maxi-shape-divider__top': {
-					shapeDivider: {
-						...getShapeDividerStyles(
-							{
-								...getGroupAttributes(props, 'shapeDivider'),
-							},
-							'top'
-						),
+				...(props['shape-divider-top-status'] && {
+					' .maxi-shape-divider__top': {
+						shapeDivider: {
+							...getShapeDividerStyles(
+								{
+									...getGroupAttributes(props, [
+										'shapeDivider',
+										'padding',
+									]),
+								},
+								'top'
+							),
+						},
 					},
-				},
-				' .maxi-shape-divider__top svg': {
-					shapeDivider: {
-						...getShapeDividerSVGStyles(
-							{
-								...getGroupAttributes(props, ['shapeDivider']),
-							},
-							'top',
-							props.parentBlockStyle
-						),
+					' .maxi-shape-divider__top svg': {
+						shapeDivider: {
+							...getShapeDividerSVGStyles(
+								{
+									...getGroupAttributes(props, [
+										['shapeDivider', 'padding'],
+									]),
+								},
+								'top',
+								props.parentBlockStyle
+							),
+						},
 					},
-				},
-				' .maxi-shape-divider__bottom': {
-					shapeDivider: {
-						...getShapeDividerStyles(
-							{
-								...getGroupAttributes(props, 'shapeDivider'),
-							},
-							'bottom'
-						),
+				}),
+				...(props['shape-divider-bottom-status'] && {
+					' .maxi-shape-divider__bottom': {
+						shapeDivider: {
+							...getShapeDividerStyles(
+								{
+									...getGroupAttributes(props, [
+										'shapeDivider',
+										'padding',
+									]),
+								},
+								'bottom'
+							),
+						},
 					},
-				},
-				' .maxi-shape-divider__bottom svg': {
-					shapeDivider: {
-						...getShapeDividerSVGStyles(
-							{
-								...getGroupAttributes(props, ['shapeDivider']),
-							},
-							'bottom',
-							props.parentBlockStyle
-						),
+					' .maxi-shape-divider__bottom svg': {
+						shapeDivider: {
+							...getShapeDividerSVGStyles(
+								{
+									...getGroupAttributes(props, [
+										['shapeDivider', 'padding'],
+									]),
+								},
+								'bottom',
+								props.parentBlockStyle
+							),
+						},
 					},
-				},
+				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

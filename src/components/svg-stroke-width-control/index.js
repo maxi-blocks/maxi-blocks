@@ -28,12 +28,12 @@ const SvgStrokeWidthControl = props => {
 			value={stroke || defaultStroke}
 			placeholder={
 				breakpoint !== 'general'
-					? getLastBreakpointAttribute(
-							`${prefix}stroke`,
+					? getLastBreakpointAttribute({
+							target: `${prefix}stroke`,
 							breakpoint,
-							props,
-							isHover
-					  )
+							attributes: props,
+							isHover,
+					  })
 					: null
 			}
 			onChangeValue={val => {

@@ -1,32 +1,32 @@
 export const selectorsContainer = {
-	'container': {
+	container: {
 		normal: {
 			label: 'container',
-			target: ' .maxi-container-block__container',
+			target: '',
 		},
 		hover: {
 			label: 'container on hover',
-			target: ' .maxi-container-block__container:hover',
+			target: ':hover',
 		},
 	},
 	'before container': {
 		normal: {
 			label: 'container ::before',
-			target: ' .maxi-container-block__container::before',
+			target: '::before',
 		},
 		hover: {
 			label: 'container ::before on hover',
-			target: ' .maxi-container-block__container:hover::before',
+			target: ':hover::before',
 		},
 	},
 	'after container': {
 		normal: {
 			label: 'container ::after',
-			target: ' .maxi-container-block__container::after',
+			target: '::after',
 		},
 		hover: {
 			label: 'container :after on hover',
-			target: ' .maxi-container-block__container:hover::after',
+			target: ':hover::after',
 		},
 	},
 };

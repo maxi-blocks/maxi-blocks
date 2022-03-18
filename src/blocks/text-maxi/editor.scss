@@ -1,0 +1,26 @@
+.maxi-text-block {
+	&__content {
+		border: 1.5px dashed #7fbddc !important;
+
+		a.maxi-text-block--link {
+			&:visited,
+			&:visited span {
+				color: inherit !important;
+			}
+		}
+	}
+	&__has-text {
+		&:hover,
+		&.is-selected {
+			.maxi-text-block__content {
+				border: 2px dashed #7fbddc !important;
+			}
+		}
+		.maxi-text-block__content {
+			border: 2px dashed transparent !important;
+		}
+	}
+	&::after {
+		display: none;
+	}
+}

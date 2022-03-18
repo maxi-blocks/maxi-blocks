@@ -1,4 +1,14 @@
 export const selectorsText = {
+	'text wrapper': {
+		normal: {
+			label: 'text wrapper',
+			target: '',
+		},
+		hover: {
+			label: 'text wrapper on hover',
+			target: ':hover',
+		},
+	},
 	text: {
 		normal: {
 			label: 'text',
@@ -29,7 +39,7 @@ export const selectorsText = {
 			target: ' .maxi-text-block__content:hover::after',
 		},
 	},
-	'links': {
+	links: {
 		normal: {
 			label: 'links',
 			target: ' .maxi-text-block--link',
@@ -39,7 +49,7 @@ export const selectorsText = {
 			target: ' .maxi-text-block--link:hover',
 		},
 	},
-	'lists':{
+	lists: {
 		ordered: {
 			label: 'Ordered list',
 			target: ' ol.maxi-text-block__content',
@@ -52,7 +62,10 @@ export const selectorsText = {
 };
 
 export const categoriesText = [
+	'text wrapper',
 	'text',
 	'links',
 	'lists',
+	'before text',
+	'after text',
 ];

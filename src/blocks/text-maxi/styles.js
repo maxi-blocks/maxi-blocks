@@ -204,6 +204,7 @@ const getListObject = props => {
 						breakpoint,
 						attributes: props,
 					});
+					
 					if (!isNil(gapNum) && !isNil(gapUnit)) {
 						response.listGap[breakpoint] = isRTL
 							? {

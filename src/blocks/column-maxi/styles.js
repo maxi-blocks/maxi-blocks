@@ -11,8 +11,8 @@ import {
 	getOpacityStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsColumn } from './custom-css';
 import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
+import { selectorsColumn } from './custom-css';
 
 /**
  * External dependencies

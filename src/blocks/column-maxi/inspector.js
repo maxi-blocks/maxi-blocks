@@ -21,11 +21,11 @@ import {
 } from '../../extensions/styles';
 import { getColumnDefaultValue } from '../../extensions/column-templates';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsColumn, categoriesColumn } from './custom-css';
 import {
 	getBgLayersCategoriesCss,
 	getBgLayersSelectorsCss,
 } from '../../components/background-displayer/utils';
+import { selectorsColumn, categoriesColumn } from './custom-css';
 
 /**
  * Inspector

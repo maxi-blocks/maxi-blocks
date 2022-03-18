@@ -18,11 +18,11 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsDivider, categoriesDivider } from './custom-css';
 import {
 	getBgLayersCategoriesCss,
 	getBgLayersSelectorsCss,
 } from '../../components/background-displayer/utils';
+import { selectorsDivider, categoriesDivider } from './custom-css';
 
 /**
  * External dependencies

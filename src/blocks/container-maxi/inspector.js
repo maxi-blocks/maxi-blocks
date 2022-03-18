@@ -14,11 +14,11 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsContainer, categoriesContainer } from './custom-css';
 import {
 	getBgLayersCategoriesCss,
 	getBgLayersSelectorsCss,
 } from '../../components/background-displayer/utils';
+import { selectorsContainer, categoriesContainer } from './custom-css';
 
 /**
  * Inspector

@@ -15,8 +15,8 @@ import {
 	getShapeDividerSVGStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsContainer } from './custom-css';
 import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
+import { selectorsContainer } from './custom-css';
 
 const getNormalObject = props => {
 	const response = {

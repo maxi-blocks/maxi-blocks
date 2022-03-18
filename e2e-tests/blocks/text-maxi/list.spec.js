@@ -6,6 +6,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
+	clipboardy,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -16,6 +17,7 @@ import {
 	openSidebarTab,
 	editAdvancedNumberControl,
 	getAttributes,
+	editColorControl,
 	modalMock,
 } from '../../utils';
 
@@ -98,10 +100,7 @@ describe('List in Text-maxi', () => {
 		expect(
 			await getAttributes('list-marker-line-height-general')
 		).toStrictEqual(46);
-	});
 
-	it('Check text position, style, start from in organized', async () => {
-		// Select
 		// Text Position
 		const textPosition = await page.$(
 			'.maxi-image-inspector__list-style select'
@@ -111,7 +110,9 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('list-text-position-general')).toStrictEqual(
 			'sub'
 		);
+	});
 
+	it('Check text position, style, start from in organized', async () => {
 		// Start From input negative numbers
 		await editAdvancedNumberControl({
 			page,
@@ -125,6 +126,7 @@ describe('List in Text-maxi', () => {
 		await style[1].select('armenian');
 
 		expect(await getAttributes('listStyle')).toStrictEqual('armenian');
+		await page.waitForTimeout(150);
 
 		// Start From input
 		await editAdvancedNumberControl({
@@ -138,10 +140,10 @@ describe('List in Text-maxi', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-image-inspector__list-start '),
-			newNumber: '-44',
+			newNumber: '-4',
 		});
 
-		expect(await getAttributes('listStart')).toStrictEqual(4);
+		expect(await getAttributes('listStart')).toStrictEqual(0);
 
 		// Reverse order button
 		await page.$eval('.maxi-image-inspector__list-reverse input', input =>
@@ -200,17 +202,18 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');
 
 		// source URL
+		// expect to be properly tested
 		/* await source.select('url');
 		await page.$eval(
 			'.maxi-image-inspector__list-source-text input',
 			input => input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		debugger;
 
-		await page.keyboard.type('http://placekitten.com/20/20');
+		await page.keyboard.type('http://placekitten.com/20/20', {
+			delay: 250,
+		});
 		await page.waitForTimeout(500);
-		debugger;
 
 		expect(await getAttributes('listStyleCustom')).toStrictEqual(
 			'http://placekitten.com/20/20'
@@ -221,6 +224,15 @@ describe('List in Text-maxi', () => {
 		await source.select('icon');
 
 		await modalMock(page, { type: 'list-svg' });
+
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-accordion-control__item__panel'),
+			paletteStatus: true,
+			colorPalette: 7,
+		});
+
+		expect(await getAttributes('list-palette-color')).toStrictEqual(7);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

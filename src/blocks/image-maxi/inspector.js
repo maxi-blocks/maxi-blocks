@@ -28,6 +28,10 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import {
+	getBgLayersCategoriesCss,
+	getBgLayersSelectorsCss,
+} from '../../components/background-displayer/utils';
 import { selectorsImage, categoriesImage } from './custom-css';
 
 /**
@@ -244,6 +248,7 @@ const Inspector = memo(
 			uniqueID,
 			mediaID,
 			captionPosition,
+			'background-layers': bgLayers,
 		} = attributes;
 
 		const getCaptionOptions = () => {
@@ -655,8 +660,18 @@ const Inspector = memo(
 											...inspectorTabs.customCss({
 												props,
 												breakpoint: deviceType,
-												selectors: selectorsImage,
-												categories: getCategoriesCss(),
+												selectors: {
+													...selectorsImage,
+													...getBgLayersSelectorsCss(
+														bgLayers
+													),
+												},
+												categories: [
+													...getCategoriesCss(),
+													...getBgLayersCategoriesCss(
+														bgLayers
+													),
+												],
 											}),
 											...inspectorTabs.scrollEffects({
 												props,

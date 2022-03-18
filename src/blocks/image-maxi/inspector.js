@@ -266,14 +266,6 @@ const Inspector = memo(
 			return response;
 		};
 
-		const getCategoriesCss = () => {
-			const { 'background-layers': bgLayers } = attributes;
-			return without(
-				categoriesImage,
-				isEmpty(bgLayers) && 'canvas background'
-			);
-		};
-
 		return (
 			<InspectorControls>
 				{inspectorTabs.responsiveInfoBox({ props })}
@@ -667,7 +659,7 @@ const Inspector = memo(
 													),
 												},
 												categories: [
-													...getCategoriesCss(),
+													...categoriesImage,
 													...getBgLayersCategoriesCss(
 														bgLayers
 													),

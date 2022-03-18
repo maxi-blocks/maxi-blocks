@@ -49,14 +49,6 @@ const Inspector = props => {
 		svgType,
 	} = attributes;
 
-	const getCategoriesCss = () => {
-		const { 'background-layers': bgLayers } = attributes;
-		return without(
-			categoriesSvgIcon,
-			isEmpty(bgLayers) && 'canvas background'
-		);
-	};
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}

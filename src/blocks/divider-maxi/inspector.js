@@ -36,15 +36,6 @@ const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 	const { 'background-layers': bgLayers } = attributes;
 
-	const getCategoriesCss = () => {
-		const { 'background-layers': bgLayers } = attributes;
-
-		return without(
-			categoriesDivider,
-			isEmpty(bgLayers) && 'canvas background'
-		);
-	};
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -285,8 +276,8 @@ const Inspector = props => {
 												),
 											},
 											categories: [
-												...getCategoriesCss(),
-												getBgLayersCategoriesCss(
+												...categoriesDivider,
+												...getBgLayersCategoriesCss(
 													bgLayers
 												),
 											],

@@ -9,16 +9,6 @@ export const selectorsButton = {
 			target: ':hover',
 		},
 	},
-	'canvas background': {
-		normal: {
-			label: 'canvas background',
-			target: '',
-		},
-		hover: {
-			label: 'canvas background on hover',
-			target: ':hover',
-		},
-	},
 	'before canvas': {
 		normal: {
 			label: 'canvas ::before',
@@ -109,7 +99,6 @@ export const categoriesButton = [
 	'canvas',
 	'before canvas',
 	'after canvas',
-	'canvas background',
 	'button',
 	'before button',
 	'after button',

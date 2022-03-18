@@ -27,14 +27,6 @@ import { isEmpty, without } from 'lodash';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
-	const getCategoriesCss = () => {
-		const { 'background-layers': bgLayers } = attributes;
-		return without(
-			categoriesNumberCounter,
-			isEmpty(bgLayers) && 'canvas background'
-		);
-	};
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}

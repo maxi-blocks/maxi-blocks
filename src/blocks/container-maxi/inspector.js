@@ -15,12 +15,19 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsContainer, categoriesContainer } from './custom-css';
+import {
+	getBgLayersCategoriesCss,
+	getBgLayersSelectorsCss,
+} from '../../components/background-displayer/utils';
 
 /**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
+
+	const bgLayersSelectors = getBgLayersSelectorsCss(attributes);
+	const bgLayersCategories = getBgLayersCategoriesCss(attributes);
 
 	return (
 		<InspectorControls>
@@ -102,8 +109,14 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsContainer,
-										categories: categoriesContainer,
+										selectors: {
+											...selectorsContainer,
+											...bgLayersSelectors,
+										},
+										categories: [
+											...categoriesContainer,
+											...bgLayersCategories,
+										],
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

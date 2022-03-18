@@ -26,3 +26,33 @@ export default function parseVideo(url) {
 		id: RegExp.$6,
 	};
 }
+
+export function getBgLayersSelectorsCss(attributes) {
+	const { 'background-layers': bgLayers } = attributes;
+
+	const bgLayersSelectors = {};
+	bgLayers?.forEach(bgLayer => {
+		bgLayersSelectors[`background ${bgLayer.type} ${bgLayer.id}`] = {
+			normal: {
+				label: `background ${bgLayer.type} ${bgLayer.id}`,
+				target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.id}`,
+			},
+			hover: {
+				label: `background ${bgLayer.type} ${bgLayer.id} on hover`,
+				target: ` .maxi-background-displayer:hover .maxi-background-displayer__${bgLayer.id}`,
+			},
+		};
+	});
+
+	return bgLayersSelectors;
+}
+
+export function getBgLayersCategoriesCss(attributes) {
+	const { 'background-layers': bgLayers } = attributes;
+
+	const bgLayersCategories = bgLayers?.map(
+		bgLayer => `background ${bgLayer.type} ${bgLayer.id}`
+	);
+
+	return bgLayersCategories;
+}

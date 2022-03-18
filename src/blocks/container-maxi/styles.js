@@ -16,6 +16,7 @@ import {
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsContainer } from './custom-css';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 
 const getNormalObject = props => {
 	const response = {
@@ -101,7 +102,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, 'background-layers': bgLayers } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -216,7 +217,7 @@ const getStyles = props => {
 					isHover: true,
 				}),
 			},
-			selectorsContainer,
+			{ ...selectorsContainer, ...getBgLayersSelectorsCss(bgLayers) },
 			props
 		),
 	};

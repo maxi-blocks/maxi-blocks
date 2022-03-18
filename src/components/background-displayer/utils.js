@@ -37,7 +37,7 @@ export function getBgLayersSelectorsCss(bgLayers) {
 			},
 			hover: {
 				label: `background ${bgLayer.type} ${index + 1} on hover`,
-				target: ` .maxi-background-displayer:hover .maxi-background-displayer__${bgLayer.id}`,
+				target: `:hover .maxi-background-displayer .maxi-background-displayer__${bgLayer.id}`,
 			},
 		};
 	});

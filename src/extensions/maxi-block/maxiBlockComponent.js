@@ -339,7 +339,7 @@ class MaxiBlockComponent extends Component {
 	loadFonts() {
 		const response = getAllFonts(this.typography, 'custom-formats');
 
-		if (!isEmpty(response)) loadFonts(response, true);
+		if (!isEmpty(response)) loadFonts(response);
 	}
 
 	getParentStyle() {

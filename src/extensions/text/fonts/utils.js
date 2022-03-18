@@ -12,37 +12,8 @@ import { isEmpty, isString, uniq, cloneDeep, isObject } from 'lodash';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../../styles';
+import getBreakpointFromAttribute from '../../styles/getBreakpointFromAttribute';
 import { getCustomFormatValue } from '../formats';
-
-export const getFontsObj = obj => {
-	const response = {};
-	let fontName = '';
-
-	Object.entries(obj).forEach(([key, val]) => {
-		if (key.includes('font-family')) {
-			fontName = val;
-			response[fontName] = { weight: [], style: [] };
-		}
-		if (key.includes('font-weight'))
-			response[fontName].weight.push(val.toString());
-
-		if (key.includes('font-style')) response[fontName].style.push(val);
-	});
-
-	if (!isEmpty(response)) {
-		Object.entries(response).forEach(([key, val]) => {
-			const fontWeight = uniq(val.weight).join();
-			const fontStyle = uniq(val.style).join();
-
-			if (fontStyle === 'normal') delete response[key].style;
-			else response[key].style = fontStyle;
-
-			response[key].weight = fontWeight;
-		});
-	}
-
-	return response;
-};
 
 export const getAllFonts = (
 	attr,
@@ -59,10 +30,7 @@ export const getAllFonts = (
 
 	const getAllFontsRecursively = obj => {
 		Object.entries(obj).forEach(([key, val]) => {
-			const breakpoint = key
-				.replace(/-hover/g, '')
-				.split('-')
-				.pop();
+			const breakpoint = getBreakpointFromAttribute(key);
 
 			if (key.includes('font-family')) {
 				if (typeof val !== 'undefined') fontName = val;

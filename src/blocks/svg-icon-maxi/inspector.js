@@ -21,12 +21,11 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import {
+	getBgLayersCategoriesCss,
+	getBgLayersSelectorsCss,
+} from '../../components/background-displayer/utils';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
-
-/**
- * External dependencies
- */
-import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
@@ -48,6 +47,8 @@ const Inspector = props => {
 		parentBlockStyle,
 		svgType,
 	} = attributes;
+
+	const { 'background-layers': bgLayers } = attributes;
 
 	return (
 		<InspectorControls>
@@ -360,8 +361,18 @@ const Inspector = props => {
 										...inspectorTabs.customCss({
 											props,
 											breakpoint: deviceType,
-											selectors: selectorsSvgIcon,
-											categories: getCategoriesCss(),
+											selectors: {
+												...selectorsSvgIcon,
+												...getBgLayersSelectorsCss(
+													bgLayers
+												),
+											},
+											categories: [
+												...categoriesSvgIcon,
+												...getBgLayersCategoriesCss(
+													bgLayers
+												),
+											],
 										}),
 										...inspectorTabs.scrollEffects({
 											props,

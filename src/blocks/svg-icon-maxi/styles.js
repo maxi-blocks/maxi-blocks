@@ -15,6 +15,7 @@ import {
 	getOverflowStyles,
 	getSVGWidthStyles,
 } from '../../extensions/styles/helpers';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsSvgIcon } from './custom-css';
 
 const getWrapperObject = props => {
@@ -175,7 +176,11 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, parentBlockStyle: blockStyle } = props;
+	const {
+		uniqueID,
+		parentBlockStyle: blockStyle,
+		'background-layers': bgLayers,
+	} = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -215,7 +220,7 @@ const getStyles = props => {
 					blockStyle,
 				}),
 			},
-			selectorsSvgIcon,
+			{ ...selectorsSvgIcon, ...getBgLayersSelectorsCss(bgLayers) },
 			props
 		),
 	};

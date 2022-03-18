@@ -6,7 +6,13 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-import { getBlockStyle, openSidebarTab, changeResponsive } from '../../utils';
+import {
+	getBlockStyle,
+	openSidebarTab,
+	changeResponsive,
+	addResponsiveTest,
+	getAttributes,
+} from '../../utils';
 
 describe('Divider Maxi', () => {
 	it('Divider Maxi does not break', async () => {
@@ -30,8 +36,6 @@ describe('Divider Maxi', () => {
 		await alignmentSelectors[1].select('flex-start');
 		await page.waitForTimeout(150);
 		await alignmentSelectors[2].select('flex-start');
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// responsive
 		// responsive S
@@ -78,5 +82,39 @@ describe('Divider Maxi', () => {
 		expect(alignmentMOrientation).toBe('horizontal');
 		expect(alignmentMVertical).toBe('flex-end');
 		expect(alignmentMHorizontal).toBe('flex-end');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+	// divider line orientation responsive
+	it('Check responsive line orientation', async () => {
+		await createNewPost();
+		await insertBlock('Divider Maxi');
+		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
+
+		const responsiveVertical = await addResponsiveTest({
+			page,
+			instance: '.line-orientation-selector select',
+			selectInstance: '.line-orientation-selector select',
+			needSelectIndex: true,
+			baseExpect: 'horizontal',
+			xsExpect: 'vertical',
+			newValue: 'vertical',
+		});
+		expect(responsiveVertical).toBeTruthy();
+		await page.waitForTimeout(150);
+
+		const alignmentSelectors = await accordionPanel.$(
+			'.line-orientation-selector select'
+		);
+
+		await changeResponsive(page, 'l');
+		await alignmentSelectors.select('horizontal');
+		expect(await getAttributes('line-orientation-l')).toStrictEqual(
+			'horizontal'
+		);
+
+		expect(await getAttributes('line-orientation-s')).toStrictEqual(
+			'vertical'
+		);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

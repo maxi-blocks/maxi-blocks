@@ -29,10 +29,10 @@ export default function parseVideo(url) {
 
 export function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {};
-	bgLayers?.forEach(bgLayer => {
-		bgLayersSelectors[`background ${bgLayer.type} ${bgLayer.id + 1}`] = {
+	bgLayers?.forEach((bgLayer, index) => {
+		bgLayersSelectors[`background ${bgLayer.type} ${index + 1}`] = {
 			normal: {
-				label: `background ${bgLayer.type} ${bgLayer.id + 1}`,
+				label: `background ${bgLayer.type} ${index + 1}`,
 				target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.id}`,
 			},
 			hover: {
@@ -46,8 +46,10 @@ export function getBgLayersSelectorsCss(bgLayers) {
 }
 
 export function getBgLayersCategoriesCss(bgLayers) {
+	console.log(bgLayers);
+
 	const bgLayersCategories = bgLayers?.map(
-		bgLayer => `background ${bgLayer.type} ${bgLayer.id + 1}`
+		(bgLayer, index) => `background ${bgLayer.type} ${index + 1}`
 	);
 
 	return bgLayersCategories;

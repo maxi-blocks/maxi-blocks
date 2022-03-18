@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { InnerBlocks } from '@wordpress/block-editor';
-
-/**
  * Internal dependencies
  */
 import MaxiBlock from '../../components/maxi-block';
@@ -30,9 +25,8 @@ const save = props => {
 			className={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
-		>
-			<InnerBlocks.Content />
-		</MaxiBlock>
+			hasInnerBlocks
+		/>
 	);
 };
 

@@ -242,7 +242,7 @@ class edit extends MaxiBlockComponent {
 						}}
 						onMerge={forward => onMerge(this.props, forward)}
 						__unstableEmbedURLOnPaste
-						preserveWhiteSpace
+						withoutInteractiveFormatting
 					>
 						{onChangeRichText}
 					</RichText>

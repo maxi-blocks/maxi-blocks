@@ -17,9 +17,6 @@ describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-		await page.$eval('.maxi-container-block', container =>
-			container.focus()
-		);
 
 		const accordionPanel = await openSidebarTab(
 			page,

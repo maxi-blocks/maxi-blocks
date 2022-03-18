@@ -3,8 +3,11 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 const columnSize = breakpointAttributesCreator({
 	obj: {
 		'column-size': {
-			type: 'string',
-			default: '90',
+			type: 'number',
+			default: 90,
+		},
+		'column-fit-content': {
+			type: 'boolean',
 		},
 	},
 });

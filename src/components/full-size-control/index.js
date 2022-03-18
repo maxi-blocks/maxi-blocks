@@ -67,6 +67,10 @@ const FullSizeControl = props => {
 			min: 0,
 			max: 999,
 		},
+		vh: {
+			min: 0,
+			max: 999,
+		},
 		'%': {
 			min: 0,
 			max: 100,
@@ -143,7 +147,7 @@ const FullSizeControl = props => {
 					);
 				}}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw']}
+				allowedUnits={['px', '%', 'em', 'vw', 'vh']}
 			/>
 			<ToggleSwitch
 				label={__('Set custom min/max values', 'maxi-blocks')}
@@ -285,7 +289,7 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw']}
+						allowedUnits={['px', 'em', 'vw', 'vh']}
 					/>
 					<AdvancedNumberControl
 						label={__('Minimum height', 'maxi-blocks')}
@@ -321,7 +325,7 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw']}
+						allowedUnits={['px', 'em', 'vw', 'vh']}
 					/>
 				</>
 			)}

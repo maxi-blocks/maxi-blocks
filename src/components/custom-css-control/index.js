@@ -53,8 +53,8 @@ const CustomCssControl = props => {
 				: 'maxi-option__not-in-use';
 
 			options.push({
-				label: capitalize(category),
-				value: category,
+				label: capitalize(category.label ?? category),
+				value: category.value ?? category,
 				className: optionClass,
 			});
 		});

@@ -30,13 +30,13 @@ export default function parseVideo(url) {
 export function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {};
 	bgLayers?.forEach((bgLayer, index) => {
-		bgLayersSelectors[`background ${bgLayer.type} ${index + 1}`] = {
+		bgLayersSelectors[`background ${bgLayer.type} ${bgLayer.id}`] = {
 			normal: {
 				label: `background ${bgLayer.type} ${index + 1}`,
 				target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.id}`,
 			},
 			hover: {
-				label: `background ${bgLayer.type} ${bgLayer.id + 1} on hover`,
+				label: `background ${bgLayer.type} ${index + 1} on hover`,
 				target: ` .maxi-background-displayer:hover .maxi-background-displayer__${bgLayer.id}`,
 			},
 		};
@@ -46,11 +46,12 @@ export function getBgLayersSelectorsCss(bgLayers) {
 }
 
 export function getBgLayersCategoriesCss(bgLayers) {
-	console.log(bgLayers);
-
-	const bgLayersCategories = bgLayers?.map(
-		(bgLayer, index) => `background ${bgLayer.type} ${index + 1}`
-	);
+	const bgLayersCategories = bgLayers?.map((bgLayer, index) => {
+		return {
+			label: `background ${bgLayer.type} ${index + 1}`,
+			value: `background ${bgLayer.type} ${bgLayer.id}`,
+		};
+	});
 
 	return bgLayersCategories;
 }

@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	setBrowserViewport,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 import {
 	addTypographyOptions,
@@ -13,21 +9,16 @@ import {
 	getStyleCardEditor,
 	editGlobalStyles,
 	checkSCResult,
-	changeResponsive,
 } from '../../utils';
 
 describe('StyleCards, Buttons', () => {
 	it('Check Button', async () => {
 		await createNewPost();
-		await setBrowserViewport('large');
 
 		await getStyleCardEditor({
 			page,
 			accordion: 'button',
 		});
-
-		await changeResponsive(page, 'l');
-		await page.waitForTimeout(100);
 
 		// size, line-height, letter-spacing
 		await addTypographyOptions({

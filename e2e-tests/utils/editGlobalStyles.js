@@ -1,4 +1,5 @@
 const editGlobalStyles = async ({ page, block, type }) => {
+	await page.waitForTimeout(150);
 	const inputSelector = await page.$eval(
 		`.maxi-blocks-sc__type--${block} .maxi-style-cards-control__toggle${
 			type ? `-${type}` : ''

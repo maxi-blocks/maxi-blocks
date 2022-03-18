@@ -4,7 +4,6 @@
 import {
 	createNewPost,
 	pressKeyTimes,
-	setBrowserViewport,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
@@ -17,7 +16,6 @@ import {
 describe('StyleCards Paragraph', () => {
 	it('Check Paragraph', async () => {
 		await createNewPost();
-		await setBrowserViewport('large');
 
 		await getStyleCardEditor({
 			page,
@@ -88,6 +86,7 @@ describe('StyleCards Paragraph', () => {
 
 		// Check paragraph global styles
 		// Paragraph Colour
+		await page.waitForTimeout(150);
 		await editGlobalStyles({
 			page,
 			block: 'paragraph',

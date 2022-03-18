@@ -19,6 +19,10 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
+import {
+	getBgLayersCategoriesCss,
+	getBgLayersSelectorsCss,
+} from '../../components/background-displayer/utils';
 
 /**
  * External dependencies
@@ -30,6 +34,7 @@ import { isEmpty, without } from 'lodash';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
+	const { 'background-layers': bgLayers } = attributes;
 
 	const getCategoriesCss = () => {
 		const { 'background-layers': bgLayers } = attributes;
@@ -273,8 +278,18 @@ const Inspector = props => {
 										...inspectorTabs.customCss({
 											props,
 											breakpoint: deviceType,
-											selectors: selectorsDivider,
-											categories: getCategoriesCss(),
+											selectors: {
+												...selectorsDivider,
+												...getBgLayersSelectorsCss(
+													bgLayers
+												),
+											},
+											categories: [
+												...getCategoriesCss(),
+												getBgLayersCategoriesCss(
+													bgLayers
+												),
+											],
 										}),
 										...inspectorTabs.scrollEffects({
 											props,

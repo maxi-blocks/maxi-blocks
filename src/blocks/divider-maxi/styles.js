@@ -13,6 +13,7 @@ import {
 	getTransformStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsDivider } from './custom-css';
 
 const getWrapperObject = props => {
@@ -152,7 +153,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, 'background-layers': bgLayers } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -185,7 +186,7 @@ const getStyles = props => {
 					blockStyle: props.parentBlockStyle,
 				}),
 			},
-			selectorsDivider,
+			{ ...selectorsDivider, ...getBgLayersSelectorsCss(bgLayers) },
 			props
 		),
 	};

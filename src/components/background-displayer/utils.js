@@ -32,13 +32,13 @@ export function getBgLayersSelectorsCss(attributes) {
 
 	const bgLayersSelectors = {};
 	bgLayers?.forEach(bgLayer => {
-		bgLayersSelectors[`background ${bgLayer.type} ${bgLayer.id}`] = {
+		bgLayersSelectors[`background ${bgLayer.type} ${bgLayer.id + 1}`] = {
 			normal: {
-				label: `background ${bgLayer.type} ${bgLayer.id}`,
+				label: `background ${bgLayer.type} ${bgLayer.id + 1}`,
 				target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.id}`,
 			},
 			hover: {
-				label: `background ${bgLayer.type} ${bgLayer.id} on hover`,
+				label: `background ${bgLayer.type} ${bgLayer.id + 1} on hover`,
 				target: ` .maxi-background-displayer:hover .maxi-background-displayer__${bgLayer.id}`,
 			},
 		};
@@ -51,7 +51,7 @@ export function getBgLayersCategoriesCss(attributes) {
 	const { 'background-layers': bgLayers } = attributes;
 
 	const bgLayersCategories = bgLayers?.map(
-		bgLayer => `background ${bgLayer.type} ${bgLayer.id}`
+		bgLayer => `background ${bgLayer.type} ${bgLayer.id + 1}`
 	);
 
 	return bgLayersCategories;

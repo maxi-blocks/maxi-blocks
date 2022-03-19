@@ -16,6 +16,27 @@ const rawFlex = {
 	'flex-flow': {
 		type: 'string',
 	},
+	'justify-content': {
+		type: 'string',
+	},
+	'flex-direction': {
+		type: 'string',
+	},
+	'align-items': {
+		type: 'string',
+	},
+	'align-content': {
+		type: 'string',
+	},
+	gap: {
+		type: 'string',
+	},
+	'row-gap': {
+		type: 'string',
+	},
+	'column-gap': {
+		type: 'string',
+	},
 };
 
 const flex = breakpointAttributesCreator({

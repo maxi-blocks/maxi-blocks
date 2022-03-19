@@ -57,6 +57,10 @@ const FLexSettingsControl = props => {
 						})}
 						options={[
 							{
+								label: __('choose', 'maxi-blocks'),
+								value: '',
+							},
+							{
 								label: __('nowrap', 'maxi-blocks'),
 								value: 'nowrap',
 							},
@@ -74,6 +78,166 @@ const FLexSettingsControl = props => {
 						}
 					/>
 					<SelectControl
+						label={__('Flex direction', 'maxi-blocks')}
+						value={getLastBreakpointAttribute({
+							target: 'flex-direction',
+							breakpoint,
+							attributes: props,
+						})}
+						options={[
+							{
+								label: __('choose', 'maxi-blocks'),
+								value: '',
+							},
+							{
+								label: __('row', 'maxi-blocks'),
+								value: 'row',
+							},
+							{
+								label: __('row-reverse', 'maxi-blocks'),
+								value: 'row-reverse',
+							},
+							{
+								label: __('column', 'maxi-blocks'),
+								value: 'column',
+							},
+							{
+								label: __('column-reverse', 'maxi-blocks'),
+								value: 'column-reverse',
+							},
+						]}
+						onChange={val =>
+							onChange({ [`flex-direction-${breakpoint}`]: val })
+						}
+					/>
+					<SelectControl
+						label={__('Justify Content', 'maxi-blocks')}
+						value={getLastBreakpointAttribute({
+							target: 'justify-content',
+							breakpoint,
+							attributes: props,
+						})}
+						options={[
+							{
+								label: __('choose', 'maxi-blocks'),
+								value: '',
+							},
+							{
+								label: __('flex-start', 'maxi-blocks'),
+								value: 'flex-start',
+							},
+							{
+								label: __('flex-end', 'maxi-blocks'),
+								value: 'flex-end',
+							},
+							{
+								label: __('center', 'maxi-blocks'),
+								value: 'center ',
+							},
+							{
+								label: __('space-between', 'maxi-blocks'),
+								value: 'space-between',
+							},
+							{
+								label: __('space-around', 'maxi-blocks'),
+								value: 'space-around',
+							},
+							{
+								label: __('space-evenly', 'maxi-blocks'),
+								value: 'space-evenly',
+							},
+						]}
+						onChange={val =>
+							onChange({ [`justify-content-${breakpoint}`]: val })
+						}
+					/>
+					<SelectControl
+						label={__('Align items', 'maxi-blocks')}
+						value={getLastBreakpointAttribute({
+							target: 'align-items',
+							breakpoint,
+							attributes: props,
+						})}
+						options={[
+							{
+								label: __('choose', 'maxi-blocks'),
+								value: '',
+							},
+							{
+								label: __('flex-start', 'maxi-blocks'),
+								value: 'flex-start',
+							},
+							{
+								label: __('flex-end', 'maxi-blocks'),
+								value: 'flex-end',
+							},
+							{
+								label: __('center', 'maxi-blocks'),
+								value: 'center ',
+							},
+							{
+								label: __('stretch', 'maxi-blocks'),
+								value: 'stretch',
+							},
+							{
+								label: __('baseline', 'maxi-blocks'),
+								value: 'baseline',
+							},
+						]}
+						onChange={val =>
+							onChange({ [`align-items-${breakpoint}`]: val })
+						}
+					/>
+					<SelectControl
+						label={__('Align content', 'maxi-blocks')}
+						value={getLastBreakpointAttribute({
+							target: 'align-content',
+							breakpoint,
+							attributes: props,
+						})}
+						options={[
+							{
+								label: __('choose', 'maxi-blocks'),
+								value: '',
+							},
+							{
+								label: __('flex-start', 'maxi-blocks'),
+								value: 'flex-start',
+							},
+							{
+								label: __('flex-end', 'maxi-blocks'),
+								value: 'flex-end',
+							},
+							{
+								label: __('center', 'maxi-blocks'),
+								value: 'center ',
+							},
+							{
+								label: __('space-between', 'maxi-blocks'),
+								value: 'space-between',
+							},
+							{
+								label: __('space-around', 'maxi-blocks'),
+								value: 'space-around',
+							},
+							{
+								label: __('space-evenly', 'maxi-blocks'),
+								value: 'space-evenly',
+							},
+							{
+								label: __('stretch', 'maxi-blocks'),
+								value: 'stretch ',
+							},
+							{
+								label: __('baseline', 'maxi-blocks'),
+								value: 'baseline',
+							},
+						]}
+						onChange={val =>
+							onChange({ [`align-content-${breakpoint}`]: val })
+						}
+					/>
+					<SelectControl
 						label={__('Flex-flow', 'maxi-blocks')}
 						value={getLastBreakpointAttribute({
 							target: 'flex-flow',
@@ -81,6 +245,10 @@ const FLexSettingsControl = props => {
 							attributes: props,
 						})}
 						options={[
+							{
+								label: __('choose', 'maxi-blocks'),
+								value: '',
+							},
 							{
 								label: __('column', 'maxi-blocks'),
 								value: 'column',
@@ -93,6 +261,45 @@ const FLexSettingsControl = props => {
 						onChange={val =>
 							onChange({ [`flex-flow-${breakpoint}`]: val })
 						}
+					/>
+					<TextControl
+						label={__('gap', 'maxi-blocks')}
+						value={getLastBreakpointAttribute({
+							target: 'gap',
+							breakpoint,
+							attributes: props,
+						})}
+						onChange={val => {
+							onChange({
+								[`gap-${breakpoint}`]: val,
+							});
+						}}
+					/>
+					<TextControl
+						label={__('row-gap', 'maxi-blocks')}
+						value={getLastBreakpointAttribute({
+							target: 'row-gap',
+							breakpoint,
+							attributes: props,
+						})}
+						onChange={val => {
+							onChange({
+								[`row-gap-${breakpoint}`]: val,
+							});
+						}}
+					/>
+					<TextControl
+						label={__('column-gap', 'maxi-blocks')}
+						value={getLastBreakpointAttribute({
+							target: 'column-gap',
+							breakpoint,
+							attributes: props,
+						})}
+						onChange={val => {
+							onChange({
+								[`column-gap-${breakpoint}`]: val,
+							});
+						}}
 					/>
 				</>
 			)}

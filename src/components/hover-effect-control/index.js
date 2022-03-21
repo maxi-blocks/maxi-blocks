@@ -72,6 +72,7 @@ const HoverEffectControl = props => {
 						'hover-transition-duration': 0.5,
 					});
 				}}
+				hasBorder
 			/>
 			<ToggleSwitch
 				label={__('Preview', 'maxi-blocks')}
@@ -388,6 +389,11 @@ const HoverEffectControl = props => {
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
+							globalProps={{
+								target: '',
+								type: 'h4',
+							}}
+							textLevel='h4'
 						/>
 					)}
 					<hr />
@@ -430,6 +436,11 @@ const HoverEffectControl = props => {
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
+							globalProps={{
+								target: '',
+								type: 'p',
+							}}
+							textLevel='p'
 						/>
 					)}
 					<hr />

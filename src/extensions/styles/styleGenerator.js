@@ -91,7 +91,6 @@ const styleGenerator = (styles, breakpoints, currentBreakpoint) => {
 		Object.entries(styles).forEach(([key, value]) => {
 			const target = getTarget(key);
 			const { content } = value;
-
 			Object.entries(content).forEach(([suffix, props]) => {
 				if (!props[breakpoint]) return;
 

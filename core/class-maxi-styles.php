@@ -34,6 +34,11 @@ class MaxiBlocks_Styles
     public function enqueue_styles()
     {
         $post_content = $this->getPostContent();
+
+		if (!$post_content) {
+			return false;
+		}
+
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
 
@@ -78,7 +83,7 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__)),
                     );
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, $meta);
+                    wp_localize_script($jsScriptName, $jsVarToPass, [$meta]);
                 }
             }
         }
@@ -96,16 +101,16 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        $post_content = (array)$wpdb->get_results(
+        $post_content = $wpdb->get_results(
             "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
             OBJECT
-        )[0];
+        );
 
         if (!$post_content) {
             return false;
         }
 
-        return $post_content;
+        return (array)$post_content[0];
     }
 
     /**
@@ -146,7 +151,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-		$style = $this->update_color_palette_backups($style);
+        $style = $this->update_color_palette_backups($style);
 
         return $style;
     }
@@ -249,76 +254,80 @@ class MaxiBlocks_Styles
         return $resultDecoded;
     }
 
-	public function update_color_palette_backups($style) {
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'maxi_blocks_general';
-		$query =
-			'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
+    public function update_color_palette_backups($style)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_general';
+        $query =
+            'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
 
-		$style_card = maybe_unserialize($wpdb->get_var($query));
+        $style_card = maybe_unserialize($wpdb->get_var($query));
 
-		if (!$style_card) {
-			return $style;
-		}
+        if (!$style_card) {
+            return $style;
+        }
 
-		// Get used colors on the post style
-		$needle = 'rgba(var(--maxi-';
-		$lastPos = 0;
-		$colors = array();
+        // Get used colors on the post style
+        $needle = 'rgba(var(--maxi-';
+        $lastPos = 0;
+        $colors = array();
 
-		while (($lastPos = strpos($style, $needle, $lastPos))!== false) {
-			$endPos = strpos($style, ')', $lastPos);
-			$colorStr = substr($style, $lastPos, $endPos - $lastPos + 1);
+        while (($lastPos = strpos($style, $needle, $lastPos))!== false) {
+            $endPos = strpos($style, ')', $lastPos);
+            $colorStr = substr($style, $lastPos, $endPos - $lastPos + 1);
 
-			if(!in_array($colorStr, $colors))
-				$colors[] = $colorStr;
+            if (!in_array($colorStr, $colors)) {
+                $colors[] = $colorStr;
+            }
 
-			$lastPos = $lastPos + strlen($needle);
-		}
+            $lastPos = $lastPos + strlen($needle);
+        }
 
-		// Get color values from the SC considering the used on post style
-		$colorVars = array();
+        // Get color values from the SC considering the used on post style
+        $colorVars = array();
 
-		foreach ($colors as $color) {
-			$color = str_replace('rgba(var(', '', $color);
-			$colorVar = explode(',', $color)[0];
-			$colorContent = str_replace($colorVar, '', $color);
-			$colorContent = str_replace(')', '', $colorContent);
-			$colorContent = ltrim($colorContent,',');
+        foreach ($colors as $color) {
+            $color = str_replace('rgba(var(', '', $color);
+            $colorVar = explode(',', $color)[0];
+            $colorContent = str_replace($colorVar, '', $color);
+            $colorContent = str_replace(')', '', $colorContent);
+            $colorContent = ltrim($colorContent, ',');
 
-			if(!in_array($colorVar , $colorVars))
-				$colorVars[$colorVar] = $colorContent;
-		}
+            if (!in_array($colorVar, $colorVars)) {
+                $colorVars[$colorVar] = $colorContent;
+            }
+        }
 
-		$changedSCColors = array();
+        $changedSCColors = array();
 
-		$style_card = is_preview() || is_admin()
-			? $style_card['_maxi_blocks_style_card_preview']
-			: $style_card['_maxi_blocks_style_card'];
+        $style_card = is_preview() || is_admin()
+            ? $style_card['_maxi_blocks_style_card_preview']
+            : $style_card['_maxi_blocks_style_card'];
 
-		foreach ($colorVars as $colorKey => $colorValue) {
-			$startPos = strpos($style_card, $colorKey);
-			$endPos = strpos($style_card, ';--', $startPos);
-			$colorSCValue = substr($style_card, $startPos + strlen($colorKey) + 1, $endPos - $startPos - strlen($colorKey) - 1);
+        foreach ($colorVars as $colorKey => $colorValue) {
+            $startPos = strpos($style_card, $colorKey);
+            $endPos = strpos($style_card, ';--', $startPos);
+            $colorSCValue = substr($style_card, $startPos + strlen($colorKey) + 1, $endPos - $startPos - strlen($colorKey) - 1);
 
-			if($colorSCValue !== $colorValue)
-				$changedSCColors[$colorKey] = $colorSCValue;
-		}
+            if ($colorSCValue !== $colorValue) {
+                $changedSCColors[$colorKey] = $colorSCValue;
+            }
+        }
 
-		// In case there are changes, fix them
-		if(empty($changedSCColors))
-			return $style;
-		else {
-			$new_style = $style;
+        // In case there are changes, fix them
+        if (empty($changedSCColors)) {
+            return $style;
+        } else {
+            $new_style = $style;
 
-			foreach ($changedSCColors as $colorKey => $colorValue) {
-				$old_color_str = "rgba(var($colorKey," . $colorVars[$colorKey] . ')';
-				$new_color_str = "rgba(var($colorKey," . $colorValue . ')';
+            foreach ($changedSCColors as $colorKey => $colorValue) {
+                $old_color_str = "rgba(var($colorKey," . $colorVars[$colorKey] . ')';
+                $new_color_str = "rgba(var($colorKey," . $colorValue . ')';
 
-				$new_style = str_replace($old_color_str, $new_color_str, $new_style);
-			}
+                $new_style = str_replace($old_color_str, $new_color_str, $new_style);
+            }
 
-			return $new_style;
-		}
-	}
+            return $new_style;
+        }
+    }
 }

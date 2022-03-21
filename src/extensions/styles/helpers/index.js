@@ -5,7 +5,6 @@ export { default as getArrowStyles } from './getArrowStyles';
 export { default as getBoxShadowStyles } from './getBoxShadowStyles';
 export { default as getBreakpoints } from './getBreakpoints';
 export { default as getColumnSizeStyles } from './getColumnSizeStyles';
-export { default as getContainerStyles } from './getContainerStyles';
 export { default as getCustomFormatsStyles } from './getCustomFormatsStyles';
 export { default as getDisplayStyles } from './getDisplayStyles';
 export { default as getDividerStyles } from './getDividerStyles';

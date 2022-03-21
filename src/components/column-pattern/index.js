@@ -80,11 +80,11 @@ const ColumnPatternsInspector = props => {
 
 		columnsBlockObjects.forEach(columnObject => {
 			columnsSizes.push(
-				getLastBreakpointAttribute(
-					'column-size',
+				getLastBreakpointAttribute({
+					target: 'column-size',
 					breakpoint,
-					columnObject.attributes
-				)
+					attributes: columnObject.attributes,
+				})
 			);
 		});
 

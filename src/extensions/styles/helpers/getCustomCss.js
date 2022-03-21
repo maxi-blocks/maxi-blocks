@@ -18,11 +18,11 @@ const getCustomCss = (obj, category, index) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const customCssValue = getLastBreakpointAttribute(
-			'custom-css',
+		const customCssValue = getLastBreakpointAttribute({
+			target: 'custom-css',
 			breakpoint,
-			obj
-		);
+			attributes: obj,
+		});
 
 		const value = customCssValue?.[category]?.[index];
 

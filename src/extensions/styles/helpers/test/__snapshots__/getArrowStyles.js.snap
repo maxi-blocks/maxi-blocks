@@ -82,14 +82,14 @@ Object {
         "width": "2px",
       },
       "l": Object {
-        "display": "block",
+        "display": "none",
         "height": "1px",
         "left": "4%",
         "top": "-0.7071067811865476px",
         "width": "1px",
       },
       "m": Object {
-        "display": "block",
+        "display": "none",
         "height": "3px",
         "left": "2%",
         "top": "calc(100% + 3px)",

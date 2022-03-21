@@ -44,7 +44,7 @@ const ToggleSwitch = ({
 			<div className='maxi-toggle-switch__toggle'>
 				<input
 					onChange={() => onChange(!selected)}
-					checked={selected}
+					checked={selected || false}
 					type='checkbox'
 					id={id}
 					aria-describedby={help ? `${id}__help` : undefined}

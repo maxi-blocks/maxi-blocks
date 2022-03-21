@@ -329,6 +329,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'icon',
+																				'iconBackground',
 																				'iconBackgroundGradient',
 																				'iconBackgroundColor',
 																				'iconBorder',

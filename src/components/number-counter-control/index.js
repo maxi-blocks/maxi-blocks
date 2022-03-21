@@ -56,21 +56,21 @@ const NumberCounterControl = props => {
 				label={__('Width', 'maxi-blocks')}
 				className='maxi-number-counter-control__width'
 				enableUnit
-				unit={getLastBreakpointAttribute(
-					'number-counter-width-unit',
+				unit={getLastBreakpointAttribute({
+					target: 'number-counter-width-unit',
 					breakpoint,
-					props
-				)}
+					attributes: props,
+				})}
 				onChangeUnit={val =>
 					onChange({
 						[`number-counter-width-unit-${breakpoint}`]: val,
 					})
 				}
-				value={getLastBreakpointAttribute(
-					'number-counter-width',
+				value={getLastBreakpointAttribute({
+					target: 'number-counter-width',
 					breakpoint,
-					props
-				)}
+					attributes: props,
+				})}
 				onChangeValue={val =>
 					onChange({ [`number-counter-width-${breakpoint}`]: val })
 				}

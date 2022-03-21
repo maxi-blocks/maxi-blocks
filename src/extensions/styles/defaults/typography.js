@@ -41,6 +41,13 @@ export const rawTypography = {
 	'text-decoration': {
 		type: 'string',
 	},
+	'text-indent': {
+		type: 'number',
+	},
+	'text-indent-unit': {
+		type: 'string',
+		default: 'px',
+	},
 	'text-shadow': {
 		type: 'string',
 	},

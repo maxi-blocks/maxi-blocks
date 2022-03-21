@@ -33,7 +33,6 @@ const AlignmentControl = props => {
 		type,
 		isHover = false,
 	} = props;
-
 	const getOptions = () => {
 		const options = [];
 
@@ -75,14 +74,15 @@ const AlignmentControl = props => {
 			type='buttons'
 			fullWidthMode
 			className={classes}
+			hasBorder
 			items={getOptions()}
 			selected={
-				getLastBreakpointAttribute(
-					type === 'text' ? 'text-alignment' : 'alignment',
+				getLastBreakpointAttribute({
+					target: type === 'text' ? 'text-alignment' : 'alignment',
 					breakpoint,
-					props,
-					isHover
-				) || getOptions()[0].value
+					attributes: props,
+					isHover,
+				}) || getOptions()[0].value
 			}
 			onChange={val =>
 				onChange(

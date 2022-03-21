@@ -112,13 +112,13 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
-		margin: getMarginPaddingStyles({
+		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin', false, 'svg-'),
 			},
 			prefix: 'svg-',
 		}),
-		padding: getMarginPaddingStyles({
+		margin: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding', false, 'svg-'),
 			},
@@ -136,7 +136,7 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
-		width: getSVGWidthStyles(getGroupAttributes(props, 'svg')),
+		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
 	};
 
 	return response;

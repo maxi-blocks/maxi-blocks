@@ -1,4 +1,6 @@
 <?php
+require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
+new MaxiBlocks_Local_Fonts();
 function maxi_blocks_create_menu()
 {
     add_menu_page('Maxi Blocks', 'Maxi Blocks', 'administrator', 'maxi-blocks.php', 'maxi_blocks_settings_page', 'dashicons-block-default');

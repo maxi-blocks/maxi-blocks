@@ -1,0 +1,142 @@
+<?php
+
+class MaxiBlocks_Local_Fonts
+{
+    /**
+     * This plugin's instance.
+     *
+     * @var MaxiBlocks_Local_Fonts
+     */
+    private static $instance;
+
+    /**
+     * Registers the plugin.
+     */
+    public static function register()
+    {
+        if (null === self::$instance) {
+            self::$instance = new MaxiBlocks_Local_Fonts();
+        }
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $allFonts = $this->getAllFontsDB();
+        $allURLs = $this->constructFontURLs($allFonts);
+        $this->createUploadFolder();
+        $this->uploadCssFiles($allURLs);
+    }
+
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+
+    public function getAllFontsDB()
+    {
+        global $wpdb;
+        $post_content_array = (array)$wpdb->get_results(
+            "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
+        );
+
+        if (!$post_content_array || empty($post_content_array)) {
+            return false;
+        }
+
+        foreach ($post_content_array as $font) {
+            $array[] = $font->fonts_value;
+        }
+
+        foreach ($array as $key => $value) {
+            $array[$key] = json_decode($value, true);
+        }
+        
+        $arrayAll = array_merge_recursive(...$array);
+       
+        return $arrayAll;
+    }
+
+    public function constructFontURLs($allFonts)
+    {
+        $response = [];
+        foreach ($allFonts as $fontName => $fontData) {
+            $fontNameSanitized = str_replace(' ', '+', $fontName);
+            $fontUrl = "https://fonts.googleapis.com/css2?family=$fontNameSanitized:";
+            if (!empty($fontData)) {
+                $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
+                $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
+
+                if (is_array($fontWeight)) {
+                    $fontWeight = implode(',', array_unique($fontWeight));
+                }
+
+                if ($fontStyle === 'italic') {
+                    $fontUrl .= 'ital,';
+                }
+
+                if (strpos($fontWeight, ',') !== false) {
+                    $fontWeightArr = array_unique(explode(',', $fontWeight));
+                    sort($fontWeightArr);
+                    $fontUrl .= 'wght@';
+                    if ($fontStyle === 'italic') {
+                        foreach ($fontWeightArr as $fw) {
+                            $fontUrl .= '0,'.$fw.';';
+                        }
+                        foreach ($fontWeightArr as $fw) {
+                            $fontUrl .= '1,'.$fw.';';
+                        }
+                    } else {
+                        foreach ($fontWeightArr as $fw) {
+                            $fontUrl .= $fw.';';
+                        }
+                    }
+                    $fontUrl = rtrim($fontUrl, ';');
+                } elseif ($fontWeight) {
+                    if ($fontStyle === 'italic') {
+                        $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
+                    } else {
+                        $fontUrl .= 'wght@'.$fontWeight;
+                    }
+                } else {
+                    if ($fontStyle === 'italic') {
+                        $fontUrl .= 'wght@0,400;1,400';
+                    } else {
+                        $fontUrl .= 'wght@400';
+                    }
+                }
+            } else {
+                $fontUrl = rtrim($fontUrl, ':');
+            }
+
+            $response[ $fontName] = $fontUrl;
+        }
+        return $response;
+    }
+
+    public function createUploadFolder()
+    {
+        $fonts_uploads_dir = trailingslashit(wp_upload_dir()['basedir']) . 'maxi/fonts';
+        wp_mkdir_p($fonts_uploads_dir);
+    }
+
+    public function uploadCssFiles($allURLs)
+    {
+        foreach ($allURLs as $fontName => $fontUrl) {
+            $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
+            $font_uploads_dir = trailingslashit(wp_upload_dir()['basedir']) . 'maxi/fonts/'.$fontNameSanitized;
+            wp_mkdir_p($font_uploads_dir);
+
+            $response = wp_remote_get($fontUrl);
+            $body     = wp_remote_retrieve_body($response);
+
+            file_put_contents($font_uploads_dir.'/style.css', $body);
+        }
+    }
+}

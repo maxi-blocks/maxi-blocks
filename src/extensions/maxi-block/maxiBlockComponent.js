@@ -66,17 +66,12 @@ const StyleComponent = ({
 
 	const styles = styleResolver(uniqueID, stylesObj, false, getBreakpoints());
 
-	let styleContent = styleGenerator(
+	const styleContent = styleGenerator(
 		styles,
 		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
-		currentBreakpoint
+		currentBreakpoint,
+		isIframe
 	);
-
-	if (isIframe)
-		styleContent = styleContent.replaceAll(
-			' .edit-post-visual-editor',
-			'.editor-styles-wrapper'
-		);
 
 	return <style>{styleContent}</style>;
 };

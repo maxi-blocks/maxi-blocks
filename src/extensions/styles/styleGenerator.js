@@ -27,7 +27,14 @@ const getResponsiveStyles = styles => {
 	return responsiveStyles;
 };
 
-const styleStringGenerator = (target, content, breakpoint) => {
+const getTargetString = (target, isIframe) => {
+	if (!isIframe)
+		return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target}, body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+
+	return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target}, body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+};
+
+const styleStringGenerator = (target, content, breakpoint, isIframe) => {
 	let string = '';
 	let generalString = '';
 	let finalContent = content;
@@ -35,18 +42,23 @@ const styleStringGenerator = (target, content, breakpoint) => {
 	if (content.includes('css:'))
 		finalContent = content.replace('css: ', '').replace(';;', ';');
 
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},`;
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+	generalString += getTargetString(target, isIframe);
 
 	if (breakpoint === 'general') {
 		string += generalString;
 	} else if (breakpoint === 'xxl') {
-		string += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
+		string += `body.maxi-blocks--active${
+			!isIframe ? ' .edit-post-visual-editor' : '.editor-styles-wrapper'
+		}[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
 	} else {
 		let breakpointPos = ALLOWED_BREAKPOINTS.indexOf(breakpoint);
 
 		do {
-			string += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="${
+			string += `body.maxi-blocks--active${
+				!isIframe
+					? ' .edit-post-visual-editor'
+					: '.editor-styles-wrapper'
+			}[maxi-blocks-responsive="${
 				ALLOWED_BREAKPOINTS[breakpointPos]
 			}"] .maxi-block.maxi-block--backend.${target}${
 				breakpointPos ? ',' : '{'
@@ -61,7 +73,7 @@ const styleStringGenerator = (target, content, breakpoint) => {
 	return string;
 };
 
-const mediaStylesGenerator = (target, content, breakpoint, media) => {
+const mediaStylesGenerator = (target, content, breakpoint, media, isIframe) => {
 	let string = '';
 	let generalString = '';
 	let finalContent = content;
@@ -70,8 +82,7 @@ const mediaStylesGenerator = (target, content, breakpoint, media) => {
 		finalContent = content.replaceAll('css: ', '').replaceAll(';;', ';');
 	}
 
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},`;
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+	generalString += getTargetString(target, isIframe);
 
 	// Media
 	if (breakpoint !== 'general')
@@ -84,7 +95,12 @@ const mediaStylesGenerator = (target, content, breakpoint, media) => {
 	return string;
 };
 
-const styleGenerator = (styles, breakpoints, currentBreakpoint) => {
+const styleGenerator = (
+	styles,
+	breakpoints,
+	currentBreakpoint,
+	isIframe = false
+) => {
 	let response = '';
 
 	BREAKPOINTS.forEach(breakpoint => {
@@ -101,19 +117,22 @@ const styleGenerator = (styles, breakpoints, currentBreakpoint) => {
 						`${target}${suffix}`,
 						style,
 						breakpoint,
-						breakpoints[breakpoint !== 'xxl' ? breakpoint : 'xl']
+						breakpoints[breakpoint !== 'xxl' ? breakpoint : 'xl'],
+						isIframe
 					);
 					if (breakpoint === 'general')
 						response += styleStringGenerator(
 							`${target}${suffix}`,
 							style,
-							breakpoint
+							breakpoint,
+							isIframe
 						);
 				} else
 					response += styleStringGenerator(
 						`${target}${suffix}`,
 						style,
-						breakpoint
+						breakpoint,
+						isIframe
 					);
 			});
 		});

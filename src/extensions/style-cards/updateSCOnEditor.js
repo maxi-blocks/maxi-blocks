@@ -267,7 +267,7 @@ const updateSCOnEditor = styleCards => {
 	} else SCStyle.innerHTML = createSCStyleString(SCObject);
 
 	const allSCFonts = getSCFontsData(SCObject);
-	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, true);
+	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);
 };
 
 export default updateSCOnEditor;

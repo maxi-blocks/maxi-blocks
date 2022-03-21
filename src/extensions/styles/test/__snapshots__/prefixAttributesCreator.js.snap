@@ -375,6 +375,7 @@ Object {
     "type": "number",
   },
   "button-box-shadow-palette-status-general-hover": Object {
+    "default": true,
     "type": "boolean",
   },
   "button-box-shadow-palette-status-l-hover": Object {

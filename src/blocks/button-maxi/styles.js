@@ -439,7 +439,7 @@ const getIconHoverObject = (props, target) => {
 					isIconInherit: props['icon-inherit'],
 					isHover: true,
 					isIcon: true,
-					hoverStatus: iconHoverStatus,
+					iconHoverStatus,
 				}),
 			},
 		gradient: iconHoverStatus &&
@@ -470,7 +470,7 @@ const getIconHoverObject = (props, target) => {
 				prefix: 'icon-',
 				parentBlockStyle: props.parentBlockStyle,
 				isHover: true,
-				hoverStatus: iconHoverStatus,
+				iconHoverStatus,
 			}),
 	};
 

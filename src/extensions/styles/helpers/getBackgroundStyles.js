@@ -31,9 +31,11 @@ export const getColorBackgroundObject = ({
 	isIconInherit = false,
 	breakpoint = 'general',
 	scValues = {},
-	hoverStatus,
+	iconHoverStatus,
 	...props
 }) => {
+	const hoverStatus =
+		iconHoverStatus || props[`${prefix}background-hover-status`];
 	const {
 		'hover-background-color-global': isActive,
 		'hover-background-color-all': affectAll,

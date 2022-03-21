@@ -29,9 +29,9 @@ const getResponsiveStyles = styles => {
 
 const getTargetString = (target, isIframe) => {
 	if (!isIframe)
-		return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target}, body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+		return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 
-	return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target}, body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+	return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 };
 
 const styleStringGenerator = (target, content, breakpoint, isIframe) => {

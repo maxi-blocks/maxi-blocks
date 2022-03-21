@@ -15,6 +15,7 @@ import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
  */
 import classnames from 'classnames';
 import { isNil, isEmpty } from 'lodash';
+import { RichText } from '@wordpress/block-editor';
 
 /**
  * Save
@@ -55,9 +56,11 @@ const save = props => {
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!attributes['icon-only'] && (
-					<span className='maxi-button-block__content'>
-						{buttonContent}
-					</span>
+					<RichText.Content
+						className='maxi-button-block__content'
+						value={buttonContent}
+						tagName='span'
+					/>
 				)}
 				{attributes['icon-content'] && (
 					<div className='maxi-button-block__icon'>

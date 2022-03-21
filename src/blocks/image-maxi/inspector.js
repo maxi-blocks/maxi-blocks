@@ -19,6 +19,7 @@ import {
 	ImageShape,
 	SelectControl,
 	SettingTabsControl,
+	ToggleSwitch,
 	TypographyControl,
 } from '../../components';
 import {
@@ -53,6 +54,7 @@ const dimensionTab = props => {
 		isImageUrl,
 		mediaID,
 		SVGElement,
+		useInitSize,
 	} = attributes;
 
 	const getSizeOptions = () => {
@@ -104,70 +106,79 @@ const dimensionTab = props => {
 		label: __('Dimension', 'maxi-blocks'),
 		content: (
 			<>
-				{!isImageUrl ||
-					(!SVGElement && (
-						<>
-							<SelectControl
-								label={__('Image Size', 'maxi-blocks')}
-								value={
-									imageSize || imageSize === 'custom'
-										? imageSize
-										: 'full'
-								} // is still necessary?
-								options={getSizeOptions()}
-								onChange={imageSize => {
-									const {
-										mediaURL,
-										mediaWidth,
-										mediaHeight,
-									} = getSizeResponse(imageSize);
+				{(!isImageUrl || !SVGElement) && getSizeOptions().length > 1 && (
+					<>
+						<SelectControl
+							label={__('Image Size', 'maxi-blocks')}
+							value={
+								imageSize || imageSize === 'custom'
+									? imageSize
+									: 'full'
+							} // is still necessary?
+							options={getSizeOptions()}
+							onChange={imageSize => {
+								const { mediaURL, mediaWidth, mediaHeight } =
+									getSizeResponse(imageSize);
+								maxiSetAttributes({
+									imageSize,
+									mediaURL,
+									mediaWidth,
+									mediaHeight,
+								});
+							}}
+						/>
+						{imageSize === 'custom' && (
+							<ImageCropControl
+								mediaID={mediaID}
+								cropOptions={cropOptions}
+								onChange={cropOptions => {
 									maxiSetAttributes({
-										imageSize,
-										mediaURL,
-										mediaWidth,
-										mediaHeight,
+										cropOptions,
+										mediaURL: cropOptions.image.source_url,
+										mediaHeight: cropOptions.image.height,
+										mediaWidth: cropOptions.image.width,
 									});
 								}}
 							/>
-							{imageSize === 'custom' && (
-								<ImageCropControl
-									mediaID={mediaID}
-									cropOptions={cropOptions}
-									onChange={cropOptions => {
-										maxiSetAttributes({
-											cropOptions,
-											mediaURL:
-												cropOptions.image.source_url,
-											mediaHeight:
-												cropOptions.image.height,
-											mediaWidth: cropOptions.image.width,
-										});
-									}}
-								/>
-							)}
-						</>
-					))}
-				<RangeControl
-					className='maxi-image-inspector__dimension-width'
-					label={__('Width', 'maxi-blocks')}
-					value={attributes.imgWidth}
-					onChange={val => {
-						if (!isNil(val))
-							maxiSetAttributes({
-								imgWidth: val,
-							});
-						else
-							maxiSetAttributes({
-								imgWidth: getDefaultAttribute(
-									'imgWidth',
-									clientId
-								),
-							});
-					}}
-					max={100}
-					allowReset
-					initialPosition={getDefaultAttribute('imgWidth', clientId)}
+						)}
+					</>
+				)}
+				<ToggleSwitch
+					label={__('Use original size', 'maxi-blocks')}
+					className='maxi-image-inspector__initial-size'
+					selected={useInitSize}
+					onChange={val =>
+						maxiSetAttributes({
+							useInitSize: val,
+						})
+					}
 				/>
+				{!useInitSize && (
+					<RangeControl
+						className='maxi-image-inspector__dimension-width'
+						label={__('Width', 'maxi-blocks')}
+						value={attributes.imgWidth}
+						onChange={val => {
+							if (!isNil(val))
+								maxiSetAttributes({
+									imgWidth: val,
+								});
+							else
+								maxiSetAttributes({
+									imgWidth: getDefaultAttribute(
+										'imgWidth',
+										clientId
+									),
+								});
+						}}
+						max={100}
+						allowReset
+						initialPosition={getDefaultAttribute(
+							'imgWidth',
+							clientId
+						)}
+					/>
+				)}
 				<SelectControl
 					className='maxi-image-inspector__ratio'
 					label={__('Image Ratio', 'maxi-blocks')}

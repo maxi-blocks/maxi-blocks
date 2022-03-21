@@ -228,8 +228,82 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
-const getHoverImageWrapperObject = props => {
+const getImageWrapperObject = props => {
+	const { imgWidth, useInitSize, mediaWidth } = props;
+
 	const response = {
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
+		...(props['hover-extension'] && {
+			hoverExtension: { general: { overflow: 'visible' } },
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin', false, 'image-'),
+			},
+			prefix: 'image-',
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding', false, 'image-'),
+			},
+			prefix: 'image-',
+		}),
+		...(imgWidth && {
+			imgWidth: {
+				general: {
+					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
+				},
+			},
+		}),
+	};
+
+	return response;
+};
+
+const getImageObject = props => {
+	const { imageRatio, clipPath } = props;
+
+	return {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					'image-'
+				),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'image-',
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+			},
+			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
+			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'image-',
+		}),
+		...(imageRatio && getAspectRatio(imageRatio)),
+		...(clipPath && {
+			image: { general: { 'clip-path': clipPath } },
+		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, 'image-'),
+			},
+			'image-'
+		),
+	};
+};
+
+const getHoverImageObject = props => {
+	return {
 		...(props['image-border-status-hover'] && {
 			border: getBorderStyles({
 				obj: {
@@ -255,79 +329,6 @@ const getHoverImageWrapperObject = props => {
 				prefix: 'image-',
 			}),
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
-		}),
-	};
-
-	return response;
-};
-
-const getImageWrapperObject = props => {
-	const response = {
-		alignment: getAlignmentFlexStyles({
-			...getGroupAttributes(props, 'alignment'),
-		}),
-		...(props['hover-extension'] && {
-			hoverExtension: { general: { overflow: 'visible' } },
-		}),
-		overflow: getOverflowStyles({
-			...getGroupAttributes(props, 'overflow'),
-		}),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(
-					props,
-					['border', 'borderWidth', 'borderRadius'],
-					false,
-					'image-'
-				),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-			prefix: 'image-',
-		}),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
-			},
-			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
-			parentBlockStyle: props.parentBlockStyle,
-			prefix: 'image-',
-		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin', false, 'image-'),
-			},
-			prefix: 'image-',
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding', false, 'image-'),
-			},
-			prefix: 'image-',
-		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
-		}),
-	};
-
-	return response;
-};
-
-const getImageObject = props => {
-	const { imageRatio, clipPath } = props;
-
-	return {
-		...(imageRatio && getAspectRatio(imageRatio)),
-		...(clipPath && {
-			image: { general: { 'clip-path': clipPath } },
-		}),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'size', false, 'image-'),
-			},
-			'image-'
-		),
 	};
 };
 
@@ -411,20 +412,19 @@ const getStyles = props => {
 				'': getWrapperObject(props),
 				':hover': getHoverWrapperObject(props),
 				' .maxi-image-block-wrapper': getImageWrapperObject(props),
-				':hover .maxi-image-block-wrapper':
-					getHoverImageWrapperObject(props),
+				' .maxi-image-block-wrapper img': getImageObject(props),
+				':hover .maxi-image-block-wrapper img':
+					getHoverImageObject(props),
 				' .maxi-image-block-wrapper > svg:first-child':
 					getImageShapeObject('svg', props),
 				' .maxi-image-block-wrapper > svg:first-child pattern image':
 					getImageShapeObject('image', props),
-				' .maxi-image-block-wrapper img': getImageObject(props),
 				' figcaption': getFigcaptionObject(props),
 				' .maxi-hover-details .maxi-hover-details__content h4':
 					getHoverEffectTitleTextObject(props),
 				' .maxi-hover-details .maxi-hover-details__content p':
 					getHoverEffectContentTextObject(props),
 				' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
-				//
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

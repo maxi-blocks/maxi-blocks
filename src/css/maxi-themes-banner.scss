@@ -11,7 +11,7 @@ body.maxi-blocks--active .maxi-block {
 	width: 100%;
 	min-width: inherit;
 	max-height: none;
-	height: inherit;
+	height: initial;
 	min-height: inherit;
 	border: none;
 	border-width: 0;
@@ -49,10 +49,15 @@ body.maxi-blocks--active
 	left: auto;
 }
 
-/*Removes focus bacgkround for Twenty Twenty One*/
+/*Removes focus background for Twenty Twenty One*/
 body.maxi-blocks--active #content .maxi-text-block--link:focus,
 body.maxi-blocks--active #content .maxi-link-wrapper:focus {
 	background: unset;
+}
+
+/*Removes button focus outline for Twenty Twenty One*/
+body.maxi-blocks--active .maxi-button-block button:focus {
+	outline: none !important;
 }
 
 /*Fixes container alignment for Twenty Twenty Two*/

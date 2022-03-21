@@ -126,7 +126,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
-				disableBackground
 			>
 				<div data-align={fullWidth} className={buttonClasses}>
 					{!attributes['icon-only'] && (

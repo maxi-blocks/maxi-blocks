@@ -37,7 +37,17 @@ describe('Divider Maxi', () => {
 		await page.waitForTimeout(150);
 		await alignmentSelectors[2].select('flex-start');
 
-		// responsive
+		expect(await getAttributes('line-orientation-general')).toStrictEqual(
+			'vertical'
+		);
+		expect(await getAttributes('line-vertical-general')).toStrictEqual(
+			'flex-start'
+		);
+		expect(await getAttributes('line-horizontal-general')).toStrictEqual(
+			'flex-start'
+		);
+
+		// responsive horizontal
 		// responsive S
 		await changeResponsive(page, 's');
 

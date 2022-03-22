@@ -54,6 +54,10 @@ class MaxiBlocks_Local_Fonts
             $array[] = $font->fonts_value;
         }
 
+        if (empty($array)) {
+            return false;
+        }
+
         foreach ($array as $key => $value) {
             $array[$key] = json_decode($value, true);
         }
@@ -65,6 +69,10 @@ class MaxiBlocks_Local_Fonts
 
     public function constructFontURLs($allFonts)
     {
+        if (!is_array($allFonts) || empty($allFonts)) {
+            return false;
+        }
+
         $response = [];
         foreach ($allFonts as $fontName => $fontData) {
             $fontNameSanitized = str_replace(' ', '+', $fontName);
@@ -128,15 +136,50 @@ class MaxiBlocks_Local_Fonts
 
     public function uploadCssFiles($allURLs)
     {
+        if (!is_array($allURLs) || empty($allURLs)) {
+            return false;
+        }
+        
         foreach ($allURLs as $fontName => $fontUrl) {
             $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
-            $font_uploads_dir = trailingslashit(wp_upload_dir()['basedir']) . 'maxi/fonts/'.$fontNameSanitized;
-            wp_mkdir_p($font_uploads_dir);
+            
+            $fontUploadsDir = trailingslashit(wp_upload_dir()['basedir']) . 'maxi/fonts/'.$fontNameSanitized;
+            wp_mkdir_p($fontUploadsDir);
+
+            $fontUrlDir = wp_upload_dir()['basedir'] . '/maxi/fonts/'.$fontNameSanitized;
 
             $response = wp_remote_get($fontUrl);
-            $body     = wp_remote_retrieve_body($response);
+            $cssFile  = wp_remote_retrieve_body($response);
 
-            file_put_contents($font_uploads_dir.'/style.css', $body);
+            preg_match_all('/url\((.*?)\)/s', $cssFile, $urls);
+
+            if (!is_array($urls) || empty($urls)) {
+                return false;
+            }
+
+            $fontFiles = $urls[1];
+            $newFontFiles = [];
+
+            $this->write_log('$fontFiles');
+            $this->write_log($fontFiles);
+
+            foreach ($fontFiles as $filePath) {
+                $fontResponse = wp_remote_get($filePath);
+                $fontBody     = wp_remote_retrieve_body($fontResponse);
+                $fileName = basename($filePath);
+                $newFilePath = $fontUploadsDir.'/'. $fileName;
+
+                $newFontFiles[] =  $fontUrlDir.'/'. $fileName;
+
+                if (!file_exists($newFilePath)) {
+                    file_put_contents($newFilePath, $fontBody);
+                }
+            }
+
+            $this->write_log('$newFontFiles');
+            $this->write_log($newFontFiles);
+
+            file_put_contents($fontUploadsDir.'/style.css', $cssFile);
         }
     }
 }

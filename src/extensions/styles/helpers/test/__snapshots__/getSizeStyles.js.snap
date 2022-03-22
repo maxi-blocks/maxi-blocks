@@ -60,3 +60,64 @@ Object {
   },
 }
 `;
+
+exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
+Object {
+  "general": Object {
+    "height": "4px",
+    "max-height": "3px",
+    "max-width": "2px",
+    "min-height": "1px",
+    "min-width": "2px",
+    "width": "1px",
+  },
+  "l": Object {
+    "aspect-ratio": 1,
+    "max-height": "2px",
+    "max-width": "2px",
+    "min-height": "1px",
+    "min-width": "3px",
+    "width": "1px",
+  },
+  "m": Object {
+    "aspect-ratio": 1,
+    "max-height": "1px",
+    "max-width": "2px",
+    "min-height": "2px",
+    "min-width": "4px",
+    "width": "3px",
+  },
+  "s": Object {
+    "aspect-ratio": 1,
+    "max-height": "1px",
+    "max-width": "3px",
+    "min-height": "2px",
+    "min-width": "1px",
+    "width": "4px",
+  },
+  "xl": Object {
+    "aspect-ratio": 1,
+    "max-height": "2px",
+    "max-width": "3px",
+    "min-height": "4px",
+    "min-width": "1px",
+    "width": "4px",
+  },
+  "xs": Object {
+    "aspect-ratio": 1,
+    "max-height": "2px",
+    "max-width": "3px",
+    "min-height": "4px",
+    "min-width": "1px",
+    "width": "4px",
+  },
+  "xxl": Object {
+    "height": "2px",
+    "max-height": "1px",
+    "max-width": "2px",
+    "min-height": "2px",
+    "min-width": "4px",
+    "width": "3px",
+  },
+}
+`;

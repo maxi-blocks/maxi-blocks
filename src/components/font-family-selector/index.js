@@ -34,6 +34,8 @@ const FontFamilySelector = props => {
 		onChange,
 		className,
 		defaultValue,
+		fontWeight,
+		fontStyle,
 		disableFontFamilyReset = false,
 	} = props;
 
@@ -59,7 +61,12 @@ const FontFamilySelector = props => {
 	const onFontChange = newFont => {
 		onChange(newFont);
 
-		loadFonts(newFont.value, newFont.files);
+		const objFont = { [newFont.value]: {} };
+
+		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
+		if (fontStyle) objFont[newFont.value].style = fontStyle;
+
+		loadFonts(objFont);
 
 		setValue({ label: newFont.value, value: newFont.value });
 	};

@@ -471,7 +471,6 @@ const getIconHoverObject = (props, target) => {
 					isIconInherit: props['icon-inherit'],
 					isHover: true,
 					isIcon: true,
-					iconHoverStatus,
 				}),
 			},
 		gradient: iconHoverStatus &&

@@ -172,7 +172,92 @@ wp.domReady(() => {
 							mutation.target.style.width = `${responsiveWidth}px`;
 						}
 					}
+					// Responsive iframe
+					if (
+						mutation.type === 'attributes' &&
+						(mutation.target.classList.contains(
+							'is-tablet-preview'
+						) ||
+							mutation.target.classList.contains(
+								'is-mobile-preview'
+							))
+					) {
+						const iframe = mutation.target.querySelector(
+							'iframe[name="editor-canvas"]'
+						);
+						const iframeDocument = iframe.contentDocument;
 
+						if (
+							iframe &&
+							!iframeDocument.body.classList.contains(
+								'maxi-blocks--active'
+							)
+						) {
+							// Iframe needs Maxi classes and attributes
+							iframeDocument.body.classList.add(
+								'maxi-blocks--active'
+							);
+							const editorWrapper = iframeDocument.querySelector(
+								'.editor-styles-wrapper'
+							);
+							editorWrapper.setAttribute(
+								'maxi-blocks-responsive',
+								mutation.target.classList.contains(
+									'is-tablet-preview'
+								)
+									? 's'
+									: 'xs'
+							);
+
+							// Get all Maxi blocks <style> from <head>
+							// and move to new iframe
+							const maxiStyles = Array.from(
+								document.querySelectorAll(
+									'div.maxi-blocks__styles'
+								)
+							);
+
+							if (!isEmpty(maxiStyles))
+								maxiStyles.forEach(rawMaxiStyle => {
+									const maxiStyle =
+										rawMaxiStyle.cloneNode(true);
+									const { id } = maxiStyle;
+
+									iframeDocument
+										.querySelector(`#${id}`)
+										?.remove();
+
+									maxiStyle.children[0].innerText =
+										maxiStyle.children[0].innerText.replaceAll(
+											' .edit-post-visual-editor',
+											'.editor-styles-wrapper'
+										);
+
+									iframe.contentDocument.head.appendChild(
+										maxiStyle
+									);
+								});
+
+							// Move Maxi variables to iframe
+							const maxiVariables = document
+								.querySelector(
+									'#maxi-blocks-sc-vars-inline-css'
+								)
+								?.cloneNode(true);
+
+							if (maxiVariables) {
+								iframeDocument
+									.querySelector(
+										'#maxi-blocks-sc-vars-inline-css'
+									)
+									?.remove();
+
+								iframe.contentDocument.head.appendChild(
+									maxiVariables
+								);
+							}
+						}
+					}
 					// Responsive toolbar
 					if (
 						mutation.type === 'attributes' &&

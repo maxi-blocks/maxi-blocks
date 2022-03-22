@@ -14,6 +14,17 @@ function register_maxi_blocks_settings()
     register_setting('maxi-blocks-settings-group', 'google_api_key_option');
 }
 
+function getFolderSize($dir)
+{
+    $size = 0;
+
+    foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        $size += is_file($each) ? filesize($each) : getFolderSize($each);
+    }
+
+    return $size;
+}
+
 function maxi_blocks_settings_page()
 {
     ?>
@@ -51,6 +62,13 @@ function maxi_blocks_settings_page()
     } ?> type="checkbox" id="local_fonts" value="1">
                         </label>
                     </fieldset>
+                    <?php
+        $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
+    $fontUploadsDirSize = round(getFolderSize($fontUploadsDir)/1048576, 2);
+    if ($fontUploadsDirSize > 0) {
+        echo '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.'MB</p>'.
+        '<input type="button" name="maxi_remove_fonts_cache" id="maxi_remove_fonts_cache" class="button" value="'.__('Remove local fonts', 'maxi-blocks').'">';
+    } ?>
                 </td>
             </tr>
             <tr>

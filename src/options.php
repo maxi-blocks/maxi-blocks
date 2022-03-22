@@ -1,6 +1,5 @@
 <?php
 require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
-new MaxiBlocks_Local_Fonts();
 function maxi_blocks_create_menu()
 {
     add_menu_page('Maxi Blocks', 'Maxi Blocks', 'administrator', 'maxi-blocks.php', 'maxi_blocks_settings_page', 'dashicons-block-default');
@@ -48,6 +47,7 @@ function maxi_blocks_settings_page()
                         <label for="local_fonts">
                             <input name="local_fonts" <?php if ((bool) get_option('local_fonts')) {
         echo "checked='checked'";
+        new MaxiBlocks_Local_Fonts();
     } ?> type="checkbox" id="local_fonts" value="1">
                         </label>
                     </fieldset>

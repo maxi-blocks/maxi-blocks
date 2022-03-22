@@ -89,8 +89,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { blockHierarchy, blockName } = useSelect(select => {
 		const { getBlockName, getBlockParents } = select('core/block-editor');
 
-		const blockOrder = getBlockParents(clientId);
-		blockOrder.push(clientId);
+		const blockOrder = [...getBlockParents(clientId), clientId];
 
 		const blockHierarchy = {};
 

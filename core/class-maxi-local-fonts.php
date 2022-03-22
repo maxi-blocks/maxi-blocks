@@ -132,7 +132,7 @@ class MaxiBlocks_Local_Fonts
 
     public function createUploadFolder()
     {
-        $fonts_uploads_dir = trailingslashit(wp_upload_dir()['basedir']) . 'maxi/fonts';
+        $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
         wp_mkdir_p($fonts_uploads_dir);
     }
 
@@ -141,11 +141,18 @@ class MaxiBlocks_Local_Fonts
         if (!is_array($allURLs) || empty($allURLs)) {
             return false;
         }
+
+        global $wp_filesystem;
+
+        $allFontsNames = [];
         
         foreach ($allURLs as $fontName => $fontUrl) {
             $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
+
+            $allFontsNames[] = $fontNameSanitized;
             
-            $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/'.$fontNameSanitized;
+            $fontsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
+            $fontUploadsDir =  $fontsDir.$fontNameSanitized;
             wp_mkdir_p($fontUploadsDir);
 
             $fontUrlDir = wp_upload_dir()['baseurl'] . '/maxi/fonts/'.$fontNameSanitized;
@@ -179,5 +186,22 @@ class MaxiBlocks_Local_Fonts
 
             file_put_contents($fontUploadsDir.'/style.css', $newCssFile);
         }
+
+        // remove not used fonts
+        $directories = glob($fontsDir.'*', GLOB_ONLYDIR);
+        $this->write_log($directories);
+        foreach ($directories as $directory) {
+            $folderName = basename($directory);
+            if (!in_array($folderName, $allFontsNames)) {
+                // $wp_filesystem->delete($directory, true);
+            }
+        }
+    }
+
+    public function removeAllLocalFonts()
+    {
+        global $wp_filesystem;
+        $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
+        $wp_filesystem->delete($fonts_uploads_dir, true);
     }
 }

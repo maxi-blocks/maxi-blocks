@@ -30,12 +30,6 @@ import { isEmpty, isArray, compact } from 'lodash';
  */
 import './editor.scss';
 
-const WRAPPER_BLOCKS = [
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/group-maxi',
-];
-
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
 const getBlockClassName = blockName => {
@@ -241,27 +235,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		hasInnerBlocks = false,
 		...extraProps
 	} = props;
-
-	// Adds hover class to show the appender on wrapper blocks
-	if (WRAPPER_BLOCKS.includes(blockName) && ref?.current) {
-		const el = ref.current;
-		const appenders = Array.from(
-			el.querySelectorAll('.block-list-appender')
-		);
-		const appender = appenders[appenders.length - 1];
-
-		if (appender) {
-			el.addEventListener('mouseover', () => {
-				el.classList.add('maxi-block--hovered');
-				appender.classList.add('block-list-appender--show');
-			});
-
-			el.addEventListener('mouseout', () => {
-				el.classList.remove('maxi-block--hovered');
-				appender.classList.remove('block-list-appender--show');
-			});
-		}
-	}
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);

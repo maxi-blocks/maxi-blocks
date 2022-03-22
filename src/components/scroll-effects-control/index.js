@@ -128,6 +128,73 @@ const ScrollEffectsControl = props => {
 	const getShortcutEffect = type => {
 		let response = {};
 		switch (type) {
+
+			case 'vertical':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('Up less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Down less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('Up some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Down some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Up more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Down more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+				break;
+
+			case 'horizontal':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('Right less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Left less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('Right some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Left some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Right more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Left more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+			break;
+
 			case 'rotate':
 				response = [
 					{
@@ -143,11 +210,97 @@ const ScrollEffectsControl = props => {
 						value: 2,
 					},
 					{
-						label: __('Test', 'maxi-blocks'),
-						value: 0,
+						label: __('Right less', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Left less', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Right some', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Left some', 'maxi-blocks'),
+						value: 6,
+					},
+					{
+						label: __('Right more', 'maxi-blocks'),
+						value: 7,
+					},
+					{
+						label: __('Left more', 'maxi-blocks'),
+						value: 8,
 					},
 				];
 				break;
+
+				case 'scale':
+					response = [
+						{
+							label: __('Choose', 'maxi-blocks'),
+							value: 0,
+						},
+						{
+							label: __('Up less', 'maxi-blocks'),
+							value: 1,
+						},
+						{
+							label: __('Down less', 'maxi-blocks'),
+							value: 2,
+						},
+						{
+							label: __('Up some', 'maxi-blocks'),
+							value: 3,
+						},
+						{
+							label: __('Down some', 'maxi-blocks'),
+							value: 4,
+						},
+						{
+							label: __('Up more', 'maxi-blocks'),
+							value: 5,
+						},
+						{
+							label: __('Down more', 'maxi-blocks'),
+							value: 6,
+						},
+					];
+					break;
+
+					case 'blur':
+						response = [
+							{
+								label: __('Choose', 'maxi-blocks'),
+								value: 0,
+							},
+							{
+								label: __('In less', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('Out less', 'maxi-blocks'),
+								value: 2,
+							},
+							{
+								label: __('In some', 'maxi-blocks'),
+								value: 3,
+							},
+							{
+								label: __('Out some', 'maxi-blocks'),
+								value: 4,
+							},
+							{
+								label: __('In more', 'maxi-blocks'),
+								value: 5,
+							},
+							{
+								label: __('Out more', 'maxi-blocks'),
+								value: 6,
+							},
+						];
+						break;
 
 			default:
 				response = [
@@ -218,12 +371,14 @@ const ScrollEffectsControl = props => {
 		if (type)
 			onChange({
 				...newDefaultShortcuts?.[type]?.[`shortcut${number}`],
+				...newDefaultShortcuts?.[type]?.[`vertical${number}`],
 			});
 		else
 			onChange({
-				...newDefaultShortcuts?.[`shortcut${number}`],
+				...newDefaultShortcuts?.[type]?.[`vertical${number}`],
 			});
 	};
+
 
 	useEffect(() => {
 		if (activeTabName) {

@@ -261,7 +261,7 @@ const CopyPaste = props => (
 	<Dropdown
 		className='maxi-copypaste__copy-selector'
 		contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
-		position='right top'
+		position='bottom right'
 		renderToggle={({ isOpen, onToggle }) => (
 			<Button onClick={onToggle} text='Copy'>
 				{__('Copy / Paste', 'maxi-blocks')}

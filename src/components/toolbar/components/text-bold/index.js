@@ -72,7 +72,7 @@ const TextBold = withFormatValue(props => {
 			isList,
 			typography,
 			value: {
-				'font-weight': (isActive && 400) || 800,
+				'font-weight': (isActive && 400) || 700,
 			},
 			breakpoint,
 			textLevel,

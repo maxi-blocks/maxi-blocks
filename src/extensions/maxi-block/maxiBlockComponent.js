@@ -30,7 +30,7 @@ import {
 	getHasScrollEffects,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import { loadFonts } from '../text/fonts';
+import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
 /**
@@ -339,12 +339,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		// Ensures Roboto is fully accessible from the editor
-		loadFonts('Roboto');
+		const response = getAllFonts(this.typography, 'custom-formats');
 
-		Object.entries(this.typography).forEach(([key, val]) => {
-			if (key.includes('font-family')) loadFonts(val);
-		});
+		if (!isEmpty(response)) loadFonts(response);
 	}
 
 	getParentStyle() {

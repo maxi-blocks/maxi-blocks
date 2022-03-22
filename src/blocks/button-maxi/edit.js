@@ -126,7 +126,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
-				disableBackground
 			>
 				<div data-align={fullWidth} className={buttonClasses}>
 					{!attributes['icon-only'] && (
@@ -145,7 +144,6 @@ class edit extends MaxiBlockComponent {
 							}}
 							placeholder={__('Set some text…', 'maxi-blocks')}
 							withoutInteractiveFormatting
-							__unstableDisableFormats
 						/>
 					)}
 					{attributes['icon-content'] && (

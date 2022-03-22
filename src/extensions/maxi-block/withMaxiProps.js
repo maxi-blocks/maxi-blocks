@@ -43,10 +43,8 @@ export const handleSetAttributes = ({
 			0,
 			key.lastIndexOf('-')
 		)}-${winBreakpoint}`;
-		const attrExistOnWinBreakpoint = !isNil(
-			attributes?.[attrLabelOnWinBreakpoint],
-			true
-		);
+		const attrOnWinBreakpoint = attributes?.[attrLabelOnWinBreakpoint];
+		const attrExistOnWinBreakpoint = !isNil(attrOnWinBreakpoint);
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
 
@@ -89,19 +87,20 @@ export const handleSetAttributes = ({
 					)
 			);
 
+		const defaultOnWinBreakpointAttribute =
+			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
+			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
+
 		if (
 			!attrExistOnGeneral &&
-			!attrExistOnWinBreakpoint &&
+			existHigherBreakpointAttribute &&
 			breakpoint === 'general' &&
-			existHigherBreakpointAttribute
+			(!attrExistOnWinBreakpoint ||
+				defaultOnWinBreakpointAttribute === attrOnWinBreakpoint)
 		)
 			response[attrLabelOnWinBreakpoint] = value;
 
 		if (!attrExistOnGeneral) return;
-
-		const defaultOnWinBreakpointAttribute =
-			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
-			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
 
 		if (
 			breakpoint === 'general' &&

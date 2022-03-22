@@ -70,7 +70,7 @@ const WRAPPER_BLOCKS = [
 ];
 
 const CopyPasteContent = props => {
-	const { clientId, blockName, prefix } = props;
+	const { clientId, blockName } = props;
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [specialPaste, setSpecialPaste] = useState([]);
@@ -79,13 +79,7 @@ const CopyPasteContent = props => {
 		const response = {};
 
 		ATTRIBUTES.forEach(attr => {
-			const obj = getGroupAttributes(
-				attributes,
-				attr,
-				false,
-				prefix,
-				true
-			);
+			const obj = getGroupAttributes(attributes, attr, false, '', true);
 
 			if (!isEmpty(obj)) response[attr] = obj;
 		});
@@ -99,7 +93,7 @@ const CopyPasteContent = props => {
 		ATTRIBUTES.forEach(typeAttr => {
 			response = {
 				...response,
-				...getGroupAttributes(attr, typeAttr, false, prefix, true),
+				...getGroupAttributes(attr, typeAttr, false, '', true),
 			};
 		});
 

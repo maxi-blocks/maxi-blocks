@@ -7,14 +7,14 @@ const getGeneralColumnAttributes = ({
 	isFirst,
 }) => {
 	return {
-		'column-size-general': (column * proportion).toString(),
-		'column-size-m': '100',
+		'column-size-general': column * proportion,
+		'column-size-m': 100,
 		...(!isFirst && {
 			'margin-top-m': '2.5',
 			'margin-unit-m': '%',
 		}),
 		...(columnPosition.columnsNumber === 1 && {
-			'column-size-general': '100',
+			'column-size-general': 100,
 		}),
 	};
 };
@@ -27,7 +27,7 @@ const getColumnAttributes = ({
 	removeColumnGap,
 }) => {
 	return {
-		[`column-size-${breakpoint}`]: (column * proportion).toString(),
+		[`column-size-${breakpoint}`]: column * proportion,
 		...(columnPosition.rowNumber !== 1 &&
 			!removeColumnGap && {
 				[`margin-top-${breakpoint}`]: '2.5',
@@ -37,7 +37,7 @@ const getColumnAttributes = ({
 			[`margin-top-${breakpoint}`]: '0',
 		}),
 		...(columnPosition.columnsNumber === 1 && {
-			[`column-size-${breakpoint}`]: '100',
+			[`column-size-${breakpoint}`]: 100,
 		}),
 	};
 };

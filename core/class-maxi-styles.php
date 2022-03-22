@@ -212,15 +212,17 @@ class MaxiBlocks_Styles
             return;
         }
 
+        $useLocalFonts = (bool) get_option('local_fonts');
+
         foreach ($fonts as $font => $fontData) {
             if ($font) {
-                if ((bool) get_option('local_fonts')) {
+                if ($useLocalFonts) {
                     $fontNameSanitized = str_replace(' ', '', strtolower($font));
-                    $fontUrl = wp_upload_dir()['basedir'] . '/maxi/fonts/'.$fontNameSanitized.'/style.css';
+                    $fontUrl = wp_upload_dir()['baseurl'] . '/maxi/fonts/'.$fontNameSanitized.'/style.css';
                 } else {
                     $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
                 }
-                if (!(bool) get_option('local_fonts') && !empty($fontData)) {
+                if (!$useLocalFonts && !empty($fontData)) {
                     $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
                     $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
 

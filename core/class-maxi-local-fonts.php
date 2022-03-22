@@ -24,10 +24,12 @@ class MaxiBlocks_Local_Fonts
      */
     public function __construct()
     {
-        $allFonts = $this->getAllFontsDB();
-        $allURLs = $this->constructFontURLs($allFonts);
-        $this->createUploadFolder();
-        $this->uploadCssFiles($allURLs);
+        if ((bool) get_option('local_fonts')) {
+            $allFonts = $this->getAllFontsDB();
+            $allURLs = $this->constructFontURLs($allFonts);
+            $this->createUploadFolder();
+            $this->uploadCssFiles($allURLs);
+        }
     }
 
     public function write_log($log)
@@ -143,10 +145,10 @@ class MaxiBlocks_Local_Fonts
         foreach ($allURLs as $fontName => $fontUrl) {
             $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
             
-            $fontUploadsDir = trailingslashit(wp_upload_dir()['basedir']) . 'maxi/fonts/'.$fontNameSanitized;
+            $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/'.$fontNameSanitized;
             wp_mkdir_p($fontUploadsDir);
 
-            $fontUrlDir = wp_upload_dir()['basedir'] . '/maxi/fonts/'.$fontNameSanitized;
+            $fontUrlDir = wp_upload_dir()['baseurl'] . '/maxi/fonts/'.$fontNameSanitized;
 
             $response = wp_remote_get($fontUrl);
             $cssFile  = wp_remote_retrieve_body($response);
@@ -159,9 +161,6 @@ class MaxiBlocks_Local_Fonts
 
             $fontFiles = $urls[1];
             $newFontFiles = [];
-
-            $this->write_log('$fontFiles');
-            $this->write_log($fontFiles);
 
             foreach ($fontFiles as $filePath) {
                 $fontResponse = wp_remote_get($filePath);
@@ -176,10 +175,9 @@ class MaxiBlocks_Local_Fonts
                 }
             }
 
-            $this->write_log('$newFontFiles');
-            $this->write_log($newFontFiles);
+            $newCssFile = str_replace($fontFiles, $newFontFiles, $cssFile);
 
-            file_put_contents($fontUploadsDir.'/style.css', $cssFile);
+            file_put_contents($fontUploadsDir.'/style.css', $newCssFile);
         }
     }
 }

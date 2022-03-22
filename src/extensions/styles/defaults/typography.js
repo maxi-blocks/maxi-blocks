@@ -57,6 +57,9 @@ export const rawTypography = {
 	'custom-formats': {
 		type: 'object',
 	},
+	'text-orientation': {
+		type: 'string',
+	},
 };
 
 export const typography = breakpointAttributesCreator({

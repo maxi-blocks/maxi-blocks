@@ -895,6 +895,34 @@ const TypographyControl = withFormatValue(props => {
 					});
 				}}
 			/>
+			<SelectControl
+				label={__('Text orientation', 'maxi-blocks')}
+				className='maxi-typography-control__decoration'
+				value={getValue(`${prefix}text-orientation`)}
+				options={[
+					{
+						label: __('None', 'maxi-blocks'),
+						value: '',
+					},
+					{
+						label: __('Mixed', 'maxi-blocks'),
+						value: 'mixed',
+					},
+					{
+						label: __('Upright', 'maxi-blocks'),
+						value: 'upright',
+					},
+					{
+						label: __('Sideways', 'maxi-blocks'),
+						value: 'sideways',
+					},
+				]}
+				onChange={val => {
+					onChangeFormat({
+						[`${prefix}text-orientation`]: val,
+					});
+				}}
+			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__text-indent'
 				label={__('Text indent', 'maxi-blocks')}

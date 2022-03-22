@@ -4,7 +4,6 @@
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
 import { withSelect, withDispatch } from '@wordpress/data';
-import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -16,7 +15,7 @@ import {
 	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { BlockPlaceholder, BlockResizer, Toolbar } from '../../components';
+import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
@@ -25,7 +24,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { round, isEmpty } from 'lodash';
+import { round } from 'lodash';
 
 /**
  * Editor
@@ -65,6 +64,7 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			updateRowPattern,
 			hasInnerBlocks,
+			clientId,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -168,14 +168,18 @@ class edit extends MaxiBlockComponent {
 										),
 									});
 								}}
-								hasInnerBlocks
+								useInnerBlocks
 								innerBlocksSettings={{
 									allowedBlocks: ALLOWED_BLOCKS,
 									orientation: 'horizontal',
 									templateLock: false,
 									renderAppender: !hasInnerBlocks
-										? BlockPlaceholder
-										: InnerBlocks.ButtonBlockAppender,
+										? () => (
+												<BlockInserter
+													clientId={clientId}
+												/>
+										  )
+										: false,
 								}}
 							/>
 						</>
@@ -193,7 +197,6 @@ const editSelect = withSelect((select, ownProps) => {
 
 	const rowBlockId = getBlockRootClientId(clientId);
 	const originalNestedColumns = getBlockOrder(rowBlockId);
-	const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
@@ -201,7 +204,6 @@ const editSelect = withSelect((select, ownProps) => {
 		rowBlockId,
 		originalNestedColumns,
 		deviceType,
-		hasInnerBlocks,
 	};
 });
 

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 
 /**
@@ -13,7 +13,7 @@ import { getDefaultAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -131,6 +131,14 @@ const withMaxiProps = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
 
+			const { hasInnerBlocks } = useSelect(select => {
+				const { getBlockOrder } = select('core/block-editor');
+
+				const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+
+				return { hasInnerBlocks };
+			});
+
 			const maxiSetAttributes = obj =>
 				handleSetAttributes({
 					obj,
@@ -143,6 +151,7 @@ const withMaxiProps = createHigherOrderComponent(
 				<WrappedComponent
 					{...ownProps}
 					maxiSetAttributes={maxiSetAttributes}
+					hasInnerBlocks={hasInnerBlocks}
 				/>
 			);
 		}),

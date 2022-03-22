@@ -17,6 +17,7 @@ import { select, useSelect } from '@wordpress/data';
  */
 import { getHasParallax } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
+import BlockInserter from '../block-inserter';
 
 /**
  * External dependencies
@@ -97,6 +98,9 @@ const getInnerBlocksChild = ({
 	anchorLink,
 	isSave = false,
 	uniqueID,
+	ref,
+	clientId,
+	hasInnerBlocks,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -116,6 +120,13 @@ const getInnerBlocksChild = ({
 			...cloneElement(innerBlocksChildren, {
 				key: `maxi-inner-content__${uniqueID}`,
 			}),
+			...(!isSave && hasInnerBlocks && (
+				<BlockInserter.WrapperInserter
+					key={`maxi-block-wrapper-inserter__${clientId}`}
+					ref={ref}
+					clientId={clientId}
+				/>
+			)),
 		];
 
 	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
@@ -139,6 +150,13 @@ const getInnerBlocksChild = ({
 			key: `maxi-inner-content__${uniqueID}`,
 		}),
 		...secondGroup,
+		...(!isSave && hasInnerBlocks && (
+			<BlockInserter.WrapperInserter
+				key={`maxi-block-wrapper-inserter__${clientId}`}
+				ref={ref}
+				clientId={clientId}
+			/>
+		)),
 	];
 };
 
@@ -153,6 +171,8 @@ const InnerBlocksBlock = forwardRef(
 			isSave,
 			anchorLink,
 			innerBlocksSettings,
+			clientId,
+			hasInnerBlocks,
 			...props
 		},
 		ref
@@ -180,6 +200,9 @@ const InnerBlocksBlock = forwardRef(
 				anchorLink,
 				isSave,
 				uniqueID,
+				ref,
+				clientId,
+				hasInnerBlocks,
 			})
 		);
 
@@ -214,6 +237,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		classes: customClasses,
 		paletteClasses,
 		hasLink,
+		useInnerBlocks = false,
 		hasInnerBlocks = false,
 		...extraProps
 	} = props;
@@ -345,10 +369,18 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	if (!hasInnerBlocks)
+	if (!useInnerBlocks)
 		return <MainBlock {...blockProps}>{children}</MainBlock>;
 
-	return <InnerBlocksBlock {...blockProps}>{children}</InnerBlocksBlock>;
+	return (
+		<InnerBlocksBlock
+			{...blockProps}
+			clientId={clientId}
+			hasInnerBlocks={hasInnerBlocks}
+		>
+			{children}
+		</InnerBlocksBlock>
+	);
 });
 
 export default MaxiBlock;

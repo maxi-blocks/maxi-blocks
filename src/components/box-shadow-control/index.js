@@ -49,12 +49,12 @@ const BoxShadowValueControl = props => {
 	return (
 		<AdvancedNumberControl
 			{...(!isToolbar && { label: __(capitalize(type), 'maxi-blocks') })}
-			value={getLastBreakpointAttribute(
-				`${prefix}box-shadow-${type}`,
+			value={getLastBreakpointAttribute({
+				target: `${prefix}box-shadow-${type}`,
 				breakpoint,
-				props,
-				isHover
-			)}
+				attributes: props,
+				isHover,
+			})}
 			onChangeValue={val => {
 				onChange({
 					[`${prefix}box-shadow-${type}-${breakpoint}${
@@ -87,7 +87,6 @@ const BoxShadowControl = props => {
 		breakpoint,
 		isToolbar = false,
 		isHover = false,
-		disableAdvanced = false,
 		prefix = '',
 		clientId,
 	} = props;
@@ -276,142 +275,6 @@ const BoxShadowControl = props => {
 						boxShadowItems.map(type => (
 							<BoxShadowValueControl type={type} {...props} />
 						))}
-					{!disableAdvanced && (
-						<>
-							<AdvancedNumberControl
-								label={__('Horizontal', 'maxi-blocks')}
-								value={getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-horizontal`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-horizontal-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-horizontal-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-horizontal-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-							<AdvancedNumberControl
-								label={__('Vertical', 'maxi-blocks')}
-								value={getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-vertical`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-vertical-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-vertical-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-vertical-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-							<AdvancedNumberControl
-								label={__('Blur', 'maxi-blocks')}
-								value={getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-blur`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-blur-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-blur-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-blur-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-							<AdvancedNumberControl
-								label={__('Spread', 'maxi-blocks')}
-								value={getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-spread`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-spread-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-spread-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-spread-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-						</>
-					)}
 				</>
 			)}
 		</div>

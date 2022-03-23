@@ -77,9 +77,6 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
-		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
@@ -156,6 +153,9 @@ const getNormalObject = props => {
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
+		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
 		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(

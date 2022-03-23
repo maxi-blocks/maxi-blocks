@@ -187,13 +187,13 @@ class MaxiBlocks_Local_Fonts
             file_put_contents($fontUploadsDir.'/style.css', $newCssFile);
         }
 
-        // remove not used fonts
+        // remove not used fonts directories
         $directories = glob($fontsDir.'*', GLOB_ONLYDIR);
-        $this->write_log($directories);
         foreach ($directories as $directory) {
             $folderName = basename($directory);
             if (!in_array($folderName, $allFontsNames)) {
-                // $wp_filesystem->delete($directory, true);
+                array_map('unlink', glob("$directory/*"));
+                rmdir($directory);
             }
         }
     }

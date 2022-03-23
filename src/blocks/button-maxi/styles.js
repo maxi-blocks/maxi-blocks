@@ -32,6 +32,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsButton } from './custom-css';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -508,7 +509,7 @@ const getIconHoverObject = (props, target) => {
 };
 
 const getStyles = (props, scValues) => {
-	const { uniqueID } = props;
+	const { uniqueID, 'background-layers': bgLayers } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -546,7 +547,7 @@ const getStyles = (props, scValues) => {
 					props['icon-status-hover'] &&
 					getIconPathStyles(props, true),
 			},
-			selectorsButton,
+			{ ...selectorsButton, ...getBgLayersSelectorsCss(bgLayers) },
 			props
 		),
 	};

@@ -19,6 +19,10 @@ import {
 import * as defaultPresets from './defaults';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
+import {
+	getBgLayersCategoriesCss,
+	getBgLayersSelectorsCss,
+} from '../../components/background-displayer/utils';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -49,7 +53,7 @@ import {
 const Inspector = memo(
 	props => {
 		const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-		const { parentBlockStyle } = attributes;
+		const { parentBlockStyle, 'background-layers': bgLayers } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -571,8 +575,18 @@ const Inspector = memo(
 												...props,
 											},
 											breakpoint: deviceType,
-											selectors: selectorsButton,
-											categories: getCategoriesCss(),
+											selectors: {
+												...selectorsButton,
+												...getBgLayersSelectorsCss(
+													bgLayers
+												),
+											},
+											categories: [
+												...getCategoriesCss(),
+												...getBgLayersCategoriesCss(
+													bgLayers
+												),
+											],
 										}),
 										...inspectorTabs.scrollEffects({
 											props: {

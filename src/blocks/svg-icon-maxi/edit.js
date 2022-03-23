@@ -29,11 +29,6 @@ import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 
 /**
- * Icons
- */
-import { toolbarReplaceImage } from '../../icons';
-
-/**
  * External dependencies
  */
 import { isEmpty, uniqueId } from 'lodash';
@@ -46,7 +41,8 @@ class edit extends MaxiBlockComponent {
 		super(props);
 
 		this.resizableObject = createRef();
-		this.setState({ isOpen: props.openFirstTime });
+
+		this.state = { isOpen: this.props.attributes.openFirstTime };
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -124,8 +120,10 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
 		} = attributes;
+		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
+
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
@@ -151,12 +149,6 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			}) === 'hidden';
 
-		const onClick = () => {
-			this.setState({ isOpen: !this.state.isOpen });
-
-			// if (onOpen) onOpen({ openFirstTime: !isOpen });
-		};
-
 		return [
 			!isEmptyContent && (
 				<Inspector
@@ -177,27 +169,32 @@ class edit extends MaxiBlockComponent {
 			<MaxiPopoverButton
 				key={`popover-${uniqueID}`}
 				ref={this.blockRef}
+				isOpen={isOpen}
 				{...this.props}
 			>
-				{isEmptyContent && (
-					<div className='maxi-svg-icon-block__placeholder'>
-						<Button
-							isPrimary
-							key={`maxi-block-library__modal-button--${clientId}`}
-							className='maxi-block-library__modal-button'
-							onClick={onClick}
-						>
-							{__('Select SVG Icon', 'maxi-blocks')}
-						</Button>
-					</div>
-				)}
-				{!isEmptyContent && (
-					<Button
-						className='maxi-svg-icon-block__replace-icon'
-						onClick={onClick}
-						icon={toolbarReplaceImage}
-					/>
-				)}
+				<MaxiModal
+					clientId={clientId}
+					type='svg'
+					isOpen={isOpen}
+					style={parentBlockStyle}
+					openFirstTime={openFirstTime}
+					onOpen={obj => {
+						maxiSetAttributes(obj);
+
+						this.setState({ isOpen: true });
+					}}
+					onSelect={obj => {
+						maxiSetAttributes(obj);
+
+						this.setState({ isOpen: false });
+					}}
+					onRemove={obj => {
+						maxiSetAttributes(obj);
+
+						this.setState({ isOpen: false });
+					}}
+					onClose={() => this.setState({ isOpen: false })}
+				/>
 			</MaxiPopoverButton>,
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
@@ -206,17 +203,18 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<>
-					<MaxiModal
-						clientId={clientId}
-						type='svg'
-						isIconOpen
-						empty={isEmptyContent}
-						style={parentBlockStyle}
-						openFirstTime={openFirstTime}
-						onOpen={obj => maxiSetAttributes(obj)}
-						onSelect={obj => maxiSetAttributes(obj)}
-						onRemove={obj => maxiSetAttributes(obj)}
-					/>
+					{isEmptyContent && (
+						<div className='maxi-svg-icon-block__placeholder'>
+							<Button
+								isPrimary
+								key={`maxi-block-library__modal-button--${clientId}`}
+								className='maxi-block-library__modal-button'
+								onClick={() => this.setState({ isOpen: true })}
+							>
+								{__('Select SVG Icon', 'maxi-blocks')}
+							</Button>
+						</div>
+					)}
 					{!isEmptyContent && (
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'

@@ -25,15 +25,11 @@
 		}
 	}
 	&__replace-icon {
-		opacity: 1;
-		visibility: visible;
 		width: 40px;
 		height: 40px;
-		position: absolute;
-		top: 0;
-		right: 0;
+		opacity: 1;
+		visibility: visible;
 		background: #232533;
-		z-index: 25;
 
 		svg {
 			fill: #fff;

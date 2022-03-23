@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { RawHTML, useState } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
 import { Button } from '@wordpress/components';
 
 /**
@@ -19,7 +19,7 @@ import { isEmpty } from 'lodash';
 /**
  * Icons
  */
-import { SCaddMore, remove } from '../../icons';
+import { SCaddMore, toolbarReplaceImage, remove } from '../../icons';
 
 /**
  * Layout modal window with tab panel.
@@ -28,12 +28,12 @@ const MaxiModal = props => {
 	const {
 		type,
 		clientId,
-		isIconOpen,
 		style,
 		openFirstTime,
 		onOpen = null,
 		onRemove,
 		onSelect,
+		onClose,
 		icon,
 	} = props;
 
@@ -43,7 +43,12 @@ const MaxiModal = props => {
 		changeIsOpen(!isOpen);
 
 		if (onOpen) onOpen({ openFirstTime: !isOpen });
+		if (onClose) onClose();
 	};
+
+	useEffect(() => {
+		if (isOpen) changeIsOpen(true);
+	}, [isOpen]);
 
 	return (
 		<div className='maxi-library-modal__action-section'>
@@ -66,6 +71,13 @@ const MaxiModal = props => {
 						<Icon icon={SCaddMore} />
 					</Button>
 				)}
+				{type === 'svg' && (
+					<Button
+						className='maxi-svg-icon-block__replace-icon'
+						onClick={onClick}
+						icon={toolbarReplaceImage}
+					/>
+				)}
 				{(type === 'bg-shape' ||
 					type === 'image-shape' ||
 					type === 'sidebar-block-shape') && (
@@ -86,7 +98,7 @@ const MaxiModal = props => {
 							: __('Replace Icon', 'maxi-blocks')}
 					</Button>
 				)}
-				{isIconOpen && (
+				{isOpen && (
 					<CloudLibrary
 						cloudType={type}
 						onClose={onClick}

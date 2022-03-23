@@ -47,11 +47,11 @@ const ColumnSize = props => {
 			<div className='toolbar-item__column-size__popover'>
 				<AdvancedNumberControl
 					label={__('Column Size (%)', 'maxi-blocks')}
-					value={getLastBreakpointAttribute(
-						'column-size',
+					value={getLastBreakpointAttribute({
+						target: 'column-size',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					onChangeValue={val => {
 						onChange({
 							[`column-size-${breakpoint}`]:

@@ -2,10 +2,10 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawFlex = {
 	'flex-grow': {
-		type: 'string',
+		type: 'number',
 	},
 	'flex-shrink': {
-		type: 'string',
+		type: 'number',
 	},
 	'flex-basis': {
 		type: 'string',
@@ -32,10 +32,18 @@ const rawFlex = {
 		type: 'string',
 	},
 	'row-gap': {
+		type: 'number',
+	},
+	'row-gap-unit': {
 		type: 'string',
+		default: 'px',
 	},
 	'column-gap': {
+		type: 'number',
+	},
+	'column-gap-unit': {
 		type: 'string',
+		default: 'px',
 	},
 	order: {
 		type: 'number',

@@ -1,3 +1,10 @@
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+/**
+ * Internal dependencies
+ */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -73,15 +80,39 @@ const getFlexStyles = obj => {
 				breakpoint,
 				attributes: obj,
 			}),
-			'row-gap': getLastBreakpointAttribute({
-				target: 'row-gap',
-				breakpoint,
-				attributes: obj,
+			...(!isNil(
+				getLastBreakpointAttribute({
+					target: 'row-gap',
+					breakpoint,
+					attributes: obj,
+				})
+			) && {
+				'row-gap': `${getLastBreakpointAttribute({
+					target: 'row-gap',
+					breakpoint,
+					attributes: obj,
+				})}${getLastBreakpointAttribute({
+					target: 'row-gap-unit',
+					breakpoint,
+					attributes: obj,
+				})}`,
 			}),
-			'column-gap': getLastBreakpointAttribute({
-				target: 'column-gap',
-				breakpoint,
-				attributes: obj,
+			...(!isNil(
+				getLastBreakpointAttribute({
+					target: 'column-gap',
+					breakpoint,
+					attributes: obj,
+				})
+			) && {
+				'column-gap': `${getLastBreakpointAttribute({
+					target: 'column-gap',
+					breakpoint,
+					attributes: obj,
+				})}${getLastBreakpointAttribute({
+					target: 'column-gap-unit',
+					breakpoint,
+					attributes: obj,
+				})}`,
 			}),
 		};
 	});

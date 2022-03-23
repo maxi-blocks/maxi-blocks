@@ -62,8 +62,9 @@ const size = ({
 					prefix={prefix}
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
-					hideWidth={hideWidth}
-					hideMaxWidth={hideMaxWidth}
+					hideWidth={hideWidth || isBlockFullWidth}
+					hideMaxWidth={hideMaxWidth || isBlockFullWidth}
+					allowForceAspectRatio={block}
 				/>
 			</>
 		),

@@ -6,6 +6,12 @@
 		left: calc(50% - 48px);
 		border-radius: 50%;
 	}
+	.block-list-appender--show {
+		.block-editor-button-block-appender {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
 	&__container {
 		border: 1px solid #7fbddc;
 		width: 100%;

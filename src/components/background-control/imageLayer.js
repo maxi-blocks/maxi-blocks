@@ -585,7 +585,7 @@ const ImageLayer = props => {
 								'background-image-mediaID',
 								isHover,
 								prefix
-							)]: imageData.id,
+							)]: imageData.order,
 							[getAttributeKey(
 								'background-image-mediaURL',
 								isHover,

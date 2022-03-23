@@ -95,11 +95,11 @@ const BlockBackgroundColor = props => {
 		};
 	};
 
-	const getNewLayerId = () =>
+	const getNewLayerOrder = () =>
 		backgroundLayers && !isEmpty(backgroundLayers)
 			? backgroundLayers.reduce((layerA, layerB) =>
-					layerA.id > layerB.id ? layerA : layerB
-			  ).id + 1
+					layerA.order > layerB.order ? layerA : layerB
+			  ).order + 1
 			: 1;
 
 	return (
@@ -138,13 +138,13 @@ const BlockBackgroundColor = props => {
 											layer: colorLayerAttr,
 											breakpoint,
 										}),
-										id: getNewLayerId(),
+										order: getNewLayerOrder(),
 									},
 								],
 							});
 						} else {
 							const newBGLayers = backgroundLayers.filter(
-								bgLayer => bgLayer.id !== layer.id
+								bgLayer => bgLayer.order !== layer.order
 							);
 
 							onChange({ 'background-layers': newBGLayers });
@@ -153,16 +153,16 @@ const BlockBackgroundColor = props => {
 				/>
 				{isBackgroundColor && (
 					<ColorLayer
-						key={`background-color-layer--${layer.id}`}
+						key={`background-color-layer--${layer.order}`}
 						colorOptions={layer}
 						onChange={obj => {
 							const newLayer = { ...layer, ...obj };
 							const newLayers = cloneDeep(backgroundLayers);
 
 							backgroundLayers.forEach((lay, i) => {
-								if (lay.id === newLayer.id) {
+								if (lay.order === newLayer.order) {
 									const index = findIndex(newLayers, {
-										id: newLayer.id,
+										order: newLayer.order,
 									});
 
 									newLayers[index] = newLayer;

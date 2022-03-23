@@ -63,7 +63,6 @@ const getLastBreakpointAttributeSingle = (
 
 	if (
 		attrFilter(currentAttr) &&
-		breakpoint !== 'general' &&
 		(winBreakpoint !== 'xxl' || breakpoint === 'xxl')
 	)
 		return currentAttr;

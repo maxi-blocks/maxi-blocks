@@ -1,15 +1,5 @@
 import getSizeStyles from '../getSizeStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
-});
-
 describe('getSizeStyles', () => {
 	it('Get a correct size styles', () => {
 		const object = {

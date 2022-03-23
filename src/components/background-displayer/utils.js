@@ -23,7 +23,7 @@ export default function parseVideo(url) {
 
 	return {
 		type,
-		id: RegExp.$6,
+		order: RegExp.$6,
 	};
 }
 

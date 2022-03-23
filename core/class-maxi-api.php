@@ -274,7 +274,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             return $response;
         }
-
+        
         /**
          * Post the posts
          */
@@ -285,7 +285,12 @@ if (!class_exists('MaxiBlocks_API')):
             $id = $data['id'];
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
-            $fonts = implode(",", $meta['fonts']);
+
+            $fontsArr = $meta['fonts'];
+            foreach ($fontsArr as $key => $font) {
+                $fontsArr[$key] = json_decode($font, true);
+            }
+            $fonts = json_encode(array_merge_recursive(...$fontsArr));
 
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 

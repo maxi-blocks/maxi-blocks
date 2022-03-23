@@ -177,7 +177,7 @@ class edit extends MaxiBlockComponent {
 					type='svg'
 					isOpen={isOpen}
 					style={parentBlockStyle}
-					openFirstTime={openFirstTime}
+					openFirstTime={isSelected ? openFirstTime : false}
 					onOpen={obj => {
 						maxiSetAttributes(obj);
 
@@ -231,11 +231,11 @@ class edit extends MaxiBlockComponent {
 									: null
 							}
 							size={{
-								width: getLastBreakpointAttribute(
-									'svg-width',
-									deviceType || 'general',
-									attributes
-								),
+								width: `${getLastBreakpointAttribute({
+									target: 'svg-width',
+									breakpoint: deviceType || 'general',
+									attributes,
+								})}${svgWidthUnit}`,
 							}}
 							showHandle={isSelected}
 							enable={{

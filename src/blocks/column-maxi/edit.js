@@ -4,6 +4,7 @@
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
 import { withSelect, withDispatch } from '@wordpress/data';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -15,12 +16,7 @@ import {
 	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import {
-	BlockPlaceholder,
-	BlockResizer,
-	Toolbar,
-	InnerBlocks,
-} from '../../components';
+import { BlockPlaceholder, BlockResizer, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
@@ -172,17 +168,16 @@ class edit extends MaxiBlockComponent {
 										),
 									});
 								}}
-							>
-								<InnerBlocks
-									allowedBlocks={ALLOWED_BLOCKS}
-									orientation='horizontal'
-									renderAppender={
-										!hasInnerBlocks
-											? BlockPlaceholder
-											: InnerBlocks.ButtonBlockAppender
-									}
-								/>
-							</MaxiBlock>
+								hasInnerBlocks
+								innerBlocksSettings={{
+									allowedBlocks: ALLOWED_BLOCKS,
+									orientation: 'horizontal',
+									templateLock: false,
+									renderAppender: !hasInnerBlocks
+										? BlockPlaceholder
+										: InnerBlocks.ButtonBlockAppender,
+								}}
+							/>
 						</>
 					);
 				}}

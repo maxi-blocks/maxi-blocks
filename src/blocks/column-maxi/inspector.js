@@ -12,6 +12,7 @@ import {
 	AdvancedNumberControl,
 	SelectControl,
 	SettingTabsControl,
+	ToggleSwitch,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -55,53 +56,88 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<AdvancedNumberControl
+													<ToggleSwitch
 														label={__(
-															'Column Size (%)',
+															'Fit content',
 															'maxi-blocks'
 														)}
-														value={getLastBreakpointAttribute(
+														className='maxi-column-inspector__fit-content'
+														selected={getLastBreakpointAttribute(
 															{
-																target: 'column-size',
+																target: 'column-fit-content',
 																breakpoint:
 																	deviceType,
 																attributes,
 															}
 														)}
-														onChangeValue={val => {
+														onChange={val => {
 															maxiSetAttributes({
-																[`column-size-${deviceType}`]:
-																	val !==
-																		undefined &&
-																	val !== ''
-																		? val
-																		: '',
+																[`column-fit-content-${deviceType}`]:
+																	val,
 															});
 														}}
-														min={0}
-														max={100}
-														step={0.1}
-														onReset={() =>
-															maxiSetAttributes({
-																[`column-size-${deviceType}`]:
-																	getColumnDefaultValue(
-																		rowPattern,
-																		{
-																			...getGroupAttributes(
-																				attributes,
-																				'columnSize'
-																			),
-																		},
-																		clientId,
-																		deviceType
-																	),
-															})
-														}
-														initialPosition={getDefaultAttribute(
-															`column-size-${deviceType}`,
-															clientId
-														)}
 													/>
+													{!getLastBreakpointAttribute(
+														{
+															target: 'column-fit-content',
+															breakpoint:
+																deviceType,
+															attributes,
+														}
+													) && (
+														<AdvancedNumberControl
+															label={__(
+																'Column Size (%)',
+																'maxi-blocks'
+															)}
+															value={getLastBreakpointAttribute(
+																{
+																	target: 'column-size',
+																	breakpoint:
+																		deviceType,
+																	attributes,
+																}
+															)}
+															onChangeValue={val => {
+																maxiSetAttributes(
+																	{
+																		[`column-size-${deviceType}`]:
+																			val !==
+																				undefined &&
+																			val !==
+																				''
+																				? val
+																				: '',
+																	}
+																);
+															}}
+															min={0}
+															max={100}
+															step={0.1}
+															onReset={() =>
+																maxiSetAttributes(
+																	{
+																		[`column-size-${deviceType}`]:
+																			getColumnDefaultValue(
+																				rowPattern,
+																				{
+																					...getGroupAttributes(
+																						attributes,
+																						'columnSize'
+																					),
+																				},
+																				clientId,
+																				deviceType
+																			),
+																	}
+																)
+															}
+															initialPosition={getDefaultAttribute(
+																`column-size-${deviceType}`,
+																clientId
+															)}
+														/>
+													)}
 													<SelectControl
 														label={__(
 															'Vertical align',
@@ -165,6 +201,12 @@ const Inspector = props => {
 										}),
 										...inspectorTabs.boxShadow({
 											props,
+										}),
+										...inspectorTabs.size({
+											props,
+											block: true,
+											hideWidth: true,
+											hideMaxWidth: true,
 										}),
 										...inspectorTabs.marginPadding({
 											props,

@@ -4,32 +4,9 @@ body.maxi-blocks--active figure.maxi-image-block {
 	flex-direction: column;
 
 	.maxi-hover-preview {
-		&.maxi-image-ratio {
-			&__original img {
-				position: static;
-			}
-			&__ar11 {
-				padding-bottom: 100%;
-			}
-			&__ar23 {
-				padding-bottom: 150%;
-			}
-			&__ar32 {
-				padding-bottom: 66.67%;
-			}
-			&__ar43 {
-				padding-bottom: 75%;
-			}
-			&__ar169 {
-				padding-bottom: 56.25%;
-			}
-		}
 		img {
-			max-height: initial;
 			object-fit: cover;
-			position: absolute;
-			top: 0;
-			left: 0;
+			width: 100%;
 			height: 100%;
 		}
 	}
@@ -40,9 +17,11 @@ body.maxi-blocks--active figure.maxi-image-block {
 	.maxi-image-block-wrapper {
 		display: flex;
 		flex-direction: column;
-		width: 100%;
-		overflow: hidden;
 		position: relative;
+		width: 100%;
+		max-width: 100%;
+		overflow: hidden;
+		box-sizing: border-box;
 
 		> svg:first-child pattern image {
 			transform-origin: 50% 50%;
@@ -67,13 +46,11 @@ body.maxi-blocks--active figure.maxi-image-block {
 			width: 100%;
 			height: 100%;
 			transition: all 1s ease;
-			width: auto;
 		}
 
 		&__content {
 			display: flex;
 			flex-direction: column;
-			padding: 4rem;
 			height: 100%;
 
 			&--center-center {

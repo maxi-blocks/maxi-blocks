@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { InnerBlocks } from '@wordpress/block-editor';
-
-/**
  * Internal dependencies
  */
 import { ArrowDisplayer } from '../../components';
@@ -20,17 +15,19 @@ const save = props => {
 	const name = 'maxi-blocks/group-maxi';
 
 	return (
-		<MaxiBlock {...getMaxiBlockAttributes({ ...props, name })} isSave>
+		<MaxiBlock
+			{...getMaxiBlockAttributes({ ...props, name })}
+			isSave
+			hasInnerBlocks
+		>
 			<ArrowDisplayer
+				key={`maxi-arrow-displayer__${attributes.uniqueID}`}
 				{...getGroupAttributes(
 					attributes,
 					['blockBackground', 'arrow', 'border'],
 					true
 				)}
 			/>
-			<div className='maxi-group-block__group'>
-				<InnerBlocks.Content />
-			</div>
 		</MaxiBlock>
 	);
 };

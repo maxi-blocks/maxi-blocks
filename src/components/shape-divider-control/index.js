@@ -207,7 +207,7 @@ const ShapeDividerControl = props => {
 	};
 
 	return (
-		<div className='maxi-shapedividercontrol'>
+		<div className='maxi-shape-divider-control'>
 			<SettingTabsControl
 				items={[
 					{
@@ -230,15 +230,15 @@ const ShapeDividerControl = props => {
 								{!!props['shape-divider-top-status'] && (
 									<>
 										<Dropdown
-											className='maxi-shapedividercontrol__shape-selector'
-											contentClassName='maxi-shapedividercontrol_popover'
+											className='maxi-shape-divider-control__shape-selector'
+											contentClassName='maxi-shape-divider-control_popover'
 											position='bottom center'
 											renderToggle={({
 												isOpen,
 												onToggle,
 											}) => (
 												<button
-													className='maxi-shapedividercontrol__shape-selector__display'
+													className='maxi-shape-divider-control__shape-selector__display'
 													onClick={onToggle}
 													type='button'
 												>
@@ -248,7 +248,7 @@ const ShapeDividerControl = props => {
 											renderContent={() => (
 												<SettingTabsControl
 													type='buttons'
-													className='maxi-shapedividercontrol__shape-list'
+													className='maxi-shape-divider-control__shape-list'
 													selected={
 														props[
 															'shape-divider-top-shape-style'
@@ -402,15 +402,15 @@ const ShapeDividerControl = props => {
 								{!!props['shape-divider-bottom-status'] && (
 									<>
 										<Dropdown
-											className='maxi-shapedividercontrol__shape-selector'
-											contentClassName='maxi-shapedividercontrol_popover'
+											className='maxi-shape-divider-control__shape-selector'
+											contentClassName='maxi-shape-divider-control_popover'
 											position='bottom center'
 											renderToggle={({
 												isOpen,
 												onToggle,
 											}) => (
 												<button
-													className='maxi-shapedividercontrol__shape-selector__display'
+													className='maxi-shape-divider-control__shape-selector__display'
 													onClick={onToggle}
 													type='button'
 												>
@@ -420,7 +420,7 @@ const ShapeDividerControl = props => {
 											renderContent={() => (
 												<SettingTabsControl
 													type='buttons'
-													className='maxi-shapedividercontrol__shape-list'
+													className='maxi-shape-divider-control__shape-list'
 													selected={
 														props[
 															'shape-divider-bottom-shape-style'

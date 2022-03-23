@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect, dispatch } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
-// import { isURL } from '@wordpress/url';
 import { createRef } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 
@@ -118,10 +117,10 @@ class edit extends MaxiBlockComponent {
 			captionContent,
 			captionType,
 			fullWidth,
-			imageRatio,
 			imgWidth,
 			mediaAlt,
 			altSelector,
+			useInitSize,
 			mediaHeight,
 			mediaID,
 			mediaURL,
@@ -137,11 +136,7 @@ class edit extends MaxiBlockComponent {
 			fullWidth === 'full' && 'alignfull'
 		);
 
-		const wrapperClassName = classnames(
-			'maxi-image-block-wrapper',
-			'maxi-image-ratio',
-			!SVGElement && `maxi-image-ratio__${imageRatio}`
-		);
+		const wrapperClassName = classnames('maxi-image-block-wrapper');
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
@@ -235,13 +230,20 @@ class edit extends MaxiBlockComponent {
 				breakpoint: deviceType,
 				attributes,
 			});
+
+			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
+
 			const maxWidthUnit = getLastBreakpointAttribute({
 				target: 'image-max-width-unit',
 				breakpoint: deviceType,
 				attributes,
 			});
 
-			if (isNumber(maxWidth)) return `${maxWidth}${maxWidthUnit}`;
+			if (
+				(!useInitSize && isNumber(maxWidth)) ||
+				(useInitSize && maxWidth > mediaWidth)
+			)
+				return `${maxWidth}${maxWidthUnit}`;
 
 			return '100%';
 		};
@@ -348,8 +350,16 @@ class edit extends MaxiBlockComponent {
 						className='maxi-block__resizer maxi-image-block__resizer'
 						resizableObject={this.resizableObject}
 						isOverflowHidden={getIsOverflowHidden()}
-						size={{ width: `${imgWidth}%` }}
-						showHandle={isSelected}
+						size={{
+							width: `${
+								fullWidth !== 'full' && !useInitSize
+									? imgWidth
+									: 100
+							}%`,
+						}}
+						showHandle={
+							isSelected && fullWidth !== 'full' && !useInitSize
+						}
 						maxWidth={getMaxWidth()}
 						enable={{
 							topRight: true,

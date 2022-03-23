@@ -37,6 +37,9 @@ const rawFlex = {
 	'column-gap': {
 		type: 'string',
 	},
+	order: {
+		type: 'number',
+	},
 };
 
 const flex = breakpointAttributesCreator({

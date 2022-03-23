@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,6 +16,33 @@ import { getGroupAttributes } from '../../extensions/styles';
 const flex = ({ props }) => {
 	const { attributes, deviceType, maxiSetAttributes, name, clientId } = props;
 
+	const { getParentBlockName } = useSelect(select => {
+		const { getBlockParents, getBlockName } = select('core/block-editor');
+
+		const getParentBlockName = getBlockName(
+			getBlockParents(clientId)
+				?.filter(id => id !== clientId)
+				?.slice(-1)
+		);
+
+		return {
+			getParentBlockName,
+		};
+	});
+
+	const wrapperBlocks = [
+		'maxi-blocks/container-maxi',
+		'maxi-blocks/row-maxi',
+		'maxi-blocks/column-maxi',
+		'maxi-blocks/group-maxi',
+	];
+
+	if (
+		!wrapperBlocks.includes(getParentBlockName) &&
+		!wrapperBlocks.includes(name)
+	)
+		return null;
+
 	return {
 		label: __('Flex', 'maxi-blocks'),
 		content: (
@@ -25,6 +53,7 @@ const flex = ({ props }) => {
 					breakpoint={deviceType}
 					clientId={clientId}
 					name={name}
+					getParentBlockName={getParentBlockName}
 				/>
 			</>
 		),

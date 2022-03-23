@@ -38,19 +38,21 @@ const getFlexStyles = obj => {
 				breakpoint,
 				attributes: obj,
 			}),
-
 			'flex-flow': getLastBreakpointAttribute({
 				target: 'flex-flow',
 				breakpoint,
 				attributes: obj,
 			}),
-
+			order: getLastBreakpointAttribute({
+				target: 'order',
+				breakpoint,
+				attributes: obj,
+			}),
 			'justify-content': getLastBreakpointAttribute({
 				target: 'justify-content',
 				breakpoint,
 				attributes: obj,
 			}),
-
 			'flex-direction': getLastBreakpointAttribute({
 				target: 'flex-direction',
 				breakpoint,

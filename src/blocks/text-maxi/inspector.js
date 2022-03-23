@@ -167,8 +167,6 @@ const Inspector = memo(
 											}),
 											...inspectorTabs.flex({
 												props,
-												maxiSetAttributes:
-													maxiSetAttributes,
 											}),
 											...inspectorTabs.zindex({
 												props,

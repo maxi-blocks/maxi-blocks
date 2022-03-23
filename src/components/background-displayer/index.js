@@ -39,7 +39,7 @@ const BackgroundContent = props => {
 			{layers &&
 				layers.length > 0 &&
 				layers.map(layer => {
-					const { type, order, isHover = false } = layer;
+					const { type, order, uniqueId, isHover = false } = layer;
 
 					switch (type) {
 						case 'color':
@@ -51,7 +51,8 @@ const BackgroundContent = props => {
 									}`}
 									className={classnames(
 										'maxi-background-displayer__layer',
-										`maxi-background-displayer__${order}`
+										`maxi-background-displayer__${order}`,
+										uniqueId
 									)}
 								/>
 							);
@@ -70,7 +71,8 @@ const BackgroundContent = props => {
 										}`}
 										className={classnames(
 											'maxi-background-displayer__layer',
-											`maxi-background-displayer__${order}`
+											`maxi-background-displayer__${order}`,
+											uniqueId
 										)}
 									/>
 								);
@@ -101,7 +103,8 @@ const BackgroundContent = props => {
 									className={classnames(
 										'maxi-background-displayer__layer',
 										'maxi-background-displayer__parallax',
-										`maxi-background-displayer__${order}`
+										`maxi-background-displayer__${order}`,
+										uniqueId
 									)}
 								>
 									<img
@@ -120,7 +123,10 @@ const BackgroundContent = props => {
 									}`}
 									wrapperRef={wrapperRef}
 									videoOptions={layer}
-									className={`maxi-background-displayer__${order}`}
+									className={classnames(
+										`maxi-background-displayer__${order}`,
+										uniqueId
+									)}
 								/>
 							);
 						case 'shape': {
@@ -134,7 +140,8 @@ const BackgroundContent = props => {
 									className={classnames(
 										'maxi-background-displayer__layer',
 										'maxi-background-displayer__svg',
-										`maxi-background-displayer__${order}`
+										`maxi-background-displayer__${order}`,
+										uniqueId
 									)}
 								>
 									{svg}

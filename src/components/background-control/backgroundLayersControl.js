@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, RawHTML } from '@wordpress/element';
+import { useState, RawHTML, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -23,6 +23,7 @@ import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
 import { setBreakpointToLayer } from './utils';
 import SelectControl from '../select-control';
+import uniqueIDGenerator from '../../extensions/attributes/uniqueIDGenerator';
 
 /**
  * External dependencies
@@ -371,9 +372,29 @@ const BackgroundLayersControl = ({
 }) => {
 	const layers = cloneDeep(layersOptions);
 	const layersHover = cloneDeep(layersHoverOptions);
+
+	const uniqueIdChecker = allLayers => {
+		const newLayers = allLayers.map(layer => {
+			return {
+				...layer,
+				uniqueId: layer.uniqueId
+					? layer.uniqueId
+					: uniqueIDGenerator('background-layers-maxi-'),
+			};
+		});
+		onChange({
+			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+		});
+
+		return newLayers;
+	};
 	const allLayers = [...layers, ...layersHover];
 
 	allLayers.sort((a, b) => a.order - b.order);
+
+	useEffect(() => {
+		uniqueIdChecker(allLayers);
+	}, []);
 
 	const [selector, changeSelector] = useState(null);
 
@@ -409,6 +430,7 @@ const BackgroundLayersControl = ({
 				isHover,
 			}),
 			order: getNewLayerOrder(),
+			uniqueId: uniqueIDGenerator('background-layer-maxi-'),
 		};
 	};
 

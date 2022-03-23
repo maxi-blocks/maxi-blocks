@@ -29,15 +29,17 @@ export default function parseVideo(url) {
 
 export function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {};
-	bgLayers?.forEach((bgLayer, index) => {
-		bgLayersSelectors[`background ${bgLayer.type} ${bgLayer.id}`] = {
+	bgLayers?.forEach(bgLayer => {
+		bgLayersSelectors[bgLayer.uniqueId] = {
 			normal: {
-				label: `background ${bgLayer.type} ${index + 1}`,
-				target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.id}`,
+				label: `background ${bgLayer.type} ${bgLayer.order + 1}`,
+				target: ` .maxi-background-displayer .${bgLayer.uniqueId}`,
 			},
 			hover: {
-				label: `background ${bgLayer.type} ${index + 1} on hover`,
-				target: `:hover .maxi-background-displayer .maxi-background-displayer__${bgLayer.id}`,
+				label: `background ${bgLayer.type} ${
+					bgLayer.order + 1
+				} on hover`,
+				target: `:hover .maxi-background-displayer .${bgLayer.uniqueId}`,
 			},
 		};
 	});
@@ -49,7 +51,7 @@ export function getBgLayersCategoriesCss(bgLayers) {
 	const bgLayersCategories = bgLayers?.map((bgLayer, index) => {
 		return {
 			label: `background ${bgLayer.type} ${index + 1}`,
-			value: `background ${bgLayer.type} ${bgLayer.id}`,
+			value: bgLayer.uniqueId,
 		};
 	});
 

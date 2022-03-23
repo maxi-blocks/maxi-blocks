@@ -43,7 +43,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round } from 'lodash';
+import { isEmpty, isNil, round, isNumber } from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -118,10 +118,10 @@ class edit extends MaxiBlockComponent {
 			captionType,
 			externalUrl,
 			fullWidth,
-			imageRatio,
 			imgWidth,
 			mediaAlt,
 			altSelector,
+			useInitSize,
 			mediaHeight,
 			mediaID,
 			mediaURL,
@@ -137,11 +137,7 @@ class edit extends MaxiBlockComponent {
 			fullWidth === 'full' && 'alignfull'
 		);
 
-		const wrapperClassName = classnames(
-			'maxi-image-block-wrapper',
-			'maxi-image-ratio',
-			!SVGElement && `maxi-image-ratio__${imageRatio}`
-		);
+		const wrapperClassName = classnames('maxi-image-block-wrapper');
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
@@ -218,10 +214,40 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
+
+		const getMaxWidth = () => {
+			const maxWidth = getLastBreakpointAttribute({
+				target: 'image-max-width',
+				breakpoint: deviceType,
+				attributes,
+			});
+
+			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
+
+			const maxWidthUnit = getLastBreakpointAttribute({
+				target: 'image-max-width-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
+
+			if (
+				(!useInitSize && isNumber(maxWidth)) ||
+				(useInitSize && maxWidth > mediaWidth)
+			)
+				return `${maxWidth}${maxWidthUnit}`;
+
+			return '100%';
+		};
 
 		return [
 			<Inspector
@@ -302,9 +328,20 @@ class edit extends MaxiBlockComponent {
 										className='maxi-block__resizer maxi-image-block__resizer'
 										resizableObject={this.resizableObject}
 										isOverflowHidden={getIsOverflowHidden()}
-										size={{ width: `${imgWidth}%` }}
-										showHandle={isSelected}
-										maxWidth='100%'
+										size={{
+											width: `${
+												fullWidth !== 'full' &&
+												!useInitSize
+													? imgWidth
+													: 100
+											}%`,
+										}}
+										showHandle={
+											isSelected &&
+											fullWidth !== 'full' &&
+											!useInitSize
+										}
+										maxWidth={getMaxWidth()}
 										enable={{
 											topRight: true,
 											bottomRight: true,

@@ -12,7 +12,6 @@ import {
 	ColumnSizeControl,
 	SettingTabsControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
 
@@ -50,10 +49,7 @@ const Inspector = props => {
 											),
 											content: (
 												<ColumnSizeControl
-													{...getGroupAttributes(
-														attributes,
-														'columnSize'
-													)}
+													props
 													verticalAlign={
 														verticalAlign
 													}

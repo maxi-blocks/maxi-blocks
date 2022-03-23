@@ -48,6 +48,7 @@ const ATTRIBUTES = [
 	'columnSize',
 	'display',
 	'divider',
+	'link',
 	'margin',
 	'motion',
 	'opacity',
@@ -57,9 +58,9 @@ const ATTRIBUTES = [
 	'size',
 	'textAlignment',
 	'transform',
+	'transitionDuration',
 	'typography',
 	'typographyHover',
-	'transitionDuration',
 	'zIndex',
 ];
 const WRAPPER_BLOCKS = [

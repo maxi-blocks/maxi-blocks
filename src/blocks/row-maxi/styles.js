@@ -88,22 +88,6 @@ const getNormalObject = props => {
 	return response;
 };
 
-const getContainerObject = props => {
-	const response = {
-		row: {
-			general: {},
-		},
-	};
-
-	if (!isEmpty(props.horizontalAlign))
-		response.row.general['justify-content'] = props.horizontalAlign;
-
-	if (!isEmpty(props.verticalAlign))
-		response.row.general['align-items'] = props.verticalAlign;
-
-	return response;
-};
-
 const getHoverObject = props => {
 	const response = {
 		border:
@@ -140,7 +124,6 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner(
 			{
 				'': getNormalObject(props),
-				' .maxi-row-block__container': getContainerObject(props),
 				':hover': getHoverObject(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

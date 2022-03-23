@@ -5,6 +5,11 @@ import { useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
+
+/**
  * Component
  */
 const BlockStylesSaver = () => {
@@ -29,6 +34,7 @@ const BlockStylesSaver = () => {
 
 	useEffect(() => {
 		if (isSaving) {
+			loadFonts(getPageFonts(), false);
 			if (!isPreviewing && !isDraft) {
 				saveStyles(true);
 				saveCustomData(true);

@@ -39,7 +39,6 @@ export { default as ImageShape } from './image-shape';
 export { default as ImageURL } from './image-url';
 export { default as Indicators } from './indicators';
 export { default as InfoBox } from './info-box';
-export { default as InnerBlocks } from './inner-blocks';
 export { default as MapControl } from './map-control';
 export { default as ScrollEffectsControl } from './scroll-effects-control';
 export { default as MotionPreview } from './motion-preview';

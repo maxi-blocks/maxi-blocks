@@ -53,12 +53,12 @@ const getTypographyStyles = ({
 
 		return (
 			isCustomFormat &&
-			getLastBreakpointAttribute(
-				'palette-status',
+			getLastBreakpointAttribute({
+				target: 'palette-status',
 				breakpoint,
-				customFormatTypography,
-				isHover
-			)
+				attributes: customFormatTypography,
+				isHover,
+			})
 		);
 	};
 
@@ -102,19 +102,21 @@ const getTypographyStyles = ({
 	// As sometimes creators just change the value and not the unit, we need to
 	// be able to request the non-hover unit
 	const getUnitValue = (prop, breakpoint) => {
-		const unit = getLastBreakpointAttribute(
-			`${prefix}${prop}`,
+		const unit = getLastBreakpointAttribute({
+			target: `${prefix}${prop}`,
 			breakpoint,
-			isCustomFormat ? customFormatTypography : obj
-		);
+			attributes: isCustomFormat ? customFormatTypography : obj,
+			avoidXXL: false,
+		});
 
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;
 
-		return getLastBreakpointAttribute(
-			`${prefix}${prop}`,
+		return getLastBreakpointAttribute({
+			target: `${prefix}${prop}`,
 			breakpoint,
-			normalTypography
-		);
+			attributes: normalTypography,
+			avoidXXL: false,
+		});
 	};
 
 	breakpoints.forEach(breakpoint => {

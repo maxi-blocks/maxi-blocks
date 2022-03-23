@@ -74,7 +74,7 @@ const AxisInput = props => {
 				'maxi-axis-control__content__item',
 				`maxi-axis-control__content__item__${replace(
 					label,
-					' / ',
+					' ',
 					'-'
 				).toLowerCase()}`
 			)}
@@ -110,12 +110,12 @@ const AxisContent = props => {
 		onReset,
 	} = props;
 
-	const sync = getLastBreakpointAttribute(
-		getKey('sync'),
+	const sync = getLastBreakpointAttribute({
+		target: getKey('sync'),
 		breakpoint,
-		props,
-		isHover
-	);
+		attributes: props,
+		isHover,
+	});
 
 	return (
 		<div>
@@ -257,12 +257,12 @@ const AxisControlContent = props => {
 		disableSync = false,
 	} = props;
 
-	const sync = getLastBreakpointAttribute(
-		getKey('sync'),
+	const sync = getLastBreakpointAttribute({
+		target: getKey('sync'),
 		breakpoint,
-		props,
-		isHover
-	);
+		attributes: props,
+		isHover,
+	});
 
 	const getSyncLabel = () => {
 		const label =
@@ -304,12 +304,12 @@ const AxisControlContent = props => {
 					false,
 					breakpoint
 				);
-				const value = getLastBreakpointAttribute(
-					getKey(input),
+				const value = getLastBreakpointAttribute({
+					target: getKey(input),
 					breakpoint,
-					props,
-					isHover
-				);
+					attributes: props,
+					isHover,
+				});
 
 				if (!isNil(value) && !isNaN(value))
 					response[key] = round(
@@ -471,14 +471,14 @@ const AxisControl = props => {
 	};
 
 	const getLastBreakpointValue = key => {
-		const inputValue = getLastBreakpointAttribute(
-			getKey(key),
+		const inputValue = getLastBreakpointAttribute({
+			target: getKey(key),
 			breakpoint,
-			props,
+			attributes: props,
 			isHover,
-			false,
-			true
-		);
+			forceSingle: false,
+			avoidXXL: true,
+		});
 
 		return inputValue;
 	};
@@ -537,12 +537,12 @@ const AxisControl = props => {
 	};
 
 	const currentUnit =
-		getLastBreakpointAttribute(
-			getKey('unit'),
+		getLastBreakpointAttribute({
+			target: getKey('unit'),
 			breakpoint,
-			props,
-			isHover
-		) || 'px';
+			attributes: props,
+			isHover,
+		}) || 'px';
 
 	const onChangeValue = (val, singleTarget, customBreakpoint) => {
 		let newValue = '';
@@ -557,12 +557,12 @@ const AxisControl = props => {
 
 		if (target === 'padding' && newValue < 0) newValue = 0;
 
-		const sync = getLastBreakpointAttribute(
-			getKey('sync'),
+		const sync = getLastBreakpointAttribute({
+			target: getKey('sync'),
 			breakpoint,
-			props,
-			isHover
-		);
+			attributes: props,
+			isHover,
+		});
 
 		let response = {};
 

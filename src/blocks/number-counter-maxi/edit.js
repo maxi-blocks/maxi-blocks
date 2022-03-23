@@ -100,10 +100,16 @@ const NumberCounter = attributes => {
 	]);
 
 	const getIsOverflowHidden = () =>
-		getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-			'hidden' &&
-		getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-			'hidden';
+		getLastBreakpointAttribute({
+			target: 'overflow-y',
+			breakpoint: deviceType,
+			attributes,
+		}) === 'hidden' &&
+		getLastBreakpointAttribute({
+			target: 'overflow-x',
+			breakpoint: deviceType,
+			attributes,
+		}) === 'hidden';
 
 	return (
 		<>
@@ -121,15 +127,15 @@ const NumberCounter = attributes => {
 				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
 				defaultSize={{
-					width: `${getLastBreakpointAttribute(
-						'number-counter-width',
-						deviceType,
-						attributes
-					)}${getLastBreakpointAttribute(
-						'number-counter-width-unit',
-						deviceType,
-						attributes
-					)}`,
+					width: `${getLastBreakpointAttribute({
+						target: 'number-counter-width',
+						breakpoint: deviceType,
+						attributes,
+					})}${getLastBreakpointAttribute({
+						target: 'number-counter-width-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}`,
 				}}
 				maxWidth='100%'
 				minWidth={
@@ -216,16 +222,16 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
-			const svgWidth = getLastBreakpointAttribute(
-				'number-counter-width',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
-			const svgWidthUnit = getLastBreakpointAttribute(
-				'number-counter-width-unit',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
+			const svgWidth = getLastBreakpointAttribute({
+				target: 'number-counter-width',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
+			const svgWidthUnit = getLastBreakpointAttribute({
+				target: 'number-counter-width-unit',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
 			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
 			if (this.resizableObject.current.state.width !== fullWidthValue)
@@ -262,11 +268,11 @@ class edit extends MaxiBlockComponent {
 		const classes = 'maxi-number-counter-block';
 
 		const handleOnResizeStop = (event, direction, elt) => {
-			const widthUnit = getLastBreakpointAttribute(
-				'number-counter-width-unit',
-				deviceType,
-				attributes
-			);
+			const widthUnit = getLastBreakpointAttribute({
+				target: 'number-counter-width-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
 
 			maxiSetAttributes({
 				[`number-counter-width-${deviceType}`]: getResizerSize(

@@ -47,11 +47,11 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 						newLabel.includes(key)
 					);
 
-					const unit = getLastBreakpointAttribute(
-						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
+					const unit = getLastBreakpointAttribute({
+						target: `${prefix}${newLabel.replace(unitKey, 'unit')}`,
 						breakpoint,
-						obj
-					);
+						attributes: obj,
+					});
 					response[breakpoint][newLabel] =
 						value === 'auto' ? 'auto' : `${value}${unit}`;
 				}

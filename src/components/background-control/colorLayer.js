@@ -70,33 +70,33 @@ const ColorLayerContent = props => {
 		<>
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
-				color={getLastBreakpointAttribute(
-					`${prefix}background-color`,
+				color={getLastBreakpointAttribute({
+					target: `${prefix}background-color`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
+					attributes: colorOptions,
+					isHover,
+				})}
 				prefix={`${prefix}background-`}
 				useBreakpointForDefault
 				defaultColorAttributes={getDefaultAttr()}
-				paletteStatus={getLastBreakpointAttribute(
-					`${prefix}background-palette-status`,
+				paletteStatus={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-status`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
-				paletteColor={getLastBreakpointAttribute(
-					`${prefix}background-palette-color`,
+					attributes: colorOptions,
+					isHover,
+				})}
+				paletteColor={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-color`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
-				paletteOpacity={getLastBreakpointAttribute(
-					`${prefix}background-palette-opacity`,
+					attributes: colorOptions,
+					isHover,
+				})}
+				paletteOpacity={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-opacity`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
+					attributes: colorOptions,
+					isHover,
+				})}
 				onChange={({
 					color,
 					paletteColor,
@@ -138,12 +138,12 @@ const ColorLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute(
-						`${prefix}background-color-clip-path`,
+					clipPath={getLastBreakpointAttribute({
+						target: `${prefix}background-color-clip-path`,
 						breakpoint,
-						colorOptions,
-						isHover
-					)}
+						attributes: colorOptions,
+						isHover,
+					})}
 					onChange={val => {
 						onChange({
 							[getAttributeKey(

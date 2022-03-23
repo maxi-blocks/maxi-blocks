@@ -3,6 +3,7 @@
  */
 import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -19,7 +20,6 @@ import {
 	Indicators,
 	ShapeDivider,
 	Toolbar,
-	InnerBlocks,
 } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -81,17 +81,29 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
+				hasInnerBlocks
+				innerBlocksSettings={{
+					allowedBlocks: ALLOWED_BLOCKS,
+					template: ROW_TEMPLATE,
+					templateLock: false,
+					orientation: 'horizontal',
+					renderAppender: !hasInnerBlocks
+						? BlockPlaceholder
+						: InnerBlocks.ButtonBlockAppender,
+				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider
+						key={`maxi-shape-divider-top__${uniqueID}`}
 						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='top'
 					/>
 				)}
-				{isFirstOnHierarchy && blockFullWidth === 'full' && (
+				{isFirstOnHierarchy && (
 					<>
 						<ArrowDisplayer
+							key={`maxi-arrow-displayer__${uniqueID}`}
 							{...getGroupAttributes(
 								attributes,
 								['blockBackground', 'arrow', 'border'],
@@ -111,23 +123,12 @@ class edit extends MaxiBlockComponent {
 						/>
 					</>
 				)}
-				<InnerBlocks
-					ref={this.blockRef}
-					className='maxi-container-block__container'
-					allowedBlocks={ALLOWED_BLOCKS}
-					template={ROW_TEMPLATE}
-					templateLock={false}
-					orientation='horizontal'
-					renderAppender={
-						!hasInnerBlocks
-							? BlockPlaceholder
-							: InnerBlocks.ButtonBlockAppender
-					}
-				/>
 				{attributes['shape-divider-bottom-status'] && (
 					<ShapeDivider
+						key={`maxi-shape-divider-bottom__${uniqueID}`}
 						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='bottom'
+						afterInnerProps
 					/>
 				)}
 			</MaxiBlock>,

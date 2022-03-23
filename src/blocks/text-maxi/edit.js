@@ -32,12 +32,12 @@ import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
+import { setSVGColor } from '../../extensions/svg';
 
 /**
  * External dependencies
  */
-import { isEmpty, compact, flatten } from 'lodash';
-import { setSVGColor } from '../../extensions/svg';
+import { isEmpty, compact, flatten, isEqual } from 'lodash';
 
 /**
  * Content
@@ -147,13 +147,15 @@ class edit extends MaxiBlockComponent {
 				clearTimeout(this.typingTimeoutFormatValue);
 			}
 
-			this.formatValue = formatValue;
-
 			this.typingTimeoutFormatValue = setTimeout(() => {
-				dispatch('maxiBlocks/text').sendFormatValue(
-					formatValue,
-					clientId
-				);
+				if (!isEqual(this.formatValue, formatValue)) {
+					dispatch('maxiBlocks/text').sendFormatValue(
+						formatValue,
+						clientId
+					);
+
+					this.formatValue = formatValue;
+				}
 			}, 100);
 		};
 
@@ -236,7 +238,7 @@ class edit extends MaxiBlockComponent {
 						}}
 						onMerge={forward => onMerge(this.props, forward)}
 						__unstableEmbedURLOnPaste
-						preserveWhiteSpace
+						withoutInteractiveFormatting
 					>
 						{onChangeRichText}
 					</RichText>

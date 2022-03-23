@@ -1,8 +1,18 @@
+/**
+ * WordPress dependencies
+ */
 import { select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import { getDefaultAttribute } from '../styles';
 
+/**
+ * External dependencies
+ */
 import { isNil } from 'lodash';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -33,10 +43,8 @@ export const handleSetAttributes = ({
 			0,
 			key.lastIndexOf('-')
 		)}-${winBreakpoint}`;
-		const attrExistOnWinBreakpoint = !isNil(
-			attributes[attrLabelOnWinBreakpoint],
-			true
-		);
+		const attrOnWinBreakpoint = attributes?.[attrLabelOnWinBreakpoint];
+		const attrExistOnWinBreakpoint = !isNil(attrOnWinBreakpoint);
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
 
@@ -48,12 +56,19 @@ export const handleSetAttributes = ({
 		const attrExistOnGeneral = !isNil(attributes[attrLabelOnGeneral], true);
 		const attrExistOnObjOnGeneral = attrLabelOnGeneral in obj;
 
+		// When changing a number that needs more than 2 digits, it is saved digit by digit
+		// Need to make both be saved in same conditions
+		const needsGeneralAttr =
+			attributes?.[attrLabelOnGeneral] === attributes?.[key];
+
 		if (
-			!attrExistOnGeneral &&
+			(!attrExistOnGeneral || needsGeneralAttr) &&
 			!attrExistOnObjOnGeneral &&
 			breakpoint === 'xxl'
 		)
 			response[attrLabelOnGeneral] = value;
+
+		if (breakpoint === 'xxl' && needsGeneralAttr) return;
 
 		const existHigherBreakpointAttribute = breakpoints
 			.slice(0, breakpoints.indexOf(winBreakpoint))
@@ -69,23 +84,36 @@ export const handleSetAttributes = ({
 					)
 			);
 
+		const defaultOnWinBreakpointAttribute =
+			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
+			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
+
 		if (
 			!attrExistOnGeneral &&
-			!attrExistOnWinBreakpoint &&
+			existHigherBreakpointAttribute &&
 			breakpoint === 'general' &&
-			existHigherBreakpointAttribute
+			(!attrExistOnWinBreakpoint ||
+				defaultOnWinBreakpointAttribute === attrOnWinBreakpoint)
 		)
 			response[attrLabelOnWinBreakpoint] = value;
 
 		if (!attrExistOnGeneral) return;
+
+		if (
+			breakpoint === 'general' &&
+			defaultOnWinBreakpointAttribute === value
+		) {
+			response[attrLabelOnWinBreakpoint] = value;
+
+			return;
+		}
 
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId);
 
 		if (
-			(breakpoint === 'general' ||
-				attributes[attrLabelOnGeneral] === value) &&
+			attributes?.[attrLabelOnGeneral] === value &&
 			defaultGeneralAttribute === value
 		)
 			return;

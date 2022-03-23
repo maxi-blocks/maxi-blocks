@@ -108,6 +108,9 @@ const attributes = {
 		type: 'number',
 		default: 100,
 	},
+	useInitSize: {
+		type: 'boolean',
+	},
 	clipPath: {
 		type: 'string',
 		default: '',

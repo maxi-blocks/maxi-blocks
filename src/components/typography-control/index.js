@@ -16,6 +16,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
+import { loadFonts } from '../../extensions/text/fonts';
 
 import {
 	setFormat,
@@ -51,14 +52,9 @@ const TextOptions = props => {
 		prefix,
 		minMaxSettings,
 		minMaxSettingsLetterSpacing,
-		breakpoint: rawBreakpoint,
+		breakpoint,
 		avoidXXL,
 	} = props;
-
-	const breakpoint =
-		rawBreakpoint !== 'general'
-			? rawBreakpoint
-			: select('maxiBlocks').receiveWinBreakpoint();
 
 	return (
 		<>
@@ -73,7 +69,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}font-size-unit`]: val,
 						},
-						rawBreakpoint
+						breakpoint
 					);
 				}}
 				placeholder={getValue(
@@ -93,7 +89,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}font-size`]: val,
 						},
-						rawBreakpoint
+						breakpoint
 					);
 				}}
 				onReset={() =>
@@ -106,7 +102,7 @@ const TextOptions = props => {
 								`${prefix}font-size`
 							),
 						},
-						rawBreakpoint
+						breakpoint
 					)
 				}
 				minMaxSettings={minMaxSettings}
@@ -136,7 +132,7 @@ const TextOptions = props => {
 									minMaxSettings['-'].max,
 							}),
 						},
-						rawBreakpoint
+						breakpoint
 					);
 				}}
 				placeholder={getValue(
@@ -156,7 +152,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}line-height`]: val,
 						},
-						rawBreakpoint
+						breakpoint
 					);
 				}}
 				onReset={() =>
@@ -169,7 +165,7 @@ const TextOptions = props => {
 								`${prefix}line-height`
 							),
 						},
-						rawBreakpoint
+						breakpoint
 					)
 				}
 				minMaxSettings={minMaxSettings}
@@ -194,7 +190,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}letter-spacing-unit`]: val,
 						},
-						rawBreakpoint
+						breakpoint
 					);
 				}}
 				placeholder={getValue(
@@ -214,7 +210,7 @@ const TextOptions = props => {
 						{
 							[`${prefix}letter-spacing`]: val,
 						},
-						rawBreakpoint
+						breakpoint
 					);
 				}}
 				onReset={() =>
@@ -225,7 +221,7 @@ const TextOptions = props => {
 							),
 							[`${prefix}letter-spacing`]: '',
 						},
-						rawBreakpoint
+						breakpoint
 					)
 				}
 				minMaxSettings={minMaxSettingsLetterSpacing}
@@ -553,34 +549,43 @@ const TypographyControl = withFormatValue(props => {
 		},
 	};
 
-	const getValue = (
-		prop,
-		customBreakpoint,
-		avoidXXL,
-		customDisableFormats = false
-	) => {
+	const getValue = (prop, customBreakpoint, avoidXXL, avoidSC = false) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
-		if (disableFormats || customDisableFormats)
-			return getLastBreakpointAttribute(
-				prop,
-				currentBreakpoint,
-				typography,
+		if (disableFormats)
+			return getLastBreakpointAttribute({
+				target: prop,
+				breakpoint: currentBreakpoint,
+				attributes: typography,
 				isHover,
-				false,
-				avoidXXL
-			);
+				avoidXXL,
+			});
 
-		const nonHoverValue = getCustomFormatValue({
-			typography,
-			formatValue,
-			prop,
-			breakpoint: currentBreakpoint,
-			textLevel,
-			styleCard,
-			styleCardPrefix,
-			avoidXXL,
-		});
+		const nonHoverValue =
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop,
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+				avoidSC,
+			}) ??
+			// In cases like HoverEffectControl, where we want the SC 'p' value
+			// but requires a clean 'prop' value (no prefix)
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop: prop.replace(prefix, ''),
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+				avoidSC,
+			});
 
 		if (!isHover) return nonHoverValue;
 
@@ -703,13 +708,7 @@ const TypographyControl = withFormatValue(props => {
 		const newFormatValue = { ...obj.formatValue };
 		delete obj.formatValue;
 
-		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
-		setTimeout(() => {
-			dispatch('maxiBlocks/text').sendFormatValue(
-				newFormatValue,
-				clientId
-			);
-		}, 200); // higher than the 150 of `onChangeRichText` method
+		dispatch('maxiBlocks/text').sendFormatValue(newFormatValue, clientId);
 
 		onChange(obj);
 	};
@@ -732,6 +731,8 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}font-options`]: font.files,
 						});
 					}}
+					fontWeight={getValue(`${prefix}font-weight`)}
+					fontStyle={getValue(`${prefix}font-style`)}
 				/>
 			)}
 			{!disableColor && !styleCards && (
@@ -801,6 +802,14 @@ const TypographyControl = withFormatValue(props => {
 				options={getWeightOptions()}
 				onChange={val => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
+					const fontName = getValue(`${prefix}font-family`);
+					const fontStyle = getValue(`${prefix}font-style`);
+					const objFont = { [fontName]: {} };
+
+					objFont[fontName].weight = val.toString();
+					if (fontStyle) objFont[fontName].style = fontStyle;
+
+					loadFonts(objFont);
 				}}
 			/>
 			<SelectControl
@@ -898,11 +907,11 @@ const TypographyControl = withFormatValue(props => {
 								[`${prefix}text-shadow`]: val,
 							});
 						}}
-						defaultColor={getLastBreakpointAttribute(
-							'color',
+						defaultColor={getLastBreakpointAttribute({
+							target: 'color',
 							breakpoint,
-							typography
-						)}
+							attributes: typography,
+						})}
 						blockStyle={blockStyle}
 						breakpoint={breakpoint}
 					/>

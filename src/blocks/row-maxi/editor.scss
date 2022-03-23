@@ -6,12 +6,8 @@
 	outline: 1px solid #81bdda !important;
 	z-index: 2;
 
-	&__container {
-		display: flex;
-		width: 100%;
-	}
-
 	.block-list-appender.wp-block {
+		position: relative;
 		width: 100%;
 		max-width: none;
 		margin: 0;

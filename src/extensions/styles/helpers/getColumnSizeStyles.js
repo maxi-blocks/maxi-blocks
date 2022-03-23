@@ -12,10 +12,18 @@ const getColumnSizeStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		if (isNumber(obj[`column-size-${breakpoint}`])) {
+		const fitContent = obj[`column-fit-content-${breakpoint}`];
+		const columnSize = obj[`column-size-${breakpoint}`];
+
+		if (fitContent) {
 			response[breakpoint] = {
-				width: `${obj[`column-size-${breakpoint}`]}%`,
-				'flex-basis': `${obj[`column-size-${breakpoint}`]}%`,
+				width: 'fit-content',
+				'flex-basis': 'fit-content',
+			};
+		} else if (isNumber(columnSize)) {
+			response[breakpoint] = {
+				width: `${columnSize}%`,
+				'flex-basis': `${columnSize}%`,
 			};
 		}
 	});

@@ -44,11 +44,11 @@ const BackgroundColor = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	const activeMedia = getLastBreakpointAttribute(
-		`${prefix}background-active-media`,
+	const activeMedia = getLastBreakpointAttribute({
+		target: `${prefix}background-active-media`,
 		breakpoint,
-		props
-	);
+		attributes: props,
+	});
 	const isBackgroundColor = activeMedia === 'color';
 
 	return (

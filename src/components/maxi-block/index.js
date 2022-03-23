@@ -3,8 +3,13 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
-import { forwardRef, useEffect, useState } from '@wordpress/element';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import {
+	forwardRef,
+	useEffect,
+	useState,
+	cloneElement,
+} from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 
 /**
@@ -17,7 +22,7 @@ import BackgroundDisplayer from '../background-displayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isArray, compact } from 'lodash';
 
 /**
  * Styles
@@ -59,7 +64,11 @@ const MainBlock = forwardRef(
 						<span id={anchorLink} className='maxi-block-anchor' />
 					)}
 					{disableBackground && (
-						<BackgroundDisplayer isSave {...background} />
+						<BackgroundDisplayer
+							key={`maxi-background-displayer__${uniqueID}`}
+							isSave
+							{...background}
+						/>
 					)}
 					{children}
 				</TagName>
@@ -68,10 +77,120 @@ const MainBlock = forwardRef(
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
 				{!isEmpty(anchorLink) && <span id={anchorLink} />}
-				{disableBackground && <BackgroundDisplayer {...background} />}
+				{disableBackground && (
+					<BackgroundDisplayer
+						key={`maxi-background-displayer__${uniqueID}`}
+						{...background}
+					/>
+				)}
 				{children}
 			</TagName>
 		);
+	}
+);
+
+const getInnerBlocksChild = ({
+	children,
+	background,
+	disableBackground,
+	innerBlocksChildren,
+	anchorLink,
+	isSave = false,
+	uniqueID,
+}) => {
+	const needToSplit =
+		isArray(children) &&
+		children.some(child => child?.props?.afterInnerProps);
+
+	if (!needToSplit)
+		return [
+			...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+			...(disableBackground && (
+				<BackgroundDisplayer
+					key={`maxi-background-displayer__${uniqueID}`}
+					isSave={isSave}
+					{...background}
+				/>
+			)),
+			...(children ?? children),
+			...cloneElement(innerBlocksChildren, {
+				key: `maxi-inner-content__${uniqueID}`,
+			}),
+		];
+
+	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
+	const secondGroup = children
+		.filter(child => child?.props?.afterInnerProps)
+		.map(({ props: { afterInnerProps, ...restProps }, ...child }) =>
+			cloneElement({ ...child, props: restProps })
+		);
+
+	return [
+		...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+		...(disableBackground && (
+			<BackgroundDisplayer
+				key={`maxi-background-displayer__${uniqueID}`}
+				isSave={isSave}
+				{...background}
+			/>
+		)),
+		...firstGroup,
+		...cloneElement(innerBlocksChildren, {
+			key: `maxi-inner-content__${uniqueID}`,
+		}),
+		...secondGroup,
+	];
+};
+
+const InnerBlocksBlock = forwardRef(
+	(
+		{
+			tagName: TagName = 'div',
+			children,
+			background,
+			disableBackground,
+			uniqueID,
+			isSave,
+			anchorLink,
+			innerBlocksSettings,
+			...props
+		},
+		ref
+	) => {
+		const blockProps = isSave
+			? useBlockProps.save(props)
+			: useBlockProps({ ...props, ref });
+
+		const innerBlocksProps = isSave
+			? useInnerBlocksProps.save(blockProps)
+			: useInnerBlocksProps(blockProps, {
+					...innerBlocksSettings,
+					wrapperRef: ref,
+			  });
+
+		const { children: innerBlocksChildren, ...restInnerBlocksProps } =
+			innerBlocksProps;
+
+		const blockChildren = compact(
+			getInnerBlocksChild({
+				children,
+				background,
+				disableBackground,
+				innerBlocksChildren,
+				anchorLink,
+				isSave,
+				uniqueID,
+			})
+		);
+
+		if (isSave)
+			return (
+				<TagName ref={ref} {...innerBlocksProps}>
+					{blockChildren}
+				</TagName>
+			);
+
+		return <TagName {...restInnerBlocksProps}>{blockChildren}</TagName>;
 	}
 );
 
@@ -96,6 +215,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		paletteClasses,
 		hasArrow,
 		hasLink,
+		hasInnerBlocks = false,
 		...extraProps
 	} = props;
 
@@ -227,7 +347,10 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	return <MainBlock {...blockProps}>{children}</MainBlock>;
+	if (!hasInnerBlocks)
+		return <MainBlock {...blockProps}>{children}</MainBlock>;
+
+	return <InnerBlocksBlock {...blockProps}>{children}</InnerBlocksBlock>;
 });
 
 export default MaxiBlock;

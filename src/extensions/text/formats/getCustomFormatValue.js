@@ -40,6 +40,7 @@ const getCustomFormatValue = ({
 	styleCard,
 	styleCardPrefix,
 	avoidXXL = false,
+	avoidSC = false,
 }) => {
 	// Custom format value
 	if (formatValue) {
@@ -55,11 +56,11 @@ const getCustomFormatValue = ({
 				isHover
 			);
 			if (customFormat) {
-				const responsiveValue = getLastBreakpointAttribute(
-					prop,
+				const responsiveValue = getLastBreakpointAttribute({
+					target: prop,
 					breakpoint,
-					customFormat
-				);
+					attributes: customFormat,
+				});
 
 				if (
 					responsiveValue ||
@@ -72,16 +73,15 @@ const getCustomFormatValue = ({
 	}
 
 	// General format value
-	const value = getLastBreakpointAttribute(
-		prop,
+	const value = getLastBreakpointAttribute({
+		target: prop,
 		breakpoint,
-		typography,
+		attributes: typography,
 		isHover,
-		false,
-		avoidXXL
-	);
+		avoidXXL,
+	});
 
-	if (getIsValidValue(value)) return value;
+	if (getIsValidValue(value) || avoidSC) return value;
 
 	// Style Cards value
 	const rawSCStyle = blockStyle ? blockStyle.replace('maxi-', '') : undefined;
@@ -92,27 +92,25 @@ const getCustomFormatValue = ({
 	const activeStyleCard = styleCard || getActiveStyleCard().value;
 	const currentSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
-	const currentSCValue = getLastBreakpointAttribute(
-		prop,
+	const currentSCValue = getLastBreakpointAttribute({
+		target: prop,
 		breakpoint,
-		currentSC,
+		attributes: currentSC,
 		isHover,
-		false,
-		avoidXXL
-	);
+		avoidXXL,
+	});
 
 	if (getIsValidValue(currentSCValue)) return currentSCValue;
 
 	const defaultSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
-	const defaultSCValue = getLastBreakpointAttribute(
-		prop,
+	const defaultSCValue = getLastBreakpointAttribute({
+		target: prop,
 		breakpoint,
-		defaultSC,
+		attributes: defaultSC,
 		isHover,
-		false,
-		avoidXXL
-	);
+		avoidXXL,
+	});
 
 	if (getIsValidValue(defaultSCValue)) return defaultSCValue;
 

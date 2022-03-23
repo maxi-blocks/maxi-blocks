@@ -41,11 +41,11 @@ const OverflowControl = props => {
 						{ label: 'Scroll', value: 'scroll' },
 					]}
 					value={
-						getLastBreakpointAttribute(
-							`overflow-${axis}`,
+						getLastBreakpointAttribute({
+							target: `overflow-${axis}`,
 							breakpoint,
-							props
-						) || ''
+							attributes: props,
+						}) || ''
 					}
 					onChange={val =>
 						onChange({

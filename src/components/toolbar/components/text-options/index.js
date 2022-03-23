@@ -189,14 +189,13 @@ const TypographyControl = withFormatValue(props => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
 		if (disableFormats)
-			return getLastBreakpointAttribute(
-				prop,
-				currentBreakpoint,
-				typography,
+			return getLastBreakpointAttribute({
+				target: prop,
+				breakpoint: currentBreakpoint,
+				attributes: typography,
 				isHover,
-				false,
-				avoidXXL
-			);
+				avoidXXL,
+			});
 
 		const nonHoverValue = getCustomFormatValue({
 			typography,

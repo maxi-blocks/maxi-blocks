@@ -29,7 +29,7 @@ describe('ShapeDividerControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-shapedividercontrol .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
+			'.maxi-shape-divider-control .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
 			click => click.click()
 		);
 
@@ -39,7 +39,7 @@ describe('ShapeDividerControl', () => {
 
 		// effects
 		await accordionPanel.$eval(
-			'.maxi-shapedividercontrol .maxi-toggle-switch.shape-divider-top-effects-status .maxi-base-control__label',
+			'.maxi-shape-divider-control .maxi-toggle-switch.shape-divider-top-effects-status .maxi-base-control__label',
 			click => click.click()
 		);
 
@@ -49,12 +49,12 @@ describe('ShapeDividerControl', () => {
 
 		// divider style
 		await accordionPanel.$eval(
-			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector button',
+			'.maxi-dropdown.maxi-shape-divider-control__shape-selector button',
 			modal => modal.click()
 		);
 
 		await page.$$eval(
-			'.maxi-shapedividercontrol__shape-list button',
+			'.maxi-shape-divider-control__shape-list button',
 			click => click[1].click()
 		);
 
@@ -89,7 +89,7 @@ describe('ShapeDividerControl', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
-				'.maxi-shapedividercontrol .maxi-divider-height'
+				'.maxi-shape-divider-control .maxi-divider-height'
 			),
 			newNumber: '200',
 		});

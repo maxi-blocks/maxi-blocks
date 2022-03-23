@@ -89,21 +89,21 @@ const Size = props => {
 						<AdvancedNumberControl
 							label={__('Width', 'maxi-blocks')}
 							enableUnit
-							unit={getLastBreakpointAttribute(
-								`${prefix}width-unit`,
+							unit={getLastBreakpointAttribute({
+								target: `${prefix}width-unit`,
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeUnit={val =>
 								onChange({
 									[`${prefix}width-unit-${breakpoint}`]: val,
 								})
 							}
-							value={getLastBreakpointAttribute(
-								`${prefix}width`,
+							value={getLastBreakpointAttribute({
+								target: `${prefix}width`,
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val =>
 								onChange({
 									[`${prefix}width-${breakpoint}`]: val,
@@ -126,11 +126,11 @@ const Size = props => {
 							<AdvancedNumberControl
 								label={__('Max Width', 'maxi-blocks')}
 								enableUnit
-								unit={getLastBreakpointAttribute(
-									`${prefix}max-width-unit`,
+								unit={getLastBreakpointAttribute({
+									target: `${prefix}max-width-unit`,
 									breakpoint,
-									props
-								)}
+									attributes: props,
+								})}
 								onChangeUnit={val =>
 									onChange({
 										[`${prefix}max-width-unit-${breakpoint}`]:
@@ -149,11 +149,11 @@ const Size = props => {
 											),
 									})
 								}
-								value={getLastBreakpointAttribute(
-									`${prefix}max-width`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}max-width`,
 									breakpoint,
-									props
-								)}
+									attributes: props,
+								})}
 								onChangeValue={val =>
 									onChange({
 										[`${prefix}max-width-${breakpoint}`]:

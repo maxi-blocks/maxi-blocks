@@ -14,6 +14,7 @@ import {
 } from '../../extensions/styles';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
+import { ToggleSwitch } from '../../components';
 
 /**
  * Component
@@ -23,39 +24,63 @@ const ColumnSizeControl = props => {
 
 	return (
 		<>
-			<AdvancedNumberControl
-				label={__('Column Size (%)', 'maxi-blocks')}
-				value={getLastBreakpointAttribute(
-					'column-size',
+			<ToggleSwitch
+				label={__('Fit content', 'maxi-blocks')}
+				className='maxi-column-inspector__fit-content'
+				selected={getLastBreakpointAttribute({
+					target: 'column-fit-content',
 					breakpoint,
-					props
-				)}
-				onChangeValue={val => {
+					props,
+				})}
+				onChange={val => {
 					onChange({
-						[`column-size-${breakpoint}`]:
-							val !== undefined && val !== '' ? val : '',
+						[`column-fit-content-${breakpoint}`]: val,
 					});
 				}}
-				min={0}
-				max={100}
-				step={0.1}
-				onReset={() =>
-					onChange({
-						[`column-size-${breakpoint}`]: getColumnDefaultValue(
-							rowPattern,
-							{
-								...getGroupAttributes(props, 'columnSize'),
-							},
-							clientId,
-							breakpoint
-						),
-					})
-				}
-				initialPosition={getDefaultAttribute(
-					`column-size-${breakpoint}`,
-					clientId
-				)}
 			/>
+			{!getLastBreakpointAttribute({
+				target: 'column-fit-content',
+				breakpoint,
+				props,
+			}) && (
+				<AdvancedNumberControl
+					label={__('Column Size (%)', 'maxi-blocks')}
+					value={getLastBreakpointAttribute({
+						target: 'column-size',
+						breakpoint,
+						props,
+					})}
+					onChangeValue={val => {
+						onChange({
+							[`column-size-${breakpoint}`]:
+								val !== undefined && val !== '' ? val : '',
+						});
+					}}
+					min={0}
+					max={100}
+					step={0.1}
+					onReset={() =>
+						onChange({
+							[`column-size-${breakpoint}`]:
+								getColumnDefaultValue(
+									rowPattern,
+									{
+										...getGroupAttributes(
+											props,
+											'columnSize'
+										),
+									},
+									clientId,
+									breakpoint
+								),
+						})
+					}
+					initialPosition={getDefaultAttribute(
+						`column-size-${breakpoint}`,
+						clientId
+					)}
+				/>
+			)}
 			<SelectControl
 				label={__('Vertical align', 'maxi-blocks')}
 				value={verticalAlign}

@@ -20,8 +20,8 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getDefaultAttribute,
 	getAttributeKey,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -166,6 +166,8 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
+		clientId,
+		globalProps,
 	} = props;
 
 	const borderWidthLastValue = () => {
@@ -173,23 +175,23 @@ const BorderControl = props => {
 
 		['top', 'right', 'bottom', 'left'].forEach(item => {
 			response[`border${capitalize(item)}Width`] =
-				getLastBreakpointAttribute(
-					`${prefix}border-${item}-width`,
+				getLastBreakpointAttribute({
+					target: `${prefix}border-${item}-width`,
 					breakpoint,
-					props,
-					isHover
-				);
+					attributes: props,
+					isHover,
+				});
 		});
 
 		return response;
 	};
 
-	const borderStyleValue = getLastBreakpointAttribute(
-		`${prefix}border-style`,
+	const borderStyleValue = getLastBreakpointAttribute({
+		target: `${prefix}border-style`,
 		breakpoint,
-		props,
-		isHover
-	);
+		attributes: props,
+		isHover,
+	});
 
 	const isBorderEnable = borderStyleValue && borderStyleValue !== 'none';
 
@@ -219,7 +221,12 @@ const BorderControl = props => {
 	const getIsActive = () => {
 		const hasBorderWidth = axisItems.some(item => {
 			return isNumber(
-				getLastBreakpointAttribute(item, breakpoint, props, isHover)
+				getLastBreakpointAttribute({
+					target: item,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})
 			);
 		});
 
@@ -231,12 +238,12 @@ const BorderControl = props => {
 		const response = {};
 
 		axisItems.forEach(item => {
-			const value = getLastBreakpointAttribute(
-				item,
+			const value = getLastBreakpointAttribute({
+				target: item,
 				breakpoint,
-				props,
-				isHover
-			);
+				attributes: props,
+				isHover,
+			});
 
 			if (!value)
 				response[getAttributeKey(item, isHover, false, breakpoint)] = 2;
@@ -327,6 +334,66 @@ const BorderControl = props => {
 					}}
 				/>
 			)}
+			{!disableColor && borderStyleValue && borderStyleValue !== 'none' && (
+				<ColorControl
+					label={__('Border', 'maxi-blocks')}
+					color={getLastBreakpointAttribute({
+						target: `${prefix}border-color`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					prefix={`${prefix}border-`}
+					useBreakpointForDefault
+					paletteStatus={getLastBreakpointAttribute({
+						target: `${prefix}border-palette-status`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					paletteColor={getLastBreakpointAttribute({
+						target: `${prefix}border-palette-color`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					paletteOpacity={getLastBreakpointAttribute({
+						target: `${prefix}border-palette-opacity`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					onChange={({
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+						color,
+					}) => {
+						onChange({
+							[`${prefix}border-palette-status-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteStatus,
+							[`${prefix}border-palette-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteColor,
+							[`${prefix}border-palette-opacity-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteOpacity,
+							[`${prefix}border-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: color,
+						});
+					}}
+					disableImage
+					disableVideo
+					disableGradient
+					isHover={isHover}
+					deviceType={breakpoint}
+					clientId={clientId}
+					globalProps={globalProps}
+				/>
+			)}
+
 			{isToolbar && (
 				<div className='maxi-border-control__icon'>
 					<Icon icon={borderWidth} />

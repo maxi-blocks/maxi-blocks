@@ -32,15 +32,6 @@ class MaxiBlocks_Local_Fonts
         }
     }
 
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-
     public function getAllFontsDB()
     {
         global $wpdb;
@@ -196,12 +187,5 @@ class MaxiBlocks_Local_Fonts
                 rmdir($directory);
             }
         }
-    }
-
-    public function removeAllLocalFonts()
-    {
-        global $wp_filesystem;
-        $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
-        $wp_filesystem->delete($fonts_uploads_dir, true);
     }
 }

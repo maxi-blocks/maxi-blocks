@@ -11,14 +11,15 @@ function register_maxi_blocks_settings()
 {
     register_setting('maxi-blocks-settings-group', 'accessibility_option');
     register_setting('maxi-blocks-settings-group', 'local_fonts');
+    register_setting('maxi-blocks-settings-group', 'remove_local_fonts');
     register_setting('maxi-blocks-settings-group', 'google_api_key_option');
 }
 
-function getFolderSize($dir)
+function getFolderSize($folder)
 {
     $size = 0;
 
-    foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+    foreach (glob(rtrim($folder, '/').'/*', GLOB_NOSORT) as $each) {
         $size += is_file($each) ? filesize($each) : getFolderSize($each);
     }
 
@@ -63,11 +64,34 @@ function maxi_blocks_settings_page()
                         </label>
                     </fieldset>
                     <?php
-        $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
+    $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
     $fontUploadsDirSize = round(getFolderSize($fontUploadsDir)/1048576, 2);
     if ($fontUploadsDirSize > 0) {
-        echo '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.'MB</p>'.
-        '<input type="button" name="maxi_remove_fonts_cache" id="maxi_remove_fonts_cache" class="button" value="'.__('Remove local fonts', 'maxi-blocks').'">';
+        echo '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.'MB</p>';
+        if (!(bool) get_option('local_fonts')) { ?>
+                    <label for="remove_local_fonts">
+                        <?php echo __('Remove local fonts', 'maxi-blocks') ?>
+                        <input name="remove_local_fonts" <?php if ((bool) get_option('remove_local_fonts')) {
+            echo "checked='checked'";
+            
+            function deleteAll($folder)
+            {
+                foreach (glob($folder . '/*') as $file) {
+                    if (is_dir($file)) {
+                        deleteAll($file);
+                    } else {
+                        unlink($file);
+                    }
+                }
+                rmdir($folder);
+            }
+
+            $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
+            deleteAll($fonts_uploads_dir);
+            update_option('remove_local_fonts', 0);
+        } ?> type="checkbox" id="remove_local_fonts" value="1">
+                    </label>
+                    <?php }
     } ?>
                 </td>
             </tr>

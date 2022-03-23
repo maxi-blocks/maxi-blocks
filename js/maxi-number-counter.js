@@ -16,7 +16,6 @@ const numberCounterEffect = () => {
 
 		if (numberData !== null) {
 			// Number Counter
-
 			if ('number-counter-status' in numberData) {
 				const numberCounterElem = document.querySelector(
 					`#${numberID} .maxi-number-counter__box`

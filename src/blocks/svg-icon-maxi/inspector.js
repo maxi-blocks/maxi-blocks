@@ -271,6 +271,17 @@ const Inspector = props => {
 													/>
 												),
 											},
+										...inspectorTabs.background({
+											label: 'SVG',
+											props: {
+												...props,
+											},
+											disableImage: true,
+											disableVideo: true,
+											disableClipPath: true,
+											disableSVG: true,
+											prefix: 'svg-',
+										}),
 										...inspectorTabs.border({
 											props,
 											prefix: 'svg-',

@@ -546,6 +546,29 @@ const getStyles = (props, scValues) => {
 				' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
 					props['icon-status-hover'] &&
 					getIconPathStyles(props, true),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
 			},
 			{ ...selectorsButton, ...getBgLayersSelectorsCss(bgLayers) },
 			props

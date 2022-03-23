@@ -117,6 +117,13 @@ describe('getArrowStyles', () => {
 			'border-left-width-m': 3,
 			'border-unit-width-m': 'px',
 			'border-style-s': 'none',
+			'border-top-left-radius-general': 20,
+			'border-top-right-radius-general': 20,
+			'border-bottom-right-radius-general': 20,
+			'border-bottom-left-radius-general': 20,
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-unit-radius-general-hover': 'px',
 		};
 
 		const result = getArrowStyles(object);
@@ -212,6 +219,12 @@ describe('getArrowStyles', () => {
 			'border-bottom-left-radius-general-hover': 4,
 			'border-sync-radius-general-hover': true,
 			'border-unit-radius-general-hover': 'px',
+			'border-top-left-radius-general': 10,
+			'border-top-right-radius-general': 10,
+			'border-bottom-right-radius-general': 10,
+			'border-bottom-left-radius-general': 10,
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
 			'background-palette-status-general': true,
 			'background-palette-color-general': 5,
 			'background-layers': [

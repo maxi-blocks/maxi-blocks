@@ -18,9 +18,8 @@ import getGroupAttributes from '../../styles/getGroupAttributes';
 /**
  * Check if the RichText format value is formatted with requested format
  *
- * @param {Object} formatValue 			RichText format value
- * @param {string} formatName 			RichText format type
- *
+ * @param {Object} formatValue RichText format value
+ * @param {string} formatName  RichText format type
  * @returns {boolean} Is formatted with requested type
  */
 const isFormattedWithType = (formatValue, formatName) => {
@@ -34,11 +33,10 @@ const isFormattedWithType = (formatValue, formatName) => {
 /**
  * Formats the link instances
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
- *
+ * @param {Object} [$0]             Optional named arguments.
+ * @param {Object} [$0.formatValue] RichText format value
+ * @param {Object} [$0.typography]  MaxiBlocks typography
+ * @param {Object} [$0.isList]      Text Maxi block has list mode active
  * @returns {Object} Formatted typography, content and RichText format
  */
 const setLinkFormats = ({ formatValue, typography, isList, textLevel }) => {
@@ -87,14 +85,13 @@ const setLinkFormats = ({ formatValue, typography, isList, textLevel }) => {
 /**
  * Replace core formats for Maxi Custom format
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {string} 	[$0.oldFormat]			Core format to remove
- * @param {Object}	[$0.value]				Requested values to implement
- * 											on typography object
- * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
- *
+ * @param {Object} [$0]             Optional named arguments.
+ * @param {Object} [$0.formatValue] RichText format value
+ * @param {Object} [$0.typography]  MaxiBlocks typography
+ * @param {string} [$0.oldFormat]   Core format to remove
+ * @param {Object} [$0.value]       Requested values to implement
+ *                                  on typography object
+ * @param {Object} [$0.isList]      Text Maxi block has list mode active
  * @returns {Object} Formatted typography, content and RichText format
  */
 const setFormat = ({
@@ -144,10 +141,9 @@ const setFormat = ({
 /**
  * Ensures organized/unorganized list content
  *
- * @param {string} content 				Text Maxi content
- * @param {boolean} isList 				Text Maxi block has list mode active
- * @param {string} typeOfList 			Text Maxi block list type
- *
+ * @param {string}  content    Text Maxi content
+ * @param {boolean} isList     Text Maxi block has list mode active
+ * @param {string}  typeOfList Text Maxi block list type
  * @returns {string} New formatted content
  */
 const cleanListContent = (content, isList, typeOfList) => {
@@ -162,13 +158,12 @@ const cleanListContent = (content, isList, typeOfList) => {
 /**
  * Check and transform core formats to Maxi formats after pasting content
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
- * @param {string} 	[$0.typeOfList]			Text Maxi block list type
- * @param {string} 	[$0.content]			Text Maxi content
- *
+ * @param {Object} [$0]             Optional named arguments.
+ * @param {Object} [$0.formatValue] RichText format value
+ * @param {Object} [$0.typography]  MaxiBlocks typography
+ * @param {Object} [$0.isList]      Text Maxi block has list mode active
+ * @param {string} [$0.typeOfList]  Text Maxi block list type
+ * @param {string} [$0.content]     Text Maxi content
  * @returns {Object} Formatted typography, content and RichText format
  */
 const setCustomFormatsWhenPaste = ({
@@ -220,7 +215,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/bold',
-			value: { 'font-weight': 800 },
+			value: { 'font-weight': '700' },
 			isList,
 			textLevel,
 		});

@@ -37,6 +37,7 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.columnSize,
+	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
 

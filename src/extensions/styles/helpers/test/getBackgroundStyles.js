@@ -45,7 +45,7 @@ describe('getBackgroundStyles', () => {
 					'background-color-general': '',
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 					'background-palette-status-xl': true,
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
@@ -380,7 +380,7 @@ describe('getBackgroundStyles', () => {
 					'background-palette-color-general': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
-					id: 0,
+					order: 0,
 				},
 				{
 					type: 'image',
@@ -515,7 +515,7 @@ describe('getBackgroundStyles', () => {
 					'background-color-general': '',
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 					'background-palette-status-xl': true,
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
@@ -1061,7 +1061,7 @@ describe('getBackgroundStyles', () => {
 					'background-color-general': '',
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 				},
 			],
 			'border-bottom-left-radius-general': 180,

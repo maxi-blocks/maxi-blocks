@@ -44,7 +44,7 @@ const attributes = {
 					'background-palette-opacity': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
-					id: 0,
+					order: 0,
 				},
 			],
 		},

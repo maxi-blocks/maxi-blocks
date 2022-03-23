@@ -269,7 +269,7 @@ const ScrollEffectsControl = props => {
 					];
 					break;
 
-					case 'blur':
+					case 'fade':
 						response = [
 							{
 								label: __('Choose', 'maxi-blocks'),
@@ -298,6 +298,47 @@ const ScrollEffectsControl = props => {
 							{
 								label: __('Out more', 'maxi-blocks'),
 								value: 6,
+							},
+						];
+						break;
+
+					case 'blur':
+						response = [
+							{
+								label: __('Choose', 'maxi-blocks'),
+								value: 0,
+							},
+							{
+								label: __('In vertical', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('Out vertical', 'maxi-blocks'),
+								value: 2,
+							},
+							{
+								label: __('In horizontal', 'maxi-blocks'),
+								value: 3,
+							},
+							{
+								label: __('Out horizontal', 'maxi-blocks'),
+								value: 4,
+							},
+							{
+								label: __('In rotate', 'maxi-blocks'),
+								value: 5,
+							},
+							{
+								label: __('Out rotate', 'maxi-blocks'),
+								value: 6,
+							},
+							{
+								label: __('In scale', 'maxi-blocks'),
+								value: 7,
+							},
+							{
+								label: __('Out scale', 'maxi-blocks'),
+								value: 8,
 							},
 						];
 						break;
@@ -348,20 +389,38 @@ const ScrollEffectsControl = props => {
 			value: 0,
 		},
 		{
-			label: __('Rotate clockwise and Fade out', 'maxi-blocks'),
+			label: __('Disable all', 'maxi-blocks'),
 			value: 1,
 		},
+		
 		{
-			label: __('Disable all', 'maxi-blocks'),
+			label: __('Rotate clockwise + Fade out', 'maxi-blocks'),
 			value: 2,
 		},
+
 		{
-			label: __('Shortcut 3', 'maxi-blocks'),
+			label: __('Blur In + Vertical Up', 'maxi-blocks'),
 			value: 3,
 		},
 		{
-			label: __('Shortcut 4', 'maxi-blocks'),
+			label: __('Blur In + Vertical Down', 'maxi-blocks'),
 			value: 4,
+		},
+		{
+			label: __('Blur In + Horizontal Left', 'maxi-blocks'),
+			value: 5,
+		},
+		{
+			label: __('Blur In + Horizontal Right', 'maxi-blocks'),
+			value: 6,
+		},
+		{
+			label: __('Blur + Rotate', 'maxi-blocks'),
+			value: 7,
+		},
+		{
+			label: __('Blur + Scale', 'maxi-blocks'),
+			value: 8,
 		},
 	];
 
@@ -371,11 +430,10 @@ const ScrollEffectsControl = props => {
 		if (type)
 			onChange({
 				...newDefaultShortcuts?.[type]?.[`shortcut${number}`],
-				...newDefaultShortcuts?.[type]?.[`vertical${number}`],
 			});
 		else
 			onChange({
-				...newDefaultShortcuts?.[type]?.[`vertical${number}`],
+				...newDefaultShortcuts?.[`shortcut${number}`],
 			});
 	};
 
@@ -447,7 +505,7 @@ const ScrollEffectsControl = props => {
 										label={__(
 											'Shortcut effect',
 											'maxi-blocks'
-										)}
+										)}						
 										onChange={val =>
 											onChangeShortcut(val, type)
 										}

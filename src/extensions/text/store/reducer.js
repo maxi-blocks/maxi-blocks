@@ -6,7 +6,7 @@ import fonts from '../fonts/fonts';
 /**
  * External dependencies
  */
-import { sortedUniq, isEqual } from 'lodash';
+import { uniq, isEqual } from 'lodash';
 
 /**
  * Reducer managing the styles
@@ -51,7 +51,7 @@ function reducer(
 		case 'UPDATE_FONTS':
 			return {
 				...state,
-				postFonts: sortedUniq([...state.postFonts, ...action.fonts]),
+				postFonts: uniq([...action.fonts]),
 			};
 		default:
 			return state;

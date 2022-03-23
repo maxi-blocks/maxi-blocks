@@ -17,7 +17,7 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber } from 'lodash';
+import { trim, isEmpty, isNumber, merge } from 'lodash';
 
 /**
  * Styles
@@ -30,6 +30,45 @@ import { getIsValid } from '../../extensions/styles';
  * Component
  */
 const AdvancedNumberControl = props => {
+	const minMaxSettingsDefault = {
+		px: {
+			min: 0,
+			max: 3999,
+			minRange: -1999,
+			maxRange: 1999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+			minRange: -199,
+			maxRange: 199,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+			minRange: -199,
+			maxRange: 199,
+		},
+		vh: {
+			min: 0,
+			max: 999,
+			minRange: -199,
+			maxRange: 199,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+			minRange: -100,
+			maxRange: 100,
+		},
+		'-': {
+			min: 0,
+			max: 16,
+			minRange: 0,
+			maxRange: 16,
+		},
+	};
+
 	const {
 		label,
 		className,
@@ -38,6 +77,7 @@ const AdvancedNumberControl = props => {
 		placeholder = '',
 		onChangeUnit,
 		enableUnit = false,
+		disableInputsLimits = false,
 		min = 0,
 		max = 999,
 		initial = 0,
@@ -49,29 +89,8 @@ const AdvancedNumberControl = props => {
 		enableAuto = false,
 		autoLabel,
 		onReset,
-		allowedUnits = ['px', 'em', 'vw', '%', '-'],
-		minMaxSettings = {
-			px: {
-				min: 0,
-				max: 3999,
-			},
-			em: {
-				min: 0,
-				max: 999,
-			},
-			vw: {
-				min: 0,
-				max: 999,
-			},
-			'%': {
-				min: 0,
-				max: 100,
-			},
-			'-': {
-				min: 0,
-				max: 16,
-			},
-		},
+		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
+		minMaxSettings = minMaxSettingsDefault,
 	} = props;
 
 	const classes = classnames('maxi-advanced-number-control', className);
@@ -96,8 +115,22 @@ const AdvancedNumberControl = props => {
 		return options;
 	};
 
-	const minValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.min;
-	const maxValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.max;
+	const minMaxSettingsResult = merge(minMaxSettingsDefault, minMaxSettings);
+
+	const minValue = minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.min;
+	const maxValue = minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.max;
+
+	const minValueRange =
+		minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange < minValue ||
+		disableInputsLimits
+			? minValue
+			: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange;
+
+	const maxValueRange =
+		minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange > maxValue ||
+		disableInputsLimits
+			? maxValue
+			: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange;
 
 	const getNewValueFromEmpty = e => {
 		const {
@@ -178,8 +211,10 @@ const AdvancedNumberControl = props => {
 							onChange={val => {
 								onChangeUnit(val);
 
-								if (value > minMaxSettings[val]?.max)
-									onChangeValue(minMaxSettings[val]?.max);
+								if (value > minMaxSettingsResult[val]?.maxRange)
+									onChangeValue(
+										minMaxSettingsResult[val]?.maxRange
+									);
 							}}
 						/>
 					)}
@@ -214,8 +249,8 @@ const AdvancedNumberControl = props => {
 						onChange={val => {
 							onChangeValue(+val);
 						}}
-						min={enableUnit ? minValue : min}
-						max={enableUnit ? maxValue : max}
+						min={enableUnit ? minValueRange : min}
+						max={enableUnit ? maxValueRange : max}
 						step={stepValue}
 						withInputField={false}
 						initialPosition={value || initial}

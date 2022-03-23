@@ -55,7 +55,9 @@ const GlobalColor = props => {
 			<ToggleSwitch
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
-				selected={processSCAttribute(SC, globalAttr, groupAttr)}
+				selected={
+					processSCAttribute(SC, globalAttr, groupAttr) || false
+				}
 				onChange={val =>
 					onChangeValue(
 						{
@@ -529,7 +531,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: __('Headings', 'maxi-blocks'),
-						content: <SettingTabsControl items={headingItems()} />,
+						content: (
+							<SettingTabsControl
+								hasBorder
+								items={headingItems()}
+							/>
+						),
 					},
 					breakpoint === 'general' && {
 						label: iconTabs.label,

@@ -41,6 +41,28 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...prefixAttributesCreator({
+		obj: attributesData.background,
+		prefix,
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundColor,
+		prefix,
+		diffValAttr: { [`${prefix}background-palette-color-general`]: 4 },
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundGradient,
+		prefix,
+	}),
+	...prefixAttributesCreator({ obj: attributesData.backgroundHover, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundColorHover,
+		prefix,
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundGradientHover,
+		prefix,
+	}),
 	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),

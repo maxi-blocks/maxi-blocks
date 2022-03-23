@@ -29,16 +29,14 @@ export default function parseVideo(url) {
 
 export function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {};
-	bgLayers?.forEach(bgLayer => {
+	bgLayers?.forEach((bgLayer, index) => {
 		bgLayersSelectors[bgLayer.uniqueId] = {
 			normal: {
-				label: `background ${bgLayer.type} ${bgLayer.order + 1}`,
+				label: `background ${bgLayer.type} ${index + 1}`,
 				target: ` .maxi-background-displayer .${bgLayer.uniqueId}`,
 			},
 			hover: {
-				label: `background ${bgLayer.type} ${
-					bgLayer.order + 1
-				} on hover`,
+				label: `background ${bgLayer.type} ${index + 1} on hover`,
 				target: `:hover .maxi-background-displayer .${bgLayer.uniqueId}`,
 			},
 		};

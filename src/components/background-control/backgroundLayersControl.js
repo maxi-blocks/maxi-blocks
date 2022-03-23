@@ -377,7 +377,7 @@ const BackgroundLayersControl = ({
 		const newLayers = allLayers.map(layer => {
 			return {
 				...layer,
-				uniqueId: layer.uniqueId
+				uniqueId: layer?.uniqueId
 					? layer.uniqueId
 					: uniqueIDGenerator('background-layers-maxi-'),
 			};

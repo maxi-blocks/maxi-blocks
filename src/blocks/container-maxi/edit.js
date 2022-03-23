@@ -84,7 +84,7 @@ class edit extends MaxiBlockComponent {
 				hasInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
-					template: ROW_TEMPLATE,
+					template: !hasInnerBlocks ? ROW_TEMPLATE : false,
 					templateLock: false,
 					orientation: 'horizontal',
 					renderAppender: !hasInnerBlocks

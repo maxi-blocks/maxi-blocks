@@ -14,6 +14,7 @@ import {
 	getZIndexStyles,
 	getOverflowStyles,
 	getSVGWidthStyles,
+	getBackgroundStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSvgIcon } from './custom-css';
 
@@ -137,6 +138,16 @@ const getNormalObject = props => {
 			prefix: 'svg-',
 		}),
 		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor', 'backgroundGradient'],
+				false,
+				'svg-'
+			),
+			blockStyle: props.parentBlockStyle,
+			prefix: 'svg-',
+		}),
 	};
 
 	return response;
@@ -169,6 +180,17 @@ const getHoverObject = props => {
 				parentBlockStyle: props.parentBlockStyle,
 				prefix: 'svg-',
 			}),
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor', 'backgroundGradient'],
+				true,
+				'svg-'
+			),
+			blockStyle: props.parentBlockStyle,
+			isHover: true,
+			prefix: 'svg-',
+		}),
 	};
 
 	return response;

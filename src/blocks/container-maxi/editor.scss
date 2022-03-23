@@ -6,6 +6,12 @@
 		left: 50%;
 		border-radius: 50%;
 	}
+	.block-list-appender--show {
+		.block-editor-button-block-appender {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
 	&__container {
 		width: 100%;
 	}

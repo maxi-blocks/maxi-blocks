@@ -172,7 +172,6 @@ wp.domReady(() => {
 							mutation.target.style.width = `${responsiveWidth}px`;
 						}
 					}
-
 					// Responsive iframe
 					if (
 						mutation.type === 'attributes' &&
@@ -186,10 +185,14 @@ wp.domReady(() => {
 						const iframe = mutation.target.querySelector(
 							'iframe[name="editor-canvas"]'
 						);
+						const iframeDocument = iframe.contentDocument;
 
-						if (iframe) {
-							const iframeDocument = iframe.contentDocument;
-
+						if (
+							iframe &&
+							!iframeDocument.body.classList.contains(
+								'maxi-blocks--active'
+							)
+						) {
 							// Iframe needs Maxi classes and attributes
 							iframeDocument.body.classList.add(
 								'maxi-blocks--active'
@@ -255,7 +258,6 @@ wp.domReady(() => {
 							}
 						}
 					}
-
 					// Responsive toolbar
 					if (
 						mutation.type === 'attributes' &&

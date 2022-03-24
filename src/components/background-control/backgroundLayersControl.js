@@ -364,14 +364,12 @@ const LayerCard = props => {
 
 const BackgroundLayersControl = ({
 	layersOptions,
-	layersHoverOptions,
 	isHover = false,
 	onChange,
 	clientId,
 	breakpoint,
 }) => {
 	const layers = cloneDeep(layersOptions);
-	const layersHover = cloneDeep(layersHoverOptions);
 
 	const uniqueIdChecker = allLayers => {
 		const newLayers = allLayers.map(layer => {
@@ -383,24 +381,23 @@ const BackgroundLayersControl = ({
 			};
 		});
 		onChange({
-			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+			'background-layers': newLayers,
 		});
 
 		return newLayers;
 	};
-	const allLayers = [...layers, ...layersHover];
 
-	allLayers.sort((a, b) => a.order - b.order);
+	layers.sort((a, b) => a.order - b.order);
 
 	useEffect(() => {
-		uniqueIdChecker(allLayers);
+		uniqueIdChecker(layers);
 	}, []);
 
 	const [selector, changeSelector] = useState(null);
 
 	const getNewLayerOrder = () =>
-		allLayers && !isEmpty(allLayers)
-			? allLayers.reduce((layerA, layerB) =>
+		layers && !isEmpty(layers)
+			? layers.reduce((layerA, layerB) =>
 					layerA.order > layerB.order ? layerA : layerB
 			  ).order + 1
 			: 1;
@@ -435,20 +432,16 @@ const BackgroundLayersControl = ({
 	};
 
 	const onLayersDrag = (fromIndex, toIndex) => {
-		const layer = allLayers.splice(fromIndex, 1)[0];
+		const layer = layers.splice(fromIndex, 1)[0];
 
-		allLayers.splice(toIndex, 0, layer);
+		layers.splice(toIndex, 0, layer);
 
-		allLayers.forEach((layer, i) => {
-			allLayers[i].order = i;
+		layers.forEach((layer, i) => {
+			layers[i].order = i;
 		});
 
-		const normalLayers = allLayers.filter(layer => !layer.isHover);
-		const hoverLayers = allLayers.filter(layer => layer.isHover);
-
 		onChange({
-			'background-layers': normalLayers,
-			'background-layers-hover': hoverLayers,
+			'background-layers': layers,
 		});
 	};
 
@@ -460,15 +453,13 @@ const BackgroundLayersControl = ({
 			defaultAttributes: setBreakpointToLayer({
 				layer: backgroundLayers[getLayerLabel(currentLayer.type)],
 				breakpoint,
-				isHover,
 			}),
 		});
 
 	const onChangeLayer = layer => {
-		const isHoverLayer = layer.isHover;
-		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
+		const newLayers = cloneDeep(layers);
 
-		allLayers.forEach((lay, i) => {
+		layers.forEach((lay, i) => {
 			if (lay.order === layer.order) {
 				const index = findIndex(newLayers, { order: layer.order });
 
@@ -476,30 +467,27 @@ const BackgroundLayersControl = ({
 			}
 		});
 
-		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
+		if (!isEqual(newLayers, layers))
 			onChange({
-				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+				'background-layers': newLayers,
 			});
 	};
 
 	const onAddLayer = layer => {
-		const isHoverLayer = layer.isHover;
-		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
+		const newLayers = cloneDeep(layers);
 
 		newLayers.push(layer);
 
 		onChange({
-			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+			'background-layers': newLayers,
 		});
 	};
 
-	const onRemoveLayer = ({ order, isHover: isHoverLayer }) => {
-		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers).filter(
-			lay => lay.order !== order
-		);
+	const onRemoveLayer = ({ order }) => {
+		const newLayers = cloneDeep(layers).filter(lay => lay.order !== order);
 
 		onChange({
-			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+			'background-layers': newLayers,
 		});
 
 		changeSelector(null);
@@ -508,7 +496,7 @@ const BackgroundLayersControl = ({
 	return (
 		<div className='maxi-background-control__layers'>
 			<div>
-				{!isEmpty(allLayers) && (
+				{!isEmpty(layers) && (
 					<ReactDragListView
 						onDragEnd={(fromIndex, toIndex) =>
 							onLayersDrag(fromIndex, toIndex)
@@ -518,7 +506,7 @@ const BackgroundLayersControl = ({
 						ignoreSelector='.maxi-background-layer__ignore-move'
 					>
 						<div className='maxi-background-layers_options'>
-							{[...(!isHover ? layers : allLayers)].map(
+							{[...(!isHover ? layers : layers)].map(
 								(layer, i) => (
 									<LayerCard
 										key={`maxi-background-layers__${

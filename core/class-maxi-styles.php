@@ -1,4 +1,5 @@
 <?php
+require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
 
 class MaxiBlocks_Styles
 {
@@ -222,51 +223,55 @@ class MaxiBlocks_Styles
                 } else {
                     $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
                 }
-                if (!$useLocalFonts && !empty($fontData)) {
-                    $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
-                    $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
-
-                    if (is_array($fontWeight)) {
-                        $fontWeight = implode(',', array_unique($fontWeight));
-                    }
-
-                    if ($fontStyle === 'italic') {
-                        $fontUrl .= 'ital,';
-                    }
-
-                    if (strpos($fontWeight, ',') !== false) {
-                        $fontWeightArr = array_unique(explode(',', $fontWeight));
-                        sort($fontWeightArr);
-                        $fontUrl .= 'wght@';
-                        if ($fontStyle === 'italic') {
-                            foreach ($fontWeightArr as $fw) {
-                                $fontUrl .= '0,'.$fw.';';
-                            }
-                            foreach ($fontWeightArr as $fw) {
-                                $fontUrl .= '1,'.$fw.';';
-                            }
-                        } else {
-                            foreach ($fontWeightArr as $fw) {
-                                $fontUrl .= $fw.';';
-                            }
-                        }
-                        $fontUrl = rtrim($fontUrl, ';');
-                    } elseif ($fontWeight) {
-                        if ($fontStyle === 'italic') {
-                            $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
-                        } else {
-                            $fontUrl .= 'wght@'.$fontWeight;
-                        }
-                    } else {
-                        if ($fontStyle === 'italic') {
-                            $fontUrl .= 'wght@0,400;1,400';
-                        } else {
-                            $fontUrl .= 'wght@400';
-                        }
-                    }
-                } else {
-                    $fontUrl = rtrim($fontUrl, ':');
+                if (!$useLocalFonts) {
+                    $localFonts = new MaxiBlocks_Local_Fonts();
+                    $fontUrl = $localFonts->generateFontURL($fontUrl, $fontData);
                 }
+                // if (!$useLocalFonts && !empty($fontData)) {
+                //     $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
+                //     $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
+
+                //     if (is_array($fontWeight)) {
+                //         $fontWeight = implode(',', array_unique($fontWeight));
+                //     }
+
+                //     if ($fontStyle === 'italic') {
+                //         $fontUrl .= 'ital,';
+                //     }
+
+                //     if (strpos($fontWeight, ',') !== false) {
+                //         $fontWeightArr = array_unique(explode(',', $fontWeight));
+                //         sort($fontWeightArr);
+                //         $fontUrl .= 'wght@';
+                //         if ($fontStyle === 'italic') {
+                //             foreach ($fontWeightArr as $fw) {
+                //                 $fontUrl .= '0,'.$fw.';';
+                //             }
+                //             foreach ($fontWeightArr as $fw) {
+                //                 $fontUrl .= '1,'.$fw.';';
+                //             }
+                //         } else {
+                //             foreach ($fontWeightArr as $fw) {
+                //                 $fontUrl .= $fw.';';
+                //             }
+                //         }
+                //         $fontUrl = rtrim($fontUrl, ';');
+                //     } elseif ($fontWeight) {
+                //         if ($fontStyle === 'italic') {
+                //             $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
+                //         } else {
+                //             $fontUrl .= 'wght@'.$fontWeight;
+                //         }
+                //     } else {
+                //         if ($fontStyle === 'italic') {
+                //             $fontUrl .= 'wght@0,400;1,400';
+                //         } else {
+                //             $fontUrl .= 'wght@400';
+                //         }
+                //     }
+                // } else {
+                //     $fontUrl = rtrim($fontUrl, ':');
+                // }
                 
                 wp_enqueue_style(
                     'maxi-'.sanitize_title_with_dashes($font),

@@ -70,59 +70,65 @@ class MaxiBlocks_Local_Fonts
         return $arrayAll;
     }
 
+    public function generateFontURL($fontUrl, $fontData)
+    {
+        if (!empty($fontData)) {
+            $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
+            $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
+
+            if (is_array($fontWeight)) {
+                $fontWeight = implode(',', array_unique($fontWeight));
+            }
+
+            if ($fontStyle === 'italic') {
+                $fontUrl .= 'ital,';
+            }
+
+            if (strpos($fontWeight, ',') !== false) {
+                $fontWeightArr = array_unique(explode(',', $fontWeight));
+                sort($fontWeightArr);
+                $fontUrl .= 'wght@';
+                if ($fontStyle === 'italic') {
+                    foreach ($fontWeightArr as $fw) {
+                        $fontUrl .= '0,'.$fw.';';
+                    }
+                    foreach ($fontWeightArr as $fw) {
+                        $fontUrl .= '1,'.$fw.';';
+                    }
+                } else {
+                    foreach ($fontWeightArr as $fw) {
+                        $fontUrl .= $fw.';';
+                    }
+                }
+                $fontUrl = rtrim($fontUrl, ';');
+            } elseif ($fontWeight) {
+                if ($fontStyle === 'italic') {
+                    $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
+                } else {
+                    $fontUrl .= 'wght@'.$fontWeight;
+                }
+            } else {
+                if ($fontStyle === 'italic') {
+                    $fontUrl .= 'wght@0,400;1,400';
+                } else {
+                    $fontUrl .= 'wght@400';
+                }
+            }
+        } else {
+            $fontUrl = rtrim($fontUrl, ':');
+        }
+
+        return $fontUrl;
+    }
+
     public function constructFontURLs($allFonts)
     {
         $response = [];
         foreach ($allFonts as $fontName => $fontData) {
             $fontNameSanitized = str_replace(' ', '+', $fontName);
             $fontUrl = "https://fonts.googleapis.com/css2?family=$fontNameSanitized:";
-            if (!empty($fontData)) {
-                $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
-                $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
 
-                if (is_array($fontWeight)) {
-                    $fontWeight = implode(',', array_unique($fontWeight));
-                }
-
-                if ($fontStyle === 'italic') {
-                    $fontUrl .= 'ital,';
-                }
-
-                if (strpos($fontWeight, ',') !== false) {
-                    $fontWeightArr = array_unique(explode(',', $fontWeight));
-                    sort($fontWeightArr);
-                    $fontUrl .= 'wght@';
-                    if ($fontStyle === 'italic') {
-                        foreach ($fontWeightArr as $fw) {
-                            $fontUrl .= '0,'.$fw.';';
-                        }
-                        foreach ($fontWeightArr as $fw) {
-                            $fontUrl .= '1,'.$fw.';';
-                        }
-                    } else {
-                        foreach ($fontWeightArr as $fw) {
-                            $fontUrl .= $fw.';';
-                        }
-                    }
-                    $fontUrl = rtrim($fontUrl, ';');
-                } elseif ($fontWeight) {
-                    if ($fontStyle === 'italic') {
-                        $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
-                    } else {
-                        $fontUrl .= 'wght@'.$fontWeight;
-                    }
-                } else {
-                    if ($fontStyle === 'italic') {
-                        $fontUrl .= 'wght@0,400;1,400';
-                    } else {
-                        $fontUrl .= 'wght@400';
-                    }
-                }
-            } else {
-                $fontUrl = rtrim($fontUrl, ':');
-            }
-
-            $response[ $fontName] = $fontUrl;
+            $response[$fontName] = $this->generateFontURL($fontUrl, $fontData);
         }
         return $response;
     }

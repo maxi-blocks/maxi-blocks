@@ -373,7 +373,6 @@ const BackgroundLayersControl = ({
 	const layers = cloneDeep(layersOptions);
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
-	console.log(layersHover);
 
 	allLayers.sort((a, b) => a.order - b.order);
 

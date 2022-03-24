@@ -10,6 +10,10 @@ const rawFlex = {
 	'flex-basis': {
 		type: 'string',
 	},
+	'flex-basis-unit': {
+		type: 'string',
+		default: 'px',
+	},
 	'flex-wrap': {
 		type: 'string',
 	},
@@ -26,9 +30,6 @@ const rawFlex = {
 		type: 'string',
 	},
 	'align-content': {
-		type: 'string',
-	},
-	gap: {
 		type: 'string',
 	},
 	'row-gap': {

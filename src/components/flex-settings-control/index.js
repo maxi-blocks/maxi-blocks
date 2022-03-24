@@ -2,13 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
+import { useState } from '@wordpress/element';
+import { toString } from 'lodash';
 /**
  * Internal dependencies
  */
-import TextControl from '../text-control';
+import ToggleSwitch from '../toggle-switch';
 import SelectControl from '../select-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getLastBreakpointAttribute,
+	getAttributeValue,
+} from '../../extensions/styles';
 import SettingTabsControl from '../setting-tabs-control';
 import AdvancedNumberControl from '../advanced-number-control';
 /**
@@ -27,6 +31,17 @@ const FLexSettingsControl = props => {
 		breakpoint = 'general',
 		getParentBlockName,
 	} = props;
+
+	const isCustomFlexBasis = /\d/.test(
+		getAttributeValue({
+			target: 'flex-basis',
+			props,
+			isHover: false,
+			breakpoint,
+		})
+	);
+
+	const [customFlexBasis, setCustomFlexBasis] = useState(isCustomFlexBasis);
 
 	const wrapperBlocks = [
 		'maxi-blocks/container-maxi',
@@ -60,16 +75,16 @@ const FLexSettingsControl = props => {
 											value: '',
 										},
 										{
-											label: __('nowrap', 'maxi-blocks'),
+											label: __('Nowrap', 'maxi-blocks'),
 											value: 'nowrap',
 										},
 										{
-											label: __('wrap', 'maxi-blocks'),
+											label: __('Wrap', 'maxi-blocks'),
 											value: 'wrap',
 										},
 										{
 											label: __(
-												'wrap-reverse',
+												'Wrap-reverse',
 												'maxi-blocks'
 											),
 											value: 'wrap-reverse',
@@ -94,23 +109,23 @@ const FLexSettingsControl = props => {
 											value: '',
 										},
 										{
-											label: __('row', 'maxi-blocks'),
+											label: __('Row', 'maxi-blocks'),
 											value: 'row',
 										},
 										{
 											label: __(
-												'row-reverse',
+												'Row-reverse',
 												'maxi-blocks'
 											),
 											value: 'row-reverse',
 										},
 										{
-											label: __('column', 'maxi-blocks'),
+											label: __('Column', 'maxi-blocks'),
 											value: 'column',
 										},
 										{
 											label: __(
-												'column-reverse',
+												'Column-reverse',
 												'maxi-blocks'
 											),
 											value: 'column-reverse',
@@ -137,39 +152,39 @@ const FLexSettingsControl = props => {
 										},
 										{
 											label: __(
-												'flex-start',
+												'Flex-start',
 												'maxi-blocks'
 											),
 											value: 'flex-start',
 										},
 										{
 											label: __(
-												'flex-end',
+												'Flex-end',
 												'maxi-blocks'
 											),
 											value: 'flex-end',
 										},
 										{
-											label: __('center', 'maxi-blocks'),
+											label: __('Center', 'maxi-blocks'),
 											value: 'center ',
 										},
 										{
 											label: __(
-												'space-between',
+												'Space-between',
 												'maxi-blocks'
 											),
 											value: 'space-between',
 										},
 										{
 											label: __(
-												'space-around',
+												'Space-around',
 												'maxi-blocks'
 											),
 											value: 'space-around',
 										},
 										{
 											label: __(
-												'space-evenly',
+												'Space-evenly',
 												'maxi-blocks'
 											),
 											value: 'space-evenly',
@@ -196,29 +211,29 @@ const FLexSettingsControl = props => {
 										},
 										{
 											label: __(
-												'flex-start',
+												'Flex-start',
 												'maxi-blocks'
 											),
 											value: 'flex-start',
 										},
 										{
 											label: __(
-												'flex-end',
+												'Flex-end',
 												'maxi-blocks'
 											),
 											value: 'flex-end',
 										},
 										{
-											label: __('center', 'maxi-blocks'),
+											label: __('Center', 'maxi-blocks'),
 											value: 'center ',
 										},
 										{
-											label: __('stretch', 'maxi-blocks'),
+											label: __('Stretch', 'maxi-blocks'),
 											value: 'stretch',
 										},
 										{
 											label: __(
-												'baseline',
+												'Baseline',
 												'maxi-blocks'
 											),
 											value: 'baseline',
@@ -244,50 +259,50 @@ const FLexSettingsControl = props => {
 										},
 										{
 											label: __(
-												'flex-start',
+												'Flex-start',
 												'maxi-blocks'
 											),
 											value: 'flex-start',
 										},
 										{
 											label: __(
-												'flex-end',
+												'Flex-end',
 												'maxi-blocks'
 											),
 											value: 'flex-end',
 										},
 										{
-											label: __('center', 'maxi-blocks'),
+											label: __('Center', 'maxi-blocks'),
 											value: 'center ',
 										},
 										{
 											label: __(
-												'space-between',
+												'Space-between',
 												'maxi-blocks'
 											),
 											value: 'space-between',
 										},
 										{
 											label: __(
-												'space-around',
+												'Space-around',
 												'maxi-blocks'
 											),
 											value: 'space-around',
 										},
 										{
 											label: __(
-												'space-evenly',
+												'Space-evenly',
 												'maxi-blocks'
 											),
 											value: 'space-evenly',
 										},
 										{
-											label: __('stretch', 'maxi-blocks'),
+											label: __('Stretch', 'maxi-blocks'),
 											value: 'stretch ',
 										},
 										{
 											label: __(
-												'baseline',
+												'Baseline',
 												'maxi-blocks'
 											),
 											value: 'baseline',
@@ -313,11 +328,11 @@ const FLexSettingsControl = props => {
 											value: '',
 										},
 										{
-											label: __('column', 'maxi-blocks'),
+											label: __('Column', 'maxi-blocks'),
 											value: 'column',
 										},
 										{
-											label: __('wrap', 'maxi-blocks'),
+											label: __('Wrap', 'maxi-blocks'),
 											value: 'wrap',
 										},
 									]}
@@ -510,19 +525,132 @@ const FLexSettingsControl = props => {
 										})
 									}
 								/>
-								<TextControl
-									label={__('Flex-basis', 'maxi-blocks')}
-									value={getLastBreakpointAttribute({
-										target: 'flex-basis',
-										breakpoint,
-										attributes: props,
-									})}
+								{!customFlexBasis && (
+									<SelectControl
+										label={__('Flex-basis', 'maxi-blocks')}
+										value={getLastBreakpointAttribute({
+											target: 'flex-basis',
+											breakpoint,
+											attributes: props,
+										})}
+										options={[
+											{
+												label: __(
+													'Auto',
+													'maxi-blocks'
+												),
+												value: '',
+											},
+											{
+												label: __(
+													'Content',
+													'maxi-blocks'
+												),
+												value: 'content',
+											},
+											{
+												label: __(
+													'Max-content',
+													'maxi-blocks'
+												),
+												value: 'max-content',
+											},
+											{
+												label: __(
+													'Min-content',
+													'maxi-blocks'
+												),
+												value: 'min-content',
+											},
+											{
+												label: __(
+													'Fit-content',
+													'maxi-blocks'
+												),
+												value: 'fit-content',
+											},
+										]}
+										onChange={val =>
+											onChange({
+												[`flex-basis-${breakpoint}`]:
+													val,
+											})
+										}
+									/>
+								)}
+								<ToggleSwitch
+									label={__(
+										'Custom flex-basis',
+										'maxi-blocks'
+									)}
+									selected={customFlexBasis}
 									onChange={val => {
-										onChange({
-											[`flex-basis-${breakpoint}`]: val,
-										});
+										setCustomFlexBasis(val);
+										if (!val) {
+											onChange({
+												[`flex-basis-${breakpoint}`]:
+													'',
+											});
+										}
 									}}
 								/>
+								{customFlexBasis && (
+									<AdvancedNumberControl
+										className='maxi-typography-control__size'
+										label={__(
+											'Custom flex-basis',
+											'maxi-blocks'
+										)}
+										enableUnit
+										unit={getLastBreakpointAttribute({
+											target: 'flex-basis-unit',
+											breakpoint,
+											attributes: props,
+										})}
+										onChangeUnit={val => {
+											onChange({
+												[`flex-basis-unit-${breakpoint}`]:
+													val,
+											});
+										}}
+										value={getLastBreakpointAttribute({
+											target: 'flex-basis',
+											breakpoint,
+											attributes: props,
+										})}
+										onChangeValue={val => {
+											onChange({
+												[`flex-basis-${breakpoint}`]:
+													toString(val),
+											});
+										}}
+										minMaxSettings={{
+											px: {
+												min: 0,
+												max: 9999,
+											},
+											em: {
+												min: 0,
+												max: 9999,
+											},
+											vw: {
+												min: 0,
+												max: 999,
+											},
+											'%': {
+												min: 0,
+												max: 100,
+											},
+										}}
+										allowedUnits={['px', 'em', 'vw', '%']}
+										onReset={() =>
+											onChange({
+												[`flex-basis-${breakpoint}`]:
+													null,
+											})
+										}
+									/>
+								)}
 							</>
 						) : (
 							<div className='maxi-warning-box'>

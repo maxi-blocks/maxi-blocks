@@ -16,6 +16,8 @@ const getFlexStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
+		let flexBasis = '';
+
 		const flexGrow = getLastBreakpointAttribute({
 			target: 'flex-grow',
 			breakpoint,
@@ -28,11 +30,42 @@ const getFlexStyles = obj => {
 			attributes: obj,
 		});
 
-		const flexBasis = getLastBreakpointAttribute({
-			target: 'flex-basis',
-			breakpoint,
-			attributes: obj,
-		});
+		if (
+			['content', 'max-content', 'min-content', 'fit-content'].includes(
+				getLastBreakpointAttribute({
+					target: 'flex-basis',
+					breakpoint,
+					attributes: obj,
+				})
+			)
+		) {
+			flexBasis = getLastBreakpointAttribute({
+				target: 'flex-basis',
+				breakpoint,
+				attributes: obj,
+			});
+		} else if (
+			getLastBreakpointAttribute({
+				target: 'flex-basis',
+				breakpoint,
+				attributes: obj,
+			}) &&
+			getLastBreakpointAttribute({
+				target: 'flex-basis-unit',
+				breakpoint,
+				attributes: obj,
+			})
+		) {
+			flexBasis = `${getLastBreakpointAttribute({
+				target: 'flex-basis',
+				breakpoint,
+				attributes: obj,
+			})}${getLastBreakpointAttribute({
+				target: 'flex-basis-unit',
+				breakpoint,
+				attributes: obj,
+			})}`;
+		}
 
 		response[breakpoint] = {
 			...((flexBasis || flexGrow || flexShrink) && {
@@ -72,11 +105,6 @@ const getFlexStyles = obj => {
 			}),
 			'align-content': getLastBreakpointAttribute({
 				target: 'align-content',
-				breakpoint,
-				attributes: obj,
-			}),
-			gap: getLastBreakpointAttribute({
-				target: 'gap',
 				breakpoint,
 				attributes: obj,
 			}),

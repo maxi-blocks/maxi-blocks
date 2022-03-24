@@ -406,6 +406,9 @@ const getImageShapeObject = (target, props) => {
 
 const getStyles = props => {
 	const { uniqueID, 'background-layers': bgLayers } = props;
+	const bgLayersHover = !isEmpty(props['background-layers-hover'])
+		? props['background-layers-hover']
+		: [];
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -476,7 +479,10 @@ const getStyles = props => {
 					props.parentBlockStyle
 				),
 			},
-			{ ...selectorsImage, ...getBgLayersSelectorsCss(bgLayers) },
+			{
+				...selectorsImage,
+				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
+			},
 			props
 		),
 	};

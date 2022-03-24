@@ -79,4 +79,6 @@ export const categoriesNumberCounter = [
 	'before number',
 	'after number',
 	'circle',
+	'background',
+	'background hover',
 ];

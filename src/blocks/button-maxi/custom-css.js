@@ -103,4 +103,6 @@ export const categoriesButton = [
 	'before button',
 	'after button',
 	'icon',
+	'background',
+	'background hover',
 ];

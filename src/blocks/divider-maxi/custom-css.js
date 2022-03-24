@@ -68,4 +68,6 @@ export const categoriesDivider = [
 	'divider',
 	'before divider',
 	'after divider',
+	'background',
+	'background hover',
 ];

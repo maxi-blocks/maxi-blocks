@@ -35,4 +35,6 @@ export const categoriesContainer = [
 	'container',
 	'before container',
 	'after container',
+	'background',
+	'background hover',
 ];

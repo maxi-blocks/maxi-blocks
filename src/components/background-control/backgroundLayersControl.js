@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, RawHTML, useEffect } from '@wordpress/element';
+import { useState, RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -364,40 +364,24 @@ const LayerCard = props => {
 
 const BackgroundLayersControl = ({
 	layersOptions,
+	layersHoverOptions,
 	isHover = false,
 	onChange,
 	clientId,
 	breakpoint,
 }) => {
 	const layers = cloneDeep(layersOptions);
+	const layersHover = cloneDeep(layersHoverOptions);
+	const allLayers = [...layers, ...layersHover];
+	console.log(layersHover);
 
-	const uniqueIdChecker = allLayers => {
-		const newLayers = allLayers.map(layer => {
-			return {
-				...layer,
-				uniqueId: layer?.uniqueId
-					? layer.uniqueId
-					: uniqueIDGenerator('background-layers-maxi-'),
-			};
-		});
-		onChange({
-			'background-layers': newLayers,
-		});
-
-		return newLayers;
-	};
-
-	layers.sort((a, b) => a.order - b.order);
-
-	useEffect(() => {
-		uniqueIdChecker(layers);
-	}, []);
+	allLayers.sort((a, b) => a.order - b.order);
 
 	const [selector, changeSelector] = useState(null);
 
 	const getNewLayerOrder = () =>
-		layers && !isEmpty(layers)
-			? layers.reduce((layerA, layerB) =>
+		allLayers && !isEmpty(allLayers)
+			? allLayers.reduce((layerA, layerB) =>
 					layerA.order > layerB.order ? layerA : layerB
 			  ).order + 1
 			: 1;
@@ -432,16 +416,20 @@ const BackgroundLayersControl = ({
 	};
 
 	const onLayersDrag = (fromIndex, toIndex) => {
-		const layer = layers.splice(fromIndex, 1)[0];
+		const layer = allLayers.splice(fromIndex, 1)[0];
 
-		layers.splice(toIndex, 0, layer);
+		allLayers.splice(toIndex, 0, layer);
 
-		layers.forEach((layer, i) => {
-			layers[i].order = i;
+		allLayers.forEach((layer, i) => {
+			allLayers[i].order = i;
 		});
 
+		const normalLayers = allLayers.filter(layer => !layer.isHover);
+		const hoverLayers = allLayers.filter(layer => layer.isHover);
+
 		onChange({
-			'background-layers': layers,
+			'background-layers': normalLayers,
+			'background-layers-hover': hoverLayers,
 		});
 	};
 
@@ -453,13 +441,15 @@ const BackgroundLayersControl = ({
 			defaultAttributes: setBreakpointToLayer({
 				layer: backgroundLayers[getLayerLabel(currentLayer.type)],
 				breakpoint,
+				isHover,
 			}),
 		});
 
 	const onChangeLayer = layer => {
-		const newLayers = cloneDeep(layers);
+		const isHoverLayer = layer.isHover;
+		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
-		layers.forEach((lay, i) => {
+		allLayers.forEach((lay, i) => {
 			if (lay.order === layer.order) {
 				const index = findIndex(newLayers, { order: layer.order });
 
@@ -467,27 +457,30 @@ const BackgroundLayersControl = ({
 			}
 		});
 
-		if (!isEqual(newLayers, layers))
+		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
 			onChange({
-				'background-layers': newLayers,
+				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
 			});
 	};
 
 	const onAddLayer = layer => {
-		const newLayers = cloneDeep(layers);
+		const isHoverLayer = layer.isHover;
+		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
 		newLayers.push(layer);
 
 		onChange({
-			'background-layers': newLayers,
+			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
 		});
 	};
 
-	const onRemoveLayer = ({ order }) => {
-		const newLayers = cloneDeep(layers).filter(lay => lay.order !== order);
+	const onRemoveLayer = ({ order, isHover: isHoverLayer }) => {
+		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers).filter(
+			lay => lay.order !== order
+		);
 
 		onChange({
-			'background-layers': newLayers,
+			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
 		});
 
 		changeSelector(null);
@@ -496,7 +489,7 @@ const BackgroundLayersControl = ({
 	return (
 		<div className='maxi-background-control__layers'>
 			<div>
-				{!isEmpty(layers) && (
+				{!isEmpty(allLayers) && (
 					<ReactDragListView
 						onDragEnd={(fromIndex, toIndex) =>
 							onLayersDrag(fromIndex, toIndex)
@@ -506,7 +499,7 @@ const BackgroundLayersControl = ({
 						ignoreSelector='.maxi-background-layer__ignore-move'
 					>
 						<div className='maxi-background-layers_options'>
-							{[...(!isHover ? layers : layers)].map(
+							{[...(!isHover ? layers : allLayers)].map(
 								(layer, i) => (
 									<LayerCard
 										key={`maxi-background-layers__${

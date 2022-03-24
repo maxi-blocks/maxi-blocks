@@ -110,6 +110,9 @@ const getHoverObject = props => {
 
 const getStyles = props => {
 	const { uniqueID, 'background-layers': bgLayers } = props;
+	const bgLayersHover = !isEmpty(props['background-layers-hover'])
+		? props['background-layers-hover']
+		: [];
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -140,7 +143,10 @@ const getStyles = props => {
 					blockStyle: props.parentBlockStyle,
 				}),
 			},
-			{ ...selectorsColumn, ...getBgLayersSelectorsCss(bgLayers) },
+			{
+				...selectorsColumn,
+				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
+			},
 			props
 		),
 	};

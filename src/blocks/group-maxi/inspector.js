@@ -9,11 +9,13 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import {
-	getBgLayersCategoriesCss,
-	getBgLayersSelectorsCss,
-} from '../../components/background-displayer/utils';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsGroup, categoriesGroup } from './custom-css';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
@@ -21,6 +23,19 @@ import { selectorsGroup, categoriesGroup } from './custom-css';
 const Inspector = props => {
 	const { attributes, deviceType } = props;
 	const { 'background-layers': bgLayers } = attributes;
+	const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
+		? attributes['background-layers-hover']
+		: [];
+
+	const getCategoriesCss = () => {
+		const { 'block-background-hover-status': blockBackgroundHoverStatus } =
+			attributes;
+		return without(
+			categoriesGroup,
+			isEmpty(bgLayers) && 'background',
+			!blockBackgroundHoverStatus && 'background hover'
+		);
+	};
 
 	return (
 		<InspectorControls>
@@ -86,16 +101,12 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors: {
 											...selectorsGroup,
-											...getBgLayersSelectorsCss(
-												bgLayers
-											),
+											...getBgLayersSelectorsCss([
+												...bgLayers,
+												...bgLayersHover,
+											]),
 										},
-										categories: [
-											...categoriesGroup,
-											...getBgLayersCategoriesCss(
-												bgLayers
-											),
-										],
+										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

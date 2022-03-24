@@ -68,4 +68,6 @@ export const categoriesImage = [
 	'image',
 	'before image',
 	'after image',
+	'background',
+	'background hover',
 ];

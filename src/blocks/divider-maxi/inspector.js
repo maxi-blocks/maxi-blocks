@@ -18,10 +18,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import {
-	getBgLayersCategoriesCss,
-	getBgLayersSelectorsCss,
-} from '../../components/background-displayer/utils';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsDivider, categoriesDivider } from './custom-css';
 
 /**
@@ -35,6 +32,19 @@ import { isEmpty, without } from 'lodash';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 	const { 'background-layers': bgLayers } = attributes;
+	const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
+		? attributes['background-layers-hover']
+		: [];
+
+	const getCategoriesCss = () => {
+		const { 'block-background-hover-status': blockBackgroundHoverStatus } =
+			attributes;
+		return without(
+			categoriesDivider,
+			isEmpty(bgLayers) && 'background',
+			!blockBackgroundHoverStatus && 'background hover'
+		);
+	};
 
 	return (
 		<InspectorControls>
@@ -271,16 +281,12 @@ const Inspector = props => {
 											breakpoint: deviceType,
 											selectors: {
 												...selectorsDivider,
-												...getBgLayersSelectorsCss(
-													bgLayers
-												),
+												...getBgLayersSelectorsCss([
+													...bgLayers,
+													...bgLayersHover,
+												]),
 											},
-											categories: [
-												...categoriesDivider,
-												...getBgLayersCategoriesCss(
-													bgLayers
-												),
-											],
+											categories: getCategoriesCss(),
 										}),
 										...inspectorTabs.scrollEffects({
 											props,

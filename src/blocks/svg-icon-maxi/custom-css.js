@@ -46,4 +46,6 @@ export const categoriesSvgIcon = [
 	'before canvas',
 	'after canvas',
 	'svg',
+	'background',
+	'background hover',
 ];

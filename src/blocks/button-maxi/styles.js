@@ -510,6 +510,9 @@ const getIconHoverObject = (props, target) => {
 
 const getStyles = (props, scValues) => {
 	const { uniqueID, 'background-layers': bgLayers } = props;
+	const bgLayersHover = !isEmpty(props['background-layers-hover'])
+		? props['background-layers-hover']
+		: [];
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -570,7 +573,10 @@ const getStyles = (props, scValues) => {
 					blockStyle: props.parentBlockStyle,
 				}),
 			},
-			{ ...selectorsButton, ...getBgLayersSelectorsCss(bgLayers) },
+			{
+				...selectorsButton,
+				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
+			},
 			props
 		),
 	};

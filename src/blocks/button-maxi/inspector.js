@@ -19,10 +19,7 @@ import {
 import * as defaultPresets from './defaults';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
-import {
-	getBgLayersCategoriesCss,
-	getBgLayersSelectorsCss,
-} from '../../components/background-displayer/utils';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -54,6 +51,9 @@ const Inspector = memo(
 	props => {
 		const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 		const { parentBlockStyle, 'background-layers': bgLayers } = attributes;
+		const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
+			? attributes['background-layers-hover']
+			: [];
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -74,10 +74,15 @@ const Inspector = memo(
 
 		const getCategoriesCss = () => {
 			const {
-				'background-layers': bgLayers,
 				'icon-content': iconContent,
+				'block-background-hover-status': blockBackgroundHoverStatus,
 			} = attributes;
-			return without(categoriesButton, isEmpty(iconContent) && 'icon');
+			return without(
+				categoriesButton,
+				isEmpty(iconContent) && 'icon',
+				isEmpty(bgLayers) && 'background',
+				!blockBackgroundHoverStatus && 'background hover'
+			);
 		};
 
 		return (
@@ -577,16 +582,12 @@ const Inspector = memo(
 											breakpoint: deviceType,
 											selectors: {
 												...selectorsButton,
-												...getBgLayersSelectorsCss(
-													bgLayers
-												),
+												...getBgLayersSelectorsCss([
+													...bgLayers,
+													...bgLayersHover,
+												]),
 											},
-											categories: [
-												...getCategoriesCss(),
-												...getBgLayersCategoriesCss(
-													bgLayers
-												),
-											],
+											categories: getCategoriesCss(),
 										}),
 										...inspectorTabs.scrollEffects({
 											props: {

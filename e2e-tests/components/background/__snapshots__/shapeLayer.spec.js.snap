@@ -28,8 +28,7 @@ Array [
     "background-svg-size-general": 43,
     "background-svg-top": null,
     "background-svg-top--unit": "%",
-    "order": 0,
-		"uniqueID": "background-layers-maxi-166",
+    "id": 0,
     "type": "shape",
   },
 ]
@@ -65,8 +64,7 @@ Array [
     "background-svg-size-s": 23,
     "background-svg-top": null,
     "background-svg-top--unit": "%",
-    "order": 0,
-		"uniqueID": "background-layers-maxi-167",
+    "id": 0,
     "type": "shape",
   },
 ]

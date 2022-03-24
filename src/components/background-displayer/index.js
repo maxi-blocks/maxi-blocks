@@ -27,7 +27,10 @@ import { getAttributeValue } from '../../extensions/styles';
 const BackgroundContent = props => {
 	const { wrapperRef, prefix = '' } = props;
 
-	const layers = compact(props['background-layers']);
+	const layers = compact([
+		...props['background-layers'],
+		...props['background-layers-hover'],
+	]);
 
 	if (layers) layers.sort((a, b) => a.order - b.order);
 
@@ -36,14 +39,16 @@ const BackgroundContent = props => {
 			{layers &&
 				layers.length > 0 &&
 				layers.map(layer => {
-					const { type, order, uniqueId } = layer;
+					const { type, order, uniqueId, isHover = false } = layer;
 
 					switch (type) {
 						case 'color':
 						case 'gradient':
 							return (
 								<div
-									key={`maxi-background-displayer__${type}-${order}`}
+									key={`maxi-background-displayer__${type}-${order}${
+										isHover ? '--hover' : ''
+									}`}
 									className={classnames(
 										'maxi-background-displayer__layer',
 										`maxi-background-displayer__${order}`,
@@ -61,7 +66,9 @@ const BackgroundContent = props => {
 							if (!parallaxStatus)
 								return (
 									<div
-										key={`maxi-background-displayer__${type}-${order}`}
+										key={`maxi-background-displayer__${type}-${order}${
+											isHover ? '--hover' : ''
+										}`}
 										className={classnames(
 											'maxi-background-displayer__layer',
 											`maxi-background-displayer__${order}`,
@@ -90,7 +97,9 @@ const BackgroundContent = props => {
 
 							return (
 								<div
-									key={`maxi-background-displayer__${type}-${order}`}
+									key={`maxi-background-displayer__${type}-${order}${
+										isHover ? '--hover' : ''
+									}`}
 									className={classnames(
 										'maxi-background-displayer__layer',
 										'maxi-background-displayer__parallax',
@@ -109,7 +118,9 @@ const BackgroundContent = props => {
 						case 'video':
 							return (
 								<VideoLayer
-									key={`maxi-background-displayer__${type}-${order}`}
+									key={`maxi-background-displayer__${type}-${order}${
+										isHover ? '--hover' : ''
+									}`}
 									wrapperRef={wrapperRef}
 									videoOptions={layer}
 									className={classnames(
@@ -123,7 +134,9 @@ const BackgroundContent = props => {
 
 							return (
 								<RawHTML
-									key={`maxi-background-displayer__${type}-${order}`}
+									key={`maxi-background-displayer__${type}-${order}${
+										isHover ? '--hover' : ''
+									}`}
 									className={classnames(
 										'maxi-background-displayer__layer',
 										'maxi-background-displayer__svg',
@@ -146,7 +159,9 @@ const BackgroundContent = props => {
 const BackgroundDisplayer = props => {
 	const { className, isSave = false } = props;
 
-	const haveLayers = !isEmpty(props['background-layers']);
+	const haveLayers =
+		!isEmpty(props['background-layers']) ||
+		!isEmpty(props['background-layers-hover']);
 
 	if (!haveLayers) return null;
 
@@ -157,7 +172,11 @@ const BackgroundDisplayer = props => {
 
 	return (
 		<div ref={wrapperRef} className={classes}>
-			<BackgroundContent wrapperRef={wrapperRef} {...props} />
+			<BackgroundContent
+				wrapperRef={wrapperRef}
+				isHover={false}
+				{...props}
+			/>
 		</div>
 	);
 };

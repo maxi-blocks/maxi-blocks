@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash';
+
 export default function parseVideo(url) {
 	// - Supported YouTube URL formats:
 	//   - http://www.youtube.com/watch?v=My2FRPA3Gf8
@@ -28,30 +30,45 @@ export default function parseVideo(url) {
 }
 
 export function getBgLayersSelectorsCss(bgLayers) {
-	const bgLayersSelectors = {};
-	bgLayers?.forEach((bgLayer, index) => {
-		bgLayersSelectors[bgLayer.uniqueId] = {
-			normal: {
-				label: `background ${bgLayer.type} ${index + 1}`,
-				target: ` .maxi-background-displayer .${bgLayer.uniqueId}`,
-			},
-			hover: {
-				label: `background ${bgLayer.type} ${index + 1} on hover`,
-				target: `:hover .maxi-background-displayer .${bgLayer.uniqueId}`,
-			},
-		};
-	});
+	const bgLayersSelectors = {
+		background: {},
+		'background hover': {},
+	};
+
+	bgLayers
+		?.sort((a, b) => a.order - b.order)
+		.forEach((bgLayer, index) => {
+			if (!isEmpty(bgLayer)) {
+				if (bgLayer?.isHover) {
+					bgLayersSelectors['background hover'] = {
+						...bgLayersSelectors['background hover'],
+						[bgLayer.uniqueId]: {
+							label: `background ${bgLayer.type} ${
+								index + 1
+							} on hover`,
+							target: ` .maxi-background-displayer .${bgLayer.uniqueId}`,
+						},
+					};
+				} else {
+					bgLayersSelectors.background = {
+						...bgLayersSelectors.background,
+						[bgLayer.uniqueId]: {
+							label: `background ${bgLayer.type} ${index + 1}`,
+							target: ` .maxi-background-displayer .${bgLayer.uniqueId}`,
+						},
+					};
+					bgLayersSelectors['background hover'] = {
+						...bgLayersSelectors['background hover'],
+						[bgLayer.uniqueId]: {
+							label: `background ${bgLayer.type} ${
+								index + 1
+							} on hover`,
+							target: `:hover .maxi-background-displayer .${bgLayer.uniqueId}`,
+						},
+					};
+				}
+			}
+		});
 
 	return bgLayersSelectors;
-}
-
-export function getBgLayersCategoriesCss(bgLayers) {
-	const bgLayersCategories = bgLayers?.map((bgLayer, index) => {
-		return {
-			label: `background ${bgLayer.type} ${index + 1}`,
-			value: bgLayer.uniqueId,
-		};
-	});
-
-	return bgLayersCategories;
 }

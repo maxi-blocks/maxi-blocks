@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
@@ -15,6 +18,11 @@ import {
 } from '../../extensions/styles/helpers';
 import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsGroup } from './custom-css';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -97,6 +105,9 @@ const getHoverObject = props => {
 
 const getStyles = props => {
 	const { uniqueID, 'background-layers': bgLayers } = props;
+	const bgLayersHover = !isEmpty(props['background-layers-hover'])
+		? props['background-layers-hover']
+		: [];
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -155,7 +166,10 @@ const getStyles = props => {
 					isHover: true,
 				}),
 			},
-			{ ...selectorsGroup, ...getBgLayersSelectorsCss(bgLayers) },
+			{
+				...selectorsGroup,
+				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
+			},
 			props
 		),
 	};

@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -15,6 +18,11 @@ import {
 } from '../../extensions/styles/helpers';
 import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsDivider } from './custom-css';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 const getWrapperObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
@@ -154,6 +162,9 @@ const getHoverObject = props => {
 
 const getStyles = props => {
 	const { uniqueID, 'background-layers': bgLayers } = props;
+	const bgLayersHover = !isEmpty(props['background-layers-hover'])
+		? props['background-layers-hover']
+		: [];
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -186,7 +197,10 @@ const getStyles = props => {
 					blockStyle: props.parentBlockStyle,
 				}),
 			},
-			{ ...selectorsDivider, ...getBgLayersSelectorsCss(bgLayers) },
+			{
+				...selectorsDivider,
+				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
+			},
 			props
 		),
 	};

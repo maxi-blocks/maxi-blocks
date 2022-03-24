@@ -20,6 +20,8 @@ const marginPadding = ({
 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
+	const { blockFullWidth } = attributes;
+
 	return {
 		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
 		content: (
@@ -38,6 +40,7 @@ const marginPadding = ({
 						breakpoint={deviceType}
 						target='margin'
 						optionType='string'
+						blockFullWidth={blockFullWidth}
 						minMaxSettings={{
 							px: {
 								min: -999,
@@ -74,6 +77,7 @@ const marginPadding = ({
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
 					target='padding'
+					blockFullWidth={blockFullWidth}
 					disableAuto
 				/>
 			</>

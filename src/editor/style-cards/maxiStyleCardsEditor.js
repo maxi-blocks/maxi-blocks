@@ -39,7 +39,7 @@ import { isEmpty, isNil, isEqual } from 'lodash';
 import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
 import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
 
-const MaxiStyleCardsEditor = ({ styleCards }) => {
+const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const {
 		isRTL,
 		breakpoint,
@@ -253,11 +253,8 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		setSelectedStyleCard(newId);
 	};
 
-	const [isVisible, setIsVisible] = useState(false);
-
 	return (
-		!isEmpty(styleCards) &&
-		!isVisible && (
+		!isEmpty(styleCards) && (
 			<Popover
 				noArrow
 				position={isRTL ? 'top left right' : 'top right left'}
@@ -269,7 +266,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 					{__('Style Card Editor', 'maxi-blocks')}
 					<span
 						className='maxi-responsive-selector__close'
-						onClick={() => setIsVisible(true)}
+						onClick={() => setIsVisible(false)}
 					>
 						<Icon icon={closeIcon} />
 					</span>

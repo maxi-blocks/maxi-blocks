@@ -56,7 +56,7 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('choose', 'maxi-blocks'),
+											label: __('Auto', 'maxi-blocks'),
 											value: '',
 										},
 										{
@@ -90,7 +90,7 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('choose', 'maxi-blocks'),
+											label: __('Auto', 'maxi-blocks'),
 											value: '',
 										},
 										{
@@ -132,7 +132,7 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('choose', 'maxi-blocks'),
+											label: __('Auto', 'maxi-blocks'),
 											value: '',
 										},
 										{
@@ -191,7 +191,7 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('choose', 'maxi-blocks'),
+											label: __('Auto', 'maxi-blocks'),
 											value: '',
 										},
 										{
@@ -239,7 +239,7 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('choose', 'maxi-blocks'),
+											label: __('Auto', 'maxi-blocks'),
 											value: '',
 										},
 										{
@@ -309,7 +309,7 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('choose', 'maxi-blocks'),
+											label: __('Auto', 'maxi-blocks'),
 											value: '',
 										},
 										{
@@ -326,19 +326,6 @@ const FLexSettingsControl = props => {
 											[`flex-flow-${breakpoint}`]: val,
 										})
 									}
-								/>
-								<TextControl
-									label={__('Gap', 'maxi-blocks')}
-									value={getLastBreakpointAttribute({
-										target: 'gap',
-										breakpoint,
-										attributes: props,
-									})}
-									onChange={val => {
-										onChange({
-											[`gap-${breakpoint}`]: val,
-										});
-									}}
 								/>
 								<AdvancedNumberControl
 									className='maxi-typography-control__size'
@@ -454,18 +441,28 @@ const FLexSettingsControl = props => {
 						value: 'flex-child',
 						content: wrapperBlocks.includes(getParentBlockName) ? (
 							<>
-								<TextControl
+								<AdvancedNumberControl
+									className='maxi-typography-control__size'
 									label={__('Order', 'maxi-blocks')}
+									enableUnit={false}
 									value={getLastBreakpointAttribute({
 										target: 'order',
 										breakpoint,
 										attributes: props,
 									})}
-									onChange={val => {
+									onChangeValue={val => {
 										onChange({
 											[`order-${breakpoint}`]: val,
 										});
 									}}
+									min={0}
+									max={12}
+									step={1}
+									onReset={() =>
+										onChange({
+											[`order-${breakpoint}`]: null,
+										})
+									}
 								/>
 								<AdvancedNumberControl
 									className='maxi-typography-control__size'

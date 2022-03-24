@@ -55,6 +55,9 @@ export const rawHeight = {
 	height: {
 		type: 'number',
 	},
+	'force-aspect-ratio': {
+		type: 'boolean',
+	},
 };
 
 export const rawMinHeight = {

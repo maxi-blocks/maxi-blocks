@@ -20,15 +20,25 @@ class MaxiBlocks_Local_Fonts
     }
 
     /**
+     * Variables
+     */
+    private $fontsUploadDir;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         if ((bool) get_option('local_fonts')) {
+            $this->fontsUploadDir = wp_upload_dir()['basedir'] . '/maxi/fonts';
             $allFonts = $this->getAllFontsDB();
-            $allURLs = $this->constructFontURLs($allFonts);
-            $this->createUploadFolder();
-            $this->uploadCssFiles($allURLs);
+            if (is_array($allFonts) && !empty($allFonts)) {
+                $allURLs = $this->constructFontURLs($allFonts);
+                if (is_array($allURLs) && !empty($allURLs)) {
+                    $this->createUploadFolder();
+                    $this->uploadCssFiles($allURLs);
+                }
+            }
         }
     }
 
@@ -62,10 +72,6 @@ class MaxiBlocks_Local_Fonts
 
     public function constructFontURLs($allFonts)
     {
-        if (!is_array($allFonts) || empty($allFonts)) {
-            return false;
-        }
-
         $response = [];
         foreach ($allFonts as $fontName => $fontData) {
             $fontNameSanitized = str_replace(' ', '+', $fontName);
@@ -123,27 +129,17 @@ class MaxiBlocks_Local_Fonts
 
     public function createUploadFolder()
     {
-        $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
-        wp_mkdir_p($fonts_uploads_dir);
+        wp_mkdir_p($this->fontsUploadDir);
     }
 
     public function uploadCssFiles($allURLs)
     {
-        if (!is_array($allURLs) || empty($allURLs)) {
-            return false;
-        }
-
-        global $wp_filesystem;
-
-        $allFontsNames = [];
-        
         foreach ($allURLs as $fontName => $fontUrl) {
             $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
 
             $allFontsNames[] = $fontNameSanitized;
             
-            $fontsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
-            $fontUploadsDir =  $fontsDir.$fontNameSanitized;
+            $fontUploadsDir =  $this->fontsUploadDir.'/'.$fontNameSanitized;
             wp_mkdir_p($fontUploadsDir);
 
             $fontUrlDir = wp_upload_dir()['baseurl'] . '/maxi/fonts/'.$fontNameSanitized;
@@ -179,7 +175,7 @@ class MaxiBlocks_Local_Fonts
         }
 
         // remove not used fonts directories
-        $directories = glob($fontsDir.'*', GLOB_ONLYDIR);
+        $directories = glob($this->fontsUploadDir.'/*', GLOB_ONLYDIR);
         foreach ($directories as $directory) {
             $folderName = basename($directory);
             if (!in_array($folderName, $allFontsNames)) {

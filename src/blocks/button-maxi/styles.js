@@ -458,7 +458,7 @@ const getIconHoverObject = (props, target) => {
 				true
 			),
 		background: iconHoverStatus &&
-			iconHoverActiveMedia === 'background-color' &&
+			iconHoverActiveMedia === 'color' &&
 			target === 'iconHover' && {
 				...getColorBackgroundObject({
 					...getGroupAttributes(

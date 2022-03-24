@@ -415,12 +415,103 @@ const ScrollEffectsControl = props => {
 			value: 6,
 		},
 		{
-			label: __('Blur + Rotate', 'maxi-blocks'),
+			label: __('Blur + Rotate Left', 'maxi-blocks'),
 			value: 7,
 		},
 		{
-			label: __('Blur + Scale', 'maxi-blocks'),
+			label: __('Blur + Rotate Right', 'maxi-blocks'),
 			value: 8,
+		},
+		{
+			label: __('Blur + Scale In', 'maxi-blocks'),
+			value: 9,
+		},
+		{
+			label: __('Blur + Scale Out', 'maxi-blocks'),
+			value: 10,
+		},
+
+		{
+			label: __('Fade + Verticanl In Less', 'maxi-blocks'),
+			value: 11,
+		},
+		{
+			label: __('Fade + Verticanl Out Less', 'maxi-blocks'),
+			value: 12,
+		},
+		{
+			label: __('Fade + Horizontal In Less', 'maxi-blocks'),
+			value: 13,
+		},
+		{
+			label: __('Fade + Horizontal Out Less', 'maxi-blocks'),
+			value: 14,
+		},
+		{
+			label: __('Fade + Vertical In Some', 'maxi-blocks'),
+			value: 15,
+		},
+		{
+			label: __('Fade + Vertical Out Some', 'maxi-blocks'),
+			value: 16,
+		},
+		{
+			label: __('Fade + Horizontal In Some', 'maxi-blocks'),
+			value: 17,
+		},
+		{
+			label: __('Fade + Horizontal Out Some', 'maxi-blocks'),
+			value: 18,
+		},
+
+		{
+			label: __('Rotate + Vertical Up Less', 'maxi-blocks'),
+			value: 19,
+		},
+		{
+			label: __('Rotate + Vertical Down Less', 'maxi-blocks'),
+			value: 20,
+		},
+		{
+			label: __('Rotate + Horizontal Left Less', 'maxi-blocks'),
+			value: 21,
+		},
+		{
+			label: __('Rotate + Horizontal Right Less', 'maxi-blocks'),
+			value: 22,
+		},
+		{
+			label: __('Rotate + Vertical Up Some', 'maxi-blocks'),
+			value: 23,
+		},
+		{
+			label: __('Rotate + Vertical Down Some', 'maxi-blocks'),
+			value: 24,
+		},
+		{
+			label: __('Rotate + Horizontal Left Some', 'maxi-blocks'),
+			value: 25,
+		},
+		{
+			label: __('Rotate + Horizontal Right Some', 'maxi-blocks'),
+			value: 26,
+		},
+
+		{
+			label: __('Scale  + Fade In + Vertical Up', 'maxi-blocks'),
+			value: 27,
+		},
+		{
+			label: __('Scale + Fade In + Vertical Down', 'maxi-blocks'),
+			value: 28,
+		},
+		{
+			label: __('Scale In + Fade In', 'maxi-blocks'),
+			value: 29,
+		},
+		{
+			label: __('Scale Out + Fade In', 'maxi-blocks'),
+			value: 29,
 		},
 	];
 

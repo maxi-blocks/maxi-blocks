@@ -152,7 +152,8 @@ class MaxiBlockComponent extends Component {
 		if (
 			!this.props.isSelected ||
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType // In case of breakpoint change
+			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
+			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
 		)
 			return true;
 

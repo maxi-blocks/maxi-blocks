@@ -93,11 +93,9 @@ const editSelect = withSelect((select, ownProps) => {
 	const hasInnerBlocks = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		hasInnerBlocks,
-		deviceType,
 	};
 });
 

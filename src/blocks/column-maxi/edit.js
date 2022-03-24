@@ -195,12 +195,9 @@ const editSelect = withSelect((select, ownProps) => {
 	const originalNestedColumns = getBlockOrder(rowBlockId);
 	const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
 	return {
 		rowBlockId,
 		originalNestedColumns,
-		deviceType,
 		hasInnerBlocks,
 	};
 });

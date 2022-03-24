@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 
 /**
@@ -142,6 +142,16 @@ const withMaxiProps = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
 
+			const { deviceType, winBreakpoint } = useSelect(select => {
+				const { receiveMaxiDeviceType, receiveWinBreakpoint } =
+					select('maxiBlocks');
+
+				const deviceType = receiveMaxiDeviceType();
+				const winBreakpoint = receiveWinBreakpoint();
+
+				return { deviceType, winBreakpoint };
+			});
+
 			const maxiSetAttributes = obj =>
 				handleSetAttributes({
 					obj,
@@ -154,6 +164,8 @@ const withMaxiProps = createHigherOrderComponent(
 				<WrappedComponent
 					{...ownProps}
 					maxiSetAttributes={maxiSetAttributes}
+					deviceType={deviceType}
+					winBreakpoint={winBreakpoint}
 				/>
 			);
 		}),

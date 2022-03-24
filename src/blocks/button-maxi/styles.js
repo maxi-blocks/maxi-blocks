@@ -501,7 +501,6 @@ const getIconHoverObject = (props, target) => {
 				prefix: 'icon-',
 				parentBlockStyle: props.parentBlockStyle,
 				isHover: true,
-				iconHoverStatus,
 			}),
 	};
 

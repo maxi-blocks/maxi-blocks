@@ -9,7 +9,7 @@ import { getIsValid } from '../utils';
 /**
  * External dependencies
  */
-import { isUndefined } from 'lodash';
+import { isUndefined, isNil } from 'lodash';
 
 /**
  * General
@@ -28,18 +28,18 @@ const getBorderStyles = ({
 	parentBlockStyle,
 	isButton = false,
 	scValues = {},
-	iconHoverStatus,
 }) => {
 	const response = {};
 
-	const hoverStatus = iconHoverStatus || obj[`${prefix}border-status-hover`];
+	const hoverStatus = obj[`${prefix}border-status-hover`];
 	const {
 		'hover-border-color-global': isActive,
 		'hover-border-color-all': affectAll,
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
-	if (isHover && !hoverStatus && !globalHoverStatus) return response;
+	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
+		return response;
 
 	const keyWords = [
 		'top-left',

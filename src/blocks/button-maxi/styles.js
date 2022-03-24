@@ -73,6 +73,7 @@ const getWrapperObject = props => {
 		},
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
+		}),
 		margin: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin'),

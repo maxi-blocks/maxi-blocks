@@ -37,7 +37,6 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
-	...attributesData.container,
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
 	...attributesData.border,

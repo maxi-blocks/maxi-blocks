@@ -1,7 +1,16 @@
 /**
- * External dependencies
+ * WordPress dependencies
  */
 import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { getLastBreakpointAttribute } from '../styles';
+
+/**
+ * External dependencies
+ */
 import { isEmpty, isNil, merge } from 'lodash';
 
 /**

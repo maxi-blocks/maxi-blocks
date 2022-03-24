@@ -99,7 +99,8 @@ const getBorderStyles = ({
 
 			if (
 				(getIsValid(value, true) ||
-					(isHover && globalHoverStatus && key.includes('color'))) &&
+					(isHover && globalHoverStatus && key.includes('color')) ||
+					key === `${prefix}border-palette-color-${breakpoint}`) &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
@@ -127,13 +128,13 @@ const getBorderStyles = ({
 					if (isHover && isBorderNone) {
 						response[breakpoint].border = 'none';
 					} else response[breakpoint]['border-style'] = borderStyle;
-				} else if (!keyWords.some(key => newLabel.includes(key))) {
+				} else if (!keyWords.some(key => newKey.includes(key))) {
 					if (
 						(key.includes('color') || key.includes('opacity')) &&
 						(!isBorderNone || (isHover && globalHoverStatus))
-					)
+					) {
 						response[breakpoint]['border-color'] = getColorString();
-					else if (
+					} else if (
 						![
 							'border-palette-status',
 							'border-palette-color',

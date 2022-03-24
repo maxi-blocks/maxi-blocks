@@ -72,6 +72,7 @@
 
 		&-label {
 			.maxi-base-control__field {
+				position: relative;
 				flex-direction: column;
 
 				& > * {
@@ -79,6 +80,20 @@
 				}
 				.maxi-base-control__label {
 					margin-bottom: 8px;
+				}
+				.components-maxi-control__reset-button {
+					position: absolute;
+					background-color: transparent;
+					border-width: 0 0 0 2px;
+					width: auto;
+					top: 0;
+					right: 0;
+					padding: 1px 1px 1px 8px;
+					&:hover {
+						svg {
+							fill: #ff4a17;
+						}
+					}
 				}
 			}
 		}

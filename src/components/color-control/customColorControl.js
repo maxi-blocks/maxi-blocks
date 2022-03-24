@@ -93,6 +93,24 @@ const CustomColorControl = props => {
 							}}
 							onReset={onResetOpacity}
 						/>
+					</div>
+					{!disableReset && (
+						<Button
+							className='components-maxi-control__reset-button'
+							onClick={e => {
+								e.preventDefault();
+								onReset();
+							}}
+							isSmall
+							aria-label={sprintf(
+								/* translators: %s: a textual label  */
+								__('Reset %s settings', 'maxi-blocks'),
+								label?.toLowerCase()
+							)}
+							type='reset'
+						>
+							{reset}
+						</Button>
 					)}
 				</>
 			)}

@@ -89,10 +89,12 @@ body {
 		}
 	}
 	&:hover {
-		.block-list-appender {
-			.block-editor-button-block-appender {
-				opacity: 1 !important;
-				visibility: visible !important;
+		& > .block-editor-block-list__layout {
+			& > .block-list-appender {
+				.block-editor-button-block-appender {
+					opacity: 1 !important;
+					visibility: visible !important;
+				}
 			}
 		}
 	}
@@ -104,34 +106,30 @@ body {
 			z-index: 21;
 			top: 100%;
 			left: 50%;
-			width: 1.5rem;
-			height: 1.5rem;
+			width: 16px;
+			height: 16px;
 			padding: 0;
 			margin: 0;
-			background: #1e1e1e;
+			background: #ff4a17;
 			opacity: 0;
 			transform: translate(-50%, -50%);
-			transition: all 0.3s ease;
+			transition: all 0s ease;
 			visibility: hidden;
+			box-shadow: none;
+			border-radius: 0;
 
 			&:hover,
 			&:focus {
 				box-shadow: none;
 				outline: none;
+				background: #151617;
 			}
 
 			svg {
-				min-width: 2rem;
-				min-height: 2rem;
+				min-width: 19px;
+				min-height: 19px;
 				fill: #fff;
 			}
-		}
-	}
-
-	.block-list-appender--show {
-		.block-editor-button-block-appender {
-			opacity: 1 !important;
-			visibility: visible !important;
 		}
 	}
 
@@ -376,4 +374,39 @@ svg path#styleCardBoat_a {
 svg path#styleCardMenu_b,
 svg path#styleCardBoat_b {
 	stroke: rgba(var(--maxi-light-color-7), 1);
+}
+
+/*******************************
+* Grid lines
+*******************************/
+
+.maxi-block {
+	&::after {
+		border: 2px solid #7fbddc;
+		border-radius: 0;
+		box-shadow: none !important;
+		opacity: 0;
+		top: -1px !important;
+		right: -1px !important;
+		bottom: -1px !important;
+		left: -1px !important;
+	}
+
+	&:not(.is-selected) {
+		&:hover {
+			&::after {
+				opacity: 1;
+			}
+		}
+	}
+
+	&.is-selected {
+		&::after {
+			opacity: 1;
+			border-color: #ff4a17;
+		}
+		&:focus {
+			box-shadow: none;
+		}
+	}
 }

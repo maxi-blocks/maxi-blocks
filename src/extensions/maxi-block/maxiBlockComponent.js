@@ -35,7 +35,7 @@ import { loadFonts, getAllFonts } from '../text/fonts';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
 
 /**
  * Style Component
@@ -95,11 +95,11 @@ class MaxiBlockComponent extends Component {
 		this.typography = getGroupAttributes(attributes, 'typography');
 
 		// Init
-		this.uniqueIDChecker(uniqueID);
+		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
 		if (!isEmpty(this.typography)) this.loadFonts();
 		this.getParentStyle();
-		this.displayStyles();
+		this.displayStyles(newUniqueID);
 	}
 
 	// Just for debugging!
@@ -213,6 +213,11 @@ class MaxiBlockComponent extends Component {
 		if (
 			!document.querySelector(
 				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+			) ||
+			isNil(
+				select('maxiBlocks/styles').getBlockStyles(
+					this.props.attributes.uniqueID
+				)
 			)
 		)
 			return false;
@@ -231,8 +236,18 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		const obj = this.getStylesObject;
-		styleResolver('', obj, true);
+		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
+		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
+		// the first copied block, on removing the styles the copied block appears naked. That's why we check if there's more than one block
+		// with same uniqueID
+		if (
+			Array.from(
+				document.getElementsByClassName(this.props.attributes.uniqueID)
+			).length <= 1
+		) {
+			const obj = this.getStylesObject;
+			styleResolver('', obj, true);
+		}
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
@@ -312,14 +327,14 @@ class MaxiBlockComponent extends Component {
 
 	uniqueIDChecker(idToCheck) {
 		if (!isEmpty(document.getElementsByClassName(idToCheck))) {
-			const newUniqueId = uniqueId(
-				idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], '')
-			);
+			const newUniqueID = uniqueIDGenerator(idToCheck);
 
-			this.uniqueIDChecker(newUniqueId);
+			this.props.attributes.uniqueID = newUniqueID;
 
-			this.props.setAttributes({ uniqueID: newUniqueId });
+			return newUniqueID;
 		}
+
+		return idToCheck;
 	}
 
 	loadFonts() {
@@ -347,10 +362,18 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on Editor
 	 */
-	displayStyles() {
+	displayStyles(rawUniqueID) {
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
-		const { uniqueID } = this.props.attributes;
+
+		const uniqueID = rawUniqueID ?? this.props.attributes.uniqueID;
+
+		// When duplicating, need to change the obj target for the new uniqueID
+		if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+			obj[uniqueID] = obj[this.props.attributes.uniqueID];
+
+			delete obj[this.props.attributes.uniqueID];
+		}
 
 		const customData = this.getCustomData;
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
@@ -359,6 +382,7 @@ class MaxiBlockComponent extends Component {
 			let wrapper = document.querySelector(
 				`#maxi-blocks__styles--${uniqueID}`
 			);
+
 			if (!wrapper) {
 				wrapper = document.createElement('div');
 				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
@@ -376,6 +400,7 @@ class MaxiBlockComponent extends Component {
 				wrapper
 			);
 
+			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
 			const iframe = document.querySelector(
 				'iframe[name="editor-canvas"]'
 			);

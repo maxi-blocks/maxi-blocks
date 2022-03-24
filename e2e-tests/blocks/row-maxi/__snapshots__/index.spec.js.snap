@@ -7,8 +7,8 @@ exports[`Row Maxi Row Maxi does not break 1`] = `
 <div class=\\"wp-block-maxi-blocks-column-maxi maxi-block maxi-column-block maxi-parent column-maxi-22\\" id=\\"column-maxi-22\\"></div>
 <!-- /wp:maxi-blocks/column-maxi -->
 
-<!-- wp:maxi-blocks/column-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-parent\\",\\"isFirstOnHierarchy\\":false,\\"uniqueID\\":\\"maxi-column-maxi-23\\",\\"column-size-general\\":48.75,\\"column-size-m\\":100,\\"margin-top-m\\":\\"2.5\\",\\"margin-unit-m\\":\\"%\\"} -->
-<div class=\\"wp-block-maxi-blocks-column-maxi maxi-block maxi-column-block maxi-parent maxi-column-maxi-23\\" id=\\"maxi-column-maxi-23\\"></div>
+<!-- wp:maxi-blocks/column-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-parent\\",\\"isFirstOnHierarchy\\":false,\\"uniqueID\\":\\"column-maxi-23\\",\\"column-size-general\\":48.75,\\"column-size-m\\":100,\\"margin-top-m\\":\\"2.5\\",\\"margin-unit-m\\":\\"%\\"} -->
+<div class=\\"wp-block-maxi-blocks-column-maxi maxi-block maxi-column-block maxi-parent column-maxi-23\\" id=\\"column-maxi-23\\"></div>
 <!-- /wp:maxi-blocks/column-maxi --></div>
 <!-- /wp:maxi-blocks/row-maxi --></section>
 <!-- /wp:maxi-blocks/container-maxi -->"

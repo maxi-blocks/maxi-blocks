@@ -49,6 +49,7 @@ const MasonryItem = props => {
 		previewIMG,
 		demoUrl,
 		currentItemColorStatus = false,
+		taxonomies,
 	} = props;
 
 	const masonryCardClasses = classnames(

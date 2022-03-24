@@ -490,6 +490,15 @@ const Inspector = memo(
 																	blockStyle={
 																		parentBlockStyle
 																	}
+																	globalProps={{
+																		target: '',
+																		type: 'p',
+																	}}
+																	hoverGlobalProps={{
+																		target: 'hover',
+																		type: 'p',
+																	}}
+																	styleCardPrefix=''
 																	allowLink
 																/>
 															</>

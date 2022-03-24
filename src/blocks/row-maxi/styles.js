@@ -1,7 +1,6 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getSizeStyles,
-	getContainerStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getPositionStyles,
@@ -21,7 +20,7 @@ import { selectorsRow } from './custom-css';
 import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
-	let response = {
+	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
@@ -69,15 +68,6 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
-
-	if (props.fullWidth !== 'full') {
-		response = {
-			...response,
-			containerSize: getContainerStyles({
-				...getGroupAttributes(props, 'container'),
-			}),
-		};
-	}
 
 	if (!isEmpty(props.horizontalAlign))
 		response.row.general['justify-content'] = props.horizontalAlign;

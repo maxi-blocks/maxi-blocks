@@ -30,7 +30,6 @@ const attributes = {
 		default: 'maxi-light',
 	},
 	...attributesData.arrow,
-	...attributesData.container,
 	...attributesData.shapeDivider,
 	...{
 		...attributesData.blockBackground,

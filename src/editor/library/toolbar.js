@@ -65,8 +65,8 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 			<a className='maxi-cloud-toolbar__help-button'>
-				{__('Help', 'maxi-blocks')}
 				{help}
+				{__('Help', 'maxi-blocks')}
 			</a>
 		</div>
 	);

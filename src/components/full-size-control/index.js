@@ -18,6 +18,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -50,6 +51,7 @@ const FullSizeControl = props => {
 		} else {
 			response[`${target}-${breakpoint}`] = val;
 		}
+
 		onChange(response);
 	};
 
@@ -82,7 +84,7 @@ const FullSizeControl = props => {
 
 	return (
 		<div className={classes}>
-			{!hideWidth && currentBlockRoot && (
+			{!hideWidth && !isEmpty(currentBlockRoot) && (
 				<AdvancedNumberControl
 					label={__('Width', 'maxi-blocks')}
 					enableUnit

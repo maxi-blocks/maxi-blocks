@@ -53,7 +53,10 @@ export const handleSetAttributes = ({
 			key.lastIndexOf('-')
 		)}-general`;
 
-		const attrExistOnGeneral = !isNil(attributes[attrLabelOnGeneral], true);
+		const attrExistOnGeneral = !isNil(
+			attributes?.[attrLabelOnGeneral],
+			true
+		);
 		const attrExistOnObjOnGeneral = attrLabelOnGeneral in obj;
 
 		// When changing a number that needs more than 2 digits, it is saved digit by digit
@@ -75,7 +78,7 @@ export const handleSetAttributes = ({
 			.some(
 				breakpoint =>
 					!isNil(
-						attributes[
+						attributes?.[
 							`${key.slice(
 								0,
 								key.lastIndexOf('-')
@@ -110,7 +113,7 @@ export const handleSetAttributes = ({
 
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
-			getDefaultAttribute(attrLabelOnGeneral, clientId);
+			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (
 			attributes?.[attrLabelOnGeneral] === value &&
@@ -128,7 +131,7 @@ export const handleSetAttributes = ({
 			return;
 		}
 
-		response[attrLabelOnWinBreakpoint] = attributes[attrLabelOnGeneral];
+		response[attrLabelOnWinBreakpoint] = attributes?.[attrLabelOnGeneral];
 	});
 
 	return onChange(response);

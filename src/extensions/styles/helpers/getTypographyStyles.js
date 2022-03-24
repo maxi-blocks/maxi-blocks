@@ -152,6 +152,11 @@ const getTypographyStyles = ({
 			...(!isNil(obj[getName('text-decoration', breakpoint)]) && {
 				'text-decoration': obj[getName('text-decoration', breakpoint)],
 			}),
+			...(!isNil(obj[getName('text-indent', breakpoint)]) && {
+				'text-indent': `${
+					obj[getName('text-indent', breakpoint)]
+				}${getUnitValue('text-indent-unit', breakpoint)}`,
+			}),
 			...(!isNil(obj[getName('text-shadow', breakpoint)]) && {
 				'text-shadow': obj[getName('text-shadow', breakpoint)],
 			}),

@@ -46,6 +46,7 @@ const StyleComponent = ({
 	stylesObj,
 	currentBreakpoint,
 	blockBreakpoints,
+	isIframe = false,
 }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
@@ -68,7 +69,8 @@ const StyleComponent = ({
 	const styleContent = styleGenerator(
 		styles,
 		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
-		currentBreakpoint
+		currentBreakpoint,
+		isIframe
 	);
 
 	return <style>{styleContent}</style>;
@@ -425,6 +427,7 @@ class MaxiBlockComponent extends Component {
 							stylesObj={obj}
 							currentBreakpoint={this.currentBreakpoint}
 							blockBreakpoints={breakpoints}
+							isIframe
 						/>,
 						iframeWrapper
 					);

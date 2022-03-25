@@ -4,14 +4,13 @@ const numberCounterEffect = () => {
 	numberElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
 		if (!maxiNumberCounter) return;
-
 		const numberID = elem.id;
 
 		const numberData =
 			// eslint-disable-next-line no-undef
-			maxiNumberCounter[numberID] !== undefined
+			maxiNumberCounter[0][numberID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxiNumberCounter[numberID]
+				  maxiNumberCounter[0][numberID]
 				: null;
 
 		if (numberData !== null) {

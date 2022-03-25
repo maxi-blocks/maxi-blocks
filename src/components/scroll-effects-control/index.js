@@ -128,6 +128,73 @@ const ScrollEffectsControl = props => {
 	const getShortcutEffect = type => {
 		let response = {};
 		switch (type) {
+
+			case 'vertical':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('Up less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Down less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('Up some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Down some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Up more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Down more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+				break;
+
+			case 'horizontal':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('Right less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Left less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('Right some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Left some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Right more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Left more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+			break;
+
 			case 'rotate':
 				response = [
 					{
@@ -135,19 +202,138 @@ const ScrollEffectsControl = props => {
 						value: 0,
 					},
 					{
-						label: __('Clockwise', 'maxi-blocks'),
+						label: __('Right less', 'maxi-blocks'),
 						value: 1,
 					},
 					{
-						label: __('Counterclockwise', 'maxi-blocks'),
+						label: __('Left less', 'maxi-blocks'),
 						value: 2,
 					},
 					{
-						label: __('Test', 'maxi-blocks'),
-						value: 0,
+						label: __('Right some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Left some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Right more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Left more', 'maxi-blocks'),
+						value: 6,
 					},
 				];
 				break;
+
+				case 'scale':
+					response = [
+						{
+							label: __('Choose', 'maxi-blocks'),
+							value: 0,
+						},
+						{
+							label: __('Up less', 'maxi-blocks'),
+							value: 1,
+						},
+						{
+							label: __('Down less', 'maxi-blocks'),
+							value: 2,
+						},
+						{
+							label: __('Up some', 'maxi-blocks'),
+							value: 3,
+						},
+						{
+							label: __('Down some', 'maxi-blocks'),
+							value: 4,
+						},
+						{
+							label: __('Up more', 'maxi-blocks'),
+							value: 5,
+						},
+						{
+							label: __('Down more', 'maxi-blocks'),
+							value: 6,
+						},
+					];
+					break;
+
+					case 'fade':
+						response = [
+							{
+								label: __('Choose', 'maxi-blocks'),
+								value: 0,
+							},
+							{
+								label: __('In less', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('Out less', 'maxi-blocks'),
+								value: 2,
+							},
+							{
+								label: __('In some', 'maxi-blocks'),
+								value: 3,
+							},
+							{
+								label: __('Out some', 'maxi-blocks'),
+								value: 4,
+							},
+							{
+								label: __('In more', 'maxi-blocks'),
+								value: 5,
+							},
+							{
+								label: __('Out more', 'maxi-blocks'),
+								value: 6,
+							},
+						];
+						break;
+
+					case 'blur':
+						response = [
+							{
+								label: __('Choose', 'maxi-blocks'),
+								value: 0,
+							},
+							{
+								label: __('In vertical', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('Out vertical', 'maxi-blocks'),
+								value: 2,
+							},
+							{
+								label: __('In horizontal', 'maxi-blocks'),
+								value: 3,
+							},
+							{
+								label: __('Out horizontal', 'maxi-blocks'),
+								value: 4,
+							},
+							{
+								label: __('In rotate', 'maxi-blocks'),
+								value: 5,
+							},
+							{
+								label: __('Out rotate', 'maxi-blocks'),
+								value: 6,
+							},
+							{
+								label: __('In scale', 'maxi-blocks'),
+								value: 7,
+							},
+							{
+								label: __('Out scale', 'maxi-blocks'),
+								value: 8,
+							},
+						];
+						break;
 
 			default:
 				response = [
@@ -195,20 +381,125 @@ const ScrollEffectsControl = props => {
 			value: 0,
 		},
 		{
-			label: __('Rotate clockwise and Fade out', 'maxi-blocks'),
+			label: __('Disable all', 'maxi-blocks'),
 			value: 1,
 		},
+		
+
 		{
-			label: __('Disable all', 'maxi-blocks'),
+			label: __('In vertical', 'maxi-blocks'),
 			value: 2,
 		},
 		{
-			label: __('Shortcut 3', 'maxi-blocks'),
+			label: __('Out vertical', 'maxi-blocks'),
 			value: 3,
 		},
 		{
-			label: __('Shortcut 4', 'maxi-blocks'),
+			label: __('In horizontal', 'maxi-blocks'),
 			value: 4,
+		},
+		{
+			label: __('Out horizontal', 'maxi-blocks'),
+			value: 5,
+		},
+		{
+			label: __('In rotate', 'maxi-blocks'),
+			value: 6,
+		},
+		{
+			label: __('Out rotate', 'maxi-blocks'),
+			value: 7,
+		},
+		{
+			label: __('In scale', 'maxi-blocks'),
+			value: 8,
+		},
+		{
+			label: __('Out scale', 'maxi-blocks'),
+			value: 9,
+		},
+
+		{
+			label: __('Fade in up less', 'maxi-blocks'),
+			value: 10,
+		},
+		{
+			label: __('Fade in down less', 'maxi-blocks'),
+			value: 11,
+		},
+		{
+			label: __('Fade in left less', 'maxi-blocks'),
+			value: 12,
+		},
+		{
+			label: __('Fade in right less', 'maxi-blocks'),
+			value: 13,
+		},
+		{
+			label: __('Fade in up some', 'maxi-blocks'),
+			value: 14,
+		},
+		{
+			label: __('Fade in down some', 'maxi-blocks'),
+			value: 15,
+		},
+		{
+			label: __('Fade in left some', 'maxi-blocks'),
+			value: 16,
+		},
+		{
+			label: __('Fade in right some', 'maxi-blocks'),
+			value: 17,
+		},
+
+		{
+			label: __('Rotate up less', 'maxi-blocks'),
+			value: 18,
+		},
+		{
+			label: __('Rotate down less', 'maxi-blocks'),
+			value: 19,
+		},
+		{
+			label: __('Rotate left less', 'maxi-blocks'),
+			value: 20,
+		},
+		{
+			label: __('Rotate right less', 'maxi-blocks'),
+			value: 21,
+		},
+		{
+			label: __('Rotate up some', 'maxi-blocks'),
+			value: 22,
+		},
+		{
+			label: __('Rotate down some', 'maxi-blocks'),
+			value: 23,
+		},
+		{
+			label: __('Rotate left some', 'maxi-blocks'),
+			value: 24,
+		},
+		{
+			label: __('Rotate right some', 'maxi-blocks'),
+			value: 25,
+		},
+
+		{
+			label: __('Scale up Fade in less', 'maxi-blocks'),
+			value: 26,
+		},
+		{
+			label: __('Scale down Fade in less', 'maxi-blocks'),
+			value: 27,
+		},
+		{
+			label: __('Scale in Fade in less', 'maxi-blocks'),
+			value: 28,
+		},
+		{
+			label: __('Scale out Fade in less', 'maxi-blocks'),
+			value: 29,
 		},
 	];
 
@@ -224,6 +515,7 @@ const ScrollEffectsControl = props => {
 				...newDefaultShortcuts?.[`shortcut${number}`],
 			});
 	};
+
 
 	useEffect(() => {
 		if (activeTabName) {

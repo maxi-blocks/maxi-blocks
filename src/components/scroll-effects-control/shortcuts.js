@@ -30,20 +30,20 @@ export const shortcut2 = {
 };
 export const shortcut3 = {
 	// Out Vertical
-	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
 	'scroll-blur-blur-mid-general': 5,
 	'scroll-blur-blur-start-general': 10,
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
 	
-	'scroll-status-vertical-general': true,
 	'scroll-vertical-easing-general': 'ease',
 	'scroll-vertical-offset-end-general': 60,
 	'scroll-vertical-offset-mid-general': 30,
 	'scroll-vertical-offset-start-general': 0,
 	'scroll-vertical-speed-general': 500,
 
+	'scroll-blur-status-general': true,
+	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
 	'scroll-rotate-status-general': false,
 	'scroll-scale-status-general': false,

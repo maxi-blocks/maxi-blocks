@@ -3,14 +3,12 @@
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { setAttributes, svgFetch, openPreviewPage } from '../utils';
 import parse from 'html-react-parser';
+import { isEqual, isEmpty } from 'lodash';
 
 const checkSVGGroup = async (page, fetchPage = 1) => {
 	await createNewPost();
-	let checker = true;
-	let iconError;
-	let iconPreviewError;
-	let checkRefresh = true;
 	const svgHtml = [];
+	const result = [];
 
 	const svgGroup = await svgFetch(page, fetchPage);
 
@@ -46,11 +44,6 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 	await previewPage.waitForSelector('.entry-content');
 	await page.waitForTimeout(250);
 
-	const iconNumber = await previewPage.$$eval(
-		'.maxi-svg-icon-block__icon svg',
-		svg => svg.length
-	);
-	await page.waitForTimeout(250);
 	for (let e = 0; e < svgGroup.length - 1; e += 1) {
 		const previewIcon = await previewPage.$$eval(
 			'.maxi-svg-icon-block__icon svg',
@@ -58,28 +51,27 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 			e
 		);
 
-		if (typeof previewIcon !== 'string') debugger;
-		if (typeof previewIcon !== 'string')
-			console.error(
-				fetchPage,
-				e,
-				iconNumber,
-				svgGroup.length,
-				svgGroup[e]
-			);
-
-		const frontEndHtml = parse(previewIcon);
 		const previewIconHtml = parse(svgHtml[e]);
 
-		if (previewIconHtml === frontEndHtml) {
-			checker = true;
-			break;
-		}
+		if (typeof previewIcon !== 'string')
+			result.push(previewIconHtml.props.className);
+		else {
+			const frontEndHtml = parse(previewIcon);
 
-		const iconError = e;
+			if (!isEqual(frontEndHtml, previewIconHtml))
+				result.push(previewIconHtml.props.className);
+		}
 	}
 
-	if (!checker) return iconError;
+	if (!isEmpty(result)) {
+		console.error(
+			`Comparison on frontend failed on this/these svg: ${result.join(
+				', '
+			)}`
+		);
+
+		return false;
+	}
 
 	// Reload
 	await page.waitForTimeout(250);
@@ -95,23 +87,34 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 			i
 		);
 
-		const frontEndHtml = parse(svgRefresh);
 		const previewIconHtml = parse(svgHtml[i]);
 
-		if (previewIconHtml === frontEndHtml) {
-			checkRefresh = true;
-			break;
+		if (typeof svgRefresh !== 'string')
+			result.push(previewIconHtml.props.className);
+		else {
+			const frontEndHtml = parse(svgRefresh);
+
+			if (!isEqual(frontEndHtml, previewIconHtml))
+				result.push(previewIconHtml.props.className);
 		}
-		const iconPreviewError = i;
 	}
 
-	if (!checkRefresh) return iconPreviewError;
+	if (!isEmpty(result)) {
+		console.error(
+			`Comparison after refresh failed on this/these svg: ${result.join(
+				', '
+			)}`
+		);
+
+		return false;
+	}
 
 	return true;
 };
 
-describe('SVG checker', () => {
-	it('SVG icons', async () => {
+describe.skip('SVG checker 2100', () => {
+	it('SVG icons (0 =>2100)', async () => {
+		// 30min +/-
 		let i = 1;
 
 		do {
@@ -122,6 +125,69 @@ describe('SVG checker', () => {
 
 			i += 1;
 			await page.waitForTimeout(50);
-		} while (i <= 14);
+		} while (i <= 30);
 	}, 999999999);
+});
+
+describe.skip('SVG checker 4200', () => {
+	it('SVG icons (2100 => 4200)', async () => {
+		// 1h +/-
+		let e = 30;
+
+		do {
+			const test = await checkSVGGroup(page, e);
+			await page.waitForTimeout(250);
+
+			await expect(test).toStrictEqual(true);
+
+			e += 1;
+			await page.waitForTimeout(50);
+		} while (e <= 60);
+	}, 999999999);
+});
+describe.skip('SVG checker 6300', () => {
+	it('SVG icons (4200 => 6300)', async () => {
+		let i = 60;
+
+		do {
+			const test = await checkSVGGroup(page, i);
+			await page.waitForTimeout(250);
+
+			await expect(test).toStrictEqual(true);
+
+			i += 1;
+			await page.waitForTimeout(50);
+		} while (i <= 90);
+	}, 999999999);
+});
+describe.skip('SVG checker 8400', () => {
+	it('SVG icons (6300 => 8400)', async () => {
+		let i = 90;
+
+		do {
+			const test = await checkSVGGroup(page, i);
+			await page.waitForTimeout(250);
+
+			await expect(test).toStrictEqual(true);
+
+			i += 1;
+			await page.waitForTimeout(50);
+		} while (i <= 120);
+	}, 999999999);
+});
+describe.skip('SVG checker 8960', () => {
+	it('SVG icons (8300 => 8960 +/-)', async () => {
+		let i = 120;
+
+		do {
+			const test = await checkSVGGroup(page, i);
+			await page.waitForTimeout(250);
+
+			await expect(test).toStrictEqual(true);
+
+			i += 1;
+			await page.waitForTimeout(50);
+		} while (i <= 130);
+	}, 999999999);
+	// max pag130
 });

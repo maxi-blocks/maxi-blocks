@@ -2,7 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { TextControl } from '@wordpress/components';
+import { SelectControl, TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -50,30 +50,100 @@ const MapControl = props => {
 					]}
 				/>
 			)}
-			<TextControl
-				label={__('Latitude', 'maxi-blocks')}
-				value={props['map-latitude']}
-				onChange={val => onChange({ 'map-latitude': val })}
-			/>
-			<TextControl
-				label={__('Longitude', 'maxi-blocks')}
-				value={props['map-longitude']}
-				onChange={val => onChange({ 'map-longitude': val })}
+			<SelectControl
+				label={__('Map service provider', 'maxi-blocks')}
+				value={props['map-provider']}
+				options={[
+					{
+						label: __('Open Street Map', 'maxi-blocks'),
+						value: 'openstreetmap',
+					},
+					{
+						label: __('Google Maps Api', 'maxi-blocks'),
+						value: 'googlemaps',
+					},
+				]}
+				onChange={val => onChange({ 'map-provider': val })}
 			/>
 			<AdvancedNumberControl
-				label={__('Zoom', 'maxi-blocks')}
+				label={__('Minimum zoom', 'maxi-blocks')}
 				min={1}
-				max={22}
+				max={21}
 				initial={1}
 				step={1}
-				value={props['map-zoom']}
-				onChangeValue={val => onChange({ 'map-zoom': val })}
+				value={props['map-min-zoom']}
+				onChangeValue={val => onChange({ 'map-min-zoom': val })}
 				onReset={() =>
 					onChange({
-						'map-zoom': getDefaultAttribute('map-zoom'),
+						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
 					})
 				}
 			/>
+			<AdvancedNumberControl
+				label={__('Maximum zoom', 'maxi-blocks')}
+				min={2}
+				max={22}
+				initial={1}
+				step={1}
+				value={props['map-max-zoom']}
+				onChangeValue={val => onChange({ 'map-max-zoom': val })}
+				onReset={() =>
+					onChange({
+						'map-max-zoom': getDefaultAttribute('map-max-zoom'),
+					})
+				}
+			/>
+			{props['map-provider'] === 'googlemaps' && (
+				<>
+					<TextControl
+						label={__('Latitude', 'maxi-blocks')}
+						value={props['map-latitude']}
+						onChange={val => onChange({ 'map-latitude': val })}
+					/>
+					<TextControl
+						label={__('Longitude', 'maxi-blocks')}
+						value={props['map-longitude']}
+						onChange={val => onChange({ 'map-longitude': val })}
+					/>
+				</>
+			)}
+
+			<TextControl
+				className='maxi-map-control__full-width-text'
+				label={__('Marker Text', 'maxi-blocks')}
+				value={props['map-marker-text']}
+				onChange={val => onChange({ 'map-marker-text': val })}
+			/>
+			<TextControl
+				className='maxi-map-control__full-width-text'
+				label={__('Marker Address', 'maxi-blocks')}
+				value={props['map-marker-address']}
+				onChange={val => onChange({ 'map-marker-address': val })}
+			/>
+			<ColorControl
+				label={__('Marker Address', 'maxi-blocks')}
+				color={props['map-marker-address-color']}
+				prefix='map-marker-address-'
+				paletteColor={props['map-marker-address-palette-color']}
+				paletteStatus={props['map-marker-address-palette-status']}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange({
+						'map-marker-address-color': color,
+						'map-marker-address-palette-color': paletteColor,
+						'map-marker-address-palette-status': paletteStatus,
+					})
+				}
+				disableOpacity
+			/>
+		</div>
+	);
+};
+
+export const MapMarkersControl = props => {
+	const { onChange } = props;
+
+	return (
+		<>
 			<div className='maxi-map-control__markers'>
 				{Object.keys(mapMarkers).map((item, index) => (
 					<div
@@ -95,7 +165,7 @@ const MapControl = props => {
 				))}
 			</div>
 			<OpacityControl
-				label={__('Marker Opacity', 'maxi-blocks')}
+				label={__('Icon opacity', 'maxi-blocks')}
 				opacity={props['map-marker-opacity']}
 				onChange={val =>
 					onChange({
@@ -104,10 +174,10 @@ const MapControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
-				label={__('Marker Scale', 'maxi-blocks')}
-				min={1}
-				max={10}
-				initial={1}
+				label={__('Icon size', 'maxi-blocks')}
+				min={15}
+				max={40}
+				initial={20}
 				step={1}
 				value={props['map-marker-scale']}
 				onChangeValue={val => onChange({ 'map-marker-scale': val })}
@@ -119,7 +189,7 @@ const MapControl = props => {
 				}
 			/>
 			<ToggleSwitch
-				label={__('Custom Maker Colours', 'maxi-block')}
+				label={__('Set custom icon colours', 'maxi-block')}
 				selected={props['map-marker-custom-color-status']}
 				onChange={val =>
 					onChange({
@@ -151,50 +221,7 @@ const MapControl = props => {
 					/>
 				</>
 			)}
-
-			<TextControl
-				className='maxi-map-control__full-width-text'
-				label={__('Marker Text', 'maxi-blocks')}
-				value={props['map-marker-text']}
-				onChange={val => onChange({ 'map-marker-text': val })}
-			/>
-			<ColorControl
-				label={__('Marker Text', 'maxi-blocks')}
-				paletteStatus={props['map-marker-text-palette-status']}
-				paletteColor={props['map-marker-text-palette-color']}
-				color={props['map-marker-text-color']}
-				prefix='map-marker-text-'
-				onChange={({ color, paletteColor, paletteStatus }) =>
-					onChange({
-						'map-marker-text-color': color,
-						'map-marker-text-palette-color': paletteColor,
-						'map-marker-text-palette-status': paletteStatus,
-					})
-				}
-				disableOpacity
-			/>
-			<TextControl
-				className='maxi-map-control__full-width-text'
-				label={__('Marker Address', 'maxi-blocks')}
-				value={props['map-marker-address']}
-				onChange={val => onChange({ 'map-marker-address': val })}
-			/>
-			<ColorControl
-				label={__('Marker Address', 'maxi-blocks')}
-				color={props['map-marker-address-color']}
-				prefix='map-marker-address-'
-				paletteColor={props['map-marker-address-palette-color']}
-				paletteStatus={props['map-marker-address-palette-status']}
-				onChange={({ color, paletteColor, paletteStatus }) =>
-					onChange({
-						'map-marker-address-color': color,
-						'map-marker-address-palette-color': paletteColor,
-						'map-marker-address-palette-status': paletteStatus,
-					})
-				}
-				disableOpacity
-			/>
-		</div>
+		</>
 	);
 };
 

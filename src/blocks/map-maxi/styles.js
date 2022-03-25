@@ -14,6 +14,8 @@ import {
 	getSizeStyles,
 	getTransformStyles,
 	getZIndexStyles,
+	getTypographyStyles,
+	getCustomFormatsStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsMap } from './custom-css';
 
@@ -101,6 +103,27 @@ const getHoverNormalObject = props => {
 };
 
 const getMapObject = (props, target) => {
+	const typography =
+		target === 'text'
+			? getTypographyStyles({
+					obj: {
+						...getGroupAttributes(props, 'typography'),
+					},
+					parentBlockStyle: props.parentBlockStyle,
+			  })
+			: getTypographyStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							'typography',
+							false,
+							'description-'
+						),
+					},
+					parentBlockStyle: props.parentBlockStyle,
+					prefix: 'description-',
+			  });
+
 	const response = {
 		map: getMapStyles(
 			{
@@ -109,6 +132,8 @@ const getMapObject = (props, target) => {
 			target,
 			props.parentBlockStyle
 		),
+		[target === 'text' ? 'typography' : 'description-typography']:
+			typography,
 	};
 
 	return response;
@@ -128,6 +153,29 @@ const getStyles = props => {
 					'address'
 				),
 			},
+			...getCustomFormatsStyles(
+				' map-marker-info-window__title',
+				props['custom-formats'],
+				false,
+				{ ...getGroupAttributes(props, 'typography') },
+				props['map-marker-heading-level'],
+				props.parentBlockStyle
+			),
+			...getCustomFormatsStyles(
+				' map-marker-info-window__address',
+				props['custom-formats'],
+				false,
+				{
+					...getGroupAttributes(
+						props,
+						'typography',
+						false,
+						'description-'
+					),
+				},
+				'p',
+				props.parentBlockStyle
+			),
 			selectorsMap,
 			props
 		),

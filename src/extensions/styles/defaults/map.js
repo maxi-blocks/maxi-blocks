@@ -2,21 +2,40 @@ import { __ } from '@wordpress/i18n';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const map = {
-	'map-latitude': {
+	'map-provider': {
 		type: 'string',
+		default: 'openstreetmap',
+	},
+	'map-latitude': {
+		type: 'number',
 		default: 52.514477,
 	},
 	'map-longitude': {
-		type: 'string',
+		type: 'number',
 		default: 13.350174,
 	},
 	'map-zoom': {
 		type: 'number',
 		default: 4,
 	},
+	'map-min-zoom': {
+		type: 'number',
+		default: 1,
+	},
+	'map-max-zoom': {
+		type: 'number',
+		default: 22,
+	},
+	'map-markers': {
+		type: 'array',
+	},
 	'map-marker': {
 		type: 'number',
 		default: 1,
+	},
+	'map-marker-heading-level': {
+		type: 'string',
+		default: 'h6',
 	},
 	'map-marker-opacity': {
 		type: 'number',
@@ -24,7 +43,7 @@ const map = {
 	},
 	'map-marker-scale': {
 		type: 'number',
-		default: 1,
+		default: 20,
 	},
 	'map-marker-custom-color-status': {
 		type: 'boolean',

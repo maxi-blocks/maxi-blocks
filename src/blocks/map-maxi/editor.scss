@@ -4,4 +4,88 @@
 		background: #fcf8e3;
 		color: #8a6d3b !important;
 	}
+
+	.leaflet-marker-icon {
+		top: 0;
+		animation: animate-marker 400ms ease-in-out;
+	}
+
+	.map-marker-info-window {
+		&__marker-remove {
+			background: #f5f5f5;
+			border-radius: 5px;
+			border: 1px solid #eee;
+			text-align: center;
+
+			svg.dashicon {
+				fill: #b52727;
+			}
+		}
+	}
+
+	.map-searchbox {
+		display: flex;
+		align-items: center;
+		background: #fff;
+		color: #444;
+		position: absolute;
+		z-index: 999;
+		top: 0.5rem;
+		right: 0.5rem;
+		border: 1px solid #1e1e1e;
+		padding: 0 0 0 0.5rem;
+		width: 280px;
+		max-width: calc(100% - 5rem);
+		transition: all 200ms ease-in-out;
+
+		> div {
+			flex: 1;
+		}
+
+		.components-base-control__field {
+			margin-bottom: 0;
+		}
+
+		.components-text-control__input[type='text'] {
+			background: transparent;
+			border: none;
+			color: #000;
+			box-shadow: none;
+		}
+
+		svg.dashicon {
+			fill: #000;
+		}
+
+		&__buttons {
+			border-top: 1px solid #ddd;
+			display: flex;
+			justify-content: space-around;
+			padding: 0.7rem 0;
+			margin: 0 0.5rem;
+		}
+
+		&__results {
+			position: absolute;
+			z-index: 999;
+			background: #fff;
+			top: 0;
+			transition: all 200ms ease-in-out;
+			max-width: calc(100% - 5rem);
+			top: 48px;
+			right: 0.5rem;
+			border: 1px solid #1e1e1e;
+			width: 280px;
+			max-height: calc(100% - 70px);
+			overflow-y: auto;
+			overflow-x: hidden;
+			text-align: left;
+
+			.components-button {
+				height: auto;
+				text-align: left;
+				width: 100%;
+			}
+		}
+	}
 }

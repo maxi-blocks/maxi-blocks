@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Imports
  */
+import { prefixAttributesCreator } from '../../extensions/styles';
 import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
@@ -26,6 +27,14 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	...attributesData.typography,
+	...prefixAttributesCreator({
+		obj: attributesData.typography,
+		prefix: 'description-',
+		diffValAttr: {
+			'description-font-size-general': 20,
+		},
+	}),
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

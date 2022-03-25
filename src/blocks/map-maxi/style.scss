@@ -1,19 +1,43 @@
+@import '~leaflet/dist/leaflet.css';
+
 body.maxi-blocks--active {
 	.maxi-map-block {
 		.maxi-map-container {
 			height: 100%;
+			overflow: hidden;
+		}
+		.leaflet-container {
+			width: 100%;
+			height: 100vh;
+		}
+		.ootb-openstreetmap--map {
+			width: 100%;
+
+			.leaflet-popup-content {
+				width: 150px;
+
+				p {
+					margin: 0.5em 0;
+				}
+			}
+		}
+		.leaflet-div-icon {
+			background-color: transparent;
+			border: transparent;
 		}
 		.map-marker-info-window {
-			text-align: center;
-			width: 150px;
-			padding: 8px;
+			.leaflet-popup-content-wrapper {
+				text-align: center;
+				width: 200px;
+				padding: 8px;
+			}
 
 			&__title {
-				font-family: 'Roboto', sans-serif !important;
+				font-family: 'Roboto', sans-serif;
 				margin: 0 0 10px;
 			}
 			&__address {
-				font-family: 'Roboto', sans-serif !important;
+				font-family: 'Roboto', sans-serif;
 				font-style: normal;
 				margin: 0;
 			}

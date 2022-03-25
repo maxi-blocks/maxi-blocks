@@ -363,6 +363,60 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
+					{!props['icon-inherit'] && (
+						<ColorControl
+							label={__('Icon Fill', 'maxi-blocks')}
+							color={
+								props[
+									`icon-fill-color${isHover ? '-hover' : ''}`
+								]
+							}
+							prefix='icon-fill'
+							paletteColor={
+								props[
+									`icon-fill-palette-color${
+										isHover ? '-hover' : ''
+									}`
+								]
+							}
+							paletteOpacity={
+								props[
+									`icon-fill-palette-opacity${
+										isHover ? '-hover' : ''
+									}`
+								]
+							}
+							paletteStatus={
+								props[
+									`icon-fill-palette-status${
+										isHover ? '-hover' : ''
+									}`
+								]
+							}
+							onChange={({
+								color,
+								paletteColor,
+								paletteStatus,
+								paletteOpacity,
+							}) => {
+								onChange({
+									[`icon-fill-color${
+										isHover ? '-hover' : ''
+									}`]: color,
+									[`icon-fill-palette-color${
+										isHover ? '-hover' : ''
+									}`]: paletteColor,
+									[`icon-fill-palette-status${
+										isHover ? '-hover' : ''
+									}`]: paletteStatus,
+									[`icon-fill-palette-opacity${
+										isHover ? '-hover' : ''
+									}`]: paletteOpacity,
+								});
+							}}
+							isHover={isHover}
+						/>
+					)}
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode

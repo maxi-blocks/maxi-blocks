@@ -22,6 +22,7 @@ import {
 	getDisplayStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
+	getSVGStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
@@ -343,14 +344,6 @@ const getIconPathStyles = (obj, isHover = false) => {
 
 const getIconObject = (props, target) => {
 	const response = {
-		icon: getIconStyles(
-			{
-				...getGroupAttributes(props, ['icon', 'typography']),
-			},
-			props.parentBlockStyle,
-			props['icon-inherit'],
-			false
-		),
 		background: props['icon-background-active-media-general'] ===
 			'background-color' && {
 			...getColorBackgroundObject({
@@ -508,7 +501,7 @@ const getIconHoverObject = (props, target) => {
 };
 
 const getStyles = (props, scValues) => {
-	const { uniqueID } = props;
+	const { uniqueID, parentBlockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -520,6 +513,12 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
+				...getSVGStyles({
+					obj: props,
+					target: '.maxi-button-block__icon',
+					blockStyle: parentBlockStyle,
+					prefix: 'icon-',
+				}),
 				' .maxi-button-block__icon': getIconObject(props, 'icon'),
 				' .maxi-button-block__icon svg': getIconSize(props, false),
 				' .maxi-button-block__icon svg > *': getIconObject(

@@ -8,35 +8,6 @@ export const shortcut1 = {
 	'scroll-blur-status-general': false,
 };
 export const shortcut2 = {
-	// Rotate clockwise and fade out
-	'scroll-delay-rotate-general': 0,
-	'scroll-easing-rotate-general': 'ease',
-	'scroll-rotate-rotate-end-general': 60,
-	'scroll-rotate-rotate-mid-general': 20,
-	'scroll-rotate-rotate-start-general': 0,
-	'scroll-speed-rotate-general': 500,
-	'scroll-status-reverse-rotate-general': true,
-	'scroll-rotate-status-general': true,
-	'scroll-viewport-bottom-rotate-general': 'bottom',
-	'scroll-viewport-middle-rotate-general': 'mid',
-	'scroll-viewport-top-rotate-general': 'top',
-	'scroll-delay-fade-general': 100,
-	'scroll-easing-fade-general': 'ease',
-	'scroll-speed-fade-general': 650,
-	'scroll-status-reverse-fade-general': true,
-	'scroll-viewport-bottom-fade-general': 'bottom',
-	'scroll-viewport-middle-fade-general': 'mid',
-	'scroll-viewport-start-fade-general': 'mid',
-	'scroll-viewport-top-fade-general': 'top',
-
-	'scroll-vertical-status-general': false,
-	'scroll-horizontal-status-general': false,
-	'scroll-rotate-status-general': true,
-	'scroll-scale-status-general': false,
-	'scroll-fade-status-general': true,
-	'scroll-blur-status-general': false,
-};
-export const shortcut3 = {
 	// In Vertical
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -57,7 +28,7 @@ export const shortcut3 = {
 	'scroll-scale-status-general': false,
 	'scroll-fade-status-general': false,
 };
-export const shortcut4 = {
+export const shortcut3 = {
 	// Out Vertical
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -78,7 +49,7 @@ export const shortcut4 = {
 	'scroll-scale-status-general': false,
 	'scroll-fade-status-general': false,
 };
-export const shortcut5 = {
+export const shortcut4 = {
 	// In Horizontal
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -99,7 +70,7 @@ export const shortcut5 = {
 	'scroll-scale-status-general': false,
 	'scroll-fade-status-general': false,
 };
-export const shortcut6 = {
+export const shortcut5 = {
 	// Out Horizontal
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -120,7 +91,7 @@ export const shortcut6 = {
 	'scroll-scale-status-general': false,
 	'scroll-fade-status-general': false,
 };
-export const shortcut7 = {
+export const shortcut6 = {
 	// In Rotate
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -141,7 +112,7 @@ export const shortcut7 = {
 	'scroll-scale-status-general': false,
 	'scroll-fade-status-general': false,
 };
-export const shortcut8 = {
+export const shortcut7 = {
 	// Out Rotate
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -162,7 +133,7 @@ export const shortcut8 = {
 	'scroll-scale-status-general': false,
 	'scroll-fade-status-general': false,
 };
-export const shortcut9 = {
+export const shortcut8 = {
 	// In Scale
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -183,7 +154,7 @@ export const shortcut9 = {
 	'scroll-rotate-status-general': false,
 	'scroll-fade-status-general': false,
 };
-export const shortcut10 = {
+export const shortcut9 = {
 	// Out Scale
 	'scroll-blur-status-general': true,
 	'scroll-blur-blur-end-general': 0,
@@ -205,7 +176,7 @@ export const shortcut10 = {
 	'scroll-fade-status-general': false,
 };
 
-export const shortcut11 = {
+export const shortcut10 = {
 	// Fade up less
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -227,7 +198,7 @@ export const shortcut11 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut12 = {
+export const shortcut11 = {
 	// Fade in down less
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -249,7 +220,7 @@ export const shortcut12 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut13 = {
+export const shortcut12 = {
 	// Fade in left less
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -271,7 +242,7 @@ export const shortcut13 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut14 = {
+export const shortcut13 = {
 	// Fade in right less
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -293,7 +264,7 @@ export const shortcut14 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut15 = {
+export const shortcut14 = {
 	// Fade in up S
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 0,
@@ -315,7 +286,7 @@ export const shortcut15 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut16 = {
+export const shortcut15 = {
 	// Fade in down S
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -337,7 +308,7 @@ export const shortcut16 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut17 = {
+export const shortcut16 = {
 	// Fade in left S
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -359,7 +330,7 @@ export const shortcut17 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut18 = {
+export const shortcut17 = {
 	// Fade in right S
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -382,7 +353,7 @@ export const shortcut18 = {
 	'scroll-blur-status-general': false,
 };
 
-export const shortcut19 = {
+export const shortcut18 = {
 	// Rotate up less
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -404,7 +375,7 @@ export const shortcut19 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut20 = {
+export const shortcut19 = {
 	// Rotate  down less
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -426,7 +397,7 @@ export const shortcut20 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut21 = {
+export const shortcut20 = {
 	// Rotate left less
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -448,7 +419,7 @@ export const shortcut21 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut22 = {
+export const shortcut21 = {
 	// Rotate right less
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -470,7 +441,7 @@ export const shortcut22 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut23 = {
+export const shortcut22 = {
 	// Rotate up S
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -492,7 +463,7 @@ export const shortcut23 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut24 = {
+export const shortcut23 = {
 	// Rotate down S
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -514,7 +485,7 @@ export const shortcut24 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut25 = {
+export const shortcut24 = {
 	// Rotate left S
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -536,7 +507,7 @@ export const shortcut25 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut26 = {
+export const shortcut25 = {
 	// Rotate right S
 	'scroll-rotate-easing-general': 'ease',
 	'scroll-rotate-opacity-end-general': 0,
@@ -559,7 +530,7 @@ export const shortcut26 = {
 	'scroll-blur-status-general': false,
 };
 
-export const shortcut27 = {
+export const shortcut26 = {
 	// Scale up Fade in less
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-opacity-end-general': 100,
@@ -587,7 +558,7 @@ export const shortcut27 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut28 = {
+export const shortcut27 = {
 	// Scale down Fade in less
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-opacity-end-general': 100,
@@ -615,7 +586,7 @@ export const shortcut28 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut29 = {
+export const shortcut28 = {
 	// Scale in Fade in less
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-opacity-end-general': 100,
@@ -636,7 +607,7 @@ export const shortcut29 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut30 = {
+export const shortcut29 = {
 	// Scale out Fade in less
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-opacity-end-general': 95,
@@ -743,34 +714,6 @@ export const horizontal = {
 
 export const rotate = {
 	shortcut1: {
-		// clockwise
-		'scroll-delay-rotate-general': 0,
-		'scroll-easing-rotate-general': 'ease',
-		'scroll-rotate-end-rotate-general': 360,
-		'scroll-rotate-mid-rotate-general': 180,
-		'scroll-rotate-start-rotate-general': 0,
-		'scroll-speed-rotate-general': 500,
-		'scroll-status-reverse-rotate-general': true,
-		'scroll-status-rotate-general': true,
-		'scroll-viewport-bottom-rotate-general': 'bottom',
-		'scroll-viewport-middle-rotate-general': 'mid',
-		'scroll-viewport-top-rotate-general': 'top',
-	},
-	shortcut2: {
-		// counter-clockwise
-		'scroll-delay-rotate-general': 0,
-		'scroll-easing-rotate-general': 'ease',
-		'scroll-rotate-end-rotate-general': 0,
-		'scroll-rotate-mid-rotate-general': 180,
-		'scroll-rotate-start-rotate-general': 360,
-		'scroll-speed-rotate-general': 500,
-		'scroll-status-reverse-rotate-general': true,
-		'scroll-status-rotate-general': true,
-		'scroll-viewport-bottom-rotate-general': 'bottom',
-		'scroll-viewport-middle-rotate-general': 'mid',
-		'scroll-viewport-top-rotate-general': 'top',
-	},
-	shortcut3: {
 		//Right less
 		'scroll-easing-rotate-general': 'ease',
 		'scroll-rotate-end-rotate-general': 0,
@@ -778,35 +721,35 @@ export const rotate = {
 		'scroll-rotate-start-rotate-general': -60,
 		'scroll-speed-rotate-general': 500,
 	},
-	shortcut4: {
+	shortcut2: {
 		//Left less
 		'scroll-rotate-end-rotate-general': 0,
 		'scroll-rotate-mid-rotate-general': 0,
 		'scroll-rotate-start-rotate-general': 60,
 		'scroll-speed-rotate-general': 500,
 	},
-	shortcut5: {
+	shortcut3: {
 		//Right some
 		'scroll-rotate-end-rotate-general': 0,
 		'scroll-rotate-mid-rotate-general': 0,
 		'scroll-rotate-start-rotate-general': -120,
 		'scroll-speed-rotate-general': 500,
 	},
-	shortcut6: {
+	shortcut4: {
 		//Left some
 		'scroll-rotate-end-rotate-general': 0,
 		'scroll-rotate-mid-rotate-general': 0,
 		'scroll-rotate-start-rotate-general': 120,
 		'scroll-speed-rotate-general': 500,
 	},
-	shortcut7: {
+	shortcut5: {
 		//Right more
 		'scroll-rotate-end-rotate-general': 0,
 		'scroll-rotate-mid-rotate-general': 0,
 		'scroll-rotate-start-rotate-general': -180,
 		'scroll-speed-rotate-general': 500,
 	},
-	shortcut8: {
+	shortcut6: {
 		//Left more
 		'scroll-rotate-end-rotate-general': 0,
 		'scroll-rotate-mid-rotate-general': 0,

@@ -74,7 +74,7 @@ const AxisInput = props => {
 				'maxi-axis-control__content__item',
 				`maxi-axis-control__content__item__${replace(
 					label,
-					' / ',
+					' ',
 					'-'
 				).toLowerCase()}`
 			)}

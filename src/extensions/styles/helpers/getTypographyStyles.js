@@ -106,6 +106,7 @@ const getTypographyStyles = ({
 			target: `${prefix}${prop}`,
 			breakpoint,
 			attributes: isCustomFormat ? customFormatTypography : obj,
+			avoidXXL: false,
 		});
 
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;
@@ -114,6 +115,7 @@ const getTypographyStyles = ({
 			target: `${prefix}${prop}`,
 			breakpoint,
 			attributes: normalTypography,
+			avoidXXL: false,
 		});
 	};
 
@@ -160,6 +162,15 @@ const getTypographyStyles = ({
 			}),
 			...(!isNil(obj[getName('vertical-align', breakpoint)]) && {
 				'vertical-align': obj[getName('vertical-align', breakpoint)],
+			}),
+			...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
+				'writing-mode': !isEmpty(
+					obj[getName('text-orientation', breakpoint)]
+				)
+					? 'vertical-rl'
+					: null,
+				'text-orientation':
+					obj[getName('text-orientation', breakpoint)],
 			}),
 		};
 

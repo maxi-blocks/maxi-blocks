@@ -35,9 +35,12 @@ class MaxiBlocks_Styles
     {
         $post_content = $this->getPostContent();
 
-		if (!$post_content) {
-			return false;
-		}
+        if (!$post_content || empty($post_content)) {
+            return false;
+        }
+
+        $post_content = json_decode(json_encode($post_content), true);
+        
 
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
@@ -51,7 +54,6 @@ class MaxiBlocks_Styles
         if ($fonts) {
             $this->enqueue_fonts($fonts);
         }
-
 
         $needCustomMeta = false;
 
@@ -101,16 +103,22 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        $post_content = $wpdb->get_results(
+        $post_content_array = (array)$wpdb->get_results(
             "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
             OBJECT
         );
 
-        if (!$post_content) {
+        if (!$post_content_array || empty($post_content_array)) {
             return false;
         }
 
-        return (array)$post_content[0];
+        $post_content = $post_content_array[0];
+
+        if (!$post_content || empty($post_content)) {
+            return false;
+        }
+
+        return $post_content;
     }
 
     /**
@@ -170,7 +178,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        return  explode(',', $fonts);
+        return json_decode($fonts, true);
     }
 
     /**
@@ -200,21 +208,67 @@ class MaxiBlocks_Styles
 
     public function enqueue_fonts($fonts)
     {
-        if (!is_array($fonts)) {
-            $fonts = [];
+        if (empty($fonts) || !is_array($fonts)) {
+            return;
         }
 
-        if (!array_key_exists('Roboto', $fonts)) {
-            array_push($fonts, 'Roboto');
-        }
+        foreach ($fonts as $font => $fontData) {
+            if ($font) {
+                $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
+                if (!empty($fontData)) {
+                    $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
+                    $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
 
-        foreach ($fonts as $font) {
-            wp_enqueue_style(
-                $font,
-                "https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
-            );
+                    if (is_array($fontWeight)) {
+                        $fontWeight = implode(',', array_unique($fontWeight));
+                    }
+
+                    if ($fontStyle === 'italic') {
+                        $fontUrl .= 'ital,';
+                    }
+
+                    if (strpos($fontWeight, ',') !== false) {
+                        $fontWeightArr = array_unique(explode(',', $fontWeight));
+                        sort($fontWeightArr);
+                        $fontUrl .= 'wght@';
+                        if ($fontStyle === 'italic') {
+                            foreach ($fontWeightArr as $fw) {
+                                $fontUrl .= '0,'.$fw.';';
+                            }
+                            foreach ($fontWeightArr as $fw) {
+                                $fontUrl .= '1,'.$fw.';';
+                            }
+                        } else {
+                            foreach ($fontWeightArr as $fw) {
+                                $fontUrl .= $fw.';';
+                            }
+                        }
+                        $fontUrl = rtrim($fontUrl, ';');
+                    } elseif ($fontWeight) {
+                        if ($fontStyle === 'italic') {
+                            $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
+                        } else {
+                            $fontUrl .= 'wght@'.$fontWeight;
+                        }
+                    } else {
+                        if ($fontStyle === 'italic') {
+                            $fontUrl .= 'wght@0,400;1,400';
+                        } else {
+                            $fontUrl .= 'wght@400';
+                        }
+                    }
+                } else {
+                    $fontUrl = rtrim($fontUrl, ':');
+                }
+                
+                wp_enqueue_style(
+                    'maxi-'.sanitize_title_with_dashes($font),
+                    $fontUrl
+                );
+            }
         }
     }
+
 
     /**
      * Custom Meta

@@ -1,17 +1,16 @@
 // Number Counter Effects
 const numberCounterEffect = () => {
 	const numberElements = document.querySelectorAll('.maxi-nc-effect');
-	numberElements.forEach((elem, ind) => {
+	numberElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
 		if (!maxiNumberCounter) return;
-
 		const numberID = elem.id;
 
 		const numberData =
 			// eslint-disable-next-line no-undef
-			maxiNumberCounter[ind][numberID] !== undefined
+			maxiNumberCounter[0][numberID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxiNumberCounter[ind][numberID]
+				  maxiNumberCounter[0][numberID]
 				: null;
 
 		if (numberData !== null) {

@@ -565,7 +565,7 @@ const BackgroundLayersControl = ({
 						const newLayer = getObject(val);
 						onAddLayer(newLayer);
 
-						changeSelector(newLayer.layer);
+						changeSelector(newLayer.order);
 					}}
 				/>
 			</div>

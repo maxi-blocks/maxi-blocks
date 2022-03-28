@@ -14,6 +14,7 @@ import {
 	getZIndexStyles,
 	getOverflowStyles,
 	getSVGWidthStyles,
+	getFlexStyles,
 	getBackgroundStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSvgIcon } from './custom-css';
@@ -69,6 +70,9 @@ const getWrapperObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

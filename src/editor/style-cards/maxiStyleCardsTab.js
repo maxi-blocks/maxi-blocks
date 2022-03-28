@@ -55,6 +55,7 @@ const GlobalColor = props => {
 			<ToggleSwitch
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
+				className={`maxi-style-cards-control__toggle-${globalAttr}`}
 				selected={
 					processSCAttribute(SC, globalAttr, groupAttr) || false
 				}
@@ -227,6 +228,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						onChangeValue={onChangeValue}
 					/>
 				),
+				classNameItem: `maxi-blocks-sc__type--h${item}`,
 			};
 		});
 
@@ -385,7 +387,8 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				items={[
 					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
-						classNameItem: 'testing',
+						classNameItem:
+							'maxi-blocks-sc__type--quick-color-presets maxi-blocks-sc__type--color',
 						content: (
 							<>
 								<div className='maxi-style-cards__quick-color-presets'>
@@ -491,6 +494,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: buttonTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--button',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${buttonTabs.label}`}
@@ -504,6 +508,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: pTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--paragraph',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${pTabs.label}`}
@@ -517,6 +522,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					breakpoint === 'general' && {
 						label: linkTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--link',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${linkTabs.label}`}
@@ -531,6 +537,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: __('Headings', 'maxi-blocks'),
+						classNameItem: 'maxi-blocks-sc__type--heading',
 						content: (
 							<SettingTabsControl
 								hasBorder
@@ -540,6 +547,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					breakpoint === 'general' && {
 						label: iconTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--SVG',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${iconTabs.label}`}
@@ -554,6 +562,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					breakpoint === 'general' && {
 						label: dividerTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--divider',
 						content: (
 							<SCAccordion
 								key={`sc-accordion__${dividerTabs.label}`}

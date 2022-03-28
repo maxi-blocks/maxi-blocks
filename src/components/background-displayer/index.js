@@ -120,9 +120,7 @@ const BackgroundContent = props => {
 									}`}
 									wrapperRef={wrapperRef}
 									videoOptions={layer}
-									className={classnames(
-										`maxi-background-displayer__${order}`
-									)}
+									className={`maxi-background-displayer__${order}`}
 								/>
 							);
 						case 'shape': {

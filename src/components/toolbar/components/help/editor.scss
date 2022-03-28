@@ -1,0 +1,18 @@
+.toolbar-item {
+	&__help {
+		width: auto !important;
+
+		.components-button {
+			padding-left: 8px !important;
+			padding-right: 4px !important;
+
+			&:hover {
+				background-color: transparent !important;
+			}
+
+			&:after {
+				display: none !important;
+			}
+		}
+	}
+}

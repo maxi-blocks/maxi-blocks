@@ -286,6 +286,7 @@ class edit extends MaxiBlockComponent {
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
+				prefix='number-counter-'
 				{...this.props}
 			/>,
 			<MaxiBlock

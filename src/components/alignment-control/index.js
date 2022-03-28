@@ -15,7 +15,16 @@ import { isEmpty } from 'lodash';
  * Styles and Icons
  */
 import './editor.scss';
-import { alignLeft, alignCenter, alignRight, alignJustify } from '../../icons';
+import {
+	alignLeft,
+	alignCenter,
+	alignRight,
+	alignJustify,
+	toolbarAlignCenter,
+	toolbarAlignLeft,
+	toolbarAlignRight,
+	toolbarAlignJustify,
+} from '../../icons';
 
 /**
  * Component
@@ -30,33 +39,42 @@ const AlignmentControl = props => {
 		disableRight = false,
 		disableJustify = false,
 		breakpoint = 'general',
-		type,
+		type = '',
 		isHover = false,
+		isToolbar = false,
 	} = props;
 	const getOptions = () => {
 		const options = [];
 
 		!disableLeft &&
 			options.push({
-				icon: <Icon icon={alignLeft} />,
+				icon: <Icon icon={isToolbar ? toolbarAlignLeft : alignLeft} />,
 				value: 'left',
 			});
 
 		!disableCenter &&
 			options.push({
-				icon: <Icon icon={alignCenter} />,
+				icon: (
+					<Icon icon={isToolbar ? toolbarAlignCenter : alignCenter} />
+				),
 				value: 'center',
 			});
 
 		!disableRight &&
 			options.push({
-				icon: <Icon icon={alignRight} />,
+				icon: (
+					<Icon icon={isToolbar ? toolbarAlignRight : alignRight} />
+				),
 				value: 'right',
 			});
 
 		!disableJustify &&
 			options.push({
-				icon: <Icon icon={alignJustify} />,
+				icon: (
+					<Icon
+						icon={isToolbar ? toolbarAlignJustify : alignJustify}
+					/>
+				),
 				value: 'justify',
 			});
 

@@ -14,7 +14,8 @@ import CustomLabel from '../custom-label';
  */
 const blockSettings = ({ props }) => {
 	const { attributes, deviceType, clientId, maxiSetAttributes } = props;
-	const { blockStyle, customLabel, isFirstOnHierarchy } = attributes;
+	const { blockStyle, customLabel, isFirstOnHierarchy, parentBlockStyle } =
+		attributes;
 
 	return (
 		deviceType === 'general' && (
@@ -32,6 +33,7 @@ const blockSettings = ({ props }) => {
 					isFirstOnHierarchy={isFirstOnHierarchy}
 					onChange={obj => maxiSetAttributes(obj)}
 					clientId={clientId}
+					parentBlockStyle={parentBlockStyle}
 				/>
 			</div>
 		)

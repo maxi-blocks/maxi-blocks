@@ -10,7 +10,7 @@ import { getScrollContainer } from '@wordpress/dom';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Utils
@@ -107,24 +107,17 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
-			const { receiveMaxiSettings, receiveMaxiDeviceType } =
-				select('maxiBlocks');
+		const { breakpoint, styleCard } = useSelect(select => {
+			const { receiveMaxiDeviceType } = select('maxiBlocks');
 			const { receiveMaxiSelectedStyleCard } = select(
 				'maxiBlocks/style-cards'
 			);
-
-			const maxiSettings = receiveMaxiSettings();
-			const version = !isEmpty(maxiSettings.editor)
-				? maxiSettings.editor.version
-				: null;
 
 			const breakpoint = receiveMaxiDeviceType();
 
 			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 			return {
-				editorVersion: version,
 				breakpoint,
 				styleCard,
 			};
@@ -153,17 +146,6 @@ const MaxiToolbar = memo(
 			getScrollContainer(anchorRef) ||
 			document.body;
 
-		// Different from > WP 5.5.3
-		const stickyProps = {
-			...((parseFloat(editorVersion) <= 9.2 && {
-				__unstableSticky: true,
-			}) ||
-				(anchorRef &&
-					!isNaN(parseFloat(editorVersion)) && {
-						__unstableStickyBoundaryElement: boundaryElement,
-					})),
-		};
-
 		const lineOrientation = getLastBreakpointAttribute(
 			'line-orientation',
 			breakpoint,
@@ -184,10 +166,9 @@ const MaxiToolbar = memo(
 							!!breadcrumbStatus() &&
 								'maxi-toolbar__popover--has-breadcrumb'
 						)}
-						uniqueid={uniqueID}
 						__unstableSlotName='block-toolbar'
 						shouldAnchorIncludePadding
-						{...stickyProps}
+						__unstableStickyBoundaryElement={boundaryElement}
 					>
 						<div className='toolbar-wrapper'>
 							<div className='toolbar-block-custom-label'>

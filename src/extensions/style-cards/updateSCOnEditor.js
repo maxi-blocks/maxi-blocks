@@ -259,7 +259,6 @@ const updateSCOnEditor = styleCards => {
 		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
 		SCStyle.innerHTML = createSCStyleString(SCObject);
 		document.head.appendChild(SCStyle);
-
 		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 
 		// Needs a delay, if not Redux returns error 3

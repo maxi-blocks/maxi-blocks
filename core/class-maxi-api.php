@@ -1,5 +1,5 @@
 <?php
-
+require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
 /**
  * Maxi Blocks styles API
  */
@@ -336,6 +336,10 @@ if (!class_exists('MaxiBlocks_API')):
                         'prev_fonts_value' =>  $fonts,
                     ));
                 }
+            }
+
+            if ((bool) get_option('local_fonts')) {
+                new MaxiBlocks_Local_Fonts();
             }
 
             $post = (array)$wpdb->get_results(

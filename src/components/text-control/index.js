@@ -55,7 +55,7 @@ export default function TextControl({
 				className='maxi-text-control__input'
 				type={type}
 				id={id}
-				value={value}
+				value={value || ''}
 				onChange={onChangeValue}
 				aria-describedby={help ? `${id}__help` : undefined}
 				{...props}

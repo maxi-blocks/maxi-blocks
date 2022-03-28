@@ -108,6 +108,7 @@ const AxisContent = props => {
 		disableSync = false,
 		label: type,
 		onReset,
+		disableLeftRightMargin,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -150,19 +151,21 @@ const AxisContent = props => {
 						currentUnit={currentUnit}
 						type={type}
 					/>
-					<AxisInput
-						label={`${inputsArray[3]} / ${inputsArray[1]}`}
-						target={inputsArray[1]}
-						singleTarget='horizontal'
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-					/>
+					{!disableLeftRightMargin && (
+						<AxisInput
+							label={`${inputsArray[3]} / ${inputsArray[1]}`}
+							target={inputsArray[1]}
+							singleTarget='horizontal'
+							getValue={getValue}
+							getLastBreakpointValue={getLastBreakpointValue}
+							breakpoint={breakpoint}
+							disableAuto={disableAuto}
+							onChangeValue={onChangeValue}
+							minMaxSettings={minMaxSettings}
+							currentUnit={currentUnit}
+							type={type}
+						/>
+					)}
 				</>
 			)}
 			{sync === 'none' && !disableSync && (
@@ -180,19 +183,21 @@ const AxisContent = props => {
 						currentUnit={currentUnit}
 						type={type}
 					/>
-					<AxisInput
-						label={inputsArray[1]}
-						target={inputsArray[1]}
-						singleTarget={inputsArray[1]}
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-					/>
+					{!disableLeftRightMargin && (
+						<AxisInput
+							label={inputsArray[1]}
+							target={inputsArray[1]}
+							singleTarget={inputsArray[1]}
+							getValue={getValue}
+							getLastBreakpointValue={getLastBreakpointValue}
+							breakpoint={breakpoint}
+							disableAuto={disableAuto}
+							onChangeValue={onChangeValue}
+							minMaxSettings={minMaxSettings}
+							currentUnit={currentUnit}
+							type={type}
+						/>
+					)}
 					<AxisInput
 						label={inputsArray[2]}
 						target={inputsArray[2]}
@@ -206,19 +211,21 @@ const AxisContent = props => {
 						currentUnit={currentUnit}
 						type={type}
 					/>
-					<AxisInput
-						label={inputsArray[3]}
-						target={inputsArray[3]}
-						singleTarget={inputsArray[3]}
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-					/>
+					{!disableLeftRightMargin && (
+						<AxisInput
+							label={inputsArray[3]}
+							target={inputsArray[3]}
+							singleTarget={inputsArray[3]}
+							getValue={getValue}
+							getLastBreakpointValue={getLastBreakpointValue}
+							breakpoint={breakpoint}
+							disableAuto={disableAuto}
+							onChangeValue={onChangeValue}
+							minMaxSettings={minMaxSettings}
+							currentUnit={currentUnit}
+							type={type}
+						/>
+					)}
 				</>
 			)}
 			{disableSync && (
@@ -442,6 +449,7 @@ const AxisControl = props => {
 		],
 		optionType = 'number',
 		disableSync = false,
+		blockFullWidth,
 	} = props;
 
 	const classes = classnames(
@@ -453,6 +461,9 @@ const AxisControl = props => {
 
 	const useResponsiveTabs =
 		!noResponsiveTabs && ['margin', 'padding'].includes(target);
+
+	const disableLeftRightMargin =
+		target === 'margin' && blockFullWidth === 'full';
 
 	const getOptions = () => {
 		const options = [];
@@ -671,6 +682,7 @@ const AxisControl = props => {
 						onChangeValue={onChangeValue}
 						minMaxSettings={minMaxSettings}
 						disableAuto={disableAuto}
+						disableLeftRightMargin={disableLeftRightMargin}
 						getKey={getKey}
 						onChangeSync={onChangeSync}
 					/>

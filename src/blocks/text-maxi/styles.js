@@ -31,6 +31,7 @@ import {
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsText } from './custom-css';
 import { getSVGListStyle } from './utils';
@@ -88,6 +89,9 @@ const getNormalObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

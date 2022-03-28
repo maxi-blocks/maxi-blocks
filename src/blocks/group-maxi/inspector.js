@@ -9,33 +9,13 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsGroup, categoriesGroup } from './custom-css';
-
-/**
- * External dependencies
- */
-import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType } = props;
-	const { 'background-layers': bgLayers } = attributes;
-	const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
-		? attributes['background-layers-hover']
-		: [];
-
-	const getCategoriesCss = () => {
-		const { 'block-background-hover-status': blockBackgroundHoverStatus } =
-			attributes;
-		return without(
-			categoriesGroup,
-			isEmpty(bgLayers) && 'background',
-			!blockBackgroundHoverStatus && 'background hover'
-		);
-	};
+	const { deviceType } = props;
 
 	return (
 		<InspectorControls>
@@ -99,14 +79,8 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: {
-											...selectorsGroup,
-											...getBgLayersSelectorsCss([
-												...bgLayers,
-												...bgLayersHover,
-											]),
-										},
-										categories: getCategoriesCss(),
+										selectors: selectorsGroup,
+										categories: categoriesGroup,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

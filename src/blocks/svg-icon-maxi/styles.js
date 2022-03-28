@@ -1,6 +1,3 @@
-/**
- * Internal dependencies
- */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
@@ -19,13 +16,7 @@ import {
 	getSVGWidthStyles,
 	getBackgroundStyles,
 } from '../../extensions/styles/helpers';
-import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsSvgIcon } from './custom-css';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 const getWrapperObject = props => {
 	const response = {
@@ -206,14 +197,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const {
-		uniqueID,
-		parentBlockStyle: blockStyle,
-		'background-layers': bgLayers,
-	} = props;
-	const bgLayersHover = !isEmpty(props['background-layers-hover'])
-		? props['background-layers-hover']
-		: [];
+	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -253,10 +237,7 @@ const getStyles = props => {
 					blockStyle,
 				}),
 			},
-			{
-				...selectorsSvgIcon,
-				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
-			},
+			selectorsSvgIcon,
 			props
 		),
 	};

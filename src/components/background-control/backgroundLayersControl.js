@@ -47,7 +47,6 @@ const LayerCard = props => {
 		onOpen,
 		isOpen,
 		onRemove,
-		layerOrder,
 		clientId,
 		breakpoint,
 		isHover,
@@ -280,7 +279,7 @@ const LayerCard = props => {
 				onChange={obj =>
 					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
 				}
-				layerOrder={layerOrder}
+				layerOrder={layer.order}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -383,7 +382,7 @@ const BackgroundLayersControl = ({
 			? allLayers.reduce((layerA, layerB) =>
 					layerA.order > layerB.order ? layerA : layerB
 			  ).order + 1
-			: 1;
+			: 0;
 
 	const getLayerLabel = type => {
 		switch (type) {
@@ -410,7 +409,7 @@ const BackgroundLayersControl = ({
 				isHover,
 			}),
 			order: getNewLayerOrder(),
-			uniqueId: uniqueIDGenerator('background-layer-maxi-'),
+			id: uniqueIDGenerator(),
 		};
 	};
 
@@ -504,7 +503,6 @@ const BackgroundLayersControl = ({
 										key={`maxi-background-layers__${
 											layer.order
 										}${isHover ? '--hover' : ''}`}
-										layerId={layer.order}
 										isHover={isHover}
 										clientId={clientId}
 										layer={layer}

@@ -8,6 +8,12 @@ import { __ } from '@wordpress/i18n';
  */
 import CustomCssControl from '../custom-css-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+import { getBgLayersSelectorsCss } from '../background-displayer/utils';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, without } from 'lodash';
 
 /**
  * Component
@@ -27,14 +33,43 @@ const customCss = ({
 	});
 	const customCssCategory = attributes['custom-css-category'];
 
+	const getCategoriesCss = () => {
+		const {
+			'icon-content': iconContent,
+			'block-background-hover-status': blockBackgroundHoverStatus,
+			'background-layers': bgLayers,
+		} = attributes;
+
+		return without(
+			categories,
+			isEmpty(iconContent) && 'icon',
+			isEmpty(bgLayers) && 'background',
+			!blockBackgroundHoverStatus && 'background hover'
+		);
+	};
+
+	const getSelectorsCss = () => {
+		const bgLayers = !isEmpty(attributes['background-layers'])
+			? attributes['background-layers']
+			: [];
+		const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
+			? attributes['background-layers-hover']
+			: [];
+
+		return {
+			...selectors,
+			...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
+		};
+	};
+
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
 		content: (
 			<CustomCssControl
 				breakpoint={breakpoint}
-				categories={categories}
+				categories={getCategoriesCss()}
 				category={customCssCategory}
-				selectors={selectors}
+				selectors={getSelectorsCss()}
 				value={customCssValue}
 				onChange={(attr, val) =>
 					maxiSetAttributes({

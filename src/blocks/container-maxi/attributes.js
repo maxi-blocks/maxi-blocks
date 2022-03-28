@@ -45,7 +45,7 @@ const attributes = {
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					order: 0,
-					uniqueId: 'background-layer-maxi-1',
+					uniqueId: 'maxi-background-layer--1',
 				},
 			],
 		},

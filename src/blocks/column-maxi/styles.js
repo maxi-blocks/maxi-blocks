@@ -12,7 +12,6 @@ import {
 	getOverflowStyles,
 	getSizeStyles,
 } from '../../extensions/styles/helpers';
-import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsColumn } from './custom-css';
 
 /**
@@ -109,10 +108,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, 'background-layers': bgLayers } = props;
-	const bgLayersHover = !isEmpty(props['background-layers-hover'])
-		? props['background-layers-hover']
-		: [];
+	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -143,10 +139,7 @@ const getStyles = props => {
 					blockStyle: props.parentBlockStyle,
 				}),
 			},
-			{
-				...selectorsColumn,
-				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
-			},
+			selectorsColumn,
 			props
 		),
 	};

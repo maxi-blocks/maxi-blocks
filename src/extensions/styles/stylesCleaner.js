@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { getCustomCssObject } from './helpers';
+import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 
 /**
  * External dependencies
@@ -101,9 +102,27 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 const stylesCleaner = (obj, selectors, props) => {
 	const response = cloneDeep(obj);
 
+	// Add to selectors generated bgLayers
+	const bgLayers = !isEmpty(props['background-layers'])
+		? props['background-layers']
+		: [];
+	const bgLayersHover = !isEmpty(props['background-layers-hover'])
+		? props['background-layers-hover']
+		: [];
+
+	const newSelectors = {
+		...selectors,
+		...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
+	};
+
+	// Delete CustomCss if bg hover off
+	if (!props['block-background-hover-status']) {
+		delete newSelectors['background hover'];
+	}
+
 	// Process custom styles if they exist
-	if (!isEmpty(selectors)) {
-		const customCssObject = getCustomCssObject(selectors, props);
+	if (!isEmpty(newSelectors)) {
+		const customCssObject = getCustomCssObject(newSelectors, props);
 		!isEmpty(customCssObject) && merge(response, customCssObject);
 	}
 

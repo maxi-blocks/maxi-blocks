@@ -26,7 +26,6 @@ import {
 	getZIndexStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
-import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsImage } from './custom-css';
 
 /**
@@ -405,10 +404,7 @@ const getImageShapeObject = (target, props) => {
 };
 
 const getStyles = props => {
-	const { uniqueID, 'background-layers': bgLayers } = props;
-	const bgLayersHover = !isEmpty(props['background-layers-hover'])
-		? props['background-layers-hover']
-		: [];
+	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -479,10 +475,7 @@ const getStyles = props => {
 					props.parentBlockStyle
 				),
 			},
-			{
-				...selectorsImage,
-				...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
-			},
+			selectorsImage,
 			props
 		),
 	};

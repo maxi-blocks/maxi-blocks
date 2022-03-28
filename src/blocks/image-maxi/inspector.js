@@ -28,20 +28,12 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsImage, categoriesImage } from './custom-css';
 
 /**
  * External dependencies
  */
-import {
-	capitalize,
-	isEmpty,
-	isNil,
-	isEqual,
-	cloneDeep,
-	without,
-} from 'lodash';
+import { capitalize, isEmpty, isNil, isEqual, cloneDeep } from 'lodash';
 
 /**
  * Dimension tab
@@ -245,22 +237,7 @@ const Inspector = memo(
 			uniqueID,
 			mediaID,
 			captionPosition,
-			'background-layers': bgLayers,
 		} = attributes;
-		const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
-			? attributes['background-layers-hover']
-			: [];
-
-		const getCategoriesCss = () => {
-			const {
-				'block-background-hover-status': blockBackgroundHoverStatus,
-			} = attributes;
-			return without(
-				categoriesImage,
-				isEmpty(bgLayers) && 'background',
-				!blockBackgroundHoverStatus && 'background hover'
-			);
-		};
 
 		const getCaptionOptions = () => {
 			const response = [
@@ -663,14 +640,8 @@ const Inspector = memo(
 											...inspectorTabs.customCss({
 												props,
 												breakpoint: deviceType,
-												selectors: {
-													...selectorsImage,
-													...getBgLayersSelectorsCss([
-														...bgLayers,
-														...bgLayersHover,
-													]),
-												},
-												categories: getCategoriesCss(),
+												selectors: selectorsImage,
+												categories: categoriesImage,
 											}),
 											...inspectorTabs.scrollEffects({
 												props,

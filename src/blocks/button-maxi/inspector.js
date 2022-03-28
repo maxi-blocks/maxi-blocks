@@ -19,13 +19,12 @@ import {
 import * as defaultPresets from './defaults';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
-import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
+import { isEmpty, isEqual, cloneDeep } from 'lodash';
 
 /**
  * Icons
@@ -50,10 +49,7 @@ import {
 const Inspector = memo(
 	props => {
 		const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-		const { parentBlockStyle, 'background-layers': bgLayers } = attributes;
-		const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
-			? attributes['background-layers-hover']
-			: [];
+		const { parentBlockStyle } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -70,19 +66,6 @@ const Inspector = memo(
 			maxiSetAttributes({
 				...newDefaultPresets[`preset${number}`],
 			});
-		};
-
-		const getCategoriesCss = () => {
-			const {
-				'icon-content': iconContent,
-				'block-background-hover-status': blockBackgroundHoverStatus,
-			} = attributes;
-			return without(
-				categoriesButton,
-				isEmpty(iconContent) && 'icon',
-				isEmpty(bgLayers) && 'background',
-				!blockBackgroundHoverStatus && 'background hover'
-			);
 		};
 
 		return (
@@ -580,14 +563,8 @@ const Inspector = memo(
 												...props,
 											},
 											breakpoint: deviceType,
-											selectors: {
-												...selectorsButton,
-												...getBgLayersSelectorsCss([
-													...bgLayers,
-													...bgLayersHover,
-												]),
-											},
-											categories: getCategoriesCss(),
+											selectors: selectorsButton,
+											categories: categoriesButton,
 										}),
 										...inspectorTabs.scrollEffects({
 											props: {

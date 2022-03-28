@@ -35,40 +35,42 @@ export function getBgLayersSelectorsCss(bgLayers) {
 		'background hover': {},
 	};
 
-	bgLayers
-		?.sort((a, b) => a.order - b.order)
-		.forEach((bgLayer, index) => {
-			if (!isEmpty(bgLayer)) {
-				if (bgLayer?.isHover) {
-					bgLayersSelectors['background hover'] = {
-						...bgLayersSelectors['background hover'],
-						[bgLayer.uniqueId]: {
-							label: `background ${bgLayer.type} ${
-								index + 1
-							} on hover`,
-							target: ` .maxi-background-displayer .${bgLayer.uniqueId}`,
-						},
-					};
-				} else {
-					bgLayersSelectors.background = {
-						...bgLayersSelectors.background,
-						[bgLayer.uniqueId]: {
-							label: `background ${bgLayer.type} ${index + 1}`,
-							target: ` .maxi-background-displayer .${bgLayer.uniqueId}`,
-						},
-					};
-					bgLayersSelectors['background hover'] = {
-						...bgLayersSelectors['background hover'],
-						[bgLayer.uniqueId]: {
-							label: `background ${bgLayer.type} ${
-								index + 1
-							} on hover`,
-							target: `:hover .maxi-background-displayer .${bgLayer.uniqueId}`,
-						},
-					};
+	if (!isEmpty(bgLayers)) {
+		bgLayers
+			.sort((a, b) => a.order - b.order)
+			.forEach(bgLayer => {
+				const newBgLayersSelectors = {
+					...bgLayersSelectors.background,
+					[`_${bgLayer.id}`]: {
+						label: `background ${bgLayer.type} ${
+							bgLayer.order + 1
+						}`,
+						target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
+					},
+				};
+
+				const newBgHoverSelectors = {
+					...bgLayersSelectors['background hover'],
+					[`_${bgLayer.id}`]: {
+						label: `background ${bgLayer.type} ${
+							bgLayer.order + 1
+						} on hover`,
+						target: `:hover .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
+					},
+				};
+
+				if (!isEmpty(bgLayer)) {
+					if (bgLayer?.isHover) {
+						bgLayersSelectors['background hover'] =
+							newBgHoverSelectors;
+					} else {
+						bgLayersSelectors.background = newBgLayersSelectors;
+						bgLayersSelectors['background hover'] =
+							newBgHoverSelectors;
+					}
 				}
-			}
-		});
+			});
+	}
 
 	return bgLayersSelectors;
 }

@@ -83,16 +83,16 @@ const VideoLayer = props => {
 
 	switch (parsedVideo.type) {
 		case 'youtube': {
-			videoUrl = `https://www.youtube.com/embed/${parsedVideo.order}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
+			videoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
 
-			if (videoLoop) videoUrl += `&loop=1&playlist=${parsedVideo.order}`;
+			if (videoLoop) videoUrl += `&loop=1&playlist=${parsedVideo.id}`;
 			if (videoStartTime) videoUrl += `&start=${videoStartTime}`;
 			if (videoEndTime) videoUrl += `&end=${videoEndTime}`;
 
 			break;
 		}
 		case 'vimeo': {
-			videoUrl = `https://player.vimeo.com/video/${parsedVideo.order}?controls=0&autoplay=1&muted=1&autopause=0`;
+			videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&muted=1&autopause=0`;
 
 			if (videoLoop) videoUrl += '&loop=1';
 			if (videoStartTime) videoUrl += `#t=${videoStartTime}`;
@@ -122,13 +122,13 @@ const VideoLayer = props => {
 		const scriptsArray = Array.from(window.document.scripts);
 
 		const vimeoIsMounted = scriptsArray.findIndex(
-			script => script.getAttribute('order') === 'maxi-vimeo-sdk'
+			script => script.getAttribute('id') === 'maxi-vimeo-sdk'
 		);
 
 		if (vimeoIsMounted === -1) {
 			const script = document.createElement('script');
 			script.src = 'https://player.vimeo.com/api/player.js';
-			script.order = 'maxi-vimeo-sdk';
+			script.id = 'maxi-vimeo-sdk';
 			script.async = true;
 			script.onload = () => {
 				// Cleanup onload handler

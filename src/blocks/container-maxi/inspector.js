@@ -14,33 +14,13 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { getBgLayersSelectorsCss } from '../../components/background-displayer/utils';
 import { selectorsContainer, categoriesContainer } from './custom-css';
-
-/**
- * External dependencies
- */
-import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
-	const { 'background-layers': bgLayers } = attributes;
-	const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
-		? attributes['background-layers-hover']
-		: [];
-
-	const getCategoriesCss = () => {
-		const { 'block-background-hover-status': blockBackgroundHoverStatus } =
-			attributes;
-		return without(
-			categoriesContainer,
-			isEmpty(bgLayers) && 'background',
-			!blockBackgroundHoverStatus && 'background hover'
-		);
-	};
 
 	return (
 		<InspectorControls>
@@ -122,14 +102,8 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: {
-											...selectorsContainer,
-											...getBgLayersSelectorsCss([
-												...bgLayers,
-												...bgLayersHover,
-											]),
-										},
-										categories: getCategoriesCss(),
+										selectors: selectorsContainer,
+										categories: categoriesContainer,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

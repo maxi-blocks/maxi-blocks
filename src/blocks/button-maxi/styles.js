@@ -65,12 +65,6 @@ const getWrapperObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground']),
-				blockStyle: props.parentBlockStyle,
-			}),
-		},
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),

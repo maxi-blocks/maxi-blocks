@@ -90,14 +90,31 @@ const TextListOptions = withFormatValue(props => {
 			});
 	};
 
+	const onChangeP = () => {
+		const content = getFormattedString({ formatValue, isList });
+
+		if (isList) {
+			onChange({
+				isList: false,
+				content: getContent(content),
+			});
+		}
+	};
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__list-options'
-			tooltip={__('List options', 'maxi-blocks')}
+			tooltip={__('List styles', 'maxi-blocks')}
 			icon={toolbarUnorderedList}
-			advancedOptions='list options'
 		>
 			<div className='toolbar-item__popover__list-options'>
+				<Button
+					className='toolbar-item__popover__list-options__button'
+					onClick={() => onChangeP()}
+					aria-pressed={!isList}
+				>
+					{__('P', 'maxi-blocks')}
+				</Button>
 				<Button
 					className='toolbar-item__popover__list-options__button'
 					icon={toolbarOrderedList}

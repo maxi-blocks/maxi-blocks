@@ -34,13 +34,75 @@ import { styleNone, dashed, dotted, solid } from '../../icons';
 /**
  * Component
  */
+export const DefaultDividersControl = props => {
+	const { lineOrientation, onChange, breakpoint, dividerBorderStyle } = props;
+
+	return (
+		<DefaultStylesControl
+			items={[
+				{
+					activeItem: dividerBorderStyle === 'none',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={styleNone}
+						/>
+					),
+					onChange: () => onChange(dividerNone(breakpoint)),
+				},
+				{
+					activeItem: dividerBorderStyle === 'solid',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={solid}
+						/>
+					),
+					onChange: () => {
+						if (lineOrientation === 'horizontal')
+							onChange(dividerSolidHorizontal(breakpoint));
+						else onChange(dividerSolidVertical(breakpoint));
+					},
+				},
+				{
+					activeItem: dividerBorderStyle === 'dashed',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={dashed}
+						/>
+					),
+					onChange: () => {
+						if (lineOrientation === 'horizontal')
+							onChange(dividerDashedHorizontal(breakpoint));
+						else onChange(dividerDashedVertical(breakpoint));
+					},
+				},
+				{
+					activeItem: dividerBorderStyle === 'dotted',
+					content: (
+						<Icon
+							className='maxi-default-styles-control__button__icon'
+							icon={dotted}
+						/>
+					),
+					onChange: () => {
+						if (lineOrientation === 'horizontal')
+							onChange(dividerDottedHorizontal(breakpoint));
+						else onChange(dividerDottedVertical(breakpoint));
+					},
+				},
+			]}
+		/>
+	);
+};
+
 const DividerControl = props => {
 	const {
 		onChange,
-		disableColor = false,
+		isHover = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
-		isHover = false,
 		clientId,
 		breakpoint,
 	} = props;
@@ -78,61 +140,11 @@ const DividerControl = props => {
 
 	return (
 		<>
-			<DefaultStylesControl
-				items={[
-					{
-						activeItem: dividerBorderStyle === 'none',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={styleNone}
-							/>
-						),
-						onChange: () => onChange(dividerNone(breakpoint)),
-					},
-					{
-						activeItem: dividerBorderStyle === 'solid',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={solid}
-							/>
-						),
-						onChange: () => {
-							if (lineOrientation === 'horizontal')
-								onChange(dividerSolidHorizontal(breakpoint));
-							else onChange(dividerSolidVertical(breakpoint));
-						},
-					},
-					{
-						activeItem: dividerBorderStyle === 'dashed',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={dashed}
-							/>
-						),
-						onChange: () => {
-							if (lineOrientation === 'horizontal')
-								onChange(dividerDashedHorizontal(breakpoint));
-							else onChange(dividerDashedVertical(breakpoint));
-						},
-					},
-					{
-						activeItem: dividerBorderStyle === 'dotted',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={dotted}
-							/>
-						),
-						onChange: () => {
-							if (lineOrientation === 'horizontal')
-								onChange(dividerDottedHorizontal(breakpoint));
-							else onChange(dividerDottedVertical(breakpoint));
-						},
-					},
-				]}
+			<DefaultDividersControl
+				lineOrientation={lineOrientation}
+				onChange={onChange}
+				breakpoint={breakpoint}
+				dividerBorderStyle={dividerBorderStyle}
 			/>
 			{!disableLineStyle && (
 				<SelectControl
@@ -171,7 +183,7 @@ const DividerControl = props => {
 						}
 					/>
 				)}
-			{dividerBorderStyle !== 'none' && !disableColor && (
+			{dividerBorderStyle !== 'none' && (
 				<ColorControl
 					label={__('Divider', 'maxi-blocks')}
 					color={getLastBreakpointAttribute({

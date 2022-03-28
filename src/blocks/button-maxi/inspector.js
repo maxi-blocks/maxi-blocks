@@ -48,8 +48,15 @@ import {
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-		const { parentBlockStyle } = attributes;
+		const {
+			attributes,
+			deviceType,
+			maxiSetAttributes,
+			clientId,
+			changeSVGContent,
+			changeSVGStrokeWidth,
+		} = props;
+		const { parentBlockStyle, svgType } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -343,6 +350,15 @@ const Inspector = memo(
 																				obj
 																			);
 																		}}
+																		svgType={
+																			svgType
+																		}
+																		changeSVGContent={
+																			changeSVGContent
+																		}
+																		changeSVGStrokeWidth={
+																			changeSVGStrokeWidth
+																		}
 																		breakpoint={
 																			deviceType
 																		}
@@ -402,6 +418,9 @@ const Inspector = memo(
 																						obj
 																					);
 																				}}
+																				svgType={
+																					svgType
+																				}
 																				breakpoint={
 																					deviceType
 																				}

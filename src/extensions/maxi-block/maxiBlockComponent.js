@@ -30,7 +30,7 @@ import {
 	getHasScrollEffects,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import { loadFonts } from '../text/fonts';
+import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
 /**
@@ -46,6 +46,7 @@ const StyleComponent = ({
 	stylesObj,
 	currentBreakpoint,
 	blockBreakpoints,
+	isIframe = false,
 }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
@@ -68,7 +69,8 @@ const StyleComponent = ({
 	const styleContent = styleGenerator(
 		styles,
 		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
-		currentBreakpoint
+		currentBreakpoint,
+		isIframe
 	);
 
 	return <style>{styleContent}</style>;
@@ -337,12 +339,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		// Ensures Roboto is fully accessible from the editor
-		loadFonts('Roboto');
+		const response = getAllFonts(this.typography, 'custom-formats');
 
-		Object.entries(this.typography).forEach(([key, val]) => {
-			if (key.includes('font-family')) loadFonts(val);
-		});
+		if (!isEmpty(response)) loadFonts(response);
 	}
 
 	getParentStyle() {
@@ -428,6 +427,7 @@ class MaxiBlockComponent extends Component {
 							stylesObj={obj}
 							currentBreakpoint={this.currentBreakpoint}
 							blockBreakpoints={breakpoints}
+							isIframe
 						/>,
 						iframeWrapper
 					);

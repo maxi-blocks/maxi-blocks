@@ -199,7 +199,7 @@ describe('getRepeatedClassNames', () => {
 	it('Should return no repeated classNames', () => {
 		const customFormats = {
 			'maxi-text-block__custom-format--0': {
-				'font-weight-general': 800,
+				'font-weight-general': '800',
 			},
 		};
 		const formatValue = {
@@ -271,10 +271,10 @@ describe('getRepeatedClassNames', () => {
 	it('Should return 2 repeated classNames that has the same format', () => {
 		const customFormats = {
 			'maxi-text-block__custom-format--0': {
-				'font-weight-general': 800,
+				'font-weight-general': '800',
 			},
 			'maxi-text-block__custom-format--1': {
-				'font-weight-general': 800,
+				'font-weight-general': '800',
 			},
 		};
 		const formatValue = {
@@ -494,10 +494,10 @@ describe('flatRepeatedClassNames', () => {
 		const typography = {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': 800,
+					'font-weight-general': '800',
 				},
 			},
 		};
@@ -595,7 +595,7 @@ describe('flatRepeatedClassNames', () => {
 			typography: {
 				'custom-formats': {
 					'maxi-text-block__custom-format--0': {
-						'font-weight-general': 800,
+						'font-weight-general': '800',
 					},
 				},
 			},
@@ -665,10 +665,10 @@ describe('flatFormatsWithClass', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'font-weight-general': 400,
+			'font-weight-general': '400',
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': 400,
+					'font-weight-general': '400',
 				},
 			},
 		};
@@ -676,7 +676,7 @@ describe('flatFormatsWithClass', () => {
 			'Testing <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Text</span> Maxi';
 		const isList = false;
 		const value = {
-			'font-weight': 400,
+			'font-weight': '400',
 		};
 		const breakpoint = 'general';
 		const textLevel = 'p';
@@ -691,7 +691,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { 'font-weight-general': 400, 'custom-formats': {} },
+			typography: { 'font-weight-general': '400', 'custom-formats': {} },
 			content: 'Testing Text Maxi',
 		};
 
@@ -881,13 +881,13 @@ describe('flatFormatsWithClass', () => {
 			],
 		};
 		const typography = {
-			'font-weight-general': 800,
+			'font-weight-general': '800',
 		};
 		const content =
 			'<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Testing Text Maxi</span>';
 		const isList = false;
 		const value = {
-			'font-weight': 800,
+			'font-weight': '800',
 		};
 		const breakpoint = 'general';
 		const textLevel = 'p';
@@ -902,7 +902,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { 'font-weight-general': 800 },
+			typography: { 'font-weight-general': '800' },
 			content: 'Testing Text Maxi',
 		};
 

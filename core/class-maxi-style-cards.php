@@ -31,15 +31,13 @@ class MaxiBlocks_StyleCards {
 	public function enqueue_styles() {
 		$vars = $this->getStylesString();
 
-		// Inline styles
-		if ($vars) {
-			wp_register_style('maxi-blocks-sc-vars', false);
-			wp_enqueue_style('maxi-blocks-sc-vars');
-			wp_add_inline_style('maxi-blocks-sc-vars', $vars);
-
-			$this->enqueue_fonts($vars);
-		}
-	}
+        // Inline styles
+        if ($vars) {
+            wp_register_style('maxi-blocks-sc-vars', false);
+            wp_enqueue_style('maxi-blocks-sc-vars');
+            wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+        }
+    }
 
 	/**
 	 * Get SC
@@ -116,21 +114,6 @@ class MaxiBlocks_StyleCards {
 		return false;
 	}
 
-	public function enqueue_fonts($vars) {
-		preg_match_all('/font-family-general:(\w+);/', $vars, $fonts);
-		$fonts = array_unique($fonts[1]);
-
-		if (empty($fonts)) {
-			return;
-		}
-
-		foreach ($fonts as $font) {
-			wp_enqueue_style(
-				"{$font}",
-				"https://fonts.googleapis.com/css2?family={$font}",
-			);
-		}
-	}
 
 	public static function getDefaultStyleCard() {
 		$json = '{

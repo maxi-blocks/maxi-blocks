@@ -164,12 +164,9 @@ const editSelect = withSelect((select, ownProps) => {
 	const selectedBlockId = getSelectedBlockClientId();
 	const originalNestedBlocks = getBlockParents(selectedBlockId);
 
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
 	return {
 		selectedBlockId,
 		originalNestedBlocks,
-		deviceType,
 	};
 });
 

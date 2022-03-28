@@ -48,6 +48,18 @@ export const handleSetAttributes = ({
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
 
+		// Ensures saving both General and XXL attribute when XXL attribute is already set,
+		// winBreakpoint is XXL and breakpoint is General
+		if (
+			breakpoint === 'general' &&
+			winBreakpoint === 'xxl' &&
+			attrExistOnWinBreakpoint
+		) {
+			response[attrLabelOnWinBreakpoint] = value;
+
+			return;
+		}
+
 		const attrLabelOnGeneral = `${key.slice(
 			0,
 			key.lastIndexOf('-')
@@ -142,13 +154,20 @@ const withMaxiProps = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
 
-			const { hasInnerBlocks } = useSelect(select => {
-				const { getBlockOrder } = select('core/block-editor');
+			const { deviceType, winBreakpoint, hasInnerBlocks } = useSelect(
+				select => {
+					const { receiveMaxiDeviceType, receiveWinBreakpoint } =
+						select('maxiBlocks');
+					const { getBlockOrder } = select('core/block-editor');
 
-				const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+					const deviceType = receiveMaxiDeviceType();
+					const winBreakpoint = receiveWinBreakpoint();
 
-				return { hasInnerBlocks };
-			});
+					const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+
+					return { deviceType, winBreakpoint, hasInnerBlocks };
+				}
+			);
 
 			const maxiSetAttributes = obj =>
 				handleSetAttributes({
@@ -162,6 +181,8 @@ const withMaxiProps = createHigherOrderComponent(
 				<WrappedComponent
 					{...ownProps}
 					maxiSetAttributes={maxiSetAttributes}
+					deviceType={deviceType}
+					winBreakpoint={winBreakpoint}
 					hasInnerBlocks={hasInnerBlocks}
 				/>
 			);

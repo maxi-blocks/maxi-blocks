@@ -36,10 +36,10 @@ import { isEmpty, isNil, isEqual } from 'lodash';
 /**
  * Icons
  */
-import { styleCardBoat, reset, SCDelete } from '../../icons';
+import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
 import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
 
-const MaxiStyleCardsEditor = ({ styleCards }) => {
+const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const {
 		isRTL,
 		breakpoint,
@@ -264,6 +264,12 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 				<h2 className='maxi-style-cards__popover__title'>
 					<Icon icon={styleCardBoat} />
 					{__('Style Card Editor', 'maxi-blocks')}
+					<span
+						className='maxi-responsive-selector__close'
+						onClick={() => setIsVisible(false)}
+					>
+						<Icon icon={closeIcon} />
+					</span>
 				</h2>
 				<hr />
 				<div className='maxi-style-cards__popover__sub-title'>

@@ -39,7 +39,12 @@ const MaxiStyleCardsEditorPopUp = () => {
 				<Icon icon={styleCardMenu} />
 				<span>{__('Style Card Editor', 'maxi-blocks')}</span>
 			</Button>
-			{isVisible && <MaxiStyleCardsEditor styleCards={styleCards} />}
+			{isVisible && (
+				<MaxiStyleCardsEditor
+					styleCards={styleCards}
+					setIsVisible={setIsVisible}
+				/>
+			)}
 		</>
 	);
 };

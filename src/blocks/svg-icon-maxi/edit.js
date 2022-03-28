@@ -3,7 +3,7 @@
  */
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
-import { withSelect, withDispatch, dispatch } from '@wordpress/data';
+import { withDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -212,14 +212,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		deviceType,
-	};
-});
-
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
 		attributes: { content },
@@ -290,4 +282,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, withMaxiProps, editDispatch)(edit);
+export default compose(withMaxiProps, editDispatch)(edit);

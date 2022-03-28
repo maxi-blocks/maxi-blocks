@@ -49,12 +49,10 @@ const customCss = ({
 	};
 
 	const getSelectorsCss = () => {
-		const bgLayers = !isEmpty(attributes['background-layers'])
-			? attributes['background-layers']
-			: [];
-		const bgLayersHover = !isEmpty(attributes['background-layers-hover'])
-			? attributes['background-layers-hover']
-			: [];
+		const {
+			'background-layers': bgLayers = [],
+			'background-layers-hover': bgLayersHover = [],
+		} = attributes;
 
 		return {
 			...selectors,

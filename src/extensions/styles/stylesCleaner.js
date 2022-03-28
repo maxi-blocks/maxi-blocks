@@ -103,12 +103,10 @@ const stylesCleaner = (obj, selectors, props) => {
 	const response = cloneDeep(obj);
 
 	// Add to selectors generated bgLayers
-	const bgLayers = !isEmpty(props['background-layers'])
-		? props['background-layers']
-		: [];
-	const bgLayersHover = !isEmpty(props['background-layers-hover'])
-		? props['background-layers-hover']
-		: [];
+	const {
+		'background-layers': bgLayers = [],
+		'background-layers-hover': bgLayersHover = [],
+	} = props;
 
 	const newSelectors = {
 		...selectors,

@@ -98,13 +98,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 						text-decoration: var(
 							--maxi-#{$style}-#{$level}-text-decoration-general
 						);
-
-						// Ensures link keeps same font-family than parent
-						a {
-							font-family: var(
-								--maxi-#{$style}-#{$level}-font-family-general
-							);
-						}
 					}
 				}
 			}

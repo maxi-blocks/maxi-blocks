@@ -19,7 +19,7 @@ const flex = ({ props }) => {
 
 	const getParentBlockName = getBlockName(
 		getBlockParents(clientId)
-			?.filter(id => id != clientId)
+			?.filter(id => id !== clientId)
 			?.slice(-1)
 	);
 

@@ -24,7 +24,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { uniqueId, isEmpty } from 'lodash';
+import { uniqueId } from 'lodash';
 import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
 /**
@@ -134,7 +134,7 @@ class edit extends MaxiBlockComponent {
 					blockFullWidth={blockFullWidth}
 					classes={emptyRowClass}
 					{...getMaxiBlockAttributes(this.props)}
-					hasInnerBlocks
+					useInnerBlocks
 					innerBlocksSettings={{
 						...(hasInnerBlocks && { templateLock: 'insert' }),
 						allowedBlocks: ALLOWED_BLOCKS,
@@ -158,14 +158,11 @@ class edit extends MaxiBlockComponent {
 }
 
 const editSelect = withSelect((select, ownProps) => {
-	const { clientId } = ownProps;
-
-	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } =
+	const { getSelectedBlockClientId, getBlockParents } =
 		select('core/block-editor');
 
 	const selectedBlockId = getSelectedBlockClientId();
 	const originalNestedBlocks = getBlockParents(selectedBlockId);
-	const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
@@ -173,7 +170,6 @@ const editSelect = withSelect((select, ownProps) => {
 		selectedBlockId,
 		originalNestedBlocks,
 		deviceType,
-		hasInnerBlocks,
 	};
 });
 

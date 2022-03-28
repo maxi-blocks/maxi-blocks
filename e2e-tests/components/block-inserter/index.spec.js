@@ -3,16 +3,16 @@
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
-describe('BlockPlaceholder', () => {
-	it('Checking the block placeholder', async () => {
+describe('BlockInserter', () => {
+	it('Checking the block inserter', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 
-		const groupPlaceholder = await page.$eval(
-			'.maxi-block-placeholder',
+		const groupInserter = await page.$eval(
+			'.maxi-block-inserter',
 			select => select.innerHTML
 		);
 
-		expect(groupPlaceholder).toMatchSnapshot();
+		expect(groupInserter).toMatchSnapshot();
 	});
 });

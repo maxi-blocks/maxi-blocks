@@ -7,7 +7,6 @@ import { toString } from 'lodash';
 /**
  * Internal dependencies
  */
-import ToggleSwitch from '../toggle-switch';
 import SelectControl from '../select-control';
 import {
 	getLastBreakpointAttribute,
@@ -525,75 +524,65 @@ const FLexSettingsControl = props => {
 										})
 									}
 								/>
-								{!customFlexBasis && (
-									<SelectControl
-										label={__('Flex-basis', 'maxi-blocks')}
-										value={getLastBreakpointAttribute({
-											target: 'flex-basis',
-											breakpoint,
-											attributes: props,
-										})}
-										options={[
-											{
-												label: __(
-													'Auto',
-													'maxi-blocks'
-												),
-												value: '',
-											},
-											{
-												label: __(
-													'Content',
-													'maxi-blocks'
-												),
-												value: 'content',
-											},
-											{
-												label: __(
-													'Max-content',
-													'maxi-blocks'
-												),
-												value: 'max-content',
-											},
-											{
-												label: __(
-													'Min-content',
-													'maxi-blocks'
-												),
-												value: 'min-content',
-											},
-											{
-												label: __(
-													'Fit-content',
-													'maxi-blocks'
-												),
-												value: 'fit-content',
-											},
-										]}
-										onChange={val =>
+								<SelectControl
+									label={__('Flex-basis', 'maxi-blocks')}
+									value={
+										customFlexBasis
+											? 'custom'
+											: getLastBreakpointAttribute({
+													target: 'flex-basis',
+													breakpoint,
+													attributes: props,
+											  })
+									}
+									options={[
+										{
+											label: __('Auto', 'maxi-blocks'),
+											value: '',
+										},
+										{
+											label: __('Content', 'maxi-blocks'),
+											value: 'content',
+										},
+										{
+											label: __(
+												'Max-content',
+												'maxi-blocks'
+											),
+											value: 'max-content',
+										},
+										{
+											label: __(
+												'Min-content',
+												'maxi-blocks'
+											),
+											value: 'min-content',
+										},
+										{
+											label: __(
+												'Fit-content',
+												'maxi-blocks'
+											),
+											value: 'fit-content',
+										},
+										{
+											label: __('Custom', 'maxi-blocks'),
+											value: 'custom',
+										},
+									]}
+									onChange={val => {
+										if (val !== 'custom') {
 											onChange({
 												[`flex-basis-${breakpoint}`]:
 													val,
-											})
-										}
-									/>
-								)}
-								<ToggleSwitch
-									label={__(
-										'Custom flex-basis',
-										'maxi-blocks'
-									)}
-									selected={customFlexBasis}
-									onChange={val => {
-										setCustomFlexBasis(val);
-										if (!val) {
-											onChange({
-												[`flex-basis-${breakpoint}`]:
-													'',
 											});
+											setCustomFlexBasis(false);
+										} else {
+											setCustomFlexBasis(true);
 										}
 									}}
 								/>
+
 								{customFlexBasis && (
 									<AdvancedNumberControl
 										className='maxi-typography-control__size'

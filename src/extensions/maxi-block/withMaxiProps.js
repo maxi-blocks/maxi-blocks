@@ -48,6 +48,18 @@ export const handleSetAttributes = ({
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
 
+		// Ensures saving both General and XXL attribute when XXL attribute is already set,
+		// winBreakpoint is XXL and breakpoint is General
+		if (
+			breakpoint === 'general' &&
+			winBreakpoint === 'xxl' &&
+			attrExistOnWinBreakpoint
+		) {
+			response[attrLabelOnWinBreakpoint] = value;
+
+			return;
+		}
+
 		const attrLabelOnGeneral = `${key.slice(
 			0,
 			key.lastIndexOf('-')

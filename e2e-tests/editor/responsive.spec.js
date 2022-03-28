@@ -483,7 +483,7 @@ describe('Responsive attributes mechanisms', () => {
 	});
 
 	it('On change XL default attributes from General responsive, changes on General and XL', async () => {
-		// Base responsive is "M"
+		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1425, height: 700 });
 
 		await createNewPost();
@@ -531,5 +531,73 @@ describe('Responsive attributes mechanisms', () => {
 		]);
 
 		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
+	});
+
+	it('On change XXL default attributes from XL screen, then change the screen size to XXL, on changing the General attribute it changes on General and XXL', async () => {
+		// Base responsive is "XL"
+		await setBrowserViewport({ width: 1425, height: 700 });
+
+		await createNewPost();
+		await insertBlock('Group Maxi');
+
+		await changeResponsive(page, 'xxl');
+
+		let accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		let axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '10',
+		});
+
+		await page.waitForTimeout(500);
+
+		const expectPaddingOnXl = {
+			'padding-top-general': 10,
+			'padding-top-xxl': 10,
+			'padding-top-xl': undefined,
+		};
+
+		const paddingOnXl = await getAttributes([
+			'padding-top-general',
+			'padding-top-xxl',
+			'padding-top-xl',
+		]);
+
+		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
+
+		await setBrowserViewport({ width: 3840, height: 2160 });
+
+		accordionPanel = await openSidebarTab(page, 'style', 'margin padding');
+
+		axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '15',
+		});
+
+		const expectPaddingOnXxl = {
+			'padding-top-general': 15,
+			'padding-top-xl': undefined,
+			'padding-top-xxl': 15,
+		};
+
+		const paddingOnXxl = await getAttributes([
+			'padding-top-general',
+			'padding-top-xl',
+			'padding-top-xxl',
+		]);
+
+		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);
 	});
 });

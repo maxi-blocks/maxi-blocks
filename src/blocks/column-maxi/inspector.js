@@ -202,6 +202,12 @@ const Inspector = props => {
 										...inspectorTabs.boxShadow({
 											props,
 										}),
+										...inspectorTabs.size({
+											props,
+											block: true,
+											hideWidth: true,
+											hideMaxWidth: true,
+										}),
 										...inspectorTabs.marginPadding({
 											props,
 										}),
@@ -250,6 +256,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
 										props,
 									}),
 									...inspectorTabs.zindex({

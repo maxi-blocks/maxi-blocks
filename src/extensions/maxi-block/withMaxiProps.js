@@ -13,7 +13,7 @@ import { getDefaultAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -154,15 +154,20 @@ const withMaxiProps = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
 
-			const { deviceType, winBreakpoint } = useSelect(select => {
-				const { receiveMaxiDeviceType, receiveWinBreakpoint } =
-					select('maxiBlocks');
+			const { deviceType, winBreakpoint, hasInnerBlocks } = useSelect(
+				select => {
+					const { receiveMaxiDeviceType, receiveWinBreakpoint } =
+						select('maxiBlocks');
+					const { getBlockOrder } = select('core/block-editor');
 
-				const deviceType = receiveMaxiDeviceType();
-				const winBreakpoint = receiveWinBreakpoint();
+					const deviceType = receiveMaxiDeviceType();
+					const winBreakpoint = receiveWinBreakpoint();
 
-				return { deviceType, winBreakpoint };
-			});
+					const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+
+					return { deviceType, winBreakpoint, hasInnerBlocks };
+				}
+			);
 
 			const maxiSetAttributes = obj =>
 				handleSetAttributes({
@@ -178,6 +183,7 @@ const withMaxiProps = createHigherOrderComponent(
 					maxiSetAttributes={maxiSetAttributes}
 					deviceType={deviceType}
 					winBreakpoint={winBreakpoint}
+					hasInnerBlocks={hasInnerBlocks}
 				/>
 			);
 		}),

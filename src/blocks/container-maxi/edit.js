@@ -1,11 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { withSelect } from '@wordpress/data';
-import { compose } from '@wordpress/compose';
-import { InnerBlocks } from '@wordpress/block-editor';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -16,7 +9,7 @@ import {
 } from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
-	BlockPlaceholder,
+	BlockInserter,
 	Indicators,
 	ShapeDivider,
 	Toolbar,
@@ -24,11 +17,6 @@ import {
 import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * General
@@ -66,8 +54,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, maxiSetAttributes } =
-			this.props;
+		const {
+			attributes,
+			deviceType,
+			hasInnerBlocks,
+			maxiSetAttributes,
+			clientId,
+		} = this.props;
 		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
 		return [
@@ -81,15 +74,15 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
-				hasInnerBlocks
+				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
-					template: ROW_TEMPLATE,
+					template: !hasInnerBlocks ? ROW_TEMPLATE : false,
 					templateLock: false,
 					orientation: 'horizontal',
 					renderAppender: !hasInnerBlocks
-						? BlockPlaceholder
-						: InnerBlocks.ButtonBlockAppender,
+						? () => <BlockInserter clientId={clientId} />
+						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
@@ -136,16 +129,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { clientId } = ownProps;
-
-	const hasInnerBlocks = !isEmpty(
-		select('core/block-editor').getBlockOrder(clientId)
-	);
-
-	return {
-		hasInnerBlocks,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

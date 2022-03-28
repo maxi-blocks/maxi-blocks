@@ -63,7 +63,7 @@ describe('FullSizeControl', () => {
 
 		await page.$$eval(
 			'.maxi-full-size-control .maxi-toggle-switch input',
-			button => button[0].click()
+			button => button[1].click()
 		);
 
 		const selector = await page.$$(

@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import ToggleSwitch from '../../../toggle-switch';
-import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -54,7 +53,6 @@ const IconColor = props => {
 					</p>
 				) : (
 					<ColorControl
-						label={__('', 'maxi-blocks')}
 						color={props['icon-color']}
 						prefix='icon-'
 						paletteColor={props['icon-palette-color']}

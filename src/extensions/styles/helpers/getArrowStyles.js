@@ -21,6 +21,11 @@ export const getArrowObject = props => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const arrowStatus = getLastBreakpointAttribute({
+			target: 'arrow-status',
+			breakpoint,
+			attributes: props,
+		});
 		const arrowWidth = getLastBreakpointAttribute({
 			target: 'arrow-width',
 			breakpoint,

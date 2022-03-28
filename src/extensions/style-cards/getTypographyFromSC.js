@@ -6,17 +6,12 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../styles';
+import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
 
 /**
  * External dependencies
  */
 import { isEmpty, isNil, merge } from 'lodash';
-
-/**
- * Internal dependencies
- */
-import { getLastBreakpointAttribute } from '../styles';
 
 const getTypographyFromSC = (styleCard, type) => {
 	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');

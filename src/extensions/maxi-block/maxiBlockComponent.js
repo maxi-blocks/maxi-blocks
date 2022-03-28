@@ -31,6 +31,7 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts, getAllFonts } from '../text/fonts';
+import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
 /**
  * External dependencies

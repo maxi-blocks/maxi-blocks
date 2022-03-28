@@ -29,6 +29,7 @@ import {
 	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**
  * External dependencies
@@ -40,7 +41,6 @@ import { isNil, isBoolean, isNumber } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**
  * Component

@@ -20,20 +20,12 @@ import { getColumnDefaultValue } from '../../../../extensions/column-templates';
  */
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
-import { ColumnSizeControl } from '../../..';
 
 /**
  * ColumnSize
  */
 const ColumnSize = props => {
-	const {
-		clientId,
-		blockName,
-		verticalAlign,
-		onChange,
-		rowPattern,
-		breakpoint,
-	} = props;
+	const { clientId, blockName, onChange, rowPattern, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 

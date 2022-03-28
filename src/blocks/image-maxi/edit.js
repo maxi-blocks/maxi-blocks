@@ -248,23 +248,6 @@ class edit extends MaxiBlockComponent {
 			return '100%';
 		};
 
-		const getMaxWidth = () => {
-			const maxWidth = getLastBreakpointAttribute(
-				'image-max-width',
-				deviceType,
-				attributes
-			);
-			const maxWidthUnit = getLastBreakpointAttribute(
-				'image-max-width-unit',
-				deviceType,
-				attributes
-			);
-
-			if (isNumber(maxWidth)) return `${maxWidth}${maxWidthUnit}`;
-
-			return '100%';
-		};
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

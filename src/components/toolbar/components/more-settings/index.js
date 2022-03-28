@@ -57,7 +57,7 @@ const MoreSettings = props => {
 					className='maxi-more-settings__settings-selector'
 					contentClassName='maxi-more-settings__popover'
 					position='right bottom'
-					renderToggle={({ isOpen, onToggle }) => (
+					renderToggle={({ onToggle }) => (
 						<Button onClick={onToggle}>
 							<Icon
 								className='toolbar-item__icon'

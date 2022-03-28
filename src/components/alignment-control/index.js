@@ -48,40 +48,32 @@ const AlignmentControl = props => {
 
 		!disableLeft &&
 			options.push({
-				icon: !isToolbar ? (
-					<Icon icon={alignLeft} />
-				) : (
-					<Icon icon={toolbarAlignLeft} />
-				),
+				icon: <Icon icon={isToolbar ? toolbarAlignLeft : alignLeft} />,
 				value: 'left',
 			});
 
 		!disableCenter &&
 			options.push({
-				icon: !isToolbar ? (
-					<Icon icon={alignCenter} />
-				) : (
-					<Icon icon={toolbarAlignCenter} />
+				icon: (
+					<Icon icon={isToolbar ? toolbarAlignCenter : alignCenter} />
 				),
 				value: 'center',
 			});
 
 		!disableRight &&
 			options.push({
-				icon: !isToolbar ? (
-					<Icon icon={alignRight} />
-				) : (
-					<Icon icon={toolbarAlignRight} />
+				icon: (
+					<Icon icon={isToolbar ? toolbarAlignRight : alignRight} />
 				),
 				value: 'right',
 			});
 
 		!disableJustify &&
 			options.push({
-				icon: !isToolbar ? (
-					<Icon icon={alignJustify} />
-				) : (
-					<Icon icon={toolbarAlignJustify} />
+				icon: (
+					<Icon
+						icon={isToolbar ? toolbarAlignJustify : alignJustify}
+					/>
 				),
 				value: 'justify',
 			});

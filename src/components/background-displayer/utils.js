@@ -38,13 +38,15 @@ export function getBgLayersSelectorsCss(bgLayers) {
 		'background hover': {},
 	};
 
+	let bgLayersShowedOrder = 1;
+
 	bgLayers
 		?.sort((a, b) => a.order - b.order)
 		.forEach(bgLayer => {
 			const newBgLayersSelectors = {
 				...bgLayersSelectors.background,
 				[`_${bgLayer.id}`]: {
-					label: `background ${bgLayer.type} ${bgLayer.order + 1}`,
+					label: `background ${bgLayer.type} ${bgLayersShowedOrder}`,
 					target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
 				},
 			};
@@ -64,6 +66,7 @@ export function getBgLayersSelectorsCss(bgLayers) {
 			} else {
 				bgLayersSelectors.background = newBgLayersSelectors;
 				bgLayersSelectors['background hover'] = newBgHoverSelectors;
+				bgLayersShowedOrder += 1;
 			}
 		});
 

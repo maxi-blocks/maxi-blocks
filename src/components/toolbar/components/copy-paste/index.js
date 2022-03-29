@@ -11,7 +11,10 @@ import { cloneBlock } from '@wordpress/blocks';
  */
 import Button from '../../../button';
 import Dropdown from '../../../dropdown';
-
+import {
+	cleanStyleAttributes,
+	getOrganizedAttributes,
+} from './attributes-mapping';
 /**
  * External dependencies
  */
@@ -21,48 +24,10 @@ import { isNil, isEmpty } from 'lodash';
  * Styles & Icons
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Component
  */
-const ATTRIBUTES = [
-	'alignment',
-	'arrow',
-	'background',
-	'backgroundColor',
-	'backgroundColorHover',
-	'backgroundGradient',
-	'backgroundGradientHover',
-	'backgroundHover',
-	'blockBackground',
-	'border',
-	'borderHover',
-	'borderRadius',
-	'borderRadiusHover',
-	'borderWidth',
-	'borderWidthHover',
-	'boxShadow',
-	'boxShadowHover',
-	'breakpoints',
-	'columnSize',
-	'display',
-	'divider',
-	'link',
-	'margin',
-	'motion',
-	'opacity',
-	'padding',
-	'position',
-	'shapeDivider',
-	'size',
-	'textAlignment',
-	'transform',
-	'transitionDuration',
-	'typography',
-	'typographyHover',
-	'zIndex',
-];
 const WRAPPER_BLOCKS = [
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/row-maxi',
@@ -75,31 +40,6 @@ const CopyPasteContent = props => {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [specialPaste, setSpecialPaste] = useState([]);
-
-	const getOrganizedAttributes = attributes => {
-		const response = {};
-
-		ATTRIBUTES.forEach(attr => {
-			const obj = getGroupAttributes(attributes, attr, false, '', true);
-
-			if (!isEmpty(obj)) response[attr] = obj;
-		});
-
-		return response;
-	};
-
-	const cleanStyleAttributes = attr => {
-		let response = {};
-
-		ATTRIBUTES.forEach(typeAttr => {
-			response = {
-				...response,
-				...getGroupAttributes(attr, typeAttr, false, '', true),
-			};
-		});
-
-		return response;
-	};
 
 	const {
 		blockAttributes,
@@ -120,7 +60,10 @@ const CopyPasteContent = props => {
 			(copiedStyles && getOrganizedAttributes(copiedStyles)) || {};
 
 		const blockValues = getBlock(clientId);
-		const blockAttributes = cleanStyleAttributes(blockValues.attributes);
+		const blockAttributes = cleanStyleAttributes(
+			blockValues.attributes,
+			getBlock(clientId).name
+		);
 		const { innerBlocks } = blockValues;
 		const hasInnerBlocks = !isEmpty(innerBlocks);
 

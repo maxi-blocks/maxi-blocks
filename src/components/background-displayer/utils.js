@@ -61,11 +61,10 @@ export function getBgLayersSelectorsCss(bgLayers) {
 				},
 			};
 
-			if (bgLayer?.isHover) {
-				bgLayersSelectors['background hover'] = newBgHoverSelectors;
-			} else {
+			bgLayersSelectors['background hover'] = newBgHoverSelectors;
+
+			if (!bgLayer?.isHover) {
 				bgLayersSelectors.background = newBgLayersSelectors;
-				bgLayersSelectors['background hover'] = newBgHoverSelectors;
 				bgLayersShowedOrder += 1;
 			}
 		});

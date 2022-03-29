@@ -131,6 +131,9 @@ const Inspector = props => {
 									...inspectorTabs.zindex({
 										props,
 									}),
+									...inspectorTabs.flex({
+										props,
+									}),
 								]}
 							/>
 						),

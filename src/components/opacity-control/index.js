@@ -19,14 +19,25 @@ import { getIsValid } from '../../extensions/styles';
  * Component
  */
 const OpacityControl = props => {
-	const { className, onChange, label, opacity, onReset } = props;
+	const {
+		className,
+		onChange,
+		label = '',
+		opacity,
+		onReset,
+		disableLabel = false,
+	} = props;
 
 	const classes = classnames('maxi-opacity-control', className);
 
 	return (
 		<AdvancedNumberControl
 			className={classes}
-			label={`${!isEmpty(label) ? label : __('Opacity', 'maxi-blocks')}`}
+			label={`${
+				!isEmpty(label) || disableLabel
+					? label
+					: __('Opacity', 'maxi-blocks')
+			}`}
 			value={getIsValid(opacity, true) ? round(opacity * 100, 2) : 100}
 			onChangeValue={val => {
 				onChange(!isNil(val) ? round(val / 100, 2) : 0);

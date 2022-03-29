@@ -70,7 +70,7 @@ const AdvancedNumberControl = props => {
 	};
 
 	const {
-		label,
+		label = '',
 		className,
 		classNameAutoInput,
 		unit = 'px',
@@ -203,7 +203,6 @@ const AdvancedNumberControl = props => {
 					/>
 					{enableUnit && (
 						<SelectControl
-							label={__('Unit', 'maxi-blocks')}
 							hideLabelFromVision
 							className='maxi-dimensions-control__units'
 							options={getOptions()}
@@ -229,7 +228,7 @@ const AdvancedNumberControl = props => {
 							aria-label={sprintf(
 								/* translators: %s: a textual label  */
 								__('Reset %s settings', 'maxi-blocks'),
-								label.toLowerCase()
+								label?.toLowerCase()
 							)}
 							type='reset'
 						>

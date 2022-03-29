@@ -54,12 +54,12 @@ const getBorderStyles = ({
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const borderStyle = getLastBreakpointAttribute(
-			`${prefix}border-style`,
+		const borderStyle = getLastBreakpointAttribute({
+			target: `${prefix}border-style`,
 			breakpoint,
-			obj,
-			isHover
-		);
+			attributes: obj,
+			isHover,
+		});
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 
 		const getColorString = () => {
@@ -99,7 +99,8 @@ const getBorderStyles = ({
 
 			if (
 				(getIsValid(value, true) ||
-					(isHover && globalHoverStatus && key.includes('color'))) &&
+					(isHover && globalHoverStatus && key.includes('color')) ||
+					key === `${prefix}border-palette-color-${breakpoint}`) &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
@@ -111,17 +112,29 @@ const getBorderStyles = ({
 					'gm'
 				);
 				const newLabel = newKey.replace(replacer, '');
+				const unitKey = keyWords.filter(key =>
+					newLabel.includes(key)
+				)[0];
+
+				const unit =
+					getLastBreakpointAttribute({
+						target: `${prefix}${newLabel.replace(unitKey, 'unit')}`,
+						breakpoint,
+						attributes: obj,
+						isHover,
+					}) || 'px';
+
 				if (key.includes('style')) {
 					if (isHover && isBorderNone) {
 						response[breakpoint].border = 'none';
 					} else response[breakpoint]['border-style'] = borderStyle;
-				} else if (!keyWords.some(key => newLabel.includes(key))) {
+				} else if (!keyWords.some(key => newKey.includes(key))) {
 					if (
 						(key.includes('color') || key.includes('opacity')) &&
 						(!isBorderNone || (isHover && globalHoverStatus))
-					)
+					) {
 						response[breakpoint]['border-color'] = getColorString();
-					else if (
+					} else if (
 						![
 							'border-palette-status',
 							'border-palette-color',
@@ -129,19 +142,17 @@ const getBorderStyles = ({
 						].includes(newLabel)
 					)
 						response[breakpoint][newLabel] = `${value}`;
+				} else if (
+					[
+						'border-top-width',
+						'border-right-width',
+						'border-left-width',
+						'border-bottom-width',
+					].includes(newLabel)
+				) {
+					if (isBorderNone) return;
+					response[breakpoint][newLabel] = `${value}${unit}`;
 				} else {
-					const unitKey = keyWords.filter(key =>
-						newLabel.includes(key)
-					)[0];
-
-					const unit =
-						getLastBreakpointAttribute(
-							`${prefix}${newLabel.replace(unitKey, 'unit')}`,
-							breakpoint,
-							obj,
-							isHover
-						) || 'px';
-
 					response[breakpoint][newLabel] = `${value}${unit}`;
 				}
 			}

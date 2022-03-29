@@ -20,7 +20,7 @@ import { selectorsContainer, categoriesContainer } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return (
 		<InspectorControls>
@@ -29,6 +29,7 @@ const Inspector = props => {
 				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),
@@ -56,7 +57,7 @@ const Inspector = props => {
 														'shapeDivider'
 													)}
 													onChange={obj =>
-														setAttributes(obj)
+														maxiSetAttributes(obj)
 													}
 												/>
 											),
@@ -73,7 +74,6 @@ const Inspector = props => {
 										...inspectorTabs.size({
 											props,
 											block: true,
-											hideMaxWidth: true,
 										}),
 										...inspectorTabs.marginPadding({
 											props,
@@ -129,6 +129,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.flex({
 										props,
 									}),
 								]}

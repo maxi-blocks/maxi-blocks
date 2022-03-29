@@ -4,8 +4,9 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect, dispatch } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
-import { isURL } from '@wordpress/url';
+// import { isURL } from '@wordpress/url';
 import { createRef } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -16,8 +17,13 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+import {
+	getMaxiBlockAttributes,
+	MaxiBlockComponent,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+
 import {
 	BlockResizer,
 	Button,
@@ -25,7 +31,7 @@ import {
 	Toolbar,
 	Placeholder,
 	RawHTML,
-	ImageURL,
+	// ImageURL,
 } from '../../components';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import {
@@ -37,7 +43,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round } from 'lodash';
+import { isEmpty, isNil, round, isNumber } from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -81,12 +87,16 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		const { 'hover-type': hoverType } = this.props.attributes;
+		const { 'hover-type': hoverType, uniqueID } = this.props.attributes;
 		const hoverStatus = hoverType !== 'none';
 
 		return {
 			...(hoverStatus && {
-				...getGroupAttributes(this.props.attributes, 'hover'),
+				hover_effects: {
+					[uniqueID]: {
+						...getGroupAttributes(this.props.attributes, 'hover'),
+					},
+				},
 			}),
 		};
 	}
@@ -95,7 +105,7 @@ class edit extends MaxiBlockComponent {
 		const {
 			attributes,
 			imageData,
-			setAttributes,
+			maxiSetAttributes,
 			clientId,
 			isSelected,
 			deviceType,
@@ -106,11 +116,11 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			captionContent,
 			captionType,
-			externalUrl,
 			fullWidth,
-			imageRatio,
 			imgWidth,
 			mediaAlt,
+			altSelector,
+			useInitSize,
 			mediaHeight,
 			mediaID,
 			mediaURL,
@@ -126,11 +136,7 @@ class edit extends MaxiBlockComponent {
 			fullWidth === 'full' && 'alignfull'
 		);
 
-		const wrapperClassName = classnames(
-			'maxi-image-block-wrapper',
-			'maxi-image-ratio',
-			!SVGElement && `maxi-image-ratio__${imageRatio}`
-		);
+		const wrapperClassName = classnames('maxi-image-block-wrapper');
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
@@ -165,7 +171,7 @@ class edit extends MaxiBlockComponent {
 
 				delete cleanCustomProps.formatValue;
 
-				setAttributes(cleanCustomProps);
+				maxiSetAttributes(cleanCustomProps);
 			}
 
 			if (this.typingTimeoutFormatValue) {
@@ -194,23 +200,53 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = captionContent.replace('</a>', '');
-				setAttributes({ captionContent: `${newContent}</a>` });
+				maxiSetAttributes({ captionContent: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					setAttributes({ captionContent });
+					maxiSetAttributes({ captionContent });
 				}, 100);
 			}
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
+
+		const getMaxWidth = () => {
+			const maxWidth = getLastBreakpointAttribute({
+				target: 'image-max-width',
+				breakpoint: deviceType,
+				attributes,
+			});
+
+			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
+
+			const maxWidthUnit = getLastBreakpointAttribute({
+				target: 'image-max-width-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
+
+			if (
+				(!useInitSize && isNumber(maxWidth)) ||
+				(useInitSize && maxWidth > mediaWidth)
+			)
+				return `${maxWidth}${maxWidthUnit}`;
+
+			return '100%';
+		};
 
 		return [
 			<Inspector
@@ -234,12 +270,23 @@ class edit extends MaxiBlockComponent {
 			>
 				<MediaUpload
 					onSelect={media => {
-						setAttributes({
+						const alt =
+							(altSelector === 'wordpress' && media?.alt) ||
+							(altSelector === 'title' && media?.title) ||
+							null;
+
+						maxiSetAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
 							isImageUrl: false,
+							...(altSelector === 'wordpress' &&
+								!alt && { altSelector: 'title' }),
+							mediaAlt:
+								altSelector === 'wordpress' && !alt
+									? media.title
+									: alt,
 						});
 
 						this.setState({ isExternalClass: false });
@@ -263,7 +310,7 @@ class edit extends MaxiBlockComponent {
 							SVGValue[el].imageURL = media.url;
 
 							const resEl = injectImgSVG(svg, resData);
-							setAttributes({
+							maxiSetAttributes({
 								SVGElement: resEl.outerHTML,
 								SVGData: SVGValue,
 							});
@@ -280,9 +327,20 @@ class edit extends MaxiBlockComponent {
 										className='maxi-block__resizer maxi-image-block__resizer'
 										resizableObject={this.resizableObject}
 										isOverflowHidden={getIsOverflowHidden()}
-										size={{ width: `${imgWidth}%` }}
-										showHandle={isSelected}
-										maxWidth='100%'
+										size={{
+											width: `${
+												fullWidth !== 'full' &&
+												!useInitSize
+													? imgWidth
+													: 100
+											}%`,
+										}}
+										showHandle={
+											isSelected &&
+											fullWidth !== 'full' &&
+											!useInitSize
+										}
+										maxWidth={getMaxWidth()}
 										enable={{
 											topRight: true,
 											bottomRight: true,
@@ -295,7 +353,7 @@ class edit extends MaxiBlockComponent {
 											elt,
 											delta
 										) => {
-											setAttributes({
+											maxiSetAttributes({
 												imgWidth: +round(
 													elt.style.width.replace(
 														/[^0-9.]/g,
@@ -316,26 +374,6 @@ class edit extends MaxiBlockComponent {
 												showTooltip='true'
 												onClick={open}
 												icon={toolbarReplaceImage}
-											/>
-											<ImageURL
-												url={externalUrl}
-												onChange={url => {
-													setAttributes({
-														externalUrl: url,
-													});
-												}}
-												onSubmit={url => {
-													if (isURL(url)) {
-														setAttributes({
-															isImageUrl: true,
-															externalUrl: url,
-															mediaURL: url,
-														});
-														this.setState({
-															isExternalClass: true,
-														});
-													}
-												}}
 											/>
 										</div>
 										{captionType !== 'none' &&
@@ -445,27 +483,6 @@ class edit extends MaxiBlockComponent {
 										onClick={open}
 										icon={toolbarReplaceImage}
 									/>
-									<ImageURL
-										url={externalUrl}
-										onChange={url => {
-											setAttributes({
-												externalUrl: url,
-											});
-										}}
-										onSubmit={url => {
-											if (isURL(url)) {
-												// TODO: fetch url and check for the code and type
-												setAttributes({
-													isImageUrl: true,
-													externalUrl: url,
-													mediaURL: url,
-												});
-												this.setState({
-													isExternalClass: true,
-												});
-											}
-										}}
-									/>
 								</div>
 							)}
 						</>
@@ -476,13 +493,13 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 	const imageData = select('core').getMedia(mediaID);
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		imageData,
-		deviceType,
 	};
-})(edit);
+});
+
+export default compose(editSelect, withMaxiProps)(edit);

@@ -10,7 +10,6 @@ import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
-	getDefaultAttribute,
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -32,50 +31,72 @@ const ColorLayerContent = props => {
 		prefix = '',
 		clientId,
 		breakpoint,
-		isGeneral = false,
 		isLayer = false,
 		globalProps,
+		isToolbar = false,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
-	const getDefaultAttr = target => {
-		if (isLayer) return getDefaultLayerAttr('colorOptions', target);
+	const getDefaultAttr = () => {
+		const prefix = 'background-';
 
-		return getDefaultAttribute(
-			getAttributeKey(target, isHover, prefix, breakpoint)
-		);
+		if (isLayer) {
+			const defaultColor = {};
+			defaultColor.paletteStatus = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}palette-status`
+			);
+			defaultColor.paletteColor = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}palette-color`
+			);
+			defaultColor.paletteOpacity = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}palette-opacity`
+			);
+			defaultColor.color = getDefaultLayerAttr(
+				'colorOptions',
+				`${prefix}color`
+			);
+
+			return defaultColor;
+		}
+
+		return null;
 	};
 
 	return (
 		<>
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
-				color={getLastBreakpointAttribute(
-					`${prefix}background-color`,
+				color={getLastBreakpointAttribute({
+					target: `${prefix}background-color`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
-				defaultColor={getDefaultAttr('background-color')}
-				paletteStatus={getLastBreakpointAttribute(
-					`${prefix}background-palette-status`,
+					attributes: colorOptions,
+					isHover,
+				})}
+				prefix={`${prefix}background-`}
+				useBreakpointForDefault
+				defaultColorAttributes={getDefaultAttr()}
+				paletteStatus={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-status`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
-				paletteColor={getLastBreakpointAttribute(
-					`${prefix}background-palette-color`,
+					attributes: colorOptions,
+					isHover,
+				})}
+				paletteColor={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-color`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
-				paletteOpacity={getLastBreakpointAttribute(
-					`${prefix}background-palette-opacity`,
+					attributes: colorOptions,
+					isHover,
+				})}
+				paletteOpacity={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-opacity`,
 					breakpoint,
-					colorOptions,
-					isHover
-				)}
+					attributes: colorOptions,
+					isHover,
+				})}
 				onChange={({
 					color,
 					paletteColor,
@@ -107,47 +128,22 @@ const ColorLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: color,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-palette-status',
-								isHover,
-								prefix,
-								'general'
-							)]: paletteStatus,
-							[getAttributeKey(
-								'background-palette-color',
-								isHover,
-								prefix,
-								'general'
-							)]: paletteColor,
-							[getAttributeKey(
-								'background-palette-opacity',
-								isHover,
-								prefix,
-								'general'
-							)]: paletteOpacity,
-							[getAttributeKey(
-								'background-color',
-								isHover,
-								prefix,
-								'general'
-							)]: color,
-						}),
 					});
 				}}
 				globalProps={globalProps}
 				isHover={isHover}
 				clientId={clientId}
 				deviceType={breakpoint}
+				isToolbar={isToolbar}
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute(
-						`${prefix}background-color-clip-path`,
+					clipPath={getLastBreakpointAttribute({
+						target: `${prefix}background-color-clip-path`,
 						breakpoint,
-						colorOptions,
-						isHover
-					)}
+						attributes: colorOptions,
+						isHover,
+					})}
 					onChange={val => {
 						onChange({
 							[getAttributeKey(
@@ -156,14 +152,6 @@ const ColorLayerContent = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-color-clip-path',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						});
 					}}
 				/>
@@ -173,7 +161,10 @@ const ColorLayerContent = props => {
 };
 
 const ColorLayer = props => {
-	const { breakpoint, ...rest } = props;
+	const { breakpoint, disableResponsiveTabs = false, ...rest } = props;
+
+	if (disableResponsiveTabs)
+		return <ColorLayerContent breakpoint={breakpoint} {...rest} />;
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>

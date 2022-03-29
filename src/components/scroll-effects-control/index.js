@@ -2,13 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-
+import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
 import Icon from '../icon';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import ScrollEffectUniqueControl from './scroll-effect-unique-control';
 import {
 	getDefaultAttribute,
@@ -20,12 +19,13 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
+import { getActiveTabName } from '../../extensions/inspector-path';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { capitalize, pickBy, cloneDeep } from 'lodash';
+import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -44,9 +44,17 @@ import './editor.scss';
  * Component
  */
 const ScrollEffectsControl = props => {
-	const { className, onChange, breakpoint = 'general', uniqueID } = props;
+	const {
+		className,
+		onChange,
+		breakpoint = 'general',
+		uniqueID,
+		depth,
+	} = props;
 
 	const classes = classnames('maxi-scroll-effects-control', className);
+
+	const activeTabName = getActiveTabName(depth);
 
 	const getActiveEffects = () => {
 		const response = [];
@@ -59,15 +67,39 @@ const ScrollEffectsControl = props => {
 	};
 
 	const firstActiveEffect = getActiveEffects()?.[0] || 'vertical';
-	const [motionStatus, setMotionStatus] = useState(firstActiveEffect);
+	const [scrollStatus, setScrollStatus] = useState(firstActiveEffect);
 
 	const motionOptions = [
-		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
-		{ label: <Icon icon={motionHorizontal} />, value: 'horizontal' },
-		{ label: <Icon icon={motionRotate} />, value: 'rotate' },
-		{ label: <Icon icon={motionScale} />, value: 'scale' },
-		{ label: <Icon icon={motionFade} />, value: 'fade' },
-		{ label: <Icon icon={motionBlur} />, value: 'blur' },
+		{
+			icon: <Icon icon={motionVertical} />,
+			value: 'vertical',
+			extraIndicatorsResponsive: ['scroll-vertical-status'],
+		},
+		{
+			icon: <Icon icon={motionHorizontal} />,
+			value: 'horizontal',
+			extraIndicatorsResponsive: ['scroll-horizontal-status'],
+		},
+		{
+			icon: <Icon icon={motionRotate} />,
+			value: 'rotate',
+			extraIndicatorsResponsive: ['scroll-rotate-status'],
+		},
+		{
+			icon: <Icon icon={motionScale} />,
+			value: 'scale',
+			extraIndicatorsResponsive: ['scroll-scale-status'],
+		},
+		{
+			icon: <Icon icon={motionFade} />,
+			value: 'fade',
+			extraIndicatorsResponsive: ['scroll-fade-status'],
+		},
+		{
+			icon: <Icon icon={motionBlur} />,
+			value: 'blur',
+			extraIndicatorsResponsive: ['scroll-blur-status'],
+		},
 	];
 
 	const easingOptions = [
@@ -96,6 +128,73 @@ const ScrollEffectsControl = props => {
 	const getShortcutEffect = type => {
 		let response = {};
 		switch (type) {
+
+			case 'vertical':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('Up less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Down less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('Up some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Down some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Up more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Down more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+				break;
+
+			case 'horizontal':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('Right less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Left less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('Right some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Left some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Right more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Left more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+			break;
+
 			case 'rotate':
 				response = [
 					{
@@ -103,19 +202,138 @@ const ScrollEffectsControl = props => {
 						value: 0,
 					},
 					{
-						label: __('Clockwise', 'maxi-blocks'),
+						label: __('Right less', 'maxi-blocks'),
 						value: 1,
 					},
 					{
-						label: __('Counterclockwise', 'maxi-blocks'),
+						label: __('Left less', 'maxi-blocks'),
 						value: 2,
 					},
 					{
-						label: __('Test', 'maxi-blocks'),
-						value: 0,
+						label: __('Right some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Left some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Right more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Left more', 'maxi-blocks'),
+						value: 6,
 					},
 				];
 				break;
+
+				case 'scale':
+					response = [
+						{
+							label: __('Choose', 'maxi-blocks'),
+							value: 0,
+						},
+						{
+							label: __('Up less', 'maxi-blocks'),
+							value: 1,
+						},
+						{
+							label: __('Down less', 'maxi-blocks'),
+							value: 2,
+						},
+						{
+							label: __('Up some', 'maxi-blocks'),
+							value: 3,
+						},
+						{
+							label: __('Down some', 'maxi-blocks'),
+							value: 4,
+						},
+						{
+							label: __('Up more', 'maxi-blocks'),
+							value: 5,
+						},
+						{
+							label: __('Down more', 'maxi-blocks'),
+							value: 6,
+						},
+					];
+					break;
+
+					case 'fade':
+						response = [
+							{
+								label: __('Choose', 'maxi-blocks'),
+								value: 0,
+							},
+							{
+								label: __('In less', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('Out less', 'maxi-blocks'),
+								value: 2,
+							},
+							{
+								label: __('In some', 'maxi-blocks'),
+								value: 3,
+							},
+							{
+								label: __('Out some', 'maxi-blocks'),
+								value: 4,
+							},
+							{
+								label: __('In more', 'maxi-blocks'),
+								value: 5,
+							},
+							{
+								label: __('Out more', 'maxi-blocks'),
+								value: 6,
+							},
+						];
+						break;
+
+					case 'blur':
+						response = [
+							{
+								label: __('Choose', 'maxi-blocks'),
+								value: 0,
+							},
+							{
+								label: __('In vertical', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('Out vertical', 'maxi-blocks'),
+								value: 2,
+							},
+							{
+								label: __('In horizontal', 'maxi-blocks'),
+								value: 3,
+							},
+							{
+								label: __('Out horizontal', 'maxi-blocks'),
+								value: 4,
+							},
+							{
+								label: __('In rotate', 'maxi-blocks'),
+								value: 5,
+							},
+							{
+								label: __('Out rotate', 'maxi-blocks'),
+								value: 6,
+							},
+							{
+								label: __('In scale', 'maxi-blocks'),
+								value: 7,
+							},
+							{
+								label: __('Out scale', 'maxi-blocks'),
+								value: 8,
+							},
+						];
+						break;
 
 			default:
 				response = [
@@ -163,20 +381,125 @@ const ScrollEffectsControl = props => {
 			value: 0,
 		},
 		{
-			label: __('Rotate clockwise and Fade out', 'maxi-blocks'),
+			label: __('Disable all', 'maxi-blocks'),
 			value: 1,
 		},
+		
+
 		{
-			label: __('Disable all', 'maxi-blocks'),
+			label: __('In vertical', 'maxi-blocks'),
 			value: 2,
 		},
 		{
-			label: __('Shortcut 3', 'maxi-blocks'),
+			label: __('Out vertical', 'maxi-blocks'),
 			value: 3,
 		},
 		{
-			label: __('Shortcut 4', 'maxi-blocks'),
+			label: __('In horizontal', 'maxi-blocks'),
 			value: 4,
+		},
+		{
+			label: __('Out horizontal', 'maxi-blocks'),
+			value: 5,
+		},
+		{
+			label: __('In rotate', 'maxi-blocks'),
+			value: 6,
+		},
+		{
+			label: __('Out rotate', 'maxi-blocks'),
+			value: 7,
+		},
+		{
+			label: __('In scale', 'maxi-blocks'),
+			value: 8,
+		},
+		{
+			label: __('Out scale', 'maxi-blocks'),
+			value: 9,
+		},
+
+		{
+			label: __('Fade in up less', 'maxi-blocks'),
+			value: 10,
+		},
+		{
+			label: __('Fade in down less', 'maxi-blocks'),
+			value: 11,
+		},
+		{
+			label: __('Fade in left less', 'maxi-blocks'),
+			value: 12,
+		},
+		{
+			label: __('Fade in right less', 'maxi-blocks'),
+			value: 13,
+		},
+		{
+			label: __('Fade in up some', 'maxi-blocks'),
+			value: 14,
+		},
+		{
+			label: __('Fade in down some', 'maxi-blocks'),
+			value: 15,
+		},
+		{
+			label: __('Fade in left some', 'maxi-blocks'),
+			value: 16,
+		},
+		{
+			label: __('Fade in right some', 'maxi-blocks'),
+			value: 17,
+		},
+
+		{
+			label: __('Rotate up less', 'maxi-blocks'),
+			value: 18,
+		},
+		{
+			label: __('Rotate down less', 'maxi-blocks'),
+			value: 19,
+		},
+		{
+			label: __('Rotate left less', 'maxi-blocks'),
+			value: 20,
+		},
+		{
+			label: __('Rotate right less', 'maxi-blocks'),
+			value: 21,
+		},
+		{
+			label: __('Rotate up some', 'maxi-blocks'),
+			value: 22,
+		},
+		{
+			label: __('Rotate down some', 'maxi-blocks'),
+			value: 23,
+		},
+		{
+			label: __('Rotate left some', 'maxi-blocks'),
+			value: 24,
+		},
+		{
+			label: __('Rotate right some', 'maxi-blocks'),
+			value: 25,
+		},
+
+		{
+			label: __('Scale up Fade in less', 'maxi-blocks'),
+			value: 26,
+		},
+		{
+			label: __('Scale down Fade in less', 'maxi-blocks'),
+			value: 27,
+		},
+		{
+			label: __('Scale in Fade in less', 'maxi-blocks'),
+			value: 28,
+		},
+		{
+			label: __('Scale out Fade in less', 'maxi-blocks'),
+			value: 29,
 		},
 	];
 
@@ -193,42 +516,51 @@ const ScrollEffectsControl = props => {
 			});
 	};
 
+
+	useEffect(() => {
+		if (activeTabName) {
+			setScrollStatus(toLower(activeTabName));
+		}
+	});
+
 	return (
 		<div className={classes}>
 			<SelectControl
 				label={__('Shortcut effect', 'maxi-blocks')}
-				onChange={val => onChange(onChangeShortcut(val))}
+				onChange={val => onChangeShortcut(val)}
 				options={globalShortcutsOptions}
 			/>
-			<ButtonGroupControl
+			<SettingTabsControl
+				type='buttons'
 				fullWidthMode
-				selected={motionStatus}
-				options={motionOptions}
-				onChange={val => setMotionStatus(val)}
-				active={getActiveEffects()}
+				selected={scrollStatus}
+				items={motionOptions}
+				onChange={val => setScrollStatus(val)}
+				depth={depth}
+				hasBorder
 			/>
 			{scrollTypes.map(type => {
-				const isPreviewEnabled = getLastBreakpointAttribute(
-					`scroll-${type}-preview-status`,
+				const isPreviewEnabled = getLastBreakpointAttribute({
+					target: `scroll-${type}-preview-status`,
 					breakpoint,
-					props
-				);
+					attributes: props,
+				});
 				return (
 					<div
 						key={`maxi-scroll-effects-control-${type}-${breakpoint}`}
 					>
-						{motionStatus === type && (
+						{scrollStatus === type && (
 							<ToggleSwitch
 								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 								label={__(
 									`Use ${capitalize(type)} scroll effect`,
 									'maxi-blocks'
 								)}
-								selected={getLastBreakpointAttribute(
-									`scroll-${type}-status`,
+								selected={getLastBreakpointAttribute({
+									target: `scroll-${type}-status`,
 									breakpoint,
-									props
-								)}
+									attributes: props,
+								})}
 								onChange={val => {
 									onChange({
 										[`scroll-${type}-status-${breakpoint}`]:
@@ -245,7 +577,7 @@ const ScrollEffectsControl = props => {
 								}}
 							/>
 						)}
-						{motionStatus === type &&
+						{scrollStatus === type &&
 							props[`scroll-${type}-status-${breakpoint}`] && (
 								<>
 									<SelectControl
@@ -254,9 +586,7 @@ const ScrollEffectsControl = props => {
 											'maxi-blocks'
 										)}
 										onChange={val =>
-											onChange(
-												onChangeShortcut(val, type)
-											)
+											onChangeShortcut(val, type)
 										}
 										options={getShortcutEffect(type)}
 									/>
@@ -265,11 +595,11 @@ const ScrollEffectsControl = props => {
 											'Easing function',
 											'maxi-blocks'
 										)}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-easing`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-easing`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChange={val =>
 											onChange({
 												[`scroll-${type}-easing-${breakpoint}`]:
@@ -280,11 +610,11 @@ const ScrollEffectsControl = props => {
 									/>
 									<AdvancedNumberControl
 										label={__('Speed (ms)', 'maxi-blocks')}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-speed`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-speed`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChangeValue={val => {
 											onChange({
 												[`scroll-${type}-speed-${breakpoint}`]:
@@ -296,7 +626,7 @@ const ScrollEffectsControl = props => {
 										}}
 										min={0}
 										step={10}
-										max={1000}
+										max={10000}
 										onReset={() =>
 											onChange({
 												[`scroll-${type}-speed-${breakpoint}`]:
@@ -311,11 +641,11 @@ const ScrollEffectsControl = props => {
 									/>
 									<AdvancedNumberControl
 										label={__('Delay (ms)', 'maxi-blocks')}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-delay`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-delay`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChangeValue={val => {
 											onChange({
 												[`scroll-${type}-delay-${breakpoint}`]:
@@ -327,7 +657,7 @@ const ScrollEffectsControl = props => {
 										}}
 										min={0}
 										step={10}
-										max={1000}
+										max={10000}
 										onReset={() =>
 											onChange({
 												[`scroll-${type}-delay-${breakpoint}`]:
@@ -345,11 +675,11 @@ const ScrollEffectsControl = props => {
 											'Viewport entry',
 											'maxi-blocks'
 										)}
-										value={getLastBreakpointAttribute(
-											`scroll-${type}-viewport-top`,
+										value={getLastBreakpointAttribute({
+											target: `scroll-${type}-viewport-top`,
 											breakpoint,
-											props
-										)}
+											attributes: props,
+										})}
 										onChange={val =>
 											onChange({
 												[`scroll-${type}-viewport-top-${breakpoint}`]:
@@ -397,11 +727,11 @@ const ScrollEffectsControl = props => {
 											'maxi-blocks'
 										)}
 										selected={
-											+getLastBreakpointAttribute(
-												`scroll-${type}-status-reverse`,
+											+getLastBreakpointAttribute({
+												target: `scroll-${type}-status-reverse`,
 												breakpoint,
-												props
-											)
+												attributes: props,
+											})
 										}
 										onChange={val =>
 											onChange({

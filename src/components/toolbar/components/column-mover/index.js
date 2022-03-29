@@ -33,9 +33,8 @@ const ColumnMover = props => {
 
 	const { rootClientId, isLeftDisabled, isRightDisabled } = useSelect(
 		select => {
-			const { getBlockRootClientId, getBlockIndex, getBlock } = select(
-				'core/block-editor'
-			);
+			const { getBlockRootClientId, getBlockIndex, getBlock } =
+				select('core/block-editor');
 
 			const rowId = getBlockRootClientId(clientId);
 			const rowBlock = !isNil(rowId) && getBlock(rowId);
@@ -64,7 +63,7 @@ const ColumnMover = props => {
 
 	return (
 		<>
-			<div className='toolbar-item-move__horizontally'>
+			<div className='toolbar-item toolbar-item-move__horizontally'>
 				<Tooltip
 					text={__('Move left', 'maxi-blocks')}
 					position='bottom center'

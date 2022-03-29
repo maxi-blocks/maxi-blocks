@@ -1,8 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
 
 /**
@@ -12,9 +10,12 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
+	withMaxiProps,
+	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Button, Toolbar } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
+
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -97,10 +98,16 @@ const NumberCounter = attributes => {
 	]);
 
 	const getIsOverflowHidden = () =>
-		getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-			'hidden' &&
-		getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-			'hidden';
+		getLastBreakpointAttribute({
+			target: 'overflow-y',
+			breakpoint: deviceType,
+			attributes,
+		}) === 'hidden' &&
+		getLastBreakpointAttribute({
+			target: 'overflow-x',
+			breakpoint: deviceType,
+			attributes,
+		}) === 'hidden';
 
 	return (
 		<>
@@ -118,15 +125,15 @@ const NumberCounter = attributes => {
 				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
 				defaultSize={{
-					width: `${getLastBreakpointAttribute(
-						'number-counter-width',
-						deviceType,
-						attributes
-					)}${getLastBreakpointAttribute(
-						'number-counter-width-unit',
-						deviceType,
-						attributes
-					)}`,
+					width: `${getLastBreakpointAttribute({
+						target: 'number-counter-width',
+						breakpoint: deviceType,
+						attributes,
+					})}${getLastBreakpointAttribute({
+						target: 'number-counter-width-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}`,
 				}}
 				maxWidth='100%'
 				minWidth={
@@ -213,16 +220,16 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
-			const svgWidth = getLastBreakpointAttribute(
-				'number-counter-width',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
-			const svgWidthUnit = getLastBreakpointAttribute(
-				'number-counter-width-unit',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
+			const svgWidth = getLastBreakpointAttribute({
+				target: 'number-counter-width',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
+			const svgWidthUnit = getLastBreakpointAttribute({
+				target: 'number-counter-width-unit',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
 			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
 			if (this.resizableObject.current.state.width !== fullWidthValue)
@@ -238,29 +245,34 @@ class edit extends MaxiBlockComponent {
 
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 
-		return {
-			...{
-				...getGroupAttributes(attributes, 'numberCounter'),
+		const response = {
+			number_counter: {
+				[uniqueID]: {
+					...getGroupAttributes(attributes, 'numberCounter'),
+				},
 			},
 		};
+
+		return response;
 	}
 
 	render() {
-		const { attributes, setAttributes, deviceType, isSelected } =
+		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
 		const { uniqueID, blockFullWidth } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
 		const handleOnResizeStop = (event, direction, elt) => {
-			const widthUnit = getLastBreakpointAttribute(
-				'number-counter-width-unit',
-				deviceType,
-				attributes
-			);
+			const widthUnit = getLastBreakpointAttribute({
+				target: 'number-counter-width-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
 
-			setAttributes({
+			maxiSetAttributes({
 				[`number-counter-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
@@ -274,6 +286,7 @@ class edit extends MaxiBlockComponent {
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
+				prefix='number-counter-'
 				{...this.props}
 			/>,
 			<MaxiBlock
@@ -300,12 +313,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		deviceType,
-	};
-});
-
-export default compose(editSelect)(edit);
+export default withMaxiProps(edit);

@@ -14,6 +14,8 @@ import {
 	getZIndexStyles,
 	getOverflowStyles,
 	getSVGWidthStyles,
+	getFlexStyles,
+	getBackgroundStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSvgIcon } from './custom-css';
 
@@ -69,6 +71,9 @@ const getWrapperObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
 	};
 
 	return response;
@@ -112,13 +117,13 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
-		margin: getMarginPaddingStyles({
+		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin', false, 'svg-'),
 			},
 			prefix: 'svg-',
 		}),
-		padding: getMarginPaddingStyles({
+		margin: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding', false, 'svg-'),
 			},
@@ -136,7 +141,17 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
 		}),
-		width: getSVGWidthStyles(getGroupAttributes(props, 'svg')),
+		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor', 'backgroundGradient'],
+				false,
+				'svg-'
+			),
+			blockStyle: props.parentBlockStyle,
+			prefix: 'svg-',
+		}),
 	};
 
 	return response;
@@ -169,6 +184,17 @@ const getHoverObject = props => {
 				parentBlockStyle: props.parentBlockStyle,
 				prefix: 'svg-',
 			}),
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor', 'backgroundGradient'],
+				true,
+				'svg-'
+			),
+			blockStyle: props.parentBlockStyle,
+			isHover: true,
+			prefix: 'svg-',
+		}),
 	};
 
 	return response;
@@ -178,44 +204,45 @@ const getStyles = props => {
 	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getWrapperObject(props),
-			':hover': getWrapperObjectHover(props),
-			' .maxi-svg-icon-block__icon': getNormalObject(props),
-			' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-			...getSVGStyles({
-				obj: {
-					...getGroupAttributes(props, 'svg'),
-				},
-				target: ' .maxi-svg-icon-block__icon',
-				blockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, [
-					'blockBackground',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(
-					props,
-					[
+		[uniqueID]: stylesCleaner(
+			{
+				'': getWrapperObject(props),
+				':hover': getWrapperObjectHover(props),
+				' .maxi-svg-icon-block__icon': getNormalObject(props),
+				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
+				...getSVGStyles({
+					obj: {
+						...getGroupAttributes(props, 'svg'),
+					},
+					target: ' .maxi-svg-icon-block__icon',
+					blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
 						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-					],
-					true
-				),
-				isHover: true,
-				blockStyle,
-			}),
-		},
-		selectorsSvgIcon,
-		props
+					]),
+					blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle,
+				}),
+			},
+			selectorsSvgIcon,
+			props
 		),
 	};
 

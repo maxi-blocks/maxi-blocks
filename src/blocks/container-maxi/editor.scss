@@ -3,11 +3,16 @@
 
 	.block-list-appender
 		.block-editor-button-block-appender[aria-label='Add Row Maxi'] {
-		left: calc(50% - 48px);
+		left: 50%;
 		border-radius: 50%;
 	}
+	.block-list-appender--show {
+		.block-editor-button-block-appender {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
 	&__container {
-		border: 1px solid #7fbddc;
 		width: 100%;
 	}
 	&[data-align='full'] {

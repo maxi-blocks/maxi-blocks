@@ -8,7 +8,6 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ButtonGroupControl from '../button-group-control';
 import ClipPath from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
@@ -40,7 +39,6 @@ const ImageLayerSettings = props => {
 		isHover = false,
 		prefix = '',
 		breakpoint,
-		isGeneral = false,
 		getDefaultAttr,
 		moreSettings,
 		setMoreSettings,
@@ -58,12 +56,12 @@ const ImageLayerSettings = props => {
 		<>
 			<OpacityControl
 				label={__('Background opacity', 'maxi-blocks')}
-				opacity={getLastBreakpointAttribute(
-					`${prefix}background-image-opacity`,
+				opacity={getLastBreakpointAttribute({
+					target: `${prefix}background-image-opacity`,
 					breakpoint,
-					imageOptions,
-					isHover
-				)}
+					attributes: imageOptions,
+					isHover,
+				})}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(
@@ -72,26 +70,18 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-image-opacity',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
 			<SelectControl
 				label={__('Background size', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__size-selector'
-				value={getLastBreakpointAttribute(
-					`${prefix}background-image-size`,
+				value={getLastBreakpointAttribute({
+					target: `${prefix}background-image-size`,
 					breakpoint,
-					imageOptions,
-					isHover
-				)}
+					attributes: imageOptions,
+					isHover,
+				})}
 				options={[
 					{
 						label: __('Auto', 'maxi-blocks'),
@@ -142,36 +132,28 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-image-size',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
-			{getLastBreakpointAttribute(
-				`${prefix}background-image-size`,
+			{getLastBreakpointAttribute({
+				target: `${prefix}background-image-size`,
 				breakpoint,
-				imageOptions,
-				isHover
-			) === 'custom' && (
+				attributes: imageOptions,
+				isHover,
+			}) === 'custom' && (
 				<ImageCropControl
-					mediaID={getLastBreakpointAttribute(
-						`${prefix}background-image-mediaID`,
+					mediaID={getLastBreakpointAttribute({
+						target: `${prefix}background-image-mediaID`,
 						breakpoint,
-						imageOptions,
-						isHover
-					)}
-					cropOptions={getLastBreakpointAttribute(
-						`${prefix}background-image-crop-options`,
+						attributes: imageOptions,
+						isHover,
+					})}
+					cropOptions={getLastBreakpointAttribute({
+						target: `${prefix}background-image-crop-options`,
 						breakpoint,
-						imageOptions,
-						isHover
-					)}
+						attributes: imageOptions,
+						isHover,
+					})}
 					onChange={cropOptions =>
 						onChange({
 							[getAttributeKey(
@@ -186,20 +168,6 @@ const ImageLayerSettings = props => {
 								prefix,
 								breakpoint
 							)]: cropOptions.image.source_url,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-image-crop-options',
-									isHover,
-									prefix,
-									'general'
-								)]: cropOptions,
-								[getAttributeKey(
-									'background-image-mediaURL',
-									isHover,
-									prefix,
-									'general'
-								)]: cropOptions.image.source_url,
-							}),
 						})
 					}
 				/>
@@ -208,12 +176,12 @@ const ImageLayerSettings = props => {
 				<SelectControl
 					label={__('Background repeat', 'maxi-blocks')}
 					className='maxi-background-control__image-layer__repeat-selector'
-					value={getLastBreakpointAttribute(
-						`${prefix}background-image-repeat`,
+					value={getLastBreakpointAttribute({
+						target: `${prefix}background-image-repeat`,
 						breakpoint,
-						imageOptions,
-						isHover
-					)}
+						attributes: imageOptions,
+						isHover,
+					})}
 					options={[
 						{
 							label: __('Repeat', 'maxi-blocks'),
@@ -248,14 +216,6 @@ const ImageLayerSettings = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-image-repeat',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						})
 					}
 				/>
@@ -263,12 +223,12 @@ const ImageLayerSettings = props => {
 			<SelectControl
 				label={__('Background position', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__position-selector'
-				value={getLastBreakpointAttribute(
-					`${prefix}background-image-position`,
+				value={getLastBreakpointAttribute({
+					target: `${prefix}background-image-position`,
 					breakpoint,
-					imageOptions,
-					isHover
-				)}
+					attributes: imageOptions,
+					isHover,
+				})}
 				options={[
 					{
 						label: __('Left top', 'maxi-blocks'),
@@ -319,33 +279,25 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-image-position',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
-			{getLastBreakpointAttribute(
-				`${prefix}background-image-position`,
+			{getLastBreakpointAttribute({
+				target: `${prefix}background-image-position`,
 				breakpoint,
-				imageOptions,
-				isHover
-			) === 'custom' && (
+				attributes: imageOptions,
+				isHover,
+			}) === 'custom' && (
 				<>
 					<AdvancedNumberControl
 						label={__('Y-axis', 'maxi-blocks')}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							`${prefix}background-image-position-width-unit`,
+						unit={getLastBreakpointAttribute({
+							target: `${prefix}background-image-position-width-unit`,
 							breakpoint,
-							imageOptions,
-							isHover
-						)}
+							attributes: imageOptions,
+							isHover,
+						})}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
@@ -354,22 +306,14 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-width-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
-						value={getLastBreakpointAttribute(
-							`${prefix}background-image-position-width`,
+						value={getLastBreakpointAttribute({
+							target: `${prefix}background-image-position-width`,
 							breakpoint,
-							imageOptions,
-							isHover
-						)}
+							attributes: imageOptions,
+							isHover,
+						})}
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
@@ -378,14 +322,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-width',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 						onReset={() =>
@@ -406,36 +342,18 @@ const ImageLayerSettings = props => {
 								)]: getDefaultAttr(
 									'background-image-position-width-unit'
 								),
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-width',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-width'
-									),
-									[getAttributeKey(
-										'background-image-position-width-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-width-unit'
-									),
-								}),
 							})
 						}
 					/>
 					<AdvancedNumberControl
 						label={__('X-axis', 'maxi-blocks')}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							'background-image-position-height-unit',
+						unit={getLastBreakpointAttribute({
+							target: 'background-image-position-height-unit',
 							breakpoint,
-							imageOptions,
-							isHover
-						)}
+							attributes: imageOptions,
+							isHover,
+						})}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
@@ -444,22 +362,14 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-height-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
-						value={getLastBreakpointAttribute(
-							'background-image-position-height',
+						value={getLastBreakpointAttribute({
+							target: 'background-image-position-height',
 							breakpoint,
-							imageOptions,
-							isHover
-						)}
+							attributes: imageOptions,
+							isHover,
+						})}
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
@@ -468,14 +378,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-height',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 						onReset={() =>
@@ -496,24 +398,6 @@ const ImageLayerSettings = props => {
 								)]: getDefaultAttr(
 									'background-image-position-height-unit'
 								),
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-position-height',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-height'
-									),
-									[getAttributeKey(
-										'background-image-position-height-unit',
-										isHover,
-										prefix,
-										'general'
-									)]: getDefaultAttr(
-										'background-image-position-height-unit'
-									),
-								}),
 							})
 						}
 					/>
@@ -524,12 +408,12 @@ const ImageLayerSettings = props => {
 					<SelectControl
 						label={__('Background attachment', 'maxi-blocks')}
 						className='maxi-background-control__image-layer__attachment-selector'
-						value={getLastBreakpointAttribute(
-							`${prefix}background-image-attachment`,
+						value={getLastBreakpointAttribute({
+							target: `${prefix}background-image-attachment`,
 							breakpoint,
-							imageOptions,
-							isHover
-						)}
+							attributes: imageOptions,
+							isHover,
+						})}
 						options={[
 							{
 								label: __('Scroll', 'maxi-blocks'),
@@ -552,14 +436,6 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
-								...(isGeneral && {
-									[getAttributeKey(
-										'background-image-attachment',
-										isHover,
-										prefix,
-										'general'
-									)]: val,
-								}),
 							})
 						}
 					/>
@@ -576,12 +452,12 @@ const ImageLayerSettings = props => {
 							<SelectControl
 								label={__('Background origin', 'maxi-blocks')}
 								className='maxi-background-control__image-layer__origin-selector'
-								value={getLastBreakpointAttribute(
-									`${prefix}background-image-origin`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}background-image-origin`,
 									breakpoint,
-									imageOptions,
-									isHover
-								)}
+									attributes: imageOptions,
+									isHover,
+								})}
 								options={[
 									{
 										label: __('Padding', 'maxi-blocks'),
@@ -604,26 +480,18 @@ const ImageLayerSettings = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-image-origin',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									})
 								}
 							/>
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
 								className='maxi-background-control__image-layer__clip-selector'
-								value={getLastBreakpointAttribute(
-									`${prefix}background-image-clip`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}background-image-clip`,
 									breakpoint,
-									imageOptions,
-									isHover
-								)}
+									attributes: imageOptions,
+									isHover,
+								})}
 								options={[
 									{
 										label: __('Border', 'maxi-blocks'),
@@ -646,14 +514,6 @@ const ImageLayerSettings = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-image-clip',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									})
 								}
 							/>
@@ -664,12 +524,12 @@ const ImageLayerSettings = props => {
 			<hr />
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute(
-						`${prefix}background-image-clip-path`,
+					clipPath={getLastBreakpointAttribute({
+						target: `${prefix}background-image-clip-path`,
 						breakpoint,
-						imageOptions,
-						isHover
-					)}
+						attributes: imageOptions,
+						isHover,
+					})}
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
@@ -678,14 +538,6 @@ const ImageLayerSettings = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-image-clip-path',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						})
 					}
 				/>
@@ -820,8 +672,9 @@ const ImageLayer = props => {
 										'background-image-parallax-status'
 									] && (
 										<>
-											<ButtonGroupControl
+											<SettingTabsControl
 												className='parallax-direction'
+												type='buttons'
 												label={__(
 													'Direction',
 													'maxi-blocks'
@@ -831,7 +684,7 @@ const ImageLayer = props => {
 														'background-image-parallax-direction'
 													]
 												}
-												options={[
+												items={[
 													{
 														label: __(
 															'Up',
@@ -847,7 +700,6 @@ const ImageLayer = props => {
 														value: 'down',
 													},
 												]}
-												optionType='string'
 												onChange={val =>
 													onChange({
 														'background-image-parallax-direction':

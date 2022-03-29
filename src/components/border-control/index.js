@@ -20,30 +20,149 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getDefaultAttribute,
 	getAttributeKey,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber } from 'lodash';
+import { isNumber, capitalize } from 'lodash';
 
 /**
  * Icons
  */
-import { styleNone, dashed, dotted, solid } from '../../icons';
+import { styleNone, dashed, dotted, solid, borderWidth } from '../../icons';
 
 /**
  * Component
  */
+const BorderColorControl = props => {
+	const {
+		prefix = '',
+		breakpoint,
+		isHover = false,
+		onChange,
+		clientId,
+		globalProps,
+		isToolbar,
+	} = props;
+
+	return (
+		<ColorControl
+			{...(!isToolbar && { label: __('Border', 'maxi-blocks') })}
+			color={getLastBreakpointAttribute({
+				target: `${prefix}border-color`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
+			defaultColor={getDefaultAttribute(
+				`${prefix}border-color-${breakpoint}${isHover ? '-hover' : ''}`
+			)}
+			paletteStatus={getLastBreakpointAttribute({
+				target: `${prefix}border-palette-status`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
+			paletteColor={getLastBreakpointAttribute({
+				target: `${prefix}border-palette-color`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
+			paletteOpacity={getLastBreakpointAttribute({
+				target: `${prefix}border-palette-opacity`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
+			onChange={({
+				paletteColor,
+				paletteStatus,
+				paletteOpacity,
+				color,
+			}) => {
+				onChange({
+					[`${prefix}border-palette-status-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: paletteStatus,
+					[`${prefix}border-palette-color-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: paletteColor,
+					[`${prefix}border-palette-opacity-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: paletteOpacity,
+					[`${prefix}border-color-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: color,
+				});
+			}}
+			disableImage
+			disableVideo
+			disableGradient
+			isHover={isHover}
+			deviceType={breakpoint}
+			clientId={clientId}
+			globalProps={globalProps}
+		/>
+	);
+};
+
+const BorderWidthControl = props => {
+	const {
+		prefix = '',
+		breakpoint,
+		isHover = false,
+		onChange,
+		isToolbar,
+	} = props;
+
+	return (
+		<AxisControl
+			{...getGroupAttributes(props, 'borderWidth', isHover, prefix)}
+			target={`${prefix}border`}
+			auxTarget='width'
+			{...(!isToolbar && { label: __('Border width', 'maxi-blocks') })}
+			onChange={obj => {
+				if (!isToolbar) onChange(obj);
+				else
+					onChange({
+						[`border-sync-width-${breakpoint}`]: 'all',
+						...obj,
+					});
+			}}
+			breakpoint={breakpoint}
+			allowedUnits={['px', 'em', 'vw']}
+			minMaxSettings={{
+				px: {
+					min: 0,
+					max: 99,
+				},
+				em: {
+					min: 0,
+					max: 10,
+				},
+				vw: {
+					min: 0,
+					max: 10,
+				},
+			}}
+			disableAuto
+			isHover={isHover}
+			{...(isToolbar && { disableSync: true })}
+		/>
+	);
+};
+
 const BorderControl = props => {
 	const {
 		className,
 		onChange,
 		breakpoint = 'general',
-		disableAdvanced = false,
+		isToolbar = false,
 		disableColor = false,
 		isHover = false,
 		prefix = '',
@@ -51,7 +170,43 @@ const BorderControl = props => {
 		globalProps,
 	} = props;
 
-	const classes = classnames('maxi-border-control', className);
+	const borderWidthLastValue = () => {
+		const response = {};
+
+		['top', 'right', 'bottom', 'left'].forEach(item => {
+			response[`border${capitalize(item)}Width`] =
+				getLastBreakpointAttribute({
+					target: `${prefix}border-${item}-width`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				});
+		});
+
+		return response;
+	};
+
+	const borderStyleValue = getLastBreakpointAttribute({
+		target: `${prefix}border-style`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isBorderEnable = borderStyleValue && borderStyleValue !== 'none';
+
+	const classes = classnames(
+		'maxi-border-control',
+		!isBorderEnable && 'maxi-border-control--disable',
+		className
+	);
+
+	const axisItems = [
+		`${prefix}border-top-width`,
+		`${prefix}border-right-width`,
+		`${prefix}border-bottom-width`,
+		`${prefix}border-left-width`,
+	];
 
 	const onChangeDefault = defaultProp => {
 		const response = {};
@@ -63,28 +218,19 @@ const BorderControl = props => {
 		onChange(response);
 	};
 
-	const borderStyleValue = getLastBreakpointAttribute(
-		`${prefix}border-style`,
-		breakpoint,
-		props,
-		isHover
-	);
-
-	const axisItems = [
-		`${prefix}border-top-width`,
-		`${prefix}border-right-width`,
-		`${prefix}border-bottom-width`,
-		`${prefix}border-left-width`,
-	];
-
 	const getIsActive = () => {
 		const hasBorderWidth = axisItems.some(item => {
 			return isNumber(
-				getLastBreakpointAttribute(item, breakpoint, props, isHover)
+				getLastBreakpointAttribute({
+					target: item,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})
 			);
 		});
 
-		if (hasBorderWidth) return borderStyleValue;
+		if (hasBorderWidth) return borderStyleValue || 'none';
 		return 'none';
 	};
 
@@ -92,12 +238,12 @@ const BorderControl = props => {
 		const response = {};
 
 		axisItems.forEach(item => {
-			const value = getLastBreakpointAttribute(
-				item,
+			const value = getLastBreakpointAttribute({
+				target: item,
 				breakpoint,
-				props,
-				isHover
-			);
+				attributes: props,
+				isHover,
+			});
 
 			if (!value)
 				response[getAttributeKey(item, isHover, false, breakpoint)] = 2;
@@ -129,7 +275,10 @@ const BorderControl = props => {
 								icon={solid}
 							/>
 						),
-						onChange: () => onChangeDefault(borderSolid(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderSolid(prefix, borderWidthLastValue())
+							),
 					},
 					{
 						activeItem: getIsActive() === 'dashed',
@@ -139,7 +288,10 @@ const BorderControl = props => {
 								icon={dashed}
 							/>
 						),
-						onChange: () => onChangeDefault(borderDashed(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderDashed(prefix, borderWidthLastValue())
+							),
 					},
 					{
 						activeItem: getIsActive() === 'dotted',
@@ -149,11 +301,14 @@ const BorderControl = props => {
 								icon={dotted}
 							/>
 						),
-						onChange: () => onChangeDefault(borderDotted(prefix)),
+						onChange: () =>
+							onChangeDefault(
+								borderDotted(prefix, borderWidthLastValue())
+							),
 					},
 				]}
 			/>
-			{!disableAdvanced && (
+			{!isToolbar && (
 				<SelectControl
 					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
@@ -179,104 +334,84 @@ const BorderControl = props => {
 					}}
 				/>
 			)}
-			{!disableColor && borderStyleValue && borderStyleValue !== 'none' && (
-				<ColorControl
-					label={__('Border', 'maxi-blocks')}
-					color={getLastBreakpointAttribute(
-						`${prefix}border-color`,
-						breakpoint,
-						props,
-						isHover
-					)}
-					defaultColor={getDefaultAttribute(
-						`${prefix}border-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					)}
-					paletteStatus={getLastBreakpointAttribute(
-						`${prefix}border-palette-status`,
-						breakpoint,
-						props,
-						isHover
-					)}
-					paletteColor={getLastBreakpointAttribute(
-						`${prefix}border-palette-color`,
-						breakpoint,
-						props,
-						isHover
-					)}
-					paletteOpacity={getLastBreakpointAttribute(
-						`${prefix}border-palette-opacity`,
-						breakpoint,
-						props,
-						isHover
-					)}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-						color,
-					}) => {
-						onChange({
-							[`${prefix}border-palette-status-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: paletteStatus,
-							[`${prefix}border-palette-color-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: paletteColor,
-							[`${prefix}border-palette-opacity-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: paletteOpacity,
-							[`${prefix}border-color-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: color,
-						});
-					}}
-					disableImage
-					disableVideo
-					disableGradient
-					isHover={isHover}
-					deviceType={breakpoint}
-					clientId={clientId}
-					globalProps={globalProps}
-				/>
-			)}
-			{!disableAdvanced &&
+			{!isToolbar &&
+				!disableColor &&
 				borderStyleValue &&
 				borderStyleValue !== 'none' && (
-					<AxisControl
-						{...getGroupAttributes(
-							props,
-							'borderWidth',
+					<ColorControl
+						label={__('Border', 'maxi-blocks')}
+						color={getLastBreakpointAttribute({
+							target: `${prefix}border-color`,
+							breakpoint,
+							attributes: props,
 							isHover,
-							prefix
-						)}
-						target={`${prefix}border`}
-						auxTarget='width'
-						label={__('Border width', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
-						breakpoint={breakpoint}
-						allowedUnits={['px', 'em', 'vw']}
-						minMaxSettings={{
-							px: {
-								min: 0,
-								max: 99,
-							},
-							em: {
-								min: 0,
-								max: 10,
-							},
-							vw: {
-								min: 0,
-								max: 10,
-							},
+						})}
+						prefix={`${prefix}border-`}
+						useBreakpointForDefault
+						paletteStatus={getLastBreakpointAttribute({
+							target: `${prefix}border-palette-status`,
+							breakpoint,
+							attributes: props,
+							isHover,
+						})}
+						paletteColor={getLastBreakpointAttribute({
+							target: `${prefix}border-palette-color`,
+							breakpoint,
+							attributes: props,
+							isHover,
+						})}
+						paletteOpacity={getLastBreakpointAttribute({
+							target: `${prefix}border-palette-opacity`,
+							breakpoint,
+							attributes: props,
+							isHover,
+						})}
+						onChange={({
+							paletteColor,
+							paletteStatus,
+							paletteOpacity,
+							color,
+						}) => {
+							onChange({
+								[`${prefix}border-palette-status-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: paletteStatus,
+								[`${prefix}border-palette-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: paletteColor,
+								[`${prefix}border-palette-opacity-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: paletteOpacity,
+								[`${prefix}border-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: color,
+							});
 						}}
-						disableAuto
+						disableImage
+						disableVideo
+						disableGradient
 						isHover={isHover}
+						deviceType={breakpoint}
+						clientId={clientId}
+						globalProps={globalProps}
 					/>
 				)}
 
-			{!disableAdvanced && (
+			{isToolbar && (
+				<div className='maxi-border-control__icon'>
+					<Icon icon={borderWidth} />
+				</div>
+			)}
+			{isToolbar && (
+				<BorderWidthControl isToolbar={isToolbar} {...props} />
+			)}
+			{(isToolbar || (!disableColor && isBorderEnable)) && (
+				<BorderColorControl {...props} />
+			)}
+			{!isToolbar && isBorderEnable && (
+				<BorderWidthControl isToolbar={isToolbar} {...props} />
+			)}
+			{!isToolbar && (
 				<>
 					<hr />
 					<AxisControl

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Draggable, Icon, Button, Tooltip } from '@wordpress/components';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
 
 /**
@@ -15,7 +15,7 @@ import { castArray, first, last } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { toolbarMove, moveUp, moveDown } from '../../../../icons';
+import { toolbarDrop, moveUp, moveDown } from '../../../../icons';
 
 /**
  * Mover
@@ -23,7 +23,10 @@ import { toolbarMove, moveUp, moveDown } from '../../../../icons';
 const Mover = props => {
 	const { clientId, blockName } = props;
 
-	const { moveBlocksDown, moveBlocksUp } = useDispatch('core/block-editor');
+	const { moveBlocksDown, moveBlocksUp, updateBlockAttributes } =
+		useDispatch('core/block-editor');
+	const { getBlockAttributes, getBlockRootClientId } =
+		select('core/block-editor');
 
 	const {
 		srcRootClientId,
@@ -75,11 +78,29 @@ const Mover = props => {
 	const { startDraggingBlocks, stopDraggingBlocks } =
 		useDispatch('core/block-editor');
 
+	const getParentBlockStyle = blockId => {
+		const { blockStyle } = getBlockAttributes(blockId);
+
+		if (!blockStyle.includes('parent')) {
+			return blockStyle;
+		}
+
+		const parentBlockId = getBlockRootClientId(blockId);
+		return getParentBlockStyle(parentBlockId);
+	};
+
 	// Stop dragging blocks if the block draggable is unmounted
 	useEffect(() => {
 		return () => {
 			if (isDragging.current) {
 				stopDraggingBlocks();
+				if (srcRootClientId) {
+					const blockStyle = getParentBlockStyle(srcRootClientId);
+
+					updateBlockAttributes(clientId, {
+						parentBlockStyle: blockStyle?.replace('maxi-', ''),
+					});
+				}
 			}
 		};
 	}, []);
@@ -125,7 +146,7 @@ const Mover = props => {
 							>
 								<Icon
 									className='toolbar-item__icon'
-									icon={toolbarMove}
+									icon={toolbarDrop}
 								/>
 							</Button>
 						</div>

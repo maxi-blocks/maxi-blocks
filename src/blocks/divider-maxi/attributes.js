@@ -27,27 +27,9 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	lineVertical: {
-		type: 'string',
-		default: 'center',
-	},
-	lineHorizontal: {
-		type: 'string',
-		default: 'center',
-	},
-	lineOrientation: {
-		type: 'string',
-		default: 'horizontal',
-	},
-	lineAlign: {
-		type: 'string',
-		default: 'row',
-	},
 	...attributesData.divider,
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
-	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
-	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 
 	/**
 	 * Canvas styles
@@ -87,5 +69,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
+
 export default attributes;

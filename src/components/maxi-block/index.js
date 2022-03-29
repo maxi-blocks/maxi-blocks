@@ -3,36 +3,32 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
-import { forwardRef, useEffect, useState } from '@wordpress/element';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import {
+	forwardRef,
+	useEffect,
+	useState,
+	cloneElement,
+} from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import {
-	getLastBreakpointAttribute,
-	getGroupAttributes,
-	getHasParallax,
-} from '../../extensions/styles';
+import { getHasParallax } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
+import BlockInserter from '../block-inserter';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isArray, compact } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-
-const WRAPPER_BLOCKS = [
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/group-maxi',
-];
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
@@ -63,7 +59,11 @@ const MainBlock = forwardRef(
 						<span id={anchorLink} className='maxi-block-anchor' />
 					)}
 					{disableBackground && (
-						<BackgroundDisplayer isSave {...background} />
+						<BackgroundDisplayer
+							key={`maxi-background-displayer__${uniqueID}`}
+							isSave
+							{...background}
+						/>
 					)}
 					{children}
 				</TagName>
@@ -72,10 +72,142 @@ const MainBlock = forwardRef(
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
 				{!isEmpty(anchorLink) && <span id={anchorLink} />}
-				{disableBackground && <BackgroundDisplayer {...background} />}
+				{disableBackground && (
+					<BackgroundDisplayer
+						key={`maxi-background-displayer__${uniqueID}`}
+						{...background}
+					/>
+				)}
 				{children}
 			</TagName>
 		);
+	}
+);
+
+const getInnerBlocksChild = ({
+	children,
+	background,
+	disableBackground,
+	innerBlocksChildren,
+	anchorLink,
+	isSave = false,
+	uniqueID,
+	ref,
+	clientId,
+	hasInnerBlocks,
+}) => {
+	const needToSplit =
+		isArray(children) &&
+		children.some(child => child?.props?.afterInnerProps);
+
+	if (!needToSplit)
+		return [
+			...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+			...(disableBackground && (
+				<BackgroundDisplayer
+					key={`maxi-background-displayer__${uniqueID}`}
+					isSave={isSave}
+					{...background}
+				/>
+			)),
+			...(children ?? children),
+			...cloneElement(innerBlocksChildren, {
+				key: `maxi-inner-content__${uniqueID}`,
+			}),
+			...(!isSave && hasInnerBlocks && (
+				<BlockInserter.WrapperInserter
+					key={`maxi-block-wrapper-inserter__${clientId}`}
+					ref={ref}
+					clientId={clientId}
+				/>
+			)),
+		];
+
+	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
+	const secondGroup = children
+		.filter(child => child?.props?.afterInnerProps)
+		.map(({ props: { afterInnerProps, ...restProps }, ...child }) =>
+			cloneElement({ ...child, props: restProps })
+		);
+
+	return [
+		...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+		...(disableBackground && (
+			<BackgroundDisplayer
+				key={`maxi-background-displayer__${uniqueID}`}
+				isSave={isSave}
+				{...background}
+			/>
+		)),
+		...firstGroup,
+		...cloneElement(innerBlocksChildren, {
+			key: `maxi-inner-content__${uniqueID}`,
+		}),
+		...secondGroup,
+		...(!isSave && hasInnerBlocks && (
+			<BlockInserter.WrapperInserter
+				key={`maxi-block-wrapper-inserter__${clientId}`}
+				ref={ref}
+				clientId={clientId}
+			/>
+		)),
+	];
+};
+
+const InnerBlocksBlock = forwardRef(
+	(
+		{
+			tagName: TagName = 'div',
+			children,
+			background,
+			disableBackground,
+			uniqueID,
+			isSave,
+			anchorLink,
+			innerBlocksSettings,
+			clientId,
+			hasInnerBlocks,
+			...props
+		},
+		ref
+	) => {
+		const blockProps = isSave
+			? useBlockProps.save(props)
+			: useBlockProps({ ...props, ref });
+
+		const innerBlocksProps = isSave
+			? useInnerBlocksProps.save(blockProps)
+			: useInnerBlocksProps(blockProps, {
+					...innerBlocksSettings,
+					wrapperRef: ref,
+			  });
+
+		const { children: innerBlocksChildren, ...restInnerBlocksProps } =
+			innerBlocksProps;
+
+		const blockChildren = compact(
+			getInnerBlocksChild({
+				children,
+				background,
+				disableBackground,
+				innerBlocksChildren,
+				anchorLink,
+				isSave,
+				uniqueID,
+				ref,
+				clientId,
+				hasInnerBlocks,
+			})
+		);
+
+		if (isSave)
+			return (
+				<TagName ref={ref} {...innerBlocksProps}>
+					{blockChildren}
+				</TagName>
+			);
+
+		return <TagName {...restInnerBlocksProps}>{blockChildren}</TagName>;
 	}
 );
 
@@ -98,31 +230,11 @@ const MaxiBlock = forwardRef((props, ref) => {
 		isSave = false,
 		classes: customClasses,
 		paletteClasses,
-		hasArrow,
 		hasLink,
+		useInnerBlocks = false,
+		hasInnerBlocks = false,
 		...extraProps
 	} = props;
-
-	// Adds hover class to show the appender on wrapper blocks
-	if (WRAPPER_BLOCKS.includes(blockName) && ref?.current) {
-		const el = ref.current;
-		const appenders = Array.from(
-			el.querySelectorAll('.block-list-appender')
-		);
-		const appender = appenders[appenders.length - 1];
-
-		if (appender) {
-			el.addEventListener('mouseover', () => {
-				el.classList.add('maxi-block--hovered');
-				appender.classList.add('block-list-appender--show');
-			});
-
-			el.addEventListener('mouseout', () => {
-				el.classList.remove('maxi-block--hovered');
-				appender.classList.remove('block-list-appender--show');
-			});
-		}
-	}
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -161,20 +273,16 @@ const MaxiBlock = forwardRef((props, ref) => {
 		'maxi-block',
 		!isSave && 'maxi-block--backend',
 		blockName && getBlockClassName(blockName),
-		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
-			motion['shape-divider-top-status'] ||
-			motion['shape-divider-bottom-status'] ||
-			motion['number-counter-status'] ||
-			motion['motion-status'] ||
-			getHasParallax(background['background-layers'])) &&
-			'maxi-motion-effect',
-		(motion['hover-type'] && motion['hover-type'] !== 'none') ||
-			motion['shape-divider-top-status'] ||
-			motion['shape-divider-bottom-status'] ||
-			motion['number-counter-status'] ||
-			motion['motion-status'] ||
-			(getHasParallax(background['background-layers']) &&
-				`maxi-motion-effect-${uniqueID}`),
+		motion['hover-type'] &&
+			motion['hover-type'] !== 'none' &&
+			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
+		getHasParallax(background['background-layers']) &&
+			`maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,
+		motion['number-counter-status'] &&
+			`maxi-nc-effect maxi-nc-effect-${uniqueID}`,
+		(motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status']) &&
+			`maxi-sd-effect maxi-sd-effect-${uniqueID}`,
 		blockStyle,
 		extraClassName,
 		uniqueID,
@@ -182,7 +290,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		displayValue === 'none' && 'maxi-block-display-none',
 		customClasses,
 		paletteClasses,
-		hasArrow && 'maxi-block--has-arrow',
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over'
 	);
@@ -235,168 +342,18 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	return <MainBlock {...blockProps}>{children}</MainBlock>;
-});
+	if (!useInnerBlocks)
+		return <MainBlock {...blockProps}>{children}</MainBlock>;
 
-export const getMaxiBlockAttributes = props => {
-	const { name, deviceType, attributes, clientId } = props;
-	const {
-		blockStyle,
-		extraClassName,
-		anchorLink,
-		uniqueID,
-		blockFullWidth,
-		linkSettings,
-	} = attributes;
-
-	const motion = {
-		...getGroupAttributes(attributes, [
-			'motion',
-			'numberCounter',
-			'shapeDivider',
-			'hover',
-		]),
-	};
-
-	const background = {
-		...getGroupAttributes(attributes, ['blockBackground']),
-	};
-	const hasArrow = props.attributes['arrow-status'] || false;
-	const hasLink =
-		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
-
-	const scrollSettingsShared = [
-		'speed',
-		'delay',
-		'easing',
-		'viewport-top',
-		'status-reverse',
-	];
-
-	const scrollSettingsVertical = [
-		...scrollSettingsShared,
-		'offset-start',
-		'offset-mid',
-		'offset-end',
-	];
-
-	const scrollSettingsRotate = [
-		...scrollSettingsShared,
-		'rotate-start',
-		'rotate-mid',
-		'rotate-end',
-	];
-
-	const scrollSettingsFade = [
-		...scrollSettingsShared,
-		'opacity-start',
-		'opacity-mid',
-		'opacity-end',
-	];
-
-	const scrollSettingsBlur = [
-		...scrollSettingsShared,
-		'blur-start',
-		'blur-mid',
-		'blur-end',
-	];
-
-	const scrollSettingsScale = [
-		...scrollSettingsShared,
-		'scale-start',
-		'scale-mid',
-		'scale-end',
-	];
-
-	const scrollTypes = [
-		'vertical',
-		'horizontal',
-		'rotate',
-		'scale',
-		'fade',
-		'blur',
-	];
-
-	const dataScrollTypeValue = () => {
-		let responseString = '';
-		scrollTypes.forEach(type => {
-			if (attributes[`scroll-${type}-status-general`])
-				responseString += `${type} `;
-		});
-		return responseString?.trim();
-	};
-
-	const enabledScrolls = dataScrollTypeValue();
-
-	const scroll = {};
-
-	if (!isEmpty(enabledScrolls)) {
-		scroll['data-scroll-effect-type'] = enabledScrolls;
-		scrollTypes.forEach(type => {
-			if (enabledScrolls.includes(type)) {
-				let responseString = '';
-				let scrollSettings;
-
-				switch (type) {
-					case 'vertical':
-						scrollSettings = scrollSettingsVertical;
-						break;
-					case 'horizontal':
-						scrollSettings = scrollSettingsVertical;
-						break;
-					case 'rotate':
-						scrollSettings = scrollSettingsRotate;
-						break;
-					case 'fade':
-						scrollSettings = scrollSettingsFade;
-						break;
-					case 'blur':
-						scrollSettings = scrollSettingsBlur;
-						break;
-					case 'scale':
-						scrollSettings = scrollSettingsScale;
-						break;
-					default:
-						break;
-				}
-
-				scrollSettings.forEach(setting => {
-					const scrollSettingValue =
-						attributes[`scroll-${type}-${setting}-general`];
-
-					responseString += `${scrollSettingValue} `;
-				});
-
-				if (!isEmpty(responseString))
-					scroll[`data-scroll-effect-${type}-general`] =
-						responseString.trim();
-			}
-		});
-	}
-
-	const displayValue = getLastBreakpointAttribute(
-		'display',
-		deviceType,
-		attributes,
-		false,
-		true
+	return (
+		<InnerBlocksBlock
+			{...blockProps}
+			clientId={clientId}
+			hasInnerBlocks={hasInnerBlocks}
+		>
+			{children}
+		</InnerBlocksBlock>
 	);
-
-	return {
-		clientId,
-		blockName: name,
-		blockStyle,
-		extraClassName,
-		anchorLink,
-		uniqueID,
-		blockFullWidth,
-		displayValue,
-		motion,
-		background,
-		hasArrow,
-		hasLink,
-		...scroll,
-	};
-};
+});
 
 export default MaxiBlock;

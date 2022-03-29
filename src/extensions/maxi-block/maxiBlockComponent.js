@@ -26,14 +26,17 @@ import {
 	getGroupAttributes,
 	getBlockStyle,
 	getParallaxLayers,
+	getHasVideo,
+	getHasScrollEffects,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import { loadFonts } from '../text/fonts';
+import { loadFonts, getAllFonts } from '../text/fonts';
+import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
 
 /**
  * Style Component
@@ -43,6 +46,7 @@ const StyleComponent = ({
 	stylesObj,
 	currentBreakpoint,
 	blockBreakpoints,
+	isIframe = false,
 }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
@@ -65,7 +69,8 @@ const StyleComponent = ({
 	const styleContent = styleGenerator(
 		styles,
 		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
-		currentBreakpoint
+		currentBreakpoint,
+		isIframe
 	);
 
 	return <style>{styleContent}</style>;
@@ -91,11 +96,11 @@ class MaxiBlockComponent extends Component {
 		this.typography = getGroupAttributes(attributes, 'typography');
 
 		// Init
-		this.uniqueIDChecker(uniqueID);
+		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
 		if (!isEmpty(this.typography)) this.loadFonts();
 		this.getParentStyle();
-		this.displayStyles();
+		this.displayStyles(newUniqueID);
 	}
 
 	// Just for debugging!
@@ -131,17 +136,6 @@ class MaxiBlockComponent extends Component {
 			this.displayStyles();
 		}
 
-		// Change `parentBlockStyle` before updating
-		const { blockStyle } = this.props.attributes;
-
-		if (blockStyle === 'maxi-parent') {
-			const changedStyle = this.getParentStyle();
-
-			if (changedStyle) {
-				this.displayStyles(); // force rendering styles after changing parentBlockStyle
-				return true;
-			}
-		}
 		// Force rendering the block when SC related values change
 		if (!isEqual(this.props.scValues, nextProps.scValues)) return true;
 
@@ -149,7 +143,8 @@ class MaxiBlockComponent extends Component {
 		if (
 			!this.props.isSelected ||
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType // In case of breakpoint change
+			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
+			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
 		)
 			return true;
 
@@ -166,6 +161,7 @@ class MaxiBlockComponent extends Component {
 				delete newAttributes[prop];
 			});
 
+			// eslint-disable-next-line no-constant-condition
 			if (!isEqual(oldAttributes, newAttributes) && false)
 				// Just for debugging 👍
 				this.difference(oldAttributes, newAttributes);
@@ -203,6 +199,20 @@ class MaxiBlockComponent extends Component {
 		// Force render styles when changing scValues
 		if (!isEqual(prevProps.scValues, this.props.scValues)) return false;
 
+		// For render styles when there's no <style> element for the block
+		// Normally happens when duplicate the block
+		if (
+			!document.querySelector(
+				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+			) ||
+			isNil(
+				select('maxiBlocks/styles').getBlockStyles(
+					this.props.attributes.uniqueID
+				)
+			)
+		)
+			return false;
+
 		if (this.maxiBlockGetSnapshotBeforeUpdate)
 			this.maxiBlockGetSnapshotBeforeUpdate();
 
@@ -217,9 +227,18 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		const obj = this.getStylesObject;
-
-		styleResolver(obj, true);
+		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
+		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
+		// the first copied block, on removing the styles the copied block appears naked. That's why we check if there's more than one block
+		// with same uniqueID
+		if (
+			Array.from(
+				document.getElementsByClassName(this.props.attributes.uniqueID)
+			).length <= 1
+		) {
+			const obj = this.getStylesObject;
+			styleResolver('', obj, true);
+		}
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
@@ -240,20 +259,28 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
-		const {
-			uniqueID,
-			'background-layers': bgLayers,
-			'motion-status': motionStatus,
-		} = this.props.attributes;
+		const { uniqueID, 'background-layers': bgLayers } =
+			this.props.attributes;
 
-		const bgParallaxLayers = getParallaxLayers(bgLayers);
+		const scroll = getGroupAttributes(
+			this.props.attributes,
+			'scroll',
+			false,
+			'',
+			true
+		);
+
+		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
+		const hasVideo = getHasVideo(uniqueID, bgLayers);
+		const hasScrollEffects = getHasScrollEffects(uniqueID, scroll);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, ['motion']),
+				...(!isEmpty(bgParallaxLayers) && {
+					...{ parallax: bgParallaxLayers },
 				}),
-				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
+				...(hasVideo && { bg_video: true }),
+				...(hasScrollEffects && { scroll_effects: true }),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};
@@ -291,23 +318,20 @@ class MaxiBlockComponent extends Component {
 
 	uniqueIDChecker(idToCheck) {
 		if (!isEmpty(document.getElementsByClassName(idToCheck))) {
-			const newUniqueId = uniqueId(
-				idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], '')
-			);
+			const newUniqueID = uniqueIDGenerator(idToCheck);
 
-			this.uniqueIDChecker(newUniqueId);
+			this.props.attributes.uniqueID = newUniqueID;
 
-			this.props.setAttributes({ uniqueID: newUniqueId });
+			return newUniqueID;
 		}
+
+		return idToCheck;
 	}
 
 	loadFonts() {
-		// Ensures Roboto is fully accessible from the editor
-		loadFonts('Roboto');
+		const response = getAllFonts(this.typography, 'custom-formats');
 
-		Object.entries(this.typography).forEach(([key, val]) => {
-			if (key.includes('font-family')) loadFonts(val);
-		});
+		if (!isEmpty(response)) loadFonts(response);
 	}
 
 	getParentStyle() {
@@ -317,6 +341,7 @@ class MaxiBlockComponent extends Component {
 		} = this.props;
 
 		const newParentStyle = getBlockStyle(clientId);
+
 		if (parentBlockStyle !== newParentStyle) {
 			this.props.attributes.parentBlockStyle = newParentStyle;
 
@@ -329,10 +354,18 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on Editor
 	 */
-	displayStyles() {
+	displayStyles(rawUniqueID) {
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
-		const { uniqueID } = this.props.attributes;
+
+		const uniqueID = rawUniqueID ?? this.props.attributes.uniqueID;
+
+		// When duplicating, need to change the obj target for the new uniqueID
+		if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+			obj[uniqueID] = obj[this.props.attributes.uniqueID];
+
+			delete obj[this.props.attributes.uniqueID];
+		}
 
 		const customData = this.getCustomData;
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
@@ -341,9 +374,11 @@ class MaxiBlockComponent extends Component {
 			let wrapper = document.querySelector(
 				`#maxi-blocks__styles--${uniqueID}`
 			);
+
 			if (!wrapper) {
 				wrapper = document.createElement('div');
 				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
+				wrapper.classList.add('maxi-blocks__styles');
 				document.head.appendChild(wrapper);
 			}
 
@@ -356,6 +391,39 @@ class MaxiBlockComponent extends Component {
 				/>,
 				wrapper
 			);
+
+			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
+			const iframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+
+			if (iframe) {
+				const iframeDocument = iframe.contentDocument;
+
+				if (iframeDocument.head) {
+					let iframeWrapper = iframeDocument.querySelector(
+						`#maxi-blocks__styles--${uniqueID}`
+					);
+
+					if (!iframeWrapper) {
+						iframeWrapper = iframeDocument.createElement('div');
+						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+						iframeWrapper.classList.add('maxi-blocks__styles');
+						iframeDocument.head.appendChild(iframeWrapper);
+					}
+
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isIframe
+						/>,
+						iframeWrapper
+					);
+				}
+			}
 		}
 	}
 }

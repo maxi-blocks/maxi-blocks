@@ -3,14 +3,30 @@ import {
 	getBackgroundStyles,
 } from '../getBackgroundStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
+jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
+	return jest.fn(() => {
+		return {
+			value: {
+				name: 'Maxi (Default)',
+				status: 'active',
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						color: {
+							1: '255,255,255',
+							2: '242,249,253',
+							3: '155,155,155',
+							4: '255,74,23',
+							5: '0,0,0',
+							6: '201,52,10',
+							7: '8,18,25',
+							8: '150,176,203',
+						},
+					},
+				},
+			},
+		};
+	});
 });
 
 describe('getBackgroundStyles', () => {
@@ -305,8 +321,6 @@ describe('getBackgroundStyles', () => {
 					'display-general': 'block',
 					'background-svg-palette-status-general': true,
 					'background-svg-palette-color-general': 5,
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
 					'background-svg-top-unit-general': '%',
 					'background-svg-top-general': 0,
 					'background-svg-left-unit-general': '%',
@@ -421,8 +435,6 @@ describe('getBackgroundStyles', () => {
 					'background-svg-palette-status-general': true,
 					'background-svg-palette-color-general': 5,
 					'background-svg-SVGElement-general': '',
-					'background-svg-SVGData-general': {},
-					'background-svg-SVGMediaID': null,
 					'background-svg-SVGMediaURL': '',
 					'background-svg-top-unit-general': '%',
 					'background-svg-top-general': null,
@@ -789,8 +801,6 @@ describe('getBackgroundStyles', () => {
 							imageURL: '',
 						},
 					},
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
 					'background-svg-top-unit-general': '%',
 					'background-svg-top-general': 0,
 					'background-svg-left-unit-general': '%',
@@ -917,8 +927,6 @@ describe('getBackgroundStyles', () => {
 							imageURL: '',
 						},
 					},
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
 					'background-svg-top-unit-general': '%',
 					'background-svg-position-top-general': 0,
 					'background-svg-position-right-general': 0,
@@ -1010,8 +1018,6 @@ describe('getBackgroundStyles', () => {
 							imageURL: '',
 						},
 					},
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
 					'background-svg-top-unit-general': '%',
 					'background-svg-top-unit-general-hover': '%',
 					'background-svg-position-top-general': 0,

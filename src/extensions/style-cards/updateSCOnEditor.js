@@ -11,11 +11,12 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../styles';
+import { loadFonts } from '../text/fonts';
 
 /**
  * External dependencies
  */
-import { times, isEmpty, merge, cloneDeep } from 'lodash';
+import { times, isEmpty, merge, cloneDeep, uniq } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
@@ -89,14 +90,14 @@ export const getSCVariablesObject = styleCards => {
 	const SC = {
 		dark: {
 			...merge(
-				{ ...cloneDeep(styleCards.dark.defaultStyleCard) },
-				{ ...cloneDeep(styleCards.dark.styleCard) }
+				{ ...cloneDeep(styleCards?.dark?.defaultStyleCard) },
+				{ ...cloneDeep(styleCards?.dark?.styleCard) }
 			),
 		},
 		light: {
 			...merge(
-				{ ...cloneDeep(styleCards.light.defaultStyleCard) },
-				{ ...cloneDeep(styleCards.light.styleCard) }
+				{ ...cloneDeep(styleCards?.light?.defaultStyleCard) },
+				{ ...cloneDeep(styleCards?.light?.styleCard) }
 			),
 		},
 	};
@@ -122,11 +123,11 @@ export const getSCVariablesObject = styleCards => {
 						)
 							response[
 								`--maxi-${style}-${element}-${setting}-${breakpoint}`
-							] = getLastBreakpointAttribute(
-								setting,
+							] = getLastBreakpointAttribute({
+								target: setting,
 								breakpoint,
-								obj
-							);
+								attributes: obj,
+							});
 					});
 				});
 
@@ -162,11 +163,11 @@ export const getSCVariablesObject = styleCards => {
 					break;
 
 				case 'icon':
-					if (obj['line-global'] && !isEmpty(obj.line))
+					if (obj['line-global'])
 						response[`--maxi-${style}-${element}-line`] =
 							getColorString(obj, 'line', style);
 
-					if (obj['fill-global'] && !isEmpty(obj.fill))
+					if (obj['fill-global'])
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
 
@@ -219,6 +220,36 @@ export const createSCStyleString = SCObject => {
 	return response;
 };
 
+const getSCFontsData = obj => {
+	const response = {};
+	let fontName = '';
+
+	Object.entries(obj).forEach(([key, val]) => {
+		if (key.includes('font-family')) {
+			fontName = val;
+			response[fontName] = { weight: [], style: [] };
+		}
+		if (key.includes('font-weight'))
+			response[fontName].weight.push(val.toString());
+
+		if (key.includes('font-style')) response[fontName].style.push(val);
+	});
+
+	if (!isEmpty(response)) {
+		Object.entries(response).forEach(([key, val]) => {
+			const fontWeight = uniq(val.weight).join();
+			const fontStyle = uniq(val.style).join();
+
+			if (fontStyle === 'normal') delete response[key].style;
+			else response[key].style = fontStyle;
+
+			response[key].weight = fontWeight;
+		});
+	}
+
+	return response;
+};
+
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
@@ -228,10 +259,14 @@ const updateSCOnEditor = styleCards => {
 		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
 		SCStyle.innerHTML = createSCStyleString(SCObject);
 		document.head.appendChild(SCStyle);
-
 		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-		saveSCStyles(false);
+
+		// Needs a delay, if not Redux returns error 3
+		setTimeout(() => saveSCStyles(false), 150);
 	} else SCStyle.innerHTML = createSCStyleString(SCObject);
+
+	const allSCFonts = getSCFontsData(SCObject);
+	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);
 };
 
 export default updateSCOnEditor;

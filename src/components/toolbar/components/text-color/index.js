@@ -16,7 +16,6 @@ import {
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
-	getDefaultAttribute,
 	getBlockStyle,
 	getColorRGBAString,
 } from '../../../../extensions/styles';
@@ -95,7 +94,7 @@ const TextColor = withFormatValue(props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__text-options toolbar-item__text-options--color'
+			className='toolbar-item__text-options toolbar-item__text-color'
 			tooltip={__('Text Colour', 'maxi-blocks')}
 			icon={
 				<div
@@ -120,15 +119,21 @@ const TextColor = withFormatValue(props => {
 			<div className='toolbar-item__text-color__popover'>
 				<ColorControl
 					label={__('Text', 'maxi-blocks')}
-					defaultColor={getDefaultAttribute('color')}
 					color={color}
 					paletteColor={colorPalette}
 					paletteStatus={colorPaletteStatus}
-					onChange={({ color, paletteColor, paletteStatus }) =>
+					paletteOpacity={colorOpacity}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
 						onChangeFormat({
 							color,
 							'palette-color': paletteColor,
 							'palette-status': paletteStatus,
+							'palette-opacity': paletteOpacity,
 						})
 					}
 					globalProps={{ target: '', type: textLevel }}

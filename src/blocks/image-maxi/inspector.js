@@ -19,6 +19,7 @@ import {
 	ImageShape,
 	SelectControl,
 	SettingTabsControl,
+	ToggleSwitch,
 	TypographyControl,
 } from '../../components';
 import {
@@ -45,7 +46,7 @@ import {
  * Dimension tab
  */
 const dimensionTab = props => {
-	const { attributes, clientId, imageData, setAttributes } = props;
+	const { attributes, clientId, imageData, maxiSetAttributes } = props;
 	const {
 		cropOptions,
 		imageRatio,
@@ -53,6 +54,7 @@ const dimensionTab = props => {
 		isImageUrl,
 		mediaID,
 		SVGElement,
+		useInitSize,
 	} = attributes;
 
 	const getSizeOptions = () => {
@@ -104,108 +106,115 @@ const dimensionTab = props => {
 		label: __('Dimension', 'maxi-blocks'),
 		content: (
 			<>
-				{!isImageUrl ||
-					(!SVGElement && (
-						<>
-							<SelectControl
-								label={__('Image Size', 'maxi-blocks')}
-								value={
-									imageSize || imageSize === 'custom'
-										? imageSize
-										: 'full'
-								} // is still necessary?
-								options={getSizeOptions()}
-								onChange={imageSize => {
-									const {
-										mediaURL,
-										mediaWidth,
-										mediaHeight,
-									} = getSizeResponse(imageSize);
-									setAttributes({
-										imageSize,
-										mediaURL,
-										mediaWidth,
-										mediaHeight,
+				{(!isImageUrl || !SVGElement) && getSizeOptions().length > 1 && (
+					<>
+						<SelectControl
+							label={__('Image Size', 'maxi-blocks')}
+							value={
+								imageSize || imageSize === 'custom'
+									? imageSize
+									: 'full'
+							} // is still necessary?
+							options={getSizeOptions()}
+							onChange={imageSize => {
+								const { mediaURL, mediaWidth, mediaHeight } =
+									getSizeResponse(imageSize);
+								maxiSetAttributes({
+									imageSize,
+									mediaURL,
+									mediaWidth,
+									mediaHeight,
+								});
+							}}
+						/>
+						{imageSize === 'custom' && (
+							<ImageCropControl
+								mediaID={mediaID}
+								cropOptions={cropOptions}
+								onChange={cropOptions => {
+									maxiSetAttributes({
+										cropOptions,
+										mediaURL: cropOptions.image.source_url,
+										mediaHeight: cropOptions.image.height,
+										mediaWidth: cropOptions.image.width,
 									});
 								}}
 							/>
-							{imageSize === 'custom' && (
-								<ImageCropControl
-									mediaID={mediaID}
-									cropOptions={cropOptions}
-									onChange={cropOptions => {
-										setAttributes({
-											cropOptions,
-											mediaURL:
-												cropOptions.image.source_url,
-											mediaHeight:
-												cropOptions.image.height,
-											mediaWidth: cropOptions.image.width,
-										});
-									}}
-								/>
-							)}
-						</>
-					))}
-				<RangeControl
-					className='maxi-image-inspector__dimension-width'
-					label={__('Width', 'maxi-blocks')}
-					value={attributes.imgWidth}
-					onChange={val => {
-						if (!isNil(val))
-							setAttributes({
-								imgWidth: val,
-							});
-						else
-							setAttributes({
-								imgWidth: getDefaultAttribute(
-									'imgWidth',
-									clientId
-								),
-							});
-					}}
-					max={100}
-					allowReset
-					initialPosition={getDefaultAttribute('imgWidth', clientId)}
+						)}
+					</>
+				)}
+				<ToggleSwitch
+					label={__('Use original size', 'maxi-blocks')}
+					className='maxi-image-inspector__initial-size'
+					selected={useInitSize}
+					onChange={val =>
+						maxiSetAttributes({
+							useInitSize: val,
+						})
+					}
 				/>
-				{!SVGElement && (
-					<SelectControl
-						className='maxi-image-inspector__ratio'
-						label={__('Image Ratio', 'maxi-blocks')}
-						value={imageRatio}
-						options={[
-							{
-								label: __('Original Size', 'maxi-blocks'),
-								value: 'original',
-							},
-							{
-								label: __('1:1 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar11',
-							},
-							{
-								label: __('2:3 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar23',
-							},
-							{
-								label: __('3:2 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar32',
-							},
-							{
-								label: __('4:3 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar43',
-							},
-							{
-								label: __('16:9 Aspect Ratio', 'maxi-blocks'),
-								value: 'ar169',
-							},
-						]}
-						onChange={imageRatio =>
-							setAttributes({
-								imageRatio,
-							})
-						}
+				{!useInitSize && (
+					<RangeControl
+						className='maxi-image-inspector__dimension-width'
+						label={__('Width', 'maxi-blocks')}
+						value={attributes.imgWidth}
+						onChange={val => {
+							if (!isNil(val))
+								maxiSetAttributes({
+									imgWidth: val,
+								});
+							else
+								maxiSetAttributes({
+									imgWidth: getDefaultAttribute(
+										'imgWidth',
+										clientId
+									),
+								});
+						}}
+						max={100}
+						allowReset
+						initialPosition={getDefaultAttribute(
+							'imgWidth',
+							clientId
+						)}
 					/>
 				)}
+				<SelectControl
+					className='maxi-image-inspector__ratio'
+					label={__('Image Ratio', 'maxi-blocks')}
+					value={imageRatio}
+					options={[
+						{
+							label: __('Original Size', 'maxi-blocks'),
+							value: 'original',
+						},
+						{
+							label: __('1:1 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar11',
+						},
+						{
+							label: __('2:3 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar23',
+						},
+						{
+							label: __('3:2 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar32',
+						},
+						{
+							label: __('4:3 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar43',
+						},
+						{
+							label: __('16:9 Aspect Ratio', 'maxi-blocks'),
+							value: 'ar169',
+						},
+					]}
+					onChange={imageRatio =>
+						maxiSetAttributes({
+							imageRatio,
+						})
+					}
+				/>
 			</>
 		),
 	};
@@ -216,13 +225,19 @@ const dimensionTab = props => {
  */
 const Inspector = memo(
 	props => {
-		const { attributes, clientId, deviceType, imageData, setAttributes } =
-			props;
+		const {
+			attributes,
+			clientId,
+			deviceType,
+			imageData,
+			maxiSetAttributes,
+		} = props;
 		const {
 			altSelector,
 			blockStyle,
 			captionType,
 			clipPath,
+			fullWidth,
 			mediaAlt,
 			parentBlockStyle,
 			SVGElement,
@@ -261,6 +276,7 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
+					depth={0}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
@@ -273,6 +289,7 @@ const Inspector = memo(
 										isSecondary
 										items={[
 											deviceType === 'general' &&
+												fullWidth !== 'full' &&
 												dimensionTab(props),
 											...inspectorTabs.alignment({
 												props,
@@ -293,7 +310,7 @@ const Inspector = memo(
 															}
 															mediaAlt={mediaAlt}
 															onChange={obj => {
-																setAttributes(
+																maxiSetAttributes(
 																	obj
 																);
 															}}
@@ -312,15 +329,17 @@ const Inspector = memo(
 															className='maxi-image-caption-type'
 															options={getCaptionOptions()}
 															onChange={captionType => {
-																setAttributes({
-																	captionType,
-																});
+																maxiSetAttributes(
+																	{
+																		captionType,
+																	}
+																);
 																if (
 																	imageData &&
 																	captionType ===
 																		'attachment'
 																)
-																	setAttributes(
+																	maxiSetAttributes(
 																		{
 																			captionContent:
 																				imageData
@@ -359,7 +378,7 @@ const Inspector = memo(
 																		},
 																	]}
 																	onChange={captionPosition =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				captionPosition,
 																			}
@@ -373,9 +392,12 @@ const Inspector = memo(
 																	)}
 																	className='maxi-image-inspector__caption-gap'
 																	placeholder={getLastBreakpointAttribute(
-																		'caption-gap',
-																		deviceType,
-																		attributes
+																		{
+																			target: 'caption-gap',
+																			breakpoint:
+																				deviceType,
+																			attributes,
+																		}
 																	)}
 																	value={
 																		attributes[
@@ -383,7 +405,7 @@ const Inspector = memo(
 																		]
 																	}
 																	onChangeValue={val =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-${deviceType}`]:
 																					val,
@@ -392,9 +414,12 @@ const Inspector = memo(
 																	}
 																	enableUnit
 																	unit={getLastBreakpointAttribute(
-																		'caption-gap-unit',
-																		deviceType,
-																		attributes
+																		{
+																			target: 'caption-gap-unit',
+																			breakpoint:
+																				deviceType,
+																			attributes,
+																		}
 																	)}
 																	minMaxSettings={{
 																		px: {
@@ -407,7 +432,7 @@ const Inspector = memo(
 																		},
 																	}}
 																	onChangeUnit={val =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-unit-${deviceType}`]:
 																					val,
@@ -415,7 +440,7 @@ const Inspector = memo(
 																		)
 																	}
 																	onReset={() =>
-																		setAttributes(
+																		maxiSetAttributes(
 																			{
 																				[`caption-gap-${deviceType}`]:
 																					getDefaultAttribute(
@@ -452,7 +477,7 @@ const Inspector = memo(
 																				newCaptionContent;
 																		}
 
-																		setAttributes(
+																		maxiSetAttributes(
 																			obj
 																		);
 																	}}
@@ -465,6 +490,15 @@ const Inspector = memo(
 																	blockStyle={
 																		parentBlockStyle
 																	}
+																	globalProps={{
+																		target: '',
+																		type: 'p',
+																	}}
+																	hoverGlobalProps={{
+																		target: 'hover',
+																		type: 'p',
+																	}}
+																	styleCardPrefix=''
 																	allowLink
 																/>
 															</>
@@ -497,7 +531,9 @@ const Inspector = memo(
 															]
 														)}
 														onChange={obj =>
-															setAttributes(obj)
+															maxiSetAttributes(
+																obj
+															)
 														}
 														blockStyle={blockStyle}
 														clientId={clientId}
@@ -516,7 +552,9 @@ const Inspector = memo(
 															'imageShape'
 														)}
 														onChange={obj => {
-															setAttributes(obj);
+															maxiSetAttributes(
+																obj
+															);
 														}}
 														icon={SVGElement}
 														breakpoint={deviceType}
@@ -532,7 +570,7 @@ const Inspector = memo(
 													<ClipPath
 														clipPath={clipPath}
 														onChange={clipPath =>
-															setAttributes({
+															maxiSetAttributes({
 																clipPath,
 															})
 														}
@@ -638,6 +676,9 @@ const Inspector = memo(
 												}),
 											},
 											...inspectorTabs.overflow({
+												props,
+											}),
+											...inspectorTabs.flex({
 												props,
 											}),
 											...inspectorTabs.zindex({

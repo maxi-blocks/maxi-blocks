@@ -61,11 +61,6 @@
 				width: 100% !important;
 			}
 
-			.maxi-tabs-control {
-				margin-right: -8px;
-				margin-left: -8px;
-			}
-
 			.maxi-library-modal__action-section {
 				margin-bottom: 8px;
 			}
@@ -157,7 +152,7 @@
 					width: 17px;
 					height: 17px;
 					path {
-						stroke: #000;
+						fill: #000;
 					}
 				}
 			}
@@ -207,7 +202,7 @@
 				width: 16px;
 				height: 16px;
 				margin: 0;
-				background-color: #ff4a17;
+				background-color: var(--maxi-primary-color);
 				border-radius: 50%;
 				cursor: pointer;
 				right: -5px;

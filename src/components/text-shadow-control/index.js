@@ -44,7 +44,14 @@ const TextShadow = props => {
 		const x = +valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0];
 		const y = +valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0];
 		const blur = +valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0];
-		const { color, opacity } = getColorRGBAParts(valueDecomposed[3]);
+		const { color, opacity } = getColorRGBAParts(
+			val && val.includes('--var')
+				? val
+						.replace(`${x}px `, '')
+						.replace(`${y}px `, '')
+						.replace(`${blur}px `, '')
+				: valueDecomposed[3]
+		);
 
 		return {
 			valueDecomposed,
@@ -56,13 +63,15 @@ const TextShadow = props => {
 		};
 	};
 
+	const defaultPaletteColor = 8;
+
 	const { valueDecomposed, x, y, blur, color, opacity } = decomposeValue();
 
 	const [isPaletteActive, setIsPaletteActive] = useState(
 		isEmpty(color) || color.toString().length === 1
 	);
 	const [currentPaletteColor, setCurrentPaletteColor] = useState(
-		isEmpty(color) || !isPaletteActive ? 8 : +color
+		isEmpty(color) || !isPaletteActive ? defaultPaletteColor : +color
 	);
 	const [currentPaletteOpacity, setCurrentPaletteOpacity] = useState(
 		!isNil(opacity) ? +opacity : 1
@@ -123,7 +132,11 @@ const TextShadow = props => {
 			valueDecomposed[2] === '0px'
 		)
 			onChange('none');
-		else onChange(valueDecomposed.join(' '));
+		else {
+			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${valueDecomposed[2]} ${valueDecomposed[3]}`;
+
+			onChange(newValue);
+		}
 	};
 
 	const onChangeDefault = val => {
@@ -261,7 +274,14 @@ const TextShadow = props => {
 						onChange={value => {
 							onChangeValue(3, value);
 						}}
-						onReset={() => onChangeValue(3, defaultColor)}
+						defaultColorAttributes={{
+							paletteStatus: isPaletteActive,
+							paletteColor: defaultPaletteColor,
+							paletteOpacity: 1,
+							color: !isPaletteActive
+								? `rgba(${getCurrentColor()},1)`
+								: '',
+						}}
 						disableGradient
 						disableGradientAboveBackground
 					/>

@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -87,15 +87,17 @@ const DisplayControl = props => {
 
 	return (
 		<div className={classes}>
-			<ButtonGroupControl
+			<SettingTabsControl
 				label={__('Display block', 'maxi-blocks')}
+				type='buttons'
 				selected={getValue()}
-				options={getOptions()}
+				items={getOptions()}
 				onChange={val =>
 					onChange({
 						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
 					})
 				}
+				hasBorder
 			/>
 		</div>
 	);

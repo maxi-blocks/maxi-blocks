@@ -1,19 +1,16 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
 import {
 	openSidebarTab,
-	changeResponsive,
 	getBlockStyle,
 	getAttributes,
+	addResponsiveTest,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('OpacityControl', () => {
@@ -21,76 +18,32 @@ describe('OpacityControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'advanced', 'opacity');
+
+		await editAdvancedNumberControl({
 			page,
-			'advanced',
-			'opacity'
-		);
-
-		await accordionPanel.$eval(
-			'.maxi-opacity-control .maxi-base-control__field input',
-			input => input.focus()
-		);
-
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('19');
+			instance: await page.$(
+				'.maxi-opacity-control .maxi-base-control__field'
+			),
+			newNumber: '19',
+		});
 
 		expect(await getAttributes('opacity-general')).toStrictEqual(0.19);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
 
-	it('Check Responsive opacity control', async () => {
-		const accordionPanel = await openSidebarTab(
+		// check responsive opacity control
+		const responsiveResult = await addResponsiveTest({
 			page,
-			'advanced',
-			'opacity'
-		);
+			instance: '.maxi-opacity-control .maxi-base-control__field input',
+			needFocus: true,
+			baseExpect: '19',
+			xsExpect: '55',
+			newValue: '55',
+		});
 
-		const responsiveBaseOption = await page.$eval(
-			'.maxi-opacity-control .maxi-base-control__field input',
-			selectedStyle => selectedStyle.value
-		);
+		expect(responsiveResult).toBeTruthy();
 
-		expect(responsiveBaseOption).toStrictEqual('19');
-
-		// responsive S
-		await changeResponsive(page, 's');
-		await accordionPanel.$eval(
-			'.maxi-opacity-control .maxi-base-control__field input',
-			input => input.focus()
-		);
-
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('55');
-
-		const responsiveSOption = await page.$eval(
-			'.maxi-opacity-control .maxi-base-control__field input',
-			selectedStyle => selectedStyle.value
-		);
-
-		expect(responsiveSOption).toStrictEqual('55');
-
-		expect(await getAttributes('opacity-s')).toStrictEqual(0.55);
-
-		// responsive XS
-		await changeResponsive(page, 'xs');
-
-		const responsiveXsOption = await page.$eval(
-			'.maxi-opacity-control .maxi-base-control__field input',
-			selectedStyle => selectedStyle.value
-		);
-
-		expect(responsiveXsOption).toStrictEqual('55');
-
-		// responsive M
-		await changeResponsive(page, 'm');
-
-		const responsiveMOption = await page.$eval(
-			'.maxi-opacity-control .maxi-base-control__field input',
-			selectedStyle => selectedStyle.value
-		);
-
-		expect(responsiveMOption).toStrictEqual('19');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

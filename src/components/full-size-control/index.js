@@ -18,6 +18,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -35,6 +36,7 @@ const FullSizeControl = props => {
 		hideWidth,
 		hideMaxWidth,
 		prefix = '',
+		allowForceAspectRatio = false,
 	} = props;
 
 	const classes = classnames('maxi-full-size-control', className);
@@ -49,6 +51,7 @@ const FullSizeControl = props => {
 		} else {
 			response[`${target}-${breakpoint}`] = val;
 		}
+
 		onChange(response);
 	};
 
@@ -65,6 +68,10 @@ const FullSizeControl = props => {
 			min: 0,
 			max: 999,
 		},
+		vh: {
+			min: 0,
+			max: 999,
+		},
 		'%': {
 			min: 0,
 			max: 100,
@@ -77,23 +84,23 @@ const FullSizeControl = props => {
 
 	return (
 		<div className={classes}>
-			{!hideWidth && currentBlockRoot && (
+			{!hideWidth && !isEmpty(currentBlockRoot) && (
 				<AdvancedNumberControl
 					label={__('Width', 'maxi-blocks')}
 					enableUnit
-					unit={getLastBreakpointAttribute(
-						`${prefix}width-unit`,
+					unit={getLastBreakpointAttribute({
+						target: `${prefix}width-unit`,
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					onChangeUnit={val =>
 						onChangeValue(`${prefix}width-unit`, val)
 					}
-					value={getLastBreakpointAttribute(
-						`${prefix}width`,
+					value={getLastBreakpointAttribute({
+						target: `${prefix}width`,
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 					onChangeValue={val => onChangeValue(`${prefix}width`, val)}
 					onReset={() => {
 						onChangeValue(
@@ -111,38 +118,59 @@ const FullSizeControl = props => {
 					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
 			)}
-			<AdvancedNumberControl
-				label={__('Height', 'maxi-blocks')}
-				enableUnit
-				unit={getLastBreakpointAttribute(
-					`${prefix}height-unit`,
-					breakpoint,
-					props
-				)}
-				onChangeUnit={val =>
-					onChangeValue([`${prefix}height-unit`], val)
-				}
-				value={getLastBreakpointAttribute(
-					`${prefix}height`,
-					breakpoint,
-					props
-				)}
-				onChangeValue={val => onChangeValue([`${prefix}height`], val)}
-				onReset={() => {
-					onChangeValue(
-						[`${prefix}height`],
-						getDefaultAttribute(`${prefix}height-${breakpoint}`)
-					);
-					onChangeValue(
-						[`${prefix}height-unit`],
-						getDefaultAttribute(
-							`${prefix}height-unit-${breakpoint}`
-						)
-					);
-				}}
-				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw']}
-			/>
+			{allowForceAspectRatio && (
+				<ToggleSwitch
+					label={__('Force Aspect Ratio', 'maxi-blocks')}
+					selected={getLastBreakpointAttribute({
+						target: `${prefix}force-aspect-ratio`,
+						breakpoint,
+						attributes: props,
+					})}
+					onChange={val =>
+						onChangeValue(`${prefix}force-aspect-ratio`, val)
+					}
+				/>
+			)}
+			{!getLastBreakpointAttribute({
+				target: `${prefix}force-aspect-ratio`,
+				breakpoint,
+				attributes: props,
+			}) && (
+				<AdvancedNumberControl
+					label={__('Height', 'maxi-blocks')}
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: `${prefix}height-unit`,
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeUnit={val =>
+						onChangeValue([`${prefix}height-unit`], val)
+					}
+					value={getLastBreakpointAttribute({
+						target: `${prefix}height`,
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeValue={val =>
+						onChangeValue([`${prefix}height`], val)
+					}
+					onReset={() => {
+						onChangeValue(
+							[`${prefix}height`],
+							getDefaultAttribute(`${prefix}height-${breakpoint}`)
+						);
+						onChangeValue(
+							[`${prefix}height-unit`],
+							getDefaultAttribute(
+								`${prefix}height-unit-${breakpoint}`
+							)
+						);
+					}}
+					minMaxSettings={minMaxSettings}
+					allowedUnits={['px', '%', 'em', 'vw', 'vh']}
+				/>
+			)}
 			<ToggleSwitch
 				label={__('Set custom min/max values', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}
@@ -179,19 +207,19 @@ const FullSizeControl = props => {
 						<AdvancedNumberControl
 							label={__('Maximum width', 'maxi-blocks')}
 							enableUnit
-							unit={getLastBreakpointAttribute(
-								`${prefix}max-width-unit`,
+							unit={getLastBreakpointAttribute({
+								target: `${prefix}max-width-unit`,
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeUnit={val =>
 								onChangeValue(`${prefix}max-width-unit`, val)
 							}
-							value={getLastBreakpointAttribute(
-								`${prefix}max-width`,
+							value={getLastBreakpointAttribute({
+								target: `${prefix}max-width`,
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val =>
 								onChangeValue(`${prefix}max-width`, val)
 							}
@@ -216,19 +244,19 @@ const FullSizeControl = props => {
 					<AdvancedNumberControl
 						label={__('Minimum width', 'maxi-blocks')}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							`${prefix}min-width-unit`,
+						unit={getLastBreakpointAttribute({
+							target: `${prefix}min-width-unit`,
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeUnit={val =>
 							onChangeValue(`${prefix}min-width-unit`, val)
 						}
-						value={getLastBreakpointAttribute(
-							`${prefix}min-width`,
+						value={getLastBreakpointAttribute({
+							target: `${prefix}min-width`,
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val =>
 							onChangeValue(`${prefix}min-width`, val)
 						}
@@ -252,19 +280,19 @@ const FullSizeControl = props => {
 					<AdvancedNumberControl
 						label={__('Maximum height', 'maxi-blocks')}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							`${prefix}max-height-unit`,
+						unit={getLastBreakpointAttribute({
+							target: `${prefix}max-height-unit`,
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeUnit={val =>
 							onChangeValue(`${prefix}max-height-unit`, val)
 						}
-						value={getLastBreakpointAttribute(
-							`${prefix}max-height`,
+						value={getLastBreakpointAttribute({
+							target: `${prefix}max-height`,
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val =>
 							onChangeValue(`${prefix}max-height`, val)
 						}
@@ -283,24 +311,24 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw']}
+						allowedUnits={['px', 'em', 'vw', 'vh']}
 					/>
 					<AdvancedNumberControl
 						label={__('Minimum height', 'maxi-blocks')}
 						enableUnit
-						unit={getLastBreakpointAttribute(
-							`${prefix}min-height-unit`,
+						unit={getLastBreakpointAttribute({
+							target: `${prefix}min-height-unit`,
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeUnit={val =>
 							onChangeValue(`${prefix}min-height-unit`, val)
 						}
-						value={getLastBreakpointAttribute(
-							`${prefix}min-height`,
+						value={getLastBreakpointAttribute({
+							target: `${prefix}min-height`,
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val =>
 							onChangeValue(`${prefix}min-height`, val)
 						}
@@ -319,7 +347,7 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw']}
+						allowedUnits={['px', 'em', 'vw', 'vh']}
 					/>
 				</>
 			)}

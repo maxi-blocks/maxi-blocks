@@ -10,6 +10,8 @@ import {
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
+	getFlexStyles,
+	getSizeStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
@@ -59,6 +61,9 @@ const getNormalObject = props => {
 				...getGroupAttributes(props, 'columnSize'),
 			}),
 		},
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
@@ -68,6 +73,9 @@ const getNormalObject = props => {
 					'justify-content': props.verticalAlign,
 				},
 			},
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

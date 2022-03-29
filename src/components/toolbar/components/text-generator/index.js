@@ -13,7 +13,7 @@ import { create, insert } from '@wordpress/rich-text';
 
 import Button from '../../../button';
 import TextControl from '../../../text-control';
-import ToolbarPopover from '../toolbar-popover';
+import Dropdown from '../../../dropdown';
 import { withFormatValue } from '../../../../extensions/text/formats';
 
 /**
@@ -23,11 +23,9 @@ import { withFormatValue } from '../../../../extensions/text/formats';
 import { LoremIpsum } from 'react-lorem-ipsum';
 
 /**
- * Styles and icons
+ * Styles
  */
-
 import './editor.scss';
-import { toolbarLoremIpsum } from '../../../../icons';
 
 const TextGenerator = withFormatValue(props => {
 	const {
@@ -50,7 +48,7 @@ const TextGenerator = withFormatValue(props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		const newContent = `${formatValue.text} ${generatedText[0].props.children}`;
+		const newContent = `${formatValue.text}${generatedText[0].props.children}`;
 
 		const newFormatsArray = [];
 		const newReplacementsArray = [];
@@ -101,44 +99,53 @@ const TextGenerator = withFormatValue(props => {
 	};
 
 	return (
-		<ToolbarPopover
-			className='toolbar-item__text-generator-blocks'
-			tooltip={__('Lorem Ipsum Text', 'maxi-blocks')}
-			icon={toolbarLoremIpsum}
-		>
-			<div className='toolbar-item__text-generator-blocks__popover'>
-				<TextControl
-					label={__('Words per a sentence', 'maxi-blocks')}
-					value={averageWordsLength}
-					onChange={val => setAverageWordsLength(val)}
-					type='number'
-					min='1'
-				/>
-				<TextControl
-					label={__('Sentences', 'maxi-blocks')}
-					value={averageSentencesLength}
-					onChange={val => setAverageSentencesLength(val)}
-					type='number'
-					min='1'
-				/>
-				<Button
-					type='button'
-					onClick={obj =>
-						replaceText(averageSentencesLength, averageWordsLength)
-					}
-				>
-					{__('Replace', 'maxi-blocks')}
+		<Dropdown
+			className='maxi-text-generator__generator'
+			contentClassName='maxi-more-settings__popover maxi-dropdown__child-content maxi-dropdown__text-generator-child-content'
+			position='right top'
+			renderToggle={({ isOpen, onToggle }) => (
+				<Button onClick={onToggle} text='Copy'>
+					{__('Text generator', 'maxi-blocks')}
 				</Button>
-				<Button
-					type='button'
-					onClick={obj =>
-						addText(averageSentencesLength, averageWordsLength)
-					}
-				>
-					{__('Add', 'maxi-blocks')}
-				</Button>
-			</div>
-		</ToolbarPopover>
+			)}
+			renderContent={() => (
+				<div className='toolbar-item__text-generator-blocks__popover'>
+					<TextControl
+						label={__('Words per sentence', 'maxi-blocks')}
+						value={averageWordsLength}
+						onChange={val => setAverageWordsLength(val)}
+						type='number'
+						min='1'
+					/>
+					<TextControl
+						label={__('Sentences', 'maxi-blocks')}
+						value={averageSentencesLength}
+						onChange={val => setAverageSentencesLength(val)}
+						type='number'
+						min='1'
+					/>
+					<Button
+						type='button'
+						onClick={obj =>
+							addText(averageSentencesLength, averageWordsLength)
+						}
+					>
+						{__('Add', 'maxi-blocks')}
+					</Button>
+					<Button
+						type='button'
+						onClick={obj =>
+							replaceText(
+								averageSentencesLength,
+								averageWordsLength
+							)
+						}
+					>
+						{__('Replace', 'maxi-blocks')}
+					</Button>
+				</div>
+			)}
+		/>
 	);
 });
 

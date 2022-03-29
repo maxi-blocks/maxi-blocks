@@ -31,7 +31,6 @@ const GradientLayerContent = props => {
 		isHover = false,
 		prefix = '',
 		breakpoint,
-		isGeneral = false,
 		isLayer = false,
 	} = props;
 
@@ -49,18 +48,18 @@ const GradientLayerContent = props => {
 		<>
 			<GradientControl
 				label={__('Background gradient', 'maxi-blocks')}
-				gradient={getLastBreakpointAttribute(
-					`${prefix}background-gradient`,
+				gradient={getLastBreakpointAttribute({
+					target: `${prefix}background-gradient`,
 					breakpoint,
-					gradientOptions,
-					isHover
-				)}
-				gradientOpacity={getLastBreakpointAttribute(
-					`${prefix}background-gradient-opacity`,
+					attributes: gradientOptions,
+					isHover,
+				})}
+				gradientOpacity={getLastBreakpointAttribute({
+					target: `${prefix}background-gradient-opacity`,
 					breakpoint,
-					gradientOptions,
-					isHover
-				)}
+					attributes: gradientOptions,
+					isHover,
+				})}
 				defaultGradient={getDefaultAttr('background-gradient')}
 				onChange={val =>
 					onChange({
@@ -70,14 +69,6 @@ const GradientLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-gradient',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 				onChangeOpacity={val =>
@@ -88,25 +79,17 @@ const GradientLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: val,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-gradient-opacity',
-								isHover,
-								prefix,
-								'general'
-							)]: val,
-						}),
 					})
 				}
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute(
-						`${prefix}background-gradient-clip-path`,
+					clipPath={getLastBreakpointAttribute({
+						target: `${prefix}background-gradient-clip-path`,
 						breakpoint,
-						gradientOptions,
-						isHover
-					)}
+						attributes: gradientOptions,
+						isHover,
+					})}
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
@@ -115,14 +98,6 @@ const GradientLayerContent = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							...(isGeneral && {
-								[getAttributeKey(
-									'background-gradient-clip-path',
-									isHover,
-									prefix,
-									'general'
-								)]: val,
-							}),
 						})
 					}
 				/>

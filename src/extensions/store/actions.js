@@ -14,23 +14,6 @@ const actions = {
 			type: 'RECEIVE_BREAKPOINTS',
 		};
 	},
-	sendMaxiMotionPresets(presets) {
-		return {
-			type: 'SEND_MOTION_PRESETS',
-			presets,
-		};
-	},
-	receiveMaxiMotionPresets() {
-		return {
-			type: 'RECEIVE_MOTION_PRESETS',
-		};
-	},
-	saveMaxiMotionPresets(presets) {
-		return {
-			type: 'SAVE_MOTION_PRESETS',
-			presets,
-		};
-	},
 	sendMaxiSettings(settings) {
 		return {
 			type: 'SEND_GLOBAL_SETTINGS',
@@ -64,7 +47,7 @@ const actions = {
 			(width >= 768 && 'Tablet') ||
 			(width < 768 && 'Mobile');
 
-		setPreviewDeviceType(gutenbergDeviceType);
+		if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
 
 		return {
 			type: 'SET_DEVICE_TYPE',
@@ -88,6 +71,12 @@ const actions = {
 		return {
 			type: 'COPY_BLOCKS',
 			copiedBlocks,
+		};
+	},
+	updateInspectorPath(inspectorPath) {
+		return {
+			type: 'UPDATE_INSPECTOR_PATH',
+			inspectorPath,
 		};
 	},
 };

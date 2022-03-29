@@ -28,13 +28,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayerContent = props => {
-	const {
-		onChange,
-		isHover = false,
-		prefix = '',
-		breakpoint,
-		isGeneral = false,
-	} = props;
+	const { onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
@@ -42,12 +36,12 @@ const VideoLayerContent = props => {
 		<>
 			<OpacityControl
 				label={__('Video opacity', 'maxi-blocks')}
-				opacity={getLastBreakpointAttribute(
-					`${prefix}background-video-opacity`,
+				opacity={getLastBreakpointAttribute({
+					target: `${prefix}background-video-opacity`,
 					breakpoint,
-					videoOptions,
-					isHover
-				)}
+					attributes: videoOptions,
+					isHover,
+				})}
 				onChange={opacity => {
 					videoOptions[
 						getAttributeKey(
@@ -58,28 +52,18 @@ const VideoLayerContent = props => {
 						)
 					] = opacity;
 
-					if (isGeneral)
-						videoOptions[
-							getAttributeKey(
-								'background-video-opacity',
-								isHover,
-								prefix,
-								'general'
-							)
-						] = opacity;
-
 					onChange(videoOptions);
 				}}
 			/>
 			<MediaUploaderControl
 				className='maxi-mediauploader-control__video-fallback'
 				placeholder={__('Background fallback')}
-				mediaID={getLastBreakpointAttribute(
-					`${prefix}background-video-fallbackID`,
+				mediaID={getLastBreakpointAttribute({
+					target: `${prefix}background-video-fallbackID`,
 					breakpoint,
-					videoOptions,
-					isHover
-				)}
+					attributes: videoOptions,
+					isHover,
+				})}
 				onSelectImage={val =>
 					onChange({
 						[getAttributeKey(
@@ -94,20 +78,6 @@ const VideoLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: val.url,
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-video-fallbackID',
-								isHover,
-								prefix,
-								'general'
-							)]: val.id,
-							[getAttributeKey(
-								'background-video-fallbackURL',
-								isHover,
-								prefix,
-								'general'
-							)]: val.url,
-						}),
 					})
 				}
 				onRemoveImage={() =>
@@ -124,20 +94,6 @@ const VideoLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: '',
-						...(isGeneral && {
-							[getAttributeKey(
-								'background-video-fallbackID',
-								isHover,
-								prefix,
-								'general'
-							)]: '',
-							[getAttributeKey(
-								'background-video-fallbackURL',
-								isHover,
-								prefix,
-								'general'
-							)]: '',
-						}),
 					})
 				}
 			/>

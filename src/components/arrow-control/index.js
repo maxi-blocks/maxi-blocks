@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import InfoBox from '../info-box';
 import {
@@ -96,30 +96,42 @@ const ArrowControl = props => {
 			)}
 			<ToggleSwitch
 				label={__('Show Arrow', 'maxi-blocks')}
-				selected={props['arrow-status']}
-				onChange={val => onChange({ 'arrow-status': val })}
+				selected={getLastBreakpointAttribute({
+					target: 'arrow-status',
+					breakpoint,
+					attributes: props,
+				})}
+				onChange={val =>
+					onChange({ [`arrow-status-${breakpoint}`]: val })
+				}
 			/>
-			{props['arrow-status'] && (
+			{getLastBreakpointAttribute({
+				target: 'arrow-status',
+				breakpoint,
+				attributes: props,
+			}) && (
 				<>
-					<ButtonGroupControl
+					<SettingTabsControl
 						label=''
-						selected={getLastBreakpointAttribute(
-							'arrow-side',
+						type='buttons'
+						fullWidthMode
+						selected={getLastBreakpointAttribute({
+							target: 'arrow-side',
 							breakpoint,
-							props
-						)}
-						options={getOptions()}
+							attributes: props,
+						})}
+						items={getOptions()}
 						onChange={val =>
 							onChange({ [`arrow-side-${breakpoint}`]: val })
 						}
 					/>
 					<AdvancedNumberControl
 						label={__('Position', 'maxi-blocks')}
-						value={getLastBreakpointAttribute(
-							'arrow-position',
+						value={getLastBreakpointAttribute({
+							target: 'arrow-position',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val => {
 							onChangeValue(
 								'arrow-position',
@@ -142,11 +154,11 @@ const ArrowControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Arrow Size', 'maxi-blocks')}
-						value={getLastBreakpointAttribute(
-							'arrow-width',
+						value={getLastBreakpointAttribute({
+							target: 'arrow-width',
 							breakpoint,
-							props
-						)}
+							attributes: props,
+						})}
 						onChangeValue={val => {
 							const value = isNil(val)
 								? getDefaultAttribute(

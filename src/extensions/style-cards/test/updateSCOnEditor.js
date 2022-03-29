@@ -1,14 +1,3 @@
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-		registerStore: jest.fn(),
-	};
-});
-
 jest.mock('@wordpress/blocks', () => {
 	return {
 		getBlockAttributes: jest.fn(),
@@ -19,6 +8,7 @@ jest.mock('@wordpress/blocks', () => {
  * Internal dependencies
  */
 import { getSCVariablesObject } from '../updateSCOnEditor';
+import '@wordpress/rich-text';
 
 describe('getSCVariablesObject', () => {
 	it('Return an object with variables ready to update on `document.documentElement`', () => {
@@ -47,7 +37,8 @@ describe('getSCVariablesObject', () => {
 						'font-size-xl': 16,
 						'font-size-unit-xl': 'px',
 						'line-height-xxl': 1.5,
-						'font-weight-general': 400,
+						'line-height-xl': 1.625,
+						'font-weight-general': '400',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -76,7 +67,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.1,
 						'line-height-l': 1.22,
 						'line-height-m': 1.27,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -105,7 +96,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.05,
 						'line-height-l': 1.26,
 						'line-height-m': 1.33,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -130,7 +121,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.3,
 						'line-height-l': 1.23,
 						'line-height-m': 1.16,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -155,7 +146,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.24,
 						'line-height-l': 1.38,
 						'line-height-m': 1.42,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -178,7 +169,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.26,
 						'line-height-l': 1.45,
 						'line-height-m': 1.5,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -201,7 +192,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.29,
 						'line-height-l': 1.5,
 						'line-height-m': 1.56,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -232,7 +223,7 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-unit-xxl': 'px',
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
-						'font-weight-general': 400,
+						'font-weight-general': '400',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'text-decoration-general': 'unset',
@@ -286,7 +277,7 @@ describe('getSCVariablesObject', () => {
 						'font-size-unit-xl': 'px',
 						'line-height-xxl': 1.5,
 						'line-height-xl': 1.625,
-						'font-weight-general': 400,
+						'font-weight-general': '400',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -315,7 +306,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.1,
 						'line-height-l': 1.22,
 						'line-height-m': 1.27,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -344,7 +335,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.05,
 						'line-height-l': 1.26,
 						'line-height-m': 1.33,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -371,7 +362,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.3,
 						'line-height-l': 1.23,
 						'line-height-m': 1.16,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -397,7 +388,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.24,
 						'line-height-l': 1.38,
 						'line-height-m': 1.42,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -420,7 +411,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.26,
 						'line-height-l': 1.45,
 						'line-height-m': 1.5,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -443,7 +434,7 @@ describe('getSCVariablesObject', () => {
 						'line-height-xl': 1.29,
 						'line-height-l': 1.5,
 						'line-height-m': 1.56,
-						'font-weight-general': 500,
+						'font-weight-general': '500',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,
@@ -470,7 +461,7 @@ describe('getSCVariablesObject', () => {
 						'font-size-unit-l': 'px',
 						'line-height-xxl': 1.5,
 						'line-height-xl': 1.625,
-						'font-weight-general': 400,
+						'font-weight-general': '400',
 						'text-transform-general': 'none',
 						'font-style-general': 'normal',
 						'letter-spacing-xxl': 0,

@@ -37,7 +37,6 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
-	...attributesData.container,
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
 	...attributesData.border,
@@ -48,7 +47,53 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...attributesData.size,
+	...{
+		...attributesData.size,
+		'max-width-xxl': {
+			type: 'number',
+			default: 1690,
+		},
+		'max-width-xl': {
+			type: 'number',
+			default: 1170,
+		},
+		'max-width-l': {
+			type: 'number',
+			default: 90,
+		},
+		'max-width-unit-xxl': {
+			type: 'string',
+			default: 'px',
+		},
+		'max-width-unit-xl': {
+			type: 'string',
+			default: 'px',
+		},
+		'max-width-unit-l': {
+			type: 'string',
+			default: '%',
+		},
+		'width-l': {
+			type: 'number',
+			default: 1170,
+		},
+		'width-m': {
+			type: 'number',
+			default: 1000,
+		},
+		'width-s': {
+			type: 'number',
+			default: 700,
+		},
+		'width-xs': {
+			type: 'number',
+			default: 460,
+		},
+		'width-unit-l': {
+			type: 'string',
+			default: 'px',
+		},
+	},
 	...attributesData.margin,
 	...attributesData.padding,
 
@@ -62,6 +107,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

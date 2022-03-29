@@ -6,7 +6,13 @@ Object {
     "height": "1px",
     "opacity": 1,
   },
+  "l": Object {},
   "label": "Shape Divider",
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
 }
 `;
 

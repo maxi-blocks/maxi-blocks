@@ -13,7 +13,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Component
  */
 const calloutArrow = ({ props }) => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 	const { blockFullWidth } = attributes;
 
 	return {
@@ -25,7 +25,7 @@ const calloutArrow = ({ props }) => {
 					'arrow',
 					'border',
 				])}
-				onChange={obj => setAttributes(obj)}
+				onChange={obj => maxiSetAttributes(obj)}
 				isFullWidth={blockFullWidth}
 				breakpoint={deviceType}
 			/>

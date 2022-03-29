@@ -25,29 +25,73 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, capitalize } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import { styleNone } from '../../icons';
+import { styleNone, boxShadow } from '../../icons';
 
 /**
  * Component
  */
+const BoxShadowValueControl = props => {
+	const {
+		type,
+		isToolbar = false,
+		prefix = '',
+		breakpoint,
+		isHover = false,
+		onChange,
+	} = props;
+
+	return (
+		<AdvancedNumberControl
+			{...(!isToolbar && { label: __(capitalize(type), 'maxi-blocks') })}
+			value={getLastBreakpointAttribute({
+				target: `${prefix}box-shadow-${type}`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
+			onChangeValue={val => {
+				onChange({
+					[`${prefix}box-shadow-${type}-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: val !== undefined && val !== '' ? val : '',
+				});
+			}}
+			min={-100}
+			max={100}
+			onReset={() =>
+				onChange({
+					[`${prefix}box-shadow-${type}-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: 0,
+				})
+			}
+			initialPosition={getDefaultAttribute(
+				`${prefix}box-shadow-${type}-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			)}
+		/>
+	);
+};
+
 const BoxShadowControl = props => {
 	const {
 		onChange,
 		className,
 		breakpoint,
-		disableAdvanced = false,
+		isToolbar = false,
 		isHover = false,
 		prefix = '',
 		clientId,
 	} = props;
 
-	const classes = classnames('maxi-shadow-control', className);
+	const boxShadowItems = ['horizontal', 'vertical', 'blur', 'spread'];
 
 	const onChangeDefault = defaultProp => {
 		const response = {};
@@ -72,12 +116,12 @@ const BoxShadowControl = props => {
 		];
 
 		const hasBoxShadow = items.some(item => {
-			const itemValue = getLastBreakpointAttribute(
-				item,
+			const itemValue = getLastBreakpointAttribute({
+				target: item,
 				breakpoint,
-				props,
-				isHover
-			);
+				attributes: props,
+				isHover,
+			});
 
 			return !isNil(itemValue) && itemValue !== 0;
 		});
@@ -85,12 +129,12 @@ const BoxShadowControl = props => {
 		if (type === 'none') return false;
 
 		const isActive = !items.some(item => {
-			const itemValue = getLastBreakpointAttribute(
-				item,
+			const itemValue = getLastBreakpointAttribute({
+				target: item,
 				breakpoint,
-				props,
-				isHover
-			);
+				attributes: props,
+				isHover,
+			});
 
 			return itemValue !== typeObj[item];
 		});
@@ -99,6 +143,14 @@ const BoxShadowControl = props => {
 
 		return false;
 	};
+
+	const isNone = getIsActive(boxShadowNone, 'none');
+
+	const classes = classnames(
+		'maxi-shadow-control',
+		isNone && 'maxi-shadow-control--disable',
+		className
+	);
 
 	return (
 		<div className={classes}>
@@ -150,40 +202,47 @@ const BoxShadowControl = props => {
 					},
 				]}
 			/>
-			{!getIsActive(boxShadowNone, 'none') && (
+			{isToolbar && (
+				<>
+					<div className='maxi-shadow-control__icon'>
+						<Icon icon={boxShadow} />
+					</div>
+					<BoxShadowValueControl type='spread' isToolbar {...props} />
+				</>
+			)}
+			{(isToolbar || !isNone) && (
 				<>
 					<ColorControl
-						label={__('Box Shadow', 'maxi-blocks')}
+						{...(!isToolbar && {
+							label: __('Box Shadow', 'maxi-blocks'),
+						})}
 						className='maxi-shadow-control__color'
-						color={getLastBreakpointAttribute(
-							`${prefix}box-shadow-color`,
+						color={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-color`,
 							breakpoint,
-							props,
-							isHover
-						)}
-						defaultColor={getDefaultAttribute(
-							`${prefix}box-shadow-color-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-						)}
-						paletteStatus={getLastBreakpointAttribute(
-							`${prefix}box-shadow-palette-status`,
+							attributes: props,
+							isHover,
+						})}
+						prefix={`${prefix}box-shadow-`}
+						useBreakpointForDefault
+						paletteStatus={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-palette-status`,
 							breakpoint,
-							props,
-							isHover
-						)}
-						paletteColor={getLastBreakpointAttribute(
-							`${prefix}box-shadow-palette-color`,
+							attributes: props,
+							isHover,
+						})}
+						paletteColor={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-palette-color`,
 							breakpoint,
-							props,
-							isHover
-						)}
-						paletteOpacity={getLastBreakpointAttribute(
-							`${prefix}box-shadow-palette-opacity`,
+							attributes: props,
+							isHover,
+						})}
+						paletteOpacity={getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-palette-opacity`,
 							breakpoint,
-							props,
-							isHover
-						)}
+							attributes: props,
+							isHover,
+						})}
 						onChange={({
 							color,
 							paletteColor,
@@ -212,142 +271,10 @@ const BoxShadowControl = props => {
 						deviceType={breakpoint}
 						clientId={clientId}
 					/>
-					{!disableAdvanced && (
-						<>
-							<AdvancedNumberControl
-								label={__('Horizontal', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-horizontal`,
-									breakpoint,
-									props,
-									isHover
-								)}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-horizontal-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-horizontal-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-horizontal-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-							<AdvancedNumberControl
-								label={__('Vertical', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-vertical`,
-									breakpoint,
-									props,
-									isHover
-								)}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-vertical-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-vertical-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-vertical-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-							<AdvancedNumberControl
-								label={__('Blur', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-blur`,
-									breakpoint,
-									props,
-									isHover
-								)}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-blur-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-blur-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-blur-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-							<AdvancedNumberControl
-								label={__('Spread', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}box-shadow-spread`,
-									breakpoint,
-									props,
-									isHover
-								)}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}box-shadow-spread-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								min={-100}
-								max={100}
-								onReset={() =>
-									onChange({
-										[`${prefix}box-shadow-spread-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: 0,
-									})
-								}
-								initialPosition={getDefaultAttribute(
-									`${prefix}box-shadow-spread-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								)}
-							/>
-						</>
-					)}
+					{!isToolbar &&
+						boxShadowItems.map(type => (
+							<BoxShadowValueControl type={type} {...props} />
+						))}
 				</>
 			)}
 		</div>

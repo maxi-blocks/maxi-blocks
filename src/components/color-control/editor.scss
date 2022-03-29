@@ -1,4 +1,23 @@
 .maxi-color-control {
+	&__wrap {
+		display: flex;
+		align-items: center;
+		margin-bottom: 8px;
+
+		& * {
+			margin-bottom: 0;
+		}
+
+		.maxi-color-control__display {
+			width: 150px;
+			margin-right: 8px;
+		}
+
+		.maxi-advanced-number-control__value {
+			width: 64px !important;
+			margin-left: 6px;
+		}
+	}
 	.chrome-picker {
 		width: 100% !important;
 		box-shadow: none !important;
@@ -53,6 +72,7 @@
 
 		&-label {
 			.maxi-base-control__field {
+				position: relative;
 				flex-direction: column;
 
 				& > * {
@@ -60,6 +80,20 @@
 				}
 				.maxi-base-control__label {
 					margin-bottom: 8px;
+				}
+				.components-maxi-control__reset-button {
+					position: absolute;
+					background-color: transparent;
+					border-width: 0 0 0 2px;
+					width: auto;
+					top: 0;
+					right: 0;
+					padding: 1px 1px 1px 8px;
+					&:hover {
+						svg {
+							fill: #ff4a17;
+						}
+					}
 				}
 			}
 		}

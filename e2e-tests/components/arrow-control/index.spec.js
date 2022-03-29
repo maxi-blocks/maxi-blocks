@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -16,6 +17,8 @@ import {
 	changeResponsive,
 	getBlockStyle,
 	getAttributes,
+	editAdvancedNumberControl,
+	addBackgroundLayer,
 } from '../../utils';
 
 describe('ArrowControl', () => {
@@ -26,6 +29,12 @@ describe('ArrowControl', () => {
 			container.focus()
 		);
 
+		// change color
+		await openSidebarTab(page, 'style', 'background layer');
+
+		await addBackgroundLayer(page, 'color');
+
+		// add arrow
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -39,9 +48,9 @@ describe('ArrowControl', () => {
 
 		const values = ['top', 'bottom', 'right', 'left'];
 
-		for (let i = 0; i < values.length; i++) {
+		for (let i = 0; i < values.length; i += 1) {
 			await page.$$eval(
-				'.maxi-arrow-control .maxi-button-group-control button',
+				'.maxi-arrow-control .maxi-settingstab-control button',
 				(buttons, i) => buttons[i].click(),
 				i
 			);
@@ -55,9 +64,13 @@ describe('ArrowControl', () => {
 			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
 
-		await selectInput[0].focus();
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-advanced-number-control .maxi-base-control__field'
+			),
+			newNumber: '59',
+		});
 
 		expect(await getAttributes('arrow-position-general')).toStrictEqual(59);
 
@@ -77,17 +90,17 @@ describe('ArrowControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			openArrowControl => openArrowControl[0].click()
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].click()
 		);
 
 		const isItemChecked = await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].ariaPressed
 		);
 
@@ -97,48 +110,73 @@ describe('ArrowControl', () => {
 		await changeResponsive(page, 's');
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].click()
 		);
 
 		await page.waitForTimeout(100);
 		const responsiveSOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].ariaPressed
 		);
 
 		expect(responsiveSOption).toBe('true');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-advanced-number-control .maxi-base-control__field'
+			),
+			newNumber: '33',
+		});
+		expect(await getAttributes('arrow-position-s')).toStrictEqual(33);
 
 		expect(await getAttributes('arrow-side-s')).toStrictEqual('right');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].click()
 		);
 		await page.waitForTimeout(100);
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[3].ariaPressed
 		);
 
 		expect(responsiveXsOption).toBe('true');
 
+		// arrow position
+		const xsPosition = await page.$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			input => input.value
+		);
+
+		expect(xsPosition).toBe('33');
+
 		// responsive M
 		await changeResponsive(page, 'm');
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].click()
 		);
 		await page.waitForTimeout(100);
 		const responsiveMOption = await page.$$eval(
-			'.maxi-arrow-control .maxi-button-group-control button',
+			'.maxi-arrow-control .maxi-settingstab-control button',
 			select => select[2].ariaPressed
 		);
 
 		expect(responsiveMOption).toBe('true');
+
+		// arrow position
+		const mPosition = await page.$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			input => input.value
+		);
+
+		expect(mPosition).toBe('59');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

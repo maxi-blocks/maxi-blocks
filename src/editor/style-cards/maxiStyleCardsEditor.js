@@ -36,9 +36,10 @@ import { isEmpty, isNil, isEqual } from 'lodash';
 /**
  * Icons
  */
-import { styleCardBoat, reset, SCDelete } from '../../icons';
+import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
+import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
 
-const MaxiStyleCardsEditor = ({ styleCards }) => {
+const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const {
 		isRTL,
 		breakpoint,
@@ -136,45 +137,38 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const onChangeValue = (obj, type) => {
 		let newSC = { ...selectedSCValue };
 
-		Object.entries(obj).forEach(([prop, value]) => {
-			if (prop === 'typography') {
-				Object.entries(value).forEach(([key, val]) => {
-					if (isNil(val)) {
-						delete value[key];
-						delete selectedSCValue[currentSCStyle].styleCard?.[
-							type
-						]?.[key];
-					}
-				});
+		const isTypography = Object.keys(obj)[0] === 'typography';
 
-				newSC = {
-					...newSC,
-					[currentSCStyle]: {
-						...newSC[currentSCStyle],
-						styleCard: {
-							...newSC[currentSCStyle].styleCard,
-							[type]: {
-								...newSC[currentSCStyle].styleCard[type],
-								...value,
-							},
-						},
-					},
-				};
-			} else {
-				newSC = {
-					...newSC,
-					[currentSCStyle]: {
-						...newSC[currentSCStyle],
-						styleCard: {
-							...newSC[currentSCStyle].styleCard,
-							[type]: {
-								...newSC[currentSCStyle].styleCard[type],
-								[prop]: value,
-							},
-						},
-					},
-				};
+		const newObj = handleSetAttributes({
+			obj: isTypography ? obj.typography : obj,
+			attributes: selectedSCValue[currentSCStyle].styleCard[type],
+			defaultAttributes:
+				selectedSCValue[currentSCStyle].defaultStyleCard[type],
+			onChange: response => response,
+		});
+
+		Object.entries(newObj).forEach(([prop, value]) => {
+			if (isTypography) {
+				if (isNil(value)) {
+					delete selectedSCValue[currentSCStyle].styleCard?.[type]?.[
+						prop
+					];
+				}
 			}
+
+			newSC = {
+				...newSC,
+				[currentSCStyle]: {
+					...newSC[currentSCStyle],
+					styleCard: {
+						...newSC[currentSCStyle].styleCard,
+						[type]: {
+							...newSC[currentSCStyle].styleCard[type],
+							[prop]: value,
+						},
+					},
+				},
+			};
 		});
 
 		const newStyleCards = {
@@ -270,6 +264,12 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 				<h2 className='maxi-style-cards__popover__title'>
 					<Icon icon={styleCardBoat} />
 					{__('Style Card Editor', 'maxi-blocks')}
+					<span
+						className='maxi-responsive-selector__close'
+						onClick={() => setIsVisible(false)}
+					>
+						<Icon icon={closeIcon} />
+					</span>
 				</h2>
 				<hr />
 				<div className='maxi-style-cards__popover__sub-title'>

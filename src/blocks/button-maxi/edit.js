@@ -11,9 +11,13 @@ import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 
@@ -40,14 +44,14 @@ const IconWrapper = forwardRef((props, ref) => {
 		};
 
 		// Bind the event listener
-		ref.current.ownerDocument.addEventListener(
+		ref?.current?.ownerDocument.addEventListener(
 			'mousedown',
 			handleClickOutside
 		);
 
 		return () => {
 			// Unbind the event listener on clean up
-			ref.current.ownerDocument.removeEventListener(
+			ref?.current?.ownerDocument.removeEventListener(
 				'mousedown',
 				handleClickOutside
 			);
@@ -84,7 +88,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
@@ -122,7 +126,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
-				disableBackground
 			>
 				<div data-align={fullWidth} className={buttonClasses}>
 					{!attributes['icon-only'] && (
@@ -136,12 +139,11 @@ class edit extends MaxiBlockComponent {
 								}
 
 								this.typingTimeout = setTimeout(() => {
-									setAttributes({ buttonContent });
+									maxiSetAttributes({ buttonContent });
 								}, 100);
 							}}
 							placeholder={__('Set some text…', 'maxi-blocks')}
 							withoutInteractiveFormatting
-							__unstableDisableFormats
 						/>
 					)}
 					{attributes['icon-content'] && (
@@ -176,8 +178,6 @@ const editSelect = withSelect((select, ownProps) => {
 		attributes: { parentBlockStyle },
 	} = ownProps;
 
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 	const scElements = [
 		'hover-border-color-global',
@@ -194,9 +194,8 @@ const editSelect = withSelect((select, ownProps) => {
 	);
 
 	return {
-		deviceType,
 		scValues,
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

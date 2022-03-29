@@ -9,7 +9,7 @@ import { CheckboxControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Button from '../../components/button';
+import { Button, ToggleSwitch } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	imageUploader,
@@ -28,13 +28,12 @@ import {
 	InstantSearch,
 	SearchBox,
 	InfiniteHits,
-	RefinementList,
+	connectRefinementList,
+	connectMenu,
+	connectHierarchicalMenu,
 	ClearRefinements,
 	Menu,
-	HierarchicalMenu,
 	Stats,
-	HitsPerPage,
-	MenuSelect,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId } from 'lodash';
@@ -50,6 +49,7 @@ const MasonryItem = props => {
 		previewIMG,
 		demoUrl,
 		currentItemColorStatus = false,
+		taxonomies,
 	} = props;
 
 	const masonryCardClasses = classnames(
@@ -63,35 +63,11 @@ const MasonryItem = props => {
 	return (
 		<div className={masonryCardClasses}>
 			{(type === 'patterns' || type === 'sc') && (
-				<>
+				<Button onClick={onRequestInsert}>
 					<div className='maxi-cloud-masonry-card__container'>
 						<div className='maxi-cloud-masonry-card__container__top-bar'>
 							<div className='maxi-cloud-masonry__serial-tag'>
 								{serial}
-							</div>
-							<div className='maxi-cloud-masonry-card__buttons'>
-								{type === 'patterns' && (
-									<Button
-										className='maxi-cloud-masonry-card__button'
-										href={demoUrl}
-										target='_blank'
-									>
-										{__('Preview', 'maxi-blocks')}
-									</Button>
-								)}
-								<Button
-									className='maxi-cloud-masonry-card__button'
-									onClick={onRequestInsert}
-								>
-									{__('Load', 'maxi-blocks')}
-								</Button>
-								<div className='maxi-cloud-masonry-card__tags'>
-									{isPro && (
-										<span className='maxi-cloud-masonry-card__tags__pro-tag'>
-											{__('PRO', 'maxi-blocks')}
-										</span>
-									)}
-								</div>
 							</div>
 						</div>
 					</div>
@@ -103,13 +79,47 @@ const MasonryItem = props => {
 							/>
 						)}
 					</div>
-				</>
+					<div className='maxi-cloud-masonry-card__buttons'>
+						{type === 'patterns' && (
+							<Button
+								className='maxi-cloud-masonry-card__button'
+								href={demoUrl}
+								target='_blank'
+							>
+								{__('Preview', 'maxi-blocks')}
+							</Button>
+						)}
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							onClick={onRequestInsert}
+						>
+							{__('Load', 'maxi-blocks')}
+						</Button>
+						<div className='maxi-cloud-masonry-card__tags'>
+							{isPro && (
+								<span className='maxi-cloud-masonry-card__tags__pro-tag'>
+									{__('PRO', 'maxi-blocks')}
+								</span>
+							)}
+						</div>
+					</div>
+				</Button>
 			)}
 			{type === 'svg' && (
 				<div
 					className='maxi-cloud-masonry-card__svg-container'
 					onClick={onRequestInsert}
 				>
+					<RawHTML
+						style={{
+							backgroundColor: currentItemColorStatus
+								? '#000000'
+								: '#ffffff',
+						}}
+						className='maxi-cloud-masonry-card__svg-container__code'
+					>
+						{svgCode}
+					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{target === 'button-icon' || target.includes('Line')
 							? serial.replace(' Line', '')
@@ -121,16 +131,7 @@ const MasonryItem = props => {
 							? serial.replace(' Shape', '')
 							: serial}
 					</div>
-					<RawHTML
-						style={{
-							backgroundColor: currentItemColorStatus
-								? '#000000'
-								: '#ffffff',
-						}}
-						className='maxi-cloud-masonry-card__svg-container__code'
-					>
-						{svgCode}
-					</RawHTML>
+					<span>{__('Load', 'maxi-block')}</span>
 				</div>
 			)}
 		</div>
@@ -184,8 +185,8 @@ const LibraryContainer = props => {
 		'6ed8ae6d1c430c6a76e0720f74eab91c'
 	);
 
-	const Accordion = ({ children, title }) => {
-		const [isAccordionOpen, setAccordionOpen] = useState(false);
+	const Accordion = ({ children, title, openByDefault = false }) => {
+		const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
 
 		const accordionClasses = classnames(
 			'maxi-cloud-container__accordion',
@@ -337,6 +338,7 @@ const LibraryContainer = props => {
 					demoUrl={hit.demo_url}
 					previewIMG={hit.preview_image_url}
 					isPro={hit.taxonomies.cost === 'pro'}
+					taxonomies={hit.taxonomies?.category?.[0]}
 					serial={hit.post_number}
 					onRequestInsert={() =>
 						onRequestInsertPattern(hit.gutenberg_code, isChecked)
@@ -443,8 +445,6 @@ const LibraryContainer = props => {
 
 				onSelect({
 					'background-svg-SVGElement': resEl.outerHTML,
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
 					'background-svg-SVGData': resData,
 				});
 
@@ -553,15 +553,18 @@ const LibraryContainer = props => {
 	};
 
 	const resultsCount = {
-		stats(nbHits, nbSortedHits, areHitsSorted) {
+		stats(nbHits) {
+			const resultsString = nbHits.toLocaleString();
 			return (
-				type !== 'sc' &&
-				type !== 'patterns' && (
+				<span>
+					<span>{__('Returned', 'maxi-blocks')}</span>
+					<strong>{` ${resultsString} `}</strong>
 					<span>
-						<strong>{nbHits.toLocaleString()}</strong>
-						<span>results</span>
+						{nbHits === 1
+							? __('result', 'maxi-blocks')
+							: __('results', 'maxi-blocks')}
 					</span>
-				)
+				</span>
 			);
 		},
 	};
@@ -581,47 +584,150 @@ const LibraryContainer = props => {
 		);
 	};
 
+	const RefinementList = ({ items, refine }) => (
+		<ul>
+			{items.map(item => (
+				<li key={item.label} className='ais-RefinementList-item'>
+					<a
+						href='#'
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+						}}
+					>
+						{item.label} ({item.count})
+					</a>
+					<ToggleSwitch
+						selected={item.isRefined}
+						onChange={val => refine(item.value)}
+					/>
+				</li>
+			))}
+		</ul>
+	);
+
+	const CustomRefinementList = connectRefinementList(RefinementList);
+
+	const MenuSelect = ({ items, currentRefinement, refine }) => {
+		return (
+			<div>
+				{items.length > 2 && (
+					<button
+						type='button'
+						value=''
+						className={classnames(
+							'maxi-cloud-container__content-svg-shape__button',
+							isEmpty(currentRefinement) &&
+								' maxi-cloud-container__content-svg-shape__button___pressed'
+						)}
+						onClick={event => {
+							event.preventDefault();
+							refine('');
+							items[0].isRefined = true;
+						}}
+					>
+						{__('All', 'maxi-blocks')}
+					</button>
+				)}
+				{items.map(item => (
+					<button
+						type='button'
+						key={item.label}
+						className={classnames(
+							'maxi-cloud-container__content-svg-shape__button',
+							(item.isRefined || items.length === 1) &&
+								' maxi-cloud-container__content-svg-shape__button___pressed'
+						)}
+						value={item.value}
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+							item.isRefined = true;
+						}}
+					>
+						{item.label}
+					</button>
+				))}
+			</div>
+		);
+	};
+
+	const CustomMenuSelect = connectMenu(MenuSelect);
+
+	const HierarchicalMenu = ({ items, refine }) => (
+		<ul>
+			{items.map(item => (
+				<li key={item.label} className='ais-HierarchicalMenu-item'>
+					<a
+						href='#'
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+						}}
+					>
+						{item.label} ({item.count})
+					</a>
+					<ToggleSwitch
+						selected={item.isRefined}
+						onChange={val => refine(item.value)}
+					/>
+					{item.items && (
+						<HierarchicalMenu items={item.items} refine={refine} />
+					)}
+				</li>
+			))}
+		</ul>
+	);
+
+	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
-				<InstantSearch
-					indexName='maxi_posts_svg_icon'
-					searchClient={searchClient}
-				>
-					<div className='maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+				<div className='maxi-cloud-container__svg-icon'>
+					<InstantSearch
+						indexName='maxi_posts_svg_icon'
+						searchClient={searchClient}
+					>
+						<div className='maxi-cloud-container__svg-icon__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<MenuSelect
-								className='maxi-cloud-container__content-svg-shape__categories'
-								attribute='taxonomies.svg_category'
-								translations={{
-									seeAllOption: __(
-										'All icons',
-										'maxi-blocks'
-									),
-								}}
-							/>
-							<Stats translations={resultsCount} />
-							<HitsPerPage
-								defaultRefinement={49}
-								items={[
-									{ value: 49, label: 'Show 50 per screen' },
-									{ value: 98, label: 'Show 100 per screen' },
-									{
-										value: 196,
-										label: 'Show 200 per screen',
-									},
+							<CustomHierarchicalMenu
+								attributes={[
+									'taxonomies_hierarchical.svg_tag.lvl0',
+									'taxonomies_hierarchical.svg_tag.lvl1',
 								]}
+								limit={10}
+								showMore
+								showLoadingIndicator
+								showMoreLimit={10}
 							/>
+							<ClearRefinements />
 						</div>
-						<InfiniteHits hitComponent={svgResults} />
-					</div>
-				</InstantSearch>
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+								<CustomMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='taxonomies.svg_category'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							</div>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgResults} />
+							</div>
+						</div>
+					</InstantSearch>
+				</div>
 			)}
 
 			{type.includes('shape') && (
@@ -629,23 +735,27 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<RefinementList
+							<CustomRefinementList
 								className='hidden'
 								attribute='taxonomies.svg_category'
 								defaultRefinement={['Shape']}
 								showLoadingIndicator
 							/>
-							<Stats translations={resultsCount} />
 						</div>
-						<InfiniteHits hitComponent={svgShapeResults} />
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
+							</div>
+						</div>
 					</div>
 				</InstantSearch>
 			)}
@@ -655,23 +765,27 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<RefinementList
+							<CustomRefinementList
 								className='hidden'
 								attribute='taxonomies.svg_category'
 								defaultRefinement={['Line']}
 								showLoadingIndicator
 							/>
-							<Stats translations={resultsCount} />
 						</div>
-						<InfiniteHits hitComponent={svgShapeResults} />
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
+							</div>
+						</div>
 					</div>
 				</InstantSearch>
 			)}
@@ -682,52 +796,41 @@ const LibraryContainer = props => {
 						indexName='maxi_posts_post'
 						searchClient={searchClient}
 					>
+						<div className='maxi-cloud-container__patterns__top-menu'>
+							<CustomMenuSelect
+								className='maxi-cloud-container__content-patterns__cost'
+								attribute='taxonomies.cost'
+							/>
+							<Menu
+								attribute='taxonomies.gutenberg_type'
+								defaultRefinement='Block Patterns'
+							/>
+						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
+							<Menu
+								attribute='taxonomies.light_or_dark'
+								defaultRefinement='Light'
+								transformItems={items =>
+									items.map(item => ({
+										...item,
+										label: `${item.label}
+											 ${__('tone', 'maxi-blocks')}`,
+									}))
+								}
+							/>
 							<SearchBox
 								autoFocus
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<Accordion
-								title={__(
-									'Placeholder for Images',
-									'maxi-blocks'
-								)}
-							>
-								<PlaceholderCheckboxControl />
-							</Accordion>
-							<Accordion
-								title={__('Block Patterns', 'maxi-blocks')}
-							>
-								<Menu
-									attribute='taxonomies.gutenberg_type'
-									defaultRefinement='Block Patterns'
-								/>
-							</Accordion>
-							<Accordion
-								title={__('Patterns Type', 'maxi-blocks')}
-							>
-								<RefinementList attribute='taxonomies.cost' />
-							</Accordion>
-							<Accordion
-								title={__('Patterns Style', 'maxi-blocks')}
-							>
-								<RefinementList
-									attribute='taxonomies.light_or_dark'
-									defaultRefinement={['Light']}
-								/>
-							</Accordion>
-							<Accordion
-								title={__('Patterns Category', 'maxi-blocks')}
-							>
-								<HierarchicalMenu
-									attributes={[
-										'taxonomies_hierarchical.category.lvl0',
-										'taxonomies_hierarchical.category.lvl1',
-										'taxonomies_hierarchical.category.lvl2',
-									]}
-								/>
-							</Accordion>
+							<PlaceholderCheckboxControl />
+							<CustomHierarchicalMenu
+								attributes={[
+									'taxonomies_hierarchical.category.lvl0',
+									'taxonomies_hierarchical.category.lvl1',
+									'taxonomies_hierarchical.category.lvl2',
+								]}
+							/>
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
@@ -750,11 +853,11 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<Accordion title={__('Colour', 'maxi-blocks')}>
-								<RefinementList attribute='taxonomies.sc_color' />
-							</Accordion>
-							<Accordion title={__('Style', 'maxi-blocks')}>
-								<RefinementList attribute='taxonomies.sc_style' />
+							<Accordion
+								title={__('Colour', 'maxi-blocks')}
+								openByDefault
+							>
+								<CustomRefinementList attribute='taxonomies.sc_color' />
 							</Accordion>
 							<ClearRefinements />
 						</div>

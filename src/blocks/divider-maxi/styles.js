@@ -12,6 +12,7 @@ import {
 	getSizeStyles,
 	getTransformStyles,
 	getZIndexStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsDivider } from './custom-css';
 
@@ -76,6 +77,9 @@ const getWrapperObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
 	};
 
 	return response;
@@ -122,29 +126,11 @@ const getDividerObject = props => {
 			'line',
 			props.parentBlockStyle
 		),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'size', false, 'divider-'),
-			},
-			'divider-'
-		),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'divider-'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
-			prefix: 'divider-',
-		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin', false, 'divider-'),
-			},
-			prefix: 'divider-',
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding', false, 'divider-'),
-			},
 			prefix: 'divider-',
 		}),
 	};
@@ -173,37 +159,38 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getWrapperObject(props),
-			':hover': getHoverWrapperObject(props),
-			' hr.maxi-divider-block__divider:hover': getHoverObject(props),
-			' hr.maxi-divider-block__divider': getDividerObject(props),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, [
-					'blockBackground',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(
-					props,
-					[
+		[uniqueID]: stylesCleaner(
+			{
+				'': getWrapperObject(props),
+				':hover': getHoverWrapperObject(props),
+				' hr.maxi-divider-block__divider:hover': getHoverObject(props),
+				' hr.maxi-divider-block__divider': getDividerObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
 						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-					],
-					true
-				),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-		},
-		selectorsDivider,
-		props
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
+			},
+			selectorsDivider,
+			props
 		),
 	};
 

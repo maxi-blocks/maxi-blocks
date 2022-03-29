@@ -20,6 +20,7 @@ import {
 	getBoxShadowStyles,
 	getColorBackgroundObject,
 	getDisplayStyles,
+	getFlexStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
 	getMarginPaddingStyles,
@@ -38,30 +39,8 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getWrapperObject = props => {
 	const response = {
-		zIndex: getZIndexStyles({
-			...getGroupAttributes(props, 'zIndex'),
-		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin'),
-			},
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding'),
-			},
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
-		display: getDisplayStyles({
-			...getGroupAttributes(props, 'display'),
-		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
-		}),
-		overflow: getOverflowStyles({
-			...getGroupAttributes(props, 'overflow'),
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -86,12 +65,34 @@ const getWrapperObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground']),
-				blockStyle: props.parentBlockStyle,
-			}),
-		},
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
+		}),
+		transform: getTransformStyles({
+			...getGroupAttributes(props, 'transform'),
+		}),
+		display: getDisplayStyles({
+			...getGroupAttributes(props, 'display'),
+		}),
+		position: getPositionStyles({
+			...getGroupAttributes(props, 'position'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
+		zIndex: getZIndexStyles({
+			...getGroupAttributes(props, 'zIndex'),
+		}),
 	};
 
 	return response;
@@ -120,27 +121,6 @@ const getHoverWrapperObject = props => {
 				parentBlockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground'], true),
-				blockStyle: props.parentBlockStyle,
-				isHover: true,
-			}),
-		},
-	};
-
-	return response;
-};
-
-const getContentObject = props => {
-	const response = {
-		typography: getTypographyStyles({
-			obj: {
-				...getGroupAttributes(props, 'typography'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-			textLevel: 'button',
-		}),
 	};
 
 	return response;
@@ -154,15 +134,6 @@ const getNormalObject = props => {
 			},
 			'button-'
 		),
-		zIndex: getZIndexStyles({
-			...getGroupAttributes(props, 'zIndex'),
-		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
-		}),
-		position: getPositionStyles({
-			...getGroupAttributes(props, 'position'),
-		}),
 		border: getBorderStyles({
 			obj: {
 				...getGroupAttributes(
@@ -186,6 +157,9 @@ const getNormalObject = props => {
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
+		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
 		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -260,6 +234,20 @@ const getHoverObject = (props, scValues) => {
 	return response;
 };
 
+const getContentObject = props => {
+	const response = {
+		typography: getTypographyStyles({
+			obj: {
+				...getGroupAttributes(props, 'typography'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+			textLevel: 'button',
+		}),
+	};
+
+	return response;
+};
+
 const getHoverContentObject = (props, scValues) => {
 	const response = {
 		typography: getTypographyStyles({
@@ -294,27 +282,27 @@ const getIconSize = (obj, isHover = false) => {
 		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
 			response[breakpoint].width = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute(
-				'icon-width-unit',
+			}${getLastBreakpointAttribute({
+				target: 'icon-width-unit',
 				breakpoint,
-				obj,
-				isHover
-			)}`;
+				attributes: obj,
+				isHover,
+			})}`;
 			response[breakpoint].height = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute(
-				'icon-width-unit',
+			}${getLastBreakpointAttribute({
+				target: 'icon-width-unit',
 				breakpoint,
-				obj,
-				isHover
-			)}`;
+				attributes: obj,
+				isHover,
+			})}`;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];
 	});
 
-	return { IconSize: response };
+	return { iconSize: response };
 };
 
 const getIconPathStyles = (obj, isHover = false) => {
@@ -338,7 +326,7 @@ const getIconPathStyles = (obj, isHover = false) => {
 			delete response[breakpoint];
 	});
 
-	return { IconPath: response };
+	return { iconPath: response };
 };
 
 const getIconObject = (props, target) => {
@@ -359,6 +347,12 @@ const getIconObject = (props, target) => {
 					'background',
 					'iconBackgroundColor',
 				]),
+				...getGroupAttributes(
+					props,
+					'backgroundColor',
+					false,
+					'button-'
+				),
 				prefix: 'icon-',
 				blockStyle: props.parentBlockStyle,
 				isIconInherit: props['icon-inherit'],
@@ -370,6 +364,7 @@ const getIconObject = (props, target) => {
 			...getGradientBackgroundObject({
 				...getGroupAttributes(props, [
 					'icon',
+					'iconBackground',
 					'iconBackgroundGradient',
 				]),
 				prefix: 'icon-',
@@ -398,6 +393,38 @@ const getIconObject = (props, target) => {
 				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
+
+	const responsive = {
+		label: 'Icon responsive',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		responsive[breakpoint] = {};
+
+		if (
+			!isNil(props[`icon-spacing-${breakpoint}`]) &&
+			!isNil(props['icon-position'])
+		) {
+			props['icon-position'] === 'left'
+				? (responsive[breakpoint][
+						'margin-right'
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
+						breakpoint,
+						attributes: props,
+				  })}px`)
+				: (responsive[breakpoint][
+						'margin-left'
+				  ] = `${getLastBreakpointAttribute({
+						target: 'icon-spacing',
+						breakpoint,
+						attributes: props,
+				  })}px`);
+		}
+	});
+
+	response.iconResponsive = responsive;
 
 	return response;
 };
@@ -468,40 +495,6 @@ const getIconHoverObject = (props, target) => {
 	return response;
 };
 
-const getIconResponsive = obj => {
-	const response = {
-		label: 'Icon responsive',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(obj[`icon-spacing-${breakpoint}`]) &&
-			!isNil(obj['icon-position'])
-		) {
-			obj['icon-position'] === 'left'
-				? (response[breakpoint][
-						'margin-right'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
-						breakpoint,
-						obj
-				  )}px`)
-				: (response[breakpoint][
-						'margin-left'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
-						breakpoint,
-						obj
-				  )}px`);
-		}
-	});
-
-	return { IconResponsive: response };
-};
-
 const getStyles = (props, scValues) => {
 	const { uniqueID } = props;
 
@@ -515,10 +508,10 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
-				' .maxi-button-block__icon': [
-					getIconObject(props, 'icon'),
-					getIconResponsive(props, 'icon'),
-				],
+				' .maxi-button-block__content': getContentObject(props),
+				' .maxi-button-block__button:hover .maxi-button-block__content':
+					getHoverContentObject(props, scValues),
+				' .maxi-button-block__icon': getIconObject(props, 'icon'),
 				' .maxi-button-block__icon svg': getIconSize(props, false),
 				' .maxi-button-block__icon svg > *': getIconObject(
 					props,
@@ -528,10 +521,6 @@ const getStyles = (props, scValues) => {
 					props,
 					false
 				),
-				' .maxi-button-block__content': getContentObject(props),
-				' .maxi-button-block__button:hover .maxi-button-block__content':
-					getHoverContentObject(props, scValues),
-
 				' .maxi-button-block__button:hover .maxi-button-block__icon':
 					props['icon-status-hover'] &&
 					getIconHoverObject(props, 'iconHover'),
@@ -543,6 +532,29 @@ const getStyles = (props, scValues) => {
 				' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
 					props['icon-status-hover'] &&
 					getIconPathStyles(props, true),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
 			},
 			selectorsButton,
 			props

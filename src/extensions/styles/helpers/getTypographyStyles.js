@@ -53,12 +53,12 @@ const getTypographyStyles = ({
 
 		return (
 			isCustomFormat &&
-			getLastBreakpointAttribute(
-				'palette-status',
+			getLastBreakpointAttribute({
+				target: 'palette-status',
 				breakpoint,
-				customFormatTypography,
-				isHover
-			)
+				attributes: customFormatTypography,
+				isHover,
+			})
 		);
 	};
 
@@ -102,19 +102,21 @@ const getTypographyStyles = ({
 	// As sometimes creators just change the value and not the unit, we need to
 	// be able to request the non-hover unit
 	const getUnitValue = (prop, breakpoint) => {
-		const unit = getLastBreakpointAttribute(
-			`${prefix}${prop}`,
+		const unit = getLastBreakpointAttribute({
+			target: `${prefix}${prop}`,
 			breakpoint,
-			isCustomFormat ? customFormatTypography : obj
-		);
+			attributes: isCustomFormat ? customFormatTypography : obj,
+			avoidXXL: false,
+		});
 
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;
 
-		return getLastBreakpointAttribute(
-			`${prefix}${prop}`,
+		return getLastBreakpointAttribute({
+			target: `${prefix}${prop}`,
 			breakpoint,
-			normalTypography
-		);
+			attributes: normalTypography,
+			avoidXXL: false,
+		});
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -150,11 +152,25 @@ const getTypographyStyles = ({
 			...(!isNil(obj[getName('text-decoration', breakpoint)]) && {
 				'text-decoration': obj[getName('text-decoration', breakpoint)],
 			}),
+			...(!isNil(obj[getName('text-indent', breakpoint)]) && {
+				'text-indent': `${
+					obj[getName('text-indent', breakpoint)]
+				}${getUnitValue('text-indent-unit', breakpoint)}`,
+			}),
 			...(!isNil(obj[getName('text-shadow', breakpoint)]) && {
 				'text-shadow': obj[getName('text-shadow', breakpoint)],
 			}),
 			...(!isNil(obj[getName('vertical-align', breakpoint)]) && {
 				'vertical-align': obj[getName('vertical-align', breakpoint)],
+			}),
+			...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
+				'writing-mode': !isEmpty(
+					obj[getName('text-orientation', breakpoint)]
+				)
+					? 'vertical-rl'
+					: null,
+				'text-orientation':
+					obj[getName('text-orientation', breakpoint)],
 			}),
 		};
 

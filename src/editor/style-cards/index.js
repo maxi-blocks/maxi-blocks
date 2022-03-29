@@ -15,7 +15,7 @@ import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
  * Styles and icons
  */
 import './editor.scss';
-import { styleCardBoat } from '../../icons';
+import { styleCardMenu } from '../../icons';
 
 const MaxiStyleCardsEditorPopUp = () => {
 	const { styleCards } = useSelect(select => {
@@ -32,14 +32,19 @@ const MaxiStyleCardsEditorPopUp = () => {
 		<>
 			<Button
 				id='maxi-button__go-to-customizer'
-				className='action-buttons__button'
+				className='action-buttons__button style-card-button'
 				aria-label={__('Style Card Editor', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
-				<Icon icon={styleCardBoat} />
+				<Icon icon={styleCardMenu} />
 				<span>{__('Style Card Editor', 'maxi-blocks')}</span>
 			</Button>
-			{isVisible && <MaxiStyleCardsEditor styleCards={styleCards} />}
+			{isVisible && (
+				<MaxiStyleCardsEditor
+					styleCards={styleCards}
+					setIsVisible={setIsVisible}
+				/>
+			)}
 		</>
 	);
 };

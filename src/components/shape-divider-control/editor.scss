@@ -1,5 +1,5 @@
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
-	.maxi-shapedividercontrol {
+	.maxi-shape-divider-control {
 		&__shape-selector {
 			&__display {
 				border-color: var(--maxi-accessibility-grey-1-color);
@@ -13,9 +13,9 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 	}
 }
-.maxi-shapedividercontrol {
+.maxi-shape-divider-control {
 	&__shape-list {
-		.maxi-base-control__field {
+		.maxi-tabs-control {
 			display: flex;
 			flex-wrap: wrap;
 			width: 271px;
@@ -23,8 +23,9 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			overflow-y: scroll;
 		}
 
-		.maxi-button-group-control__option {
+		.maxi-tabs-control__button {
 			width: 100%;
+			flex-direction: row;
 
 			svg {
 				width: 100% !important;

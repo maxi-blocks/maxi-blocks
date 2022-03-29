@@ -23,20 +23,31 @@ const getSizeStyles = (obj, prefix = '') => {
 
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
+			if (target === 'height') {
+				const forceAspectRatio = getLastBreakpointAttribute({
+					target: `${prefix}force-aspect-ratio`,
+					breakpoint,
+					attributes: obj,
+				});
+
+				if (forceAspectRatio) {
+					return { 'aspect-ratio': 1, height: '100%' };
+				}
+			}
 			if (
 				isNumber(obj[`${prefix}${target}-${breakpoint}`]) ||
 				obj[`${prefix}${target}-unit-${breakpoint}`]
 			) {
-				const num = getLastBreakpointAttribute(
-					`${prefix}${target}`,
+				const num = getLastBreakpointAttribute({
+					target: `${prefix}${target}`,
 					breakpoint,
-					obj
-				);
-				const unit = getLastBreakpointAttribute(
-					`${prefix}${target}-unit`,
+					attributes: obj,
+				});
+				const unit = getLastBreakpointAttribute({
+					target: `${prefix}${target}-unit`,
 					breakpoint,
-					obj
-				);
+					attributes: obj,
+				});
 
 				if (!isNil(num) && !isNil(unit))
 					return { [target]: num + unit };

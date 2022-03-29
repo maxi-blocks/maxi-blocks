@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,6 +20,8 @@ import {
 	AccordionItemButton,
 	AccordionItemPanel,
 } from 'react-accessible-accordion';
+
+import { getActiveAccordion } from '../../extensions/inspector-path';
 
 /**
  * Styles
@@ -40,6 +42,8 @@ const AccordionControl = props => {
 		disablePadding = false,
 	} = props;
 
+	const { updateInspectorPath } = useDispatch('maxiBlocks');
+
 	const classes = classnames(
 		'maxi-accordion-control',
 		className,
@@ -47,15 +51,19 @@ const AccordionControl = props => {
 		isSecondary && 'is-secondary'
 	);
 
-	const [currentOpen, setCurrentOpen] = useState('');
+	const currentAccordion = getActiveAccordion(1);
+
+	const accordionChange = accordionId => {
+		updateInspectorPath({ depth: 1, value: accordionId[0] });
+	};
 
 	return (
 		<Accordion
 			className={classes}
 			allowMultipleExpanded={allowMultipleExpanded}
 			allowZeroExpanded={allowZeroExpanded}
-			preExpanded={currentOpen}
-			onChange={value => setCurrentOpen(value)}
+			preExpanded={[currentAccordion]}
+			onChange={value => accordionChange(value)}
 		>
 			{items.map((item, id) => {
 				if (!item) return null;
@@ -76,9 +84,13 @@ const AccordionControl = props => {
 						: ''
 				);
 
+				const accordionUid =
+					lowerCase(item.label).replace(/[^a-zA-Z0-9]+/g, '') ||
+					undefined;
+
 				return (
 					<AccordionItem
-						uuid={item.uuid ? item.uuid : undefined}
+						uuid={accordionUid}
 						className={classesItem}
 						data-name={lowerCase(item.label)}
 						key={`maxi-accordion-control__item-${id}`}

@@ -10,14 +10,13 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
-	AdvancedNumberControl,
 	FontLevelControl,
-	SelectControl,
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsText, categoriesText } from './custom-css';
+import listTab from './list-tab';
 
 /**
  * External dependencies
@@ -29,9 +28,8 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes } = props;
-		const { isList, listReversed, listStart, textLevel, typeOfList } =
-			attributes;
+		const { attributes, deviceType, maxiSetAttributes } = props;
+		const { isList, textLevel } = attributes;
 
 		return (
 			<InspectorControls>
@@ -40,6 +38,7 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
+					depth={0}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
@@ -66,130 +65,14 @@ const Inspector = memo(
 															)}
 															value={textLevel}
 															onChange={obj =>
-																setAttributes(
+																maxiSetAttributes(
 																	obj
 																)
 															}
 														/>
 													),
 												},
-											deviceType === 'general' &&
-												isList && {
-													label: __(
-														'List options',
-														'maxi-blocks'
-													),
-													content: (
-														<>
-															<SelectControl
-																label={__(
-																	'Type of list',
-																	'maxi-blocks'
-																)}
-																value={
-																	typeOfList
-																}
-																options={[
-																	{
-																		label: __(
-																			'Unorganized',
-																			'maxi-blocks'
-																		),
-																		value: 'ul',
-																	},
-																	{
-																		label: __(
-																			'Organized',
-																			'maxi-blocks'
-																		),
-																		value: 'ol',
-																	},
-																]}
-																onChange={typeOfList =>
-																	setAttributes(
-																		{
-																			typeOfList,
-																		}
-																	)
-																}
-															/>
-															{typeOfList ===
-																'ol' && (
-																<>
-																	<AdvancedNumberControl
-																		label={__(
-																			'Start From',
-																			'maxi-blocks'
-																		)}
-																		value={
-																			listStart
-																		}
-																		onChangeValue={val => {
-																			setAttributes(
-																				{
-																					listStart:
-																						val !==
-																							undefined &&
-																						val !==
-																							''
-																							? val
-																							: '',
-																				}
-																			);
-																		}}
-																		min={
-																			-99
-																		}
-																		max={99}
-																		onReset={() =>
-																			setAttributes(
-																				{
-																					listStart:
-																						'',
-																				}
-																			)
-																		}
-																	/>
-																	<SelectControl
-																		label={__(
-																			'Reverse order',
-																			'maxi-blocks'
-																		)}
-																		value={
-																			listReversed
-																		}
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={value => {
-																			setAttributes(
-																				{
-																					listReversed:
-																						Number(
-																							value
-																						),
-																				}
-																			);
-																		}}
-																	/>
-																</>
-															)}
-														</>
-													),
-												},
+											...(isList && listTab(props)),
 											...inspectorTabs.alignment({
 												props,
 												isTextAlignment: true,
@@ -282,6 +165,9 @@ const Inspector = memo(
 											...inspectorTabs.overflow({
 												props,
 											}),
+											...inspectorTabs.flex({
+												props,
+											}),
 											...inspectorTabs.zindex({
 												props,
 											}),
@@ -302,13 +188,15 @@ const Inspector = memo(
 			propsToAvoid,
 			isSelected: wasSelected,
 			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
 		},
-		{ attributes: newAttr, isSelected, deviceType: breakpoint }
+		{ attributes: newAttr, isSelected, deviceType: breakpoint, scValues }
 	) => {
 		if (
 			!wasSelected ||
 			wasSelected !== isSelected ||
-			oldBreakpoint !== breakpoint
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
 		)
 			return false;
 

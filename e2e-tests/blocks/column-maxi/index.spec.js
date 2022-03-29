@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 	pressKeyTimes,
+	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -31,9 +32,10 @@ describe('Column Maxi', () => {
 	});
 
 	it('check column settings', async () => {
-		const column = await page.$('.maxi-column-block');
-		// need an offset as if not click on the appender and opens the menu
-		await column.click({ offset: { x: 0, y: 0 } });
+		const columnClientId = await page.$eval('.maxi-column-block', column =>
+			column.getAttribute('data-block')
+		);
+		await selectBlockByClientId(columnClientId);
 
 		await openSidebarTab(page, 'style', 'column settings');
 
@@ -100,73 +102,6 @@ describe('Column Maxi', () => {
 		);
 
 		expect(responsiveMOption).toStrictEqual('100');
-	});
-
-	it('check responsive column size', async () => {
-		await changeResponsive(page, 'base');
-
-		await page.$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			input => input.focus()
-		);
-
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-
-		expect(await getAttributes('column-size-general')).toStrictEqual(50);
-
-		// responsive m
-		await changeResponsive(page, 'm');
-
-		const responsiveMOption = await page.$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			select => select.value
-		);
-
-		expect(responsiveMOption).toStrictEqual('100');
-
-		// responsive S
-		await changeResponsive(page, 's');
-
-		await page.$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			input => input.focus()
-		);
-
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('7');
-
-		expect(await getAttributes('column-size-s')).toStrictEqual(17);
-
-		// responsive XS
-		await changeResponsive(page, 'xs');
-
-		const responsiveXsOption = await page.$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			select => select.value
-		);
-
-		expect(responsiveXsOption).toStrictEqual('17');
-
-		// responsive M
-		await changeResponsive(page, 'm');
-
-		const returnToMResponsive = await page.$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			select => select.value
-		);
-
-		expect(returnToMResponsive).toStrictEqual('100');
-
-		// responsive L
-		await changeResponsive(page, 'l');
-
-		const responsiveL = await page.$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			select => select.value
-		);
-
-		expect(responsiveL).toStrictEqual('50');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

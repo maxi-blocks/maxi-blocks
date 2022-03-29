@@ -9,7 +9,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import Icon from '../../../icon';
 import SelectControl from '../../../select-control';
-import ButtonGroupControl from '../../../button-group-control';
+import SettingTabsControl from '../../../setting-tabs-control';
 
 /**
  * Styles & Icons
@@ -19,7 +19,7 @@ import {
 	alignLeft,
 	alignCenter,
 	alignRight,
-	toolbarDividerAlign,
+	toolbarVerticalAlign,
 } from '../../../../icons';
 
 /**
@@ -40,9 +40,9 @@ const DividerAlignment = props => {
 
 	const getHorizontalOptions = () => {
 		const options = [];
-		options.push({ label: <Icon icon={alignLeft} />, value: 'flex-start' });
-		options.push({ label: <Icon icon={alignCenter} />, value: 'center' });
-		options.push({ label: <Icon icon={alignRight} />, value: 'flex-end' });
+		options.push({ icon: <Icon icon={alignLeft} />, value: 'flex-start' });
+		options.push({ icon: <Icon icon={alignCenter} />, value: 'center' });
+		options.push({ icon: <Icon icon={alignRight} />, value: 'flex-end' });
 
 		return options;
 	};
@@ -58,13 +58,13 @@ const DividerAlignment = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__divider-alignment'
-			tooltip={__('Divider aligment', 'maxi-blocks')}
-			icon={toolbarDividerAlign}
-			advancedOptions='line'
+			tooltip={__('Divider alignment', 'maxi-blocks')}
+			icon={toolbarVerticalAlign}
+			advancedOptions='alignment'
 		>
 			<div className='toolbar-item__divider-alignment__popover'>
 				<SelectControl
-					label={__('Line Orientation', 'maxi-blocks')}
+					label={__('Line orientation', 'maxi-blocks')}
 					options={[
 						{
 							label: __('Horizontal', 'maxi-blocks'),
@@ -87,10 +87,11 @@ const DividerAlignment = props => {
 					/>
 				)}
 				{lineOrientation === 'horizontal' && (
-					<ButtonGroupControl
+					<SettingTabsControl
 						className='maxi-alignment-control'
+						type='buttons'
 						selected={lineHorizontal}
-						options={getHorizontalOptions()}
+						items={getHorizontalOptions()}
 						onChange={value => onChangeHorizontal(value)}
 					/>
 				)}

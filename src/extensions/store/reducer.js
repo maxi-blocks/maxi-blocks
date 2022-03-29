@@ -1,4 +1,4 @@
-import controls from './controls';
+import { omit } from 'lodash';
 
 const breakpointResizer = (
 	size,
@@ -40,6 +40,7 @@ const reducer = (
 		presets: '',
 		copiedStyles: {},
 		copiedBlocks: {},
+		inspectorPath: [{ name: 'Settings', value: 0 }],
 	},
 	action
 ) => {
@@ -52,21 +53,10 @@ const reducer = (
 					...action.settings,
 				},
 			};
-		case 'SEND_MOTION_PRESETS':
-			return {
-				...state,
-				presets: action.presets,
-			};
 		case 'SEND_BREAKPOINTS':
 			return {
 				...state,
 				breakpoints: action.breakpoints,
-			};
-		case 'SAVE_MOTION_PRESETS':
-			controls.SAVE_MOTION_PRESETS(action);
-			return {
-				...state,
-				presets: action.presets,
 			};
 		case 'SEND_DEVICE_TYPE':
 			return {
@@ -102,6 +92,31 @@ const reducer = (
 				...state,
 				copiedBlocks: action.copiedBlocks,
 			};
+		case 'UPDATE_INSPECTOR_PATH': {
+			const { depth, value } = action.inspectorPath;
+			const newValue = omit(action.inspectorPath, ['depth']);
+			const newInspectorPath = [...state.inspectorPath];
+
+			if (depth === newInspectorPath.length) {
+				newInspectorPath.push(newValue);
+			} else if (depth < newInspectorPath.length) {
+				newInspectorPath[depth] = newValue;
+
+				for (let i = depth + 1; i <= newInspectorPath.length; i++) {
+					newInspectorPath.splice(i, 1);
+				}
+
+				// In case of accordion return undefined
+				if (value === undefined) {
+					newInspectorPath.splice(depth, 1);
+				}
+			}
+
+			return {
+				...state,
+				inspectorPath: newInspectorPath,
+			};
+		}
 		default:
 			return state;
 	}

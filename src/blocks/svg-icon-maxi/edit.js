@@ -3,7 +3,7 @@
  */
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
-import { withSelect, withDispatch, dispatch } from '@wordpress/data';
+import { withDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -12,10 +12,12 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { Toolbar, BlockResizer, RawHTML } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 
@@ -51,16 +53,16 @@ class edit extends MaxiBlockComponent {
 		}
 
 		if (this.resizableObject.current) {
-			const svgWidth = getLastBreakpointAttribute(
-				'svg-width',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
-			const svgWidthUnit = getLastBreakpointAttribute(
-				'svg-width-unit',
-				this.props.deviceType || 'general',
-				this.props.attributes
-			);
+			const svgWidth = getLastBreakpointAttribute({
+				target: 'svg-width',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
+			const svgWidthUnit = getLastBreakpointAttribute({
+				target: 'svg-width-unit',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
 			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
 			if (this.resizableObject.current.state.width !== fullWidthValue) {
@@ -78,7 +80,7 @@ class edit extends MaxiBlockComponent {
 				}
 
 				if (!isEmpty(newContent))
-					this.props.setAttributes({
+					this.props.maxiSetAttributes({
 						content: newContent,
 					});
 			}
@@ -94,8 +96,13 @@ class edit extends MaxiBlockComponent {
 	};
 
 	render() {
-		const { attributes, clientId, deviceType, setAttributes, isSelected } =
-			this.props;
+		const {
+			attributes,
+			clientId,
+			deviceType,
+			maxiSetAttributes,
+			isSelected,
+		} = this.props;
 		const {
 			blockFullWidth,
 			content,
@@ -106,12 +113,11 @@ class edit extends MaxiBlockComponent {
 		} = attributes;
 
 		const isEmptyContent = isEmpty(content);
-
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
 
-			setAttributes({
+			maxiSetAttributes({
 				[`svg-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
@@ -121,10 +127,16 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute('overflow-y', deviceType, attributes) ===
-				'hidden' &&
-			getLastBreakpointAttribute('overflow-x', deviceType, attributes) ===
-				'hidden';
+			getLastBreakpointAttribute({
+				target: 'overflow-y',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden' &&
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint: deviceType,
+				attributes,
+			}) === 'hidden';
 
 		return [
 			!isEmptyContent && (
@@ -140,6 +152,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					propsToAvoid={['resizableObject']}
 					resizableObject={this.resizableObject}
+					prefix='svg-'
 					{...this.props}
 				/>
 			),
@@ -155,10 +168,10 @@ class edit extends MaxiBlockComponent {
 						type='svg'
 						empty={isEmptyContent}
 						style={parentBlockStyle}
-						openFirstTime={openFirstTime}
-						onOpen={obj => setAttributes(obj)}
-						onSelect={obj => setAttributes(obj)}
-						onRemove={obj => setAttributes(obj)}
+						openFirstTime={isSelected ? openFirstTime : false}
+						onOpen={obj => maxiSetAttributes(obj)}
+						onSelect={obj => maxiSetAttributes(obj)}
+						onRemove={obj => maxiSetAttributes(obj)}
 					/>
 					{!isEmptyContent && (
 						<BlockResizer
@@ -167,14 +180,21 @@ class edit extends MaxiBlockComponent {
 							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
 							maxWidth={
-								getLastBreakpointAttribute(
-									'svg-responsive',
-									deviceType,
-									attributes
-								)
+								getLastBreakpointAttribute({
+									target: 'svg-responsive',
+									breakpoint: deviceType,
+									attributes,
+								})
 									? '100%'
 									: null
 							}
+							size={{
+								width: `${getLastBreakpointAttribute({
+									target: 'svg-width',
+									breakpoint: deviceType || 'general',
+									attributes,
+								})}${svgWidthUnit}`,
+							}}
 							showHandle={isSelected}
 							enable={{
 								topRight: true,
@@ -193,18 +213,10 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		deviceType,
-	};
-});
-
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
 		attributes: { content },
-		setAttributes,
+		maxiSetAttributes,
 	} = ownProps;
 
 	const changeSVGStrokeWidth = width => {
@@ -222,7 +234,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				.replace(regexLineToChange, changeTo)
 				.replace(regexLineToChange2, changeTo2);
 
-			setAttributes({
+			maxiSetAttributes({
 				content: newContent,
 			});
 		}
@@ -247,7 +259,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(strokeRegExp, strokeStr)
 			.replace(strokeRegExp2, strokeStr2);
 
-		setAttributes({ content: newContent });
+		maxiSetAttributes({ content: newContent });
 	};
 
 	const changeSVGContent = (color, type) => {
@@ -261,7 +273,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
-		setAttributes({ content: newContent });
+		maxiSetAttributes({ content: newContent });
 	};
 
 	return {
@@ -271,4 +283,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, editDispatch)(edit);
+export default compose(withMaxiProps, editDispatch)(edit);

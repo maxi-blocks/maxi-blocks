@@ -2,18 +2,22 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
 import {
-	changeResponsive,
 	getBlockAttributes,
 	openSidebarTab,
 	getBlockStyle,
 	editColorControl,
 	getAttributes,
 	editAxisControl,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('BorderControl', () => {
@@ -78,7 +82,6 @@ describe('BorderControl', () => {
 		);
 
 		// color
-
 		await editColorControl({
 			page,
 			instance: await page.$('.maxi-border-control'),
@@ -98,54 +101,22 @@ describe('BorderControl', () => {
 		expect(await getAttributes('border-style-general')).toStrictEqual(
 			'dotted'
 		);
-	});
 
-	it('Check Responsive border control', async () => {
-		// Dotted bottom enabled
-		await changeResponsive(page, 's');
-		await page.$eval('.maxi-text-block', block => block.focus());
+		// check responsive border
+		const responsiveBorder = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			selectInstance:
+				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			needSelectIndex: true,
+			baseExpect: 'dotted',
+			xsExpect: 'groove',
+			newValue: 'groove',
+		});
+		expect(responsiveBorder).toBeTruthy();
 
-		const dottedButton = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			button => button.selectedOptions[0].innerHTML
-		);
-
-		expect(dottedButton).toStrictEqual('Dotted');
-
-		// responsive S
-		const accordionPanel = await openSidebarTab(page, 'style', 'border');
-
-		const selector = await accordionPanel.$(
-			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select'
-		);
-		await selector.select('dashed');
-
-		const responsiveSOption = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
-		);
-
-		expect(responsiveSOption).toStrictEqual('Dashed');
-
-		// responsive XS
-		await changeResponsive(page, 'xs');
-
-		const responsiveXsOption = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
-		);
-
-		expect(responsiveXsOption).toStrictEqual('Dashed');
-
-		// responsive M
-		await changeResponsive(page, 'm');
-
-		const responsiveMOption = await page.$eval(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-select-control__input',
-			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
-		);
-
-		expect(responsiveMOption).toStrictEqual('Dotted');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {
@@ -180,13 +151,13 @@ describe('BorderControl', () => {
 			'border-color-general-hover': undefined,
 			'border-style-general': undefined,
 			'border-style-general-hover': 'solid',
-			'border-top-width-general': undefined,
+			'border-top-width-general': 2,
 			'border-top-width-general-hover': 2,
-			'border-right-width-general': undefined,
+			'border-right-width-general': 2,
 			'border-right-width-general-hover': 2,
-			'border-bottom-width-general': undefined,
+			'border-bottom-width-general': 2,
 			'border-bottom-width-general-hover': 2,
-			'border-left-width-general': undefined,
+			'border-left-width-general': 2,
 			'border-left-width-general-hover': 2,
 		};
 
@@ -208,5 +179,76 @@ describe('BorderControl', () => {
 		expect(borderResult).toStrictEqual(expectBorder);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// check that the values when changing the styles
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-border-control .maxi-default-styles-control button',
+			button => button[1].click()
+		);
+
+		await page.$eval(
+			'.maxi-axis-control__content__item__border-width input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('59');
+
+		expect(await getAttributes('border-left-width-general')).toStrictEqual(
+			59
+		);
+
+		// check border radius
+		await page.$eval(
+			'.maxi-axis-control__content__item__border-radius input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('26');
+
+		expect(
+			await getAttributes('border-bottom-left-radius-general')
+		).toStrictEqual(26);
+
+		// change style
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-border-control .maxi-default-styles-control button',
+			button => button[2].click()
+		);
+
+		// same value
+		const borderWidth = await page.$eval(
+			'.maxi-axis-control__content__item__border-width input',
+			input => input.value
+		);
+		expect(borderWidth).toStrictEqual('59');
+
+		// check border radius
+		const borderRadius = await page.$eval(
+			'.maxi-axis-control__content__item__border-radius input',
+			input => input.value
+		);
+
+		expect(borderRadius).toStrictEqual('26');
+
+		// reset button
+		await page.$eval(
+			'.maxi-axis-control__border .maxi-axis-control__unit-header button',
+			button => button.click()
+		);
+
+		expect(await getAttributes('border-left-width-general')).toStrictEqual(
+			2
+		);
+
+		await page.$$eval(
+			'.maxi-axis-control__border .maxi-axis-control__unit-header button',
+			button => button[1].click()
+		);
+
+		expect(
+			await getAttributes('border-bottom-left-radius-general')
+		).toStrictEqual(undefined);
 	});
 });

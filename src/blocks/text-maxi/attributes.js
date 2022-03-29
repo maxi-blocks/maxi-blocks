@@ -4,6 +4,14 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * Internal dependencies
+ */
+import {
+	breakpointAttributesCreator,
+	paletteAttributesCreator,
+} from '../../extensions/styles';
+
+/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
@@ -45,10 +53,69 @@ const attributes = {
 		type: 'number',
 	},
 	listReversed: {
-		type: 'number',
-		default: 0,
+		type: 'boolean',
 	},
-	...attributesData.container,
+	...breakpointAttributesCreator({
+		obj: {
+			'list-gap': {
+				type: 'number',
+				default: 1,
+			},
+			'list-gap-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-paragraph-spacing': {
+				type: 'number',
+			},
+			'list-paragraph-spacing-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-indent': {
+				type: 'number',
+			},
+			'list-indent-unit': {
+				type: 'string',
+				default: 'px',
+			},
+			'list-size': {
+				type: 'number',
+				default: 1,
+			},
+			'list-size-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-marker-indent': {
+				type: 'number',
+				default: 0.5,
+			},
+			'list-marker-indent-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-marker-line-height': {
+				type: 'number',
+				default: 0.5,
+			},
+			'list-marker-line-height-unit': {
+				type: 'string',
+				default: 'em',
+			},
+			'list-text-position': {
+				type: 'string',
+				default: 'middle',
+			},
+		},
+	}),
+	listStyle: {
+		type: 'string',
+	},
+	listStyleCustom: {
+		type: 'string',
+	},
+	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
 	...attributesData.link,
 	...attributesData.textAlignment,
 	...attributesData.typography,
@@ -78,6 +145,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

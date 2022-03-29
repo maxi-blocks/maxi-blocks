@@ -6,6 +6,9 @@ const columnSize = breakpointAttributesCreator({
 			type: 'number',
 			default: 90,
 		},
+		'column-fit-content': {
+			type: 'boolean',
+		},
 	},
 });
 

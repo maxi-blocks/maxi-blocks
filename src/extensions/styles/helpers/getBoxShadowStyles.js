@@ -56,12 +56,12 @@ const getBoxShadowStyles = ({
 					  ].default ||
 					  defaultBoxShadow[`box-shadow-${target}-${breakpoint}`]
 							.default
-					: getLastBreakpointAttribute(
-							`${prefix}box-shadow-${target}`,
-							getPrevBreakpoint(breakpoint),
-							obj,
-							isHover
-					  );
+					: getLastBreakpointAttribute({
+							target: `${prefix}box-shadow-${target}`,
+							breakpoint: getPrevBreakpoint(breakpoint),
+							attributes: obj,
+							isHover,
+					  });
 
 			return {
 				value,
@@ -85,12 +85,12 @@ const getBoxShadowStyles = ({
 			getValue('spread');
 
 		// Palette
-		const paletteStatus = getLastBreakpointAttribute(
-			`${prefix}box-shadow-palette-status`,
+		const paletteStatus = getLastBreakpointAttribute({
+			target: `${prefix}box-shadow-palette-status`,
 			breakpoint,
-			obj,
-			isHover
-		);
+			attributes: obj,
+			isHover,
+		});
 
 		// Color
 		const { value: paletteColor, defaultValue: defaultColor } =
@@ -105,17 +105,15 @@ const getBoxShadowStyles = ({
 				  })
 				: paletteColor;
 
-		const isColorDefault =
-			paletteStatus &&
-			isNumber(paletteColor) &&
-			paletteColor === defaultColor;
-
 		const isNotDefault =
-			(isNumber(horizontal) && horizontal !== defaultHorizontal) ||
-			(isNumber(vertical) && vertical !== defaultVertical) ||
-			(isNumber(blur) && blur !== defaultBlur) ||
-			(isNumber(spread) && spread !== defaultSpread) ||
-			(!!color && !isColorDefault);
+			(isNumber(horizontal) &&
+				horizontal !== 0 &&
+				horizontal !== defaultHorizontal) ||
+			(isNumber(vertical) &&
+				vertical !== 0 &&
+				vertical !== defaultVertical) ||
+			(isNumber(blur) && blur !== 0 && blur !== defaultBlur) ||
+			(isNumber(spread) && spread !== 0 && spread !== defaultSpread);
 
 		const horizontalValue = isNumber(horizontal)
 			? horizontal

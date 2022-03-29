@@ -31,21 +31,24 @@ class MaxiBlocks_StyleCards {
 	public function enqueue_styles() {
 		$vars = $this->getStylesString();
 
-		// Inline styles
-		if ($vars) {
-			wp_register_style('maxi-blocks-sc-vars', false);
-			wp_enqueue_style('maxi-blocks-sc-vars');
-			wp_add_inline_style('maxi-blocks-sc-vars', $vars);
-
-			$this->enqueue_fonts($vars);
-		}
-	}
+        // Inline styles
+        if ($vars) {
+            wp_register_style('maxi-blocks-sc-vars', false);
+            wp_enqueue_style('maxi-blocks-sc-vars');
+            wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+        }
+    }
 
 	/**
 	 * Get SC
 	 */
 	public function getStylesString() {
-		$style_card = get_option('mb_sc_string');
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+		$query =
+			'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
+
+		$style_card = maybe_unserialize($wpdb->get_var($query));
 
 		if (!$style_card) {
 			return false;
@@ -111,21 +114,6 @@ class MaxiBlocks_StyleCards {
 		return false;
 	}
 
-	public function enqueue_fonts($vars) {
-		preg_match_all('/font-family-general:(\w+);/', $vars, $fonts);
-		$fonts = array_unique($fonts[1]);
-
-		if (empty($fonts)) {
-			return;
-		}
-
-		foreach ($fonts as $font) {
-			wp_enqueue_style(
-				"{$font}",
-				"https://fonts.googleapis.com/css2?family={$font}",
-			);
-		}
-	}
 
 	public static function getDefaultStyleCard() {
 		$json = '{
@@ -152,11 +140,11 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 24,
+							"font-size-xxl": 20,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
-							"line-height-xxl": 34,
+							"line-height-xxl": 30,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 26,
 							"line-height-unit-xl": "px",
@@ -176,7 +164,7 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 65,
+							"font-size-xxl": 60,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 45,
 							"font-size-unit-xl": "px",
@@ -188,7 +176,7 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-s": "px",
 							"font-size-xs": 32,
 							"font-size-unit-xs": "px",
-							"line-height-xxl": 75,
+							"line-height-xxl": 70,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 55,
 							"line-height-unit-xl": "px",
@@ -216,7 +204,7 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 55,
+							"font-size-xxl": 50,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 38,
 							"font-size-unit-xl": "px",
@@ -228,7 +216,7 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-s": "px",
 							"font-size-xs": 28,
 							"font-size-unit-xs": "px",
-							"line-height-xxl": 65,
+							"line-height-xxl": 60,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 48,
 							"line-height-unit-xl": "px",
@@ -256,7 +244,7 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 45,
+							"font-size-xxl": 40,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 30,
 							"font-size-unit-xl": "px",
@@ -264,7 +252,7 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-m": "px",
 							"font-size-s": 24,
 							"font-size-unit-s": "px",
-							"line-height-xxl": 55,
+							"line-height-xxl": 30,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 40,
 							"line-height-unit-xl": "px",
@@ -320,13 +308,13 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 34,
+							"font-size-xxl": 30,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 22,
 							"font-size-unit-xl": "px",
 							"font-size-m": 20,
 							"font-size-unit-m": "px",
-							"line-height-xxl": 44,
+							"line-height-xxl": 40,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 32,
 							"line-height-unit-xl": "px",
@@ -348,15 +336,16 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 30,
+							"font-size-xxl": 26,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 20,
 							"font-size-unit-xl": "px",
 							"font-size-m": 18,
 							"font-size-unit-m": "px",
-							"line-height-xxl": 40,
+							"line-height-xxl": 36,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 30,
+							"line-height-unit-xl": "px",
 							"line-height-unit-l": "px",
 							"line-height-m": 28,
 							"line-height-unit-m": "px",
@@ -392,8 +381,8 @@ class MaxiBlocks_StyleCards {
 							"hover-palette-color": 5,
 							"hover-palette-opacity": 1,
 							"hover-color": "",
-							"font-family-general": "Roboto",
-							"font-size-xxl": 24,
+							"font-family-general": "",
+							"font-size-xxl": 20,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
@@ -482,11 +471,11 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 24,
+							"font-size-xxl": 20,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
-							"line-height-xxl": 34,
+							"line-height-xxl": 30,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 26,
 							"line-height-unit-xl": "px",
@@ -506,7 +495,7 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 65,
+							"font-size-xxl": 60,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 45,
 							"font-size-unit-xl": "px",
@@ -518,7 +507,7 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-s": "px",
 							"font-size-xs": 32,
 							"font-size-unit-xs": "px",
-							"line-height-xxl": 75,
+							"line-height-xxl": 70,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 55,
 							"line-height-unit-xl": "px",
@@ -546,7 +535,7 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 55,
+							"font-size-xxl": 50,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 38,
 							"font-size-unit-xl": "px",
@@ -558,7 +547,7 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-s": "px",
 							"font-size-xs": 28,
 							"font-size-unit-xs": "px",
-							"line-height-xxl": 65,
+							"line-height-xxl": 60,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 48,
 							"line-height-unit-xl": "px",
@@ -586,7 +575,7 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 45,
+							"font-size-xxl": 40,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 30,
 							"font-size-unit-xl": "px",
@@ -594,7 +583,7 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-m": "px",
 							"font-size-s": 24,
 							"font-size-unit-s": "px",
-							"line-height-xxl": 55,
+							"line-height-xxl": 50,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 40,
 							"line-height-unit-xl": "px",
@@ -650,13 +639,13 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 34,
+							"font-size-xxl": 30,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 22,
 							"font-size-unit-xl": "px",
 							"font-size-m": 20,
 							"font-size-unit-m": "px",
-							"line-height-xxl": 44,
+							"line-height-xxl": 40,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 32,
 							"line-height-unit-xl": "px",
@@ -678,15 +667,16 @@ class MaxiBlocks_StyleCards {
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 30,
+							"font-size-xxl": 26,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 20,
 							"font-size-unit-xl": "px",
 							"font-size-m": 18,
 							"font-size-unit-m": "px",
-							"line-height-xxl": 40,
+							"line-height-xxl": 36,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 30,
+							"line-height-unit-xl": "px",
 							"line-height-unit-l": "px",
 							"line-height-m": 28,
 							"line-height-unit-m": "px",
@@ -722,7 +712,7 @@ class MaxiBlocks_StyleCards {
 							"hover-palette-color": 5,
 							"hover-palette-opacity": 1,
 							"hover-color": "",
-							"font-family-general": "Roboto",
+							"font-family-general": "",
 							"font-size-xxl": 24,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,

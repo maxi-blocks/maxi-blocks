@@ -33,8 +33,9 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const IconToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, setAttributes, name, isSelected } = props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const { attributes, clientId, maxiSetAttributes, name, isSelected } =
+			props;
+		const { uniqueID } = attributes;
 
 		const { editorVersion, breakpoint } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -83,7 +84,7 @@ const IconToolbar = memo(
 				obj.captionContent = newCaptionContent;
 			}
 
-			setAttributes(obj);
+			maxiSetAttributes(obj);
 		};
 
 		return (
@@ -117,16 +118,15 @@ const IconToolbar = memo(
 								blockName={name}
 								{...getGroupAttributes(attributes, 'icon')}
 								onChange={obj => processAttributes(obj)}
-								parentBlockStyle={parentBlockStyle}
 							/>
 							<IconBackground
 								blockName={name}
+								breakpoint={breakpoint}
 								{...getGroupAttributes(attributes, [
 									'icon',
 									'iconBackgroundColor',
 								])}
 								onChange={obj => processAttributes(obj)}
-								parentBlockStyle={parentBlockStyle}
 							/>
 							<Border
 								blockName={name}
@@ -135,7 +135,7 @@ const IconToolbar = memo(
 									'iconBorderWidth',
 									'iconBorderRadius',
 								])}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
 								isIconToolbar
@@ -147,7 +147,7 @@ const IconToolbar = memo(
 									attributes,
 									'iconPadding'
 								)}
-								onChange={obj => setAttributes(obj)}
+								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								disableMargin
 								paddingTarget='icon-padding'

@@ -56,21 +56,21 @@ const NumberCounterControl = props => {
 				label={__('Width', 'maxi-blocks')}
 				className='maxi-number-counter-control__width'
 				enableUnit
-				unit={getLastBreakpointAttribute(
-					'number-counter-width-unit',
+				unit={getLastBreakpointAttribute({
+					target: 'number-counter-width-unit',
 					breakpoint,
-					props
-				)}
+					attributes: props,
+				})}
 				onChangeUnit={val =>
 					onChange({
 						[`number-counter-width-unit-${breakpoint}`]: val,
 					})
 				}
-				value={getLastBreakpointAttribute(
-					'number-counter-width',
+				value={getLastBreakpointAttribute({
+					target: 'number-counter-width',
 					breakpoint,
-					props
-				)}
+					attributes: props,
+				})}
 				onChangeValue={val =>
 					onChange({ [`number-counter-width-${breakpoint}`]: val })
 				}
@@ -279,7 +279,7 @@ const NumberCounterControl = props => {
 				paletteColor={props['number-counter-text-palette-color']}
 				paletteOpacity={props['number-counter-palette-text-opacity']}
 				color={props['number-counter-text-color']}
-				defaultColor={getDefaultAttribute('number-counter-text-color')}
+				prefix='number-counter-text-'
 				onChange={({
 					paletteStatus,
 					paletteColor,
@@ -315,9 +315,7 @@ const NumberCounterControl = props => {
 							]
 						}
 						color={props['number-counter-circle-background-color']}
-						defaultColor={getDefaultAttribute(
-							'number-counter-circle-background-color'
-						)}
+						prefix='number-counter-circle-background-'
 						onChange={({
 							paletteStatus,
 							paletteColor,
@@ -348,9 +346,7 @@ const NumberCounterControl = props => {
 							props['number-counter-circle-bar-palette-opacity']
 						}
 						color={props['number-counter-circle-bar-color']}
-						defaultColor={getDefaultAttribute(
-							'number-counter-circle-bar-color'
-						)}
+						prefix='number-counter-circle-bar-'
 						onChange={({
 							paletteStatus,
 							paletteColor,

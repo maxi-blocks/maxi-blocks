@@ -15,7 +15,9 @@ import FontFamilySelector from '../font-family-selector';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
-import ButtonGroupControl from '../button-group-control';
+import SettingTabsControl from '../setting-tabs-control';
+import { loadFonts } from '../../extensions/text/fonts';
+
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -27,6 +29,7 @@ import {
 	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**
  * External dependencies
@@ -94,10 +97,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}font-size-unit`]: getDefault(
-								`${prefix}font-size-unit`
+								`${prefix}font-size-unit`,
+								breakpoint
 							),
 							[`${prefix}font-size`]: getDefault(
-								`${prefix}font-size`
+								`${prefix}font-size`,
+								breakpoint
 							),
 						},
 						breakpoint
@@ -157,10 +162,12 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}line-height-unit`]: getDefault(
-								`${prefix}line-height-unit`
+								`${prefix}line-height-unit`,
+								breakpoint
 							),
 							[`${prefix}line-height`]: getDefault(
-								`${prefix}line-height`
+								`${prefix}line-height`,
+								breakpoint
 							),
 						},
 						breakpoint
@@ -215,7 +222,8 @@ const TextOptions = props => {
 					onChangeFormat(
 						{
 							[`${prefix}letter-spacing-unit`]: getDefault(
-								`${prefix}letter-spacing-unit`
+								`${prefix}letter-spacing-unit`,
+								breakpoint
 							),
 							[`${prefix}letter-spacing`]: '',
 						},
@@ -232,7 +240,6 @@ const TextOptions = props => {
 const LinkOptions = props => {
 	const {
 		getValue,
-		getDefault,
 		onChangeFormat,
 		prefix,
 		breakpoint,
@@ -244,25 +251,51 @@ const LinkOptions = props => {
 
 	return (
 		<>
-			<ButtonGroupControl
+			<SettingTabsControl
+				type='buttons'
+				fullWidthMode
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
-				options={[
+				items={[
 					{
 						label: __('Link', 'maxi-block'),
 						value: 'normal_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-color`,
+							`${prefix}link-palette-color`,
+							`${prefix}link-palette-opacity`,
+							`${prefix}link-palette-status`,
+						],
 					},
 					{
 						label: __('Hover', 'maxi-block'),
 						value: 'hover_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-hover-color`,
+							`${prefix}link-hover-palette-color`,
+							`${prefix}link-hover-palette-opacity`,
+							`${prefix}link-hover-palette-status`,
+						],
 					},
 					{
 						label: __('Active', 'maxi-block'),
 						value: 'active_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-active-color`,
+							`${prefix}link-active-palette-color`,
+							`${prefix}link-active-palette-opacity`,
+							`${prefix}link-active-palette-status`,
+						],
 					},
 					{
 						label: __('Visited', 'maxi-block'),
 						value: 'visited_link',
+						extraIndicatorsResponsive: [
+							`${prefix}link-visited-color`,
+							`${prefix}link-visited-palette-color`,
+							`${prefix}link-visited-palette-opacity`,
+							`${prefix}link-visited-palette-status`,
+						],
 					},
 				]}
 				onChange={val => setLinkStatus(val)}
@@ -272,7 +305,8 @@ const LinkOptions = props => {
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-color'
 					color={getValue(`${prefix}link-color`)}
-					defaultColor={getDefault(`${prefix}link-color`)}
+					prefix={`${prefix}link-`}
+					useBreakpointForDefault
 					paletteStatus={getValue(`${prefix}link-palette-status`)}
 					paletteColor={getValue(`${prefix}link-palette-color`)}
 					paletteOpacity={
@@ -308,7 +342,8 @@ const LinkOptions = props => {
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-hover-color'
 					color={getValue(`${prefix}link-hover-color`)}
-					defaultColor={getDefault(`${prefix}link-hover-color`)}
+					prefix={`${prefix}link-hover-`}
+					useBreakpointForDefault
 					paletteStatus={getValue(
 						`${prefix}link-hover-palette-status`
 					)}
@@ -348,7 +383,8 @@ const LinkOptions = props => {
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-active-color'
 					color={getValue(`${prefix}link-active-color`)}
-					defaultColor={getDefault(`${prefix}link-active-color`)}
+					prefix={`${prefix}link-active-`}
+					useBreakpointForDefault
 					paletteStatus={getValue(
 						`${prefix}link-active-palette-status`
 					)}
@@ -390,7 +426,8 @@ const LinkOptions = props => {
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-visited-color'
 					color={getValue(`${prefix}link-visited-color`)}
-					defaultColor={getDefault(`${prefix}link-visited-color`)}
+					prefix={`${prefix}link-visited-`}
+					useBreakpointForDefault
 					paletteStatus={getValue(
 						`${prefix}link-visited-palette-status`
 					)}
@@ -518,34 +555,43 @@ const TypographyControl = withFormatValue(props => {
 		},
 	};
 
-	const getValue = (
-		prop,
-		customBreakpoint,
-		avoidXXL,
-		customDisableFormats = false
-	) => {
+	const getValue = (prop, customBreakpoint, avoidXXL, avoidSC = false) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
-		if (disableFormats || customDisableFormats)
-			return getLastBreakpointAttribute(
-				prop,
-				currentBreakpoint,
-				typography,
+		if (disableFormats)
+			return getLastBreakpointAttribute({
+				target: prop,
+				breakpoint: currentBreakpoint,
+				attributes: typography,
 				isHover,
-				false,
-				avoidXXL
-			);
+				avoidXXL,
+			});
 
-		const nonHoverValue = getCustomFormatValue({
-			typography,
-			formatValue,
-			prop,
-			breakpoint: currentBreakpoint,
-			textLevel,
-			styleCard,
-			styleCardPrefix,
-			avoidXXL,
-		});
+		const nonHoverValue =
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop,
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+				avoidSC,
+			}) ??
+			// In cases like HoverEffectControl, where we want the SC 'p' value
+			// but requires a clean 'prop' value (no prefix)
+			getCustomFormatValue({
+				typography,
+				formatValue,
+				prop: prop.replace(prefix, ''),
+				breakpoint: currentBreakpoint,
+				textLevel,
+				styleCard,
+				styleCardPrefix,
+				avoidXXL,
+				avoidSC,
+			});
 
 		if (!isHover) return nonHoverValue;
 
@@ -638,10 +684,15 @@ const TypographyControl = withFormatValue(props => {
 
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
-		const defaultAttribute = getDefaultAttribute(
-			`${prop}-${currentBreakpoint}`,
-			clientId
-		);
+
+		const defaultAttribute = !styleCards
+			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
+			: getDefaultSCValue({
+					target: `${prop}-${currentBreakpoint}`,
+					SC: styleCard,
+					SCStyle: blockStyle,
+					groupAttr: textLevel,
+			  });
 
 		return defaultAttribute;
 	};
@@ -668,13 +719,7 @@ const TypographyControl = withFormatValue(props => {
 		const newFormatValue = { ...obj.formatValue };
 		delete obj.formatValue;
 
-		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
-		setTimeout(() => {
-			dispatch('maxiBlocks/text').sendFormatValue(
-				newFormatValue,
-				clientId
-			);
-		}, 200); // higher than the 150 of `onChangeRichText` method
+		dispatch('maxiBlocks/text').sendFormatValue(newFormatValue, clientId);
 
 		onChange(obj);
 	};
@@ -697,6 +742,8 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}font-options`]: font.files,
 						});
 					}}
+					fontWeight={getValue(`${prefix}font-weight`)}
+					fontStyle={getValue(`${prefix}font-style`)}
 				/>
 			)}
 			{!disableColor && !styleCards && (
@@ -704,7 +751,7 @@ const TypographyControl = withFormatValue(props => {
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-control__color'
 					color={getValue(`${prefix}color`)}
-					defaultColor={getDefault(`${prefix}color`)}
+					prefix={prefix}
 					paletteColor={getValue(`${prefix}palette-color`)}
 					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-status`)}
@@ -766,6 +813,14 @@ const TypographyControl = withFormatValue(props => {
 				options={getWeightOptions()}
 				onChange={val => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
+					const fontName = getValue(`${prefix}font-family`);
+					const fontStyle = getValue(`${prefix}font-style`);
+					const objFont = { [fontName]: {} };
+
+					objFont[fontName].weight = val.toString();
+					if (fontStyle) objFont[fontName].style = fontStyle;
+
+					loadFonts(objFont);
 				}}
 			/>
 			<SelectControl
@@ -852,6 +907,112 @@ const TypographyControl = withFormatValue(props => {
 					});
 				}}
 			/>
+			<SelectControl
+				label={__('Text orientation', 'maxi-blocks')}
+				className='maxi-typography-control__decoration'
+				value={getValue(
+					`${prefix}text-orientation`,
+					breakpoint,
+					false,
+					true
+				)}
+				options={[
+					{
+						label: __('None', 'maxi-blocks'),
+						value: '',
+					},
+					{
+						label: __('Mixed', 'maxi-blocks'),
+						value: 'mixed',
+					},
+					{
+						label: __('Upright', 'maxi-blocks'),
+						value: 'upright',
+					},
+					{
+						label: __('Sideways', 'maxi-blocks'),
+						value: 'sideways',
+					},
+				]}
+				onChange={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-orientation`]: val,
+						},
+						breakpoint,
+						true
+					);
+				}}
+			/>
+			<AdvancedNumberControl
+				className='maxi-typography-control__text-indent'
+				label={__('Text indent', 'maxi-blocks')}
+				enableUnit
+				unit={getValue(`${prefix}text-indent-unit`, breakpoint)}
+				defaultUnit={getDefault(
+					`${prefix}text-indent-unit`,
+					breakpoint
+				)}
+				onChangeUnit={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-indent-unit`]: val,
+						},
+						breakpoint,
+						true
+					);
+				}}
+				placeholder={getValue(`${prefix}text-indent`, breakpoint)}
+				value={getValue(
+					`${prefix}text-indent`,
+					breakpoint,
+					false,
+					true
+				)}
+				defaultValue={getDefault(`${prefix}text-indent`, breakpoint)}
+				onChangeValue={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-indent`]: val,
+						},
+						breakpoint,
+						true
+					);
+				}}
+				onReset={() =>
+					onChangeFormat(
+						{
+							[`${prefix}text-indent-unit`]: getDefault(
+								`${prefix}text-indent-unit`
+							),
+							[`${prefix}text-indent`]: getDefault(
+								`${prefix}text-indent`
+							),
+						},
+						breakpoint,
+						true
+					)
+				}
+				minMaxSettings={{
+					px: {
+						min: -99,
+						max: 99,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
+				allowedUnits={['px', 'em', 'vw', '%']}
+			/>
 			{!hideTextShadow && (
 				<>
 					<hr />
@@ -863,11 +1024,11 @@ const TypographyControl = withFormatValue(props => {
 								[`${prefix}text-shadow`]: val,
 							});
 						}}
-						defaultColor={getLastBreakpointAttribute(
-							'color',
+						defaultColor={getLastBreakpointAttribute({
+							target: 'color',
 							breakpoint,
-							typography
-						)}
+							attributes: typography,
+						})}
 						blockStyle={blockStyle}
 						breakpoint={breakpoint}
 					/>

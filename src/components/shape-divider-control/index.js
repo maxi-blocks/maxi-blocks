@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SettingTabsControl from '../setting-tabs-control';
-import ButtonGroupControl from '../button-group-control';
 import OpacityControl from '../opacity-control';
 import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
@@ -70,50 +69,50 @@ const ShapeDividerControl = props => {
 
 	const shapeItemsTop = [
 		{ label: __('None', 'max-block'), value: '' },
-		{ label: wavesTop, value: 'waves-top' },
-		{ label: wavesTopOpacity, value: 'waves-top-opacity' },
-		{ label: waveTop, value: 'wave-top' },
-		{ label: waveTopOpacity, value: 'wave-top-opacity' },
-		{ label: triangleTop, value: 'triangle-top' },
-		{ label: swishTop, value: 'swish-top' },
-		{ label: swishTopOpacity, value: 'swish-top-opacity' },
-		{ label: slantTop, value: 'slant-top' },
-		{ label: slantTopOpacity, value: 'slant-top-opacity' },
-		{ label: peakTop, value: 'peak-top' },
-		{ label: mountainsTop, value: 'mountains-top' },
-		{ label: mountainsTopOpacity, value: 'mountains-top-opacity' },
-		{ label: curveTop, value: 'curve-top' },
-		{ label: curveTopOpacity, value: 'curve-top-opacity' },
-		{ label: arrowTop, value: 'arrow-top' },
-		{ label: arrowTopOpacity, value: 'arrow-top-opacity' },
-		{ label: asymmetricTop, value: 'asymmetric-top' },
-		{ label: asymmetricTopOpacity, value: 'asymmetric-top-opacity' },
-		{ label: cloudTop, value: 'cloud-top' },
-		{ label: cloudTopOpacity, value: 'cloud-top-opacity' },
+		{ icon: wavesTop, value: 'waves-top' },
+		{ icon: wavesTopOpacity, value: 'waves-top-opacity' },
+		{ icon: waveTop, value: 'wave-top' },
+		{ icon: waveTopOpacity, value: 'wave-top-opacity' },
+		{ icon: triangleTop, value: 'triangle-top' },
+		{ icon: swishTop, value: 'swish-top' },
+		{ icon: swishTopOpacity, value: 'swish-top-opacity' },
+		{ icon: slantTop, value: 'slant-top' },
+		{ icon: slantTopOpacity, value: 'slant-top-opacity' },
+		{ icon: peakTop, value: 'peak-top' },
+		{ icon: mountainsTop, value: 'mountains-top' },
+		{ icon: mountainsTopOpacity, value: 'mountains-top-opacity' },
+		{ icon: curveTop, value: 'curve-top' },
+		{ icon: curveTopOpacity, value: 'curve-top-opacity' },
+		{ icon: arrowTop, value: 'arrow-top' },
+		{ icon: arrowTopOpacity, value: 'arrow-top-opacity' },
+		{ icon: asymmetricTop, value: 'asymmetric-top' },
+		{ icon: asymmetricTopOpacity, value: 'asymmetric-top-opacity' },
+		{ icon: cloudTop, value: 'cloud-top' },
+		{ icon: cloudTopOpacity, value: 'cloud-top-opacity' },
 	];
 
 	const shapeItemsBottom = [
 		{ label: __('None', 'max-block'), value: '' },
-		{ label: wavesBottom, value: 'waves-bottom' },
-		{ label: wavesBottomOpacity, value: 'waves-bottom-opacity' },
-		{ label: waveBottom, value: 'wave-bottom' },
-		{ label: waveBottomOpacity, value: 'wave-bottom-opacity' },
-		{ label: triangleBottom, value: 'triangle-bottom' },
-		{ label: swishBottom, value: 'swish-bottom' },
-		{ label: swishBottomOpacity, value: 'swish-bottom-opacity' },
-		{ label: slantBottom, value: 'slant-bottom' },
-		{ label: slantBottomOpacity, value: 'slant-bottom-opacity' },
-		{ label: peakBottom, value: 'peak-bottom' },
-		{ label: mountainsBottom, value: 'mountains-bottom' },
-		{ label: mountainsBottomOpacity, value: 'mountains-bottom-opacity' },
-		{ label: curveBottom, value: 'curve-bottom' },
-		{ label: curveBottomOpacity, value: 'curve-bottom-opacity' },
-		{ label: arrowBottom, value: 'arrow-bottom' },
-		{ label: arrowBottomOpacity, value: 'arrow-bottom-opacity' },
-		{ label: asymmetricBottom, value: 'asymmetric-bottom' },
-		{ label: asymmetricBottomOpacity, value: 'asymmetric-bottom-opacity' },
-		{ label: cloudBottom, value: 'cloud-bottom' },
-		{ label: cloudBottomOpacity, value: 'cloud-bottom-opacity' },
+		{ icon: wavesBottom, value: 'waves-bottom' },
+		{ icon: wavesBottomOpacity, value: 'waves-bottom-opacity' },
+		{ icon: waveBottom, value: 'wave-bottom' },
+		{ icon: waveBottomOpacity, value: 'wave-bottom-opacity' },
+		{ icon: triangleBottom, value: 'triangle-bottom' },
+		{ icon: swishBottom, value: 'swish-bottom' },
+		{ icon: swishBottomOpacity, value: 'swish-bottom-opacity' },
+		{ icon: slantBottom, value: 'slant-bottom' },
+		{ icon: slantBottomOpacity, value: 'slant-bottom-opacity' },
+		{ icon: peakBottom, value: 'peak-bottom' },
+		{ icon: mountainsBottom, value: 'mountains-bottom' },
+		{ icon: mountainsBottomOpacity, value: 'mountains-bottom-opacity' },
+		{ icon: curveBottom, value: 'curve-bottom' },
+		{ icon: curveBottomOpacity, value: 'curve-bottom-opacity' },
+		{ icon: arrowBottom, value: 'arrow-bottom' },
+		{ icon: arrowBottomOpacity, value: 'arrow-bottom-opacity' },
+		{ icon: asymmetricBottom, value: 'asymmetric-bottom' },
+		{ icon: asymmetricBottomOpacity, value: 'asymmetric-bottom-opacity' },
+		{ icon: cloudBottom, value: 'cloud-bottom' },
+		{ icon: cloudBottomOpacity, value: 'cloud-bottom-opacity' },
 	];
 
 	const showShapes = position => {
@@ -208,7 +207,7 @@ const ShapeDividerControl = props => {
 	};
 
 	return (
-		<div className='maxi-shapedividercontrol'>
+		<div className='maxi-shape-divider-control'>
 			<SettingTabsControl
 				items={[
 					{
@@ -231,15 +230,15 @@ const ShapeDividerControl = props => {
 								{!!props['shape-divider-top-status'] && (
 									<>
 										<Dropdown
-											className='maxi-shapedividercontrol__shape-selector'
-											contentClassName='maxi-shapedividercontrol_popover'
+											className='maxi-shape-divider-control__shape-selector'
+											contentClassName='maxi-shape-divider-control_popover'
 											position='bottom center'
 											renderToggle={({
 												isOpen,
 												onToggle,
 											}) => (
 												<button
-													className='maxi-shapedividercontrol__shape-selector__display'
+													className='maxi-shape-divider-control__shape-selector__display'
 													onClick={onToggle}
 													type='button'
 												>
@@ -247,14 +246,15 @@ const ShapeDividerControl = props => {
 												</button>
 											)}
 											renderContent={() => (
-												<ButtonGroupControl
-													className='maxi-shapedividercontrol__shape-list'
+												<SettingTabsControl
+													type='buttons'
+													className='maxi-shape-divider-control__shape-list'
 													selected={
 														props[
 															'shape-divider-top-shape-style'
 														]
 													}
-													options={shapeItemsTop}
+													items={shapeItemsTop}
 													onChange={shapeStyle =>
 														onChange({
 															'shape-divider-top-shape-style':
@@ -286,9 +286,7 @@ const ShapeDividerControl = props => {
 											color={
 												props['shape-divider-top-color']
 											}
-											defaultColor={getDefaultAttribute(
-												'shape-divider-top-color'
-											)}
+											prefix='shape-divider-top-'
 											paletteColor={
 												props[
 													'shape-divider-top-palette-color'
@@ -316,6 +314,7 @@ const ShapeDividerControl = props => {
 											disableOpacity
 										/>
 										<AdvancedNumberControl
+											className='maxi-divider-height'
 											label={__(
 												'Divider height',
 												'maxi-blocks'
@@ -379,6 +378,7 @@ const ShapeDividerControl = props => {
 								)}
 							</>
 						),
+						extraIndicators: ['shape-divider-top-status'],
 					},
 					{
 						label: __('Bottom shape divider', 'maxi-blocks'),
@@ -402,15 +402,15 @@ const ShapeDividerControl = props => {
 								{!!props['shape-divider-bottom-status'] && (
 									<>
 										<Dropdown
-											className='maxi-shapedividercontrol__shape-selector'
-											contentClassName='maxi-shapedividercontrol_popover'
+											className='maxi-shape-divider-control__shape-selector'
+											contentClassName='maxi-shape-divider-control_popover'
 											position='bottom center'
 											renderToggle={({
 												isOpen,
 												onToggle,
 											}) => (
 												<button
-													className='maxi-shapedividercontrol__shape-selector__display'
+													className='maxi-shape-divider-control__shape-selector__display'
 													onClick={onToggle}
 													type='button'
 												>
@@ -418,14 +418,15 @@ const ShapeDividerControl = props => {
 												</button>
 											)}
 											renderContent={() => (
-												<ButtonGroupControl
-													className='maxi-shapedividercontrol__shape-list'
+												<SettingTabsControl
+													type='buttons'
+													className='maxi-shape-divider-control__shape-list'
 													selected={
 														props[
 															'shape-divider-bottom-shape-style'
 														]
 													}
-													options={shapeItemsBottom}
+													items={shapeItemsBottom}
 													onChange={shapeStyle =>
 														onChange({
 															'shape-divider-bottom-shape-style':
@@ -459,9 +460,7 @@ const ShapeDividerControl = props => {
 													'shape-divider-bottom-color'
 												]
 											}
-											defaultColor={getDefaultAttribute(
-												'shape-divider-bottom-color'
-											)}
+											prefix='shape-divider-bottom-'
 											paletteColor={
 												props[
 													'shape-divider-bottom-palette-color'
@@ -552,6 +551,7 @@ const ShapeDividerControl = props => {
 								)}
 							</>
 						),
+						extraIndicators: ['shape-divider-bottom-status'],
 					},
 				]}
 			/>

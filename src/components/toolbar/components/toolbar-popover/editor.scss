@@ -7,7 +7,7 @@
 				flex: 3 !important;
 			}
 		}
-		.maxi-button-group-control__option {
+		.maxi-tabs-control__button {
 			opacity: 1 !important;
 			min-width: 40px;
 			height: 30px;
@@ -73,14 +73,16 @@
 				margin-bottom: 10px;
 			}
 			&-box {
-				background-color: #52545f;
+				background-color: #fff;
+				width: 35px;
+				height: 35px;
 				&__active,
 				&:hover {
-					border-color: #fff;
+					border-color: #ff4a17;
 				}
 			}
 			&-item {
-				border-color: #fff;
+				border-color: #141516;
 			}
 		}
 	}
@@ -96,17 +98,6 @@
 			background-color: transparent !important;
 			& > div:last-of-type {
 				padding-bottom: 0 !important;
-			}
-			label {
-				color: #fff !important;
-			}
-			input {
-				background-color: transparent !important;
-				color: #fff !important;
-				border-color: #80828a !important;
-			}
-			svg path {
-				fill: #fff !important;
 			}
 		}
 	}

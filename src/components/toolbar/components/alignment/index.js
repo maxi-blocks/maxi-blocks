@@ -7,31 +7,22 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AlignmentControl from '../../../alignment-control';
-import ToolbarPopover from '../toolbar-popover';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/styles';
+import Button from '../../../button';
+import Dropdown from '../../../dropdown';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import {
-	alignLeft,
-	alignCenter,
-	alignRight,
-	alignJustify,
-} from '../../../../icons';
 
 /**
  * Alignment
  */
 const ALLOWED_BLOCKS = [
-	'maxi-blocks/text-maxi',
 	'maxi-blocks/button-maxi',
-	'maxi-blocks/image-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/image-maxi',
 ];
 
 const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];
@@ -43,44 +34,30 @@ const Alignment = props => {
 
 	const isText = TEXT_BLOCKS.includes(blockName) || isCaptionToolbar;
 
-	const alignIcon = currentAlignIcon => {
-		switch (currentAlignIcon) {
-			case 'left':
-				return alignLeft;
-			case 'right':
-				return alignRight;
-			case 'justify':
-				return alignJustify;
-			case 'center':
-				return alignCenter;
-			default:
-				return alignLeft;
-		}
-	};
-
 	return (
-		<ToolbarPopover
+		<Dropdown
 			className='toolbar-item__alignment'
-			tooltip={__('Alignment', 'maxi-blocks')}
-			icon={alignIcon(
-				getLastBreakpointAttribute(
-					isText ? 'text-alignment' : 'alignment',
-					breakpoint,
-					props
-				)
+			contentClassName='maxi-dropdown__child-content maxi-dropdown__alignment-content'
+			position='bottom right'
+			renderToggle={({ isOpen, onToggle }) => (
+				<Button onClick={onToggle} text='Copy'>
+					{__('Align', 'maxi-blocks')}
+				</Button>
 			)}
-		>
-			<AlignmentControl
-				{...getGroupAttributes(
-					props,
-					isText ? 'textAlignment' : 'alignment'
-				)}
-				onChange={obj => onChange(obj)}
-				disableJustify={!isText}
-				breakpoint={breakpoint}
-				type={isText && 'text'}
-			/>
-		</ToolbarPopover>
+			renderContent={() => (
+				<AlignmentControl
+					{...getGroupAttributes(
+						props,
+						isText ? 'textAlignment' : 'alignment'
+					)}
+					onChange={obj => onChange(obj)}
+					disableJustify={!isText}
+					disableIcon
+					breakpoint={breakpoint}
+					type={isText && 'text'}
+				/>
+			)}
+		/>
 	);
 };
 

@@ -11,27 +11,29 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { opacity as opacityAttr } from '../../extensions/styles/defaults';
 
 /**
  * Component
  */
 const opacity = ({ props }) => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
 			<OpacityControl
-				opacity={getLastBreakpointAttribute(
-					'opacity',
-					deviceType,
-					getGroupAttributes(attributes, 'opacity')
-				)}
+				opacity={getLastBreakpointAttribute({
+					target: 'opacity',
+					breakpoint: deviceType,
+					attributes: getGroupAttributes(attributes, 'opacity'),
+				})}
 				onChange={val =>
-					setAttributes({ [`opacity-${deviceType}`]: val })
+					maxiSetAttributes({ [`opacity-${deviceType}`]: val })
 				}
 			/>
 		),
+		extraIndicators: Object.keys(opacityAttr),
 	};
 };
 

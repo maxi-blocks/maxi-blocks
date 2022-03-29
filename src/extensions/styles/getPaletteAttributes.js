@@ -24,12 +24,16 @@ const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
 			isHover && isBoolean(rawPaletteStatus)
 				? rawPaletteStatus
 				: nonHoverPaletteStatus;
-
 		return { paletteStatus, paletteColor, paletteOpacity, color };
 	}
 
 	const getValue = key =>
-		getLastBreakpointAttribute(`${prefix}${key}`, breakpoint, obj, isHover);
+		getLastBreakpointAttribute({
+			target: `${prefix}${key}`,
+			breakpoint,
+			attributes: obj,
+			isHover,
+		});
 
 	return {
 		paletteStatus: getValue('palette-status'),

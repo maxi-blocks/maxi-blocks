@@ -30,7 +30,7 @@ export const rawTypography = {
 		type: 'number',
 	},
 	'font-weight': {
-		type: 'number',
+		type: 'string',
 	},
 	'text-transform': {
 		type: 'string',
@@ -41,6 +41,13 @@ export const rawTypography = {
 	'text-decoration': {
 		type: 'string',
 	},
+	'text-indent': {
+		type: 'number',
+	},
+	'text-indent-unit': {
+		type: 'string',
+		default: 'px',
+	},
 	'text-shadow': {
 		type: 'string',
 	},
@@ -49,6 +56,9 @@ export const rawTypography = {
 	},
 	'custom-formats': {
 		type: 'object',
+	},
+	'text-orientation': {
+		type: 'string',
 	},
 };
 

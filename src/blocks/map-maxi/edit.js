@@ -9,9 +9,13 @@ import { withSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
+import {
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { defaultMarkers } from './defaultMarkers';
@@ -149,16 +153,14 @@ class edit extends MaxiBlockComponent {
 }
 
 const editSelect = withSelect(select => {
-	const { receiveMaxiSettings, receiveMaxiDeviceType } = select('maxiBlocks');
+	const { receiveMaxiSettings } = select('maxiBlocks');
 
-	const deviceType = receiveMaxiDeviceType();
 	const maxiSettings = receiveMaxiSettings();
 	const { google_api_key: apiKey = false } = maxiSettings;
 
 	return {
-		deviceType,
 		apiKey,
 	};
 });
 
-export default compose(editSelect)(edit);
+export default compose(editSelect, withMaxiProps)(edit);

@@ -1,15 +1,5 @@
 import getCustomFormatsStyles from '../getCustomFormatsStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
-});
-
 describe('getCustomFormatsStyles', () => {
 	it('Get a correct custom formats styles', () => {
 		const object = {
@@ -45,7 +35,7 @@ describe('getCustomFormatsStyles', () => {
 			'line-height-xxl': 2,
 			'letter-spacing-unit-xxl': 'px',
 			'letter-spacing-xxl': 3,
-			'font-weight-xxl': 4,
+			'font-weight-xxl': '4',
 			'text-transform-xxl': 'none',
 			'font-style-xxl': 'bold',
 			'text-decoration-xxl': 'underline',
@@ -59,7 +49,7 @@ describe('getCustomFormatsStyles', () => {
 			'line-height-xl': 2,
 			'letter-spacing-unit-xl': 'px',
 			'letter-spacing-xl': 3,
-			'font-weight-xl': 4,
+			'font-weight-xl': '4',
 			'text-transform-xl': 'none',
 			'font-style-xl': 'bold',
 			'text-decoration-xl': 'underline',
@@ -73,7 +63,7 @@ describe('getCustomFormatsStyles', () => {
 			'line-height-l': 2,
 			'letter-spacing-unit-l': 'px',
 			'letter-spacing-l': 3,
-			'font-weight-l': 4,
+			'font-weight-l': '4',
 			'text-transform-l': 'none',
 			'font-style-l': 'bold',
 			'text-decoration-l': 'underline',
@@ -87,7 +77,7 @@ describe('getCustomFormatsStyles', () => {
 			'line-height-m': 2,
 			'letter-spacing-unit-m': 'px',
 			'letter-spacing-m': 3,
-			'font-weight-m': 4,
+			'font-weight-m': '4',
 			'text-transform-m': 'none',
 			'font-style-m': 'bold',
 			'text-decoration-m': 'underline',
@@ -101,7 +91,7 @@ describe('getCustomFormatsStyles', () => {
 			'line-height-s': 2,
 			'letter-spacing-unit-s': 'px',
 			'letter-spacing-s': 3,
-			'font-weight-s': 4,
+			'font-weight-s': '4',
 			'text-transform-s': 'none',
 			'font-style-s': 'bold',
 			'text-decoration-s': 'underline',
@@ -115,7 +105,7 @@ describe('getCustomFormatsStyles', () => {
 			'line-height-xs': 2,
 			'letter-spacing-unit-xs': 'px',
 			'letter-spacing-xs': 3,
-			'font-weight-xs': 4,
+			'font-weight-xs': '4',
 			'text-transform-xs': 'none',
 			'font-style-xs': 'bold',
 			'text-decoration-xs': 'underline',

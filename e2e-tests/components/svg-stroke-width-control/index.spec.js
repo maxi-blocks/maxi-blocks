@@ -5,7 +5,6 @@ import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
-	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -16,6 +15,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	changeResponsive,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Svg stroke width control', () => {
@@ -26,32 +26,25 @@ describe('Svg stroke width control', () => {
 
 		// Close model opened automatically by the block
 		await page.waitForSelector(
-			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container'
+			'.components-modal__content .components-modal__header button'
 		);
-		await page.$$eval(
-			'.components-modal__content .maxi-cloud-container .ais-InfiniteHits-list .maxi-cloud-masonry-card__svg-container',
-			svg => svg[0].click()
+		await page.$eval(
+			'.components-modal__content .components-modal__header button',
+			svg => svg.click()
 		);
 
-		const accordionPanel = await openSidebarTab(
+		await openSidebarTab(page, 'style', 'icon line width');
+
+		await editAdvancedNumberControl({
 			page,
-			'style',
-			'icon line width'
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-advanced-number-control input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('3');
+			instance: await page.$('.maxi-advanced-number-control'),
+			newNumber: '3',
+		});
 
 		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
-
 	it('Check responsive svg stroke width control', async () => {
 		await changeResponsive(page, 's');
 		const accordionPanel = await openSidebarTab(
@@ -60,33 +53,31 @@ describe('Svg stroke width control', () => {
 			'icon line width'
 		);
 
-		const baseStrokeValue = await accordionPanel.$$eval(
+		const baseStrokeValue = await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
-			input => input[1].value
+			input => input.placeholder
 		);
 		expect(baseStrokeValue).toStrictEqual('3');
 
-		await accordionPanel.$$eval(
-			'.maxi-advanced-number-control input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-advanced-number-control'),
+			newNumber: '1',
+		});
 
 		await changeResponsive(page, 'xs');
 
-		const sStrokeValue = await accordionPanel.$$eval(
+		const sStrokeValue = await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
-			input => input[1].value
+			input => input.placeholder
 		);
 		expect(sStrokeValue).toStrictEqual('1');
 
 		await changeResponsive(page, 'm');
 
-		const mStrokeValue = await accordionPanel.$$eval(
+		const mStrokeValue = await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
-			input => input[1].value
+			input => input.placeholder
 		);
 		expect(mStrokeValue).toStrictEqual('3');
 	});

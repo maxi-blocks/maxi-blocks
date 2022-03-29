@@ -23,28 +23,28 @@ const getImageShapeStyles = (target = 'svg', obj, prefix = '') => {
 
 	breakpoints.forEach(breakpoint => {
 		let transformString = '';
-		const scale = getLastBreakpointAttribute(
-			`${prefix}image-shape-scale`,
+		const scale = getLastBreakpointAttribute({
+			target: `${prefix}image-shape-scale`,
 			breakpoint,
-			obj
-		);
-		const rotate = getLastBreakpointAttribute(
-			`${prefix}image-shape-rotate`,
+			attributes: obj,
+		});
+		const rotate = getLastBreakpointAttribute({
+			target: `${prefix}image-shape-rotate`,
 			breakpoint,
-			obj
-		);
+			attributes: obj,
+		});
 
-		const flipX = getLastBreakpointAttribute(
-			`${prefix}image-shape-flip-x`,
+		const flipX = getLastBreakpointAttribute({
+			target: `${prefix}image-shape-flip-x`,
 			breakpoint,
-			obj
-		);
+			attributes: obj,
+		});
 
-		const flipY = getLastBreakpointAttribute(
-			`${prefix}image-shape-flip-y`,
+		const flipY = getLastBreakpointAttribute({
+			target: `${prefix}image-shape-flip-y`,
 			breakpoint,
-			obj
-		);
+			attributes: obj,
+		});
 
 		if (isNumber(scale)) {
 			if (target === 'svg') transformString += `scale(${scale / 100}) `;

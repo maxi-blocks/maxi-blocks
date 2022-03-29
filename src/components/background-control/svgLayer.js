@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import AxisControl from '../axis-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
@@ -23,7 +24,6 @@ import { getDefaultLayerAttr } from './utils';
  * External dependencies
  */
 import { isEmpty, cloneDeep } from 'lodash';
-import { AxisControl } from '..';
 
 /**
  * Component
@@ -34,7 +34,6 @@ const SVGLayerContent = props => {
 		isHover = false,
 		prefix = '',
 		breakpoint,
-		isGeneral = false,
 		isLayer = false,
 	} = props;
 
@@ -77,8 +76,9 @@ const SVGLayerContent = props => {
 						content: (
 							<AxisControl
 								{...SVGOptions}
+								label='Position'
 								target='background-svg-position'
-								breakpoint={isGeneral ? 'general' : breakpoint}
+								breakpoint={breakpoint}
 								onChange={obj => onChange(obj)}
 								optionType='string'
 							/>
@@ -89,20 +89,20 @@ const SVGLayerContent = props => {
 						content: (
 							<AdvancedNumberControl
 								label={__('Size', 'maxi-blocks')}
-								value={getLastBreakpointAttribute(
-									`${prefix}background-svg-size`,
+								value={getLastBreakpointAttribute({
+									target: `${prefix}background-svg-size`,
 									breakpoint,
-									SVGOptions,
-									isHover
-								)}
+									attributes: SVGOptions,
+									isHover,
+								})}
 								allowedUnits={['px', 'em', 'vw', '%']}
 								enableUnit
-								unit={getLastBreakpointAttribute(
-									`${prefix}background-svg-size-unit`,
+								unit={getLastBreakpointAttribute({
+									target: `${prefix}background-svg-size-unit`,
 									breakpoint,
-									SVGOptions,
-									isHover
-								)}
+									attributes: SVGOptions,
+									isHover,
+								})}
 								onChangeValue={val => {
 									onChange({
 										[getAttributeKey(
@@ -111,14 +111,6 @@ const SVGLayerContent = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-svg-size',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									});
 								}}
 								onChangeUnit={val =>
@@ -129,14 +121,6 @@ const SVGLayerContent = props => {
 											prefix,
 											breakpoint
 										)]: val,
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-svg-size-unit',
-												isHover,
-												prefix,
-												'general'
-											)]: val,
-										}),
 									})
 								}
 								onReset={() =>
@@ -157,24 +141,6 @@ const SVGLayerContent = props => {
 										)]: getDefaultAttr(
 											'background-svg-size-unit'
 										),
-										...(isGeneral && {
-											[getAttributeKey(
-												'background-svg-size',
-												isHover,
-												prefix,
-												'general'
-											)]: getDefaultAttr(
-												'background-svg-size'
-											),
-											[getAttributeKey(
-												'background-svg-size-unit',
-												isHover,
-												prefix,
-												'general'
-											)]: getDefaultAttr(
-												'background-svg-size-unit'
-											),
-										}),
 									})
 								}
 								minMaxSettings={minMaxSettings}
@@ -215,12 +181,6 @@ const SVGLayer = props => {
 								`${prefix}background-svg-SVGElement`
 							];
 							delete SVGOptions[
-								`${prefix}background-svg-SVGMediaID`
-							];
-							delete SVGOptions[
-								`${prefix}background-svg-SVGMediaURL`
-							];
-							delete SVGOptions[
 								`${prefix}background-svg-SVGData`
 							];
 						}
@@ -232,15 +192,13 @@ const SVGLayer = props => {
 			)}
 			{!isEmpty(SVGElement) && (
 				<>
-					{(!isHover || (isHover && isLayerHover)) && (
-						<SVGFillControl
-							SVGOptions={SVGOptions}
-							onChange={obj => onChange(obj)}
-							clientId={clientId}
-							isHover={isHover}
-							breakpoint={breakpoint}
-						/>
-					)}
+					<SVGFillControl
+						SVGOptions={SVGOptions}
+						onChange={obj => onChange(obj)}
+						clientId={clientId}
+						isHover={isHover}
+						breakpoint={breakpoint}
+					/>
 					<ResponsiveTabsControl breakpoint={breakpoint}>
 						<SVGLayerContent
 							SVGOptions={SVGOptions}

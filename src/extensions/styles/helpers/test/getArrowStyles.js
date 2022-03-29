@@ -1,14 +1,29 @@
-// import '@wordpress/block-editor';
 import getArrowStyles from '../getArrowStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
+jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
+	return jest.fn(() => {
+		return {
+			value: {
+				name: 'Maxi (Default)',
+				status: 'active',
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						color: {
+							1: '255,255,255',
+							2: '242,249,253',
+							3: '155,155,155',
+							4: '255,74,23',
+							5: '0,0,0',
+							6: '201,52,10',
+							7: '8,18,25',
+							8: '150,176,203',
+						},
+					},
+				},
+			},
+		};
+	});
 });
 
 describe('getArrowStyles', () => {
@@ -16,7 +31,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'arrow-side-general': 'top',
 			'arrow-position-general': 1,
 			'arrow-width-general': 2,
@@ -26,12 +41,14 @@ describe('getArrowStyles', () => {
 			'arrow-side-xl': 'top',
 			'arrow-position-xl': 2,
 			'arrow-width-xl': 3,
+			'arrow-status-l': false,
 			'arrow-side-l': 'top',
 			'arrow-position-l': 4,
 			'arrow-width-l': 1,
 			'arrow-side-m': 'bottom',
 			'arrow-position-m': 2,
 			'arrow-width-m': 3,
+			'arrow-status-s': true,
 			'arrow-side-s': 'bottom',
 			'arrow-position-s': 4,
 			'arrow-width-s': 1,
@@ -100,6 +117,13 @@ describe('getArrowStyles', () => {
 			'border-left-width-m': 3,
 			'border-unit-width-m': 'px',
 			'border-style-s': 'none',
+			'border-top-left-radius-general': 20,
+			'border-top-right-radius-general': 20,
+			'border-bottom-right-radius-general': 20,
+			'border-bottom-left-radius-general': 20,
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-unit-radius-general-hover': 'px',
 		};
 
 		const result = getArrowStyles(object);
@@ -111,7 +135,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media-general': 'color',
 			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 2,
@@ -162,7 +186,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 2,
 			'box-shadow-palette-opacity-general': 0.2,
@@ -195,6 +219,12 @@ describe('getArrowStyles', () => {
 			'border-bottom-left-radius-general-hover': 4,
 			'border-sync-radius-general-hover': true,
 			'border-unit-radius-general-hover': 'px',
+			'border-top-left-radius-general': 10,
+			'border-top-right-radius-general': 10,
+			'border-bottom-right-radius-general': 10,
+			'border-bottom-left-radius-general': 10,
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
 			'background-palette-status-general': true,
 			'background-palette-color-general': 5,
 			'background-layers': [
@@ -220,7 +250,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': false,
+			'arrow-status-general': false,
 		};
 
 		const result = getArrowStyles(object);
@@ -231,7 +261,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media': 'gradient',
 		};
 
@@ -243,7 +273,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media': 'color',
 			'border-style-general': undefined,
 			'border-style-s': 'dashed',
@@ -257,7 +287,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			'arrow-status': true,
+			'arrow-status-general': true,
 			'background-active-media': 'color',
 			'border-style-general': undefined,
 			'border-style-s': 'solid',

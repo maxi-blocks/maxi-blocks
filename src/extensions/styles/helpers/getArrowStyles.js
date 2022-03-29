@@ -10,7 +10,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isNumber } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -18,29 +18,33 @@ export const getArrowObject = props => {
 	const response = {};
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-	if (!props['arrow-status']) return response;
-
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const arrowWidth = getLastBreakpointAttribute(
-			'arrow-width',
+		const arrowStatus = getLastBreakpointAttribute({
+			target: 'arrow-status',
 			breakpoint,
-			props
-		);
-		const arrowSide = getLastBreakpointAttribute(
-			'arrow-side',
+			attributes: props,
+		});
+		const arrowWidth = getLastBreakpointAttribute({
+			target: 'arrow-width',
 			breakpoint,
-			props
-		);
-		const arrowPosition = getLastBreakpointAttribute(
-			'arrow-position',
+			attributes: props,
+		});
+		const arrowSide = getLastBreakpointAttribute({
+			target: 'arrow-side',
 			breakpoint,
-			props
-		);
+			attributes: props,
+		});
+		const arrowPosition = getLastBreakpointAttribute({
+			target: 'arrow-position',
+			breakpoint,
+			attributes: props,
+		});
+
+		response[breakpoint].display = arrowStatus ? 'block' : 'none';
 
 		if (!isNil(arrowWidth)) {
-			response[breakpoint].display = 'block';
 			response[breakpoint].width = `${arrowWidth}px`;
 			response[breakpoint].height = `${arrowWidth}px`;
 		}
@@ -70,6 +74,41 @@ export const getArrowObject = props => {
 				(Math.sqrt(2) * arrowWidth) / 2
 			)}px`;
 		}
+	});
+
+	return response;
+};
+
+export const getArrowBorder = (props, isHover) => {
+	const response = {
+		label: 'Arrow Border',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+		const borderRadiusUnit = getLastBreakpointAttribute({
+			target: 'border-unit-radius',
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
+
+		['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(
+			target => {
+				const val = getLastBreakpointAttribute({
+					target: `border-${target}-radius`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				});
+
+				if (isNumber(val))
+					response[breakpoint][
+						`border-${target}-radius`
+					] = `${val}${borderRadiusUnit}`;
+			}
+		);
 	});
 
 	return response;
@@ -149,7 +188,12 @@ const getArrowStyles = props => {
 		: false;
 
 	if (
-		!props['arrow-status'] ||
+		!Object.entries(getGroupAttributes(props, 'arrow')).some(
+			([key, val]) => {
+				if (key.includes('arrow-status') && val) return true;
+				return false;
+			}
+		) ||
 		!isBackgroundColor ||
 		(isBorderActive && !isCorrectBorder)
 	)
@@ -195,11 +239,23 @@ const getArrowStyles = props => {
 			background: {
 				...getArrowColorObject(backgroundLayers, blockStyle),
 			},
+			borderRadius: {
+				...getArrowBorder(
+					getGroupAttributes(props, 'borderRadius', isHover),
+					false
+				),
+			},
 		},
 		...(props['block-background-hover-status'] && {
 			[`${target}:hover .maxi-container-arrow:before`]: {
 				background: {
 					...getArrowColorObject(backgroundLayers, blockStyle, true),
+				},
+				borderRadius: {
+					...getArrowBorder(
+						getGroupAttributes(props, 'borderRadius', isHover),
+						true
+					),
 				},
 			},
 		}),

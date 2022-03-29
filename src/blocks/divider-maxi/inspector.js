@@ -13,7 +13,10 @@ import {
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
 
@@ -26,11 +29,11 @@ import { isEmpty, without } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
-	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
+	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 
 	const getCategoriesCss = () => {
 		const { 'background-layers': bgLayers } = attributes;
+
 		return without(
 			categoriesDivider,
 			isEmpty(bgLayers) && 'canvas background'
@@ -44,6 +47,7 @@ const Inspector = props => {
 				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
+				depth={0}
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),
@@ -55,7 +59,7 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Alignment',
 												'maxi-blocks'
@@ -63,14 +67,19 @@ const Inspector = props => {
 											content: (
 												<>
 													<SelectControl
-														fullWidthMode
 														label={__(
 															'Line orientation',
 															'maxi-blocks'
 														)}
-														selected={
-															lineOrientation
-														}
+														className='line-orientation-selector'
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-orientation',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
 														options={[
 															{
 																label: __(
@@ -87,19 +96,26 @@ const Inspector = props => {
 																value: 'vertical',
 															},
 														]}
-														onChange={lineOrientation =>
-															setAttributes({
-																lineOrientation,
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-orientation-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
 													<SelectControl
-														fullWidthMode
 														label={__(
 															'Line vertical position',
 															'maxi-blocks'
 														)}
-														selected={lineVertical}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-vertical',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
 														options={[
 															{
 																label: __(
@@ -123,21 +139,26 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														onChange={lineVertical =>
-															setAttributes({
-																lineVertical,
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-vertical-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
 													<SelectControl
-														fullWidthMode
 														label={__(
 															'Line horizontal position',
 															'maxi-blocks'
 														)}
-														selected={
-															lineHorizontal
-														}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-horizontal',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
 														options={[
 															{
 																label: __(
@@ -161,16 +182,17 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														onChange={lineHorizontal =>
-															setAttributes({
-																lineHorizontal,
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-horizontal-${deviceType}`]:
+																	val,
 															})
 														}
 													/>
 												</>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Line settings',
 												'maxi-blocks'
@@ -183,10 +205,9 @@ const Inspector = props => {
 															['divider', 'size']
 														)}
 														onChange={obj =>
-															setAttributes(obj)
-														}
-														lineOrientation={
-															lineOrientation
+															maxiSetAttributes(
+																obj
+															)
 														}
 														breakpoint={deviceType}
 														clientId={clientId}
@@ -195,10 +216,6 @@ const Inspector = props => {
 											),
 										},
 										...inspectorTabs.boxShadow({
-											props,
-											prefix: 'divider-',
-										}),
-										...inspectorTabs.marginPadding({
 											props,
 											prefix: 'divider-',
 										}),
@@ -278,6 +295,9 @@ const Inspector = props => {
 											}),
 										},
 										...inspectorTabs.overflow({
+											props,
+										}),
+										...inspectorTabs.flex({
 											props,
 										}),
 										...inspectorTabs.zindex({

@@ -27,7 +27,7 @@ const {
 const { removeBlock, updateBlockAttributes } = dispatch('core/block-editor');
 
 const onMerge = (props, forward) => {
-	const { attributes, clientId, setAttributes } = props;
+	const { attributes, clientId, maxiSetAttributes } = props;
 	const { isList, content, 'custom-formats': customFormats } = attributes;
 
 	if (forward) {
@@ -58,7 +58,7 @@ const onMerge = (props, forward) => {
 					}
 				);
 
-			setAttributes({
+			maxiSetAttributes({
 				content: newContent,
 				'custom-formats': newCustomFormats,
 			});
@@ -158,3 +158,21 @@ export const onReplaceBlocks = (blocks, clientId) => {
 };
 
 export default onMerge;
+
+export const getSVGListStyle = svg => {
+	if (!svg) return '';
+
+	let cleanedSVG = svg
+		.replace(/"/g, "'")
+		.replace(/>\s{1,}</g, '><')
+		.replace(/\s{2,}/g, ' ');
+
+	if (cleanedSVG.indexOf('http://www.w3.org/2000/svg') < 0) {
+		cleanedSVG = cleanedSVG.replace(
+			/<svg/g,
+			"<svg xmlns='http://www.w3.org/2000/svg'"
+		);
+	}
+
+	return cleanedSVG.replace(/[\r\n%#()<>?[\\\]^`{|}]/g, encodeURIComponent);
+};

@@ -1,27 +1,16 @@
 /**
- * WordPress dependencies
- */
-import { withSelect } from '@wordpress/data';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent } from '../../extensions/maxi-block';
 import {
-	ArrowDisplayer,
-	BlockPlaceholder,
-	Toolbar,
-	InnerBlocks,
-} from '../../components';
-import MaxiBlock, { getMaxiBlockAttributes } from '../../components/maxi-block';
+	MaxiBlockComponent,
+	getMaxiBlockAttributes,
+	withMaxiProps,
+} from '../../extensions/maxi-block';
+import { ArrowDisplayer, BlockInserter, Toolbar } from '../../components';
+import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * Edit
@@ -32,8 +21,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, deviceType, hasInnerBlock } =
-			this.props;
+		const {
+			attributes,
+			blockFullWidth,
+			deviceType,
+			hasInnerBlocks,
+			clientId,
+		} = this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -58,13 +52,21 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 			/>,
 			<MaxiBlock
-				className={hasInnerBlock && 'has-child'}
 				key={`maxi-group--${uniqueID}`}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
+				useInnerBlocks
+				innerBlocksSettings={{
+					allowedBlocks: ALLOWED_BLOCKS,
+					templateLock: false,
+					renderAppender: !hasInnerBlocks
+						? () => <BlockInserter clientId={clientId} />
+						: false,
+				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
+					key={`maxi-arrow-displayer__${uniqueID}`}
 					{...getGroupAttributes(
 						attributes,
 						['blockBackground', 'arrow', 'border'],
@@ -72,31 +74,9 @@ class edit extends MaxiBlockComponent {
 					)}
 					breakpoint={deviceType}
 				/>
-				<InnerBlocks
-					allowedBlocks={ALLOWED_BLOCKS}
-					templateLock={false}
-					className='maxi-group-block__group'
-					renderAppender={
-						!hasInnerBlock
-							? BlockPlaceholder
-							: InnerBlocks.ButtonBlockAppender
-					}
-				/>
 			</MaxiBlock>,
 		];
 	}
 }
 
-export default withSelect((select, ownProps) => {
-	const { clientId } = ownProps;
-
-	const hasInnerBlock = !isEmpty(
-		select('core/block-editor').getBlockOrder(clientId)
-	);
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		hasInnerBlock,
-		deviceType,
-	};
-})(edit);
+export default withMaxiProps(edit);

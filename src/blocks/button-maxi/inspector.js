@@ -48,8 +48,7 @@ import {
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes, clientId } = props;
-
+		const { attributes, deviceType, maxiSetAttributes, clientId } = props;
 		const { parentBlockStyle } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
@@ -64,7 +63,7 @@ const Inspector = memo(
 				newDefaultPresets[`preset${number}`]['icon-content'] =
 					attributes['icon-content'];
 
-			setAttributes({
+			maxiSetAttributes({
 				...newDefaultPresets[`preset${number}`],
 			});
 		};
@@ -88,13 +87,16 @@ const Inspector = memo(
 					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
+					depth={0}
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
 							content: (
 								<>
 									{inspectorTabs.blockSettings({
-										props,
+										props: {
+											...props,
+										},
 									})}
 									<AccordionControl
 										isSecondary
@@ -327,6 +329,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'icon',
+																				'iconBackground',
 																				'iconBackgroundGradient',
 																				'iconBackgroundColor',
 																				'iconBorder',
@@ -336,7 +339,7 @@ const Inspector = memo(
 																			]
 																		)}
 																		onChange={obj => {
-																			setAttributes(
+																			maxiSetAttributes(
 																				obj
 																			);
 																		}}
@@ -370,7 +373,7 @@ const Inspector = memo(
 																				]
 																			}
 																			onChange={val =>
-																				setAttributes(
+																				maxiSetAttributes(
 																					{
 																						'icon-status-hover':
 																							val,
@@ -395,7 +398,7 @@ const Inspector = memo(
 																					true
 																				)}
 																				onChange={obj => {
-																					setAttributes(
+																					maxiSetAttributes(
 																						obj
 																					);
 																				}}
@@ -419,7 +422,9 @@ const Inspector = memo(
 												),
 											},
 											...inspectorTabs.alignment({
-												props,
+												props: {
+													...props,
+												},
 												isAlignment: true,
 												isTextAlignment: true,
 												alignmentLabel: __(
@@ -433,7 +438,9 @@ const Inspector = memo(
 												disableJustify: true,
 											}),
 											...inspectorTabs.typography({
-												props,
+												props: {
+													...props,
+												},
 												styleCardPrefix: 'button',
 												hideAlignment: true,
 												disableCustomFormats: true,
@@ -448,7 +455,9 @@ const Inspector = memo(
 											}),
 											...inspectorTabs.background({
 												label: 'Button',
-												props,
+												props: {
+													...props,
+												},
 												disableImage: true,
 												disableVideo: true,
 												disableClipPath: true,
@@ -464,7 +473,9 @@ const Inspector = memo(
 												},
 											}),
 											...inspectorTabs.border({
-												props,
+												props: {
+													...props,
+												},
 												prefix: 'button-',
 												globalProps: {
 													target: 'border',
@@ -476,15 +487,21 @@ const Inspector = memo(
 												},
 											}),
 											...inspectorTabs.boxShadow({
-												props,
+												props: {
+													...props,
+												},
 												prefix: 'button-',
 											}),
 											...inspectorTabs.size({
-												props,
+												props: {
+													...props,
+												},
 												prefix: 'button-',
 											}),
 											...inspectorTabs.marginPadding({
-												props,
+												props: {
+													...props,
+												},
 												prefix: 'button-',
 											}),
 										]}
@@ -499,23 +516,35 @@ const Inspector = memo(
 									isPrimary
 									items={[
 										...inspectorTabs.blockBackground({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.border({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.boxShadow({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.opacity({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.size({
-											props,
+											props: {
+												...props,
+											},
 											block: true,
 										}),
 										...inspectorTabs.marginPadding({
-											props,
+											props: {
+												...props,
+											},
 										}),
 									]}
 								/>
@@ -529,49 +558,76 @@ const Inspector = memo(
 									items={[
 										deviceType === 'general' && {
 											...inspectorTabs.customClasses({
-												props,
+												props: {
+													...props,
+												},
 											}),
 										},
 										deviceType === 'general' && {
 											...inspectorTabs.anchor({
-												props,
+												props: {
+													...props,
+												},
 											}),
 										},
 										...inspectorTabs.customCss({
-											props,
+											props: {
+												...props,
+											},
 											breakpoint: deviceType,
 											selectors: selectorsButton,
 											categories: getCategoriesCss(),
 										}),
 										...inspectorTabs.scrollEffects({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.transform({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.transition({
-											props,
+											props: {
+												...props,
+											},
 											label: __(
 												'Hover transition',
 												'maxi-blocks'
 											),
 										}),
 										...inspectorTabs.display({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.position({
-											props,
+											props: {
+												...props,
+											},
 										}),
 										deviceType !== 'general' && {
 											...inspectorTabs.responsive({
-												props,
+												props: {
+													...props,
+												},
 											}),
 										},
 										...inspectorTabs.overflow({
-											props,
+											props: {
+												...props,
+											},
+										}),
+										...inspectorTabs.flex({
+											props: {
+												...props,
+											},
 										}),
 										...inspectorTabs.zindex({
-											props,
+											props: {
+												...props,
+											},
 										}),
 									]}
 								/>

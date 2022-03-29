@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isEmpty, without } from 'lodash';
+import { isNil, isEmpty, without } from 'lodash';
 
 function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {
@@ -42,10 +42,12 @@ function getBgLayersSelectorsCss(bgLayers) {
 }
 
 export function getSelectorsCss(selectors, attributes) {
+	if (isNil(attributes)) return null;
+
 	const {
-		'block-background-hover-status': blockBackgroundHoverStatus,
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
+		'block-background-hover-status': blockBackgroundHoverStatus = false,
 	} = attributes;
 
 	const newSelectors = {
@@ -62,13 +64,15 @@ export function getSelectorsCss(selectors, attributes) {
 
 export function getCategoriesCss(categories, attributes) {
 	const {
-		'block-background-hover-status': blockBackgroundHoverStatus,
-		'background-layers': bgLayers,
+		'background-layers': bgLayers = [],
+		'background-layers-hover': bgLayersHover = [],
+		'block-background-hover-status': blockBackgroundHoverStatus = false,
 	} = attributes;
 
 	return without(
 		categories,
 		isEmpty(bgLayers) && 'background',
+		isEmpty(bgLayersHover) && 'background hover',
 		!blockBackgroundHoverStatus && 'background hover'
 	);
 }

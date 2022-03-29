@@ -8,7 +8,6 @@ export const iconHover = hoverAttributesCreator({
 		'icon-width-general': '',
 		'icon-stroke-general': '',
 	},
-	sameValAttr: ['icon-palette-status', 'icon-palette-color'],
 	newAttr: {
 		'icon-status-hover': {
 			type: 'boolean',

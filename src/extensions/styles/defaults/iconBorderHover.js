@@ -3,10 +3,6 @@ import { iconBorder, iconBorderWidth, iconBorderRadius } from './iconBorder';
 
 export const iconBorderHover = hoverAttributesCreator({
 	obj: iconBorder,
-	sameValAttr: [
-		'icon-border-palette-status-general',
-		'icon-border-palette-color-general',
-	],
 });
 
 export const iconBorderWidthHover = hoverAttributesCreator({

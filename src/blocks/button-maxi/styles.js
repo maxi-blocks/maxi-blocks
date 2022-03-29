@@ -451,7 +451,11 @@ const getIconHoverObject = (props, target) => {
 			iconHoverStatus &&
 			getIconStyles(
 				{
-					...getGroupAttributes(props, ['icon', 'typography'], true),
+					...getGroupAttributes(
+						props,
+						['iconHover', 'typography'],
+						true
+					),
 				},
 				props.parentBlockStyle,
 				props['icon-inherit'],
@@ -494,7 +498,11 @@ const getIconHoverObject = (props, target) => {
 				obj: {
 					...getGroupAttributes(
 						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+						[
+							'iconBorderHover',
+							'iconBorderWidthHover',
+							'iconBorderRadiusHover',
+						],
 						true
 					),
 				},

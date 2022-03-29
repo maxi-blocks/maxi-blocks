@@ -42,6 +42,7 @@ import {
 } from 'react-leaflet';
 import L from 'leaflet';
 import ReactDOMServer from 'react-dom/server';
+import uniqueIDGenerator from '../../extensions/attributes/uniqueIDGenerator';
 
 /**
  * Content
@@ -141,12 +142,64 @@ const GoogleMapsContent = props => {
 	);
 };
 
-const ZoomListener = props => {
+const MapListener = props => {
 	const { attributes, maxiSetAttributes } = props;
-	const { 'map-min-zoom': mapMinZoom, 'map-max-zoom': mapMaxZoom } =
-		attributes;
+	const {
+		'map-min-zoom': mapMinZoom,
+		'map-max-zoom': mapMaxZoom,
+		'map-is-dragging-marker': mapIsDraggingMarker,
+		'map-adding-marker': mapAddingMarker,
+		'map-markers': mapMarkers,
+	} = attributes;
+	const timeout = 300;
+	let delay;
 
 	const mapEvents = useMapEvents({
+		mousedown: event => {
+			// const elementClicked =
+			// 	event.originalEvent.target.nodeName.toLowerCase();
+			// if (elementClicked === 'div') {
+			// 	maxiSetAttributes({ 'map-is-dragging-marker': false });
+			// }
+			if (mapIsDraggingMarker === false) {
+				delay = setTimeout(() => {
+					maxiSetAttributes({ 'map-adding-marker': ' pinning' });
+					setTimeout(() => {
+						// If hangs for too long, stop it.
+						maxiSetAttributes({ 'map-adding-marker': '' });
+					}, timeout * 3);
+				}, timeout);
+			}
+		},
+		drag: () => {
+			clearTimeout(delay);
+			maxiSetAttributes({
+				'map-adding-marker': '',
+				'map-is-dragging-marker': false,
+			});
+		},
+		mouseup: event => {
+			clearTimeout(delay);
+			if (mapAddingMarker) {
+				const newMarker = {
+					id: uniqueIDGenerator(),
+					latitude: event.latlng.lat,
+					longitude: event.latlng.lng,
+					heading: '',
+					description: '',
+
+					text: '',
+				};
+				maxiSetAttributes({
+					'map-markers': [...mapMarkers, newMarker],
+					'map-adding-marker': '',
+				});
+				// getBounds(props, newMarker, e.target);
+				setTimeout(() => {
+					maxiSetAttributes({ 'map-is-dragging-marker': false });
+				}, timeout * 2);
+			}
+		},
 		moveend: () => {
 			const { _northEast, _southWest } = mapEvents.getBounds();
 
@@ -340,9 +393,15 @@ const OpenStreetMapContent = props => {
 	};
 
 	const removeMarker = event => {
-		const index = parseInt(event.target.getAttribute('dataIndex'));
+		const index = parseInt(event.target.getAttribute('dataindex'));
 		const updatedMarkers = [...mapMarkers];
 		updatedMarkers.splice(index, 1);
+		maxiSetAttributes({
+			'map-markers': updatedMarkers,
+		});
+	};
+
+	const updateMarkers = updatedMarkers => {
 		maxiSetAttributes({
 			'map-markers': updatedMarkers,
 		});
@@ -364,12 +423,39 @@ const OpenStreetMapContent = props => {
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 				/>
-				<ZoomListener {...props} />
+				<MapListener {...props} />
 				{mapMarkers?.map((marker, index) => (
 					<Marker
 						position={[marker.latitude, marker.longitude]}
 						key={marker.id}
 						icon={markerIcon}
+						draggable
+						eventHandlers={{
+							dragstart: () => {
+								maxiSetAttributes({
+									'map-is-dragging-marker': true,
+								});
+							},
+							dragend: event => {
+								const { lat, lng } = event.target._latlng;
+								const updatedMarkers = [...mapMarkers];
+								updatedMarkers[index] = {
+									...updatedMarkers[index],
+									latitude: lat,
+									longitude: lng,
+								};
+
+								updateMarkers(updatedMarkers);
+								maxiSetAttributes({
+									'map-is-dragging-marker': false,
+								});
+							},
+							mouseover: () => {
+								maxiSetAttributes({
+									'map-is-dragging-marker': true,
+								});
+							},
+						}}
 					>
 						<Popup className='map-marker-info-window'>
 							<RichText
@@ -381,9 +467,7 @@ const OpenStreetMapContent = props => {
 									const updatedMarkers = [...mapMarkers];
 									updatedMarkers[index].heading = content;
 
-									maxiSetAttributes({
-										'map-markers': updatedMarkers,
-									});
+									updateMarkers(updatedMarkers);
 								}}
 								placeholder={__(
 									'Write something',
@@ -400,9 +484,7 @@ const OpenStreetMapContent = props => {
 									const updatedMarkers = [...mapMarkers];
 									updatedMarkers[index].description = content;
 
-									maxiSetAttributes({
-										'map-markers': updatedMarkers,
-									});
+									updateMarkers(updatedMarkers);
 								}}
 								placeholder={__('Description', 'maxi-blocks')}
 								withoutInteractiveFormatting
@@ -410,7 +492,7 @@ const OpenStreetMapContent = props => {
 							<div className='map-marker-info-window__marker-remove'>
 								<Button
 									onClick={removeMarker}
-									dataIndex={index}
+									dataindex={index}
 									icon='trash'
 									showTooltip
 									label={__(

@@ -186,9 +186,6 @@ const Inspector = props => {
 																			textLevel='p'
 																			prefix='description-'
 																			onChange={obj => {
-																				// console.log(
-																				// 	obj
-																				// );
 																				maxiSetAttributes(
 																					obj
 																				);

@@ -11,6 +11,7 @@ import {
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
 
@@ -66,6 +67,9 @@ const getNormalObject = props => {
 		},
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

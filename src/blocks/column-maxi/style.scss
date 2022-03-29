@@ -5,8 +5,4 @@ body.maxi-blocks--active div.maxi-column-block {
 	height: auto;
 	margin: 0;
 	box-sizing: border-box;
-
-	> * {
-		z-index: inherit;
-	}
 }

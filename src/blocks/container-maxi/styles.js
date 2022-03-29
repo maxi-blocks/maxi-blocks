@@ -14,6 +14,7 @@ import {
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
 	getOverflowStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsContainer } from './custom-css';
 
@@ -65,6 +66,9 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'padding'),
 			},
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

@@ -48,6 +48,8 @@ const getLastBreakpointAttributeSingle = (
 			breakpoint,
 		});
 
+	const winBreakpoint = select('maxiBlocks')?.receiveWinBreakpoint();
+
 	const attrFilter = attr =>
 		!isNil(attr) &&
 		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
@@ -59,7 +61,11 @@ const getLastBreakpointAttributeSingle = (
 			}`
 		];
 
-	if (attrFilter(currentAttr)) return currentAttr;
+	if (
+		attrFilter(currentAttr) &&
+		(winBreakpoint !== 'xxl' || breakpoint === 'xxl')
+	)
+		return currentAttr;
 
 	let breakpointPosition = breakpoints.indexOf(breakpoint);
 
@@ -90,18 +96,14 @@ const getLastBreakpointAttributeSingle = (
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
 	// check for the win selected breakpoint
-	if (!currentAttr && breakpoint === 'general') {
-		const winBreakpoint = select('maxiBlocks')?.receiveWinBreakpoint();
-
-		if (winBreakpoint)
-			currentAttr = getLastBreakpointAttributeSingle(
-				target,
-				winBreakpoint,
-				attributes,
-				isHover,
-				avoidXXL
-			);
-	}
+	if (!currentAttr && breakpoint === 'general' && winBreakpoint)
+		currentAttr = getLastBreakpointAttributeSingle(
+			target,
+			winBreakpoint,
+			attributes,
+			isHover,
+			winBreakpoint === 'xxl' ? false : avoidXXL
+		);
 
 	return currentAttr;
 };

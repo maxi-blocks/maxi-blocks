@@ -5,11 +5,23 @@
 	padding: 0 5px 0 5px !important;
 
 	.components-button {
-		padding: 0;
 		display: inline-block;
-		svg {
-			width: 11px !important;
-			height: 11px !important;
+		padding: 0;
+
+		&:first-child {
+			svg {
+				transform: rotate(-90deg);
+			}
+		}
+		&:last-child {
+			svg {
+				transform: rotate(90deg);
+			}
+		}
+		&:hover {
+			path {
+				fill: var(--maxi-secondary-color) !important;
+			}
 		}
 	}
 }

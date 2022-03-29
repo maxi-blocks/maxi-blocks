@@ -2,22 +2,60 @@
 	.toolbar-item__box-shadow__popover {
 		min-width: 300px;
 	}
+
 	.maxi-shadow-control {
-		.maxi-default-styles-control {
-			&__button {
-				background: #4f515c;
+		display: flex;
+		flex-wrap: wrap;
+
+		&--disable {
+			.maxi-shadow-control__icon,
+			.maxi-advanced-number-control,
+			.maxi-color-control {
+				opacity: 0.3;
+				pointer-events: none;
 			}
 		}
 
-		&__default {
-			&__total {
-				box-shadow: 0px 0px 10px 0px #000;
+		.maxi-default-styles-control {
+			display: inline-block;
+			vertical-align: middle;
+			width: 181px;
+
+			&__button {
+				display: inline-block !important;
+				vertical-align: middle;
+
+				&:not(:first-child) {
+					padding: 0 5px;
+				}
 			}
-			&__bottom {
-				box-shadow: 0px 7px 15px -2px #000;
+		}
+
+		&__icon {
+			display: flex;
+			margin-bottom: 8px;
+
+			svg {
+				margin: auto;
 			}
-			&__solid {
-				box-shadow: 2.5px 5px 0px 0px #000;
+		}
+
+		.maxi-color-control {
+			flex-basis: 100%;
+			width: 100%;
+
+			&__wrap {
+				.maxi-color-control__display {
+					width: 171px;
+				}
+			}
+
+			.maxi-opacity-control {
+				line-height: 100%;
+
+				input {
+					flex: 1;
+				}
 			}
 		}
 	}

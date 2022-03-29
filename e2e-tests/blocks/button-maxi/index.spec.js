@@ -138,15 +138,9 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-palette-color-general')
 		).toStrictEqual(4);
 
-		await editAdvancedNumberControl({
-			page,
-			instance: await page.$('.maxi-typography-control__letter-spacing '),
-			newNumber: '31',
-		});
-
 		// border width
 		await page.$$eval(
-			'.maxi-axis-control__content__item__border input',
+			'.maxi-axis-control__content__item__border-width input',
 			input => input[0].focus()
 		);
 
@@ -159,8 +153,8 @@ describe('Button Maxi', () => {
 
 		// check border radius
 		await page.$$eval(
-			'.maxi-axis-control__content__item__border input',
-			input => input[2].focus()
+			'.maxi-axis-control__content__item__border-radius input',
+			input => input[0].focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
@@ -172,7 +166,7 @@ describe('Button Maxi', () => {
 
 		// icon padding
 		await page.$$eval(
-			'.maxi-axis-control__content__item__icon input',
+			'.maxi-axis-control__content__item__icon-padding input',
 			input => input[0].focus()
 		);
 

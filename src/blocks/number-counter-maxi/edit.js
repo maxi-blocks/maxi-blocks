@@ -1,8 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
 
 /**
@@ -288,6 +286,7 @@ class edit extends MaxiBlockComponent {
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
+				prefix='number-counter-'
 				{...this.props}
 			/>,
 			<MaxiBlock
@@ -314,12 +313,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect(select => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		deviceType,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

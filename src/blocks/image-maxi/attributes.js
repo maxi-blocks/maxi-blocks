@@ -105,6 +105,9 @@ const attributes = {
 		type: 'number',
 		default: 100,
 	},
+	useInitSize: {
+		type: 'boolean',
+	},
 	clipPath: {
 		type: 'string',
 		default: '',
@@ -172,6 +175,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

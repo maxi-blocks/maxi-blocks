@@ -25,6 +25,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 	getOverflowStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsImage } from './custom-css';
 
@@ -107,6 +108,9 @@ const getWrapperObject = props => {
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 
@@ -229,6 +233,8 @@ const getHoverEffectContentTextObject = props => {
 };
 
 const getImageWrapperObject = props => {
+	const { imgWidth, useInitSize, mediaWidth } = props;
+
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
@@ -251,8 +257,12 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		...(imgWidth && {
+			imgWidth: {
+				general: {
+					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
+				},
+			},
 		}),
 	};
 

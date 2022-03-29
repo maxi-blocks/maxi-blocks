@@ -12,6 +12,7 @@ import {
 	getSizeStyles,
 	getTransformStyles,
 	getZIndexStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsDivider } from './custom-css';
 
@@ -76,6 +77,9 @@ const getWrapperObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
 	};
 
 	return response;
@@ -127,18 +131,6 @@ const getDividerObject = props => {
 				...getGroupAttributes(props, 'boxShadow', false, 'divider-'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
-			prefix: 'divider-',
-		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin', false, 'divider-'),
-			},
-			prefix: 'divider-',
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding', false, 'divider-'),
-			},
 			prefix: 'divider-',
 		}),
 	};

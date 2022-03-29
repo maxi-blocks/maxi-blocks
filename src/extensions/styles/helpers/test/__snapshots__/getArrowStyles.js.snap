@@ -3,11 +3,7 @@
 exports[`getArrowStyles Get a correct arrow hover styles with background, shadow and border custom colors 1`] = `
 Object {
   " .maxi-container-arrow": Object {
-    "shadow": Object {
-      "general": Object {
-        "filter": "drop-shadow(0px 0px 0px rgba(var(--maxi-light-color-2,242,249,253),0.2))",
-      },
-    },
+    "shadow": Object {},
   },
   " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
@@ -58,6 +54,51 @@ Object {
       },
       "xxl": Object {
         "background-color": "rgba(150,200,90)",
+      },
+    },
+    "borderRadius": Object {
+      "general": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "l": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "label": "Arrow Border",
+      "m": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "s": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "xl": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "xs": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "xxl": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
       },
     },
   },
@@ -178,6 +219,51 @@ Object {
       },
       "xxl": Object {
         "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.2)",
+      },
+    },
+    "borderRadius": Object {
+      "general": Object {
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
+        "border-top-left-radius": "20px",
+        "border-top-right-radius": "20px",
+      },
+      "l": Object {
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
+        "border-top-left-radius": "20px",
+        "border-top-right-radius": "20px",
+      },
+      "label": "Arrow Border",
+      "m": Object {
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
+        "border-top-left-radius": "20px",
+        "border-top-right-radius": "20px",
+      },
+      "s": Object {
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
+        "border-top-left-radius": "20px",
+        "border-top-right-radius": "20px",
+      },
+      "xl": Object {
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
+        "border-top-left-radius": "20px",
+        "border-top-right-radius": "20px",
+      },
+      "xs": Object {
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
+        "border-top-left-radius": "20px",
+        "border-top-right-radius": "20px",
+      },
+      "xxl": Object {
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
+        "border-top-left-radius": "20px",
+        "border-top-right-radius": "20px",
       },
     },
   },

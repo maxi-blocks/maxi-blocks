@@ -1,8 +1,11 @@
-.toolbar-item__background__popover {
-	min-width: 300px;
-}
-.toolbar-item__background-content {
-	.components-color-picker__swatch {
-		background-image: unset;
+.toolbar-item__background {
+	&__popover {
+		min-width: 279px;
+	}
+
+	&-content {
+		.components-color-picker__swatch {
+			background-image: unset;
+		}
 	}
 }

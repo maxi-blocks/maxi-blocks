@@ -66,6 +66,7 @@ const size = ({
 					breakpoint={deviceType}
 					hideWidth={hideWidth || isBlockFullWidth}
 					hideMaxWidth={hideMaxWidth || isBlockFullWidth}
+					allowForceAspectRatio={block}
 				/>
 			</>
 		),

@@ -30,8 +30,6 @@ const attributes = {
 	...attributesData.divider,
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
-	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
-	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 
 	/**
 	 * Canvas styles
@@ -71,6 +69,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

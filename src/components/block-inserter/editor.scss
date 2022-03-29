@@ -1,0 +1,77 @@
+.maxi-block-inserter {
+	&__text {
+		text-align: center;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-family: 'Roboto', sans-serif !important;
+		font-size: 16px !important;
+		line-height: 1.4 !important;
+	}
+	.block-editor-inserter {
+		display: flex;
+		width: 100%;
+		min-height: 100px;
+	}
+	&__text {
+		&:empty {
+			display: none;
+		}
+	}
+	&__button {
+		display: block;
+		position: relative;
+		width: 16px;
+		height: 16px;
+		margin: auto;
+		padding: 0 !important;
+		background: #ff4a17;
+		box-shadow: none;
+		border-radius: 0;
+		transition: all 0s ease;
+
+		@at-root .rtl #{&} {
+			right: 50%;
+			transform: translate(50%, -50%);
+		}
+
+		&:hover,
+		&:focus {
+			box-shadow: none;
+			outline: none;
+			background: #151617;
+		}
+
+		svg {
+			display: block;
+			width: 16px;
+			height: 16px;
+			fill: #fff;
+		}
+	}
+
+	&__dropdown {
+		&-selector {
+			background: orange;
+			border: black 2px solid;
+		}
+
+		&-content {
+			z-index: 99999;
+		}
+	}
+}
+
+.maxi-wrapper-block-inserter {
+	animation: none;
+
+	.components-popover__content {
+		height: 20px;
+		transform: translate(-50%, -50%) !important;
+		overflow: hidden;
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+	}
+}

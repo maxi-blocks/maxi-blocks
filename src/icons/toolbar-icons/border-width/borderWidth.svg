@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15.884" height="15.834" viewBox="0 0 15.884 15.834">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_520" data-name="Rectangle 520" width="15.884" height="15.834" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_1144" data-name="Group 1144" transform="translate(0 0)">
+    <g id="Group_1040" data-name="Group 1040" clip-path="url(#clip-path)">
+      <path id="Path_295" data-name="Path 295" d="M15.134,3.069,12.8.922,10.461,3.069" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <line id="Line_785" data-name="Line 785" y1="13.568" transform="translate(12.891 0.922)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_296" data-name="Path 296" d="M5.039,3.841V.75H1.767" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <line id="Line_786" data-name="Line 786" y1="3.349" x2="3.645" transform="translate(1.394 0.836)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Rectangle_518" data-name="Rectangle 518" d="M1.1,0h1.11a1.1,1.1,0,0,1,1.1,1.1v0a1.1,1.1,0,0,1-1.1,1.1H1.1A1.1,1.1,0,0,1,0,1.1v0A1.1,1.1,0,0,1,1.1,0Z" transform="translate(3.455 9.932)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Rectangle_519" data-name="Rectangle 519" d="M2.564,0H6.452A2.565,2.565,0,0,1,9.017,2.565V5.594A2.564,2.564,0,0,1,6.453,8.158H2.564A2.564,2.564,0,0,1,0,5.594V2.564A2.564,2.564,0,0,1,2.564,0Z" transform="translate(0.75 6.926)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke-dasharray="0.5 2 0.5 2 0.5 2"/>
+    </g>
+  </g>
+</svg>

@@ -1,15 +1,5 @@
 import getMarginPaddingStyles from '../getMarginPaddingStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
-});
-
 describe('getMarginPaddingStyles', () => {
 	it('Get a correct margin and padding', () => {
 		const obj = {

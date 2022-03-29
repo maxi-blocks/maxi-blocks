@@ -1,3 +1,75 @@
 .toolbar-item__border__popover {
 	min-width: 300px;
+
+	.maxi-border-control {
+		display: flex;
+		flex-wrap: wrap;
+
+		&--disable {
+			.maxi-border-control__icon,
+			.maxi-axis-control,
+			.maxi-color-control {
+				opacity: 0.3;
+				pointer-events: none;
+			}
+		}
+
+		.maxi-default-styles-control {
+			display: inline-block;
+			vertical-align: middle;
+			width: 181px;
+
+			&__button {
+				display: inline-block !important;
+				vertical-align: middle;
+
+				&:not(:first-child) {
+					padding: 0 5px;
+				}
+			}
+		}
+
+		&__icon {
+			display: flex;
+			margin-bottom: 8px;
+
+			svg {
+				margin: auto;
+			}
+		}
+
+		.maxi-axis-control {
+			& > div {
+				display: flex;
+				align-items: center;
+
+				.maxi-base-control__field {
+					margin-bottom: 0;
+
+					.maxi-base-control__label {
+						flex: none;
+					}
+				}
+			}
+		}
+
+		.maxi-color-control {
+			flex-basis: 100%;
+			width: 100%;
+
+			&__wrap {
+				.maxi-color-control__display {
+					width: 171px;
+				}
+			}
+
+			.maxi-opacity-control {
+				line-height: 100%;
+
+				input {
+					flex: 1;
+				}
+			}
+		}
+	}
 }

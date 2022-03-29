@@ -496,11 +496,9 @@ class edit extends MaxiBlockComponent {
 const editSelect = withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 	const imageData = select('core').getMedia(mediaID);
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		imageData,
-		deviceType,
 	};
 });
 

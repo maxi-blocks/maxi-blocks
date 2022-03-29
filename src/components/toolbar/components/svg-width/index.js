@@ -12,7 +12,7 @@ import ToolbarPopover from '../toolbar-popover';
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarShapeWidth } from '../../../../icons';
+import { toolbarIconSize } from '../../../../icons';
 import SvgWidthControl from '../../../svg-width-control';
 import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
 
@@ -34,8 +34,9 @@ const SvgWidth = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__svg-size'
-			tooltip={__('SVG Width/Stroke', 'maxi-blocks')}
-			icon={toolbarShapeWidth}
+			tooltip={__('Icon size', 'maxi-blocks')}
+			icon={toolbarIconSize}
+			advancedOptions='icon line width'
 		>
 			<div className='toolbar-item__svg-size__popover'>
 				<SvgWidthControl

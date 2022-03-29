@@ -2,13 +2,13 @@
 	min-width: 300px;
 
 	&__warning {
-		color: #fff;
-		text-align: center;
+		text-align: left;
 		font-style: italic;
-		margin-bottom: 1rem;
-		border: 1px solid #ffce01;
-		padding: 0.5rem;
-		border-radius: 5px;
-		color: #ffce01;
+		margin-bottom: 8px;
+		margin-top: 0;
+		border-left: 2px solid #ff4a17;
+		padding: 4px 0 4px 9px;
+		border-radius: 0;
+		color: #151617;
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 
 /**
@@ -13,7 +13,7 @@ import { getDefaultAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -47,6 +47,18 @@ export const handleSetAttributes = ({
 		const attrExistOnWinBreakpoint = !isNil(attrOnWinBreakpoint);
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
+
+		// Ensures saving both General and XXL attribute when XXL attribute is already set,
+		// winBreakpoint is XXL and breakpoint is General
+		if (
+			breakpoint === 'general' &&
+			winBreakpoint === 'xxl' &&
+			attrExistOnWinBreakpoint
+		) {
+			response[attrLabelOnWinBreakpoint] = value;
+
+			return;
+		}
 
 		const attrLabelOnGeneral = `${key.slice(
 			0,
@@ -142,6 +154,21 @@ const withMaxiProps = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
 
+			const { deviceType, winBreakpoint, hasInnerBlocks } = useSelect(
+				select => {
+					const { receiveMaxiDeviceType, receiveWinBreakpoint } =
+						select('maxiBlocks');
+					const { getBlockOrder } = select('core/block-editor');
+
+					const deviceType = receiveMaxiDeviceType();
+					const winBreakpoint = receiveWinBreakpoint();
+
+					const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+
+					return { deviceType, winBreakpoint, hasInnerBlocks };
+				}
+			);
+
 			const maxiSetAttributes = obj =>
 				handleSetAttributes({
 					obj,
@@ -154,6 +181,9 @@ const withMaxiProps = createHigherOrderComponent(
 				<WrappedComponent
 					{...ownProps}
 					maxiSetAttributes={maxiSetAttributes}
+					deviceType={deviceType}
+					winBreakpoint={winBreakpoint}
+					hasInnerBlocks={hasInnerBlocks}
 				/>
 			);
 		}),

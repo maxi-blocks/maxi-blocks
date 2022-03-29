@@ -21,3 +21,4 @@ export { default as transform } from './inspector-transform';
 export { default as transition } from './inspector-transition';
 export { default as typography } from './inspector-typography';
 export { default as zindex } from './inspector-zindex';
+export { default as flex } from './inspector-flex';

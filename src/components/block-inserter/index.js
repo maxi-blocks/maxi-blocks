@@ -198,7 +198,13 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 														onToggleInserter();
 													}}
 												>
-													{blockName}
+													Add{' '}
+													{blockName
+														.replace(
+															'maxi-blocks/',
+															''
+														)
+														.replace('-', ' ')}
 												</Button>
 											)}
 										/>

@@ -25,7 +25,7 @@
 		height: 16px;
 		margin: auto;
 		padding: 0 !important;
-		background: #ff4a17;
+		background: #ff4a17 !important;
 		box-shadow: none;
 		border-radius: 0;
 		transition: all 0s ease;
@@ -39,7 +39,7 @@
 		&:focus {
 			box-shadow: none;
 			outline: none;
-			background: #151617;
+			background: #151617 !important;
 		}
 
 		svg {

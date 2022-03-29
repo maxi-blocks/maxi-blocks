@@ -1,8 +1,3 @@
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
 export default function parseVideo(url) {
 	// - Supported YouTube URL formats:
 	//   - http://www.youtube.com/watch?v=My2FRPA3Gf8
@@ -37,7 +32,6 @@ export function getBgLayersSelectorsCss(bgLayers) {
 		background: {},
 		'background hover': {},
 	};
-
 	let bgLayersShowedOrder = 1;
 
 	bgLayers
@@ -62,7 +56,6 @@ export function getBgLayersSelectorsCss(bgLayers) {
 			};
 
 			bgLayersSelectors['background hover'] = newBgHoverSelectors;
-
 			if (!bgLayer?.isHover) {
 				bgLayersSelectors.background = newBgLayersSelectors;
 				bgLayersShowedOrder += 1;

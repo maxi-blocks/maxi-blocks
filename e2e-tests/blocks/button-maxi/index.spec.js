@@ -16,6 +16,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	editColorControl,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -108,5 +109,78 @@ describe('Button Maxi', () => {
 		expect(
 			await getAttributes('icon-border-palette-color-general')
 		).toStrictEqual(6);
+
+		// icon position
+		await page.$eval('.maxi-icon-position-control button', leftButton =>
+			leftButton.click()
+		);
+		expect(await getAttributes('icon-position')).toStrictEqual('left');
+
+		// border
+		await page.$$eval(
+			'.maxi-border-control .maxi-default-styles-control button',
+			button => button[2].click()
+		);
+
+		expect(await getAttributes('icon-border-style-general')).toStrictEqual(
+			'dashed'
+		);
+
+		// border color
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-border-control'),
+			paletteStatus: true,
+			colorPalette: 4,
+		});
+
+		expect(
+			await getAttributes('icon-border-palette-color-general')
+		).toStrictEqual(4);
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__letter-spacing '),
+			newNumber: '31',
+		});
+
+		// border width
+		await page.$$eval(
+			'.maxi-axis-control__content__item__border input',
+			input => input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('59');
+
+		expect(
+			await getAttributes('icon-border-bottom-width-general')
+		).toStrictEqual(59);
+
+		// check border radius
+		await page.$$eval(
+			'.maxi-axis-control__content__item__border input',
+			input => input[2].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('26');
+
+		expect(
+			await getAttributes('icon-border-bottom-right-radius-general')
+		).toStrictEqual(26);
+
+		// icon padding
+		await page.$$eval(
+			'.maxi-axis-control__content__item__icon input',
+			input => input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('33');
+
+		expect(
+			await getAttributes('icon-padding-bottom-general')
+		).toStrictEqual(33);
 	});
 });

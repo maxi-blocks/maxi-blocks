@@ -24,7 +24,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -66,6 +66,11 @@ const Inspector = memo(
 			maxiSetAttributes({
 				...newDefaultPresets[`preset${number}`],
 			});
+		};
+
+		const getCategoriesCss = () => {
+			const { 'icon-content': iconContent } = attributes;
+			return without(categoriesButton, isEmpty(iconContent) && 'icon');
 		};
 
 		return (
@@ -564,7 +569,7 @@ const Inspector = memo(
 											},
 											breakpoint: deviceType,
 											selectors: selectorsButton,
-											categories: categoriesButton,
+											categories: getCategoriesCss(),
 										}),
 										...inspectorTabs.scrollEffects({
 											props: {

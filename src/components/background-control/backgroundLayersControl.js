@@ -23,7 +23,6 @@ import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
 import { setBreakpointToLayer } from './utils';
 import SelectControl from '../select-control';
-import uniqueIDGenerator from '../../extensions/attributes/uniqueIDGenerator';
 
 /**
  * External dependencies
@@ -377,11 +376,11 @@ const BackgroundLayersControl = ({
 
 	const [selector, changeSelector] = useState(null);
 
-	const getNewLayerOrder = () =>
+	const getLayerUniqueParameter = parameter =>
 		allLayers && !isEmpty(allLayers)
 			? allLayers.reduce((layerA, layerB) =>
-					layerA.order > layerB.order ? layerA : layerB
-			  ).order + 1
+					layerA[parameter] > layerB[parameter] ? layerA : layerB
+			  )[parameter] + 1
 			: 0;
 
 	const getLayerLabel = type => {
@@ -408,8 +407,8 @@ const BackgroundLayersControl = ({
 				breakpoint,
 				isHover,
 			}),
-			order: getNewLayerOrder(),
-			id: uniqueIDGenerator(),
+			order: getLayerUniqueParameter('order'),
+			id: getLayerUniqueParameter('id'),
 		};
 	};
 

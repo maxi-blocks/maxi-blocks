@@ -43,6 +43,7 @@ function getBgLayersSelectorsCss(bgLayers) {
 
 export function getSelectorsCss(selectors, attributes) {
 	const {
+		'block-background-hover-status': blockBackgroundHoverStatus,
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
 	} = attributes;
@@ -52,7 +53,7 @@ export function getSelectorsCss(selectors, attributes) {
 		...getBgLayersSelectorsCss([...bgLayers, ...bgLayersHover]),
 	};
 
-	if (!attributes['block-background-hover-status']) {
+	if (!blockBackgroundHoverStatus) {
 		delete newSelectors['background hover'];
 	}
 

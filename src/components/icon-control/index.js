@@ -39,9 +39,10 @@ import './editor.scss';
 import {
 	backgroundColor,
 	backgroundGradient,
-	smileIcon,
-	solid,
+	iconBorder,
 	styleNone,
+	iconStroke,
+	iconFill,
 } from '../../icons';
 
 /**
@@ -69,20 +70,20 @@ const IconControl = props => {
 
 		if (svgType !== 'Shape')
 			options.push({
-				icon: <Icon icon={smileIcon} />,
+				icon: <Icon icon={iconBorder} />,
 				value: 'color',
 			});
 		else if (iconStyle === 'color') setIconStyle('fill');
 
 		if (svgType !== 'Line')
 			options.push({
-				icon: <Icon icon={smileIcon} />,
+				icon: <Icon icon={iconFill} />,
 				value: 'fill',
 			});
 		else if (iconStyle === 'fill') setIconStyle('color');
 
 		options.push({
-			icon: <Icon icon={solid} />,
+			icon: <Icon icon={iconStroke} />,
 			value: 'border',
 		});
 

@@ -15,6 +15,7 @@ import {
 	openSidebarTab,
 	addCustomCSS,
 	changeResponsive,
+	getAttributes,
 } from '../../utils';
 
 describe('Custom-Css-Control', () => {
@@ -92,6 +93,18 @@ describe('Custom-Css-Control', () => {
 			input => input[0].innerText
 		);
 		expect(error).not.toBe('Valid');
+
+		// focus out
+		await page.$eval('.editor-post-title__input', input => input.focus());
+
+		// await validation
+		await page.waitForTimeout(1000);
+		await page.$eval('.maxi-group-block', block => block.focus());
+
+		// return css block
+		expect(await getAttributes('custom-css-general')).toMatchSnapshot();
+		expect(await getAttributes('custom-css-m')).toMatchSnapshot();
+		expect(await getAttributes('custom-css-s')).toMatchSnapshot();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

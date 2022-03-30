@@ -109,12 +109,24 @@ class MaxiBlockComponent extends Component {
 		Object.keys(obj1).forEach(key => {
 			if (obj1[key] !== obj2[key])
 				// eslint-disable-next-line no-console
-				console.warn(
+				console.log(
 					`The block is rendering due to changes on this prop: ${key}.`,
 					`Old prop was: ${obj1[key]}.`,
 					`New prop is: ${obj2[key]}`
 				);
 		});
+	}
+
+	// Removes non-necessary entries of props object for comparison
+	propsObjectCleaner(props) {
+		const newProps = cloneDeep(props);
+		const entriesToRemove = ['maxiSetAttributes'];
+
+		entriesToRemove.forEach(entry => {
+			delete newProps[entry];
+		});
+
+		return newProps;
 	}
 
 	componentDidMount() {
@@ -171,7 +183,10 @@ class MaxiBlockComponent extends Component {
 
 		if (this.shouldMaxiBlockUpdate) this.shouldMaxiBlockUpdate();
 
-		return !isEqual(nextProps, this.props);
+		return !isEqual(
+			this.propsObjectCleaner(this.props),
+			this.propsObjectCleaner(nextProps)
+		);
 	}
 
 	/**

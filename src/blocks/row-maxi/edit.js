@@ -157,17 +157,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { getSelectedBlockClientId, getBlockParents } =
-		select('core/block-editor');
-
-	const selectedBlockId = getSelectedBlockClientId();
-	const originalNestedBlocks = getBlockParents(selectedBlockId);
-
-	return {
-		selectedBlockId,
-		originalNestedBlocks,
-	};
-});
-
-export default compose(editSelect, withInstanceId, withMaxiProps)(edit);
+export default compose(withInstanceId, withMaxiProps)(edit);

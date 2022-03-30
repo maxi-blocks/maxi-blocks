@@ -37,9 +37,6 @@ describe('BackgroundControl', () => {
 		);
 
 		await modalMock(page, { type: 'bg-shape', isBGLayers: true });
-		await page.$eval('.maxi-background-layer__arrow', display =>
-			display.click()
-		);
 
 		// opacity
 		await editAdvancedNumberControl({

@@ -72,6 +72,7 @@ const modalMock = async (
 									'background-svg-left': null,
 									'background-svg-size': 100,
 									'background-svg-size--unit': '%',
+									order: 0,
 									id: 0,
 								},
 							],

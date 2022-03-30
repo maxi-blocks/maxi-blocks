@@ -10,6 +10,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "color",
   },
 ]
@@ -34,6 +35,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "color",
   },
 ]

@@ -17,6 +17,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "shape",
   },
   Object {
@@ -25,6 +26,7 @@ Array [
     "display-general": "block",
     "id": 2,
     "isHover": false,
+    "order": 2,
     "type": "gradient",
   },
 ]
@@ -49,6 +51,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "shape",
   },
   Object {
@@ -58,6 +61,7 @@ Array [
     "display-general": "block",
     "id": 2,
     "isHover": false,
+    "order": 2,
     "type": "gradient",
   },
   Object {
@@ -66,6 +70,7 @@ Array [
     "display-general": "block",
     "id": 3,
     "isHover": false,
+    "order": 3,
     "type": "gradient",
   },
 ]

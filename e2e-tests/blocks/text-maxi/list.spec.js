@@ -6,7 +6,6 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
-	clipboardy,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -126,6 +125,8 @@ describe('List in Text-maxi', () => {
 		await style[1].select('armenian');
 
 		expect(await getAttributes('listStyle')).toStrictEqual('armenian');
+		expect(await getAttributes('listStart')).toStrictEqual(-23);
+
 		await page.waitForTimeout(150);
 
 		// Start From input
@@ -151,6 +152,14 @@ describe('List in Text-maxi', () => {
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-image-inspector__list-start '),
+			newNumber: '-34',
+		});
+
+		expect(await getAttributes('listStart')).toStrictEqual(4);
 
 		// Reverse order button
 		await page.$eval('.maxi-image-inspector__list-reverse input', input =>

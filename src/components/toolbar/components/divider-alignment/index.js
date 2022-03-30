@@ -19,7 +19,7 @@ import {
 	alignLeft,
 	alignCenter,
 	alignRight,
-	toolbarDividerAlign,
+	toolbarVerticalAlign,
 } from '../../../../icons';
 
 /**
@@ -59,13 +59,13 @@ const DividerAlignment = props => {
 		<ToolbarPopover
 			className='toolbar-item__divider-alignment'
 			tooltip={__('Divider alignment', 'maxi-blocks')}
-			icon={toolbarDividerAlign}
-			advancedOptions='alingment'
+			icon={toolbarVerticalAlign}
+			advancedOptions='alignment'
 			tab={0}
 		>
 			<div className='toolbar-item__divider-alignment__popover'>
 				<SelectControl
-					label={__('Line Orientation', 'maxi-blocks')}
+					label={__('Line orientation', 'maxi-blocks')}
 					options={[
 						{
 							label: __('Horizontal', 'maxi-blocks'),

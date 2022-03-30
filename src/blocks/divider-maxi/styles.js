@@ -12,6 +12,7 @@ import {
 	getSizeStyles,
 	getTransformStyles,
 	getZIndexStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsDivider } from './custom-css';
 
@@ -75,6 +76,9 @@ const getWrapperObject = props => {
 		),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

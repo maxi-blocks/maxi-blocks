@@ -234,15 +234,15 @@ const LinkContent = withFormatValue(props => {
 					},
 					{
 						id: 'noFollow',
-						title: __('Add "nofollow" rel', 'maxi-blocks'),
+						title: __('"nofollow"', 'maxi-blocks'),
 					},
 					{
 						id: 'sponsored',
-						title: __('Add "sponsored" rel', 'maxi-blocks'),
+						title: __('"sponsored"', 'maxi-blocks'),
 					},
 					{
 						id: 'ugc',
-						title: __('Add "UGC" rel', 'maxi-blocks'),
+						title: __('"UGC"', 'maxi-blocks'),
 					},
 				]}
 			/>

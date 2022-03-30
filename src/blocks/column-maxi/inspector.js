@@ -9,17 +9,9 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	AdvancedNumberControl,
-	SelectControl,
+	ColumnSizeControl,
 	SettingTabsControl,
-	ToggleSwitch,
 } from '../../components';
-import {
-	getGroupAttributes,
-	getDefaultAttribute,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { getColumnDefaultValue } from '../../extensions/column-templates';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
 
@@ -29,6 +21,7 @@ import { selectorsColumn, categoriesColumn } from './custom-css';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId, rowPattern } =
 		props;
+	const { verticalAlign } = attributes;
 
 	return (
 		<InspectorControls>
@@ -55,141 +48,18 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<>
-													<ToggleSwitch
-														label={__(
-															'Fit content',
-															'maxi-blocks'
-														)}
-														className='maxi-column-inspector__fit-content'
-														selected={getLastBreakpointAttribute(
-															{
-																target: 'column-fit-content',
-																breakpoint:
-																	deviceType,
-																attributes,
-															}
-														)}
-														onChange={val => {
-															maxiSetAttributes({
-																[`column-fit-content-${deviceType}`]:
-																	val,
-															});
-														}}
-													/>
-													{!getLastBreakpointAttribute(
-														{
-															target: 'column-fit-content',
-															breakpoint:
-																deviceType,
-															attributes,
-														}
-													) && (
-														<AdvancedNumberControl
-															label={__(
-																'Column Size (%)',
-																'maxi-blocks'
-															)}
-															value={getLastBreakpointAttribute(
-																{
-																	target: 'column-size',
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															)}
-															onChangeValue={val => {
-																maxiSetAttributes(
-																	{
-																		[`column-size-${deviceType}`]:
-																			val !==
-																				undefined &&
-																			val !==
-																				''
-																				? val
-																				: '',
-																	}
-																);
-															}}
-															min={0}
-															max={100}
-															step={0.1}
-															onReset={() =>
-																maxiSetAttributes(
-																	{
-																		[`column-size-${deviceType}`]:
-																			getColumnDefaultValue(
-																				rowPattern,
-																				{
-																					...getGroupAttributes(
-																						attributes,
-																						'columnSize'
-																					),
-																				},
-																				clientId,
-																				deviceType
-																			),
-																	}
-																)
-															}
-															initialPosition={getDefaultAttribute(
-																`column-size-${deviceType}`,
-																clientId
-															)}
-														/>
-													)}
-													<SelectControl
-														label={__(
-															'Vertical align',
-															'maxi-blocks'
-														)}
-														value={
-															attributes.verticalAlign
-														}
-														options={[
-															{
-																label: __(
-																	'Top',
-																	'maxi-blocks'
-																),
-																value: 'flex-start',
-															},
-															{
-																label: __(
-																	'Center',
-																	'maxi-blocks'
-																),
-																value: 'center',
-															},
-															{
-																label: __(
-																	'Bottom',
-																	'maxi-blocks'
-																),
-																value: 'flex-end',
-															},
-															{
-																label: __(
-																	'Space between',
-																	'maxi-blocks'
-																),
-																value: 'space-between',
-															},
-															{
-																label: __(
-																	'Space around',
-																	'maxi-blocks'
-																),
-																value: 'space-around',
-															},
-														]}
-														onChange={verticalAlign =>
-															maxiSetAttributes({
-																verticalAlign,
-															})
-														}
-													/>
-												</>
+												<ColumnSizeControl
+													props
+													verticalAlign={
+														verticalAlign
+													}
+													rowPattern={rowPattern}
+													clientId={clientId}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
 											),
 										},
 										...inspectorTabs.blockBackground({
@@ -256,6 +126,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
 										props,
 									}),
 									...inspectorTabs.zindex({

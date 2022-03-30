@@ -6,16 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 import AdvancedNumberControl from '../../../advanced-number-control';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
-
-/**
- * External dependencies
- */
-import { round } from 'lodash';
 
 /**
  * Styles & Icons
@@ -27,16 +25,7 @@ import { toolbarSizing } from '../../../../icons';
  * ColumnSize
  */
 const ColumnSize = props => {
-	const {
-		clientId,
-		blockName,
-		verticalAlign,
-		onChange,
-		breakpoint,
-		attributes,
-		rowPattern,
-		columnSize,
-	} = props;
+	const { clientId, blockName, onChange, rowPattern, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
@@ -49,36 +38,42 @@ const ColumnSize = props => {
 			tab={0}
 		>
 			<div className='toolbar-item__column-size__popover'>
-				<SelectControl
-					label={__('Vertical align', 'maxi-blocks')}
-					value={verticalAlign}
-					options={[
-						{
-							label: __('Top', 'maxi-blocks'),
-							value: 'flex-start',
-						},
-						{
-							label: __('Center', 'maxi-blocks'),
-							value: 'center',
-						},
-						{
-							label: __('Bottom', 'maxi-blocks'),
-							value: 'flex-end',
-						},
-						{
-							label: __('Space between', 'maxi-blocks'),
-							value: 'space-between',
-						},
-						{
-							label: __('Space around', 'maxi-blocks'),
-							value: 'space-around',
-						},
-					]}
-					onChange={verticalAlign =>
+				<AdvancedNumberControl
+					label={__('Column Size (%)', 'maxi-blocks')}
+					value={getLastBreakpointAttribute({
+						target: 'column-size',
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeValue={val => {
 						onChange({
-							verticalAlign,
+							[`column-size-${breakpoint}`]:
+								val !== undefined && val !== '' ? val : '',
+						});
+					}}
+					min={0}
+					max={100}
+					step={0.1}
+					onReset={() =>
+						onChange({
+							[`column-size-${breakpoint}`]:
+								getColumnDefaultValue(
+									rowPattern,
+									{
+										...getGroupAttributes(
+											props,
+											'columnSize'
+										),
+									},
+									clientId,
+									breakpoint
+								),
 						})
 					}
+					initialPosition={getDefaultAttribute(
+						`column-size-${breakpoint}`,
+						clientId
+					)}
 				/>
 			</div>
 		</ToolbarPopover>

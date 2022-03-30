@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
-import SettingTabsControl from '../../../setting-tabs-control';
+import ToggleSwitch from '../../../toggle-switch';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
@@ -34,6 +34,8 @@ const EXCLUDED_BLOCKS = [
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/text-maxi',
+	'maxi-blocks/button-maxi',
 ];
 const ELEMENT_BLOCKS = [
 	{
@@ -43,11 +45,9 @@ const ELEMENT_BLOCKS = [
 	},
 ];
 const BLOCKS_MAX_WIDTH = [
-	'maxi-blocks/button-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/map-maxi',
-	'maxi-blocks/text-maxi',
 ];
 
 /**
@@ -68,28 +68,22 @@ const Size = props => {
 			className='toolbar-item__size'
 			tooltip={__('Size', 'maxi-blocks')}
 			icon={toolbarSizing}
-			advancedOptions='width height'
+			advancedOptions='height width'
 			tab={0}
 		>
 			<div className='toolbar-item__size__popover'>
 				{(isFirstOnHierarchy ||
 					blockName === 'maxi-blocks/row-maxi') && (
-					<SettingTabsControl
-						label={__('Full Width', 'maxi-blocks')}
-						type='buttons'
-						selected={props[attrLabel]}
-						items={[
-							{
-								label: __('Yes', 'maxi-blocks'),
-								value: 'full',
-							},
-							{
-								label: __('No', 'maxi-blocks'),
-								value: 'normal',
-							},
-						]}
-						onChange={value => onChange({ [attrLabel]: value })}
-					/>
+					<div>
+						<ToggleSwitch
+							label={__('Enable full width', 'maxi-blocks')}
+							selected={props[attrLabel] === 'full'}
+							onChange={val => {
+								const full = val ? 'full' : 'normal';
+								onChange({ [attrLabel]: full });
+							}}
+						/>
+					</div>
 				)}
 				{props[attrLabel] === 'normal' && (
 					<>
@@ -144,12 +138,18 @@ const Size = props => {
 											val,
 									})
 								}
-								defaultValue={getDefaultAttribute(
-									`${prefix}max-width-${breakpoint}`
-								)}
-								defaultUnit={getDefaultAttribute(
-									`${prefix}max-width-unit-${breakpoint}`
-								)}
+								onReset={() =>
+									onChange({
+										[`${prefix}max-width-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}max-width-${breakpoint}`
+											),
+										[`${prefix}max-width-unit-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}max-width-unit-${breakpoint}`
+											),
+									})
+								}
 								value={getLastBreakpointAttribute({
 									target: `${prefix}max-width`,
 									breakpoint,

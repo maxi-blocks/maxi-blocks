@@ -30,7 +30,8 @@ const Divider = props => {
 			className='toolbar-item__divider-line'
 			tooltip={__('Divider', 'maxi-blocks')}
 			icon={toolbarDividerSetting}
-			advancedOptions='line'
+			advancedOptions='line settings'
+			tab={0}
 		>
 			<div className='toolbar-item__divider-line__popover'>
 				<DividerControl

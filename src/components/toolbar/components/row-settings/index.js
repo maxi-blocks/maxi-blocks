@@ -28,7 +28,8 @@ const RowSettings = props => {
 			className='toolbar-item__row-settings'
 			tooltip={__('Row Settings', 'maxi-blocks')}
 			icon={toolbarAdvancedSettings}
-			advancedOptions='row settings'
+			advancedOptions='column picker'
+			tab={0}
 		>
 			<div className='toolbar-item__row-settings__popover'>
 				<SelectControl

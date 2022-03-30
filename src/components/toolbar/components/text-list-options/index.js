@@ -96,6 +96,7 @@ const TextListOptions = withFormatValue(props => {
 			tooltip={__('List options', 'maxi-blocks')}
 			icon={toolbarUnorderedList}
 			advancedOptions='list options'
+			tab={0}
 		>
 			<div className='toolbar-item__popover__list-options'>
 				<Button

@@ -47,6 +47,7 @@ const Border = props => {
 		<ToolbarPopover
 			className='toolbar-item__border'
 			advancedOptions={isIconToolbar ? 'icon' : 'border'}
+			tab={0}
 			tooltip={__('Border', 'maxi-blocks')}
 			icon={
 				<div

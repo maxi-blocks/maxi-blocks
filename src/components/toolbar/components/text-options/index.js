@@ -348,6 +348,7 @@ const TypographyControl = withFormatValue(props => {
 			tooltip={__('Typography', 'maxi-blocks')}
 			icon={toolbarType}
 			advancedOptions='typography'
+			tab={0}
 		>
 			<div className='toolbar-item__popover__font-options'>
 				<div className='toolbar-item__popover__font-options__font'>

@@ -51,6 +51,7 @@ const IconColor = props => {
 				/>
 			}
 			advancedOptions='icon'
+			tab={0}
 		>
 			<div className='toolbar-item__icon-color__popover'>
 				<SettingTabsControl

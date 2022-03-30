@@ -81,6 +81,7 @@ class ToolbarPopover extends Component {
 			icon,
 			children,
 			advancedOptions = false,
+			tab,
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;
@@ -122,11 +123,18 @@ class ToolbarPopover extends Component {
 									className='toolbar-item__popover__advanced-button'
 									icon={toolbarAdvancedSettings}
 									onClick={() =>
-										openGeneralSidebar(
-											'edit-post/block'
-										).then(() =>
-											openSidebar(advancedOptions)
-										)
+										openGeneralSidebar('edit-post/block')
+											.then(() =>
+												dispatch(
+													'maxiBlocks'
+												).updateInspectorPath({
+													depth: 0,
+													value: tab,
+												})
+											)
+											.then(() =>
+												openSidebar(advancedOptions)
+											)
 									}
 								/>
 							)}

@@ -69,6 +69,7 @@ const Size = props => {
 			tooltip={__('Size', 'maxi-blocks')}
 			icon={toolbarSizing}
 			advancedOptions='width height'
+			tab={0}
 		>
 			<div className='toolbar-item__size__popover'>
 				{(isFirstOnHierarchy ||

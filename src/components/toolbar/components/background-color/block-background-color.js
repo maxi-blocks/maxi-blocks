@@ -106,6 +106,7 @@ const BlockBackgroundColor = props => {
 		<ToolbarPopover
 			className='toolbar-item__background'
 			advancedOptions='background layer'
+			tab={1}
 			tooltip={
 				!isBackgroundColor
 					? __('Background Colour Disabled', 'maxi-blocks')

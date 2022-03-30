@@ -51,6 +51,7 @@ const IconBackground = props => {
 				/>
 			}
 			advancedOptions='icon'
+			tab={0}
 		>
 			<div className='toolbar-item__icon-background__popover'>
 				<SettingTabsControl

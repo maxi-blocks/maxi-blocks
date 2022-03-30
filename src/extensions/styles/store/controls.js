@@ -9,13 +9,23 @@ import { select } from '@wordpress/data';
  */
 import frontendStyleGenerator from '../frontendStyleGenerator';
 
+const autoprefixer = require('autoprefixer');
+const postcss = require('postcss');
+
+async function autoprefixCss(code) {
+	const css = await postcss([autoprefixer]).process(code).css;
+	return css;
+}
+
 /**
  * Controls
  */
 const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
 		const id = select('core/editor').getCurrentPostId();
-		const parsedStyles = frontendStyleGenerator(styles);
+		const parsedStyles = await autoprefixCss(
+			frontendStyleGenerator(styles)
+		);
 		const fonts = select('maxiBlocks/text').getPostFonts();
 
 		await apiFetch({

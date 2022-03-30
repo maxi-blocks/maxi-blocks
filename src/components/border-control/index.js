@@ -166,8 +166,6 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
-		clientId,
-		globalProps,
 	} = props;
 
 	const borderWidthLastValue = () => {
@@ -334,69 +332,6 @@ const BorderControl = props => {
 					}}
 				/>
 			)}
-			{!isToolbar &&
-				!disableColor &&
-				borderStyleValue &&
-				borderStyleValue !== 'none' && (
-					<ColorControl
-						label={__('Border', 'maxi-blocks')}
-						color={getLastBreakpointAttribute({
-							target: `${prefix}border-color`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						prefix={`${prefix}border-`}
-						useBreakpointForDefault
-						paletteStatus={getLastBreakpointAttribute({
-							target: `${prefix}border-palette-status`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						paletteColor={getLastBreakpointAttribute({
-							target: `${prefix}border-palette-color`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						paletteOpacity={getLastBreakpointAttribute({
-							target: `${prefix}border-palette-opacity`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						onChange={({
-							paletteColor,
-							paletteStatus,
-							paletteOpacity,
-							color,
-						}) => {
-							onChange({
-								[`${prefix}border-palette-status-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteStatus,
-								[`${prefix}border-palette-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteColor,
-								[`${prefix}border-palette-opacity-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteOpacity,
-								[`${prefix}border-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: color,
-							});
-						}}
-						disableImage
-						disableVideo
-						disableGradient
-						isHover={isHover}
-						deviceType={breakpoint}
-						clientId={clientId}
-						globalProps={globalProps}
-					/>
-				)}
-
 			{isToolbar && (
 				<div className='maxi-border-control__icon'>
 					<Icon icon={borderWidth} />

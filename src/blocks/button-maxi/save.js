@@ -45,11 +45,7 @@ const save = props => {
 	);
 
 	return (
-		<MaxiBlock
-			{...getMaxiBlockAttributes({ ...props, name })}
-			isSave
-			disableBackground
-		>
+		<MaxiBlock {...getMaxiBlockAttributes({ ...props, name })} isSave>
 			<Button
 				className={buttonClasses}
 				data-align={fullWidth}

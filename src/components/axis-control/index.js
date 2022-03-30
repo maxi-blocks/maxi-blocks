@@ -105,7 +105,10 @@ const AxisContent = props => {
 		onChangeValue,
 		minMaxSettings,
 		currentUnit,
+		disableSync = false,
 		label: type,
+		onReset,
+		disableLeftRightMargin,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -117,7 +120,7 @@ const AxisContent = props => {
 
 	return (
 		<div>
-			{sync === 'all' && (
+			{(sync === 'all' || disableSync) && (
 				<>
 					<AxisInput
 						label={type}
@@ -133,7 +136,7 @@ const AxisContent = props => {
 					/>
 				</>
 			)}
-			{sync === 'axis' && (
+			{sync === 'axis' && !disableSync && (
 				<>
 					<AxisInput
 						label={`${inputsArray[0]} / ${inputsArray[2]}`}
@@ -148,22 +151,24 @@ const AxisContent = props => {
 						currentUnit={currentUnit}
 						type={type}
 					/>
-					<AxisInput
-						label={`${inputsArray[3]} / ${inputsArray[1]}`}
-						target={inputsArray[1]}
-						singleTarget='horizontal'
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-					/>
+					{!disableLeftRightMargin && (
+						<AxisInput
+							label={`${inputsArray[3]} / ${inputsArray[1]}`}
+							target={inputsArray[1]}
+							singleTarget='horizontal'
+							getValue={getValue}
+							getLastBreakpointValue={getLastBreakpointValue}
+							breakpoint={breakpoint}
+							disableAuto={disableAuto}
+							onChangeValue={onChangeValue}
+							minMaxSettings={minMaxSettings}
+							currentUnit={currentUnit}
+							type={type}
+						/>
+					)}
 				</>
 			)}
-			{sync === 'none' && (
+			{sync === 'none' && !disableSync && (
 				<>
 					<AxisInput
 						label={inputsArray[0]}
@@ -178,19 +183,21 @@ const AxisContent = props => {
 						currentUnit={currentUnit}
 						type={type}
 					/>
-					<AxisInput
-						label={inputsArray[1]}
-						target={inputsArray[1]}
-						singleTarget={inputsArray[1]}
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-					/>
+					{!disableLeftRightMargin && (
+						<AxisInput
+							label={inputsArray[1]}
+							target={inputsArray[1]}
+							singleTarget={inputsArray[1]}
+							getValue={getValue}
+							getLastBreakpointValue={getLastBreakpointValue}
+							breakpoint={breakpoint}
+							disableAuto={disableAuto}
+							onChangeValue={onChangeValue}
+							minMaxSettings={minMaxSettings}
+							currentUnit={currentUnit}
+							type={type}
+						/>
+					)}
 					<AxisInput
 						label={inputsArray[2]}
 						target={inputsArray[2]}
@@ -204,20 +211,38 @@ const AxisContent = props => {
 						currentUnit={currentUnit}
 						type={type}
 					/>
-					<AxisInput
-						label={inputsArray[3]}
-						target={inputsArray[3]}
-						singleTarget={inputsArray[3]}
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-					/>
+					{!disableLeftRightMargin && (
+						<AxisInput
+							label={inputsArray[3]}
+							target={inputsArray[3]}
+							singleTarget={inputsArray[3]}
+							getValue={getValue}
+							getLastBreakpointValue={getLastBreakpointValue}
+							breakpoint={breakpoint}
+							disableAuto={disableAuto}
+							onChangeValue={onChangeValue}
+							minMaxSettings={minMaxSettings}
+							currentUnit={currentUnit}
+							type={type}
+						/>
+					)}
 				</>
+			)}
+			{disableSync && (
+				<BaseControl className='maxi-axis-control__unit-header'>
+					<Button
+						className='components-maxi-control__reset-button'
+						onClick={() => onReset(breakpoint)}
+						aria-label={sprintf(
+							__('Reset %s settings', 'maxi-blocks'),
+							type.toLowerCase()
+						)}
+						action='reset'
+						type='reset'
+					>
+						{reset}
+					</Button>
+				</BaseControl>
 			)}
 		</div>
 	);
@@ -236,6 +261,7 @@ const AxisControlContent = props => {
 		onChangeSync,
 		minMaxSettings,
 		inputsArray,
+		disableSync = false,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -308,65 +334,70 @@ const AxisControlContent = props => {
 
 	return (
 		<>
-			<BaseControl
-				label={__(type, 'maxi-blocks')}
-				className='maxi-axis-control__unit-header'
-			>
-				<SelectControl
-					className='maxi-axis-control__units'
-					hideLabelFromVision
-					label={__('Unit', 'maxi-blocks')}
-					options={getOptions()}
-					value={currentUnit}
-					onChange={onChangeUnit}
-				/>
-				<Button
-					className='components-maxi-control__reset-button'
-					onClick={() => onReset(breakpoint)}
-					aria-label={sprintf(
-						__('Reset %s settings', 'maxi-blocks'),
-						type.toLowerCase()
-					)}
-					action='reset'
-					type='reset'
-				>
-					{reset}
-				</Button>
-			</BaseControl>
-			<SettingTabsControl
-				label={getSyncLabel()}
-				type='buttons'
-				className='maxi-axis-control__header'
-				selected={sync}
-				items={[
-					{
-						value: 'all',
-						className: 'maxi-axis-control__sync-all',
-						icon:
-							type === 'Margin'
-								? marginSyncAllIcon
-								: paddingSyncAllIcon,
-					},
-					{
-						value: 'axis',
-						className: 'maxi-axis-control__sync-axis',
-						icon:
-							type === 'Margin'
-								? marginSyncDirectionIcon
-								: paddingSyncDirectionIcon,
-					},
-					{
-						value: 'none',
-						className: 'maxi-axis-control__sync-none',
-						icon:
-							type === 'Margin'
-								? marginSeparateIcon
-								: paddingSeparateIcon,
-					},
-				]}
-				onChange={val => onChangeSync(val, breakpoint)}
-			/>
-			<AxisContent {...props} />
+			{!disableSync && (
+				<>
+					<BaseControl
+						label={__(type, 'maxi-blocks')}
+						className='maxi-axis-control__unit-header'
+					>
+						<SelectControl
+							className='maxi-axis-control__units'
+							hideLabelFromVision
+							label={__('Unit', 'maxi-blocks')}
+							options={getOptions()}
+							value={currentUnit}
+							onChange={onChangeUnit}
+						/>
+						<Button
+							className='components-maxi-control__reset-button'
+							onClick={() => onReset(breakpoint)}
+							aria-label={sprintf(
+								__('Reset %s settings', 'maxi-blocks'),
+								type.toLowerCase()
+							)}
+							action='reset'
+							type='reset'
+						>
+							{reset}
+						</Button>
+					</BaseControl>
+					<SettingTabsControl
+						label={getSyncLabel()}
+						type='buttons'
+						className='maxi-axis-control__header'
+						selected={sync}
+						items={[
+							{
+								value: 'all',
+								className: 'maxi-axis-control__sync-all',
+								icon:
+									type === 'Margin'
+										? marginSyncAllIcon
+										: paddingSyncAllIcon,
+							},
+							{
+								value: 'axis',
+								className: 'maxi-axis-control__sync-axis',
+								icon:
+									type === 'Margin'
+										? marginSyncDirectionIcon
+										: paddingSyncDirectionIcon,
+							},
+							{
+								value: 'none',
+								className: 'maxi-axis-control__sync-none',
+								icon:
+									type === 'Margin'
+										? marginSeparateIcon
+										: paddingSeparateIcon,
+							},
+						]}
+						onChange={val => onChangeSync(val, breakpoint)}
+					/>
+					<AxisContent {...props} />
+				</>
+			)}
+			{disableSync && <AxisContent {...props} />}
 		</>
 	);
 };
@@ -380,6 +411,7 @@ const AxisControl = props => {
 		disableAuto = false,
 		allowedUnits = ['px', 'em', 'vw', '%'],
 		target,
+		noResponsiveTabs,
 		prefix = '',
 		minMaxSettings = {
 			px: {
@@ -416,6 +448,8 @@ const AxisControl = props => {
 			'sync-vertical',
 		],
 		optionType = 'number',
+		disableSync = false,
+		blockFullWidth,
 	} = props;
 
 	const classes = classnames(
@@ -425,7 +459,11 @@ const AxisControl = props => {
 		className
 	);
 
-	const useResponsiveTabs = ['margin', 'padding'].includes(target);
+	const useResponsiveTabs =
+		!noResponsiveTabs && ['margin', 'padding'].includes(target);
+
+	const disableLeftRightMargin =
+		target === 'margin' && blockFullWidth === 'full';
 
 	const getOptions = () => {
 		const options = [];
@@ -539,7 +577,7 @@ const AxisControl = props => {
 
 		let response = {};
 
-		switch (sync) {
+		switch (disableSync ? 'all' : sync) {
 			case 'all': {
 				inputsArray.forEach(key => {
 					if (
@@ -644,6 +682,7 @@ const AxisControl = props => {
 						onChangeValue={onChangeValue}
 						minMaxSettings={minMaxSettings}
 						disableAuto={disableAuto}
+						disableLeftRightMargin={disableLeftRightMargin}
 						getKey={getKey}
 						onChangeSync={onChangeSync}
 					/>

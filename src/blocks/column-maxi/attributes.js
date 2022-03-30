@@ -37,6 +37,7 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.columnSize,
+	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
 
@@ -49,6 +50,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

@@ -1,4 +1,5 @@
 <?php
+require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
 
 class MaxiBlocks_Styles
 {
@@ -35,9 +36,12 @@ class MaxiBlocks_Styles
     {
         $post_content = $this->getPostContent();
 
-		if (!$post_content) {
-			return false;
-		}
+        if (!$post_content || empty($post_content)) {
+            return false;
+        }
+
+        $post_content = json_decode(json_encode($post_content), true);
+        
 
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
@@ -51,7 +55,6 @@ class MaxiBlocks_Styles
         if ($fonts) {
             $this->enqueue_fonts($fonts);
         }
-
 
         $needCustomMeta = false;
 
@@ -101,16 +104,22 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        $post_content = $wpdb->get_results(
+        $post_content_array = (array)$wpdb->get_results(
             "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
             OBJECT
         );
 
-        if (!$post_content) {
+        if (!$post_content_array || empty($post_content_array)) {
             return false;
         }
 
-        return (array)$post_content[0];
+        $post_content = $post_content_array[0];
+
+        if (!$post_content || empty($post_content)) {
+            return false;
+        }
+
+        return $post_content;
     }
 
     /**
@@ -170,7 +179,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        return  explode(',', $fonts);
+        return json_decode($fonts, true);
     }
 
     /**
@@ -200,21 +209,33 @@ class MaxiBlocks_Styles
 
     public function enqueue_fonts($fonts)
     {
-        if (!is_array($fonts)) {
-            $fonts = [];
+        if (empty($fonts) || !is_array($fonts)) {
+            return;
         }
 
-        if (!array_key_exists('Roboto', $fonts)) {
-            array_push($fonts, 'Roboto');
-        }
+        $useLocalFonts = (bool) get_option('local_fonts');
 
-        foreach ($fonts as $font) {
-            wp_enqueue_style(
-                $font,
-                "https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
-            );
+        foreach ($fonts as $font => $fontData) {
+            if ($font) {
+                if ($useLocalFonts) {
+                    $fontNameSanitized = str_replace(' ', '', strtolower($font));
+                    $fontUrl = wp_upload_dir()['baseurl'] . '/maxi/fonts/'.$fontNameSanitized.'/style.css';
+                } else {
+                    $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
+                }
+                if (!$useLocalFonts) {
+                    $localFonts = new MaxiBlocks_Local_Fonts();
+                    $fontUrl = $localFonts->generateFontURL($fontUrl, $fontData);
+                }
+                
+                wp_enqueue_style(
+                    'maxi-'.sanitize_title_with_dashes($font),
+                    $fontUrl
+                );
+            }
         }
     }
+
 
     /**
      * Custom Meta

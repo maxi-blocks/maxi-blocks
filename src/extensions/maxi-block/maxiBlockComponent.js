@@ -30,7 +30,7 @@ import {
 	getHasScrollEffects,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import { loadFonts } from '../text/fonts';
+import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
 /**
@@ -46,6 +46,7 @@ const StyleComponent = ({
 	stylesObj,
 	currentBreakpoint,
 	blockBreakpoints,
+	isIframe = false,
 }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
@@ -68,7 +69,8 @@ const StyleComponent = ({
 	const styleContent = styleGenerator(
 		styles,
 		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
-		currentBreakpoint
+		currentBreakpoint,
+		isIframe
 	);
 
 	return <style>{styleContent}</style>;
@@ -134,17 +136,6 @@ class MaxiBlockComponent extends Component {
 			this.displayStyles();
 		}
 
-		// Change `parentBlockStyle` before updating
-		const { blockStyle } = this.props.attributes;
-
-		if (blockStyle === 'maxi-parent') {
-			const changedStyle = this.getParentStyle();
-
-			if (changedStyle) {
-				this.displayStyles(); // force rendering styles after changing parentBlockStyle
-				return true;
-			}
-		}
 		// Force rendering the block when SC related values change
 		if (!isEqual(this.props.scValues, nextProps.scValues)) return true;
 
@@ -152,7 +143,8 @@ class MaxiBlockComponent extends Component {
 		if (
 			!this.props.isSelected ||
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType // In case of breakpoint change
+			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
+			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
 		)
 			return true;
 
@@ -337,12 +329,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		// Ensures Roboto is fully accessible from the editor
-		loadFonts('Roboto');
+		const response = getAllFonts(this.typography, 'custom-formats');
 
-		Object.entries(this.typography).forEach(([key, val]) => {
-			if (key.includes('font-family')) loadFonts(val);
-		});
+		if (!isEmpty(response)) loadFonts(response);
 	}
 
 	getParentStyle() {
@@ -352,6 +341,7 @@ class MaxiBlockComponent extends Component {
 		} = this.props;
 
 		const newParentStyle = getBlockStyle(clientId);
+
 		if (parentBlockStyle !== newParentStyle) {
 			this.props.attributes.parentBlockStyle = newParentStyle;
 
@@ -428,6 +418,7 @@ class MaxiBlockComponent extends Component {
 							stylesObj={obj}
 							currentBreakpoint={this.currentBreakpoint}
 							blockBreakpoints={breakpoints}
+							isIframe
 						/>,
 						iframeWrapper
 					);

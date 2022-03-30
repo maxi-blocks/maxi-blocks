@@ -9,68 +9,75 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../../../color-control';
 import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
-import {
-	getDefaultAttribute,
-	getBlockStyle,
-	getColorRGBAString,
-} from '../../../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarDividerSetting } from '../../../../icons';
+import { toolbarShapeLineColor } from '../../../../icons';
 
 /**
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, clientId } = props;
+	const { blockName, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__text-options'
-			tooltip={__('Divider color', 'maxi-blocks')}
+			className='toolbar-item__divider'
+			tooltip={__('Divider line colour', 'maxi-blocks')}
 			icon={
-				<div
-					className='toolbar-item__text-options__icon'
-					style={{
-						background: props['divider-border-palette-status']
-							? getColorRGBAString({
-									firstVar: `color-${props['divider-border-palette-color']}`,
-									opacity:
-										props['divider-border-palette-opacity'],
-									blockStyle: getBlockStyle(clientId),
-							  })
-							: props['divider-color'],
-						borderWidth: '1px',
-						borderColor: '#fff',
-						borderStyle: 'solid',
-					}}
-				>
+				<div className='toolbar-item__divider__icon'>
 					<Icon
-						className='toolbar-item__text-options__inner-icon'
-						icon={toolbarDividerSetting}
+						className='toolbar-item__divider-icon'
+						icon={toolbarShapeLineColor}
 					/>
 				</div>
 			}
+			advancedOptions='line settings'
 		>
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl
-					label={__('Divider', 'maxi-blocks')}
-					color={props['divider-border-color']}
+					color={getLastBreakpointAttribute(
+						'divider-border-color',
+						breakpoint,
+						props
+					)}
 					prefix='border-'
-					paletteColor={props['divider-border-palette-color']}
-					paletteStatus={props['divider-border-palette-status']}
-					onChange={({ color, paletteColor, paletteStatus }) =>
+					paletteColor={getLastBreakpointAttribute(
+						'divider-border-palette-color',
+						breakpoint,
+						props
+					)}
+					paletteOpacity={getLastBreakpointAttribute(
+						'divider-border-palette-opacity',
+						breakpoint,
+						props
+					)}
+					paletteStatus={getLastBreakpointAttribute(
+						'divider-border-palette-status',
+						breakpoint,
+						props
+					)}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) => {
 						onChange({
-							'divider-border-color': color,
-							'divider-border-palette-color': paletteColor,
-							'divider-border-palette-status': paletteStatus,
-						})
-					}
+							[`divider-border-color-${breakpoint}`]: color,
+							[`divider-border-palette-color-${breakpoint}`]:
+								paletteColor,
+							[`divider-border-palette-opacity-${breakpoint}`]:
+								paletteOpacity,
+							[`divider-border-palette-status-${breakpoint}`]:
+								paletteStatus,
+						});
+					}}
 					disableGradient
 					globalProps={{ target: '', type: 'divider' }}
 				/>

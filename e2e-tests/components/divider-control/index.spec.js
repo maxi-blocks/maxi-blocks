@@ -8,18 +8,17 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, getBlockStyle } from '../../utils';
+import { openSidebarTab, getBlockStyle, getBlockAttributes } from '../../utils';
 
 describe('DividerControl', () => {
-	it.skip('Checking the style selector', async () => {
+	it('Checking the style selector', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
-		await page.$eval('.toolbar-item__divider-line', button =>
-			button.click()
-		);
 
-		await page.waitForSelector(
-			'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control'
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'line settings'
 		);
 
 		const dividerStyles = ['none', 'solid', 'dashed', 'dotted'];
@@ -27,8 +26,8 @@ describe('DividerControl', () => {
 		for (let i = 0; i < dividerStyles.length; i += 1) {
 			const dividerStyle = dividerStyles[i];
 
-			await page.$$eval(
-				'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control button',
+			await accordionPanel.$$eval(
+				'.maxi-default-styles-control button',
 				(buttons, i) => buttons[i].click(),
 				i
 			);

@@ -2,27 +2,6 @@
 
 exports[`hoverAttributesCreator Returns a color bg object 1`] = `
 Object {
-  "background-color-clip-path-active-general-hover": Object {
-    "type": "boolean",
-  },
-  "background-color-clip-path-active-l-hover": Object {
-    "type": "boolean",
-  },
-  "background-color-clip-path-active-m-hover": Object {
-    "type": "boolean",
-  },
-  "background-color-clip-path-active-s-hover": Object {
-    "type": "boolean",
-  },
-  "background-color-clip-path-active-xl-hover": Object {
-    "type": "boolean",
-  },
-  "background-color-clip-path-active-xs-hover": Object {
-    "type": "boolean",
-  },
-  "background-color-clip-path-active-xxl-hover": Object {
-    "type": "boolean",
-  },
   "background-color-clip-path-general-hover": Object {
     "type": "string",
   },
@@ -34,6 +13,27 @@ Object {
   },
   "background-color-clip-path-s-hover": Object {
     "type": "string",
+  },
+  "background-color-clip-path-status-general-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xxl-hover": Object {
+    "type": "boolean",
   },
   "background-color-clip-path-xl-hover": Object {
     "type": "string",

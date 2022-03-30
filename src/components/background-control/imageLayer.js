@@ -21,6 +21,7 @@ import {
 	getAttributeKey,
 	getAttributeValue,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -530,43 +531,22 @@ const ImageLayerSettings = props => {
 						attributes: imageOptions,
 						isHover,
 					})}
-					onChange={val =>
-						onChange({
-							[getAttributeKey(
-								'background-image-clip-path',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						})
-					}
 					hasClipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-image-clip-path-active`,
+						target: `${prefix}background-image-clip-path-status`,
 						breakpoint,
 						attributes: imageOptions,
 						isHover,
 					})}
-					onToggleClipPath={val => {
-						onChange({
-							[getAttributeKey(
-								'background-image-clip-path-active',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-							...(!val && {
-								[getAttributeKey(
-									'background-image-clip-path',
-									isHover,
-									prefix,
-									breakpoint
-								)]: null,
-							}),
-						});
-					}}
+					onChange={obj => onChange(obj)}
+					{...getGroupAttributes(
+						props,
+						'clipPath',
+						false,
+						'background-image-'
+					)}
 					isHover={isHover}
-					prefix={prefix}
-					deviceType={breakpoint}
+					prefix='background-image-'
+					breakpoint={breakpoint}
 				/>
 			)}
 		</>

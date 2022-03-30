@@ -568,12 +568,33 @@ const Inspector = memo(
 												),
 												content: (
 													<ClipPath
-														clipPath={clipPath}
-														onChange={clipPath =>
-															maxiSetAttributes({
-																clipPath,
-															})
-														}
+														clipPath={getLastBreakpointAttribute(
+															{
+																target: 'clip-path',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
+														hasClipPath={getLastBreakpointAttribute(
+															{
+																target: `clip-path-status`,
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+														}}
+														{...getGroupAttributes(
+															attributes,
+															'clipPath',
+															false
+														)}
+														breakpoint={deviceType}
 													/>
 												),
 											},

@@ -16,7 +16,7 @@ import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
-
+import { getAttributeKey } from '../../extensions/styles';
 /**
  * External dependencies
  */
@@ -102,7 +102,7 @@ const ClipPathOption = props => {
 
 							values[0] = value;
 
-							onChange(values);
+							onChangeValue(values);
 						}}
 						min={0}
 						max={100}
@@ -119,7 +119,7 @@ const ClipPathOption = props => {
 
 								values[1] = value;
 
-								onChange(values);
+								onChangeValue(values);
 							}}
 							min={0}
 							max={100}
@@ -137,8 +137,15 @@ const ClipPathOption = props => {
 };
 
 const ClipPath = props => {
-	const { clipPath, className, onChange, hasClipPath, onToggleClipPath } =
-		props;
+	const {
+		clipPath,
+		className,
+		onChange,
+		hasClipPath,
+		prefix,
+		breakpoint,
+		isHover,
+	} = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
 
@@ -271,9 +278,15 @@ const ClipPath = props => {
 		}
 		const newCP = `${type}(${newContent})`;
 
-		onChange(newCP);
+		onChangeValue(newCP);
 
 		changeClipPathOptions(clipPath);
+	};
+
+	const onChangeValue = val => {
+		onChange({
+			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
+		});
 	};
 
 	const onChangeType = newType => {
@@ -309,6 +322,16 @@ const ClipPath = props => {
 		generateCP(newCP);
 	};
 
+	const onToggleClipPath = val => {
+		onChange({
+			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
+				val,
+			...(!val && {
+				[getAttributeKey('clip-path', isHover, prefix, breakpoint)]:
+					null,
+			}),
+		});
+	};
 	return (
 		<div className={classes}>
 			<ToggleSwitch
@@ -334,7 +357,7 @@ const ClipPath = props => {
 								<Button
 									aria-pressed={clipPath === ''}
 									className='clip-path-defaults__items clip-path-defaults__items__none'
-									onClick={() => onChange('')}
+									onClick={() => onChangeValue('')}
 								>
 									<Icon icon={styleNone} />
 								</Button>
@@ -353,7 +376,7 @@ const ClipPath = props => {
 											className='clip-path-defaults__items'
 											onClick={() =>
 												newClipPath !== clipPath &&
-												onChange(newClipPath)
+												onChangeValue(newClipPath)
 											}
 										>
 											<span

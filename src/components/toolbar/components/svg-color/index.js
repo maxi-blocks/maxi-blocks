@@ -41,6 +41,7 @@ const SvgColorToolbar = props => {
 				</div>
 			}
 			advancedOptions='colour'
+			tab={0}
 		>
 			<div className='toolbar-item__svg-color__popover'>
 				<SvgColor

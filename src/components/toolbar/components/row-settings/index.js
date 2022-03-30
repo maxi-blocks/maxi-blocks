@@ -28,7 +28,7 @@ const RowSettings = props => {
 			className='toolbar-item__row-settings'
 			tooltip={__('Row Settings', 'maxi-blocks')}
 			icon={toolbarAdvancedSettings}
-			advancedOptions='column picker'
+			advancedOptions='row settings'
 			tab={0}
 		>
 			<div className='toolbar-item__row-settings__popover'>

@@ -1,10 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { withSelect } from '@wordpress/data';
-import { compose } from '@wordpress/compose';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -135,12 +129,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		deviceType,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

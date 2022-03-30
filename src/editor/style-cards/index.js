@@ -32,7 +32,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 		<>
 			<Button
 				id='maxi-button__go-to-customizer'
-				className='action-buttons__button'
+				className='action-buttons__button style-card-button'
 				aria-label={__('Style Card Editor', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>

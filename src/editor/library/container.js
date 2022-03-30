@@ -813,8 +813,8 @@ const LibraryContainer = props => {
 								transformItems={items =>
 									items.map(item => ({
 										...item,
-										label: `${item.label} 
-											${__('tone', 'maxi-blocks')}`,
+										label: `${item.label}
+											 ${__('tone', 'maxi-blocks')}`,
 									}))
 								}
 							/>

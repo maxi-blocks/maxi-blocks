@@ -17,7 +17,6 @@ import { isEmpty, cloneDeep, isEqual } from 'lodash';
  */
 import Breadcrumbs from '../breadcrumbs';
 import {
-	Alignment,
 	BackgroundColor,
 	BlockBackgroundColor,
 	Border,
@@ -25,38 +24,36 @@ import {
 	ColumnMover,
 	ColumnsHandlers,
 	ColumnSize,
-	CopyPaste,
-	Delete,
 	Divider,
 	DividerAlignment,
 	DividerColor,
 	Duplicate,
-	ImageSize,
 	Link,
 	Mover,
-	PaddingMargin,
-	ReusableBlocks,
-	RowSettings,
 	Size,
 	SvgColor,
 	SvgWidth,
-	TextBold,
 	TextColor,
-	TextItalic,
 	TextLevel,
 	TextLink,
 	TextListOptions,
-	ToggleBlock,
 	ToolbarColumnPattern,
 	TextOptions,
-	TextGenerator,
+	MoreSettings,
+	Help,
+	VerticalAlign,
+	TextMargin,
+	ToolbarMediaUpload,
 } from './components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * General
@@ -73,19 +70,6 @@ const allowedBlocks = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
-];
-
-const flexBlocks = [
-	'maxi-blocks/button-maxi',
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/divider-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/image-maxi',
-	'maxi-blocks/map-maxi',
-	'maxi-blocks/number-counter-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/svg-icon-maxi',
 ];
 
 /**
@@ -113,15 +97,9 @@ const MaxiToolbar = memo(
 			content,
 			customLabel,
 			fullWidth,
-			imageSize,
-			imgWidth,
 			isFirstOnHierarchy,
 			isList,
-			lineHorizontal,
-			lineOrientation,
-			lineVertical,
 			linkSettings,
-			mediaID,
 			textLevel,
 			typeOfList,
 			uniqueID,
@@ -168,6 +146,12 @@ const MaxiToolbar = memo(
 			getScrollContainer(anchorRef) ||
 			document.body;
 
+		const lineOrientation = getLastBreakpointAttribute(
+			'line-orientation',
+			breakpoint,
+			attributes
+		);
+
 		return (
 			<>
 				{isSelected && anchorRef && (
@@ -187,66 +171,24 @@ const MaxiToolbar = memo(
 						__unstableStickyBoundaryElement={boundaryElement}
 					>
 						<div className='toolbar-wrapper'>
-							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<div className='toolbar-block-custom-label'>
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${parentBlockStyle}`}
 								</span>
 							</div>
-							<Mover clientId={clientId} blockName={name} />
-							<TextGenerator
-								clientId={clientId}
+							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
+							<ToolbarMediaUpload
 								blockName={name}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<ReusableBlocks clientId={clientId} />
-							<ColumnMover clientId={clientId} blockName={name} />
-							<DividerColor
-								{...getGroupAttributes(attributes, 'divider')}
-								blockName={name}
-								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
-							/>
-							<Divider
-								{...getGroupAttributes(attributes, 'divider')}
-								blockName={name}
-								lineOrientation={lineOrientation}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<DividerAlignment
-								{...getGroupAttributes(attributes, 'divider')}
-								lineOrientation={lineOrientation}
-								lineVertical={lineVertical}
-								lineHorizontal={lineHorizontal}
-								blockName={name}
-								onChangeOrientation={lineOrientation =>
-									maxiSetAttributes({ lineOrientation })
-								}
-								onChangeHorizontal={lineHorizontal =>
-									maxiSetAttributes({ lineHorizontal })
-								}
-								onChangeVertical={lineVertical =>
-									maxiSetAttributes({ lineVertical })
-								}
-							/>
-							<TextOptions
+								maxiSetAttributes={maxiSetAttributes}
 								{...getGroupAttributes(
 									attributes,
 									'typography'
 								)}
-								blockName={name}
 								onChange={obj => maxiSetAttributes(obj)}
-								node={anchorRef}
-								content={content}
 								breakpoint={breakpoint}
-								isList={isList}
-								typeOfList={typeOfList}
-								textLevel={textLevel}
-								styleCard={styleCard}
 								clientId={clientId}
-								blockStyle={parentBlockStyle}
+								attributes={attributes}
 							/>
 							<TextColor
 								blockName={name}
@@ -263,15 +205,24 @@ const MaxiToolbar = memo(
 								textLevel={textLevel}
 								styleCard={styleCard}
 							/>
-							<Alignment
-								blockName={name}
+							<TextOptions
 								{...getGroupAttributes(attributes, [
-									'alignment',
+									'typography',
 									'textAlignment',
 								])}
+								blockName={name}
 								onChange={obj => maxiSetAttributes(obj)}
+								node={anchorRef}
+								content={content}
 								breakpoint={breakpoint}
+								isList={isList}
+								typeOfList={typeOfList}
+								textLevel={textLevel}
+								styleCard={styleCard}
+								clientId={clientId}
+								blockStyle={parentBlockStyle}
 							/>
+							<Mover clientId={clientId} blockName={name} />
 							<TextLevel
 								{...getGroupAttributes(attributes, [
 									'typography',
@@ -282,105 +233,11 @@ const MaxiToolbar = memo(
 								isList={isList}
 								onChange={obj => maxiSetAttributes(obj)}
 							/>
-							<TextBold
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => maxiSetAttributes(obj)}
-								isList={isList}
-								breakpoint={breakpoint}
-								textLevel={textLevel}
-								styleCard={styleCard}
-							/>
-							<TextItalic
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => maxiSetAttributes(obj)}
-								isList={isList}
-								breakpoint={breakpoint}
-								styleCard={styleCard}
-							/>
-							<RowSettings
-								blockName={name}
-								horizontalAlign={attributes.horizontalAlign}
-								verticalAlign={attributes.verticalAlign}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<ToolbarColumnPattern
-								clientId={clientId}
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'rowPattern'
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-							/>
-							<ColumnsHandlers
-								toggleHandlers={toggleHandlers}
-								blockName={name}
-							/>
-							<Link
-								blockName={name}
-								linkSettings={linkSettings}
-								onChange={linkSettings =>
-									maxiSetAttributes({ linkSettings })
-								}
-								textLevel={textLevel}
-							/>
-							<TextLink
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => maxiSetAttributes(obj)}
-								isList={isList}
-								linkSettings={linkSettings}
-								breakpoint={breakpoint}
-								textLevel={textLevel}
-								blockStyle={parentBlockStyle}
-								styleCard={styleCard}
-							/>
 							<TextListOptions
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
 								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<BackgroundColor
-								{...getGroupAttributes(
-									attributes,
-									[
-										'background',
-										'backgroundColor',
-										'backgroundGradient',
-									],
-									false,
-									prefix
-								)}
-								prefix={prefix}
-								advancedOptions={backgroundAdvancedOptions}
-								globalProps={backgroundGlobalProps}
-								blockName={name}
-								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
-							/>
-							<BlockBackgroundColor
-								{...getGroupAttributes(
-									attributes,
-									'blockBackground'
-								)}
-								blockName={name}
-								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
 							/>
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
@@ -432,37 +289,76 @@ const MaxiToolbar = memo(
 									/>
 								</>
 							)}
+							<ColumnMover clientId={clientId} blockName={name} />
+							<BackgroundColor
+								{...getGroupAttributes(
+									attributes,
+									[
+										'background',
+										'backgroundColor',
+										'backgroundGradient',
+									],
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								advancedOptions={backgroundAdvancedOptions}
+								globalProps={backgroundGlobalProps}
+								blockName={name}
+								breakpoint={breakpoint}
+								onChange={obj => maxiSetAttributes(obj)}
+								clientId={clientId}
+							/>
+							<BlockBackgroundColor
+								{...getGroupAttributes(
+									attributes,
+									'blockBackground'
+								)}
+								blockName={name}
+								breakpoint={breakpoint}
+								onChange={obj => maxiSetAttributes(obj)}
+								clientId={clientId}
+							/>
 							<Border
 								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'border',
-									'borderWidth',
-									'borderRadius',
-								])}
+								{...getGroupAttributes(
+									attributes,
+									['border', 'borderWidth', 'borderRadius'],
+									false,
+									prefix
+								)}
 								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								clientId={clientId}
+								prefix={prefix}
 							/>
-							{breakpoint === 'general' && (
-								<ImageSize
-									blockName={name}
-									imgWidth={imgWidth}
-									onChangeSize={obj => maxiSetAttributes(obj)}
-									imageSize={imageSize}
-									onChangeImageSize={imageSize =>
-										maxiSetAttributes({ imageSize })
-									}
-									mediaID={mediaID}
-									fullWidth={fullWidth}
-									onChangeFullWidth={fullWidth =>
-										maxiSetAttributes({ fullWidth })
-									}
-									isFirstOnHierarchy={isFirstOnHierarchy}
-									onChangeCaption={captionType =>
-										maxiSetAttributes({ captionType })
-									}
-								/>
-							)}
+							<BoxShadow
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									['boxShadow'],
+									false,
+									prefix
+								)}
+								onChange={obj => maxiSetAttributes(obj)}
+								clientId={clientId}
+								breakpoint={breakpoint}
+								prefix={prefix}
+							/>
+							<ToolbarColumnPattern
+								clientId={clientId}
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'rowPattern'
+								)}
+								onChange={obj => maxiSetAttributes(obj)}
+								breakpoint={breakpoint}
+							/>
+							<ColumnsHandlers
+								toggleHandlers={toggleHandlers}
+								blockName={name}
+							/>
 							<Size
 								blockName={name}
 								blockFullWidth={blockFullWidth}
@@ -478,56 +374,117 @@ const MaxiToolbar = memo(
 								onChange={obj => maxiSetAttributes(obj)}
 							/>
 							<ColumnSize
-								clientId={clientId}
-								blockName={name}
 								{...getGroupAttributes(
 									attributes,
 									'columnSize'
 								)}
+								clientId={clientId}
+								blockName={name}
 								verticalAlign={attributes.verticalAlign}
-								uniqueID={uniqueID}
 								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
 								rowPattern={rowPattern}
-								columnSize={{
-									...getGroupAttributes(
-										attributes,
-										'columnSize'
-									),
-								}}
 							/>
-							<BoxShadow
+							<TextMargin
 								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'boxShadow',
-								])}
+								{...getGroupAttributes(
+									attributes,
+									'margin',
+									false,
+									prefix
+								)}
+								onChange={obj => maxiSetAttributes(obj)}
+								textLevel={textLevel}
+							/>
+							<Link
+								blockName={name}
+								linkSettings={linkSettings}
+								onChange={linkSettings =>
+									maxiSetAttributes({ linkSettings })
+								}
+								textLevel={textLevel}
+							/>
+							<TextLink
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								blockName={name}
+								onChange={obj => maxiSetAttributes(obj)}
+								isList={isList}
+								linkSettings={linkSettings}
+								breakpoint={breakpoint}
+								textLevel={textLevel}
+								blockStyle={parentBlockStyle}
+								styleCard={styleCard}
+							/>
+							<VerticalAlign
+								clientId={clientId}
+								blockName={name}
+								verticalAlign={attributes.verticalAlign}
+								uniqueID={uniqueID}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
+							<DividerColor
+								{...getGroupAttributes(attributes, 'divider')}
+								blockName={name}
+								breakpoint={breakpoint}
 								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
-								breakpoint={breakpoint}
 							/>
-							<PaddingMargin
+							<Divider
+								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'margin',
-									'padding',
-									'iconPadding',
-								])}
-								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
+								lineOrientation={lineOrientation}
+								onChange={obj => maxiSetAttributes(obj)}
 							/>
-							<Duplicate clientId={clientId} blockName={name} />
-							<Delete clientId={clientId} blockName={name} />
-							<ToggleBlock
-								{...getGroupAttributes(attributes, 'display')}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-								defaultDisplay={
-									flexBlocks.includes(name)
-										? 'flex'
-										: 'inherit'
+							<DividerAlignment
+								{...getGroupAttributes(attributes, 'divider')}
+								lineOrientation={lineOrientation}
+								lineVertical={getLastBreakpointAttribute(
+									'line-vertical',
+									breakpoint,
+									attributes
+								)}
+								lineHorizontal={getLastBreakpointAttribute(
+									'line-horizontal',
+									breakpoint,
+									attributes
+								)}
+								blockName={name}
+								onChangeOrientation={lineOrientation =>
+									maxiSetAttributes({
+										[`line-orientation-${breakpoint}`]:
+											lineOrientation,
+									})
+								}
+								onChangeHorizontal={lineHorizontal =>
+									maxiSetAttributes({
+										[`line-horizontal-${breakpoint}`]:
+											lineHorizontal,
+									})
+								}
+								onChangeVertical={lineVertical =>
+									maxiSetAttributes({
+										[`line-vertical-${breakpoint}`]:
+											lineVertical,
+									})
 								}
 							/>
-							<CopyPaste clientId={clientId} blockName={name} />
+							<Duplicate clientId={clientId} blockName={name} />
+							<Help />
+							<MoreSettings
+								clientId={clientId}
+								{...getGroupAttributes(attributes, [
+									'alignment',
+									'textAlignment',
+								])}
+								blockName={name}
+								breakpoint={breakpoint}
+								prefix={prefix}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
 						</div>
 					</Popover>
 				)}

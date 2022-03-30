@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-return-await */
 /**
  * WordPress dependencies
@@ -12,31 +13,50 @@ import {
 	getAttributes,
 } from '../../../../utils';
 
+const changeAlignment = async (page, index = 0) => {
+	await page.waitForSelector('.toolbar-item__typography-control button');
+	await page.$eval('.toolbar-item__typography-control button', button =>
+		button.click()
+	);
+	await page.waitForSelector('.maxi-alignment-control');
+	await page.$$eval(
+		'.maxi-alignment-control button',
+		(buttons, _index) => buttons[_index].click(),
+		index
+	);
+
+	await page.keyboard.press('Escape');
+	await page.$eval('.maxi-text-block__content', el => el.focus());
+};
+
+const checkAlignment = async (page, index = 0) => {
+	await page.waitForSelector('.toolbar-item__typography-control button');
+	await page.$eval('.toolbar-item__typography-control button', button =>
+		button.click()
+	);
+	await page.waitForSelector('.maxi-alignment-control');
+	const pressed = await page.$$eval(
+		'.maxi-alignment-control button',
+		(buttons, _index) => buttons[_index].ariaPressed,
+		index
+	);
+
+	await page.keyboard.press('Escape');
+	await page.$eval('.maxi-text-block__content', el => el.focus());
+
+	return pressed;
+};
+
 describe('AlignmentControl', () => {
 	it('Checking alignment in toolbar', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 
-		await page.waitForSelector('.toolbar-wrapper .toolbar-item__alignment');
-		await page.$eval('.toolbar-wrapper .toolbar-item__alignment', button =>
-			button.click()
-		);
-
-		await page.waitForSelector(
-			'.components-popover__content .maxi-alignment-control__no-label'
-		);
-		await page.waitForTimeout(150);
-		const alignmentSettings = await page.$$(
-			'.components-popover__content .maxi-alignment-control__no-label button'
-		);
-
 		const alignments = ['center', 'right', 'justify', 'left'];
 
-		for (let i = 0; i < alignmentSettings.length; i++) {
-			const setting = alignmentSettings[i !== 3 ? i + 1 : 0];
-
-			await setting.click();
+		for (let i = 0; i < alignments.length; i += 1) {
+			await changeAlignment(page, i !== 3 ? i + 1 : 0);
 
 			const attributes = await getBlockAttributes();
 			const attribute = attributes['text-alignment-general'];
@@ -46,7 +66,6 @@ describe('AlignmentControl', () => {
 
 	it('Checking alignment in toolbar responsive', async () => {
 		// check general
-
 		expect(await getAttributes('text-alignment-general')).toStrictEqual(
 			'left'
 		);
@@ -54,30 +73,18 @@ describe('AlignmentControl', () => {
 		// responsive s
 		await changeResponsive(page, 's');
 
-		await page.$$eval(
-			'.components-popover__content .maxi-alignment-control__no-label button',
-			button => button[1].click()
-		);
+		await changeAlignment(page, 1);
 
 		expect(await getAttributes('text-alignment-s')).toStrictEqual('center');
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
 
-		const selected = await page.$$eval(
-			'.components-popover__content .maxi-alignment-control__no-label button',
-			button => button[1].ariaPressed
-		);
-
-		expect(selected).toBe('true');
+		expect(await checkAlignment(page, 1)).toBe('true');
 
 		// responsive m
 		await changeResponsive(page, 'm');
-		const selectedM = await page.$$eval(
-			'.components-popover__content .maxi-alignment-control__no-label button',
-			button => button[0].ariaPressed
-		);
 
-		expect(selectedM).toBe('true');
+		expect(await checkAlignment(page, 0)).toBe('true');
 	});
 });

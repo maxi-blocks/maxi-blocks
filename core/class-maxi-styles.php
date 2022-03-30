@@ -229,9 +229,33 @@ class MaxiBlocks_Styles
                 }
                 
                 wp_enqueue_style(
-                    'maxi-'.sanitize_title_with_dashes($font),
+                    'maxi-font-'.sanitize_title_with_dashes($font),
                     $fontUrl
                 );
+            }
+        }
+
+        function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
+        if ($useLocalFonts) {
+            write_log('local fonts');
+            add_filter('style_loader_tag', 'local_fonts_preload', 10, 2);
+            function local_fonts_preload($html, $handle)
+            {
+                write_log($handle);
+                write_log(strpos($handle, 'maxi-font-'));
+                if (strpos($handle, 'maxi-font-') !== false) {
+                    write_log('local maxi fonts');
+                    $html = str_replace("rel='stylesheet'", "rel='stylesheet preload prefetch' as='style'", $html);
+                }
+                return $html;
             }
         }
     }

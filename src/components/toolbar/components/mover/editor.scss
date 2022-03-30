@@ -8,11 +8,19 @@
 	.components-button {
 		width: 22px;
 		padding: 0;
-		height: 12px;
+		height: 8px;
 		display: inline-block;
 		svg {
-			width: 11px !important;
-			height: 11px !important;
+			width: 15px !important;
+			height: 8px !important;
+			path {
+				transition: 0.3s;
+			}
+		}
+		&:hover {
+			path {
+				fill: var(--maxi-secondary-color) !important;
+			}
 		}
 	}
 }

@@ -26,6 +26,7 @@ import {
 	getZIndexStyles,
 	getOverflowStyles,
 	getClipPathStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsImage } from './custom-css';
 
@@ -108,6 +109,9 @@ const getWrapperObject = props => {
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

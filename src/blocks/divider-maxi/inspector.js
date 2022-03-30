@@ -71,6 +71,7 @@ const Inspector = props => {
 															'Line orientation',
 															'maxi-blocks'
 														)}
+														className='line-orientation-selector'
 														value={getLastBreakpointAttribute(
 															{
 																target: 'line-orientation',
@@ -294,6 +295,9 @@ const Inspector = props => {
 											}),
 										},
 										...inspectorTabs.overflow({
+											props,
+										}),
+										...inspectorTabs.flex({
 											props,
 										}),
 										...inspectorTabs.zindex({

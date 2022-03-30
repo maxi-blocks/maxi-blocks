@@ -26,6 +26,7 @@ export { default as getTypographyStyles } from './getTypographyStyles';
 export { default as getZIndexStyles } from './getZIndexStyles';
 export { default as getCustomCssObject } from './getCustomCss';
 export { default as getClipPathStyles } from './getClipPathStyles';
+export { default as getFlexStyles } from './getFlexStyles';
 export * from './getBackgroundStyles';
 export * from './getShapeDividerStyles';
 export * from './getSVGStyles';

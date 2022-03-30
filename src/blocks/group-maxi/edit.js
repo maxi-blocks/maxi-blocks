@@ -1,11 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { withSelect } from '@wordpress/data';
-import { compose } from '@wordpress/compose';
-import { InnerBlocks } from '@wordpress/block-editor';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -14,15 +7,10 @@ import {
 	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { ArrowDisplayer, BlockPlaceholder, Toolbar } from '../../components';
+import { ArrowDisplayer, BlockInserter, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * Edit
@@ -33,8 +21,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, deviceType, hasInnerBlock } =
-			this.props;
+		const {
+			attributes,
+			blockFullWidth,
+			deviceType,
+			hasInnerBlocks,
+			clientId,
+		} = this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -58,17 +51,16 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 			/>,
 			<MaxiBlock
-				className={hasInnerBlock && 'has-child'}
 				key={`maxi-group--${uniqueID}`}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
-				hasInnerBlocks
+				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
 					templateLock: false,
-					renderAppender: !hasInnerBlock
-						? BlockPlaceholder
-						: InnerBlocks.ButtonBlockAppender,
+					renderAppender: !hasInnerBlocks
+						? () => <BlockInserter clientId={clientId} />
+						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
@@ -86,18 +78,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { clientId } = ownProps;
-
-	const hasInnerBlocks = !isEmpty(
-		select('core/block-editor').getBlockOrder(clientId)
-	);
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		hasInnerBlocks,
-		deviceType,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

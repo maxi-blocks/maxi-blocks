@@ -4,9 +4,17 @@
 .toolbar-item {
 	&__text-options {
 		.toolbar-item__icon {
-			border-width: 1px;
-			border-color: #fff;
-			border-style: solid;
+			path {
+				fill: transparent !important;
+				stroke: #fff !important;
+			}
+		}
+	}
+
+	&__text-color {
+		& > div {
+			width: 100%;
+			height: 100%;
 		}
 	}
 }

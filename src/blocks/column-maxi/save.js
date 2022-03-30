@@ -14,7 +14,7 @@ const save = props => {
 		<MaxiBlock
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
-			hasInnerBlocks
+			useInnerBlocks
 		/>
 	);
 };

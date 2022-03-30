@@ -105,6 +105,9 @@ const Inspector = props => {
 									...inspectorTabs.overflow({
 										props,
 									}),
+									...inspectorTabs.flex({
+										props,
+									}),
 									...inspectorTabs.zindex({
 										props,
 									}),

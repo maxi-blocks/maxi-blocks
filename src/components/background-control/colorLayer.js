@@ -34,6 +34,7 @@ const ColorLayerContent = props => {
 		breakpoint,
 		isLayer = false,
 		globalProps,
+		isToolbar = false,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -134,6 +135,7 @@ const ColorLayerContent = props => {
 				isHover={isHover}
 				clientId={clientId}
 				deviceType={breakpoint}
+				isToolbar={isToolbar}
 			/>
 			{!disableClipPath && (
 				<ClipPath
@@ -166,7 +168,10 @@ const ColorLayerContent = props => {
 };
 
 const ColorLayer = props => {
-	const { breakpoint, ...rest } = props;
+	const { breakpoint, disableResponsiveTabs = false, ...rest } = props;
+
+	if (disableResponsiveTabs)
+		return <ColorLayerContent breakpoint={breakpoint} {...rest} />;
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>

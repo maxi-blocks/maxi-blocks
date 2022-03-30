@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1"
-	xmlns="http://www.w3.org/2000/svg"
-	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
-	<style type="text/css">
-	0{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-		> m="matrix( 1, 0, 0, 1, 0,0) ">
-
-			"Layer0_0_1_STROKES" class="st0" d="M22.1,7.4V2h-4.8 M22.1,17v5.4h-4.8 M18.6,9.1V5.7h-3.1 M5.8,9.1V5.7h3 M2.3,7.4V2
-			,15.3v3.5h3 M2.3,17v5.4h4.8 M18.6,15.3v3.5h-3.1"/>
-
-
-
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15.689" height="15.689" viewBox="0 0 15.689 15.689">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_529" data-name="Rectangle 529" width="15.689" height="15.689" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_1090" data-name="Group 1090" transform="translate(0 0)">
+    <g id="Group_1089" data-name="Group 1089" clip-path="url(#clip-path)">
+      <path id="Path_335" data-name="Path 335" d="M14.939,15.689H.75a.75.75,0,0,1-.75-.75V.75A.75.75,0,0,1,.75,0H14.939a.749.749,0,0,1,.75.75V14.939a.75.75,0,0,1-.75.75M1.5,14.189H14.189V1.5H1.5Z" fill="#141516"/>
+      <path id="Path_336" data-name="Path 336" d="M12.536,13.285h-3a.75.75,0,0,1,0-1.5h2.25v-.774a.75.75,0,0,1,1.5,0v1.524a.75.75,0,0,1-.75.75m-6,0h-3a.75.75,0,0,1,0-1.5h3a.75.75,0,0,1,0,1.5M3.155,10.666a.75.75,0,0,1-.75-.75v-3a.75.75,0,0,1,1.5,0v3a.75.75,0,0,1-.75.75m9.381-1.905a.75.75,0,0,1-.75-.75v-3a.75.75,0,0,1,1.5,0v3a.75.75,0,0,1-.75.75M3.155,4.666a.75.75,0,0,1-.75-.75V3.154a.75.75,0,0,1,.75-.75H5.393a.75.75,0,0,1,0,1.5L3.9,3.916a.75.75,0,0,1-.75.75M11.393,3.9h-3a.75.75,0,0,1,0-1.5h3a.75.75,0,0,1,0,1.5" fill="#141516"/>
+    </g>
+  </g>
+</svg>

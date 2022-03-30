@@ -699,6 +699,9 @@ const Inspector = memo(
 											...inspectorTabs.overflow({
 												props,
 											}),
+											...inspectorTabs.flex({
+												props,
+											}),
 											...inspectorTabs.zindex({
 												props,
 											}),

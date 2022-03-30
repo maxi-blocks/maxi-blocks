@@ -381,7 +381,7 @@ const BackgroundLayersControl = ({
 			? allLayers.reduce((layerA, layerB) =>
 					layerA[parameter] > layerB[parameter] ? layerA : layerB
 			  )[parameter] + 1
-			: 0;
+			: 1;
 
 	const getLayerLabel = type => {
 		switch (type) {

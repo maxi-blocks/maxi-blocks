@@ -40,7 +40,7 @@ describe('List in Text-maxi', () => {
 
 		await page.$$eval(
 			'.components-popover__content .toolbar-item__popover__list-options button',
-			button => button[0].click()
+			button => button[1].click()
 		);
 
 		await openSidebarTab(page, 'style', 'list options');

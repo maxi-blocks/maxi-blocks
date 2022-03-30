@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SC svg icon Checking svg icon accordion 1`] = `
+Object {
+  "icon": Object {
+    "fill-global": true,
+    "line": "",
+    "line-global": true,
+    "line-palette-color": 5,
+    "line-palette-opacity": 1,
+    "line-palette-status": true,
+  },
+}
+`;

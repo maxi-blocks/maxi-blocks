@@ -4,15 +4,19 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarUnorderedList = (
-	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
-		<Path
-			fill='none'
-			stroke='#fff'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-			strokeWidth='1.5'
-			d='M2.8 20.8h1.1m-1.1-4.4h1.1M2.8 12h1.1M2.8 7.6h1.1M2.8 3.2h1.1m2.4 13.2h14.9M6.3 3.2h14.9M6.3 20.8h14.9M6.3 12h14.9M6.3 7.6h14.9'
-		/>
+	<SVG width={15.784} height={15.461} viewBox='0 0 15.784 15.461'>
+		<g data-name='Group 1273'>
+			<g strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5}>
+				<Path transform='translate(.75 14.711)' d='M0 0L0 0' />
+				<Path transform='translate(3.517 14.711)' d='M0 0L11.517 0' />
+				<Path transform='translate(.75 10.086)' d='M0 0L0 0' />
+				<Path transform='translate(3.517 10.086)' d='M0 0L11.517 0' />
+				<Path transform='translate(.75 5.375)' d='M0 0L0 0' />
+				<Path transform='translate(3.517 5.375)' d='M0 0L11.517 0' />
+				<Path transform='translate(.75 .75)' d='M0 0L0 0' />
+				<Path transform='translate(3.517 .75)' d='M0 0L11.517 0' />
+			</g>
+		</g>
 	</SVG>
 );
 

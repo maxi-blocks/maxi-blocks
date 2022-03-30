@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#FFFFFF;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-</style>
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-	<g>
-		<path id="Layer1_0_1_STROKES" class="st0" d="M2.8,3.1h1.1 M2.8,5.6h1.1 M2.8,8.1h1.1 M2.8,10.6h1.1 M2.8,13.1h1.1 M2.8,18.2h1.1
-			 M2.8,15.6h1.1 M2.8,20.7h1.1 M6.3,15.6h14.9 M6.3,10.6h14.9 M6.3,3.1h14.9 M6.3,5.6h14.9 M6.3,8.1h14.9 M6.3,13.1h14.9 M6.3,18.2
-			h14.9 M6.3,20.7h14.9"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15.574" height="15.349" viewBox="0 0 15.574 15.349">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_494" data-name="Rectangle 494" width="15.574" height="15.349" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_937" data-name="Group 937" transform="translate(0 0)">
+    <g id="Group_936" data-name="Group 936" clip-path="url(#clip-path)">
+      <path id="Path_272" data-name="Path 272" d="M.59,13.84a1.017,1.017,0,0,0,.268.716A.874.874,0,0,0,2.38,13.84a.894.894,0,0,0-.447-.806c.537-.179.447-1.164.089-1.522A.924.924,0,0,0,.5,12.228m1.88-3.4H.59c.9-.537,2.327-2.6,1.074-3.043A1.123,1.123,0,0,0,.5,6.946M1.843,3.992V.5h-.09L.679,1.038" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_273" data-name="Path 273" d="M4.439,2.2H14.824M4.529,7.572h10.3m-10.3,5.551h10.3" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </g>
+  </g>
 </svg>

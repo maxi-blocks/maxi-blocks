@@ -12,6 +12,7 @@ import {
 	getSizeStyles,
 	getTransformStyles,
 	getZIndexStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
 
@@ -70,6 +71,9 @@ const getWrapperObject = props => {
 				blockStyle: props.parentBlockStyle,
 			}),
 		},
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
 	};
 
 	return response;

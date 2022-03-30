@@ -10,8 +10,7 @@ import { cloneBlock } from '@wordpress/blocks';
  * Internal dependencies
  */
 import Button from '../../../button';
-import ToolbarContext from '../toolbar-popover/toolbarContext';
-import ToolbarPopover from '../toolbar-popover';
+import Dropdown from '../../../dropdown';
 
 /**
  * External dependencies
@@ -22,12 +21,6 @@ import { isNil, isEmpty } from 'lodash';
  * Styles & Icons
  */
 import './editor.scss';
-import {
-	toolbarCopyPaste,
-	toolbarCopy,
-	toolbarPaste,
-	toolbarSpecialPaste,
-} from '../../../../icons';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
@@ -181,21 +174,19 @@ const CopyPasteContent = props => {
 			if (isSelected) res = { ...res, ...val };
 		});
 
-		onPasteStyles(res);
+		updateBlockAttributes(clientId, res);
 	};
 
 	return (
 		<div className='toolbar-item__copy-paste__popover'>
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
-				icon={toolbarCopy}
 				onClick={onCopyStyles}
 			>
 				{__('Copy Style', 'maxi-blocks')}
 			</Button>
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
-				icon={toolbarPaste}
 				onClick={onPasteStyles}
 				disabled={isEmpty(copiedStyles)}
 			>
@@ -205,7 +196,6 @@ const CopyPasteContent = props => {
 				<>
 					<Button
 						className='toolbar-item__copy-paste__popover__button'
-						icon={toolbarSpecialPaste}
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						{__('Special Paste', 'maxi-blocks')}
@@ -249,8 +239,7 @@ const CopyPasteContent = props => {
 			)}
 			{hasInnerBlocks && (
 				<Button
-					className='toolbar-item__copy-paste__popover__button'
-					icon={toolbarCopy}
+					className='toolbar-item__copy-paste__popover__button toolbar-item__copy-nested-block__popover__button'
 					onClick={onCopyBlocks}
 				>
 					{__('Copy Nested Blocks', 'maxi-blocks')}
@@ -259,7 +248,6 @@ const CopyPasteContent = props => {
 			{WRAPPER_BLOCKS.includes(blockName) && (
 				<Button
 					className='toolbar-item__copy-paste__popover__button'
-					icon={toolbarPaste}
 					onClick={onPasteBlocks}
 					disabled={isEmpty(copiedBlocks)}
 				>
@@ -270,22 +258,18 @@ const CopyPasteContent = props => {
 	);
 };
 
-const CopyPaste = props => {
-	return (
-		<ToolbarPopover
-			className='toolbar-item__copy-paste'
-			tooltip={__('Copy / Paste Style', 'maxi-blocks')}
-			icon={toolbarCopyPaste}
-		>
-			<ToolbarContext.Consumer>
-				{({ isOpen }) => {
-					if (isOpen) return <CopyPasteContent {...props} />;
-
-					return null;
-				}}
-			</ToolbarContext.Consumer>
-		</ToolbarPopover>
-	);
-};
+const CopyPaste = props => (
+	<Dropdown
+		className='maxi-copypaste__copy-selector'
+		contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
+		position='bottom right'
+		renderToggle={({ isOpen, onToggle }) => (
+			<Button onClick={onToggle} text='Copy'>
+				{__('Copy / Paste', 'maxi-blocks')}
+			</Button>
+		)}
+		renderContent={() => <CopyPasteContent {...props} />}
+	/>
+);
 
 export default CopyPaste;

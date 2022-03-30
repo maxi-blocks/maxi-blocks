@@ -194,6 +194,7 @@ const attributes = {
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

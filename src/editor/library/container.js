@@ -816,7 +816,7 @@ const LibraryContainer = props => {
 									items.map(item => ({
 										...item,
 										label: `${item.label}
-											${__('tone', 'maxi-blocks')}`,
+											 ${__('tone', 'maxi-blocks')}`,
 									}))
 								}
 							/>

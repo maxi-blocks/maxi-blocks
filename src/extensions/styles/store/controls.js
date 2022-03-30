@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { minify } from 'minify';
+import { minify } from 'minify'; // the ERROR
 
 /**
  * Internal dependencies

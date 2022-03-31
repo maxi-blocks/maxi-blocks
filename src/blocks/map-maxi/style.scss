@@ -7,7 +7,7 @@ body.maxi-blocks--active {
 			overflow: hidden;
 		}
 		.leaflet-container {
-			width: 100%;
+			width: 100vw;
 			height: 100vh;
 		}
 		.ootb-openstreetmap--map {
@@ -25,11 +25,40 @@ body.maxi-blocks--active {
 			background-color: transparent;
 			border: transparent;
 		}
+
+		.leaflet-popup-tip-container {
+			display: none;
+		}
+
+		.leaflet-popup-content-wrapper {
+			width: 240px;
+			margin-bottom: 20px;
+			text-align: center;
+			background: transparent;
+			box-shadow: none;
+		}
+
+		.leaflet-popup-content {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
 		.map-marker-info-window {
-			.leaflet-popup-content-wrapper {
-				text-align: center;
-				width: 200px;
-				padding: 8px;
+			margin-bottom: 0;
+
+			&__background {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				z-index: -1;
+				left: 0;
+				top: 0;
+			}
+
+			&__content {
+				padding: 40px;
+				width: 100%;
 			}
 
 			&__title {

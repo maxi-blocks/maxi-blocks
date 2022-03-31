@@ -16,6 +16,7 @@ import {
 	getZIndexStyles,
 	getTypographyStyles,
 	getCustomFormatsStyles,
+	getSVGStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsMap } from './custom-css';
 
@@ -153,6 +154,21 @@ const getStyles = props => {
 					'address'
 				),
 			},
+			...getSVGStyles({
+				obj: {
+					...getGroupAttributes(props, 'svg'),
+				},
+				target: ' .map-marker-icon',
+				blockStyle: props.parentBlockStyle,
+			}),
+			...getSVGStyles({
+				obj: {
+					...getGroupAttributes(props, 'svg', false, 'popup-'),
+				},
+				target: ' .map-popup-icon',
+				blockStyle: props.parentBlockStyle,
+				prefix: 'popup-',
+			}),
 			...getCustomFormatsStyles(
 				' map-marker-info-window__title',
 				props['custom-formats'],

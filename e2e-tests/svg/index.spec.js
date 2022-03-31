@@ -1,10 +1,23 @@
 /* eslint-disable no-await-in-loop */
+/**
+ * WordPress dependencies
+ */
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { setAttributes, svgFetch, openPreviewPage } from '../utils';
+/**
+ * Internal dependencies
+ */
+import { svgFetch, openPreviewPage } from '../utils';
+
+/**
+ * External dependencies
+ */
 import parse from 'html-react-parser';
 import { isEqual, isEmpty } from 'lodash';
 
+/**
+ * Tests
+ */
 const checkSVGGroup = async (page, fetchPage = 1) => {
 	await createNewPost();
 	const svgHtml = [];
@@ -15,19 +28,15 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 	for (let i = 0; i < svgGroup.length - 1; i += 1) {
 		const svg = svgGroup[i];
 
-		await insertBlock('SVG Icon Maxi');
-
-		// Close model opened automatically by the block
-		await page.waitForSelector(
-			'.components-modal__content .components-modal__header button'
-		);
-
-		await page.$eval(
-			'.components-modal__content .components-modal__header button',
-			svg => svg.click()
-		);
-
-		await setAttributes(page, { content: svg });
+		// Add block without opening the modal and adding the SVG
+		await page.evaluate(_svg => {
+			wp.data.dispatch('core/block-editor').insertBlock(
+				wp.blocks.createBlock('maxi-blocks/svg-icon-maxi', {
+					openFirstTime: false,
+					content: _svg,
+				})
+			);
+		}, svg);
 
 		const svgBaseHtml = await page.$$eval(
 			'.maxi-svg-icon-block__icon svg',

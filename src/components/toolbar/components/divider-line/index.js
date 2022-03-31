@@ -67,7 +67,6 @@ const Divider = props => {
 			tooltip={__('Divider style', 'maxi-blocks')}
 			icon={toolbarBorder}
 			advancedOptions='line settings'
-			tab={0}
 		>
 			<div className='toolbar-item__divider-line__popover'>
 				<DefaultDividersControl

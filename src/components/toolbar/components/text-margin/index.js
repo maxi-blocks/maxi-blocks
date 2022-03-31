@@ -32,7 +32,6 @@ const TextMargin = props => {
 			tooltip={__('Margin', 'maxi-blocks')}
 			icon={toolbarTextMargin}
 			advancedOptions='margin padding'
-			tab={0}
 		>
 			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
 				<AxisControl

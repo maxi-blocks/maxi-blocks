@@ -38,7 +38,6 @@ const DividerColor = props => {
 				</div>
 			}
 			advancedOptions='line settings'
-			tab={0}
 		>
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl

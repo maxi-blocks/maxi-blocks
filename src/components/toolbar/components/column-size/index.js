@@ -35,7 +35,6 @@ const ColumnSize = props => {
 			tooltip={__('ColumnSize', 'maxi-blocks')}
 			icon={toolbarSizing}
 			advancedOptions='column settings'
-			tab={0}
 		>
 			<div className='toolbar-item__column-size__popover'>
 				<AdvancedNumberControl

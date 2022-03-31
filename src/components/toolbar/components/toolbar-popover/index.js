@@ -83,7 +83,7 @@ class ToolbarPopover extends Component {
 			icon,
 			children,
 			advancedOptions = false,
-			tab,
+			tab = 0,
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;

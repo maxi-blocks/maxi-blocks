@@ -34,7 +34,6 @@ const IconBackground = props => {
 			tooltip={__('Icon Background', 'maxi-blocks')}
 			icon={backgroundColor}
 			advancedOptions='icon'
-			tab={0}
 		>
 			<div className='toolbar-item__icon-background__popover'>
 				<ToggleSwitch

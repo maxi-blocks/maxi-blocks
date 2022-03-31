@@ -61,7 +61,6 @@ const DividerAlignment = props => {
 			tooltip={__('Divider alignment', 'maxi-blocks')}
 			icon={toolbarVerticalAlign}
 			advancedOptions='alignment'
-			tab={0}
 		>
 			<div className='toolbar-item__divider-alignment__popover'>
 				<SelectControl

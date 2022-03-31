@@ -303,7 +303,6 @@ const TypographyControl = withFormatValue(props => {
 				tooltip={__('Edit text', 'maxi-blocks')}
 				text={__('Edit', 'maxi-blocks')}
 				advancedOptions='typography'
-				tab={0}
 			>
 				<div className='toolbar-item__popover__font-options'>
 					<ResponsiveTabsControl

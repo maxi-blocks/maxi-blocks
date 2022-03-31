@@ -30,7 +30,6 @@ const IconColor = props => {
 			tooltip={__('Icon Colour', 'maxi-blocks')}
 			icon={toolbarShapeColor}
 			advancedOptions='icon'
-			tab={0}
 		>
 			<div className='toolbar-item__icon-color__popover'>
 				<ToggleSwitch

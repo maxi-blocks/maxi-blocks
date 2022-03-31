@@ -1,5 +1,7 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import prefixAttributesCreator from '../prefixAttributesCreator';
+import { clipPathRaw } from './clipPath';
 
 const prefix = 'background-';
 
@@ -24,13 +26,11 @@ export const rawBackground = {
 
 export const rawBackgroundColor = {
 	...paletteAttributesCreator({ prefix, palette: 1 }),
-	'background-color-clip-path': {
-		type: 'string',
-	},
-	'background-color-clip-path-status': {
-		type: 'boolean',
-		default: false,
-	},
+
+	...prefixAttributesCreator({
+		prefix: 'background-color-',
+		obj: clipPathRaw,
+	}),
 };
 
 export const rawBackgroundImage = {
@@ -102,14 +102,10 @@ export const rawBackgroundImage = {
 	'background-image-clip-path': {
 		type: 'string',
 	},
-	'background-image-clip-path-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'background-image-opacity': {
-		type: 'number',
-		default: 1,
-	},
+	...prefixAttributesCreator({
+		prefix: 'background-image-',
+		obj: clipPathRaw,
+	}),
 	'background-image-parallax-status': {
 		type: 'boolean',
 		default: false,
@@ -182,13 +178,10 @@ export const rawBackgroundGradient = {
 		type: 'number',
 		default: 1,
 	},
-	'background-gradient-clip-path': {
-		type: 'string',
-	},
-	'background-gradient-clip-path-status': {
-		type: 'boolean',
-		default: false,
-	},
+	...prefixAttributesCreator({
+		prefix: 'background-gradient-',
+		obj: clipPathRaw,
+	}),
 };
 
 export const rawBackgroundSVG = {

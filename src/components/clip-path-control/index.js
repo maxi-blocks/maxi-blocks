@@ -16,7 +16,10 @@ import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
-import { getAttributeKey } from '../../extensions/styles';
+import {
+	getLastBreakpointAttribute,
+	getAttributeKey,
+} from '../../extensions/styles';
 /**
  * External dependencies
  */
@@ -46,7 +49,7 @@ const optionColors = [
 ];
 
 const ClipPathOption = props => {
-	const { values, onChange, onRemove, number, type } = props;
+	const { values, onRemove, onChange, number, type } = props;
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
@@ -102,7 +105,7 @@ const ClipPathOption = props => {
 
 							values[0] = value;
 
-							onChangeValue(values);
+							onChange(values);
 						}}
 						min={0}
 						max={100}
@@ -137,17 +140,23 @@ const ClipPathOption = props => {
 };
 
 const ClipPath = props => {
-	const {
-		clipPath,
-		className,
-		onChange,
-		hasClipPath,
-		prefix,
-		breakpoint,
-		isHover,
-	} = props;
+	const { className, onChange, prefix, breakpoint, isHover } = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
+
+	const clipPath = getLastBreakpointAttribute({
+		target: `${prefix}clip-path`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const hasClipPath = getLastBreakpointAttribute({
+		target: `${prefix}clip-path-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
 
 	const deconstructCP = () => {
 		if (isEmpty(clipPath))
@@ -326,12 +335,9 @@ const ClipPath = props => {
 		onChange({
 			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
 				val,
-			...(!val && {
-				[getAttributeKey('clip-path', isHover, prefix, breakpoint)]:
-					null,
-			}),
 		});
 	};
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch

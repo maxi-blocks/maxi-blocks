@@ -11,7 +11,10 @@ const getClipPathStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		if (obj[`clip-path-${breakpoint}`])
+		if (
+			obj[`clip-path-status-${breakpoint}`] &&
+			obj[`clip-path-${breakpoint}`]
+		)
 			response[breakpoint] = {
 				'clip-path': obj[`clip-path-${breakpoint}`],
 			};

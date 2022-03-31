@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
+import { withSelect, withDispatch } from '@wordpress/data';
 import { useRef, useState, createRef } from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
@@ -17,16 +17,13 @@ import {
 	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
+import { Toolbar, RawHTML } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { defaultMarkers } from './defaultMarkers';
-import { ReactComponent as MapMarker1 } from '../../icons/map-icons/map-marker-1/map_marker_1.svg';
-import { ReactComponent as MapMarker2 } from '../../icons/map-icons/map-marker-2/map_marker_2.svg';
-import { ReactComponent as MapMarker3 } from '../../icons/map-icons/map-marker-3/map_marker_3.svg';
-import { ReactComponent as MapMarker4 } from '../../icons/map-icons/map-marker-4/map_marker_4.svg';
-import { ReactComponent as MapMarker5 } from '../../icons/map-icons/map-marker-5/map_marker_5.svg';
+import * as mapMarkerIcons from '../../icons/map-icons/markers';
+import * as mapPopupIcons from '../../icons/map-icons/popups';
 
 /**
  * External dependencies
@@ -42,7 +39,6 @@ import {
 } from 'react-leaflet';
 import L from 'leaflet';
 import ReactDOMServer from 'react-dom/server';
-import uniqueIDGenerator from '../../extensions/attributes/uniqueIDGenerator';
 
 /**
  * Content
@@ -142,6 +138,13 @@ const GoogleMapsContent = props => {
 	);
 };
 
+const getMarkerUniqueId = mapMarkers =>
+	mapMarkers && !isEmpty(mapMarkers)
+		? mapMarkers.reduce((markerA, markerB) =>
+				markerA.id > markerB.id ? markerA : markerB
+		  ).id + 1
+		: 0;
+
 const MapListener = props => {
 	const { attributes, maxiSetAttributes } = props;
 	const {
@@ -156,18 +159,18 @@ const MapListener = props => {
 
 	const mapEvents = useMapEvents({
 		mousedown: event => {
-			// const elementClicked =
-			// 	event.originalEvent.target.nodeName.toLowerCase();
-			// if (elementClicked === 'div') {
-			// 	maxiSetAttributes({ 'map-is-dragging-marker': false });
-			// }
+			const elementClicked =
+				event.originalEvent.target.nodeName.toLowerCase();
+			if (elementClicked === 'div') {
+				maxiSetAttributes({ 'map-is-dragging-marker': false });
+			}
 			if (mapIsDraggingMarker === false) {
 				delay = setTimeout(() => {
 					maxiSetAttributes({ 'map-adding-marker': ' pinning' });
 					setTimeout(() => {
 						// If hangs for too long, stop it.
 						maxiSetAttributes({ 'map-adding-marker': '' });
-					}, timeout * 3);
+					}, timeout * 5);
 				}, timeout);
 			}
 		},
@@ -182,19 +185,17 @@ const MapListener = props => {
 			clearTimeout(delay);
 			if (mapAddingMarker) {
 				const newMarker = {
-					id: uniqueIDGenerator(),
+					id: getMarkerUniqueId(mapMarkers),
 					latitude: event.latlng.lat,
 					longitude: event.latlng.lng,
 					heading: '',
 					description: '',
-
 					text: '',
 				};
 				maxiSetAttributes({
 					'map-markers': [...mapMarkers, newMarker],
 					'map-adding-marker': '',
 				});
-				// getBounds(props, newMarker, e.target);
 				setTimeout(() => {
 					maxiSetAttributes({ 'map-is-dragging-marker': false });
 				}, timeout * 2);
@@ -275,16 +276,25 @@ const SearchBox = props => {
 		}
 	};
 
+	const getHeadingAndDescription = string => {
+		const words = string.split(' ');
+		const heading = words[0];
+		const description = words.slice(1).join(' ');
+
+		return { heading, description };
+	};
+
 	const addMarker = event => {
 		const index = event.target.getAttribute('data-index');
-		const { display_name, place_id, lat, lon } = searchResults[index];
+		const { display_name: displayName, lat, lon } = searchResults[index];
+		const { heading, description } = getHeadingAndDescription(displayName);
 
 		const newMarker = {
-			id: place_id,
+			id: getMarkerUniqueId(mapMarkers),
 			latitude: lat,
 			longitude: lon,
-			heading: display_name,
-			description: '',
+			heading,
+			description,
 		};
 
 		maxiSetAttributes({
@@ -312,7 +322,6 @@ const SearchBox = props => {
 		});
 	};
 
-	// noinspection JSXNamespaceValidation
 	return (
 		<>
 			<div className='map-searchbox'>
@@ -366,31 +375,10 @@ const OpenStreetMapContent = props => {
 		'map-marker-stroke-color': mapMarkerStrokeColor,
 		'map-marker-text': mapMarkerText,
 		'map-marker-address': mapMarkerAddress,
+		'map-adding-marker': mapAddingMarker,
+		'map-marker-icon': mapMarkerIcon,
+		'map-popup-icon': mapPopupIcon,
 	} = attributes;
-
-	const getIcon = mapMarker => {
-		const iconProps = {
-			fill: mapMarkerFillColor,
-			stroke: mapMarkerStrokeColor,
-			width: mapMarkerScale,
-			opacity: mapMarkerOpacity,
-		};
-
-		switch (mapMarker) {
-			case 1:
-				return <MapMarker1 {...iconProps} />;
-			case 2:
-				return <MapMarker2 {...iconProps} />;
-			case 3:
-				return <MapMarker3 {...iconProps} />;
-			case 4:
-				return <MapMarker4 {...iconProps} />;
-			case 5:
-				return <MapMarker5 {...iconProps} />;
-			default:
-				return null;
-		}
-	};
 
 	const removeMarker = event => {
 		const index = parseInt(event.target.getAttribute('dataindex'));
@@ -408,11 +396,18 @@ const OpenStreetMapContent = props => {
 	};
 
 	const markerIcon = L.divIcon({
-		html: ReactDOMServer.renderToString(getIcon(mapMarker)),
+		html: mapMarkerIcon,
 	});
 
+	const alert =
+		mapAddingMarker === ' pinning' ? (
+			<div className='map-alert'>
+				{__('Release to drop a marker here', 'maxi-blocks')}
+			</div>
+		) : null;
+
 	return (
-		<div className='maxi-map-container'>
+		<div className='maxi-map-container' id={`map-container-${uniqueID}`}>
 			<MapContainer
 				center={[mapLatitude, mapLongitude]}
 				minZoom={mapMinZoom}
@@ -457,57 +452,65 @@ const OpenStreetMapContent = props => {
 							},
 						}}
 					>
-						<Popup className='map-marker-info-window'>
-							<RichText
-								className='map-marker-info-window__title'
-								value={marker.heading}
-								identifier='title'
-								tagName={mapMarkerHeadingLevel}
-								onChange={content => {
-									const updatedMarkers = [...mapMarkers];
-									updatedMarkers[index].heading = content;
+						<Popup
+							className='map-marker-info-window'
+							closeButton={false}
+						>
+							<RawHTML>{mapPopupIcon}</RawHTML>
+							<div className='map-marker-info-window__content'>
+								<RichText
+									className='map-marker-info-window__title'
+									value={marker.heading}
+									identifier='title'
+									tagName={mapMarkerHeadingLevel}
+									onChange={content => {
+										const updatedMarkers = [...mapMarkers];
+										updatedMarkers[index].heading = content;
 
-									updateMarkers(updatedMarkers);
-								}}
-								placeholder={__(
-									'Write something',
-									'maxi-blocks'
-								)}
-								withoutInteractiveFormatting
-							/>
-							<RichText
-								className='map-marker-info-window__address'
-								value={marker.description}
-								identifier='description'
-								tagName='p'
-								onChange={content => {
-									const updatedMarkers = [...mapMarkers];
-									updatedMarkers[index].description = content;
+										updateMarkers(updatedMarkers);
+									}}
+									placeholder={__('Title', 'maxi-blocks')}
+									withoutInteractiveFormatting
+								/>
+								<RichText
+									className='map-marker-info-window__address'
+									value={marker.description}
+									identifier='description'
+									tagName='p'
+									onChange={content => {
+										const updatedMarkers = [...mapMarkers];
+										updatedMarkers[index].description =
+											content;
 
-									updateMarkers(updatedMarkers);
-								}}
-								placeholder={__('Description', 'maxi-blocks')}
-								withoutInteractiveFormatting
-							/>
-							<div className='map-marker-info-window__marker-remove'>
-								<Button
-									onClick={removeMarker}
-									dataindex={index}
-									icon='trash'
-									showTooltip
-									label={__(
-										'Remove this marker',
+										updateMarkers(updatedMarkers);
+									}}
+									placeholder={__(
+										'Description',
 										'maxi-blocks'
 									)}
-								>
-									{__('Remove', 'maxi-blocks')}
-								</Button>
+									withoutInteractiveFormatting
+								/>
+								<div className='map-marker-info-window__marker-remove'>
+									<Button
+										onClick={removeMarker}
+										dataindex={index}
+										icon='trash'
+										showTooltip
+										label={__(
+											'Remove this marker',
+											'maxi-blocks'
+										)}
+									>
+										{__('Remove', 'maxi-blocks')}
+									</Button>
+								</div>
 							</div>
 						</Popup>
 					</Marker>
 				))}
 			</MapContainer>
 			<SearchBox {...props} />
+			{alert}
 		</div>
 	);
 };
@@ -525,8 +528,33 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth } = this.props;
-		const { uniqueID, 'map-provider': mapProvider } = attributes;
+		const { attributes, blockFullWidth, maxiSetAttributes } = this.props;
+		const {
+			uniqueID,
+			'map-provider': mapProvider,
+			'map-marker-icon': mapMarkerIcon,
+			'map-popup-icon': mapPopupIcon,
+		} = attributes;
+
+		if (!mapMarkerIcon || !mapPopupIcon) {
+			if (!mapMarkerIcon) {
+				maxiSetAttributes({
+					'map-marker-icon': ReactDOMServer.renderToString(
+						mapMarkerIcons.mapMarker1
+					),
+				});
+			}
+
+			if (!mapPopupIcon) {
+				maxiSetAttributes({
+					'map-popup-icon': ReactDOMServer.renderToString(
+						mapPopupIcons.mapPopup1
+					),
+				});
+			}
+
+			return null;
+		}
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -566,4 +594,79 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect, withMaxiProps)(edit);
+const editDispatch = withDispatch((dispatch, ownProps) => {
+	const {
+		attributes: {
+			'map-marker-icon': mapMarkerIcon,
+			'map-popup-icon': mapPopupIcon,
+		},
+		maxiSetAttributes,
+	} = ownProps;
+
+	const changeSVGStrokeWidth = width => {
+		if (width) {
+			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
+			const changeTo = `stroke-width:${width}`;
+
+			const regexLineToChange2 = new RegExp(
+				'stroke-width=".+?(?=")',
+				'g'
+			);
+			const changeTo2 = `stroke-width="${width}`;
+
+			const newContent = mapPopupIcon
+				.replace(regexLineToChange, changeTo)
+				.replace(regexLineToChange2, changeTo2);
+			console.log(newContent);
+			maxiSetAttributes({
+				'map-popup-icon': newContent,
+			});
+		}
+	};
+
+	const changeSVGContentWithBlockStyle = (fillColor, strokeColor) => {
+		const fillRegExp = new RegExp('fill:([^none])([^\\}]+)', 'g');
+		const fillStr = `fill:${fillColor}`;
+
+		const fillRegExp2 = new RegExp('fill=[^-]([^none])([^\\"]+)', 'g');
+		const fillStr2 = ` fill="${fillColor}`;
+
+		const strokeRegExp = new RegExp('stroke:([^none])([^\\}]+)', 'g');
+		const strokeStr = `stroke:${strokeColor}`;
+
+		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
+		const strokeStr2 = ` stroke="${strokeColor}`;
+
+		const newContent = ownProps.attributes['map-marker-icon']
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2)
+			.replace(strokeRegExp, strokeStr)
+			.replace(strokeRegExp2, strokeStr2);
+
+		maxiSetAttributes({ 'map-marker-icon': newContent });
+	};
+
+	const changeSVGContent = (color, type, attribute) => {
+		const fillRegExp = new RegExp(`${type}:".+?(?=")`, 'g');
+		const fillStr = `${type}:${color}`;
+
+		const fillRegExp2 = new RegExp(`${type}=".+?(?=")`, 'g');
+		const fillStr2 = ` ${type}="${color}`;
+		console.log(ownProps.attributes[attribute]);
+		const newContent = ownProps.attributes[attribute]
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2);
+
+		console.log(newContent, color, type);
+
+		maxiSetAttributes({ [attribute]: newContent });
+	};
+
+	return {
+		changeSVGStrokeWidth,
+		changeSVGContent,
+		changeSVGContentWithBlockStyle,
+	};
+});
+
+export default compose(editSelect, withMaxiProps, editDispatch)(edit);

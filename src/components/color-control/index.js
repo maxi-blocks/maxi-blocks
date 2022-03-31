@@ -32,7 +32,7 @@ import './editor.scss';
  */
 const ColorControl = props => {
 	const {
-		label,
+		label = '',
 		className,
 		paletteStatus,
 		paletteColor,
@@ -48,6 +48,7 @@ const ColorControl = props => {
 		blockStyle: rawBlockStyle,
 		disableOpacity = false,
 		disableColorDisplay = false,
+		isToolbar = false,
 		prefix = '',
 		useBreakpointForDefault = false,
 	} = props;
@@ -217,6 +218,7 @@ const ColorControl = props => {
 					disableColorDisplay={disableColorDisplay}
 					disableOpacity={disableOpacity}
 					clientId={clientId}
+					isToolbar={isToolbar}
 				/>
 			)}
 		</div>

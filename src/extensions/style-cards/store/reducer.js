@@ -64,7 +64,10 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 			};
 		case 'REMOVE_STYLE_CARD':
 			controls.SAVE_STYLE_CARDS(
-				removeStyleCard(state.styleCards, action.cardKey)
+				removeStyleCard(
+					{ ...state.styleCards, ...state.savedStyleCards },
+					action.cardKey
+				)
 			);
 
 			return {

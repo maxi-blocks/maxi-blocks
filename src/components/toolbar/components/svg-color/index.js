@@ -14,14 +14,10 @@ import {
 } from '../../../../extensions/styles';
 
 /**
- * External dependencies
- */
-import { capitalize } from 'lodash';
-
-/**
  * Styles
  */
 import './editor.scss';
+import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
 
 /**
  * SvgColor
@@ -32,45 +28,34 @@ const SvgColorToolbar = props => {
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
-	const getColor = attr =>
-		attr[`svg-${type}-palette-status`]
-			? getColorRGBAString({
-					firstVar: `icon-${type}`,
-					secondVar: `color-${attr[`svg-palette-${type}-color`]}`,
-					opacity: attr[`svg-palette-${type}-opacity`],
-					blockStyle: parentBlockStyle,
-			  })
-			: attr[`svg-${type}-color`];
-
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
 			// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
-			tooltip={__(`SVG ${capitalize(type)} Colour`, 'maxi-blocks')}
+			tooltip={__(`Icon ${type} colour`, 'maxi-blocks')}
 			icon={
-				<div
-					className='toolbar-item__icon'
-					style={{
-						background: getColor(props),
-						border: '1px solid #fff',
-					}}
-				/>
+				<div className='toolbar-item__icon'>
+					{type === 'fill'
+						? toolbarShapeColor
+						: toolbarShapeLineColor}
+				</div>
 			}
+			advancedOptions='colour'
 		>
 			<div className='toolbar-item__svg-color__popover'>
 				<SvgColor
 					{...getGroupAttributes(props, 'svg')}
 					type={type}
-					label={__(`SVG ${capitalize(type)}`, 'maxi-blocks')}
+					label={__(`Icon ${type}`, 'maxi-blocks')}
 					onChange={obj => {
 						onChange(obj);
 
 						const colorStr = getColorRGBAString({
 							firstVar: `icon-${type}`,
 							secondVar: `color-${
-								obj[`svg-palette-${type}-color`]
+								obj[`svg-${type}-palette-color`]
 							}`,
-							opacity: obj[`svg-palette-${type}-opacity`],
+							opacity: obj[`svg-${type}-palette-opacity`],
 							blockStyle: parentBlockStyle,
 						});
 

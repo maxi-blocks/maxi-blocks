@@ -126,7 +126,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
-				disableBackground
 			>
 				<div data-align={fullWidth} className={buttonClasses}>
 					{!attributes['icon-only'] && (
@@ -179,8 +178,6 @@ const editSelect = withSelect((select, ownProps) => {
 		attributes: { parentBlockStyle },
 	} = ownProps;
 
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 	const scElements = [
 		'hover-border-color-global',
@@ -197,7 +194,6 @@ const editSelect = withSelect((select, ownProps) => {
 	);
 
 	return {
-		deviceType,
 		scValues,
 	};
 });

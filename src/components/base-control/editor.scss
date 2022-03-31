@@ -1,4 +1,8 @@
 .maxi-base-control {
+	&__disable {
+		opacity: 0.3;
+		pointer-events: none;
+	}
 	&__field {
 		display: flex !important;
 		align-items: center;

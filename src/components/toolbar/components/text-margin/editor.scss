@@ -1,0 +1,11 @@
+.toolbar-item {
+	&__text-margin {
+		.toolbar-item__icon {
+			line,
+			path {
+				fill: transparent !important;
+				stroke: #000 !important;
+			}
+		}
+	}
+}

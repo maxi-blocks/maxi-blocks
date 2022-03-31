@@ -1,15 +1,5 @@
 import getPositionStyles from '../getPositionStyles';
 
-jest.mock('@wordpress/data', () => {
-	return {
-		select: jest.fn(() => {
-			return {
-				getSelectedBlockCount: jest.fn(() => 1),
-			};
-		}),
-	};
-});
-
 describe('getPositionStyles', () => {
 	it('Get a correct position styles', () => {
 		const object = {

@@ -620,6 +620,11 @@ const Inspector = memo(
 												...props,
 											},
 										}),
+										...inspectorTabs.flex({
+											props: {
+												...props,
+											},
+										}),
 										...inspectorTabs.zindex({
 											props: {
 												...props,

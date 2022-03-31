@@ -35,7 +35,7 @@ const IconToolbar = memo(
 	forwardRef((props, ref) => {
 		const { attributes, clientId, maxiSetAttributes, name, isSelected } =
 			props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const { uniqueID } = attributes;
 
 		const { editorVersion, breakpoint } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -118,16 +118,15 @@ const IconToolbar = memo(
 								blockName={name}
 								{...getGroupAttributes(attributes, 'icon')}
 								onChange={obj => processAttributes(obj)}
-								parentBlockStyle={parentBlockStyle}
 							/>
 							<IconBackground
 								blockName={name}
+								breakpoint={breakpoint}
 								{...getGroupAttributes(attributes, [
 									'icon',
 									'iconBackgroundColor',
 								])}
 								onChange={obj => processAttributes(obj)}
-								parentBlockStyle={parentBlockStyle}
 							/>
 							<Border
 								blockName={name}

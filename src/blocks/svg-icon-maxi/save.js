@@ -18,11 +18,11 @@ const save = props => {
 	const name = 'maxi-blocks/svg-icon-maxi';
 
 	return (
-		<MaxiBlock {...getMaxiBlockAttributes({ ...props, name })} isSave>
+		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{attributes.content}
 			</RawHTML>
-		</MaxiBlock>
+		</MaxiBlock.save>
 	);
 };
 

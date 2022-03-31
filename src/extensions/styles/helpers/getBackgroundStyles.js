@@ -71,6 +71,13 @@ export const getColorBackgroundObject = ({
 		isHover,
 	});
 
+	const isBgColorClipPathActive = getLastBreakpointAttribute({
+		target: `${prefix}background-color-clip-path-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
 	if (!paletteStatus && !isEmpty(color))
 		response[breakpoint]['background-color'] = color;
 	else if (paletteStatus && (paletteColor || paletteOpacity)) {
@@ -128,7 +135,7 @@ export const getColorBackgroundObject = ({
 			: color;
 	}
 
-	if (!isNil(bgClipPath))
+	if (isBgColorClipPathActive)
 		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)
 			? 'none'
 			: bgClipPath;
@@ -165,12 +172,18 @@ export const getGradientBackgroundObject = ({
 		attributes: props,
 		isHover,
 	});
-	const bgGradientClipPath = getAttributeValue({
-		target: 'background-gradient-clip-path',
-		props,
-		prefix,
-		isHover,
+	const bgGradientClipPath = getLastBreakpointAttribute({
+		target: `${prefix}background-gradient-clip-path`,
 		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isbgGradientClipPathActive = getLastBreakpointAttribute({
+		target: `${prefix}background-gradient-clip-path-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
 	});
 
 	if (
@@ -213,7 +226,7 @@ export const getGradientBackgroundObject = ({
 
 			if (background) response[breakpoint].background = background;
 		}
-		if (!isNil(bgGradientClipPath))
+		if (isbgGradientClipPathActive)
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
 				: bgGradientClipPath;
@@ -280,9 +293,20 @@ export const getImageBackgroundObject = ({
 		'background-image-attachment'
 	);
 	const bgImageOpacity = getBgImageAttributeValue('background-image-opacity');
-	const bgImageClipPath = getBgImageAttributeValue(
-		'background-image-clip-path'
-	);
+
+	const bgImageClipPath = getLastBreakpointAttribute({
+		target: `${prefix}background-image-clip-path`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isbgImageClipPathActive = getLastBreakpointAttribute({
+		target: `${prefix}background-image-clip-path-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
 
 	if (!isParallax) {
 		// Image
@@ -387,7 +411,7 @@ export const getImageBackgroundObject = ({
 	if (isNumber(bgImageOpacity)) response[breakpoint].opacity = bgImageOpacity;
 
 	// Clip-path
-	if (!isNil(bgImageClipPath))
+	if (isbgImageClipPathActive)
 		response[breakpoint]['clip-path'] = isEmpty(bgImageClipPath)
 			? 'none'
 			: bgImageClipPath;

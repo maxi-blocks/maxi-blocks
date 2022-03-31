@@ -89,8 +89,7 @@
 		"move-cli": "^2.0.0",
 		"postcss": "^8.4.12",
 		"postcss-cli": "^9.1.0",
-		"prettier": "^2.3.2",
-		"try-to-catch": "^3.0.1"
+		"prettier": "^2.3.2"
 	},
 	"browserslist": {
 		"production": [

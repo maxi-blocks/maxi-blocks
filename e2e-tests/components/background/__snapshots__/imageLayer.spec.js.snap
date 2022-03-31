@@ -26,6 +26,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "image",
   },
 ]
@@ -70,6 +71,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "image",
   },
 ]

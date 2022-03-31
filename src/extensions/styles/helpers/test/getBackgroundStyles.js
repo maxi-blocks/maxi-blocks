@@ -45,7 +45,7 @@ describe('getBackgroundStyles', () => {
 					'background-color-general': '',
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 					'background-palette-status-xl': true,
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
@@ -115,7 +115,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-image-opacity-general': 0.52,
-					id: 0,
+					order: 0,
 					'background-image-width-xl': 470,
 					'background-image-height-xl': 300,
 					'background-image-opacity-xl': 0.52,
@@ -187,7 +187,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-image-opacity-general': 0.52,
-					id: 0,
+					order: 0,
 					'background-image-width-xl': 470,
 					'background-image-height-xl': 300,
 					'background-image-opacity-xl': 0.52,
@@ -248,7 +248,7 @@ describe('getBackgroundStyles', () => {
 					'background-video-fallbackURL-general':
 						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
 					'background-video-opacity-general': 0.11,
-					id: 0,
+					order: 0,
 					'background-video-opacity-xl': 0.11,
 					'background-video-fallbackID-xl': 302,
 					'background-video-fallbackURL-xl':
@@ -284,7 +284,7 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-opacity-general': 0.15,
 					'background-gradient-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 					'background-gradient-opacity-xl': 0.15,
 					'background-gradient-xl':
 						'radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)',
@@ -327,7 +327,7 @@ describe('getBackgroundStyles', () => {
 					'background-svg-left-general': 50,
 					'background-svg-size-general': 34,
 					'background-svg-size-unit-general': '%',
-					id: 0,
+					order: 0,
 					'background-svg-top-xl': 0,
 					'background-svg-size-xl': 34,
 					'background-svg-palette-status-xxl': true,
@@ -380,7 +380,7 @@ describe('getBackgroundStyles', () => {
 					'background-palette-color-general': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
-					id: 0,
+					order: 0,
 				},
 				{
 					type: 'image',
@@ -404,7 +404,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-attachment-general': 'scroll',
 					'background-image-clip-path-general': '',
 					'background-image-opacity-general': 1,
-					id: 1,
+					order: 1,
 				},
 				{
 					type: 'video',
@@ -419,7 +419,7 @@ describe('getBackgroundStyles', () => {
 					'background-video-fallbackURL-general': '',
 					'background-video-playOnMobile-general': false,
 					'background-video-opacity-general': 1,
-					id: 2,
+					order: 2,
 				},
 				{
 					type: 'gradient',
@@ -427,7 +427,7 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-general': '',
 					'background-gradient-opacity-general': 1,
 					'background-gradient-clip-path-general': '',
-					id: 3,
+					order: 3,
 				},
 				{
 					type: 'shape',
@@ -442,7 +442,7 @@ describe('getBackgroundStyles', () => {
 					'background-svg-left-general': null,
 					'background-svg-size-general': 100,
 					'background-svg-size-unit-general': '%',
-					id: 4,
+					order: 4,
 				},
 			],
 			'border-palette-status-general': true,
@@ -516,7 +516,7 @@ describe('getBackgroundStyles', () => {
 					'background-color-clip-path-general': true,
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 					'background-palette-status-xl': true,
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
@@ -613,7 +613,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-image-opacity-general': 0.52,
-					id: 0,
+					order: 0,
 					'background-image-width-xl': 470,
 					'background-image-height-xl': 300,
 					'background-image-opacity-xl': 0.52,
@@ -700,7 +700,7 @@ describe('getBackgroundStyles', () => {
 					'background-video-fallbackURL-general':
 						'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
 					'background-video-opacity-general': 0.11,
-					id: 0,
+					order: 0,
 					'background-video-opacity-xl': 0.11,
 					'background-video-fallbackID-xl': 302,
 					'background-video-fallbackURL-xl':
@@ -742,7 +742,7 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-clip-path-status-general': true,
 					'background-gradient-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 					'background-gradient-opacity-xl': 0.15,
 					'background-gradient-xl':
 						'radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)',
@@ -827,7 +827,7 @@ describe('getBackgroundStyles', () => {
 					'background-svg-left-general': 50,
 					'background-svg-size-general': 34,
 					'background-svg-size-unit-general': '%',
-					id: 0,
+					order: 0,
 					'background-svg-top-xl': 0,
 					'background-svg-size-xl': 34,
 					'SVGElement-xxl':
@@ -925,7 +925,7 @@ describe('getBackgroundStyles', () => {
 					'isHover-general': false,
 					'background-palette-status-general': true,
 					'background-palette-color-general': 1,
-					id: 2,
+					order: 2,
 					'background-palette-status-xl-hover': true,
 					'background-palette-color-xl-hover': 4,
 					'background-palette-status-general-hover': true,
@@ -955,7 +955,7 @@ describe('getBackgroundStyles', () => {
 					'background-svg-position-unit-general': '%',
 					'background-svg-size-general': 100,
 					'background-svg-size-unit-general': '%',
-					id: 3,
+					order: 3,
 					'background-svg-palette-status-xl': true,
 					'background-svg-palette-color-xl': 4,
 				},
@@ -970,7 +970,7 @@ describe('getBackgroundStyles', () => {
 					'background-video-playOnMobile-general': false,
 					'background-video-opacity-general': 1,
 					'background-video-reduce-border-general': false,
-					id: 4,
+					order: 4,
 				},
 			],
 			'background-layers-hover': [
@@ -1014,7 +1014,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-parallax-status': false,
 					'background-image-parallax-speed': 4,
 					'background-image-parallax-direction': 'up',
-					id: 0,
+					order: 0,
 					'background-image-width-xl-hover': 600,
 					'background-image-height-xl-hover': 600,
 				},
@@ -1054,7 +1054,7 @@ describe('getBackgroundStyles', () => {
 					'background-svg-size-general-hover': 100,
 					'background-svg-size-unit-general': '%',
 					'background-svg-size-unit-general-hover': '%',
-					id: 1,
+					order: 1,
 					'background-svg-palette-status-xl-hover': true,
 					'background-svg-palette-color-xl-hover': 2,
 					'background-svg-palette-opacity-xl-hover': 0.38,
@@ -1082,7 +1082,7 @@ describe('getBackgroundStyles', () => {
 					'background-color-clip-path-status-general': true,
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 				},
 			],
 			'border-bottom-left-radius-general': 180,

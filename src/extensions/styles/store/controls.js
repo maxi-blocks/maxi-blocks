@@ -7,20 +7,20 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { minify } from 'minify'; // the ERROR
+import minifyCssString from 'minify-css-string';
+import autoprefixer from 'autoprefixer';
+import postcss from 'postcss';
 
 /**
  * Internal dependencies
  */
 import frontendStyleGenerator from '../frontendStyleGenerator';
 
-const autoprefixer = require('autoprefixer');
-const postcss = require('postcss');
-
 async function processCss(code) {
-	const css = await postcss([autoprefixer]).process(code).css;
-	// add minify here
-	return css;
+	const { css } = postcss([autoprefixer]).process(code);
+	const minifiedCss = minifyCssString(css);
+
+	return minifiedCss;
 }
 
 /**

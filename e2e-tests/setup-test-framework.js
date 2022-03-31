@@ -151,7 +151,7 @@ function observeConsoleLogging() {
 		console[logFunction](text);
 
 		// In case we want to debug the error
-		debugger;
+		// debugger;
 	});
 }
 

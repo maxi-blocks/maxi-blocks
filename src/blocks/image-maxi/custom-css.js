@@ -59,24 +59,15 @@ export const selectorsImage = {
 			target: ' .maxi-image-block__image:hover::after',
 		},
 	},
-	'canvas background': {
-		normal: {
-			label: 'canvas background',
-			target: '',
-		},
-		hover: {
-			label: 'canvas background on hover',
-			target: ':hover',
-		},
-	},
 };
 
 export const categoriesImage = [
 	'canvas',
 	'before canvas',
 	'after canvas',
-	'canvas background',
 	'image',
 	'before image',
 	'after image',
+	'background',
+	'background hover',
 ];

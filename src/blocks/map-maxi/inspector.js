@@ -14,12 +14,16 @@ import { isEmpty } from 'lodash';
  */
 import {
 	AccordionControl,
-	MapControl,
 	SettingTabsControl,
 	FontLevelControl,
 	TypographyControl,
+	ToggleSwitch,
+	MapControl,
 } from '../../components';
-import { MapMarkersControl } from '../../components/map-control';
+import {
+	MapMarkersControl,
+	MapPopupsControl,
+} from '../../components/map-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsMap, categoriesMap } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -30,6 +34,9 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 const Inspector = props => {
 	const {
 		attributes,
+		changeSVGContent,
+		changeSVGContentWithBlockStyle,
+		changeSVGStrokeWidth,
 		deviceType,
 		maxiSetAttributes,
 		clientId,
@@ -88,6 +95,16 @@ const Inspector = props => {
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
+													parentBlockStyle={
+														parentBlockStyle
+													}
+													changeSVGContent={
+														changeSVGContent
+													}
+													svgAttributes={getGroupAttributes(
+														attributes,
+														'svg'
+													)}
 												/>
 											),
 										},
@@ -209,6 +226,39 @@ const Inspector = props => {
 												</>
 											),
 										},
+										{
+											label: __(
+												'Marker pop-up',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<MapPopupsControl
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														parentBlockStyle={
+															parentBlockStyle
+														}
+														deviceType={deviceType}
+														changeSVGContent={
+															changeSVGContent
+														}
+														changeSVGStrokeWidth={
+															changeSVGStrokeWidth
+														}
+														svgAttributes={getGroupAttributes(
+															attributes,
+															'svg',
+															false,
+															'popup-'
+														)}
+													/>
+												</>
+											),
+										},
 										...inspectorTabs.border({
 											props,
 										}),
@@ -222,6 +272,92 @@ const Inspector = props => {
 										...inspectorTabs.marginPadding({
 											props,
 										}),
+										{
+											label: __(
+												'Map interaction',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<ToggleSwitch
+														label={__(
+															'Map dragging',
+															'maxi-blocks'
+														)}
+														selected={
+															attributes[
+																'map-dragging'
+															]
+														}
+														onChange={() => {
+															maxiSetAttributes({
+																'map-dragging':
+																	!attributes[
+																		'map-dragging'
+																	],
+															});
+														}}
+													/>
+													<ToggleSwitch
+														label={__(
+															'Touch zoom',
+															'maxi-blocks'
+														)}
+														selected={
+															attributes[
+																'map-touch-zoom'
+															]
+														}
+														onChange={() => {
+															maxiSetAttributes({
+																'map-touch-zoom':
+																	!attributes[
+																		'map-touch-zoom'
+																	],
+															});
+														}}
+													/>
+													<ToggleSwitch
+														label={__(
+															'Double click zoom',
+															'maxi-blocks'
+														)}
+														selected={
+															attributes[
+																'map-double-click-zoom'
+															]
+														}
+														onChange={() => {
+															maxiSetAttributes({
+																'map-double-click-zoom':
+																	!attributes[
+																		'map-double-click-zoom'
+																	],
+															});
+														}}
+													/>
+													<ToggleSwitch
+														label={__(
+															'Scroll wheel zoom',
+															'maxi-blocks'
+														)}
+														selected={
+															attributes[
+																'map-scroll-wheel-zoom'
+															]
+														}
+														onChange={() => {
+															maxiSetAttributes({
+																'map-scroll-wheel-zoom':
+																	!attributes[
+																		'map-scroll-wheel-zoom'
+																	],
+															});
+														}}
+													/>
+												</>
+											),
+										},
 									]}
 								/>
 							</>

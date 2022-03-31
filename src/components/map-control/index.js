@@ -9,22 +9,28 @@ import { SelectControl, TextControl } from '@wordpress/components';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
+import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import InfoBox from '../info-box';
 import OpacityControl from '../opacity-control';
-import ToggleSwitch from '../toggle-switch';
-import { getDefaultAttribute } from '../../extensions/styles';
+import SvgColor from '../svg-color';
+import {
+	getDefaultAttribute,
+	getColorRGBAString,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { uniqueId } from 'lodash';
+import ReactDOMServer from 'react-dom/server';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import * as mapMarkers from '../../icons/map-icons';
+import * as mapMarkers from '../../icons/map-icons/markers';
+import * as mapPopups from '../../icons/map-icons/popups';
 
 /**
  * Component
@@ -140,7 +146,8 @@ const MapControl = props => {
 };
 
 export const MapMarkersControl = props => {
-	const { onChange } = props;
+	const { onChange, parentBlockStyle, changeSVGContent, svgAttributes } =
+		props;
 
 	return (
 		<>
@@ -152,6 +159,10 @@ export const MapMarkersControl = props => {
 						onClick={e =>
 							onChange({
 								'map-marker': +e.currentTarget.dataset.item,
+								'map-marker-icon':
+									ReactDOMServer.renderToString(
+										mapMarkers[item]
+									),
 							})
 						}
 						className={`maxi-map-control__markers__item ${
@@ -167,11 +178,12 @@ export const MapMarkersControl = props => {
 			<OpacityControl
 				label={__('Icon opacity', 'maxi-blocks')}
 				opacity={props['map-marker-opacity']}
-				onChange={val =>
+				onChange={val => {
 					onChange({
 						'map-marker-opacity': val,
-					})
-				}
+					});
+					changeSVGContent(val, 'opacity');
+				}}
 			/>
 			<AdvancedNumberControl
 				label={__('Icon size', 'maxi-blocks')}
@@ -180,15 +192,19 @@ export const MapMarkersControl = props => {
 				initial={20}
 				step={1}
 				value={props['map-marker-scale']}
-				onChangeValue={val => onChange({ 'map-marker-scale': val })}
-				onReset={() =>
+				onChangeValue={val => {
+					onChange({ 'map-marker-scale': val });
+					changeSVGContent(val, ' width');
+				}}
+				onReset={() => {
+					const defaultAttr = getDefaultAttribute('map-marker-scale');
 					onChange({
-						'map-marker-scale':
-							getDefaultAttribute('map-marker-scale'),
-					})
-				}
+						'map-marker-scale': defaultAttr,
+					});
+					changeSVGContent(defaultAttr, ' width');
+				}}
 			/>
-			<ToggleSwitch
+			{/* <ToggleSwitch
 				label={__('Set custom icon colours', 'maxi-block')}
 				selected={props['map-marker-custom-color-status']}
 				onChange={val =>
@@ -220,7 +236,135 @@ export const MapMarkersControl = props => {
 						disablePalette
 					/>
 				</>
-			)}
+			)} */}
+			<SvgColor
+				{...svgAttributes}
+				type='fill'
+				label={__('Icon', 'maxi-blocks')}
+				onChange={obj => {
+					onChange(obj);
+
+					const fillColorStr = getColorRGBAString({
+						firstVar: 'icon-fill',
+						secondVar: `color-${obj['svg-fill-palette-color']}`,
+						opacity: obj['svg-fill-palette-opacity'],
+						blockStyle: parentBlockStyle,
+					});
+
+					changeSVGContent(
+						obj['svg-fill-palette-status']
+							? fillColorStr
+							: obj['svg-fill-color'],
+						'fill',
+						'map-marker-icon'
+					);
+				}}
+			/>
+		</>
+	);
+};
+
+export const MapPopupsControl = props => {
+	const {
+		onChange,
+		parentBlockStyle,
+		deviceType,
+		changeSVGContent,
+		changeSVGStrokeWidth,
+		svgAttributes,
+	} = props;
+	const prefix = 'popup-';
+
+	return (
+		<>
+			<div className='maxi-map-control__popups'>
+				{Object.keys(mapPopups).map((item, index) => (
+					<div
+						key={`map-marker-${uniqueId()}`}
+						data-item={index + 1}
+						onClick={e =>
+							onChange({
+								'map-popup': +e.currentTarget.dataset.item,
+								'map-popup-icon': ReactDOMServer.renderToString(
+									mapPopups[item]
+								),
+							})
+						}
+						className={`maxi-map-control__popups__item ${
+							props['map-marker'] - 1 === index
+								? 'maxi-map-control__popups__item--active'
+								: null
+						}`}
+					>
+						{mapPopups[item]}
+					</div>
+				))}
+			</div>
+			<SvgColor
+				{...svgAttributes}
+				type='fill'
+				label={__('Marker background', 'maxi-blocks')}
+				onChange={obj => {
+					onChange(obj);
+
+					const fillColorStr = getColorRGBAString({
+						firstVar: 'icon-',
+						secondVar: `color-${
+							obj[`${prefix}svg-fill-palette-color`]
+						}`,
+						opacity: obj[`${prefix}svg-fill-palette-opacity`],
+						blockStyle: parentBlockStyle,
+					});
+
+					changeSVGContent(
+						obj[`${prefix}svg-fill-palette-status`]
+							? fillColorStr
+							: obj[`${prefix}svg-fill-color`],
+						'fill',
+						'map-popup-icon'
+					);
+				}}
+				prefix='popup-'
+				disableOpacity={false}
+			/>
+			<SvgColor
+				{...svgAttributes}
+				type='line'
+				label={__('Marker border', 'maxi-blocks')}
+				onChange={obj => {
+					onChange(obj);
+
+					const fillColorStr = getColorRGBAString({
+						firstVar: 'icon-line',
+						secondVar: `color-${
+							obj[`${prefix}svg-line-palette-color`]
+						}`,
+						opacity: obj[`${prefix}svg-line-palette-opacity`],
+						blockStyle: parentBlockStyle,
+					});
+
+					changeSVGContent(
+						obj[`${prefix}svg-line-palette-status`]
+							? fillColorStr
+							: obj[`${prefix}svg-line-color`],
+						'stroke',
+						'map-popup-icon'
+					);
+				}}
+				prefix='popup-'
+				disableOpacity={false}
+			/>
+			<SvgStrokeWidthControl
+				{...svgAttributes}
+				prefix={`${prefix}svg-`}
+				onChange={obj => {
+					onChange(obj);
+					changeSVGStrokeWidth(
+						obj[`${prefix}svg-stroke-${deviceType}`]
+					);
+				}}
+				breakpoint={deviceType}
+			/>
 		</>
 	);
 };

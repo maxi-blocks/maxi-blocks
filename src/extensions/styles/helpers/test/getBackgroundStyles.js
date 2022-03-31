@@ -513,6 +513,7 @@ describe('getBackgroundStyles', () => {
 					'background-palette-color-general': 1,
 					'background-palette-opacity-general': 0.07,
 					'background-color-general': '',
+					'background-color-clip-path-general': true,
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					id: 0,
@@ -520,6 +521,7 @@ describe('getBackgroundStyles', () => {
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
 					'background-color-xl': '',
+					'background-color-clip-path-xl': true,
 					'background-color-clip-path-xl':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-color-clip-path-xxl':
@@ -607,6 +609,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-origin-general': 'border-box',
 					'background-image-clip-general': 'padding-box',
 					'background-image-attachment-general': 'local',
+					'background-image-clip-path-status-general': true,
 					'background-image-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-image-opacity-general': 0.52,
@@ -620,6 +623,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-attachment-xl': 'local',
 					'background-image-origin-xl': 'border-box',
 					'background-image-clip-xl': 'padding-box',
+					'background-image-clip-path-status-xl': true,
 					'background-image-clip-path-xl':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-image-width-l': 2560,
@@ -630,15 +634,18 @@ describe('getBackgroundStyles', () => {
 					'background-image-attachment-l': 'fixed',
 					'background-image-origin-l': 'content-box',
 					'background-image-clip-l': 'padding-box',
+					'background-image-clip-path-status-l': true,
 					'background-image-clip-path-l':
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
 					'background-image-opacity-m': 0.91,
 					'background-image-opacity-xxl': 0.11,
+					'background-image-clip-path-status-xxl': true,
 					'background-image-clip-path-xxl':
 						'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
 					'background-image-repeat-s': 'repeat-x',
 					'background-image-attachment-s': 'scroll',
 					'background-image-position-s': 'center top',
+					'background-image-clip-path-status-s': true,
 					'background-image-clip-path-s':
 						'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
 					'background-image-width-xs': 600,
@@ -650,8 +657,10 @@ describe('getBackgroundStyles', () => {
 					'background-image-height-general-hover': 600,
 					'background-image-opacity-xl-hover': 0.17,
 					'background-image-opacity-general-hover': 0.17,
+					'background-image-clip-path-status-xl-hover': true,
 					'background-image-clip-path-xl-hover':
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+					'background-image-clip-path-status-general-hover': true,
 					'background-image-clip-path-general-hover':
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
 					'background-image-width-xxl-hover': 788,
@@ -660,6 +669,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-width-l-hover': 470,
 					'background-image-height-l-hover': 300,
 					'background-image-opacity-l-hover': 0.81,
+					'background-image-clip-path-status-s-hover': true,
 					'background-image-clip-path-s-hover':
 						'ellipse(25% 40% at 50% 50%)',
 				},
@@ -729,17 +739,21 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-general':
 						'radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)',
 					'background-gradient-opacity-general': 0.15,
+					'background-gradient-clip-path-status-general': true,
 					'background-gradient-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					id: 0,
 					'background-gradient-opacity-xl': 0.15,
 					'background-gradient-xl':
 						'radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)',
+					'background-gradient-clip-path-status-xl': true,
 					'background-gradient-clip-path-xl':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-gradient-opacity-xxl': 0.48,
+					'background-gradient-clip-path-status-xxl': true,
 					'background-gradient-clip-path-xxl':
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+					'background-gradient-clip-path-status-l': true,
 					'background-gradient-clip-path-l':
 						'polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)',
 					'background-gradient-opacity-l': 0.8,
@@ -748,6 +762,7 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-s':
 						'radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(118,170,192) 76%,rgb(155,81,224) 100%)',
 					'background-gradient-opacity-s': 0.17,
+					'background-gradient-clip-path-status-s': true,
 					'background-gradient-clip-path-s':
 						'polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)',
 					'background-gradient-xl-hover':
@@ -758,12 +773,16 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-opacity-general-hover': 0.71,
 					'background-gradient-xxl-hover':
 						'linear-gradient(205deg,rgb(26,229,6) 0%,rgb(186,69,107) 52%,rgb(224,218,82) 100%)',
+					'background-gradient-clip-path-status-xxl-hover': true,
 					'background-gradient-clip-path-xxl-hover':
 						'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
+					'background-gradient-clip-path-status-xl-hover': true,
 					'background-gradient-clip-path-xl-hover':
 						'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+					'background-gradient-clip-path-status-general-hover': true,
 					'background-gradient-clip-path-general-hover':
 						'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+					'background-gradient-clip-path-status-l-hover': true,
 					'background-gradient-clip-path-l-hover':
 						'circle(50% at 50% 50%)',
 					'background-gradient-l-hover':
@@ -771,6 +790,7 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-opacity-l-hover': 0.37,
 					'background-gradient-s-hover':
 						'radial-gradient(rgb(186,69,107) 52%,rgba(0,114,163,0.08) 74%,rgb(224,218,82) 100%)',
+					'background-gradient-clip-path-status-s-hover': true,
 					'background-gradient-clip-path-s-hover':
 						'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
 					'background-gradient-opacity-s-hover': 0.91,
@@ -1059,6 +1079,7 @@ describe('getBackgroundStyles', () => {
 					'background-palette-color-general': 1,
 					'background-palette-opacity-general': 0.07,
 					'background-color-general': '',
+					'background-color-clip-path-status-general': true,
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					id: 0,

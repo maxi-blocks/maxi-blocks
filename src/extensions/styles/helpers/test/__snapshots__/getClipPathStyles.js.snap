@@ -1,3 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getOpacityStyles Get a correct clipPath styles 1`] = `Object {}`;
+exports[`getClipPathStyles Get a correct clipPath styles 1`] = `
+Object {
+  "general": Object {
+    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+  },
+  "l": Object {
+    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+  },
+  "m": Object {
+    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+  },
+  "s": Object {
+    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+  },
+  "xl": Object {
+    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+  },
+  "xs": Object {
+    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+  },
+  "xxl": Object {
+    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+  },
+}
+`;

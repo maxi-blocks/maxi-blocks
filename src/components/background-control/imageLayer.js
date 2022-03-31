@@ -527,7 +527,7 @@ const ImageLayerSettings = props => {
 				<ClipPath
 					onChange={obj => onChange(obj)}
 					{...getGroupAttributes(
-						props,
+						imageOptions,
 						'clipPath',
 						false,
 						'background-image-'

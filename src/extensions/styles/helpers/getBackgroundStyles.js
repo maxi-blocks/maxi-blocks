@@ -71,7 +71,7 @@ export const getColorBackgroundObject = ({
 		isHover,
 	});
 
-	const isbgColorClipPathActive = getLastBreakpointAttribute({
+	const isBgColorClipPathActive = getLastBreakpointAttribute({
 		target: `${prefix}background-color-clip-path-status`,
 		breakpoint,
 		attributes: props,
@@ -135,7 +135,7 @@ export const getColorBackgroundObject = ({
 			: color;
 	}
 
-	if (isbgColorClipPathActive)
+	if (isBgColorClipPathActive)
 		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)
 			? 'none'
 			: bgClipPath;

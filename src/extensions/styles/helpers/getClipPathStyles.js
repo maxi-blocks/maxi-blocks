@@ -1,3 +1,4 @@
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * General
  */
@@ -11,13 +12,24 @@ const getClipPathStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		if (
-			obj[`clip-path-status-${breakpoint}`] &&
-			obj[`clip-path-${breakpoint}`]
-		)
-			response[breakpoint] = {
-				'clip-path': obj[`clip-path-${breakpoint}`],
-			};
+		response[breakpoint] = {
+			...(getLastBreakpointAttribute({
+				target: 'clip-path',
+				breakpoint,
+				attributes: obj,
+			}) &&
+				getLastBreakpointAttribute({
+					target: 'clip-path-status',
+					breakpoint,
+					attributes: obj,
+				}) && {
+					'clip-path': getLastBreakpointAttribute({
+						target: 'clip-path',
+						breakpoint,
+						attributes: obj,
+					}),
+				}),
+		};
 	});
 
 	return response;

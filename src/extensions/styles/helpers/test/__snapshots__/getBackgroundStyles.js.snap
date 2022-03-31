@@ -49,26 +49,33 @@ Object {
     "color": Object {
       "general": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
       },
       "l": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "label": "Background Color",
       "m": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "s": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "xl": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "xs": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "xxl": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
     },
   },
@@ -534,30 +541,37 @@ Object {
     "gradient": Object {
       "general": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
         "opacity": 0.15,
       },
       "l": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+        "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
         "opacity": 0.8,
       },
       "label": "Background gradient",
       "m": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+        "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
       },
       "s": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(118,170,192) 76%,rgb(155,81,224) 100%)",
+        "clip-path": "polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)",
         "opacity": 0.17,
       },
       "xl": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "opacity": 0.15,
       },
       "xs": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(89,121,135) 29%,rgb(68,150,185) 52%,rgb(118,170,192) 76%,rgb(155,81,224) 100%)",
+        "clip-path": "polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)",
       },
       "xxl": Object {
         "background": "radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)",
+        "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
         "opacity": 0.48,
       },
     },
@@ -653,6 +667,7 @@ Object {
         "background-position": "left top",
         "background-repeat": "repeat-x",
         "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
       },
       "l": Object {
@@ -662,17 +677,20 @@ Object {
         "background-position": "right top",
         "background-repeat": "space",
         "background-size": "contain",
+        "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
       },
       "label": "Background Image",
       "m": Object {
         "background-position": "right top",
         "background-size": "contain",
+        "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
       },
       "s": Object {
         "background-attachment": "scroll",
         "background-position": "center top",
         "background-repeat": "repeat-x",
         "background-size": "contain",
+        "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
       "xl": Object {
         "background-attachment": "local",
@@ -681,14 +699,17 @@ Object {
         "background-position": "left top",
         "background-repeat": "repeat-x",
         "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "xs": Object {
         "background-position": "center top",
         "background-size": "auto",
+        "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
       "xxl": Object {
         "background-position": "left top",
         "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
       },
     },
   },

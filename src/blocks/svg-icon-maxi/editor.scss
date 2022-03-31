@@ -30,11 +30,18 @@
 		opacity: 1;
 		visibility: visible;
 		background: #232533;
+		transition: 0.3s;
 
 		svg {
 			fill: #fff;
 			width: 20px;
 			height: 20px;
+		}
+	}
+
+	&:hover {
+		.maxi-svg-icon-block__replace-icon {
+			opacity: 1;
 		}
 	}
 

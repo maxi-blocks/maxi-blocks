@@ -163,6 +163,8 @@ const getMaxiBlockAttributes = props => {
 		background,
 		hasLink,
 		hasInnerBlocks,
+		// Necessary for the memo() of MaxiBlocks component
+		attributes,
 		...scroll,
 	};
 };

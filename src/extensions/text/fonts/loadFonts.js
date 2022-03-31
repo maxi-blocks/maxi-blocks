@@ -18,7 +18,7 @@ import { isEmpty, uniq } from 'lodash';
 const loadFonts = (font, backendOnly = true) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
-			if (isEmpty(fontName)) return;
+			if (isEmpty(fontName)) return null;
 
 			const fontWeight = fontData?.weight || '400';
 
@@ -38,9 +38,10 @@ const loadFonts = (font, backendOnly = true) => {
 
 			if (isEmpty(fontDataNew.style)) delete fontDataNew.style;
 
-			const { files } = select('maxiBlocks/text').getFont(fontName);
+			const fontFiles =
+				select('maxiBlocks/text').getFont(fontName)?.files;
 
-			if (isEmpty(files)) return;
+			if (isEmpty(fontFiles)) return null;
 
 			const loadBackendFont = url => {
 				const fontLoad = new FontFace(
@@ -59,7 +60,7 @@ const loadFonts = (font, backendOnly = true) => {
 			if (!isEmpty(fontWeightArr)) {
 				fontWeightArr.forEach(weight => {
 					let weightFile = weight;
-					if (!(Number(weight) in files)) {
+					if (!(Number(weight) in fontFiles)) {
 						weightFile = '400';
 						const newFontWeightArr = uniq(fontWeightArr).filter(
 							value => {
@@ -73,7 +74,7 @@ const loadFonts = (font, backendOnly = true) => {
 						font[fontName].weight = newFontWeight;
 					}
 
-					Object.entries(files).forEach(variant => {
+					Object.entries(fontFiles).forEach(variant => {
 						if (variant[0].toString() === weightFile) {
 							fontDataNew = {
 								...fontData,
@@ -90,9 +91,12 @@ const loadFonts = (font, backendOnly = true) => {
 					});
 				});
 			} else
-				Object.entries(files).forEach(variant => {
+				Object.entries(fontFiles).forEach(variant => {
 					let weightFile = fontWeight.toString();
-					if (isEmpty(fontWeight) || !(Number(fontWeight) in files)) {
+					if (
+						isEmpty(fontWeight) ||
+						!(Number(fontWeight) in fontFiles)
+					) {
 						weightFile = '400';
 						font[fontName].weight = weightFile;
 						fontData.weight = weightFile;
@@ -100,6 +104,7 @@ const loadFonts = (font, backendOnly = true) => {
 
 					if (variant[0] === weightFile) loadBackendFont(variant[1]);
 				});
+			return null;
 		});
 
 		if (!backendOnly)

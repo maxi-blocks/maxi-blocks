@@ -136,17 +136,6 @@ class MaxiBlockComponent extends Component {
 			this.displayStyles();
 		}
 
-		// Change `parentBlockStyle` before updating
-		const { blockStyle } = this.props.attributes;
-
-		if (blockStyle === 'maxi-parent') {
-			const changedStyle = this.getParentStyle();
-
-			if (changedStyle) {
-				this.displayStyles(); // force rendering styles after changing parentBlockStyle
-				return true;
-			}
-		}
 		// Force rendering the block when SC related values change
 		if (!isEqual(this.props.scValues, nextProps.scValues)) return true;
 
@@ -154,7 +143,8 @@ class MaxiBlockComponent extends Component {
 		if (
 			!this.props.isSelected ||
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType // In case of breakpoint change
+			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
+			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
 		)
 			return true;
 
@@ -351,6 +341,7 @@ class MaxiBlockComponent extends Component {
 		} = this.props;
 
 		const newParentStyle = getBlockStyle(clientId);
+
 		if (parentBlockStyle !== newParentStyle) {
 			this.props.attributes.parentBlockStyle = newParentStyle;
 

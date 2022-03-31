@@ -20,6 +20,7 @@ import {
 	getBoxShadowStyles,
 	getColorBackgroundObject,
 	getDisplayStyles,
+	getFlexStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
 	getMarginPaddingStyles,
@@ -63,6 +64,9 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {

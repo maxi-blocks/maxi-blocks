@@ -355,8 +355,6 @@ const editSelect = withSelect((select, ownProps) => {
 	const { parentBlockStyle, isList, typeOfList, listStyle, listStyleCustom } =
 		attributes;
 
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
 	/**
 	 * Ensures svg list markers change the colour when SC color changes.
 	 * This changes will update the block, which will trigger maxiBlockDidUpdate
@@ -383,15 +381,12 @@ const editSelect = withSelect((select, ownProps) => {
 			);
 
 			return {
-				deviceType,
 				scValues,
 			};
 		}
 	}
 
-	return {
-		deviceType,
-	};
+	return {};
 });
 
 export default compose(editSelect, withMaxiProps)(edit);

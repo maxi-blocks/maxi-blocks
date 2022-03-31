@@ -1,3 +1,9 @@
 .toolbar-item__divider-color__popover {
 	min-width: 300px;
+	.maxi-opacity-control {
+		line-height: 100%;
+	}
+	.maxi-advanced-number-control__value {
+		flex: 1 !important;
+	}
 }

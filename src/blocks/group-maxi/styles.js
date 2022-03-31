@@ -12,6 +12,7 @@ import {
 	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
 	getOverflowStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsGroup } from './custom-css';
 
@@ -59,6 +60,9 @@ const getNormalObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

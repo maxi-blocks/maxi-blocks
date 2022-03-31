@@ -18,7 +18,7 @@ const save = props => {
 		<MaxiBlock
 			{...getMaxiBlockAttributes({ ...props, name })}
 			isSave
-			hasInnerBlocks
+			useInnerBlocks
 		>
 			<ArrowDisplayer
 				key={`maxi-arrow-displayer__${attributes.uniqueID}`}

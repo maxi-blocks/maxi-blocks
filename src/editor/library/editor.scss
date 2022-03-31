@@ -289,6 +289,9 @@
 			padding: 7px;
 			margin-top: 8px;
 			cursor: pointer;
+			border: 1px solid #dbdde6;
+			font-size: 14px;
+			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 
 			&--disabled {
 				background-color: #e7e7e7;
@@ -316,6 +319,7 @@
 				box-shadow: none;
 				margin-bottom: 0;
 				cursor: pointer;
+				font-size: 12px;
 
 				&:after {
 					content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 9 13" xml:space="preserve"><g class="st0"><path d="M.9 1.2C.9.2 2.1-.2 2.7.4L8 5.7c.4.4.4 1.1 0 1.5l-5.3 5.3c-.7.7-1.8.2-1.8-.8V1.2z" class="st1"/> </g></svg>');

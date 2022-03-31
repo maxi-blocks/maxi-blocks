@@ -5,12 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebarTab,
-	getBlockStyle,
-	getAttributes,
-} from '../../utils';
+import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
 
 describe('FontFamilySelector', () => {
 	it('Checking the font family selector', async () => {
@@ -34,6 +29,16 @@ describe('FontFamilySelector', () => {
 
 		expect(await getAttributes('font-family-general')).toStrictEqual(
 			'Montserrat'
+		);
+
+		// reset button
+		await page.$eval(
+			'.maxi-tabs-content .maxi-typography-control .maxi-base-control .components-maxi-control__font-reset-button',
+			button => button.click()
+		);
+
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			undefined
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

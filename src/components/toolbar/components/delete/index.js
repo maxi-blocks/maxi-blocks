@@ -10,12 +10,6 @@ import { useDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Button from '../../../button';
-import Icon from '../../../icon';
-
-/**
- * Icons
- */
-import { toolbarDelete } from '../../../../icons';
 
 /**
  * Delete
@@ -31,7 +25,8 @@ const Delete = props => {
 		<Tooltip text={__('Delete', 'maxi-blocks')} position='bottom center'>
 			<div className='toolbar-item toolbar-item__delete'>
 				<Button onClick={() => removeBlock(clientId)}>
-					<Icon className='toolbar-item__icon' icon={toolbarDelete} />
+					{__('Remove block', 'maxi-blocks')}
+					<span>Shift+Alt+Z</span>
 				</Button>
 			</div>
 		</Tooltip>

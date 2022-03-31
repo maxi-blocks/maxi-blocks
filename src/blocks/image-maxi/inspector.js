@@ -236,7 +236,6 @@ const Inspector = memo(
 			altSelector,
 			blockStyle,
 			captionType,
-			clipPath,
 			fullWidth,
 			mediaAlt,
 			parentBlockStyle,
@@ -568,12 +567,20 @@ const Inspector = memo(
 												),
 												content: (
 													<ClipPath
-														clipPath={clipPath}
-														onChange={clipPath =>
-															maxiSetAttributes({
-																clipPath,
-															})
-														}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+														}}
+														{...getGroupAttributes(
+															attributes,
+															'clipPath',
+															false,
+															''
+														)}
+														{...attributes}
+														breakpoint={deviceType}
+														prefix=''
 													/>
 												),
 											},

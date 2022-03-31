@@ -236,7 +236,6 @@ const Inspector = memo(
 			altSelector,
 			blockStyle,
 			captionType,
-			clipPath,
 			fullWidth,
 			mediaAlt,
 			parentBlockStyle,
@@ -568,22 +567,6 @@ const Inspector = memo(
 												),
 												content: (
 													<ClipPath
-														clipPath={getLastBreakpointAttribute(
-															{
-																target: 'clip-path',
-																breakpoint:
-																	deviceType,
-																attributes,
-															}
-														)}
-														hasClipPath={getLastBreakpointAttribute(
-															{
-																target: `clip-path-status`,
-																breakpoint:
-																	deviceType,
-																attributes,
-															}
-														)}
 														onChange={obj => {
 															maxiSetAttributes(
 																obj
@@ -592,9 +575,12 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'clipPath',
-															false
+															false,
+															''
 														)}
+														{...attributes}
 														breakpoint={deviceType}
+														prefix=''
 													/>
 												),
 											},

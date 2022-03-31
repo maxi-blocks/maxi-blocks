@@ -85,18 +85,6 @@ const GradientLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-gradient-clip-path`,
-						breakpoint,
-						attributes: gradientOptions,
-						isHover,
-					})}
-					hasClipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-gradient-clip-path-status`,
-						breakpoint,
-						attributes: gradientOptions,
-						isHover,
-					})}
 					onChange={obj => onChange(obj)}
 					{...getGroupAttributes(
 						props,
@@ -104,6 +92,7 @@ const GradientLayerContent = props => {
 						false,
 						'background-gradient-'
 					)}
+					{...gradientOptions}
 					isHover={isHover}
 					prefix='background-gradient-'
 					breakpoint={breakpoint}

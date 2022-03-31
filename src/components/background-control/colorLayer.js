@@ -139,18 +139,6 @@ const ColorLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-color-clip-path`,
-						breakpoint,
-						attributes: colorOptions,
-						isHover,
-					})}
-					hasClipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-color-clip-path-status`,
-						breakpoint,
-						attributes: colorOptions,
-						isHover,
-					})}
 					onChange={obj => onChange(obj)}
 					{...getGroupAttributes(
 						props,
@@ -158,6 +146,7 @@ const ColorLayerContent = props => {
 						false,
 						'background-color-'
 					)}
+					{...colorOptions}
 					isHover={isHover}
 					prefix='background-color-'
 					breakpoint={breakpoint}

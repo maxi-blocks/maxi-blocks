@@ -525,18 +525,6 @@ const ImageLayerSettings = props => {
 			<hr />
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-image-clip-path`,
-						breakpoint,
-						attributes: imageOptions,
-						isHover,
-					})}
-					hasClipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-image-clip-path-status`,
-						breakpoint,
-						attributes: imageOptions,
-						isHover,
-					})}
 					onChange={obj => onChange(obj)}
 					{...getGroupAttributes(
 						props,
@@ -544,6 +532,7 @@ const ImageLayerSettings = props => {
 						false,
 						'background-image-'
 					)}
+					{...imageOptions}
 					isHover={isHover}
 					prefix='background-image-'
 					breakpoint={breakpoint}

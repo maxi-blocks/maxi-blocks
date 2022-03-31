@@ -32,7 +32,15 @@ const attributes = {
 		obj: attributesData.typography,
 		prefix: 'description-',
 		diffValAttr: {
-			'description-font-size-general': 20,
+			'description-font-size-general': 16,
+		},
+	}),
+	...attributesData.svg,
+	...prefixAttributesCreator({
+		obj: attributesData.svg,
+		prefix: 'popup-',
+		diffValAttr: {
+			'popup-svg-stroke-general': 1,
 		},
 	}),
 	...attributesData.border,

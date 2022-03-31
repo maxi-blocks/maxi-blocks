@@ -28,10 +28,21 @@ const map = {
 	},
 	'map-markers': {
 		type: 'array',
+		default: [],
 	},
 	'map-marker': {
 		type: 'number',
 		default: 1,
+	},
+	'map-marker-icon': {
+		type: 'string',
+	},
+	'map-popup': {
+		type: 'number',
+		default: 1,
+	},
+	'map-popup-icon': {
+		type: 'string',
 	},
 	'map-is-dragging-marker': {
 		type: 'boolean',
@@ -68,6 +79,22 @@ const map = {
 	'map-marker-text': {
 		type: 'string',
 		default: __('Marker Title', 'maxi-blocks'),
+	},
+	'map-dragging': {
+		type: 'boolean',
+		default: true,
+	},
+	'map-touch-zoom': {
+		type: 'boolean',
+		default: true,
+	},
+	'map-double-click-zoom': {
+		type: 'boolean',
+		default: true,
+	},
+	'map-scroll-wheel-zoom': {
+		type: 'boolean',
+		default: true,
 	},
 	...paletteAttributesCreator({ prefix: 'map-marker-text-', palette: 4 }),
 	'map-marker-address': {

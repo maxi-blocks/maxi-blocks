@@ -96,7 +96,7 @@ const CopyPasteContent = props => {
 					true
 				);
 				if (!isEmpty(obj))
-					response[attrType] = {
+					response[`canvas ${attrType}`] = {
 						label: `Canvas ${label}`,
 						attribute: obj,
 					};
@@ -113,7 +113,7 @@ const CopyPasteContent = props => {
 					true
 				);
 				if (!isEmpty(obj))
-					response[attrType] = {
+					response[`canvas ${attrType}`] = {
 						label: `Canvas ${label}`,
 						attribute: obj,
 					};

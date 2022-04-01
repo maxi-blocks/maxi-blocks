@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -131,9 +131,14 @@ const ImageSize = props => {
 					<Button
 						className='toolbar-image-size-buttons__edit-image'
 						onClick={() =>
-							openGeneralSidebar('edit-post/block').then(() =>
-								openSidebar('image dimension')
-							)
+							openGeneralSidebar('edit-post/block')
+								.then(() =>
+									dispatch('maxiBlocks').updateInspectorPath({
+										depth: 0,
+										value: 0,
+									})
+								)
+								.then(() => openSidebar('image dimension'))
 						}
 					>
 						{__('Edit Image', 'maxi-blocks')}
@@ -141,9 +146,14 @@ const ImageSize = props => {
 					<Button
 						className='toolbar-image-size-buttons__add-caption'
 						onClick={() =>
-							openGeneralSidebar('edit-post/block').then(() =>
-								openSidebar('caption')
-							)
+							openGeneralSidebar('edit-post/block')
+								.then(() =>
+									dispatch('maxiBlocks').updateInspectorPath({
+										depth: 0,
+										value: 0,
+									})
+								)
+								.then(() => openSidebar('caption'))
 						}
 					>
 						{__('Add Caption', 'maxi-blocks')}

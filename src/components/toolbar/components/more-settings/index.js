@@ -85,9 +85,18 @@ const MoreSettings = props => {
 										onClick={() =>
 											openGeneralSidebar(
 												'edit-post/block'
-											).then(() =>
-												openSidebar('height width')
 											)
+												.then(() =>
+													dispatch(
+														'maxiBlocks'
+													).updateInspectorPath({
+														depth: 0,
+														value: 0,
+													})
+												)
+												.then(() =>
+													openSidebar('height width')
+												)
 										}
 									>
 										{__('Button width', 'maxi-blocks')}
@@ -96,9 +105,20 @@ const MoreSettings = props => {
 										onClick={() =>
 											openGeneralSidebar(
 												'edit-post/block'
-											).then(() =>
-												openSidebar('margin padding')
 											)
+												.then(() =>
+													dispatch(
+														'maxiBlocks'
+													).updateInspectorPath({
+														depth: 0,
+														value: 0,
+													})
+												)
+												.then(() =>
+													openSidebar(
+														'margin padding'
+													)
+												)
 										}
 									>
 										{__(
@@ -125,9 +145,18 @@ const MoreSettings = props => {
 										onClick={() =>
 											openGeneralSidebar(
 												'edit-post/block'
-											).then(() =>
-												openSidebar('dimension')
 											)
+												.then(() =>
+													dispatch(
+														'maxiBlocks'
+													).updateInspectorPath({
+														depth: 0,
+														value: 0,
+													})
+												)
+												.then(() =>
+													openSidebar('dimension')
+												)
 										}
 									>
 										{__('Image dimension', 'maxi-blocks')}
@@ -136,7 +165,18 @@ const MoreSettings = props => {
 										onClick={() =>
 											openGeneralSidebar(
 												'edit-post/block'
-											).then(() => openSidebar('caption'))
+											)
+												.then(() =>
+													dispatch(
+														'maxiBlocks'
+													).updateInspectorPath({
+														depth: 0,
+														value: 0,
+													})
+												)
+												.then(() =>
+													openSidebar('caption')
+												)
 										}
 									>
 										{__('Caption', 'maxi-blocks')}

@@ -244,6 +244,7 @@ const CopyPasteContent = props => {
 			if (isSelected) res = { ...res, ...val.attribute };
 		});
 
+		setSpecialPaste([]);
 		updateBlockAttributes(clientId, res);
 	};
 
@@ -289,6 +290,9 @@ const CopyPasteContent = props => {
 														type='checkbox'
 														name={attrType}
 														id={attrType}
+														checked={specialPaste.includes(
+															attrType
+														)}
 														onClick={() =>
 															handleSpecialPaste(
 																attrType

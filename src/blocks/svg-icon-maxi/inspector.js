@@ -24,11 +24,6 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 
 /**
- * External dependencies
- */
-import { isEmpty, without } from 'lodash';
-
-/**
  * Inspector
  */
 const Inspector = props => {
@@ -48,14 +43,6 @@ const Inspector = props => {
 		parentBlockStyle,
 		svgType,
 	} = attributes;
-
-	const getCategoriesCss = () => {
-		const { 'background-layers': bgLayers } = attributes;
-		return without(
-			categoriesSvgIcon,
-			isEmpty(bgLayers) && 'canvas background'
-		);
-	};
 
 	return (
 		<InspectorControls>
@@ -380,7 +367,7 @@ const Inspector = props => {
 											props,
 											breakpoint: deviceType,
 											selectors: selectorsSvgIcon,
-											categories: getCategoriesCss(),
+											categories: categoriesSvgIcon,
 										}),
 										...inspectorTabs.scrollEffects({
 											props,

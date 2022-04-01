@@ -133,7 +133,6 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		ref?.current?.classList.contains('has-child-selected'),
 	]);
 
-	// resume in one line
 	if (!ref?.current || blockName === 'maxi-blocks/row-maxi') return null;
 
 	const boundaryElement =
@@ -145,7 +144,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		) ||
 		document.body?.querySelector('.edit-post-visual-editor');
 
-	if (blockIsHovered || buttonIsHovered || shouldRemain)
+	if (blockIsHovered || buttonIsHovered || shouldRemain.current)
 		return (
 			<Popover
 				key={`maxi-wrapper-block-inserter__${clientId}`}

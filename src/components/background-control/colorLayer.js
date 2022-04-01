@@ -12,6 +12,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -138,22 +139,17 @@ const ColorLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-color-clip-path`,
-						breakpoint,
-						attributes: colorOptions,
-						isHover,
-					})}
-					onChange={val => {
-						onChange({
-							[getAttributeKey(
-								'background-color-clip-path',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						});
-					}}
+					onChange={obj => onChange(obj)}
+					{...getGroupAttributes(
+						props,
+						'clipPath',
+						false,
+						'background-color-'
+					)}
+					{...colorOptions}
+					isHover={isHover}
+					prefix='background-color-'
+					breakpoint={breakpoint}
 				/>
 			)}
 		</>

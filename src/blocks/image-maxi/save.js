@@ -55,11 +55,10 @@ const save = props => {
 	);
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			tagName='figure'
 			className={fullWidth === 'full' && 'alignfull'}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			isSave
 		>
 			<>
 				{captionType !== 'none' &&
@@ -108,7 +107,7 @@ const save = props => {
 						/>
 					)}
 			</>
-		</MaxiBlock>
+		</MaxiBlock.save>
 	);
 };
 

@@ -710,7 +710,7 @@ describe('TextMaxi', () => {
 		expect(expectedContent).toMatchSnapshot();
 
 		// Change color
-		await page.waitForTimeout(200);
+		await page.waitForSelector('.toolbar-item__text-color');
 		await page.$eval('.toolbar-item__text-color', button => button.click());
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.maxi-color-control__palette-box');

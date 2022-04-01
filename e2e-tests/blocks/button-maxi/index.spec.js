@@ -16,7 +16,6 @@ import {
 	openSidebarTab,
 	getAttributes,
 	editColorControl,
-	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -44,7 +43,7 @@ describe('Button Maxi', () => {
 	});
 
 	it('Check Button Icon', async () => {
-		await openSidebarTab(page, 'style', 'icon');
+		const accordion = await openSidebarTab(page, 'style', 'icon');
 
 		// Width spacing
 		await page.$$eval(
@@ -176,5 +175,80 @@ describe('Button Maxi', () => {
 		expect(
 			await getAttributes('icon-padding-bottom-general')
 		).toStrictEqual(33);
+
+		// Check Button Icon Hover
+		await accordion.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-control button',
+			button => button[1].click()
+		);
+		await page.waitForTimeout(150);
+
+		// Width spacing
+		await page.$$eval(
+			'.maxi-icon-control .maxi-advanced-number-control input',
+			select => select[0].focus()
+		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('245');
+
+		//  stroke Width
+		await page.$$eval(
+			'.maxi-icon-control .maxi-advanced-number-control input',
+			select => select[2].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('4');
+
+		expect(await getAttributes('icon-stroke-general-hover')).toStrictEqual(
+			4
+		);
+		expect(await getAttributes('icon-width-general-hover')).toStrictEqual(
+			245
+		);
+
+		// select border
+		await page.$$eval(
+			'.maxi-icon-styles-control .maxi-tabs-control__full-width button',
+			button => button[1].click()
+		);
+
+		await page.$$eval(
+			'.maxi-border-control .maxi-default-styles-control button',
+			button => button[3].click()
+		);
+
+		expect(
+			await getAttributes('icon-border-style-general-hover')
+		).toStrictEqual('dotted');
+
+		await accordion.$eval(
+			'.maxi-border-control .maxi-color-control .maxi-toggle-switch__toggle input',
+			button => button.click()
+		);
+		// border color
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-border-control'),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
+
+		expect(
+			await getAttributes('icon-border-palette-color-general-hover')
+		).toStrictEqual(5);
+
+		// border width
+		await page.$$eval(
+			'.maxi-axis-control__content__item__border-width input',
+			input => input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('70');
+
+		expect(
+			await getAttributes('icon-border-bottom-width-general-hover')
+		).toStrictEqual(70);
 	});
 });

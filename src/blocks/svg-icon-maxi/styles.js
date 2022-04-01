@@ -184,17 +184,18 @@ const getHoverObject = props => {
 				parentBlockStyle: props.parentBlockStyle,
 				prefix: 'svg-',
 			}),
-		...getBackgroundStyles({
-			...getGroupAttributes(
-				props,
-				['background', 'backgroundColor', 'backgroundGradient'],
-				true,
-				'svg-'
-			),
-			blockStyle: props.parentBlockStyle,
-			isHover: true,
-			prefix: 'svg-',
-		}),
+		...(props['svg-background-hover-status'] &&
+			getBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					['background', 'backgroundColor', 'backgroundGradient'],
+					true,
+					'svg-'
+				),
+				blockStyle: props.parentBlockStyle,
+				isHover: true,
+				prefix: 'svg-',
+			})),
 	};
 
 	return response;

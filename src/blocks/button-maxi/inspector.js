@@ -385,6 +385,7 @@ const Inspector = memo(
 																						'iconBackgroundGradient',
 																						'iconBackgroundColor',
 																						'iconBorder',
+																						'iconBackgroundHover',
 																						'iconBorderWidth',
 																						'iconBorderRadius',
 																					],

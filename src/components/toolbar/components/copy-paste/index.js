@@ -11,6 +11,7 @@ import { cloneBlock } from '@wordpress/blocks';
  */
 import Button from '../../../button';
 import Dropdown from '../../../dropdown';
+import { SettingTabsControl } from '../../../../components';
 
 /**
  * External dependencies
@@ -37,135 +38,183 @@ const CopyPasteContent = props => {
 	const { clientId, blockName, attributesMapping, prefix } = props;
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [specialPaste, setSpecialPaste] = useState([]);
+	const [specialPaste, setSpecialPaste] = useState({
+		settings: [],
+		canvas: [],
+		advanced: [],
+	});
 
 	const getOrganizedAttributes = attributes => {
 		const response = {};
-
-		Object.entries(attributesMapping.blockSpecific).forEach(
-			([attrType, label]) => {
-				if (!isEmpty(attributes[attrType]))
-					response[attrType] = {
-						label,
-						attribute: { [attrType]: attributes[attrType] },
-					};
-			}
-		);
-
-		Object.entries(attributesMapping.withPrefix).forEach(
-			([attrType, label]) => {
-				const obj = getGroupAttributes(
-					attributes,
-					attrType,
-					false,
-					prefix,
-					true
+		const settingTabs = ['settings', 'canvas', 'advanced'];
+		settingTabs.forEach(tab => {
+			response[tab] = {};
+			if (attributesMapping[tab].blockSpecific)
+				Object.entries(attributesMapping[tab].blockSpecific).forEach(
+					([attrType, label]) => {
+						if (!isEmpty(attributes[attrType]))
+							response[tab][attrType] = {
+								label,
+								attribute: { [attrType]: attributes[attrType] },
+							};
+					}
 				);
-				if (!isEmpty(obj))
-					response[attrType] = {
-						label,
-						attribute: obj,
-					};
-			}
-		);
 
-		Object.entries(attributesMapping.withPrefixHover).forEach(
-			([attrType, label]) => {
-				const obj = getGroupAttributes(
-					attributes,
-					attrType,
-					true,
-					prefix,
-					true
+			if (attributesMapping[tab].withPrefix)
+				Object.entries(attributesMapping[tab].withPrefix).forEach(
+					([attrType, label]) => {
+						const obj = getGroupAttributes(
+							attributes,
+							attrType,
+							false,
+							prefix,
+							true
+						);
+						if (!isEmpty(obj))
+							response[tab][attrType] = {
+								label,
+								attribute: obj,
+							};
+					}
 				);
-				if (!isEmpty(obj))
-					response[attrType] = {
-						label,
-						attribute: obj,
-					};
-			}
-		);
 
-		Object.entries(attributesMapping.withoutPrefix).forEach(
-			([attrType, label]) => {
-				const obj = getGroupAttributes(
-					attributes,
-					attrType,
-					false,
-					'',
-					true
+			if (attributesMapping[tab].withPrefixHover)
+				Object.entries(attributesMapping[tab].withPrefixHover).forEach(
+					([attrType, label]) => {
+						const obj = getGroupAttributes(
+							attributes,
+							attrType,
+							true,
+							prefix,
+							true
+						);
+						if (!isEmpty(obj))
+							response[tab][attrType] = {
+								label,
+								attribute: obj,
+							};
+					}
 				);
-				if (!isEmpty(obj))
-					response[`canvas ${attrType}`] = {
-						label: `Canvas ${label}`,
-						attribute: obj,
-					};
-			}
-		);
 
-		Object.entries(attributesMapping.withoutPrefixHover).forEach(
-			([attrType, label]) => {
-				const obj = getGroupAttributes(
-					attributes,
-					attrType,
-					true,
-					'',
-					true
+			if (attributesMapping[tab].withoutPrefix)
+				Object.entries(attributesMapping[tab].withoutPrefix).forEach(
+					([attrType, label]) => {
+						const obj = getGroupAttributes(
+							attributes,
+							attrType,
+							false,
+							'',
+							true
+						);
+						if (!isEmpty(obj))
+							response[tab][attrType] = {
+								label,
+								attribute: obj,
+							};
+					}
 				);
-				if (!isEmpty(obj))
-					response[`canvas ${attrType}`] = {
-						label: `Canvas ${label}`,
-						attribute: obj,
-					};
-			}
-		);
+
+			if (attributesMapping[tab].withoutPrefixHover)
+				Object.entries(
+					attributesMapping[tab].withoutPrefixHover
+				).forEach(([attrType, label]) => {
+					const obj = getGroupAttributes(
+						attributes,
+						attrType,
+						true,
+						'',
+						true
+					);
+					if (!isEmpty(obj))
+						response[tab][attrType] = {
+							label,
+							attribute: obj,
+						};
+				});
+		});
 
 		return response;
 	};
 
 	const cleanStyleAttributes = attributes => {
 		let response = {};
+		const settingTabs = ['settings', 'canvas', 'advanced'];
 
-		Object.keys(attributesMapping.blockSpecific).forEach(attrType => {
-			if (!isNil(attributes[attrType]))
-				response = {
-					...response,
-					[attrType]: attributes[attrType],
-				};
-		});
+		settingTabs.forEach(tab => {
+			if (attributesMapping[tab].blockSpecific)
+				Object.keys(attributesMapping[tab].blockSpecific).forEach(
+					attrType => {
+						if (!isNil(attributes[attrType]))
+							response = {
+								...response,
+								[attrType]: attributes[attrType],
+							};
+					}
+				);
 
-		Object.keys(attributesMapping.withPrefix).forEach(typeAttr => {
-			response = {
-				...response,
-				...getGroupAttributes(
-					attributes,
-					typeAttr,
-					false,
-					prefix,
-					true
-				),
-			};
-		});
+			if (attributesMapping[tab].withPrefix)
+				Object.keys(attributesMapping[tab].withPrefix).forEach(
+					typeAttr => {
+						response = {
+							...response,
+							...getGroupAttributes(
+								attributes,
+								typeAttr,
+								false,
+								prefix,
+								true
+							),
+						};
+					}
+				);
 
-		Object.keys(attributesMapping.withPrefixHover).forEach(typeAttr => {
-			response = {
-				...response,
-				...getGroupAttributes(attributes, typeAttr, true, prefix, true),
-			};
-		});
+			if (attributesMapping[tab].withPrefixHover)
+				Object.keys(attributesMapping[tab].withPrefixHover).forEach(
+					typeAttr => {
+						response = {
+							...response,
+							...getGroupAttributes(
+								attributes,
+								typeAttr,
+								true,
+								prefix,
+								true
+							),
+						};
+					}
+				);
 
-		Object.keys(attributesMapping.withoutPrefix).forEach(typeAttr => {
-			response = {
-				...response,
-				...getGroupAttributes(attributes, typeAttr, false, '', true),
-			};
-		});
+			if (attributesMapping[tab].withoutPrefix)
+				Object.keys(attributesMapping[tab].withoutPrefix).forEach(
+					typeAttr => {
+						response = {
+							...response,
+							...getGroupAttributes(
+								attributes,
+								typeAttr,
+								false,
+								'',
+								true
+							),
+						};
+					}
+				);
 
-		Object.keys(attributesMapping.withoutPrefixHover).forEach(typeAttr => {
-			response = {
-				...response,
-				...getGroupAttributes(attributes, typeAttr, true, '', true),
-			};
+			if (attributesMapping[tab].withoutPrefixHover)
+				Object.keys(attributesMapping[tab].withoutPrefixHover).forEach(
+					typeAttr => {
+						response = {
+							...response,
+							...getGroupAttributes(
+								attributes,
+								typeAttr,
+								true,
+								'',
+								true
+							),
+						};
+					}
+				);
 		});
 
 		return response;
@@ -225,26 +274,34 @@ const CopyPasteContent = props => {
 	const onPasteBlocks = () =>
 		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
 
-	const handleSpecialPaste = attr => {
-		const newSpecialPaste = specialPaste.includes(attr)
-			? specialPaste.filter(item => {
+	const handleSpecialPaste = (attr, tab) => {
+		const newSpecialPaste = specialPaste[tab].includes(attr)
+			? specialPaste[tab].filter(item => {
 					return item !== attr;
 			  })
-			: [...specialPaste, attr];
+			: [...specialPaste[tab], attr];
 
-		setSpecialPaste(newSpecialPaste);
+		setSpecialPaste({ ...specialPaste, [tab]: newSpecialPaste });
 	};
 
 	const onSpecialPaste = () => {
 		let res = {};
+		const tabs = ['settings', 'canvas', 'advanced'];
 
-		Object.entries(organizedAttributes).forEach(([key, val]) => {
-			const isSelected = specialPaste.some(label => label === key);
+		tabs.forEach(tab => {
+			Object.entries(organizedAttributes[tab]).forEach(([key, val]) => {
+				const isSelected = specialPaste[tab].some(
+					label => label === key
+				);
 
-			if (isSelected) res = { ...res, ...val.attribute };
+				if (isSelected) res = { ...res, ...val.attribute };
+			});
 		});
-
-		setSpecialPaste([]);
+		setSpecialPaste({
+			settings: [],
+			canvas: [],
+			advanced: [],
+		});
 		updateBlockAttributes(clientId, res);
 	};
 
@@ -263,7 +320,9 @@ const CopyPasteContent = props => {
 			>
 				{__('Paste Style', 'maxi-blocks')}
 			</Button>
-			{!isEmpty(organizedAttributes) && (
+			{(!isEmpty(organizedAttributes.settings) ||
+				!isEmpty(organizedAttributes.canvas) ||
+				!isEmpty(organizedAttributes.advanced)) && (
 				<>
 					<Button
 						className='toolbar-item__copy-paste__popover__button'
@@ -273,40 +332,157 @@ const CopyPasteContent = props => {
 					</Button>
 					{isOpen && (
 						<form>
-							{!isNil(organizedAttributes) &&
-								!isEmpty(organizedAttributes) &&
-								Object.entries(organizedAttributes).map(
-									([attrType, attribute]) => {
-										return (
-											<div
-												className='toolbar-item__copy-paste__popover__item'
-												key={`copy-paste-${attrType}`}
-											>
-												<label
-													htmlFor={attrType}
-													className='maxi-axis-control__content__item__checkbox'
-												>
-													<input
-														type='checkbox'
-														name={attrType}
-														id={attrType}
-														checked={specialPaste.includes(
-															attrType
-														)}
-														onClick={() =>
-															handleSpecialPaste(
-																attrType
-															)
-														}
-													/>
-													<span>
-														{attribute.label}
-													</span>
-												</label>
-											</div>
-										);
-									}
-								)}
+							<SettingTabsControl
+								target='sidebar-settings-tabs'
+								disablePadding
+								depth={0}
+								items={[
+									{
+										label: __('Settings', 'maxi-blocks'),
+										content:
+											!isNil(
+												organizedAttributes.settings
+											) &&
+											!isEmpty(
+												organizedAttributes.settings
+											) &&
+											Object.keys(
+												organizedAttributes.settings
+											).map((attrType, i) => {
+												return (
+													<div
+														className='toolbar-item__copy-paste__popover__item'
+														key={`copy-paste-settings-${attrType}`}
+													>
+														<label
+															htmlFor={attrType}
+															className='maxi-axis-control__content__item__checkbox'
+														>
+															<input
+																type='checkbox'
+																name={attrType}
+																id={attrType}
+																checked={specialPaste.settings.includes(
+																	attrType
+																)}
+																onClick={() =>
+																	handleSpecialPaste(
+																		attrType,
+																		'settings'
+																	)
+																}
+															/>
+															<span>
+																{
+																	organizedAttributes
+																		.settings[
+																		attrType
+																	].label
+																}
+															</span>
+														</label>
+													</div>
+												);
+											}),
+									},
+									{
+										label: __('Canvas', 'maxi_blocks'),
+										content:
+											!isNil(
+												organizedAttributes.canvas
+											) &&
+											!isEmpty(
+												organizedAttributes.canvas
+											) &&
+											Object.keys(
+												organizedAttributes.canvas
+											).map((attrType, i) => {
+												return (
+													<div
+														className='toolbar-item__copy-paste__popover__item'
+														key={`copy-paste-canvas-${attrType}`}
+													>
+														<label
+															htmlFor={attrType}
+															className='maxi-axis-control__content__item__checkbox'
+														>
+															<input
+																type='checkbox'
+																name={attrType}
+																id={attrType}
+																checked={specialPaste.canvas.includes(
+																	attrType
+																)}
+																onClick={() =>
+																	handleSpecialPaste(
+																		attrType,
+																		'canvas'
+																	)
+																}
+															/>
+															<span>
+																{
+																	organizedAttributes
+																		.canvas[
+																		attrType
+																	].label
+																}
+															</span>
+														</label>
+													</div>
+												);
+											}),
+									},
+									{
+										label: __('Advanced', 'maxi_blocks'),
+										content:
+											!isNil(
+												organizedAttributes.advanced
+											) &&
+											!isEmpty(
+												organizedAttributes.advanced
+											) &&
+											Object.keys(
+												organizedAttributes.advanced
+											).map((attrType, i) => {
+												return (
+													<div
+														className='toolbar-item__copy-paste__popover__item'
+														key={`copy-paste-advanced-${attrType}`}
+													>
+														<label
+															htmlFor={attrType}
+															className='maxi-axis-control__content__item__checkbox'
+														>
+															<input
+																type='checkbox'
+																name={attrType}
+																id={attrType}
+																checked={specialPaste.advanced.includes(
+																	attrType
+																)}
+																onClick={() =>
+																	handleSpecialPaste(
+																		attrType,
+																		'advanced'
+																	)
+																}
+															/>
+															<span>
+																{
+																	organizedAttributes
+																		.advanced[
+																		attrType
+																	].label
+																}
+															</span>
+														</label>
+													</div>
+												);
+											}),
+									},
+								]}
+							/>
 							<Button
 								className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
 								onClick={onSpecialPaste}

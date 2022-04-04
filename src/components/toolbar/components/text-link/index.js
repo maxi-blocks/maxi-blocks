@@ -52,7 +52,6 @@ const LinkContent = withFormatValue(props => {
 	} = props;
 
 	console.log(formatValue);
-	console.log(formatValue);
 	const formatName = 'maxi-blocks/text-link';
 
 	const { formatOptions } = isEmpty(formatValue)

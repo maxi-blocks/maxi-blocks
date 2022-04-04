@@ -670,12 +670,14 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Test Text Maxi on List mode and changing the font color', async () => {
+	it.only('Test Text Maxi on List mode and changing the font color', async () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
-		await page.waitForTimeout(150);
+
+		await page.waitForSelector('.toolbar-item__list-options');
 		await page.$eval('.toolbar-item__list-options', button =>
 			button.click()
 		);
+
 		await page.waitForTimeout(150);
 		await page.waitForSelector(
 			'.toolbar-item__popover__list-options__button'
@@ -684,13 +686,14 @@ describe('TextMaxi', () => {
 			'.toolbar-item__popover__list-options__button',
 			buttons => buttons[1].click()
 		);
-		await page.waitForTimeout(150);
+
 		await page.waitForTimeout(150);
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
 		await selectMaxiTextP.click();
+
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'a');
 		await page.waitForTimeout(150);
@@ -709,8 +712,19 @@ describe('TextMaxi', () => {
 
 		expect(expectedContent).toMatchSnapshot();
 
+		debugger;
+
 		// Change color
-		await page.waitForSelector('.toolbar-item__text-color');
+		await page
+			.waitForSelector('.toolbar-item__text-color')
+			.catch(async () => {
+				await page.waitForTimeout(150);
+				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const selectMaxiTextP = await selectMaxiTextDiv.$(
+					'.block-editor-rich-text__editable'
+				);
+				await selectMaxiTextP.click();
+			});
 		await page.$eval('.toolbar-item__text-color', button => button.click());
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.maxi-color-control__palette-box');
@@ -718,6 +732,8 @@ describe('TextMaxi', () => {
 			paletteButtons[3].click()
 		);
 		await page.waitForTimeout(150);
+
+		debugger;
 
 		const {
 			'palette-color-general': expectedColor,

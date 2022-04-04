@@ -727,6 +727,13 @@ describe('TextMaxi', () => {
 					'.block-editor-rich-text__editable'
 				);
 				await selectMaxiTextP.click();
+
+				await page
+					.waitForSelector('.toolbar-item__text-color')
+					.catch(async () => {
+						console.error('can not access to toolbar');
+						expect(await getEditedPostContent()).toMatchSnapshot();
+					});
 			});
 		await page.$eval('.toolbar-item__text-color', button => button.click());
 		// await page.waitForTimeout(150);

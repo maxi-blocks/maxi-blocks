@@ -44,39 +44,43 @@ const LinkContent = withFormatValue(props => {
 	const {
 		onChange,
 		isList,
-		formatValue,
+		formatValue = {},
 		textLevel,
 		onClose,
 		blockStyle,
 		styleCard,
 	} = props;
 
+	console.log(formatValue);
+	console.log(formatValue);
 	const formatName = 'maxi-blocks/text-link';
 
-	const { formatOptions } = useSelect(() => {
-		const isWholeLink = isEqual(
-			getFormatPosition({
-				formatValue,
-				formatName: 'maxi-blocks/text-link',
-				formatClassName: null,
-				formatAttributes: null,
-			}),
-			[0, formatValue.formats.length]
-		);
-		const end = formatValue.formats.length + 1;
-		const start =
-			isWholeLink && formatValue.start === formatValue.end
-				? 0
-				: formatValue.start;
-		const formatOptions = getActiveFormat(
-			{ ...formatValue, start, end },
-			formatName
-		);
+	const { formatOptions } = isEmpty(formatValue)
+		? {}
+		: useSelect(() => {
+				const isWholeLink = isEqual(
+					getFormatPosition({
+						formatValue,
+						formatName: 'maxi-blocks/text-link',
+						formatClassName: null,
+						formatAttributes: null,
+					}),
+					[0, formatValue.formats.length]
+				);
+				const end = formatValue.formats.length + 1;
+				const start =
+					isWholeLink && formatValue.start === formatValue.end
+						? 0
+						: formatValue.start;
+				const formatOptions = getActiveFormat(
+					{ ...formatValue, start, end },
+					formatName
+				);
 
-		return {
-			formatOptions,
-		};
-	}, [getActiveFormat, formatValue, formatName]);
+				return {
+					formatOptions,
+				};
+		  }, [getActiveFormat, formatValue, formatName]);
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
@@ -104,6 +108,7 @@ const LinkContent = withFormatValue(props => {
 	}, [linkValue.url]);
 
 	const getUpdatedFormatValue = (formatValue, attributes) => {
+		if (isEmpty(formatValue)) return formatValue;
 		const [posStart, posEnd] = getFormatPosition({
 			formatValue,
 			formatName: 'maxi-blocks/text-link',

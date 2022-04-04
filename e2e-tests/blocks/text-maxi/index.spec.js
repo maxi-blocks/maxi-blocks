@@ -20,6 +20,7 @@ import {
  */
 import pasteHTML from './pasteExamples';
 import {
+	editColorControl,
 	getBlockAttributes,
 	getBlockStyle,
 	openPreviewPage,
@@ -717,23 +718,32 @@ describe('TextMaxi', () => {
 		debugger;
 
 		// Change color
-		await page
-			.waitForSelector('.toolbar-item__text-color')
-			.catch(async () => {
-				await page.waitForTimeout(150);
-				const selectMaxiTextDiv = await page.$('.maxi-text-block');
-				const selectMaxiTextP = await selectMaxiTextDiv.$(
-					'.block-editor-rich-text__editable'
-				);
-				await selectMaxiTextP.click();
-			});
+		await page.waitForSelector('.toolbar-item__text-color');
 		await page.$eval('.toolbar-item__text-color', button => button.click());
-		await page.waitForTimeout(150);
-		await page.waitForSelector('.maxi-color-control__palette-box');
-		await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>
-			paletteButtons[3].click()
-		);
-		await page.waitForTimeout(150);
+		// await page.waitForTimeout(150);
+		// await page
+		// 	.waitForSelector('.maxi-color-control__palette-box')
+		// 	.catch(async () => {
+		// 		await page.waitForTimeout(150);
+		// 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		// 		const selectMaxiTextP = await selectMaxiTextDiv.$(
+		// 			'.block-editor-rich-text__editable'
+		// 		);
+		// 		await selectMaxiTextP.click();
+		// 	});
+		// await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>
+		// 	paletteButtons[3].click()
+		// );
+		// await page.waitForTimeout(150);
+
+		await editColorControl({
+			page,
+			instance: await page.$(
+				'.toolbar-item__text-color__popover .maxi-color-control'
+			),
+			paletteStatus: true,
+			colorPalette: 4,
+		});
 
 		debugger;
 

@@ -9,6 +9,7 @@ import {
 	useEffect,
 	useState,
 	cloneElement,
+	memo,
 } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 
@@ -23,7 +24,7 @@ import BlockInserter from '../block-inserter';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isArray, compact } from 'lodash';
+import { isEmpty, isArray, compact, isEqual } from 'lodash';
 
 /**
  * Styles
@@ -211,7 +212,7 @@ const InnerBlocksBlock = forwardRef(
 	}
 );
 
-const MaxiBlock = forwardRef((props, ref) => {
+const MaxiBlockContent = forwardRef((props, ref) => {
 	const {
 		clientId,
 		blockName,
@@ -235,6 +236,9 @@ const MaxiBlock = forwardRef((props, ref) => {
 		hasInnerBlocks = false,
 		...extraProps
 	} = props;
+
+	// Is just necessary for the memo() part
+	delete extraProps.attributes;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -355,5 +359,46 @@ const MaxiBlock = forwardRef((props, ref) => {
 		</InnerBlocksBlock>
 	);
 });
+
+const MaxiBlock = memo(
+	forwardRef((props, ref) => {
+		return <MaxiBlockContent {...props} ref={ref} />;
+	}),
+	(rawOldProps, rawNewProps) => {
+		if (!isEqual(rawOldProps.attributes, rawNewProps.attributes))
+			return false;
+
+		const propsCleaner = props => {
+			const response = {};
+
+			const propsToClean = [
+				'innerBlocksSettings',
+				'resizableObject',
+				'tagName',
+				'background',
+				'motion',
+				'children',
+			];
+
+			Object.entries(props).forEach(([key, value]) => {
+				if (
+					!propsToClean.includes(key) &&
+					typeof value !== 'function' &&
+					typeof value !== 'object'
+				)
+					response[key] = value;
+			});
+
+			return response;
+		};
+
+		const oldProps = propsCleaner(rawOldProps);
+		const newProps = propsCleaner(rawNewProps);
+
+		return isEqual(oldProps, newProps);
+	}
+);
+
+MaxiBlock.save = props => <MaxiBlockContent {...props} isSave />;
 
 export default MaxiBlock;

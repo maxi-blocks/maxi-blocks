@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { dispatch } from '@wordpress/data';
 import { Component, createRef } from '@wordpress/element';
 import { Icon, Popover, Tooltip } from '@wordpress/components';
 
@@ -10,7 +9,7 @@ import { Icon, Popover, Tooltip } from '@wordpress/components';
  * Internal dependencies
  */
 import Button from '../../../button';
-import openSidebar from '../../../../extensions/dom';
+import { openSidebarAccordion } from '../../../../extensions/inspector-path';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
 
@@ -88,8 +87,6 @@ class ToolbarPopover extends Component {
 
 		const { isOpen, onClose } = this.state;
 
-		const { openGeneralSidebar } = dispatch('core/edit-post');
-
 		const classes = classnames(
 			'toolbar-item',
 			'toolbar-item__button',
@@ -128,20 +125,12 @@ class ToolbarPopover extends Component {
 								<Button
 									className='toolbar-item__popover__advanced-button'
 									icon={toolbarAdvancedSettings}
-									onClick={() =>
-										openGeneralSidebar('edit-post/block')
-											.then(() =>
-												dispatch(
-													'maxiBlocks'
-												).updateInspectorPath({
-													depth: 0,
-													value: tab,
-												})
-											)
-											.then(() =>
-												openSidebar(advancedOptions)
-											)
-									}
+									onClick={() => {
+										openSidebarAccordion(
+											tab,
+											advancedOptions
+										);
+									}}
 								/>
 							)}
 						</Popover>

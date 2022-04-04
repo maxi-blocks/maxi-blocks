@@ -2,13 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch, dispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Button from '../../../button';
-import openSidebar from '../../../../extensions/dom';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
@@ -25,6 +24,7 @@ import { capitalize } from 'lodash';
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
 import { getDefaultAttribute } from '../../../../extensions/styles';
+import { openSidebarAccordion } from '../../../../extensions/inspector-path';
 
 /**
  * ImageSize
@@ -48,8 +48,6 @@ const ImageSize = props => {
 			imageData: getMedia(mediaID),
 		};
 	});
-
-	const { openGeneralSidebar } = useDispatch('core/edit-post');
 
 	if (blockName !== 'maxi-blocks/image-maxi') return null;
 
@@ -130,31 +128,17 @@ const ImageSize = props => {
 				<div className='toolbar-image-size-buttons'>
 					<Button
 						className='toolbar-image-size-buttons__edit-image'
-						onClick={() =>
-							openGeneralSidebar('edit-post/block')
-								.then(() =>
-									dispatch('maxiBlocks').updateInspectorPath({
-										depth: 0,
-										value: 0,
-									})
-								)
-								.then(() => openSidebar('image dimension'))
-						}
+						onClick={() => {
+							openSidebarAccordion(0, 'image dimension');
+						}}
 					>
 						{__('Edit Image', 'maxi-blocks')}
 					</Button>
 					<Button
 						className='toolbar-image-size-buttons__add-caption'
-						onClick={() =>
-							openGeneralSidebar('edit-post/block')
-								.then(() =>
-									dispatch('maxiBlocks').updateInspectorPath({
-										depth: 0,
-										value: 0,
-									})
-								)
-								.then(() => openSidebar('caption'))
-						}
+						onClick={() => {
+							openSidebarAccordion(0, 'caption');
+						}}
 					>
 						{__('Add Caption', 'maxi-blocks')}
 					</Button>

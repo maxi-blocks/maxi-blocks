@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "./build/index.js",
 	"scripts": {
-		"build": "wp-scripts build && npx postcss build/*.css --use autoprefixer -d build --no-map && npx minify build/index.css > build/index.min.css && npx move-cli build/index.min.css build/index.css && npx minify build/style-index.css > build/style-index.min.css && npx move-cli build/style-index.min.css build/style-index.css",
+		"build": "wp-scripts build",
 		"format:js": "wp-scripts format-js",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
@@ -95,5 +95,11 @@
 		"production": [
 			"last 4 version"
 		]
+	},
+	"postcss": {
+		"map": false,
+		"plugins": {
+			"autoprefixer": {}
+		}
 	}
 }

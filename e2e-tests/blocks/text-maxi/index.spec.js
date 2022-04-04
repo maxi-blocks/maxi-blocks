@@ -694,6 +694,8 @@ describe('TextMaxi', () => {
 		);
 		await selectMaxiTextP.click();
 
+		expect(await getEditedPostContent()).toMatchSnapshot();
+
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'a');
 		await page.waitForTimeout(150);

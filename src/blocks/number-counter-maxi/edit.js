@@ -21,6 +21,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import attributesMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -288,6 +289,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='number-counter-'
 				{...this.props}
+				attributesMapping={attributesMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}

@@ -718,7 +718,16 @@ describe('TextMaxi', () => {
 		debugger;
 
 		// Change color
-		await page.waitForSelector('.toolbar-item__text-color');
+		await page
+			.waitForSelector('.toolbar-item__text-color')
+			.catch(async () => {
+				await page.waitForTimeout(150);
+				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const selectMaxiTextP = await selectMaxiTextDiv.$(
+					'.block-editor-rich-text__editable'
+				);
+				await selectMaxiTextP.click();
+			});
 		await page.$eval('.toolbar-item__text-color', button => button.click());
 		// await page.waitForTimeout(150);
 		// await page
@@ -735,6 +744,10 @@ describe('TextMaxi', () => {
 		// 	paletteButtons[3].click()
 		// );
 		// await page.waitForTimeout(150);
+
+		await page
+			.waitForSelector('.toolbar-item__text-color__popover')
+			.catch(() => console.error('toolbar is not opened'));
 
 		await editColorControl({
 			page,

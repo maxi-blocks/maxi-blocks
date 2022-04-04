@@ -23,9 +23,6 @@ export const getFont = (state, font) => {
 export const getFormatValue = (state, clientId) => {
 	const selectedClientId = clientId || getSelectedBlockClientId();
 
-	console.log('clientId');
-	console.log(selectedClientId);
-
 	if (state.formatValues && state.formatValues[selectedClientId])
 		return state.formatValues[selectedClientId];
 

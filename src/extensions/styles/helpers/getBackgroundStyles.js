@@ -587,7 +587,7 @@ const getBackgroundLayers = ({
 	layers.forEach(layer => {
 		const { type } = layer;
 
-		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
+		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.order}`;
 
 		switch (type) {
 			case 'color':

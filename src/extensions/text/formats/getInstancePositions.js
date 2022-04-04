@@ -16,7 +16,7 @@ const getInstancePositions = (
 	formatClassName,
 	formatAttributes
 ) => {
-	const locatedInstances = formatValue?.formats?.map((formatEl, i) => {
+	const locatedInstances = formatValue.formats.map((formatEl, i) => {
 		if (
 			formatEl.some(format => {
 				if (!formatClassName && !formatAttributes)
@@ -40,7 +40,7 @@ const getInstancePositions = (
 		return null;
 	});
 
-	const filteredLocatedInstances = locatedInstances?.filter(
+	const filteredLocatedInstances = locatedInstances.filter(
 		(current, i, array) => {
 			const prev = array[i - 1];
 			const next = array[i + 1];

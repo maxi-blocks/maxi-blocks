@@ -44,7 +44,7 @@ const LinkContent = withFormatValue(props => {
 	const {
 		onChange,
 		isList,
-		formatValue = {},
+		formatValue,
 		textLevel,
 		onClose,
 		blockStyle,
@@ -104,7 +104,6 @@ const LinkContent = withFormatValue(props => {
 	}, [linkValue.url]);
 
 	const getUpdatedFormatValue = (formatValue, attributes) => {
-		if (isEmpty(formatValue)) return formatValue;
 		const [posStart, posEnd] = getFormatPosition({
 			formatValue,
 			formatName: 'maxi-blocks/text-link',

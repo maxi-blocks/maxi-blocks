@@ -432,14 +432,18 @@ const getIconObject = (props, target) => {
 const getIconHoverObject = (props, target) => {
 	const iconHoverStatus = props['icon-status-hover'];
 	const iconHoverActiveMedia =
-		props['button-background-active-media-general-hover'];
+		props['icon-background-active-media-general-hover'];
 
 	const response = {
 		icon:
 			iconHoverStatus &&
 			getIconStyles(
 				{
-					...getGroupAttributes(props, ['icon', 'typography'], true),
+					...getGroupAttributes(
+						props,
+						['iconHover', 'typography'],
+						true
+					),
 				},
 				props.parentBlockStyle,
 				props['icon-inherit'],
@@ -482,7 +486,11 @@ const getIconHoverObject = (props, target) => {
 				obj: {
 					...getGroupAttributes(
 						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+						[
+							'iconBorderHover',
+							'iconBorderWidthHover',
+							'iconBorderRadiusHover',
+						],
 						true
 					),
 				},

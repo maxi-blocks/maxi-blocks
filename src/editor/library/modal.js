@@ -30,6 +30,7 @@ const MaxiModal = props => {
 		clientId,
 		style,
 		openFirstTime,
+		isOpen: forceIsOpen,
 		onOpen = null,
 		onRemove,
 		onSelect,
@@ -37,7 +38,7 @@ const MaxiModal = props => {
 		icon,
 	} = props;
 
-	const [isOpen, changeIsOpen] = useState(openFirstTime);
+	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
 
 	const onClick = () => {
 		changeIsOpen(!isOpen);
@@ -47,8 +48,8 @@ const MaxiModal = props => {
 	};
 
 	useEffect(() => {
-		if (isOpen) changeIsOpen(true);
-	}, [isOpen]);
+		if (isOpen || forceIsOpen) changeIsOpen(true);
+	}, [isOpen, forceIsOpen]);
 
 	return (
 		<div className='maxi-library-modal__action-section'>

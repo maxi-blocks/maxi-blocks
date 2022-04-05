@@ -25,6 +25,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 	getOverflowStyles,
+	getClipPathStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsImage } from './custom-css';
@@ -270,7 +271,7 @@ const getImageWrapperObject = props => {
 };
 
 const getImageObject = props => {
-	const { imageRatio, clipPath } = props;
+	const { imageRatio } = props;
 
 	return {
 		border: getBorderStyles({
@@ -294,15 +295,15 @@ const getImageObject = props => {
 			prefix: 'image-',
 		}),
 		...(imageRatio && getAspectRatio(imageRatio)),
-		...(clipPath && {
-			image: { general: { 'clip-path': clipPath } },
-		}),
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'image-'),
 			},
 			'image-'
 		),
+		clipPath: getClipPathStyles({
+			...getGroupAttributes(props, 'clipPath'),
+		}),
 	};
 };
 

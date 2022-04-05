@@ -6,6 +6,7 @@ Array [
     "background-image-attachment-general": "fixed",
     "background-image-clip-general": "content-box",
     "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-image-clip-path-status-general": true,
     "background-image-height-general": 100,
     "background-image-height-unit-general": "%",
     "background-image-opacity-general": 0.55,
@@ -25,6 +26,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "image",
   },
 ]
@@ -41,6 +43,7 @@ Array [
     "background-image-clip-general": "content-box",
     "background-image-clip-general-hover": "border-box",
     "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-image-clip-path-status-general": true,
     "background-image-height-general": 100,
     "background-image-height-unit-general": "%",
     "background-image-opacity-general": 0.55,
@@ -68,6 +71,7 @@ Array [
     "display-general": "block",
     "id": 1,
     "isHover": false,
+    "order": 1,
     "type": "image",
   },
 ]

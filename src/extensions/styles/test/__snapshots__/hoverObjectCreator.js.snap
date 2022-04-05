@@ -14,6 +14,27 @@ Object {
   "background-color-clip-path-s-hover": Object {
     "type": "string",
   },
+  "background-color-clip-path-status-general-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xxl-hover": Object {
+    "type": "boolean",
+  },
   "background-color-clip-path-xl-hover": Object {
     "type": "string",
   },

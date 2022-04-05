@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import CustomCssControl from '../custom-css-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
 
 /**
  * Component
@@ -32,9 +33,9 @@ const customCss = ({
 		content: (
 			<CustomCssControl
 				breakpoint={breakpoint}
-				categories={categories}
+				categories={getCategoriesCss(categories, attributes)}
 				category={customCssCategory}
-				selectors={selectors}
+				selectors={getSelectorsCss(selectors, attributes)}
 				value={customCssValue}
 				onChange={(attr, val) =>
 					maxiSetAttributes({

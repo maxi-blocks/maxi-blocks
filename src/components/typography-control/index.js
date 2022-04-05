@@ -35,7 +35,7 @@ import { getDefaultSCValue } from '../../extensions/style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isBoolean, isNumber } from 'lodash';
+import { isNil, isBoolean, isNumber, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -716,10 +716,15 @@ const TypographyControl = withFormatValue(props => {
 			returnFormatValue: true,
 		});
 
-		const newFormatValue = { ...obj.formatValue };
-		delete obj.formatValue;
+		if (!isEmpty(obj.formatValue)) {
+			const newFormatValue = { ...obj.formatValue };
+			delete obj.formatValue;
 
-		dispatch('maxiBlocks/text').sendFormatValue(newFormatValue, clientId);
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}
 
 		onChange(obj);
 	};

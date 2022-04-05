@@ -19,6 +19,7 @@ import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -122,6 +123,7 @@ class edit extends MaxiBlockComponent {
 								ref={this.blockRef}
 								rowPattern={context.rowPattern}
 								propsToAvoid={['resizableObject']}
+								copyPasteMapping={copyPasteMapping}
 								{...this.props}
 							/>
 							<MaxiBlock

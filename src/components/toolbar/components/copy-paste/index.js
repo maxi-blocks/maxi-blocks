@@ -47,63 +47,65 @@ const CopyPasteContent = props => {
 	const getOrganizedAttributes = attributes => {
 		const response = {};
 		const settingTabs = ['settings', 'canvas', 'advanced'];
+
 		settingTabs.forEach(tab => {
-			response[tab] = {};
-			if (copyPasteMapping[tab].blockSpecific)
-				Object.entries(copyPasteMapping[tab].blockSpecific).forEach(
-					([attrType, label]) => {
-						if (
-							typeof copyPasteMapping[tab].blockSpecific[
-								attrType
-							] !== 'string'
-						) {
-							const attr = {};
+			if (copyPasteMapping[tab]) {
+				response[tab] = {};
+				if (copyPasteMapping[tab].blockSpecific)
+					Object.entries(copyPasteMapping[tab].blockSpecific).forEach(
+						([attrType, label]) => {
+							if (
+								typeof copyPasteMapping[tab].blockSpecific[
+									attrType
+								] !== 'string'
+							) {
+								const attr = {};
 
-							copyPasteMapping[tab].blockSpecific[
-								attrType
-							].value.forEach(val => {
-								if (!isEmpty(attributes[val]))
-									attr[val] = attributes[val];
-							});
+								copyPasteMapping[tab].blockSpecific[
+									attrType
+								].value.forEach(val => {
+									if (!isEmpty(attributes[val]))
+										attr[val] = attributes[val];
+								});
 
-							if (!isEmpty(attr))
+								if (!isEmpty(attr))
+									response[tab][attrType] = {
+										label: copyPasteMapping[tab]
+											.blockSpecific[attrType].label,
+										attribute: attr,
+									};
+							} else if (!isEmpty(attributes[attrType]))
 								response[tab][attrType] = {
-									label: copyPasteMapping[tab].blockSpecific[
-										attrType
-									].label,
-									attribute: attr,
+									label,
+									attribute: {
+										[attrType]: attributes[attrType],
+									},
 								};
-						} else if (!isEmpty(attributes[attrType]))
-							response[tab][attrType] = {
-								label,
-								attribute: {
-									[attrType]: attributes[attrType],
-								},
-							};
-					}
-				);
+						}
+					);
 
-			if (copyPasteMapping[tab].withPrefix)
-				Object.entries(copyPasteMapping[tab].withPrefix).forEach(
-					([attrType, label]) => {
-						const obj = getGroupAttributes(
-							attributes,
-							attrType,
-							false,
-							prefix,
-							true
-						);
-						if (!isEmpty(obj))
-							response[tab][attrType] = {
-								label,
-								attribute: obj,
-							};
-					}
-				);
+				if (copyPasteMapping[tab].withPrefix)
+					Object.entries(copyPasteMapping[tab].withPrefix).forEach(
+						([attrType, label]) => {
+							const obj = getGroupAttributes(
+								attributes,
+								attrType,
+								false,
+								prefix,
+								true
+							);
+							if (!isEmpty(obj))
+								response[tab][attrType] = {
+									label,
+									attribute: obj,
+								};
+						}
+					);
 
-			if (copyPasteMapping[tab].withPrefixHover)
-				Object.entries(copyPasteMapping[tab].withPrefixHover).forEach(
-					([attrType, label]) => {
+				if (copyPasteMapping[tab].withPrefixHover)
+					Object.entries(
+						copyPasteMapping[tab].withPrefixHover
+					).forEach(([attrType, label]) => {
 						const obj = getGroupAttributes(
 							attributes,
 							attrType,
@@ -116,16 +118,34 @@ const CopyPasteContent = props => {
 								label,
 								attribute: obj,
 							};
-					}
-				);
+					});
 
-			if (copyPasteMapping[tab].withoutPrefix)
-				Object.entries(copyPasteMapping[tab].withoutPrefix).forEach(
-					([attrType, label]) => {
+				if (copyPasteMapping[tab].withoutPrefix)
+					Object.entries(copyPasteMapping[tab].withoutPrefix).forEach(
+						([attrType, label]) => {
+							const obj = getGroupAttributes(
+								attributes,
+								attrType,
+								false,
+								'',
+								true
+							);
+							if (!isEmpty(obj))
+								response[tab][attrType] = {
+									label,
+									attribute: obj,
+								};
+						}
+					);
+
+				if (copyPasteMapping[tab].withoutPrefixHover)
+					Object.entries(
+						copyPasteMapping[tab].withoutPrefixHover
+					).forEach(([attrType, label]) => {
 						const obj = getGroupAttributes(
 							attributes,
 							attrType,
-							false,
+							true,
 							'',
 							true
 						);
@@ -134,26 +154,8 @@ const CopyPasteContent = props => {
 								label,
 								attribute: obj,
 							};
-					}
-				);
-
-			if (copyPasteMapping[tab].withoutPrefixHover)
-				Object.entries(
-					copyPasteMapping[tab].withoutPrefixHover
-				).forEach(([attrType, label]) => {
-					const obj = getGroupAttributes(
-						attributes,
-						attrType,
-						true,
-						'',
-						true
-					);
-					if (!isEmpty(obj))
-						response[tab][attrType] = {
-							label,
-							attribute: obj,
-						};
-				});
+					});
+			}
 		});
 
 		return response;
@@ -164,82 +166,84 @@ const CopyPasteContent = props => {
 		const settingTabs = ['settings', 'canvas', 'advanced'];
 
 		settingTabs.forEach(tab => {
-			if (copyPasteMapping[tab].blockSpecific)
-				Object.keys(copyPasteMapping[tab].blockSpecific).forEach(
-					attrType => {
-						if (
-							typeof copyPasteMapping[tab].blockSpecific[
-								attrType
-							] !== 'string'
-						)
-							copyPasteMapping[tab].blockSpecific[
-								attrType
-							].value.forEach(val => {
-								if (!isNil(attributes[val]))
-									response = {
-										...response,
-										[val]: attributes[val],
-									};
-							});
-						else if (!isNil(attributes[attrType]))
+			if (copyPasteMapping[tab]) {
+				if (copyPasteMapping[tab].blockSpecific)
+					Object.keys(copyPasteMapping[tab].blockSpecific).forEach(
+						attrType => {
+							if (
+								typeof copyPasteMapping[tab].blockSpecific[
+									attrType
+								] !== 'string'
+							)
+								copyPasteMapping[tab].blockSpecific[
+									attrType
+								].value.forEach(val => {
+									if (!isNil(attributes[val]))
+										response = {
+											...response,
+											[val]: attributes[val],
+										};
+								});
+							else if (!isNil(attributes[attrType]))
+								response = {
+									...response,
+									[attrType]: attributes[attrType],
+								};
+						}
+					);
+
+				if (copyPasteMapping[tab].withPrefix)
+					Object.keys(copyPasteMapping[tab].withPrefix).forEach(
+						typeAttr => {
 							response = {
 								...response,
-								[attrType]: attributes[attrType],
+								...getGroupAttributes(
+									attributes,
+									typeAttr,
+									false,
+									prefix,
+									true
+								),
 							};
-					}
-				);
+						}
+					);
 
-			if (copyPasteMapping[tab].withPrefix)
-				Object.keys(copyPasteMapping[tab].withPrefix).forEach(
-					typeAttr => {
-						response = {
-							...response,
-							...getGroupAttributes(
-								attributes,
-								typeAttr,
-								false,
-								prefix,
-								true
-							),
-						};
-					}
-				);
+				if (copyPasteMapping[tab].withPrefixHover)
+					Object.keys(copyPasteMapping[tab].withPrefixHover).forEach(
+						typeAttr => {
+							response = {
+								...response,
+								...getGroupAttributes(
+									attributes,
+									typeAttr,
+									true,
+									prefix,
+									true
+								),
+							};
+						}
+					);
 
-			if (copyPasteMapping[tab].withPrefixHover)
-				Object.keys(copyPasteMapping[tab].withPrefixHover).forEach(
-					typeAttr => {
-						response = {
-							...response,
-							...getGroupAttributes(
-								attributes,
-								typeAttr,
-								true,
-								prefix,
-								true
-							),
-						};
-					}
-				);
+				if (copyPasteMapping[tab].withoutPrefix)
+					Object.keys(copyPasteMapping[tab].withoutPrefix).forEach(
+						typeAttr => {
+							response = {
+								...response,
+								...getGroupAttributes(
+									attributes,
+									typeAttr,
+									false,
+									'',
+									true
+								),
+							};
+						}
+					);
 
-			if (copyPasteMapping[tab].withoutPrefix)
-				Object.keys(copyPasteMapping[tab].withoutPrefix).forEach(
-					typeAttr => {
-						response = {
-							...response,
-							...getGroupAttributes(
-								attributes,
-								typeAttr,
-								false,
-								'',
-								true
-							),
-						};
-					}
-				);
-
-			if (copyPasteMapping[tab].withoutPrefixHover)
-				Object.keys(copyPasteMapping[tab].withoutPrefixHover).forEach(
-					typeAttr => {
+				if (copyPasteMapping[tab].withoutPrefixHover)
+					Object.keys(
+						copyPasteMapping[tab].withoutPrefixHover
+					).forEach(typeAttr => {
 						response = {
 							...response,
 							...getGroupAttributes(
@@ -250,8 +254,8 @@ const CopyPasteContent = props => {
 								true
 							),
 						};
-					}
-				);
+					});
+			}
 		});
 
 		return response;
@@ -323,9 +327,8 @@ const CopyPasteContent = props => {
 
 	const onSpecialPaste = () => {
 		let res = {};
-		const tabs = ['settings', 'canvas', 'advanced'];
 
-		tabs.forEach(tab => {
+		Object.keys(organizedAttributes).forEach(tab => {
 			Object.entries(organizedAttributes[tab]).forEach(([key, val]) => {
 				const isSelected = specialPaste[tab].some(
 					label => label === key
@@ -334,12 +337,62 @@ const CopyPasteContent = props => {
 				if (isSelected) res = { ...res, ...val.attribute };
 			});
 		});
+
 		setSpecialPaste({
 			settings: [],
 			canvas: [],
 			advanced: [],
 		});
+
 		updateBlockAttributes(clientId, res);
+	};
+
+	const getTabItems = () => {
+		const response = [];
+		Object.keys(organizedAttributes).forEach(tab => {
+			const option = {
+				label: __(
+					`${tab.charAt(0).toUpperCase()}${tab.slice(1)}`,
+					'maxi-blocks'
+				),
+				content:
+					!isNil(organizedAttributes[tab]) &&
+					!isEmpty(organizedAttributes[tab]) &&
+					Object.keys(organizedAttributes[tab]).map((attrType, i) => {
+						return (
+							<div
+								className='toolbar-item__copy-paste__popover__item'
+								key={`copy-paste-${tab}-${attrType}`}
+							>
+								<label
+									htmlFor={attrType}
+									className='maxi-axis-control__content__item__checkbox'
+								>
+									<input
+										type='checkbox'
+										name={attrType}
+										id={attrType}
+										checked={specialPaste[tab].includes(
+											attrType
+										)}
+										onClick={() =>
+											handleSpecialPaste(attrType, tab)
+										}
+									/>
+									<span>
+										{
+											organizedAttributes[tab][attrType]
+												.label
+										}
+									</span>
+								</label>
+							</div>
+						);
+					}),
+			};
+			response.push(option);
+		});
+		return response;
 	};
 
 	return (
@@ -373,152 +426,7 @@ const CopyPasteContent = props => {
 								target='sidebar-settings-tabs'
 								disablePadding
 								depth={0}
-								items={[
-									{
-										label: __('Settings', 'maxi-blocks'),
-										content:
-											!isNil(
-												organizedAttributes.settings
-											) &&
-											!isEmpty(
-												organizedAttributes.settings
-											) &&
-											Object.keys(
-												organizedAttributes.settings
-											).map((attrType, i) => {
-												return (
-													<div
-														className='toolbar-item__copy-paste__popover__item'
-														key={`copy-paste-settings-${attrType}`}
-													>
-														<label
-															htmlFor={attrType}
-															className='maxi-axis-control__content__item__checkbox'
-														>
-															<input
-																type='checkbox'
-																name={attrType}
-																id={attrType}
-																checked={specialPaste.settings.includes(
-																	attrType
-																)}
-																onClick={() =>
-																	handleSpecialPaste(
-																		attrType,
-																		'settings'
-																	)
-																}
-															/>
-															<span>
-																{
-																	organizedAttributes
-																		.settings[
-																		attrType
-																	].label
-																}
-															</span>
-														</label>
-													</div>
-												);
-											}),
-									},
-									{
-										label: __('Canvas', 'maxi_blocks'),
-										content:
-											!isNil(
-												organizedAttributes.canvas
-											) &&
-											!isEmpty(
-												organizedAttributes.canvas
-											) &&
-											Object.keys(
-												organizedAttributes.canvas
-											).map((attrType, i) => {
-												return (
-													<div
-														className='toolbar-item__copy-paste__popover__item'
-														key={`copy-paste-canvas-${attrType}`}
-													>
-														<label
-															htmlFor={attrType}
-															className='maxi-axis-control__content__item__checkbox'
-														>
-															<input
-																type='checkbox'
-																name={attrType}
-																id={attrType}
-																checked={specialPaste.canvas.includes(
-																	attrType
-																)}
-																onClick={() =>
-																	handleSpecialPaste(
-																		attrType,
-																		'canvas'
-																	)
-																}
-															/>
-															<span>
-																{
-																	organizedAttributes
-																		.canvas[
-																		attrType
-																	].label
-																}
-															</span>
-														</label>
-													</div>
-												);
-											}),
-									},
-									{
-										label: __('Advanced', 'maxi_blocks'),
-										content:
-											!isNil(
-												organizedAttributes.advanced
-											) &&
-											!isEmpty(
-												organizedAttributes.advanced
-											) &&
-											Object.keys(
-												organizedAttributes.advanced
-											).map((attrType, i) => {
-												return (
-													<div
-														className='toolbar-item__copy-paste__popover__item'
-														key={`copy-paste-advanced-${attrType}`}
-													>
-														<label
-															htmlFor={attrType}
-															className='maxi-axis-control__content__item__checkbox'
-														>
-															<input
-																type='checkbox'
-																name={attrType}
-																id={attrType}
-																checked={specialPaste.advanced.includes(
-																	attrType
-																)}
-																onClick={() =>
-																	handleSpecialPaste(
-																		attrType,
-																		'advanced'
-																	)
-																}
-															/>
-															<span>
-																{
-																	organizedAttributes
-																		.advanced[
-																		attrType
-																	].label
-																}
-															</span>
-														</label>
-													</div>
-												);
-											}),
-									},
-								]}
+								items={getTabItems()}
 							/>
 							<Button
 								className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'

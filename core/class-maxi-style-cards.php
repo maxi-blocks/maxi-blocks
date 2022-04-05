@@ -1,35 +1,39 @@
 <?php
 
-class MaxiBlocks_StyleCards {
-	/**
-	 * This plugin's instance.
-	 *
-	 * @var MaxiBlocks_StyleCards
-	 */
-	private static $instance;
+class MaxiBlocks_StyleCards
+{
+    /**
+     * This plugin's instance.
+     *
+     * @var MaxiBlocks_StyleCards
+     */
+    private static $instance;
 
-	/**
-	 * Registers the plugin.
-	 */
-	public static function register() {
-		if (null === self::$instance) {
-			self::$instance = new MaxiBlocks_StyleCards();
-		}
-	}
+    /**
+     * Registers the plugin.
+     */
+    public static function register()
+    {
+        if (null === self::$instance) {
+            self::$instance = new MaxiBlocks_StyleCards();
+        }
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
-		add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+    }
 
-	/**
-	 * Enqueuing styles
-	 */
-	public function enqueue_styles() {
-		$vars = $this->getStylesString();
+    /**
+     * Enqueuing styles
+     */
+    public function enqueue_styles()
+    {
+        $vars = $this->getStylesString();
 
         // Inline styles
         if ($vars) {
@@ -39,84 +43,92 @@ class MaxiBlocks_StyleCards {
         }
     }
 
-	/**
-	 * Get SC
-	 */
-	public function getStylesString() {
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-		$query =
-			'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
+    /**
+     * Get SC
+     */
+    public function getStylesString()
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+        $query =
+            'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
 
-		$style_card = maybe_unserialize($wpdb->get_var($query));
+        $style_card = maybe_unserialize($wpdb->get_var($query));
 
-		if (!$style_card) {
-			return false;
-		}
+        if (!$style_card) {
+            return false;
+        }
 
-		$style =
-			is_preview() || is_admin()
-				? $style_card['_maxi_blocks_style_card_preview']
-				: $style_card['_maxi_blocks_style_card'];
+        if (!array_key_exists('_maxi_blocks_style_card', $style_card)) {
+            $style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card_preview'];
+        }
 
-		if (!$style || empty($style)) {
-			$style =
-				is_preview() || is_admin() // If one fail, let's test the other one!
-					? $style_card['_maxi_blocks_style_card']
-					: $style_card['_maxi_blocks_style_card_preview'];
-		}
+        $style =
+            is_preview() || is_admin()
+                ? $style_card['_maxi_blocks_style_card_preview']
+                : $style_card['_maxi_blocks_style_card'];
 
-		if (!$style || empty($style)) {
-			return false;
-		}
+        if (!$style || empty($style)) {
+            $style =
+                is_preview() || is_admin() // If one fail, let's test the other one!
+                    ? $style_card['_maxi_blocks_style_card']
+                    : $style_card['_maxi_blocks_style_card_preview'];
+        }
 
-		return $style;
-	}
+        if (!$style || empty($style)) {
+            return false;
+        }
 
-	public function get_maxi_blocks_current_style_cards() {
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-		$query =
-			'SELECT object FROM ' .
-			$table_name .
-			' where id = "style_cards_current"';
-		$maxi_blocks_style_cards_current = $wpdb->get_var($query);
-		if (
-			$maxi_blocks_style_cards_current &&
-			!empty($maxi_blocks_style_cards_current)
-		) {
-			return $maxi_blocks_style_cards_current;
-		} else {
-			$defaultStyleCard = $this->getDefaultStyleCard();
+        return $style;
+    }
 
-			$wpdb->replace($table_name, [
-				'id' => 'style_cards_current',
-				'object' => $defaultStyleCard,
-			]);
-			$maxi_blocks_style_cards_current = $wpdb->get_var($query);
-			return $maxi_blocks_style_cards_current;
-		}
-	}
+    public function get_maxi_blocks_current_style_cards()
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+        $query =
+            'SELECT object FROM ' .
+            $table_name .
+            ' where id = "style_cards_current"';
+        $maxi_blocks_style_cards_current = $wpdb->get_var($query);
+        if (
+            $maxi_blocks_style_cards_current &&
+            !empty($maxi_blocks_style_cards_current)
+        ) {
+            return $maxi_blocks_style_cards_current;
+        } else {
+            $defaultStyleCard = $this->getDefaultStyleCard();
 
-	public function get_maxi_blocks_active_style_card() {
-		$maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
+            $wpdb->replace($table_name, [
+                'id' => 'style_cards_current',
+                'object' => $defaultStyleCard,
+            ]);
+            $maxi_blocks_style_cards_current = $wpdb->get_var($query);
+            return $maxi_blocks_style_cards_current;
+        }
+    }
 
-		$maxi_blocks_style_cards_array = json_decode(
-			$maxi_blocks_style_cards,
-			true,
-		);
+    public function get_maxi_blocks_active_style_card()
+    {
+        $maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
 
-		foreach ($maxi_blocks_style_cards_array as $key => $sc) {
-			if ($sc['status'] === 'active') {
-				return $sc;
-			}
-		}
-		return false;
-	}
+        $maxi_blocks_style_cards_array = json_decode(
+            $maxi_blocks_style_cards,
+            true,
+        );
+
+        foreach ($maxi_blocks_style_cards_array as $key => $sc) {
+            if ($sc['status'] === 'active') {
+                return $sc;
+            }
+        }
+        return false;
+    }
 
 
-	public static function getDefaultStyleCard() {
-		$json = '{
+    public static function getDefaultStyleCard()
+    {
+        $json = '{
 			"sc_maxi": {
 				"name": "Maxi (Default)",
 				"status": "active",
@@ -785,6 +797,6 @@ class MaxiBlocks_StyleCards {
 			}
 		}';
 
-		return $json;
-	}
+        return $json;
+    }
 }

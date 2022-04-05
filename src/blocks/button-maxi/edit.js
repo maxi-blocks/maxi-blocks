@@ -20,7 +20,7 @@ import { Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import attributesMapping from './copy-paste-mapping';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -114,7 +114,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
-				attributesMapping={attributesMapping}
+				copyPasteMapping={copyPasteMapping}
 				prefix='button-'
 				backgroundGlobalProps={{
 					target: 'background',

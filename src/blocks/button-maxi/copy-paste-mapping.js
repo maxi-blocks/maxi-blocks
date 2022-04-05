@@ -1,4 +1,4 @@
-const attributesMapping = {
+const copyPasteMapping = {
 	settings: {
 		blockSpecific: {
 			fullWidth: 'Full Width',
@@ -83,4 +83,4 @@ const attributesMapping = {
 	},
 };
 
-export default attributesMapping;
+export default copyPasteMapping;

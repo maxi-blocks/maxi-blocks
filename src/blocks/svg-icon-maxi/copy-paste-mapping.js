@@ -1,4 +1,4 @@
-const attributesMapping = {
+const copyPasteMapping = {
 	settings: {
 		blockSpecific: {
 			content: 'SVG Content',
@@ -58,4 +58,4 @@ const attributesMapping = {
 	},
 };
 
-export default attributesMapping;
+export default copyPasteMapping;

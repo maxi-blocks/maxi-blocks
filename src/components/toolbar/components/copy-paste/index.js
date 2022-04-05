@@ -35,7 +35,7 @@ const WRAPPER_BLOCKS = [
 ];
 
 const CopyPasteContent = props => {
-	const { clientId, blockName, attributesMapping, prefix } = props;
+	const { clientId, blockName, copyPasteMapping, prefix } = props;
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [specialPaste, setSpecialPaste] = useState({
@@ -49,8 +49,8 @@ const CopyPasteContent = props => {
 		const settingTabs = ['settings', 'canvas', 'advanced'];
 		settingTabs.forEach(tab => {
 			response[tab] = {};
-			if (attributesMapping[tab].blockSpecific)
-				Object.entries(attributesMapping[tab].blockSpecific).forEach(
+			if (copyPasteMapping[tab].blockSpecific)
+				Object.entries(copyPasteMapping[tab].blockSpecific).forEach(
 					([attrType, label]) => {
 						if (!isEmpty(attributes[attrType]))
 							response[tab][attrType] = {
@@ -60,8 +60,8 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withPrefix)
-				Object.entries(attributesMapping[tab].withPrefix).forEach(
+			if (copyPasteMapping[tab].withPrefix)
+				Object.entries(copyPasteMapping[tab].withPrefix).forEach(
 					([attrType, label]) => {
 						const obj = getGroupAttributes(
 							attributes,
@@ -78,8 +78,8 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withPrefixHover)
-				Object.entries(attributesMapping[tab].withPrefixHover).forEach(
+			if (copyPasteMapping[tab].withPrefixHover)
+				Object.entries(copyPasteMapping[tab].withPrefixHover).forEach(
 					([attrType, label]) => {
 						const obj = getGroupAttributes(
 							attributes,
@@ -96,8 +96,8 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withoutPrefix)
-				Object.entries(attributesMapping[tab].withoutPrefix).forEach(
+			if (copyPasteMapping[tab].withoutPrefix)
+				Object.entries(copyPasteMapping[tab].withoutPrefix).forEach(
 					([attrType, label]) => {
 						const obj = getGroupAttributes(
 							attributes,
@@ -114,9 +114,9 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withoutPrefixHover)
+			if (copyPasteMapping[tab].withoutPrefixHover)
 				Object.entries(
-					attributesMapping[tab].withoutPrefixHover
+					copyPasteMapping[tab].withoutPrefixHover
 				).forEach(([attrType, label]) => {
 					const obj = getGroupAttributes(
 						attributes,
@@ -141,8 +141,8 @@ const CopyPasteContent = props => {
 		const settingTabs = ['settings', 'canvas', 'advanced'];
 
 		settingTabs.forEach(tab => {
-			if (attributesMapping[tab].blockSpecific)
-				Object.keys(attributesMapping[tab].blockSpecific).forEach(
+			if (copyPasteMapping[tab].blockSpecific)
+				Object.keys(copyPasteMapping[tab].blockSpecific).forEach(
 					attrType => {
 						if (!isNil(attributes[attrType]))
 							response = {
@@ -152,8 +152,8 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withPrefix)
-				Object.keys(attributesMapping[tab].withPrefix).forEach(
+			if (copyPasteMapping[tab].withPrefix)
+				Object.keys(copyPasteMapping[tab].withPrefix).forEach(
 					typeAttr => {
 						response = {
 							...response,
@@ -168,8 +168,8 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withPrefixHover)
-				Object.keys(attributesMapping[tab].withPrefixHover).forEach(
+			if (copyPasteMapping[tab].withPrefixHover)
+				Object.keys(copyPasteMapping[tab].withPrefixHover).forEach(
 					typeAttr => {
 						response = {
 							...response,
@@ -184,8 +184,8 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withoutPrefix)
-				Object.keys(attributesMapping[tab].withoutPrefix).forEach(
+			if (copyPasteMapping[tab].withoutPrefix)
+				Object.keys(copyPasteMapping[tab].withoutPrefix).forEach(
 					typeAttr => {
 						response = {
 							...response,
@@ -200,8 +200,8 @@ const CopyPasteContent = props => {
 					}
 				);
 
-			if (attributesMapping[tab].withoutPrefixHover)
-				Object.keys(attributesMapping[tab].withoutPrefixHover).forEach(
+			if (copyPasteMapping[tab].withoutPrefixHover)
+				Object.keys(copyPasteMapping[tab].withoutPrefixHover).forEach(
 					typeAttr => {
 						response = {
 							...response,

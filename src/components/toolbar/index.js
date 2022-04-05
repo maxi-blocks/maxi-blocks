@@ -91,7 +91,7 @@ const MaxiToolbar = memo(
 			prefix = '',
 			backgroundGlobalProps,
 			resizableObject,
-			attributesMapping,
+			copyPasteMapping,
 		} = props;
 		const {
 			blockFullWidth,
@@ -483,7 +483,7 @@ const MaxiToolbar = memo(
 								])}
 								blockName={name}
 								breakpoint={breakpoint}
-								attributesMapping={attributesMapping}
+								copyPasteMapping={copyPasteMapping}
 								prefix={prefix}
 								onChange={obj => maxiSetAttributes(obj)}
 							/>

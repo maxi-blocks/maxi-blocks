@@ -18,7 +18,7 @@ import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock from '../../components/maxi-block';
-import attributesMapping from './copy-paste-mapping';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -120,7 +120,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='divider-'
 				{...this.props}
-				attributesMapping={attributesMapping}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}

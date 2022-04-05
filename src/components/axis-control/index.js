@@ -62,11 +62,14 @@ const AxisInput = props => {
 		onChangeValue,
 		minMaxSettings,
 		currentUnit,
+		isSpacing,
+		onChangeUnit,
+		onReset,
 	} = props;
 
 	const value = getValue(target, breakpoint);
 	const lastValue = getLastBreakpointValue(target);
-
+	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
 	return (
 		<AdvancedNumberControl
 			label={__(capitalize(label), 'maxi-blocks')}
@@ -85,10 +88,13 @@ const AxisInput = props => {
 			enableAuto={!disableAuto}
 			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
-			disableReset
+			enableUnit={isSpacing}
 			min={minMaxSettings[currentUnit].min || 0}
 			max={minMaxSettings[currentUnit].max || 999}
 			step={minMaxSettings[currentUnit].step || 1}
+			onChangeUnit={val => onChangeUnit(val, singleTarget, breakpoint)}
+			unit={unit}
+			onReset={onReset}
 		/>
 	);
 };
@@ -109,6 +115,8 @@ const AxisContent = props => {
 		label: type,
 		onReset,
 		disableLeftRightMargin,
+		onChangeUnit,
+		isSpacing,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -133,6 +141,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
+						isSpacing={isSpacing}
+						onChangeUnit={onChangeUnit}
+						onReset={onReset}
 					/>
 				</>
 			)}
@@ -150,6 +161,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
+						isSpacing={isSpacing}
+						onChangeUnit={onChangeUnit}
+						onReset={onReset}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -164,6 +178,9 @@ const AxisContent = props => {
 							minMaxSettings={minMaxSettings}
 							currentUnit={currentUnit}
 							type={type}
+							isSpacing={isSpacing}
+							onChangeUnit={onChangeUnit}
+							onReset={onReset}
 						/>
 					)}
 				</>
@@ -182,6 +199,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
+						isSpacing={isSpacing}
+						onChangeUnit={onChangeUnit}
+						onReset={onReset}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -196,6 +216,9 @@ const AxisContent = props => {
 							minMaxSettings={minMaxSettings}
 							currentUnit={currentUnit}
 							type={type}
+							isSpacing={isSpacing}
+							onChangeUnit={onChangeUnit}
+							onReset={onReset}
 						/>
 					)}
 					<AxisInput
@@ -210,6 +233,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
+						isSpacing={isSpacing}
+						onChangeUnit={onChangeUnit}
+						onReset={onReset}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -224,6 +250,9 @@ const AxisContent = props => {
 							minMaxSettings={minMaxSettings}
 							currentUnit={currentUnit}
 							type={type}
+							isSpacing={isSpacing}
+							onChangeUnit={onChangeUnit}
+							onReset={onReset}
 						/>
 					)}
 				</>
@@ -262,6 +291,7 @@ const AxisControlContent = props => {
 		minMaxSettings,
 		inputsArray,
 		disableSync = false,
+		isSpacing,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -336,31 +366,33 @@ const AxisControlContent = props => {
 		<>
 			{!disableSync && (
 				<>
-					<BaseControl
-						label={__(type, 'maxi-blocks')}
-						className='maxi-axis-control__unit-header'
-					>
-						<SelectControl
-							className='maxi-axis-control__units'
-							hideLabelFromVision
-							label={__('Unit', 'maxi-blocks')}
-							options={getOptions()}
-							value={currentUnit}
-							onChange={onChangeUnit}
-						/>
-						<Button
-							className='components-maxi-control__reset-button'
-							onClick={() => onReset(breakpoint)}
-							aria-label={sprintf(
-								__('Reset %s settings', 'maxi-blocks'),
-								type.toLowerCase()
-							)}
-							action='reset'
-							type='reset'
+					{!isSpacing && (
+						<BaseControl
+							label={__(type, 'maxi-blocks')}
+							className='maxi-axis-control__unit-header'
 						>
-							{reset}
-						</Button>
-					</BaseControl>
+							<SelectControl
+								className='maxi-axis-control__units'
+								hideLabelFromVision
+								label={__('Unit', 'maxi-blocks')}
+								options={getOptions()}
+								value={currentUnit}
+								onChange={onChangeUnit}
+							/>
+							<Button
+								className='components-maxi-control__reset-button'
+								onClick={() => onReset(breakpoint)}
+								aria-label={sprintf(
+									__('Reset %s settings', 'maxi-blocks'),
+									type.toLowerCase()
+								)}
+								action='reset'
+								type='reset'
+							>
+								{reset}
+							</Button>
+						</BaseControl>
+					)}
 					<SettingTabsControl
 						label={getSyncLabel()}
 						type='buttons'
@@ -442,6 +474,10 @@ const AxisControl = props => {
 			'right',
 			'bottom',
 			'left',
+			'top-unit',
+			'right-unit',
+			'bottom-unit',
+			'left-unit',
 			'unit',
 			'sync',
 			'sync-horizontal',
@@ -450,6 +486,7 @@ const AxisControl = props => {
 		optionType = 'number',
 		disableSync = false,
 		blockFullWidth,
+		isSpacing,
 	} = props;
 
 	const classes = classnames(
@@ -581,10 +618,11 @@ const AxisControl = props => {
 			case 'all': {
 				inputsArray.forEach(key => {
 					if (
-						key.includes('top') ||
-						key.includes('left') ||
-						key.includes('bottom') ||
-						key.includes('right')
+						(key.includes('top') ||
+							key.includes('left') ||
+							key.includes('bottom') ||
+							key.includes('right')) &&
+						!key.includes('unit')
 					) {
 						response[
 							getAttributeKey(
@@ -608,7 +646,8 @@ const AxisControl = props => {
 								'right',
 								'bottom-left',
 								'top-right',
-							].includes(key)
+							].includes(key) &&
+							!key.includes('unit')
 						) {
 							response[
 								getAttributeKey(
@@ -628,7 +667,8 @@ const AxisControl = props => {
 								'bottom',
 								'top-left',
 								'bottom-right',
-							].includes(key)
+							].includes(key) &&
+							!key.includes('unit')
 						) {
 							response[
 								getAttributeKey(
@@ -662,6 +702,98 @@ const AxisControl = props => {
 		onChange(response);
 	};
 
+	const onChangeUnit = (val, singleTarget, customBreakpoint) => {
+		const sync = getLastBreakpointAttribute({
+			target: getKey('sync'),
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
+
+		let response = {};
+
+		switch (disableSync ? 'all' : sync) {
+			case 'all': {
+				inputsArray.forEach(key => {
+					if (
+						key.includes('top-unit') ||
+						key.includes('left-unit') ||
+						key.includes('bottom-unit') ||
+						key.includes('right-unit')
+					) {
+						response[
+							getAttributeKey(
+								getKey(key),
+								isHover,
+								false,
+								customBreakpoint ?? breakpoint
+							)
+						] = val;
+					}
+				});
+				break;
+			}
+			case 'axis': {
+				if (singleTarget === 'horizontal') {
+					inputsArray.forEach(key => {
+						if (
+							[
+								'left-unit',
+								'right-unit',
+								'bottom-left',
+								'top-right',
+							].includes(key)
+						) {
+							response[
+								getAttributeKey(
+									getKey(key),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)
+							] = val;
+						}
+					});
+				} else if (singleTarget === 'vertical') {
+					inputsArray.forEach(key => {
+						if (
+							[
+								'top-unit',
+								'bottom-unit',
+								'top-left',
+								'bottom-right',
+							].includes(key)
+						) {
+							response[
+								getAttributeKey(
+									getKey(key),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)
+							] = val;
+						}
+					});
+				}
+				break;
+			}
+			case 'none':
+			default: {
+				response = {
+					[getAttributeKey(
+						getKey(`${singleTarget}-unit`),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)]: val,
+				};
+				break;
+			}
+		}
+
+		onChange(response);
+	};
+
 	return (
 		<div className={classes}>
 			{useResponsiveTabs && (
@@ -685,6 +817,8 @@ const AxisControl = props => {
 						disableLeftRightMargin={disableLeftRightMargin}
 						getKey={getKey}
 						onChangeSync={onChangeSync}
+						onChangeUnit={onChangeUnit}
+						isSpacing={isSpacing}
 					/>
 				</ResponsiveTabsControl>
 			)}
@@ -707,6 +841,8 @@ const AxisControl = props => {
 					disableAuto={disableAuto}
 					getKey={getKey}
 					onChangeSync={onChangeSync}
+					onChangeUnit={onChangeUnit}
+					isSpacing={isSpacing}
 				/>
 			)}
 		</div>

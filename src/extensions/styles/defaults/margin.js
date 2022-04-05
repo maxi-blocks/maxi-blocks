@@ -21,6 +21,22 @@ const rawMargin = {
 		type: 'string',
 		default: 'px',
 	},
+	'margin-top-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'margin-right-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'margin-bottom-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'margin-left-unit': {
+		type: 'string',
+		default: 'px',
+	},
 };
 
 const margin = breakpointAttributesCreator({

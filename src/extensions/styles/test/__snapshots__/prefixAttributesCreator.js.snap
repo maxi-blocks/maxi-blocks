@@ -15,6 +15,28 @@ Object {
   "button-padding-bottom-s": Object {
     "type": "number",
   },
+  "button-padding-bottom-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-padding-bottom-unit-l": Object {
+    "type": "string",
+  },
+  "button-padding-bottom-unit-m": Object {
+    "type": "string",
+  },
+  "button-padding-bottom-unit-s": Object {
+    "type": "string",
+  },
+  "button-padding-bottom-unit-xl": Object {
+    "type": "string",
+  },
+  "button-padding-bottom-unit-xs": Object {
+    "type": "string",
+  },
+  "button-padding-bottom-unit-xxl": Object {
+    "type": "string",
+  },
   "button-padding-bottom-xl": Object {
     "type": "number",
   },
@@ -36,6 +58,28 @@ Object {
   "button-padding-left-s": Object {
     "type": "number",
   },
+  "button-padding-left-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-padding-left-unit-l": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-m": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-s": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-xl": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-xs": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-xxl": Object {
+    "type": "string",
+  },
   "button-padding-left-xl": Object {
     "type": "number",
   },
@@ -56,6 +100,28 @@ Object {
   },
   "button-padding-right-s": Object {
     "type": "number",
+  },
+  "button-padding-right-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-padding-right-unit-l": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-m": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-s": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-xl": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-xs": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-xxl": Object {
+    "type": "string",
   },
   "button-padding-right-xl": Object {
     "type": "number",
@@ -99,6 +165,28 @@ Object {
   },
   "button-padding-top-s": Object {
     "type": "number",
+  },
+  "button-padding-top-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-padding-top-unit-l": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-m": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-s": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-xl": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-xs": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-xxl": Object {
+    "type": "string",
   },
   "button-padding-top-xl": Object {
     "type": "number",
@@ -453,6 +541,28 @@ Object {
   "button-margin-bottom-s": Object {
     "type": "string",
   },
+  "button-margin-bottom-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-margin-bottom-unit-l": Object {
+    "type": "string",
+  },
+  "button-margin-bottom-unit-m": Object {
+    "type": "string",
+  },
+  "button-margin-bottom-unit-s": Object {
+    "type": "string",
+  },
+  "button-margin-bottom-unit-xl": Object {
+    "type": "string",
+  },
+  "button-margin-bottom-unit-xs": Object {
+    "type": "string",
+  },
+  "button-margin-bottom-unit-xxl": Object {
+    "type": "string",
+  },
   "button-margin-bottom-xl": Object {
     "type": "string",
   },
@@ -474,6 +584,28 @@ Object {
   "button-margin-left-s": Object {
     "type": "string",
   },
+  "button-margin-left-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-margin-left-unit-l": Object {
+    "type": "string",
+  },
+  "button-margin-left-unit-m": Object {
+    "type": "string",
+  },
+  "button-margin-left-unit-s": Object {
+    "type": "string",
+  },
+  "button-margin-left-unit-xl": Object {
+    "type": "string",
+  },
+  "button-margin-left-unit-xs": Object {
+    "type": "string",
+  },
+  "button-margin-left-unit-xxl": Object {
+    "type": "string",
+  },
   "button-margin-left-xl": Object {
     "type": "string",
   },
@@ -493,6 +625,28 @@ Object {
     "type": "string",
   },
   "button-margin-right-s": Object {
+    "type": "string",
+  },
+  "button-margin-right-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-margin-right-unit-l": Object {
+    "type": "string",
+  },
+  "button-margin-right-unit-m": Object {
+    "type": "string",
+  },
+  "button-margin-right-unit-s": Object {
+    "type": "string",
+  },
+  "button-margin-right-unit-xl": Object {
+    "type": "string",
+  },
+  "button-margin-right-unit-xs": Object {
+    "type": "string",
+  },
+  "button-margin-right-unit-xxl": Object {
     "type": "string",
   },
   "button-margin-right-xl": Object {
@@ -536,6 +690,28 @@ Object {
     "type": "string",
   },
   "button-margin-top-s": Object {
+    "type": "string",
+  },
+  "button-margin-top-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-margin-top-unit-l": Object {
+    "type": "string",
+  },
+  "button-margin-top-unit-m": Object {
+    "type": "string",
+  },
+  "button-margin-top-unit-s": Object {
+    "type": "string",
+  },
+  "button-margin-top-unit-xl": Object {
+    "type": "string",
+  },
+  "button-margin-top-unit-xs": Object {
+    "type": "string",
+  },
+  "button-margin-top-unit-xxl": Object {
     "type": "string",
   },
   "button-margin-top-xl": Object {
@@ -586,6 +762,28 @@ Object {
   "button-padding-left-s": Object {
     "type": "number",
   },
+  "button-padding-left-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-padding-left-unit-l": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-m": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-s": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-xl": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-xs": Object {
+    "type": "string",
+  },
+  "button-padding-left-unit-xxl": Object {
+    "type": "string",
+  },
   "button-padding-left-xl": Object {
     "type": "number",
   },
@@ -606,6 +804,28 @@ Object {
   },
   "button-padding-right-s": Object {
     "type": "number",
+  },
+  "button-padding-right-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-padding-right-unit-l": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-m": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-s": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-xl": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-xs": Object {
+    "type": "string",
+  },
+  "button-padding-right-unit-xxl": Object {
+    "type": "string",
   },
   "button-padding-right-xl": Object {
     "type": "number",
@@ -649,6 +869,28 @@ Object {
   },
   "button-padding-top-s": Object {
     "type": "number",
+  },
+  "button-padding-top-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "button-padding-top-unit-l": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-m": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-s": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-xl": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-xs": Object {
+    "type": "string",
+  },
+  "button-padding-top-unit-xxl": Object {
+    "type": "string",
   },
   "button-padding-top-xl": Object {
     "type": "number",

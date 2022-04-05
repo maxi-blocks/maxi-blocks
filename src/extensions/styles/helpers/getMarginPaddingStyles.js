@@ -10,9 +10,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
-
 	const response = {};
-
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -43,12 +41,8 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 				)
 					response[breakpoint][newLabel] = `${value}`;
 				else {
-					const unitKey = keyWords.filter(key =>
-						newLabel.includes(key)
-					);
-
 					const unit = getLastBreakpointAttribute({
-						target: `${prefix}${newLabel.replace(unitKey, 'unit')}`,
+						target: `${prefix}${newLabel}-unit`,
 						breakpoint,
 						attributes: obj,
 					});

@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Tooltip } from '@wordpress/components';
-import { useSelect, dispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,7 +17,6 @@ import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
-import openSidebar from '../../../../extensions/dom';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
@@ -29,6 +28,7 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
+import { openSidebarAccordion } from '../../../../extensions/inspector-path';
 
 /**
  * Duplicate
@@ -45,7 +45,6 @@ const MoreSettings = props => {
 			breakpoint,
 		};
 	});
-	const { openGeneralSidebar } = dispatch('core/edit-post');
 
 	return (
 		<Tooltip
@@ -82,24 +81,22 @@ const MoreSettings = props => {
 							{blockName === 'maxi-blocks/button-maxi' && (
 								<div>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() =>
-												openSidebar('height width')
-											)
-										}
+										onClick={() => {
+											openSidebarAccordion(
+												0,
+												'height width'
+											);
+										}}
 									>
 										{__('Button width', 'maxi-blocks')}
 									</Button>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() =>
-												openSidebar('margin padding')
-											)
-										}
+										onClick={() => {
+											openSidebarAccordion(
+												0,
+												'margin padding'
+											);
+										}}
 									>
 										{__(
 											'Button padding/margin',
@@ -122,22 +119,19 @@ const MoreSettings = props => {
 							{blockName === 'maxi-blocks/image-maxi' && (
 								<>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() =>
-												openSidebar('dimension')
-											)
-										}
+										onClick={() => {
+											openSidebarAccordion(
+												0,
+												'dimension'
+											);
+										}}
 									>
 										{__('Image dimension', 'maxi-blocks')}
 									</Button>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() => openSidebar('caption'))
-										}
+										onClick={() => {
+											openSidebarAccordion(0, 'caption');
+										}}
 									>
 										{__('Caption', 'maxi-blocks')}
 									</Button>

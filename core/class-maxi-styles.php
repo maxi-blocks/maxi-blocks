@@ -321,6 +321,10 @@ class MaxiBlocks_Styles
 
         $changedSCColors = array();
 
+        if (!array_key_exists('_maxi_blocks_style_card', $style_card)) {
+            $style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card_preview'];
+        }
+
         $style_card = is_preview() || is_admin()
             ? $style_card['_maxi_blocks_style_card_preview']
             : $style_card['_maxi_blocks_style_card'];

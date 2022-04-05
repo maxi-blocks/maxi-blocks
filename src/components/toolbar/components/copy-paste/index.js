@@ -57,19 +57,22 @@ const CopyPasteContent = props => {
 								attrType
 							] !== 'string'
 						) {
-							response[tab][attrType] = {
-								label: copyPasteMapping[tab].blockSpecific[
-									attrType
-								].label,
-								attribute: {},
-							};
+							const attr = {};
+
 							copyPasteMapping[tab].blockSpecific[
 								attrType
 							].value.forEach(val => {
 								if (!isEmpty(attributes[val]))
-									response[tab][attrType].attribute[val] =
-										attributes[val];
+									attr[val] = attributes[val];
 							});
+
+							if (!isEmpty(attr))
+								response[tab][attrType] = {
+									label: copyPasteMapping[tab].blockSpecific[
+										attrType
+									].label,
+									attribute: attr,
+								};
 						} else if (!isEmpty(attributes[attrType]))
 							response[tab][attrType] = {
 								label,

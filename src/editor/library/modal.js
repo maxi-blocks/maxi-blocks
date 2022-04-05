@@ -36,6 +36,7 @@ const MaxiModal = props => {
 		onSelect,
 		onClose,
 		icon,
+		forceHide = false,
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
@@ -72,7 +73,7 @@ const MaxiModal = props => {
 						<Icon icon={SCaddMore} />
 					</Button>
 				)}
-				{type === 'svg' && (
+				{type === 'svg' && !forceHide && (
 					<Button
 						className='maxi-svg-icon-block__replace-icon'
 						onClick={onClick}

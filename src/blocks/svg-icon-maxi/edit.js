@@ -149,54 +149,57 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			}) === 'hidden';
 
+		const maxiModalProps = {
+			clientId,
+			type: 'svg',
+			isOpen,
+			style: parentBlockStyle,
+			openFirstTime: isSelected ? openFirstTime : false,
+			onOpen: obj => {
+				maxiSetAttributes(obj);
+
+				this.setState({ isOpen: true });
+			},
+			onSelect: obj => {
+				maxiSetAttributes(obj);
+
+				this.setState({ isOpen: false });
+			},
+			onRemove: obj => {
+				maxiSetAttributes(obj);
+
+				this.setState({ isOpen: false });
+			},
+			onClose: () => this.setState({ isOpen: false }),
+		};
+
 		return [
-			!isEmptyContent && (
-				<Inspector
-					key={`block-settings-${uniqueID}`}
-					{...this.props}
-					resizableObject={this.resizableObject}
-				/>
-			),
-			!isEmptyContent && (
-				<Toolbar
-					key={`toolbar-${uniqueID}`}
-					ref={this.blockRef}
-					propsToAvoid={['resizableObject']}
-					resizableObject={this.resizableObject}
-					prefix='svg-'
-					{...this.props}
-				/>
-			),
-			<MaxiPopoverButton
-				key={`popover-${uniqueID}`}
-				ref={this.blockRef}
-				isOpen={isOpen}
-				{...this.props}
-			>
-				<MaxiModal
-					clientId={clientId}
-					type='svg'
-					isOpen={isOpen}
-					style={parentBlockStyle}
-					openFirstTime={isSelected ? openFirstTime : false}
-					onOpen={obj => {
-						maxiSetAttributes(obj);
-
-						this.setState({ isOpen: true });
-					}}
-					onSelect={obj => {
-						maxiSetAttributes(obj);
-
-						this.setState({ isOpen: false });
-					}}
-					onRemove={obj => {
-						maxiSetAttributes(obj);
-
-						this.setState({ isOpen: false });
-					}}
-					onClose={() => this.setState({ isOpen: false })}
-				/>
-			</MaxiPopoverButton>,
+			...[
+				!isEmptyContent && [
+					<Inspector
+						key={`block-settings-${uniqueID}`}
+						{...this.props}
+						resizableObject={this.resizableObject}
+					/>,
+					<Toolbar
+						key={`toolbar-${uniqueID}`}
+						ref={this.blockRef}
+						propsToAvoid={['resizableObject']}
+						resizableObject={this.resizableObject}
+						prefix='svg-'
+						{...this.props}
+					/>,
+					<MaxiPopoverButton
+						key={`popover-${uniqueID}`}
+						ref={this.blockRef}
+						isOpen={isOpen}
+						{...this.props}
+					>
+						<MaxiModal {...maxiModalProps} />
+					</MaxiPopoverButton>,
+				],
+			],
+			...[isEmptyContent && <MaxiModal {...maxiModalProps} forceHide />],
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}

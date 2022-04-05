@@ -143,7 +143,7 @@ const AxisContent = props => {
 						type={type}
 						isSpacing={isSpacing}
 						onChangeUnit={onChangeUnit}
-						onReset={onReset}
+						onReset={() => onReset(undefined, [...inputsArray])}
 					/>
 				</>
 			)}
@@ -163,7 +163,14 @@ const AxisContent = props => {
 						type={type}
 						isSpacing={isSpacing}
 						onChangeUnit={onChangeUnit}
-						onReset={onReset}
+						onReset={() =>
+							onReset(undefined, [
+								inputsArray[0],
+								inputsArray[2],
+								inputsArray[4],
+								inputsArray[6],
+							])
+						}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -180,7 +187,14 @@ const AxisContent = props => {
 							type={type}
 							isSpacing={isSpacing}
 							onChangeUnit={onChangeUnit}
-							onReset={onReset}
+							onReset={() =>
+								onReset(undefined, [
+									inputsArray[1],
+									inputsArray[3],
+									inputsArray[5],
+									inputsArray[7],
+								])
+							}
 						/>
 					)}
 				</>
@@ -201,7 +215,9 @@ const AxisContent = props => {
 						type={type}
 						isSpacing={isSpacing}
 						onChangeUnit={onChangeUnit}
-						onReset={onReset}
+						onReset={() =>
+							onReset(undefined, [inputsArray[0], inputsArray[4]])
+						}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -218,7 +234,12 @@ const AxisContent = props => {
 							type={type}
 							isSpacing={isSpacing}
 							onChangeUnit={onChangeUnit}
-							onReset={onReset}
+							onReset={() =>
+								onReset(undefined, [
+									inputsArray[1],
+									inputsArray[5],
+								])
+							}
 						/>
 					)}
 					<AxisInput
@@ -235,7 +256,9 @@ const AxisContent = props => {
 						type={type}
 						isSpacing={isSpacing}
 						onChangeUnit={onChangeUnit}
-						onReset={onReset}
+						onReset={() =>
+							onReset(undefined, [inputsArray[2], inputsArray[6]])
+						}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -252,7 +275,12 @@ const AxisContent = props => {
 							type={type}
 							isSpacing={isSpacing}
 							onChangeUnit={onChangeUnit}
-							onReset={onReset}
+							onReset={() =>
+								onReset(undefined, [
+									inputsArray[3],
+									inputsArray[7],
+								])
+							}
 						/>
 					)}
 				</>
@@ -547,10 +575,13 @@ const AxisControl = props => {
 		return '';
 	};
 
-	const onReset = customBreakpoint => {
+	const onReset = (customBreakpoint, inputsKeys) => {
 		const response = {};
+		const attributesKeys = !isEmpty(inputsKeys)
+			? [...inputsKeys]
+			: [...inputsArray];
 
-		inputsArray.forEach(key => {
+		attributesKeys.forEach(key => {
 			response[
 				getAttributeKey(
 					getKey(key),
@@ -567,7 +598,6 @@ const AxisControl = props => {
 				)
 			);
 		});
-
 		onChange(response);
 	};
 

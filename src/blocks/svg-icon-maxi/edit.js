@@ -154,7 +154,7 @@ class edit extends MaxiBlockComponent {
 					propsToAvoid={['resizableObject']}
 					resizableObject={this.resizableObject}
 					prefix='svg-'
-					attributesMapping={copyPasteMapping}
+					copyPasteMapping={copyPasteMapping}
 					{...this.props}
 				/>
 			),

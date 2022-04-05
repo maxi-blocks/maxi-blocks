@@ -1,7 +1,7 @@
 const copyPasteMapping = {
 	settings: {
 		blockSpecific: {
-			content: 'SVG Content',
+			content: { label: 'SVG Content', value: ['svgType', 'content'] },
 			blockFullWidth: 'Block Full Width',
 		},
 		withPrefix: {

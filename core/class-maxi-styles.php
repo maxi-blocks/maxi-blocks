@@ -240,7 +240,8 @@ class MaxiBlocks_Styles
             function local_fonts_preload($html, $handle)
             {
                 if (strpos($handle, 'maxi-font-') !== false) {
-                    $html = str_replace("rel='stylesheet'", "rel='stylesheet preload prefetch' as='style'", $html);
+                    $html = str_replace("rel='stylesheet'", "rel='stylesheet preload'", $html);
+                    $html = str_replace("media='all'", "as='style' crossorigin media='all'", $html);
                 }
                 return $html;
             }

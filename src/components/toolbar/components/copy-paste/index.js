@@ -12,6 +12,10 @@ import { cloneBlock } from '@wordpress/blocks';
 import Button from '../../../button';
 import Dropdown from '../../../dropdown';
 import { SettingTabsControl } from '../../../../components';
+import {
+	breakpointAttributesCreator,
+	getGroupAttributes,
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -22,7 +26,6 @@ import { isNil, isEmpty } from 'lodash';
  * Styles & Icons
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Component
@@ -83,6 +86,24 @@ const CopyPasteContent = props => {
 								};
 						}
 					);
+
+				/* if (copyPasteMapping[tab].withBreakpoint)
+					Object.entries(
+						copyPasteMapping[tab].withBreakpoint
+					).forEach(([attrType, label]) => {
+						const withBrkpt = breakpointAttributesCreator({
+							[attrType]: {},
+						}).keys();
+						withBrkpt.forEach(att => {
+							if (!isEmpty(attributes[att]))
+								response[tab][att] = {
+									label,
+									attribute: {
+										[att]: attributes[att],
+									},
+								};
+						});
+					}); */
 
 				if (copyPasteMapping[tab].withPrefix)
 					Object.entries(copyPasteMapping[tab].withPrefix).forEach(
@@ -191,6 +212,21 @@ const CopyPasteContent = props => {
 								};
 						}
 					);
+
+				/* if (copyPasteMapping[tab].withBreakpoint)
+					Object.keys(copyPasteMapping[tab].withBreakpoint).forEach(
+						typeAttr => {
+							const withBrkpt = breakpointAttributesCreator({
+								[typeAttr]: {},
+							}).keys();
+							withBrkpt.forEach(att => {
+								response = {
+									...response,
+									[att]: attributes[att],
+								};
+							});
+						}
+					); */
 
 				if (copyPasteMapping[tab].withPrefix)
 					Object.keys(copyPasteMapping[tab].withPrefix).forEach(

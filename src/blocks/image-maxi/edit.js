@@ -38,6 +38,7 @@ import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -259,6 +260,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 				propsToAvoid={['captionContent', 'formatValue']}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}

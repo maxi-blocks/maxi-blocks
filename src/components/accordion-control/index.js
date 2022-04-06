@@ -1,8 +1,4 @@
 /**
- * WordPress dependencies
- */
-
-/**
  * Internal dependencies
  */
 import Accordion from './Accordion';
@@ -22,13 +18,7 @@ import { getActiveAccordion } from '../../extensions/inspector-path';
  * Component
  */
 const AccordionControl = props => {
-	const {
-		className,
-		allowMultipleExpanded = false,
-		allowZeroExpanded = true,
-		isPrimary = false,
-		isSecondary = false,
-	} = props;
+	const { className, isPrimary = false, isSecondary = false } = props;
 
 	const classes = classnames(
 		'maxi-accordion-control',
@@ -42,9 +32,7 @@ const AccordionControl = props => {
 	return (
 		<Accordion
 			className={classes}
-			allowMultipleExpanded={allowMultipleExpanded}
-			allowZeroExpanded={allowZeroExpanded}
-			preExpanded={[preExpandedAccordion]}
+			preExpanded={preExpandedAccordion}
 			{...props}
 		/>
 	);

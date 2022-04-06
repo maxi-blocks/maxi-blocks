@@ -7,7 +7,6 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getActiveAccordion } from '../../extensions/inspector-path';
 import AccordionItem from './AccordionItem';
 
 /**
@@ -17,9 +16,14 @@ import { lowerCase } from 'lodash';
 import classnames from 'classnames';
 
 const Accordion = props => {
-	const { className, items, disablePadding = false } = props;
+	const {
+		className,
+		items,
+		disablePadding = false,
+		preExpandedAccordion,
+	} = props;
 
-	const [itemExpanded, setItemExpanded] = useState(getActiveAccordion(1));
+	const [itemExpanded, setItemExpanded] = useState(preExpandedAccordion);
 
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 

@@ -12,7 +12,7 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	SettingTabsControl,
-	SvgColor,
+	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
 } from '../../components';
@@ -140,104 +140,69 @@ const Inspector = props => {
 										attributes.content && {
 											label: __('Colour', 'maxi-blocks'),
 											content: (
-												<>
-													{svgType !== 'Line' && (
-														<>
-															<SvgColor
-																{...getGroupAttributes(
-																	attributes,
-																	'svg'
-																)}
-																type='fill'
-																label={__(
-																	'SVG Fill',
-																	'maxi-blocks'
-																)}
-																onChange={obj => {
-																	maxiSetAttributes(
-																		obj
-																	);
-
-																	const fillColorStr =
-																		getColorRGBAString(
-																			{
-																				firstVar:
-																					'icon-fill',
-																				secondVar: `color-${obj['svg-fill-palette-color']}`,
-																				opacity:
-																					obj[
-																						'svg-fill-palette-opacity'
-																					],
-																				blockStyle:
-																					parentBlockStyle,
-																			}
-																		);
-
-																	changeSVGContent(
-																		obj[
-																			'svg-fill-palette-status'
-																		]
-																			? fillColorStr
-																			: obj[
-																					'svg-fill-color'
-																			  ],
-																		'fill'
-																	);
-																}}
-															/>
-															{svgType ===
-																'Filled' && (
-																<hr />
-															)}
-														</>
+												<SvgColorControl
+													{...getGroupAttributes(
+														attributes,
+														'svg'
 													)}
-													{svgType !== 'Shape' && (
-														<SvgColor
-															{...getGroupAttributes(
-																attributes,
-																'svg'
-															)}
-															type='line'
-															label={__(
-																'SVG Line',
-																'maxi-blocks'
-															)}
-															onChange={obj => {
-																maxiSetAttributes(
-																	obj
-																);
+													svgType={svgType}
+													onChange={obj => {
+														maxiSetAttributes(obj);
 
-																const lineColorStr =
-																	getColorRGBAString(
-																		{
-																			firstVar:
-																				'icon-line',
-																			secondVar: `color-${obj['svg-line-palette-color']}`,
-																			opacity:
-																				obj[
-																					'svg-line-palette-opacity'
-																				],
-																			blockStyle:
-																				parentBlockStyle,
-																		}
-																	);
-
-																changeSVGContent(
+														const fillColorStr =
+															getColorRGBAString({
+																firstVar:
+																	'icon-fill',
+																secondVar: `color-${obj['svg-fill-palette-color']}`,
+																opacity:
 																	obj[
-																		'svg-line-palette-status'
-																	]
-																		? lineColorStr
-																		: obj[
-																				'svg-line-color'
-																		  ],
-																	'stroke'
-																);
-															}}
-														/>
-													)}
-												</>
+																		'svg-fill-palette-opacity'
+																	],
+																blockStyle:
+																	parentBlockStyle,
+															});
+
+														const lineColorStr =
+															getColorRGBAString({
+																firstVar:
+																	'icon-line',
+																secondVar: `color-${obj['svg-line-palette-color']}`,
+																opacity:
+																	obj[
+																		'svg-line-palette-opacity'
+																	],
+																blockStyle:
+																	parentBlockStyle,
+															});
+
+														svgType !== 'Line' &&
+															changeSVGContent(
+																obj[
+																	'svg-fill-palette-status'
+																]
+																	? fillColorStr
+																	: obj[
+																			'svg-fill-color'
+																	  ],
+																'fill'
+															);
+
+														svgType !== 'Shape' &&
+															changeSVGContent(
+																obj[
+																	'svg-line-palette-status'
+																]
+																	? lineColorStr
+																	: obj[
+																			'svg-line-color'
+																	  ],
+																'stroke'
+															);
+													}}
+												/>
 											),
 										},
+
 										attributes.content &&
 											svgType !== 'Shape' && {
 												label: __(

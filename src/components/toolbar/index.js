@@ -31,7 +31,7 @@ import {
 	Link,
 	Mover,
 	Size,
-	SvgColor,
+	SvgColorControl,
 	SvgWidth,
 	TextColor,
 	TextLevel,
@@ -242,7 +242,7 @@ const MaxiToolbar = memo(
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
 									{svgType !== 'Line' && (
-										<SvgColor
+										<SvgColorControl
 											{...getGroupAttributes(
 												attributes,
 												'svg'
@@ -257,7 +257,7 @@ const MaxiToolbar = memo(
 										/>
 									)}
 									{svgType !== 'Shape' && (
-										<SvgColor
+										<SvgColorControl
 											{...getGroupAttributes(
 												attributes,
 												'svg'

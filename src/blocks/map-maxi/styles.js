@@ -240,7 +240,7 @@ const modifyBorderWidths = (obj, arrowNumber) => {
 	return newObj;
 };
 
-const getBorderArrowStyles = props => {
+const getBorderArrowObject = props => {
 	const newObj = {
 		border: changeAttributeName(
 			getBorderStyles({
@@ -334,7 +334,7 @@ const getStyles = props => {
 					),
 				},
 				[` .map-marker-info-window__${props['map-popup']}:after`]:
-					getBorderArrowStyles(props),
+					getBorderArrowObject(props),
 			},
 			...getSVGStyles({
 				obj: {

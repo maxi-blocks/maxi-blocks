@@ -25,7 +25,7 @@ import { getActiveTabName } from '../../extensions/inspector-path';
  * External dependencies
  */
 import classnames from 'classnames';
-import { toLower, capitalize, pickBy, cloneDeep } from 'lodash';
+import { toLower, capitalize, pickBy, cloneDeep, toNumber } from 'lodash';
 
 /**
  * Styles and icons
@@ -51,7 +51,6 @@ const ScrollEffectsControl = props => {
 		uniqueID,
 		depth,
 	} = props;
-
 	const classes = classnames('maxi-scroll-effects-control', className);
 
 	const activeTabName = getActiveTabName(depth);
@@ -128,7 +127,6 @@ const ScrollEffectsControl = props => {
 	const getShortcutEffect = type => {
 		let response = {};
 		switch (type) {
-
 			case 'vertical':
 				response = [
 					{
@@ -193,7 +191,7 @@ const ScrollEffectsControl = props => {
 						value: 6,
 					},
 				];
-			break;
+				break;
 
 			case 'rotate':
 				response = [
@@ -228,112 +226,112 @@ const ScrollEffectsControl = props => {
 				];
 				break;
 
-				case 'scale':
-					response = [
-						{
-							label: __('Choose', 'maxi-blocks'),
-							value: 0,
-						},
-						{
-							label: __('Up less', 'maxi-blocks'),
-							value: 1,
-						},
-						{
-							label: __('Down less', 'maxi-blocks'),
-							value: 2,
-						},
-						{
-							label: __('Up some', 'maxi-blocks'),
-							value: 3,
-						},
-						{
-							label: __('Down some', 'maxi-blocks'),
-							value: 4,
-						},
-						{
-							label: __('Up more', 'maxi-blocks'),
-							value: 5,
-						},
-						{
-							label: __('Down more', 'maxi-blocks'),
-							value: 6,
-						},
-					];
-					break;
+			case 'scale':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('Up less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Down less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('Up some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Down some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('Up more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Down more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+				break;
 
-					case 'fade':
-						response = [
-							{
-								label: __('Choose', 'maxi-blocks'),
-								value: 0,
-							},
-							{
-								label: __('In less', 'maxi-blocks'),
-								value: 1,
-							},
-							{
-								label: __('Out less', 'maxi-blocks'),
-								value: 2,
-							},
-							{
-								label: __('In some', 'maxi-blocks'),
-								value: 3,
-							},
-							{
-								label: __('Out some', 'maxi-blocks'),
-								value: 4,
-							},
-							{
-								label: __('In more', 'maxi-blocks'),
-								value: 5,
-							},
-							{
-								label: __('Out more', 'maxi-blocks'),
-								value: 6,
-							},
-						];
-						break;
+			case 'fade':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('In less', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Out less', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('In some', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Out some', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('In more', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Out more', 'maxi-blocks'),
+						value: 6,
+					},
+				];
+				break;
 
-					case 'blur':
-						response = [
-							{
-								label: __('Choose', 'maxi-blocks'),
-								value: 0,
-							},
-							{
-								label: __('In vertical', 'maxi-blocks'),
-								value: 1,
-							},
-							{
-								label: __('Out vertical', 'maxi-blocks'),
-								value: 2,
-							},
-							{
-								label: __('In horizontal', 'maxi-blocks'),
-								value: 3,
-							},
-							{
-								label: __('Out horizontal', 'maxi-blocks'),
-								value: 4,
-							},
-							{
-								label: __('In rotate', 'maxi-blocks'),
-								value: 5,
-							},
-							{
-								label: __('Out rotate', 'maxi-blocks'),
-								value: 6,
-							},
-							{
-								label: __('In scale', 'maxi-blocks'),
-								value: 7,
-							},
-							{
-								label: __('Out scale', 'maxi-blocks'),
-								value: 8,
-							},
-						];
-						break;
+			case 'blur':
+				response = [
+					{
+						label: __('Choose', 'maxi-blocks'),
+						value: 0,
+					},
+					{
+						label: __('In vertical', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('Out vertical', 'maxi-blocks'),
+						value: 2,
+					},
+					{
+						label: __('In horizontal', 'maxi-blocks'),
+						value: 3,
+					},
+					{
+						label: __('Out horizontal', 'maxi-blocks'),
+						value: 4,
+					},
+					{
+						label: __('In rotate', 'maxi-blocks'),
+						value: 5,
+					},
+					{
+						label: __('Out rotate', 'maxi-blocks'),
+						value: 6,
+					},
+					{
+						label: __('In scale', 'maxi-blocks'),
+						value: 7,
+					},
+					{
+						label: __('Out scale', 'maxi-blocks'),
+						value: 8,
+					},
+				];
+				break;
 
 			default:
 				response = [
@@ -384,7 +382,6 @@ const ScrollEffectsControl = props => {
 			label: __('Disable all', 'maxi-blocks'),
 			value: 1,
 		},
-		
 
 		{
 			label: __('In vertical', 'maxi-blocks'),
@@ -513,9 +510,9 @@ const ScrollEffectsControl = props => {
 		else
 			onChange({
 				...newDefaultShortcuts?.[`shortcut${number}`],
+				shortcutEffect: toNumber(number),
 			});
 	};
-
 
 	useEffect(() => {
 		if (activeTabName) {
@@ -528,6 +525,7 @@ const ScrollEffectsControl = props => {
 			<SelectControl
 				label={__('Shortcut effect', 'maxi-blocks')}
 				onChange={val => onChangeShortcut(val)}
+				value={props['shortcutEffect']}
 				options={globalShortcutsOptions}
 			/>
 			<SettingTabsControl

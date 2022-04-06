@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import SvgColor from '../../../svg-color';
+import SvgColorControl from '../../../svg-color';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
@@ -43,7 +43,7 @@ const SvgColorToolbar = props => {
 			advancedOptions='colour'
 		>
 			<div className='toolbar-item__svg-color__popover'>
-				<SvgColor
+				<SvgColorControl
 					{...getGroupAttributes(props, 'svg')}
 					type={type}
 					label={__(`Icon ${type}`, 'maxi-blocks')}

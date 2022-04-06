@@ -230,7 +230,7 @@ const MapEventsListener = props => {
 const SearchBox = props => {
 	const { attributes, maxiSetAttributes, map } = props;
 	const { 'map-markers': mapMarkers } = attributes;
-	console.log(map);
+
 	const [keywords, setKeywords] = useState('');
 	const [searchResults, setSearchResults] = useState();
 	const inputRef = createRef(null);
@@ -301,7 +301,6 @@ const SearchBox = props => {
 
 			return (
 				<Button
-					autoFocus={index === 0}
 					onClick={addMarker}
 					className='map-searchbox__buttons'
 					key={placeId}

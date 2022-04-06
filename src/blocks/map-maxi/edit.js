@@ -264,12 +264,16 @@ const SearchBox = props => {
 		}
 	};
 
+	const clearSearchBox = () => {
+		if (inputRef) {
+			setSearchResults([]);
+			setKeywords('');
+		}
+	};
+
 	const onButtonClick = () => {
 		if (searchResults && searchResults.length) {
-			if (inputRef) {
-				setSearchResults([]);
-				setKeywords('');
-			}
+			clearSearchBox();
 		} else {
 			findMarkers();
 		}
@@ -293,6 +297,7 @@ const SearchBox = props => {
 				? [...mapMarkers, newMarker]
 				: [newMarker],
 		});
+		clearSearchBox();
 	};
 
 	const resultsList = () => {

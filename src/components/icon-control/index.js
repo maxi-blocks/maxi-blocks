@@ -86,7 +86,7 @@ const IconControl = props => {
 
 		options.push({
 			icon: <Icon icon={backgroundColor} />,
-			value: 'background-color',
+			value: 'color',
 		});
 
 		options.push({
@@ -186,60 +186,67 @@ const IconControl = props => {
 					/>
 					{!isHover && (
 						<>
-							<AdvancedNumberControl
-								label={__('Spacing', 'maxi-blocks')}
-								min={0}
-								max={999}
-								initial={1}
-								step={1}
-								breakpoint={breakpoint}
-								value={props[`icon-spacing-${breakpoint}`]}
-								onChangeValue={val => {
-									onChange({
-										[`icon-spacing-${breakpoint}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								onReset={() =>
-									onChange({
-										[`icon-spacing-${breakpoint}`]:
-											getDefaultAttribute(
-												`icon-spacing-${breakpoint}`
-											),
-									})
-								}
-							/>
+							{!props['icon-only'] && (
+								<AdvancedNumberControl
+									label={__('Spacing', 'maxi-blocks')}
+									min={0}
+									max={999}
+									initial={1}
+									step={1}
+									breakpoint={breakpoint}
+									value={props[`icon-spacing-${breakpoint}`]}
+									onChangeValue={val => {
+										onChange({
+											[`icon-spacing-${breakpoint}`]:
+												val !== undefined && val !== ''
+													? val
+													: '',
+										});
+									}}
+									onReset={() =>
+										onChange({
+											[`icon-spacing-${breakpoint}`]:
+												getDefaultAttribute(
+													`icon-spacing-${breakpoint}`
+												),
+										})
+									}
+								/>
+							)}
 							{breakpoint === 'general' && (
 								<>
-									<SettingTabsControl
-										label={__(
-											'Icon Position',
-											'maxi-block'
-										)}
-										className='maxi-icon-position-control'
-										type='buttons'
-										selected={props['icon-position']}
-										items={[
-											{
-												label: __('Left', 'maxi-block'),
-												value: 'left',
-											},
-											{
-												label: __(
-													'Right',
-													'maxi-block'
-												),
-												value: 'right',
-											},
-										]}
-										onChange={val =>
-											onChange({
-												'icon-position': val,
-											})
-										}
-									/>
+									{!props['icon-only'] && (
+										<SettingTabsControl
+											label={__(
+												'Icon Position',
+												'maxi-block'
+											)}
+											className='maxi-icon-position-control'
+											type='buttons'
+											selected={props['icon-position']}
+											items={[
+												{
+													label: __(
+														'Left',
+														'maxi-block'
+													),
+													value: 'left',
+												},
+												{
+													label: __(
+														'Right',
+														'maxi-block'
+													),
+													value: 'right',
+												},
+											]}
+											onChange={val =>
+												onChange({
+													'icon-position': val,
+												})
+											}
+										/>
+									)}
 									<ToggleSwitch
 										label={__(
 											'Inherit Colour/Background from Button',
@@ -373,7 +380,7 @@ const IconControl = props => {
 							});
 						}}
 					/>
-					{iconBgActive === 'background-color' && (
+					{iconBgActive === 'color' && (
 						<>
 							{!props['icon-inherit'] ? (
 								<ColorControl

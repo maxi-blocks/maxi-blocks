@@ -17,6 +17,16 @@
 	overflow-x: hidden;
 	scrollbar-gutter: stable;
 }
+
+// Scrollbar fix for Safari
+@media not all and (min-resolution: 0.001dpcm) {
+	@supports (-webkit-appearance: none) {
+		.interface-interface-skeleton__sidebar {
+			padding-right: 15px;
+		}
+	}
+}
+
 h2.gx_error {
 	font-size: 16px;
 	text-align: center;
@@ -98,39 +108,10 @@ body {
 			}
 		}
 	}
-	.block-list-appender {
+	.block-list-appender.wp-block {
+		position: relative;
+		width: 100%;
 		max-width: none;
-
-		.block-editor-button-block-appender {
-			position: absolute;
-			z-index: 21;
-			top: 100%;
-			left: 50%;
-			width: 16px;
-			height: 16px;
-			padding: 0;
-			margin: 0;
-			background: #ff4a17;
-			opacity: 0;
-			transform: translate(-50%, -50%);
-			transition: all 0s ease;
-			visibility: hidden;
-			box-shadow: none;
-			border-radius: 0;
-
-			&:hover,
-			&:focus {
-				box-shadow: none;
-				outline: none;
-				background: #151617;
-			}
-
-			svg {
-				min-width: 19px;
-				min-height: 19px;
-				fill: #fff;
-			}
-		}
 	}
 
 	&.maxi-block--has-link .maxi-text-block__content {

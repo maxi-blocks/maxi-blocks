@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
 import { Icon, Popover, Tooltip } from '@wordpress/components';
 
@@ -9,7 +9,7 @@ import { Icon, Popover, Tooltip } from '@wordpress/components';
  * Internal dependencies
  */
 import Button from '../../../button';
-import openSidebar from '../../../../extensions/dom';
+import { openSidebarAccordion } from '../../../../extensions/inspector-path';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
 
@@ -76,16 +76,16 @@ class ToolbarPopover extends Component {
 
 	render() {
 		const {
+			text,
 			className,
 			tooltip,
 			icon,
 			children,
 			advancedOptions = false,
+			tab = 0,
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;
-
-		const { openGeneralSidebar } = dispatch('core/edit-post');
 
 		const classes = classnames(
 			'toolbar-item',
@@ -104,13 +104,17 @@ class ToolbarPopover extends Component {
 							action='popup'
 						>
 							<Icon className='toolbar-item__icon' icon={icon} />
+							{__(text, 'maxi-blocks')}
 						</Button>
 					</Tooltip>
 					{isOpen && children && (
 						<Popover
 							className='toolbar-item__popover'
 							noArrow={false}
-							anchorRef={this.ref.current}
+							// Toolbar node
+							anchorRef={this.ref?.current?.closest(
+								'.toolbar-wrapper'
+							)}
 							onClose={onClose}
 							position='top center'
 							isAlternate
@@ -121,13 +125,12 @@ class ToolbarPopover extends Component {
 								<Button
 									className='toolbar-item__popover__advanced-button'
 									icon={toolbarAdvancedSettings}
-									onClick={() =>
-										openGeneralSidebar(
-											'edit-post/block'
-										).then(() =>
-											openSidebar(advancedOptions)
-										)
-									}
+									onClick={() => {
+										openSidebarAccordion(
+											tab,
+											advancedOptions
+										);
+									}}
 								/>
 							)}
 						</Popover>

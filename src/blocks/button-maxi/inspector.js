@@ -69,15 +69,8 @@ const Inspector = memo(
 		};
 
 		const getCategoriesCss = () => {
-			const {
-				'background-layers': bgLayers,
-				'icon-content': iconContent,
-			} = attributes;
-			return without(
-				categoriesButton,
-				isEmpty(bgLayers) && 'canvas background',
-				isEmpty(iconContent) && 'icon'
-			);
+			const { 'icon-content': iconContent } = attributes;
+			return without(categoriesButton, isEmpty(iconContent) && 'icon');
 		};
 
 		return (
@@ -392,6 +385,7 @@ const Inspector = memo(
 																						'iconBackgroundGradient',
 																						'iconBackgroundColor',
 																						'iconBorder',
+																						'iconBackgroundHover',
 																						'iconBorderWidth',
 																						'iconBorderRadius',
 																					],
@@ -615,6 +609,11 @@ const Inspector = memo(
 											}),
 										},
 										...inspectorTabs.overflow({
+											props: {
+												...props,
+											},
+										}),
+										...inspectorTabs.flex({
 											props: {
 												...props,
 											},

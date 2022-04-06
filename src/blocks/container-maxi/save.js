@@ -23,12 +23,11 @@ const save = props => {
 	const classes = classnames(fullWidth === 'full' ? 'alignfull' : null);
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			tagName='section'
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			isSave
-			hasInnerBlocks
+			useInnerBlocks
 		>
 			<ArrowDisplayer
 				key={`maxi-arrow-displayer__${uniqueID}`}
@@ -53,7 +52,7 @@ const save = props => {
 					afterInnerProps
 				/>
 			)}
-		</MaxiBlock>
+		</MaxiBlock.save>
 	);
 };
 

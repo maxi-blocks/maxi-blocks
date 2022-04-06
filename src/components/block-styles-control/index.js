@@ -25,8 +25,13 @@ import './editor.scss';
  * Component
  */
 const BlockStylesControl = props => {
-	const { blockStyle, onChange, isFirstOnHierarchy, className, clientId } =
-		props;
+	const {
+		onChange,
+		isFirstOnHierarchy,
+		className,
+		parentBlockStyle: blockStyle,
+		clientId,
+	} = props;
 
 	const classes = classnames('maxi-block-style-control', className);
 
@@ -56,14 +61,13 @@ const BlockStylesControl = props => {
 			});
 		}
 	};
-
 	return (
 		<>
 			{isFirstOnHierarchy ? (
 				<SelectControl
 					label={__('Block tone', 'maxi-blocks')}
 					className={classes}
-					value={blockStyle}
+					value={`maxi-${blockStyle}`}
 					options={getSelectorOptions()}
 					onChange={blockStyle => {
 						const dependsOnParent = blockStyle.includes('parent');

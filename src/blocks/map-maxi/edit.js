@@ -582,14 +582,12 @@ class edit extends MaxiBlockComponent {
 }
 
 const editSelect = withSelect(select => {
-	const { receiveMaxiSettings, receiveMaxiDeviceType } = select('maxiBlocks');
+	const { receiveMaxiSettings } = select('maxiBlocks');
 
-	const deviceType = receiveMaxiDeviceType();
 	const maxiSettings = receiveMaxiSettings();
 	const { google_api_key: apiKey = false } = maxiSettings;
 
 	return {
-		deviceType,
 		apiKey,
 	};
 });

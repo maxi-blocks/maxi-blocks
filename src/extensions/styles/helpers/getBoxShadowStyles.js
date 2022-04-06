@@ -105,17 +105,15 @@ const getBoxShadowStyles = ({
 				  })
 				: paletteColor;
 
-		const isColorDefault =
-			paletteStatus &&
-			isNumber(paletteColor) &&
-			paletteColor === defaultColor;
-
 		const isNotDefault =
-			(isNumber(horizontal) && horizontal !== defaultHorizontal) ||
-			(isNumber(vertical) && vertical !== defaultVertical) ||
-			(isNumber(blur) && blur !== defaultBlur) ||
-			(isNumber(spread) && spread !== defaultSpread) ||
-			(!!color && !isColorDefault);
+			(isNumber(horizontal) &&
+				horizontal !== 0 &&
+				horizontal !== defaultHorizontal) ||
+			(isNumber(vertical) &&
+				vertical !== 0 &&
+				vertical !== defaultVertical) ||
+			(isNumber(blur) && blur !== 0 && blur !== defaultBlur) ||
+			(isNumber(spread) && spread !== 0 && spread !== defaultSpread);
 
 		const horizontalValue = isNumber(horizontal)
 			? horizontal

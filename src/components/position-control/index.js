@@ -78,6 +78,8 @@ const PositionControl = props => {
 					{ label: 'Relative', value: 'relative' },
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
+					{ label: 'Static', value: 'static' },
+					{ label: 'Sticky', value: 'sticky' },
 				]}
 				value={
 					getLastBreakpointAttribute({

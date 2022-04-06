@@ -9,6 +9,7 @@ import {
 	useEffect,
 	useState,
 	cloneElement,
+	memo,
 } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 
@@ -17,23 +18,18 @@ import { select, useSelect } from '@wordpress/data';
  */
 import { getHasParallax } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
+import BlockInserter from '../block-inserter';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isArray, compact } from 'lodash';
+import { isEmpty, isArray, compact, isEqual } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-
-const WRAPPER_BLOCKS = [
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/group-maxi',
-];
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
@@ -97,6 +93,9 @@ const getInnerBlocksChild = ({
 	anchorLink,
 	isSave = false,
 	uniqueID,
+	ref,
+	clientId,
+	hasInnerBlocks,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -116,6 +115,13 @@ const getInnerBlocksChild = ({
 			...cloneElement(innerBlocksChildren, {
 				key: `maxi-inner-content__${uniqueID}`,
 			}),
+			...(!isSave && hasInnerBlocks && (
+				<BlockInserter.WrapperInserter
+					key={`maxi-block-wrapper-inserter__${clientId}`}
+					ref={ref}
+					clientId={clientId}
+				/>
+			)),
 		];
 
 	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
@@ -139,6 +145,13 @@ const getInnerBlocksChild = ({
 			key: `maxi-inner-content__${uniqueID}`,
 		}),
 		...secondGroup,
+		...(!isSave && hasInnerBlocks && (
+			<BlockInserter.WrapperInserter
+				key={`maxi-block-wrapper-inserter__${clientId}`}
+				ref={ref}
+				clientId={clientId}
+			/>
+		)),
 	];
 };
 
@@ -153,6 +166,8 @@ const InnerBlocksBlock = forwardRef(
 			isSave,
 			anchorLink,
 			innerBlocksSettings,
+			clientId,
+			hasInnerBlocks,
 			...props
 		},
 		ref
@@ -180,6 +195,9 @@ const InnerBlocksBlock = forwardRef(
 				anchorLink,
 				isSave,
 				uniqueID,
+				ref,
+				clientId,
+				hasInnerBlocks,
 			})
 		);
 
@@ -194,7 +212,7 @@ const InnerBlocksBlock = forwardRef(
 	}
 );
 
-const MaxiBlock = forwardRef((props, ref) => {
+const MaxiBlockContent = forwardRef((props, ref) => {
 	const {
 		clientId,
 		blockName,
@@ -214,30 +232,13 @@ const MaxiBlock = forwardRef((props, ref) => {
 		classes: customClasses,
 		paletteClasses,
 		hasLink,
+		useInnerBlocks = false,
 		hasInnerBlocks = false,
 		...extraProps
 	} = props;
 
-	// Adds hover class to show the appender on wrapper blocks
-	if (WRAPPER_BLOCKS.includes(blockName) && ref?.current) {
-		const el = ref.current;
-		const appenders = Array.from(
-			el.querySelectorAll('.block-list-appender')
-		);
-		const appender = appenders[appenders.length - 1];
-
-		if (appender) {
-			el.addEventListener('mouseover', () => {
-				el.classList.add('maxi-block--hovered');
-				appender.classList.add('block-list-appender--show');
-			});
-
-			el.addEventListener('mouseout', () => {
-				el.classList.remove('maxi-block--hovered');
-				appender.classList.remove('block-list-appender--show');
-			});
-		}
-	}
+	// Is just necessary for the memo() part
+	delete extraProps.attributes;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -345,10 +346,59 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	if (!hasInnerBlocks)
+	if (!useInnerBlocks)
 		return <MainBlock {...blockProps}>{children}</MainBlock>;
 
-	return <InnerBlocksBlock {...blockProps}>{children}</InnerBlocksBlock>;
+	return (
+		<InnerBlocksBlock
+			{...blockProps}
+			clientId={clientId}
+			hasInnerBlocks={hasInnerBlocks}
+		>
+			{children}
+		</InnerBlocksBlock>
+	);
 });
+
+const MaxiBlock = memo(
+	forwardRef((props, ref) => {
+		return <MaxiBlockContent {...props} ref={ref} />;
+	}),
+	(rawOldProps, rawNewProps) => {
+		if (!isEqual(rawOldProps.attributes, rawNewProps.attributes))
+			return false;
+
+		const propsCleaner = props => {
+			const response = {};
+
+			const propsToClean = [
+				'innerBlocksSettings',
+				'resizableObject',
+				'tagName',
+				'background',
+				'motion',
+				'children',
+			];
+
+			Object.entries(props).forEach(([key, value]) => {
+				if (
+					!propsToClean.includes(key) &&
+					typeof value !== 'function' &&
+					typeof value !== 'object'
+				)
+					response[key] = value;
+			});
+
+			return response;
+		};
+
+		const oldProps = propsCleaner(rawOldProps);
+		const newProps = propsCleaner(rawNewProps);
+
+		return isEqual(oldProps, newProps);
+	}
+);
+
+MaxiBlock.save = props => <MaxiBlockContent {...props} isSave />;
 
 export default MaxiBlock;

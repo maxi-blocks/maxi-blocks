@@ -114,6 +114,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

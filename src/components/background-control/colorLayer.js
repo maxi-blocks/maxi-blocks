@@ -12,6 +12,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -33,6 +34,7 @@ const ColorLayerContent = props => {
 		breakpoint,
 		isLayer = false,
 		globalProps,
+		isToolbar = false,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -133,25 +135,21 @@ const ColorLayerContent = props => {
 				isHover={isHover}
 				clientId={clientId}
 				deviceType={breakpoint}
+				isToolbar={isToolbar}
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-color-clip-path`,
-						breakpoint,
-						attributes: colorOptions,
-						isHover,
-					})}
-					onChange={val => {
-						onChange({
-							[getAttributeKey(
-								'background-color-clip-path',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						});
-					}}
+					onChange={obj => onChange(obj)}
+					{...getGroupAttributes(
+						props,
+						'clipPath',
+						false,
+						'background-color-'
+					)}
+					{...colorOptions}
+					isHover={isHover}
+					prefix='background-color-'
+					breakpoint={breakpoint}
 				/>
 			)}
 		</>
@@ -159,7 +157,10 @@ const ColorLayerContent = props => {
 };
 
 const ColorLayer = props => {
-	const { breakpoint, ...rest } = props;
+	const { breakpoint, disableResponsiveTabs = false, ...rest } = props;
+
+	if (disableResponsiveTabs)
+		return <ColorLayerContent breakpoint={breakpoint} {...rest} />;
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>

@@ -7,15 +7,18 @@ import { useSelect, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../../../advanced-number-control';
+import AlignmentControl from '../../../alignment-control';
 import FontFamilySelector from '../../../font-family-selector';
-import ToolbarPopover from '../toolbar-popover';
+import Icon from '../../../icon';
+import ResponsiveTabsControl from '../../../responsive-tabs-control';
+import TextBold from '../text-bold';
 import TextFormatStrikethrough from '../text-format-strikethrough';
-import TextFormatUnderline from '../text-format-underline';
-import TextFormatOverline from '../text-format-overline';
 import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
-import TextFormatCode from '../text-format-code';
-import AdvancedNumberControl from '../../../advanced-number-control';
+import TextFormatUnderline from '../text-format-underline';
+import TextItalic from '../text-italic';
+import ToolbarPopover from '../toolbar-popover';
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -31,8 +34,11 @@ import {
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarType } from '../../../../icons';
-import { ResponsiveTabsControl } from '../../..';
+import {
+	toolbarTextSize,
+	toolbarTextLineHeight,
+	toolbarTextLetterSpacing,
+} from '../../../../icons';
 
 /**
  * Component
@@ -51,20 +57,12 @@ const TextOptions = props => {
 
 	return (
 		<>
+			<Icon
+				className='toolbar-item__text-size-icon'
+				icon={toolbarTextSize}
+			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__size'
-				label={__('Size', 'maxi-blocks')}
-				enableUnit
-				unit={getValue(`${prefix}font-size-unit`, breakpoint, avoidXXL)}
-				defaultUnit={getDefault(`${prefix}font-size-unit`, breakpoint)}
-				onChangeUnit={val => {
-					onChangeFormat(
-						{
-							[`${prefix}font-size-unit`]: val,
-						},
-						breakpoint
-					);
-				}}
 				value={getValue(`${prefix}font-size`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
 				onChangeValue={val => {
@@ -78,9 +76,6 @@ const TextOptions = props => {
 				onReset={() =>
 					onChangeFormat(
 						{
-							[`${prefix}font-size-unit`]: getDefault(
-								`${prefix}font-size-unit`
-							),
 							[`${prefix}font-size`]: getDefault(
 								`${prefix}font-size`
 							),
@@ -89,31 +84,13 @@ const TextOptions = props => {
 					)
 				}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%']}
+			/>
+			<Icon
+				className='toolbar-item__text-size-icon'
+				icon={toolbarTextLineHeight}
 			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__line-height'
-				label={__('Line Height', 'maxi-blocks')}
-				enableUnit
-				unit={
-					getValue(
-						`${prefix}line-height-unit`,
-						breakpoint,
-						avoidXXL
-					) || ''
-				}
-				defaultUnit={getDefault(
-					`${prefix}line-height-unit`,
-					breakpoint
-				)}
-				onChangeUnit={val => {
-					onChangeFormat(
-						{
-							[`${prefix}line-height-unit`]: val,
-						},
-						breakpoint
-					);
-				}}
 				value={getValue(`${prefix}line-height`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
 				onChangeValue={val => {
@@ -127,9 +104,6 @@ const TextOptions = props => {
 				onReset={() =>
 					onChangeFormat(
 						{
-							[`${prefix}line-height-unit`]: getDefault(
-								`${prefix}line-height-unit`
-							),
 							[`${prefix}line-height`]: getDefault(
 								`${prefix}line-height`
 							),
@@ -138,30 +112,13 @@ const TextOptions = props => {
 					)
 				}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%', '-']}
+			/>
+			<Icon
+				className='toolbar-item__text-size-icon'
+				icon={toolbarTextLetterSpacing}
 			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__letter-spacing'
-				label={__('Letter Spacing', 'maxi-blocks')}
-				enableUnit
-				allowedUnits={['px', 'em', 'vw']}
-				unit={getValue(
-					`${prefix}letter-spacing-unit`,
-					breakpoint,
-					avoidXXL
-				)}
-				defaultUnit={getDefault(
-					`${prefix}letter-spacing-unit`,
-					breakpoint
-				)}
-				onChangeUnit={val => {
-					onChangeFormat(
-						{
-							[`${prefix}letter-spacing-unit`]: val,
-						},
-						breakpoint
-					);
-				}}
 				value={getValue(
 					`${prefix}letter-spacing`,
 					breakpoint,
@@ -179,9 +136,6 @@ const TextOptions = props => {
 				onReset={() =>
 					onChangeFormat(
 						{
-							[`${prefix}letter-spacing-unit`]: getDefault(
-								`${prefix}letter-spacing-unit`
-							),
 							[`${prefix}letter-spacing`]: '',
 						},
 						breakpoint
@@ -199,11 +153,11 @@ const TextOptions = props => {
  */
 const TypographyControl = withFormatValue(props => {
 	const {
+		textLevel,
 		blockName,
 		onChange,
 		breakpoint,
 		isList,
-		textLevel,
 		formatValue,
 		clientId,
 		prefix = '',
@@ -212,6 +166,7 @@ const TypographyControl = withFormatValue(props => {
 		isHover = false,
 		styleCardPrefix,
 		isCaptionToolbar = false,
+		name,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
@@ -219,7 +174,7 @@ const TypographyControl = withFormatValue(props => {
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const { styleCard } = useSelect(select => {
-		const { receiveMaxiSelectedStyleCard } = wp.data.select(
+		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
 
@@ -343,102 +298,141 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	return (
-		<ToolbarPopover
-			className='toolbar-item__typography-control'
-			tooltip={__('Typography', 'maxi-blocks')}
-			icon={toolbarType}
-			advancedOptions='typography'
-		>
-			<div className='toolbar-item__popover__font-options'>
-				<div className='toolbar-item__popover__font-options__font'>
-					<FontFamilySelector
-						className='toolbar-item__popover__font-options__font__selector'
-						defaultValue={getDefaultAttribute(
-							`font-family-${breakpoint}`
-						)}
-						font={getValue('font-family')}
-						onChange={font => {
-							onChangeFormat({
-								'font-family': font.value,
-							});
-						}}
-						theme='dark'
-					/>
-				</div>
-				<>
+		<div className='toolbar-item toolbar-item__typography-control'>
+			<ToolbarPopover
+				tooltip={__('Edit text', 'maxi-blocks')}
+				text={__('Edit', 'maxi-blocks')}
+				advancedOptions='typography'
+			>
+				<div className='toolbar-item__popover__font-options'>
 					<ResponsiveTabsControl
 						className='toolbar-item__typography-control__typography-tabs'
 						breakpoint={breakpoint}
 					>
-						<TextOptions
-							getValue={getValue}
-							getDefault={getDefault}
-							onChangeFormat={onChangeFormat}
-							prefix={prefix}
-							minMaxSettings={minMaxSettings}
-							minMaxSettingsLetterSpacing={
-								minMaxSettingsLetterSpacing
-							}
-							avoidXXL={!styleCards}
-						/>
+						<div>
+							<div className='toolbar-item__popover__font-options__wrap toolbar-item__popover__font-options__wrap_family'>
+								<div className='toolbar-item__popover__font-options__font'>
+									<FontFamilySelector
+										className='toolbar-item__popover__font-options__font__selector'
+										defaultValue={getDefaultAttribute(
+											`font-family-${breakpoint}`
+										)}
+										font={getValue('font-family')}
+										onChange={font => {
+											onChangeFormat({
+												'font-family': font.value,
+											});
+										}}
+										theme='dark'
+									/>
+								</div>
+								<div className='toolbar-item__typography-control__extra-text-options'>
+									<AlignmentControl
+										{...getGroupAttributes(
+											props,
+											'textAlignment'
+										)}
+										onChange={obj => onChange(obj)}
+										breakpoint={breakpoint}
+										type='text'
+										isToolbar
+									/>
+									<TextBold
+										{...getGroupAttributes(
+											props,
+											'typography'
+										)}
+										formatValue={formatValue}
+										blockName={name}
+										onChange={obj => onChange(obj)}
+										isList={isList}
+										breakpoint={breakpoint}
+										textLevel={textLevel}
+										styleCard={styleCard}
+										isCaptionToolbar
+									/>
+									<TextItalic
+										{...getGroupAttributes(
+											props,
+											'typography'
+										)}
+										formatValue={formatValue}
+										blockName={name}
+										onChange={obj => onChange(obj)}
+										isList={isList}
+										breakpoint={breakpoint}
+										textLevel={textLevel}
+										styleCard={styleCard}
+										isCaptionToolbar
+									/>
+									<TextFormatUnderline
+										{...getGroupAttributes(
+											props,
+											'typography'
+										)}
+										formatValue={formatValue}
+										onChange={obj => onChange(obj)}
+										isList={isList}
+										breakpoint={breakpoint}
+										textLevel={textLevel}
+										styleCard={styleCard}
+									/>
+									<TextFormatStrikethrough
+										{...getGroupAttributes(
+											props,
+											'typography'
+										)}
+										formatValue={formatValue}
+										onChange={obj => onChange(obj)}
+										isList={isList}
+										breakpoint={breakpoint}
+										textLevel={textLevel}
+										styleCard={styleCard}
+									/>
+									<TextFormatSubscript
+										{...getGroupAttributes(
+											props,
+											'typography'
+										)}
+										formatValue={formatValue}
+										onChange={obj => onChange(obj)}
+										isList={isList}
+										breakpoint={breakpoint}
+										textLevel={textLevel}
+										styleCard={styleCard}
+									/>
+									<TextFormatSuperscript
+										{...getGroupAttributes(
+											props,
+											'typography'
+										)}
+										formatValue={formatValue}
+										onChange={obj => onChange(obj)}
+										isList={isList}
+										breakpoint={breakpoint}
+										textLevel={textLevel}
+										styleCard={styleCard}
+									/>
+								</div>
+							</div>
+							<div className='toolbar-item__popover__font-options__wrap toolbar-item__popover__font-options__wrap_inputs'>
+								<TextOptions
+									getValue={getValue}
+									getDefault={getDefault}
+									onChangeFormat={onChangeFormat}
+									prefix={prefix}
+									minMaxSettings={minMaxSettings}
+									minMaxSettingsLetterSpacing={
+										minMaxSettingsLetterSpacing
+									}
+									avoidXXL={!styleCards}
+								/>
+							</div>
+						</div>
 					</ResponsiveTabsControl>
-					<div className='toolbar-item__typography-control__extra-text-options'>
-						<TextFormatOverline
-							{...getGroupAttributes(props, 'typography')}
-							formatValue={formatValue}
-							onChange={obj => onChange(obj)}
-							isList={isList}
-							breakpoint={breakpoint}
-							textLevel={textLevel}
-							styleCard={styleCard}
-						/>
-						<TextFormatStrikethrough
-							{...getGroupAttributes(props, 'typography')}
-							formatValue={formatValue}
-							onChange={obj => onChange(obj)}
-							isList={isList}
-							breakpoint={breakpoint}
-							textLevel={textLevel}
-							styleCard={styleCard}
-						/>
-						<TextFormatUnderline
-							{...getGroupAttributes(props, 'typography')}
-							formatValue={formatValue}
-							onChange={obj => onChange(obj)}
-							isList={isList}
-							breakpoint={breakpoint}
-							textLevel={textLevel}
-							styleCard={styleCard}
-						/>
-						<TextFormatSubscript
-							{...getGroupAttributes(props, 'typography')}
-							formatValue={formatValue}
-							onChange={obj => onChange(obj)}
-							isList={isList}
-							breakpoint={breakpoint}
-							textLevel={textLevel}
-							styleCard={styleCard}
-						/>
-						<TextFormatSuperscript
-							{...getGroupAttributes(props, 'typography')}
-							formatValue={formatValue}
-							onChange={obj => onChange(obj)}
-							isList={isList}
-							breakpoint={breakpoint}
-							textLevel={textLevel}
-							styleCard={styleCard}
-						/>
-						<TextFormatCode
-							onChange={content => onChange({ content })}
-							isList={isList}
-							formatValue={formatValue}
-							textLevel={textLevel}
-							styleCard={styleCard}
-						/>
-					</div>
-				</>
-			</div>
-		</ToolbarPopover>
+				</div>
+			</ToolbarPopover>
+		</div>
 	);
 });
 

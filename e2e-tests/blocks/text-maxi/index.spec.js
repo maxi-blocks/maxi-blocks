@@ -27,6 +27,19 @@ import {
 } from '../../utils';
 
 const linkExample = 'test.com';
+
+const clickTextStyle = async (page, type = 'bold') => {
+	await page.waitForSelector('.toolbar-item__typography-control button');
+	await page.$eval('.toolbar-item__typography-control button', button =>
+		button.click()
+	);
+	await page.waitForSelector(`.toolbar-item__${type}`);
+	await page.$eval(`.toolbar-item__${type}`, button => button.click());
+
+	await page.keyboard.press('Escape');
+	await page.$eval('.maxi-text-block__content', el => el.focus());
+};
+
 describe('TextMaxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
@@ -108,7 +121,7 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-item__bold', button => button.click());
+		await clickTextStyle(page, 'bold');
 		await page.waitForTimeout(150);
 		await pressKeyTimes('ArrowRight', '4');
 		await page.waitForTimeout(150);
@@ -125,8 +138,7 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await page.waitForTimeout(150);
-		await page.waitForSelector('.toolbar-item__italic');
-		await page.$eval('.toolbar-item__italic', button => button.click());
+		await clickTextStyle(page, 'italic');
 		await page.waitForTimeout(150);
 		await pressKeyTimes('ArrowLeft', '5');
 		await page.waitForTimeout(150);
@@ -148,7 +160,7 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await page.waitForTimeout(150);
 
-		await page.$eval('.toolbar-item__bold', button => button.click());
+		await clickTextStyle(page, 'bold');
 		await page.waitForTimeout(150);
 		await pressKeyTimes('ArrowRight', '4');
 		await page.waitForTimeout(150);
@@ -164,8 +176,7 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await page.waitForTimeout(150);
-		await page.waitForSelector('.toolbar-item__italic');
-		await page.$eval('.toolbar-item__italic', button => button.click());
+		await clickTextStyle(page, 'italic');
 		await page.waitForTimeout(150);
 		await pressKeyTimes('ArrowLeft', '4');
 		await page.waitForTimeout(150);
@@ -626,7 +637,7 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-item__bold', button => button.click());
+		await clickTextStyle(page, 'bold');
 		await page.waitForTimeout(150);
 		await page.keyboard.press('ArrowLeft');
 		await page.waitForTimeout(150);
@@ -669,9 +680,9 @@ describe('TextMaxi', () => {
 		await page.waitForSelector(
 			'.toolbar-item__popover__list-options__button'
 		);
-		await page.$eval(
+		await page.$$eval(
 			'.toolbar-item__popover__list-options__button',
-			button => button.click()
+			buttons => buttons[1].click()
 		);
 		await page.waitForTimeout(150);
 		await page.waitForTimeout(150);
@@ -700,9 +711,7 @@ describe('TextMaxi', () => {
 
 		// Change color
 		await page.waitForTimeout(200);
-		await page.$eval('.toolbar-item__text-options--color', button =>
-			button.click()
-		);
+		await page.$eval('.toolbar-item__text-color', button => button.click());
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.maxi-color-control__palette-box');
 		await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>

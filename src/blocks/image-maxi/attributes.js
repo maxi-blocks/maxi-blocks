@@ -108,10 +108,7 @@ const attributes = {
 	useInitSize: {
 		type: 'boolean',
 	},
-	clipPath: {
-		type: 'string',
-		default: '',
-	},
+	...attributesData.clipPath,
 	...attributesData.link,
 	...attributesData.textAlignment,
 	...attributesData.typography,
@@ -175,6 +172,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

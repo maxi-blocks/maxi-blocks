@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SC Link Checking link accordion 1`] = `
+Object {
+  "link": Object {
+    "active-color-global": true,
+    "hover-color-global": true,
+    "link-color": "",
+    "link-color-global": true,
+    "link-palette-color": 4,
+    "link-palette-opacity": 1,
+    "link-palette-status": true,
+    "visited-color-global": true,
+  },
+}
+`;

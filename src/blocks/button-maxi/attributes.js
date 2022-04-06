@@ -33,6 +33,7 @@ const attributes = {
 	...attributesData.icon,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,
+	...attributesData.iconBackgroundHover,
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,
@@ -191,6 +192,7 @@ const attributes = {
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

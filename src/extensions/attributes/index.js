@@ -60,6 +60,9 @@ const withAttributes = createHigherOrderComponent(
 			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
 			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
+			if (!attributes.isFirstOnHierarchy) {
+				attributes.blockStyle = 'maxi-parent';
+			}
 
 			// RTL
 			if (

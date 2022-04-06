@@ -11,10 +11,9 @@ const save = props => {
 	const name = 'maxi-blocks/column-maxi';
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
-			isSave
-			hasInnerBlocks
+			useInnerBlocks
 		/>
 	);
 };

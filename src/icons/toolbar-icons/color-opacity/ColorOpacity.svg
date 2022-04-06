@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14.934" height="14.752" viewBox="0 0 14.934 14.752">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_485" data-name="Rectangle 485" width="14.934" height="14.752" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_889" data-name="Group 889" transform="translate(0 0)">
+    <g id="Group_888" data-name="Group 888" clip-path="url(#clip-path)">
+      <path id="Path_260" data-name="Path 260" d="M6.206,3.536,1.015,8.658a.811.811,0,0,0,0,1.2L4.4,13.241a.863.863,0,0,0,.635.211,1.135,1.135,0,0,0,.634-.211l5.288-5.218-5.64-5.5M9.4,9.222H1.438" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <line id="Line_676" data-name="Line 676" y2="13.252" transform="translate(14.184 0.75)" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <line id="Line_677" data-name="Line 677" x2="1.723" transform="translate(12.306 1.796)" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <line id="Line_678" data-name="Line 678" x2="1.723" transform="translate(12.306 4.761)" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <line id="Line_679" data-name="Line 679" x2="1.723" transform="translate(12.306 4.761)" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <line id="Line_680" data-name="Line 680" x2="1.723" transform="translate(12.306 12.319)" fill="none" stroke="#081219" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

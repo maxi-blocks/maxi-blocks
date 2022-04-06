@@ -44,6 +44,7 @@ const attributes = {
 					'background-palette-opacity': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
+					order: 0,
 					id: 0,
 				},
 			],
@@ -128,6 +129,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

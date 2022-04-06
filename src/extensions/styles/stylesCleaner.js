@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { getCustomCssObject } from './helpers';
+import { getSelectorsCss } from '../../components/custom-css-control/utils';
 
 /**
  * External dependencies
@@ -102,8 +103,10 @@ const stylesCleaner = (obj, selectors, props) => {
 	const response = cloneDeep(obj);
 
 	// Process custom styles if they exist
-	if (!isEmpty(selectors)) {
-		const customCssObject = getCustomCssObject(selectors, props);
+	const newSelectors = getSelectorsCss(selectors, props);
+
+	if (!isEmpty(newSelectors)) {
+		const customCssObject = getCustomCssObject(newSelectors, props);
 		!isEmpty(customCssObject) && merge(response, customCssObject);
 	}
 

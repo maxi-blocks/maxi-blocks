@@ -1,13 +1,9 @@
 .toolbar-item__popover .maxi-font-level-control {
+	margin: -8px -8px 0;
 	&__button {
-		min-height: 1.5rem;
-		height: 1.5rem;
-		background: transparent;
-		color: #fff;
-		border: 1px solid #fff;
+		&:hover,
 		&[aria-pressed='true'] {
-			border: 2px solid #ff4a17;
-			font-weight: 400;
+			color: var(--maxi-secondary-color);
 		}
 	}
 }

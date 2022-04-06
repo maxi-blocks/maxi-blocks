@@ -19,6 +19,7 @@ function getBgLayersSelectorsCss(bgLayers) {
 		},
 	};
 	let bgLayersShowedOrder = 1;
+	let bgHoverLayersShowedOrder = 1;
 
 	bgLayers
 		?.sort((a, b) => a.order - b.order)
@@ -34,12 +35,13 @@ function getBgLayersSelectorsCss(bgLayers) {
 			const newBgHoverSelectors = {
 				...bgLayersSelectors['background hover'],
 				[`_${bgLayer.id}`]: {
-					label: `background ${bgLayer.type} ${bgLayer.order} on hover`,
+					label: `background ${bgLayer.type} ${bgHoverLayersShowedOrder} on hover`,
 					target: `:hover .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
 				},
 			};
 
 			bgLayersSelectors['background hover'] = newBgHoverSelectors;
+			bgHoverLayersShowedOrder += 1;
 			if (!bgLayer?.isHover) {
 				bgLayersSelectors.background = newBgLayersSelectors;
 				bgLayersShowedOrder += 1;

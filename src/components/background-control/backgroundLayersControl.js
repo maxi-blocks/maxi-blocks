@@ -372,16 +372,22 @@ const BackgroundLayersControl = ({
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
 
+	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
+		Math.max(
+			...layers.map(layer =>
+				typeof layer[parameter] === 'number' ? layer[parameter] : 0
+			)
+		) + 1;
+
+	if (!allLayers.every(layer => layer.order)) {
+		allLayers.forEach((layer, index, array) => {
+			layer.order = getLayerUniqueParameter('order', array);
+		});
+	}
+
 	allLayers.sort((a, b) => a.order - b.order);
 
 	const [selector, changeSelector] = useState(null);
-
-	const getLayerUniqueParameter = parameter =>
-		allLayers && !isEmpty(allLayers)
-			? allLayers.reduce((layerA, layerB) =>
-					layerA[parameter] > layerB[parameter] ? layerA : layerB
-			  )[parameter] + 1
-			: 1;
 
 	const getLayerLabel = type => {
 		switch (type) {

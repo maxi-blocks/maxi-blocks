@@ -5,8 +5,18 @@ import { isNil, isEmpty, without } from 'lodash';
 
 function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {
-		background: {},
-		'background hover': {},
+		background: {
+			'background-displayer': {
+				label: 'background wrapper',
+				target: ' .maxi-background-displayer',
+			},
+		},
+		'background hover': {
+			'background-displayer': {
+				label: 'background wrapper on hover',
+				target: ':hover .maxi-background-displayer',
+			},
+		},
 	};
 	let bgLayersShowedOrder = 1;
 
@@ -24,9 +34,7 @@ function getBgLayersSelectorsCss(bgLayers) {
 			const newBgHoverSelectors = {
 				...bgLayersSelectors['background hover'],
 				[`_${bgLayer.id}`]: {
-					label: `background ${bgLayer.type} ${
-						bgLayer.order + 1
-					} on hover`,
+					label: `background ${bgLayer.type} ${bgLayer.order} on hover`,
 					target: `:hover .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
 				},
 			};
@@ -71,8 +79,9 @@ export function getCategoriesCss(categories, attributes) {
 
 	return without(
 		categories,
-		isEmpty(bgLayers) && 'background',
-		isEmpty(bgLayersHover) && 'background hover',
-		!blockBackgroundHoverStatus && 'background hover'
+		isEmpty(bgLayers) && isEmpty(bgLayersHover) && 'background',
+		((isEmpty(bgLayers) && isEmpty(bgLayersHover)) ||
+			!blockBackgroundHoverStatus) &&
+			'background hover'
 	);
 }

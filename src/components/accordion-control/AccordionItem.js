@@ -17,10 +17,11 @@ const AccordionItem = props => {
 		isExpanded,
 		toggleExpanded,
 		uuid,
+		'data-name': dataName,
 	} = props;
 
 	return (
-		<div className={className}>
+		<div className={className} data-name={dataName}>
 			<AccordionItemHeading className={headingClassName}>
 				<AccordionItemButton
 					className='maxi-accordion-control__item__button'

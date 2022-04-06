@@ -8,14 +8,21 @@ import { SelectControl, TextControl } from '@wordpress/components';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import AxisControl from '../axis-control';
+import BoxShadowControl from '../box-shadow-control';
+import BackgroundControl from '../background-control';
 import ColorControl from '../color-control';
-import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import InfoBox from '../info-box';
+import ToggleSwitch from '../toggle-switch';
 import OpacityControl from '../opacity-control';
+import SettingTabsControl from '../setting-tabs-control';
 import SvgColor from '../svg-color';
 import {
 	getDefaultAttribute,
 	getColorRGBAString,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	setHoverAttributes,
 } from '../../extensions/styles';
 
 /**
@@ -146,8 +153,7 @@ const MapControl = props => {
 };
 
 export const MapMarkersControl = props => {
-	const { onChange, parentBlockStyle, changeSVGContent, svgAttributes } =
-		props;
+	const { onChange, parentBlockStyle, deviceType, changeSVGContent } = props;
 
 	return (
 		<>
@@ -175,105 +181,142 @@ export const MapMarkersControl = props => {
 					</div>
 				))}
 			</div>
-			<OpacityControl
-				label={__('Icon opacity', 'maxi-blocks')}
-				opacity={props['map-marker-opacity']}
-				onChange={val => {
-					onChange({
-						'map-marker-opacity': val,
-					});
-					changeSVGContent(val, 'opacity');
-				}}
-			/>
-			<AdvancedNumberControl
-				label={__('Icon size', 'maxi-blocks')}
-				min={15}
-				max={40}
-				initial={20}
-				step={1}
-				value={props['map-marker-scale']}
-				onChangeValue={val => {
-					onChange({ 'map-marker-scale': val });
-					changeSVGContent(val, ' width');
-				}}
-				onReset={() => {
-					const defaultAttr = getDefaultAttribute('map-marker-scale');
-					onChange({
-						'map-marker-scale': defaultAttr,
-					});
-					changeSVGContent(defaultAttr, ' width');
-				}}
-			/>
-			{/* <ToggleSwitch
-				label={__('Set custom icon colours', 'maxi-block')}
-				selected={props['map-marker-custom-color-status']}
-				onChange={val =>
-					onChange({
-						'map-marker-custom-color-status': val,
-					})
-				}
-			/>
-			{props['map-marker-custom-color-status'] && (
+			{props['map-provider'] === 'openstreetmap' ? (
 				<>
-					<ColorControl
-						label={__('Marker Fill', 'maxi-blocks')}
-						disableOpacity
-						color={props['map-marker-fill-color']}
-						prefix='map-marker-fill-'
-						onChange={({ color }) =>
-							onChange({ 'map-marker-fill-color': color })
-						}
-						disablePalette
+					<OpacityControl
+						label={__('Icon opacity', 'maxi-blocks')}
+						opacity={props['svg-fill-palette-opacity']}
+						onChange={val => {
+							onChange({
+								'svg-fill-palette-opacity': val,
+							});
+
+							changeSVGContent(val, 'opacity');
+						}}
 					/>
-					<ColorControl
-						label={__('Marker Stroke', 'maxi-blocks')}
-						disableOpacity
-						color={props['map-marker-stroke-color']}
-						prefix='map-marker-stroke-'
-						onChange={({ color }) =>
-							onChange({ 'map-marker-stroke-color': color })
-						}
-						disablePalette
+					<AdvancedNumberControl
+						label={__('Icon size', 'maxi-blocks')}
+						min={15}
+						max={40}
+						initial={20}
+						step={1}
+						value={getLastBreakpointAttribute({
+							target: 'svg-width',
+							breakpoint: deviceType,
+							attributes: props,
+						})}
+						onChangeValue={val => {
+							onChange({
+								[`svg-width-${deviceType}`]: val,
+							});
+
+							changeSVGContent(val, ' width');
+						}}
+						onReset={() => {
+							const defaultAttr =
+								getDefaultAttribute('svg-width-general');
+							onChange({
+								[`svg-width-${deviceType}`]: defaultAttr,
+							});
+							changeSVGContent(defaultAttr, ' width');
+						}}
+					/>
+					<SvgColor
+						{...props}
+						type='fill'
+						label={__('Icon', 'maxi-blocks')}
+						onChange={obj => {
+							onChange(obj);
+
+							const fillColorStr = getColorRGBAString({
+								firstVar: 'icon-fill',
+								secondVar: `color-${obj['svg-fill-palette-color']}`,
+								opacity: obj['svg-fill-palette-opacity'],
+								blockStyle: parentBlockStyle,
+							});
+
+							changeSVGContent(
+								obj['svg-fill-palette-status']
+									? fillColorStr
+									: obj['svg-fill-color'],
+								'fill'
+							);
+						}}
 					/>
 				</>
-			)} */}
-			<SvgColor
-				{...svgAttributes}
-				type='fill'
-				label={__('Icon', 'maxi-blocks')}
-				onChange={obj => {
-					onChange(obj);
-
-					const fillColorStr = getColorRGBAString({
-						firstVar: 'icon-fill',
-						secondVar: `color-${obj['svg-fill-palette-color']}`,
-						opacity: obj['svg-fill-palette-opacity'],
-						blockStyle: parentBlockStyle,
-					});
-
-					changeSVGContent(
-						obj['svg-fill-palette-status']
-							? fillColorStr
-							: obj['svg-fill-color'],
-						'fill',
-						'map-marker-icon'
-					);
-				}}
-			/>
+			) : (
+				<>
+					<OpacityControl
+						label={__('Marker Opacity', 'maxi-blocks')}
+						opacity={props['map-marker-opacity']}
+						onChange={val =>
+							onChange({
+								'map-marker-opacity': val,
+							})
+						}
+					/>
+					<AdvancedNumberControl
+						label={__('Marker Scale', 'maxi-blocks')}
+						min={1}
+						max={10}
+						initial={1}
+						step={1}
+						value={props['map-marker-scale']}
+						onChangeValue={val =>
+							onChange({ 'map-marker-scale': val })
+						}
+						onReset={() =>
+							onChange({
+								'map-marker-scale':
+									getDefaultAttribute('map-marker-scale'),
+							})
+						}
+					/>
+					<ToggleSwitch
+						label={__('Custom Maker Colours', 'maxi-block')}
+						selected={props['map-marker-custom-color-status']}
+						onChange={val =>
+							onChange({
+								'map-marker-custom-color-status': val,
+							})
+						}
+					/>
+					{props['map-marker-custom-color-status'] && (
+						<>
+							<ColorControl
+								label={__('Marker Fill', 'maxi-blocks')}
+								disableOpacity
+								color={props['map-marker-fill-color']}
+								prefix='map-marker-fill-'
+								onChange={({ color }) =>
+									onChange({ 'map-marker-fill-color': color })
+								}
+								disablePalette
+							/>
+							<ColorControl
+								label={__('Marker Stroke', 'maxi-blocks')}
+								disableOpacity
+								color={props['map-marker-stroke-color']}
+								prefix='map-marker-stroke-'
+								onChange={({ color }) =>
+									onChange({
+										'map-marker-stroke-color': color,
+									})
+								}
+								disablePalette
+							/>
+						</>
+					)}
+				</>
+			)}
 		</>
 	);
 };
 
 export const MapPopupsControl = props => {
-	const {
-		onChange,
-		parentBlockStyle,
-		deviceType,
-		changeSVGContent,
-		changeSVGStrokeWidth,
-		svgAttributes,
-	} = props;
+	const { onChange, clientId, deviceType, attributes } = props;
 	const prefix = 'popup-';
+	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
 
 	return (
 		<>
@@ -285,9 +328,6 @@ export const MapPopupsControl = props => {
 						onClick={e =>
 							onChange({
 								'map-popup': +e.currentTarget.dataset.item,
-								'map-popup-icon': ReactDOMServer.renderToString(
-									mapPopups[item]
-								),
 							})
 						}
 						className={`maxi-map-control__popups__item ${
@@ -300,70 +340,175 @@ export const MapPopupsControl = props => {
 					</div>
 				))}
 			</div>
-			<SvgColor
-				{...svgAttributes}
-				type='fill'
-				label={__('Marker background', 'maxi-blocks')}
-				onChange={obj => {
-					onChange(obj);
-
-					const fillColorStr = getColorRGBAString({
-						firstVar: 'icon-',
-						secondVar: `color-${
-							obj[`${prefix}svg-fill-palette-color`]
-						}`,
-						opacity: obj[`${prefix}svg-fill-palette-opacity`],
-						blockStyle: parentBlockStyle,
-					});
-
-					changeSVGContent(
-						obj[`${prefix}svg-fill-palette-status`]
-							? fillColorStr
-							: obj[`${prefix}svg-fill-color`],
-						'fill',
-						'map-popup-icon'
-					);
-				}}
-				prefix='popup-'
-				disableOpacity={false}
-			/>
-			<SvgColor
-				{...svgAttributes}
-				type='line'
-				label={__('Marker border', 'maxi-blocks')}
-				onChange={obj => {
-					onChange(obj);
-
-					const fillColorStr = getColorRGBAString({
-						firstVar: 'icon-line',
-						secondVar: `color-${
-							obj[`${prefix}svg-line-palette-color`]
-						}`,
-						opacity: obj[`${prefix}svg-line-palette-opacity`],
-						blockStyle: parentBlockStyle,
-					});
-
-					changeSVGContent(
-						obj[`${prefix}svg-line-palette-status`]
-							? fillColorStr
-							: obj[`${prefix}svg-line-color`],
-						'stroke',
-						'map-popup-icon'
-					);
-				}}
-				prefix='popup-'
-				disableOpacity={false}
-			/>
-			<SvgStrokeWidthControl
-				{...svgAttributes}
-				prefix={`${prefix}svg-`}
-				onChange={obj => {
-					onChange(obj);
-					changeSVGStrokeWidth(
-						obj[`${prefix}svg-stroke-${deviceType}`]
-					);
-				}}
+			<BackgroundControl
+				{...getGroupAttributes(
+					attributes,
+					['background', 'backgroundColor'],
+					false,
+					prefix
+				)}
+				prefix={prefix}
+				onChange={obj => onChange(obj)}
+				disableNoneStyle
+				disableImage
+				disableGradient
+				disableVideo
+				disableSVG
+				disableClipPath
+				clientId={clientId}
 				breakpoint={deviceType}
+			/>
+			<ColorControl
+				label={__('Border', 'maxi-blocks')}
+				color={getLastBreakpointAttribute({
+					target: `${prefix}border-color`,
+					breakpoint: deviceType,
+					attributes,
+				})}
+				prefix={`${prefix}border-`}
+				useBreakpointForDefault
+				paletteStatus={getLastBreakpointAttribute({
+					target: `${prefix}border-palette-status`,
+					breakpoint: deviceType,
+					attributes,
+				})}
+				paletteColor={getLastBreakpointAttribute({
+					target: `${prefix}border-palette-color`,
+					breakpoint: deviceType,
+					attributes,
+				})}
+				paletteOpacity={getLastBreakpointAttribute({
+					target: `${prefix}border-palette-opacity`,
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) => {
+					onChange({
+						[`${prefix}border-palette-status-${deviceType}`]:
+							paletteStatus,
+						[`${prefix}border-palette-color-${deviceType}`]:
+							paletteColor,
+						[`${prefix}border-palette-opacity-${deviceType}`]:
+							paletteOpacity,
+						[`${prefix}border-color-${deviceType}`]: color,
+					});
+				}}
+				disableImage
+				disableVideo
+				disableGradient
+				deviceType={deviceType}
+				clientId={clientId}
+			/>
+			<AxisControl
+				{...getGroupAttributes(
+					attributes,
+					'borderWidth',
+					false,
+					prefix
+				)}
+				target={`${prefix}border`}
+				auxTarget='width'
+				label={__('Border width', 'maxi-blocks')}
+				onChange={obj => onChange(obj)}
+				breakpoint={deviceType}
+				allowedUnits={['px', 'em', 'vw']}
+				minMaxSettings={{
+					px: {
+						min: 0,
+						max: 99,
+					},
+					em: {
+						min: 0,
+						max: 10,
+					},
+					vw: {
+						min: 0,
+						max: 10,
+					},
+				}}
+				disableAuto
+			/>
+			<SettingTabsControl
+				items={[
+					{
+						label: __('Normal state', 'maxi-blocks'),
+						content: (
+							<BoxShadowControl
+								{...getGroupAttributes(
+									attributes,
+									'boxShadow',
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								onChange={obj => onChange(obj)}
+								breakpoint={deviceType}
+								clientId={clientId}
+							/>
+						),
+					},
+					{
+						label: __('Hover state', 'maxi-blocks'),
+						content: (
+							<>
+								<ToggleSwitch
+									label={__(
+										'Enable Box Shadow Hover',
+										'maxi-blocks'
+									)}
+									selected={hoverStatus}
+									className='maxi-box-shadow-status-hover'
+									onChange={val =>
+										onChange({
+											...(val &&
+												setHoverAttributes(
+													{
+														...getGroupAttributes(
+															attributes,
+															'boxShadow',
+															false,
+															prefix
+														),
+													},
+													{
+														...getGroupAttributes(
+															attributes,
+															'boxShadow',
+															true,
+															prefix
+														),
+													}
+												)),
+											[`${prefix}box-shadow-status-hover`]:
+												val,
+										})
+									}
+								/>
+								{hoverStatus && (
+									<BoxShadowControl
+										{...getGroupAttributes(
+											attributes,
+											'boxShadow',
+											true,
+											prefix
+										)}
+										prefix={prefix}
+										onChange={obj => onChange(obj)}
+										breakpoint={deviceType}
+										isHover
+										clientId={clientId}
+									/>
+								)}
+							</>
+						),
+						extraIndicators: [`${prefix}box-shadow-status-hover`],
+					},
+				]}
 			/>
 		</>
 	);

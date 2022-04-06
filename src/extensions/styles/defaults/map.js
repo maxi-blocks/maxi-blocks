@@ -41,9 +41,6 @@ const map = {
 		type: 'number',
 		default: 1,
 	},
-	'map-popup-icon': {
-		type: 'string',
-	},
 	'map-is-dragging-marker': {
 		type: 'boolean',
 		default: false,

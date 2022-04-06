@@ -35,8 +35,6 @@ const Inspector = props => {
 	const {
 		attributes,
 		changeSVGContent,
-		changeSVGContentWithBlockStyle,
-		changeSVGStrokeWidth,
 		deviceType,
 		maxiSetAttributes,
 		clientId,
@@ -90,7 +88,7 @@ const Inspector = props => {
 												<MapMarkersControl
 													{...getGroupAttributes(
 														attributes,
-														'map'
+														['map', 'svg']
 													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)
@@ -101,10 +99,7 @@ const Inspector = props => {
 													changeSVGContent={
 														changeSVGContent
 													}
-													svgAttributes={getGroupAttributes(
-														attributes,
-														'svg'
-													)}
+													deviceType={deviceType}
 												/>
 											),
 										},
@@ -246,15 +241,8 @@ const Inspector = props => {
 														changeSVGContent={
 															changeSVGContent
 														}
-														changeSVGStrokeWidth={
-															changeSVGStrokeWidth
-														}
-														svgAttributes={getGroupAttributes(
-															attributes,
-															'svg',
-															false,
-															'popup-'
-														)}
+														clientId={clientId}
+														attributes={attributes}
 													/>
 												</>
 											),

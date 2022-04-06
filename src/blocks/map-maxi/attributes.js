@@ -12,6 +12,7 @@ import * as attributesData from '../../extensions/styles/defaults/index';
 /**
  * Attributes
  */
+const prefix = 'popup-';
 const attributes = {
 	...attributesData.global,
 
@@ -35,22 +36,60 @@ const attributes = {
 			'description-font-size-general': 16,
 		},
 	}),
-	...attributesData.svg,
 	...prefixAttributesCreator({
 		obj: attributesData.svg,
-		prefix: 'popup-',
+		prefix: '',
 		diffValAttr: {
-			'popup-svg-stroke-general': 1,
+			'svg-width-general': 20,
+			'svg-fill-palette-opacity': 1,
 		},
 	}),
+	...prefixAttributesCreator({
+		obj: attributesData.svg,
+		prefix,
+		diffValAttr: {
+			[`${prefix}svg-stroke-general`]: 1,
+		},
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.background,
+		prefix,
+		diffValAttr: {
+			[`${prefix}background-active-media-general`]: 'color',
+		},
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundColor,
+		prefix,
+	}),
 	...attributesData.border,
+	...prefixAttributesCreator({
+		obj: attributesData.border,
+		prefix,
+		diffValAttr: {
+			[`${prefix}border-style-general`]: 'solid',
+			[`${prefix}border-palette-color-general`]: 4,
+		},
+	}),
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
 	...attributesData.borderRadiusHover,
 	...attributesData.borderWidth,
+	...prefixAttributesCreator({
+		obj: attributesData.borderWidth,
+		prefix,
+	}),
 	...attributesData.borderWidthHover,
 	...attributesData.boxShadow,
+	...prefixAttributesCreator({
+		obj: attributesData.boxShadow,
+		prefix,
+	}),
 	...attributesData.boxShadowHover,
+	...prefixAttributesCreator({
+		obj: attributesData.boxShadowHover,
+		prefix,
+	}),
 	...{
 		...attributesData.size,
 		'height-general': {

@@ -391,4 +391,213 @@ describe('Responsive attributes mechanisms', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', async () => {
+		let borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		await borderAccordion.$eval(
+			'.maxi-axis-control__content__item__border-radius input',
+			input => input.focus()
+		);
+		await page.keyboard.type('100', { delay: 100 });
+
+		const expectRadiusOnM = {
+			'border-top-left-radius-general': 100,
+			'border-top-left-radius-m': undefined,
+		};
+
+		const radiusOnM = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+		]);
+
+		expect(radiusOnM).toStrictEqual(expectRadiusOnM);
+
+		await changeResponsive(page, 'xl');
+
+		borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		await borderAccordion.$eval(
+			'.maxi-axis-control__content__item__border-radius input',
+			input => input.focus()
+		);
+		await page.keyboard.type('150', { delay: 100 });
+
+		const expectRadiusOnXl = {
+			'border-top-left-radius-general': 100,
+			'border-top-left-radius-m': 100,
+			'border-top-left-radius-xl': 150,
+		};
+
+		const radiusOnXl = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+			'border-top-left-radius-xl',
+		]);
+
+		expect(radiusOnXl).toStrictEqual(expectRadiusOnXl);
+
+		// Reset
+		await borderAccordion.$eval(
+			'.components-maxi-control__reset-button',
+			button => button.click()
+		);
+
+		const expectResetRadiusOnXl = {
+			'border-top-left-radius-general': 100,
+			'border-top-left-radius-m': 100,
+			'border-top-left-radius-xl': undefined,
+		};
+
+		const resetRadiusOnXl = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+			'border-top-left-radius-xl',
+		]);
+
+		expect(resetRadiusOnXl).toStrictEqual(expectResetRadiusOnXl);
+
+		await changeResponsive(page, 'm');
+
+		borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		// Reset
+		await borderAccordion.$eval(
+			'.components-maxi-control__reset-button',
+			button => button.click()
+		);
+
+		const expectResetRadiusOnM = {
+			'border-top-left-radius-general': undefined,
+			'border-top-left-radius-m': undefined,
+			'border-top-left-radius-xl': undefined,
+		};
+
+		const resetRadiusOnM = await getAttributes([
+			'border-top-left-radius-general',
+			'border-top-left-radius-m',
+			'border-top-left-radius-xl',
+		]);
+
+		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
+	});
+
+	it('On change XL default attributes from General responsive, changes on General and XL', async () => {
+		// Base responsive is "XL"
+		await setBrowserViewport({ width: 1425, height: 700 });
+
+		await createNewPost();
+		await insertBlock('Button Maxi');
+
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		const axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '0',
+		});
+
+		const expectPaddingOnM = {
+			'button-padding-top-general': 0,
+			'button-padding-top-xl': 0,
+		};
+
+		const paddingOnM = await getAttributes([
+			'button-padding-top-general',
+			'button-padding-top-xl',
+		]);
+
+		expect(paddingOnM).toStrictEqual(expectPaddingOnM);
+
+		await changeResponsive(page, 'xxl');
+
+		const expectPaddingOnXl = {
+			'button-padding-top-general': 0,
+			'button-padding-top-xl': 0,
+			'button-padding-top-xxl': 23,
+		};
+
+		const paddingOnXl = await getAttributes([
+			'button-padding-top-general',
+			'button-padding-top-xl',
+			'button-padding-top-xxl',
+		]);
+
+		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
+	});
+
+	it('On change XXL default attributes from XL screen, then change the screen size to XXL, on changing the General attribute it changes on General and XXL', async () => {
+		// Base responsive is "XL"
+		await setBrowserViewport({ width: 1425, height: 700 });
+
+		await createNewPost();
+		await insertBlock('Group Maxi');
+
+		await changeResponsive(page, 'xxl');
+
+		let accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		let axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '10',
+		});
+
+		await page.waitForTimeout(500);
+
+		const expectPaddingOnXl = {
+			'padding-top-general': 10,
+			'padding-top-xxl': 10,
+			'padding-top-xl': undefined,
+		};
+
+		const paddingOnXl = await getAttributes([
+			'padding-top-general',
+			'padding-top-xxl',
+			'padding-top-xl',
+		]);
+
+		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
+
+		await setBrowserViewport({ width: 3840, height: 2160 });
+
+		accordionPanel = await openSidebarTab(page, 'style', 'margin padding');
+
+		axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '15',
+		});
+
+		const expectPaddingOnXxl = {
+			'padding-top-general': 15,
+			'padding-top-xl': undefined,
+			'padding-top-xxl': 15,
+		};
+
+		const paddingOnXxl = await getAttributes([
+			'padding-top-general',
+			'padding-top-xl',
+			'padding-top-xxl',
+		]);
+
+		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);
+	});
 });

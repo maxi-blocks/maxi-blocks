@@ -16,6 +16,8 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
+import { loadFonts } from '../../extensions/text/fonts';
+
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -33,7 +35,7 @@ import { getDefaultSCValue } from '../../extensions/style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isBoolean, isNumber } from 'lodash';
+import { isNil, isBoolean, isNumber, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -714,10 +716,15 @@ const TypographyControl = withFormatValue(props => {
 			returnFormatValue: true,
 		});
 
-		const newFormatValue = { ...obj.formatValue };
-		delete obj.formatValue;
+		if (!isEmpty(obj.formatValue)) {
+			const newFormatValue = { ...obj.formatValue };
+			delete obj.formatValue;
 
-		dispatch('maxiBlocks/text').sendFormatValue(newFormatValue, clientId);
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}
 
 		onChange(obj);
 	};
@@ -740,6 +747,8 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}font-options`]: font.files,
 						});
 					}}
+					fontWeight={getValue(`${prefix}font-weight`)}
+					fontStyle={getValue(`${prefix}font-style`)}
 				/>
 			)}
 			{!disableColor && !styleCards && (
@@ -809,6 +818,14 @@ const TypographyControl = withFormatValue(props => {
 				options={getWeightOptions()}
 				onChange={val => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
+					const fontName = getValue(`${prefix}font-family`);
+					const fontStyle = getValue(`${prefix}font-style`);
+					const objFont = { [fontName]: {} };
+
+					objFont[fontName].weight = val.toString();
+					if (fontStyle) objFont[fontName].style = fontStyle;
+
+					loadFonts(objFont);
 				}}
 			/>
 			<SelectControl
@@ -893,6 +910,43 @@ const TypographyControl = withFormatValue(props => {
 					onChangeFormat({
 						[`${prefix}text-decoration`]: val,
 					});
+				}}
+			/>
+			<SelectControl
+				label={__('Text orientation', 'maxi-blocks')}
+				className='maxi-typography-control__decoration'
+				value={getValue(
+					`${prefix}text-orientation`,
+					breakpoint,
+					false,
+					true
+				)}
+				options={[
+					{
+						label: __('None', 'maxi-blocks'),
+						value: '',
+					},
+					{
+						label: __('Mixed', 'maxi-blocks'),
+						value: 'mixed',
+					},
+					{
+						label: __('Upright', 'maxi-blocks'),
+						value: 'upright',
+					},
+					{
+						label: __('Sideways', 'maxi-blocks'),
+						value: 'sideways',
+					},
+				]}
+				onChange={val => {
+					onChangeFormat(
+						{
+							[`${prefix}text-orientation`]: val,
+						},
+						breakpoint,
+						true
+					);
 				}}
 			/>
 			<AdvancedNumberControl

@@ -28,6 +28,8 @@ export { default as transform } from './transform';
 export { default as transitionDuration } from './transition';
 export { default as typographyHover } from './typographyHover';
 export { default as zIndex } from './zIndex';
+export { default as clipPath } from './clipPath';
+export { default as flex } from './flex';
 export * from './background';
 export * from './backgroundHover';
 export * from './border';

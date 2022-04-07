@@ -13,6 +13,7 @@ import {
 	getDefaultAttribute,
 	getAttributeKey,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -84,22 +85,17 @@ const GradientLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-gradient-clip-path`,
-						breakpoint,
-						attributes: gradientOptions,
-						isHover,
-					})}
-					onChange={val =>
-						onChange({
-							[getAttributeKey(
-								'background-gradient-clip-path',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						})
-					}
+					onChange={obj => onChange(obj)}
+					{...getGroupAttributes(
+						props,
+						'clipPath',
+						false,
+						'background-gradient-'
+					)}
+					{...gradientOptions}
+					isHover={isHover}
+					prefix='background-gradient-'
+					breakpoint={breakpoint}
 				/>
 			)}
 		</>

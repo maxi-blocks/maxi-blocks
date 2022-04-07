@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { useRef } from '@wordpress/element';
 
@@ -14,7 +14,7 @@ import { getDefaultAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -44,12 +44,22 @@ export const handleSetAttributes = ({
 			0,
 			key.lastIndexOf('-')
 		)}-${winBreakpoint}`;
-		const attrExistOnWinBreakpoint = !isNil(
-			attributes?.[attrLabelOnWinBreakpoint],
-			true
-		);
+		const attrOnWinBreakpoint = attributes?.[attrLabelOnWinBreakpoint];
+		const attrExistOnWinBreakpoint = !isNil(attrOnWinBreakpoint);
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
+
+		// Ensures saving both General and XXL attribute when XXL attribute is already set,
+		// winBreakpoint is XXL and breakpoint is General
+		if (
+			breakpoint === 'general' &&
+			winBreakpoint === 'xxl' &&
+			attrExistOnWinBreakpoint
+		) {
+			response[attrLabelOnWinBreakpoint] = value;
+
+			return;
+		}
 
 		const attrLabelOnGeneral = `${key.slice(
 			0,
@@ -90,23 +100,36 @@ export const handleSetAttributes = ({
 					)
 			);
 
+		const defaultOnWinBreakpointAttribute =
+			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
+			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
+
 		if (
 			!attrExistOnGeneral &&
-			!attrExistOnWinBreakpoint &&
+			existHigherBreakpointAttribute &&
 			breakpoint === 'general' &&
-			existHigherBreakpointAttribute
+			(!attrExistOnWinBreakpoint ||
+				defaultOnWinBreakpointAttribute === attrOnWinBreakpoint)
 		)
 			response[attrLabelOnWinBreakpoint] = value;
 
 		if (!attrExistOnGeneral) return;
+
+		if (
+			breakpoint === 'general' &&
+			defaultOnWinBreakpointAttribute === value
+		) {
+			response[attrLabelOnWinBreakpoint] = value;
+
+			return;
+		}
 
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (
-			(breakpoint === 'general' ||
-				attributes?.[attrLabelOnGeneral] === value) &&
+			attributes?.[attrLabelOnGeneral] === value &&
 			defaultGeneralAttribute === value
 		)
 			return;
@@ -133,6 +156,20 @@ const withMaxiProps = createHigherOrderComponent(
 			const { setAttributes, attributes, clientId } = ownProps;
 
 			const ref = useRef(null);
+			const { deviceType, winBreakpoint, hasInnerBlocks } = useSelect(
+				select => {
+					const { receiveMaxiDeviceType, receiveWinBreakpoint } =
+						select('maxiBlocks');
+					const { getBlockOrder } = select('core/block-editor');
+
+					const deviceType = receiveMaxiDeviceType();
+					const winBreakpoint = receiveWinBreakpoint();
+
+					const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+
+					return { deviceType, winBreakpoint, hasInnerBlocks };
+				}
+			);
 
 			const maxiSetAttributes = obj =>
 				handleSetAttributes({
@@ -166,6 +203,9 @@ const withMaxiProps = createHigherOrderComponent(
 					ref={ref}
 					maxiSetAttributes={maxiSetAttributes}
 					insertInlineStyles={insertInlineStyles}
+					deviceType={deviceType}
+					winBreakpoint={winBreakpoint}
+					hasInnerBlocks={hasInnerBlocks}
 				/>
 			);
 		}),

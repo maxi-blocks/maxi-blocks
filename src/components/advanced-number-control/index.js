@@ -49,6 +49,12 @@ const AdvancedNumberControl = props => {
 			minRange: -199,
 			maxRange: 199,
 		},
+		vh: {
+			min: 0,
+			max: 999,
+			minRange: -199,
+			maxRange: 199,
+		},
 		'%': {
 			min: 0,
 			max: 100,
@@ -64,7 +70,7 @@ const AdvancedNumberControl = props => {
 	};
 
 	const {
-		label,
+		label = '',
 		className,
 		classNameAutoInput,
 		unit = 'px',
@@ -83,7 +89,7 @@ const AdvancedNumberControl = props => {
 		enableAuto = false,
 		autoLabel,
 		onReset,
-		allowedUnits = ['px', 'em', 'vw', '%', '-'],
+		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 	} = props;
 
@@ -197,7 +203,6 @@ const AdvancedNumberControl = props => {
 					/>
 					{enableUnit && (
 						<SelectControl
-							label={__('Unit', 'maxi-blocks')}
 							hideLabelFromVision
 							className='maxi-dimensions-control__units'
 							options={getOptions()}
@@ -223,7 +228,7 @@ const AdvancedNumberControl = props => {
 							aria-label={sprintf(
 								/* translators: %s: a textual label  */
 								__('Reset %s settings', 'maxi-blocks'),
-								label.toLowerCase()
+								label?.toLowerCase()
 							)}
 							type='reset'
 						>

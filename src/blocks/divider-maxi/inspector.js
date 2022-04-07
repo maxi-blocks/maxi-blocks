@@ -21,24 +21,10 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
 
 /**
- * External dependencies
- */
-import { isEmpty, without } from 'lodash';
-
-/**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-
-	const getCategoriesCss = () => {
-		const { 'background-layers': bgLayers } = attributes;
-
-		return without(
-			categoriesDivider,
-			isEmpty(bgLayers) && 'canvas background'
-		);
-	};
 
 	return (
 		<InspectorControls>
@@ -71,6 +57,7 @@ const Inspector = props => {
 															'Line orientation',
 															'maxi-blocks'
 														)}
+														className='line-orientation-selector'
 														value={getLastBreakpointAttribute(
 															{
 																target: 'line-orientation',
@@ -274,7 +261,7 @@ const Inspector = props => {
 											props,
 											breakpoint: deviceType,
 											selectors: selectorsDivider,
-											categories: getCategoriesCss(),
+											categories: categoriesDivider,
 										}),
 										...inspectorTabs.scrollEffects({
 											props,
@@ -294,6 +281,9 @@ const Inspector = props => {
 											}),
 										},
 										...inspectorTabs.overflow({
+											props,
+										}),
+										...inspectorTabs.flex({
 											props,
 										}),
 										...inspectorTabs.zindex({

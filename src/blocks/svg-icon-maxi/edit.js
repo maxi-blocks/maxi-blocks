@@ -3,7 +3,7 @@
  */
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
-import { withSelect, withDispatch, dispatch } from '@wordpress/data';
+import { withDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -152,6 +152,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					propsToAvoid={['resizableObject']}
 					resizableObject={this.resizableObject}
+					prefix='svg-'
 					{...this.props}
 				/>
 			),
@@ -167,7 +168,7 @@ class edit extends MaxiBlockComponent {
 						type='svg'
 						empty={isEmptyContent}
 						style={parentBlockStyle}
-						openFirstTime={openFirstTime}
+						openFirstTime={isSelected ? openFirstTime : false}
 						onOpen={obj => maxiSetAttributes(obj)}
 						onSelect={obj => maxiSetAttributes(obj)}
 						onRemove={obj => maxiSetAttributes(obj)}
@@ -188,11 +189,11 @@ class edit extends MaxiBlockComponent {
 									: null
 							}
 							size={{
-								width: getLastBreakpointAttribute(
-									'svg-width',
-									deviceType || 'general',
-									attributes
-								),
+								width: `${getLastBreakpointAttribute({
+									target: 'svg-width',
+									breakpoint: deviceType || 'general',
+									attributes,
+								})}${svgWidthUnit}`,
 							}}
 							showHandle={isSelected}
 							enable={{
@@ -211,14 +212,6 @@ class edit extends MaxiBlockComponent {
 		];
 	}
 }
-
-const editSelect = withSelect(select => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	return {
-		deviceType,
-	};
-});
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
@@ -290,4 +283,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, withMaxiProps, editDispatch)(edit);
+export default compose(withMaxiProps, editDispatch)(edit);

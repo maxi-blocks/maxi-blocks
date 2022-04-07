@@ -35,4 +35,6 @@ export const categoriesGroup = [
 	'group',
 	'before group',
 	'after group',
+	'background',
+	'background hover',
 ];

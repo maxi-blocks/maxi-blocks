@@ -44,6 +44,7 @@ const attributes = {
 					'background-palette-opacity': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
+					order: 0,
 					id: 0,
 				},
 			],
@@ -71,18 +72,6 @@ const attributes = {
 			type: 'number',
 			default: 90,
 		},
-		'max-width-m': {
-			type: 'number',
-			default: 90,
-		},
-		'max-width-s': {
-			type: 'number',
-			default: 90,
-		},
-		'max-width-xs': {
-			type: 'number',
-			default: 90,
-		},
 		'max-width-unit-xxl': {
 			type: 'string',
 			default: 'px',
@@ -92,18 +81,6 @@ const attributes = {
 			default: 'px',
 		},
 		'max-width-unit-l': {
-			type: 'string',
-			default: '%',
-		},
-		'max-width-unit-m': {
-			type: 'string',
-			default: '%',
-		},
-		'max-width-unit-s': {
-			type: 'string',
-			default: '%',
-		},
-		'max-width-unit-xs': {
 			type: 'string',
 			default: '%',
 		},
@@ -124,18 +101,6 @@ const attributes = {
 			default: 460,
 		},
 		'width-unit-l': {
-			type: 'string',
-			default: 'px',
-		},
-		'width-unit-m': {
-			type: 'string',
-			default: 'px',
-		},
-		'width-unit-s': {
-			type: 'string',
-			default: 'px',
-		},
-		'width-unit-xs': {
 			type: 'string',
 			default: 'px',
 		},
@@ -164,6 +129,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

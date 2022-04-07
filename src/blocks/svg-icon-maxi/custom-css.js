@@ -39,22 +39,13 @@ export const selectorsSvgIcon = {
 			target: ' .maxi-svg-icon-block__icon svg:hover',
 		},
 	},
-	'canvas background': {
-		normal: {
-			label: 'canvas background',
-			target: '',
-		},
-		hover: {
-			label: 'canvas background on hover',
-			target: ':hover',
-		},
-	},
 };
 
 export const categoriesSvgIcon = [
 	'canvas',
 	'before canvas',
 	'after canvas',
-	'canvas background',
 	'svg',
+	'background',
+	'background hover',
 ];

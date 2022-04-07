@@ -4,7 +4,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { __experimentalLinkControl } from '@wordpress/block-editor';
+import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -43,55 +43,58 @@ const Link = props => {
 	};
 
 	return (
-		<ToolbarPopover
-			icon={toolbarLink}
-			tooltip={__('Link', 'maxi-blocks')}
-			className={
-				!isNil(linkSettings) &&
-				!isEmpty(linkSettings.url) &&
-				'toolbar-item__link--active'
-			}
-		>
-			<>
-				<__experimentalLinkControl
-					value={linkSettings}
-					onChange={value => onChange(value)}
-					settings={[
-						{
-							id: 'opensInNewTab',
-							title: __('Open in new tab', 'maxi-blocks'),
-						},
-						{
-							id: 'noFollow',
-							title: __('Add "nofollow" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'sponsored',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'ugc',
-							title: __('Add "UGC" rel', 'maxi-blocks'),
-						},
-					]}
-				/>
-				{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
-					<ToolbarContext.Consumer>
-						{context => (
-							<Button
-								className='toolbar-popover-link-destroyer'
-								onClick={() => {
-									removeLinkHandle();
-									context.onClose();
-								}}
-							>
-								{__('Remove link', 'maxi-blocks')}
-							</Button>
-						)}
-					</ToolbarContext.Consumer>
-				)}
-			</>
-		</ToolbarPopover>
+		<div className='toolbar-item toolbar-item__link'>
+			<ToolbarPopover
+				icon={toolbarLink}
+				tooltip={__('Link', 'maxi-blocks')}
+				className={
+					!isNil(linkSettings) &&
+					!isEmpty(linkSettings.url) &&
+					'toolbar-item__link--active'
+				}
+			>
+				<>
+					<LinkControl
+						searchInputPlaceholder='Search or type URL'
+						value={linkSettings}
+						onChange={value => onChange(value)}
+						settings={[
+							{
+								id: 'opensInNewTab',
+								title: __('Open in new tab', 'maxi-blocks'),
+							},
+							{
+								id: 'noFollow',
+								title: __('"nofollow"', 'maxi-blocks'),
+							},
+							{
+								id: 'sponsored',
+								title: __('"sponsored"', 'maxi-blocks'),
+							},
+							{
+								id: 'ugc',
+								title: __('"UGC"', 'maxi-blocks'),
+							},
+						]}
+					/>
+					{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
+						<ToolbarContext.Consumer>
+							{context => (
+								<Button
+									className='toolbar-popover-link-destroyer'
+									onClick={() => {
+										removeLinkHandle();
+										context.onClose();
+									}}
+								>
+									{__('Remove link', 'maxi-blocks')}
+								</Button>
+							)}
+						</ToolbarContext.Consumer>
+					)}
+				</>
+			</ToolbarPopover>
+		</div>
 	);
 };
 

@@ -17,23 +17,10 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
 
 /**
- * External dependencies
- */
-import { isEmpty, without } from 'lodash';
-
-/**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
-
-	const getCategoriesCss = () => {
-		const { 'background-layers': bgLayers } = attributes;
-		return without(
-			categoriesNumberCounter,
-			isEmpty(bgLayers) && 'canvas background'
-		);
-	};
 
 	return (
 		<InspectorControls>
@@ -141,7 +128,7 @@ const Inspector = props => {
 										props,
 										breakpoint: deviceType,
 										selectors: selectorsNumberCounter,
-										categories: getCategoriesCss(),
+										categories: categoriesNumberCounter,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
@@ -161,6 +148,9 @@ const Inspector = props => {
 										}),
 									},
 									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
 										props,
 									}),
 									...inspectorTabs.zindex({

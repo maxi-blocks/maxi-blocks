@@ -20,6 +20,7 @@ import {
 	getBoxShadowStyles,
 	getColorBackgroundObject,
 	getDisplayStyles,
+	getFlexStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
 	getMarginPaddingStyles,
@@ -38,30 +39,8 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getWrapperObject = props => {
 	const response = {
-		zIndex: getZIndexStyles({
-			...getGroupAttributes(props, 'zIndex'),
-		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin'),
-			},
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding'),
-			},
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
-		display: getDisplayStyles({
-			...getGroupAttributes(props, 'display'),
-		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
-		}),
-		overflow: getOverflowStyles({
-			...getGroupAttributes(props, 'overflow'),
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -86,12 +65,34 @@ const getWrapperObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground']),
-				blockStyle: props.parentBlockStyle,
-			}),
-		},
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
+		}),
+		transform: getTransformStyles({
+			...getGroupAttributes(props, 'transform'),
+		}),
+		display: getDisplayStyles({
+			...getGroupAttributes(props, 'display'),
+		}),
+		position: getPositionStyles({
+			...getGroupAttributes(props, 'position'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
+		zIndex: getZIndexStyles({
+			...getGroupAttributes(props, 'zIndex'),
+		}),
 	};
 
 	return response;
@@ -120,27 +121,6 @@ const getHoverWrapperObject = props => {
 				parentBlockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground'], true),
-				blockStyle: props.parentBlockStyle,
-				isHover: true,
-			}),
-		},
-	};
-
-	return response;
-};
-
-const getContentObject = props => {
-	const response = {
-		typography: getTypographyStyles({
-			obj: {
-				...getGroupAttributes(props, 'typography'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-			textLevel: 'button',
-		}),
 	};
 
 	return response;
@@ -154,15 +134,6 @@ const getNormalObject = props => {
 			},
 			'button-'
 		),
-		zIndex: getZIndexStyles({
-			...getGroupAttributes(props, 'zIndex'),
-		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
-		}),
-		position: getPositionStyles({
-			...getGroupAttributes(props, 'position'),
-		}),
 		border: getBorderStyles({
 			obj: {
 				...getGroupAttributes(
@@ -186,6 +157,9 @@ const getNormalObject = props => {
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
+		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
 		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -254,6 +228,20 @@ const getHoverObject = (props, scValues) => {
 			isHover: true,
 			prefix: 'button-',
 			scValues,
+		}),
+	};
+
+	return response;
+};
+
+const getContentObject = props => {
+	const response = {
+		typography: getTypographyStyles({
+			obj: {
+				...getGroupAttributes(props, 'typography'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+			textLevel: 'button',
 		}),
 	};
 
@@ -444,14 +432,18 @@ const getIconObject = (props, target) => {
 const getIconHoverObject = (props, target) => {
 	const iconHoverStatus = props['icon-status-hover'];
 	const iconHoverActiveMedia =
-		props['button-background-active-media-general-hover'];
+		props['icon-background-active-media-general-hover'];
 
 	const response = {
 		icon:
 			iconHoverStatus &&
 			getIconStyles(
 				{
-					...getGroupAttributes(props, ['icon', 'typography'], true),
+					...getGroupAttributes(
+						props,
+						['iconHover', 'typography'],
+						true
+					),
 				},
 				props.parentBlockStyle,
 				props['icon-inherit'],
@@ -494,7 +486,11 @@ const getIconHoverObject = (props, target) => {
 				obj: {
 					...getGroupAttributes(
 						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+						[
+							'iconBorderHover',
+							'iconBorderWidthHover',
+							'iconBorderRadiusHover',
+						],
 						true
 					),
 				},
@@ -520,6 +516,9 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
+				' .maxi-button-block__content': getContentObject(props),
+				' .maxi-button-block__button:hover .maxi-button-block__content':
+					getHoverContentObject(props, scValues),
 				' .maxi-button-block__icon': getIconObject(props, 'icon'),
 				' .maxi-button-block__icon svg': getIconSize(props, false),
 				' .maxi-button-block__icon svg > *': getIconObject(
@@ -530,10 +529,6 @@ const getStyles = (props, scValues) => {
 					props,
 					false
 				),
-				' .maxi-button-block__content': getContentObject(props),
-				' .maxi-button-block__button:hover .maxi-button-block__content':
-					getHoverContentObject(props, scValues),
-
 				' .maxi-button-block__button:hover .maxi-button-block__icon':
 					props['icon-status-hover'] &&
 					getIconHoverObject(props, 'iconHover'),
@@ -545,6 +540,29 @@ const getStyles = (props, scValues) => {
 				' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
 					props['icon-status-hover'] &&
 					getIconPathStyles(props, true),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.parentBlockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.parentBlockStyle,
+				}),
 			},
 			selectorsButton,
 			props

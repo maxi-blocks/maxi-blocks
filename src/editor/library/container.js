@@ -128,7 +128,7 @@ const MasonryItem = props => {
 									'bg-shape',
 									'sidebar-block-shape',
 							  ].includes(target) || target.includes('Shape')
-							? serial.replace(' Shape', '')
+							? serial.replace(' shape', '')
 							: serial}
 					</div>
 					<span>{__('Load', 'maxi-block')}</span>
@@ -813,8 +813,8 @@ const LibraryContainer = props => {
 								transformItems={items =>
 									items.map(item => ({
 										...item,
-										label: `${item.label} 
-											${__('tone', 'maxi-blocks')}`,
+										label: `${item.label}
+											 ${__('tone', 'maxi-blocks')}`,
 									}))
 								}
 							/>

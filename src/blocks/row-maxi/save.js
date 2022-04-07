@@ -21,11 +21,10 @@ const save = props => {
 	const classes = classnames(fullWidth === 'full' ? 'alignfull' : null);
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			className={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			isSave
-			hasInnerBlocks
+			useInnerBlocks
 		/>
 	);
 };

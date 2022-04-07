@@ -1,5 +1,5 @@
 <?php
-
+require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
 /**
  * Maxi Blocks styles API
  */
@@ -274,7 +274,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             return $response;
         }
-
+        
         /**
          * Post the posts
          */
@@ -285,7 +285,12 @@ if (!class_exists('MaxiBlocks_API')):
             $id = $data['id'];
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
-            $fonts = implode(",", $meta['fonts']);
+
+            $fontsArr = $meta['fonts'];
+            foreach ($fontsArr as $key => $font) {
+                $fontsArr[$key] = json_decode($font, true);
+            }
+            $fonts = json_encode(array_merge_recursive(...$fontsArr));
 
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
@@ -331,6 +336,10 @@ if (!class_exists('MaxiBlocks_API')):
                         'prev_fonts_value' =>  $fonts,
                     ));
                 }
+            }
+
+            if ((bool) get_option('local_fonts')) {
+                new MaxiBlocks_Local_Fonts();
             }
 
             $post = (array)$wpdb->get_results(
@@ -386,8 +395,10 @@ if (!class_exists('MaxiBlocks_API')):
                         ];
             } else {
                 $new_style_card['_maxi_blocks_style_card_preview'] = $data['meta'];
-                if ($style_card !== '') {
+                if ($style_card !== '' && array_key_exists('_maxi_blocks_style_card', $style_card)) {
                     $new_style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card'];
+                } else {
+                    $new_style_card['_maxi_blocks_style_card'] = $data['meta'];
                 }
             }
         

@@ -1,5 +1,5 @@
 export const selectorsColumn = {
-	'column': {
+	column: {
 		normal: {
 			label: 'column',
 			target: '.maxi-column-block',
@@ -35,4 +35,6 @@ export const categoriesColumn = [
 	'column',
 	'before column',
 	'after column',
+	'background',
+	'background hover',
 ];

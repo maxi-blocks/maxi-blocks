@@ -14,6 +14,7 @@ import {
 	getSizeStyles,
 	getTransformStyles,
 	getZIndexStyles,
+	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsMap } from './custom-css';
 
@@ -65,6 +66,9 @@ const getNormalObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
 		}),
 	};
 

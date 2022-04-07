@@ -177,6 +177,8 @@ class MaxiBlocks_Local_Fonts
 
             $newCssFile = str_replace($fontFiles, $newFontFiles, $cssFile);
 
+            $newCssFile = str_replace('}', 'font-display: swap; }', $newCssFile);
+
             file_put_contents($fontUploadsDir.'/style.css', $newCssFile);
         }
 

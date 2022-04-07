@@ -383,18 +383,21 @@ const BackgroundLayersControl = ({
 			  ) + 1
 			: 1;
 
-	const checkLayerOrder = (layers, parameter) => {
-		if (!layers.every(layer => layer.order)) {
-			layers.forEach((layer, index, array) => {
-				layer.order = getLayerUniqueParameter('order', array);
-			});
+	// WILL BE DELETED AFTER BACKGROUND LAYERS ARE UPDATED
+	if (!allLayers.every(layer => layer.order)) {
+		allLayers.forEach((layer, index, array) => {
+			layer.order = getLayerUniqueParameter('order', array);
+		});
 
-			onChange({ [parameter]: layers });
-		}
-	};
+		const normalLayers = allLayers.filter(layer => !layer.isHover);
+		const hoverLayers = allLayers.filter(layer => layer.isHover);
 
-	checkLayerOrder(layers, 'background-layers');
-	checkLayerOrder(layersHover, 'background-layers-hover');
+		onChange({
+			'background-layers': normalLayers,
+			'background-layers-hover': hoverLayers,
+		});
+	}
+	//
 
 	allLayers.sort((a, b) => a.order - b.order);
 

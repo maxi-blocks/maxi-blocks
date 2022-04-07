@@ -67,7 +67,7 @@ const getSVGPathStyles = (obj, prefix = 'svg-') => {
 
 const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-') => {
 	const response = {
-		label: 'SVG path fill',
+		label: 'SVG path-fill',
 		general: {},
 	};
 

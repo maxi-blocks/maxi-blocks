@@ -384,7 +384,7 @@ const BackgroundLayersControl = ({
 			: 1;
 
 	// WILL BE DELETED AFTER BACKGROUND LAYERS ARE UPDATED
-	if (!allLayers.every(layer => layer.order)) {
+	if (!allLayers.every(layer => typeof layer.order === 'number')) {
 		allLayers.forEach((layer, index, array) => {
 			layer.order = getLayerUniqueParameter('order', array);
 		});

@@ -2,12 +2,18 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import SettingTabsControl from '../setting-tabs-control';
+import ToggleSwitch from '../toggle-switch';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 
 /**
  * SvgColor
@@ -67,7 +73,9 @@ const SvgColor = props => {
 };
 
 const SvgColorControl = props => {
-	const { onChange, svgType } = props;
+	const { onChange, svgType, maxiSetAttributes } = props;
+	const [hoverStatus, setHoverStatus] = useState(props['svg-status-hover']);
+
 	return (
 		<SettingTabsControl
 			items={[
@@ -98,23 +106,65 @@ const SvgColorControl = props => {
 					label: __('Hover state', 'maxi-blocks'),
 					content: (
 						<>
-							{svgType !== 'Line' && (
-								<SvgColor
-									type='fill'
-									label={__('SVG Fill', 'maxi-blocks')}
-									onChange={onChange}
-									isHover
-									{...props}
-								/>
-							)}
-							{svgType !== 'Shape' && (
-								<SvgColor
-									type='line'
-									label={__('SVG Line', 'maxi-blocks')}
-									onChange={onChange}
-									isHover
-									{...props}
-								/>
+							<ToggleSwitch
+								label={__(
+									'Enable SVG Colour Hover',
+									'maxi-blocks'
+								)}
+								selected={hoverStatus}
+								className='maxi-svg-status-hover'
+								onChange={val => {
+									console.log(val);
+									setHoverStatus(val);
+									maxiSetAttributes({
+										...(val &&
+											setHoverAttributes(
+												{
+													...getGroupAttributes(
+														props,
+														'svg',
+														false
+													),
+												},
+												{
+													...getGroupAttributes(
+														props,
+														'svg',
+														true
+													),
+												}
+											)),
+										'svg-status-hover': val,
+									});
+								}}
+							/>
+							{hoverStatus && (
+								<>
+									{svgType !== 'Line' && (
+										<SvgColor
+											type='fill'
+											label={__(
+												'SVG Fill',
+												'maxi-blocks'
+											)}
+											onChange={onChange}
+											isHover
+											{...props}
+										/>
+									)}
+									{svgType !== 'Shape' && (
+										<SvgColor
+											type='line'
+											label={__(
+												'SVG Line',
+												'maxi-blocks'
+											)}
+											onChange={onChange}
+											isHover
+											{...props}
+										/>
+									)}
+								</>
 							)}
 						</>
 					),

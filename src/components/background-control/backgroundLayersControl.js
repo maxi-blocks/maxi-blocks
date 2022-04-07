@@ -373,11 +373,15 @@ const BackgroundLayersControl = ({
 	const allLayers = [...layers, ...layersHover];
 
 	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
-		Math.max(
-			...layers.map(layer =>
-				typeof layer[parameter] === 'number' ? layer[parameter] : 0
-			)
-		) + 1;
+		allLayers && !isEmpty(allLayers)
+			? Math.max(
+					...layers.map(layer =>
+						typeof layer[parameter] === 'number'
+							? layer[parameter]
+							: 0
+					)
+			  ) + 1
+			: 1;
 
 	if (!allLayers.every(layer => layer.order)) {
 		allLayers.forEach((layer, index, array) => {

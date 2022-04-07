@@ -373,7 +373,7 @@ const BackgroundLayersControl = ({
 	const allLayers = [...layers, ...layersHover];
 
 	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
-		allLayers && !isEmpty(allLayers)
+		layers && !isEmpty(layers)
 			? Math.max(
 					...layers.map(layer =>
 						typeof layer[parameter] === 'number'
@@ -383,11 +383,18 @@ const BackgroundLayersControl = ({
 			  ) + 1
 			: 1;
 
-	if (!allLayers.every(layer => layer.order)) {
-		allLayers.forEach((layer, index, array) => {
-			layer.order = getLayerUniqueParameter('order', array);
-		});
-	}
+	const checkLayerOrder = (layers, parameter) => {
+		if (!layers.every(layer => layer.order)) {
+			layers.forEach((layer, index, array) => {
+				layer.order = getLayerUniqueParameter('order', array);
+			});
+
+			onChange({ [parameter]: layers });
+		}
+	};
+
+	checkLayerOrder(layers, 'background-layers');
+	checkLayerOrder(layersHover, 'background-layers-hover');
 
 	allLayers.sort((a, b) => a.order - b.order);
 

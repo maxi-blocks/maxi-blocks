@@ -60,24 +60,32 @@ const CopyPasteContent = props => {
 							if (
 								typeof copyPasteMapping[tab].blockSpecific[
 									attrType
-								] !== 'string'
+								] === 'object'
 							) {
 								const attr = {};
 
 								copyPasteMapping[tab].blockSpecific[
 									attrType
 								].value.forEach(val => {
-									if (!isEmpty(attributes[val]))
+									if (!isNil(attributes[val]))
 										attr[val] = attributes[val];
 								});
 
-								if (!isEmpty(attr))
+								if (
+									(typeof attr !== 'object' &&
+										!isNil(attr)) ||
+									!isEmpty(attr)
+								)
 									response[tab][attrType] = {
 										label: copyPasteMapping[tab]
 											.blockSpecific[attrType].label,
 										attribute: attr,
 									};
-							} else if (!isEmpty(attributes[attrType]))
+							} else if (
+								(typeof attributes[attrType] !== 'object' &&
+									!isNil(attributes[attrType])) ||
+								!isEmpty(attributes[attrType])
+							)
 								response[tab][attrType] = {
 									label,
 									attribute: {
@@ -194,18 +202,26 @@ const CopyPasteContent = props => {
 							if (
 								typeof copyPasteMapping[tab].blockSpecific[
 									attrType
-								] !== 'string'
+								] === 'object'
 							)
 								copyPasteMapping[tab].blockSpecific[
 									attrType
 								].value.forEach(val => {
-									if (!isNil(attributes[val]))
+									if (
+										(typeof attributes[val] !== 'object' &&
+											!isNil(attributes[val])) ||
+										!isEmpty(attributes[val])
+									)
 										response = {
 											...response,
 											[val]: attributes[val],
 										};
 								});
-							else if (!isNil(attributes[attrType]))
+							else if (
+								(typeof attributes[attrType] !== 'object' &&
+									!isNil(attributes[attrType])) ||
+								!isEmpty(attributes[attrType])
+							)
 								response = {
 									...response,
 									[attrType]: attributes[attrType],

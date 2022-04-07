@@ -12,7 +12,14 @@ const copyPasteMapping = {
 			},
 			mediaID: {
 				label: 'Image',
-				value: ['mediaID', 'isImageUrl', 'mediaWidth', 'mediaHeight'],
+				value: [
+					'mediaID',
+					'isImageUrl',
+					'mediaURL',
+					'mediaWidth',
+					'mediaHeight',
+					'mediaAlt',
+				],
 			},
 			mediaAlt: { label: 'Alt tag', value: ['mediaAlt', 'altSelector'] },
 			imgWidth: 'Image Width',

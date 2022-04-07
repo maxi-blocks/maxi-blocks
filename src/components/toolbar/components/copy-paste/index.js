@@ -12,10 +12,7 @@ import { cloneBlock } from '@wordpress/blocks';
 import Button from '../../../button';
 import Dropdown from '../../../dropdown';
 import { SettingTabsControl } from '../../../../components';
-import {
-	breakpointAttributesCreator,
-	getGroupAttributes,
-} from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -36,6 +33,7 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi',
 ];
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const CopyPasteContent = props => {
 	const { clientId, blockName, copyPasteMapping, prefix } = props;
@@ -95,15 +93,22 @@ const CopyPasteContent = props => {
 						}
 					);
 
-				/* if (copyPasteMapping[tab].withBreakpoint)
+				if (copyPasteMapping[tab].withBreakpoint)
 					Object.entries(
 						copyPasteMapping[tab].withBreakpoint
 					).forEach(([attrType, label]) => {
-						const withBrkpt = breakpointAttributesCreator({
-							[attrType]: {},
-						}).keys();
+						const withBrkpt = [];
+
+						breakpoints.forEach(breakpoint =>
+							withBrkpt.push(`${attrType}-${breakpoint}`)
+						);
+
 						withBrkpt.forEach(att => {
-							if (!isEmpty(attributes[att]))
+							if (
+								(typeof attributes[att] !== 'object' &&
+									!isNil(attributes[att])) ||
+								!isEmpty(attributes[att])
+							)
 								response[tab][att] = {
 									label,
 									attribute: {
@@ -111,7 +116,7 @@ const CopyPasteContent = props => {
 									},
 								};
 						});
-					}); */
+					});
 
 				if (copyPasteMapping[tab].withPrefix)
 					Object.entries(copyPasteMapping[tab].withPrefix).forEach(
@@ -229,20 +234,28 @@ const CopyPasteContent = props => {
 						}
 					);
 
-				/* if (copyPasteMapping[tab].withBreakpoint)
+				if (copyPasteMapping[tab].withBreakpoint)
 					Object.keys(copyPasteMapping[tab].withBreakpoint).forEach(
 						typeAttr => {
-							const withBrkpt = breakpointAttributesCreator({
-								[typeAttr]: {},
-							}).keys();
+							const withBrkpt = [];
+
+							breakpoints.forEach(breakpoint =>
+								withBrkpt.push(`${typeAttr}-${breakpoint}`)
+							);
+
 							withBrkpt.forEach(att => {
-								response = {
-									...response,
-									[att]: attributes[att],
-								};
+								if (
+									(typeof attributes[att] !== 'object' &&
+										!isNil(attributes[att])) ||
+									!isEmpty(attributes[att])
+								)
+									response = {
+										...response,
+										[att]: attributes[att],
+									};
 							});
 						}
-					); */
+					);
 
 				if (copyPasteMapping[tab].withPrefix)
 					Object.keys(copyPasteMapping[tab].withPrefix).forEach(

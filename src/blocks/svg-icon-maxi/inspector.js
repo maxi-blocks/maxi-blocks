@@ -146,6 +146,9 @@ const Inspector = props => {
 														'svg'
 													)}
 													svgType={svgType}
+													maxiSetAttributes={
+														maxiSetAttributes
+													}
 													onChange={obj => {
 														maxiSetAttributes(obj);
 

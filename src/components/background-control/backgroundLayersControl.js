@@ -438,7 +438,7 @@ const BackgroundLayersControl = ({
 		allLayers.splice(toIndex, 0, layer);
 
 		allLayers.forEach((layer, i) => {
-			allLayers[i].order = i;
+			allLayers[i].order = i + 1;
 		});
 
 		const normalLayers = allLayers.filter(layer => !layer.isHover);

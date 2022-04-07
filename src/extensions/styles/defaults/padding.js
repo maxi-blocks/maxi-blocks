@@ -33,10 +33,6 @@ const rawPadding = {
 		type: 'string',
 		default: 'all',
 	},
-	'padding-unit': {
-		type: 'string',
-		default: 'px',
-	},
 };
 
 const padding = breakpointAttributesCreator({

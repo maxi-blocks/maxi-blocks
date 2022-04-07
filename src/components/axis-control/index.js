@@ -62,7 +62,7 @@ const AxisInput = props => {
 		onChangeValue,
 		minMaxSettings,
 		currentUnit,
-		isSpacing,
+		enableAxisUnits,
 		onChangeUnit,
 		onReset,
 	} = props;
@@ -88,11 +88,13 @@ const AxisInput = props => {
 			enableAuto={!disableAuto}
 			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
-			enableUnit={isSpacing}
+			enableUnit={enableAxisUnits}
 			min={minMaxSettings[currentUnit].min || 0}
 			max={minMaxSettings[currentUnit].max || 999}
 			step={minMaxSettings[currentUnit].step || 1}
-			onChangeUnit={val => onChangeUnit(val, singleTarget, breakpoint)}
+			onChangeUnit={val =>
+				onChangeUnit(val, singleTarget, breakpoint, '-unit')
+			}
 			unit={unit}
 			onReset={onReset}
 		/>
@@ -116,7 +118,7 @@ const AxisContent = props => {
 		onReset,
 		disableLeftRightMargin,
 		onChangeUnit,
-		isSpacing,
+		enableAxisUnits,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -141,9 +143,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
-						isSpacing={isSpacing}
+						enableAxisUnits={enableAxisUnits}
 						onChangeUnit={onChangeUnit}
-						onReset={() => onReset(undefined, [...inputsArray])}
+						onReset={() => onReset({ reset: 'all' })}
 					/>
 				</>
 			)}
@@ -161,16 +163,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
-						isSpacing={isSpacing}
+						enableAxisUnits={enableAxisUnits}
 						onChangeUnit={onChangeUnit}
-						onReset={() =>
-							onReset(undefined, [
-								inputsArray[0],
-								inputsArray[2],
-								inputsArray[4],
-								inputsArray[6],
-							])
-						}
+						onReset={() => onReset({ reset: 'vertical' })}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -185,16 +180,9 @@ const AxisContent = props => {
 							minMaxSettings={minMaxSettings}
 							currentUnit={currentUnit}
 							type={type}
-							isSpacing={isSpacing}
+							enableAxisUnits={enableAxisUnits}
 							onChangeUnit={onChangeUnit}
-							onReset={() =>
-								onReset(undefined, [
-									inputsArray[1],
-									inputsArray[3],
-									inputsArray[5],
-									inputsArray[7],
-								])
-							}
+							onReset={() => onReset({ reset: 'horizontal' })}
 						/>
 					)}
 				</>
@@ -213,11 +201,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
-						isSpacing={isSpacing}
+						enableAxisUnits={enableAxisUnits}
 						onChangeUnit={onChangeUnit}
-						onReset={() =>
-							onReset(undefined, [inputsArray[0], inputsArray[4]])
-						}
+						onReset={() => onReset({ reset: 'top' })}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -232,14 +218,9 @@ const AxisContent = props => {
 							minMaxSettings={minMaxSettings}
 							currentUnit={currentUnit}
 							type={type}
-							isSpacing={isSpacing}
+							enableAxisUnits={enableAxisUnits}
 							onChangeUnit={onChangeUnit}
-							onReset={() =>
-								onReset(undefined, [
-									inputsArray[1],
-									inputsArray[5],
-								])
-							}
+							onReset={() => onReset({ reset: 'right' })}
 						/>
 					)}
 					<AxisInput
@@ -254,11 +235,9 @@ const AxisContent = props => {
 						minMaxSettings={minMaxSettings}
 						currentUnit={currentUnit}
 						type={type}
-						isSpacing={isSpacing}
+						enableAxisUnits={enableAxisUnits}
 						onChangeUnit={onChangeUnit}
-						onReset={() =>
-							onReset(undefined, [inputsArray[2], inputsArray[6]])
-						}
+						onReset={() => onReset({ reset: 'bottom' })}
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
@@ -273,14 +252,9 @@ const AxisContent = props => {
 							minMaxSettings={minMaxSettings}
 							currentUnit={currentUnit}
 							type={type}
-							isSpacing={isSpacing}
+							enableAxisUnits={enableAxisUnits}
 							onChangeUnit={onChangeUnit}
-							onReset={() =>
-								onReset(undefined, [
-									inputsArray[3],
-									inputsArray[7],
-								])
-							}
+							onReset={() => onReset({ reset: 'left' })}
 						/>
 					)}
 				</>
@@ -289,7 +263,9 @@ const AxisContent = props => {
 				<BaseControl className='maxi-axis-control__unit-header'>
 					<Button
 						className='components-maxi-control__reset-button'
-						onClick={() => onReset(breakpoint)}
+						onClick={() =>
+							onReset({ customBreakpoint: breakpoint })
+						}
 						aria-label={sprintf(
 							__('Reset %s settings', 'maxi-blocks'),
 							type.toLowerCase()
@@ -319,7 +295,7 @@ const AxisControlContent = props => {
 		minMaxSettings,
 		inputsArray,
 		disableSync = false,
-		isSpacing,
+		enableAxisUnits,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -394,7 +370,7 @@ const AxisControlContent = props => {
 		<>
 			{!disableSync && (
 				<>
-					{!isSpacing && (
+					{!enableAxisUnits && (
 						<BaseControl
 							label={__(type, 'maxi-blocks')}
 							className='maxi-axis-control__unit-header'
@@ -409,7 +385,9 @@ const AxisControlContent = props => {
 							/>
 							<Button
 								className='components-maxi-control__reset-button'
-								onClick={() => onReset(breakpoint)}
+								onClick={() =>
+									onReset({ customBreakpoint: breakpoint })
+								}
 								aria-label={sprintf(
 									__('Reset %s settings', 'maxi-blocks'),
 									type.toLowerCase()
@@ -514,7 +492,7 @@ const AxisControl = props => {
 		optionType = 'number',
 		disableSync = false,
 		blockFullWidth,
-		isSpacing,
+		enableAxisUnits,
 	} = props;
 
 	const classes = classnames(
@@ -575,11 +553,42 @@ const AxisControl = props => {
 		return '';
 	};
 
-	const onReset = (customBreakpoint, inputsKeys) => {
+	const onReset = ({ customBreakpoint, reset }) => {
 		const response = {};
-		const attributesKeys = !isEmpty(inputsKeys)
-			? [...inputsKeys]
-			: [...inputsArray];
+		let attributesKeys = [];
+
+		switch (reset) {
+			case 'vertical':
+				attributesKeys = [
+					inputsArray[0],
+					inputsArray[2],
+					inputsArray[4],
+					inputsArray[6],
+				];
+				break;
+			case 'horizontal':
+				attributesKeys = [
+					inputsArray[1],
+					inputsArray[3],
+					inputsArray[5],
+					inputsArray[7],
+				];
+				break;
+			case 'top':
+				attributesKeys = [inputsArray[0], inputsArray[4]];
+				break;
+			case 'right':
+				attributesKeys = [inputsArray[1], inputsArray[5]];
+				break;
+			case 'bottom':
+				attributesKeys = [inputsArray[2], inputsArray[6]];
+				break;
+			case 'left':
+				attributesKeys = [inputsArray[3], inputsArray[7]];
+				break;
+			default:
+				attributesKeys = [...inputsArray];
+		}
 
 		attributesKeys.forEach(key => {
 			response[
@@ -622,7 +631,7 @@ const AxisControl = props => {
 			isHover,
 		}) || 'px';
 
-	const onChangeValue = (val, singleTarget, customBreakpoint) => {
+	const onChangeValue = (val, singleTarget, customBreakpoint, prefix) => {
 		let newValue = '';
 
 		if (optionType === 'number')
@@ -644,113 +653,58 @@ const AxisControl = props => {
 
 		let response = {};
 
-		switch (disableSync ? 'all' : sync) {
-			case 'all': {
-				inputsArray.forEach(key => {
-					if (
-						(key.includes('top') ||
-							key.includes('left') ||
-							key.includes('bottom') ||
-							key.includes('right')) &&
-						!key.includes('unit')
-					) {
-						response[
-							getAttributeKey(
-								getKey(key),
-								isHover,
-								false,
-								customBreakpoint ?? breakpoint
-							)
-						] = newValue;
-					}
-				});
-
-				break;
+		const isAllChange = key => {
+			if (prefix) {
+				return (
+					key.includes(`top${prefix}`) ||
+					key.includes(`left${prefix}`) ||
+					key.includes(`bottom${prefix}`) ||
+					key.includes(`right${prefix}`)
+				);
 			}
-			case 'axis': {
-				if (singleTarget === 'horizontal') {
-					inputsArray.forEach(key => {
-						if (
-							[
-								'left',
-								'right',
-								'bottom-left',
-								'top-right',
-							].includes(key) &&
-							!key.includes('unit')
-						) {
-							response[
-								getAttributeKey(
-									getKey(key),
-									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)
-							] = newValue;
-						}
-					});
-				} else if (singleTarget === 'vertical') {
-					inputsArray.forEach(key => {
-						if (
-							[
-								'top',
-								'bottom',
-								'top-left',
-								'bottom-right',
-							].includes(key) &&
-							!key.includes('unit')
-						) {
-							response[
-								getAttributeKey(
-									getKey(key),
-									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)
-							] = newValue;
-						}
-					});
-				}
+			return (
+				(key.includes('top') ||
+					key.includes('left') ||
+					key.includes('bottom') ||
+					key.includes('right')) &&
+				!key.includes('unit')
+			);
+		};
 
-				break;
+		const isHorizontalChange = key => {
+			if (prefix) {
+				return [
+					`left${prefix}`,
+					`right${prefix}`,
+					'bottom-left',
+					'top-right',
+				].includes(key);
 			}
-			case 'none':
-			default: {
-				response = {
-					[getAttributeKey(
-						getKey(singleTarget),
-						isHover,
-						false,
-						customBreakpoint ?? breakpoint
-					)]: newValue,
-				};
+			return (
+				['left', 'right', 'bottom-left', 'top-right'].includes(key) &&
+				!key.includes('unit')
+			);
+		};
 
-				break;
+		const isVerticalChange = key => {
+			if (prefix) {
+				return [
+					`top${prefix}`,
+					`bottom${prefix}`,
+					'top-left',
+					'bottom-right',
+				].includes(key);
 			}
-		}
-
-		onChange(response);
-	};
-
-	const onChangeUnit = (val, singleTarget, customBreakpoint) => {
-		const sync = getLastBreakpointAttribute({
-			target: getKey('sync'),
-			breakpoint,
-			attributes: props,
-			isHover,
-		});
-
-		let response = {};
+			return (
+				['top', 'bottom', 'top-left', 'bottom-right'].includes(key) &&
+				!key.includes('unit')
+			);
+		};
 
 		switch (disableSync ? 'all' : sync) {
 			case 'all': {
 				inputsArray.forEach(key => {
-					if (
-						key.includes('top-unit') ||
-						key.includes('left-unit') ||
-						key.includes('bottom-unit') ||
-						key.includes('right-unit')
-					) {
+					if (isAllChange(key)) {
 						response[
 							getAttributeKey(
 								getKey(key),
@@ -761,19 +715,13 @@ const AxisControl = props => {
 						] = val;
 					}
 				});
+
 				break;
 			}
 			case 'axis': {
 				if (singleTarget === 'horizontal') {
 					inputsArray.forEach(key => {
-						if (
-							[
-								'left-unit',
-								'right-unit',
-								'bottom-left',
-								'top-right',
-							].includes(key)
-						) {
+						if (isHorizontalChange(key)) {
 							response[
 								getAttributeKey(
 									getKey(key),
@@ -781,19 +729,12 @@ const AxisControl = props => {
 									false,
 									customBreakpoint ?? breakpoint
 								)
-							] = val;
+							] = newValue;
 						}
 					});
 				} else if (singleTarget === 'vertical') {
 					inputsArray.forEach(key => {
-						if (
-							[
-								'top-unit',
-								'bottom-unit',
-								'top-left',
-								'bottom-right',
-							].includes(key)
-						) {
+						if (isVerticalChange(key)) {
 							response[
 								getAttributeKey(
 									getKey(key),
@@ -801,22 +742,35 @@ const AxisControl = props => {
 									false,
 									customBreakpoint ?? breakpoint
 								)
-							] = val;
+							] = newValue;
 						}
 					});
 				}
+
 				break;
 			}
 			case 'none':
 			default: {
 				response = {
-					[getAttributeKey(
-						getKey(`${singleTarget}-unit`),
-						isHover,
-						false,
-						customBreakpoint ?? breakpoint
-					)]: val,
+					...(prefix
+						? {
+								[getAttributeKey(
+									getKey(`${singleTarget}${prefix}`),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)]: newValue,
+						  }
+						: {
+								[getAttributeKey(
+									getKey(`${singleTarget}`),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)]: newValue,
+						  }),
 				};
+
 				break;
 			}
 		}
@@ -847,8 +801,8 @@ const AxisControl = props => {
 						disableLeftRightMargin={disableLeftRightMargin}
 						getKey={getKey}
 						onChangeSync={onChangeSync}
-						onChangeUnit={onChangeUnit}
-						isSpacing={isSpacing}
+						onChangeUnit={onChangeValue}
+						enableAxisUnits={enableAxisUnits}
 					/>
 				</ResponsiveTabsControl>
 			)}
@@ -871,8 +825,8 @@ const AxisControl = props => {
 					disableAuto={disableAuto}
 					getKey={getKey}
 					onChangeSync={onChangeSync}
-					onChangeUnit={onChangeUnit}
-					isSpacing={isSpacing}
+					onChangeUnit={onChangeValue}
+					enableAxisUnits={enableAxisUnits}
 				/>
 			)}
 		</div>

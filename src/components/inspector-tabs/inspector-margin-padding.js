@@ -63,7 +63,7 @@ const marginPadding = ({
 								step: 0.1,
 							},
 						}}
-						isSpacing={true}
+						enableAxisUnits={true}
 					/>
 				)}
 				<AxisControl
@@ -80,7 +80,7 @@ const marginPadding = ({
 					target='padding'
 					blockFullWidth={blockFullWidth}
 					disableAuto
-					isSpacing={true}
+					enableAxisUnits={true}
 				/>
 			</>
 		),

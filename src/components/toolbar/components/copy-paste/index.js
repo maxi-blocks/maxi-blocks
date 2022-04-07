@@ -12,7 +12,10 @@ import { cloneBlock } from '@wordpress/blocks';
 import Button from '../../../button';
 import Dropdown from '../../../dropdown';
 import { SettingTabsControl } from '../../../../components';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import {
+	getGroupAttributes,
+	paletteAttributesCreator,
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -102,21 +105,45 @@ const CopyPasteContent = props => {
 						breakpoints.forEach(breakpoint =>
 							withBrkpt.push(`${attrType}-${breakpoint}`)
 						);
-
+						const resp = {};
 						withBrkpt.forEach(att => {
 							if (
 								(typeof attributes[att] !== 'object' &&
 									!isNil(attributes[att])) ||
 								!isEmpty(attributes[att])
 							)
-								response[tab][att] = {
-									label,
-									attribute: {
-										[att]: attributes[att],
-									},
-								};
+								resp[att] = attributes[att];
 						});
+						if (!isEmpty(resp))
+							response[tab][attrType] = {
+								label,
+								attribute: resp,
+							};
 					});
+
+				if (copyPasteMapping[tab].withPalette)
+					Object.entries(copyPasteMapping[tab].withPalette).forEach(
+						([attrType, label]) => {
+							const withPalette = paletteAttributesCreator({
+								prefix: attrType,
+							});
+							const resp = {};
+							Object.keys(withPalette).forEach(att => {
+								if (
+									(typeof attributes[att] !== 'object' &&
+										!isNil(attributes[att])) ||
+									!isEmpty(attributes[att])
+								)
+									resp[att] = attributes[att];
+							});
+
+							if (!isEmpty(resp))
+								response[tab][attrType] = {
+									label,
+									attribute: resp,
+								};
+						}
+					);
 
 				if (copyPasteMapping[tab].withPrefix)
 					Object.entries(copyPasteMapping[tab].withPrefix).forEach(
@@ -244,6 +271,27 @@ const CopyPasteContent = props => {
 							);
 
 							withBrkpt.forEach(att => {
+								if (
+									(typeof attributes[att] !== 'object' &&
+										!isNil(attributes[att])) ||
+									!isEmpty(attributes[att])
+								)
+									response = {
+										...response,
+										[att]: attributes[att],
+									};
+							});
+						}
+					);
+
+				if (copyPasteMapping[tab].withPalette)
+					Object.keys(copyPasteMapping[tab].withPalette).forEach(
+						typeAttr => {
+							const withPalette = paletteAttributesCreator({
+								prefix: typeAttr,
+							});
+
+							Object.keys(withPalette).forEach(att => {
 								if (
 									(typeof attributes[att] !== 'object' &&
 										!isNil(attributes[att])) ||

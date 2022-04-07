@@ -14,6 +14,9 @@ const response = {
 		type: 'number',
 		default: 0,
 	},
+	shortcutEffectType: {
+		type: 'object',
+	},
 };
 
 const generateAttr = (

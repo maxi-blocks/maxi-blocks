@@ -506,6 +506,10 @@ const ScrollEffectsControl = props => {
 		if (type)
 			onChange({
 				...newDefaultShortcuts?.[type]?.[`shortcut${number}`],
+				shortcutEffectType: {
+					...props['shortcutEffectType'],
+					[type]: number,
+				},
 			});
 		else
 			onChange({
@@ -583,6 +587,9 @@ const ScrollEffectsControl = props => {
 											'Shortcut effect',
 											'maxi-blocks'
 										)}
+										value={
+											props['shortcutEffectType']?.[type]
+										}
 										onChange={val =>
 											onChangeShortcut(val, type)
 										}

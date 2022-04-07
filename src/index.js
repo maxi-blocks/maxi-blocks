@@ -28,6 +28,8 @@ import './blocks/number-counter-maxi/number-counter-maxi';
 import './blocks/row-maxi/row-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 import './blocks/text-maxi/text-maxi';
+import './blocks/slider-maxi/slider-maxi';
+import './blocks/slide-maxi/slide-maxi';
 
 // Editor
 import './editor/saver';

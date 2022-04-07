@@ -1,0 +1,23 @@
+.maxi-slider-block {
+	position: relative;
+	width: 100%;
+	margin: auto;
+	padding: 0;
+	z-index: 2;
+
+	&__empty {
+		&.is-selected {
+			&::after {
+				border-color: #7fbddc !important;
+			}
+		}
+		&::after {
+			opacity: 1;
+		}
+	}
+}
+
+html body.maxi-blocks--active .maxi-slider-block[data-align='full'] {
+	max-width: 100% !important;
+	width: 100% !important;
+}

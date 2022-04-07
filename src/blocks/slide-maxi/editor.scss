@@ -1,0 +1,21 @@
+.maxi-column-size-control {
+	.components-base-control__field {
+		flex-direction: column;
+		align-items: flex-start !important;
+		&__label {
+			margin: 0;
+		}
+	}
+}
+.edit-post-visual-editor {
+	.maxi-column-block__resizer.maxi-column-block {
+		vertical-align: top;
+		z-index: 1;
+		&.has-child-selected {
+			&::after {
+				opacity: 1;
+				border-color: #ff4a17 !important;
+			}
+		}
+	}
+}

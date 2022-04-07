@@ -63,7 +63,7 @@ class MaxiBlocks_Styles
         }
 
         if ($needCustomMeta) {
-            $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];
+            $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider', 'slider'];
 
             foreach ($scripts as &$script) {
                 $jsVar = str_replace('-', '_', $script);

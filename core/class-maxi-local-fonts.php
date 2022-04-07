@@ -138,6 +138,15 @@ class MaxiBlocks_Local_Fonts
         wp_mkdir_p($this->fontsUploadDir);
     }
 
+    public function minimizeFontCss($fontCss)
+    {
+        $fontCss = preg_replace('/\/\*((?!\*\/).)*\*\//', '', $fontCss);
+        $fontCss = preg_replace('/\s{2,}/', ' ', $fontCss);
+        $fontCss = preg_replace('/\s*([:;{}])\s*/', '$1', $fontCss);
+        $fontCss = preg_replace('/;}/', '}', $fontCss);
+        return $fontCss;
+    }
+
     public function uploadCssFiles($allURLs)
     {
         foreach ($allURLs as $fontName => $fontUrl) {
@@ -178,6 +187,8 @@ class MaxiBlocks_Local_Fonts
             $newCssFile = str_replace($fontFiles, $newFontFiles, $cssFile);
 
             $newCssFile = str_replace('}', 'font-display: swap; }', $newCssFile);
+
+            $newCssFile = $this->minimizeFontCss($newCssFile);
 
             file_put_contents($fontUploadsDir.'/style.css', $newCssFile);
         }

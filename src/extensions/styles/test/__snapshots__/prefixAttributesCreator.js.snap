@@ -197,28 +197,6 @@ Object {
   "button-padding-top-xxl": Object {
     "type": "number",
   },
-  "button-padding-unit-general": Object {
-    "default": "px",
-    "type": "string",
-  },
-  "button-padding-unit-l": Object {
-    "type": "string",
-  },
-  "button-padding-unit-m": Object {
-    "type": "string",
-  },
-  "button-padding-unit-s": Object {
-    "type": "string",
-  },
-  "button-padding-unit-xl": Object {
-    "type": "string",
-  },
-  "button-padding-unit-xs": Object {
-    "type": "string",
-  },
-  "button-padding-unit-xxl": Object {
-    "type": "string",
-  },
 }
 `;
 
@@ -723,28 +701,6 @@ Object {
   "button-margin-top-xxl": Object {
     "type": "string",
   },
-  "button-margin-unit-general": Object {
-    "default": "px",
-    "type": "string",
-  },
-  "button-margin-unit-l": Object {
-    "type": "string",
-  },
-  "button-margin-unit-m": Object {
-    "type": "string",
-  },
-  "button-margin-unit-s": Object {
-    "type": "string",
-  },
-  "button-margin-unit-xl": Object {
-    "type": "string",
-  },
-  "button-margin-unit-xs": Object {
-    "type": "string",
-  },
-  "button-margin-unit-xxl": Object {
-    "type": "string",
-  },
 }
 `;
 
@@ -900,28 +856,6 @@ Object {
   },
   "button-padding-top-xxl": Object {
     "type": "number",
-  },
-  "button-padding-unit-general": Object {
-    "default": "px",
-    "type": "string",
-  },
-  "button-padding-unit-l": Object {
-    "type": "string",
-  },
-  "button-padding-unit-m": Object {
-    "type": "string",
-  },
-  "button-padding-unit-s": Object {
-    "type": "string",
-  },
-  "button-padding-unit-xl": Object {
-    "type": "string",
-  },
-  "button-padding-unit-xs": Object {
-    "type": "string",
-  },
-  "button-padding-unit-xxl": Object {
-    "type": "string",
   },
 }
 `;

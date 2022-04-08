@@ -20,6 +20,8 @@ const transition = ({ props, label = '' }) => {
 		content: (
 			<TransitionControl
 				{...getGroupAttributes(attributes, 'transitionDuration')}
+				{...getGroupAttributes(attributes, 'transitionDelay')}
+				{...getGroupAttributes(attributes, 'easing')}
 				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
 			/>

@@ -123,6 +123,7 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
+	...attributesData.transitionDuration,
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.position,

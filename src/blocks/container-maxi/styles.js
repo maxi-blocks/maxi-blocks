@@ -14,6 +14,7 @@ import {
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
 	getOverflowStyles,
+	getTransitionStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsContainer } from './custom-css';
@@ -69,6 +70,9 @@ const getNormalObject = props => {
 		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
+		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
 		}),
 	};
 
@@ -126,6 +130,9 @@ const getStyles = props => {
 							),
 						},
 					},
+					' ': getTransitionStyles({
+						...getGroupAttributes(props, 'transitionDuration'),
+					}),
 					' .maxi-shape-divider__top svg': {
 						shapeDivider: {
 							...getShapeDividerSVGStyles(

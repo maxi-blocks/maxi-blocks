@@ -64,6 +64,8 @@ class MaxiBlocks_Local_Fonts
         foreach ($array as $key => $value) {
             $array[$key] = json_decode($value, true);
         }
+
+        $array = array_filter($array);
         
         $arrayAll = array_merge_recursive(...$array);
        

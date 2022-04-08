@@ -85,7 +85,7 @@ const ButtonInserter = props => {
 };
 
 const WrapperBlockInserter = forwardRef((props, ref) => {
-	const { clientId } = props;
+	const { clientId, isSelected, hasSelectedChild } = props;
 
 	const { blockHierarchy, blockName } = useSelect(select => {
 		const { getBlockName, getBlockParents } = select('core/block-editor');
@@ -124,15 +124,10 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		}
 	}, [blockIsHovered, buttonIsHovered]);
 
-	useEffect(() => {
-		setShouldRemain(
-			ref?.current?.classList.contains('is-selected') ||
-				ref?.current?.classList.contains('has-child-selected')
-		);
-	}, [
-		ref?.current?.classList.contains('is-selected'),
-		ref?.current?.classList.contains('has-child-selected'),
-	]);
+	useEffect(
+		() => setShouldRemain(isSelected || hasSelectedChild),
+		[isSelected, hasSelectedChild]
+	);
 
 	if (!ref?.current || blockName === 'maxi-blocks/row-maxi') return null;
 

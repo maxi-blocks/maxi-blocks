@@ -18,7 +18,6 @@ const getMaxiBlockAttributes = props => {
 		isChild,
 		isSelected,
 		hasSelectedChild,
-		isHovered,
 	} = props;
 	const {
 		blockStyle,
@@ -176,7 +175,6 @@ const getMaxiBlockAttributes = props => {
 		isChild,
 		isSelected,
 		hasSelectedChild,
-		isHovered,
 		// Necessary for the memo() of MaxiBlocks component
 		attributes,
 		...scroll,

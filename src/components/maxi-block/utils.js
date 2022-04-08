@@ -4,7 +4,6 @@ import { splitValueAndUnit } from '../../extensions/styles';
 export const maxiBlockTopMargin = ({
 	e,
 	ref,
-	allowMargin,
 	marginApplied: rawMarginApplied = false,
 	setMarginApplied,
 }) => {
@@ -64,7 +63,6 @@ export const maxiBlockTopMargin = ({
 	if (
 		!eventExists &&
 		!marginApplied &&
-		allowMargin &&
 		clientX > rect.left &&
 		clientX < rect.right &&
 		clientY > rect.top - 40 &&

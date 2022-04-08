@@ -3,7 +3,7 @@
  */
 import { select, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useRef } from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -179,23 +179,33 @@ const withMaxiProps = createHigherOrderComponent(
 					onChange: setAttributes,
 				});
 
-			const insertInlineStyles = (target, styleObj) => {
-				// const el =
-				// 	ref?.current.edit.blockRef.current.querySelector(target);
+			const [styleObjKeys, setStyleObjKeys] = useState([]);
 
-				// Object.entries(styleObj).forEach(([key, val]) => {
-				// 	el.style[key] = val;
-				// });
+			const insertInlineStyles = (styleObj, target = null) => {
+				if (target) {
+					const el =
+						ref?.current.blockRef.current.querySelector(target);
 
-				console.log(target, styleObj);
+					Object.entries(styleObj).forEach(([key, val]) => {
+						el.style[key] = val;
+					});
+				} else {
+					const el = ref?.current.blockRef.current;
+					setStyleObjKeys(Object.keys(styleObj));
+
+					Object.entries(styleObj).forEach(([key, val]) => {
+						el.style[key] = val;
+					});
+				}
 			};
 
-			const cleanInlineStyles = target =>
-				ref?.current.edit.blockRef.current
-					.querySelector(target)
-					.removeAttributes('styles');
+			const cleanInlineStyles = target => {
+				const el = ref?.current.blockRef.current;
 
-			console.log(ref);
+				styleObjKeys.forEach(key => {
+					el.style[key] = '';
+				});
+			};
 
 			return (
 				<WrappedComponent
@@ -203,6 +213,7 @@ const withMaxiProps = createHigherOrderComponent(
 					ref={ref}
 					maxiSetAttributes={maxiSetAttributes}
 					insertInlineStyles={insertInlineStyles}
+					cleanInlineStyles={cleanInlineStyles}
 					deviceType={deviceType}
 					winBreakpoint={winBreakpoint}
 					hasInnerBlocks={hasInnerBlocks}

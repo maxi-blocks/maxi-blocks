@@ -43,6 +43,7 @@ const BorderColorControl = props => {
 		prefix = '',
 		breakpoint,
 		isHover = false,
+		onChangeInline,
 		onChange,
 		clientId,
 		globalProps,
@@ -79,6 +80,19 @@ const BorderColorControl = props => {
 				attributes: props,
 				isHover,
 			})}
+			onChangeInline={({ color, start }) => {
+				onChangeInline(
+					{
+						[`${prefix}border-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: color,
+					},
+					{
+						'border-color': color,
+					},
+					start
+				);
+			}}
 			onChange={({
 				paletteColor,
 				paletteStatus,

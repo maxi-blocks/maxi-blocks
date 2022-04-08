@@ -156,7 +156,7 @@ const SVGLayerContent = props => {
 const SVGLayer = props => {
 	const {
 		clientId,
-		layerId,
+		layerOrder,
 		onChange,
 		breakpoint,
 		prefix = '',
@@ -176,7 +176,7 @@ const SVGLayer = props => {
 					type='bg-shape'
 					style={getBlockStyle(clientId)}
 					onRemove={obj => {
-						if (layerId) {
+						if (layerOrder) {
 							delete SVGOptions[
 								`${prefix}background-svg-SVGElement`
 							];

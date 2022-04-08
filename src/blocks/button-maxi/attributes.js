@@ -36,6 +36,7 @@ const attributes = {
 	...attributesData.icon,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,
+	...attributesData.iconBackgroundHover,
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,

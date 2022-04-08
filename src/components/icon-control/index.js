@@ -100,7 +100,7 @@ const IconControl = props => {
 
 		options.push({
 			icon: <Icon icon={backgroundColor} />,
-			value: 'background-color',
+			value: 'color',
 		});
 
 		options.push({
@@ -487,7 +487,7 @@ const IconControl = props => {
 							});
 						}}
 					/>
-					{iconBgActive === 'background-color' && (
+					{iconBgActive === 'color' && (
 						<>
 							{!props['icon-inherit'] ? (
 								<ColorControl

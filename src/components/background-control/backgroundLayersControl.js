@@ -46,7 +46,6 @@ const LayerCard = props => {
 		onOpen,
 		isOpen,
 		onRemove,
-		layerId,
 		clientId,
 		breakpoint,
 		isHover,
@@ -226,7 +225,7 @@ const LayerCard = props => {
 	const layerContent = {
 		color: (
 			<ColorLayer
-				key={`background-color-layer--${layer.id}`}
+				key={`background-color-layer--${layer.order}`}
 				colorOptions={layer}
 				onChange={obj =>
 					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
@@ -238,7 +237,7 @@ const LayerCard = props => {
 		),
 		image: (
 			<ImageLayer
-				key={`background-image-layer--${layer.id}`}
+				key={`background-image-layer--${layer.order}`}
 				imageOptions={layer}
 				onChange={obj =>
 					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
@@ -250,7 +249,7 @@ const LayerCard = props => {
 		),
 		video: (
 			<VideoLayer
-				key={`background-video-layer--${layer.id}`}
+				key={`background-video-layer--${layer.order}`}
 				videoOptions={layer}
 				onChange={obj =>
 					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
@@ -262,7 +261,7 @@ const LayerCard = props => {
 		),
 		gradient: (
 			<GradientLayer
-				key={`background-gradient-layer--${layer.id}`}
+				key={`background-gradient-layer--${layer.order}`}
 				gradientOptions={layer}
 				onChange={obj =>
 					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
@@ -274,12 +273,12 @@ const LayerCard = props => {
 		),
 		shape: (
 			<SVGLayer
-				key={`background-SVG-layer--${layer.id}`}
+				key={`background-SVG-layer--${layer.order}`}
 				SVGOptions={layer}
 				onChange={obj =>
 					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
 				}
-				layerId={layerId}
+				layerOrder={layer.order}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -373,15 +372,15 @@ const BackgroundLayersControl = ({
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
 
-	allLayers.sort((a, b) => a.id - b.id);
+	allLayers.sort((a, b) => a.order - b.order);
 
 	const [selector, changeSelector] = useState(null);
 
-	const getNewLayerId = () =>
+	const getLayerUniqueParameter = parameter =>
 		allLayers && !isEmpty(allLayers)
 			? allLayers.reduce((layerA, layerB) =>
-					layerA.id > layerB.id ? layerA : layerB
-			  ).id + 1
+					layerA[parameter] > layerB[parameter] ? layerA : layerB
+			  )[parameter] + 1
 			: 1;
 
 	const getLayerLabel = type => {
@@ -408,7 +407,8 @@ const BackgroundLayersControl = ({
 				breakpoint,
 				isHover,
 			}),
-			id: getNewLayerId(),
+			order: getLayerUniqueParameter('order'),
+			id: getLayerUniqueParameter('id'),
 		};
 	};
 
@@ -418,7 +418,7 @@ const BackgroundLayersControl = ({
 		allLayers.splice(toIndex, 0, layer);
 
 		allLayers.forEach((layer, i) => {
-			allLayers[i].id = i;
+			allLayers[i].order = i;
 		});
 
 		const normalLayers = allLayers.filter(layer => !layer.isHover);
@@ -447,8 +447,8 @@ const BackgroundLayersControl = ({
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
 		allLayers.forEach((lay, i) => {
-			if (lay.id === layer.id) {
-				const index = findIndex(newLayers, { id: layer.id });
+			if (lay.order === layer.order) {
+				const index = findIndex(newLayers, { order: layer.order });
 
 				newLayers[index] = layer;
 			}
@@ -471,9 +471,9 @@ const BackgroundLayersControl = ({
 		});
 	};
 
-	const onRemoveLayer = ({ id, isHover: isHoverLayer }) => {
+	const onRemoveLayer = ({ order, isHover: isHoverLayer }) => {
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers).filter(
-			lay => lay.id !== id
+			lay => lay.order !== order
 		);
 
 		onChange({
@@ -500,9 +500,8 @@ const BackgroundLayersControl = ({
 								(layer, i) => (
 									<LayerCard
 										key={`maxi-background-layers__${
-											layer.id
+											layer.order
 										}${isHover ? '--hover' : ''}`}
-										layerId={layer.id}
 										isHover={isHover}
 										clientId={clientId}
 										layer={layer}
@@ -510,11 +509,13 @@ const BackgroundLayersControl = ({
 										onOpen={isOpen => {
 											if (isOpen) changeSelector(null);
 											else
-												selector !== layer.id
-													? changeSelector(layer.id)
+												selector !== layer.order
+													? changeSelector(
+															layer.order
+													  )
 													: changeSelector(null);
 										}}
-										isOpen={selector === layer.id}
+										isOpen={selector === layer.order}
 										onRemove={() => {
 											onRemoveLayer(layer);
 										}}
@@ -561,7 +562,7 @@ const BackgroundLayersControl = ({
 						const newLayer = getObject(val);
 						onAddLayer(newLayer);
 
-						changeSelector(newLayer.id);
+						changeSelector(newLayer.order);
 					}}
 				/>
 			</div>

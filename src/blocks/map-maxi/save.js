@@ -14,17 +14,16 @@ const save = props => {
 	const classes = 'maxi-map-block';
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			className={classes}
 			id={uniqueID}
 			{...getMaxiBlockAttributes(props)}
-			isSave
 		>
 			<div
 				className='maxi-map-container'
 				id={`map-container-${uniqueID}`}
 			/>
-		</MaxiBlock>
+		</MaxiBlock.save>
 	);
 };
 

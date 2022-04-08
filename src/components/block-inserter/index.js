@@ -63,7 +63,8 @@ const ButtonInserter = props => {
 			className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
 			onClick={() => {
 				selectBlock(clientId).then(() => {
-					setShouldRemain(true);
+					if (setShouldRemain) setShouldRemain(true);
+
 					onToggle();
 				});
 			}}
@@ -148,9 +149,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		return (
 			<Popover
 				key={`maxi-wrapper-block-inserter__${clientId}`}
-				className={`maxi-wrapper-block-inserter num-${
-					Object.keys(blockHierarchy).length
-				}`}
+				className='maxi-wrapper-block-inserter'
 				noArrow
 				animate={false}
 				position='bottom center'

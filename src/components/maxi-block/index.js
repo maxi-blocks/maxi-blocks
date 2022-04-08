@@ -19,6 +19,7 @@ import { select, useSelect } from '@wordpress/data';
 import { getHasParallax } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
 import BlockInserter from '../block-inserter';
+import { maxiBlockTopMargin } from './utils';
 
 /**
  * External dependencies
@@ -236,9 +237,11 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasInnerBlocks = false,
 		...extraProps
 	} = props;
-
-	// Is just necessary for the memo() part
+	// Are just necessary for the memo() part
 	delete extraProps.attributes;
+	delete extraProps.isChild;
+	delete extraProps.isSelected;
+	delete extraProps.hasSelectedChild;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -362,7 +365,33 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		return <MaxiBlockContent {...props} ref={ref} />;
+		const { isChild, clientId, blockName } = props;
+
+		// Controls the state of the top margin applied to child for showing inserter
+		const [marginApplied, setMarginApplied] = useState(false);
+
+		const allowMargin =
+			isChild &&
+			!['maxi-blocks/row-maxi', 'maxi-blocks/column-maxi'].includes(
+				blockName
+			);
+
+		return (
+			<MaxiBlockContent
+				key={`maxi-block-content__${clientId}`}
+				ref={ref}
+				onMouseEnter={e => {
+					maxiBlockTopMargin({
+						e,
+						ref,
+						allowMargin,
+						marginApplied,
+						setMarginApplied,
+					});
+				}}
+				{...props}
+			/>
+		);
 	}),
 	(rawOldProps, rawNewProps) => {
 		if (!isEqual(rawOldProps.attributes, rawNewProps.attributes))

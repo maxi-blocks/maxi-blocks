@@ -41,6 +41,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.svgHover,
 	...prefixAttributesCreator({
 		obj: attributesData.background,
 		prefix,

@@ -21,6 +21,10 @@ import {
 const SvgColor = props => {
 	const { type, label, onChange, isHover = false } = props;
 
+	//	console.log(props);
+
+	// console.log('isHover', isHover);
+
 	return (
 		<>
 			{type === 'line' ? (
@@ -33,11 +37,18 @@ const SvgColor = props => {
 					paletteColor={props['svg-line-palette-color']}
 					paletteStatus={props['svg-line-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {
-						onChange({
-							'svg-line-color': color,
-							'svg-line-palette-color': paletteColor,
-							'svg-line-palette-status': paletteStatus,
-						});
+						if (isHover)
+							onChange({
+								'svg-line-color-hover': color,
+								'svg-line-palette-color-hover': paletteColor,
+								'svg-line-palette-status-hover': paletteStatus,
+							});
+						else
+							onChange({
+								'svg-line-color': color,
+								'svg-line-palette-color': paletteColor,
+								'svg-line-palette-status': paletteStatus,
+							});
 					}}
 					globalProps={{
 						target: 'line',
@@ -55,11 +66,18 @@ const SvgColor = props => {
 					paletteColor={props['svg-fill-palette-color']}
 					paletteStatus={props['svg-fill-palette-status']}
 					onChange={({ color, paletteColor, paletteStatus }) => {
-						onChange({
-							'svg-fill-color': color,
-							'svg-fill-palette-color': paletteColor,
-							'svg-fill-palette-status': paletteStatus,
-						});
+						if (isHover)
+							onChange({
+								'svg-fill-color-hover': color,
+								'svg-fill-palette-color-hover': paletteColor,
+								'svg-fill-palette-status-hover': paletteStatus,
+							});
+						else
+							onChange({
+								'svg-fill-color': color,
+								'svg-fill-palette-color': paletteColor,
+								'svg-fill-palette-status': paletteStatus,
+							});
 					}}
 					globalProps={{
 						target: 'fill',
@@ -74,7 +92,7 @@ const SvgColor = props => {
 
 const SvgColorControl = props => {
 	const { onChange, svgType, maxiSetAttributes } = props;
-	const [hoverStatus, setHoverStatus] = useState(props['svg-status-hover']);
+	const hoverStatus = useState(props['svg-status-hover']);
 
 	return (
 		<SettingTabsControl
@@ -114,8 +132,6 @@ const SvgColorControl = props => {
 								selected={hoverStatus}
 								className='maxi-svg-status-hover'
 								onChange={val => {
-									console.log(val);
-									setHoverStatus(val);
 									maxiSetAttributes({
 										...(val &&
 											setHoverAttributes(

@@ -633,7 +633,6 @@ const AxisControl = props => {
 
 	const onChangeValue = (val, singleTarget, customBreakpoint, prefix) => {
 		let newValue = '';
-
 		if (optionType === 'number')
 			if (isEmpty(val)) newValue = val;
 			else newValue = +val;
@@ -712,7 +711,7 @@ const AxisControl = props => {
 								false,
 								customBreakpoint ?? breakpoint
 							)
-						] = val;
+						] = newValue;
 					}
 				});
 

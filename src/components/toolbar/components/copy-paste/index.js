@@ -48,6 +48,19 @@ const CopyPasteContent = props => {
 		advanced: [],
 	});
 
+	const orderAlphabetically = (response, property) => {
+		if (isEmpty(response)) return {};
+
+		const orderedKeys = Object.keys(response).sort((a, b) =>
+			response[a][property].localeCompare(response[b][property])
+		);
+		const resp = {};
+		orderedKeys.forEach(key => {
+			resp[key] = response[key];
+		});
+		return resp;
+	};
+
 	const getOrganizedAttributes = attributes => {
 		const response = {};
 		const settingTabs = ['settings', 'canvas', 'advanced'];
@@ -217,6 +230,7 @@ const CopyPasteContent = props => {
 							};
 					});
 			}
+			response[tab] = orderAlphabetically(response[tab], 'label');
 		});
 
 		return response;

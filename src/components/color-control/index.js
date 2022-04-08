@@ -40,6 +40,7 @@ const ColorControl = props => {
 		color,
 		defaultColorAttributes,
 		globalProps,
+		onChangeInline,
 		onChange,
 		isHover,
 		deviceType,
@@ -212,6 +213,7 @@ const ColorControl = props => {
 				<CustomColorControl
 					label={label}
 					color={getRGBA(color)}
+					onChangeInlineValue={onChangeInline}
 					onChangeValue={onChangeValue}
 					onReset={onReset}
 					onResetOpacity={onResetOpacity}

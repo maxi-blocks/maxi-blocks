@@ -15,7 +15,7 @@ import { selectorsGroup, categoriesGroup } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, insertInlineStyles } = props;
+	const { deviceType } = props;
 
 	return (
 		<InspectorControls>

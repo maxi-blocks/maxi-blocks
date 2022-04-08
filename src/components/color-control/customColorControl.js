@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -31,6 +32,7 @@ const CustomColorControl = props => {
 	const {
 		label,
 		color,
+		onChangeInlineValue,
 		onChangeValue,
 		disableColorDisplay,
 		disableOpacity,
@@ -39,6 +41,8 @@ const CustomColorControl = props => {
 		onReset,
 		onResetOpacity,
 	} = props;
+
+	const [colorPicker, setColorPicker] = useState(color); // state for inline
 
 	return (
 		<>
@@ -148,19 +152,24 @@ const CustomColorControl = props => {
 			)}
 			<div className='maxi-color-control__color'>
 				<ChromePicker
-					color={color}
-					onChange={val =>
-						onChange({
-							color: tinycolor(val.rgb)
-								.toRgbString()
-								.replace(/\s/g, ''),
-						})
-					}
+					color={colorPicker}
+					onChange={val => {
+						const newColor = tinycolor(val.rgb)
+							.toRgbString()
+							.replace(/\s/g, '');
+						setColorPicker(newColor);
+						onChangeInlineValue({
+							color: newColor,
+						});
+					}}
 					onChangeComplete={val => {
+						const tempColor = tinycolor(val.rgb)
+							.toRgbString()
+							.replace(/\s/g, '');
+
+						setColorPicker(tempColor);
 						onChangeValue({
-							color: tinycolor(val.rgb)
-								.toRgbString()
-								.replace(/\s/g, ''),
+							color: tempColor,
 						});
 					}}
 					disableAlpha

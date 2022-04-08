@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -32,6 +33,7 @@ const border = ({
 		scValues = {},
 		depth = 2,
 		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
 
 	const {
@@ -42,6 +44,8 @@ const border = ({
 
 	const hoverStatus =
 		attributes[`${prefix}border-status-hover`] || globalHoverStatus;
+
+	const [allTimes, setAllTimes] = useState([]);
 
 	return {
 		label: __('Border', 'maxi-blocks'),
@@ -60,12 +64,13 @@ const border = ({
 									prefix
 								)}
 								prefix={prefix}
-								onChange={obj => {
-									insertInlineStyles(target, obj);
-									maxiSetAttributes(obj);
+								onChangeInline={(obj, inlineStyles) => {
+									insertInlineStyles(inlineStyles); // inline
+									maxiSetAttributes(obj); // default
 								}}
-								onChangeComplete={obj => {
+								onChange={obj => {
 									maxiSetAttributes(obj);
+									cleanInlineStyles(); // for inline
 								}}
 								breakpoint={deviceType}
 								clientId={clientId}

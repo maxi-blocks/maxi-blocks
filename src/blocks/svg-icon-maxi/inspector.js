@@ -145,6 +145,10 @@ const Inspector = props => {
 														attributes,
 														'svg'
 													)}
+													{...getGroupAttributes(
+														attributes,
+														'svgHover'
+													)}
 													svgType={svgType}
 													maxiSetAttributes={
 														maxiSetAttributes

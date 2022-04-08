@@ -21,16 +21,16 @@ Object {
     "margin-top": "0px",
   },
   "s": Object {
-    "margin-bottom": "0px",
-    "margin-left": "0px",
-    "margin-right": "0px",
-    "margin-top": "0px",
+    "margin-bottom": "0%",
+    "margin-left": "0%",
+    "margin-right": "0%",
+    "margin-top": "0%",
   },
   "xl": Object {
-    "margin-bottom": "45px",
-    "margin-left": "45px",
-    "margin-right": "45px",
-    "margin-top": "45px",
+    "margin-bottom": "45%",
+    "margin-left": "45%",
+    "margin-right": "45%",
+    "margin-top": "45%",
   },
   "xs": Object {
     "margin-bottom": "1px",
@@ -39,10 +39,10 @@ Object {
     "margin-top": "1px",
   },
   "xxl": Object {
-    "margin-bottom": "12px",
-    "margin-left": "12px",
-    "margin-right": "12px",
-    "margin-top": "12px",
+    "margin-bottom": "12%",
+    "margin-left": "12%",
+    "margin-right": "12%",
+    "margin-top": "12%",
   },
 }
 `;
@@ -68,16 +68,16 @@ Object {
     "margin-top": "1px",
   },
   "s": Object {
-    "margin-bottom": "3px",
-    "margin-left": "4px",
-    "margin-right": "2px",
-    "margin-top": "1px",
+    "margin-bottom": "3%",
+    "margin-left": "4%",
+    "margin-right": "2%",
+    "margin-top": "1%",
   },
   "xl": Object {
-    "margin-bottom": "3px",
-    "margin-left": "4px",
-    "margin-right": "2px",
-    "margin-top": "1px",
+    "margin-bottom": "3%",
+    "margin-left": "4%",
+    "margin-right": "2%",
+    "margin-top": "1%",
   },
   "xs": Object {
     "margin-bottom": "3px",
@@ -86,10 +86,10 @@ Object {
     "margin-top": "1px",
   },
   "xxl": Object {
-    "margin-bottom": "3px",
-    "margin-left": "4px",
-    "margin-right": "2px",
-    "margin-top": "1px",
+    "margin-bottom": "3%",
+    "margin-left": "4%",
+    "margin-right": "2%",
+    "margin-top": "1%",
   },
 }
 `;

@@ -29,10 +29,10 @@ export const svg = {
 };
 
 export const svgHover = hoverAttributesCreator({
-	obj: svg,
-	sameValAttr: [
-		'svg-fill-palette-status-general, svg-line-palette-status-general',
-	],
+	obj: {
+		...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
+		...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
+	},
 	newAttr: {
 		'svg-status-hover': {
 			type: 'boolean',

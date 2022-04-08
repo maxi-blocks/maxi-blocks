@@ -9,6 +9,8 @@ import { __ } from '@wordpress/i18n';
 import * as attributesData from '../../extensions/styles/defaults/index';
 import { prefixAttributesCreator } from '../../extensions/styles';
 
+console.log(attributesData.svgHover);
+
 /**
  * Attributes
  */
@@ -34,6 +36,7 @@ const attributes = {
 		type: 'string',
 	},
 	...attributesData.svg,
+	...attributesData.svgHover,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -41,7 +44,6 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...attributesData.svgHover,
 	...prefixAttributesCreator({
 		obj: attributesData.background,
 		prefix,

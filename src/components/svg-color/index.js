@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -32,10 +31,22 @@ const SvgColor = props => {
 					label={label}
 					isHover={isHover}
 					className='maxi-color-control__SVG-line-color'
-					color={props['svg-line-color']}
+					color={
+						isHover
+							? props['svg-line-color-hover']
+							: props['svg-line-color']
+					}
 					prefix='svg-line-'
-					paletteColor={props['svg-line-palette-color']}
-					paletteStatus={props['svg-line-palette-status']}
+					paletteColor={
+						isHover
+							? props['svg-line-palette-color-hover']
+							: props['svg-line-palette-color']
+					}
+					paletteStatus={
+						isHover
+							? props['svg-line-palette-status-hover']
+							: props['svg-line-palette-status']
+					}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						if (isHover)
 							onChange({
@@ -61,10 +72,22 @@ const SvgColor = props => {
 					label={label}
 					isHover={isHover}
 					className='maxi-color-control__SVG-fill-color'
-					color={props['svg-fill-color']}
+					color={
+						isHover
+							? props['svg-fill-color-hover']
+							: props['svg-fill-color']
+					}
 					prefix='svg-fill-'
-					paletteColor={props['svg-fill-palette-color']}
-					paletteStatus={props['svg-fill-palette-status']}
+					paletteColor={
+						isHover
+							? props['svg-fill-palette-color-hover']
+							: props['svg-fill-palette-color']
+					}
+					paletteStatus={
+						isHover
+							? props['svg-fill-palette-status-hover']
+							: props['svg-fill-palette-status']
+					}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						if (isHover)
 							onChange({
@@ -92,7 +115,7 @@ const SvgColor = props => {
 
 const SvgColorControl = props => {
 	const { onChange, svgType, maxiSetAttributes } = props;
-	const hoverStatus = useState(props['svg-status-hover']);
+	const hoverStatus = props['svg-status-hover'];
 
 	return (
 		<SettingTabsControl

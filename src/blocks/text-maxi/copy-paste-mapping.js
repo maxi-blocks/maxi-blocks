@@ -1,13 +1,16 @@
 const copyPasteMapping = {
 	settings: {
 		blockSpecific: {
-			blockFullWidth: 'Block Full Width',
-			listStyle: 'List Style',
-			listStyleCustom: 'List Style Custom',
+			blockFullWidth: 'Full Width',
 			content: 'Text Content',
 			textLevel: 'Text Level',
-			isList: 'Is List',
-			typeOfList: 'Type of List',
+			typeOfList: {
+				// ??????????
+				label: 'Type of List',
+				value: ['typeOfList', 'isList'],
+			},
+			listStyle: 'List Style',
+			listStyleCustom: 'List Style Custom',
 			listStart: 'List Start',
 			listReversed: 'List Reversed',
 		},
@@ -18,16 +21,14 @@ const copyPasteMapping = {
 			'list-paragraph-spacing-unit': 'List Paragraph Spacing Unit',
 			'list-indent': 'List Indent',
 			'list-indent-unit': 'List Indent Unit',
-			'list-size': 'List Size',
-			'list-size-unit': 'List Size Unit',
+			'list-size': 'Marker Size',
+			'list-size-unit': 'Marker Size Unit',
 			'list-marker-indent': 'List Marker Indent',
 			'list-marker-indent-unit': 'List Marker Indent Unit',
 			'list-marker-line-height': 'List Marker Line Height',
 			'list-marker-line-height-unit': 'List Marker Line Height Unit',
 			'list-text-position': 'List Text Position',
 		},
-		withPrefix: {},
-		withPrefixHover: {},
 		withPalette: {
 			'list-': 'List Color',
 		},

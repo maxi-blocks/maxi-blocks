@@ -48,17 +48,18 @@ const CopyPasteContent = props => {
 		advanced: [],
 	});
 
-	const orderAlphabetically = (response, property) => {
-		if (isEmpty(response)) return {};
+	const orderAlphabetically = (obj, property) => {
+		if (isEmpty(obj)) return {};
 
-		const orderedKeys = Object.keys(response).sort((a, b) =>
-			response[a][property].localeCompare(response[b][property])
+		const orderedKeys = Object.keys(obj).sort((a, b) =>
+			obj[a][property].localeCompare(obj[b][property])
 		);
-		const resp = {};
+		const response = {};
 		orderedKeys.forEach(key => {
-			resp[key] = response[key];
+			response[key] = obj[key];
 		});
-		return resp;
+
+		return response;
 	};
 
 	const getOrganizedAttributes = attributes => {
@@ -74,7 +75,9 @@ const CopyPasteContent = props => {
 							if (
 								typeof copyPasteMapping[tab].blockSpecific[
 									attrType
-								] === 'object'
+								] === 'object' &&
+								!copyPasteMapping[tab].blockSpecific[attrType]
+									.groupLabel
 							) {
 								const attr = {};
 
@@ -196,19 +199,42 @@ const CopyPasteContent = props => {
 
 				if (copyPasteMapping[tab].withoutPrefix)
 					Object.entries(copyPasteMapping[tab].withoutPrefix).forEach(
-						([attrType, label]) => {
-							const obj = getGroupAttributes(
-								attributes,
-								attrType,
-								false,
-								'',
-								true
-							);
-							if (!isEmpty(obj))
+						([attrType, val]) => {
+							if (typeof val === 'object' && val.groupLabel) {
 								response[tab][attrType] = {
-									label,
-									attribute: obj,
+									label: val.groupLabel,
+									group: [],
 								};
+								Object.entries(val.props).forEach(
+									([prop, label]) => {
+										const obj = getGroupAttributes(
+											attributes,
+											prop,
+											false,
+											'',
+											true
+										);
+										if (!isEmpty(obj))
+											response[tab][attrType].group.push({
+												label,
+												attribute: obj,
+											});
+									}
+								);
+							} else {
+								const obj = getGroupAttributes(
+									attributes,
+									attrType,
+									false,
+									'',
+									true
+								);
+								if (!isEmpty(obj))
+									response[tab][attrType] = {
+										label: val,
+										attribute: obj,
+									};
+							}
 						}
 					);
 
@@ -230,6 +256,7 @@ const CopyPasteContent = props => {
 							};
 					});
 			}
+
 			response[tab] = orderAlphabetically(response[tab], 'label');
 		});
 
@@ -248,7 +275,9 @@ const CopyPasteContent = props => {
 							if (
 								typeof copyPasteMapping[tab].blockSpecific[
 									attrType
-								] === 'object'
+								] === 'object' &&
+								!copyPasteMapping[tab].blockSpecific[attrType]
+									.groupLabel
 							)
 								copyPasteMapping[tab].blockSpecific[
 									attrType
@@ -354,16 +383,40 @@ const CopyPasteContent = props => {
 				if (copyPasteMapping[tab].withoutPrefix)
 					Object.keys(copyPasteMapping[tab].withoutPrefix).forEach(
 						typeAttr => {
-							response = {
-								...response,
-								...getGroupAttributes(
-									attributes,
-									typeAttr,
-									false,
-									'',
-									true
-								),
-							};
+							if (
+								typeof copyPasteMapping[tab].withoutPrefix[
+									typeAttr
+								] === 'object' &&
+								copyPasteMapping[tab].withoutPrefix[typeAttr]
+									.groupLabel
+							)
+								Object.keys(
+									copyPasteMapping[tab].withoutPrefix[
+										typeAttr
+									].props
+								).forEach(prop => {
+									response = {
+										...response,
+										...getGroupAttributes(
+											attributes,
+											prop,
+											false,
+											'',
+											true
+										),
+									};
+								});
+							else
+								response = {
+									...response,
+									...getGroupAttributes(
+										attributes,
+										typeAttr,
+										false,
+										'',
+										true
+									),
+								};
 						}
 					);
 
@@ -474,6 +527,14 @@ const CopyPasteContent = props => {
 		updateBlockAttributes(clientId, res);
 	};
 
+	const checkNestedCheckboxes = parent => {
+		const checkboxes = document.querySelectorAll(`.${parent}`);
+		if (!isEmpty(checkboxes))
+			checkboxes.forEach(c => {
+				c.checked = true;
+			});
+	};
+
 	const getTabItems = () => {
 		const response = [];
 		Object.keys(organizedAttributes).forEach(tab => {
@@ -486,7 +547,83 @@ const CopyPasteContent = props => {
 					!isNil(organizedAttributes[tab]) &&
 					!isEmpty(organizedAttributes[tab]) &&
 					Object.keys(organizedAttributes[tab]).map((attrType, i) => {
-						return (
+						if (!organizedAttributes[tab][attrType].group)
+							return (
+								<div
+									className='toolbar-item__copy-paste__popover__item'
+									key={`copy-paste-${tab}-${attrType}`}
+								>
+									<label
+										htmlFor={attrType}
+										className='maxi-axis-control__content__item__checkbox'
+									>
+										<input
+											type='checkbox'
+											name={attrType}
+											id={attrType}
+											checked={specialPaste[tab].includes(
+												attrType
+											)}
+											onClick={() =>
+												handleSpecialPaste(
+													attrType,
+													tab
+												)
+											}
+										/>
+										<span>
+											{
+												organizedAttributes[tab][
+													attrType
+												].label
+											}
+										</span>
+									</label>
+								</div>
+							);
+
+						const nestedCheckBoxes = organizedAttributes[tab][
+							attrType
+						].group.map((attr, i) => {
+							return (
+								<li>
+									<div
+										className='toolbar-item__copy-paste__popover__item'
+										key={`copy-paste-${tab}-${attr}`}
+									>
+										<label
+											htmlFor={attr}
+											className='maxi-axis-control__content__item__checkbox'
+										>
+											<input
+												type='checkbox'
+												name={attr}
+												id={attr}
+												className={attrType}
+												checked={specialPaste[
+													tab
+												].includes(attr)}
+												onClick={() =>
+													handleSpecialPaste(
+														attr,
+														tab
+													)
+												}
+											/>
+											<span>
+												{
+													organizedAttributes[tab][
+														attrType
+													].group[i].label
+												}
+											</span>
+										</label>
+									</div>
+								</li>
+							);
+						});
+
+						const groupCheckBox = (
 							<div
 								className='toolbar-item__copy-paste__popover__item'
 								key={`copy-paste-${tab}-${attrType}`}
@@ -499,12 +636,9 @@ const CopyPasteContent = props => {
 										type='checkbox'
 										name={attrType}
 										id={attrType}
-										checked={specialPaste[tab].includes(
+										onClick={checkNestedCheckboxes(
 											attrType
 										)}
-										onClick={() =>
-											handleSpecialPaste(attrType, tab)
-										}
 									/>
 									<span>
 										{
@@ -514,6 +648,13 @@ const CopyPasteContent = props => {
 									</span>
 								</label>
 							</div>
+						);
+
+						return (
+							<>
+								{groupCheckBox}
+								<ul>{nestedCheckBoxes}</ul>
+							</>
 						);
 					}),
 			};

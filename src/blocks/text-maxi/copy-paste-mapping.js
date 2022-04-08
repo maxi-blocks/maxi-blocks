@@ -34,9 +34,14 @@ const copyPasteMapping = {
 		},
 		withoutPrefix: {
 			blockBackground: 'Background',
-			border: 'Border',
-			borderWidth: 'Border Width',
-			borderRadius: 'Border Radius',
+			border: {
+				groupLabel: 'Border Group',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border Width',
+					borderRadius: 'Border Radius',
+				},
+			},
 			boxShadow: 'Box Shadow',
 			size: 'Size',
 			padding: 'Padding',

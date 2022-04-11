@@ -35,6 +35,7 @@ import './editor.scss';
 const TransformControl = props => {
 	const {
 		className,
+		onChangeInline,
 		onChange,
 		breakpoint = 'general',
 		uniqueID,
@@ -169,6 +170,9 @@ const TransformControl = props => {
 					})}
 					defaultY={getDefaultAttribute('transform-scale-y')}
 					onChange={(x, y) => {
+						onChangeInline({
+							transform: `scaleX(${x / 100}) scaleY(${y / 100})`,
+						});
 						onChangeTransform({
 							'transform-scale-x': x,
 							'transform-scale-y': y,
@@ -214,6 +218,9 @@ const TransformControl = props => {
 						attributes: props,
 					})}
 					onChange={(x, y, xUnit, yUnit) => {
+						onChangeInline({
+							transform: `translateX(${x}${xUnit}) translateY(${y}${yUnit})`,
+						});
 						onChangeTransform({
 							'transform-translate-x': x,
 							'transform-translate-x-unit': xUnit,
@@ -260,6 +267,9 @@ const TransformControl = props => {
 					})}
 					defaultZ={getDefaultAttribute('transform-rotate-z')}
 					onChange={(x, y, z) => {
+						onChangeInline({
+							transform: `rotateX(${x}deg) rotateY(${y}deg) rotateZ(${z}deg)`,
+						});
 						onChangeTransform({
 							'transform-rotate-x': x,
 							'transform-rotate-y': y,
@@ -304,6 +314,9 @@ const TransformControl = props => {
 						attributes: props,
 					})}
 					onChange={(x, y, xUnit, yUnit) => {
+						onChangeInline({
+							transform: `origin(${x}${xUnit} ${y}${yUnit})`,
+						});
 						onChangeTransform({
 							'transform-origin-x': x,
 							'transform-origin-x-unit': xUnit,

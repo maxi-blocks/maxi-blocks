@@ -5,7 +5,6 @@ const copyPasteMapping = {
 			content: 'Text Content',
 			textLevel: 'Text Level',
 			typeOfList: {
-				// ??????????
 				label: 'Type of List',
 				value: ['typeOfList', 'isList'],
 			},

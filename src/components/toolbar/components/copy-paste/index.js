@@ -203,7 +203,7 @@ const CopyPasteContent = props => {
 							if (typeof val === 'object' && val.groupLabel) {
 								response[tab][attrType] = {
 									label: val.groupLabel,
-									group: [],
+									group: {},
 								};
 								Object.entries(val.props).forEach(
 									([prop, label]) => {
@@ -215,10 +215,12 @@ const CopyPasteContent = props => {
 											true
 										);
 										if (!isEmpty(obj))
-											response[tab][attrType].group.push({
+											response[tab][attrType].group[
+												prop
+											] = {
 												label,
 												attribute: obj,
-											});
+											};
 									}
 								);
 							} else {
@@ -495,14 +497,19 @@ const CopyPasteContent = props => {
 	const onPasteBlocks = () =>
 		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
 
-	const handleSpecialPaste = (attr, tab) => {
-		const newSpecialPaste = specialPaste[tab].includes(attr)
-			? specialPaste[tab].filter(item => {
-					return item !== attr;
-			  })
-			: [...specialPaste[tab], attr];
-
-		setSpecialPaste({ ...specialPaste, [tab]: newSpecialPaste });
+	const handleSpecialPaste = (attr, tab, checked) => {
+		const specPaste = { ...specialPaste };
+		if (!Array.isArray(attr)) {
+			specPaste[tab] = specialPaste[tab].includes(attr)
+				? specPaste[tab].filter(val => val !== attr)
+				: [...specPaste[tab], attr];
+		} else {
+			attr.forEach(attrType => {
+				specPaste[tab] = specPaste[tab].filter(val => val !== attrType);
+				if (checked) specPaste[tab] = [...specPaste[tab], attrType];
+			});
+		}
+		setSpecialPaste(specPaste);
 	};
 
 	const onSpecialPaste = () => {
@@ -527,12 +534,12 @@ const CopyPasteContent = props => {
 		updateBlockAttributes(clientId, res);
 	};
 
-	const checkNestedCheckboxes = parent => {
-		const checkboxes = document.querySelectorAll(`.${parent}`);
-		if (!isEmpty(checkboxes))
-			checkboxes.forEach(c => {
-				c.checked = true;
-			});
+	const checkNestedCheckboxes = (attrType, tab, checked) => {
+		handleSpecialPaste(
+			Object.keys(organizedAttributes[tab][attrType].group),
+			tab,
+			checked
+		);
 	};
 
 	const getTabItems = () => {
@@ -582,9 +589,9 @@ const CopyPasteContent = props => {
 								</div>
 							);
 
-						const nestedCheckBoxes = organizedAttributes[tab][
-							attrType
-						].group.map((attr, i) => {
+						const nestedCheckBoxes = Object.keys(
+							organizedAttributes[tab][attrType].group
+						).map((attr, i) => {
 							return (
 								<li>
 									<div
@@ -599,11 +606,10 @@ const CopyPasteContent = props => {
 												type='checkbox'
 												name={attr}
 												id={attr}
-												className={attrType}
 												checked={specialPaste[
 													tab
 												].includes(attr)}
-												onClick={() =>
+												onChange={() =>
 													handleSpecialPaste(
 														attr,
 														tab
@@ -614,7 +620,7 @@ const CopyPasteContent = props => {
 												{
 													organizedAttributes[tab][
 														attrType
-													].group[i].label
+													].group[attr].label
 												}
 											</span>
 										</label>
@@ -636,9 +642,13 @@ const CopyPasteContent = props => {
 										type='checkbox'
 										name={attrType}
 										id={attrType}
-										onClick={checkNestedCheckboxes(
-											attrType
-										)}
+										onClick={e =>
+											checkNestedCheckboxes(
+												attrType,
+												tab,
+												e.target.checked
+											)
+										}
 									/>
 									<span>
 										{
@@ -658,8 +668,10 @@ const CopyPasteContent = props => {
 						);
 					}),
 			};
-			response.push(option);
+
+			if (option.content) response.push(option);
 		});
+
 		return response;
 	};
 

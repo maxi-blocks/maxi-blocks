@@ -156,33 +156,26 @@ const Inspector = props => {
 													onChange={obj => {
 														maxiSetAttributes(obj);
 
-														const fillColorStr =
-															getColorRGBAString({
-																firstVar:
-																	'icon-fill',
-																secondVar: `color-${obj['svg-fill-palette-color']}`,
-																opacity:
-																	obj[
-																		'svg-fill-palette-opacity'
-																	],
-																blockStyle:
-																	parentBlockStyle,
-															});
+														let fillColorStr = '';
+														let lineColorStr = '';
 
-														const lineColorStr =
-															getColorRGBAString({
-																firstVar:
-																	'icon-line',
-																secondVar: `color-${obj['svg-line-palette-color']}`,
-																opacity:
-																	obj[
-																		'svg-line-palette-opacity'
-																	],
-																blockStyle:
-																	parentBlockStyle,
-															});
-
-														svgType !== 'Line' &&
+														if (
+															svgType !== 'Line'
+														) {
+															fillColorStr =
+																getColorRGBAString(
+																	{
+																		firstVar:
+																			'icon-fill',
+																		secondVar: `color-${obj['svg-fill-palette-color']}`,
+																		opacity:
+																			obj[
+																				'svg-fill-palette-opacity'
+																			],
+																		blockStyle:
+																			parentBlockStyle,
+																	}
+																);
 															changeSVGContent(
 																obj[
 																	'svg-fill-palette-status'
@@ -193,8 +186,25 @@ const Inspector = props => {
 																	  ],
 																'fill'
 															);
+														}
 
-														svgType !== 'Shape' &&
+														if (
+															svgType !== 'Shape'
+														) {
+															lineColorStr =
+																getColorRGBAString(
+																	{
+																		firstVar:
+																			'icon-line',
+																		secondVar: `color-${obj['svg-line-palette-color']}`,
+																		opacity:
+																			obj[
+																				'svg-line-palette-opacity'
+																			],
+																		blockStyle:
+																			parentBlockStyle,
+																	}
+																);
 															changeSVGContent(
 																obj[
 																	'svg-line-palette-status'
@@ -202,6 +212,60 @@ const Inspector = props => {
 																	? lineColorStr
 																	: obj[
 																			'svg-line-color'
+																	  ],
+																'stroke'
+															);
+														}
+													}}
+													onChangeHover={obj => {
+														maxiSetAttributes(obj);
+
+														const fillColorStr =
+															getColorRGBAString({
+																firstVar:
+																	'icon-fill-hover',
+																secondVar: `color-${obj['svg-fill-palette-color-hover']}`,
+																opacity:
+																	obj[
+																		'svg-fill-palette-opacity-hover'
+																	],
+																blockStyle:
+																	parentBlockStyle,
+															});
+
+														const lineColorStr =
+															getColorRGBAString({
+																firstVar:
+																	'icon-line-hover',
+																secondVar: `color-${obj['svg-line-palette-color-hover']}`,
+																opacity:
+																	obj[
+																		'svg-line-palette-opacity-hover'
+																	],
+																blockStyle:
+																	parentBlockStyle,
+															});
+
+														svgType !== 'Line' &&
+															changeSVGContent(
+																obj[
+																	'svg-fill-palette-status-hover'
+																]
+																	? fillColorStr
+																	: obj[
+																			'svg-fill-color-hover'
+																	  ],
+																'fill'
+															);
+
+														svgType !== 'Shape' &&
+															changeSVGContent(
+																obj[
+																	'svg-line-palette-status-hover'
+																]
+																	? lineColorStr
+																	: obj[
+																			'svg-line-color-hover'
 																	  ],
 																'stroke'
 															);

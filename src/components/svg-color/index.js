@@ -18,11 +18,7 @@ import {
  * SvgColor
  */
 const SvgColor = props => {
-	const { type, label, onChange, isHover = false } = props;
-
-	//	console.log(props);
-
-	// console.log('isHover', isHover);
+	const { type, label, onChange, onChangeHover, isHover = false } = props;
 
 	return (
 		<>
@@ -49,7 +45,7 @@ const SvgColor = props => {
 					}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						if (isHover)
-							onChange({
+							onChangeHover({
 								'svg-line-color-hover': color,
 								'svg-line-palette-color-hover': paletteColor,
 								'svg-line-palette-status-hover': paletteStatus,

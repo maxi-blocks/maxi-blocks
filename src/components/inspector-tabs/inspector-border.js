@@ -65,7 +65,8 @@ const border = ({
 								onChangeInline={inlineStyles => {
 									insertInlineStyles(
 										inlineStyles,
-										attributes['background-layers']
+										attributes['background-layers'].length >
+											0
 											? '.maxi-background-displayer'
 											: ''
 									);
@@ -73,7 +74,8 @@ const border = ({
 								onChange={obj => {
 									maxiSetAttributes(obj);
 									cleanInlineStyles(
-										attributes['background-layers']
+										attributes['background-layers'].length >
+											0
 											? '.maxi-background-displayer'
 											: ''
 									);

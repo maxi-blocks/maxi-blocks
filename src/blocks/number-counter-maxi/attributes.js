@@ -79,6 +79,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.scroll,
 	...attributesData.flex,
 };
 

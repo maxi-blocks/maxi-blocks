@@ -172,6 +172,10 @@ const getTypographyStyles = ({
 				'text-orientation':
 					obj[getName('text-orientation', breakpoint)],
 			}),
+			...(!isNil(obj[getName('text-direction', breakpoint)]) && {
+				// eslint-disable-next-line prettier/prettier
+				'direction': obj[getName('text-direction', breakpoint)],
+			}),
 		};
 
 		if (!isEmpty(typography)) response[breakpoint] = typography;

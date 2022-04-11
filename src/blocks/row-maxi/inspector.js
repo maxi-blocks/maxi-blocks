@@ -57,7 +57,10 @@ const Inspector = props => {
 														clientId={clientId}
 														{...getGroupAttributes(
 															attributes,
-															'rowPattern'
+															[
+																'rowPattern',
+																'gap',
+															]
 														)}
 														removeColumnGap={
 															attributes.removeColumnGap

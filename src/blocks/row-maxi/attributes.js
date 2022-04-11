@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
 /**
  * Imports
  */
@@ -37,6 +36,7 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
+	...attributesData.gap,
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
 	...attributesData.border,

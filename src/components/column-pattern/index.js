@@ -225,6 +225,50 @@ const ColumnPatternsInspector = props => {
 							}}
 						/>
 					)}
+					{!removeColumnGap && (
+						<AdvancedNumberControl
+							className='maxi__size'
+							label={__('Gap', 'maxi-blocks')}
+							enableUnit
+							unit={props['gap-unit']}
+							onChangeUnit={val => {
+								console.log(val);
+								onChange({
+									[`gap-unit`]: val,
+								});
+							}}
+							value={props['gap']}
+							onChangeValue={val => {
+								onChange({
+									[`gap`]: val,
+								});
+							}}
+							minMaxSettings={{
+								px: {
+									min: 0,
+									max: 999,
+								},
+								em: {
+									min: 0,
+									max: 999,
+								},
+								vw: {
+									min: 0,
+									max: 999,
+								},
+								'%': {
+									min: 0,
+									max: 100,
+								},
+							}}
+							allowedUnits={['px', 'em', 'vw', '%']}
+							onReset={() =>
+								onChange({
+									[`gap`]: null,
+								})
+							}
+						/>
+					)}
 				</div>
 			)}
 		</div>

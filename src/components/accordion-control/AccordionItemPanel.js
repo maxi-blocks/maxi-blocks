@@ -7,7 +7,7 @@ const AccordionItemPanel = props => {
 			hidden={isHidden}
 			data-accordion-component='AccordionItemPanel'
 		>
-			{children}
+			{!isHidden && children}
 		</div>
 	);
 };

@@ -21,6 +21,7 @@ import './editor.scss';
 const BlockBackgroundControl = props => {
 	const {
 		className,
+		onChangeInline,
 		onChange,
 		isHover = false,
 		prefix = '',
@@ -62,6 +63,7 @@ const BlockBackgroundControl = props => {
 			<BackgroundLayersControl
 				layersOptions={layersOptions}
 				layersHoverOptions={layersHoverOptions}
+				onChangeInline={onChangeInline}
 				onChange={obj => onChange(obj)}
 				isHover={isHover}
 				prefix={prefix}

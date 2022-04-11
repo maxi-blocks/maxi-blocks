@@ -40,6 +40,7 @@ const ALLOWED_BLOCKS = [
 const BlockBackgroundColor = props => {
 	const {
 		blockName,
+		onChangeInline,
 		onChange,
 		breakpoint,
 		'background-layers': backgroundLayers = [],
@@ -104,6 +105,12 @@ const BlockBackgroundColor = props => {
 						disableClipPath
 						key={`background-color-layer--${layer.order}`}
 						colorOptions={layer}
+						onChangeInline={obj =>
+							onChangeInline(
+								obj,
+								`.maxi-background-displayer__${layer.order}`
+							)
+						}
 						onChange={obj => {
 							const newLayer = { ...layer, ...obj };
 							const newLayers = cloneDeep(backgroundLayers);

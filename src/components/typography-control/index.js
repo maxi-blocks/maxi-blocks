@@ -240,6 +240,7 @@ const TextOptions = props => {
 const LinkOptions = props => {
 	const {
 		getValue,
+		onChangeInline,
 		onChangeFormat,
 		prefix,
 		breakpoint,
@@ -312,6 +313,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -350,6 +354,9 @@ const LinkOptions = props => {
 					paletteColor={getValue(`${prefix}link-hover-palette-color`)}
 					paletteOpacity={
 						getValue(`${prefix}link-hover-palette-opacity`) || 1
+					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:hover')
 					}
 					onChange={({
 						paletteColor,
@@ -394,6 +401,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-active-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:active')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -437,6 +447,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-visited-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:visited')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -473,6 +486,7 @@ const TypographyControl = withFormatValue(props => {
 		className,
 		textLevel = 'p',
 		hideAlignment = false,
+		onChangeInline,
 		onChange,
 		breakpoint = 'general',
 		formatValue,
@@ -760,6 +774,9 @@ const TypographyControl = withFormatValue(props => {
 					paletteColor={getValue(`${prefix}palette-color`)}
 					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-status`)}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, textLevel)
+					}
 					onChange={({
 						color,
 						paletteColor,
@@ -1043,6 +1060,7 @@ const TypographyControl = withFormatValue(props => {
 				<LinkOptions
 					getValue={getValue}
 					getDefault={getDefault}
+					onChangeInline={onChangeInline}
 					onChangeFormat={onChangeFormat}
 					prefix={prefix}
 					breakpoint={breakpoint}

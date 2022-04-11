@@ -181,29 +181,49 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const [styleObjKeys, setStyleObjKeys] = useState([]);
 
-			const insertInlineStyles = (styleObj, target = null) => {
-				if (target) {
-					const el =
-						ref?.current.blockRef.current.querySelector(target);
+			const insertInlineStyles = (styleObj, target = '') => {
+				const parentElement = ref?.current.blockRef.current;
+				const targetElement =
+					target !== ''
+						? parentElement.querySelector(target)
+						: parentElement;
 
-					Object.entries(styleObj).forEach(([key, val]) => {
-						el.style[key] = val;
-					});
-				} else {
-					const el = ref?.current.blockRef.current;
-					setStyleObjKeys(Object.keys(styleObj));
+				Object.entries(styleObj).forEach(([key, val]) => {
+					targetElement.style[key] = val;
+				});
 
-					Object.entries(styleObj).forEach(([key, val]) => {
-						el.style[key] = val;
-					});
-				}
+				setStyleObjKeys(Object.keys(styleObj));
 			};
 
-			const cleanInlineStyles = target => {
-				const el = ref?.current.blockRef.current;
+			const cleanInlineStyles = (target = '') => {
+				const parentElement = ref?.current.blockRef.current;
+				const targetElement =
+					target !== ''
+						? parentElement.querySelector(target)
+						: parentElement;
 
-				styleObjKeys.forEach(key => {
-					el.style[key] = '';
+				const getAllInlineElements = element => {
+					const inlineElements = [element];
+
+					if (element.children.length) {
+						for (let i = 0; i < element.children.length; i += 1) {
+							inlineElements.push(
+								...getAllInlineElements(element.children[i])
+							);
+						}
+					} else {
+						inlineElements.push(element);
+					}
+
+					return inlineElements;
+				};
+
+				const inlineElements = getAllInlineElements(targetElement);
+
+				inlineElements.forEach(element => {
+					styleObjKeys.forEach(key => {
+						if (element.style[key]) element.style[key] = '';
+					});
 				});
 			};
 

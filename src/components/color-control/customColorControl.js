@@ -41,8 +41,7 @@ const CustomColorControl = props => {
 		onReset,
 		onResetOpacity,
 	} = props;
-
-	const [colorPicker, setColorPicker] = useState(color); // state for inline
+	const [colorPicker, setColorPicker] = useState(color);
 
 	return (
 		<>
@@ -57,7 +56,9 @@ const CustomColorControl = props => {
 								<span
 									style={{
 										background:
-											tinycolor(color).toRgbString(),
+											tinycolor(
+												colorPicker
+											).toRgbString(),
 									}}
 								/>
 							</div>
@@ -154,12 +155,13 @@ const CustomColorControl = props => {
 				<ChromePicker
 					color={colorPicker}
 					onChange={val => {
-						const newColor = tinycolor(val.rgb)
+						const tempColor = tinycolor(val.rgb)
 							.toRgbString()
 							.replace(/\s/g, '');
-						setColorPicker(newColor);
+
+						setColorPicker(tempColor);
 						onChangeInlineValue({
-							color: newColor,
+							color: tempColor,
 						});
 					}}
 					onChangeComplete={val => {
@@ -167,7 +169,6 @@ const CustomColorControl = props => {
 							.toRgbString()
 							.replace(/\s/g, '');
 
-						setColorPicker(tempColor);
 						onChangeValue({
 							color: tempColor,
 						});

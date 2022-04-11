@@ -50,6 +50,7 @@ const BackgroundControl = props => {
 		disableClipPath = false,
 		disableSVG = false,
 		disableNoneStyle = false,
+		onChangeInline,
 		onChange,
 		isHover = false,
 		prefix = '',
@@ -143,6 +144,7 @@ const BackgroundControl = props => {
 								prefix
 							),
 						}}
+						onChangeInline={onChangeInline}
 						onChange={obj => onChange(obj)}
 						disableClipPath={disableClipPath}
 						isHover={isHover}

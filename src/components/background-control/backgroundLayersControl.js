@@ -42,6 +42,7 @@ import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
  */
 const LayerCard = props => {
 	const {
+		onChangeInline,
 		onChange,
 		onOpen,
 		isOpen,
@@ -227,6 +228,12 @@ const LayerCard = props => {
 			<ColorLayer
 				key={`background-color-layer--${layer.order}`}
 				colorOptions={layer}
+				onChangeInline={inlineStyles => {
+					onChangeInline(
+						inlineStyles,
+						`.maxi-background-displayer__${layer.order}`
+					);
+				}}
 				onChange={obj =>
 					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
 				}
@@ -364,6 +371,7 @@ const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
 	isHover = false,
+	onChangeInline,
 	onChange,
 	clientId,
 	breakpoint,
@@ -505,6 +513,7 @@ const BackgroundLayersControl = ({
 										isHover={isHover}
 										clientId={clientId}
 										layer={layer}
+										onChangeInline={onChangeInline}
 										onChange={onChangeLayer}
 										onOpen={isOpen => {
 											if (isOpen) changeSelector(null);

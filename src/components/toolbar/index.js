@@ -91,6 +91,8 @@ const MaxiToolbar = memo(
 			prefix = '',
 			backgroundGlobalProps,
 			resizableObject,
+			insertInlineStyles,
+			cleanInlineStyles,
 		} = props;
 		const {
 			blockFullWidth,
@@ -196,7 +198,13 @@ const MaxiToolbar = memo(
 									attributes,
 									'typography'
 								)}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChangeInline={(obj, target) =>
+									insertInlineStyles(obj, target)
+								}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles();
+								}}
 								breakpoint={breakpoint}
 								node={anchorRef}
 								isList={isList}
@@ -306,6 +314,7 @@ const MaxiToolbar = memo(
 								globalProps={backgroundGlobalProps}
 								blockName={name}
 								breakpoint={breakpoint}
+								onChangeInline={obj => insertInlineStyles(obj)}
 								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
 							/>
@@ -316,6 +325,9 @@ const MaxiToolbar = memo(
 								)}
 								blockName={name}
 								breakpoint={breakpoint}
+								onChangeInline={(inlineStyles, target) =>
+									insertInlineStyles(inlineStyles, target)
+								}
 								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
 							/>

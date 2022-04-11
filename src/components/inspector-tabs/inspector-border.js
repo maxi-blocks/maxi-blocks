@@ -45,8 +45,6 @@ const border = ({
 	const hoverStatus =
 		attributes[`${prefix}border-status-hover`] || globalHoverStatus;
 
-	const [allTimes, setAllTimes] = useState([]);
-
 	return {
 		label: __('Border', 'maxi-blocks'),
 		disablePadding: true,
@@ -64,13 +62,21 @@ const border = ({
 									prefix
 								)}
 								prefix={prefix}
-								onChangeInline={(obj, inlineStyles) => {
-									insertInlineStyles(inlineStyles); // inline
-									maxiSetAttributes(obj); // default
+								onChangeInline={inlineStyles => {
+									insertInlineStyles(
+										inlineStyles,
+										attributes['background-layers']
+											? '.maxi-background-displayer'
+											: ''
+									);
 								}}
 								onChange={obj => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles(); // for inline
+									cleanInlineStyles(
+										attributes['background-layers']
+											? '.maxi-background-displayer'
+											: ''
+									);
 								}}
 								breakpoint={deviceType}
 								clientId={clientId}

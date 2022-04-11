@@ -30,6 +30,8 @@ const typography = ({
 		deviceType,
 		maxiSetAttributes,
 		scValues = {},
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
 	const {
 		parentBlockStyle,
@@ -60,7 +62,13 @@ const typography = ({
 									attributes,
 									typographyTarget
 								)}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChangeInline={(inlineStyles, target) =>
+									insertInlineStyles(inlineStyles, target)
+								}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles();
+								}}
 								hideAlignment={hideAlignment}
 								breakpoint={deviceType}
 								clientId={clientId}
@@ -99,7 +107,19 @@ const typography = ({
 											'typography',
 											true
 										)}
-										onChange={obj => maxiSetAttributes(obj)}
+										onChangeInline={(
+											inlineStyles,
+											target
+										) =>
+											insertInlineStyles(
+												inlineStyles,
+												target
+											)
+										}
+										onChange={obj => {
+											maxiSetAttributes(obj);
+											cleanInlineStyles();
+										}}
 										hideAlignment={hideAlignment}
 										breakpoint={deviceType}
 										isHover

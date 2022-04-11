@@ -49,12 +49,22 @@ class MaxiBlocks_Local_Fonts
             "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
         );
 
-        if (!$post_content_array || empty($post_content_array)) {
+        $prev_post_content_array = (array)$wpdb->get_results(
+            "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
+        );
+
+        if (empty($post_content_array) && empty($prev_post_content_array)) {
             return false;
         }
 
         foreach ($post_content_array as $font) {
             $array[] = $font->fonts_value;
+        }
+
+        if (!empty($prev_post_content_array)) {
+            foreach ($prev_post_content_array as $font) {
+                $array[] = $font->prev_fonts_value;
+            }
         }
 
         if (empty($array)) {
@@ -65,7 +75,12 @@ class MaxiBlocks_Local_Fonts
             $array[$key] = json_decode($value, true);
         }
 
-        $array = array_filter($array);
+        function filterNull($arr)
+        {
+            return ($arr !== null && $arr !== false && $arr !== '');
+        }
+
+        $array = array_filter($array, 'filterNull');
         
         $arrayAll = array_merge_recursive(...$array);
        

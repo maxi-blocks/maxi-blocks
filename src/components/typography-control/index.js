@@ -825,7 +825,8 @@ const TypographyControl = withFormatValue(props => {
 					objFont[fontName].weight = val.toString();
 					if (fontStyle) objFont[fontName].style = fontStyle;
 
-					loadFonts(objFont);
+					console.log(objFont);
+					loadFonts(objFont, false);
 				}}
 			/>
 			<SelectControl

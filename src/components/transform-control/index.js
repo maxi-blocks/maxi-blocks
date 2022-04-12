@@ -100,6 +100,21 @@ const TransformControl = props => {
 		}
 	};
 
+	const onChangeInlineTransform = () => {
+		const transformObj = getTransformStyles(transformOptions);
+
+		if (!transformObj || !transformObj[breakpoint]) return {};
+
+		const {
+			[breakpoint]: { transform, 'transform-origin': transformOrigin },
+		} = transformObj;
+
+		onChangeInline({
+			transform: transform ?? '',
+			'transform-origin': transformOrigin ?? '',
+		});
+	};
+
 	useEffect(() => {
 		if (activeTabName) {
 			setTransformStatus(toLower(activeTabName));
@@ -170,13 +185,11 @@ const TransformControl = props => {
 					})}
 					defaultY={getDefaultAttribute('transform-scale-y')}
 					onChange={(x, y) => {
-						onChangeInline({
-							transform: `scaleX(${x / 100}) scaleY(${y / 100})`,
-						});
 						onChangeTransform({
 							'transform-scale-x': x,
 							'transform-scale-y': y,
 						});
+						onChangeInlineTransform();
 						forceStyles();
 					}}
 					onSave={(x, y) => {
@@ -184,6 +197,7 @@ const TransformControl = props => {
 							'transform-scale-x': x,
 							'transform-scale-y': y,
 						});
+						onChangeInlineTransform();
 						onChange({
 							[`transform-scale-x-${breakpoint}`]: x,
 							[`transform-scale-y-${breakpoint}`]: y,
@@ -218,15 +232,13 @@ const TransformControl = props => {
 						attributes: props,
 					})}
 					onChange={(x, y, xUnit, yUnit) => {
-						onChangeInline({
-							transform: `translateX(${x}${xUnit}) translateY(${y}${yUnit})`,
-						});
 						onChangeTransform({
 							'transform-translate-x': x,
 							'transform-translate-x-unit': xUnit,
 							'transform-translate-y': y,
 							'transform-translate-y-unit': yUnit,
 						});
+						onChangeInlineTransform();
 						forceStyles();
 					}}
 					onSave={(x, y, xUnit, yUnit) => {
@@ -236,6 +248,7 @@ const TransformControl = props => {
 							'transform-translate-y': y,
 							'transform-translate-y-unit': yUnit,
 						});
+						onChangeInlineTransform();
 						onChange({
 							[`transform-translate-x-${breakpoint}`]: x,
 							[`transform-translate-x-unit-${breakpoint}`]: xUnit,
@@ -267,14 +280,12 @@ const TransformControl = props => {
 					})}
 					defaultZ={getDefaultAttribute('transform-rotate-z')}
 					onChange={(x, y, z) => {
-						onChangeInline({
-							transform: `rotateX(${x}deg) rotateY(${y}deg) rotateZ(${z}deg)`,
-						});
 						onChangeTransform({
 							'transform-rotate-x': x,
 							'transform-rotate-y': y,
 							'transform-rotate-z': z,
 						});
+						onChangeInlineTransform();
 						onChange({
 							[`transform-rotate-x-${breakpoint}`]: x,
 							[`transform-rotate-y-${breakpoint}`]: y,
@@ -314,15 +325,13 @@ const TransformControl = props => {
 						attributes: props,
 					})}
 					onChange={(x, y, xUnit, yUnit) => {
-						onChangeInline({
-							transform: `origin(${x}${xUnit} ${y}${yUnit})`,
-						});
 						onChangeTransform({
 							'transform-origin-x': x,
 							'transform-origin-x-unit': xUnit,
 							'transform-origin-y': y,
 							'transform-origin-y-unit': yUnit,
 						});
+						onChangeInlineTransform();
 						forceStyles();
 					}}
 					onSave={(x, y, xUnit, yUnit) => {
@@ -332,6 +341,7 @@ const TransformControl = props => {
 							'transform-origin-y': y,
 							'transform-origin-y-unit': yUnit,
 						});
+						onChangeInlineTransform();
 						onChange({
 							[`transform-origin-x-${breakpoint}`]: x,
 							[`transform-origin-x-unit-${breakpoint}`]: xUnit,

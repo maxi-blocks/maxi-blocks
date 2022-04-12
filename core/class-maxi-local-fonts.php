@@ -42,16 +42,6 @@ class MaxiBlocks_Local_Fonts
         }
     }
 
-
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-
     public function getAllFontsDB()
     {
         global $wpdb;
@@ -63,16 +53,9 @@ class MaxiBlocks_Local_Fonts
             "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
         );
 
-        $sc_string = $wpdb->get_results(
-            "SELECT * FROM {$wpdb->prefix}maxi_blocks_general WHERE id='sc_string'"
-        );
-
         if (empty($post_content_array) && empty($prev_post_content_array) && $sc_string === '') {
             return false;
         }
-
-        $sc_string_text = maybe_unserialize(json_decode(json_encode($sc_string), true)[0]['object'])['_maxi_blocks_style_card'];
-        //  $this->write_log($sc_string_text);
 
         foreach ($post_content_array as $font) {
             $array[] = $font->fonts_value;

@@ -31,4 +31,10 @@ export const selectorsRow = {
 	},
 };
 
-export const categoriesRow = ['row', 'before row', 'after row'];
+export const categoriesRow = [
+	'row',
+	'before row',
+	'after row',
+	'background',
+	'background hover',
+];

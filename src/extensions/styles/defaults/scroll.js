@@ -9,7 +9,15 @@ export const scrollTypes = [
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const response = {};
+const response = {
+	shortcutEffect: {
+		type: 'number',
+		default: 0,
+	},
+	shortcutEffectType: {
+		type: 'object',
+	},
+};
 
 const generateAttr = (
 	scrollType,

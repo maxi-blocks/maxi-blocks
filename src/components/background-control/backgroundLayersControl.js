@@ -372,16 +372,36 @@ const BackgroundLayersControl = ({
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
 
+	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
+		layers && !isEmpty(layers)
+			? Math.max(
+					...layers.map(layer =>
+						typeof layer[parameter] === 'number'
+							? layer[parameter]
+							: 0
+					)
+			  ) + 1
+			: 1;
+
+	// WILL BE DELETED AFTER BACKGROUND LAYERS ARE UPDATED
+	if (!allLayers.every(layer => typeof layer.order === 'number')) {
+		allLayers.forEach((layer, index, array) => {
+			layer.order = getLayerUniqueParameter('order', array);
+		});
+
+		const normalLayers = allLayers.filter(layer => !layer.isHover);
+		const hoverLayers = allLayers.filter(layer => layer.isHover);
+
+		onChange({
+			'background-layers': normalLayers,
+			'background-layers-hover': hoverLayers,
+		});
+	}
+	//
+
 	allLayers.sort((a, b) => a.order - b.order);
 
 	const [selector, changeSelector] = useState(null);
-
-	const getLayerUniqueParameter = parameter =>
-		allLayers && !isEmpty(allLayers)
-			? allLayers.reduce((layerA, layerB) =>
-					layerA[parameter] > layerB[parameter] ? layerA : layerB
-			  )[parameter] + 1
-			: 1;
 
 	const getLayerLabel = type => {
 		switch (type) {
@@ -418,7 +438,7 @@ const BackgroundLayersControl = ({
 		allLayers.splice(toIndex, 0, layer);
 
 		allLayers.forEach((layer, i) => {
-			allLayers[i].order = i;
+			allLayers[i].order = i + 1;
 		});
 
 		const normalLayers = allLayers.filter(layer => !layer.isHover);

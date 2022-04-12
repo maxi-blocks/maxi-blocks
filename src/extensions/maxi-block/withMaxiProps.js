@@ -182,6 +182,8 @@ const withMaxiProps = createHigherOrderComponent(
 			const [styleObjKeys, setStyleObjKeys] = useState([]);
 
 			const insertInlineStyles = (styleObj, target = '') => {
+				if (isEmpty(styleObj)) return;
+
 				const parentElement = ref?.current.blockRef.current;
 				const targetElement =
 					target !== ''

@@ -103,7 +103,7 @@ const TransformControl = props => {
 	const onChangeInlineTransform = () => {
 		const transformObj = getTransformStyles(transformOptions);
 
-		if (!transformObj || !transformObj[breakpoint]) return {};
+		if (!transformObj || !transformObj[breakpoint]) return;
 
 		const {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },

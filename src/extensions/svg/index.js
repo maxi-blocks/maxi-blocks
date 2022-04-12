@@ -6,3 +6,6 @@ export { default as injectImgSVG } from './injectImgSVG';
 export { default as setSVGPosition } from './setSVGPosition';
 export { default as setSVGRatio } from './setSVGRatio';
 export { default as setSVGColor } from './setSVGColor';
+export { default as setSVGContent } from './setSVGContent';
+export { default as setSVGContentWithBlockStyle } from './setSVGContentWithBlockStyle';
+export { default as setSVGStrokeWidth } from './setSVGStrokeWidth';

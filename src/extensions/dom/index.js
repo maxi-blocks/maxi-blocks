@@ -326,31 +326,16 @@ wp.domReady(() => {
 });
 
 const openSidebar = item => {
+	const accordionUid = item.replace(/[^a-zA-Z0-9]+/g, '');
+	dispatch('maxiBlocks').updateInspectorPath({
+		depth: 1,
+		value: accordionUid,
+	});
+
 	const sidebar = document.querySelector('.maxi-sidebar');
 	const wrapperElement = document.querySelector(
 		`.maxi-accordion-control__item[data-name="${item}"]`
 	);
-	const button = wrapperElement.querySelector(
-		'.maxi-accordion-control__item__button'
-	);
-	const content = wrapperElement.querySelector(
-		'.maxi-accordion-control__item__panel'
-	);
-
-	Array.from(
-		document.getElementsByClassName('maxi-accordion-control__item__button')
-	).forEach(el => {
-		if (el.getAttribute('aria-expanded'))
-			el.setAttribute('aria-expanded', false);
-	});
-	Array.from(
-		document.getElementsByClassName('maxi-accordion-control__item__panel')
-	).forEach(el => {
-		if (!el.getAttribute('hidden')) el.setAttribute('hidden', '');
-	});
-
-	button.setAttribute('aria-expanded', true);
-	content.removeAttribute('hidden');
 
 	sidebar.scroll({
 		top: wrapperElement.getBoundingClientRect().top,

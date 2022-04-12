@@ -136,6 +136,15 @@ const Inspector = props => {
 									...inspectorTabs.transform({
 										props,
 									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
+										label: __(
+											'Hover transition',
+											'maxi-blocks'
+										),
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

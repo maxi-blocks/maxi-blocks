@@ -1,6 +1,6 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const transitionDuration = breakpointAttributesCreator({
+const transition = breakpointAttributesCreator({
 	obj: {
 		'transition-duration': {
 			type: 'number',
@@ -17,4 +17,4 @@ const transitionDuration = breakpointAttributesCreator({
 	}
 });
 
-export default transitionDuration;
+export default transition;

@@ -158,8 +158,8 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -262,8 +262,8 @@ const getHoverContentObject = (props, scValues) => {
 			},
 			scValues,
 		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 

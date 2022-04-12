@@ -22,6 +22,7 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
 	getOverflowStyles,
@@ -303,6 +304,9 @@ const getImageObject = props => {
 		),
 		clipPath: getClipPathStyles({
 			...getGroupAttributes(props, 'clipPath'),
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 };

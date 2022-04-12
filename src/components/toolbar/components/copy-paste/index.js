@@ -58,7 +58,7 @@ const ATTRIBUTES = [
 	'size',
 	'textAlignment',
 	'transform',
-	'transitionDuration',
+	'transition',
 	'typography',
 	'typographyHover',
 	'zIndex',

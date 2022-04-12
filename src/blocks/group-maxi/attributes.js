@@ -44,6 +44,7 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.position,

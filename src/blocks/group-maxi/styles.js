@@ -8,6 +8,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getArrowStyles,
 	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
@@ -58,6 +59,9 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
@@ -98,6 +102,16 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -106,6 +120,7 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
+				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

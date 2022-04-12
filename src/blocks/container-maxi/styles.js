@@ -71,13 +71,24 @@ const getNormalObject = props => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
 	return response;
 };
+
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
 
 const getHoverObject = props => {
 	const response = {
@@ -116,6 +127,7 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
+				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
 				...(props['shape-divider-top-status'] && {
 					' .maxi-shape-divider__top': {
 						shapeDivider: {
@@ -130,9 +142,6 @@ const getStyles = props => {
 							),
 						},
 					},
-					' ': getTransitionStyles({
-						...getGroupAttributes(props, 'transitionDuration'),
-					}),
 					' .maxi-shape-divider__top svg': {
 						shapeDivider: {
 							...getShapeDividerSVGStyles(

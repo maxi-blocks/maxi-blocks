@@ -16,6 +16,7 @@ import {
 	getSVGWidthStyles,
 	getFlexStyles,
 	getBackgroundStyles,
+	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSvgIcon } from './custom-css';
 
@@ -64,6 +65,9 @@ const getWrapperObject = props => {
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
@@ -151,6 +155,9 @@ const getNormalObject = props => {
 			),
 			blockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 

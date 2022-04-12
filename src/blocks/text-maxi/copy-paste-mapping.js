@@ -51,9 +51,14 @@ const copyPasteMapping = {
 		},
 		withoutPrefixHover: {
 			typographyHover: 'Typography Hover',
-			borderHover: 'Border Hover',
-			borderWidthHover: 'Border Width Hover',
-			borderRadiusHover: 'Border Radius Hover',
+			borderHover: {
+				groupLabel: 'Border Hover Group',
+				props: {
+					borderHover: 'Border Hover',
+					borderWidthHover: 'Border Width Hover',
+					borderRadiusHover: 'Border Radius Hover',
+				},
+			},
 			boxShadowHover: 'Box Shadow Hover',
 		},
 	},

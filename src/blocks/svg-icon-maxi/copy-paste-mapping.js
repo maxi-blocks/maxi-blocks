@@ -8,9 +8,14 @@ const copyPasteMapping = {
 			background: 'Background',
 			backgroundColor: 'Background Color',
 			backgroundGradient: 'Background Gradient',
-			border: 'Border',
-			borderWidth: 'Border Width',
-			borderRadius: 'Border Radius',
+			border: {
+				groupLabel: 'Border Group',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border Width',
+					borderRadius: 'Border Radius',
+				},
+			},
 			boxShadow: 'Box Shadow',
 			margin: 'Margin',
 			padding: 'Padding',
@@ -19,9 +24,14 @@ const copyPasteMapping = {
 			backgroundHover: 'Background Hover',
 			backgroundColorHover: 'Background Color Hover',
 			backgroundGradientHover: 'Background Gradient Hover',
-			borderHover: 'Border Hover',
-			borderWidthHover: 'Border Width Hover',
-			borderRadiusHover: 'Border Radius Hover',
+			borderHover: {
+				groupLabel: 'Border Hover Group',
+				props: {
+					borderHover: 'Border Hover',
+					borderWidthHover: 'Border Width Hover',
+					borderRadiusHover: 'Border Radius Hover',
+				},
+			},
 			boxShadowHover: 'Box Shadow Hover',
 		},
 		withoutPrefix: { svg: 'SVG', alignment: 'Alignment', size: 'Size' },
@@ -29,18 +39,28 @@ const copyPasteMapping = {
 	canvas: {
 		withoutPrefix: {
 			blockBackground: 'Background',
-			border: 'Border',
-			borderRadius: 'Border Radius',
-			borderWidth: 'Border Width',
+			border: {
+				groupLabel: 'Border Group',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border Width',
+					borderRadius: 'Border Radius',
+				},
+			},
 			boxShadow: 'Box Shadow',
 			opacity: 'Opacity',
 			margin: 'Margin',
 			padding: 'Padding',
 		},
 		withoutPrefixHover: {
-			borderHover: 'Border Hover',
-			borderRadiusHover: 'Border Radius Hover',
-			borderWidthHover: 'Border Width Hover',
+			borderHover: {
+				groupLabel: 'Border Hover Group',
+				props: {
+					borderHover: 'Border Hover',
+					borderWidthHover: 'Border Width Hover',
+					borderRadiusHover: 'Border Radius Hover',
+				},
+			},
 			boxShadowHover: 'Box Shadow Hover',
 		},
 	},

@@ -69,194 +69,218 @@ const CopyPasteContent = props => {
 		settingTabs.forEach(tab => {
 			if (copyPasteMapping[tab]) {
 				response[tab] = {};
-				if (copyPasteMapping[tab].blockSpecific)
-					Object.entries(copyPasteMapping[tab].blockSpecific).forEach(
-						([attrType, label]) => {
-							if (
-								typeof copyPasteMapping[tab].blockSpecific[
-									attrType
-								] === 'object' &&
-								!copyPasteMapping[tab].blockSpecific[attrType]
-									.groupLabel
-							) {
-								const attr = {};
 
-								copyPasteMapping[tab].blockSpecific[
-									attrType
-								].value.forEach(val => {
-									if (!isNil(attributes[val]))
-										attr[val] = attributes[val];
-								});
+				['blockSpecific', 'withBreakpoint', 'withPalette'].forEach(
+					type => {
+						if (copyPasteMapping[tab][type])
+							Object.entries(copyPasteMapping[tab][type]).forEach(
+								([attrType, attrContent]) => {
+									if (
+										typeof attrContent === 'object' &&
+										attrContent.groupLabel
+									) {
+										const groupObj = {
+											label: attrContent.groupLabel,
+											group: {},
+										};
 
-								if (
-									(typeof attr !== 'object' &&
-										!isNil(attr)) ||
-									!isEmpty(attr)
-								)
-									response[tab][attrType] = {
-										label: copyPasteMapping[tab]
-											.blockSpecific[attrType].label,
-										attribute: attr,
-									};
-							} else if (
-								(typeof attributes[attrType] !== 'object' &&
-									!isNil(attributes[attrType])) ||
-								!isEmpty(attributes[attrType])
-							)
-								response[tab][attrType] = {
-									label,
-									attribute: {
-										[attrType]: attributes[attrType],
-									},
-								};
-						}
-					);
+										Object.entries(
+											attrContent.props
+										).forEach(([prop, label]) => {
+											let attrArray = [];
 
-				if (copyPasteMapping[tab].withBreakpoint)
-					Object.entries(
-						copyPasteMapping[tab].withBreakpoint
-					).forEach(([attrType, label]) => {
-						const withBrkpt = [];
+											attrArray = [prop];
 
-						breakpoints.forEach(breakpoint =>
-							withBrkpt.push(`${attrType}-${breakpoint}`)
-						);
-						const resp = {};
-						withBrkpt.forEach(att => {
-							if (
-								(typeof attributes[att] !== 'object' &&
-									!isNil(attributes[att])) ||
-								!isEmpty(attributes[att])
-							)
-								resp[att] = attributes[att];
-						});
-						if (!isEmpty(resp))
-							response[tab][attrType] = {
-								label,
-								attribute: resp,
-							};
-					});
+											if (type === 'withBreakpoint') {
+												const newArray = [...attrArray];
+												attrArray = [];
+												newArray.forEach(a => {
+													const withBrkpt = [];
 
-				if (copyPasteMapping[tab].withPalette)
-					Object.entries(copyPasteMapping[tab].withPalette).forEach(
-						([attrType, label]) => {
-							const withPalette = paletteAttributesCreator({
-								prefix: attrType,
-							});
-							const resp = {};
-							Object.keys(withPalette).forEach(att => {
-								if (
-									(typeof attributes[att] !== 'object' &&
-										!isNil(attributes[att])) ||
-									!isEmpty(attributes[att])
-								)
-									resp[att] = attributes[att];
-							});
+													breakpoints.forEach(
+														breakpoint =>
+															withBrkpt.push(
+																`${a}-${breakpoint}`
+															)
+													);
+													attrArray =
+														attrArray.concat(
+															withBrkpt
+														);
+												});
+											}
 
-							if (!isEmpty(resp))
-								response[tab][attrType] = {
-									label,
-									attribute: resp,
-								};
-						}
-					);
+											if (type === 'withPalette') {
+												const newArray = [...attrArray];
+												attrArray = [];
+												newArray.forEach(a => {
+													const withPalette =
+														paletteAttributesCreator(
+															{
+																prefix: a,
+															}
+														);
+													attrArray =
+														attrArray.concat(
+															Object.keys(
+																withPalette
+															)
+														);
+												});
+											}
 
-				if (copyPasteMapping[tab].withPrefix)
-					Object.entries(copyPasteMapping[tab].withPrefix).forEach(
-						([attrType, label]) => {
-							const obj = getGroupAttributes(
-								attributes,
-								attrType,
-								false,
-								prefix,
-								true
-							);
-							if (!isEmpty(obj))
-								response[tab][attrType] = {
-									label,
-									attribute: obj,
-								};
-						}
-					);
+											const resp = {};
 
-				if (copyPasteMapping[tab].withPrefixHover)
-					Object.entries(
-						copyPasteMapping[tab].withPrefixHover
-					).forEach(([attrType, label]) => {
-						const obj = getGroupAttributes(
-							attributes,
-							attrType,
-							true,
-							prefix,
-							true
-						);
-						if (!isEmpty(obj))
-							response[tab][attrType] = {
-								label,
-								attribute: obj,
-							};
-					});
+											attrArray.forEach(attr => {
+												if (
+													(typeof attributes[attr] !==
+														'object' &&
+														!isNil(
+															attributes[attr]
+														)) ||
+													!isEmpty(attributes[attr])
+												)
+													resp[attr] =
+														attributes[attr];
+											});
 
-				if (copyPasteMapping[tab].withoutPrefix)
-					Object.entries(copyPasteMapping[tab].withoutPrefix).forEach(
-						([attrType, val]) => {
-							if (typeof val === 'object' && val.groupLabel) {
-								response[tab][attrType] = {
-									label: val.groupLabel,
-									group: {},
-								};
-								Object.entries(val.props).forEach(
-									([prop, label]) => {
-										const obj = getGroupAttributes(
-											attributes,
-											prop,
-											false,
-											'',
-											true
-										);
-										if (!isEmpty(obj))
-											response[tab][attrType].group[
-												prop
-											] = {
-												label,
-												attribute: obj,
+											if (!isEmpty(resp))
+												groupObj.group[prop] = {
+													label,
+													attribute: resp,
+												};
+										});
+										if (!isEmpty(groupObj.group))
+											response[tab][attrType] = groupObj;
+									} else {
+										let attrArray = [];
+
+										if (
+											typeof attrContent === 'object' &&
+											attrContent.value
+										)
+											attrArray = [...attrContent.value];
+										else attrArray = [attrType];
+
+										if (type === 'withBreakpoint') {
+											const newArray = [...attrArray];
+											attrArray = [];
+											newArray.forEach(a => {
+												const withBrkpt = [];
+
+												breakpoints.forEach(
+													breakpoint =>
+														withBrkpt.push(
+															`${a}-${breakpoint}`
+														)
+												);
+												attrArray =
+													attrArray.concat(withBrkpt);
+											});
+										}
+
+										if (type === 'withPalette') {
+											const newArray = [...attrArray];
+											attrArray = [];
+											newArray.forEach(a => {
+												const withPalette =
+													paletteAttributesCreator({
+														prefix: a,
+													});
+												attrArray = attrArray.concat(
+													Object.keys(withPalette)
+												);
+											});
+										}
+										const resp = {};
+										attrArray.forEach(attr => {
+											if (
+												(typeof attributes[attr] !==
+													'object' &&
+													!isNil(attributes[attr])) ||
+												!isEmpty(attributes[attr])
+											)
+												resp[attr] = attributes[attr];
+										});
+										if (!isEmpty(resp))
+											response[tab][attrType] = {
+												label:
+													typeof attrContent ===
+													'string'
+														? attrContent
+														: attrContent.label,
+												attribute: resp,
 											};
 									}
-								);
-							} else {
-								const obj = getGroupAttributes(
-									attributes,
-									attrType,
-									false,
-									'',
-									true
-								);
-								if (!isEmpty(obj))
-									response[tab][attrType] = {
-										label: val,
-										attribute: obj,
-									};
-							}
-						}
-					);
+								}
+							);
+					}
+				);
 
-				if (copyPasteMapping[tab].withoutPrefixHover)
-					Object.entries(
-						copyPasteMapping[tab].withoutPrefixHover
-					).forEach(([attrType, label]) => {
-						const obj = getGroupAttributes(
-							attributes,
-							attrType,
-							true,
-							'',
-							true
+				[
+					'withPrefix',
+					'withPrefixHover',
+					'withoutPrefix',
+					'withoutPrefixHover',
+				].forEach(type => {
+					if (copyPasteMapping[tab][type])
+						Object.entries(copyPasteMapping[tab][type]).forEach(
+							([attrType, attrContent]) => {
+								if (
+									typeof attrContent === 'object' &&
+									attrContent.groupLabel
+								) {
+									const groupObj = {
+										label: attrContent.groupLabel,
+										group: {},
+									};
+
+									Object.entries(attrContent.props).forEach(
+										([prop, label]) => {
+											const resp = getGroupAttributes(
+												attributes,
+												prop,
+												type === 'withPrefixHover' ||
+													type ===
+														'withoutPrefixHover',
+												type === 'withPrefix' ||
+													type === 'withPrefixHover'
+													? prefix
+													: '',
+												true
+											);
+
+											if (!isEmpty(resp))
+												groupObj.group[prop] = {
+													label,
+													attribute: resp,
+												};
+										}
+									);
+									if (!isEmpty(groupObj.group))
+										response[tab][attrType] = groupObj;
+								} else if (typeof attrContent === 'string') {
+									const resp = getGroupAttributes(
+										attributes,
+										attrType,
+										type === 'withPrefixHover' ||
+											type === 'withoutPrefixHover',
+										type === 'withPrefix' ||
+											type === 'withPrefixHover'
+											? prefix
+											: '',
+										true
+									);
+
+									if (!isEmpty(resp))
+										response[tab][attrType] = {
+											label: attrContent,
+											attribute: resp,
+										};
+								}
+							}
 						);
-						if (!isEmpty(obj))
-							response[tab][attrType] = {
-								label,
-								attribute: obj,
-							};
-					});
+				});
 			}
 
 			response[tab] = orderAlphabetically(response[tab], 'label');
@@ -271,172 +295,107 @@ const CopyPasteContent = props => {
 
 		settingTabs.forEach(tab => {
 			if (copyPasteMapping[tab]) {
-				if (copyPasteMapping[tab].blockSpecific)
-					Object.keys(copyPasteMapping[tab].blockSpecific).forEach(
-						attrType => {
-							if (
-								typeof copyPasteMapping[tab].blockSpecific[
-									attrType
-								] === 'object' &&
-								!copyPasteMapping[tab].blockSpecific[attrType]
-									.groupLabel
-							)
-								copyPasteMapping[tab].blockSpecific[
-									attrType
-								].value.forEach(val => {
+				['blockSpecific', 'withBreakpoint', 'withPalette'].forEach(
+					type => {
+						if (copyPasteMapping[tab][type])
+							Object.entries(copyPasteMapping[tab][type]).forEach(
+								([attrType, attr]) => {
+									let attrArray = [];
+
 									if (
-										(typeof attributes[val] !== 'object' &&
-											!isNil(attributes[val])) ||
-										!isEmpty(attributes[val])
+										typeof attr === 'object' &&
+										!attr.groupLabel
 									)
-										response = {
-											...response,
-											[val]: attributes[val],
-										};
-								});
-							else if (
-								(typeof attributes[attrType] !== 'object' &&
-									!isNil(attributes[attrType])) ||
-								!isEmpty(attributes[attrType])
-							)
-								response = {
-									...response,
-									[attrType]: attributes[attrType],
-								};
-						}
-					);
+										attrArray = [...attr.value];
+									else if (
+										typeof attr === 'object' &&
+										attr.groupLabel
+									)
+										attrArray = [
+											...Object.keys(attr.props),
+										];
+									else if (typeof attr === 'string')
+										attrArray.push(attrType);
 
-				if (copyPasteMapping[tab].withBreakpoint)
-					Object.keys(copyPasteMapping[tab].withBreakpoint).forEach(
-						typeAttr => {
-							const withBrkpt = [];
+									if (type === 'withBreakpoint') {
+										const newArray = [...attrArray];
+										attrArray = [];
+										newArray.forEach(a => {
+											const withBrkpt = [];
 
-							breakpoints.forEach(breakpoint =>
-								withBrkpt.push(`${typeAttr}-${breakpoint}`)
+											breakpoints.forEach(breakpoint =>
+												withBrkpt.push(
+													`${a}-${breakpoint}`
+												)
+											);
+											attrArray =
+												attrArray.concat(withBrkpt);
+										});
+									}
+
+									if (type === 'withPalette') {
+										const newArray = [...attrArray];
+										attrArray = [];
+										newArray.forEach(a => {
+											const withPalette =
+												paletteAttributesCreator({
+													prefix: a,
+												});
+											attrArray = attrArray.concat(
+												Object.keys(withPalette)
+											);
+										});
+									}
+
+									attrArray.forEach(a => {
+										if (
+											(typeof attributes[a] !==
+												'object' &&
+												!isNil(attributes[a])) ||
+											!isEmpty(attributes[a])
+										)
+											response = {
+												...response,
+												[a]: attributes[a],
+											};
+									});
+								}
 							);
+					}
+				);
 
-							withBrkpt.forEach(att => {
-								if (
-									(typeof attributes[att] !== 'object' &&
-										!isNil(attributes[att])) ||
-									!isEmpty(attributes[att])
-								)
-									response = {
-										...response,
-										[att]: attributes[att],
-									};
-							});
-						}
-					);
-
-				if (copyPasteMapping[tab].withPalette)
-					Object.keys(copyPasteMapping[tab].withPalette).forEach(
-						typeAttr => {
-							const withPalette = paletteAttributesCreator({
-								prefix: typeAttr,
-							});
-
-							Object.keys(withPalette).forEach(att => {
-								if (
-									(typeof attributes[att] !== 'object' &&
-										!isNil(attributes[att])) ||
-									!isEmpty(attributes[att])
-								)
-									response = {
-										...response,
-										[att]: attributes[att],
-									};
-							});
-						}
-					);
-
-				if (copyPasteMapping[tab].withPrefix)
-					Object.keys(copyPasteMapping[tab].withPrefix).forEach(
-						typeAttr => {
-							response = {
-								...response,
-								...getGroupAttributes(
-									attributes,
-									typeAttr,
-									false,
-									prefix,
-									true
-								),
-							};
-						}
-					);
-
-				if (copyPasteMapping[tab].withPrefixHover)
-					Object.keys(copyPasteMapping[tab].withPrefixHover).forEach(
-						typeAttr => {
-							response = {
-								...response,
-								...getGroupAttributes(
-									attributes,
-									typeAttr,
-									true,
-									prefix,
-									true
-								),
-							};
-						}
-					);
-
-				if (copyPasteMapping[tab].withoutPrefix)
-					Object.keys(copyPasteMapping[tab].withoutPrefix).forEach(
-						typeAttr => {
-							if (
-								typeof copyPasteMapping[tab].withoutPrefix[
-									typeAttr
-								] === 'object' &&
-								copyPasteMapping[tab].withoutPrefix[typeAttr]
-									.groupLabel
-							)
-								Object.keys(
-									copyPasteMapping[tab].withoutPrefix[
-										typeAttr
-									].props
-								).forEach(prop => {
+				[
+					'withPrefix',
+					'withPrefixHover',
+					'withoutPrefix',
+					'withoutPrefixHover',
+				].forEach(type => {
+					if (copyPasteMapping[tab][type])
+						Object.entries(copyPasteMapping[tab][type]).forEach(
+							([attrType, attr]) => {
+								let attrArray = [];
+								if (typeof attr === 'object' && attr.groupLabel)
+									attrArray = Object.keys(attr.props);
+								else attrArray = [attrType];
+								attrArray.forEach(prop => {
 									response = {
 										...response,
 										...getGroupAttributes(
 											attributes,
 											prop,
-											false,
-											'',
+											type === 'withPrefixHover' ||
+												type === 'withoutPrefixHover',
+											type === 'withPrefix' ||
+												type === 'withPrefixHover'
+												? prefix
+												: '',
 											true
 										),
 									};
 								});
-							else
-								response = {
-									...response,
-									...getGroupAttributes(
-										attributes,
-										typeAttr,
-										false,
-										'',
-										true
-									),
-								};
-						}
-					);
-
-				if (copyPasteMapping[tab].withoutPrefixHover)
-					Object.keys(
-						copyPasteMapping[tab].withoutPrefixHover
-					).forEach(typeAttr => {
-						response = {
-							...response,
-							...getGroupAttributes(
-								attributes,
-								typeAttr,
-								true,
-								'',
-								true
-							),
-						};
-					});
+							}
+						);
+				});
 			}
 		});
 
@@ -497,16 +456,33 @@ const CopyPasteContent = props => {
 	const onPasteBlocks = () =>
 		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
 
-	const handleSpecialPaste = (attr, tab, checked) => {
+	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
 		const specPaste = { ...specialPaste };
 		if (!Array.isArray(attr)) {
-			specPaste[tab] = specialPaste[tab].includes(attr)
-				? specPaste[tab].filter(val => val !== attr)
-				: [...specPaste[tab], attr];
+			if (group) {
+				if (!checked)
+					specPaste[tab] = specPaste[tab].filter(sp => {
+						return (
+							typeof sp !== 'object' ||
+							(typeof sp === 'object' &&
+								!Object.values(sp).includes(attr))
+						);
+					});
+				else specPaste[tab] = [...specPaste[tab], { [group]: attr }];
+			} else
+				specPaste[tab] = specialPaste[tab].includes(attr)
+					? specPaste[tab].filter(val => val !== attr)
+					: [...specPaste[tab], attr];
 		} else {
+			specPaste[tab] = specPaste[tab].filter(sp => {
+				return (
+					typeof sp !== 'object' ||
+					(typeof sp === 'object' && !Object.keys(sp).includes(group))
+				);
+			});
 			attr.forEach(attrType => {
-				specPaste[tab] = specPaste[tab].filter(val => val !== attrType);
-				if (checked) specPaste[tab] = [...specPaste[tab], attrType];
+				if (checked)
+					specPaste[tab] = [...specPaste[tab], { [group]: attrType }];
 			});
 		}
 		setSpecialPaste(specPaste);
@@ -515,13 +491,20 @@ const CopyPasteContent = props => {
 	const onSpecialPaste = () => {
 		let res = {};
 
-		Object.keys(organizedAttributes).forEach(tab => {
-			Object.entries(organizedAttributes[tab]).forEach(([key, val]) => {
-				const isSelected = specialPaste[tab].some(
-					label => label === key
-				);
-
-				if (isSelected) res = { ...res, ...val.attribute };
+		Object.keys(specialPaste).forEach(tab => {
+			specialPaste[tab].forEach(key => {
+				if (typeof key === 'string')
+					res = {
+						...res,
+						...organizedAttributes[tab][key].attribute,
+					};
+				else
+					res = {
+						...res,
+						...organizedAttributes[tab][Object.keys(key)[0]].group[
+							Object.values(key)[0]
+						].attribute,
+					};
 			});
 		});
 
@@ -535,11 +518,12 @@ const CopyPasteContent = props => {
 	};
 
 	const checkNestedCheckboxes = (attrType, tab, checked) => {
-		handleSpecialPaste(
-			Object.keys(organizedAttributes[tab][attrType].group),
+		handleSpecialPaste({
+			attr: Object.keys(organizedAttributes[tab][attrType].group),
 			tab,
-			checked
-		);
+			group: attrType,
+			checked,
+		});
 	};
 
 	const getTabItems = () => {
@@ -572,10 +556,10 @@ const CopyPasteContent = props => {
 												attrType
 											)}
 											onClick={() =>
-												handleSpecialPaste(
-													attrType,
-													tab
-												)
+												handleSpecialPaste({
+													attr: attrType,
+													tab,
+												})
 											}
 										/>
 										<span>
@@ -606,14 +590,29 @@ const CopyPasteContent = props => {
 												type='checkbox'
 												name={attr}
 												id={attr}
-												checked={specialPaste[
-													tab
-												].includes(attr)}
-												onChange={() =>
-													handleSpecialPaste(
-														attr,
-														tab
+												checked={
+													!isEmpty(
+														specialPaste[
+															tab
+														].filter(sp => {
+															return (
+																typeof sp ===
+																	'object' &&
+																Object.values(
+																	sp
+																).includes(attr)
+															);
+														})
 													)
+												}
+												onChange={e =>
+													handleSpecialPaste({
+														attr,
+														tab,
+														checked:
+															e.target.checked,
+														group: attrType,
+													})
 												}
 											/>
 											<span>

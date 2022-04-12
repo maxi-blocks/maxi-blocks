@@ -9,9 +9,14 @@ const copyPasteMapping = {
 			background: 'Background',
 			backgroundColor: 'Background Color',
 			backgroundGradient: 'Background Gradient',
-			border: 'Border',
-			borderWidth: 'Border Width',
-			borderRadius: 'Border Radius',
+			border: {
+				groupLabel: 'Border Group',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border Width',
+					borderRadius: 'Border Radius',
+				},
+			},
 			boxShadow: 'Box Shadow',
 			size: 'Size',
 			margin: 'Margin',
@@ -21,9 +26,14 @@ const copyPasteMapping = {
 			backgroundHover: 'Background Hover',
 			backgroundColorHover: 'Background Color Hover',
 			backgroundGradientHover: 'Background Gradient Hover',
-			borderHover: 'Border Hover',
-			borderWidthHover: 'Border Width Hover',
-			borderRadiusHover: 'Border Radius Hover',
+			borderHover: {
+				groupLabel: 'Border Hover Group',
+				props: {
+					borderHover: 'Border Hover',
+					borderWidthHover: 'Border Width Hover',
+					borderRadiusHover: 'Border Radius Hover',
+				},
+			},
 			boxShadowHover: 'Box Shadow Hover',
 		},
 		withoutPrefix: {
@@ -51,9 +61,14 @@ const copyPasteMapping = {
 	},
 	canvas: {
 		withoutPrefix: {
-			border: 'Border',
-			borderWidth: 'Border Width',
-			borderRadius: 'Border Radius',
+			border: {
+				groupLabel: 'Border Group',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border Width',
+					borderRadius: 'Border Radius',
+				},
+			},
 			boxShadow: 'Box Shadow',
 			opacity: 'Opacity',
 			blockBackground: 'Background',
@@ -62,9 +77,14 @@ const copyPasteMapping = {
 			padding: 'Padding',
 		},
 		withoutPrefixHover: {
-			borderHover: 'Border Hover',
-			borderWidthHover: 'Border Width Hover',
-			borderRadiusHover: 'Border Radius Hover',
+			borderHover: {
+				groupLabel: 'Border Hover Group',
+				props: {
+					borderHover: 'Border Hover',
+					borderWidthHover: 'Border Width Hover',
+					borderRadiusHover: 'Border Radius Hover',
+				},
+			},
 			boxShadowHover: 'Box Shadow Hover',
 		},
 	},

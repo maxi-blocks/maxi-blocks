@@ -5,9 +5,14 @@ const copyPasteMapping = {
 			verticalAlign: 'Vertical Align',
 		},
 		withoutPrefix: {
-			border: 'Border',
-			borderWidth: 'Border Width',
-			borderRadius: 'Border Radius',
+			border: {
+				groupLabel: 'Border Group',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border Width',
+					borderRadius: 'Border Radius',
+				},
+			},
 			boxShadow: 'Box Shadow',
 			blockBackground: 'Background',
 			columnSize: 'Column Size',
@@ -16,9 +21,14 @@ const copyPasteMapping = {
 			padding: 'Padding',
 		},
 		withoutPrefixHover: {
-			borderHover: 'Border Hover',
-			borderWidthHover: 'Border Width Hover',
-			borderRadiusHover: 'Border Radius Hover',
+			borderHover: {
+				groupLabel: 'Border Hover Group',
+				props: {
+					borderHover: 'Border Hover',
+					borderWidthHover: 'Border Width Hover',
+					borderRadiusHover: 'Border Radius Hover',
+				},
+			},
 			boxShadowHover: 'Box Shadow Hover',
 		},
 	},

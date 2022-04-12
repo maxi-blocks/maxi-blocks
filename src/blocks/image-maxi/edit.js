@@ -261,6 +261,7 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				propsToAvoid={['captionContent', 'formatValue']}
 				copyPasteMapping={copyPasteMapping}
+				prefix='image-'
 			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}

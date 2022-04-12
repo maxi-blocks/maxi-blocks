@@ -1,9 +1,11 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
 import { withDispatch, dispatch } from '@wordpress/data';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,7 +17,12 @@ import {
 	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { Toolbar, BlockResizer, RawHTML } from '../../components';
+import {
+	Toolbar,
+	BlockResizer,
+	RawHTML,
+	MaxiPopoverButton,
+} from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import MaxiBlock from '../../components/maxi-block';
 import MaxiModal from '../../editor/library/modal';
@@ -34,6 +41,8 @@ class edit extends MaxiBlockComponent {
 		super(props);
 
 		this.resizableObject = createRef();
+
+		this.state = { isOpen: this.props.attributes.openFirstTime };
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -92,7 +101,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	state = {
-		isOpen: false,
+		isOpen: true,
 	};
 
 	render() {
@@ -111,8 +120,10 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
 		} = attributes;
+		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
+
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
@@ -138,24 +149,57 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			}) === 'hidden';
 
+		const maxiModalProps = {
+			clientId,
+			type: 'svg',
+			isOpen,
+			style: parentBlockStyle,
+			openFirstTime: isSelected ? openFirstTime : false,
+			onOpen: obj => {
+				maxiSetAttributes(obj);
+
+				this.setState({ isOpen: true });
+			},
+			onSelect: obj => {
+				maxiSetAttributes(obj);
+
+				this.setState({ isOpen: false });
+			},
+			onRemove: obj => {
+				maxiSetAttributes(obj);
+
+				this.setState({ isOpen: false });
+			},
+			onClose: () => this.setState({ isOpen: false }),
+		};
+
 		return [
-			!isEmptyContent && (
-				<Inspector
-					key={`block-settings-${uniqueID}`}
-					{...this.props}
-					resizableObject={this.resizableObject}
-				/>
-			),
-			!isEmptyContent && (
-				<Toolbar
-					key={`toolbar-${uniqueID}`}
-					ref={this.blockRef}
-					propsToAvoid={['resizableObject']}
-					resizableObject={this.resizableObject}
-					prefix='svg-'
-					{...this.props}
-				/>
-			),
+			...[
+				!isEmptyContent && [
+					<Inspector
+						key={`block-settings-${uniqueID}`}
+						{...this.props}
+						resizableObject={this.resizableObject}
+					/>,
+					<Toolbar
+						key={`toolbar-${uniqueID}`}
+						ref={this.blockRef}
+						propsToAvoid={['resizableObject']}
+						resizableObject={this.resizableObject}
+						prefix='svg-'
+						{...this.props}
+					/>,
+					<MaxiPopoverButton
+						key={`popover-${uniqueID}`}
+						ref={this.blockRef}
+						isOpen={isOpen}
+						{...this.props}
+					>
+						<MaxiModal {...maxiModalProps} />
+					</MaxiPopoverButton>,
+				],
+			],
+			...[isEmptyContent && <MaxiModal {...maxiModalProps} forceHide />],
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
@@ -163,16 +207,18 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<>
-					<MaxiModal
-						clientId={clientId}
-						type='svg'
-						empty={isEmptyContent}
-						style={parentBlockStyle}
-						openFirstTime={isSelected ? openFirstTime : false}
-						onOpen={obj => maxiSetAttributes(obj)}
-						onSelect={obj => maxiSetAttributes(obj)}
-						onRemove={obj => maxiSetAttributes(obj)}
-					/>
+					{isEmptyContent && (
+						<div className='maxi-svg-icon-block__placeholder'>
+							<Button
+								isPrimary
+								key={`maxi-block-library__modal-button--${clientId}`}
+								className='maxi-block-library__modal-button'
+								onClick={() => this.setState({ isOpen: true })}
+							>
+								{__('Select SVG Icon', 'maxi-blocks')}
+							</Button>
+						</div>
+					)}
 					{!isEmptyContent && (
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'

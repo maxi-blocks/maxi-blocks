@@ -68,4 +68,6 @@ export const categoriesText = [
 	'lists',
 	'before text',
 	'after text',
+	'background',
+	'background hover',
 ];

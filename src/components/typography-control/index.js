@@ -331,7 +331,8 @@ const LinkOptions = props => {
 								[`${prefix}link-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a'
 						)
 					}
 					textLevel={textLevel}
@@ -375,7 +376,8 @@ const LinkOptions = props => {
 								[`${prefix}link-hover-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:hover'
 						)
 					}
 					textLevel={textLevel}
@@ -421,7 +423,8 @@ const LinkOptions = props => {
 								[`${prefix}link-active-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:active'
 						)
 					}
 					textLevel={textLevel}
@@ -467,7 +470,8 @@ const LinkOptions = props => {
 								[`${prefix}link-visited-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:visited'
 						)
 					}
 					textLevel={textLevel}
@@ -714,7 +718,8 @@ const TypographyControl = withFormatValue(props => {
 	const onChangeFormat = (
 		value,
 		customBreakpoint,
-		forceDisableCustomFormats = false
+		forceDisableCustomFormats = false,
+		target = ''
 	) => {
 		const obj = setFormat({
 			formatValue,

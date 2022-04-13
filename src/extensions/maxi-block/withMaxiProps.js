@@ -210,31 +210,12 @@ const withMaxiProps = createHigherOrderComponent(
 						? parentElement.querySelectorAll(target)
 						: parentElement;
 
-				const getAllInlineElements = element => {
-					const inlineElements = [element];
-
-					if (element.children.length) {
-						for (let i = 0; i < element.children.length; i += 1) {
-							inlineElements.push(
-								...getAllInlineElements(element.children[i])
-							);
-						}
-					} else {
-						inlineElements.push(element);
-					}
-
-					return inlineElements;
-				};
-
 				for (let i = 0; i < targetElements.length; i += 1) {
 					const targetElement = targetElements[i];
 
-					const inlineElements = getAllInlineElements(targetElement);
-
-					inlineElements.forEach(element => {
-						styleObjKeys.forEach(key => {
-							if (element.style[key]) element.style[key] = '';
-						});
+					styleObjKeys.forEach(key => {
+						if (targetElement.style[key])
+							targetElement.style[key] = '';
 					});
 				}
 			};

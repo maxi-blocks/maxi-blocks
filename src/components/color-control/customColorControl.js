@@ -41,7 +41,9 @@ const CustomColorControl = props => {
 		onReset,
 		onResetOpacity,
 	} = props;
-	const [colorPicker, setColorPicker] = useState(color);
+	const [colorPicker, setColorPicker] = useState(
+		tinycolor(color).toRgbString()
+	);
 
 	return (
 		<>
@@ -128,7 +130,7 @@ const CustomColorControl = props => {
 						<div className='maxi-color-control__display__color'>
 							<span
 								style={{
-									background: tinycolor(color).toRgbString(),
+									background: colorPicker,
 								}}
 							/>
 						</div>

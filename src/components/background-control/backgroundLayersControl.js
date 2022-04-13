@@ -75,6 +75,15 @@ const LayerCard = props => {
 		  )
 		: layer['background-svg-SVGElement'];
 
+	const [backgroundColorLayer, setBackgroundColorLayer] = useState(
+		getLastBreakpointAttribute({
+			target: 'background-color',
+			breakpoint,
+			attributes: layer,
+			isHover,
+		})
+	);
+
 	const previewStyles = type => {
 		switch (type) {
 			case 'color': {
@@ -109,12 +118,7 @@ const LayerCard = props => {
 				}
 
 				return {
-					background: getLastBreakpointAttribute({
-						target: 'background-color',
-						breakpoint,
-						attributes: layer,
-						isHover,
-					}),
+					background: backgroundColorLayer,
 				};
 			}
 			case 'gradient': {
@@ -228,14 +232,18 @@ const LayerCard = props => {
 			<ColorLayer
 				key={`background-color-layer--${layer.order}`}
 				colorOptions={layer}
-				onChangeInline={inlineStyles => {
+				onChangeInline={obj => {
+					setBackgroundColorLayer(obj['background-color']);
 					onChangeInline(
-						inlineStyles,
+						obj,
 						`.maxi-background-displayer__${layer.order}`
 					);
 				}}
 				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
+					onChange(
+						{ ...layer, ...handleOnChangeLayer(obj, layer) },
+						`.maxi-background-displayer__${layer.order}`
+					)
 				}
 				breakpoint={breakpoint}
 				isHover={isHover}

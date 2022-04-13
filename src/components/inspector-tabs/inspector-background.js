@@ -70,11 +70,8 @@ const background = ({
 										prefix
 									)}
 									prefix={prefix}
-									onChangeInline={inlineStyles => {
-										insertInlineStyles(
-											inlineStyles,
-											inlineTarget
-										);
+									onChangeInline={obj => {
+										insertInlineStyles(obj, inlineTarget);
 									}}
 									onChange={obj => {
 										maxiSetAttributes(obj);
@@ -151,9 +148,9 @@ const background = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChangeInline={inlineStyles => {
+										onChangeInline={obj => {
 											insertInlineStyles(
-												inlineStyles,
+												obj,
 												`${inlineTarget}:hover`
 											);
 										}}

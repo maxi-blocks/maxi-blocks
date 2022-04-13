@@ -48,14 +48,12 @@ const blockBackground = ({
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
 									])}
-									onChangeInline={(inlineStyles, target) =>
-										insertInlineStyles(inlineStyles, target)
+									onChangeInline={(obj, target) =>
+										insertInlineStyles(obj, target)
 									}
-									onChange={obj => {
+									onChange={(obj, target) => {
 										maxiSetAttributes(obj);
-										cleanInlineStyles(
-											'.maxi-background-displayer'
-										);
+										cleanInlineStyles(target);
 									}}
 									clientId={clientId}
 									breakpoint={deviceType}
@@ -93,19 +91,16 @@ const blockBackground = ({
 											'blockBackground',
 											true
 										)}
-										onChangeInline={(
-											inlineStyles,
-											target
-										) =>
+										onChangeInline={(obj, target) =>
 											insertInlineStyles(
-												inlineStyles,
+												obj,
 												`${target}:hover`
 											)
 										}
-										onChange={obj => {
+										onChange={(obj, target) => {
 											maxiSetAttributes(obj);
 											cleanInlineStyles(
-												'.maxi-background-displayer:hover'
+												`${target}:hover`
 											);
 										}}
 										isHover

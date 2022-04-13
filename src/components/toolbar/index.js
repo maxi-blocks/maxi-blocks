@@ -332,7 +332,12 @@ const MaxiToolbar = memo(
 										inlineStylesTargetsDefault.background
 									)
 								}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(
+										inlineStylesTargetsDefault.background
+									);
+								}}
 								clientId={clientId}
 							/>
 							<BlockBackgroundColor
@@ -342,10 +347,13 @@ const MaxiToolbar = memo(
 								)}
 								blockName={name}
 								breakpoint={breakpoint}
-								onChangeInline={(inlineStyles, target) =>
-									insertInlineStyles(inlineStyles, target)
+								onChangeInline={(obj, target) =>
+									insertInlineStyles(obj, target)
 								}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChange={(obj, target) => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(target);
+								}}
 								clientId={clientId}
 							/>
 							<Border
@@ -356,9 +364,9 @@ const MaxiToolbar = memo(
 									false,
 									prefix
 								)}
-								onChangeInline={inlineStyles =>
+								onChangeInline={obj =>
 									insertInlineStyles(
-										inlineStyles,
+										obj,
 										inlineStylesTargetsResults.border
 									)
 								}

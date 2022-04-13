@@ -126,9 +126,12 @@ const BlockBackgroundColor = props => {
 							});
 
 							if (!isEqual(newLayers, backgroundLayers))
-								onChange({
-									'background-layers': newLayers,
-								});
+								onChange(
+									{
+										'background-layers': newLayers,
+									},
+									`.maxi-background-displayer__${layer.order}`
+								);
 						}}
 						breakpoint={breakpoint}
 						isToolbar

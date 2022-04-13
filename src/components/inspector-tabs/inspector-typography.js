@@ -63,9 +63,9 @@ const typography = ({
 									attributes,
 									typographyTarget
 								)}
-								onChangeInline={(inlineStyles, tag = '') =>
+								onChangeInline={(obj, tag = '') =>
 									insertInlineStyles(
-										inlineStyles,
+										obj,
 										`${inlineTarget} ${tag}`
 									)
 								}
@@ -111,18 +111,17 @@ const typography = ({
 											'typography',
 											true
 										)}
-										onChangeInline={(
-											inlineStyles,
-											tag = ''
-										) =>
+										onChangeInline={(obj, tag = '') =>
 											insertInlineStyles(
-												inlineStyles,
+												obj,
 												`${inlineTarget}:hover ${tag}`
 											)
 										}
-										onChange={obj => {
+										onChange={(obj, tag) => {
 											maxiSetAttributes(obj);
-											cleanInlineStyles(inlineTarget);
+											cleanInlineStyles(
+												`${inlineTarget}:hover ${tag}`
+											);
 										}}
 										hideAlignment={hideAlignment}
 										breakpoint={deviceType}

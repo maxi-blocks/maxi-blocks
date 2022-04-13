@@ -43,7 +43,7 @@ export const getSVGWidthStyles = obj => {
 	return { SVGWidth: response };
 };
 
-const getSVGPathStyles = obj => {
+const getSVGPathStyles = (obj, prefix = 'svg-') => {
 	const response = {
 		label: 'SVG path',
 		general: {},
@@ -52,9 +52,9 @@ const getSVGPathStyles = obj => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`svg-stroke-${breakpoint}`])) {
+		if (!isNil(obj[`${prefix}stroke-${breakpoint}`])) {
 			response[breakpoint]['stroke-width'] = `${
-				obj[`svg-stroke-${breakpoint}`]
+				obj[`${prefix}stroke-${breakpoint}`]
 			}`;
 		}
 
@@ -65,14 +65,14 @@ const getSVGPathStyles = obj => {
 	return { SVGPath: response };
 };
 
-const getSVGPathFillStyles = (obj, blockStyle) => {
+const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-') => {
 	const response = {
 		label: 'SVG path-fill',
 		general: {},
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: 'svg-fill-' });
+		getPaletteAttributes({ obj, prefix: `${prefix}fill-` });
 
 	if (paletteStatus && paletteColor)
 		response.general.fill = getColorRGBAString({
@@ -86,14 +86,14 @@ const getSVGPathFillStyles = (obj, blockStyle) => {
 	return { SVGPathFill: response };
 };
 
-const getSVGPathStrokeStyles = (obj, blockStyle) => {
+const getSVGPathStrokeStyles = (obj, blockStyle, prefix = 'svg-line-') => {
 	const response = {
 		label: 'SVG',
 		general: {},
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: 'svg-line-' });
+		getPaletteAttributes({ obj, prefix });
 
 	if (paletteStatus && paletteColor)
 		response.general.stroke = getColorRGBAString({
@@ -107,21 +107,21 @@ const getSVGPathStrokeStyles = (obj, blockStyle) => {
 	return { SVGPathStroke: response };
 };
 
-export const getSVGStyles = ({ obj, target, blockStyle }) => {
+export const getSVGStyles = ({ obj, target, blockStyle, prefix }) => {
 	const response = {
-		[` ${target} svg path`]: getSVGPathStyles(obj),
+		[` ${target} svg path`]: getSVGPathStyles(obj, prefix),
 		[` ${target} svg path[data-fill]:not([fill^="none"])`]:
-			getSVGPathFillStyles(obj, blockStyle),
+			getSVGPathFillStyles(obj, blockStyle, prefix),
 		[` ${target} svg path[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(obj, blockStyle),
+			getSVGPathStrokeStyles(obj, blockStyle, prefix),
 		[` ${target} svg g[data-fill]:not([fill^="none"])`]:
-			getSVGPathFillStyles(obj, blockStyle),
+			getSVGPathFillStyles(obj, blockStyle, prefix),
 		[` ${target} svg g[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(obj, blockStyle),
+			getSVGPathStrokeStyles(obj, blockStyle, prefix),
 		[` ${target} svg use[data-fill]:not([fill^="none"])`]:
-			getSVGPathFillStyles(obj, blockStyle),
+			getSVGPathFillStyles(obj, blockStyle, prefix),
 		[` ${target} svg use[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(obj, blockStyle),
+			getSVGPathStrokeStyles(obj, blockStyle, prefix),
 	};
 
 	return response;

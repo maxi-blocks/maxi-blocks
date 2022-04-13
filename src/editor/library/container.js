@@ -390,7 +390,7 @@ const LibraryContainer = props => {
 	};
 
 	/** Shapes */
-	const onRequestInsertShape = svgCode => {
+	const onRequestInsertShape = (svgCode, svgType) => {
 		const {
 			uniqueID,
 			mediaID,
@@ -481,10 +481,9 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'button-icon') {
-				const cleanedContent = DOMPurify.sanitize(svgCode);
-
 				onSelect({
-					'icon-content': cleanedContent,
+					'icon-content': svgCode,
+					svgType,
 				});
 
 				onRequestClose();
@@ -495,6 +494,7 @@ const LibraryContainer = props => {
 	/** Shapes Results */
 	const svgShapeResults = ({ hit }) => {
 		const shapeType = getShapeType(type);
+		const svgType = hit.taxonomies.svg_category[0];
 
 		const newContent = svgAttributesReplacer(
 			blockStyle,
@@ -510,7 +510,9 @@ const LibraryContainer = props => {
 				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertShape(newContent)}
+				onRequestInsert={() =>
+					onRequestInsertShape(newContent, svgType)
+				}
 				currentItemColorStatus={
 					type === 'image-shape' || type === 'bg-shape'
 						? false

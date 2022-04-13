@@ -73,6 +73,7 @@
 		"@wordpress/base-styles": "^4.3.0",
 		"@wordpress/e2e-test-utils": "^7.2.0",
 		"@wordpress/env": "^4.5.0",
+		"@wordpress/jest-preset-default": "^8.1.1",
 		"@wordpress/scripts": "^22.4.0",
 		"enzyme": "^3.11.0",
 		"eslint": "^8.13.0",

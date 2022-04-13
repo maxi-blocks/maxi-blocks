@@ -63,3 +63,10 @@ export const getHasVideo = (uniqueID, bgLayers) =>
 
 export const getHasScrollEffects = (uniqueID, scroll) =>
 	!isEmpty(getScrollEffects(uniqueID, scroll));
+
+export const splitValueAndUnit = val => {
+	const unit = val.split(/\d+/g)[1].trim();
+	const value = +val.split(unit)[0].trim();
+
+	return { value, unit };
+};

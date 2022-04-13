@@ -35,7 +35,7 @@ import { getDefaultSCValue } from '../../extensions/style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isBoolean, isNumber } from 'lodash';
+import { isNil, isBoolean, isNumber, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -514,7 +514,6 @@ const TypographyControl = withFormatValue(props => {
 	});
 
 	const classes = classnames('maxi-typography-control', className);
-
 	const Divider = () => <hr style={{ margin: '15px 0' }} />;
 
 	const minMaxSettings = {
@@ -681,7 +680,6 @@ const TypographyControl = withFormatValue(props => {
 		}
 		return null;
 	};
-
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
@@ -716,10 +714,15 @@ const TypographyControl = withFormatValue(props => {
 			returnFormatValue: true,
 		});
 
-		const newFormatValue = { ...obj.formatValue };
-		delete obj.formatValue;
+		if (!isEmpty(obj.formatValue)) {
+			const newFormatValue = { ...obj.formatValue };
+			delete obj.formatValue;
 
-		dispatch('maxiBlocks/text').sendFormatValue(newFormatValue, clientId);
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}
 
 		onChange(obj);
 	};
@@ -909,7 +912,7 @@ const TypographyControl = withFormatValue(props => {
 			/>
 			<SelectControl
 				label={__('Text orientation', 'maxi-blocks')}
-				className='maxi-typography-control__decoration'
+				className='maxi-typography-control__orientation'
 				value={getValue(
 					`${prefix}text-orientation`,
 					breakpoint,
@@ -942,6 +945,26 @@ const TypographyControl = withFormatValue(props => {
 						breakpoint,
 						true
 					);
+				}}
+			/>
+			<SelectControl
+				label={__('Text direction', 'maxi-blocks')}
+				className='maxi-typography-control__direction'
+				value={getValue(`${prefix}text-direction`, breakpoint)}
+				options={[
+					{
+						label: __('Left to right', 'maxi-blocks'),
+						value: 'ltr',
+					},
+					{
+						label: __('Right to left', 'maxi-blocks'),
+						value: 'rtl',
+					},
+				]}
+				onChange={val => {
+					onChangeFormat({
+						[`${prefix}text-direction`]: val,
+					});
 				}}
 			/>
 			<AdvancedNumberControl

@@ -20,6 +20,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getColorRGBAString,
 } from '../../extensions/styles';
 import SvgWidthControl from '../svg-width-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';
@@ -38,9 +39,10 @@ import './editor.scss';
 import {
 	backgroundColor,
 	backgroundGradient,
-	smileIcon,
-	solid,
+	iconBorder,
 	styleNone,
+	iconStroke,
+	iconFill,
 } from '../../icons';
 
 /**
@@ -51,9 +53,12 @@ const IconControl = props => {
 		className,
 		onChange,
 		clientId,
+		svgType,
 		breakpoint,
 		parentBlockStyle,
 		isHover = false,
+		changeSVGContent,
+		changeSVGStrokeWidth,
 	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
@@ -63,13 +68,22 @@ const IconControl = props => {
 	const getOptions = () => {
 		const options = [];
 
-		options.push({
-			icon: <Icon icon={smileIcon} />,
-			value: 'color',
-		});
+		if (svgType !== 'Shape')
+			options.push({
+				icon: <Icon icon={iconBorder} />,
+				value: 'color',
+			});
+		else if (iconStyle === 'color') setIconStyle('fill');
+
+		if (svgType !== 'Line')
+			options.push({
+				icon: <Icon icon={iconFill} />,
+				value: 'fill',
+			});
+		else if (iconStyle === 'fill') setIconStyle('color');
 
 		options.push({
-			icon: <Icon icon={solid} />,
+			icon: <Icon icon={iconStroke} />,
 			value: 'border',
 		});
 
@@ -86,7 +100,7 @@ const IconControl = props => {
 
 		options.push({
 			icon: <Icon icon={backgroundColor} />,
-			value: 'background-color',
+			value: 'color',
 		});
 
 		options.push({
@@ -179,6 +193,13 @@ const IconControl = props => {
 						)}
 						onChange={obj => {
 							onChange(obj);
+							changeSVGStrokeWidth(
+								obj[
+									`icon-stroke-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`
+								]
+							);
 						}}
 						prefix='icon-'
 						breakpoint={breakpoint}
@@ -275,60 +296,77 @@ const IconControl = props => {
 					{iconStyle === 'color' && (
 						<>
 							{!props['icon-inherit'] ? (
-								<ColorControl
-									label={__('Icon', 'maxi-blocks')}
-									color={
-										props[
-											`icon-color${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									prefix='icon-'
-									paletteColor={
-										props[
-											`icon-palette-color${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									paletteOpacity={
-										props[
-											`icon-palette-opacity${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									paletteStatus={
-										props[
-											`icon-palette-status${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									onChange={({
-										color,
-										paletteColor,
-										paletteStatus,
-										paletteOpacity,
-									}) => {
-										onChange({
-											[`icon-color${
-												isHover ? '-hover' : ''
-											}`]: color,
-											[`icon-palette-color${
-												isHover ? '-hover' : ''
-											}`]: paletteColor,
-											[`icon-palette-status${
-												isHover ? '-hover' : ''
-											}`]: paletteStatus,
-											[`icon-palette-opacity${
-												isHover ? '-hover' : ''
-											}`]: paletteOpacity,
-										});
-									}}
-									isHover={isHover}
-								/>
+								svgType !== 'Shape' && (
+									<ColorControl
+										label={__('Icon Line', 'maxi-blocks')}
+										color={
+											props[
+												`icon-color${
+													isHover ? '-hover' : ''
+												}`
+											]
+										}
+										prefix='icon-'
+										paletteColor={
+											props[
+												`icon-palette-color${
+													isHover ? '-hover' : ''
+												}`
+											]
+										}
+										paletteOpacity={
+											props[
+												`icon-palette-opacity${
+													isHover ? '-hover' : ''
+												}`
+											]
+										}
+										paletteStatus={
+											props[
+												`icon-palette-status${
+													isHover ? '-hover' : ''
+												}`
+											]
+										}
+										onChange={({
+											color,
+											paletteColor,
+											paletteStatus,
+											paletteOpacity,
+										}) => {
+											onChange({
+												[`icon-color${
+													isHover ? '-hover' : ''
+												}`]: color,
+												[`icon-palette-color${
+													isHover ? '-hover' : ''
+												}`]: paletteColor,
+												[`icon-palette-status${
+													isHover ? '-hover' : ''
+												}`]: paletteStatus,
+												[`icon-palette-opacity${
+													isHover ? '-hover' : ''
+												}`]: paletteOpacity,
+											});
+											const lineColorStr =
+												getColorRGBAString({
+													firstVar: 'icon-line',
+													secondVar: `color-${paletteColor}`,
+													opacity: paletteOpacity,
+													blockStyle:
+														parentBlockStyle,
+												});
+
+											changeSVGContent(
+												paletteStatus
+													? lineColorStr
+													: color,
+												'stroke'
+											);
+										}}
+										isHover={isHover}
+									/>
+								)
 							) : (
 								<InfoBox
 									key='maxi-warning-box__icon-color'
@@ -363,6 +401,75 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
+					{iconStyle === 'fill' &&
+						svgType !== 'Line' &&
+						!props['icon-inherit'] && (
+							<ColorControl
+								label={__('Icon Fill', 'maxi-blocks')}
+								color={
+									props[
+										`icon-fill-color${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}
+								prefix='icon-fill'
+								paletteColor={
+									props[
+										`icon-fill-palette-color${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}
+								paletteOpacity={
+									props[
+										`icon-fill-palette-opacity${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}
+								paletteStatus={
+									props[
+										`icon-fill-palette-status${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}
+								onChange={({
+									color,
+									paletteColor,
+									paletteStatus,
+									paletteOpacity,
+								}) => {
+									onChange({
+										[`icon-fill-color${
+											isHover ? '-hover' : ''
+										}`]: color,
+										[`icon-fill-palette-color${
+											isHover ? '-hover' : ''
+										}`]: paletteColor,
+										[`icon-fill-palette-status${
+											isHover ? '-hover' : ''
+										}`]: paletteStatus,
+										[`icon-fill-palette-opacity${
+											isHover ? '-hover' : ''
+										}`]: paletteOpacity,
+									});
+									const fillColorStr = getColorRGBAString({
+										firstVar: 'icon-fill',
+										secondVar: `color-${paletteColor}`,
+										opacity: paletteOpacity,
+										blockStyle: parentBlockStyle,
+									});
+
+									changeSVGContent(
+										paletteStatus ? fillColorStr : color,
+										'fill'
+									);
+								}}
+								isHover={isHover}
+							/>
+						)}
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode
@@ -380,7 +487,7 @@ const IconControl = props => {
 							});
 						}}
 					/>
-					{iconBgActive === 'background-color' && (
+					{iconBgActive === 'color' && (
 						<>
 							{!props['icon-inherit'] ? (
 								<ColorControl

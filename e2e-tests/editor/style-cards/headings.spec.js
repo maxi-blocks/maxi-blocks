@@ -45,6 +45,7 @@ describe('StyleCards headings', () => {
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
+			orientation: 'mixed',
 		});
 
 		await page.$$eval(

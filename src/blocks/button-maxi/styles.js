@@ -23,6 +23,7 @@ import {
 	getFlexStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
+	getSVGStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
@@ -331,14 +332,6 @@ const getIconPathStyles = (obj, isHover = false) => {
 
 const getIconObject = (props, target) => {
 	const response = {
-		icon: getIconStyles(
-			{
-				...getGroupAttributes(props, ['icon', 'typography']),
-			},
-			props.parentBlockStyle,
-			props['icon-inherit'],
-			false
-		),
 		background: props['icon-background-active-media-general'] ===
 			'background-color' && {
 			...getColorBackgroundObject({
@@ -432,14 +425,18 @@ const getIconObject = (props, target) => {
 const getIconHoverObject = (props, target) => {
 	const iconHoverStatus = props['icon-status-hover'];
 	const iconHoverActiveMedia =
-		props['button-background-active-media-general-hover'];
+		props['icon-background-active-media-general-hover'];
 
 	const response = {
 		icon:
 			iconHoverStatus &&
 			getIconStyles(
 				{
-					...getGroupAttributes(props, ['icon', 'typography'], true),
+					...getGroupAttributes(
+						props,
+						['iconHover', 'typography'],
+						true
+					),
 				},
 				props.parentBlockStyle,
 				props['icon-inherit'],
@@ -482,7 +479,11 @@ const getIconHoverObject = (props, target) => {
 				obj: {
 					...getGroupAttributes(
 						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+						[
+							'iconBorderHover',
+							'iconBorderWidthHover',
+							'iconBorderRadiusHover',
+						],
 						true
 					),
 				},
@@ -496,7 +497,7 @@ const getIconHoverObject = (props, target) => {
 };
 
 const getStyles = (props, scValues) => {
-	const { uniqueID } = props;
+	const { uniqueID, parentBlockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -508,6 +509,12 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
+				...getSVGStyles({
+					obj: props,
+					target: '.maxi-button-block__icon',
+					blockStyle: parentBlockStyle,
+					prefix: 'icon-',
+				}),
 				' .maxi-button-block__content': getContentObject(props),
 				' .maxi-button-block__button:hover .maxi-button-block__content':
 					getHoverContentObject(props, scValues),

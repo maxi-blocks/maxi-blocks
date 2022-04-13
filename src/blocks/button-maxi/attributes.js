@@ -30,9 +30,13 @@ const attributes = {
 	buttonContent: {
 		type: 'string',
 	},
+	svgType: {
+		type: 'string',
+	},
 	...attributesData.icon,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,
+	...attributesData.iconBackgroundHover,
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,

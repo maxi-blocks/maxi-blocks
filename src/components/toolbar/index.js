@@ -49,7 +49,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { setSVGStrokeWidth } from '../../extensions/svg';
 
 /**
  * Styles
@@ -272,9 +271,16 @@ const MaxiToolbar = memo(
 												'svg'
 											)}
 											blockName={name}
+											onChangeInline={obj =>
+												insertInlineStyles(
+													obj,
+													'[data-fill]'
+												)
+											}
 											onChange={obj => {
 												maxiSetAttributes(obj);
 											}}
+											content={attributes.content}
 											type='fill'
 											parentBlockStyle={parentBlockStyle}
 										/>
@@ -286,6 +292,12 @@ const MaxiToolbar = memo(
 												'svg'
 											)}
 											blockName={name}
+											onChangeInline={obj =>
+												insertInlineStyles(
+													obj,
+													'[data-stroke]'
+												)
+											}
 											onChange={obj => {
 												maxiSetAttributes(obj);
 											}}
@@ -303,7 +315,6 @@ const MaxiToolbar = memo(
 											maxiSetAttributes(obj);
 										}}
 										breakpoint={breakpoint}
-										setSVGStrokeWidth={setSVGStrokeWidth}
 										type={svgType}
 										resizableObject={resizableObject}
 									/>

@@ -53,6 +53,8 @@ const Inspector = memo(
 			deviceType,
 			maxiSetAttributes,
 			clientId,
+			insertInlineStyles,
+			cleanInlineStyles,
 			inlineStylesTargets,
 		} = props;
 		const { parentBlockStyle, svgType } = attributes;
@@ -337,9 +339,24 @@ const Inspector = memo(
 																				'iconPadding',
 																			]
 																		)}
-																		onChange={obj => {
+																		onChangeInline={(
+																			obj,
+																			target
+																		) => {
+																			insertInlineStyles(
+																				obj,
+																				target
+																			);
+																		}}
+																		onChange={(
+																			obj,
+																			target
+																		) => {
 																			maxiSetAttributes(
 																				obj
+																			);
+																			cleanInlineStyles(
+																				target
 																			);
 																		}}
 																		svgType={
@@ -400,9 +417,25 @@ const Inspector = memo(
 																					],
 																					true
 																				)}
-																				onChange={obj => {
+																				onChangeInline={(
+																					obj,
+																					target
+																				) => {
+																					insertInlineStyles(
+																						obj,
+																						target
+																					);
+																				}}
+																				onChange={(
+																					obj,
+																					target
+																				) => {
 																					maxiSetAttributes(
-																						obj
+																						obj,
+																						target
+																					);
+																					cleanInlineStyles(
+																						target
 																					);
 																				}}
 																				svgType={

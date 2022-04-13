@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import { setSVGStrokeWidth } from '../../../../extensions/svg';
 
 /**
  * Styles & Icons
@@ -20,14 +21,7 @@ import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
  * SvgWidth
  */
 const SvgWidth = props => {
-	const {
-		blockName,
-		onChange,
-		breakpoint,
-		setSVGStrokeWidth,
-		type,
-		resizableObject,
-	} = props;
+	const { blockName, onChange, breakpoint, type, resizableObject } = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 

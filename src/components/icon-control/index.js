@@ -22,6 +22,7 @@ import {
 	getLastBreakpointAttribute,
 	getColorRGBAString,
 } from '../../extensions/styles';
+import { setSVGStrokeWidth, setSVGContent } from '../../extensions/svg';
 import SvgWidthControl from '../svg-width-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
@@ -51,14 +52,13 @@ import {
 const IconControl = props => {
 	const {
 		className,
+		onChangeInline,
 		onChange,
 		clientId,
 		svgType,
 		breakpoint,
 		parentBlockStyle,
 		isHover = false,
-		changeSVGContent,
-		changeSVGStrokeWidth,
 	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
@@ -192,14 +192,17 @@ const IconControl = props => {
 							isHover
 						)}
 						onChange={obj => {
-							onChange(obj);
-							changeSVGStrokeWidth(
-								obj[
-									`icon-stroke-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`
-								]
-							);
+							onChange({
+								...obj,
+								'icon-content': setSVGStrokeWidth(
+									props['icon-content'],
+									obj[
+										`icon-stroke-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`
+									]
+								),
+							});
 						}}
 						prefix='icon-'
 						breakpoint={breakpoint}
@@ -328,26 +331,18 @@ const IconControl = props => {
 												}`
 											]
 										}
+										onChangeInline={({ color }) =>
+											onChangeInline(
+												{ stroke: color },
+												'[data-stroke]'
+											)
+										}
 										onChange={({
 											color,
 											paletteColor,
 											paletteStatus,
 											paletteOpacity,
 										}) => {
-											onChange({
-												[`icon-color${
-													isHover ? '-hover' : ''
-												}`]: color,
-												[`icon-palette-color${
-													isHover ? '-hover' : ''
-												}`]: paletteColor,
-												[`icon-palette-status${
-													isHover ? '-hover' : ''
-												}`]: paletteStatus,
-												[`icon-palette-opacity${
-													isHover ? '-hover' : ''
-												}`]: paletteOpacity,
-											});
 											const lineColorStr =
 												getColorRGBAString({
 													firstVar: 'icon-line',
@@ -357,11 +352,32 @@ const IconControl = props => {
 														parentBlockStyle,
 												});
 
-											changeSVGContent(
-												paletteStatus
-													? lineColorStr
-													: color,
-												'stroke'
+											onChange(
+												{
+													[`icon-color${
+														isHover ? '-hover' : ''
+													}`]: color,
+													[`icon-palette-color${
+														isHover ? '-hover' : ''
+													}`]: paletteColor,
+													[`icon-palette-status${
+														isHover ? '-hover' : ''
+													}`]: paletteStatus,
+													[`icon-palette-opacity${
+														isHover ? '-hover' : ''
+													}`]: paletteOpacity,
+													'icon-content':
+														setSVGContent(
+															props[
+																'icon-content'
+															],
+															paletteStatus
+																? lineColorStr
+																: color,
+															'stroke'
+														),
+												},
+												'[data-stroke]'
 											);
 										}}
 										isHover={isHover}
@@ -435,26 +451,18 @@ const IconControl = props => {
 										}`
 									]
 								}
+								onChangeInline={({ color }) =>
+									onChangeInline(
+										{ fill: color },
+										'[data-fill]'
+									)
+								}
 								onChange={({
 									color,
 									paletteColor,
 									paletteStatus,
 									paletteOpacity,
 								}) => {
-									onChange({
-										[`icon-fill-color${
-											isHover ? '-hover' : ''
-										}`]: color,
-										[`icon-fill-palette-color${
-											isHover ? '-hover' : ''
-										}`]: paletteColor,
-										[`icon-fill-palette-status${
-											isHover ? '-hover' : ''
-										}`]: paletteStatus,
-										[`icon-fill-palette-opacity${
-											isHover ? '-hover' : ''
-										}`]: paletteOpacity,
-									});
 									const fillColorStr = getColorRGBAString({
 										firstVar: 'icon-fill',
 										secondVar: `color-${paletteColor}`,
@@ -462,9 +470,29 @@ const IconControl = props => {
 										blockStyle: parentBlockStyle,
 									});
 
-									changeSVGContent(
-										paletteStatus ? fillColorStr : color,
-										'fill'
+									onChange(
+										{
+											[`icon-fill-color${
+												isHover ? '-hover' : ''
+											}`]: color,
+											[`icon-fill-palette-color${
+												isHover ? '-hover' : ''
+											}`]: paletteColor,
+											[`icon-fill-palette-status${
+												isHover ? '-hover' : ''
+											}`]: paletteStatus,
+											[`icon-fill-palette-opacity${
+												isHover ? '-hover' : ''
+											}`]: paletteOpacity,
+											'icon-content': setSVGContent(
+												props['icon-content'],
+												paletteStatus
+													? fillColorStr
+													: color,
+												'fill'
+											),
+										},
+										'[data-fill]'
 									);
 								}}
 								isHover={isHover}
@@ -518,38 +546,49 @@ const IconControl = props => {
 									})}
 									prefix='icon-background-'
 									useBreakpointForDefault
+									onChangeInline={({ color }) =>
+										onChangeInline(
+											{
+												background: color,
+											},
+											'.maxi-button-block__icon'
+										)
+									}
 									onChange={({
 										paletteStatus,
 										paletteColor,
 										paletteOpacity,
 										color,
 									}) => {
-										onChange({
-											[getAttributeKey(
-												'background-palette-status',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: paletteStatus,
-											[getAttributeKey(
-												'background-palette-color',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: paletteColor,
-											[getAttributeKey(
-												'background-palette-opacity',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: paletteOpacity,
-											[getAttributeKey(
-												'background-color',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: color,
-										});
+										onChange(
+											{
+												[getAttributeKey(
+													'background-palette-status',
+													isHover,
+													'icon-',
+													breakpoint
+												)]: paletteStatus,
+												[getAttributeKey(
+													'background-palette-color',
+													isHover,
+													'icon-',
+													breakpoint
+												)]: paletteColor,
+												[getAttributeKey(
+													'background-palette-opacity',
+													isHover,
+													'icon-',
+													breakpoint
+												)]: paletteOpacity,
+												[getAttributeKey(
+													'background-color',
+													isHover,
+													'icon-',
+													breakpoint
+												)]: color,
+											},
+											'.maxi-button-block__icon'
+										);
 									}}
 									isHover={isHover}
 								/>

@@ -24,7 +24,8 @@ import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
  * SvgColor
  */
 const SvgColorToolbar = props => {
-	const { type, blockName, onChange, parentBlockStyle } = props;
+	const { type, blockName, onChangeInline, onChange, parentBlockStyle } =
+		props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -47,6 +48,7 @@ const SvgColorToolbar = props => {
 					{...getGroupAttributes(props, 'svg')}
 					type={type}
 					label={__(`Icon ${type}`, 'maxi-blocks')}
+					onChangeInline={onChangeInline}
 					onChange={obj => {
 						const colorStr = getColorRGBAString({
 							firstVar: `icon-${type}`,

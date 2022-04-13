@@ -122,6 +122,7 @@ const attributes = {
 			default: 'wrap',
 		},
 	},
+	...attributesData.scroll,
 };
 
 export default attributes;

@@ -32,7 +32,7 @@ describe('StyleCards Paragraph', () => {
 			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
 			size => size.focus()
 		);
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('20');
 
 		// Line Height

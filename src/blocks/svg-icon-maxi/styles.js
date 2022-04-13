@@ -213,13 +213,16 @@ const getStyles = props => {
 	// 	})
 	// );
 
+	// console.log(getGroupAttributes(props, 'svgHover', true));
+
 	// console.log(
 	// 	getSVGStyles({
 	// 		obj: {
-	// 			...getGroupAttributes(props, 'svg', true),
+	// 			...getGroupAttributes(props, 'svgHover', true),
 	// 		},
 	// 		target: ':hover .maxi-svg-icon-block__icon',
 	// 		blockStyle,
+	// 		prefix: 'svg-',
 	// 	})
 	// );
 
@@ -239,10 +242,11 @@ const getStyles = props => {
 				}),
 				...getSVGStyles({
 					obj: {
-						...getGroupAttributes(props, 'svg', true),
+						...getGroupAttributes(props, 'svgHover', true),
 					},
 					target: '.maxi-svg-icon-block__icon:hover',
 					blockStyle,
+					isHover: true,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

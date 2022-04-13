@@ -257,12 +257,8 @@ const ColumnPatternsInspector = props => {
 										min: 0,
 										max: 999,
 									},
-									'%': {
-										min: 0,
-										max: 100,
-									},
 								}}
-								allowedUnits={['px', 'em', 'vw', '%']}
+								allowedUnits={['px', 'em', 'vw']}
 								onReset={() =>
 									onChange({
 										[`gap`]: null,

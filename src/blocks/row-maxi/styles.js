@@ -82,7 +82,7 @@ const getNormalObject = props => {
 	}
 
 	if (props.removeColumnGap) {
-		response.gap.general['gap'] = 0;
+		response.gap.general['gap'] = '2.5%';
 		response.gap.general['row-gap'] = '20px !important';
 	}
 

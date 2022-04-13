@@ -277,6 +277,7 @@ const IconControl = props => {
 							{!props['icon-inherit'] ? (
 								<ColorControl
 									label={__('Icon', 'maxi-blocks')}
+									className='maxi-icon-styles-control--color'
 									color={
 										props[
 											`icon-color${

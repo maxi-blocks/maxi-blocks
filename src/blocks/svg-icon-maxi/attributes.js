@@ -9,8 +9,6 @@ import { __ } from '@wordpress/i18n';
 import * as attributesData from '../../extensions/styles/defaults/index';
 import { prefixAttributesCreator } from '../../extensions/styles';
 
-console.log(attributesData.svgHover);
-
 /**
  * Attributes
  */

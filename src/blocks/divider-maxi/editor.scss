@@ -1,0 +1,19 @@
+body.maxi-blocks--active .maxi-divider-block {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	hr {
+		border: 0;
+		position: relative;
+		background: none;
+
+		&[data-align='full'] {
+			width: 100% !important;
+			text-align: center;
+		}
+		&:before,
+		&:after {
+			content: none !important;
+		}
+	}
+}

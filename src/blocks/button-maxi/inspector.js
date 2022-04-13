@@ -24,7 +24,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
+import { isEmpty, isEqual, cloneDeep, without, merge } from 'lodash';
 
 /**
  * Icons
@@ -48,7 +48,19 @@ import {
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, maxiSetAttributes, clientId } = props;
+		const inlineStylesTargetsDefault = {
+			background: '',
+			border: '',
+			boxShadow: '',
+		};
+
+		const {
+			attributes,
+			deviceType,
+			maxiSetAttributes,
+			clientId,
+			inlineStylesTargets,
+		} = props;
 		const { parentBlockStyle } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
@@ -72,6 +84,11 @@ const Inspector = memo(
 			const { 'icon-content': iconContent } = attributes;
 			return without(categoriesButton, isEmpty(iconContent) && 'icon');
 		};
+
+		const inlineStylesTargetsResults = merge(
+			inlineStylesTargetsDefault,
+			inlineStylesTargets
+		);
 
 		return (
 			<InspectorControls>
@@ -465,6 +482,8 @@ const Inspector = memo(
 													target: 'hover-background',
 													type: 'button',
 												},
+												inlineTarget:
+													inlineStylesTargetsResults.background,
 											}),
 											...inspectorTabs.border({
 												props: {
@@ -479,12 +498,16 @@ const Inspector = memo(
 													target: 'hover-border',
 													type: 'button',
 												},
+												inlineTarget:
+													inlineStylesTargetsResults.border,
 											}),
 											...inspectorTabs.boxShadow({
 												props: {
 													...props,
 												},
 												prefix: 'button-',
+												inlineTarget:
+													inlineStylesTargetsResults.boxShadow,
 											}),
 											...inspectorTabs.size({
 												props: {

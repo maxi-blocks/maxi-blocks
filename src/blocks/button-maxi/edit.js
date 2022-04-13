@@ -103,11 +103,18 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-right'
 		);
 
+		const inlineStylesTargets = {
+			background: '.maxi-button-block__button',
+			border: '.maxi-button-block__button',
+			boxShadow: '.maxi-button-block__button',
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				propsToAvoid={['buttonContent', 'formatValue']}
+				inlineStylesTargets={inlineStylesTargets}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -120,6 +127,7 @@ class edit extends MaxiBlockComponent {
 				}}
 				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
+				inlineStylesTargets={inlineStylesTargets}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}

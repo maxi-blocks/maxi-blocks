@@ -774,9 +774,7 @@ const TypographyControl = withFormatValue(props => {
 					paletteColor={getValue(`${prefix}palette-color`)}
 					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-status`)}
-					onChangeInline={({ color }) =>
-						onChangeInline({ color }, textLevel)
-					}
+					onChangeInline={({ color }) => onChangeInline({ color })}
 					onChange={({
 						color,
 						paletteColor,

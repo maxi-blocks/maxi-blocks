@@ -10,7 +10,7 @@ import { getScrollContainer } from '@wordpress/dom';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual } from 'lodash';
+import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 
 /**
  * Utils
@@ -49,6 +49,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { setSVGStrokeWidth } from '../../extensions/svg';
 
 /**
  * Styles
@@ -77,22 +78,27 @@ const allowedBlocks = [
  */
 const MaxiToolbar = memo(
 	forwardRef((props, ref) => {
+		const inlineStylesTargetsDefault = {
+			background: '',
+			border: '',
+			boxShadow: '',
+		};
+
 		const {
 			attributes,
 			backgroundAdvancedOptions,
-			changeSVGContent,
 			clientId,
 			isSelected,
 			name,
 			maxiSetAttributes,
 			toggleHandlers,
 			rowPattern,
-			changeSVGStrokeWidth,
 			prefix = '',
 			backgroundGlobalProps,
 			resizableObject,
 			insertInlineStyles,
 			cleanInlineStyles,
+			inlineStylesTargets = inlineStylesTargetsDefault,
 		} = props;
 		const {
 			blockFullWidth,
@@ -142,6 +148,11 @@ const MaxiToolbar = memo(
 				originalNestedBlocks.push(clientId);
 			return originalNestedBlocks.length > 1;
 		};
+
+		const inlineStylesTargetsResults = merge(
+			inlineStylesTargetsDefault,
+			inlineStylesTargets
+		);
 
 		const boundaryElement =
 			document.defaultView.frameElement ||
@@ -198,12 +209,17 @@ const MaxiToolbar = memo(
 									attributes,
 									'typography'
 								)}
-								onChangeInline={(obj, target) =>
-									insertInlineStyles(obj, target)
+								onChangeInline={obj =>
+									insertInlineStyles(
+										obj,
+										'.block-editor-rich-text__editable'
+									)
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles();
+									cleanInlineStyles(
+										'.block-editor-rich-text__editable'
+									);
 								}}
 								breakpoint={breakpoint}
 								node={anchorRef}
@@ -259,7 +275,6 @@ const MaxiToolbar = memo(
 											onChange={obj => {
 												maxiSetAttributes(obj);
 											}}
-											changeSVGContent={changeSVGContent}
 											type='fill'
 											parentBlockStyle={parentBlockStyle}
 										/>
@@ -274,7 +289,6 @@ const MaxiToolbar = memo(
 											onChange={obj => {
 												maxiSetAttributes(obj);
 											}}
-											changeSVGContent={changeSVGContent}
 											type='line'
 											parentBlockStyle={parentBlockStyle}
 										/>
@@ -289,9 +303,7 @@ const MaxiToolbar = memo(
 											maxiSetAttributes(obj);
 										}}
 										breakpoint={breakpoint}
-										changeSVGStrokeWidth={
-											changeSVGStrokeWidth
-										}
+										setSVGStrokeWidth={setSVGStrokeWidth}
 										type={svgType}
 										resizableObject={resizableObject}
 									/>
@@ -314,7 +326,12 @@ const MaxiToolbar = memo(
 								globalProps={backgroundGlobalProps}
 								blockName={name}
 								breakpoint={breakpoint}
-								onChangeInline={obj => insertInlineStyles(obj)}
+								onChangeInline={obj =>
+									insertInlineStyles(
+										obj,
+										inlineStylesTargetsDefault.background
+									)
+								}
 								onChange={obj => maxiSetAttributes(obj)}
 								clientId={clientId}
 							/>
@@ -339,7 +356,18 @@ const MaxiToolbar = memo(
 									false,
 									prefix
 								)}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChangeInline={inlineStyles =>
+									insertInlineStyles(
+										inlineStyles,
+										inlineStylesTargetsResults.border
+									)
+								}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(
+										inlineStylesTargetsResults.border
+									);
+								}}
 								breakpoint={breakpoint}
 								clientId={clientId}
 								prefix={prefix}
@@ -352,7 +380,18 @@ const MaxiToolbar = memo(
 									false,
 									prefix
 								)}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChangeInline={obj =>
+									insertInlineStyles(
+										obj,
+										inlineStylesTargetsResults.boxShadow
+									)
+								}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(
+										inlineStylesTargetsResults.boxShadow
+									);
+								}}
 								clientId={clientId}
 								breakpoint={breakpoint}
 								prefix={prefix}

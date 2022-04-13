@@ -34,6 +34,7 @@ const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi'];
 const BackgroundColor = props => {
 	const {
 		blockName,
+		onChangeInline,
 		onChange,
 		clientId,
 		breakpoint,
@@ -88,6 +89,7 @@ const BackgroundColor = props => {
 							),
 						}}
 						key={`background-color-layer--${clientId}`}
+						onChangeInline={onChangeInline}
 						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
 						globalProps={globalProps}

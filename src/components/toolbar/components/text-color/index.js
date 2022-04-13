@@ -128,7 +128,7 @@ const TextColor = withFormatValue(props => {
 					paletteStatus={colorPaletteStatus}
 					paletteOpacity={colorOpacity}
 					onChangeInline={({ color }) => {
-						onChangeInline({ color }, textLevel);
+						onChangeInline({ color });
 						setTextColor(color);
 					}}
 					onChange={({

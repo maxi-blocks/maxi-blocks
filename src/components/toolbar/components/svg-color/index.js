@@ -12,6 +12,7 @@ import {
 	getColorRGBAString,
 	getGroupAttributes,
 } from '../../../../extensions/styles';
+import { setSVGContent } from '../../../../extensions/svg';
 
 /**
  * Styles
@@ -23,8 +24,7 @@ import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
  * SvgColor
  */
 const SvgColorToolbar = props => {
-	const { type, blockName, onChange, changeSVGContent, parentBlockStyle } =
-		props;
+	const { type, blockName, onChange, parentBlockStyle } = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -48,8 +48,6 @@ const SvgColorToolbar = props => {
 					type={type}
 					label={__(`Icon ${type}`, 'maxi-blocks')}
 					onChange={obj => {
-						onChange(obj);
-
 						const colorStr = getColorRGBAString({
 							firstVar: `icon-${type}`,
 							secondVar: `color-${
@@ -59,12 +57,16 @@ const SvgColorToolbar = props => {
 							blockStyle: parentBlockStyle,
 						});
 
-						changeSVGContent(
-							obj[`svg-${type}-palette-status`]
-								? colorStr
-								: obj[`svg-${type}-color`],
-							type
-						);
+						onChange({
+							...obj,
+							content: setSVGContent(
+								props.content,
+								obj[`svg-${type}-palette-status`]
+									? colorStr
+									: obj[`svg-${type}-color`],
+								type
+							),
+						});
 					}}
 				/>
 			</div>

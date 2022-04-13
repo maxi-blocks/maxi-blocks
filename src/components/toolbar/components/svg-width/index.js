@@ -24,7 +24,7 @@ const SvgWidth = props => {
 		blockName,
 		onChange,
 		breakpoint,
-		changeSVGStrokeWidth,
+		setSVGStrokeWidth,
 		type,
 		resizableObject,
 	} = props;
@@ -53,10 +53,13 @@ const SvgWidth = props => {
 					<SvgStrokeWidthControl
 						{...props}
 						onChange={obj => {
-							onChange(obj);
-							changeSVGStrokeWidth(
-								obj[`svg-stroke-${breakpoint}`]
-							);
+							onChange({
+								...obj,
+								content: setSVGStrokeWidth(
+									props.content,
+									obj[`svg-stroke-${breakpoint}`]
+								),
+							});
 						}}
 						breakpoint={breakpoint}
 						prefix='svg-'

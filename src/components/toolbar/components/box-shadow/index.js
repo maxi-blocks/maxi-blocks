@@ -22,7 +22,14 @@ import BoxShadowControl from '../../../box-shadow-control';
 const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
 
 const BoxShadow = props => {
-	const { blockName, onChange, breakpoint, clientId, prefix = '' } = props;
+	const {
+		blockName,
+		onChangeInline,
+		onChange,
+		breakpoint,
+		clientId,
+		prefix = '',
+	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
@@ -36,6 +43,7 @@ const BoxShadow = props => {
 			<div className='toolbar-item__box-shadow__popover'>
 				<BoxShadowControl
 					{...getGroupAttributes(props, ['boxShadow'], false, prefix)}
+					onChangeInline={onChangeInline}
 					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					clientId={clientId}

@@ -99,13 +99,13 @@ const blockBackground = ({
 										) =>
 											insertInlineStyles(
 												inlineStyles,
-												target
+												`${target}:hover`
 											)
 										}
 										onChange={obj => {
 											maxiSetAttributes(obj);
 											cleanInlineStyles(
-												'.maxi-background-displayer'
+												'.maxi-background-displayer:hover'
 											);
 										}}
 										isHover

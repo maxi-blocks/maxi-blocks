@@ -17,7 +17,7 @@ import {
 /**
  * Component
  */
-const boxShadow = ({ props, prefix = '', depth = 2 }) => {
+const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 	const {
 		attributes,
 		clientId,
@@ -46,10 +46,12 @@ const boxShadow = ({ props, prefix = '', depth = 2 }) => {
 									prefix
 								)}
 								prefix={prefix}
-								onChangeInline={obj => insertInlineStyles(obj)}
+								onChangeInline={obj =>
+									insertInlineStyles(obj, inlineTarget)
+								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles();
+									cleanInlineStyles(inlineTarget);
 								}}
 								breakpoint={deviceType}
 								clientId={clientId}
@@ -102,7 +104,18 @@ const boxShadow = ({ props, prefix = '', depth = 2 }) => {
 											prefix
 										)}
 										prefix={prefix}
-										onChange={obj => maxiSetAttributes(obj)}
+										onChangeInline={obj =>
+											insertInlineStyles(
+												obj,
+												`${inlineTarget}:hover`
+											)
+										}
+										onChange={obj => {
+											maxiSetAttributes(obj);
+											cleanInlineStyles(
+												`${inlineTarget}:hover`
+											);
+										}}
 										breakpoint={deviceType}
 										isHover
 										clientId={clientId}

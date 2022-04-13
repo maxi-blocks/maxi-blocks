@@ -31,6 +31,7 @@ const background = ({
 	hoverGlobalProps,
 	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
 	depth = 2,
+	inlineTarget = '',
 }) => {
 	const {
 		attributes,
@@ -38,6 +39,8 @@ const background = ({
 		deviceType,
 		maxiSetAttributes,
 		scValues = {},
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
 
 	const {
@@ -67,7 +70,16 @@ const background = ({
 										prefix
 									)}
 									prefix={prefix}
-									onChange={obj => maxiSetAttributes(obj)}
+									onChangeInline={inlineStyles => {
+										insertInlineStyles(
+											inlineStyles,
+											inlineTarget
+										);
+									}}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+										cleanInlineStyles(inlineTarget);
+									}}
 									disableColor={disableColor}
 									disableImage={disableImage}
 									disableGradient={disableGradient}
@@ -139,7 +151,18 @@ const background = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChange={obj => maxiSetAttributes(obj)}
+										onChangeInline={inlineStyles => {
+											insertInlineStyles(
+												inlineStyles,
+												`${inlineTarget}:hover`
+											);
+										}}
+										onChange={obj => {
+											maxiSetAttributes(obj);
+											cleanInlineStyles(
+												`${inlineTarget}:hover`
+											);
+										}}
 										disableImage
 										disableVideo
 										disableClipPath

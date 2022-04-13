@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -23,7 +22,7 @@ const border = ({
 	prefix = '',
 	globalProps,
 	hoverGlobalProps,
-	target,
+	inlineTarget = '',
 }) => {
 	const {
 		attributes,
@@ -45,6 +44,14 @@ const border = ({
 	const hoverStatus =
 		attributes[`${prefix}border-status-hover`] || globalHoverStatus;
 
+	const finalInlineTarget =
+		inlineTarget === ''
+			? attributes[`${prefix}background-layers`] &&
+			  attributes[`${prefix}background-layers`].length > 0
+				? '.maxi-background-displayer'
+				: ''
+			: inlineTarget;
+
 	return {
 		label: __('Border', 'maxi-blocks'),
 		disablePadding: true,
@@ -65,20 +72,12 @@ const border = ({
 								onChangeInline={inlineStyles => {
 									insertInlineStyles(
 										inlineStyles,
-										attributes['background-layers'].length >
-											0
-											? '.maxi-background-displayer'
-											: ''
+										finalInlineTarget
 									);
 								}}
 								onChange={obj => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles(
-										attributes['background-layers'].length >
-											0
-											? '.maxi-background-displayer'
-											: ''
-									);
+									cleanInlineStyles(finalInlineTarget);
 								}}
 								breakpoint={deviceType}
 								clientId={clientId}
@@ -146,7 +145,18 @@ const border = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChange={obj => maxiSetAttributes(obj)}
+										onChangeInline={inlineStyles =>
+											insertInlineStyles(
+												inlineStyles,
+												`${finalInlineTarget}:hover`
+											)
+										}
+										onChange={obj => {
+											maxiSetAttributes(obj);
+											cleanInlineStyles(
+												`${finalInlineTarget}:hover`
+											);
+										}}
 										breakpoint={deviceType}
 										isHover
 										clientId={clientId}

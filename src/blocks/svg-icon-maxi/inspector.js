@@ -20,6 +20,11 @@ import {
 	getColorRGBAString,
 	getGroupAttributes,
 } from '../../extensions/styles';
+import {
+	setSVGStrokeWidth,
+	setSVGContent,
+	setSVGContentWithBlockStyle,
+} from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 
@@ -29,12 +34,12 @@ import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 const Inspector = props => {
 	const {
 		attributes,
-		changeSVGContent,
-		changeSVGContentWithBlockStyle,
-		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
 		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
 	} = props;
 	const {
 		blockStyle,
@@ -73,8 +78,6 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => {
-												maxiSetAttributes(obj);
-
 												const { parentBlockStyle } =
 													obj;
 
@@ -112,18 +115,23 @@ const Inspector = props => {
 															parentBlockStyle,
 													});
 
-												changeSVGContentWithBlockStyle(
-													attributes[
-														'svg-fill-palette-status'
-													]
-														? fillColorStr
-														: svgFillColor,
-													attributes[
-														'svg-line-palette-status'
-													]
-														? lineColorStr
-														: svgLineColor
-												);
+												maxiSetAttributes({
+													...obj,
+													content:
+														setSVGContentWithBlockStyle(
+															attributes.content,
+															attributes[
+																'svg-fill-palette-status'
+															]
+																? fillColorStr
+																: svgFillColor,
+															attributes[
+																'svg-line-palette-status'
+															]
+																? lineColorStr
+																: svgLineColor
+														),
+												});
 											}}
 											clientId={clientId}
 										/>
@@ -153,11 +161,13 @@ const Inspector = props => {
 																	'SVG Fill',
 																	'maxi-blocks'
 																)}
+																onChangeInline={obj =>
+																	insertInlineStyles(
+																		obj,
+																		'[data-fill]'
+																	)
+																}
 																onChange={obj => {
-																	maxiSetAttributes(
-																		obj
-																	);
-
 																	const fillColorStr =
 																		getColorRGBAString(
 																			{
@@ -173,15 +183,25 @@ const Inspector = props => {
 																			}
 																		);
 
-																	changeSVGContent(
-																		obj[
-																			'svg-fill-palette-status'
-																		]
-																			? fillColorStr
-																			: obj[
-																					'svg-fill-color'
-																			  ],
-																		'fill'
+																	maxiSetAttributes(
+																		{
+																			...obj,
+																			content:
+																				setSVGContent(
+																					attributes.content,
+																					obj[
+																						'svg-fill-palette-status'
+																					]
+																						? fillColorStr
+																						: obj[
+																								'svg-fill-color'
+																						  ],
+																					'fill'
+																				),
+																		}
+																	);
+																	cleanInlineStyles(
+																		'[data-fill]'
 																	);
 																}}
 															/>
@@ -202,11 +222,13 @@ const Inspector = props => {
 																'SVG Line',
 																'maxi-blocks'
 															)}
+															onChangeInline={obj =>
+																insertInlineStyles(
+																	obj,
+																	'[data-stroke]'
+																)
+															}
 															onChange={obj => {
-																maxiSetAttributes(
-																	obj
-																);
-
 																const lineColorStr =
 																	getColorRGBAString(
 																		{
@@ -222,15 +244,25 @@ const Inspector = props => {
 																		}
 																	);
 
-																changeSVGContent(
-																	obj[
-																		'svg-line-palette-status'
-																	]
-																		? lineColorStr
-																		: obj[
-																				'svg-line-color'
-																		  ],
-																	'stroke'
+																maxiSetAttributes(
+																	{
+																		...obj,
+																		content:
+																			setSVGContent(
+																				attributes.content,
+																				obj[
+																					'svg-line-palette-status'
+																				]
+																					? lineColorStr
+																					: obj[
+																							'svg-line-color'
+																					  ],
+																				'stroke'
+																			),
+																	}
+																);
+																cleanInlineStyles(
+																	'[data-stroke]'
 																);
 															}}
 														/>
@@ -252,14 +284,16 @@ const Inspector = props => {
 														)}
 														prefix='svg-'
 														onChange={obj => {
-															maxiSetAttributes(
-																obj
-															);
-															changeSVGStrokeWidth(
-																obj[
-																	`svg-stroke-${deviceType}`
-																]
-															);
+															maxiSetAttributes({
+																...obj,
+																content:
+																	setSVGStrokeWidth(
+																		attributes.content,
+																		obj[
+																			`svg-stroke-${deviceType}`
+																		]
+																	),
+															});
 														}}
 														breakpoint={deviceType}
 													/>
@@ -275,6 +309,8 @@ const Inspector = props => {
 											disableClipPath: true,
 											disableSVG: true,
 											prefix: 'svg-',
+											inlineTarget:
+												inlineStylesTargets.background,
 										}),
 										...inspectorTabs.border({
 											props,

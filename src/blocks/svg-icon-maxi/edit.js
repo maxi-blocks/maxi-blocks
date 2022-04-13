@@ -173,6 +173,10 @@ class edit extends MaxiBlockComponent {
 			onClose: () => this.setState({ isOpen: false }),
 		};
 
+		const inlineStylesTargets = {
+			background: '.maxi-svg-icon-block__icon',
+		};
+
 		return [
 			...[
 				!isEmptyContent && [
@@ -180,6 +184,7 @@ class edit extends MaxiBlockComponent {
 						key={`block-settings-${uniqueID}`}
 						{...this.props}
 						resizableObject={this.resizableObject}
+						inlineStylesTargets={inlineStylesTargets}
 					/>,
 					<Toolbar
 						key={`toolbar-${uniqueID}`}
@@ -187,6 +192,7 @@ class edit extends MaxiBlockComponent {
 						propsToAvoid={['resizableObject']}
 						resizableObject={this.resizableObject}
 						prefix='svg-'
+						inlineStylesTargets={inlineStylesTargets}
 						{...this.props}
 					/>,
 					<MaxiPopoverButton

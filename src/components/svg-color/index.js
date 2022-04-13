@@ -2,13 +2,12 @@
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * SvgColor
  */
 const SvgColor = props => {
-	const { type, label, onChange } = props;
+	const { type, label, onChangeInline, onChange } = props;
 
 	return (
 		<>
@@ -20,6 +19,9 @@ const SvgColor = props => {
 					prefix='svg-line-'
 					paletteColor={props['svg-line-palette-color']}
 					paletteStatus={props['svg-line-palette-status']}
+					onChangeInline={({ color }) =>
+						onChangeInline({ stroke: color })
+					}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
 							'svg-line-color': color,
@@ -38,6 +40,9 @@ const SvgColor = props => {
 					prefix='svg-fill-'
 					paletteColor={props['svg-fill-palette-color']}
 					paletteStatus={props['svg-fill-palette-status']}
+					onChangeInline={({ color }) =>
+						onChangeInline({ fill: color })
+					}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
 							'svg-fill-color': color,

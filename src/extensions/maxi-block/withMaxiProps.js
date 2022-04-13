@@ -185,23 +185,29 @@ const withMaxiProps = createHigherOrderComponent(
 				if (isEmpty(styleObj)) return;
 
 				const parentElement = ref?.current.blockRef.current;
-				const targetElement =
-					target !== ''
-						? parentElement.querySelector(target)
-						: parentElement;
+				const targetElements =
+					target !== '' && target !== ':hover'
+						? parentElement.querySelectorAll(target)
+						: [parentElement];
 
-				Object.entries(styleObj).forEach(([key, val]) => {
-					targetElement.style[key] = val;
-				});
+				for (let i = 0; i < targetElements.length; i += 1) {
+					const targetElement = targetElements[i];
 
-				setStyleObjKeys(Object.keys(styleObj));
+					Object.entries(styleObj).forEach(([key, val]) => {
+						targetElement.style[key] = val;
+					});
+
+					targetElement.style.transition = 'none';
+				}
+
+				setStyleObjKeys([...Object.keys(styleObj), 'transition']);
 			};
 
 			const cleanInlineStyles = (target = '') => {
 				const parentElement = ref?.current.blockRef.current;
-				const targetElement =
+				const targetElements =
 					target !== ''
-						? parentElement.querySelector(target)
+						? parentElement.querySelectorAll(target)
 						: parentElement;
 
 				const getAllInlineElements = element => {
@@ -220,13 +226,17 @@ const withMaxiProps = createHigherOrderComponent(
 					return inlineElements;
 				};
 
-				const inlineElements = getAllInlineElements(targetElement);
+				for (let i = 0; i < targetElements.length; i += 1) {
+					const targetElement = targetElements[i];
 
-				inlineElements.forEach(element => {
-					styleObjKeys.forEach(key => {
-						if (element.style[key]) element.style[key] = '';
+					const inlineElements = getAllInlineElements(targetElement);
+
+					inlineElements.forEach(element => {
+						styleObjKeys.forEach(key => {
+							if (element.style[key]) element.style[key] = '';
+						});
 					});
-				});
+				}
 			};
 
 			return (

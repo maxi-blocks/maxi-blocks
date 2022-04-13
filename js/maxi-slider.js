@@ -115,8 +115,8 @@ class MaxiSlider {
 	}
 
 	dragEnd(e) {
-		if (e.type == 'touchmove') {
-			this.endPosition = e.touches[0].clientX;
+		if (e.type == 'touchend') {
+			this.endPosition = this.dragPosition;
 		} else {
 			this.endPosition = e.clientX;
 		}
@@ -125,6 +125,8 @@ class MaxiSlider {
 			this.slideNext();
 		} else if (this.endPosition - this.initPosition > 100) {
 			this.slidePrev();
+		} else {
+			this.sliderAction();
 		}
 
 		document.removeEventListener('mousemove', this.onDragAction);

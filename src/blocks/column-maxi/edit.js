@@ -171,7 +171,7 @@ class edit extends MaxiBlockComponent {
 								useInnerBlocks
 								innerBlocksSettings={{
 									allowedBlocks: ALLOWED_BLOCKS,
-									orientation: 'horizontal',
+									orientation: 'vertical',
 									templateLock: false,
 									renderAppender: !hasInnerBlocks
 										? () => (

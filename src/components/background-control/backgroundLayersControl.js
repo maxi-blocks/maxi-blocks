@@ -35,7 +35,7 @@ import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
  * Icons
  */
 import { moveRight, toolbarDrop, toolbarShow } from '../../icons';
-import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
+import { handleSetAttributes } from '../../extensions/maxi-block';
 
 /**
  * Component

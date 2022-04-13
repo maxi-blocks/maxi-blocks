@@ -55,7 +55,7 @@ const Inspector = memo(
 			clientId,
 			inlineStylesTargets,
 		} = props;
-		const { parentBlockStyle } = attributes;
+		const { parentBlockStyle, svgType } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -342,6 +342,9 @@ const Inspector = memo(
 																				obj
 																			);
 																		}}
+																		svgType={
+																			svgType
+																		}
 																		breakpoint={
 																			deviceType
 																		}
@@ -402,6 +405,9 @@ const Inspector = memo(
 																						obj
 																					);
 																				}}
+																				svgType={
+																					svgType
+																				}
 																				breakpoint={
 																					deviceType
 																				}

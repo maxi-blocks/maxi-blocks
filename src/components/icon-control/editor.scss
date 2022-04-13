@@ -1,2 +1,23 @@
-.button-icon-control {
+.maxi-icon-styles-control {
+	.maxi-tabs-control__button {
+		&--selected {
+			path {
+				fill: var(--maxi-secondary-color);
+				stroke: transparent;
+			}
+			&[aria-label='color'] {
+				path {
+					&:first-child {
+						fill: #f1f1f1;
+					}
+				}
+			}
+			&[aria-label='border'] {
+				path {
+					fill: transparent;
+					stroke: var(--maxi-secondary-color);
+				}
+			}
+		}
+	}
 }

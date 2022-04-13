@@ -43,6 +43,7 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/column-maxi',
 					].indexOf(blockName) === -1
 			);
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar

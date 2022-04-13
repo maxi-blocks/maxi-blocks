@@ -18,8 +18,9 @@ const attributes = {
 	'test-general-hover': 10,
 	'test-xxl': 2,
 	'test-xxl-hover': 20,
-	'test-xl': 3,
-	'test-xl-hover': 30,
+	// Removed for General tests
+	// 'test-xl': 3,
+	// 'test-xl-hover': 30,
 	'test-l': 4,
 	'test-l-hover': 40,
 	'test-m': 5,
@@ -77,7 +78,10 @@ describe('getLastBreakpointAttribute', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
 			breakpoint: 'xl',
-			attributes,
+			attributes: {
+				...attributes,
+				'test-xl': 3,
+			},
 		});
 
 		expect(result).toBe(3);
@@ -87,7 +91,10 @@ describe('getLastBreakpointAttribute', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
 			breakpoint: 'xl',
-			attributes,
+			attributes: {
+				...attributes,
+				'test-xl-hover': 30,
+			},
 			isHover: true,
 		});
 

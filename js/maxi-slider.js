@@ -126,7 +126,7 @@ class MaxiSlider {
 		} else if (this.endPosition - this.initPosition > 100) {
 			this.slidePrev();
 		} else {
-			this.sliderAction();
+			this.wrapperTranslate = this.activeSlidePosition;
 		}
 
 		document.removeEventListener('mousemove', this.onDragAction);

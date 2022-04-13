@@ -514,7 +514,6 @@ const TypographyControl = withFormatValue(props => {
 	});
 
 	const classes = classnames('maxi-typography-control', className);
-
 	const Divider = () => <hr style={{ margin: '15px 0' }} />;
 
 	const minMaxSettings = {
@@ -681,7 +680,6 @@ const TypographyControl = withFormatValue(props => {
 		}
 		return null;
 	};
-
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
@@ -914,7 +912,7 @@ const TypographyControl = withFormatValue(props => {
 			/>
 			<SelectControl
 				label={__('Text orientation', 'maxi-blocks')}
-				className='maxi-typography-control__decoration'
+				className='maxi-typography-control__orientation'
 				value={getValue(
 					`${prefix}text-orientation`,
 					breakpoint,

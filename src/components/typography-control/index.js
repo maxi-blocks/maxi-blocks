@@ -947,6 +947,26 @@ const TypographyControl = withFormatValue(props => {
 					);
 				}}
 			/>
+			<SelectControl
+				label={__('Text direction', 'maxi-blocks')}
+				className='maxi-typography-control__direction'
+				value={getValue(`${prefix}text-direction`, breakpoint)}
+				options={[
+					{
+						label: __('Left to right', 'maxi-blocks'),
+						value: 'ltr',
+					},
+					{
+						label: __('Right to left', 'maxi-blocks'),
+						value: 'rtl',
+					},
+				]}
+				onChange={val => {
+					onChangeFormat({
+						[`${prefix}text-direction`]: val,
+					});
+				}}
+			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__text-indent'
 				label={__('Text indent', 'maxi-blocks')}

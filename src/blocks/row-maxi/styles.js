@@ -72,16 +72,19 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'flex'),
 		}),
 		gap: {
-			general: {
-				gap: `${props['gap']}${props['gap-unit']}`,
-			},
+			general: {},
 		},
 	};
 
-	if (!isEmpty(props['gap-general']) && !isEmpty(props['gap-unit-general']))
-		response.gap.general[
-			'gap'
-		] = `${props['gap-general']}${props['gap-unit-general']}`;
+	if (props.gap && props['gap-unit']) {
+		response.gap.general['row-gap'] = 0;
+		response.gap.general['gap'] = `${props['gap']}${props['gap-unit']}`;
+	}
+
+	if (props.removeColumnGap) {
+		response.gap.general['gap'] = 0;
+		response.gap.general['row-gap'] = '20px !important';
+	}
 
 	if (!isEmpty(props.horizontalAlign))
 		response.row.general['justify-content'] = props.horizontalAlign;
@@ -89,7 +92,6 @@ const getNormalObject = props => {
 	if (!isEmpty(props.verticalAlign))
 		response.row.general['align-items'] = props.verticalAlign;
 
-	console.log(response);
 	return response;
 };
 

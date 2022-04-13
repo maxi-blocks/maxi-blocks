@@ -4,7 +4,8 @@
 	margin: auto;
 	padding: 0;
 	z-index: 2;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
+	row-gap: 20px;
 
 	&__template {
 		display: flex;

@@ -107,7 +107,21 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
-	...attributesData.flex,
+	...{
+		...attributesData.flex,
+		'flex-wrap-xxl': {
+			type: 'string',
+			default: 'nowrap',
+		},
+		'flex-wrap-xl': {
+			type: 'string',
+			default: 'nowrap',
+		},
+		'flex-wrap-m': {
+			type: 'string',
+			default: 'wrap',
+		},
+	},
 };
 
 export default attributes;

@@ -10,6 +10,6 @@ module.exports = {
 	...defaultConfig,
 	resolve: {
 		...defaultConfig.resolve,
-		fallback: { https: false },
+		fallback: { ...defaultConfig.resolve.fallback, https: false },
 	},
 };

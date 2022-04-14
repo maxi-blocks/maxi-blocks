@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, RawHTML } from '@wordpress/element';
+import { useState, useEffect, RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -300,6 +300,17 @@ const LayerCard = props => {
 			/>
 		),
 	};
+
+	useEffect(() => {
+		setBackgroundColorLayer(
+			getLastBreakpointAttribute({
+				target: 'background-color',
+				breakpoint,
+				attributes: layer,
+				isHover,
+			})
+		);
+	}, [breakpoint]);
 
 	return (
 		<div className={classes}>

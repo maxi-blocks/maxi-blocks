@@ -23,15 +23,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-	isEmpty,
-	capitalize,
-	isNumber,
-	replace,
-	round,
-	isNil,
-	isNaN,
-} from 'lodash';
+import { isEmpty, capitalize, isNumber, replace, round, isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -352,7 +344,7 @@ const AxisControlContent = props => {
 					isHover,
 				});
 
-				if (!isNil(value) && !isNaN(value))
+				if (!isNil(value) && isNumber(value))
 					response[key] = round(
 						value,
 						minMaxSettings[currentUnit].step / 0.5

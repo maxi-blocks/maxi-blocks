@@ -229,9 +229,21 @@ class MaxiBlocks_Styles
                 }
                 
                 wp_enqueue_style(
-                    'maxi-'.sanitize_title_with_dashes($font),
+                    'maxi-font-'.sanitize_title_with_dashes($font),
                     $fontUrl
                 );
+            }
+        }
+
+        if ($useLocalFonts) {
+            add_filter('style_loader_tag', 'local_fonts_preload', 10, 2);
+            function local_fonts_preload($html, $handle)
+            {
+                if (strpos($handle, 'maxi-font-') !== false) {
+                    $html = str_replace("rel='stylesheet'", "rel='stylesheet preload'", $html);
+                    $html = str_replace("media='all'", "as='style' crossorigin media='all'", $html);
+                }
+                return $html;
             }
         }
     }
@@ -320,6 +332,10 @@ class MaxiBlocks_Styles
         }
 
         $changedSCColors = array();
+
+        if (!array_key_exists('_maxi_blocks_style_card', $style_card)) {
+            $style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card_preview'];
+        }
 
         $style_card = is_preview() || is_admin()
             ? $style_card['_maxi_blocks_style_card_preview']

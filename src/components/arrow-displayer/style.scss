@@ -57,6 +57,7 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 			position: absolute;
 			top: -25%;
 			left: -25%;
+			transform: translate(-0.8px, -0.8px);
 			clip-path: polygon(100% 0, 0% 100%, 100% 100%);
 		}
 	}

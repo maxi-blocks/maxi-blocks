@@ -277,7 +277,7 @@ export const preset4 = {
 	'icon-width-general': 14,
 	'icon-width-unit-general': 'px',
 	'icon-spacing-general': 14,
-	'icon-background-active-media-general': 'background-color',
+	'icon-background-active-media-general': 'color',
 	'icon-background-palette-opacity-general': 0.43,
 	'icon-background-gradient-opacity-general': 1,
 	'icon-background-palette-color-general': 1,
@@ -673,7 +673,7 @@ export const preset9 = {
 	'palette-status-general': true,
 	// icon
 	'icon-inherit': false,
-	'icon-background-active-media-general': 'background-color',
+	'icon-background-active-media-general': 'color',
 	'icon-background-palette-opacity-general': 1,
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 4,
@@ -815,7 +815,7 @@ export const preset11 = {
 	'palette-color-general': 1,
 	'palette-status-general': true,
 	// icon
-	'icon-background-active-media-general': 'background-color',
+	'icon-background-active-media-general': 'color',
 	'icon-background-palette-opacity-general': 1,
 	'icon-inherit': false,
 	'icon-background-color-general': '',

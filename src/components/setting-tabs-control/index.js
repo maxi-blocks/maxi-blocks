@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, cloneElement } from '@wordpress/element';
-import { select, useDispatch } from '@wordpress/data';
+import { select, useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -55,6 +55,10 @@ const SettingTabsControl = props => {
 
 	const [tab, setTab] = useState(0);
 
+	const updatedTab = useSelect(
+		() => select('maxiBlocks').receiveInspectorPath()?.[0]?.value || 0
+	);
+
 	const currentForcedTab = getForcedTabFromPath(items, depth);
 	const classes = classnames('maxi-settingstab-control', className);
 
@@ -79,6 +83,12 @@ const SettingTabsControl = props => {
 		setTab(tab);
 		updateInspectorPath({ depth, name, value: tab });
 	};
+
+	useEffect(() => {
+		if (updatedTab !== tab) {
+			setTab(updatedTab);
+		}
+	}, [updatedTab]);
 
 	useEffect(() => {
 		if (currentForcedTab || currentForcedTab === 0) {

@@ -16,7 +16,7 @@
 		"test:e2e-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js --puppeteer-interactive",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
 		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
-		"minify:frontend": "for FILE in ./js/*; do FILENAME=$(basename -- $FILE); minify $FILE > ./js/${FILENAME%.*}.min.js; done"
+		"minify:frontend": "minify js/maxi-bg-video.js > js/maxi-bg-video.min.js && minify js/maxi-hover-effects.js > js/maxi-hover-effects.min.js && minify js/maxi-map.js > js/maxi-map.min.js && minify js/maxi-number-counter.js > js/maxi-number-counter.min.js && minify js/maxi-parallax.js > js/maxi-parallax.min.js && minify js/maxi-scroll-effects.js > js/maxi-scroll-effects.min.js && minify js/maxi-shape-divider.js > js/maxi-shape-divider.min.js"
 	},
 	"dependencies": {
 		"@googlemaps/js-api-loader": "^1.11.4",
@@ -42,7 +42,6 @@
 		"css-to-react-native": "^3.0.0",
 		"dompurify": "^2.3.0",
 		"html-react-parser": "^1.2.7",
-		"postcss": "^8.3.6",
 		"re-resizable": "^6.9.0",
 		"react-accessible-accordion": "^3.3.5",
 		"react-color": "^2.19.3",
@@ -72,8 +71,9 @@
 		"@prettier/plugin-php": "^0.16.2",
 		"@wordpress/base-styles": "^3.6.0",
 		"@wordpress/e2e-test-utils": "^5.4.1",
-		"@wordpress/env": "^4.1.0",
+		"@wordpress/env": "^4.4.0",
 		"@wordpress/scripts": "^17.1.0",
+		"autoprefixer": "^10.4.4",
 		"enzyme": "^3.11.0",
 		"eslint": "^7.32.0",
 		"eslint-config-airbnb": "^18.2.1",
@@ -84,6 +84,21 @@
 		"eslint-plugin-react": "^7.23.2",
 		"eslint-plugin-react-hooks": "^4.2.0",
 		"jest-canvas-mock": "^2.3.1",
+		"minify": "^8.0.4",
+		"minify-css-string": "^1.0.0",
+		"optimize-css-assets-webpack-plugin": "^6.0.1",
+		"postcss": "^8.4.12",
 		"prettier": "^2.3.2"
+	},
+	"browserslist": {
+		"production": [
+			"last 4 version"
+		]
+	},
+	"postcss": {
+		"map": false,
+		"plugins": {
+			"autoprefixer": {}
+		}
 	}
 }

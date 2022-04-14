@@ -139,6 +139,8 @@ class MaxiSlider {
 			this.currentSlide = this.currentSlide + 1;
 
 			this.sliderAction();
+		} else {
+			this.wrapperTranslate = this.activeSlidePosition;
 		}
 	}
 

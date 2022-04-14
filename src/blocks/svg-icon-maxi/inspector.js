@@ -153,16 +153,13 @@ const Inspector = props => {
 													maxiSetAttributes={
 														maxiSetAttributes
 													}
-													onChange={obj => {
+													onChangeFill={obj => {
 														maxiSetAttributes(obj);
-
-														let fillColorStr = '';
-														let lineColorStr = '';
 
 														if (
 															svgType !== 'Line'
 														) {
-															fillColorStr =
+															const fillColorStr =
 																getColorRGBAString(
 																	{
 																		firstVar:
@@ -176,6 +173,9 @@ const Inspector = props => {
 																			parentBlockStyle,
 																	}
 																);
+															console.log(
+																'change content'
+															);
 															changeSVGContent(
 																obj[
 																	'svg-fill-palette-status'
@@ -187,11 +187,14 @@ const Inspector = props => {
 																'fill'
 															);
 														}
+													}}
+													onChangeStroke={obj => {
+														maxiSetAttributes(obj);
 
 														if (
 															svgType !== 'Shape'
 														) {
-															lineColorStr =
+															const lineColorStr =
 																getColorRGBAString(
 																	{
 																		firstVar:

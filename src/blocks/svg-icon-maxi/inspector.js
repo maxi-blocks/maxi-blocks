@@ -246,29 +246,29 @@ const Inspector = props => {
 																	parentBlockStyle,
 															});
 
-														svgType !== 'Line' &&
-															changeSVGContent(
-																obj[
-																	'svg-fill-palette-status-hover'
-																]
-																	? fillColorStr
-																	: obj[
-																			'svg-fill-color-hover'
-																	  ],
-																'fill'
-															);
+														// svgType !== 'Line' &&
+														// 	changeSVGContent(
+														// 		obj[
+														// 			'svg-fill-palette-status-hover'
+														// 		]
+														// 			? fillColorStr
+														// 			: obj[
+														// 					'svg-fill-color-hover'
+														// 			  ],
+														// 		'fill'
+														// 	);
 
-														svgType !== 'Shape' &&
-															changeSVGContent(
-																obj[
-																	'svg-line-palette-status-hover'
-																]
-																	? lineColorStr
-																	: obj[
-																			'svg-line-color-hover'
-																	  ],
-																'stroke'
-															);
+														// svgType !== 'Shape' &&
+														// 	changeSVGContent(
+														// 		obj[
+														// 			'svg-line-palette-status-hover'
+														// 		]
+														// 			? lineColorStr
+														// 			: obj[
+														// 					'svg-line-color-hover'
+														// 			  ],
+														// 		'stroke'
+														// 	);
 													}}
 												/>
 											),

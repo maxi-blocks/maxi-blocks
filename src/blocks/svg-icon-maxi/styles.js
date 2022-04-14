@@ -240,13 +240,15 @@ const getStyles = props => {
 					target: ' .maxi-svg-icon-block__icon',
 					blockStyle,
 				}),
-				...getSVGStyles({
-					obj: {
-						...getGroupAttributes(props, 'svgHover', true),
-					},
-					target: '.maxi-svg-icon-block__icon:hover',
-					blockStyle,
-					isHover: true,
+				...(props['svg-status-hover'] && {
+					...getSVGStyles({
+						obj: {
+							...getGroupAttributes(props, 'svgHover', true),
+						},
+						target: '.maxi-svg-icon-block__icon:hover',
+						blockStyle,
+						isHover: true,
+					}),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
@@ -277,7 +279,7 @@ const getStyles = props => {
 		),
 	};
 
-	console.log(response);
+	//	console.log(response);
 
 	return response;
 };

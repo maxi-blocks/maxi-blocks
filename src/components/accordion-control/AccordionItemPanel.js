@@ -2,13 +2,16 @@ const AccordionItemPanel = props => {
 	const { children, className, isHidden } = props;
 
 	return (
-		<div
-			className={className}
-			hidden={isHidden}
-			data-accordion-component='AccordionItemPanel'
-		>
-			{!isHidden && children}
-		</div>
+		<>
+			{!isHidden && (
+				<div
+					className={className}
+					data-accordion-component='AccordionItemPanel'
+				>
+					{children}
+				</div>
+			)}
+		</>
 	);
 };
 

@@ -64,7 +64,7 @@ const withMaxiProps = createHigherOrderComponent(
 				});
 
 			const ref = useRef(null);
-			const [styleObjKeys, setStyleObjKeys] = useState([]);
+			const styleObjKeys = useRef([]);
 
 			const insertInlineStyles = (styleObj, target = '') => {
 				if (isEmpty(styleObj)) return;
@@ -85,7 +85,7 @@ const withMaxiProps = createHigherOrderComponent(
 					targetElement.style.transition = 'none';
 				}
 
-				setStyleObjKeys([...Object.keys(styleObj), 'transition']);
+				styleObjKeys.current = [...Object.keys(styleObj), 'transition'];
 			};
 
 			const cleanInlineStyles = (target = '') => {
@@ -93,16 +93,18 @@ const withMaxiProps = createHigherOrderComponent(
 				const targetElements =
 					target !== ''
 						? parentElement.querySelectorAll(target)
-						: parentElement;
+						: [parentElement];
 
 				for (let i = 0; i < targetElements.length; i += 1) {
 					const targetElement = targetElements[i];
 
-					styleObjKeys.forEach(key => {
+					styleObjKeys.current.forEach(key => {
 						if (targetElement.style[key])
 							targetElement.style[key] = '';
 					});
 				}
+
+				styleObjKeys.current = [];
 			};
 
 			return (

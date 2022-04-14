@@ -12,7 +12,7 @@ import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = obj => {
+export const getSVGWidthStyles = (obj, prefix) => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -21,14 +21,14 @@ export const getSVGWidthStyles = obj => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const svgWidth = obj[`svg-width-${breakpoint}`];
-		const svgResponsive = obj[`svg-responsive-${breakpoint}`];
+		const svgWidth = obj[`${prefix}svg-width-${breakpoint}`];
+		const svgResponsive = obj[`${prefix}svg-responsive-${breakpoint}`];
 
 		if (!isNil(svgWidth))
 			response[
 				breakpoint
 			].width = `${svgWidth}${getLastBreakpointAttribute({
-				target: 'svg-width-unit',
+				target: `${prefix}svg-width-unit`,
 				breakpoint,
 				attributes: obj,
 			})}`;
@@ -52,9 +52,9 @@ const getSVGPathStyles = (obj, prefix = 'svg-') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`${prefix}stroke-${breakpoint}`])) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[`${prefix}stroke-${breakpoint}`]
+		if (!isNil(obj[`${prefix}svg-stroke-${breakpoint}`])) {
+			response[breakpoint][`${prefix}stroke-width`] = `${
+				obj[`${prefix}svg-stroke-${breakpoint}`]
 			}`;
 		}
 
@@ -93,7 +93,7 @@ const getSVGPathStrokeStyles = (obj, blockStyle, prefix = 'svg-line-') => {
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix });
+		getPaletteAttributes({ obj, prefix: `${prefix}svg-line-` });
 
 	if (paletteStatus && paletteColor)
 		response.general.stroke = getColorRGBAString({
@@ -107,7 +107,7 @@ const getSVGPathStrokeStyles = (obj, blockStyle, prefix = 'svg-line-') => {
 	return { SVGPathStroke: response };
 };
 
-export const getSVGStyles = ({ obj, target, blockStyle, prefix }) => {
+export const getSVGStyles = ({ obj, target, blockStyle, prefix = '' }) => {
 	const response = {
 		[` ${target} svg path`]: getSVGPathStyles(obj, prefix),
 		[` ${target} svg path[data-fill]:not([fill^="none"])`]:

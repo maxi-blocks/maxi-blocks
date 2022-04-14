@@ -8,7 +8,7 @@ import { getDefaultAttribute } from '../../extensions/styles';
  * SvgColor
  */
 const SvgColor = props => {
-	const { type, label, onChange } = props;
+	const { type, label, onChange, disableOpacity = true, prefix = '' } = props;
 
 	return (
 		<>
@@ -18,35 +18,51 @@ const SvgColor = props => {
 					className='maxi-color-control__SVG-line-color'
 					color={props['svg-line-color']}
 					prefix='svg-line-'
-					paletteColor={props['svg-line-palette-color']}
-					paletteStatus={props['svg-line-palette-status']}
-					onChange={({ color, paletteColor, paletteStatus }) => {
+					paletteColor={props[`${prefix}svg-line-palette-color`]}
+					paletteStatus={props[`${prefix}svg-line-palette-status`]}
+					paletteOpacity={props[`${prefix}svg-line-palette-opacity`]}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) => {
 						onChange({
-							'svg-line-color': color,
-							'svg-line-palette-color': paletteColor,
-							'svg-line-palette-status': paletteStatus,
+							[`${prefix}svg-line-color`]: color,
+							[`${prefix}svg-line-palette-color`]: paletteColor,
+							[`${prefix}svg-line-palette-status`]: paletteStatus,
+							[`${prefix}svg-line-palette-opacity`]:
+								paletteOpacity,
 						});
 					}}
 					globalProps={{ target: 'line', type: 'icon' }}
-					disableOpacity
+					disableOpacity={disableOpacity}
 				/>
 			) : (
 				<ColorControl
 					label={label}
 					className='maxi-color-control__SVG-fill-color'
-					color={props['svg-fill-color']}
+					color={props[`${prefix}svg-fill-color`]}
 					prefix='svg-fill-'
-					paletteColor={props['svg-fill-palette-color']}
-					paletteStatus={props['svg-fill-palette-status']}
-					onChange={({ color, paletteColor, paletteStatus }) => {
+					paletteColor={props[`${prefix}svg-fill-palette-color`]}
+					paletteStatus={props[`${prefix}svg-fill-palette-status`]}
+					paletteOpacity={props[`${prefix}svg-fill-palette-opacity`]}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) => {
 						onChange({
-							'svg-fill-color': color,
-							'svg-fill-palette-color': paletteColor,
-							'svg-fill-palette-status': paletteStatus,
+							[`${prefix}svg-fill-color`]: color,
+							[`${prefix}svg-fill-palette-color`]: paletteColor,
+							[`${prefix}svg-fill-palette-status`]: paletteStatus,
+							[`${prefix}svg-fill-palette-opacity`]:
+								paletteOpacity,
 						});
 					}}
 					globalProps={{ target: 'fill', type: 'icon' }}
-					disableOpacity
+					disableOpacity={disableOpacity}
 				/>
 			)}
 		</>

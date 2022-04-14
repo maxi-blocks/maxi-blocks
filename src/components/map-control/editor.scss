@@ -21,7 +21,8 @@
 			color: #ff4a17 !important;
 		}
 	}
-	&__markers {
+	&__markers,
+	&__popups {
 		display: flex;
 		width: 100%;
 		margin-bottom: 8px;

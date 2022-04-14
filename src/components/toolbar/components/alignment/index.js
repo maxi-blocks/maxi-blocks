@@ -50,7 +50,7 @@ const Alignment = props => {
 						props,
 						isText ? 'textAlignment' : 'alignment'
 					)}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					disableJustify={!isText}
 					disableIcon
 					breakpoint={breakpoint}

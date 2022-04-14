@@ -145,7 +145,7 @@ const BackgroundControl = props => {
 							),
 						}}
 						onChangeInline={onChangeInline}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						disableClipPath={disableClipPath}
 						isHover={isHover}
 						prefix={prefix}
@@ -165,7 +165,7 @@ const BackgroundControl = props => {
 								prefix
 							),
 						}}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						disableClipPath={disableClipPath}
 						isHover={isHover}
 						prefix={prefix}
@@ -182,7 +182,7 @@ const BackgroundControl = props => {
 								prefix
 							),
 						}}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						disableClipPath={disableClipPath}
 						isHover={isHover}
 						prefix={prefix}
@@ -199,7 +199,7 @@ const BackgroundControl = props => {
 								prefix
 							),
 						}}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						disableClipPath={disableClipPath}
 						isHover={isHover}
 						prefix={prefix}
@@ -216,7 +216,7 @@ const BackgroundControl = props => {
 								prefix
 							),
 						}}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						isHover={isHover}
 						prefix={prefix}
 						clientId={clientId}

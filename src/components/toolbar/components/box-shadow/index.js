@@ -44,7 +44,7 @@ const BoxShadow = props => {
 				<BoxShadowControl
 					{...getGroupAttributes(props, ['boxShadow'], false, prefix)}
 					onChangeInline={onChangeInline}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					breakpoint={breakpoint}
 					clientId={clientId}
 					disableAdvanced

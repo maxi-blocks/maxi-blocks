@@ -79,7 +79,7 @@ const SVGLayerContent = props => {
 								label='Position'
 								target='background-svg-position'
 								breakpoint={breakpoint}
-								onChange={obj => onChange(obj)}
+								onChange={onChange}
 								optionType='string'
 							/>
 						),
@@ -194,7 +194,7 @@ const SVGLayer = props => {
 				<>
 					<SVGFillControl
 						SVGOptions={SVGOptions}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						clientId={clientId}
 						isHover={isHover}
 						breakpoint={breakpoint}

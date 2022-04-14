@@ -178,9 +178,7 @@ const IconControl = props => {
 							`icon${isHover ? 'Hover' : ''}`,
 							isHover
 						)}
-						onChange={obj => {
-							onChange(obj);
-						}}
+						onChange={onChange}
 						prefix='icon-'
 						breakpoint={breakpoint}
 						isHover={isHover}
@@ -411,7 +409,7 @@ const IconControl = props => {
 								`iconBorderRadius${isHover ? 'Hover' : ''}`,
 							])}
 							prefix='icon-'
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							breakpoint={breakpoint}
 							clientId={clientId}
 							isHover={isHover}
@@ -665,7 +663,7 @@ const IconControl = props => {
 						<AxisControl
 							{...getGroupAttributes(props, 'iconPadding')}
 							label={__('Icon Padding', 'maxi-blocks')}
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							breakpoint={breakpoint}
 							target='icon-padding'
 							disableAuto

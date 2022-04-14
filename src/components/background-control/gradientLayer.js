@@ -85,7 +85,7 @@ const GradientLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					{...getGroupAttributes(
 						props,
 						'clipPath',

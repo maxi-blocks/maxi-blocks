@@ -525,7 +525,7 @@ const ImageLayerSettings = props => {
 			<hr />
 			{!disableClipPath && (
 				<ClipPath
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					{...getGroupAttributes(
 						imageOptions,
 						'clipPath',

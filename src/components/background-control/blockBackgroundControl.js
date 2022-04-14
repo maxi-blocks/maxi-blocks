@@ -64,7 +64,7 @@ const BlockBackgroundControl = props => {
 				layersOptions={layersOptions}
 				layersHoverOptions={layersHoverOptions}
 				onChangeInline={onChangeInline}
-				onChange={obj => onChange(obj)}
+				onChange={onChange}
 				isHover={isHover}
 				prefix={prefix}
 				disableImage={disableImage}

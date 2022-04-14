@@ -90,7 +90,7 @@ const BackgroundColor = props => {
 						}}
 						key={`background-color-layer--${clientId}`}
 						onChangeInline={onChangeInline}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						breakpoint={breakpoint}
 						globalProps={globalProps}
 						prefix={prefix}

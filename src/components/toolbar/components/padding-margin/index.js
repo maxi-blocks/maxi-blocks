@@ -48,7 +48,7 @@ const PaddingMargin = props => {
 							isIconToolbar ? 'iconPadding' : 'padding'
 						)}
 						label={__('Icon padding', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						breakpoint={breakpoint}
 						target={paddingTarget}
 						disableAuto
@@ -59,7 +59,7 @@ const PaddingMargin = props => {
 					<AxisControl
 						{...getGroupAttributes(props, 'margin')}
 						label={__('Margin', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						breakpoint={breakpoint}
 						target={marginTarget}
 						optionType='string'

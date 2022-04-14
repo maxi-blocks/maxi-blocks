@@ -384,7 +384,7 @@ const HoverEffectControl = props => {
 								),
 							}}
 							hideAlignment
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							prefix='hover-title-'
 							disableCustomFormats
 							blockStyle={blockStyle}
@@ -431,7 +431,7 @@ const HoverEffectControl = props => {
 								),
 							}}
 							hideAlignment
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							prefix='hover-content-'
 							disableCustomFormats
 							blockStyle={blockStyle}
@@ -450,7 +450,7 @@ const HoverEffectControl = props => {
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
 						])}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						disableClipPath
 						disableImage
 						disableVideo
@@ -474,7 +474,7 @@ const HoverEffectControl = props => {
 								'hoverBorderWidth',
 								'hoverBorderRadius',
 							])}
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							prefix='hover-'
 							disablePalette
 							clientId={clientId}
@@ -493,7 +493,7 @@ const HoverEffectControl = props => {
 						<AxisControl
 							{...getGroupAttributes(props, 'hoverPadding')}
 							label={__('Padding', 'maxi-blocks')}
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							target='hover-padding'
 							disableAuto
 						/>
@@ -511,7 +511,7 @@ const HoverEffectControl = props => {
 						<AxisControl
 							{...getGroupAttributes(props, 'hoverMargin')}
 							label={__('Margin', 'maxi-blocks')}
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							target='hover-margin'
 							optionType='string'
 						/>

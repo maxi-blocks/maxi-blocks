@@ -332,7 +332,7 @@ const TypographyControl = withFormatValue(props => {
 											props,
 											'textAlignment'
 										)}
-										onChange={obj => onChange(obj)}
+										onChange={onChange}
 										breakpoint={breakpoint}
 										type='text'
 										isToolbar
@@ -344,7 +344,7 @@ const TypographyControl = withFormatValue(props => {
 										)}
 										formatValue={formatValue}
 										blockName={name}
-										onChange={obj => onChange(obj)}
+										onChange={onChange}
 										isList={isList}
 										breakpoint={breakpoint}
 										textLevel={textLevel}
@@ -358,7 +358,7 @@ const TypographyControl = withFormatValue(props => {
 										)}
 										formatValue={formatValue}
 										blockName={name}
-										onChange={obj => onChange(obj)}
+										onChange={onChange}
 										isList={isList}
 										breakpoint={breakpoint}
 										textLevel={textLevel}
@@ -371,7 +371,7 @@ const TypographyControl = withFormatValue(props => {
 											'typography'
 										)}
 										formatValue={formatValue}
-										onChange={obj => onChange(obj)}
+										onChange={onChange}
 										isList={isList}
 										breakpoint={breakpoint}
 										textLevel={textLevel}
@@ -383,7 +383,7 @@ const TypographyControl = withFormatValue(props => {
 											'typography'
 										)}
 										formatValue={formatValue}
-										onChange={obj => onChange(obj)}
+										onChange={onChange}
 										isList={isList}
 										breakpoint={breakpoint}
 										textLevel={textLevel}
@@ -395,7 +395,7 @@ const TypographyControl = withFormatValue(props => {
 											'typography'
 										)}
 										formatValue={formatValue}
-										onChange={obj => onChange(obj)}
+										onChange={onChange}
 										isList={isList}
 										breakpoint={breakpoint}
 										textLevel={textLevel}
@@ -407,7 +407,7 @@ const TypographyControl = withFormatValue(props => {
 											'typography'
 										)}
 										formatValue={formatValue}
-										onChange={obj => onChange(obj)}
+										onChange={onChange}
 										isList={isList}
 										breakpoint={breakpoint}
 										textLevel={textLevel}

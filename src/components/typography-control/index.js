@@ -743,7 +743,7 @@ const TypographyControl = withFormatValue(props => {
 			);
 		}
 
-		onChange(obj);
+		onChange(obj, target);
 	};
 
 	const getOpacityValue = label => {
@@ -805,7 +805,7 @@ const TypographyControl = withFormatValue(props => {
 					{...getGroupAttributes(props, 'textAlignment')}
 					className='maxi-typography-control__text-alignment'
 					label={__('Alignment', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					breakpoint={breakpoint}
 					type='text'
 				/>

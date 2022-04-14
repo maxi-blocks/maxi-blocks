@@ -319,6 +319,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
+		console.log('changeSVGContent');
+		console.log(ownProps.attributes.content);
+		console.log(newContent);
+
 		maxiSetAttributes({ content: newContent });
 	};
 

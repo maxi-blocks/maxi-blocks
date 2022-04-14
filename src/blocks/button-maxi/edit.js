@@ -258,10 +258,11 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
-		maxiSetAttributes({ 'icon-content': newContent });
-
+		console.log('changeSVGContent');
 		console.log(content);
 		console.log(newContent);
+
+		maxiSetAttributes({ 'icon-content': newContent });
 	};
 
 	return {

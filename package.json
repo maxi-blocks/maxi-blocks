@@ -55,7 +55,7 @@
 		"react-instantsearch": "^6.23.3",
 		"react-instantsearch-dom": "^6.23.3",
 		"react-lazy-load": "^3.1.13",
-		"react-leaflet": "^3.1.0",
+		"react-leaflet": "^3.2.5",
 		"react-linear-gradient-picker": "^2.0.3",
 		"react-lorem-ipsum": "^1.4.10",
 		"react-masonry-css": "^1.0.16",

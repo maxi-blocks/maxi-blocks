@@ -53,7 +53,7 @@ const blockBackground = ({
 									}
 									onChange={(obj, target) => {
 										maxiSetAttributes(obj);
-										cleanInlineStyles(target);
+										if (target) cleanInlineStyles(target);
 									}}
 									clientId={clientId}
 									breakpoint={deviceType}
@@ -99,9 +99,10 @@ const blockBackground = ({
 										}
 										onChange={(obj, target) => {
 											maxiSetAttributes(obj);
-											cleanInlineStyles(
-												`${target}:hover`
-											);
+											if (target)
+												cleanInlineStyles(
+													`${target}:hover`
+												);
 										}}
 										isHover
 										clientId={clientId}

@@ -489,7 +489,7 @@ const BackgroundLayersControl = ({
 			}),
 		});
 
-	const onChangeLayer = layer => {
+	const onChangeLayer = (layer, target = false) => {
 		const isHoverLayer = layer.isHover;
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
@@ -502,9 +502,13 @@ const BackgroundLayersControl = ({
 		});
 
 		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
-			onChange({
-				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
-			});
+			onChange(
+				{
+					[`background-layers${isHoverLayer ? '-hover' : ''}`]:
+						newLayers,
+				},
+				target
+			);
 	};
 
 	const onAddLayer = layer => {

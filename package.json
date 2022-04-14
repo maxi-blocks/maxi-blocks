@@ -16,7 +16,7 @@
 		"test:e2e-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js --puppeteer-interactive",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
 		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
-		"minify:frontend": "for FILE in ./js/*; do FILENAME=$(basename -- $FILE); minify $FILE > ./js/${FILENAME%.*}.min.js; done"
+		"minify:frontend": "minify js/maxi-bg-video.js > js/maxi-bg-video.min.js && minify js/maxi-hover-effects.js > js/maxi-hover-effects.min.js && minify js/maxi-map.js > js/maxi-map.min.js && minify js/maxi-number-counter.js > js/maxi-number-counter.min.js && minify js/maxi-parallax.js > js/maxi-parallax.min.js && minify js/maxi-scroll-effects.js > js/maxi-scroll-effects.min.js && minify js/maxi-shape-divider.js > js/maxi-shape-divider.min.js"
 	},
 	"dependencies": {
 		"@googlemaps/js-api-loader": "^1.14.0",
@@ -42,7 +42,6 @@
 		"css-to-react-native": "^3.0.0",
 		"dompurify": "^2.3.6",
 		"html-react-parser": "^1.4.10",
-		"postcss": "^8.4.12",
 		"re-resizable": "^6.9.5",
 		"react-accessible-accordion": "^4.0.0",
 		"react-color": "^2.19.3",
@@ -75,6 +74,8 @@
 		"@wordpress/env": "^4.5.0",
 		"@wordpress/jest-preset-default": "^8.1.1",
 		"@wordpress/scripts": "^22.4.0",
+		"autoprefixer": "^10.4.4",
+		"css-minimizer-webpack-plugin": "^3.4.1",
 		"enzyme": "^3.11.0",
 		"eslint": "^8.13.0",
 		"eslint-config-airbnb": "^19.0.4",
@@ -85,6 +86,20 @@
 		"eslint-plugin-react": "^7.29.4",
 		"eslint-plugin-react-hooks": "^4.4.0",
 		"jest-canvas-mock": "^2.3.1",
+		"minify": "^8.0.4",
+		"minify-css-string": "^1.0.0",
+		"postcss": "^8.4.12",
 		"prettier": "^2.6.2"
+	},
+	"browserslist": {
+		"production": [
+			"last 4 version"
+		]
+	},
+	"postcss": {
+		"map": false,
+		"plugins": {
+			"autoprefixer": {}
+		}
 	}
 }

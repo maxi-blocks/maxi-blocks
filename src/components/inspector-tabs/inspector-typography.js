@@ -69,9 +69,9 @@ const typography = ({
 										`${inlineTarget} ${tag}`
 									)
 								}
-								onChange={obj => {
+								onChange={(obj, tag = '') => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles(inlineTarget);
+									cleanInlineStyles(`${inlineTarget} ${tag}`);
 								}}
 								hideAlignment={hideAlignment}
 								breakpoint={deviceType}

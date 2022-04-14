@@ -42,7 +42,7 @@ describe('Button Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Button Icon', async () => {
+	it.skip('Check Button Icon', async () => {
 		await openSidebarTab(page, 'style', 'icon');
 
 		// Width spacing
@@ -176,7 +176,7 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-padding-bottom-general')
 		).toStrictEqual(33);
 	});
-	it('Check Button Icon Hover', async () => {
+	it.skip('Check Button Icon Hover', async () => {
 		const accordion = await openSidebarTab(page, 'style', 'icon');
 
 		await accordion.$$eval(

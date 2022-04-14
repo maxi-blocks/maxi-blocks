@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import DisplayControl from '../display-control';
 import { getGroupAttributes } from '../../extensions/styles';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -18,12 +19,14 @@ const display = ({ props }) => {
 	return {
 		label: __('Show/hide block', 'maxi-blocks'),
 		content: (
-			<DisplayControl
-				{...getGroupAttributes(attributes, 'display')}
-				onChange={obj => maxiSetAttributes(obj)}
-				breakpoint={deviceType}
-				defaultDisplay='flex'
-			/>
+			<ResponsiveTabsControl breakpoint={deviceType}>
+				<DisplayControl
+					{...getGroupAttributes(attributes, 'display')}
+					onChange={obj => maxiSetAttributes(obj)}
+					breakpoint={deviceType}
+					defaultDisplay='flex'
+				/>
+			</ResponsiveTabsControl>
 		),
 	};
 };

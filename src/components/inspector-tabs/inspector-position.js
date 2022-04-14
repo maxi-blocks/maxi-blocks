@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import PositionControl from '../position-control';
 import { getGroupAttributes } from '../../extensions/styles';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -18,11 +19,13 @@ const position = ({ props }) => {
 	return {
 		label: __('Position', 'maxi-blocks'),
 		content: (
-			<PositionControl
-				{...getGroupAttributes(attributes, 'position')}
-				onChange={obj => maxiSetAttributes(obj)}
-				breakpoint={deviceType}
-			/>
+			<ResponsiveTabsControl breakpoint={deviceType}>
+				<PositionControl
+					{...getGroupAttributes(attributes, 'position')}
+					onChange={obj => maxiSetAttributes(obj)}
+					breakpoint={deviceType}
+				/>
+			</ResponsiveTabsControl>
 		),
 	};
 };

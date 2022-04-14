@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import TransitionControl from '../transition-control';
 import { getGroupAttributes } from '../../extensions/styles';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -18,11 +19,13 @@ const transition = ({ props, label = '' }) => {
 	return {
 		label,
 		content: (
-			<TransitionControl
-				{...getGroupAttributes(attributes, 'transitionDuration')}
-				onChange={obj => maxiSetAttributes(obj)}
-				breakpoint={deviceType}
-			/>
+			<ResponsiveTabsControl breakpoint={deviceType}>
+				<TransitionControl
+					{...getGroupAttributes(attributes, 'transitionDuration')}
+					onChange={obj => maxiSetAttributes(obj)}
+					breakpoint={deviceType}
+				/>
+			</ResponsiveTabsControl>
 		),
 	};
 };

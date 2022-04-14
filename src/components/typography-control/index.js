@@ -790,20 +790,15 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
-			<ResponsiveTabsControl
-				className='maxi-typography-control__text-options-tabs'
-				breakpoint={breakpoint}
-			>
-				<TextOptions
-					getValue={getValue}
-					getDefault={getDefault}
-					onChangeFormat={onChangeFormat}
-					prefix={prefix}
-					minMaxSettings={minMaxSettings}
-					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
-					avoidXXL={!styleCards}
-				/>
-			</ResponsiveTabsControl>
+			<TextOptions
+				getValue={getValue}
+				getDefault={getDefault}
+				onChangeFormat={onChangeFormat}
+				prefix={prefix}
+				minMaxSettings={minMaxSettings}
+				minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
+				avoidXXL={!styleCards}
+			/>
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&

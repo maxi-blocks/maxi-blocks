@@ -259,6 +259,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(fillRegExp2, fillStr2);
 
 		maxiSetAttributes({ 'icon-content': newContent });
+
+		console.log(content);
+		console.log(newContent);
 	};
 
 	return {

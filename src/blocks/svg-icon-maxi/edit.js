@@ -319,7 +319,21 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
-		console.log('changeSVGContent');
+		maxiSetAttributes({ content: newContent });
+	};
+
+	const changeSVGContentHover = () => {
+		const fillRegExp = new RegExp('(fill=[^-]([^none])([^\\"]+))', 'g');
+		const fillStr = 'data-hover-fill $1';
+
+		const strokeRegExp = new RegExp('(stroke=[^-]([^none])([^\\"]+))', 'g');
+		const strokeStr = 'data-hover-stroke $1';
+
+		const newContent = ownProps.attributes.content
+			.replace(fillRegExp, fillStr)
+			.replace(strokeRegExp, strokeStr);
+
+		console.log('changeSVGContent hover');
 		console.log(ownProps.attributes.content);
 		console.log(newContent);
 
@@ -330,6 +344,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		changeSVGStrokeWidth,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,
+		changeSVGContentHover,
 	};
 });
 

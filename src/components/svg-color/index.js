@@ -23,7 +23,8 @@ const SvgColor = props => {
 		label,
 		onChangeFill,
 		onChangeStroke,
-		onChangeHover,
+		onChangeHoverFill,
+		onChangeHoverStroke,
 		isHover = false,
 	} = props;
 
@@ -52,7 +53,7 @@ const SvgColor = props => {
 					}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						if (isHover)
-							onChangeHover({
+							onChangeHoverStroke({
 								'svg-line-color-hover': color,
 								'svg-line-palette-color-hover': paletteColor,
 								'svg-line-palette-status-hover': paletteStatus,
@@ -93,7 +94,7 @@ const SvgColor = props => {
 					}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						if (isHover)
-							onChangeHover({
+							onChangeHoverFill({
 								'svg-fill-color-hover': color,
 								'svg-fill-palette-color-hover': paletteColor,
 								'svg-fill-palette-status-hover': paletteStatus,
@@ -120,7 +121,8 @@ const SvgColorControl = props => {
 	const {
 		onChangeFill,
 		onChangeStroke,
-		onChangeHover,
+		onChangeHoverFill,
+		onChangeHoverStroke,
 		svgType,
 		maxiSetAttributes,
 	} = props;
@@ -195,7 +197,7 @@ const SvgColorControl = props => {
 												'SVG Fill',
 												'maxi-blocks'
 											)}
-											onChange={onChangeHover}
+											onChange={onChangeHoverFill}
 											isHover
 											{...props}
 										/>
@@ -207,7 +209,7 @@ const SvgColorControl = props => {
 												'SVG Line',
 												'maxi-blocks'
 											)}
-											onChange={onChangeHover}
+											onChange={onChangeHoverStroke}
 											isHover
 											{...props}
 										/>

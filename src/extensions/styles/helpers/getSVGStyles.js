@@ -139,5 +139,27 @@ export const getSVGStyles = ({
 			getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
 	};
 
+	if (isHover) {
+		return {
+			...response,
+			...{
+				[` ${target} svg path[data-stroke-hover]`]: getSVGPathStyles(
+					obj,
+					prefix,
+					isHover
+				),
+				[` ${target} svg path[data-hover-fill]:not([fill^="none"])`]:
+					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+				[` ${target} svg g[data-hover-fill]:not([fill^="none"])`]:
+					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+				[` ${target} svg g[data-hover-stroke]:not([stroke^="none"])`]:
+					getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+				[` ${target} svg use[data-hover-fill]:not([fill^="none"])`]:
+					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+				[` ${target} svg use[data-hover-stroke]:not([stroke^="none"])`]:
+					getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+			},
+		};
+	}
 	return response;
 };

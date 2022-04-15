@@ -14,6 +14,7 @@ import {
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 
 /**
  * Inspector
@@ -48,18 +49,24 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ColumnSizeControl
-													props
-													verticalAlign={
-														verticalAlign
-													}
-													rowPattern={rowPattern}
-													clientId={clientId}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
+												<ResponsiveTabsControl
 													breakpoint={deviceType}
-												/>
+												>
+													<ColumnSizeControl
+														props
+														verticalAlign={
+															verticalAlign
+														}
+														rowPattern={rowPattern}
+														clientId={clientId}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+													/>
+												</ResponsiveTabsControl>
 											),
 										},
 										...inspectorTabs.blockBackground({

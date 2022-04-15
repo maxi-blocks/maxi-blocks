@@ -20,6 +20,7 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsMap, categoriesMap } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 
 /**
  * Inspector
@@ -50,16 +51,24 @@ const Inspector = props => {
 										{
 											label: __('Map', 'maxi-blocks'),
 											content: (
-												<MapControl
-													{...getGroupAttributes(
-														attributes,
-														'map'
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													hasApiKey={!isEmpty(apiKey)}
-												/>
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
+													<MapControl
+														{...getGroupAttributes(
+															attributes,
+															'map'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														hasApiKey={
+															!isEmpty(apiKey)
+														}
+													/>
+												</ResponsiveTabsControl>
 											),
 										},
 										...inspectorTabs.border({

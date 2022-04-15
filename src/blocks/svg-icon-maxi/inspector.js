@@ -218,11 +218,71 @@ const Inspector = props => {
 															);
 														}
 													}}
-													onChangeHover={obj => {
+													onChangeHoverFill={obj => {
 														maxiSetAttributes(obj);
 
-														svgType === 'Filled' &&
-															changeSVGContentHover();
+														if (
+															svgType === 'Filled'
+														) {
+															const fillColorStrHover =
+																getColorRGBAString(
+																	{
+																		firstVar:
+																			'icon-fill-hover',
+																		secondVar: `color-${obj['svg-fill-palette-color-hover']}`,
+																		opacity:
+																			obj[
+																				'svg-fill-palette-opacity-hover'
+																			],
+																		blockStyle:
+																			parentBlockStyle,
+																	}
+																);
+
+															changeSVGContentHover(
+																obj[
+																	'svg-fill-palette-status-hover'
+																]
+																	? fillColorStrHover
+																	: obj[
+																			'svg-fill-color-hover'
+																	  ],
+																'fill'
+															);
+														}
+													}}
+													onChangeHoverStroke={obj => {
+														maxiSetAttributes(obj);
+
+														if (
+															svgType === 'Filled'
+														) {
+															const lineColorStrHover =
+																getColorRGBAString(
+																	{
+																		firstVar:
+																			'icon-line-hover',
+																		secondVar: `color-${obj['svg-line-palette-color-hover']}`,
+																		opacity:
+																			obj[
+																				'svg-line-palette-opacity-hover'
+																			],
+																		blockStyle:
+																			parentBlockStyle,
+																	}
+																);
+
+															changeSVGContentHover(
+																obj[
+																	'svg-line-palette-status-hover'
+																]
+																	? lineColorStrHover
+																	: obj[
+																			'svg-line-color-hover'
+																	  ],
+																'stroke'
+															);
+														}
 													}}
 												/>
 											),

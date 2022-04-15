@@ -322,22 +322,29 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		maxiSetAttributes({ content: newContent });
 	};
 
-	const changeSVGContentHover = () => {
-		const fillRegExp = new RegExp('(fill=[^-]([^none])([^\\"]+))', 'g');
-		const fillStr = 'data-hover-fill $1';
+	const changeSVGContentHover = (color, type) => {
+		let newContent = ownProps.attributes.content;
 
-		const strokeRegExp = new RegExp('(stroke=[^-]([^none])([^\\"]+))', 'g');
-		const strokeStr = 'data-hover-stroke $1';
+		const svgRegExp = new RegExp(`(${type}=[^-]([^none])([^\\"]+))`, 'g');
+		const svgStr = `data-hover-${type} $1`;
 
-		const newContent = ownProps.attributes.content
-			.replace(fillRegExp, fillStr)
-			.replace(strokeRegExp, strokeStr);
+		const cssRegExpOld = new RegExp(
+			`((hover\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`
+		);
+		const cssStrOld = '';
 
-		console.log('changeSVGContent hover');
-		console.log(ownProps.attributes.content);
-		console.log(newContent);
+		const cssRegExp = new RegExp(
+			`(((?<!hover)\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`
+		);
+		const cssStr = `$1}:hover$2{${type}:${color}}`;
 
-		maxiSetAttributes({ content: newContent });
+		newContent = newContent
+			.replace(svgRegExp, svgStr)
+			.replace(cssRegExpOld, cssStrOld)
+			.replace(cssRegExp, cssStr);
+
+		newContent !== ownProps.attributes.content &&
+			maxiSetAttributes({ content: newContent });
 	};
 
 	return {

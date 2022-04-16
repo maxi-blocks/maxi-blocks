@@ -5,9 +5,23 @@ import apiFetch from '@wordpress/api-fetch';
 import { select } from '@wordpress/data';
 
 /**
+ * External dependencies
+ */
+import minifyCssString from 'minify-css-string';
+import autoprefixer from 'autoprefixer';
+import postcss from 'postcss';
+
+/**
  * Internal dependencies
  */
 import frontendStyleGenerator from '../frontendStyleGenerator';
+
+async function processCss(code) {
+	const { css } = postcss([autoprefixer]).process(code);
+	const minifiedCss = minifyCssString(css);
+
+	return minifiedCss;
+}
 
 /**
  * Controls
@@ -15,7 +29,7 @@ import frontendStyleGenerator from '../frontendStyleGenerator';
 const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
 		const id = select('core/editor').getCurrentPostId();
-		const parsedStyles = frontendStyleGenerator(styles);
+		const parsedStyles = await processCss(frontendStyleGenerator(styles));
 		const fonts = select('maxiBlocks/text').getPostFonts();
 
 		await apiFetch({

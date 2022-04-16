@@ -32,16 +32,15 @@ const getColumnAttributes = ({
  * @param {Array} sizes array of columns widths
  * @return {Array} columns sizes after applying the gap
  */
-const columnAttributesGenerator = (columns, removeColumnGap, breakpoint) => {
+const columnAttributesGenerator = (columns, breakpoint) => {
 	const newColumnsSizes = [];
 	const columnsPositions = getColumnsPosition(columns);
-	const gap = !removeColumnGap ? 2.5 : 0;
 
 	const isResponsive = breakpoint !== 'general';
 
 	columns.forEach((column, i) => {
-		const numberOfGaps = columnsPositions[i].columnsNumber - 1;
-		const proportion = 100 - gap * numberOfGaps;
+		const proportion = 100;
+
 		newColumnsSizes.push(
 			(!isResponsive &&
 				getGeneralColumnAttributes({
@@ -55,7 +54,6 @@ const columnAttributesGenerator = (columns, removeColumnGap, breakpoint) => {
 					breakpoint,
 					columnPosition: columnsPositions[i],
 					proportion,
-					removeColumnGap,
 				})
 		);
 	});

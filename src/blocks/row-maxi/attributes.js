@@ -36,7 +36,32 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
-	...attributesData.gap,
+	gap: {
+		type: 'number',
+		default: 20,
+	},
+	'gap-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'row-gap': {
+		type: 'number',
+	},
+	'row-gap-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'column-gap': {
+		type: 'number',
+	},
+	'column-gap-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'gap-sync': {
+		type: 'string',
+		default: 'all',
+	},
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
 	...attributesData.border,

@@ -10,7 +10,7 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '../button';
-import ToggleSwitch from '../toggle-switch';
+import GapControl from '../gap-control';
 import Icon from '../icon';
 import AdvancedNumberControl from '../advanced-number-control';
 import {
@@ -210,63 +210,13 @@ const ColumnPatternsInspector = props => {
 			</div>
 			{!toolbar && (
 				<div className='components-column-pattern__gap'>
-					{numCol !== 1 && breakpoint === 'general' && (
-						<ToggleSwitch
-							label={__('Remove Gap', 'maxi-blocks')}
-							selected={removeColumnGap}
-							onChange={val => {
-								onChange({ removeColumnGap: val });
-								loadColumnsTemplate(
-									props['row-pattern-general'],
-									val,
-									clientId,
-									breakpoint
-								);
-							}}
+					<>
+						<GapControl
+							onChange={onChange}
+							breakpoint={breakpoint}
+							{...props}
 						/>
-					)}
-					{!removeColumnGap && (
-						<>
-							<AdvancedNumberControl
-								className='maxi__size'
-								label={__('Gap', 'maxi-blocks')}
-								enableUnit
-								unit={props['gap-unit']}
-								onChangeUnit={val => {
-									console.log(val);
-									onChange({
-										[`gap-unit`]: val,
-									});
-								}}
-								value={props['gap']}
-								onChangeValue={val => {
-									onChange({
-										[`gap`]: val,
-									});
-								}}
-								minMaxSettings={{
-									px: {
-										min: 0,
-										max: 999,
-									},
-									em: {
-										min: 0,
-										max: 999,
-									},
-									vw: {
-										min: 0,
-										max: 999,
-									},
-								}}
-								allowedUnits={['px', 'em', 'vw']}
-								onReset={() =>
-									onChange({
-										[`gap`]: null,
-									})
-								}
-							/>
-						</>
-					)}
+					</>
 				</div>
 			)}
 		</div>

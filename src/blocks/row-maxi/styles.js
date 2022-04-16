@@ -76,14 +76,33 @@ const getNormalObject = props => {
 		},
 	};
 
-	if (props.gap && props['gap-unit']) {
-		response.gap.general['row-gap'] = 0;
-		response.gap.general['gap'] = `${props['gap']}${props['gap-unit']}`;
-	}
+	const sync = props['gap-sync'];
 
-	if (props.removeColumnGap) {
-		response.gap.general['gap'] = '2.5%';
-		response.gap.general['row-gap'] = '20px !important';
+	switch (sync) {
+		case 'all':
+			if (props.gap && props['gap-unit']) {
+				response.gap.general['gap'] =
+					props['gap'] && props['gap-unit']
+						? `${props['gap']}${props['gap-unit']}`
+						: 0;
+			}
+			break;
+		case 'axis':
+			response.gap.general = {
+				...(props['row-gap'] &&
+					props['row-gap-unit'] && {
+						'row-gap': `${props['row-gap']}${props['row-gap-unit']}`,
+					}),
+				...(props['column-gap'] &&
+					props['column-gap-unit'] && {
+						'column-gap': `${props['column-gap']}${props['column-gap-unit']}`,
+					}),
+			};
+
+			break;
+
+		default:
+			break;
 	}
 
 	if (!isEmpty(props.horizontalAlign))

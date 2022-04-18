@@ -72,7 +72,8 @@ const Accordion = props => {
 						}),
 						item.breakpoint,
 						item.extraIndicators,
-						item.extraIndicatorsResponsive
+						item.extraIndicatorsResponsive,
+						item.ignoreIndicator
 					) && 'maxi-accordion-control__item--active'
 				);
 

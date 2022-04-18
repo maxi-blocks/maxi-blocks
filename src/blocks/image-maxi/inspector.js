@@ -548,12 +548,7 @@ const Inspector = memo(
 														breakpoint={deviceType}
 													/>
 												),
-												extraIndicators: [
-													'image-shape-flip-y',
-													'image-shape-scale',
-													'image-shape-rotate',
-													'image-shape-flip-x',
-												],
+												extraIndicators: ['SVGElement'],
 											},
 											{
 												label: __(
@@ -577,7 +572,7 @@ const Inspector = memo(
 														prefix=''
 													/>
 												),
-												extraIndicators: [
+												ignoreIndicator: [
 													`clip-path-${deviceType}`,
 												],
 											},

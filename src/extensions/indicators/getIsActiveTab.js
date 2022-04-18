@@ -8,7 +8,8 @@ const getIsActiveTab = (
 	attributes,
 	breakpoint,
 	extraIndicators = [],
-	extraIndicatorsResponsive = []
+	extraIndicatorsResponsive = [],
+	ignoreIndicator = []
 ) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
@@ -27,6 +28,7 @@ const getIsActiveTab = (
 		'parentBlockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',
+		...ignoreIndicator,
 	];
 
 	const extractAttributes = items => {
@@ -48,7 +50,6 @@ const getIsActiveTab = (
 	].every(attribute => {
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
-
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === false) return true;
 

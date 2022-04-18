@@ -4,7 +4,6 @@ const getGeneralColumnAttributes = ({ column, columnPosition, proportion }) => {
 	return {
 		'column-size-general': column * proportion,
 		'column-size-m': 100,
-
 		...(columnPosition.columnsNumber === 1 && {
 			'column-size-general': 100,
 		}),
@@ -19,7 +18,6 @@ const getColumnAttributes = ({
 }) => {
 	return {
 		[`column-size-${breakpoint}`]: column * proportion,
-
 		...(columnPosition.columnsNumber === 1 && {
 			[`column-size-${breakpoint}`]: 100,
 		}),

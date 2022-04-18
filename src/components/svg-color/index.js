@@ -17,7 +17,7 @@ import {
 /**
  * SvgColor
  */
-const SvgColor = props => {
+export const SvgColor = props => {
 	const {
 		type,
 		label,
@@ -117,7 +117,7 @@ const SvgColor = props => {
 	);
 };
 
-const SvgColorControl = props => {
+export const SvgColorControl = props => {
 	const {
 		onChangeFill,
 		onChangeStroke,
@@ -223,5 +223,3 @@ const SvgColorControl = props => {
 		/>
 	);
 };
-
-export default SvgColorControl;

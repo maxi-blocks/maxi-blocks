@@ -51,7 +51,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange, blockStyle, clientId } = props;
+	const { className, onChangeInline, onChange, blockStyle, clientId } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -384,6 +384,7 @@ const HoverEffectControl = props => {
 								),
 							}}
 							hideAlignment
+							onChangeInline={onChangeInline}
 							onChange={onChange}
 							prefix='hover-title-'
 							disableCustomFormats
@@ -394,6 +395,7 @@ const HoverEffectControl = props => {
 								type: 'h4',
 							}}
 							textLevel='h4'
+							inlineTarget='maxi-hover-details__content h4'
 						/>
 					)}
 					<hr />
@@ -441,6 +443,7 @@ const HoverEffectControl = props => {
 								type: 'p',
 							}}
 							textLevel='p'
+							inlineTarget='maxi-hover-details__content p'
 						/>
 					)}
 					<hr />
@@ -450,6 +453,9 @@ const HoverEffectControl = props => {
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
 						])}
+						onChangeInline={obj =>
+							onChangeInline(obj, '.maxi-hover-details__content')
+						}
 						onChange={onChange}
 						disableClipPath
 						disableImage
@@ -474,6 +480,12 @@ const HoverEffectControl = props => {
 								'hoverBorderWidth',
 								'hoverBorderRadius',
 							])}
+							onChangeInline={obj =>
+								onChangeInline(
+									obj,
+									'.maxi-hover-details__content'
+								)
+							}
 							onChange={onChange}
 							prefix='hover-'
 							disablePalette

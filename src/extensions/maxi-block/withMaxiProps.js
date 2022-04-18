@@ -3,7 +3,7 @@
  */
 import { useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useRef, useState } from '@wordpress/element';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies

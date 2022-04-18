@@ -21,7 +21,7 @@ import { toolbarShapeLineColor } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, breakpoint } = props;
+	const { blockName, onChangeInline, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -62,6 +62,9 @@ const DividerColor = props => {
 						breakpoint,
 						props
 					)}
+					onChangeInline={({ color }) =>
+						onChangeInline({ 'border-color': color })
+					}
 					onChange={({
 						color,
 						paletteColor,

@@ -58,6 +58,7 @@ const BackgroundControl = props => {
 		clientId,
 		breakpoint = 'general',
 		globalProps,
+		inlineTarget = '',
 	} = props;
 
 	const backgroundActiveMedia = getLastBreakpointAttribute({
@@ -144,7 +145,9 @@ const BackgroundControl = props => {
 								prefix
 							),
 						}}
-						onChangeInline={onChangeInline}
+						onChangeInline={obj =>
+							onChangeInline(obj, inlineTarget)
+						}
 						onChange={onChange}
 						disableClipPath={disableClipPath}
 						isHover={isHover}

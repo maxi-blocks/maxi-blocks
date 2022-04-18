@@ -224,6 +224,8 @@ const Inspector = memo(
 			deviceType,
 			imageData,
 			maxiSetAttributes,
+			insertInlineStyles,
+			cleanInlineStyles,
 		} = props;
 		const {
 			altSelector,
@@ -448,7 +450,19 @@ const Inspector = memo(
 																		]
 																	)}
 																	textLevel='p'
-																	onChange={obj => {
+																	onChangeInline={(
+																		obj,
+																		target
+																	) =>
+																		insertInlineStyles(
+																			obj,
+																			target
+																		)
+																	}
+																	onChange={(
+																		obj,
+																		target
+																	) => {
 																		if (
 																			'content' in
 																			obj
@@ -463,6 +477,9 @@ const Inspector = memo(
 
 																		maxiSetAttributes(
 																			obj
+																		);
+																		cleanInlineStyles(
+																			target
 																		);
 																	}}
 																	breakpoint={
@@ -514,11 +531,26 @@ const Inspector = memo(
 																'hoverContentTypography',
 															]
 														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
+														onChangeInline={(
+															obj,
+															target
+														) =>
+															insertInlineStyles(
+																obj,
+																target
 															)
 														}
+														onChange={(
+															obj,
+															target
+														) => {
+															maxiSetAttributes(
+																obj
+															);
+															cleanInlineStyles(
+																target
+															);
+														}}
 														blockStyle={blockStyle}
 														clientId={clientId}
 													/>

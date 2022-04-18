@@ -494,6 +494,7 @@ const TypographyControl = withFormatValue(props => {
 		onChange,
 		breakpoint = 'general',
 		formatValue,
+		inlineTarget = '.rich-text',
 		isList = false,
 		isHover = false,
 		disableColor = false,
@@ -716,8 +717,7 @@ const TypographyControl = withFormatValue(props => {
 	const onChangeFormat = (
 		value,
 		customBreakpoint,
-		forceDisableCustomFormats = false,
-		target = ''
+		forceDisableCustomFormats = false
 	) => {
 		const obj = setFormat({
 			formatValue,
@@ -743,7 +743,14 @@ const TypographyControl = withFormatValue(props => {
 			);
 		}
 
-		onChange(obj, target);
+		onChange(obj, inlineTarget);
+	};
+
+	const onChangeInlineValue = (obj, tag = '') => {
+		onChangeInline(
+			obj,
+			`${inlineTarget} ${tag}, ${inlineTarget} ${tag} span`
+		);
 	};
 
 	const getOpacityValue = label => {
@@ -777,7 +784,9 @@ const TypographyControl = withFormatValue(props => {
 					paletteColor={getValue(`${prefix}palette-color`)}
 					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-status`)}
-					onChangeInline={({ color }) => onChangeInline({ color })}
+					onChangeInline={({ color }) =>
+						onChangeInlineValue({ color })
+					}
 					onChange={({
 						color,
 						paletteColor,
@@ -1062,6 +1071,9 @@ const TypographyControl = withFormatValue(props => {
 					<TextShadowControl
 						className='maxi-typography-control__text-shadow'
 						textShadow={getValue(`${prefix}text-shadow`)}
+						onChangeInline={val =>
+							onChangeInlineValue({ 'text-shadow': val })
+						}
 						onChange={val => {
 							onChangeFormat({
 								[`${prefix}text-shadow`]: val,
@@ -1081,7 +1093,7 @@ const TypographyControl = withFormatValue(props => {
 				<LinkOptions
 					getValue={getValue}
 					getDefault={getDefault}
-					onChangeInline={onChangeInline}
+					onChangeInline={onChangeInlineValue}
 					onChangeFormat={onChangeFormat}
 					prefix={prefix}
 					breakpoint={breakpoint}

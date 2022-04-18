@@ -23,7 +23,7 @@ const typography = ({
 	globalProps,
 	hoverGlobalProps,
 	depth = 2,
-	inlineTarget = '.block-editor-rich-text__editable',
+	inlineTarget = '.rich-text',
 }) => {
 	const {
 		attributes,
@@ -63,15 +63,12 @@ const typography = ({
 									attributes,
 									typographyTarget
 								)}
-								onChangeInline={(obj, tag = '') =>
-									insertInlineStyles(
-										obj,
-										`${inlineTarget} ${tag}`
-									)
+								onChangeInline={(obj, target) =>
+									insertInlineStyles(obj, target)
 								}
-								onChange={(obj, tag = '') => {
+								onChange={(obj, target) => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles(`${inlineTarget} ${tag}`);
+									cleanInlineStyles(target);
 								}}
 								hideAlignment={hideAlignment}
 								breakpoint={deviceType}
@@ -80,6 +77,7 @@ const typography = ({
 								blockStyle={parentBlockStyle}
 								styleCardPrefix={styleCardPrefix}
 								textLevel={textLevel}
+								inlineTarget={inlineTarget}
 								isList={isList}
 								allowLink={allowLink}
 								globalProps={globalProps}
@@ -111,17 +109,12 @@ const typography = ({
 											'typography',
 											true
 										)}
-										onChangeInline={(obj, tag = '') =>
-											insertInlineStyles(
-												obj,
-												`${inlineTarget}:hover ${tag}`
-											)
+										onChangeInline={(obj, target) =>
+											insertInlineStyles(obj, target)
 										}
-										onChange={(obj, tag) => {
+										onChange={(obj, target) => {
 											maxiSetAttributes(obj);
-											cleanInlineStyles(
-												`${inlineTarget}:hover ${tag}`
-											);
+											cleanInlineStyles(target);
 										}}
 										hideAlignment={hideAlignment}
 										breakpoint={deviceType}

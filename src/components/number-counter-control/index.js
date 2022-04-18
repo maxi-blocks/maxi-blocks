@@ -31,7 +31,7 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, breakpoint, onChange } = props;
+	const { className, breakpoint, onChangeInline, onChange } = props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -280,18 +280,28 @@ const NumberCounterControl = props => {
 				paletteOpacity={props['number-counter-palette-text-opacity']}
 				color={props['number-counter-text-color']}
 				prefix='number-counter-text-'
+				onChangeInline={({ color }) =>
+					onChangeInline(
+						{ fill: color },
+						'.maxi-number-counter__box__text'
+					)
+				}
 				onChange={({
 					paletteStatus,
 					paletteColor,
 					paletteOpacity,
 					color,
 				}) =>
-					onChange({
-						'number-counter-text-palette-status': paletteStatus,
-						'number-counter-text-palette-color': paletteColor,
-						'number-counter-palette-text-opacity': paletteOpacity,
-						'number-counter-text-color': color,
-					})
+					onChange(
+						{
+							'number-counter-text-palette-status': paletteStatus,
+							'number-counter-text-palette-color': paletteColor,
+							'number-counter-palette-text-opacity':
+								paletteOpacity,
+							'number-counter-text-color': color,
+						},
+						'.maxi-number-counter__box__text'
+					)
 				}
 			/>
 			<hr />
@@ -316,21 +326,31 @@ const NumberCounterControl = props => {
 						}
 						color={props['number-counter-circle-background-color']}
 						prefix='number-counter-circle-background-'
+						onChangeInline={({ color }) =>
+							onChangeInline(
+								{ fill: color },
+								'.maxi-number-counter__box__background'
+							)
+						}
 						onChange={({
 							paletteStatus,
 							paletteColor,
 							paletteOpacity,
 							color,
 						}) =>
-							onChange({
-								'number-counter-circle-background-palette-status':
-									paletteStatus,
-								'number-counter-circle-background-palette-color':
-									paletteColor,
-								'number-counter-circle-background-palette-opacity':
-									paletteOpacity,
-								'number-counter-circle-background-color': color,
-							})
+							onChange(
+								{
+									'number-counter-circle-background-palette-status':
+										paletteStatus,
+									'number-counter-circle-background-palette-color':
+										paletteColor,
+									'number-counter-circle-background-palette-opacity':
+										paletteOpacity,
+									'number-counter-circle-background-color':
+										color,
+								},
+								'.maxi-number-counter__box__background'
+							)
 						}
 					/>
 					<hr />
@@ -347,21 +367,30 @@ const NumberCounterControl = props => {
 						}
 						color={props['number-counter-circle-bar-color']}
 						prefix='number-counter-circle-bar-'
+						onChangeInline={({ color }) =>
+							onChangeInline(
+								{ stroke: color },
+								'.maxi-number-counter__box__circle'
+							)
+						}
 						onChange={({
 							paletteStatus,
 							paletteColor,
 							paletteOpacity,
 							color,
 						}) =>
-							onChange({
-								'number-counter-circle-bar-palette-status':
-									paletteStatus,
-								'number-counter-circle-bar-palette-color':
-									paletteColor,
-								'number-counter-circle-bar-palette-opacity':
-									paletteOpacity,
-								'number-counter-circle-bar-color': color,
-							})
+							onChange(
+								{
+									'number-counter-circle-bar-palette-status':
+										paletteStatus,
+									'number-counter-circle-bar-palette-color':
+										paletteColor,
+									'number-counter-circle-bar-palette-opacity':
+										paletteOpacity,
+									'number-counter-circle-bar-color': color,
+								},
+								'.maxi-number-counter__box__circle'
+							)
 						}
 					/>
 				</>

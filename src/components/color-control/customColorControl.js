@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -41,9 +41,11 @@ const CustomColorControl = props => {
 		onReset,
 		onResetOpacity,
 	} = props;
-	const [colorPicker, setColorPicker] = useState(
-		tinycolor(color).toRgbString()
-	);
+	const [colorPicker, setColorPicker] = useState(color);
+
+	useEffect(() => {
+		if (!colorPicker) setColorPicker(color);
+	}, [color]);
 
 	return (
 		<>
@@ -70,6 +72,7 @@ const CustomColorControl = props => {
 									onClick={e => {
 										e.preventDefault();
 										onReset();
+										setColorPicker();
 									}}
 									isSmall
 									aria-label={sprintf(
@@ -107,6 +110,7 @@ const CustomColorControl = props => {
 							onClick={e => {
 								e.preventDefault();
 								onReset();
+								setColorPicker();
 							}}
 							isSmall
 							aria-label={sprintf(

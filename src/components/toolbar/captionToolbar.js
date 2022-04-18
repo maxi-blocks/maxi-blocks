@@ -35,7 +35,13 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const CaptionToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, maxiSetAttributes } = props;
+		const {
+			attributes,
+			clientId,
+			maxiSetAttributes,
+			insertInlineStyles,
+			cleanInlineStyles,
+		} = props;
 		const {
 			captionContent: content,
 			isList = false,
@@ -145,7 +151,13 @@ const CaptionToolbar = memo(
 									attributes,
 									'typography'
 								)}
-								onChange={obj => processAttributes(obj)}
+								onChangeInline={obj =>
+									insertInlineStyles(obj, '.rich-text')
+								}
+								onChange={obj => {
+									processAttributes(obj);
+									cleanInlineStyles('.rich-text');
+								}}
 								breakpoint={breakpoint}
 								node={anchorRef}
 								isList={isList}

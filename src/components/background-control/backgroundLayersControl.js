@@ -239,12 +239,12 @@ const LayerCard = props => {
 						`.maxi-background-displayer__${layer.order}`
 					);
 				}}
-				onChange={obj =>
+				onChange={obj => {
 					onChange(
 						{ ...layer, ...handleOnChangeLayer(obj, layer) },
 						`.maxi-background-displayer__${layer.order}`
-					)
-				}
+					);
+				}}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer

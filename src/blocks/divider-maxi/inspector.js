@@ -24,7 +24,15 @@ import { selectorsDivider, categoriesDivider } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
+		clientId,
+	} = props;
 
 	return (
 		<InspectorControls>
@@ -190,11 +198,20 @@ const Inspector = props => {
 															attributes,
 															['divider', 'size']
 														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
+														onChangeInline={obj =>
+															insertInlineStyles(
+																obj,
+																inlineStylesTargets.dividerColor
 															)
 														}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+															cleanInlineStyles(
+																inlineStylesTargets.dividerColor
+															);
+														}}
 														breakpoint={deviceType}
 														clientId={clientId}
 													/>

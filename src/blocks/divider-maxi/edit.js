@@ -109,12 +109,21 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			}) === 'hidden';
 
+		const inlineStylesTargets = {
+			dividerColor: '.maxi-divider-block__divider',
+		};
+
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				inlineStylesTargets={inlineStylesTargets}
+				{...this.props}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				prefix='divider-'
+				inlineStylesTargets={inlineStylesTargets}
 				{...this.props}
 			/>,
 			<MaxiBlock

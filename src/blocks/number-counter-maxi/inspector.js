@@ -20,7 +20,13 @@ import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 
 	return (
 		<InspectorControls>
@@ -55,9 +61,21 @@ const Inspector = props => {
 														false,
 														'number-counter-'
 													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
+													onChangeInline={(
+														obj,
+														target
+													) =>
+														insertInlineStyles(
+															obj,
+															target
+														)
 													}
+													onChange={(obj, target) => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															target
+														);
+													}}
 													breakpoint={deviceType}
 												/>
 											),

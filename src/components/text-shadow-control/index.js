@@ -30,7 +30,13 @@ import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
  * Component
  */
 const TextShadow = props => {
-	const { value, onChange, defaultColor, blockStyle: rawBlockStyle } = props;
+	const {
+		value,
+		onChangeInline,
+		onChange,
+		defaultColor,
+		blockStyle: rawBlockStyle,
+	} = props;
 
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
@@ -110,7 +116,7 @@ const TextShadow = props => {
 	const getDefaultValue = ({ data, color }) =>
 		`${data} ${getCurrentColor(color)}`;
 
-	const onChangeValue = (i, val) => {
+	const getValue = (i, val) => {
 		if (i === 3) {
 			const { paletteStatus, paletteColor, paletteOpacity, color } = val;
 
@@ -131,12 +137,20 @@ const TextShadow = props => {
 			valueDecomposed[1] === '0px' &&
 			valueDecomposed[2] === '0px'
 		)
-			onChange('none');
-		else {
-			const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${valueDecomposed[2]} ${valueDecomposed[3]}`;
+			return 'none';
 
-			onChange(newValue);
-		}
+		const newValue = `${valueDecomposed[0]} ${valueDecomposed[1]} ${valueDecomposed[2]} ${valueDecomposed[3]}`;
+		return newValue;
+	};
+
+	const onChangeValue = (i, val) => {
+		const newValue = getValue(i, val);
+		onChange(newValue);
+	};
+
+	const onChangeInlineValue = (i, val) => {
+		const newValue = getValue(i, val);
+		onChangeInline(newValue);
 	};
 
 	const onChangeDefault = val => {
@@ -271,6 +285,7 @@ const TextShadow = props => {
 						paletteColor={currentPaletteColor}
 						paletteOpacity={currentPaletteOpacity}
 						color={!isPaletteActive ? getCurrentColor() : ''}
+						onChangeInline={value => onChangeInlineValue(3, value)}
 						onChange={value => {
 							onChangeValue(3, value);
 						}}
@@ -320,6 +335,7 @@ const TextShadow = props => {
 const TextShadowControl = props => {
 	const {
 		textShadow,
+		onChangeInline,
 		onChange,
 		defaultColor,
 		className,
@@ -353,6 +369,10 @@ const TextShadowControl = props => {
 			{showOptions && (
 				<TextShadow
 					value={lastValue}
+					onChangeInline={val => {
+						changeLastValue(val);
+						onChangeInline(val);
+					}}
 					onChange={val => {
 						changeLastValue(val);
 						onChange(val);

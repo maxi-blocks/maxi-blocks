@@ -81,6 +81,7 @@ const MaxiToolbar = memo(
 			background: '',
 			border: '',
 			boxShadow: '',
+			dividerColor: '',
 		};
 
 		const {
@@ -209,16 +210,11 @@ const MaxiToolbar = memo(
 									'typography'
 								)}
 								onChangeInline={obj =>
-									insertInlineStyles(
-										obj,
-										'.block-editor-rich-text__editable'
-									)
+									insertInlineStyles(obj, '.rich-text')
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles(
-										'.block-editor-rich-text__editable'
-									);
+									cleanInlineStyles('.rich-text');
 								}}
 								breakpoint={breakpoint}
 								node={anchorRef}
@@ -499,7 +495,18 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
 								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChangeInline={obj =>
+									insertInlineStyles(
+										obj,
+										inlineStylesTargetsResults.dividerColor
+									)
+								}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(
+										inlineStylesTargetsResults.dividerColor
+									);
+								}}
 								clientId={clientId}
 							/>
 							<Divider

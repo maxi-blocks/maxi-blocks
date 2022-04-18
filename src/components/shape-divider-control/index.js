@@ -65,7 +65,7 @@ import {
  * Component
  */
 const ShapeDividerControl = props => {
-	const { onChange } = props;
+	const { onChangeInline, onChange } = props;
 
 	const shapeItemsTop = [
 		{ label: __('None', 'max-block'), value: '' },
@@ -297,6 +297,9 @@ const ShapeDividerControl = props => {
 													'shape-divider-top-palette-status'
 												]
 											}
+											onChangeInline={({ color }) =>
+												onChangeInline({ fill: color })
+											}
 											onChange={({
 												color,
 												paletteColor,
@@ -470,6 +473,9 @@ const ShapeDividerControl = props => {
 												props[
 													'shape-divider-bottom-palette-status'
 												]
+											}
+											onChangeInline={({ color }) =>
+												onChangeInline({ fill: color })
 											}
 											onChange={({
 												color,

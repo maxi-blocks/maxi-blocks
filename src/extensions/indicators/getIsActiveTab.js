@@ -4,7 +4,6 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray } from 'lodash';
-
 const getIsActiveTab = (
 	attributes,
 	breakpoint,
@@ -51,6 +50,8 @@ const getIsActiveTab = (
 		if (!(attribute in defaultAttributes)) return true;
 
 		if (currentAttributes[attribute] === undefined) return true;
+		if (currentAttributes[attribute] === false) return true;
+
 		if (
 			attribute.includes('scroll-') &&
 			currentAttributes[attribute] === false

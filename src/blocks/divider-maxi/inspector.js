@@ -177,6 +177,11 @@ const Inspector = props => {
 													/>
 												</>
 											),
+											extraIndicators: [
+												`line-horizontal-${deviceType}`,
+												`line-vertical-${deviceType}`,
+												`line-orientation-${deviceType}`,
+											],
 										},
 										{
 											label: __(

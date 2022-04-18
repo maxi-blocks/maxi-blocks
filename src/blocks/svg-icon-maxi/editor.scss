@@ -27,7 +27,6 @@
 	&__replace-icon {
 		width: 40px;
 		height: 40px;
-		opacity: 1;
 		visibility: visible;
 		background: #232533;
 		transition: 0.3s;
@@ -36,12 +35,6 @@
 			fill: #fff;
 			width: 20px;
 			height: 20px;
-		}
-	}
-
-	&:hover {
-		.maxi-svg-icon-block__replace-icon {
-			opacity: 1;
 		}
 	}
 

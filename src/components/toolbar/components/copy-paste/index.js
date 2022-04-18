@@ -555,7 +555,7 @@ const CopyPasteContent = props => {
 											checked={specialPaste[tab].includes(
 												attrType
 											)}
-											onClick={() =>
+											onChange={() =>
 												handleSpecialPaste({
 													attr: attrType,
 													tab,
@@ -577,24 +577,22 @@ const CopyPasteContent = props => {
 							organizedAttributes[tab][attrType].group
 						).map((attr, i) => {
 							return (
-								<li>
-									<div
-										className='toolbar-item__copy-paste__popover__item'
-										key={`copy-paste-${tab}-${attr}`}
+								<div
+									className='toolbar-item__copy-paste__popover__item'
+									key={`copy-paste-${tab}-${attr}`}
+								>
+									<label
+										htmlFor={attr}
+										className='maxi-axis-control__content__item__checkbox'
 									>
-										<label
-											htmlFor={attr}
-											className='maxi-axis-control__content__item__checkbox'
-										>
-											<input
-												type='checkbox'
-												name={attr}
-												id={attr}
-												checked={
-													!isEmpty(
-														specialPaste[
-															tab
-														].filter(sp => {
+										<input
+											type='checkbox'
+											name={attr}
+											id={attr}
+											checked={
+												!isEmpty(
+													specialPaste[tab].filter(
+														sp => {
 															return (
 																typeof sp ===
 																	'object' &&
@@ -602,36 +600,35 @@ const CopyPasteContent = props => {
 																	sp
 																).includes(attr)
 															);
-														})
+														}
 													)
-												}
-												onChange={e =>
-													handleSpecialPaste({
-														attr,
-														tab,
-														checked:
-															e.target.checked,
-														group: attrType,
-													})
-												}
-											/>
-											<span>
-												{
-													organizedAttributes[tab][
-														attrType
-													].group[attr].label
-												}
-											</span>
-										</label>
-									</div>
-								</li>
+												)
+											}
+											onChange={e =>
+												handleSpecialPaste({
+													attr,
+													tab,
+													checked: e.target.checked,
+													group: attrType,
+												})
+											}
+										/>
+										<span>
+											{
+												organizedAttributes[tab][
+													attrType
+												].group[attr].label
+											}
+										</span>
+									</label>
+								</div>
 							);
 						});
 
 						const groupCheckBox = (
 							<div
 								className='toolbar-item__copy-paste__popover__item'
-								key={`copy-paste-${tab}-${attrType}`}
+								key={`copy-paste-group-${tab}-${attrType}`}
 							>
 								<label
 									htmlFor={attrType}
@@ -659,12 +656,7 @@ const CopyPasteContent = props => {
 							</div>
 						);
 
-						return (
-							<>
-								{groupCheckBox}
-								<ul>{nestedCheckBoxes}</ul>
-							</>
-						);
+						return [groupCheckBox, nestedCheckBoxes];
 					}),
 			};
 

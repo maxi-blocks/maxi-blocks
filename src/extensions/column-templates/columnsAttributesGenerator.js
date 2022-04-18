@@ -11,7 +11,7 @@ const getGeneralColumnAttributes = ({
 		'column-size-m': 100,
 		...(!isFirst && {
 			'margin-top-m': '2.5',
-			'margin-unit-m': '%',
+			'margin-top-unit-m': '%',
 		}),
 		...(columnPosition.columnsNumber === 1 && {
 			'column-size-general': 100,
@@ -31,7 +31,7 @@ const getColumnAttributes = ({
 		...(columnPosition.rowNumber !== 1 &&
 			!removeColumnGap && {
 				[`margin-top-${breakpoint}`]: '2.5',
-				[`margin-unit-${breakpoint}`]: '%',
+				[`margin-top-unit-${breakpoint}`]: '%',
 			}),
 		...((columnPosition.rowNumber === 1 || removeColumnGap) && {
 			[`margin-top-${breakpoint}`]: '0',

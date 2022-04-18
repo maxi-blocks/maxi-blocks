@@ -176,6 +176,7 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-padding-bottom-general')
 		).toStrictEqual(33);
 	});
+
 	it.skip('Check Button Icon Hover', async () => {
 		const accordion = await openSidebarTab(page, 'style', 'icon');
 

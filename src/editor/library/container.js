@@ -587,7 +587,7 @@ const LibraryContainer = props => {
 	};
 
 	const RefinementList = ({ items, refine }) => (
-		<ul>
+		<ul className='maxi-cloud-container__content__svg-categories'>
 			{items.map(item => (
 				<li key={item.label} className='ais-RefinementList-item'>
 					<a
@@ -738,7 +738,7 @@ const LibraryContainer = props => {
 					searchClient={searchClient}
 				>
 					<div className='maxi-cloud-container__svg-shape'>
-						<div className='maxi-cloud-container__svg-shape__sidebar'>
+						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus

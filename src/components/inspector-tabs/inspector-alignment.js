@@ -27,26 +27,24 @@ const alignment = ({
 		label: __('Alignment', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
-				<>
-					{isAlignment && (
-						<AlignmentControl
-							label={alignmentLabel}
-							{...getGroupAttributes(attributes, 'alignment')}
-							onChange={obj => maxiSetAttributes(obj)}
-							breakpoint={deviceType}
-							disableJustify={disableJustify}
-						/>
-					)}
-					{isTextAlignment && (
-						<AlignmentControl
-							label={textAlignmentLabel}
-							{...getGroupAttributes(attributes, 'textAlignment')}
-							onChange={obj => maxiSetAttributes(obj)}
-							breakpoint={deviceType}
-							type='text'
-						/>
-					)}
-				</>
+				{isAlignment && (
+					<AlignmentControl
+						label={alignmentLabel}
+						{...getGroupAttributes(attributes, 'alignment')}
+						onChange={obj => maxiSetAttributes(obj)}
+						breakpoint={deviceType}
+						disableJustify={disableJustify}
+					/>
+				)}
+				{isTextAlignment && (
+					<AlignmentControl
+						label={textAlignmentLabel}
+						{...getGroupAttributes(attributes, 'textAlignment')}
+						onChange={obj => maxiSetAttributes(obj)}
+						breakpoint={deviceType}
+						type='text'
+					/>
+				)}
 			</ResponsiveTabsControl>
 		),
 	};

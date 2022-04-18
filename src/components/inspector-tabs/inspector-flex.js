@@ -41,16 +41,14 @@ const flex = ({ props }) => {
 		label: __('Flex', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
-				<>
-					<FLexSettingsControl
-						{...getGroupAttributes(attributes, 'flex')}
-						onChange={maxiSetAttributes}
-						breakpoint={deviceType}
-						clientId={clientId}
-						name={name}
-						getParentBlockName={getParentBlockName}
-					/>
-				</>
+				<FLexSettingsControl
+					{...getGroupAttributes(attributes, 'flex')}
+					onChange={maxiSetAttributes}
+					breakpoint={deviceType}
+					clientId={clientId}
+					name={name}
+					getParentBlockName={getParentBlockName}
+				/>
 			</ResponsiveTabsControl>
 		),
 	};

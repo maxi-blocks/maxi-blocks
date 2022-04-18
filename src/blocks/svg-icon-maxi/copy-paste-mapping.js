@@ -1,8 +1,15 @@
 const copyPasteMapping = {
+	excludeInGeneralPaste: ['content', 'svgType'],
 	settings: {
 		blockSpecific: {
 			content: { label: 'SVG Content', value: ['svgType', 'content'] },
 			blockFullWidth: 'Block Full Width',
+			customLabel: 'Custom Label',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			extraClassName: 'Custom CSS Classes',
 		},
 		withPrefix: {
 			background: 'Background',
@@ -34,7 +41,12 @@ const copyPasteMapping = {
 			},
 			boxShadowHover: 'Box Shadow Hover',
 		},
-		withoutPrefix: { svg: 'SVG', alignment: 'Alignment', size: 'Size' },
+		withoutPrefix: {
+			breakpoints: 'Breakpoints',
+			svg: 'SVG',
+			alignment: 'Alignment',
+			size: 'Size',
+		},
 	},
 	canvas: {
 		withoutPrefix: {

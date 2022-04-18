@@ -1,17 +1,20 @@
 const copyPasteMapping = {
+	excludeInGeneralPaste: ['content'],
 	settings: {
 		blockSpecific: {
 			blockFullWidth: 'Full Width',
 			content: 'Text Content',
 			textLevel: 'Text Level',
-			typeOfList: {
-				label: 'Type of List',
-				value: ['typeOfList', 'isList'],
-			},
 			listStyle: 'List Style',
 			listStyleCustom: 'List Style Custom',
 			listStart: 'List Start',
 			listReversed: 'List Reversed',
+			customLabel: 'Custom Label',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			extraClassName: 'Custom CSS Classes',
 		},
 		withBreakpoint: {
 			'list-gap': 'List Gap',
@@ -32,6 +35,7 @@ const copyPasteMapping = {
 			'list-': 'List Color',
 		},
 		withoutPrefix: {
+			breakpoints: 'Breakpoints',
 			blockBackground: 'Background',
 			border: {
 				groupLabel: 'Border Group',

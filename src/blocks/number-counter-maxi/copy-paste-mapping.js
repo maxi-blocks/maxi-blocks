@@ -2,6 +2,12 @@ const copyPasteMapping = {
 	settings: {
 		blockSpecific: {
 			blockFullWidth: 'Block Full Width',
+			customLabel: 'Custom Label',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			extraClassName: 'Custom CSS Classes',
 		},
 		withPrefix: {
 			border: {
@@ -29,6 +35,7 @@ const copyPasteMapping = {
 			boxShadowHover: 'Box Shadow Hover',
 		},
 		withoutPrefix: {
+			breakpoints: 'Breakpoints',
 			numberCounter: 'Number Counter',
 		},
 	},

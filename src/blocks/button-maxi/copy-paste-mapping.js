@@ -1,9 +1,16 @@
 const copyPasteMapping = {
+	excludeInGeneralPaste: ['buttonContent'],
 	settings: {
 		blockSpecific: {
 			fullWidth: 'Full Width',
 			buttonContent: 'Button Text',
 			blockFullWidth: 'Block Full Width',
+			customLabel: 'Custom Label',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			extraClassName: 'Custom CSS Classes',
 		},
 		withPrefix: {
 			background: 'Background',
@@ -37,6 +44,7 @@ const copyPasteMapping = {
 			boxShadowHover: 'Box Shadow Hover',
 		},
 		withoutPrefix: {
+			breakpoints: 'Breakpoints',
 			icon: 'Icon',
 			iconBackground: 'Icon Background',
 			iconPadding: 'Icon Padding',

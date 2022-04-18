@@ -450,7 +450,15 @@ const CopyPasteContent = props => {
 		useDispatch('core/block-editor');
 
 	const onCopyStyles = () => copyStyles(blockAttributes);
-	const onPasteStyles = () => updateBlockAttributes(clientId, copiedStyles);
+	const onPasteStyles = () => {
+		const styles = { ...copiedStyles };
+		if (copyPasteMapping.excludeInGeneralPaste)
+			copyPasteMapping.excludeInGeneralPaste.forEach(prop => {
+				if (styles[prop]) delete styles[prop];
+			});
+
+		updateBlockAttributes(clientId, styles);
+	};
 
 	const onCopyBlocks = () => copyNestedBlocks(innerBlocks);
 	const onPasteBlocks = () =>
@@ -627,7 +635,7 @@ const CopyPasteContent = props => {
 
 						const groupCheckBox = (
 							<div
-								className='toolbar-item__copy-paste__popover__item'
+								className='toolbar-item__copy-paste__popover__item toolbar-item__copy-paste__popover__item__group'
 								key={`copy-paste-group-${tab}-${attrType}`}
 							>
 								<label

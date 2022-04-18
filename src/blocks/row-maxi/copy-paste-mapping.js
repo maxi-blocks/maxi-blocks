@@ -5,8 +5,15 @@ const copyPasteMapping = {
 			removeColumnGap: 'Remove Column Gap',
 			verticalAlign: 'Vertical Align',
 			horizontalAlign: 'Horizontal Align',
+			customLabel: 'Custom Label',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			extraClassName: 'Custom CSS Classes',
 		},
 		withoutPrefix: {
+			breakpoints: 'Breakpoints',
 			rowPattern: 'Row Pattern',
 			border: {
 				groupLabel: 'Border Group',

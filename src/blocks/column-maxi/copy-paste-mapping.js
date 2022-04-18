@@ -3,6 +3,12 @@ const copyPasteMapping = {
 		blockSpecific: {
 			fullWidth: 'Full Width',
 			verticalAlign: 'Vertical Align',
+			customLabel: 'Custom Label',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			extraClassName: 'Custom CSS Classes',
 		},
 		withoutPrefix: {
 			border: {
@@ -19,6 +25,7 @@ const copyPasteMapping = {
 			size: 'Size',
 			margin: 'Margin',
 			padding: 'Padding',
+			breakpoints: 'Breakpoints',
 		},
 		withoutPrefixHover: {
 			borderHover: {

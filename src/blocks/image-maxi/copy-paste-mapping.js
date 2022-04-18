@@ -1,7 +1,21 @@
 const copyPasteMapping = {
+	excludeInGeneralPaste: [
+		'mediaID',
+		'isImageUrl',
+		'mediaURL',
+		'mediaWidth',
+		'mediaHeight',
+		'mediaAlt',
+	],
 	settings: {
 		blockSpecific: {
 			fullWidth: 'Full Width',
+			customLabel: 'Custom Label',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			extraClassName: 'Custom CSS Classes',
 			imageSize: {
 				label: 'Image Size',
 				value: ['imageSize', 'mediaURL', 'mediaWidth', 'mediaHeight'],
@@ -79,6 +93,7 @@ const copyPasteMapping = {
 			hoverMargin: 'Hover Margin',
 			hoverPadding: 'Hover Padding',
 			hoverTitleTypography: 'Hover Title Typography',
+			breakpoints: 'Breakpoints',
 		},
 	},
 	canvas: {

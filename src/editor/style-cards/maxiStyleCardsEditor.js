@@ -37,7 +37,7 @@ import { isEmpty, isNil, isEqual } from 'lodash';
  * Icons
  */
 import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
-import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
+import { handleSetAttributes } from '../../extensions/maxi-block';
 
 const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const {

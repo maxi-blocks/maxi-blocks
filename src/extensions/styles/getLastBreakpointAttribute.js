@@ -61,6 +61,19 @@ const getLastBreakpointAttributeSingle = (
 			}`
 		];
 
+	// In case that breakpoint is general and winBreakpoint attribute exists,
+	// give priority to winBreakpoint attribute
+	if (breakpoint === 'general') {
+		const winBreakpointAttr =
+			attr[
+				`${!isEmpty(target) ? `${target}-` : ''}${winBreakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			];
+
+		if (attrFilter(winBreakpointAttr)) return winBreakpointAttr;
+	}
+
 	if (
 		attrFilter(currentAttr) &&
 		(winBreakpoint !== 'xxl' || breakpoint === 'xxl')

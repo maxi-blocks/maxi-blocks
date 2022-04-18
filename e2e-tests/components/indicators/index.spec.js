@@ -13,7 +13,7 @@ import {
 	getAttributes,
 } from '../../utils';
 
-describe('Indicators', () => {
+describe.skip('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');

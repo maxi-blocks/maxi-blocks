@@ -12,7 +12,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const transition = ({ props, label = '' }) => {
+const transition = ({ props, label = __('Hover transition', 'maxi-blocks') }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {

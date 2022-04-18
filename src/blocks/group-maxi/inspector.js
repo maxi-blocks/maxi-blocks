@@ -92,10 +92,6 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
-										label: __(
-											'Hover transition',
-											'maxi-blocks'
-										),
 									}),
 									...inspectorTabs.display({
 										props,

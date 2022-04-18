@@ -108,7 +108,7 @@ const attributes = {
 	'transform-origin-y-unit-general': '%',
 	'transition-duration-general': 0.3,
 	'transition-delay-general': 0,
-	'easing': 'ease',
+	'transition-timing-function': 'ease',
 	uniqueID: 'button-maxi-1617',
 	isFirstOnHierarchy: true,
 	blockStyle: 'maxi-light',

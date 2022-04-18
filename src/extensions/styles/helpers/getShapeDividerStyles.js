@@ -52,9 +52,6 @@ export const getShapeDividerSVGStyles = (obj, location, parentBlockStyle) => {
 		general: {},
 	};
 
-	console.log('obj');
-	console.log(obj);
-
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj,

@@ -63,6 +63,7 @@ const FLexSettingsControl = props => {
 							<>
 								<SelectControl
 									label={__('Flex wrap', 'maxi-blocks')}
+									className='maxi-flex__wrap'
 									value={getLastBreakpointAttribute({
 										target: 'flex-wrap',
 										breakpoint,
@@ -97,6 +98,7 @@ const FLexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Flex direction', 'maxi-blocks')}
+									className='maxi-flex__direction'
 									value={getLastBreakpointAttribute({
 										target: 'flex-direction',
 										breakpoint,
@@ -139,6 +141,7 @@ const FLexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Justify Content', 'maxi-blocks')}
+									className='maxi-flex__justify-content'
 									value={getLastBreakpointAttribute({
 										target: 'justify-content',
 										breakpoint,
@@ -198,6 +201,7 @@ const FLexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Align items', 'maxi-blocks')}
+									className='maxi-flex__align-items'
 									value={getLastBreakpointAttribute({
 										target: 'align-items',
 										breakpoint,
@@ -246,6 +250,7 @@ const FLexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Align content', 'maxi-blocks')}
+									className='maxi-flex__align-content'
 									value={getLastBreakpointAttribute({
 										target: 'align-content',
 										breakpoint,
@@ -316,6 +321,7 @@ const FLexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Flex-flow', 'maxi-blocks')}
+									className='maxi-flex__flow'
 									value={getLastBreakpointAttribute({
 										target: 'flex-flow',
 										breakpoint,
@@ -342,7 +348,7 @@ const FLexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__row-gap'
 									label={__('Row-gap', 'maxi-blocks')}
 									enableUnit
 									unit={getLastBreakpointAttribute({
@@ -391,7 +397,7 @@ const FLexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__column-gap'
 									label={__('Column-gap', 'maxi-blocks')}
 									enableUnit
 									unit={getLastBreakpointAttribute({
@@ -456,7 +462,7 @@ const FLexSettingsControl = props => {
 						content: wrapperBlocks.includes(getParentBlockName) ? (
 							<>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__order'
 									label={__('Order', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -479,7 +485,7 @@ const FLexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__flex-grow'
 									label={__('Flex-grow', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -502,7 +508,7 @@ const FLexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__flex-shrink'
 									label={__('Flex-shrink', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -526,6 +532,7 @@ const FLexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Flex-basis', 'maxi-blocks')}
+									className='maxi-typography-control__flex-basis'
 									value={
 										customFlexBasis
 											? 'custom'
@@ -585,7 +592,7 @@ const FLexSettingsControl = props => {
 
 								{customFlexBasis && (
 									<AdvancedNumberControl
-										className='maxi-typography-control__size'
+										className='maxi-typography-control__custom-flex-basis'
 										label={__(
 											'Custom flex-basis',
 											'maxi-blocks'

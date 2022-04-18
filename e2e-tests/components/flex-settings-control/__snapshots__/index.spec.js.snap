@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FlexSettings Checking the flex options 1`] = `"The block should have a wrapper to use flex-child properties"`;
+
+exports[`FlexSettings Checking the flex options 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-2,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-2{ flex-wrap: wrap; flex-flow: wrap; justify-content: flex-end; flex-direction: row; align-items: flex-end; align-content: flex-start; row-gap: 55vw; column-gap: 77em;}</style>"`;
+
+exports[`FlexSettings Checking the flex options 3`] = `"The block should have a wrapper to use flex-child properties"`;

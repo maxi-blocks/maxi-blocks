@@ -333,7 +333,7 @@ const getIconPathStyles = (obj, isHover = false) => {
 const getIconObject = (props, target) => {
 	const response = {
 		background: props['icon-background-active-media-general'] ===
-			'background-color' && {
+			'color' && {
 			...getColorBackgroundObject({
 				...getGroupAttributes(props, [
 					'icon',

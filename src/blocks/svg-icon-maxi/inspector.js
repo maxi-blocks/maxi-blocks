@@ -141,70 +141,17 @@ const Inspector = props => {
 										attributes.content && {
 											label: __('Colour', 'maxi-blocks'),
 											content: (
-												<ResponsiveTabsControl
-													breakpoint={deviceType}
-												>
-													<>
-														{svgType !== 'Line' && (
-															<>
-																<SvgColor
-																	{...getGroupAttributes(
-																		attributes,
-																		'svg'
-																	)}
-																	type='fill'
-																	label={__(
-																		'SVG Fill',
-																		'maxi-blocks'
-																	)}
-																	onChange={obj => {
-																		maxiSetAttributes(
-																			obj
-																		);
-
-																		const fillColorStr =
-																			getColorRGBAString(
-																				{
-																					firstVar:
-																						'icon-fill',
-																					secondVar: `color-${obj['svg-fill-palette-color']}`,
-																					opacity:
-																						obj[
-																							'svg-fill-palette-opacity'
-																						],
-																					blockStyle:
-																						parentBlockStyle,
-																				}
-																			);
-
-																		changeSVGContent(
-																			obj[
-																				'svg-fill-palette-status'
-																			]
-																				? fillColorStr
-																				: obj[
-																						'svg-fill-color'
-																				  ],
-																			'fill'
-																		);
-																	}}
-																/>
-																{svgType ===
-																	'Filled' && (
-																	<hr />
-																)}
-															</>
-														)}
-														{svgType !==
-															'Shape' && (
+												<>
+													{svgType !== 'Line' && (
+														<>
 															<SvgColor
 																{...getGroupAttributes(
 																	attributes,
 																	'svg'
 																)}
-																type='line'
+																type='fill'
 																label={__(
-																	'SVG Line',
+																	'SVG Fill',
 																	'maxi-blocks'
 																)}
 																onChange={obj => {
@@ -212,15 +159,15 @@ const Inspector = props => {
 																		obj
 																	);
 
-																	const lineColorStr =
+																	const fillColorStr =
 																		getColorRGBAString(
 																			{
 																				firstVar:
-																					'icon-line',
-																				secondVar: `color-${obj['svg-line-palette-color']}`,
+																					'icon-fill',
+																				secondVar: `color-${obj['svg-fill-palette-color']}`,
 																				opacity:
 																					obj[
-																						'svg-line-palette-opacity'
+																						'svg-fill-palette-opacity'
 																					],
 																				blockStyle:
 																					parentBlockStyle,
@@ -229,19 +176,67 @@ const Inspector = props => {
 
 																	changeSVGContent(
 																		obj[
-																			'svg-line-palette-status'
+																			'svg-fill-palette-status'
 																		]
-																			? lineColorStr
+																			? fillColorStr
 																			: obj[
-																					'svg-line-color'
+																					'svg-fill-color'
 																			  ],
-																		'stroke'
+																		'fill'
 																	);
 																}}
 															/>
-														)}
-													</>
-												</ResponsiveTabsControl>
+															{svgType ===
+																'Filled' && (
+																<hr />
+															)}
+														</>
+													)}
+													{svgType !== 'Shape' && (
+														<SvgColor
+															{...getGroupAttributes(
+																attributes,
+																'svg'
+															)}
+															type='line'
+															label={__(
+																'SVG Line',
+																'maxi-blocks'
+															)}
+															onChange={obj => {
+																maxiSetAttributes(
+																	obj
+																);
+
+																const lineColorStr =
+																	getColorRGBAString(
+																		{
+																			firstVar:
+																				'icon-line',
+																			secondVar: `color-${obj['svg-line-palette-color']}`,
+																			opacity:
+																				obj[
+																					'svg-line-palette-opacity'
+																				],
+																			blockStyle:
+																				parentBlockStyle,
+																		}
+																	);
+
+																changeSVGContent(
+																	obj[
+																		'svg-line-palette-status'
+																	]
+																		? lineColorStr
+																		: obj[
+																				'svg-line-color'
+																		  ],
+																	'stroke'
+																);
+															}}
+														/>
+													)}
+												</>
 											),
 										},
 										attributes.content &&

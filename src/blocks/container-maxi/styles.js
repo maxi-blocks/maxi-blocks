@@ -107,6 +107,8 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
+	console.log(getGroupAttributes(props, ['shapeDivider', 'padding']));
+
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
@@ -131,7 +133,8 @@ const getStyles = props => {
 							...getShapeDividerSVGStyles(
 								{
 									...getGroupAttributes(props, [
-										['shapeDivider', 'padding'],
+										'shapeDivider',
+										'padding',
 									]),
 								},
 								'top',

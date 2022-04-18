@@ -31,7 +31,6 @@ import {
 	Link,
 	Mover,
 	Size,
-	SvgColorControl,
 	SvgWidth,
 	TextColor,
 	TextLevel,
@@ -48,12 +47,14 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getColorRGBAString,
 } from '../../extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
+import SvgColorToolbar from './components/svg-color';
 
 /**
  * General
@@ -81,6 +82,7 @@ const MaxiToolbar = memo(
 			attributes,
 			backgroundAdvancedOptions,
 			changeSVGContent,
+			changeSVGContentHover,
 			clientId,
 			isSelected,
 			name,
@@ -242,31 +244,87 @@ const MaxiToolbar = memo(
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
 									{svgType !== 'Line' && (
-										<SvgColorControl
+										<SvgColorToolbar
 											{...getGroupAttributes(
 												attributes,
 												'svg'
 											)}
+											{...getGroupAttributes(
+												attributes,
+												'svgHover'
+											)}
+											maxiSetAttributes={
+												maxiSetAttributes
+											}
 											blockName={name}
-											onChange={obj => {
+											onChangeFill={obj => {
 												maxiSetAttributes(obj);
+
+												const fillColorStr =
+													getColorRGBAString({
+														firstVar: 'icon-fill',
+														secondVar: `color-${obj['svg-fill-palette-color']}`,
+														opacity:
+															obj[
+																'svg-fill-palette-opacity'
+															],
+														blockStyle:
+															parentBlockStyle,
+													});
+												changeSVGContent(
+													obj[
+														'svg-fill-palette-status'
+													]
+														? fillColorStr
+														: obj['svg-fill-color'],
+													'fill'
+												);
 											}}
 											changeSVGContent={changeSVGContent}
+											svgType='Fill'
 											type='fill'
 											parentBlockStyle={parentBlockStyle}
 										/>
 									)}
 									{svgType !== 'Shape' && (
-										<SvgColorControl
+										<SvgColorToolbar
 											{...getGroupAttributes(
 												attributes,
 												'svg'
 											)}
+											{...getGroupAttributes(
+												attributes,
+												'svgHover'
+											)}
+											maxiSetAttributes={
+												maxiSetAttributes
+											}
 											blockName={name}
-											onChange={obj => {
+											onChangeStroke={obj => {
 												maxiSetAttributes(obj);
+
+												const lineColorStr =
+													getColorRGBAString({
+														firstVar: 'icon-line',
+														secondVar: `color-${obj['svg-line-palette-color']}`,
+														opacity:
+															obj[
+																'svg-line-palette-opacity'
+															],
+														blockStyle:
+															parentBlockStyle,
+													});
+												changeSVGContent(
+													obj[
+														'svg-line-palette-status'
+													]
+														? lineColorStr
+														: obj['svg-line-color'],
+													'stroke'
+												);
 											}}
 											changeSVGContent={changeSVGContent}
+											svgType='Line'
 											type='line'
 											parentBlockStyle={parentBlockStyle}
 										/>

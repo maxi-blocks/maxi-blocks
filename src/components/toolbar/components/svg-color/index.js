@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import SvgColorControl from '../../../svg-color';
+import { SvgColor } from '../../../svg-color';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
@@ -23,8 +23,17 @@ import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
  * SvgColor
  */
 const SvgColorToolbar = props => {
-	const { type, blockName, onChange, changeSVGContent, parentBlockStyle } =
-		props;
+	const {
+		type,
+		blockName,
+		onChangeFill,
+		onChangeHoverFill,
+		onChangeStroke,
+		onChangeHoverStroke,
+		changeSVGContent,
+		maxiSetAttributes,
+		changeSVGContentHover,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -43,29 +52,17 @@ const SvgColorToolbar = props => {
 			advancedOptions='colour'
 		>
 			<div className='toolbar-item__svg-color__popover'>
-				<SvgColorControl
+				<SvgColor
 					{...getGroupAttributes(props, 'svg')}
+					{...getGroupAttributes(props, 'svgHover')}
 					type={type}
-					label={__(`Icon ${type}`, 'maxi-blocks')}
-					onChange={obj => {
-						onChange(obj);
-
-						const colorStr = getColorRGBAString({
-							firstVar: `icon-${type}`,
-							secondVar: `color-${
-								obj[`svg-${type}-palette-color`]
-							}`,
-							opacity: obj[`svg-${type}-palette-opacity`],
-							blockStyle: parentBlockStyle,
-						});
-
-						changeSVGContent(
-							obj[`svg-${type}-palette-status`]
-								? colorStr
-								: obj[`svg-${type}-color`],
-							type
-						);
-					}}
+					maxiSetAttributes={maxiSetAttributes}
+					onChangeFill={onChangeFill}
+					onChangeStroke={onChangeStroke}
+					onChangeHoverFill={onChangeHoverFill}
+					onChangeHoverStroke={onChangeHoverStroke}
+					changeSVGContent={changeSVGContent}
+					changeSVGContentHover={changeSVGContentHover}
 				/>
 			</div>
 		</ToolbarPopover>

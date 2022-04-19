@@ -1002,6 +1002,9 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
+	// console.log('response');
+	// console.log(response);
+
 	if (isHover && !props[`${prefix}block-background-hover-status`])
 		return response;
 

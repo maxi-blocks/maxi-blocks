@@ -24,44 +24,6 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	horizontalAlign: {
-		type: 'string',
-		default: 'space-between',
-	},
-	verticalAlign: {
-		type: 'string',
-		default: 'stretch',
-	},
-	removeColumnGap: {
-		type: 'boolean',
-		default: false,
-	},
-	gap: {
-		type: 'number',
-		default: 20,
-	},
-	'gap-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	'row-gap': {
-		type: 'number',
-	},
-	'row-gap-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	'column-gap': {
-		type: 'number',
-	},
-	'column-gap-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	'gap-sync': {
-		type: 'string',
-		default: 'all',
-	},
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
 	...attributesData.border,
@@ -134,17 +96,33 @@ const attributes = {
 	...attributesData.customCss,
 	...{
 		...attributesData.flex,
-		'flex-wrap-xxl': {
-			type: 'string',
-			default: 'nowrap',
+		'row-gap-general': {
+			type: 'number',
+			default: 20,
 		},
-		'flex-wrap-xl': {
+		'row-gap-unit-general': {
 			type: 'string',
-			default: 'nowrap',
+			default: 'px',
 		},
-		'flex-wrap-m': {
+		'column-gap-general': {
+			type: 'number',
+			default: 2.5,
+		},
+		'column-gap-unit-general': {
 			type: 'string',
-			default: 'wrap',
+			default: '%',
+		},
+		'justify-content-general': {
+			type: 'string',
+			default: 'space-between',
+		},
+		'align-items-general': {
+			type: 'string',
+			default: 'stretch',
+		},
+		'flex-direction-general': {
+			type: 'string',
+			default: 'row',
 		},
 	},
 	...attributesData.scroll,

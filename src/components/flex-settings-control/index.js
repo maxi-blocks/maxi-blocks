@@ -3,26 +3,31 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { toString } from 'lodash';
+
 /**
  * Internal dependencies
  */
+import FlexGapControl from './flex-gap-control';
+import FlexAlignControl from './flex-align-control';
+import FlexWrapControl from './flex-wrap-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
+import SettingTabsControl from '../setting-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
 } from '../../extensions/styles';
-import SettingTabsControl from '../setting-tabs-control';
-import AdvancedNumberControl from '../advanced-number-control';
+
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { toString } from 'lodash';
 
 /**
  * Component
  */
-const FLexSettingsControl = props => {
+const FlexSettingsControl = props => {
 	const {
 		className,
 		onChange,
@@ -61,40 +66,7 @@ const FLexSettingsControl = props => {
 						value: 'flex-parent',
 						content: wrapperBlocks.includes(name) ? (
 							<>
-								<SelectControl
-									label={__('Flex wrap', 'maxi-blocks')}
-									value={getLastBreakpointAttribute({
-										target: 'flex-wrap',
-										breakpoint,
-										attributes: props,
-									})}
-									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
-										{
-											label: __('Nowrap', 'maxi-blocks'),
-											value: 'nowrap',
-										},
-										{
-											label: __('Wrap', 'maxi-blocks'),
-											value: 'wrap',
-										},
-										{
-											label: __(
-												'Wrap-reverse',
-												'maxi-blocks'
-											),
-											value: 'wrap-reverse',
-										},
-									]}
-									onChange={val =>
-										onChange({
-											[`flex-wrap-${breakpoint}`]: val,
-										})
-									}
-								/>
+								<FlexWrapControl {...props} />
 								<SelectControl
 									label={__('Flex direction', 'maxi-blocks')}
 									value={getLastBreakpointAttribute({
@@ -103,10 +75,6 @@ const FLexSettingsControl = props => {
 										attributes: props,
 									})}
 									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
 										{
 											label: __('Row', 'maxi-blocks'),
 											value: 'row',
@@ -137,112 +105,10 @@ const FLexSettingsControl = props => {
 										})
 									}
 								/>
-								<SelectControl
-									label={__('Justify Content', 'maxi-blocks')}
-									value={getLastBreakpointAttribute({
-										target: 'justify-content',
-										breakpoint,
-										attributes: props,
-									})}
-									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
-										{
-											label: __(
-												'Flex-start',
-												'maxi-blocks'
-											),
-											value: 'flex-start',
-										},
-										{
-											label: __(
-												'Flex-end',
-												'maxi-blocks'
-											),
-											value: 'flex-end',
-										},
-										{
-											label: __('Center', 'maxi-blocks'),
-											value: 'center ',
-										},
-										{
-											label: __(
-												'Space-between',
-												'maxi-blocks'
-											),
-											value: 'space-between',
-										},
-										{
-											label: __(
-												'Space-around',
-												'maxi-blocks'
-											),
-											value: 'space-around',
-										},
-										{
-											label: __(
-												'Space-evenly',
-												'maxi-blocks'
-											),
-											value: 'space-evenly',
-										},
-									]}
-									onChange={val =>
-										onChange({
-											[`justify-content-${breakpoint}`]:
-												val,
-										})
-									}
-								/>
-								<SelectControl
-									label={__('Align items', 'maxi-blocks')}
-									value={getLastBreakpointAttribute({
-										target: 'align-items',
-										breakpoint,
-										attributes: props,
-									})}
-									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
-										{
-											label: __(
-												'Flex-start',
-												'maxi-blocks'
-											),
-											value: 'flex-start',
-										},
-										{
-											label: __(
-												'Flex-end',
-												'maxi-blocks'
-											),
-											value: 'flex-end',
-										},
-										{
-											label: __('Center', 'maxi-blocks'),
-											value: 'center ',
-										},
-										{
-											label: __('Stretch', 'maxi-blocks'),
-											value: 'stretch',
-										},
-										{
-											label: __(
-												'Baseline',
-												'maxi-blocks'
-											),
-											value: 'baseline',
-										},
-									]}
-									onChange={val =>
-										onChange({
-											[`align-items-${breakpoint}`]: val,
-										})
-									}
+								<FlexAlignControl
+									{...props}
+									onChange={onChange}
+									breakpoint={breakpoint}
 								/>
 								<SelectControl
 									label={__('Align content', 'maxi-blocks')}
@@ -252,10 +118,6 @@ const FLexSettingsControl = props => {
 										attributes: props,
 									})}
 									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
 										{
 											label: __(
 												'Flex-start',
@@ -323,10 +185,6 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
-										{
 											label: __('Column', 'maxi-blocks'),
 											value: 'column',
 										},
@@ -341,104 +199,10 @@ const FLexSettingsControl = props => {
 										})
 									}
 								/>
-								<AdvancedNumberControl
-									className='maxi-typography-control__size'
-									label={__('Row-gap', 'maxi-blocks')}
-									enableUnit
-									unit={getLastBreakpointAttribute({
-										target: 'row-gap-unit',
-										breakpoint,
-										attributes: props,
-									})}
-									onChangeUnit={val => {
-										onChange({
-											[`row-gap-unit-${breakpoint}`]: val,
-										});
-									}}
-									value={getLastBreakpointAttribute({
-										target: 'row-gap',
-										breakpoint,
-										attributes: props,
-									})}
-									onChangeValue={val => {
-										onChange({
-											[`row-gap-${breakpoint}`]: val,
-										});
-									}}
-									minMaxSettings={{
-										px: {
-											min: 0,
-											max: 999,
-										},
-										em: {
-											min: 0,
-											max: 999,
-										},
-										vw: {
-											min: 0,
-											max: 999,
-										},
-										'%': {
-											min: 0,
-											max: 100,
-										},
-									}}
-									allowedUnits={['px', 'em', 'vw', '%']}
-									onReset={() =>
-										onChange({
-											[`row-gap-${breakpoint}`]: null,
-										})
-									}
-								/>
-								<AdvancedNumberControl
-									className='maxi-typography-control__size'
-									label={__('Column-gap', 'maxi-blocks')}
-									enableUnit
-									unit={getLastBreakpointAttribute({
-										target: 'column-gap-unit',
-										breakpoint,
-										attributes: props,
-									})}
-									onChangeUnit={val => {
-										onChange({
-											[`column-gap-unit-${breakpoint}`]:
-												val,
-										});
-									}}
-									value={getLastBreakpointAttribute({
-										target: 'column-gap',
-										breakpoint,
-										attributes: props,
-									})}
-									onChangeValue={val => {
-										onChange({
-											[`column-gap-${breakpoint}`]: val,
-										});
-									}}
-									minMaxSettings={{
-										px: {
-											min: 0,
-											max: 999,
-										},
-										em: {
-											min: 0,
-											max: 999,
-										},
-										vw: {
-											min: 0,
-											max: 999,
-										},
-										'%': {
-											min: 0,
-											max: 100,
-										},
-									}}
-									allowedUnits={['px', 'em', 'vw', '%']}
-									onReset={() =>
-										onChange({
-											[`column-gap-${breakpoint}`]: null,
-										})
-									}
+								<FlexGapControl
+									{...props}
+									onChange={onChange}
+									breakpoint={breakpoint}
 								/>
 							</>
 						) : (
@@ -536,10 +300,6 @@ const FLexSettingsControl = props => {
 											  })
 									}
 									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
 										{
 											label: __('Content', 'maxi-blocks'),
 											value: 'content',
@@ -658,4 +418,4 @@ const FLexSettingsControl = props => {
 	);
 };
 
-export default FLexSettingsControl;
+export default FlexSettingsControl;

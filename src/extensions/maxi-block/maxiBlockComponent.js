@@ -181,7 +181,19 @@ class MaxiBlockComponent extends Component {
 			return !isEqual(oldAttributes, newAttributes);
 		}
 
-		if (this.shouldMaxiBlockUpdate) this.shouldMaxiBlockUpdate();
+		if (this.shouldMaxiBlockUpdate)
+			return (
+				this.shouldMaxiBlockUpdate(
+					this.props,
+					nextProps,
+					this.state,
+					nextState
+				) ||
+				!isEqual(
+					this.propsObjectCleaner(this.props),
+					this.propsObjectCleaner(nextProps)
+				)
+			);
 
 		return !isEqual(
 			this.propsObjectCleaner(this.props),
@@ -229,7 +241,10 @@ class MaxiBlockComponent extends Component {
 			return false;
 
 		if (this.maxiBlockGetSnapshotBeforeUpdate)
-			this.maxiBlockGetSnapshotBeforeUpdate();
+			return (
+				this.maxiBlockGetSnapshotBeforeUpdate(prevProps) &&
+				isEqual(prevProps.attributes, this.props.attributes)
+			);
 
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}

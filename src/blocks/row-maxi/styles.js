@@ -15,11 +15,6 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
@@ -62,54 +57,13 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		row: {
-			general: {},
-		},
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		gap: {
-			general: {},
-		},
 	};
-
-	const sync = props['gap-sync'];
-
-	switch (sync) {
-		case 'all':
-			if (props.gap && props['gap-unit']) {
-				response.gap.general['gap'] =
-					props['gap'] && props['gap-unit']
-						? `${props['gap']}${props['gap-unit']}`
-						: 0;
-			}
-			break;
-		case 'axis':
-			response.gap.general = {
-				...(props['row-gap'] &&
-					props['row-gap-unit'] && {
-						'row-gap': `${props['row-gap']}${props['row-gap-unit']}`,
-					}),
-				...(props['column-gap'] &&
-					props['column-gap-unit'] && {
-						'column-gap': `${props['column-gap']}${props['column-gap-unit']}`,
-					}),
-			};
-
-			break;
-
-		default:
-			break;
-	}
-
-	if (!isEmpty(props.horizontalAlign))
-		response.row.general['justify-content'] = props.horizontalAlign;
-
-	if (!isEmpty(props.verticalAlign))
-		response.row.general['align-items'] = props.verticalAlign;
 
 	return response;
 };

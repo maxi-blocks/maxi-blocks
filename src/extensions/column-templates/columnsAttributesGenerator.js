@@ -1,8 +1,16 @@
+/**
+ * Internal dependencies
+ */
 import getColumnsPosition from './getColumnsPosition';
 
-const getGeneralColumnAttributes = ({ column, columnPosition, proportion }) => {
+/**
+ * External dependencies
+ */
+import { round } from 'lodash';
+
+const getGeneralColumnAttributes = ({ column, columnPosition }) => {
 	return {
-		'column-size-general': column * proportion,
+		'column-size-general': round(column * 100, 2),
 		'column-size-m': 100,
 		...(columnPosition.columnsNumber === 1 && {
 			'column-size-general': 100,
@@ -10,14 +18,9 @@ const getGeneralColumnAttributes = ({ column, columnPosition, proportion }) => {
 	};
 };
 
-const getColumnAttributes = ({
-	column,
-	breakpoint,
-	columnPosition,
-	proportion,
-}) => {
+const getColumnAttributes = ({ column, breakpoint, columnPosition }) => {
 	return {
-		[`column-size-${breakpoint}`]: column * proportion,
+		[`column-size-${breakpoint}`]: round(column * 100, 2),
 		...(columnPosition.columnsNumber === 1 && {
 			[`column-size-${breakpoint}`]: 100,
 		}),
@@ -37,21 +40,16 @@ const columnAttributesGenerator = (columns, breakpoint) => {
 	const isResponsive = breakpoint !== 'general';
 
 	columns.forEach((column, i) => {
-		const proportion = 100;
-
 		newColumnsSizes.push(
 			(!isResponsive &&
 				getGeneralColumnAttributes({
 					column,
 					columnPosition: columnsPositions[i],
-					proportion,
-					isFirst: !i,
 				})) ||
 				getColumnAttributes({
 					column,
 					breakpoint,
 					columnPosition: columnsPositions[i],
-					proportion,
 				})
 		);
 	});

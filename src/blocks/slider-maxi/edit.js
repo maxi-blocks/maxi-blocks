@@ -280,22 +280,6 @@ class edit extends MaxiBlockComponent {
 			? 'maxi-slider-block__empty'
 			: 'maxi-slider-block__has-innerBlock';
 
-		const nextSlide = () => {
-			maxiSetAttributes({
-				currentSlide:
-					currentSlide < numberOfSlides - 1
-						? currentSlide + 1
-						: currentSlide,
-			});
-		};
-
-		const prevSlide = () => {
-			maxiSetAttributes({
-				currentSlide:
-					currentSlide > 0 ? currentSlide - 1 : currentSlide,
-			});
-		};
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -316,21 +300,38 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<div className='maxi-slider-block__tracker'>
-					<SliderWrapper
-						nextSlide={nextSlide}
-						prevSlide={prevSlide}
-						{...this.props}
-					/>
+					<SliderWrapper {...this.props} />
 					<div className='maxi-slider-block__nav'>
 						<span
 							className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
-							onClick={!isVertical ? nextSlide : undefined}
+							onClick={
+								!isVertical
+									? () =>
+											maxiSetAttributes({
+												currentSlide:
+													currentSlide <
+													numberOfSlides - 1
+														? currentSlide + 1
+														: currentSlide,
+											})
+									: undefined
+							}
 						>
 							+
 						</span>
 						<span
 							className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
-							onClick={!isVertical ? prevSlide : undefined}
+							onClick={
+								!isVertical
+									? () =>
+											maxiSetAttributes({
+												currentSlide:
+													currentSlide > 0
+														? currentSlide - 1
+														: currentSlide,
+											})
+									: undefined
+							}
 						>
 							-
 						</span>

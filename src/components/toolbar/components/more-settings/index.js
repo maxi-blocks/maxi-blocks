@@ -64,12 +64,13 @@ const MoreSettings = props => {
 							/>
 						</Button>
 					)}
-					renderContent={() => (
+					renderContent={args => (
 						<div>
 							<CopyPaste
 								clientId={clientId}
 								blockName={blockName}
 								prefix={prefix}
+								closeMoreSettings={args.onClose}
 								copyPasteMapping={copyPasteMapping}
 							/>
 							{blockName === 'maxi-blocks/text-maxi' && (

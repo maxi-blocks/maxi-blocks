@@ -39,7 +39,8 @@ const WRAPPER_BLOCKS = [
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const CopyPasteContent = props => {
-	const { clientId, blockName, copyPasteMapping, prefix } = props;
+	const { clientId, blockName, copyPasteMapping, prefix, closeMoreSettings } =
+		props;
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [specialPaste, setSpecialPaste] = useState({
@@ -457,6 +458,7 @@ const CopyPasteContent = props => {
 				if (styles[prop]) delete styles[prop];
 			});
 
+		closeMoreSettings();
 		updateBlockAttributes(clientId, styles);
 	};
 
@@ -522,6 +524,7 @@ const CopyPasteContent = props => {
 			advanced: [],
 		});
 
+		closeMoreSettings();
 		updateBlockAttributes(clientId, res);
 	};
 

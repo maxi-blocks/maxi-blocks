@@ -82,7 +82,6 @@ const MaxiToolbar = memo(
 			attributes,
 			backgroundAdvancedOptions,
 			changeSVGContent,
-			changeSVGContentHover,
 			clientId,
 			isSelected,
 			name,

@@ -54,6 +54,7 @@ const Inspector = memo(
 			maxiSetAttributes,
 			clientId,
 			changeSVGContent,
+			changeSVGContentHover,
 			changeSVGStrokeWidth,
 		} = props;
 		const { parentBlockStyle, svgType } = attributes;
@@ -423,6 +424,9 @@ const Inspector = memo(
 																				}
 																				parentBlockStyle={
 																					parentBlockStyle
+																				}
+																				changeSVGContentHover={
+																					changeSVGContentHover
 																				}
 																				isHover
 																			/>

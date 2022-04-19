@@ -549,6 +549,12 @@ const Inspector = memo(
 													/>
 												),
 												extraIndicators: ['SVGElement'],
+												ignoreIndicator: [
+													`image-shape-scale-${deviceType}`,
+													`image-shape-rotate-${deviceType}`,
+													`image-shape-flip-x-${deviceType}`,
+													`image-shape-flip-y-${deviceType}`,
+												],
 											},
 											{
 												label: __(

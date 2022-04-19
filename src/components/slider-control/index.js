@@ -25,6 +25,7 @@ const SliderControl = props => {
 				onChangeValue={val =>
 					maxiSetAttributes({ numberOfSlides: val })
 				}
+				onReset={() => maxiSetAttributes({ numberOfSlides: 6 })}
 				min={0}
 				max={10}
 				className={classes}

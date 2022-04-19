@@ -24,6 +24,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
+import { times } from 'lodash';
 
 /**
  * Edit
@@ -120,7 +121,7 @@ const SliderWrapper = props => {
 	let dragPosition;
 	const slideWidth = useSelect(
 		select =>
-			select('core/block-editor').getBlocks(clientId)[0].attributes
+			select('core/block-editor').getBlocks(clientId)[0]?.attributes
 				.slideWidth
 	);
 	const [wrapperTranslate, setWrapperTranslate] = useState(
@@ -147,8 +148,6 @@ const SliderWrapper = props => {
 
 	const onDragEnd = e => {
 		if (isVertical) return;
-
-		e.preventDefault();
 
 		if (
 			dragPosition - initPosition < -100 &&
@@ -185,15 +184,16 @@ const SliderWrapper = props => {
 	};
 
 	useEffect(() => {
-		wrapperRef.current.addEventListener('mousedown', onDragStart);
-		wrapperRef.current.addEventListener('touchstart', onDragStart);
-		wrapperRef.current.addEventListener('touchmove', onDragAction);
-		wrapperRef.current.addEventListener('touchend', onDragEnd);
+		const slider = wrapperRef.current;
+		slider.addEventListener('mousedown', onDragStart);
+		slider.addEventListener('touchstart', onDragStart);
+		slider.addEventListener('touchmove', onDragAction);
+		slider.addEventListener('touchend', onDragEnd);
 		return () => {
-			wrapperRef.current.removeEventListener('mousedown', onDragStart);
-			wrapperRef.current.removeEventListener('touchstart', onDragStart);
-			wrapperRef.current.removeEventListener('touchmove', onDragAction);
-			wrapperRef.current.removeEventListener('touchend', onDragEnd);
+			slider.removeEventListener('mousedown', onDragStart);
+			slider.removeEventListener('touchstart', onDragStart);
+			slider.removeEventListener('touchmove', onDragAction);
+			slider.removeEventListener('touchend', onDragEnd);
 		};
 	}, [currentSlide, slideWidth, isVertical]);
 
@@ -247,16 +247,20 @@ class edit extends MaxiBlockComponent {
 		const { numberOfSlides: prevNumberOfSlides } = prevProps.attributes;
 
 		if (numberOfSlides > prevNumberOfSlides) {
-			dispatch('core/block-editor').replaceInnerBlocks(clientId, [
-				...select('core/block-editor').getBlocks(clientId),
-				createBlock('maxi-blocks/slide-maxi'),
-			]);
+			times(numberOfSlides - prevNumberOfSlides, () =>
+				dispatch('core/block-editor').replaceInnerBlocks(clientId, [
+					...select('core/block-editor').getBlocks(clientId),
+					createBlock('maxi-blocks/slide-maxi'),
+				])
+			);
 		} else if (numberOfSlides < prevNumberOfSlides) {
-			dispatch('core/block-editor').replaceInnerBlocks(
-				clientId,
-				[...select('core/block-editor').getBlocks(clientId)].slice(
-					0,
-					-1
+			times(prevNumberOfSlides - numberOfSlides, () =>
+				dispatch('core/block-editor').replaceInnerBlocks(
+					clientId,
+					[...select('core/block-editor').getBlocks(clientId)].slice(
+						0,
+						-1
+					)
 				)
 			);
 		}

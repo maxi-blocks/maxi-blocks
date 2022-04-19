@@ -168,13 +168,13 @@ const getTypographyStyles = ({
 					obj[getName('text-orientation', breakpoint)]
 				)
 					? 'vertical-rl'
-					: null,
+					: 'unset',
 				'text-orientation':
 					obj[getName('text-orientation', breakpoint)],
 			}),
 			...(!isNil(obj[getName('text-direction', breakpoint)]) && {
 				// eslint-disable-next-line prettier/prettier
-				'direction': obj[getName('text-direction', breakpoint)],
+				direction: obj[getName('text-direction', breakpoint)],
 			}),
 		};
 

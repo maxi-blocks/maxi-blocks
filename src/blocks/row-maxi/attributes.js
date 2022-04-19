@@ -112,18 +112,6 @@ const attributes = {
 			type: 'string',
 			default: '%',
 		},
-		'justify-content-general': {
-			type: 'string',
-			default: 'space-between',
-		},
-		'align-items-general': {
-			type: 'string',
-			default: 'stretch',
-		},
-		'flex-direction-general': {
-			type: 'string',
-			default: 'row',
-		},
 	},
 	...attributesData.scroll,
 };

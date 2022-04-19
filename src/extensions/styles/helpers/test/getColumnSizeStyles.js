@@ -1,6 +1,6 @@
 import getColumnSizeStyles from '../getColumnSizeStyles';
 
-const rowProps = {
+const rowGapProps = {
 	rowElements: ['', ''],
 };
 
@@ -16,7 +16,7 @@ describe('getColumnSizeStyles', () => {
 			'column-size-xs': 3,
 		};
 
-		const result = getColumnSizeStyles(object, rowProps);
+		const result = getColumnSizeStyles(object, rowGapProps);
 		expect(result).toMatchSnapshot();
 	});
 
@@ -31,7 +31,7 @@ describe('getColumnSizeStyles', () => {
 			'column-size-xs': 3,
 		};
 
-		const result = getColumnSizeStyles(object, rowProps);
+		const result = getColumnSizeStyles(object, rowGapProps);
 		expect(result).toMatchSnapshot();
 	});
 
@@ -46,7 +46,7 @@ describe('getColumnSizeStyles', () => {
 			'column-size-xs': 3,
 		};
 
-		const result = getColumnSizeStyles(object, rowProps);
+		const result = getColumnSizeStyles(object, rowGapProps);
 		expect(result).toMatchSnapshot();
 	});
 

@@ -40,7 +40,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
-		return isEqual(prevProps.rowGap, this.props.rowGap);
+		return isEqual(prevProps.rowGapProps, this.props.rowGapProps);
 	}
 
 	maxiBlockDidUpdate() {
@@ -51,18 +51,21 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			});
 
-			if (this.resizableObject.current.state.width !== `${columnWidth}%`)
+			if (
+				this.resizableObject.current.state.width !== `${columnWidth}%`
+			) {
 				this.resizableObject.current.updateSize({
 					width: `${columnWidth}%`,
 				});
+
+				this.resizableObject.current.resizable.style.flexBasis = '';
+				this.resizableObject.current.resizable.style.flexShrink = '';
+			}
 		}
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes, {
-			...this.props.rowGap,
-			rowElements: this.props.originalNestedColumns,
-		});
+		return getStyles(this.props.attributes, this.props.rowGapProps);
 	}
 
 	render() {
@@ -202,7 +205,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const originalNestedColumns = getBlockOrder(rowBlockId);
 	const rowAttributes = getBlockAttributes(rowBlockId);
 
-	const rowGap =
+	const rowGapProps =
 		rowAttributes &&
 		(() => {
 			const response = getGroupAttributes(rowAttributes, 'flex');
@@ -217,7 +220,7 @@ const editSelect = withSelect((select, ownProps) => {
 	return {
 		rowBlockId,
 		originalNestedColumns,
-		rowGap,
+		rowGapProps,
 	};
 });
 

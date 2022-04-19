@@ -20,7 +20,7 @@ import { selectorsColumn } from './custom-css';
  */
 import { isEmpty } from 'lodash';
 
-const getNormalObject = (props, rowProps) => {
+const getNormalObject = (props, rowGapProps) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -61,7 +61,7 @@ const getNormalObject = (props, rowProps) => {
 				{
 					...getGroupAttributes(props, 'columnSize'),
 				},
-				rowProps
+				rowGapProps
 			),
 		},
 		size: getSizeStyles({
@@ -114,13 +114,13 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = (props, rowProps) => {
+const getStyles = (props, rowGapProps) => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props, rowProps),
+				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

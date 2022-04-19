@@ -44,13 +44,14 @@ import {
 } from '../../icons';
 import getColumnTemplateContent from './getColumnTemplateContent';
 
-const getColumnContent = (columns, breakpoint) => {
+const getColumnContent = (columns, breakpoint = 'general') => {
 	return {
 		sizes: columns,
 		content: getColumnTemplateContent(columns, breakpoint),
 		attributes: {
-			'flex-wrap-general': 'nowrap',
-			'flex-wrap-m': 'wrap',
+			[`flex-wrap-${breakpoint}`]: 'wrap',
+			[`column-gap-${breakpoint}`]: 2.5,
+			[`column-gap-unit-${breakpoint}`]: '%',
 		},
 	};
 };

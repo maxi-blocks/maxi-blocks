@@ -22,13 +22,6 @@ const getColumnTemplate = (templateName, breakpoint) => {
 
 	template.content = getColumnTemplateContent(template.sizes, breakpoint);
 
-	// In case is not a responsive layout add `nowrap` on the responsive stage value
-	if (template.responsiveLayout)
-		template.attributes = {
-			...template.attributes,
-			[`flex-wrap-${breakpoint}`]: 'nowrap',
-		};
-
 	return template;
 };
 

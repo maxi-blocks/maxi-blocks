@@ -79,7 +79,7 @@ const getFlexStyles = obj => {
 			breakpoint,
 			attributes: obj,
 		});
-		const rowGap = getLastBreakpointAttribute({
+		const rowGapProps = getLastBreakpointAttribute({
 			target: 'row-gap',
 			breakpoint,
 			attributes: obj,
@@ -117,21 +117,19 @@ const getFlexStyles = obj => {
 			...(!isNil(alignContent) && {
 				'align-content': alignContent,
 			}),
-			...(!isNil(rowGap) && {
-				'row-gap': `${rowGap}${getLastBreakpointAttribute({
+			...(!isNil(rowGapProps) && {
+				'row-gap': `${rowGapProps}${getLastBreakpointAttribute({
 					target: 'row-gap-unit',
 					breakpoint,
 					attributes: obj,
 				})}`,
 			}),
 			...(!isNil(columnGap) && {
-				...((!['wrap', 'wrap-reverse'].includes(flexWrap) && {
-					'column-gap': `${columnGap}${getLastBreakpointAttribute({
-						target: 'column-gap-unit',
-						breakpoint,
-						attributes: obj,
-					})}`,
-				}) || { 'column-gap': '0px' }),
+				'column-gap': `${columnGap}${getLastBreakpointAttribute({
+					target: 'column-gap-unit',
+					breakpoint,
+					attributes: obj,
+				})}`,
 			}),
 		};
 

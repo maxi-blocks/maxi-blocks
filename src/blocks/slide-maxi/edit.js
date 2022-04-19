@@ -25,6 +25,25 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	maxiBlockDidMount() {
+		const { maxiSetAttributes } = this.props;
+		maxiSetAttributes({
+			slideWidth: this.blockRef.current.getBoundingClientRect().width,
+		});
+	}
+
+	maxiBlockDidUpdate() {
+		const { maxiSetAttributes } = this.props;
+		if (
+			this.props.attributes.slideWidth !==
+			this.blockRef.current.getBoundingClientRect().width
+		) {
+			maxiSetAttributes({
+				slideWidth: this.blockRef.current.getBoundingClientRect().width,
+			});
+		}
+	}
+
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const { uniqueID } = attributes;
@@ -61,6 +80,7 @@ class edit extends MaxiBlockComponent {
 					emptySlideClass,
 					'maxi-block',
 					'maxi-block--backend',
+					'maxi-slide-block',
 					'maxi-slide-block__resizer',
 					`maxi-slide-block__resizer__${uniqueID}`,
 					getLastBreakpointAttribute({

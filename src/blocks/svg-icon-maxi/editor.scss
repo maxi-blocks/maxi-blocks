@@ -46,8 +46,10 @@
 	}
 
 	.maxi-svg-icon-block__icon {
+		max-height: 100%;
 		svg {
 			width: 100% !important;
+			max-height: 100%;
 		}
 	}
 	.maxi-library-modal__action-section {

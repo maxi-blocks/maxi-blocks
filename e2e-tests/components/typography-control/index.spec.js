@@ -51,14 +51,7 @@ describe('TypographyControl', () => {
 	});
 
 	it('Checking the responsive font family', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'typography'
-		);
-		const input = await page.$(
-			'.maxi-typography-control .maxi-typography-control__font-family input'
-		);
+		let accordionPanel = await openSidebarTab(page, 'style', 'typography');
 
 		const typographyInput = await page.$$eval(
 			'.maxi-typography-control__font-family div div div',
@@ -70,9 +63,12 @@ describe('TypographyControl', () => {
 
 		// s
 		await changeResponsive(page, 's');
-		await openSidebarTab(page, 'style', 'typography');
+		accordionPanel = await openSidebarTab(page, 'style', 'typography');
 
-		await input.focus();
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__font-family input',
+			input => input.focus()
+		);
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('Arial');
 		await page.keyboard.press('Enter');

@@ -149,16 +149,17 @@ describe('ColorControl', () => {
 		).toStrictEqual(4);
 
 		// custom color
-		await page.$$eval(
+		await page.$eval(
 			'.maxi-color-palette-control .maxi-toggle-switch input',
-			input => input[1].click()
+			input => input.click()
 		);
 		await page.waitForTimeout(150);
 
 		// check custom color
 
-		await page.$$eval('.maxi-opacity-control input', opacity =>
-			opacity[2].focus()
+		await page.$eval(
+			'.maxi-opacity-control .maxi-advanced-number-control__value',
+			opacity => opacity.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('50');

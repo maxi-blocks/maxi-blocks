@@ -163,6 +163,7 @@ export const getSCVariablesObject = styleCards => {
 					break;
 
 				case 'icon':
+					console.log(obj);
 					if (obj['line-global'])
 						response[`--maxi-${style}-${element}-stroke`] =
 							getColorString(obj, 'line', style);

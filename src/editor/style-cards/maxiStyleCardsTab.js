@@ -352,7 +352,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteStatus: 'line-palette-status',
 				paletteColor: 'line-palette-color',
 				paletteOpacity: 'line-palette-opacity',
-				color: 'stroke',
+				color: 'line',
 			},
 			{
 				label: __('Fill', 'maxi-blocks'),

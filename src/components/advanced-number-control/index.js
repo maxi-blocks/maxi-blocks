@@ -95,8 +95,6 @@ const AdvancedNumberControl = props => {
 
 	const classes = classnames('maxi-advanced-number-control', className);
 
-	const isOnlyPositive = min >= 0;
-
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
 
 	const advancedNumberControlId = `maxi-advanced-number-control__${useInstanceId(
@@ -199,7 +197,7 @@ const AdvancedNumberControl = props => {
 							onChangeValue(value === '' ? value : +value);
 						}}
 						onKeyDown={e => {
-							if (e.key === '-' && isOnlyPositive) {
+							if (e.key === '-' && min >= 0) {
 								e.preventDefault();
 							}
 						}}

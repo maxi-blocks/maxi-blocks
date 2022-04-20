@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { RawHTML, useState } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
 import { Button } from '@wordpress/components';
 
 /**
@@ -28,22 +28,29 @@ const MaxiModal = props => {
 	const {
 		type,
 		clientId,
-		empty,
 		style,
 		openFirstTime,
+		isOpen: forceIsOpen,
 		onOpen = null,
 		onRemove,
 		onSelect,
+		onClose,
 		icon,
+		forceHide = false,
 	} = props;
 
-	const [isOpen, changeIsOpen] = useState(openFirstTime);
+	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
 
 	const onClick = () => {
 		changeIsOpen(!isOpen);
 
 		if (onOpen) onOpen({ openFirstTime: !isOpen });
+		if (onClose) onClose();
 	};
+
+	useEffect(() => {
+		if (isOpen || forceIsOpen) changeIsOpen(true);
+	}, [isOpen, forceIsOpen]);
 
 	return (
 		<div className='maxi-library-modal__action-section'>
@@ -66,19 +73,7 @@ const MaxiModal = props => {
 						<Icon icon={SCaddMore} />
 					</Button>
 				)}
-				{type === 'svg' && empty && (
-					<div className='maxi-svg-icon-block__placeholder'>
-						<Button
-							isPrimary
-							key={`maxi-block-library__modal-button--${clientId}`}
-							className='maxi-block-library__modal-button'
-							onClick={onClick}
-						>
-							{__('Select SVG Icon', 'maxi-blocks')}
-						</Button>
-					</div>
-				)}
-				{type === 'svg' && !empty && (
+				{type === 'svg' && !forceHide && (
 					<Button
 						className='maxi-svg-icon-block__replace-icon'
 						onClick={onClick}

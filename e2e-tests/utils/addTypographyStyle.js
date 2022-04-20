@@ -8,6 +8,7 @@ const addTypographyStyle = async ({
 	weight,
 	transform,
 	style,
+	orientation,
 }) => {
 	// Weight, Transform, Style, Decoration
 	const weightSelector = await page.$(
@@ -29,6 +30,11 @@ const addTypographyStyle = async ({
 		'.maxi-typography-control__decoration .maxi-base-control__field select'
 	);
 	await decorationSelector.select(decoration);
+
+	const orientationSelector = await page.$(
+		'.maxi-typography-control__orientation .maxi-base-control__field select'
+	);
+	await orientationSelector.select(orientation);
 };
 
 export default addTypographyStyle;

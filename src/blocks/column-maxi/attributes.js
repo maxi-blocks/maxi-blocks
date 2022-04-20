@@ -33,7 +33,9 @@ const attributes = {
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
+	...attributesData.borderRadiusHover,
 	...attributesData.borderWidth,
+	...attributesData.borderWidthHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.columnSize,
@@ -51,6 +53,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.scroll,
 	...attributesData.flex,
 };
 

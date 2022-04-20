@@ -25,6 +25,18 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	numberOfSlides: {
+		type: 'number',
+		default: 6,
+	},
+	currentSlide: {
+		type: 'number',
+		default: 0,
+	},
+	isVertical: {
+		type: 'boolean',
+		default: false,
+	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,

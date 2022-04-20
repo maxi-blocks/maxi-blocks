@@ -30,6 +30,10 @@ body.maxi-blocks--active .maxi-slider-block {
 		padding: 0;
 		margin: 0;
 		transition: transform 0.2s ease-out;
+
+		&--vertical {
+			flex-direction: column;
+		}
 	}
 
 	&__arrow {

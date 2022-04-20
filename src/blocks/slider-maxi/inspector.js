@@ -6,7 +6,11 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { AccordionControl, SettingTabsControl } from '../../components';
+import {
+	AccordionControl,
+	SettingTabsControl,
+	SliderControl,
+} from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
 
@@ -39,6 +43,15 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										{
+											label: __(
+												'Slider settings',
+												'maxi-blocks'
+											),
+											content: (
+												<SliderControl {...props} />
+											),
+										},
 										...inspectorTabs.blockBackground({
 											props,
 										}),

@@ -90,23 +90,21 @@ const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
 	return { SVGPathFill: response };
 };
 
-const getSVGPathStrokeStyles = (
-	obj,
-	blockStyle,
-	prefix = 'svg-line-',
-	isHover
-) => {
+const getSVGPathStrokeStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
 	const response = {
-		label: 'SVG',
+		label: 'SVG Path stroke',
 		general: {},
 	};
 
+	const linePrefix =
+		prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
+
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix, isHover });
+		getPaletteAttributes({ obj, prefix: linePrefix, isHover });
 
 	if (paletteStatus && paletteColor)
 		response.general.stroke = getColorRGBAString({
-			firstVar: 'icon-line',
+			firstVar: 'icon-stroke',
 			secondVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
 			blockStyle,
@@ -124,6 +122,14 @@ export const getSVGStyles = ({
 	isHover = false,
 }) => {
 	const response = {
+		[` ${target} svg[data-fill]:not([fill^="none"])`]: getSVGPathFillStyles(
+			obj,
+			blockStyle,
+			prefix,
+			isHover
+		),
+		[` ${target} svg[data-stroke]:not([stroke^="none"])`]:
+			getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
 		[` ${target} svg path`]: getSVGPathStyles(obj, prefix, isHover),
 		[` ${target} svg path[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),

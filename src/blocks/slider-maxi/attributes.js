@@ -37,6 +37,10 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
+	isLoop: {
+		type: 'boolean',
+		default: false,
+	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,

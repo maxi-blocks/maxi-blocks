@@ -499,6 +499,16 @@ const getIconHoverObject = (props, target) => {
 const getStyles = (props, scValues) => {
 	const { uniqueID, parentBlockStyle } = props;
 
+	console.log(
+		getSVGStyles({
+			obj: props,
+			target: '.maxi-button-block__icon:hover',
+			blockStyle: parentBlockStyle,
+			prefix: 'icon-',
+			isHover: true,
+		})
+	);
+
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
@@ -517,7 +527,7 @@ const getStyles = (props, scValues) => {
 				}),
 				...getSVGStyles({
 					obj: props,
-					target: '.maxi-button-block__icon:hover',
+					target: ':hover .maxi-button-block__icon',
 					blockStyle: parentBlockStyle,
 					prefix: 'icon-',
 					isHover: true,

@@ -78,27 +78,16 @@ const Mover = props => {
 	const { startDraggingBlocks, stopDraggingBlocks } =
 		useDispatch('core/block-editor');
 
-	const getParentBlockStyle = blockId => {
-		const { blockStyle } = getBlockAttributes(blockId);
-
-		if (!blockStyle.includes('parent')) {
-			return blockStyle;
-		}
-
-		const parentBlockId = getBlockRootClientId(blockId);
-		return getParentBlockStyle(parentBlockId);
-	};
-
 	// Stop dragging blocks if the block draggable is unmounted
 	useEffect(() => {
 		return () => {
 			if (isDragging.current) {
 				stopDraggingBlocks();
 				if (srcRootClientId) {
-					const blockStyle = getParentBlockStyle(srcRootClientId);
+					const { blockStyle } = getBlockAttributes(srcRootClientId);
 
 					updateBlockAttributes(clientId, {
-						parentBlockStyle: blockStyle?.replace('maxi-', ''),
+						blockStyle: blockStyle?.replace('maxi-', ''),
 					});
 				}
 			}

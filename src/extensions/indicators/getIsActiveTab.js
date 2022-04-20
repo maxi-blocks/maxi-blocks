@@ -22,12 +22,7 @@ const getIsActiveTab = (
 
 	const defaultAttributes = getBlockAttributes(name);
 
-	const excludedAttributes = [
-		'blockStyle',
-		'parentBlockStyle',
-		'isFirstOnHierarchy',
-		'uniqueID',
-	];
+	const excludedAttributes = ['blockStyle', 'isFirstOnHierarchy', 'uniqueID'];
 
 	return ![
 		...attributes,

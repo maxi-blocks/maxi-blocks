@@ -303,7 +303,9 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		(motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status']) &&
 			`maxi-sd-effect maxi-sd-effect-${uniqueID}`,
-		blockStyle,
+		blockStyle && blockStyle.includes('maxi-')
+			? blockStyle
+			: `maxi-${blockStyle}`,
 		extraClassName,
 		uniqueID,
 		className,

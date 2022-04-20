@@ -110,7 +110,6 @@ const attributes = {
 	uniqueID: 'button-maxi-1617',
 	isFirstOnHierarchy: true,
 	blockStyle: 'maxi-light',
-	parentBlockStyle: 'light',
 	'border-style-general': 'solid',
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 1,

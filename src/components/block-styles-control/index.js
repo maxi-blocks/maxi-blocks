@@ -25,39 +25,34 @@ import './editor.scss';
  * Component
  */
 const BlockStylesControl = props => {
-	const {
-		onChange,
-		isFirstOnHierarchy,
-		className,
-		parentBlockStyle: blockStyle,
-		clientId,
-	} = props;
+	const { onChange, isFirstOnHierarchy, className, blockStyle, clientId } =
+		props;
 
 	const classes = classnames('maxi-block-style-control', className);
 
 	const getSelectorOptions = () => {
 		if (isFirstOnHierarchy)
 			return [
-				{ label: __('Dark', 'maxi-blocks'), value: 'maxi-dark' },
-				{ label: __('Light', 'maxi-blocks'), value: 'maxi-light' },
+				{ label: __('Dark', 'maxi-blocks'), value: 'dark' },
+				{ label: __('Light', 'maxi-blocks'), value: 'light' },
 			];
-		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
+		return null;
 	};
 
-	const getAllInnerBlocks = (id, parentBlockStyle) => {
+	const getAllInnerBlocks = (id, blockStyle) => {
 		const { getBlockOrder } = select('core/block-editor');
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const innerBlockIds = id ? getBlockOrder(id) : getBlockOrder(clientId);
-		const innerBlocksStyle = parentBlockStyle || '';
+		const innerBlocksStyle = blockStyle || '';
 
 		if (innerBlockIds) {
 			innerBlockIds.forEach(innerBlockId => {
 				if (!isEmpty(innerBlocksStyle))
 					updateBlockAttributes(innerBlockId, {
-						parentBlockStyle: innerBlocksStyle,
+						blockStyle: innerBlocksStyle,
 					});
 
-				getAllInnerBlocks(innerBlockId, parentBlockStyle);
+				getAllInnerBlocks(innerBlockId, blockStyle);
 			});
 		}
 	};
@@ -67,20 +62,16 @@ const BlockStylesControl = props => {
 				<SelectControl
 					label={__('Block tone', 'maxi-blocks')}
 					className={classes}
-					value={`maxi-${blockStyle}`}
+					value={blockStyle}
 					options={getSelectorOptions()}
-					onChange={blockStyle => {
-						const dependsOnParent = blockStyle.includes('parent');
-						const parentBlockStyle = blockStyle.replace(
-							'maxi-',
-							''
-						);
+					onChange={rawBlockStyle => {
+						const blockStyle = rawBlockStyle.replace('maxi-', '');
 
-						getAllInnerBlocks(clientId, parentBlockStyle);
+						getAllInnerBlocks(clientId, blockStyle);
 
 						onChange({
 							blockStyle,
-							...(!dependsOnParent && { parentBlockStyle }),
+							...{ blockStyle },
 						});
 					}}
 				/>

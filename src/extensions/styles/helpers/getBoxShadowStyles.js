@@ -30,7 +30,7 @@ const getBoxShadowStyles = ({
 	isHover = false,
 	dropShadow = false,
 	prefix = '',
-	parentBlockStyle,
+	blockStyle,
 }) => {
 	const response = {};
 	const defaultObj = isHover ? defaultBoxShadowHover : defaultBoxShadow;
@@ -101,7 +101,7 @@ const getBoxShadowStyles = ({
 				? getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
 						opacity: getValue('palette-opacity').value,
-						blockStyle: parentBlockStyle,
+						blockStyle,
 				  })
 				: paletteColor;
 

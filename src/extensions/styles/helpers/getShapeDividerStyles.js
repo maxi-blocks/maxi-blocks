@@ -46,7 +46,7 @@ export const getShapeDividerStyles = (obj, location) => {
 	return response;
 };
 
-export const getShapeDividerSVGStyles = (obj, location, parentBlockStyle) => {
+export const getShapeDividerSVGStyles = (obj, location, blockStyle) => {
 	const response = {
 		label: 'Shape Divider SVG',
 		general: {},
@@ -64,7 +64,7 @@ export const getShapeDividerSVGStyles = (obj, location, parentBlockStyle) => {
 		response.general.fill = getColorRGBAString({
 			firstVar: `color-${paletteColor}`,
 			opacity: obj[paletteOpacity],
-			blockStyle: parentBlockStyle,
+			blockStyle: blockStyle,
 		});
 	}
 

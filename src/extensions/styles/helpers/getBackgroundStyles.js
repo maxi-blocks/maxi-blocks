@@ -886,7 +886,7 @@ const getGeneralBackgroundStyles = (
 
 	const border = getBorderStyles({
 		obj: borderProps,
-		parentBlockStyle: blockStyle,
+		blockStyle,
 		isHover,
 	});
 

@@ -9,7 +9,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
  */
 import { isNil } from 'lodash';
 
-const getMapStyles = (obj, target, parentBlockStyle) => {
+const getMapStyles = (obj, target, blockStyle) => {
 	const response = {
 		label: 'Map',
 		general: {},
@@ -26,7 +26,7 @@ const getMapStyles = (obj, target, parentBlockStyle) => {
 		response.general.color = getColorRGBAString({
 			firstVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
-			blockStyle: parentBlockStyle,
+			blockStyle: blockStyle,
 		});
 
 	return response;

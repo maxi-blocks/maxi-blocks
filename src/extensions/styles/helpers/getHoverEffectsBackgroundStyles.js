@@ -15,7 +15,7 @@ import { merge } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
+const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 	const response = {
 		general: {},
 	};
@@ -38,7 +38,7 @@ const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 						false,
 						'hover-'
 					),
-					blockStyle: parentBlockStyle,
+					blockStyle,
 					breakpoint,
 					prefix: 'hover-',
 				}),

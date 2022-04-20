@@ -75,7 +75,7 @@ describe('getBoxShadowStyles', () => {
 
 		const result = getBoxShadowStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
 	});
@@ -94,7 +94,7 @@ describe('getBoxShadowStyles', () => {
 
 		const result = getBoxShadowStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
 	});

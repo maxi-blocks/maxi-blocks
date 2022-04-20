@@ -43,7 +43,7 @@ describe('getBorderStyles', () => {
 
 		const result = getBorderStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
 	});
@@ -100,7 +100,7 @@ describe('getBorderStyles', () => {
 
 		const result = getBorderStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
 	});
@@ -213,7 +213,7 @@ describe('getBorderStyles', () => {
 
 		const result = getBorderStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 			isHover: true,
 		});
 		expect(result).toMatchSnapshot();
@@ -243,7 +243,7 @@ describe('getBorderStyles', () => {
 
 		const result = getBorderStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
 	});
@@ -320,7 +320,7 @@ describe('getBorderStyles', () => {
 
 		const result = getBorderStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 			isButton: true,
 			prefix: 'button-',
 		});
@@ -364,7 +364,7 @@ describe('getBorderStyles', () => {
 
 		const result = getBorderStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 			isButton: true,
 			prefix: 'button-',
 		});
@@ -408,7 +408,7 @@ describe('getBorderStyles', () => {
 
 		const result = getBorderStyles({
 			obj: object,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 			isButton: true,
 			prefix: 'button-',
 			scValues: {

@@ -11,7 +11,7 @@ import { isNil } from 'lodash';
 
 const getIconStyles = (
 	obj,
-	parentBlockStyle,
+	blockStyle,
 	isIconInherit = true,
 	isHover = false
 ) => {
@@ -36,7 +36,7 @@ const getIconStyles = (
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle,
 			});
 		}
 	} else {
@@ -49,7 +49,7 @@ const getIconStyles = (
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: obj[paletteOpacity],
-				blockStyle: parentBlockStyle,
+				blockStyle,
 			});
 		}
 	}

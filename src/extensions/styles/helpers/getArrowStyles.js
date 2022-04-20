@@ -213,7 +213,7 @@ const getArrowStyles = props => {
 				...getBoxShadowStyles({
 					obj: getGroupAttributes(props, 'boxShadow'),
 					dropShadow: true,
-					parentBlockStyle: blockStyle,
+					blockStyle,
 				}),
 			},
 		},
@@ -224,7 +224,7 @@ const getArrowStyles = props => {
 						obj: getGroupAttributes(props, 'boxShadow', isHover),
 						isHover,
 						dropShadow: true,
-						parentBlockStyle: blockStyle,
+						blockStyle,
 					}),
 				},
 			},

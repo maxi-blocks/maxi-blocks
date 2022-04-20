@@ -99,7 +99,7 @@ class MaxiBlockComponent extends Component {
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
 		if (!isEmpty(this.typography)) this.loadFonts();
-		this.getParentStyle();
+		this.getCurrentBlockStyle();
 		this.displayStyles(newUniqueID);
 	}
 
@@ -314,12 +314,11 @@ class MaxiBlockComponent extends Component {
 		} else if (
 			select('core/block-editor')
 				.getBlockName(blockRootClientId)
-				.includes('maxi-blocks')
-		) {
+				.includes('maxi-blocks') &&
 			select('core/block-editor').getBlockAttributes(blockRootClientId)
 				.blockStyle === 'maxi-custom'
-				? (res = 'maxi-custom')
-				: (res = 'maxi-parent');
+		) {
+			res = 'maxi-custom';
 		} else {
 			res = 'maxi-light';
 		}
@@ -349,16 +348,16 @@ class MaxiBlockComponent extends Component {
 		if (!isEmpty(response)) loadFonts(response);
 	}
 
-	getParentStyle() {
+	getCurrentBlockStyle() {
 		const {
 			clientId,
-			attributes: { parentBlockStyle },
+			attributes: { blockStyle },
 		} = this.props;
 
 		const newParentStyle = getBlockStyle(clientId);
 
-		if (parentBlockStyle !== newParentStyle) {
-			this.props.attributes.parentBlockStyle = newParentStyle;
+		if (blockStyle !== newParentStyle) {
+			this.props.attributes.blockStyle = newParentStyle;
 
 			return true;
 		}

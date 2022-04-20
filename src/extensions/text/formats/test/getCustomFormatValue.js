@@ -47,7 +47,7 @@ describe('getCustomFormatValue', () => {
 		const prop = 'font-size';
 		const breakpoint = 'xl';
 		const textLevel = 'p';
-		const blockStyle = 'maxi-light';
+		const blockStyle = 'light';
 
 		const result = getCustomFormatValue({
 			formatValue,

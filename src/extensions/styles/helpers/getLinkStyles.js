@@ -9,7 +9,7 @@ import getColorRGBAString from '../getColorRGBAString';
 import { isBoolean } from 'lodash';
 import getPaletteAttributes from '../getPaletteAttributes';
 
-const getLinkStyles = (obj, target, parentBlockStyle) => {
+const getLinkStyles = (obj, target, blockStyle) => {
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const response = {
 		[target]: { link: {} },
@@ -44,7 +44,7 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				firstVar: 'link',
 				secondVar: `color-${linkPaletteColor}`,
 				opacity: linkPaletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle: blockStyle,
 			});
 		}
 
@@ -71,7 +71,7 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				firstVar: 'link-hover',
 				secondVar: `color-${linkHoverPaletteColor}`,
 				opacity: linkHoverPaletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle: blockStyle,
 			});
 
 			response[`${target}:hover`].link[breakpoint] = { color };
@@ -102,7 +102,7 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				firstVar: 'link-active',
 				secondVar: `color-${linkActivePaletteColor}`,
 				opacity: linkActivePaletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle: blockStyle,
 			});
 
 			response[`${target}:active`].link[breakpoint] = { color };
@@ -133,7 +133,7 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				firstVar: 'link-visited',
 				secondVar: `color-${linkVisitedPaletteColor}`,
 				opacity: linkVisitedPaletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle: blockStyle,
 			});
 
 			response[`${target}:visited`].link[breakpoint] = { color };

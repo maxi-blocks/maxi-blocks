@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Internal dependencies
  */
 import BlockStylesControl from '../block-styles-control';
@@ -14,8 +9,7 @@ import CustomLabel from '../custom-label';
  */
 const blockSettings = ({ props }) => {
 	const { attributes, deviceType, clientId, maxiSetAttributes } = props;
-	const { blockStyle, customLabel, isFirstOnHierarchy, parentBlockStyle } =
-		attributes;
+	const { blockStyle, customLabel, isFirstOnHierarchy } = attributes;
 
 	return (
 		deviceType === 'general' && (
@@ -33,7 +27,6 @@ const blockSettings = ({ props }) => {
 					isFirstOnHierarchy={isFirstOnHierarchy}
 					onChange={obj => maxiSetAttributes(obj)}
 					clientId={clientId}
-					parentBlockStyle={parentBlockStyle}
 				/>
 			</div>
 		)

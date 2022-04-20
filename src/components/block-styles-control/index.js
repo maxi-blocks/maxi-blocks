@@ -64,9 +64,7 @@ const BlockStylesControl = props => {
 					className={classes}
 					value={blockStyle}
 					options={getSelectorOptions()}
-					onChange={rawBlockStyle => {
-						const blockStyle = rawBlockStyle.replace('maxi-', '');
-
+					onChange={blockStyle => {
 						getAllInnerBlocks(clientId, blockStyle);
 
 						onChange({

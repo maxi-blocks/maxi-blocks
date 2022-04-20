@@ -84,9 +84,8 @@ const getCustomFormatValue = ({
 	if (getIsValidValue(value) || avoidSC) return value;
 
 	// Style Cards value
-	const rawSCStyle = blockStyle ? blockStyle.replace('maxi-', '') : undefined;
-	const SCStyle = ['light', 'dark'].includes(rawSCStyle)
-		? rawSCStyle
+	const SCStyle = ['light', 'dark'].includes(blockStyle)
+		? blockStyle
 		: getBlockStyle();
 	const SCLevel = styleCardPrefix || textLevel;
 	const activeStyleCard = styleCard || getActiveStyleCard().value;

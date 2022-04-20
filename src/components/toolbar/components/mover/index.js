@@ -87,7 +87,7 @@ const Mover = props => {
 					const { blockStyle } = getBlockAttributes(srcRootClientId);
 
 					updateBlockAttributes(clientId, {
-						blockStyle: blockStyle?.replace('maxi-', ''),
+						blockStyle,
 					});
 				}
 			}

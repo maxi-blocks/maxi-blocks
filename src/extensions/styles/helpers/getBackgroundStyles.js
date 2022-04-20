@@ -25,7 +25,7 @@ const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 export const getColorBackgroundObject = ({
 	isHover = false,
 	prefix = '',
-	blockStyle: rawBlockStyle,
+	blockStyle,
 	isButton = false,
 	isIcon = false,
 	isIconInherit = false,
@@ -42,8 +42,6 @@ export const getColorBackgroundObject = ({
 
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
 		return {};
-
-	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
 	const response = {
 		label: 'Background Color',
@@ -1048,13 +1046,11 @@ export const getBackgroundStyles = ({
 	isHover = false,
 	prefix = '',
 	isButton = false,
-	blockStyle: rawBlockStyle,
+	blockStyle,
 	isIconInherit = false,
 	scValues = {},
 	...props
 }) => {
-	const blockStyle = rawBlockStyle.replace('maxi-', '');
-
 	const response = {};
 
 	BREAKPOINTS.forEach(breakpoint => {

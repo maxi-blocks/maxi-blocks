@@ -203,29 +203,6 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
-	// console.log(
-	// 	getSVGStyles({
-	// 		obj: {
-	// 			...getGroupAttributes(props, 'svg'),
-	// 		},
-	// 		target: ' .maxi-svg-icon-block__icon',
-	// 		blockStyle,
-	// 	})
-	// );
-
-	// console.log(getGroupAttributes(props, 'svgHover', true));
-
-	// console.log(
-	// 	getSVGStyles({
-	// 		obj: {
-	// 			...getGroupAttributes(props, 'svgHover', true),
-	// 		},
-	// 		target: ':hover .maxi-svg-icon-block__icon',
-	// 		blockStyle,
-	// 		prefix: 'svg-',
-	// 	})
-	// );
-
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{

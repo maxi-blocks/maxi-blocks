@@ -450,7 +450,10 @@ const CopyPasteContent = props => {
 	const { updateBlockAttributes, replaceInnerBlocks } =
 		useDispatch('core/block-editor');
 
-	const onCopyStyles = () => copyStyles(blockAttributes);
+	const onCopyStyles = () => {
+		closeMoreSettings();
+		copyStyles(blockAttributes);
+	};
 	const onPasteStyles = () => {
 		const styles = { ...copiedStyles };
 		if (copyPasteMapping.excludeInGeneralPaste)

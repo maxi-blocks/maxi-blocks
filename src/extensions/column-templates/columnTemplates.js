@@ -50,7 +50,7 @@ const getColumnContent = (columns, breakpoint = 'general') => {
 		content: getColumnTemplateContent(columns, breakpoint),
 		attributes: {
 			[`flex-wrap-${breakpoint}`]: 'wrap',
-			[`column-gap-${breakpoint}`]: 2.5,
+			[`column-gap-${breakpoint}`]: 1.5,
 			[`column-gap-unit-${breakpoint}`]: '%',
 		},
 	};

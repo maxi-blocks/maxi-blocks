@@ -10,6 +10,7 @@ import {
 	getBlockStyle,
 	editAdvancedNumberControl,
 	getAttributes,
+	changeResponsive,
 } from '../../utils';
 
 describe('FlexSettings', () => {
@@ -184,5 +185,247 @@ describe('FlexSettings', () => {
 			content => content.innerHTML
 		);
 		expect(warningBoxFlex).toMatchSnapshot();
+	});
+	it('Checking the flex options responsive', async () => {
+		// this openSidebar is required
+		await openSidebarTab(page, 'advanced', 'overflow');
+		await insertBlock('Group Maxi');
+		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
+
+		// base
+		const wrapSelector = await accordionPanel.$('.maxi-flex__wrap select');
+		await wrapSelector.select('wrap');
+
+		const directionSelector = await accordionPanel.$(
+			'.maxi-flex__direction select'
+		);
+		await directionSelector.select('row');
+
+		const justifyContentSelector = await accordionPanel.$(
+			'.maxi-flex__justify-content select'
+		);
+		await justifyContentSelector.select('flex-end');
+
+		const alignItemSelector = await accordionPanel.$(
+			'.maxi-flex__align-items select'
+		);
+		await alignItemSelector.select('flex-end');
+
+		const alignContentSelector = await accordionPanel.$(
+			'.maxi-flex__align-content select'
+		);
+		await alignContentSelector.select('flex-start');
+
+		const flowSelector = await accordionPanel.$('.maxi-flex__flow select');
+		await flowSelector.select('wrap');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__row-gap'),
+			newNumber: '55',
+			newValue: 'vw',
+		});
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__column-gap'),
+			newNumber: '77',
+			newValue: 'em',
+		});
+
+		// change responsive s
+		await changeResponsive(page, 's');
+
+		const wrapSelectorS = await accordionPanel.$('.maxi-flex__wrap select');
+		await wrapSelectorS.select('nowrap');
+
+		const directionSelectorS = await accordionPanel.$(
+			'.maxi-flex__direction select'
+		);
+		await directionSelectorS.select('column');
+
+		const justifyContentSelectorS = await accordionPanel.$(
+			'.maxi-flex__justify-content select'
+		);
+		await justifyContentSelectorS.select('flex-start');
+
+		const alignItemSelectorS = await accordionPanel.$(
+			'.maxi-flex__align-items select'
+		);
+		await alignItemSelectorS.select('flex-start');
+
+		const alignContentSelectorS = await accordionPanel.$(
+			'.maxi-flex__align-content select'
+		);
+		await alignContentSelectorS.select('flex-end');
+
+		const flowSelectorS = await accordionPanel.$('.maxi-flex__flow select');
+		await flowSelectorS.select('column');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__row-gap'),
+			newNumber: '23',
+			newValue: 'em',
+		});
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__column-gap'),
+			newNumber: '34',
+			newValue: 'px',
+		});
+
+		const attributeParentS = await getAttributes([
+			'flex-direction-s',
+			'flex-flow-s',
+			'flex-wrap-s',
+			'justify-content-s',
+			'align-content-s',
+			'align-items-s',
+			'column-gap-s',
+			'column-gap-unit-s',
+			'row-gap-s',
+			'row-gap-unit-s',
+		]);
+
+		const expectedParentAttributeS = {
+			'flex-direction-s': 'column',
+			'flex-flow-s': 'column',
+			'flex-wrap-s': 'nowrap',
+			'justify-content-s': 'flex-start',
+			'align-content-s': 'flex-end',
+			'align-items-s': 'flex-start',
+			'column-gap-s': 34,
+			'column-gap-unit-s': 'px',
+			'row-gap-s': 23,
+			'row-gap-unit-s': 'em',
+		};
+		expect(attributeParentS).toStrictEqual(expectedParentAttributeS);
+
+		// change responsive xs
+		await changeResponsive(page, 'xs');
+
+		const wrapSelectorXS = await accordionPanel.$eval(
+			'.maxi-flex__wrap select',
+			selector => selector.value
+		);
+		expect(wrapSelectorXS).toStrictEqual('nowrap');
+
+		const directionSelectorXS = await accordionPanel.$eval(
+			'.maxi-flex__direction select',
+			selector => selector.value
+		);
+		expect(directionSelectorXS).toStrictEqual('column');
+
+		const justifyContentSelectorXS = await accordionPanel.$eval(
+			'.maxi-flex__justify-content select',
+			selector => selector.value
+		);
+		expect(justifyContentSelectorXS).toStrictEqual('flex-start');
+
+		const alignItemSelectorXS = await accordionPanel.$eval(
+			'.maxi-flex__align-items select',
+			selector => selector.value
+		);
+		expect(alignItemSelectorXS).toStrictEqual('flex-start');
+
+		const alignContentSelectorXS = await accordionPanel.$eval(
+			'.maxi-flex__align-content select',
+			selector => selector.value
+		);
+		expect(alignContentSelectorXS).toStrictEqual('flex-end');
+
+		const flowSelectorXS = await accordionPanel.$eval(
+			'.maxi-flex__flow select',
+			selector => selector.value
+		);
+		expect(flowSelectorXS).toStrictEqual('column');
+
+		const rowGapXS = await accordionPanel.$eval(
+			'.maxi-typography-control__row-gap input',
+			selector => selector.value
+		);
+		expect(rowGapXS).toStrictEqual('23');
+
+		const rowGapSelectorXS = await accordionPanel.$eval(
+			'.maxi-typography-control__row-gap select',
+			selector => selector.value
+		);
+		expect(rowGapSelectorXS).toStrictEqual('em');
+
+		const columnGapXS = await accordionPanel.$eval(
+			'.maxi-typography-control__column-gap input',
+			selector => selector.value
+		);
+		expect(columnGapXS).toStrictEqual('34');
+
+		const columnGapSelectorXS = await accordionPanel.$eval(
+			'.maxi-typography-control__column-gap select',
+			selector => selector.value
+		);
+		expect(columnGapSelectorXS).toStrictEqual('px');
+
+		// change responsive m
+		await changeResponsive(page, 'm');
+
+		const wrapSelectorM = await accordionPanel.$eval(
+			'.maxi-flex__wrap select',
+			selector => selector.value
+		);
+		expect(wrapSelectorM).toStrictEqual('wrap');
+
+		const directionSelectorM = await accordionPanel.$eval(
+			'.maxi-flex__direction select',
+			selector => selector.value
+		);
+		expect(directionSelectorM).toStrictEqual('row');
+
+		const justifyContentSelectorM = await accordionPanel.$eval(
+			'.maxi-flex__justify-content select',
+			selector => selector.value
+		);
+		expect(justifyContentSelectorM).toStrictEqual('flex-end');
+
+		const alignItemSelectorM = await accordionPanel.$eval(
+			'.maxi-flex__align-items select',
+			selector => selector.value
+		);
+		expect(alignItemSelectorM).toStrictEqual('flex-end');
+
+		const alignContentSelectorM = await accordionPanel.$eval(
+			'.maxi-flex__align-content select',
+			selector => selector.value
+		);
+		expect(alignContentSelectorM).toStrictEqual('flex-start');
+
+		const flowSelectorM = await accordionPanel.$eval(
+			'.maxi-flex__flow select',
+			selector => selector.value
+		);
+		expect(flowSelectorM).toStrictEqual('wrap');
+
+		const rowGapM = await accordionPanel.$eval(
+			'.maxi-typography-control__row-gap input',
+			selector => selector.value
+		);
+		expect(rowGapM).toStrictEqual('55');
+		const rowGapSelectorM = await accordionPanel.$eval(
+			'.maxi-typography-control__row-gap select',
+			selector => selector.value
+		);
+		expect(rowGapSelectorM).toStrictEqual('vw');
+
+		const columnGapM = await accordionPanel.$eval(
+			'.maxi-typography-control__column-gap input',
+			selector => selector.value
+		);
+		expect(columnGapM).toStrictEqual('77');
+
+		const columnGapSelectorM = await accordionPanel.$eval(
+			'.maxi-typography-control__column-gap select',
+			selector => selector.value
+		);
+		expect(columnGapSelectorM).toStrictEqual('em');
 	});
 });

@@ -40,12 +40,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (this.resizableObject.current) {
-			if (this.resizableObject.current.state) {
-				this.resizableObject.current.updateSize({
-					isResizing: this.resizableObject.current.state.isResizing,
-				});
-			}
+		if (this.resizableObject.current?.state) {
+			this.resizableObject.current.updateSize({
+				isResizing: this.resizableObject.current?.state?.isResizing,
+			});
 		}
 	}
 

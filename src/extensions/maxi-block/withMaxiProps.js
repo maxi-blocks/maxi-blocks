@@ -66,7 +66,23 @@ const withMaxiProps = createHigherOrderComponent(
 			const ref = useRef(null);
 			const styleObjKeys = useRef([]);
 
-			const insertInlineStyles = (styleObj, target = '') => {
+			const modifyStyleElement = (
+				styleElement,
+				modifiedTarget,
+				styleObj
+			) => {
+				styleElement.innerHTML = `${modifiedTarget} { ${Object.entries(
+					styleObj
+				).map(
+					([key, value]) => `${key}: ${value} !important;`
+				)} transition: none !important; }`;
+			};
+
+			const insertInlineStyles = (
+				styleObj,
+				target = '',
+				preudoElement = ''
+			) => {
 				if (isEmpty(styleObj)) return;
 
 				const parentElement = ref?.current.blockRef.current;
@@ -78,17 +94,50 @@ const withMaxiProps = createHigherOrderComponent(
 				for (let i = 0; i < targetElements.length; i += 1) {
 					const targetElement = targetElements[i];
 
-					Object.entries(styleObj).forEach(([key, val]) => {
-						targetElement.style[key] = val;
-					});
+					if (preudoElement !== '') {
+						const styleElement = targetElement.querySelector(
+							`style[data-pseudo-element="${preudoElement}"]`
+						);
 
-					targetElement.style.transition = 'none';
+						if (styleElement) {
+							modifyStyleElement(
+								styleElement,
+								`${target}${preudoElement}`,
+								styleObj
+							);
+						} else {
+							const styleElement =
+								document.createElement('style');
+							styleElement.setAttribute(
+								'data-pseudo-element',
+								preudoElement
+							);
+							modifyStyleElement(
+								styleElement,
+								`${target}${preudoElement}`,
+								styleObj
+							);
+
+							targetElement.appendChild(styleElement);
+						}
+					} else {
+						Object.entries(styleObj).forEach(([key, val]) => {
+							targetElement.style[key] = val;
+						});
+
+						targetElement.style.transition = 'none';
+					}
+
+					if (preudoElement === '') {
+						styleObjKeys.current = [
+							...Object.keys(styleObj),
+							'transition',
+						];
+					}
 				}
-
-				styleObjKeys.current = [...Object.keys(styleObj), 'transition'];
 			};
 
-			const cleanInlineStyles = (target = '') => {
+			const cleanInlineStyles = (target = '', pseudoElement = '') => {
 				const parentElement = ref?.current.blockRef.current;
 				const targetElements =
 					target !== ''
@@ -98,10 +147,23 @@ const withMaxiProps = createHigherOrderComponent(
 				for (let i = 0; i < targetElements.length; i += 1) {
 					const targetElement = targetElements[i];
 
-					styleObjKeys.current.forEach(key => {
-						if (targetElement.style[key])
-							targetElement.style[key] = '';
-					});
+					if (
+						pseudoElement !== '' &&
+						targetElement.querySelector(
+							`style[data-pseudo-element="${pseudoElement}"]`
+						)
+					) {
+						targetElement
+							.querySelector(
+								`style[data-pseudo-element="${pseudoElement}"]`
+							)
+							.remove();
+					} else {
+						styleObjKeys.current.forEach(key => {
+							if (targetElement.style[key])
+								targetElement.style[key] = '';
+						});
+					}
 				}
 
 				styleObjKeys.current = [];

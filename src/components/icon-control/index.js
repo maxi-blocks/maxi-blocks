@@ -302,7 +302,7 @@ const IconControl = props => {
 										label={__('Icon Line', 'maxi-blocks')}
 										color={
 											props[
-												`icon-color${
+												`icon-stroke-color${
 													isHover ? '-hover' : ''
 												}`
 											]
@@ -310,21 +310,21 @@ const IconControl = props => {
 										prefix='icon-'
 										paletteColor={
 											props[
-												`icon-palette-color${
+												`icon-stroke-palette-color${
 													isHover ? '-hover' : ''
 												}`
 											]
 										}
 										paletteOpacity={
 											props[
-												`icon-palette-opacity${
+												`icon-stroke-palette-opacity${
 													isHover ? '-hover' : ''
 												}`
 											]
 										}
 										paletteStatus={
 											props[
-												`icon-palette-status${
+												`icon-stroke-palette-status${
 													isHover ? '-hover' : ''
 												}`
 											]
@@ -336,22 +336,22 @@ const IconControl = props => {
 											paletteOpacity,
 										}) => {
 											onChange({
-												[`icon-color${
+												[`icon-stroke-color${
 													isHover ? '-hover' : ''
 												}`]: color,
-												[`icon-palette-color${
+												[`icon-stroke-palette-color${
 													isHover ? '-hover' : ''
 												}`]: paletteColor,
-												[`icon-palette-status${
+												[`icon-stroke-palette-status${
 													isHover ? '-hover' : ''
 												}`]: paletteStatus,
-												[`icon-palette-opacity${
+												[`icon-stroke-palette-opacity${
 													isHover ? '-hover' : ''
 												}`]: paletteOpacity,
 											});
 											const lineColorStr =
 												getColorRGBAString({
-													firstVar: `icon-line${
+													firstVar: `icon-stroke${
 														isHover ? '-hover' : ''
 													}`,
 													secondVar: `color-${paletteColor}${

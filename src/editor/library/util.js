@@ -13,7 +13,14 @@ import {
 	getPaletteAttributes,
 } from '../../extensions/styles';
 
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
 export const rgbToHex = color => {
+	if (isNil(color)) return '';
+
 	const rgb = color.match(
 		/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
 	);

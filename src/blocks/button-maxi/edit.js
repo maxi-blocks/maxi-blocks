@@ -264,6 +264,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	const changeSVGContentHover = (color, type) => {
 		let newContent = ownProps.attributes['icon-content'];
 
+		if (newContent.includes(`data-hover-${type}`)) return;
+
 		const svgRegExp = new RegExp(`(${type}=[^-]([^none])([^\\"]+))`, 'g');
 		const svgStr = `data-hover-${type} $1`;
 

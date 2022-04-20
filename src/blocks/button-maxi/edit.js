@@ -266,8 +266,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 		if (newContent.includes(`data-hover-${type}`)) return;
 
-		const svgRegExp = new RegExp(`(${type}=[^-]([^none])([^\\"]+))`, 'g');
-		const svgStr = `data-hover-${type} $1`;
+		const svgRegExp = new RegExp(`( ${type}=[^-]([^none])([^\\"]+))`, 'g');
+		const svgStr = ` data-hover-${type}$1`;
 
 		const cssRegExpOld = new RegExp(
 			`((hover\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`
@@ -283,8 +283,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(svgRegExp, svgStr)
 			.replace(cssRegExpOld, cssStrOld)
 			.replace(cssRegExp, cssStr);
-
-		console.log(newContent);
 
 		newContent !== ownProps.attributes['icon-content'] &&
 			maxiSetAttributes({ 'icon-content': newContent });

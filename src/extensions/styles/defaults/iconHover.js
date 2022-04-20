@@ -4,7 +4,8 @@ import { icon, iconBackground, iconBackgroundColor } from './icon';
 export const iconHover = hoverAttributesCreator({
 	obj: icon,
 	diffValAttr: {
-		'icon-palette-color-hover': 6,
+		'icon-stroke-palette-color-hover': 6,
+		'icon-fill-palette-color-hover': 2,
 		'icon-width-general': '',
 		'icon-stroke-general': '',
 	},
@@ -12,6 +13,14 @@ export const iconHover = hoverAttributesCreator({
 		'icon-status-hover': {
 			type: 'boolean',
 			default: false,
+		},
+		'icon-stroke-palette-status-hover': {
+			type: 'boolean',
+			default: true,
+		},
+		'icon-fill-palette-status-hover': {
+			type: 'boolean',
+			default: true,
 		},
 	},
 });

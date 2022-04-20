@@ -325,8 +325,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	const changeSVGContentHover = (color, type) => {
 		let newContent = ownProps.attributes.content;
 
-		const svgRegExp = new RegExp(`(${type}=[^-]([^none])([^\\"]+))`, 'g');
-		const svgStr = `data-hover-${type} $1`;
+		const svgRegExp = new RegExp(`( ${type}=[^-]([^none])([^\\"]+))`, 'g');
+		const svgStr = ` data-hover-${type}$1`;
 
 		const cssRegExpOld = new RegExp(
 			`((hover\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`

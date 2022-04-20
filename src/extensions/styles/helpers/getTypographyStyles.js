@@ -164,11 +164,10 @@ const getTypographyStyles = ({
 				'vertical-align': obj[getName('vertical-align', breakpoint)],
 			}),
 			...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
-				'writing-mode': !isEmpty(
-					obj[getName('text-orientation', breakpoint)]
-				)
-					? 'vertical-rl'
-					: 'unset',
+				'writing-mode':
+					obj[getName('text-orientation', breakpoint)] !== 'unset'
+						? 'vertical-rl'
+						: 'unset',
 				'text-orientation':
 					obj[getName('text-orientation', breakpoint)],
 			}),

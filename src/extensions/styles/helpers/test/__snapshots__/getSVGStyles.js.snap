@@ -13,9 +13,9 @@ Object {
   "  .maxi-svg-icon-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
       "general": Object {
-        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7,8,18,25),1))",
+        "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
-      "label": "SVG",
+      "label": "SVG Path stroke",
     },
   },
   "  .maxi-svg-icon-block__icon svg path": Object {
@@ -40,9 +40,9 @@ Object {
   "  .maxi-svg-icon-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
       "general": Object {
-        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7,8,18,25),1))",
+        "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
-      "label": "SVG",
+      "label": "SVG Path stroke",
     },
   },
   "  .maxi-svg-icon-block__icon svg use[data-fill]:not([fill^=\\"none\\"])": Object {
@@ -56,9 +56,25 @@ Object {
   "  .maxi-svg-icon-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
       "general": Object {
-        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7,8,18,25),1))",
+        "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
-      "label": "SVG",
+      "label": "SVG Path stroke",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg[data-fill]:not([fill^=\\"none\\"])": Object {
+    "SVGPathFill": Object {
+      "general": Object {
+        "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "label": "SVG path-fill",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
+    "SVGPathStroke": Object {
+      "general": Object {
+        "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
+      },
+      "label": "SVG Path stroke",
     },
   },
 }

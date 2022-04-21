@@ -12,6 +12,12 @@ import { isEmpty } from 'lodash';
  * General
  *
  */
+// Adds window.process to fix browserslist error when using
+// postcss and autofixer on the controls of style store
+window.process = window.process || {};
+window.process.env = window.process.env || {};
+window.process.env.BROWSERSLIST_DISABLE_CACHE = false;
+
 const allowedBlocks = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',

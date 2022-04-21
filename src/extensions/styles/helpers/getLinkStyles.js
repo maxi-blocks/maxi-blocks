@@ -44,7 +44,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				firstVar: 'link',
 				secondVar: `color-${linkPaletteColor}`,
 				opacity: linkPaletteOpacity,
-				blockStyle: blockStyle,
+				blockStyle,
 			});
 		}
 
@@ -71,7 +71,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				firstVar: 'link-hover',
 				secondVar: `color-${linkHoverPaletteColor}`,
 				opacity: linkHoverPaletteOpacity,
-				blockStyle: blockStyle,
+				blockStyle,
 			});
 
 			response[`${target}:hover`].link[breakpoint] = { color };
@@ -102,7 +102,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				firstVar: 'link-active',
 				secondVar: `color-${linkActivePaletteColor}`,
 				opacity: linkActivePaletteOpacity,
-				blockStyle: blockStyle,
+				blockStyle,
 			});
 
 			response[`${target}:active`].link[breakpoint] = { color };
@@ -133,7 +133,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				firstVar: 'link-visited',
 				secondVar: `color-${linkVisitedPaletteColor}`,
 				opacity: linkVisitedPaletteOpacity,
-				blockStyle: blockStyle,
+				blockStyle,
 			});
 
 			response[`${target}:visited`].link[breakpoint] = { color };

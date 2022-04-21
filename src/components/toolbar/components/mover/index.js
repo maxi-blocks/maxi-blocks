@@ -25,8 +25,7 @@ const Mover = props => {
 
 	const { moveBlocksDown, moveBlocksUp, updateBlockAttributes } =
 		useDispatch('core/block-editor');
-	const { getBlockAttributes, getBlockRootClientId } =
-		select('core/block-editor');
+	const { getBlockAttributes } = select('core/block-editor');
 
 	const {
 		srcRootClientId,

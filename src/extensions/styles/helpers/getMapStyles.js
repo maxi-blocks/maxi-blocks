@@ -26,7 +26,7 @@ const getMapStyles = (obj, target, blockStyle) => {
 		response.general.color = getColorRGBAString({
 			firstVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
-			blockStyle: blockStyle,
+			blockStyle,
 		});
 
 	return response;

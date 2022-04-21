@@ -3,6 +3,7 @@
  */
 import { compose } from '@wordpress/compose';
 import { withDispatch } from '@wordpress/data';
+import { createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -29,8 +30,21 @@ import { isNil } from 'lodash';
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(props) {
+		super(props);
+
+		this.resizableObject = createRef();
+	}
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
+	}
+
+	maxiBlockDidUpdate() {
+		if (this.resizableObject.current?.state) {
+			this.resizableObject.current.updateSize({
+				isResizing: this.resizableObject.current?.state?.isResizing,
+			});
+		}
 	}
 
 	render() {
@@ -108,7 +122,6 @@ class edit extends MaxiBlockComponent {
 				breakpoint: deviceType,
 				attributes,
 			}) === 'hidden';
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -122,6 +135,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				classes={classes}
+				resizableObject={this.resizableObject}
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				isOverflowHidden={getIsOverflowHidden()}

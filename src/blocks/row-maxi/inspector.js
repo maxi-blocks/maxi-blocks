@@ -56,127 +56,139 @@ const Inspector = props => {
 												<ResponsiveTabsControl
 													breakpoint={deviceType}
 												>
-													<ColumnPattern
-														clientId={clientId}
-														{...getGroupAttributes(
-															attributes,
-															'rowPattern'
-														)}
-														removeColumnGap={
-															attributes.removeColumnGap
-														}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-													/>
-													<SelectControl
-														label={__(
-															'Horizontal align',
-															'maxi-blocks'
-														)}
-														value={horizontalAlign}
-														options={[
-															{
-																label: __(
-																	'Flex-start',
-																	'maxi-blocks'
-																),
-																value: 'flex-start',
-															},
-															{
-																label: __(
-																	'Flex-end',
-																	'maxi-blocks'
-																),
-																value: 'flex-end',
-															},
-															{
-																label: __(
-																	'Center',
-																	'maxi-blocks'
-																),
-																value: 'center',
-															},
-															{
-																label: __(
-																	'Space between',
-																	'maxi-blocks'
-																),
-																value: 'space-between',
-															},
-															{
-																label: __(
-																	'Space around',
-																	'maxi-blocks'
-																),
-																value: 'space-around',
-															},
-														]}
-														onChange={horizontalAlign =>
-															maxiSetAttributes({
-																horizontalAlign,
-															})
-														}
-													/>
-													<SelectControl
-														label={__(
-															'Vertical align',
-															'maxi-blocks'
-														)}
-														value={verticalAlign}
-														options={[
-															{
-																label: __(
-																	'Stretch',
-																	'maxi-blocks'
-																),
-																value: 'stretch',
-															},
-															{
-																label: __(
-																	'Flex-start',
-																	'maxi-blocks'
-																),
-																value: 'flex-start',
-															},
-															{
-																label: __(
-																	'Flex-end',
-																	'maxi-blocks'
-																),
-																value: 'flex-end',
-															},
-															{
-																label: __(
-																	'Center',
-																	'maxi-blocks'
-																),
-																value: 'center',
-															},
-															{
-																label: __(
-																	'Space between',
-																	'maxi-blocks'
-																),
-																value: 'space-between',
-															},
-															{
-																label: __(
-																	'Space around',
-																	'maxi-blocks'
-																),
-																value: 'space-around',
-															},
-														]}
-														onChange={verticalAlign =>
-															maxiSetAttributes({
-																verticalAlign,
-															})
-														}
-													/>
+													<>
+														<ColumnPattern
+															clientId={clientId}
+															{...getGroupAttributes(
+																attributes,
+																'rowPattern'
+															)}
+															removeColumnGap={
+																attributes.removeColumnGap
+															}
+															onChange={obj =>
+																maxiSetAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+														<SelectControl
+															label={__(
+																'Horizontal align',
+																'maxi-blocks'
+															)}
+															value={
+																horizontalAlign
+															}
+															options={[
+																{
+																	label: __(
+																		'Flex-start',
+																		'maxi-blocks'
+																	),
+																	value: 'flex-start',
+																},
+																{
+																	label: __(
+																		'Flex-end',
+																		'maxi-blocks'
+																	),
+																	value: 'flex-end',
+																},
+																{
+																	label: __(
+																		'Center',
+																		'maxi-blocks'
+																	),
+																	value: 'center',
+																},
+																{
+																	label: __(
+																		'Space between',
+																		'maxi-blocks'
+																	),
+																	value: 'space-between',
+																},
+																{
+																	label: __(
+																		'Space around',
+																		'maxi-blocks'
+																	),
+																	value: 'space-around',
+																},
+															]}
+															onChange={horizontalAlign =>
+																maxiSetAttributes(
+																	{
+																		horizontalAlign,
+																	}
+																)
+															}
+														/>
+														<SelectControl
+															label={__(
+																'Vertical align',
+																'maxi-blocks'
+															)}
+															value={
+																verticalAlign
+															}
+															options={[
+																{
+																	label: __(
+																		'Stretch',
+																		'maxi-blocks'
+																	),
+																	value: 'stretch',
+																},
+																{
+																	label: __(
+																		'Flex-start',
+																		'maxi-blocks'
+																	),
+																	value: 'flex-start',
+																},
+																{
+																	label: __(
+																		'Flex-end',
+																		'maxi-blocks'
+																	),
+																	value: 'flex-end',
+																},
+																{
+																	label: __(
+																		'Center',
+																		'maxi-blocks'
+																	),
+																	value: 'center',
+																},
+																{
+																	label: __(
+																		'Space between',
+																		'maxi-blocks'
+																	),
+																	value: 'space-between',
+																},
+																{
+																	label: __(
+																		'Space around',
+																		'maxi-blocks'
+																	),
+																	value: 'space-around',
+																},
+															]}
+															onChange={verticalAlign =>
+																maxiSetAttributes(
+																	{
+																		verticalAlign,
+																	}
+																)
+															}
+														/>
+													</>
 												</ResponsiveTabsControl>
 											),
 										},

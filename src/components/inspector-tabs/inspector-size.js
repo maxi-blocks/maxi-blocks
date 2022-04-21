@@ -31,44 +31,55 @@ const size = ({
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
-				{isFirstOnHierarchy &&
-					(block ? (
-						<ToggleSwitch
-							label={__('Set full-width', 'maxi-blocks')}
-							selected={isBlockFullWidth}
-							onChange={val =>
-								maxiSetAttributes({
-									blockFullWidth: val ? 'full' : 'normal',
-								})
-							}
-						/>
-					) : (
-						<ToggleSwitch
-							label={__('Set full-width', 'maxi-blocks')}
-							selected={fullWidth === 'full'}
-							onChange={val =>
-								isImage
-									? maxiSetAttributes({
-											imageRatio: 'original',
-											imageSize: 'full',
-											imgWidth: 100,
-											fullWidth: val ? 'full' : 'normal',
-									  })
-									: maxiSetAttributes({
-											fullWidth: val ? 'full' : 'normal',
-									  })
-							}
-						/>
-					))}
-				<FullSizeControl
-					{...getGroupAttributes(attributes, 'size', false, prefix)}
-					prefix={prefix}
-					onChange={obj => maxiSetAttributes(obj)}
-					breakpoint={deviceType}
-					hideWidth={hideWidth || isBlockFullWidth}
-					hideMaxWidth={hideMaxWidth || isBlockFullWidth}
-					allowForceAspectRatio={block}
-				/>
+				<>
+					{isFirstOnHierarchy &&
+						(block ? (
+							<ToggleSwitch
+								label={__('Set full-width', 'maxi-blocks')}
+								selected={isBlockFullWidth}
+								onChange={val =>
+									maxiSetAttributes({
+										blockFullWidth: val ? 'full' : 'normal',
+									})
+								}
+							/>
+						) : (
+							<ToggleSwitch
+								label={__('Set full-width', 'maxi-blocks')}
+								selected={fullWidth === 'full'}
+								onChange={val =>
+									isImage
+										? maxiSetAttributes({
+												imageRatio: 'original',
+												imageSize: 'full',
+												imgWidth: 100,
+												fullWidth: val
+													? 'full'
+													: 'normal',
+										  })
+										: maxiSetAttributes({
+												fullWidth: val
+													? 'full'
+													: 'normal',
+										  })
+								}
+							/>
+						))}
+					<FullSizeControl
+						{...getGroupAttributes(
+							attributes,
+							'size',
+							false,
+							prefix
+						)}
+						prefix={prefix}
+						onChange={obj => maxiSetAttributes(obj)}
+						breakpoint={deviceType}
+						hideWidth={hideWidth || isBlockFullWidth}
+						hideMaxWidth={hideMaxWidth || isBlockFullWidth}
+						allowForceAspectRatio={block}
+					/>
+				</>
 			</ResponsiveTabsControl>
 		),
 		extraIndicators: [

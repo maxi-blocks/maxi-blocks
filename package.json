@@ -43,6 +43,7 @@
 		"dompurify": "^2.3.6",
 		"html-react-parser": "^1.4.10",
 		"re-resizable": "^6.9.5",
+		"react": "^18.0.0",
 		"react-accessible-accordion": "^4.0.0",
 		"react-color": "^2.19.3",
 		"react-compound-slider": "^3.3.1",

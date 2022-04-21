@@ -180,10 +180,12 @@ const getListObject = props => {
 				? listStart
 				: 0;
 		counterReset += listStart > 0 ? listStart : 0;
-		counterReset += listReversed ? parse(content).length : 1;
+		counterReset +=
+			listReversed && parse(content).length ? parse(content).length : 1;
 		counterReset += listReversed ? 1 : -1;
 		counterReset -= 1;
-	} else if (listReversed) counterReset = parse(content).length + 1;
+	} else if (listReversed)
+		counterReset = parse(content).length ? parse(content).length + 1 : 2;
 	else counterReset = 0;
 
 	const response = {

@@ -1,31 +1,37 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
 const SliderControl = props => {
-	const { className, attributes, maxiSetAttributes } = props;
-
-	const { numberOfSlides, isVertical } = attributes;
-
+	const { className, onChange, numberOfSlides, isEditView } = props;
 	const classes = classnames('maxi-slider-control', className);
 
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				label={__('Vertical view', 'maxi-blocks')}
-				selected={isVertical}
+				label={__('Edit view', 'maxi-blocks')}
+				selected={isEditView}
 				onChange={val => {
-					maxiSetAttributes({ isVertical: val });
+					onChange({ isEditView: val });
 				}}
 			/>
 			<AdvancedNumberControl
 				label='Number of slides'
 				value={numberOfSlides}
-				onChangeValue={val =>
-					maxiSetAttributes({ numberOfSlides: val })
-				}
-				onReset={() => maxiSetAttributes({ numberOfSlides: 6 })}
+				onChangeValue={val => onChange({ numberOfSlides: val })}
+				onReset={() => onChange({ numberOfSlides: 6 })}
 				min={0}
 				max={10}
 				className={classes}

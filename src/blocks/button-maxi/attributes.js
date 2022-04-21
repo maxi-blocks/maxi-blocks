@@ -33,9 +33,6 @@ const attributes = {
 	svgType: {
 		type: 'string',
 	},
-	shortcut: {
-		type: 'number',
-	},
 	...attributesData.icon,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,

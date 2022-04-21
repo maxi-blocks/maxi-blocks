@@ -72,7 +72,6 @@ const Inspector = memo(
 
 			maxiSetAttributes({
 				...newDefaultPresets[`preset${number}`],
-				shortcut: number,
 			});
 		};
 
@@ -309,7 +308,6 @@ const Inspector = memo(
 														]}
 													/>
 												),
-												extraIndicators: ['shortcut'],
 											},
 											{
 												label: __(

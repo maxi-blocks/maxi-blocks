@@ -176,6 +176,11 @@ const Inspector = props => {
 													/>
 												</>
 											),
+
+											extraIndicators: [
+												'verticalAlign',
+												'horizontalAlign',
+											],
 										},
 										...inspectorTabs.blockBackground({
 											props,

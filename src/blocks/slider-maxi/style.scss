@@ -31,8 +31,9 @@ body.maxi-blocks--active .maxi-slider-block {
 		margin: 0;
 		transition: transform 0.2s ease-out;
 
-		&--vertical {
+		&--edit-view {
 			flex-direction: column;
+			transform: none !important;
 		}
 	}
 

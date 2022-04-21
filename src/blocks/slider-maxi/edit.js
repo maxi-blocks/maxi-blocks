@@ -4,7 +4,7 @@
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { dispatch, select, useSelect } from '@wordpress/data';
+import { dispatch, select, useSelect, withSelect } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
 /**
@@ -111,8 +111,8 @@ const TEMPLATE = [
 ];
 
 const SliderWrapper = props => {
-	const { maxiSetAttributes, attributes, clientId } = props;
-	const { currentSlide, numberOfSlides, isVertical } = attributes;
+	const { attributes, clientId } = props;
+	const { numberOfSlides, isEditView } = attributes;
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
@@ -124,12 +124,13 @@ const SliderWrapper = props => {
 			select('core/block-editor').getBlocks(clientId)[0]?.attributes
 				.slideWidth
 	);
+	const [currentSlide, setCurrentSlide] = useState(0);
 	const [wrapperTranslate, setWrapperTranslate] = useState(
 		currentSlide * slideWidth
 	);
 
 	const onDragAction = e => {
-		if (isVertical) return;
+		if (isEditView) return;
 
 		e.preventDefault();
 
@@ -147,21 +148,16 @@ const SliderWrapper = props => {
 	};
 
 	const onDragEnd = e => {
-		if (isVertical) return;
-
+		if (isEditView) return;
 		if (
 			dragPosition - initPosition < -100 &&
 			currentSlide < numberOfSlides - 1
 		) {
 			setWrapperTranslate((currentSlide + 1) * slideWidth);
-			maxiSetAttributes({
-				currentSlide: currentSlide + 1,
-			});
+			setCurrentSlide(prev => prev + 1);
 		} else if (dragPosition - initPosition > 100 && currentSlide > 0) {
 			setWrapperTranslate((currentSlide - 1) * slideWidth);
-			maxiSetAttributes({
-				currentSlide: currentSlide - 1,
-			});
+			setCurrentSlide(prev => prev - 1);
 		} else {
 			setWrapperTranslate(currentSlide * slideWidth);
 		}
@@ -171,7 +167,7 @@ const SliderWrapper = props => {
 	};
 
 	const onDragStart = e => {
-		if (isVertical) return;
+		if (isEditView) return;
 		if (e.type === 'touchstart') {
 			initPosition = e.touches[0].clientX;
 		} else {
@@ -179,7 +175,6 @@ const SliderWrapper = props => {
 			editor.addEventListener('mousemove', onDragAction);
 			editor.addEventListener('mouseup', onDragEnd);
 		}
-
 		dragPosition = initPosition;
 	};
 
@@ -195,7 +190,7 @@ const SliderWrapper = props => {
 			slider.removeEventListener('touchmove', onDragAction);
 			slider.removeEventListener('touchend', onDragEnd);
 		};
-	}, [currentSlide, slideWidth, isVertical]);
+	}, [currentSlide, slideWidth, isEditView]);
 
 	useEffect(() => {
 		if (wrapperTranslate !== currentSlide * slideWidth) {
@@ -205,25 +200,61 @@ const SliderWrapper = props => {
 
 	const classes = classnames(
 		'maxi-slider-block__wrapper',
-		isVertical && 'maxi-slider-block__wrapper--vertical'
+		isEditView && 'maxi-slider-block__wrapper--edit-view'
 	);
 
 	return (
-		<ul
-			{...useInnerBlocksProps(
-				{
-					className: classes,
-					ref: wrapperRef,
-					style: { transform: `translateX(-${wrapperTranslate}px)` },
-				},
-				{
-					allowedBlocks: ALLOWED_BLOCKS,
-					orientation: 'horizontal',
-					template: TEMPLATE,
-					renderAppender: false,
-				}
-			)}
-		/>
+		<>
+			<ul
+				{...useInnerBlocksProps(
+					{
+						className: classes,
+						ref: wrapperRef,
+						style: {
+							transform: `translateX(-${wrapperTranslate}px)`,
+						},
+					},
+					{
+						allowedBlocks: ALLOWED_BLOCKS,
+						orientation: 'horizontal',
+						template: TEMPLATE,
+						renderAppender: false,
+					}
+				)}
+			/>
+			<div className='maxi-slider-block__nav'>
+				<span
+					className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
+					onClick={
+						!isEditView
+							? () =>
+									setCurrentSlide(
+										currentSlide < numberOfSlides - 1
+											? currentSlide + 1
+											: currentSlide
+									)
+							: undefined
+					}
+				>
+					+
+				</span>
+				<span
+					className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
+					onClick={
+						!isEditView
+							? () =>
+									setCurrentSlide(
+										currentSlide > 0
+											? currentSlide - 1
+											: currentSlide
+									)
+							: undefined
+					}
+				>
+					-
+				</span>
+			</div>
+		</>
 	);
 };
 
@@ -267,14 +298,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			blockFullWidth,
-			hasInnerBlocks,
-			maxiSetAttributes,
-		} = this.props;
-		const { uniqueID, currentSlide, numberOfSlides, isVertical } =
-			attributes;
+		const { attributes, blockFullWidth, hasInnerBlocks } = this.props;
+		const { uniqueID } = attributes;
 
 		const emptySliderClass = !hasInnerBlocks
 			? 'maxi-slider-block__empty'
@@ -301,45 +326,14 @@ class edit extends MaxiBlockComponent {
 			>
 				<div className='maxi-slider-block__tracker'>
 					<SliderWrapper {...this.props} />
-					<div className='maxi-slider-block__nav'>
-						<span
-							className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
-							onClick={
-								!isVertical
-									? () =>
-											maxiSetAttributes({
-												currentSlide:
-													currentSlide <
-													numberOfSlides - 1
-														? currentSlide + 1
-														: currentSlide,
-											})
-									: undefined
-							}
-						>
-							+
-						</span>
-						<span
-							className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
-							onClick={
-								!isVertical
-									? () =>
-											maxiSetAttributes({
-												currentSlide:
-													currentSlide > 0
-														? currentSlide - 1
-														: currentSlide,
-											})
-									: undefined
-							}
-						>
-							-
-						</span>
-					</div>
 				</div>
 			</MaxiBlock>,
 		];
 	}
 }
+
+// const editSelect = withSelect(select => {
+// 	const slides = select('core/block-editor').getBlocks();
+// })
 
 export default compose(withInstanceId, withMaxiProps)(edit);

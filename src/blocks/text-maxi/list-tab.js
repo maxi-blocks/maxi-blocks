@@ -593,26 +593,28 @@ const listTab = props => {
 								className='maxi-image-inspector__list-style'
 								value={listStyle || 'disc'}
 								options={getListStyleOptions(typeOfList)}
-								onChange={listStyle =>
+								onChange={listStyle => {
 									maxiSetAttributes({
 										listStyle,
-									})
-								}
+									});
+									if (
+										!(
+											['decimal', 'details'].includes(
+												typeOfList
+											) || !listStyle
+										) &&
+										listStart < 0
+									) {
+										maxiSetAttributes({ listStart: 0 });
+									}
+								}}
 							/>
 							{typeOfList === 'ol' && (
 								<>
 									<AdvancedNumberControl
 										label={__('Start From', 'maxi-blocks')}
 										className='maxi-image-inspector__list-start'
-										value={
-											!(
-												['decimal', 'details'].includes(
-													listStyle
-												) || !listStyle
-											) && listStart < 0
-												? 0
-												: listStart
-										}
+										value={listStart}
 										onChangeValue={val => {
 											maxiSetAttributes({
 												listStart:

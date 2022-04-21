@@ -36,7 +36,16 @@ module.exports = {
 				},
 			},
 			minimizer: [
-				new CssMinimizerPlugin(),
+				new CssMinimizerPlugin({
+					minimizerOptions: {
+						preset: [
+							'default',
+							{
+								discardComments: { removeAll: true },
+							},
+						],
+					},
+				}),
 				new TerserPlugin({
 					parallel: true,
 					terserOptions: {

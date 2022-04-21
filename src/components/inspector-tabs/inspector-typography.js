@@ -63,8 +63,16 @@ const typography = ({
 									attributes,
 									typographyTarget
 								)}
-								onChangeInline={(obj, target) =>
-									insertInlineStyles(obj, target)
+								onChangeInline={(
+									obj,
+									target,
+									isMultiplySelector
+								) =>
+									insertInlineStyles(
+										obj,
+										target,
+										isMultiplySelector
+									)
 								}
 								onChange={(obj, target) => {
 									maxiSetAttributes(obj);
@@ -109,8 +117,16 @@ const typography = ({
 											'typography',
 											true
 										)}
-										onChangeInline={(obj, target) =>
-											insertInlineStyles(obj, target)
+										onChangeInline={(
+											obj,
+											target,
+											isMultiplySelector
+										) =>
+											insertInlineStyles(
+												obj,
+												target,
+												isMultiplySelector
+											)
 										}
 										onChange={(obj, target) => {
 											maxiSetAttributes(obj);

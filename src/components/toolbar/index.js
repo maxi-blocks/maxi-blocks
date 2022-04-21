@@ -210,11 +210,17 @@ const MaxiToolbar = memo(
 									'typography'
 								)}
 								onChangeInline={obj =>
-									insertInlineStyles(obj, '.rich-text')
+									insertInlineStyles(
+										obj,
+										`.rich-text ${isList ? 'li' : ''}`,
+										isList
+									)
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles('.rich-text');
+									cleanInlineStyles(
+										`.rich-text ${isList ? 'li' : ''}`
+									);
 								}}
 								breakpoint={breakpoint}
 								node={anchorRef}

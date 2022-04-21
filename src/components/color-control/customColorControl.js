@@ -42,9 +42,10 @@ const CustomColorControl = props => {
 		onResetOpacity,
 	} = props;
 	const [colorPicker, setColorPicker] = useState(color);
+	const [isChanging, setIsChanging] = useState(false);
 
 	useEffect(() => {
-		if (!colorPicker) setColorPicker(color);
+		if (!isChanging) setColorPicker(color);
 	}, [color]);
 
 	return (
@@ -72,7 +73,6 @@ const CustomColorControl = props => {
 									onClick={e => {
 										e.preventDefault();
 										onReset();
-										setColorPicker();
 									}}
 									isSmall
 									aria-label={sprintf(
@@ -110,7 +110,6 @@ const CustomColorControl = props => {
 							onClick={e => {
 								e.preventDefault();
 								onReset();
-								setColorPicker();
 							}}
 							isSmall
 							aria-label={sprintf(
@@ -161,6 +160,7 @@ const CustomColorControl = props => {
 				<ChromePicker
 					color={colorPicker}
 					onChange={val => {
+						setIsChanging(true);
 						const tempColor = tinycolor(val.rgb)
 							.toRgbString()
 							.replace(/\s/g, '');
@@ -178,6 +178,7 @@ const CustomColorControl = props => {
 						onChangeValue({
 							color: tempColor,
 						});
+						setIsChanging(false);
 					}}
 					disableAlpha
 				/>

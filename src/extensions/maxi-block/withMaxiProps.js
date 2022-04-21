@@ -81,6 +81,7 @@ const withMaxiProps = createHigherOrderComponent(
 			const insertInlineStyles = (
 				styleObj,
 				target = '',
+				isMultiplySelector = false,
 				preudoElement = ''
 			) => {
 				if (isEmpty(styleObj)) return;
@@ -88,7 +89,9 @@ const withMaxiProps = createHigherOrderComponent(
 				const parentElement = ref?.current.blockRef.current;
 				const targetElements =
 					target !== '' && target !== ':hover'
-						? parentElement.querySelectorAll(target)
+						? isMultiplySelector
+							? parentElement.querySelectorAll(target)
+							: [parentElement.querySelector(target)]
 						: [parentElement];
 
 				for (let i = 0; i < targetElements.length; i += 1) {

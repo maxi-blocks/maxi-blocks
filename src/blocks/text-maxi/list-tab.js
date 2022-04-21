@@ -481,7 +481,12 @@ const listTab = props => {
 							paletteColor={attributes['list-palette-color']}
 							paletteOpacity={attributes['list-palette-opacity']}
 							onChangeInline={({ color }) =>
-								insertInlineStyles({ color }, 'li', '::before')
+								insertInlineStyles(
+									{ color },
+									'li',
+									false,
+									'::before'
+								)
 							}
 							onChange={({
 								paletteStatus,

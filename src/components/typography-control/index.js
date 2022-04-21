@@ -714,10 +714,21 @@ const TypographyControl = withFormatValue(props => {
 		return defaultAttribute;
 	};
 
+	const getInlineTarget = tag => {
+		const target = `${inlineTarget} ${isList ? 'li' : ''}${
+			tag !== ''
+				? `${tag}, ${inlineTarget} ${isList ? 'li' : ''} ${tag} span`
+				: ''
+		}`;
+
+		return target.replace(/\s{2,}/g, ' ');
+	};
+
 	const onChangeFormat = (
 		value,
 		customBreakpoint,
-		forceDisableCustomFormats = false
+		forceDisableCustomFormats = false,
+		tag = ''
 	) => {
 		const obj = setFormat({
 			formatValue,
@@ -743,14 +754,11 @@ const TypographyControl = withFormatValue(props => {
 			);
 		}
 
-		onChange(obj, inlineTarget);
+		onChange(obj, getInlineTarget(tag));
 	};
 
 	const onChangeInlineValue = (obj, tag = '') => {
-		onChangeInline(
-			obj,
-			`${inlineTarget} ${tag}, ${inlineTarget} ${tag} span`
-		);
+		onChangeInline(obj, getInlineTarget(tag), isList);
 	};
 
 	const getOpacityValue = label => {

@@ -374,7 +374,6 @@ describe('getSCVariablesObject', () => {
 					h4: {
 						'color-global': false,
 						color: '',
-
 						'font-family-general': 'Roboto',
 						'font-size-xxl': 30,
 						'font-size-unit-xxl': 'px',

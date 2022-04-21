@@ -95,11 +95,11 @@ const ColorContent = ({
 					breakpoint
 				)]: paletteOpacity,
 				[getAttributeKey(
-					'background-svg-palette-opacity',
+					'background-svg-color',
 					isHover,
 					false,
 					breakpoint
-				)]: paletteOpacity,
+				)]: color,
 			});
 		}}
 		isHover={isHover}

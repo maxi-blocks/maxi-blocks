@@ -91,8 +91,6 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes, changeSVGContent } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
-		const { isIconSelected } = this.state;
-
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
 			attributes['icon-content'] &&
@@ -153,7 +151,6 @@ class edit extends MaxiBlockComponent {
 								ref={this.iconRef}
 								{...this.props}
 								propsToAvoid={['buttonContent', 'formatValue']}
-								isSelected={isIconSelected}
 								changeSVGContent={changeSVGContent}
 							/>
 							<IconWrapper

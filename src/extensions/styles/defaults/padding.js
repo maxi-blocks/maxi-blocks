@@ -13,13 +13,25 @@ const rawPadding = {
 	'padding-left': {
 		type: 'number',
 	},
+	'padding-top-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'padding-right-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'padding-bottom-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'padding-left-unit': {
+		type: 'string',
+		default: 'px',
+	},
 	'padding-sync': {
 		type: 'string',
 		default: 'all',
-	},
-	'padding-unit': {
-		type: 'string',
-		default: 'px',
 	},
 };
 

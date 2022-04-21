@@ -41,6 +41,7 @@ describe('StyleCards, Buttons', () => {
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
+			orientation: 'mixed',
 		});
 		await page.waitForTimeout(100);
 

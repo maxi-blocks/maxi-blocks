@@ -13,7 +13,12 @@ import {
 	withMaxiProps,
 	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
-import { BlockResizer, Button, Toolbar } from '../../components';
+import {
+	BlockResizer,
+	Button,
+	Toolbar,
+	MaxiPopoverButton,
+} from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 
 import {
@@ -36,7 +41,6 @@ import { replay } from '../../icons';
 /**
  * NumberCounter
  */
-
 const NumberCounter = attributes => {
 	const {
 		'number-counter-duration': countDuration,
@@ -49,6 +53,9 @@ const NumberCounter = attributes => {
 		'number-counter-end': endNumber,
 		deviceType,
 		resizerProps,
+		blockRef,
+		isSelected,
+		uniqueID,
 	} = attributes;
 
 	const countRef = useRef(null);
@@ -112,15 +119,23 @@ const NumberCounter = attributes => {
 
 	return (
 		<>
-			<Button
-				className='maxi-number-counter__replay'
-				onClick={() => {
-					setCount(startCountValue);
-					setReplyStatus(true);
-					clearInterval(countRef.current);
-				}}
-				icon={replay}
-			/>
+			<MaxiPopoverButton
+				key={`popover-${uniqueID}`}
+				ref={blockRef}
+				isSelected={isSelected}
+				attributes={{ uniqueID }}
+				{...attributes}
+			>
+				<Button
+					className='maxi-number-counter__replay'
+					onClick={() => {
+						setCount(startCountValue);
+						setReplyStatus(true);
+						clearInterval(countRef.current);
+					}}
+					icon={replay}
+				/>
+			</MaxiPopoverButton>
 			<BlockResizer
 				className='maxi-number-counter__box'
 				isOverflowHidden={getIsOverflowHidden()}
@@ -309,6 +324,9 @@ class edit extends MaxiBlockComponent {
 						showHandle: isSelected,
 					}}
 					deviceType={deviceType}
+					blockRef={this.blockRef}
+					isSelected={isSelected}
+					uniqueID={uniqueID}
 				/>
 			</MaxiBlock>,
 		];

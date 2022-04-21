@@ -49,12 +49,22 @@ class MaxiBlocks_Local_Fonts
             "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
         );
 
-        if (!$post_content_array || empty($post_content_array)) {
+        $prev_post_content_array = (array)$wpdb->get_results(
+            "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
+        );
+
+        if (empty($post_content_array) && empty($prev_post_content_array) && $sc_string === '') {
             return false;
         }
 
         foreach ($post_content_array as $font) {
             $array[] = $font->fonts_value;
+        }
+
+        if (!empty($prev_post_content_array)) {
+            foreach ($prev_post_content_array as $font) {
+                $array[] = $font->prev_fonts_value;
+            }
         }
 
         if (empty($array)) {
@@ -64,6 +74,13 @@ class MaxiBlocks_Local_Fonts
         foreach ($array as $key => $value) {
             $array[$key] = json_decode($value, true);
         }
+
+        function filterNull($arr)
+        {
+            return ($arr !== null && $arr !== false && $arr !== '');
+        }
+
+        $array = array_filter($array, 'filterNull');
         
         $arrayAll = array_merge_recursive(...$array);
        
@@ -138,6 +155,15 @@ class MaxiBlocks_Local_Fonts
         wp_mkdir_p($this->fontsUploadDir);
     }
 
+    public function minimizeFontCss($fontCss)
+    {
+        $fontCss = preg_replace('/\/\*((?!\*\/).)*\*\//', '', $fontCss);
+        $fontCss = preg_replace('/\s{2,}/', ' ', $fontCss);
+        $fontCss = preg_replace('/\s*([:;{}])\s*/', '$1', $fontCss);
+        $fontCss = preg_replace('/;}/', '}', $fontCss);
+        return $fontCss;
+    }
+
     public function uploadCssFiles($allURLs)
     {
         foreach ($allURLs as $fontName => $fontUrl) {
@@ -176,6 +202,10 @@ class MaxiBlocks_Local_Fonts
             }
 
             $newCssFile = str_replace($fontFiles, $newFontFiles, $cssFile);
+
+            $newCssFile = str_replace('}', 'font-display: swap; }', $newCssFile);
+
+            $newCssFile = $this->minimizeFontCss($newCssFile);
 
             file_put_contents($fontUploadsDir.'/style.css', $newCssFile);
         }

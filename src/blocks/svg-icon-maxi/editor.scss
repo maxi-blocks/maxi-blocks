@@ -25,15 +25,10 @@
 		}
 	}
 	&__replace-icon {
-		position: absolute;
-		z-index: 25;
-		top: 0;
-		right: 0;
 		width: 40px;
 		height: 40px;
-		background: #232533;
-		opacity: 0;
 		visibility: visible;
+		background: #232533;
 		transition: 0.3s;
 
 		svg {
@@ -43,15 +38,11 @@
 		}
 	}
 
-	&:hover {
-		.maxi-svg-icon-block__replace-icon {
-			opacity: 1;
-		}
-	}
-
 	.maxi-svg-icon-block__icon {
+		max-height: 100%;
 		svg {
 			width: 100% !important;
+			max-height: 100%;
 		}
 	}
 	.maxi-library-modal__action-section {

@@ -581,7 +581,7 @@ const ImageLayer = props => {
 								'background-image-mediaID',
 								isHover,
 								prefix
-							)]: imageData.order,
+							)]: imageData.id,
 							[getAttributeKey(
 								'background-image-mediaURL',
 								isHover,
@@ -623,8 +623,6 @@ const ImageLayer = props => {
 							)]: '',
 						})
 					}
-					placeholder={__('Set image', 'maxi-blocks')}
-					removeButton={__('Remove', 'maxi-blocks')}
 				/>
 			)}
 			{!hideSettings && (

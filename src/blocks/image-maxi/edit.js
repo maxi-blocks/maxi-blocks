@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect, dispatch } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
-// import { isURL } from '@wordpress/url';
 import { createRef } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 
@@ -31,7 +30,7 @@ import {
 	Toolbar,
 	Placeholder,
 	RawHTML,
-	// ImageURL,
+	MaxiPopoverButton,
 } from '../../components';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import {
@@ -64,6 +63,7 @@ class edit extends MaxiBlockComponent {
 
 		this.state = {
 			isExternalClass: isImageUrl,
+			isUploaderOpen: false,
 		};
 
 		this.textRef = createRef(null);
@@ -130,7 +130,7 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 		} = attributes;
-		const { isExternalClass } = this.state;
+		const { isExternalClass, isUploaderOpen } = this.state;
 
 		const classes = classnames(
 			'maxi-image-block',
@@ -142,10 +142,10 @@ class edit extends MaxiBlockComponent {
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
 				hoverPreview &&
-				`maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
+				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
 			hoverType === 'text' &&
 				hoverPreview &&
-				`maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
+				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
 			hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
@@ -263,13 +263,11 @@ class edit extends MaxiBlockComponent {
 				copyPasteMapping={copyPasteMapping}
 				prefix='image-'
 			/>,
-			<MaxiBlock
-				key={`maxi-image--${uniqueID}`}
+			<MaxiPopoverButton
+				key={`popover-${uniqueID}`}
 				ref={this.blockRef}
-				tagName='figure'
-				blockFullWidth={blockFullWidth}
-				className={classes}
-				{...getMaxiBlockAttributes(this.props)}
+				isOpen={isUploaderOpen}
+				{...this.props}
 			>
 				<MediaUpload
 					onSelect={media => {
@@ -322,175 +320,155 @@ class edit extends MaxiBlockComponent {
 					allowedTypes='image'
 					value={mediaID}
 					render={({ open }) => (
-						<>
-							{(!isNil(mediaID) && imageData) || mediaURL ? (
-								<>
-									<BlockResizer
-										key={uniqueID}
-										className='maxi-block__resizer maxi-image-block__resizer'
-										resizableObject={this.resizableObject}
-										isOverflowHidden={getIsOverflowHidden()}
-										size={{
-											width: `${
-												fullWidth !== 'full' &&
-												!useInitSize
-													? imgWidth
-													: 100
-											}%`,
-										}}
-										showHandle={
-											isSelected &&
-											fullWidth !== 'full' &&
-											!useInitSize
-										}
-										maxWidth={getMaxWidth()}
-										enable={{
-											topRight: true,
-											bottomRight: true,
-											bottomLeft: true,
-											topLeft: true,
-										}}
-										onResizeStop={(
-											event,
-											direction,
-											elt,
-											delta
-										) => {
-											maxiSetAttributes({
-												imgWidth: +round(
-													elt.style.width.replace(
-														/[^0-9.]/g,
-														''
-													),
-													1
-												),
-											});
-										}}
-									>
-										<div className='maxi-image-block__settings'>
-											<Button
-												className='maxi-image-block__settings__upload-button'
-												label={__(
-													'Upload / Add from Media Library',
-													'maxi-blocks'
-												)}
-												showTooltip='true'
-												onClick={open}
-												icon={toolbarReplaceImage}
-											/>
-										</div>
-										{captionType !== 'none' &&
-											captionPosition === 'top' && (
-												<>
-													<CaptionToolbar
-														key={`caption-toolbar-${uniqueID}`}
-														ref={this.textRef}
-														{...this.props}
-														propsToAvoid={[
-															'captionContent',
-															'formatValue',
-														]}
-													/>
-													<RichText
-														ref={this.textRef}
-														className='maxi-image-block__caption'
-														value={captionContent}
-														onChange={
-															processContent
-														}
-														tagName='figcaption'
-														placeholder={__(
-															'Set your Image Maxi caption here…',
-															'maxi-blocks'
-														)}
-														__unstableEmbedURLOnPaste
-														__unstableAllowPrefixTransformations
-													>
-														{onChangeRichText}
-													</RichText>
-												</>
-											)}
-										<HoverPreview
-											key={`hover-preview-${uniqueID}`}
-											wrapperClassName={wrapperClassName}
-											hoverClassName={hoverClasses}
-											isSVG={!!SVGElement}
-											{...getGroupAttributes(attributes, [
-												'hover',
-												'hoverTitleTypography',
-												'hoverContentTypography',
-											])}
-										>
-											{SVGElement ? (
-												<RawHTML>{SVGElement}</RawHTML>
-											) : (
-												<img
-													className={
-														isExternalClass
-															? 'maxi-image-block__image wp-image-external'
-															: `maxi-image-block__image wp-image-${mediaID}`
-													}
-													src={mediaURL}
-													width={mediaWidth}
-													height={mediaHeight}
-													alt={mediaAlt}
-												/>
-											)}
-										</HoverPreview>
-										{captionType !== 'none' &&
-											captionPosition === 'bottom' && (
-												<>
-													<CaptionToolbar
-														key={`caption-toolbar-${uniqueID}`}
-														ref={this.textRef}
-														{...this.props}
-														propsToAvoid={[
-															'captionContent',
-															'formatValue',
-														]}
-													/>
-													<RichText
-														ref={this.textRef}
-														className='maxi-image-block__caption'
-														value={captionContent}
-														onChange={
-															processContent
-														}
-														tagName='figcaption'
-														placeholder={__(
-															'Set your Image Maxi caption here…',
-															'maxi-blocks'
-														)}
-														__unstableEmbedURLOnPaste
-														__unstableAllowPrefixTransformations
-													>
-														{onChangeRichText}
-													</RichText>
-												</>
-											)}
-									</BlockResizer>
-								</>
+						<div className='maxi-image-block__settings'>
+							<Button
+								className='maxi-image-block__settings__upload-button'
+								label={__(
+									'Upload / Add from Media Library',
+									'maxi-blocks'
+								)}
+								showTooltip='true'
+								onClick={() => {
+									open();
+									this.setState({ isUploaderOpen: true });
+								}}
+								icon={toolbarReplaceImage}
+							/>
+						</div>
+					)}
+					onClose={() => this.setState({ isUploaderOpen: false })}
+				/>
+			</MaxiPopoverButton>,
+			<MaxiBlock
+				key={`maxi-image--${uniqueID}`}
+				ref={this.blockRef}
+				tagName='figure'
+				blockFullWidth={blockFullWidth}
+				className={classes}
+				{...getMaxiBlockAttributes(this.props)}
+			>
+				{(!isNil(mediaID) && imageData) || mediaURL ? (
+					<BlockResizer
+						key={uniqueID}
+						className='maxi-block__resizer maxi-image-block__resizer'
+						resizableObject={this.resizableObject}
+						isOverflowHidden={getIsOverflowHidden()}
+						size={{
+							width: `${
+								fullWidth !== 'full' && !useInitSize
+									? imgWidth
+									: 100
+							}%`,
+						}}
+						showHandle={
+							isSelected && fullWidth !== 'full' && !useInitSize
+						}
+						maxWidth={getMaxWidth()}
+						enable={{
+							topRight: true,
+							bottomRight: true,
+							bottomLeft: true,
+							topLeft: true,
+						}}
+						onResizeStop={(event, direction, elt, delta) => {
+							maxiSetAttributes({
+								imgWidth: +round(
+									elt.style.width.replace(/[^0-9.]/g, ''),
+									1
+								),
+							});
+						}}
+					>
+						{captionType !== 'none' && captionPosition === 'top' && (
+							<>
+								<CaptionToolbar
+									key={`caption-toolbar-${uniqueID}`}
+									ref={this.textRef}
+									{...this.props}
+									propsToAvoid={[
+										'captionContent',
+										'formatValue',
+									]}
+								/>
+								<RichText
+									ref={this.textRef}
+									className='maxi-image-block__caption'
+									value={captionContent}
+									onChange={processContent}
+									tagName='figcaption'
+									placeholder={__(
+										'Set your Image Maxi caption here…',
+										'maxi-blocks'
+									)}
+									__unstableEmbedURLOnPaste
+									__unstableAllowPrefixTransformations
+								>
+									{onChangeRichText}
+								</RichText>
+							</>
+						)}
+						<HoverPreview
+							key={`hover-preview-${uniqueID}`}
+							wrapperClassName={wrapperClassName}
+							hoverClassName={hoverClasses}
+							isSVG={!!SVGElement}
+							{...getGroupAttributes(attributes, [
+								'hover',
+								'hoverTitleTypography',
+								'hoverContentTypography',
+							])}
+						>
+							{SVGElement ? (
+								<RawHTML>{SVGElement}</RawHTML>
 							) : (
-								<div className='maxi-image-block__placeholder'>
-									<Placeholder
-										icon={placeholderImage}
-										label=''
+								<img
+									className={
+										isExternalClass
+											? 'maxi-image-block__image wp-image-external'
+											: `maxi-image-block__image wp-image-${mediaID}`
+									}
+									src={mediaURL}
+									width={mediaWidth}
+									height={mediaHeight}
+									alt={mediaAlt}
+								/>
+							)}
+						</HoverPreview>
+						{captionType !== 'none' &&
+							captionPosition === 'bottom' && (
+								<>
+									<CaptionToolbar
+										key={`caption-toolbar-${uniqueID}`}
+										ref={this.textRef}
+										{...this.props}
+										propsToAvoid={[
+											'captionContent',
+											'formatValue',
+										]}
 									/>
-									<Button
-										className='maxi-image-block__settings__upload-button'
-										label={__(
-											'Upload / Add from Media Library',
+									<RichText
+										ref={this.textRef}
+										className='maxi-image-block__caption'
+										value={captionContent}
+										onChange={processContent}
+										tagName='figcaption'
+										placeholder={__(
+											'Set your Image Maxi caption here…',
 											'maxi-blocks'
 										)}
-										showTooltip='true'
-										onClick={open}
-										icon={toolbarReplaceImage}
-									/>
-								</div>
+										__unstableEmbedURLOnPaste
+										__unstableAllowPrefixTransformations
+									>
+										{onChangeRichText}
+									</RichText>
+								</>
 							)}
-						</>
-					)}
-				/>
+					</BlockResizer>
+				) : (
+					<div className='maxi-image-block__placeholder'>
+						<Placeholder icon={placeholderImage} label='' />
+					</div>
+				)}
 			</MaxiBlock>,
 		];
 	}

@@ -68,7 +68,7 @@ describe('IconControl', () => {
 			'.maxi-settingstab-control.maxi-icon-styles-control button'
 		);
 
-		await iconBorder[1].click();
+		await iconBorder[2].click();
 
 		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',

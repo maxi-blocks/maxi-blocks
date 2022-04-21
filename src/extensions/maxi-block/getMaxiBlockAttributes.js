@@ -9,7 +9,16 @@ import { getLastBreakpointAttribute, getGroupAttributes } from '../styles';
 import { isEmpty } from 'lodash';
 
 const getMaxiBlockAttributes = props => {
-	const { name, deviceType, attributes, clientId, hasInnerBlocks } = props;
+	const {
+		name,
+		deviceType,
+		attributes,
+		clientId,
+		hasInnerBlocks,
+		isChild,
+		isSelected,
+		hasSelectedChild,
+	} = props;
 	const {
 		blockStyle,
 		extraClassName,
@@ -163,6 +172,9 @@ const getMaxiBlockAttributes = props => {
 		background,
 		hasLink,
 		hasInnerBlocks,
+		isChild,
+		isSelected,
+		hasSelectedChild,
 		// Necessary for the memo() of MaxiBlocks component
 		attributes,
 		...scroll,

@@ -52,10 +52,7 @@ class edit extends MaxiBlockComponent {
 				? 'maxi-divider-block--vertical'
 				: 'maxi-divider-block--horizontal',
 			'maxi-divider-block__resizer',
-			`maxi-divider-block__resizer__${uniqueID}`,
-			{
-				'is-selected': isSelected,
-			}
+			`maxi-divider-block__resizer__${uniqueID}`
 		);
 		const handleOnResizeStart = event => {
 			event.preventDefault();

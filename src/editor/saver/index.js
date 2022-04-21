@@ -13,27 +13,32 @@ import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
  * Component
  */
 const BlockStylesSaver = () => {
-	const { isSaving, isPreviewing, isDraft } = useSelect(select => {
-		const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
-			select('core/editor');
+	const { isSaving, isPreviewing, isDraft, isCodeEditor } = useSelect(
+		select => {
+			const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
+				select('core/editor');
+			const { getEditorMode } = select('core/edit-post');
 
-		const isSaving = isSavingPost();
-		const isPreviewing = isPreviewingPost();
-		const isDraft = getCurrentPostAttribute('status') === 'draft';
+			const isSaving = isSavingPost();
+			const isPreviewing = isPreviewingPost();
+			const isDraft = getCurrentPostAttribute('status') === 'draft';
+			const isCodeEditor = getEditorMode() === 'text';
 
-		return {
-			isSaving,
-			isPreviewing,
-			isDraft,
-		};
-	});
+			return {
+				isSaving,
+				isPreviewing,
+				isDraft,
+				isCodeEditor,
+			};
+		}
+	);
 
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 	const { saveSCStyles } = useDispatch('maxiBlocks/style-cards');
 
 	useEffect(() => {
-		if (isSaving) {
+		if (isSaving && !isCodeEditor) {
 			loadFonts(getPageFonts(), false);
 			if (!isPreviewing && !isDraft) {
 				saveStyles(true);

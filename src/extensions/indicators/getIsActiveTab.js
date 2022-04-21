@@ -20,7 +20,6 @@ const getIsActiveTab = (
 	const { name, attributes: currentAttributes } = block;
 
 	if (!name.includes('maxi-blocks')) return null;
-
 	const defaultAttributes = getBlockAttributes(name);
 	const excludedAttributes = [
 		'blockStyle',

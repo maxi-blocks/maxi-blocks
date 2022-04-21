@@ -176,7 +176,10 @@ const Inspector = props => {
 													/>
 												</>
 											),
-
+											ignoreIndicator: [
+												'row-pattern-general',
+												'row-pattern-m',
+											],
 											extraIndicators: [
 												'verticalAlign',
 												'horizontalAlign',
@@ -202,6 +205,10 @@ const Inspector = props => {
 								/>
 							</>
 						),
+						ignoreIndicator: [
+							'row-pattern-general',
+							`row-pattern-m`,
+						],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

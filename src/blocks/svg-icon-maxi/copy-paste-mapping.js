@@ -1,5 +1,5 @@
 const copyPasteMapping = {
-	excludeInGeneralPaste: ['content', 'svgType'],
+	exclude: ['content', 'svgType'],
 	settings: {
 		blockSpecific: {
 			content: { label: 'SVG Content', value: ['svgType', 'content'] },

@@ -1,5 +1,5 @@
 const copyPasteMapping = {
-	excludeInGeneralPaste: ['buttonContent'],
+	exclude: ['buttonContent'],
 	settings: {
 		blockSpecific: {
 			fullWidth: 'Full Width',

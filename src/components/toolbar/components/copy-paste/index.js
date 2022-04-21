@@ -456,8 +456,8 @@ const CopyPasteContent = props => {
 	};
 	const onPasteStyles = () => {
 		const styles = { ...copiedStyles };
-		if (copyPasteMapping.excludeInGeneralPaste)
-			copyPasteMapping.excludeInGeneralPaste.forEach(prop => {
+		if (copyPasteMapping.exclude)
+			copyPasteMapping.exclude.forEach(prop => {
 				if (styles[prop]) delete styles[prop];
 			});
 

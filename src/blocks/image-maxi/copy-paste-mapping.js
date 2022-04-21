@@ -1,5 +1,5 @@
 const copyPasteMapping = {
-	excludeInGeneralPaste: [
+	exclude: [
 		'mediaID',
 		'isImageUrl',
 		'mediaURL',

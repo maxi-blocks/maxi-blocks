@@ -17,7 +17,11 @@ import {
 } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getParentBorderRadius,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+
 import getStyles from './styles';
 
 /**
@@ -32,6 +36,10 @@ import { round } from 'lodash';
 class edit extends MaxiBlockComponent {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			parentBorderRadius: null,
+		};
 
 		this.resizableObject = createRef();
 	}
@@ -48,6 +56,20 @@ class edit extends MaxiBlockComponent {
 				this.resizableObject.current.updateSize({
 					width: `${columnWidth}%`,
 				});
+		}
+
+		if (this.state.parentBorderRadius !== this.context.borderRadius) {
+			this.setState({
+				parentBorderRadius: this.context.borderRadius,
+			});
+
+			this.props.maxiSetAttributes({
+				parentBorderRadius: getParentBorderRadius(
+					this.context.borderRadius,
+					this.props.originalNestedColumns,
+					this.props.clientId
+				),
+			});
 		}
 	}
 
@@ -189,6 +211,8 @@ class edit extends MaxiBlockComponent {
 		];
 	}
 }
+
+edit.contextType = RowContext;
 
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;

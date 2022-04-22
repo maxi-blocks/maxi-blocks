@@ -29,6 +29,9 @@ const attributes = {
 		type: 'string',
 		default: 'stretch',
 	},
+	parentBorderRadius: {
+		type: 'obj',
+	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

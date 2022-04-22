@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { compose, withInstanceId } from '@wordpress/compose';
-import { withSelect, useDispatch } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import { Button, Icon } from '@wordpress/components';
 
 /**
@@ -126,6 +126,10 @@ class edit extends MaxiBlockComponent {
 				value={{
 					displayHandlers: this.state.displayHandlers,
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
+					borderRadius: getGroupAttributes(
+						attributes,
+						'borderRadius'
+					),
 				}}
 			>
 				<MaxiBlock

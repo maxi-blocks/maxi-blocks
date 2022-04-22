@@ -75,6 +75,14 @@ const Inspector = props => {
 											content: (
 												<ColumnPicker {...props} />
 											),
+											ignoreIndicator: [
+												'row-pattern-general',
+												'row-pattern-m',
+											],
+											extraIndicators: [
+												'verticalAlign',
+												'horizontalAlign',
+											],
 										},
 										...inspectorTabs.blockBackground({
 											props,
@@ -96,6 +104,10 @@ const Inspector = props => {
 								/>
 							</>
 						),
+						ignoreIndicator: [
+							'row-pattern-general',
+							`row-pattern-m`,
+						],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

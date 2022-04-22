@@ -26,7 +26,7 @@ export const rawWidth = {
 		type: 'number',
 	},
 	'width-fit-content': {
-		type: 'bool',
+		type: 'boolean',
 		default: false,
 	},
 };

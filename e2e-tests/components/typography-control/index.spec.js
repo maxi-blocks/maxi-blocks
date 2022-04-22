@@ -56,9 +56,6 @@ describe('TypographyControl', () => {
 			'style',
 			'typography'
 		);
-		const input = await page.$(
-			'.maxi-typography-control .maxi-typography-control__font-family input'
-		);
 
 		const typographyInput = await page.$$eval(
 			'.maxi-typography-control__font-family div div div',
@@ -71,6 +68,10 @@ describe('TypographyControl', () => {
 		// s
 		await changeResponsive(page, 's');
 		await openSidebarTab(page, 'style', 'typography');
+
+		const input = await page.$(
+			'.maxi-typography-control .maxi-typography-control__font-family input'
+		);
 
 		await input.focus();
 		await pressKeyTimes('Backspace', '4');

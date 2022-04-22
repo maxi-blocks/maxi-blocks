@@ -73,13 +73,16 @@ class edit extends MaxiBlockComponent {
 				parentBorderRadius: this.context.borderRadius,
 			});
 
-			this.props.maxiSetAttributes({
-				parentBorderRadius: getParentBorderRadius(
-					this.context.borderRadius,
-					this.props.originalNestedColumns,
-					this.props.clientId
-				),
-			});
+			const newParentBorderRadius = getParentBorderRadius(
+				this.context.borderRadius,
+				this.props.originalNestedColumns,
+				this.props.clientId
+			);
+
+			if (newParentBorderRadius)
+				this.props.maxiSetAttributes({
+					parentBorderRadius: newParentBorderRadius,
+				});
 		}
 	}
 

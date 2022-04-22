@@ -30,7 +30,7 @@ const attributes = {
 		default: 'stretch',
 	},
 	parentBorderRadius: {
-		type: 'obj',
+		type: 'object',
 	},
 	...attributesData.blockBackground,
 	...attributesData.border,

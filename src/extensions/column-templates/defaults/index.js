@@ -111,7 +111,7 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
-						'margin-unit-m': '%',
+						'margin-top-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',
@@ -122,7 +122,7 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
-						'margin-unit-m': '%',
+						'margin-top-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',
@@ -137,7 +137,7 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
-						'margin-unit-m': '%',
+						'margin-top-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',
@@ -148,7 +148,7 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
 						'margin-top-m': '2.5',
-						'margin-unit-m': '%',
+						'margin-top-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',

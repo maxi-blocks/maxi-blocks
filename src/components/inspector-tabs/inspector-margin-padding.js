@@ -78,6 +78,7 @@ const marginPadding = ({
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
 					target='padding'
+					optionType='string'
 					blockFullWidth={blockFullWidth}
 					disableAuto
 					enableAxisUnits

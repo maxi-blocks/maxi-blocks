@@ -14,55 +14,21 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
 	...defaultConfig,
-	...{
-		optimization: {
-			// Only concatenate modules in production, when not analyzing bundles.
-			concatenateModules: isProduction && !process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: {
-				cacheGroups: {
-					style: {
-						type: 'css/mini-extract',
-						test: /[\\/]style(\.module)?\.(sc|sa|c)ss$/,
-						chunks: 'all',
-						enforce: true,
-						name(_, chunks, cacheGroupKey) {
-							const chunkName = chunks[0].name;
-							return `${dirname(
-								chunkName
-							)}/${cacheGroupKey}-${basename(chunkName)}`;
+	optimization: {
+		...defaultConfig.optimization,
+		minimizer: [
+			new CssMinimizerPlugin({
+				minimizerOptions: {
+					preset: [
+						'default',
+						{
+							discardComments: { removeAll: true },
 						},
-					},
-					default: false,
+					],
 				},
-			},
-			minimizer: [
-				new CssMinimizerPlugin({
-					minimizerOptions: {
-						preset: [
-							'default',
-							{
-								discardComments: { removeAll: true },
-							},
-						],
-					},
-				}),
-				new TerserPlugin({
-					parallel: true,
-					terserOptions: {
-						output: {
-							comments: /translators:/i,
-						},
-						compress: {
-							passes: 2,
-						},
-						mangle: {
-							reserved: ['__', '_n', '_nx', '_x'],
-						},
-					},
-					extractComments: false,
-				}),
-			],
-		},
+			}),
+			...defaultConfig.optimization.minimizer,
+		],
 	},
 	resolve: {
 		...defaultConfig.resolve,

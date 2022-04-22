@@ -56,6 +56,9 @@ const NumberCounterControl = props => {
 				label={__('Width', 'maxi-blocks')}
 				className='maxi-number-counter-control__width'
 				enableUnit
+				autoLabel='Auto Width'
+				enableAuto
+				autoDefaultValue='250'
 				unit={getLastBreakpointAttribute({
 					target: 'number-counter-width-unit',
 					breakpoint,

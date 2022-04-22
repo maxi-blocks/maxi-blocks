@@ -50,7 +50,7 @@ const getSizeStyles = (obj, prefix = '') => {
 				});
 
 				if (!isNil(num) && !isNil(unit))
-					return { [target]: num + unit };
+					return { [target]: num === 'auto' ? 'auto' : num + unit };
 			}
 
 			return {};

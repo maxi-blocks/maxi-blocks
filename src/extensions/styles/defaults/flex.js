@@ -22,7 +22,6 @@ const rawFlex = {
 	},
 	'justify-content': {
 		type: 'string',
-		default: 'stretch',
 	},
 	'flex-direction': {
 		type: 'string',

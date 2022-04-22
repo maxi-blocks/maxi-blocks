@@ -18,17 +18,17 @@ import {
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import {
-	getParentBorderRadius,
+	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getParentBorderRadius,
 } from '../../extensions/styles';
-
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { round } from 'lodash';
+import { round, isEqual } from 'lodash';
 
 /**
  * Editor
@@ -44,6 +44,10 @@ class edit extends MaxiBlockComponent {
 		this.resizableObject = createRef();
 	}
 
+	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
+		return isEqual(prevProps.rowGapProps, this.props.rowGapProps);
+	}
+
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute({
@@ -52,10 +56,16 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			});
 
-			if (this.resizableObject.current.state.width !== `${columnWidth}%`)
+			if (
+				this.resizableObject.current.state.width !== `${columnWidth}%`
+			) {
 				this.resizableObject.current.updateSize({
 					width: `${columnWidth}%`,
 				});
+
+				this.resizableObject.current.resizable.style.flexBasis = '';
+				this.resizableObject.current.resizable.style.flexShrink = '';
+			}
 		}
 
 		if (this.state.parentBorderRadius !== this.context.borderRadius) {
@@ -74,7 +84,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(this.props.attributes, this.props.rowGapProps);
 	}
 
 	render() {
@@ -129,86 +139,78 @@ class edit extends MaxiBlockComponent {
 			? 'maxi-column-block__empty'
 			: 'maxi-column-block__has-innerBlock';
 
-		return [
-			<RowContext.Consumer key={`column-content-${uniqueID}`}>
-				{context => {
-					return (
-						<>
-							<Inspector
-								key={`block-settings-${uniqueID}`}
-								rowPattern={context.rowPattern}
-								{...this.props}
-							/>
-							<Toolbar
-								key={`toolbar-${uniqueID}`}
-								ref={this.blockRef}
-								rowPattern={context.rowPattern}
-								propsToAvoid={['resizableObject']}
-								{...this.props}
-							/>
-							<MaxiBlock
-								key={`maxi-column--${uniqueID}`}
-								ref={this.blockRef}
-								{...getMaxiBlockAttributes(this.props)}
-								isOverflowHidden={getIsOverflowHidden()}
-								tagName={BlockResizer}
-								resizableObject={this.resizableObject}
-								classes={classnames(
-									emptyColumnClass,
-									'maxi-block',
-									'maxi-block--backend',
-									'maxi-column-block__resizer',
-									`maxi-column-block__resizer__${uniqueID}`,
-									getLastBreakpointAttribute({
-										target: 'display',
-										breakpoint: deviceType,
-										attributes,
-										isHover: false,
-										forceSingle: true,
-									}) === 'none' && 'maxi-block-display-none'
-								)}
-								defaultSize={{
-									width: getColumnWidthDefault(),
-								}}
-								enable={{
-									right: true,
-									left: true,
-								}}
-								minWidth='1%'
-								maxWidth='100%'
-								showHandle={context.displayHandlers}
-								onResizeStop={(event, direction, elt) => {
-									updateRowPattern(
-										rowBlockId,
-										deviceType,
-										context.rowPattern
-									);
+		return (
+			<RowContext.Consumer>
+				{context => [
+					<Inspector
+						key={`block-settings-${uniqueID}`}
+						rowPattern={context.rowPattern}
+						{...this.props}
+					/>,
+					<Toolbar
+						key={`toolbar-${uniqueID}`}
+						ref={this.blockRef}
+						rowPattern={context.rowPattern}
+						propsToAvoid={['resizableObject']}
+						{...this.props}
+					/>,
+					<MaxiBlock
+						key={`maxi-column--${uniqueID}`}
+						ref={this.blockRef}
+						{...getMaxiBlockAttributes(this.props)}
+						isOverflowHidden={getIsOverflowHidden()}
+						tagName={BlockResizer}
+						resizableObject={this.resizableObject}
+						classes={classnames(
+							emptyColumnClass,
+							'maxi-block',
+							'maxi-block--backend',
+							'maxi-column-block__resizer',
+							`maxi-column-block__resizer__${uniqueID}`,
+							getLastBreakpointAttribute({
+								target: 'display',
+								breakpoint: deviceType,
+								attributes,
+								isHover: false,
+								forceSingle: true,
+							}) === 'none' && 'maxi-block-display-none'
+						)}
+						defaultSize={{
+							width: getColumnWidthDefault(),
+						}}
+						enable={{
+							right: true,
+							left: true,
+						}}
+						minWidth='1%'
+						maxWidth='100%'
+						showHandle={context.displayHandlers}
+						onResizeStop={(event, direction, elt) => {
+							updateRowPattern(
+								rowBlockId,
+								deviceType,
+								context.rowPattern
+							);
 
-									maxiSetAttributes({
-										[`column-size-${deviceType}`]: round(
-											+elt.style.width.replace('%', '')
-										),
-									});
-								}}
-								useInnerBlocks
-								innerBlocksSettings={{
-									allowedBlocks: ALLOWED_BLOCKS,
-									orientation: 'vertical',
-									templateLock: false,
-									renderAppender: !hasInnerBlocks
-										? () => (
-												<BlockInserter
-													clientId={clientId}
-												/>
-										  )
-										: false,
-								}}
-							/>
-						</>
-					);
-				}}
-			</RowContext.Consumer>,
-		];
+							maxiSetAttributes({
+								[`column-size-${deviceType}`]: round(
+									+elt.style.width.replace('%', '')
+								),
+							});
+						}}
+						useInnerBlocks
+						innerBlocksSettings={{
+							allowedBlocks: ALLOWED_BLOCKS,
+							orientation: 'vertical',
+							templateLock: false,
+							renderAppender: !hasInnerBlocks
+								? () => <BlockInserter clientId={clientId} />
+								: false,
+						}}
+					/>,
+				]}
+			</RowContext.Consumer>
+		);
 	}
 }
 
@@ -217,14 +219,29 @@ edit.contextType = RowContext;
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const { getBlockRootClientId, getBlockOrder } = select('core/block-editor');
+	const { getBlockRootClientId, getBlockOrder, getBlockAttributes } =
+		select('core/block-editor');
 
 	const rowBlockId = getBlockRootClientId(clientId);
 	const originalNestedColumns = getBlockOrder(rowBlockId);
+	const rowAttributes = getBlockAttributes(rowBlockId);
+
+	const rowGapProps =
+		rowAttributes &&
+		(() => {
+			const response = getGroupAttributes(rowAttributes, 'flex');
+
+			Object.keys(response).forEach(key => {
+				if (!key.includes('gap')) delete response[key];
+			});
+
+			return response;
+		})();
 
 	return {
 		rowBlockId,
 		originalNestedColumns,
+		rowGapProps,
 	};
 });
 

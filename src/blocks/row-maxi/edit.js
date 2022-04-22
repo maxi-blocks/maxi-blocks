@@ -35,7 +35,6 @@ const RowBlockTemplate = ({
 	instanceId,
 	maxiSetAttributes,
 	deviceType,
-	removeColumnGap,
 }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
@@ -57,7 +56,6 @@ const RowBlockTemplate = ({
 							});
 							loadColumnsTemplate(
 								template.name,
-								removeColumnGap,
 								clientId,
 								deviceType
 							);
@@ -101,7 +99,7 @@ class edit extends MaxiBlockComponent {
 			instanceId,
 			maxiSetAttributes,
 		} = this.props;
-		const { uniqueID, removeColumnGap } = attributes;
+		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
@@ -150,7 +148,6 @@ class edit extends MaxiBlockComponent {
 										instanceId={instanceId}
 										maxiSetAttributes={maxiSetAttributes}
 										deviceType={deviceType}
-										removeColumnGap={removeColumnGap}
 									/>
 							  )
 							: false,

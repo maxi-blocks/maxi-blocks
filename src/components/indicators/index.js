@@ -54,9 +54,27 @@ const Indicators = props => {
 				breakpoint: deviceType,
 				attributes: props,
 			}) || 0,
-		unit:
+		topUnit:
 			getLastBreakpointAttribute({
-				target: 'margin-unit',
+				target: 'margin-top-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
+		rightUnit:
+			getLastBreakpointAttribute({
+				target: 'margin-right-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
+		leftUnit:
+			getLastBreakpointAttribute({
+				target: 'margin-left-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 0,
+		bottomUnit:
+			getLastBreakpointAttribute({
+				target: 'margin-bottom-unit',
 				breakpoint: deviceType,
 				attributes: props,
 			}) || 0,
@@ -87,18 +105,36 @@ const Indicators = props => {
 				breakpoint: deviceType,
 				attributes: props,
 			}) || 0,
-		unit:
+		topUnit:
 			getLastBreakpointAttribute({
-				target: 'padding-unit',
+				target: 'padding-top-unit',
 				breakpoint: deviceType,
 				attributes: props,
-			}) || 0,
+			}) || 'px',
+		bottomUnit:
+			getLastBreakpointAttribute({
+				target: 'padding-bottom-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 'px',
+		leftUnit:
+			getLastBreakpointAttribute({
+				target: 'padding-left-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 'px',
+		rightUnit:
+			getLastBreakpointAttribute({
+				target: 'padding-right-unit',
+				breakpoint: deviceType,
+				attributes: props,
+			}) || 'px',
 	};
 
 	const handleOnResizeStart = (type, e, dir) => {
 		e.preventDefault();
 		onChange({
-			[`${type}-${dir}-unit`]: [type].unit,
+			[`${type}-${dir}-unit`]: [type][`${[dir]}Unit`],
 		});
 	};
 
@@ -158,9 +194,11 @@ const Indicators = props => {
 					style={{
 						[dir === 'top' || dir === 'bottom'
 							? 'height'
-							: 'width']: `${margin[dir]}${margin.unit}`,
+							: 'width']: `${margin[dir]}${
+							margin[`${[dir]}Unit`]
+						}`,
 						[dir]: `${margin[dir] <= 0 ? -4 : -margin[dir]}${
-							margin.unit
+							margin[`${[dir]}Unit`]
 						}`,
 					}}
 					className={`maxi-indicators__margin maxi-indicators__margin--${dir}`}
@@ -174,10 +212,14 @@ const Indicators = props => {
 							dir === 'top' || dir === 'bottom'
 								? {
 										width: '100%',
-										height: `${margin[dir]}${margin.unit}`,
+										height: `${margin[dir]}${
+											margin[`${[dir]}Unit`]
+										}`,
 								  }
 								: {
-										width: `${margin[dir]}${margin.unit}`,
+										width: `${margin[dir]}${
+											margin[`${[dir]}Unit`]
+										}`,
 										height: '100%',
 								  }
 						}
@@ -185,10 +227,14 @@ const Indicators = props => {
 							dir === 'top' || dir === 'bottom'
 								? {
 										width: '100%',
-										height: `${margin[dir]}${margin.unit}`,
+										height: `${margin[dir]}${
+											margin[`${[dir]}Unit`]
+										}`,
 								  }
 								: {
-										width: `${margin[dir]}${margin.unit}`,
+										width: `${margin[dir]}${
+											margin[`${[dir]}Unit`]
+										}`,
 										height: '100%',
 								  }
 						}
@@ -199,9 +245,13 @@ const Indicators = props => {
 							handleOnResize('margin', e, dir, ref)
 						}
 					>
-						{((margin.unit === 'px' && margin[dir] > 19) ||
-							(margin.unit !== 'px' && margin[dir] > 2)) && (
-							<span>{`${margin[dir]}${margin.unit}`}</span>
+						{((margin[`${[dir]}Unit`] === 'px' &&
+							margin[dir] > 19) ||
+							(margin[`${[dir]}Unit`] !== 'px' &&
+								margin[dir] > 2)) && (
+							<span>{`${margin[dir]}${
+								margin[`${[dir]}Unit`]
+							}`}</span>
 						)}
 					</Resizable>
 				</div>
@@ -224,10 +274,14 @@ const Indicators = props => {
 						dir === 'top' || dir === 'bottom'
 							? {
 									width: '100%',
-									height: `${padding[dir]}${padding.unit}`,
+									height: `${padding[dir]}${
+										padding[`${[dir]}Unit`]
+									}`,
 							  }
 							: {
-									width: `${padding[dir]}${padding.unit}`,
+									width: `${padding[dir]}${
+										padding[`${[dir]}Unit`]
+									}`,
 									height: '100%',
 							  }
 					}
@@ -235,10 +289,14 @@ const Indicators = props => {
 						dir === 'top' || dir === 'bottom'
 							? {
 									width: '100%',
-									height: `${padding[dir]}${padding.unit}`,
+									height: `${padding[dir]}${
+										padding[`${[dir]}Unit`]
+									}`,
 							  }
 							: {
-									width: `${padding[dir]}${padding.unit}`,
+									width: `${padding[dir]}${
+										padding[`${[dir]}Unit`]
+									}`,
 									height: '100%',
 							  }
 					}
@@ -249,9 +307,12 @@ const Indicators = props => {
 						handleOnResize('padding', e, dir, ref)
 					}
 				>
-					{((padding.unit === 'px' && padding[dir] > 19) ||
-						(padding.unit !== 'px' && padding[dir] > 2)) && (
-						<span>{`${padding[dir]}${padding.unit}`}</span>
+					{((padding[`${[dir]}Unit`] === 'px' && padding[dir] > 19) ||
+						(padding[`${[dir]}Unit`] !== 'px' &&
+							padding[dir] > 2)) && (
+						<span>{`${padding[dir]}${
+							padding[`${[dir]}Unit`]
+						}`}</span>
 					)}
 				</Resizable>
 			</div>

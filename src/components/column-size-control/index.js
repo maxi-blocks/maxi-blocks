@@ -20,7 +20,13 @@ import { ToggleSwitch } from '../../components';
  * Component
  */
 const ColumnSizeControl = props => {
-	const { verticalAlign, rowPattern, clientId, onChange, breakpoint } = props;
+	const {
+		breakpoint,
+		rowPattern,
+		clientId,
+		onChange,
+		[`justify-content-${breakpoint}`]: verticalAlign,
+	} = props;
 
 	return (
 		<>
@@ -108,7 +114,7 @@ const ColumnSizeControl = props => {
 				]}
 				onChange={verticalAlign =>
 					onChange({
-						verticalAlign,
+						[`justify-content-${breakpoint}`]: verticalAlign,
 					})
 				}
 			/>

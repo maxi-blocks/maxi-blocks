@@ -214,7 +214,7 @@ const NumberCounter = attributes => {
 				)}
 				{circleStatus && (
 					<span className='maxi-number-counter__box__text'>
-						{`${parseInt((count / 360) * 100)}`}
+						{`${Math.ceil((count / 360) * 100)}`}
 						{usePercentage && <sup>%</sup>}
 					</span>
 				)}

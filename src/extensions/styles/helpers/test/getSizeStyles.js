@@ -187,7 +187,7 @@ describe('getSizeStyles', () => {
 			'max-width-unit-general': 'px',
 			'max-width-general': 2,
 			'width-unit-general': 'px',
-			'width-general': 1,
+			'width-general': 'fit-content',
 			'min-width-unit-general': 'px',
 			'min-width-general': 2,
 			'max-height-unit-general': 'px',

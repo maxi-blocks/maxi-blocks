@@ -39,14 +39,6 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(await getAttributes('row-pattern-general')).toStrictEqual('1-1');
-
-		// remove Gap
-		await accordionControl.$eval(
-			'.components-column-pattern__gap .maxi-toggle-switch .maxi-base-control__label',
-			click => click.click()
-		);
-
-		expect(await getAttributes('removeColumnGap')).toStrictEqual(true);
 	});
 
 	it('Check responsive row-pattern', async () => {

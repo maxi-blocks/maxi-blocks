@@ -172,6 +172,17 @@ const FullSizeControl = props => {
 				/>
 			)}
 			<ToggleSwitch
+				label={__('Set width to fit content', 'maxi-blocks')}
+				selected={getLastBreakpointAttribute({
+					target: `${prefix}width-fit-content`,
+					breakpoint,
+					attributes: props,
+				})}
+				onChange={val => {
+					onChangeValue([`${prefix}width-fit-content`], val);
+				}}
+			/>
+			<ToggleSwitch
 				label={__('Set custom min/max values', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}
 				onChange={val => {

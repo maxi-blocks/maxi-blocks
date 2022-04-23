@@ -15,9 +15,7 @@ import {
 } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
-	Button,
 	Toolbar,
-	MaxiPopoverButton,
 } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 
@@ -33,14 +31,12 @@ import getStyles from './styles';
 import { round } from 'lodash';
 
 /**
- * Icons
- */
-import { replay } from '../../icons';
-
-/**
  * NumberCounter
  */
+
+
 const NumberCounter = attributes => {
+
 	const {
 		'number-counter-duration': countDuration,
 		'number-counter-stroke': stroke,
@@ -55,6 +51,7 @@ const NumberCounter = attributes => {
 		blockRef,
 		isSelected,
 		uniqueID,
+		replayCounter,
 	} = attributes;
 
 	const countRef = useRef(null);
@@ -64,15 +61,16 @@ const NumberCounter = attributes => {
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
-	const [replyStatus, setReplyStatus] = useState(false);
+	const [replayStatus, setReplayStatus] = useState(false);
 
 	const circumference = 2 * Math.PI * radius;
+
 
 	const frameDuration =
 		(1 / ((endCountValue - startCountValue) / countDuration)) * 1000;
 
 	useEffect(() => {
-		if ((startCountValue < endCountValue && preview) || replyStatus) {
+		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			if (count >= endCountValue) {
 				setCount(endCountValue);
 				return;
@@ -85,19 +83,19 @@ const NumberCounter = attributes => {
 			// eslint-disable-next-line consistent-return
 			return () => clearInterval(countRef.current);
 		}
-	}, [count, replyStatus, preview, endCountValue]);
+	}, [count, replayStatus, preview, endCountValue]);
 
 	useEffect(() => {
-		if ((startCountValue < endCountValue && preview) || replyStatus) {
+		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			if (count >= endCountValue) {
 				setCount(startCountValue);
-				setReplyStatus(false);
+				setReplayStatus(false);
 				clearInterval(countRef.current);
 			}
 		}
 	}, [
 		startCountValue,
-		replyStatus,
+		replayStatus,
 		endCountValue,
 		countDuration,
 		radius,
@@ -116,25 +114,15 @@ const NumberCounter = attributes => {
 			attributes,
 		}) === 'hidden';
 
+		replayCounter(() => {
+			setCount(startCountValue);
+			setReplayStatus(true);
+		   	clearInterval(countRef.current);
+		}	
+	);
+			
 	return (
-		<>
-			<MaxiPopoverButton
-				key={`popover-${uniqueID}`}
-				ref={blockRef}
-				isSelected={isSelected}
-				attributes={{ uniqueID }}
-				{...attributes}
-			>
-				<Button
-					className='maxi-number-counter__replay'
-					onClick={() => {
-						setCount(startCountValue);
-						setReplyStatus(true);
-						clearInterval(countRef.current);
-					}}
-					icon={replay}
-				/>
-			</MaxiPopoverButton>
+		
 			<BlockResizer
 				className='maxi-number-counter__box'
 				isOverflowHidden={getIsOverflowHidden()}
@@ -219,7 +207,6 @@ const NumberCounter = attributes => {
 					</span>
 				)}
 			</BlockResizer>
-		</>
 	);
 };
 
@@ -231,7 +218,10 @@ class edit extends MaxiBlockComponent {
 		super(props);
 
 		this.resizableObject = createRef();
+
 	}
+
+	resetNumberHelper;
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
@@ -303,6 +293,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='number-counter-'
 				{...this.props}
+				resetNumberHelper={this.resetNumberHelper}
 			/>,
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
@@ -325,6 +316,9 @@ class edit extends MaxiBlockComponent {
 					blockRef={this.blockRef}
 					isSelected={isSelected}
 					uniqueID={uniqueID}
+					replayCounter={fn => {
+						this.resetNumberHelper = fn;
+					}}
 				/>
 			</MaxiBlock>,
 		];

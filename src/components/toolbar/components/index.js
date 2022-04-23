@@ -19,6 +19,8 @@ export { default as IconSize } from './icon-size';
 export { default as ImageSize } from './image-size';
 export { default as Link } from './link';
 export { default as Mover } from './mover';
+export { default as NumberCounterReplay } from './number-counter-replay';
+export { default as TextLeve } from './number-counter-replay';
 export { default as PaddingMargin } from './padding-margin';
 export { default as ReusableBlocks } from './reusable-blocks';
 export { default as RowSettings } from './row-settings';

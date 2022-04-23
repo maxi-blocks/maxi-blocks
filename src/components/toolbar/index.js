@@ -30,6 +30,7 @@ import {
 	Duplicate,
 	Link,
 	Mover,
+	NumberCounterReplay,
 	Size,
 	SvgColor,
 	SvgWidth,
@@ -91,6 +92,7 @@ const MaxiToolbar = memo(
 			prefix = '',
 			backgroundGlobalProps,
 			resizableObject,
+			resetNumberHelper,
 		} = props;
 		const {
 			blockFullWidth,
@@ -354,6 +356,16 @@ const MaxiToolbar = memo(
 								)}
 								onChange={obj => maxiSetAttributes(obj)}
 								breakpoint={breakpoint}
+							/>
+							<NumberCounterReplay 
+								resetNumberHelper={resetNumberHelper}
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'numberCounterReplay'
+								)}
+								onChange={obj => maxiSetAttributes(obj)}
+								clientId={clientId}
 							/>
 							<ColumnsHandlers
 								toggleHandlers={toggleHandlers}

@@ -360,12 +360,6 @@ const MaxiToolbar = memo(
 							<NumberCounterReplay 
 								resetNumberHelper={resetNumberHelper}
 								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'numberCounterReplay'
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
 							/>
 							<ColumnsHandlers
 								toggleHandlers={toggleHandlers}

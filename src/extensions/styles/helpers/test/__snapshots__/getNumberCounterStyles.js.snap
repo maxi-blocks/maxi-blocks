@@ -15,7 +15,25 @@ Object {
       "general": Object {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
+      "l": Object {
+        "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+      },
       "label": "Number Counter",
+      "m": Object {
+        "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+      },
+      "s": Object {
+        "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+      },
+      "xl": Object {
+        "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+      },
+      "xs": Object {
+        "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+      },
+      "xxl": Object {
+        "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+      },
     },
   },
   " .maxi-number-counter__box .maxi-number-counter__box__text": Object {
@@ -25,14 +43,30 @@ Object {
         "font-family": "Roboto",
         "font-size": "40px",
       },
+      "l": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
       "label": "Number Counter",
+      "m": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "s": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xl": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xs": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xxl": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
     },
   },
   " .maxi-number-counter__box .maxi-number-counter__box__text tspan": Object {
     "numberCounterSup": Object {
-      "general": Object {
-        "font-size": "calc(26.666666666666668px)",
-      },
+      "general": Object {},
       "label": "Number Counter",
     },
   },

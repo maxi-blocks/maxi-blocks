@@ -40,14 +40,14 @@ describe('getNumberCounterStyles', () => {
 			'number-counter-stroke': 20,
 			'number-counter-duration': 1,
 			'number-counter-start-animation': 'page-load',
-			'number-counter-text-palette-status': true,
-			'number-counter-text-palette-color': 5,
+			'number-counter-text-palette-status-general': true,
+			'number-counter-text-palette-color-general': 5,
 			'number-counter-circle-background-palette-status': true,
 			'number-counter-circle-background-palette-color': 2,
-			'number-counter-circle-bar-palette-status': true,
-			'number-counter-circle-bar-palette-color': 4,
-			'number-counter-title-font-size': 40,
-			'number-counter-title-font-family': 'Roboto',
+			'number-counter-circle-bar-palette-status-general': true,
+			'number-counter-circle-bar-palette-color-general': 4,
+			'number-counter-title-font-size-general': 40,
+			'number-counter-title-font-family-general': 'Roboto',
 		};
 		const target = '.maxi-number-counter__box';
 		const blockStyle = 'light';

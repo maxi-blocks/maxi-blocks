@@ -8,6 +8,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import { getPropsFromChildren } from '../../indicators';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -92,6 +93,8 @@ const getTextStyles = (obj, blockStyle) => {
 	};
 
 	breakpoints.forEach(breakpoint => {
+		console.log(getColor(breakpoint));
+
 		response[breakpoint] = {
 			...(!isNil(obj[`number-counter-title-font-size-${breakpoint}`]) && {
 				'font-size': `${
@@ -109,6 +112,7 @@ const getTextStyles = (obj, blockStyle) => {
 		};
 	});
 
+	console.log(response);
 	return { numberCounterText: response };
 };
 

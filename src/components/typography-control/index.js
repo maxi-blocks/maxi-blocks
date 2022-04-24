@@ -735,6 +735,7 @@ const TypographyControl = withFormatValue(props => {
 					avoidXXL={!styleCards}
 				/>
 			</ResponsiveTabsControl>
+
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&
@@ -745,11 +746,10 @@ const TypographyControl = withFormatValue(props => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
 				}}
 				value={getValue(`${prefix}font-weight`)}
-				fontFamily={getValue(`${prefix}font-family`)}
+				fontName={getValue(`${prefix}font-family`)}
 				fontStyle={getValue(`${prefix}font-style`)}
 				prefix={prefix}
 			/>
-
 			<SelectControl
 				label={__('Text transform', 'maxi-blocks')}
 				className='maxi-typography-control__transform'

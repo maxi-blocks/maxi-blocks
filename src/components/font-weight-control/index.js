@@ -7,7 +7,8 @@ import { getWeightOptions } from '../../extensions/styles';
 import { loadFonts } from '../../extensions/text/fonts';
 
 const FontWeightControl = props => {
-	const { onChange, fontName, fontStyle, fontWeight, prefix } = props;
+	const { onChange, fontName, fontStyle, fontWeight } = props;
+
 	return (
 		<SelectControl
 			label={__('Font weight', 'maxi-blocks')}

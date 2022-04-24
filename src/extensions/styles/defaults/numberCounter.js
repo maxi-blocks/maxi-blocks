@@ -1,6 +1,7 @@
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const numberCounter = {
+export const numberCounter = {
 	'number-counter-status': {
 		type: 'boolean',
 		default: true,
@@ -50,14 +51,18 @@ const numberCounter = {
 		prefix: 'number-counter-circle-bar-',
 		palette: 4,
 	}),
-	'number-counter-title-font-size': {
-		type: 'number',
-		default: 40,
-	},
-	'number-counter-title-font-family': {
-		type: 'string',
-		default: 'Roboto',
-	},
+	...breakpointAttributesCreator({
+		obj: {
+			'number-counter-title-font-size': {
+				type: 'number',
+				default: 40,
+			},
+			'number-counter-title-font-family': {
+				type: 'string',
+				default: 'Roboto',
+			},
+		},
+	}),
 };
 
 export default numberCounter;

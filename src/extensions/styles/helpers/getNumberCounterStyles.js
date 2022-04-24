@@ -9,6 +9,8 @@ import getPaletteAttributes from '../getPaletteAttributes';
  */
 import { isNil } from 'lodash';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getCircleBarStyles = (obj, blockStyle) => {
 	const response = {
 		label: 'Number Counter',
@@ -73,14 +75,22 @@ const getTextStyles = (obj, blockStyle) => {
 			blockStyle,
 		});
 
-	if (!isNil(obj['number-counter-title-font-family']))
-		response.general['font-family'] =
-			obj['number-counter-title-font-family'];
-
-	if (!isNil(obj['number-counter-title-font-size']))
-		response.general[
-			'font-size'
-		] = `${obj['number-counter-title-font-size']}px`;
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {
+			...(!isNil(obj[`number-counter-title-font-size-${breakpoint}`]) && {
+				'font-size': `${
+					obj[`number-counter-title-font-size-${breakpoint}`]
+				}px`,
+			}),
+			...(!isNil(
+				obj[`number-counter-title-font-family-${breakpoint}`]
+			) && {
+				'font-family': `${
+					obj[`number-counter-title-font-family-${breakpoint}`]
+				}`,
+			}),
+		};
+	});
 
 	return { numberCounterText: response };
 };

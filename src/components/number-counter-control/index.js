@@ -32,7 +32,6 @@ import './editor.scss';
  */
 const NumberCounterControl = props => {
 	const { className, breakpoint, onChange } = props;
-
 	const classes = classnames('maxi-number-counter-control', className);
 
 	const minMaxSettings = {
@@ -205,12 +204,17 @@ const NumberCounterControl = props => {
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
 				defaultValue={getDefaultAttribute(
-					'number-counter-title-font-family'
+					`number-counter-title-font-family-${breakpoint}`
 				)}
-				font={props['number-counter-title-font-family']}
+				font={getLastBreakpointAttribute({
+					target: 'number-counter-title-font-family',
+					breakpoint,
+					attributes: props,
+				})}
 				onChange={font =>
 					onChange({
-						'number-counter-title-font-family': font.value,
+						[`number-counter-title-font-family-${breakpoint}`]:
+							font.value,
 					})
 				}
 			/>
@@ -220,15 +224,22 @@ const NumberCounterControl = props => {
 				max={99}
 				initial={32}
 				step={1}
-				value={props['number-counter-title-font-size']}
+				value={getLastBreakpointAttribute({
+					target: 'number-counter-title-font-size',
+					breakpoint,
+					attributes: props,
+				})}
 				onChangeValue={val =>
-					onChange({ 'number-counter-title-font-size': val })
+					onChange({
+						[`number-counter-title-font-size-${breakpoint}`]: val,
+					})
 				}
 				onReset={() =>
 					onChange({
-						'number-counter-title-font-size': getDefaultAttribute(
-							'number-counter-title-font-size'
-						),
+						[`number-counter-title-font-size-${breakpoint}`]:
+							getDefaultAttribute(
+								`number-counter-title-font-size-${breakpoint}`
+							),
 					})
 				}
 			/>

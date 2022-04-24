@@ -56,7 +56,6 @@ const NumberCounter = attributes => {
 		isSelected,
 		uniqueID,
 	} = attributes;
-
 	const countRef = useRef(null);
 
 	const startCountValue = Math.ceil((startNumber * 360) / 100);

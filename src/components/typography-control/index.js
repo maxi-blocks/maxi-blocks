@@ -922,7 +922,7 @@ const TypographyControl = withFormatValue(props => {
 				options={[
 					{
 						label: __('None', 'maxi-blocks'),
-						value: '',
+						value: 'unset',
 					},
 					{
 						label: __('Mixed', 'maxi-blocks'),

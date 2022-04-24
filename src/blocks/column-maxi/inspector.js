@@ -61,6 +61,10 @@ const Inspector = props => {
 													breakpoint={deviceType}
 												/>
 											),
+											extraIndicators: [
+												`column-fit-content-${deviceType}`,
+												`column-size-${deviceType}`,
+											],
 										},
 										...inspectorTabs.blockBackground({
 											props,

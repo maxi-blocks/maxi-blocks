@@ -41,6 +41,18 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										...inspectorTabs.alignment({
+											props: {
+												...props,
+											},
+											isAlignment: true,
+											isTextAlignment: false,
+											alignmentLabel: __(
+												'Counter',
+												'maxi-blocks'
+											),
+											disableJustify: true,
+										}),
 										{
 											label: __('Number', 'maxi-blocks'),
 											content: (

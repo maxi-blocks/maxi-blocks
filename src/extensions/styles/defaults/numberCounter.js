@@ -1,4 +1,5 @@
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import alignment from './alignment';
 
 const numberCounter = {
 	'number-counter-status': {
@@ -58,6 +59,10 @@ const numberCounter = {
 		type: 'string',
 		default: 'Roboto',
 	},
+	'number-counter-title-font-weight': {
+		type: 'string',
+	},
+	...alignment,
 };
 
 export default numberCounter;

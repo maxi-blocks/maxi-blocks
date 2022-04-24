@@ -58,7 +58,6 @@ const NumberCounter = attributes => {
 	} = attributes;
 
 	const countRef = useRef(null);
-
 	const startCountValue = Math.ceil((startNumber * 360) / 100);
 	const endCountValue = Math.ceil((endNumber * 360) / 100);
 	const radius = 90;

@@ -11,6 +11,7 @@ import ColorControl from '../color-control';
 import ToggleSwitch from '../toggle-switch';
 import FontFamilySelector from '../font-family-selector';
 import SelectControl from '../select-control';
+import FontWeightControl from '../font-weight-control';
 
 import {
 	getDefaultAttribute,
@@ -214,6 +215,15 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			<FontWeightControl
+				onChange={val => {
+					onChange({ ['number-counter-title-font-weight']: val });
+				}}
+				value={props['number-counter-title-font-weight']}
+				fontName={props['number-counter-title-font-family']}
+				prefix='number-counter-title-'
+				fontStyle=''
+			/>
 			<AdvancedNumberControl
 				label={__('Title Font Size', 'maxi-blocks')}
 				min={0}
@@ -232,6 +242,7 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+
 			<ToggleSwitch
 				className='number-counter-percentage-sign-status'
 				label={__('Show Percentage Sign', 'maxi-block')}

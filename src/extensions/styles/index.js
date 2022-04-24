@@ -17,5 +17,6 @@ export { default as setHoverAttributes } from './setHoverAttributes';
 export { default as styleGenerator } from './styleGenerator';
 export { default as styleResolver } from './styleResolver';
 export { default as stylesCleaner } from './stylesCleaner';
+export { default as getWeightOptions } from './getWeightOptions';
 
 export * from './utils';

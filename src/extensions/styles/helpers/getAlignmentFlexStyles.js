@@ -16,18 +16,18 @@ const getAlignmentFlexStyles = obj => {
 			switch (obj[`alignment-${breakpoint}`]) {
 				case 'left':
 					response[breakpoint] = {
-						'align-items': 'flex-start',
+						'justify-content': 'flex-start',
 					};
 					break;
 				case 'center':
 				case 'justify':
 					response[breakpoint] = {
-						'align-items': 'center',
+						'justify-content': 'center',
 					};
 					break;
 				case 'right':
 					response[breakpoint] = {
-						'align-items': 'flex-end',
+						'justify-content': 'flex-end',
 					};
 					break;
 				default:

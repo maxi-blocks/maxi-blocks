@@ -42,7 +42,7 @@ export const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
-	...paletteAttributesCreator({ prefix: 'number-counter-text-', palette: 4 }),
+
 	...paletteAttributesCreator({
 		prefix: 'number-counter-circle-background-',
 		palette: 2,
@@ -51,6 +51,7 @@ export const numberCounter = {
 		prefix: 'number-counter-circle-bar-',
 		palette: 4,
 	}),
+
 	...breakpointAttributesCreator({
 		obj: {
 			'number-counter-title-font-size': {
@@ -61,6 +62,14 @@ export const numberCounter = {
 				type: 'string',
 				default: 'Roboto',
 			},
+			...paletteAttributesCreator({
+				prefix: 'number-counter-text-',
+				palette: 4,
+			}),
+			...paletteAttributesCreator({
+				prefix: 'number-counter-circle-bar-',
+				palette: 4,
+			}),
 		},
 	}),
 };

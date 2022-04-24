@@ -46,7 +46,6 @@ const NumberCounter = attributes => {
 		'number-counter-stroke': stroke,
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
-		'number-counter-title-font-size': fontSize,
 		'number-counter-percentage-sign-status': usePercentage,
 		'number-counter-start': startNumber,
 		'number-counter-end': endNumber,
@@ -102,6 +101,12 @@ const NumberCounter = attributes => {
 		radius,
 		stroke,
 	]);
+
+	const fontSize = getLastBreakpointAttribute({
+		target: 'number-counter-title-font-size',
+		breakpoint: deviceType,
+		attributes,
+	});
 
 	const getIsOverflowHidden = () =>
 		getLastBreakpointAttribute({

@@ -286,10 +286,26 @@ const NumberCounterControl = props => {
 			<hr />
 			<ColorControl
 				label={__('Text', 'maxi-blocks')}
-				paletteStatus={props['number-counter-text-palette-status']}
-				paletteColor={props['number-counter-text-palette-color']}
-				paletteOpacity={props['number-counter-palette-text-opacity']}
-				color={props['number-counter-text-color']}
+				paletteStatus={getLastBreakpointAttribute({
+					target: `number-counter-text-palette-status`,
+					breakpoint,
+					attributes: props,
+				})}
+				paletteColor={getLastBreakpointAttribute({
+					target: `number-counter-text-palette-color`,
+					breakpoint,
+					attributes: props,
+				})}
+				paletteOpacity={getLastBreakpointAttribute({
+					target: `number-counter-palette-text-opacity`,
+					breakpoint,
+					attributes: props,
+				})}
+				color={getLastBreakpointAttribute({
+					target: `number-counter-text-color`,
+					breakpoint,
+					attributes: props,
+				})}
 				prefix='number-counter-text-'
 				onChange={({
 					paletteStatus,
@@ -298,10 +314,13 @@ const NumberCounterControl = props => {
 					color,
 				}) =>
 					onChange({
-						'number-counter-text-palette-status': paletteStatus,
-						'number-counter-text-palette-color': paletteColor,
-						'number-counter-palette-text-opacity': paletteOpacity,
-						'number-counter-text-color': color,
+						[`number-counter-text-palette-status-${breakpoint}`]:
+							paletteStatus,
+						[`number-counter-text-palette-color-${breakpoint}`]:
+							paletteColor,
+						[`number-counter-palette-text-opacity-${breakpoint}`]:
+							paletteOpacity,
+						[`number-counter-text-color-${breakpoint}`]: color,
 					})
 				}
 			/>
@@ -347,16 +366,26 @@ const NumberCounterControl = props => {
 					<hr />
 					<ColorControl
 						label={__('Circle Bar', 'maxi-blocks')}
-						paletteStatus={
-							props['number-counter-circle-bar-palette-status']
-						}
-						paletteColor={
-							props['number-counter-circle-bar-palette-color']
-						}
-						paletteOpacity={
-							props['number-counter-circle-bar-palette-opacity']
-						}
-						color={props['number-counter-circle-bar-color']}
+						paletteStatus={getLastBreakpointAttribute({
+							target: `number-counter-circle-bar-palette-status`,
+							breakpoint,
+							attributes: props,
+						})}
+						paletteColor={getLastBreakpointAttribute({
+							target: `number-counter-circle-bar-palette-color`,
+							breakpoint,
+							attributes: props,
+						})}
+						paletteOpacity={getLastBreakpointAttribute({
+							target: `number-counter-circle-bar-palette-opacity`,
+							breakpoint,
+							attributes: props,
+						})}
+						color={getLastBreakpointAttribute({
+							target: `number-counter-circle-bar-color`,
+							breakpoint,
+							attributes: props,
+						})}
 						prefix='number-counter-circle-bar-'
 						onChange={({
 							paletteStatus,
@@ -365,13 +394,14 @@ const NumberCounterControl = props => {
 							color,
 						}) =>
 							onChange({
-								'number-counter-circle-bar-palette-status':
+								[`number-counter-circle-bar-palette-status-${breakpoint}`]:
 									paletteStatus,
-								'number-counter-circle-bar-palette-color':
+								[`number-counter-circle-bar-palette-color-${breakpoint}`]:
 									paletteColor,
-								'number-counter-circle-bar-palette-opacity':
+								[`number-counter-circle-bar-palette-opacity-${breakpoint}`]:
 									paletteOpacity,
-								'number-counter-circle-bar-color': color,
+								[`number-counter-circle-bar-color-${breakpoint}`]:
+									color,
 							})
 						}
 					/>

@@ -17,18 +17,29 @@ const getCircleBarStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: 'number-counter-circle-bar-' });
+	const getColor = breakpoint => {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: 'number-counter-circle-bar-',
+				breakpoint,
+			});
+		if (!paletteStatus && !isNil(color)) {
+			return color;
+		} else if (paletteStatus && paletteColor) {
+			return getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: obj[paletteOpacity],
+				blockStyle,
+			});
+		}
+	};
 
-	if (!paletteStatus && !isNil(color)) {
-		response.general.stroke = color;
-	} else if (paletteStatus && paletteColor) {
-		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${paletteColor}`,
-			opacity: obj[paletteOpacity],
-			blockStyle,
-		});
-	}
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {
+			stroke: getColor(breakpoint),
+		};
+	});
 
 	return { numberCounterCircleBar: response };
 };
@@ -62,18 +73,23 @@ const getTextStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: 'number-counter-text-' });
-
 	const typeOfStyle = obj['number-counter-circle-status'] ? 'color' : 'fill';
 
-	if (!paletteStatus && !isNil(color)) response.general[typeOfStyle] = color;
-	else if (paletteStatus && paletteColor)
-		response.general[typeOfStyle] = getColorRGBAString({
-			firstVar: `color-${paletteColor}`,
-			opacity: paletteOpacity,
-			blockStyle,
-		});
+	const getColor = breakpoint => {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: 'number-counter-text-',
+				breakpoint,
+			});
+		if (!paletteStatus && !isNil(color)) return color;
+		else if (paletteStatus && paletteColor)
+			return getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+	};
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
@@ -89,6 +105,7 @@ const getTextStyles = (obj, blockStyle) => {
 					obj[`number-counter-title-font-family-${breakpoint}`]
 				}`,
 			}),
+			[typeOfStyle]: getColor(breakpoint),
 		};
 	});
 

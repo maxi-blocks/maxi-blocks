@@ -17,14 +17,17 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
+import { isEmpty, isEqual, isNil, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -69,6 +72,60 @@ const Inspector = memo(
 			)
 				newDefaultPresets[`preset${number}`]['icon-content'] =
 					attributes['icon-content'];
+
+			if (type === 'icon') {
+				const iconContent = attributes['icon-content']
+					? attributes['icon-content']
+					: defaultPresets[`preset${number}`]['icon-content'];
+
+				const strokeRegExp = new RegExp(
+					'stroke=[^-]([^none])([^\\"]+)',
+					'g'
+				);
+				const strokeStr2 = ` stroke="${'#00ff00'}`;
+				iconContent.replace(strokeRegExp, strokeStr2);
+
+				newDefaultPresets[`preset${number}`]['icon-content'] =
+					iconContent;
+			}
+
+			if (
+				!isNil(
+					defaultPresets[`preset${number}`][
+						'icon-border-style-general-hover'
+					]
+				) &&
+				defaultPresets[`preset${number}`][
+					'icon-border-style-general-hover'
+				] !== 'none'
+			) {
+				const hover = getGroupAttributes(
+					{ ...newDefaultPresets[`preset${number}`] },
+					['border', 'borderWidth', 'borderRadius'],
+					true,
+					'icon-'
+				);
+
+				const nonHover = getGroupAttributes(
+					{ ...newDefaultPresets[`preset${number}`] },
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					'icon-'
+				);
+
+				Object.keys(hover).forEach(h => {
+					if (!h.includes('hover')) delete hover[h];
+				});
+				Object.keys(nonHover).forEach(h => {
+					if (h.includes('hover')) delete nonHover[h];
+				});
+				setHoverAttributes(nonHover, hover);
+
+				newDefaultPresets[`preset${number}`] = {
+					...newDefaultPresets[`preset${number}`],
+					...hover,
+				};
+			}
 
 			maxiSetAttributes({
 				...newDefaultPresets[`preset${number}`],

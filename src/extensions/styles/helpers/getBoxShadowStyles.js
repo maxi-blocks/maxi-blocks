@@ -9,7 +9,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { round, isNumber } from 'lodash';
+import { round, isNumber, isNil } from 'lodash';
 import getAttributeValue from '../getAttributeValue';
 
 /**
@@ -84,6 +84,22 @@ const getBoxShadowStyles = ({
 		const { value: spread, defaultValue: defaultSpread } =
 			getValue('spread');
 
+		// Horizontal Unit
+		const { value: horizontalUnit, defaultValue: defaultHorizontalUnit } =
+			getValue('horizontal-unit');
+
+		// Vertical Unit
+		const { value: verticalUnit, defaultValue: defaultVerticalUnit } =
+			getValue('vertical-unit');
+
+		// Blur Unit
+		const { value: blurUnit, defaultValue: defaultBlurUnit } =
+			getValue('blur-unit');
+
+		// Spread Unit
+		const { value: spreadUnit, defaultValue: defaultSpreadUnit } =
+			getValue('spread-unit');
+
 		// Palette
 		const paletteStatus = getLastBreakpointAttribute({
 			target: `${prefix}box-shadow-palette-status`,
@@ -113,7 +129,12 @@ const getBoxShadowStyles = ({
 				vertical !== 0 &&
 				vertical !== defaultVertical) ||
 			(isNumber(blur) && blur !== 0 && blur !== defaultBlur) ||
-			(isNumber(spread) && spread !== 0 && spread !== defaultSpread);
+			(isNumber(spread) && spread !== 0 && spread !== defaultSpread) ||
+			(!isNil(horizontalUnit) &&
+				horizontalUnit !== defaultHorizontalUnit) ||
+			(!isNil(verticalUnit) && verticalUnit !== defaultVerticalUnit) ||
+			(!isNil(blurUnit) && blurUnit !== defaultBlurUnit) ||
+			(!isNil(spreadUnit) && spreadUnit !== defaultSpreadUnit);
 
 		const horizontalValue = isNumber(horizontal)
 			? horizontal
@@ -125,9 +146,9 @@ const getBoxShadowStyles = ({
 				? round(blur / 3)
 				: round(defaultBlur / 3);
 
-			boxShadowString += `${horizontalValue || 0}px `;
-			boxShadowString += `${verticalValue || 0}px `;
-			boxShadowString += `${blurValue || 0}px `;
+			boxShadowString += `${horizontalValue || 0}${horizontalUnit} `;
+			boxShadowString += `${verticalValue || 0}${verticalUnit} `;
+			boxShadowString += `${blurValue || 0}${blurUnit} `;
 			boxShadowString += color || defaultColor;
 
 			response[breakpoint] = {
@@ -137,10 +158,10 @@ const getBoxShadowStyles = ({
 			const blurValue = isNumber(blur) ? blur : defaultBlur;
 			const spreadValue = isNumber(spread) ? spread : defaultSpread;
 
-			boxShadowString += `${horizontalValue || 0}px `;
-			boxShadowString += `${verticalValue || 0}px `;
-			boxShadowString += `${blurValue || 0}px `;
-			boxShadowString += `${spreadValue || 0}px `;
+			boxShadowString += `${horizontalValue || 0}${horizontalUnit} `;
+			boxShadowString += `${verticalValue || 0}${verticalUnit} `;
+			boxShadowString += `${blurValue || 0}${blurUnit} `;
+			boxShadowString += `${spreadValue || 0}${spreadUnit} `;
 			boxShadowString += color || defaultColor;
 
 			response[breakpoint] = {

@@ -210,6 +210,7 @@ const dimensionTab = props => {
 				/>
 			</>
 		),
+		extraIndicators: ['imageRatio', 'imgWidth'],
 	};
 };
 
@@ -488,6 +489,9 @@ const Inspector = memo(
 														)}
 													</>
 												),
+												extraIndicators: [
+													'captionType',
+												],
 											},
 											{
 												label: __(
@@ -543,6 +547,13 @@ const Inspector = memo(
 														breakpoint={deviceType}
 													/>
 												),
+												extraIndicators: ['SVGElement'],
+												ignoreIndicator: [
+													`image-shape-scale-${deviceType}`,
+													`image-shape-rotate-${deviceType}`,
+													`image-shape-flip-x-${deviceType}`,
+													`image-shape-flip-y-${deviceType}`,
+												],
 											},
 											{
 												label: __(
@@ -562,11 +573,13 @@ const Inspector = memo(
 															false,
 															''
 														)}
-														{...attributes}
 														breakpoint={deviceType}
 														prefix=''
 													/>
 												),
+												ignoreIndicator: [
+													`clip-path-${deviceType}`,
+												],
 											},
 											...inspectorTabs.border({
 												props,

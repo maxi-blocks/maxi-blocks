@@ -33,6 +33,7 @@ import {
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -191,6 +192,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}

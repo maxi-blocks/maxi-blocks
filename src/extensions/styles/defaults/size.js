@@ -23,7 +23,7 @@ export const rawWidth = {
 		default: 'px',
 	},
 	width: {
-		type: 'number',
+		type: 'string',
 	},
 };
 

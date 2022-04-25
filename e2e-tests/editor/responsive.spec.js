@@ -505,8 +505,8 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectPaddingOnM = {
-			'button-padding-top-general': 0,
-			'button-padding-top-xl': 0,
+			'button-padding-top-general': '0',
+			'button-padding-top-xl': '0',
 		};
 
 		const paddingOnM = await getAttributes([
@@ -519,8 +519,8 @@ describe('Responsive attributes mechanisms', () => {
 		await changeResponsive(page, 'xxl');
 
 		const expectPaddingOnXl = {
-			'button-padding-top-general': 0,
-			'button-padding-top-xl': 0,
+			'button-padding-top-general': '0',
+			'button-padding-top-xl': '0',
 			'button-padding-top-xxl': 23,
 		};
 
@@ -560,8 +560,8 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingOnXl = {
-			'padding-top-general': 10,
-			'padding-top-xxl': 10,
+			'padding-top-general': '10',
+			'padding-top-xxl': '10',
 			'padding-top-xl': undefined,
 		};
 
@@ -587,9 +587,9 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectPaddingOnXxl = {
-			'padding-top-general': 15,
+			'padding-top-general': '15',
 			'padding-top-xl': undefined,
-			'padding-top-xxl': 15,
+			'padding-top-xxl': '15',
 		};
 
 		const paddingOnXxl = await getAttributes([

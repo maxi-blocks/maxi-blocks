@@ -26,6 +26,7 @@ describe('ResponsiveControl', () => {
 		});
 
 		expect(await getAttributes('breakpoints-xs')).toStrictEqual(450);
+	});
 
 	/* it('Check Responsive to responsive control', async () => {
 		const input = await page.$('.maxi-responsive-control input');

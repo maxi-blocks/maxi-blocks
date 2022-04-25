@@ -85,7 +85,9 @@ const BoxShadowValueControl = props => {
 			})}
 			onChangeUnit={val =>
 				onChange({
-					[`${prefix}box-shadow-${type}-unit-${breakpoint}`]: val,
+					[`${prefix}box-shadow-${type}-unit-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: val,
 				})
 			}
 			allowedUnits={['px', 'em', 'vw']}

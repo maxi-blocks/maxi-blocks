@@ -5,7 +5,7 @@ import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { isNil } from 'lodash';
 
-const getWeightOptions = fontFamily => {
+export const getWeightOptions = fontFamily => {
 	const { getFont } = select('maxiBlocks/text');
 
 	if (!isNil(fontFamily)) {
@@ -71,4 +71,3 @@ const getWeightOptions = fontFamily => {
 	}
 	return null;
 };
-export default getWeightOptions;

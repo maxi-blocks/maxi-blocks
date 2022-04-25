@@ -610,7 +610,6 @@ const TypographyControl = withFormatValue(props => {
 		return nonHoverValue;
 	};
 
-	//const getWeightOptions = () => {};
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 

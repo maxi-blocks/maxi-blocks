@@ -46,7 +46,6 @@ const Inspector = props => {
 												...props,
 											},
 											isAlignment: true,
-											isTextAlignment: false,
 											alignmentLabel: __(
 												'Counter',
 												'maxi-blocks'

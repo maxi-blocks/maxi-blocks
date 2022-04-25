@@ -197,9 +197,7 @@ wp.domReady(() => {
 							iframeDocument.body.classList.add(
 								'maxi-blocks--active'
 							);
-							const editorWrapper = iframeDocument.querySelector(
-								'.editor-styles-wrapper'
-							);
+							const editorWrapper = iframeDocument.body;
 							editorWrapper.setAttribute(
 								'maxi-blocks-responsive',
 								mutation.target.classList.contains(

@@ -146,9 +146,11 @@ const getBoxShadowStyles = ({
 				? round(blur / 3)
 				: round(defaultBlur / 3);
 
-			boxShadowString += `${horizontalValue || 0}${horizontalUnit} `;
-			boxShadowString += `${verticalValue || 0}${verticalUnit} `;
-			boxShadowString += `${blurValue || 0}${blurUnit} `;
+			boxShadowString += `${horizontalValue || 0}${
+				horizontalUnit || 'px'
+			} `;
+			boxShadowString += `${verticalValue || 0}${verticalUnit || 'px'} `;
+			boxShadowString += `${blurValue || 0}${blurUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
 			response[breakpoint] = {
@@ -158,10 +160,12 @@ const getBoxShadowStyles = ({
 			const blurValue = isNumber(blur) ? blur : defaultBlur;
 			const spreadValue = isNumber(spread) ? spread : defaultSpread;
 
-			boxShadowString += `${horizontalValue || 0}${horizontalUnit} `;
-			boxShadowString += `${verticalValue || 0}${verticalUnit} `;
-			boxShadowString += `${blurValue || 0}${blurUnit} `;
-			boxShadowString += `${spreadValue || 0}${spreadUnit} `;
+			boxShadowString += `${horizontalValue || 0}${
+				horizontalUnit || 'px'
+			} `;
+			boxShadowString += `${verticalValue || 0}${verticalUnit || 'px'} `;
+			boxShadowString += `${blurValue || 0}${blurUnit || 'px'} `;
+			boxShadowString += `${spreadValue || 0}${spreadUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
 			response[breakpoint] = {

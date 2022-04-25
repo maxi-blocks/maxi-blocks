@@ -37,6 +37,7 @@ import {
 	getHasNativeFormat,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -141,10 +142,10 @@ class edit extends MaxiBlockComponent {
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
 				hoverPreview &&
-				`maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
+				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
 			hoverType === 'text' &&
 				hoverPreview &&
-				`maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
+				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
 			hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
@@ -259,6 +260,8 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 				propsToAvoid={['captionContent', 'formatValue']}
+				copyPasteMapping={copyPasteMapping}
+				prefix='image-'
 			/>,
 			<MaxiPopoverButton
 				key={`popover-${uniqueID}`}

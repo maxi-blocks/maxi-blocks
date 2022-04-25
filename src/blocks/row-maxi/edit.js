@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { compose, withInstanceId } from '@wordpress/compose';
-import { withSelect, useDispatch } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import { Button, Icon } from '@wordpress/components';
 
 /**
@@ -20,6 +20,7 @@ import MaxiBlock from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -35,7 +36,6 @@ const RowBlockTemplate = ({
 	instanceId,
 	maxiSetAttributes,
 	deviceType,
-	removeColumnGap,
 }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
@@ -57,7 +57,6 @@ const RowBlockTemplate = ({
 							});
 							loadColumnsTemplate(
 								template.name,
-								removeColumnGap,
 								clientId,
 								deviceType
 							);
@@ -101,7 +100,7 @@ class edit extends MaxiBlockComponent {
 			instanceId,
 			maxiSetAttributes,
 		} = this.props;
-		const { uniqueID, removeColumnGap } = attributes;
+		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
@@ -119,6 +118,7 @@ class edit extends MaxiBlockComponent {
 						displayHandlers: !this.state.displayHandlers,
 					});
 				}}
+				copyPasteMapping={copyPasteMapping}
 				{...this.props}
 			/>,
 			<RowContext.Provider
@@ -146,7 +146,6 @@ class edit extends MaxiBlockComponent {
 										instanceId={instanceId}
 										maxiSetAttributes={maxiSetAttributes}
 										deviceType={deviceType}
-										removeColumnGap={removeColumnGap}
 									/>
 							  )
 							: false,

@@ -1,41 +1,26 @@
+/**
+ * Internal dependencies
+ */
 import getColumnsPosition from './getColumnsPosition';
 
-const getGeneralColumnAttributes = ({
-	column,
-	columnPosition,
-	proportion,
-	isFirst,
-}) => {
+/**
+ * External dependencies
+ */
+import { round } from 'lodash';
+
+const getGeneralColumnAttributes = ({ column, columnPosition }) => {
 	return {
-		'column-size-general': column * proportion,
+		'column-size-general': round(column * 100, 2),
 		'column-size-m': 100,
-		...(!isFirst && {
-			'margin-top-m': '2.5',
-			'margin-unit-m': '%',
-		}),
 		...(columnPosition.columnsNumber === 1 && {
 			'column-size-general': 100,
 		}),
 	};
 };
 
-const getColumnAttributes = ({
-	column,
-	breakpoint,
-	columnPosition,
-	proportion,
-	removeColumnGap,
-}) => {
+const getColumnAttributes = ({ column, breakpoint, columnPosition }) => {
 	return {
-		[`column-size-${breakpoint}`]: column * proportion,
-		...(columnPosition.rowNumber !== 1 &&
-			!removeColumnGap && {
-				[`margin-top-${breakpoint}`]: '2.5',
-				[`margin-unit-${breakpoint}`]: '%',
-			}),
-		...((columnPosition.rowNumber === 1 || removeColumnGap) && {
-			[`margin-top-${breakpoint}`]: '0',
-		}),
+		[`column-size-${breakpoint}`]: round(column * 100, 2),
 		...(columnPosition.columnsNumber === 1 && {
 			[`column-size-${breakpoint}`]: 100,
 		}),
@@ -48,30 +33,23 @@ const getColumnAttributes = ({
  * @param {Array} sizes array of columns widths
  * @return {Array} columns sizes after applying the gap
  */
-const columnAttributesGenerator = (columns, removeColumnGap, breakpoint) => {
+const columnAttributesGenerator = (columns, breakpoint) => {
 	const newColumnsSizes = [];
 	const columnsPositions = getColumnsPosition(columns);
-	const gap = !removeColumnGap ? 2.5 : 0;
 
 	const isResponsive = breakpoint !== 'general';
 
 	columns.forEach((column, i) => {
-		const numberOfGaps = columnsPositions[i].columnsNumber - 1;
-		const proportion = 100 - gap * numberOfGaps;
 		newColumnsSizes.push(
 			(!isResponsive &&
 				getGeneralColumnAttributes({
 					column,
 					columnPosition: columnsPositions[i],
-					proportion,
-					isFirst: !i,
 				})) ||
 				getColumnAttributes({
 					column,
 					breakpoint,
 					columnPosition: columnsPositions[i],
-					proportion,
-					removeColumnGap,
 				})
 		);
 	});

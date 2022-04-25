@@ -179,6 +179,115 @@ describe('FlexSettings', () => {
 			'%'
 		);
 
+		// flex-child responsive
+		// check s
+		await changeResponsive(page, 's');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__order'),
+			newNumber: '2',
+		});
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__flex-grow'),
+			newNumber: '5',
+		});
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__flex-shrink'),
+			newNumber: '4',
+		});
+
+		await page.waitForTimeout(100);
+
+		const flexBasisSelectorS = await page.$(
+			'.maxi-typography-control__flex-basis select'
+		);
+		await page.waitForTimeout(100);
+
+		await flexBasisSelectorS.select('fit-content');
+
+		const attributeResultS = await getAttributes([
+			'flex-basis-s',
+			'flex-grow-s',
+			'flex-shrink-s',
+			'order-s',
+		]);
+
+		const expectedAttributesS = {
+			'flex-basis-s': 'fit-content',
+			'flex-grow-s': 5,
+			'flex-shrink-s': 4,
+			'order-s': 2,
+		};
+		expect(attributeResultS).toStrictEqual(expectedAttributesS);
+
+		// check xs
+		await changeResponsive(page, 'xs');
+		const flexShrinkXS = await page.$eval(
+			'.maxi-typography-control__flex-shrink input',
+			input => input.value
+		);
+
+		expect(flexShrinkXS).toStrictEqual('4');
+
+		const flexGrowXS = await page.$eval(
+			'.maxi-typography-control__flex-grow input',
+			input => input.value
+		);
+
+		expect(flexGrowXS).toStrictEqual('5');
+
+		const orderXS = await page.$eval(
+			'.maxi-typography-control__order input',
+			input => input.value
+		);
+
+		expect(orderXS).toStrictEqual('2');
+
+		const flexBasisXS = await page.$eval(
+			'.maxi-typography-control__flex-basis select',
+			input => input.value
+		);
+
+		expect(flexBasisXS).toStrictEqual('fit-content');
+
+		// check m
+		await changeResponsive(page, 'm');
+
+		const flexShrinkM = await page.$eval(
+			'.maxi-typography-control__flex-shrink input',
+			input => input.value
+		);
+
+		expect(flexShrinkM).toStrictEqual('6');
+
+		const flexGrowM = await page.$eval(
+			'.maxi-typography-control__flex-grow input',
+			input => input.value
+		);
+
+		expect(flexGrowM).toStrictEqual('10');
+
+		const orderM = await page.$eval(
+			'.maxi-typography-control__order input',
+			input => input.value
+		);
+
+		expect(orderM).toStrictEqual('4');
+
+		await page.waitForTimeout(100);
+
+		const flexBasisM = await page.$eval(
+			'.maxi-typography-control__flex-basis select',
+			input => input.value
+		);
+
+		expect(flexBasisM).toStrictEqual('');
+
 		// warning box
 		const warningBoxFlex = await accordionPanel.$eval(
 			'.maxi-warning-box',
@@ -189,6 +298,7 @@ describe('FlexSettings', () => {
 	it('Checking the flex options responsive', async () => {
 		// this openSidebar is required
 		await openSidebarTab(page, 'advanced', 'overflow');
+		await changeResponsive(page, 'base');
 		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
 

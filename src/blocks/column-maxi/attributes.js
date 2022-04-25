@@ -25,10 +25,6 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	verticalAlign: {
-		type: 'string',
-		default: 'stretch',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

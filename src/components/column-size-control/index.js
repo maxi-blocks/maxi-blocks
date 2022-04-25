@@ -20,7 +20,7 @@ import { ToggleSwitch } from '../../components';
  * Component
  */
 const ColumnSizeControl = props => {
-	const { verticalAlign, rowPattern, clientId, onChange, breakpoint } = props;
+	const { breakpoint, rowPattern, clientId, onChange } = props;
 
 	return (
 		<>
@@ -83,7 +83,11 @@ const ColumnSizeControl = props => {
 			)}
 			<SelectControl
 				label={__('Vertical align', 'maxi-blocks')}
-				value={verticalAlign}
+				value={getLastBreakpointAttribute({
+					target: 'justify-content',
+					breakpoint,
+					attributes: props,
+				})}
 				options={[
 					{
 						label: __('Top', 'maxi-blocks'),
@@ -108,7 +112,7 @@ const ColumnSizeControl = props => {
 				]}
 				onChange={verticalAlign =>
 					onChange({
-						verticalAlign,
+						[`justify-content-${breakpoint}`]: verticalAlign,
 					})
 				}
 			/>

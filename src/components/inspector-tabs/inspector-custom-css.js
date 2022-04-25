@@ -44,6 +44,7 @@ const customCss = ({
 				}
 			/>
 		),
+		extraIndicators: [`custom-css-${breakpoint}`],
 	};
 };
 

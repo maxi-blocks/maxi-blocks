@@ -75,15 +75,8 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 	});
 };
 
-const loadColumnsTemplate = (
-	templateName,
-	removeColumnGap,
-	clientId,
-	breakpoint
-) => {
-	const template = cloneDeep(
-		getColumnTemplate(templateName, removeColumnGap, breakpoint)
-	);
+const loadColumnsTemplate = (templateName, clientId, breakpoint) => {
+	const template = cloneDeep(getColumnTemplate(templateName, breakpoint));
 	const columnsBlockObjects = wp.data
 		.select('core/block-editor')
 		.getBlock(clientId).innerBlocks;

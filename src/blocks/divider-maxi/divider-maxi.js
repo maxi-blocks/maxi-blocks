@@ -31,7 +31,7 @@ import { dividerIcon } from '../../icons';
 registerBlockType('maxi-blocks/divider-maxi', {
 	title: __('Divider Maxi', 'maxi-blocks'),
 	icon: dividerIcon,
-	description: 'Create a horizontal divider between visual elements',
+	description: 'Create a divider between visual elements',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

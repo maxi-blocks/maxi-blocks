@@ -187,6 +187,18 @@ wp.domReady(() => {
 						);
 						const iframeDocument = iframe.contentDocument;
 
+						const editorWrapper = iframeDocument.querySelector(
+							'.editor-styles-wrapper'
+						);
+						editorWrapper.setAttribute(
+							'maxi-blocks-responsive',
+							mutation.target.classList.contains(
+								'is-tablet-preview'
+							)
+								? 's'
+								: 'xs'
+						);
+
 						if (
 							iframe &&
 							!iframeDocument.body.classList.contains(

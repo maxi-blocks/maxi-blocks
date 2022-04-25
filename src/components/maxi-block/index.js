@@ -303,6 +303,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		(motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status']) &&
 			`maxi-sd-effect maxi-sd-effect-${uniqueID}`,
+		// blockStyle is included 'maxi-' prefix before #2885, now it's not and we need to add prefix to className
+		// to support old blocks, we check if blockStyle has 'maxi-' prefix
 		blockStyle && blockStyle.includes('maxi-')
 			? blockStyle
 			: `maxi-${blockStyle}`,

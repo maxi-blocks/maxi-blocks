@@ -346,6 +346,27 @@ Object {
   "button-box-shadow-blur-s-hover": Object {
     "type": "number",
   },
+  "button-box-shadow-blur-unit-general-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-blur-unit-l-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-blur-unit-m-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-blur-unit-s-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-blur-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-blur-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-blur-unit-xxl-hover": Object {
+    "type": "string",
+  },
   "button-box-shadow-blur-xl-hover": Object {
     "type": "number",
   },
@@ -387,6 +408,27 @@ Object {
   },
   "button-box-shadow-horizontal-s-hover": Object {
     "type": "number",
+  },
+  "button-box-shadow-horizontal-unit-general-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-horizontal-unit-l-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-horizontal-unit-m-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-horizontal-unit-s-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-horizontal-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-horizontal-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-horizontal-unit-xxl-hover": Object {
+    "type": "string",
   },
   "button-box-shadow-horizontal-xl-hover": Object {
     "type": "number",
@@ -473,6 +515,27 @@ Object {
   "button-box-shadow-spread-s-hover": Object {
     "type": "number",
   },
+  "button-box-shadow-spread-unit-general-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-spread-unit-l-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-spread-unit-m-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-spread-unit-s-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-spread-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-spread-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-spread-unit-xxl-hover": Object {
+    "type": "string",
+  },
   "button-box-shadow-spread-xl-hover": Object {
     "type": "number",
   },
@@ -497,6 +560,27 @@ Object {
   },
   "button-box-shadow-vertical-s-hover": Object {
     "type": "number",
+  },
+  "button-box-shadow-vertical-unit-general-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-vertical-unit-l-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-vertical-unit-m-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-vertical-unit-s-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-vertical-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-vertical-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "button-box-shadow-vertical-unit-xxl-hover": Object {
+    "type": "string",
   },
   "button-box-shadow-vertical-xl-hover": Object {
     "type": "number",

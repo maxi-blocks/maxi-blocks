@@ -20,6 +20,7 @@ import MaxiBlock from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -117,6 +118,7 @@ class edit extends MaxiBlockComponent {
 						displayHandlers: !this.state.displayHandlers,
 					});
 				}}
+				copyPasteMapping={copyPasteMapping}
 				{...this.props}
 			/>,
 			<RowContext.Provider

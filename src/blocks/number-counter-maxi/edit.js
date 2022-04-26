@@ -26,6 +26,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -218,7 +219,7 @@ const NumberCounter = attributes => {
 				)}
 				{circleStatus && (
 					<span className='maxi-number-counter__box__text'>
-						{`${parseInt((count / 360) * 100)}`}
+						{`${Math.ceil((count / 360) * 100)}`}
 						{usePercentage && <sup>%</sup>}
 					</span>
 				)}
@@ -307,6 +308,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='number-counter-'
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}

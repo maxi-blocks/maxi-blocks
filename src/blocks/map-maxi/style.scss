@@ -31,6 +31,7 @@ body.maxi-blocks--active {
 		}
 
 		.leaflet-popup-content {
+			width: 160px;
 			position: relative;
 			display: flex;
 			justify-content: center;
@@ -52,7 +53,6 @@ body.maxi-blocks--active {
 			}
 
 			&__content {
-				width: 100%;
 				padding: 32px;
 				position: relative;
 				z-index: 10;

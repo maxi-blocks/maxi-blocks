@@ -41,7 +41,7 @@ class MaxiBlocks_Styles
         }
 
         $post_content = json_decode(json_encode($post_content), true);
-        
+
 
         $styles = $this->getStyles($post_content);
         $fonts = $this->getFonts($post_content);
@@ -63,7 +63,7 @@ class MaxiBlocks_Styles
         }
 
         if ($needCustomMeta) {
-            $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider'];
+            $scripts = ['hover-effects', 'bg-video', 'parallax', 'scroll-effects', 'number-counter', 'shape-divider', 'map'];
 
             foreach ($scripts as &$script) {
                 $jsVar = str_replace('-', '_', $script);
@@ -227,7 +227,7 @@ class MaxiBlocks_Styles
                     $localFonts = new MaxiBlocks_Local_Fonts();
                     $fontUrl = $localFonts->generateFontURL($fontUrl, $fontData);
                 }
-                
+
                 wp_enqueue_style(
                     'maxi-font-'.sanitize_title_with_dashes($font),
                     $fontUrl

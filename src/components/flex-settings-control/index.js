@@ -3,26 +3,31 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { toString } from 'lodash';
+
 /**
  * Internal dependencies
  */
+import FlexGapControl from './flex-gap-control';
+import FlexAlignControl from './flex-align-control';
+import FlexWrapControl from './flex-wrap-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
+import SettingTabsControl from '../setting-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
 } from '../../extensions/styles';
-import SettingTabsControl from '../setting-tabs-control';
-import AdvancedNumberControl from '../advanced-number-control';
+
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { toString } from 'lodash';
 
 /**
  * Component
  */
-const FLexSettingsControl = props => {
+const FlexSettingsControl = props => {
 	const {
 		className,
 		onChange,
@@ -105,10 +110,6 @@ const FLexSettingsControl = props => {
 										attributes: props,
 									})}
 									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
 										{
 											label: __('Row', 'maxi-blocks'),
 											value: 'row',
@@ -258,10 +259,6 @@ const FLexSettingsControl = props => {
 									})}
 									options={[
 										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
-										{
 											label: __(
 												'Flex-start',
 												'maxi-blocks'
@@ -328,10 +325,6 @@ const FLexSettingsControl = props => {
 										attributes: props,
 									})}
 									options={[
-										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
 										{
 											label: __('Column', 'maxi-blocks'),
 											value: 'column',
@@ -544,10 +537,6 @@ const FLexSettingsControl = props => {
 									}
 									options={[
 										{
-											label: __('Auto', 'maxi-blocks'),
-											value: '',
-										},
-										{
 											label: __('Content', 'maxi-blocks'),
 											value: 'content',
 										},
@@ -665,4 +654,4 @@ const FLexSettingsControl = props => {
 	);
 };
 
-export default FLexSettingsControl;
+export default FlexSettingsControl;

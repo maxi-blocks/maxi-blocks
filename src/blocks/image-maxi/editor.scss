@@ -25,19 +25,12 @@
 	}
 
 	&__settings {
-		position: relative;
-		z-index: 1;
-
 		&__upload-button {
-			position: absolute;
-			top: 0;
-			right: 0;
 			width: 30px;
 			height: 30px;
 			box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 			border-radius: 0;
 			background: #fff;
-			opacity: 0;
 			visibility: visible;
 			transition: 0.3s;
 
@@ -50,14 +43,6 @@
 				svg {
 					fill: #ff4a17;
 				}
-			}
-		}
-	}
-
-	&:hover {
-		.maxi-image-block__settings {
-			.maxi-image-block__settings__upload-button {
-				opacity: 1;
 			}
 		}
 	}

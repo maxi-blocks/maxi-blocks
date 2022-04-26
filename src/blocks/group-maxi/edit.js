@@ -11,6 +11,7 @@ import { ArrowDisplayer, BlockInserter, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * Edit
@@ -43,12 +44,14 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/column-maxi',
 					].indexOf(blockName) === -1
 			);
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-group--${uniqueID}`}

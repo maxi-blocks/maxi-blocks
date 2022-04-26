@@ -74,7 +74,9 @@ const FullSizeControl = props => {
 		},
 		'%': {
 			min: 0,
-			max: 100,
+			max: 300,
+			minRange: 0,
+			maxRange: 300,
 		},
 	};
 

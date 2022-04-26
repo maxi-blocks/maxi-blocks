@@ -1,3 +1,5 @@
+jest.mock('@wordpress/e2e-test-utils', () => jest.fn());
+
 import { getAttributes } from '../getBlockAttributes';
 
 describe('getBlockAttributes', () => {

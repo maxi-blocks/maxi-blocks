@@ -23,7 +23,7 @@ export const rawWidth = {
 		default: 'px',
 	},
 	width: {
-		type: 'string',
+		type: 'number',
 	},
 	'width-fit-content': {
 		type: 'boolean',

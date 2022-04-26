@@ -83,7 +83,6 @@ const AdvancedNumberControl = props => {
 		initial = 0,
 		step = 1,
 		defaultValue = '',
-		autoDefaultValue = '',
 		value,
 		onChangeValue,
 		disableReset = false,
@@ -159,9 +158,7 @@ const AdvancedNumberControl = props => {
 					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
-					onChange={val =>
-						onChangeValue(val ? 'auto' : autoDefaultValue)
-					}
+					onChange={val => onChangeValue(val ? 'auto' : '')}
 				/>
 			)}
 			{value !== 'auto' && (

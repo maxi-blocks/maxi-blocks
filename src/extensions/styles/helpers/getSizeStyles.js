@@ -20,6 +20,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
+	if (prefix === 'number-counter-') console.log(obj);
 
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
@@ -60,8 +61,14 @@ const getSizeStyles = (obj, prefix = '') => {
 					attributes: obj,
 				});
 
+				const auto = getLastBreakpointAttribute({
+					target: `${prefix}${target}-auto`,
+					breakpoint,
+					attributes: obj,
+				});
+
 				if (!isNil(num) && !isNil(unit))
-					return { [target]: num === 'auto' ? 'auto' : num + unit };
+					return { [target]: auto ? 'auto' : num + unit };
 			}
 
 			return {};

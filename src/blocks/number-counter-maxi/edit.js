@@ -141,22 +141,21 @@ const NumberCounter = attributes => {
 				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
 				size={{
-					width:
-						getLastBreakpointAttribute({
-							target: 'number-counter-width',
-							breakpoint: deviceType,
-							attributes,
-						}) === 'auto'
-							? 'auto'
-							: `${getLastBreakpointAttribute({
-									target: 'number-counter-width',
-									breakpoint: deviceType,
-									attributes,
-							  })}${getLastBreakpointAttribute({
-									target: 'number-counter-width-unit',
-									breakpoint: deviceType,
-									attributes,
-							  })}`,
+					width: getLastBreakpointAttribute({
+						target: 'number-counter-width-auto',
+						breakpoint: deviceType,
+						attributes,
+					})
+						? 'auto'
+						: `${getLastBreakpointAttribute({
+								target: 'number-counter-width',
+								breakpoint: deviceType,
+								attributes,
+						  })}${getLastBreakpointAttribute({
+								target: 'number-counter-width-unit',
+								breakpoint: deviceType,
+								attributes,
+						  })}`,
 				}}
 				maxWidth='100%'
 				minWidth={

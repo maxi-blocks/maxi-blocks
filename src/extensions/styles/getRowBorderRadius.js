@@ -36,7 +36,7 @@ const getRowBorderRadius = (
 		return rowBorderRadius;
 	}
 
-	return null;
+	return {};
 };
 
 export default getRowBorderRadius;

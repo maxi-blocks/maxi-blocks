@@ -999,7 +999,7 @@ export const getBlockBackgroundStyles = ({
 	isHover = false,
 	prefix = '',
 	blockStyle,
-	rowBorderRadiusObj = {},
+	rowBorderRadius = {},
 	...props
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
@@ -1009,7 +1009,7 @@ export const getBlockBackgroundStyles = ({
 		isHover,
 		prefix,
 		blockStyle,
-		rowBorderRadiusObj,
+		rowBorderRadius,
 		...props,
 	});
 

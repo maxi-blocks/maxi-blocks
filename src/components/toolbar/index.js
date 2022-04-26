@@ -305,7 +305,7 @@ const MaxiToolbar = memo(
 
 												const lineColorStr =
 													getColorRGBAString({
-														firstVar: 'icon-line',
+														firstVar: 'icon-stroke',
 														secondVar: `color-${obj['svg-line-palette-color']}`,
 														opacity:
 															obj[

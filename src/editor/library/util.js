@@ -147,7 +147,7 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 	const lineColor = !currentAttributes[`${target}-line-palette-status`]
 		? currentAttributes[`${target}-line-color`]
 		: getColorRGBAString({
-				firstVar: 'icon-line',
+				firstVar: 'icon-stroke',
 				secondVar: `color-${
 					currentAttributes[`${target}-line-palette-color`]
 				}`,

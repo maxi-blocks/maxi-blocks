@@ -22,7 +22,9 @@ const getBlockStyle = clientId => {
 	const rootClientId = getBlockHierarchyRootClientId(id);
 	const rootAttributes = getBlockAttributes(rootClientId);
 
-	return rootAttributes?.blockStyle;
+	if (getBlockAttributes(id)?.blockStyle) return rootAttributes?.blockStyle;
+
+	return 'light';
 };
 
 export default getBlockStyle;

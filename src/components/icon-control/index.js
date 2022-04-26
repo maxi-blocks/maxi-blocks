@@ -299,6 +299,7 @@ const IconControl = props => {
 								svgType !== 'Shape' && (
 									<ColorControl
 										label={__('Icon stroke', 'maxi-blocks')}
+										className='maxi-icon-styles-control--color'
 										color={
 											props[
 												`icon-color${

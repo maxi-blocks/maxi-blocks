@@ -118,6 +118,7 @@ const getStyles = (props, rowGapProps) => {
 						'borderRadius',
 					]),
 					blockStyle: props.parentBlockStyle,
+					rowBorderRadius: props.rowBorderRadius,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -132,6 +133,7 @@ const getStyles = (props, rowGapProps) => {
 					),
 					isHover: true,
 					blockStyle: props.parentBlockStyle,
+					rowBorderRadius: props.rowBorderRadius,
 				}),
 			},
 			selectorsColumn,

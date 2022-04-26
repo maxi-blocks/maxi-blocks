@@ -15,6 +15,7 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
 import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector
@@ -22,7 +23,6 @@ import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId, rowPattern } =
 		props;
-	const { verticalAlign } = attributes;
 
 	return (
 		<InspectorControls>
@@ -54,9 +54,10 @@ const Inspector = props => {
 												>
 													<ColumnSizeControl
 														props
-														verticalAlign={
-															verticalAlign
-														}
+														{...getGroupAttributes(
+															attributes,
+															'flex'
+														)}
 														rowPattern={rowPattern}
 														clientId={clientId}
 														onChange={obj =>
@@ -68,6 +69,10 @@ const Inspector = props => {
 													/>
 												</ResponsiveTabsControl>
 											),
+											extraIndicators: [
+												`column-fit-content-${deviceType}`,
+												`column-size-${deviceType}`,
+											],
 										},
 										...inspectorTabs.blockBackground({
 											props,

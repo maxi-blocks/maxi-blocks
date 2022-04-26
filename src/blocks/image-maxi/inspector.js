@@ -211,6 +211,7 @@ const dimensionTab = props => {
 				/>
 			</>
 		),
+		extraIndicators: ['imageRatio', 'imgWidth'],
 	};
 };
 
@@ -496,6 +497,9 @@ const Inspector = memo(
 														</>
 													</ResponsiveTabsControl>
 												),
+												extraIndicators: [
+													'captionType',
+												],
 											},
 											{
 												label: __(
@@ -557,6 +561,13 @@ const Inspector = memo(
 														breakpoint={deviceType}
 													/>
 												),
+												extraIndicators: ['SVGElement'],
+												ignoreIndicator: [
+													`image-shape-scale-${deviceType}`,
+													`image-shape-rotate-${deviceType}`,
+													`image-shape-flip-x-${deviceType}`,
+													`image-shape-flip-y-${deviceType}`,
+												],
 											},
 											{
 												label: __(
@@ -587,6 +598,9 @@ const Inspector = memo(
 														/>
 													</ResponsiveTabsControl>
 												),
+												ignoreIndicator: [
+													`clip-path-${deviceType}`,
+												],
 											},
 											...inspectorTabs.border({
 												props,

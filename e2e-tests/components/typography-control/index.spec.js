@@ -186,7 +186,7 @@ describe('TypographyControl', () => {
 		await openSidebarTab(page, 'style', 'typography');
 
 		await addTypographyStyle({
-			page,
+			instance: page,
 			decoration: 'overline',
 			weight: '300',
 			transform: 'capitalize',

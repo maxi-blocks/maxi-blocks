@@ -26,7 +26,6 @@ import ResponsiveTabsControl from '../../components/responsive-tabs-control';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -188,6 +187,11 @@ const Inspector = props => {
 													</>
 												</ResponsiveTabsControl>
 											),
+											extraIndicators: [
+												`line-horizontal-${deviceType}`,
+												`line-vertical-${deviceType}`,
+												`line-orientation-${deviceType}`,
+											],
 										},
 										{
 											label: __(
@@ -220,6 +224,11 @@ const Inspector = props => {
 													</>
 												</ResponsiveTabsControl>
 											),
+											ignoreIndicator: [
+												`line-horizontal-${deviceType}`,
+												`line-vertical-${deviceType}`,
+												`line-orientation-${deviceType}`,
+											],
 										},
 										...inspectorTabs.boxShadow({
 											props,

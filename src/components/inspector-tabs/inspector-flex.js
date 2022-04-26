@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import FLexSettingsControl from '../flex-settings-control';
+import FlexSettingsControl from '../flex-settings-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
@@ -41,7 +41,7 @@ const flex = ({ props }) => {
 		label: __('Flex', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
-				<FLexSettingsControl
+				<FlexSettingsControl
 					{...getGroupAttributes(attributes, 'flex')}
 					onChange={maxiSetAttributes}
 					breakpoint={deviceType}

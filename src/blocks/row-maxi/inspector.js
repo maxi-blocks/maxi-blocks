@@ -9,7 +9,8 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	ColumnPattern,
-	SelectControl,
+	FlexGapControl,
+	FlexWrapControl,
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -17,16 +18,36 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsRow, categoriesRow } from './custom-css';
 import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 
-/**
- * External dependencies
- */
+const ColumnPicker = props => {
+	const { clientId, attributes, deviceType, maxiSetAttributes } = props;
+
+	return (
+		<>
+			<ColumnPattern
+				clientId={clientId}
+				{...getGroupAttributes(attributes, 'rowPattern')}
+				onChange={obj => maxiSetAttributes(obj)}
+				breakpoint={deviceType}
+			/>
+			<FlexGapControl
+				{...getGroupAttributes(attributes, 'flex')}
+				onChange={maxiSetAttributes}
+				breakpoint={deviceType}
+			/>
+			<FlexWrapControl
+				{...getGroupAttributes(attributes, 'flex')}
+				onChange={maxiSetAttributes}
+				breakpoint={deviceType}
+			/>
+		</>
+	);
+};
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { horizontalAlign, verticalAlign } = attributes;
+	const { deviceType } = props;
 
 	return (
 		<InspectorControls>
@@ -56,141 +77,17 @@ const Inspector = props => {
 												<ResponsiveTabsControl
 													breakpoint={deviceType}
 												>
-													<>
-														<ColumnPattern
-															clientId={clientId}
-															{...getGroupAttributes(
-																attributes,
-																'rowPattern'
-															)}
-															removeColumnGap={
-																attributes.removeColumnGap
-															}
-															onChange={obj =>
-																maxiSetAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-														/>
-														<SelectControl
-															label={__(
-																'Horizontal align',
-																'maxi-blocks'
-															)}
-															value={
-																horizontalAlign
-															}
-															options={[
-																{
-																	label: __(
-																		'Flex-start',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-start',
-																},
-																{
-																	label: __(
-																		'Flex-end',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-end',
-																},
-																{
-																	label: __(
-																		'Center',
-																		'maxi-blocks'
-																	),
-																	value: 'center',
-																},
-																{
-																	label: __(
-																		'Space between',
-																		'maxi-blocks'
-																	),
-																	value: 'space-between',
-																},
-																{
-																	label: __(
-																		'Space around',
-																		'maxi-blocks'
-																	),
-																	value: 'space-around',
-																},
-															]}
-															onChange={horizontalAlign =>
-																maxiSetAttributes(
-																	{
-																		horizontalAlign,
-																	}
-																)
-															}
-														/>
-														<SelectControl
-															label={__(
-																'Vertical align',
-																'maxi-blocks'
-															)}
-															value={
-																verticalAlign
-															}
-															options={[
-																{
-																	label: __(
-																		'Stretch',
-																		'maxi-blocks'
-																	),
-																	value: 'stretch',
-																},
-																{
-																	label: __(
-																		'Flex-start',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-start',
-																},
-																{
-																	label: __(
-																		'Flex-end',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-end',
-																},
-																{
-																	label: __(
-																		'Center',
-																		'maxi-blocks'
-																	),
-																	value: 'center',
-																},
-																{
-																	label: __(
-																		'Space between',
-																		'maxi-blocks'
-																	),
-																	value: 'space-between',
-																},
-																{
-																	label: __(
-																		'Space around',
-																		'maxi-blocks'
-																	),
-																	value: 'space-around',
-																},
-															]}
-															onChange={verticalAlign =>
-																maxiSetAttributes(
-																	{
-																		verticalAlign,
-																	}
-																)
-															}
-														/>
-													</>
+													<ColumnPicker {...props} />
 												</ResponsiveTabsControl>
 											),
+											ignoreIndicator: [
+												'row-pattern-general',
+												'row-pattern-m',
+											],
+											extraIndicators: [
+												'verticalAlign',
+												'horizontalAlign',
+											],
 										},
 										...inspectorTabs.blockBackground({
 											props,
@@ -212,6 +109,10 @@ const Inspector = props => {
 								/>
 							</>
 						),
+						ignoreIndicator: [
+							'row-pattern-general',
+							'row-pattern-m',
+						],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

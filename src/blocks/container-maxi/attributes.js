@@ -25,10 +25,6 @@ const attributes = {
 		type: 'string',
 		default: 'full',
 	},
-	blockStyle: {
-		type: 'string',
-		default: 'light',
-	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...{

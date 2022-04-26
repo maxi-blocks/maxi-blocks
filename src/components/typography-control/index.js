@@ -744,7 +744,7 @@ const TypographyControl = withFormatValue(props => {
 				onChange={val => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
 				}}
-				value={getValue(`${prefix}font-weight`)}
+				fontWeight={getValue(`${prefix}font-weight`)}
 				fontName={getValue(`${prefix}font-family`)}
 				fontStyle={getValue(`${prefix}font-style`)}
 				prefix={prefix}

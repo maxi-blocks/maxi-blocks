@@ -74,7 +74,7 @@ const IconColor = props => {
 										'icon-palette-status': paletteStatus,
 									});
 									const lineColorStr = getColorRGBAString({
-										firstVar: 'icon-line',
+										firstVar: 'icon-stroke',
 										secondVar: `color-${paletteColor}`,
 										opacity: props['icon-palette-opacity'],
 										blockStyle: parentBlockStyle,

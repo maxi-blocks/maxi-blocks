@@ -105,7 +105,7 @@ const Inspector = props => {
 													});
 												const lineColorStr =
 													getColorRGBAString({
-														firstVar: 'icon-line',
+														firstVar: 'icon-stroke',
 														secondVar: `color-${svgPaletteLineColor}`,
 														opacity:
 															svgPaletteLineOpacity,
@@ -196,7 +196,7 @@ const Inspector = props => {
 																getColorRGBAString(
 																	{
 																		firstVar:
-																			'icon-line',
+																			'icon-stroke',
 																		secondVar: `color-${obj['svg-line-palette-color']}`,
 																		opacity:
 																			obj[
@@ -261,7 +261,7 @@ const Inspector = props => {
 																getColorRGBAString(
 																	{
 																		firstVar:
-																			'icon-line-hover',
+																			'icon-stroke-hover',
 																		secondVar: `color-${obj['svg-line-palette-color-hover']}`,
 																		opacity:
 																			obj[

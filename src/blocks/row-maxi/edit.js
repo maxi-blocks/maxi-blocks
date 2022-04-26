@@ -124,10 +124,6 @@ class edit extends MaxiBlockComponent {
 				value={{
 					displayHandlers: this.state.displayHandlers,
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
-					borderRadius: getGroupAttributes(
-						attributes,
-						'borderRadius'
-					),
 				}}
 			>
 				<MaxiBlock

@@ -20,7 +20,7 @@ import MaxiBlock from '../../components/maxi-block';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getParentBorderRadius,
+	getRowBorderRadius,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -37,15 +37,14 @@ class edit extends MaxiBlockComponent {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			parentBorderRadius: null,
-		};
-
 		this.resizableObject = createRef();
 	}
 
 	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
-		return isEqual(prevProps.rowGapProps, this.props.rowGapProps);
+		return (
+			isEqual(prevProps.rowGapProps, this.props.rowGapProps) &&
+			isEqual(prevProps.rowBorderRadius, this.props.rowBorderRadius)
+		);
 	}
 
 	maxiBlockDidUpdate() {
@@ -67,27 +66,16 @@ class edit extends MaxiBlockComponent {
 				this.resizableObject.current.resizable.style.flexShrink = '';
 			}
 		}
-
-		if (this.state.parentBorderRadius !== this.context.borderRadius) {
-			this.setState({
-				parentBorderRadius: this.context.borderRadius,
-			});
-
-			const newParentBorderRadius = getParentBorderRadius(
-				this.context.borderRadius,
-				this.props.originalNestedColumns,
-				this.props.clientId
-			);
-
-			if (newParentBorderRadius)
-				this.props.maxiSetAttributes({
-					parentBorderRadius: newParentBorderRadius,
-				});
-		}
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes, this.props.rowGapProps);
+		return getStyles(
+			{
+				...this.props.attributes,
+				rowBorderRadius: this.props.rowBorderRadius,
+			},
+			this.props.rowGapProps
+		);
 	}
 
 	render() {
@@ -217,8 +205,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-edit.contextType = RowContext;
-
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
@@ -241,10 +227,19 @@ const editSelect = withSelect((select, ownProps) => {
 			return response;
 		})();
 
+	const rowBorderRadius =
+		rowAttributes &&
+		getRowBorderRadius(
+			getGroupAttributes(rowAttributes, 'borderRadius'),
+			originalNestedColumns,
+			clientId
+		);
+
 	return {
 		rowBlockId,
 		originalNestedColumns,
 		rowGapProps,
+		rowBorderRadius,
 	};
 });
 

@@ -958,7 +958,7 @@ const getBasicResponseObject = ({
 	isHover,
 	prefix,
 	blockStyle,
-	parentBorderRadius,
+	rowBorderRadius,
 	...props
 }) => {
 	const includeBorder =
@@ -978,19 +978,19 @@ const getBasicResponseObject = ({
 			blockStyle,
 			isHover
 		);
-	const parentBorderRadiusObj = getGeneralBackgroundStyles(
-		parentBorderRadius,
-		{ ...parentBorderRadius },
+	const rowBorderRadiusObj = getGeneralBackgroundStyles(
+		rowBorderRadius,
+		{ ...rowBorderRadius },
 		blockStyle,
 		isHover
 	);
-	const mergedBorderObj = merge(parentBorderRadiusObj, borderObj);
+	const mergedBorderObj = merge(rowBorderRadiusObj, borderObj);
 
 	return {
 		[`${target} > .maxi-background-displayer`]:
 			includeBorder && !isEmpty(borderObj.general)
 				? mergedBorderObj
-				: parentBorderRadiusObj,
+				: rowBorderRadiusObj,
 	};
 };
 
@@ -999,7 +999,7 @@ export const getBlockBackgroundStyles = ({
 	isHover = false,
 	prefix = '',
 	blockStyle,
-	parentBorderRadius = {},
+	rowBorderRadiusObj = {},
 	...props
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
@@ -1009,7 +1009,7 @@ export const getBlockBackgroundStyles = ({
 		isHover,
 		prefix,
 		blockStyle,
-		parentBorderRadius,
+		rowBorderRadiusObj,
 		...props,
 	});
 

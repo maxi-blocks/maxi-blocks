@@ -16,27 +16,27 @@ const getBorderRadiusCorners = (index, originalNestedColumns) => {
 	return null;
 };
 
-const getParentBorderRadius = (
-	rawParentBorderRadius,
+const getRowBorderRadius = (
+	rawRowBorderRadius,
 	originalNestedColumns,
 	clientId
 ) => {
 	const index = originalNestedColumns.indexOf(clientId);
 	const corners = getBorderRadiusCorners(index, originalNestedColumns);
 
-	const parentBorderRadius = {};
+	const rowBorderRadius = {};
 
 	if (corners) {
-		Object.entries(rawParentBorderRadius).forEach(([key, value]) => {
+		Object.entries(rawRowBorderRadius).forEach(([key, value]) => {
 			if (corners.some(corner => key.includes(corner))) {
-				parentBorderRadius[key] = value;
+				rowBorderRadius[key] = value;
 			}
 		});
 
-		return parentBorderRadius;
+		return rowBorderRadius;
 	}
 
 	return null;
 };
 
-export default getParentBorderRadius;
+export default getRowBorderRadius;

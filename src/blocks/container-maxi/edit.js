@@ -17,6 +17,7 @@ import {
 import MaxiBlock from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * General
@@ -69,6 +70,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-container--${uniqueID}`}

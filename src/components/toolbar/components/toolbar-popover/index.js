@@ -83,6 +83,7 @@ class ToolbarPopover extends Component {
 			children,
 			advancedOptions = false,
 			tab = 0,
+			position = 'top center',
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;
@@ -116,7 +117,7 @@ class ToolbarPopover extends Component {
 								'.toolbar-wrapper'
 							)}
 							onClose={onClose}
-							position='top center'
+							position={position}
 							isAlternate
 							shouldAnchorIncludePadding
 						>

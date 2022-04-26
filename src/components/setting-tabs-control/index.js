@@ -134,7 +134,8 @@ const SettingTabsControl = props => {
 										}),
 										item.breakpoint,
 										item.extraIndicators,
-										item.extraIndicatorsResponsive
+										item.extraIndicatorsResponsive,
+										item.ignoreIndicator
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {

@@ -16,11 +16,6 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
@@ -76,12 +71,6 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'flex'),
 		}),
 	};
-
-	if (!isEmpty(props.horizontalAlign))
-		response.row.general['justify-content'] = props.horizontalAlign;
-
-	if (!isEmpty(props.verticalAlign))
-		response.row.general['align-items'] = props.verticalAlign;
 
 	return response;
 };

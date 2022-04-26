@@ -25,7 +25,6 @@ import { selectorsDivider, categoriesDivider } from './custom-css';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -177,6 +176,11 @@ const Inspector = props => {
 													/>
 												</>
 											),
+											extraIndicators: [
+												`line-horizontal-${deviceType}`,
+												`line-vertical-${deviceType}`,
+												`line-orientation-${deviceType}`,
+											],
 										},
 										{
 											label: __(
@@ -200,6 +204,11 @@ const Inspector = props => {
 													/>
 												</>
 											),
+											ignoreIndicator: [
+												`line-horizontal-${deviceType}`,
+												`line-vertical-${deviceType}`,
+												`line-orientation-${deviceType}`,
+											],
 										},
 										...inspectorTabs.boxShadow({
 											props,

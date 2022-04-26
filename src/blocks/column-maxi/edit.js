@@ -23,6 +23,7 @@ import {
 	getRowBorderRadius,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -142,6 +143,7 @@ class edit extends MaxiBlockComponent {
 						key={`toolbar-${uniqueID}`}
 						ref={this.blockRef}
 						rowPattern={context.rowPattern}
+						copyPasteMapping={copyPasteMapping}
 						propsToAvoid={['resizableObject']}
 						{...this.props}
 					/>,

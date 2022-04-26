@@ -34,6 +34,17 @@ const getSizeStyles = (obj, prefix = '') => {
 					return { 'aspect-ratio': 1, height: '100%' };
 				}
 			}
+			if (target === 'width') {
+				const fitContent = getLastBreakpointAttribute({
+					target: `${prefix}width-fit-content`,
+					breakpoint,
+					attributes: obj,
+				});
+
+				if (fitContent) {
+					return { width: 'fit-content' };
+				}
+			}
 			if (
 				isNumber(obj[`${prefix}${target}-${breakpoint}`]) ||
 				obj[`${prefix}${target}-unit-${breakpoint}`]

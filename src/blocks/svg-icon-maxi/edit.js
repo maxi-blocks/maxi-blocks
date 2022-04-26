@@ -27,6 +27,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
 import MaxiBlock from '../../components/maxi-block';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -186,6 +187,7 @@ class edit extends MaxiBlockComponent {
 						ref={this.blockRef}
 						propsToAvoid={['resizableObject']}
 						resizableObject={this.resizableObject}
+						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
 						{...this.props}
 					/>,

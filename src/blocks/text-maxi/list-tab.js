@@ -553,11 +553,11 @@ const listTab = props => {
 							value={typeOfList}
 							options={[
 								{
-									label: __('Unorganized', 'maxi-blocks'),
+									label: __('Unordered', 'maxi-blocks'),
 									value: 'ul',
 								},
 								{
-									label: __('Organized', 'maxi-blocks'),
+									label: __('Ordered', 'maxi-blocks'),
 									value: 'ol',
 								},
 							]}

@@ -301,7 +301,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
 		const strokeStr2 = ` stroke="${strokeColor}`;
 
-		const newContent = ownProps.attributes.content
+		const newContent = content
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2)
 			.replace(strokeRegExp, strokeStr)
@@ -312,7 +312,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 	const changeSVGContent = (color, type) => {
 		const fillRegExp = new RegExp(
-			`(((?<!hover )\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			`(((?<!hover )\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
 			'g'
 		);
 		const fillStr = `$2{${type}:${color}`;
@@ -320,7 +320,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
 		const fillStr2 = ` ${type}="${color}`;
 
-		const newContent = ownProps.attributes.content
+		const newContent = content
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
@@ -328,7 +328,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContentHover = (color, type) => {
-		let newContent = ownProps.attributes.content;
+		let newContent = content;
 
 		const svgRegExp = new RegExp(`( ${type}=[^-]([^none])([^\\"]+))`, 'g');
 		const svgStr = ` data-hover-${type}$1`;
@@ -340,7 +340,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		const cssStrOld = '';
 
 		const cssRegExp = new RegExp(
-			`(((?<!hover)\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			`(((?<!hover)\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
 			'g'
 		);
 		const cssStr = `$1}.maxi-svg-icon-block__icon:hover $2{${type}:${color}`;
@@ -350,8 +350,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			.replace(cssRegExpOld, cssStrOld)
 			.replace(cssRegExp, cssStr);
 
-		newContent !== ownProps.attributes.content &&
-			maxiSetAttributes({ content: newContent });
+		newContent !== content && maxiSetAttributes({ content: newContent });
 	};
 
 	return {

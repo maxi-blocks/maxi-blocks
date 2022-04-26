@@ -54,7 +54,9 @@ describe('Column Maxi', () => {
 		);
 		await selector.select('center');
 
-		expect(await getAttributes('verticalAlign')).toStrictEqual('center');
+		expect(await getAttributes('justify-content-general')).toStrictEqual(
+			'center'
+		);
 
 		// responsive S
 		await changeResponsive(page, 's');

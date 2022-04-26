@@ -14,6 +14,7 @@ import {
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector
@@ -21,7 +22,6 @@ import { selectorsColumn, categoriesColumn } from './custom-css';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId, rowPattern } =
 		props;
-	const { verticalAlign } = attributes;
 
 	return (
 		<InspectorControls>
@@ -50,9 +50,10 @@ const Inspector = props => {
 											content: (
 												<ColumnSizeControl
 													props
-													verticalAlign={
-														verticalAlign
-													}
+													{...getGroupAttributes(
+														attributes,
+														'flex'
+													)}
 													rowPattern={rowPattern}
 													clientId={clientId}
 													onChange={obj =>

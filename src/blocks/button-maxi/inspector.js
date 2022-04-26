@@ -425,6 +425,12 @@ const Inspector = memo(
 																					blockStyle
 																				}
 																				isHover
+																				changeSVGContent={
+																					changeSVGContent
+																				}
+																				changeSVGStrokeWidth={
+																					changeSVGStrokeWidth
+																				}
 																			/>
 																		)}
 																	</>

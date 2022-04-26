@@ -15,11 +15,6 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
 const getNormalObject = (props, rowGapProps) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
@@ -69,13 +64,6 @@ const getNormalObject = (props, rowGapProps) => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
-		}),
-		...(!isEmpty(props.verticalAlign) && {
-			column: {
-				general: {
-					'justify-content': props.verticalAlign,
-				},
-			},
 		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),

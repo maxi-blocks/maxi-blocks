@@ -149,15 +149,24 @@ export const getSVGStyles = ({
 		return {
 			...response,
 			...{
-				[` ${target} svg path[data-stroke-hover]`]: getSVGPathStyles(
+				[` ${target} svg[data-hover-stroke] path`]: getSVGPathStyles(
 					obj,
 					prefix,
 					isHover
 				),
+				[` ${target} svg path[data-hover-stroke]`]: getSVGPathStyles(
+					obj,
+					prefix,
+					isHover
+				),
+				[` ${target} svg[data-hover-fill] path:not([fill^="none"])`]:
+					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 				[` ${target} svg path[data-hover-fill]:not([fill^="none"])`]:
 					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 				[` ${target} svg g[data-hover-fill]:not([fill^="none"])`]:
 					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+				[` ${target} svg[data-hover-stroke] path:not([stroke^="none"])`]:
+					getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
 				[` ${target} svg g[data-hover-stroke]:not([stroke^="none"])`]:
 					getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
 				[` ${target} svg use[data-hover-fill]:not([fill^="none"])`]:

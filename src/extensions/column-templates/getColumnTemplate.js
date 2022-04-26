@@ -9,17 +9,7 @@ import getColumnTemplateContent from './getColumnTemplateContent';
  */
 import { find } from 'lodash';
 
-/**
- *
- * @param {*} templateName
- * @param {*} removeColumnGap
- */
-
-const getColumnTemplate = (
-	templateName,
-	removeColumnGap = false,
-	breakpoint
-) => {
+const getColumnTemplate = (templateName, breakpoint) => {
 	let template = null;
 
 	Object.values(columnTemplates).forEach(colNum =>
@@ -30,11 +20,7 @@ const getColumnTemplate = (
 		})
 	);
 
-	template.content = getColumnTemplateContent(
-		template.sizes,
-		removeColumnGap,
-		breakpoint
-	);
+	template.content = getColumnTemplateContent(template.sizes, breakpoint);
 
 	return template;
 };

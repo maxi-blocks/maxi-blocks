@@ -15,12 +15,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
-const getNormalObject = props => {
+const getNormalObject = (props, rowGapProps) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -57,22 +52,18 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'transform'),
 		}),
 		columnSize: {
-			...getColumnSizeStyles({
-				...getGroupAttributes(props, 'columnSize'),
-			}),
+			...getColumnSizeStyles(
+				{
+					...getGroupAttributes(props, 'columnSize'),
+				},
+				rowGapProps
+			),
 		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
-		}),
-		...(!isEmpty(props.verticalAlign) && {
-			column: {
-				general: {
-					'justify-content': props.verticalAlign,
-				},
-			},
 		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
@@ -111,13 +102,13 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = props => {
+const getStyles = (props, rowGapProps) => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props),
+				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

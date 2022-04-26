@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
 /**
  * Imports
  */
@@ -24,18 +23,6 @@ const attributes = {
 	blockFullWidth: {
 		type: 'string',
 		default: 'normal',
-	},
-	horizontalAlign: {
-		type: 'string',
-		default: 'space-between',
-	},
-	verticalAlign: {
-		type: 'string',
-		default: 'stretch',
-	},
-	removeColumnGap: {
-		type: 'boolean',
-		default: false,
 	},
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
@@ -107,8 +94,26 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...{
+		...attributesData.flex,
+		'row-gap-general': {
+			type: 'number',
+			default: 20,
+		},
+		'row-gap-unit-general': {
+			type: 'string',
+			default: 'px',
+		},
+		'column-gap-general': {
+			type: 'number',
+			default: 1.5,
+		},
+		'column-gap-unit-general': {
+			type: 'string',
+			default: '%',
+		},
+	},
 	...attributesData.scroll,
-	...attributesData.flex,
 };
 
 export default attributes;

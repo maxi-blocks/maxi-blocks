@@ -47,6 +47,7 @@ const blockBackground = ({
 								<BlockBackgroundControl
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
+										'background-layers',
 									])}
 									onChangeInline={(obj, target) =>
 										insertInlineStyles(obj, target)
@@ -65,6 +66,7 @@ const blockBackground = ({
 								/>
 							</>
 						),
+						extraIndicators: ['background-layers'],
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),

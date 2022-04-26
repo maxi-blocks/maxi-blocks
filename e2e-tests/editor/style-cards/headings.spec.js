@@ -31,7 +31,7 @@ describe.skip('StyleCards headings', () => {
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
-				'.maxi-typography-control.maxi-style-cards-control__sc__h1-typography'
+				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography .maxi-typography-control__text-options-tabs'
 			),
 			size: '20',
 			lineHeight: '0',
@@ -41,7 +41,9 @@ describe.skip('StyleCards headings', () => {
 		// Selectors
 		// Weight, Transform, Style, Decoration
 		await addTypographyStyle({
-			page,
+			instance: await page.$(
+				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
+			),
 			decoration: 'overline',
 			weight: '300',
 			transform: 'capitalize',

@@ -19,6 +19,7 @@ import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock from '../../components/maxi-block';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -139,6 +140,7 @@ class edit extends MaxiBlockComponent {
 				prefix='divider-'
 				inlineStylesTargets={inlineStylesTargets}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}

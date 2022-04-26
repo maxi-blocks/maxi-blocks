@@ -41,6 +41,7 @@ const CaptionToolbar = memo(
 			maxiSetAttributes,
 			insertInlineStyles,
 			cleanInlineStyles,
+			isSelected,
 		} = props;
 		const {
 			captionContent: content,
@@ -51,35 +52,28 @@ const CaptionToolbar = memo(
 			parentBlockStyle,
 		} = attributes;
 
-		const { editorVersion, breakpoint, styleCard, isSelected } = useSelect(
-			select => {
-				const { receiveMaxiSettings, receiveMaxiDeviceType } =
-					select('maxiBlocks');
-				const { receiveMaxiSelectedStyleCard } = select(
-					'maxiBlocks/style-cards'
-				);
+		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } =
+				select('maxiBlocks');
+			const { receiveMaxiSelectedStyleCard } = select(
+				'maxiBlocks/style-cards'
+			);
 
-				const maxiSettings = receiveMaxiSettings();
-				const version = !isEmpty(maxiSettings.editor)
-					? maxiSettings.editor.version
-					: null;
+			const maxiSettings = receiveMaxiSettings();
+			const version = !isEmpty(maxiSettings.editor)
+				? maxiSettings.editor.version
+				: null;
 
-				const breakpoint = receiveMaxiDeviceType();
+			const breakpoint = receiveMaxiDeviceType();
 
-				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-				const isSelected = ref.current?.isSameNode(
-					ref.current.ownerDocument.activeElement
-				);
-
-				return {
-					editorVersion: version,
-					breakpoint,
-					styleCard,
-					isSelected,
-				};
-			}
-		);
+			return {
+				editorVersion: version,
+				breakpoint,
+				styleCard,
+			};
+		});
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 

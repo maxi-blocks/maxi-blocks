@@ -185,6 +185,11 @@ const Inspector = props => {
 													/>
 												</>
 											),
+											extraIndicators: [
+												`line-horizontal-${deviceType}`,
+												`line-vertical-${deviceType}`,
+												`line-orientation-${deviceType}`,
+											],
 										},
 										{
 											label: __(
@@ -217,6 +222,11 @@ const Inspector = props => {
 													/>
 												</>
 											),
+											ignoreIndicator: [
+												`line-horizontal-${deviceType}`,
+												`line-vertical-${deviceType}`,
+												`line-orientation-${deviceType}`,
+											],
 										},
 										...inspectorTabs.boxShadow({
 											props,

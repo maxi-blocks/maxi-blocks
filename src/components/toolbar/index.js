@@ -99,6 +99,7 @@ const MaxiToolbar = memo(
 			insertInlineStyles,
 			cleanInlineStyles,
 			inlineStylesTargets = inlineStylesTargetsDefault,
+			copyPasteMapping,
 		} = props;
 		const {
 			blockFullWidth,
@@ -565,6 +566,7 @@ const MaxiToolbar = memo(
 								])}
 								blockName={name}
 								breakpoint={breakpoint}
+								copyPasteMapping={copyPasteMapping}
 								prefix={prefix}
 								onChange={obj => maxiSetAttributes(obj)}
 							/>

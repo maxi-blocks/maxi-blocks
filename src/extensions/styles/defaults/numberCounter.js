@@ -6,10 +6,8 @@ const numberCounter = {
 		obj: {
 			'number-counter-width-auto': {
 				type: 'boolean',
+				default: false,
 			},
-		},
-		diffValAttr: {
-			'number-counter-width-auto-general': false,
 		},
 	}),
 	'number-counter-status': {

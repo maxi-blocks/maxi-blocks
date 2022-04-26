@@ -298,7 +298,7 @@ const IconControl = props => {
 							{!props['icon-inherit'] ? (
 								svgType !== 'Shape' && (
 									<ColorControl
-										label={__('Icon Line', 'maxi-blocks')}
+										label={__('Icon stroke', 'maxi-blocks')}
 										color={
 											props[
 												`icon-color${

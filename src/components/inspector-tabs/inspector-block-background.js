@@ -40,6 +40,7 @@ const blockBackground = ({
 								<BlockBackgroundControl
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
+										'background-layers',
 									])}
 									onChange={obj => maxiSetAttributes(obj)}
 									clientId={clientId}
@@ -52,6 +53,7 @@ const blockBackground = ({
 								/>
 							</>
 						),
+						extraIndicators: ['background-layers'],
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),

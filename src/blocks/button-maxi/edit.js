@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect, withDispatch } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
-import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
+import { RawHTML, createRef, forwardRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -20,6 +20,7 @@ import { Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -30,40 +31,10 @@ import classnames from 'classnames';
  * Content
  */
 const IconWrapper = forwardRef((props, ref) => {
-	const { children, className, changeIsSelected, uniqueID } = props;
-
-	useEffect(() => {
-		const handleClickOutside = event => {
-			if (ref.current && !ref.current.contains(event.target)) {
-				changeIsSelected(
-					document
-						.querySelector(`.${uniqueID}`)
-						.classList.contains('is-selected')
-				);
-			}
-		};
-
-		// Bind the event listener
-		ref?.current?.ownerDocument.addEventListener(
-			'mousedown',
-			handleClickOutside
-		);
-
-		return () => {
-			// Unbind the event listener on clean up
-			ref?.current?.ownerDocument.removeEventListener(
-				'mousedown',
-				handleClickOutside
-			);
-		};
-	}, [ref]);
+	const { children, className } = props;
 
 	return (
-		<div
-			onClick={() => changeIsSelected(true)}
-			ref={ref}
-			className={className}
-		>
+		<div ref={ref} className={className}>
 			{children}
 		</div>
 	);
@@ -75,10 +46,6 @@ class edit extends MaxiBlockComponent {
 		this.iconRef = createRef(null);
 	}
 
-	state = {
-		isIconSelected: false,
-	};
-
 	typingTimeout = 0;
 
 	get getStylesObject() {
@@ -88,10 +55,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes } = this.props;
+		const { attributes, maxiSetAttributes, changeSVGContent } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
-
-		const { isIconSelected } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -113,6 +78,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 				prefix='button-'
 				backgroundGlobalProps={{
 					target: 'background',
@@ -153,15 +119,12 @@ class edit extends MaxiBlockComponent {
 								ref={this.iconRef}
 								{...this.props}
 								propsToAvoid={['buttonContent', 'formatValue']}
-								isSelected={isIconSelected}
+								changeSVGContent={changeSVGContent}
 							/>
 							<IconWrapper
 								ref={this.iconRef}
 								uniqueID={uniqueID}
 								className='maxi-button-block__icon'
-								changeIsSelected={isIconSelected =>
-									this.setState({ isIconSelected })
-								}
 							>
 								<RawHTML>{attributes['icon-content']}</RawHTML>
 							</IconWrapper>

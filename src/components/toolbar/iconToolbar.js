@@ -33,9 +33,15 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const IconToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, maxiSetAttributes, name, isSelected } =
-			props;
-		const { uniqueID } = attributes;
+		const {
+			attributes,
+			clientId,
+			maxiSetAttributes,
+			name,
+			isSelected,
+			changeSVGContent,
+		} = props;
+		const { uniqueID, svgType, parentBlockStyle } = attributes;
 
 		const { editorVersion, breakpoint } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -117,6 +123,9 @@ const IconToolbar = memo(
 							<IconColor
 								blockName={name}
 								{...getGroupAttributes(attributes, 'icon')}
+								svgType={svgType}
+								changeSVGContent={changeSVGContent}
+								parentBlockStyle={parentBlockStyle}
 								onChange={obj => processAttributes(obj)}
 							/>
 							<IconBackground

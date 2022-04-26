@@ -25,6 +25,10 @@ export const rawWidth = {
 	width: {
 		type: 'string',
 	},
+	'width-fit-content': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export const rawMinWidth = {

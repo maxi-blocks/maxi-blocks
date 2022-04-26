@@ -9,12 +9,15 @@ import { __ } from '@wordpress/i18n';
 import AlignmentControl from '../../../alignment-control';
 import { getGroupAttributes } from '../../../../extensions/styles';
 import Button from '../../../button';
+import Icon from '../../../icon';
 import Dropdown from '../../../dropdown';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
+import { alignCenter } from '../../../../icons';
+
 
 /**
  * Alignment
@@ -41,7 +44,7 @@ const Alignment = props => {
 			position='bottom right'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>
-					{__('Align', 'maxi-blocks')}
+					<Icon className='toolbar-item__icon toolbar-item__icon__alignment' icon={alignCenter} />
 				</Button>
 			)}
 			renderContent={() => (

@@ -25,10 +25,6 @@ const attributes = {
 		type: 'string',
 		default: 'full',
 	},
-	blockStyle: {
-		type: 'string',
-		default: 'maxi-light',
-	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...{

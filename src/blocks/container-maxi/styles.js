@@ -29,7 +29,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -38,7 +38,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -103,7 +103,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -112,7 +112,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 	};
 
@@ -151,7 +151,7 @@ const getStyles = props => {
 									]),
 								},
 								'top',
-								props.parentBlockStyle
+								props.blockStyle
 							),
 						},
 					},
@@ -179,7 +179,7 @@ const getStyles = props => {
 									]),
 								},
 								'bottom',
-								props.parentBlockStyle
+								props.blockStyle
 							),
 						},
 					},
@@ -191,7 +191,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -205,7 +205,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 				}),
 				...getArrowStyles({
 					...getGroupAttributes(props, [
@@ -216,7 +216,7 @@ const getStyles = props => {
 						'blockBackground',
 						'boxShadow',
 					]),
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 				}),
 				...getArrowStyles({
 					...getGroupAttributes(
@@ -232,7 +232,7 @@ const getStyles = props => {
 						true
 					),
 					...getGroupAttributes(props, ['arrow']),
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 					isHover: true,
 				}),
 			},

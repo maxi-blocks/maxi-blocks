@@ -22,9 +22,9 @@ describe('BlockStylesControl', () => {
 		const input = await page.$(
 			'.maxi-tab-content__box .maxi-block-style-control select'
 		);
-		await input.select('maxi-dark');
+		await input.select('dark');
 
-		expect(await getAttributes('blockStyle')).toStrictEqual('maxi-dark');
+		expect(await getAttributes('blockStyle')).toStrictEqual('dark');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

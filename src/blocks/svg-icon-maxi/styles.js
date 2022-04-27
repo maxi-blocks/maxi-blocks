@@ -30,13 +30,13 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -96,7 +96,7 @@ const getWrapperObjectHover = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -105,7 +105,7 @@ const getWrapperObjectHover = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 	};
 
@@ -118,7 +118,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'svg-'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
 		padding: getMarginPaddingStyles({
@@ -142,7 +142,7 @@ const getNormalObject = props => {
 					'svg-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
 		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
@@ -153,7 +153,7 @@ const getNormalObject = props => {
 				false,
 				'svg-'
 			),
-			blockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
 		transition: getTransitionStyles({
@@ -178,7 +178,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'svg-',
 			}),
 		boxShadow:
@@ -188,7 +188,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true, 'svg-'),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'svg-',
 			}),
 		...getBackgroundStyles({
@@ -198,7 +198,7 @@ const getHoverObject = props => {
 				true,
 				'svg-'
 			),
-			blockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			isHover: true,
 			prefix: 'svg-',
 		}),
@@ -208,7 +208,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, parentBlockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(

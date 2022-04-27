@@ -104,7 +104,7 @@ const MaxiToolbar = memo(
 			textLevel,
 			typeOfList,
 			uniqueID,
-			parentBlockStyle,
+			blockStyle,
 			svgType,
 		} = attributes;
 
@@ -175,7 +175,7 @@ const MaxiToolbar = memo(
 							<div className='toolbar-block-custom-label'>
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
-									{` | ${parentBlockStyle}`}
+									{` | ${blockStyle}`}
 								</span>
 							</div>
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
@@ -221,7 +221,7 @@ const MaxiToolbar = memo(
 								textLevel={textLevel}
 								styleCard={styleCard}
 								clientId={clientId}
-								blockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 							/>
 							<Mover clientId={clientId} blockName={name} />
 							<TextLevel
@@ -254,7 +254,7 @@ const MaxiToolbar = memo(
 											}}
 											changeSVGContent={changeSVGContent}
 											type='fill'
-											parentBlockStyle={parentBlockStyle}
+											blockStyle={blockStyle}
 										/>
 									)}
 									{svgType !== 'Shape' && (
@@ -269,7 +269,7 @@ const MaxiToolbar = memo(
 											}}
 											changeSVGContent={changeSVGContent}
 											type='line'
-											parentBlockStyle={parentBlockStyle}
+											blockStyle={blockStyle}
 										/>
 									)}
 									<SvgWidth
@@ -416,7 +416,7 @@ const MaxiToolbar = memo(
 								linkSettings={linkSettings}
 								breakpoint={breakpoint}
 								textLevel={textLevel}
-								blockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 								styleCard={styleCard}
 							/>
 							<VerticalAlign

@@ -25,7 +25,7 @@ export { default as size } from './size';
 export { default as svg } from './svg';
 export { default as textAlignment } from './textAlignment';
 export { default as transform } from './transform';
-export { default as transitionDuration } from './transition';
+export { default as transition } from './transition';
 export { default as typographyHover } from './typographyHover';
 export { default as zIndex } from './zIndex';
 export { default as clipPath } from './clipPath';

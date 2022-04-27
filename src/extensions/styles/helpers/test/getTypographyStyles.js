@@ -146,7 +146,7 @@ describe('getTypographyStyles', () => {
 
 		const result = getTypographyStyles({
 			obj,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
 	});
@@ -316,7 +316,7 @@ describe('getTypographyStyles', () => {
 
 		const result = getTypographyStyles({
 			obj: hoverObj,
-			parentBlockStyle: 'light',
+			blockStyle: 'light',
 			isHover: true,
 			normalTypography: obj,
 		});

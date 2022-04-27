@@ -1108,4 +1108,60 @@ describe('getBackgroundStyles', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get correct block background styles for color layer with row border radius', () => {
+		const result = getBlockBackgroundStyles({
+			target: 'maxi-test',
+			isHover: false,
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity-general': 0.07,
+					'background-color-general': '',
+					order: 0,
+				},
+			],
+			rowBorderRadius: {
+				'border-bottom-left-radius-general': 181,
+				'border-bottom-right-radius-general': 182,
+				'border-top-left-radius-general': 183,
+				'border-top-right-radius-general': 184,
+			},
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get correct block background styles for color layer with border radius and row border radius', () => {
+		const result = getBlockBackgroundStyles({
+			target: 'maxi-test',
+			isHover: false,
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity-general': 0.07,
+					'background-color-general': '',
+					order: 0,
+				},
+			],
+			rowBorderRadius: {
+				'border-bottom-left-radius-general': 180,
+				'border-bottom-right-radius-general': 181,
+				'border-top-left-radius-general': 182,
+				'border-top-right-radius-general': 183,
+			},
+			'border-bottom-left-radius-general': 160,
+			'border-bottom-right-radius-general': 200,
+		});
+
+		expect(result).toMatchSnapshot();
+	});
 });

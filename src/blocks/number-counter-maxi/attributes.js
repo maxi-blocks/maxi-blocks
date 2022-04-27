@@ -74,6 +74,7 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

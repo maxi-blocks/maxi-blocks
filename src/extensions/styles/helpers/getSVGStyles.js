@@ -12,7 +12,7 @@ import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = (obj, prefix) => {
+export const getSVGWidthStyles = (obj, prefix = '') => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -43,7 +43,7 @@ export const getSVGWidthStyles = (obj, prefix) => {
 	return { SVGWidth: response };
 };
 
-const getSVGPathStyles = (obj, prefix = 'svg-') => {
+const getSVGPathStyles = (obj, prefix = '') => {
 	const response = {
 		label: 'SVG path',
 		general: {},
@@ -65,14 +65,14 @@ const getSVGPathStyles = (obj, prefix = 'svg-') => {
 	return { SVGPath: response };
 };
 
-const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-') => {
+const getSVGPathFillStyles = (obj, blockStyle, prefix = '') => {
 	const response = {
 		label: 'SVG path-fill',
 		general: {},
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: `${prefix}fill-` });
+		getPaletteAttributes({ obj, prefix: `${prefix}svg-fill-` });
 
 	if (paletteStatus && paletteColor)
 		response.general.fill = getColorRGBAString({
@@ -86,7 +86,7 @@ const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-') => {
 	return { SVGPathFill: response };
 };
 
-const getSVGPathStrokeStyles = (obj, blockStyle, prefix = 'svg-line-') => {
+const getSVGPathStrokeStyles = (obj, blockStyle, prefix = '') => {
 	const response = {
 		label: 'SVG',
 		general: {},

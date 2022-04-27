@@ -22,6 +22,7 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -338,60 +339,58 @@ const Inspector = props => {
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<>
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props,
-											}),
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsSvgIcon,
+										categories: categoriesSvgIcon,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props,
-											}),
-										},
-										...inspectorTabs.customCss({
-											props,
-											breakpoint: deviceType,
-											selectors: selectorsSvgIcon,
-											categories: categoriesSvgIcon,
-										}),
-										...inspectorTabs.scrollEffects({
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props,
 										}),
-										...inspectorTabs.transform({
-											props,
-										}),
-										...inspectorTabs.transition({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.display({
-											props,
-										}),
-										...inspectorTabs.position({
-											props,
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props,
-											}),
-										},
-										...inspectorTabs.overflow({
-											props,
-										}),
-										...inspectorTabs.flex({
-											props,
-										}),
-										...inspectorTabs.zindex({
-											props,
-										}),
-									]}
-								/>
-							</>
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 				]}
@@ -400,4 +399,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

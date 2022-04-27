@@ -277,11 +277,15 @@ const MaxiToolbar = memo(
 											onChangeInline={obj =>
 												insertInlineStyles(
 													obj,
-													'[data-fill]'
+													'[data-fill]',
+													true
 												)
 											}
 											onChange={obj => {
 												maxiSetAttributes(obj);
+												cleanInlineStyles(
+													'[data-fill]'
+												);
 											}}
 											content={attributes.content}
 											type='fill'
@@ -298,12 +302,17 @@ const MaxiToolbar = memo(
 											onChangeInline={obj =>
 												insertInlineStyles(
 													obj,
-													'[data-stroke]'
+													'[data-stroke]',
+													true
 												)
 											}
 											onChange={obj => {
 												maxiSetAttributes(obj);
+												cleanInlineStyles(
+													'[data-stroke]'
+												);
 											}}
+											content={attributes.content}
 											type='line'
 											parentBlockStyle={parentBlockStyle}
 										/>

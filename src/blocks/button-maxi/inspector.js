@@ -345,7 +345,8 @@ const Inspector = memo(
 																		) => {
 																			insertInlineStyles(
 																				obj,
-																				target
+																				target,
+																				true
 																			);
 																		}}
 																		onChange={(
@@ -423,7 +424,8 @@ const Inspector = memo(
 																				) => {
 																					insertInlineStyles(
 																						obj,
-																						target
+																						target,
+																						true
 																					);
 																				}}
 																				onChange={(

@@ -33,8 +33,15 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const IconToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, maxiSetAttributes, name, isSelected } =
-			props;
+		const {
+			attributes,
+			clientId,
+			maxiSetAttributes,
+			insertInlineStyles,
+			cleanInlineStyles,
+			name,
+			isSelected,
+		} = props;
 		const { uniqueID, svgType, parentBlockStyle } = attributes;
 
 		const { editorVersion, breakpoint } = useSelect(select => {
@@ -119,7 +126,13 @@ const IconToolbar = memo(
 								{...getGroupAttributes(attributes, 'icon')}
 								svgType={svgType}
 								parentBlockStyle={parentBlockStyle}
-								onChange={obj => processAttributes(obj)}
+								onChangeInline={(obj, target) =>
+									insertInlineStyles(obj, target, true)
+								}
+								onChange={(obj, target) => {
+									processAttributes(obj);
+									cleanInlineStyles(target);
+								}}
 							/>
 							<IconBackground
 								blockName={name}
@@ -128,7 +141,18 @@ const IconToolbar = memo(
 									'icon',
 									'iconBackgroundColor',
 								])}
-								onChange={obj => processAttributes(obj)}
+								onChangeInline={obj =>
+									insertInlineStyles(
+										obj,
+										'.maxi-button-block__icon'
+									)
+								}
+								onChange={obj => {
+									processAttributes(obj);
+									cleanInlineStyles(
+										'.maxi-button-block__icon'
+									);
+								}}
 							/>
 							<Border
 								blockName={name}

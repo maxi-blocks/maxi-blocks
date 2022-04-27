@@ -333,7 +333,8 @@ const IconControl = props => {
 										onChangeInline={({ color }) =>
 											onChangeInline(
 												{ stroke: color },
-												'[data-stroke]'
+												'[data-stroke]',
+												true
 											)
 										}
 										onChange={({
@@ -453,7 +454,8 @@ const IconControl = props => {
 								onChangeInline={({ color }) =>
 									onChangeInline(
 										{ fill: color },
-										'[data-fill]'
+										'[data-fill]',
+										true
 									)
 								}
 								onChange={({

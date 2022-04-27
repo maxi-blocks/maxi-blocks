@@ -22,7 +22,8 @@ import { setSVGContent } from '../../../../extensions/svg';
  * Component
  */
 const IconColor = props => {
-	const { blockName, onChange, svgType, parentBlockStyle } = props;
+	const { blockName, onChangeInline, onChange, svgType, parentBlockStyle } =
+		props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
@@ -63,6 +64,12 @@ const IconColor = props => {
 								prefix='icon-'
 								paletteColor={props['icon-palette-color']}
 								paletteStatus={props['icon-palette-status']}
+								onChangeInline={({ color }) =>
+									onChangeInline(
+										{ stroke: color },
+										'[data-stroke]'
+									)
+								}
 								onChange={({
 									color,
 									paletteColor,
@@ -75,18 +82,22 @@ const IconColor = props => {
 										blockStyle: parentBlockStyle,
 									});
 
-									onChange({
-										'icon-color': color,
-										'icon-palette-color': paletteColor,
-										'icon-palette-status': paletteStatus,
-										'icon-content': setSVGContent(
-											props['icon-content'],
-											paletteStatus
-												? lineColorStr
-												: color,
-											'stroke'
-										),
-									});
+									onChange(
+										{
+											'icon-color': color,
+											'icon-palette-color': paletteColor,
+											'icon-palette-status':
+												paletteStatus,
+											'icon-content': setSVGContent(
+												props['icon-content'],
+												paletteStatus
+													? lineColorStr
+													: color,
+												'stroke'
+											),
+										},
+										'[data-stroke]'
+									);
 								}}
 								disableOpacity
 							/>
@@ -99,6 +110,12 @@ const IconColor = props => {
 								paletteColor={props['icon-fill-palette-color']}
 								paletteStatus={
 									props['icon-fill-palette-status']
+								}
+								onChangeInline={({ color }) =>
+									onChangeInline(
+										{ fill: color },
+										'[data-fill]'
+									)
 								}
 								onChange={({
 									color,
@@ -113,19 +130,23 @@ const IconColor = props => {
 										blockStyle: parentBlockStyle,
 									});
 
-									onChange({
-										'icon-fill-color': color,
-										'icon-fill-palette-color': paletteColor,
-										'icon-fill-palette-status':
-											paletteStatus,
-										'icon-content': setSVGContent(
-											props['icon-content'],
-											paletteStatus
-												? fillColorStr
-												: color,
-											'fill'
-										),
-									});
+									onChange(
+										{
+											'icon-fill-color': color,
+											'icon-fill-palette-color':
+												paletteColor,
+											'icon-fill-palette-status':
+												paletteStatus,
+											'icon-content': setSVGContent(
+												props['icon-content'],
+												paletteStatus
+													? fillColorStr
+													: color,
+												'fill'
+											),
+										},
+										'[data-fill]'
+									);
 								}}
 								disableOpacity
 							/>

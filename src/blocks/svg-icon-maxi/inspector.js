@@ -164,7 +164,8 @@ const Inspector = props => {
 																onChangeInline={obj =>
 																	insertInlineStyles(
 																		obj,
-																		'[data-fill]'
+																		'[data-fill]',
+																		true
 																	)
 																}
 																onChange={obj => {
@@ -225,7 +226,8 @@ const Inspector = props => {
 															onChangeInline={obj =>
 																insertInlineStyles(
 																	obj,
-																	'[data-stroke]'
+																	'[data-stroke]',
+																	true
 																)
 															}
 															onChange={obj => {

@@ -52,6 +52,7 @@
 			}
 		],
 		// Off //
+		"react/function-component-definition": "off",
 		"react/jsx-curly-newline": "off",
 		"react/react-in-jsx-scope": "off",
 		"react/state-in-constructor": "off",

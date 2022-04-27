@@ -20,8 +20,10 @@ import MaxiBlock from '../../components/maxi-block';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getRowBorderRadius,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -40,7 +42,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
-		return isEqual(prevProps.rowGapProps, this.props.rowGapProps);
+		return (
+			isEqual(prevProps.rowGapProps, this.props.rowGapProps) &&
+			isEqual(prevProps.rowBorderRadius, this.props.rowBorderRadius)
+		);
 	}
 
 	maxiBlockDidUpdate() {
@@ -65,7 +70,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes, this.props.rowGapProps);
+		return getStyles(
+			{
+				...this.props.attributes,
+				rowBorderRadius: this.props.rowBorderRadius,
+			},
+			this.props.rowGapProps
+		);
 	}
 
 	render() {
@@ -132,6 +143,7 @@ class edit extends MaxiBlockComponent {
 						key={`toolbar-${uniqueID}`}
 						ref={this.blockRef}
 						rowPattern={context.rowPattern}
+						copyPasteMapping={copyPasteMapping}
 						propsToAvoid={['resizableObject']}
 						{...this.props}
 					/>,
@@ -217,10 +229,19 @@ const editSelect = withSelect((select, ownProps) => {
 			return response;
 		})();
 
+	const rowBorderRadius =
+		rowAttributes &&
+		getRowBorderRadius(
+			getGroupAttributes(rowAttributes, 'borderRadius'),
+			originalNestedColumns,
+			clientId
+		);
+
 	return {
 		rowBlockId,
 		originalNestedColumns,
 		rowGapProps,
+		rowBorderRadius,
 	};
 });
 

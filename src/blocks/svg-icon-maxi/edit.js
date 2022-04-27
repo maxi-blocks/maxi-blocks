@@ -27,6 +27,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
 import MaxiBlock from '../../components/maxi-block';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -116,7 +117,7 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			content,
 			openFirstTime,
-			parentBlockStyle,
+			blockStyle,
 			uniqueID,
 			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
 		} = attributes;
@@ -153,7 +154,7 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			type: 'svg',
 			isOpen,
-			style: parentBlockStyle,
+			style: blockStyle,
 			openFirstTime: isSelected ? openFirstTime : false,
 			onOpen: obj => {
 				maxiSetAttributes(obj);
@@ -186,6 +187,7 @@ class edit extends MaxiBlockComponent {
 						ref={this.blockRef}
 						propsToAvoid={['resizableObject']}
 						resizableObject={this.resizableObject}
+						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
 						{...this.props}
 					/>,

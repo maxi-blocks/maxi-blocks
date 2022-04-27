@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 
 /**
@@ -15,7 +14,7 @@ import ToggleSwitch from '../toggle-switch';
 import classnames from 'classnames';
 
 const SliderControl = props => {
-	const { className, onChange, numberOfSlides, isEditView } = props;
+	const { className, onChange, isEditView } = props;
 	const classes = classnames('maxi-slider-control', className);
 
 	return (
@@ -26,15 +25,6 @@ const SliderControl = props => {
 				onChange={val => {
 					onChange({ isEditView: val });
 				}}
-			/>
-			<AdvancedNumberControl
-				label='Number of slides'
-				value={numberOfSlides}
-				onChangeValue={val => onChange({ numberOfSlides: val })}
-				onReset={() => onChange({ numberOfSlides: 6 })}
-				min={0}
-				max={10}
-				className={classes}
 			/>
 		</div>
 	);

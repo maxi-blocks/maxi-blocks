@@ -144,16 +144,22 @@ const NumberCounter = attributes => {
 				className='maxi-number-counter__box'
 				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
-				defaultSize={{
-					width: `${getLastBreakpointAttribute({
-						target: 'number-counter-width',
+				size={{
+					width: getLastBreakpointAttribute({
+						target: 'number-counter-width-auto',
 						breakpoint: deviceType,
 						attributes,
-					})}${getLastBreakpointAttribute({
-						target: 'number-counter-width-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}`,
+					})
+						? 'auto'
+						: `${getLastBreakpointAttribute({
+								target: 'number-counter-width',
+								breakpoint: deviceType,
+								attributes,
+						  })}${getLastBreakpointAttribute({
+								target: 'number-counter-width-unit',
+								breakpoint: deviceType,
+								attributes,
+						  })}`,
 				}}
 				maxWidth='100%'
 				minWidth={
@@ -318,10 +324,13 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter
-					{...getGroupAttributes(attributes, [
-						'numberCounter',
+					{...getGroupAttributes(attributes, 'numberCounter')}
+					{...getGroupAttributes(
+						attributes,
 						'size',
-					])}
+						false,
+						'number-counter-'
+					)}
 					resizerProps={{
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,

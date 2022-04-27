@@ -1,3 +1,14 @@
+const checkMediaQuery = () => {
+	let breakpoint = 'general';
+	const winWIdth = window.innerWidth;
+	if (winWIdth <= 480) breakpoint = 'xs';
+	if (winWIdth > 480 && winWIdth <= 768) breakpoint = 's';
+	if (winWIdth > 768 && winWIdth <= 1024) breakpoint = 'm';
+	if (winWIdth > 1024 && winWIdth <= 1366) breakpoint = 'l';
+	if (winWIdth > 1366 && winWIdth <= 1920) breakpoint = 'general';
+	if (winWIdth > 1920) breakpoint = 'xxl';
+	return breakpoint;
+};
 // Number Counter Effects
 const numberCounterEffect = () => {
 	const numberElements = document.querySelectorAll('.maxi-nc-effect');
@@ -80,6 +91,9 @@ const numberCounterEffect = () => {
 					}, frameDuration);
 				};
 
+				const winSize = checkMediaQuery();
+				setNewDyAttribute(numberCounterElemText, numberData, winSize);
+
 				if (startAnimation === 'view-scroll') {
 					// eslint-disable-next-line no-unused-vars, no-undef
 					const waypoint = new Waypoint({
@@ -92,10 +106,36 @@ const numberCounterEffect = () => {
 				} else {
 					startCounter();
 				}
+				window.addEventListener('resize', () => {
+					const winSize = checkMediaQuery();
+					setNewDyAttribute(
+						numberCounterElemText,
+						numberData,
+						winSize
+					);
+				});
 			}
 		}
 	});
 };
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
+const setNewDyAttribute = (elem, numberData, winSize) => {
+	const fontSize = getLastBreakpointValue(numberData, winSize);
+	elem.setAttribute(
+		'dy',
+		`${Math.round((fontSize / 4 + Number.EPSILON) * 100) / 100}px`
+	);
+};
+
+const getLastBreakpointValue = (numberData, winSize) => {
+	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
+	if (numberData[`number-counter-title-font-size-${winSize}`]) {
+		return numberData[`number-counter-title-font-size-${winSize}`];
+	} else {
+		const winIndex = breakpoints.indexOf(winSize);
+		return getLastBreakpointValue(numberData, breakpoints[winIndex + 1]);
+	}
+};
+
 window.addEventListener('load', numberCounterEffect);

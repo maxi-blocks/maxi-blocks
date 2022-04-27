@@ -28,7 +28,7 @@ import { ResponsiveTabsControl } from '..';
 /**
  * Component
  */
-function ColorContent({
+const ColorContent = ({
 	SVGOptions,
 	SVGData,
 	breakpoint,
@@ -37,7 +37,7 @@ function ColorContent({
 	value,
 	onChange,
 	clientId,
-}) {
+}) => {
 	return (
 		<ColorControl
 			label={__('Fill', 'maxi-blocks')}
@@ -113,9 +113,9 @@ function ColorContent({
 			clientId={clientId}
 		/>
 	);
-}
+};
 
-function SVGFillControl(props) {
+const SVGFillControl = props => {
 	const {
 		onChange,
 		className,
@@ -308,6 +308,6 @@ function SVGFillControl(props) {
 				getFillItem(Object.entries(SVGData)[0])}
 		</div>
 	);
-}
+};
 
 export default SVGFillControl;

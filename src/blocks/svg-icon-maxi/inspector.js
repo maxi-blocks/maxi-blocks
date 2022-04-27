@@ -26,7 +26,7 @@ import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 /**
  * Inspector
  */
-function Inspector(props) {
+const Inspector = props => {
 	const {
 		attributes,
 		changeSVGContent,
@@ -161,8 +161,7 @@ function Inspector(props) {
 																			obj[
 																				'svg-fill-palette-opacity'
 																			],
-																		blockStyle:
-																			parentBlockStyle,
+																		blockStyle,
 																	}
 																);
 															changeSVGContent(
@@ -193,8 +192,7 @@ function Inspector(props) {
 																			obj[
 																				'svg-line-palette-opacity'
 																			],
-																		blockStyle:
-																			parentBlockStyle,
+																		blockStyle,
 																	}
 																);
 															changeSVGContent(
@@ -225,8 +223,7 @@ function Inspector(props) {
 																			obj[
 																				'svg-fill-palette-opacity-hover'
 																			],
-																		blockStyle:
-																			parentBlockStyle,
+																		blockStyle,
 																	}
 																);
 
@@ -258,8 +255,7 @@ function Inspector(props) {
 																			obj[
 																				'svg-line-palette-opacity-hover'
 																			],
-																		blockStyle:
-																			parentBlockStyle,
+																		blockStyle,
 																	}
 																);
 
@@ -448,6 +444,6 @@ function Inspector(props) {
 			/>
 		</InspectorControls>
 	);
-}
+};
 
 export default Inspector;

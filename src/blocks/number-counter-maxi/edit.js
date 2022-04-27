@@ -26,6 +26,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -139,16 +140,22 @@ const NumberCounter = attributes => {
 				className='maxi-number-counter__box'
 				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
-				defaultSize={{
-					width: `${getLastBreakpointAttribute({
-						target: 'number-counter-width',
+				size={{
+					width: getLastBreakpointAttribute({
+						target: 'number-counter-width-auto',
 						breakpoint: deviceType,
 						attributes,
-					})}${getLastBreakpointAttribute({
-						target: 'number-counter-width-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}`,
+					})
+						? 'auto'
+						: `${getLastBreakpointAttribute({
+								target: 'number-counter-width',
+								breakpoint: deviceType,
+								attributes,
+						  })}${getLastBreakpointAttribute({
+								target: 'number-counter-width-unit',
+								breakpoint: deviceType,
+								attributes,
+						  })}`,
 				}}
 				maxWidth='100%'
 				minWidth={
@@ -214,7 +221,7 @@ const NumberCounter = attributes => {
 				)}
 				{circleStatus && (
 					<span className='maxi-number-counter__box__text'>
-						{`${parseInt((count / 360) * 100)}`}
+						{`${Math.ceil((count / 360) * 100)}`}
 						{usePercentage && <sup>%</sup>}
 					</span>
 				)}
@@ -303,6 +310,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='number-counter-'
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
@@ -312,10 +320,13 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter
-					{...getGroupAttributes(attributes, [
-						'numberCounter',
+					{...getGroupAttributes(attributes, 'numberCounter')}
+					{...getGroupAttributes(
+						attributes,
 						'size',
-					])}
+						false,
+						'number-counter-'
+					)}
 					resizerProps={{
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,

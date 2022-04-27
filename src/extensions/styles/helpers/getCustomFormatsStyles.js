@@ -18,7 +18,7 @@ const getCustomFormatsStyles = (
 					isHover: false, // always false, as doesn't need `-hover` suffix
 					customFormatTypography: typography,
 					textLevel,
-					parentBlockStyle: blockStyle,
+					blockStyle,
 				}),
 			};
 		});

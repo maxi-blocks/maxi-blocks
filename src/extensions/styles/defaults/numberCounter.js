@@ -1,6 +1,15 @@
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const numberCounter = {
+	...breakpointAttributesCreator({
+		obj: {
+			'number-counter-width-auto': {
+				type: 'boolean',
+				default: false,
+			},
+		},
+	}),
 	'number-counter-status': {
 		type: 'boolean',
 		default: true,

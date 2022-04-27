@@ -9,7 +9,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
  */
 import { isNil } from 'lodash';
 
-const getShapeStyles = (obj, target, parentBlockStyle) => {
+const getShapeStyles = (obj, target, blockStyle) => {
 	const response = {
 		label: 'Shape',
 		general: {},
@@ -32,7 +32,7 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 			response.general.fill = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle: blockStyle,
 			});
 		else if (!paletteStatus && !isNil(color)) response.general.fill = color;
 	}

@@ -36,13 +36,7 @@ const Inspector = props => {
 		deviceType,
 		maxiSetAttributes,
 	} = props;
-	const {
-		blockStyle,
-		customLabel,
-		isFirstOnHierarchy,
-		parentBlockStyle,
-		svgType,
-	} = attributes;
+	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } = attributes;
 
 	return (
 		<InspectorControls>
@@ -75,8 +69,7 @@ const Inspector = props => {
 											onChange={obj => {
 												maxiSetAttributes(obj);
 
-												const { parentBlockStyle } =
-													obj;
+												const { blockStyle } = obj;
 
 												const {
 													'svg-fill-palette-color':
@@ -99,8 +92,7 @@ const Inspector = props => {
 														secondVar: `color-${svgPaletteFillColor}`,
 														opacity:
 															svgPaletteFillOpacity,
-														blockStyle:
-															parentBlockStyle,
+														blockStyle,
 													});
 												const lineColorStr =
 													getColorRGBAString({
@@ -108,8 +100,7 @@ const Inspector = props => {
 														secondVar: `color-${svgPaletteLineColor}`,
 														opacity:
 															svgPaletteLineOpacity,
-														blockStyle:
-															parentBlockStyle,
+														blockStyle,
 													});
 
 												changeSVGContentWithBlockStyle(
@@ -168,8 +159,7 @@ const Inspector = props => {
 																					obj[
 																						'svg-fill-palette-opacity'
 																					],
-																				blockStyle:
-																					parentBlockStyle,
+																				blockStyle,
 																			}
 																		);
 
@@ -217,8 +207,7 @@ const Inspector = props => {
 																				obj[
 																					'svg-line-palette-opacity'
 																				],
-																			blockStyle:
-																				parentBlockStyle,
+																			blockStyle,
 																		}
 																	);
 

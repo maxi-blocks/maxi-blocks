@@ -232,7 +232,6 @@ const Inspector = memo(
 			captionType,
 			fullWidth,
 			mediaAlt,
-			parentBlockStyle,
 			SVGElement,
 			uniqueID,
 			mediaID,
@@ -473,7 +472,7 @@ const Inspector = memo(
 																		clientId
 																	}
 																	blockStyle={
-																		parentBlockStyle
+																		blockStyle
 																	}
 																	globalProps={{
 																		target: '',

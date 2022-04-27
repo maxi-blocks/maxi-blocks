@@ -23,8 +23,7 @@ import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
  * SvgColor
  */
 const SvgColorToolbar = props => {
-	const { type, blockName, onChange, changeSVGContent, parentBlockStyle } =
-		props;
+	const { type, blockName, onChange, changeSVGContent, blockStyle } = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -56,7 +55,7 @@ const SvgColorToolbar = props => {
 								obj[`svg-${type}-palette-color`]
 							}`,
 							opacity: obj[`svg-${type}-palette-opacity`],
-							blockStyle: parentBlockStyle,
+							blockStyle,
 						});
 
 						changeSVGContent(

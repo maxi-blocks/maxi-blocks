@@ -22,7 +22,7 @@ const getNormalObject = (props, rowGapProps) => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -32,7 +32,7 @@ const getNormalObject = (props, rowGapProps) => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
@@ -91,7 +91,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -100,7 +100,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 	};
 
@@ -136,7 +136,7 @@ const getStyles = (props, rowGapProps) => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 					rowBorderRadius: props.rowBorderRadius,
 				}),
 				...getBlockBackgroundStyles({
@@ -151,7 +151,7 @@ const getStyles = (props, rowGapProps) => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 					rowBorderRadius: props.rowBorderRadius,
 				}),
 			},

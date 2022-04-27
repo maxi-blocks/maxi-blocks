@@ -36,7 +36,6 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi',
 ];
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const CopyPasteContent = props => {
 	const { clientId, blockName, copyPasteMapping, prefix, closeMoreSettings } =

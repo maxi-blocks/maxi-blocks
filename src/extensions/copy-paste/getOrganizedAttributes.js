@@ -8,6 +8,8 @@ import { getGroupAttributes, paletteAttributesCreator } from '../styles';
  */
 import { isNil, isEmpty } from 'lodash';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 	const response = {};
 	const settingTabs = ['settings', 'canvas', 'advanced'];

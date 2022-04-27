@@ -41,7 +41,7 @@ const IconToolbar = memo(
 			isSelected,
 			changeSVGContent,
 		} = props;
-		const { uniqueID, svgType, parentBlockStyle } = attributes;
+		const { uniqueID, svgType, blockStyle } = attributes;
 
 		const { editorVersion, breakpoint } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -125,7 +125,7 @@ const IconToolbar = memo(
 								{...getGroupAttributes(attributes, 'icon')}
 								svgType={svgType}
 								changeSVGContent={changeSVGContent}
-								parentBlockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 								onChange={obj => processAttributes(obj)}
 							/>
 							<IconBackground

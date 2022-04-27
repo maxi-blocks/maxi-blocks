@@ -40,9 +40,9 @@ describe('getLinkStyles', () => {
 			'link-visited-palette-color-general': 3,
 		};
 		const target = ' p.maxi-text-block__content a';
-		const parentBlockStyles = 'light';
+		const blockStyles = 'light';
 
-		const result = getLinkStyles(obj, target, parentBlockStyles);
+		const result = getLinkStyles(obj, target, blockStyles);
 
 		expect(result).toMatchSnapshot();
 	});
@@ -64,9 +64,9 @@ describe('getLinkStyles', () => {
 			'link-visited-color-general': 'rgba(27,109,168,1)',
 		};
 		const target = ' p.maxi-text-block__content a';
-		const parentBlockStyles = 'light';
+		const blockStyles = 'light';
 
-		const result = getLinkStyles(obj, target, parentBlockStyles);
+		const result = getLinkStyles(obj, target, blockStyles);
 
 		expect(result).toMatchSnapshot();
 	});

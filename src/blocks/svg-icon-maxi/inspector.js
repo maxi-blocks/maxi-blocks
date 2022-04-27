@@ -163,9 +163,11 @@ const Inspector = props => {
 																)}
 																onChangeInline={obj =>
 																	insertInlineStyles(
-																		obj,
-																		'[data-fill]',
-																		true
+																		{
+																			obj,
+																			target: '[data-fill]',
+																			isMultiplySelector: true,
+																		}
 																	)
 																}
 																onChange={obj => {
@@ -225,9 +227,11 @@ const Inspector = props => {
 															)}
 															onChangeInline={obj =>
 																insertInlineStyles(
-																	obj,
-																	'[data-stroke]',
-																	true
+																	{
+																		obj,
+																		target: '[data-stroke]',
+																		isMultiplySelector: true,
+																	}
 																)
 															}
 															onChange={obj => {

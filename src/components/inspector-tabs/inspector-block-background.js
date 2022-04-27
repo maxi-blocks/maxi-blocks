@@ -50,7 +50,7 @@ const blockBackground = ({
 										'background-layers',
 									])}
 									onChangeInline={(obj, target) =>
-										insertInlineStyles(obj, target)
+										insertInlineStyles({ obj, target })
 									}
 									onChange={(obj, target) => {
 										maxiSetAttributes(obj);
@@ -94,10 +94,10 @@ const blockBackground = ({
 											true
 										)}
 										onChangeInline={(obj, target) =>
-											insertInlineStyles(
+											insertInlineStyles({
 												obj,
-												`${target}:hover`
-											)
+												target: `${target}:hover`,
+											})
 										}
 										onChange={(obj, target) => {
 											maxiSetAttributes(obj);

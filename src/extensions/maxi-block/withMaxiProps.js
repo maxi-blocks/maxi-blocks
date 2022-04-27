@@ -78,12 +78,12 @@ const withMaxiProps = createHigherOrderComponent(
 				)} transition: none !important; }`;
 			};
 
-			const insertInlineStyles = (
+			const insertInlineStyles = ({
 				styleObj,
 				target = '',
 				isMultiplySelector = false,
-				preudoElement = ''
-			) => {
+				preudoElement = '',
+			}) => {
 				if (isEmpty(styleObj)) return;
 
 				const parentElement = ref?.current.blockRef.current;

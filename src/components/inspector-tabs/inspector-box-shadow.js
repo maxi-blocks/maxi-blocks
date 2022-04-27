@@ -47,7 +47,10 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 								)}
 								prefix={prefix}
 								onChangeInline={obj =>
-									insertInlineStyles(obj, inlineTarget)
+									insertInlineStyles({
+										obj,
+										target: inlineTarget,
+									})
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
@@ -105,10 +108,10 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 										)}
 										prefix={prefix}
 										onChangeInline={obj =>
-											insertInlineStyles(
+											insertInlineStyles({
 												obj,
-												`${inlineTarget}:hover`
-											)
+												target: `${inlineTarget}:hover`,
+											})
 										}
 										onChange={obj => {
 											maxiSetAttributes(obj);

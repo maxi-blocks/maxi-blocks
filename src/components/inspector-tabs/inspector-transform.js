@@ -27,7 +27,7 @@ const transform = ({ props, depth = 2 }) => {
 		content: (
 			<TransformControl
 				{...getGroupAttributes(attributes, 'transform')}
-				onChangeInline={obj => insertInlineStyles(obj)}
+				onChangeInline={obj => insertInlineStyles({ obj })}
 				onChange={obj => {
 					maxiSetAttributes(obj);
 					cleanInlineStyles();

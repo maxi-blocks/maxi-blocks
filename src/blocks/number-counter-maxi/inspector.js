@@ -65,10 +65,10 @@ const Inspector = props => {
 														obj,
 														target
 													) =>
-														insertInlineStyles(
+														insertInlineStyles({
 															obj,
-															target
-														)
+															target,
+														})
 													}
 													onChange={(obj, target) => {
 														maxiSetAttributes(obj);

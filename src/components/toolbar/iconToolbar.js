@@ -127,7 +127,11 @@ const IconToolbar = memo(
 								svgType={svgType}
 								parentBlockStyle={parentBlockStyle}
 								onChangeInline={(obj, target) =>
-									insertInlineStyles(obj, target, true)
+									insertInlineStyles({
+										obj,
+										target,
+										isMultiplySelector: true,
+									})
 								}
 								onChange={(obj, target) => {
 									processAttributes(obj);
@@ -142,10 +146,10 @@ const IconToolbar = memo(
 									'iconBackgroundColor',
 								])}
 								onChangeInline={obj =>
-									insertInlineStyles(
+									insertInlineStyles({
 										obj,
-										'.maxi-button-block__icon'
-									)
+										target: '.maxi-button-block__icon',
+									})
 								}
 								onChange={obj => {
 									processAttributes(obj);

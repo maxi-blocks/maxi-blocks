@@ -344,9 +344,11 @@ const Inspector = memo(
 																			target
 																		) => {
 																			insertInlineStyles(
-																				obj,
-																				target,
-																				true
+																				{
+																					obj,
+																					target,
+																					isMultiplySelector: true,
+																				}
 																			);
 																		}}
 																		onChange={(
@@ -423,9 +425,11 @@ const Inspector = memo(
 																					target
 																				) => {
 																					insertInlineStyles(
-																						obj,
-																						target,
-																						true
+																						{
+																							obj,
+																							target,
+																							isMultiplySelector: true,
+																						}
 																					);
 																				}}
 																				onChange={(

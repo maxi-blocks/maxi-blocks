@@ -146,7 +146,10 @@ const CaptionToolbar = memo(
 									'typography'
 								)}
 								onChangeInline={obj =>
-									insertInlineStyles(obj, '.rich-text')
+									insertInlineStyles({
+										obj,
+										target: '.rich-text',
+									})
 								}
 								onChange={obj => {
 									processAttributes(obj);

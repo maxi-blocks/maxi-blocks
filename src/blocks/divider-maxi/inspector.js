@@ -204,10 +204,10 @@ const Inspector = props => {
 															['divider', 'size']
 														)}
 														onChangeInline={obj =>
-															insertInlineStyles(
+															insertInlineStyles({
 																obj,
-																inlineStylesTargets.dividerColor
-															)
+																target: inlineStylesTargets.dividerColor,
+															})
 														}
 														onChange={obj => {
 															maxiSetAttributes(

@@ -70,7 +70,10 @@ const border = ({
 								)}
 								prefix={prefix}
 								onChangeInline={obj => {
-									insertInlineStyles(obj, finalInlineTarget);
+									insertInlineStyles({
+										obj,
+										target: finalInlineTarget,
+									});
 								}}
 								onChange={obj => {
 									maxiSetAttributes(obj);
@@ -143,10 +146,10 @@ const border = ({
 										)}
 										prefix={prefix}
 										onChangeInline={obj =>
-											insertInlineStyles(
+											insertInlineStyles({
 												obj,
-												`${finalInlineTarget}:hover`
-											)
+												target: `${finalInlineTarget}:hover`,
+											})
 										}
 										onChange={obj => {
 											maxiSetAttributes(obj);

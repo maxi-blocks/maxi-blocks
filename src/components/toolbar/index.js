@@ -211,11 +211,13 @@ const MaxiToolbar = memo(
 									'typography'
 								)}
 								onChangeInline={obj =>
-									insertInlineStyles(
+									insertInlineStyles({
 										obj,
-										`.rich-text ${isList ? 'li' : ''}`,
-										isList
-									)
+										target: `.rich-text ${
+											isList ? 'li' : ''
+										}`,
+										isMultiplySelector: isList,
+									})
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
@@ -275,11 +277,11 @@ const MaxiToolbar = memo(
 											)}
 											blockName={name}
 											onChangeInline={obj =>
-												insertInlineStyles(
+												insertInlineStyles({
 													obj,
-													'[data-fill]',
-													true
-												)
+													target: '[data-fill]',
+													isMultiplySelector: true,
+												})
 											}
 											onChange={obj => {
 												maxiSetAttributes(obj);
@@ -300,11 +302,11 @@ const MaxiToolbar = memo(
 											)}
 											blockName={name}
 											onChangeInline={obj =>
-												insertInlineStyles(
+												insertInlineStyles({
 													obj,
-													'[data-stroke]',
-													true
-												)
+													target: '[data-stroke]',
+													isMultiplySelector: true,
+												})
 											}
 											onChange={obj => {
 												maxiSetAttributes(obj);
@@ -350,10 +352,10 @@ const MaxiToolbar = memo(
 								blockName={name}
 								breakpoint={breakpoint}
 								onChangeInline={obj =>
-									insertInlineStyles(
+									insertInlineStyles({
 										obj,
-										inlineStylesTargetsDefault.background
-									)
+										target: inlineStylesTargetsDefault.background,
+									})
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
@@ -371,7 +373,7 @@ const MaxiToolbar = memo(
 								blockName={name}
 								breakpoint={breakpoint}
 								onChangeInline={(obj, target) =>
-									insertInlineStyles(obj, target)
+									insertInlineStyles({ obj, target })
 								}
 								onChange={(obj, target) => {
 									maxiSetAttributes(obj);
@@ -388,10 +390,10 @@ const MaxiToolbar = memo(
 									prefix
 								)}
 								onChangeInline={obj =>
-									insertInlineStyles(
+									insertInlineStyles({
 										obj,
-										inlineStylesTargetsResults.border
-									)
+										target: inlineStylesTargetsResults.border,
+									})
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
@@ -412,10 +414,10 @@ const MaxiToolbar = memo(
 									prefix
 								)}
 								onChangeInline={obj =>
-									insertInlineStyles(
+									insertInlineStyles({
 										obj,
-										inlineStylesTargetsResults.boxShadow
-									)
+										target: inlineStylesTargetsResults.boxShadow,
+									})
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);
@@ -512,10 +514,10 @@ const MaxiToolbar = memo(
 								blockName={name}
 								breakpoint={breakpoint}
 								onChangeInline={obj =>
-									insertInlineStyles(
+									insertInlineStyles({
 										obj,
-										inlineStylesTargetsResults.dividerColor
-									)
+										target: inlineStylesTargetsResults.dividerColor,
+									})
 								}
 								onChange={obj => {
 									maxiSetAttributes(obj);

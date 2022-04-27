@@ -63,10 +63,10 @@ const Inspector = props => {
 														'shapeDivider'
 													)}
 													onChangeInline={obj =>
-														insertInlineStyles(
+														insertInlineStyles({
 															obj,
-															'svg'
-														)
+															target: 'svg',
+														})
 													}
 													onChange={obj => {
 														maxiSetAttributes(obj);

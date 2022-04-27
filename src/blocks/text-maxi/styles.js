@@ -129,8 +129,8 @@ const getHoverObject = props => {
 
 const getLinkObject = props => {
 	const response = {
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 

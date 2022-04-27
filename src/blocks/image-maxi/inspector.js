@@ -669,6 +669,11 @@ const Inspector = memo(
 											...inspectorTabs.transform({
 												props,
 											}),
+											...inspectorTabs.transition({
+												props: {
+													...props,
+												},
+											}),
 											...inspectorTabs.display({
 												props,
 											}),

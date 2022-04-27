@@ -117,7 +117,7 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			content,
 			openFirstTime,
-			parentBlockStyle,
+			blockStyle,
 			uniqueID,
 			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
 		} = attributes;
@@ -154,7 +154,7 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			type: 'svg',
 			isOpen,
-			style: parentBlockStyle,
+			style: blockStyle,
 			openFirstTime: isSelected ? openFirstTime : false,
 			onOpen: obj => {
 				maxiSetAttributes(obj);

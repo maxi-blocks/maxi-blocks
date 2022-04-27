@@ -50,44 +50,63 @@ const NumberCounterControl = props => {
 		},
 	};
 
+	const autoWidth = getLastBreakpointAttribute({
+		target: 'number-counter-width-auto',
+		breakpoint,
+		attributes: props,
+	});
+
 	return (
 		<div className={classes}>
-			<AdvancedNumberControl
-				label={__('Width', 'maxi-blocks')}
-				className='maxi-number-counter-control__width'
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'number-counter-width-unit',
-					breakpoint,
-					attributes: props,
-				})}
-				onChangeUnit={val =>
+			<ToggleSwitch
+				label={__('Auto Width', 'maxi-blocks')}
+				selected={autoWidth}
+				onChange={val =>
 					onChange({
-						[`number-counter-width-unit-${breakpoint}`]: val,
+						[`number-counter-width-auto-${breakpoint}`]: val,
 					})
 				}
-				value={getLastBreakpointAttribute({
-					target: 'number-counter-width',
-					breakpoint,
-					attributes: props,
-				})}
-				onChangeValue={val =>
-					onChange({ [`number-counter-width-${breakpoint}`]: val })
-				}
-				onReset={() =>
-					onChange({
-						[`number-counter-width-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-width-${breakpoint}`
-							),
-						[`number-counter-width-unit-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-width-unit-${breakpoint}`
-							),
-					})
-				}
-				minMaxSettings={minMaxSettings}
 			/>
+			{!autoWidth && (
+				<AdvancedNumberControl
+					label={__('Width', 'maxi-blocks')}
+					className='maxi-number-counter-control__width'
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: 'number-counter-width-unit',
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeUnit={val =>
+						onChange({
+							[`number-counter-width-unit-${breakpoint}`]: val,
+						})
+					}
+					value={getLastBreakpointAttribute({
+						target: 'number-counter-width',
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeValue={val =>
+						onChange({
+							[`number-counter-width-${breakpoint}`]: val,
+						})
+					}
+					onReset={() =>
+						onChange({
+							[`number-counter-width-${breakpoint}`]:
+								getDefaultAttribute(
+									`number-counter-width-${breakpoint}`
+								),
+							[`number-counter-width-unit-${breakpoint}`]:
+								getDefaultAttribute(
+									`number-counter-width-unit-${breakpoint}`
+								),
+						})
+					}
+					minMaxSettings={minMaxSettings}
+				/>
+			)}
 			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}

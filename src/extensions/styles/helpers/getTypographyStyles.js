@@ -24,7 +24,7 @@ const getTypographyStyles = ({
 	isHover = false,
 	prefix = '',
 	customFormatTypography = false,
-	parentBlockStyle,
+	blockStyle,
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
 	scValues = {},
@@ -77,7 +77,7 @@ const getTypographyStyles = ({
 						}`,
 						secondVar: `color-${paletteColor}`,
 						opacity: paletteOpacity,
-						blockStyle: parentBlockStyle,
+						blockStyle,
 					}),
 				}),
 			};
@@ -87,7 +87,7 @@ const getTypographyStyles = ({
 					color: getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
 						opacity: paletteOpacity,
-						blockStyle: parentBlockStyle,
+						blockStyle,
 					}),
 				}),
 			};

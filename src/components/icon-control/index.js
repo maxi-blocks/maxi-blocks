@@ -55,7 +55,7 @@ const IconControl = props => {
 		clientId,
 		svgType,
 		breakpoint,
-		parentBlockStyle,
+		blockStyle,
 		isHover = false,
 		changeSVGContent,
 		changeSVGContentHover,
@@ -147,7 +147,7 @@ const IconControl = props => {
 			{!isHover && breakpoint === 'general' && (
 				<MaxiModal
 					type='button-icon'
-					style={parentBlockStyle}
+					style={blockStyle}
 					onSelect={obj => onChange(obj)}
 					onRemove={obj => onChange(obj)}
 					icon={props['icon-content']}
@@ -359,8 +359,7 @@ const IconControl = props => {
 														isHover ? '-hover' : ''
 													}`,
 													opacity: paletteOpacity,
-													blockStyle:
-														parentBlockStyle,
+													blockStyle,
 												});
 
 											!isHover &&
@@ -478,7 +477,7 @@ const IconControl = props => {
 											isHover ? '-hover' : ''
 										}`,
 										opacity: paletteOpacity,
-										blockStyle: parentBlockStyle,
+										blockStyle,
 									});
 
 									!isHover &&

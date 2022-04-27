@@ -142,11 +142,9 @@ const Inspector = memo(
 												props,
 											}),
 											...inspectorTabs.transition({
-												props,
-												label: __(
-													'Hyperlink hover transition',
-													'maxi-blocks'
-												),
+												props: {
+													...props,
+												},
 											}),
 											...inspectorTabs.display({
 												props,

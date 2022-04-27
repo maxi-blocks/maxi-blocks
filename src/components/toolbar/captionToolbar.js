@@ -49,7 +49,7 @@ const CaptionToolbar = memo(
 			linkSettings,
 			textLevel = 'p',
 			uniqueID,
-			parentBlockStyle,
+			blockStyle,
 		} = attributes;
 
 		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
@@ -138,7 +138,7 @@ const CaptionToolbar = memo(
 								styleCard={styleCard}
 								clientId={clientId}
 								isCaptionToolbar
-								blockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 							/>
 							<TextColor
 								{...getGroupAttributes(
@@ -207,7 +207,7 @@ const CaptionToolbar = memo(
 								linkSettings={linkSettings}
 								breakpoint={breakpoint}
 								textLevel={textLevel}
-								blockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 								styleCard={styleCard}
 								isCaptionToolbar
 							/>

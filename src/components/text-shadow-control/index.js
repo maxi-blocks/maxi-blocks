@@ -30,15 +30,7 @@ import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
  * Component
  */
 const TextShadow = props => {
-	const {
-		value,
-		onChangeInline,
-		onChange,
-		defaultColor,
-		blockStyle: rawBlockStyle,
-	} = props;
-
-	const blockStyle = rawBlockStyle.replace('maxi-', '');
+	const { value, onChangeInline, onChange, defaultColor, blockStyle } = props;
 
 	const decomposeValue = rawVal => {
 		const val = rawVal ?? value;

@@ -186,7 +186,7 @@ const attributes = {
 	...attributesData.blockBackground,
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transitionDuration,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

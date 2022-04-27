@@ -58,13 +58,8 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		const { attributes, setAttributes } = this.props;
-		const {
-			parentBlockStyle,
-			isList,
-			typeOfList,
-			listStyle,
-			listStyleCustom,
-		} = attributes;
+		const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
+			attributes;
 
 		// Ensures svg list markers change the colour when SC color changes
 		if (
@@ -83,7 +78,7 @@ class edit extends MaxiBlockComponent {
 				const newColor = getColorRGBAString({
 					firstVar: `color-${paletteColor}`,
 					opacity: paletteOpacity,
-					blockStyle: parentBlockStyle,
+					blockStyle,
 				});
 
 				if (!listStyleCustom.includes(newColor))
@@ -354,7 +349,7 @@ class edit extends MaxiBlockComponent {
 
 const editSelect = withSelect((select, ownProps) => {
 	const { attributes } = ownProps;
-	const { parentBlockStyle, isList, typeOfList, listStyle, listStyleCustom } =
+	const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
 		attributes;
 
 	/**
@@ -378,7 +373,7 @@ const editSelect = withSelect((select, ownProps) => {
 			const scElements = paletteColor.toString();
 			const scValues = receiveStyleCardValue(
 				scElements,
-				parentBlockStyle,
+				blockStyle,
 				'color'
 			);
 

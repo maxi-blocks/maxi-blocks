@@ -145,7 +145,7 @@ class edit extends MaxiBlockComponent {
 
 const editSelect = withSelect((select, ownProps) => {
 	const {
-		attributes: { parentBlockStyle },
+		attributes: { blockStyle },
 	} = ownProps;
 
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
@@ -157,11 +157,7 @@ const editSelect = withSelect((select, ownProps) => {
 		'hover-background-color-global',
 		'hover-background-color-all',
 	];
-	const scValues = receiveStyleCardValue(
-		scElements,
-		parentBlockStyle,
-		'button'
-	);
+	const scValues = receiveStyleCardValue(scElements, blockStyle, 'button');
 
 	return {
 		scValues,

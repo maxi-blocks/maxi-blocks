@@ -8,8 +8,7 @@
 		"plugin:react/recommended",
 		"airbnb",
 		"plugin:prettier/recommended",
-		"prettier",
-		"prettier/react"
+		"prettier"
 	],
 	"parserOptions": {
 		"ecmaFeatures": {
@@ -53,6 +52,7 @@
 			}
 		],
 		// Off //
+		"react/function-component-definition": "off",
 		"react/jsx-curly-newline": "off",
 		"react/react-in-jsx-scope": "off",
 		"react/state-in-constructor": "off",

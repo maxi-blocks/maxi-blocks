@@ -87,10 +87,14 @@ describe('Button Maxi', () => {
 		// icon color
 		await editColorControl({
 			page,
-			instance: await page.$('.maxi-color-palette-control'),
+			instance: await page.$(
+				'.maxi-color-palette-control.maxi-icon-styles-control--color'
+			),
 			paletteStatus: true,
 			colorPalette: 5,
 		});
+
+		expect(await getAttributes('icon-palette-color')).toStrictEqual(5);
 
 		await page.$$eval(
 			'.maxi-icon-styles-control .maxi-tabs-control__full-width button',
@@ -99,12 +103,13 @@ describe('Button Maxi', () => {
 
 		await editColorControl({
 			page,
-			instance: await page.$('.maxi-color-palette-control'),
+			instance: await page.$(
+				'.maxi-border-control .maxi-color-palette-control'
+			),
 			paletteStatus: true,
 			colorPalette: 6,
 		});
 
-		expect(await getAttributes('icon-palette-color')).toStrictEqual(5);
 		expect(
 			await getAttributes('icon-border-palette-color-general')
 		).toStrictEqual(6);

@@ -13,7 +13,10 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 /**
  * Component
  */
-const transition = ({ props, label = '' }) => {
+const transition = ({
+	props,
+	label = __('Hover transition', 'maxi-blocks'),
+}) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	return {
@@ -21,7 +24,7 @@ const transition = ({ props, label = '' }) => {
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<TransitionControl
-					{...getGroupAttributes(attributes, 'transitionDuration')}
+					{...getGroupAttributes(attributes, 'transition')}
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
 				/>

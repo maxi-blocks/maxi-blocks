@@ -33,7 +33,7 @@ const typography = ({
 		scValues = {},
 	} = props;
 	const {
-		parentBlockStyle,
+		blockStyle,
 		textLevel,
 		isList,
 		'typography-status-hover': typographyHoverStatus,
@@ -67,7 +67,7 @@ const typography = ({
 									breakpoint={deviceType}
 									clientId={clientId}
 									disableCustomFormats={disableCustomFormats}
-									blockStyle={parentBlockStyle}
+									blockStyle={blockStyle}
 									styleCardPrefix={styleCardPrefix}
 									textLevel={textLevel}
 									isList={isList}
@@ -112,7 +112,7 @@ const typography = ({
 											disableCustomFormats={
 												disableCustomFormats
 											}
-											blockStyle={parentBlockStyle}
+											blockStyle={blockStyle}
 											styleCardPrefix={styleCardPrefix}
 											globalProps={hoverGlobalProps}
 										/>

@@ -233,7 +233,6 @@ const Inspector = memo(
 			captionType,
 			fullWidth,
 			mediaAlt,
-			parentBlockStyle,
 			SVGElement,
 			uniqueID,
 			mediaID,
@@ -479,7 +478,7 @@ const Inspector = memo(
 																			clientId
 																		}
 																		blockStyle={
-																			parentBlockStyle
+																			blockStyle
 																		}
 																		globalProps={{
 																			target: '',
@@ -663,55 +662,58 @@ const Inspector = memo(
 						{
 							label: __('Advanced', 'maxi-blocks'),
 							content: (
-								<>
-									<AccordionControl
-										isPrimary
-										items={[
-											deviceType === 'general' && {
-												...inspectorTabs.customClasses({
-													props,
-												}),
+								<AccordionControl
+									isPrimary
+									items={[
+										deviceType === 'general' && {
+											...inspectorTabs.customClasses({
+												props,
+											}),
+										},
+										deviceType === 'general' && {
+											...inspectorTabs.anchor({
+												props,
+											}),
+										},
+										...inspectorTabs.customCss({
+											props,
+											breakpoint: deviceType,
+											selectors: selectorsImage,
+											categories: categoriesImage,
+										}),
+										...inspectorTabs.scrollEffects({
+											props,
+										}),
+										...inspectorTabs.transform({
+											props,
+										}),
+										...inspectorTabs.transition({
+											props: {
+												...props,
 											},
-											deviceType === 'general' && {
-												...inspectorTabs.anchor({
-													props,
-												}),
-											},
-											...inspectorTabs.customCss({
-												props,
-												breakpoint: deviceType,
-												selectors: selectorsImage,
-												categories: categoriesImage,
-											}),
-											...inspectorTabs.scrollEffects({
+										}),
+										...inspectorTabs.display({
+											props,
+										}),
+										...inspectorTabs.position({
+											props,
+										}),
+										deviceType !== 'general' && {
+											...inspectorTabs.responsive({
 												props,
 											}),
-											...inspectorTabs.transform({
-												props,
-											}),
-											...inspectorTabs.display({
-												props,
-											}),
-											...inspectorTabs.position({
-												props,
-											}),
-											deviceType !== 'general' && {
-												...inspectorTabs.responsive({
-													props,
-												}),
-											},
-											...inspectorTabs.overflow({
-												props,
-											}),
-											...inspectorTabs.flex({
-												props,
-											}),
-											...inspectorTabs.zindex({
-												props,
-											}),
-										]}
-									/>
-								</>
+										},
+										...inspectorTabs.overflow({
+											props,
+										}),
+										...inspectorTabs.flex({
+											props,
+										}),
+										...inspectorTabs.zindex({
+											props,
+										}),
+									]}
+								/>
 							),
 						},
 					]}

@@ -26,7 +26,7 @@ import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 /**
  * Inspector
  */
-const Inspector = props => {
+function Inspector(props) {
 	const {
 		attributes,
 		changeSVGContent,
@@ -37,13 +37,7 @@ const Inspector = props => {
 		deviceType,
 		maxiSetAttributes,
 	} = props;
-	const {
-		blockStyle,
-		customLabel,
-		isFirstOnHierarchy,
-		parentBlockStyle,
-		svgType,
-	} = attributes;
+	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } = attributes;
 
 	return (
 		<InspectorControls>
@@ -76,8 +70,7 @@ const Inspector = props => {
 											onChange={obj => {
 												maxiSetAttributes(obj);
 
-												const { parentBlockStyle } =
-													obj;
+												const { blockStyle } = obj;
 
 												const {
 													'svg-fill-palette-color':
@@ -100,8 +93,7 @@ const Inspector = props => {
 														secondVar: `color-${svgPaletteFillColor}`,
 														opacity:
 															svgPaletteFillOpacity,
-														blockStyle:
-															parentBlockStyle,
+														blockStyle,
 													});
 												const lineColorStr =
 													getColorRGBAString({
@@ -109,8 +101,7 @@ const Inspector = props => {
 														secondVar: `color-${svgPaletteLineColor}`,
 														opacity:
 															svgPaletteLineOpacity,
-														blockStyle:
-															parentBlockStyle,
+														blockStyle,
 													});
 
 												changeSVGContentWithBlockStyle(
@@ -399,61 +390,64 @@ const Inspector = props => {
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<>
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props,
-											}),
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsSvgIcon,
+										categories: categoriesSvgIcon,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props,
-											}),
-										},
-										...inspectorTabs.customCss({
-											props,
-											breakpoint: deviceType,
-											selectors: selectorsSvgIcon,
-											categories: categoriesSvgIcon,
-										}),
-										...inspectorTabs.scrollEffects({
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props,
 										}),
-										...inspectorTabs.transform({
-											props,
-										}),
-										...inspectorTabs.display({
-											props,
-										}),
-										...inspectorTabs.position({
-											props,
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props,
-											}),
-										},
-										...inspectorTabs.overflow({
-											props,
-										}),
-										...inspectorTabs.flex({
-											props,
-										}),
-										...inspectorTabs.zindex({
-											props,
-										}),
-									]}
-								/>
-							</>
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 				]}
 			/>
 		</InspectorControls>
 	);
-};
+}
 
 export default Inspector;

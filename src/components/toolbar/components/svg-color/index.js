@@ -19,7 +19,7 @@ import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
 /**
  * SvgColor
  */
-const SvgColorToolbar = props => {
+function SvgColorToolbar(props) {
 	const {
 		type,
 		blockName,
@@ -30,6 +30,7 @@ const SvgColorToolbar = props => {
 		changeSVGContent,
 		maxiSetAttributes,
 		changeSVGContentHover,
+		blockStyle,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
@@ -60,10 +61,12 @@ const SvgColorToolbar = props => {
 					onChangeHoverStroke={onChangeHoverStroke}
 					changeSVGContent={changeSVGContent}
 					changeSVGContentHover={changeSVGContentHover}
+					label={__(`Icon ${type}`, 'maxi-blocks')}
+					blockStyle={blockStyle}
 				/>
 			</div>
 		</ToolbarPopover>
 	);
-};
+}
 
 export default SvgColorToolbar;

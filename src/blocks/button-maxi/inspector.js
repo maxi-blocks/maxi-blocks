@@ -57,7 +57,7 @@ const Inspector = memo(
 			changeSVGContentHover,
 			changeSVGStrokeWidth,
 		} = props;
-		const { parentBlockStyle, svgType } = attributes;
+		const { blockStyle, svgType } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -359,8 +359,8 @@ const Inspector = memo(
 																		clientId={
 																			clientId
 																		}
-																		parentBlockStyle={
-																			parentBlockStyle
+																		blockStyle={
+																			blockStyle
 																		}
 																	/>
 																),
@@ -423,8 +423,8 @@ const Inspector = memo(
 																				clientId={
 																					clientId
 																				}
-																				parentBlockStyle={
-																					parentBlockStyle
+																				blockStyle={
+																					blockStyle
 																				}
 																				changeSVGContentHover={
 																					changeSVGContentHover
@@ -616,10 +616,6 @@ const Inspector = memo(
 											props: {
 												...props,
 											},
-											label: __(
-												'Hover transition',
-												'maxi-blocks'
-											),
 										}),
 										...inspectorTabs.display({
 											props: {

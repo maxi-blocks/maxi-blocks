@@ -3,6 +3,10 @@ body.maxi-blocks--active figure.maxi-image-block {
 	justify-content: center;
 	flex-direction: column;
 
+	img {
+		box-sizing: border-box;
+	}
+
 	.maxi-hover-preview {
 		img {
 			object-fit: cover;
@@ -20,12 +24,14 @@ body.maxi-blocks--active figure.maxi-image-block {
 		position: relative;
 		width: 100%;
 		max-width: 100%;
-		overflow: hidden;
 		box-sizing: border-box;
 
 		> svg:first-child pattern image {
 			transform-origin: 50% 50%;
 		}
+	}
+	.maxi-image-block-wrapper.maxi-hover-effect-active {
+		overflow: hidden;
 	}
 	.maxi-image-block {
 		&__caption {

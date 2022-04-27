@@ -4,6 +4,7 @@
 	margin: auto;
 	padding: 0;
 	z-index: 2;
+	flex-wrap: wrap;
 
 	&__template {
 		display: flex;
@@ -49,6 +50,9 @@
 		&::after {
 			opacity: 1;
 		}
+	}
+	.maxi-block__resizer {
+		flex-shrink: unset !important;
 	}
 }
 

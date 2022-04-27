@@ -87,8 +87,8 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
-		const { attributes, clientId } = this.props;
-		const { uniqueID, blockStyle } = attributes;
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
@@ -97,9 +97,8 @@ class MaxiBlockComponent extends Component {
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.getDefaultBlockStyle(blockStyle, clientId);
 		if (!isEmpty(this.typography)) this.loadFonts();
-		this.getParentStyle();
+		this.getCurrentBlockStyle();
 		this.displayStyles(newUniqueID);
 	}
 
@@ -181,7 +180,19 @@ class MaxiBlockComponent extends Component {
 			return !isEqual(oldAttributes, newAttributes);
 		}
 
-		if (this.shouldMaxiBlockUpdate) this.shouldMaxiBlockUpdate();
+		if (this.shouldMaxiBlockUpdate)
+			return (
+				this.shouldMaxiBlockUpdate(
+					this.props,
+					nextProps,
+					this.state,
+					nextState
+				) ||
+				!isEqual(
+					this.propsObjectCleaner(this.props),
+					this.propsObjectCleaner(nextProps)
+				)
+			);
 
 		return !isEqual(
 			this.propsObjectCleaner(this.props),
@@ -229,7 +240,10 @@ class MaxiBlockComponent extends Component {
 			return false;
 
 		if (this.maxiBlockGetSnapshotBeforeUpdate)
-			this.maxiBlockGetSnapshotBeforeUpdate();
+			return (
+				this.maxiBlockGetSnapshotBeforeUpdate(prevProps) &&
+				isEqual(prevProps.attributes, this.props.attributes)
+			);
 
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}
@@ -301,36 +315,6 @@ class MaxiBlockComponent extends Component {
 		};
 	}
 
-	getDefaultBlockStyle(blockStyle, clientId) {
-		if (blockStyle) return;
-
-		let res;
-
-		const blockRootClientId =
-			select('core/block-editor').getBlockRootClientId(clientId);
-
-		if (!blockRootClientId) {
-			res = 'maxi-light';
-		} else if (
-			select('core/block-editor')
-				.getBlockName(blockRootClientId)
-				.includes('maxi-blocks')
-		) {
-			select('core/block-editor').getBlockAttributes(blockRootClientId)
-				.blockStyle === 'maxi-custom'
-				? (res = 'maxi-custom')
-				: (res = 'maxi-parent');
-		} else {
-			res = 'maxi-light';
-		}
-
-		// Kind of cheat. What it seeks is to don't generate an historical entity in the registry
-		// that transforms in the necessity of clicking more than onces on undo button after pasting
-		// any content on Text Maxi due to the `setAttributes` action that creates a record entity
-		// on the historical registry 👍
-		this.props.attributes.blockStyle = res;
-	}
-
 	uniqueIDChecker(idToCheck) {
 		if (!isEmpty(document.getElementsByClassName(idToCheck))) {
 			const newUniqueID = uniqueIDGenerator(idToCheck);
@@ -349,16 +333,16 @@ class MaxiBlockComponent extends Component {
 		if (!isEmpty(response)) loadFonts(response);
 	}
 
-	getParentStyle() {
+	getCurrentBlockStyle() {
 		const {
 			clientId,
-			attributes: { parentBlockStyle },
+			attributes: { blockStyle },
 		} = this.props;
 
-		const newParentStyle = getBlockStyle(clientId);
+		const newBlockStyle = getBlockStyle(clientId);
 
-		if (parentBlockStyle !== newParentStyle) {
-			this.props.attributes.parentBlockStyle = newParentStyle;
+		if (blockStyle !== newBlockStyle) {
+			this.props.attributes.blockStyle = newBlockStyle;
 
 			return true;
 		}

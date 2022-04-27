@@ -23,7 +23,6 @@ export { default as NumberCounterReplay } from './number-counter-replay';
 export { default as TextLeve } from './number-counter-replay';
 export { default as PaddingMargin } from './padding-margin';
 export { default as ReusableBlocks } from './reusable-blocks';
-export { default as RowSettings } from './row-settings';
 export { default as Size } from './size';
 export { default as Style } from './style';
 export { default as SvgColor } from './svg-color';

@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import columnTemplates from './defaults';
+import columnTemplates from './columnTemplates';
 
 /**
- * get templates based on the number of columns and device
+ * Get templates based on the number of columns and device
  *
  * @param {Integer} columnsNumber Number of columns
  * @return {Array} Array of templates for the corresponding columns number

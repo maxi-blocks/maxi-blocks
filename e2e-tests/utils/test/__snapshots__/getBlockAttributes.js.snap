@@ -84,7 +84,6 @@ Object {
   "extraClassName": "",
   "fullWidth": "normal",
   "height-unit-general": "px",
-  "horizontalAlign": "space-between",
   "isFirstOnHierarchy": false,
   "margin-sync-general": false,
   "margin-unit-general": "px",
@@ -97,13 +96,11 @@ Object {
   "parentBlockStyle": "light",
   "position-sync-general": false,
   "position-unit-general": "px",
-  "removeColumnGap": false,
   "row-pattern-general": "1-1",
   "size-advanced-options": false,
   "transform-translate-x-unit-general": "%",
   "transform-translate-y-unit-general": "%",
   "uniqueID": "row-maxi-34",
-  "verticalAlign": "stretch",
   "width-unit-general": "px",
 }
 `;

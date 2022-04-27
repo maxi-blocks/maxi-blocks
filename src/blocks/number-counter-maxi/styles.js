@@ -122,6 +122,7 @@ const getBoxObject = props => {
 	const size = getSizeStyles(
 		{
 			...getGroupAttributes(props, 'size', false, 'number-counter-'),
+			...getGroupAttributes(props, 'numberCounter'),
 		},
 		'number-counter-'
 	);

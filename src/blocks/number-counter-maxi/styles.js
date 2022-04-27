@@ -11,6 +11,7 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
@@ -74,6 +75,9 @@ const getWrapperObject = props => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 	};
 
 	return response;
@@ -122,6 +126,7 @@ const getBoxObject = props => {
 	const size = getSizeStyles(
 		{
 			...getGroupAttributes(props, 'size', false, 'number-counter-'),
+			...getGroupAttributes(props, 'numberCounter'),
 		},
 		'number-counter-'
 	);
@@ -177,6 +182,9 @@ const getBoxObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'number-counter-',
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 

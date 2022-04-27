@@ -611,10 +611,6 @@ const Inspector = memo(
 											props: {
 												...props,
 											},
-											label: __(
-												'Hover transition',
-												'maxi-blocks'
-											),
 										}),
 										...inspectorTabs.display({
 											props: {

@@ -14,18 +14,18 @@ import {
  */
 import { openPreviewPage } from '../utils';
 
-describe.skip('sc-variable', () => {
+describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
-		await page.waitForTimeout(5000);
+		await page.waitForTimeout(1000);
 		await saveDraft();
-		await page.waitForTimeout(5000);
+		await page.waitForTimeout(1000);
 
 		await page.evaluate(() => window.location.reload());
 
-		await page.waitForTimeout(5000);
+		await page.waitForTimeout(500);
 		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
 
 		const scVariable = await page.$eval(

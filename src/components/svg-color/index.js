@@ -17,7 +17,7 @@ import {
 /**
  * SvgColor
  */
-export function SvgColor(props) {
+export const SvgColor = props => {
 	const {
 		type,
 		label,
@@ -111,9 +111,9 @@ export function SvgColor(props) {
 			disableOpacity
 		/>
 	);
-}
+};
 
-export function SvgColorControl(props) {
+export const SvgColorControl = props => {
 	const {
 		onChangeFill,
 		onChangeStroke,
@@ -218,4 +218,4 @@ export function SvgColorControl(props) {
 			]}
 		/>
 	);
-}
+};

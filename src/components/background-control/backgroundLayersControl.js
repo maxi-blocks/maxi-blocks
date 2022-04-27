@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, RawHTML } from '@wordpress/element';
+import { RawHTML, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -75,14 +75,7 @@ const LayerCard = props => {
 		  )
 		: layer['background-svg-SVGElement'];
 
-	const [backgroundColorLayer, setBackgroundColorLayer] = useState(
-		getLastBreakpointAttribute({
-			target: 'background-color',
-			breakpoint,
-			attributes: layer,
-			isHover,
-		})
-	);
+	const previewRef = useRef(null);
 
 	const previewStyles = type => {
 		switch (type) {
@@ -118,7 +111,12 @@ const LayerCard = props => {
 				}
 
 				return {
-					background: backgroundColorLayer,
+					background: getLastBreakpointAttribute({
+						target: 'background-color',
+						breakpoint,
+						attributes: layer,
+						isHover,
+					}),
 				};
 			}
 			case 'gradient': {
@@ -233,7 +231,8 @@ const LayerCard = props => {
 				key={`background-color-layer--${layer.order}`}
 				colorOptions={layer}
 				onChangeInline={obj => {
-					setBackgroundColorLayer(obj['background-color']);
+					previewRef.current.style.background =
+						obj['background-color'];
 					onChangeInline(
 						obj,
 						`.maxi-background-displayer__${layer.order}`
@@ -301,17 +300,6 @@ const LayerCard = props => {
 		),
 	};
 
-	useEffect(() => {
-		setBackgroundColorLayer(
-			getLastBreakpointAttribute({
-				target: 'background-color',
-				breakpoint,
-				attributes: layer,
-				isHover,
-			})
-		);
-	}, [breakpoint]);
-
 	return (
 		<div className={classes}>
 			<div
@@ -335,6 +323,7 @@ const LayerCard = props => {
 					<span className='maxi-background-layer__title__text'>
 						<span
 							className='maxi-background-layer__preview'
+							ref={previewRef}
 							style={previewStyles(type)}
 						>
 							{type === 'shape' &&

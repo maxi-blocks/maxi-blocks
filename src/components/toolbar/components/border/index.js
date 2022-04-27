@@ -62,7 +62,7 @@ const Border = props => {
 						prefix
 					)}
 					onChangeInline={onChangeInline}
-					onChange={value => onChange(value)}
+					onChange={onChange}
 					breakpoint={breakpoint}
 					isToolbar
 					disableColor={disableColor}

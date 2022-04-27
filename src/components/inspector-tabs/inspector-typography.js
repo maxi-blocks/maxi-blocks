@@ -23,7 +23,7 @@ const typography = ({
 	globalProps,
 	hoverGlobalProps,
 	depth = 2,
-	inlineTarget = '.rich-text',
+	inlineTarget = '.maxi-text-block__content',
 }) => {
 	const {
 		attributes,

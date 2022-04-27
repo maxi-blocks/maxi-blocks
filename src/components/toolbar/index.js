@@ -213,7 +213,7 @@ const MaxiToolbar = memo(
 								onChangeInline={obj =>
 									insertInlineStyles({
 										obj,
-										target: `.rich-text ${
+										target: `.maxi-text-block__content ${
 											isList ? 'li' : ''
 										}`,
 										isMultiplySelector: isList,
@@ -222,7 +222,9 @@ const MaxiToolbar = memo(
 								onChange={obj => {
 									maxiSetAttributes(obj);
 									cleanInlineStyles(
-										`.rich-text ${isList ? 'li' : ''}`
+										`.maxi-text-block__content ${
+											isList ? 'li' : ''
+										}`
 									);
 								}}
 								breakpoint={breakpoint}

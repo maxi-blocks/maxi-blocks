@@ -494,7 +494,7 @@ const TypographyControl = withFormatValue(props => {
 		onChange,
 		breakpoint = 'general',
 		formatValue,
-		inlineTarget = '.rich-text',
+		inlineTarget = '.maxi-text-block__content',
 		isList = false,
 		isHover = false,
 		disableColor = false,

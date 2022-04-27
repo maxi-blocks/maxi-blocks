@@ -148,12 +148,14 @@ const CaptionToolbar = memo(
 								onChangeInline={obj =>
 									insertInlineStyles({
 										obj,
-										target: '.rich-text',
+										target: '.maxi-text-block__content',
 									})
 								}
 								onChange={obj => {
 									processAttributes(obj);
-									cleanInlineStyles('.rich-text');
+									cleanInlineStyles(
+										'.maxi-text-block__content'
+									);
 								}}
 								breakpoint={breakpoint}
 								node={anchorRef}

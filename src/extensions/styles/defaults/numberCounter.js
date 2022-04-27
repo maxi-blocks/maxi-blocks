@@ -1,7 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-
 
 const numberCounter = {
 	...breakpointAttributesCreator({

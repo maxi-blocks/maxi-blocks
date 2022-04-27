@@ -11,6 +11,7 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
@@ -132,6 +133,9 @@ const getDividerObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'divider-',
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 

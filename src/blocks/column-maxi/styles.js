@@ -12,6 +12,7 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
+	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
@@ -68,10 +69,14 @@ const getNormalObject = (props, rowGapProps) => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 	};
 
 	return response;
 };
+
 
 const getHoverObject = props => {
 	const response = {
@@ -102,7 +107,20 @@ const getHoverObject = props => {
 	return response;
 };
 
+
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
+
 const getStyles = (props, rowGapProps) => {
+
 	const { uniqueID } = props;
 
 	const response = {
@@ -110,6 +128,7 @@ const getStyles = (props, rowGapProps) => {
 			{
 				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
+				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

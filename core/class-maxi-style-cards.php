@@ -1,4 +1,5 @@
 <?php
+require_once MAXI_PLUGIN_DIR_PATH . 'core/utils/get-last-breakpoint-attribute.php';
 
 class MaxiBlocks_StyleCards
 {
@@ -82,7 +83,7 @@ class MaxiBlocks_StyleCards
         return $style;
     }
 
-    public function get_maxi_blocks_current_style_cards()
+    public static function get_maxi_blocks_current_style_cards()
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
@@ -124,6 +125,25 @@ class MaxiBlocks_StyleCards
         }
         return false;
     }
+
+	public static function get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint)
+	{
+		$maxi_blocks_style_cards = json_decode(self::get_maxi_blocks_current_style_cards());
+
+		$style_card_name = array_key_first((array) $maxi_blocks_style_cards);
+
+		$style_card_values = (object) array_merge(
+			(array) $maxi_blocks_style_cards->$style_card_name->$block_style->defaultStyleCard,
+			(array) $maxi_blocks_style_cards->$style_card_name->$block_style->styleCard
+		);
+
+
+		$text_level_values = $style_card_values->$text_level;
+
+		$font = get_last_breakpoint_attribute('font-family', $breakpoint, $text_level_values);
+
+		return $font;
+	}
 
 
     public static function getDefaultStyleCard()

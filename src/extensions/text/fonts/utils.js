@@ -6,50 +6,46 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isString, uniq, cloneDeep, isObject } from 'lodash';
+import { isEmpty, isString, cloneDeep, isObject } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import { getGroupAttributes } from '../../styles';
-import getBreakpointFromAttribute from '../../styles/getBreakpointFromAttribute';
 import { getCustomFormatValue } from '../formats';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const getAllFonts = (
 	attr,
 	recursiveKey = false,
 	isHover = false,
-	textLevel = 'p'
+	textLevel = 'p',
+	blockStyle = 'light'
 ) => {
 	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
 	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-	let fontName = '';
-	const fontWeight = [];
-	const fontStyle = [];
+	const result = {};
 
 	const getAllFontsRecursively = obj => {
-		Object.entries(obj).forEach(([key, val]) => {
-			const breakpoint = getBreakpointFromAttribute(key);
+		breakpoints.forEach(breakpoint => {
+			const fontName = obj[`font-family-${breakpoint}`];
+			const fontWeight = obj[`font-weight-${breakpoint}`];
+			const fontStyle = obj[`font-style-${breakpoint}`];
 
-			if (key.includes('font-family')) {
-				if (typeof val !== 'undefined') fontName = val;
-				else
-					fontName = getCustomFormatValue({
-						typography: { ...obj },
-						prop: 'font-family',
-						breakpoint,
-						isHover,
-						textLevel,
-						styleCard,
-					});
-			}
-
-			if (key.includes('font-weight')) {
-				if (typeof val !== 'undefined')
-					fontWeight.push(val?.toString());
-				else {
-					fontWeight.push(
+			if (
+				fontName ||
+				fontWeight ||
+				fontStyle ||
+				breakpoint === 'general'
+			) {
+				result[
+					fontName ??
+						`sc_font_${blockStyle}_${textLevel}_${breakpoint}`
+				] = {
+					fontWeight:
+						fontWeight ??
 						getCustomFormatValue({
 							typography: { ...obj },
 							prop: 'font-weight',
@@ -57,36 +53,22 @@ export const getAllFonts = (
 							isHover,
 							textLevel,
 							styleCard,
-						})?.toString()
-					);
-				}
+						})?.toString(),
+					fontStyle:
+						fontStyle ??
+						getCustomFormatValue({
+							typography: { ...obj },
+							prop: 'font-style',
+							breakpoint,
+							isHover,
+							textLevel,
+							styleCard,
+						}),
+				};
 			}
+		});
 
-			if (key.includes('font-style')) {
-				if (typeof val !== 'undefined') fontStyle.push(val);
-				else {
-					const styleSC = getCustomFormatValue({
-						typography: { ...obj },
-						prop: 'font-style',
-						breakpoint,
-						isHover,
-						textLevel,
-						styleCard,
-					});
-					if (styleSC !== 'normal')
-						fontStyle.push(
-							getCustomFormatValue({
-								typography: { ...obj },
-								prop: 'font-style',
-								breakpoint,
-								isHover,
-								textLevel,
-								styleCard,
-							})
-						);
-				}
-			}
-
+		Object.entries(obj).forEach(([key, val]) => {
 			if (
 				typeof val !== 'undefined' &&
 				isString(recursiveKey) &&
@@ -107,19 +89,7 @@ export const getAllFonts = (
 
 	getAllFontsRecursively(attr);
 
-	const response = {};
-
-	if (!isEmpty(fontName)) {
-		response[fontName] = {};
-		if (!isEmpty(fontWeight)) {
-			response[fontName].weight = uniq(fontWeight).join(',');
-		}
-		if (!isEmpty(fontStyle)) {
-			response[fontName].style = uniq(fontStyle).join(',');
-		}
-	}
-
-	return response;
+	return result;
 };
 
 const mergeDeep = (target, source) => {
@@ -166,6 +136,8 @@ export const getPageFonts = () => {
 				let typography = {};
 				let typographyHover = {};
 				let textLevel = attributes?.textLevel || 'p';
+				const { blockStyle } = attributes;
+
 				switch (name) {
 					case 'maxi-blocks/number-counter-maxi':
 						typography = {
@@ -199,11 +171,29 @@ export const getPageFonts = () => {
 
 				if (typographyHover?.['typography-status-hover'])
 					response = mergeDeep(
-						getAllFonts(typography, false, false, textLevel),
-						getAllFonts(typographyHover, false, true, textLevel)
+						getAllFonts(
+							typography,
+							false,
+							false,
+							textLevel,
+							blockStyle
+						),
+						getAllFonts(
+							typographyHover,
+							false,
+							true,
+							textLevel,
+							blockStyle
+						)
 					);
 				else
-					response = getAllFonts(typography, false, false, textLevel);
+					response = getAllFonts(
+						typography,
+						false,
+						false,
+						textLevel,
+						blockStyle
+					);
 
 				mergedResponse = mergeDeep(
 					cloneDeep(oldResponse),

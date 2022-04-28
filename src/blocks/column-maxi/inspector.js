@@ -16,6 +16,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
 import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { getGroupAttributes } from '../../extensions/styles';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -161,4 +162,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

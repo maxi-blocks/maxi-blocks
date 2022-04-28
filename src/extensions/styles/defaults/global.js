@@ -5,10 +5,6 @@ const global = {
 	blockStyle: {
 		type: 'string',
 	},
-	defaultBlockStyle: {
-		type: 'string',
-		default: 'maxi-def-light',
-	},
 	extraClassName: {
 		type: 'string',
 	},

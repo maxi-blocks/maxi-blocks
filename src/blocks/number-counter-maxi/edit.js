@@ -13,7 +13,12 @@ import {
 	withMaxiProps,
 	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
-import { BlockResizer, Button, Toolbar } from '../../components';
+import {
+	BlockResizer,
+	Button,
+	Toolbar,
+	MaxiPopoverButton,
+} from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 
 import {
@@ -21,6 +26,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -35,7 +41,6 @@ import { replay } from '../../icons';
 /**
  * NumberCounter
  */
-
 const NumberCounter = attributes => {
 	const {
 		'number-counter-duration': countDuration,
@@ -48,6 +53,9 @@ const NumberCounter = attributes => {
 		'number-counter-end': endNumber,
 		deviceType,
 		resizerProps,
+		blockRef,
+		isSelected,
+		uniqueID,
 	} = attributes;
 
 	const countRef = useRef(null);
@@ -111,29 +119,43 @@ const NumberCounter = attributes => {
 
 	return (
 		<>
-			<Button
-				className='maxi-number-counter__replay'
-				onClick={() => {
-					setCount(startCountValue);
-					setReplyStatus(true);
-					clearInterval(countRef.current);
-				}}
-				icon={replay}
-			/>
+			<MaxiPopoverButton
+				key={`popover-${uniqueID}`}
+				ref={blockRef}
+				isSelected={isSelected}
+				attributes={{ uniqueID }}
+				{...attributes}
+			>
+				<Button
+					className='maxi-number-counter__replay'
+					onClick={() => {
+						setCount(startCountValue);
+						setReplyStatus(true);
+						clearInterval(countRef.current);
+					}}
+					icon={replay}
+				/>
+			</MaxiPopoverButton>
 			<BlockResizer
 				className='maxi-number-counter__box'
 				isOverflowHidden={getIsOverflowHidden()}
 				lockAspectRatio
-				defaultSize={{
-					width: `${getLastBreakpointAttribute({
-						target: 'number-counter-width',
+				size={{
+					width: getLastBreakpointAttribute({
+						target: 'number-counter-width-auto',
 						breakpoint: deviceType,
 						attributes,
-					})}${getLastBreakpointAttribute({
-						target: 'number-counter-width-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}`,
+					})
+						? 'auto'
+						: `${getLastBreakpointAttribute({
+								target: 'number-counter-width',
+								breakpoint: deviceType,
+								attributes,
+						  })}${getLastBreakpointAttribute({
+								target: 'number-counter-width-unit',
+								breakpoint: deviceType,
+								attributes,
+						  })}`,
 				}}
 				maxWidth='100%'
 				minWidth={
@@ -199,7 +221,7 @@ const NumberCounter = attributes => {
 				)}
 				{circleStatus && (
 					<span className='maxi-number-counter__box__text'>
-						{`${parseInt((count / 360) * 100)}`}
+						{`${Math.ceil((count / 360) * 100)}`}
 						{usePercentage && <sup>%</sup>}
 					</span>
 				)}
@@ -288,6 +310,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='number-counter-'
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
@@ -297,16 +320,22 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter
-					{...getGroupAttributes(attributes, [
-						'numberCounter',
+					{...getGroupAttributes(attributes, 'numberCounter')}
+					{...getGroupAttributes(
+						attributes,
 						'size',
-					])}
+						false,
+						'number-counter-'
+					)}
 					resizerProps={{
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,
 						showHandle: isSelected,
 					}}
 					deviceType={deviceType}
+					blockRef={this.blockRef}
+					isSelected={isSelected}
+					uniqueID={uniqueID}
 				/>
 			</MaxiBlock>,
 		];

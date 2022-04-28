@@ -23,6 +23,7 @@ import {
 	getFlexStyles,
 	getGradientBackgroundObject,
 	getIconStyles,
+	getSVGStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
@@ -50,14 +51,14 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			isButton: true,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -108,7 +109,7 @@ const getHoverWrapperObject = props => {
 					true
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			isHover: true,
 			isButton: false, // yes, is button, but in this case is the wrapper 👍
 		}),
@@ -118,7 +119,7 @@ const getHoverWrapperObject = props => {
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
 	};
@@ -143,7 +144,7 @@ const getNormalObject = props => {
 					'button-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			isButton: true,
 			prefix: 'button-',
 			scValues: props.scValues,
@@ -152,14 +153,14 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'button-'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'button-',
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -169,7 +170,7 @@ const getNormalObject = props => {
 				'button-'
 			),
 			isButton: true,
-			blockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'button-',
 		}),
 		margin: getMarginPaddingStyles({
@@ -201,7 +202,7 @@ const getHoverObject = (props, scValues) => {
 				),
 			},
 			isHover: true,
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			isButton: true,
 			prefix: 'button-',
 			scValues,
@@ -214,7 +215,7 @@ const getHoverObject = (props, scValues) => {
 				},
 				isHover: true,
 				prefix: 'button-',
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -224,7 +225,7 @@ const getHoverObject = (props, scValues) => {
 				'button-'
 			),
 			isButton: true,
-			blockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			isHover: true,
 			prefix: 'button-',
 			scValues,
@@ -240,7 +241,7 @@ const getContentObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'typography'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			textLevel: 'button',
 		}),
 	};
@@ -255,15 +256,15 @@ const getHoverContentObject = (props, scValues) => {
 				...getGroupAttributes(props, 'typography', true),
 			},
 			isHover: true,
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			textLevel: 'button',
 			normalTypography: {
 				...getGroupAttributes(props, 'typography'),
 			},
 			scValues,
 		}),
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -331,16 +332,8 @@ const getIconPathStyles = (obj, isHover = false) => {
 
 const getIconObject = (props, target) => {
 	const response = {
-		icon: getIconStyles(
-			{
-				...getGroupAttributes(props, ['icon', 'typography']),
-			},
-			props.parentBlockStyle,
-			props['icon-inherit'],
-			false
-		),
 		background: props['icon-background-active-media-general'] ===
-			'background-color' && {
+			'color' && {
 			...getColorBackgroundObject({
 				...getGroupAttributes(props, [
 					'icon',
@@ -354,7 +347,7 @@ const getIconObject = (props, target) => {
 					'button-'
 				),
 				prefix: 'icon-',
-				blockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				isIconInherit: props['icon-inherit'],
 				isIcon: true,
 			}),
@@ -390,7 +383,7 @@ const getIconObject = (props, target) => {
 					]),
 				},
 				prefix: 'icon-',
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 	};
 
@@ -445,7 +438,7 @@ const getIconHoverObject = (props, target) => {
 						true
 					),
 				},
-				props.parentBlockStyle,
+				props.blockStyle,
 				props['icon-inherit'],
 				true
 			),
@@ -459,7 +452,7 @@ const getIconHoverObject = (props, target) => {
 						true
 					),
 					prefix: 'icon-',
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 					isIconInherit: props['icon-inherit'],
 					isHover: true,
 					isIcon: true,
@@ -495,7 +488,7 @@ const getIconHoverObject = (props, target) => {
 					),
 				},
 				prefix: 'icon-',
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
 	};
@@ -504,7 +497,7 @@ const getIconHoverObject = (props, target) => {
 };
 
 const getStyles = (props, scValues) => {
-	const { uniqueID } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -516,6 +509,12 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
+				...getSVGStyles({
+					obj: props,
+					target: '.maxi-button-block__icon',
+					blockStyle: blockStyle,
+					prefix: 'icon-',
+				}),
 				' .maxi-button-block__content': getContentObject(props),
 				' .maxi-button-block__button:hover .maxi-button-block__content':
 					getHoverContentObject(props, scValues),
@@ -547,7 +546,7 @@ const getStyles = (props, scValues) => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -561,7 +560,7 @@ const getStyles = (props, scValues) => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 				}),
 			},
 			selectorsButton,

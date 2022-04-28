@@ -25,10 +25,6 @@ const attributes = {
 		type: 'string',
 		default: 'full',
 	},
-	blockStyle: {
-		type: 'string',
-		default: 'maxi-light',
-	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...{
@@ -44,8 +40,8 @@ const attributes = {
 					'background-palette-opacity': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
-					order: 0,
-					id: 0,
+					order: 1,
+					id: 1,
 				},
 			],
 		},
@@ -123,6 +119,7 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.position,

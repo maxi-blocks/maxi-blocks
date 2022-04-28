@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+import { pressKeyTimes, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 const addTypographyOptions = async ({
 	page,
@@ -16,7 +16,7 @@ const addTypographyOptions = async ({
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[0].focus()
 		);
-		await pressKeyWithModifier('primary', 'a');
+		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type(size, { delay: 150 });
 	}
 

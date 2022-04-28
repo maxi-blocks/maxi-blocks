@@ -253,6 +253,40 @@ body.rtl .toolbar-item__popover {
 	}
 }
 
+body.maxi-blocks--active.rtl {
+	select.maxi-select-control__input {
+		background: #fff
+			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>')
+			no-repeat left 8px top 50%;
+		background-size: 9px 9px;
+		font-size: 12px;
+	}
+	.maxi-color-control__palette-label
+		.maxi-base-control__field
+		.maxi-base-control__label {
+		text-align: left;
+	}
+	.maxi-advanced-number-control
+		.components-base-control__field
+		.components-range-control__root {
+		margin-left: 0;
+		margin-right: 8px;
+	}
+	.maxi-sidebar input[type='number'] {
+		padding: 8px 8px 8px 0;
+	}
+	.interface-interface-skeleton__sidebar {
+		overflow-x: hidden;
+		scrollbar-gutter: unset;
+	}
+	.maxi-row-block {
+		justify-content: center;
+	}
+	.maxi-block-inserter__button {
+		position: absolute;
+		top: 50%;
+	}
+}
 body .toolbar-item__popover {
 	input[type='text'],
 	input[type='number'],

@@ -53,6 +53,7 @@ const Inspector = props => {
 		maxiSetAttributes,
 		clientId,
 		changeSVGContent,
+		changeSVGContentHover,
 		changeSVGStrokeWidth,
 	} = props;
 	const { blockStyle, svgType } = attributes;
@@ -394,6 +395,7 @@ const Inspector = props => {
 																				attributes,
 																				[
 																					'icon',
+																					'iconHover',
 																					'iconBackgroundGradient',
 																					'iconBackgroundColor',
 																					'iconBorder',
@@ -419,6 +421,9 @@ const Inspector = props => {
 																			}
 																			blockStyle={
 																				blockStyle
+																			}
+																			changeSVGContentHover={
+																				changeSVGContentHover
 																			}
 																			isHover
 																			changeSVGContent={

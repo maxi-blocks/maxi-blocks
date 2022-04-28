@@ -512,7 +512,7 @@ const getStyles = (props, scValues) => {
 				...getSVGStyles({
 					obj: props,
 					target: '.maxi-button-block__icon',
-					blockStyle: blockStyle,
+					blockStyle,
 					prefix: 'icon-',
 				}),
 				' .maxi-button-block__content': getContentObject(props),

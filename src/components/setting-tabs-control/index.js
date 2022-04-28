@@ -9,6 +9,11 @@ import { select, useDispatch, useSelect } from '@wordpress/data';
  */
 import BaseControl from '../base-control';
 import Button from '../button';
+import { getForcedTabFromPath } from '../../extensions/inspector';
+import {
+	getIsActiveTab,
+	getMaxiAttrsFromChildren,
+} from '../../extensions/indicators';
 
 /**
  * External dependencies
@@ -20,11 +25,6 @@ import { isEmpty } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import {
-	getIsActiveTab,
-	getMaxiAttrsFromChildren,
-} from '../../extensions/indicators';
-import { getForcedTabFromPath } from '../../extensions/inspector-path';
 
 /**
  * Component

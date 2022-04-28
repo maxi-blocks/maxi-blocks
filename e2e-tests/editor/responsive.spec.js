@@ -521,7 +521,7 @@ describe('Responsive attributes mechanisms', () => {
 		const expectPaddingOnXl = {
 			'button-padding-top-general': '0',
 			'button-padding-top-xl': '0',
-			'button-padding-top-xxl': 23,
+			'button-padding-top-xxl': '23',
 		};
 
 		const paddingOnXl = await getAttributes([

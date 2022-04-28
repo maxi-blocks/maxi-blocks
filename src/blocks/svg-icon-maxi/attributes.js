@@ -34,6 +34,7 @@ const attributes = {
 		type: 'string',
 	},
 	...attributesData.svg,
+	...attributesData.svgHover,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

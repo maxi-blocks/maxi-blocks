@@ -22,10 +22,8 @@ const getIsActiveTab = (
 
 	if (!name.includes('maxi-blocks')) return null;
 	const defaultAttributes = getBlockAttributes(name);
-
 	const excludedAttributes = [
 		'blockStyle',
-		'parentBlockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',
 		...ignoreIndicator,
@@ -35,7 +33,7 @@ const getIsActiveTab = (
 		const attributesArr = [];
 
 		items.forEach(item => {
-			for (const [key, value] of Object.entries(item)) {
+			for (const [key] of Object.entries(item)) {
 				attributesArr.push(key);
 			}
 		});

@@ -21,11 +21,13 @@ import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
-
 	const paletteStatus = obj[`${prefix}palette-status`];
 	const paletteColor = obj[`${prefix}palette-color`];
 	const paletteOpacity = obj[`${prefix}palette-opacity`];
-	const color = obj[`${prefix}color`];
+	const color =
+		target === 'line' || target === 'fill'
+			? obj[target]
+			: obj[`${prefix}color`];
 
 	return paletteStatus
 		? getColorRGBAString({
@@ -164,7 +166,7 @@ export const getSCVariablesObject = styleCards => {
 
 				case 'icon':
 					if (obj['line-global'])
-						response[`--maxi-${style}-${element}-line`] =
+						response[`--maxi-${style}-${element}-stroke`] =
 							getColorString(obj, 'line', style);
 
 					if (obj['fill-global'])

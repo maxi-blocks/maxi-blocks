@@ -30,6 +30,45 @@ import './editor.scss';
 /**
  * Component
  */
+
+const ATTRIBUTES = [
+	'alignment',
+	'arrow',
+	'background',
+	'backgroundColor',
+	'backgroundColorHover',
+	'backgroundGradient',
+	'backgroundGradientHover',
+	'backgroundHover',
+	'blockBackground',
+	'border',
+	'borderHover',
+	'borderRadius',
+	'borderRadiusHover',
+	'borderWidth',
+	'borderWidthHover',
+	'boxShadow',
+	'boxShadowHover',
+	'breakpoints',
+	'columnSize',
+	'display',
+	'divider',
+	'link',
+	'margin',
+	'motion',
+	'opacity',
+	'padding',
+	'position',
+	'shapeDivider',
+	'size',
+	'textAlignment',
+	'transform',
+	'transition',
+	'typography',
+	'typographyHover',
+	'zIndex',
+];
+
 const WRAPPER_BLOCKS = [
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/row-maxi',

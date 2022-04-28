@@ -136,6 +136,11 @@ const Inspector = props => {
 									...inspectorTabs.transform({
 										props,
 									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

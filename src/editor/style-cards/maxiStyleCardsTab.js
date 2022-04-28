@@ -118,7 +118,7 @@ const GlobalColor = props => {
 							paletteColor: newPaletteColor,
 							paletteOpacity: newPaletteOpacity,
 							color: newColor,
-						}) =>
+						}) => {
 							onChangeValue(
 								{
 									[paletteStatus]: newPaletteStatus,
@@ -127,8 +127,8 @@ const GlobalColor = props => {
 									[color]: newColor,
 								},
 								groupAttr
-							)
-						}
+							);
+						}}
 						blockStyle={SCStyle}
 						disableGradient
 					/>

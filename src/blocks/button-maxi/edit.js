@@ -138,7 +138,7 @@ class edit extends MaxiBlockComponent {
 
 const editSelect = withSelect((select, ownProps) => {
 	const {
-		attributes: { parentBlockStyle },
+		attributes: { blockStyle },
 	} = ownProps;
 
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
@@ -150,11 +150,7 @@ const editSelect = withSelect((select, ownProps) => {
 		'hover-background-color-global',
 		'hover-background-color-all',
 	];
-	const scValues = receiveStyleCardValue(
-		scElements,
-		parentBlockStyle,
-		'button'
-	);
+	const scValues = receiveStyleCardValue(scElements, blockStyle, 'button');
 
 	return {
 		scValues,
@@ -211,8 +207,11 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContent = (color, type) => {
-		const fillRegExp = new RegExp(`${type}:([^none])([^\\}]+)`, 'g');
-		const fillStr = `${type}:${color}`;
+		const fillRegExp = new RegExp(
+			`(((?<!hover )\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			'g'
+		);
+		const fillStr = `$2{${type}:${color}`;
 
 		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
 		const fillStr2 = ` ${type}="${color}`;
@@ -224,9 +223,39 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		maxiSetAttributes({ 'icon-content': newContent });
 	};
 
+	const changeSVGContentHover = (color, type) => {
+		let newContent = ownProps.attributes['icon-content'];
+
+		if (newContent.includes(`data-hover-${type}`)) return;
+
+		const svgRegExp = new RegExp(`( ${type}=[^-]([^none])([^\\"]+))`, 'g');
+		const svgStr = ` data-hover-${type}$1`;
+
+		const cssRegExpOld = new RegExp(
+			`((\.maxi-button-block__button:hover \.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))(})`,
+			'g'
+		);
+		const cssStrOld = '';
+
+		const cssRegExp = new RegExp(
+			`(((?<!hover)\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			'g'
+		);
+		const cssStr = `$1}.maxi-button-block__button:hover $2{${type}:${color}`;
+
+		newContent = newContent
+			.replace(svgRegExp, svgStr)
+			.replace(cssRegExpOld, cssStrOld)
+			.replace(cssRegExp, cssStr);
+
+		newContent !== ownProps.attributes['icon-content'] &&
+			maxiSetAttributes({ 'icon-content': newContent });
+	};
+
 	return {
 		changeSVGStrokeWidth,
 		changeSVGContent,
+		changeSVGContentHover,
 		changeSVGContentWithBlockStyle,
 	};
 });

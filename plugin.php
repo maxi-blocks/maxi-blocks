@@ -91,6 +91,15 @@ if (class_exists('MaxiBlocks_ImageUpload')) {
     MaxiBlocks_ImageUpload::register();
 }
 
+//======================================================================
+// MaxiBlocks Dashboard
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dashboard.php';
+if (class_exists('MaxiBlocks_Dashboard')) {
+    MaxiBlocks_Dashboard::register();
+}
+
+
 
 /**
  * TODO: Old init.php file. Please, delete these lines of comment and require onces this file has been removed

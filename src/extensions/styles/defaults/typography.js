@@ -60,6 +60,9 @@ export const rawTypography = {
 	'text-orientation': {
 		type: 'string',
 	},
+	'text-direction': {
+		type: 'string',
+	},
 };
 
 export const typography = breakpointAttributesCreator({

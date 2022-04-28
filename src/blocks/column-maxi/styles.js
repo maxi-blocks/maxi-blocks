@@ -12,21 +12,17 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
+	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
-const getNormalObject = props => {
+const getNormalObject = (props, rowGapProps) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -36,7 +32,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
@@ -57,9 +53,12 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'transform'),
 		}),
 		columnSize: {
-			...getColumnSizeStyles({
-				...getGroupAttributes(props, 'columnSize'),
-			}),
+			...getColumnSizeStyles(
+				{
+					...getGroupAttributes(props, 'columnSize'),
+				},
+				rowGapProps
+			),
 		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -67,20 +66,17 @@ const getNormalObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
-		...(!isEmpty(props.verticalAlign) && {
-			column: {
-				general: {
-					'justify-content': props.verticalAlign,
-				},
-			},
-		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
 	return response;
 };
+
 
 const getHoverObject = props => {
 	const response = {
@@ -95,7 +91,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -104,21 +100,35 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 	};
 
 	return response;
 };
 
-const getStyles = props => {
+
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
+
+const getStyles = (props, rowGapProps) => {
+
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props),
+				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
+				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',
@@ -126,7 +136,8 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
+					rowBorderRadius: props.rowBorderRadius,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -140,7 +151,8 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
+					rowBorderRadius: props.rowBorderRadius,
 				}),
 			},
 			selectorsColumn,

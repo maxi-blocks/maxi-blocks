@@ -7,10 +7,12 @@ class MaxiSlider {
 			'.maxi-slider-block__wrapper'
 		);
 
-		// Sliders
+		// Slides
 		this._slides = Array.from(
 			this._wrapper.getElementsByClassName('maxi-slide-block')
 		).map((slide, i) => new Slide(slide, i));
+
+		this.isLoop = this._container.dataset.infiniteLoop;
 
 		// Navigation
 		this._arrowNext = this._container.querySelector(
@@ -43,12 +45,14 @@ class MaxiSlider {
 	}
 
 	get activeSlidePosition() {
+		if (this._currentSlide < 0) return 0;
 		return this.currentSlide === 0
-			? 0
+			? this.realFirstElOffset
 			: this._slides
 					.slice(0, this.currentSlide)
 					.map(slide => slide.size.width)
-					?.reduce((acc, cur) => acc + cur) || 0;
+					?.reduce((acc, cur) => acc + cur) +
+					this.realFirstElOffset || this.realFirstElOffset;
 	}
 
 	get wrapperTranslate() {
@@ -64,8 +68,22 @@ class MaxiSlider {
 	}
 
 	init() {
+		if (this.isLoop) {
+			this._wrapper.append(this._slides[0]._slide.cloneNode(true));
+			this._wrapper.prepend(
+				this._slides[this._slides.length - 1]._slide.cloneNode(true)
+			);
+			this._wrapper.addEventListener(
+				'transitionend',
+				this.transitionEnd.bind(this)
+			);
+		}
+		this.realFirstElOffset = this.isLoop
+			? this._slides[this._slides.length - 1].size.width
+			: 0;
+
 		// Init styles
-		this.wrapperTranslate = '0px';
+		this.wrapperTranslate = this.realFirstElOffset;
 
 		this.navEvents();
 		this.wrapperEvents();
@@ -134,18 +152,16 @@ class MaxiSlider {
 	}
 
 	slideNext() {
-		if (this.currentSlide + 1 < this._slides.length) {
+		if (this.currentSlide + 1 < this._slides.length || this.isLoop) {
 			// Update current slide
 			this.currentSlide = this.currentSlide + 1;
 
 			this.sliderAction();
-		} else {
-			this.wrapperTranslate = this.activeSlidePosition;
 		}
 	}
 
 	slidePrev() {
-		if (this.currentSlide - 1 >= 0) {
+		if (this.currentSlide - 1 >= 0 || this.isLoop) {
 			// Update current slide
 			this.currentSlide = this.currentSlide - 1;
 
@@ -153,12 +169,26 @@ class MaxiSlider {
 		}
 	}
 
-	sliderAction() {
+	sliderAction(withTransition = true) {
 		// Update active slide
 		this._slides.forEach(slide => (slide.isActive = this.currentSlide));
 
 		// Move the slider
+		if (withTransition)
+			this._wrapper.style.transition = 'transform 0.2s ease-out';
 		this.wrapperTranslate = this.activeSlidePosition;
+	}
+
+	transitionEnd() {
+		this._wrapper.style.transition = '';
+		if (this.currentSlide >= this._slides.length) {
+			this.currentSlide = 0;
+			this.sliderAction(false);
+		}
+		if (this.currentSlide < 0) {
+			this.currentSlide = this._slides.length - 1;
+			this.sliderAction(false);
+		}
 	}
 }
 

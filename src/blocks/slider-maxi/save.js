@@ -19,6 +19,7 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
+	const { isLoop } = attributes;
 	const { fullWidth } = attributes;
 
 	const name = 'maxi-blocks/slider-maxi';
@@ -29,6 +30,7 @@ const save = props => {
 		<MaxiBlock.save
 			className={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			data-infinite-loop={isLoop}
 		>
 			<div className='maxi-slider-block__tracker'>
 				<ul

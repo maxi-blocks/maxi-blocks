@@ -118,6 +118,7 @@ describe('ColorControl', () => {
 
 	it('Checking the reset button', async () => {
 		await createNewPost();
+
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -139,9 +140,9 @@ describe('ColorControl', () => {
 		).toStrictEqual(5);
 
 		// reset button
-		await page.$eval(
+		await page.$$eval(
 			'.maxi-responsive-tabs-control .maxi-tabs-content .maxi-color-palette-control .components-maxi-control__reset-button',
-			input => input.click()
+			input => input[2].click()
 		);
 
 		expect(

@@ -273,6 +273,7 @@ describe('TypographyControl', () => {
 
 	it('Check Size, line height and letter spacing', async () => {
 		await changeResponsive(page, 'xl');
+
 		await addTypographyOptions({
 			page,
 			instance: await openSidebarTab(page, 'style', 'typography'),
@@ -322,12 +323,10 @@ describe('TypographyControl', () => {
 		expect(responsiveSizeUnit).toBeTruthy();
 
 		// test line-height
-		const accordion = await openSidebarTab(page, 'style', 'typography');
-		const input = await accordion.$$(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input'
+		await page.$$(
+			'.maxi-typography-control .maxi-typography-control__line-height input',
+			input => input[0].focus()
 		);
-
-		await input[0].focus();
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('45');
@@ -335,7 +334,7 @@ describe('TypographyControl', () => {
 		const responsiveLineHeight = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input',
+				'.maxi-typography-control .maxi-typography-control__line-height input',
 			needFocus: true,
 			baseExpect: '45',
 			xsExpect: '43',
@@ -344,16 +343,15 @@ describe('TypographyControl', () => {
 		expect(responsiveLineHeight).toBeTruthy();
 
 		// letter spacing responsive
-		const letterInput = await accordion.$$(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input'
+		await page.$$eval(
+			'.maxi-typography-control__letter-spacing input',
+			input => input[0].focus()
 		);
-
-		await letterInput[0].focus();
 
 		const responsiveLetterSpacing = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+				'.maxi-typography-control .maxi-typography-control__letter-spacing input',
 			needFocus: true,
 			baseExpect: '10',
 			xsExpect: '23',

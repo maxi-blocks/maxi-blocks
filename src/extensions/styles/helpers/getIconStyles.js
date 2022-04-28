@@ -11,7 +11,7 @@ import { isNil } from 'lodash';
 
 const getIconStyles = (
 	obj,
-	parentBlockStyle,
+	blockStyle,
 	isIconInherit = true,
 	isHover = false
 ) => {
@@ -28,16 +28,15 @@ const getIconStyles = (
 				isHover,
 				breakpoint: 'general',
 			});
+		response.general.fill = 'none';
 
 		if (!paletteStatus && color) {
-			response.general.fill = 'none';
 			response.general.stroke = color;
 		} else if (paletteStatus && paletteColor) {
-			response.general.fill = 'none';
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle,
 			});
 		}
 	} else {
@@ -45,14 +44,12 @@ const getIconStyles = (
 			getPaletteAttributes({ obj, prefix: 'icon-', isHover });
 
 		if (!paletteStatus && !isNil(color)) {
-			response.general.fill = 'none';
 			response.general.stroke = color;
 		} else if (paletteStatus && paletteColor) {
-			response.general.fill = 'none';
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: obj[paletteOpacity],
-				blockStyle: parentBlockStyle,
+				blockStyle,
 			});
 		}
 	}

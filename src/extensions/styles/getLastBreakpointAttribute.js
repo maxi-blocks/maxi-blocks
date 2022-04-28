@@ -61,6 +61,19 @@ const getLastBreakpointAttributeSingle = (
 			}`
 		];
 
+	// In case that breakpoint is general and winBreakpoint attribute exists,
+	// give priority to winBreakpoint attribute
+	if (breakpoint === 'general') {
+		const winBreakpointAttr =
+			attr[
+				`${!isEmpty(target) ? `${target}-` : ''}${winBreakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			];
+
+		if (attrFilter(winBreakpointAttr)) return winBreakpointAttr;
+	}
+
 	if (
 		attrFilter(currentAttr) &&
 		(winBreakpoint !== 'xxl' || breakpoint === 'xxl')
@@ -69,7 +82,12 @@ const getLastBreakpointAttributeSingle = (
 
 	let breakpointPosition = breakpoints.indexOf(breakpoint);
 
-	do {
+	while (
+		breakpointPosition > 0 &&
+		!isNumber(currentAttr) &&
+		!isBoolean(currentAttr) &&
+		(isEmpty(currentAttr) || isNil(currentAttr))
+	) {
 		breakpointPosition -= 1;
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr =
@@ -78,12 +96,7 @@ const getLastBreakpointAttributeSingle = (
 						breakpoints[breakpointPosition]
 					}${isHover ? '-hover' : ''}`
 				];
-	} while (
-		breakpointPosition > 0 &&
-		!isNumber(currentAttr) &&
-		!isBoolean(currentAttr) &&
-		(isEmpty(currentAttr) || isNil(currentAttr))
-	);
+	}
 
 	if (isHover && !attrFilter(currentAttr))
 		currentAttr = getLastBreakpointAttributeSingle(

@@ -63,6 +63,7 @@ const marginPadding = ({
 								step: 0.1,
 							},
 						}}
+						enableAxisUnits
 					/>
 				)}
 				<AxisControl
@@ -77,8 +78,10 @@ const marginPadding = ({
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
 					target='padding'
+					optionType='string'
 					blockFullWidth={blockFullWidth}
 					disableAuto
+					enableAxisUnits
 				/>
 			</>
 		),

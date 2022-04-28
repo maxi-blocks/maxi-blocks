@@ -160,6 +160,28 @@ Object {
   "background-image-mediaURL": Object {
     "type": "string",
   },
+  "background-image-opacity-general": Object {
+    "default": 1,
+    "type": "number",
+  },
+  "background-image-opacity-l": Object {
+    "type": "number",
+  },
+  "background-image-opacity-m": Object {
+    "type": "number",
+  },
+  "background-image-opacity-s": Object {
+    "type": "number",
+  },
+  "background-image-opacity-xl": Object {
+    "type": "number",
+  },
+  "background-image-opacity-xs": Object {
+    "type": "number",
+  },
+  "background-image-opacity-xxl": Object {
+    "type": "number",
+  },
   "background-image-origin-general": Object {
     "default": "padding-box",
     "type": "string",

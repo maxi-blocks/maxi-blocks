@@ -36,7 +36,7 @@ import { capitalize } from 'lodash';
 const listTab = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 	const {
-		parentBlockStyle,
+		blockStyle,
 		listReversed,
 		listStart,
 		typeOfList,
@@ -484,7 +484,7 @@ const listTab = props => {
 									? getColorRGBAString({
 											firstVar: `color-${paletteColor}`,
 											opacity: paletteOpacity,
-											blockStyle: parentBlockStyle,
+											blockStyle,
 									  })
 									: color;
 
@@ -553,11 +553,11 @@ const listTab = props => {
 							value={typeOfList}
 							options={[
 								{
-									label: __('Unorganized', 'maxi-blocks'),
+									label: __('Unordered', 'maxi-blocks'),
 									value: 'ul',
 								},
 								{
-									label: __('Organized', 'maxi-blocks'),
+									label: __('Ordered', 'maxi-blocks'),
 									value: 'ol',
 								},
 							]}
@@ -578,26 +578,28 @@ const listTab = props => {
 								className='maxi-image-inspector__list-style'
 								value={listStyle || 'disc'}
 								options={getListStyleOptions(typeOfList)}
-								onChange={listStyle =>
+								onChange={listStyle => {
 									maxiSetAttributes({
 										listStyle,
-									})
-								}
+									});
+									if (
+										!(
+											['decimal', 'details'].includes(
+												typeOfList
+											) || !listStyle
+										) &&
+										listStart < 0
+									) {
+										maxiSetAttributes({ listStart: 0 });
+									}
+								}}
 							/>
 							{typeOfList === 'ol' && (
 								<>
 									<AdvancedNumberControl
 										label={__('Start From', 'maxi-blocks')}
 										className='maxi-image-inspector__list-start'
-										value={
-											!(
-												['decimal', 'details'].includes(
-													listStyle
-												) || !listStyle
-											) && listStart < 0
-												? 0
-												: listStart
-										}
+										value={listStart}
 										onChangeValue={val => {
 											maxiSetAttributes({
 												listStart:
@@ -703,9 +705,7 @@ const listTab = props => {
 										<>
 											<MaxiModal
 												type='image-shape'
-												style={
-													parentBlockStyle || 'light'
-												}
+												style={blockStyle || 'light'}
 												onSelect={obj => {
 													const {
 														paletteStatus,
@@ -724,8 +724,7 @@ const listTab = props => {
 																		firstVar: `color-${paletteColor}`,
 																		opacity:
 																			paletteOpacity,
-																		blockStyle:
-																			parentBlockStyle,
+																		blockStyle,
 																	}
 															  )
 															: color;

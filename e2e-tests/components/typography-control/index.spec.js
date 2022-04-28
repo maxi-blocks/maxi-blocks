@@ -180,16 +180,17 @@ describe('TypographyControl', () => {
 		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
 	});
 
-	it('Checking the Weight, Transform, Style and Decoration', async () => {
+	it('Checking the Weight, Transform, Style, Decoration and Orientation', async () => {
 		await changeResponsive(page, 'base');
 		await openSidebarTab(page, 'style', 'typography');
 
 		await addTypographyStyle({
-			page,
+			instance: page,
 			decoration: 'overline',
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
+			orientation: 'mixed',
 		});
 
 		const typographyResult = await getAttributes([
@@ -197,6 +198,7 @@ describe('TypographyControl', () => {
 			'font-weight-general',
 			'text-decoration-general',
 			'text-transform-general',
+			'text-orientation-general',
 		]);
 
 		const expectedAttributesTwo = {
@@ -204,6 +206,7 @@ describe('TypographyControl', () => {
 			'font-weight-general': '300',
 			'text-decoration-general': 'overline',
 			'text-transform-general': 'capitalize',
+			'text-orientation-general': 'mixed',
 		};
 
 		expect(typographyResult).toStrictEqual(expectedAttributesTwo);

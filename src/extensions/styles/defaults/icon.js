@@ -45,6 +45,7 @@ export const icon = {
 		},
 	}),
 	...paletteAttributesCreator({ prefix, palette: 1 }),
+	...paletteAttributesCreator({ prefix: `${prefix}fill-`, palette: 4 }),
 };
 
 export const iconBackground = prefixAttributesCreator({

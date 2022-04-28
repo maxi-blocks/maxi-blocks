@@ -41,7 +41,7 @@ describe('ColorControl', () => {
 
 		// check reset button
 		await accordionPanel.$eval(
-			'.maxi-base-control__field .components-maxi-control__reset-button',
+			'.maxi-background-control .maxi-base-control__field .components-maxi-control__reset-button',
 			resetButton => resetButton.click()
 		);
 
@@ -142,7 +142,7 @@ describe('ColorControl', () => {
 		// reset button
 		await page.$$eval(
 			'.maxi-responsive-tabs-control .maxi-tabs-content .maxi-color-palette-control .components-maxi-control__reset-button',
-			input => input[2].click()
+			input => input[0].click()
 		);
 
 		expect(

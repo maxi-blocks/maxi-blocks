@@ -621,42 +621,6 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.border({
 										props,
-										prefix: 'image-',
-									}),
-									...inspectorTabs.boxShadow({
-										props,
-										prefix: 'image-',
-									}),
-									...inspectorTabs.size({
-										props,
-										prefix: 'image-',
-										isImage: true,
-										hideWidth: true,
-									}),
-									...inspectorTabs.marginPadding({
-										props,
-										prefix: 'image-',
-										customLabel: __(
-											'Padding',
-											'maxi-blocks'
-										),
-										disableMargin: true,
-									}),
-								]}
-							/>
-						),
-					},
-					{
-						label: __('Canvas', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								isPrimary
-								items={[
-									...inspectorTabs.blockBackground({
-										props,
-									}),
-									...inspectorTabs.border({
-										props,
 									}),
 									...inspectorTabs.boxShadow({
 										props,

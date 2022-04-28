@@ -105,12 +105,12 @@ const attributes = {
 	...{
 		...attributesData.padding,
 		'padding-top-general': {
-			type: 'number',
-			default: 20,
+			type: 'string',
+			default: '20',
 		},
 		'padding-bottom-general': {
-			type: 'number',
-			default: 20,
+			type: 'string',
+			default: '20',
 		},
 	},
 

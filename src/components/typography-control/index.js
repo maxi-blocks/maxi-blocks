@@ -735,19 +735,38 @@ const TypographyControl = withFormatValue(props => {
 
 	return (
 		<div className={classes}>
-			{!disableFontFamily && (
-				<FontFamilySelector
-					className='maxi-typography-control__font-family'
-					font={getValue(`${prefix}font-family`)}
-					onChange={font => {
-						onChangeFormat({
-							[`${prefix}font-family`]: font.value,
-							[`${prefix}font-options`]: font.files,
-						});
-					}}
-					fontWeight={getValue(`${prefix}font-weight`)}
-					fontStyle={getValue(`${prefix}font-style`)}
-				/>
+			{styleCards ? (
+				!disableFontFamily && (
+					<FontFamilySelector
+						className='maxi-typography-control__font-family'
+						font={getValue(`${prefix}font-family`)}
+						onChange={font => {
+							onChangeFormat({
+								[`${prefix}font-family`]: font.value,
+								[`${prefix}font-options`]: font.files,
+							});
+						}}
+						fontWeight={getValue(`${prefix}font-weight`)}
+						fontStyle={getValue(`${prefix}font-style`)}
+					/>
+				)
+			) : (
+				<ResponsiveTabsControl breakpoint={breakpoint}>
+					{!disableFontFamily && (
+						<FontFamilySelector
+							className='maxi-typography-control__font-family'
+							font={getValue(`${prefix}font-family`)}
+							onChange={font => {
+								onChangeFormat({
+									[`${prefix}font-family`]: font.value,
+									[`${prefix}font-options`]: font.files,
+								});
+							}}
+							fontWeight={getValue(`${prefix}font-weight`)}
+							fontStyle={getValue(`${prefix}font-style`)}
+						/>
+					)}
+				</ResponsiveTabsControl>
 			)}
 			{!disableColor && !styleCards && (
 				<ColorControl
@@ -790,15 +809,34 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
-			<TextOptions
-				getValue={getValue}
-				getDefault={getDefault}
-				onChangeFormat={onChangeFormat}
-				prefix={prefix}
-				minMaxSettings={minMaxSettings}
-				minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
-				avoidXXL={!styleCards}
-			/>
+			{styleCards ? (
+				<ResponsiveTabsControl
+					className='maxi-typography-control__text-options-tabs'
+					breakpoint={breakpoint}
+				>
+					<TextOptions
+						getValue={getValue}
+						getDefault={getDefault}
+						onChangeFormat={onChangeFormat}
+						prefix={prefix}
+						minMaxSettings={minMaxSettings}
+						minMaxSettingsLetterSpacing={
+							minMaxSettingsLetterSpacing
+						}
+						avoidXXL={!styleCards}
+					/>
+				</ResponsiveTabsControl>
+			) : (
+				<TextOptions
+					getValue={getValue}
+					getDefault={getDefault}
+					onChangeFormat={onChangeFormat}
+					prefix={prefix}
+					minMaxSettings={minMaxSettings}
+					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
+					avoidXXL={!styleCards}
+				/>
+			)}
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&

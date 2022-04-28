@@ -2,10 +2,10 @@
 require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
 function maxi_blocks_create_menu()
 {
-    add_menu_page('Maxi Blocks', 'Maxi Blocks', 'administrator', 'maxi-blocks.php', 'maxi_blocks_settings_page', 'dashicons-block-default');
-    add_action('admin_init', 'register_maxi_blocks_settings');
+    // add_menu_page('Maxi Blocks', 'Maxi Blocks', 'administrator', 'maxi-blocks.php', 'maxi_blocks_settings_page', 'dashicons-block-default');
+   // add_action('admin_init', 'register_maxi_blocks_settings');
 }
-add_action('admin_menu', 'maxi_blocks_create_menu');
+//add_action('admin_menu', 'maxi_blocks_create_menu');
 
 function register_maxi_blocks_settings()
 {

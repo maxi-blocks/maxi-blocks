@@ -67,6 +67,7 @@ class MaxiBlocks_Styles {
 				'scroll-effects',
 				'number-counter',
 				'shape-divider',
+				'slider',
 			];
 
 			foreach ($scripts as &$script) {

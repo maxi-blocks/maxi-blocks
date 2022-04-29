@@ -15,6 +15,7 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -42,25 +43,42 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										...inspectorTabs.alignment({
+											props: {
+												...props,
+											},
+											isAlignment: true,
+											alignmentLabel: __(
+												'Counter',
+												'maxi-blocks'
+											),
+											disableJustify: true,
+										}),
 										{
 											label: __('Number', 'maxi-blocks'),
 											content: (
-												<NumberCounterControl
-													{...getGroupAttributes(
-														attributes,
-														'numberCounter'
-													)}
-													{...getGroupAttributes(
-														attributes,
-														'size',
-														false,
-														'number-counter-'
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
+												<ResponsiveTabsControl
 													breakpoint={deviceType}
-												/>
+												>
+													<NumberCounterControl
+														{...getGroupAttributes(
+															attributes,
+															'numberCounter'
+														)}
+														{...getGroupAttributes(
+															attributes,
+															'size',
+															false,
+															'number-counter-'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+													/>
+												</ResponsiveTabsControl>
 											),
 										},
 										...inspectorTabs.border({

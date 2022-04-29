@@ -230,6 +230,8 @@ class edit extends MaxiBlockComponent {
 					width: fullWidthValue,
 				});
 		}
+
+		if (!this.resetNumberHelper) this.forceUpdate();
 	}
 
 	get getStylesObject() {

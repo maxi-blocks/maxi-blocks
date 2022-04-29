@@ -53,9 +53,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi_config_page'
                 ), MAXI_PLUGIN_ICON, null);
             add_submenu_page(MAXI_SLUG_DASHBOARD, __(MAXI_PLUGIN_NAME, MAXI_TEXT_DOMAIN), __('Welcome', MAXI_TEXT_DOMAIN), 'manage_options', MAXI_SLUG_DASHBOARD, '', null);
-            add_submenu_page(MAXI_SLUG_DASHBOARD, __('Editor preferences', MAXI_TEXT_DOMAIN), __('Editor preferences', MAXI_TEXT_DOMAIN), 'manage_options', 'admin.php?page='.MAXI_SLUG_DASHBOARD.'&tab=editor-preferences', '', null);
-            add_submenu_page(MAXI_SLUG_DASHBOARD, __('Documentation & support', MAXI_TEXT_DOMAIN), __('Documentation & support', MAXI_TEXT_DOMAIN), 'manage_options', 'admin.php?page='.MAXI_SLUG_DASHBOARD.'&tab=documentation-support', '', null);
-            add_submenu_page(MAXI_SLUG_DASHBOARD, __('Advanced', MAXI_TEXT_DOMAIN), __('Advanced', MAXI_TEXT_DOMAIN), 'manage_options', 'admin.php?page='.MAXI_SLUG_DASHBOARD.'&tab=advanced', '', null);
+            add_submenu_page(MAXI_SLUG_DASHBOARD, __('Settings', MAXI_TEXT_DOMAIN), __('Settings', MAXI_TEXT_DOMAIN), 'manage_options', 'admin.php?page='.MAXI_SLUG_DASHBOARD.'&tab=settings', '', null);
         }
 
         // Draw option page
@@ -63,9 +61,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             $settings_tabs = array(
                 MAXI_PREFIX.'welcome' => __('Welcome', MAXI_TEXT_DOMAIN),
-                MAXI_PREFIX.'editor_preferences' => __('Editor preferences', MAXI_TEXT_DOMAIN),
-                MAXI_PREFIX.'documentation_support' => __('Documentation & support', MAXI_TEXT_DOMAIN),
-                MAXI_PREFIX.'advanced' => __('Advanced', MAXI_TEXT_DOMAIN),
+                MAXI_PREFIX.'settings' => __('Settings', MAXI_TEXT_DOMAIN),
+                
             );
         
 
@@ -76,7 +73,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             echo '<div class="maxi-dashboard_wrap">';
-            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" src="'.esc_url(plugin_dir_url(__DIR__)) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', MAXI_TEXT_DOMAIN).'"></header>';
+            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(plugin_dir_url(__DIR__)) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', MAXI_TEXT_DOMAIN).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
             
             foreach ($settings_tabs as $tab_page => $tab_name) {
@@ -84,28 +81,29 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 
                 echo '<a class="maxi-dashboard_nav-tab nav-tab ' . esc_attr($tab_page) . esc_attr($active_tab) . '" href="?page=' . esc_attr(MAXI_SLUG_DASHBOARD) . '&tab=' . esc_attr($tab_page) . '">' . wp_kses($tab_name, $this->maxi_blocks_allowed_html()) . '</a>';
             }
-            echo '</h4> <form action="options.php" method="post" class="maxi-dashboard_form"><div class="maxi-dashboard_main">';
+            echo '</h4> <form action="options.php" method="post" class="maxi-dashboard_form">';
+            echo '<div class="maxi-dashboard_main">';
 
             if (isset($tab)) {
                 if ($tab === MAXI_PREFIX.'welcome') {
                     echo wp_kses($this->maxi_blocks_welcome(), maxi_blocks_allowed_html());
-                } elseif ($tab === MAXI_PREFIX.'editor_preferences') {
-                    echo wp_kses($this->maxi_blocks_editor_preferences(), maxi_blocks_allowed_html());
-                } elseif ($tab === MAXI_PREFIX.'documentation_support') {
-                    echo wp_kses($this->maxi_blocks_documentation_support(), maxi_blocks_allowed_html());
-                } elseif ($tab === MAXI_PREFIX.'advanced') {
-                    echo wp_kses($this->maxi_blocks_advanced(), maxi_blocks_allowed_html());
+                } elseif ($tab === MAXI_PREFIX.'settings') {
+                    echo wp_kses($this->maxi_blocks_settings(), maxi_blocks_allowed_html());
                 }
             }
             
-            echo '</div></form></div>';
+            echo '</div>'; // maxi-dashboard_main
+            echo '</form>'; // maxi-dashboard_form
+            echo '</div>';// maxi-dashboard_wrap
         }
 
         public function maxi_blocks_welcome()
         {
-            $user_name = 'Kyra';
+            $current_user = wp_get_current_user();
+            $user_name = $current_user->user_firstname;
 
-            $content = '<h1>'.__('Welcome, ', MAXI_TEXT_DOMAIN).$user_name.'</h1>';
+            $content = '<div class="maxi-dashboard_main-content">';
+            $content .= '<h1>'.__('Welcome, ', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h1>';
             $content .= '<h2>'.__('Prototype web pages and tell your story with Maxi Blocks', MAXI_TEXT_DOMAIN).'</h2>';
             
             $content .= '<p>'.__('Thank you for installing Maxi Blocks.', MAXI_TEXT_DOMAIN).'</p>';
@@ -131,35 +129,35 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<p>'.__('There’s a grand plan and we need your help. Share your suggestions or vote on what to build next.', MAXI_TEXT_DOMAIN).'</p>';
             $content .= '<a href="" target="_blank">'.__('See what’s planned in the roadmap', MAXI_TEXT_DOMAIN).'</a>';
 
-            $content .= '<h3>'.__('Connect', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '<p>'.__('News and stories for creators.', MAXI_TEXT_DOMAIN);
-            $content .= ' <a href="" target="_blank">'.__('Read the blog', MAXI_TEXT_DOMAIN).'</a>.</p>';
-            $content .= '<p>'.__('Get a summary of stories you missed.', MAXI_TEXT_DOMAIN);
-            $content .= ' <a href="" target="_blank">'.__('Notify me', MAXI_TEXT_DOMAIN).'</a>.</p>';
-            $content .= '<p>'.__('Your thoughts can inspire others.', MAXI_TEXT_DOMAIN);
-            $content .= ' <a href="" target="_blank">'.__('Give a quick review', MAXI_TEXT_DOMAIN).'</a>.</p>';
-
             $content .= '<h3>'.__('Beta 1.0', MAXI_TEXT_DOMAIN).'</h3>';
             $content .= '<p>'.__('The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.', MAXI_TEXT_DOMAIN).'</p>';
             
+            $content .='</div>'; // maxi-dashboard_main-content
+            
+            $content .= '<div class="maxi-dashboard_main-sidebar">';
+
+            $content .= '<div class="maxi-dashboard_main-sidebar-item">';
+            $content .= '<p>'.__('News and stories for creators.', MAXI_TEXT_DOMAIN);
+            $content .= ' <a href="" target="_blank">'.__('Read the blog', MAXI_TEXT_DOMAIN).'</a>.</p>';
+            $content .='</div>'; // maxi-dashboard_main-sidebar-item
+            
+            $content .= '<div class="maxi-dashboard_main-sidebar-item">';
+            $content .= '<p>'.__('Get a summary of stories you missed.', MAXI_TEXT_DOMAIN);
+            $content .= ' <a href="" target="_blank">'.__('Notify me', MAXI_TEXT_DOMAIN).'</a>.</p>';
+            $content .='</div>'; // maxi-dashboard_main-sidebar-item
+
+            $content .= '<div class="maxi-dashboard_main-sidebar-item">';
+            $content .= '<p>'.__('Your thoughts can inspire others.', MAXI_TEXT_DOMAIN);
+            $content .= ' <a href="" target="_blank">'.__('Give a quick review', MAXI_TEXT_DOMAIN).'</a>.</p>';
+            $content .='</div>'; // maxi-dashboard_main-sidebar-item
+
+            $content .='</div>'; // maxi-dashboard_main-sidebar
             return $content;
         }
 
-        public function maxi_blocks_editor_preferences()
+        public function maxi_blocks_settings()
         {
             $content = 'Add content here2';
-            return $content;
-        }
-
-        public function maxi_blocks_documentation_support()
-        {
-            $content = 'Add content here3';
-            return $content;
-        }
-
-        public function maxi_blocks_advanced()
-        {
-            $content = 'Add content here4';
             return $content;
         }
 

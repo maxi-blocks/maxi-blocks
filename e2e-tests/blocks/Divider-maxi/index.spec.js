@@ -27,7 +27,7 @@ describe('Divider Maxi', () => {
 	it('Check Divider alignment', async () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
-		let alignmentSelectors = await accordionPanel.$$(
+		const alignmentSelectors = await accordionPanel.$$(
 			'.maxi-base-control select'
 		);
 
@@ -51,9 +51,6 @@ describe('Divider Maxi', () => {
 		// responsive S
 		await changeResponsive(page, 's');
 
-		alignmentSelectors = await accordionPanel.$$(
-			'.maxi-base-control select'
-		);
 		await alignmentSelectors[0].select('horizontal');
 		await page.waitForTimeout(150);
 		await alignmentSelectors[1].select('flex-end');
@@ -115,12 +112,11 @@ describe('Divider Maxi', () => {
 		expect(responsiveVertical).toBeTruthy();
 		await page.waitForTimeout(150);
 
-		await changeResponsive(page, 'l');
-
 		const alignmentSelectors = await accordionPanel.$(
 			'.line-orientation-selector select'
 		);
 
+		await changeResponsive(page, 'l');
 		await alignmentSelectors.select('horizontal');
 		expect(await getAttributes('line-orientation-l')).toStrictEqual(
 			'horizontal'

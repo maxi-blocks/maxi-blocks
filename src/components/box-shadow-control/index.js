@@ -314,11 +314,7 @@ const BoxShadowControl = props => {
 					/>
 					{!isToolbar &&
 						boxShadowItems.map(type => (
-							<BoxShadowValueControl
-								type={type}
-								key={type}
-								{...props}
-							/>
+							<BoxShadowValueControl type={type} {...props} />
 						))}
 				</>
 			)}

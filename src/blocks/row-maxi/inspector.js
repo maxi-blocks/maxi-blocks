@@ -16,7 +16,6 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsRow, categoriesRow } from './custom-css';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 function ColumnPicker(props) {
@@ -75,11 +74,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ResponsiveTabsControl
-													breakpoint={deviceType}
-												>
-													<ColumnPicker {...props} />
-												</ResponsiveTabsControl>
+												<ColumnPicker {...props} />
 											),
 											ignoreIndicator: [
 												'row-pattern-general',

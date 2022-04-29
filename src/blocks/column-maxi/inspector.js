@@ -14,7 +14,6 @@ import {
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsColumn, categoriesColumn } from './custom-css';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import { withMaxiInspector } from '../../extensions/inspector';
 
@@ -50,25 +49,19 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ResponsiveTabsControl
+												<ColumnSizeControl
+													props
+													{...getGroupAttributes(
+														attributes,
+														'flex'
+													)}
+													rowPattern={rowPattern}
+													clientId={clientId}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
 													breakpoint={deviceType}
-												>
-													<ColumnSizeControl
-														props
-														{...getGroupAttributes(
-															attributes,
-															'flex'
-														)}
-														rowPattern={rowPattern}
-														clientId={clientId}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-													/>
-												</ResponsiveTabsControl>
+												/>
 											),
 											extraIndicators: [
 												`column-fit-content-${deviceType}`,

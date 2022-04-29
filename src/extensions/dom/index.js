@@ -193,8 +193,9 @@ wp.domReady(() => {
 						);
 						const iframeDocument = iframe.contentDocument;
 
-						const editorWrapper = iframeDocument.body;
-
+						const editorWrapper = iframeDocument.querySelector(
+							'.editor-styles-wrapper'
+						);
 						editorWrapper.setAttribute(
 							'maxi-blocks-responsive',
 							mutation.target.classList.contains(
@@ -213,15 +214,6 @@ wp.domReady(() => {
 							// Iframe needs Maxi classes and attributes
 							iframeDocument.body.classList.add(
 								'maxi-blocks--active'
-							);
-							const editorWrapper = iframeDocument.body;
-							editorWrapper.setAttribute(
-								'maxi-blocks-responsive',
-								mutation.target.classList.contains(
-									'is-tablet-preview'
-								)
-									? 's'
-									: 'xs'
 							);
 
 							// Get all Maxi blocks <style> from <head>
@@ -269,34 +261,6 @@ wp.domReady(() => {
 
 								iframe.contentDocument.head.appendChild(
 									maxiVariables
-								);
-							}
-
-							// Ensures all Maxi styles are loaded on iframe
-							const editStyles = iframeDocument.querySelector(
-								'#maxi-blocks-block-editor-css'
-							);
-							const frontStyles = iframeDocument.querySelector(
-								'#maxi-blocks-block-css'
-							);
-
-							if (!editStyles) {
-								const rawEditStyles = document.querySelector(
-									'#maxi-blocks-block-editor-css'
-								);
-
-								iframe.contentDocument.head.appendChild(
-									rawEditStyles.cloneNode(true)
-								);
-							}
-
-							if (!frontStyles) {
-								const rawFrontStyles = document.querySelector(
-									'#maxi-blocks-block-css'
-								);
-
-								iframe.contentDocument.head.appendChild(
-									rawFrontStyles.cloneNode(true)
 								);
 							}
 						}

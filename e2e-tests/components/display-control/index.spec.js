@@ -32,6 +32,7 @@ describe('DisplayControl', () => {
 
 	it('Check Responsive display control', async () => {
 		await openSidebarTab(page, 'advanced', 'show hide block');
+		const displayButtons = await page.$$('.maxi-display-control button');
 
 		const isItemChecked = await page.$$eval(
 			'.maxi-display-control button',
@@ -42,9 +43,8 @@ describe('DisplayControl', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await page.$$eval('.maxi-display-control button', button =>
-			button[0].click()
-		);
+		await displayButtons[0].click();
+
 		const responsiveSOption = await page.$$eval(
 			'.maxi-display-control button',
 			select => select[0].ariaPressed

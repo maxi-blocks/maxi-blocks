@@ -19,7 +19,6 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -61,141 +60,131 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ResponsiveTabsControl
-													breakpoint={deviceType}
-												>
-													<>
-														<SelectControl
-															label={__(
-																'Line orientation',
-																'maxi-blocks'
-															)}
-															className='line-orientation-selector'
-															value={getLastBreakpointAttribute(
-																{
-																	target: 'line-orientation',
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															)}
-															options={[
-																{
-																	label: __(
-																		'Horizontal',
-																		'maxi-blocks'
-																	),
-																	value: 'horizontal',
-																},
-																{
-																	label: __(
-																		'Vertical',
-																		'maxi-blocks'
-																	),
-																	value: 'vertical',
-																},
-															]}
-															onChange={val =>
-																maxiSetAttributes(
-																	{
-																		[`line-orientation-${deviceType}`]:
-																			val,
-																	}
-																)
+												<>
+													<SelectControl
+														label={__(
+															'Line orientation',
+															'maxi-blocks'
+														)}
+														className='line-orientation-selector'
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-orientation',
+																breakpoint:
+																	deviceType,
+																attributes,
 															}
-														/>
-														<SelectControl
-															label={__(
-																'Line vertical position',
-																'maxi-blocks'
-															)}
-															value={getLastBreakpointAttribute(
-																{
-																	target: 'line-vertical',
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															)}
-															options={[
-																{
-																	label: __(
-																		'Top',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-start',
-																},
-																{
-																	label: __(
-																		'Center',
-																		'maxi-blocks'
-																	),
-																	value: 'center',
-																},
-																{
-																	label: __(
-																		'Bottom',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-end',
-																},
-															]}
-															onChange={val =>
-																maxiSetAttributes(
-																	{
-																		[`line-vertical-${deviceType}`]:
-																			val,
-																	}
-																)
+														)}
+														options={[
+															{
+																label: __(
+																	'Horizontal',
+																	'maxi-blocks'
+																),
+																value: 'horizontal',
+															},
+															{
+																label: __(
+																	'Vertical',
+																	'maxi-blocks'
+																),
+																value: 'vertical',
+															},
+														]}
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-orientation-${deviceType}`]:
+																	val,
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															'Line vertical position',
+															'maxi-blocks'
+														)}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-vertical',
+																breakpoint:
+																	deviceType,
+																attributes,
 															}
-														/>
-														<SelectControl
-															label={__(
-																'Line horizontal position',
-																'maxi-blocks'
-															)}
-															value={getLastBreakpointAttribute(
-																{
-																	target: 'line-horizontal',
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															)}
-															options={[
-																{
-																	label: __(
-																		'Left',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-start',
-																},
-																{
-																	label: __(
-																		'Center',
-																		'maxi-blocks'
-																	),
-																	value: 'center',
-																},
-																{
-																	label: __(
-																		'Right',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-end',
-																},
-															]}
-															onChange={val =>
-																maxiSetAttributes(
-																	{
-																		[`line-horizontal-${deviceType}`]:
-																			val,
-																	}
-																)
+														)}
+														options={[
+															{
+																label: __(
+																	'Top',
+																	'maxi-blocks'
+																),
+																value: 'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
+																	'maxi-blocks'
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Bottom',
+																	'maxi-blocks'
+																),
+																value: 'flex-end',
+															},
+														]}
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-vertical-${deviceType}`]:
+																	val,
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															'Line horizontal position',
+															'maxi-blocks'
+														)}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-horizontal',
+																breakpoint:
+																	deviceType,
+																attributes,
 															}
-														/>
-													</>
-												</ResponsiveTabsControl>
+														)}
+														options={[
+															{
+																label: __(
+																	'Left',
+																	'maxi-blocks'
+																),
+																value: 'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
+																	'maxi-blocks'
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Right',
+																	'maxi-blocks'
+																),
+																value: 'flex-end',
+															},
+														]}
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-horizontal-${deviceType}`]:
+																	val,
+															})
+														}
+													/>
+												</>
 											),
 											extraIndicators: [
 												`line-horizontal-${deviceType}`,
@@ -209,23 +198,17 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ResponsiveTabsControl
+												<DividerControl
+													{...getGroupAttributes(
+														attributes,
+														['divider', 'size']
+													)}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
 													breakpoint={deviceType}
-												>
-													<DividerControl
-														{...getGroupAttributes(
-															attributes,
-															['divider', 'size']
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-														clientId={clientId}
-													/>
-												</ResponsiveTabsControl>
+													clientId={clientId}
+												/>
 											),
 											ignoreIndicator: [
 												`line-horizontal-${deviceType}`,

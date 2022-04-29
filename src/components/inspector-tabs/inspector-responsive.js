@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import ResponsiveControl from '../responsive-control';
 import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -19,13 +18,11 @@ const responsive = ({ props }) => {
 	return {
 		label: __('Breakpoint', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<ResponsiveControl
-					{...getGroupAttributes(attributes, 'breakpoints')}
-					onChange={obj => maxiSetAttributes(obj)}
-					breakpoint={deviceType}
-				/>
-			</ResponsiveTabsControl>
+			<ResponsiveControl
+				{...getGroupAttributes(attributes, 'breakpoints')}
+				onChange={obj => maxiSetAttributes(obj)}
+				breakpoint={deviceType}
+			/>
 		),
 	};
 };

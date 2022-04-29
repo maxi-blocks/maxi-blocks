@@ -8,7 +8,6 @@ import { select } from '@wordpress/data';
  */
 import FlexSettingsControl from '../flex-settings-control';
 import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -40,7 +39,7 @@ const flex = ({ props }) => {
 	return {
 		label: __('Flex', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
+			<>
 				<FlexSettingsControl
 					{...getGroupAttributes(attributes, 'flex')}
 					onChange={maxiSetAttributes}
@@ -49,7 +48,7 @@ const flex = ({ props }) => {
 					name={name}
 					getParentBlockName={getParentBlockName}
 				/>
-			</ResponsiveTabsControl>
+			</>
 		),
 	};
 };

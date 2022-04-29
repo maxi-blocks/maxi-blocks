@@ -12,7 +12,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { opacity as opacityAttr } from '../../extensions/styles/defaults';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -23,18 +22,16 @@ const opacity = ({ props }) => {
 	return {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<OpacityControl
-					opacity={getLastBreakpointAttribute({
-						target: 'opacity',
-						breakpoint: deviceType,
-						attributes: getGroupAttributes(attributes, 'opacity'),
-					})}
-					onChange={val =>
-						maxiSetAttributes({ [`opacity-${deviceType}`]: val })
-					}
-				/>
-			</ResponsiveTabsControl>
+			<OpacityControl
+				opacity={getLastBreakpointAttribute({
+					target: 'opacity',
+					breakpoint: deviceType,
+					attributes: getGroupAttributes(attributes, 'opacity'),
+				})}
+				onChange={val =>
+					maxiSetAttributes({ [`opacity-${deviceType}`]: val })
+				}
+			/>
 		),
 		extraIndicators: Object.keys(opacityAttr),
 	};

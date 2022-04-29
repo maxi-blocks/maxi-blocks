@@ -177,6 +177,7 @@ const getStyles = props => {
 			props
 		),
 	};
+
 	return response;
 };
 

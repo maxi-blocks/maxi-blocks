@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import OverflowControl from '../overflow-control';
 import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -19,13 +18,11 @@ const overflow = ({ props }) => {
 	return {
 		label: __('Overflow', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<OverflowControl
-					{...getGroupAttributes(attributes, 'overflow')}
-					onChange={obj => maxiSetAttributes(obj)}
-					breakpoint={deviceType}
-				/>
-			</ResponsiveTabsControl>
+			<OverflowControl
+				{...getGroupAttributes(attributes, 'overflow')}
+				onChange={obj => maxiSetAttributes(obj)}
+				breakpoint={deviceType}
+			/>
 		),
 	};
 };

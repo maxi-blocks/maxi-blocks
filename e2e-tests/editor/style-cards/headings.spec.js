@@ -31,7 +31,7 @@ describe.skip('StyleCards headings', () => {
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
-				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
+				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography .maxi-typography-control__text-options-tabs'
 			),
 			size: '20',
 			lineHeight: '0',

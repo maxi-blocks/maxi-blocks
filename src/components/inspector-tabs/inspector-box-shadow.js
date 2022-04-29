@@ -13,7 +13,6 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -34,100 +33,94 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 		label: __('Box shadow', 'maxi-blocks'),
 		disablePadding: true,
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<SettingTabsControl
-					items={[
-						{
-							label: __('Normal state', 'maxi-blocks'),
-							content: (
-								<BoxShadowControl
-									{...getGroupAttributes(
-										attributes,
-										'boxShadow',
-										false,
-										prefix
+			<SettingTabsControl
+				items={[
+					{
+						label: __('Normal state', 'maxi-blocks'),
+						content: (
+							<BoxShadowControl
+								{...getGroupAttributes(
+									attributes,
+									'boxShadow',
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								onChangeInline={obj =>
+									insertInlineStyles({
+										obj,
+										target: inlineTarget,
+									})
+								}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(inlineTarget);
+								}}
+								breakpoint={deviceType}
+								clientId={clientId}
+							/>
+						),
+					},
+					{
+						label: __('Hover state', 'maxi-blocks'),
+						content: (
+							<>
+								<ToggleSwitch
+									label={__(
+										'Enable Box Shadow Hover',
+										'maxi-blocks'
 									)}
-									prefix={prefix}
-									onChangeInline={obj =>
-										insertInlineStyles({
-											obj,
-											target: inlineTarget,
+									selected={hoverStatus}
+									className='maxi-box-shadow-status-hover'
+									onChange={val =>
+										maxiSetAttributes({
+											...(val &&
+												setHoverAttributes(
+													{
+														...getGroupAttributes(
+															attributes,
+															'boxShadow',
+															false,
+															prefix
+														),
+													},
+													{
+														...getGroupAttributes(
+															attributes,
+															'boxShadow',
+															true,
+															prefix
+														),
+													}
+												)),
+											[`${prefix}box-shadow-status-hover`]:
+												val,
 										})
 									}
-									onChange={obj => {
-										maxiSetAttributes(obj);
-										cleanInlineStyles(inlineTarget);
-									}}
-									breakpoint={deviceType}
-									clientId={clientId}
 								/>
-							),
-						},
-						{
-							label: __('Hover state', 'maxi-blocks'),
-							content: (
-								<>
-									<ToggleSwitch
-										label={__(
-											'Enable Box Shadow Hover',
-											'maxi-blocks'
+								{hoverStatus && (
+									<BoxShadowControl
+										{...getGroupAttributes(
+											attributes,
+											'boxShadow',
+											true,
+											prefix
 										)}
-										selected={hoverStatus}
-										className='maxi-box-shadow-status-hover'
+										prefix={prefix}
 										onChangeInline={() => {}}
-										onChange={val =>
-											maxiSetAttributes({
-												...(val &&
-													setHoverAttributes(
-														{
-															...getGroupAttributes(
-																attributes,
-																'boxShadow',
-																false,
-																prefix
-															),
-														},
-														{
-															...getGroupAttributes(
-																attributes,
-																'boxShadow',
-																true,
-																prefix
-															),
-														}
-													)),
-												[`${prefix}box-shadow-status-hover`]:
-													val,
-											})
-										}
+										onChange={obj => maxiSetAttributes(obj)}
+										breakpoint={deviceType}
+										isHover
+										clientId={clientId}
 									/>
-									{hoverStatus && (
-										<BoxShadowControl
-											{...getGroupAttributes(
-												attributes,
-												'boxShadow',
-												true,
-												prefix
-											)}
-											prefix={prefix}
-											onChange={obj =>
-												maxiSetAttributes(obj)
-											}
-											breakpoint={deviceType}
-											isHover
-											clientId={clientId}
-										/>
-									)}
-								</>
-							),
-							extraIndicators: [
-								`${prefix}box-shadow-status-hover`,
-							],
-						},
-					]}
-					depth={depth}
-				/>
-			</ResponsiveTabsControl>
+								)}
+							</>
+						),
+						extraIndicators: [`${prefix}box-shadow-status-hover`],
+					},
+				]}
+				depth={depth}
+			/>
 		),
 	};
 };

@@ -9,6 +9,8 @@ define('MAXI_SLUG_DASHBOARD', 'maxi-blocks-dashboard');
 define('MAXI_PLUGIN_NAME', 'Maxi Blocks');
 define('MAXI_TEXT_DOMAIN', 'maxi-blocks');
 define('MAXI_PLUGIN_ICON', 'dashicons-block-default');
+
+
     
 
 if (!class_exists('MaxiBlocks_Dashboard')):
@@ -43,6 +45,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ));
         }
 
+        public function maxi_get_menu_icon_base64()
+        {
+            $icon_svg_code = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M19.742 10.079c-.131-.187-.328-.312-.557-.352-.246-.043-.507.017-.73.174l-2.485 1.922 1.728-6.786a.89.89 0 0 0-.473-1.057.94.94 0 0 0-1.097.25l-4.839 5.923 1.264-5.205c.121-.368-.046-.796-.4-1.017-.344-.216-.805-.164-1.082.113l-8.404 7.637c-.596-2.82.294-4.884 1.182-6.147 1.463-2.057 3.961-3.378 6.385-3.378.502.006.972-.403.972-.908a.91.91 0 0 0-.902-.908C7.316.314 4.191 1.911 2.341 4.47.601 6.901.178 9.947 1.142 13.07l-.768.699a.87.87 0 0 0-.292.639c-.005.236.079.464.224.626.288.363.931.411 1.272.069l8.536-7.742-1.521 6.272c-.08.4.111.805.505 1.022a.94.94 0 0 0 1.098-.251l4.756-5.83-1.375 5.356c-.126.377.033.805.375 1.017s.783.189 1.06-.046l2.48-1.936c-1.209 2.999-3.943 4.879-7.243 4.879-.872 0-3.878-.201-5.986-2.801-.335-.376-.878-.425-1.281-.104a.95.95 0 0 0-.315.606c-.028.251.047.491.201.664 2.618 3.202 6.33 3.451 7.406 3.451 5.078 0 9.032-3.624 9.6-8.735a.95.95 0 0 0-.131-.845z" fill="#fff"/></svg>';
+            $icon_base64 = base64_encode($icon_svg_code);
+            $icon_data_uri = 'data:image/svg+xml;base64,' . $icon_base64;
+
+            return $icon_data_uri;
+        }
+
         /**
          * Register menu page and submenus
          */
@@ -51,7 +62,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             add_menu_page(__(MAXI_PLUGIN_NAME, MAXI_TEXT_DOMAIN), __(MAXI_PLUGIN_NAME, MAXI_TEXT_DOMAIN), 'manage_options', MAXI_SLUG_DASHBOARD, array(
                     $this,
                     'maxi_config_page'
-                ), MAXI_PLUGIN_ICON, null);
+                ), $this->maxi_get_menu_icon_base64(), null);
             add_submenu_page(MAXI_SLUG_DASHBOARD, __(MAXI_PLUGIN_NAME, MAXI_TEXT_DOMAIN), __('Welcome', MAXI_TEXT_DOMAIN), 'manage_options', MAXI_SLUG_DASHBOARD, '', null);
             add_submenu_page(MAXI_SLUG_DASHBOARD, __('Settings', MAXI_TEXT_DOMAIN), __('Settings', MAXI_TEXT_DOMAIN), 'manage_options', 'admin.php?page='.MAXI_SLUG_DASHBOARD.'&tab=settings', '', null);
         }
@@ -158,15 +169,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_blocks_settings()
         {
             $content = '<div class="maxi-dashboard_main-content">';
-            $content .= '<h2>'.__('Editor preferences', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h2>';
+            $content .= '<h2>'.__('Editor preferences', MAXI_TEXT_DOMAIN).'</h2>';
 
-            $content .= '<h3>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h3>';
+            $content .= '<h3>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).'</h3>';
             $content .= '<p>'.__('Show or hide tooltips on mouse-hover.', MAXI_TEXT_DOMAIN).'</p>';
 
-            $content .= '<h3>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h3>';
+            $content .= '<h3>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).'</h3>';
             $content .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', MAXI_TEXT_DOMAIN).'</p>';
 
-            $content .= '<h3>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h3>';
+            $content .= '<h3>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).'</h3>';
             $content .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', MAXI_TEXT_DOMAIN).'</p>';
 
             return $content;

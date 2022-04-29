@@ -157,7 +157,18 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function maxi_blocks_settings()
         {
-            $content = 'Add content here2';
+            $content = '<div class="maxi-dashboard_main-content">';
+            $content .= '<h2>'.__('Editor preferences', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h2>';
+
+            $content .= '<h3>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h3>';
+            $content .= '<p>'.__('Show or hide tooltips on mouse-hover.', MAXI_TEXT_DOMAIN).'</p>';
+
+            $content .= '<h3>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h3>';
+            $content .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', MAXI_TEXT_DOMAIN).'</p>';
+
+            $content .= '<h3>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).esc_html($user_name).'</h3>';
+            $content .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', MAXI_TEXT_DOMAIN).'</p>';
+
             return $content;
         }
 

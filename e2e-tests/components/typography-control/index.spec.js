@@ -323,15 +323,18 @@ describe('TypographyControl', () => {
 		expect(responsiveSizeUnit).toBeTruthy();
 
 		// test line-height
+		await page.waitForTimeout(250);
+
 		const responsiveLineHeight = await addResponsiveTest({
 			page,
 			instance:
 				'.maxi-typography-control .maxi-typography-control__line-height input',
-			needFocus: true,
+			needFocusPlaceholder: true,
 			baseExpect: '22',
 			xsExpect: '43',
 			newValue: '43',
 		});
+
 		expect(responsiveLineHeight).toBeTruthy();
 
 		// letter spacing responsive

@@ -1,6 +1,6 @@
 <?php
 
-function maxi_allowed_html()
+function maxi_blocks_allowed_html()
 {
     $allowed_tags = array(
         'address'    => array(),

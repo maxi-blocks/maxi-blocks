@@ -9,7 +9,7 @@ import { Icon, Popover, Tooltip } from '@wordpress/components';
  * Internal dependencies
  */
 import Button from '../../../button';
-import { openSidebarAccordion } from '../../../../extensions/inspector-path';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
 

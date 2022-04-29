@@ -512,8 +512,15 @@ const getStyles = (props, scValues) => {
 				...getSVGStyles({
 					obj: props,
 					target: '.maxi-button-block__icon',
-					blockStyle: blockStyle,
+					blockStyle,
 					prefix: 'icon-',
+				}),
+				...getSVGStyles({
+					obj: props,
+					target: ':hover .maxi-button-block__icon',
+					blockStyle,
+					prefix: 'icon-',
+					isHover: true,
 				}),
 				' .maxi-button-block__content': getContentObject(props),
 				' .maxi-button-block__button:hover .maxi-button-block__content':

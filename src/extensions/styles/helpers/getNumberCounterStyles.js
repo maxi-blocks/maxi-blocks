@@ -82,6 +82,10 @@ const getTextStyles = (obj, blockStyle) => {
 			'font-size'
 		] = `${obj['number-counter-title-font-size']}px`;
 
+	if (!isNil(obj['number-counter-title-font-weight']))
+		response.general['font-weight'] =
+			obj['number-counter-title-font-weight'];
+
 	return { numberCounterText: response };
 };
 

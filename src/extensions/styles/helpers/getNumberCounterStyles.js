@@ -26,7 +26,8 @@ const getCircleBarStyles = (obj, blockStyle) => {
 			});
 		if (!paletteStatus && !isNil(color)) {
 			return color;
-		} else if (paletteStatus && paletteColor) {
+		}
+		if (paletteStatus && paletteColor) {
 			return getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: obj[paletteOpacity],
@@ -83,7 +84,7 @@ const getTextStyles = (obj, blockStyle) => {
 				breakpoint,
 			});
 		if (!paletteStatus && !isNil(color)) return color;
-		else if (paletteStatus && paletteColor)
+		if (paletteStatus && paletteColor)
 			return getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
@@ -118,10 +119,12 @@ const getSupStyles = obj => {
 		general: {},
 	};
 
-	if (!isNil(obj['number-counter-title-font-size']))
-		response.general['font-size'] = `calc(${
-			obj['number-counter-title-font-size'] / 1.5
-		}px)`;
+	breakpoints.forEach(breakpoint => {
+		if (!isNil(obj[`number-counter-title-font-size-${breakpoint}`]))
+			response.general['font-size'] = `${
+				obj[`number-counter-title-font-size-${breakpoint}`] / 1.5
+			}px`;
+	});
 
 	return { numberCounterSup: response };
 };

@@ -218,7 +218,7 @@ const NumberCounter = attributes => {
 						>
 							{`${parseInt((count / 360) * 100)}`}
 							{usePercentage && (
-								<tspan baselineShift='sup'>%</tspan>
+								<tspan baselineShift='super'>%</tspan>
 							)}
 						</text>
 					</svg>

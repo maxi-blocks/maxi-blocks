@@ -110,8 +110,7 @@ const TEMPLATE = [
 ];
 
 const SliderWrapper = props => {
-	const { attributes, slidesWidth } = props;
-	const { numberOfSlides, isEditView } = attributes;
+	const { slidesWidth, isEditView, numberOfSlides } = props;
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
@@ -183,7 +182,7 @@ const SliderWrapper = props => {
 			slider.removeEventListener('touchmove', onDragAction);
 			slider.removeEventListener('touchend', onDragEnd);
 		};
-	}, [currentSlide, slideWidth, isEditView]);
+	}, [currentSlide, slideWidth, isEditView, numberOfSlides]);
 
 	useEffect(() => {
 		if (wrapperTranslate !== currentSlide * slideWidth) {
@@ -260,6 +259,8 @@ class edit extends MaxiBlockComponent {
 
 		this.state = {
 			slidesWidth: {},
+			isEditView: false,
+			numberOfSlides: 0,
 		};
 	}
 
@@ -277,12 +278,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		const { attributes, clientId, maxiSetAttributes } = this.props;
-		const { numberOfSlides: prevNumberOfSlides } = attributes;
-		const numberOfSlides =
-			select('core/block-editor').getBlockCount(clientId);
+		const { numberOfSlides: prevNumberOfSlides, slidesWidth } = this.state;
+		const numberOfSlides = Object.keys(slidesWidth).length;
 		if (numberOfSlides !== prevNumberOfSlides) {
-			maxiSetAttributes({ numberOfSlides });
+			this.setState({ numberOfSlides });
 		}
 	}
 
@@ -295,7 +294,12 @@ class edit extends MaxiBlockComponent {
 			: 'maxi-slider-block__has-innerBlock';
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				{...this.state}
+				setEditView={val => this.setState({ isEditView: val })}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -328,10 +332,7 @@ class edit extends MaxiBlockComponent {
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					<div className='maxi-slider-block__tracker'>
-						<SliderWrapper
-							{...this.props}
-							slidesWidth={this.state.slidesWidth}
-						/>
+						<SliderWrapper {...this.props} {...this.state} />
 					</div>
 				</MaxiBlock>
 			</SliderContext.Provider>,

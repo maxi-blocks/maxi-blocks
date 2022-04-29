@@ -13,6 +13,7 @@ import {
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -22,7 +23,7 @@ import { selectorsSlider, categoriesSlider } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType } = props;
+	const { deviceType, maxiSetAttributes, attributes } = props;
 
 	return (
 		<InspectorControls>
@@ -49,7 +50,15 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<SliderControl {...props} />
+												<SliderControl
+													{...getGroupAttributes(
+														attributes,
+														'slider'
+													)}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+												/>
 											),
 										},
 										...inspectorTabs.blockBackground({

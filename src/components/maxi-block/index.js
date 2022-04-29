@@ -428,8 +428,13 @@ const MaxiBlock = memo(
 		);
 	}),
 	(rawOldProps, rawNewProps) => {
+		// Check differences between attributes
 		if (!isEqual(rawOldProps.attributes, rawNewProps.attributes))
 			return false;
+
+		// Check differences between children
+		if (rawOldProps?.children || rawNewProps?.children)
+			return isEqual(rawOldProps.children, rawNewProps.children);
 
 		const propsCleaner = props => {
 			const response = {};

@@ -22,6 +22,7 @@ export { default as rowPattern } from './rowPattern';
 export { default as shape } from './shape';
 export { default as shapeDivider } from './shapeDivider';
 export { default as size } from './size';
+export { default as slider } from './slider';
 export { default as svg } from './svg';
 export { default as textAlignment } from './textAlignment';
 export { default as transform } from './transform';

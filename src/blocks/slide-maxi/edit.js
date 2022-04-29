@@ -11,6 +11,7 @@ import { BlockInserter, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
+import SliderContext from '../slider-maxi/context';
 
 /**
  * External dependencies
@@ -25,22 +26,16 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidMount() {
-		const { maxiSetAttributes } = this.props;
-		maxiSetAttributes({
-			slideWidth: this.blockRef.current.getBoundingClientRect().width,
-		});
-	}
-
 	maxiBlockDidUpdate() {
-		const { maxiSetAttributes } = this.props;
+		const { clientId } = this.props;
 		if (
-			this.props.attributes.slideWidth !==
+			this.context.slidesWidth[clientId] !==
 			this.blockRef.current.getBoundingClientRect().width
 		) {
-			maxiSetAttributes({
-				slideWidth: this.blockRef.current.getBoundingClientRect().width,
-			});
+			this.context.setSlideWidth(
+				clientId,
+				this.blockRef.current.getBoundingClientRect().width
+			);
 		}
 	}
 
@@ -104,5 +99,7 @@ class edit extends MaxiBlockComponent {
 		];
 	}
 }
+
+edit.contextType = SliderContext;
 
 export default withMaxiProps(edit);

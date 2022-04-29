@@ -30,8 +30,9 @@ body.maxi-blocks--active .maxi-slider-block {
 		padding: 0;
 		margin: 0;
 
-		&--vertical {
+		&--edit-view {
 			flex-direction: column;
+			transform: none !important;
 		}
 	}
 

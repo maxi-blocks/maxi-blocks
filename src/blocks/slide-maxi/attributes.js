@@ -29,9 +29,6 @@ const attributes = {
 		type: 'string',
 		default: 'stretch',
 	},
-	slideWidth: {
-		type: 'number',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

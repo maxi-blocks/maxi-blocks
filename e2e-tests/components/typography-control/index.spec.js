@@ -273,8 +273,7 @@ describe('TypographyControl', () => {
 
 	it('Check Size, line height and letter spacing', async () => {
 		await changeResponsive(page, 'xl');
-		// const accordion = await openSidebarTab(page, 'style', 'typography');
-		debugger;
+
 		await addTypographyOptions({
 			page,
 			instance: page,

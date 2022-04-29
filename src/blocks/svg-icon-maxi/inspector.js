@@ -22,6 +22,7 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -283,24 +284,30 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<SvgStrokeWidthControl
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														prefix='svg-'
-														onChange={obj => {
-															maxiSetAttributes(
-																obj
-															);
-															changeSVGStrokeWidth(
-																obj[
-																	`svg-stroke-${deviceType}`
-																]
-															);
-														}}
+													<ResponsiveTabsControl
 														breakpoint={deviceType}
-													/>
+													>
+														<SvgStrokeWidthControl
+															{...getGroupAttributes(
+																attributes,
+																'svg'
+															)}
+															prefix='svg-'
+															onChange={obj => {
+																maxiSetAttributes(
+																	obj
+																);
+																changeSVGStrokeWidth(
+																	obj[
+																		`svg-stroke-${deviceType}`
+																	]
+																);
+															}}
+															breakpoint={
+																deviceType
+															}
+														/>
+													</ResponsiveTabsControl>
 												),
 											},
 										...inspectorTabs.background({
@@ -328,18 +335,24 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<SvgWidthControl
-													{...getGroupAttributes(
-														attributes,
-														'svg'
-													)}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-													}}
+												<ResponsiveTabsControl
 													breakpoint={deviceType}
-													prefix='svg-'
-													enableResponsive
-												/>
+												>
+													<SvgWidthControl
+														{...getGroupAttributes(
+															attributes,
+															'svg'
+														)}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+														}}
+														breakpoint={deviceType}
+														prefix='svg-'
+														enableResponsive
+													/>
+												</ResponsiveTabsControl>
 											),
 										},
 										...inspectorTabs.marginPadding({

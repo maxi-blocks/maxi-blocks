@@ -194,6 +194,12 @@ const SliderWrapper = props => {
 		setSlideWidth(Object.values(slidesWidth)[0]);
 	}, [slidesWidth]);
 
+	useEffect(() => {
+		if (currentSlide >= numberOfSlides) {
+			setCurrentSlide(numberOfSlides - 1);
+		}
+	}, [numberOfSlides]);
+
 	const classes = classnames(
 		'maxi-slider-block__wrapper',
 		isEditView && 'maxi-slider-block__wrapper--edit-view'
@@ -321,6 +327,11 @@ class edit extends MaxiBlockComponent {
 								[id]: width,
 							},
 						});
+					},
+					onRemoveSlide: id => {
+						let slidesWidth = { ...this.state.slidesWidth };
+						delete slidesWidth[id];
+						this.setState({ slidesWidth });
 					},
 				}}
 			>

@@ -15,6 +15,7 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -47,6 +48,17 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										...inspectorTabs.alignment({
+											props: {
+												...props,
+											},
+											isAlignment: true,
+											alignmentLabel: __(
+												'Counter',
+												'maxi-blocks'
+											),
+											disableJustify: true,
+										}),
 										{
 											label: __('Number', 'maxi-blocks'),
 											content: (
@@ -189,4 +201,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

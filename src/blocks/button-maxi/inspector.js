@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { memo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -20,11 +19,12 @@ import * as defaultPresets from './defaults';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, without } from 'lodash';
+import { isEmpty, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -46,678 +46,613 @@ import {
 /**
  * Inspector
  */
-const Inspector = memo(
-	props => {
-		const {
-			attributes,
-			deviceType,
-			maxiSetAttributes,
-			clientId,
-			insertInlineStyles,
-			cleanInlineStyles,
-			inlineStylesTargets,
-		} = props;
-		const { blockStyle, svgType } = attributes;
+const Inspector = props => {
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		clientId,
+		changeSVGContent,
+		changeSVGContentHover,
+		changeSVGStrokeWidth,
+	} = props;
+	const { blockStyle, svgType } = attributes;
 
-		const onChangePreset = (number, type = 'normal') => {
-			const newDefaultPresets = cloneDeep({ ...defaultPresets });
+	const onChangePreset = (number, type = 'normal') => {
+		const newDefaultPresets = cloneDeep({ ...defaultPresets });
 
-			if (
-				type === 'icon' &&
-				!isEmpty(attributes['icon-content']) &&
-				attributes['icon-content'] !==
-					defaultPresets[`preset${number}`]['icon-content']
-			)
-				newDefaultPresets[`preset${number}`]['icon-content'] =
-					attributes['icon-content'];
+		if (
+			type === 'icon' &&
+			!isEmpty(attributes['icon-content']) &&
+			attributes['icon-content'] !==
+				defaultPresets[`preset${number}`]['icon-content']
+		)
+			newDefaultPresets[`preset${number}`]['icon-content'] =
+				attributes['icon-content'];
 
-			maxiSetAttributes({
-				...newDefaultPresets[`preset${number}`],
-			});
-		};
+		maxiSetAttributes({
+			...newDefaultPresets[`preset${number}`],
+		});
+	};
 
-		const getCategoriesCss = () => {
-			const { 'icon-content': iconContent } = attributes;
-			return without(categoriesButton, isEmpty(iconContent) && 'icon');
-		};
+	const getCategoriesCss = () => {
+		const { 'icon-content': iconContent } = attributes;
+		return without(categoriesButton, isEmpty(iconContent) && 'icon');
+	};
 
-		return (
-			<InspectorControls>
-				{inspectorTabs.responsiveInfoBox({ props })}
-				<SettingTabsControl
-					target='sidebar-settings-tabs'
-					disablePadding
-					deviceType={deviceType}
-					depth={0}
-					items={[
-						{
-							label: __('Settings', 'maxi-blocks'),
-							content: (
-								<>
-									{inspectorTabs.blockSettings({
-										props: {
-											...props,
+	return (
+		<InspectorControls>
+			{inspectorTabs.responsiveInfoBox({ props })}
+			<SettingTabsControl
+				target='sidebar-settings-tabs'
+				disablePadding
+				deviceType={deviceType}
+				depth={0}
+				items={[
+					{
+						label: __('Settings', 'maxi-blocks'),
+						content: (
+							<>
+								{inspectorTabs.blockSettings({
+									props: {
+										...props,
+									},
+								})}
+								<AccordionControl
+									isSecondary
+									items={[
+										deviceType === 'general' && {
+											label: __(
+												'Style shortcut',
+												'maxi-blocks'
+											),
+											content: (
+												<DefaultStylesControl
+													className='maxi-button-default-styles'
+													items={[
+														{
+															label: __(
+																'Button shortcut 1',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetOne
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	1
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 2',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetTwo
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	2
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 3',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetThree
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	3
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 4',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetFour
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	4,
+																	'icon'
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 5',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetFive
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	5,
+																	'icon'
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 6',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetSix
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	6,
+																	'icon'
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 7',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetSeven
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	7,
+																	'icon'
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 8',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetEight
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	8,
+																	'icon'
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 9',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetNine
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	9,
+																	'icon'
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 10',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetTen
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	10,
+																	'icon'
+																),
+														},
+														{
+															label: __(
+																'Button shortcut 11',
+																'maxi-blocks'
+															),
+															content: (
+																<Icon
+																	icon={
+																		presetEleven
+																	}
+																/>
+															),
+															onChange: () =>
+																onChangePreset(
+																	11,
+																	'icon'
+																),
+														},
+													]}
+												/>
+											),
 										},
-									})}
-									<AccordionControl
-										isSecondary
-										items={[
-											deviceType === 'general' && {
-												label: __(
-													'Style shortcut',
-													'maxi-blocks'
-												),
-												content: (
-													<DefaultStylesControl
-														className='maxi-button-default-styles'
-														items={[
-															{
-																label: __(
-																	'Button shortcut 1',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetOne
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		1
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 2',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetTwo
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		2
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 3',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetThree
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		3
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 4',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetFour
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		4,
-																		'icon'
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 5',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetFive
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		5,
-																		'icon'
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 6',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetSix
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		6,
-																		'icon'
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 7',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetSeven
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		7,
-																		'icon'
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 8',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetEight
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		8,
-																		'icon'
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 9',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetNine
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		9,
-																		'icon'
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 10',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetTen
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		10,
-																		'icon'
-																	),
-															},
-															{
-																label: __(
-																	'Button shortcut 11',
-																	'maxi-blocks'
-																),
-																content: (
-																	<Icon
-																		icon={
-																			presetEleven
-																		}
-																	/>
-																),
-																onChange: () =>
-																	onChangePreset(
-																		11,
-																		'icon'
-																	),
-															},
-														]}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Icon',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal state',
-																	'maxi-blocks'
-																),
-																content: (
-																	<IconControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'icon',
-																				'iconBackground',
-																				'iconBackgroundGradient',
-																				'iconBackgroundColor',
-																				'iconBorder',
-																				'iconBorderWidth',
-																				'iconBorderRadius',
-																				'iconPadding',
-																			]
+										{
+											label: __('Icon', 'maxi-blocks'),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal state',
+																'maxi-blocks'
+															),
+															content: (
+																<IconControl
+																	{...getGroupAttributes(
+																		attributes,
+																		[
+																			'icon',
+																			'iconBackground',
+																			'iconBackgroundGradient',
+																			'iconBackgroundColor',
+																			'iconBorder',
+																			'iconBorderWidth',
+																			'iconBorderRadius',
+																			'iconPadding',
+																		]
+																	)}
+																	onChange={obj => {
+																		maxiSetAttributes(
+																			obj
+																		);
+																	}}
+																	svgType={
+																		svgType
+																	}
+																	changeSVGContent={
+																		changeSVGContent
+																	}
+																	changeSVGStrokeWidth={
+																		changeSVGStrokeWidth
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																	blockStyle={
+																		blockStyle
+																	}
+																/>
+															),
+														},
+														{
+															label: __(
+																'Hover state',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<ToggleSwitch
+																		label={__(
+																			'Enable Icon Hover',
+																			'maxi-blocks'
 																		)}
-																		onChangeInline={(
-																			obj,
-																			target
-																		) => {
-																			insertInlineStyles(
-																				{
-																					obj,
-																					target,
-																					isMultiplySelector: true,
-																				}
-																			);
-																		}}
-																		onChange={(
-																			obj,
-																			target
-																		) => {
+																		selected={
+																			attributes[
+																				'icon-status-hover'
+																			]
+																		}
+																		onChange={val =>
 																			maxiSetAttributes(
-																				obj
-																			);
-																			cleanInlineStyles(
-																				target
-																			);
-																		}}
-																		svgType={
-																			svgType
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																		blockStyle={
-																			blockStyle
+																				{
+																					'icon-status-hover':
+																						val,
+																				}
+																			)
 																		}
 																	/>
-																),
-															},
-															{
-																label: __(
-																	'Hover state',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Icon Hover',
-																				'maxi-blocks'
+																	{attributes[
+																		'icon-status-hover'
+																	] && (
+																		<IconControl
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'icon',
+																					'iconHover',
+																					'iconBackgroundGradient',
+																					'iconBackgroundColor',
+																					'iconBorder',
+																					'iconBackgroundHover',
+																					'iconBorderWidth',
+																					'iconBorderRadius',
+																				],
+																				true
 																			)}
-																			selected={
-																				attributes[
-																					'icon-status-hover'
-																				]
-																			}
-																			onChange={val =>
+																			onChange={obj => {
 																				maxiSetAttributes(
-																					{
-																						'icon-status-hover':
-																							val,
-																					}
-																				)
+																					obj
+																				);
+																			}}
+																			svgType={
+																				svgType
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																			clientId={
+																				clientId
+																			}
+																			blockStyle={
+																				blockStyle
+																			}
+																			changeSVGContentHover={
+																				changeSVGContentHover
+																			}
+																			isHover
+																			changeSVGContent={
+																				changeSVGContent
+																			}
+																			changeSVGStrokeWidth={
+																				changeSVGStrokeWidth
 																			}
 																		/>
-																		{attributes[
-																			'icon-status-hover'
-																		] && (
-																			<IconControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'icon',
-																						'iconBackgroundGradient',
-																						'iconBackgroundColor',
-																						'iconBorder',
-																						'iconBackgroundHover',
-																						'iconBorderWidth',
-																						'iconBorderRadius',
-																					],
-																					true
-																				)}
-																				onChangeInline={(
-																					obj,
-																					target
-																				) => {
-																					insertInlineStyles(
-																						{
-																							obj,
-																							target,
-																							isMultiplySelector: true,
-																						}
-																					);
-																				}}
-																				onChange={(
-																					obj,
-																					target
-																				) => {
-																					maxiSetAttributes(
-																						obj,
-																						target
-																					);
-																					cleanInlineStyles(
-																						target
-																					);
-																				}}
-																				svgType={
-																					svgType
-																				}
-																				breakpoint={
-																					deviceType
-																				}
-																				clientId={
-																					clientId
-																				}
-																				blockStyle={
-																					blockStyle
-																				}
-																				isHover
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
-											...inspectorTabs.alignment({
-												props: {
-													...props,
-												},
-												isAlignment: true,
-												isTextAlignment: true,
-												alignmentLabel: __(
-													'Button',
-													'maxi-blocks'
-												),
-												textAlignmentLabel: __(
-													'Text',
-													'maxi-blocks'
-												),
-												disableJustify: true,
-											}),
-											...inspectorTabs.typography({
-												props: {
-													...props,
-												},
-												styleCardPrefix: 'button',
-												hideAlignment: true,
-												disableCustomFormats: true,
-												globalProps: {
-													target: '',
-													type: 'button',
-												},
-												hoverGlobalProps: {
-													target: 'hover',
-													type: 'button',
-												},
-											}),
-											...inspectorTabs.background({
-												label: 'Button',
-												props: {
-													...props,
-												},
-												disableImage: true,
-												disableVideo: true,
-												disableClipPath: true,
-												disableSVG: true,
-												prefix: 'button-',
-												globalProps: {
-													target: 'background',
-													type: 'button',
-												},
-												hoverGlobalProps: {
-													target: 'hover-background',
-													type: 'button',
-												},
-												inlineTarget:
-													inlineStylesTargets.background,
-											}),
-											...inspectorTabs.border({
-												props: {
-													...props,
-												},
-												prefix: 'button-',
-												globalProps: {
-													target: 'border',
-													type: 'button',
-												},
-												hoverGlobalProps: {
-													target: 'hover-border',
-													type: 'button',
-												},
-												inlineTarget:
-													inlineStylesTargets.border,
-											}),
-											...inspectorTabs.boxShadow({
-												props: {
-													...props,
-												},
-												prefix: 'button-',
-												inlineTarget:
-													inlineStylesTargets.boxShadow,
-											}),
-											...inspectorTabs.size({
-												props: {
-													...props,
-												},
-												prefix: 'button-',
-											}),
-											...inspectorTabs.marginPadding({
-												props: {
-													...props,
-												},
-												prefix: 'button-',
-											}),
-										]}
-									/>
-								</>
-							),
-						},
-						{
-							label: __('Canvas', 'maxi-blocks'),
-							content: (
-								<AccordionControl
-									isPrimary
-									items={[
-										...inspectorTabs.blockBackground({
+																	)}
+																</>
+															),
+														},
+													]}
+												/>
+											),
+										},
+										...inspectorTabs.alignment({
 											props: {
 												...props,
+											},
+											isAlignment: true,
+											isTextAlignment: true,
+											alignmentLabel: __(
+												'Button',
+												'maxi-blocks'
+											),
+											textAlignmentLabel: __(
+												'Text',
+												'maxi-blocks'
+											),
+											disableJustify: true,
+										}),
+										...inspectorTabs.typography({
+											props: {
+												...props,
+											},
+											styleCardPrefix: 'button',
+											hideAlignment: true,
+											disableCustomFormats: true,
+											globalProps: {
+												target: '',
+												type: 'button',
+											},
+											hoverGlobalProps: {
+												target: 'hover',
+												type: 'button',
+											},
+										}),
+										...inspectorTabs.background({
+											label: 'Button',
+											props: {
+												...props,
+											},
+											disableImage: true,
+											disableVideo: true,
+											disableClipPath: true,
+											disableSVG: true,
+											prefix: 'button-',
+											globalProps: {
+												target: 'background',
+												type: 'button',
+											},
+											hoverGlobalProps: {
+												target: 'hover-background',
+												type: 'button',
 											},
 										}),
 										...inspectorTabs.border({
 											props: {
 												...props,
 											},
+											prefix: 'button-',
+											globalProps: {
+												target: 'border',
+												type: 'button',
+											},
+											hoverGlobalProps: {
+												target: 'hover-border',
+												type: 'button',
+											},
 										}),
 										...inspectorTabs.boxShadow({
 											props: {
 												...props,
 											},
-										}),
-										...inspectorTabs.opacity({
-											props: {
-												...props,
-											},
+											prefix: 'button-',
 										}),
 										...inspectorTabs.size({
 											props: {
 												...props,
 											},
-											block: true,
+											prefix: 'button-',
 										}),
 										...inspectorTabs.marginPadding({
 											props: {
 												...props,
 											},
+											prefix: 'button-',
 										}),
 									]}
 								/>
-							),
-						},
-						{
-							label: __('Advanced', 'maxi-blocks'),
-							content: (
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props: {
-													...props,
-												},
-											}),
+							</>
+						),
+					},
+					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.blockBackground({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props: {
-													...props,
-												},
-											}),
+									}),
+									...inspectorTabs.border({
+										props: {
+											...props,
 										},
-										...inspectorTabs.customCss({
-											props: {
-												...props,
-											},
-											breakpoint: deviceType,
-											selectors: selectorsButton,
-											categories: getCategoriesCss(),
-										}),
-										...inspectorTabs.scrollEffects({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.transform({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.transition({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.display({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.position({
-											props: {
-												...props,
-											},
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props: {
-													...props,
-												},
-											}),
+									}),
+									...inspectorTabs.boxShadow({
+										props: {
+											...props,
 										},
-										...inspectorTabs.overflow({
+									}),
+									...inspectorTabs.opacity({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.size({
+										props: {
+											...props,
+										},
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props: {
+											...props,
+										},
+									}),
+								]}
+							/>
+						),
+					},
+					{
+						label: __('Advanced', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
 											props: {
 												...props,
 											},
 										}),
-										...inspectorTabs.flex({
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
 											props: {
 												...props,
 											},
 										}),
-										...inspectorTabs.zindex({
+									},
+									...inspectorTabs.customCss({
+										props: {
+											...props,
+										},
+										breakpoint: deviceType,
+										selectors: selectorsButton,
+										categories: getCategoriesCss(),
+									}),
+									...inspectorTabs.scrollEffects({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.transform({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.display({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.position({
+										props: {
+											...props,
+										},
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props: {
 												...props,
 											},
 										}),
-									]}
-								/>
-							),
-						},
-					]}
-				/>
-			</InspectorControls>
-		);
-	},
-	// Avoids non-necessary renderings
-	(
-		{
-			attributes: oldAttr,
-			propsToAvoid,
-			isSelected: wasSelected,
-			deviceType: oldBreakpoint,
-			scValues: oldSCValues,
-		},
-		{ attributes: newAttr, isSelected, deviceType: breakpoint, scValues }
-	) => {
-		if (
-			!wasSelected ||
-			wasSelected !== isSelected ||
-			oldBreakpoint !== breakpoint ||
-			!isEqual(oldSCValues, scValues)
-		)
-			return false;
+									},
+									...inspectorTabs.overflow({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.flex({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.zindex({
+										props: {
+											...props,
+										},
+									}),
+								]}
+							/>
+						),
+					},
+				]}
+			/>
+		</InspectorControls>
+	);
+};
 
-		const oldAttributes = cloneDeep(oldAttr);
-		const newAttributes = cloneDeep(newAttr);
-
-		if (!isEmpty(propsToAvoid)) {
-			propsToAvoid.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			return isEqual(oldAttributes, newAttributes);
-		}
-
-		return isEqual(oldAttributes, newAttributes);
-	}
-);
-
-export default Inspector;
+export default withMaxiInspector(Inspector);

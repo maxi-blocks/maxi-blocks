@@ -164,4 +164,107 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-export default compose(editSelect, withMaxiProps)(edit);
+const editDispatch = withDispatch((dispatch, ownProps) => {
+	const {
+		attributes: { 'icon-content': content },
+		maxiSetAttributes,
+	} = ownProps;
+
+	const changeSVGStrokeWidth = width => {
+		if (width) {
+			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
+			const changeTo = `stroke-width:${width}`;
+
+			const regexLineToChange2 = new RegExp(
+				'stroke-width=".+?(?=")',
+				'g'
+			);
+			const changeTo2 = `stroke-width="${width}`;
+
+			const newContent = content
+				.replace(regexLineToChange, changeTo)
+				.replace(regexLineToChange2, changeTo2);
+
+			maxiSetAttributes({
+				'icon-content': newContent,
+			});
+		}
+	};
+
+	const changeSVGContentWithBlockStyle = (fillColor, strokeColor) => {
+		const fillRegExp = new RegExp('fill:([^none])([^\\}]+)', 'g');
+		const fillStr = `fill:${fillColor}`;
+
+		const fillRegExp2 = new RegExp('fill=[^-]([^none])([^\\"]+)', 'g');
+		const fillStr2 = ` fill="${fillColor}`;
+
+		const strokeRegExp = new RegExp('stroke:([^none])([^\\}]+)', 'g');
+		const strokeStr = `stroke:${strokeColor}`;
+
+		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
+		const strokeStr2 = ` stroke="${strokeColor}`;
+
+		const newContent = content
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2)
+			.replace(strokeRegExp, strokeStr)
+			.replace(strokeRegExp2, strokeStr2);
+
+		maxiSetAttributes({ 'icon-content': newContent });
+	};
+
+	const changeSVGContent = (color, type) => {
+		const fillRegExp = new RegExp(
+			`(((?<!hover )\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			'g'
+		);
+		const fillStr = `$2{${type}:${color}`;
+
+		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
+		const fillStr2 = ` ${type}="${color}`;
+
+		const newContent = content
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2);
+
+		maxiSetAttributes({ 'icon-content': newContent });
+	};
+
+	const changeSVGContentHover = (color, type) => {
+		let newContent = ownProps.attributes['icon-content'];
+
+		if (newContent.includes(`data-hover-${type}`)) return;
+
+		const svgRegExp = new RegExp(`( ${type}=[^-]([^none])([^\\"]+))`, 'g');
+		const svgStr = ` data-hover-${type}$1`;
+
+		const cssRegExpOld = new RegExp(
+			`((\.maxi-button-block__button:hover \.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))(})`,
+			'g'
+		);
+		const cssStrOld = '';
+
+		const cssRegExp = new RegExp(
+			`(((?<!hover)\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			'g'
+		);
+		const cssStr = `$1}.maxi-button-block__button:hover $2{${type}:${color}`;
+
+		newContent = newContent
+			.replace(svgRegExp, svgStr)
+			.replace(cssRegExpOld, cssStrOld)
+			.replace(cssRegExp, cssStr);
+
+		newContent !== ownProps.attributes['icon-content'] &&
+			maxiSetAttributes({ 'icon-content': newContent });
+	};
+
+	return {
+		changeSVGStrokeWidth,
+		changeSVGContent,
+		changeSVGContentHover,
+		changeSVGContentWithBlockStyle,
+	};
+});
+
+export default compose(editSelect, withMaxiProps, editDispatch)(edit);

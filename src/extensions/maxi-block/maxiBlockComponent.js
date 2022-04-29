@@ -92,6 +92,7 @@ class MaxiBlockComponent extends Component {
 
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
+		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 

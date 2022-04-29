@@ -16,7 +16,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
-import { getActiveTabName } from '../../extensions/inspector-path';
+import { getActiveTabName } from '../../extensions/inspector';
 
 /**
  * External dependencies

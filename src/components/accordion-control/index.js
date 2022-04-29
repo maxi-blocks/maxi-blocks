@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import Accordion from './Accordion';
+import { getActiveAccordion } from '../../extensions/inspector';
 
 /**
  * External dependencies
@@ -12,7 +13,6 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
-import { getActiveAccordion } from '../../extensions/inspector-path';
 
 /**
  * Component

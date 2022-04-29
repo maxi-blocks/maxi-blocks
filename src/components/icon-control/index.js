@@ -59,6 +59,9 @@ const IconControl = props => {
 		breakpoint,
 		blockStyle,
 		isHover = false,
+		changeSVGContent,
+		changeSVGContentHover,
+		changeSVGStrokeWidth,
 	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
@@ -303,7 +306,7 @@ const IconControl = props => {
 										className='maxi-icon-styles-control--color'
 										color={
 											props[
-												`icon-color${
+												`icon-stroke-color${
 													isHover ? '-hover' : ''
 												}`
 											]
@@ -311,21 +314,21 @@ const IconControl = props => {
 										prefix='icon-'
 										paletteColor={
 											props[
-												`icon-palette-color${
+												`icon-stroke-palette-color${
 													isHover ? '-hover' : ''
 												}`
 											]
 										}
 										paletteOpacity={
 											props[
-												`icon-palette-opacity${
+												`icon-stroke-palette-opacity${
 													isHover ? '-hover' : ''
 												}`
 											]
 										}
 										paletteStatus={
 											props[
-												`icon-palette-status${
+												`icon-stroke-palette-status${
 													isHover ? '-hover' : ''
 												}`
 											]
@@ -343,41 +346,47 @@ const IconControl = props => {
 											paletteStatus,
 											paletteOpacity,
 										}) => {
+											onChange({
+												[`icon-stroke-color${
+													isHover ? '-hover' : ''
+												}`]: color,
+												[`icon-stroke-palette-color${
+													isHover ? '-hover' : ''
+												}`]: paletteColor,
+												[`icon-stroke-palette-status${
+													isHover ? '-hover' : ''
+												}`]: paletteStatus,
+												[`icon-stroke-palette-opacity${
+													isHover ? '-hover' : ''
+												}`]: paletteOpacity,
+											});
 											const lineColorStr =
 												getColorRGBAString({
-													firstVar: 'icon-line',
-													secondVar: `color-${paletteColor}`,
+													firstVar: `icon-stroke${
+														isHover ? '-hover' : ''
+													}`,
+													secondVar: `color-${paletteColor}${
+														isHover ? '-hover' : ''
+													}`,
 													opacity: paletteOpacity,
 													blockStyle,
 												});
 
-											onChange(
-												{
-													[`icon-color${
-														isHover ? '-hover' : ''
-													}`]: color,
-													[`icon-palette-color${
-														isHover ? '-hover' : ''
-													}`]: paletteColor,
-													[`icon-palette-status${
-														isHover ? '-hover' : ''
-													}`]: paletteStatus,
-													[`icon-palette-opacity${
-														isHover ? '-hover' : ''
-													}`]: paletteOpacity,
-													'icon-content':
-														setSVGContent(
-															props[
-																'icon-content'
-															],
-															paletteStatus
-																? lineColorStr
-																: color,
-															'stroke'
-														),
-												},
-												'[data-stroke]'
-											);
+											!isHover &&
+												changeSVGContent(
+													paletteStatus
+														? lineColorStr
+														: color,
+													'stroke'
+												);
+
+											isHover &&
+												changeSVGContentHover(
+													paletteStatus
+														? lineColorStr
+														: color,
+													'stroke'
+												);
 										}}
 										isHover={isHover}
 									/>
@@ -464,36 +473,30 @@ const IconControl = props => {
 									paletteOpacity,
 								}) => {
 									const fillColorStr = getColorRGBAString({
-										firstVar: 'icon-fill',
-										secondVar: `color-${paletteColor}`,
+										firstVar: `icon-fill${
+											isHover ? '-hover' : ''
+										}`,
+										secondVar: `color-${paletteColor}${
+											isHover ? '-hover' : ''
+										}`,
 										opacity: paletteOpacity,
 										blockStyle,
 									});
 
-									onChange(
-										{
-											[`icon-fill-color${
-												isHover ? '-hover' : ''
-											}`]: color,
-											[`icon-fill-palette-color${
-												isHover ? '-hover' : ''
-											}`]: paletteColor,
-											[`icon-fill-palette-status${
-												isHover ? '-hover' : ''
-											}`]: paletteStatus,
-											[`icon-fill-palette-opacity${
-												isHover ? '-hover' : ''
-											}`]: paletteOpacity,
-											'icon-content': setSVGContent(
-												props['icon-content'],
-												paletteStatus
-													? fillColorStr
-													: color,
-												'fill'
-											),
-										},
-										'[data-fill]'
-									);
+									!isHover &&
+										changeSVGContent(
+											paletteStatus
+												? fillColorStr
+												: color,
+											'fill'
+										);
+									isHover &&
+										changeSVGContentHover(
+											paletteStatus
+												? fillColorStr
+												: color,
+											'fill'
+										);
 								}}
 								isHover={isHover}
 							/>

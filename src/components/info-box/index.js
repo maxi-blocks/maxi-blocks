@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { openSidebarAccordion } from '../../extensions/inspector-path';
+import { openSidebarAccordion } from '../../extensions/inspector';
 
 /**
  * External dependencies

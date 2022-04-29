@@ -22,7 +22,7 @@ import { setSVGContent } from '../../../../extensions/svg';
  * Component
  */
 const IconColor = props => {
-	const { blockName, onChangeInline, onChange, svgType, parentBlockStyle } =
+	const { blockName, onChange, svgType, changeSVGContent, blockStyle } =
 		props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
@@ -76,10 +76,10 @@ const IconColor = props => {
 									paletteStatus,
 								}) => {
 									const lineColorStr = getColorRGBAString({
-										firstVar: 'icon-line',
+										firstVar: 'icon-stroke',
 										secondVar: `color-${paletteColor}`,
 										opacity: props['icon-palette-opacity'],
-										blockStyle: parentBlockStyle,
+										blockStyle,
 									});
 
 									onChange(
@@ -127,7 +127,7 @@ const IconColor = props => {
 										secondVar: `color-${paletteColor}`,
 										opacity:
 											props['icon-fill-palette-opacity'],
-										blockStyle: parentBlockStyle,
+										blockStyle,
 									});
 
 									onChange(

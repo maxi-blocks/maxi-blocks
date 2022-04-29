@@ -16,8 +16,9 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsRow, categoriesRow } from './custom-css';
+import { withMaxiInspector } from '../../extensions/inspector';
 
-const ColumnPicker = props => {
+function ColumnPicker(props) {
 	const { clientId, attributes, deviceType, maxiSetAttributes } = props;
 
 	return (
@@ -40,7 +41,7 @@ const ColumnPicker = props => {
 			/>
 		</>
 	);
-};
+}
 
 /**
  * Inspector
@@ -106,7 +107,7 @@ const Inspector = props => {
 						),
 						ignoreIndicator: [
 							'row-pattern-general',
-							`row-pattern-m`,
+							'row-pattern-m',
 						],
 					},
 					{
@@ -136,6 +137,11 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
 									}),
 									...inspectorTabs.display({
 										props,
@@ -170,4 +176,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

@@ -55,9 +55,10 @@ const IconControl = props => {
 		clientId,
 		svgType,
 		breakpoint,
-		parentBlockStyle,
+		blockStyle,
 		isHover = false,
 		changeSVGContent,
+		changeSVGContentHover,
 		changeSVGStrokeWidth,
 	} = props;
 
@@ -146,7 +147,7 @@ const IconControl = props => {
 			{!isHover && breakpoint === 'general' && (
 				<MaxiModal
 					type='button-icon'
-					style={parentBlockStyle}
+					style={blockStyle}
 					onSelect={obj => onChange(obj)}
 					onRemove={obj => onChange(obj)}
 					icon={props['icon-content']}
@@ -299,9 +300,10 @@ const IconControl = props => {
 								svgType !== 'Shape' && (
 									<ColorControl
 										label={__('Icon stroke', 'maxi-blocks')}
+										className='maxi-icon-styles-control--color'
 										color={
 											props[
-												`icon-color${
+												`icon-stroke-color${
 													isHover ? '-hover' : ''
 												}`
 											]
@@ -309,21 +311,21 @@ const IconControl = props => {
 										prefix='icon-'
 										paletteColor={
 											props[
-												`icon-palette-color${
+												`icon-stroke-palette-color${
 													isHover ? '-hover' : ''
 												}`
 											]
 										}
 										paletteOpacity={
 											props[
-												`icon-palette-opacity${
+												`icon-stroke-palette-opacity${
 													isHover ? '-hover' : ''
 												}`
 											]
 										}
 										paletteStatus={
 											props[
-												`icon-palette-status${
+												`icon-stroke-palette-status${
 													isHover ? '-hover' : ''
 												}`
 											]
@@ -335,34 +337,46 @@ const IconControl = props => {
 											paletteOpacity,
 										}) => {
 											onChange({
-												[`icon-color${
+												[`icon-stroke-color${
 													isHover ? '-hover' : ''
 												}`]: color,
-												[`icon-palette-color${
+												[`icon-stroke-palette-color${
 													isHover ? '-hover' : ''
 												}`]: paletteColor,
-												[`icon-palette-status${
+												[`icon-stroke-palette-status${
 													isHover ? '-hover' : ''
 												}`]: paletteStatus,
-												[`icon-palette-opacity${
+												[`icon-stroke-palette-opacity${
 													isHover ? '-hover' : ''
 												}`]: paletteOpacity,
 											});
 											const lineColorStr =
 												getColorRGBAString({
-													firstVar: 'icon-line',
-													secondVar: `color-${paletteColor}`,
+													firstVar: `icon-stroke${
+														isHover ? '-hover' : ''
+													}`,
+													secondVar: `color-${paletteColor}${
+														isHover ? '-hover' : ''
+													}`,
 													opacity: paletteOpacity,
-													blockStyle:
-														parentBlockStyle,
+													blockStyle,
 												});
 
-											changeSVGContent(
-												paletteStatus
-													? lineColorStr
-													: color,
-												'stroke'
-											);
+											!isHover &&
+												changeSVGContent(
+													paletteStatus
+														? lineColorStr
+														: color,
+													'stroke'
+												);
+
+											isHover &&
+												changeSVGContentHover(
+													paletteStatus
+														? lineColorStr
+														: color,
+													'stroke'
+												);
 										}}
 										isHover={isHover}
 									/>
@@ -456,16 +470,30 @@ const IconControl = props => {
 										}`]: paletteOpacity,
 									});
 									const fillColorStr = getColorRGBAString({
-										firstVar: 'icon-fill',
-										secondVar: `color-${paletteColor}`,
+										firstVar: `icon-fill${
+											isHover ? '-hover' : ''
+										}`,
+										secondVar: `color-${paletteColor}${
+											isHover ? '-hover' : ''
+										}`,
 										opacity: paletteOpacity,
-										blockStyle: parentBlockStyle,
+										blockStyle,
 									});
 
-									changeSVGContent(
-										paletteStatus ? fillColorStr : color,
-										'fill'
-									);
+									!isHover &&
+										changeSVGContent(
+											paletteStatus
+												? fillColorStr
+												: color,
+											'fill'
+										);
+									isHover &&
+										changeSVGContentHover(
+											paletteStatus
+												? fillColorStr
+												: color,
+											'fill'
+										);
 								}}
 								isHover={isHover}
 							/>

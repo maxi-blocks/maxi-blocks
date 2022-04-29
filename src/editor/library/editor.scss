@@ -817,6 +817,11 @@
 						}
 					}
 				}
+				&.maxi-cloud-container__hide-categories {
+					.maxi-cloud-container__content__svg-categories {
+						display: none;
+					}
+				}
 			}
 			&__search-bar,
 			.ais-Menu {

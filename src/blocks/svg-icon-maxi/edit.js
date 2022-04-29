@@ -117,7 +117,7 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			content,
 			openFirstTime,
-			parentBlockStyle,
+			blockStyle,
 			uniqueID,
 			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
 		} = attributes;
@@ -154,7 +154,7 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			type: 'svg',
 			isOpen,
-			style: parentBlockStyle,
+			style: blockStyle,
 			openFirstTime: isSelected ? openFirstTime : false,
 			onOpen: obj => {
 				maxiSetAttributes(obj);
@@ -301,7 +301,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
 		const strokeStr2 = ` stroke="${strokeColor}`;
 
-		const newContent = ownProps.attributes.content
+		const newContent = content
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2)
 			.replace(strokeRegExp, strokeStr)
@@ -311,23 +311,53 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContent = (color, type) => {
-		const fillRegExp = new RegExp(`${type}:([^none])([^\\}]+)`, 'g');
-		const fillStr = `${type}:${color}`;
+		const fillRegExp = new RegExp(
+			`(((?<!hover )\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			'g'
+		);
+		const fillStr = `$2{${type}:${color}`;
 
 		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
 		const fillStr2 = ` ${type}="${color}`;
 
-		const newContent = ownProps.attributes.content
+		const newContent = content
 			.replace(fillRegExp, fillStr)
 			.replace(fillRegExp2, fillStr2);
 
 		maxiSetAttributes({ content: newContent });
 	};
 
+	const changeSVGContentHover = (color, type) => {
+		let newContent = content;
+
+		const svgRegExp = new RegExp(`( ${type}=[^-]([^none])([^\\"]+))`, 'g');
+		const svgStr = ` data-hover-${type}$1`;
+
+		const cssRegExpOld = new RegExp(
+			`((\.maxi-svg-icon-block__icon:hover \.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))(})`,
+			'g'
+		);
+		const cssStrOld = '';
+
+		const cssRegExp = new RegExp(
+			`(((?<!hover)\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
+			'g'
+		);
+		const cssStr = `$1}.maxi-svg-icon-block__icon:hover $2{${type}:${color}`;
+
+		newContent = newContent
+			.replace(svgRegExp, svgStr)
+			.replace(cssRegExpOld, cssStrOld)
+			.replace(cssRegExp, cssStr);
+
+		newContent !== content && maxiSetAttributes({ content: newContent });
+	};
+
 	return {
 		changeSVGStrokeWidth,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,
+		changeSVGContentHover,
 	};
 });
 

@@ -19,6 +19,7 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -188,21 +189,17 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<>
-													<DividerControl
-														{...getGroupAttributes(
-															attributes,
-															['divider', 'size']
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-														clientId={clientId}
-													/>
-												</>
+												<DividerControl
+													{...getGroupAttributes(
+														attributes,
+														['divider', 'size']
+													)}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													breakpoint={deviceType}
+													clientId={clientId}
+												/>
 											),
 											ignoreIndicator: [
 												`line-horizontal-${deviceType}`,
@@ -252,55 +249,58 @@ const Inspector = props => {
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<>
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props,
-											}),
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsDivider,
+										categories: categoriesDivider,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props,
-											}),
-										},
-										...inspectorTabs.customCss({
-											props,
-											breakpoint: deviceType,
-											selectors: selectorsDivider,
-											categories: categoriesDivider,
-										}),
-										...inspectorTabs.scrollEffects({
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props,
 										}),
-										...inspectorTabs.transform({
-											props,
-										}),
-										...inspectorTabs.display({
-											props,
-										}),
-										...inspectorTabs.position({
-											props,
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props,
-											}),
-										},
-										...inspectorTabs.overflow({
-											props,
-										}),
-										...inspectorTabs.flex({
-											props,
-										}),
-										...inspectorTabs.zindex({
-											props,
-										}),
-									]}
-								/>
-							</>
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 				]}
@@ -309,4 +309,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

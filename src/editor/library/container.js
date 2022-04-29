@@ -181,6 +181,7 @@
 		 if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	 }, [selectedSCKey]);
  
+	 //Appends 4 divs with break class which are needed for masonry columns
 	 useEffect(() => {
 		 if (ref.current) {
 			 const listWrapper = ref.current.querySelector('.ais-InfiniteHits ul');

@@ -145,18 +145,8 @@ const border = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChangeInline={obj =>
-											insertInlineStyles({
-												obj,
-												target: `${finalInlineTarget}:hover`,
-											})
-										}
-										onChange={obj => {
-											maxiSetAttributes(obj);
-											cleanInlineStyles(
-												`${finalInlineTarget}:hover`
-											);
-										}}
+										onChangeInline={() => {}}
+										onChange={obj => maxiSetAttributes(obj)}
 										breakpoint={deviceType}
 										isHover
 										clientId={clientId}

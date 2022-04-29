@@ -107,18 +107,8 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 											prefix
 										)}
 										prefix={prefix}
-										onChangeInline={obj =>
-											insertInlineStyles({
-												obj,
-												target: `${inlineTarget}:hover`,
-											})
-										}
-										onChange={obj => {
-											maxiSetAttributes(obj);
-											cleanInlineStyles(
-												`${inlineTarget}:hover`
-											);
-										}}
+										onChangeInline={() => {}}
+										onChange={obj => maxiSetAttributes(obj)}
 										breakpoint={deviceType}
 										isHover
 										clientId={clientId}

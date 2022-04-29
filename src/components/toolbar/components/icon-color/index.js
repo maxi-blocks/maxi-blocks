@@ -22,8 +22,7 @@ import { setSVGContent } from '../../../../extensions/svg';
  * Component
  */
 const IconColor = props => {
-	const { blockName, onChange, svgType, changeSVGContent, blockStyle } =
-		props;
+	const { blockName, onChangeInline, onChange, svgType, blockStyle } = props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 

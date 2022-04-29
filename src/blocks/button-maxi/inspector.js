@@ -51,10 +51,10 @@ const Inspector = props => {
 		attributes,
 		deviceType,
 		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
 		clientId,
-		changeSVGContent,
-		changeSVGContentHover,
-		changeSVGStrokeWidth,
 	} = props;
 	const { blockStyle, svgType } = attributes;
 
@@ -335,19 +335,32 @@ const Inspector = props => {
 																			'iconPadding',
 																		]
 																	)}
-																	onChange={obj => {
+																	onChangeInline={(
+																		obj,
+																		target,
+																		isMultiplySelector = false
+																	) =>
+																		insertInlineStyles(
+																			{
+																				obj,
+																				target,
+																				isMultiplySelector,
+																			}
+																		)
+																	}
+																	onChange={(
+																		obj,
+																		target
+																	) => {
 																		maxiSetAttributes(
 																			obj
+																		);
+																		cleanInlineStyles(
+																			target
 																		);
 																	}}
 																	svgType={
 																		svgType
-																	}
-																	changeSVGContent={
-																		changeSVGContent
-																	}
-																	changeSVGStrokeWidth={
-																		changeSVGStrokeWidth
 																	}
 																	breakpoint={
 																		deviceType
@@ -405,6 +418,7 @@ const Inspector = props => {
 																				],
 																				true
 																			)}
+																			onChangeInline={() => {}}
 																			onChange={obj => {
 																				maxiSetAttributes(
 																					obj
@@ -422,16 +436,7 @@ const Inspector = props => {
 																			blockStyle={
 																				blockStyle
 																			}
-																			changeSVGContentHover={
-																				changeSVGContentHover
-																			}
 																			isHover
-																			changeSVGContent={
-																				changeSVGContent
-																			}
-																			changeSVGStrokeWidth={
-																				changeSVGStrokeWidth
-																			}
 																		/>
 																	)}
 																</>
@@ -491,6 +496,8 @@ const Inspector = props => {
 												target: 'hover-background',
 												type: 'button',
 											},
+											inlineTarget:
+												inlineStylesTargets.background,
 										}),
 										...inspectorTabs.border({
 											props: {

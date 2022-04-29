@@ -43,28 +43,26 @@ const blockBackground = ({
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
-							<>
-								<BlockBackgroundControl
-									{...getGroupAttributes(attributes, [
-										'blockBackground',
-										'background-layers',
-									])}
-									onChangeInline={(obj, target) =>
-										insertInlineStyles({ obj, target })
-									}
-									onChange={(obj, target) => {
-										maxiSetAttributes(obj);
-										if (target) cleanInlineStyles(target);
-									}}
-									clientId={clientId}
-									breakpoint={deviceType}
-									disableImage={disableImage}
-									disableVideo={disableVideo}
-									disableGradient={disableGradient}
-									disableColor={disableColor}
-									disableSVG={disableSVG}
-								/>
-							</>
+							<BlockBackgroundControl
+								{...getGroupAttributes(attributes, [
+									'blockBackground',
+									'background-layers',
+								])}
+								onChangeInline={(obj, target) =>
+									insertInlineStyles({ obj, target })
+								}
+								onChange={(obj, target) => {
+									maxiSetAttributes(obj);
+									if (target) cleanInlineStyles(target);
+								}}
+								clientId={clientId}
+								breakpoint={deviceType}
+								disableImage={disableImage}
+								disableVideo={disableVideo}
+								disableGradient={disableGradient}
+								disableColor={disableColor}
+								disableSVG={disableSVG}
+							/>
 						),
 						extraIndicators: ['background-layers'],
 					},
@@ -93,19 +91,8 @@ const blockBackground = ({
 											'blockBackground',
 											true
 										)}
-										onChangeInline={(obj, target) =>
-											insertInlineStyles({
-												obj,
-												target: `${target}:hover`,
-											})
-										}
-										onChange={(obj, target) => {
-											maxiSetAttributes(obj);
-											if (target)
-												cleanInlineStyles(
-													`${target}:hover`
-												);
-										}}
+										onChangeInline={() => {}}
+										onChange={obj => maxiSetAttributes(obj)}
 										isHover
 										clientId={clientId}
 										breakpoint={deviceType}

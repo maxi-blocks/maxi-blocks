@@ -61,36 +61,34 @@ const background = ({
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
-							<>
-								<BackgroundControl
-									{...getGroupAttributes(
-										attributes,
-										groupAttributes,
-										false,
-										prefix
-									)}
-									prefix={prefix}
-									onChangeInline={obj => {
-										insertInlineStyles({
-											obj,
-											target: inlineTarget,
-										});
-									}}
-									onChange={obj => {
-										maxiSetAttributes(obj);
-										cleanInlineStyles(inlineTarget);
-									}}
-									disableColor={disableColor}
-									disableImage={disableImage}
-									disableGradient={disableGradient}
-									disableVideo={disableVideo}
-									disableSVG={disableSVG}
-									disableClipPath={disableClipPath}
-									clientId={clientId}
-									breakpoint={deviceType}
-									globalProps={globalProps}
-								/>
-							</>
+							<BackgroundControl
+								{...getGroupAttributes(
+									attributes,
+									groupAttributes,
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								onChangeInline={obj => {
+									insertInlineStyles({
+										obj,
+										target: inlineTarget,
+									});
+								}}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(inlineTarget);
+								}}
+								disableColor={disableColor}
+								disableImage={disableImage}
+								disableGradient={disableGradient}
+								disableVideo={disableVideo}
+								disableSVG={disableSVG}
+								disableClipPath={disableClipPath}
+								clientId={clientId}
+								breakpoint={deviceType}
+								globalProps={globalProps}
+							/>
 						),
 					},
 					{
@@ -151,17 +149,9 @@ const background = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChangeInline={obj => {
-											insertInlineStyles({
-												obj,
-												target: `${inlineTarget}:hover`,
-											});
-										}}
+										onChangeInline={() => {}}
 										onChange={obj => {
 											maxiSetAttributes(obj);
-											cleanInlineStyles(
-												`${inlineTarget}:hover`
-											);
 										}}
 										disableImage
 										disableVideo

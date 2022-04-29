@@ -49,12 +49,14 @@ import {
 	getLastBreakpointAttribute,
 	getColorRGBAString,
 } from '../../extensions/styles';
+import { setSVGContent } from '../../extensions/svg';
 
 /**
  * Styles
  */
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
+import { insert } from '@wordpress/rich-text';
 
 /**
  * General
@@ -205,7 +207,23 @@ const MaxiToolbar = memo(
 						<TextColor
 							blockName={name}
 							{...getGroupAttributes(attributes, 'typography')}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: `.maxi-text-block__content ${
+										isList ? 'li' : ''
+									}`,
+									isMultiplySelector: isList,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									`.maxi-text-block__content ${
+										isList ? 'li' : ''
+									}`
+								);
+							}}
 							breakpoint={breakpoint}
 							node={anchorRef}
 							isList={isList}
@@ -262,9 +280,14 @@ const MaxiToolbar = memo(
 										)}
 										maxiSetAttributes={maxiSetAttributes}
 										blockName={name}
+										onChangeInline={(obj, target) =>
+											insertInlineStyles({
+												obj,
+												target,
+												isMultiplySelector: true,
+											})
+										}
 										onChangeFill={obj => {
-											maxiSetAttributes(obj);
-
 											const fillColorStr =
 												getColorRGBAString({
 													firstVar: 'icon-fill',
@@ -275,14 +298,21 @@ const MaxiToolbar = memo(
 														],
 													blockStyle,
 												});
-											changeSVGContent(
-												obj['svg-fill-palette-status']
-													? fillColorStr
-													: obj['svg-fill-color'],
-												'fill'
-											);
+
+											maxiSetAttributes({
+												...obj,
+												content: setSVGContent(
+													attributes.content,
+													obj[
+														'svg-fill-palette-status'
+													]
+														? fillColorStr
+														: obj['svg-fill-color'],
+													'fill'
+												),
+											});
+											cleanInlineStyles('[data-fill]');
 										}}
-										changeSVGContent={changeSVGContent}
 										svgType='Fill'
 										type='fill'
 										blockStyle={blockStyle}
@@ -300,9 +330,14 @@ const MaxiToolbar = memo(
 										)}
 										maxiSetAttributes={maxiSetAttributes}
 										blockName={name}
+										onChangeInline={(obj, target) =>
+											insertInlineStyles({
+												obj,
+												target,
+												isMultiplySelector: true,
+											})
+										}
 										onChangeStroke={obj => {
-											maxiSetAttributes(obj);
-
 											const lineColorStr =
 												getColorRGBAString({
 													firstVar: 'icon-stroke',
@@ -313,14 +348,21 @@ const MaxiToolbar = memo(
 														],
 													blockStyle,
 												});
-											changeSVGContent(
-												obj['svg-line-palette-status']
-													? lineColorStr
-													: obj['svg-line-color'],
-												'stroke'
-											);
+
+											maxiSetAttributes({
+												...obj,
+												content: setSVGContent(
+													attributes.content,
+													obj[
+														'svg-line-palette-status'
+													]
+														? lineColorStr
+														: obj['svg-line-color'],
+													'stroke'
+												),
+											});
+											cleanInlineStyles('[data-stroke]');
 										}}
-										changeSVGContent={changeSVGContent}
 										svgType='Line'
 										type='line'
 										blockStyle={blockStyle}
@@ -333,7 +375,6 @@ const MaxiToolbar = memo(
 										maxiSetAttributes(obj);
 									}}
 									breakpoint={breakpoint}
-									changeSVGStrokeWidth={changeSVGStrokeWidth}
 									type={svgType}
 									resizableObject={resizableObject}
 								/>
@@ -356,7 +397,18 @@ const MaxiToolbar = memo(
 							globalProps={backgroundGlobalProps}
 							blockName={name}
 							breakpoint={breakpoint}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsDefault.background,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsDefault.background
+								);
+							}}
 							clientId={clientId}
 						/>
 						<BlockBackgroundColor
@@ -366,7 +418,13 @@ const MaxiToolbar = memo(
 							)}
 							blockName={name}
 							breakpoint={breakpoint}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChangeInline={(obj, target) =>
+								insertInlineStyles({ obj, target })
+							}
+							onChange={(obj, target) => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(target);
+							}}
 							clientId={clientId}
 						/>
 						<Border
@@ -377,7 +435,18 @@ const MaxiToolbar = memo(
 								false,
 								prefix
 							)}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsResults.border,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsResults.border
+								);
+							}}
 							breakpoint={breakpoint}
 							clientId={clientId}
 							prefix={prefix}
@@ -390,7 +459,18 @@ const MaxiToolbar = memo(
 								false,
 								prefix
 							)}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChangeInline={obj => {
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsResults.boxShadow,
+								});
+							}}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsResults.boxShadow
+								);
+							}}
 							clientId={clientId}
 							breakpoint={breakpoint}
 							prefix={prefix}
@@ -470,7 +550,18 @@ const MaxiToolbar = memo(
 							{...getGroupAttributes(attributes, 'divider')}
 							blockName={name}
 							breakpoint={breakpoint}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsResults.divider,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsResults.divider
+								);
+							}}
 							clientId={clientId}
 						/>
 						<Divider

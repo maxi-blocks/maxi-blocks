@@ -23,6 +23,7 @@ import {
 import {
 	setSVGStrokeWidth,
 	setSVGContent,
+	setSVGContentHover,
 	setSVGContentWithBlockStyle,
 } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -35,10 +36,6 @@ import { withMaxiInspector } from '../../extensions/inspector';
 const Inspector = props => {
 	const {
 		attributes,
-		changeSVGContent,
-		changeSVGContentWithBlockStyle,
-		changeSVGStrokeWidth,
-		changeSVGContentHover,
 		clientId,
 		deviceType,
 		maxiSetAttributes,
@@ -157,6 +154,16 @@ const Inspector = props => {
 													maxiSetAttributes={
 														maxiSetAttributes
 													}
+													onChangeInline={(
+														obj,
+														target
+													) => {
+														insertInlineStyles({
+															obj,
+															target,
+															isMultiplySelector: true,
+														});
+													}}
 													onChangeFill={obj => {
 														maxiSetAttributes(obj);
 
@@ -176,15 +183,22 @@ const Inspector = props => {
 																		blockStyle,
 																	}
 																);
-															changeSVGContent(
-																obj[
-																	'svg-fill-palette-status'
-																]
-																	? fillColorStr
-																	: obj[
-																			'svg-fill-color'
-																	  ],
-																'fill'
+															maxiSetAttributes({
+																content:
+																	setSVGContent(
+																		attributes.content,
+																		obj[
+																			'svg-fill-palette-status'
+																		]
+																			? fillColorStr
+																			: obj[
+																					'svg-fill-color'
+																			  ],
+																		'fill'
+																	),
+															});
+															cleanInlineStyles(
+																'[data-fill]'
 															);
 														}
 													}}
@@ -207,15 +221,22 @@ const Inspector = props => {
 																		blockStyle,
 																	}
 																);
-															changeSVGContent(
-																obj[
-																	'svg-line-palette-status'
-																]
-																	? lineColorStr
-																	: obj[
-																			'svg-line-color'
-																	  ],
-																'stroke'
+															maxiSetAttributes({
+																content:
+																	setSVGContent(
+																		attributes.content,
+																		obj[
+																			'svg-line-palette-status'
+																		]
+																			? lineColorStr
+																			: obj[
+																					'svg-line-color'
+																			  ],
+																		'stroke'
+																	),
+															});
+															cleanInlineStyles(
+																'[data-stroke]'
 															);
 														}
 													}}
@@ -239,16 +260,20 @@ const Inspector = props => {
 																	}
 																);
 
-															changeSVGContentHover(
-																obj[
-																	'svg-fill-palette-status-hover'
-																]
-																	? fillColorStrHover
-																	: obj[
-																			'svg-fill-color-hover'
-																	  ],
-																'fill'
-															);
+															maxiSetAttributes({
+																content:
+																	setSVGContentHover(
+																		attributes.content,
+																		obj[
+																			'svg-fill-palette-status-hover'
+																		]
+																			? fillColorStrHover
+																			: obj[
+																					'svg-fill-color-hover'
+																			  ],
+																		'fill'
+																	),
+															});
 														}
 													}}
 													onChangeHoverStroke={obj => {
@@ -271,16 +296,20 @@ const Inspector = props => {
 																	}
 																);
 
-															changeSVGContentHover(
-																obj[
-																	'svg-line-palette-status-hover'
-																]
-																	? lineColorStrHover
-																	: obj[
-																			'svg-line-color-hover'
-																	  ],
-																'stroke'
-															);
+															maxiSetAttributes({
+																content:
+																	setSVGContentHover(
+																		attributes.content,
+																		obj[
+																			'svg-line-palette-status-hover'
+																		]
+																			? lineColorStrHover
+																			: obj[
+																					'svg-line-color-hover'
+																			  ],
+																		'stroke'
+																	),
+															});
 														}
 													}}
 												/>

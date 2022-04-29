@@ -117,21 +117,8 @@ const typography = ({
 											'typography',
 											true
 										)}
-										onChangeInline={(
-											obj,
-											target,
-											isMultiplySelector
-										) =>
-											insertInlineStyles({
-												obj,
-												target,
-												isMultiplySelector,
-											})
-										}
-										onChange={(obj, target) => {
-											maxiSetAttributes(obj);
-											cleanInlineStyles(target);
-										}}
+										onChangeInline={() => {}}
+										onChange={obj => maxiSetAttributes(obj)}
 										hideAlignment={hideAlignment}
 										breakpoint={deviceType}
 										isHover

@@ -74,7 +74,7 @@ const numberCounterEffect = () => {
 							const percentageNode =
 								numberCounterElemText.nodeName === 'SPAN'
 									? '<sup>%</sup>'
-									: '<tspan baselineShift="super">%</tspan>';
+									: '<tspan baseline-shift="super">%</tspan>';
 
 							newInnerHTML += percentageNode;
 						}

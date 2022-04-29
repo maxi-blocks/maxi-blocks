@@ -67,7 +67,6 @@ const save = props => {
 							text-anchor='middle'
 							x='50%'
 							y='50%'
-							dy={`${round(fontSize / 4, 2)}px`}
 						/>
 					</svg>
 				)}

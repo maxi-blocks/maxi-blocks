@@ -7,11 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import SvgColor from '../../../svg-color';
-import {
-	getColorRGBAString,
-	getGroupAttributes,
-} from '../../../../extensions/styles';
+import { SvgColor } from '../../../svg-color';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -22,8 +19,19 @@ import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
 /**
  * SvgColor
  */
-const SvgColorToolbar = props => {
-	const { type, blockName, onChange, changeSVGContent, blockStyle } = props;
+function SvgColorToolbar(props) {
+	const {
+		type,
+		blockName,
+		onChangeFill,
+		onChangeHoverFill,
+		onChangeStroke,
+		onChangeHoverStroke,
+		changeSVGContent,
+		maxiSetAttributes,
+		changeSVGContentHover,
+		blockStyle,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -44,31 +52,21 @@ const SvgColorToolbar = props => {
 			<div className='toolbar-item__svg-color__popover'>
 				<SvgColor
 					{...getGroupAttributes(props, 'svg')}
+					{...getGroupAttributes(props, 'svgHover')}
 					type={type}
+					maxiSetAttributes={maxiSetAttributes}
+					onChangeFill={onChangeFill}
+					onChangeStroke={onChangeStroke}
+					onChangeHoverFill={onChangeHoverFill}
+					onChangeHoverStroke={onChangeHoverStroke}
+					changeSVGContent={changeSVGContent}
+					changeSVGContentHover={changeSVGContentHover}
 					label={__(`Icon ${type}`, 'maxi-blocks')}
-					onChange={obj => {
-						onChange(obj);
-
-						const colorStr = getColorRGBAString({
-							firstVar: `icon-${type}`,
-							secondVar: `color-${
-								obj[`svg-${type}-palette-color`]
-							}`,
-							opacity: obj[`svg-${type}-palette-opacity`],
-							blockStyle,
-						});
-
-						changeSVGContent(
-							obj[`svg-${type}-palette-status`]
-								? colorStr
-								: obj[`svg-${type}-color`],
-							type
-						);
-					}}
+					blockStyle={blockStyle}
 				/>
 			</div>
 		</ToolbarPopover>
 	);
-};
+}
 
 export default SvgColorToolbar;

@@ -44,7 +44,7 @@ export const icon = {
 			'icon-width-general': 32,
 		},
 	}),
-	...paletteAttributesCreator({ prefix, palette: 1 }),
+	...paletteAttributesCreator({ prefix: `${prefix}stroke-`, palette: 1 }),
 	...paletteAttributesCreator({ prefix: `${prefix}fill-`, palette: 4 }),
 };
 

@@ -14,8 +14,8 @@ import {
  */
 import { openPreviewPage } from '../utils';
 
-describe.skip('sc-variable', () => {
-	it('Check sc-vars', async () => {
+describe('sc-variable', () => {
+	it.skip('Check sc-vars', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 

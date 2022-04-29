@@ -14,11 +14,15 @@ import {
 	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
+	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
 
 const getWrapperObject = props => {
 	const response = {
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),

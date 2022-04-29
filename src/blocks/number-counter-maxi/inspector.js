@@ -15,6 +15,7 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -62,34 +63,43 @@ const Inspector = props => {
 										{
 											label: __('Number', 'maxi-blocks'),
 											content: (
-												<NumberCounterControl
-													{...getGroupAttributes(
-														attributes,
-														'numberCounter'
-													)}
-													{...getGroupAttributes(
-														attributes,
-														'size',
-														false,
-														'number-counter-'
-													)}
-													onChangeInline={(
-														obj,
-														target
-													) =>
-														insertInlineStyles({
-															obj,
-															target,
-														})
-													}
-													onChange={(obj, target) => {
-														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															target
-														);
-													}}
+												<ResponsiveTabsControl
 													breakpoint={deviceType}
-												/>
+												>
+													<NumberCounterControl
+														{...getGroupAttributes(
+															attributes,
+															'numberCounter'
+														)}
+														{...getGroupAttributes(
+															attributes,
+															'size',
+															false,
+															'number-counter-'
+														)}
+														onChangeInline={(
+															obj,
+															target
+														) =>
+															insertInlineStyles({
+																obj,
+																target,
+															})
+														}
+														onChange={(
+															obj,
+															target
+														) => {
+															maxiSetAttributes(
+																obj
+															);
+															cleanInlineStyles(
+																target
+															);
+														}}
+														breakpoint={deviceType}
+													/>
+												</ResponsiveTabsControl>
 											),
 										},
 										...inspectorTabs.border({

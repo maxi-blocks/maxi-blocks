@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AlignmentControl from '../alignment-control';
 import { getGroupAttributes } from '../../extensions/styles';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -25,26 +26,28 @@ const alignment = ({
 	return {
 		label: __('Alignment', 'maxi-blocks'),
 		content: (
-			<>
-				{isAlignment && (
-					<AlignmentControl
-						label={alignmentLabel}
-						{...getGroupAttributes(attributes, 'alignment')}
-						onChange={obj => maxiSetAttributes(obj)}
-						breakpoint={deviceType}
-						disableJustify={disableJustify}
-					/>
-				)}
-				{isTextAlignment && (
-					<AlignmentControl
-						label={textAlignmentLabel}
-						{...getGroupAttributes(attributes, 'textAlignment')}
-						onChange={obj => maxiSetAttributes(obj)}
-						breakpoint={deviceType}
-						type='text'
-					/>
-				)}
-			</>
+			<ResponsiveTabsControl breakpoint={deviceType}>
+				<>
+					{isAlignment && (
+						<AlignmentControl
+							label={alignmentLabel}
+							{...getGroupAttributes(attributes, 'alignment')}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={deviceType}
+							disableJustify={disableJustify}
+						/>
+					)}
+					{isTextAlignment && (
+						<AlignmentControl
+							label={textAlignmentLabel}
+							{...getGroupAttributes(attributes, 'textAlignment')}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={deviceType}
+							type='text'
+						/>
+					)}
+				</>
+			</ResponsiveTabsControl>
 		),
 	};
 };

@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ZIndexControl from '../zindex-control';
 import { getGroupAttributes } from '../../extensions/styles';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * Component
@@ -18,11 +19,13 @@ const zindex = ({ props }) => {
 	return {
 		label: __('Z-index', 'maxi-blocks'),
 		content: (
-			<ZIndexControl
-				{...getGroupAttributes(attributes, 'zIndex')}
-				onChange={obj => maxiSetAttributes(obj)}
-				breakpoint={deviceType}
-			/>
+			<ResponsiveTabsControl breakpoint={deviceType}>
+				<ZIndexControl
+					{...getGroupAttributes(attributes, 'zIndex')}
+					onChange={obj => maxiSetAttributes(obj)}
+					breakpoint={deviceType}
+				/>
+			</ResponsiveTabsControl>
 		),
 	};
 };

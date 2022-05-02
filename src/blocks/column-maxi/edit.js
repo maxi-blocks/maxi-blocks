@@ -137,6 +137,7 @@ class edit extends MaxiBlockComponent {
 					<Inspector
 						key={`block-settings-${uniqueID}`}
 						rowPattern={context.rowPattern}
+						propsToAvoid={['rowGapProps', 'rowBorderRadius']}
 						{...this.props}
 					/>,
 					<Toolbar
@@ -144,7 +145,11 @@ class edit extends MaxiBlockComponent {
 						ref={this.blockRef}
 						rowPattern={context.rowPattern}
 						copyPasteMapping={copyPasteMapping}
-						propsToAvoid={['resizableObject']}
+						propsToAvoid={[
+							'resizableObject',
+							'rowGapProps',
+							'rowBorderRadius',
+						]}
 						{...this.props}
 					/>,
 					<MaxiBlock
@@ -170,6 +175,15 @@ class edit extends MaxiBlockComponent {
 						)}
 						defaultSize={{
 							width: getColumnWidthDefault(),
+							height: `${getLastBreakpointAttribute({
+								target: 'height',
+								breakpoint: deviceType,
+								attributes,
+							})}${getLastBreakpointAttribute({
+								target: 'height-unit',
+								breakpoint: deviceType,
+								attributes,
+							})}`,
 						}}
 						enable={{
 							right: true,

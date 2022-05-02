@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { useState, Children, cloneElement } from '@wordpress/element';
+import {
+	Children,
+	cloneElement,
+	useEffect,
+	useState,
+} from '@wordpress/element';
 
 /**
  * External dependencies
@@ -15,6 +20,25 @@ import './editor.scss';
 
 const ListControl = ({ children, onListItemsDrag }) => {
 	const [selector, changeSelector] = useState(null);
+	const [childrenIds, changeChildrenIds] = useState([]);
+
+	useEffect(() => {
+		const currentChildrenIds = children.map(child => child.props.id);
+		const addedId = currentChildrenIds.filter(
+			id => !childrenIds.includes(id)
+		);
+
+		if (
+			addedId.length === 1 &&
+			currentChildrenIds.length > childrenIds.length
+		) {
+			changeSelector(addedId[0]);
+		}
+
+		if (currentChildrenIds.length !== childrenIds.length) {
+			changeChildrenIds(currentChildrenIds);
+		}
+	}, [children]);
 
 	const childrenWithProps = Children.map(children, child => {
 		return cloneElement(child, {

@@ -1,0 +1,10 @@
+.maxi-list-control {
+	.maxi-settingstab-control .maxi-tabs-content {
+		padding-right: 0 !important;
+		padding-left: 0 !important;
+	}
+
+	&__options {
+		counter-reset: list-items-counter 0;
+	}
+}

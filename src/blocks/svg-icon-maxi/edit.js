@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
-import { withDispatch, dispatch } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 import { Button } from '@wordpress/components';
 
 /**
@@ -174,6 +174,10 @@ class edit extends MaxiBlockComponent {
 			onClose: () => this.setState({ isOpen: false }),
 		};
 
+		const inlineStylesTargets = {
+			background: '.maxi-svg-icon-block__icon',
+		};
+
 		return [
 			...[
 				!isEmptyContent && [
@@ -181,6 +185,7 @@ class edit extends MaxiBlockComponent {
 						key={`block-settings-${uniqueID}`}
 						{...this.props}
 						resizableObject={this.resizableObject}
+						inlineStylesTargets={inlineStylesTargets}
 					/>,
 					<Toolbar
 						key={`toolbar-${uniqueID}`}
@@ -189,6 +194,7 @@ class edit extends MaxiBlockComponent {
 						resizableObject={this.resizableObject}
 						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
+						inlineStylesTargets={inlineStylesTargets}
 						{...this.props}
 					/>,
 					<MaxiPopoverButton
@@ -261,104 +267,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const {
-		attributes: { content },
-		maxiSetAttributes,
-	} = ownProps;
-
-	const changeSVGStrokeWidth = width => {
-		if (width) {
-			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
-			const changeTo = `stroke-width:${width}`;
-
-			const regexLineToChange2 = new RegExp(
-				'stroke-width=".+?(?=")',
-				'g'
-			);
-			const changeTo2 = `stroke-width="${width}`;
-
-			const newContent = content
-				.replace(regexLineToChange, changeTo)
-				.replace(regexLineToChange2, changeTo2);
-
-			maxiSetAttributes({
-				content: newContent,
-			});
-		}
-	};
-
-	const changeSVGContentWithBlockStyle = (fillColor, strokeColor) => {
-		const fillRegExp = new RegExp('fill:([^none])([^\\}]+)', 'g');
-		const fillStr = `fill:${fillColor}`;
-
-		const fillRegExp2 = new RegExp('fill=[^-]([^none])([^\\"]+)', 'g');
-		const fillStr2 = ` fill="${fillColor}`;
-
-		const strokeRegExp = new RegExp('stroke:([^none])([^\\}]+)', 'g');
-		const strokeStr = `stroke:${strokeColor}`;
-
-		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
-		const strokeStr2 = ` stroke="${strokeColor}`;
-
-		const newContent = content
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2)
-			.replace(strokeRegExp, strokeStr)
-			.replace(strokeRegExp2, strokeStr2);
-
-		maxiSetAttributes({ content: newContent });
-	};
-
-	const changeSVGContent = (color, type) => {
-		const fillRegExp = new RegExp(
-			`(((?<!hover )\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
-			'g'
-		);
-		const fillStr = `$2{${type}:${color}`;
-
-		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
-		const fillStr2 = ` ${type}="${color}`;
-
-		const newContent = content
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2);
-
-		maxiSetAttributes({ content: newContent });
-	};
-
-	const changeSVGContentHover = (color, type) => {
-		let newContent = content;
-
-		const svgRegExp = new RegExp(`( ${type}=[^-]([^none])([^\\"]+))`, 'g');
-		const svgStr = ` data-hover-${type}$1`;
-
-		const cssRegExpOld = new RegExp(
-			`((\.maxi-svg-icon-block__icon:hover \.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))(})`,
-			'g'
-		);
-		const cssStrOld = '';
-
-		const cssRegExp = new RegExp(
-			`(((?<!hover)\\.-?[_a-zA-Z]+[_a-zA-Z0-9-]* \.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)\{${type}:([^none])([^\\}]+))`,
-			'g'
-		);
-		const cssStr = `$1}.maxi-svg-icon-block__icon:hover $2{${type}:${color}`;
-
-		newContent = newContent
-			.replace(svgRegExp, svgStr)
-			.replace(cssRegExpOld, cssStrOld)
-			.replace(cssRegExp, cssStr);
-
-		newContent !== content && maxiSetAttributes({ content: newContent });
-	};
-
-	return {
-		changeSVGStrokeWidth,
-		changeSVGContent,
-		changeSVGContentWithBlockStyle,
-		changeSVGContentHover,
-	};
-});
-
-export default compose(withMaxiProps, editDispatch)(edit);
+export default compose(withMaxiProps)(edit);

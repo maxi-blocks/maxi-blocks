@@ -239,6 +239,7 @@ const TextOptions = props => {
 const LinkOptions = props => {
 	const {
 		getValue,
+		onChangeInline,
 		onChangeFormat,
 		prefix,
 		breakpoint,
@@ -311,6 +312,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -326,7 +330,8 @@ const LinkOptions = props => {
 								[`${prefix}link-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a'
 						)
 					}
 					textLevel={textLevel}
@@ -350,6 +355,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-hover-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:hover')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -367,7 +375,8 @@ const LinkOptions = props => {
 								[`${prefix}link-hover-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:hover'
 						)
 					}
 					textLevel={textLevel}
@@ -393,6 +402,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-active-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:active')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -410,7 +422,8 @@ const LinkOptions = props => {
 								[`${prefix}link-active-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:active'
 						)
 					}
 					textLevel={textLevel}
@@ -436,6 +449,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-visited-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:visited')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -453,7 +469,8 @@ const LinkOptions = props => {
 								[`${prefix}link-visited-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:visited'
 						)
 					}
 					textLevel={textLevel}
@@ -472,9 +489,11 @@ const TypographyControl = withFormatValue(props => {
 		className,
 		textLevel = 'p',
 		hideAlignment = false,
+		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
 		formatValue,
+		inlineTarget = '.maxi-text-block__content',
 		isList = false,
 		isHover = false,
 		disableColor = false,
@@ -625,10 +644,21 @@ const TypographyControl = withFormatValue(props => {
 		return defaultAttribute;
 	};
 
+	const getInlineTarget = tag => {
+		const target = `${inlineTarget} ${isList ? 'li' : ''}${
+			tag !== ''
+				? `${tag}, ${inlineTarget} ${isList ? 'li' : ''} ${tag} span`
+				: ''
+		}`;
+
+		return target.replace(/\s{2,}/g, ' ');
+	};
+
 	const onChangeFormat = (
 		value,
 		customBreakpoint,
-		forceDisableCustomFormats = false
+		forceDisableCustomFormats = false,
+		tag = ''
 	) => {
 		const obj = setFormat({
 			formatValue,
@@ -654,7 +684,11 @@ const TypographyControl = withFormatValue(props => {
 			);
 		}
 
-		onChange(obj);
+		onChange(obj, getInlineTarget(tag));
+	};
+
+	const onChangeInlineValue = (obj, tag = '') => {
+		onChangeInline && onChangeInline(obj, getInlineTarget(tag), isList);
 	};
 
 	const getOpacityValue = label => {
@@ -707,6 +741,9 @@ const TypographyControl = withFormatValue(props => {
 					paletteColor={getValue(`${prefix}palette-color`)}
 					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-status`)}
+					onChangeInline={({ color }) =>
+						onChangeInlineValue({ color })
+					}
 					onChange={({
 						color,
 						paletteColor,
@@ -734,7 +771,7 @@ const TypographyControl = withFormatValue(props => {
 					{...getGroupAttributes(props, 'textAlignment')}
 					className='maxi-typography-control__text-alignment'
 					label={__('Alignment', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					breakpoint={breakpoint}
 					type='text'
 				/>
@@ -997,6 +1034,9 @@ const TypographyControl = withFormatValue(props => {
 					<TextShadowControl
 						className='maxi-typography-control__text-shadow'
 						textShadow={getValue(`${prefix}text-shadow`)}
+						onChangeInline={val =>
+							onChangeInlineValue({ 'text-shadow': val })
+						}
 						onChange={val => {
 							onChangeFormat({
 								[`${prefix}text-shadow`]: val,
@@ -1016,6 +1056,7 @@ const TypographyControl = withFormatValue(props => {
 				<LinkOptions
 					getValue={getValue}
 					getDefault={getDefault}
+					onChangeInline={onChangeInlineValue}
 					onChangeFormat={onChangeFormat}
 					prefix={prefix}
 					breakpoint={breakpoint}

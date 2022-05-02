@@ -97,7 +97,7 @@ const BoxShadowValueControl = props => {
 
 const BoxShadowControl = props => {
 	const {
-		onChangeInline,
+		onChangeInline = null,
 		onChange,
 		className,
 		breakpoint,
@@ -260,29 +260,32 @@ const BoxShadowControl = props => {
 							isHover,
 						})}
 						onChangeInline={({ color }) => {
-							onChangeInline({
-								'box-shadow': `${getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-horizontal`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}px ${getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-vertical`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}px ${getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-blur`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}px ${getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-spread`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}px ${color}`,
-							});
+							onChangeInline &&
+								onChangeInline({
+									'box-shadow': `${getLastBreakpointAttribute(
+										{
+											target: `${prefix}box-shadow-horizontal`,
+											breakpoint,
+											attributes: props,
+											isHover,
+										}
+									)}px ${getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-vertical`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}px ${getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-blur`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}px ${getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-spread`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}px ${color}`,
+								});
 						}}
 						onChange={({
 							color,

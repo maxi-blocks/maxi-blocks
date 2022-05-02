@@ -91,7 +91,6 @@ const blockBackground = ({
 											'blockBackground',
 											true
 										)}
-										onChangeInline={() => {}}
 										onChange={obj => maxiSetAttributes(obj)}
 										isHover
 										clientId={clientId}

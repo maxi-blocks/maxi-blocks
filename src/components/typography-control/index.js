@@ -489,7 +489,7 @@ const TypographyControl = withFormatValue(props => {
 		className,
 		textLevel = 'p',
 		hideAlignment = false,
-		onChangeInline,
+		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
 		formatValue,
@@ -688,7 +688,7 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	const onChangeInlineValue = (obj, tag = '') => {
-		onChangeInline(obj, getInlineTarget(tag), isList);
+		onChangeInline && onChangeInline(obj, getInlineTarget(tag), isList);
 	};
 
 	const getOpacityValue = label => {

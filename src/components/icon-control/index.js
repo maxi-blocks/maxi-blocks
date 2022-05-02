@@ -56,7 +56,7 @@ import {
 const IconControl = props => {
 	const {
 		className,
-		onChangeInline,
+		onChangeInline = null,
 		onChange,
 		clientId,
 		svgType,
@@ -334,6 +334,7 @@ const IconControl = props => {
 										]
 									}
 									onChangeInline={({ color }) =>
+										onChangeInline &&
 										onChangeInline(
 											{ stroke: color },
 											'[data-stroke]',
@@ -459,6 +460,7 @@ const IconControl = props => {
 									]
 								}
 								onChangeInline={({ color }) =>
+									onChangeInline &&
 									onChangeInline(
 										{ fill: color },
 										'[data-fill]',
@@ -563,6 +565,7 @@ const IconControl = props => {
 								prefix='icon-background-'
 								useBreakpointForDefault
 								onChangeInline={({ color }) =>
+									onChangeInline &&
 									onChangeInline(
 										{
 											background: color,

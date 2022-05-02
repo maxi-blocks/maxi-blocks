@@ -21,7 +21,7 @@ export const SvgColor = props => {
 	const {
 		type,
 		label,
-		onChangeInline,
+		onChangeInline = null,
 		onChangeFill,
 		onChangeStroke,
 		onChangeHoverFill,
@@ -51,6 +51,7 @@ export const SvgColor = props => {
 					: props['svg-line-palette-status']
 			}
 			onChangeInline={({ color }) =>
+				onChangeInline &&
 				onChangeInline({ stroke: color }, '[data-stroke]')
 			}
 			onChange={({ color, paletteColor, paletteStatus }) => {
@@ -95,7 +96,7 @@ export const SvgColor = props => {
 					: props['svg-fill-palette-status']
 			}
 			onChangeInline={({ color }) =>
-				onChangeInline({ fill: color }, '[data-fill]')
+				onChangeInline && onChangeInline({ fill: color }, '[data-fill]')
 			}
 			onChange={({ color, paletteColor, paletteStatus }) => {
 				if (isHover)
@@ -198,7 +199,7 @@ export const SvgColorControl = props => {
 												'SVG Fill',
 												'maxi-blocks'
 											)}
-											onChangeInline={() => {}}
+											onChangeInline={null}
 											isHover
 										/>
 									)}
@@ -210,7 +211,7 @@ export const SvgColorControl = props => {
 												'SVG Line',
 												'maxi-blocks'
 											)}
-											onChangeInline={() => {}}
+											onChangeInline={null}
 											isHover
 										/>
 									)}

@@ -74,7 +74,6 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 										)}
 										selected={hoverStatus}
 										className='maxi-box-shadow-status-hover'
-										onChangeInline={() => {}}
 										onChange={val =>
 											maxiSetAttributes({
 												...(val &&

@@ -42,7 +42,7 @@ import { handleSetAttributes } from '../../extensions/maxi-block';
  */
 const LayerCard = props => {
 	const {
-		onChangeInline,
+		onChangeInline = null,
 		onChange,
 		onOpen,
 		isOpen,
@@ -233,10 +233,11 @@ const LayerCard = props => {
 				onChangeInline={obj => {
 					previewRef.current.style.background =
 						obj['background-color'];
-					onChangeInline(
-						obj,
-						`.maxi-background-displayer__${layer.order}`
-					);
+					onChangeInline &&
+						onChangeInline(
+							obj,
+							`.maxi-background-displayer__${layer.order}`
+						);
 				}}
 				onChange={obj => {
 					onChange(

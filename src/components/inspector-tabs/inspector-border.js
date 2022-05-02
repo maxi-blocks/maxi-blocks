@@ -103,7 +103,6 @@ const border = ({
 											)}
 											selected={hoverStatus}
 											className='maxi-border-status-hover'
-											onChangeInline={() => {}}
 											onChange={val =>
 												maxiSetAttributes({
 													...(val &&

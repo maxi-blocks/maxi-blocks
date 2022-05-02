@@ -418,7 +418,6 @@ const Inspector = props => {
 																				],
 																				true
 																			)}
-																			onChangeInline={() => {}}
 																			onChange={obj => {
 																				maxiSetAttributes(
 																					obj

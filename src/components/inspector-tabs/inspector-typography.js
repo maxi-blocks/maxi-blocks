@@ -117,7 +117,6 @@ const typography = ({
 											'typography',
 											true
 										)}
-										onChangeInline={() => {}}
 										onChange={obj => maxiSetAttributes(obj)}
 										hideAlignment={hideAlignment}
 										breakpoint={deviceType}

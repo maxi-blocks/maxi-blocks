@@ -149,7 +149,6 @@ const background = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChangeInline={() => {}}
 										onChange={obj => {
 											maxiSetAttributes(obj);
 										}}

@@ -34,6 +34,7 @@ const attributes = {
 		type: 'string',
 	},
 	...attributesData.svg,
+	...attributesData.svgHover,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -106,6 +107,7 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

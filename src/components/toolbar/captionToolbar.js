@@ -35,45 +35,45 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const CaptionToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, maxiSetAttributes } = props;
+		const {
+			attributes,
+			clientId,
+			maxiSetAttributes,
+			insertInlineStyles,
+			cleanInlineStyles,
+			isSelected,
+		} = props;
 		const {
 			captionContent: content,
 			isList = false,
 			linkSettings,
 			textLevel = 'p',
 			uniqueID,
-			parentBlockStyle,
+			blockStyle,
 		} = attributes;
 
-		const { editorVersion, breakpoint, styleCard, isSelected } = useSelect(
-			select => {
-				const { receiveMaxiSettings, receiveMaxiDeviceType } =
-					select('maxiBlocks');
-				const { receiveMaxiSelectedStyleCard } = select(
-					'maxiBlocks/style-cards'
-				);
+		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } =
+				select('maxiBlocks');
+			const { receiveMaxiSelectedStyleCard } = select(
+				'maxiBlocks/style-cards'
+			);
 
-				const maxiSettings = receiveMaxiSettings();
-				const version = !isEmpty(maxiSettings.editor)
-					? maxiSettings.editor.version
-					: null;
+			const maxiSettings = receiveMaxiSettings();
+			const version = !isEmpty(maxiSettings.editor)
+				? maxiSettings.editor.version
+				: null;
 
-				const breakpoint = receiveMaxiDeviceType();
+			const breakpoint = receiveMaxiDeviceType();
 
-				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-				const isSelected = ref.current?.isSameNode(
-					ref.current.ownerDocument.activeElement
-				);
-
-				return {
-					editorVersion: version,
-					breakpoint,
-					styleCard,
-					isSelected,
-				};
-			}
-		);
+			return {
+				editorVersion: version,
+				breakpoint,
+				styleCard,
+			};
+		});
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
@@ -138,14 +138,25 @@ const CaptionToolbar = memo(
 								styleCard={styleCard}
 								clientId={clientId}
 								isCaptionToolbar
-								blockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 							/>
 							<TextColor
 								{...getGroupAttributes(
 									attributes,
 									'typography'
 								)}
-								onChange={obj => processAttributes(obj)}
+								onChangeInline={obj =>
+									insertInlineStyles({
+										obj,
+										target: '.maxi-text-block__content',
+									})
+								}
+								onChange={obj => {
+									processAttributes(obj);
+									cleanInlineStyles(
+										'.maxi-text-block__content'
+									);
+								}}
 								breakpoint={breakpoint}
 								node={anchorRef}
 								isList={isList}
@@ -196,7 +207,7 @@ const CaptionToolbar = memo(
 								linkSettings={linkSettings}
 								breakpoint={breakpoint}
 								textLevel={textLevel}
-								blockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 								styleCard={styleCard}
 								isCaptionToolbar
 							/>

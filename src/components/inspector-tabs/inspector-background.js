@@ -31,6 +31,7 @@ const background = ({
 	hoverGlobalProps,
 	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
 	depth = 2,
+	inlineTarget = '',
 }) => {
 	const {
 		attributes,
@@ -38,6 +39,8 @@ const background = ({
 		deviceType,
 		maxiSetAttributes,
 		scValues = {},
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
 
 	const {
@@ -58,27 +61,34 @@ const background = ({
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
-							<>
-								<BackgroundControl
-									{...getGroupAttributes(
-										attributes,
-										groupAttributes,
-										false,
-										prefix
-									)}
-									prefix={prefix}
-									onChange={obj => maxiSetAttributes(obj)}
-									disableColor={disableColor}
-									disableImage={disableImage}
-									disableGradient={disableGradient}
-									disableVideo={disableVideo}
-									disableSVG={disableSVG}
-									disableClipPath={disableClipPath}
-									clientId={clientId}
-									breakpoint={deviceType}
-									globalProps={globalProps}
-								/>
-							</>
+							<BackgroundControl
+								{...getGroupAttributes(
+									attributes,
+									groupAttributes,
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								onChangeInline={obj => {
+									insertInlineStyles({
+										obj,
+										target: inlineTarget,
+									});
+								}}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(inlineTarget);
+								}}
+								disableColor={disableColor}
+								disableImage={disableImage}
+								disableGradient={disableGradient}
+								disableVideo={disableVideo}
+								disableSVG={disableSVG}
+								disableClipPath={disableClipPath}
+								clientId={clientId}
+								breakpoint={deviceType}
+								globalProps={globalProps}
+							/>
 						),
 					},
 					{
@@ -139,7 +149,9 @@ const background = ({
 											prefix
 										)}
 										prefix={prefix}
-										onChange={obj => maxiSetAttributes(obj)}
+										onChange={obj => {
+											maxiSetAttributes(obj);
+										}}
 										disableImage
 										disableVideo
 										disableClipPath

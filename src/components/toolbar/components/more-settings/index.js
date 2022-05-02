@@ -18,6 +18,7 @@ import Delete from '../delete';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
 import { getGroupAttributes } from '../../../../extensions/styles';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * Icons
@@ -28,13 +29,12 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
-import { openSidebarAccordion } from '../../../../extensions/inspector-path';
 
 /**
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, onChange, prefix } = props;
+	const { clientId, blockName, onChange, prefix, copyPasteMapping } = props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -64,12 +64,14 @@ const MoreSettings = props => {
 							/>
 						</Button>
 					)}
-					renderContent={() => (
+					renderContent={args => (
 						<div>
 							<CopyPaste
 								clientId={clientId}
 								blockName={blockName}
 								prefix={prefix}
+								closeMoreSettings={args.onClose}
+								copyPasteMapping={copyPasteMapping}
 							/>
 							{blockName === 'maxi-blocks/text-maxi' && (
 								<TextGenerator
@@ -139,19 +141,17 @@ const MoreSettings = props => {
 							)}
 							{(blockName === 'maxi-blocks/svg-icon-maxi' ||
 								blockName === 'maxi-blocks/image-maxi') && (
-								<>
-									<Alignment
-										clientId={clientId}
-										blockName={blockName}
-										getGroupAttributes
-										{...getGroupAttributes(props, [
-											'alignment',
-											'textAlignment',
-										])}
-										onChange={onChange}
-										breakpoint={breakpoint}
-									/>
-								</>
+								<Alignment
+									clientId={clientId}
+									blockName={blockName}
+									getGroupAttributes
+									{...getGroupAttributes(props, [
+										'alignment',
+										'textAlignment',
+									])}
+									onChange={onChange}
+									breakpoint={breakpoint}
+								/>
 							)}
 							<ReusableBlocks
 								clientId={clientId}

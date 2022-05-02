@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, dispatch, useSelect } from '@wordpress/data';
+import { dispatch, useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
@@ -16,8 +16,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
-import { loadFonts } from '../../extensions/text/fonts';
-
+import FontWeightControl from '../font-weight-control';
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -35,7 +34,7 @@ import { getDefaultSCValue } from '../../extensions/style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isBoolean, isNumber, isEmpty } from 'lodash';
+import { isBoolean, isNumber, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -240,6 +239,7 @@ const TextOptions = props => {
 const LinkOptions = props => {
 	const {
 		getValue,
+		onChangeInline,
 		onChangeFormat,
 		prefix,
 		breakpoint,
@@ -312,6 +312,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -327,7 +330,8 @@ const LinkOptions = props => {
 								[`${prefix}link-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a'
 						)
 					}
 					textLevel={textLevel}
@@ -351,6 +355,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-hover-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:hover')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -368,7 +375,8 @@ const LinkOptions = props => {
 								[`${prefix}link-hover-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:hover'
 						)
 					}
 					textLevel={textLevel}
@@ -394,6 +402,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-active-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:active')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -411,7 +422,8 @@ const LinkOptions = props => {
 								[`${prefix}link-active-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:active'
 						)
 					}
 					textLevel={textLevel}
@@ -437,6 +449,9 @@ const LinkOptions = props => {
 					paletteOpacity={
 						getValue(`${prefix}link-visited-palette-opacity`) || 1
 					}
+					onChangeInline={({ color }) =>
+						onChangeInline({ color }, 'a:visited')
+					}
 					onChange={({
 						paletteColor,
 						paletteStatus,
@@ -454,7 +469,8 @@ const LinkOptions = props => {
 								[`${prefix}link-visited-color`]: color,
 							},
 							false,
-							true
+							true,
+							'a:visited'
 						)
 					}
 					textLevel={textLevel}
@@ -473,9 +489,11 @@ const TypographyControl = withFormatValue(props => {
 		className,
 		textLevel = 'p',
 		hideAlignment = false,
+		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
 		formatValue,
+		inlineTarget = '.maxi-text-block__content',
 		isList = false,
 		isHover = false,
 		disableColor = false,
@@ -611,75 +629,6 @@ const TypographyControl = withFormatValue(props => {
 		return nonHoverValue;
 	};
 
-	const getWeightOptions = () => {
-		const { getFont } = select('maxiBlocks/text');
-
-		if (!isNil(getValue(`${prefix}font-family`))) {
-			const fontFiles = getFont(getValue(`${prefix}font-family`))?.files;
-			const fontOptions = fontFiles
-				? Object.keys(fontFiles).map(key => key)
-				: [];
-
-			if (fontOptions.length === 0) {
-				return [
-					{ label: __('Thin (Hairline)', 'maxi-blocks'), value: 100 },
-					{
-						label: __('Extra Light (Ultra Light)', 'maxi-blocks'),
-						value: 200,
-					},
-					{ label: __('Light', 'maxi-blocks'), value: 300 },
-					{
-						label: __('Normal (Regular)', 'maxi-blocks'),
-						value: 400,
-					},
-					{ label: __('Medium', 'maxi-blocks'), value: 500 },
-					{
-						label: __('Semi Bold (Semi Bold)', 'maxi-blocks'),
-						value: 600,
-					},
-					{ label: __('Bold', 'maxi-blocks'), value: 700 },
-					{
-						label: __('Extra Bold (Ultra Bold)', 'maxi-blocks'),
-						value: 800,
-					},
-					{ label: __('Black (Heavy)', 'maxi-blocks'), value: 900 },
-					{
-						label: __('Extra Black (Ultra Black)', 'maxi-blocks'),
-						value: 950,
-					},
-				];
-			}
-			const weightOptions = {
-				100: 'Thin (Hairline)',
-				200: 'Extra Light (Ultra Light)',
-				300: 'Light',
-				400: 'Normal (Regular)',
-				500: 'Medium',
-				600: 'Semi Bold (Semi Bold)',
-				700: 'Bold',
-				800: 'Extra Bold (Ultra Bold)',
-				900: 'Black (Heavy)',
-				950: 'Extra Black (Ultra Black)',
-			};
-			const response = [];
-			if (!fontOptions.includes('900')) {
-				fontOptions.push('900');
-			}
-			fontOptions.forEach(weight => {
-				const weightOption = {};
-				if (weightOptions[weight]) {
-					weightOption.label = __(
-						weightOptions[weight],
-						'maxi-blocks'
-					);
-					weightOption.value = weight;
-					response.push(weightOption);
-				}
-			});
-			return response;
-		}
-		return null;
-	};
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
@@ -695,10 +644,21 @@ const TypographyControl = withFormatValue(props => {
 		return defaultAttribute;
 	};
 
+	const getInlineTarget = tag => {
+		const target = `${inlineTarget} ${isList ? 'li' : ''}${
+			tag !== ''
+				? `${tag}, ${inlineTarget} ${isList ? 'li' : ''} ${tag} span`
+				: ''
+		}`;
+
+		return target.replace(/\s{2,}/g, ' ');
+	};
+
 	const onChangeFormat = (
 		value,
 		customBreakpoint,
-		forceDisableCustomFormats = false
+		forceDisableCustomFormats = false,
+		tag = ''
 	) => {
 		const obj = setFormat({
 			formatValue,
@@ -724,7 +684,11 @@ const TypographyControl = withFormatValue(props => {
 			);
 		}
 
-		onChange(obj);
+		onChange(obj, getInlineTarget(tag));
+	};
+
+	const onChangeInlineValue = (obj, tag = '') => {
+		onChangeInline && onChangeInline(obj, getInlineTarget(tag), isList);
 	};
 
 	const getOpacityValue = label => {
@@ -735,19 +699,38 @@ const TypographyControl = withFormatValue(props => {
 
 	return (
 		<div className={classes}>
-			{!disableFontFamily && (
-				<FontFamilySelector
-					className='maxi-typography-control__font-family'
-					font={getValue(`${prefix}font-family`)}
-					onChange={font => {
-						onChangeFormat({
-							[`${prefix}font-family`]: font.value,
-							[`${prefix}font-options`]: font.files,
-						});
-					}}
-					fontWeight={getValue(`${prefix}font-weight`)}
-					fontStyle={getValue(`${prefix}font-style`)}
-				/>
+			{styleCards ? (
+				!disableFontFamily && (
+					<FontFamilySelector
+						className='maxi-typography-control__font-family'
+						font={getValue(`${prefix}font-family`)}
+						onChange={font => {
+							onChangeFormat({
+								[`${prefix}font-family`]: font.value,
+								[`${prefix}font-options`]: font.files,
+							});
+						}}
+						fontWeight={getValue(`${prefix}font-weight`)}
+						fontStyle={getValue(`${prefix}font-style`)}
+					/>
+				)
+			) : (
+				<ResponsiveTabsControl breakpoint={breakpoint}>
+					{!disableFontFamily && (
+						<FontFamilySelector
+							className='maxi-typography-control__font-family'
+							font={getValue(`${prefix}font-family`)}
+							onChange={font => {
+								onChangeFormat({
+									[`${prefix}font-family`]: font.value,
+									[`${prefix}font-options`]: font.files,
+								});
+							}}
+							fontWeight={getValue(`${prefix}font-weight`)}
+							fontStyle={getValue(`${prefix}font-style`)}
+						/>
+					)}
+				</ResponsiveTabsControl>
 			)}
 			{!disableColor && !styleCards && (
 				<ColorControl
@@ -758,6 +741,9 @@ const TypographyControl = withFormatValue(props => {
 					paletteColor={getValue(`${prefix}palette-color`)}
 					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-status`)}
+					onChangeInline={({ color }) =>
+						onChangeInlineValue({ color })
+					}
 					onChange={({
 						color,
 						paletteColor,
@@ -785,15 +771,29 @@ const TypographyControl = withFormatValue(props => {
 					{...getGroupAttributes(props, 'textAlignment')}
 					className='maxi-typography-control__text-alignment'
 					label={__('Alignment', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					breakpoint={breakpoint}
 					type='text'
 				/>
 			)}
-			<ResponsiveTabsControl
-				className='maxi-typography-control__text-options-tabs'
-				breakpoint={breakpoint}
-			>
+			{styleCards ? (
+				<ResponsiveTabsControl
+					className='maxi-typography-control__text-options-tabs'
+					breakpoint={breakpoint}
+				>
+					<TextOptions
+						getValue={getValue}
+						getDefault={getDefault}
+						onChangeFormat={onChangeFormat}
+						prefix={prefix}
+						minMaxSettings={minMaxSettings}
+						minMaxSettingsLetterSpacing={
+							minMaxSettingsLetterSpacing
+						}
+						avoidXXL={!styleCards}
+					/>
+				</ResponsiveTabsControl>
+			) : (
 				<TextOptions
 					getValue={getValue}
 					getDefault={getDefault}
@@ -803,28 +803,20 @@ const TypographyControl = withFormatValue(props => {
 					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
 					avoidXXL={!styleCards}
 				/>
-			</ResponsiveTabsControl>
+			)}
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&
 				!styleCards &&
 				!hideAlignment && <Divider />}
-			<SelectControl
-				label={__('Font weight', 'maxi-blocks')}
-				className='maxi-typography-control__weight'
-				value={getValue(`${prefix}font-weight`)}
-				options={getWeightOptions()}
+			<FontWeightControl
 				onChange={val => {
 					onChangeFormat({ [`${prefix}font-weight`]: val });
-					const fontName = getValue(`${prefix}font-family`);
-					const fontStyle = getValue(`${prefix}font-style`);
-					const objFont = { [fontName]: {} };
-
-					objFont[fontName].weight = val.toString();
-					if (fontStyle) objFont[fontName].style = fontStyle;
-
-					loadFonts(objFont);
 				}}
+				fontWeight={getValue(`${prefix}font-weight`)}
+				fontName={getValue(`${prefix}font-family`)}
+				fontStyle={getValue(`${prefix}font-style`)}
+				prefix={prefix}
 			/>
 			<SelectControl
 				label={__('Text transform', 'maxi-blocks')}
@@ -922,7 +914,7 @@ const TypographyControl = withFormatValue(props => {
 				options={[
 					{
 						label: __('None', 'maxi-blocks'),
-						value: '',
+						value: 'unset',
 					},
 					{
 						label: __('Mixed', 'maxi-blocks'),
@@ -1042,6 +1034,9 @@ const TypographyControl = withFormatValue(props => {
 					<TextShadowControl
 						className='maxi-typography-control__text-shadow'
 						textShadow={getValue(`${prefix}text-shadow`)}
+						onChangeInline={val =>
+							onChangeInlineValue({ 'text-shadow': val })
+						}
 						onChange={val => {
 							onChangeFormat({
 								[`${prefix}text-shadow`]: val,
@@ -1061,6 +1056,7 @@ const TypographyControl = withFormatValue(props => {
 				<LinkOptions
 					getValue={getValue}
 					getDefault={getDefault}
+					onChangeInline={onChangeInlineValue}
 					onChangeFormat={onChangeFormat}
 					prefix={prefix}
 					breakpoint={breakpoint}

@@ -12,7 +12,11 @@ const getActiveStyleCard = styleCards => {
 	let SC;
 
 	if (!styleCards)
-		SC = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
+		// Needs a delay, if not Redux returns error 3
+		SC = setTimeout(
+			() => select('maxiBlocks/style-cards').receiveMaxiStyleCards(),
+			150
+		);
 	else SC = styleCards;
 
 	let styleCardActive;

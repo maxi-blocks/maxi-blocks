@@ -33,9 +33,16 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const IconToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, maxiSetAttributes, name, isSelected } =
-			props;
-		const { uniqueID } = attributes;
+		const {
+			attributes,
+			clientId,
+			maxiSetAttributes,
+			insertInlineStyles,
+			cleanInlineStyles,
+			name,
+			isSelected,
+		} = props;
+		const { uniqueID, svgType, blockStyle } = attributes;
 
 		const { editorVersion, breakpoint } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -88,75 +95,88 @@ const IconToolbar = memo(
 		};
 
 		return (
-			<>
-				{isSelected && anchorRef && (
-					<Popover
-						noArrow
-						animate={false}
-						position='bottom center'
-						focusOnMount={false}
-						anchorRef={anchorRef}
-						className={classnames('maxi-toolbar__popover')}
-						uniqueid={uniqueID}
-						__unstableSlotName='block-toolbar'
-						shouldAnchorIncludePadding
-						{...stickyProps}
-					>
-						<div className='toolbar-wrapper icon-toolbar'>
-							<IconPosition
-								blockName={name}
-								{...getGroupAttributes(attributes, 'icon')}
-								onChange={obj => processAttributes(obj)}
-							/>
-							<IconSize
-								blockName={name}
-								{...getGroupAttributes(attributes, 'icon')}
-								onChange={obj => processAttributes(obj)}
-								breakpoint={breakpoint}
-							/>
-							<IconColor
-								blockName={name}
-								{...getGroupAttributes(attributes, 'icon')}
-								onChange={obj => processAttributes(obj)}
-							/>
-							<IconBackground
-								blockName={name}
-								breakpoint={breakpoint}
-								{...getGroupAttributes(attributes, [
-									'icon',
-									'iconBackgroundColor',
-								])}
-								onChange={obj => processAttributes(obj)}
-							/>
-							<Border
-								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'iconBorder',
-									'iconBorderWidth',
-									'iconBorderRadius',
-								])}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-								clientId={clientId}
-								isIconToolbar
-								prefix='icon-'
-							/>
-							<PaddingMargin
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'iconPadding'
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-								disableMargin
-								paddingTarget='icon-padding'
-								isIconToolbar
-							/>
-						</div>
-					</Popover>
-				)}
-			</>
+			isSelected &&
+			anchorRef && (
+				<Popover
+					noArrow
+					animate={false}
+					position='bottom center'
+					focusOnMount={false}
+					anchorRef={anchorRef}
+					className={classnames('maxi-toolbar__popover')}
+					uniqueid={uniqueID}
+					__unstableSlotName='block-toolbar'
+					shouldAnchorIncludePadding
+					{...stickyProps}
+				>
+					<div className='toolbar-wrapper icon-toolbar'>
+						<IconPosition
+							blockName={name}
+							{...getGroupAttributes(attributes, 'icon')}
+							onChange={obj => processAttributes(obj)}
+						/>
+						<IconSize
+							blockName={name}
+							{...getGroupAttributes(attributes, 'icon')}
+							onChange={obj => processAttributes(obj)}
+							breakpoint={breakpoint}
+						/>
+						<IconColor
+							blockName={name}
+							{...getGroupAttributes(attributes, 'icon')}
+							svgType={svgType}
+							blockStyle={blockStyle}
+							onChangeInline={(obj, target) =>
+								insertInlineStyles({ obj, target })
+							}
+							onChange={(obj, target) => {
+								processAttributes(obj);
+								cleanInlineStyles(target);
+							}}
+						/>
+						<IconBackground
+							blockName={name}
+							breakpoint={breakpoint}
+							{...getGroupAttributes(attributes, [
+								'icon',
+								'iconBackgroundColor',
+							])}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: '.maxi-button-block__icon',
+								})
+							}
+							onChange={obj => {
+								processAttributes(obj);
+								cleanInlineStyles('.maxi-button-block__icon');
+							}}
+						/>
+						<Border
+							blockName={name}
+							{...getGroupAttributes(attributes, [
+								'iconBorder',
+								'iconBorderWidth',
+								'iconBorderRadius',
+							])}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={breakpoint}
+							clientId={clientId}
+							isIconToolbar
+							prefix='icon-'
+						/>
+						<PaddingMargin
+							blockName={name}
+							{...getGroupAttributes(attributes, 'iconPadding')}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={breakpoint}
+							disableMargin
+							paddingTarget='icon-padding'
+							isIconToolbar
+						/>
+					</div>
+				</Popover>
+			)
 		);
 	}),
 	// Avoids non-necessary renderings

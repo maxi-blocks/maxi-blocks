@@ -1,6 +1,16 @@
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import alignment from './alignment';
 
 const numberCounter = {
+	...breakpointAttributesCreator({
+		obj: {
+			'number-counter-width-auto': {
+				type: 'boolean',
+				default: false,
+			},
+		},
+	}),
 	'number-counter-status': {
 		type: 'boolean',
 		default: true,
@@ -58,6 +68,10 @@ const numberCounter = {
 		type: 'string',
 		default: 'Roboto',
 	},
+	'number-counter-title-font-weight': {
+		type: 'string',
+	},
+	...alignment,
 };
 
 export default numberCounter;

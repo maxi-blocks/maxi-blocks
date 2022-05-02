@@ -4,7 +4,6 @@
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -329,7 +328,7 @@ class edit extends MaxiBlockComponent {
 						});
 					},
 					onRemoveSlide: id => {
-						let slidesWidth = { ...this.state.slidesWidth };
+						const slidesWidth = { ...this.state.slidesWidth };
 						delete slidesWidth[id];
 						this.setState({ slidesWidth });
 					},

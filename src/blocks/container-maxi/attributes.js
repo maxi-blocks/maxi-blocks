@@ -126,7 +126,17 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
-	...attributesData.flex,
+	...{
+		...attributesData.flex,
+		'row-gap-general': {
+			type: 'number',
+			default: 20,
+		},
+		'row-gap-unit-general': {
+			type: 'string',
+			default: 'px',
+		},
+	}
 };
 
 export default attributes;

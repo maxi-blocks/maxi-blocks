@@ -12,7 +12,7 @@ export const svg = {
 	...prefixAttributesCreator({
 		obj: width,
 		prefix,
-		diffValAttr: { 'svg-width-general': 64 },
+		diffValAttr: { 'svg-width-general': '64' },
 	}),
 	...breakpointAttributesCreator({
 		obj: {

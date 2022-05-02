@@ -276,6 +276,8 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
+		const handleReset = () => this.resetNumberHelper();
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -283,7 +285,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='number-counter-'
 				{...this.props}
-				resetNumberHelper={this.resetNumberHelper}
+				resetNumberHelper={handleReset}
 				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock

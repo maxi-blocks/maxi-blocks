@@ -67,7 +67,7 @@ const numberCounter = {
 				type: 'number',
 				default: 40,
 			},
-			'number-counter-title-font-family': {
+			'font-family': {
 				type: 'string',
 				default: 'Roboto',
 			},

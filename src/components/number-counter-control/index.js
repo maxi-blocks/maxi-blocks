@@ -223,24 +223,21 @@ const NumberCounterControl = props => {
 			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
-				defaultValue={getDefaultAttribute(
-					`number-counter-title-font-family-${breakpoint}`
-				)}
+				defaultValue={getDefaultAttribute(`font-family-${breakpoint}`)}
 				font={getLastBreakpointAttribute({
-					target: 'number-counter-title-font-family',
+					target: 'font-family',
 					breakpoint,
 					attributes: props,
 				})}
 				onChange={font =>
 					onChange({
-						[`number-counter-title-font-family-${breakpoint}`]:
-							font.value,
+						[`font-family-${breakpoint}`]: font.value,
 					})
 				}
 			/>
 			<FontWeightControl
 				onChange={val => {
-					onChange({ ['number-counter-title-font-weight']: val });
+					onChange({ 'number-counter-title-font-weight': val });
 				}}
 				value={props['number-counter-title-font-weight']}
 				fontName={props['number-counter-title-font-family']}
@@ -317,22 +314,22 @@ const NumberCounterControl = props => {
 			<ColorControl
 				label={__('Text', 'maxi-blocks')}
 				paletteStatus={getLastBreakpointAttribute({
-					target: `number-counter-text-palette-status`,
+					target: 'number-counter-text-palette-status',
 					breakpoint,
 					attributes: props,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: `number-counter-text-palette-color`,
+					target: 'number-counter-text-palette-color',
 					breakpoint,
 					attributes: props,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: `number-counter-palette-text-opacity`,
+					target: 'number-counter-palette-text-opacity',
 					breakpoint,
 					attributes: props,
 				})}
 				color={getLastBreakpointAttribute({
-					target: `number-counter-text-color`,
+					target: 'number-counter-text-color',
 					breakpoint,
 					attributes: props,
 				})}
@@ -397,22 +394,22 @@ const NumberCounterControl = props => {
 					<ColorControl
 						label={__('Circle Bar', 'maxi-blocks')}
 						paletteStatus={getLastBreakpointAttribute({
-							target: `number-counter-circle-bar-palette-status`,
+							target: 'number-counter-circle-bar-palette-status',
 							breakpoint,
 							attributes: props,
 						})}
 						paletteColor={getLastBreakpointAttribute({
-							target: `number-counter-circle-bar-palette-color`,
+							target: 'number-counter-circle-bar-palette-color',
 							breakpoint,
 							attributes: props,
 						})}
 						paletteOpacity={getLastBreakpointAttribute({
-							target: `number-counter-circle-bar-palette-opacity`,
+							target: 'number-counter-circle-bar-palette-opacity',
 							breakpoint,
 							attributes: props,
 						})}
 						color={getLastBreakpointAttribute({
-							target: `number-counter-circle-bar-color`,
+							target: 'number-counter-circle-bar-color',
 							breakpoint,
 							attributes: props,
 						})}

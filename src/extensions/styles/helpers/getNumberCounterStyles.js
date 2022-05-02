@@ -99,12 +99,8 @@ const getTextStyles = (obj, blockStyle) => {
 					obj[`number-counter-title-font-size-${breakpoint}`]
 				}px`,
 			}),
-			...(!isNil(
-				obj[`number-counter-title-font-family-${breakpoint}`]
-			) && {
-				'font-family': `${
-					obj[`number-counter-title-font-family-${breakpoint}`]
-				}`,
+			...(!isNil(obj[`font-family-${breakpoint}`]) && {
+				'font-family': `${obj[`font-family-${breakpoint}`]}`,
 			}),
 			[typeOfStyle]: getColor(breakpoint),
 		};

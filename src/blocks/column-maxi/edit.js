@@ -175,6 +175,15 @@ class edit extends MaxiBlockComponent {
 						)}
 						defaultSize={{
 							width: getColumnWidthDefault(),
+							height: `${getLastBreakpointAttribute({
+								target: 'height',
+								breakpoint: deviceType,
+								attributes,
+							})}${getLastBreakpointAttribute({
+								target: 'height-unit',
+								breakpoint: deviceType,
+								attributes,
+							})}`,
 						}}
 						enable={{
 							right: true,

@@ -18,8 +18,15 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 /**
  * Component
  */
-const boxShadow = ({ props, prefix = '', depth = 2 }) => {
-	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
+const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 
 	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
 
@@ -41,7 +48,16 @@ const boxShadow = ({ props, prefix = '', depth = 2 }) => {
 										prefix
 									)}
 									prefix={prefix}
-									onChange={obj => maxiSetAttributes(obj)}
+									onChangeInline={obj =>
+										insertInlineStyles({
+											obj,
+											target: inlineTarget,
+										})
+									}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+										cleanInlineStyles(inlineTarget);
+									}}
 									breakpoint={deviceType}
 									clientId={clientId}
 								/>

@@ -51,7 +51,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange, blockStyle, clientId } = props;
+	const { className, onChangeInline, onChange, blockStyle, clientId } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -384,7 +384,8 @@ const HoverEffectControl = props => {
 								),
 							}}
 							hideAlignment
-							onChange={obj => onChange(obj)}
+							onChangeInline={onChangeInline}
+							onChange={onChange}
 							prefix='hover-title-'
 							disableCustomFormats
 							blockStyle={blockStyle}
@@ -394,6 +395,7 @@ const HoverEffectControl = props => {
 								type: 'h4',
 							}}
 							textLevel='h4'
+							inlineTarget='maxi-hover-details__content h4'
 						/>
 					)}
 					<hr />
@@ -431,7 +433,7 @@ const HoverEffectControl = props => {
 								),
 							}}
 							hideAlignment
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							prefix='hover-content-'
 							disableCustomFormats
 							blockStyle={blockStyle}
@@ -441,6 +443,7 @@ const HoverEffectControl = props => {
 								type: 'p',
 							}}
 							textLevel='p'
+							inlineTarget='maxi-hover-details__content p'
 						/>
 					)}
 					<hr />
@@ -450,7 +453,10 @@ const HoverEffectControl = props => {
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
 						])}
-						onChange={obj => onChange(obj)}
+						onChangeInline={obj =>
+							onChangeInline(obj, '.maxi-hover-details__content')
+						}
+						onChange={onChange}
 						disableClipPath
 						disableImage
 						disableVideo
@@ -474,7 +480,13 @@ const HoverEffectControl = props => {
 								'hoverBorderWidth',
 								'hoverBorderRadius',
 							])}
-							onChange={obj => onChange(obj)}
+							onChangeInline={obj =>
+								onChangeInline(
+									obj,
+									'.maxi-hover-details__content'
+								)
+							}
+							onChange={onChange}
 							prefix='hover-'
 							disablePalette
 							clientId={clientId}
@@ -493,7 +505,7 @@ const HoverEffectControl = props => {
 						<AxisControl
 							{...getGroupAttributes(props, 'hoverPadding')}
 							label={__('Padding', 'maxi-blocks')}
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							target='hover-padding'
 							disableAuto
 						/>
@@ -511,7 +523,7 @@ const HoverEffectControl = props => {
 						<AxisControl
 							{...getGroupAttributes(props, 'hoverMargin')}
 							label={__('Margin', 'maxi-blocks')}
-							onChange={obj => onChange(obj)}
+							onChange={onChange}
 							target='hover-margin'
 							optionType='string'
 						/>

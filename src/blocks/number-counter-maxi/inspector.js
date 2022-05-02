@@ -15,12 +15,20 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 
 	return (
 		<InspectorControls>
@@ -41,25 +49,57 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										...inspectorTabs.alignment({
+											props: {
+												...props,
+											},
+											isAlignment: true,
+											alignmentLabel: __(
+												'Counter',
+												'maxi-blocks'
+											),
+											disableJustify: true,
+										}),
 										{
 											label: __('Number', 'maxi-blocks'),
 											content: (
-												<NumberCounterControl
-													{...getGroupAttributes(
-														attributes,
-														'numberCounter'
-													)}
-													{...getGroupAttributes(
-														attributes,
-														'size',
-														false,
-														'number-counter-'
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
+												<ResponsiveTabsControl
 													breakpoint={deviceType}
-												/>
+												>
+													<NumberCounterControl
+														{...getGroupAttributes(
+															attributes,
+															'numberCounter'
+														)}
+														{...getGroupAttributes(
+															attributes,
+															'size',
+															false,
+															'number-counter-'
+														)}
+														onChangeInline={(
+															obj,
+															target
+														) =>
+															insertInlineStyles({
+																obj,
+																target,
+															})
+														}
+														onChange={(
+															obj,
+															target
+														) => {
+															maxiSetAttributes(
+																obj
+															);
+															cleanInlineStyles(
+																target
+															);
+														}}
+														breakpoint={deviceType}
+													/>
+												</ResponsiveTabsControl>
 											),
 										},
 										...inspectorTabs.border({
@@ -171,4 +211,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

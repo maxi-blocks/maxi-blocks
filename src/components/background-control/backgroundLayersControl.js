@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { RawHTML } from '@wordpress/element';
+import { RawHTML, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -41,18 +41,37 @@ import { handleSetAttributes } from '../../extensions/maxi-block';
 /**
  * Component
  */
-
 const getLayerCardContent = props => {
-	const { breakpoint, handleOnChangeLayer, isHover, layer, onChange } = props;
+	const {
+		breakpoint,
+		handleOnChangeLayer,
+		isHover,
+		layer,
+		onChangeInline = null,
+		onChange,
+		previewRef,
+	} = props;
 
 	const layerContent = {
 		color: (
 			<ColorLayer
 				key={`background-color-layer--${layer.order}`}
 				colorOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
+				onChangeInline={obj => {
+					previewRef.current.style.background =
+						obj['background-color'];
+					onChangeInline &&
+						onChangeInline(
+							obj,
+							`.maxi-background-displayer__${layer.order}`
+						);
+				}}
+				onChange={obj => {
+					onChange(
+						{ ...layer, ...handleOnChangeLayer(obj, layer) },
+						`.maxi-background-displayer__${layer.order}`
+					);
+				}}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -113,7 +132,7 @@ const getLayerCardContent = props => {
 };
 
 const getLayerCardTitle = props => {
-	const { onChange, clientId, breakpoint, isHover } = props;
+	const { onChange, clientId, breakpoint, isHover, previewRef } = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
@@ -285,6 +304,7 @@ const getLayerCardTitle = props => {
 			<span className='maxi-background-layer__title__text'>
 				<span
 					className='maxi-background-layer__preview'
+					ref={previewRef}
 					style={previewStyles(type)}
 				>
 					{type === 'shape' && layer['background-svg-SVGElement'] && (
@@ -323,10 +343,13 @@ const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
 	isHover = false,
+	onChangeInline,
 	onChange,
 	clientId,
 	breakpoint,
 }) => {
+	const previewRef = useRef(null);
+
 	const layers = cloneDeep(layersOptions);
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
@@ -419,7 +442,7 @@ const BackgroundLayersControl = ({
 			}),
 		});
 
-	const onChangeLayer = layer => {
+	const onChangeLayer = (layer, target = false) => {
 		const isHoverLayer = layer.isHover;
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
@@ -432,9 +455,13 @@ const BackgroundLayersControl = ({
 		});
 
 		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
-			onChange({
-				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
-			});
+			onChange(
+				{
+					[`background-layers${isHoverLayer ? '-hover' : ''}`]:
+						newLayers,
+				},
+				target
+			);
 	};
 
 	const onAddLayer = layer => {
@@ -477,13 +504,16 @@ const BackgroundLayersControl = ({
 										onChange: onChangeLayer,
 										breakpoint,
 										handleOnChangeLayer,
+										previewRef,
 									})}
 									content={getLayerCardContent({
 										breakpoint,
 										handleOnChangeLayer,
 										isHover,
 										layer,
+										onChangeInline,
 										onChange: onChangeLayer,
+										previewRef,
 									})}
 									id={layer.order}
 									onRemove={() => onRemoveLayer(layer)}

@@ -24,7 +24,7 @@ import { capitalize } from 'lodash';
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
 import { getDefaultAttribute } from '../../../../extensions/styles';
-import { openSidebarAccordion } from '../../../../extensions/inspector-path';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * ImageSize

@@ -44,7 +44,15 @@ const Alignment = props => {
 			position='bottom right'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>
-					<Icon className='toolbar-item__icon toolbar-item__icon__alignment' icon={alignCenter} />
+					{isText ?
+						<Icon className='toolbar-item__icon toolbar-item__icon__alignment' icon={alignCenter} />
+		
+					:
+						<>
+							{__('Align', 'maxi-blocks')}
+						</>
+					}
+					
 				</Button>
 			)}
 			renderContent={() => (
@@ -53,7 +61,7 @@ const Alignment = props => {
 						props,
 						isText ? 'textAlignment' : 'alignment'
 					)}
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					disableJustify={!isText}
 					disableIcon
 					breakpoint={breakpoint}

@@ -47,7 +47,7 @@ describe('getNumberCounterStyles', () => {
 			'number-counter-circle-bar-palette-status-general': true,
 			'number-counter-circle-bar-palette-color-general': 4,
 			'number-counter-title-font-size-general': 40,
-			'number-counter-title-font-family-general': 'Roboto',
+			'font-family-general': 'Roboto',
 		};
 		const target = '.maxi-number-counter__box';
 		const blockStyle = 'light';

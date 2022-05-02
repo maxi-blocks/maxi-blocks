@@ -203,6 +203,14 @@ function maxi_blocks_allowed_html()
             'datetime' => true,
             'cite'     => true,
         ),
+        'g'        => array(
+            'class'    => true,
+            'd'    => true,
+            'fill' => true,
+            'stroke' => true,
+            'data-fill'     => true,
+            'data-stroke'       => true,
+        ),
         'kbd'        => array(),
         'label'      => array(
             'for' => true,
@@ -241,6 +249,14 @@ function maxi_blocks_allowed_html()
         'q'          => array(
             'cite' => true,
         ),
+        'path'          => array(
+            'class'    => true,
+            'd'    => true,
+            'fill' => true,
+            'stroke' => true,
+            'data-fill'     => true,
+            'data-stroke'       => true,
+        ),
         's'          => array(),
         'samp'       => array(),
         'span'       => array(
@@ -269,6 +285,19 @@ function maxi_blocks_allowed_html()
             'xml:lang' => true,
         ),
         'sup'        => array(),
+        'style'        => array(),
+        'svg'      => array(
+            'class'    => true,
+            'width'       => true,
+            'height'     => true,
+            'stroke'      => true,
+            'fill' => true,
+            'stroke-width' => true,
+            'stroke-linejoin'         => true,
+            'stroke-miterlimit'       => true,
+            'data-fill'     => true,
+            'data-stroke'       => true,
+        ),
         'table'      => array(
             'id'       => true,
             'class'    => true,

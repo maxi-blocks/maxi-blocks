@@ -35,6 +35,7 @@ const FullSizeControl = props => {
 		breakpoint,
 		hideWidth,
 		hideMaxWidth,
+		isBlockFullWidth,
 		prefix = '',
 		allowForceAspectRatio = false,
 	} = props;
@@ -103,7 +104,7 @@ const FullSizeControl = props => {
 					target: `${prefix}width-fit-content`,
 					breakpoint,
 					attributes: props,
-				}) && (
+				}) || !isBlockFullWidth && (
 					<AdvancedNumberControl
 						label={__('Width', 'maxi-blocks')}
 						enableUnit

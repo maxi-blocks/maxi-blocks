@@ -71,9 +71,9 @@ describe('Svg Background', () => {
 			await getAttributes('svg-background-palette-color-general-hover')
 		).toStrictEqual(7);
 
-		await page.$$eval(
-			'.maxi-background-control__simple .maxi-tabs-control__full-width button',
-			button => button[0].click()
+		await accordion.$eval(
+			'.maxi-tab-content--selected .maxi-background-status-hover input',
+			input => input.click()
 		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

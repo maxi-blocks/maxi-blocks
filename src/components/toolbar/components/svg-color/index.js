@@ -23,13 +23,12 @@ function SvgColorToolbar(props) {
 	const {
 		type,
 		blockName,
+		onChangeInline,
 		onChangeFill,
 		onChangeHoverFill,
 		onChangeStroke,
 		onChangeHoverStroke,
-		changeSVGContent,
 		maxiSetAttributes,
-		changeSVGContentHover,
 		blockStyle,
 	} = props;
 
@@ -55,12 +54,11 @@ function SvgColorToolbar(props) {
 					{...getGroupAttributes(props, 'svgHover')}
 					type={type}
 					maxiSetAttributes={maxiSetAttributes}
+					onChangeInline={onChangeInline}
 					onChangeFill={onChangeFill}
 					onChangeStroke={onChangeStroke}
 					onChangeHoverFill={onChangeHoverFill}
 					onChangeHoverStroke={onChangeHoverStroke}
-					changeSVGContent={changeSVGContent}
-					changeSVGContentHover={changeSVGContentHover}
 					label={__(`Icon ${type}`, 'maxi-blocks')}
 					blockStyle={blockStyle}
 				/>

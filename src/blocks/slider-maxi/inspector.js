@@ -13,7 +13,6 @@ import {
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -23,13 +22,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const {
-		deviceType,
-		maxiSetAttributes,
-		attributes,
-		setEditView,
-		isEditView,
-	} = props;
+	const { deviceType, maxiSetAttributes, setEditView, isEditView } = props;
 
 	return (
 		<InspectorControls>
@@ -57,10 +50,6 @@ const Inspector = props => {
 											),
 											content: (
 												<SliderControl
-													{...getGroupAttributes(
-														attributes,
-														'slider'
-													)}
 													isEditView={isEditView}
 													onChange={obj =>
 														maxiSetAttributes(obj)

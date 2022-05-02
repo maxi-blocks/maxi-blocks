@@ -25,7 +25,6 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	...attributesData.slider,
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,

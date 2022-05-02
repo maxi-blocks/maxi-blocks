@@ -131,6 +131,7 @@ const BlockResizer = forwardRef((props, ref) => {
 						'maxi-resizable__handle-bottomleft'
 					),
 			}}
+			handleWrapperStyle={{ position: 'absolute' }}
 		>
 			{children}
 		</Resizable>

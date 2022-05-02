@@ -19,7 +19,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
-import { getActiveTabName } from '../../extensions/inspector-path';
+import { getActiveTabName } from '../../extensions/inspector';
 
 /**
  * External dependencies

@@ -76,6 +76,21 @@ const BoxShadowValueControl = props => {
 					isHover ? '-hover' : ''
 				}`
 			)}
+			enableUnit
+			unit={getLastBreakpointAttribute({
+				target: `${prefix}box-shadow-${type}-unit`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
+			onChangeUnit={val =>
+				onChange({
+					[`${prefix}box-shadow-${type}-unit-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: val,
+				})
+			}
+			allowedUnits={['px', 'em', 'vw']}
 		/>
 	);
 };
@@ -273,7 +288,11 @@ const BoxShadowControl = props => {
 					/>
 					{!isToolbar &&
 						boxShadowItems.map(type => (
-							<BoxShadowValueControl type={type} {...props} />
+							<BoxShadowValueControl
+								type={type}
+								key={type}
+								{...props}
+							/>
 						))}
 				</>
 			)}

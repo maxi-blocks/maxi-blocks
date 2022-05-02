@@ -56,9 +56,6 @@ describe('TypographyControl', () => {
 			'style',
 			'typography'
 		);
-		const input = await page.$(
-			'.maxi-typography-control .maxi-typography-control__font-family input'
-		);
 
 		const typographyInput = await page.$$eval(
 			'.maxi-typography-control__font-family div div div',
@@ -71,6 +68,10 @@ describe('TypographyControl', () => {
 		// s
 		await changeResponsive(page, 's');
 		await openSidebarTab(page, 'style', 'typography');
+
+		const input = await page.$(
+			'.maxi-typography-control .maxi-typography-control__font-family input'
+		);
 
 		await input.focus();
 		await pressKeyTimes('Backspace', '4');
@@ -272,9 +273,10 @@ describe('TypographyControl', () => {
 
 	it('Check Size, line height and letter spacing', async () => {
 		await changeResponsive(page, 'xl');
+
 		await addTypographyOptions({
 			page,
-			instance: await openSidebarTab(page, 'style', 'typography'),
+			instance: page,
 			size: '19',
 			lineHeight: '22',
 			letterSpacing: '10',
@@ -298,7 +300,7 @@ describe('TypographyControl', () => {
 		const responsiveSizeControl = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',
+				'.maxi-typography-control .maxi-typography-control__size input',
 			needFocus: true,
 			baseExpect: '19',
 			xsExpect: '11',
@@ -310,9 +312,9 @@ describe('TypographyControl', () => {
 		const responsiveSizeUnit = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+				'.maxi-typography-control .maxi-typography-control__size select',
 			selectInstance:
-				'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+				'.maxi-typography-control .maxi-typography-control__size select',
 			needSelectIndex: true,
 			baseExpect: 'px',
 			xsExpect: 'em',
@@ -321,38 +323,25 @@ describe('TypographyControl', () => {
 		expect(responsiveSizeUnit).toBeTruthy();
 
 		// test line-height
-		const accordion = await openSidebarTab(page, 'style', 'typography');
-		const input = await accordion.$$(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input'
-		);
-
-		await input[0].focus();
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('45');
+		await page.waitForTimeout(250);
 
 		const responsiveLineHeight = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input',
-			needFocus: true,
-			baseExpect: '45',
+				'.maxi-typography-control .maxi-typography-control__line-height input',
+			needFocusPlaceholder: true,
+			baseExpect: '22',
 			xsExpect: '43',
 			newValue: '43',
 		});
+
 		expect(responsiveLineHeight).toBeTruthy();
 
 		// letter spacing responsive
-		const letterInput = await accordion.$$(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input'
-		);
-
-		await letterInput[0].focus();
-
 		const responsiveLetterSpacing = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+				'.maxi-typography-control .maxi-typography-control__letter-spacing input',
 			needFocus: true,
 			baseExpect: '10',
 			xsExpect: '23',

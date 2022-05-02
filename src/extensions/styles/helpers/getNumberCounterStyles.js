@@ -110,6 +110,10 @@ const getTextStyles = (obj, blockStyle) => {
 		};
 	});
 
+	if (!isNil(obj['number-counter-title-font-weight']))
+		response.general['font-weight'] =
+			obj['number-counter-title-font-weight'];
+
 	return { numberCounterText: response };
 };
 

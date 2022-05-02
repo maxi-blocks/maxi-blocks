@@ -1,5 +1,6 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import alignment from './alignment';
 
 const numberCounter = {
 	...breakpointAttributesCreator({
@@ -80,6 +81,10 @@ const numberCounter = {
 			}),
 		},
 	}),
+	'number-counter-title-font-weight': {
+		type: 'string',
+	},
+	...alignment,
 };
 
 export default numberCounter;

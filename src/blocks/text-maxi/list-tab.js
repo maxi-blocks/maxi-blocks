@@ -34,7 +34,13 @@ import { capitalize } from 'lodash';
  * Inspector
  */
 const listTab = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 	const {
 		blockStyle,
 		listReversed,
@@ -474,6 +480,14 @@ const listTab = props => {
 							paletteStatus={attributes['list-palette-status']}
 							paletteColor={attributes['list-palette-color']}
 							paletteOpacity={attributes['list-palette-opacity']}
+							onChangeInline={({ color }) =>
+								insertInlineStyles({
+									obj: { color },
+									target: 'li',
+									isMultiplySelector: false,
+									pseudoElement: '::before',
+								})
+							}
 							onChange={({
 								paletteStatus,
 								paletteColor,
@@ -501,6 +515,7 @@ const listTab = props => {
 										}),
 									}),
 								});
+								cleanInlineStyles('li', '::before');
 							}}
 						/>
 					)}

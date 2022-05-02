@@ -13,12 +13,7 @@ import {
 	withMaxiProps,
 	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
-import {
-	BlockResizer,
-	Button,
-	Toolbar,
-	MaxiPopoverButton,
-} from '../../components';
+import { BlockResizer, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
 
 import {
@@ -34,13 +29,9 @@ import copyPasteMapping from './copy-paste-mapping';
 import { round } from 'lodash';
 
 /**
- * Icons
- */
-import { replay } from '../../icons';
-
-/**
  * NumberCounter
  */
+
 const NumberCounter = attributes => {
 	const {
 		'number-counter-duration': countDuration,
@@ -52,9 +43,7 @@ const NumberCounter = attributes => {
 		'number-counter-end': endNumber,
 		deviceType,
 		resizerProps,
-		blockRef,
-		isSelected,
-		uniqueID,
+		replayCounter,
 	} = attributes;
 	const countRef = useRef(null);
 	const startCountValue = Math.ceil((startNumber * 360) / 100);
@@ -62,7 +51,7 @@ const NumberCounter = attributes => {
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
-	const [replyStatus, setReplyStatus] = useState(false);
+	const [replayStatus, setReplayStatus] = useState(false);
 
 	const circumference = 2 * Math.PI * radius;
 
@@ -70,7 +59,7 @@ const NumberCounter = attributes => {
 		(1 / ((endCountValue - startCountValue) / countDuration)) * 1000;
 
 	useEffect(() => {
-		if ((startCountValue < endCountValue && preview) || replyStatus) {
+		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			if (count >= endCountValue) {
 				setCount(endCountValue);
 				return;
@@ -83,19 +72,19 @@ const NumberCounter = attributes => {
 			// eslint-disable-next-line consistent-return
 			return () => clearInterval(countRef.current);
 		}
-	}, [count, replyStatus, preview, endCountValue]);
+	}, [count, replayStatus, preview, endCountValue]);
 
 	useEffect(() => {
-		if ((startCountValue < endCountValue && preview) || replyStatus) {
+		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			if (count >= endCountValue) {
 				setCount(startCountValue);
-				setReplyStatus(false);
+				setReplayStatus(false);
 				clearInterval(countRef.current);
 			}
 		}
 	}, [
 		startCountValue,
-		replyStatus,
+		replayStatus,
 		endCountValue,
 		countDuration,
 		radius,
@@ -120,116 +109,97 @@ const NumberCounter = attributes => {
 			attributes,
 		}) === 'hidden';
 
+	replayCounter(() => setReplayStatus(true));
+
 	return (
-		<>
-			<MaxiPopoverButton
-				key={`popover-${uniqueID}`}
-				ref={blockRef}
-				isSelected={isSelected}
-				attributes={{ uniqueID }}
-				{...attributes}
-			>
-				<Button
-					className='maxi-number-counter__replay'
-					onClick={() => {
-						setCount(startCountValue);
-						setReplyStatus(true);
-						clearInterval(countRef.current);
-					}}
-					icon={replay}
-				/>
-			</MaxiPopoverButton>
-			<BlockResizer
-				className='maxi-number-counter__box'
-				isOverflowHidden={getIsOverflowHidden()}
-				lockAspectRatio
-				size={{
-					width: getLastBreakpointAttribute({
-						target: 'number-counter-width-auto',
-						breakpoint: deviceType,
-						attributes,
-					})
-						? 'auto'
-						: `${getLastBreakpointAttribute({
-								target: 'number-counter-width',
-								breakpoint: deviceType,
-								attributes,
-						  })}${getLastBreakpointAttribute({
-								target: 'number-counter-width-unit',
-								breakpoint: deviceType,
-								attributes,
-						  })}`,
-				}}
-				maxWidth='100%'
-				minWidth={
-					!circleStatus
-						? `${
-								fontSize * (endCountValue.toString().length - 1)
-						  }px`
-						: `${fontSize}px`
-				}
-				minHeight={circleStatus && `${fontSize}px`}
-				enable={{
-					topRight: true,
-					bottomRight: true,
-					bottomLeft: true,
-					topLeft: true,
-				}}
-				{...resizerProps}
-				showHandle={!circleStatus ? resizerProps.showHandle : false}
-			>
-				{!circleStatus && (
-					<svg
-						viewBox={`0 0 ${radius * 2 + stroke} ${
-							radius * 2 + stroke
-						}`}
+		<BlockResizer
+			className='maxi-number-counter__box'
+			isOverflowHidden={getIsOverflowHidden()}
+			lockAspectRatio
+			size={{
+				width: getLastBreakpointAttribute({
+					target: 'number-counter-width-auto',
+					breakpoint: deviceType,
+					attributes,
+				})
+					? 'auto'
+					: `${getLastBreakpointAttribute({
+							target: 'number-counter-width',
+							breakpoint: deviceType,
+							attributes,
+					  })}${getLastBreakpointAttribute({
+							target: 'number-counter-width-unit',
+							breakpoint: deviceType,
+							attributes,
+					  })}`,
+			}}
+			maxWidth='100%'
+			minWidth={
+				!circleStatus
+					? `${fontSize * (endCountValue.toString().length - 1)}px`
+					: `${fontSize}px`
+			}
+			minHeight={circleStatus && `${fontSize}px`}
+			enable={{
+				topRight: true,
+				bottomRight: true,
+				bottomLeft: true,
+				topLeft: true,
+			}}
+			{...resizerProps}
+			showHandle={!circleStatus ? resizerProps.showHandle : false}
+		>
+			{!circleStatus && (
+				<svg
+					viewBox={`0 0 ${radius * 2 + stroke} ${
+						radius * 2 + stroke
+					}`}
+				>
+					<circle
+						className='maxi-number-counter__box__background'
+						strokeWidth={stroke}
+						fill='none'
+						cx={radius + stroke / 2}
+						cy={radius + stroke / 2}
+						r={radius}
+					/>
+					<circle
+						className='maxi-number-counter__box__circle'
+						strokeWidth={stroke}
+						fill='none'
+						cx={radius + stroke / 2}
+						cy={radius + stroke / 2}
+						r={radius}
+						strokeLinecap={
+							attributes['number-counter-rounded-status']
+								? 'round'
+								: ''
+						}
+						strokeDasharray={`${parseInt(
+							(count / 360) * circumference
+						)} ${circumference}`}
+					/>
+					<text
+						className='maxi-number-counter__box__text'
+						textAnchor='middle'
+						x='50%'
+						y='50%'
+						dy={`${round(fontSize / 4, 2)}px`}
 					>
-						<circle
-							className='maxi-number-counter__box__background'
-							strokeWidth={stroke}
-							fill='none'
-							cx={radius + stroke / 2}
-							cy={radius + stroke / 2}
-							r={radius}
-						/>
-						<circle
-							className='maxi-number-counter__box__circle'
-							strokeWidth={stroke}
-							fill='none'
-							cx={radius + stroke / 2}
-							cy={radius + stroke / 2}
-							r={radius}
-							strokeLinecap={
-								attributes['number-counter-rounded-status']
-									? 'round'
-									: ''
-							}
-							strokeDasharray={`${parseInt(
-								(count / 360) * circumference
-							)} ${circumference}`}
-						/>
-						<text
-							className='maxi-number-counter__box__text'
-							textAnchor='middle'
-							x='50%'
-							y='50%'
-							dy={`${round(fontSize / 4, 2)}px`}
-						>
-							{`${parseInt((count / 360) * 100)}`}
-							{usePercentage && (
-								<tspan baselineShift='super'>%</tspan>
-							)}
-						</text>
-					</svg>
-				)}
-				{circleStatus && (
-					<span className='maxi-number-counter__box__text'>
-						{`${Math.ceil((count / 360) * 100)}`}
-						{usePercentage && <sup>%</sup>}
-					</span>
-				)}
-			</BlockResizer>
-		</>
+						{`${parseInt((count / 360) * 100)}`}
+						{usePercentage && (
+							<tspan baselineShift='super'>%</tspan>
+						)}
+					</text>
+				</svg>
+			)}
+			{circleStatus && (
+				<span className='maxi-number-counter__box__text'>
+					{`${Math.ceil((count / 360) * 100)}`}
+					{usePercentage && <sup>%</sup>}
+				</span>
+			)}
+		</BlockResizer>
 	);
 };
 
@@ -242,6 +212,8 @@ class edit extends MaxiBlockComponent {
 
 		this.resizableObject = createRef();
 	}
+
+	resetNumberHelper;
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
@@ -262,6 +234,8 @@ class edit extends MaxiBlockComponent {
 					width: fullWidthValue,
 				});
 		}
+
+		if (!this.resetNumberHelper) this.forceUpdate();
 	}
 
 	get getStylesObject() {
@@ -306,6 +280,8 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
+		const handleReset = () => this.resetNumberHelper();
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -313,6 +289,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				prefix='number-counter-'
 				{...this.props}
+				resetNumberHelper={handleReset}
 				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
@@ -339,6 +316,9 @@ class edit extends MaxiBlockComponent {
 					blockRef={this.blockRef}
 					isSelected={isSelected}
 					uniqueID={uniqueID}
+					replayCounter={fn => {
+						this.resetNumberHelper = fn;
+					}}
 				/>
 			</MaxiBlock>,
 		];

@@ -18,7 +18,13 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 /**
  * Component
  */
-const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
+const border = ({
+	props,
+	prefix = '',
+	globalProps,
+	hoverGlobalProps,
+	inlineTarget = '',
+}) => {
 	const {
 		attributes,
 		clientId,
@@ -26,6 +32,8 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 		maxiSetAttributes,
 		scValues = {},
 		depth = 2,
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
 
 	const {
@@ -36,6 +44,14 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 
 	const hoverStatus =
 		attributes[`${prefix}border-status-hover`] || globalHoverStatus;
+
+	const finalInlineTarget =
+		inlineTarget === ''
+			? attributes[`${prefix}background-layers`] &&
+			  attributes[`${prefix}background-layers`].length > 0
+				? '.maxi-background-displayer'
+				: ''
+			: inlineTarget;
 
 	return {
 		label: __('Border', 'maxi-blocks'),
@@ -59,8 +75,15 @@ const border = ({ props, prefix = '', globalProps, hoverGlobalProps }) => {
 										prefix
 									)}
 									prefix={prefix}
+									onChangeInline={obj =>
+										insertInlineStyles({
+											obj,
+											target: finalInlineTarget,
+										})
+									}
 									onChange={obj => {
 										maxiSetAttributes(obj);
+										cleanInlineStyles(finalInlineTarget);
 									}}
 									breakpoint={deviceType}
 									clientId={clientId}

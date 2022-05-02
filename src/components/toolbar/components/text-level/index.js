@@ -65,7 +65,7 @@ const TextLevel = props => {
 					'typographyHover',
 				])}
 				value={textLevel}
-				onChange={obj => onChange(obj)}
+				onChange={onChange}
 			/>
 		</ToolbarPopover>
 	);

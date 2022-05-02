@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import { setSVGStrokeWidth } from '../../../../extensions/svg';
 
 /**
  * Styles & Icons
@@ -20,14 +21,7 @@ import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
  * SvgWidth
  */
 const SvgWidth = props => {
-	const {
-		blockName,
-		onChange,
-		breakpoint,
-		changeSVGStrokeWidth,
-		type,
-		resizableObject,
-	} = props;
+	const { blockName, onChange, breakpoint, type, resizableObject } = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -41,9 +35,7 @@ const SvgWidth = props => {
 			<div className='toolbar-item__svg-size__popover'>
 				<SvgWidthControl
 					{...props}
-					onChange={obj => {
-						onChange(obj);
-					}}
+					onChange={onChange}
 					prefix='svg-'
 					breakpoint={breakpoint}
 					resizableObject={resizableObject}
@@ -53,10 +45,13 @@ const SvgWidth = props => {
 					<SvgStrokeWidthControl
 						{...props}
 						onChange={obj => {
-							onChange(obj);
-							changeSVGStrokeWidth(
-								obj[`svg-stroke-${breakpoint}`]
-							);
+							onChange({
+								...obj,
+								content: setSVGStrokeWidth(
+									props.content,
+									obj[`svg-stroke-${breakpoint}`]
+								),
+							});
 						}}
 						breakpoint={breakpoint}
 						prefix='svg-'

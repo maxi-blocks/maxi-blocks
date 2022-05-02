@@ -28,6 +28,7 @@ const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
 const Border = props => {
 	const {
 		blockName,
+		onChangeInline,
 		onChange,
 		breakpoint,
 		disableColor = false,
@@ -60,7 +61,8 @@ const Border = props => {
 						false,
 						prefix
 					)}
-					onChange={value => onChange(value)}
+					onChangeInline={onChangeInline}
+					onChange={onChange}
 					breakpoint={breakpoint}
 					isToolbar
 					disableColor={disableColor}

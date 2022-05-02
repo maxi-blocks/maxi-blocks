@@ -42,6 +42,7 @@ h2.gx_error {
 
 .block-editor-inserter {
 	color: #fff !important;
+	height: 100%;
 
 	&__toggle {
 		svg {
@@ -111,7 +112,12 @@ body {
 	.block-list-appender.wp-block {
 		position: relative;
 		width: 100%;
+		height: 100%;
 		max-width: none;
+
+		.maxi-block-inserter {
+			height: 100%;
+		}
 	}
 
 	&.maxi-block--has-link .maxi-text-block__content {

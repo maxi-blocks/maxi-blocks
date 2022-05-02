@@ -56,7 +56,6 @@ import { setSVGContent } from '../../extensions/svg';
  */
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
-import { insert } from '@wordpress/rich-text';
 
 /**
  * General

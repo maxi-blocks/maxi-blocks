@@ -10,9 +10,6 @@ define('MAXI_PLUGIN_NAME', 'Maxi Blocks');
 define('MAXI_TEXT_DOMAIN', 'maxi-blocks');
 define('MAXI_PLUGIN_ICON', 'dashicons-block-default');
 
-
-    
-
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
@@ -43,6 +40,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'maxi_register_menu'
             ));
+
+            add_action('admin_enqueue_scripts', array(
+                $this,
+                'maxi_admin_scripts_styles'
+            ));
         }
 
         public function maxi_get_menu_icon_base64()
@@ -52,6 +54,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $icon_data_uri = 'data:image/svg+xml;base64,' . $icon_base64;
 
             return $icon_data_uri;
+        }
+
+        public function maxi_admin_scripts_styles()
+        {
+            if (is_admin()) {
+                wp_register_style('maxi-admin', plugin_dir_url(__DIR__).'build/admin.css');
+                wp_enqueue_style('maxi-admin');
+            }
         }
 
         /**
@@ -64,7 +74,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi_config_page'
                 ), $this->maxi_get_menu_icon_base64(), null);
             add_submenu_page(MAXI_SLUG_DASHBOARD, __(MAXI_PLUGIN_NAME, MAXI_TEXT_DOMAIN), __('Welcome', MAXI_TEXT_DOMAIN), 'manage_options', MAXI_SLUG_DASHBOARD, '', null);
-            add_submenu_page(MAXI_SLUG_DASHBOARD, __('Settings', MAXI_TEXT_DOMAIN), __('Settings', MAXI_TEXT_DOMAIN), 'manage_options', 'admin.php?page='.MAXI_SLUG_DASHBOARD.'&tab=settings', '', null);
+            add_submenu_page(MAXI_SLUG_DASHBOARD, __('Settings', MAXI_TEXT_DOMAIN), __('Settings', MAXI_TEXT_DOMAIN), 'manage_options', 'admin.php?page='.MAXI_SLUG_DASHBOARD.'&tab=maxi_blocks_settings', '', null);
         }
 
         // Draw option page
@@ -104,6 +114,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
             
             echo '</div>'; // maxi-dashboard_main
+            echo '<div class="clear"></div>';
             echo '</form>'; // maxi-dashboard_form
             echo '</div>';// maxi-dashboard_wrap
         }
@@ -172,17 +183,60 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_blocks_settings()
         {
             $content = '<div class="maxi-dashboard_main-content">';
-            $content .= '<h2>'.__('Editor preferences', MAXI_TEXT_DOMAIN).'</h2>';
+            $content = '<div class="maxi-dashboard_main-content_accordion">';
 
-            $content .= '<h3>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="editor-preferences">';
+            $content .= '<label for="editor-preferences" class="maxi-dashboard_main-content_accordion-item-label">';
+            $content .= '<h3>'.__('Editor preferences', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '</label>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= '<h4>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Show or hide tooltips on mouse-hover.', MAXI_TEXT_DOMAIN).'</p>';
 
-            $content .= '<h3>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '<h4>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', MAXI_TEXT_DOMAIN).'</p>';
 
-            $content .= '<h3>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '<h4>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= get_submit_button();
+            
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="general">';
+            $content .= '<label for="general" class="maxi-dashboard_main-content_accordion-item-label">';
+            $content .= '<h3>'.__('General', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '</label>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= '<h4>'.__('Use post excerpts, if defined by your theme', MAXI_TEXT_DOMAIN).'</h4>';
+            $content .= '<p>'.__('Let your active theme control the length and display of post excerpts.', MAXI_TEXT_DOMAIN).'</p>';
+
+            $content .= '<h4>'.__('Enable responsive image functionality', MAXI_TEXT_DOMAIN).'</h4>';
+            $content .= '<p>'.__('Ensure your images look great no matter the screen size of the device it is viewed upon.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= get_submit_button();
+            
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="fonts-files">';
+            $content .= '<label for="fonts-files" class="maxi-dashboard_main-content_accordion-item-label">';
+            $content .= '<h3>'.__('Fonts and files', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '</label>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+
+            $content .= '<h4>'.__('Google Fonts load method', MAXI_TEXT_DOMAIN).'</h4>';
+            $content .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact privacy (GDPR) if a web visitor’s IP address is revealed to Google.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on your website. This method removes the connection to Google’s servers for a visitor browsing your website. This can improve or degrade performance depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= get_submit_button();
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion
+            $content .= '</div>'; // maxi-dashboard_main-content
             return $content;
         }
 

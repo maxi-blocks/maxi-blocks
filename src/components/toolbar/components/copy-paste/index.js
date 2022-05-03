@@ -13,9 +13,9 @@ import Button from '../../../button';
 import Dropdown from '../../../dropdown';
 import { SettingTabsControl } from '../../../../components';
 import {
-	getGroupAttributes,
-	paletteAttributesCreator,
-} from '../../../../extensions/styles';
+	getOrganizedAttributes,
+	cleanStyleAttributes,
+} from '../../../../extensions/copy-paste';
 
 /**
  * External dependencies
@@ -75,7 +75,6 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi',
 ];
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const CopyPasteContent = props => {
 	const { clientId, blockName, copyPasteMapping, prefix, closeMoreSettings } =
@@ -87,360 +86,6 @@ const CopyPasteContent = props => {
 		canvas: [],
 		advanced: [],
 	});
-
-	const orderAlphabetically = (obj, property) => {
-		if (isEmpty(obj)) return {};
-
-		const orderedKeys = Object.keys(obj).sort((a, b) =>
-			obj[a][property].localeCompare(obj[b][property])
-		);
-		const response = {};
-		orderedKeys.forEach(key => {
-			response[key] = obj[key];
-		});
-
-		return response;
-	};
-
-	const getOrganizedAttributes = attributes => {
-		const response = {};
-		const settingTabs = ['settings', 'canvas', 'advanced'];
-
-		settingTabs.forEach(tab => {
-			if (copyPasteMapping[tab]) {
-				response[tab] = {};
-
-				['blockSpecific', 'withBreakpoint', 'withPalette'].forEach(
-					type => {
-						if (copyPasteMapping[tab][type])
-							Object.entries(copyPasteMapping[tab][type]).forEach(
-								([attrType, attrContent]) => {
-									if (
-										typeof attrContent === 'object' &&
-										attrContent.groupLabel
-									) {
-										const groupObj = {
-											label: attrContent.groupLabel,
-											group: {},
-										};
-
-										Object.entries(
-											attrContent.props
-										).forEach(([prop, label]) => {
-											let attrArray = [];
-
-											attrArray = [prop];
-
-											if (type === 'withBreakpoint') {
-												const newArray = [...attrArray];
-												attrArray = [];
-												newArray.forEach(a => {
-													const withBrkpt = [];
-
-													breakpoints.forEach(
-														breakpoint =>
-															withBrkpt.push(
-																`${a}-${breakpoint}`
-															)
-													);
-													attrArray =
-														attrArray.concat(
-															withBrkpt
-														);
-												});
-											}
-
-											if (type === 'withPalette') {
-												const newArray = [...attrArray];
-												attrArray = [];
-												newArray.forEach(a => {
-													const withPalette =
-														paletteAttributesCreator(
-															{
-																prefix: a,
-															}
-														);
-													attrArray =
-														attrArray.concat(
-															Object.keys(
-																withPalette
-															)
-														);
-												});
-											}
-
-											const resp = {};
-
-											attrArray.forEach(attr => {
-												if (
-													(typeof attributes[attr] !==
-														'object' &&
-														!isNil(
-															attributes[attr]
-														)) ||
-													!isEmpty(attributes[attr])
-												)
-													resp[attr] =
-														attributes[attr];
-											});
-
-											if (!isEmpty(resp))
-												groupObj.group[prop] = {
-													label,
-													attribute: resp,
-												};
-										});
-										if (!isEmpty(groupObj.group))
-											response[tab][attrType] = groupObj;
-									} else {
-										let attrArray = [];
-
-										if (
-											typeof attrContent === 'object' &&
-											attrContent.value
-										)
-											attrArray = [...attrContent.value];
-										else attrArray = [attrType];
-
-										if (type === 'withBreakpoint') {
-											const newArray = [...attrArray];
-											attrArray = [];
-											newArray.forEach(a => {
-												const withBrkpt = [];
-
-												breakpoints.forEach(
-													breakpoint =>
-														withBrkpt.push(
-															`${a}-${breakpoint}`
-														)
-												);
-												attrArray =
-													attrArray.concat(withBrkpt);
-											});
-										}
-
-										if (type === 'withPalette') {
-											const newArray = [...attrArray];
-											attrArray = [];
-											newArray.forEach(a => {
-												const withPalette =
-													paletteAttributesCreator({
-														prefix: a,
-													});
-												attrArray = attrArray.concat(
-													Object.keys(withPalette)
-												);
-											});
-										}
-										const resp = {};
-										attrArray.forEach(attr => {
-											if (
-												(typeof attributes[attr] !==
-													'object' &&
-													!isNil(attributes[attr])) ||
-												!isEmpty(attributes[attr])
-											)
-												resp[attr] = attributes[attr];
-										});
-										if (!isEmpty(resp))
-											response[tab][attrType] = {
-												label:
-													typeof attrContent ===
-													'string'
-														? attrContent
-														: attrContent.label,
-												attribute: resp,
-											};
-									}
-								}
-							);
-					}
-				);
-
-				[
-					'withPrefix',
-					'withPrefixHover',
-					'withoutPrefix',
-					'withoutPrefixHover',
-				].forEach(type => {
-					if (copyPasteMapping[tab][type])
-						Object.entries(copyPasteMapping[tab][type]).forEach(
-							([attrType, attrContent]) => {
-								if (
-									typeof attrContent === 'object' &&
-									attrContent.groupLabel
-								) {
-									const groupObj = {
-										label: attrContent.groupLabel,
-										group: {},
-									};
-
-									Object.entries(attrContent.props).forEach(
-										([prop, label]) => {
-											const resp = getGroupAttributes(
-												attributes,
-												prop,
-												type === 'withPrefixHover' ||
-													type ===
-														'withoutPrefixHover',
-												type === 'withPrefix' ||
-													type === 'withPrefixHover'
-													? prefix
-													: '',
-												true
-											);
-
-											if (!isEmpty(resp))
-												groupObj.group[prop] = {
-													label,
-													attribute: resp,
-												};
-										}
-									);
-									if (!isEmpty(groupObj.group))
-										response[tab][attrType] = groupObj;
-								} else if (typeof attrContent === 'string') {
-									const resp = getGroupAttributes(
-										attributes,
-										attrType,
-										type === 'withPrefixHover' ||
-											type === 'withoutPrefixHover',
-										type === 'withPrefix' ||
-											type === 'withPrefixHover'
-											? prefix
-											: '',
-										true
-									);
-
-									if (!isEmpty(resp))
-										response[tab][attrType] = {
-											label: attrContent,
-											attribute: resp,
-										};
-								}
-							}
-						);
-				});
-			}
-
-			response[tab] = orderAlphabetically(response[tab], 'label');
-		});
-
-		return response;
-	};
-
-	const cleanStyleAttributes = attributes => {
-		let response = {};
-		const settingTabs = ['settings', 'canvas', 'advanced'];
-
-		settingTabs.forEach(tab => {
-			if (copyPasteMapping[tab]) {
-				['blockSpecific', 'withBreakpoint', 'withPalette'].forEach(
-					type => {
-						if (copyPasteMapping[tab][type])
-							Object.entries(copyPasteMapping[tab][type]).forEach(
-								([attrType, attr]) => {
-									let attrArray = [];
-
-									if (
-										typeof attr === 'object' &&
-										!attr.groupLabel
-									)
-										attrArray = [...attr.value];
-									else if (
-										typeof attr === 'object' &&
-										attr.groupLabel
-									)
-										attrArray = [
-											...Object.keys(attr.props),
-										];
-									else if (typeof attr === 'string')
-										attrArray.push(attrType);
-
-									if (type === 'withBreakpoint') {
-										const newArray = [...attrArray];
-										attrArray = [];
-										newArray.forEach(a => {
-											const withBrkpt = [];
-
-											breakpoints.forEach(breakpoint =>
-												withBrkpt.push(
-													`${a}-${breakpoint}`
-												)
-											);
-											attrArray =
-												attrArray.concat(withBrkpt);
-										});
-									}
-
-									if (type === 'withPalette') {
-										const newArray = [...attrArray];
-										attrArray = [];
-										newArray.forEach(a => {
-											const withPalette =
-												paletteAttributesCreator({
-													prefix: a,
-												});
-											attrArray = attrArray.concat(
-												Object.keys(withPalette)
-											);
-										});
-									}
-
-									attrArray.forEach(a => {
-										if (
-											(typeof attributes[a] !==
-												'object' &&
-												!isNil(attributes[a])) ||
-											!isEmpty(attributes[a])
-										)
-											response = {
-												...response,
-												[a]: attributes[a],
-											};
-									});
-								}
-							);
-					}
-				);
-
-				[
-					'withPrefix',
-					'withPrefixHover',
-					'withoutPrefix',
-					'withoutPrefixHover',
-				].forEach(type => {
-					if (copyPasteMapping[tab][type])
-						Object.entries(copyPasteMapping[tab][type]).forEach(
-							([attrType, attr]) => {
-								let attrArray = [];
-								if (typeof attr === 'object' && attr.groupLabel)
-									attrArray = Object.keys(attr.props);
-								else attrArray = [attrType];
-								attrArray.forEach(prop => {
-									response = {
-										...response,
-										...getGroupAttributes(
-											attributes,
-											prop,
-											type === 'withPrefixHover' ||
-												type === 'withoutPrefixHover',
-											type === 'withPrefix' ||
-												type === 'withPrefixHover'
-												? prefix
-												: '',
-											true
-										),
-									};
-								});
-							}
-						);
-				});
-			}
-		});
-
-		return response;
-	};
 
 	const {
 		blockAttributes,
@@ -458,10 +103,20 @@ const CopyPasteContent = props => {
 		const copiedBlocks = receiveCopiedBlocks();
 
 		const organizedAttributes =
-			(copiedStyles && getOrganizedAttributes(copiedStyles)) || {};
+			(copiedStyles &&
+				getOrganizedAttributes(
+					copiedStyles,
+					copyPasteMapping,
+					prefix
+				)) ||
+			{};
 
 		const blockValues = getBlock(clientId);
-		const blockAttributes = cleanStyleAttributes(blockValues.attributes);
+		const blockAttributes = cleanStyleAttributes(
+			blockValues.attributes,
+			copyPasteMapping,
+			prefix
+		);
 		const { innerBlocks } = blockValues;
 		const hasInnerBlocks = !isEmpty(innerBlocks);
 

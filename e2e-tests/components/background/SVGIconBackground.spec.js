@@ -70,6 +70,7 @@ describe('Svg Background', () => {
 		expect(
 			await getAttributes('svg-background-palette-color-general-hover')
 		).toStrictEqual(7);
+		expect(await getEditedPostContent()).toMatchSnapshot();
 
 		await accordion.$eval(
 			'.maxi-tab-content--selected .maxi-background-status-hover input',

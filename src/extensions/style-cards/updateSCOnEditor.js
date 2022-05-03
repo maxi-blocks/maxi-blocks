@@ -165,19 +165,19 @@ export const getSCVariablesObject = styleCards => {
 					break;
 
 				case 'icon':
-					if (obj['line-global'])
+					if (obj['line-color-global'])
 						response[`--maxi-${style}-${element}-stroke`] =
 							getColorString(obj, 'line', style);
 
-					if (obj['fill-global'])
+					if (obj['fill-color-global'])
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
 
-					if (obj['hover-line-global'])
+					if (obj['hover-line-color-global'])
 						response[`--maxi-${style}-${element}-stroke-hover`] =
 							getColorString(obj, 'hover-line', style);
 
-					if (obj['hover-fill-global'])
+					if (obj['hover-fill-color-global'])
 						response[`--maxi-${style}-${element}-fill-hover`] =
 							getColorString(obj, 'hover-fill', style);
 

@@ -14,6 +14,7 @@ import {
 	getColorRGBAString,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { handleSetAttributes } from '../../extensions/maxi-block';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
@@ -24,7 +25,7 @@ import VideoLayer from './videoLayer';
 import { setBreakpointToLayer } from './utils';
 import SelectControl from '../select-control';
 import ListControl from '../list-control';
-import ListItemControl from '../list-item-control';
+import ListItemControl from '../list-control/list-item-control';
 
 /**
  * External dependencies
@@ -36,7 +37,6 @@ import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
  * Icons
  */
 import { toolbarDrop, toolbarShow } from '../../icons';
-import { handleSetAttributes } from '../../extensions/maxi-block';
 
 /**
  * Component
@@ -52,83 +52,100 @@ const getLayerCardContent = props => {
 		previewRef,
 	} = props;
 
-	const layerContent = {
-		color: (
-			<ColorLayer
-				key={`background-color-layer--${layer.order}`}
-				colorOptions={layer}
-				onChangeInline={obj => {
-					previewRef.current.style.background =
-						obj['background-color'];
-					onChangeInline &&
-						onChangeInline(
-							obj,
+	switch (layer.type) {
+		case 'color':
+			return (
+				<ColorLayer
+					key={`background-color-layer--${layer.order}`}
+					colorOptions={layer}
+					onChangeInline={obj => {
+						previewRef.current.style.background =
+							obj['background-color'];
+						onChangeInline &&
+							onChangeInline(
+								obj,
+								`.maxi-background-displayer__${layer.order}`
+							);
+					}}
+					onChange={obj => {
+						onChange(
+							{ ...layer, ...handleOnChangeLayer(obj, layer) },
 							`.maxi-background-displayer__${layer.order}`
 						);
-				}}
-				onChange={obj => {
-					onChange(
-						{ ...layer, ...handleOnChangeLayer(obj, layer) },
-						`.maxi-background-displayer__${layer.order}`
-					);
-				}}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		image: (
-			<ImageLayer
-				key={`background-image-layer--${layer.order}`}
-				imageOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		video: (
-			<VideoLayer
-				key={`background-video-layer--${layer.order}`}
-				videoOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		gradient: (
-			<GradientLayer
-				key={`background-gradient-layer--${layer.order}`}
-				gradientOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		shape: (
-			<SVGLayer
-				key={`background-SVG-layer--${layer.order}`}
-				SVGOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				layerOrder={layer.order}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-	};
-
-	return layerContent[layer.type];
+					}}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'image':
+			return (
+				<ImageLayer
+					key={`background-image-layer--${layer.order}`}
+					imageOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'video':
+			return (
+				<VideoLayer
+					key={`background-video-layer--${layer.order}`}
+					videoOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'gradient':
+			return (
+				<GradientLayer
+					key={`background-gradient-layer--${layer.order}`}
+					gradientOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'shape':
+			return (
+				<SVGLayer
+					key={`background-SVG-layer--${layer.order}`}
+					SVGOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					layerOrder={layer.order}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		default:
+			return null;
+	}
 };
 
 const getLayerCardTitle = props => {

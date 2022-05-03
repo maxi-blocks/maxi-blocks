@@ -6,6 +6,7 @@ export { default as button } from './button';
 export { default as buttonIcon } from './button-icon';
 export { default as callToAction } from './call-to-action';
 export { default as container } from './container';
+export { default as columnIcon } from './column';
 export { default as containerIcon } from './container-icon';
 export { default as dividerIcon } from './divider-icon';
 export { default as footer } from './footer';

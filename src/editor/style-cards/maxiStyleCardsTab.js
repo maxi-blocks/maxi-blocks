@@ -362,6 +362,22 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteOpacity: 'fill-palette-opacity',
 				color: 'fill',
 			},
+			{
+				label: __('Line Hover', 'maxi-blocks'),
+				globalAttr: 'hover-line-global',
+				paletteStatus: 'hover-line-palette-status',
+				paletteColor: 'hover-line-palette-color',
+				paletteOpacity: 'hover-line-palette-opacity',
+				color: 'hover-line',
+			},
+			{
+				label: __('Fill Hover', 'maxi-blocks'),
+				globalAttr: 'hover-fill-global',
+				paletteStatus: 'hover-fill-palette-status',
+				paletteColor: 'hover-fill-palette-color',
+				paletteOpacity: 'hover-fill-palette-opacity',
+				color: 'hover-fill',
+			},
 		],
 	};
 	const dividerTabs = {

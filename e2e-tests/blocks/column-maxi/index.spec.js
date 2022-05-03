@@ -109,7 +109,13 @@ describe('Column Maxi', () => {
 	});
 
 	it('check column Border', async () => {
-		await changeResponsive(page, 'base');
+		await createNewPost();
+		await insertBlock('Container Maxi');
+
+		await page.$$eval('.maxi-row-block__template button', button =>
+			button[6].click()
+		);
+
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		const axisControlInstance = await borderAccordion.$(
@@ -175,6 +181,18 @@ describe('Column Maxi', () => {
 			'border-top-right-radius-general-hover',
 		]);
 		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
+
+		// check first column
+		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
+			block[0].focus()
+		);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// check last column
+		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
+			block[2].focus()
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

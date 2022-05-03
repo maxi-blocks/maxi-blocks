@@ -348,7 +348,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		colorContent: [
 			{
 				label: __('Line', 'maxi-blocks'),
-				globalAttr: 'line-global',
+				globalAttr: 'line-color-global',
 				paletteStatus: 'line-palette-status',
 				paletteColor: 'line-palette-color',
 				paletteOpacity: 'line-palette-opacity',
@@ -356,7 +356,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			},
 			{
 				label: __('Fill', 'maxi-blocks'),
-				globalAttr: 'fill-global',
+				globalAttr: 'fill-color-global',
 				paletteStatus: 'fill-palette-status',
 				paletteColor: 'fill-palette-color',
 				paletteOpacity: 'fill-palette-opacity',
@@ -364,7 +364,8 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			},
 			{
 				label: __('Line Hover', 'maxi-blocks'),
-				globalAttr: 'hover-line-global',
+				globalAttr: 'hover-line-color-global',
+				globalAllAttr: 'hover-line-all',
 				paletteStatus: 'hover-line-palette-status',
 				paletteColor: 'hover-line-palette-color',
 				paletteOpacity: 'hover-line-palette-opacity',
@@ -372,7 +373,8 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			},
 			{
 				label: __('Fill Hover', 'maxi-blocks'),
-				globalAttr: 'hover-fill-global',
+				globalAttr: 'hover-fill-color-global',
+				globalAllAttr: 'hover-fill-all',
 				paletteStatus: 'hover-fill-palette-status',
 				paletteColor: 'hover-fill-palette-color',
 				paletteOpacity: 'hover-fill-palette-opacity',

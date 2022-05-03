@@ -110,7 +110,6 @@ describe('Column Maxi', () => {
 
 	it('check column Border', async () => {
 		await changeResponsive(page, 'base');
-
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		const axisControlInstance = await borderAccordion.$(

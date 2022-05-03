@@ -80,7 +80,7 @@ const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
 
 	if (paletteStatus && paletteColor)
 		response.general.fill = getColorRGBAString({
-			firstVar: 'icon-fill',
+			firstVar: isHover ? 'icon-fill-hover' : 'icon-fill',
 			secondVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
 			blockStyle,
@@ -104,7 +104,7 @@ const getSVGPathStrokeStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
 
 	if (paletteStatus && paletteColor)
 		response.general.stroke = getColorRGBAString({
-			firstVar: 'icon-stroke',
+			firstVar: isHover ? 'icon-stroke-hover' : 'icon-stroke',
 			secondVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
 			blockStyle,

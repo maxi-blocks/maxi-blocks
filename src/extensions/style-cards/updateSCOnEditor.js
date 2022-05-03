@@ -173,6 +173,14 @@ export const getSCVariablesObject = styleCards => {
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
 
+					if (obj['hover-line-global'])
+						response[`--maxi-${style}-${element}-stroke-hover`] =
+							getColorString(obj, 'hover-line', style);
+
+					if (obj['hover-fill-global'])
+						response[`--maxi-${style}-${element}-fill-hover`] =
+							getColorString(obj, 'hover-fill', style);
+
 					break;
 
 				case 'link':

@@ -120,10 +120,21 @@ class MaxiBlockComponent extends Component {
 	// Removes non-necessary entries of props object for comparison
 	propsObjectCleaner(props) {
 		const newProps = cloneDeep(props);
-		const entriesToRemove = ['maxiSetAttributes'];
+		const entriesToRemove = [
+			'maxiSetAttributes',
+			'insertInlineStyles',
+			'cleanInlineStyles',
+			'context',
+		];
 
 		entriesToRemove.forEach(entry => {
 			delete newProps[entry];
+		});
+
+		// Transform objects into strings to compare easier
+		Object.entries(newProps).forEach(([key, value]) => {
+			if (typeof value === 'object')
+				newProps[key] = JSON.stringify(value);
 		});
 
 		return newProps;
@@ -153,7 +164,6 @@ class MaxiBlockComponent extends Component {
 
 		// Ensures rendering when selecting or unselecting
 		if (
-			!this.props.isSelected ||
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
 			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change

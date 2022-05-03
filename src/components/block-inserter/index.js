@@ -3,7 +3,7 @@
  */
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useState, useRef, useEffect, forwardRef } from '@wordpress/element';
+import { useState, useRef, forwardRef } from '@wordpress/element';
 import { getScrollContainer } from '@wordpress/dom';
 import { Popover } from '@wordpress/components';
 
@@ -85,9 +85,9 @@ const ButtonInserter = props => {
 };
 
 const WrapperBlockInserter = forwardRef((props, ref) => {
-	const { clientId, isSelected, hasSelectedChild } = props;
+	const { clientId, isSelected, hasSelectedChild, isHovered } = props;
 
-	const { blockHierarchy, blockName } = useSelect(select => {
+	const { blockHierarchy } = useSelect(select => {
 		const { getBlockName, getBlockParents } = select('core/block-editor');
 
 		const blockOrder = [...getBlockParents(clientId), clientId];
@@ -99,37 +99,16 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				blockHierarchy[blockClientId] = getBlockName(blockClientId);
 		});
 
-		const blockName = getBlockName(clientId);
-
-		return { blockHierarchy, blockName };
+		return { blockHierarchy };
 	});
 
-	const [blockIsHovered, setBlockIsHovered] = useState(false);
 	const [buttonIsHovered, setButtonIsHovered] = useState(false);
 	const shouldRemain = useRef(false);
 	const setShouldRemain = val => {
 		shouldRemain.current = val;
 	};
 
-	useEffect(() => {
-		if (ref?.current) {
-			ref.current.addEventListener('mouseover', () => {
-				setBlockIsHovered(true);
-			});
-			ref.current.addEventListener('mouseleave', () => {
-				setTimeout(() => {
-					if (!buttonIsHovered) setBlockIsHovered(false);
-				}, 50);
-			});
-		}
-	}, [blockIsHovered, buttonIsHovered]);
-
-	useEffect(
-		() => setShouldRemain(isSelected || hasSelectedChild),
-		[isSelected, hasSelectedChild]
-	);
-
-	if (!ref?.current || blockName === 'maxi-blocks/row-maxi') return null;
+	if (!ref?.current) return null;
 
 	const boundaryElement =
 		document.defaultView.frameElement?.querySelector(
@@ -140,7 +119,13 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		) ||
 		document.body?.querySelector('.edit-post-visual-editor');
 
-	if (blockIsHovered || buttonIsHovered || shouldRemain.current)
+	if (
+		isHovered ||
+		buttonIsHovered ||
+		isSelected ||
+		hasSelectedChild ||
+		shouldRemain.current
+	)
 		return (
 			<Popover
 				key={`maxi-wrapper-block-inserter__${clientId}`}
@@ -225,6 +210,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 						)}
 					/>
 				)}
+				{JSON.stringify(isHovered)}
 			</Popover>
 		);
 

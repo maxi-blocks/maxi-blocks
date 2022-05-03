@@ -628,12 +628,33 @@ const MaxiToolbar = memo(
 			)
 		);
 	}),
-	// Avoids non-necessary renderings
-	(
-		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },
-		{ attributes: newAttr, isSelected }
-	) => {
-		if (!wasSelected || wasSelected !== isSelected) return false;
+	(oldProps, newProps) => {
+		const {
+			attributes: oldAttr,
+			propsToAvoid,
+			isSelected: wasSelected,
+			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
+		} = oldProps;
+
+		const {
+			attributes: newAttr,
+			isSelected,
+			deviceType: breakpoint,
+			scValues,
+		} = newProps;
+
+		// If is not selected, don't render
+		if (!isSelected && wasSelected === isSelected) return true;
+
+		if (select('core/block-editor').isDraggingBlocks()) return true;
+
+		if (
+			wasSelected !== isSelected ||
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
+		)
+			return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);
@@ -643,8 +664,6 @@ const MaxiToolbar = memo(
 				delete oldAttributes[prop];
 				delete newAttributes[prop];
 			});
-
-			return isEqual(oldAttributes, newAttributes);
 		}
 
 		return isEqual(oldAttributes, newAttributes);

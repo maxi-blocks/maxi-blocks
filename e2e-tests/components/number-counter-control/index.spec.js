@@ -49,6 +49,7 @@ describe('NumberCounterControl', () => {
 			page,
 			instance: await page.$('.maxi-number-counter-control__width '),
 			newNumber: '31',
+			newValue: '%',
 		});
 
 		// Start Number
@@ -187,7 +188,9 @@ describe('NumberCounterControl', () => {
 			page,
 			instance: await page.$('.maxi-number-counter-control__width '),
 			newNumber: '45',
+			newValue: 'px',
 		});
+
 		// responsive xs
 		await changeResponsive(page, 'xs');
 		const responsiveXsOption = await page.$eval(
@@ -197,6 +200,12 @@ describe('NumberCounterControl', () => {
 
 		expect(responsiveXsOption).toBe('45');
 
+		const responsiveXsValue = await page.$eval(
+			'.maxi-number-counter-control__width select',
+			select => select.value
+		);
+		expect(responsiveXsValue).toBe('px');
+
 		// responsive m
 		await changeResponsive(page, 'm');
 		const responsiveMOption = await page.$eval(
@@ -205,6 +214,12 @@ describe('NumberCounterControl', () => {
 		);
 
 		expect(responsiveMOption).toBe('31');
+
+		const responsiveMValue = await page.$eval(
+			'.maxi-number-counter-control__width select',
+			select => select.value
+		);
+		expect(responsiveMValue).toBe('%');
 	});
 	it('Check number counter auto width responsive', async () => {
 		// responsive base

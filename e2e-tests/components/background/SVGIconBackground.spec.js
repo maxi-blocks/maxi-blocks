@@ -30,10 +30,9 @@ describe('Svg Background', () => {
 		// normal state
 		const accordion = await openSidebarTab(page, 'style', 'svg background');
 
-		const backgroundButtons = await page.$$(
-			'.maxi-background-control__simple .maxi-tabs-control__full-width button'
+		await page.$eval('.maxi-tabs-control__button-color', button =>
+			button.click()
 		);
-		await backgroundButtons[1].click();
 
 		await accordion.$$eval(
 			'.maxi-color-control__palette .maxi-color-control__palette-container button',
@@ -45,11 +44,12 @@ describe('Svg Background', () => {
 			await getAttributes('svg-background-palette-color-general')
 		).toStrictEqual(6);
 
-		await backgroundButtons[0].click();
+		await page.$eval('.maxi-tabs-control__button-none', button =>
+			button.click()
+		);
 
-		await accordion.$$eval(
-			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-control button',
-			button => button[1].click()
+		await accordion.$eval('.maxi-tabs-control__button-Hover', button =>
+			button.click()
 		);
 
 		await accordion.$eval(
@@ -57,9 +57,8 @@ describe('Svg Background', () => {
 			input => input.click()
 		);
 
-		await page.$$eval(
-			'.maxi-background-control__simple .maxi-tabs-control__full-width button',
-			button => button[1].click()
+		await page.$eval('.maxi-tabs-control__button-color', button =>
+			button.click()
 		);
 
 		await accordion.$$eval(

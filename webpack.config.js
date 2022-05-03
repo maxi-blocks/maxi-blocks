@@ -7,8 +7,6 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
  * External Dependencies
  */
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const { basename, dirname } = require('path');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -33,5 +31,25 @@ module.exports = {
 	resolve: {
 		...defaultConfig.resolve,
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
+	},
+	module: {
+		...defaultConfig.module,
+		rules: [
+			...defaultConfig.module.rules,
+			{
+				test: /admin\.scss$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: require.resolve('sass-loader'),
+						options: {
+							sourceMap: !isProduction,
+							outputPath: 'build/',
+							name: '[name].min.css',
+						},
+					},
+				],
+			},
+		],
 	},
 };

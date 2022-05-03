@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, RawHTML } from '@wordpress/element';
+import { RawHTML, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -42,6 +42,7 @@ import { handleSetAttributes } from '../../extensions/maxi-block';
  */
 const LayerCard = props => {
 	const {
+		onChangeInline = null,
 		onChange,
 		onOpen,
 		isOpen,
@@ -73,6 +74,8 @@ const LayerCard = props => {
 				changeTo
 		  )
 		: layer['background-svg-SVGElement'];
+
+	const previewRef = useRef(null);
 
 	const previewStyles = type => {
 		switch (type) {
@@ -227,9 +230,21 @@ const LayerCard = props => {
 			<ColorLayer
 				key={`background-color-layer--${layer.order}`}
 				colorOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
+				onChangeInline={obj => {
+					previewRef.current.style.background =
+						obj['background-color'];
+					onChangeInline &&
+						onChangeInline(
+							obj,
+							`.maxi-background-displayer__${layer.order}`
+						);
+				}}
+				onChange={obj => {
+					onChange(
+						{ ...layer, ...handleOnChangeLayer(obj, layer) },
+						`.maxi-background-displayer__${layer.order}`
+					);
+				}}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				isLayer
@@ -309,6 +324,7 @@ const LayerCard = props => {
 					<span className='maxi-background-layer__title__text'>
 						<span
 							className='maxi-background-layer__preview'
+							ref={previewRef}
 							style={previewStyles(type)}
 						>
 							{type === 'shape' &&
@@ -364,6 +380,7 @@ const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
 	isHover = false,
+	onChangeInline,
 	onChange,
 	clientId,
 	breakpoint,
@@ -462,7 +479,7 @@ const BackgroundLayersControl = ({
 			}),
 		});
 
-	const onChangeLayer = layer => {
+	const onChangeLayer = (layer, target = false) => {
 		const isHoverLayer = layer.isHover;
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
@@ -475,9 +492,13 @@ const BackgroundLayersControl = ({
 		});
 
 		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
-			onChange({
-				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
-			});
+			onChange(
+				{
+					[`background-layers${isHoverLayer ? '-hover' : ''}`]:
+						newLayers,
+				},
+				target
+			);
 	};
 
 	const onAddLayer = layer => {
@@ -525,6 +546,7 @@ const BackgroundLayersControl = ({
 										isHover={isHover}
 										clientId={clientId}
 										layer={layer}
+										onChangeInline={onChangeInline}
 										onChange={onChangeLayer}
 										onOpen={isOpen => {
 											if (isOpen) changeSelector(null);

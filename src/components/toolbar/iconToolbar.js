@@ -37,9 +37,10 @@ const IconToolbar = memo(
 			attributes,
 			clientId,
 			maxiSetAttributes,
+			insertInlineStyles,
+			cleanInlineStyles,
 			name,
 			isSelected,
-			changeSVGContent,
 		} = props;
 		const { uniqueID, svgType, blockStyle } = attributes;
 
@@ -124,9 +125,14 @@ const IconToolbar = memo(
 							blockName={name}
 							{...getGroupAttributes(attributes, 'icon')}
 							svgType={svgType}
-							changeSVGContent={changeSVGContent}
 							blockStyle={blockStyle}
-							onChange={obj => processAttributes(obj)}
+							onChangeInline={(obj, target) =>
+								insertInlineStyles({ obj, target })
+							}
+							onChange={(obj, target) => {
+								processAttributes(obj);
+								cleanInlineStyles(target);
+							}}
 						/>
 						<IconBackground
 							blockName={name}
@@ -135,7 +141,16 @@ const IconToolbar = memo(
 								'icon',
 								'iconBackgroundColor',
 							])}
-							onChange={obj => processAttributes(obj)}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: '.maxi-button-block__icon',
+								})
+							}
+							onChange={obj => {
+								processAttributes(obj);
+								cleanInlineStyles('.maxi-button-block__icon');
+							}}
 						/>
 						<Border
 							blockName={name}

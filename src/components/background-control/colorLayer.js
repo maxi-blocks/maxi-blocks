@@ -27,6 +27,7 @@ import { cloneDeep } from 'lodash';
 const ColorLayerContent = props => {
 	const {
 		onChange,
+		onChangeInline,
 		disableClipPath,
 		isHover = false,
 		prefix = '',
@@ -98,6 +99,11 @@ const ColorLayerContent = props => {
 					attributes: colorOptions,
 					isHover,
 				})}
+				onChangeInline={({ color }) => {
+					onChangeInline({
+						'background-color': color,
+					});
+				}}
 				onChange={({
 					color,
 					paletteColor,
@@ -139,7 +145,7 @@ const ColorLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					onChange={obj => onChange(obj)}
+					onChange={onChange}
 					{...getGroupAttributes(
 						props,
 						'clipPath',

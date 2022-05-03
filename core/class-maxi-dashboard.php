@@ -3,6 +3,8 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
+
 define('MAXI_PREFIX', 'maxi_blocks_');
 define('MAXI_SLUG', 'maxi-blocks');
 define('MAXI_SLUG_DASHBOARD', 'maxi-blocks-dashboard');
@@ -41,10 +43,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_register_menu'
             ));
 
-            add_action('admin_enqueue_scripts', array(
+            add_action('admin_init', array(
                 $this,
-                'maxi_admin_scripts_styles'
+                'register_maxi_blocks_settings'
             ));
+
+            // add_action('admin_enqueue_scripts', array(
+            //     $this,
+            //     'maxi_admin_scripts_styles'
+            // ));
         }
 
         public function maxi_get_menu_icon_base64()
@@ -103,6 +110,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 echo '<a class="maxi-dashboard_nav-tab nav-tab ' . esc_attr($tab_page) . esc_attr($active_tab) . '" href="?page=' . esc_attr(MAXI_SLUG_DASHBOARD) . '&tab=' . esc_attr($tab_page) . '">' . wp_kses($tab_name, $this->maxi_blocks_allowed_html()) . '</a>';
             }
             echo '</h4> <form action="options.php" method="post" class="maxi-dashboard_form">';
+            settings_fields('maxi-blocks-settings-group');
+            do_settings_sections('maxi-blocks-settings-group');
             echo '<div class="maxi-dashboard_main">';
 
             if (isset($tab)) {
@@ -182,23 +191,61 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function maxi_blocks_settings()
         {
+            $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
+            $fontUploadsDirSize = round($this->get_folder_size($fontUploadsDir)/1048576, 2);
+
+
             $content = '<div class="maxi-dashboard_main-content">';
             $content = '<div class="maxi-dashboard_main-content_accordion">';
 
             $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+
             $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="editor-preferences">';
+
             $content .= '<label for="editor-preferences" class="maxi-dashboard_main-content_accordion-item-label">';
             $content .= '<h3>'.__('Editor preferences', MAXI_TEXT_DOMAIN).'</h3>';
             $content .= '</label>';
+
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= '<h4>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Show or hide tooltips on mouse-hover.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
 
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= '<h4>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+            $content .= '<input name="accessibility_option" class="maxi-dashboard_main-content_accordion-item-toggle" ';
+            if ((bool) get_option('accessibility_option')) {
+                $content .= 'checked="checked" ';
+            }
+            $content .= 'type="checkbox" id="accessibility_option" value="1">';
+            $content .= '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle__track"></span>';
+            $content .= '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle__thumb"></span>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
 
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= '<h4>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-settings
             $content .= get_submit_button();
             
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -209,12 +256,29 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<label for="general" class="maxi-dashboard_main-content_accordion-item-label">';
             $content .= '<h3>'.__('General', MAXI_TEXT_DOMAIN).'</h3>';
             $content .= '</label>';
+
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= '<h4>'.__('Use post excerpts, if defined by your theme', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Let your active theme control the length and display of post excerpts.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
 
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= '<h4>'.__('Enable responsive image functionality', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Ensure your images look great no matter the screen size of the device it is viewed upon.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
             $content .= get_submit_button();
             
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -227,9 +291,46 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</label>';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
 
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= '<h4>'.__('Google Fonts load method', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact privacy (GDPR) if a web visitor’s IP address is revealed to Google.', MAXI_TEXT_DOMAIN).'</p>';
             $content .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on your website. This method removes the connection to Google’s servers for a visitor browsing your website. This can improve or degrade performance depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+            $content .= '<input name="local_fonts" class="maxi-dashboard_main-content_accordion-item-toggle" ';
+            if ((bool) get_option('local_fonts')) {
+                $content .= 'checked="checked" ';
+                new MaxiBlocks_Local_Fonts();
+            }
+            $content .= 'type="checkbox" id="local_fonts" value="1">';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
+            if ($fontUploadsDirSize > 0) {
+                $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__('MB', 'maxi-blocks').'</p>';
+                if (!(bool) get_option('local_fonts')) {
+                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
+                    $content .=  '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
+                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+                    $content .= '<input name="remove_local_fonts" class="maxi-dashboard_main-content_accordion-item-toggle" ';
+                    if ((bool) get_option('remove_local_fonts')) {
+                        $content .= "checked='checked' ";
+                        $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
+                        $this->delete_all_files($fonts_uploads_dir);
+                        update_option('remove_local_fonts', 0);
+                    }
+                    $content .= 'type="checkbox" id="remove_local_fonts" value="1">';
+                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
+                }
+            }
+
             $content .= get_submit_button();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -240,7 +341,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $content;
         }
 
-        
         public function maxi_blocks_allowed_html()
         {
             if (!function_exists('maxi_blocks_allowed_html')) {
@@ -248,6 +348,37 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             return maxi_blocks_allowed_html();
+        }
+
+        public function register_maxi_blocks_settings()
+        {
+            register_setting('maxi-blocks-settings-group', 'accessibility_option');
+            register_setting('maxi-blocks-settings-group', 'local_fonts');
+            register_setting('maxi-blocks-settings-group', 'remove_local_fonts');
+            register_setting('maxi-blocks-settings-group', 'google_api_key_option');
+        }
+
+        public function get_folder_size($folder)
+        {
+            $size = 0;
+
+            foreach (glob(rtrim($folder, '/').'/*', GLOB_NOSORT) as $each) {
+                $size += is_file($each) ? filesize($each) : $this->get_folder_size($each);
+            }
+
+            return $size;
+        }
+
+        public function delete_all_files($folder)
+        {
+            foreach (glob($folder . '/*') as $file) {
+                if (is_dir($file)) {
+                    $this->delete_all_files($file);
+                } else {
+                    unlink($file);
+                }
+            }
+            rmdir($folder);
         }
     }
 endif;

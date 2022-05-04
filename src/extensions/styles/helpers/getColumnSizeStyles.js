@@ -18,14 +18,17 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 
 	breakpoints.forEach(breakpoint => {
 		const fitContent = obj[`column-fit-content-${breakpoint}`];
-		const columnSize = obj[`column-size-${breakpoint}`];
+		let columnSize = obj[`column-size-${breakpoint}`];
 
 		if (fitContent) {
 			response[breakpoint] = {
 				width: 'fit-content',
 				'flex-basis': 'fit-content',
 			};
-		} else if (isNumber(columnSize)) {
+		} else if (
+			isNumber(columnSize) ||
+			isNumber(rowGapProps[`column-gap-${breakpoint}`])
+		) {
 			const gap = getLastBreakpointAttribute({
 				target: 'column-gap',
 				breakpoint,
@@ -36,6 +39,13 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 				breakpoint,
 				attributes: rowGapProps,
 			});
+
+			if (!columnSize)
+				columnSize = getLastBreakpointAttribute({
+					target: 'column-size',
+					breakpoint,
+					attributes: obj,
+				});
 
 			const gapValue = gap ? `${round(gap, 2)}${gapUnit}` : '0px';
 

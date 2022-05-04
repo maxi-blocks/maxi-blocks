@@ -238,8 +238,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description .= '<p>'.__('Ensure your images look great no matter the screen size of the device it is viewed upon.', MAXI_TEXT_DOMAIN).'</p>';
             $content .= $this->generate_setting($description, 'responsive_image');
 
+            $description = '<h4>'.__('Google API Key', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Please create your own API key on the ', MAXI_TEXT_DOMAIN);
+            $description .= '<a href="https://console.developers.google.com" target="_blank" rel="noreferrer">'.__('Google Console', MAXI_TEXT_DOMAIN).'</a> ';
+            $description .= '<p>'.__('This is a requirement enforced by Google.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'google_api_key_option');
+
             $content .= get_submit_button();
-            
+
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
@@ -251,14 +257,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
 
             $description = '<h4>'.__('Google Fonts load method', MAXI_TEXT_DOMAIN).'</h4>';
-            $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact privacy (GDPR) if a web visitor’s IP address is revealed to Google.', MAXI_TEXT_DOMAIN).'</p>';
-            $description .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on your website. This method removes the connection to Google’s servers for a visitor browsing your website. This can improve or degrade performance depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.', MAXI_TEXT_DOMAIN).'</p>';
+            $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
+            privacy (GDPR) if a web visitor’s IP address is revealed to Google.', MAXI_TEXT_DOMAIN).'</p>';
+            $description .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on
+            your website. This method removes the connection to Google’s servers for a visitor browsing your website.
+            This can improve or degrade performance depending on hosting quality or resource usage. Please test and
+            monitor carefully. Unused font files are removed periodically to conserve space.', MAXI_TEXT_DOMAIN).'</p>';
             $content .= $this->generate_setting($description, 'local_fonts', new MaxiBlocks_Local_Fonts());
-            
+
             if ($fontUploadsDirSize > 0) {
-                $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__('MB', 'maxi-blocks').'</p>';
+                $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__(
+                    'MB',
+                    'maxi-blocks'
+                ).'</p>';
                 if (!(bool) get_option('local_fonts')) {
-                    $description =  '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
+                    $description = '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
                     $content .= $this->generate_setting($description, 'remove_local_fonts', $this->remove_local_fonts());
                 }
             }
@@ -281,12 +294,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $toggle .= $option;
             $toggle .= '" class="maxi-dashboard_main-content_accordion-item-toggle" ';
             if ((bool) get_option($option)) {
-                $toggle .= 'checked="checked" ';
+                $toggle .= ' checked="checked" ';
                 if (is_callable($function)) {
                     $function();
                 }
             }
-            $toggle .= 'type="checkbox" id="';
+            $toggle .= ' type="checkbox" id="';
             $toggle .= $option;
             $toggle .= '" value="1">';
             $toggle .= '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle__track"></span>';
@@ -297,13 +310,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $toggle;
         }
 
+        public function generate_input($option, $function = '')
+        {
+            $input = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $input .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
+            $input .= '<input name="';
+            $input .= $option;
+            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="text" value="';
+            $input .= get_option($option);
+            $input .= '">';
+            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__input
+            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+
+            return $input;
+        }
+
         public function generate_setting($description, $option, $function = '')
         {
             $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= $description;
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            $content .= $this->generate_toggle($option, $function);
+            if ($option === 'google_api_key_option') {
+                $content .= $this->generate_input($option, $function);
+            } else {
+                $content .= $this->generate_toggle($option, $function);
+            }
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
 
             return $content;

@@ -1,9 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
-import { withSelect, withDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,13 +15,10 @@ import {
 } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import MaxiBlock from '../../components/maxi-block';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-	getRowBorderRadius,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
+import getRowBorderRadius from './utils';
 
 /**
  * External dependencies
@@ -41,11 +36,32 @@ class edit extends MaxiBlockComponent {
 		this.resizableObject = createRef();
 	}
 
-	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
-		return (
-			isEqual(prevProps.rowGapProps, this.props.rowGapProps) &&
-			isEqual(prevProps.rowBorderRadius, this.props.rowBorderRadius)
-		);
+	static contextType = RowContext;
+
+	rowGapProps = {};
+
+	rowBorderRadius = {};
+
+	maxiBlockDidMount() {
+		this.context.setColumnClientId(this.props.clientId);
+	}
+
+	maxiBlockGetSnapshotBeforeUpdate() {
+		if (
+			!isEqual(this.rowGapProps, this.context.rowGapProps) ||
+			!isEqual(this.rowBorderRadius, this.context.rowBorderRadius)
+		) {
+			this.rowGapProps = this.context.rowGapProps;
+			this.rowBorderRadius = getRowBorderRadius(
+				this.context.rowBorderRadius,
+				this.context.columnsClientIds,
+				this.props.clientId
+			);
+
+			return false;
+		}
+
+		return true;
 	}
 
 	maxiBlockDidUpdate() {
@@ -73,9 +89,9 @@ class edit extends MaxiBlockComponent {
 		return getStyles(
 			{
 				...this.props.attributes,
-				rowBorderRadius: this.props.rowBorderRadius,
+				rowBorderRadius: this.rowBorderRadius,
 			},
-			this.props.rowGapProps
+			this.rowGapProps
 		);
 	}
 
@@ -83,14 +99,12 @@ class edit extends MaxiBlockComponent {
 		const {
 			attributes,
 			deviceType,
-			originalNestedColumns,
-			rowBlockId,
 			maxiSetAttributes,
-			updateRowPattern,
 			hasInnerBlocks,
 			clientId,
 		} = this.props;
 		const { uniqueID } = attributes;
+		const { columnsClientIds } = this.context;
 
 		const getColumnWidthDefault = () => {
 			const columnWidth = getLastBreakpointAttribute({
@@ -101,7 +115,7 @@ class edit extends MaxiBlockComponent {
 
 			if (columnWidth) return `${columnWidth}%`;
 
-			return `${100 / originalNestedColumns.length}%`;
+			return `${100 / columnsClientIds.length}%`;
 		};
 
 		const ALLOWED_BLOCKS = wp.blocks
@@ -193,12 +207,6 @@ class edit extends MaxiBlockComponent {
 						maxWidth='100%'
 						showHandle={context.displayHandlers}
 						onResizeStop={(event, direction, elt) => {
-							updateRowPattern(
-								rowBlockId,
-								deviceType,
-								context.rowPattern
-							);
-
 							maxiSetAttributes({
 								[`column-size-${deviceType}`]: round(
 									+elt.style.width.replace('%', '')
@@ -221,54 +229,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { clientId } = ownProps;
-
-	const { getBlockRootClientId, getBlockOrder, getBlockAttributes } =
-		select('core/block-editor');
-
-	const rowBlockId = getBlockRootClientId(clientId);
-	const originalNestedColumns = getBlockOrder(rowBlockId);
-	const rowAttributes = getBlockAttributes(rowBlockId);
-
-	const rowGapProps =
-		rowAttributes &&
-		(() => {
-			const response = getGroupAttributes(rowAttributes, 'flex');
-
-			Object.keys(response).forEach(key => {
-				if (!key.includes('gap')) delete response[key];
-			});
-
-			return response;
-		})();
-
-	const rowBorderRadius =
-		rowAttributes &&
-		getRowBorderRadius(
-			getGroupAttributes(rowAttributes, 'borderRadius'),
-			originalNestedColumns,
-			clientId
-		);
-
-	return {
-		rowBlockId,
-		originalNestedColumns,
-		rowGapProps,
-		rowBorderRadius,
-	};
-});
-
-const editDispatch = withDispatch(dispatch => {
-	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
-		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
-			rowPattern: rowPatternAttribute[`row-pattern-${deviceType}`],
-		});
-	};
-
-	return {
-		updateRowPattern,
-	};
-});
-
-export default compose(editSelect, editDispatch, withMaxiProps)(edit);
+export default withMaxiProps(edit);

@@ -1,7 +1,7 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /**
  * WordPress dependencies
  */
-import { compose, withInstanceId } from '@wordpress/compose';
 import { useDispatch } from '@wordpress/data';
 import { Button, Icon } from '@wordpress/components';
 
@@ -31,24 +31,19 @@ import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTe
 /**
  * Edit
  */
-const RowBlockTemplate = ({
-	clientId,
-	instanceId,
-	maxiSetAttributes,
-	deviceType,
-}) => {
+const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
 	return (
 		<div
 			className='maxi-row-block__template'
 			onClick={() => selectBlock(clientId)}
-			key={`maxi-row-block--${instanceId}`}
+			key={`maxi-row-block--${clientId}`}
 		>
 			{getTemplates().map(template => {
 				return (
 					<Button
-						key={uniqueId(`maxi-row-block--${instanceId}--`)}
+						key={uniqueId(`maxi-row-block--${clientId}--`)}
 						className='maxi-row-block__template__button'
 						onClick={() => {
 							maxiSetAttributes({
@@ -82,6 +77,8 @@ class edit extends MaxiBlockComponent {
 		displayHandlers: false,
 	};
 
+	columnsClientIds = [];
+
 	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
 			this.setState({
@@ -97,7 +94,6 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			deviceType,
 			hasInnerBlocks,
-			instanceId,
 			maxiSetAttributes,
 		} = this.props;
 		const { uniqueID } = attributes;
@@ -125,7 +121,29 @@ class edit extends MaxiBlockComponent {
 				key={`row-content-${uniqueID}`}
 				value={{
 					displayHandlers: this.state.displayHandlers,
+					// Needs a useMemo or useCallback
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
+					rowBlockId: clientId,
+					columnsClientIds: this.columnsClientIds,
+					setColumnClientId: clientId => {
+						this.columnsClientIds = [
+							...this.columnsClientIds,
+							clientId,
+						];
+					},
+					rowGapProps: (() => {
+						const response = getGroupAttributes(attributes, 'flex');
+
+						Object.keys(response).forEach(key => {
+							if (!key.includes('gap')) delete response[key];
+						});
+
+						return response;
+					})(),
+					rowBorderRadius: getGroupAttributes(
+						attributes,
+						'borderRadius'
+					),
 				}}
 			>
 				<MaxiBlock
@@ -143,7 +161,6 @@ class edit extends MaxiBlockComponent {
 							? () => (
 									<RowBlockTemplate
 										clientId={clientId}
-										instanceId={instanceId}
 										maxiSetAttributes={maxiSetAttributes}
 										deviceType={deviceType}
 									/>
@@ -156,4 +173,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withInstanceId, withMaxiProps)(edit);
+export default withMaxiProps(edit);

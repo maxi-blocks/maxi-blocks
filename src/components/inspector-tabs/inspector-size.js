@@ -36,6 +36,7 @@ const size = ({
 						(block ? (
 							<ToggleSwitch
 								label={__('Set full-width', 'maxi-blocks')}
+								className='maxi-full-width-toggle'
 								selected={isBlockFullWidth}
 								onChange={val =>
 									maxiSetAttributes({
@@ -77,6 +78,7 @@ const size = ({
 						breakpoint={deviceType}
 						hideWidth={hideWidth || isBlockFullWidth}
 						hideMaxWidth={hideMaxWidth || isBlockFullWidth}
+						isBlockFullWidth={isBlockFullWidth}
 						allowForceAspectRatio={block}
 					/>
 				</>

@@ -14,7 +14,6 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
-	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import {
@@ -24,7 +23,8 @@ import {
 	MaxiPopoverButton,
 } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';

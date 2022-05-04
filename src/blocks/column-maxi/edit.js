@@ -8,13 +8,10 @@ import { createRef } from '@wordpress/element';
  */
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';

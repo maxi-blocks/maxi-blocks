@@ -12,13 +12,13 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
-	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import copyPasteMapping from './copy-paste-mapping';
 
 /**
@@ -36,6 +36,7 @@ class edit extends MaxiBlockComponent {
 
 		this.resizableObject = createRef();
 	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -123,7 +124,7 @@ class edit extends MaxiBlockComponent {
 				breakpoint: deviceType,
 				attributes,
 			}) === 'hidden';
-    
+
 		const inlineStylesTargets = {
 			dividerColor: '.maxi-divider-block__divider',
 		};

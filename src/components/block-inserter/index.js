@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
-import { useSelect, useDispatch } from '@wordpress/data';
-import { useState, useRef, forwardRef } from '@wordpress/element';
+import { select, useDispatch } from '@wordpress/data';
+import { useRef, forwardRef } from '@wordpress/element';
 import { getScrollContainer } from '@wordpress/dom';
 import { Popover } from '@wordpress/components';
 
@@ -52,22 +52,12 @@ const BlockInserter = props => {
 };
 
 const ButtonInserter = props => {
-	const { setButtonIsHovered, onToggle, setShouldRemain, clientId } = props;
-
-	const { selectBlock } = useDispatch('core/block-editor');
+	const { onToggle } = props;
 
 	return (
 		<Button
-			onMouseOver={() => setButtonIsHovered(true)}
-			onMouseOut={() => setButtonIsHovered(false)}
 			className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
-			onClick={() => {
-				selectBlock(clientId).then(() => {
-					if (setShouldRemain) setShouldRemain(true);
-
-					onToggle();
-				});
-			}}
+			onClick={onToggle}
 		>
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
@@ -85,24 +75,17 @@ const ButtonInserter = props => {
 };
 
 const WrapperBlockInserter = forwardRef((props, ref) => {
-	const { clientId, isSelected, hasSelectedChild, isHovered } = props;
+	const { clientId, isSelected, hasSelectedChild } = props;
 
-	const { blockHierarchy } = useSelect(select => {
-		const { getBlockName, getBlockParents } = select('core/block-editor');
+	const { getBlockName, getBlockParents } = select('core/block-editor');
 
-		const blockOrder = [...getBlockParents(clientId), clientId];
-
-		const blockHierarchy = {};
-
-		blockOrder.forEach(blockClientId => {
-			if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId)))
-				blockHierarchy[blockClientId] = getBlockName(blockClientId);
-		});
-
-		return { blockHierarchy };
+	const blockHierarchy = {};
+	const blockOrder = [...getBlockParents(clientId), clientId];
+	blockOrder.forEach(blockClientId => {
+		if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId)))
+			blockHierarchy[blockClientId] = getBlockName(blockClientId);
 	});
 
-	const [buttonIsHovered, setButtonIsHovered] = useState(false);
 	const shouldRemain = useRef(false);
 	const setShouldRemain = val => {
 		shouldRemain.current = val;
@@ -119,13 +102,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		) ||
 		document.body?.querySelector('.edit-post-visual-editor');
 
-	if (
-		isHovered ||
-		buttonIsHovered ||
-		isSelected ||
-		hasSelectedChild ||
-		shouldRemain.current
-	)
+	if (isSelected || hasSelectedChild || shouldRemain.current)
 		return (
 			<Popover
 				key={`maxi-wrapper-block-inserter__${clientId}`}
@@ -147,10 +124,8 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 						position='bottom center'
 						renderToggle={({ onToggle }) => (
 							<ButtonInserter
-								setButtonIsHovered={setButtonIsHovered}
 								onToggle={onToggle}
 								setShouldRemain={setShouldRemain}
-								clientId
 							/>
 						)}
 						renderContent={({ onToggle }) => (
@@ -201,16 +176,10 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 						__experimentalIsQuick
 						onSelectOrClose={() => setShouldRemain(false)}
 						renderToggle={({ onToggle }) => (
-							<ButtonInserter
-								setButtonIsHovered={setButtonIsHovered}
-								onToggle={onToggle}
-								setShouldRemain={setShouldRemain}
-								clientId
-							/>
+							<ButtonInserter onToggle={onToggle} />
 						)}
 					/>
 				)}
-				{JSON.stringify(isHovered)}
 			</Popover>
 		);
 

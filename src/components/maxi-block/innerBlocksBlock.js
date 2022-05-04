@@ -1,0 +1,192 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
+/**
+ * WordPress dependencies
+ */
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { forwardRef, cloneElement, memo } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import BackgroundDisplayer from '../background-displayer';
+import BlockInserter from '../block-inserter';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, isArray, compact, isEqual } from 'lodash';
+
+const getInnerBlocksChild = ({
+	children,
+	background,
+	disableBackground,
+	innerBlocksChildren,
+	anchorLink,
+	isSave = false,
+	uniqueID,
+	blockName,
+	ref,
+	clientId,
+	hasInnerBlocks,
+	isSelected,
+	hasSelectedChild,
+}) => {
+	const needToSplit =
+		isArray(children) &&
+		children.some(child => child?.props?.afterInnerProps);
+
+	if (!needToSplit)
+		return [
+			...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+			...(disableBackground && (
+				<BackgroundDisplayer
+					key={`maxi-background-displayer__${uniqueID}`}
+					isSave={isSave}
+					{...background}
+				/>
+			)),
+			...(children ?? children),
+			...cloneElement(innerBlocksChildren, {
+				key: `maxi-inner-content__${uniqueID}`,
+			}),
+			...(!isSave &&
+				hasInnerBlocks &&
+				blockName !== 'maxi-blocks/row-maxi' && (
+					<BlockInserter.WrapperInserter
+						key={`maxi-block-wrapper-inserter__${clientId}`}
+						ref={ref}
+						clientId={clientId}
+						isSelected={isSelected}
+						hasSelectedChild={hasSelectedChild}
+					/>
+				)),
+		];
+
+	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
+	const secondGroup = children
+		.filter(child => child?.props?.afterInnerProps)
+		.map(({ props: { afterInnerProps, ...restProps }, ...child }) =>
+			cloneElement({ ...child, props: restProps })
+		);
+
+	return [
+		...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+		...(disableBackground && (
+			<BackgroundDisplayer
+				key={`maxi-background-displayer__${uniqueID}`}
+				isSave={isSave}
+				{...background}
+			/>
+		)),
+		...firstGroup,
+		...cloneElement(innerBlocksChildren, {
+			key: `maxi-inner-content__${uniqueID}`,
+		}),
+		...secondGroup,
+		...(!isSave &&
+			hasInnerBlocks &&
+			blockName !== 'maxi-blocks/row-maxi' && (
+				<BlockInserter.WrapperInserter
+					key={`maxi-block-wrapper-inserter__${clientId}`}
+					ref={ref}
+					clientId={clientId}
+					isSelected={isSelected}
+					hasSelectedChild={hasSelectedChild}
+				/>
+			)),
+	];
+};
+
+const MainInnerBlocksBlock = forwardRef(
+	(
+		{
+			tagName: TagName = 'div',
+			children,
+			background,
+			disableBackground,
+			uniqueID,
+			blockName,
+			isSave,
+			anchorLink,
+			innerBlocksSettings,
+			clientId,
+			hasInnerBlocks,
+			isSelected,
+			hasSelectedChild,
+			...props
+		},
+		ref
+	) => {
+		const blockProps = isSave
+			? useBlockProps.save(props)
+			: useBlockProps({ ...props, ref });
+
+		const innerBlocksProps = isSave
+			? useInnerBlocksProps.save(blockProps)
+			: useInnerBlocksProps(blockProps, {
+					...innerBlocksSettings,
+					wrapperRef: ref,
+			  });
+
+		const { children: innerBlocksChildren, ...restInnerBlocksProps } =
+			innerBlocksProps;
+
+		const blockChildren = compact(
+			getInnerBlocksChild({
+				children,
+				background,
+				disableBackground,
+				innerBlocksChildren,
+				anchorLink,
+				isSave,
+				uniqueID,
+				blockName,
+				ref,
+				clientId,
+				hasInnerBlocks,
+				isSelected,
+				hasSelectedChild,
+			})
+		);
+
+		if (isSave)
+			return (
+				<TagName ref={ref} {...innerBlocksProps}>
+					{blockChildren}
+				</TagName>
+			);
+
+		return <TagName {...restInnerBlocksProps}>{blockChildren}</TagName>;
+	}
+);
+
+const EditInnerBlocksBlock = memo(
+	MainInnerBlocksBlock,
+	(rawOldProps, rawNewProps) => {
+		const propsCleaner = props => {
+			const response = {};
+
+			Object.entries(props).forEach(([key, value]) => {
+				if (typeof value !== 'function' && typeof value !== 'object') {
+					response[key] = value;
+				}
+			});
+
+			return response;
+		};
+
+		const oldProps = propsCleaner(rawOldProps);
+		const newProps = propsCleaner(rawNewProps);
+
+		return isEqual(oldProps, newProps);
+	}
+);
+
+const InnerBlocksBlock = forwardRef(({ isSave, ...restProps }, ref) => {
+	if (isSave) return <MainInnerBlocksBlock isSave {...restProps} />;
+
+	return <EditInnerBlocksBlock ref={ref} {...restProps} />;
+});
+
+export default InnerBlocksBlock;

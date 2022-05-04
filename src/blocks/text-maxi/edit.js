@@ -14,18 +14,14 @@ import {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
 	getPaletteAttributes,
 } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import onMerge, { onReplaceBlocks } from './utils';
 import {

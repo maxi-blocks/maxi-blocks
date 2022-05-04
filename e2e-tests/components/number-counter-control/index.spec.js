@@ -164,9 +164,9 @@ describe('NumberCounterControl', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
-		expect(
-			await getAttributes('number-counter-title-font-family-general')
-		).toStrictEqual('Montserrat');
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			'Montserrat'
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

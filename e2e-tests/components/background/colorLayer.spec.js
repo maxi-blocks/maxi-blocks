@@ -26,7 +26,7 @@ describe('Background Color Layer', () => {
 
 		// change color
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-color-control__palette-container button',
+			'.maxi-list-item-control__content .maxi-color-control__palette-container button',
 			colorPalette => colorPalette[4].click()
 		);
 
@@ -65,7 +65,7 @@ describe('Background Color Layer', () => {
 
 		// modify s responsive
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-color-control__palette-box',
+			'.maxi-list-item-control__content .maxi-color-control__palette-box',
 			colorPalette => colorPalette[5].click()
 		);
 
@@ -119,13 +119,13 @@ describe('Background Color Layer', () => {
 
 		// hover options
 		await page.$eval(
-			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			'.maxi-list-control__options .maxi-list-item-control',
 			options => options.click()
 		);
 
 		// change color
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-color-control__palette-container button',
+			'.maxi-list-item-control__content .maxi-color-control__palette-container button',
 			colorPalette => colorPalette[1].click()
 		);
 
@@ -161,7 +161,7 @@ describe('Background Color Layer', () => {
 
 		// modify s responsive
 		await page.$$eval(
-			'.maxi-background-layer__content .maxi-color-control__palette-container button',
+			'.maxi-list-item-control__content .maxi-color-control__palette-container button',
 			colorPalette => colorPalette[3].click()
 		);
 

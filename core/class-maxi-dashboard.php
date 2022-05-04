@@ -199,53 +199,24 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content_accordion">';
 
             $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-
             $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="editor-preferences">';
-
             $content .= '<label for="editor-preferences" class="maxi-dashboard_main-content_accordion-item-label">';
             $content .= '<h3>'.__('Editor preferences', MAXI_TEXT_DOMAIN).'</h3>';
             $content .= '</label>';
-
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
-            $content .= '<h4>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).'</h4>';
-            $content .= '<p>'.__('Show or hide tooltips on mouse-hover.', MAXI_TEXT_DOMAIN).'</p>';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
-            $content .= '<h4>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).'</h4>';
-            $content .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', MAXI_TEXT_DOMAIN).'</p>';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
-            $content .= '<input name="accessibility_option" class="maxi-dashboard_main-content_accordion-item-toggle" ';
-            if ((bool) get_option('accessibility_option')) {
-                $content .= 'checked="checked" ';
-            }
-            $content .= 'type="checkbox" id="accessibility_option" value="1">';
-            $content .= '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle__track"></span>';
-            $content .= '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle__thumb"></span>';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
+            $description = '<h4>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Show or hide tooltips on mouse-hover.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'show_tooltips');
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
-            $content .= '<h4>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).'</h4>';
-            $content .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', MAXI_TEXT_DOMAIN).'</p>';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-settings
+            $description = '<h4>'.__('Accessibility: Enable focus indicator', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'accessibility_option');
+
+            $description = '<h4>'.__('Auto-collapse panels in settings sidebar', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'collapse_panels');
+
             $content .= get_submit_button();
             
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -258,27 +229,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</label>';
 
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
-            $content .= '<h4>'.__('Use post excerpts, if defined by your theme', MAXI_TEXT_DOMAIN).'</h4>';
-            $content .= '<p>'.__('Let your active theme control the length and display of post excerpts.', MAXI_TEXT_DOMAIN).'</p>';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
-            $content .= '<h4>'.__('Enable responsive image functionality', MAXI_TEXT_DOMAIN).'</h4>';
-            $content .= '<p>'.__('Ensure your images look great no matter the screen size of the device it is viewed upon.', MAXI_TEXT_DOMAIN).'</p>';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
+            $description = '<h4>'.__('Use post excerpts, if defined by your theme', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Let your active theme control the length and display of post excerpts.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'post_excerpts');
+
+            $description = '<h4>'.__('Enable responsive image functionality', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Ensure your images look great no matter the screen size of the device it is viewed upon.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'responsive_image');
+
             $content .= get_submit_button();
             
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -291,43 +250,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</label>';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
-            $content .= '<h4>'.__('Google Fonts load method', MAXI_TEXT_DOMAIN).'</h4>';
-            $content .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact privacy (GDPR) if a web visitor’s IP address is revealed to Google.', MAXI_TEXT_DOMAIN).'</p>';
-            $content .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on your website. This method removes the connection to Google’s servers for a visitor browsing your website. This can improve or degrade performance depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.', MAXI_TEXT_DOMAIN).'</p>';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
-            $content .= '<input name="local_fonts" class="maxi-dashboard_main-content_accordion-item-toggle" ';
-            if ((bool) get_option('local_fonts')) {
-                $content .= 'checked="checked" ';
-                new MaxiBlocks_Local_Fonts();
-            }
-            $content .= 'type="checkbox" id="local_fonts" value="1">';
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
+            $description = '<h4>'.__('Google Fonts load method', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact privacy (GDPR) if a web visitor’s IP address is revealed to Google.', MAXI_TEXT_DOMAIN).'</p>';
+            $description .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on your website. This method removes the connection to Google’s servers for a visitor browsing your website. This can improve or degrade performance depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'local_fonts', new MaxiBlocks_Local_Fonts());
+            
             if ($fontUploadsDirSize > 0) {
                 $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__('MB', 'maxi-blocks').'</p>';
                 if (!(bool) get_option('local_fonts')) {
-                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
-                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
-                    $content .=  '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
-                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-                    $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
-                    $content .= '<input name="remove_local_fonts" class="maxi-dashboard_main-content_accordion-item-toggle" ';
-                    if ((bool) get_option('remove_local_fonts')) {
-                        $content .= "checked='checked' ";
-                        $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
-                        $this->delete_all_files($fonts_uploads_dir);
-                        update_option('remove_local_fonts', 0);
-                    }
-                    $content .= 'type="checkbox" id="remove_local_fonts" value="1">';
-                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
-                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
-                    $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
+                    $description =  '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
+                    $content .= $this->generate_setting($description, 'remove_local_fonts', $this->remove_local_fonts());
                 }
             }
 
@@ -338,6 +270,42 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion
             $content .= '</div>'; // maxi-dashboard_main-content
+            return $content;
+        }
+
+        public function generate_toggle($option, $function = '')
+        {
+            $toggle = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $toggle .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle">';
+            $toggle .= '<input name="';
+            $toggle .= $option;
+            $toggle .= '" class="maxi-dashboard_main-content_accordion-item-toggle" ';
+            if ((bool) get_option($option)) {
+                $toggle .= 'checked="checked" ';
+                if (is_callable($function)) {
+                    $function();
+                }
+            }
+            $toggle .= 'type="checkbox" id="';
+            $toggle .= $option;
+            $toggle .= '" value="1">';
+            $toggle .= '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle__track"></span>';
+            $toggle .= '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__toggle__thumb"></span>';
+            $toggle .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__toggle
+            $toggle .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+
+            return $toggle;
+        }
+
+        public function generate_setting($description, $option, $function = '')
+        {
+            $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
+            $content .= $description;
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
+            $content .= $this->generate_toggle($option, $function);
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
+
             return $content;
         }
 
@@ -379,6 +347,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
             }
             rmdir($folder);
+        }
+
+        public function remove_local_fonts()
+        {
+            $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
+            $this->delete_all_files($fonts_uploads_dir);
+            update_option('remove_local_fonts', 0);
         }
     }
 endif;

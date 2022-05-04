@@ -73,21 +73,6 @@ const Inspector = props => {
 			newDefaultPresets[`preset${number}`]['icon-content'] =
 				attributes['icon-content'];
 
-		if (type === 'icon') {
-			const iconContent = attributes['icon-content']
-				? attributes['icon-content']
-				: defaultPresets[`preset${number}`]['icon-content'];
-
-			const strokeRegExp = new RegExp(
-				'stroke=[^-]([^none])([^\\"]+)',
-				'g'
-			);
-			const strokeStr2 = ` stroke="${'#00ff00'}`;
-			iconContent.replace(strokeRegExp, strokeStr2);
-
-			newDefaultPresets[`preset${number}`]['icon-content'] = iconContent;
-		}
-
 		if (
 			!isNil(
 				defaultPresets[`preset${number}`][

@@ -259,6 +259,7 @@ function maxi_blocks_allowed_html()
         ),
         's'          => array(),
         'samp'       => array(),
+        'script'       => array(),
         'span'       => array(
             'id'       => true,
             'class'    => true,

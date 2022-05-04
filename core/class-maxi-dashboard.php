@@ -47,11 +47,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'register_maxi_blocks_settings'
             ));
-
-            // add_action('admin_enqueue_scripts', array(
-            //     $this,
-            //     'maxi_admin_scripts_styles'
-            // ));
         }
 
         public function maxi_get_menu_icon_base64()
@@ -99,7 +94,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             } else {
                 $current_tab = $tab =  MAXI_PREFIX.'welcome';
             }
-
+            
             echo '<div class="maxi-dashboard_wrap">';
             echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(plugin_dir_url(__DIR__)) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', MAXI_TEXT_DOMAIN).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
@@ -109,7 +104,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 
                 echo '<a class="maxi-dashboard_nav-tab nav-tab ' . esc_attr($tab_page) . esc_attr($active_tab) . '" href="?page=' . esc_attr(MAXI_SLUG_DASHBOARD) . '&tab=' . esc_attr($tab_page) . '">' . wp_kses($tab_name, $this->maxi_blocks_allowed_html()) . '</a>';
             }
-            echo '</h4> <form action="options.php" method="post" class="maxi-dashboard_form">';
+            echo '</h4> <form action="options.php?panel=test&" method="post" class="maxi-dashboard_form">';
             settings_fields('maxi-blocks-settings-group');
             do_settings_sections('maxi-blocks-settings-group');
             echo '<div class="maxi-dashboard_main">';
@@ -194,16 +189,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
             $fontUploadsDirSize = round($this->get_folder_size($fontUploadsDir)/1048576, 2);
 
+            // not the best way to do this, but we need it only on this tab, and it's just 8 lines of code
+            // &panel=documentation-support will open the tab in the accordion
+            $content .= '<script>
+            document.addEventListener("DOMContentLoaded", function(event) { 
+                var urlStr = window.location.href
+                var url = new URL(urlStr);
+                var toCheck = url.searchParams.get("panel");
+                var checkBox = document.getElementById(toCheck);
+                if(checkBox) checkBox.checked = true;
+            });
+            </script>';
 
-            $content = '<div class="maxi-dashboard_main-content">';
-            $content = '<div class="maxi-dashboard_main-content_accordion">';
+            $content .= '<div class="maxi-dashboard_main-content">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="editor-preferences">';
-            $content .= '<label for="editor-preferences" class="maxi-dashboard_main-content_accordion-item-label">';
-            $content .= '<h3>'.__('Editor preferences', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '</label>';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= $this->generate_item_header('Editor preferences', true);
 
             $description = '<h4>'.__('Hide interface tooltips', MAXI_TEXT_DOMAIN).'</h4>';
             $description .= '<p>'.__('Show or hide tooltips on mouse-hover.', MAXI_TEXT_DOMAIN).'</p>';
@@ -222,13 +223,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="general">';
-            $content .= '<label for="general" class="maxi-dashboard_main-content_accordion-item-label">';
-            $content .= '<h3>'.__('General', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '</label>';
-
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= $this->generate_item_header('General', true);
 
             $description = '<h4>'.__('Use post excerpts, if defined by your theme', MAXI_TEXT_DOMAIN).'</h4>';
             $description .= '<p>'.__('Let your active theme control the length and display of post excerpts.', MAXI_TEXT_DOMAIN).'</p>';
@@ -249,12 +244,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="fonts-files">';
-            $content .= '<label for="fonts-files" class="maxi-dashboard_main-content_accordion-item-label">';
-            $content .= '<h3>'.__('Fonts and files', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '</label>';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= $this->generate_item_header('Fonts and files', false);
 
             $description = '<h4>'.__('Allow SVG / JSON file uploads (recommended)', MAXI_TEXT_DOMAIN).'</h4>';
             $description .= '<p>'.__('Scalable Vector Graphics (SVG) are great for design and SEO. Commonly used as icons and shapes. These small image files scale without any blur. Style Cards rely on SVG for automatic colour changes. JSON files enable the import and export of templates in the library.', MAXI_TEXT_DOMAIN).'</p>';
@@ -285,12 +275,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="documentation-support">';
-            $content .= '<label for="documentation-support" class="maxi-dashboard_main-content_accordion-item-label">';
-            $content .= '<h3>'.__('Documentation & support', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '</label>';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= $this->generate_item_header('Documentation & support', false);
 
             $content .= '<p>'.__('Read the ', MAXI_TEXT_DOMAIN);
             $content .= '<a href="" target="_blank"> '.__('online documentation', MAXI_TEXT_DOMAIN).'</a>';
@@ -303,12 +288,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="troubleshooting">';
-            $content .= '<label for="troubleshooting" class="maxi-dashboard_main-content_accordion-item-label">';
-            $content .= '<h3>'.__('Troubleshooting', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '</label>';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= $this->generate_item_header('Troubleshooting', false);
 
             $content .= '<h4>'.__('Site health info report', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly.', MAXI_TEXT_DOMAIN).'</p>';
@@ -317,24 +297,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="updates-roll-back">';
-            $content .= '<label for="updates-roll-back" class="maxi-dashboard_main-content_accordion-item-label">';
-            $content .= '<h3>'.__('Updates & Roll-Back', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '</label>';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= $this->generate_item_header('Updates & Roll-Back', false);
 
             $content .= '<p>'.__('Maxi Blocks includes a roll-back feature to restore a previous version of the plugin if required. It is recommended to run a backup of your website and database before you perform a rollback.', MAXI_TEXT_DOMAIN).'</p>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
-            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="advanced ">';
-            $content .= '<label for="advanced " class="maxi-dashboard_main-content_accordion-item-label">';
-            $content .= '<h3>'.__('Advanced', MAXI_TEXT_DOMAIN).'</h3>';
-            $content .= '</label>';
-            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+            $content .= $this->generate_item_header('Advanced', false);
 
             $content .= '<h4>'.__('Responsive design breakpoints', MAXI_TEXT_DOMAIN).'</h4>';
             $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', MAXI_TEXT_DOMAIN).'</p>';
@@ -347,6 +317,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content
 
             return $content;
+        }
+
+        public function generate_item_header($title, $checked)
+        {
+            $label = str_replace(' ', '-', strtolower($title));
+            $header = '<div class="maxi-dashboard_main-content_accordion-item">';
+            $header .= '<input type="checkbox"';
+            
+            if ($checked === true) {
+                $header .= ' checked';
+            }
+
+            $header .= ' class="maxi-dashboard_main-content_accordion-item-checkbox" id="';
+            $header .= $label.'">';
+            $header .= '<label for="';
+            $header .= $label;
+            $header .= '" class="maxi-dashboard_main-content_accordion-item-label">';
+            $header .= '<h3>'.__($title, MAXI_TEXT_DOMAIN).'</h3>';
+            $header .= '</label>';
+            $header .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+
+            return $header;
         }
 
         public function generate_toggle($option, $function = '')

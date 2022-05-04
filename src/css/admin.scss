@@ -59,6 +59,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 			padding: 0 1em;
 			background: white;
 			transition: all 0.35s;
+			p {
+				margin-top: 0;
+			}
 			&-setting {
 				display: flex;
 				flex-wrap: wrap;

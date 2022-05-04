@@ -256,6 +256,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</label>';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
 
+            $description = '<h4>'.__('Allow SVG / JSON file uploads (recommended)', MAXI_TEXT_DOMAIN).'</h4>';
+            $description .= '<p>'.__('Scalable Vector Graphics (SVG) are great for design and SEO. Commonly used as icons and shapes. These small image files scale without any blur. Style Cards rely on SVG for automatic colour changes. JSON files enable the import and export of templates in the library.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= $this->generate_setting($description, 'allow_svg_json_uploads');
+
             $description = '<h4>'.__('Google Fonts load method', MAXI_TEXT_DOMAIN).'</h4>';
             $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
             privacy (GDPR) if a web visitor’s IP address is revealed to Google.', MAXI_TEXT_DOMAIN).'</p>';
@@ -281,8 +285,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="documentation-support">';
+            $content .= '<label for="documentation-support" class="maxi-dashboard_main-content_accordion-item-label">';
+            $content .= '<h3>'.__('Documentation & support', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '</label>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+
+            $content .= '<p>'.__('Read the ', MAXI_TEXT_DOMAIN);
+            $content .= '<a href="" target="_blank"> '.__('online documentation', MAXI_TEXT_DOMAIN).'</a>';
+            $content .= __(' for self-service.', MAXI_TEXT_DOMAIN).'</p>';
+
+            $content .= '<p>'.__('For support please  ', MAXI_TEXT_DOMAIN);
+            $content .= '<a href="" target="_blank"> '.__('post your question', MAXI_TEXT_DOMAIN).'</a>';
+            $content .= __(' in the WordPress.org forum.', MAXI_TEXT_DOMAIN).'</p>';
+
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
             $content .= '</div>'; // maxi-dashboard_main-content_accordion
             $content .= '</div>'; // maxi-dashboard_main-content
+
             return $content;
         }
 

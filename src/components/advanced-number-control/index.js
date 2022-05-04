@@ -194,7 +194,7 @@ const AdvancedNumberControl = props => {
 									value = min;
 							}
 
-							onChangeValue(value === '' ? value : +value);
+							onChangeValue(value);
 						}}
 						onKeyDown={e => {
 							if (e.key === '-' && min >= 0) {

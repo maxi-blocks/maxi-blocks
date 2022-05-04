@@ -25,7 +25,10 @@ const getColorString = (obj, target, style) => {
 	const paletteColor = obj[`${prefix}palette-color`];
 	const paletteOpacity = obj[`${prefix}palette-opacity`];
 	const color =
-		target === 'line' || target === 'fill'
+		target === 'line' ||
+		target === 'fill' ||
+		target === 'hover-line' ||
+		target === 'hover-fill'
 			? obj[target]
 			: obj[`${prefix}color`];
 

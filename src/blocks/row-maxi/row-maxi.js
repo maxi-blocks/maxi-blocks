@@ -23,6 +23,7 @@ import { rowIcon } from '../../icons';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
 
 /**
  * Block
@@ -51,4 +52,5 @@ registerBlockType('maxi-blocks/row-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [fromNumberToStringMigrator({ attributes, save })],
 });

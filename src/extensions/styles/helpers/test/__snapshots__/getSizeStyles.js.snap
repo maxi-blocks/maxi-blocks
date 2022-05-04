@@ -138,6 +138,7 @@ Object {
     "width": "fit-content",
   },
   "l": Object {
+    "height": "4px",
     "max-height": "2px",
     "max-width": "2px",
     "min-height": "1px",
@@ -145,6 +146,7 @@ Object {
     "width": "fit-content",
   },
   "m": Object {
+    "height": "4px",
     "max-height": "1px",
     "max-width": "2px",
     "min-height": "2px",
@@ -160,6 +162,7 @@ Object {
     "width": "fit-content",
   },
   "xl": Object {
+    "height": "4px",
     "max-height": "2px",
     "max-width": "3px",
     "min-height": "4px",

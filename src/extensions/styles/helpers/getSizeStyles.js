@@ -45,8 +45,9 @@ const getSizeStyles = (obj, prefix = '') => {
 					return { width: 'fit-content' };
 				}
 			}
+
 			if (
-				isNumber(obj[`${prefix}${target}-${breakpoint}`]) ||
+				isNumber(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
 				obj[`${prefix}${target}-unit-${breakpoint}`]
 			) {
 				const num = getLastBreakpointAttribute({

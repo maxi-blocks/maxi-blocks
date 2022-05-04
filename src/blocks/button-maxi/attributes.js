@@ -80,10 +80,6 @@ const attributes = {
 			type: 'number',
 			default: 1,
 		},
-		'text-direction-general': {
-			type: 'string',
-			default: 'ltr',
-		},
 	},
 	...attributesData.typographyHover,
 	...prefixAttributesCreator({

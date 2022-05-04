@@ -119,13 +119,7 @@ const attributes = {
 	...attributesData.link,
 	...attributesData.textAlignment,
 	...attributesData.textAlignment,
-	...{
-		...attributesData.typography,
-		'text-direction-general': {
-			type: 'string',
-			default: 'ltr',
-		},
-	},
+	...attributesData.typography,
 	...attributesData.typographyHover,
 	...attributesData.blockBackground,
 	...attributesData.border,

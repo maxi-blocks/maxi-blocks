@@ -121,20 +121,20 @@ const numberCounterEffect = () => {
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
 const setNewDyAttribute = (elem, numberData, winSize) => {
-	const fontSize = getLastBreakpointValue(numberData, winSize);
+	const fontSize = getTitleFontSize(numberData, winSize);
 	elem.setAttribute(
 		'dy',
 		`${Math.round((fontSize / 4 + Number.EPSILON) * 100) / 100}px`
 	);
 };
 
-const getLastBreakpointValue = (numberData, winSize) => {
+const getTitleFontSize = (numberData, winSize) => {
 	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
 	if (numberData[`number-counter-title-font-size-${winSize}`]) {
 		return numberData[`number-counter-title-font-size-${winSize}`];
 	} else {
 		const winIndex = breakpoints.indexOf(winSize);
-		return getLastBreakpointValue(numberData, breakpoints[winIndex + 1]);
+		return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
 	}
 };
 

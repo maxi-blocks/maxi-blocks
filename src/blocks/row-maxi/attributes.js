@@ -37,16 +37,16 @@ const attributes = {
 	...{
 		...attributesData.size,
 		'max-width-xxl': {
-			type: 'number',
-			default: 1690,
+			type: 'string',
+			default: '1690',
 		},
 		'max-width-xl': {
-			type: 'number',
-			default: 1170,
+			type: 'string',
+			default: '1170',
 		},
 		'max-width-l': {
-			type: 'number',
-			default: 90,
+			type: 'string',
+			default: '90',
 		},
 		'max-width-unit-xxl': {
 			type: 'string',
@@ -61,20 +61,20 @@ const attributes = {
 			default: '%',
 		},
 		'width-l': {
-			type: 'number',
-			default: 1170,
+			type: 'string',
+			default: '1170',
 		},
 		'width-m': {
-			type: 'number',
-			default: 1000,
+			type: 'string',
+			default: '1000',
 		},
 		'width-s': {
-			type: 'number',
-			default: 700,
+			type: 'string',
+			default: '700',
 		},
 		'width-xs': {
-			type: 'number',
-			default: 460,
+			type: 'string',
+			default: '460',
 		},
 		'width-unit-l': {
 			type: 'string',

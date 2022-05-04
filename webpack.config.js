@@ -32,24 +32,4 @@ module.exports = {
 		...defaultConfig.resolve,
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
 	},
-	module: {
-		...defaultConfig.module,
-		rules: [
-			...defaultConfig.module.rules,
-			{
-				test: /admin\.scss$/,
-				exclude: /node_modules/,
-				use: [
-					{
-						loader: require.resolve('sass-loader'),
-						options: {
-							sourceMap: !isProduction,
-							outputPath: 'build/',
-							name: '[name].min.css',
-						},
-					},
-				],
-			},
-		],
-	},
 };

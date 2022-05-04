@@ -300,6 +300,45 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<a href="" target="_blank"> '.__('post your question', MAXI_TEXT_DOMAIN).'</a>';
             $content .= __(' in the WordPress.org forum.', MAXI_TEXT_DOMAIN).'</p>';
 
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="troubleshooting">';
+            $content .= '<label for="troubleshooting" class="maxi-dashboard_main-content_accordion-item-label">';
+            $content .= '<h3>'.__('Troubleshooting', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '</label>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+
+            $content .= '<h4>'.__('Site health info report', MAXI_TEXT_DOMAIN).'</h4>';
+            $content .= '<p>'.__('The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '<p><a href="" target="_blank"> '.__('Go to site health info', MAXI_TEXT_DOMAIN).'</a></p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="updates-roll-back">';
+            $content .= '<label for="updates-roll-back" class="maxi-dashboard_main-content_accordion-item-label">';
+            $content .= '<h3>'.__('Updates & Roll-Back', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '</label>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+
+            $content .= '<p>'.__('Maxi Blocks includes a roll-back feature to restore a previous version of the plugin if required. It is recommended to run a backup of your website and database before you perform a rollback.', MAXI_TEXT_DOMAIN).'</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item">';
+            $content .= '<input type="checkbox" class="maxi-dashboard_main-content_accordion-item-checkbox" id="advanced ">';
+            $content .= '<label for="advanced " class="maxi-dashboard_main-content_accordion-item-label">';
+            $content .= '<h3>'.__('Advanced', MAXI_TEXT_DOMAIN).'</h3>';
+            $content .= '</label>';
+            $content .= '<div class="maxi-dashboard_main-content_accordion-item-content">';
+
+            $content .= '<h4>'.__('Responsive design breakpoints', MAXI_TEXT_DOMAIN).'</h4>';
+            $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', MAXI_TEXT_DOMAIN).'</p>';
+            $content .= '<p>'.__('Normally you don’t need to change breakpoint values. But, you might have special requirements. Adjust at your own discretion and remember to test, test, test.', MAXI_TEXT_DOMAIN).'</p>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item

@@ -4,16 +4,16 @@ exports[`prefixAttributesCreator Returns prefixed object with custom values 1`] 
 Object {
   "button-padding-bottom-general": Object {
     "default": 30,
-    "type": "number",
+    "type": "string",
   },
   "button-padding-bottom-l": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-bottom-m": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-bottom-s": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-bottom-unit-general": Object {
     "default": "px",
@@ -38,25 +38,25 @@ Object {
     "type": "string",
   },
   "button-padding-bottom-xl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-bottom-xs": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-bottom-xxl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-general": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-l": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-m": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-s": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-unit-general": Object {
     "default": "px",
@@ -81,25 +81,25 @@ Object {
     "type": "string",
   },
   "button-padding-left-xl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-xs": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-xxl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-general": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-l": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-m": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-s": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-unit-general": Object {
     "default": "px",
@@ -124,13 +124,13 @@ Object {
     "type": "string",
   },
   "button-padding-right-xl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-xs": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-xxl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-sync-general": Object {
     "default": "all",
@@ -155,16 +155,16 @@ Object {
     "type": "string",
   },
   "button-padding-top-general": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-l": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-m": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-s": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-unit-general": Object {
     "default": "px",
@@ -189,13 +189,13 @@ Object {
     "type": "string",
   },
   "button-padding-top-xl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-xs": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-xxl": Object {
-    "type": "number",
+    "type": "string",
   },
 }
 `;
@@ -791,16 +791,16 @@ Object {
 exports[`prefixAttributesCreator Returns prefixed object with excluded values 1`] = `
 Object {
   "button-padding-left-general": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-l": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-m": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-s": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-unit-general": Object {
     "default": "px",
@@ -825,25 +825,25 @@ Object {
     "type": "string",
   },
   "button-padding-left-xl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-xs": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-left-xxl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-general": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-l": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-m": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-s": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-unit-general": Object {
     "default": "px",
@@ -868,13 +868,13 @@ Object {
     "type": "string",
   },
   "button-padding-right-xl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-xs": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-right-xxl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-sync-general": Object {
     "default": "all",
@@ -899,16 +899,16 @@ Object {
     "type": "string",
   },
   "button-padding-top-general": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-l": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-m": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-s": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-unit-general": Object {
     "default": "px",
@@ -933,13 +933,13 @@ Object {
     "type": "string",
   },
   "button-padding-top-xl": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-xs": Object {
-    "type": "number",
+    "type": "string",
   },
   "button-padding-top-xxl": Object {
-    "type": "number",
+    "type": "string",
   },
 }
 `;

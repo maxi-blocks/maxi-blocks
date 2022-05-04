@@ -13,7 +13,7 @@ export const rawMaxWidth = {
 		default: 'px',
 	},
 	'max-width': {
-		type: 'number',
+		type: 'string',
 	},
 };
 
@@ -23,7 +23,7 @@ export const rawWidth = {
 		default: 'px',
 	},
 	width: {
-		type: 'number',
+		type: 'string',
 	},
 	'width-fit-content': {
 		type: 'boolean',
@@ -37,7 +37,7 @@ export const rawMinWidth = {
 		default: 'px',
 	},
 	'min-width': {
-		type: 'number',
+		type: 'string',
 	},
 };
 
@@ -47,7 +47,7 @@ export const rawMaxHeight = {
 		default: 'px',
 	},
 	'max-height': {
-		type: 'number',
+		type: 'string',
 	},
 };
 
@@ -57,7 +57,7 @@ export const rawHeight = {
 		default: 'px',
 	},
 	height: {
-		type: 'number',
+		type: 'string',
 	},
 	'force-aspect-ratio': {
 		type: 'boolean',
@@ -70,7 +70,7 @@ export const rawMinHeight = {
 		default: 'px',
 	},
 	'min-height': {
-		type: 'number',
+		type: 'string',
 	},
 };
 

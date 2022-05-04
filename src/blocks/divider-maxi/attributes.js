@@ -51,8 +51,8 @@ const attributes = {
 	...{
 		...attributesData.size,
 		'height-general': {
-			type: 'number',
-			default: 100,
+			type: 'string',
+			default: '100',
 		},
 		'height-unit-general': {
 			type: 'string',
@@ -67,6 +67,7 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

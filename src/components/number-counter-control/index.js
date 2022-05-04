@@ -11,6 +11,7 @@ import ColorControl from '../color-control';
 import ToggleSwitch from '../toggle-switch';
 import FontFamilySelector from '../font-family-selector';
 import SelectControl from '../select-control';
+import FontWeightControl from '../font-weight-control';
 
 import {
 	getDefaultAttribute,
@@ -31,7 +32,7 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, breakpoint, onChange } = props;
+	const { className, breakpoint, onChangeInline, onChange } = props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -50,44 +51,63 @@ const NumberCounterControl = props => {
 		},
 	};
 
+	const autoWidth = getLastBreakpointAttribute({
+		target: 'number-counter-width-auto',
+		breakpoint,
+		attributes: props,
+	});
+
 	return (
 		<div className={classes}>
-			<AdvancedNumberControl
-				label={__('Width', 'maxi-blocks')}
-				className='maxi-number-counter-control__width'
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'number-counter-width-unit',
-					breakpoint,
-					attributes: props,
-				})}
-				onChangeUnit={val =>
+			<ToggleSwitch
+				label={__('Auto Width', 'maxi-blocks')}
+				selected={autoWidth}
+				onChange={val =>
 					onChange({
-						[`number-counter-width-unit-${breakpoint}`]: val,
+						[`number-counter-width-auto-${breakpoint}`]: val,
 					})
 				}
-				value={getLastBreakpointAttribute({
-					target: 'number-counter-width',
-					breakpoint,
-					attributes: props,
-				})}
-				onChangeValue={val =>
-					onChange({ [`number-counter-width-${breakpoint}`]: val })
-				}
-				onReset={() =>
-					onChange({
-						[`number-counter-width-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-width-${breakpoint}`
-							),
-						[`number-counter-width-unit-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-width-unit-${breakpoint}`
-							),
-					})
-				}
-				minMaxSettings={minMaxSettings}
 			/>
+			{!autoWidth && (
+				<AdvancedNumberControl
+					label={__('Width', 'maxi-blocks')}
+					className='maxi-number-counter-control__width'
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: 'number-counter-width-unit',
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeUnit={val =>
+						onChange({
+							[`number-counter-width-unit-${breakpoint}`]: val,
+						})
+					}
+					value={getLastBreakpointAttribute({
+						target: 'number-counter-width',
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeValue={val =>
+						onChange({
+							[`number-counter-width-${breakpoint}`]: val,
+						})
+					}
+					onReset={() =>
+						onChange({
+							[`number-counter-width-${breakpoint}`]:
+								getDefaultAttribute(
+									`number-counter-width-${breakpoint}`
+								),
+							[`number-counter-width-unit-${breakpoint}`]:
+								getDefaultAttribute(
+									`number-counter-width-unit-${breakpoint}`
+								),
+						})
+					}
+					minMaxSettings={minMaxSettings}
+				/>
+			)}
 			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}
@@ -214,6 +234,15 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			<FontWeightControl
+				onChange={val => {
+					onChange({ ['number-counter-title-font-weight']: val });
+				}}
+				value={props['number-counter-title-font-weight']}
+				fontName={props['number-counter-title-font-family']}
+				prefix='number-counter-title-'
+				fontStyle=''
+			/>
 			<AdvancedNumberControl
 				label={__('Title Font Size', 'maxi-blocks')}
 				min={0}
@@ -232,6 +261,7 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+
 			<ToggleSwitch
 				className='number-counter-percentage-sign-status'
 				label={__('Show Percentage Sign', 'maxi-block')}
@@ -280,18 +310,28 @@ const NumberCounterControl = props => {
 				paletteOpacity={props['number-counter-palette-text-opacity']}
 				color={props['number-counter-text-color']}
 				prefix='number-counter-text-'
+				onChangeInline={({ color }) =>
+					onChangeInline(
+						{ fill: color },
+						'.maxi-number-counter__box__text'
+					)
+				}
 				onChange={({
 					paletteStatus,
 					paletteColor,
 					paletteOpacity,
 					color,
 				}) =>
-					onChange({
-						'number-counter-text-palette-status': paletteStatus,
-						'number-counter-text-palette-color': paletteColor,
-						'number-counter-palette-text-opacity': paletteOpacity,
-						'number-counter-text-color': color,
-					})
+					onChange(
+						{
+							'number-counter-text-palette-status': paletteStatus,
+							'number-counter-text-palette-color': paletteColor,
+							'number-counter-palette-text-opacity':
+								paletteOpacity,
+							'number-counter-text-color': color,
+						},
+						'.maxi-number-counter__box__text'
+					)
 				}
 			/>
 			<hr />
@@ -316,21 +356,31 @@ const NumberCounterControl = props => {
 						}
 						color={props['number-counter-circle-background-color']}
 						prefix='number-counter-circle-background-'
+						onChangeInline={({ color }) =>
+							onChangeInline(
+								{ fill: color },
+								'.maxi-number-counter__box__background'
+							)
+						}
 						onChange={({
 							paletteStatus,
 							paletteColor,
 							paletteOpacity,
 							color,
 						}) =>
-							onChange({
-								'number-counter-circle-background-palette-status':
-									paletteStatus,
-								'number-counter-circle-background-palette-color':
-									paletteColor,
-								'number-counter-circle-background-palette-opacity':
-									paletteOpacity,
-								'number-counter-circle-background-color': color,
-							})
+							onChange(
+								{
+									'number-counter-circle-background-palette-status':
+										paletteStatus,
+									'number-counter-circle-background-palette-color':
+										paletteColor,
+									'number-counter-circle-background-palette-opacity':
+										paletteOpacity,
+									'number-counter-circle-background-color':
+										color,
+								},
+								'.maxi-number-counter__box__background'
+							)
 						}
 					/>
 					<hr />
@@ -347,21 +397,30 @@ const NumberCounterControl = props => {
 						}
 						color={props['number-counter-circle-bar-color']}
 						prefix='number-counter-circle-bar-'
+						onChangeInline={({ color }) =>
+							onChangeInline(
+								{ stroke: color },
+								'.maxi-number-counter__box__circle'
+							)
+						}
 						onChange={({
 							paletteStatus,
 							paletteColor,
 							paletteOpacity,
 							color,
 						}) =>
-							onChange({
-								'number-counter-circle-bar-palette-status':
-									paletteStatus,
-								'number-counter-circle-bar-palette-color':
-									paletteColor,
-								'number-counter-circle-bar-palette-opacity':
-									paletteOpacity,
-								'number-counter-circle-bar-color': color,
-							})
+							onChange(
+								{
+									'number-counter-circle-bar-palette-status':
+										paletteStatus,
+									'number-counter-circle-bar-palette-color':
+										paletteColor,
+									'number-counter-circle-bar-palette-opacity':
+										paletteOpacity,
+									'number-counter-circle-bar-color': color,
+								},
+								'.maxi-number-counter__box__circle'
+							)
 						}
 					/>
 				</>

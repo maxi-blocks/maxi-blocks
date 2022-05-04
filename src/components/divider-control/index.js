@@ -99,6 +99,7 @@ export const DefaultDividersControl = props => {
 
 const DividerControl = props => {
 	const {
+		onChangeInline,
 		onChange,
 		isHover = false,
 		disableLineStyle = false,
@@ -207,6 +208,9 @@ const DividerControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
+					onChangeInline={({ color }) =>
+						onChangeInline({ 'border-color': color })
+					}
 					onChange={({
 						color,
 						paletteColor,

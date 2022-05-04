@@ -43,6 +43,7 @@ const BorderColorControl = props => {
 		prefix = '',
 		breakpoint,
 		isHover = false,
+		onChangeInline = null,
 		onChange,
 		clientId,
 		globalProps,
@@ -79,6 +80,12 @@ const BorderColorControl = props => {
 				attributes: props,
 				isHover,
 			})}
+			onChangeInline={({ color }) => {
+				onChangeInline &&
+					onChangeInline({
+						'border-color': color,
+					});
+			}}
 			onChange={({
 				paletteColor,
 				paletteStatus,
@@ -359,7 +366,7 @@ const BorderControl = props => {
 						target={`${prefix}border`}
 						auxTarget='radius'
 						label={__('Border radius', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						breakpoint={breakpoint}
 						minMaxSettings={{
 							px: {

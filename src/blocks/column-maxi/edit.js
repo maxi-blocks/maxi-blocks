@@ -20,6 +20,7 @@ import MaxiBlock from '../../components/maxi-block';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getRowBorderRadius,
 } from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -41,7 +42,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
-		return isEqual(prevProps.rowGapProps, this.props.rowGapProps);
+		return (
+			isEqual(prevProps.rowGapProps, this.props.rowGapProps) &&
+			isEqual(prevProps.rowBorderRadius, this.props.rowBorderRadius)
+		);
 	}
 
 	maxiBlockDidUpdate() {
@@ -66,7 +70,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes, this.props.rowGapProps);
+		return getStyles(
+			{
+				...this.props.attributes,
+				rowBorderRadius: this.props.rowBorderRadius,
+			},
+			this.props.rowGapProps
+		);
 	}
 
 	render() {
@@ -127,6 +137,7 @@ class edit extends MaxiBlockComponent {
 					<Inspector
 						key={`block-settings-${uniqueID}`}
 						rowPattern={context.rowPattern}
+						propsToAvoid={['rowGapProps', 'rowBorderRadius']}
 						{...this.props}
 					/>,
 					<Toolbar
@@ -134,7 +145,11 @@ class edit extends MaxiBlockComponent {
 						ref={this.blockRef}
 						rowPattern={context.rowPattern}
 						copyPasteMapping={copyPasteMapping}
-						propsToAvoid={['resizableObject']}
+						propsToAvoid={[
+							'resizableObject',
+							'rowGapProps',
+							'rowBorderRadius',
+						]}
 						{...this.props}
 					/>,
 					<MaxiBlock
@@ -160,6 +175,15 @@ class edit extends MaxiBlockComponent {
 						)}
 						defaultSize={{
 							width: getColumnWidthDefault(),
+							height: `${getLastBreakpointAttribute({
+								target: 'height',
+								breakpoint: deviceType,
+								attributes,
+							})}${getLastBreakpointAttribute({
+								target: 'height-unit',
+								breakpoint: deviceType,
+								attributes,
+							})}`,
 						}}
 						enable={{
 							right: true,
@@ -219,10 +243,19 @@ const editSelect = withSelect((select, ownProps) => {
 			return response;
 		})();
 
+	const rowBorderRadius =
+		rowAttributes &&
+		getRowBorderRadius(
+			getGroupAttributes(rowAttributes, 'borderRadius'),
+			originalNestedColumns,
+			clientId
+		);
+
 	return {
 		rowBlockId,
 		originalNestedColumns,
 		rowGapProps,
+		rowBorderRadius,
 	};
 });
 

@@ -4,6 +4,7 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray } from 'lodash';
+
 const getIsActiveTab = (
 	attributes,
 	breakpoint,
@@ -23,7 +24,6 @@ const getIsActiveTab = (
 	const defaultAttributes = getBlockAttributes(name);
 	const excludedAttributes = [
 		'blockStyle',
-		'parentBlockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',
 		...ignoreIndicator,
@@ -33,7 +33,7 @@ const getIsActiveTab = (
 		const attributesArr = [];
 
 		items.forEach(item => {
-			for (const [key, value] of Object.entries(item)) {
+			for (const [key] of Object.entries(item)) {
 				attributesArr.push(key);
 			}
 		});
@@ -71,7 +71,8 @@ const getIsActiveTab = (
 
 					return true;
 				});
-			} else if (
+			}
+			if (
 				attribute.lastIndexOf(`-${breakpoint}`) ===
 				attribute.length - `-${breakpoint}`.length
 			) {
@@ -89,12 +90,11 @@ const getIsActiveTab = (
 					currentAttributes[attribute] !==
 					defaultAttributes[attribute]
 				);
-			} else if (currentAttributes[attribute] === '') return true;
-			else
-				return (
-					currentAttributes[attribute] ===
-					defaultAttributes[attribute]
-				);
+			}
+			if (currentAttributes[attribute] === '') return true;
+			return (
+				currentAttributes[attribute] === defaultAttributes[attribute]
+			);
 		}
 
 		return true;

@@ -12,7 +12,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getDividerStyles = (obj, target, parentBlockStyle) => {
+const getDividerStyles = (obj, target, blockStyle) => {
 	const response = {
 		label: 'Divider',
 		general: {},
@@ -32,7 +32,7 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 					firstVar: 'divider-color',
 					secondVar: `color-${paletteColor}`,
 					opacity: paletteOpacity,
-					blockStyle: parentBlockStyle,
+					blockStyle,
 				}),
 			};
 

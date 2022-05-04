@@ -9,7 +9,7 @@ import { Icon, Popover, Tooltip } from '@wordpress/components';
  * Internal dependencies
  */
 import Button from '../../../button';
-import { openSidebarAccordion } from '../../../../extensions/inspector-path';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
 
@@ -83,6 +83,7 @@ class ToolbarPopover extends Component {
 			children,
 			advancedOptions = false,
 			tab = 0,
+			position = 'top center',
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;
@@ -116,7 +117,7 @@ class ToolbarPopover extends Component {
 								'.toolbar-wrapper'
 							)}
 							onClose={onClose}
-							position='top center'
+							position={position}
 							isAlternate
 							shouldAnchorIncludePadding
 						>

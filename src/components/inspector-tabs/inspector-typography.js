@@ -23,6 +23,7 @@ const typography = ({
 	globalProps,
 	hoverGlobalProps,
 	depth = 2,
+	inlineTarget = '.maxi-text-block__content',
 }) => {
 	const {
 		attributes,
@@ -30,9 +31,11 @@ const typography = ({
 		deviceType,
 		maxiSetAttributes,
 		scValues = {},
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
 	const {
-		parentBlockStyle,
+		blockStyle,
 		textLevel,
 		isList,
 		'typography-status-hover': typographyHoverStatus,
@@ -60,14 +63,29 @@ const typography = ({
 									attributes,
 									typographyTarget
 								)}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChangeInline={(
+									obj,
+									target,
+									isMultiplySelector
+								) =>
+									insertInlineStyles({
+										obj,
+										target,
+										isMultiplySelector,
+									})
+								}
+								onChange={(obj, target) => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(target);
+								}}
 								hideAlignment={hideAlignment}
 								breakpoint={deviceType}
 								clientId={clientId}
 								disableCustomFormats={disableCustomFormats}
-								blockStyle={parentBlockStyle}
+								blockStyle={blockStyle}
 								styleCardPrefix={styleCardPrefix}
 								textLevel={textLevel}
+								inlineTarget={inlineTarget}
 								isList={isList}
 								allowLink={allowLink}
 								globalProps={globalProps}
@@ -107,7 +125,7 @@ const typography = ({
 										disableCustomFormats={
 											disableCustomFormats
 										}
-										blockStyle={parentBlockStyle}
+										blockStyle={blockStyle}
 										styleCardPrefix={styleCardPrefix}
 										globalProps={hoverGlobalProps}
 									/>

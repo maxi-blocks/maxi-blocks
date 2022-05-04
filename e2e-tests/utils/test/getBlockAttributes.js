@@ -1,3 +1,5 @@
+jest.mock('@wordpress/e2e-test-utils', () => jest.fn());
+
 import { getAttributes } from '../getBlockAttributes';
 
 describe('getBlockAttributes', () => {
@@ -8,8 +10,7 @@ describe('getBlockAttributes', () => {
 				name: 'maxi-blocks/container-maxi',
 				isValid: true,
 				attributes: {
-					blockStyle: 'maxi-light',
-					defaultBlockStyle: 'maxi-def-light',
+					blockStyle: 'light',
 					extraClassName: '',
 					customLabel: 'Container',
 					fullWidth: 'full',
@@ -138,7 +139,6 @@ describe('getBlockAttributes', () => {
 					'position-unit-general': 'px',
 					uniqueID: 'container-maxi-12',
 					isFirstOnHierarchy: true,
-					parentBlockStyle: 'light',
 				},
 				innerBlocks: [
 					{
@@ -146,7 +146,6 @@ describe('getBlockAttributes', () => {
 						name: 'maxi-blocks/row-maxi',
 						isValid: true,
 						attributes: {
-							defaultBlockStyle: 'maxi-def-light',
 							extraClassName: '',
 							customLabel: 'Row',
 							fullWidth: 'normal',
@@ -243,8 +242,7 @@ describe('getBlockAttributes', () => {
 							'transform-translate-y-unit-general': '%',
 							uniqueID: 'row-maxi-34',
 							isFirstOnHierarchy: false,
-							blockStyle: 'maxi-parent',
-							parentBlockStyle: 'light',
+							blockStyle: 'light',
 							'row-pattern-general': '1-1',
 						},
 						innerBlocks: [
@@ -254,7 +252,6 @@ describe('getBlockAttributes', () => {
 								name: 'maxi-blocks/column-maxi',
 								isValid: true,
 								attributes: {
-									defaultBlockStyle: 'maxi-def-light',
 									extraClassName: '',
 									uniqueID: 'maxi-column-maxi-90',
 									customLabel: 'Column',
@@ -321,8 +318,7 @@ describe('getBlockAttributes', () => {
 									'transform-translate-x-unit-general': '%',
 									'transform-translate-y-unit-general': '%',
 									isFirstOnHierarchy: false,
-									blockStyle: 'maxi-parent',
-									parentBlockStyle: 'light',
+									blockStyle: 'light',
 								},
 								innerBlocks: [],
 							},
@@ -332,7 +328,6 @@ describe('getBlockAttributes', () => {
 								name: 'maxi-blocks/column-maxi',
 								isValid: true,
 								attributes: {
-									defaultBlockStyle: 'maxi-def-light',
 									extraClassName: '',
 									uniqueID: 'maxi-column-maxi-91',
 									customLabel: 'Column',
@@ -399,8 +394,7 @@ describe('getBlockAttributes', () => {
 									'transform-translate-x-unit-general': '%',
 									'transform-translate-y-unit-general': '%',
 									isFirstOnHierarchy: false,
-									blockStyle: 'maxi-parent',
-									parentBlockStyle: 'light',
+									blockStyle: 'light',
 								},
 								innerBlocks: [],
 							},

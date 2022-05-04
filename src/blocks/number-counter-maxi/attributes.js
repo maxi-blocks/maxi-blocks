@@ -42,7 +42,7 @@ const attributes = {
 		obj: attributesData.size,
 		prefix,
 		diffValAttr: {
-			[`${prefix}width-general`]: 250,
+			[`${prefix}width-general`]: '250',
 			[`${prefix}width-unit-general`]: 'px',
 		},
 	}),
@@ -74,6 +74,7 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

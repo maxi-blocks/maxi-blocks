@@ -11,6 +11,7 @@ import {
 	getBlockStyle,
 	getAttributes,
 	addResponsiveTest,
+	pressKeyWithModifier,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
@@ -98,5 +99,32 @@ describe('FullSizeControl', () => {
 		]);
 
 		expect(result).toStrictEqual(expectSize);
+	});
+	it('Checking fullSizeControl force aspect ratio', async () => {
+		await createNewPost();
+		await insertBlock('Container Maxi');
+
+		// select 3 columns
+		await page.$$eval('.maxi-row-block__template button', button =>
+			button[6].click()
+		);
+
+		// select colum
+		await page.$eval(
+			'.maxi-row-block .maxi-column-block .block-editor-inserter',
+			button => button.click()
+		);
+
+		await openSidebarTab(page, 'style', 'height width');
+
+		// select Force Aspect Ratio
+		await page.$eval('.force-aspect-ratio-toggle-switch input', input =>
+			input.click()
+		);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		await changeResponsive(page, 'xs');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

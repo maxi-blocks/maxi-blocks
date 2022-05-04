@@ -81,13 +81,13 @@ const FullSizeControl = props => {
 		},
 	};
 
-		const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
+	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
 		select('core/block-editor').getSelectedBlockClientId()
 	);
 
 	return (
 		<div className={classes}>
-			{!isBlockFullWidth && (	
+			{!isBlockFullWidth && (
 				<ToggleSwitch
 					label={__('Set width to fit content', 'maxi-blocks')}
 					selected={getLastBreakpointAttribute({
@@ -146,6 +146,7 @@ const FullSizeControl = props => {
 				)}
 			{allowForceAspectRatio && (
 				<ToggleSwitch
+					className='force-aspect-ratio-toggle-switch'
 					label={__('Force Aspect Ratio', 'maxi-blocks')}
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}force-aspect-ratio`,

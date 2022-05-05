@@ -228,10 +228,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description .= '<p>'.__('Let your active theme control the length and display of post excerpts.', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'post_excerpts');
 
-            $description = '<h4>'.__('Enable responsive image functionality', self::$maxi_text_domain).'</h4>';
-            $description .= '<p>'.__('Ensure your images look great no matter the screen size of the device it is viewed upon.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'responsive_image');
-
             $description = '<h4>'.__('Google API Key', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Please create your own API key on the ', self::$maxi_text_domain);
             $description .= '<a href="https://console.developers.google.com" target="_blank" rel="noreferrer">'.__('Google Console', self::$maxi_text_domain).'</a> ';

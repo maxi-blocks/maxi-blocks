@@ -8,8 +8,6 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
  */
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 module.exports = {
 	...defaultConfig,
 	optimization: {
@@ -31,5 +29,9 @@ module.exports = {
 	resolve: {
 		...defaultConfig.resolve,
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
+	},
+	entry: {
+		admin: ['./core/admin/admin.js', './core/admin/admin.scss'],
+		index: ['./src/index.js'],
 	},
 };

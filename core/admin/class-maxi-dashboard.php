@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
+require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
 
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
@@ -47,6 +47,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'register_maxi_blocks_settings'
             ));
+
+            add_action('admin_enqueue_scripts', array(
+                $this,
+                'maxi_admin_scripts_styles'
+            ));
         }
 
         public function maxi_get_menu_icon_base64()
@@ -61,8 +66,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_admin_scripts_styles()
         {
             if (is_admin()) {
-                wp_register_style('maxi-admin', plugin_dir_url(__DIR__).'build/admin.css');
+                wp_register_style('maxi-admin', MAXI_PLUGIN_URL_PATH.'build/admin.css');
                 wp_enqueue_style('maxi-admin');
+
+                wp_register_script(
+                    'maxi-admin',
+                    MAXI_PLUGIN_URL_PATH.'build/admin.js',
+                );
+                wp_enqueue_script('maxi-admin');
             }
         }
 
@@ -96,7 +107,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
             
             echo '<div class="maxi-dashboard_wrap">';
-            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(plugin_dir_url(__DIR__)) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', self::$maxi_text_domain).'"></header>';
+            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', self::$maxi_text_domain).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
             
             foreach ($settings_tabs as $tab_page => $tab_name) {
@@ -188,18 +199,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
             $fontUploadsDirSize = round($this->get_folder_size($fontUploadsDir)/1048576, 2);
-
-            // not the best way to do this, but we need it only on this tab, and it's just 8 lines of code
-            // &panel=documentation-support will open the tab in the accordion
-            $content = '<script>
-            document.addEventListener("DOMContentLoaded", function(event) { 
-                var urlStr = window.location.href
-                var url = new URL(urlStr);
-                var toCheck = url.searchParams.get("panel");
-                var checkBox = document.getElementById(toCheck);
-                if(checkBox) checkBox.checked = true;
-            });
-            </script>';
 
             $content .= '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';

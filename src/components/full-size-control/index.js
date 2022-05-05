@@ -81,9 +81,7 @@ const FullSizeControl = props => {
 		},
 	};
 
-		const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
-		select('core/block-editor').getSelectedBlockClientId()
-	);
+	const currentBlockRoot = select('core/block-editor').getSelectedBlockClientId();
 
 	return (
 		<div className={classes}>
@@ -105,7 +103,7 @@ const FullSizeControl = props => {
 					target: `${prefix}width-fit-content`,
 					breakpoint,
 					attributes: props,
-				})) ||
+				})) &&
 				(!isBlockFullWidth && (
 					<AdvancedNumberControl
 						className='full-size-control__width'

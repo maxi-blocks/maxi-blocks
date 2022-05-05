@@ -523,6 +523,8 @@ export const preset6 = {
 	'icon-padding-right-xxl': '0',
 	// hover
 	'icon-status-hover': true,
+	'icon-stroke-palette-color-hover': 6,
+	'icon-stroke-palette-status-hover': true,
 	'icon-border-style-general-hover': 'none',
 	'button-background-active-media-general-hover': 'none',
 	'button-border-style-general-hover': 'none',

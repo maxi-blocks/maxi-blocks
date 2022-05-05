@@ -752,12 +752,7 @@ const TypographyControl = withFormatValue(props => {
 			<SelectControl
 				label={__('Text transform', 'maxi-blocks')}
 				className='maxi-typography-control__transform'
-				value={getValue(
-					`${prefix}text-transform`,
-					breakpoint,
-					false,
-					true
-				)}				
+				value={getValue(`${prefix}text-transform`)}			
 				options={[
 					{
 						label: __('Default', 'maxi-blocks'),

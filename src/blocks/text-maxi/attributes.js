@@ -118,7 +118,6 @@ const attributes = {
 	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
 	...attributesData.link,
 	...attributesData.textAlignment,
-	...attributesData.textAlignment,
 	...attributesData.typography,
 	...attributesData.typographyHover,
 	...attributesData.blockBackground,

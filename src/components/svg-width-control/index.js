@@ -54,7 +54,8 @@ const SvgWidthControl = props => {
 						: null
 				}
 				onChangeValue={val => {
-					const newVal = val !== undefined && val !== '' ? val : '';
+					const newVal =
+						val !== undefined && val !== '' ? val.toString() : '';
 
 					onChange({
 						[getAttributeKey('width', isHover, prefix, breakpoint)]:

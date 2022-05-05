@@ -51,14 +51,7 @@ describe('TypographyControl', () => {
 	});
 
 	it('Checking the responsive font family', async () => {
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'typography'
-		);
-		const input = await page.$(
-			'.maxi-typography-control .maxi-typography-control__font-family input'
-		);
+		let accordionPanel = await openSidebarTab(page, 'style', 'typography');
 
 		const typographyInput = await page.$$eval(
 			'.maxi-typography-control__font-family div div div',
@@ -70,9 +63,12 @@ describe('TypographyControl', () => {
 
 		// s
 		await changeResponsive(page, 's');
-		await openSidebarTab(page, 'style', 'typography');
+		accordionPanel = await openSidebarTab(page, 'style', 'typography');
 
-		await input.focus();
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__font-family input',
+			input => input.focus()
+		);
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('Arial');
 		await page.keyboard.press('Enter');
@@ -180,16 +176,17 @@ describe('TypographyControl', () => {
 		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
 	});
 
-	it('Checking the Weight, Transform, Style and Decoration', async () => {
+	it('Checking the Weight, Transform, Style, Decoration and Orientation', async () => {
 		await changeResponsive(page, 'base');
 		await openSidebarTab(page, 'style', 'typography');
 
 		await addTypographyStyle({
-			page,
+			instance: page,
 			decoration: 'overline',
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
+			orientation: 'mixed',
 		});
 
 		const typographyResult = await getAttributes([
@@ -197,6 +194,7 @@ describe('TypographyControl', () => {
 			'font-weight-general',
 			'text-decoration-general',
 			'text-transform-general',
+			'text-orientation-general',
 		]);
 
 		const expectedAttributesTwo = {
@@ -204,6 +202,7 @@ describe('TypographyControl', () => {
 			'font-weight-general': '300',
 			'text-decoration-general': 'overline',
 			'text-transform-general': 'capitalize',
+			'text-orientation-general': 'mixed',
 		};
 
 		expect(typographyResult).toStrictEqual(expectedAttributesTwo);
@@ -269,9 +268,10 @@ describe('TypographyControl', () => {
 
 	it('Check Size, line height and letter spacing', async () => {
 		await changeResponsive(page, 'xl');
+
 		await addTypographyOptions({
 			page,
-			instance: await openSidebarTab(page, 'style', 'typography'),
+			instance: page,
 			size: '19',
 			lineHeight: '22',
 			letterSpacing: '10',
@@ -295,7 +295,7 @@ describe('TypographyControl', () => {
 		const responsiveSizeControl = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',
+				'.maxi-typography-control .maxi-typography-control__size input',
 			needFocus: true,
 			baseExpect: '19',
 			xsExpect: '11',
@@ -307,9 +307,9 @@ describe('TypographyControl', () => {
 		const responsiveSizeUnit = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+				'.maxi-typography-control .maxi-typography-control__size select',
 			selectInstance:
-				'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+				'.maxi-typography-control .maxi-typography-control__size select',
 			needSelectIndex: true,
 			baseExpect: 'px',
 			xsExpect: 'em',
@@ -318,38 +318,25 @@ describe('TypographyControl', () => {
 		expect(responsiveSizeUnit).toBeTruthy();
 
 		// test line-height
-		const accordion = await openSidebarTab(page, 'style', 'typography');
-		const input = await accordion.$$(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input'
-		);
-
-		await input[0].focus();
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('45');
+		await page.waitForTimeout(250);
 
 		const responsiveLineHeight = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input',
-			needFocus: true,
-			baseExpect: '45',
+				'.maxi-typography-control .maxi-typography-control__line-height input',
+			needFocusPlaceholder: true,
+			baseExpect: '22',
 			xsExpect: '43',
 			newValue: '43',
 		});
+
 		expect(responsiveLineHeight).toBeTruthy();
 
 		// letter spacing responsive
-		const letterInput = await accordion.$$(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input'
-		);
-
-		await letterInput[0].focus();
-
 		const responsiveLetterSpacing = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+				'.maxi-typography-control .maxi-typography-control__letter-spacing input',
 			needFocus: true,
 			baseExpect: '10',
 			xsExpect: '23',

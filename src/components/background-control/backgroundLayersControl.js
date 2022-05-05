@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, RawHTML } from '@wordpress/element';
+import { RawHTML, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,6 +14,7 @@ import {
 	getColorRGBAString,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { handleSetAttributes } from '../../extensions/maxi-block';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
@@ -23,44 +24,136 @@ import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
 import { setBreakpointToLayer } from './utils';
 import SelectControl from '../select-control';
+import ListControl from '../list-control';
+import ListItemControl from '../list-control/list-item-control';
 
 /**
  * External dependencies
  */
-import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
 
 /**
  * Icons
  */
-import { moveRight, toolbarDrop, toolbarShow } from '../../icons';
-import { handleSetAttributes } from '../../extensions/maxi-block/withMaxiProps';
+import { toolbarDrop, toolbarShow } from '../../icons';
 
 /**
  * Component
  */
-const LayerCard = props => {
+const getLayerCardContent = props => {
 	const {
-		onChange,
-		onOpen,
-		isOpen,
-		onRemove,
-		layerId,
-		clientId,
 		breakpoint,
-		isHover,
 		handleOnChangeLayer,
+		isHover,
+		layer,
+		onChangeInline = null,
+		onChange,
+		previewRef,
 	} = props;
+
+	switch (layer.type) {
+		case 'color':
+			return (
+				<ColorLayer
+					key={`background-color-layer--${layer.order}`}
+					colorOptions={layer}
+					onChangeInline={obj => {
+						previewRef.current.style.background =
+							obj['background-color'];
+						onChangeInline &&
+							onChangeInline(
+								obj,
+								`.maxi-background-displayer__${layer.order}`
+							);
+					}}
+					onChange={obj => {
+						onChange(
+							{ ...layer, ...handleOnChangeLayer(obj, layer) },
+							`.maxi-background-displayer__${layer.order}`
+						);
+					}}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'image':
+			return (
+				<ImageLayer
+					key={`background-image-layer--${layer.order}`}
+					imageOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'video':
+			return (
+				<VideoLayer
+					key={`background-video-layer--${layer.order}`}
+					videoOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'gradient':
+			return (
+				<GradientLayer
+					key={`background-gradient-layer--${layer.order}`}
+					gradientOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		case 'shape':
+			return (
+				<SVGLayer
+					key={`background-SVG-layer--${layer.order}`}
+					SVGOptions={layer}
+					onChange={obj =>
+						onChange({
+							...layer,
+							...handleOnChangeLayer(obj, layer),
+						})
+					}
+					layerOrder={layer.order}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					isLayer
+				/>
+			);
+		default:
+			return null;
+	}
+};
+
+const getLayerCardTitle = props => {
+	const { onChange, clientId, breakpoint, isHover, previewRef } = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
-	const classes = classnames(
-		'maxi-background-layer',
-		isOpen && 'maxi-background-layer__open'
-	);
-
-	const regexLineToChange = new RegExp('fill=".+?(?=")');
+	const regexLineToChange = /fill=".+?(?=")/;
 	const colorStr = getColorRGBAString({
 		firstVar: `color-${layer['background-svg-palette-color']}`,
 		opacity: layer['background-svg-palette-opacity'],
@@ -223,141 +316,43 @@ const LayerCard = props => {
 		return currentDisplay === 'block' ? 'block' : 'none';
 	};
 
-	const layerContent = {
-		color: (
-			<ColorLayer
-				key={`background-color-layer--${layer.id}`}
-				colorOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		image: (
-			<ImageLayer
-				key={`background-image-layer--${layer.id}`}
-				imageOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		video: (
-			<VideoLayer
-				key={`background-video-layer--${layer.id}`}
-				videoOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		gradient: (
-			<GradientLayer
-				key={`background-gradient-layer--${layer.id}`}
-				gradientOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-		shape: (
-			<SVGLayer
-				key={`background-SVG-layer--${layer.id}`}
-				SVGOptions={layer}
-				onChange={obj =>
-					onChange({ ...layer, ...handleOnChangeLayer(obj, layer) })
-				}
-				layerId={layerId}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				isLayer
-			/>
-		),
-	};
-
 	return (
-		<div className={classes}>
-			<div
-				className='maxi-background-layer__row'
-				onClick={({ target }) => {
-					if (
-						!target
-							?.closest('span')
-							?.classList?.contains(
-								'maxi-background-layer__ignore-open'
-							)
-					)
-						onOpen(!!isOpen);
-				}}
-			>
-				<span className='maxi-background-layer__arrow'>
-					{moveRight}
+		<>
+			<span className='maxi-background-layer__title__text'>
+				<span
+					className='maxi-background-layer__preview'
+					ref={previewRef}
+					style={previewStyles(type)}
+				>
+					{type === 'shape' && layer['background-svg-SVGElement'] && (
+						<RawHTML>{newSvgElement}</RawHTML>
+					)}
 				</span>
-				<div className='maxi-background-layer__title'>
-					<span className='maxi-background-layer__title__id' />
-					<span className='maxi-background-layer__title__text'>
-						<span
-							className='maxi-background-layer__preview'
-							style={previewStyles(type)}
-						>
-							{type === 'shape' &&
-								layer['background-svg-SVGElement'] && (
-									<RawHTML>{newSvgElement}</RawHTML>
-								)}
-						</span>
-						{getTitle(type)}
-					</span>
-					{breakpoint === 'general' && (
-						<span
-							className={classnames(
-								'maxi-background-layer__title__mover',
-								'maxi-background-layer__ignore-open'
-							)}
-						>
-							<Icon icon={toolbarDrop} />
-						</span>
+				{getTitle(type)}
+			</span>
+			{breakpoint === 'general' && (
+				<span
+					className={classnames(
+						'maxi-background-layer__title__mover',
+						'maxi-list-item-control__title__mover',
+						'maxi-list-item-control__ignore-open'
 					)}
-					<span
-						className={classnames(
-							'maxi-background-layer__title__display',
-							`maxi-background-layer__title__display--${getIsDisplayed()}`,
-							'maxi-background-layer__ignore-move',
-							'maxi-background-layer__ignore-open'
-						)}
-						onClick={onChangeDisplay}
-					>
-						<Icon icon={toolbarShow} />
-					</span>
-					{(!isHover || (isHover && layer.isHover)) && (
-						<span
-							className={classnames(
-								'maxi-background-layer__title__remover',
-								'maxi-background-layer__ignore-move',
-								'maxi-background-layer__ignore-open'
-							)}
-							onClick={onRemove}
-						/>
-					)}
-				</div>
-			</div>
-			{isOpen && (
-				<div className='maxi-background-layer__content maxi-background-layer__ignore-move'>
-					{layerContent[type]}
-				</div>
+				>
+					<Icon icon={toolbarDrop} />
+				</span>
 			)}
-		</div>
+			<span
+				className={classnames(
+					'maxi-background-layer__title__display',
+					`maxi-background-layer__title__display--${getIsDisplayed()}`,
+					'maxi-list-item-control__ignore-move',
+					'maxi-list-item-control__ignore-open'
+				)}
+				onClick={onChangeDisplay}
+			>
+				<Icon icon={toolbarShow} />
+			</span>
+		</>
 	);
 };
 
@@ -365,24 +360,45 @@ const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
 	isHover = false,
+	onChangeInline,
 	onChange,
 	clientId,
 	breakpoint,
 }) => {
+	const previewRef = useRef(null);
+
 	const layers = cloneDeep(layersOptions);
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
 
-	allLayers.sort((a, b) => a.id - b.id);
-
-	const [selector, changeSelector] = useState(null);
-
-	const getNewLayerId = () =>
-		allLayers && !isEmpty(allLayers)
-			? allLayers.reduce((layerA, layerB) =>
-					layerA.id > layerB.id ? layerA : layerB
-			  ).id + 1
+	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
+		layers && !isEmpty(layers)
+			? Math.max(
+					...layers.map(layer =>
+						typeof layer[parameter] === 'number'
+							? layer[parameter]
+							: 0
+					)
+			  ) + 1
 			: 1;
+
+	// WILL BE DELETED AFTER BACKGROUND LAYERS ARE UPDATED
+	if (!allLayers.every(layer => typeof layer.order === 'number')) {
+		allLayers.forEach((layer, index, array) => {
+			layer.order = getLayerUniqueParameter('order', array);
+		});
+
+		const normalLayers = allLayers.filter(layer => !layer.isHover);
+		const hoverLayers = allLayers.filter(layer => layer.isHover);
+
+		onChange({
+			'background-layers': normalLayers,
+			'background-layers-hover': hoverLayers,
+		});
+	}
+	//
+
+	allLayers.sort((a, b) => a.order - b.order);
 
 	const getLayerLabel = type => {
 		switch (type) {
@@ -408,7 +424,8 @@ const BackgroundLayersControl = ({
 				breakpoint,
 				isHover,
 			}),
-			id: getNewLayerId(),
+			order: getLayerUniqueParameter('order'),
+			id: getLayerUniqueParameter('id'),
 		};
 	};
 
@@ -418,7 +435,7 @@ const BackgroundLayersControl = ({
 		allLayers.splice(toIndex, 0, layer);
 
 		allLayers.forEach((layer, i) => {
-			allLayers[i].id = i;
+			allLayers[i].order = i + 1;
 		});
 
 		const normalLayers = allLayers.filter(layer => !layer.isHover);
@@ -442,22 +459,26 @@ const BackgroundLayersControl = ({
 			}),
 		});
 
-	const onChangeLayer = layer => {
+	const onChangeLayer = (layer, target = false) => {
 		const isHoverLayer = layer.isHover;
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
 		allLayers.forEach((lay, i) => {
-			if (lay.id === layer.id) {
-				const index = findIndex(newLayers, { id: layer.id });
+			if (lay.order === layer.order) {
+				const index = findIndex(newLayers, { order: layer.order });
 
 				newLayers[index] = layer;
 			}
 		});
 
 		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
-			onChange({
-				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
-			});
+			onChange(
+				{
+					[`background-layers${isHoverLayer ? '-hover' : ''}`]:
+						newLayers,
+				},
+				target
+			);
 	};
 
 	const onAddLayer = layer => {
@@ -471,62 +492,55 @@ const BackgroundLayersControl = ({
 		});
 	};
 
-	const onRemoveLayer = ({ id, isHover: isHoverLayer }) => {
+	const onRemoveLayer = ({ order, isHover: isHoverLayer }) => {
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers).filter(
-			lay => lay.id !== id
+			lay => lay.order !== order
 		);
 
 		onChange({
 			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
 		});
-
-		changeSelector(null);
 	};
 
 	return (
 		<div className='maxi-background-control__layers'>
 			<div>
 				{!isEmpty(allLayers) && (
-					<ReactDragListView
-						onDragEnd={(fromIndex, toIndex) =>
-							onLayersDrag(fromIndex, toIndex)
-						}
-						nodeSelector='div.maxi-background-layer'
-						handleSelector='span.maxi-background-layer__title__mover'
-						ignoreSelector='.maxi-background-layer__ignore-move'
-					>
-						<div className='maxi-background-layers_options'>
-							{[...(!isHover ? layers : allLayers)].map(
-								(layer, i) => (
-									<LayerCard
-										key={`maxi-background-layers__${
-											layer.id
-										}${isHover ? '--hover' : ''}`}
-										layerId={layer.id}
-										isHover={isHover}
-										clientId={clientId}
-										layer={layer}
-										onChange={onChangeLayer}
-										onOpen={isOpen => {
-											if (isOpen) changeSelector(null);
-											else
-												selector !== layer.id
-													? changeSelector(layer.id)
-													: changeSelector(null);
-										}}
-										isOpen={selector === layer.id}
-										onRemove={() => {
-											onRemoveLayer(layer);
-										}}
-										breakpoint={breakpoint}
-										handleOnChangeLayer={
-											handleOnChangeLayer
-										}
-									/>
-								)
-							)}
-						</div>
-					</ReactDragListView>
+					<ListControl onListItemsDrag={onLayersDrag}>
+						{[...(!isHover ? layers : allLayers)].map(layer => {
+							return (
+								<ListItemControl
+									key={`maxi-background-layers__${
+										layer.order
+									}${isHover ? '--hover' : ''}`}
+									className='maxi-background-layer'
+									title={getLayerCardTitle({
+										isHover,
+										clientId,
+										layer,
+										onChange: onChangeLayer,
+										breakpoint,
+										handleOnChangeLayer,
+										previewRef,
+									})}
+									content={getLayerCardContent({
+										breakpoint,
+										handleOnChangeLayer,
+										isHover,
+										layer,
+										onChangeInline,
+										onChange: onChangeLayer,
+										previewRef,
+									})}
+									id={layer.order}
+									onRemove={() => onRemoveLayer(layer)}
+									isCloseButton={
+										!isHover || (isHover && layer.isHover)
+									}
+								/>
+							);
+						})}
+					</ListControl>
 				)}
 				<SelectControl
 					className='maxi-background-control__add-layer'
@@ -560,8 +574,6 @@ const BackgroundLayersControl = ({
 					onChange={val => {
 						const newLayer = getObject(val);
 						onAddLayer(newLayer);
-
-						changeSelector(newLayer.id);
 					}}
 				/>
 			</div>

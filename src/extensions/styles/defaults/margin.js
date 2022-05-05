@@ -17,7 +17,19 @@ const rawMargin = {
 		type: 'string',
 		default: 'all',
 	},
-	'margin-unit': {
+	'margin-top-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'margin-right-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'margin-bottom-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'margin-left-unit': {
 		type: 'string',
 		default: 'px',
 	},

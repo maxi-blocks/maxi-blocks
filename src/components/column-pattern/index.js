@@ -10,7 +10,6 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '../button';
-import ToggleSwitch from '../toggle-switch';
 import Icon from '../icon';
 import AdvancedNumberControl from '../advanced-number-control';
 import {
@@ -18,6 +17,7 @@ import {
 	getTemplates,
 	loadColumnsTemplate,
 } from '../../extensions/column-templates';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -29,20 +29,13 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Column patterns
  *
  */
 const ColumnPatternsInspector = props => {
-	const {
-		clientId,
-		onChange,
-		breakpoint,
-		toolbar = false,
-		removeColumnGap = false,
-	} = props;
+	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
@@ -139,13 +132,9 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = removeColumnGap ? 0 : 2.5;
-
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
-				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
-				const total = 100 - gap * numberOfGaps;
-				newColumnsSizes.push(sizes[i] * total);
+				newColumnsSizes.push(sizes[i] * 100);
 			}
 
 			if (columnsPositions[i].columnsNumber === 1) {
@@ -189,7 +178,6 @@ const ColumnPatternsInspector = props => {
 							onClick={() => {
 								loadColumnsTemplate(
 									template.name,
-									removeColumnGap,
 									clientId,
 									breakpoint
 								);
@@ -208,25 +196,6 @@ const ColumnPatternsInspector = props => {
 					);
 				})}
 			</div>
-			{!toolbar && (
-				<div className='components-column-pattern__gap'>
-					{numCol !== 1 && breakpoint === 'general' && (
-						<ToggleSwitch
-							label={__('Remove Gap', 'maxi-blocks')}
-							selected={removeColumnGap}
-							onChange={val => {
-								onChange({ removeColumnGap: val });
-								loadColumnsTemplate(
-									props['row-pattern-general'],
-									val,
-									clientId,
-									breakpoint
-								);
-							}}
-						/>
-					)}
-				</div>
-			)}
 		</div>
 	);
 };

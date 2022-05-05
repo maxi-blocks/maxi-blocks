@@ -49,7 +49,6 @@ const MasonryItem = props => {
 		previewIMG,
 		demoUrl,
 		currentItemColorStatus = false,
-		taxonomies,
 	} = props;
 
 	const masonryCardClasses = classnames(
@@ -128,7 +127,7 @@ const MasonryItem = props => {
 									'bg-shape',
 									'sidebar-block-shape',
 							  ].includes(target) || target.includes('Shape')
-							? serial.replace(' Shape', '')
+							? serial.replace(' shape', '')
 							: serial}
 					</div>
 					<span>{__('Load', 'maxi-block')}</span>
@@ -390,7 +389,7 @@ const LibraryContainer = props => {
 	};
 
 	/** Shapes */
-	const onRequestInsertShape = svgCode => {
+	const onRequestInsertShape = (svgCode, svgType) => {
 		const {
 			uniqueID,
 			mediaID,
@@ -481,10 +480,9 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'button-icon') {
-				const cleanedContent = DOMPurify.sanitize(svgCode);
-
 				onSelect({
-					'icon-content': cleanedContent,
+					'icon-content': svgCode,
+					svgType,
 				});
 
 				onRequestClose();
@@ -495,6 +493,7 @@ const LibraryContainer = props => {
 	/** Shapes Results */
 	const svgShapeResults = ({ hit }) => {
 		const shapeType = getShapeType(type);
+		const svgType = hit.taxonomies.svg_category[0];
 
 		const newContent = svgAttributesReplacer(
 			blockStyle,
@@ -510,7 +509,9 @@ const LibraryContainer = props => {
 				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertShape(newContent)}
+				onRequestInsert={() =>
+					onRequestInsertShape(newContent, svgType)
+				}
 				currentItemColorStatus={
 					type === 'image-shape' || type === 'bg-shape'
 						? false
@@ -585,7 +586,7 @@ const LibraryContainer = props => {
 	};
 
 	const RefinementList = ({ items, refine }) => (
-		<ul>
+		<ul className='maxi-cloud-container__content__svg-categories'>
 			{items.map(item => (
 				<li key={item.label} className='ais-RefinementList-item'>
 					<a
@@ -736,7 +737,7 @@ const LibraryContainer = props => {
 					searchClient={searchClient}
 				>
 					<div className='maxi-cloud-container__svg-shape'>
-						<div className='maxi-cloud-container__svg-shape__sidebar'>
+						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus

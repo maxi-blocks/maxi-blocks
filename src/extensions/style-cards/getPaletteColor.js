@@ -4,15 +4,16 @@
 import getBlockStyle from '../styles/getBlockStyle';
 import getActiveStyleCard from './getActiveStyleCard';
 
-const getPaletteColor = ({ clientId, color, blockStyle }) => {
+const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 	const SCValue = getActiveStyleCard().value;
-	const parentBlockStyle = blockStyle ?? getBlockStyle(clientId);
+
+	const blockStyle = rawBlockStyle ?? getBlockStyle(clientId);
 
 	return (
-		SCValue?.[parentBlockStyle].styleCard?.color?.[color] ||
-		SCValue?.[parentBlockStyle].defaultStyleCard?.color?.[color] ||
+		SCValue?.[blockStyle].styleCard?.color?.[color] ||
+		SCValue?.[blockStyle].defaultStyleCard?.color?.[color] ||
 		getComputedStyle(document.documentElement).getPropertyValue(
-			`--maxi-${parentBlockStyle}-color-${color}`
+			`--maxi-${blockStyle}-color-${color}`
 		)
 	);
 };

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+import { pressKeyTimes, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 const addTypographyOptions = async ({
 	page,
@@ -12,19 +12,18 @@ const addTypographyOptions = async ({
 }) => {
 	// size
 	if (size) {
-		await instance.$$eval(
-			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-			select => select[0].focus()
+		await instance.$$eval('.maxi-typography-control__size input', select =>
+			select[0].focus()
 		);
-		await pressKeyWithModifier('primary', 'a');
+		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type(size, { delay: 150 });
 	}
 
 	// line-height
 	if (lineHeight) {
 		await instance.$$eval(
-			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-			select => select[2].focus()
+			'.maxi-typography-control__line-height input',
+			select => select[0].focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
@@ -34,8 +33,8 @@ const addTypographyOptions = async ({
 	// letter-spacing
 	if (letterSpacing) {
 		await instance.$$eval(
-			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
-			select => select[4].focus()
+			'.maxi-typography-control__letter-spacing input',
+			select => select[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(letterSpacing, { delay: 150 });

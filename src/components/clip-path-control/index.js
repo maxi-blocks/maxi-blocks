@@ -16,7 +16,10 @@ import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
-
+import {
+	getLastBreakpointAttribute,
+	getAttributeKey,
+} from '../../extensions/styles';
 /**
  * External dependencies
  */
@@ -46,7 +49,7 @@ const optionColors = [
 ];
 
 const ClipPathOption = props => {
-	const { values, onChange, onRemove, number, type } = props;
+	const { values, onRemove, onChange, number, type } = props;
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
@@ -119,7 +122,7 @@ const ClipPathOption = props => {
 
 								values[1] = value;
 
-								onChange(values);
+								onChangeValue(values);
 							}}
 							min={0}
 							max={100}
@@ -136,10 +139,24 @@ const ClipPathOption = props => {
 	);
 };
 
-const ClipPathControl = props => {
-	const { clipPath, className, onChange } = props;
+const ClipPath = props => {
+	const { className, onChange, prefix, breakpoint, isHover } = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
+
+	const clipPath = getLastBreakpointAttribute({
+		target: `${prefix}clip-path`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const hasClipPath = getLastBreakpointAttribute({
+		target: `${prefix}clip-path-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
 
 	const deconstructCP = () => {
 		if (isEmpty(clipPath))
@@ -230,7 +247,6 @@ const ClipPathControl = props => {
 
 	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
 
-	const [hasClipPath, changeHasClipPath] = useState(!isEmpty(clipPath));
 	const [isCustom, changeIsCustom] = useState(
 		!(
 			Object.values(clipPathDefaults).includes(clipPath) ||
@@ -271,9 +287,15 @@ const ClipPathControl = props => {
 		}
 		const newCP = `${type}(${newContent})`;
 
-		onChange(newCP);
+		onChangeValue(newCP);
 
 		changeClipPathOptions(clipPath);
+	};
+
+	const onChangeValue = val => {
+		onChange({
+			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
+		});
 	};
 
 	const onChangeType = newType => {
@@ -309,12 +331,19 @@ const ClipPathControl = props => {
 		generateCP(newCP);
 	};
 
+	const onToggleClipPath = val => {
+		onChange({
+			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
+				val,
+		});
+	};
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch
 				label={__('Use clip-path', 'maxi-blocks')}
 				selected={hasClipPath}
-				onChange={val => changeHasClipPath(val)}
+				onChange={val => onToggleClipPath(val)}
 			/>
 			{hasClipPath && (
 				<>
@@ -334,7 +363,7 @@ const ClipPathControl = props => {
 								<Button
 									aria-pressed={clipPath === ''}
 									className='clip-path-defaults__items clip-path-defaults__items__none'
-									onClick={() => onChange('')}
+									onClick={() => onChangeValue('')}
 								>
 									<Icon icon={styleNone} />
 								</Button>
@@ -353,7 +382,7 @@ const ClipPathControl = props => {
 											className='clip-path-defaults__items'
 											onClick={() =>
 												newClipPath !== clipPath &&
-												onChange(newClipPath)
+												onChangeValue(newClipPath)
 											}
 										>
 											<span
@@ -472,4 +501,4 @@ const ClipPathControl = props => {
 	);
 };
 
-export default ClipPathControl;
+export default ClipPath;

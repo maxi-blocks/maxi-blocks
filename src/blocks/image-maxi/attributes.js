@@ -108,10 +108,7 @@ const attributes = {
 	useInitSize: {
 		type: 'boolean',
 	},
-	clipPath: {
-		type: 'string',
-		default: '',
-	},
+	...attributesData.clipPath,
 	...attributesData.link,
 	...attributesData.textAlignment,
 	...attributesData.typography,
@@ -170,6 +167,7 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

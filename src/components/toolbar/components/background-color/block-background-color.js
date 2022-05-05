@@ -40,6 +40,7 @@ const ALLOWED_BLOCKS = [
 const BlockBackgroundColor = props => {
 	const {
 		blockName,
+		onChangeInline,
 		onChange,
 		breakpoint,
 		'background-layers': backgroundLayers = [],
@@ -54,11 +55,11 @@ const BlockBackgroundColor = props => {
 
 	const isBackgroundColor = !isEmpty(layer);
 
-	const getNewLayerId = () =>
+	const getNewLayerOrder = () =>
 		backgroundLayers && !isEmpty(backgroundLayers)
 			? backgroundLayers.reduce((layerA, layerB) =>
-					layerA.id > layerB.id ? layerA : layerB
-			  ).id + 1
+					layerA.order > layerB.order ? layerA : layerB
+			  ).order + 1
 			: 1;
 
 	return (
@@ -86,13 +87,13 @@ const BlockBackgroundColor = props => {
 											layer: colorLayerAttr,
 											breakpoint,
 										}),
-										id: getNewLayerId(),
+										order: getNewLayerOrder(),
 									},
 								],
 							});
 						} else {
 							const newBGLayers = backgroundLayers.filter(
-								bgLayer => bgLayer.id !== layer.id
+								bgLayer => bgLayer.order !== layer.order
 							);
 
 							onChange({ 'background-layers': newBGLayers });
@@ -102,16 +103,22 @@ const BlockBackgroundColor = props => {
 				{isBackgroundColor && (
 					<ColorLayer
 						disableClipPath
-						key={`background-color-layer--${layer.id}`}
+						key={`background-color-layer--${layer.order}`}
 						colorOptions={layer}
+						onChangeInline={obj =>
+							onChangeInline(
+								obj,
+								`.maxi-background-displayer__${layer.order}`
+							)
+						}
 						onChange={obj => {
 							const newLayer = { ...layer, ...obj };
 							const newLayers = cloneDeep(backgroundLayers);
 
 							backgroundLayers.forEach((lay, i) => {
-								if (lay.id === newLayer.id) {
+								if (lay.order === newLayer.order) {
 									const index = findIndex(newLayers, {
-										id: newLayer.id,
+										order: newLayer.order,
 									});
 
 									newLayers[index] = newLayer;
@@ -119,9 +126,12 @@ const BlockBackgroundColor = props => {
 							});
 
 							if (!isEqual(newLayers, backgroundLayers))
-								onChange({
-									'background-layers': newLayers,
-								});
+								onChange(
+									{
+										'background-layers': newLayers,
+									},
+									`.maxi-background-displayer__${layer.order}`
+								);
 						}}
 						breakpoint={breakpoint}
 						isToolbar

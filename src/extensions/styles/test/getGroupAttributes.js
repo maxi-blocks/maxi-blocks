@@ -1,7 +1,6 @@
 import getGroupAttributes from '../getGroupAttributes';
 
 const attributes = {
-	defaultBlockStyle: 'maxi-def-light',
 	extraClassName: '',
 	anchorLink: '',
 	customLabel: 'Button',
@@ -107,10 +106,11 @@ const attributes = {
 	'transform-origin-x-unit-general': '%',
 	'transform-origin-y-unit-general': '%',
 	'transition-duration-general': 0.3,
+	'transition-delay-general': 0,
+	'transition-timing-function': 'ease',
 	uniqueID: 'button-maxi-1617',
 	isFirstOnHierarchy: true,
 	blockStyle: 'maxi-light',
-	parentBlockStyle: 'light',
 	'border-style-general': 'solid',
 	'icon-background-color-general': '',
 	'icon-background-palette-color-general': 1,

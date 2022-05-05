@@ -59,24 +59,15 @@ export const selectorsDivider = {
 			target: ' .maxi-divider-block__divider:hover::after',
 		},
 	},
-	'canvas background': {
-		normal: {
-			label: 'canvas background',
-			target: '',
-		},
-		hover: {
-			label: 'canvas background on hover',
-			target: ':hover',
-		},
-	},
 };
 
 export const categoriesDivider = [
 	'canvas',
 	'before canvas',
 	'after canvas',
-	'canvas background',
 	'divider',
 	'before divider',
 	'after divider',
+	'background',
+	'background hover',
 ];

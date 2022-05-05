@@ -196,6 +196,11 @@ const AdvancedNumberControl = props => {
 
 							onChangeValue(value === '' ? value : +value);
 						}}
+						onKeyDown={e => {
+							if (e.key === '-' && min >= 0) {
+								e.preventDefault();
+							}
+						}}
 						min={enableUnit ? minValue : min}
 						max={enableUnit ? maxValue : max}
 						step={stepValue}

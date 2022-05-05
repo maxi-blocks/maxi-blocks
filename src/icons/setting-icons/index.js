@@ -59,3 +59,6 @@ export { default as tablet } from './tablet';
 export { default as typography } from './typography';
 export { default as ui } from './ui';
 export { default as width } from './width';
+export { default as iconStroke } from './icon-stroke';
+export { default as iconFill } from './icon-fill';
+export { default as iconBorder } from './icon-border';

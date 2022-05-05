@@ -63,7 +63,8 @@ const ButtonInserter = props => {
 			className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
 			onClick={() => {
 				selectBlock(clientId).then(() => {
-					setShouldRemain(true);
+					if (setShouldRemain) setShouldRemain(true);
+
 					onToggle();
 				});
 			}}
@@ -84,7 +85,7 @@ const ButtonInserter = props => {
 };
 
 const WrapperBlockInserter = forwardRef((props, ref) => {
-	const { clientId } = props;
+	const { clientId, isSelected, hasSelectedChild } = props;
 
 	const { blockHierarchy, blockName } = useSelect(select => {
 		const { getBlockName, getBlockParents } = select('core/block-editor');
@@ -123,17 +124,11 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		}
 	}, [blockIsHovered, buttonIsHovered]);
 
-	useEffect(() => {
-		setShouldRemain(
-			ref?.current?.classList.contains('is-selected') ||
-				ref?.current?.classList.contains('has-child-selected')
-		);
-	}, [
-		ref?.current?.classList.contains('is-selected'),
-		ref?.current?.classList.contains('has-child-selected'),
-	]);
+	useEffect(
+		() => setShouldRemain(isSelected || hasSelectedChild),
+		[isSelected, hasSelectedChild]
+	);
 
-	// resume in one line
 	if (!ref?.current || blockName === 'maxi-blocks/row-maxi') return null;
 
 	const boundaryElement =
@@ -145,13 +140,11 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		) ||
 		document.body?.querySelector('.edit-post-visual-editor');
 
-	if (blockIsHovered || buttonIsHovered || shouldRemain)
+	if (blockIsHovered || buttonIsHovered || shouldRemain.current)
 		return (
 			<Popover
 				key={`maxi-wrapper-block-inserter__${clientId}`}
-				className={`maxi-wrapper-block-inserter num-${
-					Object.keys(blockHierarchy).length
-				}`}
+				className='maxi-wrapper-block-inserter'
 				noArrow
 				animate={false}
 				position='bottom center'
@@ -198,7 +191,13 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 														onToggleInserter();
 													}}
 												>
-													{blockName}
+													Add{' '}
+													{blockName
+														.replace(
+															'maxi-blocks/',
+															''
+														)
+														.replace('-', ' ')}
 												</Button>
 											)}
 										/>

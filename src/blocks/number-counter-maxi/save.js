@@ -32,11 +32,10 @@ const save = props => {
 	const radius = 90;
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			className={classes}
 			id={uniqueID}
 			{...getMaxiBlockAttributes(props)}
-			isSave
 		>
 			<div className='maxi-number-counter__box'>
 				{!circleStatus && (
@@ -76,7 +75,7 @@ const save = props => {
 					<span className='maxi-number-counter__box__text' />
 				)}
 			</div>
-		</MaxiBlock>
+		</MaxiBlock.save>
 	);
 };
 

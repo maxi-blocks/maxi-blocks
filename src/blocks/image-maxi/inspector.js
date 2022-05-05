@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { RangeControl } from '@wordpress/components';
-import { memo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -29,18 +28,13 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsImage, categoriesImage } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * External dependencies
  */
-import {
-	capitalize,
-	isEmpty,
-	isNil,
-	isEqual,
-	cloneDeep,
-	without,
-} from 'lodash';
+import { capitalize, isEmpty, isNil } from 'lodash';
 
 /**
  * Dimension tab
@@ -217,112 +211,97 @@ const dimensionTab = props => {
 				/>
 			</>
 		),
+		extraIndicators: ['imageRatio', 'imgWidth'],
 	};
 };
 
 /**
  * Inspector
  */
-const Inspector = memo(
-	props => {
-		const {
-			attributes,
-			clientId,
-			deviceType,
-			imageData,
-			maxiSetAttributes,
-		} = props;
-		const {
-			altSelector,
-			blockStyle,
-			captionType,
-			clipPath,
-			fullWidth,
-			mediaAlt,
-			parentBlockStyle,
-			SVGElement,
-			uniqueID,
-			mediaID,
-			captionPosition,
-		} = attributes;
+const Inspector = props => {
+	const { attributes, clientId, deviceType, imageData, maxiSetAttributes } =
+		props;
+	const {
+		altSelector,
+		blockStyle,
+		captionType,
+		fullWidth,
+		mediaAlt,
+		SVGElement,
+		uniqueID,
+		mediaID,
+		captionPosition,
+	} = attributes;
 
-		const getCaptionOptions = () => {
-			const response = [
-				{ label: 'None', value: 'none' },
-				{ label: 'Custom Caption', value: 'custom' },
-			];
-			if (imageData && !isEmpty(imageData.caption.rendered)) {
-				const newCaption = {
-					label: 'Attachment Caption',
-					value: 'attachment',
-				};
-				response.splice(1, 0, newCaption);
-			}
-			return response;
-		};
+	const getCaptionOptions = () => {
+		const response = [
+			{ label: 'None', value: 'none' },
+			{ label: 'Custom Caption', value: 'custom' },
+		];
+		if (imageData && !isEmpty(imageData.caption.rendered)) {
+			const newCaption = {
+				label: 'Attachment Caption',
+				value: 'attachment',
+			};
+			response.splice(1, 0, newCaption);
+		}
+		return response;
+	};
 
-		const getCategoriesCss = () => {
-			const { 'background-layers': bgLayers } = attributes;
-			return without(
-				categoriesImage,
-				isEmpty(bgLayers) && 'canvas background'
-			);
-		};
-
-		return (
-			<InspectorControls>
-				{inspectorTabs.responsiveInfoBox({ props })}
-				<SettingTabsControl
-					target='sidebar-settings-tabs'
-					disablePadding
-					deviceType={deviceType}
-					depth={0}
-					items={[
-						{
-							label: __('Settings', 'maxi-blocks'),
-							content: (
-								<>
-									{inspectorTabs.blockSettings({
-										props,
-									})}
-									<AccordionControl
-										isSecondary
-										items={[
-											deviceType === 'general' &&
-												fullWidth !== 'full' &&
-												dimensionTab(props),
-											...inspectorTabs.alignment({
-												props,
-												isAlignment: true,
-												disableJustify: true,
-											}),
-											deviceType === 'general' &&
-												!SVGElement && {
-													label: __(
-														'Alt tag',
-														'maxi-blocks'
-													),
-													content: (
-														<ImageAltControl
-															mediaID={mediaID}
-															altSelector={
-																altSelector
-															}
-															mediaAlt={mediaAlt}
-															onChange={obj => {
-																maxiSetAttributes(
-																	obj
-																);
-															}}
-														/>
-													),
-												},
-											{
+	return (
+		<InspectorControls>
+			{inspectorTabs.responsiveInfoBox({ props })}
+			<SettingTabsControl
+				target='sidebar-settings-tabs'
+				disablePadding
+				deviceType={deviceType}
+				depth={0}
+				items={[
+					{
+						label: __('Settings', 'maxi-blocks'),
+						content: (
+							<>
+								{inspectorTabs.blockSettings({
+									props,
+								})}
+								<AccordionControl
+									isSecondary
+									items={[
+										deviceType === 'general' &&
+											fullWidth !== 'full' &&
+											dimensionTab(props),
+										...inspectorTabs.alignment({
+											props,
+											isAlignment: true,
+											disableJustify: true,
+										}),
+										deviceType === 'general' &&
+											!SVGElement && {
 												label: __(
-													'Caption',
+													'Alt tag',
 													'maxi-blocks'
 												),
 												content: (
+													<ImageAltControl
+														mediaID={mediaID}
+														altSelector={
+															altSelector
+														}
+														mediaAlt={mediaAlt}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+														}}
+													/>
+												),
+											},
+										{
+											label: __('Caption', 'maxi-blocks'),
+											content: (
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
 													<>
 														<SelectControl
 															value={captionType}
@@ -488,7 +467,7 @@ const Inspector = memo(
 																		clientId
 																	}
 																	blockStyle={
-																		parentBlockStyle
+																		blockStyle
 																	}
 																	globalProps={{
 																		target: '',
@@ -504,14 +483,19 @@ const Inspector = memo(
 															</>
 														)}
 													</>
-												),
-											},
-											{
-												label: __(
-													'Hover effect',
-													'maxi-blocks'
-												),
-												content: (
+												</ResponsiveTabsControl>
+											),
+											extraIndicators: ['captionType'],
+										},
+										{
+											label: __(
+												'Hover effect',
+												'maxi-blocks'
+											),
+											content: (
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
 													<HoverEffectControl
 														uniqueID={uniqueID}
 														{...getGroupAttributes(
@@ -538,193 +522,185 @@ const Inspector = memo(
 														blockStyle={blockStyle}
 														clientId={clientId}
 													/>
-												),
-											},
-											{
-												label: __(
-													'Shape mask',
-													'maxi-blocks'
-												),
-												content: (
-													<ImageShape
-														{...getGroupAttributes(
-															attributes,
-															'imageShape'
-														)}
+												</ResponsiveTabsControl>
+											),
+										},
+										{
+											label: __(
+												'Shape mask',
+												'maxi-blocks'
+											),
+											content: (
+												<ImageShape
+													{...getGroupAttributes(
+														attributes,
+														'imageShape'
+													)}
+													onChange={obj => {
+														maxiSetAttributes(obj);
+													}}
+													icon={SVGElement}
+													breakpoint={deviceType}
+												/>
+											),
+											extraIndicators: ['SVGElement'],
+											ignoreIndicator: [
+												`image-shape-scale-${deviceType}`,
+												`image-shape-rotate-${deviceType}`,
+												`image-shape-flip-x-${deviceType}`,
+												`image-shape-flip-y-${deviceType}`,
+											],
+										},
+										{
+											label: __(
+												'Clip-path',
+												'maxi-blocks'
+											),
+											content: (
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
+													<ClipPath
 														onChange={obj => {
 															maxiSetAttributes(
 																obj
 															);
 														}}
-														icon={SVGElement}
+														{...getGroupAttributes(
+															attributes,
+															'clipPath',
+															false,
+															''
+														)}
+														{...attributes}
 														breakpoint={deviceType}
+														prefix=''
 													/>
-												),
-											},
-											{
-												label: __(
-													'Clip-path',
-													'maxi-blocks'
-												),
-												content: (
-													<ClipPath
-														clipPath={clipPath}
-														onChange={clipPath =>
-															maxiSetAttributes({
-																clipPath,
-															})
-														}
-													/>
-												),
-											},
-											...inspectorTabs.border({
-												props,
-												prefix: 'image-',
-											}),
-											...inspectorTabs.boxShadow({
-												props,
-												prefix: 'image-',
-											}),
-											...inspectorTabs.size({
-												props,
-												prefix: 'image-',
-												isImage: true,
-												hideWidth: true,
-											}),
-											...inspectorTabs.marginPadding({
-												props,
-												prefix: 'image-',
-												customLabel: __(
-													'Padding',
-													'maxi-blocks'
-												),
-												disableMargin: true,
-											}),
-										]}
-									/>
-								</>
-							),
-						},
-						{
-							label: __('Canvas', 'maxi-blocks'),
-							content: (
-								<AccordionControl
-									isPrimary
-									items={[
-										...inspectorTabs.blockBackground({
-											props,
-										}),
+												</ResponsiveTabsControl>
+											),
+											ignoreIndicator: [
+												`clip-path-${deviceType}`,
+											],
+										},
 										...inspectorTabs.border({
 											props,
+											prefix: 'image-',
 										}),
 										...inspectorTabs.boxShadow({
 											props,
-										}),
-										...inspectorTabs.opacity({
-											props,
+											prefix: 'image-',
 										}),
 										...inspectorTabs.size({
 											props,
-											block: true,
+											prefix: 'image-',
+											isImage: true,
+											hideWidth: true,
 										}),
 										...inspectorTabs.marginPadding({
 											props,
+											prefix: 'image-',
+											customLabel: __(
+												'Padding',
+												'maxi-blocks'
+											),
+											disableMargin: true,
 										}),
 									]}
 								/>
-							),
-						},
+							</>
+						),
+					},
+					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
+						),
+					},
 
-						{
-							label: __('Advanced', 'maxi-blocks'),
-							content: (
-								<>
-									<AccordionControl
-										isPrimary
-										items={[
-											deviceType === 'general' && {
-												...inspectorTabs.customClasses({
-													props,
-												}),
-											},
-											deviceType === 'general' && {
-												...inspectorTabs.anchor({
-													props,
-												}),
-											},
-											...inspectorTabs.customCss({
-												props,
-												breakpoint: deviceType,
-												selectors: selectorsImage,
-												categories: getCategoriesCss(),
-											}),
-											...inspectorTabs.scrollEffects({
-												props,
-											}),
-											...inspectorTabs.transform({
-												props,
-											}),
-											...inspectorTabs.display({
-												props,
-											}),
-											...inspectorTabs.position({
-												props,
-											}),
-											deviceType !== 'general' && {
-												...inspectorTabs.responsive({
-													props,
-												}),
-											},
-											...inspectorTabs.overflow({
-												props,
-											}),
-											...inspectorTabs.flex({
-												props,
-											}),
-											...inspectorTabs.zindex({
-												props,
-											}),
-										]}
-									/>
-								</>
-							),
-						},
-					]}
-				/>
-			</InspectorControls>
-		);
-	},
-	// Avoids non-necessary renderings
-	(
-		{
-			attributes: oldAttr,
-			propsToAvoid,
-			isSelected: wasSelected,
-			deviceType: oldBreakpoint,
-		},
-		{ attributes: newAttr, isSelected, deviceType: breakpoint }
-	) => {
-		if (
-			!wasSelected ||
-			wasSelected !== isSelected ||
-			oldBreakpoint !== breakpoint
-		)
-			return false;
+					{
+						label: __('Advanced', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsImage,
+										categories: categoriesImage,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
+											props,
+										}),
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+								]}
+							/>
+						),
+					},
+				]}
+			/>
+		</InspectorControls>
+	);
+};
 
-		const oldAttributes = cloneDeep(oldAttr);
-		const newAttributes = cloneDeep(newAttr);
-
-		if (!isEmpty(propsToAvoid)) {
-			propsToAvoid.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			return isEqual(oldAttributes, newAttributes);
-		}
-
-		return isEqual(oldAttributes, newAttributes);
-	}
-);
-
-export default Inspector;
+export default withMaxiInspector(Inspector);

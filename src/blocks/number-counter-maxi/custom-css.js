@@ -69,25 +69,16 @@ export const selectorsNumberCounter = {
 			target: ' .maxi-number-counter__box__text:hover::after',
 		},
 	},
-	'canvas background': {
-		normal: {
-			label: 'canvas background',
-			target: '',
-		},
-		hover: {
-			label: 'canvas background on hover',
-			target: ':hover',
-		},
-	},
 };
 
 export const categoriesNumberCounter = [
 	'canvas',
 	'before canvas',
 	'after canvas',
-	'canvas background',
 	'number',
 	'before number',
 	'after number',
-	'circle'
+	'circle',
+	'background',
+	'background hover',
 ];

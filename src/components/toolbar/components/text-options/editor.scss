@@ -104,7 +104,6 @@
 		&__font {
 			display: flex;
 			width: 100%;
-			width: 115px;
 
 			&__selector {
 				flex-basis: 100%;
@@ -112,6 +111,7 @@
 
 			.maxi-font-family-selector {
 				margin-bottom: 0;
+				width: 115px;
 				&__button {
 					color: #fff;
 					border-color: #80828a;
@@ -119,7 +119,9 @@
 			}
 
 			.components-maxi-control__reset-button {
-				height: 31px;
+				height: 36px;
+				margin: 0 0;
+				border: none;
 
 				svg {
 					width: 14px;
@@ -149,7 +151,7 @@
 					}
 
 					input {
-						width: 67px !important;
+						width: 82px !important;
 					}
 				}
 

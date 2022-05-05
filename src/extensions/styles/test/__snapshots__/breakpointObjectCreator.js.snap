@@ -46,6 +46,28 @@ Object {
   "background-image-clip-path-s": Object {
     "type": "string",
   },
+  "background-image-clip-path-status-general": Object {
+    "default": false,
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-l": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-m": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-s": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-xl": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-xs": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-xxl": Object {
+    "type": "boolean",
+  },
   "background-image-clip-path-xl": Object {
     "type": "string",
   },

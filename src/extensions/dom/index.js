@@ -12,6 +12,12 @@ import { isEmpty } from 'lodash';
  * General
  *
  */
+// Adds window.process to fix browserslist error when using
+// postcss and autofixer on the controls of style store
+window.process = window.process || {};
+window.process.env = window.process.env || {};
+window.process.env.BROWSERSLIST_DISABLE_CACHE = false;
+
 const allowedBlocks = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
@@ -187,6 +193,17 @@ wp.domReady(() => {
 						);
 						const iframeDocument = iframe.contentDocument;
 
+						const editorWrapper = iframeDocument.body;
+
+						editorWrapper.setAttribute(
+							'maxi-blocks-responsive',
+							mutation.target.classList.contains(
+								'is-tablet-preview'
+							)
+								? 's'
+								: 'xs'
+						);
+
 						if (
 							iframe &&
 							!iframeDocument.body.classList.contains(
@@ -197,9 +214,7 @@ wp.domReady(() => {
 							iframeDocument.body.classList.add(
 								'maxi-blocks--active'
 							);
-							const editorWrapper = iframeDocument.querySelector(
-								'.editor-styles-wrapper'
-							);
+							const editorWrapper = iframeDocument.body;
 							editorWrapper.setAttribute(
 								'maxi-blocks-responsive',
 								mutation.target.classList.contains(
@@ -254,6 +269,34 @@ wp.domReady(() => {
 
 								iframe.contentDocument.head.appendChild(
 									maxiVariables
+								);
+							}
+
+							// Ensures all Maxi styles are loaded on iframe
+							const editStyles = iframeDocument.querySelector(
+								'#maxi-blocks-block-editor-css'
+							);
+							const frontStyles = iframeDocument.querySelector(
+								'#maxi-blocks-block-css'
+							);
+
+							if (!editStyles) {
+								const rawEditStyles = document.querySelector(
+									'#maxi-blocks-block-editor-css'
+								);
+
+								iframe.contentDocument.head.appendChild(
+									rawEditStyles.cloneNode(true)
+								);
+							}
+
+							if (!frontStyles) {
+								const rawFrontStyles = document.querySelector(
+									'#maxi-blocks-block-css'
+								);
+
+								iframe.contentDocument.head.appendChild(
+									rawFrontStyles.cloneNode(true)
 								);
 							}
 						}
@@ -326,31 +369,16 @@ wp.domReady(() => {
 });
 
 const openSidebar = item => {
+	const accordionUid = item.replace(/[^a-zA-Z0-9]+/g, '');
+	dispatch('maxiBlocks').updateInspectorPath({
+		depth: 1,
+		value: accordionUid,
+	});
+
 	const sidebar = document.querySelector('.maxi-sidebar');
 	const wrapperElement = document.querySelector(
 		`.maxi-accordion-control__item[data-name="${item}"]`
 	);
-	const button = wrapperElement.querySelector(
-		'.maxi-accordion-control__item__button'
-	);
-	const content = wrapperElement.querySelector(
-		'.maxi-accordion-control__item__panel'
-	);
-
-	Array.from(
-		document.getElementsByClassName('maxi-accordion-control__item__button')
-	).forEach(el => {
-		if (el.getAttribute('aria-expanded'))
-			el.setAttribute('aria-expanded', false);
-	});
-	Array.from(
-		document.getElementsByClassName('maxi-accordion-control__item__panel')
-	).forEach(el => {
-		if (!el.getAttribute('hidden')) el.setAttribute('hidden', '');
-	});
-
-	button.setAttribute('aria-expanded', true);
-	content.removeAttribute('hidden');
 
 	sidebar.scroll({
 		top: wrapperElement.getBoundingClientRect().top,

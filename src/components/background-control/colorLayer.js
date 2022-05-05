@@ -12,6 +12,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -26,6 +27,7 @@ import { cloneDeep } from 'lodash';
 const ColorLayerContent = props => {
 	const {
 		onChange,
+		onChangeInline,
 		disableClipPath,
 		isHover = false,
 		prefix = '',
@@ -97,6 +99,11 @@ const ColorLayerContent = props => {
 					attributes: colorOptions,
 					isHover,
 				})}
+				onChangeInline={({ color }) => {
+					onChangeInline({
+						'background-color': color,
+					});
+				}}
 				onChange={({
 					color,
 					paletteColor,
@@ -138,22 +145,17 @@ const ColorLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-color-clip-path`,
-						breakpoint,
-						attributes: colorOptions,
-						isHover,
-					})}
-					onChange={val => {
-						onChange({
-							[getAttributeKey(
-								'background-color-clip-path',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						});
-					}}
+					onChange={onChange}
+					{...getGroupAttributes(
+						props,
+						'clipPath',
+						false,
+						'background-color-'
+					)}
+					{...colorOptions}
+					isHover={isHover}
+					prefix='background-color-'
+					breakpoint={breakpoint}
 				/>
 			)}
 		</>

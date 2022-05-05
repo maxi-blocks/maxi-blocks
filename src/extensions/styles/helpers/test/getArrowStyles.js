@@ -65,7 +65,7 @@ describe('getArrowStyles', () => {
 					'background-color-general': '',
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 					'background-palette-status-xl': true,
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
@@ -237,7 +237,7 @@ describe('getArrowStyles', () => {
 					'background-color-general': 'rgba(150,200,90)',
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					id: 0,
+					order: 0,
 				},
 			],
 		};

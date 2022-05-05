@@ -2,24 +2,36 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawPadding = {
 	'padding-top': {
-		type: 'number',
+		type: 'string',
 	},
 	'padding-right': {
-		type: 'number',
+		type: 'string',
 	},
 	'padding-bottom': {
-		type: 'number',
+		type: 'string',
 	},
 	'padding-left': {
-		type: 'number',
+		type: 'string',
+	},
+	'padding-top-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'padding-right-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'padding-bottom-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'padding-left-unit': {
+		type: 'string',
+		default: 'px',
 	},
 	'padding-sync': {
 		type: 'string',
 		default: 'all',
-	},
-	'padding-unit': {
-		type: 'string',
-		default: 'px',
 	},
 };
 

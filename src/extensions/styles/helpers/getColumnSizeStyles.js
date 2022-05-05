@@ -1,29 +1,62 @@
 /**
- * General
+ * Internal dependencies
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
  */
-import { isNumber } from 'lodash';
+import { isNumber, round } from 'lodash';
 
-const getColumnSizeStyles = obj => {
+/**
+ * General
+ */
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+const getColumnSizeStyles = (obj, rowGapProps) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
 		const fitContent = obj[`column-fit-content-${breakpoint}`];
-		const columnSize = obj[`column-size-${breakpoint}`];
+		let columnSize = obj[`column-size-${breakpoint}`];
 
 		if (fitContent) {
 			response[breakpoint] = {
 				width: 'fit-content',
 				'flex-basis': 'fit-content',
 			};
-		} else if (isNumber(columnSize)) {
+		} else if (
+			isNumber(columnSize) ||
+			isNumber(rowGapProps[`column-gap-${breakpoint}`])
+		) {
+			const gap = getLastBreakpointAttribute({
+				target: 'column-gap',
+				breakpoint,
+				attributes: rowGapProps,
+			});
+			const gapUnit = getLastBreakpointAttribute({
+				target: 'column-gap-unit',
+				breakpoint,
+				attributes: rowGapProps,
+			});
+
+			if (!columnSize)
+				columnSize = getLastBreakpointAttribute({
+					target: 'column-size',
+					breakpoint,
+					attributes: obj,
+				});
+
+			const gapValue = gap ? `${round(gap, 2)}${gapUnit}` : '0px';
+
+			const value =
+				columnSize !== 100
+					? `calc(${columnSize}% - ${gapValue})`
+					: '100%';
+
 			response[breakpoint] = {
-				width: `${columnSize}%`,
-				'flex-basis': `${columnSize}%`,
+				width: value,
+				'flex-basis': value,
 			};
 		}
 	});

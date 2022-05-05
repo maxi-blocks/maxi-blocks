@@ -11,13 +11,18 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
+	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
 
 const getWrapperObject = props => {
 	const response = {
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -54,13 +59,13 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -68,11 +73,14 @@ const getWrapperObject = props => {
 		background: {
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, ['blockBackground']),
-				blockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		},
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -92,7 +100,7 @@ const getHoverWrapperObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -101,12 +109,12 @@ const getHoverWrapperObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		background: {
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, ['blockBackground'], true),
-				blockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
 		},
@@ -122,6 +130,7 @@ const getBoxObject = props => {
 	const size = getSizeStyles(
 		{
 			...getGroupAttributes(props, 'size', false, 'number-counter-'),
+			...getGroupAttributes(props, 'numberCounter'),
 		},
 		'number-counter-'
 	);
@@ -163,7 +172,7 @@ const getBoxObject = props => {
 					'number-counter-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'number-counter-',
 		}),
 		border: getBorderStyles({
@@ -175,8 +184,11 @@ const getBoxObject = props => {
 					'number-counter-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'number-counter-',
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -197,7 +209,7 @@ const getHoverBoxObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'number-counter-',
 			}),
 		boxShadow:
@@ -212,7 +224,7 @@ const getHoverBoxObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'number-counter-',
 			}),
 	};
@@ -221,7 +233,7 @@ const getHoverBoxObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, parentBlockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(

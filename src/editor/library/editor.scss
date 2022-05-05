@@ -8,7 +8,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-right: 7px;
 		width: 100%;
 
 		&__buttons {
@@ -816,6 +815,11 @@
 								margin-bottom: 0;
 							}
 						}
+					}
+				}
+				&.maxi-cloud-container__hide-categories {
+					.maxi-cloud-container__content__svg-categories {
+						display: none;
 					}
 				}
 			}

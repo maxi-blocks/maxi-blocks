@@ -15,7 +15,7 @@ import {
 import { openPreviewPage } from '../utils';
 
 describe('sc-variable', () => {
-	it('Check sc-vars', async () => {
+	it.skip('Check sc-vars', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
@@ -30,7 +30,7 @@ describe('sc-variable', () => {
 
 		const scVariable = await page.$eval(
 			'#maxi-blocks-sc-vars-inline-css',
-			content => content.innerHTML
+			content => content.innerText
 		);
 
 		expect(scVariable).toMatchSnapshot();
@@ -42,7 +42,7 @@ describe('sc-variable', () => {
 
 		const scVariableFront = await page.$eval(
 			'#maxi-blocks-sc-vars-inline-css',
-			content => content.innerHTML
+			content => content.innerText
 		);
 
 		expect(scVariableFront).toMatchSnapshot();

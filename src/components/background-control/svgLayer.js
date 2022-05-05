@@ -79,7 +79,7 @@ const SVGLayerContent = props => {
 								label='Position'
 								target='background-svg-position'
 								breakpoint={breakpoint}
-								onChange={obj => onChange(obj)}
+								onChange={onChange}
 								optionType='string'
 							/>
 						),
@@ -156,7 +156,7 @@ const SVGLayerContent = props => {
 const SVGLayer = props => {
 	const {
 		clientId,
-		layerId,
+		layerOrder,
 		onChange,
 		breakpoint,
 		prefix = '',
@@ -176,7 +176,7 @@ const SVGLayer = props => {
 					type='bg-shape'
 					style={getBlockStyle(clientId)}
 					onRemove={obj => {
-						if (layerId) {
+						if (layerOrder) {
 							delete SVGOptions[
 								`${prefix}background-svg-SVGElement`
 							];
@@ -194,7 +194,7 @@ const SVGLayer = props => {
 				<>
 					<SVGFillControl
 						SVGOptions={SVGOptions}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						clientId={clientId}
 						isHover={isHover}
 						breakpoint={breakpoint}

@@ -25,15 +25,14 @@ const save = props => {
 	);
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			isSave
 		>
 			{attributes['divider-border-style'] !== 'none' && (
 				<hr className='maxi-divider-block__divider' />
 			)}
-		</MaxiBlock>
+		</MaxiBlock.save>
 	);
 };
 

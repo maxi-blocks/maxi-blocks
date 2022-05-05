@@ -25,7 +25,7 @@ const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 export const getColorBackgroundObject = ({
 	isHover = false,
 	prefix = '',
-	blockStyle: rawBlockStyle,
+	blockStyle,
 	isButton = false,
 	isIcon = false,
 	isIconInherit = false,
@@ -40,16 +40,8 @@ export const getColorBackgroundObject = ({
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
-	if (
-		isHover &&
-		!isNil(hoverStatus) &&
-		!hoverStatus &&
-		!isNil(globalHoverStatus) &&
-		!globalHoverStatus
-	)
+	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
 		return {};
-
-	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
 	const response = {
 		label: 'Background Color',
@@ -66,6 +58,13 @@ export const getColorBackgroundObject = ({
 
 	const bgClipPath = getLastBreakpointAttribute({
 		target: `${prefix}background-color-clip-path`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isBgColorClipPathActive = getLastBreakpointAttribute({
+		target: `${prefix}background-color-clip-path-status`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -128,7 +127,7 @@ export const getColorBackgroundObject = ({
 			: color;
 	}
 
-	if (!isNil(bgClipPath))
+	if (isBgColorClipPathActive)
 		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)
 			? 'none'
 			: bgClipPath;
@@ -165,12 +164,18 @@ export const getGradientBackgroundObject = ({
 		attributes: props,
 		isHover,
 	});
-	const bgGradientClipPath = getAttributeValue({
-		target: 'background-gradient-clip-path',
-		props,
-		prefix,
-		isHover,
+	const bgGradientClipPath = getLastBreakpointAttribute({
+		target: `${prefix}background-gradient-clip-path`,
 		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isbgGradientClipPathActive = getLastBreakpointAttribute({
+		target: `${prefix}background-gradient-clip-path-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
 	});
 
 	if (
@@ -213,7 +218,7 @@ export const getGradientBackgroundObject = ({
 
 			if (background) response[breakpoint].background = background;
 		}
-		if (!isNil(bgGradientClipPath))
+		if (isbgGradientClipPathActive)
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
 				: bgGradientClipPath;
@@ -280,9 +285,20 @@ export const getImageBackgroundObject = ({
 		'background-image-attachment'
 	);
 	const bgImageOpacity = getBgImageAttributeValue('background-image-opacity');
-	const bgImageClipPath = getBgImageAttributeValue(
-		'background-image-clip-path'
-	);
+
+	const bgImageClipPath = getLastBreakpointAttribute({
+		target: `${prefix}background-image-clip-path`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isbgImageClipPathActive = getLastBreakpointAttribute({
+		target: `${prefix}background-image-clip-path-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
 
 	if (!isParallax) {
 		// Image
@@ -387,7 +403,7 @@ export const getImageBackgroundObject = ({
 	if (isNumber(bgImageOpacity)) response[breakpoint].opacity = bgImageOpacity;
 
 	// Clip-path
-	if (!isNil(bgImageClipPath))
+	if (isbgImageClipPathActive)
 		response[breakpoint]['clip-path'] = isEmpty(bgImageClipPath)
 			? 'none'
 			: bgImageClipPath;
@@ -563,7 +579,7 @@ const getBackgroundLayers = ({
 	layers.forEach(layer => {
 		const { type } = layer;
 
-		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
+		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.order}`;
 
 		switch (type) {
 			case 'color':
@@ -868,7 +884,7 @@ const getGeneralBackgroundStyles = (
 
 	const border = getBorderStyles({
 		obj: borderProps,
-		parentBlockStyle: blockStyle,
+		blockStyle,
 		isHover,
 	});
 
@@ -940,6 +956,7 @@ const getBasicResponseObject = ({
 	isHover,
 	prefix,
 	blockStyle,
+	rowBorderRadius,
 	...props
 }) => {
 	const includeBorder =
@@ -959,11 +976,19 @@ const getBasicResponseObject = ({
 			blockStyle,
 			isHover
 		);
+	const rowBorderRadiusObj = getGeneralBackgroundStyles(
+		rowBorderRadius,
+		{ ...rowBorderRadius },
+		blockStyle,
+		isHover
+	);
+	const mergedBorderObj = merge(rowBorderRadiusObj, borderObj);
 
 	return {
-		...(includeBorder && {
-			[`${target} > .maxi-background-displayer`]: { ...borderObj },
-		}),
+		[`${target} > .maxi-background-displayer`]:
+			includeBorder && !isEmpty(borderObj.general)
+				? mergedBorderObj
+				: rowBorderRadiusObj,
 	};
 };
 
@@ -972,6 +997,7 @@ export const getBlockBackgroundStyles = ({
 	isHover = false,
 	prefix = '',
 	blockStyle,
+	rowBorderRadius = {},
 	...props
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
@@ -981,6 +1007,7 @@ export const getBlockBackgroundStyles = ({
 		isHover,
 		prefix,
 		blockStyle,
+		rowBorderRadius,
 		...props,
 	});
 
@@ -1030,13 +1057,11 @@ export const getBackgroundStyles = ({
 	isHover = false,
 	prefix = '',
 	isButton = false,
-	blockStyle: rawBlockStyle,
+	blockStyle,
 	isIconInherit = false,
 	scValues = {},
 	...props
 }) => {
-	const blockStyle = rawBlockStyle.replace('maxi-', '');
-
 	const response = {};
 
 	BREAKPOINTS.forEach(breakpoint => {

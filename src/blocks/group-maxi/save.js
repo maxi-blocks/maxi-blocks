@@ -15,9 +15,8 @@ const save = props => {
 	const name = 'maxi-blocks/group-maxi';
 
 	return (
-		<MaxiBlock
+		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
-			isSave
 			useInnerBlocks
 		>
 			<ArrowDisplayer
@@ -28,7 +27,7 @@ const save = props => {
 					true
 				)}
 			/>
-		</MaxiBlock>
+		</MaxiBlock.save>
 	);
 };
 

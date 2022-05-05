@@ -52,7 +52,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -61,7 +61,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -111,7 +111,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -120,7 +120,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 	};
 
@@ -129,8 +129,8 @@ const getHoverObject = props => {
 
 const getLinkObject = props => {
 	const response = {
-		transitionDuration: getTransitionStyles({
-			...getGroupAttributes(props, 'transitionDuration'),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -143,7 +143,7 @@ const getTypographyObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'typography'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
 		}),
 	};
@@ -158,7 +158,7 @@ const getTypographyHoverObject = props => {
 				...getGroupAttributes(props, 'typographyHover'),
 			},
 			isHover: true,
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
 			normalTypography: {
 				...getGroupAttributes(props, 'typography'),
@@ -180,10 +180,12 @@ const getListObject = props => {
 				? listStart
 				: 0;
 		counterReset += listStart > 0 ? listStart : 0;
-		counterReset += listReversed ? parse(content).length : 1;
+		counterReset +=
+			listReversed && parse(content).length ? parse(content).length : 1;
 		counterReset += listReversed ? 1 : -1;
 		counterReset -= 1;
-	} else if (listReversed) counterReset = parse(content).length + 1;
+	} else if (listReversed)
+		counterReset = parse(content).length ? parse(content).length + 1 : 2;
 	else counterReset = 0;
 
 	const response = {
@@ -208,7 +210,7 @@ const getListObject = props => {
 						breakpoint,
 						attributes: props,
 					});
-					
+
 					if (!isNil(gapNum) && !isNil(gapUnit)) {
 						response.listGap[breakpoint] = isRTL
 							? {
@@ -299,8 +301,7 @@ const getListParagraphObject = props => {
 };
 
 const getMarkerObject = props => {
-	const { typeOfList, listStyle, listStyleCustom, parentBlockStyle, isRTL } =
-		props;
+	const { typeOfList, listStyle, listStyleCustom, blockStyle, isRTL } = props;
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -315,7 +316,7 @@ const getMarkerObject = props => {
 					? getColorRGBAString({
 							firstVar: `color-${paletteColor}`,
 							opacity: paletteOpacity,
-							blockStyle: parentBlockStyle,
+							blockStyle,
 					  })
 					: color,
 			},
@@ -513,7 +514,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -527,7 +528,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.parentBlockStyle,
+					blockStyle: props.blockStyle,
 				}),
 				...getCustomFormatsStyles(
 					!isList
@@ -537,7 +538,7 @@ const getStyles = props => {
 					false,
 					{ ...getGroupAttributes(props, 'typography') },
 					props.textLevel,
-					props.parentBlockStyle
+					props.blockStyle
 				),
 				...getCustomFormatsStyles(
 					!isList
@@ -550,17 +551,17 @@ const getStyles = props => {
 						'typographyHover',
 					]),
 					props.textLevel,
-					props.parentBlockStyle
+					props.blockStyle
 				),
 				...getLinkStyles(
 					{ ...getGroupAttributes(props, 'link') },
 					[` a ${element}.maxi-text-block__content`],
-					props.parentBlockStyle
+					props.blockStyle
 				),
 				...getLinkStyles(
 					{ ...getGroupAttributes(props, 'link') },
 					[` ${element}.maxi-text-block__content a`],
-					props.parentBlockStyle
+					props.blockStyle
 				),
 			},
 			selectorsText,

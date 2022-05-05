@@ -21,6 +21,7 @@ import {
 	getAttributeKey,
 	getAttributeValue,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -524,22 +525,17 @@ const ImageLayerSettings = props => {
 			<hr />
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={getLastBreakpointAttribute({
-						target: `${prefix}background-image-clip-path`,
-						breakpoint,
-						attributes: imageOptions,
-						isHover,
-					})}
-					onChange={val =>
-						onChange({
-							[getAttributeKey(
-								'background-image-clip-path',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						})
-					}
+					onChange={onChange}
+					{...getGroupAttributes(
+						imageOptions,
+						'clipPath',
+						false,
+						'background-image-'
+					)}
+					{...imageOptions}
+					isHover={isHover}
+					prefix='background-image-'
+					breakpoint={breakpoint}
 				/>
 			)}
 		</>
@@ -627,8 +623,6 @@ const ImageLayer = props => {
 							)]: '',
 						})
 					}
-					placeholder={__('Set image', 'maxi-blocks')}
-					removeButton={__('Remove', 'maxi-blocks')}
 				/>
 			)}
 			{!hideSettings && (

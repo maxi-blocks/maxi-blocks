@@ -9,7 +9,7 @@ import { getIsValid } from '../utils';
 /**
  * External dependencies
  */
-import { isUndefined } from 'lodash';
+import { isUndefined, isNil } from 'lodash';
 
 /**
  * General
@@ -25,7 +25,7 @@ const getBorderStyles = ({
 	obj,
 	isHover = false,
 	prefix = '',
-	parentBlockStyle,
+	blockStyle,
 	isButton = false,
 	scValues = {},
 }) => {
@@ -38,7 +38,8 @@ const getBorderStyles = ({
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
-	if (isHover && !hoverStatus && !globalHoverStatus) return response;
+	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
+		return response;
 
 	const keyWords = [
 		'top-left',
@@ -79,13 +80,13 @@ const getBorderStyles = ({
 						}`,
 						secondVar: `color-${paletteColor}`,
 						opacity: paletteOpacity,
-						blockStyle: parentBlockStyle,
+						blockStyle,
 					});
 				else
 					return getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
 						opacity: paletteOpacity,
-						blockStyle: parentBlockStyle,
+						blockStyle,
 					});
 			return color;
 		};

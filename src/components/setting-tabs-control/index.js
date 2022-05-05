@@ -2,13 +2,18 @@
  * WordPress dependencies
  */
 import { useState, useEffect, cloneElement } from '@wordpress/element';
-import { select, useDispatch } from '@wordpress/data';
+import { select, useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import BaseControl from '../base-control';
 import Button from '../button';
+import { getForcedTabFromPath } from '../../extensions/inspector';
+import {
+	getIsActiveTab,
+	getMaxiAttrsFromChildren,
+} from '../../extensions/indicators';
 
 /**
  * External dependencies
@@ -20,11 +25,6 @@ import { isEmpty } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import {
-	getIsActiveTab,
-	getMaxiAttrsFromChildren,
-} from '../../extensions/indicators';
-import { getForcedTabFromPath } from '../../extensions/inspector-path';
 
 /**
  * Component
@@ -55,6 +55,10 @@ const SettingTabsControl = props => {
 
 	const [tab, setTab] = useState(0);
 
+	const updatedTab = useSelect(
+		() => select('maxiBlocks').receiveInspectorPath()?.[0]?.value || 0
+	);
+
 	const currentForcedTab = getForcedTabFromPath(items, depth);
 	const classes = classnames('maxi-settingstab-control', className);
 
@@ -79,6 +83,12 @@ const SettingTabsControl = props => {
 		setTab(tab);
 		updateInspectorPath({ depth, name, value: tab });
 	};
+
+	useEffect(() => {
+		if (updatedTab !== tab) {
+			setTab(updatedTab);
+		}
+	}, [updatedTab]);
 
 	useEffect(() => {
 		if (currentForcedTab || currentForcedTab === 0) {
@@ -124,7 +134,8 @@ const SettingTabsControl = props => {
 										}),
 										item.breakpoint,
 										item.extraIndicators,
-										item.extraIndicatorsResponsive
+										item.extraIndicatorsResponsive,
+										item.ignoreIndicator
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {

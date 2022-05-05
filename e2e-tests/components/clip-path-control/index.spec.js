@@ -26,7 +26,7 @@ describe('ClipPathOption', () => {
 			click[1].click()
 		);
 
-		expect(await getAttributes('clipPath')).toStrictEqual(
+		expect(await getAttributes('clip-path-general')).toStrictEqual(
 			'polygon(50% 0%, 0% 100%, 100% 100%)'
 		);
 
@@ -41,7 +41,7 @@ describe('ClipPathOption', () => {
 		);
 		await selectType.select('inset');
 
-		expect(await getAttributes('clipPath')).toStrictEqual(
+		expect(await getAttributes('clip-path-general')).toStrictEqual(
 			'inset(15% 5% 15% 5%)'
 		);
 
@@ -73,7 +73,7 @@ describe('ClipPathOption', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('64');
 
-		expect(await getAttributes('clipPath')).toStrictEqual(
+		expect(await getAttributes('clip-path-general')).toStrictEqual(
 			'inset(28% 5% 15% 64%)'
 		);
 

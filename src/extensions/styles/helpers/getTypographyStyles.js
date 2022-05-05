@@ -24,7 +24,7 @@ const getTypographyStyles = ({
 	isHover = false,
 	prefix = '',
 	customFormatTypography = false,
-	parentBlockStyle,
+	blockStyle,
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
 	scValues = {},
@@ -77,7 +77,7 @@ const getTypographyStyles = ({
 						}`,
 						secondVar: `color-${paletteColor}`,
 						opacity: paletteOpacity,
-						blockStyle: parentBlockStyle,
+						blockStyle,
 					}),
 				}),
 			};
@@ -87,7 +87,7 @@ const getTypographyStyles = ({
 					color: getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
 						opacity: paletteOpacity,
-						blockStyle: parentBlockStyle,
+						blockStyle,
 					}),
 				}),
 			};
@@ -164,13 +164,15 @@ const getTypographyStyles = ({
 				'vertical-align': obj[getName('vertical-align', breakpoint)],
 			}),
 			...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
-				'writing-mode': !isEmpty(
-					obj[getName('text-orientation', breakpoint)]
-				)
-					? 'vertical-rl'
-					: null,
+				'writing-mode':
+					obj[getName('text-orientation', breakpoint)] !== 'unset'
+						? 'vertical-rl'
+						: 'unset',
 				'text-orientation':
 					obj[getName('text-orientation', breakpoint)],
+			}),
+			...(!isNil(obj[getName('text-direction', breakpoint)]) && {
+				direction: obj[getName('text-direction', breakpoint)],
 			}),
 		};
 

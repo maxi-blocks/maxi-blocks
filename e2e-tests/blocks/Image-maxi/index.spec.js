@@ -156,6 +156,7 @@ describe.skip('Image Maxi', () => {
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
+			orientation: 'mixed',
 		});
 
 		const result = await getAttributes([

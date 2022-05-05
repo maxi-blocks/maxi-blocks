@@ -395,8 +395,10 @@ if (!class_exists('MaxiBlocks_API')):
                         ];
             } else {
                 $new_style_card['_maxi_blocks_style_card_preview'] = $data['meta'];
-                if ($style_card !== '') {
+                if ($style_card !== '' && array_key_exists('_maxi_blocks_style_card', $style_card)) {
                     $new_style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card'];
+                } else {
+                    $new_style_card['_maxi_blocks_style_card'] = $data['meta'];
                 }
             }
         

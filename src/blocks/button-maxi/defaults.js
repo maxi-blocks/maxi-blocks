@@ -299,7 +299,7 @@ export const preset4 = {
 	'icon-border-unit-radius-general': 'px',
 	'icon-border-unit-width-general': 'px',
 	'icon-content':
-		'<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#081219" data-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>',
+		'<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" data-stroke="" stroke="#081219" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>',
 	svgType: 'Line',
 	'icon-inherit': false,
 	'icon-padding-top-general': '13',
@@ -398,7 +398,7 @@ export const preset5 = {
 	'icon-border-unit-radius-general': '%',
 	'icon-border-unit-width-general': 'px',
 	'icon-content':
-		'<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#081219" data-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>',
+		'<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" data-stroke="" stroke="#081219" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>',
 	svgType: 'Line',
 	'icon-padding-bottom-general': '10',
 	'icon-padding-left-general': '10',
@@ -490,7 +490,7 @@ export const preset6 = {
 	'icon-background-palette-color-general': '',
 	'icon-border-style-general': 'none',
 	'icon-content':
-		'<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#081219" data-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>',
+		'<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" data-stroke="" stroke="#081219" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>',
 	svgType: 'Line',
 	'icon-padding-top-general': '10',
 	'icon-padding-bottom-general': '10',

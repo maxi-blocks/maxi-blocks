@@ -39,7 +39,7 @@ const SvgStrokeWidthControl = props => {
 			onChangeValue={val => {
 				onChange({
 					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
-						val !== undefined && val !== '' ? val.toString() : '',
+						val !== undefined && val !== '' ? val : '',
 				});
 			}}
 			min={0.1}

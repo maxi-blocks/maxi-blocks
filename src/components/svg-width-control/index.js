@@ -54,8 +54,7 @@ const SvgWidthControl = props => {
 						: null
 				}
 				onChangeValue={val => {
-					const newVal =
-						val !== undefined && val !== '' ? val.toString() : '';
+					const newVal = val !== undefined && val !== '' ? val : '';
 
 					onChange({
 						[getAttributeKey('width', isHover, prefix, breakpoint)]:
@@ -98,6 +97,7 @@ const SvgWidthControl = props => {
 				defaultValue={defaultWidth}
 				initialPosition={defaultWidth}
 				isHover={isHover}
+				optionType='string'
 			/>
 			{enableResponsive && (
 				<ToggleSwitch

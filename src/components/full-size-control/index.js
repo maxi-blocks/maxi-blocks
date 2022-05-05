@@ -81,7 +81,7 @@ const FullSizeControl = props => {
 		},
 	};
 
-	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
+		const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
 		select('core/block-editor').getSelectedBlockClientId()
 	);
 

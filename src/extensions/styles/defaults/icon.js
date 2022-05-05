@@ -41,7 +41,7 @@ export const icon = {
 		obj: width,
 		prefix,
 		diffValAttr: {
-			'icon-width-general': 32,
+			'icon-width-general': '32',
 		},
 	}),
 	...paletteAttributesCreator({ prefix: `${prefix}stroke-`, palette: 1 }),

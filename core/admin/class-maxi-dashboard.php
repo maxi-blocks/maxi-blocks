@@ -222,7 +222,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('General', true);
+            $content .= $this->generate_item_header('General', false);
 
             $description = '<h4>'.__('Use post excerpts, if defined by your theme', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Let your active theme control the length and display of post excerpts.', self::$maxi_text_domain).'</p>';
@@ -320,7 +320,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function generate_item_header($title, $checked)
         {
-            $label = str_replace(' ', '-', strtolower($title));
+            $label = str_replace(' ', '-', strtolower(str_replace('& ', '', $title)));
             $header = '<div class="maxi-dashboard_main-content_accordion-item">';
             $header .= '<input type="checkbox"';
             

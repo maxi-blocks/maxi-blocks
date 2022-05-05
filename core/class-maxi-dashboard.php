@@ -191,7 +191,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // not the best way to do this, but we need it only on this tab, and it's just 8 lines of code
             // &panel=documentation-support will open the tab in the accordion
-            $content .= '<script>
+            $content = '<script>
             document.addEventListener("DOMContentLoaded", function(event) { 
                 var urlStr = window.location.href
                 var url = new URL(urlStr);

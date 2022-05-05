@@ -9,7 +9,13 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+	editAdvancedNumberControl,
+	changeResponsive,
+} from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {
@@ -38,10 +44,13 @@ describe('NumberCounterControl', () => {
 		);
 		await widthUnitSelect.select('%');
 
-		// Width
-		await inputs[0].focus();
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('100');
+		// number width
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-number-counter-control__width '),
+			newNumber: '31',
+			newValue: '%',
+		});
 
 		// Start Number
 		await inputs[1].focus();
@@ -79,7 +88,7 @@ describe('NumberCounterControl', () => {
 		]);
 
 		const expectAttributes = {
-			'number-counter-width-general': 100,
+			'number-counter-width-general': 31,
 			'number-counter-width-unit-general': '%',
 			'number-counter-duration': 10,
 			'number-counter-end': 50,
@@ -169,5 +178,87 @@ describe('NumberCounterControl', () => {
 		).toStrictEqual('Montserrat');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check number counter width responsive', async () => {
+		// responsive s
+		await changeResponsive(page, 's');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-number-counter-control__width '),
+			newNumber: '45',
+			newValue: 'px',
+		});
+
+		// responsive xs
+		await changeResponsive(page, 'xs');
+		const responsiveXsOption = await page.$eval(
+			'.maxi-number-counter-control__width input',
+			select => select.value
+		);
+
+		expect(responsiveXsOption).toBe('45');
+
+		const responsiveXsValue = await page.$eval(
+			'.maxi-number-counter-control__width select',
+			select => select.value
+		);
+		expect(responsiveXsValue).toBe('px');
+
+		// responsive m
+		await changeResponsive(page, 'm');
+		const responsiveMOption = await page.$eval(
+			'.maxi-number-counter-control__width input',
+			select => select.value
+		);
+
+		expect(responsiveMOption).toBe('31');
+
+		const responsiveMValue = await page.$eval(
+			'.maxi-number-counter-control__width select',
+			select => select.value
+		);
+		expect(responsiveMValue).toBe('%');
+	});
+	it('Check number counter auto width responsive', async () => {
+		// responsive base
+		await changeResponsive(page, 'base');
+		await page.$eval(
+			'.maxi-number-counter-control .maxi-toggle-switch input',
+			button => button.click()
+		);
+
+		expect(
+			await getAttributes('number-counter-width-auto-general')
+		).toStrictEqual(true);
+
+		// responsive s
+		await changeResponsive(page, 's');
+		await page.$eval(
+			'.maxi-number-counter-control .maxi-toggle-switch input',
+			button => button.click()
+		);
+		expect(
+			await getAttributes('number-counter-width-auto-s')
+		).toStrictEqual(false);
+
+		// responsive M
+		await changeResponsive(page, 'xs');
+		const responsiveMOption = await page.$eval(
+			'.maxi-base-control.maxi-toggle-switch.maxi-toggle-switch--is-checked input',
+			select => select.checked
+		);
+
+		expect(responsiveMOption).toBe(true);
+
+		// responsive xs
+		await changeResponsive(page, 'xs');
+		const responsiveXsOption = await page.$eval(
+			'.maxi-number-counter-control .maxi-toggle-switch input',
+			select => select.checked
+		);
+
+		expect(responsiveXsOption).toBe(false);
 	});
 });

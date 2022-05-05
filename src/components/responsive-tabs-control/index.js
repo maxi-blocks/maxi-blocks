@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import { cloneElement } from '@wordpress/element';
 
 /**
@@ -32,7 +32,7 @@ const ResponsiveTabsControl = props => {
 	} = props;
 
 	const { winBreakpoint } = useSelect(select => {
-		const { receiveWinBreakpoint } = wp.data.select('maxiBlocks');
+		const { receiveWinBreakpoint } = select('maxiBlocks');
 
 		const winBreakpoint = receiveWinBreakpoint();
 
@@ -44,6 +44,18 @@ const ResponsiveTabsControl = props => {
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
+
+	const setScreenSize = size => {
+		const xxlSize = select('maxiBlocks').receiveXXLSize();
+		const breakpointsWidth = select('maxiBlocks').receiveMaxiBreakpoints();
+
+		if (size === 'general') setMaxiDeviceType('general');
+		else
+			setMaxiDeviceType(
+				size,
+				size !== 'xxl' ? breakpointsWidth[size] : xxlSize
+			);
+	};
 
 	const classes = classnames('maxi-responsive-tabs-control', className);
 
@@ -76,11 +88,7 @@ const ResponsiveTabsControl = props => {
 					showNotification: showNotification(breakpoint),
 					callback: () =>
 						!disableCallback
-							? setMaxiDeviceType(
-									winBreakpoint === breakpoint.toLowerCase()
-										? 'general'
-										: breakpoint.toLowerCase()
-							  )
+							? setScreenSize(breakpoint.toLowerCase())
 							: null,
 					breakpoint: breakpoint.toLowerCase(),
 				};

@@ -126,7 +126,7 @@ class MaxiBlocks_StyleCards
         return false;
     }
 
-	public static function get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint)
+	public static function get_maxi_blocks_style_card_fonts($block_style, $text_level)
 	{
 		$maxi_blocks_style_cards = json_decode(self::get_maxi_blocks_current_style_cards());
 
@@ -140,7 +140,7 @@ class MaxiBlocks_StyleCards
 
 		$text_level_values = $style_card_values->$text_level;
 
-		$font = get_last_breakpoint_attribute('font-family', $breakpoint, $text_level_values);
+		$font = $text_level_values->{'font-family-general'};
 
 		return $font;
 	}

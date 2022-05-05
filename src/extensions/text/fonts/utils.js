@@ -40,30 +40,61 @@ export const getAllFonts = (
 				fontStyle ||
 				breakpoint === 'general'
 			) {
-				result[
+				const finalFontName =
 					fontName ??
-						`sc_font_${blockStyle}_${textLevel}_${breakpoint}`
-				] = {
-					fontWeight:
-						fontWeight ??
-						getCustomFormatValue({
-							typography: { ...obj },
-							prop: 'font-weight',
-							breakpoint,
-							isHover,
-							textLevel,
-							styleCard,
-						})?.toString(),
-					fontStyle:
-						fontStyle ??
-						getCustomFormatValue({
-							typography: { ...obj },
-							prop: 'font-style',
-							breakpoint,
-							isHover,
-							textLevel,
-							styleCard,
-						}),
+					getCustomFormatValue({
+						typography: { ...obj },
+						prop: 'font-family',
+						breakpoint,
+						isHover,
+						textLevel,
+						avoidSC: true,
+					}) ??
+					`sc_font_${blockStyle}_${textLevel}`;
+
+				let finalFontWeight =
+					fontWeight ??
+					getCustomFormatValue({
+						typography: { ...obj },
+						prop: 'font-weight',
+						breakpoint,
+						isHover,
+						textLevel,
+						styleCard,
+					})?.toString();
+
+				let finalFontStyle =
+					fontStyle ??
+					getCustomFormatValue({
+						typography: { ...obj },
+						prop: 'font-style',
+						breakpoint,
+						isHover,
+						textLevel,
+						styleCard,
+					});
+
+				if (result[finalFontName]) {
+					const {
+						fontWeight: currentFontWeight,
+						fontStyle: currentFontStyle,
+					} = result[finalFontName];
+
+					if (
+						currentFontWeight &&
+						!currentFontWeight.includes(finalFontWeight)
+					)
+						finalFontWeight = `${currentFontWeight},${finalFontWeight}`;
+					if (
+						currentFontStyle &&
+						!currentFontStyle.includes(finalFontStyle)
+					)
+						finalFontStyle = `${currentFontStyle},${finalFontStyle}`;
+				}
+
+				result[finalFontName] = {
+					fontWeight: finalFontWeight,
+					fontStyle: finalFontStyle,
 				};
 			}
 		});

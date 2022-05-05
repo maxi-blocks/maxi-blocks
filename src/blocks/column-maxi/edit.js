@@ -27,13 +27,13 @@ import { round, isEqual } from 'lodash';
  * Editor
  */
 class edit extends MaxiBlockComponent {
+	static contextType = RowContext;
+
 	constructor(props) {
 		super(props);
 
 		this.resizableObject = createRef();
 	}
-
-	static contextType = RowContext;
 
 	rowGapProps = {};
 
@@ -43,7 +43,10 @@ class edit extends MaxiBlockComponent {
 		this.context.setColumnClientId(this.props.clientId);
 	}
 
-	maxiBlockGetSnapshotBeforeUpdate() {
+	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
+		// maxiBlockComponent doesn't get the context from its extensions,
+		// and we need to compare the previous and current row border radius
+		// to know if we need to update the styles.
 		if (
 			!isEqual(this.rowGapProps, this.context.rowGapProps) ||
 			!isEqual(this.rowBorderRadius, this.context.rowBorderRadius)
@@ -86,9 +89,10 @@ class edit extends MaxiBlockComponent {
 		return getStyles(
 			{
 				...this.props.attributes,
-				rowBorderRadius: this.rowBorderRadius,
+				rowBorderRadius:
+					this.rowBorderRadius ?? this.context?.rowBorderRadius,
 			},
-			this.rowGapProps
+			this.rowGapProps ?? this.context?.rowGapProps
 		);
 	}
 

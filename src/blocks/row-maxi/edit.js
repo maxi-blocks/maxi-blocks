@@ -118,7 +118,6 @@ class edit extends MaxiBlockComponent {
 				key={`row-content-${uniqueID}`}
 				value={{
 					displayHandlers: this.state.displayHandlers,
-					// Needs a useMemo or useCallback
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
 					rowBlockId: clientId,
 					columnsClientIds: this.columnsClientIds,

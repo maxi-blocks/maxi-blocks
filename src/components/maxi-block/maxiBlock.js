@@ -9,6 +9,7 @@ import {
 	useState,
 	memo,
 	useCallback,
+	useReducer,
 } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
@@ -201,18 +202,14 @@ const MaxiBlock = memo(
 	forwardRef((props, ref) => {
 		const { clientId } = props;
 
-		const [isHovered, setIsHovered] = useState(false);
+		const [isHovered, setHovered] = useReducer(e => !e, false);
 
 		return (
 			<MaxiBlockContent
 				key={`maxi-block-content__${clientId}`}
 				ref={ref}
-				onMouseEnter={e => {
-					setIsHovered(true);
-				}}
-				onMouseLeave={() => {
-					setIsHovered(false);
-				}}
+				onMouseEnter={setHovered}
+				onMouseLeave={setHovered}
 				isHovered={isHovered}
 				{...props}
 			/>

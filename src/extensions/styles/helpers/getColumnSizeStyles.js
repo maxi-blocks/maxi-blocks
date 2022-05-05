@@ -27,7 +27,7 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 			};
 		} else if (
 			isNumber(columnSize) ||
-			isNumber(rowGapProps[`column-gap-${breakpoint}`])
+			isNumber(rowGapProps?.[`column-gap-${breakpoint}`])
 		) {
 			const gap = getLastBreakpointAttribute({
 				target: 'column-gap',

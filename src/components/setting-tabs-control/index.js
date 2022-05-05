@@ -121,6 +121,7 @@ const SettingTabsControl = props => {
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
+									`maxi-tabs-control__button-${buttonLabel}`,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									getIsActiveTab(

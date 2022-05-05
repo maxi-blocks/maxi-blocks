@@ -38,6 +38,7 @@ class MaxiBlocks_Local_Fonts
                     $this->createUploadFolder();
                     $this->uploadCssFiles($allURLs);
                 }
+                update_option('local_fonts_uploaded', true);
             }
         }
     }

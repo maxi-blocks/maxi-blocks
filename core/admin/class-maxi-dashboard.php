@@ -3,8 +3,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
-
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
@@ -252,7 +250,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             your website. This method removes the connection to Google’s servers for a visitor browsing your website.
             This can improve or degrade performance depending on hosting quality or resource usage. Please test and
             monitor carefully. Unused font files are removed periodically to conserve space.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'local_fonts', new MaxiBlocks_Local_Fonts());
+            $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
 
             if ($fontUploadsDirSize > 0) {
                 $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__(
@@ -260,6 +258,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi-blocks'
                 ).'</p>';
                 if (!(bool) get_option('local_fonts')) {
+                    update_option('local_fonts_uploaded', false);
                     $description = '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
                     $content .= $this->generate_setting($description, 'remove_local_fonts', $this->remove_local_fonts());
                 }
@@ -402,9 +401,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function register_maxi_blocks_settings()
         {
-            register_setting('maxi-blocks-settings-group', 'accessibility_option');
-            register_setting('maxi-blocks-settings-group', 'local_fonts');
-            register_setting('maxi-blocks-settings-group', 'remove_local_fonts');
+            $args = array(
+                'type' => 'boolean',
+                'default' => false,
+            );
+            register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
+            register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
+            register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
+            register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
         }
 
@@ -436,6 +440,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
             $this->delete_all_files($fonts_uploads_dir);
             update_option('remove_local_fonts', 0);
+        }
+
+        public function local_fonts_upload()
+        {
+            if (!get_option('local_fonts_uploaded')) {
+                require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
+                new MaxiBlocks_Local_Fonts();
+            }
         }
     }
 endif;

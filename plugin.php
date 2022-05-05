@@ -18,6 +18,8 @@ if (!defined('ABSPATH')) {
 
 define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 define('MAXI_PLUGIN_DIR_FILE', __FILE__);
+define('MAXI_PLUGIN_URL_PATH', plugin_dir_url(__FILE__));
+
 
 //======================================================================
 // MaxiBlocks Core
@@ -94,7 +96,7 @@ if (class_exists('MaxiBlocks_ImageUpload')) {
 //======================================================================
 // MaxiBlocks Dashboard
 //======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dashboard.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/admin/class-maxi-dashboard.php';
 if (class_exists('MaxiBlocks_Dashboard')) {
     MaxiBlocks_Dashboard::register();
 }

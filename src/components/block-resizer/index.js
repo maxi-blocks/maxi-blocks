@@ -136,6 +136,8 @@ const BlockResizer = forwardRef((props, ref) => {
 				height: '100%',
 				width: '100%',
 				zIndex: -1,
+				top: 0,
+				left: 0,
 			}}
 		>
 			{children}

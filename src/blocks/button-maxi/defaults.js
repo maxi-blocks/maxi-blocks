@@ -522,6 +522,7 @@ export const preset6 = {
 	'icon-padding-left-xxl': '0',
 	'icon-padding-right-xxl': '0',
 	// hover
+	'icon-status-hover': true,
 	'icon-border-style-general-hover': 'none',
 	'button-background-active-media-general-hover': 'none',
 	'button-border-style-general-hover': 'none',
@@ -865,6 +866,7 @@ export const preset11 = {
 	'icon-padding-sync-xxl': 'all',
 	'icon-stroke-xxl': 1.3,
 	// hover
+	'icon-status-hover': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-status-hover': false,

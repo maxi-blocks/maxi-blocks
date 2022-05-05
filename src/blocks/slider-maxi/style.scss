@@ -30,6 +30,11 @@ body.maxi-blocks--active .maxi-slider-block {
 		padding: 0;
 		margin: 0;
 		transition: transform 0.2s ease-out;
+
+		&--edit-view {
+			flex-direction: column;
+			transform: none !important;
+		}
 	}
 
 	&__arrow {

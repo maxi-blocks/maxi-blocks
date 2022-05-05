@@ -6,7 +6,11 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { AccordionControl, SettingTabsControl } from '../../components';
+import {
+	AccordionControl,
+	SettingTabsControl,
+	SliderControl,
+} from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
 
@@ -18,7 +22,7 @@ import { selectorsSlider, categoriesSlider } from './custom-css';
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType } = props;
+	const { deviceType, maxiSetAttributes, setEditView, isEditView } = props;
 
 	return (
 		<InspectorControls>
@@ -39,6 +43,21 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										{
+											label: __(
+												'Slider settings',
+												'maxi-blocks'
+											),
+											content: (
+												<SliderControl
+													isEditView={isEditView}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													setEditView={setEditView}
+												/>
+											),
+										},
 										...inspectorTabs.blockBackground({
 											props,
 										}),

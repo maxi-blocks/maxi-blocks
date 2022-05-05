@@ -70,6 +70,8 @@ const allowedBlocks = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
+	'maxi-blocks/slider-maxi',
+	'maxi-blocks/slide-maxi',
 ];
 
 /**

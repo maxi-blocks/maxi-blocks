@@ -139,6 +139,8 @@ const BlockResizer = memo(
 					height: '100%',
 					width: '100%',
 					zIndex: -1,
+					top: 0,
+					left: 0,
 				}}
 			>
 				{children}

@@ -200,7 +200,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
             $fontUploadsDirSize = round($this->get_folder_size($fontUploadsDir)/1048576, 2);
 
-            $content .= '<div class="maxi-dashboard_main-content">';
+            $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
             $content .= $this->generate_item_header('Editor preferences', true);

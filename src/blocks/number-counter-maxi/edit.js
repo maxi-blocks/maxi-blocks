@@ -21,6 +21,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import { getBreakpoints } from '../../extensions/styles/helpers';
 import copyPasteMapping from './copy-paste-mapping';
 
 /**
@@ -250,6 +251,7 @@ class edit extends MaxiBlockComponent {
 			number_counter: {
 				[uniqueID]: {
 					...getGroupAttributes(attributes, 'numberCounter'),
+					breakpoints: { ...getBreakpoints(attributes) },
 				},
 			},
 		};

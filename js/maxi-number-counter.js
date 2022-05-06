@@ -1,12 +1,17 @@
-const checkMediaQuery = () => {
-	let breakpoint = 'general';
+const checkMediaQuery = numberID => {
+	if (!maxiNumberCounter[0][numberID]) return;
+	const breakpoints = maxiNumberCounter[0][numberID].breakpoints;
+	const brkArray = ['xs', 's', 'm', 'l', 'xl', 'xxl'];
+	let breakpoint = 'xl';
 	const winWIdth = window.innerWidth;
-	if (winWIdth <= 480) breakpoint = 'xs';
-	if (winWIdth > 480 && winWIdth <= 768) breakpoint = 's';
-	if (winWIdth > 768 && winWIdth <= 1024) breakpoint = 'm';
-	if (winWIdth > 1024 && winWIdth <= 1366) breakpoint = 'l';
-	if (winWIdth > 1366 && winWIdth <= 1920) breakpoint = 'general';
-	if (winWIdth > 1920) breakpoint = 'xxl';
+	for (const brpt of brkArray) {
+		if (winWIdth <= breakpoints[brpt]) {
+			breakpoint = brpt;
+			break;
+		}
+	}
+	breakpoint = breakpoint === 'xl' ? 'general' : breakpoint;
+
 	return breakpoint;
 };
 // Number Counter Effects
@@ -91,8 +96,12 @@ const numberCounterEffect = () => {
 					}, frameDuration);
 				};
 
-				const winSize = checkMediaQuery();
-				setNewDyAttribute(numberCounterElemText, numberData, winSize);
+				const breakpoint = checkMediaQuery(numberID);
+				setNewDyAttribute(
+					numberCounterElemText,
+					numberData,
+					breakpoint
+				);
 
 				if (startAnimation === 'view-scroll') {
 					// eslint-disable-next-line no-unused-vars, no-undef
@@ -107,11 +116,11 @@ const numberCounterEffect = () => {
 					startCounter();
 				}
 				window.addEventListener('resize', () => {
-					const winSize = checkMediaQuery();
+					const breakpoint = checkMediaQuery(numberID);
 					setNewDyAttribute(
 						numberCounterElemText,
 						numberData,
-						winSize
+						breakpoint
 					);
 				});
 			}
@@ -120,20 +129,20 @@ const numberCounterEffect = () => {
 };
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
-const setNewDyAttribute = (elem, numberData, winSize) => {
-	const fontSize = getTitleFontSize(numberData, winSize);
+const setNewDyAttribute = (elem, numberData, breakpoint) => {
+	const fontSize = getTitleFontSize(numberData, breakpoint);
 	elem.setAttribute(
 		'dy',
 		`${Math.round((fontSize / 4 + Number.EPSILON) * 100) / 100}px`
 	);
 };
 
-const getTitleFontSize = (numberData, winSize) => {
+const getTitleFontSize = (numberData, breakpoint) => {
 	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
-	if (numberData[`number-counter-title-font-size-${winSize}`]) {
-		return numberData[`number-counter-title-font-size-${winSize}`];
+	if (numberData[`number-counter-title-font-size-${breakpoint}`]) {
+		return numberData[`number-counter-title-font-size-${breakpoint}`];
 	} else {
-		const winIndex = breakpoints.indexOf(winSize);
+		const winIndex = breakpoints.indexOf(breakpoint);
 		return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
 	}
 };

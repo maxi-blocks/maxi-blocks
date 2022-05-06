@@ -109,26 +109,6 @@ const attributes = {
 			type: 'number',
 			default: 1.5,
 		},
-		'column-gap-xxl': {
-			type: 'number',
-			default: 1.5,
-		},
-		'column-gap-l': {
-			type: 'number',
-			default: 1.5,
-		},
-		'column-gap-m': {
-			type: 'number',
-			default: 1.5,
-		},
-		'column-gap-s': {
-			type: 'number',
-			default: 1.5,
-		},
-		'column-gap-xs': {
-			type: 'number',
-			default: 1.5,
-		},
 		'column-gap-unit-general': {
 			type: 'string',
 			default: '%',

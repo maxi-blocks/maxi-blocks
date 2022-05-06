@@ -15,7 +15,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import './editor.scss';
-import { columnIcon } from '../../icons';
+import { imageBox } from '../../icons';
 
 /**
  * Block dependencies
@@ -36,7 +36,7 @@ import { isFinite } from 'lodash';
 
 registerBlockType('maxi-blocks/column-maxi', {
 	title: __('Column Maxi', 'maxi-blocks'),
-	icon: columnIcon,
+	icon: imageBox,
 	description: 'Stack one or more blocks, top-to-bottom (vertical)',
 	category: 'maxi-blocks',
 	supports: {

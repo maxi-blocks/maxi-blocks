@@ -355,14 +355,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'line',
 			},
 			{
-				label: __('Fill', 'maxi-blocks'),
-				globalAttr: 'fill-global',
-				paletteStatus: 'fill-palette-status',
-				paletteColor: 'fill-palette-color',
-				paletteOpacity: 'fill-palette-opacity',
-				color: 'fill',
-			},
-			{
 				label: __('Line Hover', 'maxi-blocks'),
 				globalAttr: 'hover-line-global',
 				globalAllAttr: 'hover-line-all',
@@ -370,6 +362,14 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteColor: 'hover-line-palette-color',
 				paletteOpacity: 'hover-line-palette-opacity',
 				color: 'hover-line',
+			},
+			{
+				label: __('Fill', 'maxi-blocks'),
+				globalAttr: 'fill-global',
+				paletteStatus: 'fill-palette-status',
+				paletteColor: 'fill-palette-color',
+				paletteOpacity: 'fill-palette-opacity',
+				color: 'fill',
 			},
 			{
 				label: __('Fill Hover', 'maxi-blocks'),

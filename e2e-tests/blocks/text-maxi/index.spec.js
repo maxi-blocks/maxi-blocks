@@ -24,6 +24,7 @@ import {
 	getBlockStyle,
 	openPreviewPage,
 	setAttributes,
+	addCustomCSS,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -55,6 +56,10 @@ describe('TextMaxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('Text Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 
 	it('Test Text Maxi on pressing enter', async () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });

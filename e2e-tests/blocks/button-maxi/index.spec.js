@@ -16,6 +16,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	editColorControl,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -30,6 +31,9 @@ describe('Button Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Button Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 
 	it('Button Style', async () => {
 		await openSidebarTab(page, 'style', 'style shortcut');

@@ -12,7 +12,6 @@ import {
 	changeResponsive,
 	addResponsiveTest,
 	getAttributes,
-	addBackgroundLayerCanvas,
 	addCustomCSS,
 } from '../../utils';
 
@@ -26,7 +25,6 @@ describe('Divider Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Divider Custom CSS', async () => {
-		await addBackgroundLayerCanvas(page, 'canvas', 'color');
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
 

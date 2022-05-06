@@ -37,7 +37,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await modalMock(page, { type: 'bg-shape', isBGLayers: true });
-		await page.$eval('.maxi-background-layer__arrow', display =>
+		await page.$eval('.maxi-list-item-control__arrow', display =>
 			display.click()
 		);
 
@@ -191,7 +191,7 @@ describe('BackgroundControl', () => {
 
 		// hover options
 		await page.$$eval(
-			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			'.maxi-list-control__options .maxi-list-item-control',
 			options => options[0].click()
 		);
 

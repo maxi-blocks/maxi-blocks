@@ -64,7 +64,7 @@ export const getShapeDividerSVGStyles = (obj, location, blockStyle) => {
 		response.general.fill = getColorRGBAString({
 			firstVar: `color-${paletteColor}`,
 			opacity: obj[paletteOpacity],
-			blockStyle: blockStyle,
+			blockStyle,
 		});
 	}
 

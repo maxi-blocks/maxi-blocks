@@ -49,7 +49,7 @@ const ResponsiveTabsControl = props => {
 		const xxlSize = select('maxiBlocks').receiveXXLSize();
 		const breakpointsWidth = select('maxiBlocks').receiveMaxiBreakpoints();
 
-		if (size === 'general') setMaxiDeviceType('general');
+		if (winBreakpoint === size) setMaxiDeviceType('general');
 		else
 			setMaxiDeviceType(
 				size,

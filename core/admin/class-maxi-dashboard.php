@@ -241,7 +241,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description = '<h4>'.__('Allow SVG / JSON file uploads (recommended)', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Scalable Vector Graphics (SVG) are great for design and SEO. Commonly used as icons and shapes. These small image files scale without any blur. Style Cards rely on SVG for automatic colour changes. JSON files enable the import and export of templates in the library.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'allow_svg_json_uploads');
+            $content .= $this->generate_setting($description, 'allow_svg_json_uploads', $this->allow_svg_json());
 
             $description = '<h4>'.__('Google Fonts load method', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
@@ -409,6 +409,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
             register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
+            register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
         }
 
@@ -448,6 +449,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
                 new MaxiBlocks_Local_Fonts();
             }
+        }
+
+        public function allow_svg_json()
+        {
+            function svg_json($mimes)
+            {
+                $mimes['json'] = 'application/json';
+                $mimes['svg'] = 'image/svg+xml';
+                return $mimes;
+            }
+            add_filter('upload_mimes', 'svg_json', 100000);
         }
     }
 endif;

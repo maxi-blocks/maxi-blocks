@@ -2,8 +2,7 @@
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
-import { withSelect, dispatch } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import {
 	__unstableIndentListItems,
@@ -343,43 +342,7 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { attributes } = ownProps;
-	const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
-		attributes;
-
-	/**
-	 * Ensures svg list markers change the colour when SC color changes.
-	 * This changes will update the block, which will trigger maxiBlockDidUpdate
-	 * where the script will finish the task of updating the colour
-	 */
-	if (
-		isList &&
-		typeOfList === 'ul' &&
-		listStyle === 'custom' &&
-		listStyleCustom?.includes('<svg ')
-	) {
-		const { paletteStatus, paletteColor } = getPaletteAttributes({
-			obj: attributes,
-			prefix: 'list-',
-		});
-
-		if (paletteStatus) {
-			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-			const scElements = paletteColor.toString();
-			const scValues = receiveStyleCardValue(
-				scElements,
-				blockStyle,
-				'color'
-			);
-
-			return {
-				scValues,
-			};
-		}
-	}
-
-	return {};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps({
+	scElements: [1, 2, 3, 4, 5, 6, 7, 8],
+	scType: 'color',
+})(edit);

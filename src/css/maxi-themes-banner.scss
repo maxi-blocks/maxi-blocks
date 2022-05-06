@@ -57,6 +57,7 @@ body.maxi-blocks--active
 body.maxi-blocks--active #content .maxi-text-block--link:focus,
 body.maxi-blocks--active #content .maxi-link-wrapper:focus {
 	background: unset;
+	text-decoration: none;
 }
 
 /*Removes button focus outline for Twenty Twenty One*/
@@ -78,4 +79,10 @@ body.maxi-blocks--active #wpcontent .is-root-container {
 }
 body.maxi-blocks--active #wpcontent .editor-styles-wrapper {
 	padding: 5px;
+}
+
+/*Removes anchor border for Twenty Twenty One and Twenty*/
+body.maxi-blocks--active .maxi-link-wrapper {
+	text-decoration: none;
+	outline: none;
 }

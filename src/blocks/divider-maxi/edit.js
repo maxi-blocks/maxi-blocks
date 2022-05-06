@@ -1,8 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
-import { withDispatch } from '@wordpress/data';
 import { createRef } from '@wordpress/element';
 
 /**
@@ -25,7 +23,6 @@ import copyPasteMapping from './copy-paste-mapping';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Content
@@ -42,25 +39,28 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (this.resizableObject.current?.state) {
+		const height = `${getLastBreakpointAttribute({
+			target: 'height',
+			breakpoint: this.props.deviceType,
+			attributes: this.props.attributes,
+		})}${getLastBreakpointAttribute({
+			target: 'height-unit',
+			breakpoint: this.props.deviceType,
+			attributes: this.props.attributes,
+		})}`;
+
+		if (this.resizableObject.current?.state.height !== height) {
 			this.resizableObject.current.updateSize({
-				isResizing: this.resizableObject.current?.state?.isResizing,
+				height,
 			});
 		}
 	}
 
 	render() {
-		const {
-			attributes,
-			deviceType,
-			isSelected,
-			onDeviceTypeChange,
-			maxiSetAttributes,
-		} = this.props;
+		const { attributes, deviceType, isSelected, maxiSetAttributes } =
+			this.props;
 		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
 			attributes;
-
-		onDeviceTypeChange();
 
 		const classes = classnames(
 			lineOrientation === 'vertical'
@@ -152,18 +152,6 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				isOverflowHidden={getIsOverflowHidden()}
-				size={{
-					width: '100%',
-					height: `${getLastBreakpointAttribute({
-						target: 'height',
-						breakpoint: deviceType,
-						attributes,
-					})}${getLastBreakpointAttribute({
-						target: 'height-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}`,
-				}}
 				defaultSize={{
 					width: '100%',
 					height: `${getLastBreakpointAttribute({
@@ -199,35 +187,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
-	const {
-		attributes: { uniqueID },
-		deviceType,
-	} = ownProps;
-
-	const onDeviceTypeChange = () => {
-		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
-		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
-
-		const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];
-
-		if (
-			allowedDeviceTypes.includes(newDeviceType) &&
-			deviceType !== newDeviceType
-		) {
-			const node = document.querySelector(
-				`.maxi-divider-block__resizer__${uniqueID}`
-			);
-			if (isNil(node)) return;
-			node.style.height = `${
-				ownProps.attributes[`height-${newDeviceType}`]
-			}px`;
-		}
-	};
-
-	return {
-		onDeviceTypeChange,
-	};
-});
-
-export default compose(editDispatch, withMaxiProps)(edit);
+export default withMaxiProps()(edit);

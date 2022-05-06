@@ -19,101 +19,120 @@ import {
  */
 import { isEmpty } from 'lodash';
 
-const withMaxiProps = createHigherOrderComponent(
-	WrappedComponent =>
-		pure(ownProps => {
-			const { setAttributes, attributes, clientId } = ownProps;
+const withMaxiProps = ({ scElements = [], scType } = {}) =>
+	createHigherOrderComponent(
+		WrappedComponent =>
+			pure(ownProps => {
+				const { setAttributes, attributes, clientId } = ownProps;
+				const { blockStyle } = attributes;
 
-			const {
-				deviceType,
-				winBreakpoint,
-				hasInnerBlocks,
-				isChild,
-				hasSelectedChild,
-			} = useSelect(select => {
-				const { receiveMaxiDeviceType, receiveWinBreakpoint } =
-					select('maxiBlocks');
 				const {
-					getBlockOrder,
-					getBlockParents,
-					hasSelectedInnerBlock,
-				} = select('core/block-editor');
-
-				const deviceType = receiveMaxiDeviceType();
-				const winBreakpoint = receiveWinBreakpoint();
-
-				const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
-
-				const isChild = !isEmpty(
-					getBlockParents(clientId).filter(val => val !== clientId)
-				);
-
-				const hasSelectedChild = hasSelectedInnerBlock(clientId, true);
-
-				return {
 					deviceType,
 					winBreakpoint,
 					hasInnerBlocks,
 					isChild,
 					hasSelectedChild,
-				};
-			});
+					scValues,
+				} = useSelect(select => {
+					const { receiveMaxiDeviceType, receiveWinBreakpoint } =
+						select('maxiBlocks');
+					const { receiveStyleCardValue } = select(
+						'maxiBlocks/style-cards'
+					);
+					const {
+						getBlockOrder,
+						getBlockParents,
+						hasSelectedInnerBlock,
+					} = select('core/block-editor');
 
-			const maxiSetAttributes = useCallback(obj =>
-				handleSetAttributes({
-					obj,
-					attributes,
-					clientId,
-					onChange: setAttributes,
-				})
-			);
+					const deviceType = receiveMaxiDeviceType();
+					const winBreakpoint = receiveWinBreakpoint();
 
-			const ref = useRef(null);
-			const styleObjKeys = useRef([]);
+					const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
-			const insertInlineStyles = useCallback(
-				({
-					obj,
-					target = '',
-					isMultiplySelector = false,
-					pseudoElement = '',
-				}) =>
-					handleInsertInlineStyles({
-						styleObj: obj,
-						target,
-						isMultiplySelector,
-						pseudoElement,
-						styleObjKeys,
-						ref,
+					const isChild = !isEmpty(
+						getBlockParents(clientId).filter(
+							val => val !== clientId
+						)
+					);
+
+					const hasSelectedChild = hasSelectedInnerBlock(
+						clientId,
+						true
+					);
+
+					const scValues = receiveStyleCardValue(
+						scElements,
+						blockStyle,
+						scType
+					);
+
+					return {
+						deviceType,
+						winBreakpoint,
+						hasInnerBlocks,
+						isChild,
+						hasSelectedChild,
+						scValues,
+					};
+				});
+
+				const maxiSetAttributes = useCallback(obj =>
+					handleSetAttributes({
+						obj,
+						attributes,
+						clientId,
+						onChange: setAttributes,
 					})
-			);
+				);
 
-			const cleanInlineStyles = useCallback(
-				(target = '', pseudoElement = '') =>
-					handleCleanInlineStyles(
-						target,
-						pseudoElement,
-						styleObjKeys,
-						ref
-					)
-			);
+				const ref = useRef(null);
+				const styleObjKeys = useRef([]);
 
-			return (
-				<WrappedComponent
-					{...ownProps}
-					ref={ref}
-					maxiSetAttributes={maxiSetAttributes}
-					insertInlineStyles={insertInlineStyles}
-					cleanInlineStyles={cleanInlineStyles}
-					deviceType={deviceType}
-					winBreakpoint={winBreakpoint}
-					hasInnerBlocks={hasInnerBlocks}
-					isChild={isChild}
-					hasSelectedChild={hasSelectedChild}
-				/>
-			);
-		}),
-	'withMaxiProps'
-);
+				const insertInlineStyles = useCallback(
+					({
+						obj,
+						target = '',
+						isMultiplySelector = false,
+						pseudoElement = '',
+					}) =>
+						handleInsertInlineStyles({
+							styleObj: obj,
+							target,
+							isMultiplySelector,
+							pseudoElement,
+							styleObjKeys,
+							ref,
+						})
+				);
+
+				const cleanInlineStyles = useCallback(
+					(target = '', pseudoElement = '') =>
+						handleCleanInlineStyles(
+							target,
+							pseudoElement,
+							styleObjKeys,
+							ref
+						)
+				);
+
+				return (
+					<WrappedComponent
+						{...ownProps}
+						ref={ref}
+						maxiSetAttributes={maxiSetAttributes}
+						insertInlineStyles={insertInlineStyles}
+						cleanInlineStyles={cleanInlineStyles}
+						deviceType={deviceType}
+						winBreakpoint={winBreakpoint}
+						hasInnerBlocks={hasInnerBlocks}
+						isChild={isChild}
+						hasSelectedChild={hasSelectedChild}
+						scValues={scValues}
+					/>
+				);
+			}),
+		'withMaxiProps'
+	);
 
 export default withMaxiProps;

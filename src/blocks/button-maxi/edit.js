@@ -2,8 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
 import { RawHTML, createRef, forwardRef } from '@wordpress/element';
 
@@ -140,25 +138,14 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const {
-		attributes: { blockStyle },
-	} = ownProps;
-
-	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-	const scElements = [
+export default withMaxiProps({
+	scElements: [
 		'hover-border-color-global',
 		'hover-border-color-all',
 		'hover-color-global',
 		'hover-color-all',
 		'hover-background-color-global',
 		'hover-background-color-all',
-	];
-	const scValues = receiveStyleCardValue(scElements, blockStyle, 'button');
-
-	return {
-		scValues,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+	],
+	scType: 'button',
+})(edit);

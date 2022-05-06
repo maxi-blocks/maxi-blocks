@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
 import { Button } from '@wordpress/components';
@@ -267,4 +266,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withMaxiProps)(edit);
+export default withMaxiProps()(edit);

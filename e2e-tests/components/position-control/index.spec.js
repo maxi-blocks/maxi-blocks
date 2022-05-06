@@ -53,6 +53,21 @@ describe('PositionControl', () => {
 		]);
 
 		expect(positionResult).toStrictEqual(expectPosition);
+
+		// check static
+		await selectPosition.select('static');
+
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			syncOption: 'all',
+			values: '56',
+		});
+
+		expect(await getAttributes('position-top-general')).toStrictEqual(56);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		await selectPosition.select('relative');
 	});
 
 	it('Check Responsive position control', async () => {
@@ -157,6 +172,44 @@ describe('PositionControl', () => {
 		);
 		expect(positionMGeneralUnit).toStrictEqual('%');
 
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+	it('Check position static and sticky', async () => {
+		await changeResponsive(page, 'base');
+
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'position'
+		);
+
+		const selectPosition = await accordionPanel.$(
+			'.maxi-position-control .maxi-base-control__field select'
+		);
+
+		// check static
+		await selectPosition.select('static');
+
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			syncOption: 'all',
+			values: '44',
+		});
+
+		expect(await getAttributes('position-top-general')).toStrictEqual(44);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		await selectPosition.select('sticky');
+
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			syncOption: 'all',
+			values: '12',
+		});
+
+		expect(await getAttributes('position-top-general')).toStrictEqual(12);
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

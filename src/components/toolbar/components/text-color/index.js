@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -32,6 +33,7 @@ import { toolbarType } from '../../../../icons';
 const TextColor = withFormatValue(props => {
 	const {
 		blockName,
+		onChangeInline,
 		onChange,
 		breakpoint,
 		formatValue,
@@ -92,6 +94,8 @@ const TextColor = withFormatValue(props => {
 		onChange(obj);
 	};
 
+	const textColor = useRef();
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__text-options toolbar-item__text-color'
@@ -99,6 +103,7 @@ const TextColor = withFormatValue(props => {
 			icon={
 				<div
 					className='toolbar-item__text-options__icon'
+					ref={textColor}
 					style={{
 						background: colorPaletteStatus
 							? getColorRGBAString({
@@ -123,6 +128,10 @@ const TextColor = withFormatValue(props => {
 					paletteColor={colorPalette}
 					paletteStatus={colorPaletteStatus}
 					paletteOpacity={colorOpacity}
+					onChangeInline={({ color }) => {
+						onChangeInline({ color });
+						textColor.current.style.background = color;
+					}}
 					onChange={({
 						color,
 						paletteColor,

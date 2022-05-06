@@ -21,7 +21,13 @@ import { withMaxiInspector } from '../../extensions/inspector';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 
 	return (
 		<InspectorControls>
@@ -57,9 +63,18 @@ const Inspector = props => {
 														attributes,
 														'shapeDivider'
 													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
+													onChangeInline={obj =>
+														insertInlineStyles({
+															obj,
+															target: 'svg',
+														})
 													}
+													onChange={obj => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															'svg'
+														);
+													}}
 												/>
 											),
 										},

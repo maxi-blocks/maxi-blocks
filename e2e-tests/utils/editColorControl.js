@@ -46,9 +46,9 @@ const editColorControl = async ({
 
 	// change opacity
 	if (opacity) {
-		await page.$$eval(
-			'.maxi-color-control .maxi-opacity-control input',
-			input => input[2].focus()
+		await page.$eval(
+			'.maxi-color-control .maxi-opacity-control .maxi-advanced-number-control__value',
+			input => input.focus()
 		);
 
 		await page.waitForTimeout(150);

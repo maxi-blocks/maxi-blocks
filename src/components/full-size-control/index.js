@@ -36,6 +36,7 @@ const FullSizeControl = props => {
 		hideWidth,
 		hideMaxWidth,
 		prefix = '',
+		isBlockFullWidth,
 		allowForceAspectRatio = false,
 	} = props;
 
@@ -80,23 +81,25 @@ const FullSizeControl = props => {
 		},
 	};
 
-	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
+		const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
 		select('core/block-editor').getSelectedBlockClientId()
 	);
 
 	return (
 		<div className={classes}>
-			<ToggleSwitch
-				label={__('Set width to fit content', 'maxi-blocks')}
-				selected={getLastBreakpointAttribute({
-					target: `${prefix}width-fit-content`,
-					breakpoint,
-					attributes: props,
-				})}
-				onChange={val => {
-					onChangeValue([`${prefix}width-fit-content`], val);
-				}}
-			/>
+			{!isBlockFullWidth && (	
+				<ToggleSwitch
+					label={__('Set width to fit content', 'maxi-blocks')}
+					selected={getLastBreakpointAttribute({
+						target: `${prefix}width-fit-content`,
+						breakpoint,
+						attributes: props,
+					})}
+					onChange={val => {
+						onChangeValue([`${prefix}width-fit-content`], val);
+					}}
+				/>
+			)}
 			{!hideWidth &&
 				!isEmpty(currentBlockRoot) &&
 				!getLastBreakpointAttribute({

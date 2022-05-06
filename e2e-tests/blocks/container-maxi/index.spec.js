@@ -6,6 +6,10 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import { getBlockStyle } from '../../utils';
 
 describe('Container Maxi', () => {

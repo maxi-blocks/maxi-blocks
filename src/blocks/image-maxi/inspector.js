@@ -1,9 +1,11 @@
 /**
  * WordPress dependencies
  */
+import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { RangeControl } from '@wordpress/components';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -219,8 +221,7 @@ const dimensionTab = props => {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, clientId, deviceType, imageData, maxiSetAttributes } =
-		props;
+	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
 	const {
 		altSelector,
 		blockStyle,
@@ -232,6 +233,11 @@ const Inspector = props => {
 		mediaID,
 		captionPosition,
 	} = attributes;
+
+	const imageData = useCallback(
+		() => select('core').getMedia(mediaID),
+		[mediaID]
+	)();
 
 	const getCaptionOptions = () => {
 		const response = [

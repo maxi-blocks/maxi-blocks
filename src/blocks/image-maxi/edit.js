@@ -2,10 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { withSelect, dispatch } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
 import { createRef } from '@wordpress/element';
-import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -71,13 +70,6 @@ class edit extends MaxiBlockComponent {
 
 	typingTimeoutContent = 0;
 
-	get getWrapperWidth() {
-		const target = document.getElementById(`block-${this.props.clientId}`);
-		if (target) return target.getBoundingClientRect().width;
-
-		return false;
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -100,7 +92,6 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const {
 			attributes,
-			imageData,
 			maxiSetAttributes,
 			clientId,
 			isSelected,
@@ -342,13 +333,13 @@ class edit extends MaxiBlockComponent {
 				className={classes}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				{(!isNil(mediaID) && imageData) || mediaURL ? (
+				{!isNil(mediaID) || mediaURL ? (
 					<BlockResizer
 						key={uniqueID}
 						className='maxi-block__resizer maxi-image-block__resizer'
 						resizableObject={this.resizableObject}
 						isOverflowHidden={getIsOverflowHidden()}
-						size={{
+						defaultSize={{
 							width: `${
 								fullWidth !== 'full' && !useInitSize
 									? imgWidth
@@ -365,14 +356,14 @@ class edit extends MaxiBlockComponent {
 							bottomLeft: true,
 							topLeft: true,
 						}}
-						onResizeStop={(event, direction, elt, delta) => {
+						onResizeStop={(event, direction, elt, delta) =>
 							maxiSetAttributes({
 								imgWidth: +round(
 									elt.style.width.replace(/[^0-9.]/g, ''),
 									1
 								),
-							});
-						}}
+							})
+						}
 					>
 						{captionType !== 'none' && captionPosition === 'top' && (
 							<>
@@ -469,13 +460,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { mediaID } = ownProps.attributes;
-	const imageData = select('core').getMedia(mediaID);
-
-	return {
-		imageData,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps()(edit);

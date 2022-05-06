@@ -176,7 +176,8 @@ const getStyles = props => {
 							...getShapeDividerSVGStyles(
 								{
 									...getGroupAttributes(props, [
-										['shapeDivider', 'padding'],
+										'shapeDivider',
+										'padding',
 									]),
 								},
 								'bottom',

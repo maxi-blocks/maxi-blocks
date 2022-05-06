@@ -76,6 +76,7 @@ export const preset1 = {
 	'button-background-status-hover-general': true,
 	'button-border-status-hover': false,
 	'typography-status-hover': false,
+	'icon-status-hover': false,
 };
 
 export const preset2 = {
@@ -152,6 +153,7 @@ export const preset2 = {
 	'button-border-top-right-radius-xxl': 15,
 	'button-border-unit-radius-xxl': 'px',
 	// hover
+	'button-background-status-hover-general': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': true,
 	'button-border-style-general-hover': 'solid',
@@ -160,6 +162,7 @@ export const preset2 = {
 	'palette-color-general-hover': 6,
 	'palette-status-hover': true,
 	'typography-status-hover': true,
+	'icon-status-hover': false,
 };
 
 export const preset3 = {
@@ -232,6 +235,7 @@ export const preset3 = {
 	'button-border-sync-radius-xxl': 'all',
 	'button-border-unit-radius-xxl': 'px',
 	// hover
+	'button-background-status-hover-general': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': true,
 	'button-border-style-general-hover': 'solid',
@@ -247,6 +251,7 @@ export const preset3 = {
 	'button-box-shadow-spread-general-hover': 0,
 	'button-box-shadow-status-hover': true,
 	'button-box-shadow-vertical-general-hover': 3,
+	'icon-status-hover': false,
 };
 
 export const preset4 = {
@@ -443,6 +448,7 @@ export const preset5 = {
 	'icon-border-palette-color-general-hover': 6,
 	'icon-border-style-general-hover': 'solid',
 	'icon-palette-color-hover': 6,
+	'button-background-status-hover-general': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': true,
 	'button-border-style-general-hover': 'solid',
@@ -521,12 +527,15 @@ export const preset6 = {
 	// hover
 	'icon-border-style-general-hover': 'none',
 	'button-background-active-media-general-hover': 'none',
+	'button-border-status-hover': false,
 	'button-border-style-general-hover': 'none',
+	'button-background-status-hover-general': false,
 	'button-background-palette-color-general-hover': 1,
 	'palette-color-general-hover': 6,
 	'palette-status-hover': true,
 	'typography-status-hover': true,
 	'button-box-shadow-status-hover': false,
+	'icon-status-hover': false,
 };
 
 export const preset7 = {
@@ -574,6 +583,7 @@ export const preset7 = {
 	'icon-width-xxl': 35,
 	'icon-stroke-xxl': 1.5,
 	// hover
+	'button-background-status-hover-general': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-status-hover': false,
@@ -582,6 +592,7 @@ export const preset7 = {
 	'icon-palette-color-hover': 6,
 	'icon-palette-status-hover': true,
 	'icon-border-style-general-hover': 'none',
+	'button-box-shadow-status-hover': false,
 };
 
 export const preset8 = {
@@ -646,6 +657,7 @@ export const preset8 = {
 	'icon-padding-sync-xxl': 'all',
 	'icon-stroke-xxl': 1.3,
 	// hover
+	'button-background-status-hover-general': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-status-hover': false,
@@ -657,6 +669,7 @@ export const preset8 = {
 	'icon-background-palette-status-general-hover': false,
 	'icon-border-palette-status-general-hover': true,
 	'icon-border-palette-color-general-hover': 6,
+	'button-box-shadow-status-hover': false,
 };
 
 export const preset9 = {
@@ -715,6 +728,7 @@ export const preset9 = {
 	'icon-stroke-xxl': 1.3,
 	// hover
 	'button-background-active-media-general-hover': 'none',
+	'button-background-status-hover-general': false,
 	'button-border-status-hover': false,
 	'palette-status-hover': false,
 	'typography-status-hover': false,
@@ -724,6 +738,7 @@ export const preset9 = {
 	'icon-background-palette-color-hover': 6,
 	'icon-border-palette-status-general-hover': false,
 	'icon-palette-status-hover': true,
+	'button-box-shadow-status-hover': false,
 };
 
 export const preset10 = {
@@ -789,6 +804,7 @@ export const preset10 = {
 	'icon-padding-sync-xxl': 'all',
 	'icon-stroke-xxl': 1.3,
 	// hover
+	'button-background-status-hover-general': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-status-hover': false,
@@ -800,6 +816,7 @@ export const preset10 = {
 	'icon-background-palette-status-general-hover': false,
 	'icon-border-palette-status-general-hover': true,
 	'icon-border-palette-color-general-hover': 6,
+	'button-box-shadow-status-hover': false,
 };
 
 export const preset11 = {
@@ -857,6 +874,7 @@ export const preset11 = {
 	'icon-padding-sync-xxl': 'all',
 	'icon-stroke-xxl': 1.3,
 	// hover
+	'button-background-status-hover-general': false,
 	'button-background-active-media-general-hover': 'none',
 	'button-border-status-hover': false,
 	'palette-status-hover': false,
@@ -866,4 +884,6 @@ export const preset11 = {
 	'icon-background-palette-color-hover': 6,
 	'icon-border-palette-status-general-hover': false,
 	'icon-palette-status-hover': true,
+	'button-box-shadow-status-hover': false,
+	'icon-status-hover': false,
 };

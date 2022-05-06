@@ -216,10 +216,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'accessibility_option');
 
-            $description = '<h4>'.__('Auto-collapse panels in settings sidebar', self::$maxi_text_domain).'</h4>';
-            $description .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'collapse_panels');
-
             $content .= get_submit_button();
             
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -248,13 +244,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description .= '<p>'.__('Scalable Vector Graphics (SVG) are great for design and SEO. Commonly used as icons and shapes. These small image files scale without any blur. Style Cards rely on SVG for automatic colour changes. JSON files enable the import and export of templates in the library.', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'allow_svg_json_uploads');
 
-            $description = '<h4>'.__('Google Fonts load method', self::$maxi_text_domain).'</h4>';
-            $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
-            privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain).'</p>';
+            $description = '<h4>'.__('Serve Google fonts locally', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on
             your website. This method removes the connection to Google’s servers for a visitor browsing your website.
             This can improve or degrade performance depending on hosting quality or resource usage. Please test and
             monitor carefully. Unused font files are removed periodically to conserve space.', self::$maxi_text_domain).'</p>';
+            $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
+            privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain);
+            $description .= '<i> '.__('(Default)', self::$maxi_text_domain).'</i></p>';
             $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
 
             if ($fontUploadsDirSize > 0) {

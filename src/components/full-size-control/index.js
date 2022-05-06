@@ -81,30 +81,35 @@ const FullSizeControl = props => {
 		},
 	};
 
-	const currentBlockRoot = select('core/block-editor').getSelectedBlockClientId();
+	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
+		select('core/block-editor').getSelectedBlockClientId()
+	);
 
 	return (
 		<div className={classes}>
-			<ToggleSwitch
-				className='full-size-control__width-fit-content'
-				label={__('Set width to fit content', 'maxi-blocks')}
-				selected={getLastBreakpointAttribute({
-					target: `${prefix}width-fit-content`,
-					breakpoint,
-					attributes: props,
-				})}
-				onChange={val => {
-					onChangeValue([`${prefix}width-fit-content`], val);
-				}}
-			/>
+			{!isBlockFullWidth && (	
+				<ToggleSwitch
+					className='full-size-control__width-fit-content'
+					label={__('Set width to fit content', 'maxi-blocks')}
+					selected={getLastBreakpointAttribute({
+						target: `${prefix}width-fit-content`,
+						breakpoint,
+						attributes: props,
+					})}
+					onChange={val => {
+						onChangeValue([`${prefix}width-fit-content`], val);
+					}}
+				/>
+			)}
 			{(!hideWidth &&
 				!isEmpty(currentBlockRoot) &&
 				!getLastBreakpointAttribute({
 					target: `${prefix}width-fit-content`,
 					breakpoint,
 					attributes: props,
-				})) &&
-				(!isBlockFullWidth && (
+				}) 
+			)}
+			{(!isBlockFullWidth && !hideWidth && (
 					<AdvancedNumberControl
 						className='full-size-control__width'
 						label={__('Width', 'maxi-blocks')}

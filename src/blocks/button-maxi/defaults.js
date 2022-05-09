@@ -592,6 +592,15 @@ export const preset7 = {
 	'icon-border-top-left-radius-general': 0,
 	'icon-border-top-right-radius-general': 0,
 	'icon-border-unit-radius-general': 'px',
+	'button-box-shadow-blur-general': undefined,
+	'button-box-shadow-horizontal-general': undefined,
+	'button-box-shadow-spread-general': undefined,
+	'button-box-shadow-vertical-general': undefined,
+	'button-box-shadow-blur-general-hover': undefined,
+	'button-box-shadow-horizontal-general-hover': undefined,
+	'button-box-shadow-spread-general-hover': undefined,
+	'button-box-shadow-vertical-general-hover': undefined,
+	'button-box-shadow-status-hover': false,
 	// 4k
 	'icon-width-xxl': 35,
 	'icon-stroke-xxl': 1.5,
@@ -613,7 +622,6 @@ export const preset7 = {
 	'icon-stroke-palette-color-hover': 6,
 	'icon-stroke-palette-status-hover': true,
 	'icon-border-style-general-hover': 'none',
-	'button-box-shadow-status-hover': false,
 };
 
 export const preset8 = {
@@ -664,6 +672,15 @@ export const preset8 = {
 	'icon-stroke-general': 1.5,
 	'icon-width-general': 23,
 	'icon-width-unit-general': 'px',
+	'button-box-shadow-blur-general': undefined,
+	'button-box-shadow-horizontal-general': undefined,
+	'button-box-shadow-spread-general': undefined,
+	'button-box-shadow-vertical-general': undefined,
+	'button-box-shadow-blur-general-hover': undefined,
+	'button-box-shadow-horizontal-general-hover': undefined,
+	'button-box-shadow-spread-general-hover': undefined,
+	'button-box-shadow-vertical-general-hover': undefined,
+	'button-box-shadow-status-hover': false,
 	// 4k
 	'icon-width-xxl': 35,
 	'icon-border-bottom-left-radius-xxl': 100,
@@ -694,7 +711,6 @@ export const preset8 = {
 	'icon-background-palette-status-general-hover': false,
 	'icon-border-palette-status-general-hover': true,
 	'icon-border-palette-color-general-hover': 6,
-	'button-box-shadow-status-hover': false,
 };
 
 export const preset9 = {
@@ -738,6 +754,15 @@ export const preset9 = {
 	'icon-stroke-general': 1.5,
 	'icon-width-general': 23,
 	'icon-width-unit-general': 'px',
+	'button-box-shadow-blur-general': undefined,
+	'button-box-shadow-horizontal-general': undefined,
+	'button-box-shadow-spread-general': undefined,
+	'button-box-shadow-vertical-general': undefined,
+	'button-box-shadow-blur-general-hover': undefined,
+	'button-box-shadow-horizontal-general-hover': undefined,
+	'button-box-shadow-spread-general-hover': undefined,
+	'button-box-shadow-vertical-general-hover': undefined,
+	'button-box-shadow-status-hover': false,
 	// 4k
 	'icon-width-xxl': 35,
 	'icon-border-bottom-left-radius-xxl': 100,
@@ -768,7 +793,6 @@ export const preset9 = {
 	'icon-background-palette-color-general-hover': 6,
 	'icon-border-palette-status-general-hover': false,
 	'icon-stroke-palette-status-hover': true,
-	'button-box-shadow-status-hover': false,
 };
 
 export const preset10 = {
@@ -820,6 +844,15 @@ export const preset10 = {
 	'icon-stroke-general': 1.5,
 	'icon-width-general': 23,
 	'icon-width-unit-general': 'px',
+	'button-box-shadow-blur-general': undefined,
+	'button-box-shadow-horizontal-general': undefined,
+	'button-box-shadow-spread-general': undefined,
+	'button-box-shadow-vertical-general': undefined,
+	'button-box-shadow-blur-general-hover': undefined,
+	'button-box-shadow-horizontal-general-hover': undefined,
+	'button-box-shadow-spread-general-hover': undefined,
+	'button-box-shadow-vertical-general-hover': undefined,
+	'button-box-shadow-status-hover': false,
 	// 4k
 	'icon-width-xxl': 35,
 	'icon-border-bottom-left-radius-xxl': 5,
@@ -850,7 +883,6 @@ export const preset10 = {
 	'icon-background-palette-status-general-hover': false,
 	'icon-border-palette-status-general-hover': true,
 	'icon-border-palette-color-general-hover': 6,
-	'button-box-shadow-status-hover': false,
 };
 
 export const preset11 = {
@@ -894,6 +926,15 @@ export const preset11 = {
 	'icon-stroke-general': 1.5,
 	'icon-width-general': 23,
 	'icon-width-unit-general': 'px',
+	'button-box-shadow-blur-general': undefined,
+	'button-box-shadow-horizontal-general': undefined,
+	'button-box-shadow-spread-general': undefined,
+	'button-box-shadow-vertical-general': undefined,
+	'button-box-shadow-blur-general-hover': undefined,
+	'button-box-shadow-horizontal-general-hover': undefined,
+	'button-box-shadow-spread-general-hover': undefined,
+	'button-box-shadow-vertical-general-hover': undefined,
+	'button-box-shadow-status-hover': false,
 	// 4k
 	'icon-width-xxl': 35,
 	'icon-border-bottom-left-radius-xxl': 5,
@@ -923,6 +964,5 @@ export const preset11 = {
 	'icon-background-palette-color-general-hover': 6,
 	'icon-border-palette-status-general-hover': false,
 	'icon-stroke-palette-status-hover': true,
-	'button-box-shadow-status-hover': false,
 	'icon-status-hover': true,
 };

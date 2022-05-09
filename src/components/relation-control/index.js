@@ -127,32 +127,22 @@ const RelationControl = props => {
 		const prefix = selectedSettingsObj?.prefix || '';
 		const blockAttributes = getBlock(clientId)?.attributes;
 
-		const defaultBreakpoints = {
-			xs: 480,
-			s: 768,
-			m: 1024,
-			l: 1366,
-			xl: 1920,
-		};
 		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(
 			blockAttributes,
 			'breakpoints'
 		);
 
-		const breakpoints = (() => {
-			const result = {};
-
-			Object.entries(defaultBreakpoints).forEach(([breakpoint, val]) => {
-				if (blockBreakpoints[breakpoint])
-					result[breakpoint] = blockBreakpoints[breakpoint];
-				else if (storeBreakpoints[breakpoint])
-					result[breakpoint] = storeBreakpoints[breakpoint];
-				else result[breakpoint] = val;
-			});
-
-			return result;
-		})();
+		const breakpoints = {
+			...storeBreakpoints,
+			...Object.keys(blockBreakpoints).reduce((acc, key) => {
+				if (blockAttributes[key]) {
+					const newKey = key.replace('breakpoints-', '');
+					acc[newKey] = blockBreakpoints[key];
+				}
+				return acc;
+			}, {}),
+		};
 
 		if (
 			selectedSettingsObj?.target &&

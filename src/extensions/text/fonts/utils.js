@@ -139,7 +139,8 @@ const mergeDeep = (target, source) => {
 		} else if (isObject(targetValue) && isObject(sourceValue)) {
 			target[key] = mergeDeep({ ...targetValue }, { ...sourceValue });
 		} else if (isString(targetValue) && isString(sourceValue)) {
-			target[key] = `${targetValue},${sourceValue}`;
+			if (!targetValue.includes(sourceValue))
+				target[key] = `${targetValue},${sourceValue}`;
 		} else target[key] = sourceValue;
 	});
 

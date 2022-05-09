@@ -154,7 +154,10 @@ const RelationControl = props => {
 			return result;
 		})();
 
-		if (item.target !== selectedSettingsObj?.target) {
+		if (
+			selectedSettingsObj?.target &&
+			item.target !== selectedSettingsObj?.target
+		) {
 			onChangeRelationProperty(
 				item.id,
 				'target',

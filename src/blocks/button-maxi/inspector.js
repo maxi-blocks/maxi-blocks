@@ -83,31 +83,31 @@ const Inspector = props => {
 				'icon-border-style-general-hover'
 			] !== 'none'
 		) {
-			const hover = getGroupAttributes(
+			const hoverAttr = getGroupAttributes(
 				{ ...newDefaultPresets[`preset${number}`] },
 				['border', 'borderWidth', 'borderRadius'],
 				true,
 				'icon-'
 			);
 
-			const nonHover = getGroupAttributes(
+			const nonHoverAttr = getGroupAttributes(
 				{ ...newDefaultPresets[`preset${number}`] },
 				['border', 'borderWidth', 'borderRadius'],
 				false,
 				'icon-'
 			);
 
-			Object.keys(hover).forEach(h => {
-				if (!h.includes('hover')) delete hover[h];
+			Object.keys(hoverAttr).forEach(h => {
+				if (!h.includes('hover')) delete hoverAttr[h];
 			});
-			Object.keys(nonHover).forEach(h => {
-				if (h.includes('hover')) delete nonHover[h];
+			Object.keys(nonHoverAttr).forEach(h => {
+				if (h.includes('hover')) delete nonHoverAttr[h];
 			});
-			setHoverAttributes(nonHover, hover);
+			setHoverAttributes(nonHoverAttr, hoverAttr);
 
 			newDefaultPresets[`preset${number}`] = {
 				...newDefaultPresets[`preset${number}`],
-				...hover,
+				...hoverAttr,
 			};
 		}
 

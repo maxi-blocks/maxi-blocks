@@ -55,6 +55,7 @@ export { default as OverflowControl } from './overflow-control';
 export { default as Placeholder } from './placeholder';
 export { default as PositionControl } from './position-control';
 export { default as RawHTML } from './raw-html';
+export { default as RelationControl } from './relation-control';
 export { default as ResponsiveControl } from './responsive-control';
 export { default as ResponsiveTabsControl } from './responsive-tabs-control';
 export { default as ScrollEffectsControl } from './scroll-effects-control';

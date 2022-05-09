@@ -16,6 +16,7 @@ export { default as paletteAttributesCreator } from './paletteAttributesCreator'
 export { default as prefixAttributesCreator } from './prefixAttributesCreator';
 export { default as setHoverAttributes } from './setHoverAttributes';
 export { default as styleGenerator } from './styleGenerator';
+export * from './styleGenerator';
 export { default as styleResolver } from './styleResolver';
 export { default as stylesCleaner } from './stylesCleaner';
 

@@ -20,6 +20,10 @@ const global = {
 	uniqueID: {
 		type: 'string',
 	},
+	relations: {
+		type: 'array',
+		default: [],
+	},
 };
 
 export default global;

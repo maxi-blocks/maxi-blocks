@@ -54,8 +54,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 			display: flex;
 			justify-content: space-between;
 			padding: 0 61px;
+			max-width: 1026px;
 			.maxi-dashboard_main-content {
-				width: 73%;
+				width: 70%;
 				h1,
 				h2,
 				h3 {
@@ -303,7 +304,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 			}
 			.maxi-dashboard_main-sidebar {
-				width: 25%;
+				width: 28%;
 				max-width: 270px;
 				.maxi-dashboard_main-sidebar-item {
 					border: 1px solid #dbdde6;

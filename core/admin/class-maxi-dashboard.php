@@ -305,7 +305,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<h4>'.__('Responsive design breakpoints', self::$maxi_text_domain).'</h4>';
             $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', self::$maxi_text_domain).'</p>';
             $content .= '<p>'.__('Normally you don’t need to change breakpoint values. But, you might have special requirements. Adjust at your own discretion and remember to test, test, test.', self::$maxi_text_domain).'</p>';
-
+            $content .= $this->generate_breakpoint_inputs();
+            $content .= get_submit_button();
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
@@ -374,6 +375,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
 
             return $input;
+        }
+
+        public function generate__breakpoint_input($breakpoint, $value)
+        {
+            $input = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $input .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
+            $input .= '<label class="maxi-dashboard_main-content_accordion-item-content-switcher__label" for="';
+            $input .= $breakpoint;
+            $input .= '">';
+            $input .= $breakpoint;
+            $input .= '</label>'; // maxi-dashboard_main-content_accordion-item-content-switcher__label
+            $input .= '<input name="';
+            $input .= $breakpoint;
+            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-number" type="number" value="';
+            $input .= $value;
+            $input .= '">';
+           
+            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__input
+            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+
+            return $input;
+        }
+
+        public function generate_breakpoint_inputs()
+        {
+            require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
+            $api = new MaxiBlocks_API();
+          
+            $breakpoints_html = '';
+            $breakpoints_array = array_reverse(maybe_unserialize($api::get_maxi_blocks_breakpoints()));
+
+            foreach ($breakpoints_array as $breakpoint => $value) {
+                $value_num = intval($value);
+                $breakpoints_html .= $this->generate__breakpoint_input($breakpoint, $value_num);
+            }
+
+            // $breakpoints_html .= json_encode(maybe_unserialize($breakpoints));
+            return $breakpoints_html;
         }
 
         public function generate_setting($description, $option, $function = '')

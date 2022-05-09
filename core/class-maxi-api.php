@@ -414,13 +414,30 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_maxi_blocks_breakpoints()
         {
-            return [
-                'xs' => 480,
-                's' => 768,
-                'm' => 1024,
-                'l' => 1366,
-                'xl' => 1920,
-            ];
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+            $query = 'SELECT object FROM ' .
+                     $table_name .
+                     ' where id = "breakpoints"';
+
+            $response =  maybe_unserialize($wpdb->get_var($query));
+
+            if (!$response) {
+                $default_breakpoints = [
+                    'xs' => 480,
+                    's' => 768,
+                    'm' => 1024,
+                    'l' => 1366,
+                    'xl' => 1920,
+                ];
+                $response = $default_breakpoints;
+                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+                            'id' => 'breakpoints',
+                            'object' =>  serialize($default_breakpoints),
+                        ));
+            }
+
+            return $response;
         }
 
         public function mb_delete_register($postId)

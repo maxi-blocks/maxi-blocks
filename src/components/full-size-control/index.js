@@ -35,8 +35,8 @@ const FullSizeControl = props => {
 		breakpoint,
 		hideWidth,
 		hideMaxWidth,
-		isBlockFullWidth,
 		prefix = '',
+		isBlockFullWidth,
 		allowForceAspectRatio = false,
 	} = props;
 
@@ -81,15 +81,18 @@ const FullSizeControl = props => {
 		},
 	};
 
+
 	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
 		select('core/block-editor').getSelectedBlockClientId()
 	);
 
+	const selectedBlockid = select('core/block-editor').getSelectedBlockClientId();
+	const blockName = select('core/block-editor').getBlockName(selectedBlockid);
+
 	return (
 		<div className={classes}>
-			{!isBlockFullWidth && (	
+			{!isBlockFullWidth && (
 				<ToggleSwitch
-					className='full-size-control__width-fit-content'
 					label={__('Set width to fit content', 'maxi-blocks')}
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}width-fit-content`,
@@ -101,17 +104,14 @@ const FullSizeControl = props => {
 					}}
 				/>
 			)}
-			{(!hideWidth &&
-				!isEmpty(currentBlockRoot) &&
-				!getLastBreakpointAttribute({
+			{!hideWidth && !isBlockFullWidth &&
+				(blockName==='maxi-blocks/container-maxi' ? isEmpty(currentBlockRoot) : !isEmpty(currentBlockRoot) )
+				 && !getLastBreakpointAttribute({
 					target: `${prefix}width-fit-content`,
 					breakpoint,
 					attributes: props,
-				}) 
-			)}
-			{(!isBlockFullWidth && !hideWidth && (
+				}) && (
 					<AdvancedNumberControl
-						className='full-size-control__width'
 						label={__('Width', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({
@@ -146,11 +146,11 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', '%']}
+						optionType='string'
 					/>
-				))}
+				)}
 			{allowForceAspectRatio && (
 				<ToggleSwitch
-					className='full-size-control__force-aspect-ratio'
 					label={__('Force Aspect Ratio', 'maxi-blocks')}
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}force-aspect-ratio`,
@@ -168,7 +168,6 @@ const FullSizeControl = props => {
 				attributes: props,
 			}) && (
 				<AdvancedNumberControl
-					className='full-size-control__height'
 					label={__('Height', 'maxi-blocks')}
 					enableUnit
 					unit={getLastBreakpointAttribute({
@@ -204,7 +203,6 @@ const FullSizeControl = props => {
 				/>
 			)}
 			<ToggleSwitch
-				className='full-size-control__custom-min-max'
 				label={__('Set custom min/max values', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}
 				onChange={val => {
@@ -243,7 +241,6 @@ const FullSizeControl = props => {
 							attributes: props,
 						}) && (
 							<AdvancedNumberControl
-								className='full-size-control__maximum-width'
 								label={__('Maximum width', 'maxi-blocks')}
 								enableUnit
 								unit={getLastBreakpointAttribute({
@@ -289,7 +286,6 @@ const FullSizeControl = props => {
 						attributes: props,
 					}) && (
 						<AdvancedNumberControl
-							className='full-size-control__minimum-width'
 							label={__('Minimum width', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute({
@@ -327,7 +323,6 @@ const FullSizeControl = props => {
 						/>
 					)}
 					<AdvancedNumberControl
-						className='full-size-control__maximum-height'
 						label={__('Maximum height', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({
@@ -364,7 +359,6 @@ const FullSizeControl = props => {
 						allowedUnits={['px', 'em', 'vw', 'vh']}
 					/>
 					<AdvancedNumberControl
-						className='full-size-control__minimum-height'
 						label={__('Minimum height', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({

@@ -651,6 +651,9 @@ const Inspector = props => {
 											...props,
 										},
 									}),
+									...inspectorTabs.relation({
+										props,
+									}),
 								]}
 							/>
 						),

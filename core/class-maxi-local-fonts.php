@@ -1,4 +1,5 @@
 <?php
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 
 class MaxiBlocks_Local_Fonts
 {
@@ -32,6 +33,7 @@ class MaxiBlocks_Local_Fonts
         if ((bool) get_option('local_fonts')) {
             $this->fontsUploadDir = wp_upload_dir()['basedir'] . '/maxi/fonts';
             $allFonts = $this->getAllFontsDB();
+
             if (is_array($allFonts) && !empty($allFonts)) {
                 $allURLs = $this->constructFontURLs($allFonts);
                 if (is_array($allURLs) && !empty($allURLs)) {
@@ -81,9 +83,9 @@ class MaxiBlocks_Local_Fonts
         }
 
         $array = array_filter($array, 'filterNull');
-        
+
         $arrayAll = array_merge_recursive(...$array);
-       
+
         return $arrayAll;
     }
 
@@ -142,7 +144,19 @@ class MaxiBlocks_Local_Fonts
     {
         $response = [];
         foreach ($allFonts as $fontName => $fontData) {
+			if(strpos($fontName, 'sc_font') !== false) {
+				$split_font = explode('_', str_replace('sc_font_', '', $fontName));
+				$block_style = $split_font[0];
+				$text_level = $split_font[1];
+				$breakpoint = $split_font[2];
+
+				if (class_exists('MaxiBlocks_StyleCards'))
+					$fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+			}
+
             $fontNameSanitized = str_replace(' ', '+', $fontName);
+
+
             $fontUrl = "https://fonts.googleapis.com/css2?family=$fontNameSanitized:";
 
             $response[$fontName] = $this->generateFontURL($fontUrl, $fontData);
@@ -167,10 +181,22 @@ class MaxiBlocks_Local_Fonts
     public function uploadCssFiles($allURLs)
     {
         foreach ($allURLs as $fontName => $fontUrl) {
+			if(strpos($fontName, 'sc_font') !== false) {
+				$split_font = explode('_', str_replace('sc_font_', '', $fontName));
+				$block_style = $split_font[0];
+				$text_level = $split_font[1];
+				$breakpoint = $split_font[2];
+
+				if (class_exists('MaxiBlocks_StyleCards'))
+					$fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+
+			}
+
             $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
 
+
             $allFontsNames[] = $fontNameSanitized;
-            
+
             $fontUploadsDir =  $this->fontsUploadDir.'/'.$fontNameSanitized;
             wp_mkdir_p($fontUploadsDir);
 

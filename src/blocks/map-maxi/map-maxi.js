@@ -23,6 +23,7 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { mapIcon } from '../../icons';
+import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
 
 /**
  * Block
@@ -49,4 +50,5 @@ registerBlockType('maxi-blocks/map-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [fromNumberToStringMigrator({ attributes, save })],
 });

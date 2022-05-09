@@ -16,6 +16,7 @@ import {
 	changeResponsive,
 	getAttributes,
 	getBlockStyle,
+	editAxisControl,
 } from '../../utils';
 
 describe('Column Maxi', () => {
@@ -103,6 +104,95 @@ describe('Column Maxi', () => {
 		);
 
 		expect(responsiveMOption).toStrictEqual('100');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('check column Border', async () => {
+		await createNewPost();
+		await insertBlock('Container Maxi');
+
+		await page.$$eval('.maxi-row-block__template button', button =>
+			button[6].click()
+		);
+
+		const borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		const axisControlInstance = await borderAccordion.$(
+			'.maxi-axis-control__border'
+		);
+
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			syncOption: 'none',
+			values: ['16', '15', '24', '25'],
+			unit: '%',
+		});
+
+		const expectBorder = {
+			'border-bottom-left-radius-general': 25,
+			'border-bottom-right-radius-general': 24,
+			'border-top-left-radius-general': 16,
+			'border-top-right-radius-general': 15,
+		};
+		const borderResult = await getAttributes([
+			'border-bottom-left-radius-general',
+			'border-bottom-right-radius-general',
+			'border-top-left-radius-general',
+			'border-top-right-radius-general',
+		]);
+
+		expect(borderResult).toStrictEqual(expectBorder);
+
+		// check hover border
+		await borderAccordion.$$eval(
+			'.maxi-accordion-control__item__panel--disable-padding .maxi-settingstab-control .maxi-tabs-content .maxi-tabs-control button',
+			button => button[1].click()
+		);
+
+		await borderAccordion.$eval(
+			'.maxi-border-status-hover .maxi-toggle-switch__toggle input',
+			button => button.click()
+		);
+
+		const axisControlHoverInstance = await borderAccordion.$(
+			'.maxi-axis-control__border'
+		);
+
+		await editAxisControl({
+			page,
+			instance: axisControlHoverInstance,
+			syncOption: 'none',
+			values: ['33', '25', '55', '12'],
+			unit: '%',
+		});
+
+		const expectHoverBorder = {
+			'border-bottom-left-radius-general-hover': 12,
+			'border-bottom-right-radius-general-hover': 55,
+			'border-top-left-radius-general-hover': 33,
+			'border-top-right-radius-general-hover': 25,
+		};
+		const borderHoverResult = await getAttributes([
+			'border-bottom-left-radius-general-hover',
+			'border-bottom-right-radius-general-hover',
+			'border-top-left-radius-general-hover',
+			'border-top-right-radius-general-hover',
+		]);
+		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
+
+		// check first column
+		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
+			block[0].focus()
+		);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// check last column
+		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
+			block[2].focus()
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

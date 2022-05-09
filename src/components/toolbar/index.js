@@ -145,11 +145,6 @@ const MaxiToolbar = memo(
 
 		if (!allowedBlocks.includes(name)) return null;
 
-		console.log(
-			'where are you? (have you tried using a sudo? lol)',
-			showCustomLabel
-		);
-
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');
 			const originalNestedBlocks = clientId
@@ -195,12 +190,14 @@ const MaxiToolbar = memo(
 					__unstableStickyBoundaryElement={boundaryElement}
 				>
 					<div className='toolbar-wrapper'>
-						<div className='toolbar-block-custom-label'>
-							{customLabel}
-							<span className='toolbar-block-custom-label__block-style'>
-								{` | ${blockStyle}`}
-							</span>
-						</div>
+						{showCustomLabel && (
+							<div className='toolbar-block-custom-label'>
+								{customLabel}
+								<span className='toolbar-block-custom-label__block-style'>
+									{` | ${blockStyle}`}
+								</span>
+							</div>
+						)}
 						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 						<ToolbarMediaUpload
 							blockName={name}

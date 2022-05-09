@@ -175,17 +175,20 @@ class edit extends MaxiBlockComponent {
 				const newContent = content.replace('</a>', '');
 				maxiSetAttributes({ content: `${newContent}</a>` });
 			} else {
+				this.state.showCustomLabel &&
+					this.setState({ showCustomLabel: false });
+
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
-					this.setState({ showCustomLabel: false });
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
 					maxiSetAttributes({ content });
-					this.setState({ showCustomLabel: true });
 				}, 100);
 			}
 		};
+
+		const onBlurRichText = () => this.setState({ showCustomLabel: true });
 
 		return [
 			<Inspector
@@ -245,6 +248,7 @@ class edit extends MaxiBlockComponent {
 								);
 						}}
 						onMerge={forward => onMerge(this.props, forward)}
+						onBlur={onBlurRichText}
 						__unstableEmbedURLOnPaste
 						withoutInteractiveFormatting
 					>
@@ -286,6 +290,7 @@ class edit extends MaxiBlockComponent {
 						}}
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
+						onBlur={onBlurRichText}
 						start={listStart}
 						reversed={listReversed}
 						type={typeOfList}

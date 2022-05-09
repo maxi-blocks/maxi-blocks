@@ -22,7 +22,6 @@ const global = {
 	},
 	relations: {
 		type: 'array',
-		default: [],
 	},
 };
 

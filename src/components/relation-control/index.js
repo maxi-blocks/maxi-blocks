@@ -34,7 +34,7 @@ const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 
 	const { blockStyle, deviceType, onChange, uniqueID } = props;
-	const relations = cloneDeep(props.relations);
+	const relations = cloneDeep(props.relations) ?? [];
 
 	const getRelationalStyles = styles => {
 		const response = {};

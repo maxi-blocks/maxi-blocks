@@ -69,9 +69,10 @@ export const SvgColor = props => {
 					});
 			}}
 			globalProps={{
-				target: 'line',
+				target: `${isHover ? 'hover-' : ''}line`,
 				type: 'icon',
 			}}
+			noColorPrefix
 			disableOpacity
 		/>
 	) : (
@@ -113,9 +114,10 @@ export const SvgColor = props => {
 					});
 			}}
 			globalProps={{
-				target: 'fill',
+				target: `${isHover ? 'hover-' : ''}fill`,
 				type: 'icon',
 			}}
+			noColorPrefix
 			disableOpacity
 		/>
 	);

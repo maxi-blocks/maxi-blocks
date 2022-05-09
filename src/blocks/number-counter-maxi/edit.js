@@ -21,6 +21,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import { getBreakpoints } from '../../extensions/styles/helpers';
 import copyPasteMapping from './copy-paste-mapping';
 
 /**
@@ -38,7 +39,6 @@ const NumberCounter = attributes => {
 		'number-counter-stroke': stroke,
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
-		'number-counter-title-font-size': fontSize,
 		'number-counter-percentage-sign-status': usePercentage,
 		'number-counter-start': startNumber,
 		'number-counter-end': endNumber,
@@ -46,7 +46,6 @@ const NumberCounter = attributes => {
 		resizerProps,
 		replayCounter,
 	} = attributes;
-
 	const countRef = useRef(null);
 	const startCountValue = Math.ceil((startNumber * 360) / 100);
 	const endCountValue = Math.ceil((endNumber * 360) / 100);
@@ -92,6 +91,12 @@ const NumberCounter = attributes => {
 		radius,
 		stroke,
 	]);
+
+	const fontSize = getLastBreakpointAttribute({
+		target: 'number-counter-title-font-size',
+		breakpoint: deviceType,
+		attributes,
+	});
 
 	const getIsOverflowHidden = () =>
 		getLastBreakpointAttribute({
@@ -246,6 +251,7 @@ class edit extends MaxiBlockComponent {
 			number_counter: {
 				[uniqueID]: {
 					...getGroupAttributes(attributes, 'numberCounter'),
+					breakpoints: { ...getBreakpoints(attributes) },
 				},
 			},
 		};

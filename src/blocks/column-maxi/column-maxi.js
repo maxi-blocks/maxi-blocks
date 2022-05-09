@@ -15,7 +15,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import './editor.scss';
-import { imageBox } from '../../icons';
+import { columnIcon } from '../../icons';
 
 /**
  * Block dependencies
@@ -35,7 +35,7 @@ import fromNumberToStringMigrator from '../../extensions/styles/migrators/number
 
 registerBlockType('maxi-blocks/column-maxi', {
 	title: __('Column Maxi', 'maxi-blocks'),
-	icon: imageBox,
+	icon: columnIcon,
 	description: 'Stack one or more blocks, top-to-bottom (vertical)',
 	category: 'maxi-blocks',
 	supports: {

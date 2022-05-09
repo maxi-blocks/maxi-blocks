@@ -16,7 +16,10 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -24,7 +27,7 @@ import { withMaxiInspector } from '../../extensions/inspector';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, without } from 'lodash';
+import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -69,6 +72,44 @@ const Inspector = props => {
 		)
 			newDefaultPresets[`preset${number}`]['icon-content'] =
 				attributes['icon-content'];
+
+		if (
+			!isNil(
+				defaultPresets[`preset${number}`][
+					'icon-border-style-general-hover'
+				]
+			) &&
+			defaultPresets[`preset${number}`][
+				'icon-border-style-general-hover'
+			] !== 'none'
+		) {
+			const hoverAttr = getGroupAttributes(
+				{ ...newDefaultPresets[`preset${number}`] },
+				['border', 'borderWidth', 'borderRadius'],
+				true,
+				'icon-'
+			);
+
+			const nonHoverAttr = getGroupAttributes(
+				{ ...newDefaultPresets[`preset${number}`] },
+				['border', 'borderWidth', 'borderRadius'],
+				false,
+				'icon-'
+			);
+
+			Object.keys(hoverAttr).forEach(h => {
+				if (!h.includes('hover')) delete hoverAttr[h];
+			});
+			Object.keys(nonHoverAttr).forEach(h => {
+				if (h.includes('hover')) delete nonHoverAttr[h];
+			});
+			setHoverAttributes(nonHoverAttr, hoverAttr);
+
+			newDefaultPresets[`preset${number}`] = {
+				...newDefaultPresets[`preset${number}`],
+				...hoverAttr,
+			};
+		}
 
 		maxiSetAttributes({
 			...newDefaultPresets[`preset${number}`],

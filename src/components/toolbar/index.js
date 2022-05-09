@@ -104,6 +104,7 @@ const MaxiToolbar = memo(
 			inlineStylesTargets = inlineStylesTargetsDefault,
 			resetNumberHelper,
 			copyPasteMapping,
+			showCustomLabel,
 		} = props;
 		const {
 			blockFullWidth,
@@ -143,6 +144,8 @@ const MaxiToolbar = memo(
 		});
 
 		if (!allowedBlocks.includes(name)) return null;
+
+		console.log('where are you?', showCustomLabel);
 
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');

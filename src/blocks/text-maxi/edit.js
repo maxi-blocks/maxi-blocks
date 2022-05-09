@@ -52,6 +52,10 @@ class edit extends MaxiBlockComponent {
 
 	typingTimeoutContent = 0;
 
+	state = {
+		showCustomLabel: true,
+	};
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -173,10 +177,12 @@ class edit extends MaxiBlockComponent {
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
+					this.setState({ showCustomLabel: false });
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
 					maxiSetAttributes({ content });
+					this.setState({ showCustomLabel: true });
 				}, 100);
 			}
 		};
@@ -193,6 +199,7 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
 				copyPasteMapping={copyPasteMapping}
+				showCustomLabel={this.state.showCustomLabel}
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}

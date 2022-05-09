@@ -11,7 +11,6 @@ import { Tooltip } from '@wordpress/components';
  */
 import Icon from '../../../icon';
 import Button from '../../../button';
-import tooltipsHide from '../../tooltipsHide';
 
 /**
  * External dependencies
@@ -28,7 +27,7 @@ import { moveRight, moveLeft } from '../../../../icons';
  * ColumnMover
  */
 const ColumnMover = props => {
-	const { clientId, blockName } = props;
+	const { clientId, blockName, tooltipsHide } = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
@@ -60,52 +59,50 @@ const ColumnMover = props => {
 
 	const { moveBlocksDown, moveBlocksUp } = useDispatch('core/block-editor');
 
+	const buttonMoveLeft = () => {
+		return (
+			<Button
+				aria-disabled={isLeftDisabled}
+				onClick={() => moveBlocksUp([clientId], rootClientId)}
+			>
+				<Icon className='toolbar-item__icon' icon={moveLeft} />
+			</Button>
+		);
+	};
+
+	const buttonMoveRight = () => {
+		return (
+			<Button
+				aria-disabled={isRightDisabled}
+				onClick={() => moveBlocksDown([clientId], rootClientId)}
+			>
+				<Icon className='toolbar-item__icon' icon={moveRight} />
+			</Button>
+		);
+	};
+
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
 	return (
 		<div className='toolbar-item toolbar-item-move__horizontally'>
-			{!tooltipsHide() && (
+			{!tooltipsHide && (
 				<Tooltip
 					text={__('Move left', 'maxi-blocks')}
 					position='bottom center'
 				>
-					<Button
-						aria-disabled={isLeftDisabled}
-						onClick={() => moveBlocksUp([clientId], rootClientId)}
-					>
-						<Icon className='toolbar-item__icon' icon={moveLeft} />
-					</Button>
+					{buttonMoveLeft()}
 				</Tooltip>
 			)}
-			{!tooltipsHide() && (
+			{!tooltipsHide && (
 				<Tooltip
 					text={__('Move right', 'maxi-blocks')}
 					position='bottom center'
 				>
-					<Button
-						aria-disabled={isRightDisabled}
-						onClick={() => moveBlocksDown([clientId], rootClientId)}
-					>
-						<Icon className='toolbar-item__icon' icon={moveRight} />
-					</Button>
+					{buttonMoveRight()}
 				</Tooltip>
 			)}
-			{tooltipsHide() && (
-				<Button
-					aria-disabled={isLeftDisabled}
-					onClick={() => moveBlocksUp([clientId], rootClientId)}
-				>
-					<Icon className='toolbar-item__icon' icon={moveLeft} />
-				</Button>
-			)}
-			{tooltipsHide() && (
-				<Button
-					aria-disabled={isRightDisabled}
-					onClick={() => moveBlocksDown([clientId], rootClientId)}
-				>
-					<Icon className='toolbar-item__icon' icon={moveRight} />
-				</Button>
-			)}
+			{tooltipsHide && buttonMoveLeft()}
+			{tooltipsHide && buttonMoveRight()}
 		</div>
 	);
 };

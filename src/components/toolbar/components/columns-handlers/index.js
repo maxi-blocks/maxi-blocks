@@ -10,7 +10,6 @@ import { useState } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
-import tooltipsHide from '../../tooltipsHide';
 
 /**
  * External dependencies
@@ -25,7 +24,7 @@ import './editor.scss';
 import { handlers } from '../../../../icons';
 
 const ColumnsHandlers = props => {
-	const { blockName, className, toggleHandlers } = props;
+	const { blockName, className, toggleHandlers, tooltipsHide } = props;
 
 	const [isActive, setActive] = useState(false);
 
@@ -38,40 +37,33 @@ const ColumnsHandlers = props => {
 		className
 	);
 
-	if (!tooltipsHide())
+	const handlersContent = () => {
+		return (
+			<div>
+				<Button
+					className={classes}
+					onClick={() => {
+						toggleHandlers();
+						setActive(!isActive);
+					}}
+					aria-pressed={isActive}
+				>
+					<Icon className='toolbar-item__icon' icon={handlers} />
+				</Button>
+			</div>
+		);
+	};
+
+	if (!tooltipsHide)
 		return (
 			<Tooltip
 				text={__('Columns Handlers', 'maxi-blocks')}
 				position='bottom center'
 			>
-				<div>
-					<Button
-						className={classes}
-						onClick={() => {
-							toggleHandlers();
-							setActive(!isActive);
-						}}
-						aria-pressed={isActive}
-					>
-						<Icon className='toolbar-item__icon' icon={handlers} />
-					</Button>
-				</div>
+				{handlersContent()}
 			</Tooltip>
 		);
-	return (
-		<div>
-			<Button
-				className={classes}
-				onClick={() => {
-					toggleHandlers();
-					setActive(!isActive);
-				}}
-				aria-pressed={isActive}
-			>
-				<Icon className='toolbar-item__icon' icon={handlers} />
-			</Button>
-		</div>
-	);
+	return handlersContent();
 };
 
 export default ColumnsHandlers;

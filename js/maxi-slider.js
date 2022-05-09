@@ -12,7 +12,7 @@ class MaxiSlider {
 			this._wrapper.getElementsByClassName('maxi-slide-block')
 		).map((slide, i) => new Slide(slide, i));
 
-		this.isLoop = this._container.dataset.infiniteLoop;
+		this.isLoop = this._container.dataset.infiniteLoop === 'true';
 
 		// Navigation
 		this._arrowNext = this._container.querySelector(
@@ -27,6 +27,8 @@ class MaxiSlider {
 		this.initPosition;
 		this.dragPosition;
 		this.endPosition;
+
+		this.realFirstElOffset = 0;
 
 		// Binded methods
 		this.onDragStart = this.dragStart.bind(this);
@@ -45,7 +47,15 @@ class MaxiSlider {
 	}
 
 	get activeSlidePosition() {
-		if (this._currentSlide < 0) return 0;
+		if (this._currentSlide < 0)
+			return (
+				this.realFirstElOffset -
+				this._slides
+					.slice(this.currentSlide)
+					.map(slide => slide.size.width)
+					?.reduce((acc, cur) => acc + cur)
+			);
+
 		return this.currentSlide === 0
 			? this.realFirstElOffset
 			: this._slides
@@ -69,18 +79,8 @@ class MaxiSlider {
 
 	init() {
 		if (this.isLoop) {
-			this._wrapper.append(this._slides[0]._slide.cloneNode(true));
-			this._wrapper.prepend(
-				this._slides[this._slides.length - 1]._slide.cloneNode(true)
-			);
-			this._wrapper.addEventListener(
-				'transitionend',
-				this.transitionEnd.bind(this)
-			);
+			this.insertSlideClones(2);
 		}
-		this.realFirstElOffset = this.isLoop
-			? this._slides[this._slides.length - 1].size.width
-			: 0;
 
 		// Init styles
 		this.wrapperTranslate = this.realFirstElOffset;
@@ -99,6 +99,26 @@ class MaxiSlider {
 		this._wrapper.addEventListener('touchstart', this.onDragStart);
 		this._wrapper.addEventListener('touchmove', this.onDragAction);
 		this._wrapper.addEventListener('touchend', this.onDragEnd);
+		this._wrapper.addEventListener(
+			'transitionend',
+			this.transitionEnd.bind(this)
+		);
+	}
+
+	insertSlideClones(numberOfClones) {
+		for (let i = 0; i < numberOfClones; i += 1) {
+			let frontClone = this._slides[i]._slide.cloneNode(true);
+			let backClone =
+				this._slides[this._slides.length - 1 - i]._slide.cloneNode(
+					true
+				);
+			frontClone.classList.add('maxi-slide-block--clone');
+			backClone.classList.add('maxi-slide-block--clone');
+			this._wrapper.append(frontClone);
+			this._wrapper.prepend(backClone);
+			this.realFirstElOffset += backClone.getBoundingClientRect().width;
+			this.lastSlideTranslate += backClone.getBoundingClientRect().width;
+		}
 	}
 
 	dragStart(e) {
@@ -144,7 +164,7 @@ class MaxiSlider {
 		} else if (this.endPosition - this.initPosition > 100) {
 			this.slidePrev();
 		} else {
-			this.wrapperTranslate = this.activeSlidePosition;
+			this.sliderAction();
 		}
 
 		document.removeEventListener('mousemove', this.onDragAction);
@@ -155,18 +175,16 @@ class MaxiSlider {
 		if (this.currentSlide + 1 < this._slides.length || this.isLoop) {
 			// Update current slide
 			this.currentSlide = this.currentSlide + 1;
-
-			this.sliderAction();
 		}
+		this.sliderAction();
 	}
 
 	slidePrev() {
 		if (this.currentSlide - 1 >= 0 || this.isLoop) {
 			// Update current slide
 			this.currentSlide = this.currentSlide - 1;
-
-			this.sliderAction();
 		}
+		this.sliderAction();
 	}
 
 	sliderAction(withTransition = true) {
@@ -179,8 +197,7 @@ class MaxiSlider {
 		this.wrapperTranslate = this.activeSlidePosition;
 	}
 
-	transitionEnd() {
-		this._wrapper.style.transition = '';
+	loop() {
 		if (this.currentSlide >= this._slides.length) {
 			this.currentSlide = 0;
 			this.sliderAction(false);
@@ -189,6 +206,11 @@ class MaxiSlider {
 			this.currentSlide = this._slides.length - 1;
 			this.sliderAction(false);
 		}
+	}
+
+	transitionEnd() {
+		this._wrapper.style.transition = '';
+		if (this.isLoop) this.loop();
 	}
 }
 

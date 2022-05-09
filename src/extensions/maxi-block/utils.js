@@ -11,15 +11,15 @@ export const getResizerSize = (elt, blockRef, unit, axis = 'width') => {
 		case '%': {
 			const wrapperSize = blockRef.current.getBoundingClientRect()[axis];
 
-			return round((pxSize / wrapperSize) * 100, 2);
+			return round((pxSize / wrapperSize) * 100, 2).toString();
 		}
 		case 'vw': {
 			const winSize = window.innerWidth;
 
-			return round((pxSize / winSize) * 100, 2);
+			return round((pxSize / winSize) * 100, 2).toString();
 		}
 		case 'px':
 		default:
-			return pxSize;
+			return pxSize.toString();
 	}
 };

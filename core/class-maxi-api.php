@@ -275,14 +275,14 @@ if (!class_exists('MaxiBlocks_API')):
 
             return $response;
         }
-        
+
         /**
          * Post the posts
          */
         public function post_maxi_blocks_post($data)
         {
             global $wpdb;
-            
+
             $id = $data['id'];
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
@@ -363,9 +363,9 @@ if (!class_exists('MaxiBlocks_API')):
             $query = 'SELECT object FROM ' .
                      $table_name .
                      ' where id = "sc_string"';
-        
+
             $response =  maybe_unserialize($wpdb->get_var($query));
-        
+
             if (!$response) {
                 $response = '';
                 $empty_sc_string = [
@@ -377,10 +377,10 @@ if (!class_exists('MaxiBlocks_API')):
                             'object' =>  serialize($empty_sc_string),
                         ));
             }
-        
+
             return $response;
         }
-        
+
         /**
          * Post the posts
          */
@@ -388,7 +388,7 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
             $style_card = $this->get_maxi_blocks_sc_string();
-        
+
             if ($data['update']) {
                 $new_style_card = [
                             '_maxi_blocks_style_card' => $data['meta'],
@@ -402,13 +402,13 @@ if (!class_exists('MaxiBlocks_API')):
                     $new_style_card['_maxi_blocks_style_card'] = $data['meta'];
                 }
             }
-        
+
             $wpdb->replace("{$wpdb->prefix}maxi_blocks_general", array(
                 'id' => 'sc_string',
                 'object' =>  serialize($new_style_card),
             ));
-            
-        
+
+
             return $new_style_card;
         }
 
@@ -440,7 +440,7 @@ if (!class_exists('MaxiBlocks_API')):
             $response_code = wp_remote_retrieve_response_code($response);
             $response_message = wp_remote_retrieve_response_message($response);
             $response_body = wp_remote_retrieve_body($response);
- 
+
             if (!is_wp_error($response)) {
                 return new WP_REST_Response([
                      'status' => $response_code,

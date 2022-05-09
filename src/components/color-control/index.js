@@ -40,6 +40,7 @@ const ColorControl = props => {
 		color,
 		defaultColorAttributes,
 		globalProps,
+		noColorPrefix,
 		onChangeInline,
 		onChange,
 		isHover,
@@ -187,6 +188,7 @@ const ColorControl = props => {
 					label={label}
 					value={paletteColor}
 					globalProps={globalProps}
+					noColorPrefix
 					isHover={isHover}
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}

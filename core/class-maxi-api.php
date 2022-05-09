@@ -248,6 +248,7 @@ if (!class_exists('MaxiBlocks_API')):
                     'version' => $version,
                     'is_core' => $is_core,
                 ],
+                'hide_tooltips' => get_option('hide_tooltips'),
             ];
 
             return $response;

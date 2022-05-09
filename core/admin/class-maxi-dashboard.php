@@ -210,7 +210,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description = '<h4>'.__('Hide interface tooltips', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Show or hide tooltips on mouse-hover.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'show_tooltips');
+            $content .= $this->generate_setting($description, 'hide_tooltips');
 
             $description = '<h4>'.__('Accessibility: Enable focus indicator', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', self::$maxi_text_domain).'</p>';
@@ -412,6 +412,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
             register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
+            register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
         }
 

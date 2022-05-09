@@ -10,6 +10,7 @@ import { Tooltip } from '@wordpress/components';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
+import tooltipsHide from '../../tooltipsHide';
 
 /**
  * Icons
@@ -29,14 +30,25 @@ const Help = props => {
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
+	if (!tooltipsHide())
+		return (
+			<Tooltip text={__('Help', 'maxi-blocks')} position='bottom center'>
+				<div className='toolbar-item toolbar-item__help'>
+					<Button href='#'>
+						<Icon
+							className='toolbar-item__icon'
+							icon={toolbarHelp}
+						/>
+					</Button>
+				</div>
+			</Tooltip>
+		);
 	return (
-		<Tooltip text={__('Help', 'maxi-blocks')} position='bottom center'>
-			<div className='toolbar-item toolbar-item__help'>
-				<Button href='#'>
-					<Icon className='toolbar-item__icon' icon={toolbarHelp} />
-				</Button>
-			</div>
-		</Tooltip>
+		<div className='toolbar-item toolbar-item__help'>
+			<Button href='#'>
+				<Icon className='toolbar-item__icon' icon={toolbarHelp} />
+			</Button>
+		</div>
 	);
 };
 

@@ -11,6 +11,7 @@ import { Tooltip } from '@wordpress/components';
  */
 import Icon from '../../../icon';
 import Button from '../../../button';
+import tooltipsHide from '../../tooltipsHide';
 
 /**
  * External dependencies
@@ -62,8 +63,8 @@ const ColumnMover = props => {
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
 	return (
-		<>
-			<div className='toolbar-item toolbar-item-move__horizontally'>
+		<div className='toolbar-item toolbar-item-move__horizontally'>
+			{!tooltipsHide() && (
 				<Tooltip
 					text={__('Move left', 'maxi-blocks')}
 					position='bottom center'
@@ -75,6 +76,8 @@ const ColumnMover = props => {
 						<Icon className='toolbar-item__icon' icon={moveLeft} />
 					</Button>
 				</Tooltip>
+			)}
+			{!tooltipsHide() && (
 				<Tooltip
 					text={__('Move right', 'maxi-blocks')}
 					position='bottom center'
@@ -86,8 +89,24 @@ const ColumnMover = props => {
 						<Icon className='toolbar-item__icon' icon={moveRight} />
 					</Button>
 				</Tooltip>
-			</div>
-		</>
+			)}
+			{tooltipsHide() && (
+				<Button
+					aria-disabled={isLeftDisabled}
+					onClick={() => moveBlocksUp([clientId], rootClientId)}
+				>
+					<Icon className='toolbar-item__icon' icon={moveLeft} />
+				</Button>
+			)}
+			{tooltipsHide() && (
+				<Button
+					aria-disabled={isRightDisabled}
+					onClick={() => moveBlocksDown([clientId], rootClientId)}
+				>
+					<Icon className='toolbar-item__icon' icon={moveRight} />
+				</Button>
+			)}
+		</div>
 	);
 };
 

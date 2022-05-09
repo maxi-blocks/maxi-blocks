@@ -11,6 +11,7 @@ import { Tooltip } from '@wordpress/components';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
+import tooltipsHide from '../../tooltipsHide';
 
 /**
  * Icons
@@ -27,17 +28,28 @@ const Duplicate = props => {
 
 	const { duplicateBlocks } = useDispatch('core/block-editor');
 
+	if (!tooltipsHide())
+		return (
+			<Tooltip
+				text={__('Duplicate', 'maxi-blocks')}
+				position='bottom center'
+			>
+				<div className='toolbar-item toolbar-item__duplicate'>
+					<Button onClick={() => duplicateBlocks([clientId])}>
+						<Icon
+							className='toolbar-item__icon'
+							icon={toolbarDuplicate}
+						/>
+					</Button>
+				</div>
+			</Tooltip>
+		);
 	return (
-		<Tooltip text={__('Duplicate', 'maxi-blocks')} position='bottom center'>
-			<div className='toolbar-item toolbar-item__duplicate'>
-				<Button onClick={() => duplicateBlocks([clientId])}>
-					<Icon
-						className='toolbar-item__icon'
-						icon={toolbarDuplicate}
-					/>
-				</Button>
-			</div>
-		</Tooltip>
+		<div className='toolbar-item toolbar-item__duplicate'>
+			<Button onClick={() => duplicateBlocks([clientId])}>
+				<Icon className='toolbar-item__icon' icon={toolbarDuplicate} />
+			</Button>
+		</div>
 	);
 };
 

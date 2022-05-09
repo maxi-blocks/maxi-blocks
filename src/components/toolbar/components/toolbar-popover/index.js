@@ -12,6 +12,7 @@ import Button from '../../../button';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
+import tooltipsHide from '../../tooltipsHide';
 
 /**
  * External dependencies
@@ -97,7 +98,23 @@ class ToolbarPopover extends Component {
 		return (
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={{ isOpen, onClose }}>
-					<Tooltip text={tooltip} position='bottom center'>
+					{!tooltipsHide() && (
+						<Tooltip text={tooltip} position='bottom center'>
+							<Button
+								className={classes}
+								onClick={() => this.onToggle()}
+								aria-expanded={isOpen}
+								action='popup'
+							>
+								<Icon
+									className='toolbar-item__icon'
+									icon={icon}
+								/>
+								{__(text, 'maxi-blocks')}
+							</Button>
+						</Tooltip>
+					)}
+					{tooltipsHide() && (
 						<Button
 							className={classes}
 							onClick={() => this.onToggle()}
@@ -107,7 +124,7 @@ class ToolbarPopover extends Component {
 							<Icon className='toolbar-item__icon' icon={icon} />
 							{__(text, 'maxi-blocks')}
 						</Button>
-					</Tooltip>
+					)}
 					{isOpen && children && (
 						<Popover
 							className='toolbar-item__popover'

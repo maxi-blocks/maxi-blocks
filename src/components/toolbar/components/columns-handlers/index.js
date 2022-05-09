@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
+import tooltipsHide from '../../tooltipsHide';
 
 /**
  * External dependencies
@@ -26,6 +27,8 @@ import { handlers } from '../../../../icons';
 const ColumnsHandlers = props => {
 	const { blockName, className, toggleHandlers } = props;
 
+	const [isActive, setActive] = useState(false);
+
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
 	const classes = classnames(
@@ -35,28 +38,39 @@ const ColumnsHandlers = props => {
 		className
 	);
 
-
-	const [isActive, setActive] = useState(false);
-
-
+	if (!tooltipsHide())
+		return (
+			<Tooltip
+				text={__('Columns Handlers', 'maxi-blocks')}
+				position='bottom center'
+			>
+				<div>
+					<Button
+						className={classes}
+						onClick={() => {
+							toggleHandlers();
+							setActive(!isActive);
+						}}
+						aria-pressed={isActive}
+					>
+						<Icon className='toolbar-item__icon' icon={handlers} />
+					</Button>
+				</div>
+			</Tooltip>
+		);
 	return (
-		<Tooltip
-			text={__('Columns Handlers', 'maxi-blocks')}
-			position='bottom center'
-		>
-			<div>
-				<Button 
-				className={classes} 
+		<div>
+			<Button
+				className={classes}
 				onClick={() => {
 					toggleHandlers();
 					setActive(!isActive);
 				}}
 				aria-pressed={isActive}
-				>
-					<Icon className='toolbar-item__icon' icon={handlers} />
-				</Button>
-			</div>
-		</Tooltip>
+			>
+				<Icon className='toolbar-item__icon' icon={handlers} />
+			</Button>
+		</div>
 	);
 };
 

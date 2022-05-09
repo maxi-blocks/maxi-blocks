@@ -10,6 +10,7 @@ import { useDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Button from '../../../button';
+import tooltipsHide from '../../tooltipsHide';
 
 /**
  * Delete
@@ -21,15 +22,27 @@ const Delete = props => {
 
 	const { removeBlock } = useDispatch('core/block-editor');
 
+	if (!tooltipsHide())
+		return (
+			<Tooltip
+				text={__('Delete', 'maxi-blocks')}
+				position='bottom center'
+			>
+				<div className='toolbar-item toolbar-item__delete'>
+					<Button onClick={() => removeBlock(clientId)}>
+						{__('Remove block', 'maxi-blocks')}
+						<span>Shift+Alt+Z</span>
+					</Button>
+				</div>
+			</Tooltip>
+		);
 	return (
-		<Tooltip text={__('Delete', 'maxi-blocks')} position='bottom center'>
-			<div className='toolbar-item toolbar-item__delete'>
-				<Button onClick={() => removeBlock(clientId)}>
-					{__('Remove block', 'maxi-blocks')}
-					<span>Shift+Alt+Z</span>
-				</Button>
-			</div>
-		</Tooltip>
+		<div className='toolbar-item toolbar-item__delete'>
+			<Button onClick={() => removeBlock(clientId)}>
+				{__('Remove block', 'maxi-blocks')}
+				<span>Shift+Alt+Z</span>
+			</Button>
+		</div>
 	);
 };
 

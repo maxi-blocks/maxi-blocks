@@ -89,7 +89,10 @@ const TextItalic = withFormatValue(props => {
 				onClick={onClick}
 				aria-pressed={isActive}
 			>
-				<Icon className='toolbar-item__icon toolbar-item__italic' icon={toolbarItalic} />
+				<Icon
+					className='toolbar-item__icon toolbar-item__italic'
+					icon={toolbarItalic}
+				/>
 			</Button>
 		</Tooltip>
 	);

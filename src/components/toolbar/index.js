@@ -145,7 +145,10 @@ const MaxiToolbar = memo(
 
 		if (!allowedBlocks.includes(name)) return null;
 
-		console.log('where are you?', showCustomLabel);
+		console.log(
+			'where are you? (have you tried using a sudo? lol)',
+			showCustomLabel
+		);
 
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');
@@ -632,11 +635,18 @@ const MaxiToolbar = memo(
 		);
 	}),
 	// Avoids non-necessary renderings
-	(
-		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },
-		{ attributes: newAttr, isSelected }
-	) => {
+	(oldProps, newProps) => {
+		const {
+			attributes: oldAttr,
+			propsToAvoid,
+			isSelected: wasSelected,
+			showCustomLabel: wasShowCustomLabel,
+		} = oldProps;
+		const { attributes: newAttr, isSelected, showCustomLabel } = newProps;
+
 		if (!wasSelected || wasSelected !== isSelected) return false;
+		// Temporary: will be improved on #2997
+		if (wasShowCustomLabel !== showCustomLabel) return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);
@@ -646,8 +656,6 @@ const MaxiToolbar = memo(
 				delete oldAttributes[prop];
 				delete newAttributes[prop];
 			});
-
-			return isEqual(oldAttributes, newAttributes);
 		}
 
 		return isEqual(oldAttributes, newAttributes);

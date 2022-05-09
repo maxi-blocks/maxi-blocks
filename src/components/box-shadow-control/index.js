@@ -97,6 +97,7 @@ const BoxShadowValueControl = props => {
 
 const BoxShadowControl = props => {
 	const {
+		onChangeInline = null,
 		onChange,
 		className,
 		breakpoint,
@@ -258,6 +259,34 @@ const BoxShadowControl = props => {
 							attributes: props,
 							isHover,
 						})}
+						onChangeInline={({ color }) => {
+							onChangeInline &&
+								onChangeInline({
+									'box-shadow': `${getLastBreakpointAttribute(
+										{
+											target: `${prefix}box-shadow-horizontal`,
+											breakpoint,
+											attributes: props,
+											isHover,
+										}
+									)}px ${getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-vertical`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}px ${getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-blur`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}px ${getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-spread`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}px ${color}`,
+								});
+						}}
 						onChange={({
 							color,
 							paletteColor,
@@ -288,7 +317,11 @@ const BoxShadowControl = props => {
 					/>
 					{!isToolbar &&
 						boxShadowItems.map(type => (
-							<BoxShadowValueControl type={type} {...props} />
+							<BoxShadowValueControl
+								type={type}
+								key={type}
+								{...props}
+							/>
 						))}
 				</>
 			)}

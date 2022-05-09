@@ -21,6 +21,7 @@ export const SvgColor = props => {
 	const {
 		type,
 		label,
+		onChangeInline = null,
 		onChangeFill,
 		onChangeStroke,
 		onChangeHoverFill,
@@ -49,6 +50,10 @@ export const SvgColor = props => {
 					? props['svg-line-palette-status-hover']
 					: props['svg-line-palette-status']
 			}
+			onChangeInline={({ color }) =>
+				onChangeInline &&
+				onChangeInline({ stroke: color }, '[data-stroke]')
+			}
 			onChange={({ color, paletteColor, paletteStatus }) => {
 				if (isHover)
 					onChangeHoverStroke({
@@ -64,9 +69,10 @@ export const SvgColor = props => {
 					});
 			}}
 			globalProps={{
-				target: 'line',
+				target: `${isHover ? 'hover-' : ''}line`,
 				type: 'icon',
 			}}
+			noColorPrefix
 			disableOpacity
 		/>
 	) : (
@@ -90,6 +96,9 @@ export const SvgColor = props => {
 					? props['svg-fill-palette-status-hover']
 					: props['svg-fill-palette-status']
 			}
+			onChangeInline={({ color }) =>
+				onChangeInline && onChangeInline({ fill: color }, '[data-fill]')
+			}
 			onChange={({ color, paletteColor, paletteStatus }) => {
 				if (isHover)
 					onChangeHoverFill({
@@ -105,23 +114,17 @@ export const SvgColor = props => {
 					});
 			}}
 			globalProps={{
-				target: 'fill',
+				target: `${isHover ? 'hover-' : ''}fill`,
 				type: 'icon',
 			}}
+			noColorPrefix
 			disableOpacity
 		/>
 	);
 };
 
 export const SvgColorControl = props => {
-	const {
-		onChangeFill,
-		onChangeStroke,
-		onChangeHoverFill,
-		onChangeHoverStroke,
-		svgType,
-		maxiSetAttributes,
-	} = props;
+	const { onChangeInline, svgType, maxiSetAttributes } = props;
 	const hoverStatus = props['svg-status-hover'];
 
 	return (
@@ -133,18 +136,22 @@ export const SvgColorControl = props => {
 						<>
 							{svgType !== 'Line' && (
 								<SvgColor
+									{...props}
 									type='fill'
 									label={__('SVG Fill', 'maxi-blocks')}
-									onChange={onChangeFill}
-									{...props}
+									onChangeInline={obj =>
+										onChangeInline(obj, '[data-fill]')
+									}
 								/>
 							)}
 							{svgType !== 'Shape' && (
 								<SvgColor
+									{...props}
 									type='line'
 									label={__('SVG Line', 'maxi-blocks')}
-									onChange={onChangeStroke}
-									{...props}
+									onChangeInline={obj =>
+										onChangeInline(obj, '[data-stroke]')
+									}
 								/>
 							)}
 						</>
@@ -188,26 +195,26 @@ export const SvgColorControl = props => {
 								<>
 									{svgType !== 'Line' && (
 										<SvgColor
+											{...props}
 											type='fill'
 											label={__(
 												'SVG Fill',
 												'maxi-blocks'
 											)}
-											onChange={onChangeHoverFill}
+											onChangeInline={null}
 											isHover
-											{...props}
 										/>
 									)}
 									{svgType !== 'Shape' && (
 										<SvgColor
+											{...props}
 											type='line'
 											label={__(
 												'SVG Line',
 												'maxi-blocks'
 											)}
-											onChange={onChangeHoverStroke}
+											onChangeInline={null}
 											isHover
-											{...props}
 										/>
 									)}
 								</>

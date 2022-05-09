@@ -40,6 +40,8 @@ const ColorControl = props => {
 		color,
 		defaultColorAttributes,
 		globalProps,
+		noColorPrefix,
+		onChangeInline,
 		onChange,
 		isHover,
 		deviceType,
@@ -75,14 +77,26 @@ const ColorControl = props => {
 			rgb: { r: 1, g: 1, b: 1, a: 1 },
 		};
 
+	const colorObj = {
+		paletteStatus,
+		paletteColor,
+		paletteOpacity,
+		color,
+	};
+
 	const onChangeValue = obj =>
 		onChange({
-			paletteStatus,
-			paletteColor,
-			paletteOpacity,
-			color,
+			...colorObj,
 			...obj,
 		});
+
+	const onChangeInlineValue = obj =>
+		onChangeInline
+			? onChangeInline({
+					...colorObj,
+					...obj,
+			  })
+			: onChangeValue(obj);
 
 	const onReset = () => {
 		let defaultColorAttr = defaultColorAttributes;
@@ -132,15 +146,18 @@ const ColorControl = props => {
 				color,
 			});
 		else {
+			const defaultColor = `rgba(${getPaletteColor({
+				clientId,
+				color: paletteColor || defaultColorAttr.paletteColor,
+				blockStyle,
+			})},${paletteOpacity || 1})`;
+
+			onChangeInline({ color: defaultColor });
 			onChange({
 				paletteStatus,
 				paletteColor,
 				paletteOpacity,
-				color: `rgba(${getPaletteColor({
-					clientId,
-					color: paletteColor || defaultColorAttr.paletteColor,
-					blockStyle,
-				})},${paletteOpacity || 1})`,
+				color: defaultColor,
 			});
 		}
 	};
@@ -171,6 +188,7 @@ const ColorControl = props => {
 					label={label}
 					value={paletteColor}
 					globalProps={globalProps}
+					noColorPrefix
 					isHover={isHover}
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}
@@ -212,6 +230,7 @@ const ColorControl = props => {
 				<CustomColorControl
 					label={label}
 					color={getRGBA(color)}
+					onChangeInlineValue={onChangeInlineValue}
 					onChangeValue={onChangeValue}
 					onReset={onReset}
 					onResetOpacity={onResetOpacity}

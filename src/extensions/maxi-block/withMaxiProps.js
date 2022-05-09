@@ -3,11 +3,16 @@
  */
 import { useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import handleSetAttributes from './handleSetAttributes';
+import {
+	handleInsertInlineStyles,
+	handleCleanInlineStyles,
+} from './inlineStyles';
 
 /**
  * External dependencies
@@ -62,10 +67,39 @@ const withMaxiProps = createHigherOrderComponent(
 					onChange: setAttributes,
 				});
 
+			const ref = useRef(null);
+			const styleObjKeys = useRef([]);
+
+			const insertInlineStyles = ({
+				obj,
+				target = '',
+				isMultiplySelector = false,
+				pseudoElement = '',
+			}) =>
+				handleInsertInlineStyles({
+					styleObj: obj,
+					target,
+					isMultiplySelector,
+					pseudoElement,
+					styleObjKeys,
+					ref,
+				});
+
+			const cleanInlineStyles = (target = '', pseudoElement = '') =>
+				handleCleanInlineStyles(
+					target,
+					pseudoElement,
+					styleObjKeys,
+					ref
+				);
+
 			return (
 				<WrappedComponent
 					{...ownProps}
+					ref={ref}
 					maxiSetAttributes={maxiSetAttributes}
+					insertInlineStyles={insertInlineStyles}
+					cleanInlineStyles={cleanInlineStyles}
 					deviceType={deviceType}
 					winBreakpoint={winBreakpoint}
 					hasInnerBlocks={hasInnerBlocks}

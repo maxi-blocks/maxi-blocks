@@ -37,11 +37,12 @@ const IconToolbar = memo(
 			attributes,
 			clientId,
 			maxiSetAttributes,
+			insertInlineStyles,
+			cleanInlineStyles,
 			name,
 			isSelected,
-			changeSVGContent,
 		} = props;
-		const { uniqueID, svgType, parentBlockStyle } = attributes;
+		const { uniqueID, svgType, blockStyle } = attributes;
 
 		const { editorVersion, breakpoint } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -124,9 +125,14 @@ const IconToolbar = memo(
 							blockName={name}
 							{...getGroupAttributes(attributes, 'icon')}
 							svgType={svgType}
-							changeSVGContent={changeSVGContent}
-							parentBlockStyle={parentBlockStyle}
-							onChange={obj => processAttributes(obj)}
+							blockStyle={blockStyle}
+							onChangeInline={(obj, target) =>
+								insertInlineStyles({ obj, target })
+							}
+							onChange={(obj, target) => {
+								processAttributes(obj);
+								cleanInlineStyles(target);
+							}}
 						/>
 						<IconBackground
 							blockName={name}
@@ -135,7 +141,16 @@ const IconToolbar = memo(
 								'icon',
 								'iconBackgroundColor',
 							])}
-							onChange={obj => processAttributes(obj)}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: '.maxi-button-block__icon',
+								})
+							}
+							onChange={obj => {
+								processAttributes(obj);
+								cleanInlineStyles('.maxi-button-block__icon');
+							}}
 						/>
 						<Border
 							blockName={name}

@@ -84,7 +84,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end',
 			'number-counter-start',
 			'number-counter-stroke',
-			'number-counter-title-font-size',
+			'number-counter-title-font-size-general',
 		]);
 
 		const expectAttributes = {
@@ -94,7 +94,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end': 50,
 			'number-counter-start': 20,
 			'number-counter-stroke': 50,
-			'number-counter-title-font-size': 19,
+			'number-counter-title-font-size-general': 19,
 		};
 
 		expect(numberResult).toStrictEqual(expectAttributes);
@@ -151,14 +151,14 @@ describe('NumberCounterControl', () => {
 
 		// expect
 		const colorResult = await getAttributes([
-			'number-counter-text-palette-color',
-			'number-counter-circle-bar-palette-color',
+			'number-counter-text-palette-color-general',
+			'number-counter-circle-bar-palette-color-general',
 			'number-counter-circle-background-palette-color',
 		]);
 
 		const expectedColorAttributes = {
-			'number-counter-text-palette-color': 4,
-			'number-counter-circle-bar-palette-color': 2,
+			'number-counter-text-palette-color-general': 4,
+			'number-counter-circle-bar-palette-color-general': 2,
 			'number-counter-circle-background-palette-color': 3,
 		};
 
@@ -173,9 +173,9 @@ describe('NumberCounterControl', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
-		expect(
-			await getAttributes('number-counter-title-font-family')
-		).toStrictEqual('Montserrat');
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			'Montserrat'
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -66,8 +66,9 @@ const EditMainBlock = memo(MainBlock, (rawOldProps, rawNewProps) => {
 		const response = {};
 
 		Object.entries(props).forEach(([key, value]) => {
-			if (typeof value !== 'function' && typeof value !== 'object')
-				response[key] = value;
+			if (typeof value !== 'function') response[key] = value;
+			if (typeof value !== 'object')
+				response[key] = JSON.stringify(value);
 		});
 
 		return response;

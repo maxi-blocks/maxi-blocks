@@ -1,5 +1,6 @@
 body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 
 	img {

@@ -127,82 +127,17 @@ export const imageUploader = async (imageSrc, usePlaceholderImage) => {
 };
 
 export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
-	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
-	const clientId = getSelectedBlockClientId();
-	const currentAttributes = getBlock(clientId).attributes;
-
-	if (!currentAttributes) return false;
-
-	const fillColor = !currentAttributes[`${target}-fill-palette-status`]
-		? currentAttributes[`${target}-fill-color`]
-		: getColorRGBAString({
-				firstVar: 'icon-fill',
-				secondVar: `color-${
-					currentAttributes[`${target}-fill-palette-color`]
-				}`,
-				opacity: currentAttributes[`${target}-fill-palette-opacity`],
-				blockStyle,
-		  }) || '';
-
-	const lineColor = !currentAttributes[`${target}-line-palette-status`]
-		? currentAttributes[`${target}-line-color`]
-		: getColorRGBAString({
-				firstVar: 'icon-stroke',
-				secondVar: `color-${
-					currentAttributes[`${target}-line-palette-color`]
-				}`,
-				opacity: currentAttributes[`${target}-line-palette-opacity`],
-				blockStyle,
-		  }) || '';
-
-	const shapeFillColor = !currentAttributes[`${target}-fill-palette-status`]
-		? currentAttributes[`${target}-fill-color`]
-		: getColorRGBAString({
-				firstVar: 'shape-fill',
-				secondVar: `color-${
-					currentAttributes[`${target}-fill-palette-color`]
-				}`,
-				opacity: 100,
-				blockStyle,
-		  }) || '';
-
-	const iconNoInheritColor = !currentAttributes[`${target}-palette-status`]
-		? currentAttributes[`${target}-color`]
-		: getColorRGBAString({
-				firstVar: 'color',
-				secondVar: `color-${
-					currentAttributes[`${target}-palette-color`]
-				}`,
-				opacity: 100,
-				blockStyle,
-		  }) || '';
-
-	const iconInheritColor = !currentAttributes['palette-status-general']
-		? currentAttributes['color-general']
-		: getColorRGBAString({
-				firstVar: 'color',
-				secondVar: `color-${currentAttributes['palette-color-general']}`,
-				opacity: 100,
-				blockStyle,
-		  }) || '';
-
-	const iconColor = currentAttributes['icon-inherit']
-		? iconInheritColor
-		: iconNoInheritColor;
-
 	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
-	const fillStr = `fill:${target === 'shape' ? shapeFillColor : fillColor}`;
+	const fillStr = 'fill:#ff4a17';
 
 	const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-	const fillStr2 = ` fill="${
-		target === 'shape' ? shapeFillColor : fillColor
-	}`;
+	const fillStr2 = ' fill="#ff4a17';
 
 	const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
-	const strokeStr = `stroke:${target === 'icon' ? iconColor : lineColor}`;
+	const strokeStr = 'stroke:#081219';
 
 	const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
-	const strokeStr2 = ` stroke="${target === 'icon' ? iconColor : lineColor}`;
+	const strokeStr2 = ' stroke="#081219';
 
 	return target === 'svg'
 		? svgCode

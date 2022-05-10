@@ -19,7 +19,7 @@ const getTarget = target => {
  *
  * @param {obj} styles responsive styles device
  */
-const getResponsiveStyles = styles => {
+export const getResponsiveStyles = styles => {
 	let responsiveStyles = '';
 	for (const [key, value] of Object.entries(styles)) {
 		responsiveStyles += ` ${key}: ${value};`;

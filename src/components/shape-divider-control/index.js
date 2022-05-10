@@ -245,7 +245,7 @@ const ShapeDividerControl = props => {
 													{showShapes('top')}
 												</button>
 											)}
-											renderContent={() => (
+											renderContent={({ onClose }) => (
 												<SettingTabsControl
 													type='buttons'
 													className='maxi-shape-divider-control__shape-list'
@@ -255,12 +255,13 @@ const ShapeDividerControl = props => {
 														]
 													}
 													items={shapeItemsTop}
-													onChange={shapeStyle =>
+													onChange={shapeStyle => {
 														onChange({
 															'shape-divider-top-shape-style':
 																shapeStyle,
-														})
-													}
+														});
+														onClose();
+													}}
 												/>
 											)}
 										/>
@@ -420,7 +421,7 @@ const ShapeDividerControl = props => {
 													{showShapes('bottom')}
 												</button>
 											)}
-											renderContent={() => (
+											renderContent={({ onClose }) => (
 												<SettingTabsControl
 													type='buttons'
 													className='maxi-shape-divider-control__shape-list'
@@ -430,12 +431,13 @@ const ShapeDividerControl = props => {
 														]
 													}
 													items={shapeItemsBottom}
-													onChange={shapeStyle =>
+													onChange={shapeStyle => {
 														onChange({
 															'shape-divider-bottom-shape-style':
 																shapeStyle,
-														})
-													}
+														});
+														onClose();
+													}}
 												/>
 											)}
 										/>

@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AxisControl from '../axis-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import MarginControl from '../margin-control';
+import PaddingControl from '../padding-control';
 
 /**
  * Component
@@ -20,68 +20,23 @@ const marginPadding = ({
 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
-	const { blockFullWidth } = attributes;
-
 	return {
 		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
 		content: (
 			<>
 				{!disableMargin && (
-					<AxisControl
-						{...getGroupAttributes(
-							attributes,
-							'margin',
-							false,
-							prefix
-						)}
+					<MarginControl
+						{...attributes}
 						prefix={prefix}
-						label={__('Margin', 'maxi-blocks')}
 						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
-						target='margin'
-						optionType='string'
-						blockFullWidth={blockFullWidth}
-						minMaxSettings={{
-							px: {
-								min: -999,
-								max: 999,
-								step: 1,
-							},
-							em: {
-								min: -999,
-								max: 999,
-								step: 0.1,
-							},
-							vw: {
-								min: -999,
-								max: 999,
-								step: 0.1,
-							},
-							'%': {
-								min: -999,
-								max: 999,
-								step: 0.1,
-							},
-						}}
-						enableAxisUnits
 					/>
 				)}
-				<AxisControl
-					{...getGroupAttributes(
-						attributes,
-						'padding',
-						false,
-						prefix
-					)}
+				<PaddingControl
+					{...attributes}
 					prefix={prefix}
-					label={__('Padding', 'maxi-blocks')}
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
-					target='padding'
-					optionType='string'
-					blockFullWidth={blockFullWidth}
-					disableAuto
-					enableAxisUnits
 				/>
 			</>
 		),

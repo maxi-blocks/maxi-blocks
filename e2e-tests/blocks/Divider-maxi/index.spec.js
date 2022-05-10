@@ -28,6 +28,9 @@ describe('Divider Maxi', () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
 
+	it('Divider Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 	it('Check Divider alignment', async () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 

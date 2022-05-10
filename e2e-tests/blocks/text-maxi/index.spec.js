@@ -23,6 +23,7 @@ import {
 	getBlockAttributes,
 	getBlockStyle,
 	openPreviewPage,
+	addCustomCSS,
 	setAttributes,
 	addCustomCSS,
 } from '../../utils';

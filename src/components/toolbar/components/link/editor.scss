@@ -176,13 +176,18 @@
 		}
 		&__search-results {
 			padding: 8px 0 0px;
+			&:hover {
+				.block-editor-link-control__search-item-type {
+					background-color: var(--maxi-black-1-color);
+				}
+			}
 		}
 		&__search-item {
 			margin-bottom: 0;
 		}
 		&__search-item-type {
 			background-color: var(--maxi-primary-color);
-			padding: 4px 17px;
+			padding: 5px 17px;
 			height: 24px;
 			border-radius: 0;
 		}

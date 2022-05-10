@@ -22,6 +22,11 @@
 					padding: 5px;
 					margin-bottom: 0;
 					height: 36px;
+					&[aria-pressed='true'] {
+						color: #007cba;
+						background-color: #eaf2f6 !important;
+						border-bottom: 3px solid #007cba !important;
+					}
 				}
 
 				svg {

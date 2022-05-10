@@ -71,5 +71,12 @@
 				}
 			}
 		}
+		.maxi-axis-control {
+			& > div {
+				& > .maxi-axis-control__unit-header {
+					display: none;
+				}
+			}
+		}
 	}
 }

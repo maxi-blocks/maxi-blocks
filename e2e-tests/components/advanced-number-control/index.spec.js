@@ -68,4 +68,95 @@ describe('Advanced Number Control', () => {
 
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual('');
 	});
+	it('Checking the advanced number control max value', async () => {
+		await changeResponsive(page, 'base');
+
+		// px max default value
+		await openSidebarTab(page, 'style', 'height width');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-full-size-control .maxi-advanced-number-control'
+			),
+			newNumber: '4000',
+		});
+		expect(await getAttributes('height-general')).toStrictEqual(3999);
+
+		// em max default value
+
+		const heightSelector = await page.$(
+			'.maxi-full-size-control .maxi-advanced-number-control select'
+		);
+
+		await heightSelector.select('em');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-full-size-control .maxi-advanced-number-control'
+			),
+			newNumber: '9999',
+		});
+
+		expect(await getAttributes('height-general')).toStrictEqual(999);
+
+		// vw max default value
+		await heightSelector.select('vw');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-full-size-control .maxi-advanced-number-control'
+			),
+			newNumber: '9999',
+		});
+
+		expect(await getAttributes('height-general')).toStrictEqual(999);
+	});
+
+	it('Checking the advanced number control min value', async () => {
+		await openSidebarTab(page, 'style', 'margin padding');
+
+		// px min default value
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			newNumber: '-4000',
+		});
+		expect(await getAttributes('height-general')).toStrictEqual(-999);
+
+		// em min default value
+		const marginSelector = await page.$(
+			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin select'
+		);
+
+		await marginSelector.select('em');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			newNumber: '-9999',
+		});
+
+		expect(await getAttributes('height-general')).toStrictEqual(-999);
+
+		// vw min default value
+		await marginSelector.select('vw');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			newNumber: '-9999',
+		});
+
+		expect(await getAttributes('height-general')).toStrictEqual(-999);
+	});
 });

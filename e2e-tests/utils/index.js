@@ -1,4 +1,3 @@
-export { default as addCustomCSS } from './addCustomCSS';
 export { default as addBackgroundLayer } from './addBackgroundLayer';
 export { default as addBackgroundLayerCanvas } from './addBackgroundLayerCanvas';
 export { default as addTypographyOptions } from './addTypographyOptions';

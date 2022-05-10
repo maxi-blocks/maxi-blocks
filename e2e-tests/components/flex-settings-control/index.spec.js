@@ -47,14 +47,14 @@ describe('FlexSettings', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__row-gap'),
+			instance: await page.$('.maxi-flex__row-gap'),
 			newNumber: '55',
 			newValue: 'vw',
 		});
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__column-gap'),
+			instance: await page.$('.maxi-flex__column-gap'),
 			newNumber: '77',
 			newValue: 'em',
 		});
@@ -294,6 +294,8 @@ describe('FlexSettings', () => {
 			content => content.innerHTML
 		);
 		expect(warningBoxFlex).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Checking the flex options responsive', async () => {
 		// this openSidebar is required
@@ -331,14 +333,14 @@ describe('FlexSettings', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__row-gap'),
+			instance: await page.$('.maxi-flex__row-gap'),
 			newNumber: '55',
 			newValue: 'vw',
 		});
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__column-gap'),
+			instance: await page.$('.maxi-flex__column-gap'),
 			newNumber: '77',
 			newValue: 'em',
 		});
@@ -374,14 +376,14 @@ describe('FlexSettings', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__row-gap'),
+			instance: await page.$('.maxi-flex__row-gap'),
 			newNumber: '23',
 			newValue: 'em',
 		});
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__column-gap'),
+			instance: await page.$('.maxi-flex__column-gap'),
 			newNumber: '34',
 			newValue: 'px',
 		});
@@ -453,25 +455,25 @@ describe('FlexSettings', () => {
 		expect(flowSelectorXS).toStrictEqual('column');
 
 		const rowGapXS = await accordionPanel.$eval(
-			'.maxi-typography-control__row-gap input',
+			'.maxi-flex__row-gap input',
 			selector => selector.value
 		);
 		expect(rowGapXS).toStrictEqual('23');
 
 		const rowGapSelectorXS = await accordionPanel.$eval(
-			'.maxi-typography-control__row-gap select',
+			'.maxi-flex__row-gap select',
 			selector => selector.value
 		);
 		expect(rowGapSelectorXS).toStrictEqual('em');
 
 		const columnGapXS = await accordionPanel.$eval(
-			'.maxi-typography-control__column-gap input',
+			'.maxi-flex__column-gap input',
 			selector => selector.value
 		);
 		expect(columnGapXS).toStrictEqual('34');
 
 		const columnGapSelectorXS = await accordionPanel.$eval(
-			'.maxi-typography-control__column-gap select',
+			'.maxi-flex__column-gap select',
 			selector => selector.value
 		);
 		expect(columnGapSelectorXS).toStrictEqual('px');
@@ -516,26 +518,27 @@ describe('FlexSettings', () => {
 		expect(flowSelectorM).toStrictEqual('wrap');
 
 		const rowGapM = await accordionPanel.$eval(
-			'.maxi-typography-control__row-gap input',
+			'.maxi-flex__row-gap input',
 			selector => selector.value
 		);
 		expect(rowGapM).toStrictEqual('55');
 		const rowGapSelectorM = await accordionPanel.$eval(
-			'.maxi-typography-control__row-gap select',
+			'.maxi-flex__row-gap select',
 			selector => selector.value
 		);
 		expect(rowGapSelectorM).toStrictEqual('vw');
 
 		const columnGapM = await accordionPanel.$eval(
-			'.maxi-typography-control__column-gap input',
+			'.maxi-flex__column-gap input',
 			selector => selector.value
 		);
 		expect(columnGapM).toStrictEqual('77');
 
 		const columnGapSelectorM = await accordionPanel.$eval(
-			'.maxi-typography-control__column-gap select',
+			'.maxi-flex__column-gap select',
 			selector => selector.value
 		);
 		expect(columnGapSelectorM).toStrictEqual('em');
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

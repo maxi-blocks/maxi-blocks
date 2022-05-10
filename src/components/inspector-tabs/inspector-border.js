@@ -88,6 +88,7 @@ const border = ({
 									breakpoint={deviceType}
 									clientId={clientId}
 									globalProps={globalProps}
+									isPaddingEnable
 								/>
 							),
 						},

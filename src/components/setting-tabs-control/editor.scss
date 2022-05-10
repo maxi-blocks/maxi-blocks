@@ -119,6 +119,10 @@
 			padding: 8px 8px 0;
 			background-color: #fff;
 		}
+		&_has-padding {
+			padding-left: 8px;
+			padding-right: 8px;
+		}
 
 		.maxi-tab-content {
 			display: none;

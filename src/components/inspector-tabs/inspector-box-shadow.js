@@ -60,6 +60,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 									}}
 									breakpoint={deviceType}
 									clientId={clientId}
+									isPaddingEnable
 								/>
 							),
 						},

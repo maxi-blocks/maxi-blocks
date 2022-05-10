@@ -47,7 +47,10 @@ class ToolbarPopover extends Component {
 		if (
 			this.ref.current?.ownerDocument.querySelectorAll(
 				'.toolbar-item__popover'
-			).length >= 2
+			).length >= 2 ||
+			this.ref.current?.ownerDocument.querySelector(
+				'.components-dropdown__content'
+			)
 		)
 			this.state.onClose();
 	}

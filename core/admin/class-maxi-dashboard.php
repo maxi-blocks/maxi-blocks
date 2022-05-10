@@ -3,11 +3,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-//======================================================================
-// MaxiBlocks Dashboard Settings
-//======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/admin/maxi-dashboard-settings.php';
-
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
@@ -55,6 +50,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'maxi_admin_scripts_styles'
             ));
+
+            $this->allow_svg_json_uploads();
         }
 
         public function maxi_get_menu_icon_base64()
@@ -500,8 +497,18 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
         }
 
-        public function save_breakpoints()
+        public function allow_svg_json_uploads()
         {
+            function maxi_svg_json_upload($mimes)
+            {
+                $mimes['json'] = 'text/plain';
+                $mimes['svg'] = 'image/svg+xml';
+                return $mimes;
+            }
+
+            if (get_option('allow_svg_json_uploads')) {
+                add_filter('upload_mimes', 'maxi_svg_json_upload');
+            }
         }
     }
 endif;

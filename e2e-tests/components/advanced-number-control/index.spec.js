@@ -119,7 +119,6 @@ describe('Advanced Number Control', () => {
 		await openSidebarTab(page, 'style', 'margin padding');
 
 		// px min default value
-
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
@@ -127,7 +126,9 @@ describe('Advanced Number Control', () => {
 			),
 			newNumber: '-4000',
 		});
-		expect(await getAttributes('height-general')).toStrictEqual(-999);
+		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
+			'-999'
+		);
 
 		// em min default value
 		const marginSelector = await page.$(
@@ -144,7 +145,9 @@ describe('Advanced Number Control', () => {
 			newNumber: '-9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual(-999);
+		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
+			'-999'
+		);
 
 		// vw min default value
 		await marginSelector.select('vw');
@@ -157,6 +160,8 @@ describe('Advanced Number Control', () => {
 			newNumber: '-9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual(-999);
+		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
+			'-999'
+		);
 	});
 });

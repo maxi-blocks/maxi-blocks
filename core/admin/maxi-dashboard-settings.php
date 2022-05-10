@@ -7,7 +7,7 @@
  *
  **/
 
-function svg_json_upload($mimes)
+function maxi_svg_json_upload($mimes)
 {
     $mimes['json'] = 'text/plain';
     $mimes['svg'] = 'image/svg+xml';
@@ -15,5 +15,5 @@ function svg_json_upload($mimes)
 }
 
 if (get_option('allow_svg_json_uploads')) {
-    add_filter('upload_mimes', 'svg_json_upload');
+    add_filter('upload_mimes', 'maxi_svg_json_upload');
 }

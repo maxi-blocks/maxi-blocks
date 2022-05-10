@@ -118,7 +118,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 
                 echo '<a class="maxi-dashboard_nav-tab nav-tab ' . esc_attr($tab_page) . esc_attr($active_tab) . '" href="?page=' . esc_attr(self::$maxi_slug_dashboard) . '&tab=' . esc_attr($tab_page) . '">' . wp_kses($tab_name, $this->maxi_blocks_allowed_html()) . '</a>';
             }
-            echo '</h4> <form action="options.php?panel=test&" method="post" class="maxi-dashboard_form">';
+            echo '</h4><form action="options.php" method="post" class="maxi-dashboard_form">';
             settings_fields('maxi-blocks-settings-group');
             do_settings_sections('maxi-blocks-settings-group');
             echo '<div class="maxi-dashboard_main">';
@@ -246,7 +246,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description = '<h4>'.__('Serve Google fonts locally', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on
-            your website. This method removes the connection to Google’s servers for a visitor browsing your website.
+            your website. This method removes the connection to_ Google’s servers for a visitor browsing your website.
             This can improve or degrade performance depending on hosting quality or resource usage. Please test and
             monitor carefully. Unused font files are removed periodically to conserve space.', self::$maxi_text_domain).'</p>';
             $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
@@ -309,7 +309,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= get_submit_button();
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-
             $content .= '</div>'; // maxi-dashboard_main-content_accordion
             $content .= '</div>'; // maxi-dashboard_main-content
 
@@ -377,21 +376,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $input;
         }
 
-        public function generate__breakpoint_input($breakpoint, $value)
+        public function generate_breakpoint_input($breakpoint, $value)
         {
+            $breakpoint_label = 'maxi-breakpoint-'.$breakpoint;
+
             $input = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
             $input .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
             $input .= '<label class="maxi-dashboard_main-content_accordion-item-content-switcher__label" for="';
-            $input .= $breakpoint;
+            $input .= $breakpoint_label;
             $input .= '">';
             $input .= $breakpoint;
             $input .= '</label>'; // maxi-dashboard_main-content_accordion-item-content-switcher__label
             $input .= '<input name="';
-            $input .= $breakpoint;
-            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-number" type="number" value="';
+            $input .= $breakpoint_label.'" id="'.$breakpoint_label;
+            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-number" type="number" min="0" value="';
             $input .= $value;
             $input .= '">';
-           
             $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__input
             $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
 
@@ -404,14 +404,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $api = new MaxiBlocks_API();
           
             $breakpoints_html = '';
-            $breakpoints_array = array_reverse(maybe_unserialize($api::get_maxi_blocks_breakpoints()));
+            $breakpoints_array = array_reverse(($api->get_maxi_blocks_breakpoints()));
 
             foreach ($breakpoints_array as $breakpoint => $value) {
                 $value_num = intval($value);
-                $breakpoints_html .= $this->generate__breakpoint_input($breakpoint, $value_num);
+                $breakpoints_html .= $this->generate_breakpoint_input($breakpoint, $value_num);
             }
 
-            // $breakpoints_html .= json_encode(maybe_unserialize($breakpoints));
+            $breakpoints_string = esc_html(json_encode($breakpoints_array));
+
+            $breakpoints_html .= '<input type="hidden" name="maxi_breakpoints" id="maxi-breakpoints" value="';
+            $breakpoints_html .= $breakpoints_string;
+            $breakpoints_html .= '">';
+
             return $breakpoints_html;
         }
 
@@ -446,6 +451,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'boolean',
                 'default' => false,
             );
+            
             register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
@@ -453,6 +459,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
+            register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
         }
 
         public function get_folder_size($folder)
@@ -491,6 +498,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
                 new MaxiBlocks_Local_Fonts();
             }
+        }
+
+        public function save_breakpoints()
+        {
         }
     }
 endif;

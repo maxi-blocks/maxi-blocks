@@ -23,7 +23,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 		position: relative;
 		width: 100%;
 		max-width: 100%;
-		height: 100%;
+		flex-grow: 1;
 		box-sizing: border-box;
 
 		> svg:first-child pattern image {

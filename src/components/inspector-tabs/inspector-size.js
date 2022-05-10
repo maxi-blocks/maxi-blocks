@@ -80,6 +80,7 @@ const size = ({
 						hideMaxWidth={hideMaxWidth || isBlockFullWidth}
 						isBlockFullWidth={isBlockFullWidth}
 						allowForceAspectRatio={block}
+						isFirstOnHierarchy={isFirstOnHierarchy}
 					/>
 				</>
 			</ResponsiveTabsControl>

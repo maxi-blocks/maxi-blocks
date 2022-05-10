@@ -330,32 +330,41 @@ const LibraryContainer = props => {
 	/** Patterns / Blocks Results */
 	const patternsResults = ({ hit }) => {
 		return (
-			<>
-				<MasonryItem
-					type='patterns'
-					key={`maxi-cloud-masonry__item-${hit.post_id}`}
-					demoUrl={hit.demo_url}
-					previewIMG={hit.preview_image_url}
-					isPro={hit.taxonomies.cost === 'pro'}
-					taxonomies={hit.taxonomies?.category?.[0]}
-					serial={hit.post_number}
-					onRequestInsert={() =>
-						onRequestInsertPattern(hit.gutenberg_code, isChecked)
-					}
-				/>
-			</>
+			<MasonryItem
+				type='patterns'
+				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				demoUrl={hit.demo_url}
+				previewIMG={hit.preview_image_url}
+				isPro={hit.taxonomies.cost === 'pro'}
+				taxonomies={hit.taxonomies?.category?.[0]}
+				serial={hit.post_number}
+				onRequestInsert={() =>
+					onRequestInsertPattern(hit.gutenberg_code, isChecked)
+				}
+			/>
 		);
 	};
 
 	/** SVG Icons */
 	const onRequestInsertSVG = (svgCode, svgType) => {
+		const style = svgCode.substr(
+			svgCode.indexOf('<style>') + 7,
+			svgCode.indexOf('</style>') - svgCode.indexOf('<style>') - 7
+		);
 		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
+
+		const hoverStyle = style
+			.replaceAll(svgClass, `${svgClass}:hover`)
+			.replaceAll('icon-stroke', 'icon-stroke-hover')
+			.replaceAll('icon-fill', 'icon-fill-hover');
+
+		const withHoverStyle = svgCode.replace(style, style + hoverStyle);
 		const newSvgClass = `${svgClass}__${uniqueId()}`;
 		const replaceIt = `${svgClass}`;
 
 		const finalSvgCode = svgAttributesReplacer(
 			blockStyle,
-			svgCode
+			withHoverStyle
 		).replaceAll(replaceIt, newSvgClass);
 
 		if (isValidTemplate(finalSvgCode)) {

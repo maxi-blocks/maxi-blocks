@@ -112,7 +112,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		// to support old blocks, we check if blockStyle has 'maxi-' prefix
 		blockStyle && blockStyle.includes('maxi-')
 			? blockStyle
-			: `maxi-${blockStyle}`,
+			: `maxi-${blockStyle ?? 'light'}`,
 		extraClassName,
 		uniqueID,
 		className,

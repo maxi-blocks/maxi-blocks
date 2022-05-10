@@ -297,8 +297,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
-		const { uniqueID, 'background-layers': bgLayers } =
-			this.props.attributes;
+		const {
+			uniqueID,
+			'background-layers': bgLayers,
+			relations,
+		} = this.props.attributes;
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,
@@ -316,6 +319,9 @@ class MaxiBlockComponent extends Component {
 			[uniqueID]: {
 				...(!isEmpty(bgParallaxLayers) && {
 					...{ parallax: bgParallaxLayers },
+				}),
+				...(!isEmpty(relations) && {
+					relations,
 				}),
 				...(hasVideo && { bg_video: true }),
 				...(hasScrollEffects && { scroll_effects: true }),

@@ -9,11 +9,6 @@ eslint-disable react/no-unknown-property
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
- * External dependencies
- */
-import { round } from 'lodash';
-
-/**
  * Save
  */
 const save = props => {
@@ -22,7 +17,6 @@ const save = props => {
 		uniqueID,
 		'number-counter-stroke': stroke,
 		'number-counter-circle-status': circleStatus,
-		'number-counter-title-font-size': fontSize,
 		'number-counter-rounded-status': roundedStatus,
 	} = attributes;
 
@@ -66,7 +60,6 @@ const save = props => {
 							text-anchor='middle'
 							x='50%'
 							y='50%'
-							dy={`${round(fontSize / 4, 2)}px`}
 						/>
 					</svg>
 				)}

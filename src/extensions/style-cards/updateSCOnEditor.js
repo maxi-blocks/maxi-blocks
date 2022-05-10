@@ -25,7 +25,10 @@ const getColorString = (obj, target, style) => {
 	const paletteColor = obj[`${prefix}palette-color`];
 	const paletteOpacity = obj[`${prefix}palette-opacity`];
 	const color =
-		target === 'line' || target === 'fill'
+		target === 'line' ||
+		target === 'fill' ||
+		target === 'hover-line' ||
+		target === 'hover-fill'
 			? obj[target]
 			: obj[`${prefix}color`];
 
@@ -161,6 +164,14 @@ export const getSCVariablesObject = styleCards => {
 					if (obj['fill-global'])
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
+
+					if (obj['hover-line-global'])
+						response[`--maxi-${style}-${element}-stroke-hover`] =
+							getColorString(obj, 'hover-line', style);
+
+					if (obj['hover-fill-global'])
+						response[`--maxi-${style}-${element}-fill-hover`] =
+							getColorString(obj, 'hover-fill', style);
 
 					break;
 

@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { select, useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
-import { cloneElement } from '@wordpress/element';
+import { useEffect, useState, cloneElement } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -28,6 +27,7 @@ const Accordion = props => {
 		disablePadding = false,
 		preExpandedAccordion,
 		blockName,
+		depth = 1,
 	} = props;
 
 	const [itemExpanded, setItemExpanded] = useState(preExpandedAccordion);
@@ -35,14 +35,14 @@ const Accordion = props => {
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
 	const updatedItemExpanded = useSelect(
-		() => select('maxiBlocks').receiveInspectorPath()?.[1]?.value
+		() => select('maxiBlocks').receiveInspectorPath()?.[depth]?.value
 	);
 
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
 
 	const toggleExpanded = uuid => {
-		updateInspectorPath({ depth: 1, value: uuid });
+		updateInspectorPath({ depth, value: uuid });
 		setItemExpanded(uuid);
 	};
 

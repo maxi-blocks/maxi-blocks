@@ -547,7 +547,12 @@ const MaxiToolbar = memo(
 						<VerticalAlign
 							clientId={clientId}
 							blockName={name}
-							verticalAlign={attributes.verticalAlign}
+							verticalAlign={getLastBreakpointAttribute({
+								target: 'justify-content',
+								breakpoint,
+								attributes,
+							})}
+							breakpoint={breakpoint}
 							uniqueID={uniqueID}
 							onChange={obj => maxiSetAttributes(obj)}
 						/>

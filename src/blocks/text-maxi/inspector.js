@@ -20,7 +20,6 @@ import listTab from './list-tab';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -114,63 +113,64 @@ const Inspector = props => {
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<>
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props,
-											}),
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsText,
+										categories: categoriesText,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props,
-											}),
-										},
-										...inspectorTabs.customCss({
-											props,
-											breakpoint: deviceType,
-											selectors: selectorsText,
-											categories: categoriesText,
-										}),
-										...inspectorTabs.scrollEffects({
-											props,
-										}),
-										...inspectorTabs.transform({
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props,
 										}),
-										...inspectorTabs.transition({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.display({
-											props,
-										}),
-										...inspectorTabs.opacity({
-											props,
-										}),
-										...inspectorTabs.position({
-											props,
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props,
-											}),
-										},
-										...inspectorTabs.overflow({
-											props,
-										}),
-										...inspectorTabs.flex({
-											props,
-										}),
-										...inspectorTabs.zindex({
-											props,
-										}),
-									]}
-								/>
-							</>
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.relation({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 				]}

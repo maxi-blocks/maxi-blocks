@@ -14,7 +14,6 @@ const checkCSS = async ({ page, cssInstances }) => {
 		await page.keyboard.type('background: red');
 
 		// validate css
-
 		await page.$$eval(
 			'.maxi-additional__css button',
 			(buttons, _i) => buttons[_i].click(),

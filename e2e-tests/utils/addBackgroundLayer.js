@@ -1,7 +1,7 @@
 import openSidebarTab from './openSidebarTab';
 
-const addBackgroundLayer = async (page, tab, type, isHover = false) => {
-	const accordion = await openSidebarTab(page, tab, 'background layer');
+const addBackgroundLayer = async (page, type, isHover = false) => {
+	const accordion = await openSidebarTab(page, 'style', 'background layer');
 	await accordion.$$eval(
 		'.maxi-tabs-control button',
 		(button, _isHover) => button[+_isHover].click(),

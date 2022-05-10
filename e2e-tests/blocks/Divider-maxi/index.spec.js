@@ -12,6 +12,8 @@ import {
 	changeResponsive,
 	addResponsiveTest,
 	getAttributes,
+	addBackgroundLayer,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Divider Maxi', () => {
@@ -25,7 +27,7 @@ describe('Divider Maxi', () => {
 	});
 
 	it('Divider Custom CSS', async () => {
-		await addBackgroundLayer(page, 'canvas', 'color');
+		// await addBackgroundLayer(page, 'canvas', 'color');
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
 	it('Check Divider alignment', async () => {

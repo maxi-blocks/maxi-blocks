@@ -227,6 +227,7 @@ describe('TextMaxi', () => {
 			'.block-editor-rich-text__editable'
 		);
 		await selectMaxiTextP.focus();
+		await page.keyboard.press('ArrowRight');
 
 		await page.keyboard.type(' and its awesome features', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -338,6 +339,7 @@ describe('TextMaxi', () => {
 			'.block-editor-rich-text__editable'
 		);
 		await selectMaxiTextP.focus();
+		await page.keyboard.press('ArrowRight');
 
 		await pressKeyTimes('ArrowLeft', '6');
 		await page.waitForTimeout(150);
@@ -383,6 +385,7 @@ describe('TextMaxi', () => {
 			'.block-editor-rich-text__editable'
 		);
 		await selectMaxiTextP.focus();
+		await page.keyboard.press('ArrowRight');
 
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -651,6 +654,7 @@ describe('TextMaxi', () => {
 			'.block-editor-rich-text__editable'
 		);
 		await selectMaxiTextP.focus();
+		await page.keyboard.press('ArrowRight');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 

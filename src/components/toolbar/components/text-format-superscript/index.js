@@ -10,11 +10,6 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import {
-	setFormat,
-	getCustomFormatValue,
-} from '../../../../extensions/text/formats';
 
 /**
  * Styles and icons
@@ -25,48 +20,18 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
-		props;
+	const { onChangeFormat, getValue } = props;
 
-	const getSuperscriptValue = () =>
-		getCustomFormatValue({
-			typography: { ...getGroupAttributes(props, 'typography') },
-			formatValue,
-			prop: 'vertical-align',
-			breakpoint,
-			textLevel,
-			styleCard,
-		}) || '';
+	const getSuperscriptValue = () => getValue('vertical-align') || '';
 
-	const superscriptValue = getSuperscriptValue();
-
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [isActive, setIsActive] = useState(
-		(superscriptValue === 'super' && true) || false
+		(getSuperscriptValue() === 'super' && true) || false
 	);
 
 	useEffect(() => {
-		const superscriptValue = getSuperscriptValue();
-
-		setIsActive((superscriptValue === 'super' && true) || false);
+		setIsActive((getSuperscriptValue() === 'super' && true) || false);
 	});
-
-	const onClick = () => {
-		const obj = setFormat({
-			formatValue,
-			isActive,
-			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
-			value: {
-				'vertical-align': isActive ? 'unset' : 'super',
-			},
-			breakpoint,
-			textLevel,
-		});
-
-		setIsActive(!isActive);
-
-		onChange(obj);
-	};
 
 	return (
 		<Tooltip
@@ -75,7 +40,11 @@ const TextFormatSuperscript = props => {
 		>
 			<Button
 				className='toolbar-item toolbar-item__superscript'
-				onClick={onClick}
+				onClick={() =>
+					onChangeFormat({
+						'vertical-align': isActive ? 'unset' : 'super',
+					})
+				}
 				aria-pressed={isActive}
 			>
 				<Icon

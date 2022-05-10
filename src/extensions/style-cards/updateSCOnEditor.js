@@ -103,11 +103,6 @@ export const getSCVariablesObject = styleCards => {
 			),
 		},
 	};
-	const settingsToAvoidInGeneral = [
-		'font-size',
-		'line-height',
-		'letter-spacing',
-	];
 	const elementsForColor = ['divider', 'icon', 'link'];
 
 	styles.forEach(style => {
@@ -117,19 +112,13 @@ export const getSCVariablesObject = styleCards => {
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
 					breakpoints.forEach(breakpoint => {
-						if (
-							!(
-								breakpoint === 'general' &&
-								settingsToAvoidInGeneral.includes(setting)
-							)
-						)
-							response[
-								`--maxi-${style}-${element}-${setting}-${breakpoint}`
-							] = getLastBreakpointAttribute({
-								target: setting,
-								breakpoint,
-								attributes: obj,
-							});
+						response[
+							`--maxi-${style}-${element}-${setting}-${breakpoint}`
+						] = getLastBreakpointAttribute({
+							target: setting,
+							breakpoint,
+							attributes: obj,
+						});
 					});
 				});
 

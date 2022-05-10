@@ -284,8 +284,6 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 
-		dispatch('maxiBlocks/text').removeFormatValue(this.props.clientId);
-
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 

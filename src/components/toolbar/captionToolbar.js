@@ -2,7 +2,13 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
+import {
+	useEffect,
+	useState,
+	memo,
+	forwardRef,
+	useContext,
+} from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { getScrollContainer } from '@wordpress/dom';
 
@@ -10,7 +16,7 @@ import { getScrollContainer } from '@wordpress/dom';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Utils
@@ -29,6 +35,7 @@ import {
  */
 import './editor.scss';
 import { getGroupAttributes } from '../../extensions/styles';
+import { getTypographyValue, setFormat } from '../../extensions/text/formats';
 
 /**
  * Component
@@ -42,9 +49,9 @@ const CaptionToolbar = memo(
 			insertInlineStyles,
 			cleanInlineStyles,
 			isSelected,
+			context,
 		} = props;
 		const {
-			captionContent: content,
 			isList = false,
 			linkSettings,
 			textLevel = 'p',
@@ -52,24 +59,21 @@ const CaptionToolbar = memo(
 			blockStyle,
 		} = attributes;
 
-		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
-			const { receiveMaxiSettings, receiveMaxiDeviceType } =
-				select('maxiBlocks');
+		const typography = { ...getGroupAttributes(props, 'typography') };
+
+		const { formatValue, onChangeTextFormat } = useContext(context);
+
+		const { breakpoint, styleCard } = useSelect(select => {
+			const { receiveMaxiDeviceType } = select('maxiBlocks');
 			const { receiveMaxiSelectedStyleCard } = select(
 				'maxiBlocks/style-cards'
 			);
-
-			const maxiSettings = receiveMaxiSettings();
-			const version = !isEmpty(maxiSettings.editor)
-				? maxiSettings.editor.version
-				: null;
 
 			const breakpoint = receiveMaxiDeviceType();
 
 			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 			return {
-				editorVersion: version,
 				breakpoint,
 				styleCard,
 			};
@@ -86,17 +90,6 @@ const CaptionToolbar = memo(
 			getScrollContainer(anchorRef) ||
 			document.body;
 
-		// Different from > WP 5.5.3
-		const stickyProps = {
-			...((parseFloat(editorVersion) <= 9.2 && {
-				__unstableSticky: true,
-			}) ||
-				(anchorRef &&
-					!isNaN(parseFloat(editorVersion)) && {
-						__unstableStickyBoundaryElement: boundaryElement,
-					})),
-		};
-
 		const processAttributes = obj => {
 			if ('content' in obj) {
 				const newCaptionContent = obj.content;
@@ -108,114 +101,112 @@ const CaptionToolbar = memo(
 			maxiSetAttributes(obj);
 		};
 
-		return (
-			<>
-				{isSelected && anchorRef && (
-					<Popover
-						noArrow
-						animate={false}
-						position='top center right'
-						focusOnMount={false}
-						anchorRef={anchorRef}
-						className={classnames('maxi-toolbar__popover')}
-						uniqueid={uniqueID}
-						__unstableSlotName='block-toolbar'
-						shouldAnchorIncludePadding
-						{...stickyProps}
-					>
-						<div className='toolbar-wrapper caption-toolbar'>
-							<TextOptions
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChange={obj => processAttributes(obj)}
-								node={anchorRef}
-								content={content}
-								breakpoint={breakpoint}
-								isList={isList}
-								textLevel={textLevel}
-								styleCard={styleCard}
-								clientId={clientId}
-								isCaptionToolbar
-								blockStyle={blockStyle}
-							/>
-							<TextColor
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChangeInline={obj =>
-									insertInlineStyles({
-										obj,
-										target: '.maxi-text-block__content',
-									})
-								}
-								onChange={obj => {
-									processAttributes(obj);
-									cleanInlineStyles(
-										'.maxi-text-block__content'
-									);
-								}}
-								breakpoint={breakpoint}
-								node={anchorRef}
-								isList={isList}
-								clientId={clientId}
-								textLevel={textLevel}
-								styleCard={styleCard}
-								isCaptionToolbar
-							/>
-							<Alignment
-								{...getGroupAttributes(
-									attributes,
-									'textAlignment'
-								)}
-								onChange={obj => processAttributes(obj)}
-								breakpoint={breakpoint}
-								isCaptionToolbar
-							/>
-							<TextBold
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChange={obj => processAttributes(obj)}
-								isList={isList}
-								breakpoint={breakpoint}
-								textLevel={textLevel}
-								styleCard={styleCard}
-								isCaptionToolbar
-							/>
-							<TextItalic
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChange={obj => processAttributes(obj)}
-								isList={isList}
-								breakpoint={breakpoint}
-								styleCard={styleCard}
-								isCaptionToolbar
-							/>
-							<TextLink
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChange={obj => processAttributes(obj)}
-								isList={isList}
-								linkSettings={linkSettings}
-								breakpoint={breakpoint}
-								textLevel={textLevel}
-								blockStyle={blockStyle}
-								styleCard={styleCard}
-								isCaptionToolbar
-							/>
-						</div>
-					</Popover>
-				)}
-			</>
-		);
+		const getValue = prop =>
+			getTypographyValue({
+				prop,
+				breakpoint,
+				typography,
+				formatValue,
+				textLevel,
+				styleCard,
+			});
+
+		const onChangeFormat = value => {
+			const obj = setFormat({
+				formatValue,
+				isList,
+				typography,
+				value,
+				breakpoint,
+				textLevel,
+				returnFormatValue: true,
+			});
+
+			const newFormatValue = { ...obj.formatValue };
+			delete obj.formatValue;
+
+			onChangeTextFormat(newFormatValue);
+
+			processAttributes(obj);
+		};
+
+		if (isSelected && anchorRef)
+			return (
+				<Popover
+					noArrow
+					animate={false}
+					position='top center right'
+					focusOnMount={false}
+					anchorRef={anchorRef}
+					className={classnames('maxi-toolbar__popover')}
+					uniqueid={uniqueID}
+					__unstableSlotName='block-toolbar'
+					shouldAnchorIncludePadding
+					__unstableStickyBoundaryElement={boundaryElement}
+				>
+					<div className='toolbar-wrapper caption-toolbar'>
+						<TextOptions
+							{...getGroupAttributes(attributes, 'typography')}
+							onChange={obj => processAttributes(obj)}
+							breakpoint={breakpoint}
+							isList={isList}
+							clientId={clientId}
+							isCaptionToolbar
+							context={context}
+						/>
+						<TextColor
+							{...getGroupAttributes(attributes, 'typography')}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: '.maxi-text-block__content',
+								})
+							}
+							onChange={obj => {
+								processAttributes(obj);
+								cleanInlineStyles('.maxi-text-block__content');
+							}}
+							breakpoint={breakpoint}
+							node={anchorRef}
+							isList={isList}
+							clientId={clientId}
+							textLevel={textLevel}
+							styleCard={styleCard}
+							isCaptionToolbar
+							context={context}
+						/>
+						<Alignment
+							{...getGroupAttributes(attributes, 'textAlignment')}
+							onChange={obj => processAttributes(obj)}
+							breakpoint={breakpoint}
+							isCaptionToolbar
+						/>
+						<TextBold
+							onChangeFormat={onChangeFormat}
+							getValue={getValue}
+							isCaptionToolbar
+						/>
+						<TextItalic
+							onChangeFormat={onChangeFormat}
+							getValue={getValue}
+							isCaptionToolbar
+						/>
+						<TextLink
+							{...getGroupAttributes(attributes, 'typography')}
+							onChange={obj => processAttributes(obj)}
+							isList={isList}
+							linkSettings={linkSettings}
+							breakpoint={breakpoint}
+							textLevel={textLevel}
+							blockStyle={blockStyle}
+							styleCard={styleCard}
+							isCaptionToolbar
+						/>
+					</div>
+				</Popover>
+			);
+
+		return null;
 	}),
 	// Avoids non-necessary renderings
 	(

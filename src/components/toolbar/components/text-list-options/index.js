@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useContext } from '@wordpress/element';
 import {
 	__unstableIndentListItems,
 	__unstableCanIndentListItems,
@@ -20,7 +22,6 @@ import {
 	fromListToText,
 	fromTextToList,
 	getFormattedString,
-	withFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -42,10 +43,12 @@ import {
 /**
  * TextListOptions
  */
-const TextListOptions = withFormatValue(props => {
-	const { blockName, formatValue, isList, typeOfList, onChange } = props;
+const TextListOptions = props => {
+	const { blockName, isList, typeOfList, onChange, context } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
+
+	const { formatValue } = useContext(context);
 
 	const getContent = content => {
 		if (!isList) return fromTextToList(content);
@@ -148,6 +151,6 @@ const TextListOptions = withFormatValue(props => {
 			</div>
 		</ToolbarPopover>
 	);
-});
+};
 
 export default TextListOptions;

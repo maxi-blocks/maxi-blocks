@@ -16,18 +16,13 @@ import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsText, categoriesText } from './custom-css';
 import listTab from './list-tab';
-
-/**
- * External dependencies
- */
-import { isEmpty, isEqual, cloneDeep } from 'lodash';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, context } = props;
 	const { isList, textLevel } = attributes;
 
 	return (
@@ -89,6 +84,7 @@ const Inspector = props => {
 												target: 'hover',
 												type: textLevel,
 											},
+											context,
 										}),
 										...inspectorTabs.blockBackground({
 											props,
@@ -114,63 +110,61 @@ const Inspector = props => {
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<>
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props,
-											}),
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsText,
+										categories: categoriesText,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props,
-											}),
-										},
-										...inspectorTabs.customCss({
-											props,
-											breakpoint: deviceType,
-											selectors: selectorsText,
-											categories: categoriesText,
-										}),
-										...inspectorTabs.scrollEffects({
-											props,
-										}),
-										...inspectorTabs.transform({
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props,
 										}),
-										...inspectorTabs.transition({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.display({
-											props,
-										}),
-										...inspectorTabs.opacity({
-											props,
-										}),
-										...inspectorTabs.position({
-											props,
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props,
-											}),
-										},
-										...inspectorTabs.overflow({
-											props,
-										}),
-										...inspectorTabs.flex({
-											props,
-										}),
-										...inspectorTabs.zindex({
-											props,
-										}),
-									]}
-								/>
-							</>
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 				]}

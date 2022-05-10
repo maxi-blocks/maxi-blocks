@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useContext, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,7 +13,6 @@ import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getCustomFormatValue,
-	withFormatValue,
 	setFormat,
 } from '../../../../extensions/text/formats';
 import {
@@ -30,21 +30,23 @@ import { toolbarType } from '../../../../icons';
 /**
  * TextColor
  */
-const TextColor = withFormatValue(props => {
+const TextColor = props => {
 	const {
 		blockName,
 		onChangeInline,
 		onChange,
 		breakpoint,
-		formatValue,
 		clientId,
 		isList,
 		textLevel,
 		styleCard,
 		isCaptionToolbar = false,
+		context,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
+
+	const { formatValue, onChangeTextFormat } = useContext(context);
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
@@ -89,7 +91,13 @@ const TextColor = withFormatValue(props => {
 			value,
 			breakpoint,
 			textLevel,
+			returnFormatValue: true,
 		});
+
+		const newFormatValue = { ...obj.formatValue };
+		delete obj.formatValue;
+
+		onChangeTextFormat(newFormatValue);
 
 		onChange(obj);
 	};
@@ -151,6 +159,6 @@ const TextColor = withFormatValue(props => {
 			</div>
 		</ToolbarPopover>
 	);
-});
+};
 
 export default TextColor;

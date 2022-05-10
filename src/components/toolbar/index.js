@@ -104,10 +104,10 @@ const MaxiToolbar = memo(
 			inlineStylesTargets = inlineStylesTargetsDefault,
 			resetNumberHelper,
 			copyPasteMapping,
+			context,
 		} = props;
 		const {
 			blockFullWidth,
-			content,
 			customLabel,
 			fullWidth,
 			isFirstOnHierarchy,
@@ -232,6 +232,7 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							textLevel={textLevel}
 							styleCard={styleCard}
+							context={context}
 						/>
 						<TextOptions
 							{...getGroupAttributes(attributes, [
@@ -240,15 +241,12 @@ const MaxiToolbar = memo(
 							])}
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
-							node={anchorRef}
-							content={content}
 							breakpoint={breakpoint}
 							isList={isList}
-							typeOfList={typeOfList}
 							textLevel={textLevel}
 							styleCard={styleCard}
 							clientId={clientId}
-							blockStyle={blockStyle}
+							context={context}
 						/>
 						<Mover clientId={clientId} blockName={name} />
 						<TextLevel
@@ -266,6 +264,7 @@ const MaxiToolbar = memo(
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => maxiSetAttributes(obj)}
+							context={context}
 						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<>
@@ -543,6 +542,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 							blockStyle={blockStyle}
 							styleCard={styleCard}
+							context={context}
 						/>
 						<VerticalAlign
 							clientId={clientId}
@@ -622,6 +622,7 @@ const MaxiToolbar = memo(
 							copyPasteMapping={copyPasteMapping}
 							prefix={prefix}
 							onChange={obj => maxiSetAttributes(obj)}
+							context={context}
 						/>
 					</div>
 				</Popover>

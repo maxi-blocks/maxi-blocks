@@ -23,11 +23,9 @@ const breakpointResizer = (
 		editorWrapper.style.width = '';
 		editorWrapper.style.margin = '';
 	} else {
-		if (size !== 'xxl') editorWrapper.style.width = `${responsiveWidth}px`;
-		else editorWrapper.style.width = `${responsiveWidth}px`;
+		editorWrapper.style.width = `${responsiveWidth}px`;
 
-		if (winHeight > responsiveWidth)
-			editorWrapper.style.margin = '36px auto';
+		if (winHeight > responsiveWidth) editorWrapper.style.margin = '0 auto';
 		else editorWrapper.style.margin = '';
 	}
 };

@@ -30,7 +30,7 @@ const editAxisControl = async ({
 
 	if (unit) {
 		// change unit
-		const selector = await instance.$('.maxi-axis-control__units select');
+		const selector = await instance.$(' select');
 
 		await selector.select(unit);
 	}

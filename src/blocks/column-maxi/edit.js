@@ -86,7 +86,10 @@ class edit extends MaxiBlockComponent {
 			const columnHeightObj = this.getHeightObj();
 
 			if (
-				this.resizableObject.current.state.width !== `${columnWidth}%`
+				this.resizableObject.current.state.width !==
+					`${columnWidth}%` ||
+				this.resizableObject.current.state.height !==
+					columnHeightObj.height
 			) {
 				this.resizableObject.current.updateSize({
 					width: `${columnWidth}%`,

@@ -206,18 +206,13 @@ class edit extends MaxiBlockComponent {
 					},
 				}}
 			>
-				<Inspector
-					key={`block-settings-${uniqueID}`}
-					{...this.props}
-					context={ImageContext}
-				/>
+				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					prefix='image-'
-					context={ImageContext}
 				/>
 				<MaxiPopoverButton
 					key={`popover-${uniqueID}`}
@@ -344,7 +339,6 @@ class edit extends MaxiBlockComponent {
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
 											{...this.props}
-											context={ImageContext}
 										/>
 										<RichText
 											ref={this.textRef}
@@ -407,7 +401,6 @@ class edit extends MaxiBlockComponent {
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
 											{...this.props}
-											context={ImageContext}
 										/>
 										<RichText
 											ref={this.textRef}

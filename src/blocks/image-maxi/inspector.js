@@ -221,8 +221,7 @@ const dimensionTab = props => {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, clientId, deviceType, maxiSetAttributes, context } =
-		props;
+	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
 	const {
 		altSelector,
 		blockStyle,
@@ -486,9 +485,6 @@ const Inspector = props => {
 																	}}
 																	styleCardPrefix=''
 																	allowLink
-																	context={
-																		context
-																	}
 																/>
 															</>
 														)}

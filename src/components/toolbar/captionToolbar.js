@@ -35,7 +35,11 @@ import {
  */
 import './editor.scss';
 import { getGroupAttributes } from '../../extensions/styles';
-import { getTypographyValue, setFormat } from '../../extensions/text/formats';
+import {
+	getTypographyValue,
+	setFormat,
+	textContext,
+} from '../../extensions/text/formats';
 
 /**
  * Component
@@ -49,7 +53,6 @@ const CaptionToolbar = memo(
 			insertInlineStyles,
 			cleanInlineStyles,
 			isSelected,
-			context,
 		} = props;
 		const {
 			isList = false,
@@ -61,7 +64,7 @@ const CaptionToolbar = memo(
 
 		const typography = { ...getGroupAttributes(props, 'typography') };
 
-		const { formatValue, onChangeTextFormat } = useContext(context);
+		const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 		const { breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -152,7 +155,6 @@ const CaptionToolbar = memo(
 							isList={isList}
 							clientId={clientId}
 							isCaptionToolbar
-							context={context}
 						/>
 						<TextColor
 							{...getGroupAttributes(attributes, 'typography')}
@@ -173,7 +175,6 @@ const CaptionToolbar = memo(
 							textLevel={textLevel}
 							styleCard={styleCard}
 							isCaptionToolbar
-							context={context}
 						/>
 						<Alignment
 							{...getGroupAttributes(attributes, 'textAlignment')}

@@ -90,7 +90,6 @@ const typography = ({
 								isList={isList}
 								allowLink={allowLink}
 								globalProps={globalProps}
-								context={context}
 							/>
 						),
 					},

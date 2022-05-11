@@ -18,7 +18,11 @@ import SelectControl from '../select-control';
 import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
 import FontWeightControl from '../font-weight-control';
-import { setFormat, getTypographyValue } from '../../extensions/text/formats';
+import {
+	setFormat,
+	getTypographyValue,
+	textContext,
+} from '../../extensions/text/formats';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -313,12 +317,9 @@ const TypographyControl = props => {
 		allowLink = false,
 		blockStyle,
 		globalProps,
-		context,
 	} = props;
 
-	const { formatValue, onChangeTextFormat } = context
-		? useContext(context)
-		: {};
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const typography =
 		props.typography ||

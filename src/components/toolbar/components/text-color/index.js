@@ -14,6 +14,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	getCustomFormatValue,
 	setFormat,
+	textContext,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -22,7 +23,7 @@ import {
 } from '../../../../extensions/styles';
 
 /**
- * Icons
+ * Styles and icons
  */
 import './editor.scss';
 import { toolbarType } from '../../../../icons';
@@ -41,12 +42,11 @@ const TextColor = props => {
 		textLevel,
 		styleCard,
 		isCaptionToolbar = false,
-		context,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
-	const { formatValue, onChangeTextFormat } = useContext(context);
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 

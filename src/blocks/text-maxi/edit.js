@@ -23,10 +23,9 @@ import {
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import onMerge, { onReplaceBlocks } from './utils';
-import { onChangeRichText } from '../../extensions/text/formats';
+import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import copyPasteMapping from './copy-paste-mapping';
-import TextContext from './context';
 
 /**
  * External dependencies
@@ -132,7 +131,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return [
-			<TextContext.Provider
+			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
 					formatValue: this.state.formatValue,
@@ -148,17 +147,12 @@ class edit extends MaxiBlockComponent {
 					},
 				}}
 			>
-				<Inspector
-					key={`block-settings-${uniqueID}`}
-					{...this.props}
-					context={TextContext}
-				/>
+				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
-					context={TextContext}
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}
@@ -350,7 +344,7 @@ class edit extends MaxiBlockComponent {
 						</RichText>
 					)}
 				</MaxiBlock>
-			</TextContext.Provider>,
+			</textContext.Provider>,
 		];
 	}
 }

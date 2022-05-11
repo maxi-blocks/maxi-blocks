@@ -22,6 +22,7 @@ import {
 	applyLinkFormat,
 	removeLinkFormat,
 	getFormatPosition,
+	textContext,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -39,17 +40,10 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const LinkContent = props => {
-	const {
-		onChange,
-		isList,
-		textLevel,
-		onClose,
-		blockStyle,
-		styleCard,
-		context,
-	} = props;
+	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
+		props;
 
-	const { formatValue, onChangeTextFormat } = useContext(context);
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const formatName = 'maxi-blocks/text-link';
 

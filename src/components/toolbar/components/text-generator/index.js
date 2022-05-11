@@ -14,6 +14,7 @@ import { create, insert } from '@wordpress/rich-text';
 import Button from '../../../button';
 import TextControl from '../../../text-control';
 import Dropdown from '../../../dropdown';
+import { textContext } from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -27,8 +28,9 @@ import { LoremIpsum } from 'react-lorem-ipsum';
 import './editor.scss';
 
 const TextGenerator = props => {
-	const { onChange, context } = props;
-	const { formatValue, onChangeTextFormat } = useContext(context);
+	const { onChange } = props;
+
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);

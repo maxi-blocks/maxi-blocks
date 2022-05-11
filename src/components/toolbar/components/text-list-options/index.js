@@ -22,6 +22,7 @@ import {
 	fromListToText,
 	fromTextToList,
 	getFormattedString,
+	textContext,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -44,11 +45,11 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	const { blockName, isList, typeOfList, onChange, context } = props;
+	const { blockName, isList, typeOfList, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const { formatValue } = useContext(context);
+	const { formatValue } = useContext(textContext);
 
 	const getContent = content => {
 		if (!isList) return fromTextToList(content);

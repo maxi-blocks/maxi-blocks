@@ -160,4 +160,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect, withMaxiProps)(edit);
+export default compose(editSelect, withMaxiProps())(edit);

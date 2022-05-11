@@ -157,7 +157,7 @@ const SCAccordion = props => {
 					className={`maxi-style-cards-control__sc__${groupAttr}-typography`}
 					textLevel={groupAttr}
 					breakpoint={breakpoint}
-					styleCards
+					isStyleCards
 					onChange={obj => {
 						onChangeValue({ typography: obj }, groupAttr);
 					}}

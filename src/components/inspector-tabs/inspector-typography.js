@@ -24,7 +24,6 @@ const typography = ({
 	hoverGlobalProps,
 	depth = 2,
 	inlineTarget = '.maxi-text-block__content',
-	context,
 }) => {
 	const {
 		attributes,

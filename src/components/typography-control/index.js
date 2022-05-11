@@ -309,7 +309,7 @@ const TypographyControl = props => {
 		disableFormats = false,
 		disableCustomFormats = false,
 		hideTextShadow = false,
-		styleCards = false,
+		isStyleCards = false,
 		disablePalette = false,
 		disableFontFamily = false,
 		clientId,
@@ -319,7 +319,9 @@ const TypographyControl = props => {
 		globalProps,
 	} = props;
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { formatValue, onChangeTextFormat } = !isStyleCards
+		? useContext(textContext)
+		: {};
 
 	const typography =
 		props.typography ||
@@ -402,7 +404,7 @@ const TypographyControl = props => {
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
-		const defaultAttribute = !styleCards
+		const defaultAttribute = !isStyleCards
 			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
 			: getDefaultSCValue({
 					target: `${prop}-${currentBreakpoint}`,
@@ -481,7 +483,7 @@ const TypographyControl = props => {
 						fontStyle={getValue(`${prefix}font-style`)}
 					/>
 				)}
-				{!disableColor && !styleCards && (
+				{!disableColor && !isStyleCards && (
 					<ColorControl
 						label={__('Font', 'maxi-blocks')}
 						className='maxi-typography-control__color'
@@ -534,7 +536,7 @@ const TypographyControl = props => {
 					unit={getValue(
 						`${prefix}font-size-unit`,
 						breakpoint,
-						!styleCards
+						!isStyleCards
 					)}
 					defaultUnit={getDefault(
 						`${prefix}font-size-unit`,
@@ -551,12 +553,12 @@ const TypographyControl = props => {
 					placeholder={getValue(
 						`${prefix}font-size`,
 						null,
-						!styleCards
+						!isStyleCards
 					)}
 					value={getValue(
 						`${prefix}font-size`,
 						null,
-						!styleCards,
+						!isStyleCards,
 						true
 					)}
 					defaultValue={getDefault(`${prefix}font-size`)}
@@ -591,7 +593,7 @@ const TypographyControl = props => {
 						getValue(
 							`${prefix}line-height-unit`,
 							breakpoint,
-							!styleCards
+							!isStyleCards
 						) || ''
 					}
 					defaultUnit={getDefault(
@@ -613,12 +615,12 @@ const TypographyControl = props => {
 					placeholder={getValue(
 						`${prefix}line-height`,
 						breakpoint,
-						!styleCards
+						!isStyleCards
 					)}
 					value={getValue(
 						`${prefix}line-height`,
 						breakpoint,
-						!styleCards,
+						!isStyleCards,
 						true
 					)}
 					defaultValue={getDefault(
@@ -659,7 +661,7 @@ const TypographyControl = props => {
 					unit={getValue(
 						`${prefix}letter-spacing-unit`,
 						breakpoint,
-						!styleCards
+						!isStyleCards
 					)}
 					defaultUnit={getDefault(
 						`${prefix}letter-spacing-unit`,
@@ -676,12 +678,12 @@ const TypographyControl = props => {
 					placeholder={getValue(
 						`${prefix}letter-spacing`,
 						breakpoint,
-						!styleCards
+						!isStyleCards
 					)}
 					value={getValue(
 						`${prefix}letter-spacing`,
 						breakpoint,
-						!styleCards,
+						!isStyleCards,
 						true
 					)}
 					defaultValue={getDefault(
@@ -714,7 +716,7 @@ const TypographyControl = props => {
 				<hr />
 				{!disableFontFamily &&
 					!disableColor &&
-					!styleCards &&
+					!isStyleCards &&
 					!hideAlignment && <Divider />}
 				<FontWeightControl
 					onChange={val => {

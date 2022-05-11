@@ -30,7 +30,7 @@ const getCircleBarStyles = (obj, blockStyle) => {
 		if (paletteStatus && paletteColor) {
 			return getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
-				opacity: obj[paletteOpacity],
+				opacity: paletteOpacity,
 				blockStyle,
 			});
 		}

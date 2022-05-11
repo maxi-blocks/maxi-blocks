@@ -319,9 +319,8 @@ const TypographyControl = props => {
 		globalProps,
 	} = props;
 
-	const { formatValue, onChangeTextFormat } = !isStyleCards
-		? useContext(textContext)
-		: {};
+	const { formatValue, onChangeTextFormat } =
+		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
 
 	const typography =
 		props.typography ||

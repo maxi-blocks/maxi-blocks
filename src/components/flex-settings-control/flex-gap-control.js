@@ -39,7 +39,7 @@ const GapAxisControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			className={`maxi-flex__${target}`}
+			className={`maxi-gap-control__${target}`}
 			label={__(label, 'maxi-blocks')}
 			enableUnit
 			unit={getLastBreakpointAttribute({

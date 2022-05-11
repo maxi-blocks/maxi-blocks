@@ -19,7 +19,9 @@ describe('FlexSettings', () => {
 		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
 
-		const wrapSelector = await accordionPanel.$('.maxi-flex__wrap select');
+		const wrapSelector = await accordionPanel.$(
+			'.maxi-flex-wrap-control select'
+		);
 		await wrapSelector.select('wrap');
 
 		const directionSelector = await accordionPanel.$(
@@ -28,12 +30,12 @@ describe('FlexSettings', () => {
 		await directionSelector.select('row');
 
 		const justifyContentSelector = await accordionPanel.$(
-			'.maxi-flex__justify-content select'
+			'.maxi-align-control__justify-content select'
 		);
 		await justifyContentSelector.select('flex-end');
 
 		const alignItemSelector = await accordionPanel.$(
-			'.maxi-flex__align-items select'
+			'.maxi-align-control__align-items select'
 		);
 		await alignItemSelector.select('flex-end');
 
@@ -47,14 +49,14 @@ describe('FlexSettings', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-flex__row-gap'),
+			instance: await page.$('.maxi-gap-control__row-gap'),
 			newNumber: '55',
 			newValue: 'vw',
 		});
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-flex__column-gap'),
+			instance: await page.$('.maxi-gap-control__column-gap'),
 			newNumber: '77',
 			newValue: 'em',
 		});
@@ -305,7 +307,9 @@ describe('FlexSettings', () => {
 		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
 
 		// base
-		const wrapSelector = await accordionPanel.$('.maxi-flex__wrap select');
+		const wrapSelector = await accordionPanel.$(
+			'.maxi-flex-wrap-control select'
+		);
 		await wrapSelector.select('wrap');
 
 		const directionSelector = await accordionPanel.$(
@@ -314,12 +318,12 @@ describe('FlexSettings', () => {
 		await directionSelector.select('row');
 
 		const justifyContentSelector = await accordionPanel.$(
-			'.maxi-flex__justify-content select'
+			'.maxi-align-control__justify-content select'
 		);
 		await justifyContentSelector.select('flex-end');
 
 		const alignItemSelector = await accordionPanel.$(
-			'.maxi-flex__align-items select'
+			'.maxi-align-control__align-items select'
 		);
 		await alignItemSelector.select('flex-end');
 
@@ -333,14 +337,14 @@ describe('FlexSettings', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-flex__row-gap'),
+			instance: await page.$('.maxi-gap-control__row-gap'),
 			newNumber: '55',
 			newValue: 'vw',
 		});
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-flex__column-gap'),
+			instance: await page.$('.maxi-gap-control__column-gap'),
 			newNumber: '77',
 			newValue: 'em',
 		});
@@ -348,7 +352,9 @@ describe('FlexSettings', () => {
 		// change responsive s
 		await changeResponsive(page, 's');
 
-		const wrapSelectorS = await accordionPanel.$('.maxi-flex__wrap select');
+		const wrapSelectorS = await accordionPanel.$(
+			'.maxi-flex-wrap-control select'
+		);
 		await wrapSelectorS.select('nowrap');
 
 		const directionSelectorS = await accordionPanel.$(
@@ -357,12 +363,12 @@ describe('FlexSettings', () => {
 		await directionSelectorS.select('column');
 
 		const justifyContentSelectorS = await accordionPanel.$(
-			'.maxi-flex__justify-content select'
+			'.maxi-align-control__justify-content select'
 		);
 		await justifyContentSelectorS.select('flex-start');
 
 		const alignItemSelectorS = await accordionPanel.$(
-			'.maxi-flex__align-items select'
+			'.maxi-align-control__align-items select'
 		);
 		await alignItemSelectorS.select('flex-start');
 
@@ -376,14 +382,14 @@ describe('FlexSettings', () => {
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-flex__row-gap'),
+			instance: await page.$('.maxi-gap-control__row-gap'),
 			newNumber: '23',
 			newValue: 'em',
 		});
 
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-flex__column-gap'),
+			instance: await page.$('.maxi-gap-control__column-gap'),
 			newNumber: '34',
 			newValue: 'px',
 		});
@@ -419,7 +425,7 @@ describe('FlexSettings', () => {
 		await changeResponsive(page, 'xs');
 
 		const wrapSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__wrap select',
+			'.maxi-flex-wrap-control select',
 			selector => selector.value
 		);
 		expect(wrapSelectorXS).toStrictEqual('nowrap');
@@ -431,13 +437,13 @@ describe('FlexSettings', () => {
 		expect(directionSelectorXS).toStrictEqual('column');
 
 		const justifyContentSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__justify-content select',
+			'.maxi-align-control__justify-content select',
 			selector => selector.value
 		);
 		expect(justifyContentSelectorXS).toStrictEqual('flex-start');
 
 		const alignItemSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__align-items select',
+			'.maxi-align-control__align-items select',
 			selector => selector.value
 		);
 		expect(alignItemSelectorXS).toStrictEqual('flex-start');
@@ -455,25 +461,25 @@ describe('FlexSettings', () => {
 		expect(flowSelectorXS).toStrictEqual('column');
 
 		const rowGapXS = await accordionPanel.$eval(
-			'.maxi-flex__row-gap input',
+			'.maxi-gap-control__row-gap input',
 			selector => selector.value
 		);
 		expect(rowGapXS).toStrictEqual('23');
 
 		const rowGapSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__row-gap select',
+			'.maxi-gap-control__row-gap select',
 			selector => selector.value
 		);
 		expect(rowGapSelectorXS).toStrictEqual('em');
 
 		const columnGapXS = await accordionPanel.$eval(
-			'.maxi-flex__column-gap input',
+			'.maxi-gap-control__column-gap input',
 			selector => selector.value
 		);
 		expect(columnGapXS).toStrictEqual('34');
 
 		const columnGapSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__column-gap select',
+			'.maxi-gap-control__column-gap select',
 			selector => selector.value
 		);
 		expect(columnGapSelectorXS).toStrictEqual('px');
@@ -482,7 +488,7 @@ describe('FlexSettings', () => {
 		await changeResponsive(page, 'm');
 
 		const wrapSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__wrap select',
+			'.maxi-flex-wrap-control select',
 			selector => selector.value
 		);
 		expect(wrapSelectorM).toStrictEqual('wrap');
@@ -494,13 +500,13 @@ describe('FlexSettings', () => {
 		expect(directionSelectorM).toStrictEqual('row');
 
 		const justifyContentSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__justify-content select',
+			'.maxi-align-control__justify-content select',
 			selector => selector.value
 		);
 		expect(justifyContentSelectorM).toStrictEqual('flex-end');
 
 		const alignItemSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__align-items select',
+			'.maxi-align-control__align-items select',
 			selector => selector.value
 		);
 		expect(alignItemSelectorM).toStrictEqual('flex-end');
@@ -518,24 +524,24 @@ describe('FlexSettings', () => {
 		expect(flowSelectorM).toStrictEqual('wrap');
 
 		const rowGapM = await accordionPanel.$eval(
-			'.maxi-flex__row-gap input',
+			'.maxi-gap-control__row-gap input',
 			selector => selector.value
 		);
 		expect(rowGapM).toStrictEqual('55');
 		const rowGapSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__row-gap select',
+			'.maxi-gap-control__row-gap select',
 			selector => selector.value
 		);
 		expect(rowGapSelectorM).toStrictEqual('vw');
 
 		const columnGapM = await accordionPanel.$eval(
-			'.maxi-flex__column-gap input',
+			'.maxi-gap-control__column-gap input',
 			selector => selector.value
 		);
 		expect(columnGapM).toStrictEqual('77');
 
 		const columnGapSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__column-gap select',
+			'.maxi-gap-control__column-gap select',
 			selector => selector.value
 		);
 		expect(columnGapSelectorM).toStrictEqual('em');

@@ -19,7 +19,7 @@ const FlexWrapControl = props => {
 	return (
 		<SelectControl
 			label={__('Flex wrap', 'maxi-blocks')}
-			className='maxi-flex__wrap'
+			className='maxi-flex-wrap-control'
 			value={getLastBreakpointAttribute({
 				target: 'flex-wrap',
 				breakpoint,

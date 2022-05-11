@@ -24,6 +24,7 @@ import getStyles from './styles';
  */
 import classnames from 'classnames';
 import SliderContext from './context';
+import { isEmpty } from 'lodash';
 
 /**
  * Edit
@@ -111,18 +112,48 @@ const TEMPLATE = [
 
 const SliderWrapper = props => {
 	const { attributes, slidesWidth } = props;
-	const { numberOfSlides, isEditView } = attributes;
+	const { numberOfSlides, isEditView, isLoop } = attributes;
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
 	const editor = document.querySelector('#editor');
 	let initPosition = 0;
 	let dragPosition = 0;
-	const [slideWidth, setSlideWidth] = useState(Object.values(slidesWidth)[0]);
 	const [currentSlide, setCurrentSlide] = useState(0);
-	const [wrapperTranslate, setWrapperTranslate] = useState(
-		currentSlide * slideWidth
-	);
+	const [wrapperTranslate, setWrapperTranslate] = useState(0);
+	const [realFirstElOffset, setRealFirstElOffset] = useState(0);
+
+	const getSlidePosition = currentSlide => {
+		if (currentSlide < 0) return 0;
+		return currentSlide === 0
+			? realFirstElOffset
+			: Object.values(slidesWidth)
+					.slice(0, currentSlide)
+					.reduce((acc, cur) => acc + cur) + realFirstElOffset ||
+					realFirstElOffset;
+	};
+
+	const nextSlide = () => {
+		if (currentSlide < numberOfSlides - 1 || isLoop) {
+			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+			setCurrentSlide(prev => {
+				const newCurrentSlide = prev + 1;
+				setWrapperTranslate(getSlidePosition(newCurrentSlide));
+				return newCurrentSlide;
+			});
+		}
+	};
+
+	const prevSlide = () => {
+		if (currentSlide >= 0 || isLoop) {
+			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+			setCurrentSlide(prev => {
+				const newCurrentSlide = prev - 1;
+				setWrapperTranslate(getSlidePosition(newCurrentSlide));
+				return newCurrentSlide;
+			});
+		}
+	};
 
 	const onDragAction = e => {
 		if (isEditView) return;
@@ -137,22 +168,25 @@ const SliderWrapper = props => {
 			dragPosition = e.clientX;
 		}
 
-		setWrapperTranslate(prev => prev + dragMove);
+		setWrapperTranslate(prev => {
+			const newTranslate = prev + dragMove;
+			if (newTranslate > 1000000) {
+				setCurrentSlide(0);
+				return newTranslate - getSlidePosition(numberOfSlides);
+			}
+			return newTranslate;
+		});
 	};
 
 	const onDragEnd = e => {
 		if (isEditView) return;
-		if (
-			dragPosition - initPosition < -100 &&
-			currentSlide < numberOfSlides - 1
-		) {
-			setWrapperTranslate((currentSlide + 1) * slideWidth);
-			setCurrentSlide(prev => prev + 1);
-		} else if (dragPosition - initPosition > 100 && currentSlide > 0) {
-			setWrapperTranslate((currentSlide - 1) * slideWidth);
-			setCurrentSlide(prev => prev - 1);
+		if (dragPosition - initPosition < -100) {
+			nextSlide();
+		} else if (dragPosition - initPosition > 100) {
+			prevSlide();
 		} else {
-			setWrapperTranslate(currentSlide * slideWidth);
+			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 
 		editor.removeEventListener('mousemove', onDragAction);
@@ -171,6 +205,51 @@ const SliderWrapper = props => {
 		dragPosition = initPosition;
 	};
 
+	const handleTransitionEnd = () => {
+		wrapperRef.current.style.transition = '';
+		if (currentSlide > numberOfSlides - 1) {
+			setWrapperTranslate(0);
+			setCurrentSlide(0);
+		}
+		if (currentSlide < 0) {
+			setWrapperTranslate(getSlidePosition(numberOfSlides - 1));
+			setCurrentSlide(numberOfSlides - 1);
+		}
+	};
+
+	const deleteSlideClones = () => {
+		const clones = document.getElementsByClassName(
+			'maxi-slide-block--clone'
+		);
+
+		Array.from(clones).forEach(clone => clone.remove());
+	};
+
+	const getSlideClone = slideIndex => {
+		const cloneId = `block-${Object.keys(slidesWidth)[slideIndex]}`;
+		const clone = document.getElementById(cloneId);
+		clone.classList.add('maxi-slide-block--clone');
+		clone.id = `clone-${cloneId} clone-first-slide`;
+		return clone;
+	};
+
+	const updateSlideClones = () => {
+		if (isEmpty(slidesWidth)) return;
+
+		deleteSlideClones();
+
+		const newFirstChildClone = getSlideClone(0);
+		const newLastChildClone = getSlideClone(
+			Object.keys(slidesWidth).length - 1
+		);
+
+		wrapperRef.current.append(newFirstChildClone);
+		wrapperRef.current.prepend(newLastChildClone);
+		setRealFirstElOffset(
+			Object.values(slidesWidth)[Object.keys(slidesWidth).length - 1]
+		);
+	};
+
 	useEffect(() => {
 		const slider = wrapperRef.current;
 		slider.addEventListener('mousedown', onDragStart);
@@ -183,17 +262,21 @@ const SliderWrapper = props => {
 			slider.removeEventListener('touchmove', onDragAction);
 			slider.removeEventListener('touchend', onDragEnd);
 		};
-	}, [currentSlide, slideWidth, isEditView]);
+	}, [currentSlide, slidesWidth, isEditView]);
 
 	useEffect(() => {
-		if (wrapperTranslate !== currentSlide * slideWidth) {
-			setWrapperTranslate(currentSlide * slideWidth);
+		if (wrapperTranslate !== getSlidePosition(currentSlide)) {
+			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
-	}, [currentSlide, slideWidth]);
+	}, [slidesWidth, isLoop]);
 
 	useEffect(() => {
-		setSlideWidth(Object.values(slidesWidth)[0]);
-	}, [slidesWidth]);
+		if (isLoop) {
+			updateSlideClones();
+		} else {
+			deleteSlideClones();
+		}
+	}, [isLoop, slidesWidth]);
 
 	const classes = classnames(
 		'maxi-slider-block__wrapper',
@@ -210,42 +293,26 @@ const SliderWrapper = props => {
 						style: {
 							transform: `translateX(-${wrapperTranslate}px)`,
 						},
+						onTransitionEnd: handleTransitionEnd,
 					},
 					{
 						allowedBlocks: ALLOWED_BLOCKS,
 						orientation: 'horizontal',
 						template: TEMPLATE,
+						...(!isEditView && { renderAppender: false }),
 					}
 				)}
 			/>
 			<div className='maxi-slider-block__nav'>
 				<span
 					className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
-					onClick={
-						!isEditView
-							? () =>
-									setCurrentSlide(
-										currentSlide < numberOfSlides - 1
-											? currentSlide + 1
-											: currentSlide
-									)
-							: undefined
-					}
+					onClick={!isEditView ? () => nextSlide() : undefined}
 				>
 					+
 				</span>
 				<span
 					className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
-					onClick={
-						!isEditView
-							? () =>
-									setCurrentSlide(
-										currentSlide > 0
-											? currentSlide - 1
-											: currentSlide
-									)
-							: undefined
-					}
+					onClick={!isEditView ? () => prevSlide() : undefined}
 				>
 					-
 				</span>

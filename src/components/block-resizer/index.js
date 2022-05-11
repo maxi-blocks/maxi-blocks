@@ -14,6 +14,7 @@ import { isEqual } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import { memoChildrenComparator } from '../../extensions/maxi-block';
 
 /**
  * Component
@@ -148,6 +149,9 @@ const BlockResizer = memo(
 		);
 	}),
 	(oldRawProps, newRawProps) => {
+		if (!memoChildrenComparator(oldRawProps.children, newRawProps.children))
+			return false;
+
 		const propsObjectCleaner = props => {
 			const cleanProps = { ...props };
 

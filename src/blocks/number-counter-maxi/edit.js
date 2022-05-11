@@ -116,7 +116,7 @@ const NumberCounter = attributes => {
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
-			size={{
+			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',
 					breakpoint: deviceType,

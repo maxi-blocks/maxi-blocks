@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { memo, forwardRef } from '@wordpress/element';
+import { memo, forwardRef, useEffect, useState } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 
 /**
@@ -136,6 +137,12 @@ const MaxiToolbar = memo(
 
 		if (!allowedBlocks.includes(name)) return null;
 
+		const [anchorRef, setAnchorRef] = useState(ref.current);
+
+		useEffect(() => {
+			setAnchorRef(ref.current);
+		});
+
 		const inlineStylesTargetsResults = merge(
 			inlineStylesTargetsDefault,
 			inlineStylesTargets
@@ -149,18 +156,18 @@ const MaxiToolbar = memo(
 
 		return (
 			isSelected &&
-			ref.current && (
+			anchorRef && (
 				<Popover
 					noArrow
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					anchorRef={ref.current}
+					anchorRef={anchorRef}
 					className='maxi-toolbar__popover'
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
 					__unstableStickyBoundaryElement={getBoundaryElement(
-						ref.current
+						anchorRef
 					)}
 				>
 					<div className='toolbar-wrapper'>

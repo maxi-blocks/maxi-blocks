@@ -239,7 +239,7 @@ class edit extends MaxiBlockComponent {
 									? '100%'
 									: null
 							}
-							size={{
+							defaultSize={{
 								width: `${getLastBreakpointAttribute({
 									target: 'svg-width',
 									breakpoint: deviceType || 'general',

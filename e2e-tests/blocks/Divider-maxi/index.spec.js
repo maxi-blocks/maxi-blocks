@@ -12,6 +12,7 @@ import {
 	changeResponsive,
 	addResponsiveTest,
 	getAttributes,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Divider Maxi', () => {
@@ -131,4 +132,7 @@ describe('Divider Maxi', () => {
 		);
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Divider Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

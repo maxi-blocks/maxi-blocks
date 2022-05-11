@@ -150,7 +150,11 @@ const LinkContent = props => {
 			returnFormatValue: true,
 		});
 
-		onChangeTextFormat(obj.formatValue);
+		onChangeTextFormat({
+			...obj.formatValue,
+			start: updatedFormatValue.start,
+			end: updatedFormatValue.end,
+		});
 		delete obj.formatValue;
 
 		onChange(obj);

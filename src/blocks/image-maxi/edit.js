@@ -28,9 +28,8 @@ import {
 } from '../../components';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import copyPasteMapping from './copy-paste-mapping';
-import { onChangeRichText } from '../../extensions/text/formats';
+import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
-import ImageContext from './context';
 
 /**
  * External dependencies
@@ -190,7 +189,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return [
-			<ImageContext.Provider
+			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
 					formatValue: this.state.formatValue,
@@ -436,7 +435,7 @@ class edit extends MaxiBlockComponent {
 						</div>
 					)}
 				</MaxiBlock>
-			</ImageContext.Provider>,
+			</textContext.Provider>,
 		];
 	}
 }

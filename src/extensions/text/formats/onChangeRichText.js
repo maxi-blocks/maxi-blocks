@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { applyFormat, toHTMLString } from '@wordpress/rich-text';
-
-/**
  * Internal dependencies
  */
 import { getGroupAttributes } from '../../styles';
@@ -13,7 +8,7 @@ import setCustomFormatsWhenPaste from './setCustomFormatsWhenPaste';
 /**
  * External dependencies
  */
-import { isEqual, find, isEmpty } from 'lodash';
+import { isEqual } from 'lodash';
 
 const onChangeRichText = ({
 	attributes,
@@ -22,7 +17,7 @@ const onChangeRichText = ({
 	onChange,
 	richTextValues,
 }) => {
-	let { value: formatValue } = richTextValues;
+	const { value: formatValue } = richTextValues;
 	const { onChange: onChangeRichText } = richTextValues;
 
 	/**
@@ -50,73 +45,16 @@ const onChangeRichText = ({
 		maxiSetAttributes(cleanCustomProps);
 	}
 
-	/**
-	 * Ensures we keep the same link format when the text has
-	 * a link in all the content
-	 */
-	const { formats } = formatValue;
-	let isWholeLink = false;
-
-	const containLink = formats.some(
-		format => !!find(format, { type: 'maxi-blocks/text-link' })
-	);
-
-	if (containLink) {
-		isWholeLink = true;
-
-		for (let i = 0; i < formats.length; i += 1) {
-			const format = formats[i];
-
-			if (formats.length - 1 !== i) {
-				if (!find(format, { type: 'maxi-blocks/text-link' }))
-					isWholeLink = false;
-			} else if (isWholeLink && isEmpty(format)) {
-				const customFormat = find(formats[i - 2], {
-					type: 'maxi-blocks/text-custom',
-				});
-
-				if (customFormat)
-					formatValue = applyFormat(
-						formatValue,
-						customFormat,
-						i,
-						i + 1
-					);
-
-				const linkFormat = find(formats[i - 1], {
-					type: 'maxi-blocks/text-link',
-				});
-
-				if (linkFormat)
-					formatValue = applyFormat(
-						formatValue,
-						linkFormat,
-						i,
-						i + 1
-					);
-
-				// Needs a time out to avoid recalling this function on the render cycle
-				// eslint-disable-next-line no-loop-func
-				setTimeout(() => {
-					onChangeRichText(formatValue);
-				}, 1);
-			}
-		}
-	}
-
 	// Returns the new state
 	if (!isEqual(oldFormatValue, formatValue)) {
 		// Avoid saving state on the render cycle
 		setTimeout(() => {
-			onChange(
-				{
-					formatValue,
-					...(onChangeRichText && {
-						onChangeFormat: onChangeRichText,
-					}),
-				},
-				isWholeLink && toHTMLString({ value: formatValue })
-			);
+			onChange({
+				formatValue,
+				...(onChangeRichText && {
+					onChangeFormat: onChangeRichText,
+				}),
+			});
 		}, 50);
 	}
 };

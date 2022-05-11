@@ -26,6 +26,7 @@ const getIsActiveTab = (
 		'blockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',
+		'svgType',
 		...ignoreIndicator,
 	];
 

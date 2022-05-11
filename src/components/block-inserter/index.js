@@ -4,7 +4,6 @@
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
 import { select, useDispatch } from '@wordpress/data';
 import { useRef, forwardRef } from '@wordpress/element';
-import { getScrollContainer } from '@wordpress/dom';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -22,6 +21,7 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
+import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component
@@ -93,15 +93,6 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 
 	if (!ref?.current) return null;
 
-	const boundaryElement =
-		document.defaultView.frameElement?.querySelector(
-			'.edit-post-visual-editor'
-		) ||
-		getScrollContainer(ref.current)?.querySelector(
-			'.edit-post-visual-editor'
-		) ||
-		document.body?.querySelector('.edit-post-visual-editor');
-
 	if (isSelected || hasSelectedChild || shouldRemain.current)
 		return (
 			<Popover
@@ -114,7 +105,10 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				anchorRef={ref.current}
 				__unstableSlotName='block-toolbar'
-				__unstableStickyBoundaryElement={boundaryElement}
+				__unstableStickyBoundaryElement={getBoundaryElement(
+					ref.current,
+					'.edit-post-visual-editor'
+				)}
 				shouldAnchorIncludePadding
 			>
 				{Object.keys(blockHierarchy).length > 1 && (

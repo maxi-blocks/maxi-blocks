@@ -2,14 +2,12 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
+import { memo, forwardRef } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 
 /**
@@ -57,6 +55,7 @@ import { setSVGContent } from '../../extensions/svg';
  */
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
+import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * General
@@ -135,33 +134,12 @@ const MaxiToolbar = memo(
 			};
 		});
 
-		const [anchorRef, setAnchorRef] = useState(ref.current);
-
-		useEffect(() => {
-			setAnchorRef(ref.current);
-		});
-
 		if (!allowedBlocks.includes(name)) return null;
-
-		const breadcrumbStatus = () => {
-			const { getBlockParents } = select('core/block-editor');
-			const originalNestedBlocks = clientId
-				? getBlockParents(clientId)
-				: [];
-			if (!originalNestedBlocks.includes(clientId))
-				originalNestedBlocks.push(clientId);
-			return originalNestedBlocks.length > 1;
-		};
 
 		const inlineStylesTargetsResults = merge(
 			inlineStylesTargetsDefault,
 			inlineStylesTargets
 		);
-
-		const boundaryElement =
-			document.defaultView.frameElement ||
-			getScrollContainer(anchorRef) ||
-			document.body;
 
 		const lineOrientation = getLastBreakpointAttribute(
 			'line-orientation',
@@ -171,21 +149,19 @@ const MaxiToolbar = memo(
 
 		return (
 			isSelected &&
-			anchorRef && (
+			ref.current && (
 				<Popover
 					noArrow
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					anchorRef={anchorRef}
-					className={classnames(
-						'maxi-toolbar__popover',
-						!!breadcrumbStatus() &&
-							'maxi-toolbar__popover--has-breadcrumb'
-					)}
+					anchorRef={ref.current}
+					className='maxi-toolbar__popover'
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
-					__unstableStickyBoundaryElement={boundaryElement}
+					__unstableStickyBoundaryElement={getBoundaryElement(
+						ref.current
+					)}
 				>
 					<div className='toolbar-wrapper'>
 						<div className='toolbar-block-custom-label'>
@@ -225,10 +201,7 @@ const MaxiToolbar = memo(
 								);
 							}}
 							breakpoint={breakpoint}
-							node={anchorRef}
 							isList={isList}
-							typeOfList={typeOfList}
-							clientId={clientId}
 							textLevel={textLevel}
 							styleCard={styleCard}
 						/>

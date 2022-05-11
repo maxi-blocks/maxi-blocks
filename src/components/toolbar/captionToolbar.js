@@ -2,15 +2,8 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import {
-	useEffect,
-	useState,
-	memo,
-	forwardRef,
-	useContext,
-} from '@wordpress/element';
+import { memo, forwardRef, useContext } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
@@ -40,6 +33,7 @@ import {
 	setFormat,
 	textContext,
 } from '../../extensions/text/formats';
+import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component
@@ -82,17 +76,6 @@ const CaptionToolbar = memo(
 			};
 		});
 
-		const [anchorRef, setAnchorRef] = useState(ref.current);
-
-		useEffect(() => {
-			setAnchorRef(ref.current);
-		});
-
-		const boundaryElement =
-			document.defaultView.frameElement ||
-			getScrollContainer(anchorRef) ||
-			document.body;
-
 		const processAttributes = obj => {
 			if ('content' in obj) {
 				const newCaptionContent = obj.content;
@@ -133,19 +116,21 @@ const CaptionToolbar = memo(
 			processAttributes(obj);
 		};
 
-		if (isSelected && anchorRef)
+		if (isSelected && ref.current)
 			return (
 				<Popover
 					noArrow
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					anchorRef={anchorRef}
+					anchorRef={ref.current}
 					className={classnames('maxi-toolbar__popover')}
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
-					__unstableStickyBoundaryElement={boundaryElement}
+					__unstableStickyBoundaryElement={getBoundaryElement(
+						ref.current
+					)}
 				>
 					<div className='toolbar-wrapper caption-toolbar'>
 						<TextOptions
@@ -169,7 +154,6 @@ const CaptionToolbar = memo(
 								cleanInlineStyles('.maxi-text-block__content');
 							}}
 							breakpoint={breakpoint}
-							node={anchorRef}
 							isList={isList}
 							clientId={clientId}
 							textLevel={textLevel}

@@ -48,10 +48,6 @@ class edit extends MaxiBlockComponent {
 
 	typingTimeout = 0;
 
-	state = {
-		showCustomLabel: true,
-	};
-
 	get getStylesObject() {
 		const { attributes, scValues } = this.props;
 
@@ -98,7 +94,6 @@ class edit extends MaxiBlockComponent {
 				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
 				inlineStylesTargets={inlineStylesTargets}
-				showCustomLabel={this.state.showCustomLabel}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
@@ -113,11 +108,6 @@ class edit extends MaxiBlockComponent {
 							value={attributes.buttonContent}
 							identifier='content'
 							onChange={buttonContent => {
-								this.state.showCustomLabel &&
-									this.setState({
-										showCustomLabel: false,
-									});
-
 								if (this.typingTimeout) {
 									clearTimeout(this.typingTimeout);
 								}
@@ -126,9 +116,6 @@ class edit extends MaxiBlockComponent {
 									maxiSetAttributes({ buttonContent });
 								}, 100);
 							}}
-							onBlur={() =>
-								this.setState({ showCustomLabel: true })
-							}
 							placeholder={__('Set some text…', 'maxi-blocks')}
 							withoutInteractiveFormatting
 						/>

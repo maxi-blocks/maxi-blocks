@@ -64,7 +64,6 @@ class edit extends MaxiBlockComponent {
 		this.state = {
 			isExternalClass: isImageUrl,
 			isUploaderOpen: false,
-			showCustomLabel: true,
 		};
 
 		this.textRef = createRef(null);
@@ -204,9 +203,6 @@ class edit extends MaxiBlockComponent {
 				const newContent = captionContent.replace('</a>', '');
 				maxiSetAttributes({ captionContent: `${newContent}</a>` });
 			} else {
-				this.state.showCustomLabel &&
-					this.setState({ showCustomLabel: false });
-
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
@@ -266,7 +262,6 @@ class edit extends MaxiBlockComponent {
 				propsToAvoid={['captionContent', 'formatValue']}
 				copyPasteMapping={copyPasteMapping}
 				prefix='image-'
-				showCustomLabel={this.state.showCustomLabel}
 			/>,
 			<MaxiPopoverButton
 				key={`popover-${uniqueID}`}
@@ -400,9 +395,6 @@ class edit extends MaxiBlockComponent {
 									className='maxi-image-block__caption'
 									value={captionContent}
 									onChange={processContent}
-									onBlur={() =>
-										this.setState({ showCustomLabel: true })
-									}
 									tagName='figcaption'
 									placeholder={__(
 										'Set your Image Maxi caption here…',

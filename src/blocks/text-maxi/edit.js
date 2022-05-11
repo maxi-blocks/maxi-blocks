@@ -52,10 +52,6 @@ class edit extends MaxiBlockComponent {
 
 	typingTimeoutContent = 0;
 
-	state = {
-		showCustomLabel: true,
-	};
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -175,9 +171,6 @@ class edit extends MaxiBlockComponent {
 				const newContent = content.replace('</a>', '');
 				maxiSetAttributes({ content: `${newContent}</a>` });
 			} else {
-				this.state.showCustomLabel &&
-					this.setState({ showCustomLabel: false });
-
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
@@ -187,8 +180,6 @@ class edit extends MaxiBlockComponent {
 				}, 100);
 			}
 		};
-
-		const onBlurRichText = () => this.setState({ showCustomLabel: true });
 
 		return [
 			<Inspector
@@ -202,7 +193,6 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
 				copyPasteMapping={copyPasteMapping}
-				showCustomLabel={this.state.showCustomLabel}
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
@@ -248,7 +238,6 @@ class edit extends MaxiBlockComponent {
 								);
 						}}
 						onMerge={forward => onMerge(this.props, forward)}
-						onBlur={onBlurRichText}
 						__unstableEmbedURLOnPaste
 						withoutInteractiveFormatting
 					>
@@ -290,7 +279,6 @@ class edit extends MaxiBlockComponent {
 						}}
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
-						onBlur={onBlurRichText}
 						start={listStart}
 						reversed={listReversed}
 						type={typeOfList}

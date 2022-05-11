@@ -104,7 +104,6 @@ const MaxiToolbar = memo(
 			inlineStylesTargets = inlineStylesTargetsDefault,
 			resetNumberHelper,
 			copyPasteMapping,
-			showCustomLabel,
 		} = props;
 		const {
 			blockFullWidth,
@@ -121,11 +120,12 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard } = useSelect(select => {
+		const { breakpoint, styleCard, isTyping } = useSelect(select => {
 			const { receiveMaxiDeviceType } = select('maxiBlocks');
 			const { receiveMaxiSelectedStyleCard } = select(
 				'maxiBlocks/style-cards'
 			);
+			const { isTyping } = select('core/block-editor');
 
 			const breakpoint = receiveMaxiDeviceType();
 
@@ -134,6 +134,7 @@ const MaxiToolbar = memo(
 			return {
 				breakpoint,
 				styleCard,
+				isTyping: isTyping(),
 			};
 		});
 
@@ -190,7 +191,7 @@ const MaxiToolbar = memo(
 					__unstableStickyBoundaryElement={boundaryElement}
 				>
 					<div className='toolbar-wrapper'>
-						{showCustomLabel && (
+						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
@@ -637,13 +638,10 @@ const MaxiToolbar = memo(
 			attributes: oldAttr,
 			propsToAvoid,
 			isSelected: wasSelected,
-			showCustomLabel: wasShowCustomLabel,
 		} = oldProps;
-		const { attributes: newAttr, isSelected, showCustomLabel } = newProps;
+		const { attributes: newAttr, isSelected } = newProps;
 
 		if (!wasSelected || wasSelected !== isSelected) return false;
-		// Temporary: will be improved on #2997
-		if (wasShowCustomLabel !== showCustomLabel) return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);

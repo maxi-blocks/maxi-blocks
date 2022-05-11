@@ -87,4 +87,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.1s transform ease;
 		}
 	}
+	&--has-padding {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
 }

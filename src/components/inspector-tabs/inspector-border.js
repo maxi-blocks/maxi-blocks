@@ -137,6 +137,7 @@ const border = ({
 														val,
 												})
 											}
+											isPaddingEnable
 										/>
 									)}
 									{hoverStatus && (
@@ -159,6 +160,7 @@ const border = ({
 											isHover
 											clientId={clientId}
 											globalProps={hoverGlobalProps}
+											isPaddingEnable
 										/>
 									)}
 								</>

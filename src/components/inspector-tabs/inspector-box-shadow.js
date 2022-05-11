@@ -100,6 +100,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 													val,
 											})
 										}
+										isPaddingEnable
 									/>
 									{hoverStatus && (
 										<BoxShadowControl
@@ -116,6 +117,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 											breakpoint={deviceType}
 											isHover
 											clientId={clientId}
+											isPaddingEnable
 										/>
 									)}
 								</>

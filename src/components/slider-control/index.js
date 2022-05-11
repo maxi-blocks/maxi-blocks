@@ -14,7 +14,8 @@ import ToggleSwitch from '../toggle-switch';
 import classnames from 'classnames';
 
 const SliderControl = props => {
-	const { className, onChange, isEditView, isLoop } = props;
+	const { className, onChange, isEditView, setEditView, isLoop } = props;
+
 	const classes = classnames('maxi-slider-control', className);
 
 	return (
@@ -23,7 +24,7 @@ const SliderControl = props => {
 				label={__('Edit view', 'maxi-blocks')}
 				selected={isEditView}
 				onChange={val => {
-					onChange({ isEditView: val });
+					setEditView(val);
 				}}
 			/>
 			<ToggleSwitch

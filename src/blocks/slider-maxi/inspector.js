@@ -23,7 +23,13 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, maxiSetAttributes, attributes } = props;
+	const {
+		deviceType,
+		maxiSetAttributes,
+		setEditView,
+		isEditView,
+		attributes,
+	} = props;
 
 	return (
 		<InspectorControls>
@@ -58,6 +64,8 @@ const Inspector = props => {
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
+													isEditView={isEditView}
+													setEditView={setEditView}
 												/>
 											),
 										},

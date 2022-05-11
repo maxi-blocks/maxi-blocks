@@ -39,6 +39,11 @@ class edit extends MaxiBlockComponent {
 		}
 	}
 
+	maxiBlockWillUnmount() {
+		const { clientId } = this.props;
+		this.context.onRemoveSlide(clientId);
+	}
+
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const { uniqueID } = attributes;

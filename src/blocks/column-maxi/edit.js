@@ -48,6 +48,33 @@ class edit extends MaxiBlockComponent {
 		);
 	}
 
+	getHeightObj() {
+		const forceAspectRatio = getLastBreakpointAttribute({
+			target: 'force-aspect-ratio',
+			breakpoint: this.props.deviceType || 'general',
+			attributes: this.props.attributes,
+		});
+
+		const columnHeight = forceAspectRatio
+			? '100%'
+			: `${getLastBreakpointAttribute({
+					target: 'height',
+					breakpoint: this.props.deviceType || 'general',
+					attributes: this.props.attributes,
+			  })}${getLastBreakpointAttribute({
+					target: 'height-unit',
+					breakpoint: this.props.deviceType || 'general',
+					attributes: this.props.attributes,
+			  })}`;
+
+		return {
+			height: columnHeight,
+			...(forceAspectRatio && {
+				'force-aspect-ratio': 1,
+			}),
+		};
+	}
+
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute({
@@ -56,11 +83,14 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			});
 
+			const columnHeightObj = this.getHeightObj();
+
 			if (
 				this.resizableObject.current.state.width !== `${columnWidth}%`
 			) {
 				this.resizableObject.current.updateSize({
 					width: `${columnWidth}%`,
+					...columnHeightObj,
 				});
 
 				this.resizableObject.current.resizable.style.flexBasis = '';
@@ -175,15 +205,7 @@ class edit extends MaxiBlockComponent {
 						)}
 						defaultSize={{
 							width: getColumnWidthDefault(),
-							height: `${getLastBreakpointAttribute({
-								target: 'height',
-								breakpoint: deviceType,
-								attributes,
-							})}${getLastBreakpointAttribute({
-								target: 'height-unit',
-								breakpoint: deviceType,
-								attributes,
-							})}`,
+							...this.getHeightObj(),
 						}}
 						enable={{
 							right: true,

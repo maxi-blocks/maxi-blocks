@@ -24,9 +24,7 @@ describe('Divider Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
-	it('Divider Custom CSS', async () => {
-		await expect(await addCustomCSS(page)).toMatchSnapshot();
-	}, 500000);
+
 	it('Check Divider alignment', async () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
@@ -134,4 +132,7 @@ describe('Divider Maxi', () => {
 		);
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Divider Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

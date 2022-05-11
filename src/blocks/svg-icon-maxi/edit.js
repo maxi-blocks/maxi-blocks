@@ -113,14 +113,8 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			isSelected,
 		} = this.props;
-		const {
-			blockFullWidth,
-			content,
-			openFirstTime,
-			blockStyle,
-			uniqueID,
-			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
-		} = attributes;
+		const { blockFullWidth, content, openFirstTime, blockStyle, uniqueID } =
+			attributes;
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
@@ -133,7 +127,11 @@ class edit extends MaxiBlockComponent {
 				[`svg-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
-					svgWidthUnit
+					getLastBreakpointAttribute({
+						target: 'svg-width-unit',
+						breakpoint: deviceType || 'general',
+						attributes,
+					})
 				),
 			});
 		};
@@ -247,7 +245,11 @@ class edit extends MaxiBlockComponent {
 									target: 'svg-width',
 									breakpoint: deviceType || 'general',
 									attributes,
-								})}${svgWidthUnit}`,
+								})}${getLastBreakpointAttribute({
+									target: 'svg-width-unit',
+									breakpoint: deviceType || 'general',
+									attributes,
+								})}`,
 							}}
 							showHandle={isSelected}
 							enable={{

@@ -80,7 +80,7 @@ describe('Advanced Number Control', () => {
 			),
 			newNumber: '4000',
 		});
-		expect(await getAttributes('height-general')).toStrictEqual(3999);
+		expect(await getAttributes('height-general')).toStrictEqual('3999');
 
 		// em max default value
 
@@ -98,7 +98,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual(999);
+		expect(await getAttributes('height-general')).toStrictEqual('999');
 
 		// vw max default value
 		await heightSelector.select('vw');
@@ -111,7 +111,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual(999);
+		expect(await getAttributes('height-general')).toStrictEqual('999');
 	});
 
 	it('Checking the advanced number control min value', async () => {

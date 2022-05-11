@@ -14,7 +14,7 @@ import ToggleSwitch from '../toggle-switch';
 import classnames from 'classnames';
 
 const SliderControl = props => {
-	const { className, onChange, isEditView } = props;
+	const { className, onChange, isEditView, isLoop } = props;
 	const classes = classnames('maxi-slider-control', className);
 
 	return (
@@ -30,7 +30,7 @@ const SliderControl = props => {
 				label={__('Infinite loop', 'maxi-blocks')}
 				selected={isLoop}
 				onChange={val => {
-					maxiSetAttributes({ isLoop: val });
+					onChange({ isLoop: val });
 				}}
 			/>
 		</div>

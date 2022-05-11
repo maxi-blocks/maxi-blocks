@@ -30,7 +30,7 @@ const ToolbarButton = props => {
 };
 
 const LibraryToolbar = props => {
-	const { type, onChange } = props;
+	const { type, onChange, onRequestClose } = props;
 
 	const buttons = [
 		{ label: 'Style Cards', value: 'styleCards' },
@@ -38,6 +38,7 @@ const LibraryToolbar = props => {
 		{ label: 'Block Patterns', value: 'patterns' },
 		{ label: 'Global', value: 'global' },
 		{ label: 'Blocks', value: 'blocks' },
+		{ label: 'Preview', value: 'preview' },
 	];
 
 	return (
@@ -46,12 +47,19 @@ const LibraryToolbar = props => {
 				{library}
 				{type === 'svg' && __('Maxi SVG icons', 'maxi-blocks')}
 				{type === 'patterns' && __('Template library', 'maxi-blocks')}
+				{type === 'preview' && __('Preview', 'maxi-blocks')}
 				{type === 'sc' && __('Style cards', 'maxi-blocks')}
 				{type.includes('shape') &&
 					__('Maxi cloud shape library', 'maxi-blocks')}
 				{type.includes('button') &&
 					__('Maxi button icon library', 'maxi-blocks')}
 			</a>
+			{type === 'preview' && (
+				<ToolbarButton
+					label={__('Go back', 'maxi-blocks')}
+					onClick={onRequestClose}
+				/>
+			)}
 			{type === 'all' && (
 				<div>
 					{buttons.map(button => (

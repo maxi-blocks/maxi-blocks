@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
 import { RawHTML, useEffect, useState } from '@wordpress/element';
-import { CheckboxControl, Modal } from '@wordpress/components';
+import { CheckboxControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -18,6 +18,7 @@ import {
 	fitSvg,
 } from './util';
 import { injectImgSVG, generateDataObject } from '../../extensions/svg';
+import MaxiModal from './modal';
 import DOMPurify from 'dompurify';
 
 /**
@@ -59,36 +60,6 @@ const MasonryItem = props => {
 			'maxi-cloud-masonry-card__light'
 	);
 
-	const [isOpen, setOpen] = useState(false);
-
-	const previewModal = () => {
-		const openModal = () => setOpen(true);
-
-		const closeModal = () => setOpen(false);
-
-		return (
-			<>
-				<Button
-					className='maxi-cloud-masonry-card__button'
-					onClick={event => {
-						console.log('CLICKED');
-						event.preventDefault();
-						openModal();
-					}}
-				>
-					{__('Preview', 'maxi-blocks')}
-				</Button>
-				{isOpen && (
-					<Modal title='This is my modal' onRequestClose={closeModal}>
-						<Button variant='secondary' onClick={closeModal}>
-							My custom close button
-						</Button>
-					</Modal>
-				)}
-			</>
-		);
-	};
-
 	const patternsScContent = () => {
 		return (
 			<>
@@ -105,7 +76,13 @@ const MasonryItem = props => {
 					)}
 				</div>
 				<div className='maxi-cloud-masonry-card__buttons'>
-					{type === 'patterns' && previewModal()}
+					{type === 'patterns' && (
+						<MaxiModal
+							type='preview'
+							url={demoUrl}
+							title={serial}
+						/>
+					)}
 					<Button
 						className='maxi-cloud-masonry-card__button'
 						onClick={onRequestInsert}
@@ -298,7 +275,7 @@ const HierarchicalMenu = ({ items, refine }) => (
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle, onSelect } = props;
+	const { type, onRequestClose, blockStyle, onSelect, url, title } = props;
 
 	const {
 		styleCards,
@@ -719,6 +696,18 @@ const LibraryContainer = props => {
 
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 
+	const maxiPreviewIframe = (url, title) => {
+		return (
+			<iframe
+				className='maxi-cloud-container__preview-iframe'
+				src={url}
+				title={title}
+				width='100%'
+				height='100%'
+			/>
+		);
+	};
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -826,6 +815,12 @@ const LibraryContainer = props => {
 						</div>
 					</div>
 				</InstantSearch>
+			)}
+
+			{type === 'preview' && (
+				<div className='maxi-cloud-container__patterns'>
+					{maxiPreviewIframe(url, title)}
+				</div>
 			)}
 
 			{type === 'patterns' && (

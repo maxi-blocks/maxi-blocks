@@ -2,11 +2,14 @@
 
 body.toplevel_page_maxi-blocks-dashboard {
 	background-color: #fff;
-	& * {
-		font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
-	}
+
 	#wpcontent {
 		padding-left: 0;
+		.maxi-dashboard_wrap {
+			& * {
+				font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			}
+		}
 	}
 	.maxi-dashboard_header {
 		background-color: #ff4a17;
@@ -292,6 +295,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									font-size: 12px;
 									border: none;
 									border-radius: 0;
+									box-shadow: none;
 									padding: 6px 22px;
 									transition: 0.3s;
 									&:hover {

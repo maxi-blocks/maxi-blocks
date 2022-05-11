@@ -43,14 +43,18 @@ class ToolbarPopover extends Component {
 	/**
 	 * Ensures the popover closes when clicking outside
 	 */
-	onClickOutside() {
+	onClickOutside(event) {
 		if (
 			this.ref.current?.ownerDocument.querySelectorAll(
 				'.toolbar-item__popover'
 			).length >= 2 ||
-			this.ref.current?.ownerDocument.querySelector(
-				'.components-dropdown__content'
-			)
+			// If the click isn't inside the popover and isn't inside the button
+			(!event.path.includes(
+				this.ref.current?.ownerDocument.querySelector(
+					'.toolbar-item__popover'
+				)
+			) &&
+				!event.path.includes(this.ref.current))
 		)
 			this.state.onClose();
 	}

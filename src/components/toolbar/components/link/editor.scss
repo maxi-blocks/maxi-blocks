@@ -209,6 +209,9 @@
 		text-align: center;
 		color: #fff;
 		display: block;
+		&:hover {
+			background-color: var(--maxi-black-1-color) !important;
+		}
 	}
 }
 

@@ -419,6 +419,7 @@ body .toolbar-item__popover {
 		border: 1px solid var(--maxi-grey-1-color);
 		color: var(--maxi-grey-5-color);
 		flex: 2;
+		min-width: 1px;
 		&::placeholder {
 			color: #fff;
 		}

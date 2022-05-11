@@ -107,18 +107,19 @@ class MaxiSlider {
 
 	insertSlideClones(numberOfClones) {
 		for (let i = 0; i < numberOfClones; i += 1) {
-			let frontClone = this._slides[i]._slide.cloneNode(true);
-			let backClone =
-				this._slides[this._slides.length - 1 - i]._slide.cloneNode(
-					true
-				);
-			frontClone.classList.add('maxi-slide-block--clone');
-			backClone.classList.add('maxi-slide-block--clone');
+			let frontClone = this.getSlideClone(i);
+			let backClone = this.getSlideClone(this._slides.length - 1 - i);
 			this._wrapper.append(frontClone);
 			this._wrapper.prepend(backClone);
 			this.realFirstElOffset += backClone.getBoundingClientRect().width;
 			this.lastSlideTranslate += backClone.getBoundingClientRect().width;
 		}
+	}
+
+	getSlideClone(slideIndex) {
+		let clone = this._slides[slideIndex]._slide.cloneNode(true);
+		clone.classList.add('maxi-slide-block--clone');
+		return clone;
 	}
 
 	dragStart(e) {

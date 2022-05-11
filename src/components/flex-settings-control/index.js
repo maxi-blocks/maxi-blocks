@@ -69,6 +69,7 @@ const FlexSettingsControl = props => {
 								<FlexWrapControl {...props} />
 								<SelectControl
 									label={__('Flex direction', 'maxi-blocks')}
+									className='maxi-flex__direction'
 									value={getLastBreakpointAttribute({
 										target: 'flex-direction',
 										breakpoint,
@@ -110,8 +111,10 @@ const FlexSettingsControl = props => {
 									onChange={onChange}
 									breakpoint={breakpoint}
 								/>
+
 								<SelectControl
 									label={__('Align content', 'maxi-blocks')}
+									className='maxi-flex__align-content'
 									value={getLastBreakpointAttribute({
 										target: 'align-content',
 										breakpoint,
@@ -178,6 +181,7 @@ const FlexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Flex-flow', 'maxi-blocks')}
+									className='maxi-flex__flow'
 									value={getLastBreakpointAttribute({
 										target: 'flex-flow',
 										breakpoint,
@@ -220,7 +224,7 @@ const FlexSettingsControl = props => {
 						content: wrapperBlocks.includes(getParentBlockName) ? (
 							<>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__order'
 									label={__('Order', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -243,7 +247,7 @@ const FlexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__flex-grow'
 									label={__('Flex-grow', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -266,7 +270,7 @@ const FlexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__size'
+									className='maxi-typography-control__flex-shrink'
 									label={__('Flex-shrink', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -290,6 +294,7 @@ const FlexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Flex-basis', 'maxi-blocks')}
+									className='maxi-typography-control__flex-basis'
 									value={
 										customFlexBasis
 											? 'custom'
@@ -345,7 +350,7 @@ const FlexSettingsControl = props => {
 
 								{customFlexBasis && (
 									<AdvancedNumberControl
-										className='maxi-typography-control__size'
+										className='maxi-typography-control__custom-flex-basis'
 										label={__(
 											'Custom flex-basis',
 											'maxi-blocks'

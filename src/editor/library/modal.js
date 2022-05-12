@@ -118,6 +118,7 @@ const MaxiModal = props => {
 						onSelect={onSelect}
 						url={url}
 						title={title}
+						className={`maxi-library-modal__${type}`}
 					/>
 				)}
 			</div>

@@ -41,6 +41,26 @@ const LibraryToolbar = props => {
 		{ label: 'Preview', value: 'preview' },
 	];
 
+	const goFullScreen = () => {
+		const element = document.getElementsByClassName(
+			'components-modal__frame maxi-library-modal__preview'
+		)[0];
+		const requestMethod =
+			element.requestFullScreen ||
+			element.webkitRequestFullScreen ||
+			element.mozRequestFullScreen ||
+			element.msRequestFullScreen;
+
+		if (requestMethod) {
+			requestMethod.call(element);
+		} else if (typeof window.ActiveXObject !== 'undefined') {
+			const script = new ActiveXObject('WScript.Shell');
+			if (script !== null) {
+				script.SendKeys('{F11}');
+			}
+		}
+	};
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			<a className='maxi-cloud-toolbar__logo'>
@@ -71,6 +91,12 @@ const LibraryToolbar = props => {
 						/>
 					))}
 				</div>
+			)}
+			{type === 'preview' && (
+				<ToolbarButton
+					label={__('Full Screen', 'maxi-blocks')}
+					onClick={goFullScreen}
+				/>
 			)}
 			<a className='maxi-cloud-toolbar__help-button'>
 				{help}

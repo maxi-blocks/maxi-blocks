@@ -70,6 +70,9 @@
 					flex: 1;
 				}
 			}
+			& > .components-maxi-control__reset-button {
+				display: none;
+			}
 		}
 		.maxi-axis-control {
 			& > div {

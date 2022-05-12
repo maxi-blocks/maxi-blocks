@@ -16,6 +16,7 @@ import {
 	getAttributes,
 	editAdvancedNumberControl,
 	changeResponsive,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('NumberCounterControl', () => {
@@ -262,7 +263,18 @@ describe('NumberCounterControl', () => {
 
 		expect(responsiveXsOption).toBe(false);
 	});
-	it('Check number counter font size responsive', async () => {
+	it('Check number counter font size and font family responsive', async () => {
+		const responsiveFontSize = await addResponsiveTest({
+			page,
+			instance: '.maxi-typography-control__font-size input',
+			needFocus: true,
+			baseExpect: '19',
+			xsExpect: '33',
+			newValue: '33',
+		});
+		expect(responsiveFontSize).toBeTruthy();
+
+		// font family
 		await changeResponsive(page, 'base');
 
 		const typographyInput = await page.$eval(

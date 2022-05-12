@@ -18,6 +18,7 @@ import {
 	styleResolver,
 	getResponsiveStyles,
 } from '../../extensions/styles';
+import getClientId from '../../extensions/attributes/getClientId';
 
 /**
  * External dependencies
@@ -61,13 +62,6 @@ const RelationControl = props => {
 					)
 			  ) + 1
 			: 1;
-
-	const getClientId = uniqueID => {
-		const element = document.querySelector(`[uniqueId="${uniqueID}"]`);
-		const clientId = element ? element.getAttribute('data-block') : null;
-
-		return clientId;
-	};
 
 	const getOptions = clientId => {
 		const blockName = getBlock(clientId)?.name;

@@ -16,7 +16,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
-const getNormalObject = (props, rowGapProps) => {
+const getNormalObject = (props, rowGapProps, columnsNumber) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -57,7 +57,8 @@ const getNormalObject = (props, rowGapProps) => {
 				{
 					...getGroupAttributes(props, 'columnSize'),
 				},
-				rowGapProps
+				rowGapProps,
+				columnsNumber
 			),
 		},
 		size: getSizeStyles({
@@ -76,7 +77,6 @@ const getNormalObject = (props, rowGapProps) => {
 
 	return response;
 };
-
 
 const getHoverObject = props => {
 	const response = {
@@ -107,7 +107,6 @@ const getHoverObject = props => {
 	return response;
 };
 
-
 const getBackgroundDisplayer = props => {
 	const response = {
 		transition: getTransitionStyles({
@@ -118,17 +117,16 @@ const getBackgroundDisplayer = props => {
 	return response;
 };
 
-
-const getStyles = (props, rowGapProps) => {
-
+const getStyles = (props, rowGapProps, columnsNumber) => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props, rowGapProps),
+				'': getNormalObject(props, rowGapProps, columnsNumber),
 				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
+				' > .maxi-background-displayer > div':
+					getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

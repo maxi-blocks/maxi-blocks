@@ -1,3 +1,11 @@
+/**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getSizeStyles,
@@ -15,8 +23,14 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
+import getClientId from '../../extensions/attributes/getClientId';
 
 const getNormalObject = props => {
+	const { getBlockOrder } = select('core/block-editor');
+
+	const rowClientId = getClientId(props.uniqueID);
+	const columnsNumber = getBlockOrder(rowClientId).length;
+
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -67,9 +81,12 @@ const getNormalObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
-		flex: getFlexStyles({
-			...getGroupAttributes(props, 'flex'),
-		}),
+		flex: getFlexStyles(
+			{
+				...getGroupAttributes(props, 'flex'),
+			},
+			columnsNumber
+		),
 	};
 
 	return response;
@@ -122,7 +139,8 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
+				' > .maxi-background-displayer > div':
+					getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

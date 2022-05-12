@@ -28,9 +28,7 @@ const getIsActiveTab = (
 	const ignoreAttributes = [];
 	ignoreGroups.forEach(group => {
 		ignoreAttributes.push(
-			...Object.keys(
-				getGroupAttributes(defaultAttributes, group, false, '')
-			)
+			...Object.keys(getGroupAttributes(currentAttributes, group))
 		);
 	});
 

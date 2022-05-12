@@ -11,9 +11,10 @@ import {
 	getBlockStyle,
 	editAxisControl,
 	getAttributes,
+	addResponsiveTest,
 } from '../../utils';
 
-describe.skip('Indicators', () => {
+describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
@@ -25,7 +26,7 @@ describe.skip('Indicators', () => {
 		);
 
 		const axisControlInstance = await accordionPanel.$(
-			'.maxi-axis-control__padding'
+			'.maxi-axis-control__padding .maxi-axis-control__content__item__padding'
 		);
 
 		await editAxisControl({
@@ -36,11 +37,11 @@ describe.skip('Indicators', () => {
 		});
 
 		const expectPadding = {
-			'padding-top-general': 12,
-			'padding-bottom-general': 12,
-			'padding-left-general': 12,
-			'padding-right-general': 12,
-			'padding-unit-general': '%',
+			'padding-top-general': '12',
+			'padding-bottom-general': '12',
+			'padding-left-general': '12',
+			'padding-right-general': '12',
+			'padding-bottom-unit-general': '%',
 		};
 
 		const paddingResult = await getAttributes([
@@ -48,11 +49,37 @@ describe.skip('Indicators', () => {
 			'padding-bottom-general',
 			'padding-left-general',
 			'padding-right-general',
-			'padding-unit-general',
+			'padding-bottom-unit-general',
 		]);
 
 		expect(paddingResult).toStrictEqual(expectPadding);
 
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+	it('Checking the indicators responsive', async () => {
+		const responsiveValue = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-axis-control__padding .maxi-axis-control__content__item__padding select',
+			selectInstance:
+				'.maxi-axis-control__padding .maxi-axis-control__content__item__padding select',
+			needSelectIndex: true,
+			baseExpect: '%',
+			xsExpect: 'em',
+			newValue: 'em',
+		});
+		expect(responsiveValue).toBeTruthy();
+
+		const responsivePadding = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-axis-control__padding .maxi-axis-control__content__item__padding input',
+			needFocusPlaceholder: true,
+			baseExpect: '12',
+			xsExpect: '44',
+			newValue: '44',
+		});
+		expect(responsivePadding).toBeTruthy();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

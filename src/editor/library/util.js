@@ -259,7 +259,7 @@ export const onRequestInsertPattern = (
 
 		const allImagesLinks = parsedContent.match(allImagesRegexp);
 
-		const allImagesLinksParsed = allImagesLinks.map(image => {
+		const allImagesLinksParsed = allImagesLinks?.map(image => {
 			const parsed = image.replace(/\\/g, '');
 
 			const idRegexp = new RegExp('(?<=":)(.*?)(?=,")', 'g');

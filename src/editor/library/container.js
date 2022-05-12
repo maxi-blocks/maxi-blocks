@@ -55,10 +55,13 @@ const MasonryItem = props => {
 	const masonryCardClasses = classnames(
 		'maxi-cloud-masonry-card',
 		`maxi-cloud-masonry-card__${target}`,
+		type === 'patterns' && `maxi-cloud-masonry-card__pattern-${serial}`,
 		type === 'svg' &&
 			currentItemColorStatus &&
 			'maxi-cloud-masonry-card__light'
 	);
+
+	const masonryCardId = `maxi-cloud-masonry-card__pattern-${serial}`;
 
 	const patternsScContent = () => {
 		return (
@@ -82,10 +85,11 @@ const MasonryItem = props => {
 							url={demoUrl}
 							title={serial}
 							onRequestInsert={onRequestInsert}
+							cardId={masonryCardId}
 						/>
 					)}
 					<Button
-						className='maxi-cloud-masonry-card__button'
+						className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
 						onClick={onRequestInsert}
 					>
 						{__('Load', 'maxi-blocks')}
@@ -103,7 +107,7 @@ const MasonryItem = props => {
 	};
 
 	return (
-		<div className={masonryCardClasses}>
+		<div className={masonryCardClasses} id={masonryCardId}>
 			{type === 'sc' && (
 				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
 			)}
@@ -320,111 +324,6 @@ const LibraryContainer = props => {
 	);
 
 	const [isChecked, setChecked] = useState(false);
-
-	/** Patterns / Blocks */
-	// const onRequestInsertPattern = (parsedContent, usePlaceholderImage) => {
-	// 	const isValid = isValidTemplate(parsedContent);
-
-	// 	if (isValid) {
-	// 		const loadingMessage = `<h3>${__(
-	// 			'LOADING…',
-	// 			'maxi-blocks'
-	// 		)}<span class="maxi-spinner"></span></h3>`;
-
-	// 		onSelect({ content: loadingMessage });
-
-	// 		onRequestClose();
-
-	// 		const imagesLinks = [];
-	// 		const imagesIds = [];
-
-	// 		const allImagesRegexp = new RegExp('mediaID":(.*)",', 'g');
-
-	// 		const allImagesLinks = parsedContent.match(allImagesRegexp);
-
-	// 		const allImagesLinksParsed = allImagesLinks.map(image => {
-	// 			const parsed = image.replace(/\\/g, '');
-
-	// 			const idRegexp = new RegExp('(?<=":)(.*?)(?=,")', 'g');
-	// 			const id = parsed.match(idRegexp);
-	// 			imagesIds.push(id);
-
-	// 			const urlRegexp = new RegExp(
-	// 				'(?<=mediaURL":")(.*?)(?=",)',
-	// 				'g'
-	// 			);
-	// 			const url = parsed.match(urlRegexp);
-	// 			imagesLinks.push(url);
-
-	// 			return null;
-	// 		});
-
-	// 		if (!isEmpty(allImagesLinksParsed)) {
-	// 			let tempContent = parsedContent;
-	// 			const imagesLinksUniq = uniq(imagesLinks);
-	// 			const imagesIdsUniq = uniq(imagesIds);
-	// 			let counter = imagesLinksUniq.length;
-	// 			const checkCounter = imagesIdsUniq.length;
-
-	// 			if (counter !== checkCounter) {
-	// 				console.error(
-	// 					__(
-	// 						"Error processing images' links and ids - counts do not match",
-	// 						'maxi-blocks'
-	// 					)
-	// 				);
-	// 				replaceBlock(
-	// 					clientId,
-	// 					wp.blocks.rawHandler({
-	// 						HTML: parsedContent,
-	// 						mode: 'BLOCKS',
-	// 					})
-	// 				);
-	// 				return;
-	// 			}
-
-	// 			const imagesUniq = imagesIdsUniq.reduce(
-	// 				(o, k, i) => ({ ...o, [k]: imagesLinksUniq[i] }),
-	// 				{}
-	// 			);
-
-	// 			Object.entries(imagesUniq).map(image => {
-	// 				const id = image[0];
-	// 				const url = image[1];
-
-	// 				imageUploader(url, usePlaceholderImage).then(data => {
-	// 					tempContent = tempContent.replaceAll(url, data.url);
-	// 					tempContent = tempContent.replaceAll(id, data.id);
-	// 					counter -= 1;
-	// 					if (counter === 0) {
-	// 						replaceBlock(
-	// 							clientId,
-	// 							wp.blocks.rawHandler({
-	// 								HTML: tempContent,
-	// 								mode: 'BLOCKS',
-	// 							})
-	// 						);
-	// 					}
-	// 				});
-	// 				return null;
-	// 			});
-	// 		} else {
-	// 			// no images to process
-	// 			replaceBlock(
-	// 				clientId,
-	// 				wp.blocks.rawHandler({
-	// 					HTML: parsedContent,
-	// 					mode: 'BLOCKS',
-	// 				})
-	// 			);
-	// 		}
-	// 	} else {
-	// 		// not valid gutenberg code
-	// 		// TODO: show a human-readable error here
-	// 		console.error(__('The Code is not valid', 'maxi-blocks'));
-	// 		onRequestClose();
-	// 	}
-	// };
 
 	const getShapeType = type => {
 		switch (type) {

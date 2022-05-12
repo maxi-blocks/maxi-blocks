@@ -39,6 +39,7 @@ const MaxiModal = props => {
 		forceHide = false,
 		url,
 		title,
+		cardId,
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
@@ -118,6 +119,7 @@ const MaxiModal = props => {
 						onSelect={onSelect}
 						url={url}
 						title={title}
+						cardId={cardId}
 						className={`maxi-library-modal__${type}`}
 					/>
 				)}

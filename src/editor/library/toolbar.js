@@ -30,7 +30,7 @@ const ToolbarButton = props => {
 };
 
 const LibraryToolbar = props => {
-	const { type, onChange, onRequestClose } = props;
+	const { type, onChange, onRequestClose, cardId } = props;
 
 	const buttons = [
 		{ label: 'Style Cards', value: 'styleCards' },
@@ -57,6 +57,14 @@ const LibraryToolbar = props => {
 		}
 	};
 
+	const clickLoadButton = id => {
+		const button = document.querySelector(
+			`#${id} .maxi-cloud-masonry-card__button-load`
+		);
+
+		button?.click();
+	};
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			<a className='maxi-cloud-toolbar__logo'>
@@ -71,10 +79,20 @@ const LibraryToolbar = props => {
 					__('Maxi button icon library', 'maxi-blocks')}
 			</a>
 			{type === 'preview' && (
-				<ToolbarButton
-					label={__('Go back', 'maxi-blocks')}
-					onClick={onRequestClose}
-				/>
+				<>
+					<ToolbarButton
+						label={__('Go back', 'maxi-blocks')}
+						onClick={onRequestClose}
+					/>
+					<Button icon={fullScreen} onClick={goFullScreen} />
+					<ToolbarButton
+						label={__('Load', 'maxi-blocks')}
+						onClick={() => {
+							clickLoadButton(cardId);
+							onRequestClose();
+						}}
+					/>
+				</>
 			)}
 			{type === 'all' && (
 				<div>
@@ -87,9 +105,6 @@ const LibraryToolbar = props => {
 						/>
 					))}
 				</div>
-			)}
-			{type === 'preview' && (
-				<Button icon={fullScreen} onClick={goFullScreen} />
 			)}
 			<a className='maxi-cloud-toolbar__help-button'>
 				{help}

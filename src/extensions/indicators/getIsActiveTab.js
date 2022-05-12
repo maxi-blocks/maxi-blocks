@@ -63,12 +63,6 @@ const getIsActiveTab = (
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === false) return true;
 
-		if (
-			attribute.includes('scroll-') &&
-			currentAttributes[attribute] === false
-		)
-			return true;
-
 		if (breakpoint) {
 			if (
 				isArray(currentAttributes[attribute]) &&

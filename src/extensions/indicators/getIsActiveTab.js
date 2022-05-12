@@ -4,13 +4,15 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray } from 'lodash';
+import { getGroupAttributes } from '../styles';
 
 const getIsActiveTab = (
 	attributes,
 	breakpoint,
 	extraIndicators = [],
 	extraIndicatorsResponsive = [],
-	ignoreIndicator = []
+	ignoreIndicator = [],
+	ignoreGroups = []
 ) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
@@ -22,12 +24,23 @@ const getIsActiveTab = (
 
 	if (!name.includes('maxi-blocks')) return null;
 	const defaultAttributes = getBlockAttributes(name);
+
+	const ignoreAttributes = [];
+	ignoreGroups.forEach(group => {
+		ignoreAttributes.push(
+			...Object.keys(
+				getGroupAttributes(defaultAttributes, group, false, '')
+			)
+		);
+	});
+
 	const excludedAttributes = [
 		'blockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',
 		'svgType',
 		...ignoreIndicator,
+		...ignoreAttributes,
 	];
 
 	const extractAttributes = items => {

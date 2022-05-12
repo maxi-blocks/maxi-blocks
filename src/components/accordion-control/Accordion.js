@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { select, useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
-import { cloneElement } from '@wordpress/element';
+import { useEffect, useState, cloneElement } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -73,7 +72,8 @@ const Accordion = props => {
 						item.breakpoint,
 						item.extraIndicators,
 						item.extraIndicatorsResponsive,
-						item.ignoreIndicator
+						item.ignoreIndicator,
+						item.ignoreGroups
 					) && 'maxi-accordion-control__item--active'
 				);
 

@@ -7,11 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import {
-	getColorRGBAString,
-	getBlockStyle,
-	getPaletteAttributes,
-} from '../../extensions/styles';
+import { getBlockStyle, getPaletteAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies

@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { library, help } from '../../icons';
+import { library, help, fullScreen } from '../../icons';
 import Button from '../../components/button';
 
 /**
@@ -42,22 +42,18 @@ const LibraryToolbar = props => {
 	];
 
 	const goFullScreen = () => {
-		const element = document.getElementsByClassName(
+		const elem = document.getElementsByClassName(
 			'components-modal__frame maxi-library-modal__preview'
 		)[0];
-		const requestMethod =
-			element.requestFullScreen ||
-			element.webkitRequestFullScreen ||
-			element.mozRequestFullScreen ||
-			element.msRequestFullScreen;
 
-		if (requestMethod) {
-			requestMethod.call(element);
-		} else if (typeof window.ActiveXObject !== 'undefined') {
-			const script = new ActiveXObject('WScript.Shell');
-			if (script !== null) {
-				script.SendKeys('{F11}');
-			}
+		if (!document.fullscreenElement) {
+			elem.requestFullscreen().catch(err => {
+				console.warn(
+					`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
+				);
+			});
+		} else {
+			document.exitFullscreen();
 		}
 	};
 
@@ -93,10 +89,7 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 			{type === 'preview' && (
-				<ToolbarButton
-					label={__('Full Screen', 'maxi-blocks')}
-					onClick={goFullScreen}
-				/>
+				<Button icon={fullScreen} onClick={goFullScreen} />
 			)}
 			<a className='maxi-cloud-toolbar__help-button'>
 				{help}

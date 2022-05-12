@@ -37,7 +37,7 @@ import {
 	Stats,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
-import { uniq, isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 const MasonryItem = props => {
 	const {

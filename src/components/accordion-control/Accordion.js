@@ -72,16 +72,12 @@ const Accordion = props => {
 					if (block && block.name.includes('maxi-blocks')) {
 						const { attributes, name } = block;
 						const defaultAttributes = getBlockAttributes(name);
-						isActiveTab = !item.indicatorProps.every(prop => {
-							console.log({
-								a: attributes[prop],
-								b: defaultAttributes[prop],
-								prop,
-							});
-							return attributes[prop] === defaultAttributes[prop];
-						});
+						isActiveTab = !item.indicatorProps.every(prop =>
+							Array.isArray(attributes[prop])
+								? isEmpty(attributes[prop])
+								: attributes[prop] === defaultAttributes[prop]
+						);
 					}
-					console.log(isActiveTab);
 				}
 
 				const classesItemButton = classnames(

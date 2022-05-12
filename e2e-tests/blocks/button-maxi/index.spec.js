@@ -16,6 +16,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	editColorControl,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -258,4 +259,7 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-bottom-width-general-hover')
 		).toStrictEqual(70);
 	});
+	it('Button Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

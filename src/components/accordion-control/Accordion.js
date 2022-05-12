@@ -3,6 +3,7 @@
  */
 import { select, useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState, cloneElement } from '@wordpress/element';
+import { getBlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -60,21 +61,48 @@ const Accordion = props => {
 					? cloneElement(item.content)
 					: item;
 
+				let isActiveTab = false;
+
+				if (item.indicatorProps) {
+					const { getBlock, getSelectedBlockClientId } =
+						select('core/block-editor');
+
+					const block = getBlock(getSelectedBlockClientId());
+
+					if (block && block.name.includes('maxi-blocks')) {
+						const { attributes, name } = block;
+						const defaultAttributes = getBlockAttributes(name);
+						isActiveTab = !item.indicatorProps.every(prop => {
+							console.log({
+								a: attributes[prop],
+								b: defaultAttributes[prop],
+								prop,
+							});
+							return attributes[prop] === defaultAttributes[prop];
+						});
+					}
+					console.log(isActiveTab);
+				}
+
 				const classesItemButton = classnames(
 					'maxi-accordion-control__item__button',
-					getIsActiveTab(
-						getMaxiAttrsFromChildren({
-							items: itemsIndicators,
-							blockName:
-								blockName ??
-								getBlockName(getSelectedBlockClientId()),
-						}),
-						item.breakpoint,
-						item.extraIndicators,
-						item.extraIndicatorsResponsive,
-						item.ignoreIndicator,
-						item.ignoreGroups
-					) && 'maxi-accordion-control__item--active'
+					(item.indicatorProps
+						? isActiveTab
+						: getIsActiveTab(
+								getMaxiAttrsFromChildren({
+									items: itemsIndicators,
+									blockName:
+										blockName ??
+										getBlockName(
+											getSelectedBlockClientId()
+										),
+								}),
+								item.breakpoint,
+								item.extraIndicators,
+								item.extraIndicatorsResponsive,
+								item.ignoreIndicator,
+								item.ignoreGroups
+						  )) && 'maxi-accordion-control__item--active'
 				);
 
 				const classesItem = classnames(

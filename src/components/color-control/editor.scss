@@ -207,3 +207,13 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir="rtl"]  {
+	.maxi-color-control__palette-label .maxi-base-control__field .components-maxi-control__reset-button {
+		right: unset;
+		left: 0;
+	}
+}

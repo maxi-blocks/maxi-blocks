@@ -692,23 +692,18 @@ const LibraryContainer = props => {
 
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 
-	const rebuildMasonry = () => {
-		setInterval(() => {
-			const elem = document.querySelector(
-				'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
-			);
-			if (elem) {
-				// eslint-disable-next-line no-new
-				new Masonry(elem, {
-					// options
-					itemSelector: '.ais-InfiniteHits-item',
-					gutter: 16,
-				});
-			}
-		}, 500);
-	};
-
-	rebuildMasonry();
+	setInterval(() => {
+		const elem = document.querySelector(
+			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
+		);
+		if (elem) {
+			// eslint-disable-next-line no-new
+			new Masonry(elem, {
+				itemSelector: '.ais-InfiniteHits-item',
+				gutter: 16,
+			});
+		}
+	}, 100);
 
 	return (
 		<div className='maxi-cloud-container'>

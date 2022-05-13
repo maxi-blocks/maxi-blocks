@@ -1323,4 +1323,12 @@ html[dir="rtl"]  {
 	.toolbar-item-move__horizontally .maxi-components-button.components-button{
 		transform: scaleX(-1);
 	}
+	.maxi-responsive-selector .action-buttons__button.style-card-button {
+		border-left: 1px solid #dbdde6;
+	}
+	.maxi-responsive-selector .action-buttons__help {
+		margin-left: 0;
+		padding-left: 8px;
+		padding-right: 5px;
+	  }
 }

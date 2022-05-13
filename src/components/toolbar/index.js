@@ -558,13 +558,13 @@ const MaxiToolbar = memo(
 							onChangeInline={obj =>
 								insertInlineStyles({
 									obj,
-									target: inlineStylesTargetsResults.divider,
+									target: inlineStylesTargetsResults.dividerColor,
 								})
 							}
 							onChange={obj => {
 								maxiSetAttributes(obj);
 								cleanInlineStyles(
-									inlineStylesTargetsResults.divider
+									inlineStylesTargetsResults.dividerColor
 								);
 							}}
 							clientId={clientId}

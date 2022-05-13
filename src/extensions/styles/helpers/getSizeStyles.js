@@ -46,6 +46,14 @@ const getSizeStyles = (obj, prefix = '') => {
 				}
 			}
 
+			if (target === 'width' || target === 'max-width') {
+				const fullWidth = obj.fullWidth || false;
+
+				if (fullWidth === 'full') {
+					return null;
+				}
+			}
+
 			if (
 				isNumber(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
 				obj[`${prefix}${target}-unit-${breakpoint}`]

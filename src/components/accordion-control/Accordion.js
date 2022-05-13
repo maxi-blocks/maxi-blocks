@@ -97,7 +97,7 @@ const Accordion = props => {
 								item.extraIndicators,
 								item.extraIndicatorsResponsive,
 								item.ignoreIndicator,
-								item.ignoreGroups
+								item.ignoreIndicatorGroups
 						  )) && 'maxi-accordion-control__item--active'
 				);
 

@@ -33,7 +33,7 @@ const calloutArrow = ({ props }) => {
 				/>
 			</ResponsiveTabsControl>
 		),
-		ignoreGroups: ['border', 'blockBackground'],
+		ignoreIndicatorGroups: ['border', 'blockBackground'],
 	};
 };
 

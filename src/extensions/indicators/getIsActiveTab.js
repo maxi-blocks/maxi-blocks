@@ -12,7 +12,7 @@ const getIsActiveTab = (
 	extraIndicators = [],
 	extraIndicatorsResponsive = [],
 	ignoreIndicator = [],
-	ignoreGroups = []
+	ignoreIndicatorGroups = []
 ) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
@@ -26,7 +26,7 @@ const getIsActiveTab = (
 	const defaultAttributes = getBlockAttributes(name);
 
 	const ignoreAttributes = [];
-	ignoreGroups.forEach(group => {
+	ignoreIndicatorGroups.forEach(group => {
 		ignoreAttributes.push(
 			...Object.keys(getGroupAttributes(currentAttributes, group))
 		);

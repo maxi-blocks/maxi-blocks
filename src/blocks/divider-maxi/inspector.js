@@ -222,6 +222,12 @@ const Inspector = props => {
 																obj
 															)
 														}
+														onChangeInline={obj =>
+															insertInlineStyles({
+																obj,
+																target: inlineStylesTargets.divider,
+															})
+														}
 														breakpoint={deviceType}
 														clientId={clientId}
 													/>

@@ -75,7 +75,7 @@ const RowBlockTemplate = ({
 
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
-		return getStyles(this.props.attributes, this.props.clientId);
+		return getStyles(this.props.attributes);
 	}
 
 	state = {

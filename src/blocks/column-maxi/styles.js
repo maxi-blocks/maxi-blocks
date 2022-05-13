@@ -16,7 +16,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
-const getNormalObject = (props, rowGapProps, columnsNumber) => {
+const getNormalObject = (props, rowGapProps) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {

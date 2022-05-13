@@ -1,11 +1,3 @@
-/**
- * WordPress dependencies
- */
-import { select } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getSizeStyles,
@@ -24,10 +16,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
 
-const getNormalObject = (props, clientId) => {
-	const { getBlockOrder } = select('core/block-editor');
-	const columnsNumber = getBlockOrder(clientId).length;
-
+const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -78,12 +67,9 @@ const getNormalObject = (props, clientId) => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
-		flex: getFlexStyles(
-			{
-				...getGroupAttributes(props, 'flex'),
-			},
-			columnsNumber
-		),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
 	};
 
 	return response;

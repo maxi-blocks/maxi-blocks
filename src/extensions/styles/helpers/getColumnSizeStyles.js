@@ -29,12 +29,15 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 			isNumber(columnSize) ||
 			isNumber(rowGapProps[`column-gap-${breakpoint}`])
 		) {
+			const gapNum = rowGapProps.columnNum - 1;
 			const gap =
-				getLastBreakpointAttribute({
+				(getLastBreakpointAttribute({
 					target: 'column-gap',
 					breakpoint,
 					attributes: rowGapProps,
-				}) / rowGapProps.columnNum;
+				}) *
+					gapNum) /
+				rowGapProps.columnNum;
 			const gapUnit = getLastBreakpointAttribute({
 				target: 'column-gap-unit',
 				breakpoint,

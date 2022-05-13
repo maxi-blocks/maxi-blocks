@@ -12,7 +12,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Generates flex styles object
  */
-const getFlexStyles = (obj, columnsNumber) => {
+const getFlexStyles = obj => {
 	const response = {};
 	breakpoints.forEach(breakpoint => {
 		let flexBasis = getLastBreakpointAttribute({
@@ -85,17 +85,11 @@ const getFlexStyles = (obj, columnsNumber) => {
 			attributes: obj,
 		});
 
-		const columnGap = columnsNumber
-			? getLastBreakpointAttribute({
-					target: 'column-gap',
-					breakpoint,
-					attributes: obj,
-			  }) / columnsNumber
-			: getLastBreakpointAttribute({
-					target: 'column-gap',
-					breakpoint,
-					attributes: obj,
-			  });
+		const columnGap = getLastBreakpointAttribute({
+			target: 'column-gap',
+			breakpoint,
+			attributes: obj,
+		});
 
 		response[breakpoint] = {
 			...((flexBasis || flexGrow || flexShrink) && {

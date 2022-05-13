@@ -402,7 +402,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			<AccordionControl
 				key='sc-accordion__quick-color-presets'
 				isSecondary
-				depth='style-card'
+				isStyleCard
 				items={[
 					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),

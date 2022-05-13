@@ -69,6 +69,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		background: {
 			...getBlockBackgroundStyles({
@@ -233,7 +234,7 @@ const getHoverBoxObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, blockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(

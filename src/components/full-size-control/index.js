@@ -191,6 +191,7 @@ const FullSizeControl = props => {
 					}}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', '%', 'em', 'vw', 'vh']}
+					optionType='string'
 				/>
 			)}
 			<ToggleSwitch
@@ -269,6 +270,7 @@ const FullSizeControl = props => {
 								}}
 								minMaxSettings={minMaxSettings}
 								allowedUnits={['px', 'em', 'vw', '%']}
+								optionType='string'
 							/>
 						)}
 					{!getLastBreakpointAttribute({
@@ -311,6 +313,7 @@ const FullSizeControl = props => {
 							}}
 							minMaxSettings={minMaxSettings}
 							allowedUnits={['px', 'em', 'vw', '%']}
+							optionType='string'
 						/>
 					)}
 					<AdvancedNumberControl
@@ -348,6 +351,7 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', 'vh']}
+						optionType='string'
 					/>
 					<AdvancedNumberControl
 						label={__('Minimum height', 'maxi-blocks')}
@@ -384,6 +388,7 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', 'vh']}
+						optionType='string'
 					/>
 				</>
 			)}

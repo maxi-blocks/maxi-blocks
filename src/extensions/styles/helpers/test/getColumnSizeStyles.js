@@ -2,6 +2,7 @@ import getColumnSizeStyles from '../getColumnSizeStyles';
 
 const rowGapProps = {
 	rowElements: ['', ''],
+	columnNum: 2,
 };
 
 describe('getColumnSizeStyles', () => {
@@ -16,7 +17,7 @@ describe('getColumnSizeStyles', () => {
 			'column-size-xs': 3,
 		};
 
-		const result = getColumnSizeStyles(object, rowGapProps, 2);
+		const result = getColumnSizeStyles(object, rowGapProps);
 		expect(result).toMatchSnapshot();
 	});
 
@@ -46,7 +47,7 @@ describe('getColumnSizeStyles', () => {
 			'column-size-xs': 3,
 		};
 
-		const result = getColumnSizeStyles(object, rowGapProps, 2);
+		const result = getColumnSizeStyles(object, rowGapProps);
 		expect(result).toMatchSnapshot();
 	});
 
@@ -61,21 +62,18 @@ describe('getColumnSizeStyles', () => {
 			'column-size-xs': 3,
 		};
 
-		const result = getColumnSizeStyles(
-			object,
-			{
-				'row-gap-general': 20,
-				'row-gap-unit-general': 'px',
-				'column-gap-general': 2.5,
-				'column-gap-unit-general': '%',
-				'row-gap-xxl': 10,
-				'row-gap-unit-xxl': 'px',
-				'column-gap-xxl': 2.5,
-				'column-gap-unit-xxl': 'px',
-				rowElements: ['', ''],
-			},
-			2
-		);
+		const result = getColumnSizeStyles(object, {
+			'row-gap-general': 20,
+			'row-gap-unit-general': 'px',
+			'column-gap-general': 2.5,
+			'column-gap-unit-general': '%',
+			'row-gap-xxl': 10,
+			'row-gap-unit-xxl': 'px',
+			'column-gap-xxl': 2.5,
+			'column-gap-unit-xxl': 'px',
+			rowElements: ['', ''],
+			columnNum: 2,
+		});
 		expect(result).toMatchSnapshot();
 	});
 });

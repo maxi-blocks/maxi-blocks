@@ -48,31 +48,30 @@ class edit extends MaxiBlockComponent {
 		);
 	}
 
-	getHeightObj() {
+	getHeight() {
 		const forceAspectRatio = getLastBreakpointAttribute({
 			target: 'force-aspect-ratio',
 			breakpoint: this.props.deviceType || 'general',
 			attributes: this.props.attributes,
 		});
 
-		const columnHeight = forceAspectRatio
-			? '100%'
-			: `${getLastBreakpointAttribute({
-					target: 'height',
-					breakpoint: this.props.deviceType || 'general',
-					attributes: this.props.attributes,
-			  })}${getLastBreakpointAttribute({
-					target: 'height-unit',
-					breakpoint: this.props.deviceType || 'general',
-					attributes: this.props.attributes,
-			  })}`;
+		const columnHeightAttribute = getLastBreakpointAttribute({
+			target: 'height',
+			breakpoint: this.props.deviceType || 'general',
+			attributes: this.props.attributes,
+		});
 
-		return {
-			height: columnHeight,
-			...(forceAspectRatio && {
-				'force-aspect-ratio': 1,
-			}),
-		};
+		let columnHeight = 'auto';
+
+		if (forceAspectRatio) columnHeight = '100%';
+		else if (columnHeightAttribute);
+		columnHeight = `${columnHeightAttribute}${getLastBreakpointAttribute({
+			target: 'height-unit',
+			breakpoint: this.props.deviceType || 'general',
+			attributes: this.props.attributes,
+		})}`;
+
+		return columnHeight;
 	}
 
 	maxiBlockDidUpdate() {
@@ -83,17 +82,16 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			});
 
-			const columnHeightObj = this.getHeightObj();
+			const columnHeight = this.getHeight();
 
 			if (
 				this.resizableObject.current.state.width !==
 					`${columnWidth}%` ||
-				this.resizableObject.current.state.height !==
-					columnHeightObj.height
+				this.resizableObject.current.state.height !== columnHeight
 			) {
 				this.resizableObject.current.updateSize({
 					width: `${columnWidth}%`,
-					...columnHeightObj,
+					height: columnHeight,
 				});
 
 				this.resizableObject.current.resizable.style.flexBasis = '';
@@ -208,7 +206,7 @@ class edit extends MaxiBlockComponent {
 						)}
 						defaultSize={{
 							width: getColumnWidthDefault(),
-							...this.getHeightObj(),
+							height: this.getHeight(),
 						}}
 						enable={{
 							right: true,

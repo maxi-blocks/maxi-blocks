@@ -37,7 +37,7 @@ describe('FullSizeControl', () => {
 		);
 
 		const inputs = await accordionPanel.$(
-			'.maxi-full-size-control .full-size-control__height .maxi-advanced-number-control__value'
+			'.maxi-full-size-control .maxi-full-size-control__height .maxi-advanced-number-control__value'
 		);
 
 		await inputs.focus();
@@ -47,7 +47,7 @@ describe('FullSizeControl', () => {
 		const responsiveResult = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-full-size-control .full-size-control__height .maxi-advanced-number-control__value',
+				'.maxi-full-size-control .maxi-full-size-control__height .maxi-advanced-number-control__value',
 			needFocus: true,
 			baseExpect: '330',
 			xsExpect: '200',
@@ -62,15 +62,15 @@ describe('FullSizeControl', () => {
 		await changeResponsive(page, 'base');
 
 		await page.$eval(
-			'.maxi-full-size-control .full-size-control__custom-min-max input',
+			'.maxi-full-size-control .maxi-full-size-control__custom-min-max input',
 			button => button.click()
 		);
 
 		const selectorHeight = await page.$(
-			'.maxi-full-size-control .full-size-control__height .maxi-dimensions-control__units select'
+			'.maxi-full-size-control .maxi-full-size-control__height .maxi-dimensions-control__units select'
 		);
 		const selectorWidth = await page.$(
-			'.maxi-full-size-control .full-size-control__minimum-width .maxi-dimensions-control__units select'
+			'.maxi-full-size-control .maxi-full-size-control__min-width .maxi-dimensions-control__units select'
 		);
 
 		// check that vh works in height and does not exist in width

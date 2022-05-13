@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -210,20 +214,80 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		// open advanced
-		await page.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-control__sidebar-settings-tabs .maxi-tabs-control__button-Settings',
-			button => button[1].click()
+		await page.$eval(
+			'.toolbar-item__copy-paste__popover .maxi-tabs-control__button-Settings',
+			button => button.click()
 		);
 
 		// select border
-		await page.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input',
-			button => button[1].click()
+		await page.$eval(
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#border',
+			button => button.click()
 		);
 
 		await page.$eval(
 			'.toolbar-item__copy-paste__popover .toolbar-item__copy-paste__popover__button--special',
 			button => button.click()
+		);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Should copy nested blocks', async () => {
+		await createNewPost();
+		await insertBlock('Group Maxi');
+
+		await page.$eval('.maxi-block-inserter button', addBlock =>
+			addBlock.click()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('Text Maxi');
+
+		// focus group
+		await page.$eval('.maxi-group-block', group => group.focus());
+
+		// open options
+		await page.$eval(
+			'.toolbar-wrapper .toolbar-item__more-settings button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select copy/paste
+		await page.$eval(
+			'.components-popover__content .maxi-copypaste__copy-selector button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select copy Nested Blocks
+		await page.$eval(
+			'.components-popover__content .toolbar-item__copy-nested-block__popover__button',
+			button => button.click()
+		);
+
+		await page.waitForTimeout(150);
+		await insertBlock('Group Maxi');
+
+		// open options
+		await page.$eval(
+			'.toolbar-wrapper .toolbar-item__more-settings button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select copy/paste
+		await page.$eval(
+			'.components-popover__content .maxi-copypaste__copy-selector button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select paste nested blocks
+		await page.$$eval(
+			'.components-popover__content .toolbar-item__copy-paste__popover button',
+			button => button[4].click()
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

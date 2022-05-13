@@ -141,6 +141,9 @@ const Inspector = props => {
 									...inspectorTabs.zindex({
 										props,
 									}),
+									...inspectorTabs.relation({
+										props,
+									}),
 								]}
 							/>
 						),

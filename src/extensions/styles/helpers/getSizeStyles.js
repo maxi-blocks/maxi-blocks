@@ -104,7 +104,7 @@ const getSizeStyles = (obj, prefix = '') => {
 			...getValue('min-height'),
 		};
 	});
-	console.log(response);
+
 	return response;
 };
 

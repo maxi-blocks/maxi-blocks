@@ -114,13 +114,13 @@ const getBackgroundDisplayer = props => {
 	return response;
 };
 
-const getStyles = (props, clientId) => {
+const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props, clientId),
+				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 				' > .maxi-background-displayer > div':
 					getBackgroundDisplayer(props),

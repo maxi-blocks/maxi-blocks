@@ -7,40 +7,13 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
 	openSidebarTab,
 	editAxisControl,
 	getAttributes,
+	getBlockStyle,
 } from '../../../../utils';
 
-/**
- * External dependencies
- */
-import { isEqual } from 'lodash';
-
 describe('CopyPaste from Toolbar', () => {
-	/* beforeEach(async () => {
-		await createNewPost();
-		await page.waitForTimeout(1000);
-
-		// Inserts styled block
-		await page.evaluate(block => {
-			window.wp.data.dispatch('core/block-editor').insertBlock(block);
-		}, block);
-		await page.waitForTimeout(1000);
-
-		// Copy styles
-		await page.waitForSelector('.toolbar-item__copy-paste');
-		await page.$eval('.toolbar-item__copy-paste', button => button.click());
-		await page.waitForSelector('.toolbar-item__copy-paste__popover');
-		await page.$eval('.toolbar-item__copy-paste__popover button', button =>
-			button.click()
-		);
-
-		// Set new block
-		await insertBlock('Text Maxi');
-	}); */
-
 	it('Should copy and paste bulk styles', async () => {
 		await createNewPost();
 		await page.waitForTimeout(1000);
@@ -126,46 +99,133 @@ describe('CopyPaste from Toolbar', () => {
 
 		expect(positionResult).toStrictEqual(expectPosition);
 	});
-	/* it('Should copy and paste styles with special paste', async () => {
-		// Paste styles
-		await page.waitForSelector('.toolbar-item__copy-paste');
-		await page.$eval('.toolbar-item__copy-paste', button => button.click());
-		await page.waitForSelector('.toolbar-item__copy-paste__popover');
-		await page.$$eval('.toolbar-item__copy-paste__popover button', button =>
-			button[2].click()
+	it('Should copy and paste styles with special paste', async () => {
+		await insertBlock('Group Maxi');
+
+		// add border attributes
+		const borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		const axisControlInstance = await borderAccordion.$(
+			'.maxi-axis-control__border'
 		);
-		await page.$$eval(
-			'.toolbar-item__copy-paste__popover__item',
-			pasteOptions => {
-				pasteOptions.forEach(option => {
-					if (
-						option.querySelector('span')?.innerHTML === 'typography'
-					)
-						option.querySelector('input')?.click();
-				});
-			}
+
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			syncOption: 'none',
+			values: ['56', '15', '96', '44'],
+			unit: '%',
+		});
+
+		const expectMargin = {
+			'border-bottom-left-radius-general': 44,
+			'border-bottom-right-radius-general': 96,
+			'border-top-left-radius-general': 56,
+			'border-top-right-radius-general': 15,
+		};
+		const marginResult = await getAttributes([
+			'border-bottom-left-radius-general',
+			'border-bottom-right-radius-general',
+			'border-top-left-radius-general',
+			'border-top-right-radius-general',
+		]);
+
+		expect(marginResult).toStrictEqual(expectMargin);
+
+		// add flex attributes
+		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
+
+		const wrapSelector = await accordionPanel.$(
+			'.maxi-flex-wrap-control select'
 		);
+		await wrapSelector.select('wrap');
+
+		const directionSelector = await accordionPanel.$(
+			'.maxi-flex__direction select'
+		);
+		await directionSelector.select('row');
+
+		const attributeParent = await getAttributes([
+			'flex-direction-general',
+			'flex-wrap-general',
+		]);
+
+		const expectedParentAttribute = {
+			'flex-direction-general': 'row',
+			'flex-wrap-general': 'wrap',
+		};
+		expect(attributeParent).toStrictEqual(expectedParentAttribute);
+
+		// copy style
+		// open options
 		await page.$eval(
-			'.toolbar-item__copy-paste__popover__button--special',
+			'.toolbar-wrapper .toolbar-item__more-settings button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select copy/paste
+		await page.$eval(
+			'.components-popover__content .maxi-copypaste__copy-selector button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select copy Style
+		await page.$eval(
+			'.components-popover__content .toolbar-item__copy-paste__popover button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// new block
+		await insertBlock('Group Maxi');
+		await page.waitForTimeout(500);
+
+		// open options
+		await page.$eval(
+			'.toolbar-wrapper .toolbar-item__more-settings button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select copy/paste
+		await page.$eval(
+			'.components-popover__content .maxi-copypaste__copy-selector button',
+			button => button.click()
+		);
+		await page.waitForTimeout(150);
+
+		// select special paste
+		await page.$$eval(
+			'.components-popover__content .toolbar-item__copy-paste__popover button',
+			button => button[2].click()
+		);
+		await page.waitForTimeout(150);
+
+		// select flex
+		await page.$eval(
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#flex',
 			button => button.click()
 		);
 
-		// Compare attributes
-		const secondBlockAttr = await getBlockAttributes();
-		const secondBlockTypography = getGroupAttributes(
-			secondBlockAttr,
-			'typography'
-		);
-		await page.waitForSelector('.maxi-text-block');
-		await page.$eval('.maxi-text-block', block => block.focus());
-		const firstBlockAttr = await getBlockAttributes();
-		const firstBlockTypography = getGroupAttributes(
-			firstBlockAttr,
-			'typography'
+		// open advanced
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-control__sidebar-settings-tabs .maxi-tabs-control__button-Settings',
+			button => button[1].click()
 		);
 
-		await expect(
-			isEqual(firstBlockTypography, secondBlockTypography)
-		).toBeTruthy();
-	}); */
+		// select border
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input',
+			button => button[1].click()
+		);
+
+		await page.$eval(
+			'.toolbar-item__copy-paste__popover .toolbar-item__copy-paste__popover__button--special',
+			button => button.click()
+		);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
 });

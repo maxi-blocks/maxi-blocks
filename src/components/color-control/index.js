@@ -40,7 +40,6 @@ const ColorControl = props => {
 		color,
 		defaultColorAttributes,
 		globalProps,
-		noColorPrefix,
 		onChangeInline,
 		onChange,
 		isHover,
@@ -152,7 +151,7 @@ const ColorControl = props => {
 				blockStyle,
 			})},${paletteOpacity || 1})`;
 
-			onChangeInline({ color: defaultColor });
+			onChangeInline && onChangeInline({ color: defaultColor });
 			onChange({
 				paletteStatus,
 				paletteColor,

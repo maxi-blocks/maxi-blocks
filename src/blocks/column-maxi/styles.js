@@ -62,6 +62,7 @@ const getNormalObject = (props, rowGapProps) => {
 		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -76,7 +77,6 @@ const getNormalObject = (props, rowGapProps) => {
 
 	return response;
 };
-
 
 const getHoverObject = props => {
 	const response = {
@@ -107,7 +107,6 @@ const getHoverObject = props => {
 	return response;
 };
 
-
 const getBackgroundDisplayer = props => {
 	const response = {
 		transition: getTransitionStyles({
@@ -118,9 +117,7 @@ const getBackgroundDisplayer = props => {
 	return response;
 };
 
-
 const getStyles = (props, rowGapProps) => {
-
 	const { uniqueID } = props;
 
 	const response = {
@@ -128,7 +125,8 @@ const getStyles = (props, rowGapProps) => {
 			{
 				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
+				' > .maxi-background-displayer > div':
+					getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

@@ -246,6 +246,7 @@ const NumberCounterControl = props => {
 				fontStyle=''
 			/>
 			<AdvancedNumberControl
+				className='maxi-number-counter-control__font-size'
 				label={__('Title Font Size', 'maxi-blocks')}
 				min={0}
 				max={99}
@@ -325,7 +326,7 @@ const NumberCounterControl = props => {
 					attributes: props,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: 'number-counter-palette-text-opacity',
+					target: 'number-counter-text-palette-opacity',
 					breakpoint,
 					attributes: props,
 				})}
@@ -353,7 +354,7 @@ const NumberCounterControl = props => {
 								paletteStatus,
 							[`number-counter-text-palette-color-${breakpoint}`]:
 								paletteColor,
-							[`number-counter-palette-text-opacity-${breakpoint}`]:
+							[`number-counter-text-palette-opacity-${breakpoint}`]:
 								paletteOpacity,
 							[`number-counter-text-color-${breakpoint}`]: color,
 						},

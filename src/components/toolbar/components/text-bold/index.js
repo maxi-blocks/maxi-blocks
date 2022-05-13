@@ -37,6 +37,7 @@ const TextBold = withFormatValue(props => {
 		textLevel,
 		styleCard,
 		isCaptionToolbar = false,
+		tooltipsHide,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
@@ -83,8 +84,8 @@ const TextBold = withFormatValue(props => {
 		onChange(obj);
 	};
 
-	return (
-		<Tooltip text={__('Bold', 'maxi-blocks')} position='bottom center'>
+	const boldContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__bold'
 				onClick={onClick}
@@ -92,8 +93,16 @@ const TextBold = withFormatValue(props => {
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarBold} />
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip text={__('Bold', 'maxi-blocks')} position='bottom center'>
+				{boldContent()}
+			</Tooltip>
+		);
+	return boldContent();
 });
 
 export default TextBold;

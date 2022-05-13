@@ -37,6 +37,7 @@ import {
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId } from 'lodash';
+import Masonry from 'masonry-layout';
 
 const MasonryItem = props => {
 	const {
@@ -691,6 +692,24 @@ const LibraryContainer = props => {
 
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 
+	const rebuildMasonry = () => {
+		setInterval(() => {
+			const elem = document.querySelector(
+				'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
+			);
+			if (elem) {
+				// eslint-disable-next-line no-new
+				new Masonry(elem, {
+					// options
+					itemSelector: '.ais-InfiniteHits-item',
+					gutter: 16,
+				});
+			}
+		}, 500);
+	};
+
+	rebuildMasonry();
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -850,7 +869,6 @@ const LibraryContainer = props => {
 					</InstantSearch>
 				</div>
 			)}
-
 			{type === 'sc' && (
 				<div className='maxi-cloud-container__sc'>
 					<InstantSearch

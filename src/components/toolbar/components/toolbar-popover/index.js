@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
 import { Icon, Popover, Tooltip } from '@wordpress/components';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,6 +18,7 @@ import ToolbarContext from './toolbarContext';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -101,20 +103,36 @@ class ToolbarPopover extends Component {
 			className
 		);
 
+		const { receiveMaxiSettings } = select('maxiBlocks');
+
+		const maxiSettings = receiveMaxiSettings();
+		const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+			? maxiSettings.hide_tooltips
+			: false;
+
+		const buttonContent = () => {
+			return (
+				<Button
+					className={classes}
+					onClick={() => this.onToggle()}
+					aria-expanded={isOpen}
+					action='popup'
+				>
+					<Icon className='toolbar-item__icon' icon={icon} />
+					{__(text, 'maxi-blocks')}
+				</Button>
+			);
+		};
+
 		return (
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={{ isOpen, onClose }}>
-					<Tooltip text={tooltip} position='bottom center'>
-						<Button
-							className={classes}
-							onClick={() => this.onToggle()}
-							aria-expanded={isOpen}
-							action='popup'
-						>
-							<Icon className='toolbar-item__icon' icon={icon} />
-							{__(text, 'maxi-blocks')}
-						</Button>
-					</Tooltip>
+					{!tooltipsHide && (
+						<Tooltip text={tooltip} position='bottom center'>
+							{buttonContent()}
+						</Tooltip>
+					)}
+					{tooltipsHide && buttonContent()}
 					{isOpen && children && (
 						<Popover
 							className='toolbar-item__popover'

@@ -18,7 +18,7 @@ import {
 	styleResolver,
 	getResponsiveStyles,
 } from '../../extensions/styles';
-import getClientId from '../../extensions/attributes/getClientId';
+import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 
 /**
  * External dependencies
@@ -109,7 +109,7 @@ const RelationControl = props => {
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
-		const clientId = getClientId(item.uniqueID);
+		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
 		const selectedSettingsObj = getOptions(clientId).find(
 			option => option.label === item.settings
@@ -247,7 +247,7 @@ const RelationControl = props => {
 									<div
 										className={classnames(
 											'maxi-relation-control__item__content__target',
-											getClientId(item.uniqueID) &&
+											getClientIdFromUniqueId(item.uniqueID) &&
 												'maxi-relation-control__item__content__target--has-block'
 										)}
 									>
@@ -312,7 +312,7 @@ const RelationControl = props => {
 												value: '',
 											},
 											...getOptions(
-												getClientId(item.uniqueID)
+												getClientIdFromUniqueId(item.uniqueID)
 											).map(option => ({
 												label: option.label,
 												value: option.label,

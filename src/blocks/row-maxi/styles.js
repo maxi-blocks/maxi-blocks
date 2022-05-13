@@ -23,12 +23,12 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
-import getClientId from '../../extensions/attributes/getClientId';
+import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 
 const getNormalObject = props => {
 	const { getBlockOrder } = select('core/block-editor');
 
-	const rowClientId = getClientId(props.uniqueID);
+	const rowClientId = getClientIdFromUniqueId(props.uniqueID);
 	const columnsNumber = getBlockOrder(rowClientId).length;
 
 	const response = {

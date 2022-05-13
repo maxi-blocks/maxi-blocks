@@ -163,8 +163,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<a href="" target="_blank"> '.__('Learn more about Maxi Blocks Pro', self::$maxi_text_domain).'</a>.</p>';
 
             $content .= '<h3>'.__('Roadmap', self::$maxi_text_domain).'</h3>';
-            $content .= '<p>'.__('There’s a grand plan and we need your help. Share your suggestions or vote on what to build next.', self::$maxi_text_domain).'</p>';
-            $content .= '<a href="" target="_blank">'.__('See what’s planned in the roadmap', self::$maxi_text_domain).'</a>';
+            $content .= '<p>'.__('There’s a grand plan and we need your help. Share your suggestions or vote on what to build next.', self::$maxi_text_domain).' <a href="" target="_blank">'.__('See what’s planned in the roadmap', self::$maxi_text_domain).'</a></p>';
 
             $content .= '<h3>'.__('Beta 1.0', self::$maxi_text_domain).'</h3>';
             $content .= '<p>'.__('The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.', self::$maxi_text_domain).'</p>';

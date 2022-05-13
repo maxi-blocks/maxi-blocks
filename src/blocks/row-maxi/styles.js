@@ -23,13 +23,10 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
-import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 
-const getNormalObject = props => {
+const getNormalObject = (props, clientId) => {
 	const { getBlockOrder } = select('core/block-editor');
-
-	const rowClientId = getClientIdFromUniqueId(props.uniqueID);
-	const columnsNumber = getBlockOrder(rowClientId).length;
+	const columnsNumber = getBlockOrder(clientId).length;
 
 	const response = {
 		boxShadow: getBoxShadowStyles({
@@ -131,13 +128,13 @@ const getBackgroundDisplayer = props => {
 	return response;
 };
 
-const getStyles = props => {
+const getStyles = (props, clientId) => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props),
+				'': getNormalObject(props, clientId),
 				':hover': getHoverObject(props),
 				' > .maxi-background-displayer > div':
 					getBackgroundDisplayer(props),

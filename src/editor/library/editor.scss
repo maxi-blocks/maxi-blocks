@@ -781,8 +781,6 @@
 						.ais-RefinementList-checkbox {
 							display: none;
 						}
-						.ais-RefinementList-labelText {
-						}
 						.ais-RefinementList-count {
 							&:before {
 								content: '(';
@@ -1286,5 +1284,36 @@
 				grid-template-columns: 100%;
 			}
 		}
+	}
+}
+
+/*******************************
+* RTL
+*******************************/
+html[dir="rtl"]  {
+	.maxi-library-modal .maxi-cloud-toolbar__help-button svg {
+		margin-right: 0;
+		margin-left: 5px;
+	}
+	.maxi-library-modal .maxi-cloud-container__patterns__top-menu .ais-Menu {
+		left: unset;
+		right: 194px;
+	}
+	.maxi-library-modal .components-modal__content .components-modal__header .components-button {
+		left: 4px;
+		right: unset;
+	}
+	.maxi-library-modal .maxi-cloud-container__patterns__top-menu .maxi-cloud-container__content-svg-shape__button {
+		margin-right: 0;
+		margin-left: 15px;
+	}
+	.maxi-library-modal .maxi-cloud-toolbar {
+		padding: 5px 8px 5px 43px;
+	}
+	.maxi-library-modal .maxi-cloud-container__svg-shape .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu), 
+	.maxi-library-modal .maxi-cloud-container__svg-icon .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu), 
+	.maxi-library-modal .maxi-cloud-container__patterns .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu), 
+	.maxi-library-modal .maxi-cloud-container__sc .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu) {
+		padding: 9px 24px 8px 0px;
 	}
 }

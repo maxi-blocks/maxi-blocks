@@ -1316,4 +1316,8 @@ html[dir="rtl"]  {
 	.maxi-library-modal .maxi-cloud-container__sc .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu) {
 		padding: 9px 24px 8px 0px;
 	}
+	.rtl .maxi-block-inserter__button {
+		top: 50%;
+		margin: 0;
+	}
 }

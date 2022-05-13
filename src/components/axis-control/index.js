@@ -120,6 +120,8 @@ const AxisContent = props => {
 		isHover,
 	});
 
+	console.log('hey!');
+
 	return (
 		<div>
 			{(sync === 'all' || disableSync) && (

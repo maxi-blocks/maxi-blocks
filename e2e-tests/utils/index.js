@@ -1,7 +1,9 @@
 export { default as addBackgroundLayer } from './addBackgroundLayer';
+export { default as addBackgroundLayerCanvas } from './addBackgroundLayerCanvas';
 export { default as addTypographyOptions } from './addTypographyOptions';
 export { default as addTypographyStyle } from './addTypographyStyle';
 export { default as addResponsiveTest } from './addResponsiveTest';
+export { default as addCustomCSS } from './addCustomCSS';
 export { default as editAdvancedNumberControl } from './editAdvancedNumberControl';
 export { default as editAxisControl } from './editAxisControl';
 export { default as editColorControl } from './editColorControl';

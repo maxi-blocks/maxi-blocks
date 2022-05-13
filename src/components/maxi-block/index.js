@@ -58,7 +58,11 @@ const MainBlock = forwardRef(
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
 					{!isEmpty(anchorLink) && (
-						<span id={anchorLink} className='maxi-block-anchor' />
+						<span
+							id={anchorLink}
+							className='maxi-block-anchor'
+							key={`maxi-block-anchor-${anchorLink}`}
+						/>
 					)}
 					{disableBackground && (
 						<BackgroundDisplayer
@@ -73,7 +77,13 @@ const MainBlock = forwardRef(
 
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
-				{!isEmpty(anchorLink) && <span id={anchorLink} />}
+				{!isEmpty(anchorLink) && (
+					<span
+						id={anchorLink}
+						className='maxi-block-anchor'
+						key={`maxi-block-anchor-${anchorLink}`}
+					/>
+				)}
 				{disableBackground && (
 					<BackgroundDisplayer
 						key={`maxi-background-displayer__${uniqueID}`}
@@ -107,7 +117,13 @@ const getInnerBlocksChild = ({
 
 	if (!needToSplit)
 		return [
-			...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+			...(!isEmpty(anchorLink) && (
+				<span
+					id={anchorLink}
+					className='maxi-block-anchor'
+					key={`maxi-block-anchor-${anchorLink}`}
+				/>
+			)),
 			...(disableBackground && (
 				<BackgroundDisplayer
 					key={`maxi-background-displayer__${uniqueID}`}
@@ -138,7 +154,13 @@ const getInnerBlocksChild = ({
 		);
 
 	return [
-		...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+		...(!isEmpty(anchorLink) && (
+			<span
+				id={anchorLink}
+				className='maxi-block-anchor'
+				key={`maxi-block-anchor-${anchorLink}`}
+			/>
+		)),
 		...(disableBackground && (
 			<BackgroundDisplayer
 				key={`maxi-background-displayer__${uniqueID}`}
@@ -307,7 +329,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		// to support old blocks, we check if blockStyle has 'maxi-' prefix
 		blockStyle && blockStyle.includes('maxi-')
 			? blockStyle
-			: `maxi-${blockStyle}`,
+			: `maxi-${blockStyle ?? 'light'}`,
 		extraClassName,
 		uniqueID,
 		className,

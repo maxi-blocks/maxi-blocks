@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -15,6 +16,7 @@ import {
 	getAttributes,
 	editAdvancedNumberControl,
 	changeResponsive,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('NumberCounterControl', () => {
@@ -84,7 +86,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end',
 			'number-counter-start',
 			'number-counter-stroke',
-			'number-counter-title-font-size',
+			'number-counter-title-font-size-general',
 		]);
 
 		const expectAttributes = {
@@ -94,7 +96,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end': 50,
 			'number-counter-start': 20,
 			'number-counter-stroke': 50,
-			'number-counter-title-font-size': 19,
+			'number-counter-title-font-size-general': 19,
 		};
 
 		expect(numberResult).toStrictEqual(expectAttributes);
@@ -151,14 +153,14 @@ describe('NumberCounterControl', () => {
 
 		// expect
 		const colorResult = await getAttributes([
-			'number-counter-text-palette-color',
-			'number-counter-circle-bar-palette-color',
+			'number-counter-text-palette-color-general',
+			'number-counter-circle-bar-palette-color-general',
 			'number-counter-circle-background-palette-color',
 		]);
 
 		const expectedColorAttributes = {
-			'number-counter-text-palette-color': 4,
-			'number-counter-circle-bar-palette-color': 2,
+			'number-counter-text-palette-color-general': 4,
+			'number-counter-circle-bar-palette-color-general': 2,
 			'number-counter-circle-background-palette-color': 3,
 		};
 
@@ -173,9 +175,9 @@ describe('NumberCounterControl', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
-		expect(
-			await getAttributes('number-counter-title-font-family')
-		).toStrictEqual('Montserrat');
+		expect(await getAttributes('font-family-general')).toStrictEqual(
+			'Montserrat'
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -260,5 +262,130 @@ describe('NumberCounterControl', () => {
 		);
 
 		expect(responsiveXsOption).toBe(false);
+	});
+	it('Check number counter font size and font family responsive', async () => {
+		const responsiveFontSize = await addResponsiveTest({
+			page,
+			instance: '.maxi-number-counter-control__font-size input',
+			needFocus: true,
+			baseExpect: '19',
+			xsExpect: '33',
+			newValue: '33',
+		});
+		expect(responsiveFontSize).toBeTruthy();
+
+		// font family
+		await changeResponsive(page, 'base');
+
+		const typographyInput = await page.$eval(
+			'.maxi-typography-control__font-family div div div',
+			fontValue => fontValue.innerHTML
+		);
+		await page.waitForTimeout(200);
+
+		expect(typographyInput).toStrictEqual('Montserrat');
+
+		// s
+		await changeResponsive(page, 's');
+
+		await page.$eval('.maxi-typography-control__font-family input', input =>
+			input.focus()
+		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('Arial');
+		await page.keyboard.press('Enter');
+
+		const typographyInputS = await page.$eval(
+			'.maxi-typography-control__font-family div div div',
+			fontValue => fontValue.innerHTML
+		);
+		expect(typographyInputS).toStrictEqual('Arial');
+
+		expect(await getAttributes('font-family-s')).toStrictEqual('Arial');
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const typographyInputXs = await page.$eval(
+			'.maxi-typography-control__font-family div div div',
+			fontValue => fontValue.innerHTML
+		);
+
+		expect(typographyInputXs).toStrictEqual('Arial');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const typographyInputM = await page.$eval(
+			'.maxi-typography-control__font-family div div div',
+			fontValue => fontValue.innerHTML
+		);
+
+		expect(typographyInputM).toStrictEqual('Montserrat');
+	});
+	it('Check number counter text-color and circle-bar-color responsive', async () => {
+		// change responsive s
+		await changeResponsive(page, 's');
+
+		const colorsS = await page.$$(
+			'.maxi-color-palette-control .maxi-color-control__palette'
+		);
+
+		// Text color
+		await colorsS[0].$$eval('button', click => click[4].click());
+
+		// Circle Bar Color
+		await colorsS[2].$$eval('button', click => click[2].click());
+
+		// expect
+		const colorResult = await getAttributes([
+			'number-counter-text-palette-color-s',
+			'number-counter-circle-bar-palette-color-s',
+		]);
+
+		const expectedColorAttributes = {
+			'number-counter-text-palette-color-s': 5,
+			'number-counter-circle-bar-palette-color-s': 3,
+		};
+
+		expect(colorResult).toStrictEqual(expectedColorAttributes);
+
+		// change responsive xs
+		await changeResponsive(page, 'xs');
+
+		const xsTextColor = await colorsS[0].$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
+		);
+
+		expect(xsTextColor).toStrictEqual('5');
+
+		const xsCircleBarColor = await colorsS[2].$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
+		);
+
+		expect(xsCircleBarColor).toStrictEqual('3');
+
+		// change responsive m
+		await changeResponsive(page, 'm');
+		const colorsM = await page.$$(
+			'.maxi-color-palette-control .maxi-color-control__palette'
+		);
+		await page.waitForTimeout(1500);
+
+		const mTextColor = await colorsM[0].$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
+		);
+
+		expect(mTextColor).toStrictEqual('4');
+
+		const mCircleBarColor = await colorsM[2].$eval(
+			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
+			select => select.getAttribute('data-item')
+		);
+
+		expect(mCircleBarColor).toStrictEqual('2');
 	});
 });

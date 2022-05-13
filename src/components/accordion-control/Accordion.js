@@ -28,6 +28,7 @@ const Accordion = props => {
 		preExpandedAccordion,
 		blockName,
 		depth = 1,
+		isStyleCard = false,
 	} = props;
 
 	const [itemExpanded, setItemExpanded] = useState(preExpandedAccordion);
@@ -42,13 +43,13 @@ const Accordion = props => {
 		select('core/block-editor');
 
 	const toggleExpanded = uuid => {
-		updateInspectorPath({ depth, value: uuid });
+		if (!isStyleCard) updateInspectorPath({ depth, value: uuid });
 		setItemExpanded(uuid);
 	};
 
 	useEffect(() => {
 		if (updatedItemExpanded !== itemExpanded) {
-			setItemExpanded(updatedItemExpanded);
+			if (!isStyleCard) setItemExpanded(updatedItemExpanded);
 		}
 	}, [updatedItemExpanded]);
 

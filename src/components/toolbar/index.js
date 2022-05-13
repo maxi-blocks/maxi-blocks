@@ -2,7 +2,13 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
+import {
+	forwardRef,
+	memo,
+	useEffect,
+	useRef,
+	useState,
+} from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 import { getScrollContainer } from '@wordpress/dom';
 
@@ -138,8 +144,45 @@ const MaxiToolbar = memo(
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
+		const popoverRef = useRef(null);
+
+		const correctPopoverPosition = () => {
+			if (!popoverRef.current) return;
+
+			const popoverContent = popoverRef.current.querySelector(
+				'.components-popover__content'
+			);
+
+			const { x } = popoverContent.getBoundingClientRect();
+			const { offsetWidth } = popoverContent;
+			const { offsetWidth: contentWidth } = document.querySelector(
+				'.interface-interface-skeleton__content'
+			);
+
+			let percentInvisible = null;
+
+			if (x < 0) {
+				percentInvisible = (x / offsetWidth) * 100;
+			}
+
+			if (x + offsetWidth > contentWidth)
+				percentInvisible =
+					((x + offsetWidth - contentWidth) / offsetWidth) * 100;
+
+			if (percentInvisible)
+				popoverContent.style.transform = `translateX(${
+					-50 - percentInvisible
+				}%)`;
+			else popoverContent.style.transform = '';
+		};
+
 		useEffect(() => {
 			setAnchorRef(ref.current);
+			if (isSelected) {
+				setTimeout(() => {
+					correctPopoverPosition();
+				}, 0);
+			}
 		});
 
 		if (!allowedBlocks.includes(name)) return null;
@@ -178,6 +221,7 @@ const MaxiToolbar = memo(
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
+					ref={popoverRef}
 					anchorRef={anchorRef}
 					className={classnames(
 						'maxi-toolbar__popover',

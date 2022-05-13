@@ -75,8 +75,10 @@ class edit extends MaxiBlockComponent {
 				...this.props.attributes,
 				rowBorderRadius: this.props.rowBorderRadius,
 			},
-			this.props.rowGapProps,
-			this.props.originalNestedColumns.length
+			{
+				...this.props.rowGapProps,
+				columnNum: this.props.originalNestedColumns.length,
+			}
 		);
 	}
 

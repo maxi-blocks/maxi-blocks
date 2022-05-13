@@ -13,7 +13,7 @@ import { isNumber, round } from 'lodash';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getColumnSizeStyles = (obj, rowGapProps, columnsNumber) => {
+const getColumnSizeStyles = (obj, rowGapProps) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -34,7 +34,7 @@ const getColumnSizeStyles = (obj, rowGapProps, columnsNumber) => {
 					target: 'column-gap',
 					breakpoint,
 					attributes: rowGapProps,
-				}) / columnsNumber;
+				}) / rowGapProps.columnNum;
 			const gapUnit = getLastBreakpointAttribute({
 				target: 'column-gap-unit',
 				breakpoint,

@@ -57,8 +57,7 @@ const getNormalObject = (props, rowGapProps, columnsNumber) => {
 				{
 					...getGroupAttributes(props, 'columnSize'),
 				},
-				rowGapProps,
-				columnsNumber
+				rowGapProps
 			),
 		},
 		size: getSizeStyles({
@@ -117,13 +116,13 @@ const getBackgroundDisplayer = props => {
 	return response;
 };
 
-const getStyles = (props, rowGapProps, columnsNumber) => {
+const getStyles = (props, rowGapProps) => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props, rowGapProps, columnsNumber),
+				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
 				' > .maxi-background-displayer > div':
 					getBackgroundDisplayer(props),

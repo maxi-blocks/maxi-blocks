@@ -266,7 +266,7 @@ describe('NumberCounterControl', () => {
 	it('Check number counter font size and font family responsive', async () => {
 		const responsiveFontSize = await addResponsiveTest({
 			page,
-			instance: '.maxi-typography-control__font-size input',
+			instance: '.maxi-number-counter-control__font-size input',
 			needFocus: true,
 			baseExpect: '19',
 			xsExpect: '33',

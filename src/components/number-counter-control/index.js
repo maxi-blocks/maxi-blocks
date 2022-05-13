@@ -246,7 +246,7 @@ const NumberCounterControl = props => {
 				fontStyle=''
 			/>
 			<AdvancedNumberControl
-				className='maxi-typography-control__font-size'
+				className='maxi-number-counter-control__font-size'
 				label={__('Title Font Size', 'maxi-blocks')}
 				min={0}
 				max={99}

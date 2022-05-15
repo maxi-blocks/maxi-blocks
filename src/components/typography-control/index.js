@@ -884,7 +884,7 @@ const TypographyControl = withFormatValue(props => {
 						value: 'overline',
 					},
 					{
-						label: __('Line Through', 'maxi-blocks'),
+						label: __('Line through', 'maxi-blocks'),
 						value: 'line-through',
 					},
 					{
@@ -892,7 +892,7 @@ const TypographyControl = withFormatValue(props => {
 						value: 'underline',
 					},
 					{
-						label: __('Underline Overline', 'maxi-blocks'),
+						label: __('Underline overline', 'maxi-blocks'),
 						value: 'underline overline',
 					},
 				]}

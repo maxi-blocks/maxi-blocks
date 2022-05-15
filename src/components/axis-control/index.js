@@ -78,7 +78,7 @@ const AxisInput = props => {
 			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
-			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
+			autoLabel={__(`Auto ${label.toLowerCase()}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			enableUnit={enableAxisUnits}
 			min={minMaxSettings[currentUnit].min || 0}

@@ -44,13 +44,13 @@ const ImageAltControl = ({ mediaID, altSelector, mediaAlt, onChange }) => {
 
 		if (titleAlt)
 			response.unshift({
-				label: __('Image Title', 'maxi-blocks'),
+				label: __('Image title', 'maxi-blocks'),
 				value: 'title',
 			});
 
 		if (wpAlt)
 			response.unshift({
-				label: __('WordPress Alt', 'maxi-blocks'),
+				label: __('WordPress alt', 'maxi-blocks'),
 				value: 'wordpress',
 			});
 
@@ -61,7 +61,7 @@ const ImageAltControl = ({ mediaID, altSelector, mediaAlt, onChange }) => {
 		<>
 			<SelectControl
 				className='maxi-image-inspector__alt-tag'
-				label={__('Image Alt Tag', 'maxi-blocks')}
+				label={__('Image alt tag', 'maxi-blocks')}
 				value={altSelector}
 				options={getImageAltOptions()}
 				onChange={altSelector =>

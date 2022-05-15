@@ -147,7 +147,7 @@ const FullSizeControl = props => {
 				)}
 			{allowForceAspectRatio && (
 				<ToggleSwitch
-					label={__('Force Aspect Ratio', 'maxi-blocks')}
+					label={__('Force canvas equal height & width', 'maxi-blocks')}
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}force-aspect-ratio`,
 						breakpoint,

@@ -107,7 +107,7 @@ Object {
       "attribute": Object {
         "blockFullWidth": "normal",
       },
-      "label": "Block Full Width",
+      "label": "Block full width",
     },
     "border": Object {
       "group": Object {
@@ -123,7 +123,7 @@ Object {
             "border-sync-radius-general": "all",
             "border-unit-radius-general": "px",
           },
-          "label": "Border Radius",
+          "label": "Border radius",
         },
         "borderWidth": Object {
           "attribute": Object {
@@ -134,10 +134,10 @@ Object {
             "border-top-width-general": 2,
             "border-unit-width-general": "px",
           },
-          "label": "Border Width",
+          "label": "Border width",
         },
       },
-      "label": "Border Group",
+      "label": "Border group",
     },
     "borderHover": Object {
       "group": Object {
@@ -147,16 +147,16 @@ Object {
             "border-palette-status-general-hover": true,
             "border-status-hover": false,
           },
-          "label": "Border Hover",
+          "label": "Border hover",
         },
         "borderRadiusHover": Object {
           "attribute": Object {
             "border-unit-radius-general-hover": "px",
           },
-          "label": "Border Radius Hover",
+          "label": "Border radius hover",
         },
       },
-      "label": "Border Hover Group",
+      "label": "Border hover group",
     },
     "boxShadow": Object {
       "attribute": Object {
@@ -168,14 +168,14 @@ Object {
         "box-shadow-spread-general": 0,
         "box-shadow-vertical-general": 30,
       },
-      "label": "Box Shadow",
+      "label": "Box shadow",
     },
     "boxShadowHover": Object {
       "attribute": Object {
         "box-shadow-palette-color-general-hover": 6,
         "box-shadow-status-hover": false,
       },
-      "label": "Box Shadow Hover",
+      "label": "Box shadow hover",
     },
     "margin": Object {
       "attribute": Object {
@@ -223,7 +223,7 @@ Object {
         },
         "SVGElement": "<svg viewBox=\\"0 0 36.1 36.1\\" class=\\"heart-54-shape-maxi-svg\\" data-item=\\"image-maxi-331__svg\\"><pattern id=\\"image-maxi-331__428__img\\" class=\\"maxi-svg-block__pattern\\" width=\\"100%\\" height=\\"100%\\" x=\\"0\\" y=\\"0\\" patternunits=\\"userSpaceOnUse\\"><image class=\\"maxi-svg-block__pattern__image\\" width=\\"100%\\" height=\\"100%\\" x=\\"0\\" y=\\"0\\" href=\\"http://localhost:8888/wp-content/uploads/2022/04/ball.jpg\\" preserveaspectratio=\\"xMidYMid slice\\"></image></pattern><path fill=\\"url(#image-maxi-331__428__img)\\" data-fill=\\"\\" fill-rule=\\"evenodd\\" d=\\"M2.2 6.2h0c2.7-2.7 7.2-2.7 10 0L18 12l5.8-5.8c2.7-2.7 7.2-2.7 10 0h0c2.7 2.7 2.7 7.2 0 10L18 32 2.2 16.2c-2.7-2.8-2.7-7.3 0-10h0z\\" style=\\"fill: url(#image-maxi-331__428__img)\\"></path></svg>",
       },
-      "label": "SVG Shape",
+      "label": "SVG shape",
     },
     "alignment": Object {
       "attribute": Object {
@@ -250,7 +250,7 @@ Object {
             "image-border-top-right-radius-general": 71,
             "image-border-unit-radius-general": "px",
           },
-          "label": "Border Radius",
+          "label": "Border radius",
         },
         "borderWidth": Object {
           "attribute": Object {
@@ -261,10 +261,10 @@ Object {
             "image-border-top-width-general": 3,
             "image-border-unit-width-general": "px",
           },
-          "label": "Border Width",
+          "label": "Border width",
         },
       },
-      "label": "Border Group",
+      "label": "Border group",
     },
     "borderHover": Object {
       "group": Object {
@@ -275,7 +275,7 @@ Object {
             "image-border-status-hover": true,
             "image-border-style-general-hover": "dashed",
           },
-          "label": "Border Hover",
+          "label": "Border hover",
         },
         "borderRadiusHover": Object {
           "attribute": Object {
@@ -286,7 +286,7 @@ Object {
             "image-border-top-right-radius-general-hover": 71,
             "image-border-unit-radius-general-hover": "px",
           },
-          "label": "Border Radius Hover",
+          "label": "Border radius hover",
         },
         "borderWidthHover": Object {
           "attribute": Object {
@@ -297,54 +297,54 @@ Object {
             "image-border-top-width-general-hover": 3,
             "image-border-unit-width-general-hover": "px",
           },
-          "label": "Border Width Hover",
+          "label": "Border width hover",
         },
       },
-      "label": "Border Hover Group",
+      "label": "Border hover group",
     },
     "boxShadow": Object {
       "attribute": Object {
         "image-box-shadow-palette-color-general": 8,
         "image-box-shadow-palette-status-general": true,
       },
-      "label": "Box Shadow",
+      "label": "Box shadow",
     },
     "boxShadowHover": Object {
       "attribute": Object {
         "image-box-shadow-palette-color-general-hover": 6,
         "image-box-shadow-status-hover": false,
       },
-      "label": "Box Shadow Hover",
+      "label": "Box shadow hover",
     },
     "caption-gap": Object {
       "attribute": Object {
         "caption-gap-general": 2,
       },
-      "label": "Caption Gap",
+      "label": "Caption gap",
     },
     "caption-gap-unit": Object {
       "attribute": Object {
         "caption-gap-unit-general": "em",
       },
-      "label": "Caption Gap Unit",
+      "label": "Caption gap unit",
     },
     "captionContent": Object {
       "attribute": Object {
         "captionContent": "Basket Ball",
       },
-      "label": "Caption Content",
+      "label": "Caption content",
     },
     "captionPosition": Object {
       "attribute": Object {
         "captionPosition": "bottom",
       },
-      "label": "Caption Position",
+      "label": "Caption position",
     },
     "captionType": Object {
       "attribute": Object {
         "captionType": "custom",
       },
-      "label": "Caption Type",
+      "label": "Caption type",
     },
     "cropOptions": Object {
       "attribute": Object {
@@ -352,19 +352,19 @@ Object {
         "mediaURL": "http://localhost:8888/wp-content/uploads/2022/04/ball.jpg",
         "mediaWidth": 225,
       },
-      "label": "Crop Options",
+      "label": "Crop options",
     },
     "customLabel": Object {
       "attribute": Object {
         "customLabel": "Image",
       },
-      "label": "Custom Label",
+      "label": "Custom label",
     },
     "fullWidth": Object {
       "attribute": Object {
         "fullWidth": "normal",
       },
-      "label": "Full Width",
+      "label": "Full width",
     },
     "hover": Object {
       "attribute": Object {
@@ -388,7 +388,7 @@ Object {
       "attribute": Object {
         "hover-background-status": false,
       },
-      "label": "Hover Background",
+      "label": "Hover background",
     },
     "hoverBackgroundColor": Object {
       "attribute": Object {
@@ -396,14 +396,14 @@ Object {
         "hover-background-palette-color-general": 1,
         "hover-background-palette-status-general": true,
       },
-      "label": "Hover Background Color",
+      "label": "Hover background colour",
     },
     "hoverBackgroundGradient": Object {
       "attribute": Object {
         "hover-background-gradient-clip-path-status-general": false,
         "hover-background-gradient-opacity-general": 1,
       },
-      "label": "Hover Background Gradient",
+      "label": "Hover background gradient",
     },
     "hoverBorder": Object {
       "attribute": Object {
@@ -411,14 +411,14 @@ Object {
         "hover-border-palette-status-general": true,
         "hover-border-status": false,
       },
-      "label": "Hover Border",
+      "label": "Hover border",
     },
     "hoverBorderRadius": Object {
       "attribute": Object {
         "hover-border-sync-radius-general": "all",
         "hover-border-unit-radius-general": "px",
       },
-      "label": "Hover Border Radius",
+      "label": "Hover border radius",
     },
     "hoverBorderWidth": Object {
       "attribute": Object {
@@ -429,7 +429,7 @@ Object {
         "hover-border-top-width-general": 2,
         "hover-border-unit-width-general": "px",
       },
-      "label": "Hover Border Width",
+      "label": "Hover border width",
     },
     "hoverContentTypography": Object {
       "attribute": Object {
@@ -443,7 +443,7 @@ Object {
         "hover-content-typography-content": "Add your Hover Title here",
         "hover-content-typography-status": false,
       },
-      "label": "Hover Content Typography",
+      "label": "Hover content typography",
     },
     "hoverMargin": Object {
       "attribute": Object {
@@ -454,7 +454,7 @@ Object {
         "hover-margin-sync-general": "all",
         "hover-margin-top-unit-general": "px",
       },
-      "label": "Hover Margin",
+      "label": "Hover margin",
     },
     "hoverPadding": Object {
       "attribute": Object {
@@ -465,7 +465,7 @@ Object {
         "hover-padding-sync-general": "all",
         "hover-padding-top-unit-general": "px",
       },
-      "label": "Hover Padding",
+      "label": "Hover padding",
     },
     "hoverTitleTypography": Object {
       "attribute": Object {
@@ -479,13 +479,13 @@ Object {
         "hover-title-typography-content": "Add your Hover Title here",
         "hover-title-typography-status": false,
       },
-      "label": "Hover Title Typography",
+      "label": "Hover title typography",
     },
     "imageRatio": Object {
       "attribute": Object {
         "imageRatio": "original",
       },
-      "label": "Image Ratio",
+      "label": "Image ratio",
     },
     "imageSize": Object {
       "attribute": Object {
@@ -494,13 +494,13 @@ Object {
         "mediaURL": "http://localhost:8888/wp-content/uploads/2022/04/ball.jpg",
         "mediaWidth": 225,
       },
-      "label": "Image Size",
+      "label": "Image size",
     },
     "imgWidth": Object {
       "attribute": Object {
         "imgWidth": 82,
       },
-      "label": "Image Width",
+      "label": "Image width",
     },
     "link": Object {
       "attribute": Object {
@@ -560,7 +560,7 @@ Object {
       "attribute": Object {
         "text-alignment-general": "center",
       },
-      "label": "Text Alignment",
+      "label": "Text alignment",
     },
     "typography": Object {
       "attribute": Object {

@@ -33,7 +33,7 @@ registerBlockType('maxi-blocks/row-maxi', {
 	title: __('Row Maxi', 'maxi-blocks'),
 	icon: rowIcon,
 	description:
-		'Position one or more blocks, arranged side-by-side (horizontal)',
+		'Configure columns inside a row',
 	category: 'maxi-blocks',
 	parent: ['maxi-blocks/container-maxi'],
 	supports: {

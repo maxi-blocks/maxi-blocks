@@ -36,7 +36,7 @@ import fromNumberToStringMigrator from '../../extensions/styles/migrators/number
 registerBlockType('maxi-blocks/column-maxi', {
 	title: __('Column Maxi', 'maxi-blocks'),
 	icon: columnIcon,
-	description: 'Stack one or more blocks, top-to-bottom (vertical)',
+	description: 'Stack blocks vertically inside a column',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

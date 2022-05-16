@@ -51,7 +51,7 @@ class ToolbarPopover extends Component {
 				'.toolbar-item__popover'
 			).length >= 2 ||
 			// If the click isn't inside the popover and isn't inside the button
-			(!event.path.includes(
+			(event.path && !event.path.includes(
 				this.ref.current?.ownerDocument.querySelector(
 					'.toolbar-item__popover'
 				)

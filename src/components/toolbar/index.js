@@ -120,28 +120,32 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard, tooltipsHide } = useSelect(select => {
-			const { receiveMaxiDeviceType, receiveMaxiSettings } =
-				select('maxiBlocks');
-			const { receiveMaxiSelectedStyleCard } = select(
-				'maxiBlocks/style-cards'
-			);
+		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
+			select => {
+				const { receiveMaxiDeviceType, receiveMaxiSettings } =
+					select('maxiBlocks');
+				const { receiveMaxiSelectedStyleCard } = select(
+					'maxiBlocks/style-cards'
+				);
+				const { isTyping } = select('core/block-editor');
 
-			const breakpoint = receiveMaxiDeviceType();
+				const breakpoint = receiveMaxiDeviceType();
 
-			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-			const maxiSettings = receiveMaxiSettings();
-			const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
-				? maxiSettings.hide_tooltips
-				: false;
+				const maxiSettings = receiveMaxiSettings();
+				const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+					? maxiSettings.hide_tooltips
+					: false;
 
-			return {
-				breakpoint,
-				styleCard,
-				tooltipsHide,
-			};
-		});
+				return {
+					breakpoint,
+					styleCard,
+					isTyping: isTyping(),
+					tooltipsHide,
+				};
+			}
+		);
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
@@ -196,12 +200,14 @@ const MaxiToolbar = memo(
 					__unstableStickyBoundaryElement={boundaryElement}
 				>
 					<div className='toolbar-wrapper'>
-						<div className='toolbar-block-custom-label'>
-							{customLabel}
-							<span className='toolbar-block-custom-label__block-style'>
-								{` | ${blockStyle}`}
-							</span>
-						</div>
+						{!isTyping && (
+							<div className='toolbar-block-custom-label'>
+								{customLabel}
+								<span className='toolbar-block-custom-label__block-style'>
+									{` | ${blockStyle}`}
+								</span>
+							</div>
+						)}
 						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 						<ToolbarMediaUpload
 							blockName={name}
@@ -564,7 +570,12 @@ const MaxiToolbar = memo(
 						<VerticalAlign
 							clientId={clientId}
 							blockName={name}
-							verticalAlign={attributes.verticalAlign}
+							verticalAlign={getLastBreakpointAttribute({
+								target: 'justify-content',
+								breakpoint,
+								attributes,
+							})}
+							breakpoint={breakpoint}
 							uniqueID={uniqueID}
 							onChange={obj => maxiSetAttributes(obj)}
 						/>
@@ -651,10 +662,14 @@ const MaxiToolbar = memo(
 		);
 	}),
 	// Avoids non-necessary renderings
-	(
-		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },
-		{ attributes: newAttr, isSelected }
-	) => {
+	(oldProps, newProps) => {
+		const {
+			attributes: oldAttr,
+			propsToAvoid,
+			isSelected: wasSelected,
+		} = oldProps;
+		const { attributes: newAttr, isSelected } = newProps;
+
 		if (!wasSelected || wasSelected !== isSelected) return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
@@ -665,8 +680,6 @@ const MaxiToolbar = memo(
 				delete oldAttributes[prop];
 				delete newAttributes[prop];
 			});
-
-			return isEqual(oldAttributes, newAttributes);
 		}
 
 		return isEqual(oldAttributes, newAttributes);

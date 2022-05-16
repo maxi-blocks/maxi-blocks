@@ -19,7 +19,7 @@ import {
 describe('Svg width control', () => {
 	it('Check svg width control', async () => {
 		await createNewPost();
-		await insertBlock('SVG Icon Maxi');
+		await insertBlock('Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

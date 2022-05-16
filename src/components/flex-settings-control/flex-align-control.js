@@ -15,7 +15,7 @@ const FlexAlignControl = props => {
 	return (
 		<>
 			<SelectControl
-				label={__('Justify content horizontal', 'maxi-blocks')}
+				label={__('Justify content horizontally', 'maxi-blocks')}
 				className='maxi-flex-align-control__justify-content'
 				value={getLastBreakpointAttribute({
 					target: 'justify-content',
@@ -55,7 +55,7 @@ const FlexAlignControl = props => {
 				}
 			/>
 			<SelectControl
-				label={__('Align items vertical', 'maxi-blocks')}
+				label={__('Align items vertically', 'maxi-blocks')}
 				className='maxi-flex-align-control__align-items'
 				value={getLastBreakpointAttribute({
 					target: 'align-items',

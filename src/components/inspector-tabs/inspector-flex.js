@@ -38,7 +38,7 @@ const flex = ({ props }) => {
 		return null;
 
 	return {
-		label: __('Flex', 'maxi-blocks'),
+		label: __('Flexbox', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<FlexSettingsControl

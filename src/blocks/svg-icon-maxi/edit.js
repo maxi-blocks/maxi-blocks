@@ -221,7 +221,7 @@ class edit extends MaxiBlockComponent {
 								className='maxi-block-library__modal-button'
 								onClick={() => this.setState({ isOpen: true })}
 							>
-								{__('Select SVG Icon', 'maxi-blocks')}
+								{__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}

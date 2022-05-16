@@ -36,6 +36,7 @@ const getNormalObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		margin: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'margin') },
@@ -122,7 +123,8 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
+				' > .maxi-background-displayer > div':
+					getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

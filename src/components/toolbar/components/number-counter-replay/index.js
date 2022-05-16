@@ -1,41 +1,44 @@
 /**
  * WordPress dependencies
  */
- import { __ } from '@wordpress/i18n';
- import { Icon } from '@wordpress/components';
- import { Tooltip } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { Icon, Tooltip } from '@wordpress/components';
 
- /**
-  * Internal dependencies
-  */
- import Button from '../../../button';
- 
- /**
-  * Styles and icons
-  */
+/**
+ * Internal dependencies
+ */
+import Button from '../../../button';
+
+/**
+ * Styles and icons
+ */
 import { replay } from '../../../../icons';
 
- const NumberCounterReplay = props => {
-	const {
-		blockName,
-		resetNumberHelper,
-	} = props;
+const NumberCounterReplay = props => {
+	const { blockName, resetNumberHelper, tooltipsHide } = props;
 
-	if (blockName !== 'maxi-blocks/number-counter-maxi') return null;
-	return (
-		<Tooltip text={__('Replay', 'maxi-blocks')}>
+	const replayContent = () => {
+		return (
 			<div className='toolbar-item toolbar-item__replay'>
-				<Button 
-				className='toolbar-item toolbar-item__replay'
-				onClick={resetNumberHelper}>
-					<Icon
-						className='toolbar-item__icon'
-						icon={replay}
-					/>
+				<Button
+					className='toolbar-item toolbar-item__replay'
+					onClick={resetNumberHelper}
+				>
+					<Icon className='toolbar-item__icon' icon={replay} />
 				</Button>
 			</div>
-		</Tooltip>
-	 );
- };
- 
- export default NumberCounterReplay;
+		);
+	};
+
+	if (blockName !== 'maxi-blocks/number-counter-maxi') return null;
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip text={__('Replay', 'maxi-blocks')}>
+				{replayContent()}{' '}
+			</Tooltip>
+		);
+	return replayContent();
+};
+
+export default NumberCounterReplay;

@@ -55,6 +55,7 @@ Object {
     "palette-opacity": 1,
     "palette-status": true,
     "text-decoration-general": "overline",
+    "text-direction-general": "ltr",
     "text-indent-general": 44,
     "text-orientation-general": "mixed",
     "text-transform-general": "capitalize",

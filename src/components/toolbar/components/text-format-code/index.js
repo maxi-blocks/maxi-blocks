@@ -35,7 +35,7 @@ import { toolbarCode } from '../../../../icons';
  * TextFormatCode
  */
 const TextFormatCode = withFormatValue(props => {
-	const { onChange, isList, formatValue } = props;
+	const { onChange, isList, formatValue, tooltipsHide } = props;
 
 	const formatName = 'core/code';
 
@@ -82,8 +82,8 @@ const TextFormatCode = withFormatValue(props => {
 		onChange(newContent);
 	};
 
-	return (
-		<Tooltip text={__('Code', 'maxi-blocks')} position='bottom center'>
+	const codeContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__code'
 				onClick={onClick}
@@ -91,8 +91,16 @@ const TextFormatCode = withFormatValue(props => {
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarCode} />
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip text={__('Code', 'maxi-blocks')} position='bottom center'>
+				{codeContent()}
+			</Tooltip>
+		);
+	return codeContent();
 });
 
 export default TextFormatCode;

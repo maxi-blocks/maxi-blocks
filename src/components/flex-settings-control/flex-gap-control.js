@@ -68,6 +68,9 @@ const GapAxisControl = props => {
 					[`${target}-${breakpoint}`]: getDefaultAttribute(
 						`${target}-${breakpoint}`
 					),
+					[`${target}-unit-${breakpoint}`]: getDefaultAttribute(
+						`${target}-unit-${breakpoint}`
+					),
 				})
 			}
 		/>

@@ -905,12 +905,7 @@ const TypographyControl = withFormatValue(props => {
 			<SelectControl
 				label={__('Text orientation', 'maxi-blocks')}
 				className='maxi-typography-control__orientation'
-				value={getValue(
-					`${prefix}text-orientation`,
-					breakpoint,
-					false,
-					true
-				)}
+				value={getValue(`${prefix}text-orientation`)}
 				options={[
 					{
 						label: __('None', 'maxi-blocks'),
@@ -942,7 +937,7 @@ const TypographyControl = withFormatValue(props => {
 			<SelectControl
 				label={__('Text direction', 'maxi-blocks')}
 				className='maxi-typography-control__direction'
-				value={getValue(`${prefix}text-direction`, breakpoint)}
+				value={getValue(`${prefix}text-direction`)}
 				options={[
 					{
 						label: __('Left to right', 'maxi-blocks'),

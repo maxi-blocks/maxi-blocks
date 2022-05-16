@@ -1,7 +1,7 @@
 body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
 
 	img {
 		box-sizing: border-box;
@@ -20,7 +20,6 @@ body.maxi-blocks--active figure.maxi-image-block {
 	}
 	.maxi-image-block-wrapper {
 		display: flex;
-		flex-direction: column;
 		position: relative;
 		width: 100%;
 		max-width: 100%;

@@ -77,11 +77,9 @@ const NumberCounter = attributes => {
 
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
-			if (count >= endCountValue) {
-				setCount(startCountValue);
-				setReplayStatus(false);
-				clearInterval(countRef.current);
-			}
+			setCount(startCountValue);
+			setReplayStatus(false);
+			clearInterval(countRef.current);
 		}
 	}, [
 		startCountValue,

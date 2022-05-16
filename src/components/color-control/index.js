@@ -151,7 +151,6 @@ const ColorControl = props => {
 				blockStyle,
 			})},${paletteOpacity || 1})`;
 
-			onChangeInline && onChangeInline({ color: defaultColor });
 			onChange({
 				paletteStatus,
 				paletteColor,

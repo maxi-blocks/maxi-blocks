@@ -15,7 +15,7 @@ import { modalMock, openSidebarTab, getAttributes } from '../../utils';
 describe('Svg Background', () => {
 	it('Check Svg Background', async () => {
 		await createNewPost();
-		await insertBlock('SVG Icon Maxi');
+		await insertBlock('Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

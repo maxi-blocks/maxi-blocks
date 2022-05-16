@@ -120,23 +120,32 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard, isTyping } = useSelect(select => {
-			const { receiveMaxiDeviceType } = select('maxiBlocks');
-			const { receiveMaxiSelectedStyleCard } = select(
-				'maxiBlocks/style-cards'
-			);
-			const { isTyping } = select('core/block-editor');
+		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
+			select => {
+				const { receiveMaxiDeviceType, receiveMaxiSettings } =
+					select('maxiBlocks');
+				const { receiveMaxiSelectedStyleCard } = select(
+					'maxiBlocks/style-cards'
+				);
+				const { isTyping } = select('core/block-editor');
 
-			const breakpoint = receiveMaxiDeviceType();
+				const breakpoint = receiveMaxiDeviceType();
 
-			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-			return {
-				breakpoint,
-				styleCard,
-				isTyping: isTyping(),
-			};
-		});
+				const maxiSettings = receiveMaxiSettings();
+				const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+					? maxiSettings.hide_tooltips
+					: false;
+
+				return {
+					breakpoint,
+					styleCard,
+					isTyping: isTyping(),
+					tooltipsHide,
+				};
+			}
+		);
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
@@ -254,7 +263,11 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							blockStyle={blockStyle}
 						/>
-						<Mover clientId={clientId} blockName={name} />
+						<Mover
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
 						<TextLevel
 							{...getGroupAttributes(attributes, [
 								'typography',
@@ -385,7 +398,11 @@ const MaxiToolbar = memo(
 								/>
 							</>
 						)}
-						<ColumnMover clientId={clientId} blockName={name} />
+						<ColumnMover
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
 						<BackgroundColor
 							{...getGroupAttributes(
 								attributes,
@@ -490,10 +507,12 @@ const MaxiToolbar = memo(
 						<NumberCounterReplay
 							resetNumberHelper={resetNumberHelper}
 							blockName={name}
+							tooltipsHide={tooltipsHide}
 						/>
 						<ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
+							tooltipsHide={tooltipsHide}
 						/>
 						<Size
 							blockName={name}
@@ -562,13 +581,13 @@ const MaxiToolbar = memo(
 							onChangeInline={obj =>
 								insertInlineStyles({
 									obj,
-									target: inlineStylesTargetsResults.divider,
+									target: inlineStylesTargetsResults.dividerColor,
 								})
 							}
 							onChange={obj => {
 								maxiSetAttributes(obj);
 								cleanInlineStyles(
-									inlineStylesTargetsResults.divider
+									inlineStylesTargetsResults.dividerColor
 								);
 							}}
 							clientId={clientId}
@@ -613,8 +632,12 @@ const MaxiToolbar = memo(
 								})
 							}
 						/>
-						<Duplicate clientId={clientId} blockName={name} />
-						<Help />
+						<Duplicate
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
+						<Help tooltipsHide={tooltipsHide} />
 						<MoreSettings
 							clientId={clientId}
 							{...getGroupAttributes(attributes, [
@@ -626,6 +649,7 @@ const MaxiToolbar = memo(
 							copyPasteMapping={copyPasteMapping}
 							prefix={prefix}
 							onChange={obj => maxiSetAttributes(obj)}
+							tooltipsHide={tooltipsHide}
 						/>
 					</div>
 				</Popover>

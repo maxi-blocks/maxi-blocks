@@ -21,7 +21,7 @@ import { toolbarDrop, moveUp, moveDown } from '../../../../icons';
  * Mover
  */
 const Mover = props => {
-	const { clientId, blockName } = props;
+	const { clientId, blockName, tooltipsHide } = props;
 
 	const { moveBlocksDown, moveBlocksUp, updateBlockAttributes } =
 		useDispatch('core/block-editor');
@@ -104,6 +104,30 @@ const Mover = props => {
 		srcRootClientId,
 	};
 
+	const moveUpContent = () => {
+		return (
+			<Button
+				aria-disabled={isTopDisabled}
+				onClick={() => {
+					moveBlocksUp([clientId], srcRootClientId);
+				}}
+			>
+				<Icon className='toolbar-item__icon' icon={moveUp} />
+			</Button>
+		);
+	};
+
+	const moveDownContent = () => {
+		return (
+			<Button
+				aria-disabled={isDownDisabled}
+				onClick={() => moveBlocksDown([clientId], srcRootClientId)}
+			>
+				<Icon className='toolbar-item__icon' icon={moveDown} />
+			</Button>
+		);
+	};
+
 	return (
 		<>
 			<Draggable
@@ -119,11 +143,29 @@ const Mover = props => {
 				}}
 				__experimentalTransferDataType='wp-blocks'
 			>
-				{({ onDraggableStart, onDraggableEnd }, ...rest) => (
-					<Tooltip
-						text={__('Mover', 'maxi-blocks')}
-						position='bottom center'
-					>
+				{({ onDraggableStart, onDraggableEnd }, ...rest) => {
+					!tooltipsHide && (
+						<Tooltip
+							text={__('Mover', 'maxi-blocks')}
+							position='bottom center'
+						>
+							<div className='toolbar-item'>
+								<Button
+									className='toolbar-item toolbar-item__move'
+									draggable={isDraggable}
+									onDragStart={onDraggableStart}
+									onDragEnd={onDraggableEnd}
+									{...rest}
+								>
+									<Icon
+										className='toolbar-item__icon'
+										icon={toolbarDrop}
+									/>
+								</Button>
+							</div>
+						</Tooltip>
+					);
+					tooltipsHide && (
 						<div className='toolbar-item'>
 							<Button
 								className='toolbar-item toolbar-item__move'
@@ -138,36 +180,31 @@ const Mover = props => {
 								/>
 							</Button>
 						</div>
-					</Tooltip>
-				)}
+					);
+				}}
 			</Draggable>
 			<div className='toolbar-item-move__vertically'>
-				<Tooltip
-					text={__('Move up', 'maxi-blocks')}
-					position='bottom center'
-				>
-					<Button
-						aria-disabled={isTopDisabled}
-						onClick={() => {
-							moveBlocksUp([clientId], srcRootClientId);
-						}}
-					>
-						<Icon className='toolbar-item__icon' icon={moveUp} />
-					</Button>
-				</Tooltip>
-				<Tooltip
-					text={__('Move down', 'maxi-blocks')}
-					position='bottom center'
-				>
-					<Button
-						aria-disabled={isDownDisabled}
-						onClick={() =>
-							moveBlocksDown([clientId], srcRootClientId)
-						}
-					>
-						<Icon className='toolbar-item__icon' icon={moveDown} />
-					</Button>
-				</Tooltip>
+				{!tooltipsHide && (
+					<>
+						<Tooltip
+							text={__('Move up', 'maxi-blocks')}
+							position='bottom center'
+						>
+							{moveUpContent()}
+						</Tooltip>
+						<Tooltip
+							text={__('Move down', 'maxi-blocks')}
+							position='bottom center'
+						>
+							{moveDownContent()}
+						</Tooltip>
+					</>
+				)}
+				{tooltipsHide && (
+					<>
+						{moveUpContent()} {moveDownContent()}
+					</>
+				)}
 			</div>
 		</>
 	);

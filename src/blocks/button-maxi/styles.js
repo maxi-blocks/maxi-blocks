@@ -65,6 +65,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
@@ -132,6 +133,7 @@ const getNormalObject = props => {
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'button-'),
+				fullWidth: props.fullWidth,
 			},
 			'button-'
 		),
@@ -400,20 +402,24 @@ const getIconObject = (props, target) => {
 			!isNil(props['icon-position'])
 		) {
 			props['icon-position'] === 'left'
-				? (responsive[breakpoint][
-						'margin-right'
-				  ] = `${getLastBreakpointAttribute({
-						target: 'icon-spacing',
-						breakpoint,
-						attributes: props,
-				  })}px`)
-				: (responsive[breakpoint][
-						'margin-left'
-				  ] = `${getLastBreakpointAttribute({
-						target: 'icon-spacing',
-						breakpoint,
-						attributes: props,
-				  })}px`);
+				? (responsive[breakpoint]['margin-right'] = `${
+						props['icon-only']
+							? '0'
+							: getLastBreakpointAttribute({
+									target: 'icon-spacing',
+									breakpoint,
+									attributes: props,
+							  })
+				  }px`)
+				: (responsive[breakpoint]['margin-left'] = `${
+						props['icon-only']
+							? '0'
+							: getLastBreakpointAttribute({
+									target: 'icon-spacing',
+									breakpoint,
+									attributes: props,
+							  })
+				  }px`);
 		}
 	});
 

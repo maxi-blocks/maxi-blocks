@@ -17,7 +17,11 @@ describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
-		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'flexbox'
+		);
 
 		const wrapSelector = await accordionPanel.$(
 			'.maxi-flex-wrap-control select'
@@ -304,7 +308,11 @@ describe('FlexSettings', () => {
 		await openSidebarTab(page, 'advanced', 'overflow');
 		await changeResponsive(page, 'base');
 		await insertBlock('Group Maxi');
-		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'flexbox'
+		);
 
 		// base
 		const wrapSelector = await accordionPanel.$(

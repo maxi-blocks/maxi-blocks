@@ -142,6 +142,20 @@ class MaxiSlider {
 
 		let dragMove;
 
+		if (
+			this.currentSlide + 1 >= this._slides.length &&
+			this.dragPosition < this.initPosition
+		) {
+			this.currentSlide = this.currentSlide - this._slides.length;
+			this.sliderAction(false);
+		} else if (
+			this.currentSlide <= 0 &&
+			this.dragPosition > this.initPosition
+		) {
+			this.currentSlide = this.currentSlide + this._slides.length;
+			this.sliderAction(false);
+		}
+
 		if (e.type == 'touchmove') {
 			dragMove = this.dragPosition - e.touches[0].clientX;
 			this.dragPosition = e.touches[0].clientX;

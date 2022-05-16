@@ -51,7 +51,7 @@ const BorderColorControl = props => {
 
 	return (
 		<ColorControl
-			{...{ label: __('Border', 'maxi-blocks') }}
+			label={__('Border', 'maxi-blocks')}
 			color={getLastBreakpointAttribute({
 				target: `${prefix}border-color`,
 				breakpoint,

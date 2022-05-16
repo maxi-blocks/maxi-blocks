@@ -51,7 +51,7 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 					attributes: obj,
 				});
 
-			const gapValue = gap ? `${round(gap, 2)}${gapUnit}` : '0px';
+			const gapValue = gap ? `${round(gap, 4)}${gapUnit}` : '0px';
 
 			const value =
 				columnSize !== 100

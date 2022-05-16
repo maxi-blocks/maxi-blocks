@@ -349,7 +349,7 @@ const ClipPath = props => {
 				<>
 					<ToggleSwitch
 						className='clip-path-custom'
-						label={__('Use Custom', 'maxi-blocks')}
+						label={__('Custom clip-path', 'maxi-blocks')}
 						selected={isCustom}
 						onChange={val => changeIsCustom(val)}
 					/>

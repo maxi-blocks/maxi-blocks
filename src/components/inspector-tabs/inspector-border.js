@@ -98,7 +98,7 @@ const border = ({
 									{!globalHoverStatus && (
 										<ToggleSwitch
 											label={__(
-												'Enable Border Hover',
+												'Enable border hover',
 												'maxi-blocks'
 											)}
 											selected={hoverStatus}

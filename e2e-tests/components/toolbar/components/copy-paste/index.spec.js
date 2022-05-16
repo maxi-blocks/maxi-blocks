@@ -235,17 +235,40 @@ describe('CopyPaste from Toolbar', () => {
 
 	it('Should copy nested blocks', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertBlock('Container Maxi');
+		await page.$$eval('.maxi-row-block__template button', button =>
+			button[0].click()
+		);
 
-		await page.$eval('.maxi-block-inserter button', addBlock =>
-			addBlock.click()
+		// Select column
+		await page.$eval('.maxi-column-block', column => column.focus());
+
+		// Open appender on Column Maxi
+		await page.$eval(
+			'.maxi-column-block .block-editor-button-block-appender',
+			button => button.click()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('Text Maxi');
 
-		// focus group
-		await page.$eval('.maxi-group-block', group => group.focus());
+		await page.$eval(
+			'.editor-block-list-item-maxi-blocks-text-maxi',
+			button => button.click()
+		);
+
+		// focus container
+		await page.$eval(
+			'.edit-post-header__toolbar .edit-post-header-toolbar__left .edit-post-header-toolbar__list-view-toggle',
+			toolbar => toolbar.click()
+		);
+		await page.waitForTimeout(150);
+
+		await page.$eval(
+			'.edit-post-editor__list-view-panel-content .block-editor-list-view-leaf .block-editor-list-view-block__contents-container button',
+			column => column.click()
+		);
+		await page.waitForTimeout(500);
 
 		// open options
 		await page.$eval(
@@ -268,7 +291,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await page.waitForTimeout(150);
-		await insertBlock('Group Maxi');
+		await insertBlock('Container Maxi');
 
 		// open options
 		await page.$eval(
@@ -287,7 +310,7 @@ describe('CopyPaste from Toolbar', () => {
 		// select paste nested blocks
 		await page.$$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
-			button => button[4].click()
+			button => button[3].click()
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

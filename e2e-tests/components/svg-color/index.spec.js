@@ -17,8 +17,8 @@ import {
 	getAttributes,
 } from '../../utils';
 
-describe('Svg Color', () => {
-	it('Check Svg Color', async () => {
+describe('Icon Color', () => {
+	it('Check Icon Color', async () => {
 		await createNewPost();
 		await insertBlock('Icon Maxi');
 		await modalMock(page, { type: 'svg' });

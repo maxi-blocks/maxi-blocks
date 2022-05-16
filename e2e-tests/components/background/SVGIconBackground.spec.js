@@ -12,8 +12,8 @@ import {
  */
 import { modalMock, openSidebarTab, getAttributes } from '../../utils';
 
-describe('Svg Background', () => {
-	it('Check Svg Background', async () => {
+describe('Icon background', () => {
+	it('Check Icon background', async () => {
 		await createNewPost();
 		await insertBlock('Icon Maxi');
 		await modalMock(page, { type: 'svg' });

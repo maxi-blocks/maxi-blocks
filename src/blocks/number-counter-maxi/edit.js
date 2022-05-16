@@ -110,7 +110,10 @@ const NumberCounter = attributes => {
 			attributes,
 		}) === 'hidden';
 
-	replayCounter(() => setReplayStatus(true));
+	replayCounter(() => {
+		setCount(startCountValue);
+		setReplayStatus(true);
+	});
 
 	return (
 		<BlockResizer

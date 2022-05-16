@@ -11,6 +11,7 @@ export { default as containerIcon } from './container-icon';
 export { default as dividerIcon } from './divider-icon';
 export { default as footer } from './footer';
 export { default as form } from './form';
+export { default as fullScreen } from './full-screen';
 export { default as googleMap } from './google-map';
 export { default as groupIcon } from './group-icon';
 export { default as headings } from './headings';

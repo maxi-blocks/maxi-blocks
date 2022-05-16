@@ -31,6 +31,11 @@ import {
 } from '../../../../extensions/styles';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
@@ -173,15 +178,23 @@ const TypographyControl = withFormatValue(props => {
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const { styleCard } = useSelect(select => {
+	const { styleCard, tooltipsHide } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
+
+		const { receiveMaxiSettings } = select('maxiBlocks');
+
+		const maxiSettings = receiveMaxiSettings();
+		const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+			? maxiSettings.hide_tooltips
+			: false;
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 		return {
 			styleCard,
+			tooltipsHide,
 		};
 	});
 
@@ -350,6 +363,7 @@ const TypographyControl = withFormatValue(props => {
 										textLevel={textLevel}
 										styleCard={styleCard}
 										isCaptionToolbar
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextItalic
 										{...getGroupAttributes(
@@ -364,6 +378,7 @@ const TypographyControl = withFormatValue(props => {
 										textLevel={textLevel}
 										styleCard={styleCard}
 										isCaptionToolbar
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatUnderline
 										{...getGroupAttributes(
@@ -376,6 +391,7 @@ const TypographyControl = withFormatValue(props => {
 										breakpoint={breakpoint}
 										textLevel={textLevel}
 										styleCard={styleCard}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatStrikethrough
 										{...getGroupAttributes(
@@ -388,6 +404,7 @@ const TypographyControl = withFormatValue(props => {
 										breakpoint={breakpoint}
 										textLevel={textLevel}
 										styleCard={styleCard}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatSubscript
 										{...getGroupAttributes(
@@ -400,6 +417,7 @@ const TypographyControl = withFormatValue(props => {
 										breakpoint={breakpoint}
 										textLevel={textLevel}
 										styleCard={styleCard}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatSuperscript
 										{...getGroupAttributes(
@@ -412,6 +430,7 @@ const TypographyControl = withFormatValue(props => {
 										breakpoint={breakpoint}
 										textLevel={textLevel}
 										styleCard={styleCard}
+										tooltipsHide={tooltipsHide}
 									/>
 								</div>
 							</div>
@@ -426,6 +445,7 @@ const TypographyControl = withFormatValue(props => {
 										minMaxSettingsLetterSpacing
 									}
 									avoidXXL={!styleCards}
+									tooltipsHide={tooltipsHide}
 								/>
 							</div>
 						</div>

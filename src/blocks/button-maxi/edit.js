@@ -41,10 +41,23 @@ class edit extends MaxiBlockComponent {
 		this.iconRef = createRef(null);
 	}
 
+	scProps = {
+		scElements: [
+			'hover-border-color-global',
+			'hover-border-color-all',
+			'hover-color-global',
+			'hover-color-all',
+			'hover-background-color-global',
+			'hover-background-color-all',
+		],
+		scType: 'button',
+	};
+
 	typingTimeout = 0;
 
 	get getStylesObject() {
-		const { attributes, scValues } = this.props;
+		const { attributes } = this.props;
+		const { scValues } = this.state;
 
 		return getStyles(attributes, scValues);
 	}
@@ -52,6 +65,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
+		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -75,6 +89,7 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				propsToAvoid={['buttonContent', 'formatValue']}
 				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -89,6 +104,7 @@ class edit extends MaxiBlockComponent {
 				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
 				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
@@ -138,14 +154,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps({
-	scElements: [
-		'hover-border-color-global',
-		'hover-border-color-all',
-		'hover-color-global',
-		'hover-color-all',
-		'hover-background-color-global',
-		'hover-background-color-all',
-	],
-	scType: 'button',
-})(edit);
+export default withMaxiProps(edit);

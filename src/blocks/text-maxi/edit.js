@@ -41,6 +41,11 @@ class edit extends MaxiBlockComponent {
 		onChangeFormat: null,
 	};
 
+	scProps = {
+		scElements: [1, 2, 3, 4, 5, 6, 7, 8],
+		scType: 'color',
+	};
+
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
@@ -349,7 +354,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps({
-	scElements: [1, 2, 3, 4, 5, 6, 7, 8],
-	scType: 'color',
-})(edit);
+export default withMaxiProps(edit);

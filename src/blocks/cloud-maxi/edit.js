@@ -61,4 +61,4 @@ class edit extends Component {
 	}
 }
 
-export default withMaxiProps()(edit);
+export default withMaxiProps(edit);

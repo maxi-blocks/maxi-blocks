@@ -36,24 +36,6 @@ describe('Indicators', () => {
 			unit: '%',
 		});
 
-		const expectPadding = {
-			'padding-top-general': '12',
-			'padding-bottom-general': '12',
-			'padding-left-general': '12',
-			'padding-right-general': '12',
-			'padding-bottom-unit-general': '%',
-		};
-
-		const paddingResult = await getAttributes([
-			'padding-top-general',
-			'padding-bottom-general',
-			'padding-left-general',
-			'padding-right-general',
-			'padding-bottom-unit-general',
-		]);
-
-		expect(paddingResult).toStrictEqual(expectPadding);
-
 		const paddingTop = await page.$eval(
 			'.maxi-indicators__padding.maxi-indicators__padding--top',
 			div => div.outerHTML

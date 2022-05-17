@@ -55,7 +55,6 @@ const RotateControl = props => {
 						}}
 						min={0}
 						max={360}
-						orient='vertical'
 					/>
 					<input
 						type='number'
@@ -109,7 +108,6 @@ const RotateControl = props => {
 						}}
 						min={0}
 						max={360}
-						orient='vertical'
 					/>
 					<input
 						type='number'
@@ -163,7 +161,6 @@ const RotateControl = props => {
 						}}
 						min={0}
 						max={360}
-						orient='vertical'
 					/>
 					<input
 						type='number'

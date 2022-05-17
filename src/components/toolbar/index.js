@@ -2,7 +2,13 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
+import {
+	forwardRef,
+	memo,
+	useEffect,
+	useRef,
+	useState,
+} from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
 import { getScrollContainer } from '@wordpress/dom';
 
@@ -147,6 +153,8 @@ const MaxiToolbar = memo(
 			}
 		);
 
+		const popoverRef = useRef(null);
+
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
 		useEffect(() => {
@@ -185,11 +193,48 @@ const MaxiToolbar = memo(
 			isSelected &&
 			anchorRef && (
 				<Popover
+					ref={popoverRef}
 					noArrow
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					anchorRef={anchorRef}
+					getAnchorRect={() => {
+						const rect = anchorRef.getBoundingClientRect();
+						const popoverRect = popoverRef.current
+							?.querySelector('.components-popover__content')
+							?.getBoundingClientRect();
+
+						const { width, x } = rect;
+						const { width: popoverWidth } = popoverRect;
+
+						const expectedContentX =
+							x + width / 2 - popoverWidth / 2;
+
+						const container = document
+							.querySelector('.editor-styles-wrapper')
+							?.getBoundingClientRect();
+
+						if (container) {
+							const { x: containerX, width: containerWidth } =
+								container;
+
+							// Left cut off check
+							if (expectedContentX < containerX)
+								rect.x += containerX - expectedContentX;
+
+							// Right cut off check
+							if (
+								expectedContentX + popoverWidth >
+								containerX + containerWidth
+							)
+								rect.x -=
+									expectedContentX +
+									popoverWidth -
+									(containerX + containerWidth);
+						}
+
+						return rect;
+					}}
 					className={classnames(
 						'maxi-toolbar__popover',
 						!!breadcrumbStatus() &&

@@ -144,7 +144,10 @@ const FullSizeControl = props => {
 			)}
 			{allowForceAspectRatio && (
 				<ToggleSwitch
-					label={__('Force Aspect Ratio', 'maxi-blocks')}
+					label={__(
+						'Force canvas equal height & width',
+						'maxi-blocks'
+					)}
 					className='maxi-full-size-control__force-aspect-ratio'
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}force-aspect-ratio`,
@@ -206,27 +209,6 @@ const FullSizeControl = props => {
 					onChange({
 						[`${prefix}size-advanced-options`]: val,
 					});
-					if (props[`${prefix}size-advanced-options`]) {
-						onChangeValue(
-							[
-								'min-width',
-								'max-width',
-								'min-height',
-								'max-height',
-							],
-							''
-						);
-
-						onChangeValue(
-							[
-								'min-width-unit',
-								'max-width-unit',
-								'min-height-unit',
-								'max-height-unit',
-							],
-							'px'
-						);
-					}
 				}}
 			/>
 			{props[`${prefix}size-advanced-options`] && (

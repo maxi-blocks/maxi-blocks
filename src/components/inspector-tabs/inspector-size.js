@@ -35,7 +35,7 @@ const size = ({
 					{isFirstOnHierarchy &&
 						(block ? (
 							<ToggleSwitch
-								label={__('Set full-width', 'maxi-blocks')}
+								label={__('Set block full-width', 'maxi-blocks')}
 								className='maxi-full-width-toggle'
 								selected={isBlockFullWidth}
 								onChange={val =>
@@ -46,7 +46,7 @@ const size = ({
 							/>
 						) : (
 							<ToggleSwitch
-								label={__('Set full-width', 'maxi-blocks')}
+								label={__('Set block full-width', 'maxi-blocks')}
 								selected={fullWidth === 'full'}
 								onChange={val =>
 									isImage

@@ -25,8 +25,15 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
-		props;
+	const {
+		formatValue,
+		onChange,
+		isList,
+		breakpoint,
+		textLevel,
+		styleCard,
+		tooltipsHide,
+	} = props;
 
 	const getSuperscriptValue = () =>
 		getCustomFormatValue({
@@ -68,11 +75,8 @@ const TextFormatSuperscript = props => {
 		onChange(obj);
 	};
 
-	return (
-		<Tooltip
-			text={__('Superscript', 'maxi-blocks')}
-			position='bottom center'
-		>
+	const superscriptContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__superscript'
 				onClick={onClick}
@@ -83,8 +87,19 @@ const TextFormatSuperscript = props => {
 					icon={toolbarSuperScript}
 				/>
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Superscript', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{superscriptContent()}
+			</Tooltip>
+		);
+	return superscriptContent();
 };
 
 export default TextFormatSuperscript;

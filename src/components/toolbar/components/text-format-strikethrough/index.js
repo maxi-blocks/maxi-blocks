@@ -30,8 +30,15 @@ import { toolbarStrikethrough } from '../../../../icons';
  * TextFormatStrikethrough
  */
 const TextFormatStrikethrough = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
-		props;
+	const {
+		formatValue,
+		onChange,
+		isList,
+		breakpoint,
+		textLevel,
+		styleCard,
+		tooltipHide,
+	} = props;
 
 	const getTextDecorationValue = () => {
 		return (
@@ -90,11 +97,8 @@ const TextFormatStrikethrough = props => {
 		onChange(obj);
 	};
 
-	return (
-		<Tooltip
-			text={__('Strikethrough', 'maxi-blocks')}
-			position='bottom center'
-		>
+	const contentStrikethrough = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__strikethrough'
 				onClick={onClick}
@@ -105,8 +109,19 @@ const TextFormatStrikethrough = props => {
 					icon={toolbarStrikethrough}
 				/>
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipHide)
+		return (
+			<Tooltip
+				text={__('Strikethrough', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{contentStrikethrough()}
+			</Tooltip>
+		);
+	return contentStrikethrough();
 };
 
 export default TextFormatStrikethrough;

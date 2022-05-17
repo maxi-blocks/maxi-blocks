@@ -88,7 +88,7 @@ const DisplayControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
-				label={__('Display block', 'maxi-blocks')}
+				label={__('Show or hide by breakpoint', 'maxi-blocks')}
 				type='buttons'
 				selected={getValue()}
 				items={getOptions()}

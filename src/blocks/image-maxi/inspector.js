@@ -105,7 +105,7 @@ const dimensionTab = props => {
 				{(!isImageUrl || !SVGElement) && getSizeOptions().length > 1 && (
 					<>
 						<SelectControl
-							label={__('Image Size', 'maxi-blocks')}
+							label={__('Image size', 'maxi-blocks')}
 							value={
 								imageSize || imageSize === 'custom'
 									? imageSize
@@ -177,31 +177,31 @@ const dimensionTab = props => {
 				)}
 				<SelectControl
 					className='maxi-image-inspector__ratio'
-					label={__('Image Ratio', 'maxi-blocks')}
+					label={__('Image ratio', 'maxi-blocks')}
 					value={imageRatio}
 					options={[
 						{
-							label: __('Original Size', 'maxi-blocks'),
+							label: __('Original size', 'maxi-blocks'),
 							value: 'original',
 						},
 						{
-							label: __('1:1 Aspect Ratio', 'maxi-blocks'),
+							label: __('1:1 Aspect ratio', 'maxi-blocks'),
 							value: 'ar11',
 						},
 						{
-							label: __('2:3 Aspect Ratio', 'maxi-blocks'),
+							label: __('2:3 Aspect ratio', 'maxi-blocks'),
 							value: 'ar23',
 						},
 						{
-							label: __('3:2 Aspect Ratio', 'maxi-blocks'),
+							label: __('3:2 Aspect ratio', 'maxi-blocks'),
 							value: 'ar32',
 						},
 						{
-							label: __('4:3 Aspect Ratio', 'maxi-blocks'),
+							label: __('4:3 Aspect ratio', 'maxi-blocks'),
 							value: 'ar43',
 						},
 						{
-							label: __('16:9 Aspect Ratio', 'maxi-blocks'),
+							label: __('16:9 Aspect ratio', 'maxi-blocks'),
 							value: 'ar169',
 						},
 					]}
@@ -242,11 +242,11 @@ const Inspector = props => {
 	const getCaptionOptions = () => {
 		const response = [
 			{ label: 'None', value: 'none' },
-			{ label: 'Custom Caption', value: 'custom' },
+			{ label: 'Custom caption', value: 'custom' },
 		];
 		if (imageData && !isEmpty(imageData.caption.rendered)) {
 			const newCaption = {
-				label: 'Attachment Caption',
+				label: 'Attachment caption',
 				value: 'attachment',
 			};
 			response.splice(1, 0, newCaption);
@@ -578,7 +578,6 @@ const Inspector = props => {
 															false,
 															''
 														)}
-														{...attributes}
 														breakpoint={deviceType}
 														prefix=''
 													/>

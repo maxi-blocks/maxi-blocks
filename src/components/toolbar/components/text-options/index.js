@@ -32,6 +32,11 @@ import {
 } from '../../../../extensions/styles';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
@@ -172,15 +177,23 @@ const TextOptions = props => {
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const { styleCard } = useSelect(select => {
+	const { styleCard, tooltipsHide } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
+
+		const { receiveMaxiSettings } = select('maxiBlocks');
+
+		const maxiSettings = receiveMaxiSettings();
+		const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+			? maxiSettings.hide_tooltips
+			: false;
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 		return {
 			styleCard,
+			tooltipsHide,
 		};
 	});
 
@@ -305,26 +318,32 @@ const TextOptions = props => {
 									<TextBold
 										onChangeFormat={onChangeFormat}
 										getValue={getValue}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextItalic
 										onChangeFormat={onChangeFormat}
 										getValue={getValue}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatUnderline
 										onChangeFormat={onChangeFormat}
 										getValue={getValue}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatStrikethrough
 										onChangeFormat={onChangeFormat}
 										getValue={getValue}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatSubscript
 										onChangeFormat={onChangeFormat}
 										getValue={getValue}
+										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatSuperscript
 										onChangeFormat={onChangeFormat}
 										getValue={getValue}
+										tooltipsHide={tooltipsHide}
 									/>
 								</div>
 							</div>
@@ -339,6 +358,7 @@ const TextOptions = props => {
 										minMaxSettingsLetterSpacing
 									}
 									avoidXXL={!styleCards}
+									tooltipsHide={tooltipsHide}
 								/>
 							</div>
 						</div>

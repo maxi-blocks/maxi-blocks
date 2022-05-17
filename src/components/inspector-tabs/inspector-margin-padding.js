@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import MarginControl from '../margin-control';
 import PaddingControl from '../padding-control';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Component
@@ -26,14 +27,24 @@ const marginPadding = ({
 			<>
 				{!disableMargin && (
 					<MarginControl
-						{...attributes}
+						{...getGroupAttributes(
+							attributes,
+							'margin',
+							false,
+							prefix
+						)}
 						prefix={prefix}
 						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
 					/>
 				)}
 				<PaddingControl
-					{...attributes}
+					{...getGroupAttributes(
+						attributes,
+						'padding',
+						false,
+						prefix
+					)}
 					prefix={prefix}
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}

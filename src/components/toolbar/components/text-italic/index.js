@@ -22,7 +22,7 @@ import { toolbarItalic } from '../../../../icons';
  * TextItalic
  */
 const TextItalic = props => {
-	const { onChangeFormat, getValue } = props;
+	const { onChangeFormat, getValue, tooltipsHide } = props;
 
 	const getItalicValue = () => getValue('font-style');
 
@@ -34,8 +34,8 @@ const TextItalic = props => {
 		setIsActive((getItalicValue() === 'italic' && true) || false);
 	});
 
-	return (
-		<Tooltip text={__('Italic', 'maxi-blocks')} position='bottom center'>
+	const italicContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__italic'
 				onClick={() =>
@@ -50,8 +50,19 @@ const TextItalic = props => {
 					icon={toolbarItalic}
 				/>
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Italic', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{italicContent()}
+			</Tooltip>
+		);
+	return italicContent();
 };
 
 export default TextItalic;

@@ -25,7 +25,7 @@ import { toolbarUnderline } from '../../../../icons';
  * TextFormatUnderline
  */
 const TextFormatUnderline = props => {
-	const { onChangeFormat, getValue } = props;
+	const { onChangeFormat, getValue, tooltipsHide } = props;
 
 	const getTextDecorationValue = () => getValue('text-decoration') || '';
 
@@ -57,8 +57,8 @@ const TextFormatUnderline = props => {
 		});
 	};
 
-	return (
-		<Tooltip text={__('Underline', 'maxi-blocks')} position='bottom center'>
+	const underlineContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__underline'
 				onClick={onClick}
@@ -66,8 +66,19 @@ const TextFormatUnderline = props => {
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarUnderline} />
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Underline', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{underlineContent()}
+			</Tooltip>
+		);
+	return underlineContent();
 };
 
 export default TextFormatUnderline;

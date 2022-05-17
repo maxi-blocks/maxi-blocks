@@ -144,7 +144,7 @@ const Inspector = props => {
 									items={[
 										deviceType === 'general' && {
 											label: __(
-												'Style shortcut',
+												'Quick styles',
 												'maxi-blocks'
 											),
 											content: (

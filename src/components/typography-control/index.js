@@ -792,7 +792,7 @@ const TypographyControl = props => {
 							value: 'overline',
 						},
 						{
-							label: __('Line Through', 'maxi-blocks'),
+							label: __('Line through', 'maxi-blocks'),
 							value: 'line-through',
 						},
 						{
@@ -800,7 +800,7 @@ const TypographyControl = props => {
 							value: 'underline',
 						},
 						{
-							label: __('Underline Overline', 'maxi-blocks'),
+							label: __('Underline overline', 'maxi-blocks'),
 							value: 'underline overline',
 						},
 					]}
@@ -813,12 +813,7 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Text orientation', 'maxi-blocks')}
 					className='maxi-typography-control__orientation'
-					value={getValue(
-						`${prefix}text-orientation`,
-						breakpoint,
-						false,
-						true
-					)}
+					value={getValue(`${prefix}text-orientation`)}
 					options={[
 						{
 							label: __('None', 'maxi-blocks'),

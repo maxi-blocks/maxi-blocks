@@ -21,7 +21,7 @@ import { toolbarBold } from '../../../../icons';
  * TextBold
  */
 const TextBold = props => {
-	const { onChangeFormat, getValue } = props;
+	const { onChangeFormat, getValue, tooltipsHide } = props;
 
 	const getBoldValue = () => getValue('font-weight');
 
@@ -33,8 +33,8 @@ const TextBold = props => {
 		setIsActive(getBoldValue() > 400 || false);
 	});
 
-	return (
-		<Tooltip text={__('Bold', 'maxi-blocks')} position='bottom center'>
+	const boldContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__bold'
 				onClick={() =>
@@ -46,8 +46,17 @@ const TextBold = props => {
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarBold} />
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip text={__('Bold', 'maxi-blocks')} position='bottom center'>
+				{boldContent()}
+			</Tooltip>
+		);
+
+	return boldContent();
 };
 
 export default TextBold;

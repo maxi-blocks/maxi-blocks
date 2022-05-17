@@ -188,7 +188,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h1": {
 							"color-global": false,
@@ -234,7 +236,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h2": {
 							"color-global": false,
@@ -280,7 +284,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h3": {
 							"color-global": false,
@@ -318,7 +324,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h4": {
 							"color-global": false,
@@ -356,7 +364,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h5": {
 							"color-global": false,
@@ -390,7 +400,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h6": {
 							"color-global": false,
@@ -425,7 +437,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"button": {
 							"border-color-global": false,
@@ -471,6 +485,8 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
 							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr",
 							"background-color-global": false,
 							"background-palette-status": true,
 							"background-palette-color": 4,
@@ -577,7 +593,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h1": {
 							"color-global": false,
@@ -623,7 +641,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h2": {
 							"color-global": false,
@@ -669,7 +689,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h3": {
 							"color-global": false,
@@ -707,7 +729,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h4": {
 							"color-global": false,
@@ -745,7 +769,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h5": {
 							"color-global": false,
@@ -779,7 +805,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h6": {
 							"color-global": false,
@@ -814,7 +842,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"button": {
 							"border-color-global": false,
@@ -860,6 +890,8 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
 							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr",
 							"background-color-global": false,
 							"background-palette-status": true,
 							"background-palette-color": 4,

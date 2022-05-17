@@ -66,19 +66,31 @@ const CaptionToolbar = memo(
 
 		const { formatValue, onChangeTextFormat } = useContext(textContext);
 
-		const { breakpoint, styleCard } = useSelect(select => {
-			const { receiveMaxiDeviceType } = select('maxiBlocks');
+		const { breakpoint, styleCard, tooltipsHide } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } =
+				select('maxiBlocks');
 			const { receiveMaxiSelectedStyleCard } = select(
 				'maxiBlocks/style-cards'
 			);
+
+			const maxiSettings = receiveMaxiSettings();
+			const version = !isEmpty(maxiSettings.editor)
+				? maxiSettings.editor.version
+				: null;
 
 			const breakpoint = receiveMaxiDeviceType();
 
 			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
+			const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+				? maxiSettings.hide_tooltips
+				: false;
+
 			return {
+				editorVersion: version,
 				breakpoint,
 				styleCard,
+				tooltipsHide,
 			};
 		});
 
@@ -133,7 +145,7 @@ const CaptionToolbar = memo(
 				<Popover
 					noArrow
 					animate={false}
-					position='top center right'
+					position='bottom center right'
 					focusOnMount={false}
 					anchorRef={anchorRef}
 					className={classnames('maxi-toolbar__popover')}
@@ -182,6 +194,7 @@ const CaptionToolbar = memo(
 							onChangeFormat={onChangeFormat}
 							getValue={getValue}
 							isCaptionToolbar
+							tooltipsHide={tooltipsHide}
 						/>
 						<TextItalic
 							onChangeFormat={onChangeFormat}

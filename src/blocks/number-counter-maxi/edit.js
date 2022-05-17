@@ -76,11 +76,9 @@ const NumberCounter = attributes => {
 
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
-			if (count >= endCountValue) {
-				setCount(startCountValue);
-				setReplayStatus(false);
-				clearInterval(countRef.current);
-			}
+			setCount(startCountValue);
+			setReplayStatus(false);
+			clearInterval(countRef.current);
 		}
 	}, [
 		startCountValue,
@@ -109,7 +107,10 @@ const NumberCounter = attributes => {
 			attributes,
 		}) === 'hidden';
 
-	replayCounter(() => setReplayStatus(true));
+	replayCounter(() => {
+		setCount(startCountValue);
+		setReplayStatus(true);
+	});
 
 	return (
 		<BlockResizer
@@ -195,7 +196,7 @@ const NumberCounter = attributes => {
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text'>
-					{`${Math.ceil((count / 360) * 100)}`}
+					{`${Math.round((count / 360) * 100)}`}
 					{usePercentage && <sup>%</sup>}
 				</span>
 			)}

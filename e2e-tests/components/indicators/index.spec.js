@@ -54,6 +54,28 @@ describe('Indicators', () => {
 
 		expect(paddingResult).toStrictEqual(expectPadding);
 
+		const paddingTop = await page.$eval(
+			'.maxi-indicators__padding.maxi-indicators__padding--top',
+			div => div.outerHTML
+		);
+		const paddingRight = await page.$eval(
+			'.maxi-indicators__padding.maxi-indicators__padding--right',
+			div => div.outerHTML
+		);
+		const paddingBottom = await page.$eval(
+			'.maxi-indicators__padding.maxi-indicators__padding--bottom',
+			div => div.outerHTML
+		);
+		const paddingLeft = await page.$eval(
+			'.maxi-indicators__padding.maxi-indicators__padding--left',
+			div => div.outerHTML
+		);
+
+		expect(paddingTop).toMatchSnapshot();
+		expect(paddingRight).toMatchSnapshot();
+		expect(paddingBottom).toMatchSnapshot();
+		expect(paddingLeft).toMatchSnapshot();
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Checking the indicators responsive', async () => {

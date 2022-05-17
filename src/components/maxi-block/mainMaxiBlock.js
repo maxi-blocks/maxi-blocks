@@ -32,7 +32,11 @@ const MainBlock = forwardRef(
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
 					{!isEmpty(anchorLink) && (
-						<span id={anchorLink} className='maxi-block-anchor' />
+						<span
+							id={anchorLink}
+							className='maxi-block-anchor'
+							key={`maxi-block-anchor-${anchorLink}`}
+						/>
 					)}
 					{disableBackground && (
 						<BackgroundDisplayer
@@ -48,7 +52,13 @@ const MainBlock = forwardRef(
 		return (
 			// eslint-disable-next-line react-hooks/rules-of-hooks
 			<TagName {...useBlockProps({ ...props, ref })}>
-				{!isEmpty(anchorLink) && <span id={anchorLink} />}
+				{!isEmpty(anchorLink) && (
+					<span
+						id={anchorLink}
+						className='maxi-block-anchor'
+						key={`maxi-block-anchor-${anchorLink}`}
+					/>
+				)}
 				{disableBackground && (
 					<BackgroundDisplayer
 						key={`maxi-background-displayer__${uniqueID}`}

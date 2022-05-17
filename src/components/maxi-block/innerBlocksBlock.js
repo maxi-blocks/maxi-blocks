@@ -38,7 +38,13 @@ const getInnerBlocksChild = ({
 
 	if (!needToSplit)
 		return [
-			...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+			...(!isEmpty(anchorLink) && (
+				<span
+					id={anchorLink}
+					className='maxi-block-anchor'
+					key={`maxi-block-anchor-${anchorLink}`}
+				/>
+			)),
 			...(disableBackground && (
 				<BackgroundDisplayer
 					key={`maxi-background-displayer__${uniqueID}`}
@@ -71,7 +77,13 @@ const getInnerBlocksChild = ({
 		);
 
 	return [
-		...(!isEmpty(anchorLink) && <span id={anchorLink} />),
+		...(!isEmpty(anchorLink) && (
+			<span
+				id={anchorLink}
+				className='maxi-block-anchor'
+				key={`maxi-block-anchor-${anchorLink}`}
+			/>
+		)),
 		...(disableBackground && (
 			<BackgroundDisplayer
 				key={`maxi-background-displayer__${uniqueID}`}

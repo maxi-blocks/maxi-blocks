@@ -34,7 +34,14 @@ import './editor.scss';
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, onChange, prefix, copyPasteMapping } = props;
+	const {
+		clientId,
+		blockName,
+		onChange,
+		prefix,
+		copyPasteMapping,
+		tooltipsHide,
+	} = props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -46,11 +53,8 @@ const MoreSettings = props => {
 		};
 	});
 
-	return (
-		<Tooltip
-			text={__('More Settings', 'maxi-blocks')}
-			position='bottom center'
-		>
+	const moreSettingsContent = () => {
+		return (
 			<div className='toolbar-item toolbar-item__more-settings'>
 				<Dropdown
 					className='maxi-more-settings__settings-selector'
@@ -162,8 +166,19 @@ const MoreSettings = props => {
 					)}
 				/>
 			</div>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('More Settings', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{moreSettingsContent()}
+			</Tooltip>
+		);
+	return moreSettingsContent();
 };
 
 export default MoreSettings;

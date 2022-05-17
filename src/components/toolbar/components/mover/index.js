@@ -144,7 +144,7 @@ const Mover = props => {
 				__experimentalTransferDataType='wp-blocks'
 			>
 				{({ onDraggableStart, onDraggableEnd }, ...rest) => {
-					!tooltipsHide && (
+					return !tooltipsHide ? (
 						<Tooltip
 							text={__('Mover', 'maxi-blocks')}
 							position='bottom center'
@@ -164,8 +164,7 @@ const Mover = props => {
 								</Button>
 							</div>
 						</Tooltip>
-					);
-					tooltipsHide && (
+					) : (
 						<div className='toolbar-item'>
 							<Button
 								className='toolbar-item toolbar-item__move'

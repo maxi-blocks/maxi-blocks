@@ -11,7 +11,6 @@ import {
 	getBlockStyle,
 	getAttributes,
 	addResponsiveTest,
-	pressKeyWithModifier,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
@@ -118,12 +117,40 @@ describe('FullSizeControl', () => {
 		await openSidebarTab(page, 'style', 'height width');
 
 		// select Force Aspect Ratio
-		await page.$eval('.force-aspect-ratio-toggle-switch input', input =>
-			input.click()
+		await page.$$eval(
+			'.maxi-full-size-control .maxi-base-control.maxi-toggle-switch input',
+			input => input[1].click()
 		);
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
+		// check responsive
+		await changeResponsive(page, 's');
+
+		// unselect Force Aspect Ratio
+		await page.$$eval(
+			'.maxi-full-size-control .maxi-base-control.maxi-toggle-switch input',
+			input => input[1].click()
+		);
+
+		await page.waitForTimeout(100);
+		const inputs = await page.$(
+			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value'
+		);
+
+		await inputs.focus();
+		await page.keyboard.type('55', { delay: 100 });
+
 		await changeResponsive(page, 'xs');
+		const fullSizeControlInputXs = await page.$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
+			input => input.value
+		);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		expect(fullSizeControlInputXs).toStrictEqual('55');
+
+		await changeResponsive(page, 'm');
+		await page.waitForTimeout(100);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

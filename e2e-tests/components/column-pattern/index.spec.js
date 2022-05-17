@@ -108,6 +108,12 @@ describe('ColumnPattern', () => {
 			newValue: '%',
 		});
 
+		expect(await getAttributes('column-gap-s')).toStrictEqual(12);
+		expect(await getAttributes('column-gap-unit-s')).toStrictEqual('%');
+
+		expect(await getAttributes('row-gap-s')).toStrictEqual(6);
+		expect(await getAttributes('row-gap-unit-s')).toStrictEqual('px');
+
 		// xs responsive
 		await changeResponsive(page, 'xs');
 

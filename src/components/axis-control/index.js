@@ -78,7 +78,7 @@ const AxisInput = props => {
 			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
-			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
+			autoLabel={__(`Auto ${label.toLowerCase()}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			enableUnit={enableAxisUnits}
 			min={minMaxSettings[currentUnit].min || 0}
@@ -123,23 +123,21 @@ const AxisContent = props => {
 	return (
 		<div>
 			{(sync === 'all' || disableSync) && (
-				<>
-					<AxisInput
-						label={type}
-						target={inputsArray[0]}
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-						enableAxisUnits={enableAxisUnits}
-						onChangeUnit={onChangeUnit}
-						onReset={() => onReset({ reset: 'all' })}
-					/>
-				</>
+				<AxisInput
+					label={type}
+					target={inputsArray[0]}
+					getValue={getValue}
+					getLastBreakpointValue={getLastBreakpointValue}
+					breakpoint={breakpoint}
+					disableAuto={disableAuto}
+					onChangeValue={onChangeValue}
+					minMaxSettings={minMaxSettings}
+					currentUnit={currentUnit}
+					type={type}
+					enableAxisUnits={enableAxisUnits}
+					onChangeUnit={onChangeUnit}
+					onReset={() => onReset({ reset: 'all' })}
+				/>
 			)}
 			{sync === 'axis' && !disableSync && (
 				<>

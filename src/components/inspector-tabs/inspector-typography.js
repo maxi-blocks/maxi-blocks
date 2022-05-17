@@ -99,7 +99,7 @@ const typography = ({
 								{!globalHoverStatus && (
 									<ToggleSwitch
 										label={__(
-											'Enable Typography Hover',
+											'Enable typography hover',
 											'maxi-blocks'
 										)}
 										selected={hoverStatus}

@@ -445,6 +445,7 @@ function maxi_blocks_allowed_html()
             'type'   => true,
             'value' => true,
             'checked' => true,
+            'min' => true,
         ),
         'label' => array(
             'class'  => true,

@@ -25,6 +25,7 @@ import DOMPurify from 'dompurify';
  * External dependencies
  */
 import algoliasearch from 'algoliasearch/lite';
+import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
 	SearchBox,
@@ -318,10 +319,40 @@ const LibraryContainer = props => {
 		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
 
-	const searchClient = algoliasearch(
-		'39ZZ3SLI6Z',
-		'6ed8ae6d1c430c6a76e0720f74eab91c'
-	);
+	// const searchClient = algoliasearch(
+	// 	'39ZZ3SLI6Z',
+	// 	'6ed8ae6d1c430c6a76e0720f74eab91c'
+	// );
+
+	const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
+		server: {
+			apiKey: 'dwwE1dzYaFilMKYvG7yAkDDvq0SuS5TV', // Be sure to use an API key that only allows search operations
+			nodes: [
+				{
+					host: 'slrjg083f5otv7qxp.a1.typesense.net',
+					port: '443',
+					protocol: 'https',
+				},
+				{
+					host: 'slrjg083f5otv7qxp-2.a1.typesense.net',
+					port: '443',
+					protocol: 'https',
+				},
+				{
+					host: 'slrjg083f5otv7qxp-3.a1.typesense.net',
+					port: '443',
+					protocol: 'https',
+				},
+			],
+		},
+		// The following parameters are directly passed to Typesense's search API endpoint.
+		//  So you can pass any parameters supported by the search endpoint below.
+		//  query_by is required.
+		additionalSearchParameters: {
+			query_by: 'post_date',
+		},
+	});
+	const { searchClient } = typesenseInstantsearchAdapter;
 
 	const [isChecked, setChecked] = useState(false);
 
@@ -347,8 +378,8 @@ const LibraryContainer = props => {
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
-				isPro={hit.taxonomies.cost === 'pro'}
-				taxonomies={hit.taxonomies?.category?.[0]}
+				isPro={hit.cost?.[0] === 'pro'}
+				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
 				onRequestInsert={() =>
 					onRequestInsertPattern(
@@ -733,23 +764,20 @@ const LibraryContainer = props => {
 
 			{type === 'patterns' && (
 				<div className='maxi-cloud-container__patterns'>
-					<InstantSearch
-						indexName='maxi_posts_post'
-						searchClient={searchClient}
-					>
+					<InstantSearch indexName='post' searchClient={searchClient}>
 						<div className='maxi-cloud-container__patterns__top-menu'>
 							<CustomMenuSelect
 								className='maxi-cloud-container__content-patterns__cost'
-								attribute='taxonomies.cost'
+								attribute='cost'
 							/>
 							<Menu
-								attribute='taxonomies.gutenberg_type'
+								attribute='gutenberg_type'
 								defaultRefinement='Block Patterns'
 							/>
 						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
 							<Menu
-								attribute='taxonomies.light_or_dark'
+								attribute='light_or_dark'
 								defaultRefinement='Light'
 								transformItems={items =>
 									items.map(item => ({
@@ -767,9 +795,9 @@ const LibraryContainer = props => {
 							<PlaceholderCheckboxControl />
 							<CustomHierarchicalMenu
 								attributes={[
-									'taxonomies_hierarchical.category.lvl0',
-									'taxonomies_hierarchical.category.lvl1',
-									'taxonomies_hierarchical.category.lvl2',
+									'category',
+									// 'category.lvl1',
+									// 'category.lvl2',
 								]}
 							/>
 							<ClearRefinements />
@@ -785,7 +813,7 @@ const LibraryContainer = props => {
 			{type === 'sc' && (
 				<div className='maxi-cloud-container__sc'>
 					<InstantSearch
-						indexName='maxi_posts_style_card'
+						indexName='style_card'
 						searchClient={searchClient}
 					>
 						<div className='maxi-cloud-container__sc__sidebar'>

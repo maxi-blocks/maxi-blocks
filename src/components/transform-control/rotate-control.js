@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -26,16 +25,6 @@ import { reset } from '../../icons';
 const RotateControl = props => {
 	const { x, y, z, defaultX, defaultY, defaultZ, onChange } = props;
 
-	const [xAxis, changeXAxis] = useState(x);
-	const [yAxis, changeYAxis] = useState(y);
-	const [zAxis, changeZAxis] = useState(z);
-
-	useEffect(() => {
-		changeXAxis(x);
-		changeYAxis(y);
-		changeZAxis(z);
-	}, [x, y, z]);
-
 	return (
 		<div className='maxi-transform-control__rotate-control'>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -46,12 +35,11 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={xAxis || 0}
+						value={x || 0}
 						onChange={e => {
 							const value = +e.target.value;
 
-							changeXAxis(value);
-							onChange(value, yAxis, zAxis);
+							onChange(value, y, z);
 						}}
 						min={0}
 						max={360}
@@ -60,30 +48,25 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={isNil(xAxis) ? '' : xAxis}
+						value={isNil(x) ? '' : x}
 						min={0}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
-								changeXAxis(defaultX);
-								onChange(defaultX, yAxis, zAxis);
+								onChange(defaultX, y, z);
 							} else {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
 								if (value < 0) value = 0;
 
-								changeXAxis(value);
-								onChange(value, yAxis, zAxis);
+								onChange(value, y, z);
 							}
 						}}
 					/>
 					<Button
 						className='components-maxi-control__reset-button'
-						onClick={() => {
-							changeXAxis(defaultX);
-							onChange(defaultX, yAxis, zAxis);
-						}}
+						onClick={() => onChange(defaultX, y, z)}
 						action='reset'
 						type='reset'
 					>
@@ -99,12 +82,11 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={yAxis || 0}
+						value={y || 0}
 						onChange={e => {
 							const value = +e.target.value;
 
-							changeYAxis(value);
-							onChange(xAxis, value, zAxis);
+							onChange(x, value, z);
 						}}
 						min={0}
 						max={360}
@@ -113,30 +95,25 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={isNil(yAxis) ? '' : yAxis}
+						value={isNil(y) ? '' : y}
 						min={0}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
-								changeYAxis(defaultY);
-								onChange(xAxis, defaultY, zAxis);
+								onChange(x, defaultY, z);
 							} else {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
 								if (value < 0) value = 0;
 
-								changeYAxis(value);
-								onChange(xAxis, value, zAxis);
+								onChange(x, value, z);
 							}
 						}}
 					/>
 					<Button
 						className='components-maxi-control__reset-button'
-						onClick={() => {
-							changeYAxis(defaultY);
-							onChange(xAxis, defaultY, zAxis);
-						}}
+						onClick={() => onChange(x, defaultY, z)}
 						action='reset'
 						type='reset'
 					>
@@ -152,12 +129,11 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={zAxis || 0}
+						value={z || 0}
 						onChange={e => {
 							const value = +e.target.value;
 
-							changeZAxis(value);
-							onChange(xAxis, yAxis, value);
+							onChange(x, y, value);
 						}}
 						min={0}
 						max={360}
@@ -166,30 +142,25 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={isNil(zAxis) ? '' : zAxis}
+						value={isNil(z) ? '' : z}
 						min={0}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
-								changeZAxis(defaultZ);
-								onChange(xAxis, yAxis, defaultZ);
+								onChange(x, y, defaultZ);
 							} else {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
 								if (value < 0) value = 0;
 
-								changeZAxis(value);
-								onChange(xAxis, yAxis, value);
+								onChange(x, y, value);
 							}
 						}}
 					/>
 					<Button
 						className='components-maxi-control__reset-button'
-						onClick={() => {
-							changeZAxis(defaultZ);
-							onChange(xAxis, yAxis, defaultZ);
-						}}
+						onClick={() => onChange(z, y, defaultZ)}
 						action='reset'
 						type='reset'
 					>

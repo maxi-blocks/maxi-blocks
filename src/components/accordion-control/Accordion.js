@@ -28,6 +28,8 @@ const Accordion = props => {
 		disablePadding = false,
 		preExpandedAccordion,
 		blockName,
+		depth = 1,
+		isStyleCard = false,
 	} = props;
 
 	const [itemExpanded, setItemExpanded] = useState(preExpandedAccordion);
@@ -35,20 +37,20 @@ const Accordion = props => {
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
 	const updatedItemExpanded = useSelect(
-		() => select('maxiBlocks').receiveInspectorPath()?.[1]?.value
+		() => select('maxiBlocks').receiveInspectorPath()?.[depth]?.value
 	);
 
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
 
 	const toggleExpanded = uuid => {
-		updateInspectorPath({ depth: 1, value: uuid });
+		if (!isStyleCard) updateInspectorPath({ depth, value: uuid });
 		setItemExpanded(uuid);
 	};
 
 	useEffect(() => {
 		if (updatedItemExpanded !== itemExpanded) {
-			setItemExpanded(updatedItemExpanded);
+			if (!isStyleCard) setItemExpanded(updatedItemExpanded);
 		}
 	}, [updatedItemExpanded]);
 

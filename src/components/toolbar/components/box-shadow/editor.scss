@@ -1,6 +1,6 @@
 .components-popover {
 	.toolbar-item__box-shadow__popover {
-		min-width: 300px;
+		min-width: 305px;
 	}
 
 	.maxi-shadow-control {
@@ -56,6 +56,9 @@
 				input {
 					flex: 1;
 				}
+			}
+			& > .components-maxi-control__reset-button {
+				display: none;
 			}
 		}
 	}

@@ -101,6 +101,9 @@ const Inspector = props => {
 													/>
 												</ResponsiveTabsControl>
 											),
+											ignoreIndicatorGroups: [
+												'alignment',
+											],
 										},
 										...inspectorTabs.border({
 											props,

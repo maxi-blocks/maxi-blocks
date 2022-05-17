@@ -4,13 +4,15 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray } from 'lodash';
+import { getGroupAttributes } from '../styles';
 
 const getIsActiveTab = (
 	attributes,
 	breakpoint,
 	extraIndicators = [],
 	extraIndicatorsResponsive = [],
-	ignoreIndicator = []
+	ignoreIndicator = [],
+	ignoreIndicatorGroups = []
 ) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
@@ -22,11 +24,21 @@ const getIsActiveTab = (
 
 	if (!name.includes('maxi-blocks')) return null;
 	const defaultAttributes = getBlockAttributes(name);
+
+	const ignoreAttributes = [];
+	ignoreIndicatorGroups.forEach(group => {
+		ignoreAttributes.push(
+			...Object.keys(getGroupAttributes(currentAttributes, group))
+		);
+	});
+
 	const excludedAttributes = [
 		'blockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',
+		'svgType',
 		...ignoreIndicator,
+		...ignoreAttributes,
 	];
 
 	const extractAttributes = items => {
@@ -50,12 +62,6 @@ const getIsActiveTab = (
 		if (!(attribute in defaultAttributes)) return true;
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === false) return true;
-
-		if (
-			attribute.includes('scroll-') &&
-			currentAttributes[attribute] === false
-		)
-			return true;
 
 		if (breakpoint) {
 			if (

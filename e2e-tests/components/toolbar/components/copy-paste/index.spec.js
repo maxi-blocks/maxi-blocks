@@ -217,7 +217,6 @@ describe('CopyPaste from Toolbar', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
-		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Should copy nested blocks', async () => {

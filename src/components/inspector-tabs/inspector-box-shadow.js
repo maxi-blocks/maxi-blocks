@@ -68,7 +68,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 								<>
 									<ToggleSwitch
 										label={__(
-											'Enable Box Shadow Hover',
+											'Enable box shadow hover',
 											'maxi-blocks'
 										)}
 										selected={hoverStatus}

@@ -38,6 +38,7 @@ const TextItalic = withFormatValue(props => {
 		textLevel,
 		styleCard,
 		isCaptionToolbar = false,
+		tooltipsHide,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
@@ -82,17 +83,31 @@ const TextItalic = withFormatValue(props => {
 		onChange(obj);
 	};
 
-	return (
-		<Tooltip text={__('Italic', 'maxi-blocks')} position='bottom center'>
+	const italicContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__italic'
 				onClick={onClick}
 				aria-pressed={isActive}
 			>
-				<Icon className='toolbar-item__icon toolbar-item__italic' icon={toolbarItalic} />
+				<Icon
+					className='toolbar-item__icon toolbar-item__italic'
+					icon={toolbarItalic}
+				/>
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Italic', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{italicContent()}
+			</Tooltip>
+		);
+	return italicContent();
 });
 
 export default TextItalic;

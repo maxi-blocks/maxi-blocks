@@ -25,8 +25,15 @@ import { toolbarSubScript } from '../../../../icons';
  * TextFormatSubscript
  */
 const TextFormatSubscript = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
-		props;
+	const {
+		formatValue,
+		onChange,
+		isList,
+		breakpoint,
+		textLevel,
+		styleCard,
+		tooltipsHide,
+	} = props;
 
 	const getSuperscriptValue = () =>
 		getCustomFormatValue({
@@ -68,8 +75,8 @@ const TextFormatSubscript = props => {
 		onChange(obj);
 	};
 
-	return (
-		<Tooltip text={__('Subscript', 'maxi-blocks')} position='bottom center'>
+	const subscriptContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__subscript'
 				onClick={onClick}
@@ -77,8 +84,19 @@ const TextFormatSubscript = props => {
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarSubScript} />
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Subscript', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{subscriptContent()}
+			</Tooltip>
+		);
+	return subscriptContent();
 };
 
 export default TextFormatSubscript;

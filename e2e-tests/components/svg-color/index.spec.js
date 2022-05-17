@@ -32,7 +32,7 @@ describe('Icon Color', () => {
 			svg => svg.click()
 		);
 
-		await openSidebarTab(page, 'style', 'colour');
+		await openSidebarTab(page, 'style', 'icon colour');
 
 		await editColorControl({
 			page,

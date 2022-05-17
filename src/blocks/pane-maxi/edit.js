@@ -1,8 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, select } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
+import { RichText } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -25,10 +24,6 @@ import { isEmpty, compact, flatten } from 'lodash';
  * Edit
  */
 class edit extends MaxiBlockComponent {
-	constructor(...args) {
-		super(...args);
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -56,7 +51,7 @@ class edit extends MaxiBlockComponent {
 
 		return [
 			<MaxiBlock
-				key={`maxi-accordion--${uniqueID}`}
+				key={`maxi-group--${uniqueID}`}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				useInnerBlocks
@@ -66,17 +61,41 @@ class edit extends MaxiBlockComponent {
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<button
-					onClick={() => {
-						dispatch('core/block-editor').insertBlock(
-							createBlock('maxi-blocks/pane-maxi'),
-							1,
-							this.props.clientId
+				<RichText
+					className='maxi-text-block__content'
+					identifier='title'
+					value={title}
+					// Needs to stay: if there's no `onSplit` function, `onReplace` function
+					// is not called when pasting content with blocks; is called with plainText
+					// Check `packages/block-editor/src/components/rich-text/use-enter.js` on Gutenberg
+					onSplit={() => null}
+					onReplace={(blocks, indexToSelect, initialPosition) => {
+						if (
+							!blocks ||
+							isEmpty(compact(blocks)) ||
+							flatten(blocks).every(block => isEmpty(block))
+						)
+							return;
+
+						const { blocks: cleanBlocks } = onReplaceBlocks(
+							blocks,
+							clientId,
+							title
 						);
+
+						if (!isEmpty(compact(cleanBlocks)))
+							onReplace(
+								cleanBlocks,
+								indexToSelect,
+								initialPosition
+							);
 					}}
+					onMerge={forward => onMerge(this.props, forward)}
+					__unstableEmbedURLOnPaste
+					withoutInteractiveFormatting
 				>
-					Click
-				</button>
+					{onChangeRichText}
+				</RichText>
 			</MaxiBlock>,
 		];
 	}

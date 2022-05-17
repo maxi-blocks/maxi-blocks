@@ -33,6 +33,8 @@ const getNormalObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
+			showMaxWidth: true,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -176,7 +178,8 @@ const getStyles = props => {
 							...getShapeDividerSVGStyles(
 								{
 									...getGroupAttributes(props, [
-										['shapeDivider', 'padding'],
+										'shapeDivider',
+										'padding',
 									]),
 								},
 								'bottom',

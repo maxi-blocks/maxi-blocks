@@ -9,24 +9,38 @@ import getPaletteAttributes from '../getPaletteAttributes';
  */
 import { isNil } from 'lodash';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getCircleBarStyles = (obj, blockStyle) => {
 	const response = {
 		label: 'Number Counter',
 		general: {},
 	};
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: 'number-counter-circle-bar-' });
+	const getColor = breakpoint => {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: 'number-counter-circle-bar-',
+				breakpoint,
+			});
+		if (!paletteStatus && !isNil(color)) {
+			return color;
+		}
+		if (paletteStatus && paletteColor) {
+			return getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+		}
+	};
 
-	if (!paletteStatus && !isNil(color)) {
-		response.general.stroke = color;
-	} else if (paletteStatus && paletteColor) {
-		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${paletteColor}`,
-			opacity: obj[paletteOpacity],
-			blockStyle,
-		});
-	}
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {
+			stroke: getColor(breakpoint),
+		};
+	});
 
 	return { numberCounterCircleBar: response };
 };
@@ -60,27 +74,37 @@ const getTextStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: 'number-counter-text-' });
-
 	const typeOfStyle = obj['number-counter-circle-status'] ? 'color' : 'fill';
 
-	if (!paletteStatus && !isNil(color)) response.general[typeOfStyle] = color;
-	else if (paletteStatus && paletteColor)
-		response.general[typeOfStyle] = getColorRGBAString({
-			firstVar: `color-${paletteColor}`,
-			opacity: paletteOpacity,
-			blockStyle,
-		});
+	const getColor = breakpoint => {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: 'number-counter-text-',
+				breakpoint,
+			});
+		if (!paletteStatus && !isNil(color)) return color;
+		if (paletteStatus && paletteColor)
+			return getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+	};
 
-	if (!isNil(obj['number-counter-title-font-family']))
-		response.general['font-family'] =
-			obj['number-counter-title-font-family'];
-
-	if (!isNil(obj['number-counter-title-font-size']))
-		response.general[
-			'font-size'
-		] = `${obj['number-counter-title-font-size']}px`;
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {
+			...(!isNil(obj[`number-counter-title-font-size-${breakpoint}`]) && {
+				'font-size': `${
+					obj[`number-counter-title-font-size-${breakpoint}`]
+				}px`,
+			}),
+			...(!isNil(obj[`font-family-${breakpoint}`]) && {
+				'font-family': `${obj[`font-family-${breakpoint}`]}`,
+			}),
+			[typeOfStyle]: getColor(breakpoint),
+		};
+	});
 
 	if (!isNil(obj['number-counter-title-font-weight']))
 		response.general['font-weight'] =
@@ -95,10 +119,12 @@ const getSupStyles = obj => {
 		general: {},
 	};
 
-	if (!isNil(obj['number-counter-title-font-size']))
-		response.general['font-size'] = `calc(${
-			obj['number-counter-title-font-size'] / 1.5
-		}px)`;
+	breakpoints.forEach(breakpoint => {
+		if (!isNil(obj[`number-counter-title-font-size-${breakpoint}`]))
+			response.general['font-size'] = `${
+				obj[`number-counter-title-font-size-${breakpoint}`] / 1.5
+			}px`;
+	});
 
 	return { numberCounterSup: response };
 };

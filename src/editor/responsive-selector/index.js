@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch, select } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
 /**
@@ -11,6 +11,7 @@ import { createBlock } from '@wordpress/blocks';
 import Button from '../../components/button';
 import Icon from '../../components/icon';
 import MaxiStyleCardsEditorPopUp from '../style-cards';
+import { setScreenSize } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -36,32 +37,13 @@ import {
 /**
  * Components
  */
-const ResponsiveButton = ({
-	winBreakpoint,
-	icon,
-	breakpoint,
-	target,
-	breakpoints,
-}) => {
+const ResponsiveButton = ({ winBreakpoint, icon, breakpoint, target }) => {
 	const isWinBreakpoint = winBreakpoint === target;
 
 	const classes = classnames(
 		'maxi-responsive-selector__button-wrapper',
 		isWinBreakpoint && 'maxi-responsive-selector__base'
 	);
-
-	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
-
-	const setScreenSize = size => {
-		const xxlSize = select('maxiBlocks').receiveXXLSize();
-
-		if (size === 'general') setMaxiDeviceType('general');
-		else
-			setMaxiDeviceType(
-				size,
-				size !== 'xxl' ? breakpoints[size] : xxlSize
-			);
-	};
 
 	const getIsPressed = () => {
 		if (breakpoint === 'general') return winBreakpoint === target;

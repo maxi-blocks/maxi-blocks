@@ -151,7 +151,6 @@ const ColorControl = props => {
 				blockStyle,
 			})},${paletteOpacity || 1})`;
 
-			onChangeInline({ color: defaultColor });
 			onChange({
 				paletteStatus,
 				paletteColor,
@@ -187,6 +186,7 @@ const ColorControl = props => {
 					label={label}
 					value={paletteColor}
 					globalProps={globalProps}
+					noColorPrefix
 					isHover={isHover}
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}

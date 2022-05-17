@@ -30,8 +30,15 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
-		props;
+	const {
+		formatValue,
+		onChange,
+		isList,
+		breakpoint,
+		textLevel,
+		styleCard,
+		tooltipsHide,
+	} = props;
 
 	const getTextDecorationValue = () => {
 		return (
@@ -90,8 +97,8 @@ const TextFormatOverline = props => {
 		onChange(obj);
 	};
 
-	return (
-		<Tooltip text={__('Overline', 'maxi-blocks')} position='bottom center'>
+	const overlineContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__overline'
 				onClick={onClick}
@@ -99,8 +106,19 @@ const TextFormatOverline = props => {
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarOverline} />
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Overline', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{overlineContent()}
+			</Tooltip>
+		);
+	return overlineContent();
 };
 
 export default TextFormatOverline;

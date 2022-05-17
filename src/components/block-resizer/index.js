@@ -36,6 +36,7 @@ const BlockResizer = forwardRef((props, ref) => {
 	const handleClassName = 'maxi-resizable__handle';
 	const showHandlesClassName = showHandle && 'maxi-resizable__handle--show';
 	const sideHandleClassName = 'maxi-resizable__side-handle';
+	const handlesWrapperClassName = 'maxi-resizable__handle-wrapper';
 
 	const enable = {
 		top: false,
@@ -131,12 +132,7 @@ const BlockResizer = forwardRef((props, ref) => {
 						'maxi-resizable__handle-bottomleft'
 					),
 			}}
-			handleWrapperStyle={{
-				position: 'absolute',
-				height: '100%',
-				width: '100%',
-				zIndex: -1,
-			}}
+			handleWrapperClass={handlesWrapperClassName}
 		>
 			{children}
 		</Resizable>

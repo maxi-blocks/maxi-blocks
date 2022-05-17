@@ -142,12 +142,16 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', '%']}
+						optionType='string'
 					/>
 				)}
 			{allowForceAspectRatio && (
 				<ToggleSwitch
 					className='force-aspect-ratio-toggle-switch'
-					label={__('Force Aspect Ratio', 'maxi-blocks')}
+					label={__(
+						'Force canvas equal height & width',
+						'maxi-blocks'
+					)}
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}force-aspect-ratio`,
 						breakpoint,
@@ -196,6 +200,7 @@ const FullSizeControl = props => {
 					}}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', '%', 'em', 'vw', 'vh']}
+					optionType='string'
 				/>
 			)}
 			<ToggleSwitch
@@ -205,27 +210,6 @@ const FullSizeControl = props => {
 					onChange({
 						[`${prefix}size-advanced-options`]: val,
 					});
-					if (props[`${prefix}size-advanced-options`]) {
-						onChangeValue(
-							[
-								'min-width',
-								'max-width',
-								'min-height',
-								'max-height',
-							],
-							''
-						);
-
-						onChangeValue(
-							[
-								'min-width-unit',
-								'max-width-unit',
-								'min-height-unit',
-								'max-height-unit',
-							],
-							'px'
-						);
-					}
 				}}
 			/>
 			{props[`${prefix}size-advanced-options`] && (
@@ -274,6 +258,7 @@ const FullSizeControl = props => {
 								}}
 								minMaxSettings={minMaxSettings}
 								allowedUnits={['px', 'em', 'vw', '%']}
+								optionType='string'
 							/>
 						)}
 					{!getLastBreakpointAttribute({
@@ -316,6 +301,7 @@ const FullSizeControl = props => {
 							}}
 							minMaxSettings={minMaxSettings}
 							allowedUnits={['px', 'em', 'vw', '%']}
+							optionType='string'
 						/>
 					)}
 					<AdvancedNumberControl
@@ -353,6 +339,7 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', 'vh']}
+						optionType='string'
 					/>
 					<AdvancedNumberControl
 						label={__('Minimum height', 'maxi-blocks')}
@@ -389,6 +376,7 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', 'vh']}
+						optionType='string'
 					/>
 				</>
 			)}

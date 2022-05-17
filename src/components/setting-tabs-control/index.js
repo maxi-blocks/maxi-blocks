@@ -56,7 +56,7 @@ const SettingTabsControl = props => {
 	const [tab, setTab] = useState(0);
 
 	const updatedTab = useSelect(
-		() => select('maxiBlocks').receiveInspectorPath()?.[0]?.value || 0
+		() => select('maxiBlocks').receiveInspectorPath()?.[depth]?.value || 0
 	);
 
 	const currentForcedTab = getForcedTabFromPath(items, depth);
@@ -121,6 +121,7 @@ const SettingTabsControl = props => {
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
+									`maxi-tabs-control__button-${buttonLabel}`,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									getIsActiveTab(

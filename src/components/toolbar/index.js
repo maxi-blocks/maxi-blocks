@@ -271,7 +271,7 @@ const MaxiToolbar = memo(
 								);
 							}}
 							breakpoint={breakpoint}
-							node={ref.current}
+							node={anchorRef}
 							isList={isList}
 							typeOfList={typeOfList}
 							clientId={clientId}
@@ -285,7 +285,7 @@ const MaxiToolbar = memo(
 							])}
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
-							node={ref.current}
+							node={anchorRef}
 							content={content}
 							breakpoint={breakpoint}
 							isList={isList}

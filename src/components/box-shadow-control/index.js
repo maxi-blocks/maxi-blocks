@@ -105,7 +105,6 @@ const BoxShadowControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
-		isPaddingEnable = false,
 	} = props;
 
 	const boxShadowItems = ['horizontal', 'vertical', 'blur', 'spread'];
@@ -166,7 +165,6 @@ const BoxShadowControl = props => {
 	const classes = classnames(
 		'maxi-shadow-control',
 		isNone && 'maxi-shadow-control--disable',
-		isPaddingEnable && 'maxi-tabs-content_has-padding',
 		className
 	);
 

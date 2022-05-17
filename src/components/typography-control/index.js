@@ -256,6 +256,7 @@ const LinkOptions = props => {
 				fullWidthMode
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
+				hasBorder
 				items={[
 					{
 						label: __('Link', 'maxi-block'),

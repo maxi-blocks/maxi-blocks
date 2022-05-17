@@ -55,7 +55,6 @@ const border = ({
 
 	return {
 		label: __('Border', 'maxi-blocks'),
-		disablePadding: true,
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<SettingTabsControl
@@ -88,7 +87,6 @@ const border = ({
 									breakpoint={deviceType}
 									clientId={clientId}
 									globalProps={globalProps}
-									isPaddingEnable
 								/>
 							),
 						},
@@ -137,7 +135,6 @@ const border = ({
 														val,
 												})
 											}
-											isPaddingEnable
 										/>
 									)}
 									{hoverStatus && (
@@ -160,7 +157,6 @@ const border = ({
 											isHover
 											clientId={clientId}
 											globalProps={hoverGlobalProps}
-											isPaddingEnable
 										/>
 									)}
 								</>

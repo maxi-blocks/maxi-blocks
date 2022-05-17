@@ -32,7 +32,6 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 
 	return {
 		label: __('Box shadow', 'maxi-blocks'),
-		disablePadding: true,
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<SettingTabsControl
@@ -60,7 +59,6 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 									}}
 									breakpoint={deviceType}
 									clientId={clientId}
-									isPaddingEnable
 								/>
 							),
 						},
@@ -100,7 +98,6 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 													val,
 											})
 										}
-										isPaddingEnable
 									/>
 									{hoverStatus && (
 										<BoxShadowControl
@@ -117,7 +114,6 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 											breakpoint={deviceType}
 											isHover
 											clientId={clientId}
-											isPaddingEnable
 										/>
 									)}
 								</>

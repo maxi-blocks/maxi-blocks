@@ -28,7 +28,6 @@ const ToggleSwitch = ({
 	help,
 	selected,
 	disabled,
-	isPaddingEnable,
 }) => {
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
@@ -37,7 +36,6 @@ const ToggleSwitch = ({
 		'maxi-toggle-switch',
 		selected && 'maxi-toggle-switch--is-checked',
 		disabled && 'maxi-toggle-switch--disabled', // TODO
-		isPaddingEnable && 'maxi-toggle-switch--has-padding',
 		className
 	);
 

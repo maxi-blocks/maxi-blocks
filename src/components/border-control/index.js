@@ -173,7 +173,6 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
-		isPaddingEnable = false,
 	} = props;
 
 	const borderWidthLastValue = () => {
@@ -204,7 +203,6 @@ const BorderControl = props => {
 	const classes = classnames(
 		'maxi-border-control',
 		!isBorderEnable && 'maxi-border-control--disable',
-		isPaddingEnable && 'maxi-tabs-content_has-padding',
 		className
 	);
 

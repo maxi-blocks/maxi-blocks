@@ -75,7 +75,7 @@ const BlockStylesControl = props => {
 				/>
 			) : (
 				<div className='maxi-block-style-preview'>
-					{__('Block style: ', 'maxi-blocks')}
+					{__('Block tone ', 'maxi-blocks')}
 					<span
 						className={`maxi-block-style-preview__${getBlockStyle(
 							clientId

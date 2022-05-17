@@ -95,7 +95,7 @@ const ArrowControl = props => {
 				/>
 			)}
 			<ToggleSwitch
-				label={__('Show Arrow', 'maxi-blocks')}
+				label={__('Show arrow on boundary', 'maxi-blocks')}
 				selected={getLastBreakpointAttribute({
 					target: 'arrow-status',
 					breakpoint,

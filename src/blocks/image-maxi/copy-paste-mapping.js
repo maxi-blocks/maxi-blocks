@@ -17,7 +17,7 @@ const copyPasteMapping = {
 			},
 			extraClassName: 'Custom CSS Classes',
 			imageSize: {
-				label: 'Image Size',
+				label: 'Image size',
 				value: ['imageSize', 'mediaURL', 'mediaWidth', 'mediaHeight'],
 			},
 			cropOptions: {

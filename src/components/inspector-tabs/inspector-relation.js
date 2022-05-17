@@ -21,6 +21,7 @@ const relation = ({ props }) => {
 				deviceType={deviceType}
 			/>
 		),
+		indicatorProps: ['relations'],
 	};
 };
 

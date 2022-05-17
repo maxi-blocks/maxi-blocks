@@ -60,7 +60,7 @@ const HoverPreview = props => {
 			}`;
 		}
 
-		if (hoverType === 'basic') {
+		if (hoverType === 'basic' && props['hover-preview']) {
 			if (hoverBasicEffectType === 'zoom-in')
 				target.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
 			else if (hoverBasicEffectType === 'rotate')

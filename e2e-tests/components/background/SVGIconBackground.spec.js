@@ -28,7 +28,11 @@ describe('Icon background', () => {
 		);
 
 		// normal state
-		const accordion = await openSidebarTab(page, 'style', 'svg background');
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'icon background'
+		);
 
 		await page.$eval('.maxi-tabs-control__button-color', button =>
 			button.click()

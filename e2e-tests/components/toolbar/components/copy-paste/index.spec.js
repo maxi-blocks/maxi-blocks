@@ -102,6 +102,7 @@ describe('CopyPaste from Toolbar', () => {
 		]);
 
 		expect(positionResult).toStrictEqual(expectPosition);
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Should copy and paste styles with special paste', async () => {
 		await insertBlock('Group Maxi');
@@ -137,7 +138,11 @@ describe('CopyPaste from Toolbar', () => {
 		expect(marginResult).toStrictEqual(expectMargin);
 
 		// add flex attributes
-		const accordionPanel = await openSidebarTab(page, 'advanced', 'flex');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'flexbox'
+		);
 
 		const wrapSelector = await accordionPanel.$(
 			'.maxi-flex-wrap-control select'
@@ -207,21 +212,20 @@ describe('CopyPaste from Toolbar', () => {
 		);
 		await page.waitForTimeout(150);
 
-		// select flex
-		await page.$eval(
-			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#flex',
-			button => button.click()
-		);
-
-		// open advanced
-		await page.$eval(
-			'.toolbar-item__copy-paste__popover .maxi-tabs-control__button-Settings',
-			button => button.click()
-		);
-
 		// select border
 		await page.$eval(
 			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#border',
+			button => button.click()
+		);
+		// open advanced
+		await page.$eval(
+			'.toolbar-item__copy-paste__popover .maxi-tabs-control__button-Advanced',
+			button => button.click()
+		);
+
+		// select flex
+		await page.$eval(
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#flex',
 			button => button.click()
 		);
 

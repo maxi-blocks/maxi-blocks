@@ -125,7 +125,7 @@ class edit extends MaxiBlockComponent {
 			},
 			{
 				...(this.rowGapProps ?? this.context?.rowGapProps),
-				columnNum: this.props.originalNestedColumns.length,
+				columnNum: this.context?.columnsClientIds.length,
 			}
 		);
 	}

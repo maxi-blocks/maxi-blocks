@@ -134,7 +134,8 @@ const getBoxShadowStyles = ({
 				horizontalUnit !== defaultHorizontalUnit) ||
 			(!isNil(verticalUnit) && verticalUnit !== defaultVerticalUnit) ||
 			(!isNil(blurUnit) && blurUnit !== defaultBlurUnit) ||
-			(!isNil(spreadUnit) && spreadUnit !== defaultSpreadUnit);
+			(!isNil(spreadUnit) && spreadUnit !== defaultSpreadUnit) ||
+			(!isNil(color) && color !== defaultColor);
 
 		const horizontalValue = isNumber(horizontal)
 			? horizontal

@@ -315,6 +315,10 @@ const Inspector = props => {
 													}}
 												/>
 											),
+											ignoreIndicator: [
+												`svg-width-${deviceType}`,
+												`svg-stroke-${deviceType}`,
+											],
 										},
 
 										attributes.content &&
@@ -353,6 +357,15 @@ const Inspector = props => {
 														/>
 													</ResponsiveTabsControl>
 												),
+												ignoreIndicator: [
+													'svg-fill-palette-color',
+													'svg-fill-palette-status',
+													'svg-fill-color',
+													'svg-line-palette-color',
+													'svg-line-palette-status',
+													'svg-line-color',
+													`svg-width-${deviceType}`,
+												],
 											},
 										...inspectorTabs.background({
 											label: 'Icon',
@@ -400,6 +413,15 @@ const Inspector = props => {
 													/>
 												</ResponsiveTabsControl>
 											),
+											ignoreIndicator: [
+												'svg-fill-palette-color',
+												'svg-fill-palette-status',
+												'svg-fill-color',
+												'svg-line-palette-color',
+												'svg-line-palette-status',
+												'svg-line-color',
+												`svg-stroke-${deviceType}`,
+											],
 										},
 										...inspectorTabs.marginPadding({
 											props,

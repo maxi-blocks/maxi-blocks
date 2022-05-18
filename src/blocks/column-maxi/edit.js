@@ -106,7 +106,10 @@ class edit extends MaxiBlockComponent {
 				...this.props.attributes,
 				rowBorderRadius: this.props.rowBorderRadius,
 			},
-			this.props.rowGapProps
+			{
+				...this.props.rowGapProps,
+				columnNum: this.props.originalNestedColumns.length,
+			}
 		);
 	}
 
@@ -253,7 +256,6 @@ const editSelect = withSelect((select, ownProps) => {
 	const rowBlockId = getBlockRootClientId(clientId);
 	const originalNestedColumns = getBlockOrder(rowBlockId);
 	const rowAttributes = getBlockAttributes(rowBlockId);
-
 	const rowGapProps =
 		rowAttributes &&
 		(() => {

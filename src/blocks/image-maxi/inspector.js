@@ -572,7 +572,6 @@ const Inspector = props => {
 															false,
 															''
 														)}
-														{...attributes}
 														breakpoint={deviceType}
 														prefix=''
 													/>

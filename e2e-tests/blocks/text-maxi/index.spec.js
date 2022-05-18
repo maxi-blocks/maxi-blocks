@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-return-await */
 /**
  * IMPORTANT: when testing on non-interactive there are no delay times between action, so is possible that
@@ -71,7 +72,13 @@ describe('TextMaxi', () => {
 	it('Test Text Maxi split', async () => {
 		await page.keyboard.type('Testing Text Maxi...onSplit', { delay: 100 });
 		await page.waitForTimeout(150);
-		await pressKeyTimes('ArrowLeft', '7');
+		// Need some delay between pressing arrow as block needs to re-render
+		for (let i = 0; i < 7; i += 1) {
+			await page.keyboard.press('ArrowLeft');
+
+			await page.waitForTimeout(50);
+		}
+
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
@@ -87,7 +94,12 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page.keyboard.type('...OnMerge', { delay: 100 });
-		await pressKeyTimes('ArrowLeft', '11');
+		// Need some delay between pressing arrow as block needs to re-render
+		for (let i = 0; i < 11; i += 1) {
+			await page.keyboard.press('ArrowLeft');
+
+			await page.waitForTimeout(50);
+		}
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
@@ -103,7 +115,12 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page.keyboard.type('...OnMerge', { delay: 100 });
-		await pressKeyTimes('ArrowLeft', '10');
+		// Need some delay between pressing arrow as block needs to re-render
+		for (let i = 0; i < 10; i += 1) {
+			await page.keyboard.press('ArrowLeft');
+
+			await page.waitForTimeout(50);
+		}
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);

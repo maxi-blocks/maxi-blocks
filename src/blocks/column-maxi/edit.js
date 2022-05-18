@@ -123,7 +123,10 @@ class edit extends MaxiBlockComponent {
 				rowBorderRadius:
 					this.rowBorderRadius ?? this.context?.rowBorderRadius,
 			},
-			this.rowGapProps ?? this.context?.rowGapProps
+			{
+				...(this.rowGapProps ?? this.context?.rowGapProps),
+				columnNum: this.props.originalNestedColumns.length,
+			}
 		);
 	}
 

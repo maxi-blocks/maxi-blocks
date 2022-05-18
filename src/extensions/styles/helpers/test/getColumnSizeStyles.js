@@ -2,6 +2,7 @@ import getColumnSizeStyles from '../getColumnSizeStyles';
 
 const rowGapProps = {
 	rowElements: ['', ''],
+	columnNum: 2,
 };
 
 describe('getColumnSizeStyles', () => {
@@ -71,6 +72,7 @@ describe('getColumnSizeStyles', () => {
 			'column-gap-xxl': 2.5,
 			'column-gap-unit-xxl': 'px',
 			rowElements: ['', ''],
+			columnNum: 2,
 		});
 		expect(result).toMatchSnapshot();
 	});

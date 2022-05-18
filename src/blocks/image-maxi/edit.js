@@ -205,7 +205,11 @@ class edit extends MaxiBlockComponent {
 					},
 				}}
 			>
-				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Inspector
+					key={`block-settings-${uniqueID}`}
+					resizableObject={this.resizableObject.current}
+					{...this.props}
+				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}

@@ -446,7 +446,11 @@ const TypographyControl = props => {
 		});
 
 		if (!isEmpty(obj.formatValue)) {
-			const newFormatValue = { ...obj.formatValue };
+			const newFormatValue = {
+				...obj.formatValue,
+				start: formatValue.start,
+				end: formatValue.end,
+			};
 			delete obj.formatValue;
 
 			onChangeTextFormat(newFormatValue);

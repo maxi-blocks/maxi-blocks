@@ -42,7 +42,13 @@ import { capitalize, isEmpty, isNil } from 'lodash';
  * Dimension tab
  */
 const dimensionTab = props => {
-	const { attributes, clientId, imageData, maxiSetAttributes } = props;
+	const {
+		attributes,
+		clientId,
+		imageData,
+		maxiSetAttributes,
+		resizableObject,
+	} = props;
 	const {
 		cropOptions,
 		imageRatio,
@@ -155,17 +161,28 @@ const dimensionTab = props => {
 						label={__('Width', 'maxi-blocks')}
 						value={attributes.imgWidth}
 						onChange={val => {
-							if (!isNil(val))
+							if (!isNil(val)) {
 								maxiSetAttributes({
 									imgWidth: val,
 								});
-							else
-								maxiSetAttributes({
-									imgWidth: getDefaultAttribute(
-										'imgWidth',
-										clientId
-									),
+
+								resizableObject.updateSize({
+									width: `${val}%`,
 								});
+							} else {
+								const defaultAttribute = getDefaultAttribute(
+									'imgWidth',
+									clientId
+								);
+
+								maxiSetAttributes({
+									imgWidth: defaultAttribute,
+								});
+
+								resizableObject.updateSize({
+									width: `${defaultAttribute}%`,
+								});
+							}
 						}}
 						max={100}
 						allowReset

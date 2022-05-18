@@ -20,10 +20,8 @@
 	.block-editor-block-inspector.maxi-controls {
 		.block-editor-block-card {
 			position: relative;
-			margin: 0 0 8px 0 !important;
 			padding: 8px;
 			color: #fff;
-			border-bottom: 1px solid #dbdde6;
 			background: #fff;
 			letter-spacing: 0;
 
@@ -42,5 +40,10 @@
 				margin: 0;
 			}
 		}
+	}
+	.block-editor-block-card__description {
+		position: relative;
+		left: -25px;
+		padding-top: 5px;
 	}
 }

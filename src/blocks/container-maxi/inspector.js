@@ -32,6 +32,7 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -41,62 +42,55 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										...inspectorTabs.calloutArrow({
-											props,
-										}),
-										{
-											label: __(
-												'Shape divider',
-												'maxi-blocks'
-											),
-											disablePadding: true,
-											content: (
-												<ShapeDividerControl
-													{...getGroupAttributes(
-														attributes,
-														'shapeDivider'
-													)}
-													onChangeInline={obj =>
-														insertInlineStyles({
-															obj,
-															target: 'svg',
-														})
-													}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															'svg'
-														);
-													}}
-												/>
-											),
-										},
-										...inspectorTabs.blockBackground({
-											props,
-										}),
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.calloutArrow({
+										props,
+									}),
+									{
+										label: __(
+											'Shape divider',
+											'maxi-blocks'
+										),
+										disablePadding: true,
+										content: (
+											<ShapeDividerControl
+												{...getGroupAttributes(
+													attributes,
+													'shapeDivider'
+												)}
+												onChangeInline={obj =>
+													insertInlineStyles({
+														obj,
+														target: 'svg',
+													})
+												}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+													cleanInlineStyles('svg');
+												}}
+											/>
+										),
+									},
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{

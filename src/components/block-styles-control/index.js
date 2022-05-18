@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import { select, dispatch } from '@wordpress/data';
 
 /**
@@ -39,6 +40,20 @@ const BlockStylesControl = props => {
 		return null;
 	};
 
+	const [descVisibility, setDescVisibility] = useState(false);
+
+	const toggleDesc = () => {
+		setDescVisibility(!descVisibility);
+	};
+
+	const blockDesc = document.querySelector(
+		'.block-editor-block-card__description'
+	);
+
+	!descVisibility
+		? (blockDesc.style.display = 'none')
+		: (blockDesc.style.display = 'block');
+
 	const getAllInnerBlocks = (id, blockStyle) => {
 		const { getBlockOrder } = select('core/block-editor');
 		const { updateBlockAttributes } = dispatch('core/block-editor');
@@ -58,6 +73,9 @@ const BlockStylesControl = props => {
 	};
 	return (
 		<>
+			<div className='block-info-icon' onClick={toggleDesc}>
+				<span className='block-info-icon-span'>i</span>
+			</div>
 			{isFirstOnHierarchy ? (
 				<SelectControl
 					label={__('Block tone', 'maxi-blocks')}
@@ -75,7 +93,6 @@ const BlockStylesControl = props => {
 				/>
 			) : (
 				<div className='maxi-block-style-preview'>
-					{__('Block style: ', 'maxi-blocks')}
 					<span
 						className={`maxi-block-style-preview__${getBlockStyle(
 							clientId

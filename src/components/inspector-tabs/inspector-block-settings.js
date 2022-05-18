@@ -7,13 +7,13 @@ import CustomLabel from '../custom-label';
 /**
  * Component
  */
-const blockSettings = ({ props }) => {
+const BlockSettings = ({ props }) => {
 	const { attributes, deviceType, clientId, maxiSetAttributes } = props;
 	const { blockStyle, customLabel, isFirstOnHierarchy } = attributes;
 
 	return (
 		deviceType === 'general' && (
-			<div className='maxi-tab-content__box'>
+			<div className='maxi-tab-content__box sidebar-block-info'>
 				<CustomLabel
 					customLabel={customLabel}
 					onChange={customLabel =>
@@ -33,4 +33,4 @@ const blockSettings = ({ props }) => {
 	);
 };
 
-export default blockSettings;
+export default BlockSettings;

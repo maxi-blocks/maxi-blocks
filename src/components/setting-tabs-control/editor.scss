@@ -166,4 +166,57 @@
 			}
 		}
 	}
+	
+}
+.sidebar-block-info {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: #fff;
+	padding-left: 5px;
+
+	.maxi-custom-label {
+		width: 100%;
+		position: relative;
+	}
+	.maxi-base-control.maxi-block-style-control {
+		position: relative;
+		min-width: 75px;
+		margin-left: 10px;
+	}
+	.maxi-block-style-preview {
+		position: relative;
+		min-width: 100px;
+		margin-left: 10px;		
+	}
+	.block-style-label-2,
+	.maxi-base-control__label {
+		position: absolute;
+		top: -8px;
+		left: 10%;
+		font-size: 8px;
+		color: #5d5e5f;
+		font-style: italic;
+		background: #fff;
+		padding: 0 5px;
+	}
+}
+.block-info-icon {
+	position: absolute;
+	right: 0;
+	border: 1px solid var(--maxi-grey-1-color);
+	border-radius: 50%;
+	height: 18px;
+	width: 18px;
+	text-align: center;
+	top: 5px;
+	cursor: pointer;
+
+	&:hover {
+		border: 1px solid var(--maxi-black-1-color);
+	}
+
+	span {
+		font-size: 10px;
+	}
 }

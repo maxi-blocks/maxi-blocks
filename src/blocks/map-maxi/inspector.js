@@ -33,6 +33,7 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -42,52 +43,43 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										{
-											label: __('Map', 'maxi-blocks'),
-											content: (
-												<ResponsiveTabsControl
-													breakpoint={deviceType}
-												>
-													<MapControl
-														{...getGroupAttributes(
-															attributes,
-															'map'
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														hasApiKey={
-															!isEmpty(apiKey)
-														}
-													/>
-												</ResponsiveTabsControl>
-											),
-										},
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+							<AccordionControl
+								isPrimary
+								items={[
+									{
+										label: __('Map', 'maxi-blocks'),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<MapControl
+													{...getGroupAttributes(
+														attributes,
+														'map'
+													)}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													hasApiKey={!isEmpty(apiKey)}
+												/>
+											</ResponsiveTabsControl>
+										),
+									},
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{

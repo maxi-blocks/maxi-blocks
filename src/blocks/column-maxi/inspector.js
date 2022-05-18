@@ -28,6 +28,7 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -37,66 +38,59 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										{
-											label: __(
-												'Column settings',
-												'maxi-blocks'
-											),
-											content: (
-												<ResponsiveTabsControl
+							<AccordionControl
+								isPrimary
+								items={[
+									{
+										label: __(
+											'Column settings',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<ColumnSizeControl
+													props
+													{...getGroupAttributes(
+														attributes,
+														'flex'
+													)}
+													rowPattern={rowPattern}
+													clientId={clientId}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
 													breakpoint={deviceType}
-												>
-													<ColumnSizeControl
-														props
-														{...getGroupAttributes(
-															attributes,
-															'flex'
-														)}
-														rowPattern={rowPattern}
-														clientId={clientId}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-													/>
-												</ResponsiveTabsControl>
-											),
-											extraIndicators: [
-												`column-fit-content-${deviceType}`,
-												`column-size-${deviceType}`,
-											],
-										},
-										...inspectorTabs.blockBackground({
-											props,
-											disableVideo: true,
-										}),
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-											hideWidth: true,
-											hideMaxWidth: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+												/>
+											</ResponsiveTabsControl>
+										),
+										extraIndicators: [
+											`column-fit-content-${deviceType}`,
+											`column-size-${deviceType}`,
+										],
+									},
+									...inspectorTabs.blockBackground({
+										props,
+										disableVideo: true,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+										hideWidth: true,
+										hideMaxWidth: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{

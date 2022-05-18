@@ -686,6 +686,7 @@ const IconControl = props => {
 							breakpoint={breakpoint}
 							target='icon-padding'
 							disableAuto
+							optionType='string'
 							minMaxSettings={minMaxSettings}
 						/>
 					)}

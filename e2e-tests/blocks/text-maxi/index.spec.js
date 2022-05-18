@@ -42,6 +42,15 @@ const clickTextStyle = async (page, type = 'bold') => {
 	await page.$eval('.maxi-text-block__content', el => el.focus());
 };
 
+const pressKeyWithTimeout = async (key, times, timeout = 50) => {
+	// Need some delay between pressing arrow as block needs to re-render
+	for (let i = 0; i < times; i += 1) {
+		await page.keyboard.press(key);
+
+		await page.waitForTimeout(timeout);
+	}
+};
+
 describe('TextMaxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
@@ -72,13 +81,7 @@ describe('TextMaxi', () => {
 	it('Test Text Maxi split', async () => {
 		await page.keyboard.type('Testing Text Maxi...onSplit', { delay: 100 });
 		await page.waitForTimeout(150);
-		// Need some delay between pressing arrow as block needs to re-render
-		for (let i = 0; i < 7; i += 1) {
-			await page.keyboard.press('ArrowLeft');
-
-			await page.waitForTimeout(50);
-		}
-
+		await pressKeyWithTimeout('ArrowLeft', 7);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
@@ -94,12 +97,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page.keyboard.type('...OnMerge', { delay: 100 });
-		// Need some delay between pressing arrow as block needs to re-render
-		for (let i = 0; i < 11; i += 1) {
-			await page.keyboard.press('ArrowLeft');
-
-			await page.waitForTimeout(50);
-		}
+		await pressKeyWithTimeout('ArrowLeft', 11);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
@@ -115,12 +113,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page.keyboard.type('...OnMerge', { delay: 100 });
-		// Need some delay between pressing arrow as block needs to re-render
-		for (let i = 0; i < 10; i += 1) {
-			await page.keyboard.press('ArrowLeft');
-
-			await page.waitForTimeout(50);
-		}
+		await pressKeyWithTimeout('ArrowLeft', 10);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);
@@ -715,11 +708,11 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.keyboard.press('ArrowLeft');
 		await page.waitForTimeout(150);
-		await pressKeyTimes('ArrowRight', '8');
+		await pressKeyWithTimeout('ArrowRight', 8);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
-		await pressKeyTimes('ArrowRight', '5');
+		await pressKeyWithTimeout('ArrowRight', 5);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);

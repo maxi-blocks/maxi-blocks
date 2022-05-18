@@ -48,13 +48,25 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<MaxiModal
-								type='button-icon'
-								style={blockStyle}
-								onSelect={obj => changePaneIcon(obj)}
-								onRemove={obj => changePaneIcon(obj)}
-								icon={props['icon-content']}
-							/>
+							<>
+								<MaxiModal
+									type='accordion-icon'
+									style={blockStyle}
+									onSelect={obj => changePaneIcon(obj)}
+									onRemove={obj => changePaneIcon(obj)}
+									icon={attributes['icon-content']}
+									label='Icon'
+								/>
+
+								<MaxiModal
+									type='accordion-icon-active'
+									style={blockStyle}
+									onSelect={obj => changePaneIcon(obj)}
+									onRemove={obj => changePaneIcon(obj)}
+									icon={attributes['icon-content-active']}
+									label='Icon Active'
+								/>
+							</>
 						),
 					},
 				]}

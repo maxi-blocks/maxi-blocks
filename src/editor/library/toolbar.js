@@ -51,6 +51,8 @@ const LibraryToolbar = props => {
 					__('Maxi cloud shape library', 'maxi-blocks')}
 				{type.includes('button') &&
 					__('Maxi button icon library', 'maxi-blocks')}
+				{type.includes('accordion') &&
+					__('Maxi accordion icon library', 'maxi-blocks')}
 			</a>
 			{type === 'all' && (
 				<div>

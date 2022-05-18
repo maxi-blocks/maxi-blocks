@@ -316,7 +316,7 @@ const LibraryContainer = props => {
 
 	const getShapeType = type => {
 		switch (type) {
-			case 'button-icon':
+			case 'button-icon' || 'accordion-icon' || 'accordion-icon-active':
 				return 'icon';
 			case 'sidebar-block-shape':
 				return 'shape';
@@ -488,9 +488,18 @@ const LibraryContainer = props => {
 				onRequestClose();
 			}
 
-			if (type === 'button-icon') {
+			if (type === 'button-icon' || type === 'accordion-icon') {
 				onSelect({
 					'icon-content': svgCode,
+					svgType,
+				});
+
+				onRequestClose();
+			}
+
+			if (type === 'accordion-icon-active') {
+				onSelect({
+					'icon-content-active': svgCode,
 					svgType,
 				});
 
@@ -771,6 +780,37 @@ const LibraryContainer = props => {
 			)}
 
 			{type === 'button-icon' && (
+				<InstantSearch
+					indexName='maxi_posts_svg_icon'
+					searchClient={searchClient}
+				>
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<CustomRefinementList
+								className='hidden'
+								attribute='taxonomies.svg_category'
+								defaultRefinement={['Line']}
+								showLoadingIndicator
+							/>
+						</div>
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
+							</div>
+						</div>
+					</div>
+				</InstantSearch>
+			)}
+
+			{(type === 'accordion-icon' ||
+				type === 'accordion-icon-active') && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}

@@ -34,6 +34,10 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	'icon-content-active': {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default attributes;

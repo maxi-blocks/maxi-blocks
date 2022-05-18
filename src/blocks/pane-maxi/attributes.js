@@ -27,6 +27,10 @@ const attributes = {
 		default: 'normal',
 	},
 	title: { type: 'string' },
+	'icon-content': {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default attributes;

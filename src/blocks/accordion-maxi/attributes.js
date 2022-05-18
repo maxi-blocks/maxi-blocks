@@ -26,7 +26,14 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	title: { type: 'string' },
+	lastIndex: {
+		type: 'number',
+		default: 0,
+	},
+	'icon-content': {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default attributes;

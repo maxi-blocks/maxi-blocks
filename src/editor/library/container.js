@@ -586,7 +586,7 @@ const LibraryContainer = props => {
 	const PlaceholderCheckboxControl = () => {
 		return (
 			<CheckboxControl
-				className='use-placeholer-all-images'
+				className='use-placeholder-all-images'
 				label={__('Use placeholder for all images', 'maxi-blocks')}
 				help={__(
 					'(do not download any images to your media library, use a generic grey image)',

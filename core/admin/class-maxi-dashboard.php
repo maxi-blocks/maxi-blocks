@@ -292,6 +292,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_item_header('Updates & Roll-Back', false);
 
             $content .= '<p>'.__('Maxi Blocks includes a roll-back feature to restore a previous version of the plugin if required. It is recommended to run a backup of your website and database before you perform a rollback.', self::$maxi_text_domain).'</p>';
+            
+            $description = '<h4>'.__('Automatically backup the plugin before updates', self::$maxi_text_domain).'</h4>';
+            $content .= $this->generate_setting($description, 'rollback');
+            $content .= '<p>'.__('Number of backups to keep (we recommend from 1 to 5, default is 3)', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_input('rollback-amount', '', 'number');
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -357,13 +362,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $toggle;
         }
 
-        public function generate_input($option, $function = '')
+        public function generate_input($option, $function = '', $type = 'text')
         {
             $input = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
             $input .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
             $input .= '<input name="';
             $input .= $option;
-            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="text" value="';
+            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="';
+            $input .= $type;
+            $input .= '" value="';
             $input .= get_option($option);
             $input .= '">';
             $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__input
@@ -416,14 +423,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $breakpoints_html;
         }
 
-        public function generate_setting($description, $option, $function = '')
+        public function generate_setting($description, $option, $function = '', $type = 'text')
         {
             $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= $description;
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
             if ($option === 'google_api_key_option') {
-                $content .= $this->generate_input($option, $function);
+                $content .= $this->generate_input($option, $function, $type);
             } else {
                 $content .= $this->generate_toggle($option, $function);
             }
@@ -447,6 +454,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'boolean',
                 'default' => false,
             );
+
+            $argsAlt = array(
+                'type' => 'boolean',
+                'default' => true,
+            );
+
+            $argsAmount = array(
+                'type' => 'number',
+                'default' => '3',
+            );
             
             register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
@@ -456,6 +473,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
+            register_setting('maxi-blocks-settings-group', 'rollback', $argsAlt);
+            register_setting('maxi-blocks-settings-group', 'rollback-amount', $argsAmount);
         }
 
         public function get_folder_size($folder)
@@ -508,6 +527,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if (get_option('allow_svg_json_uploads')) {
                 add_filter('upload_mimes', 'maxi_svg_json_upload');
             }
+        }
+
+        public function createZip($source, $destination)
+        {
+            if (!extension_loaded('zip') || !file_exists($source)) {
+                return false;
+            }
+
+            $zip = new ZipArchive();
+            if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
+                return false;
+            }
+
+            $source = str_replace('\\', '/', realpath($source));
+
+            if (is_dir($source) === true) {
+                $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
+
+                foreach ($files as $file) {
+                    $file = str_replace('\\', '/', $file);
+
+                    if (in_array(substr($file, strrpos($file, '/')+1), array('.', '..'))) {
+                        continue;
+                    }
+
+                    $file = realpath($file);
+
+                    if (is_dir($file) === true) {
+                        $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
+                    } elseif (is_file($file) === true) {
+                        $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
+                    }
+                }
+            } elseif (is_file($source) === true) {
+                $zip->addFromString(basename($source), file_get_contents($source));
+            }
+
+            return $zip->close();
         }
     }
 endif;

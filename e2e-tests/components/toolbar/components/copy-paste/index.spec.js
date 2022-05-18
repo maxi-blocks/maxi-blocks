@@ -14,7 +14,6 @@ import {
 	openSidebarTab,
 	editAxisControl,
 	getAttributes,
-	getBlockStyle,
 } from '../../../../utils';
 
 describe('CopyPaste from Toolbar', () => {
@@ -133,6 +132,17 @@ describe('CopyPaste from Toolbar', () => {
 		);
 		await directionSelector.select('row');
 
+		// add box shadow (these attributes should not appear in the second group maxi)
+		const boxShadowAccordion = await openSidebarTab(
+			page,
+			'style',
+			'box shadow'
+		);
+
+		await boxShadowAccordion.$$eval('.maxi-shadow-control button', click =>
+			click[1].click()
+		);
+
 		// copy style
 		// open options
 		await page.$eval(
@@ -196,27 +206,29 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		// check flex
-		expect(await getAttributes('flex-direction-general')).toStrictEqual(
-			'row'
-		);
-		expect(await getAttributes('flex-wrap-general')).toStrictEqual('wrap');
-
-		// check border
-		const expectMargin = {
+		// check attributes
+		const expectAttributes = {
+			'flex-direction-general': 'row',
+			'flex-wrap-general': 'wrap',
 			'border-bottom-left-radius-general': 44,
 			'border-bottom-right-radius-general': 96,
 			'border-top-left-radius-general': 56,
 			'border-top-right-radius-general': 15,
+			'box-shadow-blur-general': undefined,
+			'box-shadow-color-general': undefined,
 		};
-		const marginResult = await getAttributes([
+		const attributesResult = await getAttributes([
+			'flex-direction-general',
+			'flex-wrap-general',
 			'border-bottom-left-radius-general',
 			'border-bottom-right-radius-general',
 			'border-top-left-radius-general',
 			'border-top-right-radius-general',
+			'box-shadow-blur-general',
+			'box-shadow-color-general',
 		]);
 
-		expect(marginResult).toStrictEqual(expectMargin);
+		expect(attributesResult).toStrictEqual(expectAttributes);
 	});
 
 	it('Should copy nested blocks', async () => {

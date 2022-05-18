@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useState, useContext, useMemo } from '@wordpress/element';
+import { useState, useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -343,8 +343,6 @@ const TypographyControl = props => {
 	});
 
 	const classes = classnames('maxi-typography-control', className);
-
-	const Divider = useMemo(() => <hr style={{ margin: '15px 0' }} />);
 
 	const minMaxSettings = {
 		px: {
@@ -720,7 +718,7 @@ const TypographyControl = props => {
 				{!disableFontFamily &&
 					!disableColor &&
 					!isStyleCards &&
-					!hideAlignment && <Divider />}
+					!hideAlignment && <hr style={{ margin: '15px 0' }} />}
 				<FontWeightControl
 					onChange={val => {
 						onChangeFormat({ [`${prefix}font-weight`]: val });

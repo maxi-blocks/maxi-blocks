@@ -11,10 +11,9 @@ import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
-	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,
@@ -118,7 +117,7 @@ const NumberCounter = attributes => {
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
-			size={{
+			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',
 					breakpoint: deviceType,

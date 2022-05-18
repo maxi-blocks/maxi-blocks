@@ -212,7 +212,7 @@ const FlexSettingsControl = props => {
 						) : (
 							<div className='maxi-warning-box'>
 								{__(
-									'The block should be wrapper to use flex-parent properties, use Flex-child instead',
+									'Block should be a wrapper to use flex-parent properties. Use Flex-child instead.',
 									'maxi-blocks'
 								)}
 							</div>

@@ -9,7 +9,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { round, isNumber, isNil } from 'lodash';
+import { isNil, isNumber, round } from 'lodash';
 import getAttributeValue from '../getAttributeValue';
 
 /**
@@ -109,8 +109,13 @@ const getBoxShadowStyles = ({
 		});
 
 		// Color
-		const { value: paletteColor, defaultValue: defaultColor } =
+		const { value: paletteColor, defaultValue: defaultPaletteColor } =
 			paletteStatus ? getValue('palette-color') : getValue('color');
+		const defaultColor = getColorRGBAString({
+			firstVar: `color-${defaultPaletteColor}`,
+			opacity: 1,
+			blockStyle,
+		});
 
 		const color =
 			paletteStatus && paletteColor

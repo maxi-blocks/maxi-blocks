@@ -2,11 +2,7 @@
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
 	BlockInserter,
@@ -14,7 +10,8 @@ import {
 	ShapeDivider,
 	Toolbar,
 } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';

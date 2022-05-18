@@ -3,20 +3,19 @@
  */
 import { Popover } from '@wordpress/components';
 import {
-	forwardRef,
 	memo,
+	forwardRef,
 	useEffect,
-	useRef,
 	useState,
+	useRef,
 } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Utils
@@ -63,23 +62,7 @@ import { setSVGContent } from '../../extensions/svg';
  */
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
-
-/**
- * General
- */
-const allowedBlocks = [
-	'maxi-blocks/button-maxi',
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/divider-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/image-maxi',
-	'maxi-blocks/map-maxi',
-	'maxi-blocks/number-counter-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/text-maxi',
-];
+import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component
@@ -113,7 +96,6 @@ const MaxiToolbar = memo(
 		} = props;
 		const {
 			blockFullWidth,
-			content,
 			customLabel,
 			fullWidth,
 			isFirstOnHierarchy,
@@ -161,8 +143,6 @@ const MaxiToolbar = memo(
 			setAnchorRef(ref.current);
 		});
 
-		if (!allowedBlocks.includes(name)) return null;
-
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');
 			const originalNestedBlocks = clientId
@@ -177,11 +157,6 @@ const MaxiToolbar = memo(
 			inlineStylesTargetsDefault,
 			inlineStylesTargets
 		);
-
-		const boundaryElement =
-			document.defaultView.frameElement ||
-			getScrollContainer(anchorRef) ||
-			document.body;
 
 		const lineOrientation = getLastBreakpointAttribute(
 			'line-orientation',
@@ -242,7 +217,9 @@ const MaxiToolbar = memo(
 					)}
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
-					__unstableStickyBoundaryElement={boundaryElement}
+					__unstableStickyBoundaryElement={getBoundaryElement(
+						anchorRef
+					)}
 				>
 					<div className='toolbar-wrapper'>
 						{!isTyping && (
@@ -284,10 +261,7 @@ const MaxiToolbar = memo(
 								);
 							}}
 							breakpoint={breakpoint}
-							node={anchorRef}
 							isList={isList}
-							typeOfList={typeOfList}
-							clientId={clientId}
 							textLevel={textLevel}
 							styleCard={styleCard}
 						/>
@@ -298,15 +272,11 @@ const MaxiToolbar = memo(
 							])}
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
-							node={anchorRef}
-							content={content}
 							breakpoint={breakpoint}
 							isList={isList}
-							typeOfList={typeOfList}
 							textLevel={textLevel}
 							styleCard={styleCard}
 							clientId={clientId}
-							blockStyle={blockStyle}
 						/>
 						<Mover
 							clientId={clientId}
@@ -706,16 +676,33 @@ const MaxiToolbar = memo(
 			)
 		);
 	}),
-	// Avoids non-necessary renderings
 	(oldProps, newProps) => {
 		const {
 			attributes: oldAttr,
 			propsToAvoid,
 			isSelected: wasSelected,
+			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
 		} = oldProps;
-		const { attributes: newAttr, isSelected } = newProps;
 
-		if (!wasSelected || wasSelected !== isSelected) return false;
+		const {
+			attributes: newAttr,
+			isSelected,
+			deviceType: breakpoint,
+			scValues,
+		} = newProps;
+
+		// If is not selected, don't render
+		if (!isSelected && wasSelected === isSelected) return true;
+
+		if (select('core/block-editor').isDraggingBlocks()) return true;
+
+		if (
+			wasSelected !== isSelected ||
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
+		)
+			return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);

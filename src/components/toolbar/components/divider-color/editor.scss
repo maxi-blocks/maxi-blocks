@@ -6,4 +6,9 @@
 	.maxi-advanced-number-control__value {
 		flex: 1 !important;
 	}
+	.maxi-color-control {
+		& > .components-maxi-control__reset-button {
+			display: none;
+		}
+	}
 }

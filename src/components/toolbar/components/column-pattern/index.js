@@ -27,7 +27,7 @@ const ToolbarColumnPattern = props => {
 				<ToolbarPopover
 					className='toolbar-item__column-pattern'
 					icon={toolbarColumnPattern}
-					tooltip={__('Column pattern', 'maxi-blocks')}
+					tooltip={__('Column picker', 'maxi-blocks')}
 				>
 					<div className='toolbar-item__column-pattern__popover'>
 						<ColumnPattern

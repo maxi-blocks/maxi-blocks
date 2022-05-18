@@ -884,7 +884,7 @@ const TypographyControl = withFormatValue(props => {
 						value: 'overline',
 					},
 					{
-						label: __('Line Through', 'maxi-blocks'),
+						label: __('Line through', 'maxi-blocks'),
 						value: 'line-through',
 					},
 					{
@@ -892,7 +892,7 @@ const TypographyControl = withFormatValue(props => {
 						value: 'underline',
 					},
 					{
-						label: __('Underline Overline', 'maxi-blocks'),
+						label: __('Underline overline', 'maxi-blocks'),
 						value: 'underline overline',
 					},
 				]}
@@ -905,12 +905,7 @@ const TypographyControl = withFormatValue(props => {
 			<SelectControl
 				label={__('Text orientation', 'maxi-blocks')}
 				className='maxi-typography-control__orientation'
-				value={getValue(
-					`${prefix}text-orientation`,
-					breakpoint,
-					false,
-					true
-				)}
+				value={getValue(`${prefix}text-orientation`)}
 				options={[
 					{
 						label: __('None', 'maxi-blocks'),
@@ -942,7 +937,7 @@ const TypographyControl = withFormatValue(props => {
 			<SelectControl
 				label={__('Text direction', 'maxi-blocks')}
 				className='maxi-typography-control__direction'
-				value={getValue(`${prefix}text-direction`, breakpoint)}
+				value={getValue(`${prefix}text-direction`)}
 				options={[
 					{
 						label: __('Left to right', 'maxi-blocks'),

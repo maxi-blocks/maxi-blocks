@@ -494,7 +494,7 @@ Object {
         "mediaURL": "http://localhost:8888/wp-content/uploads/2022/04/ball.jpg",
         "mediaWidth": 225,
       },
-      "label": "Image Size",
+      "label": "Image size",
     },
     "imgWidth": Object {
       "attribute": Object {

@@ -18,7 +18,7 @@ import './editor.scss';
  * Component
  */
 const AccordionControl = props => {
-	const { className, isPrimary = false, isSecondary = false } = props;
+	const { className, isPrimary = false, isSecondary = false, depth } = props;
 
 	const classes = classnames(
 		'maxi-accordion-control',
@@ -34,6 +34,7 @@ const AccordionControl = props => {
 			className={classes}
 			preExpanded={preExpandedAccordion}
 			{...props}
+			depth={depth}
 		/>
 	);
 };

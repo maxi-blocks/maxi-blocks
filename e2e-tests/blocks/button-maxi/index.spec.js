@@ -33,7 +33,7 @@ describe('Button Maxi', () => {
 	});
 
 	it('Button Style', async () => {
-		await openSidebarTab(page, 'style', 'style shortcut');
+		await openSidebarTab(page, 'style', 'quick styles');
 
 		const buttons = await page.$$('.maxi-button-default-styles button');
 		await buttons[4].click();

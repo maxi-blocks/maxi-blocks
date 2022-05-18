@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`CopyPaste from Toolbar Should copy nested blocks 1`] = `"<p role=\\"textbox\\" aria-multiline=\\"true\\" class=\\"block-editor-rich-text__editable maxi-text-block__content rich-text\\" contenteditable=\\"true\\" style=\\"white-space: pre-wrap; min-width: 1px;\\">﻿</p>"`;

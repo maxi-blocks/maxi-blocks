@@ -305,11 +305,27 @@ describe('CopyPaste from Toolbar', () => {
 			button => button[3].click()
 		);
 
-		// check text maxi exist
-		const textMaxiHtml = await page.$$eval(
-			'.maxi-container-block .maxi-row-block .maxi-text-block p',
-			block => block[1].outerHTML
+		// focus on Text Maxi
+		await page.$$eval('.maxi-text-block', blocks =>
+			wp.data
+				.dispatch('core/block-editor')
+				.selectBlock(
+					blocks[blocks.length - 1].getAttribute('data-block')
+				)
 		);
-		expect(textMaxiHtml).toMatchSnapshot();
+
+		// check text maxi exist
+		const innerBlocksNum = await page.evaluate(
+			() =>
+				wp.data
+					.select('core/block-editor')
+					.getBlockParents(
+						wp.data
+							.select('core/block-editor')
+							.getSelectedBlockClientId()
+					).length
+		);
+
+		expect(innerBlocksNum).toBe(4);
 	});
 });

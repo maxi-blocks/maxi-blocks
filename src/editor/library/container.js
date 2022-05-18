@@ -75,26 +75,31 @@ const MasonryItem = props => {
 					</div>
 				</div>
 				<div className='maxi-cloud-masonry-card__image'>
-					{(type === 'patterns' || type === 'sc') && (
-						<img src={previewIMG} alt={`Preview for ${serial}`} />
-					)}
+					<img src={previewIMG} alt={`Preview for ${serial}`} />
 				</div>
 				<div className='maxi-cloud-masonry-card__buttons'>
 					{type === 'patterns' && (
-						<MaxiModal
-							type='preview'
-							url={demoUrl}
-							title={serial}
-							onRequestInsert={onRequestInsert}
-							cardId={masonryCardId}
-						/>
+						<>
+							<MaxiModal
+								type='preview'
+								url={demoUrl}
+								title={serial}
+								onRequestInsert={onRequestInsert}
+								cardId={masonryCardId}
+							/>
+							<Button
+								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
+								onClick={onRequestInsert}
+							>
+								{__('Load', 'maxi-blocks')}
+							</Button>
+						</>
 					)}
-					<Button
-						className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-						onClick={onRequestInsert}
-					>
-						{__('Load', 'maxi-blocks')}
-					</Button>
+					{type === 'sc' && (
+						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
+							{__('Load', 'maxi-block')}
+						</span>
+					)}
 					<div className='maxi-cloud-masonry-card__tags'>
 						{isPro && (
 							<span className='maxi-cloud-masonry-card__tags__pro-tag'>

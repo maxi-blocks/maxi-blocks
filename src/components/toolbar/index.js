@@ -198,7 +198,10 @@ const MaxiToolbar = memo(
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					getAnchorRect={() => {
+					getAnchorRect={spanEl => {
+						// span element needs to be hidden to don't break the grid
+						spanEl.style.display = 'none';
+
 						const rect = anchorRef.getBoundingClientRect();
 						const popoverRect = popoverRef.current
 							?.querySelector('.components-popover__content')

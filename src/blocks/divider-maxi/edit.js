@@ -36,6 +36,7 @@ class edit extends MaxiBlockComponent {
 
 		this.resizableObject = createRef();
 	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -123,7 +124,7 @@ class edit extends MaxiBlockComponent {
 				breakpoint: deviceType,
 				attributes,
 			}) === 'hidden';
-    
+
 		const inlineStylesTargets = {
 			dividerColor: '.maxi-divider-block__divider',
 		};

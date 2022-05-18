@@ -108,6 +108,12 @@
 		}
 	}
 
+	&__preview {
+		.components-modal__content {
+			overflow-y: clip;
+		}
+	}
+
 	.components-modal__content {
 		position: absolute;
 		width: 100%;
@@ -117,7 +123,6 @@
 		margin-top: 0;
 		padding: 46px 0 0;
 		overflow-x: hidden;
-		overflow-y: clip;
 
 		&::before {
 			margin: 0;

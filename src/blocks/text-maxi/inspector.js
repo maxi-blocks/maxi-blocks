@@ -69,6 +69,7 @@ const Inspector = props => {
 														}
 													/>
 												),
+												indicatorProps: ['textLevel'],
 											},
 										...(isList && listTab(props)),
 										...inspectorTabs.alignment({

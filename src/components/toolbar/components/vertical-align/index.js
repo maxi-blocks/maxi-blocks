@@ -19,7 +19,7 @@ import { toolbarVerticalAlign } from '../../../../icons';
  * ColumnSize
  */
 const VerticalAlign = props => {
-	const { blockName, verticalAlign, onChange } = props;
+	const { blockName, verticalAlign, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
@@ -58,7 +58,7 @@ const VerticalAlign = props => {
 					]}
 					onChange={verticalAlign =>
 						onChange({
-							verticalAlign,
+							[`justify-content-${breakpoint}`]: verticalAlign,
 						})
 					}
 				/>

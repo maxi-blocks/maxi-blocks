@@ -117,6 +117,7 @@
 		margin-top: 0;
 		padding: 46px 0 0;
 		overflow-x: hidden;
+		overflow-y: clip;
 
 		&::before {
 			margin: 0;
@@ -300,6 +301,12 @@
 		}
 		.ais-ClearRefinements-button {
 			width: 100%;
+		}
+
+		&__preview-iframe {
+			position: absolute;
+			width: 100%;
+			height: 100%;
 		}
 
 		&__accordion {

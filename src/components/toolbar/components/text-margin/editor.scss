@@ -7,5 +7,14 @@
 				stroke: #000 !important;
 			}
 		}
+		&__popover {
+			.maxi-axis-control {
+				& > div {
+					& > .maxi-axis-control__unit-header {
+						display: none;
+					}
+				}
+			}
+		}
 	}
 }

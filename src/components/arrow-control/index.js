@@ -80,14 +80,6 @@ const ArrowControl = props => {
 
 	return (
 		<div className={classes}>
-			{props['show-warning-box'] && (
-				<InfoBox
-					message={__(
-						'Please ensure that the background color is not the same as the page background color.'
-					)}
-					onClose={() => onChange({ 'show-warning-box': false })}
-				/>
-			)}
 			{!isBackgroundColor && (
 				<InfoBox
 					message={__(
@@ -102,6 +94,19 @@ const ArrowControl = props => {
 					]}
 				/>
 			)}
+			{getLastBreakpointAttribute({
+				target: 'arrow-status',
+				breakpoint,
+				attributes: props,
+			}) &&
+				props['show-warning-box'] && (
+					<InfoBox
+						message={__(
+							'Please ensure that the background color is not the same as the page background color.'
+						)}
+						onClose={() => onChange({ 'show-warning-box': false })}
+					/>
+				)}
 			<ToggleSwitch
 				label={__('Show arrow on boundary', 'maxi-blocks')}
 				selected={getLastBreakpointAttribute({

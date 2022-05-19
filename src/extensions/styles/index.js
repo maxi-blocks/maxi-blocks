@@ -6,7 +6,6 @@ export { default as getAttributeValue } from './getAttributeValue';
 export { default as getBlockStyle } from './getBlockStyle';
 export { default as getColorRGBAParts } from './getColorRGBAParts';
 export { default as getColorRGBAString } from './getColorRGBAString';
-export { default as getColumnNum } from './getColumnNum';
 export { default as getDefaultAttribute } from './getDefaultAttribute';
 export { default as getGroupAttributes } from './getGroupAttributes';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';

@@ -86,3 +86,8 @@ body.maxi-blocks--active .maxi-link-wrapper {
 	text-decoration: none;
 	outline: none;
 }
+
+/*Block inserted position - Astra*/
+body.maxi-blocks--active #wpwrap .maxi-block-inserter__button {
+	margin: auto;
+}

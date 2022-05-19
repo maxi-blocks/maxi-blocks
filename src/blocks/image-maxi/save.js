@@ -77,6 +77,7 @@ const save = props => {
 						'hoverTitleTypography',
 						'hoverContentTypography',
 					])}
+					isSave
 				>
 					{SVGElement ? (
 						<RawHTML>{SVGElement}</RawHTML>

@@ -120,16 +120,22 @@ const SliderWrapper = props => {
 	let dragPosition = 0;
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [wrapperTranslate, setWrapperTranslate] = useState(0);
-	const [realFirstElOffset, setRealFirstElOffset] = useState(0);
+	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
 
 	const getSlidePosition = currentSlide => {
-		if (currentSlide < 0) return 0;
-		return currentSlide === 0
-			? realFirstElOffset
-			: Object.values(slidesWidth)
-					.slice(0, currentSlide)
-					.reduce((acc, cur) => acc + cur) + realFirstElOffset ||
-					realFirstElOffset;
+		if (currentSlide < 0)
+			return (
+				realFirstSlideOffset -
+				Object.values(slidesWidth)
+					.slice(currentSlide)
+					.reduce((acc, cur) => acc + cur)
+			);
+		return (
+			Object.values(slidesWidth)
+				.slice(0, currentSlide)
+				.reduce((acc, cur) => acc + cur, realFirstSlideOffset) ||
+			realFirstSlideOffset
+		);
 	};
 
 	const nextSlide = () => {
@@ -137,18 +143,16 @@ const SliderWrapper = props => {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev + 1;
-				setWrapperTranslate(getSlidePosition(newCurrentSlide));
 				return newCurrentSlide;
 			});
 		}
 	};
 
 	const prevSlide = () => {
-		if (currentSlide >= 0 || isLoop) {
+		if (currentSlide > 0 || isLoop) {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev - 1;
-				setWrapperTranslate(getSlidePosition(newCurrentSlide));
 				return newCurrentSlide;
 			});
 		}
@@ -167,14 +171,7 @@ const SliderWrapper = props => {
 			dragPosition = e.clientX;
 		}
 
-		setWrapperTranslate(prev => {
-			const newTranslate = prev + dragMove;
-			if (newTranslate > 1000000) {
-				setCurrentSlide(0);
-				return newTranslate - getSlidePosition(numberOfSlides);
-			}
-			return newTranslate;
-		});
+		setWrapperTranslate(prev => prev + dragMove);
 	};
 
 	const onDragEnd = e => {
@@ -207,46 +204,71 @@ const SliderWrapper = props => {
 	const handleTransitionEnd = () => {
 		wrapperRef.current.style.transition = '';
 		if (currentSlide > numberOfSlides - 1) {
-			setWrapperTranslate(0);
 			setCurrentSlide(0);
 		}
 		if (currentSlide < 0) {
-			setWrapperTranslate(getSlidePosition(numberOfSlides - 1));
 			setCurrentSlide(numberOfSlides - 1);
 		}
 	};
 
 	const deleteSlideClones = () => {
-		const clones = document.getElementsByClassName(
-			'maxi-slide-block--clone'
+		const clones = wrapperRef.current.querySelectorAll(
+			':scope > .maxi-slide-block--clone'
 		);
 
-		Array.from(clones).forEach(clone => clone.remove());
+		clones.forEach(clone => {
+			clone.remove();
+		});
+
+		setRealFirstSlideOffset(0);
 	};
 
 	const getSlideClone = slideIndex => {
-		const cloneId = `block-${Object.keys(slidesWidth)[slideIndex]}`;
-		const clone = document.getElementById(cloneId);
+		const slide = wrapperRef.current.querySelectorAll(
+			':scope > .maxi-slide-block:not(.maxi-slide-block--clone)'
+		)[slideIndex];
+
+		if (!slide) {
+			const clone = document.createElement('li');
+			clone.classList.add('maxi-slide-block--clone');
+			return clone;
+		}
+
+		const clone = slide.cloneNode(true);
 		clone.classList.add('maxi-slide-block--clone');
-		clone.id = `clone-${cloneId} clone-first-slide`;
+		clone.id = `clone-${slide.id}`;
+		clone.setAttribute(
+			'uniqueid',
+			`clone-${slide.getAttribute('uniqueid')}`
+		);
 		return clone;
 	};
 
-	const updateSlideClones = () => {
-		if (isEmpty(slidesWidth)) return;
+	const insertSlideClones = numberOfClones => {
+		for (let i = 0; i < numberOfClones; i += 1) {
+			const backClone = getSlideClone(numberOfSlides - 1 - i);
+			const frontClone = getSlideClone(i);
+
+			wrapperRef.current.append(frontClone);
+			wrapperRef.current.prepend(backClone);
+
+			setRealFirstSlideOffset(
+				prev =>
+					prev + Object.values(slidesWidth)[numberOfSlides - 1 - i] ||
+					prev
+			);
+		}
+	};
+
+	const updateSlideClones = numberOfClones => {
+		if (
+			isEmpty(slidesWidth) ||
+			(currentSlide !== 0 && currentSlide !== numberOfSlides - 1)
+		)
+			return;
 
 		deleteSlideClones();
-
-		const newFirstChildClone = getSlideClone(0);
-		const newLastChildClone = getSlideClone(
-			Object.keys(slidesWidth).length - 1
-		);
-
-		wrapperRef.current.append(newFirstChildClone);
-		wrapperRef.current.prepend(newLastChildClone);
-		setRealFirstElOffset(
-			Object.values(slidesWidth)[Object.keys(slidesWidth).length - 1]
-		);
+		insertSlideClones(numberOfClones);
 	};
 
 	useEffect(() => {
@@ -264,21 +286,20 @@ const SliderWrapper = props => {
 	}, [currentSlide, slidesWidth, isEditView]);
 
 	useEffect(() => {
-		if (wrapperTranslate !== getSlidePosition(currentSlide)) {
+		if (wrapperTranslate !== getSlidePosition(currentSlide))
 			setWrapperTranslate(getSlidePosition(currentSlide));
-		}
-	}, [slidesWidth, isLoop]);
+	}, [slidesWidth, isLoop, currentSlide]);
 
 	useEffect(() => {
 		if (isLoop) {
-			updateSlideClones();
+			updateSlideClones(Math.min(2, numberOfSlides));
 		} else {
 			deleteSlideClones();
 		}
-	}, [isLoop, slidesWidth]);
+	}, [currentSlide, isLoop, isEditView, slidesWidth]);
 
 	useEffect(() => {
-		if (currentSlide >= numberOfSlides) {
+		if (currentSlide >= numberOfSlides && numberOfSlides > 0) {
 			setCurrentSlide(numberOfSlides - 1);
 		}
 	}, [numberOfSlides]);
@@ -396,9 +417,11 @@ class edit extends MaxiBlockComponent {
 						});
 					},
 					onRemoveSlide: id => {
-						const slidesWidth = { ...this.state.slidesWidth };
-						delete slidesWidth[id];
-						this.setState({ slidesWidth });
+						const newSlidesWidth = { ...this.state.slidesWidth };
+						delete newSlidesWidth[id];
+						this.setState({
+							slidesWidth: newSlidesWidth,
+						});
 					},
 				}}
 			>

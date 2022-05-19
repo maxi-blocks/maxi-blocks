@@ -21,7 +21,7 @@ import { Placeholder } from '../../components';
  */
 import { isEmpty } from 'lodash';
 
-class Edit extends Component {
+class edit extends Component {
 	render() {
 		const { attributes, clientId, maxiSetAttributes } = this.props;
 
@@ -61,4 +61,4 @@ class Edit extends Component {
 	}
 }
 
-export default withMaxiProps(Edit);
+export default withMaxiProps(edit);

@@ -12,7 +12,7 @@ import { useSelect } from '@wordpress/data';
 import Button from '../../../button';
 import Icon from '../../../icon';
 import Dropdown from '../../../dropdown';
-import CopyPaste from '../copy-paste';
+import CopyPasteContent from '../copy-paste';
 import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
 import Alignment from '../alignment';
@@ -34,14 +34,7 @@ import './editor.scss';
  * Duplicate
  */
 const MoreSettings = props => {
-	const {
-		clientId,
-		blockName,
-		onChange,
-		prefix,
-		copyPasteMapping,
-		tooltipsHide,
-	} = props;
+	const { clientId, blockName, onChange, prefix, copyPasteMapping } = props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -53,8 +46,11 @@ const MoreSettings = props => {
 		};
 	});
 
-	const moreSettingsContent = () => {
-		return (
+	return (
+		<Tooltip
+			text={__('More Settings', 'maxi-blocks')}
+			position='bottom center'
+		>
 			<div className='toolbar-item toolbar-item__more-settings'>
 				<Dropdown
 					className='maxi-more-settings__settings-selector'
@@ -70,7 +66,7 @@ const MoreSettings = props => {
 					)}
 					renderContent={args => (
 						<div>
-							<CopyPaste
+							<CopyPasteContent
 								clientId={clientId}
 								blockName={blockName}
 								prefix={prefix}
@@ -78,7 +74,11 @@ const MoreSettings = props => {
 								copyPasteMapping={copyPasteMapping}
 							/>
 							{blockName === 'maxi-blocks/text-maxi' && (
-								<TextGenerator onChange={onChange} />
+								<TextGenerator
+									clientId={clientId}
+									blockName={blockName}
+									onChange={onChange}
+								/>
 							)}
 							{blockName === 'maxi-blocks/button-maxi' && (
 								<div>
@@ -162,19 +162,8 @@ const MoreSettings = props => {
 					)}
 				/>
 			</div>
-		);
-	};
-
-	if (!tooltipsHide)
-		return (
-			<Tooltip
-				text={__('More Settings', 'maxi-blocks')}
-				position='bottom center'
-			>
-				{moreSettingsContent()}
-			</Tooltip>
-		);
-	return moreSettingsContent();
+		</Tooltip>
+	);
 };
 
 export default MoreSettings;

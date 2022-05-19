@@ -14,15 +14,18 @@ const getTransitionStyles = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
-			'transition-duration':
-				!isNil(obj[`transition-duration-${breakpoint}`]) &&
-				`${obj[`transition-duration-${breakpoint}`]}s`,
-			'transition-delay':
-				!isNil(obj[`transition-delay-${breakpoint}`]) &&
-				`${obj[`transition-delay-${breakpoint}`]}s`,
-			'transition-timing-function':
-				!isNil(obj[`transition-timing-function-${breakpoint}`]) &&
-				obj[`transition-timing-function-${breakpoint}`],
+			...(!isNil(obj[`transition-duration-${breakpoint}`]) && {
+				'transition-duration': `${
+					obj[`transition-duration-${breakpoint}`]
+				}s`,
+			}),
+			...(!isNil(obj[`transition-delay-${breakpoint}`]) && {
+				'transition-delay': `${obj[`transition-delay-${breakpoint}`]}s`,
+			}),
+			...(!isNil(obj[`transition-timing-function-${breakpoint}`]) && {
+				'transition-timing-function':
+					obj[`transition-timing-function-${breakpoint}`],
+			}),
 		};
 	});
 

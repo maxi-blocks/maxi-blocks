@@ -26,7 +26,7 @@ export const getColumnNum = (columnsSize, clientId, breakpoint) => {
 		if (size) {
 			acc += size;
 
-			if (acc >= 100) {
+			if (acc > 100) {
 				k += 1;
 
 				acc = size;

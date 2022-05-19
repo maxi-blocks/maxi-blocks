@@ -298,6 +298,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<p>'.__('Number of backups to keep (we recommend from 1 to 5, default is 3)', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_input('rollback-amount', '', 'number');
 
+            //  $this-> createZip(plugin_dir_path(__DIR__) . '../', wp_upload_dir()['basedir'] . '/maxi/backups/maxi-test.zip');
+
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 

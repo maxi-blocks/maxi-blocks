@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect, useState } from '@wordpress/element';
+import { RawHTML, useEffect, useState, useMemo } from '@wordpress/element';
 import { CheckboxControl } from '@wordpress/components';
 
 /**
@@ -610,7 +610,7 @@ const LibraryContainer = props => {
 
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 
-	setInterval(() => {
+	const masonryGenerator = useMemo(() => {
 		const elem = document.querySelector(
 			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
 		);
@@ -621,7 +621,12 @@ const LibraryContainer = props => {
 				gutter: 16,
 			});
 		}
-	}, 100);
+	});
+	useEffect(() => {
+		const interval = setInterval(masonryGenerator, 100);
+		return clearInterval(interval);
+	});
+
 	const maxiPreviewIframe = (url, title) => {
 		return (
 			<iframe

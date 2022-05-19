@@ -55,7 +55,6 @@ const border = ({
 
 	return {
 		label: __('Border', 'maxi-blocks'),
-		disablePadding: true,
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<SettingTabsControl

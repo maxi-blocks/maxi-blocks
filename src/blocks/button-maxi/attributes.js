@@ -30,6 +30,9 @@ const attributes = {
 	buttonContent: {
 		type: 'string',
 	},
+	svgType: {
+		type: 'string',
+	},
 	...attributesData.icon,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,
@@ -144,6 +147,25 @@ const attributes = {
 	},
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
 
+	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.padding,
+		prefix,
+		diffValAttr: {
+			[`${prefix}padding-top-xxl`]: '23',
+			[`${prefix}padding-right-xxl`]: '55',
+			[`${prefix}padding-bottom-xxl`]: '23',
+			[`${prefix}padding-left-xxl`]: '55',
+			[`${prefix}padding-top-xl`]: '15',
+			[`${prefix}padding-right-xl`]: '36',
+			[`${prefix}padding-bottom-xl`]: '15',
+			[`${prefix}padding-left-xl`]: '36',
+			[`${prefix}padding-sync-xl`]: 'axis',
+			[`${prefix}padding-sync-xxl`]: 'axis',
+		},
+	}),
+
 	/**
 	 * Canvas styles
 	 */
@@ -160,22 +182,6 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.opacity,
-	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
-	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
-	...prefixAttributesCreator({
-		obj: attributesData.padding,
-		prefix,
-		diffValAttr: {
-			[`${prefix}padding-top-xxl`]: 23,
-			[`${prefix}padding-right-xxl`]: 55,
-			[`${prefix}padding-bottom-xxl`]: 23,
-			[`${prefix}padding-left-xxl`]: 55,
-			[`${prefix}padding-top-xl`]: 15,
-			[`${prefix}padding-right-xl`]: 36,
-			[`${prefix}padding-bottom-xl`]: 15,
-			[`${prefix}padding-left-xl`]: 36,
-		},
-	}),
 
 	/**
 	 * Advanced
@@ -183,7 +189,7 @@ const attributes = {
 	...attributesData.blockBackground,
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transitionDuration,
+	...attributesData.transition,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

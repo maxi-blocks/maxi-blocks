@@ -21,11 +21,16 @@ import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
-
 	const paletteStatus = obj[`${prefix}palette-status`];
 	const paletteColor = obj[`${prefix}palette-color`];
 	const paletteOpacity = obj[`${prefix}palette-opacity`];
-	const color = obj[`${prefix}color`];
+	const color =
+		target === 'line' ||
+		target === 'fill' ||
+		target === 'hover-line' ||
+		target === 'hover-fill'
+			? obj[target]
+			: obj[`${prefix}color`];
 
 	return paletteStatus
 		? getColorRGBAString({
@@ -101,11 +106,6 @@ export const getSCVariablesObject = styleCards => {
 			),
 		},
 	};
-	const settingsToAvoidInGeneral = [
-		'font-size',
-		'line-height',
-		'letter-spacing',
-	];
 	const elementsForColor = ['divider', 'icon', 'link'];
 
 	styles.forEach(style => {
@@ -115,19 +115,13 @@ export const getSCVariablesObject = styleCards => {
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
 					breakpoints.forEach(breakpoint => {
-						if (
-							!(
-								breakpoint === 'general' &&
-								settingsToAvoidInGeneral.includes(setting)
-							)
-						)
-							response[
-								`--maxi-${style}-${element}-${setting}-${breakpoint}`
-							] = getLastBreakpointAttribute({
-								target: setting,
-								breakpoint,
-								attributes: obj,
-							});
+						response[
+							`--maxi-${style}-${element}-${setting}-${breakpoint}`
+						] = getLastBreakpointAttribute({
+							target: setting,
+							breakpoint,
+							attributes: obj,
+						});
 					});
 				});
 
@@ -164,12 +158,20 @@ export const getSCVariablesObject = styleCards => {
 
 				case 'icon':
 					if (obj['line-global'])
-						response[`--maxi-${style}-${element}-line`] =
+						response[`--maxi-${style}-${element}-stroke`] =
 							getColorString(obj, 'line', style);
 
 					if (obj['fill-global'])
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
+
+					if (obj['hover-line-global'])
+						response[`--maxi-${style}-${element}-stroke-hover`] =
+							getColorString(obj, 'hover-line', style);
+
+					if (obj['hover-fill-global'])
+						response[`--maxi-${style}-${element}-fill-hover`] =
+							getColorString(obj, 'hover-fill', style);
 
 					break;
 

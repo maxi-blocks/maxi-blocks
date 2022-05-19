@@ -2,24 +2,20 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
-import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
+import { RawHTML, createRef, forwardRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -30,40 +26,10 @@ import classnames from 'classnames';
  * Content
  */
 const IconWrapper = forwardRef((props, ref) => {
-	const { children, className, changeIsSelected, uniqueID } = props;
-
-	useEffect(() => {
-		const handleClickOutside = event => {
-			if (ref.current && !ref.current.contains(event.target)) {
-				changeIsSelected(
-					document
-						.querySelector(`.${uniqueID}`)
-						.classList.contains('is-selected')
-				);
-			}
-		};
-
-		// Bind the event listener
-		ref?.current?.ownerDocument.addEventListener(
-			'mousedown',
-			handleClickOutside
-		);
-
-		return () => {
-			// Unbind the event listener on clean up
-			ref?.current?.ownerDocument.removeEventListener(
-				'mousedown',
-				handleClickOutside
-			);
-		};
-	}, [ref]);
+	const { children, className } = props;
 
 	return (
-		<div
-			onClick={() => changeIsSelected(true)}
-			ref={ref}
-			className={className}
-		>
+		<div ref={ref} className={className}>
 			{children}
 		</div>
 	);
@@ -75,14 +41,23 @@ class edit extends MaxiBlockComponent {
 		this.iconRef = createRef(null);
 	}
 
-	state = {
-		isIconSelected: false,
+	scProps = {
+		scElements: [
+			'hover-border-color-global',
+			'hover-border-color-all',
+			'hover-color-global',
+			'hover-color-all',
+			'hover-background-color-global',
+			'hover-background-color-all',
+		],
+		scType: 'button',
 	};
 
 	typingTimeout = 0;
 
 	get getStylesObject() {
-		const { attributes, scValues } = this.props;
+		const { attributes } = this.props;
+		const { scValues } = this.state;
 
 		return getStyles(attributes, scValues);
 	}
@@ -90,8 +65,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
-
-		const { isIconSelected } = this.state;
+		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -103,16 +77,25 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-right'
 		);
 
+		const inlineStylesTargets = {
+			background: '.maxi-button-block__button',
+			border: '.maxi-button-block__button',
+			boxShadow: '.maxi-button-block__button',
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				propsToAvoid={['buttonContent', 'formatValue']}
+				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 				prefix='button-'
 				backgroundGlobalProps={{
 					target: 'background',
@@ -120,6 +103,8 @@ class edit extends MaxiBlockComponent {
 				}}
 				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
+				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
@@ -153,15 +138,11 @@ class edit extends MaxiBlockComponent {
 								ref={this.iconRef}
 								{...this.props}
 								propsToAvoid={['buttonContent', 'formatValue']}
-								isSelected={isIconSelected}
 							/>
 							<IconWrapper
 								ref={this.iconRef}
 								uniqueID={uniqueID}
 								className='maxi-button-block__icon'
-								changeIsSelected={isIconSelected =>
-									this.setState({ isIconSelected })
-								}
 							>
 								<RawHTML>{attributes['icon-content']}</RawHTML>
 							</IconWrapper>
@@ -173,29 +154,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const {
-		attributes: { parentBlockStyle },
-	} = ownProps;
-
-	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-	const scElements = [
-		'hover-border-color-global',
-		'hover-border-color-all',
-		'hover-color-global',
-		'hover-color-all',
-		'hover-background-color-global',
-		'hover-background-color-all',
-	];
-	const scValues = receiveStyleCardValue(
-		scElements,
-		parentBlockStyle,
-		'button'
-	);
-
-	return {
-		scValues,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

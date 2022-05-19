@@ -23,6 +23,7 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { containerIcon } from '../../icons';
+import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
 
 /**
  * Block
@@ -31,7 +32,7 @@ import { containerIcon } from '../../icons';
 registerBlockType('maxi-blocks/container-maxi', {
 	title: __('Container Maxi', 'maxi-blocks'),
 	icon: containerIcon,
-	description: 'Arrange blocks within a container to create patterns',
+	description: 'Wrap blocks within a container',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
@@ -49,4 +50,5 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [fromNumberToStringMigrator({ attributes, save })],
 });

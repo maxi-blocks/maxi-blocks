@@ -125,7 +125,7 @@ describe('List in Text-maxi', () => {
 		await style[1].select('armenian');
 
 		expect(await getAttributes('listStyle')).toStrictEqual('armenian');
-		expect(await getAttributes('listStart')).toStrictEqual(-23);
+		expect(await getAttributes('listStart')).toStrictEqual(0);
 
 		await page.waitForTimeout(150);
 
@@ -144,7 +144,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '-4',
 		});
 
-		expect(await getAttributes('listStart')).toStrictEqual(0);
+		expect(await getAttributes('listStart')).toStrictEqual(4);
 
 		// Reverse order button
 		await page.$eval('.maxi-image-inspector__list-reverse input', input =>
@@ -159,7 +159,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '-34',
 		});
 
-		expect(await getAttributes('listStart')).toStrictEqual(4);
+		expect(await getAttributes('listStart')).toStrictEqual(34);
 
 		// Reverse order button
 		await page.$eval('.maxi-image-inspector__list-reverse input', input =>

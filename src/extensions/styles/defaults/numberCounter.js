@@ -1,6 +1,16 @@
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import alignment from './alignment';
 
 const numberCounter = {
+	...breakpointAttributesCreator({
+		obj: {
+			'number-counter-width-auto': {
+				type: 'boolean',
+				default: false,
+			},
+		},
+	}),
 	'number-counter-status': {
 		type: 'boolean',
 		default: true,
@@ -41,7 +51,7 @@ const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
-	...paletteAttributesCreator({ prefix: 'number-counter-text-', palette: 4 }),
+
 	...paletteAttributesCreator({
 		prefix: 'number-counter-circle-background-',
 		palette: 2,
@@ -50,14 +60,31 @@ const numberCounter = {
 		prefix: 'number-counter-circle-bar-',
 		palette: 4,
 	}),
-	'number-counter-title-font-size': {
-		type: 'number',
-		default: 40,
-	},
-	'number-counter-title-font-family': {
+
+	...breakpointAttributesCreator({
+		obj: {
+			'number-counter-title-font-size': {
+				type: 'number',
+				default: 40,
+			},
+			'font-family': {
+				type: 'string',
+				default: 'Roboto',
+			},
+			...paletteAttributesCreator({
+				prefix: 'number-counter-text-',
+				palette: 4,
+			}),
+			...paletteAttributesCreator({
+				prefix: 'number-counter-circle-bar-',
+				palette: 4,
+			}),
+		},
+	}),
+	'number-counter-title-font-weight': {
 		type: 'string',
-		default: 'Roboto',
 	},
+	...alignment,
 };
 
 export default numberCounter;

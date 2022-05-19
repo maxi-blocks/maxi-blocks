@@ -1,8 +1,8 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /**
  * WordPress dependencies
  */
-import { compose, withInstanceId } from '@wordpress/compose';
-import { withSelect, useDispatch } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import { Button, Icon } from '@wordpress/components';
 
 /**
@@ -10,16 +10,14 @@ import { Button, Icon } from '@wordpress/components';
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -30,25 +28,19 @@ import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTe
 /**
  * Edit
  */
-const RowBlockTemplate = ({
-	clientId,
-	instanceId,
-	maxiSetAttributes,
-	deviceType,
-	removeColumnGap,
-}) => {
+const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
 	return (
 		<div
 			className='maxi-row-block__template'
 			onClick={() => selectBlock(clientId)}
-			key={`maxi-row-block--${instanceId}`}
+			key={`maxi-row-block--${clientId}`}
 		>
 			{getTemplates().map(template => {
 				return (
 					<Button
-						key={uniqueId(`maxi-row-block--${instanceId}--`)}
+						key={uniqueId(`maxi-row-block--${clientId}--`)}
 						className='maxi-row-block__template__button'
 						onClick={() => {
 							maxiSetAttributes({
@@ -57,7 +49,6 @@ const RowBlockTemplate = ({
 							});
 							loadColumnsTemplate(
 								template.name,
-								removeColumnGap,
 								clientId,
 								deviceType
 							);
@@ -83,6 +74,8 @@ class edit extends MaxiBlockComponent {
 		displayHandlers: false,
 	};
 
+	columnsClientIds = [];
+
 	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
 			this.setState({
@@ -98,10 +91,9 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			deviceType,
 			hasInnerBlocks,
-			instanceId,
 			maxiSetAttributes,
 		} = this.props;
-		const { uniqueID, removeColumnGap } = attributes;
+		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
@@ -119,6 +111,7 @@ class edit extends MaxiBlockComponent {
 						displayHandlers: !this.state.displayHandlers,
 					});
 				}}
+				copyPasteMapping={copyPasteMapping}
 				{...this.props}
 			/>,
 			<RowContext.Provider
@@ -126,6 +119,27 @@ class edit extends MaxiBlockComponent {
 				value={{
 					displayHandlers: this.state.displayHandlers,
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
+					rowBlockId: clientId,
+					columnsClientIds: this.columnsClientIds,
+					setColumnClientId: clientId => {
+						this.columnsClientIds = [
+							...this.columnsClientIds,
+							clientId,
+						];
+					},
+					rowGapProps: (() => {
+						const response = getGroupAttributes(attributes, 'flex');
+
+						Object.keys(response).forEach(key => {
+							if (!key.includes('gap')) delete response[key];
+						});
+
+						return response;
+					})(),
+					rowBorderRadius: getGroupAttributes(
+						attributes,
+						'borderRadius'
+					),
 				}}
 			>
 				<MaxiBlock
@@ -143,10 +157,8 @@ class edit extends MaxiBlockComponent {
 							? () => (
 									<RowBlockTemplate
 										clientId={clientId}
-										instanceId={instanceId}
 										maxiSetAttributes={maxiSetAttributes}
 										deviceType={deviceType}
-										removeColumnGap={removeColumnGap}
 									/>
 							  )
 							: false,
@@ -157,4 +169,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withInstanceId, withMaxiProps)(edit);
+export default withMaxiProps(edit);

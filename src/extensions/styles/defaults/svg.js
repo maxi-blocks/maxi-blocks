@@ -1,17 +1,18 @@
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import hoverAttributesCreator from '../hoverAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { width } from './size';
 
 const prefix = 'svg-';
 
-const svg = {
+export const svg = {
 	...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
 	...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
 	...prefixAttributesCreator({
 		obj: width,
 		prefix,
-		diffValAttr: { 'svg-width-general': 64 },
+		diffValAttr: { 'svg-width-general': '64' },
 	}),
 	...breakpointAttributesCreator({
 		obj: {
@@ -27,4 +28,15 @@ const svg = {
 	}),
 };
 
-export default svg;
+export const svgHover = hoverAttributesCreator({
+	obj: {
+		...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
+		...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
+	},
+	newAttr: {
+		'svg-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
+	},
+});

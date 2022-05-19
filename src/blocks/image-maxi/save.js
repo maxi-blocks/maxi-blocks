@@ -8,8 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
-import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -46,10 +45,10 @@ const save = props => {
 	const hoverClasses = classnames(
 		hoverType === 'basic' &&
 			hoverPreview &&
-			`maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
+			`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
 		hoverType === 'text' &&
 			hoverPreview &&
-			`maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
+			`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
 		hoverType !== 'none' &&
 			`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 	);

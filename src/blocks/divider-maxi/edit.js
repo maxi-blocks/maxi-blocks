@@ -1,8 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
-import { withDispatch } from '@wordpress/data';
+import { createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -11,50 +10,64 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
-	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(props) {
+		super(props);
+
+		this.resizableObject = createRef();
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
 
+	maxiBlockDidUpdate() {
+		const height = `${getLastBreakpointAttribute({
+			target: 'height',
+			breakpoint: this.props.deviceType,
+			attributes: this.props.attributes,
+		})}${getLastBreakpointAttribute({
+			target: 'height-unit',
+			breakpoint: this.props.deviceType,
+			attributes: this.props.attributes,
+		})}`;
+
+		if (this.resizableObject.current?.state.height !== height) {
+			this.resizableObject.current.updateSize({
+				height,
+			});
+		}
+	}
+
 	render() {
-		const {
-			attributes,
-			deviceType,
-			isSelected,
-			onDeviceTypeChange,
-			maxiSetAttributes,
-		} = this.props;
+		const { attributes, deviceType, isSelected, maxiSetAttributes } =
+			this.props;
 		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
 			attributes;
-
-		onDeviceTypeChange();
 
 		const classes = classnames(
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'
 				: 'maxi-divider-block--horizontal',
 			'maxi-divider-block__resizer',
-			`maxi-divider-block__resizer__${uniqueID}`,
-			{
-				'is-selected': isSelected,
-			}
+			`maxi-divider-block__resizer__${uniqueID}`
 		);
 		const handleOnResizeStart = event => {
 			event.preventDefault();
@@ -112,34 +125,33 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			}) === 'hidden';
 
+		const inlineStylesTargets = {
+			dividerColor: '.maxi-divider-block__divider',
+		};
+
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				inlineStylesTargets={inlineStylesTargets}
+				{...this.props}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				prefix='divider-'
+				inlineStylesTargets={inlineStylesTargets}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}
 				ref={this.blockRef}
 				blockFullWidth={blockFullWidth}
 				classes={classes}
+				resizableObject={this.resizableObject}
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				isOverflowHidden={getIsOverflowHidden()}
-				size={{
-					width: '100%',
-					height: `${getLastBreakpointAttribute({
-						target: 'height',
-						breakpoint: deviceType,
-						attributes,
-					})}${getLastBreakpointAttribute({
-						target: 'height-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}`,
-				}}
 				defaultSize={{
 					width: '100%',
 					height: `${getLastBreakpointAttribute({
@@ -175,35 +187,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
-	const {
-		attributes: { uniqueID },
-		deviceType,
-	} = ownProps;
-
-	const onDeviceTypeChange = () => {
-		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
-		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
-
-		const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];
-
-		if (
-			allowedDeviceTypes.includes(newDeviceType) &&
-			deviceType !== newDeviceType
-		) {
-			const node = document.querySelector(
-				`.maxi-divider-block__resizer__${uniqueID}`
-			);
-			if (isNil(node)) return;
-			node.style.height = `${
-				ownProps.attributes[`height-${newDeviceType}`]
-			}px`;
-		}
-	};
-
-	return {
-		onDeviceTypeChange,
-	};
-});
-
-export default compose(editDispatch, withMaxiProps)(edit);
+export default withMaxiProps(edit);

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -31,6 +32,7 @@ const CustomColorControl = props => {
 	const {
 		label,
 		color,
+		onChangeInlineValue,
 		onChangeValue,
 		disableColorDisplay,
 		disableOpacity,
@@ -39,6 +41,12 @@ const CustomColorControl = props => {
 		onReset,
 		onResetOpacity,
 	} = props;
+	const [colorPicker, setColorPicker] = useState(color);
+	const [isChanging, setIsChanging] = useState(false);
+
+	useEffect(() => {
+		if (!isChanging) setColorPicker(color);
+	}, [color]);
 
 	return (
 		<>
@@ -53,7 +61,9 @@ const CustomColorControl = props => {
 								<span
 									style={{
 										background:
-											tinycolor(color).toRgbString(),
+											tinycolor(
+												colorPicker
+											).toRgbString(),
 									}}
 								/>
 							</div>
@@ -94,24 +104,6 @@ const CustomColorControl = props => {
 							onReset={onResetOpacity}
 						/>
 					)}
-					{!disableReset && (
-						<Button
-							className='components-maxi-control__reset-button'
-							onClick={e => {
-								e.preventDefault();
-								onReset();
-							}}
-							isSmall
-							aria-label={sprintf(
-								/* translators: %s: a textual label  */
-								__('Reset %s settings', 'maxi-blocks'),
-								label?.toLowerCase()
-							)}
-							type='reset'
-						>
-							{reset}
-						</Button>
-					)}
 				</>
 			)}
 			{isToolbar && (
@@ -123,7 +115,7 @@ const CustomColorControl = props => {
 						<div className='maxi-color-control__display__color'>
 							<span
 								style={{
-									background: tinycolor(color).toRgbString(),
+									background: colorPicker,
 								}}
 							/>
 						</div>
@@ -148,13 +140,27 @@ const CustomColorControl = props => {
 			)}
 			<div className='maxi-color-control__color'>
 				<ChromePicker
-					color={color}
-					onChangeComplete={val => {
-						onChangeValue({
-							color: tinycolor(val.rgb)
-								.toRgbString()
-								.replace(/\s/g, ''),
+					color={colorPicker}
+					onChange={val => {
+						setIsChanging(true);
+						const tempColor = tinycolor(val.rgb)
+							.toRgbString()
+							.replace(/\s/g, '');
+
+						setColorPicker(tempColor);
+						onChangeInlineValue({
+							color: tempColor,
 						});
+					}}
+					onChangeComplete={val => {
+						const tempColor = tinycolor(val.rgb)
+							.toRgbString()
+							.replace(/\s/g, '');
+
+						onChangeValue({
+							color: tempColor,
+						});
+						setIsChanging(false);
 					}}
 					disableAlpha
 				/>

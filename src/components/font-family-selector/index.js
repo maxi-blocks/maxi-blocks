@@ -65,7 +65,6 @@ const FontFamilySelector = props => {
 
 		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
 		if (fontStyle) objFont[newFont.value].style = fontStyle;
-
 		loadFonts(objFont);
 
 		setValue({ label: newFont.value, value: newFont.value });

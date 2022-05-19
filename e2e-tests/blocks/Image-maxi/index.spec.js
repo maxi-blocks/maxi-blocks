@@ -19,6 +19,7 @@ import {
 	getAttributes,
 	editColorControl,
 	getBlockStyle,
+	addCustomCSS,
 	addTypographyOptions,
 	addTypographyStyle,
 } from '../../utils';
@@ -155,6 +156,7 @@ describe.skip('Image Maxi', () => {
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
+			orientation: 'mixed',
 		});
 
 		const result = await getAttributes([
@@ -349,4 +351,7 @@ describe.skip('Image Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Image Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

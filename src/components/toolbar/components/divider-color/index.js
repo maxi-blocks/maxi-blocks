@@ -21,7 +21,7 @@ import { toolbarShapeLineColor } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, breakpoint } = props;
+	const { blockName, onChangeInline, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -41,27 +41,30 @@ const DividerColor = props => {
 		>
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl
-					color={getLastBreakpointAttribute(
-						'divider-border-color',
+					color={getLastBreakpointAttribute({
+						target: 'divider-border-color',
 						breakpoint,
-						props
-					)}
-					prefix='border-'
-					paletteColor={getLastBreakpointAttribute(
-						'divider-border-palette-color',
+						attributes: props,
+					})}
+					prefix='divider-border-'
+					paletteColor={getLastBreakpointAttribute({
+						target: 'divider-border-palette-color',
 						breakpoint,
-						props
-					)}
-					paletteOpacity={getLastBreakpointAttribute(
-						'divider-border-palette-opacity',
+						attributes: props,
+					})}
+					paletteOpacity={getLastBreakpointAttribute({
+						target: 'divider-border-palette-opacity',
 						breakpoint,
-						props
-					)}
-					paletteStatus={getLastBreakpointAttribute(
-						'divider-border-palette-status',
+						attributes: props,
+					})}
+					paletteStatus={getLastBreakpointAttribute({
+						target: 'divider-border-palette-status',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
+					onChangeInline={({ color }) =>
+						onChangeInline({ 'border-color': color })
+					}
 					onChange={({
 						color,
 						paletteColor,

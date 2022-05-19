@@ -7,13 +7,16 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import {
-	getColorRGBAString,
-	getBlockStyle,
-	getPaletteAttributes,
-} from '../../extensions/styles';
+import { getBlockStyle, getPaletteAttributes } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import { isNil, uniq, isEmpty } from 'lodash';
 
 export const rgbToHex = color => {
+	if (isNil(color)) return '';
+
 	const rgb = color.match(
 		/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
 	);
@@ -120,82 +123,17 @@ export const imageUploader = async (imageSrc, usePlaceholderImage) => {
 };
 
 export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
-	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
-	const clientId = getSelectedBlockClientId();
-	const currentAttributes = getBlock(clientId).attributes;
-
-	if (!currentAttributes) return false;
-
-	const fillColor = !currentAttributes[`${target}-fill-palette-status`]
-		? currentAttributes[`${target}-fill-color`]
-		: getColorRGBAString({
-				firstVar: 'icon-fill',
-				secondVar: `color-${
-					currentAttributes[`${target}-fill-palette-color`]
-				}`,
-				opacity: currentAttributes[`${target}-fill-palette-opacity`],
-				blockStyle,
-		  }) || '';
-
-	const lineColor = !currentAttributes[`${target}-line-palette-status`]
-		? currentAttributes[`${target}-line-color`]
-		: getColorRGBAString({
-				firstVar: 'icon-line',
-				secondVar: `color-${
-					currentAttributes[`${target}-line-palette-color`]
-				}`,
-				opacity: currentAttributes[`${target}-line-palette-opacity`],
-				blockStyle,
-		  }) || '';
-
-	const shapeFillColor = !currentAttributes[`${target}-fill-palette-status`]
-		? currentAttributes[`${target}-fill-color`]
-		: getColorRGBAString({
-				firstVar: 'shape-fill',
-				secondVar: `color-${
-					currentAttributes[`${target}-fill-palette-color`]
-				}`,
-				opacity: 100,
-				blockStyle,
-		  }) || '';
-
-	const iconNoInheritColor = !currentAttributes[`${target}-palette-status`]
-		? currentAttributes[`${target}-color`]
-		: getColorRGBAString({
-				firstVar: 'color',
-				secondVar: `color-${
-					currentAttributes[`${target}-palette-color`]
-				}`,
-				opacity: 100,
-				blockStyle,
-		  }) || '';
-
-	const iconInheritColor = !currentAttributes['palette-status-general']
-		? currentAttributes['color-general']
-		: getColorRGBAString({
-				firstVar: 'color',
-				secondVar: `color-${currentAttributes['palette-color-general']}`,
-				opacity: 100,
-				blockStyle,
-		  }) || '';
-
-	const iconColor = currentAttributes['icon-inherit']
-		? iconInheritColor
-		: iconNoInheritColor;
-
 	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
-	const fillStr = `fill:${target === 'shape' ? shapeFillColor : fillColor}`;
+	const fillStr = 'fill:#ff4a17';
 
 	const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-	const fillStr2 = ` fill="${
-		target === 'shape' ? shapeFillColor : fillColor
-	}`;
+	const fillStr2 = ' fill="#ff4a17';
 
 	const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
-	const strokeStr = `stroke:${target === 'icon' ? iconColor : lineColor}`;
+	const strokeStr = 'stroke:#081219';
 
 	const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
-	const strokeStr2 = ` stroke="${target === 'icon' ? iconColor : lineColor}`;
+	const strokeStr2 = ' stroke="#081219';
 
 	return target === 'svg'
 		? svgCode
@@ -291,4 +229,113 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 					? iconInheritColor
 					: currentColor
 		  );
+};
+
+export const onRequestInsertPattern = (
+	parsedContent,
+	usePlaceholderImage,
+	isValidTemplate,
+	onSelect,
+	onRequestClose,
+	replaceBlock,
+	clientId
+) => {
+	const isValid = isValidTemplate(parsedContent);
+
+	if (isValid) {
+		const loadingMessage = `<h3>${__(
+			'LOADING…',
+			'maxi-blocks'
+		)}<span class="maxi-spinner"></span></h3>`;
+
+		onSelect({ content: loadingMessage });
+
+		onRequestClose();
+
+		const imagesLinks = [];
+		const imagesIds = [];
+
+		const allImagesRegexp = new RegExp('mediaID":(.*)",', 'g');
+
+		const allImagesLinks = parsedContent.match(allImagesRegexp);
+
+		const allImagesLinksParsed = allImagesLinks?.map(image => {
+			const parsed = image.replace(/\\/g, '');
+
+			const idRegexp = new RegExp('(?<=":)(.*?)(?=,")', 'g');
+			const id = parsed.match(idRegexp);
+			imagesIds.push(id);
+
+			const urlRegexp = new RegExp('(?<=mediaURL":")(.*?)(?=",)', 'g');
+			const url = parsed.match(urlRegexp);
+			imagesLinks.push(url);
+
+			return null;
+		});
+
+		if (!isEmpty(allImagesLinksParsed)) {
+			let tempContent = parsedContent;
+			const imagesLinksUniq = uniq(imagesLinks);
+			const imagesIdsUniq = uniq(imagesIds);
+			let counter = imagesLinksUniq.length;
+			const checkCounter = imagesIdsUniq.length;
+
+			if (counter !== checkCounter) {
+				console.error(
+					__(
+						"Error processing images' links and ids - counts do not match",
+						'maxi-blocks'
+					)
+				);
+				replaceBlock(
+					clientId,
+					wp.blocks.rawHandler({
+						HTML: parsedContent,
+						mode: 'BLOCKS',
+					})
+				);
+				return;
+			}
+
+			const imagesUniq = imagesIdsUniq.reduce(
+				(o, k, i) => ({ ...o, [k]: imagesLinksUniq[i] }),
+				{}
+			);
+
+			Object.entries(imagesUniq).map(image => {
+				const id = image[0];
+				const url = image[1];
+
+				imageUploader(url, usePlaceholderImage).then(data => {
+					tempContent = tempContent.replaceAll(url, data.url);
+					tempContent = tempContent.replaceAll(id, data.id);
+					counter -= 1;
+					if (counter === 0) {
+						replaceBlock(
+							clientId,
+							wp.blocks.rawHandler({
+								HTML: tempContent,
+								mode: 'BLOCKS',
+							})
+						);
+					}
+				});
+				return null;
+			});
+		} else {
+			// no images to process
+			replaceBlock(
+				clientId,
+				wp.blocks.rawHandler({
+					HTML: parsedContent,
+					mode: 'BLOCKS',
+				})
+			);
+		}
+	} else {
+		// not valid gutenberg code
+		// TODO: show a human-readable error here
+		console.error(__('The Code is not valid', 'maxi-blocks'));
+		onRequestClose();
+	}
 };

@@ -24,7 +24,13 @@ import { backgroundColor } from '../../../../icons';
  * Component
  */
 const IconBackground = props => {
-	const { blockName, onChange, breakpoint, isHover = false } = props;
+	const {
+		blockName,
+		onChangeInline,
+		onChange,
+		breakpoint,
+		isHover = false,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
@@ -85,6 +91,9 @@ const IconBackground = props => {
 						)}
 						deviceType={breakpoint}
 						useBreakpointForDefault
+						onChangeInline={({ color }) =>
+							onChangeInline({ background: color })
+						}
 						onChange={({
 							color,
 							paletteColor,

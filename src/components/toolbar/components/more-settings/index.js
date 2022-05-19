@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Tooltip } from '@wordpress/components';
-import { useSelect, dispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,8 +17,8 @@ import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
-import openSidebar from '../../../../extensions/dom';
 import { getGroupAttributes } from '../../../../extensions/styles';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * Icons
@@ -34,7 +34,14 @@ import './editor.scss';
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, onChange, prefix } = props;
+	const {
+		clientId,
+		blockName,
+		onChange,
+		prefix,
+		copyPasteMapping,
+		tooltipsHide,
+	} = props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -45,13 +52,9 @@ const MoreSettings = props => {
 			breakpoint,
 		};
 	});
-	const { openGeneralSidebar } = dispatch('core/edit-post');
 
-	return (
-		<Tooltip
-			text={__('More Settings', 'maxi-blocks')}
-			position='bottom center'
-		>
+	const moreSettingsContent = () => {
+		return (
 			<div className='toolbar-item toolbar-item__more-settings'>
 				<Dropdown
 					className='maxi-more-settings__settings-selector'
@@ -65,41 +68,37 @@ const MoreSettings = props => {
 							/>
 						</Button>
 					)}
-					renderContent={() => (
+					renderContent={args => (
 						<div>
 							<CopyPaste
 								clientId={clientId}
 								blockName={blockName}
 								prefix={prefix}
+								closeMoreSettings={args.onClose}
+								copyPasteMapping={copyPasteMapping}
 							/>
 							{blockName === 'maxi-blocks/text-maxi' && (
-								<TextGenerator
-									clientId={clientId}
-									blockName={blockName}
-									onChange={onChange}
-								/>
+								<TextGenerator onChange={onChange} />
 							)}
 							{blockName === 'maxi-blocks/button-maxi' && (
 								<div>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() =>
-												openSidebar('height width')
-											)
-										}
+										onClick={() => {
+											openSidebarAccordion(
+												0,
+												'height width'
+											);
+										}}
 									>
 										{__('Button width', 'maxi-blocks')}
 									</Button>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() =>
-												openSidebar('margin padding')
-											)
-										}
+										onClick={() => {
+											openSidebarAccordion(
+												0,
+												'margin padding'
+											);
+										}}
 									>
 										{__(
 											'Button padding/margin',
@@ -122,22 +121,19 @@ const MoreSettings = props => {
 							{blockName === 'maxi-blocks/image-maxi' && (
 								<>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() =>
-												openSidebar('dimension')
-											)
-										}
+										onClick={() => {
+											openSidebarAccordion(
+												0,
+												'dimension'
+											);
+										}}
 									>
 										{__('Image dimension', 'maxi-blocks')}
 									</Button>
 									<Button
-										onClick={() =>
-											openGeneralSidebar(
-												'edit-post/block'
-											).then(() => openSidebar('caption'))
-										}
+										onClick={() => {
+											openSidebarAccordion(0, 'caption');
+										}}
 									>
 										{__('Caption', 'maxi-blocks')}
 									</Button>
@@ -145,19 +141,17 @@ const MoreSettings = props => {
 							)}
 							{(blockName === 'maxi-blocks/svg-icon-maxi' ||
 								blockName === 'maxi-blocks/image-maxi') && (
-								<>
-									<Alignment
-										clientId={clientId}
-										blockName={blockName}
-										getGroupAttributes
-										{...getGroupAttributes(props, [
-											'alignment',
-											'textAlignment',
-										])}
-										onChange={onChange}
-										breakpoint={breakpoint}
-									/>
-								</>
+								<Alignment
+									clientId={clientId}
+									blockName={blockName}
+									getGroupAttributes
+									{...getGroupAttributes(props, [
+										'alignment',
+										'textAlignment',
+									])}
+									onChange={onChange}
+									breakpoint={breakpoint}
+								/>
 							)}
 							<ReusableBlocks
 								clientId={clientId}
@@ -168,8 +162,19 @@ const MoreSettings = props => {
 					)}
 				/>
 			</div>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('More Settings', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{moreSettingsContent()}
+			</Tooltip>
+		);
+	return moreSettingsContent();
 };
 
 export default MoreSettings;

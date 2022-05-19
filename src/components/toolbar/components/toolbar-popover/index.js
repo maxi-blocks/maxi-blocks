@@ -2,15 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { dispatch } from '@wordpress/data';
 import { Component, createRef } from '@wordpress/element';
 import { Icon, Popover, Tooltip } from '@wordpress/components';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Button from '../../../button';
-import openSidebar from '../../../../extensions/dom';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
 
@@ -18,6 +18,7 @@ import ToolbarContext from './toolbarContext';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -44,11 +45,20 @@ class ToolbarPopover extends Component {
 	/**
 	 * Ensures the popover closes when clicking outside
 	 */
-	onClickOutside() {
+	onClickOutside(event) {
+		const path = event.path || (event.composedPath && event.composedPath());
 		if (
 			this.ref.current?.ownerDocument.querySelectorAll(
 				'.toolbar-item__popover'
-			).length >= 2
+			).length >= 2 ||
+			// If the click isn't inside the popover and isn't inside the button
+			(path &&
+				!path.includes(
+					this.ref.current?.ownerDocument.querySelector(
+						'.toolbar-item__popover'
+					)
+				) &&
+				!path.includes(this.ref.current))
 		)
 			this.state.onClose();
 	}
@@ -83,11 +93,11 @@ class ToolbarPopover extends Component {
 			icon,
 			children,
 			advancedOptions = false,
+			tab = 0,
+			position = 'top center',
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;
-
-		const { openGeneralSidebar } = dispatch('core/edit-post');
 
 		const classes = classnames(
 			'toolbar-item',
@@ -95,20 +105,36 @@ class ToolbarPopover extends Component {
 			className
 		);
 
+		const { receiveMaxiSettings } = select('maxiBlocks');
+
+		const maxiSettings = receiveMaxiSettings();
+		const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+			? maxiSettings.hide_tooltips
+			: false;
+
+		const buttonContent = () => {
+			return (
+				<Button
+					className={classes}
+					onClick={() => this.onToggle()}
+					aria-expanded={isOpen}
+					action='popup'
+				>
+					<Icon className='toolbar-item__icon' icon={icon} />
+					{__(text, 'maxi-blocks')}
+				</Button>
+			);
+		};
+
 		return (
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={{ isOpen, onClose }}>
-					<Tooltip text={tooltip} position='bottom center'>
-						<Button
-							className={classes}
-							onClick={() => this.onToggle()}
-							aria-expanded={isOpen}
-							action='popup'
-						>
-							<Icon className='toolbar-item__icon' icon={icon} />
-							{__(text, 'maxi-blocks')}
-						</Button>
-					</Tooltip>
+					{!tooltipsHide && (
+						<Tooltip text={tooltip} position='bottom center'>
+							{buttonContent()}
+						</Tooltip>
+					)}
+					{tooltipsHide && buttonContent()}
 					{isOpen && children && (
 						<Popover
 							className='toolbar-item__popover'
@@ -118,7 +144,7 @@ class ToolbarPopover extends Component {
 								'.toolbar-wrapper'
 							)}
 							onClose={onClose}
-							position='top center'
+							position={position}
 							isAlternate
 							shouldAnchorIncludePadding
 						>
@@ -127,13 +153,12 @@ class ToolbarPopover extends Component {
 								<Button
 									className='toolbar-item__popover__advanced-button'
 									icon={toolbarAdvancedSettings}
-									onClick={() =>
-										openGeneralSidebar(
-											'edit-post/block'
-										).then(() =>
-											openSidebar(advancedOptions)
-										)
-									}
+									onClick={() => {
+										openSidebarAccordion(
+											tab,
+											advancedOptions
+										);
+									}}
 								/>
 							)}
 						</Popover>

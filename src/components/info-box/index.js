@@ -1,12 +1,8 @@
 /**
- * WordPress dependencies
- */
-import { dispatch } from '@wordpress/data';
-
-/**
  * Internal dependencies
  */
-import openSidebar from '../../extensions/dom';
+import { openSidebarAccordion } from '../../extensions/inspector';
+import Icon from '../icon';
 
 /**
  * External dependencies
@@ -15,14 +11,13 @@ import classnames from 'classnames';
 import { isEmpty, uniqueId } from 'lodash';
 
 /**
- * Styles
+ * Styles and icons
  */
+import { closeIcon } from '../../icons';
 import './editor.scss';
 
-const InfoBox = ({ className, message, links }) => {
+const InfoBox = ({ className, message, links, tab = 0, onClose }) => {
 	const classes = classnames('maxi-warning-box', className);
-
-	const { openGeneralSidebar } = dispatch('core/edit-post');
 
 	return (
 		<div className={classes}>
@@ -34,9 +29,7 @@ const InfoBox = ({ className, message, links }) => {
 							key={uniqueId('maxi-warning-box__links__item')}
 							onClick={() => {
 								if (!isEmpty(item.panel))
-									openGeneralSidebar('edit-post/block').then(
-										() => openSidebar(item.panel)
-									);
+									openSidebarAccordion(tab, item.panel);
 
 								if (!isEmpty(item.href))
 									window.open(item.href, '_blank');
@@ -45,6 +38,14 @@ const InfoBox = ({ className, message, links }) => {
 							{item.title}
 						</a>
 					))}
+				</div>
+			)}
+			{onClose && (
+				<div
+					className='maxi-warning-box__close-button'
+					onClick={onClose}
+				>
+					<Icon icon={closeIcon} />
 				</div>
 			)}
 		</div>

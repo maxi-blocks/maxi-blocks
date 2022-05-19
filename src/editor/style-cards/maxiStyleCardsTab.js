@@ -118,7 +118,7 @@ const GlobalColor = props => {
 							paletteColor: newPaletteColor,
 							paletteOpacity: newPaletteOpacity,
 							color: newColor,
-						}) =>
+						}) => {
 							onChangeValue(
 								{
 									[paletteStatus]: newPaletteStatus,
@@ -127,8 +127,8 @@ const GlobalColor = props => {
 									[color]: newColor,
 								},
 								groupAttr
-							)
-						}
+							);
+						}}
 						blockStyle={SCStyle}
 						disableGradient
 					/>
@@ -157,7 +157,7 @@ const SCAccordion = props => {
 					className={`maxi-style-cards-control__sc__${groupAttr}-typography`}
 					textLevel={groupAttr}
 					breakpoint={breakpoint}
-					styleCards
+					isStyleCards
 					onChange={obj => {
 						onChangeValue({ typography: obj }, groupAttr);
 					}}
@@ -355,12 +355,30 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'line',
 			},
 			{
+				label: __('Line Hover', 'maxi-blocks'),
+				globalAttr: 'hover-line-global',
+				globalAllAttr: 'hover-line-all',
+				paletteStatus: 'hover-line-palette-status',
+				paletteColor: 'hover-line-palette-color',
+				paletteOpacity: 'hover-line-palette-opacity',
+				color: 'hover-line',
+			},
+			{
 				label: __('Fill', 'maxi-blocks'),
 				globalAttr: 'fill-global',
 				paletteStatus: 'fill-palette-status',
 				paletteColor: 'fill-palette-color',
 				paletteOpacity: 'fill-palette-opacity',
 				color: 'fill',
+			},
+			{
+				label: __('Fill Hover', 'maxi-blocks'),
+				globalAttr: 'hover-fill-global',
+				globalAllAttr: 'hover-fill-all',
+				paletteStatus: 'hover-fill-palette-status',
+				paletteColor: 'hover-fill-palette-color',
+				paletteOpacity: 'hover-fill-palette-opacity',
+				color: 'hover-fill',
 			},
 		],
 	};
@@ -384,6 +402,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			<AccordionControl
 				key='sc-accordion__quick-color-presets'
 				isSecondary
+				isStyleCard
 				items={[
 					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),

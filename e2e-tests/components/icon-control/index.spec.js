@@ -38,7 +38,7 @@ describe('IconControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40');
 
-		expect(await getAttributes('icon-width-general')).toStrictEqual(340);
+		expect(await getAttributes('icon-width-general')).toStrictEqual('340');
 
 		// stroke width
 		await inputs[2].click();
@@ -68,7 +68,7 @@ describe('IconControl', () => {
 			'.maxi-settingstab-control.maxi-icon-styles-control button'
 		);
 
-		await iconBorder[1].click();
+		await iconBorder[2].click();
 
 		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',

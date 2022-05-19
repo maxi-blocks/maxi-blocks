@@ -36,11 +36,13 @@ describe('StyleCards, Buttons', () => {
 		await page.waitForTimeout(100);
 
 		await addTypographyStyle({
-			page,
+			instance: page,
 			decoration: 'overline',
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
+			orientation: 'mixed',
+			direction: 'ltr',
 		});
 		await page.waitForTimeout(100);
 

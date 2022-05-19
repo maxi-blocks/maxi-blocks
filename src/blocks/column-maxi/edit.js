@@ -1,39 +1,93 @@
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
-import { withSelect, withDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
+import getRowBorderRadius from './utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { round } from 'lodash';
+import { round, isEqual } from 'lodash';
 
 /**
  * Editor
  */
 class edit extends MaxiBlockComponent {
+	static contextType = RowContext;
+
 	constructor(props) {
 		super(props);
 
 		this.resizableObject = createRef();
+	}
+
+	rowGapProps = {};
+
+	rowBorderRadius = {};
+
+	maxiBlockDidMount() {
+		this.context.setColumnClientId(this.props.clientId);
+	}
+
+	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
+		// maxiBlockComponent doesn't get the context from its extensions,
+		// and we need to compare the previous and current row border radius
+		// to know if we need to update the styles.
+		if (
+			!isEqual(this.rowGapProps, this.context.rowGapProps) ||
+			!isEqual(this.rowBorderRadius, this.context.rowBorderRadius)
+		) {
+			this.rowGapProps = this.context.rowGapProps;
+			this.rowBorderRadius = getRowBorderRadius(
+				this.context.rowBorderRadius,
+				this.context.columnsClientIds,
+				this.props.clientId
+			);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	getHeight() {
+		const forceAspectRatio = getLastBreakpointAttribute({
+			target: 'force-aspect-ratio',
+			breakpoint: this.props.deviceType || 'general',
+			attributes: this.props.attributes,
+		});
+
+		const columnHeightAttribute = getLastBreakpointAttribute({
+			target: 'height',
+			breakpoint: this.props.deviceType || 'general',
+			attributes: this.props.attributes,
+		});
+
+		let columnHeight = 'auto';
+
+		if (forceAspectRatio) columnHeight = '100%';
+		else if (columnHeightAttribute);
+		columnHeight = `${columnHeightAttribute}${getLastBreakpointAttribute({
+			target: 'height-unit',
+			breakpoint: this.props.deviceType || 'general',
+			attributes: this.props.attributes,
+		})}`;
+
+		return columnHeight;
 	}
 
 	maxiBlockDidUpdate() {
@@ -44,29 +98,48 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			});
 
-			if (this.resizableObject.current.state.width !== `${columnWidth}%`)
+			const columnHeight = this.getHeight();
+
+			if (
+				this.resizableObject.current.state.width !==
+					`${columnWidth}%` ||
+				this.resizableObject.current.state.height !== columnHeight
+			) {
 				this.resizableObject.current.updateSize({
 					width: `${columnWidth}%`,
+					height: columnHeight,
 				});
+
+				this.resizableObject.current.resizable.style.flexBasis = '';
+				this.resizableObject.current.resizable.style.flexShrink = '';
+			}
 		}
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(
+			{
+				...this.props.attributes,
+				rowBorderRadius:
+					this.rowBorderRadius ?? this.context?.rowBorderRadius,
+			},
+			{
+				...(this.rowGapProps ?? this.context?.rowGapProps),
+				columnNum: this.context?.columnsClientIds.length,
+			}
+		);
 	}
 
 	render() {
 		const {
 			attributes,
 			deviceType,
-			originalNestedColumns,
-			rowBlockId,
 			maxiSetAttributes,
-			updateRowPattern,
 			hasInnerBlocks,
 			clientId,
 		} = this.props;
 		const { uniqueID } = attributes;
+		const { columnsClientIds } = this.context;
 
 		const getColumnWidthDefault = () => {
 			const columnWidth = getLastBreakpointAttribute({
@@ -77,7 +150,7 @@ class edit extends MaxiBlockComponent {
 
 			if (columnWidth) return `${columnWidth}%`;
 
-			return `${100 / originalNestedColumns.length}%`;
+			return `${100 / columnsClientIds.length}%`;
 		};
 
 		const ALLOWED_BLOCKS = wp.blocks
@@ -107,113 +180,80 @@ class edit extends MaxiBlockComponent {
 			? 'maxi-column-block__empty'
 			: 'maxi-column-block__has-innerBlock';
 
-		return [
-			<RowContext.Consumer key={`column-content-${uniqueID}`}>
-				{context => {
-					return (
-						<>
-							<Inspector
-								key={`block-settings-${uniqueID}`}
-								rowPattern={context.rowPattern}
-								{...this.props}
-							/>
-							<Toolbar
-								key={`toolbar-${uniqueID}`}
-								ref={this.blockRef}
-								rowPattern={context.rowPattern}
-								propsToAvoid={['resizableObject']}
-								{...this.props}
-							/>
-							<MaxiBlock
-								key={`maxi-column--${uniqueID}`}
-								ref={this.blockRef}
-								{...getMaxiBlockAttributes(this.props)}
-								isOverflowHidden={getIsOverflowHidden()}
-								tagName={BlockResizer}
-								resizableObject={this.resizableObject}
-								classes={classnames(
-									emptyColumnClass,
-									'maxi-block',
-									'maxi-block--backend',
-									'maxi-column-block__resizer',
-									`maxi-column-block__resizer__${uniqueID}`,
-									getLastBreakpointAttribute({
-										target: 'display',
-										breakpoint: deviceType,
-										attributes,
-										isHover: false,
-										forceSingle: true,
-									}) === 'none' && 'maxi-block-display-none'
-								)}
-								defaultSize={{
-									width: getColumnWidthDefault(),
-								}}
-								enable={{
-									right: true,
-									left: true,
-								}}
-								minWidth='1%'
-								maxWidth='100%'
-								showHandle={context.displayHandlers}
-								onResizeStop={(event, direction, elt) => {
-									updateRowPattern(
-										rowBlockId,
-										deviceType,
-										context.rowPattern
-									);
-
-									maxiSetAttributes({
-										[`column-size-${deviceType}`]: round(
-											+elt.style.width.replace('%', '')
-										),
-									});
-								}}
-								useInnerBlocks
-								innerBlocksSettings={{
-									allowedBlocks: ALLOWED_BLOCKS,
-									orientation: 'horizontal',
-									templateLock: false,
-									renderAppender: !hasInnerBlocks
-										? () => (
-												<BlockInserter
-													clientId={clientId}
-												/>
-										  )
-										: false,
-								}}
-							/>
-						</>
-					);
-				}}
-			</RowContext.Consumer>,
-		];
+		return (
+			<RowContext.Consumer>
+				{context => [
+					<Inspector
+						key={`block-settings-${uniqueID}`}
+						rowPattern={context.rowPattern}
+						propsToAvoid={['rowGapProps', 'rowBorderRadius']}
+						{...this.props}
+					/>,
+					<Toolbar
+						key={`toolbar-${uniqueID}`}
+						ref={this.blockRef}
+						rowPattern={context.rowPattern}
+						copyPasteMapping={copyPasteMapping}
+						propsToAvoid={[
+							'resizableObject',
+							'rowGapProps',
+							'rowBorderRadius',
+						]}
+						{...this.props}
+					/>,
+					<MaxiBlock
+						key={`maxi-column--${uniqueID}`}
+						ref={this.blockRef}
+						{...getMaxiBlockAttributes(this.props)}
+						isOverflowHidden={getIsOverflowHidden()}
+						tagName={BlockResizer}
+						resizableObject={this.resizableObject}
+						classes={classnames(
+							emptyColumnClass,
+							'maxi-block',
+							'maxi-block--backend',
+							'maxi-column-block__resizer',
+							`maxi-column-block__resizer__${uniqueID}`,
+							getLastBreakpointAttribute({
+								target: 'display',
+								breakpoint: deviceType,
+								attributes,
+								isHover: false,
+								forceSingle: true,
+							}) === 'none' && 'maxi-block-display-none'
+						)}
+						defaultSize={{
+							width: getColumnWidthDefault(),
+							height: this.getHeight(),
+						}}
+						enable={{
+							right: true,
+							left: true,
+						}}
+						minWidth='1%'
+						maxWidth='100%'
+						showHandle={context.displayHandlers}
+						onResizeStop={(event, direction, elt) => {
+							maxiSetAttributes({
+								[`column-size-${deviceType}`]: round(
+									+elt.style.width.replace('%', '')
+								),
+							});
+						}}
+						useInnerBlocks
+						innerBlocksSettings={{
+							allowedBlocks: ALLOWED_BLOCKS,
+							orientation: 'vertical',
+							templateLock: false,
+							renderAppender: !hasInnerBlocks
+								? () => <BlockInserter clientId={clientId} />
+								: false,
+						}}
+					/>,
+				]}
+			</RowContext.Consumer>
+		);
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { clientId } = ownProps;
-
-	const { getBlockRootClientId, getBlockOrder } = select('core/block-editor');
-
-	const rowBlockId = getBlockRootClientId(clientId);
-	const originalNestedColumns = getBlockOrder(rowBlockId);
-
-	return {
-		rowBlockId,
-		originalNestedColumns,
-	};
-});
-
-const editDispatch = withDispatch(dispatch => {
-	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
-		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
-			rowPattern: rowPatternAttribute[`row-pattern-${deviceType}`],
-		});
-	};
-
-	return {
-		updateRowPattern,
-	};
-});
-
-export default compose(editSelect, editDispatch, withMaxiProps)(edit);
+export default withMaxiProps(edit);

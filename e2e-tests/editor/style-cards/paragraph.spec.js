@@ -32,7 +32,7 @@ describe('StyleCards Paragraph', () => {
 			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
 			size => size.focus()
 		);
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('20');
 
 		// Line Height
@@ -71,10 +71,22 @@ describe('StyleCards Paragraph', () => {
 			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__decoration select'
 		);
 
+		// Orientation
+		const orientationOptions = await page.$(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__orientation select'
+		);
+
+		// Direction
+		const directionOptions = await page.$(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__direction select'
+		);
+
 		await weightOptions.select('300');
 		await transformOptions.select('capitalize');
 		await styleOptions.select('italic');
 		await decorationOptions.select('overline');
+		await orientationOptions.select('none');
+		await directionOptions.select('ltr');
 
 		await page.$$eval(
 			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__text-indent input',

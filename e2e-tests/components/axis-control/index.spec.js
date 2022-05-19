@@ -15,24 +15,20 @@ import {
 	editAxisControl,
 	getAttributes,
 	getBlockStyle,
+	addResponsiveTest,
 } from '../../utils';
 
 describe('AxisControl', () => {
 	it('Checking AxisControl util', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'margin padding'
-		);
+		await openSidebarTab(page, 'style', 'margin padding');
 
-		const axisControlInstance = await accordionPanel.$(
-			'.maxi-axis-control__margin'
-		);
 		await editAxisControl({
 			page,
-			instance: axisControlInstance,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
 			values: '66',
 			unit: '%',
 		});
@@ -42,10 +38,16 @@ describe('AxisControl', () => {
 			'margin-bottom-general': '66',
 			'margin-left-general': '66',
 			'margin-right-general': '66',
-			'margin-unit-general': '%',
+			'margin-left-unit-general': '%',
+			'margin-bottom-unit-general': '%',
+			'margin-top-unit-general': '%',
+			'margin-right-unit-general': '%',
 		};
 		const marginResult = await getAttributes([
-			'margin-unit-general',
+			'margin-left-unit-general',
+			'margin-bottom-unit-general',
+			'margin-top-unit-general',
+			'margin-right-unit-general',
 			'margin-top-general',
 			'margin-bottom-general',
 			'margin-left-general',
@@ -55,17 +57,19 @@ describe('AxisControl', () => {
 		expect(marginResult).toStrictEqual(expectMargin);
 	});
 
-	it('Check padding attributes are numbers and margin strings', async () => {
+	it('Check padding attributes strings', async () => {
 		await editAxisControl({
 			page,
-			instance: await page.$('.maxi-axis-control__padding'),
+			instance: await page.$(
+				'.maxi-axis-control__padding .maxi-axis-control__content__item__padding'
+			),
 			values: '34',
 			unit: '%',
 		});
 
 		expect(
 			typeof (await getAttributes('padding-bottom-general'))
-		).toStrictEqual('number');
+		).toStrictEqual('string');
 
 		expect(
 			typeof (await getAttributes('margin-bottom-general'))
@@ -73,104 +77,61 @@ describe('AxisControl', () => {
 	});
 
 	it('Checking responsive axisControl', async () => {
-		await changeResponsive(page, 's');
-
-		const positionGeneralValue = await page.$$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
-			input => input[0].placeholder
-		);
-
-		expect(positionGeneralValue).toStrictEqual('66');
-
-		const positionGeneralUnit = await page.$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
-			input => input.value
-		);
-		expect(positionGeneralUnit).toStrictEqual('%');
-
-		// change s responsive
-		const axisControlInstance = await page.$('.maxi-axis-control__margin');
-		await editAxisControl({
+		const responsiveValue = await addResponsiveTest({
 			page,
-			instance: axisControlInstance,
-			values: '89',
-			unit: 'px',
+			instance:
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
+			needFocusPlaceholder: true,
+			baseExpect: '66',
+			xsExpect: '44',
+			newValue: '44',
 		});
+		expect(responsiveValue).toBeTruthy();
 
-		const positionSValue = await page.$$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
-			input => input[0].placeholder
-		);
-
-		expect(positionSValue).toStrictEqual('89');
-
-		const positionSUnit = await page.$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
-			input => input.value
-		);
-		expect(positionSUnit).toStrictEqual('px');
-
-		// Xs responsive
-		await changeResponsive(page, 'xs');
-
-		const positionXsValue = await page.$$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
-			input => input[0].placeholder
-		);
-
-		expect(positionXsValue).toStrictEqual('89');
-
-		const positionXsUnit = await page.$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
-			input => input.value
-		);
-		expect(positionXsUnit).toStrictEqual('px');
-
-		// M responsive
-		await changeResponsive(page, 'm');
-
-		const positionMValue = await page.$$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
-			input => input[0].placeholder
-		);
-
-		expect(positionMValue).toStrictEqual('66');
-
-		const positionMUnit = await page.$eval(
-			'.maxi-axis-control__margin .maxi-axis-control__unit-header select',
-			input => input.value
-		);
-		expect(positionMUnit).toStrictEqual('%');
+		const responsiveUnit = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin select',
+			selectInstance:
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin select',
+			needSelectIndex: true,
+			baseExpect: '%',
+			xsExpect: 'px',
+			newValue: 'px',
+		});
+		expect(responsiveUnit).toBeTruthy();
 	});
+
 	it('Check the arrows in input and %% 0.1 steps', async () => {
 		await changeResponsive(page, 'base');
 
-		const accordionPanel = await openSidebarTab(
-			page,
-			'style',
-			'margin padding'
+		// reset attributtes
+		await page.$(
+			'.maxi-axis-control__margin .components-maxi-control__reset-button',
+			button => button.click()
 		);
 
 		await page.waitForTimeout(150);
 
 		await editAxisControl({
 			page,
-			instance: await accordionPanel.$('.maxi-axis-control__margin'),
-			values: '3',
+			instance: await page.$('.maxi-axis-control__margin'),
+			values: '3.5',
+			unit: 'px',
 		});
-		await page.waitForTimeout(150);
 
-		expect(await getAttributes('margin-top-general')).toStrictEqual('3');
+		await page.waitForTimeout(300);
 
-		const input = await accordionPanel.$$(
-			'.maxi-axis-control__content__item input'
-		);
+		expect(await getAttributes('margin-top-general')).toStrictEqual('3.5');
+
+		const input = await page.$$('.maxi-axis-control__content__item input');
 
 		await input[0].focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('margin-top-general')).toStrictEqual('2.5');
+		expect(await getAttributes('margin-top-general')).toStrictEqual('-1');
 	});
+
 	it('Checking AxisControl auto', async () => {
 		await changeResponsive(page, 'base');
 
@@ -186,11 +147,17 @@ describe('AxisControl', () => {
 			'margin-bottom-general': 'auto',
 			'margin-left-general': 'auto',
 			'margin-right-general': 'auto',
-			'margin-unit-general': 'px',
+			'margin-left-unit-general': 'px',
+			'margin-bottom-unit-general': 'px',
+			'margin-top-unit-general': 'px',
+			'margin-right-unit-general': 'px',
 		};
 
 		const result = await getAttributes([
-			'margin-unit-general',
+			'margin-left-unit-general',
+			'margin-bottom-unit-general',
+			'margin-top-unit-general',
+			'margin-right-unit-general',
 			'margin-top-general',
 			'margin-bottom-general',
 			'margin-left-general',
@@ -199,6 +166,7 @@ describe('AxisControl', () => {
 
 		expect(result).toStrictEqual(expectMargin);
 	});
+
 	it('Checking AxisControl async buttons', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
@@ -218,15 +186,21 @@ describe('AxisControl', () => {
 			'margin-bottom-general': '66',
 			'margin-left-general': '77',
 			'margin-right-general': '77',
-			'margin-unit-general': '%',
+			'margin-left-unit-general': 'px',
+			'margin-bottom-unit-general': '%',
+			'margin-top-unit-general': '%',
+			'margin-right-unit-general': 'px',
 		};
 
 		const resultAxis = await getAttributes([
-			'margin-top-general',
+			'margin-left-unit-general',
+			'margin-bottom-unit-general',
+			'margin-top-unit-general',
+			'margin-right-unit-general',
 			'margin-bottom-general',
 			'margin-left-general',
 			'margin-right-general',
-			'margin-unit-general',
+			'margin-top-general',
 		]);
 
 		expect(resultAxis).toStrictEqual(expectAxisMargin);
@@ -244,15 +218,21 @@ describe('AxisControl', () => {
 			'margin-bottom-general': '55',
 			'margin-left-general': '33',
 			'margin-right-general': '77',
-			'margin-unit-general': 'px',
+			'margin-left-unit-general': 'px',
+			'margin-bottom-unit-general': '%',
+			'margin-top-unit-general': 'px',
+			'margin-right-unit-general': 'px',
 		};
 
 		const resultSyncOptionNone = await getAttributes([
-			'margin-unit-general',
 			'margin-top-general',
 			'margin-bottom-general',
 			'margin-left-general',
 			'margin-right-general',
+			'margin-left-unit-general',
+			'margin-bottom-unit-general',
+			'margin-top-unit-general',
+			'margin-right-unit-general',
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
@@ -261,22 +241,21 @@ describe('AxisControl', () => {
 
 	it('Check padding min is never below 0', async () => {
 		await openSidebarTab(page, 'style', 'margin padding');
-		const axisControlInstance = await page.$('.maxi-axis-control__padding');
 
 		await editAxisControl({
 			page,
-			instance: axisControlInstance,
+			instance: await page.$('.maxi-axis-control__padding'),
 			values: '1',
 			unit: 'px',
 		});
 
-		const input = await axisControlInstance.$$(
-			'.maxi-axis-control__content__item input'
+		const input = await page.$(
+			'.maxi-axis-control__padding .maxi-axis-control__content__item input'
 		);
 
-		await input[0].focus();
+		await input.focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('padding-top-general')).toStrictEqual(0);
+		expect(await getAttributes('padding-top-general')).toStrictEqual('0');
 	});
 });

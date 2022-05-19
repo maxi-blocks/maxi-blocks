@@ -91,6 +91,7 @@ const AdvancedNumberControl = props => {
 		onReset,
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
+		optionType = 'number',
 	} = props;
 
 	const classes = classnames('maxi-advanced-number-control', className);
@@ -194,7 +195,16 @@ const AdvancedNumberControl = props => {
 									value = min;
 							}
 
-							onChangeValue(value === '' ? value : +value);
+							onChangeValue(
+								value === '' || optionType === 'string'
+									? value.toString()
+									: +value
+							);
+						}}
+						onKeyDown={e => {
+							if (e.key === '-' && min >= 0) {
+								e.preventDefault();
+							}
 						}}
 						min={enableUnit ? minValue : min}
 						max={enableUnit ? maxValue : max}
@@ -246,7 +256,9 @@ const AdvancedNumberControl = props => {
 							) || 0
 						}
 						onChange={val => {
-							onChangeValue(+val);
+							onChangeValue(
+								optionType === 'string' ? val.toString() : +val
+							);
 						}}
 						min={enableUnit ? minValueRange : min}
 						max={enableUnit ? maxValueRange : max}

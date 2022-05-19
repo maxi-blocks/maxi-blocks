@@ -10,11 +10,6 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import {
-	setFormat,
-	getCustomFormatValue,
-} from '../../../../extensions/text/formats';
 
 /**
  * Styles and icons
@@ -25,61 +20,28 @@ import { toolbarSubScript } from '../../../../icons';
  * TextFormatSubscript
  */
 const TextFormatSubscript = props => {
-	const {
-		formatValue,
-		onChange,
-		isList,
-		breakpoint,
-		textLevel,
-		styleCard,
-		tooltipsHide,
-	} = props;
+	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	const getSuperscriptValue = () =>
-		getCustomFormatValue({
-			typography: { ...getGroupAttributes(props, 'typography') },
-			formatValue,
-			prop: 'vertical-align',
-			breakpoint,
-			styleCard,
-		}) || '';
-
-	const superscriptValue = getSuperscriptValue();
+	const getSuperscriptValue = () => getValue('vertical-align') || '';
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [isActive, setIsActive] = useState(
-		(superscriptValue === 'sub' && true) || false
+		(getSuperscriptValue() === 'sub' && true) || false
 	);
 
 	useEffect(() => {
-		const superscriptValue = getSuperscriptValue();
-
-		setIsActive((superscriptValue === 'sub' && true) || false);
+		setIsActive((getSuperscriptValue() === 'sub' && true) || false);
 	});
-
-	const onClick = () => {
-		const obj = setFormat({
-			formatValue,
-			isActive,
-			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
-			value: {
-				'vertical-align': isActive ? 'unset' : 'sub',
-			},
-			breakpoint,
-			textLevel,
-		});
-
-		setIsActive(!isActive);
-
-		onChange(obj);
-	};
 
 	const subscriptContent = () => {
 		return (
 			<Button
 				className='toolbar-item toolbar-item__subscript'
-				onClick={onClick}
+				onClick={() =>
+					onChangeFormat({
+						'vertical-align': isActive ? 'unset' : 'sub',
+					})
+				}
 				aria-pressed={isActive}
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarSubScript} />

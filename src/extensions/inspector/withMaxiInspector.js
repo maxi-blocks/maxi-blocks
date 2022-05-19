@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { memo } from '@wordpress/element';
 
@@ -29,7 +30,9 @@ const withMaxiInspector = createHigherOrderComponent(
 				} = newProps;
 
 				// If is not selected, don't render
-				if (!isSelected) return true;
+				if (!isSelected && wasSelected === isSelected) return true;
+
+				if (select('core/block-editor').isDraggingBlocks()) return true;
 
 				if (
 					!wasSelected ||

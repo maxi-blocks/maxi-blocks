@@ -41,6 +41,15 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidMount() {
 		this.context.setColumnClientId(this.props.clientId);
+
+		this.context.setColumnSize(
+			this.props.clientId,
+			getLastBreakpointAttribute({
+				target: 'column-size',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			})
+		);
 	}
 
 	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
@@ -115,6 +124,8 @@ class edit extends MaxiBlockComponent {
 			}
 		}
 
+		// Needs to compare if the columnSize has changed and in that case call
+		// this function again 👍
 		this.context.setColumnSize(
 			this.props.clientId,
 			getLastBreakpointAttribute({

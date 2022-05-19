@@ -187,6 +187,12 @@ const CopyPasteContent = props => {
 	};
 
 	const checkNestedCheckboxes = (attrType, tab, checked) => {
+		const group = document.querySelectorAll(
+			`div[data-copy_paste_group='${attrType}']`
+		);
+		group.forEach(g => {
+			g.style.display = checked ? 'block' : 'none';
+		});
 		handleSpecialPaste({
 			attr: Object.keys(organizedAttributes[tab][attrType].group),
 			tab,
@@ -249,6 +255,8 @@ const CopyPasteContent = props => {
 								<div
 									className='toolbar-item__copy-paste__popover__item'
 									key={`copy-paste-${tab}-${attr}`}
+									data-copy_paste_group={attrType}
+									style={{ display: 'none' }}
 								>
 									<label
 										htmlFor={attr}

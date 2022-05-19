@@ -51,6 +51,7 @@ const PaddingMargin = props => {
 						onChange={onChange}
 						breakpoint={breakpoint}
 						target={paddingTarget}
+						optionType='string'
 						disableAuto
 						disableSync
 					/>

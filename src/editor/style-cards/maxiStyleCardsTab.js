@@ -343,7 +343,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		],
 	};
 	const iconTabs = {
-		label: __('SVG Icons', 'maxi-blocks'),
+		label: __('Icons', 'maxi-blocks'),
 		groupAttr: 'icon',
 		colorContent: [
 			{
@@ -355,7 +355,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'line',
 			},
 			{
-				label: __('Line Hover', 'maxi-blocks'),
+				label: __('Line hover', 'maxi-blocks'),
 				globalAttr: 'hover-line-global',
 				globalAllAttr: 'hover-line-all',
 				paletteStatus: 'hover-line-palette-status',
@@ -372,7 +372,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'fill',
 			},
 			{
-				label: __('Fill Hover', 'maxi-blocks'),
+				label: __('Fill hover', 'maxi-blocks'),
 				globalAttr: 'hover-fill-global',
 				globalAllAttr: 'hover-fill-all',
 				paletteStatus: 'hover-fill-palette-status',
@@ -405,7 +405,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				isStyleCard
 				items={[
 					{
-						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
+						label: __('Colour palette', 'maxi-blocks'),
 						classNameItem:
 							'maxi-blocks-sc__type--quick-color-presets maxi-blocks-sc__type--color',
 						content: (

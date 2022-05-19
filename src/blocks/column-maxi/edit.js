@@ -114,6 +114,15 @@ class edit extends MaxiBlockComponent {
 				this.resizableObject.current.resizable.style.flexShrink = '';
 			}
 		}
+
+		this.context.setColumnSize(
+			this.props.clientId,
+			getLastBreakpointAttribute({
+				target: 'column-size',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			})
+		);
 	}
 
 	get getStylesObject() {
@@ -126,6 +135,7 @@ class edit extends MaxiBlockComponent {
 			{
 				...(this.rowGapProps ?? this.context?.rowGapProps),
 				columnNum: this.context?.columnsClientIds.length,
+				columnsSize: this.context?.columnsSize,
 			}
 		);
 	}

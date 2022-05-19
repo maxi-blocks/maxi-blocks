@@ -6,7 +6,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isNumber, round } from 'lodash';
+import { isNumber, round, ceil, sum } from 'lodash';
 
 /**
  * General
@@ -29,15 +29,25 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 			isNumber(columnSize) ||
 			isNumber(rowGapProps?.[`column-gap-${breakpoint}`])
 		) {
+			const columnSum = rowGapProps?.columnsSize
+				? sum(Object.values(rowGapProps.columnsSize))
+				: 100;
+
+			const rowNum =
+				ceil(columnSum, -round(columnSum).toString().length + 1) /
+				10 ** (round(columnSum).toString().length - 1);
+
 			const gapNum = rowGapProps.columnNum - 1;
 			const gap =
-				(getLastBreakpointAttribute({
+				((getLastBreakpointAttribute({
 					target: 'column-gap',
 					breakpoint,
 					attributes: rowGapProps,
 				}) *
 					gapNum) /
-				rowGapProps.columnNum;
+					rowGapProps.columnNum) *
+				rowNum;
+
 			const gapUnit = getLastBreakpointAttribute({
 				target: 'column-gap-unit',
 				breakpoint,

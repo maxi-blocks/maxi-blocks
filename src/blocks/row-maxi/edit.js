@@ -74,6 +74,8 @@ class edit extends MaxiBlockComponent {
 		displayHandlers: false,
 	};
 
+	columnsSize = {};
+
 	columnsClientIds = [];
 
 	maxiBlockDidUpdate() {
@@ -120,12 +122,19 @@ class edit extends MaxiBlockComponent {
 					displayHandlers: this.state.displayHandlers,
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
 					rowBlockId: clientId,
+					columnsSize: this.columnsSize,
 					columnsClientIds: this.columnsClientIds,
 					setColumnClientId: clientId => {
 						this.columnsClientIds = [
 							...this.columnsClientIds,
 							clientId,
 						];
+					},
+					setColumnSize: (clientId, columnSize) => {
+						this.columnsSize = {
+							...this.columnsSize,
+							[clientId]: columnSize,
+						};
 					},
 					rowGapProps: (() => {
 						const response = getGroupAttributes(attributes, 'flex');

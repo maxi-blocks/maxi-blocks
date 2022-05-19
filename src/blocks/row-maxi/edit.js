@@ -135,6 +135,8 @@ class edit extends MaxiBlockComponent {
 							...this.columnsSize,
 							[clientId]: columnSize,
 						};
+
+						this.forceUpdate();
 					},
 					rowGapProps: (() => {
 						const response = getGroupAttributes(attributes, 'flex');

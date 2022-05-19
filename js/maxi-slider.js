@@ -126,6 +126,8 @@ class MaxiSlider {
 		e = e || window.event;
 		e.preventDefault();
 
+		this._wrapper.style.transition = '';
+
 		if (e.type == 'touchstart') {
 			this.initPosition = e.touches[0].clientX;
 		} else {

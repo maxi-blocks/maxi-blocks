@@ -43,7 +43,7 @@ describe('Button Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.skip('Check Button Icon', async () => {
+	it('Check Button Icon', async () => {
 		await openSidebarTab(page, 'style', 'icon');
 
 		// Width spacing
@@ -78,7 +78,7 @@ describe('Button Maxi', () => {
 		]);
 
 		const expectedAttributesTwo = {
-			'icon-width-general': 343,
+			'icon-width-general': '343',
 			'icon-stroke-general': 2,
 			'icon-spacing-general': 14,
 		};
@@ -95,7 +95,9 @@ describe('Button Maxi', () => {
 			colorPalette: 5,
 		});
 
-		expect(await getAttributes('icon-palette-color')).toStrictEqual(5);
+		expect(await getAttributes('icon-stroke-palette-color')).toStrictEqual(
+			5
+		);
 
 		await page.$$eval(
 			'.maxi-icon-styles-control .maxi-tabs-control__full-width button',
@@ -180,14 +182,12 @@ describe('Button Maxi', () => {
 
 		expect(
 			await getAttributes('icon-padding-bottom-general')
-		).toStrictEqual(33);
+		).toStrictEqual('33');
 	});
-	it.skip('Check Button Icon Hover', async () => {
-		const accordion = await openSidebarTab(page, 'style', 'icon');
-
-		await accordion.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-control button',
-			button => button[1].click()
+	it('Check Button Icon Hover', async () => {
+		await page.$eval(
+			'.maxi-settingstab-control .maxi-tabs-control__button-Hover',
+			button => button.click()
 		);
 		await page.waitForTimeout(150);
 
@@ -198,6 +198,10 @@ describe('Button Maxi', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('245');
+
+		expect(await getAttributes('icon-width-general-hover')).toStrictEqual(
+			'245'
+		);
 
 		//  stroke Width
 		await page.$$eval(
@@ -210,9 +214,6 @@ describe('Button Maxi', () => {
 
 		expect(await getAttributes('icon-stroke-general-hover')).toStrictEqual(
 			4
-		);
-		expect(await getAttributes('icon-width-general-hover')).toStrictEqual(
-			245
 		);
 
 		// select border
@@ -230,14 +231,22 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-style-general-hover')
 		).toStrictEqual('dotted');
 
-		await accordion.$eval(
-			'.maxi-border-control .maxi-color-control .maxi-toggle-switch__toggle input',
+		// select border icon
+		await page.$eval(
+			'.maxi-icon-control .maxi-icon-styles-control .maxi-tabs-control__button-border',
 			button => button.click()
+		);
+
+		await page.$$eval(
+			'.maxi-border-control .maxi-default-styles-control button',
+			button => button[2].click()
 		);
 		// border color
 		await editColorControl({
 			page,
-			instance: await page.$('.maxi-border-control'),
+			instance: await page.$(
+				'.maxi-border-control .maxi-color-palette-control'
+			),
 			paletteStatus: true,
 			colorPalette: 5,
 		});
@@ -260,6 +269,6 @@ describe('Button Maxi', () => {
 		).toStrictEqual(70);
 	});
 	it('Button Maxi Custom CSS', async () => {
-		await expect(await addCustomCSS(page)).toMatchSnapshot();
+		await expect(await addCustomCSS(page));
 	}, 500000);
 });

@@ -1,9 +1,11 @@
 /**
  * WordPress dependencies
  */
+import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { RangeControl } from '@wordpress/components';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -40,7 +42,13 @@ import { capitalize, isEmpty, isNil } from 'lodash';
  * Dimension tab
  */
 const dimensionTab = props => {
-	const { attributes, clientId, imageData, maxiSetAttributes } = props;
+	const {
+		attributes,
+		clientId,
+		imageData,
+		maxiSetAttributes,
+		resizableObject,
+	} = props;
 	const {
 		cropOptions,
 		imageRatio,
@@ -153,17 +161,28 @@ const dimensionTab = props => {
 						label={__('Width', 'maxi-blocks')}
 						value={attributes.imgWidth}
 						onChange={val => {
-							if (!isNil(val))
+							if (!isNil(val)) {
 								maxiSetAttributes({
 									imgWidth: val,
 								});
-							else
-								maxiSetAttributes({
-									imgWidth: getDefaultAttribute(
-										'imgWidth',
-										clientId
-									),
+
+								resizableObject.updateSize({
+									width: `${val}%`,
 								});
+							} else {
+								const defaultAttribute = getDefaultAttribute(
+									'imgWidth',
+									clientId
+								);
+
+								maxiSetAttributes({
+									imgWidth: defaultAttribute,
+								});
+
+								resizableObject.updateSize({
+									width: `${defaultAttribute}%`,
+								});
+							}
 						}}
 						max={100}
 						allowReset
@@ -219,8 +238,7 @@ const dimensionTab = props => {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, clientId, deviceType, imageData, maxiSetAttributes } =
-		props;
+	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
 	const {
 		altSelector,
 		blockStyle,
@@ -232,6 +250,11 @@ const Inspector = props => {
 		mediaID,
 		captionPosition,
 	} = attributes;
+
+	const imageData = useCallback(
+		() => select('core').getMedia(mediaID),
+		[mediaID]
+	)();
 
 	const getCaptionOptions = () => {
 		const response = [

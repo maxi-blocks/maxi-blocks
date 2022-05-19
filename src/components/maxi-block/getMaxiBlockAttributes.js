@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute, getGroupAttributes } from '../styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies

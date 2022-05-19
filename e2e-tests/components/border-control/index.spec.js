@@ -129,7 +129,7 @@ describe('BorderControl', () => {
 		);
 
 		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-content .maxi-tabs-control button',
+			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
 			buttons => buttons[1].click()
 		);
 
@@ -139,7 +139,7 @@ describe('BorderControl', () => {
 		);
 
 		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-content .maxi-tabs-control button',
+			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
 			buttons => buttons[0].click()
 		);
 

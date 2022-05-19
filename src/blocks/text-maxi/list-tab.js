@@ -717,68 +717,61 @@ const listTab = props => {
 										/>
 									)}
 									{listStyleSource === 'icon' && (
-										<>
-											<MaxiModal
-												type='image-shape'
-												style={blockStyle || 'light'}
-												onSelect={obj => {
-													const {
-														paletteStatus,
-														paletteColor,
-														paletteOpacity,
-														color,
-													} = getPaletteAttributes({
-														obj: attributes,
-														prefix: 'list-',
-													});
+										<MaxiModal
+											type='image-shape'
+											style={blockStyle || 'light'}
+											onSelect={obj => {
+												const {
+													paletteStatus,
+													paletteColor,
+													paletteOpacity,
+													color,
+												} = getPaletteAttributes({
+													obj: attributes,
+													prefix: 'list-',
+												});
 
-													const colorStr =
-														paletteStatus
-															? getColorRGBAString(
-																	{
-																		firstVar: `color-${paletteColor}`,
-																		opacity:
-																			paletteOpacity,
-																		blockStyle,
-																	}
-															  )
-															: color;
+												const colorStr = paletteStatus
+													? getColorRGBAString({
+															firstVar: `color-${paletteColor}`,
+															opacity:
+																paletteOpacity,
+															blockStyle,
+													  })
+													: color;
 
-													const SVGElement =
-														setSVGColor({
-															svg: obj.SVGElement,
-															color: colorStr,
-															type: 'fill',
-														});
+												const SVGElement = setSVGColor({
+													svg: obj.SVGElement,
+													color: colorStr,
+													type: 'fill',
+												});
 
-													maxiSetAttributes({
-														listStyleCustom:
-															SVGElement,
-													});
-													setListStyleCustoms({
-														...listStyleCustoms,
-														[listStyleSource]:
-															SVGElement,
-													});
-												}}
-												onRemove={() => {
-													maxiSetAttributes({
-														listStyleCustom: '',
-													});
-													setListStyleCustoms({
-														...listStyleCustoms,
-														[listStyleSource]: '',
-													});
-												}}
-												icon={
-													listStyleCustom?.includes(
-														'<svg '
-													)
-														? listStyleCustom
-														: false
-												}
-											/>
-										</>
+												maxiSetAttributes({
+													listStyleCustom: SVGElement,
+												});
+												setListStyleCustoms({
+													...listStyleCustoms,
+													[listStyleSource]:
+														SVGElement,
+												});
+											}}
+											onRemove={() => {
+												maxiSetAttributes({
+													listStyleCustom: '',
+												});
+												setListStyleCustoms({
+													...listStyleCustoms,
+													[listStyleSource]: '',
+												});
+											}}
+											icon={
+												listStyleCustom?.includes(
+													'<svg '
+												)
+													? listStyleCustom
+													: false
+											}
+										/>
 									)}
 								</>
 							)}

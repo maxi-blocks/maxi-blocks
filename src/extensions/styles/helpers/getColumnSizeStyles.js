@@ -2,18 +2,19 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getColumnNum from '../getColumnNum';
 
 /**
  * External dependencies
  */
-import { isNumber, round, ceil, sum } from 'lodash';
+import { isNumber, round } from 'lodash';
 
 /**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getColumnSizeStyles = (obj, rowGapProps) => {
+const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -29,25 +30,23 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 			isNumber(columnSize) ||
 			isNumber(rowGapProps?.[`column-gap-${breakpoint}`])
 		) {
-			const columnSum = rowGapProps?.columnsSize
-				? sum(Object.values(rowGapProps.columnsSize))
-				: 100;
+			const columnNum = getColumnNum(
+				rowGapProps?.columnsSize,
+				clientId,
+				breakpoint
+			);
 
-			const rowNum =
-				ceil(columnSum, -round(columnSum).toString().length + 1) /
-				10 ** (round(columnSum).toString().length - 1);
-
-			const gapNum = rowGapProps.columnNum - 1;
+			const gapNum = columnNum - 1;
 			const gap =
-				((getLastBreakpointAttribute({
+				(getLastBreakpointAttribute({
 					target: 'column-gap',
 					breakpoint,
 					attributes: rowGapProps,
 				}) *
 					gapNum) /
-					rowGapProps.columnNum) *
-				rowNum;
+				columnNum;
 
+			console.log(gap);
 			const gapUnit = getLastBreakpointAttribute({
 				target: 'column-gap-unit',
 				breakpoint,

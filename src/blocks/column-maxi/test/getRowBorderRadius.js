@@ -1,4 +1,4 @@
-import getRowBorderRadius from '../getRowBorderRadius';
+import getRowBorderRadius from '../utils';
 
 describe('getRowBorderRadius', () => {
 	it('Get correct row border radius with one nested column', () => {

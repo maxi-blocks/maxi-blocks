@@ -5,6 +5,10 @@
 	.maxi-tabs-control {
 		margin-right: -8px;
 		margin-left: -8px;
+		&.maxi-settingstab-control_has-border-left-right {
+			margin-right: 0;
+			margin-left: 0;
+		}
 
 		&__button {
 			padding: 10px;

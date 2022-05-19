@@ -25,8 +25,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, maxiSetAttributes, clientId } =
-			this.props;
+		const { attributes, blockFullWidth, maxiSetAttributes } = this.props;
 		const { uniqueID, lastIndex } = attributes;
 
 		/**

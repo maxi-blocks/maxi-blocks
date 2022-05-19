@@ -25,9 +25,9 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, maxiSetAttributes } = this.props;
+		const { attributes, blockFullWidth, maxiSetAttributes, clientId } =
+			this.props;
 		const { uniqueID, title } = attributes;
-
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
 		 */
@@ -54,25 +54,35 @@ class edit extends MaxiBlockComponent {
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<RichText
-					className='maxi-pane-block__title'
-					value={title}
-					identifier='content'
-					onChange={title => {
-						if (this.typingTimeout) {
-							clearTimeout(this.typingTimeout);
-						}
+				<div id={`title-${clientId}`}>
+					<RichText
+						className='maxi-pane-block__title'
+						value={title}
+						identifier='content'
+						onChange={title => {
+							if (this.typingTimeout) {
+								clearTimeout(this.typingTimeout);
+							}
 
-						this.typingTimeout = setTimeout(() => {
-							maxiSetAttributes({ title });
-						}, 100);
-					}}
-					placeholder={__('Title', 'maxi-blocks')}
-					withoutInteractiveFormatting
-				/>
+							this.typingTimeout = setTimeout(() => {
+								maxiSetAttributes({ title });
+							}, 100);
+						}}
+						placeholder={__('Title', 'maxi-blocks')}
+						withoutInteractiveFormatting
+					/>
 
-				<div className='maxi-accordion-block__icon'>
-					<RawHTML>{attributes['icon-content']}</RawHTML>
+					<div
+						className='maxi-accordion-block__icon'
+						onClick={() => {
+							const paneElement = document.querySelector(
+								`#block-${clientId} > :not(div[id='title-${clientId}'])`
+							);
+							paneElement.style.display = 'none';
+						}}
+					>
+						<RawHTML>{attributes['icon-content']}</RawHTML>
+					</div>
 				</div>
 			</MaxiBlock>,
 		];

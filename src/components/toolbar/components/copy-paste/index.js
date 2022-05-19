@@ -31,44 +31,6 @@ import './editor.scss';
  * Component
  */
 
-const ATTRIBUTES = [
-	'alignment',
-	'arrow',
-	'background',
-	'backgroundColor',
-	'backgroundColorHover',
-	'backgroundGradient',
-	'backgroundGradientHover',
-	'backgroundHover',
-	'blockBackground',
-	'border',
-	'borderHover',
-	'borderRadius',
-	'borderRadiusHover',
-	'borderWidth',
-	'borderWidthHover',
-	'boxShadow',
-	'boxShadowHover',
-	'breakpoints',
-	'columnSize',
-	'display',
-	'divider',
-	'link',
-	'margin',
-	'motion',
-	'opacity',
-	'padding',
-	'position',
-	'shapeDivider',
-	'size',
-	'textAlignment',
-	'transform',
-	'transition',
-	'typography',
-	'typographyHover',
-	'zIndex',
-];
-
 const WRAPPER_BLOCKS = [
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/row-maxi',
@@ -80,7 +42,6 @@ const CopyPasteContent = props => {
 	const { clientId, blockName, copyPasteMapping, prefix, closeMoreSettings } =
 		props;
 
-	const [isOpen, setIsOpen] = useState(false);
 	const [specialPaste, setSpecialPaste] = useState({
 		settings: [],
 		canvas: [],
@@ -226,6 +187,12 @@ const CopyPasteContent = props => {
 	};
 
 	const checkNestedCheckboxes = (attrType, tab, checked) => {
+		const group = document.querySelectorAll(
+			`div[data-copy_paste_group='${attrType}']`
+		);
+		group.forEach(g => {
+			g.style.display = checked ? 'block' : 'none';
+		});
 		handleSpecialPaste({
 			attr: Object.keys(organizedAttributes[tab][attrType].group),
 			tab,
@@ -288,6 +255,8 @@ const CopyPasteContent = props => {
 								<div
 									className='toolbar-item__copy-paste__popover__item'
 									key={`copy-paste-${tab}-${attr}`}
+									data-copy_paste_group={attrType}
+									style={{ display: 'none' }}
 								>
 									<label
 										htmlFor={attr}
@@ -387,23 +356,29 @@ const CopyPasteContent = props => {
 				onClick={onPasteStyles}
 				disabled={isEmpty(copiedStyles)}
 			>
-				{__('Paste Style', 'maxi-blocks')}
+				{__('Paste styles - all', 'maxi-blocks')}
 			</Button>
 			{(!isEmpty(organizedAttributes.settings) ||
 				!isEmpty(organizedAttributes.canvas) ||
 				!isEmpty(organizedAttributes.advanced)) && (
-				<>
-					<Button
-						className='toolbar-item__copy-paste__popover__button'
-						onClick={() => setIsOpen(!isOpen)}
-					>
-						{__('Special Paste', 'maxi-blocks')}
-					</Button>
-					{isOpen && (
+				<Dropdown
+					className='maxi-copypaste__copy-selector'
+					contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
+					position='right bottom'
+					renderToggle={({ isOpen, onToggle }) => (
+						<Button
+							className='toolbar-item__copy-paste__popover__button'
+							onClick={onToggle}
+						>
+							{__('Special paste', 'maxi-blocks')}
+						</Button>
+					)}
+					renderContent={() => (
 						<form>
 							<SettingTabsControl
 								target='sidebar-settings-tabs'
 								disablePadding
+								depth={0}
 								items={getTabItems()}
 							/>
 							<Button
@@ -414,7 +389,7 @@ const CopyPasteContent = props => {
 							</Button>
 						</form>
 					)}
-				</>
+				/>
 			)}
 			{hasInnerBlocks && (
 				<Button
@@ -437,18 +412,4 @@ const CopyPasteContent = props => {
 	);
 };
 
-const CopyPaste = props => (
-	<Dropdown
-		className='maxi-copypaste__copy-selector'
-		contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
-		position='bottom right'
-		renderToggle={({ isOpen, onToggle }) => (
-			<Button onClick={onToggle} text='Copy'>
-				{__('Copy / Paste', 'maxi-blocks')}
-			</Button>
-		)}
-		renderContent={() => <CopyPasteContent {...props} />}
-	/>
-);
-
-export default CopyPaste;
+export default CopyPasteContent;

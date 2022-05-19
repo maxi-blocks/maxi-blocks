@@ -32,7 +32,6 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 
 	return {
 		label: __('Box shadow', 'maxi-blocks'),
-		disablePadding: true,
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<SettingTabsControl

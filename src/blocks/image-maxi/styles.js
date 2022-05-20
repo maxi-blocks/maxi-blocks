@@ -102,6 +102,9 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
@@ -412,6 +415,16 @@ const getImageShapeObject = (target, props) => {
 	return response;
 };
 
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -433,6 +446,8 @@ const getStyles = props => {
 					getHoverEffectTitleTextObject(props),
 				' .maxi-hover-details .maxi-hover-details__content p':
 					getHoverEffectContentTextObject(props),
+				' > .maxi-background-displayer > div':
+					getBackgroundDisplayer(props),
 				' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

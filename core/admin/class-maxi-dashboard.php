@@ -298,7 +298,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<p>'.__('Number of backups to keep (we recommend from 1 to 5, default is 3)', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_input('rollback-amount', '', 'number');
 
-            //  $this-> createZip(plugin_dir_path(__DIR__) . '../', wp_upload_dir()['basedir'] . '/maxi/backups/maxi-test.zip');
+            $this-> createZip(plugin_dir_path(__DIR__), wp_upload_dir()['basedir'] . '/maxi/backups/maxi-test.zip');
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -536,44 +536,36 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if (!extension_loaded('zip') || !file_exists($source)) {
                 return false;
             }
-            
+
             $zip = new ZipArchive();
             if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
                 return false;
             }
-            
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                DEFINE('DS', DIRECTORY_SEPARATOR); //for windows
-            } else {
-                DEFINE('DS', '/'); //for linux
-            }
-            
-            
-            $source = str_replace('\\', DS, realpath($source));
-            
+
+            $source = str_replace('\\', '/', realpath($source));
+
             if (is_dir($source) === true) {
                 $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
-                echo $source;
+
                 foreach ($files as $file) {
-                    $file = str_replace('\\', DS, $file);
-                    // Ignore "." and ".." folders
-                    if (in_array(substr($file, strrpos($file, DS)+1), array('.', '..'))) {
+                    $file = str_replace('\\', '/', $file);
+
+                    if (in_array(substr($file, strrpos($file, '/')+1), array('.', '..'))) {
                         continue;
                     }
-            
+
                     $file = realpath($file);
-            
-                    if (is_dir($file) === true) {
-                        $zip->addEmptyDir(str_replace($source . DS, '', $file . DS));
+
+                    if (is_dir($file) === true && !(str_contains($file, 'node_modules')) && !(str_contains($file, 'github')) && !(str_contains($file, 'vscode'))) {
+                        $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
                     } elseif (is_file($file) === true) {
-                        $zip->addFromString(str_replace($source . DS, '', $file), file_get_contents($file));
+                        $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
                     }
-                    echo $source;
                 }
             } elseif (is_file($source) === true) {
                 $zip->addFromString(basename($source), file_get_contents($source));
             }
-            
+
             return $zip->close();
         }
     }

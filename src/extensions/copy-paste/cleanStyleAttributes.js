@@ -106,21 +106,28 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 					Object.entries(copyPasteMapping[tab][type]).forEach(
 						([attrType, attr]) => {
 							let attrArray = [];
-							if (typeof attr === 'object' && attr.groupLabel)
-								attrArray = Object.keys(attr.props);
-							else attrArray = [attrType];
-							attrArray.forEach(prop => {
-								response = {
-									...response,
-									...getGroupAttributes(
-										attributes,
-										prop,
-										false,
-										type === 'withPrefix' ? prefix : '',
-										true
-									),
-								};
-							});
+							if (typeof attr === 'object' && attr.groupLabel) {
+								Object.keys(attr.props).forEach(prop => {
+									if (typeof attr.props[prop] === 'string')
+										attrArray = attrArray.concat(prop);
+									else
+										attrArray = attrArray.concat(
+											...attr.props[prop].props
+										);
+								});
+							} else if (typeof attr === 'object' && attr.value) {
+								attrArray = attr.value;
+							} else attrArray = [attrType];
+							response = {
+								...response,
+								...getGroupAttributes(
+									attributes,
+									attrArray,
+									false,
+									type === 'withPrefix' ? prefix : '',
+									true
+								),
+							};
 						}
 					);
 			});

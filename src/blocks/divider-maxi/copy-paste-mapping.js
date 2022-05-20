@@ -85,6 +85,7 @@ const copyPasteMapping = {
 			relations: 'Interaction',
 		},
 		withoutPrefix: {
+			breakpoints: 'Breakpoints',
 			customCss: 'Custom CSS',
 			scroll: 'Scroll',
 			transform: 'Transform',

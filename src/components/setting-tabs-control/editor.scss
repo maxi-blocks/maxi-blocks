@@ -175,6 +175,12 @@
 	background-color: #fff;
 	padding-left: 5px;
 
+	.maxi-text-control__input {
+		padding-left: 10px !important;
+	}
+	.maxi-select-control__input {
+		padding-left: 12px !important;	
+	}
 	.maxi-select-control__input:hover,
 	.maxi-text-control__input:hover {
 		border-color: var(--maxi-black-1-color) !important;
@@ -191,7 +197,7 @@
 	.maxi-base-control.maxi-block-style-control {
 		position: relative;
 		min-width: 75px;
-		margin-left: 10px;
+		margin: 0 5px;
 	}
 	.maxi-block-style-preview {
 		position: relative;
@@ -210,11 +216,13 @@
 		background: #fff;
 		padding: 0 5px;
 		pointer-events: none;
+		box-sizing: border-box;
+		-webkit-box-sizing: border-box;
 	}
 }
 .block-info-icon {
 	position: absolute;
-	right: 0;
+	right: 5px;
 	border: 1px solid var(--maxi-grey-1-color);
 	border-radius: 50%;
 	height: 16px;

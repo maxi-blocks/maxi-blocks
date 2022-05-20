@@ -44,6 +44,15 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 												let propArray = [prop];
 												if (
 													attrContent.props[prop]
+														.props
+												) {
+													propArray = [];
+													propArray =
+														attrContent.props[prop]
+															.props;
+												}
+												if (
+													attrContent.props[prop]
 														.type === 'withPalette'
 												) {
 													propArray = [];

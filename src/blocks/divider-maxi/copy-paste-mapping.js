@@ -4,7 +4,7 @@ const copyPasteMapping = {
 			alignment: {
 				groupLabel: 'Alignment',
 				props: {
-					'line-orientation': 'Line Orientation',
+					'line-orientation': 'Line orientation',
 					'line-vertical': 'Line vertical position',
 					'line-horizontal': 'Line horizontal position',
 				},
@@ -17,28 +17,35 @@ const copyPasteMapping = {
 						type: 'withPalette',
 						label: 'Line colour',
 					},
-					'divider-width': 'Line width',
-					'divider-height': 'Line height',
-					'divider-border-top-width': 'Horizontal line weight',
-					'divider-border-top-unit': 'Horizontal line weight unit',
-					'divider-border-right-width': 'Vertical line weight',
-					'divider-border-right-unit': 'Vertical line weight unit',
+					'divider-size': {
+						label: 'Line size',
+						props: ['divider-height', 'divider-width'],
+					},
+					'divider-weight': {
+						label: 'Line weight',
+						props: [
+							'divider-border-top-width',
+							'divider-border-top-unit',
+							'divider-border-right-width',
+							'divider-border-right-unit',
+						],
+					},
 				},
 			},
 		},
 		withPrefix: {
 			boxShadow: {
-				groupLabel: 'Box Shadow',
+				groupLabel: 'Box shadow',
 				props: {
-					boxShadow: 'Box Shadow',
-					boxShadowHover: 'Box Shadow Hover',
+					boxShadow: 'Box shadow',
+					boxShadowHover: 'Box shadow hover',
 				},
 			},
 		},
 	},
 	canvas: {
 		blockSpecific: {
-			blockFullWidth: 'Block Full Width',
+			blockFullWidth: 'Block full width',
 		},
 		withoutPrefix: {
 			blockBackground: 'Background',
@@ -54,10 +61,10 @@ const copyPasteMapping = {
 				},
 			},
 			boxShadow: {
-				groupLabel: 'Box Shadow',
+				groupLabel: 'Box shadow',
 				props: {
-					boxShadow: 'Box Shadow',
-					boxShadowHover: 'Box Shadow Hover',
+					boxShadow: 'Box shadow',
+					boxShadowHover: 'Box shadow hover',
 				},
 			},
 			opacity: 'Opacity',
@@ -70,7 +77,7 @@ const copyPasteMapping = {
 	},
 	advanced: {
 		blockSpecific: {
-			extraClassName: 'Custom CSS Classes',
+			extraClassName: 'Custom CSS classes',
 			anchorLink: {
 				label: 'Anchor',
 				value: ['anchorLink', 'linkSettings'],
@@ -78,15 +85,15 @@ const copyPasteMapping = {
 			relations: 'Interaction',
 		},
 		withoutPrefix: {
-			customCss: 'Custom Css',
+			customCss: 'Custom CSS',
 			scroll: 'Scroll',
 			transform: 'Transform',
-			transition: 'Hover Transition',
+			transition: 'Hover transition',
 			display: 'Display',
 			position: 'Position',
 			overflow: 'Overflow',
 			flex: 'Flex',
-			zIndex: 'z-Index',
+			zIndex: 'Z-index',
 		},
 	},
 };

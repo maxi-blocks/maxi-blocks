@@ -40,17 +40,40 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 										if (type === 'withBreakpoint') {
 											const newArray = [...attrArray];
 											attrArray = [];
-											newArray.forEach(a => {
-												const withBrkpt = [];
+											newArray.forEach(prop => {
+												let propArray = [prop];
+												if (
+													attrContent.props[prop]
+														.type === 'withPalette'
+												) {
+													propArray = [];
+													const withPalette =
+														paletteAttributesCreator(
+															{
+																prefix: prop,
+															}
+														);
+													propArray =
+														propArray.concat(
+															Object.keys(
+																withPalette
+															)
+														);
+												}
+												propArray.forEach(prop => {
+													const withBrkpt = [];
 
-												breakpoints.forEach(
-													breakpoint =>
-														withBrkpt.push(
-															`${a}-${breakpoint}`
-														)
-												);
-												attrArray =
-													attrArray.concat(withBrkpt);
+													breakpoints.forEach(
+														breakpoint =>
+															withBrkpt.push(
+																`${prop}-${breakpoint}`
+															)
+													);
+													attrArray =
+														attrArray.concat(
+															withBrkpt
+														);
+												});
 											});
 										}
 
@@ -82,7 +105,10 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 
 										if (!isEmpty(resp))
 											groupObj.group[prop] = {
-												label,
+												label:
+													typeof label === 'string'
+														? label
+														: label.label,
 												attribute: resp,
 											};
 									}
@@ -146,13 +172,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 						}
 					);
 			});
-
-			[
-				'withPrefix',
-				'withPrefixHover',
-				'withoutPrefix',
-				'withoutPrefixHover',
-			].forEach(type => {
+			[('withPrefix', 'withoutPrefix')].forEach(type => {
 				if (copyPasteMapping[tab][type])
 					Object.entries(copyPasteMapping[tab][type]).forEach(
 						([attrType, attrContent]) => {
@@ -170,12 +190,8 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 										const resp = getGroupAttributes(
 											attributes,
 											prop,
-											type === 'withPrefixHover' ||
-												type === 'withoutPrefixHover',
-											type === 'withPrefix' ||
-												type === 'withPrefixHover'
-												? prefix
-												: '',
+											false,
+											type === 'withPrefix' ? prefix : '',
 											true
 										);
 
@@ -192,12 +208,8 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 								const resp = getGroupAttributes(
 									attributes,
 									attrType,
-									type === 'withPrefixHover' ||
-										type === 'withoutPrefixHover',
-									type === 'withPrefix' ||
-										type === 'withPrefixHover'
-										? prefix
-										: '',
+									false,
+									type === 'withPrefix' ? prefix : '',
 									true
 								);
 

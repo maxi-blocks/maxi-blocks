@@ -364,7 +364,7 @@ const CopyPaste = props => {
 				className='toolbar-item__copy-paste__popover__button'
 				onClick={onCopyStyles}
 			>
-				{__('Copy Style', 'maxi-blocks')}
+				{__('Copy styles - all', 'maxi-blocks')}
 			</Button>
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
@@ -385,7 +385,7 @@ const CopyPaste = props => {
 							className='toolbar-item__copy-paste__popover__button'
 							onClick={onToggle}
 						>
-							{__('Special paste', 'maxi-blocks')}
+							{__('Paste special - select', 'maxi-blocks')}
 						</Button>
 					)}
 					renderContent={() => (

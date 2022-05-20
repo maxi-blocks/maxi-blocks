@@ -10,11 +10,11 @@ const transition = breakpointAttributesCreator({
 			type: 'number',
 			default: 0,
 		},
-		'easing': {
+		easing: {
 			type: 'string',
 			default: 'ease',
-		}
-	}
+		},
+	},
 });
 
 export default transition;

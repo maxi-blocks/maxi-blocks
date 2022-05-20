@@ -31,9 +31,9 @@ describe('inspector border', () => {
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		// add hover
-		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-content .maxi-tabs-control button',
-			buttons => buttons[1].click()
+		await borderAccordion.$eval(
+			'.maxi-responsive-tabs-control .maxi-settingstab-control .maxi-tabs-control__button-Hover',
+			buttons => buttons.click()
 		);
 
 		await page.$eval(

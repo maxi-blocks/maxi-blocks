@@ -12,7 +12,7 @@ import { useSelect } from '@wordpress/data';
 import Button from '../../../button';
 import Icon from '../../../icon';
 import Dropdown from '../../../dropdown';
-import CopyPasteContent from '../copy-paste';
+import CopyPaste from '../copy-paste';
 import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
 import Alignment from '../alignment';
@@ -66,7 +66,7 @@ const MoreSettings = props => {
 					)}
 					renderContent={args => (
 						<div>
-							<CopyPasteContent
+							<CopyPaste
 								clientId={clientId}
 								blockName={blockName}
 								prefix={prefix}

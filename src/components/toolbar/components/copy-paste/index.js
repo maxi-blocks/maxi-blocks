@@ -38,7 +38,7 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/group-maxi',
 ];
 
-const CopyPasteContent = props => {
+const CopyPaste = props => {
 	const { clientId, blockName, copyPasteMapping, prefix, closeMoreSettings } =
 		props;
 
@@ -187,17 +187,27 @@ const CopyPasteContent = props => {
 	};
 
 	const checkNestedCheckboxes = (attrType, tab, checked) => {
-		const group = document.querySelectorAll(
-			`div[data-copy_paste_group='${attrType}']`
-		);
-		group.forEach(g => {
-			g.style.display = checked ? 'block' : 'none';
-		});
 		handleSpecialPaste({
 			attr: Object.keys(organizedAttributes[tab][attrType].group),
 			tab,
 			group: attrType,
 			checked,
+		});
+	};
+
+	const groupExpand = (e, attrType) => {
+		e.target.setAttribute(
+			'aria-expanded',
+			e.target.getAttribute('aria-expanded') !== 'true'
+		);
+		const group = document.querySelectorAll(
+			`div[data-copy_paste_group='${attrType}']`
+		);
+		group.forEach(g => {
+			g.style.display =
+				e.target.getAttribute('aria-expanded') === 'true'
+					? 'block'
+					: 'none';
 		});
 	};
 
@@ -330,6 +340,11 @@ const CopyPasteContent = props => {
 										}
 									</span>
 								</label>
+								<span
+									onClick={e => groupExpand(e, attrType)}
+									aria-expanded='false'
+									className='copy-paste__group-icon'
+								/>
 							</div>
 						);
 
@@ -412,4 +427,4 @@ const CopyPasteContent = props => {
 	);
 };
 
-export default CopyPasteContent;
+export default CopyPaste;

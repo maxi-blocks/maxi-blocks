@@ -83,6 +83,9 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
@@ -505,6 +508,16 @@ const getIconHoverObject = (props, target) => {
 	return response;
 };
 
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = (props, scValues) => {
 	const { uniqueID, blockStyle } = props;
 
@@ -557,6 +570,8 @@ const getStyles = (props, scValues) => {
 				' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
 					props['icon-status-hover'] &&
 					getIconPathStyles(props, true),
+				' > .maxi-background-displayer > div':
+					getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

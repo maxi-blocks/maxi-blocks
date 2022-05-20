@@ -293,12 +293,20 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= '<p>'.__('Maxi Blocks includes a roll-back feature to restore a previous version of the plugin if required. It is recommended to run a backup of your website and database before you perform a rollback.', self::$maxi_text_domain).'</p>';
             
-            $description = '<h4>'.__('Automatically backup the plugin before updates', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'rollback');
-            $content .= '<p>'.__('Number of backups to keep (we recommend from 1 to 5, default is 3)', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_input('rollback-amount', '', 'number');
+            // TO DO: use maxi version. Jetpack is for tests only!
+            $maxi_version = get_plugin_data(WP_PLUGIN_DIR.'/jetpack/jetpack.php');
 
-            $this-> createZip(plugin_dir_path(__DIR__), wp_upload_dir()['basedir'] . '/maxi/backups/maxi-test.zip');
+            if ($maxi_version) {
+                $content .= '<p>'.__('You are using version <strong>', self::$maxi_text_domain).$maxi_version['Version'].'</strong></p>';
+            }
+            $content .= '<h4>'.__('Choose a version to rollback to', self::$maxi_text_domain).'</h4>';
+            $content .= $this->generate_dropdown();
+            $content .= '<input type="hidden" name="maxi_rollback_version" id="maxi-rollback-version" value="current">';
+            $version_to_roll = get_option('maxi_rollback_version');
+            if ($version_to_roll !== 'current') {
+                $this->rollback_zip($version_to_roll);
+            }
+            $content .= get_submit_button('Rollback');
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -425,6 +433,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $breakpoints_html;
         }
 
+        public function generate_dropdown()
+        {
+            $dropdown = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $dropdown .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__dropdown">';
+            $dropdown .= '<select name="maxi_versions" id="maxi-versions" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
+            $dropdown .= '<option value="current">'.__('Select a version', self::$maxi_text_domain).'</option>';
+
+            $versions = $this->get_versions_list();
+            if ($versions) {
+                foreach ($versions as $version => $url) {
+                    $dropdown .= '<option value="'.$url.'">'.$version.'</option>';
+                }
+            } else {
+                $dropdown .= '<option value="">'.__('Can\'t get a list of versions from WordPress.com', self::$maxi_text_domain).'</option>';
+            }
+            $dropdown .= '</select>';
+            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__dropdown
+            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+
+            return $dropdown;
+        }
+
         public function generate_setting($description, $option, $function = '', $type = 'text')
         {
             $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
@@ -457,14 +487,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'default' => false,
             );
 
-            $argsAlt = array(
-                'type' => 'boolean',
-                'default' => true,
-            );
-
-            $argsAmount = array(
-                'type' => 'number',
-                'default' => '3',
+            $argsRollback = array(
+                'type' => 'string',
+                'default' => 'current',
             );
             
             register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
@@ -475,8 +500,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
-            register_setting('maxi-blocks-settings-group', 'rollback', $argsAlt);
-            register_setting('maxi-blocks-settings-group', 'rollback-amount', $argsAmount);
+            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $argsRollback);
         }
 
         public function get_folder_size($folder)
@@ -531,42 +555,57 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
         }
 
-        public function createZip($source, $destination)
+        public function rollback_zip($url)
         {
-            if (!extension_loaded('zip') || !file_exists($source)) {
-                return false;
+            $zip_file = substr($url, strrpos($url, '/') + 1);
+            $file_content = file_put_contents($zip_file, fopen($url, 'r'), LOCK_EX);
+            if (false === $file_content) {
+                die('Couldn\'t write to file.');
             }
 
-            $zip = new ZipArchive();
-            if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
-                return false;
+            $zip = new ZipArchive;
+            $res = $zip->open($zip_file);
+
+            if ($res === true) {
+                $zip->extractTo(plugin_dir_path(__DIR__) . '../..');
+                $zip->close();
             }
 
-            $source = str_replace('\\', '/', realpath($source));
+            update_option('maxi_rollback_version', 'current');
+        }
 
-            if (is_dir($source) === true) {
-                $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
+        public function get_versions_list()
+        {
+            $args = array(
+                'slug' => 'jetpack',
+                'fields' => array(
+                    'downloaded' => true,
+                    'downloadlink' => true
+                )
+            );
+            $response = wp_remote_post(
+                'http://api.wordpress.org/plugins/info/1.0/',
+                array(
+                    'body' => array(
+                        'action' => 'plugin_information',
+                        'request'=>serialize((object)$args)
+                    )
+                )
+            );
 
-                foreach ($files as $file) {
-                    $file = str_replace('\\', '/', $file);
-
-                    if (in_array(substr($file, strrpos($file, '/')+1), array('.', '..'))) {
-                        continue;
-                    }
-
-                    $file = realpath($file);
-
-                    if (is_dir($file) === true && !(str_contains($file, 'node_modules')) && !(str_contains($file, 'github')) && !(str_contains($file, 'vscode'))) {
-                        $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
-                    } elseif (is_file($file) === true) {
-                        $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
+            if (!is_wp_error($response)) {
+                $returned_object = unserialize(wp_remote_retrieve_body($response));
+                $versions = $returned_object->versions;
+                if (!is_array($versions)) {
+                    return false;
+                } else {
+                    if ($versions) {
+                        return $versions;
                     }
                 }
-            } elseif (is_file($source) === true) {
-                $zip->addFromString(basename($source), file_get_contents($source));
+            } else {
+                return false;
             }
-
-            return $zip->close();
         }
     }
 endif;

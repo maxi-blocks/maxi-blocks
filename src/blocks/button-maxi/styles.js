@@ -246,6 +246,9 @@ const getContentObject = props => {
 			blockStyle: props.blockStyle,
 			textLevel: 'button',
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 	};
 
 	return response;
@@ -264,9 +267,6 @@ const getHoverContentObject = (props, scValues) => {
 				...getGroupAttributes(props, 'typography'),
 			},
 			scValues,
-		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -387,6 +387,9 @@ const getIconObject = (props, target) => {
 				prefix: 'icon-',
 				blockStyle: props.blockStyle,
 			}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 	};
 
 	const responsive = {

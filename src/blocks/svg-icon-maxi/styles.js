@@ -157,9 +157,6 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
 	};
 
 	return response;
@@ -218,6 +215,11 @@ const getStyles = props => {
 				':hover': getWrapperObjectHover(props),
 				' .maxi-svg-icon-block__icon': getNormalObject(props),
 				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
+				' .maxi-svg-icon-block__icon svg': {
+					transition: getTransitionStyles({
+						...getGroupAttributes(props, 'transition'),
+					}),
+				},
 				...getSVGStyles({
 					obj: {
 						...getGroupAttributes(props, 'svg'),

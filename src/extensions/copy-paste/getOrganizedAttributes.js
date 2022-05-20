@@ -181,7 +181,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 						}
 					);
 			});
-			[('withPrefix', 'withoutPrefix')].forEach(type => {
+			['withPrefix', 'withoutPrefix'].forEach(type => {
 				if (copyPasteMapping[tab][type])
 					Object.entries(copyPasteMapping[tab][type]).forEach(
 						([attrType, attrContent]) => {
@@ -193,12 +193,15 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									label: attrContent.groupLabel,
 									group: {},
 								};
-
 								Object.entries(attrContent.props).forEach(
 									([prop, label]) => {
+										let propArray = [];
+										if (typeof label === 'string')
+											propArray = [prop];
+										else propArray = label.props;
 										const resp = getGroupAttributes(
 											attributes,
-											prop,
+											propArray,
 											false,
 											type === 'withPrefix' ? prefix : '',
 											true
@@ -206,13 +209,33 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 
 										if (!isEmpty(resp))
 											groupObj.group[prop] = {
-												label,
+												label:
+													typeof label === 'string'
+														? label
+														: label.label,
 												attribute: resp,
 											};
 									}
 								);
 								if (!isEmpty(groupObj.group))
 									response[tab][attrType] = groupObj;
+							} else if (
+								typeof attrContent === 'object' &&
+								attrContent.value
+							) {
+								const resp = getGroupAttributes(
+									attributes,
+									attrContent.value,
+									false,
+									type === 'withPrefix' ? prefix : '',
+									true
+								);
+
+								if (!isEmpty(resp))
+									response[tab][attrType] = {
+										label: attrContent.label,
+										attribute: resp,
+									};
 							} else if (typeof attrContent === 'string') {
 								const resp = getGroupAttributes(
 									attributes,
@@ -232,24 +255,9 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 					);
 			});
 		}
-
-		response[tab] = orderAlphabetically(response[tab], 'label');
 	});
 
 	return response;
 };
 
-const orderAlphabetically = (obj, property) => {
-	if (isEmpty(obj)) return {};
-
-	const orderedKeys = Object.keys(obj).sort((a, b) =>
-		obj[a][property].localeCompare(obj[b][property])
-	);
-	const response = {};
-	orderedKeys.forEach(key => {
-		response[key] = obj[key];
-	});
-
-	return response;
-};
 export default getOrganizedAttributes;

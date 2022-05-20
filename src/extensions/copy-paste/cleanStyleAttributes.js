@@ -40,6 +40,12 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 								attrArray = [];
 								newArray.forEach(prop => {
 									let propArray = [prop];
+									if (attrContent.props[prop].props) {
+										propArray = [];
+										propArray =
+											attrContent.props[prop].props;
+									}
+
 									if (
 										attrContent.props[prop].type ===
 										'withPalette'

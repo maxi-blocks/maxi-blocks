@@ -175,6 +175,15 @@
 	background-color: #fff;
 	padding-left: 5px;
 
+	.maxi-select-control__input:hover,
+	.maxi-text-control__input:hover {
+		border-color: var(--maxi-black-1-color) !important;
+	}
+	.maxi-select-control__input:focus,
+	.maxi-text-control__input:focus {
+		border-color: var(--maxi-primary-color) !important;
+	}
+
 	.maxi-custom-label {
 		width: 100%;
 		position: relative;
@@ -194,12 +203,13 @@
 	.maxi-base-control__label {
 		position: absolute;
 		top: -8px;
-		left: 10%;
+		left: 8px;
 		font-size: 8px;
 		color: #5d5e5f;
 		font-style: italic;
 		background: #fff;
 		padding: 0 5px;
+		pointer-events: none;
 	}
 }
 .block-info-icon {
@@ -207,14 +217,17 @@
 	right: 0;
 	border: 1px solid var(--maxi-grey-1-color);
 	border-radius: 50%;
-	height: 18px;
-	width: 18px;
+	height: 16px;
+	width: 16px;
 	text-align: center;
 	top: 5px;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	&:hover {
-		border: 1px solid var(--maxi-black-1-color);
+		background: var(--maxi-grey-4-color);
 	}
 
 	span {

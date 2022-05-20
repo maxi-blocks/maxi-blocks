@@ -3,7 +3,11 @@
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-import { isNil } from 'lodash';
+/**
+ * Internal dependencies
+ */
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+
 /**
  * Generates size styles object
  *
@@ -12,22 +16,36 @@ import { isNil } from 'lodash';
 const getTransitionStyles = obj => {
 	const response = {};
 
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {
-			...(!isNil(obj[`transition-duration-${breakpoint}`]) && {
-				'transition-duration': `${
-					obj[`transition-duration-${breakpoint}`]
-				}s`,
-			}),
-			...(!isNil(obj[`transition-delay-${breakpoint}`]) && {
-				'transition-delay': `${obj[`transition-delay-${breakpoint}`]}s`,
-			}),
-			...(!isNil(obj[`transition-timing-function-${breakpoint}`]) && {
-				'transition-timing-function':
-					obj[`transition-timing-function-${breakpoint}`],
-			}),
-		};
-	});
+	if (obj['transition-status'])
+		breakpoints.forEach(breakpoint => {
+			const transitionDuration = getLastBreakpointAttribute({
+				target: 'transition-duration',
+				breakpoint,
+				attributes: obj,
+			});
+
+			const transitionDelay = getLastBreakpointAttribute({
+				target: 'transition-delay',
+				breakpoint,
+				attributes: obj,
+			});
+
+			const transitionTimingFunction = getLastBreakpointAttribute({
+				target: 'easing',
+				breakpoint,
+				attributes: obj,
+			});
+
+			if (
+				transitionDuration ||
+				transitionDelay ||
+				transitionTimingFunction
+			) {
+				response[breakpoint] = {
+					transition: `${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction}`,
+				};
+			}
+		});
 
 	return response;
 };

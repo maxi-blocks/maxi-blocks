@@ -118,6 +118,11 @@ class edit extends MaxiBlockComponent {
 
 		const isEmptyContent = isEmpty(content);
 
+		const handleOnResizeStart = () =>
+			maxiSetAttributes({
+				'transition-status': false,
+			});
+
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
@@ -132,6 +137,7 @@ class edit extends MaxiBlockComponent {
 						attributes,
 					})
 				),
+				'transition-status': true,
 			});
 		};
 
@@ -257,6 +263,7 @@ class edit extends MaxiBlockComponent {
 								bottomLeft: true,
 								topLeft: true,
 							}}
+							onResizeStart={handleOnResizeStart}
 							onResizeStop={handleOnResizeStop}
 						>
 							<RawHTML>{content}</RawHTML>

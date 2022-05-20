@@ -157,6 +157,9 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 	};
 
 	return response;

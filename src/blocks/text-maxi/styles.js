@@ -147,6 +147,9 @@ const getTypographyObject = props => {
 			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 	};
 
 	return response;

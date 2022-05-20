@@ -26,7 +26,15 @@ import { withMaxiInspector } from '../../extensions/inspector';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
+		clientId,
+	} = props;
 
 	return (
 		<InspectorControls>

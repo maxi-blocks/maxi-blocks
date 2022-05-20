@@ -15,7 +15,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
  */
 const transition = ({
 	props,
-	label = __('Hyperlink hover transition', 'maxi-blocks'),
+	label = __('Hover transition', 'maxi-blocks'),
 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 

@@ -1,4 +1,8 @@
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setTransitionToSelectors,
+	stylesCleaner,
+} from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getBlockBackgroundStyles,
@@ -218,18 +222,16 @@ const getStyles = props => {
 				':hover': getWrapperObjectHover(props),
 				' .maxi-svg-icon-block__icon': getNormalObject(props),
 				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-				' .maxi-svg-icon-block__icon svg': {
-					transition: getTransitionStyles({
-						...getGroupAttributes(props, 'transition'),
+				...setTransitionToSelectors(
+					getSVGStyles({
+						obj: {
+							...getGroupAttributes(props, 'svg'),
+						},
+						target: ' .maxi-svg-icon-block__icon',
+						blockStyle,
 					}),
-				},
-				...getSVGStyles({
-					obj: {
-						...getGroupAttributes(props, 'svg'),
-					},
-					target: ' .maxi-svg-icon-block__icon',
-					blockStyle,
-				}),
+					props
+				),
 				...(props['svg-status-hover'] && {
 					...getSVGStyles({
 						obj: {

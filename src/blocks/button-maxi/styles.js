@@ -8,6 +8,7 @@ import { isNil, isEmpty } from 'lodash';
  */
 import {
 	getGroupAttributes,
+	setTransitionToSelectors,
 	stylesCleaner,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -531,12 +532,15 @@ const getStyles = (props, scValues) => {
 					props,
 					scValues
 				),
-				...getSVGStyles({
-					obj: props,
-					target: '.maxi-button-block__icon',
-					blockStyle,
-					prefix: 'icon-',
-				}),
+				...setTransitionToSelectors(
+					getSVGStyles({
+						obj: props,
+						target: '.maxi-button-block__icon',
+						blockStyle,
+						prefix: 'icon-',
+					}),
+					props
+				),
 				...(props['icon-status-hover'] && {
 					...getSVGStyles({
 						obj: props,

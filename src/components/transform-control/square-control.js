@@ -809,7 +809,7 @@ const SquareControl = props => {
 						}
 					>
 						<Button
-							aria-label={__('Sync Units', 'maxi-blocks')}
+							aria-label={__('Sync units', 'maxi-blocks')}
 							isPrimary={sync}
 							aria-pressed={sync}
 							onClick={() => changeSync(!sync)}

@@ -2,7 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useReducer } from '@wordpress/element';
 import { select, dispatch } from '@wordpress/data';
 
 /**
@@ -40,19 +40,17 @@ const BlockStylesControl = props => {
 		return null;
 	};
 
-	const [descVisibility, setDescVisibility] = useState(false);
+	const [, setDescVisibility] = useReducer(isVisible => {
+		const blockDesc = document.querySelector(
+			'.block-editor-block-card__description'
+		);
 
-	const toggleDesc = () => {
-		setDescVisibility(!descVisibility);
-	};
+		!isVisible
+			? (blockDesc.style.display = 'block')
+			: (blockDesc.style.display = 'none');
 
-	const blockDesc = document.querySelector(
-		'.block-editor-block-card__description'
-	);
-
-	!descVisibility
-		? (blockDesc.style.display = 'none')
-		: (blockDesc.style.display = 'block');
+		return !isVisible;
+	}, false);
 
 	const getAllInnerBlocks = (id, blockStyle) => {
 		const { getBlockOrder } = select('core/block-editor');
@@ -73,7 +71,7 @@ const BlockStylesControl = props => {
 	};
 	return (
 		<>
-			<div className='block-info-icon' onClick={toggleDesc}>
+			<div className='block-info-icon' onClick={setDescVisibility}>
 				<span className='block-info-icon-span'>i</span>
 			</div>
 			{isFirstOnHierarchy ? (

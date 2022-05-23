@@ -35,15 +35,13 @@
 				line-height: 14px;
 			}
 			&__description {
-				display: block;
+				display: none;
 				width: 100%;
 				margin: 0;
+				position: relative;
+				left: -25px;
+				padding-top: 5px;
 			}
 		}
-	}
-	.block-editor-block-card__description {
-		position: relative;
-		left: -25px;
-		padding-top: 5px;
 	}
 }

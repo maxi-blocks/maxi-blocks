@@ -101,8 +101,6 @@ if (class_exists('MaxiBlocks_Dashboard')) {
     MaxiBlocks_Dashboard::register();
 }
 
-
-
 /**
  * TODO: Old init.php file. Please, delete these lines of comment and require onces this file has been removed
  */

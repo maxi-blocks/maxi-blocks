@@ -30,10 +30,10 @@ const Inspector = props => {
 		attributes,
 		deviceType,
 		maxiSetAttributes,
+		clientId,
 		insertInlineStyles,
 		cleanInlineStyles,
 		inlineStylesTargets,
-		clientId,
 	} = props;
 
 	return (
@@ -217,11 +217,20 @@ const Inspector = props => {
 															attributes,
 															['divider', 'size']
 														)}
-														onChange={obj =>
+														onChangeInline={obj =>
+															insertInlineStyles({
+																obj,
+																target: inlineStylesTargets.dividerColor,
+															})
+														}
+														onChange={obj => {
 															maxiSetAttributes(
 																obj
-															)
-														}
+															);
+															cleanInlineStyles(
+																inlineStylesTargets.dividerColor
+															);
+														}}
 														breakpoint={deviceType}
 														clientId={clientId}
 													/>

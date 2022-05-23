@@ -16,17 +16,13 @@ import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsText, categoriesText } from './custom-css';
 import listTab from './list-tab';
-
-/**
- * External dependencies
- */
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, context } = props;
 	const { isList, textLevel } = attributes;
 
 	return (
@@ -69,6 +65,7 @@ const Inspector = props => {
 														}
 													/>
 												),
+												indicatorProps: ['textLevel'],
 											},
 										...(isList && listTab(props)),
 										...inspectorTabs.alignment({
@@ -88,6 +85,7 @@ const Inspector = props => {
 												target: 'hover',
 												type: textLevel,
 											},
+											context,
 										}),
 										...inspectorTabs.blockBackground({
 											props,

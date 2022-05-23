@@ -3,8 +3,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
-
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
@@ -52,6 +50,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'maxi_admin_scripts_styles'
             ));
+
+            $this->allow_svg_json_uploads();
         }
 
         public function maxi_get_menu_icon_base64()
@@ -115,7 +115,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 
                 echo '<a class="maxi-dashboard_nav-tab nav-tab ' . esc_attr($tab_page) . esc_attr($active_tab) . '" href="?page=' . esc_attr(self::$maxi_slug_dashboard) . '&tab=' . esc_attr($tab_page) . '">' . wp_kses($tab_name, $this->maxi_blocks_allowed_html()) . '</a>';
             }
-            echo '</h4> <form action="options.php?panel=test&" method="post" class="maxi-dashboard_form">';
+            echo '</h4><form action="options.php" method="post" class="maxi-dashboard_form">';
             settings_fields('maxi-blocks-settings-group');
             do_settings_sections('maxi-blocks-settings-group');
             echo '<div class="maxi-dashboard_main">';
@@ -163,8 +163,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<a href="" target="_blank"> '.__('Learn more about Maxi Blocks Pro', self::$maxi_text_domain).'</a>.</p>';
 
             $content .= '<h3>'.__('Roadmap', self::$maxi_text_domain).'</h3>';
-            $content .= '<p>'.__('There’s a grand plan and we need your help. Share your suggestions or vote on what to build next.', self::$maxi_text_domain).'</p>';
-            $content .= '<a href="" target="_blank">'.__('See what’s planned in the roadmap', self::$maxi_text_domain).'</a>';
+            $content .= '<p>'.__('There’s a grand plan and we need your help. Share your suggestions or vote on what to build next.', self::$maxi_text_domain).' <a href="" target="_blank">'.__('See what’s planned in the roadmap', self::$maxi_text_domain).'</a></p>';
 
             $content .= '<h3>'.__('Beta 1.0', self::$maxi_text_domain).'</h3>';
             $content .= '<p>'.__('The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.', self::$maxi_text_domain).'</p>';
@@ -207,15 +206,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description = '<h4>'.__('Hide interface tooltips', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Show or hide tooltips on mouse-hover.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'show_tooltips');
+            $content .= $this->generate_setting($description, 'hide_tooltips');
 
             $description = '<h4>'.__('Accessibility: Enable focus indicator', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'accessibility_option');
-
-            $description = '<h4>'.__('Auto-collapse panels in settings sidebar', self::$maxi_text_domain).'</h4>';
-            $description .= '<p>'.__('Collapsible panels reduce vertical scrolling for the page editor experience.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'collapse_panels');
 
             $content .= get_submit_button();
             
@@ -227,10 +222,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description = '<h4>'.__('Use post excerpts, if defined by your theme', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Let your active theme control the length and display of post excerpts.', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'post_excerpts');
-
-            $description = '<h4>'.__('Enable responsive image functionality', self::$maxi_text_domain).'</h4>';
-            $description .= '<p>'.__('Ensure your images look great no matter the screen size of the device it is viewed upon.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'responsive_image');
 
             $description = '<h4>'.__('Google API Key', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Please create your own API key on the ', self::$maxi_text_domain);
@@ -249,14 +240,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description .= '<p>'.__('Scalable Vector Graphics (SVG) are great for design and SEO. Commonly used as icons and shapes. These small image files scale without any blur. Style Cards rely on SVG for automatic colour changes. JSON files enable the import and export of templates in the library.', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'allow_svg_json_uploads');
 
-            $description = '<h4>'.__('Google Fonts load method', self::$maxi_text_domain).'</h4>';
-            $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
-            privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain).'</p>';
+            $description = '<h4>'.__('Serve Google fonts locally', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__(' Local storage: Download, store and serve font files from a WordPress directory on
-            your website. This method removes the connection to Google’s servers for a visitor browsing your website.
+            your website. This method removes the connection to_ Google’s servers for a visitor browsing your website.
             This can improve or degrade performance depending on hosting quality or resource usage. Please test and
             monitor carefully. Unused font files are removed periodically to conserve space.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'local_fonts', new MaxiBlocks_Local_Fonts());
+            $description .= '<p>'.__('Google servers: Serve Google font files directly from Google’s servers. It may impact
+            privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain);
+            $description .= '<i> '.__('(Default)', self::$maxi_text_domain).'</i></p>';
+            $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
 
             if ($fontUploadsDirSize > 0) {
                 $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__(
@@ -264,6 +256,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi-blocks'
                 ).'</p>';
                 if (!(bool) get_option('local_fonts')) {
+                    update_option('local_fonts_uploaded', false);
                     $description = '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
                     $content .= $this->generate_setting($description, 'remove_local_fonts', $this->remove_local_fonts());
                 }
@@ -308,10 +301,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<h4>'.__('Responsive design breakpoints', self::$maxi_text_domain).'</h4>';
             $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', self::$maxi_text_domain).'</p>';
             $content .= '<p>'.__('Normally you don’t need to change breakpoint values. But, you might have special requirements. Adjust at your own discretion and remember to test, test, test.', self::$maxi_text_domain).'</p>';
-
+            $content .= $this->generate_breakpoint_inputs();
+            $content .= get_submit_button();
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-
             $content .= '</div>'; // maxi-dashboard_main-content_accordion
             $content .= '</div>'; // maxi-dashboard_main-content
 
@@ -379,6 +372,50 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $input;
         }
 
+        public function generate_breakpoint_input($breakpoint, $value)
+        {
+            $breakpoint_label = 'maxi-breakpoint-'.$breakpoint;
+
+            $input = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $input .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
+            $input .= '<label class="maxi-dashboard_main-content_accordion-item-content-switcher__label" for="';
+            $input .= $breakpoint_label;
+            $input .= '">';
+            $input .= $breakpoint;
+            $input .= '</label>'; // maxi-dashboard_main-content_accordion-item-content-switcher__label
+            $input .= '<input name="';
+            $input .= $breakpoint_label.'" id="'.$breakpoint_label;
+            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-number" type="number" min="0" value="';
+            $input .= $value;
+            $input .= '">';
+            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__input
+            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+
+            return $input;
+        }
+
+        public function generate_breakpoint_inputs()
+        {
+            require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
+            $api = new MaxiBlocks_API();
+          
+            $breakpoints_html = '';
+            $breakpoints_array = array_reverse(($api->get_maxi_blocks_breakpoints()));
+
+            foreach ($breakpoints_array as $breakpoint => $value) {
+                $value_num = intval($value);
+                $breakpoints_html .= $this->generate_breakpoint_input($breakpoint, $value_num);
+            }
+
+            $breakpoints_string = esc_html(json_encode($breakpoints_array));
+
+            $breakpoints_html .= '<input type="hidden" name="maxi_breakpoints" id="maxi-breakpoints" value="';
+            $breakpoints_html .= $breakpoints_string;
+            $breakpoints_html .= '">';
+
+            return $breakpoints_html;
+        }
+
         public function generate_setting($description, $option, $function = '')
         {
             $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
@@ -406,10 +443,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function register_maxi_blocks_settings()
         {
-            register_setting('maxi-blocks-settings-group', 'accessibility_option');
-            register_setting('maxi-blocks-settings-group', 'local_fonts');
-            register_setting('maxi-blocks-settings-group', 'remove_local_fonts');
+            $args = array(
+                'type' => 'boolean',
+                'default' => false,
+            );
+            
+            register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
+            register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
+            register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
+            register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
+            register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
+            register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
+            register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
         }
 
         public function get_folder_size($folder)
@@ -440,6 +486,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
             $this->delete_all_files($fonts_uploads_dir);
             update_option('remove_local_fonts', 0);
+        }
+
+        public function local_fonts_upload()
+        {
+            if (!get_option('local_fonts_uploaded')) {
+                require_once(plugin_dir_path(__DIR__) . '../core/class-maxi-local-fonts.php');
+                new MaxiBlocks_Local_Fonts();
+            }
+        }
+
+        public function allow_svg_json_uploads()
+        {
+            function maxi_svg_json_upload($mimes)
+            {
+                $mimes['json'] = 'text/plain';
+                $mimes['svg'] = 'image/svg+xml';
+                return $mimes;
+            }
+
+            if (get_option('allow_svg_json_uploads')) {
+                add_filter('upload_mimes', 'maxi_svg_json_upload');
+            }
         }
     }
 endif;

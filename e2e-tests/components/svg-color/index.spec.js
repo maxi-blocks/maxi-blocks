@@ -17,10 +17,10 @@ import {
 	getAttributes,
 } from '../../utils';
 
-describe('Svg Color', () => {
-	it('Check Svg Color', async () => {
+describe('Icon Color', () => {
+	it('Check Icon Color', async () => {
 		await createNewPost();
-		await insertBlock('SVG Icon Maxi');
+		await insertBlock('Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block
@@ -32,7 +32,7 @@ describe('Svg Color', () => {
 			svg => svg.click()
 		);
 
-		await openSidebarTab(page, 'style', 'colour');
+		await openSidebarTab(page, 'style', 'icon colour');
 
 		await editColorControl({
 			page,

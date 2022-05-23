@@ -32,7 +32,6 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 
 	return {
 		label: __('Box shadow', 'maxi-blocks'),
-		disablePadding: true,
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<SettingTabsControl
@@ -69,7 +68,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 								<>
 									<ToggleSwitch
 										label={__(
-											'Enable Box Shadow Hover',
+											'Enable box shadow hover',
 											'maxi-blocks'
 										)}
 										selected={hoverStatus}

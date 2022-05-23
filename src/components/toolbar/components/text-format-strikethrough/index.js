@@ -10,11 +10,6 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import {
-	setFormat,
-	getCustomFormatValue,
-} from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -30,32 +25,16 @@ import { toolbarStrikethrough } from '../../../../icons';
  * TextFormatStrikethrough
  */
 const TextFormatStrikethrough = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
-		props;
+	const { onChangeFormat, getValue, tooltipHide } = props;
 
-	const getTextDecorationValue = () => {
-		return (
-			getCustomFormatValue({
-				typography: { ...getGroupAttributes(props, 'typography') },
-				formatValue,
-				prop: 'text-decoration',
-				breakpoint,
-				textLevel,
-				styleCard,
-			}) || ''
-		);
-	};
-
-	const textDecorationValue = getTextDecorationValue();
+	const getTextDecorationValue = () => getValue('text-decoration') || '';
 
 	const [isActive, setIsActive] = useState(
-		textDecorationValue.indexOf('line-through') >= 0
+		getTextDecorationValue().indexOf('line-through') >= 0
 	);
 
 	useEffect(() => {
-		const textDecorationValue = getTextDecorationValue();
-
-		setIsActive(textDecorationValue.indexOf('line-through') >= 0);
+		setIsActive(getTextDecorationValue().indexOf('line-through') >= 0);
 	});
 
 	const onClick = () => {
@@ -73,28 +52,13 @@ const TextFormatStrikethrough = props => {
 		response = trim(response);
 		if (isEmpty(response)) response = 'unset';
 
-		const obj = setFormat({
-			formatValue,
-			isActive,
-			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
-			value: {
-				'text-decoration': response,
-			},
-			breakpoint,
-			textLevel,
+		onChangeFormat({
+			'text-decoration': response,
 		});
-
-		setIsActive(!isActive);
-
-		onChange(obj);
 	};
 
-	return (
-		<Tooltip
-			text={__('Strikethrough', 'maxi-blocks')}
-			position='bottom center'
-		>
+	const contentStrikethrough = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__strikethrough'
 				onClick={onClick}
@@ -105,8 +69,19 @@ const TextFormatStrikethrough = props => {
 					icon={toolbarStrikethrough}
 				/>
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipHide)
+		return (
+			<Tooltip
+				text={__('Strikethrough', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{contentStrikethrough()}
+			</Tooltip>
+		);
+	return contentStrikethrough();
 };
 
 export default TextFormatStrikethrough;

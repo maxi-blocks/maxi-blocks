@@ -18,6 +18,7 @@ import {
 	styleResolver,
 	getResponsiveStyles,
 } from '../../extensions/styles';
+import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 
 /**
  * External dependencies
@@ -61,13 +62,6 @@ const RelationControl = props => {
 					)
 			  ) + 1
 			: 1;
-
-	const getClientId = uniqueID => {
-		const element = document.querySelector(`[uniqueId="${uniqueID}"]`);
-		const clientId = element ? element.getAttribute('data-block') : null;
-
-		return clientId;
-	};
 
 	const getOptions = clientId => {
 		const blockName = getBlock(clientId)?.name;
@@ -115,7 +109,7 @@ const RelationControl = props => {
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
-		const clientId = getClientId(item.uniqueID);
+		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
 		const selectedSettingsObj = getOptions(clientId).find(
 			option => option.label === item.settings
@@ -225,7 +219,7 @@ const RelationControl = props => {
 				variant='secondary'
 				onClick={onAddRelation}
 			>
-				{__('Add new relation', 'maxi-blocks')}
+				{__('Add new interaction', 'maxi-blocks')}
 			</Button>
 			{!isEmpty(relations) && (
 				<ListControl>
@@ -235,13 +229,14 @@ const RelationControl = props => {
 							className='maxi-relation-control__item'
 							title={
 								item.title ||
-								__('Untitled relation', 'maxi-blocks')
+								__('Untitled interaction', 'maxi-blocks')
 							}
 							content={
 								<div className='maxi-relation-control__item__content'>
 									<TextControl
-										label={__('Title', 'maxi-blocks')}
+										label={__('Name', 'maxi-blocks')}
 										value={item.title}
+										placeholder={__('Give memorable name...')}
 										onChange={value =>
 											onChangeRelationProperty(
 												item.id,
@@ -253,7 +248,7 @@ const RelationControl = props => {
 									<div
 										className={classnames(
 											'maxi-relation-control__item__content__target',
-											getClientId(item.uniqueID) &&
+											getClientIdFromUniqueId(item.uniqueID) &&
 												'maxi-relation-control__item__content__target--has-block'
 										)}
 									>
@@ -285,14 +280,14 @@ const RelationControl = props => {
 											},
 											{
 												label: __(
-													'Click',
+													'On click',
 													'maxi-blocks'
 												),
 												value: 'click',
 											},
 											{
 												label: __(
-													'Hover',
+													'On hover',
 													'maxi-blocks'
 												),
 												value: 'hover',
@@ -318,7 +313,7 @@ const RelationControl = props => {
 												value: '',
 											},
 											...getOptions(
-												getClientId(item.uniqueID)
+												getClientIdFromUniqueId(item.uniqueID)
 											).map(option => ({
 												label: option.label,
 												value: option.label,

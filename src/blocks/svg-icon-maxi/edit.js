@@ -237,7 +237,7 @@ class edit extends MaxiBlockComponent {
 									attributes,
 								})
 									? '100%'
-									: null
+									: undefined
 							}
 							defaultSize={{
 								width: `${getLastBreakpointAttribute({

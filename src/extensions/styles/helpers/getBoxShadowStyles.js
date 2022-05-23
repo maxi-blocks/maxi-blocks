@@ -1,16 +1,15 @@
 /**
  * Internal dependencies
  */
-import defaultBoxShadow from '../defaults/boxShadow';
-import defaultBoxShadowHover from '../defaults/boxShadowHover';
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getAttributeValue from '../getAttributeValue';
+import getDefaultAttribute from '../getDefaultAttribute';
 
 /**
  * External dependencies
  */
-import { round, isNumber, isNil } from 'lodash';
-import getAttributeValue from '../getAttributeValue';
+import { isNil, isNumber, round } from 'lodash';
 
 /**
  * General
@@ -33,7 +32,6 @@ const getBoxShadowStyles = ({
 	blockStyle,
 }) => {
 	const response = {};
-	const defaultObj = isHover ? defaultBoxShadowHover : defaultBoxShadow;
 
 	breakpoints.forEach(breakpoint => {
 		let boxShadowString = '';
@@ -49,13 +47,9 @@ const getBoxShadowStyles = ({
 
 			const defaultValue =
 				breakpoint === 'general'
-					? defaultObj[
-							`box-shadow-${target}-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-					  ].default ||
-					  defaultBoxShadow[`box-shadow-${target}-${breakpoint}`]
-							.default
+					? getDefaultAttribute(
+							`${prefix}box-shadow-${target}-${breakpoint}`
+					  )
 					: getLastBreakpointAttribute({
 							target: `${prefix}box-shadow-${target}`,
 							breakpoint: getPrevBreakpoint(breakpoint),
@@ -109,8 +103,13 @@ const getBoxShadowStyles = ({
 		});
 
 		// Color
-		const { value: paletteColor, defaultValue: defaultColor } =
+		const { value: paletteColor, defaultValue: defaultPaletteColor } =
 			paletteStatus ? getValue('palette-color') : getValue('color');
+		const defaultColor = getColorRGBAString({
+			firstVar: `color-${defaultPaletteColor}`,
+			opacity: getValue('palette-opacity').defaultValue,
+			blockStyle,
+		});
 
 		const color =
 			paletteStatus && paletteColor
@@ -134,7 +133,8 @@ const getBoxShadowStyles = ({
 				horizontalUnit !== defaultHorizontalUnit) ||
 			(!isNil(verticalUnit) && verticalUnit !== defaultVerticalUnit) ||
 			(!isNil(blurUnit) && blurUnit !== defaultBlurUnit) ||
-			(!isNil(spreadUnit) && spreadUnit !== defaultSpreadUnit);
+			(!isNil(spreadUnit) && spreadUnit !== defaultSpreadUnit) ||
+			(!isNil(color) && color !== defaultColor);
 
 		const horizontalValue = isNumber(horizontal)
 			? horizontal

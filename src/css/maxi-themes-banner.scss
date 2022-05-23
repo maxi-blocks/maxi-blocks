@@ -24,7 +24,7 @@ body.maxi-blocks--active .maxi-block {
 	transition: none;
 	line-height: 1;
 
-	* {
+	*:not(.maxi-background-displayer) {
 		box-sizing: border-box;
 	}
 

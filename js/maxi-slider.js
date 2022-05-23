@@ -1,5 +1,33 @@
+/* eslint-disable max-classes-per-file */
 console.log('MaxiSlider in da house!');
 
+class Slide {
+	constructor(el, id) {
+		this._slide = el;
+		this._id = id;
+
+		this.isActive = 0;
+
+		this.size = this._slide.getBoundingClientRect();
+	}
+
+	get isActive() {
+		return this._isActive;
+	}
+
+	set isActive(activeSlideId) {
+		this._isActive = this._id === activeSlideId;
+		this._slide.classList.toggle('slider-item--active', this._isActive);
+	}
+
+	get size() {
+		return this._size;
+	}
+
+	set size(size) {
+		this._size = size;
+	}
+}
 class MaxiSlider {
 	constructor(el) {
 		this._container = el;
@@ -107,8 +135,8 @@ class MaxiSlider {
 
 	insertSlideClones(numberOfClones) {
 		for (let i = 0; i < numberOfClones; i += 1) {
-			let frontClone = this.getSlideClone(i);
-			let backClone = this.getSlideClone(this._slides.length - 1 - i);
+			const frontClone = this.getSlideClone(i);
+			const backClone = this.getSlideClone(this._slides.length - 1 - i);
 			this._wrapper.append(frontClone);
 			this._wrapper.prepend(backClone);
 			this.realFirstElOffset += backClone.getBoundingClientRect().width;
@@ -117,7 +145,7 @@ class MaxiSlider {
 	}
 
 	getSlideClone(slideIndex) {
-		let clone = this._slides[slideIndex]._slide.cloneNode(true);
+		const clone = this._slides[slideIndex]._slide.cloneNode(true);
 		clone.classList.add('maxi-slide-block--clone');
 		return clone;
 	}
@@ -128,7 +156,7 @@ class MaxiSlider {
 
 		this._wrapper.style.transition = '';
 
-		if (e.type == 'touchstart') {
+		if (e.type === 'touchstart') {
 			this.initPosition = e.touches[0].clientX;
 		} else {
 			this.initPosition = e.clientX;
@@ -148,17 +176,17 @@ class MaxiSlider {
 			this.currentSlide + 1 >= this._slides.length &&
 			this.dragPosition < this.initPosition
 		) {
-			this.currentSlide = this.currentSlide - this._slides.length;
+			this.currentSlide -= this._slides.length;
 			this.sliderAction(false);
 		} else if (
 			this.currentSlide <= 0 &&
 			this.dragPosition > this.initPosition
 		) {
-			this.currentSlide = this.currentSlide + this._slides.length;
+			this.currentSlide += this._slides.length;
 			this.sliderAction(false);
 		}
 
-		if (e.type == 'touchmove') {
+		if (e.type === 'touchmove') {
 			dragMove = this.dragPosition - e.touches[0].clientX;
 			this.dragPosition = e.touches[0].clientX;
 		} else {
@@ -166,11 +194,11 @@ class MaxiSlider {
 			this.dragPosition = e.clientX;
 		}
 
-		this.wrapperTranslate = this.wrapperTranslate + dragMove;
+		this.wrapperTranslate += dragMove;
 	}
 
 	dragEnd(e) {
-		if (e.type == 'touchend') {
+		if (e.type === 'touchend') {
 			this.endPosition = this.dragPosition;
 		} else {
 			this.endPosition = e.clientX;
@@ -191,7 +219,7 @@ class MaxiSlider {
 	slideNext() {
 		if (this.currentSlide + 1 < this._slides.length || this.isLoop) {
 			// Update current slide
-			this.currentSlide = this.currentSlide + 1;
+			this.currentSlide += 1;
 		}
 		this.sliderAction();
 	}
@@ -199,7 +227,7 @@ class MaxiSlider {
 	slidePrev() {
 		if (this.currentSlide - 1 >= 0 || this.isLoop) {
 			// Update current slide
-			this.currentSlide = this.currentSlide - 1;
+			this.currentSlide -= 1;
 		}
 		this.sliderAction();
 	}
@@ -228,34 +256,6 @@ class MaxiSlider {
 	transitionEnd() {
 		this._wrapper.style.transition = '';
 		if (this.isLoop) this.loop();
-	}
-}
-
-class Slide {
-	constructor(el, id) {
-		this._slide = el;
-		this._id = id;
-
-		this.isActive = 0;
-
-		this.size = this._slide.getBoundingClientRect();
-	}
-
-	get isActive() {
-		return this._isActive;
-	}
-
-	set isActive(activeSlideId) {
-		this._isActive = this._id === activeSlideId;
-		this._slide.classList.toggle('slider-item--active', this._isActive);
-	}
-
-	get size() {
-		return this._size;
-	}
-
-	set size(size) {
-		this._size = size;
 	}
 }
 

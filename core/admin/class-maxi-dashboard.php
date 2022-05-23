@@ -292,12 +292,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_item_header('Updates & Roll-Back', false);
 
             $content .= '<p>'.__('Maxi Blocks includes a roll-back feature to restore a previous version of the plugin if required. It is recommended to run a backup of your website and database before you perform a rollback.', self::$maxi_text_domain).'</p>';
-            
-            // TO DO: use maxi version. Jetpack is for tests only!
-            $maxi_version = get_plugin_data(WP_PLUGIN_DIR.'/jetpack/jetpack.php');
 
-            if ($maxi_version) {
-                $content .= '<p>'.__('You are using version <strong>', self::$maxi_text_domain).$maxi_version['Version'].'</strong></p>';
+            if (MAXI_PLUGIN_VERSION) {
+                $content .= '<p>'.__('You are using version <strong>', self::$maxi_text_domain).MAXI_PLUGIN_VERSION.'</strong></p>';
             }
             $content .= '<h4>'.__('Choose a version to rollback to', self::$maxi_text_domain).'</h4>';
             $content .= $this->generate_dropdown();

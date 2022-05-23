@@ -482,7 +482,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
 	});
 
-	it('On change XL default attributes from General responsive, changes on General and XL', async () => {
+	it('On change XL default attributes from General responsive and then reset, changes on General', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1425, height: 700 });
 
@@ -495,18 +495,18 @@ describe('Responsive attributes mechanisms', () => {
 			'margin padding'
 		);
 
-		const axisControlInstance = await accordionPanel.$(
+		let axisControlInstance = await accordionPanel.$(
 			'.maxi-axis-control__padding'
 		);
 		await editAxisControl({
 			page,
 			instance: axisControlInstance,
-			values: '0',
+			values: '10',
 		});
 
 		const expectPaddingOnM = {
-			'button-padding-top-general': '0',
-			'button-padding-top-xl': '0',
+			'button-padding-top-general': '10',
+			'button-padding-top-xl': undefined,
 		};
 
 		const paddingOnM = await getAttributes([
@@ -519,8 +519,8 @@ describe('Responsive attributes mechanisms', () => {
 		await changeResponsive(page, 'xxl');
 
 		const expectPaddingOnXl = {
-			'button-padding-top-general': '0',
-			'button-padding-top-xl': '0',
+			'button-padding-top-general': '10',
+			'button-padding-top-xl': undefined,
 			'button-padding-top-xxl': '23',
 		};
 
@@ -531,6 +531,31 @@ describe('Responsive attributes mechanisms', () => {
 		]);
 
 		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
+
+		// Reset
+		await changeResponsive(page, 'xl');
+		axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
+		);
+
+		await axisControlInstance.$eval(
+			'.components-maxi-control__reset-button',
+			button => button.click()
+		);
+
+		const expectPaddingAfterReset = {
+			'button-padding-top-general': '15',
+			'button-padding-top-xl': undefined,
+			'button-padding-top-xxl': '23',
+		};
+
+		const paddingAfterReset = await getAttributes([
+			'button-padding-top-general',
+			'button-padding-top-xl',
+			'button-padding-top-xxl',
+		]);
+
+		expect(paddingAfterReset).toStrictEqual(expectPaddingAfterReset);
 	});
 
 	it('On change XXL default attributes from XL screen, then change the screen size to XXL, on changing the General attribute it changes on General and XXL', async () => {

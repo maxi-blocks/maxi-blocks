@@ -27,6 +27,7 @@ import {
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
+import { handleSetAttributes } from '../../extensions/maxi-block';
 
 /**
  * External dependencies
@@ -37,7 +38,6 @@ import { isEmpty, isNil, isEqual } from 'lodash';
  * Icons
  */
 import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
-import { handleSetAttributes } from '../../extensions/maxi-block';
 
 const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const {
@@ -273,10 +273,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 				</h2>
 				<hr />
 				<div className='maxi-style-cards__popover__sub-title'>
-					{__(
-						'Search or edit style cards',
-						'maxi-blocks'
-					)}
+					{__('Search or edit style cards', 'maxi-blocks')}
 				</div>
 				<div className='maxi-style-cards__sc'>
 					<div className='maxi-style-cards__sc__more-sc'>

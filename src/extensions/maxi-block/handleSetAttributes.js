@@ -44,6 +44,13 @@ const handleSetAttributes = ({
 		)}-${winBreakpoint}`;
 		const attrOnWinBreakpoint = attributes?.[attrLabelOnWinBreakpoint];
 		const attrExistOnWinBreakpoint = !isNil(attrOnWinBreakpoint);
+		const attrLabelOnGeneral = `${key.slice(
+			0,
+			key.lastIndexOf('-')
+		)}-general`;
+		const defaultGeneralAttribute =
+			defaultAttributes?.[attrLabelOnGeneral] ??
+			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
 
@@ -52,17 +59,13 @@ const handleSetAttributes = ({
 		if (
 			breakpoint === 'general' &&
 			winBreakpoint === 'xxl' &&
-			attrExistOnWinBreakpoint
+			attrExistOnWinBreakpoint &&
+			defaultGeneralAttribute !== value
 		) {
 			response[attrLabelOnWinBreakpoint] = value;
 
 			return;
 		}
-
-		const attrLabelOnGeneral = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-general`;
 
 		const attrExistOnGeneral = !isNil(
 			attributes?.[attrLabelOnGeneral],
@@ -145,10 +148,6 @@ const handleSetAttributes = ({
 
 			return;
 		}
-
-		const defaultGeneralAttribute =
-			defaultAttributes?.[attrLabelOnGeneral] ??
-			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (
 			attributes?.[attrLabelOnGeneral] === value &&

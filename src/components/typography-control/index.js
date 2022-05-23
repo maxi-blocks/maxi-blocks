@@ -331,15 +331,19 @@ const TypographyControl = props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	const { styleCard } = useSelect(select => {
+	const { styleCard, winBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
+		const { receiveWinBreakpoint } = select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
+		const winBreakpoint = receiveWinBreakpoint();
+
 		return {
 			styleCard,
+			winBreakpoint,
 		};
 	});
 
@@ -383,11 +387,11 @@ const TypographyControl = props => {
 		},
 	};
 
-	const getValue = (prop, customBreakpoint, avoidXXL, avoidSC = false) =>
+	const getValue = (prop, avoidXXL, avoidSC = false) =>
 		getTypographyValue({
 			disableFormats,
 			prop,
-			breakpoint: customBreakpoint || breakpoint,
+			breakpoint,
 			typography,
 			isHover,
 			avoidXXL,
@@ -399,8 +403,10 @@ const TypographyControl = props => {
 			prefix,
 		});
 
-	const getDefault = (prop, customBreakpoint) => {
-		const currentBreakpoint = customBreakpoint || breakpoint;
+	const getDefault = prop => {
+		const currentBreakpoint =
+			(isStyleCards && breakpoint === 'general' && winBreakpoint) ||
+			breakpoint;
 
 		const defaultAttribute = !isStyleCards
 			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
@@ -426,7 +432,6 @@ const TypographyControl = props => {
 
 	const onChangeFormat = (
 		value,
-		customBreakpoint,
 		forceDisableCustomFormats = false,
 		tag = ''
 	) => {
@@ -435,7 +440,7 @@ const TypographyControl = props => {
 			isList,
 			typography,
 			value,
-			breakpoint: customBreakpoint || breakpoint,
+			breakpoint,
 			isHover,
 			textLevel,
 			disableCustomFormats:
@@ -535,22 +540,12 @@ const TypographyControl = props => {
 					className='maxi-typography-control__size'
 					label={__('Font size', 'maxi-blocks')}
 					enableUnit
-					unit={getValue(
-						`${prefix}font-size-unit`,
-						breakpoint,
-						!isStyleCards
-					)}
-					defaultUnit={getDefault(
-						`${prefix}font-size-unit`,
-						breakpoint
-					)}
+					unit={getValue(`${prefix}font-size-unit`, !isStyleCards)}
+					defaultUnit={getDefault(`${prefix}font-size-unit`)}
 					onChangeUnit={val => {
-						onChangeFormat(
-							{
-								[`${prefix}font-size-unit`]: val,
-							},
-							breakpoint
-						);
+						onChangeFormat({
+							[`${prefix}font-size-unit`]: val,
+						});
 					}}
 					placeholder={getValue(
 						`${prefix}font-size`,
@@ -570,19 +565,14 @@ const TypographyControl = props => {
 						});
 					}}
 					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}font-size-unit`]: getDefault(
-									`${prefix}font-size-unit`,
-									breakpoint
-								),
-								[`${prefix}font-size`]: getDefault(
-									`${prefix}font-size`,
-									breakpoint
-								),
-							},
-							breakpoint
-						)
+						onChangeFormat({
+							[`${prefix}font-size-unit`]: getDefault(
+								`${prefix}font-size-unit`
+							),
+							[`${prefix}font-size`]: getDefault(
+								`${prefix}font-size`
+							),
+						})
 					}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', 'em', 'vw', '%']}
@@ -592,65 +582,43 @@ const TypographyControl = props => {
 					label={__('Line height', 'maxi-blocks')}
 					enableUnit
 					unit={
-						getValue(
-							`${prefix}line-height-unit`,
-							breakpoint,
-							!isStyleCards
-						) || ''
+						getValue(`${prefix}line-height-unit`, !isStyleCards) ||
+						''
 					}
-					defaultUnit={getDefault(
-						`${prefix}line-height-unit`,
-						breakpoint
-					)}
+					defaultUnit={getDefault(`${prefix}line-height-unit`)}
 					onChangeUnit={val => {
-						onChangeFormat(
-							{
-								[`${prefix}line-height-unit`]: val,
-								...(val === '-' && {
-									[`${prefix}line-height`]:
-										minMaxSettings['-'].max,
-								}),
-							},
-							breakpoint
-						);
+						onChangeFormat({
+							[`${prefix}line-height-unit`]: val,
+							...(val === '-' && {
+								[`${prefix}line-height`]:
+									minMaxSettings['-'].max,
+							}),
+						});
 					}}
 					placeholder={getValue(
 						`${prefix}line-height`,
-						breakpoint,
 						!isStyleCards
 					)}
 					value={getValue(
 						`${prefix}line-height`,
-						breakpoint,
 						!isStyleCards,
 						true
 					)}
-					defaultValue={getDefault(
-						`${prefix}line-height`,
-						breakpoint
-					)}
+					defaultValue={getDefault(`${prefix}line-height`)}
 					onChangeValue={val => {
-						onChangeFormat(
-							{
-								[`${prefix}line-height`]: val,
-							},
-							breakpoint
-						);
+						onChangeFormat({
+							[`${prefix}line-height`]: val,
+						});
 					}}
 					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}line-height-unit`]: getDefault(
-									`${prefix}line-height-unit`,
-									breakpoint
-								),
-								[`${prefix}line-height`]: getDefault(
-									`${prefix}line-height`,
-									breakpoint
-								),
-							},
-							breakpoint
-						)
+						onChangeFormat({
+							[`${prefix}line-height-unit`]: getDefault(
+								`${prefix}line-height-unit`
+							),
+							[`${prefix}line-height`]: getDefault(
+								`${prefix}line-height`
+							),
+						})
 					}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', 'em', 'vw', '%', '-']}
@@ -662,55 +630,38 @@ const TypographyControl = props => {
 					allowedUnits={['px', 'em', 'vw']}
 					unit={getValue(
 						`${prefix}letter-spacing-unit`,
-						breakpoint,
 						!isStyleCards
 					)}
-					defaultUnit={getDefault(
-						`${prefix}letter-spacing-unit`,
-						breakpoint
-					)}
+					defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
 					onChangeUnit={val => {
-						onChangeFormat(
-							{
-								[`${prefix}letter-spacing-unit`]: val,
-							},
-							breakpoint
-						);
+						onChangeFormat({
+							[`${prefix}letter-spacing-unit`]: val,
+						});
 					}}
 					placeholder={getValue(
 						`${prefix}letter-spacing`,
-						breakpoint,
 						!isStyleCards
 					)}
 					value={getValue(
 						`${prefix}letter-spacing`,
-						breakpoint,
 						!isStyleCards,
 						true
 					)}
-					defaultValue={getDefault(
-						`${prefix}letter-spacing`,
-						breakpoint
-					)}
+					defaultValue={getDefault(`${prefix}letter-spacing`)}
 					onChangeValue={val => {
-						onChangeFormat(
-							{
-								[`${prefix}letter-spacing`]: val,
-							},
-							breakpoint
-						);
+						onChangeFormat({
+							[`${prefix}letter-spacing`]: val,
+						});
 					}}
 					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}letter-spacing-unit`]: getDefault(
-									`${prefix}letter-spacing-unit`,
-									breakpoint
-								),
-								[`${prefix}letter-spacing`]: '',
-							},
-							breakpoint
-						)
+						onChangeFormat({
+							[`${prefix}letter-spacing-unit`]: getDefault(
+								`${prefix}letter-spacing-unit`
+							),
+							[`${prefix}letter-spacing`]: getDefault(
+								`${prefix}letter-spacing`
+							),
+						})
 					}
 					minMaxSettings={minMaxSettingsLetterSpacing}
 					step={0.1}
@@ -840,7 +791,6 @@ const TypographyControl = props => {
 							{
 								[`${prefix}text-orientation`]: val,
 							},
-							breakpoint,
 							true
 						);
 					}}
@@ -848,7 +798,7 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Text direction', 'maxi-blocks')}
 					className='maxi-typography-control__direction'
-					value={getValue(`${prefix}text-direction`, breakpoint)}
+					value={getValue(`${prefix}text-direction`)}
 					options={[
 						{
 							label: __('Left to right', 'maxi-blocks'),
@@ -869,37 +819,29 @@ const TypographyControl = props => {
 					className='maxi-typography-control__text-indent'
 					label={__('Text indent', 'maxi-blocks')}
 					enableUnit
-					unit={getValue(`${prefix}text-indent-unit`, breakpoint)}
-					defaultUnit={getDefault(
-						`${prefix}text-indent-unit`,
-						breakpoint
-					)}
+					unit={getValue(`${prefix}text-indent-unit`)}
+					defaultUnit={getDefault(`${prefix}text-indent-unit`)}
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
 								[`${prefix}text-indent-unit`]: val,
 							},
-							breakpoint,
 							true
 						);
 					}}
-					placeholder={getValue(`${prefix}text-indent`, breakpoint)}
+					placeholder={getValue(`${prefix}text-indent`)}
 					value={getValue(
 						`${prefix}text-indent`,
 						breakpoint,
 						false,
 						true
 					)}
-					defaultValue={getDefault(
-						`${prefix}text-indent`,
-						breakpoint
-					)}
+					defaultValue={getDefault(`${prefix}text-indent`)}
 					onChangeValue={val => {
 						onChangeFormat(
 							{
 								[`${prefix}text-indent`]: val,
 							},
-							breakpoint,
 							true
 						);
 					}}
@@ -913,7 +855,6 @@ const TypographyControl = props => {
 									`${prefix}text-indent`
 								),
 							},
-							breakpoint,
 							true
 						)
 					}

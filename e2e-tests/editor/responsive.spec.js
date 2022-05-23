@@ -12,6 +12,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	editAxisControl,
+	getStyleCardEditor,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -624,5 +625,58 @@ describe('Responsive attributes mechanisms', () => {
 		]);
 
 		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);
+	});
+
+	it('On resetting Typography values from SC having XXL as winBreakpoint', async () => {
+		// Base responsive is "XXL"
+		await setBrowserViewport({ width: 2000, height: 700 });
+		await createNewPost();
+
+		await getStyleCardEditor({
+			page,
+			accordion: 'paragraph',
+		});
+
+		const defaultValue = await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
+			input => input.value
+		);
+
+		// Size reset button 1
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .components-maxi-control__reset-button',
+			input => input.click()
+		);
+
+		await page.waitForTimeout(150);
+
+		// Size reset button 2
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .components-maxi-control__reset-button',
+			input => input.click()
+		);
+
+		await page.waitForTimeout(150);
+
+		// Size reset button 3
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .components-maxi-control__reset-button',
+			input => input.click()
+		);
+
+		await page.waitForTimeout(150);
+
+		// Size value
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
+			input => input.focus()
+		);
+
+		const value = await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
+			input => input.value
+		);
+
+		expect(defaultValue).toBe(value);
 	});
 });

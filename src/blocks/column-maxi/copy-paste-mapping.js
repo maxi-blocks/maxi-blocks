@@ -1,27 +1,27 @@
 const copyPasteMapping = {
 	settings: {
 		blockSpecific: {
-			fullWidth: 'Full Width',
-			verticalAlign: 'Vertical Align',
-			customLabel: 'Custom Label',
+			fullWidth: 'Full width',
+			verticalAlign: 'Vertical align',
+			customLabel: 'Custom label',
 			anchorLink: {
 				label: 'Anchor',
 				value: ['anchorLink', 'linkSettings'],
 			},
-			extraClassName: 'Custom CSS Classes',
+			extraClassName: 'Custom CSS classes',
 		},
 		withoutPrefix: {
 			border: {
-				groupLabel: 'Border Group',
+				groupLabel: 'Border',
 				props: {
 					border: 'Border',
-					borderWidth: 'Border Width',
-					borderRadius: 'Border Radius',
+					borderWidth: 'Border width',
+					borderRadius: 'Border radius',
 				},
 			},
-			boxShadow: 'Box Shadow',
+			boxShadow: 'Box shadow',
 			blockBackground: 'Background',
-			columnSize: 'Column Size',
+			columnSize: 'Column size',
 			size: 'Size',
 			margin: 'Margin',
 			padding: 'Padding',
@@ -29,14 +29,14 @@ const copyPasteMapping = {
 		},
 		withoutPrefixHover: {
 			borderHover: {
-				groupLabel: 'Border Hover Group',
+				groupLabel: 'Border hover',
 				props: {
-					borderHover: 'Border Hover',
-					borderWidthHover: 'Border Width Hover',
-					borderRadiusHover: 'Border Radius Hover',
+					borderHover: 'Border hover',
+					borderWidthHover: 'Border width hover',
+					borderRadiusHover: 'Border radius hover',
 				},
 			},
-			boxShadowHover: 'Box Shadow Hover',
+			boxShadowHover: 'Box shadow hover',
 		},
 	},
 	advanced: {
@@ -47,7 +47,7 @@ const copyPasteMapping = {
 			display: 'Display',
 			overflow: 'Overflow',
 			zIndex: 'z-Index',
-			customCss: 'Custom Css',
+			customCss: 'Custom CSS',
 			flex: 'Flex',
 		},
 	},

@@ -13,7 +13,36 @@ import { isNumber, round } from 'lodash';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getColumnSizeStyles = (obj, rowGapProps) => {
+export const getColumnNum = (columnsSize, clientId, breakpoint) => {
+	if (!columnsSize) return null;
+
+	let k = 0;
+	let acc = 0;
+	const columnSizeMatrix = [];
+
+	Object.entries(columnsSize).forEach(([key, value]) => {
+		const size = value[`column-size-${breakpoint}`];
+
+		if (size) {
+			acc += size;
+
+			if (acc > 100) {
+				k += 1;
+
+				acc = size;
+			}
+
+			if (!columnSizeMatrix[k]) columnSizeMatrix[k] = [];
+
+			columnSizeMatrix[k].push(key);
+		}
+	});
+
+	const row = columnSizeMatrix.find(row => row?.includes(clientId));
+	return row?.length;
+};
+
+const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -29,7 +58,13 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 			isNumber(columnSize) ||
 			isNumber(rowGapProps?.[`column-gap-${breakpoint}`])
 		) {
-			const gapNum = rowGapProps.columnNum - 1;
+			const columnNum = getColumnNum(
+				rowGapProps?.columnsSize,
+				clientId,
+				breakpoint
+			);
+
+			const gapNum = columnNum - 1;
 			const gap =
 				(getLastBreakpointAttribute({
 					target: 'column-gap',
@@ -37,7 +72,7 @@ const getColumnSizeStyles = (obj, rowGapProps) => {
 					attributes: rowGapProps,
 				}) *
 					gapNum) /
-				rowGapProps.columnNum;
+				columnNum;
 			const gapUnit = getLastBreakpointAttribute({
 				target: 'column-gap-unit',
 				breakpoint,

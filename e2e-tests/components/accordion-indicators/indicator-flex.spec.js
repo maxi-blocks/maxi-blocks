@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector flexbox', () => {
-	it('check group flexbox inspector', async () => {
+describe('Inspector flexbox', () => {
+	it('Check group flexbox inspector', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebarTab(

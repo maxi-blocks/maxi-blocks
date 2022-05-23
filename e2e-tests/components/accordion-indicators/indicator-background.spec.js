@@ -4,8 +4,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab, addBackgroundLayer } from '../../utils';
 
-describe('inspector background', () => {
-	it('check group background inspector', async () => {
+describe('Inspector background', () => {
+	it('Check group background inspector', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
@@ -18,7 +18,7 @@ describe('inspector background', () => {
 		expect(activeInspectors).toStrictEqual('Background / Layer');
 	});
 
-	it('check group background hover inspector', async () => {
+	it('Check group background hover inspector', async () => {
 		await insertBlock('Group Maxi');
 		const accordion = await openSidebarTab(
 			page,

@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab, editAdvancedNumberControl } from '../../utils';
 
-describe('inspector opacity', () => {
-	it('check text opacity inspector', async () => {
+describe('Inspector opacity', () => {
+	it('Check text opacity inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await openSidebarTab(page, 'advanced', 'opacity');

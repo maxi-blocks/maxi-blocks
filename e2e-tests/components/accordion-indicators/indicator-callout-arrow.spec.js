@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector callout arrow', () => {
-	it('check text callout arrow inspector', async () => {
+describe('Inspector callout arrow', () => {
+	it('Check text callout arrow inspector', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'callout arrow');

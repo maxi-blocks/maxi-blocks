@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector border', () => {
-	it('check text border inspector', async () => {
+describe('Inspector border', () => {
+	it('Check text border inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
@@ -25,7 +25,7 @@ describe('inspector border', () => {
 		expect(activeInspectors).toStrictEqual('Border');
 	});
 
-	it('check text hover border inspector', async () => {
+	it('Check text hover border inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');

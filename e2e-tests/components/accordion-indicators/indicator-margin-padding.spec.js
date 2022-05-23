@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector margin padding', () => {
-	it('check group margin padding inspector', async () => {
+describe('Inspector margin padding', () => {
+	it('Check group margin padding inspector', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'margin padding');

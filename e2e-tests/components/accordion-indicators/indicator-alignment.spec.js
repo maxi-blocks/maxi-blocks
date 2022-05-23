@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector alignment', () => {
-	it('check text alignment inspector', async () => {
+describe('Inspector alignment', () => {
+	it('Check text alignment inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
@@ -26,7 +26,7 @@ describe('inspector alignment', () => {
 		expect(activeInspectors).toStrictEqual('Alignment');
 	});
 
-	it('check divider alignment inspector', async () => {
+	it('Check divider alignment inspector', async () => {
 		await insertBlock('Divider Maxi');
 		await openSidebarTab(page, 'style', 'alignment');
 

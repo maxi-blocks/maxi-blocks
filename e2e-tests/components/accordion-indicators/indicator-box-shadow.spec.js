@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector boxShadow', () => {
-	it('check text boxShadow inspector', async () => {
+describe('Inspector boxShadow', () => {
+	it('Check text boxShadow inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebarTab(
@@ -27,7 +27,7 @@ describe('inspector boxShadow', () => {
 		expect(activeInspectors).toStrictEqual('Box shadow');
 	});
 
-	it('check text hover boxShadow inspector', async () => {
+	it('Check text hover boxShadow inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await openSidebarTab(page, 'style', 'box shadow');

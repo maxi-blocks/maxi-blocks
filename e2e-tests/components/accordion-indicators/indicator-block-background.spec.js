@@ -2,10 +2,10 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, addBackgroundLayer } from '../../utils';
+import { openSidebarTab } from '../../utils';
 
-describe('inspector background', () => {
-	it('check group background inspector', async () => {
+describe('Inspector background', () => {
+	it('Check group background inspector', async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'style', 'button background');
@@ -22,7 +22,7 @@ describe('inspector background', () => {
 		expect(activeInspectors).toStrictEqual('Button background');
 	});
 
-	it('check group background hover inspector', async () => {
+	it('Check group background hover inspector', async () => {
 		await insertBlock('Button Maxi');
 		const accordion = await openSidebarTab(
 			page,

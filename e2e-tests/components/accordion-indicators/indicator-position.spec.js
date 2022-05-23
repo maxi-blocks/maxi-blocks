@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector position', () => {
-	it('check text position inspector', async () => {
+describe('Inspector position', () => {
+	it('Check text position inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await openSidebarTab(page, 'advanced', 'position');

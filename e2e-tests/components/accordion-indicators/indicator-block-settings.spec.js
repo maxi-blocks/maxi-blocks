@@ -4,8 +4,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector settings', () => {
-	it('check text settings inspector', async () => {
+describe('Inspector settings', () => {
+	it('Check text settings inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await openSidebarTab(page, 'style', 'alignment');

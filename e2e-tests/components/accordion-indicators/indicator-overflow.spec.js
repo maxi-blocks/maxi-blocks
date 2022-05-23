@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector overflow', () => {
-	it('check text overflow inspector', async () => {
+describe('Inspector overflow', () => {
+	it('Check text overflow inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await openSidebarTab(page, 'advanced', 'overflow');

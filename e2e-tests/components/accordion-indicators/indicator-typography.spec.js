@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector typography', () => {
-	it('check typography inspector', async () => {
+describe('Inspector typography', () => {
+	it('Check typography inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebarTab(
@@ -38,7 +38,7 @@ describe('inspector typography', () => {
 		expect(activeInspectors).toStrictEqual('Typography');
 	});
 
-	it('check typography hover inspector', async () => {
+	it('Check typography hover inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordion = await openSidebarTab(page, 'style', 'typography');

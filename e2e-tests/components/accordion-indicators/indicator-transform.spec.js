@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab } from '../../utils';
 
-describe('inspector transform', () => {
-	it('check transform inspector', async () => {
+describe('Inspector transform', () => {
+	it('Check transform inspector', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openSidebarTab(

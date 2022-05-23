@@ -7,8 +7,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebarTab, editAdvancedNumberControl } from '../../utils';
 
-describe('inspector Z-index', () => {
-	it('check Z-index inspector', async () => {
+describe('Inspector Z-index', () => {
+	it('Check Z-index inspector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');

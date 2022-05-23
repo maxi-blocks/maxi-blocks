@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import { cloneBlock } from '@wordpress/blocks';
 
 /**
@@ -16,6 +16,7 @@ import {
 	getOrganizedAttributes,
 	cleanStyleAttributes,
 } from '../../../../extensions/copy-paste';
+import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 
 /**
  * External dependencies
@@ -117,6 +118,22 @@ const CopyPaste = props => {
 			});
 
 		closeMoreSettings();
+		if (blockName === 'maxi-blocks/row-maxi') {
+			Object.entries(styles).forEach(([key, style]) => {
+				if (key.includes('row-pattern')) {
+					const { getBlock } = select('core/block-editor');
+
+					const { attributes } = getBlock(clientId);
+					console.log({ style, um: key.replace('row-pattern-', '') });
+					if (style !== attributes[key])
+						loadColumnsTemplate(
+							attributes[key],
+							clientId,
+							key.replace('row-pattern-', '')
+						);
+				}
+			});
+		}
 		updateBlockAttributes(clientId, styles);
 	};
 

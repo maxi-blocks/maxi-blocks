@@ -1,57 +1,70 @@
 const copyPasteMapping = {
 	settings: {
+		withBreakpoint: {
+			rowSettings: {
+				groupLabel: 'Row settings',
+				props: {
+					'row-pattern': 'Row pattern',
+					'row-gap': {
+						label: 'Row gap',
+						props: ['row-gap', 'row-gap-unit'],
+					},
+					'column-gap': {
+						label: 'Column gap',
+						props: ['column-gap', 'column-gap-unit'],
+					},
+					'flex-wrap': 'Flex wrap',
+				},
+			},
+		},
+		withoutPrefix: {
+			blockBackground: 'Background',
+			border: {
+				groupLabel: 'Border',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border width',
+					borderRadius: 'Border radius',
+					borderHover: 'Border hover',
+					borderWidthHover: 'Border width hover',
+					borderRadiusHover: 'Border radius hover',
+				},
+			},
+			boxShadow: {
+				groupLabel: 'Box shadow',
+				props: {
+					boxShadow: 'Box shadow',
+					boxShadowHover: 'Box shadow hover',
+				},
+			},
+			size: 'Size',
+			'margin-padding': {
+				groupLabel: 'Margin/Padding',
+				props: { margin: 'Margin', padding: 'Padding' },
+			},
+		},
+	},
+	advanced: {
 		blockSpecific: {
-			blockFullWidth: 'Block Full Width',
-			removeColumnGap: 'Remove Column Gap',
-			verticalAlign: 'Vertical Align',
-			horizontalAlign: 'Horizontal Align',
-			customLabel: 'Custom Label',
+			extraClassName: 'Custom CSS classes',
 			anchorLink: {
 				label: 'Anchor',
 				value: ['anchorLink', 'linkSettings'],
 			},
-			extraClassName: 'Custom CSS Classes',
+			relations: 'Interaction',
 		},
 		withoutPrefix: {
 			breakpoints: 'Breakpoints',
-			rowPattern: 'Row Pattern',
-			border: {
-				groupLabel: 'Border Group',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border Width',
-					borderRadius: 'Border Radius',
-				},
-			},
-			boxShadow: 'Box Shadow',
-			blockBackground: 'Background',
-			size: 'Size',
-			margin: 'Margin',
-			padding: 'Padding',
-		},
-		withoutPrefixHover: {
-			borderHover: {
-				groupLabel: 'Border Hover Group',
-				props: {
-					borderHover: 'Border Hover',
-					borderWidthHover: 'Border Width Hover',
-					borderRadiusHover: 'Border Radius Hover',
-				},
-			},
-			boxShadowHover: 'Box Shadow Hover',
-		},
-	},
-	advanced: {
-		withoutPrefix: {
-			opacity: 'Opacity',
-			scroll: 'Scroll',
+			customCss: 'Custom CSS',
+			scroll: 'Scroll effects',
 			transform: 'Transform',
-			display: 'Display',
+			transition: 'Hyperlink hover transition',
+			display: 'Show/hide block',
+			opacity: 'Opacity',
 			position: 'Position',
 			overflow: 'Overflow',
-			zIndex: 'z-Index',
-			customCss: 'Custom Css',
-			flex: 'Flex',
+			flex: 'Flexbox',
+			zIndex: 'Z-index',
 		},
 	},
 };

@@ -91,7 +91,7 @@ const attributes = {
 		},
 		'column-gap-general': {
 			type: 'number',
-			default: 1.5,
+			default: 2.5,
 		},
 		'column-gap-unit-general': {
 			type: 'string',

@@ -66,7 +66,9 @@ describe('Advanced Number Control', () => {
 			click => click.click()
 		);
 
-		expect(await getAttributes('letter-spacing-m')).toStrictEqual('');
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(
+			undefined
+		);
 	});
 	it('Checking the advanced number control max value', async () => {
 		await changeResponsive(page, 'base');

@@ -547,11 +547,7 @@ const TypographyControl = props => {
 							[`${prefix}font-size-unit`]: val,
 						});
 					}}
-					placeholder={getValue(
-						`${prefix}font-size`,
-						null,
-						!isStyleCards
-					)}
+					placeholder={getValue(`${prefix}font-size`, !isStyleCards)}
 					value={getValue(
 						`${prefix}font-size`,
 						null,

@@ -1,7 +1,7 @@
 /**
  * Transform list formatted text to plain text
  *
- * @param {string} content 			Text content
+ * @param {string} content Text content
  *
  * @returns {string} New formatted string
  */
@@ -14,7 +14,7 @@ export const fromListToText = content => {
 /**
  * Transform plain text to list formatted text
  *
- * @param {string} content 			Text content
+ * @param {string} content Text content
  *
  * @returns {string} New formatted string
  */

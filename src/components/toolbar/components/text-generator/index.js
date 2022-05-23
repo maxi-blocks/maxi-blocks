@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { dispatch } from '@wordpress/data';
+import { useContext, useState } from '@wordpress/element';
 import { create, insert } from '@wordpress/rich-text';
 
 /**
@@ -14,7 +14,7 @@ import { create, insert } from '@wordpress/rich-text';
 import Button from '../../../button';
 import TextControl from '../../../text-control';
 import Dropdown from '../../../dropdown';
-import { withFormatValue } from '../../../../extensions/text/formats';
+import { textContext } from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -27,16 +27,10 @@ import { LoremIpsum } from 'react-lorem-ipsum';
  */
 import './editor.scss';
 
-const TextGenerator = withFormatValue(props => {
-	const {
-		blockName,
-		onChange,
-		formatValue,
-		isCaptionToolbar = false,
-		clientId,
-	} = props;
+const TextGenerator = props => {
+	const { onChange } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
@@ -60,13 +54,7 @@ const TextGenerator = withFormatValue(props => {
 			` ${generatedText[0].props.children}`
 		);
 
-		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
-		setTimeout(() => {
-			dispatch('maxiBlocks/text').sendFormatValue(
-				newFormatValue,
-				clientId
-			);
-		}, 150);
+		onChangeTextFormat(newFormatValue);
 
 		onChange({ isList: false, content: newContent });
 	};
@@ -87,13 +75,7 @@ const TextGenerator = withFormatValue(props => {
 
 		const newFormatValue = create({ text: newContent });
 
-		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
-		setTimeout(() => {
-			dispatch('maxiBlocks/text').sendFormatValue(
-				newFormatValue,
-				clientId
-			);
-		}, 150);
+		onChangeTextFormat(newFormatValue);
 
 		onChange({ isList: false, content: generatedText[0].props.children });
 	};
@@ -147,6 +129,6 @@ const TextGenerator = withFormatValue(props => {
 			)}
 		/>
 	);
-});
+};
 
 export default TextGenerator;

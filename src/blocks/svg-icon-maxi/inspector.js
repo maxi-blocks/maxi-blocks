@@ -140,7 +140,7 @@ const Inspector = props => {
 											disableJustify: true,
 										}),
 										attributes.content && {
-											label: __('Colour', 'maxi-blocks'),
+											label: __('Icon colour', 'maxi-blocks'),
 											content: (
 												<SvgColorControl
 													{...getGroupAttributes(
@@ -315,6 +315,10 @@ const Inspector = props => {
 													}}
 												/>
 											),
+											ignoreIndicator: [
+												`svg-width-${deviceType}`,
+												`svg-stroke-${deviceType}`,
+											],
 										},
 
 										attributes.content &&
@@ -353,9 +357,18 @@ const Inspector = props => {
 														/>
 													</ResponsiveTabsControl>
 												),
+												ignoreIndicator: [
+													'svg-fill-palette-color',
+													'svg-fill-palette-status',
+													'svg-fill-color',
+													'svg-line-palette-color',
+													'svg-line-palette-status',
+													'svg-line-color',
+													`svg-width-${deviceType}`,
+												],
 											},
 										...inspectorTabs.background({
-											label: 'SVG',
+											label: 'Icon',
 											props: {
 												...props,
 											},
@@ -400,6 +413,15 @@ const Inspector = props => {
 													/>
 												</ResponsiveTabsControl>
 											),
+											ignoreIndicator: [
+												'svg-fill-palette-color',
+												'svg-fill-palette-status',
+												'svg-fill-color',
+												'svg-line-palette-color',
+												'svg-line-palette-status',
+												'svg-line-color',
+												`svg-stroke-${deviceType}`,
+											],
 										},
 										...inspectorTabs.marginPadding({
 											props,

@@ -12,10 +12,10 @@ import {
  */
 import { modalMock, openSidebarTab, getAttributes } from '../../utils';
 
-describe('Svg Background', () => {
-	it('Check Svg Background', async () => {
+describe('Icon background', () => {
+	it('Check Icon background', async () => {
 		await createNewPost();
-		await insertBlock('SVG Icon Maxi');
+		await insertBlock('Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block
@@ -28,7 +28,11 @@ describe('Svg Background', () => {
 		);
 
 		// normal state
-		const accordion = await openSidebarTab(page, 'style', 'svg background');
+		const accordion = await openSidebarTab(
+			page,
+			'style',
+			'icon background'
+		);
 
 		await page.$eval('.maxi-tabs-control__button-color', button =>
 			button.click()

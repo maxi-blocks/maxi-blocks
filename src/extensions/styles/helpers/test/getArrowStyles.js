@@ -1,5 +1,9 @@
 import getArrowStyles from '../getArrowStyles';
 
+jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+	jest.fn(() => 0)
+);
+
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
 		return {

@@ -1,7 +1,7 @@
 /**
  * BLOCK: maxi-blocks/group-maxi
  *
- * Group of blocks composed with a similar style or layout
+ * Insert a map with marker
  */
 
 /**
@@ -32,7 +32,7 @@ import fromNumberToStringMigrator from '../../extensions/styles/migrators/number
 registerBlockType('maxi-blocks/map-maxi', {
 	title: __('Map Maxi', 'maxi-blocks'),
 	icon: mapIcon,
-	description: __('Show Google Map', 'maxi-blocks'),
+	description: __('Insert a map with marker', 'maxi-blocks'),
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

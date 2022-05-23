@@ -6,6 +6,7 @@ const textAlignment = breakpointAttributesCreator({
 			type: 'string',
 		},
 	},
+	diffValAttr: { 'text-alignment-general': 'left' },
 });
 
 export default textAlignment;

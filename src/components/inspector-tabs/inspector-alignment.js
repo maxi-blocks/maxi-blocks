@@ -29,47 +29,22 @@ const alignment = ({
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<>
 					{isAlignment && (
-						<>
-							{isTextAlignment && (
-								<label
-									className='maxi-base-control__label'
-									htmlFor={`${alignmentLabel}-alignment`}
-								>
-									{`${alignmentLabel} alignment`}
-								</label>
-							)}
-							<AlignmentControl
-								id={`${alignmentLabel}-alignment`}
-								label={alignmentLabel}
-								{...getGroupAttributes(attributes, 'alignment')}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={deviceType}
-								disableJustify={disableJustify}
-							/>
-						</>
+						<AlignmentControl
+							label={alignmentLabel}
+							{...getGroupAttributes(attributes, 'alignment')}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={deviceType}
+							disableJustify={disableJustify}
+						/>
 					)}
 					{isTextAlignment && (
-						<>
-							{isAlignment && (
-								<label
-									className='maxi-base-control__label'
-									htmlFor={`${textAlignmentLabel}-alignment`}
-								>
-									{`${textAlignmentLabel} alignment`}
-								</label>
-							)}
-							<AlignmentControl
-								id={`${textAlignmentLabel}-alignment`}
-								label={textAlignmentLabel}
-								{...getGroupAttributes(
-									attributes,
-									'textAlignment'
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={deviceType}
-								type='text'
-							/>
-						</>
+						<AlignmentControl
+							label={textAlignmentLabel}
+							{...getGroupAttributes(attributes, 'textAlignment')}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={deviceType}
+							type='text'
+						/>
 					)}
 				</>
 			</ResponsiveTabsControl>

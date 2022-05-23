@@ -74,11 +74,13 @@ const HoverEffectControl = props => {
 				}}
 				hasBorder
 			/>
-			<ToggleSwitch
-				label={__('Show hover preview', 'maxi-blocks')}
-				selected={props['hover-preview']}
-				onChange={val => onChange({ 'hover-preview': val })}
-			/>
+			{props['hover-type'] !== 'none' && (
+				<ToggleSwitch
+					label={__('Show hover preview', 'maxi-blocks')}
+					selected={props['hover-preview']}
+					onChange={val => onChange({ 'hover-preview': val })}
+				/>
+			)}
 			<ToggleSwitch
 				label={__('Extend outside boundary', 'maxi-blocks')}
 				selected={props['hover-extension']}
@@ -239,38 +241,36 @@ const HoverEffectControl = props => {
 							props['hover-basic-effect-type'] === 'rotate' ||
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
-							<>
-								<AdvancedNumberControl
-									label={__('Amount', 'maxi-blocks')}
-									value={
-										props[
-											`hover-basic-${props['hover-basic-effect-type']}-value`
-										]
-									}
-									onChangeValue={val => {
-										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												val !== undefined && val !== ''
-													? val
-													: '',
-										});
-									}}
-									min={0}
-									step={0.1}
-									max={100}
-									onReset={() =>
-										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												getDefaultAttribute([
-													`hover-basic-${props['hover-basic-effect-type']}-value`,
-												]),
-										})
-									}
-									initialPosition={getDefaultAttribute([
-										`hover-basic-${props['hover-basic-effect-type']}-value`,
-									])}
-								/>
-							</>
+							<AdvancedNumberControl
+								label={__('Amount', 'maxi-blocks')}
+								value={
+									props[
+										`hover-basic-${props['hover-basic-effect-type']}-value`
+									]
+								}
+								onChangeValue={val => {
+									onChange({
+										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+								}}
+								min={0}
+								step={0.1}
+								max={100}
+								onReset={() =>
+									onChange({
+										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+											getDefaultAttribute([
+												`hover-basic-${props['hover-basic-effect-type']}-value`,
+											]),
+									})
+								}
+								initialPosition={getDefaultAttribute([
+									`hover-basic-${props['hover-basic-effect-type']}-value`,
+								])}
+							/>
 						)}
 				</>
 			)}

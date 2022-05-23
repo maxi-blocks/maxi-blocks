@@ -128,7 +128,6 @@ const handleSetAttributes = ({
 
 		if (
 			!attrExistOnGeneral &&
-			existHigherBreakpointAttribute &&
 			breakpoint === 'general' &&
 			(!attrExistOnWinBreakpoint ||
 				defaultOnWinBreakpointAttribute === attrOnWinBreakpoint)
@@ -157,8 +156,6 @@ const handleSetAttributes = ({
 			return;
 
 		if (breakpoint !== 'general' && attrExistOnObjOnGeneral) return;
-
-		if (breakpoint === 'general' && !existHigherBreakpointAttribute) return;
 
 		if (breakpoint === 'general') {
 			response[attrLabelOnWinBreakpoint] = value;

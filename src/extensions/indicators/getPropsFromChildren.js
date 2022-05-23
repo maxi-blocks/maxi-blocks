@@ -24,6 +24,10 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 
 	const getProps = item => {
 		if (!isObject(item)) return;
+		if ('indicatorProps' in item) {
+			response.push(...item.indicatorProps);
+			return;
+		}
 
 		// Gets extraIndicators in cases where the prop is send to the component
 		// with other label. Just need to be set on the lowest level of the tab item

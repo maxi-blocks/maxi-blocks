@@ -201,7 +201,10 @@ const SquareControl = props => {
 							changeYAxis(
 								pxToPercent(elt.style.height.replace('px', ''))
 							);
-							onChange(xAxis, yAxis);
+							onChange(
+								pxToPercent(elt.style.width.replace('px', '')),
+								pxToPercent(elt.style.height.replace('px', ''))
+							);
 						}}
 						onResizeStop={(event, direction, elt) => {
 							changeXAxis(
@@ -210,7 +213,10 @@ const SquareControl = props => {
 							changeYAxis(
 								pxToPercent(elt.style.height.replace('px', ''))
 							);
-							onSave(xAxis, yAxis);
+							onSave(
+								pxToPercent(elt.style.width.replace('px', '')),
+								pxToPercent(elt.style.height.replace('px', ''))
+							);
 						}}
 					/>
 				)}

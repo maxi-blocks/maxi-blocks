@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { applyFormat } from '@wordpress/rich-text';
-import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -30,7 +29,7 @@ const applyLinkFormat = ({
 	isHover = false,
 	returnFormatValue = false,
 	saveFormatValue = false,
-	clientId,
+	onChangeTextFormat,
 }) => {
 	const linkCustomFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',
@@ -50,20 +49,8 @@ const applyLinkFormat = ({
 		returnFormatValue: returnFormatValue || saveFormatValue,
 	});
 
-	if (saveFormatValue) {
-		const blockClientId =
-			clientId || select('core/block-editor').getSelectedBlockClientId();
-
-		const newFormatValue = response.formatValue;
-
-		// This time-out avoids to the new formatValue to be removed for the other time-out
-		// on `onChangeRichText` function of text related blocks where the value is `100`
-		setTimeout(() => {
-			dispatch('maxiBlocks/text').sendFormatValue(
-				newFormatValue,
-				blockClientId
-			);
-		}, 150);
+	if (saveFormatValue && onChangeTextFormat) {
+		onChangeTextFormat(response.formatValue);
 
 		if (!returnFormatValue) delete response.formatValue;
 	}

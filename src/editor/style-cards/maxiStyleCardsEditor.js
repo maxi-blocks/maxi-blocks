@@ -263,7 +263,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			>
 				<h2 className='maxi-style-cards__popover__title'>
 					<Icon icon={styleCardBoat} />
-					{__('Style Card Editor', 'maxi-blocks')}
+					{__('Style card manager', 'maxi-blocks')}
 					<span
 						className='maxi-responsive-selector__close'
 						onClick={() => setIsVisible(false)}
@@ -274,7 +274,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 				<hr />
 				<div className='maxi-style-cards__popover__sub-title'>
 					{__(
-						'Group of blocks composed with a similar style or layout',
+						'Search or edit style cards',
 						'maxi-blocks'
 					)}
 				</div>

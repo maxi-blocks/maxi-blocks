@@ -32,7 +32,7 @@ import fromNumberToStringMigrator from '../../extensions/styles/migrators/number
 registerBlockType('maxi-blocks/container-maxi', {
 	title: __('Container Maxi', 'maxi-blocks'),
 	icon: containerIcon,
-	description: 'Arrange blocks within a container to create patterns',
+	description: 'Wrap blocks within a container',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

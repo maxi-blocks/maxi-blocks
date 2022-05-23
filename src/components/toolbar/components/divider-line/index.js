@@ -49,17 +49,17 @@ const Divider = props => {
 		},
 	};
 
-	const lineOrientation = getLastBreakpointAttribute(
-		'line-orientation',
+	const lineOrientation = getLastBreakpointAttribute({
+		target: 'line-orientation',
 		breakpoint,
-		props
-	);
+		attributes: props,
+	});
 
-	const dividerBorderStyle = getLastBreakpointAttribute(
-		'divider-border-style',
+	const dividerBorderStyle = getLastBreakpointAttribute({
+		target: 'divider-border-style',
 		breakpoint,
-		props
-	);
+		attributes: props,
+	});
 
 	return (
 		<ToolbarPopover
@@ -73,11 +73,11 @@ const Divider = props => {
 					lineOrientation={lineOrientation}
 					onChange={onChange}
 					breakpoint={breakpoint}
-					dividerBorderStyle={getLastBreakpointAttribute(
-						'divider-border-style',
+					dividerBorderStyle={getLastBreakpointAttribute({
+						target: 'divider-border-style',
 						breakpoint,
-						props
-					)}
+						attributes: props,
+					})}
 				/>
 				{lineOrientation === 'horizontal' && (
 					<>
@@ -90,11 +90,11 @@ const Divider = props => {
 							>
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl
-									value={getLastBreakpointAttribute(
-										'divider-border-top-width',
+									value={getLastBreakpointAttribute({
+										target: 'divider-border-top-width',
 										breakpoint,
-										props
-									)}
+										attributes: props,
+									})}
 									onChangeValue={val =>
 										onChange({
 											[`divider-border-top-width-${breakpoint}`]:
@@ -123,11 +123,11 @@ const Divider = props => {
 								'divider-border__size-disable'
 							}
 							label={__('Line size', 'maxi-blocks')}
-							value={getLastBreakpointAttribute(
-								'divider-width',
+							value={getLastBreakpointAttribute({
+								target: 'divider-width',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val =>
 								onChange({
 									[`divider-width-${breakpoint}`]: val,
@@ -160,11 +160,11 @@ const Divider = props => {
 							>
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl
-									value={getLastBreakpointAttribute(
-										'divider-border-right-width',
+									value={getLastBreakpointAttribute({
+										target: 'divider-border-right-width',
 										breakpoint,
-										props
-									)}
+										attributes: props,
+									})}
 									onChangeValue={val => {
 										onChange({
 											[`divider-border-right-width-${breakpoint}`]:
@@ -195,11 +195,11 @@ const Divider = props => {
 								'divider-border__size-disable'
 							}
 							label={__('Size', 'maxi-blocks')}
-							value={getLastBreakpointAttribute(
-								'divider-height',
+							value={getLastBreakpointAttribute({
+								target: 'divider-height',
 								breakpoint,
-								props
-							)}
+								attributes: props,
+							})}
 							onChangeValue={val => {
 								onChange({
 									[`divider-height-${breakpoint}`]:

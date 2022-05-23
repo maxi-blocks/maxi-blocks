@@ -55,7 +55,6 @@ const border = ({
 
 	return {
 		label: __('Border', 'maxi-blocks'),
-		disablePadding: true,
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<SettingTabsControl
@@ -98,7 +97,7 @@ const border = ({
 									{!globalHoverStatus && (
 										<ToggleSwitch
 											label={__(
-												'Enable Border Hover',
+												'Enable border hover',
 												'maxi-blocks'
 											)}
 											selected={hoverStatus}

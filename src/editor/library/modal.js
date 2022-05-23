@@ -37,6 +37,9 @@ const MaxiModal = props => {
 		onClose,
 		icon,
 		forceHide = false,
+		url,
+		title,
+		cardId,
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
@@ -62,7 +65,7 @@ const MaxiModal = props => {
 						className='maxi-block-library__modal-button'
 						onClick={onClick}
 					>
-						{__('Launch the Library', 'maxi-blocks')}
+						{__('Launch template library', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'sc' && (
@@ -100,12 +103,24 @@ const MaxiModal = props => {
 							: __('Replace Icon', 'maxi-blocks')}
 					</Button>
 				)}
+				{type === 'preview' && (
+					<Button
+						className='maxi-cloud-masonry-card__button'
+						onClick={onClick}
+					>
+						{__('Preview', 'maxi-blocks')}
+					</Button>
+				)}
 				{isOpen && (
 					<CloudLibrary
 						cloudType={type}
 						onClose={onClick}
 						blockStyle={style}
 						onSelect={onSelect}
+						url={url}
+						title={title}
+						cardId={cardId}
+						className={`maxi-library-modal__${type}`}
 					/>
 				)}
 			</div>

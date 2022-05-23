@@ -82,7 +82,7 @@ const ImageSize = props => {
 		>
 			<div className='toolbar-item__image-size__popover'>
 				<SelectControl
-					label={__('Image Size', 'maxi-blocks')}
+					label={__('Image size', 'maxi-blocks')}
 					value={
 						imageSize || imageSize === 'custom' ? imageSize : 'full'
 					} // is still necessary?

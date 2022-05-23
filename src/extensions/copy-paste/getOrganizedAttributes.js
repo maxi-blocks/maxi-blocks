@@ -34,55 +34,36 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 								Object.entries(attrContent.props).forEach(
 									([prop, label]) => {
 										let attrArray = [];
-
-										attrArray = [prop];
+										if (typeof label === 'string')
+											attrArray = [prop];
+										else if (label.props) {
+											attrArray = label.props;
+										} else if (
+											attrContent.props[prop].type ===
+											'withPalette'
+										) {
+											const withPalette =
+												paletteAttributesCreator({
+													prefix: prop,
+												});
+											attrArray =
+												Object.keys(withPalette);
+										}
 
 										if (type === 'withBreakpoint') {
 											const newArray = [...attrArray];
 											attrArray = [];
 											newArray.forEach(prop => {
-												let propArray = [prop];
-												if (
-													attrContent.props[prop]
-														.props
-												) {
-													propArray = [];
-													propArray =
-														attrContent.props[prop]
-															.props;
-												}
-												if (
-													attrContent.props[prop]
-														.type === 'withPalette'
-												) {
-													propArray = [];
-													const withPalette =
-														paletteAttributesCreator(
-															{
-																prefix: prop,
-															}
-														);
-													propArray =
-														propArray.concat(
-															Object.keys(
-																withPalette
-															)
-														);
-												}
-												propArray.forEach(prop => {
-													const withBrkpt = [];
+												const withBrkpt = [];
 
-													breakpoints.forEach(
-														breakpoint =>
-															withBrkpt.push(
-																`${prop}-${breakpoint}`
-															)
-													);
-													attrArray =
-														attrArray.concat(
-															withBrkpt
-														);
-												});
+												breakpoints.forEach(
+													breakpoint =>
+														withBrkpt.push(
+															`${prop}-${breakpoint}`
+														)
+												);
+												attrArray =
+													attrArray.concat(withBrkpt);
 											});
 										}
 

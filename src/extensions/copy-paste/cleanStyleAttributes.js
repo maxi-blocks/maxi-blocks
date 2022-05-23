@@ -30,35 +30,39 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 							else if (
 								typeof attrContent === 'object' &&
 								attrContent.groupLabel
-							)
-								attrArray = [...Object.keys(attrContent.props)];
-							else if (typeof attrContent === 'string')
+							) {
+								Object.keys(attrContent.props).forEach(prop => {
+									if (attrContent.props[prop].props) {
+										attrArray = attrArray.concat(
+											...attrContent.props[prop].props
+										);
+									} else if (
+										attrContent.props[prop].type ===
+										'withPalette'
+									) {
+										const withPalette =
+											paletteAttributesCreator({
+												prefix: prop,
+											});
+										attrArray = attrArray.concat(
+											Object.keys(withPalette)
+										);
+									} else if (
+										typeof attrContent.props[prop] ===
+										'string'
+									) {
+										attrArray = attrArray.concat(prop);
+									}
+								});
+							} else if (typeof attrContent === 'string')
 								attrArray.push(attrType);
 
 							if (type === 'withBreakpoint') {
 								const newArray = [...attrArray];
 								attrArray = [];
 								newArray.forEach(prop => {
-									let propArray = [prop];
-									if (attrContent.props[prop].props) {
-										propArray = [];
-										propArray =
-											attrContent.props[prop].props;
-									}
+									const propArray = [prop];
 
-									if (
-										attrContent.props[prop].type ===
-										'withPalette'
-									) {
-										propArray = [];
-										const withPalette =
-											paletteAttributesCreator({
-												prefix: prop,
-											});
-										propArray = propArray.concat(
-											Object.keys(withPalette)
-										);
-									}
 									propArray.forEach(prop => {
 										const withBrkpt = [];
 

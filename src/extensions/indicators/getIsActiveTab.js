@@ -23,6 +23,7 @@ const getIsActiveTab = (
 	const { name, attributes: currentAttributes } = block;
 
 	if (!name.includes('maxi-blocks')) return null;
+
 	const defaultAttributes = getBlockAttributes(name);
 
 	const ignoreAttributes = [];
@@ -64,46 +65,54 @@ const getIsActiveTab = (
 		if (currentAttributes[attribute] === false) return true;
 
 		if (breakpoint) {
-			if (
-				isArray(currentAttributes[attribute]) &&
-				currentAttributes[attribute].length !== 0
-			) {
-				return [
-					...extractAttributes(currentAttributes[attribute]),
-				].every(attr => {
-					if (attr.split('-').pop() === breakpoint) {
-						return false;
-					}
+			const breakpointAttributeChecker = bp => {
+				if (
+					isArray(currentAttributes[attribute]) &&
+					currentAttributes[attribute].length !== 0
+				) {
+					return [
+						...extractAttributes(currentAttributes[attribute]),
+					].every(attr => {
+						if (attr.split('-').pop() === bp) {
+							return false;
+						}
 
-					return true;
-				});
-			}
-			if (
-				attribute.lastIndexOf(`-${breakpoint}`) ===
-				attribute.length - `-${breakpoint}`.length
-			) {
-				return (
-					currentAttributes[attribute] ===
-					defaultAttributes[attribute]
-				);
-			}
-		} else {
-			if (
-				isArray(currentAttributes[attribute]) &&
-				currentAttributes[attribute].length === 0
-			) {
-				return (
-					currentAttributes[attribute] !==
-					defaultAttributes[attribute]
-				);
-			}
-			if (currentAttributes[attribute] === '') return true;
+						return true;
+					});
+				}
+				if (
+					attribute.lastIndexOf(`-${bp}`) ===
+					attribute.length - `-${bp}`.length
+				) {
+					return (
+						currentAttributes[attribute] ===
+						defaultAttributes[attribute]
+					);
+				}
+
+				return true;
+			};
+
+			let result = breakpointAttributeChecker(breakpoint);
+
+			const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+
+			if (result && winBreakpoint === breakpoint)
+				result = breakpointAttributeChecker('general');
+
+			return result;
+		}
+		if (
+			isArray(currentAttributes[attribute]) &&
+			currentAttributes[attribute].length === 0
+		) {
 			return (
-				currentAttributes[attribute] === defaultAttributes[attribute]
+				currentAttributes[attribute] !== defaultAttributes[attribute]
 			);
 		}
+		if (currentAttributes[attribute] === '') return true;
 
-		return true;
+		return currentAttributes[attribute] === defaultAttributes[attribute];
 	});
 };
 

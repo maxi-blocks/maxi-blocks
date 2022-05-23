@@ -39,6 +39,7 @@ import {
 import classnames from 'classnames';
 import { isEmpty, uniqueId } from 'lodash';
 import Masonry from 'masonry-layout';
+import useInterval from '../../extensions/dom/useInterval';
 
 const MasonryItem = props => {
 	const {
@@ -610,10 +611,11 @@ const LibraryContainer = props => {
 
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 
-	const masonryGenerator = useMemo(() => {
+	const masonryGenerator = () => {
 		const elem = document.querySelector(
 			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
 		);
+
 		if (elem) {
 			// eslint-disable-next-line no-new
 			new Masonry(elem, {
@@ -621,11 +623,9 @@ const LibraryContainer = props => {
 				gutter: 16,
 			});
 		}
-	});
-	useEffect(() => {
-		const interval = setInterval(masonryGenerator, 100);
-		return clearInterval(interval);
-	});
+	};
+
+	useInterval(masonryGenerator, 100);
 
 	const maxiPreviewIframe = (url, title) => {
 		return (

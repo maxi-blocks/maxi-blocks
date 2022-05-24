@@ -65,7 +65,7 @@ const MaxiModal = props => {
 						className='maxi-block-library__modal-button'
 						onClick={onClick}
 					>
-						{__('Launch the Library', 'maxi-blocks')}
+						{__('Launch template library', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'sc' && (

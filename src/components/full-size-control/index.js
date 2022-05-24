@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -18,7 +17,6 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -38,6 +36,7 @@ const FullSizeControl = props => {
 		prefix = '',
 		isBlockFullWidth,
 		allowForceAspectRatio = false,
+		isFirstOnHierarchy,
 	} = props;
 
 	const classes = classnames('maxi-full-size-control', className);
@@ -81,15 +80,22 @@ const FullSizeControl = props => {
 		},
 	};
 
-	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
-		select('core/block-editor').getSelectedBlockClientId()
-	);
+	const showWidth =
+		!hideWidth &&
+		!isBlockFullWidth &&
+		!getLastBreakpointAttribute({
+			target: `${prefix}width-fit-content`,
+			breakpoint,
+			attributes: props,
+		}) &&
+		isFirstOnHierarchy;
 
 	return (
 		<div className={classes}>
 			{!isBlockFullWidth && (
 				<ToggleSwitch
 					label={__('Set width to fit content', 'maxi-blocks')}
+					className='maxi-full-size-control__width-fit-content'
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}width-fit-content`,
 						breakpoint,
@@ -100,58 +106,49 @@ const FullSizeControl = props => {
 					}}
 				/>
 			)}
-			{!hideWidth &&
-				!isEmpty(currentBlockRoot) &&
-				!getLastBreakpointAttribute({
-					target: `${prefix}width-fit-content`,
-					breakpoint,
-					attributes: props,
-				}) && (
-					<AdvancedNumberControl
-						label={__('Width', 'maxi-blocks')}
-						className='maxi-full-size-control__width'
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: `${prefix}width-unit`,
-							breakpoint,
-							attributes: props,
-						})}
-						onChangeUnit={val =>
-							onChangeValue(`${prefix}width-unit`, val)
-						}
-						value={getLastBreakpointAttribute({
-							target: `${prefix}width`,
-							breakpoint,
-							attributes: props,
-						})}
-						onChangeValue={val =>
-							onChangeValue(`${prefix}width`, val)
-						}
-						onReset={() => {
-							onChangeValue(
-								`${prefix}width`,
-								getDefaultAttribute(
-									`${prefix}width-${breakpoint}`
-								)
-							);
-							onChangeValue(
-								`${prefix}width-unit`,
-								getDefaultAttribute(
-									`${prefix}width-unit-${breakpoint}`
-								)
-							);
-						}}
-						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', '%']}
-						optionType='string'
-					/>
-				)}
+			{showWidth && (
+				<AdvancedNumberControl
+					label={__('Width', 'maxi-blocks')}
+					className='maxi-full-size-control__width'
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: `${prefix}width-unit`,
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeUnit={val =>
+						onChangeValue(`${prefix}width-unit`, val)
+					}
+					value={getLastBreakpointAttribute({
+						target: `${prefix}width`,
+						breakpoint,
+						attributes: props,
+					})}
+					onChangeValue={val => onChangeValue(`${prefix}width`, val)}
+					onReset={() => {
+						onChangeValue(
+							`${prefix}width`,
+							getDefaultAttribute(`${prefix}width-${breakpoint}`)
+						);
+						onChangeValue(
+							`${prefix}width-unit`,
+							getDefaultAttribute(
+								`${prefix}width-unit-${breakpoint}`
+							)
+						);
+					}}
+					minMaxSettings={minMaxSettings}
+					allowedUnits={['px', 'em', 'vw', '%']}
+					optionType='string'
+				/>
+			)}
 			{allowForceAspectRatio && (
 				<ToggleSwitch
 					label={__(
 						'Force canvas equal height & width',
 						'maxi-blocks'
 					)}
+					className='maxi-full-size-control__force-aspect-ratio'
 					selected={getLastBreakpointAttribute({
 						target: `${prefix}force-aspect-ratio`,
 						breakpoint,
@@ -206,6 +203,7 @@ const FullSizeControl = props => {
 			)}
 			<ToggleSwitch
 				label={__('Set custom min/max values', 'maxi-blocks')}
+				className='maxi-full-size-control__custom-min-max'
 				selected={props[`${prefix}size-advanced-options`] || 0}
 				onChange={val => {
 					onChange({

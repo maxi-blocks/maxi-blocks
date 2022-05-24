@@ -16,44 +16,44 @@ export const getWeightOptions = fontFamily => {
 
 		if (fontOptions.length === 0) {
 			return [
-				{ label: __('Thin (Hairline)', 'maxi-blocks'), value: 100 },
+				{ label: __('Hairline (100)', 'maxi-blocks'), value: 100 },
 				{
-					label: __('Extra Light (Ultra Light)', 'maxi-blocks'),
+					label: __('Extra light (200)', 'maxi-blocks'),
 					value: 200,
 				},
-				{ label: __('Light', 'maxi-blocks'), value: 300 },
+				{ label: __('Light (300)', 'maxi-blocks'), value: 300 },
 				{
-					label: __('Normal (Regular)', 'maxi-blocks'),
+					label: __('Regular (400)', 'maxi-blocks'),
 					value: 400,
 				},
-				{ label: __('Medium', 'maxi-blocks'), value: 500 },
+				{ label: __('Medium (500)', 'maxi-blocks'), value: 500 },
 				{
-					label: __('Semi Bold (Semi Bold)', 'maxi-blocks'),
+					label: __('Semi bold (600)', 'maxi-blocks'),
 					value: 600,
 				},
-				{ label: __('Bold', 'maxi-blocks'), value: 700 },
+				{ label: __('Bold (700)', 'maxi-blocks'), value: 700 },
 				{
-					label: __('Extra Bold (Ultra Bold)', 'maxi-blocks'),
+					label: __('Extra bold (800)', 'maxi-blocks'),
 					value: 800,
 				},
-				{ label: __('Black (Heavy)', 'maxi-blocks'), value: 900 },
+				{ label: __('Heavy (900)', 'maxi-blocks'), value: 900 },
 				{
-					label: __('Extra Black (Ultra Black)', 'maxi-blocks'),
+					label: __('Extra heavy (950)', 'maxi-blocks'),
 					value: 950,
 				},
 			];
 		}
 		const weightOptions = {
-			100: 'Thin (Hairline)',
-			200: 'Extra Light (Ultra Light)',
-			300: 'Light',
-			400: 'Normal (Regular)',
-			500: 'Medium',
-			600: 'Semi Bold (Semi Bold)',
-			700: 'Bold',
-			800: 'Extra Bold (Ultra Bold)',
-			900: 'Black (Heavy)',
-			950: 'Extra Black (Ultra Black)',
+			100: 'Hairline (100)',
+			200: 'Extra light (200)',
+			300: 'Light (300)',
+			400: 'Regular (400)',
+			500: 'Medium (500)',
+			600: 'Semi bold (600)',
+			700: 'Bold (700)',
+			800: 'Extra bold (800)',
+			900: 'Heavy (900)',
+			950: 'Extra heavy (950)',
 		};
 		const response = [];
 		if (!fontOptions.includes('900')) {

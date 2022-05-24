@@ -58,7 +58,7 @@ const HoverEffectControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
-				label={__('Hover Animation', 'maxi-blocks')}
+				label={__('Hover animation', 'maxi-blocks')}
 				type='buttons'
 				selected={props['hover-type']}
 				items={[
@@ -74,13 +74,15 @@ const HoverEffectControl = props => {
 				}}
 				hasBorder
 			/>
+			{props['hover-type'] !== 'none' && (
+				<ToggleSwitch
+					label={__('Show hover preview', 'maxi-blocks')}
+					selected={props['hover-preview']}
+					onChange={val => onChange({ 'hover-preview': val })}
+				/>
+			)}
 			<ToggleSwitch
-				label={__('Preview', 'maxi-blocks')}
-				selected={props['hover-preview']}
-				onChange={val => onChange({ 'hover-preview': val })}
-			/>
-			<ToggleSwitch
-				label={__('Allow extension', 'maxi-blocks')}
+				label={__('Extend outside boundary', 'maxi-blocks')}
 				selected={props['hover-extension']}
 				onChange={val => onChange({ 'hover-extension': val })}
 			/>
@@ -141,27 +143,27 @@ const HoverEffectControl = props => {
 						}
 						options={[
 							{
-								label: __('ease', 'maxi-blocks'),
+								label: __('Ease', 'maxi-blocks'),
 								value: 'ease',
 							},
 							{
-								label: __('linear', 'maxi-blocks'),
+								label: __('Linear', 'maxi-blocks'),
 								value: 'linear',
 							},
 							{
-								label: __('ease-in', 'maxi-blocks'),
+								label: __('Ease-in', 'maxi-blocks'),
 								value: 'ease-in',
 							},
 							{
-								label: __('ease-out', 'maxi-blocks'),
+								label: __('Ease-out', 'maxi-blocks'),
 								value: 'ease-out',
 							},
 							{
-								label: __('ease-in-out', 'maxi-blocks'),
+								label: __('Ease-in-out', 'maxi-blocks'),
 								value: 'ease-in-out',
 							},
 							{
-								label: __('cubic-bezier', 'maxi-blocks'),
+								label: __('Cubic-bezier', 'maxi-blocks'),
 								value: 'cubic-bezier',
 							},
 						]}
@@ -180,18 +182,18 @@ const HoverEffectControl = props => {
 			{props['hover-type'] === 'basic' && (
 				<>
 					<SelectControl
-						label={__('Effect Type', 'maxi-blocks')}
+						label={__('Effect type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
 						onChange={val =>
 							onChange({ 'hover-basic-effect-type': val })
 						}
 						options={[
 							{
-								label: __('Zoom In', 'maxi-blocks'),
+								label: __('Zoom in', 'maxi-blocks'),
 								value: 'zoom-in',
 							},
 							{
-								label: __('Zoom Out', 'maxi-blocks'),
+								label: __('Zoom out', 'maxi-blocks'),
 								value: 'zoom-out',
 							},
 							{
@@ -212,15 +214,15 @@ const HoverEffectControl = props => {
 								value: 'sepia',
 							},
 							{
-								label: __('Clear Sepia', 'maxi-blocks'),
+								label: __('Clear sepia', 'maxi-blocks'),
 								value: 'clear-sepia',
 							},
 							{
-								label: __('Gray Scale', 'maxi-blocks'),
+								label: __('Gray scale', 'maxi-blocks'),
 								value: 'grey-scale',
 							},
 							{
-								label: __('Clear Gray Scale', 'maxi-blocks'),
+								label: __('Clear gray scale', 'maxi-blocks'),
 								value: 'clear-grey-scale',
 							},
 							{
@@ -228,7 +230,7 @@ const HoverEffectControl = props => {
 								value: 'shine',
 							},
 							{
-								label: __('Circle Shine', 'maxi-blocks'),
+								label: __('Circle shine', 'maxi-blocks'),
 								value: 'circle-shine',
 							},
 						]}
@@ -239,82 +241,80 @@ const HoverEffectControl = props => {
 							props['hover-basic-effect-type'] === 'rotate' ||
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
-							<>
-								<AdvancedNumberControl
-									label={__('Amount', 'maxi-blocks')}
-									value={
-										props[
-											`hover-basic-${props['hover-basic-effect-type']}-value`
-										]
-									}
-									onChangeValue={val => {
-										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												val !== undefined && val !== ''
-													? val
-													: '',
-										});
-									}}
-									min={0}
-									step={0.1}
-									max={100}
-									onReset={() =>
-										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												getDefaultAttribute([
-													`hover-basic-${props['hover-basic-effect-type']}-value`,
-												]),
-										})
-									}
-									initialPosition={getDefaultAttribute([
-										`hover-basic-${props['hover-basic-effect-type']}-value`,
-									])}
-								/>
-							</>
+							<AdvancedNumberControl
+								label={__('Amount', 'maxi-blocks')}
+								value={
+									props[
+										`hover-basic-${props['hover-basic-effect-type']}-value`
+									]
+								}
+								onChangeValue={val => {
+									onChange({
+										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+								}}
+								min={0}
+								step={0.1}
+								max={100}
+								onReset={() =>
+									onChange({
+										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+											getDefaultAttribute([
+												`hover-basic-${props['hover-basic-effect-type']}-value`,
+											]),
+									})
+								}
+								initialPosition={getDefaultAttribute([
+									`hover-basic-${props['hover-basic-effect-type']}-value`,
+								])}
+							/>
 						)}
 				</>
 			)}
 			{props['hover-type'] === 'text' && (
 				<>
 					<SelectControl
-						label={__('Animation Type', 'maxi-blocks')}
+						label={__('Animation type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
 						options={[
 							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },
 							{
-								label: __('Push Up', 'maxi-blocks'),
+								label: __('Push up', 'maxi-blocks'),
 								value: 'push-up',
 							},
 							{
-								label: __('Push Right', 'maxi-blocks'),
+								label: __('Push right', 'maxi-blocks'),
 								value: 'push-right',
 							},
 							{
-								label: __('Push Down', 'maxi-blocks'),
+								label: __('Push down', 'maxi-blocks'),
 								value: 'push-down',
 							},
 							{
-								label: __('Push Left', 'maxi-blocks'),
+								label: __('Push left', 'maxi-blocks'),
 								value: 'push-left',
 							},
 							{
-								label: __('Slide Up', 'maxi-blocks'),
+								label: __('Slide up', 'maxi-blocks'),
 								value: 'slide-up',
 							},
 							{
-								label: __('Slide Right', 'maxi-blocks'),
+								label: __('Slide right', 'maxi-blocks'),
 								value: 'slide-right',
 							},
 							{
-								label: __('Slide Down', 'maxi-blocks'),
+								label: __('Slide down', 'maxi-blocks'),
 								value: 'slide-down',
 							},
 							{
-								label: __('Slide Left', 'maxi-blocks'),
+								label: __('Slide left', 'maxi-blocks'),
 								value: 'slide-left',
 							},
 							{
-								label: __('Flip Horizontal', 'maxi-blocks'),
+								label: __('Flip horizontal', 'maxi-blocks'),
 								value: 'flip-horiz',
 							},
 						]}
@@ -352,7 +352,7 @@ const HoverEffectControl = props => {
 					/>
 					<TextareaControl
 						placeholder={__(
-							'Add your Hover Title Text here',
+							'Add hover title text here',
 							'maxi-blocks'
 						)}
 						value={props['hover-title-typography-content']}
@@ -367,7 +367,7 @@ const HoverEffectControl = props => {
 						}
 					/>
 					<ToggleSwitch
-						label={__('Custom Hover Text', 'maxi-block')}
+						label={__('Custom hover text', 'maxi-block')}
 						selected={props['hover-title-typography-status']}
 						onChange={val =>
 							onChange({
@@ -401,7 +401,7 @@ const HoverEffectControl = props => {
 					<hr />
 					<TextareaControl
 						placeholder={__(
-							'Add your Hover Content Text here',
+							'Add hover content text here',
 							'maxi-blocks'
 						)}
 						value={props['hover-content-typography-content']}
@@ -416,7 +416,7 @@ const HoverEffectControl = props => {
 						}
 					/>
 					<ToggleSwitch
-						label={__('Custom Content Text', 'maxi-block')}
+						label={__('Custom content text', 'maxi-block')}
 						selected={props['hover-content-typography-status']}
 						onChange={val =>
 							onChange({
@@ -465,7 +465,7 @@ const HoverEffectControl = props => {
 						clientId={clientId}
 					/>
 					<ToggleSwitch
-						label={__('Custom Border', 'maxi-block')}
+						label={__('Custom border', 'maxi-block')}
 						selected={props['hover-border-status']}
 						onChange={val =>
 							onChange({
@@ -493,7 +493,7 @@ const HoverEffectControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__('Custom Padding', 'maxi-block')}
+						label={__('Custom padding', 'maxi-block')}
 						selected={props['hover-padding-status']}
 						onChange={val =>
 							onChange({
@@ -511,7 +511,7 @@ const HoverEffectControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__('Custom Margin', 'maxi-block')}
+						label={__('Custom margin', 'maxi-block')}
 						selected={props['hover-margin-status']}
 						onChange={val =>
 							onChange({

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
@@ -11,12 +10,6 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import {
-	getCustomFormatValue,
-	setFormat,
-	withFormatValue,
-} from '../../../../extensions/text/formats';
 
 /**
  * Styles and icons
@@ -27,68 +20,28 @@ import { toolbarBold } from '../../../../icons';
 /**
  * TextBold
  */
-const TextBold = withFormatValue(props => {
-	const {
-		blockName,
-		onChange,
-		isList,
-		breakpoint,
-		formatValue,
-		textLevel,
-		styleCard,
-		isCaptionToolbar = false,
-		tooltipsHide,
-	} = props;
+const TextBold = props => {
+	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
-
-	const typography = { ...getGroupAttributes(props, 'typography') };
-
-	const getBoldValue = () =>
-		getCustomFormatValue({
-			typography: { ...getGroupAttributes(props, 'typography') },
-			formatValue,
-			prop: 'font-weight',
-			breakpoint,
-			textLevel,
-			styleCard,
-		});
-
-	const boldValue = getBoldValue();
+	const getBoldValue = () => getValue('font-weight');
 
 	const [isActive, setIsActive] = useState(
-		(boldValue > 400 && true) || false
+		(getBoldValue() > 400 && true) || false
 	);
 
 	useEffect(() => {
-		const boldValue = getBoldValue();
-
-		setIsActive((boldValue > 400 && true) || false);
+		setIsActive(getBoldValue() > 400 || false);
 	});
-
-	const onClick = () => {
-		const obj = setFormat({
-			formatValue,
-			isActive,
-			isList,
-			typography,
-			value: {
-				'font-weight': (isActive && 400) || 700,
-			},
-			breakpoint,
-			textLevel,
-		});
-
-		setIsActive(!isActive);
-
-		onChange(obj);
-	};
 
 	const boldContent = () => {
 		return (
 			<Button
 				className='toolbar-item toolbar-item__bold'
-				onClick={onClick}
+				onClick={() =>
+					onChangeFormat({
+						'font-weight': (isActive && 400) || 700,
+					})
+				}
 				aria-pressed={isActive}
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarBold} />
@@ -102,7 +55,8 @@ const TextBold = withFormatValue(props => {
 				{boldContent()}
 			</Tooltip>
 		);
+
 	return boldContent();
-});
+};
 
 export default TextBold;

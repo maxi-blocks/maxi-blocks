@@ -242,3 +242,13 @@
 		font-size: 10px;
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir="rtl"]  {
+	.maxi-settingstab-control .maxi-tabs-control__button {
+		border-left: 1px solid var(--maxi-grey-1-color);
+		border-right: none;
+	}
+}

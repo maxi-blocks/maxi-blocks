@@ -24,11 +24,13 @@ const anchor = ({ props }) => {
 	};
 
 	return {
-		label: __('Add Anchor Link', 'maxi-blocks'),
+		label: __('Add anchor link', 'maxi-blocks'),
 		content: (
 			<TextControl
-				label={__('Add anchor', 'maxi-blocks')}
+				isFullwidth
+				label={__('Create anchor link ID for this block', 'maxi-blocks')}
 				className='maxi-anchor-link'
+				placeholder={__('Allowed chars: 0-9, A-Z, a-z, _ , -')}
 				value={anchorLink}
 				onChange={anchorLink => {
 					const link = validateAnchor(anchorLink);
@@ -36,11 +38,6 @@ const anchor = ({ props }) => {
 						anchorLink: link,
 					});
 				}}
-				validationText={
-					__('Add an anchor link to the element. ', 'maxi-blocks') +
-					__('Possible characters: ', 'maxi-blocks') +
-					__('0-9, A-Z, a-z, _ , -', 'maxi-blocks')
-				}
 			/>
 		),
 		extraIndicators: ['anchorLink'],

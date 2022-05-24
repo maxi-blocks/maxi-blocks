@@ -22,6 +22,11 @@
 					padding: 5px;
 					margin-bottom: 0;
 					height: 36px;
+					&[aria-pressed='true'] {
+						color: #007cba;
+						background-color: #eaf2f6 !important;
+						border-bottom: 3px solid #007cba !important;
+					}
 				}
 
 				svg {
@@ -151,7 +156,7 @@
 					}
 
 					input {
-						width: 82px !important;
+						width: 80px !important;
 					}
 				}
 
@@ -183,10 +188,6 @@
 		.components-button {
 			font-family: 'Roboto', sans-serif !important;
 			font-weight: 700;
-			// background-color: transparent !important;
-			// &::after {
-			// 	display: none !important;
-			// }
 		}
 	}
 }

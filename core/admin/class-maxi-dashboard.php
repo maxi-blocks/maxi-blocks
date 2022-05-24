@@ -573,35 +573,52 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function get_versions_list()
         {
-            $args = array(
-                'slug' => 'jetpack',
-                'fields' => array(
-                    'downloaded' => true,
-                    'downloadlink' => true
-                )
-            );
-            $response = wp_remote_post(
-                'http://api.wordpress.org/plugins/info/1.0/',
-                array(
-                    'body' => array(
-                        'action' => 'plugin_information',
-                        'request'=>serialize((object)$args)
-                    )
-                )
-            );
+            // You can test with the Jetpack plugin for now
 
-            if (!is_wp_error($response)) {
-                $returned_object = unserialize(wp_remote_retrieve_body($response));
-                $versions = $returned_object->versions;
-                if (!is_array($versions)) {
-                    return false;
-                } else {
-                    if ($versions) {
-                        return $versions;
-                    }
-                }
-            } else {
+            // $args = array(
+            //     'slug' => 'jetpack', // change to Maxi when we have it on WordPress plugins directory
+            //     'fields' => array(
+            //         'downloaded' => true,
+            //         'downloadlink' => true
+            //     )
+            // );
+            // $response = wp_remote_post(
+            //     'http://api.wordpress.org/plugins/info/1.0/',
+            //     array(
+            //         'body' => array(
+            //             'action' => 'plugin_information',
+            //             'request'=>serialize((object)$args)
+            //         )
+            //     )
+            // );
+
+            // if (!is_wp_error($response)) {
+            //     $returned_object = unserialize(wp_remote_retrieve_body($response));
+            //     $versions = $returned_object->versions;
+            //     if (!is_array($versions)) {
+            //         return false;
+            //     } else {
+            //         if ($versions) {
+            //             return $versions;
+            //         }
+            //     }
+            // } else {
+            //     return false;
+            // }
+
+            // Temporary solution until we have our plugin in the WP plugins directory
+
+            $json = file_get_contents('https://storage.googleapis.com/plugin-files/updates/versions.json');
+            $returned_object = json_decode($json, true);
+
+            $versions = $returned_object['versions'];
+
+            if (!is_array($versions)) {
                 return false;
+            } else {
+                if ($versions) {
+                    return $versions;
+                }
             }
         }
     }

@@ -30,10 +30,10 @@ const Inspector = props => {
 		attributes,
 		deviceType,
 		maxiSetAttributes,
+		clientId,
 		insertInlineStyles,
 		cleanInlineStyles,
 		inlineStylesTargets,
-		clientId,
 	} = props;
 
 	return (

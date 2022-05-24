@@ -51,6 +51,7 @@ class edit extends MaxiBlockComponent {
 
 		if (this.resizableObject.current?.state.height !== height) {
 			this.resizableObject.current.updateSize({
+				width: '100%',
 				height,
 			});
 		}

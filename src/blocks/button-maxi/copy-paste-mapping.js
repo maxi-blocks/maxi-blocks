@@ -2,8 +2,14 @@ const copyPasteMapping = {
 	exclude: ['buttonContent'],
 	settings: {
 		blockSpecific: {
-			fullWidth: 'Full width',
 			buttonContent: 'Button text',
+			size: {
+				groupLabel: 'Size',
+				props: {
+					fullWidth: 'Full width',
+					size: { label: 'Size', type: 'withPrefix' },
+				},
+			},
 		},
 		withoutPrefix: {
 			iconGroup: {
@@ -110,7 +116,6 @@ const copyPasteMapping = {
 					boxShadowHover: 'Box shadow hover',
 				},
 			},
-			size: 'Size',
 			'margin-padding': {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },
@@ -119,7 +124,13 @@ const copyPasteMapping = {
 	},
 	canvas: {
 		blockSpecific: {
-			blockFullWidth: 'Block full width',
+			size: {
+				groupLabel: 'Size',
+				props: {
+					blockFullWidth: 'Full width',
+					size: { label: 'Size', type: 'withoutPrefix' },
+				},
+			},
 		},
 		withoutPrefix: {
 			blockBackground: 'Background',
@@ -142,7 +153,6 @@ const copyPasteMapping = {
 				},
 			},
 			opacity: 'Opacity',
-			size: 'Size',
 			'margin-padding': {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },

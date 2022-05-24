@@ -51,6 +51,13 @@ const copyPasteMapping = {
 					'mediaAlt',
 				],
 			},
+			size: {
+				groupLabel: 'Size',
+				props: {
+					fullWidth: 'Full width',
+					size: { label: 'Size', type: 'withPrefix' },
+				},
+			},
 		},
 		withoutPrefix: {
 			alignment: 'Alignment',
@@ -58,16 +65,16 @@ const copyPasteMapping = {
 				groupLabel: 'Hover effects',
 				props: {
 					hover: 'Hover',
-					hoverBackground: 'Hover Background',
-					hoverBackgroundColor: 'Hover Background Color',
-					hoverBackgroundGradient: 'Hover Background Gradient',
-					hoverBorder: 'Hover Border',
-					hoverBorderRadius: 'Hover Border Radius',
-					hoverBorderWidth: 'Hover Border Width',
-					hoverContentTypography: 'Hover Content Typography',
-					hoverMargin: 'Hover Margin',
-					hoverPadding: 'Hover Padding',
-					hoverTitleTypography: 'Hover Title Typography',
+					hoverBackground: 'Hover background',
+					hoverBackgroundColor: 'Hover background color',
+					hoverBackgroundGradient: 'Hover background gradient',
+					hoverBorder: 'Hover border',
+					hoverBorderRadius: 'Hover border radius',
+					hoverBorderWidth: 'Hover border width',
+					hoverContentTypography: 'Hover content typography',
+					hoverMargin: 'Hover margin',
+					hoverPadding: 'Hover padding',
+					hoverTitleTypography: 'Hover title typography',
 				},
 			},
 			clipPath: 'Clip Path',
@@ -96,13 +103,18 @@ const copyPasteMapping = {
 					boxShadowHover: 'Box shadow hover',
 				},
 			},
-			size: 'Size',
 			padding: 'Padding',
 		},
 	},
 	canvas: {
 		blockSpecific: {
-			blockFullWidth: 'Block full width',
+			size: {
+				groupLabel: 'Size',
+				props: {
+					blockFullWidth: 'Full width',
+					size: { label: 'Size', type: 'withoutPrefix' },
+				},
+			},
 		},
 		withoutPrefix: {
 			blockBackground: 'Background',
@@ -125,7 +137,6 @@ const copyPasteMapping = {
 				},
 			},
 			opacity: 'Opacity',
-			size: 'Size',
 			'margin-padding': {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },

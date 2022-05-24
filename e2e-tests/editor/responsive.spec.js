@@ -13,6 +13,7 @@ import {
 	changeResponsive,
 	editAxisControl,
 	getStyleCardEditor,
+	editAdvancedNumberControl,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -678,5 +679,40 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		expect(defaultValue).toBe(value);
+	});
+
+	// Skipped as Row doesn't have Width options anymore and there are no more situations where the first default attribute doesn't
+	// start with XXL, General or XL. In this case, having the width-l default value as the first was creating this concrete issue that
+	// was supposed to be fixed and tested here. Things are different now, so this test is skipped but kept in case we find a future
+	// situation related that will need it 👍
+	it.skip('On L as a winBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
+		// Base responsive is "XL"
+		await setBrowserViewport({ width: 1040, height: 700 });
+
+		await createNewPost();
+		await insertBlock('Container Maxi');
+
+		await page.$$eval('.maxi-row-block__template button', button =>
+			button[0].click()
+		);
+
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'height width'
+		);
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await accordionPanel.$('.maxi-full-size-control__width'),
+			newNumber: '500',
+		});
+
+		const newWidth = await accordionPanel.$eval(
+			'.maxi-full-size-control__width input',
+			input => input.value
+		);
+
+		expect(newWidth).toMatchSnapshot('500');
 	});
 });

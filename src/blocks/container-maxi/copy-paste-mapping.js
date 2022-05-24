@@ -51,6 +51,13 @@ const copyPasteMapping = {
 						'Divider scroll effect',
 				},
 			},
+			size: {
+				groupLabel: 'Size',
+				props: {
+					blockFullWidth: 'Full width',
+					size: { label: 'Size', type: 'withoutPrefix' },
+				},
+			},
 		},
 		withoutPrefix: {
 			blockBackground: 'Background',
@@ -72,7 +79,6 @@ const copyPasteMapping = {
 					boxShadowHover: 'Box shadow hover',
 				},
 			},
-			size: 'Size',
 			'margin-padding': {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },

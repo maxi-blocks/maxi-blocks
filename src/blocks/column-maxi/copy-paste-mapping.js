@@ -1,5 +1,14 @@
 const copyPasteMapping = {
 	settings: {
+		blockSpecific: {
+			size: {
+				groupLabel: 'Size',
+				props: {
+					fullWidth: 'Full width',
+					size: { label: 'Size', type: 'withoutPrefix' },
+				},
+			},
+		},
 		withBreakpoint: {
 			'column-settings': {
 				groupLabel: 'Column settings',
@@ -30,7 +39,6 @@ const copyPasteMapping = {
 					boxShadowHover: 'Box shadow hover',
 				},
 			},
-			size: 'Size',
 			'margin-padding': {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },

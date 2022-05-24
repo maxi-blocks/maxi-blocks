@@ -427,9 +427,7 @@ const getMarkerObject = props => {
 							breakpoint,
 							attributes: props,
 						}) || 'px';
-					const indentMarkerSum = `calc(${
-						indentMarkerNum + indentMarkerUnit
-					} + ${indentSum})`;
+					const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
 
 					// Marker line-height
 					const lineHeightMarkerNum =

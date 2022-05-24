@@ -37,7 +37,9 @@ export const borderNone = (prefix = '', isHover) => {
 		[`${prefix}border-palette-color`]:
 			currentDefaultBorder[`${prefix}border-palette-color-general`]
 				.default,
-		[`${prefix}border-palette-opacity`]: 1,
+		[`${prefix}border-palette-opacity`]:
+			currentDefaultBorder[`${prefix}border-palette-opacity-general`]
+				.default,
 		[`${prefix}border-color`]:
 			currentDefaultBorder[`${prefix}border-color-general`].default,
 		[`${prefix}border-style`]: isHover

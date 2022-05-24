@@ -44,7 +44,7 @@ const IconBackground = props => {
 			<div className='toolbar-item__icon-background__popover'>
 				<ToggleSwitch
 					label={__(
-						'Inherit Colour/Background from Button',
+						'Inherit colour/background from button',
 						'maxi-blocks'
 					)}
 					selected={props['icon-inherit']}
@@ -63,7 +63,7 @@ const IconBackground = props => {
 					</p>
 				) : (
 					<ColorControl
-						label={__('Icon Background', 'maxi-blocks')}
+						label={__('Icon background', 'maxi-blocks')}
 						color={getLastBreakpointAttribute(
 							'icon-background-color',
 							breakpoint,

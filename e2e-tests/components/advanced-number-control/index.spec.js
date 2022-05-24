@@ -66,7 +66,9 @@ describe('Advanced Number Control', () => {
 			click => click.click()
 		);
 
-		expect(await getAttributes('letter-spacing-m')).toStrictEqual('');
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(
+			undefined
+		);
 	});
 	it('Checking the advanced number control max value', async () => {
 		await changeResponsive(page, 'base');
@@ -76,7 +78,7 @@ describe('Advanced Number Control', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
-				'.maxi-full-size-control .maxi-advanced-number-control'
+				'.maxi-full-size-control .maxi-full-size-control__height'
 			),
 			newNumber: '4000',
 		});
@@ -98,7 +100,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual('999');
+		expect(await getAttributes('height-general')).toStrictEqual('3999');
 
 		// vw max default value
 		await heightSelector.select('vw');
@@ -111,7 +113,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual('999');
+		expect(await getAttributes('height-general')).toStrictEqual('3999');
 	});
 
 	it('Checking the advanced number control min value', async () => {

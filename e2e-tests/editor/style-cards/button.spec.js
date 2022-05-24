@@ -27,7 +27,7 @@ describe('StyleCards, Buttons', () => {
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
 			size: '20',
-			lineHeight: '0',
+			lineHeight: '10',
 			letterSpacing: '5',
 		});
 

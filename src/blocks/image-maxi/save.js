@@ -33,7 +33,6 @@ const save = props => {
 		SVGElement,
 		fullWidth,
 		'hover-type': hoverType,
-		'hover-preview': hoverPreview,
 		isImageUrl,
 		captionPosition,
 	} = attributes;
@@ -44,10 +43,8 @@ const save = props => {
 
 	const hoverClasses = classnames(
 		hoverType === 'basic' &&
-			hoverPreview &&
 			`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
 		hoverType === 'text' &&
-			hoverPreview &&
 			`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
 		hoverType !== 'none' &&
 			`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
@@ -79,6 +76,7 @@ const save = props => {
 						'hoverTitleTypography',
 						'hoverContentTypography',
 					])}
+					isSave
 				>
 					{SVGElement ? (
 						<RawHTML>{SVGElement}</RawHTML>

@@ -202,6 +202,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
+            if (isset($_GET['settings-updated'])) {
+                $content .= '<h2>'.__('Successfully done', self::$maxi_text_domain).'</h2>';
+            }
+
             $content .= $this->generate_item_header('Editor preferences', true);
 
             $description = '<h4>'.__('Hide interface tooltips', self::$maxi_text_domain).'</h4>';
@@ -303,7 +307,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if ($version_to_roll !== 'current') {
                 $this->rollback_zip($version_to_roll);
             }
-            $content .= get_submit_button('Rollback');
+            $content .= get_submit_button(__('Rollback', self::$maxi_text_domain), 'primary', 'maxi-rollback-submit');
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -567,7 +571,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $zip->extractTo(plugin_dir_path(__DIR__) . '../..');
                 $zip->close();
             }
-
+            
             update_option('maxi_rollback_version', 'current');
         }
 
@@ -607,7 +611,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // }
 
             // Temporary solution until we have our plugin in the WP plugins directory
-
             $json = file_get_contents('https://storage.googleapis.com/plugin-files/updates/versions.json');
             $returned_object = json_decode($json, true);
 

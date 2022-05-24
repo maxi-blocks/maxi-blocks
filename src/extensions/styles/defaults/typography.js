@@ -1,7 +1,5 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
-import alignment from './alignment';
 
 export const rawTypography = {
 	'font-family': {
@@ -68,12 +66,4 @@ export const rawTypography = {
 export const typography = breakpointAttributesCreator({
 	obj: rawTypography,
 	noBreakpointAttr: ['custom-formats'],
-});
-
-export const typographyAlignment = prefixAttributesCreator({
-	obj: alignment,
-	prefix: 'typography-',
-	diffValAttr: {
-		'typography-alignment-general': 'left',
-	},
 });

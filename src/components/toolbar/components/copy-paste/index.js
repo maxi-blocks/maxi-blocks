@@ -120,14 +120,14 @@ const CopyPaste = props => {
 		closeMoreSettings();
 		if (blockName === 'maxi-blocks/row-maxi') {
 			Object.entries(styles).forEach(([key, style]) => {
-				if (key.includes('row-pattern')) {
+				if (key.includes('row-pattern-')) {
 					const { getBlock } = select('core/block-editor');
 
 					const { attributes } = getBlock(clientId);
-					console.log({ style, um: key.replace('row-pattern-', '') });
+
 					if (style !== attributes[key])
 						loadColumnsTemplate(
-							attributes[key],
+							style,
 							clientId,
 							key.replace('row-pattern-', '')
 						);
@@ -200,6 +200,24 @@ const CopyPaste = props => {
 		});
 
 		closeMoreSettings();
+
+		if (blockName === 'maxi-blocks/row-maxi') {
+			Object.entries(res).forEach(([key, style]) => {
+				if (key.includes('row-pattern-')) {
+					const { getBlock } = select('core/block-editor');
+
+					const { attributes } = getBlock(clientId);
+
+					if (style !== attributes[key])
+						loadColumnsTemplate(
+							style,
+							clientId,
+							key.replace('row-pattern-', '')
+						);
+				}
+			});
+		}
+
 		updateBlockAttributes(clientId, res);
 	};
 

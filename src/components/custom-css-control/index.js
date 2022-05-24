@@ -114,7 +114,9 @@ const CustomCssControl = props => {
 					delete newCustomCss[category];
 			}
 
-			onChange(`custom-css-${breakpoint}`, newCustomCss);
+			if (!isEmpty(newCustomCss))
+				onChange(`custom-css-${breakpoint}`, newCustomCss);
+			else onChange(`custom-css-${breakpoint}`, '');
 		};
 
 		async function validateCss(code) {

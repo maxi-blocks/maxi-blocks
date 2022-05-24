@@ -483,7 +483,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					returnValue={({ key }) => setCurrentSCStyle(key)}
 					items={[
 						{
-							label: __('Light Style Preset', 'maxi-blocks'),
+							label: __('Light tone globals', 'maxi-blocks'),
 							key: 'light',
 							content: (
 								<MaxiStyleCardsTab
@@ -496,7 +496,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							),
 						},
 						{
-							label: __('Dark Style Preset', 'maxi-blocks'),
+							label: __('Dark tone globals', 'maxi-blocks'),
 							key: 'dark',
 							content: (
 								<MaxiStyleCardsTab

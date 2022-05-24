@@ -12,6 +12,7 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	editAxisControl,
+	editAdvancedNumberControl,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -482,7 +483,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
 	});
 
-	it('On change XL default attributes from General responsive, changes on General and XL', async () => {
+	it('On change XL default attributes from General responsive and then reset, changes on General', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1425, height: 700 });
 
@@ -495,18 +496,18 @@ describe('Responsive attributes mechanisms', () => {
 			'margin padding'
 		);
 
-		const axisControlInstance = await accordionPanel.$(
+		let axisControlInstance = await accordionPanel.$(
 			'.maxi-axis-control__padding'
 		);
 		await editAxisControl({
 			page,
 			instance: axisControlInstance,
-			values: '0',
+			values: '10',
 		});
 
 		const expectPaddingOnM = {
-			'button-padding-top-general': '0',
-			'button-padding-top-xl': '0',
+			'button-padding-top-general': '10',
+			'button-padding-top-xl': undefined,
 		};
 
 		const paddingOnM = await getAttributes([
@@ -519,8 +520,8 @@ describe('Responsive attributes mechanisms', () => {
 		await changeResponsive(page, 'xxl');
 
 		const expectPaddingOnXl = {
-			'button-padding-top-general': '0',
-			'button-padding-top-xl': '0',
+			'button-padding-top-general': '10',
+			'button-padding-top-xl': undefined,
 			'button-padding-top-xxl': '23',
 		};
 
@@ -531,6 +532,31 @@ describe('Responsive attributes mechanisms', () => {
 		]);
 
 		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
+
+		// Reset
+		await changeResponsive(page, 'xl');
+		axisControlInstance = await accordionPanel.$(
+			'.maxi-axis-control__padding'
+		);
+
+		await axisControlInstance.$eval(
+			'.components-maxi-control__reset-button',
+			button => button.click()
+		);
+
+		const expectPaddingAfterReset = {
+			'button-padding-top-general': '15',
+			'button-padding-top-xl': undefined,
+			'button-padding-top-xxl': '23',
+		};
+
+		const paddingAfterReset = await getAttributes([
+			'button-padding-top-general',
+			'button-padding-top-xl',
+			'button-padding-top-xxl',
+		]);
+
+		expect(paddingAfterReset).toStrictEqual(expectPaddingAfterReset);
 	});
 
 	it('On change XXL default attributes from XL screen, then change the screen size to XXL, on changing the General attribute it changes on General and XXL', async () => {
@@ -599,5 +625,36 @@ describe('Responsive attributes mechanisms', () => {
 		]);
 
 		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);
+	});
+
+	it('On L as a winBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
+		// Base responsive is "XL"
+		await setBrowserViewport({ width: 1040, height: 700 });
+
+		await createNewPost();
+		await insertBlock('Container Maxi');
+
+		await page.$$eval('.maxi-row-block__template button', button =>
+			button[0].click()
+		);
+
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'height width'
+		);
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await accordionPanel.$('.maxi-full-size-control__width'),
+			newNumber: '500',
+		});
+
+		const newWidth = await accordionPanel.$eval(
+			'.maxi-full-size-control__width input',
+			input => input.value
+		);
+
+		expect(newWidth).toMatchSnapshot('500');
 	});
 });

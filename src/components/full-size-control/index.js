@@ -109,6 +109,7 @@ const FullSizeControl = props => {
 				}) && (
 					<AdvancedNumberControl
 						label={__('Width', 'maxi-blocks')}
+						className='maxi-full-size-control__width'
 						enableUnit
 						unit={getLastBreakpointAttribute({
 							target: `${prefix}width-unit`,
@@ -169,6 +170,7 @@ const FullSizeControl = props => {
 			}) && (
 				<AdvancedNumberControl
 					label={__('Height', 'maxi-blocks')}
+					className='maxi-full-size-control__height'
 					enableUnit
 					unit={getLastBreakpointAttribute({
 						target: `${prefix}height-unit`,
@@ -222,6 +224,7 @@ const FullSizeControl = props => {
 						}) && (
 							<AdvancedNumberControl
 								label={__('Maximum width', 'maxi-blocks')}
+								className='maxi-full-size-control__max-width'
 								enableUnit
 								unit={getLastBreakpointAttribute({
 									target: `${prefix}max-width-unit`,
@@ -268,6 +271,7 @@ const FullSizeControl = props => {
 					}) && (
 						<AdvancedNumberControl
 							label={__('Minimum width', 'maxi-blocks')}
+							className='maxi-full-size-control__min-width'
 							enableUnit
 							unit={getLastBreakpointAttribute({
 								target: `${prefix}min-width-unit`,
@@ -306,6 +310,7 @@ const FullSizeControl = props => {
 					)}
 					<AdvancedNumberControl
 						label={__('Maximum height', 'maxi-blocks')}
+						className='maxi-full-size-control__max-height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
 							target: `${prefix}max-height-unit`,
@@ -343,6 +348,7 @@ const FullSizeControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Minimum height', 'maxi-blocks')}
+						className='maxi-full-size-control__min-height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
 							target: `${prefix}min-height-unit`,

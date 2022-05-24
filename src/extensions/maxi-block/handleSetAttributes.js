@@ -98,13 +98,36 @@ const handleSetAttributes = ({
 					)
 			);
 
+		if (
+			!attrExistOnWinBreakpoint &&
+			(breakpoint === 'general' || !existHigherBreakpointAttribute)
+		) {
+			// Checks if the higher breakpoint attribute is not on XXL
+			if (
+				!breakpoints
+					.slice(0, breakpoints.indexOf(winBreakpoint))
+					.some(
+						breakpoint =>
+							breakpoint !== 'xxl' &&
+							!isNil(
+								attributes?.[
+									`${key.slice(
+										0,
+										key.lastIndexOf('-')
+									)}-${breakpoint}`
+								]
+							)
+					)
+			)
+				return;
+		}
+
 		const defaultOnWinBreakpointAttribute =
 			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
 			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
 
 		if (
 			!attrExistOnGeneral &&
-			existHigherBreakpointAttribute &&
 			breakpoint === 'general' &&
 			(!attrExistOnWinBreakpoint ||
 				defaultOnWinBreakpointAttribute === attrOnWinBreakpoint)
@@ -133,8 +156,6 @@ const handleSetAttributes = ({
 			return;
 
 		if (breakpoint !== 'general' && attrExistOnObjOnGeneral) return;
-
-		if (breakpoint === 'general' && !existHigherBreakpointAttribute) return;
 
 		if (breakpoint === 'general') {
 			response[attrLabelOnWinBreakpoint] = value;

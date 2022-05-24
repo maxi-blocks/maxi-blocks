@@ -25,16 +25,22 @@
 		}
 	}
 	&__replace-icon {
-		width: 40px;
-		height: 40px;
+		background: #fff;
+		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
+		width: 30px;
+		height: 30px;
 		visibility: visible;
-		background: #232533;
 		transition: 0.3s;
 
 		svg {
-			fill: #fff;
-			width: 20px;
-			height: 20px;
+			fill: #007cba;
+			width: 15px;
+			height: 15px;
+		}
+		&:hover {
+			svg {
+				fill: #ff4a17;
+			}
 		}
 	}
 

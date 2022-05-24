@@ -21,7 +21,7 @@ import { Placeholder } from '../../components';
  */
 import { isEmpty } from 'lodash';
 
-class Edit extends Component {
+class edit extends Component {
 	render() {
 		const { attributes, clientId, maxiSetAttributes } = this.props;
 
@@ -34,11 +34,11 @@ class Edit extends Component {
 					<Placeholder
 						key='placeholder'
 						label={__(
-							'Cloud Library Maxi',
+							'Template library',
 							'gutenberg-extra-blocks'
 						)}
 						instructions={__(
-							'Launch the library to browse pre-designed blocks and templates.',
+							'Find templates and patterns to build your page',
 							'gutenberg-extra-blocks'
 						)}
 						className='maxi-block-library__placeholder'
@@ -61,4 +61,4 @@ class Edit extends Component {
 	}
 }
 
-export default withMaxiProps(Edit);
+export default withMaxiProps(edit);

@@ -419,7 +419,7 @@ if (!class_exists('MaxiBlocks_API')):
             if (!$breakpoints) {
                 $default_breakpoints = [
                     'xs' => 480,
-                    's' => 768,
+                    's' => 767,
                     'm' => 1024,
                     'l' => 1366,
                     'xl' => 1920,

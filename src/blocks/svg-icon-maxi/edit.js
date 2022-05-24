@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
 import { Button } from '@wordpress/components';
@@ -14,7 +13,6 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
-	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import {
@@ -24,7 +22,8 @@ import {
 	MaxiPopoverButton,
 } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -221,7 +220,7 @@ class edit extends MaxiBlockComponent {
 								className='maxi-block-library__modal-button'
 								onClick={() => this.setState({ isOpen: true })}
 							>
-								{__('Select SVG Icon', 'maxi-blocks')}
+								{__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}
@@ -240,7 +239,7 @@ class edit extends MaxiBlockComponent {
 									? '100%'
 									: null
 							}
-							size={{
+							defaultSize={{
 								width: `${getLastBreakpointAttribute({
 									target: 'svg-width',
 									breakpoint: deviceType || 'general',
@@ -269,4 +268,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withMaxiProps)(edit);
+export default withMaxiProps(edit);

@@ -36,6 +36,10 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
+		'size-advanced-options': {
+			type: 'boolean',
+			default: true,
+		},
 		'max-width-xxl': {
 			type: 'string',
 			default: '1690',
@@ -107,7 +111,7 @@ const attributes = {
 		},
 		'column-gap-general': {
 			type: 'number',
-			default: 1.5,
+			default: 2.5,
 		},
 		'column-gap-unit-general': {
 			type: 'string',

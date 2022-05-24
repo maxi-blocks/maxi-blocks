@@ -1,4 +1,5 @@
 .maxi-warning-box {
+	position: relative;
 	padding: 1rem;
 	background: #fcf8e3;
 	color: #8a6d3b !important;
@@ -22,6 +23,13 @@
 				opacity: 0.6;
 			}
 		}
+	}
+
+	&__close-button {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		cursor: pointer;
 	}
 }
 .maxi-accordion-control__item__panel {

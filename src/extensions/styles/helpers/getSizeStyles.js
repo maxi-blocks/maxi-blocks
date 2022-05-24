@@ -24,12 +24,7 @@ const getSizeStyles = (obj, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
 			if (!obj['size-advanced-options']) {
-				if (!!obj?.showMaxWidth && target === 'max-width') return null;
-
-				if (
-					target !== 'max-width' &&
-					(target.includes('max') || target.includes('min'))
-				)
+				if (target.includes('max') || target.includes('min'))
 					return null;
 			}
 

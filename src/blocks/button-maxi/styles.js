@@ -14,6 +14,7 @@ import {
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBackgroundDisplayerStyles,
 	getBackgroundStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -161,9 +162,13 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow', 'button background']
+		),
 		...getBackgroundStyles({
 			...getGroupAttributes(
 				props,
@@ -246,6 +251,13 @@ const getContentObject = props => {
 			blockStyle: props.blockStyle,
 			textLevel: 'button',
 		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			'typography'
+		),
 	};
 
 	return response;
@@ -264,9 +276,6 @@ const getHoverContentObject = (props, scValues) => {
 				...getGroupAttributes(props, 'typography'),
 			},
 			scValues,
-		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -387,6 +396,13 @@ const getIconObject = (props, target) => {
 				prefix: 'icon-',
 				blockStyle: props.blockStyle,
 			}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			'icon'
+		),
 	};
 
 	const responsive = {
@@ -514,6 +530,12 @@ const getStyles = (props, scValues) => {
 				' .maxi-button-block__button:hover': getHoverObject(
 					props,
 					scValues
+				),
+				...getBackgroundDisplayerStyles(
+					{
+						...getGroupAttributes(props, 'transition'),
+					},
+					'canvas'
 				),
 				...getSVGStyles({
 					obj: props,

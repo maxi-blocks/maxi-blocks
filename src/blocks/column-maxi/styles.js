@@ -1,5 +1,6 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
+	getBackgroundDisplayerStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getColumnSizeStyles,
@@ -70,9 +71,13 @@ const getNormalObject = (props, rowGapProps) => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow']
+		),
 	};
 
 	return response;
@@ -107,16 +112,6 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getBackgroundDisplayer = props => {
-	const response = {
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
-	};
-
-	return response;
-};
-
 const getStyles = (props, rowGapProps) => {
 	const { uniqueID } = props;
 
@@ -125,8 +120,9 @@ const getStyles = (props, rowGapProps) => {
 			{
 				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div':
-					getBackgroundDisplayer(props),
+				...getBackgroundDisplayerStyles({
+					...getGroupAttributes(props, 'transition'),
+				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

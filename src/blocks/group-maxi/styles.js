@@ -1,5 +1,6 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
+	getBackgroundDisplayerStyles,
 	getBorderStyles,
 	getSizeStyles,
 	getBoxShadowStyles,
@@ -60,9 +61,13 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow']
+		),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
@@ -103,16 +108,6 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getBackgroundDisplayer = props => {
-	const response = {
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
-	};
-
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -121,8 +116,9 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div':
-					getBackgroundDisplayer(props),
+				...getBackgroundDisplayerStyles({
+					...getGroupAttributes(props, 'transition'),
+				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

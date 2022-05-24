@@ -9,6 +9,7 @@ import {
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -102,6 +103,13 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'canvas',
+			['border', 'box shadow']
+		),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
@@ -298,9 +306,13 @@ const getImageObject = props => {
 		clipPath: getClipPathStyles({
 			...getGroupAttributes(props, 'clipPath'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow']
+		),
 		...(imgWidth && {
 			imgWidth: {
 				general: {
@@ -434,6 +446,9 @@ const getStyles = props => {
 				' .maxi-hover-details .maxi-hover-details__content p':
 					getHoverEffectContentTextObject(props),
 				' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
+				...getBackgroundDisplayerStyles({
+					...getGroupAttributes(props, 'transition', 'canvas'),
+				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

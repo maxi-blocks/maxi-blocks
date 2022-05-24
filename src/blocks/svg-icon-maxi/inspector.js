@@ -140,7 +140,10 @@ const Inspector = props => {
 											disableJustify: true,
 										}),
 										attributes.content && {
-											label: __('Icon colour', 'maxi-blocks'),
+											label: __(
+												'Icon colour',
+												'maxi-blocks'
+											),
 											content: (
 												<SvgColorControl
 													{...getGroupAttributes(

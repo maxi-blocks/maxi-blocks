@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
 
 /**
  * Attributes
@@ -74,7 +77,13 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator({
+			blockOptions: ['Border', 'Box shadow'],
+			canvasOptions: ['Background / Layer', 'Border', 'Box shadow'],
+		}),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

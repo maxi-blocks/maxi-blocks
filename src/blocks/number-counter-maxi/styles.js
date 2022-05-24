@@ -1,5 +1,6 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
+	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -80,9 +81,13 @@ const getWrapperObject = props => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'canvas',
+			['border', 'box shadow']
+		),
 	};
 
 	return response;
@@ -188,9 +193,13 @@ const getBoxObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'number-counter-',
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow']
+		),
 	};
 
 	return response;
@@ -243,6 +252,12 @@ const getStyles = props => {
 				':hover': getHoverWrapperObject(props),
 				':hover .maxi-number-counter__box': getHoverBoxObject(props),
 				' .maxi-number-counter__box': getBoxObject(props),
+				...getBackgroundDisplayerStyles(
+					{
+						...getGroupAttributes(props, 'transition'),
+					},
+					'canvas'
+				),
 				...getNumberCounterStyles({
 					obj: {
 						...getGroupAttributes(props, 'numberCounter'),

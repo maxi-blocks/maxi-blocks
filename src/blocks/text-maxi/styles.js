@@ -16,6 +16,7 @@ import {
 } from '../../extensions/styles';
 import {
 	getAlignmentTextStyles,
+	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -79,6 +80,13 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow']
+		),
 		margin: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
@@ -130,9 +138,13 @@ const getHoverObject = props => {
 
 const getLinkObject = props => {
 	const response = {
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			'typography'
+		),
 	};
 
 	return response;
@@ -147,6 +159,13 @@ const getTypographyObject = props => {
 			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
 		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			'typography'
+		),
 	};
 
 	return response;
@@ -507,6 +526,9 @@ const getStyles = props => {
 						getTypographyHoverObject(props),
 					[` ${element}.maxi-text-block__content li::before`]:
 						getMarkerObject({ ...props, isRTL }),
+				}),
+				...getBackgroundDisplayerStyles({
+					...getGroupAttributes(props, 'transition'),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

@@ -1,5 +1,6 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
+	getBackgroundDisplayerStyles,
 	getBorderStyles,
 	getSizeStyles,
 	getBoxShadowStyles,
@@ -72,9 +73,13 @@ const getNormalObject = props => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow']
+		),
 	};
 
 	return response;
@@ -82,9 +87,13 @@ const getNormalObject = props => {
 
 const getBackgroundDisplayer = props => {
 	const response = {
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'background / layer']
+		),
 	};
 
 	return response;
@@ -186,6 +195,9 @@ const getStyles = props => {
 							),
 						},
 					},
+				}),
+				...getBackgroundDisplayerStyles({
+					...getGroupAttributes(props, 'transition'),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

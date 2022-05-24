@@ -1,5 +1,6 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
+	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -63,6 +64,13 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'canvas',
+			['border', 'box shadow']
+		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -135,9 +143,13 @@ const getDividerObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'divider-',
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			'box shadow'
+		),
 	};
 
 	return response;
@@ -170,6 +182,9 @@ const getStyles = props => {
 				':hover': getHoverWrapperObject(props),
 				' hr.maxi-divider-block__divider:hover': getHoverObject(props),
 				' hr.maxi-divider-block__divider': getDividerObject(props),
+				...getBackgroundDisplayerStyles({
+					...getGroupAttributes(props, 'transition', 'canvas'),
+				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

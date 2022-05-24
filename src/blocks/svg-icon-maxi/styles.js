@@ -1,6 +1,11 @@
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setTransitionToSelectors,
+	stylesCleaner,
+} from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
+	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -67,9 +72,13 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'canvas',
+			['border', 'box shadow']
+		),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
@@ -157,9 +166,13 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
+		transition: getTransitionStyles(
+			{
+				...getGroupAttributes(props, 'transition'),
+			},
+			'block',
+			['border', 'box shadow']
+		),
 	};
 
 	return response;
@@ -218,13 +231,28 @@ const getStyles = props => {
 				':hover': getWrapperObjectHover(props),
 				' .maxi-svg-icon-block__icon': getNormalObject(props),
 				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-				...getSVGStyles({
-					obj: {
-						...getGroupAttributes(props, 'svg'),
+				...getBackgroundDisplayerStyles(
+					{
+						...getGroupAttributes(props, 'transition'),
 					},
-					target: ' .maxi-svg-icon-block__icon',
-					blockStyle,
-				}),
+					'canvas'
+				),
+				...setTransitionToSelectors(
+					getSVGStyles({
+						obj: {
+							...getGroupAttributes(props, 'svg'),
+						},
+						target: ' .maxi-svg-icon-block__icon',
+						blockStyle,
+					}),
+					getTransitionStyles(
+						{
+							...getGroupAttributes(props, 'transition'),
+						},
+						'block',
+						'icon colour'
+					)
+				),
 				...(props['svg-status-hover'] && {
 					...getSVGStyles({
 						obj: {

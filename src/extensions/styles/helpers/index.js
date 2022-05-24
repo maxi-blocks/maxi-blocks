@@ -1,5 +1,6 @@
 export { default as getAlignmentFlexStyles } from './getAlignmentFlexStyles';
 export { default as getAlignmentTextStyles } from './getAlignmentTextStyles';
+export { default as getBackgroundDisplayerStyles } from './getBackgroundDisplayerStyles';
 export { default as getBorderStyles } from './getBorderStyles';
 export { default as getArrowStyles } from './getArrowStyles';
 export { default as getBoxShadowStyles } from './getBoxShadowStyles';

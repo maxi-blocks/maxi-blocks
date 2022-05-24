@@ -627,7 +627,11 @@ describe('Responsive attributes mechanisms', () => {
 		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);
 	});
 
-	it('On L as a winBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
+	// Skipped as Row doesn't have Width options anymore and there are no more situations where the first default attribute doesn't
+	// start with XXL, General or XL. In this case, having the width-l default value as the first was creating this concrete issue that
+	// was supposed to be fixed and tested here. Things are different now, so this test is skipped but kept in case we find a future
+	// situation related that will need it 👍
+	it.skip('On L as a winBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1040, height: 700 });
 

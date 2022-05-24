@@ -21,7 +21,11 @@ export const getColumnNum = (columnsSize, clientId, breakpoint) => {
 	const columnSizeMatrix = [];
 
 	Object.entries(columnsSize).forEach(([key, value]) => {
-		const size = value[`column-size-${breakpoint}`];
+		const size = getLastBreakpointAttribute({
+			target: 'column-size',
+			breakpoint,
+			attributes: value,
+		});
 
 		if (size) {
 			acc += size;

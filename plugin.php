@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Maxi Blocks - Last Github version
  * Plugin URI:
- * Description: MaxiBlocks — Last update: some moment of 2022 lol
+ * Description: MaxiBlocks — Last update: some moment of May 2022 lol
  * Author: Gutenberg Den
  * Author URI:
  * Version: 0.1

@@ -20,10 +20,6 @@ export const svg = {
 				type: 'number',
 				default: 2,
 			},
-			'svg-responsive': {
-				type: 'boolean',
-				default: true,
-			},
 		},
 	}),
 };

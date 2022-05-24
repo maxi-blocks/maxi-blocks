@@ -44,7 +44,7 @@ const OpacityControl = props => {
 			}}
 			min={0}
 			max={100}
-			onReset={() => (onReset ? onReset() : onChange(1))}
+			onReset={() => (onReset ? onReset() : onChange(undefined))}
 		/>
 	);
 };

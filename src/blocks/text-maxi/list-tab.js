@@ -22,7 +22,7 @@ import {
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
 } from '../../extensions/styles';
-import { setSVGColor } from '../../extensions/svg';
+import { setSVGColor, setSVGSize } from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 
 /**
@@ -325,9 +325,30 @@ const listTab = props => {
 							attributes,
 						})}
 						onChangeValue={val => {
+							let svgElement = null;
+
+							if (
+								typeOfList === 'ul' &&
+								listStyleSource === 'icon'
+							) {
+								const unit = getLastBreakpointAttribute({
+									target: 'list-size-unit',
+									breakpoint: deviceType,
+									attributes,
+								});
+
+								svgElement = setSVGSize({
+									svg: listStyleCustom,
+									size: val + unit,
+								});
+							}
+
 							maxiSetAttributes({
 								[`list-size-${deviceType}`]:
 									val !== undefined && val !== '' ? val : '',
+								...(svgElement && {
+									listStyleCustom: svgElement,
+								}),
 							});
 						}}
 						enableUnit
@@ -336,11 +357,32 @@ const listTab = props => {
 							breakpoint: deviceType,
 							attributes,
 						})}
-						onChangeUnit={val =>
+						onChangeUnit={val => {
+							let svgElement = null;
+
+							if (
+								typeOfList === 'ul' &&
+								listStyleSource === 'icon'
+							) {
+								const size = getLastBreakpointAttribute({
+									target: 'list-size',
+									breakpoint: deviceType,
+									attributes,
+								});
+
+								svgElement = setSVGSize({
+									svg: listStyleCustom,
+									size: size + val,
+								});
+							}
+
 							maxiSetAttributes({
 								[`list-size-unit-${deviceType}`]: val,
-							})
-						}
+								...(svgElement && {
+									listStyleCustom: svgElement,
+								}),
+							});
+						}}
 						breakpoint={deviceType}
 						minMaxSettings={{
 							px: {
@@ -740,10 +782,27 @@ const listTab = props => {
 													  })
 													: color;
 
-												const SVGElement = setSVGColor({
+												let SVGElement = setSVGColor({
 													svg: obj.SVGElement,
 													color: colorStr,
 													type: 'fill',
+												});
+
+												const size =
+													getLastBreakpointAttribute({
+														target: 'list-size',
+														breakpoint: deviceType,
+														attributes,
+													}) +
+													getLastBreakpointAttribute({
+														target: 'list-size-unit',
+														breakpoint: deviceType,
+														attributes,
+													});
+
+												SVGElement = setSVGSize({
+													svg: SVGElement,
+													size,
 												});
 
 												maxiSetAttributes({

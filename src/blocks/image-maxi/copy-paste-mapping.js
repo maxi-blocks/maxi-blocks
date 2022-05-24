@@ -9,20 +9,36 @@ const copyPasteMapping = {
 	],
 	settings: {
 		blockSpecific: {
-			fullWidth: 'Full Width',
-			customLabel: 'Custom Label',
-			anchorLink: {
-				label: 'Anchor',
-				value: ['anchorLink', 'linkSettings'],
+			dimension: {
+				groupLabel: 'Dimension',
+				props: {
+					useInitSize: 'Use original size',
+					imgWidth: 'Image width',
+					imageRatio: 'Image ratio',
+				},
 			},
-			extraClassName: 'Custom CSS Classes',
-			imageSize: {
-				label: 'Image size',
-				value: ['imageSize', 'mediaURL', 'mediaWidth', 'mediaHeight'],
-			},
-			cropOptions: {
-				label: 'Crop Options',
-				value: ['cropOptions', 'mediaURL', 'mediaWidth', 'mediaHeight'],
+			mediaAlt: { label: 'Alt tag', value: ['mediaAlt', 'altSelector'] },
+			caption: {
+				groupLabel: 'Caption',
+				props: {
+					captionType: 'Caption type',
+					captionContent: 'Caption content',
+					captionPosition: 'Caption position',
+					'caption-gap': {
+						label: 'Caption gap',
+						type: 'withBreakpoint',
+					},
+					'caption-gap-unit': {
+						label: 'Caption gap unit',
+						type: 'withBreakpoint',
+					},
+					typography: { label: 'Typography', type: 'withoutPrefix' },
+					textAlignment: {
+						label: 'Text alignment',
+						type: 'withoutPrefix',
+					},
+					link: { label: 'Link', type: 'withoutPrefix' },
+				},
 			},
 			mediaID: {
 				label: 'Image',
@@ -35,109 +51,106 @@ const copyPasteMapping = {
 					'mediaAlt',
 				],
 			},
-			mediaAlt: { label: 'Alt tag', value: ['mediaAlt', 'altSelector'] },
-			imgWidth: 'Image Width',
-			useInitSize: 'Use original size',
-			clipPath: 'Clip Path',
-			captionType: 'Caption Type',
-			captionContent: 'Caption Content',
-			captionPosition: 'Caption Position',
-			imageRatio: 'Image Ratio',
-			SVGElement: {
-				label: 'SVG Shape',
-				value: ['SVGElement', 'SVGData'],
-			},
-		},
-		withBreakpoint: {
-			'caption-gap': 'Caption Gap',
-			'caption-gap-unit': 'Caption Gap Unit',
-		},
-		withPrefix: {
-			border: {
-				groupLabel: 'Border Group',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border Width',
-					borderRadius: 'Border Radius',
-				},
-			},
-			boxShadow: 'Box Shadow',
-			size: 'Size',
-			padding: 'Padding',
-		},
-		withPrefixHover: {
-			borderHover: {
-				groupLabel: 'Border Hover Group',
-				props: {
-					borderHover: 'Border Hover',
-					borderWidthHover: 'Border Width Hover',
-					borderRadiusHover: 'Border Radius Hover',
-				},
-			},
-			boxShadowHover: 'Box Shadow Hover',
 		},
 		withoutPrefix: {
 			alignment: 'Alignment',
-			textAlignment: 'Text Alignment',
-			typography: 'Typography',
-			link: 'Link',
-			imageShape: 'Image Shape',
-			hover: 'Hover',
-			hoverBackground: 'Hover Background',
-			hoverBackgroundColor: 'Hover Background Color',
-			hoverBackgroundGradient: 'Hover Background Gradient',
-			hoverBorder: 'Hover Border',
-			hoverBorderRadius: 'Hover Border Radius',
-			hoverBorderWidth: 'Hover Border Width',
-			hoverContentTypography: 'Hover Content Typography',
-			hoverMargin: 'Hover Margin',
-			hoverPadding: 'Hover Padding',
-			hoverTitleTypography: 'Hover Title Typography',
-			breakpoints: 'Breakpoints',
+			hoverEffects: {
+				groupLabel: 'Hover effects',
+				props: {
+					hover: 'Hover',
+					hoverBackground: 'Hover Background',
+					hoverBackgroundColor: 'Hover Background Color',
+					hoverBackgroundGradient: 'Hover Background Gradient',
+					hoverBorder: 'Hover Border',
+					hoverBorderRadius: 'Hover Border Radius',
+					hoverBorderWidth: 'Hover Border Width',
+					hoverContentTypography: 'Hover Content Typography',
+					hoverMargin: 'Hover Margin',
+					hoverPadding: 'Hover Padding',
+					hoverTitleTypography: 'Hover Title Typography',
+				},
+			},
+			clipPath: 'Clip Path',
+		},
+		withPrefix: {
+			border: {
+				groupLabel: 'Border',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border width',
+					borderRadius: 'Border radius',
+				},
+			},
+			borderHover: {
+				groupLabel: 'Border hover',
+				props: {
+					borderHover: 'Border hover',
+					borderWidthHover: 'Border width hover',
+					borderRadiusHover: 'Border radius hover',
+				},
+			},
+			boxShadow: {
+				groupLabel: 'Box shadow',
+				props: {
+					boxShadow: 'Box shadow',
+					boxShadowHover: 'Box shadow hover',
+				},
+			},
+			size: 'Size',
+			padding: 'Padding',
 		},
 	},
 	canvas: {
 		blockSpecific: {
-			blockFullWidth: 'Block Full Width',
+			blockFullWidth: 'Block full width',
 		},
 		withoutPrefix: {
+			blockBackground: 'Background',
 			border: {
-				groupLabel: 'Border Group',
+				groupLabel: 'Border',
 				props: {
 					border: 'Border',
-					borderWidth: 'Border Width',
-					borderRadius: 'Border Radius',
+					borderWidth: 'Border width',
+					borderRadius: 'Border radius',
+					borderHover: 'Border hover',
+					borderWidthHover: 'Border width hover',
+					borderRadiusHover: 'Border radius hover',
 				},
 			},
-			boxShadow: 'Box Shadow',
-			opacity: 'Opacity',
-			blockBackground: 'Background',
-			size: 'Size',
-			margin: 'Margin',
-			padding: 'Padding',
-		},
-		withoutPrefixHover: {
-			borderHover: {
-				groupLabel: 'Border Hover Group',
+			boxShadow: {
+				groupLabel: 'Box shadow',
 				props: {
-					borderHover: 'Border Hover',
-					borderWidthHover: 'Border Width Hover',
-					borderRadiusHover: 'Border Radius Hover',
+					boxShadow: 'Box shadow',
+					boxShadowHover: 'Box shadow hover',
 				},
 			},
-			boxShadowHover: 'Box Shadow Hover',
+			opacity: 'Opacity',
+			size: 'Size',
+			'margin-padding': {
+				groupLabel: 'Margin/Padding',
+				props: { margin: 'Margin', padding: 'Padding' },
+			},
 		},
 	},
 	advanced: {
+		blockSpecific: {
+			extraClassName: 'Custom CSS classes',
+			anchorLink: {
+				label: 'Anchor',
+				value: ['anchorLink', 'linkSettings'],
+			},
+			relations: 'Interaction',
+		},
 		withoutPrefix: {
+			breakpoints: 'Breakpoints',
+			customCss: 'Custom CSS',
 			scroll: 'Scroll',
 			transform: 'Transform',
-			display: 'Display',
-			position: 'Position',
+			transition: 'Hyperlink hover transition',
+			display: 'Show/hide block',
 			overflow: 'Overflow',
-			zIndex: 'z-Index',
-			customCss: 'Custom Css',
-			flex: 'Flex',
+			flex: 'Flexbox',
+			zIndex: 'Z-index',
 		},
 	},
 };

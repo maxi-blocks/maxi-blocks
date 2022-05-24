@@ -48,6 +48,38 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 											Object.keys(withPalette)
 										);
 									} else if (
+										attrContent.props[prop].type ===
+										'withBreakpoint'
+									) {
+										const withBrkpt = [];
+
+										breakpoints.forEach(breakpoint =>
+											withBrkpt.push(
+												`${prop}-${breakpoint}`
+											)
+										);
+										attrArray = attrArray.concat(withBrkpt);
+									} else if (
+										attrContent.props[prop].type ===
+											'withoutPrefix' ||
+										attrContent.props[prop].type ===
+											'withPrefix'
+									) {
+										attrArray = attrArray.concat(
+											Object.keys(
+												getGroupAttributes(
+													attributes,
+													prop,
+													false,
+													attrContent.props[prop]
+														.type === 'withPrefix'
+														? prefix
+														: '',
+													true
+												)
+											)
+										);
+									} else if (
 										typeof attrContent.props[prop] ===
 										'string'
 									) {

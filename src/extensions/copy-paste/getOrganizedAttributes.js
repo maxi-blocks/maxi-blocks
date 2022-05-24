@@ -48,6 +48,36 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 												});
 											attrArray =
 												Object.keys(withPalette);
+										} else if (
+											attrContent.props[prop].type ===
+											'withBreakpoint'
+										) {
+											const withBrkpt = [];
+
+											breakpoints.forEach(breakpoint =>
+												withBrkpt.push(
+													`${prop}-${breakpoint}`
+												)
+											);
+											attrArray = withBrkpt;
+										} else if (
+											attrContent.props[prop].type ===
+												'withoutPrefix' ||
+											attrContent.props[prop].type ===
+												'withPrefix'
+										) {
+											attrArray = Object.keys(
+												getGroupAttributes(
+													attributes,
+													prop,
+													false,
+													attrContent.props[prop]
+														.type === 'withPrefix'
+														? prefix
+														: '',
+													true
+												)
+											);
 										}
 
 										if (type === 'withBreakpoint') {

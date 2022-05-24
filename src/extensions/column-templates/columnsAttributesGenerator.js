@@ -6,11 +6,11 @@ import getColumnsPosition from './getColumnsPosition';
 /**
  * External dependencies
  */
-import { round } from 'lodash';
+import { floor } from 'lodash';
 
 const getGeneralColumnAttributes = ({ column, columnPosition }) => {
 	return {
-		'column-size-general': round(column * 100, 2),
+		'column-size-general': floor(column * 100, 2),
 		'column-size-m': 100,
 		...(columnPosition.columnsNumber === 1 && {
 			'column-size-general': 100,
@@ -20,7 +20,7 @@ const getGeneralColumnAttributes = ({ column, columnPosition }) => {
 
 const getColumnAttributes = ({ column, breakpoint, columnPosition }) => {
 	return {
-		[`column-size-${breakpoint}`]: round(column * 100, 2),
+		[`column-size-${breakpoint}`]: floor(column * 100, 2),
 		...(columnPosition.columnsNumber === 1 && {
 			[`column-size-${breakpoint}`]: 100,
 		}),

@@ -26,6 +26,15 @@ describe('ColumnPattern', () => {
 			'column picker'
 		);
 
+		// check default values
+		expect(await getAttributes('column-gap-general')).toStrictEqual(1.5);
+		expect(await getAttributes('column-gap-unit-general')).toStrictEqual(
+			'%'
+		);
+
+		expect(await getAttributes('row-gap-general')).toStrictEqual(20);
+		expect(await getAttributes('row-gap-unit-general')).toStrictEqual('px');
+
 		// select column
 		await accordionControl.$eval(
 			'.components-column-pattern .maxi-base-control__field input',

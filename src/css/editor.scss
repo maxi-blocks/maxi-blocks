@@ -354,8 +354,9 @@ body .toolbar-item__popover {
 }
 
 /*******************************
-* Style Card Editor Boat Icon
+* Style Card Editor Boat Icon and Template library Icon
 *******************************/
+#template-library-fill,
 svg path#styleCardMenu_a,
 svg path#styleCardBoat_a {
 	fill: rgba(var(--maxi-light-color-4), 1);

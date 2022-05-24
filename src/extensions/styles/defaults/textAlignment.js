@@ -4,6 +4,7 @@ const textAlignment = breakpointAttributesCreator({
 	obj: {
 		'text-alignment': {
 			type: 'string',
+			default: 'left',
 		},
 	},
 });

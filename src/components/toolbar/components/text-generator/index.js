@@ -87,7 +87,7 @@ const TextGenerator = props => {
 			position='right top'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>
-					{__('Ipsum text generator', 'maxi-blocks')}
+					{__('Placeholder text generator', 'maxi-blocks')}
 				</Button>
 			)}
 			renderContent={() => (

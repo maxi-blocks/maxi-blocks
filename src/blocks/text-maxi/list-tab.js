@@ -612,7 +612,7 @@ const listTab = props => {
 							{typeOfList === 'ol' && (
 								<>
 									<AdvancedNumberControl
-										label={__('Start From', 'maxi-blocks')}
+										label={__('Start from', 'maxi-blocks')}
 										className='maxi-image-inspector__list-start'
 										value={listStart}
 										onChangeValue={val => {

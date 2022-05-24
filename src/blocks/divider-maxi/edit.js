@@ -173,6 +173,7 @@ class edit extends MaxiBlockComponent {
 				isOverflowHidden={getIsOverflowHidden()}
 				minWidth='1px'
 				defaultSize={{
+					width: '100%',
 					height: `${getLastBreakpointAttribute({
 						target: 'height',
 						breakpoint: deviceType,

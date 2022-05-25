@@ -24,7 +24,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
-const getNormalObject = (props, rowGapProps) => {
+const getNormalObject = (props, rowGapProps, clientId) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -65,7 +65,8 @@ const getNormalObject = (props, rowGapProps) => {
 				{
 					...getGroupAttributes(props, 'columnSize'),
 				},
-				rowGapProps
+				rowGapProps,
+				clientId
 			),
 		},
 		size: getSizeStyles({
@@ -112,7 +113,7 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = (props, rowGapProps) => {
+const getStyles = (props, rowGapProps, clientId) => {
 	const { uniqueID } = props;
 
 	const response = {

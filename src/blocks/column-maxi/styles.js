@@ -1,6 +1,5 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
-	getBackgroundDisplayerStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getColumnSizeStyles,
@@ -16,6 +15,7 @@ import {
 	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
+import { merge } from 'lodash';
 
 const getNormalObject = (props, rowGapProps) => {
 	const response = {
@@ -71,13 +71,6 @@ const getNormalObject = (props, rowGapProps) => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			['border', 'box shadow']
-		),
 	};
 
 	return response;
@@ -117,38 +110,40 @@ const getStyles = (props, rowGapProps) => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getNormalObject(props, rowGapProps),
-				':hover': getHoverObject(props),
-				...getBackgroundDisplayerStyles({
-					...getGroupAttributes(props, 'transition'),
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-					rowBorderRadius: props.rowBorderRadius,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+			merge(
+				{
+					'': getNormalObject(props, rowGapProps),
+					':hover': getHoverObject(props),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-					rowBorderRadius: props.rowBorderRadius,
-				}),
-			},
+						]),
+						blockStyle: props.blockStyle,
+						rowBorderRadius: props.rowBorderRadius,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle: props.blockStyle,
+						rowBorderRadius: props.rowBorderRadius,
+					}),
+				},
+				...getTransitionStyles({
+					...getGroupAttributes(props, 'transition'),
+				})
+			),
 			selectorsColumn,
 			props
 		),

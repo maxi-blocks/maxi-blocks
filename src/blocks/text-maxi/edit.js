@@ -26,6 +26,7 @@ import onMerge, { onReplaceBlocks } from './utils';
 import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import copyPasteMapping from './copy-paste-mapping';
+import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -35,6 +36,16 @@ import { isEmpty, compact, flatten } from 'lodash';
 /**
  * Content
  */
+export const transitionObj = {
+	canvas: {
+		...transitionDefault.canvas,
+		typography: {
+			title: 'Typography',
+			target: ' .maxi-text-block__content',
+			limitless: true,
+		},
+	},
+};
 class edit extends MaxiBlockComponent {
 	state = {
 		formatValue: {},
@@ -49,7 +60,7 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(this.props.attributes, transitionObj);
 	}
 
 	maxiBlockDidUpdate() {

@@ -1,6 +1,5 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
-	getBackgroundDisplayerStyles,
 	getSizeStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
@@ -16,6 +15,7 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
+import { merge } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -60,13 +60,6 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			['border', 'box shadow']
-		),
 		row: {
 			general: {},
 		},
@@ -115,36 +108,38 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getNormalObject(props),
-				':hover': getHoverObject(props),
-				...getBackgroundDisplayerStyles({
-					...getGroupAttributes(props, 'transition'),
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+			merge(
+				{
+					'': getNormalObject(props),
+					':hover': getHoverObject(props),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-				}),
-			},
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle: props.blockStyle,
+					}),
+				},
+				...getTransitionStyles({
+					...getGroupAttributes(props, 'transition'),
+				})
+			),
 			selectorsRow,
 			props
 		),

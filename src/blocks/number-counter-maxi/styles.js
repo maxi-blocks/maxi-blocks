@@ -1,6 +1,5 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
-	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -18,6 +17,7 @@ import {
 	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
+import { merge } from 'lodash';
 
 const getWrapperObject = props => {
 	const response = {
@@ -242,30 +242,31 @@ const getHoverBoxObject = props => {
 	return response;
 };
 
-const getStyles = props => {
+const getStyles = (props, transitionObj) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getHoverWrapperObject(props),
-				':hover .maxi-number-counter__box': getHoverBoxObject(props),
-				' .maxi-number-counter__box': getBoxObject(props),
-				...getBackgroundDisplayerStyles(
-					{
-						...getGroupAttributes(props, 'transition'),
-					},
-					'canvas'
-				),
-				...getNumberCounterStyles({
-					obj: {
-						...getGroupAttributes(props, 'numberCounter'),
-					},
-					target: '.maxi-number-counter__box',
-					blockStyle,
-				}),
-			},
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getHoverWrapperObject(props),
+					':hover .maxi-number-counter__box':
+						getHoverBoxObject(props),
+					' .maxi-number-counter__box': getBoxObject(props),
+					...getNumberCounterStyles({
+						obj: {
+							...getGroupAttributes(props, 'numberCounter'),
+						},
+						target: '.maxi-number-counter__box',
+						blockStyle,
+					}),
+				},
+				...getTransitionStyles(
+					{ ...getGroupAttributes(props, 'transition') },
+					transitionObj
+				)
+			),
 			selectorsNumberCounter,
 			props
 		),

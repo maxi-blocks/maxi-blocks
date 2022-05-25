@@ -22,6 +22,7 @@ import {
 import getStyles from './styles';
 import { getBreakpoints } from '../../extensions/styles/helpers';
 import copyPasteMapping from './copy-paste-mapping';
+import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -31,6 +32,21 @@ import { round } from 'lodash';
 /**
  * NumberCounter
  */
+export const transitionObj = {
+	...transitionDefault,
+	block: {
+		border: {
+			title: 'Border',
+			target: ' .maxi-number-counter__box',
+			property: 'border',
+		},
+		'box shadow': {
+			title: 'Box shadow',
+			target: ' .maxi-number-counter__box',
+			property: 'box-shadow',
+		},
+	},
+};
 
 const NumberCounter = attributes => {
 	const {
@@ -242,7 +258,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(this.props.attributes, transitionDefault);
 	}
 
 	get getMaxiCustomData() {

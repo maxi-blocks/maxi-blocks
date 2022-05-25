@@ -16,7 +16,6 @@ import {
 } from '../../extensions/styles';
 import {
 	getAlignmentTextStyles,
-	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -40,7 +39,7 @@ import { getSVGListStyle } from './utils';
 /**
  * External dependencies
  */
-import { isNil, isNumber } from 'lodash';
+import { isNil, isNumber, merge } from 'lodash';
 import parse from 'html-react-parser';
 
 const getNormalObject = props => {
@@ -80,13 +79,6 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			['border', 'box shadow']
-		),
 		margin: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
@@ -136,20 +128,6 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getLinkObject = props => {
-	const response = {
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			'typography'
-		),
-	};
-
-	return response;
-};
-
 const getTypographyObject = props => {
 	const response = {
 		typography: getTypographyStyles({
@@ -159,13 +137,6 @@ const getTypographyObject = props => {
 			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			'typography'
-		),
 	};
 
 	return response;
@@ -493,100 +464,105 @@ const getMarkerObject = props => {
 	};
 };
 
-const getStyles = props => {
+const getStyles = (props, transitionObj) => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
 	const { isRTL } = select('core/editor').getEditorSettings();
 
 	return {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getNormalObject(props),
-				' .maxi-text-block--link, .maxi-text-block--link span':
-					getLinkObject(props),
-				':hover': getHoverObject(props),
-				...(!isList && {
-					[` ${element}.maxi-text-block__content`]:
-						getTypographyObject(props, isList),
-					[` ${element}.maxi-text-block__content:hover`]:
-						getTypographyHoverObject(props),
-				}),
-				...(isList && {
-					[` ${element}.maxi-text-block__content`]: getListObject({
-						...props,
-						isRTL,
+			merge(
+				{
+					'': getNormalObject(props),
+					':hover': getHoverObject(props),
+					...(!isList && {
+						[` ${element}.maxi-text-block__content`]:
+							getTypographyObject(props, isList),
+						[` ${element}.maxi-text-block__content:hover`]:
+							getTypographyHoverObject(props),
 					}),
-					[` ${element}.maxi-text-block__content li`]: {
-						...getTypographyObject(props),
-						...getListItemObject(props),
-					},
-					[` ${element}.maxi-text-block__content li:not(:first-child)`]:
-						{ ...getListParagraphObject(props) },
-					[` ${element}.maxi-text-block__content li:hover`]:
-						getTypographyHoverObject(props),
-					[` ${element}.maxi-text-block__content li::before`]:
-						getMarkerObject({ ...props, isRTL }),
-				}),
-				...getBackgroundDisplayerStyles({
-					...getGroupAttributes(props, 'transition'),
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+					...(isList && {
+						[` ${element}.maxi-text-block__content`]: getListObject(
+							{
+								...props,
+								isRTL,
+							}
+						),
+						[` ${element}.maxi-text-block__content li`]: {
+							...getTypographyObject(props),
+							...getListItemObject(props),
+						},
+						[` ${element}.maxi-text-block__content li:not(:first-child)`]:
+							{ ...getListParagraphObject(props) },
+						[` ${element}.maxi-text-block__content li:hover`]:
+							getTypographyHoverObject(props),
+						[` ${element}.maxi-text-block__content li::before`]:
+							getMarkerObject({ ...props, isRTL }),
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle: props.blockStyle,
+					}),
+					...getCustomFormatsStyles(
+						!isList
+							? ' .maxi-text-block__content'
+							: ' .maxi-text-block__content li',
+						props['custom-formats'],
+						false,
+						{ ...getGroupAttributes(props, 'typography') },
+						props.textLevel,
+						props.blockStyle
 					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-				}),
-				...getCustomFormatsStyles(
-					!isList
-						? ' .maxi-text-block__content'
-						: ' .maxi-text-block__content li',
-					props['custom-formats'],
-					false,
-					{ ...getGroupAttributes(props, 'typography') },
-					props.textLevel,
-					props.blockStyle
-				),
-				...getCustomFormatsStyles(
-					!isList
-						? ':hover .maxi-text-block__content'
-						: ':hover .maxi-text-block__content li',
-					props['custom-formats-hover'],
-					true,
-					getGroupAttributes(props, [
-						'typography',
-						'typographyHover',
-					]),
-					props.textLevel,
-					props.blockStyle
-				),
-				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
-					[` a ${element}.maxi-text-block__content`],
-					props.blockStyle
-				),
-				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
-					[` ${element}.maxi-text-block__content a`],
-					props.blockStyle
-				),
-			},
+					...getCustomFormatsStyles(
+						!isList
+							? ':hover .maxi-text-block__content'
+							: ':hover .maxi-text-block__content li',
+						props['custom-formats-hover'],
+						true,
+						getGroupAttributes(props, [
+							'typography',
+							'typographyHover',
+						]),
+						props.textLevel,
+						props.blockStyle
+					),
+					...getLinkStyles(
+						{ ...getGroupAttributes(props, 'link') },
+						[` a ${element}.maxi-text-block__content`],
+						props.blockStyle
+					),
+					...getLinkStyles(
+						{ ...getGroupAttributes(props, 'link') },
+						[` ${element}.maxi-text-block__content a`],
+						props.blockStyle
+					),
+				},
+				...getTransitionStyles(
+					{
+						...getGroupAttributes(props, 'transition'),
+					},
+					transitionObj
+				)
+			),
 			selectorsText,
 			props
 		),

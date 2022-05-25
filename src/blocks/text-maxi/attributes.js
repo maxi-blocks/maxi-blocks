@@ -16,6 +16,7 @@ import {
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { transitionObj } from './edit';
 
 /**
  * Attributes
@@ -141,14 +142,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator({
-			blockOptions: [
-				'Typography',
-				'Background / Layer',
-				'Border',
-				'Box shadow',
-			],
-		}),
+		...transitionAttributesCreator(transitionObj),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

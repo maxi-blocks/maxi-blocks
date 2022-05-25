@@ -30,6 +30,7 @@ import { generateDataObject, injectImgSVG } from '../../extensions/svg';
 import copyPasteMapping from './copy-paste-mapping';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
+import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -46,6 +47,21 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
 /**
  * Content
  */
+export const transitionObj = {
+	...transitionDefault,
+	block: {
+		border: {
+			title: 'Border',
+			target: ' .maxi-image-block-wrapper',
+			property: 'border',
+		},
+		'box shadow': {
+			title: 'Box shadow',
+			target: ' .maxi-image-block-wrapper',
+			property: 'box-shadow',
+		},
+	},
+};
 class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
@@ -66,7 +82,7 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(this.props.attributes, transitionObj);
 	}
 
 	get getMaxiCustomData() {

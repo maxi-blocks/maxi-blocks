@@ -13,27 +13,6 @@ import copyPasteMapping from './copy-paste-mapping';
 /**
  * Edit
  */
-
-export const transitionObj = {
-	canvas: {
-		border: {
-			title: 'Border',
-			target: '',
-			property: 'border',
-		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: '',
-			property: 'box-shadow',
-		},
-		'background / layer': {
-			title: 'Background / Layer',
-			target: ' > .maxi-background-displayer > div',
-			property: 'background',
-			limitless: true,
-		},
-	},
-};
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);

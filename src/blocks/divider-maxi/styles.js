@@ -1,6 +1,5 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
-	getBackgroundDisplayerStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -17,6 +16,7 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsDivider } from './custom-css';
+import { merge } from 'lodash';
 
 const getWrapperObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
@@ -64,13 +64,6 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'canvas',
-			['border', 'box shadow']
-		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -143,13 +136,6 @@ const getDividerObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'divider-',
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			'box shadow'
-		),
 	};
 
 	return response;
@@ -172,43 +158,49 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = props => {
+const getStyles = (props, transitionObj) => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getHoverWrapperObject(props),
-				' hr.maxi-divider-block__divider:hover': getHoverObject(props),
-				' hr.maxi-divider-block__divider': getDividerObject(props),
-				...getBackgroundDisplayerStyles({
-					...getGroupAttributes(props, 'transition', 'canvas'),
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getHoverWrapperObject(props),
+					' hr.maxi-divider-block__divider:hover':
+						getHoverObject(props),
+					' hr.maxi-divider-block__divider': getDividerObject(props),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-				}),
-			},
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle: props.blockStyle,
+					}),
+				},
+				...getTransitionStyles(
+					{
+						...getGroupAttributes(props, 'transition'),
+					},
+					transitionObj
+				)
+			),
 			selectorsDivider,
 			props
 		),

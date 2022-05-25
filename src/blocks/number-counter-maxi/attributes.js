@@ -11,6 +11,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
+import { transitionObj } from './edit';
 
 /**
  * Attributes
@@ -79,10 +80,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator({
-			blockOptions: ['Border', 'Box shadow'],
-			canvasOptions: ['Background / Layer', 'Border', 'Box shadow'],
-		}),
+		...transitionAttributesCreator(transitionObj),
 	},
 	...attributesData.display,
 	...attributesData.position,

@@ -46,9 +46,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator({
-			blockOptions: ['Background / Layer', 'Border', 'Box shadow'],
-		}),
+		...transitionAttributesCreator(),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

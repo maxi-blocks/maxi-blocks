@@ -15,7 +15,6 @@ import { getAttributes, openSidebarTab } from '../../../../utils';
 describe('Background color from Toolbar', () => {
 	it('Test background color from toolbar', async () => {
 		await createNewPost();
-		await page.waitForTimeout(1000);
 		await insertBlock('Button Maxi');
 
 		// edit background color maxi
@@ -25,9 +24,9 @@ describe('Background color from Toolbar', () => {
 		);
 
 		// select background color
-		await page.$$eval(
-			'.components-popover__content .maxi-color-palette-control button',
-			button => button[2].click()
+		await page.$eval(
+			'.components-popover__content .maxi-color-palette-control button[data-item="3"]',
+			button => button.click()
 		);
 
 		// change opacity

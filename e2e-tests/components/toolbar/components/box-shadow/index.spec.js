@@ -15,7 +15,6 @@ import { getAttributes, openSidebarTab } from '../../../../utils';
 describe('Box shadow from Toolbar', () => {
 	it('Test box shadow from toolbar', async () => {
 		await createNewPost();
-		await page.waitForTimeout(1000);
 		await insertBlock('Button Maxi');
 
 		// edit box-shadow maxi
@@ -27,7 +26,7 @@ describe('Box shadow from Toolbar', () => {
 		// select box-shadow
 		await page.$$eval(
 			'.components-popover__content .maxi-shadow-control .maxi-default-styles-control button',
-			button => button[2].click()
+			button => button[1].click()
 		);
 
 		// change box-shadow spread
@@ -39,9 +38,9 @@ describe('Box shadow from Toolbar', () => {
 		await page.keyboard.type('77');
 
 		// change color
-		await page.$$eval(
-			'.toolbar-item__box-shadow__popover .maxi-color-control__palette-container button',
-			button => button[5].click()
+		await page.$eval(
+			'.toolbar-item__box-shadow__popover .maxi-color-control__palette-container button[data-item="6"]',
+			button => button.click()
 		);
 
 		// change opacity

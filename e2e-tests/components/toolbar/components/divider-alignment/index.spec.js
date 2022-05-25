@@ -11,7 +11,6 @@ import { getAttributes, openSidebarTab } from '../../../../utils';
 describe('Divider alignment from Toolbar', () => {
 	it('Test divider alignment from toolbar', async () => {
 		await createNewPost();
-		await page.waitForTimeout(1000);
 		await insertBlock('Divider Maxi');
 
 		// edit divider alignment
@@ -34,9 +33,9 @@ describe('Divider alignment from Toolbar', () => {
 		// Check changes in sidebar
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
-		const alignmentOrientation = await accordionPanel.$$eval(
-			'.maxi-base-control select',
-			select => select[0].value
+		const alignmentOrientation = await accordionPanel.$eval(
+			'.line-orientation-selector select',
+			select => select.value
 		);
 
 		expect(alignmentOrientation).toStrictEqual('vertical');

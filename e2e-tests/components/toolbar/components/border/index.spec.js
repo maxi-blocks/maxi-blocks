@@ -38,9 +38,9 @@ describe('Border from Toolbar', () => {
 		await page.keyboard.type('59');
 
 		// change color
-		await page.$$eval(
-			'.maxi-border-control .maxi-color-control__palette-container button',
-			button => button[7].click()
+		await page.$eval(
+			'.maxi-border-control .maxi-color-control__palette-container button[data-item="8"]',
+			button => button.click()
 		);
 
 		// change opacity

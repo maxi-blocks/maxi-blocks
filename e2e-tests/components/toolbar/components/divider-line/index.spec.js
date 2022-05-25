@@ -15,7 +15,6 @@ import { getAttributes, openSidebarTab } from '../../../../utils';
 describe('Divider line from Toolbar', () => {
 	it('Test divider line from toolbar', async () => {
 		await createNewPost();
-		await page.waitForTimeout(1000);
 		await insertBlock('Divider Maxi');
 
 		// edit divider line
@@ -72,9 +71,9 @@ describe('Divider line from Toolbar', () => {
 			'line settings'
 		);
 
-		const borderLine = await accordionPanel.$$eval(
+		const borderLine = await accordionPanel.$eval(
 			'.maxi-tabs-content .maxi-base-control__field select',
-			select => select[0].value
+			select => select.value
 		);
 
 		expect(borderLine).toStrictEqual('dashed');

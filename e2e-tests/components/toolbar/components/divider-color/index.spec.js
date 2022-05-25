@@ -15,7 +15,6 @@ import { getAttributes, openSidebarTab } from '../../../../utils';
 describe('Divider color from Toolbar', () => {
 	it('Test divider color from toolbar', async () => {
 		await createNewPost();
-		await page.waitForTimeout(1000);
 		await insertBlock('Divider Maxi');
 
 		// edit divider color
@@ -25,9 +24,9 @@ describe('Divider color from Toolbar', () => {
 		);
 
 		// select background color
-		await page.$$eval(
-			'.components-popover__content .maxi-color-palette-control button',
-			button => button[5].click()
+		await page.$eval(
+			'.components-popover__content .maxi-color-palette-control button[data-item="6"]',
+			button => button.click()
 		);
 
 		// change opacity

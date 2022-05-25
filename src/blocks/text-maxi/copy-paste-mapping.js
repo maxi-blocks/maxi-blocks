@@ -50,11 +50,11 @@ const copyPasteMapping = {
 						type: 'withBreakpoint',
 						label: 'List paragraph spacing unit',
 					},
-					'list-size': {
+					'list-marker-size': {
 						type: 'withBreakpoint',
 						label: 'Marker size',
 					},
-					'list-size-unit': {
+					'list-marker-size-unit': {
 						type: 'withBreakpoint',
 						label: 'Marker size unit',
 					},

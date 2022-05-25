@@ -50,6 +50,20 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 												Object.keys(withPalette);
 										} else if (
 											attrContent.props[prop].type ===
+											'withPaletteHover'
+										) {
+											const withPaletteHover =
+												paletteAttributesCreator({
+													prefix: prop.replace(
+														'hover',
+														''
+													),
+												});
+											attrArray = Object.keys(
+												withPaletteHover
+											).map(prop => `${prop}-hover`);
+										} else if (
+											attrContent.props[prop].type ===
 											'withBreakpoint'
 										) {
 											const withBrkpt = [];

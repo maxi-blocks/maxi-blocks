@@ -1,5 +1,16 @@
 const copyPasteMapping = {
 	exclude: ['buttonContent'],
+	_order: [
+		'Icon',
+		'Alignment',
+		'Typography',
+		'Background',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Margin/Padding',
+	],
+
 	settings: {
 		blockSpecific: {
 			buttonContent: 'Button text',

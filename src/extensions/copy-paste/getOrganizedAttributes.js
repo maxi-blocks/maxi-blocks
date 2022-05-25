@@ -280,8 +280,72 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 					);
 			});
 		}
+
+		response[tab] = orderAlphabetically(
+			response[tab],
+			'label',
+			copyPasteMapping,
+			tab
+		);
 	});
 
+	return response;
+};
+
+const orderAlphabetically = (obj, property, copyPasteMapping, tab) => {
+	if (isEmpty(obj)) return {};
+	let orderedKeys;
+
+	if (tab === 'settings') {
+		const { _order } = copyPasteMapping;
+
+		orderedKeys = Object.keys(obj).sort(
+			(a, b) =>
+				_order.indexOf(obj[a][property]) -
+				_order.indexOf(obj[b][property])
+		);
+	} else if (tab === 'canvas') {
+		const _order = [
+			'Background',
+			'Border',
+			'Box shadow',
+			'Opacity',
+			'Size',
+			'Margin/Padding',
+		];
+
+		orderedKeys = Object.keys(obj).sort(
+			(a, b) =>
+				_order.indexOf(obj[a][property]) -
+				_order.indexOf(obj[b][property])
+		);
+	} else if (tab === 'advanced') {
+		const _order = [
+			'Custom CSS classes',
+			'Anchor',
+			'Custom CSS',
+			'Scroll',
+			'Transform',
+			'Hyperlink hover transition',
+			'Show/hide block',
+			'Opacity',
+			'Position',
+			'Overflow',
+			'Flexbox',
+			'Z-index',
+		];
+
+		orderedKeys = Object.keys(obj).sort(
+			(a, b) =>
+				_order.indexOf(obj[a][property]) -
+				_order.indexOf(obj[b][property])
+		);
+	}
+
+	const response = {};
+	orderedKeys.forEach(key => {
+		response[key] = obj[key];
+	});
 	return response;
 };
 

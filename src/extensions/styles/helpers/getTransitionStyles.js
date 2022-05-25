@@ -21,14 +21,14 @@ import { isNil } from 'lodash';
  */
 const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 	const { transition } = props;
-	console.log(transition);
+
 	const response = {};
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
 			const { target, property, limitless = false } = value;
 
 			if (isNil(response[target])) response[target] = { transition: {} };
-			console.log(transitionObj, transition, type, key);
+
 			breakpoints.forEach(breakpoint => {
 				const transitionContent = transition[type][key];
 
@@ -59,9 +59,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 				) {
 					transitionString += `${
 						limitless ? 'all' : property
-					} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction} ${
-						transitionContent.property || ''
-					}, `;
+					} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction}, `;
 				}
 
 				transitionString = transitionString.replace(/,\s*$/, '');

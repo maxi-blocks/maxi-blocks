@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
 import { RawHTML, useEffect, useState, useMemo } from '@wordpress/element';
 import { CheckboxControl } from '@wordpress/components';
+import { orderBy, isEmpty, uniqueId } from 'lodash';
 
 /**
  * Internal dependencies
@@ -37,7 +38,6 @@ import {
 	Stats,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
-import { isEmpty, uniqueId } from 'lodash';
 import Masonry from 'masonry-layout';
 import useInterval from '../../extensions/dom/useInterval';
 
@@ -594,7 +594,10 @@ const LibraryContainer = props => {
 		return (
 			<CheckboxControl
 				className='use-placeholer-all-images'
-				label={__('Swap stock images for placeholders to save disk space', 'maxi-blocks')}
+				label={__(
+					'Swap stock images for placeholders to save disk space',
+					'maxi-blocks'
+				)}
 				checked={isChecked}
 				onChange={setChecked}
 			/>
@@ -807,16 +810,17 @@ const LibraryContainer = props => {
 						searchClient={searchClient}
 					>
 						<div className='maxi-cloud-container__sc__sidebar'>
-							<SearchBox
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
-							/>
+							<SearchBox autoFocus showLoadingIndicator />
 							<Accordion
 								title={__('Colour', 'maxi-blocks')}
 								openByDefault
 							>
-								<CustomRefinementList attribute='taxonomies.sc_color' />
+								<CustomRefinementList
+									attribute='taxonomies.sc_color'
+									transformItems={items =>
+										orderBy(items, 'count', 'desc')
+									}
+								/>
 							</Accordion>
 							<ClearRefinements />
 						</div>

@@ -818,7 +818,7 @@ const LibraryContainer = props => {
 								<CustomRefinementList
 									attribute='taxonomies.sc_color'
 									transformItems={items =>
-										orderBy(items, 'count', 'desc')
+										orderBy(items, 'label', 'asc')
 									}
 								/>
 							</Accordion>

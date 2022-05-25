@@ -17,6 +17,7 @@ import postcss from 'postcss';
 import frontendStyleGenerator from '../frontendStyleGenerator';
 
 async function processCss(code) {
+	console.log(code);
 	const { css } = postcss([autoprefixer]).process(code);
 	const minifiedCss = minifyCssString(css);
 

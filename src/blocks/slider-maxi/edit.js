@@ -139,27 +139,18 @@ const SliderWrapper = props => {
 	};
 
 	const nextSlide = () => {
-		if (currentSlide < numberOfSlides - 1 && !isLoop) {
-			//	wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+		if (currentSlide < numberOfSlides - 1 || isLoop) {
+			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev + 1;
 				return newCurrentSlide;
 			});
 		}
-		if (isLoop) {
-			console.log('==============================');
-			console.log(`currentSlide: ${currentSlide}`);
-			if (currentSlide < numberOfSlides - 1)
-				setCurrentSlide(currentSlide + 1);
-			else {
-				setCurrentSlide(0);
-			}
-		}
 	};
 
 	const prevSlide = () => {
-		if (currentSlide > 0 && !isLoop) {
-			//	wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+		if (currentSlide > 0 || isLoop) {
+			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev - 1;
 				return newCurrentSlide;
@@ -190,7 +181,7 @@ const SliderWrapper = props => {
 		} else if (dragPosition - initPosition > 100) {
 			prevSlide();
 		} else {
-			//	wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 

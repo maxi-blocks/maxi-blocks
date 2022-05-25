@@ -24,11 +24,9 @@ const save = props => {
 
 	const name = 'maxi-blocks/slider-maxi';
 
-	const classes = classnames(fullWidth === 'full' ? 'alignfull' : null);
-
 	return (
 		<MaxiBlock.save
-			className={classes}
+			className={fullWidth === 'full' && 'alignfull'}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			data-infinite-loop={isLoop}
 		>

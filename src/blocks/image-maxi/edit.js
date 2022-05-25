@@ -52,12 +52,12 @@ export const transitionObj = {
 	block: {
 		border: {
 			title: 'Border',
-			target: ' .maxi-image-block-wrapper',
+			target: ' .maxi-image-block-wrapper img',
 			property: 'border',
 		},
 		'box shadow': {
 			title: 'Box shadow',
-			target: ' .maxi-image-block-wrapper',
+			target: ' .maxi-image-block-wrapper img',
 			property: 'box-shadow',
 		},
 	},

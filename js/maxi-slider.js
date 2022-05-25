@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-console.log('MaxiSlider in da house!');
 
 class Slide {
 	constructor(el, id) {
@@ -220,6 +219,7 @@ class MaxiSlider {
 		if (this.currentSlide + 1 < this._slides.length || this.isLoop) {
 			// Update current slide
 			this.currentSlide += 1;
+			console.log('this.currentSlide: ', this.currentSlide);
 		}
 		this.sliderAction();
 	}

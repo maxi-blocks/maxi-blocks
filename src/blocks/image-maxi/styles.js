@@ -102,13 +102,6 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'canvas',
-			['border', 'box shadow']
-		),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
@@ -305,13 +298,6 @@ const getImageObject = props => {
 		clipPath: getClipPathStyles({
 			...getGroupAttributes(props, 'clipPath'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			['border', 'box shadow']
-		),
 		...(imgWidth && {
 			imgWidth: {
 				general: {

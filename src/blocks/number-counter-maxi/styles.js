@@ -88,13 +88,6 @@ const getWrapperObject = props => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'canvas',
-			['border', 'box shadow']
-		),
 	};
 
 	return response;
@@ -200,13 +193,6 @@ const getBoxObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'number-counter-',
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			['border', 'box shadow']
-		),
 	};
 
 	return response;

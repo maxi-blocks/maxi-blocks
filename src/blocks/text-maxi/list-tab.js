@@ -22,7 +22,7 @@ import {
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
 } from '../../extensions/styles';
-import { setSVGColor } from '../../extensions/svg';
+import { setSVGColor, setSVGSize } from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 
 /**
@@ -138,9 +138,33 @@ const listTab = props => {
 			label: __('List options', 'maxi-blocks'),
 			content: (
 				<>
+					<SelectControl
+						label={__('List style position', 'maxi-blocks')}
+						className='maxi-text-inspector__list-style-position'
+						value={getLastBreakpointAttribute({
+							target: 'list-style-position',
+							breakpoint: deviceType,
+							attributes,
+						})}
+						options={[
+							{
+								label: __('Inside', 'maxi-blocks'),
+								value: 'inside',
+							},
+							{
+								label: __('Outside', 'maxi-blocks'),
+								value: 'outside',
+							},
+						]}
+						onChange={val =>
+							maxiSetAttributes({
+								[`list-style-position-${deviceType}`]: val,
+							})
+						}
+					/>
 					<AdvancedNumberControl
 						label={__('Text indent', 'maxi-blocks')}
-						className='maxi-image-inspector__list-indent'
+						className='maxi-text-inspector__list-indent'
 						placeholder={getLastBreakpointAttribute({
 							target: 'list-indent',
 							breakpoint: deviceType,
@@ -196,7 +220,7 @@ const listTab = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('List gap', 'maxi-blocks')}
-						className='maxi-image-inspector__list-gap'
+						className='maxi-text-inspector__list-gap'
 						placeholder={getLastBreakpointAttribute({
 							target: 'list-gap',
 							breakpoint: deviceType,
@@ -255,7 +279,7 @@ const listTab = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Paragraph spacing', 'maxi-blocks')}
-						className='maxi-image-inspector__list-paragraph-spacing'
+						className='maxi-text-inspector__list-paragraph-spacing'
 						placeholder={getLastBreakpointAttribute({
 							target: 'list-paragraph-spacing',
 							breakpoint: deviceType,
@@ -318,29 +342,71 @@ const listTab = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Marker size', 'maxi-blocks')}
-						className='maxi-image-inspector__list-size'
+						className='maxi-text-inspector__list-marker-size'
 						value={getLastBreakpointAttribute({
-							target: 'list-size',
+							target: 'list-marker-size',
 							breakpoint: deviceType,
 							attributes,
 						})}
 						onChangeValue={val => {
+							let svgElement = null;
+
+							if (
+								typeOfList === 'ul' &&
+								listStyleSource === 'icon'
+							) {
+								const unit = getLastBreakpointAttribute({
+									target: 'list-marker-size-unit',
+									breakpoint: deviceType,
+									attributes,
+								});
+
+								svgElement = setSVGSize({
+									svg: listStyleCustom,
+									size: val + unit,
+								});
+							}
+
 							maxiSetAttributes({
-								[`list-size-${deviceType}`]:
+								[`list-marker-size-${deviceType}`]:
 									val !== undefined && val !== '' ? val : '',
+								...(svgElement && {
+									listStyleCustom: svgElement,
+								}),
 							});
 						}}
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: 'list-size-unit',
+							target: 'list-marker-size-unit',
 							breakpoint: deviceType,
 							attributes,
 						})}
-						onChangeUnit={val =>
+						onChangeUnit={val => {
+							let svgElement = null;
+
+							if (
+								typeOfList === 'ul' &&
+								listStyleSource === 'icon'
+							) {
+								const size = getLastBreakpointAttribute({
+									target: 'list-marker-size',
+									breakpoint: deviceType,
+									attributes,
+								});
+
+								svgElement = setSVGSize({
+									svg: listStyleCustom,
+									size: size + val,
+								});
+							}
+
 							maxiSetAttributes({
-								[`list-size-unit-${deviceType}`]: val,
-							})
-						}
+								[`list-marker-size-unit-${deviceType}`]: val,
+								...(svgElement && {
+									listStyleCustom: svgElement,
+								}),
+							});
+						}}
 						breakpoint={deviceType}
 						minMaxSettings={{
 							px: {
@@ -362,20 +428,20 @@ const listTab = props => {
 						}}
 						onReset={() =>
 							maxiSetAttributes({
-								[`list-size-${deviceType}`]:
+								[`list-marker-size-${deviceType}`]:
 									getDefaultAttribute(
-										`list-size-${deviceType}`
+										`list-marker-size-${deviceType}`
 									),
-								[`list-size-unit-${deviceType}`]:
+								[`list-marker-size-unit-${deviceType}`]:
 									getDefaultAttribute(
-										`list-size-unit-${deviceType}`
+										`list-marker-size-unit-${deviceType}`
 									),
 							})
 						}
 					/>
 					<AdvancedNumberControl
 						label={__('Marker line-height', 'maxi-blocks')}
-						className='maxi-image-inspector__list-marker-line-height'
+						className='maxi-text-inspector__list-marker-line-height'
 						placeholder={getLastBreakpointAttribute({
 							target: 'list-marker-line-height',
 							breakpoint: deviceType,
@@ -417,7 +483,7 @@ const listTab = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Marker indent', 'maxi-blocks')}
-						className='maxi-image-inspector__list-marker-indent'
+						className='maxi-text-inspector__list-marker-indent'
 						placeholder={getLastBreakpointAttribute({
 							target: 'list-marker-indent',
 							breakpoint: deviceType,
@@ -521,7 +587,7 @@ const listTab = props => {
 					)}
 					<SelectControl
 						label={__('Text position', 'maxi-blocks')}
-						className='maxi-image-inspector__list-style'
+						className='maxi-text-inspector__list-style'
 						value={getLastBreakpointAttribute({
 							target: 'list-text-position',
 							breakpoint: deviceType,
@@ -564,7 +630,7 @@ const listTab = props => {
 					{deviceType === 'general' && (
 						<SelectControl
 							label={__('Type of list', 'maxi-blocks')}
-							className='maxi-image-inspector__list-type'
+							className='maxi-text-inspector__list-type'
 							value={typeOfList}
 							options={[
 								{
@@ -590,7 +656,7 @@ const listTab = props => {
 						<>
 							<SelectControl
 								label={__('Style', 'maxi-blocks')}
-								className='maxi-image-inspector__list-style'
+								className='maxi-text-inspector__list-style'
 								value={listStyle || 'disc'}
 								options={getListStyleOptions(typeOfList)}
 								onChange={listStyle => {
@@ -613,7 +679,7 @@ const listTab = props => {
 								<>
 									<AdvancedNumberControl
 										label={__('Start from', 'maxi-blocks')}
-										className='maxi-image-inspector__list-start'
+										className='maxi-text-inspector__list-start'
 										value={listStart}
 										onChangeValue={val => {
 											maxiSetAttributes({
@@ -643,7 +709,7 @@ const listTab = props => {
 											'Reverse order',
 											'maxi-blocks'
 										)}
-										className='maxi-image-inspector__list-reverse'
+										className='maxi-text-inspector__list-reverse'
 										selected={listReversed}
 										onChange={val => {
 											maxiSetAttributes({
@@ -657,7 +723,7 @@ const listTab = props => {
 								<>
 									<SelectControl
 										label={__('Source', 'maxi-blocks')}
-										className='maxi-image-inspector__list-source-selector'
+										className='maxi-text-inspector__list-source-selector'
 										value={listStyleSource}
 										options={[
 											{
@@ -697,7 +763,7 @@ const listTab = props => {
 									/>
 									{listStyleSource !== 'icon' && (
 										<TextControl
-											className='maxi-image-inspector__list-source-text'
+											className='maxi-text-inspector__list-source-text'
 											value={
 												listStyleCustoms[
 													listStyleSource
@@ -717,68 +783,78 @@ const listTab = props => {
 										/>
 									)}
 									{listStyleSource === 'icon' && (
-										<>
-											<MaxiModal
-												type='image-shape'
-												style={blockStyle || 'light'}
-												onSelect={obj => {
-													const {
-														paletteStatus,
-														paletteColor,
-														paletteOpacity,
-														color,
-													} = getPaletteAttributes({
-														obj: attributes,
-														prefix: 'list-',
+										<MaxiModal
+											type='image-shape'
+											style={blockStyle || 'light'}
+											onSelect={obj => {
+												const {
+													paletteStatus,
+													paletteColor,
+													paletteOpacity,
+													color,
+												} = getPaletteAttributes({
+													obj: attributes,
+													prefix: 'list-',
+												});
+
+												const colorStr = paletteStatus
+													? getColorRGBAString({
+															firstVar: `color-${paletteColor}`,
+															opacity:
+																paletteOpacity,
+															blockStyle,
+													  })
+													: color;
+
+												let SVGElement = setSVGColor({
+													svg: obj.SVGElement,
+													color: colorStr,
+													type: 'fill',
+												});
+
+												const size =
+													getLastBreakpointAttribute({
+														target: 'list-marker-size',
+														breakpoint: deviceType,
+														attributes,
+													}) +
+													getLastBreakpointAttribute({
+														target: 'list-marker-size-unit',
+														breakpoint: deviceType,
+														attributes,
 													});
 
-													const colorStr =
-														paletteStatus
-															? getColorRGBAString(
-																	{
-																		firstVar: `color-${paletteColor}`,
-																		opacity:
-																			paletteOpacity,
-																		blockStyle,
-																	}
-															  )
-															: color;
+												SVGElement = setSVGSize({
+													svg: SVGElement,
+													size,
+												});
 
-													const SVGElement =
-														setSVGColor({
-															svg: obj.SVGElement,
-															color: colorStr,
-															type: 'fill',
-														});
-
-													maxiSetAttributes({
-														listStyleCustom:
-															SVGElement,
-													});
-													setListStyleCustoms({
-														...listStyleCustoms,
-														[listStyleSource]:
-															SVGElement,
-													});
-												}}
-												onRemove={() => {
-													maxiSetAttributes({
-														listStyleCustom: '',
-													});
-													setListStyleCustoms({
-														...listStyleCustoms,
-														[listStyleSource]: '',
-													});
-												}}
-												icon={
-													listStyleCustom?.includes(
-														'<svg '
-													)
-														? listStyleCustom
-														: false
-												}
-											/>
-										</>
+												maxiSetAttributes({
+													listStyleCustom: SVGElement,
+												});
+												setListStyleCustoms({
+													...listStyleCustoms,
+													[listStyleSource]:
+														SVGElement,
+												});
+											}}
+											onRemove={() => {
+												maxiSetAttributes({
+													listStyleCustom: '',
+												});
+												setListStyleCustoms({
+													...listStyleCustoms,
+													[listStyleSource]: '',
+												});
+											}}
+											icon={
+												listStyleCustom?.includes(
+													'<svg '
+												)
+													? listStyleCustom
+													: false
+											}
+										/>
 									)}
 								</>
 							)}

@@ -2,82 +2,161 @@ const copyPasteMapping = {
 	exclude: ['content'],
 	settings: {
 		blockSpecific: {
+			textLevel: 'Heading / Paragraph tag',
 			blockFullWidth: 'Full Width',
 			content: 'Text Content',
-			textLevel: 'Text Level',
-			listStyle: 'List Style',
-			listStyleCustom: 'List Style Custom',
-			listStart: 'List Start',
-			listReversed: 'List Reversed',
-			customLabel: 'Custom Label',
+			list: {
+				groupLabel: 'List options',
+				props: {
+					'list-indent': {
+						type: 'withBreakpoint',
+						label: 'List indent',
+					},
+					'list-indent-unit': {
+						type: 'withBreakpoint',
+						label: 'List indent unit',
+					},
+					'list-gap': {
+						type: 'withBreakpoint',
+						label: 'List gap',
+					},
+					'list-gap-unit': {
+						type: 'withBreakpoint',
+						label: 'List gap unit',
+					},
+					'list-paragraph-spacing': {
+						type: 'withBreakpoint',
+						label: 'List paragraph spacing',
+					},
+					'list-paragraph-spacing-unit': {
+						type: 'withBreakpoint',
+						label: 'List paragraph spacing unit',
+					},
+					'list-size': {
+						type: 'withBreakpoint',
+						label: 'Marker size',
+					},
+					'list-size-unit': {
+						type: 'withBreakpoint',
+						label: 'Marker size unit',
+					},
+					'list-marker-indent': {
+						type: 'withBreakpoint',
+						label: 'List marker indent',
+					},
+					'list-marker-indent-unit': {
+						type: 'withBreakpoint',
+						label: 'List marker indent unit',
+					},
+					'list-marker-line-height': {
+						type: 'withBreakpoint',
+						label: 'List marker line height',
+					},
+					'list-marker-line-height-unit': {
+						type: 'withBreakpoint',
+						label: 'List marker line height unit',
+					},
+					'list-': {
+						type: 'withPalette',
+						label: 'List colour',
+					},
+					'list-text-position': {
+						type: 'withBreakpoint',
+						label: 'List text position',
+					},
+					typeOfList: 'List type',
+					listStyle: 'List style',
+					listStyleCustom: 'List style custom',
+					listStart: 'List start',
+					listReversed: 'List reversed',
+				},
+			},
+		},
+		withoutPrefix: {
+			textAlignment: 'Text alignment',
+			typography: {
+				groupLabel: 'Typography',
+				props: {
+					typography: 'Typography',
+					typographyHover: 'Typography hover',
+				},
+			},
+			background: {
+				groupLabel: 'Background',
+				props: {
+					backgroundColor: {
+						label: 'Background color',
+						props: ['background', 'backgroundColor'],
+					},
+					backgroundGradient: {
+						label: 'Background gradient',
+						props: ['background', 'backgroundGradient'],
+					},
+				},
+			},
+			backgroundHover: {
+				groupLabel: 'Background hover',
+				props: {
+					backgroundColorHover: {
+						label: 'Background color hover',
+						props: ['backgroundHover', 'backgroundColorHover'],
+					},
+					backgroundGradientHover: {
+						label: 'Background gradient hover',
+						props: ['backgroundHover', 'backgroundGradientHover'],
+					},
+				},
+			},
+			border: {
+				groupLabel: 'Border',
+				props: {
+					border: 'Border',
+					borderWidth: 'Border width',
+					borderRadius: 'Border radius',
+				},
+			},
+			borderHover: {
+				groupLabel: 'Border hover',
+				props: {
+					borderHover: 'Border hover',
+					borderWidthHover: 'Border width hover',
+					borderRadiusHover: 'Border radius hover',
+				},
+			},
+			boxShadow: {
+				groupLabel: 'Box shadow',
+				props: {
+					boxShadow: 'Box shadow',
+					boxShadowHover: 'Box shadow hover',
+				},
+			},
+			'margin-padding': {
+				groupLabel: 'Margin/Padding',
+				props: { margin: 'Margin', padding: 'Padding' },
+			},
+		},
+	},
+	advanced: {
+		blockSpecific: {
+			extraClassName: 'Custom CSS classes',
 			anchorLink: {
 				label: 'Anchor',
 				value: ['anchorLink', 'linkSettings'],
 			},
-			extraClassName: 'Custom CSS Classes',
-		},
-		withBreakpoint: {
-			'list-gap': 'List Gap',
-			'list-gap-unit': 'List Gap Unit',
-			'list-paragraph-spacing': 'List Paragraph Spacing',
-			'list-paragraph-spacing-unit': 'List Paragraph Spacing Unit',
-			'list-indent': 'List Indent',
-			'list-indent-unit': 'List Indent Unit',
-			'list-size': 'Marker Size',
-			'list-size-unit': 'Marker Size Unit',
-			'list-marker-indent': 'List Marker Indent',
-			'list-marker-indent-unit': 'List Marker Indent Unit',
-			'list-marker-line-height': 'List Marker Line Height',
-			'list-marker-line-height-unit': 'List Marker Line Height Unit',
-			'list-text-position': 'List Text Position',
-		},
-		withPalette: {
-			'list-': 'List Color',
+			relations: 'Interaction',
 		},
 		withoutPrefix: {
 			breakpoints: 'Breakpoints',
-			blockBackground: 'Background',
-			border: {
-				groupLabel: 'Border Group',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border Width',
-					borderRadius: 'Border Radius',
-				},
-			},
-			boxShadow: 'Box Shadow',
-			size: 'Size',
-			padding: 'Padding',
-			margin: 'Margin',
-			textAlignment: 'Text Alignment',
-			typography: 'Typography',
-			link: 'Link',
-		},
-		withoutPrefixHover: {
-			typographyHover: 'Typography Hover',
-			borderHover: {
-				groupLabel: 'Border Hover Group',
-				props: {
-					borderHover: 'Border Hover',
-					borderWidthHover: 'Border Width Hover',
-					borderRadiusHover: 'Border Radius Hover',
-				},
-			},
-			boxShadowHover: 'Box Shadow Hover',
-		},
-	},
-	advanced: {
-		withoutPrefix: {
+			customCss: 'Custom CSS',
 			scroll: 'Scroll',
 			transform: 'Transform',
-			transitionDuration: 'Transition Duration',
-			display: 'Display',
+			transition: 'Hyperlink hover transition',
+			display: 'Show/hide block',
 			opacity: 'Opacity',
 			position: 'Position',
 			overflow: 'Overflow',
-			zIndex: 'z-Index',
-			customCss: 'Custom Css',
-			flex: 'Flex',
+			flex: 'Flexbox',
+			zIndex: 'Z-index',
 		},
 	},
 };

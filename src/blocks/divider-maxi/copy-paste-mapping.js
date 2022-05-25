@@ -1,4 +1,5 @@
 const copyPasteMapping = {
+	_order: ['Alignment', 'Line settings', 'Box shadow'],
 	settings: {
 		withBreakpoint: {
 			alignment: {

@@ -1,4 +1,13 @@
 const copyPasteMapping = {
+	_order: [
+		'Callout arrow',
+		'Background',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Margin/Padding',
+	],
+
 	settings: {
 		withBreakpoint: {
 			blockSpecific: {

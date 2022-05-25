@@ -7,6 +7,20 @@ const copyPasteMapping = {
 		'mediaHeight',
 		'mediaAlt',
 	],
+	_order: [
+		'Dimension',
+		'Alignment',
+		'Alt tag',
+		'Background',
+		'Caption',
+		'Hover effects',
+		'Clip path',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Padding',
+	],
+
 	settings: {
 		blockSpecific: {
 			dimension: {
@@ -77,7 +91,7 @@ const copyPasteMapping = {
 					hoverTitleTypography: 'Hover title typography',
 				},
 			},
-			clipPath: 'Clip Path',
+			clipPath: 'Clip path',
 		},
 		withPrefix: {
 			border: {
@@ -86,11 +100,6 @@ const copyPasteMapping = {
 					border: 'Border',
 					borderWidth: 'Border width',
 					borderRadius: 'Border radius',
-				},
-			},
-			borderHover: {
-				groupLabel: 'Border hover',
-				props: {
 					borderHover: 'Border hover',
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',

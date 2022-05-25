@@ -1,5 +1,17 @@
 const copyPasteMapping = {
 	exclude: ['content'],
+	_order: [
+		'Heading / Paragraph tag',
+		'List options',
+		'Text alignment',
+		'Typography',
+		'Background',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Margin/Padding',
+	],
+
 	settings: {
 		blockSpecific: {
 			size: {
@@ -87,43 +99,13 @@ const copyPasteMapping = {
 					typographyHover: 'Typography hover',
 				},
 			},
-			background: {
-				groupLabel: 'Background',
-				props: {
-					backgroundColor: {
-						label: 'Background color',
-						props: ['background', 'backgroundColor'],
-					},
-					backgroundGradient: {
-						label: 'Background gradient',
-						props: ['background', 'backgroundGradient'],
-					},
-				},
-			},
-			backgroundHover: {
-				groupLabel: 'Background hover',
-				props: {
-					backgroundColorHover: {
-						label: 'Background color hover',
-						props: ['backgroundHover', 'backgroundColorHover'],
-					},
-					backgroundGradientHover: {
-						label: 'Background gradient hover',
-						props: ['backgroundHover', 'backgroundGradientHover'],
-					},
-				},
-			},
+			blockBackground: 'Background',
 			border: {
 				groupLabel: 'Border',
 				props: {
 					border: 'Border',
 					borderWidth: 'Border width',
 					borderRadius: 'Border radius',
-				},
-			},
-			borderHover: {
-				groupLabel: 'Border hover',
-				props: {
 					borderHover: 'Border hover',
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',

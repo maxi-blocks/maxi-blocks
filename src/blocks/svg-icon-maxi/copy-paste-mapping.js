@@ -1,4 +1,15 @@
 const copyPasteMapping = {
+	_order: [
+		'Alignment',
+		'Icon colour',
+		'Icon line width',
+		'Icon background',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Margin/Padding',
+	],
+
 	exclude: ['content', 'svgType'],
 	settings: {
 		blockSpecific: {
@@ -33,24 +44,19 @@ const copyPasteMapping = {
 		withBreakpoint: { 'svg-stroke': 'Icon line width' },
 		withPrefix: {
 			background: {
-				groupLabel: 'Background',
+				groupLabel: 'Icon background',
 				props: {
 					backgroundColor: {
 						label: 'Background color',
 						props: ['background', 'backgroundColor'],
 					},
-					backgroundGradient: {
-						label: 'Background gradient',
-						props: ['background', 'backgroundGradient'],
-					},
-				},
-			},
-			backgroundHover: {
-				groupLabel: 'Background hover',
-				props: {
 					backgroundColorHover: {
 						label: 'Background color hover',
 						props: ['backgroundHover', 'backgroundColorHover'],
+					},
+					backgroundGradient: {
+						label: 'Background gradient',
+						props: ['background', 'backgroundGradient'],
 					},
 					backgroundGradientHover: {
 						label: 'Background gradient hover',
@@ -64,11 +70,6 @@ const copyPasteMapping = {
 					border: 'Border',
 					borderWidth: 'Border width',
 					borderRadius: 'Border radius',
-				},
-			},
-			borderHover: {
-				groupLabel: 'Border hover',
-				props: {
 					borderHover: 'Border hover',
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',

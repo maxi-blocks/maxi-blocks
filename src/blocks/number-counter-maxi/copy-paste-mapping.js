@@ -1,4 +1,13 @@
 const copyPasteMapping = {
+	_order: [
+		'Alignment',
+		'Number',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Margin/Padding',
+	],
+
 	settings: {
 		withoutPrefix: {
 			alignment: 'Alignment',
@@ -11,11 +20,6 @@ const copyPasteMapping = {
 					border: 'Border',
 					borderWidth: 'Border width',
 					borderRadius: 'Border radius',
-				},
-			},
-			borderHover: {
-				groupLabel: 'Border hover',
-				props: {
 					borderHover: 'Border hover',
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',

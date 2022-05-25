@@ -1,4 +1,14 @@
 const copyPasteMapping = {
+	_order: [
+		'Callout arrow',
+		'Top shape divider',
+		'Bottom shape divider',
+		'Background',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Margin/Padding',
+	],
 	settings: {
 		withBreakpoint: {
 			arrow: {

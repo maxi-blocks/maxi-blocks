@@ -1,4 +1,13 @@
 const copyPasteMapping = {
+	_order: [
+		'Row settings',
+		'Background',
+		'Border',
+		'Box shadow',
+		'Size',
+		'Margin/Padding',
+	],
+
 	settings: {
 		blockSpecific: {
 			size: {

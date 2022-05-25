@@ -22,11 +22,6 @@ const copyPasteMapping = {
 							'iconBorder',
 							'iconBorderWidth',
 							'iconBorderRadius',
-						],
-					},
-					iconBorderHover: {
-						label: 'Icon border hover',
-						props: [
 							'iconBorderHover',
 							'iconBorderWidthHover',
 							'iconBorderRadiusHover',
@@ -38,11 +33,6 @@ const copyPasteMapping = {
 							'iconBackground',
 							'iconBackgroundColor',
 							'iconBackgroundGradient',
-						],
-					},
-					iconBackgroundHover: {
-						label: 'Icon background hover',
-						props: [
 							'iconBackgroundHover',
 							'iconBackgroundColorHover',
 							'iconBackgroundGradientHover',
@@ -78,11 +68,6 @@ const copyPasteMapping = {
 						label: 'Background gradient',
 						props: ['background', 'backgroundGradient'],
 					},
-				},
-			},
-			backgroundHover: {
-				groupLabel: 'Background hover',
-				props: {
 					backgroundColorHover: {
 						label: 'Background color hover',
 						props: ['backgroundHover', 'backgroundColorHover'],
@@ -99,11 +84,6 @@ const copyPasteMapping = {
 					border: 'Border',
 					borderWidth: 'Border width',
 					borderRadius: 'Border radius',
-				},
-			},
-			borderHover: {
-				groupLabel: 'Border hover',
-				props: {
 					borderHover: 'Border hover',
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',

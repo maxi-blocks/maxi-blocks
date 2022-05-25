@@ -2,9 +2,15 @@ const copyPasteMapping = {
 	exclude: ['content'],
 	settings: {
 		blockSpecific: {
+			size: {
+				groupLabel: 'Size',
+				props: {
+					blockFullWidth: 'Full width',
+					size: { label: 'Size', type: 'withPrefix' },
+				},
+			},
 			textLevel: 'Heading / Paragraph tag',
-			blockFullWidth: 'Full Width',
-			content: 'Text Content',
+			content: 'Text content',
 			list: {
 				groupLabel: 'List options',
 				props: {

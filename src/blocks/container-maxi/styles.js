@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
@@ -18,7 +26,6 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsContainer } from './custom-css';
-import { merge } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {

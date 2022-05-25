@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -17,7 +25,6 @@ import {
 	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
-import { merge } from 'lodash';
 
 const getWrapperObject = props => {
 	const response = {

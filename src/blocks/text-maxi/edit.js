@@ -41,7 +41,7 @@ export const transitionObj = {
 		...transitionDefault.canvas,
 		typography: {
 			title: 'Typography',
-			target: ' .maxi-text-block__content',
+			target: ' .maxi-text-block__content, .maxi-text-block--link, .maxi-text-block--link span',
 			limitless: true,
 		},
 	},

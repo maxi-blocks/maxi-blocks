@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
@@ -15,7 +23,6 @@ import {
 	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
-import { merge } from 'lodash';
 
 const getNormalObject = (props, rowGapProps) => {
 	const response = {

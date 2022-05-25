@@ -32,10 +32,12 @@ export const transitionObj = {
 		icon: {
 			title: 'Icon',
 			target: ' .maxi-button-block__icon',
+			limitless: true,
 		},
 		typography: {
 			title: 'Typography',
 			target: ' .maxi-button-block__content',
+			limitless: true,
 		},
 		'button background': {
 			title: 'Button background',

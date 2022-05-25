@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -16,7 +24,6 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsDivider } from './custom-css';
-import { merge } from 'lodash';
 
 const getWrapperObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;

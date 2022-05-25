@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
 import { transitionAttributesCreator } from '../../extensions/styles';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * Attributes
@@ -48,7 +47,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transitionDefault),
+		...transitionAttributesCreator(),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

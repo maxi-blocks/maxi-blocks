@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
@@ -16,9 +24,6 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsGroup } from './custom-css';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
-
-import { merge } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -164,12 +169,9 @@ const getStyles = props => {
 						isHover: true,
 					}),
 				},
-				...getTransitionStyles(
-					{
-						...getGroupAttributes(props, 'transition'),
-					},
-					transitionDefault
-				)
+				...getTransitionStyles({
+					...getGroupAttributes(props, 'transition'),
+				})
 			),
 			selectorsGroup,
 			props

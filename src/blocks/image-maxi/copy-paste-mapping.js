@@ -159,6 +159,7 @@ const copyPasteMapping = {
 			transform: 'Transform',
 			transition: 'Hyperlink hover transition',
 			display: 'Show/hide block',
+			position: 'Position',
 			overflow: 'Overflow',
 			flex: 'Flexbox',
 			zIndex: 'Z-index',

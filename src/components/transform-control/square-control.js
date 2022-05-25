@@ -32,9 +32,11 @@ const SquareControl = props => {
 		x,
 		defaultX,
 		xUnit = null,
+		defaultXUnit,
 		y,
 		defaultY,
 		yUnit = null,
+		defaultYUnit,
 		onChange,
 		onSave,
 		type = 'resize',
@@ -107,28 +109,27 @@ const SquareControl = props => {
 	const onReset = () => {
 		switch (type) {
 			case 'resize':
-				changeXAxis(defaultX);
-				changeYAxis(defaultY);
 				onChange(defaultX, defaultY);
 				onSave(defaultX, defaultY);
 				break;
 			case 'drag':
-				changeXAxis(0);
-				changeYAxis(0);
-				onSave(0, 0, '%', '%');
+				onChange(defaultX, defaultY);
+				onSave(defaultX, defaultY, defaultXUnit, defaultYUnit);
 				break;
 			case 'origin':
-				changeXAxis(defaultX);
-				changeYAxis(defaultY);
-				onChange(defaultX, defaultY);
+				onChange(defaultX, defaultY, defaultXUnit, defaultYUnit);
+				onSave(defaultX, defaultY, defaultXUnit, defaultYUnit);
 				break;
 			default:
 				return false;
 		}
+
 		return false;
 	};
 	const transformStr = useCallback(() => {
-		return `translateX(${xAxis}${xUnit}) translateY(${yAxis}${yUnit})`;
+		return `translateX(${xAxis || 0}${xUnit || '%'}) translateY(${
+			yAxis || 0
+		}${yUnit || '%'})`;
 	}, [xAxis, xUnit, yAxis, yUnit]);
 
 	useEffect(() => {

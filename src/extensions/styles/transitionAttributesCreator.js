@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from './breakpointAttributesCreator';
+import transitionDefault from './transitions/transitionDefault';
 
 const transitionRaw = breakpointAttributesCreator({
 	obj: {
@@ -17,21 +18,29 @@ const transitionRaw = breakpointAttributesCreator({
 	},
 });
 
-const transitionAttributesCreator = ({ blockOptions, canvasOptions }) => {
+const transitionAttributesCreator = (transitionObj = transitionDefault) => {
+	const getTransitionOptions = transitionObj =>
+		transitionObj
+			? Object.values(transitionObj).map(({ title }) => title)
+			: null;
+
+	const blockOptions = getTransitionOptions(transitionObj?.block);
+	const canvasOptions = getTransitionOptions(transitionObj?.canvas);
+
 	const transitionRawObj = Object.keys(transitionRaw).reduce((acc, key) => {
 		acc[key] = transitionRaw[key].default;
 		return acc;
 	}, {});
 
-	const transitionObj = {
+	const transitionStyleObj = {
 		block: {},
 		canvas: {},
 	};
 
 	blockOptions &&
 		blockOptions.forEach(target => {
-			transitionObj.block = {
-				...transitionObj.block,
+			transitionStyleObj.block = {
+				...transitionStyleObj.block,
 				[target.toLowerCase()]: {
 					...transitionRawObj,
 				},
@@ -40,8 +49,8 @@ const transitionAttributesCreator = ({ blockOptions, canvasOptions }) => {
 
 	canvasOptions &&
 		canvasOptions.forEach(target => {
-			transitionObj.canvas = {
-				...transitionObj.canvas,
+			transitionStyleObj.canvas = {
+				...transitionStyleObj.canvas,
 				[target.toLowerCase()]: {
 					...transitionRawObj,
 				},
@@ -51,7 +60,7 @@ const transitionAttributesCreator = ({ blockOptions, canvasOptions }) => {
 	return {
 		transition: {
 			type: 'object',
-			default: transitionObj,
+			default: transitionStyleObj,
 		},
 	};
 };

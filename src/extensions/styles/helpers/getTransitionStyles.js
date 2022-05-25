@@ -7,82 +7,75 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import transitionDefault from '../transitions/transitionDefault';
 
-const properties = [
-	{
-		target: 'border',
-		property: 'border',
-	},
-	{
-		target: 'box shadow',
-		property: 'box-shadow',
-	},
-	{
-		target: 'button background',
-		property: 'background',
-	},
-];
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
 
 /**
  * Generates size styles object
  *
  * @param {Object} obj Block size properties
  */
-const getTransitionStyles = (obj, type, rawTargets) => {
-	if (!rawTargets) return null;
-
-	const { transition } = obj;
-	const targets = !Array.isArray(rawTargets) ? [rawTargets] : rawTargets;
-
-	const transitionObj = targets.map(target => {
-		const property = properties.find(
-			property => property.target === target
-		)?.property;
-
-		return {
-			...transition[type][target],
-			property,
-		};
-	});
-
+const getTransitionStyles = (props, transitionObj = transitionDefault) => {
+	const { transition } = props;
+	console.log(transition);
 	const response = {};
-	breakpoints.forEach(breakpoint => {
-		let transitionString = '';
-		transitionObj.forEach(obj => {
-			const transitionDuration = getLastBreakpointAttribute({
-				target: 'transition-duration',
-				breakpoint,
-				attributes: obj,
-			});
+	Object.entries(transitionObj).forEach(([type, obj]) => {
+		Object.entries(obj).forEach(([key, value]) => {
+			const { target, property, limitless = false } = value;
 
-			const transitionDelay = getLastBreakpointAttribute({
-				target: 'transition-delay',
-				breakpoint,
-				attributes: obj,
-			});
+			if (isNil(response[target])) response[target] = { transition: {} };
+			console.log(transitionObj, transition, type, key);
+			breakpoints.forEach(breakpoint => {
+				const transitionContent = transition[type][key];
 
-			const transitionTimingFunction = getLastBreakpointAttribute({
-				target: 'easing',
-				breakpoint,
-				attributes: obj,
-			});
+				let transitionString = '';
 
-			if (
-				transitionDuration ||
-				transitionDelay ||
-				transitionTimingFunction
-			) {
-				transitionString += `${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction} ${
-					obj.property || ''
-				}, `;
-			}
+				const transitionDuration = getLastBreakpointAttribute({
+					target: 'transition-duration',
+					breakpoint,
+					attributes: transitionContent,
+				});
+
+				const transitionDelay = getLastBreakpointAttribute({
+					target: 'transition-delay',
+					breakpoint,
+					attributes: transitionContent,
+				});
+
+				const transitionTimingFunction = getLastBreakpointAttribute({
+					target: 'easing',
+					breakpoint,
+					attributes: transitionContent,
+				});
+
+				if (
+					transitionDuration ||
+					transitionDelay ||
+					transitionTimingFunction
+				) {
+					transitionString += `${
+						limitless ? 'all' : property
+					} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction} ${
+						transitionContent.property || ''
+					}, `;
+				}
+
+				transitionString = transitionString.replace(/,\s*$/, '');
+
+				if (isNil(response[target].transition[breakpoint]))
+					response[target].transition[breakpoint] = {
+						transition: transitionString,
+					};
+				else
+					response[target].transition[
+						breakpoint
+					].transition += `, ${transitionString}`;
+			});
 		});
-
-		transitionString = transitionString.replace(/,\s*$/, '');
-
-		response[breakpoint] = {
-			transition: transitionString,
-		};
 	});
 
 	return response;

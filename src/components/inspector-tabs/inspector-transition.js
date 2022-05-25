@@ -106,7 +106,7 @@ const transition = ({
 					]}
 				/>
 			) : (
-				<TransitionControlWrapper type='block' {...props} />
+				<TransitionControlWrapper type='canvas' {...props} />
 			),
 		ignoreIndicator,
 	};

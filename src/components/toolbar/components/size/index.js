@@ -124,7 +124,7 @@ const Size = props => {
 						/>
 						{BLOCKS_MAX_WIDTH.includes(blockName) && (
 							<AdvancedNumberControl
-								label={__('Max Width', 'maxi-blocks')}
+								label={__('Max width', 'maxi-blocks')}
 								enableUnit
 								unit={getLastBreakpointAttribute({
 									target: `${prefix}max-width-unit`,

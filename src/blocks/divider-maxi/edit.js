@@ -39,21 +39,39 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		const height = `${getLastBreakpointAttribute({
-			target: 'height',
-			breakpoint: this.props.deviceType,
-			attributes: this.props.attributes,
-		})}${getLastBreakpointAttribute({
-			target: 'height-unit',
-			breakpoint: this.props.deviceType,
-			attributes: this.props.attributes,
-		})}`;
-
-		if (this.resizableObject.current?.state.height !== height) {
-			this.resizableObject.current.updateSize({
-				width: '100%',
-				height,
+		if (this.resizableObject.current) {
+			const width = getLastBreakpointAttribute({
+				target: 'width',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
 			});
+			const widthUnit = getLastBreakpointAttribute({
+				target: 'width-unit',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			});
+			const height = `${getLastBreakpointAttribute({
+				target: 'height',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			})}${getLastBreakpointAttribute({
+				target: 'height-unit',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			})}`;
+
+			const { width: resizerWidth, height: resizerHeight } =
+				this.resizableObject.current.state;
+
+			if (
+				resizerWidth !== `${width}${widthUnit}` ||
+				resizerHeight !== height
+			) {
+				this.resizableObject.current.updateSize({
+					width: width ? `${width}${widthUnit}` : '100%',
+					height,
+				});
+			}
 		}
 	}
 
@@ -153,6 +171,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				isOverflowHidden={getIsOverflowHidden()}
+				minWidth='1px'
 				defaultSize={{
 					width: '100%',
 					height: `${getLastBreakpointAttribute({

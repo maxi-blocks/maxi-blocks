@@ -31,7 +31,7 @@ const IconPosition = props => {
 		>
 			<div className='toolbar-item__icon-position__popover'>
 				<SelectControl
-					label={__('Icon Position', 'maxi-block')}
+					label={__('Icon position', 'maxi-block')}
 					className='maxi-icon__position'
 					value={props['icon-position']}
 					options={[

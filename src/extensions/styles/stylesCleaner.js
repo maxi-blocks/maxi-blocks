@@ -102,6 +102,8 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 const stylesCleaner = (obj, selectors, props) => {
 	const response = cloneDeep(obj);
 
+	console.log(response);
+
 	// Process custom styles if they exist
 	const newSelectors = getSelectorsCss(selectors, props);
 

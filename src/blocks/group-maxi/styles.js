@@ -1,4 +1,8 @@
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	stylesCleaner,
+} from '../../extensions/styles';
 import {
 	getBackgroundDisplayerStyles,
 	getBorderStyles,
@@ -17,6 +21,8 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsGroup } from './custom-css';
+import { transitionObj } from './edit';
+import { isNil } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -61,13 +67,13 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles(
-			{
-				...getGroupAttributes(props, 'transition'),
-			},
-			'block',
-			['border', 'box shadow']
-		),
+		// transition: getTransitionStyles(
+		// 	{
+		// 		...getGroupAttributes(props, 'transition'),
+		// 	},
+		// 	'block',
+		// 	['border', 'box shadow']
+		// ),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
@@ -108,17 +114,89 @@ const getHoverObject = props => {
 	return response;
 };
 
+/**
+ * Draft, needs to be cleaned and organized on its correct place
+ */
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+const getTransitionStylesPrototype = props => {
+	const { transition } = props;
+
+	const response = {};
+
+	Object.entries(transitionObj).forEach(([key, value]) => {
+		const { target, property, limitless = false } = value;
+
+		if (isNil(response[target])) response[target] = { transition: {} };
+
+		breakpoints.forEach(breakpoint => {
+			const transitionContent = transition.block[key]; // set .block temporary
+
+			let transitionString = '';
+
+			const transitionDuration = getLastBreakpointAttribute({
+				target: 'transition-duration',
+				breakpoint,
+				attributes: transitionContent,
+			});
+
+			const transitionDelay = getLastBreakpointAttribute({
+				target: 'transition-delay',
+				breakpoint,
+				attributes: transitionContent,
+			});
+
+			const transitionTimingFunction = getLastBreakpointAttribute({
+				target: 'easing',
+				breakpoint,
+				attributes: transitionContent,
+			});
+
+			if (
+				transitionDuration ||
+				transitionDelay ||
+				transitionTimingFunction
+			) {
+				transitionString += `${
+					limitless ? 'all' : property
+				} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction} ${
+					transitionContent.property || ''
+				}, `;
+			}
+
+			transitionString = transitionString.replace(/,\s*$/, '');
+
+			if (isNil(response[target].transition[breakpoint]))
+				response[target].transition[breakpoint] = {
+					transition: transitionString,
+				};
+			else
+				response[target].transition[
+					breakpoint
+				].transition += `, ${transitionString}`;
+		});
+	});
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
+
+	console.log(
+		getTransitionStylesPrototype({
+			...getGroupAttributes(props, 'transition'),
+		})
+	);
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				...getBackgroundDisplayerStyles({
-					...getGroupAttributes(props, 'transition'),
-				}),
+				// ...getBackgroundDisplayerStyles({
+				// 	...getGroupAttributes(props, 'transition'),
+				// }),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',
@@ -170,11 +248,15 @@ const getStyles = props => {
 					blockStyle: props.blockStyle,
 					isHover: true,
 				}),
+				...getTransitionStylesPrototype({
+					...getGroupAttributes(props, 'transition'),
+				}),
 			},
 			selectorsGroup,
 			props
 		),
 	};
+
 	return response;
 };
 

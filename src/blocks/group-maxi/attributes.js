@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
 import { transitionAttributesCreator } from '../../extensions/styles';
+import { transitionObj } from './edit';
 
 /**
  * Attributes
@@ -48,7 +49,9 @@ const attributes = {
 	...{
 		...attributesData.transition,
 		...transitionAttributesCreator({
-			blockOptions: ['Background / Layer', 'Border', 'Box shadow'],
+			blockOptions: Object.values(transitionObj).map(
+				({ title }) => title
+			),
 		}),
 	},
 	...attributesData.display,

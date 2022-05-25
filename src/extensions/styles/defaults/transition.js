@@ -4,9 +4,11 @@ const transition = {
 	},
 	'transition-block-selected': {
 		type: 'string',
+		default: 'none',
 	},
 	'transition-canvas-selected': {
 		type: 'string',
+		default: 'none',
 	},
 };
 

@@ -89,9 +89,6 @@ const TransitionControl = props => {
 							),
 					})
 				}
-				initialPosition={getDefaultAttribute(
-					`transition-duration-${breakpoint}`
-				)}
 			/>
 			<AdvancedNumberControl
 				label={__('Transition delay', 'maxi-blocks')}
@@ -118,9 +115,6 @@ const TransitionControl = props => {
 							getDefaultTransitionAttribute('transition-delay'),
 					})
 				}
-				initialPosition={getDefaultAttribute(
-					`transition-delay-${breakpoint}`
-				)}
 			/>
 			<SelectControl
 				label={__('Easing', 'maxi-blocks')}
@@ -152,7 +146,6 @@ const TransitionControl = props => {
 							getDefaultTransitionAttribute('easing'),
 					})
 				}
-				initialPosition={getDefaultTransitionAttribute('easing')}
 			/>
 		</>
 	);

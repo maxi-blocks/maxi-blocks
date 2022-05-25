@@ -29,11 +29,6 @@ import classnames from 'classnames';
 export const transitionObj = {
 	...transitionDefault,
 	block: {
-		icon: {
-			title: 'Icon',
-			target: ' .maxi-button-block__icon',
-			limitless: true,
-		},
 		typography: {
 			title: 'Typography',
 			target: ' .maxi-button-block__content',

@@ -12,7 +12,10 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
 import getRowBorderRadius from './utils';
@@ -41,6 +44,11 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidMount() {
 		this.context.setColumnClientId(this.props.clientId);
+
+		this.context.setColumnSize(
+			this.props.clientId,
+			getGroupAttributes(this.props.attributes, 'columnSize')
+		);
 	}
 
 	maxiBlockGetSnapshotBeforeUpdate(prevProps) {
@@ -90,7 +98,7 @@ class edit extends MaxiBlockComponent {
 		return columnHeight;
 	}
 
-	maxiBlockDidUpdate() {
+	maxiBlockDidUpdate(prevProps) {
 		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute({
 				target: 'column-size',
@@ -114,6 +122,19 @@ class edit extends MaxiBlockComponent {
 				this.resizableObject.current.resizable.style.flexShrink = '';
 			}
 		}
+
+		// Updates columnSize on the context if the column size has changed.
+		const prevColumnSize = getGroupAttributes(
+			prevProps.attributes,
+			'columnSize'
+		);
+		const columnSize = getGroupAttributes(
+			this.props.attributes,
+			'columnSize'
+		);
+
+		if (!isEqual(prevColumnSize, columnSize))
+			this.context.setColumnSize(this.props.clientId, columnSize);
 	}
 
 	get getStylesObject() {
@@ -126,7 +147,9 @@ class edit extends MaxiBlockComponent {
 			{
 				...(this.rowGapProps ?? this.context?.rowGapProps),
 				columnNum: this.context?.columnsClientIds.length,
-			}
+				columnsSize: this.context?.columnsSize,
+			},
+			this.props.clientId
 		);
 	}
 

@@ -22,9 +22,10 @@ const size = ({
 	hideMaxWidth = false,
 	isImage = false,
 }) => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const { fullWidth, blockFullWidth, isFirstOnHierarchy } = attributes;
 
+	const showFullWidth = isFirstOnHierarchy || name === 'maxi-blocks/row-maxi';
 	const isBlockFullWidth = blockFullWidth === 'full';
 
 	return {
@@ -32,10 +33,13 @@ const size = ({
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<>
-					{isFirstOnHierarchy &&
+					{showFullWidth &&
 						(block ? (
 							<ToggleSwitch
-								label={__('Set block full-width', 'maxi-blocks')}
+								label={__(
+									'Set block full-width',
+									'maxi-blocks'
+								)}
 								className='maxi-full-width-toggle'
 								selected={isBlockFullWidth}
 								onChange={val =>
@@ -46,7 +50,10 @@ const size = ({
 							/>
 						) : (
 							<ToggleSwitch
-								label={__('Set block full-width', 'maxi-blocks')}
+								label={__(
+									'Set block full-width',
+									'maxi-blocks'
+								)}
 								selected={fullWidth === 'full'}
 								onChange={val =>
 									isImage
@@ -80,6 +87,7 @@ const size = ({
 						hideMaxWidth={hideMaxWidth || isBlockFullWidth}
 						isBlockFullWidth={isBlockFullWidth}
 						allowForceAspectRatio={block}
+						isFirstOnHierarchy={isFirstOnHierarchy}
 					/>
 				</>
 			</ResponsiveTabsControl>

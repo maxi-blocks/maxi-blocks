@@ -79,11 +79,11 @@ const attributes = {
 				type: 'string',
 				default: 'px',
 			},
-			'list-size': {
+			'list-marker-size': {
 				type: 'number',
 				default: 1,
 			},
-			'list-size-unit': {
+			'list-marker-size-unit': {
 				type: 'string',
 				default: 'em',
 			},
@@ -106,6 +106,10 @@ const attributes = {
 			'list-text-position': {
 				type: 'string',
 				default: 'middle',
+			},
+			'list-style-position': {
+				type: 'string',
+				default: 'inside',
 			},
 		},
 	}),

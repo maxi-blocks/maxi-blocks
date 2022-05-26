@@ -47,11 +47,7 @@ const TransitionControl = props => {
 	const getDefaultTransitionAttribute = prop => {
 		const defaultTransition = getDefaultAttribute('transition');
 
-		return getLastBreakpointAttribute({
-			target: prop,
-			breakpoint,
-			attributes: defaultTransition[type][selected],
-		});
+		return defaultTransition[type][selected][`${prop}-${breakpoint}`];
 	};
 
 	const transitionObj = props.transition[type][selected];

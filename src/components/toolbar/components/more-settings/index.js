@@ -169,7 +169,7 @@ const MoreSettings = props => {
 		return (
 			<Tooltip
 				text={__('More Settings', 'maxi-blocks')}
-				position='bottom center'
+				position='top center'
 			>
 				{moreSettingsContent()}
 			</Tooltip>

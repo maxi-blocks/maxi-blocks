@@ -88,7 +88,7 @@ const ColumnMover = props => {
 			{!tooltipsHide && (
 				<Tooltip
 					text={__('Move left', 'maxi-blocks')}
-					position='bottom center'
+					position='top center'
 				>
 					{buttonMoveLeft()}
 				</Tooltip>
@@ -96,7 +96,7 @@ const ColumnMover = props => {
 			{!tooltipsHide && (
 				<Tooltip
 					text={__('Move right', 'maxi-blocks')}
-					position='bottom center'
+					position='top center'
 				>
 					{buttonMoveRight()}
 				</Tooltip>

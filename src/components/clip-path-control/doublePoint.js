@@ -13,14 +13,8 @@ import classnames from 'classnames';
  * Component
  */
 const ClipPathDoublePoint = props => {
-	const {
-		handle,
-		color,
-		isMoving,
-		onMouseOut,
-		onChangeMoving,
-		number,
-	} = props;
+	const { handle, color, isMoving, onMouseOut, onChangeMoving, number } =
+		props;
 
 	const tooltipText = sprintf(
 		__('Top: %1$s Left: %2$s', 'maxi-blocks'),
@@ -51,7 +45,7 @@ const ClipPathDoublePoint = props => {
 			}}
 		>
 			{!isMoving && (
-				<Tooltip text={tooltipText} position='bottom center'>
+				<Tooltip text={tooltipText} position='top center'>
 					<span className='maxi-clip-path-button__hidden-tooltip' />
 				</Tooltip>
 			)}

@@ -253,6 +253,10 @@ body .toolbar-item__popover {
 	}
 }
 
+body.maxi-blocks--active .components-tooltip {
+	opacity: 0.95 !important;
+}
+
 body.maxi-blocks--active.rtl .maxi-sidebar,
 body.rtl .maxi-popover,
 body.rtl .toolbar-item__popover {

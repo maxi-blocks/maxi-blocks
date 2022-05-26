@@ -120,7 +120,7 @@ const getStyles = (props, rowGapProps, clientId) => {
 		[uniqueID]: stylesCleaner(
 			merge(
 				{
-					'': getNormalObject(props, rowGapProps),
+					'': getNormalObject(props, rowGapProps, clientId),
 					':hover': getHoverObject(props),
 					...getBlockBackgroundStyles({
 						...getGroupAttributes(props, [

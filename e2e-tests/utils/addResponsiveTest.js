@@ -17,6 +17,7 @@ const addResponsiveTest = async ({
 	newValue,
 	needFocus,
 	needSelectIndex,
+	needFocusPlaceholder,
 }) => {
 	if (needFocus) {
 		// base responsive
@@ -55,6 +56,52 @@ const addResponsiveTest = async ({
 		await page.$eval(`${instance}`, m => m.focus());
 
 		const checkMResponsive = await page.$eval(`${instance}`, m => m.value);
+
+		if (checkMResponsive !== baseExpect) return false;
+
+		return true;
+	}
+
+	if (needFocusPlaceholder) {
+		// base responsive
+		await page.$eval(`${instance}`, base => base.focus());
+
+		const checkBaseResponsive = await page.$eval(
+			`${instance}`,
+			base => base.placeholder
+		);
+
+		if (checkBaseResponsive !== baseExpect) return false;
+
+		// change responsive s
+		await changeResponsive(page, 's');
+
+		await page.$eval(`${instance}`, changeValue => changeValue.focus());
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type(`${newValue}`);
+
+		// change responsive xs
+		await changeResponsive(page, 'xs');
+
+		await page.$eval(`${instance}`, xs => xs.focus());
+
+		const checkXsResponsive = await page.$eval(
+			`${instance}`,
+			xs => xs.placeholder
+		);
+
+		if (checkXsResponsive !== xsExpect) return false;
+
+		// change responsive m
+		await changeResponsive(page, 'm');
+
+		await page.$eval(`${instance}`, m => m.focus());
+
+		const checkMResponsive = await page.$eval(
+			`${instance}`,
+			m => m.placeholder
+		);
 
 		if (checkMResponsive !== baseExpect) return false;
 

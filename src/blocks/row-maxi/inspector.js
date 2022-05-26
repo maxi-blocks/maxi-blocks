@@ -16,8 +16,10 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsRow, categoriesRow } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { withMaxiInspector } from '../../extensions/inspector';
 
-const ColumnPicker = props => {
+function ColumnPicker(props) {
 	const { clientId, attributes, deviceType, maxiSetAttributes } = props;
 
 	return (
@@ -40,7 +42,7 @@ const ColumnPicker = props => {
 			/>
 		</>
 	);
-};
+}
 
 /**
  * Inspector
@@ -73,7 +75,11 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ColumnPicker {...props} />
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
+													<ColumnPicker {...props} />
+												</ResponsiveTabsControl>
 											),
 											ignoreIndicator: [
 												'row-pattern-general',
@@ -106,7 +112,7 @@ const Inspector = props => {
 						),
 						ignoreIndicator: [
 							'row-pattern-general',
-							`row-pattern-m`,
+							'row-pattern-m',
 						],
 					},
 					{
@@ -165,6 +171,9 @@ const Inspector = props => {
 									...inspectorTabs.zindex({
 										props,
 									}),
+									...inspectorTabs.relation({
+										props,
+									}),
 								]}
 							/>
 						),
@@ -175,4 +184,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

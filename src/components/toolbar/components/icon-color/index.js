@@ -16,13 +16,13 @@ import ToggleSwitch from '../../../toggle-switch';
 import './editor.scss';
 import { toolbarShapeColor } from '../../../../icons';
 import { getColorRGBAString } from '../../../../extensions/styles';
+import { setSVGContent } from '../../../../extensions/svg';
 
 /**
  * Component
  */
 const IconColor = props => {
-	const { blockName, onChange, svgType, changeSVGContent, parentBlockStyle } =
-		props;
+	const { blockName, onChangeInline, onChange, svgType, blockStyle } = props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
@@ -37,7 +37,7 @@ const IconColor = props => {
 			<div className='toolbar-item__icon-color__popover'>
 				<ToggleSwitch
 					label={__(
-						'Inherit Colour/Background from Button',
+						'Inherit colour/background from button',
 						'maxi-blocks'
 					)}
 					selected={props['icon-inherit']}
@@ -63,26 +63,39 @@ const IconColor = props => {
 								prefix='icon-'
 								paletteColor={props['icon-palette-color']}
 								paletteStatus={props['icon-palette-status']}
+								onChangeInline={({ color }) =>
+									onChangeInline(
+										{ stroke: color },
+										'[data-stroke]'
+									)
+								}
 								onChange={({
 									color,
 									paletteColor,
 									paletteStatus,
 								}) => {
-									onChange({
-										'icon-color': color,
-										'icon-palette-color': paletteColor,
-										'icon-palette-status': paletteStatus,
-									});
 									const lineColorStr = getColorRGBAString({
-										firstVar: 'icon-line',
+										firstVar: 'icon-stroke',
 										secondVar: `color-${paletteColor}`,
 										opacity: props['icon-palette-opacity'],
-										blockStyle: parentBlockStyle,
+										blockStyle,
 									});
 
-									changeSVGContent(
-										paletteStatus ? lineColorStr : color,
-										'stroke'
+									onChange(
+										{
+											'icon-color': color,
+											'icon-palette-color': paletteColor,
+											'icon-palette-status':
+												paletteStatus,
+											'icon-content': setSVGContent(
+												props['icon-content'],
+												paletteStatus
+													? lineColorStr
+													: color,
+												'stroke'
+											),
+										},
+										'[data-stroke]'
 									);
 								}}
 								disableOpacity
@@ -90,35 +103,48 @@ const IconColor = props => {
 						)}
 						{svgType !== 'Line' && (
 							<ColorControl
-								label={__('Icon Fill', 'maxi-blocks')}
+								label={__('Icon fill', 'maxi-blocks')}
 								color={props['icon-fill-color']}
 								prefix='icon-fill'
 								paletteColor={props['icon-fill-palette-color']}
 								paletteStatus={
 									props['icon-fill-palette-status']
 								}
+								onChangeInline={({ color }) =>
+									onChangeInline(
+										{ fill: color },
+										'[data-fill]'
+									)
+								}
 								onChange={({
 									color,
 									paletteColor,
 									paletteStatus,
 								}) => {
-									onChange({
-										'icon-fill-color': color,
-										'icon-fill-palette-color': paletteColor,
-										'icon-fill-palette-status':
-											paletteStatus,
-									});
 									const fillColorStr = getColorRGBAString({
 										firstVar: 'icon-fill',
 										secondVar: `color-${paletteColor}`,
 										opacity:
 											props['icon-fill-palette-opacity'],
-										blockStyle: parentBlockStyle,
+										blockStyle,
 									});
 
-									changeSVGContent(
-										paletteStatus ? fillColorStr : color,
-										'fill'
+									onChange(
+										{
+											'icon-fill-color': color,
+											'icon-fill-palette-color':
+												paletteColor,
+											'icon-fill-palette-status':
+												paletteStatus,
+											'icon-content': setSVGContent(
+												props['icon-content'],
+												paletteStatus
+													? fillColorStr
+													: color,
+												'fill'
+											),
+										},
+										'[data-fill]'
 									);
 								}}
 								disableOpacity

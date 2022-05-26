@@ -54,7 +54,7 @@ const GlobalColor = props => {
 		<>
 			<ToggleSwitch
 				// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
-				label={__(`Use Global ${label} Colour`, 'maxi-blocks')}
+				label={__(`${label} colour`, 'maxi-blocks')}
 				className={`maxi-style-cards-control__toggle-${globalAttr}`}
 				selected={
 					processSCAttribute(SC, globalAttr, groupAttr) || false
@@ -118,7 +118,7 @@ const GlobalColor = props => {
 							paletteColor: newPaletteColor,
 							paletteOpacity: newPaletteOpacity,
 							color: newColor,
-						}) =>
+						}) => {
 							onChangeValue(
 								{
 									[paletteStatus]: newPaletteStatus,
@@ -127,8 +127,8 @@ const GlobalColor = props => {
 									[color]: newColor,
 								},
 								groupAttr
-							)
-						}
+							);
+						}}
 						blockStyle={SCStyle}
 						disableGradient
 					/>
@@ -157,7 +157,7 @@ const SCAccordion = props => {
 					className={`maxi-style-cards-control__sc__${groupAttr}-typography`}
 					textLevel={groupAttr}
 					breakpoint={breakpoint}
-					styleCards
+					isStyleCards
 					onChange={obj => {
 						onChangeValue({ typography: obj }, groupAttr);
 					}}
@@ -233,11 +233,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		});
 
 	const buttonTabs = {
-		label: __('Button', 'maxi-blocks'),
+		label: __('Button globals', 'maxi-blocks'),
 		groupAttr: 'button',
 		colorContent: [
 			{
-				label: __('Button Text', 'maxi-blocks'),
+				label: __('Text', 'maxi-blocks'),
 				globalAttr: 'color-global',
 				paletteStatus: 'palette-status',
 				paletteColor: 'palette-color',
@@ -245,7 +245,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'color',
 			},
 			{
-				label: __('Button Background', 'maxi-blocks'),
+				label: __('Background', 'maxi-blocks'),
 				globalAttr: 'background-color-global',
 				paletteStatus: 'background-palette-status',
 				paletteColor: 'background-palette-color',
@@ -253,7 +253,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'background-color',
 			},
 			{
-				label: __('Button Background Hover', 'maxi-blocks'),
+				label: __('Background hover', 'maxi-blocks'),
 				globalAttr: 'hover-background-color-global',
 				globalAllAttr: 'hover-background-color-all',
 				paletteStatus: 'hover-background-palette-status',
@@ -262,7 +262,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'hover-background-color',
 			},
 			{
-				label: __('Button Text Hover', 'maxi-blocks'),
+				label: __('Text hover', 'maxi-blocks'),
 				globalAttr: 'hover-color-global',
 				globalAllAttr: 'hover-color-all',
 				paletteStatus: 'hover-palette-status',
@@ -271,7 +271,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'hover-color',
 			},
 			{
-				label: __('Button Border', 'maxi-blocks'),
+				label: __('Border', 'maxi-blocks'),
 				globalAttr: 'border-color-global',
 				paletteStatus: 'border-palette-status',
 				paletteColor: 'border-palette-color',
@@ -279,7 +279,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'border-color',
 			},
 			{
-				label: __('Button Border Hover', 'maxi-blocks'),
+				label: __('Border hover', 'maxi-blocks'),
 				globalAttr: 'hover-border-color-global',
 				globalAllAttr: 'hover-border-color-all',
 				paletteStatus: 'hover-border-palette-status',
@@ -290,7 +290,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		],
 	};
 	const pTabs = {
-		label: __('Paragraph', 'maxi-blocks'),
+		label: __('Paragraph globals', 'maxi-blocks'),
 		groupAttr: 'p',
 		colorContent: [
 			{
@@ -304,7 +304,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		],
 	};
 	const linkTabs = {
-		label: __('Link', 'maxi-blocks'),
+		label: __('Link globals', 'maxi-blocks'),
 		groupAttr: 'link',
 		colorContent: [
 			{
@@ -343,7 +343,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		],
 	};
 	const iconTabs = {
-		label: __('SVG Icons', 'maxi-blocks'),
+		label: __('Icon globals', 'maxi-blocks'),
 		groupAttr: 'icon',
 		colorContent: [
 			{
@@ -355,6 +355,15 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'line',
 			},
 			{
+				label: __('Line hover', 'maxi-blocks'),
+				globalAttr: 'hover-line-global',
+				globalAllAttr: 'hover-line-all',
+				paletteStatus: 'hover-line-palette-status',
+				paletteColor: 'hover-line-palette-color',
+				paletteOpacity: 'hover-line-palette-opacity',
+				color: 'hover-line',
+			},
+			{
 				label: __('Fill', 'maxi-blocks'),
 				globalAttr: 'fill-global',
 				paletteStatus: 'fill-palette-status',
@@ -362,10 +371,19 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteOpacity: 'fill-palette-opacity',
 				color: 'fill',
 			},
+			{
+				label: __('Fill hover', 'maxi-blocks'),
+				globalAttr: 'hover-fill-global',
+				globalAllAttr: 'hover-fill-all',
+				paletteStatus: 'hover-fill-palette-status',
+				paletteColor: 'hover-fill-palette-color',
+				paletteOpacity: 'hover-fill-palette-opacity',
+				color: 'hover-fill',
+			},
 		],
 	};
 	const dividerTabs = {
-		label: __('Divider', 'maxi-blocks'),
+		label: __('Divider globals', 'maxi-blocks'),
 		groupAttr: 'divider',
 		colorContent: [
 			{
@@ -384,9 +402,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			<AccordionControl
 				key='sc-accordion__quick-color-presets'
 				isSecondary
+				isStyleCard
 				items={[
 					{
-						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
+						label: __('Colour palette', 'maxi-blocks'),
 						classNameItem:
 							'maxi-blocks-sc__type--quick-color-presets maxi-blocks-sc__type--color',
 						content: (
@@ -536,7 +555,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						),
 					},
 					{
-						label: __('Headings', 'maxi-blocks'),
+						label: __('Typography globals', 'maxi-blocks'),
 						classNameItem: 'maxi-blocks-sc__type--heading',
 						content: (
 							<SettingTabsControl

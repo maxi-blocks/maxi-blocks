@@ -544,7 +544,7 @@ const getSVGBackgroundObject = ({
 	...props
 }) => {
 	const response = {
-		label: 'SVG Background',
+		label: 'Icon background',
 		[breakpoint]: {},
 	};
 

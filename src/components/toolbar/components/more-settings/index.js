@@ -18,6 +18,7 @@ import Delete from '../delete';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
 import { getGroupAttributes } from '../../../../extensions/styles';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * Icons
@@ -28,13 +29,19 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
-import { openSidebarAccordion } from '../../../../extensions/inspector-path';
 
 /**
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, onChange, prefix, copyPasteMapping } = props;
+	const {
+		clientId,
+		blockName,
+		onChange,
+		prefix,
+		copyPasteMapping,
+		tooltipsHide,
+	} = props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -46,11 +53,8 @@ const MoreSettings = props => {
 		};
 	});
 
-	return (
-		<Tooltip
-			text={__('More Settings', 'maxi-blocks')}
-			position='bottom center'
-		>
+	const moreSettingsContent = () => {
+		return (
 			<div className='toolbar-item toolbar-item__more-settings'>
 				<Dropdown
 					className='maxi-more-settings__settings-selector'
@@ -74,11 +78,7 @@ const MoreSettings = props => {
 								copyPasteMapping={copyPasteMapping}
 							/>
 							{blockName === 'maxi-blocks/text-maxi' && (
-								<TextGenerator
-									clientId={clientId}
-									blockName={blockName}
-									onChange={onChange}
-								/>
+								<TextGenerator onChange={onChange} />
 							)}
 							{blockName === 'maxi-blocks/button-maxi' && (
 								<div>
@@ -141,19 +141,17 @@ const MoreSettings = props => {
 							)}
 							{(blockName === 'maxi-blocks/svg-icon-maxi' ||
 								blockName === 'maxi-blocks/image-maxi') && (
-								<>
-									<Alignment
-										clientId={clientId}
-										blockName={blockName}
-										getGroupAttributes
-										{...getGroupAttributes(props, [
-											'alignment',
-											'textAlignment',
-										])}
-										onChange={onChange}
-										breakpoint={breakpoint}
-									/>
-								</>
+								<Alignment
+									clientId={clientId}
+									blockName={blockName}
+									getGroupAttributes
+									{...getGroupAttributes(props, [
+										'alignment',
+										'textAlignment',
+									])}
+									onChange={onChange}
+									breakpoint={breakpoint}
+								/>
 							)}
 							<ReusableBlocks
 								clientId={clientId}
@@ -164,8 +162,19 @@ const MoreSettings = props => {
 					)}
 				/>
 			</div>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('More Settings', 'maxi-blocks')}
+				position='bottom center'
+			>
+				{moreSettingsContent()}
+			</Tooltip>
+		);
+	return moreSettingsContent();
 };
 
 export default MoreSettings;

@@ -6,7 +6,7 @@ import { select, dispatch } from '@wordpress/data';
 /*
  * Internal dependencies
  */
-import openSidebar from '../dom';
+import { openSidebar } from '../dom';
 
 const { receiveInspectorPath } = select('maxiBlocks');
 

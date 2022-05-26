@@ -9,13 +9,10 @@ import { useRef, useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import getStyles from './styles';
 
 /**
@@ -139,17 +136,18 @@ const SliderWrapper = props => {
 	};
 
 	const nextSlide = () => {
-		if (currentSlide < numberOfSlides - 1 || isLoop) {
+		if (currentSlide + 1 < numberOfSlides || isLoop) {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev + 1;
+				console.log('newCurrentSlide: ', newCurrentSlide);
 				return newCurrentSlide;
 			});
 		}
 	};
 
 	const prevSlide = () => {
-		if (currentSlide > 0 || isLoop) {
+		if (currentSlide - 1 >= 0 || isLoop) {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev - 1;
@@ -202,8 +200,9 @@ const SliderWrapper = props => {
 	};
 
 	const handleTransitionEnd = () => {
+		console.log('handleTransitionEnd!');
 		wrapperRef.current.style.transition = '';
-		if (currentSlide > numberOfSlides - 1) {
+		if (currentSlide >= numberOfSlides) {
 			setCurrentSlide(0);
 		}
 		if (currentSlide < 0) {

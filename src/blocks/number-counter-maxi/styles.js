@@ -14,11 +14,15 @@ import {
 	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
+	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
 
 const getWrapperObject = props => {
 	const response = {
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -65,6 +69,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		background: {
 			...getBlockBackgroundStyles({
@@ -229,7 +234,7 @@ const getHoverBoxObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, blockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(

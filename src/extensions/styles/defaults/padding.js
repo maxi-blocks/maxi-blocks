@@ -2,16 +2,16 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawPadding = {
 	'padding-top': {
-		type: 'number',
+		type: 'string',
 	},
 	'padding-right': {
-		type: 'number',
+		type: 'string',
 	},
 	'padding-bottom': {
-		type: 'number',
+		type: 'string',
 	},
 	'padding-left': {
-		type: 'number',
+		type: 'string',
 	},
 	'padding-top-unit': {
 		type: 'string',

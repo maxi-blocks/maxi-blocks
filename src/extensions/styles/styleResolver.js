@@ -51,7 +51,13 @@ const getCleanContent = content => {
 	return newContent;
 };
 
-const styleResolver = (target, styles, remover = false, breakpoints) => {
+const styleResolver = (
+	target,
+	styles,
+	remover = false,
+	breakpoints,
+	update = true
+) => {
 	if (!styles) return {};
 
 	const response = (remover && []) || {};
@@ -71,8 +77,11 @@ const styleResolver = (target, styles, remover = false, breakpoints) => {
 	if (response?.[target]?.content)
 		response[target].content = getCleanContent(response[target].content);
 
-	if (!remover) dispatch('maxiBlocks/styles').updateStyles(target, response);
-	else dispatch('maxiBlocks/styles').removeStyles(response);
+	if (update) {
+		if (!remover)
+			dispatch('maxiBlocks/styles').updateStyles(target, response);
+		else dispatch('maxiBlocks/styles').removeStyles(response);
+	}
 
 	return response;
 };

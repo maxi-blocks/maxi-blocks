@@ -50,6 +50,7 @@ const BackgroundControl = props => {
 		disableClipPath = false,
 		disableSVG = false,
 		disableNoneStyle = false,
+		onChangeInline = null,
 		onChange,
 		isHover = false,
 		prefix = '',
@@ -57,6 +58,7 @@ const BackgroundControl = props => {
 		clientId,
 		breakpoint = 'general',
 		globalProps,
+		inlineTarget = '',
 	} = props;
 
 	const backgroundActiveMedia = getLastBreakpointAttribute({
@@ -132,96 +134,97 @@ const BackgroundControl = props => {
 					}
 				/>
 			)}
-			<>
-				{!disableColor && backgroundActiveMedia === 'color' && (
-					<ColorLayer
-						colorOptions={{
-							...getGroupAttributes(
-								props,
-								'backgroundColor',
-								isHover,
-								prefix
-							),
-						}}
-						onChange={obj => onChange(obj)}
-						disableClipPath={disableClipPath}
-						isHover={isHover}
-						prefix={prefix}
-						disablePalette={disablePalette}
-						clientId={clientId}
-						breakpoint={breakpoint}
-						globalProps={globalProps}
-					/>
-				)}
-				{!disableImage && backgroundActiveMedia === 'image' && (
-					<ImageLayer
-						imageOptions={{
-							...getGroupAttributes(
-								props,
-								'backgroundImage',
-								isHover,
-								prefix
-							),
-						}}
-						onChange={obj => onChange(obj)}
-						disableClipPath={disableClipPath}
-						isHover={isHover}
-						prefix={prefix}
-						breakpoint={breakpoint}
-					/>
-				)}
-				{!disableVideo && backgroundActiveMedia === 'video' && (
-					<VideoLayer
-						videoOptions={{
-							...getGroupAttributes(
-								props,
-								'backgroundVideo',
-								isHover,
-								prefix
-							),
-						}}
-						onChange={obj => onChange(obj)}
-						disableClipPath={disableClipPath}
-						isHover={isHover}
-						prefix={prefix}
-						breakpoint={breakpoint}
-					/>
-				)}
-				{!disableGradient && backgroundActiveMedia === 'gradient' && (
-					<GradientLayer
-						gradientOptions={{
-							...getGroupAttributes(
-								props,
-								'backgroundGradient',
-								isHover,
-								prefix
-							),
-						}}
-						onChange={obj => onChange(obj)}
-						disableClipPath={disableClipPath}
-						isHover={isHover}
-						prefix={prefix}
-						breakpoint={breakpoint}
-					/>
-				)}
-				{!disableSVG && backgroundActiveMedia === 'svg' && (
-					<SVGLayer
-						SVGOptions={{
-							...getGroupAttributes(
-								props,
-								'backgroundSVG',
-								isHover,
-								prefix
-							),
-						}}
-						onChange={obj => onChange(obj)}
-						isHover={isHover}
-						prefix={prefix}
-						clientId={clientId}
-						breakpoint={breakpoint}
-					/>
-				)}
-			</>
+			{!disableColor && backgroundActiveMedia === 'color' && (
+				<ColorLayer
+					colorOptions={{
+						...getGroupAttributes(
+							props,
+							'backgroundColor',
+							isHover,
+							prefix
+						),
+					}}
+					onChangeInline={obj =>
+						onChangeInline && onChangeInline(obj, inlineTarget)
+					}
+					onChange={onChange}
+					disableClipPath={disableClipPath}
+					isHover={isHover}
+					prefix={prefix}
+					disablePalette={disablePalette}
+					clientId={clientId}
+					breakpoint={breakpoint}
+					globalProps={globalProps}
+				/>
+			)}
+			{!disableImage && backgroundActiveMedia === 'image' && (
+				<ImageLayer
+					imageOptions={{
+						...getGroupAttributes(
+							props,
+							'backgroundImage',
+							isHover,
+							prefix
+						),
+					}}
+					onChange={onChange}
+					disableClipPath={disableClipPath}
+					isHover={isHover}
+					prefix={prefix}
+					breakpoint={breakpoint}
+				/>
+			)}
+			{!disableVideo && backgroundActiveMedia === 'video' && (
+				<VideoLayer
+					videoOptions={{
+						...getGroupAttributes(
+							props,
+							'backgroundVideo',
+							isHover,
+							prefix
+						),
+					}}
+					onChange={onChange}
+					disableClipPath={disableClipPath}
+					isHover={isHover}
+					prefix={prefix}
+					breakpoint={breakpoint}
+				/>
+			)}
+			{!disableGradient && backgroundActiveMedia === 'gradient' && (
+				<GradientLayer
+					gradientOptions={{
+						...getGroupAttributes(
+							props,
+							'backgroundGradient',
+							isHover,
+							prefix
+						),
+					}}
+					onChange={onChange}
+					disableClipPath={disableClipPath}
+					isHover={isHover}
+					prefix={prefix}
+					breakpoint={breakpoint}
+				/>
+			)}
+			{!disableSVG && backgroundActiveMedia === 'svg' && (
+				<SVGLayer
+					SVGOptions={{
+						...getGroupAttributes(
+							props,
+							'backgroundSVG',
+							isHover,
+							prefix
+						),
+					}}
+					onChange={onChange}
+					isHover={isHover}
+					prefix={prefix}
+					clientId={clientId}
+					breakpoint={breakpoint}
+				/>
+			)}
 		</div>
 	);
 };

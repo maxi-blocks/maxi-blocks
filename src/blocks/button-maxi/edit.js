@@ -2,8 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
-import { withSelect, withDispatch } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
 import { RawHTML, createRef, forwardRef } from '@wordpress/element';
 
@@ -11,13 +9,10 @@ import { RawHTML, createRef, forwardRef } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 import copyPasteMapping from './copy-paste-mapping';
@@ -46,17 +41,31 @@ class edit extends MaxiBlockComponent {
 		this.iconRef = createRef(null);
 	}
 
+	scProps = {
+		scElements: [
+			'hover-border-color-global',
+			'hover-border-color-all',
+			'hover-color-global',
+			'hover-color-all',
+			'hover-background-color-global',
+			'hover-background-color-all',
+		],
+		scType: 'button',
+	};
+
 	typingTimeout = 0;
 
 	get getStylesObject() {
-		const { attributes, scValues } = this.props;
+		const { attributes } = this.props;
+		const { scValues } = this.state;
 
 		return getStyles(attributes, scValues);
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes, changeSVGContent } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
+		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -68,11 +77,19 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-right'
 		);
 
+		const inlineStylesTargets = {
+			background: '.maxi-button-block__button',
+			border: '.maxi-button-block__button',
+			boxShadow: '.maxi-button-block__button',
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				propsToAvoid={['buttonContent', 'formatValue']}
+				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -86,6 +103,8 @@ class edit extends MaxiBlockComponent {
 				}}
 				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
+				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
@@ -119,7 +138,6 @@ class edit extends MaxiBlockComponent {
 								ref={this.iconRef}
 								{...this.props}
 								propsToAvoid={['buttonContent', 'formatValue']}
-								changeSVGContent={changeSVGContent}
 							/>
 							<IconWrapper
 								ref={this.iconRef}
@@ -136,95 +154,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const {
-		attributes: { blockStyle },
-	} = ownProps;
-
-	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-	const scElements = [
-		'hover-border-color-global',
-		'hover-border-color-all',
-		'hover-color-global',
-		'hover-color-all',
-		'hover-background-color-global',
-		'hover-background-color-all',
-	];
-	const scValues = receiveStyleCardValue(scElements, blockStyle, 'button');
-
-	return {
-		scValues,
-	};
-});
-
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const {
-		attributes: { 'icon-content': content },
-		maxiSetAttributes,
-	} = ownProps;
-
-	const changeSVGStrokeWidth = width => {
-		if (width) {
-			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
-			const changeTo = `stroke-width:${width}`;
-
-			const regexLineToChange2 = new RegExp(
-				'stroke-width=".+?(?=")',
-				'g'
-			);
-			const changeTo2 = `stroke-width="${width}`;
-
-			const newContent = content
-				.replace(regexLineToChange, changeTo)
-				.replace(regexLineToChange2, changeTo2);
-
-			maxiSetAttributes({
-				'icon-content': newContent,
-			});
-		}
-	};
-
-	const changeSVGContentWithBlockStyle = (fillColor, strokeColor) => {
-		const fillRegExp = new RegExp('fill:([^none])([^\\}]+)', 'g');
-		const fillStr = `fill:${fillColor}`;
-
-		const fillRegExp2 = new RegExp('fill=[^-]([^none])([^\\"]+)', 'g');
-		const fillStr2 = ` fill="${fillColor}`;
-
-		const strokeRegExp = new RegExp('stroke:([^none])([^\\}]+)', 'g');
-		const strokeStr = `stroke:${strokeColor}`;
-
-		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
-		const strokeStr2 = ` stroke="${strokeColor}`;
-
-		const newContent = content
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2)
-			.replace(strokeRegExp, strokeStr)
-			.replace(strokeRegExp2, strokeStr2);
-
-		maxiSetAttributes({ 'icon-content': newContent });
-	};
-
-	const changeSVGContent = (color, type) => {
-		const fillRegExp = new RegExp(`${type}:([^none])([^\\}]+)`, 'g');
-		const fillStr = `${type}:${color}`;
-
-		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
-		const fillStr2 = ` ${type}="${color}`;
-
-		const newContent = content
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2);
-
-		maxiSetAttributes({ 'icon-content': newContent });
-	};
-
-	return {
-		changeSVGStrokeWidth,
-		changeSVGContent,
-		changeSVGContentWithBlockStyle,
-	};
-});
-
-export default compose(editSelect, withMaxiProps, editDispatch)(edit);
+export default withMaxiProps(edit);

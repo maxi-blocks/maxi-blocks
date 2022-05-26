@@ -97,6 +97,7 @@ const SvgWidthControl = props => {
 				defaultValue={defaultWidth}
 				initialPosition={defaultWidth}
 				isHover={isHover}
+				optionType='string'
 			/>
 			{enableResponsive && (
 				<ToggleSwitch

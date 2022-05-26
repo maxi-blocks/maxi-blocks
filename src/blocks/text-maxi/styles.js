@@ -56,6 +56,7 @@ const getNormalObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -211,14 +212,54 @@ const getListObject = props => {
 						attributes: props,
 					});
 
+					// List style position
+					const listStylePosition = getLastBreakpointAttribute({
+						target: 'list-style-position',
+						breakpoint,
+						attributes: props,
+					});
+
+					// List marker size
+					const sizeNum =
+						getLastBreakpointAttribute({
+							target: 'list-marker-size',
+							breakpoint,
+							attributes: props,
+						}) || 0;
+					const sizeUnit =
+						getLastBreakpointAttribute({
+							target: 'list-marker-size-unit',
+							breakpoint,
+							attributes: props,
+						}) || 'px';
+
+					// Marker indent
+					const indentMarkerNum =
+						getLastBreakpointAttribute({
+							target: 'list-marker-indent',
+							breakpoint,
+							attributes: props,
+						}) || 0;
+					const indentMarkerUnit =
+						getLastBreakpointAttribute({
+							target: 'list-marker-indent-unit',
+							breakpoint,
+							attributes: props,
+						}) || 'px';
+
+					const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
+
+					const padding =
+						listStylePosition === 'inside'
+							? gapNum + gapUnit
+							: `calc(${gapNum + gapUnit} + ${
+									sizeNum + sizeUnit
+							  } + ${indentMarkerSum})`;
+
 					if (!isNil(gapNum) && !isNil(gapUnit)) {
-						response.listGap[breakpoint] = isRTL
-							? {
-									'padding-right': gapNum + gapUnit,
-							  }
-							: {
-									'padding-left': gapNum + gapUnit,
-							  };
+						response.listGap[breakpoint] = {
+							[`padding-${isRTL ? 'right' : 'left'}`]: padding,
+						};
 					}
 
 					// List indent
@@ -389,18 +430,24 @@ const getMarkerObject = props => {
 							breakpoint,
 							attributes: props,
 						}) || 'px';
-					const indentSum = indentNum + indentUnit;
 
-					// List size
+					// List style position
+					const listStylePosition = getLastBreakpointAttribute({
+						target: 'list-style-position',
+						breakpoint,
+						attributes: props,
+					});
+
+					// List marker size
 					const sizeNum =
 						getLastBreakpointAttribute({
-							target: 'list-size',
+							target: 'list-marker-size',
 							breakpoint,
 							attributes: props,
 						}) || 0;
 					const sizeUnit =
 						getLastBreakpointAttribute({
-							target: 'list-size-unit',
+							target: 'list-marker-size-unit',
 							breakpoint,
 							attributes: props,
 						}) || 'px';
@@ -426,7 +473,14 @@ const getMarkerObject = props => {
 							breakpoint,
 							attributes: props,
 						}) || 'px';
+
 					const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
+					const indentSum =
+						listStylePosition === 'inside'
+							? indentNum + indentUnit
+							: `calc(${indentNum}${indentUnit} - ${
+									sizeNum + sizeUnit
+							  } - ${indentMarkerSum})`;
 
 					// Marker line-height
 					const lineHeightMarkerNum =

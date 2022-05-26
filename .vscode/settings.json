@@ -21,5 +21,6 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"eslint.alwaysShowStatus": true,
-	"prettier.tabWidth": 4
+	"prettier.tabWidth": 4,
+	"php-cs-fixer.rules": "@PSR2"
 }

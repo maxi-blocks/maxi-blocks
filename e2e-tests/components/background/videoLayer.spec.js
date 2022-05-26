@@ -139,7 +139,7 @@ describe.skip('BackgroundControl', () => {
 
 		// hover options
 		await page.$$eval(
-			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			'.maxi-list-control__options .maxi-list-item-control',
 			options => options[0].click()
 		);
 

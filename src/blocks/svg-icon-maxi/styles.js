@@ -43,6 +43,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -208,7 +209,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, blockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -223,6 +224,16 @@ const getStyles = props => {
 					},
 					target: ' .maxi-svg-icon-block__icon',
 					blockStyle,
+				}),
+				...(props['svg-status-hover'] && {
+					...getSVGStyles({
+						obj: {
+							...getGroupAttributes(props, 'svgHover', true),
+						},
+						target: '.maxi-svg-icon-block__icon:hover',
+						blockStyle,
+						isHover: true,
+					}),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

@@ -10,17 +10,25 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockStyle, modalMock } from '../../utils';
+import { getBlockStyle, modalMock, addCustomCSS } from '../../utils';
 
 describe('Svg Icon Maxi', () => {
 	it('Svg Icon Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('SVG Icon Maxi');
+		await insertBlock('Icon Maxi');
 
 		await modalMock(page, { type: 'svg' });
+		await page.waitForTimeout(150);
+
+		await page.$eval('button[aria-label="Close dialog"]', button =>
+			button.click()
+		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+	it('Svg Icon Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

@@ -36,17 +36,13 @@ const IconSize = props => {
 				<SvgWidthControl
 					prefix='icon-'
 					{...props}
-					onChange={obj => {
-						onChange(obj);
-					}}
+					onChange={onChange}
 					breakpoint={breakpoint}
 				/>
 				<SvgStrokeWidthControl
 					prefix='icon-'
 					{...props}
-					onChange={obj => {
-						onChange(obj);
-					}}
+					onChange={onChange}
 					breakpoint={breakpoint}
 				/>
 				<AdvancedNumberControl

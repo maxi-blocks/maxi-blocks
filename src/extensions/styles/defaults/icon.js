@@ -41,10 +41,10 @@ export const icon = {
 		obj: width,
 		prefix,
 		diffValAttr: {
-			'icon-width-general': 32,
+			'icon-width-general': '32',
 		},
 	}),
-	...paletteAttributesCreator({ prefix, palette: 1 }),
+	...paletteAttributesCreator({ prefix: `${prefix}stroke-`, palette: 1 }),
 	...paletteAttributesCreator({ prefix: `${prefix}fill-`, palette: 4 }),
 };
 

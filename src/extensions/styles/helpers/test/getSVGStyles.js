@@ -34,11 +34,11 @@ describe('getSVGStyles', () => {
 			'svg-line-palette-status': true,
 			'svg-line-palette-color': 7,
 			'svg-stroke-general': 2,
-			'svg-width-general': 64,
+			'svg-width-general': '64',
 			'svg-width-unit-general': 'px',
 			'svg-responsive-general': false,
 			'svg-stroke-m': 20,
-			'svg-width-m': 640,
+			'svg-width-m': '640',
 			'svg-width-unit-m': 'vw',
 			'svg-responsive-m': true,
 		};

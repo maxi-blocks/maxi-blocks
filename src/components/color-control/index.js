@@ -171,11 +171,16 @@ const ColorControl = props => {
 					useBreakpointForDefault ? deviceType : null
 				)
 			);
+
+		const { color: rgbaColor } = getColorRGBAParts(color);
+
 		onChange({
 			paletteStatus,
 			paletteColor,
 			paletteOpacity: opacity,
-			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
+			color:
+				rgbaColor &&
+				`rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
 		});
 	};
 

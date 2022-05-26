@@ -167,10 +167,7 @@ const MoreSettings = props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip
-				text={__('More Settings', 'maxi-blocks')}
-				position='top center'
-			>
+			<Tooltip text={__('More', 'maxi-blocks')} position='top center'>
 				{moreSettingsContent()}
 			</Tooltip>
 		);

@@ -180,7 +180,7 @@ class edit extends MaxiBlockComponent {
 			});
 
 			if (
-				(!useInitSize && isNumber(maxWidth)) ||
+				(!useInitSize && maxWidth) ||
 				(useInitSize && maxWidth > mediaWidth)
 			)
 				return `${maxWidth}${maxWidthUnit}`;

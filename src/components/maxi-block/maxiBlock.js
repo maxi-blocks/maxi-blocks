@@ -226,6 +226,10 @@ const MaxiBlock = memo(
 
 		if (wasSelected !== isSelected) return false;
 
+		// Check differences between children
+		if (rawOldProps?.children || rawNewProps?.children)
+			return isEqual(rawOldProps.children, rawNewProps.children);
+
 		const propsCleaner = props => {
 			const response = {};
 

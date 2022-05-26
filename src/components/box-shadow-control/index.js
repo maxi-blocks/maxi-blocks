@@ -64,13 +64,15 @@ const BoxShadowValueControl = props => {
 			}}
 			min={-100}
 			max={100}
-			onReset={() =>
+			onReset={() => {
+				const key = `${prefix}box-shadow-${type}-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`;
+
 				onChange({
-					[`${prefix}box-shadow-${type}-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: 0,
-				})
-			}
+					[key]: getDefaultAttribute(key),
+				});
+			}}
 			initialPosition={getDefaultAttribute(
 				`${prefix}box-shadow-${type}-${breakpoint}${
 					isHover ? '-hover' : ''

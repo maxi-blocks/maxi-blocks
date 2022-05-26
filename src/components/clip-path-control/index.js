@@ -358,7 +358,7 @@ const ClipPath = props => {
 							<Tooltip
 								key='clip-path-defaults__item__none'
 								text={__('none', 'maxi-blocks')}
-								position='bottom center'
+								position='top center'
 							>
 								<Button
 									aria-pressed={clipPath === ''}

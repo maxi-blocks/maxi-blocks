@@ -37,7 +37,7 @@ const attributes = {
 					'display-general': 'block',
 					'background-palette-status-general': true,
 					'background-palette-color-general': 1,
-					'background-palette-opacity': 1,
+					'background-palette-opacity-general': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					order: 1,

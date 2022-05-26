@@ -88,8 +88,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 													attrContent.props[prop]
 														.type === 'withPrefix'
 														? prefix
-														: '',
-													true
+														: ''
 												)
 											);
 										}
@@ -228,8 +227,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 											attributes,
 											propArray,
 											false,
-											type === 'withPrefix' ? prefix : '',
-											true
+											type === 'withPrefix' ? prefix : ''
 										);
 
 										if (!isEmpty(resp))
@@ -252,8 +250,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrContent.value,
 									false,
-									type === 'withPrefix' ? prefix : '',
-									true
+									type === 'withPrefix' ? prefix : ''
 								);
 
 								if (!isEmpty(resp))
@@ -266,8 +263,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrType,
 									false,
-									type === 'withPrefix' ? prefix : '',
-									true
+									type === 'withPrefix' ? prefix : ''
 								);
 
 								if (!isEmpty(resp))

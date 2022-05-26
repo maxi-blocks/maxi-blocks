@@ -412,7 +412,6 @@ const Inspector = props => {
 														}}
 														breakpoint={deviceType}
 														prefix='svg-'
-														enableResponsive
 													/>
 												</ResponsiveTabsControl>
 											),

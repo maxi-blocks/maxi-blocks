@@ -95,7 +95,6 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			clientId,
 			isSelected,
-			onRemove,
 			onReplace,
 			maxiSetAttributes,
 		} = this.props;
@@ -210,6 +209,9 @@ class edit extends MaxiBlockComponent {
 									);
 							}}
 							onMerge={forward => onMerge(this.props, forward)}
+							// onRemove needs to be commented to avoid removing the block
+							// on pressing backspace with the content empty 👍
+							// onRemove={onRemove}
 							__unstableEmbedURLOnPaste
 							withoutInteractiveFormatting
 							preserveWhiteSpace
@@ -274,7 +276,9 @@ class edit extends MaxiBlockComponent {
 									);
 							}}
 							onMerge={forward => onMerge(this.props, forward)}
-							onRemove={onRemove}
+							// onRemove needs to be commented to avoid removing the block
+							// on pressing backspace with the content empty 👍
+							// onRemove={onRemove}
 							start={listStart}
 							reversed={listReversed}
 							type={typeOfList}

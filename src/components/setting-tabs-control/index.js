@@ -47,6 +47,7 @@ const SettingTabsControl = props => {
 		blockName,
 		depth,
 		hasBorder = false,
+		ignoreIndicator = [],
 	} = props;
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
@@ -136,7 +137,10 @@ const SettingTabsControl = props => {
 										item.breakpoint,
 										item.extraIndicators,
 										item.extraIndicatorsResponsive,
-										item.ignoreIndicator
+										[
+											...ignoreIndicator,
+											...item.ignoreIndicator,
+										]
 									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {

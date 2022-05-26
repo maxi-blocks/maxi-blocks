@@ -17,10 +17,23 @@ const calloutArrow = ({ props }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 	const { blockFullWidth } = attributes;
 
+	const ignoreIndicator =
+		!attributes[`arrow-status-${deviceType}`] &&
+		Object.keys(
+			getGroupAttributes(attributes, [
+				'blockBackground',
+				'arrow',
+				'border',
+			])
+		);
+
 	return {
 		label: __('Callout arrow', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
+			<ResponsiveTabsControl
+				breakpoint={deviceType}
+				ignoreIndicator={ignoreIndicator}
+			>
 				<ArrowControl
 					{...getGroupAttributes(attributes, [
 						'blockBackground',
@@ -33,6 +46,7 @@ const calloutArrow = ({ props }) => {
 				/>
 			</ResponsiveTabsControl>
 		),
+		ignoreIndicator,
 		ignoreIndicatorGroups: ['border', 'blockBackground'],
 	};
 };

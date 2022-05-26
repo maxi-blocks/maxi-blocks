@@ -30,6 +30,7 @@ const ResponsiveTabsControl = props => {
 		breakpoint,
 		disableCallback = false,
 		target,
+		ignoreIndicator,
 	} = props;
 
 	const { winBreakpoint } = useSelect(select => {
@@ -84,6 +85,7 @@ const ResponsiveTabsControl = props => {
 			})}
 			forceTab={getTextOptionsTab()}
 			target={target}
+			ignoreIndicator={ignoreIndicator}
 		/>
 	);
 };

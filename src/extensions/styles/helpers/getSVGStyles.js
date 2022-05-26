@@ -144,7 +144,7 @@ export const getSVGStyles = ({
 	blockStyle,
 	prefix,
 	isHover = false,
-	useIconColor = false,
+	useIconColor = true,
 }) => {
 	const response = {
 		[` ${target} svg[data-fill]:not([fill^="none"])`]: getSVGPathFillStyles(

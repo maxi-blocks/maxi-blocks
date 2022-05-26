@@ -72,69 +72,6 @@ const Inspector = props => {
 		'icon-content': iconContent,
 	} = attributes;
 
-	const onChangePreset = (number, type = 'normal') => {
-		const newDefaultPresets = cloneDeep({ ...defaultPresets });
-
-		if (
-			type === 'icon' &&
-			!isEmpty(attributes['icon-content']) &&
-			attributes['icon-content'] !==
-				defaultPresets[`preset${number}`]['icon-content']
-		)
-			newDefaultPresets[`preset${number}`]['icon-content'] =
-				attributes['icon-content'];
-
-		if (
-			!isNil(
-				defaultPresets[`preset${number}`][
-					'icon-border-style-general-hover'
-				]
-			) &&
-			defaultPresets[`preset${number}`][
-				'icon-border-style-general-hover'
-			] !== 'none'
-		) {
-			const hoverAttr = getGroupAttributes(
-				{ ...newDefaultPresets[`preset${number}`] },
-				['border', 'borderWidth', 'borderRadius'],
-				true,
-				'icon-'
-			);
-
-			const nonHoverAttr = getGroupAttributes(
-				{ ...newDefaultPresets[`preset${number}`] },
-				['border', 'borderWidth', 'borderRadius'],
-				false,
-				'icon-'
-			);
-
-			Object.keys(hoverAttr).forEach(h => {
-				if (!h.includes('hover')) delete hoverAttr[h];
-			});
-			Object.keys(nonHoverAttr).forEach(h => {
-				if (h.includes('hover')) delete nonHoverAttr[h];
-			});
-			setHoverAttributes(nonHoverAttr, hoverAttr);
-
-			newDefaultPresets[`preset${number}`] = {
-				...newDefaultPresets[`preset${number}`],
-				...hoverAttr,
-			};
-		}
-
-		maxiSetAttributes({
-			...newDefaultPresets[`preset${number}`],
-		});
-	};
-
-	const getCategoriesCss = () => {
-		const { 'icon-content': iconContent } = attributes;
-		return without(categoriesButton, isEmpty(iconContent) && 'icon');
-	};
-
-	const alignmentLabel = __('Button', 'maxi-blocks');
-	const textAlignmentLabel = __('Text', 'maxi-blocks');
-
 	const getIconWithColor = (args = {}) => {
 		let {
 			paletteColor,
@@ -144,7 +81,7 @@ const Inspector = props => {
 			isInherit,
 			isIconOnly,
 		} = args;
-		const { isHover, type = 'stroke' } = args;
+		const { isHover, type = 'stroke', rawIcon } = args;
 
 		if (isNil(isInherit)) isInherit = iconInherit;
 		if (isNil(isIconOnly)) isIconOnly = iconOnly;
@@ -217,18 +154,116 @@ const Inspector = props => {
 
 		const icon = isHover
 			? setSVGContentHover(
-					iconContent,
+					rawIcon ?? iconContent,
 					paletteStatus ? lineColorStr : color,
 					type
 			  )
 			: setSVGContent(
-					iconContent,
+					rawIcon ?? iconContent,
 					paletteStatus ? lineColorStr : color,
 					type
 			  );
 
 		return icon;
 	};
+
+	const onChangePreset = (number, type = 'normal') => {
+		const newDefaultPresets = cloneDeep({ ...defaultPresets });
+
+		if (
+			type === 'icon' &&
+			!isEmpty(attributes['icon-content']) &&
+			attributes['icon-content'] !==
+				defaultPresets[`preset${number}`]['icon-content']
+		)
+			newDefaultPresets[`preset${number}`]['icon-content'] =
+				attributes['icon-content'];
+
+		if (
+			!isNil(
+				defaultPresets[`preset${number}`][
+					'icon-border-style-general-hover'
+				]
+			) &&
+			defaultPresets[`preset${number}`][
+				'icon-border-style-general-hover'
+			] !== 'none'
+		) {
+			const hoverAttr = getGroupAttributes(
+				{ ...newDefaultPresets[`preset${number}`] },
+				['border', 'borderWidth', 'borderRadius'],
+				true,
+				'icon-'
+			);
+
+			const nonHoverAttr = getGroupAttributes(
+				{ ...newDefaultPresets[`preset${number}`] },
+				['border', 'borderWidth', 'borderRadius'],
+				false,
+				'icon-'
+			);
+
+			Object.keys(hoverAttr).forEach(h => {
+				if (!h.includes('hover')) delete hoverAttr[h];
+			});
+			Object.keys(nonHoverAttr).forEach(h => {
+				if (h.includes('hover')) delete nonHoverAttr[h];
+			});
+			setHoverAttributes(nonHoverAttr, hoverAttr);
+
+			newDefaultPresets[`preset${number}`] = {
+				...newDefaultPresets[`preset${number}`],
+				...hoverAttr,
+			};
+		}
+
+		const {
+			'icon-stroke-palette-status': strokePaletteStatus,
+			'icon-stroke-palette-hover-status': strokePaletteHoverStatus,
+			'icon-content': rawIcon,
+		} = newDefaultPresets[`preset${number}`];
+
+		let icon = null;
+
+		if (rawIcon && (strokePaletteStatus || strokePaletteHoverStatus)) {
+			const {
+				'icon-stroke-palette-color': strokePaletteColor,
+				'icon-stroke-palette-hover-color': strokePaletteHoverColor,
+				'icon-inherit': rawIconInherit,
+				'icon-only': rawIconOnly,
+			} = newDefaultPresets[`preset${number}`];
+
+			icon = getIconWithColor({
+				paletteStatus: strokePaletteStatus,
+				paletteColor: strokePaletteColor,
+				rawIcon,
+				isInherit: rawIconInherit,
+				isIconOnly: rawIconOnly,
+			});
+
+			icon = getIconWithColor({
+				paletteStatus: strokePaletteHoverStatus,
+				paletteColor: strokePaletteHoverColor,
+				isHover: true,
+				rawIcon: icon,
+				isInherit: rawIconInherit,
+				isIconOnly: rawIconOnly,
+			});
+		}
+
+		maxiSetAttributes({
+			...newDefaultPresets[`preset${number}`],
+			...(icon && { 'icon-content': icon }),
+		});
+	};
+
+	const getCategoriesCss = () => {
+		const { 'icon-content': iconContent } = attributes;
+		return without(categoriesButton, isEmpty(iconContent) && 'icon');
+	};
+
+	const alignmentLabel = __('Button', 'maxi-blocks');
+	const textAlignmentLabel = __('Text', 'maxi-blocks');
 
 	useEffect(
 		() =>

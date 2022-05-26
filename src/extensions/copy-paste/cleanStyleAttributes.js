@@ -170,15 +170,10 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 							} else if (typeof attr === 'object' && attr.value) {
 								attrArray = attr.value;
 							} else attrArray = [attrType];
+
 							response = {
 								...response,
-								...getGroupAttributes(
-									attributes,
-									attrArray,
-									false,
-									type === 'withPrefix' ? prefix : '',
-									true
-								),
+								...getGroupAttributes(attributes, attrArray),
 							};
 						}
 					);

@@ -17,8 +17,7 @@ const onChangeRichText = ({
 	onChange,
 	richTextValues,
 }) => {
-	const { value: formatValue } = richTextValues;
-	const { onChange: onChangeRichText } = richTextValues;
+	const { value: formatValue, onChange: onChangeRichText } = richTextValues;
 
 	/**
 	 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats

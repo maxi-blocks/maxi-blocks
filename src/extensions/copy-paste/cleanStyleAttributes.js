@@ -173,7 +173,12 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 
 							response = {
 								...response,
-								...getGroupAttributes(attributes, attrArray),
+								...getGroupAttributes(
+									attributes,
+									attrArray,
+									false,
+									type === 'withPrefix' ? prefix : ''
+								),
 							};
 						}
 					);

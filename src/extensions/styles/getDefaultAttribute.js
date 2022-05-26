@@ -77,6 +77,10 @@ const getDefaultAttribute = (
 		);
 	}
 
+	if (prop === 'list-color') {
+		console.log(response);
+	}
+
 	return response;
 };
 

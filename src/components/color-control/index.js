@@ -51,7 +51,7 @@ const ColorControl = props => {
 		disableColorDisplay = false,
 		isToolbar = false,
 		prefix = '',
-		useBreakpointForDefault = false,
+		avoidBreakpointForDefault = false,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -108,7 +108,7 @@ const ColorControl = props => {
 					'palette-status',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
 			defaultColorAttr.paletteColor = getDefaultAttribute(
@@ -116,7 +116,7 @@ const ColorControl = props => {
 					'palette-color',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
 			defaultColorAttr.paletteOpacity = getDefaultAttribute(
@@ -124,7 +124,7 @@ const ColorControl = props => {
 					'palette-opacity',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
 			defaultColorAttr.color = getDefaultAttribute(
@@ -132,10 +132,21 @@ const ColorControl = props => {
 					'color',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
 		}
+
+		console.log(
+			getDefaultAttribute(
+				getAttributeKey(
+					'palette-color',
+					isHover,
+					prefix,
+					avoidBreakpointForDefault ? deviceType : null
+				)
+			)
+		);
 
 		if (showPalette)
 			onChange({
@@ -168,7 +179,7 @@ const ColorControl = props => {
 					'palette-opacity',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
 		onChange({

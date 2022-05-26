@@ -20,7 +20,12 @@ import { getGroupAttributes } from '../../../../extensions/styles';
 /**
  * Border
  */
-const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
+const ALLOWED_BLOCKS = [
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/slider-maxi',
+	'maxi-blocks/slide-maxi',
+];
 
 /**
  * Component

@@ -191,6 +191,8 @@ const settings = {
 		},
 		...canvasSettings,
 	],
+	'maxi-blocks/slider-maxi': [...canvasSettings],
+	'maxi-blocks/slide-maxi': [...canvasSettings],
 };
 
 export default settings;

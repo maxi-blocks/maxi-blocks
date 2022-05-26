@@ -166,7 +166,7 @@ const ArrowControl = props => {
 						)}
 					/>
 					<AdvancedNumberControl
-						label={__('Arrow Size', 'maxi-blocks')}
+						label={__('Arrow size', 'maxi-blocks')}
 						value={getLastBreakpointAttribute({
 							target: 'arrow-width',
 							breakpoint,

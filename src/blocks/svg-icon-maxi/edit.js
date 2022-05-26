@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createRef } from '@wordpress/element';
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 import { Button } from '@wordpress/components';
 
 /**
@@ -121,6 +121,9 @@ class edit extends MaxiBlockComponent {
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
 			elt.querySelector('svg').style.width = null;
+
+			const deviceType =
+				select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 
 			maxiSetAttributes({
 				[`svg-width-${deviceType}`]: getResizerSize(

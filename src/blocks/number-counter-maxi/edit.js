@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -269,6 +270,8 @@ class edit extends MaxiBlockComponent {
 		const classes = 'maxi-number-counter-block';
 
 		const handleOnResizeStop = (event, direction, elt) => {
+			const deviceType =
+				select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 			const widthUnit = getLastBreakpointAttribute({
 				target: 'number-counter-width-unit',
 				breakpoint: deviceType,

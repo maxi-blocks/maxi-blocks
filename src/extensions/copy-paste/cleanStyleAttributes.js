@@ -19,50 +19,29 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 			['blockSpecific', 'withBreakpoint', 'withPalette'].forEach(type => {
 				if (copyPasteMapping[tab][type])
 					Object.entries(copyPasteMapping[tab][type]).forEach(
-						([attrType, attrContent]) => {
+						([attrType, attr]) => {
 							let attrArray = [];
 
-							if (
-								typeof attrContent === 'object' &&
-								!attrContent.groupLabel
-							)
-								attrArray = [...attrContent.value];
+							if (typeof attr === 'object' && !attr.groupLabel)
+								attrArray = [...attr.value];
 							else if (
-								typeof attrContent === 'object' &&
-								attrContent.groupLabel
+								typeof attr === 'object' &&
+								attr.groupLabel
 							)
-								attrArray = [...Object.keys(attrContent.props)];
-							else if (typeof attrContent === 'string')
+								attrArray = [...Object.keys(attr.props)];
+							else if (typeof attr === 'string')
 								attrArray.push(attrType);
 
 							if (type === 'withBreakpoint') {
 								const newArray = [...attrArray];
 								attrArray = [];
-								newArray.forEach(prop => {
-									let propArray = [prop];
-									if (
-										attrContent.props[prop].type ===
-										'withPalette'
-									) {
-										propArray = [];
-										const withPalette =
-											paletteAttributesCreator({
-												prefix: prop,
-											});
-										propArray = propArray.concat(
-											Object.keys(withPalette)
-										);
-									}
-									propArray.forEach(prop => {
-										const withBrkpt = [];
+								newArray.forEach(a => {
+									const withBrkpt = [];
 
-										breakpoints.forEach(breakpoint =>
-											withBrkpt.push(
-												`${prop}-${breakpoint}`
-											)
-										);
-										attrArray = attrArray.concat(withBrkpt);
-									});
+									breakpoints.forEach(breakpoint =>
+										withBrkpt.push(`${a}-${breakpoint}`)
+									);
+									attrArray = attrArray.concat(withBrkpt);
 								});
 							}
 
@@ -95,7 +74,12 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 					);
 			});
 
-			['withPrefix', 'withoutPrefix'].forEach(type => {
+			[
+				'withPrefix',
+				'withPrefixHover',
+				'withoutPrefix',
+				'withoutPrefixHover',
+			].forEach(type => {
 				if (copyPasteMapping[tab][type])
 					Object.entries(copyPasteMapping[tab][type]).forEach(
 						([attrType, attr]) => {
@@ -109,8 +93,12 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 									...getGroupAttributes(
 										attributes,
 										prop,
-										false,
-										type === 'withPrefix' ? prefix : '',
+										type === 'withPrefixHover' ||
+											type === 'withoutPrefixHover',
+										type === 'withPrefix' ||
+											type === 'withPrefixHover'
+											? prefix
+											: '',
 										true
 									),
 								};

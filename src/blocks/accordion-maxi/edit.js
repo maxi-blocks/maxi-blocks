@@ -3,6 +3,7 @@
  */
 import { dispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -15,6 +16,7 @@ import {
 } from '../../extensions/maxi-block';
 import MaxiBlock from '../../components/maxi-block';
 import getStyles from './styles';
+import { Button } from '../../components';
 
 /**
  * Edit
@@ -50,7 +52,8 @@ class edit extends MaxiBlockComponent {
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<button
+				<Button
+					className='maxi-accordion__add-item-button'
 					onClick={() => {
 						dispatch('core/block-editor').insertBlock(
 							createBlock('maxi-blocks/pane-maxi'),
@@ -60,8 +63,8 @@ class edit extends MaxiBlockComponent {
 						maxiSetAttributes({ lastIndex: lastIndex + 1 });
 					}}
 				>
-					Add Item
-				</button>
+					{__('Add Item', 'maxi-blocks')}
+				</Button>
 			</MaxiBlock>,
 		];
 	}

@@ -546,6 +546,7 @@ const listTab = props => {
 							paletteStatus={attributes['list-palette-status']}
 							paletteColor={attributes['list-palette-color']}
 							paletteOpacity={attributes['list-palette-opacity']}
+							prefix='list-'
 							avoidBreakpointForDefault
 							onChangeInline={({ color }) =>
 								insertInlineStyles({

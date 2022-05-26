@@ -540,12 +540,13 @@ const listTab = props => {
 					/>
 					{deviceType === 'general' && (
 						<ColorControl
-							label={__('Marker colour', 'maxi-blocks')}
+							label={__('Marker', 'maxi-blocks')}
 							color={attributes['list-color']}
 							defaultColor={getDefaultAttribute('list-color')}
 							paletteStatus={attributes['list-palette-status']}
 							paletteColor={attributes['list-palette-color']}
 							paletteOpacity={attributes['list-palette-opacity']}
+							avoidBreakpointForDefault
 							onChangeInline={({ color }) =>
 								insertInlineStyles({
 									obj: { color },
@@ -572,7 +573,7 @@ const listTab = props => {
 									'list-palette-status': paletteStatus,
 									'list-palette-color': paletteColor,
 									'list-palette-opacity': paletteOpacity,
-									'list-color': color,
+									'list-color': colorStr,
 									...(listStyleCustom?.includes('<svg ') && {
 										listStyleCustom: setSVGColor({
 											svg: listStyleCustom,

@@ -90,7 +90,6 @@ const IconBackground = props => {
 							isHover
 						)}
 						deviceType={breakpoint}
-						useBreakpointForDefault
 						onChangeInline={({ color }) =>
 							onChangeInline({ background: color })
 						}

@@ -563,7 +563,6 @@ const IconControl = props => {
 									isHover,
 								})}
 								prefix='icon-background-'
-								useBreakpointForDefault
 								onChangeInline={({ color }) =>
 									onChangeInline &&
 									onChangeInline(

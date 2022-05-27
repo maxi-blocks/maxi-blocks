@@ -137,6 +137,8 @@ const ColorControl = props => {
 			);
 		}
 
+		console.log(prefix);
+		console.log(deviceType);
 		console.log(`avoidBreakpointForDefault ${avoidBreakpointForDefault}`);
 		console.log(
 			getAttributeKey(

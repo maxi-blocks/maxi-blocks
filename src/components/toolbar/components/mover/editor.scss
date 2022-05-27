@@ -4,20 +4,26 @@
 	justify-content: center;
 	flex-direction: column;
 
-	&:hover {
-		background-color: #eaf2f6 !important;
-	}
-
 	.components-button {
 		width: 100%;
 		padding: 0;
 		height: 16px;
 		display: flex;
 		transition: 0.3s;
+		border-radius: 0;
 
 		svg {
 			width: 15px !important;
 			height: 8px !important;
+		}
+
+		&:hover {
+			background-color: #eaf2f6 !important;
+			border-color: var(--maxi-secondary-color) !important;
+
+			path {
+				fill: var(--maxi-secondary-color) !important;
+			}
 		}
 
 	}
@@ -32,22 +38,12 @@
 				transition: 0.3s;
 			}
 		}
-		&:hover {
-			border-color: var(--maxi-secondary-color);
-
-			path {
-				fill: var(--maxi-secondary-color) !important;
-			}
-		}
+	
 	}
 
 	.components-button:nth-child(2) {
 		border-bottom: 2px solid transparent;
 
-		&:hover {
-			border-color: var(--maxi-secondary-color);
-		}
-	
 		svg {
 			margin-bottom: auto !important;
 			margin-top: 0 !important;
@@ -57,14 +53,16 @@
 .toolbar-item-move__horizontally {
 	transition: all 0.3s;
 	
-	&:hover {
-		background-color: #eaf2f6 !important;
-	}	
+	.components-button {
+		border-radius: 0;
+		height: 32px;
+	}
 
 	.components-button:nth-child(1) {
 		border-left: 2px solid transparent;
 
 		&:hover {
+			background-color: #eaf2f6 !important;
 			border-color: var(--maxi-secondary-color);
 		}
 	}
@@ -73,6 +71,7 @@
 		z-index: 1;
 
 		&:hover {
+			background-color: #eaf2f6 !important;
 			border-color: var(--maxi-secondary-color);
 		}
 	}

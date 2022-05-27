@@ -658,10 +658,13 @@ const LibraryContainer = props => {
 									'taxonomies_hierarchical.svg_tag.lvl0',
 									'taxonomies_hierarchical.svg_tag.lvl1',
 								]}
-								limit={10}
+								transformItems={items =>
+									orderBy(items, 'name', 'asc')
+								}
+								limit={30}
 								showMore
 								showLoadingIndicator
-								showMoreLimit={10}
+								showMoreLimit={30}
 							/>
 							<ClearRefinements />
 						</div>
@@ -735,6 +738,9 @@ const LibraryContainer = props => {
 								attribute='taxonomies.svg_category'
 								defaultRefinement={['Line']}
 								showLoadingIndicator
+								transformItems={items =>
+									orderBy(items, 'label', 'asc')
+								}
 							/>
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>

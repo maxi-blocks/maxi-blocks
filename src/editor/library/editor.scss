@@ -826,6 +826,8 @@
 							border: none;
 							padding: 0;
 							margin-bottom: 5px;
+							display: flex;
+
 							&:last-child {
 								margin-bottom: 0;
 							}
@@ -931,6 +933,7 @@
 					}
 					.maxi-toggle-switch {
 						margin-bottom: 8px;
+						margin-left: auto;
 					}
 				}
 				ul {

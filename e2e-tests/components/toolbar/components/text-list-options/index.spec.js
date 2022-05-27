@@ -26,7 +26,7 @@ describe('Text list options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('list-palette-status')).toStrictEqual(true);
+		expect(await getAttributes('typeOfList')).toStrictEqual('ol');
 
 		// select dotted list
 		await insertBlock('Text Maxi');
@@ -43,6 +43,6 @@ describe('Text list options', () => {
 			button => button[1].click()
 		);
 
-		expect(await getAttributes('list-palette-status')).toStrictEqual(true);
+		expect(await getAttributes('typeOfList')).toStrictEqual('ul');
 	});
 });

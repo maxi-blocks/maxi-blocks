@@ -41,8 +41,8 @@ describe('Pattern', () => {
 		await page.evaluate(() =>
 			wp.data.dispatch('maxiBlocks').receiveMaxiBreakpoints()
 		);
-		await page.waitForTimeout(5000);
 		await saveDraft();
+		await page.waitForTimeout(5000);
 
 		// Check post content
 		expect(await getEditedPostContent()).toMatchSnapshot();

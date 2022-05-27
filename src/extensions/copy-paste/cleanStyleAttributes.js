@@ -90,8 +90,7 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 													attrContent.props[prop]
 														.type === 'withPrefix'
 														? prefix
-														: '',
-													true
+														: ''
 												)
 											)
 										);
@@ -139,15 +138,10 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 							}
 
 							attrArray.forEach(a => {
-								if (
-									(typeof attributes[a] !== 'object' &&
-										!isNil(attributes[a])) ||
-									!isEmpty(attributes[a])
-								)
-									response = {
-										...response,
-										[a]: attributes[a],
-									};
+								response = {
+									...response,
+									[a]: attributes[a],
+								};
 							});
 						}
 					);

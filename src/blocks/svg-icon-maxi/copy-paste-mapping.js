@@ -13,7 +13,7 @@ const copyPasteMapping = {
 	exclude: ['content', 'svgType'],
 	settings: {
 		blockSpecific: {
-			content: { label: 'SVG Content', value: ['svgType', 'content'] },
+			content: { label: 'Icon content', value: ['svgType', 'content'] },
 			iconColor: {
 				groupLabel: 'Icon colour',
 				props: {
@@ -86,9 +86,9 @@ const copyPasteMapping = {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },
 			},
-			withoutPrefix: {
-				alignment: 'Alignment',
-			},
+		},
+		withoutPrefix: {
+			alignment: 'Alignment',
 		},
 	},
 	canvas: {

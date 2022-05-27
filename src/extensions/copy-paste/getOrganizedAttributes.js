@@ -127,27 +127,20 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 										const resp = {};
 
 										attrArray.forEach(attr => {
-											if (
-												(typeof attributes[attr] !==
-													'object' &&
-													!isNil(attributes[attr])) ||
-												!isEmpty(attributes[attr])
-											)
-												resp[attr] = attributes[attr];
+											resp[attr] = attributes[attr];
 										});
 
-										if (!isEmpty(resp))
-											groupObj.group[prop] = {
-												label:
-													typeof label === 'string'
-														? label
-														: label.label,
-												attribute: resp,
-											};
+										groupObj.group[prop] = {
+											label:
+												typeof label === 'string'
+													? label
+													: label.label,
+											attribute: resp,
+										};
 									}
 								);
-								if (!isEmpty(groupObj.group))
-									response[tab][attrType] = groupObj;
+
+								response[tab][attrType] = groupObj;
 							} else {
 								let attrArray = [];
 
@@ -186,21 +179,16 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 								}
 								const resp = {};
 								attrArray.forEach(attr => {
-									if (
-										(typeof attributes[attr] !== 'object' &&
-											!isNil(attributes[attr])) ||
-										!isEmpty(attributes[attr])
-									)
-										resp[attr] = attributes[attr];
+									resp[attr] = attributes[attr];
 								});
-								if (!isEmpty(resp))
-									response[tab][attrType] = {
-										label:
-											typeof attrContent === 'string'
-												? attrContent
-												: attrContent.label,
-										attribute: resp,
-									};
+
+								response[tab][attrType] = {
+									label:
+										typeof attrContent === 'string'
+											? attrContent
+											: attrContent.label,
+									attribute: resp,
+								};
 							}
 						}
 					);
@@ -230,18 +218,17 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 											type === 'withPrefix' ? prefix : ''
 										);
 
-										if (!isEmpty(resp))
-											groupObj.group[prop] = {
-												label:
-													typeof label === 'string'
-														? label
-														: label.label,
-												attribute: resp,
-											};
+										groupObj.group[prop] = {
+											label:
+												typeof label === 'string'
+													? label
+													: label.label,
+											attribute: resp,
+										};
 									}
 								);
-								if (!isEmpty(groupObj.group))
-									response[tab][attrType] = groupObj;
+
+								response[tab][attrType] = groupObj;
 							} else if (
 								typeof attrContent === 'object' &&
 								attrContent.value
@@ -253,11 +240,10 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									type === 'withPrefix' ? prefix : ''
 								);
 
-								if (!isEmpty(resp))
-									response[tab][attrType] = {
-										label: attrContent.label,
-										attribute: resp,
-									};
+								response[tab][attrType] = {
+									label: attrContent.label,
+									attribute: resp,
+								};
 							} else if (typeof attrContent === 'string') {
 								const resp = getGroupAttributes(
 									attributes,
@@ -266,18 +252,17 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									type === 'withPrefix' ? prefix : ''
 								);
 
-								if (!isEmpty(resp))
-									response[tab][attrType] = {
-										label: attrContent,
-										attribute: resp,
-									};
+								response[tab][attrType] = {
+									label: attrContent,
+									attribute: resp,
+								};
 							}
 						}
 					);
 			});
 		}
 
-		response[tab] = orderAlphabetically(
+		response[tab] = orderAttributes(
 			response[tab],
 			'label',
 			copyPasteMapping,
@@ -288,7 +273,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 	return response;
 };
 
-const orderAlphabetically = (obj, property, copyPasteMapping, tab) => {
+const orderAttributes = (obj, property, copyPasteMapping, tab) => {
 	if (isEmpty(obj)) return {};
 	let orderedKeys;
 

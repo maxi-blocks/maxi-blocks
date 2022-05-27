@@ -13,7 +13,6 @@ const getColumnContent = (columns, breakpoint) => {
 	return {
 		content: getColumnTemplateContent(columns, breakpoint),
 		attributes: {
-			[`flex-wrap-${breakpoint}`]: 'wrap',
 			[`column-gap-${breakpoint}`]: 2.5,
 			[`column-gap-unit-${breakpoint}`]: '%',
 		},

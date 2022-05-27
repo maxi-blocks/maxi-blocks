@@ -21,7 +21,7 @@ import CopyPasteGroup from './CopyPasteGroup';
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isEqual } from 'lodash';
 
 /**
  * Styles & Icons
@@ -52,6 +52,7 @@ const CopyPaste = props => {
 	const {
 		blockAttributes,
 		organizedAttributes,
+		currentOrganizedAttributes,
 		copiedStyles,
 		copiedBlocks,
 		innerBlocks,
@@ -79,12 +80,18 @@ const CopyPaste = props => {
 			copyPasteMapping,
 			prefix
 		);
+		const currentOrganizedAttributes = getOrganizedAttributes(
+			blockAttributes,
+			copyPasteMapping,
+			prefix
+		);
 		const { innerBlocks } = blockValues;
 		const hasInnerBlocks = !isEmpty(innerBlocks);
 
 		return {
 			blockAttributes,
 			organizedAttributes,
+			currentOrganizedAttributes,
 			copiedStyles,
 			copiedBlocks,
 			innerBlocks,
@@ -232,8 +239,18 @@ const CopyPaste = props => {
 				content:
 					!isNil(organizedAttributes[tab]) &&
 					!isEmpty(organizedAttributes[tab]) &&
+					!isEqual(
+						currentOrganizedAttributes[tab],
+						organizedAttributes[tab]
+					) &&
 					Object.keys(organizedAttributes[tab]).map((attrType, i) => {
-						if (!organizedAttributes[tab][attrType].group)
+						if (
+							!organizedAttributes[tab][attrType].group &&
+							!isEqual(
+								currentOrganizedAttributes[tab][attrType],
+								organizedAttributes[tab][attrType]
+							)
+						)
 							return (
 								<div
 									className='toolbar-item__copy-paste__popover__item'
@@ -269,14 +286,22 @@ const CopyPaste = props => {
 							);
 
 						return (
-							<CopyPasteGroup
-								key={`copy-paste-group-${tab}-${attrType}`}
-								tab={tab}
-								attrType={attrType}
-								organizedAttributes={organizedAttributes}
-								specialPaste={specialPaste}
-								handleSpecialPaste={handleSpecialPaste}
-							/>
+							!isEqual(
+								currentOrganizedAttributes[tab][attrType],
+								organizedAttributes[tab][attrType]
+							) && (
+								<CopyPasteGroup
+									key={`copy-paste-group-${tab}-${attrType}`}
+									tab={tab}
+									attrType={attrType}
+									organizedAttributes={organizedAttributes}
+									currentOrganizedAttributes={
+										currentOrganizedAttributes
+									}
+									specialPaste={specialPaste}
+									handleSpecialPaste={handleSpecialPaste}
+								/>
+							)
 						);
 					}),
 			};
@@ -302,36 +327,37 @@ const CopyPaste = props => {
 			>
 				{__('Paste styles - all', 'maxi-blocks')}
 			</Button>
-			{!isEmpty(copiedStyles) && (
-				<Dropdown
-					className='maxi-copypaste__copy-selector'
-					contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
-					position='right bottom'
-					renderToggle={({ isOpen, onToggle }) => (
-						<Button
-							className='toolbar-item__copy-paste__popover__button'
-							onClick={onToggle}
-						>
-							{__('Paste special - select', 'maxi-blocks')}
-						</Button>
-					)}
-					renderContent={() => (
-						<form>
-							<SettingTabsControl
-								target='sidebar-settings-tabs'
-								disablePadding
-								items={getTabItems()}
-							/>
+			{!isEmpty(copiedStyles) &&
+				!isEqual(currentOrganizedAttributes, organizedAttributes) && (
+					<Dropdown
+						className='maxi-copypaste__copy-selector'
+						contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
+						position='right bottom'
+						renderToggle={({ isOpen, onToggle }) => (
 							<Button
-								className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
-								onClick={onSpecialPaste}
+								className='toolbar-item__copy-paste__popover__button'
+								onClick={onToggle}
 							>
-								{__('Paste Special Style', 'maxi-blocks')}
+								{__('Paste special - select', 'maxi-blocks')}
 							</Button>
-						</form>
-					)}
-				/>
-			)}
+						)}
+						renderContent={() => (
+							<form>
+								<SettingTabsControl
+									target='sidebar-settings-tabs'
+									disablePadding
+									items={getTabItems()}
+								/>
+								<Button
+									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
+									onClick={onSpecialPaste}
+								>
+									{__('Paste Special Style', 'maxi-blocks')}
+								</Button>
+							</form>
+						)}
+					/>
+				)}
 			{hasInnerBlocks && (
 				<Button
 					className='toolbar-item__copy-paste__popover__button toolbar-item__copy-nested-block__popover__button'

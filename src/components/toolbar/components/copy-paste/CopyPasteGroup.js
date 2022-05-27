@@ -6,13 +6,14 @@ import { useState } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 const CopyPasteGroup = props => {
 	const {
 		tab,
 		attrType,
 		organizedAttributes,
+		currentOrganizedAttributes,
 		specialPaste,
 		handleSpecialPaste,
 	} = props;
@@ -58,49 +59,59 @@ const CopyPasteGroup = props => {
 				Object.keys(organizedAttributes[tab][attrType].group).map(
 					attr => {
 						return (
-							<div
-								className='toolbar-item__copy-paste__popover__item'
-								key={`copy-paste-${tab}-${attr}`}
-								data-copy_paste_group={attrType}
-							>
-								<label
-									htmlFor={attr}
-									className='maxi-axis-control__content__item__checkbox'
+							!isEqual(
+								currentOrganizedAttributes[tab][attrType].group[
+									attr
+								],
+								organizedAttributes[tab][attrType].group[attr]
+							) && (
+								<div
+									className='toolbar-item__copy-paste__popover__item'
+									key={`copy-paste-${tab}-${attr}`}
+									data-copy_paste_group={attrType}
 								>
-									<input
-										type='checkbox'
-										name={attr}
-										id={attr}
-										checked={
-											!isEmpty(
-												specialPaste[tab].filter(sp => {
-													return (
-														typeof sp ===
-															'object' &&
-														Object.values(
-															sp
-														).includes(attr)
-													);
+									<label
+										htmlFor={attr}
+										className='maxi-axis-control__content__item__checkbox'
+									>
+										<input
+											type='checkbox'
+											name={attr}
+											id={attr}
+											checked={
+												!isEmpty(
+													specialPaste[tab].filter(
+														sp => {
+															return (
+																typeof sp ===
+																	'object' &&
+																Object.values(
+																	sp
+																).includes(attr)
+															);
+														}
+													)
+												)
+											}
+											onChange={e =>
+												handleSpecialPaste({
+													attr,
+													tab,
+													checked: e.target.checked,
+													group: attrType,
 												})
-											)
-										}
-										onChange={e =>
-											handleSpecialPaste({
-												attr,
-												tab,
-												checked: e.target.checked,
-												group: attrType,
-											})
-										}
-									/>
-									<span>
-										{
-											organizedAttributes[tab][attrType]
-												.group[attr].label
-										}
-									</span>
-								</label>
-							</div>
+											}
+										/>
+										<span>
+											{
+												organizedAttributes[tab][
+													attrType
+												].group[attr].label
+											}
+										</span>
+									</label>
+								</div>
+							)
 						);
 					}
 				)}

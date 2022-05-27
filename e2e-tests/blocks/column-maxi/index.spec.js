@@ -17,6 +17,7 @@ import {
 	getAttributes,
 	getBlockStyle,
 	editAxisControl,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Column Maxi', () => {
@@ -147,7 +148,7 @@ describe('Column Maxi', () => {
 
 		// check hover border
 		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel--disable-padding .maxi-settingstab-control .maxi-tabs-content .maxi-tabs-control button',
+			'.maxi-accordion-control__item__panel .maxi-settingstab-control .maxi-tabs-content .maxi-tabs-control button',
 			button => button[1].click()
 		);
 
@@ -196,4 +197,8 @@ describe('Column Maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('Column Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

@@ -1,11 +1,11 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
-import { compose } from '@wordpress/compose';
-import { withSelect, dispatch } from '@wordpress/data';
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import {
+	insert,
 	__unstableIndentListItems,
 	__unstableOutdentListItems,
 } from '@wordpress/rich-text';
@@ -14,39 +14,37 @@ import {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
-	getGroupAttributes,
 	getPaletteAttributes,
 } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import onMerge, { onReplaceBlocks } from './utils';
-import {
-	getHasNativeFormat,
-	setCustomFormatsWhenPaste,
-} from '../../extensions/text/formats';
+import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
  */
-import { isEmpty, compact, flatten, isEqual } from 'lodash';
+import { isEmpty, compact, flatten } from 'lodash';
 
 /**
  * Content
  */
 class edit extends MaxiBlockComponent {
-	propsToAvoidRendering = ['formatValue'];
+	state = {
+		formatValue: {},
+		onChangeFormat: null,
+	};
 
-	formatValue = {};
+	scProps = {
+		scElements: [1, 2, 3, 4, 5, 6, 7, 8],
+		scType: 'color',
+	};
 
 	typingTimeoutFormatValue = 0;
 
@@ -99,7 +97,6 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			clientId,
 			isSelected,
-			onRemove,
 			onReplace,
 			maxiSetAttributes,
 		} = this.props;
@@ -112,48 +109,6 @@ class edit extends MaxiBlockComponent {
 			typeOfList,
 			uniqueID,
 		} = attributes;
-
-		const onChangeRichText = ({ value: formatValue }) => {
-			/**
-			 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-			 * and add some coding manually
-			 * This next script will check if there is any format directly related with
-			 * any native format and if it's so, will format it in Maxi Blocks way
-			 */
-			const hasNativeFormat = getHasNativeFormat(formatValue);
-
-			if (hasNativeFormat) {
-				const { typeOfList, content, textLevel } = attributes;
-
-				const cleanCustomProps = setCustomFormatsWhenPaste({
-					formatValue,
-					typography: getGroupAttributes(attributes, 'typography'),
-					isList,
-					typeOfList,
-					content,
-					textLevel,
-				});
-
-				delete cleanCustomProps.formatValue;
-
-				maxiSetAttributes(cleanCustomProps);
-			}
-
-			if (this.typingTimeoutFormatValue) {
-				clearTimeout(this.typingTimeoutFormatValue);
-			}
-
-			this.typingTimeoutFormatValue = setTimeout(() => {
-				if (!isEqual(this.formatValue, formatValue)) {
-					dispatch('maxiBlocks/text').sendFormatValue(
-						formatValue,
-						clientId
-					);
-
-					this.formatValue = formatValue;
-				}
-			}, 100);
-		};
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -169,11 +124,11 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
+
 				maxiSetAttributes({ content: `${newContent}</a>` });
 			} else {
-				if (this.typingTimeoutContent) {
+				if (this.typingTimeoutContent)
 					clearTimeout(this.typingTimeoutContent);
-				}
 
 				this.typingTimeoutContent = setTimeout(() => {
 					maxiSetAttributes({ content });
@@ -182,208 +137,246 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				{...this.props}
-				propsToAvoid={['content', 'formatValue']}
-			/>,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				{...this.props}
-				propsToAvoid={['content', 'formatValue']}
-				copyPasteMapping={copyPasteMapping}
-			/>,
-			<MaxiBlock
-				key={`maxi-text--${uniqueID}`}
-				classes={`${
-					content === ''
-						? 'maxi-text-block__empty'
-						: 'maxi-text-block__has-text'
-				} ${isList ? 'maxi-list-block' : ''}`}
-				blockFullWidth={blockFullWidth}
-				ref={this.blockRef}
-				{...getMaxiBlockAttributes(this.props)}
+			<textContext.Provider
+				key={`maxi-text-block__context-${uniqueID}`}
+				value={{
+					formatValue: this.state.formatValue,
+					onChangeTextFormat: newFormatValue => {
+						this.state.onChangeFormat(newFormatValue);
+						onChangeRichText({
+							attributes,
+							maxiSetAttributes,
+							oldFormatValue: this.state.formatValue,
+							onChange: newState => this.setState(newState),
+							richTextValues: { value: newFormatValue },
+						});
+					},
+				}}
 			>
-				{!isList && (
-					<RichText
-						className='maxi-text-block__content'
-						identifier='content'
-						value={content}
-						onChange={processContent}
-						tagName={textLevel}
-						// Needs to stay: if there's no `onSplit` function, `onReplace` function
-						// is not called when pasting content with blocks; is called with plainText
-						// Check `packages/block-editor/src/components/rich-text/use-enter.js` on Gutenberg
-						onSplit={() => null}
-						onReplace={(blocks, indexToSelect, initialPosition) => {
-							if (
-								!blocks ||
-								isEmpty(compact(blocks)) ||
-								flatten(blocks).every(block => isEmpty(block))
-							)
-								return;
-
-							const { blocks: cleanBlocks } = onReplaceBlocks(
+				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Toolbar
+					key={`toolbar-${uniqueID}`}
+					ref={this.blockRef}
+					{...this.props}
+					copyPasteMapping={copyPasteMapping}
+				/>
+				<MaxiBlock
+					key={`maxi-text--${uniqueID}`}
+					classes={`${
+						content === ''
+							? 'maxi-text-block__empty'
+							: 'maxi-text-block__has-text'
+					} ${isList ? 'maxi-list-block' : ''}`}
+					blockFullWidth={blockFullWidth}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					{!isList && (
+						<RichText
+							className='maxi-text-block__content'
+							identifier='content'
+							value={content}
+							onChange={processContent}
+							tagName={textLevel}
+							onSplit={() => {
+								this.state.onChangeFormat(
+									insert(this.state.formatValue, '\n')
+								);
+							}}
+							onReplace={(
 								blocks,
-								clientId,
-								content
-							);
+								indexToSelect,
+								initialPosition
+							) => {
+								if (
+									!blocks ||
+									isEmpty(compact(blocks)) ||
+									flatten(blocks).every(block =>
+										isEmpty(block)
+									)
+								)
+									return;
 
-							if (!isEmpty(compact(cleanBlocks)))
-								onReplace(
-									cleanBlocks,
-									indexToSelect,
-									initialPosition
+								const { blocks: cleanBlocks } = onReplaceBlocks(
+									blocks,
+									clientId,
+									content
 								);
-						}}
-						onMerge={forward => onMerge(this.props, forward)}
-						__unstableEmbedURLOnPaste
-						withoutInteractiveFormatting
-					>
-						{onChangeRichText}
-					</RichText>
-				)}
-				{isList && (
-					<RichText
-						className='maxi-text-block__content'
-						identifier='content'
-						multiline='li'
-						tagName={typeOfList}
-						onChange={processContent}
-						value={content}
-						// Needs to stay: if there's no `onSplit` function, `onReplace` function
-						// is not called when pasting content with blocks; is called with plainText
-						// Check `packages/block-editor/src/components/rich-text/use-enter.js` on Gutenberg
-						onSplit={() => null}
-						onReplace={(blocks, indexToSelect, initialPosition) => {
-							if (
-								!blocks ||
-								isEmpty(compact(blocks)) ||
-								flatten(blocks).every(block => isEmpty(block))
-							)
-								return;
 
-							const { blocks: cleanBlocks } = onReplaceBlocks(
+								if (!isEmpty(compact(cleanBlocks)))
+									onReplace(
+										cleanBlocks,
+										indexToSelect,
+										initialPosition
+									);
+							}}
+							onMerge={forward => onMerge(this.props, forward)}
+							// onRemove needs to be commented to avoid removing the block
+							// on pressing backspace with the content empty 👍
+							// onRemove={onRemove}
+							__unstableEmbedURLOnPaste
+							withoutInteractiveFormatting
+							preserveWhiteSpace
+						>
+							{richTextValues =>
+								onChangeRichText({
+									attributes,
+									maxiSetAttributes,
+									oldFormatValue: this.state.formatValue,
+									onChange: (newState, newContent) => {
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
+
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
+
+										if (newContent) {
+											maxiSetAttributes({
+												content: newContent,
+											});
+										}
+									},
+									richTextValues,
+								})
+							}
+						</RichText>
+					)}
+					{isList && (
+						<RichText
+							className='maxi-text-block__content'
+							identifier='content'
+							multiline='li'
+							value={content}
+							onChange={processContent}
+							tagName={typeOfList}
+							onSplit={() => {
+								this.state.onChangeFormat(
+									insert(this.state.formatValue, '\n')
+								);
+							}}
+							onReplace={(
 								blocks,
-								clientId,
-								content
-							);
+								indexToSelect,
+								initialPosition
+							) => {
+								if (
+									!blocks ||
+									isEmpty(compact(blocks)) ||
+									flatten(blocks).every(block =>
+										isEmpty(block)
+									)
+								)
+									return;
 
-							if (!isEmpty(compact(cleanBlocks)))
-								onReplace(
-									cleanBlocks,
-									indexToSelect,
-									initialPosition
-								);
-						}}
-						onMerge={forward => onMerge(this.props, forward)}
-						onRemove={onRemove}
-						start={listStart}
-						reversed={listReversed}
-						type={typeOfList}
-					>
-						{({ value: formatValue, onChange }) => {
-							onChangeRichText({ value: formatValue });
-
-							if (isSelected)
-								return (
-									<>
-										<RichTextShortcut
-											type='primary'
-											character='['
-											onUse={() => {
-												onChange(
-													__unstableOutdentListItems(
-														formatValue
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primary'
-											character=']'
-											onUse={() => {
-												onChange(
-													__unstableIndentListItems(
-														formatValue,
-														{ type: typeOfList }
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primary'
-											character='m'
-											onUse={() => {
-												onChange(
-													__unstableIndentListItems(
-														formatValue,
-														{ type: typeOfList }
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primaryShift'
-											character='m'
-											onUse={() => {
-												onChange(
-													__unstableOutdentListItems(
-														formatValue
-													)
-												);
-											}}
-										/>
-									</>
+								const { blocks: cleanBlocks } = onReplaceBlocks(
+									blocks,
+									clientId,
+									content
 								);
 
-							return null;
-						}}
-					</RichText>
-				)}
-			</MaxiBlock>,
+								if (!isEmpty(compact(cleanBlocks)))
+									onReplace(
+										cleanBlocks,
+										indexToSelect,
+										initialPosition
+									);
+							}}
+							onMerge={forward => onMerge(this.props, forward)}
+							// onRemove needs to be commented to avoid removing the block
+							// on pressing backspace with the content empty 👍
+							// onRemove={onRemove}
+							start={listStart}
+							reversed={listReversed}
+							type={typeOfList}
+						>
+							{richTextValues => {
+								const { value: formatValue, onChange } =
+									richTextValues;
+
+								onChangeRichText({
+									attributes,
+									maxiSetAttributes,
+									oldFormatValue: this.state.formatValue,
+									onChange: newState => {
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
+
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
+									},
+									richTextValues,
+								});
+
+								if (isSelected)
+									return (
+										<>
+											<RichTextShortcut
+												type='primary'
+												character='['
+												onUse={() => {
+													onChange(
+														__unstableOutdentListItems(
+															formatValue
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character=']'
+												onUse={() => {
+													onChange(
+														__unstableIndentListItems(
+															formatValue,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character='m'
+												onUse={() => {
+													onChange(
+														__unstableIndentListItems(
+															formatValue,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primaryShift'
+												character='m'
+												onUse={() => {
+													onChange(
+														__unstableOutdentListItems(
+															formatValue
+														)
+													);
+												}}
+											/>
+										</>
+									);
+
+								return null;
+							}}
+						</RichText>
+					)}
+				</MaxiBlock>
+			</textContext.Provider>,
 		];
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const { attributes } = ownProps;
-	const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
-		attributes;
-
-	/**
-	 * Ensures svg list markers change the colour when SC color changes.
-	 * This changes will update the block, which will trigger maxiBlockDidUpdate
-	 * where the script will finish the task of updating the colour
-	 */
-	if (
-		isList &&
-		typeOfList === 'ul' &&
-		listStyle === 'custom' &&
-		listStyleCustom?.includes('<svg ')
-	) {
-		const { paletteStatus, paletteColor } = getPaletteAttributes({
-			obj: attributes,
-			prefix: 'list-',
-		});
-
-		if (paletteStatus) {
-			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-			const scElements = paletteColor.toString();
-			const scValues = receiveStyleCardValue(
-				scElements,
-				blockStyle,
-				'color'
-			);
-
-			return {
-				scValues,
-			};
-		}
-	}
-
-	return {};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

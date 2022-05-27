@@ -24,7 +24,7 @@ body.maxi-blocks--active .maxi-block {
 	transition: none;
 	line-height: 1;
 
-	* {
+	*:not(.maxi-background-displayer) {
 		box-sizing: border-box;
 	}
 
@@ -85,4 +85,19 @@ body.maxi-blocks--active #wpcontent .editor-styles-wrapper {
 body.maxi-blocks--active .maxi-link-wrapper {
 	text-decoration: none;
 	outline: none;
+}
+
+/** Astra **/
+/*Block inserted position*/
+body.maxi-blocks--active #wpwrap .maxi-block-inserter__button {
+	margin: auto;
+}
+
+/*Block border radius*/
+body.maxi-blocks--active.ast-highlight-wpblock-onhover
+	.maxi-block--backend.block-editor-block-list__block {
+	&.is-highlighted,
+	&:hover {
+		border-radius: 0;
+	}
 }

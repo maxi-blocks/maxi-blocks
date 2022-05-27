@@ -87,6 +87,11 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
+		this.state = {
+			oldSC: {},
+			scValues: {},
+		};
+
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
@@ -120,10 +125,21 @@ class MaxiBlockComponent extends Component {
 	// Removes non-necessary entries of props object for comparison
 	propsObjectCleaner(props) {
 		const newProps = cloneDeep(props);
-		const entriesToRemove = ['maxiSetAttributes'];
+		const entriesToRemove = [
+			'maxiSetAttributes',
+			'insertInlineStyles',
+			'cleanInlineStyles',
+			'context',
+		];
 
 		entriesToRemove.forEach(entry => {
 			delete newProps[entry];
+		});
+
+		// Transform objects into strings to compare easier
+		Object.entries(newProps).forEach(([key, value]) => {
+			if (typeof value === 'object')
+				newProps[key] = JSON.stringify(value);
 		});
 
 		return newProps;
@@ -149,11 +165,29 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Force rendering the block when SC related values change
-		if (!isEqual(this.props.scValues, nextProps.scValues)) return true;
+		if (this.scProps) {
+			const SC = select(
+				'maxiBlocks/style-cards'
+			).receiveMaxiSelectedStyleCard();
+
+			if (!isEqual(this.state.oldSC, SC)) {
+				this.setState({
+					oldSC: SC,
+					scValues: select(
+						'maxiBlocks/style-cards'
+					).receiveStyleCardValue(
+						this.scProps.scElements,
+						this.props.attributes.blockStyle,
+						this.scProps.scType
+					),
+				});
+
+				return true;
+			}
+		}
 
 		// Ensures rendering when selecting or unselecting
 		if (
-			!this.props.isSelected ||
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
 			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
@@ -204,7 +238,7 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Prevents styling
 	 */
-	getSnapshotBeforeUpdate(prevProps) {
+	getSnapshotBeforeUpdate(prevProps, prevState) {
 		if (!isEmpty(this.propsToAvoidStyling)) {
 			const oldAttributes = cloneDeep(prevProps.attributes);
 			const newAttributes = cloneDeep(this.props.attributes);
@@ -218,13 +252,13 @@ class MaxiBlockComponent extends Component {
 				this.difference(oldAttributes, newAttributes);
 
 			if (this.maxiBlockGetSnapshotBeforeUpdate)
-				this.maxiBlockGetSnapshotBeforeUpdate();
+				this.maxiBlockGetSnapshotBeforeUpdate(prevProps, prevState);
 
 			return isEqual(oldAttributes, newAttributes);
 		}
 
-		// Force render styles when changing scValues
-		if (!isEqual(prevProps.scValues, this.props.scValues)) return false;
+		// Force render styles when changing state
+		if (!isEqual(prevState, this.state)) return false;
 
 		// For render styles when there's no <style> element for the block
 		// Normally happens when duplicate the block
@@ -274,8 +308,6 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 
-		dispatch('maxiBlocks/text').removeFormatValue(this.props.clientId);
-
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
@@ -289,8 +321,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
-		const { uniqueID, 'background-layers': bgLayers } =
-			this.props.attributes;
+		const {
+			uniqueID,
+			'background-layers': bgLayers,
+			relations,
+		} = this.props.attributes;
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,
@@ -308,6 +343,9 @@ class MaxiBlockComponent extends Component {
 			[uniqueID]: {
 				...(!isEmpty(bgParallaxLayers) && {
 					...{ parallax: bgParallaxLayers },
+				}),
+				...(!isEmpty(relations) && {
+					relations,
 				}),
 				...(hasVideo && { bg_video: true }),
 				...(hasScrollEffects && { scroll_effects: true }),

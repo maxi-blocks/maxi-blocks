@@ -23,6 +23,11 @@ const getSizeStyles = (obj, prefix = '') => {
 
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
+			if (!obj[`${prefix}size-advanced-options`]) {
+				if (target.includes('max') || target.includes('min'))
+					return null;
+			}
+
 			if (target === 'height') {
 				const forceAspectRatio = getLastBreakpointAttribute({
 					target: `${prefix}force-aspect-ratio`,
@@ -43,6 +48,14 @@ const getSizeStyles = (obj, prefix = '') => {
 
 				if (fitContent) {
 					return { width: 'fit-content' };
+				}
+			}
+
+			if (target === 'width' || target === 'max-width') {
+				const fullWidth = obj.fullWidth || false;
+
+				if (fullWidth === 'full') {
+					return null;
 				}
 			}
 

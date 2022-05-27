@@ -107,6 +107,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -235,8 +236,6 @@ const getHoverEffectContentTextObject = props => {
 };
 
 const getImageWrapperObject = props => {
-	const { imgWidth, useInitSize, mediaWidth } = props;
-
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
@@ -259,20 +258,13 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
-		...(imgWidth && {
-			imgWidth: {
-				general: {
-					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
-				},
-			},
-		}),
 	};
 
 	return response;
 };
 
 const getImageObject = props => {
-	const { imageRatio } = props;
+	const { imageRatio, imgWidth, useInitSize, mediaWidth } = props;
 
 	return {
 		border: getBorderStyles({
@@ -299,6 +291,7 @@ const getImageObject = props => {
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'image-'),
+				fullWidth: props.fullWidth,
 			},
 			'image-'
 		),
@@ -307,6 +300,13 @@ const getImageObject = props => {
 		}),
 		transition: getTransitionStyles({
 			...getGroupAttributes(props, 'transition'),
+		}),
+		...(imgWidth && {
+			imgWidth: {
+				general: {
+					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
+				},
+			},
 		}),
 	};
 };

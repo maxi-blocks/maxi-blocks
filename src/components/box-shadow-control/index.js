@@ -76,7 +76,7 @@ const BoxShadowValueControl = props => {
 					isHover ? '-hover' : ''
 				}`
 			)}
-			enableUnit
+			{...(!isToolbar && { enableUnit: true })}
 			unit={getLastBreakpointAttribute({
 				target: `${prefix}box-shadow-${type}-unit`,
 				breakpoint,
@@ -229,9 +229,7 @@ const BoxShadowControl = props => {
 			{(isToolbar || !isNone) && (
 				<>
 					<ColorControl
-						{...(!isToolbar && {
-							label: __('Box Shadow', 'maxi-blocks'),
-						})}
+						label={__('Box shadow', 'maxi-blocks')}
 						className='maxi-shadow-control__color'
 						color={getLastBreakpointAttribute({
 							target: `${prefix}box-shadow-color`,

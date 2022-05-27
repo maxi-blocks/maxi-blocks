@@ -155,6 +155,9 @@ const Inspector = props => {
 									...inspectorTabs.flex({
 										props,
 									}),
+									...inspectorTabs.relation({
+										props,
+									}),
 								]}
 							/>
 						),

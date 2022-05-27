@@ -101,6 +101,9 @@ const Inspector = props => {
 													/>
 												</ResponsiveTabsControl>
 											),
+											ignoreIndicatorGroups: [
+												'alignment',
+											],
 										},
 										...inspectorTabs.border({
 											props,
@@ -199,6 +202,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.relation({
 										props,
 									}),
 								]}

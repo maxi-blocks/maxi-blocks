@@ -9,6 +9,17 @@ import getColumnTemplateContent from './getColumnTemplateContent';
  */
 import { find } from 'lodash';
 
+const getColumnContent = (columns, breakpoint) => {
+	return {
+		content: getColumnTemplateContent(columns, breakpoint),
+		attributes: {
+			[`flex-wrap-${breakpoint}`]: 'wrap',
+			[`column-gap-${breakpoint}`]: 2.5,
+			[`column-gap-unit-${breakpoint}`]: '%',
+		},
+	};
+};
+
 const getColumnTemplate = (templateName, breakpoint) => {
 	let template = null;
 
@@ -16,11 +27,9 @@ const getColumnTemplate = (templateName, breakpoint) => {
 		Object.values(colNum).forEach(colRes => {
 			const res = find(colRes, e => e.name === templateName);
 
-			if (res) template = res;
+			if (res) template = getColumnContent(res.sizes, breakpoint);
 		})
 	);
-
-	template.content = getColumnTemplateContent(template.sizes, breakpoint);
 
 	return template;
 };

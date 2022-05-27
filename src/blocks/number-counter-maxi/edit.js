@@ -11,16 +11,16 @@ import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
-	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import { getBreakpoints } from '../../extensions/styles/helpers';
 import copyPasteMapping from './copy-paste-mapping';
 
 /**
@@ -38,7 +38,6 @@ const NumberCounter = attributes => {
 		'number-counter-stroke': stroke,
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
-		'number-counter-title-font-size': fontSize,
 		'number-counter-percentage-sign-status': usePercentage,
 		'number-counter-start': startNumber,
 		'number-counter-end': endNumber,
@@ -46,7 +45,6 @@ const NumberCounter = attributes => {
 		resizerProps,
 		replayCounter,
 	} = attributes;
-
 	const countRef = useRef(null);
 	const startCountValue = Math.ceil((startNumber * 360) / 100);
 	const endCountValue = Math.ceil((endNumber * 360) / 100);
@@ -78,8 +76,8 @@ const NumberCounter = attributes => {
 
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
+			setCount(startCountValue);
 			if (count >= endCountValue) {
-				setCount(startCountValue);
 				setReplayStatus(false);
 				clearInterval(countRef.current);
 			}
@@ -93,6 +91,12 @@ const NumberCounter = attributes => {
 		stroke,
 	]);
 
+	const fontSize = getLastBreakpointAttribute({
+		target: 'number-counter-title-font-size',
+		breakpoint: deviceType,
+		attributes,
+	});
+
 	const getIsOverflowHidden = () =>
 		getLastBreakpointAttribute({
 			target: 'overflow-y',
@@ -105,14 +109,17 @@ const NumberCounter = attributes => {
 			attributes,
 		}) === 'hidden';
 
-	replayCounter(() => setReplayStatus(true));
+	replayCounter(() => {
+		setCount(startCountValue);
+		setReplayStatus(true);
+	});
 
 	return (
 		<BlockResizer
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
-			size={{
+			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',
 					breakpoint: deviceType,
@@ -191,7 +198,7 @@ const NumberCounter = attributes => {
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text'>
-					{`${Math.ceil((count / 360) * 100)}`}
+					{`${Math.round((count / 360) * 100)}`}
 					{usePercentage && <sup>%</sup>}
 				</span>
 			)}
@@ -246,6 +253,7 @@ class edit extends MaxiBlockComponent {
 			number_counter: {
 				[uniqueID]: {
 					...getGroupAttributes(attributes, 'numberCounter'),
+					breakpoints: { ...getBreakpoints(attributes) },
 				},
 			},
 		};

@@ -2,11 +2,17 @@
  * WordPress Dependencies
  */
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+const { getWebpackEntryPoints } = require('@wordpress/scripts/utils');
 
 /**
  * External Dependencies
  */
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
+const adminEntry = {
+	admin: ['./core/admin/admin.js', './core/admin/admin.scss'],
+};
+const newEntry = { ...getWebpackEntryPoints(), ...adminEntry };
 
 module.exports = {
 	...defaultConfig,
@@ -30,8 +36,5 @@ module.exports = {
 		...defaultConfig.resolve,
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
 	},
-	entry: {
-		admin: ['./core/admin/admin.js', './core/admin/admin.scss'],
-		index: ['./src/index.js'],
-	},
+	entry: newEntry,
 };

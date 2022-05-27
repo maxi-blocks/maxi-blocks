@@ -154,7 +154,7 @@ const ColumnPatternsInspector = props => {
 		<div className='components-column-pattern'>
 			{!toolbar && breakpoint === 'general' && (
 				<AdvancedNumberControl
-					label={__('Columns', 'maxi-blocks')}
+					label={__('Number of columns', 'maxi-blocks')}
 					value={numCol}
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}

@@ -44,6 +44,13 @@ const handleSetAttributes = ({
 		)}-${winBreakpoint}`;
 		const attrOnWinBreakpoint = attributes?.[attrLabelOnWinBreakpoint];
 		const attrExistOnWinBreakpoint = !isNil(attrOnWinBreakpoint);
+		const attrLabelOnGeneral = `${key.slice(
+			0,
+			key.lastIndexOf('-')
+		)}-general`;
+		const defaultGeneralAttribute =
+			defaultAttributes?.[attrLabelOnGeneral] ??
+			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
 
@@ -52,17 +59,13 @@ const handleSetAttributes = ({
 		if (
 			breakpoint === 'general' &&
 			winBreakpoint === 'xxl' &&
-			attrExistOnWinBreakpoint
+			attrExistOnWinBreakpoint &&
+			defaultGeneralAttribute !== value
 		) {
 			response[attrLabelOnWinBreakpoint] = value;
 
 			return;
 		}
-
-		const attrLabelOnGeneral = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-general`;
 
 		const attrExistOnGeneral = !isNil(
 			attributes?.[attrLabelOnGeneral],
@@ -98,13 +101,36 @@ const handleSetAttributes = ({
 					)
 			);
 
+		if (
+			!attrExistOnWinBreakpoint &&
+			(breakpoint === 'general' || !existHigherBreakpointAttribute)
+		) {
+			// Checks if the higher breakpoint attribute is not on XXL
+			if (
+				!breakpoints
+					.slice(0, breakpoints.indexOf(winBreakpoint))
+					.some(
+						breakpoint =>
+							breakpoint !== 'xxl' &&
+							!isNil(
+								attributes?.[
+									`${key.slice(
+										0,
+										key.lastIndexOf('-')
+									)}-${breakpoint}`
+								]
+							)
+					)
+			)
+				return;
+		}
+
 		const defaultOnWinBreakpointAttribute =
 			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
 			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
 
 		if (
 			!attrExistOnGeneral &&
-			existHigherBreakpointAttribute &&
 			breakpoint === 'general' &&
 			(!attrExistOnWinBreakpoint ||
 				defaultOnWinBreakpointAttribute === attrOnWinBreakpoint)
@@ -122,10 +148,6 @@ const handleSetAttributes = ({
 			return;
 		}
 
-		const defaultGeneralAttribute =
-			defaultAttributes?.[attrLabelOnGeneral] ??
-			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
-
 		if (
 			attributes?.[attrLabelOnGeneral] === value &&
 			defaultGeneralAttribute === value
@@ -133,8 +155,6 @@ const handleSetAttributes = ({
 			return;
 
 		if (breakpoint !== 'general' && attrExistOnObjOnGeneral) return;
-
-		if (breakpoint === 'general' && !existHigherBreakpointAttribute) return;
 
 		if (breakpoint === 'general') {
 			response[attrLabelOnWinBreakpoint] = value;

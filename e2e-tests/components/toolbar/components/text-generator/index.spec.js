@@ -49,6 +49,6 @@ describe('Text generator', () => {
 			'.components-popover__content .toolbar-item__text-generator-blocks__popover button',
 			button => button.click()
 		);
-		expect(await getAttributes('content')).toStrictEqual('Lorem.');
+		expect(await getAttributes('content')).toStrictEqual(' Lorem.');
 	});
 });

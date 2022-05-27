@@ -30,7 +30,7 @@ describe('Pattern', () => {
 
 		// Create a new post and reload after SC have been loaded
 		await createNewPost();
-		await page.waitForTimeout(5000);
+		await page.waitForTimeout(1000);
 		await page.reload();
 
 		// add pattern from code editor
@@ -38,9 +38,30 @@ describe('Pattern', () => {
 
 		// Needs this timeout to ensure breakpoints are loaded
 		// and save to re-render styles of the blocks
-		await page.evaluate(() =>
-			wp.data.dispatch('maxiBlocks').receiveMaxiBreakpoints()
-		);
+		// Also select every block to ensure the pattern is rendered
+		await page.evaluate(() => {
+			wp.data.dispatch('maxiBlocks').receiveMaxiBreakpoints();
+			(() => {
+				const { getBlocks } = wp.data.select('core/block-editor');
+				const blocks = getBlocks();
+
+				function getClickInAllBlocks(blocks) {
+					const { selectBlock } =
+						wp.data.dispatch('core/block-editor');
+
+					blocks.forEach(block => {
+						if (block.innerBlocks.length) {
+							getClickInAllBlocks(block.innerBlocks);
+						}
+						setTimeout(() => {
+							selectBlock(block.clientId);
+						}, 200);
+					});
+				}
+
+				getClickInAllBlocks(blocks);
+			})();
+		});
 		await saveDraft();
 		await page.waitForTimeout(5000);
 

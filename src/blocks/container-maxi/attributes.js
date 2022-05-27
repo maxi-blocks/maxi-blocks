@@ -38,7 +38,7 @@ const attributes = {
 					'background-palette-status-general': true,
 					'background-palette-color-general': 1,
 					'background-palette-opacity-general': 1,
-					'background-color-general': '',
+					'background-color-general': undefined,
 					'background-color-clip-path-general': '',
 					order: 1,
 					id: 1,

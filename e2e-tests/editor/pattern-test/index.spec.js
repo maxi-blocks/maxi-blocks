@@ -14,6 +14,13 @@ import {
 import { clientIdCleaner, openPreviewPage } from '../../utils';
 import basePattern from './pattern';
 
+const htmlCleaner = html =>
+	clientIdCleaner(html).replace(
+		// eslint-disable-next-line no-useless-escape
+		/(data-is-drop-zone=")([a-zA-Z0-9:;\.\s\(\)\-\,]*)(")/g,
+		''
+	);
+
 describe('Pattern', () => {
 	it('Checking pattern generate', async () => {
 		// Image Maxi returns an error as the images displayed there are not uploaded
@@ -21,7 +28,10 @@ describe('Pattern', () => {
 		// so try to remove this line someday
 		console.error = jest.fn();
 
+		// Create a new post and reload after SC have been loaded
 		await createNewPost();
+		await page.waitForTimeout(5000);
+		await page.reload();
 
 		// add pattern from code editor
 		await setPostContent(basePattern);
@@ -42,7 +52,7 @@ describe('Pattern', () => {
 			'.is-root-container.block-editor-block-list__layout',
 			el => el.outerHTML
 		);
-		expect(clientIdCleaner(blocksHtml)).toMatchSnapshot();
+		expect(htmlCleaner(blocksHtml)).toMatchSnapshot();
 
 		// Checks blocks styles elements
 		let blockStyles = await page.$$eval(
@@ -60,9 +70,9 @@ describe('Pattern', () => {
 		// Check post html
 		const htmlPage = await previewPage.$eval(
 			'.entry-content',
-			div => div.outerHTML
+			div => div.innerHTML
 		);
-		expect(clientIdCleaner(htmlPage)).toMatchSnapshot();
+		expect(htmlCleaner(htmlPage)).toMatchSnapshot();
 
 		// Check post styles
 		const stylesPage = await previewPage.$eval(
@@ -94,7 +104,7 @@ describe('Pattern', () => {
 			'.is-root-container.block-editor-block-list__layout',
 			el => el.outerHTML
 		);
-		expect(clientIdCleaner(blocksHtml)).toMatchSnapshot();
+		expect(htmlCleaner(blocksHtml)).toMatchSnapshot();
 
 		// Checks blocks styles elements
 		blockStyles = await page.$$eval('.maxi-blocks__styles', styleEls => {

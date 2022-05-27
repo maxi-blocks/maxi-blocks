@@ -113,7 +113,7 @@ const BorderColorControl = props => {
 			deviceType={breakpoint}
 			clientId={clientId}
 			globalProps={globalProps}
-			prefix='border-'
+			prefix={`${prefix}border-`}
 		/>
 	);
 };

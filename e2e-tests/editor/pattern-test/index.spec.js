@@ -25,9 +25,13 @@ describe('Pattern', () => {
 
 		// add pattern from code editor
 		await setPostContent(basePattern);
-		await page.waitForTimeout(1500);
 
-		// save changes
+		// Needs this timeout to ensure breakpoints are loaded
+		// and save to re-render styles of the blocks
+		await page.evaluate(() =>
+			wp.data.dispatch('maxiBlocks').receiveMaxiBreakpoints()
+		);
+		await page.waitForTimeout(5000);
 		await saveDraft();
 
 		// Check post content
@@ -73,6 +77,14 @@ describe('Pattern', () => {
 		// Return to editor page and reload
 		await page.bringToFront();
 		await page.reload();
+
+		// Needs this timeout to ensure breakpoints are loaded
+		// and save to re-render styles of the blocks
+		await page.evaluate(() =>
+			wp.data.dispatch('maxiBlocks').receiveMaxiBreakpoints()
+		);
+		await saveDraft();
+		await page.waitForTimeout(5000);
 
 		// Check post content
 		expect(await getEditedPostContent()).toMatchSnapshot();

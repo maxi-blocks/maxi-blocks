@@ -138,29 +138,6 @@ const ColorControl = props => {
 			);
 		}
 
-		console.log(prefix);
-		console.log(deviceType);
-		console.log(`avoidBreakpointForDefault ${avoidBreakpointForDefault}`);
-		console.log(
-			getAttributeKey(
-				'palette-color',
-				isHover,
-				prefix,
-				avoidBreakpointForDefault ? '' : deviceType
-			)
-		);
-
-		console.log(
-			getDefaultAttribute(
-				getAttributeKey(
-					'palette-color',
-					isHover,
-					prefix,
-					avoidBreakpointForDefault ? '' : deviceType
-				)
-			)
-		);
-
 		if (showPalette)
 			onChange({
 				paletteStatus: defaultColorAttr.paletteStatus,

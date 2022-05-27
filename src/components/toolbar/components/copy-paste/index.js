@@ -320,7 +320,6 @@ const CopyPaste = props => {
 							<SettingTabsControl
 								target='sidebar-settings-tabs'
 								disablePadding
-								depth={0}
 								items={getTabItems()}
 							/>
 							<Button

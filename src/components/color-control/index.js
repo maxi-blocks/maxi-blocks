@@ -98,7 +98,6 @@ const ColorControl = props => {
 			: onChangeValue(obj);
 
 	const onReset = () => {
-		console.log('ON RESET!');
 		let defaultColorAttr = defaultColorAttributes;
 
 		if (!defaultColorAttr) {
@@ -204,7 +203,6 @@ const ColorControl = props => {
 					label={__('Set custom colour', 'maxi-blocks')}
 					selected={!paletteStatus}
 					onChange={val => {
-						console.log('SET CUSTOM COLOR');
 						onChangeValue({
 							paletteStatus: !val,
 							// If palette is disabled, set custom color from palette one

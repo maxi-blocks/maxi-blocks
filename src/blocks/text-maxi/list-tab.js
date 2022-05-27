@@ -542,7 +542,6 @@ const listTab = props => {
 						<ColorControl
 							label={__('Marker', 'maxi-blocks')}
 							color={attributes['list-color']}
-							defaultColor={getDefaultAttribute('list-color')}
 							paletteStatus={attributes['list-palette-status']}
 							paletteColor={attributes['list-palette-color']}
 							paletteOpacity={attributes['list-palette-opacity']}

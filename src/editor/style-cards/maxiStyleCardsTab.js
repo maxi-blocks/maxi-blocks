@@ -452,11 +452,13 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										quickColorPreset,
 										'color'
 									)}, 1)`}
-									defaultColor={`rgba(${processSCAttribute(
-										SC,
-										quickColorPreset,
-										'color'
-									)}, 1)`}
+									defaultColorAttributes={{
+										defaultColor: `rgba(${processSCAttribute(
+											SC,
+											quickColorPreset,
+											'color'
+										)}, 1)`,
+									}}
 									onChange={({ color }) =>
 										onChangeValue(
 											{

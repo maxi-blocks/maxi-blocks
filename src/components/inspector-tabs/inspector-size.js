@@ -40,10 +40,7 @@ const size = ({
 	return {
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl
-				breakpoint={deviceType}
-				ignoreIndicator={ignoreIndicator}
-			>
+			<ResponsiveTabsControl breakpoint={deviceType}>
 				<>
 					{showFullWidth &&
 						(block ? (

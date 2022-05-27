@@ -547,7 +547,7 @@ const IconControl = props => {
 									isHover,
 								})}
 								paletteColor={getLastBreakpointAttribute({
-									target: 'icon-background-palette-color',
+									target: '-palette-color',
 									breakpoint,
 									attributes: props,
 									isHover,

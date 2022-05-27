@@ -42,16 +42,6 @@ describe('Icon size', () => {
 
 		expect(await getAttributes('svg-width-general')).toStrictEqual('132');
 
-		// change force responsive
-		await page.$eval(
-			'.toolbar-item__svg-size__popover .maxi-base-control .maxi-toggle-switch__toggle input',
-			input => input.click()
-		);
-
-		expect(await getAttributes('svg-responsive-general')).toStrictEqual(
-			false
-		);
-
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'height width');
 

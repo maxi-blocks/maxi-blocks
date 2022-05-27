@@ -36,6 +36,8 @@ describe('Pattern', () => {
 		// add pattern from code editor
 		await setPostContent(basePattern);
 
+		await page.waitForTimeout(10000);
+
 		// Needs this timeout to ensure breakpoints are loaded
 		// and save to re-render styles of the blocks
 		// Also select every block to ensure the pattern is rendered

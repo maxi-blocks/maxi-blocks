@@ -146,7 +146,7 @@ const ColorControl = props => {
 				'palette-color',
 				isHover,
 				prefix,
-				avoidBreakpointForDefault ? 'general' : deviceType
+				avoidBreakpointForDefault ? '' : deviceType
 			)
 		);
 
@@ -156,7 +156,7 @@ const ColorControl = props => {
 					'palette-color',
 					isHover,
 					prefix,
-					avoidBreakpointForDefault ? 'general' : deviceType
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			)
 		);

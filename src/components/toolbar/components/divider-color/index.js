@@ -81,6 +81,7 @@ const DividerColor = props => {
 								paletteStatus,
 						});
 					}}
+					deviceType={breakpoint}
 					disableGradient
 					globalProps={{ target: '', type: 'divider' }}
 				/>

@@ -77,11 +77,7 @@ const MoreSettings = props => {
 							copyPasteMapping={copyPasteMapping}
 						/>
 						{blockName === 'maxi-blocks/text-maxi' && (
-							<TextGenerator
-								clientId={clientId}
-								blockName={blockName}
-								onChange={onChange}
-							/>
+							<TextGenerator onChange={onChange} />
 						)}
 						{blockName === 'maxi-blocks/button-maxi' && (
 							<div>

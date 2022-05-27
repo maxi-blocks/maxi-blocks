@@ -137,14 +137,9 @@ const CopyPaste = props => {
 		updateBlockAttributes(clientId, styles);
 	};
 
-	const onCopyBlocks = () => {
-		closeMoreSettings();
-		copyNestedBlocks(innerBlocks);
-	};
-	const onPasteBlocks = () => {
-		closeMoreSettings();
+	const onCopyBlocks = () => copyNestedBlocks(innerBlocks);
+	const onPasteBlocks = () =>
 		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
-	};
 
 	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
 		const specPaste = { ...specialPaste };
@@ -413,9 +408,7 @@ const CopyPaste = props => {
 			>
 				{__('Paste styles - all', 'maxi-blocks')}
 			</Button>
-			{(!isEmpty(organizedAttributes.settings) ||
-				!isEmpty(organizedAttributes.canvas) ||
-				!isEmpty(organizedAttributes.advanced)) && (
+			{!isEmpty(copiedStyles) && (
 				<Dropdown
 					className='maxi-copypaste__copy-selector'
 					contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'

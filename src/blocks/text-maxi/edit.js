@@ -46,6 +46,8 @@ class edit extends MaxiBlockComponent {
 		scType: 'color',
 	};
 
+	typingTimeoutFormatValue = 0;
+
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
@@ -220,7 +222,16 @@ class edit extends MaxiBlockComponent {
 									maxiSetAttributes,
 									oldFormatValue: this.state.formatValue,
 									onChange: (newState, newContent) => {
-										this.setState(newState);
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
+
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
 
 										if (newContent) {
 											maxiSetAttributes({
@@ -287,8 +298,18 @@ class edit extends MaxiBlockComponent {
 									attributes,
 									maxiSetAttributes,
 									oldFormatValue: this.state.formatValue,
-									onChange: newState =>
-										this.setState(newState),
+									onChange: newState => {
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
+
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
+									},
 									richTextValues,
 								});
 

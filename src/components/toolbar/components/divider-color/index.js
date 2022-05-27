@@ -41,6 +41,7 @@ const DividerColor = props => {
 		>
 			<div className='toolbar-item__divider-color__popover'>
 				<ColorControl
+					label={__('Divider line', 'maxi-blocks')}
 					color={getLastBreakpointAttribute({
 						target: 'divider-border-color',
 						breakpoint,

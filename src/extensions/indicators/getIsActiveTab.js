@@ -3,7 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray } from 'lodash';
+import { isArray, isEqual } from 'lodash';
 import { getGroupAttributes } from '../styles';
 
 const getIsActiveTab = (
@@ -64,6 +64,16 @@ const getIsActiveTab = (
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === false) return true;
 
+		if (
+			!isEqual(currentAttributes[attribute], defaultAttributes[attribute])
+		) {
+			console.log(
+				attribute,
+				currentAttributes[attribute],
+				defaultAttributes[attribute]
+			);
+		}
+
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
 				if (
@@ -84,8 +94,8 @@ const getIsActiveTab = (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
-					return (
-						currentAttributes[attribute] ===
+					return isEqual(
+						currentAttributes[attribute],
 						defaultAttributes[attribute]
 					);
 				}
@@ -106,13 +116,17 @@ const getIsActiveTab = (
 			isArray(currentAttributes[attribute]) &&
 			currentAttributes[attribute].length === 0
 		) {
-			return (
-				currentAttributes[attribute] !== defaultAttributes[attribute]
+			return !isEqual(
+				currentAttributes[attribute],
+				defaultAttributes[attribute]
 			);
 		}
 		if (currentAttributes[attribute] === '') return true;
 
-		return currentAttributes[attribute] === defaultAttributes[attribute];
+		return isEqual(
+			currentAttributes[attribute],
+			defaultAttributes[attribute]
+		);
 	});
 };
 

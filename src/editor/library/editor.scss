@@ -485,6 +485,7 @@
 						.ais-SearchBox-loadingIndicator {
 							position: relative;
 							top: 10px;
+							padding: 5px 0;
 						}
 						.ais-SearchBox-reset {
 							position: absolute;
@@ -756,6 +757,10 @@
 						margin: 0 8px 8px;
 						font-size: 12px;
 						color: #bdbdbd;
+					}
+
+					.components-base-control__field {
+						display: flex;
 					}
 				}
 				.ais-HierarchicalMenu-item,
@@ -1041,7 +1046,8 @@
 						display: flex;
 						justify-content: space-between;
 						align-items: center;
-						margin-bottom: 2px;
+						padding: 10px;
+
 						.maxi-cloud-masonry__serial-tag {
 							color: #232533;
 							font-weight: 500;
@@ -1058,7 +1064,7 @@
 				&__buttons {
 					display: flex;
 					align-items: center;
-					margin-top: 12px;
+					padding: 10px;
 				}
 				&__button {
 					display: inline-flex;

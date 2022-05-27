@@ -36,7 +36,6 @@ const FullSizeControl = props => {
 		prefix = '',
 		isBlockFullWidth,
 		allowForceAspectRatio = false,
-		isFirstOnHierarchy,
 	} = props;
 
 	const classes = classnames('maxi-full-size-control', className);
@@ -87,8 +86,7 @@ const FullSizeControl = props => {
 			target: `${prefix}width-fit-content`,
 			breakpoint,
 			attributes: props,
-		}) &&
-		isFirstOnHierarchy;
+		});
 
 	return (
 		<div className={classes}>

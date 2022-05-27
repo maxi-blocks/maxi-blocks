@@ -17,7 +17,7 @@ import {
 	cleanStyleAttributes,
 } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
-
+import CopyPasteGroup from './CopyPasteGroup';
 /**
  * External dependencies
  */
@@ -221,31 +221,6 @@ const CopyPaste = props => {
 		updateBlockAttributes(clientId, res);
 	};
 
-	const checkNestedCheckboxes = (attrType, tab, checked) => {
-		handleSpecialPaste({
-			attr: Object.keys(organizedAttributes[tab][attrType].group),
-			tab,
-			group: attrType,
-			checked,
-		});
-	};
-
-	const groupExpand = (e, attrType) => {
-		e.target.setAttribute(
-			'aria-expanded',
-			e.target.getAttribute('aria-expanded') !== 'true'
-		);
-		const group = document.querySelectorAll(
-			`div[data-copy_paste_group='${attrType}']`
-		);
-		group.forEach(g => {
-			g.style.display =
-				e.target.getAttribute('aria-expanded') === 'true'
-					? 'block'
-					: 'none';
-		});
-	};
-
 	const getTabItems = () => {
 		const response = [];
 		Object.keys(organizedAttributes).forEach(tab => {
@@ -293,97 +268,16 @@ const CopyPaste = props => {
 								</div>
 							);
 
-						const nestedCheckBoxes = Object.keys(
-							organizedAttributes[tab][attrType].group
-						).map((attr, i) => {
-							return (
-								<div
-									className='toolbar-item__copy-paste__popover__item'
-									key={`copy-paste-${tab}-${attr}`}
-									data-copy_paste_group={attrType}
-									style={{ display: 'none' }}
-								>
-									<label
-										htmlFor={attr}
-										className='maxi-axis-control__content__item__checkbox'
-									>
-										<input
-											type='checkbox'
-											name={attr}
-											id={attr}
-											checked={
-												!isEmpty(
-													specialPaste[tab].filter(
-														sp => {
-															return (
-																typeof sp ===
-																	'object' &&
-																Object.values(
-																	sp
-																).includes(attr)
-															);
-														}
-													)
-												)
-											}
-											onChange={e =>
-												handleSpecialPaste({
-													attr,
-													tab,
-													checked: e.target.checked,
-													group: attrType,
-												})
-											}
-										/>
-										<span>
-											{
-												organizedAttributes[tab][
-													attrType
-												].group[attr].label
-											}
-										</span>
-									</label>
-								</div>
-							);
-						});
-
-						const groupCheckBox = (
-							<div
-								className='toolbar-item__copy-paste__popover__item toolbar-item__copy-paste__popover__item__group'
+						return (
+							<CopyPasteGroup
 								key={`copy-paste-group-${tab}-${attrType}`}
-							>
-								<label
-									htmlFor={attrType}
-									className='maxi-axis-control__content__item__checkbox'
-								>
-									<input
-										type='checkbox'
-										name={attrType}
-										id={attrType}
-										onClick={e =>
-											checkNestedCheckboxes(
-												attrType,
-												tab,
-												e.target.checked
-											)
-										}
-									/>
-									<span>
-										{
-											organizedAttributes[tab][attrType]
-												.label
-										}
-									</span>
-								</label>
-								<span
-									onClick={e => groupExpand(e, attrType)}
-									aria-expanded='false'
-									className='copy-paste__group-icon'
-								/>
-							</div>
+								tab={tab}
+								attrType={attrType}
+								organizedAttributes={organizedAttributes}
+								specialPaste={specialPaste}
+								handleSpecialPaste={handleSpecialPaste}
+							/>
 						);
-
-						return [groupCheckBox, nestedCheckBoxes];
 					}),
 			};
 

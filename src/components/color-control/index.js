@@ -109,7 +109,7 @@ const ColorControl = props => {
 					'palette-status',
 					isHover,
 					prefix,
-					avoidBreakpointForDefault ? 'general' : deviceType
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.paletteColor = getDefaultAttribute(
@@ -117,7 +117,7 @@ const ColorControl = props => {
 					'palette-color',
 					isHover,
 					prefix,
-					avoidBreakpointForDefault ? 'general' : deviceType
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.paletteOpacity = getDefaultAttribute(
@@ -125,7 +125,7 @@ const ColorControl = props => {
 					'palette-opacity',
 					isHover,
 					prefix,
-					avoidBreakpointForDefault ? 'general' : deviceType
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.color = getDefaultAttribute(
@@ -133,7 +133,7 @@ const ColorControl = props => {
 					'color',
 					isHover,
 					prefix,
-					avoidBreakpointForDefault ? 'general' : deviceType
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 		}

@@ -1,6 +1,6 @@
 import getOrganizedAttributes from '../getOrganizedAttributes';
 import cleanStyleAttributes from '../cleanStyleAttributes';
-import { default as imageMaxiMapping } from '../../../blocks/image-maxi/copy-paste-mapping';
+import { imageMaxiMapping } from '../../../blocks/image-maxi/copy-paste-mapping';
 
 describe('getOrganizedAttributes', () => {
 	it('Ensure getOrganizedAttributes and cleanStyleAttributes work correctly', () => {

@@ -255,6 +255,7 @@ body .toolbar-item__popover {
 
 body.maxi-blocks--active .components-tooltip {
 	opacity: 0.95 !important;
+	pointer-events: none;
 }
 
 body.maxi-blocks--active.rtl .maxi-sidebar,

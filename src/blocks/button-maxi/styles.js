@@ -285,7 +285,7 @@ const getIconSize = (obj, isHover = false) => {
 		const iconWidth =
 			obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`];
 
-		if (!isNil(iconWidth) || !isEmpty(iconWidth)) {
+		if (!isNil(iconWidth) && !isEmpty(iconWidth)) {
 			const iconUnit = getLastBreakpointAttribute({
 				target: 'icon-width-unit',
 				breakpoint,
@@ -507,12 +507,11 @@ const getStyles = (props, scValues) => {
 		uniqueID,
 		blockStyle,
 		'icon-status-hover': iconHoverStatus,
-		'icon-only': iconOnly,
 		'icon-inherit': iconInherit,
 	} = props;
 
 	const hasIcon = !!props['icon-content'];
-	const useIconColor = iconOnly || !iconInherit;
+	const useIconColor = !iconInherit;
 
 	const response = {
 		[uniqueID]: stylesCleaner(

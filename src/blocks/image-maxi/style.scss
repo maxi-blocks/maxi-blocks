@@ -19,12 +19,10 @@ body.maxi-blocks--active figure.maxi-image-block {
 		width: 100%;
 	}
 	.maxi-image-block-wrapper {
-		display: flex;
 		position: relative;
 		width: 100%;
 		max-width: 100%;
 		max-height: 100%;
-		flex-grow: 1;
 		box-sizing: border-box;
 
 		> svg:first-child pattern image {

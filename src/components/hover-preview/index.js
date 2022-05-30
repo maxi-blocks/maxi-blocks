@@ -62,13 +62,8 @@ const HoverPreview = props => {
 			target.style.transform = '';
 			target.style.marginLeft = '';
 			target.style.filter = '';
-			target.style.transitionTimingFunction = `${
-				hoverTransitionEasing !== 'cubic-bezier'
-					? hoverTransitionEasing
-					: !isNil(hoverTransitionEasingCB)
-					? `cubic-bezier(${hoverTransitionEasingCB.join()})`
-					: 'easing'
-			}`;
+			target.style.transitionDuration = `${hoverTransitionDuration}s`;
+			target.style.transitionTimingFunction = transitionTimingFunction;
 		}
 
 		if (hoverType === 'basic' && showEffects) {
@@ -87,9 +82,6 @@ const HoverPreview = props => {
 				target.style.marginLeft = '';
 				target.style.filter = '';
 			}
-
-			target.style.transitionDuration = `${hoverTransitionDuration}s`;
-			target.style.transitionTimingFunction = transitionTimingFunction;
 		}
 	};
 

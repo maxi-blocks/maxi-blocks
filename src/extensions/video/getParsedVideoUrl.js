@@ -36,10 +36,17 @@ const getParsedVideoUrl = props => {
 			break;
 		}
 		case 'vimeo': {
-			parsedVideoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=0&muted=1&autopause=0`;
+			parsedVideoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?autopause=0`;
 
+			let controls = '&controls=0';
+
+			if (showPlayerControls) controls = '&controls=0';
 			if (isLoop) parsedVideoUrl += '&loop=1';
+			if (isAutoplay) parsedVideoUrl += '&autoplay=1';
+			if (isMuted) parsedVideoUrl += '&muted=1';
 			if (startTime) parsedVideoUrl += `#t=${startTime}`;
+
+			parsedVideoUrl += controls;
 
 			break;
 		}

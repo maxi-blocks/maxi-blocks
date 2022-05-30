@@ -69,6 +69,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
 	delete extraProps.isChild;
+	delete extraProps.deviceType;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -216,9 +217,17 @@ const MaxiBlock = memo(
 		);
 	}),
 	(rawOldProps, rawNewProps) => {
-		const { attributes: oldAttr, isSelected: wasSelected } = rawOldProps;
+		const {
+			attributes: oldAttr,
+			isSelected: wasSelected,
+			deviceType: oldDeviceType,
+		} = rawOldProps;
 
-		const { attributes: newAttr, isSelected } = rawNewProps;
+		const {
+			attributes: newAttr,
+			isSelected,
+			deviceType: newDeviceType,
+		} = rawNewProps;
 
 		// Check differences between attributes
 		if (!isEqual(oldAttr, newAttr)) return false;
@@ -230,6 +239,8 @@ const MaxiBlock = memo(
 		if (select('core/block-editor').isDraggingBlocks()) return true;
 
 		if (wasSelected !== isSelected) return false;
+
+		if (!isEqual(oldDeviceType, newDeviceType)) return false;
 
 		const propsCleaner = props => {
 			const response = {};

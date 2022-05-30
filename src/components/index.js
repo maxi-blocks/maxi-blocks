@@ -77,5 +77,7 @@ export { default as Toolbar } from './toolbar';
 export { default as TransformControl } from './transform-control';
 export { default as TransitionControl } from './transition-control';
 export { default as TypographyControl } from './typography-control';
+export { default as VideoControl } from './video-control';
+export { default as VideoOptionsControl } from './video-options-control';
 export { default as ZIndexControl } from './zindex-control';
 export * from './svg-color';

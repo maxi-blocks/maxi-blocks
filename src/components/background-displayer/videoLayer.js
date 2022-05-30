@@ -7,7 +7,7 @@ import classnames from 'classnames';
  * Internal Dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import parseVideo from './utils';
+import { parseVideo, videoValidation } from '../../extensions/video';
 import { isNil } from 'lodash';
 
 /**
@@ -165,11 +165,6 @@ const VideoLayer = props => {
 			document.body.appendChild(script);
 		}
 	}
-
-	const videoValidation = url =>
-		url.match(
-			/https?:\/\/.*\.(?:mp4|webm|ogg)|(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/
-		);
 
 	return (
 		<>

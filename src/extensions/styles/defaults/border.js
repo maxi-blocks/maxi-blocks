@@ -7,7 +7,6 @@ export const rawBorder = {
 	...paletteAttributesCreator({ prefix, palette: 2, opacity: 1 }),
 	'border-style': {
 		type: 'string',
-		default: 'none',
 	},
 };
 

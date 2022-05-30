@@ -79,6 +79,8 @@ class edit extends MaxiBlockComponent {
 		this.resizableObject = createRef();
 	}
 
+	typingTimeoutFormatValue = 0;
+
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
@@ -196,7 +198,7 @@ class edit extends MaxiBlockComponent {
 			});
 
 			if (
-				(!useInitSize && isNumber(maxWidth)) ||
+				(!useInitSize && maxWidth) ||
 				(useInitSize && maxWidth > mediaWidth)
 			)
 				return `${maxWidth}${maxWidthUnit}`;
@@ -378,8 +380,24 @@ class edit extends MaxiBlockComponent {
 													maxiSetAttributes,
 													oldFormatValue:
 														this.state.formatValue,
-													onChange: newState =>
-														this.setState(newState),
+													onChange: newState => {
+														if (
+															this
+																.typingTimeoutFormatValue
+														) {
+															clearTimeout(
+																this
+																	.typingTimeoutFormatValue
+															);
+														}
+
+														this.typingTimeoutFormatValue =
+															setTimeout(() => {
+																this.setState(
+																	newState
+																);
+															}, 10);
+													},
 													richTextValues,
 												})
 											}

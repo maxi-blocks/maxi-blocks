@@ -150,7 +150,13 @@ const IconControl = props => {
 				<MaxiModal
 					type='button-icon'
 					style={blockStyle}
-					onSelect={obj => onChange(obj)}
+					onSelect={obj => {
+						const icon = getIconWithColor({
+							rawIcon: obj['icon-content'],
+						});
+
+						onChange({ ...obj, 'icon-content': icon });
+					}}
 					onRemove={obj => onChange(obj)}
 					icon={iconContent}
 				/>

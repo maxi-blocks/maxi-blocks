@@ -139,9 +139,7 @@ const SliderWrapper = props => {
 		if (currentSlide + 1 < numberOfSlides || isLoop) {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
-				const newCurrentSlide = prev + 1;
-				console.log('newCurrentSlide on next: ', newCurrentSlide);
-				return newCurrentSlide;
+				return prev + 1;
 			});
 		}
 	};
@@ -149,10 +147,8 @@ const SliderWrapper = props => {
 	const prevSlide = () => {
 		if (currentSlide - 1 >= 0 || isLoop) {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
-			setCurrentSlide(prev => {
-				const newCurrentSlide = prev - 1;
-				console.log('newCurrentSlide on prev: ', newCurrentSlide);
-				return newCurrentSlide;
+			setCurrentSlide(next => {
+				return next - 1;
 			});
 		}
 	};
@@ -201,7 +197,6 @@ const SliderWrapper = props => {
 	};
 
 	const handleTransitionEnd = () => {
-		console.log('handleTransitionEnd!');
 		wrapperRef.current.style.transition = '';
 		if (currentSlide >= numberOfSlides) {
 			setCurrentSlide(0);

@@ -36,11 +36,7 @@ class edit extends MaxiBlockComponent {
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
 		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				{...this.props}
-				resizableObject={this.resizableObject}
-			/>,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<MaxiBlock
 				key={`maxi-accordion--${uniqueID}`}
 				blockFullWidth={blockFullWidth}

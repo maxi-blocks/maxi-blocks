@@ -144,9 +144,14 @@ const CopyPaste = props => {
 		updateBlockAttributes(clientId, styles);
 	};
 
-	const onCopyBlocks = () => copyNestedBlocks(innerBlocks);
-	const onPasteBlocks = () =>
+	const onCopyBlocks = () => {
+		copyNestedBlocks(innerBlocks);
+		closeMoreSettings();
+	};
+	const onPasteBlocks = () => {
 		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
+		closeMoreSettings();
+	};
 
 	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
 		const specPaste = { ...specialPaste };

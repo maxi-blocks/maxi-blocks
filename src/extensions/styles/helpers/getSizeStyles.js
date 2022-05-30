@@ -23,7 +23,7 @@ const getSizeStyles = (obj, prefix = '') => {
 
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
-			if (!obj['size-advanced-options']) {
+			if (!obj[`${prefix}size-advanced-options`]) {
 				if (target.includes('max') || target.includes('min'))
 					return null;
 			}

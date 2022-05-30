@@ -46,6 +46,14 @@ const HoverPreview = props => {
 
 	const showEffects = props['hover-preview'] || isSave;
 
+	const transitionTimingFunction = `${
+		hoverTransitionEasing !== 'cubic-bezier'
+			? hoverTransitionEasing
+			: !isNil(hoverTransitionEasingCB)
+			? `cubic-bezier(${hoverTransitionEasingCB.join()})`
+			: 'easing'
+	}`;
+
 	const mouseHoverHandle = ({ target }) => {
 		if (
 			hoverType === 'text' ||
@@ -79,6 +87,9 @@ const HoverPreview = props => {
 				target.style.marginLeft = '';
 				target.style.filter = '';
 			}
+
+			target.style.transitionDuration = `${hoverTransitionDuration}s`;
+			target.style.transitionTimingFunction = transitionTimingFunction;
 		}
 	};
 
@@ -142,18 +153,7 @@ const HoverPreview = props => {
 				<div
 					style={{
 						transitionDuration: `${hoverTransitionDuration}s`,
-						transitionTimingFunction:
-							hoverTransitionEasing !== 'cubic-bezier'
-								? hoverTransitionEasing
-								: !isNil(
-										props[
-											'hover-transition-easing-cubic-bezier'
-										]
-								  )
-								? `cubic-bezier(${props[
-										'hover-transition-easing-cubic-bezier'
-								  ].join()})`
-								: 'easing',
+						transitionTimingFunction,
 					}}
 					className='maxi-hover-details'
 				>

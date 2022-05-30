@@ -70,7 +70,9 @@ const onMerge = (props, forward) => {
 		const blockName = getBlock(previousBlockClientId)?.name;
 
 		if (!previousBlockClientId || blockName !== 'maxi-blocks/text-maxi') {
-			removeBlock(clientId);
+			// Basically removes the block when pressing backspace and there's not block before
+			// Commented as is something we might want to come back in future
+			// removeBlock(clientId);
 		} else {
 			const previousBlockAttributes = getBlockAttributes(
 				previousBlockClientId

@@ -92,7 +92,12 @@ body.maxi-blocks--active .maxi-link-wrapper {
 body.maxi-blocks--active #wpwrap .maxi-block-inserter__button {
 	margin: auto;
 }
+
 /*Block border radius*/
-body.maxi-blocks--active #wpwrap .maxi-block.maxi-block--backend {
-	border-radius: 0;
+body.maxi-blocks--active.ast-highlight-wpblock-onhover
+	.maxi-block--backend.block-editor-block-list__block {
+	&.is-highlighted,
+	&:hover {
+		border-radius: 0;
+	}
 }

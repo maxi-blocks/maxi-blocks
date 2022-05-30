@@ -140,7 +140,7 @@ const SliderWrapper = props => {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev + 1;
-				console.log('newCurrentSlide: ', newCurrentSlide);
+				console.log('newCurrentSlide on next: ', newCurrentSlide);
 				return newCurrentSlide;
 			});
 		}
@@ -151,6 +151,7 @@ const SliderWrapper = props => {
 			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
 			setCurrentSlide(prev => {
 				const newCurrentSlide = prev - 1;
+				console.log('newCurrentSlide on prev: ', newCurrentSlide);
 				return newCurrentSlide;
 			});
 		}

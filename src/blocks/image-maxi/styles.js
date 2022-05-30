@@ -415,18 +415,17 @@ const getImageShapeObject = (target, props) => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
+	const imgTag = props.SVGElement === '' || !props.SVGElement ? 'img' : 'svg';
+
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
 				'': getWrapperObject(props),
 				':hover': getHoverWrapperObject(props),
 				' .maxi-image-block-wrapper': getImageWrapperObject(props),
-				[` .maxi-image-block-wrapper ${
-					props.SVGElement === '' ? 'img' : 'svg'
-				}`]: getImageObject(props),
-				[`:hover .maxi-image-block-wrapper ${
-					props.SVGElement === '' ? 'img' : 'svg'
-				}`]: getHoverImageObject(props),
+				[` .maxi-image-block-wrapper ${imgTag}`]: getImageObject(props),
+				[`:hover .maxi-image-block-wrapper ${imgTag}`]:
+					getHoverImageObject(props),
 				' .maxi-image-block-wrapper > svg:first-child':
 					getImageShapeObject('svg', props),
 				' .maxi-image-block-wrapper > svg:first-child pattern image':
@@ -491,7 +490,7 @@ const getStyles = props => {
 			props
 		),
 	};
-
+	console.log(response);
 	return response;
 };
 

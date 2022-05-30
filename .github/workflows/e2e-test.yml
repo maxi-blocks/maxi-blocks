@@ -7,6 +7,9 @@ on:
 jobs:
     e2e-js:
         runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            shard: [1, 2, 3, 4, 5]
         steps:
             - uses: actions/checkout@v2
               with:
@@ -41,4 +44,4 @@ jobs:
                   chmod -R 767 ./
                   npm run wp-env start
             - name: Running the tests
-              run: npm run test:e2e -- -b 1
+              run: npm run test:e2e -- -b 1 --shard=${{ matrix.shard }}/${{ strategy.job-total }}

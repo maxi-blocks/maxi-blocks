@@ -12,10 +12,10 @@
 		"wp-env": "wp-env",
 		"test": "wp-scripts test-unit-jest",
 		"test:debug": "wp-scripts --inspect-brk test-unit-jest --runInBand --no-cache --verbose",
-		"test:e2e": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js",
-		"test:e2e-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js --puppeteer-interactive",
-		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
-		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
+		"test:e2e": "node e2e-tests/test-e2e.js -c ./e2e-tests/jest.config.js",
+		"test:e2e-interactive": "node e2e-tests/test-e2e.js -c ./e2e-tests/jest.config.js --puppeteer-interactive",
+		"test:e2e:debug": "node e2e-tests/test-e2e.js --inspect-brk -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
+		"test:e2e-interactive:debug": "node e2e-tests/test-e2e.js --inspect-brk -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
 		"minify:frontend": "minify js/maxi-bg-video.js > js/maxi-bg-video.min.js && minify js/maxi-hover-effects.js > js/maxi-hover-effects.min.js && minify js/maxi-map.js > js/maxi-map.min.js && minify js/maxi-number-counter.js > js/maxi-number-counter.min.js && minify js/maxi-parallax.js > js/maxi-parallax.min.js && minify js/maxi-scroll-effects.js > js/maxi-scroll-effects.min.js && minify js/maxi-shape-divider.js > js/maxi-shape-divider.min.js && minify js/maxi-relations.js > js/maxi-relations.min.js"
 	},
 	"dependencies": {
@@ -84,6 +84,7 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.29.4",
 		"eslint-plugin-react-hooks": "^4.4.0",
+		"jest": "^28.1.0",
 		"jest-canvas-mock": "^2.3.1",
 		"minify": "^8.0.4",
 		"minify-css-string": "^1.0.0",

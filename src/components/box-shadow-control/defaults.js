@@ -5,23 +5,23 @@ export const boxShadowNone = prefix => {
 
 	response = {
 		[`${[prefix]}box-shadow-palette-opacity`]:
-			boxShadow[`${[prefix]}box-shadow-palette-opacity-general`].default,
+			boxShadow['box-shadow-palette-opacity-general'].default,
 		[`${[prefix]}box-shadow-horizontal`]:
-			boxShadow[`${[prefix]}box-shadow-horizontal-general`].default,
+			boxShadow['box-shadow-horizontal-general'].default,
 		[`${[prefix]}box-shadow-horizontal-unit`]:
-			boxShadow[`${[prefix]}box-shadow-horizontal-unit-general`].default,
+			boxShadow['box-shadow-horizontal-unit-general'].default,
 		[`${[prefix]}box-shadow-vertical`]:
-			boxShadow[`${[prefix]}box-shadow-vertical-general`].default,
+			boxShadow['box-shadow-vertical-general'].default,
 		[`${[prefix]}box-shadow-vertical-unit`]:
-			boxShadow[`${[prefix]}box-shadow-vertical-unit-general`].default,
+			boxShadow['box-shadow-vertical-unit-general'].default,
 		[`${[prefix]}box-shadow-blur`]:
-			boxShadow[`${[prefix]}box-shadow-blur-general`].default,
+			boxShadow['box-shadow-blur-general'].default,
 		[`${[prefix]}box-shadow-blur-unit`]:
-			boxShadow[`${[prefix]}box-shadow-blur-unit-general`].default,
+			boxShadow['box-shadow-blur-unit-general'].default,
 		[`${[prefix]}box-shadow-spread`]:
-			boxShadow[`${[prefix]}box-shadow-spread-general`].default,
+			boxShadow['box-shadow-spread-general'].default,
 		[`${[prefix]}box-shadow-spread-unit`]:
-			boxShadow[`${[prefix]}box-shadow-spread-unit-general`].default,
+			boxShadow['box-shadow-spread-unit-general'].default,
 	};
 
 	return response;

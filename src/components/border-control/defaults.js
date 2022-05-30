@@ -31,13 +31,17 @@ export const borderNone = (prefix = '', isHover) => {
 		: defaultBorderWidth;
 
 	response = {
+		[`${prefix}border-style`]:
+			currentDefaultBorder[`${prefix}border-style-general`].default,
 		[`${prefix}border-palette-status`]:
 			currentDefaultBorder[`${prefix}border-palette-status-general`]
 				.default,
 		[`${prefix}border-palette-color`]:
 			currentDefaultBorder[`${prefix}border-palette-color-general`]
 				.default,
-		[`${prefix}border-palette-opacity`]: 1,
+		[`${prefix}border-palette-opacity`]:
+			currentDefaultBorder[`${prefix}border-palette-opacity-general`]
+				.default,
 		[`${prefix}border-color`]:
 			currentDefaultBorder[`${prefix}border-color-general`].default,
 		[`${prefix}border-style`]: isHover

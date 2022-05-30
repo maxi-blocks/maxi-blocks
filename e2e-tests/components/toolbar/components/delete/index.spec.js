@@ -3,11 +3,6 @@
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
-/**
- * Internal dependencies
- */
-import { getAttributes, getBlockStyle } from '../../../../utils';
-
 describe('Delete block', () => {
 	it('Check delete block', async () => {
 		await createNewPost();
@@ -32,13 +27,12 @@ describe('Delete block', () => {
 			button => button.click()
 		);
 
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Block 2', { delay: 100 });
+		// check block not exist
 		const textContentBeforeDelete = await page.$eval(
 			'.is-root-container.block-editor-block-list__layout div',
 			content => content.outerText
 		);
 
-		expect(textContentBeforeDelete).toStrictEqual('Block 2');
+		expect(textContentBeforeDelete).toBe('');
 	});
 });

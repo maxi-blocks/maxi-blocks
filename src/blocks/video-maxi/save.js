@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { RawHTML } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
@@ -8,7 +13,11 @@ import { videoValidation } from '../../extensions/video';
  * Save
  */
 const save = props => {
-	const { isLightBox, embedUrl } = props.attributes;
+	const {
+		isLightbox,
+		embedUrl,
+		'close-icon-content': closeIcon,
+	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
 
@@ -16,9 +25,14 @@ const save = props => {
 		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			{embedUrl &&
 				videoValidation(embedUrl) &&
-				(isLightBox ? (
-					<div className='maxi-video-block__popup-wrapper'>
-						<span className='maxi-video-block__close-button' />
+				(isLightbox ? (
+					<div
+						className='maxi-video-block__popup-wrapper'
+						style={{ display: 'none' }}
+					>
+						<div className='maxi-video-block__close-button'>
+							<RawHTML>{closeIcon}</RawHTML>
+						</div>
 						<div className='maxi-video-block__iframe-container'>
 							<iframe
 								className='maxi-video-block__video-player'

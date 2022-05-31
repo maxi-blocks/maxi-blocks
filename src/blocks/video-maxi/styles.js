@@ -11,6 +11,7 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
+	getBackgroundStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsVideo } from './custom-css';
 
@@ -93,6 +94,31 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getLightBoxObject = props => {
+	const response = {
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor'],
+				false,
+				'lightbox-'
+			),
+			prefix: 'lightbox-',
+			blockStyle: props.blockStyle,
+		}),
+	};
+	console.log(
+		response,
+		...getGroupAttributes(
+			props,
+			['background', 'backgroundColor'],
+			false,
+			'lightbox-'
+		)
+	);
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -101,15 +127,7 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.parentBlockStyle,
-				}),
+				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
 						props,

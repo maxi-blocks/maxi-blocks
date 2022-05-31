@@ -6,7 +6,7 @@ const videoEvents = () => {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		if (videoData['video-is-lightbox']) {
+		if (videoData['isLightbox']) {
 			const wrapper = video.querySelector(
 				'.maxi-video-block__popup-wrapper'
 			);
@@ -22,7 +22,6 @@ const videoEvents = () => {
 			};
 
 			const closeVideo = e => {
-				if (e.target !== e.currentTarget) return;
 				wrapper.style.display = 'none';
 				iframe.src = '';
 			};

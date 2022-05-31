@@ -21,7 +21,8 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, attributes, maxiSetAttributes } = props;
+	const { deviceType, attributes, maxiSetAttributes, clientId } = props;
+	const { blockStyle } = attributes;
 
 	return (
 		<InspectorControls>
@@ -67,16 +68,24 @@ const Inspector = props => {
 														attributes,
 														'video'
 													)}
+													{...getGroupAttributes(
+														attributes,
+														[
+															'background',
+															'backgroundColor',
+														],
+														false,
+														'lightbox-'
+													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
+													breakpoint={deviceType}
+													clientId={clientId}
+													blockStyle={blockStyle}
 												/>
 											),
 										},
-										...inspectorTabs.blockBackground({
-											props,
-											disableVideo: true,
-										}),
 										...inspectorTabs.border({
 											props,
 										}),

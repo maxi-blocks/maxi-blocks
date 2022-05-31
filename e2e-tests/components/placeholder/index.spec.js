@@ -1,11 +1,12 @@
 /**
  * WordPress dependencies
  */
-// import { createNewPost } from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 describe('Placeholder', () => {
 	it('Test placeholder', async () => {
-		/* await createNewPost();
+		await createNewPost();
+
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()
 		);
@@ -25,6 +26,31 @@ describe('Placeholder', () => {
 			div => div.innerHTML
 		);
 		await page.waitForTimeout(500);
-		expect(placeholder).toMatchSnapshot(); */
+		expect(placeholder).toMatchSnapshot();
+	});
+
+	it('Test icon placeholder', async () => {
+		await insertBlock('Icon Maxi');
+
+		await page.$eval('.components-modal__header button', button =>
+			button.click()
+		);
+
+		const placeholder = await page.$eval(
+			'.maxi-svg-icon-block__placeholder',
+			div => div.innerHTML
+		);
+		await page.waitForTimeout(500);
+		expect(placeholder).toMatchSnapshot();
+	});
+	it('Test image placeholder', async () => {
+		await insertBlock('Image Maxi');
+
+		const placeholder = await page.$eval(
+			'.maxi-image-block__placeholder',
+			div => div.innerHTML
+		);
+		await page.waitForTimeout(500);
+		expect(placeholder).toMatchSnapshot();
 	});
 });

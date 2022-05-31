@@ -3,6 +3,11 @@
  */
 import parseVideo from './parseVideo';
 
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 const getParsedVideoUrl = props => {
 	const {
 		url,
@@ -13,6 +18,8 @@ const getParsedVideoUrl = props => {
 		isMuted,
 		showPlayerControls,
 	} = props;
+
+	if (isEmpty(url)) return url;
 
 	const parsedVideo = parseVideo(url);
 	let parsedVideoUrl = url;

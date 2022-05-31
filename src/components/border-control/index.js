@@ -21,7 +21,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getAttributeKey,
-	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -58,9 +57,6 @@ const BorderColorControl = props => {
 				attributes: props,
 				isHover,
 			})}
-			defaultColor={getDefaultAttribute(
-				`${prefix}border-color-${breakpoint}${isHover ? '-hover' : ''}`
-			)}
 			paletteStatus={getLastBreakpointAttribute({
 				target: `${prefix}border-palette-status`,
 				breakpoint,
@@ -113,6 +109,7 @@ const BorderColorControl = props => {
 			deviceType={breakpoint}
 			clientId={clientId}
 			globalProps={globalProps}
+			prefix={`${prefix}border-`}
 		/>
 	);
 };

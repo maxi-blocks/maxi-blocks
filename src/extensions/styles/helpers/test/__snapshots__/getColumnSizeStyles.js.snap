@@ -36,28 +36,32 @@ Object {
 exports[`getColumnSizeStyles Get a correct column size styles with gap options 1`] = `
 Object {
   "general": Object {
-    "flex-basis": "calc(1% - 2.5%)",
-    "width": "calc(1% - 2.5%)",
+    "flex-basis": "calc(1% - 1.6667%)",
+    "width": "calc(1% - 1.6667%)",
   },
   "l": Object {
     "flex-basis": "fit-content",
     "width": "fit-content",
   },
+  "m": Object {
+    "flex-basis": "100%",
+    "width": "100%",
+  },
   "s": Object {
-    "flex-basis": "calc(2% - 2.5%)",
-    "width": "calc(2% - 2.5%)",
+    "flex-basis": "calc(2% - 0px)",
+    "width": "calc(2% - 0px)",
   },
   "xl": Object {
-    "flex-basis": "calc(3% - 2.5%)",
-    "width": "calc(3% - 2.5%)",
+    "flex-basis": "calc(3% - 1.6667%)",
+    "width": "calc(3% - 1.6667%)",
   },
   "xs": Object {
     "flex-basis": "fit-content",
     "width": "fit-content",
   },
   "xxl": Object {
-    "flex-basis": "calc(2% - 2.5px)",
-    "width": "calc(2% - 2.5px)",
+    "flex-basis": "calc(2% - 1.6667px)",
+    "width": "calc(2% - 1.6667px)",
   },
 }
 `;

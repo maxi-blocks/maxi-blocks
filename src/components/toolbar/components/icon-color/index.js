@@ -37,7 +37,7 @@ const IconColor = props => {
 			<div className='toolbar-item__icon-color__popover'>
 				<ToggleSwitch
 					label={__(
-						'Inherit Colour/Background from Button',
+						'Inherit colour/background from button',
 						'maxi-blocks'
 					)}
 					selected={props['icon-inherit']}
@@ -103,7 +103,7 @@ const IconColor = props => {
 						)}
 						{svgType !== 'Line' && (
 							<ColorControl
-								label={__('Icon Fill', 'maxi-blocks')}
+								label={__('Icon fill', 'maxi-blocks')}
 								color={props['icon-fill-color']}
 								prefix='icon-fill'
 								paletteColor={props['icon-fill-palette-color']}

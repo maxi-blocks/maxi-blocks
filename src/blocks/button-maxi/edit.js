@@ -2,8 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
 import { RawHTML, createRef, forwardRef } from '@wordpress/element';
 
@@ -11,13 +9,10 @@ import { RawHTML, createRef, forwardRef } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 import copyPasteMapping from './copy-paste-mapping';
@@ -46,10 +41,23 @@ class edit extends MaxiBlockComponent {
 		this.iconRef = createRef(null);
 	}
 
+	scProps = {
+		scElements: [
+			'hover-border-color-global',
+			'hover-border-color-all',
+			'hover-color-global',
+			'hover-color-all',
+			'hover-background-color-global',
+			'hover-background-color-all',
+		],
+		scType: 'button',
+	};
+
 	typingTimeout = 0;
 
 	get getStylesObject() {
-		const { attributes, scValues } = this.props;
+		const { attributes } = this.props;
+		const { scValues } = this.state;
 
 		return getStyles(attributes, scValues);
 	}
@@ -57,6 +65,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, blockFullWidth, fullWidth } = attributes;
+		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -80,6 +89,7 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				propsToAvoid={['buttonContent', 'formatValue']}
 				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -94,6 +104,7 @@ class edit extends MaxiBlockComponent {
 				backgroundAdvancedOptions='button background'
 				propsToAvoid={['buttonContent', 'formatValue']}
 				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
@@ -143,25 +154,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const {
-		attributes: { blockStyle },
-	} = ownProps;
-
-	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-	const scElements = [
-		'hover-border-color-global',
-		'hover-border-color-all',
-		'hover-color-global',
-		'hover-color-all',
-		'hover-background-color-global',
-		'hover-background-color-all',
-	];
-	const scValues = receiveStyleCardValue(scElements, blockStyle, 'button');
-
-	return {
-		scValues,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

@@ -84,6 +84,7 @@ const getFlexStyles = obj => {
 			breakpoint,
 			attributes: obj,
 		});
+
 		const columnGap = getLastBreakpointAttribute({
 			target: 'column-gap',
 			breakpoint,

@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { dispatch, useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { useState, useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -19,8 +20,8 @@ import SettingTabsControl from '../setting-tabs-control';
 import FontWeightControl from '../font-weight-control';
 import {
 	setFormat,
-	getCustomFormatValue,
-	withFormatValue,
+	getTypographyValue,
+	textContext,
 } from '../../extensions/text/formats';
 import {
 	getDefaultAttribute,
@@ -34,208 +35,16 @@ import { getDefaultSCValue } from '../../extensions/style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isBoolean, isNumber, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
- * Styles and icons
+ * Styles
  */
 import './editor.scss';
 
 /**
  * Component
  */
-const TextOptions = props => {
-	const {
-		getValue,
-		getDefault,
-		onChangeFormat,
-		prefix,
-		minMaxSettings,
-		minMaxSettingsLetterSpacing,
-		breakpoint,
-		avoidXXL,
-	} = props;
-
-	return (
-		<>
-			<AdvancedNumberControl
-				className='maxi-typography-control__size'
-				label={__('Font size', 'maxi-blocks')}
-				enableUnit
-				unit={getValue(`${prefix}font-size-unit`, breakpoint, avoidXXL)}
-				defaultUnit={getDefault(`${prefix}font-size-unit`, breakpoint)}
-				onChangeUnit={val => {
-					onChangeFormat(
-						{
-							[`${prefix}font-size-unit`]: val,
-						},
-						breakpoint
-					);
-				}}
-				placeholder={getValue(
-					`${prefix}font-size`,
-					breakpoint,
-					avoidXXL
-				)}
-				value={getValue(
-					`${prefix}font-size`,
-					breakpoint,
-					avoidXXL,
-					true
-				)}
-				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
-				onChangeValue={val => {
-					onChangeFormat(
-						{
-							[`${prefix}font-size`]: val,
-						},
-						breakpoint
-					);
-				}}
-				onReset={() =>
-					onChangeFormat(
-						{
-							[`${prefix}font-size-unit`]: getDefault(
-								`${prefix}font-size-unit`,
-								breakpoint
-							),
-							[`${prefix}font-size`]: getDefault(
-								`${prefix}font-size`,
-								breakpoint
-							),
-						},
-						breakpoint
-					)
-				}
-				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%']}
-			/>
-			<AdvancedNumberControl
-				className='maxi-typography-control__line-height'
-				label={__('Line height', 'maxi-blocks')}
-				enableUnit
-				unit={
-					getValue(
-						`${prefix}line-height-unit`,
-						breakpoint,
-						avoidXXL
-					) || ''
-				}
-				defaultUnit={getDefault(
-					`${prefix}line-height-unit`,
-					breakpoint
-				)}
-				onChangeUnit={val => {
-					onChangeFormat(
-						{
-							[`${prefix}line-height-unit`]: val,
-							...(val === '-' && {
-								[`${prefix}line-height`]:
-									minMaxSettings['-'].max,
-							}),
-						},
-						breakpoint
-					);
-				}}
-				placeholder={getValue(
-					`${prefix}line-height`,
-					breakpoint,
-					avoidXXL
-				)}
-				value={getValue(
-					`${prefix}line-height`,
-					breakpoint,
-					avoidXXL,
-					true
-				)}
-				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
-				onChangeValue={val => {
-					onChangeFormat(
-						{
-							[`${prefix}line-height`]: val,
-						},
-						breakpoint
-					);
-				}}
-				onReset={() =>
-					onChangeFormat(
-						{
-							[`${prefix}line-height-unit`]: getDefault(
-								`${prefix}line-height-unit`,
-								breakpoint
-							),
-							[`${prefix}line-height`]: getDefault(
-								`${prefix}line-height`,
-								breakpoint
-							),
-						},
-						breakpoint
-					)
-				}
-				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%', '-']}
-			/>
-			<AdvancedNumberControl
-				className='maxi-typography-control__letter-spacing'
-				label={__('Letter spacing', 'maxi-blocks')}
-				enableUnit
-				allowedUnits={['px', 'em', 'vw']}
-				unit={getValue(
-					`${prefix}letter-spacing-unit`,
-					breakpoint,
-					avoidXXL
-				)}
-				defaultUnit={getDefault(
-					`${prefix}letter-spacing-unit`,
-					breakpoint
-				)}
-				onChangeUnit={val => {
-					onChangeFormat(
-						{
-							[`${prefix}letter-spacing-unit`]: val,
-						},
-						breakpoint
-					);
-				}}
-				placeholder={getValue(
-					`${prefix}letter-spacing`,
-					breakpoint,
-					avoidXXL
-				)}
-				value={getValue(
-					`${prefix}letter-spacing`,
-					breakpoint,
-					avoidXXL,
-					true
-				)}
-				defaultValue={getDefault(`${prefix}letter-spacing`, breakpoint)}
-				onChangeValue={val => {
-					onChangeFormat(
-						{
-							[`${prefix}letter-spacing`]: val,
-						},
-						breakpoint
-					);
-				}}
-				onReset={() =>
-					onChangeFormat(
-						{
-							[`${prefix}letter-spacing-unit`]: getDefault(
-								`${prefix}letter-spacing-unit`,
-								breakpoint
-							),
-							[`${prefix}letter-spacing`]: '',
-						},
-						breakpoint
-					)
-				}
-				minMaxSettings={minMaxSettingsLetterSpacing}
-				step={0.1}
-			/>
-		</>
-	);
-};
-
 const LinkOptions = props => {
 	const {
 		getValue,
@@ -256,6 +65,7 @@ const LinkOptions = props => {
 				fullWidthMode
 				className='maxi-typography-control__link-options'
 				selected={linkStatus}
+				hasBorder
 				items={[
 					{
 						label: __('Link', 'maxi-block'),
@@ -484,7 +294,7 @@ const LinkOptions = props => {
 	);
 };
 
-const TypographyControl = withFormatValue(props => {
+const TypographyControl = props => {
 	const {
 		className,
 		textLevel = 'p',
@@ -492,7 +302,6 @@ const TypographyControl = withFormatValue(props => {
 		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
-		formatValue,
 		inlineTarget = '.maxi-text-block__content',
 		isList = false,
 		isHover = false,
@@ -501,7 +310,7 @@ const TypographyControl = withFormatValue(props => {
 		disableFormats = false,
 		disableCustomFormats = false,
 		hideTextShadow = false,
-		styleCards = false,
+		isStyleCards = false,
 		disablePalette = false,
 		disableFontFamily = false,
 		clientId,
@@ -511,6 +320,9 @@ const TypographyControl = withFormatValue(props => {
 		globalProps,
 	} = props;
 
+	const { formatValue, onChangeTextFormat } =
+		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
+
 	const typography =
 		props.typography ||
 		getGroupAttributes(props, [
@@ -519,20 +331,23 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	const { styleCard } = useSelect(select => {
+	const { styleCard, winBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
+		const { receiveWinBreakpoint } = select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
+		const winBreakpoint = receiveWinBreakpoint();
+
 		return {
 			styleCard,
+			winBreakpoint,
 		};
 	});
 
 	const classes = classnames('maxi-typography-control', className);
-	const Divider = () => <hr style={{ margin: '15px 0' }} />;
 
 	const minMaxSettings = {
 		px: {
@@ -572,67 +387,28 @@ const TypographyControl = withFormatValue(props => {
 		},
 	};
 
-	const getValue = (prop, customBreakpoint, avoidXXL, avoidSC = false) => {
-		const currentBreakpoint = customBreakpoint || breakpoint;
-
-		if (disableFormats)
-			return getLastBreakpointAttribute({
-				target: prop,
-				breakpoint: currentBreakpoint,
-				attributes: typography,
-				isHover,
-				avoidXXL,
-			});
-
-		const nonHoverValue =
-			getCustomFormatValue({
-				typography,
-				formatValue,
-				prop,
-				breakpoint: currentBreakpoint,
-				textLevel,
-				styleCard,
-				styleCardPrefix,
-				avoidXXL,
-				avoidSC,
-			}) ??
-			// In cases like HoverEffectControl, where we want the SC 'p' value
-			// but requires a clean 'prop' value (no prefix)
-			getCustomFormatValue({
-				typography,
-				formatValue,
-				prop: prop.replace(prefix, ''),
-				breakpoint: currentBreakpoint,
-				textLevel,
-				styleCard,
-				styleCardPrefix,
-				avoidXXL,
-				avoidSC,
-			});
-
-		if (!isHover) return nonHoverValue;
-
-		const hoverValue = getCustomFormatValue({
-			typography,
-			formatValue,
+	const getValue = (prop, avoidXXL, avoidSC = false) =>
+		getTypographyValue({
+			disableFormats,
 			prop,
-			breakpoint: currentBreakpoint,
+			breakpoint,
+			typography,
 			isHover,
+			avoidXXL,
+			formatValue,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
+			avoidSC,
+			prefix,
 		});
 
-		if (hoverValue || isBoolean(hoverValue) || isNumber(hoverValue))
-			return hoverValue;
+	const getDefault = prop => {
+		const currentBreakpoint =
+			(isStyleCards && breakpoint === 'general' && winBreakpoint) ||
+			breakpoint;
 
-		return nonHoverValue;
-	};
-
-	const getDefault = (prop, customBreakpoint) => {
-		const currentBreakpoint = customBreakpoint || breakpoint;
-
-		const defaultAttribute = !styleCards
+		const defaultAttribute = !isStyleCards
 			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
 			: getDefaultSCValue({
 					target: `${prop}-${currentBreakpoint}`,
@@ -656,7 +432,6 @@ const TypographyControl = withFormatValue(props => {
 
 	const onChangeFormat = (
 		value,
-		customBreakpoint,
 		forceDisableCustomFormats = false,
 		tag = ''
 	) => {
@@ -665,23 +440,24 @@ const TypographyControl = withFormatValue(props => {
 			isList,
 			typography,
 			value,
-			breakpoint: customBreakpoint || breakpoint,
+			breakpoint,
 			isHover,
 			textLevel,
 			disableCustomFormats:
-				forceDisableCustomFormats ?? disableCustomFormats,
+				forceDisableCustomFormats || disableCustomFormats,
 			styleCardPrefix,
 			returnFormatValue: true,
 		});
 
 		if (!isEmpty(obj.formatValue)) {
-			const newFormatValue = { ...obj.formatValue };
+			const newFormatValue = {
+				...obj.formatValue,
+				start: formatValue.start,
+				end: formatValue.end,
+			};
 			delete obj.formatValue;
 
-			dispatch('maxiBlocks/text').sendFormatValue(
-				newFormatValue,
-				clientId
-			);
+			onChangeTextFormat(newFormatValue);
 		}
 
 		onChange(obj, getInlineTarget(tag));
@@ -698,9 +474,9 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	return (
-		<div className={classes}>
-			{styleCards ? (
-				!disableFontFamily && (
+		<ResponsiveTabsControl breakpoint={breakpoint}>
+			<div className={classes}>
+				{!disableFontFamily && (
 					<FontFamilySelector
 						className='maxi-typography-control__font-family'
 						font={getValue(`${prefix}font-family`)}
@@ -713,356 +489,432 @@ const TypographyControl = withFormatValue(props => {
 						fontWeight={getValue(`${prefix}font-weight`)}
 						fontStyle={getValue(`${prefix}font-style`)}
 					/>
-				)
-			) : (
-				<ResponsiveTabsControl breakpoint={breakpoint}>
-					{!disableFontFamily && (
-						<FontFamilySelector
-							className='maxi-typography-control__font-family'
-							font={getValue(`${prefix}font-family`)}
-							onChange={font => {
-								onChangeFormat({
-									[`${prefix}font-family`]: font.value,
-									[`${prefix}font-options`]: font.files,
-								});
-							}}
-							fontWeight={getValue(`${prefix}font-weight`)}
-							fontStyle={getValue(`${prefix}font-style`)}
-						/>
-					)}
-				</ResponsiveTabsControl>
-			)}
-			{!disableColor && !styleCards && (
-				<ColorControl
-					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-control__color'
-					color={getValue(`${prefix}color`)}
-					prefix={prefix}
-					paletteColor={getValue(`${prefix}palette-color`)}
-					paletteOpacity={getOpacityValue(`${prefix}palette-opacity`)}
-					paletteStatus={getValue(`${prefix}palette-status`)}
-					onChangeInline={({ color }) =>
-						onChangeInlineValue({ color })
-					}
-					onChange={({
-						color,
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-					}) =>
+				)}
+				{!disableColor && !isStyleCards && (
+					<ColorControl
+						label={__('Font', 'maxi-blocks')}
+						className='maxi-typography-control__color'
+						color={getValue(`${prefix}color`)}
+						prefix={prefix}
+						paletteColor={getValue(`${prefix}palette-color`)}
+						paletteOpacity={getOpacityValue(
+							`${prefix}palette-opacity`
+						)}
+						paletteStatus={getValue(`${prefix}palette-status`)}
+						onChangeInline={({ color }) =>
+							onChangeInlineValue({ color })
+						}
+						onChange={({
+							color,
+							paletteColor,
+							paletteStatus,
+							paletteOpacity,
+						}) =>
+							onChangeFormat({
+								[`${prefix}color`]: color,
+								[`${prefix}palette-color`]: paletteColor,
+								[`${prefix}palette-status`]: paletteStatus,
+								[`${prefix}palette-opacity`]: paletteOpacity,
+							})
+						}
+						globalProps={globalProps}
+						textLevel={textLevel}
+						isHover={isHover}
+						deviceType={breakpoint}
+						clientId={clientId}
+						disableGradient
+						disablePalette={disablePalette}
+					/>
+				)}
+				{!hideAlignment && (
+					<AlignmentControl
+						{...getGroupAttributes(props, 'textAlignment')}
+						className='maxi-typography-control__text-alignment'
+						label={__('Alignment', 'maxi-blocks')}
+						onChange={onChange}
+						breakpoint={breakpoint}
+						type='text'
+					/>
+				)}
+				<AdvancedNumberControl
+					className='maxi-typography-control__size'
+					label={__('Font size', 'maxi-blocks')}
+					enableUnit
+					unit={getValue(`${prefix}font-size-unit`, !isStyleCards)}
+					defaultUnit={getDefault(`${prefix}font-size-unit`)}
+					onChangeUnit={val => {
 						onChangeFormat({
-							[`${prefix}color`]: color,
-							[`${prefix}palette-color`]: paletteColor,
-							[`${prefix}palette-status`]: paletteStatus,
-							[`${prefix}palette-opacity`]: paletteOpacity,
+							[`${prefix}font-size-unit`]: val,
+						});
+					}}
+					placeholder={getValue(`${prefix}font-size`, !isStyleCards)}
+					value={getValue(
+						`${prefix}font-size`,
+						null,
+						!isStyleCards,
+						true
+					)}
+					defaultValue={getDefault(`${prefix}font-size`)}
+					onChangeValue={val => {
+						onChangeFormat({
+							[`${prefix}font-size`]: val,
+						});
+					}}
+					onReset={() =>
+						onChangeFormat({
+							[`${prefix}font-size-unit`]: getDefault(
+								`${prefix}font-size-unit`
+							),
+							[`${prefix}font-size`]: getDefault(
+								`${prefix}font-size`
+							),
 						})
 					}
-					globalProps={globalProps}
-					textLevel={textLevel}
-					isHover={isHover}
-					deviceType={breakpoint}
-					clientId={clientId}
-					disableGradient
-					disablePalette={disablePalette}
+					minMaxSettings={minMaxSettings}
+					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
-			)}
-			{!hideAlignment && (
-				<AlignmentControl
-					{...getGroupAttributes(props, 'textAlignment')}
-					className='maxi-typography-control__text-alignment'
-					label={__('Alignment', 'maxi-blocks')}
-					onChange={onChange}
-					breakpoint={breakpoint}
-					type='text'
+				<AdvancedNumberControl
+					className='maxi-typography-control__line-height'
+					label={__('Line height', 'maxi-blocks')}
+					enableUnit
+					unit={
+						getValue(`${prefix}line-height-unit`, !isStyleCards) ||
+						''
+					}
+					defaultUnit={getDefault(`${prefix}line-height-unit`)}
+					onChangeUnit={val => {
+						onChangeFormat({
+							[`${prefix}line-height-unit`]: val,
+							...(val === '-' && {
+								[`${prefix}line-height`]:
+									minMaxSettings['-'].max,
+							}),
+						});
+					}}
+					placeholder={getValue(
+						`${prefix}line-height`,
+						!isStyleCards
+					)}
+					value={getValue(
+						`${prefix}line-height`,
+						!isStyleCards,
+						true
+					)}
+					defaultValue={getDefault(`${prefix}line-height`)}
+					onChangeValue={val => {
+						onChangeFormat({
+							[`${prefix}line-height`]: val,
+						});
+					}}
+					onReset={() =>
+						onChangeFormat({
+							[`${prefix}line-height-unit`]: getDefault(
+								`${prefix}line-height-unit`
+							),
+							[`${prefix}line-height`]: getDefault(
+								`${prefix}line-height`
+							),
+						})
+					}
+					minMaxSettings={minMaxSettings}
+					allowedUnits={['px', 'em', 'vw', '%', '-']}
 				/>
-			)}
-			{styleCards ? (
-				<ResponsiveTabsControl
-					className='maxi-typography-control__text-options-tabs'
-					breakpoint={breakpoint}
-				>
-					<TextOptions
+				<AdvancedNumberControl
+					className='maxi-typography-control__letter-spacing'
+					label={__('Letter spacing', 'maxi-blocks')}
+					enableUnit
+					allowedUnits={['px', 'em', 'vw']}
+					unit={getValue(
+						`${prefix}letter-spacing-unit`,
+						!isStyleCards
+					)}
+					defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
+					onChangeUnit={val => {
+						onChangeFormat({
+							[`${prefix}letter-spacing-unit`]: val,
+						});
+					}}
+					placeholder={getValue(
+						`${prefix}letter-spacing`,
+						!isStyleCards
+					)}
+					value={getValue(
+						`${prefix}letter-spacing`,
+						!isStyleCards,
+						true
+					)}
+					defaultValue={getDefault(`${prefix}letter-spacing`)}
+					onChangeValue={val => {
+						onChangeFormat({
+							[`${prefix}letter-spacing`]: val,
+						});
+					}}
+					onReset={() =>
+						onChangeFormat({
+							[`${prefix}letter-spacing-unit`]: getDefault(
+								`${prefix}letter-spacing-unit`
+							),
+							[`${prefix}letter-spacing`]: getDefault(
+								`${prefix}letter-spacing`
+							),
+						})
+					}
+					minMaxSettings={minMaxSettingsLetterSpacing}
+					step={0.1}
+				/>
+				<hr />
+				{!disableFontFamily &&
+					!disableColor &&
+					!isStyleCards &&
+					!hideAlignment && <hr style={{ margin: '15px 0' }} />}
+				<FontWeightControl
+					onChange={val => {
+						onChangeFormat({ [`${prefix}font-weight`]: val });
+					}}
+					fontWeight={getValue(`${prefix}font-weight`)}
+					fontName={getValue(`${prefix}font-family`)}
+					fontStyle={getValue(`${prefix}font-style`)}
+					prefix={prefix}
+				/>
+				<SelectControl
+					label={__('Text transform', 'maxi-blocks')}
+					className='maxi-typography-control__transform'
+					value={getValue(`${prefix}text-transform`)}
+					options={[
+						{
+							label: __('Default', 'maxi-blocks'),
+							value: 'none',
+						},
+						{
+							label: __('Capitalize', 'maxi-blocks'),
+							value: 'capitalize',
+						},
+						{
+							label: __('Uppercase', 'maxi-blocks'),
+							value: 'uppercase',
+						},
+						{
+							label: __('Lowercase', 'maxi-blocks'),
+							value: 'lowercase',
+						},
+					]}
+					onChange={val => {
+						onChangeFormat({
+							[`${prefix}text-transform`]: val,
+						});
+					}}
+				/>
+				<SelectControl
+					label={__('Style', 'maxi-blocks')}
+					className='maxi-typography-control__font-style'
+					value={getValue(`${prefix}font-style`)}
+					options={[
+						{
+							label: __('Default', 'maxi-blocks'),
+							value: 'normal',
+						},
+						{
+							label: __('Italic', 'maxi-blocks'),
+							value: 'italic',
+						},
+						{
+							label: __('Oblique', 'maxi-blocks'),
+							value: 'oblique',
+						},
+					]}
+					onChange={val => {
+						onChangeFormat({
+							[`${prefix}font-style`]: val,
+						});
+					}}
+				/>
+				<SelectControl
+					label={__('Text decoration', 'maxi-blocks')}
+					className='maxi-typography-control__decoration'
+					value={getValue(`${prefix}text-decoration`)}
+					options={[
+						{
+							label: __('Default', 'maxi-blocks'),
+							value: 'none',
+						},
+						{
+							label: __('Overline', 'maxi-blocks'),
+							value: 'overline',
+						},
+						{
+							label: __('Line through', 'maxi-blocks'),
+							value: 'line-through',
+						},
+						{
+							label: __('Underline', 'maxi-blocks'),
+							value: 'underline',
+						},
+						{
+							label: __('Underline overline', 'maxi-blocks'),
+							value: 'underline overline',
+						},
+					]}
+					onChange={val => {
+						onChangeFormat({
+							[`${prefix}text-decoration`]: val,
+						});
+					}}
+				/>
+				<SelectControl
+					label={__('Text orientation', 'maxi-blocks')}
+					className='maxi-typography-control__orientation'
+					value={getValue(`${prefix}text-orientation`)}
+					options={[
+						{
+							label: __('None', 'maxi-blocks'),
+							value: 'unset',
+						},
+						{
+							label: __('Mixed', 'maxi-blocks'),
+							value: 'mixed',
+						},
+						{
+							label: __('Upright', 'maxi-blocks'),
+							value: 'upright',
+						},
+						{
+							label: __('Sideways', 'maxi-blocks'),
+							value: 'sideways',
+						},
+					]}
+					onChange={val => {
+						onChangeFormat(
+							{
+								[`${prefix}text-orientation`]: val,
+							},
+							true
+						);
+					}}
+				/>
+				<SelectControl
+					label={__('Text direction', 'maxi-blocks')}
+					className='maxi-typography-control__direction'
+					value={getValue(`${prefix}text-direction`)}
+					options={[
+						{
+							label: __('Left to right', 'maxi-blocks'),
+							value: 'ltr',
+						},
+						{
+							label: __('Right to left', 'maxi-blocks'),
+							value: 'rtl',
+						},
+					]}
+					onChange={val => {
+						onChangeFormat({
+							[`${prefix}text-direction`]: val,
+						});
+					}}
+				/>
+				<AdvancedNumberControl
+					className='maxi-typography-control__text-indent'
+					label={__('Text indent', 'maxi-blocks')}
+					enableUnit
+					unit={getValue(`${prefix}text-indent-unit`)}
+					defaultUnit={getDefault(`${prefix}text-indent-unit`)}
+					onChangeUnit={val => {
+						onChangeFormat(
+							{
+								[`${prefix}text-indent-unit`]: val,
+							},
+							true
+						);
+					}}
+					placeholder={getValue(`${prefix}text-indent`)}
+					value={getValue(
+						`${prefix}text-indent`,
+						breakpoint,
+						false,
+						true
+					)}
+					defaultValue={getDefault(`${prefix}text-indent`)}
+					onChangeValue={val => {
+						onChangeFormat(
+							{
+								[`${prefix}text-indent`]: val,
+							},
+							true
+						);
+					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}text-indent-unit`]: getDefault(
+									`${prefix}text-indent-unit`
+								),
+								[`${prefix}text-indent`]: getDefault(
+									`${prefix}text-indent`
+								),
+							},
+							true
+						)
+					}
+					minMaxSettings={{
+						px: {
+							min: -99,
+							max: 99,
+						},
+						em: {
+							min: -99,
+							max: 99,
+						},
+						vw: {
+							min: -99,
+							max: 99,
+						},
+						'%': {
+							min: -100,
+							max: 100,
+						},
+					}}
+					allowedUnits={['px', 'em', 'vw', '%']}
+				/>
+				{!hideTextShadow && (
+					<>
+						<hr />
+						<TextShadowControl
+							className='maxi-typography-control__text-shadow'
+							textShadow={getValue(`${prefix}text-shadow`)}
+							onChangeInline={val =>
+								onChangeInlineValue({ 'text-shadow': val })
+							}
+							onChange={val => {
+								onChangeFormat({
+									[`${prefix}text-shadow`]: val,
+								});
+							}}
+							defaultColor={getLastBreakpointAttribute({
+								target: 'color',
+								breakpoint,
+								attributes: typography,
+							})}
+							blockStyle={blockStyle}
+							breakpoint={breakpoint}
+						/>
+					</>
+				)}
+				{allowLink && (
+					<LinkOptions
 						getValue={getValue}
 						getDefault={getDefault}
+						onChangeInline={onChangeInlineValue}
 						onChangeFormat={onChangeFormat}
 						prefix={prefix}
-						minMaxSettings={minMaxSettings}
-						minMaxSettingsLetterSpacing={
-							minMaxSettingsLetterSpacing
-						}
-						avoidXXL={!styleCards}
-					/>
-				</ResponsiveTabsControl>
-			) : (
-				<TextOptions
-					getValue={getValue}
-					getDefault={getDefault}
-					onChangeFormat={onChangeFormat}
-					prefix={prefix}
-					minMaxSettings={minMaxSettings}
-					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
-					avoidXXL={!styleCards}
-				/>
-			)}
-			<hr />
-			{!disableFontFamily &&
-				!disableColor &&
-				!styleCards &&
-				!hideAlignment && <Divider />}
-			<FontWeightControl
-				onChange={val => {
-					onChangeFormat({ [`${prefix}font-weight`]: val });
-				}}
-				fontWeight={getValue(`${prefix}font-weight`)}
-				fontName={getValue(`${prefix}font-family`)}
-				fontStyle={getValue(`${prefix}font-style`)}
-				prefix={prefix}
-			/>
-			<SelectControl
-				label={__('Text transform', 'maxi-blocks')}
-				className='maxi-typography-control__transform'
-				value={getValue(`${prefix}text-transform`)}
-				options={[
-					{
-						label: __('Default', 'maxi-blocks'),
-						value: 'none',
-					},
-					{
-						label: __('Capitalize', 'maxi-blocks'),
-						value: 'capitalize',
-					},
-					{
-						label: __('Uppercase', 'maxi-blocks'),
-						value: 'uppercase',
-					},
-					{
-						label: __('Lowercase', 'maxi-blocks'),
-						value: 'lowercase',
-					},
-				]}
-				onChange={val => {
-					onChangeFormat({
-						[`${prefix}text-transform`]: val,
-					});
-				}}
-			/>
-			<SelectControl
-				label={__('Style', 'maxi-blocks')}
-				className='maxi-typography-control__font-style'
-				value={getValue(`${prefix}font-style`)}
-				options={[
-					{
-						label: __('Default', 'maxi-blocks'),
-						value: 'normal',
-					},
-					{
-						label: __('Italic', 'maxi-blocks'),
-						value: 'italic',
-					},
-					{
-						label: __('Oblique', 'maxi-blocks'),
-						value: 'oblique',
-					},
-				]}
-				onChange={val => {
-					onChangeFormat({
-						[`${prefix}font-style`]: val,
-					});
-				}}
-			/>
-			<SelectControl
-				label={__('Text decoration', 'maxi-blocks')}
-				className='maxi-typography-control__decoration'
-				value={getValue(`${prefix}text-decoration`)}
-				options={[
-					{
-						label: __('Default', 'maxi-blocks'),
-						value: 'none',
-					},
-					{
-						label: __('Overline', 'maxi-blocks'),
-						value: 'overline',
-					},
-					{
-						label: __('Line through', 'maxi-blocks'),
-						value: 'line-through',
-					},
-					{
-						label: __('Underline', 'maxi-blocks'),
-						value: 'underline',
-					},
-					{
-						label: __('Underline overline', 'maxi-blocks'),
-						value: 'underline overline',
-					},
-				]}
-				onChange={val => {
-					onChangeFormat({
-						[`${prefix}text-decoration`]: val,
-					});
-				}}
-			/>
-			<SelectControl
-				label={__('Text orientation', 'maxi-blocks')}
-				className='maxi-typography-control__orientation'
-				value={getValue(`${prefix}text-orientation`)}
-				options={[
-					{
-						label: __('None', 'maxi-blocks'),
-						value: 'unset',
-					},
-					{
-						label: __('Mixed', 'maxi-blocks'),
-						value: 'mixed',
-					},
-					{
-						label: __('Upright', 'maxi-blocks'),
-						value: 'upright',
-					},
-					{
-						label: __('Sideways', 'maxi-blocks'),
-						value: 'sideways',
-					},
-				]}
-				onChange={val => {
-					onChangeFormat(
-						{
-							[`${prefix}text-orientation`]: val,
-						},
-						breakpoint,
-						true
-					);
-				}}
-			/>
-			<SelectControl
-				label={__('Text direction', 'maxi-blocks')}
-				className='maxi-typography-control__direction'
-				value={getValue(`${prefix}text-direction`)}
-				options={[
-					{
-						label: __('Left to right', 'maxi-blocks'),
-						value: 'ltr',
-					},
-					{
-						label: __('Right to left', 'maxi-blocks'),
-						value: 'rtl',
-					},
-				]}
-				onChange={val => {
-					onChangeFormat({
-						[`${prefix}text-direction`]: val,
-					});
-				}}
-			/>
-			<AdvancedNumberControl
-				className='maxi-typography-control__text-indent'
-				label={__('Text indent', 'maxi-blocks')}
-				enableUnit
-				unit={getValue(`${prefix}text-indent-unit`, breakpoint)}
-				defaultUnit={getDefault(
-					`${prefix}text-indent-unit`,
-					breakpoint
-				)}
-				onChangeUnit={val => {
-					onChangeFormat(
-						{
-							[`${prefix}text-indent-unit`]: val,
-						},
-						breakpoint,
-						true
-					);
-				}}
-				placeholder={getValue(`${prefix}text-indent`, breakpoint)}
-				value={getValue(
-					`${prefix}text-indent`,
-					breakpoint,
-					false,
-					true
-				)}
-				defaultValue={getDefault(`${prefix}text-indent`, breakpoint)}
-				onChangeValue={val => {
-					onChangeFormat(
-						{
-							[`${prefix}text-indent`]: val,
-						},
-						breakpoint,
-						true
-					);
-				}}
-				onReset={() =>
-					onChangeFormat(
-						{
-							[`${prefix}text-indent-unit`]: getDefault(
-								`${prefix}text-indent-unit`
-							),
-							[`${prefix}text-indent`]: getDefault(
-								`${prefix}text-indent`
-							),
-						},
-						breakpoint,
-						true
-					)
-				}
-				minMaxSettings={{
-					px: {
-						min: -99,
-						max: 99,
-					},
-					em: {
-						min: -99,
-						max: 99,
-					},
-					vw: {
-						min: -99,
-						max: 99,
-					},
-					'%': {
-						min: -100,
-						max: 100,
-					},
-				}}
-				allowedUnits={['px', 'em', 'vw', '%']}
-			/>
-			{!hideTextShadow && (
-				<>
-					<hr />
-					<TextShadowControl
-						className='maxi-typography-control__text-shadow'
-						textShadow={getValue(`${prefix}text-shadow`)}
-						onChangeInline={val =>
-							onChangeInlineValue({ 'text-shadow': val })
-						}
-						onChange={val => {
-							onChangeFormat({
-								[`${prefix}text-shadow`]: val,
-							});
-						}}
-						defaultColor={getLastBreakpointAttribute({
-							target: 'color',
-							breakpoint,
-							attributes: typography,
-						})}
-						blockStyle={blockStyle}
 						breakpoint={breakpoint}
+						textLevel={textLevel}
+						isHover={isHover}
+						clientId={clientId}
+						getOpacityValue={getOpacityValue}
 					/>
-				</>
-			)}
-			{allowLink && (
-				<LinkOptions
-					getValue={getValue}
-					getDefault={getDefault}
-					onChangeInline={onChangeInlineValue}
-					onChangeFormat={onChangeFormat}
-					prefix={prefix}
-					breakpoint={breakpoint}
-					textLevel={textLevel}
-					isHover={isHover}
-					clientId={clientId}
-					getOpacityValue={getOpacityValue}
-				/>
-			)}
-		</div>
+				)}
+			</div>
+		</ResponsiveTabsControl>
 	);
-});
+};
 
 export default TypographyControl;

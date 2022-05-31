@@ -33,11 +33,11 @@ const MaxiStyleCardsEditorPopUp = () => {
 			<Button
 				id='maxi-button__go-to-customizer'
 				className='action-buttons__button style-card-button'
-				aria-label={__('Style Card Editor', 'maxi-blocks')}
+				aria-label={__('Style card manager', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
 				<Icon icon={styleCardMenu} />
-				<span>{__('Style Card Editor', 'maxi-blocks')}</span>
+				<span>{__('Style card manager', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && (
 				<MaxiStyleCardsEditor

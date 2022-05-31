@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -120,6 +119,7 @@ const NumberCounter = attributes => {
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
+			deviceType={deviceType}
 			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',
@@ -270,8 +270,6 @@ class edit extends MaxiBlockComponent {
 		const classes = 'maxi-number-counter-block';
 
 		const handleOnResizeStop = (event, direction, elt) => {
-			const deviceType =
-				select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 			const widthUnit = getLastBreakpointAttribute({
 				target: 'number-counter-width-unit',
 				breakpoint: deviceType,

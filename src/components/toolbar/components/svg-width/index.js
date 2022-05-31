@@ -39,7 +39,6 @@ const SvgWidth = props => {
 					prefix='svg-'
 					breakpoint={breakpoint}
 					resizableObject={resizableObject}
-					enableResponsive
 				/>
 				{type !== 'Shape' && (
 					<SvgStrokeWidthControl

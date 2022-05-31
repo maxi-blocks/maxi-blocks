@@ -336,7 +336,7 @@ const CopyPaste = props => {
 				!isEqual(currentOrganizedAttributes, organizedAttributes) && (
 					<Dropdown
 						className='maxi-copypaste__copy-selector'
-						contentClassName='maxi-more-settings__popover maxi-dropdown__child-content'
+						contentClassName='maxi-more-settings__popover maxi-dropdown__child-content maxi-copy-paste__popover'
 						position='right bottom'
 						renderToggle={({ isOpen, onToggle }) => (
 							<Button

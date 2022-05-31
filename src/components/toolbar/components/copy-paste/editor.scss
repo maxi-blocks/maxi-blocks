@@ -1,119 +1,3 @@
-// .toolbar-item__copy-paste {
-// 	&__popover {
-// 		min-width: 170px;
-
-// 		form {
-// 			max-height: 196px;
-// 			overflow-y: scroll;
-// 			padding: 0 12px 10px;
-// 			background-color: var(--maxi-white-1-color);
-
-// 			/* width */
-// 			&::-webkit-scrollbar {
-// 				width: 5px;
-// 			}
-
-// 			/* Track */
-// 			&::-webkit-scrollbar-track {
-// 				background: #fff;
-// 			}
-
-// 			/* Handle */
-// 			&::-webkit-scrollbar-thumb {
-// 				background: #b4b4b4;
-// 				border-radius: 0;
-// 				cursor: pointer;
-// 			}
-
-// 			/* Handle on hover */
-// 			&::-webkit-scrollbar-thumb:hover {
-// 				background: #007cba;
-// 			}
-// 		}
-
-// 		&__item {
-// 			.maxi-axis-control__content__item__checkbox {
-// 				display: flex;
-// 				align-items: center;
-// 				color: var(--maxi-black-1-color);
-// 				font-size: 12px;
-// 				margin-top: 4px;
-// 			}
-// 		}
-
-// 		input[type='checkbox'] {
-// 			border-color: #50575e;
-// 			border-radius: 0;
-// 			margin: 0 5px 0 0;
-
-// 			&:focus {
-// 				box-shadow: none;
-// 			}
-
-// 			&:checked {
-// 				&::before {
-// 					content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
-// 					margin: -0.2rem 0 0 -0.34rem;
-// 				}
-
-// 				& ~ span {
-// 					color: var(--maxi-primary-color);
-// 				}
-// 			}
-// 		}
-
-// 		&__button {
-// 			display: flex;
-// 			width: 100%;
-// 			color: var(--maxi-black-1-color);
-// 			text-align: left;
-// 			border-radius: 0;
-// 			box-shadow: none;
-
-// 			&.toolbar-item__copy-nested-block__popover__button {
-// 				&::before {
-// 					content: '';
-// 					display: block;
-// 					position: absolute;
-// 					top: 0;
-// 					left: 0;
-// 					bottom: 0;
-// 					width: 100%;
-// 					height: 1px;
-// 					margin: 0;
-// 					background-color: var(--maxi-grey-1-color);
-// 				}
-// 			}
-
-// 			svg {
-// 				width: 20px;
-// 			}
-
-// 			&--special {
-// 				display: block;
-// 				height: 30px;
-// 				margin-top: 10px;
-// 				background: var(--maxi-primary-color);
-// 				border-radius: 0;
-// 				color: #fff;
-// 				font-size: 12px;
-// 				text-align: center !important;
-
-// 				&::after {
-// 					display: none !important;
-// 				}
-// 			}
-
-// 			&:last-child {
-// 				border-bottom: none;
-// 			}
-
-// 			&:hover {
-// 				color: var(--maxi-secondary-color);
-// 			}
-// 		}
-// 	}
-// }
 .toolbar-item__copy-paste {
 	&__popover {
 		min-width: 170px;
@@ -148,14 +32,23 @@
 		}
 
 		&__item {
-			border-bottom: 1px solid #dbdde6;
+			border-top: 1px solid #dbdde6;
 			position: relative;
 			cursor: pointer;
 			margin: 0;
 			padding: 5px 7px;
 			&[data-copy_paste_group] {
 				padding: 3px 7px 3px 15px;
-				border-bottom: 0;
+				border-top: 0;
+				& + .toolbar-item__copy-paste__popover__item {
+					&:not([data-copy_paste_group]) {
+						margin-top: 5px;
+					}
+				}
+			}
+
+			&:last-child {
+				border-bottom: 1px solid #dbdde6;
 			}
 
 			.maxi-axis-control__content__item__checkbox {
@@ -180,10 +73,6 @@
 						content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
 						margin: -0.2rem 0 0 -0.34rem;
 					}
-
-					// & ~ span {
-					// 	color: var(--maxi-primary-color);
-					// }
 				}
 			}
 		}

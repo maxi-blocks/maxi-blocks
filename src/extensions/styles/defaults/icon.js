@@ -31,6 +31,10 @@ export const icon = {
 				type: 'number',
 				default: 5,
 			},
+			'icon-stroke': {
+				type: 'number',
+				default: 2,
+			},
 		},
 	}),
 	...prefixAttributesCreator({

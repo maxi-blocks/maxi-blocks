@@ -37,6 +37,11 @@
 			cursor: pointer;
 			margin: 0;
 			padding: 5px 7px;
+			display: flex;
+			align-items: center;
+			&:hover {
+				background-color: #eaf2f6;
+			}
 			&[data-copy_paste_group] {
 				padding: 3px 7px 3px 15px;
 				border-top: 0;
@@ -45,6 +50,10 @@
 						margin-top: 5px;
 					}
 				}
+			}
+
+			&:first-child {
+				border-top: none;
 			}
 
 			&:last-child {
@@ -62,8 +71,11 @@
 			input[type='checkbox'] {
 				border-color: #e1e2ea;
 				border-radius: 0;
-				margin: 0 5px 0 0;
-
+				margin: 0;
+				box-shadow: none;
+				&:hover {
+					border-color: #000;
+				}
 				&:focus {
 					box-shadow: none;
 				}
@@ -73,6 +85,14 @@
 						content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
 						margin: -0.2rem 0 0 -0.34rem;
 					}
+				}
+				& + span {
+					padding-left: 5px;
+				}
+			}
+			&__group {
+				label {
+					pointer-events: none;
 				}
 			}
 		}
@@ -159,6 +179,7 @@
 .maxi-copy-paste__popover {
 	.components-popover__content {
 		width: 210px !important;
+		border-radius: 0 !important;
 
 		/* width */
 		&::-webkit-scrollbar {

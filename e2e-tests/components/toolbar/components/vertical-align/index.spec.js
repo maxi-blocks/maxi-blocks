@@ -32,7 +32,7 @@ describe('Vertical align align from Toolbar', () => {
 			button => button.click()
 		);
 
-		// change line size
+		// change vertical align
 		const selector = await page.$(
 			'.toolbar-item__vertical-align__popover select'
 		);

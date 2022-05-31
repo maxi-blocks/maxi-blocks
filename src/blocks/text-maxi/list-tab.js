@@ -573,7 +573,7 @@ const listTab = props => {
 									'list-palette-status': paletteStatus,
 									'list-palette-color': paletteColor,
 									'list-palette-opacity': paletteOpacity,
-									'list-color': colorStr,
+									'list-color': color,
 									...(listStyleCustom?.includes('<svg ') && {
 										listStyleCustom: setSVGColor({
 											svg: listStyleCustom,

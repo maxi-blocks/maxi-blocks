@@ -5,7 +5,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	getAttributes,
+	changeResponsive,
+	getBlockAttributes,
+} from '../../utils';
 
 describe('OverflowControl', () => {
 	it('Checking the overflow control', async () => {
@@ -27,7 +32,7 @@ describe('OverflowControl', () => {
 		expect(await getAttributes('overflow-y-general')).toStrictEqual('auto');
 	});
 
-	/* it('Checking the overflow responsive', async () => {
+	it('Checking the overflow responsive', async () => {
 		await changeResponsive(page, 's');
 
 		const responsiveSOverflowX = await page.$$eval(
@@ -65,5 +70,5 @@ describe('OverflowControl', () => {
 		);
 
 		expect(responsiveMOverflowX).toStrictEqual('hidden');
-	}); */
+	});
 });

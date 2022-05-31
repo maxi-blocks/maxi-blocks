@@ -1,8 +1,7 @@
 /**
  * Internal dependencies
  */
-import MaxiBlock from '../../components/maxi-block';
-import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
+import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 
 /**
  * Save

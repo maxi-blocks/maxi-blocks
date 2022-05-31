@@ -69,13 +69,8 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground']),
-				blockStyle: props.blockStyle,
-			}),
-		},
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
@@ -111,13 +106,6 @@ const getHoverWrapperObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground'], true),
-				blockStyle: props.blockStyle,
-				isHover: true,
-			}),
-		},
 	};
 
 	return response;
@@ -248,6 +236,29 @@ const getStyles = props => {
 					},
 					target: '.maxi-number-counter__box',
 					blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					blockStyle: props.blockStyle,
+					isHover: true,
 				}),
 			},
 			selectorsNumberCounter,

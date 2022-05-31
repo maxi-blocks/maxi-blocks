@@ -47,12 +47,11 @@ const BorderColorControl = props => {
 		onChange,
 		clientId,
 		globalProps,
-		isToolbar,
 	} = props;
 
 	return (
 		<ColorControl
-			{...(!isToolbar && { label: __('Border', 'maxi-blocks') })}
+			label={__('Border', 'maxi-blocks')}
 			color={getLastBreakpointAttribute({
 				target: `${prefix}border-color`,
 				breakpoint,

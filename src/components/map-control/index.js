@@ -95,7 +95,7 @@ const MapControl = props => {
 				))}
 			</div>
 			<OpacityControl
-				label={__('Marker Opacity', 'maxi-blocks')}
+				label={__('Marker opacity', 'maxi-blocks')}
 				opacity={props['map-marker-opacity']}
 				onChange={val =>
 					onChange({
@@ -104,7 +104,7 @@ const MapControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
-				label={__('Marker Scale', 'maxi-blocks')}
+				label={__('Marker scale', 'maxi-blocks')}
 				min={1}
 				max={10}
 				initial={1}
@@ -119,7 +119,7 @@ const MapControl = props => {
 				}
 			/>
 			<ToggleSwitch
-				label={__('Custom Maker Colours', 'maxi-block')}
+				label={__('Custom marker colours', 'maxi-block')}
 				selected={props['map-marker-custom-color-status']}
 				onChange={val =>
 					onChange({
@@ -130,7 +130,7 @@ const MapControl = props => {
 			{props['map-marker-custom-color-status'] && (
 				<>
 					<ColorControl
-						label={__('Marker Fill', 'maxi-blocks')}
+						label={__('Marker fill', 'maxi-blocks')}
 						disableOpacity
 						color={props['map-marker-fill-color']}
 						prefix='map-marker-fill-'
@@ -140,7 +140,7 @@ const MapControl = props => {
 						disablePalette
 					/>
 					<ColorControl
-						label={__('Marker Stroke', 'maxi-blocks')}
+						label={__('Marker stroke', 'maxi-blocks')}
 						disableOpacity
 						color={props['map-marker-stroke-color']}
 						prefix='map-marker-stroke-'
@@ -154,12 +154,12 @@ const MapControl = props => {
 
 			<TextControl
 				className='maxi-map-control__full-width-text'
-				label={__('Marker Text', 'maxi-blocks')}
+				label={__('Marker text', 'maxi-blocks')}
 				value={props['map-marker-text']}
 				onChange={val => onChange({ 'map-marker-text': val })}
 			/>
 			<ColorControl
-				label={__('Marker Text', 'maxi-blocks')}
+				label={__('Marker text', 'maxi-blocks')}
 				paletteStatus={props['map-marker-text-palette-status']}
 				paletteColor={props['map-marker-text-palette-color']}
 				color={props['map-marker-text-color']}
@@ -175,12 +175,12 @@ const MapControl = props => {
 			/>
 			<TextControl
 				className='maxi-map-control__full-width-text'
-				label={__('Marker Address', 'maxi-blocks')}
+				label={__('Marker address', 'maxi-blocks')}
 				value={props['map-marker-address']}
 				onChange={val => onChange({ 'map-marker-address': val })}
 			/>
 			<ColorControl
-				label={__('Marker Address', 'maxi-blocks')}
+				label={__('Marker address', 'maxi-blocks')}
 				color={props['map-marker-address-color']}
 				prefix='map-marker-address-'
 				paletteColor={props['map-marker-address-palette-color']}

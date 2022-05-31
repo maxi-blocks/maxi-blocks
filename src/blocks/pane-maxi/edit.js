@@ -8,14 +8,9 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
-import { content } from '../../icons';
 
 /**
  * Edit
@@ -81,7 +76,6 @@ class edit extends MaxiBlockComponent {
 							);
 
 							paneContent.forEach(content => {
-								console.log(content.styles);
 								if (content.style.display === 'none')
 									content.style.display = '';
 								else

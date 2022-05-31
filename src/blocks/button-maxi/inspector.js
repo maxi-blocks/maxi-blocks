@@ -14,6 +14,8 @@ import {
 	IconControl,
 	SettingTabsControl,
 	ToggleSwitch,
+	ResponsiveTabsControl,
+	AlignmentControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -121,6 +123,9 @@ const Inspector = props => {
 		return without(categoriesButton, isEmpty(iconContent) && 'icon');
 	};
 
+	const alignmentLabel = __('Button', 'maxi-blocks');
+	const textAlignmentLabel = __('Text', 'maxi-blocks');
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -144,7 +149,7 @@ const Inspector = props => {
 									items={[
 										deviceType === 'general' && {
 											label: __(
-												'Style shortcut',
+												'Quick styles',
 												'maxi-blocks'
 											),
 											content: (
@@ -486,22 +491,74 @@ const Inspector = props => {
 												/>
 											),
 										},
-										...inspectorTabs.alignment({
-											props: {
-												...props,
-											},
-											isAlignment: true,
-											isTextAlignment: true,
-											alignmentLabel: __(
-												'Button',
+										{
+											label: __(
+												'Alignment',
 												'maxi-blocks'
 											),
-											textAlignmentLabel: __(
-												'Text',
-												'maxi-blocks'
+											content: (
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
+													<>
+														<>
+															<label
+																className='maxi-base-control__label'
+																htmlFor={`${alignmentLabel}-alignment`}
+															>
+																{`${alignmentLabel} alignment`}
+															</label>
+															<AlignmentControl
+																id={`${alignmentLabel}-alignment`}
+																label={
+																	alignmentLabel
+																}
+																{...getGroupAttributes(
+																	attributes,
+																	'alignment'
+																)}
+																onChange={obj =>
+																	maxiSetAttributes(
+																		obj
+																	)
+																}
+																breakpoint={
+																	deviceType
+																}
+																disableJustify
+															/>
+														</>
+														<>
+															<label
+																className='maxi-base-control__label'
+																htmlFor={`${textAlignmentLabel}-alignment`}
+															>
+																{`${textAlignmentLabel} alignment`}
+															</label>
+															<AlignmentControl
+																id={`${textAlignmentLabel}-alignment`}
+																label={
+																	textAlignmentLabel
+																}
+																{...getGroupAttributes(
+																	attributes,
+																	'textAlignment'
+																)}
+																onChange={obj =>
+																	maxiSetAttributes(
+																		obj
+																	)
+																}
+																breakpoint={
+																	deviceType
+																}
+																type='text'
+															/>
+														</>
+													</>
+												</ResponsiveTabsControl>
 											),
-											disableJustify: true,
-										}),
+										},
 										...inspectorTabs.typography({
 											props: {
 												...props,

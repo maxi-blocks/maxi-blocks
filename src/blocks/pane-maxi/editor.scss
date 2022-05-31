@@ -1,3 +1,10 @@
-.maxi-accordion-block__icon svg {
+.maxi-pane-block__icon svg {
 	width: 32px;
+	position: absolute;
+	right: 20px;
+	top: -5px;
+}
+.maxi-pane-block__header {
+	position: relative;
+	height: 50px;
 }

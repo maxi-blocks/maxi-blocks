@@ -166,6 +166,9 @@ const getMaxiBlockAttributes = props => {
 		clientId,
 		deviceType,
 		blockName: name,
+		...(name === 'maxi-blocks/pane-maxi' && {
+			paneExpanded: props.paneExpanded,
+		}),
 		blockStyle,
 		extraClassName,
 		anchorLink,

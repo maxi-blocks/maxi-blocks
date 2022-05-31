@@ -81,5 +81,8 @@ const actions = {
 			inspectorPath,
 		};
 	},
+	updateAccordionMaxiData(data) {
+		return { type: 'UPDATE_ACCORDION_MAXI_DATA', data };
+	},
 };
 export default actions;

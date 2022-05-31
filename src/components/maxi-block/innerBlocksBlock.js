@@ -31,6 +31,7 @@ const getInnerBlocksChild = ({
 	hasInnerBlocks,
 	isSelected,
 	hasSelectedChild,
+	paneExpanded,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -53,9 +54,10 @@ const getInnerBlocksChild = ({
 				/>
 			)),
 			...(children ?? children),
-			...cloneElement(innerBlocksChildren, {
-				key: `maxi-inner-content__${uniqueID}`,
-			}),
+			!(blockName === 'maxi-blocks/pane-maxi' && !paneExpanded) &&
+				cloneElement(innerBlocksChildren, {
+					key: `maxi-inner-content__${uniqueID}`,
+				}),
 			...(!isSave &&
 				hasInnerBlocks &&
 				blockName !== 'maxi-blocks/row-maxi' && (
@@ -126,6 +128,7 @@ const MainInnerBlocksBlock = forwardRef(
 			hasInnerBlocks,
 			isSelected,
 			hasSelectedChild,
+			paneExpanded,
 			...props
 		},
 		ref
@@ -159,6 +162,9 @@ const MainInnerBlocksBlock = forwardRef(
 				hasInnerBlocks,
 				isSelected,
 				hasSelectedChild,
+				...(blockName === 'maxi-blocks/pane-maxi' && {
+					paneExpanded,
+				}),
 			})
 		);
 

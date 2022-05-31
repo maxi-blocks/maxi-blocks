@@ -30,6 +30,7 @@ const withMaxiProps = createHigherOrderComponent(
 				hasInnerBlocks,
 				isChild,
 				hasSelectedChild,
+				paneExpanded,
 			} = useSelect(select => {
 				const { receiveMaxiDeviceType, receiveWinBreakpoint } =
 					select('maxiBlocks');
@@ -50,12 +51,29 @@ const withMaxiProps = createHigherOrderComponent(
 
 				const hasSelectedChild = hasSelectedInnerBlock(clientId, true);
 
+				let paneExpanded = false;
+				if (ownProps.name === 'maxi-blocks/pane-maxi') {
+					const parentAccordion = select(
+						'core/block-editor'
+					).getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/accordion-maxi'
+					);
+					if (parentAccordion) {
+						const accordionData =
+							select('maxiBlocks').receiveAccordionData();
+						paneExpanded =
+							accordionData[parentAccordion[0]] === clientId;
+					}
+				}
+
 				return {
 					deviceType,
 					winBreakpoint,
 					hasInnerBlocks,
 					isChild,
 					hasSelectedChild,
+					paneExpanded,
 				};
 			});
 
@@ -97,6 +115,22 @@ const withMaxiProps = createHigherOrderComponent(
 						ref
 					)
 			);
+			if (ownProps.name === 'maxi-blocks/pane-maxi')
+				return (
+					<WrappedComponent
+						{...ownProps}
+						ref={ref}
+						maxiSetAttributes={maxiSetAttributes}
+						insertInlineStyles={insertInlineStyles}
+						cleanInlineStyles={cleanInlineStyles}
+						deviceType={deviceType}
+						winBreakpoint={winBreakpoint}
+						hasInnerBlocks={hasInnerBlocks}
+						isChild={isChild}
+						hasSelectedChild={hasSelectedChild}
+						paneExpanded={paneExpanded}
+					/>
+				);
 
 			return (
 				<WrappedComponent

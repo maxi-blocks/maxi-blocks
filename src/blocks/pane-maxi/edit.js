@@ -4,6 +4,7 @@
 import { RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -50,7 +51,27 @@ class edit extends MaxiBlockComponent {
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<div id={`title-${clientId}`}>
+				<div
+					className='maxi-pane-block__header'
+					id={`title-${clientId}`}
+					onClick={() => {
+						const { getBlockParentsByBlockName } =
+							select('core/block-editor');
+						const parentAccordion = getBlockParentsByBlockName(
+							clientId,
+							'maxi-blocks/accordion-maxi'
+						);
+						if (parentAccordion) {
+							const openPane =
+								select('maxiBlocks').receiveAccordionData();
+							const accordionClientId = parentAccordion[0];
+							dispatch('maxiBlocks').updateAccordionMaxiData({
+								...openPane,
+								[accordionClientId]: clientId,
+							});
+						}
+					}}
+				>
 					<RichText
 						className='maxi-pane-block__title'
 						value={title}
@@ -68,24 +89,7 @@ class edit extends MaxiBlockComponent {
 						withoutInteractiveFormatting
 					/>
 
-					<div
-						className='maxi-accordion-block__icon'
-						onClick={() => {
-							const paneContent = document.querySelectorAll(
-								`#block-${clientId} > :not(div[id='title-${clientId}'])`
-							);
-
-							paneContent.forEach(content => {
-								if (content.style.display === 'none')
-									content.style.display = '';
-								else
-									content.setAttribute(
-										'style',
-										'display:none !important'
-									);
-							});
-						}}
-					>
+					<div className='maxi-pane-block__icon'>
 						<RawHTML>{attributes['icon-content']}</RawHTML>
 					</div>
 				</div>

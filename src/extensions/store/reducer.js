@@ -39,6 +39,7 @@ const reducer = (
 		copiedStyles: {},
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
+		accordionData: {},
 	},
 	action
 ) => {
@@ -114,6 +115,9 @@ const reducer = (
 				...state,
 				inspectorPath: newInspectorPath,
 			};
+		}
+		case 'UPDATE_ACCORDION_MAXI_DATA': {
+			return { ...state, accordionData: { ...action.data } };
 		}
 		default:
 			return state;

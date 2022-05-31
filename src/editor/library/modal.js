@@ -40,6 +40,7 @@ const MaxiModal = props => {
 		url,
 		title,
 		cardId,
+		prefix = '',
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
@@ -103,6 +104,15 @@ const MaxiModal = props => {
 							: __('Replace Icon', 'maxi-blocks')}
 					</Button>
 				)}
+				{type === 'video-icon' && (
+					<Button
+						className='maxi-library-modal__action-section__buttons__load-library'
+						onClick={onClick}
+						label={__('Lightbox close button', 'maxi-blocks')}
+					>
+						{__('Load shape library', 'maxi-blocks')}
+					</Button>
+				)}
 				{type === 'preview' && (
 					<Button
 						className='maxi-cloud-masonry-card__button'
@@ -120,6 +130,7 @@ const MaxiModal = props => {
 						url={url}
 						title={title}
 						cardId={cardId}
+						prefix={prefix}
 						className={`maxi-library-modal__${type}`}
 					/>
 				)}
@@ -170,6 +181,22 @@ const MaxiModal = props => {
 						}
 					/>
 					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
+						{icon}
+					</RawHTML>
+				</div>
+			)}
+			{type === 'video-icon' && !isEmpty(icon) && (
+				<div className='maxi-library-modal__action-section__preview'>
+					<Icon
+						className='maxi-library-modal__action-section__preview--remove'
+						icon={remove}
+						onClick={() =>
+							onRemove({
+								[`${prefix}icon-content`]: '',
+							})
+						}
+					/>
+					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
 						{icon}
 					</RawHTML>
 				</div>

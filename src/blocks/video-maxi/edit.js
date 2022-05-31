@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 // import { __ } from '@wordpress/i18n';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -19,6 +20,7 @@ import { videoValidation } from '../../extensions/video';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Icons
@@ -31,14 +33,17 @@ import { placeholderImage } from '../../icons';
 
 const VideoPopup = props => {
 	const { attributes, onClose } = props;
-	const { embedUrl } = attributes;
+	const { embedUrl, 'close-icon-content': closeIcon } = attributes;
 
 	return (
 		<div className='maxi-video-block__popup-wrapper'>
-			<span
+			{/* <span
 				className='maxi-video-block__close-button'
 				onClick={onClose}
-			/>
+			/> */}
+			<div className='maxi-video-block__close-button' onClick={onClose}>
+				<RawHTML>{closeIcon}</RawHTML>
+			</div>
 			<div className='maxi-video-block__iframe-container'>
 				<iframe
 					className='maxi-video-block__video-player'
@@ -85,8 +90,15 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, isSelected } = this.props;
-		const { blockFullWidth, fullWidth, uniqueID, embedUrl, isLightbox } =
-			attributes;
+		const {
+			blockFullWidth,
+			fullWidth,
+			uniqueID,
+			embedUrl,
+			isLightbox,
+			thumbnailId,
+			thumbnailUrl,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-video-block',
@@ -100,7 +112,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 				// copyPasteMapping={copyPasteMapping}
-				// prefix='video-'
 			/>,
 			<MaxiBlock
 				key={`maxi-video--${uniqueID}`}
@@ -112,6 +123,15 @@ class edit extends MaxiBlockComponent {
 					isLightbox ? (
 						<>
 							<div className='maxi-video-block__thumbnail'>
+								{!isNil(thumbnailId) || thumbnailUrl ? (
+									<img
+										className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
+										src={thumbnailUrl}
+										alt=''
+									/>
+								) : (
+									<Placeholder icon={placeholderImage} />
+								)}
 								<div
 									className='maxi-video-block__play-button'
 									onClick={() =>
@@ -135,7 +155,6 @@ class edit extends MaxiBlockComponent {
 								title='video player'
 								allowFullScreen
 								allow='autoplay'
-								sandbox='allow-scripts allow-same-origin allow-presentation'
 								src={embedUrl}
 							/>
 							{!isSelected && (

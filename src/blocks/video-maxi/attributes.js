@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { prefixAttributesCreator } from '../../extensions/styles';
 
 const attributes = {
 	...attributesData.global,
@@ -28,7 +29,19 @@ const attributes = {
 		default: 'stretch',
 	},
 	...attributesData.video,
-	...attributesData.blockBackground,
+	...prefixAttributesCreator({
+		obj: attributesData.background,
+		prefix: 'lightbox-',
+		diffValAttr: {
+			'lightbox-background-active-media-general': 'color',
+		},
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundColor,
+		prefix: 'lightbox-',
+		diffValAttr: { 'lightbox-background-palette-color-general': 2 },
+	}),
+
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

@@ -24,7 +24,7 @@ import { videoIcon } from '../../icons';
 registerBlockType('maxi-blocks/video-maxi', {
 	title: __('Video Maxi', 'maxi-blocks'),
 	icon: videoIcon,
-	description: 'Upload video',
+	description: 'Insert a video with conrols or lightbox',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

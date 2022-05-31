@@ -27,7 +27,7 @@ describe('ColumnPattern', () => {
 		);
 
 		// check default values
-		expect(await getAttributes('column-gap-general')).toStrictEqual(1.5);
+		expect(await getAttributes('column-gap-general')).toStrictEqual(2.5);
 		expect(await getAttributes('column-gap-unit-general')).toStrictEqual(
 			'%'
 		);
@@ -66,11 +66,11 @@ describe('ColumnPattern', () => {
 			instance: await page.$(
 				'.maxi-gap-control .maxi-gap-control__column-gap'
 			),
-			newNumber: '2.5',
+			newNumber: '32',
 			newValue: 'em',
 		});
 
-		expect(await getAttributes('column-gap-general')).toStrictEqual(2.5);
+		expect(await getAttributes('column-gap-general')).toStrictEqual(32);
 		expect(await getAttributes('column-gap-unit-general')).toStrictEqual(
 			'em'
 		);
@@ -188,7 +188,7 @@ describe('ColumnPattern', () => {
 		expect(rowGapValueM).toStrictEqual('14');
 		expect(rowGapSelectM).toStrictEqual('%');
 
-		expect(columnGapValueM).toStrictEqual('2.5');
+		expect(columnGapValueM).toStrictEqual('32');
 		expect(columnGapSelectM).toStrictEqual('em');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

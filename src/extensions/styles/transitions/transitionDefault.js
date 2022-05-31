@@ -2,7 +2,7 @@ const transitionDefault = {
 	canvas: {
 		border: {
 			title: 'Border',
-			target: '',
+			target: ', .maxi-background-displayer',
 			property: 'border',
 		},
 		'box shadow': {

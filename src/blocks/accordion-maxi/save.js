@@ -7,9 +7,10 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
  * Save
  */
 const save = props => {
+	const name = 'maxi-blocks/accordion-maxi';
 	return (
 		<MaxiBlock.save
-			{...getMaxiBlockAttributes({ ...props })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
 		/>
 	);

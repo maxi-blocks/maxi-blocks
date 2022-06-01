@@ -22,6 +22,14 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	get getMaxiCustomData() {
+		const response = {
+			accordion: this.props.name,
+		};
+
+		return response;
+	}
+
 	render() {
 		const { attributes, blockFullWidth, maxiSetAttributes } = this.props;
 		const { uniqueID, lastIndex } = attributes;

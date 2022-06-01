@@ -20,7 +20,7 @@ const attributes = {
 
 	customLabel: {
 		type: 'string',
-		default: __('Group', 'maxi-blocks'),
+		default: __('Accordion', 'maxi-blocks'),
 	},
 	blockFullWidth: {
 		type: 'string',

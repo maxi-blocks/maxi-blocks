@@ -69,6 +69,7 @@ class MaxiBlocks_Styles {
 				'number-counter',
 				'shape-divider',
 				'relations',
+				'accordion',
 			];
 
 			foreach ($scripts as &$script) {
@@ -82,7 +83,7 @@ class MaxiBlocks_Styles {
 					);
 				$jsScriptName = 'maxi-' . $script;
 				$jsScriptPath = '//js//' . $jsScriptName . '.min.js';
-
+				$jsName = '//js//' . $jsScriptName . '.js';
 				$meta = $this->customMeta($jsVar);
 
 				if (!empty($meta)) {
@@ -225,13 +226,17 @@ class MaxiBlocks_Styles {
 		$useLocalFonts = (bool) get_option('local_fonts');
 
 		foreach ($fonts as $font => $fontData) {
-			if(strpos($font, 'sc_font') !== false) {
+			if (strpos($font, 'sc_font') !== false) {
 				$split_font = explode('_', str_replace('sc_font_', '', $font));
 				$block_style = $split_font[0];
 				$text_level = $split_font[1];
 
-				if (class_exists('MaxiBlocks_StyleCards'))
-					$font = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level);
+				if (class_exists('MaxiBlocks_StyleCards')) {
+					$font = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts(
+						$block_style,
+						$text_level,
+					);
+				}
 			}
 
 			if ($font) {

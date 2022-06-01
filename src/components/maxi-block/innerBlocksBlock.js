@@ -53,15 +53,21 @@ const getInnerBlocksChild = ({
 					{...background}
 				/>
 			)),
-			...(children ?? children),
-			!(
-				blockName === 'maxi-blocks/pane-maxi' &&
-				!paneExpanded &&
-				!isSave
-			) &&
+			...(blockName !== 'maxi-blocks/accordion-maxi' &&
+				!!children &&
+				children),
+			!(blockName === 'maxi-blocks/pane-maxi' && !paneExpanded) &&
 				cloneElement(innerBlocksChildren, {
 					key: `maxi-inner-content__${uniqueID}`,
 				}),
+			blockName === 'maxi-blocks/pane-maxi' && isSave && (
+				<div className='maxi-pane-block__content'>
+					{cloneElement(innerBlocksChildren, {
+						key: `maxi-inner-content__${uniqueID}`,
+					})}
+				</div>
+			),
+			...(blockName === 'maxi-blocks/accordion-maxi' && children),
 			...(!isSave &&
 				hasInnerBlocks &&
 				blockName !== 'maxi-blocks/row-maxi' && (

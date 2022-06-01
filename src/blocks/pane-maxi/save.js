@@ -1,4 +1,10 @@
 /**
+ * WordPress dependencies
+ */
+import { RichText } from '@wordpress/block-editor';
+import { RawHTML } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
@@ -7,11 +13,26 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
  * Save
  */
 const save = props => {
+	const { attributes } = props;
+	const { title } = attributes;
+	const name = 'maxi-blocks/pane-maxi';
 	return (
 		<MaxiBlock.save
-			{...getMaxiBlockAttributes({ ...props })}
+			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
-		/>
+		>
+			<div className='maxi-pane-block__header'>
+				<RichText.Content
+					className='maxi-pane-block__title'
+					value={title}
+					tagName='span'
+				/>
+
+				<div className='maxi-pane-block__icon'>
+					<RawHTML>{attributes['icon-content']}</RawHTML>
+				</div>
+			</div>
+		</MaxiBlock.save>
 	);
 };
 

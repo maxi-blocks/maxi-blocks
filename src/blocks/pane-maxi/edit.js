@@ -53,7 +53,6 @@ class edit extends MaxiBlockComponent {
 			>
 				<div
 					className='maxi-pane-block__header'
-					id={`title-${clientId}`}
 					onClick={() => {
 						const { getBlockParentsByBlockName } =
 							select('core/block-editor');

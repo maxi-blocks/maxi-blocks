@@ -84,10 +84,24 @@ const VideoLightBox = props => {
  */
 
 const VideoPlayer = props => {
-	const { videoType, embedUrl } = props;
+	const {
+		videoType,
+		embedUrl,
+		isLoop,
+		isAutoplay,
+		isMuted,
+		showPlayerControls,
+	} = props;
 
 	return videoType === 'direct' ? (
-		<video src={embedUrl}>
+		<video
+			src={embedUrl}
+			className='maxi-video-block__video-player'
+			loop={isLoop}
+			muted={isMuted}
+			autoPlay={isAutoplay}
+			controls={showPlayerControls}
+		>
 			<track kind='captions' />
 		</video>
 	) : (

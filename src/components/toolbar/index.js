@@ -56,13 +56,13 @@ import {
 	getColorRGBAString,
 } from '../../extensions/styles';
 import { setSVGContent } from '../../extensions/svg';
+import SvgColorToolbar from './components/svg-color';
+import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Styles
  */
 import './editor.scss';
-import SvgColorToolbar from './components/svg-color';
-import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component

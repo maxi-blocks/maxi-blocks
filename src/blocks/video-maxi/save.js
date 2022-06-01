@@ -17,6 +17,7 @@ const save = props => {
 		isLightbox,
 		embedUrl,
 		'close-icon-content': closeIcon,
+		'play-icon-content': playIcon,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
@@ -26,22 +27,38 @@ const save = props => {
 			{embedUrl &&
 				videoValidation(embedUrl) &&
 				(isLightbox ? (
-					<div
-						className='maxi-video-block__popup-wrapper'
-						style={{ display: 'none' }}
-					>
-						<div className='maxi-video-block__close-button'>
-							<RawHTML>{closeIcon}</RawHTML>
+					<>
+						<div className='maxi-video-block__thumbnail'>
+							{/* {!isNil(thumbnailId) || thumbnailUrl ? (
+								<img
+									className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
+									src={thumbnailUrl}
+									alt=''
+								/>
+							) : (
+								<Placeholder icon={placeholderImage} />
+							)} */}
+							<div className='maxi-video-block__play-button'>
+								<RawHTML>{playIcon}</RawHTML>
+							</div>
 						</div>
-						<div className='maxi-video-block__iframe-container'>
-							<iframe
-								className='maxi-video-block__video-player'
-								title='video player'
-								allowFullScreen
-								allow='autoplay'
-							/>
+						<div
+							className='maxi-video-block__popup-wrapper'
+							style={{ display: 'none' }}
+						>
+							<div className='maxi-video-block__close-button'>
+								<RawHTML>{closeIcon}</RawHTML>
+							</div>
+							<div className='maxi-video-block__iframe-container'>
+								<iframe
+									className='maxi-video-block__video-player'
+									title='video player'
+									allowFullScreen
+									allow='autoplay'
+								/>
+							</div>
 						</div>
-					</div>
+					</>
 				) : (
 					<iframe
 						className='maxi-video-block__video-player'

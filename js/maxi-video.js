@@ -13,10 +13,15 @@ const videoEvents = () => {
 			const closeButton = video.querySelector(
 				'.maxi-video-block__close-button'
 			);
+			const playButton = video.querySelector(
+				'.maxi-video-block__play-button'
+			);
+			const thumbnail = video.querySelector(
+				'.maxi-video-block__thumbnail'
+			);
 			const iframe = video.querySelector('iframe');
 
 			const openVideo = e => {
-				if (e.target !== e.currentTarget) return;
 				wrapper.style.display = 'flex';
 				iframe.src = videoData['embedUrl'];
 			};
@@ -26,7 +31,8 @@ const videoEvents = () => {
 				iframe.src = '';
 			};
 
-			video.addEventListener('click', openVideo);
+			thumbnail.addEventListener('click', openVideo);
+			playButton.addEventListener('click', openVideo);
 			closeButton.addEventListener('click', closeVideo);
 			wrapper.addEventListener('click', closeVideo);
 		} else {

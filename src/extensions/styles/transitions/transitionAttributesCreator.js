@@ -1,5 +1,5 @@
-import breakpointAttributesCreator from './breakpointAttributesCreator';
-import transitionDefault from './transitions/transitionDefault';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import transitionDefault from './transitionDefault';
 
 const transitionRaw = breakpointAttributesCreator({
 	obj: {

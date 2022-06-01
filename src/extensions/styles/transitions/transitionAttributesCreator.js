@@ -2,12 +2,12 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import transitionDefault from './transitionDefault';
 
 const getHoverProp = (property, prefix = '') => {
-	const notOrdinary = {
-		'background / layer': 'block-background-status-hover',
-		background: 'background-hover-status',
-	};
-
-	const hoverProp = notOrdinary[property] || `${property}-status-hover`;
+	const hoverProp =
+		property === 'background'
+			? prefix
+				? 'background-hover-status'
+				: 'block-background-hover-status'
+			: `${property}-status-hover`;
 
 	return `${prefix}${hoverProp}`;
 };

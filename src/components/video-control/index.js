@@ -9,7 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import TextControl from '../text-control';
-import { getParsedVideoUrl } from '../../extensions/video';
+import { getParsedVideoUrl, parseVideo } from '../../extensions/video';
 
 const VideoControl = props => {
 	const { onChange, url: videoUrl, startTime, endTime } = props;
@@ -38,6 +38,7 @@ const VideoControl = props => {
 					onChange({
 						url: val,
 						embedUrl: getParsedVideoUrl({ val, ...props }),
+						videoType: parseVideo(val).type,
 					});
 				}}
 				validationText={validationText}

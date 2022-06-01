@@ -264,12 +264,7 @@ const getStyles = props => {
 						blockStyle,
 					}),
 				},
-				...getTransitionStyles(
-					{
-						...getGroupAttributes(props, 'transition'),
-					},
-					transitionObj
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsSvgIcon,
 			props

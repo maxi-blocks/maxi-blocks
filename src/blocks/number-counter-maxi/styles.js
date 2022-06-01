@@ -266,10 +266,7 @@ const getStyles = props => {
 						isHover: true,
 					}),
 				},
-				...getTransitionStyles(
-					{ ...getGroupAttributes(props, 'transition') },
-					transitionObj
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsNumberCounter,
 			props

@@ -7,6 +7,7 @@ const transitionObj = {
 			title: 'Box shadow',
 			target: ' hr.maxi-divider-block__divider',
 			property: 'box-shadow',
+			hoverProp: 'divider-box-shadow-status-hover',
 		},
 	},
 };

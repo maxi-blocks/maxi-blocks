@@ -574,12 +574,7 @@ const getStyles = (props, scValues) => {
 						blockStyle: props.blockStyle,
 					}),
 				},
-				...getTransitionStyles(
-					{
-						...getGroupAttributes(props, 'transition'),
-					},
-					transitionObj
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsButton,
 			props

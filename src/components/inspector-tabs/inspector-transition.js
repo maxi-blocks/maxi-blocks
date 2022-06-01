@@ -15,14 +15,24 @@ import SelectControl from '../select-control';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 /**
  * Component
  */
 const TransitionControlWrapper = props => {
 	const { attributes, deviceType, maxiSetAttributes, type } = props;
-	const { transition } = attributes;
+	const { transition: rawTransition } = attributes;
+
+	const transition = cloneDeep(rawTransition);
+
+	Object.keys(transition[type]).forEach(key => {
+		if (
+			transition[type][key]?.hoverProp &&
+			!attributes[transition[type][key].hoverProp]
+		)
+			delete transition[type][key];
+	});
 
 	return (
 		<>

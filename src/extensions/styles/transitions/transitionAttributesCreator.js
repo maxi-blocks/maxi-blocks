@@ -21,7 +21,12 @@ const transitionRaw = breakpointAttributesCreator({
 const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj
-			? Object.values(transitionObj).map(({ title }) => title)
+			? Object.values(transitionObj).map(({ title, hoverProp }) => {
+					return {
+						title,
+						hoverProp,
+					};
+			  })
 			: null;
 
 	const blockOptions = getTransitionOptions(transitionObj?.block);
@@ -38,21 +43,23 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	};
 
 	blockOptions &&
-		blockOptions.forEach(target => {
+		blockOptions.forEach(({ title, hoverProp }) => {
 			transitionStyleObj.block = {
 				...transitionStyleObj.block,
-				[target.toLowerCase()]: {
+				[title.toLowerCase()]: {
 					...transitionRawObj,
+					hoverProp,
 				},
 			};
 		});
 
 	canvasOptions &&
-		canvasOptions.forEach(target => {
+		canvasOptions.forEach(({ title, hoverProp }) => {
 			transitionStyleObj.canvas = {
 				...transitionStyleObj.canvas,
-				[target.toLowerCase()]: {
+				[title.toLowerCase()]: {
 					...transitionRawObj,
+					hoverProp,
 				},
 			};
 		});

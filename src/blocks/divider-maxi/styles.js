@@ -202,12 +202,7 @@ const getStyles = props => {
 						blockStyle: props.blockStyle,
 					}),
 				},
-				...getTransitionStyles(
-					{
-						...getGroupAttributes(props, 'transition'),
-					},
-					transitionObj
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsDivider,
 			props

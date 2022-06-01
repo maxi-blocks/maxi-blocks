@@ -19,7 +19,7 @@ const getBorderDefault = (
 	};
 };
 
-export const borderNone = (prefix = '', borderStyle) => {
+export const borderNone = (prefix = '', hasBorderStyle) => {
 	let response = {};
 
 	const currentDefaultBorder = prefix
@@ -42,7 +42,7 @@ export const borderNone = (prefix = '', borderStyle) => {
 				.default,
 		[`${prefix}border-color`]:
 			currentDefaultBorder[`${prefix}border-color-general`].default,
-		[`${prefix}border-style`]: borderStyle
+		[`${prefix}border-style`]: hasBorderStyle
 			? 'none'
 			: currentDefaultBorder[`${prefix}border-style-general`].default,
 		[`${prefix}border-top-width`]:

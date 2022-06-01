@@ -94,6 +94,7 @@ class edit extends MaxiBlockComponent {
 			isLightbox,
 			thumbnailId,
 			thumbnailUrl,
+			'play-icon-content': playIcon,
 		} = attributes;
 
 		const classes = classnames(
@@ -134,7 +135,9 @@ class edit extends MaxiBlockComponent {
 									onClick={() =>
 										this.setState({ showPopup: true })
 									}
-								/>
+								>
+									<RawHTML>{playIcon}</RawHTML>
+								</div>
 							</div>
 							{this.state.showPopup && (
 								<VideoPopup

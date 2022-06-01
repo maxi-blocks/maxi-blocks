@@ -80,5 +80,6 @@ export { default as TypographyControl } from './typography-control';
 export { default as VideoControl } from './video-control';
 export { default as VideoIconControl } from './video-icon-control';
 export { default as VideoOptionsControl } from './video-options-control';
+export { default as VideoOverlayControl } from './video-overlay-control';
 export { default as ZIndexControl } from './zindex-control';
 export * from './svg-color';

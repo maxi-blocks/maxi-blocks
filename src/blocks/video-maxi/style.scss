@@ -52,15 +52,8 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
+
 		transform: translate(-50%, -50%);
-		border: 0;
-		background: transparent;
-		box-sizing: border-box;
-		width: 0;
-		height: 74px;
-		border-color: transparent transparent transparent #202020;
-		border-style: solid;
-		border-width: 37px 0 37px 60px;
 		cursor: pointer;
 	}
 

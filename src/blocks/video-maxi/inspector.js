@@ -12,6 +12,7 @@ import {
 	SettingTabsControl,
 	VideoControl,
 	VideoOptionsControl,
+	VideoOverlayControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsVideo, categoriesVideo } from './custom-css';
@@ -76,6 +77,26 @@ const Inspector = props => {
 														],
 														false,
 														'lightbox-'
+													)}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													breakpoint={deviceType}
+													clientId={clientId}
+													blockStyle={blockStyle}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Video overlay',
+												'maxi-blocks'
+											),
+											content: (
+												<VideoOverlayControl
+													{...getGroupAttributes(
+														attributes,
+														'video'
 													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)

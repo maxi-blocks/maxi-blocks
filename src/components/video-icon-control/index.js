@@ -50,13 +50,13 @@ const VideoIconControl = props => {
 				style={blockStyle}
 				onSelect={obj => onChange(obj)}
 				onRemove={obj => onChange(obj)}
-				icon={props['close-icon-content']}
-				label='Lightbox close button'
+				icon={props[`${prefix}icon-content`]}
+				label={label}
 			/>
-			{!isEmpty(props['close-icon-content']) && (
+			{!isEmpty(props[`${prefix}icon-content`]) && (
 				<>
 					<ColorControl
-						className='maxi-video-options-control__close-icon-colour'
+						className='maxi-video-icon-control__icon-colour'
 						label={label}
 						color={props[`${prefix}icon-fill-color`]}
 						defaultColor={getDefaultAttribute(

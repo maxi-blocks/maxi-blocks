@@ -191,6 +191,22 @@ const getStyles = props => {
 					false,
 					'close-'
 				),
+				' .maxi-video-block__play-button svg': getIconSize(
+					props,
+					'play-'
+				),
+				' .maxi-video-block__play-button svg > *': getIconStyles(
+					props,
+					props.blockStyle,
+					false,
+					false,
+					'play-'
+				),
+				' .maxi-video-block__play-button svg path': getIconPathStyles(
+					props,
+					false,
+					'play-'
+				),
 			},
 			selectorsVideo,
 			props

@@ -35,9 +35,6 @@ const videoEvents = () => {
 			playButton.addEventListener('click', openVideo);
 			closeButton.addEventListener('click', closeVideo);
 			wrapper.addEventListener('click', closeVideo);
-		} else {
-			const iframe = video.querySelector('iframe');
-			iframe.src = videoData['embedUrl'];
 		}
 	});
 };

@@ -19,7 +19,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
-import { getActiveTabName } from '../../extensions/inspector-path';
+import { getActiveTabName } from '../../extensions/inspector';
 
 /**
  * External dependencies
@@ -527,7 +527,7 @@ const ScrollEffectsControl = props => {
 	return (
 		<div className={classes}>
 			<SelectControl
-				label={__('Shortcut effect', 'maxi-blocks')}
+				label={__('Scroll combinations', 'maxi-blocks')}
 				onChange={val => onChangeShortcut(val)}
 				value={props['shortcutEffect']}
 				options={globalShortcutsOptions}
@@ -555,7 +555,7 @@ const ScrollEffectsControl = props => {
 							<ToggleSwitch
 								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 								label={__(
-									`Use ${capitalize(type)} scroll effect`,
+									`Activate ${type} scroll`,
 									'maxi-blocks'
 								)}
 								selected={getLastBreakpointAttribute({
@@ -584,7 +584,7 @@ const ScrollEffectsControl = props => {
 								<>
 									<SelectControl
 										label={__(
-											'Shortcut effect',
+											'Direction preset',
 											'maxi-blocks'
 										)}
 										value={
@@ -696,7 +696,7 @@ const ScrollEffectsControl = props => {
 									<ToggleSwitch
 										// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 										label={__(
-											`Preview ${type} settings`,
+											`Simulate scroll effect live (test)`,
 											'maxi-block'
 										)}
 										selected={isPreviewEnabled}

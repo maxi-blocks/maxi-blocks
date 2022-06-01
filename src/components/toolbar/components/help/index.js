@@ -25,19 +25,27 @@ import './editor.scss';
  * Duplicate
  */
 const Help = props => {
-	const { blockName } = props;
+	const { blockName, tooltipsHide } = props;
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
-	return (
-		<Tooltip text={__('Help', 'maxi-blocks')} position='bottom center'>
+	const helpContent = () => {
+		return (
 			<div className='toolbar-item toolbar-item__help'>
 				<Button href='#'>
 					<Icon className='toolbar-item__icon' icon={toolbarHelp} />
 				</Button>
 			</div>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip text={__('Help', 'maxi-blocks')} position='top center'>
+				{helpContent()}
+			</Tooltip>
+		);
+	return helpContent();
 };
 
 export default Help;

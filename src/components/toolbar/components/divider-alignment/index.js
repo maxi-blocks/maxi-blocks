@@ -80,7 +80,7 @@ const DividerAlignment = props => {
 				/>
 				{lineOrientation === 'vertical' && (
 					<SelectControl
-						label={__('Vertical Position', 'maxi-blocks')}
+						label={__('Vertical position', 'maxi-blocks')}
 						options={getVerticalOptions()}
 						value={lineVertical}
 						onChange={value => onChangeVertical(value)}

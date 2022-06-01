@@ -19,7 +19,7 @@ import {
 describe('Svg width control', () => {
 	it('Check svg width control', async () => {
 		await createNewPost();
-		await insertBlock('SVG Icon Maxi');
+		await insertBlock('Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block
@@ -47,7 +47,7 @@ describe('Svg width control', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('37');
 
-		expect(await getAttributes('svg-width-general')).toStrictEqual(37);
+		expect(await getAttributes('svg-width-general')).toStrictEqual('37');
 
 		const unitSelector = await accordionPanel.$(
 			'.maxi-advanced-number-control select'

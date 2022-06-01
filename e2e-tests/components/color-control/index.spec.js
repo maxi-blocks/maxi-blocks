@@ -41,7 +41,7 @@ describe('ColorControl', () => {
 
 		// check reset button
 		await accordionPanel.$eval(
-			'.maxi-base-control__field .components-maxi-control__reset-button',
+			'.maxi-background-control .maxi-base-control__field .components-maxi-control__reset-button',
 			resetButton => resetButton.click()
 		);
 
@@ -118,6 +118,7 @@ describe('ColorControl', () => {
 
 	it('Checking the reset button', async () => {
 		await createNewPost();
+
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -139,9 +140,9 @@ describe('ColorControl', () => {
 		).toStrictEqual(5);
 
 		// reset button
-		await page.$eval(
+		await page.$$eval(
 			'.maxi-responsive-tabs-control .maxi-tabs-content .maxi-color-palette-control .components-maxi-control__reset-button',
-			input => input.click()
+			input => input[0].click()
 		);
 
 		expect(
@@ -149,16 +150,17 @@ describe('ColorControl', () => {
 		).toStrictEqual(4);
 
 		// custom color
-		await page.$$eval(
+		await page.$eval(
 			'.maxi-color-palette-control .maxi-toggle-switch input',
-			input => input[1].click()
+			input => input.click()
 		);
 		await page.waitForTimeout(150);
 
 		// check custom color
 
-		await page.$$eval('.maxi-opacity-control input', opacity =>
-			opacity[2].focus()
+		await page.$eval(
+			'.maxi-opacity-control .maxi-advanced-number-control__value',
+			opacity => opacity.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('50');

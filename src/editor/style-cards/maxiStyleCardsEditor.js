@@ -27,6 +27,7 @@ import {
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
+import { handleSetAttributes } from '../../extensions/maxi-block';
 
 /**
  * External dependencies
@@ -37,7 +38,6 @@ import { isEmpty, isNil, isEqual } from 'lodash';
  * Icons
  */
 import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
-import { handleSetAttributes } from '../../extensions/maxi-block';
 
 const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const {
@@ -263,7 +263,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			>
 				<h2 className='maxi-style-cards__popover__title'>
 					<Icon icon={styleCardBoat} />
-					{__('Style Card Editor', 'maxi-blocks')}
+					{__('Style card manager', 'maxi-blocks')}
 					<span
 						className='maxi-responsive-selector__close'
 						onClick={() => setIsVisible(false)}
@@ -273,10 +273,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 				</h2>
 				<hr />
 				<div className='maxi-style-cards__popover__sub-title'>
-					{__(
-						'Group of blocks composed with a similar style or layout',
-						'maxi-blocks'
-					)}
+					{__('Search or edit style cards', 'maxi-blocks')}
 				</div>
 				<div className='maxi-style-cards__sc'>
 					<div className='maxi-style-cards__sc__more-sc'>
@@ -483,7 +480,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					returnValue={({ key }) => setCurrentSCStyle(key)}
 					items={[
 						{
-							label: __('Light Style Preset', 'maxi-blocks'),
+							label: __('Light tone globals', 'maxi-blocks'),
 							key: 'light',
 							content: (
 								<MaxiStyleCardsTab
@@ -496,7 +493,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							),
 						},
 						{
-							label: __('Dark Style Preset', 'maxi-blocks'),
+							label: __('Dark tone globals', 'maxi-blocks'),
 							key: 'dark',
 							content: (
 								<MaxiStyleCardsTab

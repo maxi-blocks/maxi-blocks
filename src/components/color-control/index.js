@@ -40,6 +40,7 @@ const ColorControl = props => {
 		color,
 		defaultColorAttributes,
 		globalProps,
+		onChangeInline,
 		onChange,
 		isHover,
 		deviceType,
@@ -50,7 +51,7 @@ const ColorControl = props => {
 		disableColorDisplay = false,
 		isToolbar = false,
 		prefix = '',
-		useBreakpointForDefault = false,
+		avoidBreakpointForDefault = false,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -75,14 +76,26 @@ const ColorControl = props => {
 			rgb: { r: 1, g: 1, b: 1, a: 1 },
 		};
 
+	const colorObj = {
+		paletteStatus,
+		paletteColor,
+		paletteOpacity,
+		color,
+	};
+
 	const onChangeValue = obj =>
 		onChange({
-			paletteStatus,
-			paletteColor,
-			paletteOpacity,
-			color,
+			...colorObj,
 			...obj,
 		});
+
+	const onChangeInlineValue = obj =>
+		onChangeInline
+			? onChangeInline({
+					...colorObj,
+					...obj,
+			  })
+			: onChangeValue(obj);
 
 	const onReset = () => {
 		let defaultColorAttr = defaultColorAttributes;
@@ -95,7 +108,7 @@ const ColorControl = props => {
 					'palette-status',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.paletteColor = getDefaultAttribute(
@@ -103,7 +116,7 @@ const ColorControl = props => {
 					'palette-color',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.paletteOpacity = getDefaultAttribute(
@@ -111,7 +124,7 @@ const ColorControl = props => {
 					'palette-opacity',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.color = getDefaultAttribute(
@@ -119,7 +132,7 @@ const ColorControl = props => {
 					'color',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 		}
@@ -132,15 +145,17 @@ const ColorControl = props => {
 				color,
 			});
 		else {
+			const defaultColor = `rgba(${getPaletteColor({
+				clientId,
+				color: paletteColor || defaultColorAttr.paletteColor,
+				blockStyle,
+			})},${paletteOpacity || 1})`;
+
 			onChange({
 				paletteStatus,
 				paletteColor,
 				paletteOpacity,
-				color: `rgba(${getPaletteColor({
-					clientId,
-					color: paletteColor || defaultColorAttr.paletteColor,
-					blockStyle,
-				})},${paletteOpacity || 1})`,
+				color: defaultColor,
 			});
 		}
 	};
@@ -153,7 +168,7 @@ const ColorControl = props => {
 					'palette-opacity',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
 		onChange({
@@ -171,6 +186,7 @@ const ColorControl = props => {
 					label={label}
 					value={paletteColor}
 					globalProps={globalProps}
+					noColorPrefix
 					isHover={isHover}
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}
@@ -212,6 +228,7 @@ const ColorControl = props => {
 				<CustomColorControl
 					label={label}
 					color={getRGBA(color)}
+					onChangeInlineValue={onChangeInlineValue}
 					onChangeValue={onChangeValue}
 					onReset={onReset}
 					onResetOpacity={onResetOpacity}

@@ -21,14 +21,14 @@ import { toolbarDuplicate } from '../../../../icons';
  * Duplicate
  */
 const Duplicate = props => {
-	const { clientId, blockName } = props;
+	const { clientId, blockName, tooltipsHide } = props;
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const { duplicateBlocks } = useDispatch('core/block-editor');
 
-	return (
-		<Tooltip text={__('Duplicate', 'maxi-blocks')} position='bottom center'>
+	const duplicateContent = () => {
+		return (
 			<div className='toolbar-item toolbar-item__duplicate'>
 				<Button onClick={() => duplicateBlocks([clientId])}>
 					<Icon
@@ -37,8 +37,19 @@ const Duplicate = props => {
 					/>
 				</Button>
 			</div>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Duplicate', 'maxi-blocks')}
+				position='top center'
+			>
+				{duplicateContent()}
+			</Tooltip>
+		);
+	return duplicateContent();
 };
 
 export default Duplicate;

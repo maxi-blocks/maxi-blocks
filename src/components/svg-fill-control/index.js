@@ -37,75 +37,82 @@ const ColorContent = ({
 	value,
 	onChange,
 	clientId,
-}) => (
-	<ColorControl
-		label={__('Fill', 'maxi-blocks')}
-		prefix='background-svg-'
-		useBreakpointForDefault
-		paletteStatus={getLastBreakpointAttribute({
-			target: 'background-svg-palette-status',
-			breakpoint,
-			attributes: SVGOptions,
-			isHover,
-		})}
-		paletteColor={getLastBreakpointAttribute({
-			target: 'background-svg-palette-color',
-			breakpoint,
-			attributes: SVGOptions,
-			isHover,
-		})}
-		paletteOpacity={getLastBreakpointAttribute({
-			target: 'background-svg-palette-opacity',
-			breakpoint,
-			attributes: SVGOptions,
-			isHover,
-		})}
-		color={getLastBreakpointAttribute({
-			target: 'color',
-			breakpoint,
-			attributes: value,
-			isHover,
-		})}
-		onChange={({ paletteStatus, paletteColor, paletteOpacity, color }) => {
-			SVGData[id][getAttributeKey('color', isHover, false, breakpoint)] =
-				color;
+}) => {
+	return (
+		<ColorControl
+			label={__('Fill', 'maxi-blocks')}
+			prefix='background-svg-'
+			paletteStatus={getLastBreakpointAttribute({
+				target: 'background-svg-palette-status',
+				breakpoint,
+				attributes: SVGOptions,
+				isHover,
+			})}
+			paletteColor={getLastBreakpointAttribute({
+				target: 'background-svg-palette-color',
+				breakpoint,
+				attributes: SVGOptions,
+				isHover,
+			})}
+			paletteOpacity={getLastBreakpointAttribute({
+				target: 'background-svg-palette-opacity',
+				breakpoint,
+				attributes: SVGOptions,
+				isHover,
+			})}
+			color={getLastBreakpointAttribute({
+				target: 'color',
+				breakpoint,
+				attributes: value,
+				isHover,
+			})}
+			onChange={({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color,
+			}) => {
+				SVGData[id][
+					getAttributeKey('color', isHover, false, breakpoint)
+				] = color;
 
-			onChange({
-				'background-svg-SVGElement': injectImgSVG(
-					SVGOptions['background-svg-SVGElement'],
-					SVGData
-				).outerHTML,
-				'background-svg-SVGData': SVGData,
-				[getAttributeKey(
-					'background-svg-palette-status',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteStatus,
-				[getAttributeKey(
-					'background-svg-palette-color',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteColor,
-				[getAttributeKey(
-					'background-svg-palette-opacity',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteOpacity,
-				[getAttributeKey(
-					'background-svg-palette-opacity',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteOpacity,
-			});
-		}}
-		isHover={isHover}
-		clientId={clientId}
-	/>
-);
+				onChange({
+					'background-svg-SVGElement': injectImgSVG(
+						SVGOptions['background-svg-SVGElement'],
+						SVGData
+					).outerHTML,
+					'background-svg-SVGData': SVGData,
+					[getAttributeKey(
+						'background-svg-palette-status',
+						isHover,
+						false,
+						breakpoint
+					)]: paletteStatus,
+					[getAttributeKey(
+						'background-svg-palette-color',
+						isHover,
+						false,
+						breakpoint
+					)]: paletteColor,
+					[getAttributeKey(
+						'background-svg-palette-opacity',
+						isHover,
+						false,
+						breakpoint
+					)]: paletteOpacity,
+					[getAttributeKey(
+						'background-svg-color',
+						isHover,
+						false,
+						breakpoint
+					)]: color,
+				});
+			}}
+			isHover={isHover}
+			clientId={clientId}
+		/>
+	);
+};
 
 const SVGFillControl = props => {
 	const {

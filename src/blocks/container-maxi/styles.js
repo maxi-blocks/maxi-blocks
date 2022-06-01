@@ -33,6 +33,7 @@ const getNormalObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fullWidth: props.blockFullWidth,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -89,7 +90,6 @@ const getBackgroundDisplayer = props => {
 	return response;
 };
 
-
 const getHoverObject = props => {
 	const response = {
 		border:
@@ -127,7 +127,8 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
+				' > .maxi-background-displayer > div':
+					getBackgroundDisplayer(props),
 				...(props['shape-divider-top-status'] && {
 					' .maxi-shape-divider__top': {
 						shapeDivider: {
@@ -147,7 +148,8 @@ const getStyles = props => {
 							...getShapeDividerSVGStyles(
 								{
 									...getGroupAttributes(props, [
-										['shapeDivider', 'padding'],
+										'shapeDivider',
+										'padding',
 									]),
 								},
 								'top',
@@ -175,7 +177,8 @@ const getStyles = props => {
 							...getShapeDividerSVGStyles(
 								{
 									...getGroupAttributes(props, [
-										['shapeDivider', 'padding'],
+										'shapeDivider',
+										'padding',
 									]),
 								},
 								'bottom',

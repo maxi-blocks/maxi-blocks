@@ -1,7 +1,6 @@
 import getGroupAttributes from '../getGroupAttributes';
 
 const attributes = {
-	defaultBlockStyle: 'maxi-def-light',
 	extraClassName: '',
 	anchorLink: '',
 	customLabel: 'Button',

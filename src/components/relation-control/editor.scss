@@ -1,0 +1,12 @@
+.maxi-relation-control {
+	&__button {
+		display: flex;
+		width: 100%;
+		justify-content: center;
+		margin-bottom: 10px;
+	}
+
+	&__item__content__target--has-block input {
+		color: green !important;
+	}
+}

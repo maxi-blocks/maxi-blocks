@@ -128,17 +128,19 @@ describe('BorderControl', () => {
 			buttons => buttons[1].click()
 		);
 
-		await borderAccordion.$$eval('.maxi-tabs-control__button', buttons =>
-			buttons[1].click()
+		await borderAccordion.$$eval(
+			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			buttons => buttons[1].click()
 		);
 
 		await page.$eval(
-			'.maxi-border-status-hover.maxi-toggle-switch .maxi-base-control__label',
+			'.maxi-tabs-content .maxi-border-status-hover input',
 			use => use.click()
 		);
 
-		await borderAccordion.$$eval('.maxi-tabs-control__button', buttons =>
-			buttons[0].click()
+		await borderAccordion.$$eval(
+			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			buttons => buttons[0].click()
 		);
 
 		await borderAccordion.$$eval(

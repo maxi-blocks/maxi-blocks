@@ -1,7 +1,7 @@
 /**
  * BLOCK: maxi-blocks/group-maxi
  *
- * Group of blocks composed with a similar style or layout
+ * Create a number counter
  */
 
 /**
@@ -22,6 +22,7 @@ import save from './save';
  */
 import './style.scss';
 import { numberCounterIcon } from '../../icons';
+import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
 
 /**
  * Block
@@ -30,7 +31,7 @@ import { numberCounterIcon } from '../../icons';
 registerBlockType('maxi-blocks/number-counter-maxi', {
 	title: __('Number Counter Maxi', 'maxi-blocks'),
 	icon: numberCounterIcon,
-	description: __('Count up or count down numbers', 'maxi-blocks'),
+	description: __('Create a number counter', 'maxi-blocks'),
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
@@ -48,4 +49,5 @@ registerBlockType('maxi-blocks/number-counter-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [fromNumberToStringMigrator({ attributes, save })],
 });

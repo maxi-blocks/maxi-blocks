@@ -61,7 +61,7 @@ const ReusableBlocks = props => {
 				>
 					<TextControl
 						placeholder={__('Reusable block name', 'maxi-blocks')}
-						label={__('Create Reusable block', 'maxi-blocks')}
+						label={__('Create reusable block', 'maxi-blocks')}
 						value={title}
 						onChange={setTitle}
 					/>

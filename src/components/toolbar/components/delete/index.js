@@ -15,22 +15,30 @@ import Button from '../../../button';
  * Delete
  */
 const Delete = props => {
-	const { clientId, blockName } = props;
+	const { clientId, blockName, tooltipsHide } = props;
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const { removeBlock } = useDispatch('core/block-editor');
 
-	return (
-		<Tooltip text={__('Delete', 'maxi-blocks')} position='bottom center'>
+	const deleteContent = () => {
+		return (
 			<div className='toolbar-item toolbar-item__delete'>
 				<Button onClick={() => removeBlock(clientId)}>
 					{__('Remove block', 'maxi-blocks')}
 					<span>Shift+Alt+Z</span>
 				</Button>
 			</div>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip text={__('Delete', 'maxi-blocks')} position='top center'>
+				{deleteContent()}
+			</Tooltip>
+		);
+	return deleteContent();
 };
 
 export default Delete;

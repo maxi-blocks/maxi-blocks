@@ -24,7 +24,13 @@ import { backgroundColor } from '../../../../icons';
  * Component
  */
 const IconBackground = props => {
-	const { blockName, onChange, breakpoint, isHover = false } = props;
+	const {
+		blockName,
+		onChangeInline,
+		onChange,
+		breakpoint,
+		isHover = false,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
@@ -38,7 +44,7 @@ const IconBackground = props => {
 			<div className='toolbar-item__icon-background__popover'>
 				<ToggleSwitch
 					label={__(
-						'Inherit Colour/Background from Button',
+						'Inherit colour/background from button',
 						'maxi-blocks'
 					)}
 					selected={props['icon-inherit']}
@@ -57,67 +63,79 @@ const IconBackground = props => {
 					</p>
 				) : (
 					<ColorControl
-						label={__('Icon Background', 'maxi-blocks')}
-						color={getLastBreakpointAttribute(
-							'icon-background-color',
+						label={__('Icon background', 'maxi-blocks')}
+						paletteStatus={getLastBreakpointAttribute({
+							target: 'icon-background-palette-status',
 							breakpoint,
-							props,
-							isHover
-						)}
+							attributes: props,
+							isHover,
+						})}
+						paletteColor={getLastBreakpointAttribute({
+							target: 'icon-background-palette-color',
+							breakpoint,
+							attributes: props,
+							isHover,
+						})}
+						paletteOpacity={getLastBreakpointAttribute({
+							target: 'icon-background-palette-opacity',
+							breakpoint,
+							attributes: props,
+							isHover,
+						})}
+						color={getLastBreakpointAttribute({
+							target: 'icon-background-color',
+							breakpoint,
+							attributes: props,
+							isHover,
+						})}
 						prefix='icon-background-'
-						paletteStatus={getLastBreakpointAttribute(
-							'icon-background-palette-status',
-							breakpoint,
-							props,
-							isHover
-						)}
-						paletteOpacity={getLastBreakpointAttribute(
-							'icon-background-palette-opacity',
-							breakpoint,
-							props,
-							isHover
-						)}
-						paletteColor={getLastBreakpointAttribute(
-							'icon-background-palette-color',
-							breakpoint,
-							props,
-							isHover
-						)}
 						deviceType={breakpoint}
-						useBreakpointForDefault
+						onChangeInline={({ color }) =>
+							onChangeInline &&
+							onChangeInline(
+								{
+									background: color,
+								},
+								'.maxi-button-block__icon'
+							)
+						}
 						onChange={({
-							color,
-							paletteColor,
 							paletteStatus,
+							paletteColor,
 							paletteOpacity,
+							color,
 						}) => {
-							onChange({
-								[getAttributeKey(
-									'background-palette-status',
-									isHover,
-									'icon-',
-									breakpoint
-								)]: paletteStatus,
-								[getAttributeKey(
-									'background-palette-opacity',
-									isHover,
-									'icon-',
-									breakpoint
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'background-palette-color',
-									isHover,
-									'icon-',
-									breakpoint
-								)]: paletteColor,
-								[getAttributeKey(
-									'background-color',
-									isHover,
-									'icon-',
-									breakpoint
-								)]: color,
-							});
+							onChange(
+								{
+									[getAttributeKey(
+										'background-palette-status',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: paletteStatus,
+									[getAttributeKey(
+										'background-palette-color',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: paletteColor,
+									[getAttributeKey(
+										'background-palette-opacity',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: paletteOpacity,
+									[getAttributeKey(
+										'background-color',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: color,
+								},
+								'.maxi-button-block__icon'
+							);
 						}}
+						isHover={isHover}
 					/>
 				)}
 			</div>

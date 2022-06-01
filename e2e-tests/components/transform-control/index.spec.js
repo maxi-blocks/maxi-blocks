@@ -169,7 +169,10 @@ describe('TransformControl', () => {
 		expect(responsiveResult).toBeTruthy();
 
 		// check responsive translate
-		await buttons[1].click();
+		await accordionPanel.$$eval(
+			'.maxi-transform-control .maxi-settingstab-control button',
+			buttons => buttons[1].click()
+		);
 
 		const responsiveResultTranslate = await addResponsiveTest({
 			page,
@@ -184,7 +187,10 @@ describe('TransformControl', () => {
 		expect(responsiveResultTranslate).toBeTruthy();
 
 		// check responsive rotate
-		await buttons[2].click();
+		await accordionPanel.$$eval(
+			'.maxi-transform-control .maxi-settingstab-control button',
+			buttons => buttons[2].click()
+		);
 
 		const responsiveResultRotate = await addResponsiveTest({
 			page,
@@ -199,7 +205,10 @@ describe('TransformControl', () => {
 		expect(responsiveResultRotate).toBeTruthy();
 
 		// check responsive origin
-		await buttons[3].click();
+		await accordionPanel.$$eval(
+			'.maxi-transform-control .maxi-settingstab-control button',
+			buttons => buttons[3].click()
+		);
 
 		const responsiveResultOrigin = await addResponsiveTest({
 			page,

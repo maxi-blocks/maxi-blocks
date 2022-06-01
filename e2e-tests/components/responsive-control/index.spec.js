@@ -30,36 +30,50 @@ describe('ResponsiveControl', () => {
 		await openSidebarTab(page, 'style', 'alignment');
 		await changeResponsive(page, 'xxl');
 
-		const alignmentButtons = await page.$$(
-			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button'
+		await page.$$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
+			button => button[0].click()
 		);
-
-		await alignmentButtons[0].click();
 
 		expect(await getAttributes('alignment-xxl')).toStrictEqual('left');
 
 		await changeResponsive(page, 'xl');
-		await alignmentButtons[2].click();
+		await page.$$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
+			button => button[2].click()
+		);
 
-		expect(await getAttributes('alignment-xl')).toStrictEqual('right');
+		expect(await getAttributes('alignment-general')).toStrictEqual('right');
 
 		await changeResponsive(page, 'l');
-		await alignmentButtons[1].click();
+		await page.$$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
+			button => button[1].click()
+		);
 
 		expect(await getAttributes('alignment-l')).toStrictEqual('center');
 
 		await changeResponsive(page, 'm');
-		await alignmentButtons[0].click();
+		await page.$$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
+			button => button[0].click()
+		);
 
 		expect(await getAttributes('alignment-m')).toStrictEqual('left');
 
 		await changeResponsive(page, 's');
-		await alignmentButtons[2].click();
+		await page.$$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
+			button => button[2].click()
+		);
 
 		expect(await getAttributes('alignment-s')).toStrictEqual('right');
 
 		await changeResponsive(page, 'xs');
-		await alignmentButtons[1].click();
+		await page.$$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
+			button => button[1].click()
+		);
 
 		expect(await getAttributes('alignment-xs')).toStrictEqual('center');
 	});

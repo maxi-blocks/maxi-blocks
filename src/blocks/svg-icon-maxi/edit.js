@@ -2,9 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
-import { withDispatch, dispatch } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 import { Button } from '@wordpress/components';
 
 /**
@@ -14,7 +13,6 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
-	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import {
@@ -24,7 +22,8 @@ import {
 	MaxiPopoverButton,
 } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -113,14 +112,8 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			isSelected,
 		} = this.props;
-		const {
-			blockFullWidth,
-			content,
-			openFirstTime,
-			blockStyle,
-			uniqueID,
-			[`svg-width-unit-${deviceType}`]: svgWidthUnit,
-		} = attributes;
+		const { blockFullWidth, content, openFirstTime, blockStyle, uniqueID } =
+			attributes;
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
@@ -133,7 +126,11 @@ class edit extends MaxiBlockComponent {
 				[`svg-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
-					svgWidthUnit
+					getLastBreakpointAttribute({
+						target: 'svg-width-unit',
+						breakpoint: deviceType || 'general',
+						attributes,
+					})
 				),
 			});
 		};
@@ -174,6 +171,10 @@ class edit extends MaxiBlockComponent {
 			onClose: () => this.setState({ isOpen: false }),
 		};
 
+		const inlineStylesTargets = {
+			background: '.maxi-svg-icon-block__icon',
+		};
+
 		return [
 			...[
 				!isEmptyContent && [
@@ -181,6 +182,7 @@ class edit extends MaxiBlockComponent {
 						key={`block-settings-${uniqueID}`}
 						{...this.props}
 						resizableObject={this.resizableObject}
+						inlineStylesTargets={inlineStylesTargets}
 					/>,
 					<Toolbar
 						key={`toolbar-${uniqueID}`}
@@ -189,6 +191,7 @@ class edit extends MaxiBlockComponent {
 						resizableObject={this.resizableObject}
 						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
+						inlineStylesTargets={inlineStylesTargets}
 						{...this.props}
 					/>,
 					<MaxiPopoverButton
@@ -217,7 +220,7 @@ class edit extends MaxiBlockComponent {
 								className='maxi-block-library__modal-button'
 								onClick={() => this.setState({ isOpen: true })}
 							>
-								{__('Select SVG Icon', 'maxi-blocks')}
+								{__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}
@@ -227,21 +230,16 @@ class edit extends MaxiBlockComponent {
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
-							maxWidth={
-								getLastBreakpointAttribute({
-									target: 'svg-responsive',
-									breakpoint: deviceType,
-									attributes,
-								})
-									? '100%'
-									: null
-							}
-							size={{
+							defaultSize={{
 								width: `${getLastBreakpointAttribute({
 									target: 'svg-width',
 									breakpoint: deviceType || 'general',
 									attributes,
-								})}${svgWidthUnit}`,
+								})}${getLastBreakpointAttribute({
+									target: 'svg-width-unit',
+									breakpoint: deviceType || 'general',
+									attributes,
+								})}`,
 							}}
 							showHandle={isSelected}
 							enable={{
@@ -261,74 +259,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const {
-		attributes: { content },
-		maxiSetAttributes,
-	} = ownProps;
-
-	const changeSVGStrokeWidth = width => {
-		if (width) {
-			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
-			const changeTo = `stroke-width:${width}`;
-
-			const regexLineToChange2 = new RegExp(
-				'stroke-width=".+?(?=")',
-				'g'
-			);
-			const changeTo2 = `stroke-width="${width}`;
-
-			const newContent = content
-				.replace(regexLineToChange, changeTo)
-				.replace(regexLineToChange2, changeTo2);
-
-			maxiSetAttributes({
-				content: newContent,
-			});
-		}
-	};
-
-	const changeSVGContentWithBlockStyle = (fillColor, strokeColor) => {
-		const fillRegExp = new RegExp('fill:([^none])([^\\}]+)', 'g');
-		const fillStr = `fill:${fillColor}`;
-
-		const fillRegExp2 = new RegExp('fill=[^-]([^none])([^\\"]+)', 'g');
-		const fillStr2 = ` fill="${fillColor}`;
-
-		const strokeRegExp = new RegExp('stroke:([^none])([^\\}]+)', 'g');
-		const strokeStr = `stroke:${strokeColor}`;
-
-		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
-		const strokeStr2 = ` stroke="${strokeColor}`;
-
-		const newContent = ownProps.attributes.content
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2)
-			.replace(strokeRegExp, strokeStr)
-			.replace(strokeRegExp2, strokeStr2);
-
-		maxiSetAttributes({ content: newContent });
-	};
-
-	const changeSVGContent = (color, type) => {
-		const fillRegExp = new RegExp(`${type}:([^none])([^\\}]+)`, 'g');
-		const fillStr = `${type}:${color}`;
-
-		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
-		const fillStr2 = ` ${type}="${color}`;
-
-		const newContent = ownProps.attributes.content
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2);
-
-		maxiSetAttributes({ content: newContent });
-	};
-
-	return {
-		changeSVGStrokeWidth,
-		changeSVGContent,
-		changeSVGContentWithBlockStyle,
-	};
-});
-
-export default compose(withMaxiProps, editDispatch)(edit);
+export default withMaxiProps(edit);

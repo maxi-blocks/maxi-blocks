@@ -24,14 +24,15 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { iconBox } from '../../icons';
+import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
 
 /**
  * Block
  */
 registerBlockType('maxi-blocks/svg-icon-maxi', {
-	title: __('SVG Icon Maxi', 'maxi-blocks'),
+	title: __('Icon Maxi', 'maxi-blocks'),
 	icon: iconBox,
-	description: 'Insert, modify or style SVG icons',
+	description: 'Add icon or shape and style it',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
@@ -49,4 +50,5 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [fromNumberToStringMigrator({ attributes, save })],
 });

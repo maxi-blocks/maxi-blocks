@@ -8,6 +8,7 @@ export const rawTypography = {
 		type: 'string',
 	},
 	...paletteAttributesCreator({ prefix: '', palette: 3 }),
+	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
 	'font-size-unit': {
 		type: 'string',
 		default: 'px',

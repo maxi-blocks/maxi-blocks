@@ -24,7 +24,7 @@ import { capitalize } from 'lodash';
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
 import { getDefaultAttribute } from '../../../../extensions/styles';
-import { openSidebarAccordion } from '../../../../extensions/inspector-path';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * ImageSize
@@ -82,7 +82,7 @@ const ImageSize = props => {
 		>
 			<div className='toolbar-item__image-size__popover'>
 				<SelectControl
-					label={__('Image Size', 'maxi-blocks')}
+					label={__('Image size', 'maxi-blocks')}
 					value={
 						imageSize || imageSize === 'custom' ? imageSize : 'full'
 					} // is still necessary?
@@ -91,7 +91,7 @@ const ImageSize = props => {
 				/>
 				{isFirstOnHierarchy && (
 					<SettingTabsControl
-						label={__('Full Width', 'maxi-blocks')}
+						label={__('Full width', 'maxi-blocks')}
 						type='buttons'
 						selected={fullWidth}
 						items={[

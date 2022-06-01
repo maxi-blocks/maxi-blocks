@@ -24,7 +24,9 @@ import './editor.scss';
 import { handlers } from '../../../../icons';
 
 const ColumnsHandlers = props => {
-	const { blockName, className, toggleHandlers } = props;
+	const { blockName, className, toggleHandlers, tooltipsHide } = props;
+
+	const [isActive, setActive] = useState(false);
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
@@ -35,29 +37,33 @@ const ColumnsHandlers = props => {
 		className
 	);
 
-
-	const [isActive, setActive] = useState(false);
-
-
-	return (
-		<Tooltip
-			text={__('Columns Handlers', 'maxi-blocks')}
-			position='bottom center'
-		>
+	const handlersContent = () => {
+		return (
 			<div>
-				<Button 
-				className={classes} 
-				onClick={() => {
-					toggleHandlers();
-					setActive(!isActive);
-				}}
-				aria-pressed={isActive}
+				<Button
+					className={classes}
+					onClick={() => {
+						toggleHandlers();
+						setActive(!isActive);
+					}}
+					aria-pressed={isActive}
 				>
 					<Icon className='toolbar-item__icon' icon={handlers} />
 				</Button>
 			</div>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Columns Handlers', 'maxi-blocks')}
+				position='top center'
+			>
+				{handlersContent()}
+			</Tooltip>
+		);
+	return handlersContent();
 };
 
 export default ColumnsHandlers;

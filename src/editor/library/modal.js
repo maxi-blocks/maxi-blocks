@@ -9,7 +9,7 @@ import { Button } from '@wordpress/components';
  * Internal dependencies
  */
 import CloudLibrary from '.';
-import { Icon } from '../../components';
+import { Icon, BaseControl } from '../../components';
 
 /**
  * External dependencies
@@ -41,6 +41,7 @@ const MaxiModal = props => {
 		title,
 		cardId,
 		prefix = '',
+		label = '',
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
@@ -58,6 +59,11 @@ const MaxiModal = props => {
 
 	return (
 		<div className='maxi-library-modal__action-section'>
+			{!isEmpty(label) && (
+				<BaseControl.VisualLabel className='maxi-library-modal__action-section__label'>
+					{label}
+				</BaseControl.VisualLabel>
+			)}
 			<div className='maxi-library-modal__action-section__buttons'>
 				{type === 'patterns' && (
 					<Button

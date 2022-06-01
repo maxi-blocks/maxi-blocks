@@ -51,6 +51,7 @@ const VideoIconControl = props => {
 				onSelect={obj => onChange(obj)}
 				onRemove={obj => onChange(obj)}
 				icon={props['close-icon-content']}
+				label='Lightbox close button'
 			/>
 			{!isEmpty(props['close-icon-content']) && (
 				<>

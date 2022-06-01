@@ -107,12 +107,14 @@ const GlobalColor = props => {
 							1
 						}
 						color={processSCAttribute(SC, color, groupAttr)}
-						defaultColor={getDefaultSCValue({
-							target: color,
-							SC,
-							SCStyle,
-							groupAttr,
-						})}
+						defaultColorAttributes={{
+							defaultColor: getDefaultSCValue({
+								target: color,
+								SC,
+								SCStyle,
+								groupAttr,
+							}),
+						}}
 						onChange={({
 							paletteStatus: newPaletteStatus,
 							paletteColor: newPaletteColor,
@@ -450,11 +452,13 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										quickColorPreset,
 										'color'
 									)}, 1)`}
-									defaultColor={`rgba(${processSCAttribute(
-										SC,
-										quickColorPreset,
-										'color'
-									)}, 1)`}
+									defaultColorAttributes={{
+										defaultColor: `rgba(${processSCAttribute(
+											SC,
+											quickColorPreset,
+											'color'
+										)}, 1)`,
+									}}
 									onChange={({ color }) =>
 										onChangeValue(
 											{
@@ -465,6 +469,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											'color'
 										)
 									}
+									avoidBreakpointForDefault
 									blockStyle={SCStyle}
 									disableColorDisplay
 									disableOpacity

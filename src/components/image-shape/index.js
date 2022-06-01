@@ -47,10 +47,14 @@ const ImageShape = props => {
 					type='image-shape'
 					onSelect={obj => {
 						const { SVGElement } = obj;
+
 						const newSVGElement = SVGElement.replace(
 							/class="(.*?)"/,
-							'class="$1 maxi-image-block__image"'
+							`class="${
+								SVGElement.match(/class="(.*?)"/)[1]
+							} maxi-image-block__image"`
 						);
+
 						onChange({ ...obj, SVGElement: newSVGElement });
 					}}
 					onRemove={obj => {

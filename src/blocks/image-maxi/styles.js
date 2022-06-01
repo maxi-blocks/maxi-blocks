@@ -490,7 +490,7 @@ const getStyles = props => {
 			props
 		),
 	};
-	console.log(response);
+
 	return response;
 };
 

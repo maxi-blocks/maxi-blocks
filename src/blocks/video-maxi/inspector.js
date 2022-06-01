@@ -98,6 +98,15 @@ const Inspector = props => {
 														attributes,
 														'video'
 													)}
+													{...getGroupAttributes(
+														attributes,
+														[
+															'background',
+															'backgroundColor',
+														],
+														false,
+														'overlay-'
+													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}

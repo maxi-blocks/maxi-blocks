@@ -148,9 +148,7 @@ const getStyles = (props, rowGapProps, clientId) => {
 						rowBorderRadius: props.rowBorderRadius,
 					}),
 				},
-				...getTransitionStyles({
-					...getGroupAttributes(props, 'transition'),
-				})
+				...getTransitionStyles(props)
 			),
 			selectorsColumn,
 			props

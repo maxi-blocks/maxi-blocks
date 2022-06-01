@@ -233,9 +233,7 @@ const getStyles = props => {
 						isHover: true,
 					}),
 				},
-				...getTransitionStyles({
-					...getGroupAttributes(props, 'transition'),
-				})
+				...getTransitionStyles(props)
 			),
 			selectorsContainer,
 			props

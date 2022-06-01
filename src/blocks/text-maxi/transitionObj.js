@@ -6,6 +6,7 @@ const transitionObj = {
 		typography: {
 			title: 'Typography',
 			target: ' .maxi-text-block__content, .maxi-text-block--link, .maxi-text-block--link span',
+			property: 'typography',
 			limitless: true,
 		},
 	},

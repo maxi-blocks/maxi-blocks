@@ -1,6 +1,17 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import transitionDefault from './transitionDefault';
 
+const getHoverProp = (property, prefix = '') => {
+	const notOrdinary = {
+		'background / layer': 'block-background-status-hover',
+		background: 'background-hover-status',
+	};
+
+	const hoverProp = notOrdinary[property] || `${property}-status-hover`;
+
+	return `${prefix}${hoverProp}`;
+};
+
 const transitionRaw = breakpointAttributesCreator({
 	obj: {
 		'transition-duration': {
@@ -21,12 +32,16 @@ const transitionRaw = breakpointAttributesCreator({
 const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj
-			? Object.values(transitionObj).map(({ title, hoverProp }) => {
-					return {
-						title,
-						hoverProp,
-					};
-			  })
+			? Object.values(transitionObj).map(
+					({ title, property, prefix }) => {
+						console.log(property);
+						return {
+							title,
+							property,
+							prefix,
+						};
+					}
+			  )
 			: null;
 
 	const blockOptions = getTransitionOptions(transitionObj?.block);
@@ -43,23 +58,23 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	};
 
 	blockOptions &&
-		blockOptions.forEach(({ title, hoverProp }) => {
+		blockOptions.forEach(({ title, property, prefix }) => {
 			transitionStyleObj.block = {
 				...transitionStyleObj.block,
 				[title.toLowerCase()]: {
 					...transitionRawObj,
-					hoverProp,
+					hoverProp: getHoverProp(property, prefix),
 				},
 			};
 		});
 
 	canvasOptions &&
-		canvasOptions.forEach(({ title, hoverProp }) => {
+		canvasOptions.forEach(({ title, property, prefix }) => {
 			transitionStyleObj.canvas = {
 				...transitionStyleObj.canvas,
 				[title.toLowerCase()]: {
 					...transitionRawObj,
-					hoverProp,
+					hoverProp: getHoverProp(property, prefix),
 				},
 			};
 		});

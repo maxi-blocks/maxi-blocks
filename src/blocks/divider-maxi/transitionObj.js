@@ -1,5 +1,7 @@
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
+const prefix = 'divider-';
+
 const transitionObj = {
 	...transitionDefault,
 	block: {
@@ -7,7 +9,7 @@ const transitionObj = {
 			title: 'Box shadow',
 			target: ' hr.maxi-divider-block__divider',
 			property: 'box-shadow',
-			hoverProp: 'divider-box-shadow-status-hover',
+			prefix,
 		},
 	},
 };

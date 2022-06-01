@@ -1,5 +1,7 @@
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
+const prefix = 'number-counter-';
+
 const transitionObj = {
 	...transitionDefault,
 	block: {
@@ -7,13 +9,13 @@ const transitionObj = {
 			title: 'Border',
 			target: ' .maxi-number-counter__box',
 			property: 'border',
-			hoverProp: 'number-counter-border-status-hover',
+			prefix,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-number-counter__box',
 			property: 'box-shadow',
-			hoverProp: 'number-counter-box-shadow-status-hover',
+			prefix,
 		},
 	},
 };

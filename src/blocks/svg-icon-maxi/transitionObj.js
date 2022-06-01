@@ -1,5 +1,7 @@
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
+const prefix = 'svg-';
+
 const transitionObj = {
 	...transitionDefault,
 	block: {
@@ -7,13 +9,13 @@ const transitionObj = {
 			title: 'Border',
 			target: ' .maxi-svg-icon-block__icon',
 			property: 'border',
-			hoverProp: 'svg-border-status-hover',
+			prefix,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-svg-icon-block__icon',
 			property: 'box-shadow',
-			hoverProp: 'svg-box-shadow-status-hover',
+			prefix,
 		},
 	},
 };

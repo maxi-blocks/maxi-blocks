@@ -25,24 +25,18 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 	const response = {};
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
-			const {
-				target: rawTarget,
-				property,
-				limitless = false,
-				hoverProp,
-			} = value;
-			console.log(hoverProp, props[hoverProp]);
-			if (hoverProp && !props[hoverProp]) return;
+			const { target: rawTarget, property, limitless = false } = value;
 
 			const targets = Array.isArray(rawTarget) ? rawTarget : [rawTarget];
 
-			targets.map(target => {
+			targets.forEach(target => {
+				const transitionContent = transition[type][key];
+				if (!props[transitionContent.hoverProp]) return;
+
 				if (isNil(response[target]))
 					response[target] = { transition: {} };
 
 				breakpoints.forEach(breakpoint => {
-					const transitionContent = transition[type][key];
-
 					let transitionString = '';
 
 					const transitionDuration = getLastBreakpointAttribute({
@@ -89,7 +83,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 			});
 		});
 	});
-	console.log(response);
+
 	return response;
 };
 

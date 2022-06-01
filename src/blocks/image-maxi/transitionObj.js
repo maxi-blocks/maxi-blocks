@@ -1,5 +1,7 @@
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
+const prefix = 'image-';
+
 const transitionObj = {
 	...transitionDefault,
 	block: {
@@ -7,13 +9,13 @@ const transitionObj = {
 			title: 'Border',
 			target: ' .maxi-image-block-wrapper img',
 			property: 'border',
-			hoverProp: 'image-border-status-hover',
+			prefix,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-image-block-wrapper img',
 			property: 'box-shadow',
-			hoverProp: 'image-box-shadow-status-hover',
+			prefix,
 		},
 	},
 };

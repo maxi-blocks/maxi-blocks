@@ -11,6 +11,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
+import InfoBox from '../info-box';
 
 /**
  * External dependencies
@@ -21,7 +22,8 @@ import { isEmpty, cloneDeep } from 'lodash';
  * Component
  */
 const TransitionControlWrapper = props => {
-	const { attributes, deviceType, maxiSetAttributes, type } = props;
+	const { attributes, deviceType, maxiSetAttributes, type, isOneType } =
+		props;
 	const { transition: rawTransition } = attributes;
 
 	const transition = cloneDeep(rawTransition);
@@ -34,7 +36,7 @@ const TransitionControlWrapper = props => {
 			delete transition[type][key];
 	});
 
-	return (
+	return !isEmpty(transition[type]) ? (
 		<>
 			<SelectControl
 				label={__('Settings', 'maxi-blocks')}
@@ -71,6 +73,16 @@ const TransitionControlWrapper = props => {
 					</ResponsiveTabsControl>
 				)}
 		</>
+	) : (
+		<InfoBox
+			// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+			message={__(
+				`No transition ${
+					!isOneType ? `${type}` : ''
+				} settings available. Please turn on some hover settings.`,
+				'maxi-blocks'
+			)}
+		/>
 	);
 };
 
@@ -89,7 +101,14 @@ const transition = ({
 	return {
 		label,
 		content:
-			!isEmpty(transition.block) && !isEmpty(transition.canvas) ? (
+			isEmpty(transition.block) && isEmpty(transition.canvas) ? (
+				<InfoBox
+					message={__(
+						'No transition settings available. Please turn on some hover settings.',
+						'maxi-blocks'
+					)}
+				/>
+			) : !isEmpty(transition.block) && !isEmpty(transition.canvas) ? (
 				<SettingTabsControl
 					breakpoint={deviceType}
 					items={[
@@ -116,7 +135,7 @@ const transition = ({
 					]}
 				/>
 			) : (
-				<TransitionControlWrapper type='canvas' {...props} />
+				<TransitionControlWrapper type='canvas' isOneType {...props} />
 			),
 		ignoreIndicator,
 	};

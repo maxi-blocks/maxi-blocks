@@ -114,6 +114,7 @@ class edit extends MaxiBlockComponent {
 				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockAttributes(this.props)}
+				state={this.state}
 			>
 				{embedUrl && videoValidation(embedUrl) ? (
 					isLightbox ? (

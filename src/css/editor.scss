@@ -253,6 +253,11 @@ body .toolbar-item__popover {
 	}
 }
 
+body.maxi-blocks--active .components-tooltip {
+	opacity: 0.95 !important;
+	pointer-events: none;
+}
+
 body.maxi-blocks--active.rtl .maxi-sidebar,
 body.rtl .maxi-popover,
 body.rtl .toolbar-item__popover {
@@ -354,8 +359,9 @@ body .toolbar-item__popover {
 }
 
 /*******************************
-* Style Card Editor Boat Icon
+* Style Card Editor Boat Icon and Template library Icon
 *******************************/
+#template-library-fill,
 svg path#styleCardMenu_a,
 svg path#styleCardBoat_a {
 	fill: rgba(var(--maxi-light-color-4), 1);

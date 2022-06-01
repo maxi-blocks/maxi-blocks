@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 // import { __ } from '@wordpress/i18n';
-import { RawHTML } from '@wordpress/element';
+import { RawHTML, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -28,12 +28,11 @@ import { isNil } from 'lodash';
 import { placeholderImage } from '../../icons';
 
 /**
- * Video popup
+ * Popup
  */
 
 const VideoPopup = props => {
-	const { attributes, onClose } = props;
-	const { embedUrl, 'close-icon-content': closeIcon } = attributes;
+	const { 'close-icon-content': closeIcon, onClose } = props;
 
 	return (
 		<div className='maxi-video-block__popup-wrapper'>
@@ -41,15 +40,64 @@ const VideoPopup = props => {
 				<RawHTML>{closeIcon}</RawHTML>
 			</div>
 			<div className='maxi-video-block__iframe-container'>
-				<iframe
-					className='maxi-video-block__video-player'
-					title='video player'
-					allowFullScreen
-					allow='autoplay'
-					src={embedUrl}
-				/>
+				<VideoPlayer {...props} />
 			</div>
 		</div>
+	);
+};
+
+/**
+ * LightBox
+ */
+
+const VideoLightBox = props => {
+	const { thumbnailId, thumbnailUrl, 'play-icon-content': playIcon } = props;
+
+	const [showPopup, setShowPopup] = useState(false);
+
+	return (
+		<>
+			{!isNil(thumbnailId) || thumbnailUrl ? (
+				<img
+					className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
+					src={thumbnailUrl}
+					alt=''
+				/>
+			) : (
+				<Placeholder icon={placeholderImage} />
+			)}
+			<div
+				className='maxi-video-block__play-button'
+				onClick={() => setShowPopup(true)}
+			>
+				<RawHTML>{playIcon}</RawHTML>
+			</div>
+			{showPopup && (
+				<VideoPopup {...props} onClose={() => setShowPopup(false)} />
+			)}
+		</>
+	);
+};
+
+/**
+ * Video player
+ */
+
+const VideoPlayer = props => {
+	const { videoType, embedUrl } = props;
+
+	return videoType === 'direct' ? (
+		<video src={embedUrl}>
+			<track kind='captions' />
+		</video>
+	) : (
+		<iframe
+			className='maxi-video-block__video-player'
+			title='video player'
+			allowFullScreen
+			allow='autoplay'
+			src={embedUrl}
+		/>
 	);
 };
 
@@ -57,14 +105,6 @@ const VideoPopup = props => {
  * Content
  */
 class edit extends MaxiBlockComponent {
-	constructor(...args) {
-		super(...args);
-
-		this.state = {
-			showPopup: false,
-		};
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -86,16 +126,8 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, isSelected } = this.props;
-		const {
-			blockFullWidth,
-			fullWidth,
-			uniqueID,
-			embedUrl,
-			isLightbox,
-			thumbnailId,
-			thumbnailUrl,
-			'play-icon-content': playIcon,
-		} = attributes;
+		const { blockFullWidth, fullWidth, uniqueID, embedUrl, isLightbox } =
+			attributes;
 
 		const classes = classnames(
 			'maxi-video-block',
@@ -115,48 +147,13 @@ class edit extends MaxiBlockComponent {
 				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockAttributes(this.props)}
-				state={this.state}
 			>
 				{embedUrl && videoValidation(embedUrl) ? (
 					isLightbox ? (
-						<>
-							<div className='maxi-video-block__thumbnail'>
-								{!isNil(thumbnailId) || thumbnailUrl ? (
-									<img
-										className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
-										src={thumbnailUrl}
-										alt=''
-									/>
-								) : (
-									<Placeholder icon={placeholderImage} />
-								)}
-								<div
-									className='maxi-video-block__play-button'
-									onClick={() =>
-										this.setState({ showPopup: true })
-									}
-								>
-									<RawHTML>{playIcon}</RawHTML>
-								</div>
-							</div>
-							{this.state.showPopup && (
-								<VideoPopup
-									{...this.props}
-									onClose={() =>
-										this.setState({ showPopup: false })
-									}
-								/>
-							)}
-						</>
+						<VideoLightBox {...attributes} />
 					) : (
 						<>
-							<iframe
-								className='maxi-video-block__video-player'
-								title='video player'
-								allowFullScreen
-								allow='autoplay'
-								src={embedUrl}
-							/>
+							<VideoPlayer {...attributes} />
 							{!isSelected && (
 								<div className='maxi-video-block__overlay' />
 							)}

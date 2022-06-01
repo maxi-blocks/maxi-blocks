@@ -15,6 +15,9 @@ const rawVideo = {
 	endTime: {
 		type: 'string',
 	},
+	videoType: {
+		type: 'string',
+	},
 	isLightbox: {
 		type: 'boolean',
 		default: false,

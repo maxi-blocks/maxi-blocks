@@ -141,6 +141,7 @@ const MasonryItem = props => {
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
+									'video-shape',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
@@ -337,8 +338,8 @@ const LibraryContainer = props => {
 		switch (type) {
 			case 'button-icon':
 				return 'icon';
-			case 'video-icon':
-				return 'icon';
+			case 'video-shape':
+				return 'shape';
 			case 'sidebar-block-shape':
 				return 'shape';
 			case 'bg-shape':
@@ -518,7 +519,7 @@ const LibraryContainer = props => {
 				onRequestClose();
 			}
 
-			if (type === 'button-icon' || type === 'video-icon') {
+			if (type === 'button-icon' || type === 'video-shape') {
 				onSelect({
 					[`${prefix}icon-content`]: svgCode,
 					[`${prefix}svgType`]: svgType,
@@ -690,7 +691,7 @@ const LibraryContainer = props => {
 				</div>
 			)}
 
-			{type.includes('shape') && (
+			{(type.includes('shape') || type === 'video-shape') && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
@@ -720,38 +721,35 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{type === 'button-icon' ||
-				(type === 'video-icon' && (
-					<InstantSearch
-						indexName='maxi_posts_svg_icon'
-						searchClient={searchClient}
-					>
-						<div className='maxi-cloud-container__svg-shape'>
-							<div className='maxi-cloud-container__svg-shape__sidebar'>
-								<SearchBox
-									submit={__('Find', 'maxi-blocks')}
-									autoFocus
-									searchAsYouType
-									showLoadingIndicator
-								/>
-								<CustomRefinementList
-									className='hidden'
-									attribute='taxonomies.svg_category'
-									defaultRefinement={['Line']}
-									showLoadingIndicator
-								/>
-							</div>
-							<div className='maxi-cloud-container__content-svg-shape'>
-								<div className='maxi-cloud-container__sc__content-sc'>
-									<Stats translations={resultsCount} />
-									<InfiniteHits
-										hitComponent={svgShapeResults}
-									/>
-								</div>
+			{type === 'button-icon' && (
+				<InstantSearch
+					indexName='maxi_posts_svg_icon'
+					searchClient={searchClient}
+				>
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<CustomRefinementList
+								className='hidden'
+								attribute='taxonomies.svg_category'
+								defaultRefinement={['Line']}
+								showLoadingIndicator
+							/>
+						</div>
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
 							</div>
 						</div>
-					</InstantSearch>
-				))}
+					</div>
+				</InstantSearch>
+			)}
 
 			{type === 'preview' && (
 				<div className='maxi-cloud-container__patterns'>

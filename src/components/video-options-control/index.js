@@ -11,9 +11,14 @@ import { getParsedVideoUrl } from '../../extensions/video';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import ColorControl from '../color-control';
-import MaxiModal from '../../editor/library/modal';
+
+/**
+ * External dependencies
+ */
+import VideoIconControl from '../video-icon-control.js';
 
 const VideoOptionsControl = props => {
 	const {
@@ -98,7 +103,7 @@ const VideoOptionsControl = props => {
 			{isLightbox && (
 				<>
 					<ColorControl
-						className='maxi-video-options-control__open-in-lightbox'
+						className='maxi-video-options-control__lightbox-colour'
 						label={__('Lightbox background', 'maxi-blocks')}
 						color={getLastBreakpointAttribute({
 							target: 'lightbox-background-color',
@@ -155,13 +160,19 @@ const VideoOptionsControl = props => {
 							target: 'lightbox',
 						}}
 					/>
-					<MaxiModal
-						type='video-icon'
+					<VideoIconControl
 						prefix='close-'
-						style={blockStyle}
-						onSelect={obj => onChange(obj)}
-						onRemove={obj => onChange(obj)}
-						icon={props['close-icon-content']}
+						label={__('Lightbox close button', 'maxi-blocks')}
+						blockStyle={blockStyle}
+						breakpoint={breakpoint}
+						clientId={clientId}
+						onChange={obj => onChange(obj)}
+						{...getGroupAttributes(
+							props,
+							['icon', 'iconBackground', 'iconBackgroundColor'],
+							false,
+							'close-'
+						)}
 					/>
 				</>
 			)}

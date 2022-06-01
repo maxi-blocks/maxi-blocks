@@ -1,25 +1,6 @@
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
-import {
-	icon,
-	iconBackground,
-	iconBackgroundColor,
-	iconBackgroundGradient,
-	iconPadding,
-} from './icon';
+import { icon, iconBackground, iconPadding } from './icon';
 import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
-import {
-	iconBorderHover,
-	iconBorderRadiusHover,
-	iconBorderWidthHover,
-} from './iconBorderHover';
-import {
-	iconBackgroundColorHover,
-	iconBackgroundGradientHover,
-	iconBackgroundHover,
-	iconHover,
-} from './iconHover';
 
 const rawVideo = {
 	url: {
@@ -66,29 +47,10 @@ const rawIcon = {
 	},
 	...icon,
 	...iconBackground,
-	...iconHover,
-	...iconBackgroundHover,
 	...iconPadding,
-	...{
-		...iconBackgroundColor,
-		'icon-background-palette-status-general': {
-			type: 'boolean',
-			default: true,
-		},
-		'icon-background-palette-color-general': {
-			type: 'number',
-			default: 4,
-		},
-	},
-	...iconBackgroundColorHover,
-	...iconBackgroundGradient,
-	...iconBackgroundGradientHover,
 	...iconBorder,
 	...iconBorderWidth,
 	...iconBorderRadius,
-	...iconBorderHover,
-	...iconBorderWidthHover,
-	...iconBorderRadiusHover,
 };
 
 const icons = {

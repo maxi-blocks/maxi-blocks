@@ -34,7 +34,6 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 		transitionObj
 			? Object.values(transitionObj).map(
 					({ title, property, prefix }) => {
-						console.log(property);
 						return {
 							title,
 							property,
@@ -57,10 +56,11 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 		canvas: {},
 	};
 
-	blockOptions &&
-		blockOptions.forEach(({ title, property, prefix }) => {
-			transitionStyleObj.block = {
-				...transitionStyleObj.block,
+	const createTransitionStyleObjForType = (type, options) =>
+		options &&
+		options.forEach(({ title, property, prefix }) => {
+			transitionStyleObj[type] = {
+				...transitionStyleObj[type],
 				[title.toLowerCase()]: {
 					...transitionRawObj,
 					hoverProp: getHoverProp(property, prefix),
@@ -68,16 +68,8 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 			};
 		});
 
-	canvasOptions &&
-		canvasOptions.forEach(({ title, property, prefix }) => {
-			transitionStyleObj.canvas = {
-				...transitionStyleObj.canvas,
-				[title.toLowerCase()]: {
-					...transitionRawObj,
-					hoverProp: getHoverProp(property, prefix),
-				},
-			};
-		});
+	createTransitionStyleObjForType('block', blockOptions);
+	createTransitionStyleObjForType('canvas', canvasOptions);
 
 	return {
 		transition: {

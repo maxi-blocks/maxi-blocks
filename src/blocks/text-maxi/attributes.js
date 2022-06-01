@@ -16,7 +16,7 @@ import {
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { transitionObj } from './edit';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes

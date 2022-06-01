@@ -24,6 +24,7 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsDivider } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getWrapperObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
@@ -165,7 +166,7 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = (props, transitionObj) => {
+const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {

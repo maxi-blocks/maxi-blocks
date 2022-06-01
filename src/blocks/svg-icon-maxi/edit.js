@@ -27,7 +27,6 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -37,21 +36,6 @@ import { isEmpty, uniqueId } from 'lodash';
 /**
  * Content
  */
-export const transitionObj = {
-	...transitionDefault,
-	block: {
-		border: {
-			title: 'Border',
-			target: ' .maxi-svg-icon-block__icon',
-			property: 'border',
-		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: ' .maxi-svg-icon-block__icon',
-			property: 'box-shadow',
-		},
-	},
-};
 class edit extends MaxiBlockComponent {
 	constructor(props) {
 		super(props);
@@ -113,7 +97,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes, transitionObj);
+		return getStyles(this.props.attributes);
 	}
 
 	state = {

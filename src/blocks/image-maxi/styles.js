@@ -30,6 +30,7 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsImage } from './custom-css';
+import transitionObj from './transitionObj';
 
 /**
  * External dependencies
@@ -409,7 +410,7 @@ const getImageShapeObject = (target, props) => {
 	return response;
 };
 
-const getStyles = (props, transitionObj) => {
+const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {

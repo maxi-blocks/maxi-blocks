@@ -35,6 +35,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsText } from './custom-css';
 import { getSVGListStyle } from './utils';
+import transitionObj from './transitionObj';
 
 /**
  * External dependencies
@@ -517,7 +518,7 @@ const getMarkerObject = props => {
 	};
 };
 
-const getStyles = (props, transitionObj) => {
+const getStyles = props => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
 	const { isRTL } = select('core/editor').getEditorSettings();

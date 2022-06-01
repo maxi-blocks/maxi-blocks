@@ -35,6 +35,7 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsButton } from './custom-css';
+import transitionObj from './transitionObj';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -496,7 +497,7 @@ const getIconHoverObject = (props, target) => {
 	return response;
 };
 
-const getStyles = (props, scValues, transitionObj) => {
+const getStyles = (props, scValues) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {

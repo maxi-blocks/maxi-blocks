@@ -25,6 +25,7 @@ import {
 	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getWrapperObject = props => {
 	const response = {
@@ -222,7 +223,7 @@ const getHoverBoxObject = props => {
 	return response;
 };
 
-const getStyles = (props, transitionObj) => {
+const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {

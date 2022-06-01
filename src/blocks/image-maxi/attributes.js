@@ -12,7 +12,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
-import { transitionObj } from './edit';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes

@@ -16,7 +16,6 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 import copyPasteMapping from './copy-paste-mapping';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -26,32 +25,6 @@ import classnames from 'classnames';
 /**
  * Content
  */
-export const transitionObj = {
-	...transitionDefault,
-	block: {
-		typography: {
-			title: 'Typography',
-			target: ' .maxi-button-block__content',
-			limitless: true,
-		},
-		'button background': {
-			title: 'Button background',
-			target: ' .maxi-button-block__button',
-			property: 'background',
-		},
-		border: {
-			title: 'Border',
-			target: ' .maxi-button-block__button',
-			property: 'border',
-		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: ' .maxi-button-block__button',
-			property: 'box-shadow',
-		},
-	},
-};
-
 const IconWrapper = forwardRef((props, ref) => {
 	const { children, className } = props;
 
@@ -86,7 +59,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
 
-		return getStyles(attributes, scValues, transitionObj);
+		return getStyles(attributes, scValues);
 	}
 
 	render() {

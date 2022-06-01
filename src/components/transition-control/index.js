@@ -55,10 +55,10 @@ const TransitionControl = props => {
 	const classes = classnames('maxi-transition-control', className);
 
 	return (
-		<>
+		<div className={classes}>
 			<AdvancedNumberControl
 				label={__('Transition duration', 'maxi-blocks')}
-				className={classes}
+				className='maxi-transition-control__duration'
 				defaultValue={getDefaultTransitionAttribute(
 					'transition-duration'
 				)}
@@ -88,7 +88,7 @@ const TransitionControl = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Transition delay', 'maxi-blocks')}
-				className={classes}
+				className='maxi-transition-control__delay'
 				defaultValue={getDefaultTransitionAttribute('transition-delay')}
 				value={getLastBreakpointAttribute({
 					target: 'transition-delay',
@@ -114,7 +114,7 @@ const TransitionControl = props => {
 			/>
 			<SelectControl
 				label={__('Easing', 'maxi-blocks')}
-				className={classes}
+				className='maxi-transition-control__easing'
 				value={getLastBreakpointAttribute({
 					target: 'easing',
 					breakpoint,
@@ -143,7 +143,7 @@ const TransitionControl = props => {
 					})
 				}
 			/>
-		</>
+		</div>
 	);
 };
 

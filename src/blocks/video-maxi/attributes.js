@@ -42,6 +42,19 @@ const attributes = {
 		diffValAttr: { 'lightbox-background-palette-color-general': 2 },
 	}),
 
+	...prefixAttributesCreator({
+		obj: attributesData.background,
+		prefix: 'overlay-',
+		diffValAttr: {
+			'overlay-background-active-media-general': 'color',
+		},
+	}),
+	...prefixAttributesCreator({
+		obj: attributesData.backgroundColor,
+		prefix: 'overlay-',
+		diffValAttr: { 'overlay-background-palette-color-general': 2 },
+	}),
+
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

@@ -14,11 +14,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import ColorControl from '../color-control';
-
-/**
- * External dependencies
- */
-import VideoIconControl from '../video-icon-control.js';
+import VideoIconControl from '../video-icon-control';
 
 const VideoOptionsControl = props => {
 	const {

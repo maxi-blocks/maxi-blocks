@@ -54,7 +54,11 @@ const getInnerBlocksChild = ({
 				/>
 			)),
 			...(children ?? children),
-			!(blockName === 'maxi-blocks/pane-maxi' && !paneExpanded) &&
+			!(
+				blockName === 'maxi-blocks/pane-maxi' &&
+				!paneExpanded &&
+				!isSave
+			) &&
 				cloneElement(innerBlocksChildren, {
 					key: `maxi-inner-content__${uniqueID}`,
 				}),

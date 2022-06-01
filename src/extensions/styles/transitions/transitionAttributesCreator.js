@@ -7,7 +7,9 @@ const getHoverProp = (property, prefix = '') => {
 			? prefix
 				? 'background-hover-status'
 				: 'block-background-hover-status'
-			: `${property}-status-hover`;
+			: `${
+					Array.isArray(property) ? property[0] : property
+			  }-status-hover`;
 
 	return `${prefix}${hoverProp}`;
 };

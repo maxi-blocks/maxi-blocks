@@ -25,9 +25,16 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 	const response = {};
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
-			const { target: rawTarget, property, limitless = false } = value;
+			const {
+				target: rawTarget,
+				property: rawProperty,
+				limitless = false,
+			} = value;
 
 			const targets = Array.isArray(rawTarget) ? rawTarget : [rawTarget];
+			const properties = Array.isArray(rawProperty)
+				? rawProperty
+				: [rawProperty];
 
 			targets.forEach(target => {
 				const transitionContent = transition[type][key];
@@ -59,15 +66,17 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						}
 					);
 
-					if (
-						transitionDuration ||
-						transitionDelay ||
-						transitionTimingFunction
-					) {
-						transitionString += `${
-							limitless ? 'all' : property
-						} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction}, `;
-					}
+					properties.forEach(property => {
+						if (
+							transitionDuration ||
+							transitionDelay ||
+							transitionTimingFunction
+						) {
+							transitionString += `${
+								limitless ? 'all' : property
+							} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction}, `;
+						}
+					});
 
 					transitionString = transitionString.replace(/,\s*$/, '');
 

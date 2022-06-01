@@ -3,7 +3,7 @@ const transitionDefault = {
 		border: {
 			title: 'Border',
 			target: ['', ' > .maxi-background-displayer'],
-			property: 'border',
+			property: ['border', 'top', 'left'],
 		},
 		'box shadow': {
 			title: 'Box shadow',

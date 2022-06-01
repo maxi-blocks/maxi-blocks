@@ -86,7 +86,8 @@ const MaxiModal = props => {
 				)}
 				{(type === 'bg-shape' ||
 					type === 'image-shape' ||
-					type === 'sidebar-block-shape') && (
+					type === 'sidebar-block-shape' ||
+					type === 'video-shape') && (
 					<Button
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
@@ -102,15 +103,6 @@ const MaxiModal = props => {
 						{isEmpty(icon)
 							? __('Add Icon', 'maxi-blocks')
 							: __('Replace Icon', 'maxi-blocks')}
-					</Button>
-				)}
-				{type === 'video-icon' && (
-					<Button
-						className='maxi-library-modal__action-section__buttons__load-library'
-						onClick={onClick}
-						label={__('Lightbox close button', 'maxi-blocks')}
-					>
-						{__('Load shape library', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'preview' && (
@@ -185,7 +177,7 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'video-icon' && !isEmpty(icon) && (
+			{type === 'video-shape' && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'

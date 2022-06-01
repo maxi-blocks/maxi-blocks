@@ -37,10 +37,6 @@ const VideoPopup = props => {
 
 	return (
 		<div className='maxi-video-block__popup-wrapper'>
-			{/* <span
-				className='maxi-video-block__close-button'
-				onClick={onClose}
-			/> */}
 			<div className='maxi-video-block__close-button' onClick={onClose}>
 				<RawHTML>{closeIcon}</RawHTML>
 			</div>

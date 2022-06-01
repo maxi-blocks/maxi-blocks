@@ -1,19 +1,34 @@
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+/**
+ * External dependencies
+ */
+import { isNil, isEmpty } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	stylesCleaner,
+} from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getDisplayStyles,
 	getTransformStyles,
 	getMarginPaddingStyles,
-	getBlockBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
 	getBackgroundStyles,
+	getIconPathStyles,
+	getIconStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsVideo } from './custom-css';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const response = {
@@ -107,16 +122,41 @@ const getLightBoxObject = props => {
 			blockStyle: props.blockStyle,
 		}),
 	};
-	console.log(
-		response,
-		...getGroupAttributes(
-			props,
-			['background', 'backgroundColor'],
-			false,
-			'lightbox-'
-		)
-	);
+
 	return response;
+};
+
+const getIconSize = (obj, prefix = '') => {
+	const response = {
+		label: 'Icon size',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (!isNil(obj[`${prefix}icon-height-${breakpoint}`])) {
+			response[breakpoint].height = `${
+				obj[`${prefix}icon-height-${breakpoint}`]
+			}${getLastBreakpointAttribute({
+				target: `${prefix}icon-height-unit`,
+				breakpoint,
+				attributes: obj,
+			})}`;
+			response[breakpoint].width = `${
+				obj[`${prefix}icon-height-${breakpoint}`]
+			}${getLastBreakpointAttribute({
+				target: `${prefix}icon-height-unit`,
+				breakpoint,
+				attributes: obj,
+			})}`;
+		}
+
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+			delete response[breakpoint];
+	});
+
+	return { iconSize: response };
 };
 
 const getStyles = props => {
@@ -128,20 +168,29 @@ const getStyles = props => {
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
-							'blockBackground',
-							'border',
-							'borderWidth',
-							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.parentBlockStyle,
-				}),
+				' .maxi-video-block__close-button': getIconStyles(
+					props,
+					props.blockStyle,
+					false,
+					false,
+					'close-'
+				),
+				' .maxi-video-block__close-button svg': getIconSize(
+					props,
+					'close-'
+				),
+				' .maxi-video-block__close-button svg > *': getIconStyles(
+					props,
+					props.blockStyle,
+					false,
+					false,
+					'close-'
+				),
+				' .maxi-video-block__close-button svg path': getIconPathStyles(
+					props,
+					false,
+					'close-'
+				),
 			},
 			selectorsVideo,
 			props

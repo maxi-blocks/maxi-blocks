@@ -22,6 +22,7 @@ import {
 	getDisplayStyles,
 	getFlexStyles,
 	getGradientBackgroundObject,
+	getIconPathStyles,
 	getIconStyles,
 	getSVGStyles,
 	getMarginPaddingStyles,
@@ -306,30 +307,6 @@ const getIconSize = (obj, isHover = false) => {
 	});
 
 	return { iconSize: response };
-};
-
-const getIconPathStyles = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon path',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`])
-		) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconPath: response };
 };
 
 const getIconObject = (props, target) => {

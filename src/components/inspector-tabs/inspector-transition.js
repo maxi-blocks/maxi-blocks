@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import TransitionControl from '../transition-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
@@ -35,6 +38,35 @@ const TransitionControlWrapper = props => {
 		)
 			delete transition[type][key];
 	});
+
+	const selected = attributes[`transition-${type}-selected`] || 'none';
+
+	const transitionObj = transition[type][selected];
+
+	const onChangeTransition = obj => {
+		const newObj = {
+			transition: {
+				...attributes?.transition,
+				[type]: {
+					...(attributes?.transition?.[type] || []),
+					[selected]: {
+						...(attributes?.transition?.[type]?.[selected] || {}),
+						...obj,
+					},
+				},
+			},
+		};
+
+		maxiSetAttributes(newObj);
+
+		return newObj;
+	};
+
+	const getDefaultTransitionAttribute = prop => {
+		const defaultTransition = getDefaultAttribute('transition');
+
+		return defaultTransition[type][selected][`${prop}-${deviceType}`];
+	};
 
 	return !isEmpty(transition[type]) ? (
 		<>
@@ -66,7 +98,11 @@ const TransitionControlWrapper = props => {
 					<ResponsiveTabsControl breakpoint={deviceType}>
 						<TransitionControl
 							{...getGroupAttributes(attributes, 'transition')}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChange={onChangeTransition}
+							getDefaultTransitionAttribute={
+								getDefaultTransitionAttribute
+							}
+							transition={transitionObj}
 							breakpoint={deviceType}
 							type={type}
 						/>

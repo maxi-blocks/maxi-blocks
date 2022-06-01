@@ -7,10 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import {
-	getLastBreakpointAttribute,
-	getDefaultAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -22,35 +19,13 @@ import SelectControl from '../select-control';
  * Component
  */
 const TransitionControl = props => {
-	const { onChange, className, breakpoint, type } = props;
-	const selected = props[`transition-${type}-selected`] || 'none';
-
-	const onChangeTransition = obj => {
-		const newObj = {
-			transition: {
-				...props?.transition,
-				[type]: {
-					...(props?.transition?.[type] || []),
-					[selected]: {
-						...(props?.transition?.[type]?.[selected] || {}),
-						...obj,
-					},
-				},
-			},
-		};
-
-		onChange(newObj);
-
-		return newObj;
-	};
-
-	const getDefaultTransitionAttribute = prop => {
-		const defaultTransition = getDefaultAttribute('transition');
-
-		return defaultTransition[type][selected][`${prop}-${breakpoint}`];
-	};
-
-	const transitionObj = props.transition[type][selected];
+	const {
+		onChange,
+		className,
+		breakpoint,
+		getDefaultTransitionAttribute,
+		transition,
+	} = props;
 
 	const classes = classnames('maxi-transition-control', className);
 
@@ -65,10 +40,10 @@ const TransitionControl = props => {
 				value={getLastBreakpointAttribute({
 					target: 'transition-duration',
 					breakpoint,
-					attributes: transitionObj,
+					attributes: transition,
 				})}
 				onChangeValue={val => {
-					onChangeTransition({
+					onChange({
 						[`transition-duration-${breakpoint}`]:
 							val !== undefined && val !== '' ? val : '',
 					});
@@ -78,7 +53,7 @@ const TransitionControl = props => {
 				step={0.1}
 				initial={0.3}
 				onReset={() =>
-					onChangeTransition({
+					onChange({
 						[`transition-duration-${breakpoint}`]:
 							getDefaultTransitionAttribute(
 								'transition-duration'
@@ -93,10 +68,10 @@ const TransitionControl = props => {
 				value={getLastBreakpointAttribute({
 					target: 'transition-delay',
 					breakpoint,
-					attributes: transitionObj,
+					attributes: transition,
 				})}
 				onChangeValue={val => {
-					onChangeTransition({
+					onChange({
 						[`transition-delay-${breakpoint}`]:
 							val !== undefined && val !== '' ? val : '',
 					});
@@ -106,7 +81,7 @@ const TransitionControl = props => {
 				step={0.1}
 				initial={0}
 				onReset={() =>
-					onChangeTransition({
+					onChange({
 						[`transition-delay-${breakpoint}`]:
 							getDefaultTransitionAttribute('transition-delay'),
 					})
@@ -118,7 +93,7 @@ const TransitionControl = props => {
 				value={getLastBreakpointAttribute({
 					target: 'easing',
 					breakpoint,
-					attributes: transitionObj,
+					attributes: transition,
 				})}
 				options={[
 					{ label: __('Ease', 'maxi-blocks'), value: 'ease' },
@@ -131,13 +106,13 @@ const TransitionControl = props => {
 					{ label: __('Linear', 'maxi-blocks'), value: 'linear' },
 				]}
 				onChange={val => {
-					onChangeTransition({
+					onChange({
 						[`easing-${breakpoint}`]:
 							val !== undefined && val !== '' ? val : '',
 					});
 				}}
 				onReset={() =>
-					onChangeTransition({
+					onChange({
 						[`easing-${breakpoint}`]:
 							getDefaultTransitionAttribute('easing'),
 					})

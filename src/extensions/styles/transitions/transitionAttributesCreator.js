@@ -12,22 +12,41 @@ const getHoverProp = (property, prefix = '') => {
 	return `${prefix}${hoverProp}`;
 };
 
-const transitionRaw = breakpointAttributesCreator({
-	obj: {
-		'transition-duration': {
-			type: 'number',
-			default: 0.3,
-		},
-		'transition-delay': {
-			type: 'number',
-			default: 0,
-		},
-		easing: {
-			type: 'string',
-			default: 'ease',
-		},
-	},
-});
+const disableDefaultTransition = false;
+
+const transitionRaw = disableDefaultTransition
+	? breakpointAttributesCreator({
+			obj: {
+				'transition-duration': {
+					type: 'number',
+					default: 0,
+				},
+				'transition-delay': {
+					type: 'number',
+					default: 0,
+				},
+				easing: {
+					type: 'string',
+					default: 'ease',
+				},
+			},
+	  })
+	: breakpointAttributesCreator({
+			obj: {
+				'transition-duration': {
+					type: 'number',
+					default: 0.3,
+				},
+				'transition-delay': {
+					type: 'number',
+					default: 0,
+				},
+				easing: {
+					type: 'string',
+					default: 'ease',
+				},
+			},
+	  });
 
 const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const getTransitionOptions = transitionObj =>

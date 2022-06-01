@@ -37,7 +37,7 @@ const VideoControl = props => {
 
 					onChange({
 						url: val,
-						embedUrl: getParsedVideoUrl({ val, ...props }),
+						embedUrl: getParsedVideoUrl({ ...props, url: val }),
 						videoType: parseVideo(val).type,
 					});
 				}}

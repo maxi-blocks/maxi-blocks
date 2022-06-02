@@ -45,7 +45,18 @@ const ImageShape = props => {
 			{!disableModal && breakpoint === 'general' && (
 				<MaxiModal
 					type='image-shape'
-					onSelect={obj => onChange(obj)}
+					onSelect={obj => {
+						const { SVGElement } = obj;
+
+						const newSVGElement = SVGElement.replace(
+							/class="(.*?)"/,
+							`class="${
+								SVGElement.match(/class="(.*?)"/)[1]
+							} maxi-image-block__image"`
+						);
+
+						onChange({ ...obj, SVGElement: newSVGElement });
+					}}
 					onRemove={obj => {
 						onChange(obj);
 					}}

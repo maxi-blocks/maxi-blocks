@@ -413,6 +413,8 @@ const getImageShapeObject = (target, props) => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
+	const imgTag = props.SVGElement === '' || !props.SVGElement ? 'img' : 'svg';
+
 	const response = {
 		[uniqueID]: stylesCleaner(
 			merge(
@@ -420,8 +422,9 @@ const getStyles = props => {
 					'': getWrapperObject(props),
 					':hover': getHoverWrapperObject(props),
 					' .maxi-image-block-wrapper': getImageWrapperObject(props),
-					' .maxi-image-block-wrapper img': getImageObject(props),
-					':hover .maxi-image-block-wrapper img':
+					[` .maxi-image-block-wrapper ${imgTag}`]:
+						getImageObject(props),
+					[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 						getHoverImageObject(props),
 					' .maxi-image-block-wrapper > svg:first-child':
 						getImageShapeObject('svg', props),
@@ -434,6 +437,14 @@ const getStyles = props => {
 						getHoverEffectContentTextObject(props),
 					' .maxi-hover-details':
 						getHoverEffectDetailsBoxObject(props),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
+							'blockBackground',
+							'borderWidth',
+							'borderRadius',
+						]),
+						blockStyle: props.blockStyle,
+					}),
 					...getBlockBackgroundStyles({
 						...getGroupAttributes(props, [
 							'blockBackground',

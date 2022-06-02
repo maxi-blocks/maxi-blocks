@@ -41,7 +41,7 @@ const Help = props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip text={__('Help', 'maxi-blocks')} position='bottom center'>
+			<Tooltip text={__('Help', 'maxi-blocks')} position='top center'>
 				{helpContent()}
 			</Tooltip>
 		);

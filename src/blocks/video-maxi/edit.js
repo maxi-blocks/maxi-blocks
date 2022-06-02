@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 // import { __ } from '@wordpress/i18n';
-import { RawHTML, useState } from '@wordpress/element';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -26,58 +26,6 @@ import { isNil } from 'lodash';
  * Icons
  */
 import { placeholderImage } from '../../icons';
-
-/**
- * Popup
- */
-
-const VideoPopup = props => {
-	const { 'close-icon-content': closeIcon, onClose } = props;
-
-	return (
-		<div className='maxi-video-block__popup-wrapper'>
-			<div className='maxi-video-block__close-button' onClick={onClose}>
-				<RawHTML>{closeIcon}</RawHTML>
-			</div>
-			<div className='maxi-video-block__iframe-container'>
-				<VideoPlayer {...props} />
-			</div>
-		</div>
-	);
-};
-
-/**
- * LightBox
- */
-
-const VideoLightBox = props => {
-	const { thumbnailId, thumbnailUrl, 'play-icon-content': playIcon } = props;
-
-	const [showPopup, setShowPopup] = useState(false);
-
-	return (
-		<>
-			{!isNil(thumbnailId) || thumbnailUrl ? (
-				<img
-					className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
-					src={thumbnailUrl}
-					alt=''
-				/>
-			) : (
-				<Placeholder icon={placeholderImage} />
-			)}
-			<div
-				className='maxi-video-block__play-button'
-				onClick={() => setShowPopup(true)}
-			>
-				<RawHTML>{playIcon}</RawHTML>
-			</div>
-			{showPopup && (
-				<VideoPopup {...props} onClose={() => setShowPopup(false)} />
-			)}
-		</>
-	);
-};
 
 /**
  * Video player
@@ -140,16 +88,32 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, isSelected } = this.props;
-		const { blockFullWidth, fullWidth, uniqueID, embedUrl, isLightbox } =
-			attributes;
+		const {
+			blockFullWidth,
+			fullWidth,
+			uniqueID,
+			embedUrl,
+			isLightbox,
+			thumbnailId,
+			thumbnailUrl,
+			'play-icon-content': playIcon,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-video-block',
 			fullWidth === 'full' && 'alignfull'
 		);
 
+		const inlineStylesTargets = {
+			playIcon: '.maxi-video-block__play-button svg path',
+		};
+
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				inlineStylesTargets={inlineStylesTargets}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -160,11 +124,25 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-video--${uniqueID}`}
 				blockFullWidth={blockFullWidth}
 				className={classes}
+				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				{embedUrl && videoValidation(embedUrl) ? (
 					isLightbox ? (
-						<VideoLightBox {...attributes} />
+						<>
+							{!isNil(thumbnailId) || thumbnailUrl ? (
+								<img
+									className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
+									src={thumbnailUrl}
+									alt=''
+								/>
+							) : (
+								<Placeholder icon={placeholderImage} />
+							)}
+							<div className='maxi-video-block__play-button'>
+								<RawHTML>{playIcon}</RawHTML>
+							</div>
+						</>
 					) : (
 						<>
 							<VideoPlayer {...attributes} />

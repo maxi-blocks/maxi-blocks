@@ -179,13 +179,6 @@ const getStyles = props => {
 					props,
 					'close-'
 				),
-				' .maxi-video-block__close-button svg > *': getIconStyles(
-					props,
-					props.blockStyle,
-					false,
-					false,
-					'close-'
-				),
 				' .maxi-video-block__close-button svg path': getIconPathStyles(
 					props,
 					false,
@@ -195,7 +188,7 @@ const getStyles = props => {
 					props,
 					'play-'
 				),
-				' .maxi-video-block__play-button svg > *': getIconStyles(
+				' .maxi-video-block__play-button': getIconStyles(
 					props,
 					props.blockStyle,
 					false,

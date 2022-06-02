@@ -72,7 +72,7 @@ const TransitionControlWrapper = props => {
 		<>
 			<SelectControl
 				label={__('Settings', 'maxi-blocks')}
-				value={attributes[`transition-${type}-selected`]}
+				value={selected}
 				options={[
 					{
 						label: __('Select setting', 'maxi-blocks'),
@@ -93,21 +93,20 @@ const TransitionControlWrapper = props => {
 					});
 				}}
 			/>
-			{attributes[`transition-${type}-selected`] &&
-				attributes[`transition-${type}-selected`] !== 'none' && (
-					<ResponsiveTabsControl breakpoint={deviceType}>
-						<TransitionControl
-							{...getGroupAttributes(attributes, 'transition')}
-							onChange={onChangeTransition}
-							getDefaultTransitionAttribute={
-								getDefaultTransitionAttribute
-							}
-							transition={transitionObj}
-							breakpoint={deviceType}
-							type={type}
-						/>
-					</ResponsiveTabsControl>
-				)}
+			{selected && selected !== 'none' && (
+				<ResponsiveTabsControl breakpoint={deviceType}>
+					<TransitionControl
+						{...getGroupAttributes(attributes, 'transition')}
+						onChange={onChangeTransition}
+						getDefaultTransitionAttribute={
+							getDefaultTransitionAttribute
+						}
+						transition={transitionObj}
+						breakpoint={deviceType}
+						type={type}
+					/>
+				</ResponsiveTabsControl>
+			)}
 		</>
 	) : (
 		<InfoBox

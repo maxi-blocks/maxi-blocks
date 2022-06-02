@@ -19,16 +19,20 @@ const videoEvents = () => {
 			const thumbnail = video.querySelector(
 				'.maxi-video-block__thumbnail'
 			);
-			const iframe = video.querySelector('iframe');
+			const player = video.querySelector(
+				'.maxi-video-block__video-player'
+			);
 
 			const openVideo = e => {
 				wrapper.style.display = 'flex';
-				iframe.src = videoData['embedUrl'];
+				player.src = videoData['embedUrl'];
 			};
 
 			const closeVideo = e => {
+				if (e.target !== e.currentTarget && e.currentTarget === wrapper)
+					return;
 				wrapper.style.display = 'none';
-				iframe.src = '';
+				player.src = '';
 			};
 
 			thumbnail.addEventListener('click', openVideo);

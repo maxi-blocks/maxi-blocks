@@ -272,7 +272,7 @@ const Inspector = props => {
 		}
 		return response;
 	};
-	console.log(props);
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}

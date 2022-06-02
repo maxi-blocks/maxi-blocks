@@ -4,9 +4,10 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 const prefix = 'box-shadow-';
 
 const rawBoxShadow = {
-	...paletteAttributesCreator({ prefix, palette: 8 }),
+	...paletteAttributesCreator({ prefix, palette: 8, opacity: 1 }),
 	'box-shadow-horizontal': {
 		type: 'number',
+		default: 0,
 	},
 	'box-shadow-horizontal-unit': {
 		type: 'string',
@@ -14,6 +15,7 @@ const rawBoxShadow = {
 	},
 	'box-shadow-vertical': {
 		type: 'number',
+		default: 0,
 	},
 	'box-shadow-vertical-unit': {
 		type: 'string',
@@ -21,6 +23,7 @@ const rawBoxShadow = {
 	},
 	'box-shadow-blur': {
 		type: 'number',
+		default: 0,
 	},
 	'box-shadow-blur-unit': {
 		type: 'string',
@@ -28,6 +31,7 @@ const rawBoxShadow = {
 	},
 	'box-shadow-spread': {
 		type: 'number',
+		default: 0,
 	},
 	'box-shadow-spread-unit': {
 		type: 'string',

@@ -266,7 +266,17 @@ const BorderControl = props => {
 							/>
 						),
 						onChange: () =>
-							onChangeDefault(borderNone(prefix, isHover)),
+							onChangeDefault(
+								borderNone(
+									prefix,
+									getLastBreakpointAttribute({
+										target: `${prefix}border-style`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									}) && breakpoint !== 'general'
+								)
+							),
 					},
 					{
 						activeItem: getIsActive() === 'solid',

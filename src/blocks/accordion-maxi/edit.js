@@ -56,6 +56,10 @@ class edit extends MaxiBlockComponent {
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
 					templateLock: false,
+					template: [
+						['maxi-blocks/pane-maxi', { title: 'Accordion 1' }],
+						['maxi-blocks/pane-maxi', { title: 'Accordion 2' }],
+					],
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>

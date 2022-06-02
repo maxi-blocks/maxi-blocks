@@ -40,6 +40,7 @@ registerBlockType('maxi-blocks/pane-maxi', {
 	attributes: {
 		...attributes,
 	},
+	parent: ['maxi-blocks/accordion-maxi'],
 	getEditWrapperProps(attributes) {
 		const { uniqueID } = attributes;
 

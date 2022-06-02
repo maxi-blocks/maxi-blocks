@@ -127,6 +127,23 @@ const getLightBoxObject = props => {
 	return response;
 };
 
+const getOverlayObject = props => {
+	const response = {
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor'],
+				false,
+				'overlay-'
+			),
+			prefix: 'overlay-',
+			blockStyle: props.blockStyle,
+		}),
+	};
+
+	return response;
+};
+
 const getVideoPlayerOject = props => {
 	const { videoRatio } = props;
 
@@ -180,6 +197,7 @@ const getStyles = props => {
 				':hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				' .maxi-video-block__video-player': getVideoPlayerOject(props),
+				' .maxi-video-block__overlay': getOverlayObject(props),
 				' .maxi-video-block__close-button': getIconStyles(
 					props,
 					props.blockStyle,

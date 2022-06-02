@@ -29,12 +29,16 @@
 		object-fit: cover;
 	}
 
-	&__overlay {
+	&__overlay,
+	&__select-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
 		bottom: 0;
 		right: 0;
+	}
+
+	&__select-overlay {
 		background: transparent;
 	}
 

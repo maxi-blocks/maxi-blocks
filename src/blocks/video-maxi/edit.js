@@ -139,6 +139,7 @@ class edit extends MaxiBlockComponent {
 							) : (
 								<Placeholder icon={placeholderImage} />
 							)}
+							<div className='maxi-video-block__overlay' />
 							<div className='maxi-video-block__play-button'>
 								<RawHTML>{playIcon}</RawHTML>
 							</div>
@@ -147,7 +148,7 @@ class edit extends MaxiBlockComponent {
 						<>
 							<VideoPlayer {...attributes} />
 							{!isSelected && (
-								<div className='maxi-video-block__overlay' />
+								<div className='maxi-video-block__select-overlay' />
 							)}
 						</>
 					)

@@ -14,7 +14,7 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar, Placeholder } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { videoValidation } from '../../extensions/video';
-// import copyPasteMapping from './copy-paste-mapping';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -118,7 +118,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
-				// copyPasteMapping={copyPasteMapping}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-video--${uniqueID}`}

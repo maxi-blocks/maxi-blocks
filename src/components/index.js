@@ -50,6 +50,7 @@ export { default as MapControl } from './map-control';
 export { default as MarginControl } from './margin-control';
 export { default as MaxiPopoverButton } from './maxi-popover-button';
 export { default as MotionPreview } from './motion-preview';
+export { default as NavigationControl } from './navigation-control';
 export { default as NumberCounterControl } from './number-counter-control';
 export { default as OpacityControl } from './opacity-control';
 export { default as OverflowControl } from './overflow-control';

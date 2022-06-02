@@ -10,6 +10,7 @@ import {
 	AccordionControl,
 	SettingTabsControl,
 	SliderControl,
+	NavigationControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
@@ -29,7 +30,11 @@ const Inspector = props => {
 		setEditView,
 		isEditView,
 		attributes,
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
+
+	const { blockStyle, svgType } = attributes;
 
 	return (
 		<InspectorControls>
@@ -66,6 +71,32 @@ const Inspector = props => {
 													}
 													isEditView={isEditView}
 													setEditView={setEditView}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Navigation',
+												'maxi-blocks'
+											),
+											content: (
+												<NavigationControl
+													{...getGroupAttributes(
+														attributes,
+														'navigation'
+													)}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													deviceType={deviceType}
+													insertInlineStyles={
+														insertInlineStyles
+													}
+													cleanInlineStyles={
+														cleanInlineStyles
+													}
+													blockStyle={blockStyle}
+													svgType={svgType}
 												/>
 											),
 										},

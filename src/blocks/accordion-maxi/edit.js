@@ -23,8 +23,15 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 		const response = {
-			accordion: this.props.name,
+			accordion: {
+				[uniqueID]: {
+					paneIcon: attributes['icon-content'],
+					paneIconActive: attributes['icon-content-active'],
+				},
+			},
 		};
 
 		return response;

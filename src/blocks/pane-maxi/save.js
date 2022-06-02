@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { RichText } from '@wordpress/block-editor';
-import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -28,9 +27,7 @@ const save = props => {
 					tagName='span'
 				/>
 
-				<div className='maxi-pane-block__icon'>
-					<RawHTML>{attributes['icon-content']}</RawHTML>
-				</div>
+				<div className='maxi-pane-block__icon' />
 			</div>
 		</MaxiBlock.save>
 	);

@@ -1,8 +1,14 @@
 .maxi-pane-block__icon svg {
 	width: 32px;
 	position: absolute;
-	right: 20px;
-	top: -5px;
+	right: 10px;
+	top: -10px;
+}
+
+.maxi-pane-block__title {
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }
 
 .maxi-pane-block__header {

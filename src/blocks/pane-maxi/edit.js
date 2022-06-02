@@ -22,8 +22,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, maxiSetAttributes, clientId } =
-			this.props;
+		const {
+			attributes,
+			blockFullWidth,
+			maxiSetAttributes,
+			clientId,
+			paneIcon,
+		} = this.props;
 		const { uniqueID, title } = attributes;
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -89,7 +94,7 @@ class edit extends MaxiBlockComponent {
 					/>
 
 					<div className='maxi-pane-block__icon'>
-						<RawHTML>{attributes['icon-content']}</RawHTML>
+						<RawHTML>{paneIcon}</RawHTML>
 					</div>
 				</div>
 			</MaxiBlock>,

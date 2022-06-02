@@ -167,39 +167,32 @@ const VideoLayer = props => {
 	}
 
 	return (
-		<>
-			{videoValidation(videoUrl) && (
-				<div
-					className={videoPlayerClasses}
-					data-start={videoStartTime}
-					data-end={videoEndTime}
-					data-type={parsedVideo.type}
-				>
-					{parsedVideo.type === 'direct' && (
-						<video
-							loop={!!+videoLoop}
-							src={videoUrl}
-							autoPlay
-							muted
-						/>
-					)}
+		videoValidation(videoUrl) && (
+			<div
+				className={videoPlayerClasses}
+				data-start={videoStartTime}
+				data-end={videoEndTime}
+				data-type={parsedVideo.type}
+			>
+				{parsedVideo.type === 'direct' && (
+					<video loop={!!+videoLoop} src={videoUrl} autoPlay muted />
+				)}
 
-					{(parsedVideo.type === 'youtube' ||
-						parsedVideo.type === 'vimeo') && (
-						<div className='maxi-background-displayer__iframe-wrapper'>
-							<iframe
-								title={`${parsedVideo.type} video`}
-								src={videoUrl}
-								frameBorder='0'
-								allow='autoplay'
-								allowFullScreen='allowfullscreen'
-								style={style}
-							/>
-						</div>
-					)}
-				</div>
-			)}
-		</>
+				{(parsedVideo.type === 'youtube' ||
+					parsedVideo.type === 'vimeo') && (
+					<div className='maxi-background-displayer__iframe-wrapper'>
+						<iframe
+							title={`${parsedVideo.type} video`}
+							src={videoUrl}
+							frameBorder='0'
+							allow='autoplay'
+							allowFullScreen='allowfullscreen'
+							style={style}
+						/>
+					</div>
+				)}
+			</div>
+		)
 	);
 };
 

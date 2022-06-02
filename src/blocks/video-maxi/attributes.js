@@ -39,7 +39,10 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix: 'lightbox-',
-		diffValAttr: { 'lightbox-background-palette-color-general': 2 },
+		diffValAttr: {
+			'lightbox-background-palette-color-general': 5,
+			'lightbox-background-palette-opacity-general': 0.7,
+		},
 	}),
 
 	...prefixAttributesCreator({

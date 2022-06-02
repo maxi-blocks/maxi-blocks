@@ -54,7 +54,7 @@ const save = props => {
 							<div className='maxi-video-block__close-button'>
 								<RawHTML>{closeIcon}</RawHTML>
 							</div>
-							<div className='maxi-video-block__iframe-container'>
+							<div className='maxi-video-block__video-container'>
 								{videoType === 'direct' ? (
 									<video
 										className='maxi-video-block__video-player'

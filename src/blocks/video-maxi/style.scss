@@ -1,4 +1,6 @@
 .maxi-video-block {
+	z-index: unset;
+
 	&__popup-wrapper {
 		top: 0;
 		bottom: 0;
@@ -14,8 +16,8 @@
 		cursor: auto;
 	}
 
-	&__iframe-container {
-		width: 90%;
+	&__video-container {
+		width: 80%;
 		height: 60%;
 	}
 
@@ -23,6 +25,7 @@
 	&__video-player {
 		width: 100%;
 		height: 100%;
+		object-fit: cover;
 	}
 
 	&__overlay {

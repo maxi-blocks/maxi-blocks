@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shape divider Checking the shape divider 1`] = `
+Array [
+  Object {
+    "background-color-clip-path-general": "",
+    "background-color-general": "",
+    "background-palette-color-general": 1,
+    "background-palette-opacity": 1,
+    "background-palette-status-general": true,
+    "display-general": "block",
+    "id": 1,
+    "order": 1,
+    "type": "color",
+  },
+]
+`;

@@ -48,6 +48,10 @@ const rawIcon = {
 	svgType: {
 		type: 'string',
 	},
+	'icon-inherit': {
+		type: 'boolean',
+		default: false,
+	},
 	...icon,
 	...iconBackground,
 	...iconPadding,

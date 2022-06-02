@@ -18,7 +18,7 @@ const attributes = {
 
 	customLabel: {
 		type: 'string',
-		default: __('Slide', 'maxi-blocks'),
+		default: __('Video', 'maxi-blocks'),
 	},
 	fullWidth: {
 		type: 'string',

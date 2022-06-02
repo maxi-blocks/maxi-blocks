@@ -22,7 +22,15 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, attributes, maxiSetAttributes, clientId } = props;
+	const {
+		deviceType,
+		attributes,
+		maxiSetAttributes,
+		clientId,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
+	} = props;
 	const { blockStyle } = attributes;
 
 	return (
@@ -107,6 +115,15 @@ const Inspector = props => {
 														false,
 														'overlay-'
 													)}
+													inlineStylesTargets={
+														inlineStylesTargets
+													}
+													insertInlineStyles={
+														insertInlineStyles
+													}
+													cleanInlineStyles={
+														cleanInlineStyles
+													}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}

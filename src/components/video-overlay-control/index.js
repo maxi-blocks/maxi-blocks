@@ -15,7 +15,15 @@ import {
 import ColorControl from '../color-control';
 
 const VideoOverlayControl = props => {
-	const { blockStyle, breakpoint, clientId, onChange } = props;
+	const {
+		blockStyle,
+		breakpoint,
+		clientId,
+		onChange,
+		insertInlineStyles,
+		inlineStylesTargets,
+		cleanInlineStyles,
+	} = props;
 
 	return (
 		<>
@@ -45,12 +53,7 @@ const VideoOverlayControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
-				// onChangeInline={({ color }) => {
-				// 	onChangeInline &&
-				// 		onChangeInline({
-				// 			'border-color': color,
-				// 		});
-				// }}
+				onChangeInline={() => null}
 				onChange={({
 					paletteColor,
 					paletteStatus,
@@ -82,7 +85,16 @@ const VideoOverlayControl = props => {
 				blockStyle={blockStyle}
 				breakpoint={breakpoint}
 				clientId={clientId}
-				onChange={obj => onChange(obj)}
+				onChangeInline={obj =>
+					insertInlineStyles({
+						obj,
+						target: inlineStylesTargets.playIcon,
+					})
+				}
+				onChange={obj => {
+					onChange(obj);
+					cleanInlineStyles(inlineStylesTargets.playIcon);
+				}}
 				{...getGroupAttributes(
 					props,
 					['icon', 'iconBackground', 'iconBackgroundColor'],

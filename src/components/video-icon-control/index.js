@@ -17,7 +17,15 @@ import { setSVGContent } from '../../extensions/svg';
 import AdvancedNumberControl from '../advanced-number-control';
 
 const VideoIconControl = props => {
-	const { blockStyle, onChange, breakpoint, clientId, prefix, label } = props;
+	const {
+		blockStyle,
+		onChange,
+		breakpoint,
+		clientId,
+		prefix,
+		label,
+		onChangeInline,
+	} = props;
 
 	const minMaxSettings = {
 		px: {
@@ -69,12 +77,12 @@ const VideoIconControl = props => {
 						paletteOpacity={
 							props[`${prefix}icon-fill-palette-opacity`]
 						}
-						// onChangeInline={({ color }) => {
-						// 	onChangeInline &&
-						// 		onChangeInline({
-						// 			'border-color': color,
-						// 		});
-						// }}
+						onChangeInline={({ color }) => {
+							onChangeInline &&
+								onChangeInline({
+									fill: color,
+								});
+						}}
 						onChange={({
 							paletteColor,
 							paletteStatus,

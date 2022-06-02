@@ -124,12 +124,7 @@ const VideoOptionsControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						// onChangeInline={({ color }) => {
-						// 	onChangeInline &&
-						// 		onChangeInline({
-						// 			'border-color': color,
-						// 		});
-						// }}
+						onChangeInline={() => null}
 						onChange={({
 							paletteColor,
 							paletteStatus,

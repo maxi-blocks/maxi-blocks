@@ -9,10 +9,11 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import TextControl from '../text-control';
+import SelectControl from '../select-control';
 import { getParsedVideoUrl, parseVideo } from '../../extensions/video';
 
 const VideoControl = props => {
-	const { onChange, url: videoUrl, startTime, endTime } = props;
+	const { onChange, url: videoUrl, startTime, endTime, videoRatio } = props;
 
 	const [validationText, setValidationText] = useState(null);
 
@@ -74,6 +75,42 @@ const VideoControl = props => {
 				onReset={() =>
 					onChange({
 						endTime: '',
+					})
+				}
+			/>
+			<SelectControl
+				className='maxi-video-control__ratio'
+				label={__('Aspect ratio', 'maxi-blocks')}
+				value={videoRatio}
+				options={[
+					{
+						label: __('None', 'maxi-blocks'),
+						value: 'initial',
+					},
+					{
+						label: __('1:1 Aspect ratio', 'maxi-blocks'),
+						value: 'ar11',
+					},
+					{
+						label: __('2:3 Aspect ratio', 'maxi-blocks'),
+						value: 'ar23',
+					},
+					{
+						label: __('3:2 Aspect ratio', 'maxi-blocks'),
+						value: 'ar32',
+					},
+					{
+						label: __('4:3 Aspect ratio', 'maxi-blocks'),
+						value: 'ar43',
+					},
+					{
+						label: __('16:9 Aspect ratio', 'maxi-blocks'),
+						value: 'ar169',
+					},
+				]}
+				onChange={newRatio =>
+					onChange({
+						videoRatio: newRatio,
 					})
 				}
 			/>

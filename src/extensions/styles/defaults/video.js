@@ -15,6 +15,10 @@ const rawVideo = {
 	endTime: {
 		type: 'string',
 	},
+	videoRatio: {
+		type: 'string',
+		default: 'none',
+	},
 	videoType: {
 		type: 'string',
 	},
@@ -64,10 +68,16 @@ const icons = {
 	...prefixAttributesCreator({
 		obj: rawIcon,
 		prefix: 'close-',
+		diffValAttr: {
+			'close-icon-stroke-general': 0,
+		},
 	}),
 	...prefixAttributesCreator({
 		obj: rawIcon,
 		prefix: 'play-',
+		diffValAttr: {
+			'play-icon-stroke-general': 0,
+		},
 	}),
 };
 

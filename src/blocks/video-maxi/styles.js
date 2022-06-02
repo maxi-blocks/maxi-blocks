@@ -25,6 +25,7 @@ import {
 	getBackgroundStyles,
 	getIconPathStyles,
 	getIconStyles,
+	getAspectRatio,
 } from '../../extensions/styles/helpers';
 import { selectorsVideo } from './custom-css';
 
@@ -126,6 +127,16 @@ const getLightBoxObject = props => {
 	return response;
 };
 
+const getVideoPlayerOject = props => {
+	const { videoRatio } = props;
+
+	const response = {
+		...(videoRatio && getAspectRatio(videoRatio)),
+	};
+
+	return response;
+};
+
 const getIconSize = (obj, prefix = '') => {
 	const response = {
 		label: 'Icon size',
@@ -168,6 +179,7 @@ const getStyles = props => {
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
+				' .maxi-video-block__video-player': getVideoPlayerOject(props),
 				' .maxi-video-block__close-button': getIconStyles(
 					props,
 					props.blockStyle,

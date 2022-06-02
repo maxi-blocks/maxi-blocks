@@ -6,6 +6,8 @@ const videoEvents = () => {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
+		const player = video.querySelector('.maxi-video-block__video-player');
+
 		if (videoData['isLightbox']) {
 			const wrapper = video.querySelector(
 				'.maxi-video-block__popup-wrapper'
@@ -18,9 +20,6 @@ const videoEvents = () => {
 			);
 			const thumbnail = video.querySelector(
 				'.maxi-video-block__thumbnail'
-			);
-			const player = video.querySelector(
-				'.maxi-video-block__video-player'
 			);
 
 			const openVideo = e => {
@@ -39,6 +38,39 @@ const videoEvents = () => {
 			playButton.addEventListener('click', openVideo);
 			closeButton.addEventListener('click', closeVideo);
 			wrapper.addEventListener('click', closeVideo);
+		}
+
+		const videoType = videoData['videoType'];
+		const videoEnd = videoData['endTime'];
+		console.log(videoType, videoEnd);
+		if (videoType === 'vimeo' && videoEnd) {
+			const scriptsArray = Array.from(window.document.scripts);
+
+			const vimeoIsMounted = scriptsArray.findIndex(
+				script => script.getAttribute('id') === 'maxi-vimeo-sdk'
+			);
+			console.log(vimeoIsMounted);
+			if (vimeoIsMounted === -1) {
+				console.log('imhere');
+				const script = document.createElement('script');
+				script.src = 'https://player.vimeo.com/api/player.js';
+				script.id = 'maxi-vimeo-sdk';
+				script.async = true;
+				script.onload = () => {
+					// Cleanup onload handler
+					script.onload = null;
+
+					const vimeoPlayer = new Vimeo.Player(player);
+
+					// eslint-disable-next-line func-names
+					vimeoPlayer.on('timeupdate', function (data) {
+						if (data.seconds > videoEnd) {
+							vimeoPlayer.pause();
+						}
+					});
+				};
+				document.body.appendChild(script);
+			}
 		}
 	});
 };

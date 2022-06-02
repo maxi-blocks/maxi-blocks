@@ -30,6 +30,8 @@ export { default as typographyHover } from './typographyHover';
 export { default as zIndex } from './zIndex';
 export { default as clipPath } from './clipPath';
 export { default as flex } from './flex';
+export * from './arrowIcon';
+export * from './arrowIconHover';
 export * from './background';
 export * from './backgroundHover';
 export * from './border';

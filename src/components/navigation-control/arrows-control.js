@@ -28,13 +28,14 @@ const NavigationArrowsControl = props => {
 	const {
 		onChange,
 		deviceType,
-		attributes,
 		insertInlineStyles,
 		cleanInlineStyles,
 		svgType,
 		clientId,
 		blockStyle,
 	} = props;
+
+	console.log('props', props);
 
 	return (
 		<SettingTabsControl
@@ -43,15 +44,15 @@ const NavigationArrowsControl = props => {
 					label: __('Normal state', 'maxi-blocks'),
 					content: (
 						<ArrowIconControl
-							{...getGroupAttributes(attributes, [
-								'icon',
-								'iconBackground',
-								'iconBackgroundGradient',
-								'iconBackgroundColor',
-								'iconBorder',
-								'iconBorderWidth',
-								'iconBorderRadius',
-								'iconPadding',
+							{...getGroupAttributes(props, [
+								'arrowIcon',
+								'arrowIconBackground',
+								'arrowIconBackgroundGradient',
+								'arrowIconBackgroundColor',
+								'arrowIconBorder',
+								'arrowIconBorderWidth',
+								'arrowIconBorderRadius',
+								'arrowIconPadding',
 							])}
 							onChangeInline={(
 								obj,
@@ -81,26 +82,29 @@ const NavigationArrowsControl = props => {
 						<>
 							<ToggleSwitch
 								label={__('Enable Icon Hover', 'maxi-blocks')}
-								selected={attributes['icon-status-hover']}
+								selected={
+									props['navigation-arrow-both-status-hover']
+								}
 								onChange={val =>
 									onChange({
-										'icon-status-hover': val,
+										'navigation-arrow-both-status-hover':
+											val,
 									})
 								}
 							/>
-							{attributes['icon-status-hover'] && (
+							{props['navigation-arrow-both-status-hover'] && (
 								<IconControl
 									{...getGroupAttributes(
-										attributes,
+										props,
 										[
-											'icon',
-											'iconHover',
-											'iconBackgroundGradient',
-											'iconBackgroundColor',
-											'iconBorder',
-											'iconBackgroundHover',
-											'iconBorderWidth',
-											'iconBorderRadius',
+											'arrowIcon',
+											'arrowIconHover',
+											'arrowIconBackgroundGradient',
+											'arrowIconBackgroundColor',
+											'arrowIconBorder',
+											'arrowIconBackgroundHover',
+											'arrowIconBorderWidth',
+											'arrowIconBorderRadius',
 										],
 										true
 									)}

@@ -36,6 +36,8 @@ const Inspector = props => {
 
 	const { blockStyle, svgType } = attributes;
 
+	console.log(attributes);
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -82,7 +84,7 @@ const Inspector = props => {
 											content: (
 												<NavigationControl
 													{...getGroupAttributes(
-														attributes,
+														props,
 														'navigation'
 													)}
 													onChange={obj =>

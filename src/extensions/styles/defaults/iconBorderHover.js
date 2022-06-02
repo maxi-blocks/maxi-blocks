@@ -11,5 +11,5 @@ export const iconBorderWidthHover = hoverAttributesCreator({
 
 export const iconBorderRadiusHover = hoverAttributesCreator({
 	obj: iconBorderRadius,
-	diffValAttr: { 'icon-iconBorder-unit-radius-general-hover': 'px' },
+	diffValAttr: { 'icon-border-unit-radius-general-hover': 'px' },
 });

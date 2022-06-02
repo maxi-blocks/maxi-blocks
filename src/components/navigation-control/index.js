@@ -28,6 +28,8 @@ const NavigationControl = props => {
 
 	const classes = classnames('maxi-slider-navigation', className);
 
+	console.log('props', props);
+
 	return (
 		<div className={classes}>
 			<SelectControl

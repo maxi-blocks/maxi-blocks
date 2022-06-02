@@ -196,7 +196,7 @@ describe('CopyPaste from Toolbar', () => {
 			'border-bottom-right-radius-general': 96,
 			'border-top-left-radius-general': 56,
 			'border-top-right-radius-general': 15,
-			'box-shadow-blur-general': undefined,
+			'box-shadow-blur-general': 0,
 			'box-shadow-color-general': undefined,
 		};
 		const attributesResult = await getAttributes([

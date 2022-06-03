@@ -5,16 +5,16 @@ const rawPosition = {
 		type: 'string',
 	},
 	'position-top': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-right': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-bottom': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-left': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-sync': {
 		type: 'string',

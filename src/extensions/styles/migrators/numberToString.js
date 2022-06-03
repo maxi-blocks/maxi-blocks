@@ -15,6 +15,7 @@ const fromNumberToStringMigrator = ({ attributes, save }) => {
 				'size',
 				'icon',
 				'svg',
+				'position',
 			]);
 
 			return Object.entries(attrsToChange).some(([attrKey, attrVal]) => {
@@ -34,6 +35,7 @@ const fromNumberToStringMigrator = ({ attributes, save }) => {
 				'size',
 				'icon',
 				'svg',
+				'position',
 			]);
 
 			Object.entries(attrsToChange).forEach(([key, val]) => {

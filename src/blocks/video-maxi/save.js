@@ -14,7 +14,7 @@ import { videoValidation } from '../../extensions/video';
  */
 const save = props => {
 	const {
-		isLightbox,
+		playerType,
 		embedUrl,
 		'close-icon-content': closeIcon,
 		'play-icon-content': playIcon,
@@ -31,7 +31,7 @@ const save = props => {
 		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			{embedUrl &&
 				videoValidation(embedUrl) &&
-				(isLightbox ? (
+				(playerType === 'popup' ? (
 					<>
 						<div className='maxi-video-block__overlay' />
 						<div className='maxi-video-block__play-button'>

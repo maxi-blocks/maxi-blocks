@@ -13,7 +13,14 @@ import SelectControl from '../select-control';
 import { getParsedVideoUrl, parseVideo } from '../../extensions/video';
 
 const VideoControl = props => {
-	const { onChange, url: videoUrl, startTime, endTime, videoRatio } = props;
+	const {
+		onChange,
+		url: videoUrl,
+		startTime,
+		endTime,
+		videoRatio,
+		playerType,
+	} = props;
 
 	const [validationText, setValidationText] = useState(null);
 
@@ -22,8 +29,27 @@ const VideoControl = props => {
 
 	return (
 		<>
+			<SelectControl
+				label={__('Type', 'maxi-blocks')}
+				value={playerType}
+				options={[
+					{
+						label: __('Video', 'maxi-blocks'),
+						value: 'video',
+					},
+					{
+						label: __('Popup', 'maxi-blocks'),
+						value: 'popup',
+					},
+				]}
+				onChange={val =>
+					onChange({
+						playerType: val,
+					})
+				}
+			/>
 			<TextControl
-				label='URL'
+				label={__('URL', 'maxi-blocks')}
 				type='url'
 				value={videoUrl}
 				placeholder='Youtube, Vimeo, or Direct Link'

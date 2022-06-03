@@ -15,6 +15,7 @@ const copyPasteMapping = {
 			video: {
 				groupLabel: 'Video',
 				props: {
+					playerType: 'Video type',
 					startTime: 'Start time',
 					endTime: 'End time',
 					videoRatio: 'Aspect ratio',
@@ -28,7 +29,6 @@ const copyPasteMapping = {
 					isLoop: 'Loop',
 					showPlayerControls: 'Player controls',
 					reduceBorders: 'Reduce black borders',
-					isLightbox: 'Open in lightbox',
 					lightBoxBackground: {
 						label: 'Lightbox background colour',
 						props: [

@@ -22,10 +22,6 @@ const rawVideo = {
 	videoType: {
 		type: 'string',
 	},
-	isLightbox: {
-		type: 'boolean',
-		default: false,
-	},
 	isLoop: {
 		type: 'boolean',
 		default: false,
@@ -45,6 +41,10 @@ const rawVideo = {
 	reduceBorders: {
 		type: 'boolean',
 		default: false,
+	},
+	playerType: {
+		type: 'string',
+		default: 'video',
 	},
 };
 

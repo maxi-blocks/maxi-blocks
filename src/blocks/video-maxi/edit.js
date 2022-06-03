@@ -92,7 +92,7 @@ class edit extends MaxiBlockComponent {
 			fullWidth,
 			uniqueID,
 			embedUrl,
-			isLightbox,
+			playerType,
 			'play-icon-content': playIcon,
 		} = attributes;
 
@@ -126,7 +126,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				{embedUrl && videoValidation(embedUrl) ? (
-					isLightbox ? (
+					playerType === 'popup' ? (
 						<>
 							<div className='maxi-video-block__overlay' />
 							<div className='maxi-video-block__play-button'>

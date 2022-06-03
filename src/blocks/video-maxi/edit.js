@@ -20,7 +20,6 @@ import copyPasteMapping from './copy-paste-mapping';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Icons
@@ -94,8 +93,6 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			embedUrl,
 			isLightbox,
-			thumbnailId,
-			thumbnailUrl,
 			'play-icon-content': playIcon,
 		} = attributes;
 
@@ -106,6 +103,7 @@ class edit extends MaxiBlockComponent {
 
 		const inlineStylesTargets = {
 			playIcon: '.maxi-video-block__play-button svg path',
+			overlay: '.maxi-video-block__overlay',
 		};
 
 		return [
@@ -130,15 +128,6 @@ class edit extends MaxiBlockComponent {
 				{embedUrl && videoValidation(embedUrl) ? (
 					isLightbox ? (
 						<>
-							{!isNil(thumbnailId) || thumbnailUrl ? (
-								<img
-									className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
-									src={thumbnailUrl}
-									alt=''
-								/>
-							) : (
-								<Placeholder icon={placeholderImage} />
-							)}
 							<div className='maxi-video-block__overlay' />
 							<div className='maxi-video-block__play-button'>
 								<RawHTML>{playIcon}</RawHTML>

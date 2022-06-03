@@ -53,7 +53,14 @@ const VideoOverlayControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
-				onChangeInline={() => null}
+				onChangeInline={({ color }) =>
+					insertInlineStyles({
+						obj: {
+							background: color,
+						},
+						target: inlineStylesTargets.overlay,
+					})
+				}
 				onChange={({
 					paletteColor,
 					paletteStatus,
@@ -69,6 +76,7 @@ const VideoOverlayControl = props => {
 							paletteOpacity,
 						[`overlay-background-color-${breakpoint}`]: color,
 					});
+					cleanInlineStyles(inlineStylesTargets.overlay);
 				}}
 				disableImage
 				disableVideo

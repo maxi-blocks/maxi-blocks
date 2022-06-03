@@ -38,7 +38,7 @@ const VideoOptionsControl = props => {
 		<>
 			<ToggleSwitch
 				label={__('Autoplay', 'maxi-blocks')}
-				className='maxi-video-options-control__open-in-lightbox'
+				className='maxi-video-options-control__autoplay'
 				selected={isAutoplay}
 				onChange={val =>
 					onChangeValue({
@@ -48,7 +48,7 @@ const VideoOptionsControl = props => {
 			/>
 			<ToggleSwitch
 				label={__('Mute', 'maxi-blocks')}
-				className='maxi-video-options-control__open-in-lightbox'
+				className='maxi-video-options-control__mute'
 				selected={isMuted}
 				onChange={val =>
 					onChangeValue({
@@ -58,7 +58,7 @@ const VideoOptionsControl = props => {
 			/>
 			<ToggleSwitch
 				label={__('Loop', 'maxi-blocks')}
-				className='maxi-video-options-control__open-in-lightbox'
+				className='maxi-video-options-control__loop'
 				selected={isLoop}
 				onChange={val =>
 					onChangeValue({
@@ -68,7 +68,7 @@ const VideoOptionsControl = props => {
 			/>
 			<ToggleSwitch
 				label={__('Player controls', 'maxi-blocks')}
-				className='maxi-video-options-control__open-in-lightbox'
+				className='maxi-video-options-control__player-controls'
 				selected={showPlayerControls}
 				onChange={val =>
 					onChangeValue({
@@ -78,7 +78,7 @@ const VideoOptionsControl = props => {
 			/>
 			<ToggleSwitch
 				label={__('Reduce black borders', 'maxi-blocks')}
-				className='maxi-video-options-control__open-in-lightbox'
+				className='maxi-video-options-control__black-borders'
 				selected={reduceBorders}
 				onChange={val =>
 					onChangeValue({

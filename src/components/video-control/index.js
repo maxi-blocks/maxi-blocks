@@ -49,8 +49,13 @@ const VideoControl = props => {
 				label={__('Start time (s)', 'maxi-blocks')}
 				value={startTime}
 				onChangeValue={val => {
+					const safeVal = val !== undefined && val !== '' ? val : '';
 					onChange({
-						startTime: val !== undefined && val !== '' ? val : '',
+						startTime: safeVal,
+						embedUrl: getParsedVideoUrl({
+							...props,
+							startTime: safeVal,
+						}),
 					});
 				}}
 				min={0}
@@ -65,11 +70,16 @@ const VideoControl = props => {
 				className='maxi-video-end-time'
 				label={__('End time (s)', 'maxi-blocks')}
 				value={endTime}
-				onChangeValue={val =>
+				onChangeValue={val => {
+					const safeVal = val !== undefined && val !== '' ? val : '';
 					onChange({
-						endTime: val !== undefined && val !== '' ? val : '',
-					})
-				}
+						endTime: safeVal,
+						embedUrl: getParsedVideoUrl({
+							...props,
+							endTime: safeVal,
+						}),
+					});
+				}}
 				min={0}
 				max={999}
 				onReset={() =>

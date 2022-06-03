@@ -11,7 +11,7 @@ import getStyles from './styles';
 import Inspector from './inspector';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar, Placeholder } from '../../components';
+import { Toolbar } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { videoValidation } from '../../extensions/video';
 import copyPasteMapping from './copy-paste-mapping';
@@ -20,11 +20,6 @@ import copyPasteMapping from './copy-paste-mapping';
  * External dependencies
  */
 import classnames from 'classnames';
-
-/**
- * Icons
- */
-import { placeholderImage } from '../../icons';
 
 /**
  * Video player
@@ -38,27 +33,35 @@ const VideoPlayer = props => {
 		isAutoplay,
 		isMuted,
 		showPlayerControls,
+		isSelected,
 	} = props;
 
-	return videoType === 'direct' ? (
-		<video
-			src={embedUrl}
-			className='maxi-video-block__video-player'
-			loop={isLoop}
-			muted={isMuted}
-			autoPlay={isAutoplay}
-			controls={showPlayerControls}
-		>
-			<track kind='captions' />
-		</video>
-	) : (
-		<iframe
-			className='maxi-video-block__video-player'
-			title='video player'
-			allowFullScreen
-			allow='autoplay'
-			src={embedUrl}
-		/>
+	return (
+		<>
+			{videoType === 'direct' ? (
+				<video
+					src={embedUrl}
+					className='maxi-video-block__video-player'
+					loop={isLoop}
+					muted={isMuted}
+					autoPlay={isAutoplay}
+					controls={showPlayerControls}
+				>
+					<track kind='captions' />
+				</video>
+			) : (
+				<iframe
+					className='maxi-video-block__video-player'
+					title='video player'
+					allowFullScreen
+					allow='autoplay'
+					src={embedUrl}
+				/>
+			)}
+			{!isSelected && (
+				<div className='maxi-video-block__select-overlay' />
+			)}
+		</>
 	);
 };
 
@@ -125,8 +128,9 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				{embedUrl && videoValidation(embedUrl) ? (
-					playerType === 'popup' ? (
+				{embedUrl &&
+					videoValidation(embedUrl) &&
+					(playerType === 'popup' ? (
 						<>
 							<div className='maxi-video-block__overlay' />
 							<div className='maxi-video-block__play-button'>
@@ -134,18 +138,8 @@ class edit extends MaxiBlockComponent {
 							</div>
 						</>
 					) : (
-						<>
-							<VideoPlayer {...attributes} />
-							{!isSelected && (
-								<div className='maxi-video-block__select-overlay' />
-							)}
-						</>
-					)
-				) : (
-					<div className='maxi-video-block__placeholder'>
-						<Placeholder icon={placeholderImage} />
-					</div>
-				)}
+						<VideoPlayer {...attributes} isSelected={isSelected} />
+					))}
 			</MaxiBlock>,
 		];
 	}

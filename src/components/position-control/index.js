@@ -83,7 +83,7 @@ const PositionControl = props => {
 			<SelectControl
 				label={__('Position', 'maxi-blocks')}
 				options={[
-					{ label: 'Default', value: '' },
+					{ label: 'Default', value: 'unset' },
 					{ label: 'Relative', value: 'relative' },
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
@@ -104,23 +104,19 @@ const PositionControl = props => {
 					})
 				}
 			/>
-			{!isEmpty(
-				getLastBreakpointAttribute({
-					target: 'position',
-					breakpoint,
-					attributes: props,
-				})
-			) && (
+			{getLastBreakpointAttribute({
+				target: 'position',
+				breakpoint,
+				attributes: props,
+			}) !== 'unset' && (
 				<AxisControl
 					{...props}
 					target='position'
-					onChange={obj => {
-						console.log(obj);
-						onChange(obj);
-					}}
+					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					minMaxSettings={minMaxSettings}
 					disableAuto
+					optionType='string'
 					enableAxisUnits
 				/>
 			)}

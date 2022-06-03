@@ -7,13 +7,13 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import SelectControl from '../select-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import SelectControl from '../select-control';
 
 /**
  * Component

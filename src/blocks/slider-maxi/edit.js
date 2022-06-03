@@ -346,7 +346,7 @@ const SliderWrapper = props => {
 			/>
 			<div className='maxi-slider-block__nav'>
 				<span
-					className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
+					className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
 					onClick={!isEditView ? () => nextSlide() : undefined}
 				>
 					{attributes['navigation-arrow-first-icon-content'] && (
@@ -374,7 +374,7 @@ const SliderWrapper = props => {
 					)}
 				</span>
 				<span
-					className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
+					className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
 					onClick={!isEditView ? () => prevSlide() : undefined}
 				>
 					{attributes['navigation-arrow-second-icon-content'] && (

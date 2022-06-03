@@ -41,11 +41,11 @@ const save = props => {
 					})}
 				/>
 				<div className='maxi-slider-block__nav'>
-					<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
-						+
-					</span>
 					<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
 						-
+					</span>
+					<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
+						+
 					</span>
 				</div>
 			</div>

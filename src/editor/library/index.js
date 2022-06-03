@@ -35,6 +35,7 @@ const CloudLibrary = props => {
 		url,
 		title,
 		cardId,
+		prefix = '',
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -63,6 +64,7 @@ const CloudLibrary = props => {
 					onSelect={onSelect}
 					url={url}
 					title={title}
+					prefix={prefix}
 				/>
 			</>
 		</Modal>

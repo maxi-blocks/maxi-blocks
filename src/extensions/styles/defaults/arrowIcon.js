@@ -42,6 +42,12 @@ export const arrowIcon = {
 			'icon-content',
 		],
 	}),
+	...{
+		'navigation-arrow-style-separately': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 };
 
 export const arrowIconBackground = {

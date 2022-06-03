@@ -33,9 +33,8 @@ const NavigationArrowsControl = props => {
 		svgType,
 		clientId,
 		blockStyle,
+		attributes,
 	} = props;
-
-	console.log('props', props);
 
 	return (
 		<SettingTabsControl
@@ -44,16 +43,7 @@ const NavigationArrowsControl = props => {
 					label: __('Normal state', 'maxi-blocks'),
 					content: (
 						<ArrowIconControl
-							{...getGroupAttributes(props, [
-								'arrowIcon',
-								'arrowIconBackground',
-								'arrowIconBackgroundGradient',
-								'arrowIconBackgroundColor',
-								'arrowIconBorder',
-								'arrowIconBorderWidth',
-								'arrowIconBorderRadius',
-								'arrowIconPadding',
-							])}
+							{...attributes}
 							onChangeInline={(
 								obj,
 								target,

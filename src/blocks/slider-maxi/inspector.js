@@ -36,8 +36,6 @@ const Inspector = props => {
 
 	const { blockStyle, svgType } = attributes;
 
-	console.log(attributes);
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -83,10 +81,7 @@ const Inspector = props => {
 											),
 											content: (
 												<NavigationControl
-													{...getGroupAttributes(
-														props,
-														'navigation'
-													)}
+													{...props}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}

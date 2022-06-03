@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect, useState, useMemo } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
 import { CheckboxControl } from '@wordpress/components';
 
 /**
@@ -135,7 +135,9 @@ const MasonryItem = props => {
 						{svgCode}
 					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon' || target.includes('Line')
+						{target === 'button-icon' ||
+						target === 'arrow-icon' ||
+						target.includes('Line')
 							? serial.replace(' Line', '')
 							: [
 									'image-shape',
@@ -287,7 +289,15 @@ const HierarchicalMenu = ({ items, refine }) => (
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle, onSelect, url, title } = props;
+	const {
+		type,
+		onRequestClose,
+		blockStyle,
+		onSelect,
+		url,
+		title,
+		prefix = '',
+	} = props;
 
 	const {
 		styleCards,
@@ -335,6 +345,8 @@ const LibraryContainer = props => {
 	const getShapeType = type => {
 		switch (type) {
 			case 'button-icon':
+				return 'icon';
+			case 'arrow-icon':
 				return 'icon';
 			case 'sidebar-block-shape':
 				return 'shape';
@@ -523,6 +535,15 @@ const LibraryContainer = props => {
 
 				onRequestClose();
 			}
+
+			if (type === 'arrow-icon') {
+				onSelect({
+					[`${prefix}icon-content`]: svgCode,
+					svgType,
+				});
+
+				onRequestClose();
+			}
 		}
 	};
 
@@ -594,7 +615,10 @@ const LibraryContainer = props => {
 		return (
 			<CheckboxControl
 				className='use-placeholer-all-images'
-				label={__('Swap stock images for placeholders to save disk space', 'maxi-blocks')}
+				label={__(
+					'Swap stock images for placeholders to save disk space',
+					'maxi-blocks'
+				)}
 				checked={isChecked}
 				onChange={setChecked}
 			/>
@@ -714,7 +738,7 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{type === 'button-icon' && (
+			{(type === 'button-icon' || type === 'arrow-icon') && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}

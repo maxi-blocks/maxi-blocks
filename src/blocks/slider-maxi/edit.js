@@ -3,13 +3,21 @@
  */
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { compose, withInstanceId } from '@wordpress/compose';
-import { useRef, useState, useEffect } from '@wordpress/element';
+import {
+	useRef,
+	useState,
+	useEffect,
+	RawHTML,
+	createRef,
+	forwardRef,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import { Toolbar } from '../../components';
+import IconToolbar from '../../components/toolbar/iconToolbar';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
@@ -35,6 +43,16 @@ const slideTemplate = {
 	order: 1,
 	id: 1,
 };
+
+const IconWrapper = forwardRef((props, ref) => {
+	const { children, className } = props;
+
+	return (
+		<div ref={ref} className={className}>
+			{children}
+		</div>
+	);
+});
 
 const TEMPLATE = [
 	[
@@ -107,11 +125,13 @@ const TEMPLATE = [
 ];
 
 const SliderWrapper = props => {
-	const { slidesWidth, isEditView, numberOfSlides, attributes } = props;
+	const { slidesWidth, isEditView, numberOfSlides, attributes, uniqueID } =
+		props;
 	const { isLoop } = attributes;
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
+	const iconRef = createRef(null);
 	const editor = document.querySelector('#editor');
 	let initPosition = 0;
 	let dragPosition = 0;
@@ -329,13 +349,57 @@ const SliderWrapper = props => {
 					className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
 					onClick={!isEditView ? () => nextSlide() : undefined}
 				>
-					+
+					{attributes['navigation-arrow-first-icon-content'] && (
+						<>
+							<IconToolbar
+								key={`navigation-arrow-first-icon-toolbar-${uniqueID}`}
+								ref={iconRef}
+								{...props}
+								propsToAvoid={['buttonContent', 'formatValue']}
+							/>
+							<IconWrapper
+								ref={iconRef}
+								uniqueID={uniqueID}
+								className='maxi-navigation-arrow-first-icon-block__icon'
+							>
+								<RawHTML>
+									{
+										attributes[
+											'navigation-arrow-first-icon-content'
+										]
+									}
+								</RawHTML>
+							</IconWrapper>
+						</>
+					)}
 				</span>
 				<span
 					className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
 					onClick={!isEditView ? () => prevSlide() : undefined}
 				>
-					-
+					{attributes['navigation-arrow-second-icon-content'] && (
+						<>
+							<IconToolbar
+								key={`navigation-arrow-second-icon-toolbar-${uniqueID}`}
+								ref={iconRef}
+								{...props}
+								propsToAvoid={['buttonContent', 'formatValue']}
+							/>
+							<IconWrapper
+								ref={iconRef}
+								uniqueID={uniqueID}
+								className='maxi-navigation-arrow-second-icon-block__icon'
+							>
+								<RawHTML>
+									{
+										attributes[
+											'navigation-arrow-second-icon-content'
+										]
+									}
+								</RawHTML>
+							</IconWrapper>
+						</>
+					)}
 				</span>
 			</div>
 		</>
@@ -351,6 +415,8 @@ class edit extends MaxiBlockComponent {
 			isEditView: false,
 			numberOfSlides: 0,
 		};
+
+		this.iconRef = createRef(null);
 	}
 
 	get getStylesObject() {
@@ -428,7 +494,12 @@ class edit extends MaxiBlockComponent {
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					<div className='maxi-slider-block__tracker'>
-						<SliderWrapper {...this.props} {...this.state} />
+						<SliderWrapper
+							{...this.props}
+							{...this.state}
+							{...this.iconRef}
+							uniqueID={uniqueID}
+						/>
 					</div>
 				</MaxiBlock>
 			</SliderContext.Provider>,

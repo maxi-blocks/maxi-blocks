@@ -8,15 +8,11 @@ import getGroupAttributes from '../getGroupAttributes';
 import { isFinite } from 'lodash';
 
 const fromNumberToStringMigrator = ({ attributes, save }) => {
+	const targets = ['padding', 'size', 'icon', 'svg', 'position'];
+
 	return {
 		isEligible(blockAttributes) {
-			const attrsToChange = getGroupAttributes(blockAttributes, [
-				'padding',
-				'size',
-				'icon',
-				'svg',
-				'position',
-			]);
+			const attrsToChange = getGroupAttributes(blockAttributes, targets);
 
 			return Object.entries(attrsToChange).some(([attrKey, attrVal]) => {
 				if (isFinite(attrVal)) {
@@ -30,13 +26,7 @@ const fromNumberToStringMigrator = ({ attributes, save }) => {
 		},
 
 		migrate(oldAttributes) {
-			const attrsToChange = getGroupAttributes(oldAttributes, [
-				'padding',
-				'size',
-				'icon',
-				'svg',
-				'position',
-			]);
+			const attrsToChange = getGroupAttributes(oldAttributes, targets);
 
 			Object.entries(attrsToChange).forEach(([key, val]) => {
 				if (isFinite(val) && attributes?.[key]?.type === 'string')

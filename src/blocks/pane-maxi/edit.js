@@ -11,6 +11,7 @@ import { select, dispatch } from '@wordpress/data';
  */
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
+import { BlockInserter } from '../../components';
 import getStyles from './styles';
 
 /**
@@ -27,6 +28,7 @@ class edit extends MaxiBlockComponent {
 			blockFullWidth,
 			maxiSetAttributes,
 			clientId,
+			hasInnerBlocks,
 			paneIcon,
 		} = this.props;
 		const { uniqueID, title } = attributes;
@@ -44,6 +46,24 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 					].indexOf(blockName) === -1
 			);
+		const { isBlockSelected, getSelectedBlockClientId, getBlockParents } =
+			select('core/block-editor');
+
+		if (
+			(isBlockSelected(clientId) ||
+				getBlockParents(getSelectedBlockClientId()).includes(
+					clientId
+				)) &&
+			this.blockRef.current
+		) {
+			this.blockRef.current.querySelector(
+				'.maxi-pane-block__content'
+			).style.display = 'block';
+		} else if (this.blockRef.current) {
+			this.blockRef.current.querySelector(
+				'.maxi-pane-block__content'
+			).style.display = 'none';
+		}
 
 		return [
 			<MaxiBlock
@@ -54,9 +74,12 @@ class edit extends MaxiBlockComponent {
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
 					templateLock: false,
+					renderAppender: !hasInnerBlocks
+						? () => <BlockInserter clientId={clientId} />
+						: false,
 				}}
-				{...getMaxiBlockAttributes(this.props)}
 				paneIcon={paneIcon}
+				{...getMaxiBlockAttributes(this.props)}
 			>
 				<div
 					className='maxi-pane-block__header'
@@ -67,6 +90,7 @@ class edit extends MaxiBlockComponent {
 							clientId,
 							'maxi-blocks/accordion-maxi'
 						);
+
 						if (parentAccordion) {
 							const openPane =
 								select('maxiBlocks').receiveAccordionData();

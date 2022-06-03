@@ -55,6 +55,7 @@ class edit extends MaxiBlockComponent {
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
+					renderAppender: false,
 					templateLock: false,
 					template: [
 						['maxi-blocks/pane-maxi', { title: 'Accordion 1' }],

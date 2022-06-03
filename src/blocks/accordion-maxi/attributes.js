@@ -28,7 +28,7 @@ const attributes = {
 	},
 	lastIndex: {
 		type: 'number',
-		default: 0,
+		default: 2,
 	},
 	'icon-content': {
 		type: 'string',

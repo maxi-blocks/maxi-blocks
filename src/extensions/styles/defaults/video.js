@@ -17,7 +17,7 @@ const rawVideo = {
 	},
 	videoRatio: {
 		type: 'string',
-		default: 'none',
+		default: 'ar169',
 	},
 	videoType: {
 		type: 'string',
@@ -40,7 +40,7 @@ const rawVideo = {
 	},
 	showPlayerControls: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	reduceBorders: {
 		type: 'boolean',

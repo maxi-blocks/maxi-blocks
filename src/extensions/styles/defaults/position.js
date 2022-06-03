@@ -20,7 +20,19 @@ const rawPosition = {
 		type: 'string',
 		default: 'all',
 	},
-	'position-unit': {
+	'position-top-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'position-right-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'position-bottom-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'position-left-unit': {
 		type: 'string',
 		default: 'px',
 	},

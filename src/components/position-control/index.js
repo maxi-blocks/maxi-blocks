@@ -63,8 +63,17 @@ const PositionControl = props => {
 			[`position-sync-${breakpoint}`]: getDefaultAttribute(
 				`position-sync-${breakpoint}`
 			),
-			[`position-unit-${breakpoint}`]: getDefaultAttribute(
-				`position-unit-${breakpoint}`
+			[`position-top-unit-${breakpoint}`]: getDefaultAttribute(
+				`position-top-unit-${breakpoint}`
+			),
+			[`position-right-unit-${breakpoint}`]: getDefaultAttribute(
+				`position-right-unit-${breakpoint}`
+			),
+			[`position-bottom-unit-${breakpoint}`]: getDefaultAttribute(
+				`position-bottom-unit-${breakpoint}`
+			),
+			[`position-left-unit-${breakpoint}`]: getDefaultAttribute(
+				`position-left-unit-${breakpoint}`
 			),
 		};
 	};
@@ -105,10 +114,14 @@ const PositionControl = props => {
 				<AxisControl
 					{...props}
 					target='position'
-					onChange={obj => onChange(obj)}
+					onChange={obj => {
+						console.log(obj);
+						onChange(obj);
+					}}
 					breakpoint={breakpoint}
 					minMaxSettings={minMaxSettings}
 					disableAuto
+					enableAxisUnits
 				/>
 			)}
 		</div>

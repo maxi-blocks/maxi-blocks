@@ -37,10 +37,10 @@ describe('PositionControl', () => {
 		});
 
 		const expectPosition = {
-			'position-top-general': 56,
-			'position-bottom-general': 56,
-			'position-left-general': 56,
-			'position-right-general': 56,
+			'position-top-general': '56',
+			'position-bottom-general': '56',
+			'position-left-general': '56',
+			'position-right-general': '56',
 			'position-top-unit-general': '%',
 			'position-bottom-unit-general': '%',
 			'position-left-unit-general': '%',
@@ -70,7 +70,7 @@ describe('PositionControl', () => {
 			values: '56',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual(56);
+		expect(await getAttributes('position-top-general')).toStrictEqual('56');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('relative');
@@ -203,7 +203,7 @@ describe('PositionControl', () => {
 			values: '44',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual(44);
+		expect(await getAttributes('position-top-general')).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('sticky');
@@ -215,7 +215,7 @@ describe('PositionControl', () => {
 			values: '12',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual(12);
+		expect(await getAttributes('position-top-general')).toStrictEqual('12');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

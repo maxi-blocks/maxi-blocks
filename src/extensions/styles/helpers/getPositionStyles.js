@@ -6,7 +6,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * General
@@ -20,47 +20,35 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 
 const getPositionStyles = obj => {
+	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const getValue = direction => {
-			const val = getLastBreakpointAttribute({
-				target: `position-${direction}`,
-				breakpoint,
-				attributes: obj,
-			});
-
-			return val;
-		};
-
 		const position = obj[`position-${breakpoint}`];
-		const top = getValue('top');
-		const right = getValue('right');
-		const bottom = getValue('bottom');
-		const left = getValue('left');
-		const unit = getLastBreakpointAttribute({
-			target: 'position-unit',
-			breakpoint,
-			attributes: obj,
-		});
 
-		response[breakpoint] = {
-			...(position && { position }),
-			...(!isNil(top) && {
-				top: getValue('top') + unit,
-			}),
-			...(!isNil(right) && {
-				right: getValue('right') + unit,
-			}),
-			...(!isNil(bottom) && {
-				bottom: getValue('bottom') + unit,
-			}),
-			...(!isNil(left) && {
-				left: getValue('left') + unit,
-			}),
-		};
+		if (position) {
+			response[breakpoint] = {
+				position,
+			};
 
-		if (isEmpty(response[breakpoint])) delete response[breakpoint];
+			keyWords.forEach(keyWord => {
+				const value = getLastBreakpointAttribute({
+					target: `position-${keyWord}`,
+					breakpoint,
+					attributes: obj,
+				});
+
+				const unit = getLastBreakpointAttribute({
+					target: `position-${keyWord}-unit`,
+					breakpoint,
+					attributes: obj,
+				});
+
+				if (!isNil(value) && !isNil(unit)) {
+					response[breakpoint][`${keyWord}`] = `${value}${unit}`;
+				}
+			});
+		}
 	});
 
 	return response;

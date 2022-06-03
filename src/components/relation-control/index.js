@@ -12,12 +12,11 @@ import TextControl from '../text-control';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
 import SelectControl from '../select-control';
+import SettingTabsControl from '../setting-tabs-control';
 import settings from './settings';
-import {
-	getGroupAttributes,
-	styleResolver,
-	getResponsiveStyles,
-} from '../../extensions/styles';
+import TransitionControl from '../transition-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+import { getGroupAttributes } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 
 /**
@@ -36,23 +35,6 @@ const RelationControl = props => {
 
 	const { blockStyle, deviceType, onChange, uniqueID } = props;
 	const relations = cloneDeep(props.relations) ?? [];
-
-	const getRelationalStyles = styles => {
-		const response = {};
-
-		['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
-			if (styles[breakpoint])
-				response[breakpoint] = {
-					content: getResponsiveStyles(styles[breakpoint].content),
-					breakpoint:
-						breakpoint === 'general'
-							? null
-							: styles[breakpoint].breakpoints[breakpoint],
-				};
-		});
-
-		return response;
-	};
 
 	const getRelationId = () =>
 		relations && !isEmpty(relations)
@@ -85,6 +67,11 @@ const RelationControl = props => {
 			attributes: {},
 			css: {},
 			id: getRelationId(),
+			effects: {
+				'transition-duration-general': 0.3,
+				'transition-delay-general': 0,
+				'transition-timing-function-general': 'ease',
+			},
 		};
 
 		onChange({ relations: [...relations, relation] });
@@ -192,17 +179,20 @@ const RelationControl = props => {
 					},
 				});
 
-				const resolvedStyles = styleResolver(
-					mergedAttributes.uniqueID,
-					stylesObj,
-					false,
-					breakpoints,
-					false
-				);
+				const styles = Object.keys(stylesObj).reduce((acc, key) => {
+					if (key !== 'label') {
+						acc[key] = {
+							styles: stylesObj[key],
+							breakpoint: breakpoints[key] || null,
+						};
 
-				const styles = resolvedStyles.general
-					? getRelationalStyles(resolvedStyles)
-					: {};
+						return acc;
+					}
+
+					acc[key] = stylesObj[key];
+
+					return acc;
+				}, {});
 
 				onChangeRelationProperty(item.id, 'css', styles);
 			},
@@ -236,7 +226,7 @@ const RelationControl = props => {
 									<TextControl
 										label={__('Name', 'maxi-blocks')}
 										value={item.title}
-										placeholder={__('Give memorable name...')}
+										placeholder={__('Give memorable name…')}
 										onChange={value =>
 											onChangeRelationProperty(
 												item.id,
@@ -248,7 +238,9 @@ const RelationControl = props => {
 									<div
 										className={classnames(
 											'maxi-relation-control__item__content__target',
-											getClientIdFromUniqueId(item.uniqueID) &&
+											getClientIdFromUniqueId(
+												item.uniqueID
+											) &&
 												'maxi-relation-control__item__content__target--has-block'
 										)}
 									>
@@ -313,7 +305,9 @@ const RelationControl = props => {
 												value: '',
 											},
 											...getOptions(
-												getClientIdFromUniqueId(item.uniqueID)
+												getClientIdFromUniqueId(
+													item.uniqueID
+												)
 											).map(option => ({
 												label: option.label,
 												value: option.label,
@@ -332,7 +326,53 @@ const RelationControl = props => {
 											);
 										}}
 									/>
-									{displaySelectedSetting(item)}
+									{item.uniqueID && item.settings && (
+										<SettingTabsControl
+											deviceType={deviceType}
+											items={[
+												{
+													label: __(
+														'Settings',
+														'maxi-blocks'
+													),
+													content:
+														displaySelectedSetting(
+															item
+														),
+												},
+												{
+													label: __(
+														'Effects',
+														'maxi-blocks'
+													),
+													content: (
+														<ResponsiveTabsControl
+															breakpoint={
+																deviceType
+															}
+														>
+															<TransitionControl
+																{...item.effects}
+																onChange={value =>
+																	onChangeRelationProperty(
+																		item.id,
+																		'effects',
+																		{
+																			...item.effects,
+																			...value,
+																		}
+																	)
+																}
+																breakpoint={
+																	deviceType
+																}
+															/>
+														</ResponsiveTabsControl>
+													),
+												},
+											]}
+										/>
+									)}
 								</div>
 							}
 							id={item.id}

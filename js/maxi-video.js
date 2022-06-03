@@ -18,9 +18,7 @@ const videoEvents = () => {
 			const playButton = video.querySelector(
 				'.maxi-video-block__play-button'
 			);
-			const thumbnail = video.querySelector(
-				'.maxi-video-block__thumbnail'
-			);
+			const overlay = video.querySelector('.maxi-video-block__overlay');
 
 			const openVideo = e => {
 				wrapper.style.display = 'flex';
@@ -34,7 +32,7 @@ const videoEvents = () => {
 				player.src = '';
 			};
 
-			thumbnail.addEventListener('click', openVideo);
+			overlay.addEventListener('click', openVideo);
 			playButton.addEventListener('click', openVideo);
 			closeButton.addEventListener('click', closeVideo);
 			wrapper.addEventListener('click', closeVideo);
@@ -42,16 +40,15 @@ const videoEvents = () => {
 
 		const videoType = videoData['videoType'];
 		const videoEnd = videoData['endTime'];
-		console.log(videoType, videoEnd);
+
 		if (videoType === 'vimeo' && videoEnd) {
 			const scriptsArray = Array.from(window.document.scripts);
 
 			const vimeoIsMounted = scriptsArray.findIndex(
 				script => script.getAttribute('id') === 'maxi-vimeo-sdk'
 			);
-			console.log(vimeoIsMounted);
+
 			if (vimeoIsMounted === -1) {
-				console.log('imhere');
 				const script = document.createElement('script');
 				script.src = 'https://player.vimeo.com/api/player.js';
 				script.id = 'maxi-vimeo-sdk';

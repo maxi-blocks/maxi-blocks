@@ -33,19 +33,9 @@ const save = props => {
 				videoValidation(embedUrl) &&
 				(isLightbox ? (
 					<>
-						<div className='maxi-video-block__thumbnail'>
-							{/* {!isNil(thumbnailId) || thumbnailUrl ? (
-								<img
-									className={`maxi-video-block__thumbnail-image wp-image-${thumbnailId}`}
-									src={thumbnailUrl}
-									alt=''
-								/>
-							) : (
-								<Placeholder icon={placeholderImage} />
-							)} */}
-							<div className='maxi-video-block__play-button'>
-								<RawHTML>{playIcon}</RawHTML>
-							</div>
+						<div className='maxi-video-block__overlay' />
+						<div className='maxi-video-block__play-button'>
+							<RawHTML>{playIcon}</RawHTML>
 						</div>
 						<div
 							className='maxi-video-block__popup-wrapper'

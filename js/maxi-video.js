@@ -8,12 +8,9 @@ const videoEvents = () => {
 
 		const player = video.querySelector('.maxi-video-block__video-player');
 
-		if (videoData['isLightbox']) {
+		if (videoData['playerType'] === 'popup') {
 			const wrapper = video.querySelector(
 				'.maxi-video-block__popup-wrapper'
-			);
-			const closeButton = video.querySelector(
-				'.maxi-video-block__close-button'
 			);
 			const playButton = video.querySelector(
 				'.maxi-video-block__play-button'
@@ -26,7 +23,11 @@ const videoEvents = () => {
 			};
 
 			const closeVideo = e => {
-				if (e.target !== e.currentTarget && e.currentTarget === wrapper)
+				if (
+					e.target.classList.contains(
+						'maxi-video-block__video-player'
+					)
+				)
 					return;
 				wrapper.style.display = 'none';
 				player.src = '';
@@ -34,7 +35,6 @@ const videoEvents = () => {
 
 			overlay.addEventListener('click', openVideo);
 			playButton.addEventListener('click', openVideo);
-			closeButton.addEventListener('click', closeVideo);
 			wrapper.addEventListener('click', closeVideo);
 		}
 

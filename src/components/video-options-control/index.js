@@ -23,7 +23,7 @@ const VideoOptionsControl = props => {
 		isMuted,
 		isLoop,
 		showPlayerControls,
-		isLightbox,
+		playerType,
 		reduceBorders,
 		breakpoint,
 		clientId,
@@ -86,17 +86,7 @@ const VideoOptionsControl = props => {
 					})
 				}
 			/>
-			<ToggleSwitch
-				label={__('Open in lightbox', 'maxi-blocks')}
-				className='maxi-video-options-control__open-in-lightbox'
-				selected={isLightbox}
-				onChange={val =>
-					onChangeValue({
-						isLightbox: val,
-					})
-				}
-			/>
-			{isLightbox && (
+			{playerType === 'popup' && (
 				<>
 					<ColorControl
 						className='maxi-video-options-control__lightbox-colour'

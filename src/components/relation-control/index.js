@@ -8,14 +8,15 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import TextControl from '../text-control';
+import InfoBox from '../info-box';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
-import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
-import settings from './settings';
-import TransitionControl from '../transition-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import SelectControl from '../select-control';
+import settings from './settings';
+import SettingTabsControl from '../setting-tabs-control';
+import TextControl from '../text-control';
+import TransitionControl from '../transition-control';
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
@@ -233,6 +234,8 @@ const RelationControl = props => {
 		return blocksToAffect(maxiBlocks);
 	};
 
+	const blocksToAffect = getBlocksToAffect();
+
 	return (
 		<div className='maxi-relation-control'>
 			<Button
@@ -267,6 +270,15 @@ const RelationControl = props => {
 											)
 										}
 									/>
+									{blocksToAffect.length === 0 && (
+										<InfoBox
+											className='maxi-relation-control__item__content__info-box'
+											message={__(
+												'Add names to blocks which you want to be able to select them here.',
+												'maxi-blocks'
+											)}
+										/>
+									)}
 									<SelectControl
 										label={__(
 											'Block to affect',
@@ -281,7 +293,7 @@ const RelationControl = props => {
 												),
 												value: '',
 											},
-											...getBlocksToAffect(),
+											...blocksToAffect,
 										]}
 										onChange={value =>
 											onChangeRelationProperty(

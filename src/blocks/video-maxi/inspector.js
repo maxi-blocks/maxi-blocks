@@ -31,7 +31,7 @@ const Inspector = props => {
 		cleanInlineStyles,
 		inlineStylesTargets,
 	} = props;
-	const { blockStyle } = attributes;
+	const { blockStyle, isLightbox } = attributes;
 
 	return (
 		<InspectorControls>
@@ -95,7 +95,7 @@ const Inspector = props => {
 												/>
 											),
 										},
-										{
+										isLightbox && {
 											label: __(
 												'Video overlay',
 												'maxi-blocks'

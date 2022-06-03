@@ -3,7 +3,7 @@ const copyPasteMapping = {
 	_order: [
 		'Video',
 		'Video options',
-		// 'Video overlay',
+		'Video overlay',
 		'Border',
 		'Box shadow',
 		'Size',

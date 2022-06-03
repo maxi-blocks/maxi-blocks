@@ -16,13 +16,15 @@ import SettingTabsControl from '../setting-tabs-control';
 import settings from './settings';
 import TransitionControl from '../transition-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { cloneDeep, isEmpty } from 'lodash';
 
 /**
@@ -201,6 +203,36 @@ const RelationControl = props => {
 		});
 	};
 
+	const getBlocksToAffect = () => {
+		const { getBlocks } = select('core/block-editor');
+		const maxiBlocks = getBlocks().filter(block =>
+			block.name.includes('maxi-blocks')
+		);
+
+		const blocksToAffect = (blocks, arr = []) => {
+			blocks.forEach(block => {
+				if (
+					block.attributes.customLabel !==
+						getDefaultAttribute('customLabel', block.clientId) &&
+					block.attributes.uniqueID !== uniqueID
+				) {
+					arr.push({
+						label: block.attributes.customLabel,
+						value: block.attributes.uniqueID,
+					});
+				}
+
+				if (block.innerBlocks.length) {
+					blocksToAffect(block.innerBlocks, arr);
+				}
+			});
+
+			return arr;
+		};
+
+		return blocksToAffect(maxiBlocks);
+	};
+
 	return (
 		<div className='maxi-relation-control'>
 			<Button
@@ -235,97 +267,107 @@ const RelationControl = props => {
 											)
 										}
 									/>
-									<div
-										className={classnames(
-											'maxi-relation-control__item__content__target',
-											getClientIdFromUniqueId(
-												item.uniqueID
-											) &&
-												'maxi-relation-control__item__content__target--has-block'
-										)}
-									>
-										<TextControl
-											label={__(
-												'Block to affect',
-												'maxi-blocks'
-											)}
-											value={item.uniqueID}
-											onChange={value =>
-												onChangeRelationProperty(
-													item.id,
-													'uniqueID',
-													value
-												)
-											}
-										/>
-									</div>
 									<SelectControl
-										label={__('Action', 'maxi-blocks')}
-										value={item.action}
+										label={__(
+											'Block to affect',
+											'maxi-blocks'
+										)}
+										value={item.uniqueID}
 										options={[
 											{
 												label: __(
-													'Choose action',
+													'Select block…',
 													'maxi-blocks'
 												),
 												value: '',
 											},
-											{
-												label: __(
-													'On click',
-													'maxi-blocks'
-												),
-												value: 'click',
-											},
-											{
-												label: __(
-													'On hover',
-													'maxi-blocks'
-												),
-												value: 'hover',
-											},
+											...getBlocksToAffect(),
 										]}
 										onChange={value =>
 											onChangeRelationProperty(
 												item.id,
-												'action',
+												'uniqueID',
 												value
 											)
 										}
 									/>
-									<SelectControl
-										label={__('Settings', 'maxi-blocks')}
-										value={item.settings}
-										options={[
-											{
-												label: __(
-													'Choose settings',
+									{item.uniqueID && (
+										<>
+											<SelectControl
+												label={__(
+													'Action',
 													'maxi-blocks'
-												),
-												value: '',
-											},
-											...getOptions(
-												getClientIdFromUniqueId(
-													item.uniqueID
-												)
-											).map(option => ({
-												label: option.label,
-												value: option.label,
-											})),
-										]}
-										onChange={value => {
-											onChangeRelationProperty(
-												item.id,
-												'attributes',
-												{}
-											);
-											onChangeRelationProperty(
-												item.id,
-												'settings',
-												value
-											);
-										}}
-									/>
+												)}
+												value={item.action}
+												options={[
+													{
+														label: __(
+															'Choose action',
+															'maxi-blocks'
+														),
+														value: '',
+													},
+													{
+														label: __(
+															'On click',
+															'maxi-blocks'
+														),
+														value: 'click',
+													},
+													{
+														label: __(
+															'On hover',
+															'maxi-blocks'
+														),
+														value: 'hover',
+													},
+												]}
+												onChange={value =>
+													onChangeRelationProperty(
+														item.id,
+														'action',
+														value
+													)
+												}
+											/>
+											<SelectControl
+												label={__(
+													'Settings',
+													'maxi-blocks'
+												)}
+												value={item.settings}
+												options={[
+													{
+														label: __(
+															'Choose settings',
+															'maxi-blocks'
+														),
+														value: '',
+													},
+													...getOptions(
+														getClientIdFromUniqueId(
+															item.uniqueID
+														)
+													).map(option => ({
+														label: option.label,
+														value: option.label,
+													})),
+												]}
+												onChange={value => {
+													onChangeRelationProperty(
+														item.id,
+														'attributes',
+														{}
+													);
+													onChangeRelationProperty(
+														item.id,
+														'settings',
+														value
+													);
+												}}
+											/>
+										</>
+									)}
 									{item.uniqueID && item.settings && (
 										<SettingTabsControl
 											deviceType={deviceType}

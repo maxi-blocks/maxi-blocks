@@ -5,9 +5,11 @@ import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
 const rawVideo = {
 	url: {
 		type: 'string',
+		default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
 	},
 	embedUrl: {
 		type: 'string',
+		default: 'https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&controls=1',
 	},
 	startTime: {
 		type: 'string',

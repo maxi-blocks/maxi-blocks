@@ -41,7 +41,10 @@ describe('PositionControl', () => {
 			'position-bottom-general': 56,
 			'position-left-general': 56,
 			'position-right-general': 56,
-			'position-unit-general': '%',
+			'position-top-unit-general': '%',
+			'position-bottom-unit-general': '%',
+			'position-left-unit-general': '%',
+			'position-right-unit-general': '%',
 		};
 
 		const positionResult = await getAttributes([
@@ -49,7 +52,10 @@ describe('PositionControl', () => {
 			'position-bottom-general',
 			'position-left-general',
 			'position-right-general',
-			'position-unit-general',
+			'position-top-unit-general',
+			'position-bottom-unit-general',
+			'position-left-unit-general',
+			'position-right-unit-general',
 		]);
 
 		expect(positionResult).toStrictEqual(expectPosition);
@@ -87,7 +93,7 @@ describe('PositionControl', () => {
 		expect(positionGeneralValue).toStrictEqual('56');
 
 		const positionGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionGeneralUnit).toStrictEqual('%');
@@ -121,7 +127,7 @@ describe('PositionControl', () => {
 		expect(positionSGeneralValue).toStrictEqual('87');
 
 		const positionSGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionSGeneralUnit).toStrictEqual('px');
@@ -144,7 +150,7 @@ describe('PositionControl', () => {
 		expect(positionXsGeneralValue).toStrictEqual('87');
 
 		const positionXsGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionXsGeneralUnit).toStrictEqual('px');
@@ -167,7 +173,7 @@ describe('PositionControl', () => {
 		expect(positionMGeneralValue).toStrictEqual('56');
 
 		const positionMGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionMGeneralUnit).toStrictEqual('%');

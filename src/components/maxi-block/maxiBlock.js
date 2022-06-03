@@ -229,6 +229,12 @@ const MaxiBlock = memo(
 			deviceType: newDeviceType,
 		} = rawNewProps;
 
+		if (
+			rawNewProps.name === 'maxi-blocks/pane-maxi' &&
+			!isEqual(rawOldProps.paneIcon, rawNewProps.paneIcon)
+		)
+			return false;
+
 		if (!isEqual(oldAttr, newAttr)) return false;
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;

@@ -44,6 +44,7 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 					].indexOf(blockName) === -1
 			);
+
 		return [
 			<MaxiBlock
 				key={`maxi-pane--${uniqueID}`}
@@ -55,6 +56,7 @@ class edit extends MaxiBlockComponent {
 					templateLock: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
+				paneIcon={paneIcon}
 			>
 				<div
 					className='maxi-pane-block__header'

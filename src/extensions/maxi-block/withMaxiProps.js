@@ -23,7 +23,6 @@ const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
-
 			const {
 				deviceType,
 				winBreakpoint,

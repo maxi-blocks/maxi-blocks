@@ -63,6 +63,7 @@ import { setSVGContent } from '../../extensions/svg';
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
 import { getBoundaryElement } from '../../extensions/dom';
+import VideoUrl from './components/video-url';
 
 /**
  * Component
@@ -79,6 +80,7 @@ const MaxiToolbar = memo(
 		const {
 			attributes,
 			backgroundAdvancedOptions,
+			backgroundPrefix,
 			clientId,
 			isSelected,
 			name,
@@ -416,6 +418,12 @@ const MaxiToolbar = memo(
 								/>
 							</>
 						)}
+						{name === 'maxi-blocks/video-maxi' && (
+							<VideoUrl
+								{...getGroupAttributes(attributes, 'video')}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
+						)}
 						<ColumnMover
 							clientId={clientId}
 							blockName={name}
@@ -430,9 +438,12 @@ const MaxiToolbar = memo(
 									'backgroundGradient',
 								],
 								false,
-								prefix
+								backgroundPrefix || prefix
 							)}
-							prefix={prefix}
+							{...(name === 'maxi-blocks/video-maxi' && {
+								...getGroupAttributes(attributes, 'video'),
+							})}
+							prefix={backgroundPrefix || prefix}
 							advancedOptions={backgroundAdvancedOptions}
 							globalProps={backgroundGlobalProps}
 							blockName={name}

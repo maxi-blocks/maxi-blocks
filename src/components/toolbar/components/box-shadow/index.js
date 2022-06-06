@@ -19,7 +19,11 @@ import BoxShadowControl from '../../../box-shadow-control';
 /**
  * BoxShadow
  */
-const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
+const ALLOWED_BLOCKS = [
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/video-maxi',
+];
 
 const BoxShadow = props => {
 	const {

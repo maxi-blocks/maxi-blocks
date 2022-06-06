@@ -120,6 +120,8 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 				copyPasteMapping={copyPasteMapping}
+				backgroundAdvancedOptions='video overlay'
+				backgroundPrefix='overlay-'
 			/>,
 			<MaxiBlock
 				key={`maxi-video--${uniqueID}`}

@@ -139,7 +139,7 @@ const ArrowIconControl = props => {
 					/>
 					{!isHover && (
 						<AdvancedNumberControl
-							label={__('Spacing', 'maxi-blocks')}
+							label={__('Horizontal Spacing', 'maxi-blocks')}
 							min={-999}
 							max={999}
 							initial={1}

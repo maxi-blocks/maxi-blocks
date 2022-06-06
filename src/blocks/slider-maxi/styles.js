@@ -164,6 +164,75 @@ const getIconSize = (obj, isHover = false) => {
 	return { iconSize: response };
 };
 
+// TO DO: abstract this (and the Button's one) later
+const getIconPathStyles = (obj, isHover = false) => {
+	const response = {
+		label: 'Icon path',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (
+			!isNil(
+				obj[
+					`navigation-arrow-both-icon-stroke-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
+				]
+			)
+		) {
+			response[breakpoint]['stroke-width'] = `${
+				obj[
+					`navigation-arrow-both-icon-stroke-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
+				]
+			}`;
+		}
+
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+			delete response[breakpoint];
+	});
+
+	return { iconPath: response };
+};
+
+const getIconObject = props => {
+	const response = {
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'navigationArrowBothIconPadding'),
+			},
+			prefix: 'navigation-arrow-both-icon-',
+		}),
+	};
+
+	const responsive = {
+		label: 'Icon responsive',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		responsive[breakpoint] = {};
+
+		if (!isNil(props[`navigation-arrow-both-icon-spacing-${breakpoint}`])) {
+			responsive[breakpoint][
+				'margin-right'
+			] = `${getLastBreakpointAttribute({
+				target: 'navigation-arrow-both-icon-spacing',
+				breakpoint,
+				attributes: props,
+			})}px`;
+		}
+	});
+
+	response.iconResponsive = responsive;
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
 
@@ -202,6 +271,14 @@ const getStyles = props => {
 					prefix: 'navigation-arrow-both-icon-',
 				}),
 				' .maxi-slider-block__arrow svg': getIconSize(props, false),
+				' .maxi-slider-block__arrow svg > *': getIconObject(
+					props,
+					'svg'
+				),
+				' .maxi-slider-block__arrow svg path': getIconPathStyles(
+					props,
+					false
+				),
 			},
 			selectorsSlider,
 			props

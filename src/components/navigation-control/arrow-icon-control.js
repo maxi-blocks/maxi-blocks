@@ -36,7 +36,7 @@ import classnames from 'classnames';
 /**
  * Styles and icons
  */
-import { iconBorder, styleNone, iconStroke, iconFill } from '../../icons';
+import { iconBorder, iconStroke, iconFill } from '../../icons';
 import { svgHover } from '../../extensions/styles/defaults';
 
 /**

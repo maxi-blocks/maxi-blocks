@@ -333,20 +333,10 @@ const LibraryContainer = props => {
 
 	const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 		server: {
-			apiKey: 'dwwE1dzYaFilMKYvG7yAkDDvq0SuS5TV', // Be sure to use an API key that only allows search operations
+			apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6', // Be sure to use an API key that only allows search operations
 			nodes: [
 				{
-					host: 'slrjg083f5otv7qxp.a1.typesense.net',
-					port: '443',
-					protocol: 'https',
-				},
-				{
-					host: 'slrjg083f5otv7qxp-2.a1.typesense.net',
-					port: '443',
-					protocol: 'https',
-				},
-				{
-					host: 'slrjg083f5otv7qxp-3.a1.typesense.net',
+					host: '24q17endjv0kacilp-1.a1.typesense.net',
 					port: '443',
 					protocol: 'https',
 				},
@@ -435,7 +425,7 @@ const LibraryContainer = props => {
 	/** SVG Icons Results */
 	const svgResults = ({ hit }) => {
 		const newContent = svgAttributesReplacer(blockStyle, hit.svg_code);
-		const svgType = hit.taxonomies.svg_category[0];
+		const svgType = hit.svg_category[0];
 		const shapeType = getShapeType(type);
 
 		return (
@@ -444,7 +434,7 @@ const LibraryContainer = props => {
 				target={svgType}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.taxonomies.cost === 'pro'}
+				isPro={hit.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
 				currentItemColorStatus={svgCurrentColorStatus(
@@ -560,7 +550,7 @@ const LibraryContainer = props => {
 	/** Shapes Results */
 	const svgShapeResults = ({ hit }) => {
 		const shapeType = getShapeType(type);
-		const svgType = hit.taxonomies.svg_category[0];
+		const svgType = hit.svg_category[0];
 
 		const newContent = svgAttributesReplacer(
 			blockStyle,
@@ -574,7 +564,7 @@ const LibraryContainer = props => {
 				target={type}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.taxonomies.cost === 'pro'}
+				isPro={hit.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() =>
 					onRequestInsertShape(newContent, svgType)
@@ -613,8 +603,8 @@ const LibraryContainer = props => {
 				type='sc'
 				target='style-cards'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				previewIMG={hit.images.thumbnail.url}
-				isPro={hit.taxonomies.cost === 'pro'}
+				previewIMG={hit.post_thumbnail}
+				isPro={hit.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSC(hit.sc_code)}
 			/>
@@ -625,7 +615,10 @@ const LibraryContainer = props => {
 		return (
 			<CheckboxControl
 				className='use-placeholer-all-images'
-				label={__('Swap stock images for placeholders to save disk space', 'maxi-blocks')}
+				label={__(
+					'Swap stock images for placeholders to save disk space',
+					'maxi-blocks'
+				)}
 				checked={isChecked}
 				onChange={setChecked}
 			/>
@@ -697,7 +690,7 @@ const LibraryContainer = props => {
 							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
 								<CustomMenuSelect
 									className='maxi-cloud-container__content-svg-shape__categories'
-									attribute='taxonomies.svg_category'
+									attribute='svg_category'
 									translations={{
 										seeAllOption: __(
 											'All icons',
@@ -730,7 +723,7 @@ const LibraryContainer = props => {
 							/>
 							<CustomRefinementList
 								className='hidden'
-								attribute='taxonomies.svg_category'
+								attribute='svg_category'
 								defaultRefinement={['Shape']}
 								showLoadingIndicator
 							/>
@@ -760,7 +753,7 @@ const LibraryContainer = props => {
 							/>
 							<CustomRefinementList
 								className='hidden'
-								attribute='taxonomies.svg_category'
+								attribute='svg_category'
 								defaultRefinement={['Line']}
 								showLoadingIndicator
 							/>
@@ -844,7 +837,7 @@ const LibraryContainer = props => {
 								title={__('Colour', 'maxi-blocks')}
 								openByDefault
 							>
-								<CustomRefinementList attribute='taxonomies.sc_color' />
+								<CustomRefinementList attribute='sc_color' />
 							</Accordion>
 							<ClearRefinements />
 						</div>

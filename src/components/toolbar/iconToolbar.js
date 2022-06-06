@@ -4,16 +4,15 @@
 import { Popover } from '@wordpress/components';
 import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
- * Utils
+ * Internal dependencies
  */
 import IconPosition from './components/icon-position';
 import IconSize from './components/icon-size';
@@ -21,12 +20,13 @@ import IconColor from './components/icon-color';
 import IconBackground from './components/icon-background';
 import Border from './components/border';
 import PaddingMargin from './components/padding-margin';
+import { getBoundaryElement } from '../../extensions/dom';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Component
@@ -44,19 +44,12 @@ const IconToolbar = memo(
 		} = props;
 		const { uniqueID, svgType, blockStyle } = attributes;
 
-		const { editorVersion, breakpoint } = useSelect(select => {
-			const { receiveMaxiSettings, receiveMaxiDeviceType } =
-				select('maxiBlocks');
-
-			const maxiSettings = receiveMaxiSettings();
-			const version = !isEmpty(maxiSettings.editor)
-				? maxiSettings.editor.version
-				: null;
+		const { breakpoint } = useSelect(select => {
+			const { receiveMaxiDeviceType } = select('maxiBlocks');
 
 			const breakpoint = receiveMaxiDeviceType();
 
 			return {
-				editorVersion: version,
 				breakpoint,
 			};
 		});
@@ -66,22 +59,6 @@ const IconToolbar = memo(
 		useEffect(() => {
 			setAnchorRef(ref.current);
 		});
-
-		const boundaryElement =
-			document.defaultView.frameElement ||
-			getScrollContainer(anchorRef) ||
-			document.body;
-
-		// Different from > WP 5.5.3
-		const stickyProps = {
-			...((parseFloat(editorVersion) <= 9.2 && {
-				__unstableSticky: true,
-			}) ||
-				(anchorRef &&
-					!isNaN(parseFloat(editorVersion)) && {
-						__unstableStickyBoundaryElement: boundaryElement,
-					})),
-		};
 
 		const processAttributes = obj => {
 			if ('content' in obj) {
@@ -107,7 +84,9 @@ const IconToolbar = memo(
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
-					{...stickyProps}
+					__unstableStickyBoundaryElement={getBoundaryElement(
+						ref.current
+					)}
 				>
 					<div className='toolbar-wrapper icon-toolbar'>
 						<IconPosition

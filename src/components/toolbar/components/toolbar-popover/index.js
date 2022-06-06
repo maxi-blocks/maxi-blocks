@@ -46,17 +46,19 @@ class ToolbarPopover extends Component {
 	 * Ensures the popover closes when clicking outside
 	 */
 	onClickOutside(event) {
+		const path = event.path || (event.composedPath && event.composedPath());
 		if (
 			this.ref.current?.ownerDocument.querySelectorAll(
 				'.toolbar-item__popover'
 			).length >= 2 ||
 			// If the click isn't inside the popover and isn't inside the button
-			(!event.path.includes(
-				this.ref.current?.ownerDocument.querySelector(
-					'.toolbar-item__popover'
-				)
-			) &&
-				!event.path.includes(this.ref.current))
+			(path &&
+				!path.includes(
+					this.ref.current?.ownerDocument.querySelector(
+						'.toolbar-item__popover'
+					)
+				) &&
+				!path.includes(this.ref.current))
 		)
 			this.state.onClose();
 	}
@@ -128,7 +130,7 @@ class ToolbarPopover extends Component {
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={{ isOpen, onClose }}>
 					{!tooltipsHide && (
-						<Tooltip text={tooltip} position='bottom center'>
+						<Tooltip text={tooltip} position='top center'>
 							{buttonContent()}
 						</Tooltip>
 					)}

@@ -91,7 +91,7 @@ const ImageSize = props => {
 				/>
 				{isFirstOnHierarchy && (
 					<SettingTabsControl
-						label={__('Full Width', 'maxi-blocks')}
+						label={__('Full width', 'maxi-blocks')}
 						type='buttons'
 						selected={fullWidth}
 						items={[

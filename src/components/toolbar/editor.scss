@@ -1,6 +1,6 @@
 .maxi-toolbar__popover {
 	z-index: 29;
-
+	
 	.components-popover__content {
 		overflow: visible;
 		background-color: transparent;
@@ -9,6 +9,7 @@
 
 		.toolbar-wrapper {
 			display: flex;
+			background-color: #fff;
 			width: min-content;
 			position: relative;
 			top: -23px;
@@ -18,7 +19,8 @@
 			border-radius: 0;
 			border: 1px solid var(--maxi-grey-1-color);
 
-			&.icon-toolbar {
+			&.icon-toolbar,
+			&.caption-toolbar {
 				top: 5px;
 			}
 
@@ -36,10 +38,6 @@
 				font-weight: 400;
 				font-family: 'Roboto', sans-serif !important;
 				line-height: 100%;
-
-				& + .toolbar-item {
-					padding-left: 2px;
-				}
 
 				&__block-style {
 					text-transform: capitalize;
@@ -69,7 +67,6 @@
 				border-right: 1px solid var(--maxi-grey-1-color);
 				cursor: pointer;
 
-				&.toolbar-item__help,
 				&.toolbar-item__more-settings {
 					border-right: none;
 				}

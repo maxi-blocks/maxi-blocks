@@ -19,8 +19,14 @@ const rawArrow = {
 	},
 };
 
-const arrow = breakpointAttributesCreator({
-	obj: rawArrow,
-});
+const arrow = {
+	...breakpointAttributesCreator({
+		obj: rawArrow,
+	}),
+	'show-warning-box': {
+		type: 'boolean',
+		default: true,
+	},
+};
 
 export default arrow;

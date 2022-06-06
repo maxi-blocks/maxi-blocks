@@ -40,6 +40,7 @@ export const SvgColor = props => {
 					: props['svg-line-color']
 			}
 			prefix='svg-line-'
+			avoidBreakpointForDefault
 			paletteColor={
 				isHover
 					? props['svg-line-palette-color-hover']
@@ -86,6 +87,7 @@ export const SvgColor = props => {
 					: props['svg-fill-color']
 			}
 			prefix='svg-fill-'
+			avoidBreakpointForDefault
 			paletteColor={
 				isHover
 					? props['svg-fill-palette-color-hover']
@@ -138,7 +140,7 @@ export const SvgColorControl = props => {
 								<SvgColor
 									{...props}
 									type='fill'
-									label={__('SVG Fill', 'maxi-blocks')}
+									label={__('Icon fill', 'maxi-blocks')}
 									onChangeInline={obj =>
 										onChangeInline(obj, '[data-fill]')
 									}
@@ -148,7 +150,7 @@ export const SvgColorControl = props => {
 								<SvgColor
 									{...props}
 									type='line'
-									label={__('SVG Line', 'maxi-blocks')}
+									label={__('Icon line', 'maxi-blocks')}
 									onChangeInline={obj =>
 										onChangeInline(obj, '[data-stroke]')
 									}
@@ -162,10 +164,7 @@ export const SvgColorControl = props => {
 					content: (
 						<>
 							<ToggleSwitch
-								label={__(
-									'Enable SVG Colour Hover',
-									'maxi-blocks'
-								)}
+								label={__('Enable hover colour', 'maxi-blocks')}
 								selected={hoverStatus}
 								className='maxi-svg-status-hover'
 								onChange={val => {
@@ -198,7 +197,7 @@ export const SvgColorControl = props => {
 											{...props}
 											type='fill'
 											label={__(
-												'SVG Fill',
+												'Icon fill hover',
 												'maxi-blocks'
 											)}
 											onChangeInline={null}
@@ -210,7 +209,7 @@ export const SvgColorControl = props => {
 											{...props}
 											type='line'
 											label={__(
-												'SVG Line',
+												'Icon line hover',
 												'maxi-blocks'
 											)}
 											onChangeInline={null}

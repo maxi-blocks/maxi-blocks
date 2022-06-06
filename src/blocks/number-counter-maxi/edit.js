@@ -11,10 +11,9 @@ import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
-	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,
@@ -78,8 +77,10 @@ const NumberCounter = attributes => {
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			setCount(startCountValue);
-			setReplayStatus(false);
-			clearInterval(countRef.current);
+			if (count >= endCountValue) {
+				setReplayStatus(false);
+				clearInterval(countRef.current);
+			}
 		}
 	}, [
 		startCountValue,
@@ -118,7 +119,8 @@ const NumberCounter = attributes => {
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
-			size={{
+			deviceType={deviceType}
+			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',
 					breakpoint: deviceType,

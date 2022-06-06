@@ -253,6 +253,11 @@ body .toolbar-item__popover {
 	}
 }
 
+body.maxi-blocks--active .components-tooltip {
+	opacity: 0.95 !important;
+	pointer-events: none;
+}
+
 body.maxi-blocks--active.rtl .maxi-sidebar,
 body.rtl .maxi-popover,
 body.rtl .toolbar-item__popover {
@@ -354,8 +359,9 @@ body .toolbar-item__popover {
 }
 
 /*******************************
-* Style Card Editor Boat Icon
+* Style Card Editor Boat Icon and Template library Icon
 *******************************/
+#template-library-fill,
 svg path#styleCardMenu_a,
 svg path#styleCardBoat_a {
 	fill: rgba(var(--maxi-light-color-4), 1);
@@ -397,5 +403,49 @@ svg path#styleCardBoat_b {
 		&:focus {
 			box-shadow: none;
 		}
+	}
+}
+
+/*******************************
+* RTL
+*******************************/
+
+html[dir="rtl"] {
+	.interface-interface-skeleton__sidebar {
+		scrollbar-gutter: unset;
+	}
+	.maxi-color-control .chrome-picker > div > div:last-of-type:last-of-type div:not(.saturation-white, .saturation-black) label,
+	.maxi-responsive-selector .maxi-style-cards__popover .maxi-style-cards__sc__actions button,
+	.maxi-responsive-selector .maxi-style-cards__popover .maxi-style-cards__sc__more-sc--select,
+	.maxi-responsive-selector .maxi-style-cards__popover .maxi-style-cards__sc__ie button,
+	.maxi-responsive-selector .maxi-style-cards__popover .maxi-style-cards__sc a.components-button,
+	.maxi-responsive-selector .maxi-style-cards__popover .maxi-style-cards__sc__save input[type="text"],
+	.maxi-responsive-selector .action-buttons__button svg {
+		margin-right: 0;
+		margin-left: 5px;
+	}
+	.maxi-responsive-selector .action-buttons__help svg {
+		margin-left: 2px;
+	}
+	.maxi-responsive-selector .maxi-style-cards__popover .maxi-style-cards__quick-color-presets__reset-button svg,
+	.maxi-responsive-selector .maxi-style-cards__popover__title > svg {
+		margin-right: 0;
+		margin-left: 10px;
+	}
+	body.maxi-blocks--active select.maxi-select-control__input,
+	.maxi-responsive-selector .maxi-style-cards__popover .maxi-style-cards__sc__more-sc--select .maxi-select-control__input {
+		padding-right: 20px;
+	}
+	.maxi-advanced-number-control .maxi-base-control__field > *, 
+	.maxi-advanced-number-control .components-base-control__field > * {
+		margin-left: 0;
+		margin-right: 4px;
+	}
+	.maxi-tab-content__box .maxi-base-control.maxi-typography-control__orientation,
+	.maxi-tab-content__box .maxi-base-control.maxi-typography-control__direction {
+		margin-bottom: 8px;
+	}
+	.rtl .maxi-base-control .components-maxi-control__reset-button {
+		margin-left: 0;;
 	}
 }

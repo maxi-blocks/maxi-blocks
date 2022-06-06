@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
@@ -11,12 +10,6 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import {
-	getCustomFormatValue,
-	setFormat,
-	withFormatValue,
-} from '../../../../extensions/text/formats';
 
 /**
  * Styles and icons
@@ -28,66 +21,28 @@ import { toolbarItalic } from '../../../../icons';
 /**
  * TextItalic
  */
-const TextItalic = withFormatValue(props => {
-	const {
-		blockName,
-		formatValue,
-		onChange,
-		isList,
-		breakpoint,
-		textLevel,
-		styleCard,
-		isCaptionToolbar = false,
-		tooltipsHide,
-	} = props;
+const TextItalic = props => {
+	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
-
-	const getItalicValue = () =>
-		getCustomFormatValue({
-			typography: { ...getGroupAttributes(props, 'typography') },
-			formatValue,
-			prop: 'font-style',
-			breakpoint,
-			textLevel,
-			styleCard,
-		});
-
-	const italicValue = getItalicValue();
+	const getItalicValue = () => getValue('font-style');
 
 	const [isActive, setIsActive] = useState(
-		(italicValue === 'italic' && true) || false
+		(getItalicValue() > 400 && true) || false
 	);
 
 	useEffect(() => {
-		const italicValue = getItalicValue();
-
-		setIsActive((italicValue === 'italic' && true) || false);
+		setIsActive((getItalicValue() === 'italic' && true) || false);
 	});
-
-	const onClick = () => {
-		const obj = setFormat({
-			formatValue,
-			isActive,
-			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
-			value: {
-				'font-style': isActive ? 'normal' : 'italic',
-			},
-			breakpoint,
-			textLevel,
-		});
-
-		setIsActive(!isActive);
-
-		onChange(obj);
-	};
 
 	const italicContent = () => {
 		return (
 			<Button
 				className='toolbar-item toolbar-item__italic'
-				onClick={onClick}
+				onClick={() =>
+					onChangeFormat({
+						'font-style': isActive ? 'normal' : 'italic',
+					})
+				}
 				aria-pressed={isActive}
 			>
 				<Icon
@@ -100,14 +55,11 @@ const TextItalic = withFormatValue(props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip
-				text={__('Italic', 'maxi-blocks')}
-				position='bottom center'
-			>
+			<Tooltip text={__('Italic', 'maxi-blocks')} position='top center'>
 				{italicContent()}
 			</Tooltip>
 		);
 	return italicContent();
-});
+};
 
 export default TextItalic;

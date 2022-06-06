@@ -56,6 +56,10 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
+		'size-advanced-options': {
+			type: 'boolean',
+			default: true,
+		},
 		'max-width-xxl': {
 			type: 'string',
 			default: '1690',
@@ -136,7 +140,7 @@ const attributes = {
 			type: 'string',
 			default: 'px',
 		},
-	}
+	},
 };
 
 export default attributes;

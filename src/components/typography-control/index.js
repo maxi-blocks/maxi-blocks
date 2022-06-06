@@ -348,7 +348,7 @@ const TypographyControl = props => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 99,
+			max: 300,
 		},
 		em: {
 			min: 0,

@@ -40,20 +40,20 @@ const AdvancedNumberControl = props => {
 		em: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		vw: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		vh: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		'%': {
 			min: 0,

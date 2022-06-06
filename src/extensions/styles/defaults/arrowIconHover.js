@@ -1,7 +1,7 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import { arrowIcon } from './arrowIcon';
+import arrowIcon from './arrowIcon';
 
-export const arrowIconHover = hoverAttributesCreator({
+const arrowIconHover = hoverAttributesCreator({
 	obj: arrowIcon,
 	diffValAttr: {
 		'navigation-arrow-first-stroke-palette-color-hover': 6,
@@ -56,3 +56,5 @@ export const arrowIconHover = hoverAttributesCreator({
 		},
 	},
 });
+
+export default arrowIconHover;

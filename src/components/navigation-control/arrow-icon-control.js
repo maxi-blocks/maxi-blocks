@@ -74,33 +74,8 @@ const ArrowIconControl = props => {
 			});
 		else if (iconStyle === 'fill') setIconStyle('color');
 
-		options.push({
-			icon: <Icon icon={iconStroke} />,
-			value: 'border',
-		});
-
 		return options;
 	};
-
-	const minMaxSettings = {
-		px: {
-			min: 0,
-			max: 999,
-		},
-		em: {
-			min: 0,
-			max: 999,
-		},
-		vw: {
-			min: 0,
-			max: 999,
-		},
-		'%': {
-			min: 0,
-			max: 100,
-		},
-	};
-	console.log('svgType', svgType);
 
 	return (
 		<div className={classes}>
@@ -298,6 +273,26 @@ const ArrowIconControl = props => {
 														: color,
 													'stroke'
 											  ),
+									'navigation-arrow-second-icon-content':
+										isHover
+											? setSVGContentHover(
+													props[
+														'navigation-arrow-second-icon-content'
+													],
+													paletteStatus
+														? lineColorStr
+														: color,
+													'stroke'
+											  )
+											: setSVGContent(
+													props[
+														'navigation-arrow-second-icon-content'
+													],
+													paletteStatus
+														? lineColorStr
+														: color,
+													'stroke'
+											  ),
 								});
 							}}
 							isHover={isHover}
@@ -397,18 +392,6 @@ const ArrowIconControl = props => {
 								});
 							}}
 							isHover={isHover}
-						/>
-					)}
-					{!isHover && (
-						<AxisControl
-							{...getGroupAttributes(props, 'iconPadding')}
-							label={__('Icon padding', 'maxi-blocks')}
-							onChange={onChange}
-							breakpoint={breakpoint}
-							target='navigation-arrow-both-icon-padding'
-							disableAuto
-							optionType='string'
-							minMaxSettings={minMaxSettings}
 						/>
 					)}
 				</>

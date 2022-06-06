@@ -37,7 +37,6 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...attributesData.arrowIcon,
 	...attributesData.arrowIconHover,
-	...attributesData.arrowIconPadding,
 	...{
 		...attributesData.size,
 		'max-width-xxl': {

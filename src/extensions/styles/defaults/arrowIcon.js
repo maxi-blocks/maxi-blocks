@@ -4,7 +4,7 @@ import padding from './padding';
 
 const prefix = 'navigation-arrow-both-';
 
-export const arrowIcon = {
+const arrowIcon = {
 	...prefixAttributesCreator({
 		obj: icon,
 		prefix,
@@ -32,9 +32,4 @@ export const arrowIcon = {
 	},
 };
 
-export const arrowIconPadding = {
-	...prefixAttributesCreator({
-		obj: padding,
-		prefix,
-	}),
-};
+export default arrowIcon;

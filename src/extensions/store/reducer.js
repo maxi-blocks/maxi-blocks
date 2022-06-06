@@ -116,9 +116,6 @@ const reducer = (
 				inspectorPath: newInspectorPath,
 			};
 		}
-		case 'UPDATE_ACCORDION_MAXI_DATA': {
-			return { ...state, accordionData: { ...action.data } };
-		}
 		default:
 			return state;
 	}

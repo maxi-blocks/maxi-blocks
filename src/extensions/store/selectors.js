@@ -74,10 +74,6 @@ const selectors = {
 			})[0]
 			.toLowerCase();
 	},
-	receiveAccordionData(state) {
-		if (state) return state.accordionData;
-		return false;
-	},
 };
 
 export default selectors;

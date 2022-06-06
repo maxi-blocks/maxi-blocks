@@ -12,7 +12,7 @@ import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = obj => {
+export const getSVGWidthStyles = (obj, prefix = 'svg-') => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -21,14 +21,14 @@ export const getSVGWidthStyles = obj => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const svgWidth = obj[`svg-width-${breakpoint}`];
-		const svgResponsive = obj[`svg-responsive-${breakpoint}`];
+		const svgWidth = obj[`${prefix}width-${breakpoint}`];
+		const svgResponsive = obj[`${prefix}responsive-${breakpoint}`];
 
 		if (!isNil(svgWidth))
 			response[
 				breakpoint
 			].width = `${svgWidth}${getLastBreakpointAttribute({
-				target: 'svg-width-unit',
+				target: `${prefix}width-unit`,
 				breakpoint,
 				attributes: obj,
 			})}`;
@@ -43,7 +43,7 @@ export const getSVGWidthStyles = obj => {
 	return { SVGWidth: response };
 };
 
-const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
+const getSVGPathStyles = (obj, isHover, prefix = 'svg-') => {
 	const response = {
 		label: 'SVG path',
 		general: {},
@@ -69,7 +69,7 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
 	return { SVGPath: response };
 };
 
-const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
+const getSVGPathFillStyles = (obj, blockStyle, isHover, prefix = 'svg-') => {
 	const response = {
 		label: 'SVG path-fill',
 		general: {},
@@ -90,7 +90,7 @@ const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
 	return { SVGPathFill: response };
 };
 
-const getSVGPathStrokeStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
+const getSVGPathStrokeStyles = (obj, blockStyle, isHover, prefix = 'svg-') => {
 	const response = {
 		label: 'SVG Path stroke',
 		general: {},
@@ -176,5 +176,6 @@ export const getSVGStyles = ({
 			},
 		};
 	}
+
 	return response;
 };

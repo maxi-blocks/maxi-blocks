@@ -87,14 +87,8 @@ const NavigationArrowsControl = props => {
 									{...getGroupAttributes(
 										props,
 										[
-											'arrowIcon',
-											'arrowIconHover',
-											'arrowIconBackgroundGradient',
-											'arrowIconBackgroundColor',
-											'arrowIconBorder',
-											'arrowIconBackgroundHover',
-											'arrowIconBorderWidth',
-											'arrowIconBorderRadius',
+											'navigationArrowIcon',
+											'navigationArrowIconHover',
 										],
 										true
 									)}

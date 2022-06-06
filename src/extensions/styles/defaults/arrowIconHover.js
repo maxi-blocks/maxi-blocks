@@ -1,12 +1,5 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import {
-	arrowIcon,
-	arrowIconBackground,
-	arrowIconBackgroundColor,
-	arrowIconBorder,
-	arrowIconBorderWidth,
-	arrowIconBorderRadius,
-} from './arrowIcon';
+import { arrowIcon } from './arrowIcon';
 
 export const arrowIconHover = hoverAttributesCreator({
 	obj: arrowIcon,
@@ -61,49 +54,5 @@ export const arrowIconHover = hoverAttributesCreator({
 			type: 'boolean',
 			default: true,
 		},
-	},
-});
-
-export const arrowIconBackgroundHover = hoverAttributesCreator({
-	obj: arrowIconBackground,
-	diffValAttr: {
-		'navigation-arrow-first-background-active-media-general-hover': 'none',
-		'navigation-arrow-second-background-active-media-general-hover': 'none',
-		'navigation-arrow-both-background-active-media-general-hover': 'none',
-	},
-});
-
-export const arrowIconBackgroundColorHover = hoverAttributesCreator({
-	obj: arrowIconBackgroundColor,
-	diffValAttr: {
-		'navigation-arrow-first-background-palette-color-general-hover': 6,
-		'navigation-arrow-second-background-palette-color-general-hover': 6,
-		'navigation-arrow-both-background-palette-color-general-hover': 6,
-	},
-});
-
-export const arrowIconBackgroundGradientHover = hoverAttributesCreator({
-	obj: arrowIconBackgroundColor,
-	diffValAttr: {
-		'navigation-arrow-first-background-gradient-opacity-general-hover': 1,
-		'navigation-arrow-second-background-gradient-opacity-general-hover': 1,
-		'navigation-arrow-both-background-gradient-opacity-general-hover': 1,
-	},
-});
-
-export const arrowIconBorderHover = hoverAttributesCreator({
-	obj: arrowIconBorder,
-});
-
-export const arrowIconBorderWidthHover = hoverAttributesCreator({
-	obj: arrowIconBorderWidth,
-});
-
-export const arrowIconBorderRadiusHover = hoverAttributesCreator({
-	obj: arrowIconBorderRadius,
-	diffValAttr: {
-		'navigation-arrow-first-unit-radius-general-hover': 'px',
-		'navigation-arrow-second-unit-radius-general-hover': 'px',
-		'navigation-arrow-both-unit-radius-general-hover': 'px',
 	},
 });

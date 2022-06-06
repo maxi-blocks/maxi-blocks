@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useInnerBlocksProps } from '@wordpress/block-editor';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -40,14 +41,34 @@ const save = props => {
 						className: 'maxi-slider-block__wrapper',
 					})}
 				/>
-				<div className='maxi-slider-block__nav'>
-					<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
-						-
-					</span>
-					<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
-						+
-					</span>
-				</div>
+				{(attributes['navigation-arrow-first-icon-content'] ||
+					attributes['navigation-arrow-first-icon-content'] ||
+					attributes['navigation-dots-content']) && (
+					<div className='maxi-slider-block__nav'>
+						{attributes['navigation-arrow-first-icon-content'] && (
+							<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
+								<RawHTML>
+									{
+										attributes[
+											'navigation-arrow-first-icon-content'
+										]
+									}
+								</RawHTML>
+							</span>
+						)}
+						{attributes['navigation-arrow-second-icon-content'] && (
+							<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
+								<RawHTML>
+									{
+										attributes[
+											'navigation-arrow-second-icon-content'
+										]
+									}
+								</RawHTML>
+							</span>
+						)}
+					</div>
+				)}
 			</div>
 		</MaxiBlock.save>
 	);

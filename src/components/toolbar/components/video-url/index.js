@@ -16,6 +16,9 @@ import {
 	parseVideo,
 } from '../../../../extensions/video';
 
+/** Icons */
+import { toolbarVideo } from '../../../../icons';
+
 const VideoUrl = props => {
 	const { url, onChange, playerType } = props;
 
@@ -26,6 +29,7 @@ const VideoUrl = props => {
 			className='toolbar-item__video-url'
 			tooltip={__('Video url', 'maxi-blocks')}
 			advancedOptions='video'
+			icon={toolbarVideo}
 		>
 			<div className='toolbar-item__video-url__popover'>
 				<TextControl

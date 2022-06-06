@@ -1,58 +1,18 @@
 /**
  * WordPress dependencies
  */
-import { SVG, Path, Defs, G, Rect, Circle } from '@wordpress/primitives';
+import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarVideo = (
 	<SVG
-		width='16'
-		height='16'
-		viewBox='0 0 16 16'
-		id='Group_1001'
-		data-name='Group 1001'
+		className='play-87-shape-maxi-svg'
+		width='16px'
+		height='16px'
+		viewBox='0 0 36.1 36.1'
+		dataFill=''
+		fill='#ff4a17'
 	>
-		<Defs>
-			<clipPath id='clip-path'>
-				<Rect
-					id='Rectangle_513'
-					data-name='Rectangle 513'
-					width='16'
-					height='16'
-					fill='none'
-					stroke='#007bb8'
-					strokeWidth='1'
-				/>
-			</clipPath>
-		</Defs>
-		<G
-			id='Group_1000'
-			data-name='Group 1000'
-			transform='translate(0 0)'
-			clipPath='url(#clip-path)'
-		>
-			<Circle
-				id='Ellipse_70'
-				data-name='Ellipse 70'
-				cx='7.008'
-				cy='7.008'
-				r='7.008'
-				transform='translate(0.992 0.992)'
-				fill='none'
-				stroke='#007bb8'
-				strokeLinejoin='round'
-				strokeWidth='1.5'
-			/>
-			<Path
-				id='Path_265'
-				data-name='Path 265'
-				d='M10.339,6.791,5.05,9.833V3.75Z'
-				transform='translate(1.628 1.209)'
-				fill='none'
-				stroke='#007bb8'
-				strokeLinejoin='round'
-				strokeWidth='1.5'
-			/>
-		</G>
+		<Path d='M14.5 26l10.6-8-10.6-7.9zM18 .4C8.3.4.4 8.3.4 18S8.3 35.7 18 35.7 35.7 27.8 35.7 18 27.8.4 18 .4zm0 31.8c-7.8 0-14.2-6.4-14.2-14.2S10.2 3.9 18 3.9 32.2 10.2 32.2 18 25.9 32.2 18 32.2z' />
 	</SVG>
 );
 

@@ -4,27 +4,32 @@
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+	changeResponsive,
+} from '../../utils';
 
 describe('BoxShadowControl', () => {
-	beforeEach(async () => {
+	it('Checking the boxShadow control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-	});
-	it('Checking the boxShadow control', async () => {
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
 			'box shadow'
 		);
 
-		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
-			click[1].click()
+		await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-default-styles-control__button',
+			click => click[1].click()
 		);
 
 		const expectAttributes = {
@@ -54,25 +59,25 @@ describe('BoxShadowControl', () => {
 
 		// Horizontal
 		await inputs[2].focus();
-		await pressKeyTimes('Backspace', 2);
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('30');
 		await page.keyboard.press('Enter');
 
 		// Vertical
 		await inputs[4].focus();
-		await pressKeyTimes('Backspace', 2);
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('40');
 		await page.keyboard.press('Enter');
 
 		// Blur
 		await inputs[6].focus();
-		await pressKeyTimes('Backspace', 2);
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('10');
 		await page.keyboard.press('Enter');
 
 		// Spread
 		await inputs[8].focus();
-		await pressKeyTimes('Backspace', 2);
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('60');
 		await page.keyboard.press('Enter');
 
@@ -94,13 +99,16 @@ describe('BoxShadowControl', () => {
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {
+		await insertBlock('Text Maxi');
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
 			'box shadow'
 		);
-		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
-			click[1].click()
+		await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-default-styles-control__button',
+			click => click[1].click()
 		);
 
 		await accordionPanel.$$eval(
@@ -118,8 +126,9 @@ describe('BoxShadowControl', () => {
 			buttons => buttons[0].click()
 		);
 
-		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
-			click[0].click()
+		await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-default-styles-control__button',
+			click => click[0].click()
 		);
 
 		const expectBoxShadow = {
@@ -147,5 +156,97 @@ describe('BoxShadowControl', () => {
 		expect(boxShadowResult).toStrictEqual(expectBoxShadow);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check responsive box shadow', async () => {
+		await insertBlock('Text Maxi');
+
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'box shadow'
+		);
+
+		// base
+		await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-default-styles-control__button',
+			click => click[1].click()
+		);
+
+		const expectAttributes = {
+			'box-shadow-blur-general': 50,
+			'box-shadow-color-general': undefined,
+			'box-shadow-horizontal-general': 0,
+			'box-shadow-spread-general': 0,
+			'box-shadow-status-hover': false,
+			'box-shadow-vertical-general': 30,
+		};
+
+		const typographyAttributes = await getAttributes([
+			'box-shadow-blur-general',
+			'box-shadow-color-general',
+			'box-shadow-horizontal-general',
+			'box-shadow-spread-general',
+			'box-shadow-status-hover',
+			'box-shadow-vertical-general',
+		]);
+
+		expect(typographyAttributes).toStrictEqual(expectAttributes);
+
+		// s
+		await changeResponsive(page, 's');
+
+		await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-default-styles-control__button',
+			click => click[3].click()
+		);
+
+		const sHorizontal = await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-advanced-number-control input',
+			input => input[2].value
+		);
+
+		expect(sHorizontal).toStrictEqual('5');
+
+		const sVertical = await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-advanced-number-control input',
+			input => input[4].value
+		);
+
+		expect(sVertical).toStrictEqual('6');
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const xsHorizontal = await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-advanced-number-control input',
+			input => input[2].value
+		);
+
+		expect(xsHorizontal).toStrictEqual('5');
+
+		const xsVertical = await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-advanced-number-control input',
+			input => input[4].value
+		);
+
+		expect(xsVertical).toStrictEqual('6');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const mVertical = await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-advanced-number-control input',
+			input => input[4].value
+		);
+
+		expect(mVertical).toStrictEqual('30');
+
+		const mBlur = await accordionPanel.$$eval(
+			'.maxi-shadow-control .maxi-advanced-number-control input',
+			input => input[6].value
+		);
+
+		expect(mBlur).toStrictEqual('50');
 	});
 });

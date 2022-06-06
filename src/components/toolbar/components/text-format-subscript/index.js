@@ -53,7 +53,7 @@ const TextFormatSubscript = props => {
 		return (
 			<Tooltip
 				text={__('Subscript', 'maxi-blocks')}
-				position='bottom center'
+				position='top center'
 			>
 				{subscriptContent()}
 			</Tooltip>

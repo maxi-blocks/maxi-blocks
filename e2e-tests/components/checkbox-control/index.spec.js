@@ -5,40 +5,33 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import { openSidebarTab, getAttributes } from '../../utils';
 
 describe('CheckBoxControl', () => {
-	it.skip('checking the checkbox control', async () => {
+	it('checking the checkbox control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
-			'margin padding'
+			'height width'
 		);
-		const axisControls = await accordionPanel.$$('.maxi-axis-control');
-		const marginControl = axisControls[1];
-		const checkBoxes = await marginControl.$$(
-			'.maxi-axis-control__content__item .maxi-axis-control__content__item__checkbox input'
+
+		// use checkbox
+		await accordionPanel.$eval(
+			'.maxi-responsive-tabs-control .maxi-full-width-toggle .maxi-toggle-switch__toggle input',
+			checkBox => checkBox.click()
 		);
-		for (const checkBox of checkBoxes) {
-			await checkBox.click();
-		}
 
-		const marginKeys = [
-			'margin-bottom-general',
-			'margin-left-general',
-			'margin-right-general',
-			'margin-top-general',
-		];
+		// use checkbox
+		await page.$eval(
+			'.maxi-full-size-control .maxi-full-size-control__force-aspect-ratio input',
+			checkBox => checkBox.click()
+		);
 
-		const fourthAttributes = await getBlockAttributes();
-		const areAllAuto = marginKeys.every(key => {
-			return fourthAttributes[key] === 'auto';
-		});
-
-		expect(areAllAuto).toStrictEqual(true);
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(await getAttributes('blockFullWidth')).toStrictEqual('full');
+		expect(await getAttributes('force-aspect-ratio-general')).toStrictEqual(
+			true
+		);
 	});
 });

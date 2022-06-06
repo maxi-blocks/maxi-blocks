@@ -356,7 +356,7 @@ const TypographyControl = props => {
 		},
 		vw: {
 			min: 0,
-			max: 99,
+			max: 100,
 		},
 		'%': {
 			min: 0,

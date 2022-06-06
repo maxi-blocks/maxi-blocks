@@ -15,6 +15,7 @@ const save = props => {
 	const { attributes } = props;
 	const { title } = attributes;
 	const name = 'maxi-blocks/pane-maxi';
+
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}

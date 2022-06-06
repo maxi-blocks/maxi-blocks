@@ -4,7 +4,7 @@
 import { RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -30,6 +30,7 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			hasInnerBlocks,
 			paneIcon,
+			accordionLayout,
 		} = this.props;
 		const { uniqueID, title } = attributes;
 		/**
@@ -48,6 +49,7 @@ class edit extends MaxiBlockComponent {
 			);
 		const { isBlockSelected, getSelectedBlockClientId, getBlockParents } =
 			select('core/block-editor');
+		let paneOpen = false;
 
 		if (
 			(isBlockSelected(clientId) ||
@@ -59,6 +61,7 @@ class edit extends MaxiBlockComponent {
 			this.blockRef.current.querySelector(
 				'.maxi-pane-block__content'
 			).style.display = 'block';
+			paneOpen = true;
 		} else if (this.blockRef.current) {
 			this.blockRef.current.querySelector(
 				'.maxi-pane-block__content'
@@ -71,6 +74,7 @@ class edit extends MaxiBlockComponent {
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				useInnerBlocks
+				className={`maxi-pane-block--${accordionLayout}-layout`}
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
 					templateLock: false,
@@ -79,50 +83,35 @@ class edit extends MaxiBlockComponent {
 						: false,
 				}}
 				paneIcon={paneIcon}
+				accordionLayout={accordionLayout}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<div
-					className='maxi-pane-block__header'
-					onClick={() => {
-						const { getBlockParentsByBlockName } =
-							select('core/block-editor');
-						const parentAccordion = getBlockParentsByBlockName(
-							clientId,
-							'maxi-blocks/accordion-maxi'
-						);
+				<>
+					<div className='maxi-pane-block__header'>
+						<RichText
+							className='maxi-pane-block__title'
+							value={title}
+							identifier='content'
+							onChange={title => {
+								if (this.typingTimeout) {
+									clearTimeout(this.typingTimeout);
+								}
 
-						if (parentAccordion) {
-							const openPane =
-								select('maxiBlocks').receiveAccordionData();
-							const accordionClientId = parentAccordion[0];
-							dispatch('maxiBlocks').updateAccordionMaxiData({
-								...openPane,
-								[accordionClientId]: clientId,
-							});
-						}
-					}}
-				>
-					<RichText
-						className='maxi-pane-block__title'
-						value={title}
-						identifier='content'
-						onChange={title => {
-							if (this.typingTimeout) {
-								clearTimeout(this.typingTimeout);
-							}
+								this.typingTimeout = setTimeout(() => {
+									maxiSetAttributes({ title });
+								}, 100);
+							}}
+							placeholder={__('Title', 'maxi-blocks')}
+							withoutInteractiveFormatting
+						/>
 
-							this.typingTimeout = setTimeout(() => {
-								maxiSetAttributes({ title });
-							}, 100);
-						}}
-						placeholder={__('Title', 'maxi-blocks')}
-						withoutInteractiveFormatting
-					/>
-
-					<div className='maxi-pane-block__icon'>
-						<RawHTML>{paneIcon}</RawHTML>
+						<div className='maxi-pane-block__icon'>
+							<RawHTML>{paneIcon}</RawHTML>
+						</div>
 					</div>
-				</div>
+					{accordionLayout === 'simple' && <hr />}
+					{accordionLayout === 'boxed' && paneOpen && <hr />}
+				</>
 			</MaxiBlock>,
 		];
 	}

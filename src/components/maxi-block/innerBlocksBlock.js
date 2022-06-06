@@ -139,6 +139,7 @@ const MainInnerBlocksBlock = forwardRef(
 			isSelected,
 			hasSelectedChild,
 			paneIcon,
+			accordionLayout,
 			...props
 		},
 		ref

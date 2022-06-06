@@ -31,7 +31,6 @@ import { groupIcon } from '../../icons';
 registerBlockType('maxi-blocks/pane-maxi', {
 	title: __('Pane Maxi', 'maxi-blocks'),
 	icon: groupIcon,
-	description: 'Expand or collapse content inside of a panel',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

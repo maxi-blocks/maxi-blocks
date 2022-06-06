@@ -30,6 +30,7 @@ const attributes = {
 		type: 'number',
 		default: 2,
 	},
+	accordionLayout: { type: 'string', default: 'simple' },
 	'icon-content': {
 		type: 'string',
 		default: '',

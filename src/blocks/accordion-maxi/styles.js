@@ -1,11 +1,19 @@
 import { stylesCleaner } from '../../extensions/styles';
 
+const getAccordionLayoutStyles = props => {
+	const { attributes } = props;
+	const response = {};
+
+	return {
+		' .maxi-pane-block__header': {},
+	};
+};
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner({
-			'': { general: { width: '900px' } },
+			...getAccordionLayoutStyles(props),
 		}),
 	};
 	return response;

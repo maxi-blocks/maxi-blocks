@@ -208,6 +208,11 @@
 				border-bottom: 1px solid #dbdde6;
 				.components-button {
 					border-right: 1px solid #dbdde6;
+					text-align: center;
+					display: flex;
+					padding-left: 0;
+					padding-right: 0;
+					transition: background-color 0.3s;
 					&:last-child {
 						border-right: none;
 					}

@@ -269,4 +269,14 @@
 			}
 		}
 	}
+	.maxi-transform-control__rotate-control {
+		margin-bottom: 10px;
+
+		.maxi-base-control__label {
+			margin-right: 5px;
+		}
+		.components-maxi-control__reset-button {
+			min-width: 32px;
+		}
+	}
 }

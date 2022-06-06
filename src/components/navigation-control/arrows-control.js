@@ -10,13 +10,8 @@ import {
 	IconControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	ResponsiveTabsControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getLastBreakpointAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import ArrowIconControl from './arrow-icon-control';
 
 /**

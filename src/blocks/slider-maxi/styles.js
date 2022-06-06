@@ -199,7 +199,7 @@ const getIconPathStyles = (obj, isHover = false) => {
 	return { iconPath: response };
 };
 
-const getIconObject = props => {
+const getIconSpacing = (props, icon) => {
 	const response = {
 		padding: getMarginPaddingStyles({
 			obj: {
@@ -217,14 +217,45 @@ const getIconObject = props => {
 	breakpoints.forEach(breakpoint => {
 		responsive[breakpoint] = {};
 
-		if (!isNil(props[`navigation-arrow-both-icon-spacing-${breakpoint}`])) {
-			responsive[breakpoint][
-				'margin-right'
-			] = `${getLastBreakpointAttribute({
-				target: 'navigation-arrow-both-icon-spacing',
+		const size = `${getLastBreakpointAttribute({
+			target: 'navigation-arrow-both-icon-width',
+			breakpoint,
+			attributes: props,
+		})}${getLastBreakpointAttribute({
+			target: 'navigation-arrow-both-icon-width-unit',
+			breakpoint,
+			attributes: props,
+		})}`;
+
+		const halfSize = `${
+			getLastBreakpointAttribute({
+				target: 'navigation-arrow-both-icon-width',
 				breakpoint,
 				attributes: props,
-			})}px`;
+			}) / 2
+		}${getLastBreakpointAttribute({
+			target: 'navigation-arrow-both-icon-width-unit',
+			breakpoint,
+			attributes: props,
+		})}`;
+
+		if (!isNil(props[`navigation-arrow-both-icon-spacing-${breakpoint}`])) {
+			if (icon === 'prev')
+				responsive[
+					breakpoint
+				].left = `calc(${-getLastBreakpointAttribute({
+					target: 'navigation-arrow-both-icon-spacing',
+					breakpoint,
+					attributes: props,
+				})}px - ${halfSize})`;
+			if (icon === 'next')
+				responsive[
+					breakpoint
+				].right = `calc(${-getLastBreakpointAttribute({
+					target: 'navigation-arrow-both-icon-spacing',
+					breakpoint,
+					attributes: props,
+				})}px - (${size} + ${halfSize}))`;
 		}
 	});
 
@@ -270,11 +301,15 @@ const getStyles = props => {
 					blockStyle,
 					prefix: 'navigation-arrow-both-icon-',
 				}),
-				' .maxi-slider-block__arrow svg': getIconSize(props, false),
-				' .maxi-slider-block__arrow svg > *': getIconObject(
+				' .maxi-slider-block__arrow--prev': getIconSpacing(
 					props,
-					'svg'
+					'prev'
 				),
+				' .maxi-slider-block__arrow--next': getIconSpacing(
+					props,
+					'next'
+				),
+				' .maxi-slider-block__arrow svg': getIconSize(props, false),
 				' .maxi-slider-block__arrow svg path': getIconPathStyles(
 					props,
 					false

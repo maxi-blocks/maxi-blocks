@@ -42,11 +42,11 @@ body.maxi-blocks--active .maxi-slider-block {
 		transform: translate(-50%, -50%);
 
 		&--next {
-			right: -20px;
+			right: 0px;
 		}
 
 		&--prev {
-			left: -20px;
+			left: 0px;
 		}
 	}
 }

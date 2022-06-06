@@ -10,12 +10,9 @@ import { useState } from '@wordpress/element';
 import AdvancedNumberControl from '../advanced-number-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ColorControl from '../color-control';
-import AxisControl from '../axis-control';
 import {
-	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
-	getLastBreakpointAttribute,
 	getColorRGBAString,
 } from '../../extensions/styles';
 import {
@@ -36,8 +33,7 @@ import classnames from 'classnames';
 /**
  * Styles and icons
  */
-import { iconBorder, iconStroke, iconFill } from '../../icons';
-import { svgHover } from '../../extensions/styles/defaults';
+import { iconBorder, iconFill } from '../../icons';
 
 /**
  * Component
@@ -144,7 +140,7 @@ const ArrowIconControl = props => {
 					{!isHover && (
 						<AdvancedNumberControl
 							label={__('Spacing', 'maxi-blocks')}
-							min={0}
+							min={-999}
 							max={999}
 							initial={1}
 							step={1}

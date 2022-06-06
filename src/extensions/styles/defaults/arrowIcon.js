@@ -1,6 +1,5 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { icon } from './icon';
-import padding from './padding';
 
 const prefix = 'navigation-arrow-both-';
 

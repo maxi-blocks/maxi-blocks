@@ -38,7 +38,7 @@ import {
 	Configure,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, orderBy, capitalize } from 'lodash';
 import Masonry from 'masonry-layout';
 import useInterval from '../../extensions/dom/useInterval';
 
@@ -204,7 +204,7 @@ const RefinementList = ({ items, refine }) => (
 						refine(item.value);
 					}}
 				>
-					{item.label} ({item.count})
+					{capitalize(item.label)} ({item.count})
 				</a>
 				<ToggleSwitch
 					selected={item.isRefined}
@@ -837,7 +837,13 @@ const LibraryContainer = props => {
 								title={__('Colour', 'maxi-blocks')}
 								openByDefault
 							>
-								<CustomRefinementList attribute='sc_color' />
+								<CustomRefinementList
+									attribute='sc_color'
+									limit={20}
+									transformItems={items =>
+										orderBy(items, 'label', 'asc')
+									}
+								/>
 							</Accordion>
 							<ClearRefinements />
 						</div>

@@ -24,6 +24,16 @@ const getPositionStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
+		const isPositionStyleNeeded = breakpoints.some(breakpoint => {
+			const breakpointPosition = obj[`position-${breakpoint}`];
+
+			if (breakpoint !== 'general') {
+				return !isNil(breakpointPosition);
+			}
+
+			return breakpointPosition !== 'inherit';
+		});
+
 		const position = getLastBreakpointAttribute({
 			target: 'position',
 			breakpoint,
@@ -32,21 +42,25 @@ const getPositionStyles = obj => {
 
 		response[breakpoint] = {};
 
-		if (!isNil(position)) {
+		if (!isNil(position) && isPositionStyleNeeded) {
 			response[breakpoint] = {
 				position,
 			};
 		}
 
 		keyWords.forEach(keyWord => {
+			const lastBreakpointValue = getLastBreakpointAttribute({
+				target: `position-${keyWord}`,
+				breakpoint,
+				attributes: obj,
+			});
+
 			const value =
 				position !== 'inherit'
-					? getLastBreakpointAttribute({
-							target: `position-${keyWord}`,
-							breakpoint,
-							attributes: obj,
-					  })
-					: '0';
+					? lastBreakpointValue
+					: lastBreakpointValue
+					? '0'
+					: null;
 
 			const unit = getLastBreakpointAttribute({
 				target: `position-${keyWord}-unit`,

@@ -18,7 +18,7 @@ const responsiveInfoBox = ({ props }) => {
 		deviceType !== 'general' && (
 			<InfoBox
 				message={__(
-					'You are currently in responsive editing mode. Select Base to continue editing general settings.',
+					'Responsive mode activated. Edits apply exclusively to selected break points. Return to "Your size" for global editing (recommended).',
 					'maxi-blocks'
 				)}
 			/>

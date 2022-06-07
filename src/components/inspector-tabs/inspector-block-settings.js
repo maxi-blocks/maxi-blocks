@@ -13,7 +13,7 @@ const blockSettings = ({ props }) => {
 
 	return (
 		deviceType === 'general' && (
-			<div className='maxi-tab-content__box'>
+			<div className='maxi-tab-content__box  sidebar-block-info'>
 				<CustomLabel
 					customLabel={customLabel}
 					onChange={customLabel =>

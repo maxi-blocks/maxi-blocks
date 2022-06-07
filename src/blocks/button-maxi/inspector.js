@@ -586,32 +586,6 @@ const Inspector = props => {
 																			}
 																		)
 																	}
-																	onChange={(
-																		obj,
-																		target
-																	) => {
-																		maxiSetAttributes(
-																			obj
-																		);
-																		cleanInlineStyles(
-																			target
-																		);
-																	}}
-																	svgType={
-																		svgType
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																	clientId={
-																		clientId
-																	}
-																	blockStyle={
-																		blockStyle
-																	}
-																	getIconWithColor={
-																		getIconWithColor
-																	}
 																/>
 																{attributes[
 																	'icon-status-hover'
@@ -648,10 +622,10 @@ const Inspector = props => {
 																		blockStyle={
 																			blockStyle
 																		}
-																		isHover
 																		getIconWithColor={
 																			getIconWithColor
 																		}
+																		isHover
 																	/>
 																)}
 															</>
@@ -726,25 +700,22 @@ const Inspector = props => {
 											</ResponsiveTabsControl>
 										),
 									},
-									...inspectorTabs.typography({
-										props,
-										...(!iconOnly && {
-											...inspectorTabs.typography({
-												props: {
-													...props,
-												},
-												styleCardPrefix: 'button',
-												hideAlignment: true,
-												disableCustomFormats: true,
-												globalProps: {
-													target: '',
-													type: 'button',
-												},
-												hoverGlobalProps: {
-													target: 'hover',
-													type: 'button',
-												},
-											}),
+									...(!iconOnly && {
+										...inspectorTabs.typography({
+											props: {
+												...props,
+											},
+											styleCardPrefix: 'button',
+											hideAlignment: true,
+											disableCustomFormats: true,
+											globalProps: {
+												target: '',
+												type: 'button',
+											},
+											hoverGlobalProps: {
+												target: 'hover',
+												type: 'button',
+											},
 										}),
 									}),
 									...inspectorTabs.background({

@@ -783,7 +783,7 @@ const LibraryContainer = props => {
 							/>
 							<Menu
 								attribute='gutenberg_type'
-								defaultRefinement='Block Patterns'
+								defaultRefinement='Patterns'
 							/>
 						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
@@ -806,9 +806,9 @@ const LibraryContainer = props => {
 							<PlaceholderCheckboxControl />
 							<CustomHierarchicalMenu
 								attributes={[
-									'category',
-									// 'category.lvl1',
-									// 'category.lvl2',
+									// 'category',
+									'category.lvl0',
+									'category.lvl1',
 								]}
 							/>
 							<ClearRefinements />

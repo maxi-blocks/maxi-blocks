@@ -39,6 +39,9 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -48,207 +51,191 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isSecondary
-									items={[
-										{
-											label: __(
-												'Alignment',
-												'maxi-blocks'
-											),
-											content: (
-												<ResponsiveTabsControl
-													breakpoint={deviceType}
-												>
-													<>
-														<SelectControl
-															label={__(
-																'Line orientation',
-																'maxi-blocks'
-															)}
-															className='line-orientation-selector'
-															value={getLastBreakpointAttribute(
-																{
-																	target: 'line-orientation',
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															)}
-															options={[
-																{
-																	label: __(
-																		'Horizontal',
-																		'maxi-blocks'
-																	),
-																	value: 'horizontal',
-																},
-																{
-																	label: __(
-																		'Vertical',
-																		'maxi-blocks'
-																	),
-																	value: 'vertical',
-																},
-															]}
-															onChange={val =>
-																maxiSetAttributes(
-																	{
-																		[`line-orientation-${deviceType}`]:
-																			val,
-																	}
-																)
-															}
-														/>
-														<SelectControl
-															label={__(
-																'Line vertical position',
-																'maxi-blocks'
-															)}
-															value={getLastBreakpointAttribute(
-																{
-																	target: 'line-vertical',
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															)}
-															options={[
-																{
-																	label: __(
-																		'Top',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-start',
-																},
-																{
-																	label: __(
-																		'Center',
-																		'maxi-blocks'
-																	),
-																	value: 'center',
-																},
-																{
-																	label: __(
-																		'Bottom',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-end',
-																},
-															]}
-															onChange={val =>
-																maxiSetAttributes(
-																	{
-																		[`line-vertical-${deviceType}`]:
-																			val,
-																	}
-																)
-															}
-														/>
-														<SelectControl
-															label={__(
-																'Line horizontal position',
-																'maxi-blocks'
-															)}
-															value={getLastBreakpointAttribute(
-																{
-																	target: 'line-horizontal',
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															)}
-															options={[
-																{
-																	label: __(
-																		'Left',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-start',
-																},
-																{
-																	label: __(
-																		'Center',
-																		'maxi-blocks'
-																	),
-																	value: 'center',
-																},
-																{
-																	label: __(
-																		'Right',
-																		'maxi-blocks'
-																	),
-																	value: 'flex-end',
-																},
-															]}
-															onChange={val =>
-																maxiSetAttributes(
-																	{
-																		[`line-horizontal-${deviceType}`]:
-																			val,
-																	}
-																)
-															}
-														/>
-													</>
-												</ResponsiveTabsControl>
-											),
-											extraIndicators: [
-												`line-horizontal-${deviceType}`,
-												`line-vertical-${deviceType}`,
-												`line-orientation-${deviceType}`,
-											],
-										},
-										{
-											label: __(
-												'Line settings',
-												'maxi-blocks'
-											),
-											content: (
-												<ResponsiveTabsControl
-													breakpoint={deviceType}
-												>
-													<DividerControl
-														{...getGroupAttributes(
-															attributes,
-															['divider', 'size']
+							<AccordionControl
+								isSecondary
+								items={[
+									{
+										label: __('Alignment', 'maxi-blocks'),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<>
+													<SelectControl
+														label={__(
+															'Line orientation',
+															'maxi-blocks'
 														)}
-														onChangeInline={obj =>
-															insertInlineStyles({
-																obj,
-																target: inlineStylesTargets.dividerColor,
+														className='line-orientation-selector'
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-orientation',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
+														options={[
+															{
+																label: __(
+																	'Horizontal',
+																	'maxi-blocks'
+																),
+																value: 'horizontal',
+															},
+															{
+																label: __(
+																	'Vertical',
+																	'maxi-blocks'
+																),
+																value: 'vertical',
+															},
+														]}
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-orientation-${deviceType}`]:
+																	val,
 															})
 														}
-														onChange={obj => {
-															maxiSetAttributes(
-																obj
-															);
-															cleanInlineStyles(
-																inlineStylesTargets.dividerColor
-															);
-														}}
-														breakpoint={deviceType}
-														clientId={clientId}
 													/>
-												</ResponsiveTabsControl>
-											),
-											ignoreIndicator: [
-												`line-horizontal-${deviceType}`,
-												`line-vertical-${deviceType}`,
-												`line-orientation-${deviceType}`,
-											],
-										},
-										...inspectorTabs.boxShadow({
-											props,
-											prefix: 'divider-',
-										}),
-									]}
-								/>
-							</>
+													<SelectControl
+														label={__(
+															'Line vertical position',
+															'maxi-blocks'
+														)}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-vertical',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
+														options={[
+															{
+																label: __(
+																	'Top',
+																	'maxi-blocks'
+																),
+																value: 'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
+																	'maxi-blocks'
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Bottom',
+																	'maxi-blocks'
+																),
+																value: 'flex-end',
+															},
+														]}
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-vertical-${deviceType}`]:
+																	val,
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															'Line horizontal position',
+															'maxi-blocks'
+														)}
+														value={getLastBreakpointAttribute(
+															{
+																target: 'line-horizontal',
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														)}
+														options={[
+															{
+																label: __(
+																	'Left',
+																	'maxi-blocks'
+																),
+																value: 'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
+																	'maxi-blocks'
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Right',
+																	'maxi-blocks'
+																),
+																value: 'flex-end',
+															},
+														]}
+														onChange={val =>
+															maxiSetAttributes({
+																[`line-horizontal-${deviceType}`]:
+																	val,
+															})
+														}
+													/>
+												</>
+											</ResponsiveTabsControl>
+										),
+										extraIndicators: [
+											`line-horizontal-${deviceType}`,
+											`line-vertical-${deviceType}`,
+											`line-orientation-${deviceType}`,
+										],
+									},
+									{
+										label: __(
+											'Line settings',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<DividerControl
+													{...getGroupAttributes(
+														attributes,
+														['divider', 'size']
+													)}
+													onChangeInline={obj =>
+														insertInlineStyles({
+															obj,
+															target: inlineStylesTargets.dividerColor,
+														})
+													}
+													onChange={obj => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															inlineStylesTargets.dividerColor
+														);
+													}}
+													breakpoint={deviceType}
+													clientId={clientId}
+												/>
+											</ResponsiveTabsControl>
+										),
+										ignoreIndicator: [
+											`line-horizontal-${deviceType}`,
+											`line-vertical-${deviceType}`,
+											`line-orientation-${deviceType}`,
+										],
+									},
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'divider-',
+									}),
+								]}
+							/>
 						),
 					},
 					{

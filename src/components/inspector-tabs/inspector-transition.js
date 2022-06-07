@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -15,14 +14,14 @@ import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
 	getGroupAttributes,
-	defaultTransitionObj,
-	disableDefaultTransitionObj,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isEqual } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -44,7 +43,17 @@ const TransitionControlWrapper = props => {
 
 	const selected = attributes[`transition-${type}-selected`] || 'none';
 
-	const transitionObj = transition[type][selected];
+	const defaultTransition = getDefaultAttribute('transition')[type][selected];
+	const selectedTransition = transition[type][selected];
+
+	const transitionStatus = getLastBreakpointAttribute({
+		target: 'transition-status',
+		attributes: selectedTransition,
+		breakpoint: deviceType,
+	});
+
+	const getDefaultTransitionAttribute = prop =>
+		defaultTransition[`${prop}-${deviceType}`];
 
 	const onChangeTransition = obj => {
 		const newObj = {
@@ -53,7 +62,7 @@ const TransitionControlWrapper = props => {
 				[type]: {
 					...(attributes?.transition?.[type] || []),
 					[selected]: {
-						...(attributes?.transition?.[type]?.[selected] || {}),
+						...selectedTransition,
 						...obj,
 					},
 				},
@@ -65,45 +74,10 @@ const TransitionControlWrapper = props => {
 		return newObj;
 	};
 
-	const [disableDefaultTransition, setDisableDefaultTransition] =
-		useState(false);
-
-	const defaultTransition = disableDefaultTransition
-		? disableDefaultTransitionObj
-		: defaultTransitionObj;
-
-	const getDefaultTransitionAttribute = prop =>
-		defaultTransition[`${prop}-${deviceType}`];
-
-	const onChangeSwitch = value => {
-		setDisableDefaultTransition(value);
-
-		const filterObjects = obj =>
-			Object.keys(obj).reduce((acc, key) => {
-				if (obj[key] !== undefined && key !== 'hoverProp') {
-					acc[key] = obj[key];
-				}
-
-				return acc;
-			}, {});
-
-		if (
-			isEqual(
-				filterObjects(defaultTransition),
-				filterObjects(transitionObj)
-			)
-		)
-			switch (value) {
-				case true:
-					onChangeTransition(disableDefaultTransitionObj);
-					break;
-				case false:
-					onChangeTransition(defaultTransitionObj);
-					break;
-				default:
-					break;
-			}
-	};
+	const onChangeSwitch = value =>
+		onChangeTransition({
+			[`transition-status-${deviceType}`]: !value,
+		});
 
 	return !isEmpty(transition[type]) ? (
 		<>
@@ -134,23 +108,25 @@ const TransitionControlWrapper = props => {
 				<ResponsiveTabsControl breakpoint={deviceType}>
 					<>
 						<ToggleSwitch
-							label={__(
-								'Disable transition defaults',
-								'maxi-blocks'
-							)}
-							selected={disableDefaultTransition}
+							label={__('Disable transition', 'maxi-blocks')}
+							selected={!transitionStatus}
 							onChange={onChangeSwitch}
 						/>
-						<TransitionControl
-							{...getGroupAttributes(attributes, 'transition')}
-							onChange={onChangeTransition}
-							getDefaultTransitionAttribute={
-								getDefaultTransitionAttribute
-							}
-							transition={transitionObj}
-							breakpoint={deviceType}
-							type={type}
-						/>
+						{transitionStatus && (
+							<TransitionControl
+								{...getGroupAttributes(
+									attributes,
+									'transition'
+								)}
+								onChange={onChangeTransition}
+								getDefaultTransitionAttribute={
+									getDefaultTransitionAttribute
+								}
+								transition={selectedTransition}
+								breakpoint={deviceType}
+								type={type}
+							/>
+						)}
 					</>
 				</ResponsiveTabsControl>
 			)}

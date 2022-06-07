@@ -47,6 +47,10 @@ const transitionRaw = disableDefaultTransition
 					type: 'string',
 					default: 'ease',
 				},
+				'transition-status': {
+					type: 'boolean',
+					default: true,
+				},
 			},
 	  });
 

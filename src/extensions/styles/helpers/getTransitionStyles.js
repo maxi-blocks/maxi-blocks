@@ -66,15 +66,24 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						}
 					);
 
+					const transitionStatus = getLastBreakpointAttribute({
+						target: 'transition-status',
+						breakpoint,
+						attributes: transitionContent,
+					});
+
 					properties.forEach(property => {
+						const transitionProperty = limitless ? 'all' : property;
+
 						if (
-							transitionDuration ||
-							transitionDelay ||
-							transitionTimingFunction
+							transitionStatus &&
+							(transitionDuration ||
+								transitionDelay ||
+								transitionTimingFunction)
 						) {
-							transitionString += `${
-								limitless ? 'all' : property
-							} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction}, `;
+							transitionString += `${transitionProperty} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction}, `;
+						} else {
+							transitionString += `${transitionProperty} 0s 0s`;
 						}
 					});
 

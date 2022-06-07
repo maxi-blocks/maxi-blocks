@@ -83,7 +83,7 @@ const PositionControl = props => {
 			<SelectControl
 				label={__('Position', 'maxi-blocks')}
 				options={[
-					{ label: 'Default', value: 'unset' },
+					{ label: 'Default', value: 'inherit' },
 					{ label: 'Relative', value: 'relative' },
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
@@ -108,14 +108,13 @@ const PositionControl = props => {
 				target: 'position',
 				breakpoint,
 				attributes: props,
-			}) !== 'unset' && (
+			}) !== 'inherit' && (
 				<AxisControl
 					{...props}
 					target='position'
 					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					minMaxSettings={minMaxSettings}
-					disableAuto
 					optionType='string'
 					enableAxisUnits
 				/>

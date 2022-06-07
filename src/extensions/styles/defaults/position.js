@@ -3,6 +3,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 const rawPosition = {
 	position: {
 		type: 'string',
+		default: 'inherit',
 	},
 	'position-top': {
 		type: 'string',

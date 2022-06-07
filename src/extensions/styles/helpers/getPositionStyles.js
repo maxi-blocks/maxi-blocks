@@ -40,7 +40,7 @@ const getPositionStyles = obj => {
 
 		keyWords.forEach(keyWord => {
 			const value =
-				position !== 'unset'
+				position !== 'inherit'
 					? getLastBreakpointAttribute({
 							target: `position-${keyWord}`,
 							breakpoint,

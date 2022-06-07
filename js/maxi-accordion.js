@@ -29,7 +29,7 @@ class Accordion {
 			pane.querySelector('.maxi-pane-block__icon').innerHTML =
 				this.paneIcon;
 			for (var i = 0; i < this.openPanes.length; i++)
-				if (this.openPanes[i] === index) delete this.openPanes[i];
+				if (this.openPanes[i] === index) this.openPanes.splice(i, 1);
 
 			if (this.accordionLayout === 'boxed')
 				pane.removeChild(pane.querySelector('hr'));
@@ -52,6 +52,8 @@ class Accordion {
 				);
 
 			if (this.openPanes.length > 0 && this.autoPaneClose) {
+				let index = this.openPanes[0];
+				this.openPanes = [];
 				this.accordion.children[index].querySelector(
 					'.maxi-pane-block__content'
 				).style.display = 'none';

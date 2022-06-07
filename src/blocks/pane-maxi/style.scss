@@ -14,6 +14,8 @@
 			width: 20px;
 			position: absolute;
 			right: 25px;
+			top: 50%;
+			transform: translateY(-50%);
 		}
 
 		&title {

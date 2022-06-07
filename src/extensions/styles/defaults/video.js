@@ -40,10 +40,6 @@ const rawVideo = {
 		type: 'boolean',
 		default: true,
 	},
-	reduceBorders: {
-		type: 'boolean',
-		default: false,
-	},
 	playerType: {
 		type: 'string',
 		default: 'video',

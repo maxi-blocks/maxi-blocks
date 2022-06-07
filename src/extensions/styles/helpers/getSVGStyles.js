@@ -192,6 +192,10 @@ export const getSVGStyles = ({
 				isHover,
 				useIconColor
 			),
+		[` ${target} svg circle[data-fill]:not([fill^="none"])`]:
+			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+		[` ${target} svg circle[data-stroke]:not([stroke^="none"])`]:
+			getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
 	};
 
 	if (isHover) {

@@ -24,10 +24,7 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	verticalAlign: {
-		type: 'string',
-		default: 'stretch',
-	},
+
 	...attributesData.video,
 	...prefixAttributesCreator({
 		obj: attributesData.background,

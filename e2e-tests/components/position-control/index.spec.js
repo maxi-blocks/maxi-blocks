@@ -86,7 +86,7 @@ describe('PositionControl', () => {
 		expect(positionSelector).toStrictEqual('relative');
 
 		const positionGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
@@ -120,7 +120,7 @@ describe('PositionControl', () => {
 		expect(positionSSelector).toStrictEqual('fixed');
 
 		const positionSGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
@@ -143,7 +143,7 @@ describe('PositionControl', () => {
 		expect(positionXsSelector).toStrictEqual('fixed');
 
 		const positionXsGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
@@ -166,7 +166,7 @@ describe('PositionControl', () => {
 		expect(positionMSelector).toStrictEqual('relative');
 
 		const positionMGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 

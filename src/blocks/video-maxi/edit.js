@@ -58,6 +58,7 @@ const VideoPlayer = props => {
 					allowFullScreen
 					allow='autoplay'
 					src={embedUrl}
+					frameBorder={0}
 				/>
 			)}
 			{!isSelected && (

@@ -26,7 +26,7 @@ const getParsedVideoUrl = props => {
 
 	switch (parsedVideo.type) {
 		case 'youtube': {
-			parsedVideoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?rel=0`;
+			parsedVideoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?rel=0&enablejsapi=1`;
 
 			let controls = '&controls=0';
 			let autoplay = '&autoplay=0';
@@ -34,7 +34,6 @@ const getParsedVideoUrl = props => {
 			if (showPlayerControls) controls = '&controls=1';
 			if (isAutoplay) autoplay = '&autoplay=1';
 			if (isMuted) parsedVideoUrl += '&mute=1';
-			if (isLoop) parsedVideoUrl += `&loop=1&playlist=${parsedVideo.id}`;
 			if (startTime) parsedVideoUrl += `&start=${startTime}`;
 			if (endTime) parsedVideoUrl += `&end=${endTime}`;
 

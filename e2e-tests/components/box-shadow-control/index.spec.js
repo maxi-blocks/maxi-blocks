@@ -99,8 +99,6 @@ describe('BoxShadowControl', () => {
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {
-		await insertBlock('Text Maxi');
-
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -159,12 +157,15 @@ describe('BoxShadowControl', () => {
 	});
 
 	it('Check responsive box shadow', async () => {
-		await insertBlock('Text Maxi');
-
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
 			'box shadow'
+		);
+
+		await accordionPanel.$$eval(
+			'[data-name="box shadow"] .maxi-tabs-content .maxi-tabs-control__button',
+			buttons => buttons[0].click()
 		);
 
 		// base
@@ -178,7 +179,7 @@ describe('BoxShadowControl', () => {
 			'box-shadow-color-general': undefined,
 			'box-shadow-horizontal-general': 0,
 			'box-shadow-spread-general': 0,
-			'box-shadow-status-hover': false,
+			'box-shadow-status-hover': true,
 			'box-shadow-vertical-general': 30,
 		};
 

@@ -31,6 +31,7 @@ class edit extends MaxiBlockComponent {
 					paneIcon: attributes['icon-content'],
 					paneIconActive: attributes['icon-content-active'],
 					accordionLayout: attributes.accordionLayout,
+					autoPaneClose: attributes.autoPaneClose,
 				},
 			},
 		};

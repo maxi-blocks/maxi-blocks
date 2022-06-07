@@ -81,7 +81,6 @@ class edit extends MaxiBlockComponent {
 						: false,
 				}}
 				paneIcon={paneIcon}
-				accordionLayout={accordionLayout}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<>

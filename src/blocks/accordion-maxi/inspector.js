@@ -21,7 +21,7 @@ import MaxiModal from '../../editor/library/modal';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { blockStyle, accordionLayout } = attributes;
+	const { blockStyle, accordionLayout, autoPaneClose } = attributes;
 
 	return (
 		<InspectorControls>
@@ -55,6 +55,9 @@ const Inspector = props => {
 														accordionLayout
 													}
 													clientId={clientId}
+													autoPaneClose={
+														autoPaneClose
+													}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}

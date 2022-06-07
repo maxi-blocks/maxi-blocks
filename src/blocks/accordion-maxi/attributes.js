@@ -31,6 +31,7 @@ const attributes = {
 		default: 2,
 	},
 	accordionLayout: { type: 'string', default: 'simple' },
+	autoPaneClose: { type: 'boolean', default: true },
 	'icon-content': {
 		type: 'string',
 		default: '',

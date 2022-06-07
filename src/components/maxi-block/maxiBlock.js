@@ -231,11 +231,7 @@ const MaxiBlock = memo(
 
 		if (
 			rawNewProps.name === 'maxi-blocks/pane-maxi' &&
-			(!isEqual(rawOldProps.paneIcon, rawNewProps.paneIcon) ||
-				!isEqual(
-					rawOldProps.accordionLayout,
-					rawNewProps.accordionLayout
-				))
+			!isEqual(rawOldProps.paneIcon, rawNewProps.paneIcon)
 		)
 			return false;
 

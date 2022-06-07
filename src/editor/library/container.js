@@ -24,7 +24,6 @@ import DOMPurify from 'dompurify';
 /**
  * External dependencies
  */
-import algoliasearch from 'algoliasearch/lite';
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
@@ -36,6 +35,7 @@ import {
 	ClearRefinements,
 	Menu,
 	Stats,
+	Configure,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { isEmpty, uniqueId } from 'lodash';
@@ -325,11 +325,6 @@ const LibraryContainer = props => {
 	useEffect(() => {
 		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
-
-	// const searchClient = algoliasearch(
-	// 	'39ZZ3SLI6Z',
-	// 	'6ed8ae6d1c430c6a76e0720f74eab91c'
-	// );
 
 	const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 		server: {
@@ -667,6 +662,7 @@ const LibraryContainer = props => {
 						indexName='maxi_posts_svg_icon'
 						searchClient={searchClient}
 					>
+						<Configure hitsPerPage={49} />
 						<div className='maxi-cloud-container__svg-icon__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
@@ -713,6 +709,7 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
+					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
 							<SearchBox
@@ -743,6 +740,7 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
+					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar'>
 							<SearchBox
@@ -777,6 +775,7 @@ const LibraryContainer = props => {
 			{type === 'patterns' && (
 				<div className='maxi-cloud-container__patterns'>
 					<InstantSearch indexName='post' searchClient={searchClient}>
+						<Configure hitsPerPage={20} />
 						<div className='maxi-cloud-container__patterns__top-menu'>
 							<CustomMenuSelect
 								className='maxi-cloud-container__content-patterns__cost'
@@ -827,6 +826,7 @@ const LibraryContainer = props => {
 						indexName='style_card'
 						searchClient={searchClient}
 					>
+						<Configure hitsPerPage={9} />
 						<div className='maxi-cloud-container__sc__sidebar'>
 							<SearchBox
 								autoFocus

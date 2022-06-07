@@ -24,7 +24,6 @@ const VideoOptionsControl = props => {
 		isLoop,
 		showPlayerControls,
 		playerType,
-		reduceBorders,
 		breakpoint,
 		clientId,
 		blockStyle,
@@ -85,16 +84,6 @@ const VideoOptionsControl = props => {
 						showPlayerControls: val,
 					});
 				}}
-			/>
-			<ToggleSwitch
-				label={__('Reduce black borders', 'maxi-blocks')}
-				className='maxi-video-options-control__black-borders'
-				selected={reduceBorders}
-				onChange={val =>
-					onChangeValue({
-						reduceBorders: val,
-					})
-				}
 			/>
 			{playerType === 'popup' && (
 				<>

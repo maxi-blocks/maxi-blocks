@@ -166,9 +166,10 @@ const dimensionTab = props => {
 									imgWidth: val,
 								});
 
-								resizableObject.updateSize({
-									width: `${val}%`,
-								});
+								resizableObject &&
+									resizableObject.updateSize({
+										width: `${val}%`,
+									});
 							} else {
 								const defaultAttribute = getDefaultAttribute(
 									'imgWidth',
@@ -179,9 +180,10 @@ const dimensionTab = props => {
 									imgWidth: defaultAttribute,
 								});
 
-								resizableObject.updateSize({
-									width: `${defaultAttribute}%`,
-								});
+								resizableObject &&
+									resizableObject.updateSize({
+										width: `${defaultAttribute}%`,
+									});
 							}
 						}}
 						max={100}

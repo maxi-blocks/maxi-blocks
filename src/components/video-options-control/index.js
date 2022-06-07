@@ -28,6 +28,7 @@ const VideoOptionsControl = props => {
 		breakpoint,
 		clientId,
 		blockStyle,
+		videoType,
 	} = props;
 
 	const onChangeValue = obj => {
@@ -36,16 +37,18 @@ const VideoOptionsControl = props => {
 
 	return (
 		<>
-			<ToggleSwitch
-				label={__('Autoplay', 'maxi-blocks')}
-				className='maxi-video-options-control__autoplay'
-				selected={isAutoplay}
-				onChange={val =>
-					onChangeValue({
-						isAutoplay: val,
-					})
-				}
-			/>
+			{(videoType !== 'direct' || showPlayerControls) && (
+				<ToggleSwitch
+					label={__('Autoplay', 'maxi-blocks')}
+					className='maxi-video-options-control__autoplay'
+					selected={isAutoplay}
+					onChange={val =>
+						onChangeValue({
+							isAutoplay: val,
+						})
+					}
+				/>
+			)}
 			<ToggleSwitch
 				label={__('Mute', 'maxi-blocks')}
 				className='maxi-video-options-control__mute'
@@ -70,11 +73,18 @@ const VideoOptionsControl = props => {
 				label={__('Player controls', 'maxi-blocks')}
 				className='maxi-video-options-control__player-controls'
 				selected={showPlayerControls}
-				onChange={val =>
+				onChange={val => {
+					if (videoType === 'direct' && !val) {
+						onChangeValue({
+							showPlayerControls: val,
+							isAutoplay: true,
+						});
+						return;
+					}
 					onChangeValue({
 						showPlayerControls: val,
-					})
-				}
+					});
+				}}
 			/>
 			<ToggleSwitch
 				label={__('Reduce black borders', 'maxi-blocks')}

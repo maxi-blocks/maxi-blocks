@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -9,7 +10,7 @@ import { __ } from '@wordpress/i18n';
 import SelectControl from '../select-control';
 
 const AccordionSettings = props => {
-	const { accordionLayout, onChange } = props;
+	const { accordionLayout, clientId, onChange } = props;
 	return (
 		<SelectControl
 			label={__('Accordion layout', 'maxi-blocks')}
@@ -19,6 +20,22 @@ const AccordionSettings = props => {
 				{ label: 'Boxed', value: 'boxed' },
 			]}
 			onChange={val => {
+				const blocks = select(
+					'core/block-editor'
+				).getClientIdsOfDescendants([clientId]);
+
+				blocks.forEach(block => {
+					if (
+						select('core/block-editor').getBlockName(block) ===
+						'maxi-blocks/pane-maxi'
+					) {
+						dispatch('core/block-editor').updateBlockAttributes(
+							block,
+							{ accordionLayout: val }
+						);
+					}
+				});
+
 				onChange({ accordionLayout: val });
 			}}
 		/>

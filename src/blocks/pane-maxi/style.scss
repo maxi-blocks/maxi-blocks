@@ -3,11 +3,15 @@
 		width: 95%;
 		margin-left: auto !important;
 		margin-right: auto !important;
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		border-color: #edf6fa !important;
+		border-style: solid !important;
 	}
 
 	&__ {
 		&icon svg {
-			width: 25px;
+			width: 20px;
 			position: absolute;
 			right: 25px;
 		}
@@ -25,27 +29,6 @@
 
 		&content {
 			display: none;
-		}
-	}
-
-	&--simple-layout {
-		& hr {
-			margin: 25px 0;
-		}
-	}
-
-	&--boxed-layout {
-		border: 5px solid var(--maxi-light-blue-2-color) !important;
-		margin-top: 15px !important;
-
-		.maxi-pane-block__header {
-			margin-right: 25px !important;
-			margin-left: 25px !important;
-			margin-top: 25px !important;
-		}
-
-		& hr {
-			margin-top: 20px;
 		}
 	}
 }

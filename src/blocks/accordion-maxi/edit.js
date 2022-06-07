@@ -30,6 +30,7 @@ class edit extends MaxiBlockComponent {
 				[uniqueID]: {
 					paneIcon: attributes['icon-content'],
 					paneIconActive: attributes['icon-content-active'],
+					accordionLayout: attributes.accordionLayout,
 				},
 			},
 		};
@@ -39,7 +40,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, blockFullWidth, maxiSetAttributes } = this.props;
-		const { uniqueID, lastIndex } = attributes;
+		const { uniqueID, lastIndex, accordionLayout } = attributes;
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -52,6 +53,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-accordion--${uniqueID}`}
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
+				className={`maxi-accordion-block--${accordionLayout}-layout`}
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
@@ -68,7 +70,9 @@ class edit extends MaxiBlockComponent {
 					className='maxi-accordion__add-item-button'
 					onClick={() => {
 						dispatch('core/block-editor').insertBlock(
-							createBlock('maxi-blocks/pane-maxi'),
+							createBlock('maxi-blocks/pane-maxi', {
+								accordionLayout,
+							}),
 							lastIndex,
 							this.props.clientId
 						);

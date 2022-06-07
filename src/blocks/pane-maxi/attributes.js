@@ -18,6 +18,7 @@ const attributes = {
 		default: 'normal',
 	},
 	title: { type: 'string' },
+	accordionLayout: { type: 'string' },
 };
 
 export default attributes;

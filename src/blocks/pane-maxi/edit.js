@@ -30,9 +30,8 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			hasInnerBlocks,
 			paneIcon,
-			accordionLayout,
 		} = this.props;
-		const { uniqueID, title } = attributes;
+		const { uniqueID, title, accordionLayout } = attributes;
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
 		 */
@@ -74,7 +73,6 @@ class edit extends MaxiBlockComponent {
 				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				useInnerBlocks
-				className={`maxi-pane-block--${accordionLayout}-layout`}
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
 					templateLock: false,

@@ -95,6 +95,7 @@ const MaxiToolbar = memo(
 			inlineStylesTargets = inlineStylesTargetsDefault,
 			resetNumberHelper,
 			copyPasteMapping,
+			mediaPrefix,
 		} = props;
 		const {
 			blockFullWidth,
@@ -244,6 +245,7 @@ const MaxiToolbar = memo(
 							breakpoint={breakpoint}
 							clientId={clientId}
 							attributes={attributes}
+							prefix={mediaPrefix}
 						/>
 						<TextColor
 							blockName={name}

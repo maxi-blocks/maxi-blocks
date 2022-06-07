@@ -13,6 +13,7 @@ import {
 	getDefaultAttribute,
 } from '../../extensions/styles';
 import ColorControl from '../color-control';
+import MediaUploaderControl from '../media-uploader-control';
 
 const VideoOverlayControl = props => {
 	const {
@@ -23,12 +24,34 @@ const VideoOverlayControl = props => {
 		insertInlineStyles,
 		inlineStylesTargets,
 		cleanInlineStyles,
+		'overlay-mediaID': overlayMediaId,
+		'overlay-altSelector': altSelector,
 	} = props;
 
 	return (
 		<>
+			<MediaUploaderControl
+				className='maxi-video-overlay-control__cover-image'
+				placeholder={__('Image overlay')}
+				mediaID={overlayMediaId}
+				onSelectImage={val => {
+					const alt =
+						(altSelector === 'wordpress' && val?.alt) ||
+						(altSelector === 'title' && val?.title) ||
+						null;
+
+					onChange({
+						'overlay-mediaID': val.order,
+						'overlay-mediaURL': val.url,
+						'overlay-mediaAlt':
+							altSelector === 'wordpress' && !alt
+								? val.title
+								: alt,
+					});
+				}}
+			/>
 			<ColorControl
-				className='maxi-video-overlay-control__overlay-colour'
+				className='maxi-video-overlay-control__overlay-background-colour'
 				label={__('Overlay background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute({
 					target: 'overlay-background-color',

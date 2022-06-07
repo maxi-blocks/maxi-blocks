@@ -58,6 +58,20 @@ const attributes = {
 		diffValAttr: { 'overlay-background-palette-color-general': 2 },
 	}),
 
+	'overlay-mediaID': {
+		type: 'number',
+	},
+	'overlay-mediaURL': {
+		type: 'string',
+	},
+	'overlay-altSelector': {
+		type: 'string',
+		default: 'wordpress',
+	},
+	'overlay-mediaAlt': {
+		type: 'string',
+	},
+
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

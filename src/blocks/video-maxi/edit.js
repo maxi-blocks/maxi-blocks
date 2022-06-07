@@ -11,15 +11,17 @@ import getStyles from './styles';
 import Inspector from './inspector';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
+import { Toolbar, Placeholder } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { videoValidation } from '../../extensions/video';
 import copyPasteMapping from './copy-paste-mapping';
+import { placeholderImage } from '../../icons';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Video player
@@ -97,6 +99,9 @@ class edit extends MaxiBlockComponent {
 			embedUrl,
 			playerType,
 			'play-icon-content': playIcon,
+			'overlay-mediaID': overlayMediaId,
+			'overlay-mediaURL': overlayMediaUrl,
+			'overlay-mediaAlt': overlayMediaAlt,
 		} = attributes;
 
 		const classes = classnames(
@@ -122,6 +127,7 @@ class edit extends MaxiBlockComponent {
 				copyPasteMapping={copyPasteMapping}
 				backgroundAdvancedOptions='video overlay'
 				backgroundPrefix='overlay-'
+				mediaPrefix='overlay-'
 			/>,
 			<MaxiBlock
 				key={`maxi-video--${uniqueID}`}
@@ -133,12 +139,26 @@ class edit extends MaxiBlockComponent {
 				{embedUrl &&
 					videoValidation(embedUrl) &&
 					(playerType === 'popup' ? (
-						<>
-							<div className='maxi-video-block__overlay' />
+						<div className='maxi-video-block__overlay'>
+							{!isNil(overlayMediaId) || overlayMediaUrl ? (
+								<img
+									className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
+									src={overlayMediaUrl}
+									alt={overlayMediaAlt}
+								/>
+							) : (
+								<div className='maxi-video-block__placeholder'>
+									<Placeholder
+										icon={placeholderImage}
+										label=''
+									/>
+								</div>
+							)}
+							<div className='maxi-video-block__overlay-background' />
 							<div className='maxi-video-block__play-button'>
 								<RawHTML>{playIcon}</RawHTML>
 							</div>
-						</>
+						</div>
 					) : (
 						<VideoPlayer {...attributes} isSelected={isSelected} />
 					))}

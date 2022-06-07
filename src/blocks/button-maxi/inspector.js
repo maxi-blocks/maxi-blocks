@@ -558,6 +558,9 @@ const Inspector = props => {
 																blockStyle={
 																	blockStyle
 																}
+																getIconWithColor={
+																	getIconWithColor
+																}
 															/>
 														),
 													},

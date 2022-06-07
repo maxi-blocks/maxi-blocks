@@ -10,6 +10,11 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { videoValidation } from '../../extensions/video';
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * Save
  */
 const save = props => {
@@ -23,6 +28,9 @@ const save = props => {
 		isAutoplay,
 		isMuted,
 		showPlayerControls,
+		'overlay-mediaID': overlayMediaId,
+		'overlay-mediaURL': overlayMediaUrl,
+		'overlay-mediaAlt': overlayMediaAlt,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
@@ -33,9 +41,18 @@ const save = props => {
 				videoValidation(embedUrl) &&
 				(playerType === 'popup' ? (
 					<>
-						<div className='maxi-video-block__overlay' />
-						<div className='maxi-video-block__play-button'>
-							<RawHTML>{playIcon}</RawHTML>
+						<div className='maxi-video-block__overlay'>
+							{(!isNil(overlayMediaId) || overlayMediaUrl) && (
+								<img
+									className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
+									src={overlayMediaUrl}
+									alt={overlayMediaAlt}
+								/>
+							)}
+							<div className='maxi-video-block__overlay-background' />
+							<div className='maxi-video-block__play-button'>
+								<RawHTML>{playIcon}</RawHTML>
+							</div>
 						</div>
 						<div
 							className='maxi-video-block__popup-wrapper'

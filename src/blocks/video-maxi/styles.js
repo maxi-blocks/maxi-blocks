@@ -127,7 +127,7 @@ const getLightBoxObject = props => {
 	return response;
 };
 
-const getOverlayObject = props => {
+const getOverlayBackgroundObject = props => {
 	const response = {
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -197,7 +197,8 @@ const getStyles = props => {
 				':hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				' .maxi-video-block__video-player': getVideoPlayerOject(props),
-				' .maxi-video-block__overlay': getOverlayObject(props),
+				' .maxi-video-block__overlay-background':
+					getOverlayBackgroundObject(props),
 				' .maxi-video-block__close-button': getIconStyles(
 					props,
 					props.blockStyle,

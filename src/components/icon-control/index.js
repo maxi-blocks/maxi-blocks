@@ -590,7 +590,7 @@ const IconControl = props => {
 											'Button Background colour',
 											'maxi-blocks'
 										),
-										panel: 'background',
+										panel: 'button background',
 									},
 								]}
 							/>

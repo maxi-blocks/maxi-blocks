@@ -341,7 +341,7 @@ const LibraryContainer = props => {
 		//  So you can pass any parameters supported by the search endpoint below.
 		//  query_by is required.
 		additionalSearchParameters: {
-			query_by: 'post_date',
+			query_by: 'post_title',
 		},
 	});
 	const { searchClient } = typesenseInstantsearchAdapter;

@@ -13,14 +13,8 @@ import classnames from 'classnames';
  * Component
  */
 const ClipPathRadiusPoint = props => {
-	const {
-		radius,
-		color,
-		onMouseOut,
-		onChangeMoving,
-		number,
-		position,
-	} = props;
+	const { radius, color, onMouseOut, onChangeMoving, number, position } =
+		props;
 
 	const tooltipText = sprintf(__('Radius: %s', 'maxi-blocks'), radius);
 
@@ -50,7 +44,7 @@ const ClipPathRadiusPoint = props => {
 					borderColor: color,
 				}}
 			>
-				<Tooltip text={tooltipText} position='bottom center'>
+				<Tooltip text={tooltipText} position='top center'>
 					<span className='maxi-clip-path-button__hidden-tooltip' />
 				</Tooltip>
 			</span>

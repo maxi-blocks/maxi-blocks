@@ -25,7 +25,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, capitalize } from 'lodash';
+import { capitalize } from 'lodash';
 
 /**
  * Styles and icons
@@ -112,8 +112,20 @@ const BoxShadowControl = props => {
 	const onChangeDefault = defaultProp => {
 		const response = {};
 
-		defaultProp[`${prefix}box-shadow-color`] =
-			props[`${prefix}box-shadow-color-${breakpoint}`];
+		defaultProp[`${prefix}box-shadow-palette-color`] =
+			getLastBreakpointAttribute({
+				target: `${prefix}box-shadow-palette-color`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			});
+
+		defaultProp[`${prefix}box-shadow-color`] = getLastBreakpointAttribute({
+			target: `${prefix}box-shadow-color`,
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
 
 		Object.entries(defaultProp).forEach(([key, value]) => {
 			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
@@ -122,27 +134,18 @@ const BoxShadowControl = props => {
 		onChange(response);
 	};
 
-	const getIsActive = (typeObj, type) => {
+	const getIsActive = typeObj => {
 		const items = [
 			`${prefix}box-shadow-palette-opacity`,
 			`${prefix}box-shadow-horizontal`,
+			`${prefix}box-shadow-horizontal-unit`,
 			`${prefix}box-shadow-vertical`,
+			`${prefix}box-shadow-vertical-unit`,
 			`${prefix}box-shadow-blur`,
+			`${prefix}box-shadow-blur-unit`,
 			`${prefix}box-shadow-spread`,
+			`${prefix}box-shadow-spread-unit`,
 		];
-
-		const hasBoxShadow = items.some(item => {
-			const itemValue = getLastBreakpointAttribute({
-				target: item,
-				breakpoint,
-				attributes: props,
-				isHover,
-			});
-
-			return !isNil(itemValue) && itemValue !== 0;
-		});
-		if (!hasBoxShadow && type === 'none') return true;
-		if (type === 'none') return false;
 
 		const isActive = !items.some(item => {
 			const itemValue = getLastBreakpointAttribute({
@@ -160,7 +163,7 @@ const BoxShadowControl = props => {
 		return false;
 	};
 
-	const isNone = getIsActive(boxShadowNone, 'none');
+	const isNone = getIsActive(boxShadowNone(prefix));
 
 	const classes = classnames(
 		'maxi-shadow-control',
@@ -173,10 +176,7 @@ const BoxShadowControl = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getIsActive(
-							{ ...boxShadowNone(prefix) },
-							'none'
-						),
+						activeItem: getIsActive({ ...boxShadowNone(prefix) }),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -186,20 +186,14 @@ const BoxShadowControl = props => {
 						onChange: () => onChangeDefault(boxShadowNone(prefix)),
 					},
 					{
-						activeItem: getIsActive(
-							{ ...boxShadowTotal(prefix) },
-							'total'
-						),
+						activeItem: getIsActive({ ...boxShadowTotal(prefix) }),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__total' />
 						),
 						onChange: () => onChangeDefault(boxShadowTotal(prefix)),
 					},
 					{
-						activeItem: getIsActive(
-							{ ...boxShadowBottom(prefix) },
-							'bottom'
-						),
+						activeItem: getIsActive({ ...boxShadowBottom(prefix) }),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__bottom' />
 						),
@@ -207,10 +201,7 @@ const BoxShadowControl = props => {
 							onChangeDefault(boxShadowBottom(prefix)),
 					},
 					{
-						activeItem: getIsActive(
-							{ ...boxShadowSolid(prefix) },
-							'solid'
-						),
+						activeItem: getIsActive({ ...boxShadowSolid(prefix) }),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__solid' />
 						),
@@ -238,7 +229,6 @@ const BoxShadowControl = props => {
 							isHover,
 						})}
 						prefix={`${prefix}box-shadow-`}
-						useBreakpointForDefault
 						paletteStatus={getLastBreakpointAttribute({
 							target: `${prefix}box-shadow-palette-status`,
 							breakpoint,

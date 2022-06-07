@@ -47,12 +47,6 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		// select copy/paste
-		await page.$eval(
-			'.components-popover__content .maxi-copypaste__copy-selector button',
-			button => button.click()
-		);
-
 		// select copy style
 		await page.$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
@@ -150,12 +144,6 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		// select copy/paste
-		await page.$eval(
-			'.components-popover__content .maxi-copypaste__copy-selector button',
-			button => button.click()
-		);
-
 		// select copy style
 		await page.$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
@@ -172,12 +160,6 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		// select copy/paste
-		await page.$eval(
-			'.components-popover__content .maxi-copypaste__copy-selector button',
-			button => button.click()
-		);
-
 		// select special paste
 		await page.$$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
@@ -191,7 +173,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 		// open advanced
 		await page.$eval(
-			'.toolbar-item__copy-paste__popover .maxi-tabs-control__button-Advanced',
+			'.components-popover__content .maxi-tabs-control__button-Advanced',
 			button => button.click()
 		);
 
@@ -202,7 +184,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await page.$eval(
-			'.toolbar-item__copy-paste__popover .toolbar-item__copy-paste__popover__button--special',
+			'.components-popover__content .toolbar-item__copy-paste__popover__button--special',
 			button => button.click()
 		);
 
@@ -214,7 +196,7 @@ describe('CopyPaste from Toolbar', () => {
 			'border-bottom-right-radius-general': 96,
 			'border-top-left-radius-general': 56,
 			'border-top-right-radius-general': 15,
-			'box-shadow-blur-general': undefined,
+			'box-shadow-blur-general': 0,
 			'box-shadow-color-general': undefined,
 		};
 		const attributesResult = await getAttributes([
@@ -273,12 +255,6 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		// select copy/paste
-		await page.$eval(
-			'.components-popover__content .maxi-copypaste__copy-selector button',
-			button => button.click()
-		);
-
 		// select copy nested blocks
 		await page.$eval(
 			'.components-popover__content .toolbar-item__copy-nested-block__popover__button',
@@ -290,12 +266,6 @@ describe('CopyPaste from Toolbar', () => {
 		// open options
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__more-settings button',
-			button => button.click()
-		);
-
-		// select copy/paste
-		await page.$eval(
-			'.components-popover__content .maxi-copypaste__copy-selector button',
 			button => button.click()
 		);
 

@@ -307,6 +307,7 @@ const IconControl = props => {
 								<ColorControl
 									label={__('Icon stroke', 'maxi-blocks')}
 									className='maxi-icon-styles-control--color'
+									avoidBreakpointForDefault
 									color={
 										props[
 											`icon-stroke-color${
@@ -314,7 +315,7 @@ const IconControl = props => {
 											}`
 										]
 									}
-									prefix='icon-'
+									prefix='icon-stroke-'
 									paletteColor={
 										props[
 											`icon-stroke-palette-color${
@@ -479,6 +480,7 @@ const IconControl = props => {
 								});
 							}}
 							isHover={isHover}
+							avoidBreakpointForDefault
 						/>
 					)}
 					<SettingTabsControl
@@ -527,7 +529,7 @@ const IconControl = props => {
 									isHover,
 								})}
 								prefix='icon-background-'
-								useBreakpointForDefault
+								avoidBreakpointForDefault
 								onChangeInline={({ color }) =>
 									onChangeInline &&
 									onChangeInline(

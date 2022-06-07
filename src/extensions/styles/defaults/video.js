@@ -9,7 +9,8 @@ const rawVideo = {
 	},
 	embedUrl: {
 		type: 'string',
-		default: 'https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&controls=1',
+		default:
+			'https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&enablejsapi=1&controls=1&autoplay=0',
 	},
 	startTime: {
 		type: 'string',
@@ -23,6 +24,7 @@ const rawVideo = {
 	},
 	videoType: {
 		type: 'string',
+		default: 'youtube',
 	},
 	isLoop: {
 		type: 'boolean',

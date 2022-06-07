@@ -36,7 +36,10 @@ const save = props => {
 	const name = 'maxi-blocks/video-maxi';
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			classes={`maxi-video-block--${videoType}`}
+			{...getMaxiBlockAttributes({ ...props, name })}
+		>
 			{embedUrl &&
 				videoValidation(embedUrl) &&
 				(playerType === 'popup' ? (
@@ -78,6 +81,7 @@ const save = props => {
 										title='video player'
 										allowFullScreen
 										allow='autoplay'
+										frameBorder={0}
 									/>
 								)}
 							</div>
@@ -101,6 +105,7 @@ const save = props => {
 						allowFullScreen
 						allow='autoplay'
 						src={embedUrl}
+						frameBorder={0}
 					/>
 				))}
 		</MaxiBlock.save>

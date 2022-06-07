@@ -60,8 +60,14 @@ class edit extends MaxiBlockComponent {
 					renderAppender: false,
 					templateLock: false,
 					template: [
-						['maxi-blocks/pane-maxi'],
-						['maxi-blocks/pane-maxi'],
+						[
+							'maxi-blocks/pane-maxi',
+							{ accordionLayout: 'simple' },
+						],
+						[
+							'maxi-blocks/pane-maxi',
+							{ accordionLayout: 'simple' },
+						],
 					],
 				}}
 				{...getMaxiBlockAttributes(this.props)}

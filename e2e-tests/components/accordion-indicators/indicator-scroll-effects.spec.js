@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector responsive', () => {
 	it('Check text responsive inspector', async () => {
@@ -19,10 +19,11 @@ describe('Inspector responsive', () => {
 
 		await selector.select('2');
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Scroll effects');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Scroll effects',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

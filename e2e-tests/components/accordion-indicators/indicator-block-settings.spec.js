@@ -2,7 +2,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector settings', () => {
 	it('Check text settings inspector', async () => {
@@ -14,10 +14,11 @@ describe('Inspector settings', () => {
 			button[2].click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-tabs-control__button-Settings.maxi-tabs-control__button--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Settings');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Alignment',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

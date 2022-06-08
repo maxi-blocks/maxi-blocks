@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector callout arrow', () => {
 	it('Check text callout arrow inspector', async () => {
@@ -18,10 +18,11 @@ describe('Inspector callout arrow', () => {
 			button => button.click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Callout arrow');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Callout arrow',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

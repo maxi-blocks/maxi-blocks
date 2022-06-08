@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector anchor link', () => {
 	it('Check anchor link inspector', async () => {
@@ -23,10 +23,11 @@ describe('Inspector anchor link', () => {
 
 		await page.keyboard.type('test');
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Add anchor link');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Add anchor link',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

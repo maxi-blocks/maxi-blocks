@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector position', () => {
 	it('Check text position inspector', async () => {
@@ -18,10 +18,11 @@ describe('Inspector position', () => {
 		);
 		await selectPosition.select('relative');
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Position');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Position',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector transform', () => {
 	it('Check transform inspector', async () => {
@@ -24,10 +24,11 @@ describe('Inspector transform', () => {
 
 		await page.keyboard.type('55');
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Transform');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Transform',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector flexbox', () => {
 	it('Check group flexbox inspector', async () => {
@@ -23,10 +23,11 @@ describe('Inspector flexbox', () => {
 
 		await selector.select('wrap');
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Flexbox');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Flexbox',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

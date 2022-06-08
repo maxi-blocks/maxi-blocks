@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector boxShadow', () => {
 	it('Check text boxShadow inspector', async () => {
@@ -20,11 +20,13 @@ describe('Inspector boxShadow', () => {
 		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
 			click[1].click()
 		);
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Box shadow');
+
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Box shadow',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 
 	it('Check text hover boxShadow inspector', async () => {
@@ -43,11 +45,12 @@ describe('Inspector boxShadow', () => {
 			input => input.click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Box shadow');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Box shadow',
+		});
+
+		expect(expectResult).toBeTruthy();
 
 		const activeHoverInspectors = await page.$eval(
 			'.maxi-tabs-control__button-Hover.maxi-tabs-control__button--active',

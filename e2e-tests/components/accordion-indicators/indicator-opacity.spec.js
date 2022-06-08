@@ -5,7 +5,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, editAdvancedNumberControl } from '../../utils';
+import {
+	openSidebarTab,
+	editAdvancedNumberControl,
+	checkIndicators,
+} from '../../utils';
 
 describe('Inspector opacity', () => {
 	it('Check text opacity inspector', async () => {
@@ -21,10 +25,11 @@ describe('Inspector opacity', () => {
 			newNumber: '19',
 		});
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Opacity');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Opacity',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

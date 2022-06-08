@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector border', () => {
 	it('Check text border inspector', async () => {
@@ -18,11 +18,12 @@ describe('Inspector border', () => {
 			button => button[1].click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Border');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Border',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 
 	it('Check text hover border inspector', async () => {
@@ -41,11 +42,12 @@ describe('Inspector border', () => {
 			input => input.click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Border');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Border',
+		});
+
+		expect(expectResult).toBeTruthy();
 
 		const activeHoverInspectors = await page.$eval(
 			'.maxi-tabs-control__button-Hover.maxi-tabs-control__button--active',

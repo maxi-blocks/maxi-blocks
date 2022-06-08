@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector margin padding', () => {
 	it('Check group margin padding inspector', async () => {
@@ -18,10 +18,11 @@ describe('Inspector margin padding', () => {
 			button => button[1].click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Margin / Padding');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Margin / Padding',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

@@ -5,7 +5,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, editAdvancedNumberControl } from '../../utils';
+import {
+	openSidebarTab,
+	editAdvancedNumberControl,
+	checkIndicators,
+} from '../../utils';
 
 describe('Inspector Z-index', () => {
 	it('Check Z-index inspector', async () => {
@@ -22,10 +26,11 @@ describe('Inspector Z-index', () => {
 			newNumber: '20',
 		});
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Z-index');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Z-index',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

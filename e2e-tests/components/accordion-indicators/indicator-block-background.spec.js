@@ -2,7 +2,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector background', () => {
 	it('Check group background inspector', async () => {
@@ -15,11 +15,12 @@ describe('Inspector background', () => {
 			button => button.click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Button background');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Button background',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 
 	it('Check group background hover inspector', async () => {
@@ -41,11 +42,12 @@ describe('Inspector background', () => {
 			button => button.click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Button background');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Button background',
+		});
+
+		expect(expectResult).toBeTruthy();
 
 		const activeHoverInspectors = await page.$eval(
 			'.maxi-tabs-control__button-Hover.maxi-tabs-control__button--active',

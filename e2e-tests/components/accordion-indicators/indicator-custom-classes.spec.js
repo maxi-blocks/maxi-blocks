@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector custom css', () => {
 	it('Check custom css inspector', async () => {
@@ -24,10 +24,11 @@ describe('Inspector custom css', () => {
 
 		await page.keyboard.type('test');
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Add CSS classes');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Add CSS classes',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

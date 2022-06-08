@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, checkIndicators } from '../../utils';
 
 describe('Inspector overflow', () => {
 	it('Check text overflow inspector', async () => {
@@ -17,10 +17,11 @@ describe('Inspector overflow', () => {
 
 		await selectorX[0].select('hidden');
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Overflow');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Overflow',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

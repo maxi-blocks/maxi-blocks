@@ -5,7 +5,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, editAdvancedNumberControl } from '../../utils';
+import {
+	openSidebarTab,
+	editAdvancedNumberControl,
+	checkIndicators,
+} from '../../utils';
 
 describe('Inspector size', () => {
 	it('Check size inspector', async () => {
@@ -21,14 +25,15 @@ describe('Inspector size', () => {
 			newNumber: '22',
 		});
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Height / Width');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Height / Width',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 	// if add full size the indicator does not appear
-	it.skip('Check full size inspector', async () => {
+	it('Check full size inspector', async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'style', 'height width');
@@ -38,10 +43,11 @@ describe('Inspector size', () => {
 			input => input.click()
 		);
 
-		const activeInspectors = await page.$eval(
-			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
-			test => test.outerText
-		);
-		expect(activeInspectors).toStrictEqual('Height / Width');
+		const expectResult = await checkIndicators({
+			page,
+			indicators: 'Height / Width',
+		});
+
+		expect(expectResult).toBeTruthy();
 	});
 });

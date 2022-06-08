@@ -46,57 +46,61 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 				breakpoints.forEach(breakpoint => {
 					let transitionString = '';
 
-					const transitionDuration = getLastBreakpointAttribute({
-						target: 'transition-duration',
-						breakpoint,
-						attributes: transitionContent,
-					});
-
-					const transitionDelay = getLastBreakpointAttribute({
-						target: 'transition-delay',
-						breakpoint,
-						attributes: transitionContent,
-					});
-
-					const transitionTimingFunction = getLastBreakpointAttribute(
-						{
-							target: 'easing',
+					const getLastTransitionAttribute = target =>
+						getLastBreakpointAttribute({
+							target,
 							breakpoint,
 							attributes: transitionContent,
-						}
+						});
+
+					const getTransitionAttribute = target =>
+						transitionContent[`${target}-${breakpoint}`];
+
+					const lastTransitionDuration = getLastTransitionAttribute(
+						'transition-duration'
+					);
+					const transitionDuration = getTransitionAttribute(
+						'transition-duration'
 					);
 
-					const transitionStatus = getLastBreakpointAttribute({
-						target: 'transition-status',
-						breakpoint,
-						attributes: transitionContent,
-					});
+					const lastTransitionDelay =
+						getLastTransitionAttribute('transition-delay');
+					const transitionDelay =
+						getTransitionAttribute('transition-delay');
+
+					const lastTransitionTimingFunction =
+						getLastTransitionAttribute('easing');
+					const transitionTimingFunction =
+						getTransitionAttribute('easing');
+
+					const transitionStatus =
+						getLastTransitionAttribute('transition-status');
 
 					properties.forEach(property => {
 						const transitionProperty = limitless ? 'all' : property;
+						const isSomeValue =
+							transitionDuration ||
+							transitionDelay ||
+							transitionTimingFunction;
 
-						if (
-							transitionStatus &&
-							(transitionDuration ||
-								transitionDelay ||
-								transitionTimingFunction)
-						) {
-							transitionString += `${transitionProperty} ${transitionDuration}s ${transitionDelay}s ${transitionTimingFunction}, `;
-						} else {
-							transitionString += `${transitionProperty} 0s 0s`;
+						if (transitionStatus && isSomeValue) {
+							transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
+						} else if (isSomeValue) {
+							transitionString += `${transitionProperty} 0s 0s, `;
 						}
 					});
 
 					transitionString = transitionString.replace(/,\s*$/, '');
 
-					if (isNil(response[target].transition[breakpoint]))
-						response[target].transition[breakpoint] = {
-							transition: transitionString,
-						};
-					else
-						response[target].transition[
-							breakpoint
-						].transition += `, ${transitionString}`;
+					if (transitionString)
+						if (isNil(response[target].transition[breakpoint]))
+							response[target].transition[breakpoint] = {
+								transition: transitionString,
+							};
+						else
+							response[target].transition[
+								breakpoint
+							].transition += `, ${transitionString}`;
 				});
 			});
 		});

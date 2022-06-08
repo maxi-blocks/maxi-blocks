@@ -21,7 +21,7 @@ import {
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty } from 'lodash';
+import { capitalize, cloneDeep, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -91,10 +91,7 @@ const TransitionControlWrapper = props => {
 					},
 					...(transition[type] &&
 						Object.keys(transition[type]).map(name => ({
-							label: __(
-								name.charAt(0).toUpperCase() + name.slice(1),
-								'maxi-blocks'
-							),
+							label: __(capitalize(name), 'maxi-blocks'),
 							value: name,
 						}))),
 				]}

@@ -1,8 +1,7 @@
 /**
  * WordPress dependencies
  */
-// import { __ } from '@wordpress/i18n';
-import { RawHTML } from '@wordpress/element';
+import { RawHTML, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -36,7 +35,40 @@ const VideoPlayer = props => {
 		isMuted,
 		showPlayerControls,
 		isSelected,
+		uniqueID,
+		startTime,
 	} = props;
+
+	const playerID = `${uniqueID}-player`;
+	let player;
+
+	const handleStateChange = state => {
+		if (state.data === 0 && isLoop) {
+			player.seekTo(startTime);
+		}
+	};
+
+	const loadVideo = () => {
+		player = new window.YT.Player(playerID, {
+			events: {
+				onStateChange: handleStateChange,
+			},
+		});
+	};
+
+	useEffect(() => {
+		if (videoType === 'youtube') {
+			if (!window.YT) {
+				const script = document.createElement('script');
+				script.src = 'https://www.youtube.com/iframe_api';
+				script.id = 'maxi-youtube-sdk';
+				window.onYouTubeIframeAPIReady = loadVideo;
+				document.body.appendChild(script);
+			} else {
+				loadVideo();
+			}
+		}
+	}, []);
 
 	return (
 		<>
@@ -44,6 +76,7 @@ const VideoPlayer = props => {
 				<video
 					src={embedUrl}
 					className='maxi-video-block__video-player'
+					id={playerID}
 					loop={isLoop}
 					muted={isMuted}
 					autoPlay={isAutoplay}
@@ -54,6 +87,7 @@ const VideoPlayer = props => {
 			) : (
 				<iframe
 					className='maxi-video-block__video-player'
+					id={playerID}
 					title='video player'
 					allowFullScreen
 					allow='autoplay'

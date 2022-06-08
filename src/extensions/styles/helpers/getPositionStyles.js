@@ -34,6 +34,8 @@ const getPositionStyles = obj => {
 			return breakpointPosition !== 'inherit';
 		});
 
+		if (!isPositionStyleNeeded) return;
+
 		const position = getLastBreakpointAttribute({
 			target: 'position',
 			breakpoint,
@@ -42,7 +44,7 @@ const getPositionStyles = obj => {
 
 		response[breakpoint] = {};
 
-		if (!isNil(position) && isPositionStyleNeeded) {
+		if (!isNil(position)) {
 			response[breakpoint] = {
 				position,
 			};

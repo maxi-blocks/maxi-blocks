@@ -37,6 +37,7 @@ const VideoPlayer = props => {
 		isSelected,
 		uniqueID,
 		startTime,
+		endTime,
 	} = props;
 
 	const playerID = `${uniqueID}-player`;
@@ -48,11 +49,22 @@ const VideoPlayer = props => {
 		}
 	};
 
-	const loadVideo = () => {
+	const handleYoutubeVideo = () => {
 		player = new window.YT.Player(playerID, {
 			events: {
 				onStateChange: handleStateChange,
 			},
+		});
+	};
+
+	const handleVimeoVideo = () => {
+		const playerElement = document.getElementById(playerID);
+		player = new window.Vimeo.Player(playerElement);
+		player.on('timeupdate', data => {
+			if (data.seconds > +endTime) {
+				if (isLoop) player.setCurrentTime(+startTime);
+				else player.pause();
+			}
 		});
 	};
 
@@ -62,10 +74,24 @@ const VideoPlayer = props => {
 				const script = document.createElement('script');
 				script.src = 'https://www.youtube.com/iframe_api';
 				script.id = 'maxi-youtube-sdk';
-				window.onYouTubeIframeAPIReady = loadVideo;
+				window.onYouTubeIframeAPIReady = handleYoutubeVideo;
 				document.body.appendChild(script);
 			} else {
-				loadVideo();
+				handleYoutubeVideo();
+			}
+		} else if (videoType === 'vimeo') {
+			if (!window.Vimeo) {
+				const script = document.createElement('script');
+				script.src = 'https://player.vimeo.com/api/player.js';
+				script.id = 'maxi-vimeo-sdk';
+				script.async = true;
+				script.onload = () => {
+					script.onload = null;
+					handleVimeoVideo();
+				};
+				document.body.appendChild(script);
+			} else {
+				handleVimeoVideo();
 			}
 		}
 	}, []);

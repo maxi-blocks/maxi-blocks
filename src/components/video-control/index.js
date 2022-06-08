@@ -92,6 +92,7 @@ const VideoControl = props => {
 						startTime: '',
 					})
 				}
+				optionType='string'
 			/>
 			<AdvancedNumberControl
 				className='maxi-video-end-time'
@@ -114,6 +115,7 @@ const VideoControl = props => {
 						endTime: '',
 					})
 				}
+				optionType='string'
 			/>
 			<SelectControl
 				className='maxi-video-control__ratio'

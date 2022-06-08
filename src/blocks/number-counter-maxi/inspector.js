@@ -33,6 +33,9 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -42,84 +45,72 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										...inspectorTabs.alignment({
-											props: {
-												...props,
-											},
-											isAlignment: true,
-											alignmentLabel: __(
-												'Counter',
-												'maxi-blocks'
-											),
-											disableJustify: true,
-										}),
-										{
-											label: __('Number', 'maxi-blocks'),
-											content: (
-												<ResponsiveTabsControl
-													breakpoint={deviceType}
-												>
-													<NumberCounterControl
-														{...getGroupAttributes(
-															attributes,
-															'numberCounter'
-														)}
-														{...getGroupAttributes(
-															attributes,
-															'size',
-															false,
-															'number-counter-'
-														)}
-														onChangeInline={(
-															obj,
-															target
-														) =>
-															insertInlineStyles({
-																obj,
-																target,
-															})
-														}
-														onChange={(
-															obj,
-															target
-														) => {
-															maxiSetAttributes(
-																obj
-															);
-															cleanInlineStyles(
-																target
-															);
-														}}
-														breakpoint={deviceType}
-													/>
-												</ResponsiveTabsControl>
-											),
-											ignoreIndicatorGroups: [
-												'alignment',
-											],
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.alignment({
+										props: {
+											...props,
 										},
-										...inspectorTabs.border({
-											props,
-											prefix: 'number-counter-',
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-											prefix: 'number-counter-',
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-											prefix: 'number-counter-',
-										}),
-									]}
-								/>
-							</>
+										isAlignment: true,
+										alignmentLabel: __(
+											'Counter',
+											'maxi-blocks'
+										),
+										disableJustify: true,
+									}),
+									{
+										label: __('Number', 'maxi-blocks'),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<NumberCounterControl
+													{...getGroupAttributes(
+														attributes,
+														'numberCounter'
+													)}
+													{...getGroupAttributes(
+														attributes,
+														'size',
+														false,
+														'number-counter-'
+													)}
+													onChangeInline={(
+														obj,
+														target
+													) =>
+														insertInlineStyles({
+															obj,
+															target,
+														})
+													}
+													onChange={(obj, target) => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															target
+														);
+													}}
+													breakpoint={deviceType}
+												/>
+											</ResponsiveTabsControl>
+										),
+										ignoreIndicatorGroups: ['alignment'],
+									},
+									...inspectorTabs.border({
+										props,
+										prefix: 'number-counter-',
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'number-counter-',
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+										prefix: 'number-counter-',
+									}),
+								]}
+							/>
 						),
 					},
 					{

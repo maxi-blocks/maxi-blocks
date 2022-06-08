@@ -355,7 +355,7 @@ const LibraryContainer = props => {
 	).searchClient;
 
 	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_category' // svg_tag
+		'post_title, svg_tag, svg_category' // svg_tag
 	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);
@@ -715,7 +715,7 @@ const LibraryContainer = props => {
 
 			{type.includes('shape') && (
 				<InstantSearch
-					indexName='maxi_posts_svg_icon'
+					indexName='svg_icon'
 					searchClient={searchClientSvg}
 				>
 					<Configure hitsPerPage={49} />
@@ -746,7 +746,7 @@ const LibraryContainer = props => {
 
 			{type === 'button-icon' && (
 				<InstantSearch
-					indexName='maxi_posts_svg_icon'
+					indexName='svg_icon'
 					searchClient={searchClientSvg}
 				>
 					<Configure hitsPerPage={49} />

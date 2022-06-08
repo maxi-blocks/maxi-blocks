@@ -38,7 +38,7 @@ import {
 	Configure,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
-import { isEmpty, uniqueId, orderBy, capitalize } from 'lodash';
+import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
 import Masonry from 'masonry-layout';
 import useInterval from '../../extensions/dom/useInterval';
 
@@ -270,7 +270,7 @@ const HierarchicalMenu = ({ items, refine }) => (
 						refine(item.value);
 					}}
 				>
-					{item.label} ({item.count})
+					{unescape(item.label)} ({item.count})
 				</a>
 				<ToggleSwitch
 					selected={item.isRefined}
@@ -355,7 +355,7 @@ const LibraryContainer = props => {
 	).searchClient;
 
 	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_category, svg_tag'
+		'post_title, svg_category' // svg_tag
 	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);
@@ -671,7 +671,7 @@ const LibraryContainer = props => {
 			{type === 'svg' && (
 				<div className='maxi-cloud-container__svg-icon'>
 					<InstantSearch
-						indexName='maxi_posts_svg_icon'
+						indexName='svg_icon'
 						searchClient={searchClientSvg}
 					>
 						<Configure hitsPerPage={49} />
@@ -684,10 +684,10 @@ const LibraryContainer = props => {
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
-								limit={10}
+								limit={20}
 								showMore
 								showLoadingIndicator
-								showMoreLimit={10}
+								showMoreLimit={20}
 							/>
 							<ClearRefinements />
 						</div>

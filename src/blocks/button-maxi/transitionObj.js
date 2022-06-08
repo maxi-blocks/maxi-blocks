@@ -8,6 +8,7 @@ const transitionObj = {
 		typography: {
 			title: 'Typography',
 			target: ' .maxi-button-block__content',
+			property: 'typography',
 			limitless: true,
 			prefix,
 		},

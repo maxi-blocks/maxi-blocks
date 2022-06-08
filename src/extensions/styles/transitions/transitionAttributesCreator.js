@@ -2,16 +2,18 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import transitionDefault from './transitionDefault';
 
 const getHoverProp = (property, prefix = '') => {
-	const hoverProp =
-		property === 'background'
-			? prefix
-				? 'background-hover-status'
-				: 'block-background-hover-status'
-			: `${
-					Array.isArray(property) ? property[0] : property
-			  }-status-hover`;
-
-	return `${prefix}${hoverProp}`;
+	switch (property) {
+		case 'background':
+			return prefix
+				? `${prefix}background-hover-status`
+				: 'block-background-hover-status';
+		case 'typography':
+			return 'typography-status-hover';
+		default:
+			return `${prefix}${
+				Array.isArray(property) ? property[0] : property
+			}-status-hover`;
+	}
 };
 
 const disableDefaultTransition = false;

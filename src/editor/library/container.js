@@ -326,25 +326,37 @@ const LibraryContainer = props => {
 		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
 
-	const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-		server: {
-			apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6', // Be sure to use an API key that only allows search operations
-			nodes: [
-				{
-					host: '24q17endjv0kacilp-1.a1.typesense.net',
-					port: '443',
-					protocol: 'https',
-				},
-			],
-		},
-		// The following parameters are directly passed to Typesense's search API endpoint.
-		//  So you can pass any parameters supported by the search endpoint below.
-		//  query_by is required.
-		additionalSearchParameters: {
-			query_by: 'post_title',
-		},
-	});
-	const { searchClient } = typesenseInstantsearchAdapter;
+	const typesenseInstantsearchAdapter = params => {
+		return new TypesenseInstantSearchAdapter({
+			server: {
+				apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6', // Be sure to use an API key that only allows search operations
+				nodes: [
+					{
+						host: '24q17endjv0kacilp-1.a1.typesense.net',
+						port: '443',
+						protocol: 'https',
+					},
+				],
+			},
+			// The following parameters are directly passed to Typesense's search API endpoint.
+			//  So you can pass any parameters supported by the search endpoint below.
+			//  query_by is required.
+			additionalSearchParameters: {
+				query_by: params,
+			},
+		});
+	};
+	const searchClientPatterns = typesenseInstantsearchAdapter(
+		'post_title, post_number, category.lvl0, category.lvl1'
+	).searchClient;
+
+	const searchClientSc = typesenseInstantsearchAdapter(
+		'post_title, sc_color'
+	).searchClient;
+
+	const searchClientSvg = typesenseInstantsearchAdapter(
+		'post_title, svg_category, svg_tag'
+	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);
 
@@ -660,7 +672,7 @@ const LibraryContainer = props => {
 				<div className='maxi-cloud-container__svg-icon'>
 					<InstantSearch
 						indexName='maxi_posts_svg_icon'
-						searchClient={searchClient}
+						searchClient={searchClientSvg}
 					>
 						<Configure hitsPerPage={49} />
 						<div className='maxi-cloud-container__svg-icon__sidebar'>
@@ -671,10 +683,7 @@ const LibraryContainer = props => {
 								showLoadingIndicator
 							/>
 							<CustomHierarchicalMenu
-								attributes={[
-									'taxonomies_hierarchical.svg_tag.lvl0',
-									'taxonomies_hierarchical.svg_tag.lvl1',
-								]}
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
 								limit={10}
 								showMore
 								showLoadingIndicator
@@ -707,7 +716,7 @@ const LibraryContainer = props => {
 			{type.includes('shape') && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
-					searchClient={searchClient}
+					searchClient={searchClientSvg}
 				>
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
@@ -738,7 +747,7 @@ const LibraryContainer = props => {
 			{type === 'button-icon' && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
-					searchClient={searchClient}
+					searchClient={searchClientSvg}
 				>
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
@@ -774,7 +783,10 @@ const LibraryContainer = props => {
 
 			{type === 'patterns' && (
 				<div className='maxi-cloud-container__patterns'>
-					<InstantSearch indexName='post' searchClient={searchClient}>
+					<InstantSearch
+						indexName='post'
+						searchClient={searchClientPatterns}
+					>
 						<Configure hitsPerPage={20} />
 						<div className='maxi-cloud-container__patterns__top-menu'>
 							<CustomMenuSelect
@@ -805,11 +817,7 @@ const LibraryContainer = props => {
 							/>
 							<PlaceholderCheckboxControl />
 							<CustomHierarchicalMenu
-								attributes={[
-									// 'category',
-									'category.lvl0',
-									'category.lvl1',
-								]}
+								attributes={['category.lvl0', 'category.lvl1']}
 							/>
 							<ClearRefinements />
 						</div>
@@ -824,7 +832,7 @@ const LibraryContainer = props => {
 				<div className='maxi-cloud-container__sc'>
 					<InstantSearch
 						indexName='style_card'
-						searchClient={searchClient}
+						searchClient={searchClientSc}
 					>
 						<Configure hitsPerPage={9} />
 						<div className='maxi-cloud-container__sc__sidebar'>

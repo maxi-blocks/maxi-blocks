@@ -1,3 +1,4 @@
+export { default as accordion } from './accordion';
 export { default as alignment } from './alignment';
 export { default as arrow } from './arrow';
 export { default as boxShadow } from './boxShadow';

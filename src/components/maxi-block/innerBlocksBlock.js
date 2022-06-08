@@ -31,6 +31,7 @@ const getInnerBlocksChild = ({
 	hasInnerBlocks,
 	isSelected,
 	hasSelectedChild,
+	accordionLayout,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -60,11 +61,18 @@ const getInnerBlocksChild = ({
 					key: `maxi-inner-content__${uniqueID}`,
 				}),
 			blockName === 'maxi-blocks/pane-maxi' && (
-				<div className='maxi-pane-block__content'>
-					{cloneElement(innerBlocksChildren, {
-						key: `maxi-inner-content__${uniqueID}`,
-					})}
-				</div>
+				<>
+					<div
+						className='maxi-pane-block__content'
+						key={`maxi-pane-content__${uniqueID}`}
+					>
+						<hr />
+						{cloneElement(innerBlocksChildren, {
+							key: `maxi-inner-content__${uniqueID}`,
+						})}
+					</div>
+					{accordionLayout === 'simple' && <hr />}
+				</>
 			),
 			...(blockName === 'maxi-blocks/accordion-maxi' && children),
 			...(!isSave &&
@@ -138,7 +146,6 @@ const MainInnerBlocksBlock = forwardRef(
 			hasInnerBlocks,
 			isSelected,
 			hasSelectedChild,
-			paneIcon,
 			accordionLayout,
 			...props
 		},
@@ -173,6 +180,7 @@ const MainInnerBlocksBlock = forwardRef(
 				hasInnerBlocks,
 				isSelected,
 				hasSelectedChild,
+				accordionLayout,
 			})
 		);
 

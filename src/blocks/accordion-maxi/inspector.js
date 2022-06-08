@@ -15,13 +15,14 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 import MaxiModal from '../../editor/library/modal';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { blockStyle, accordionLayout, autoPaneClose } = attributes;
+	const { blockStyle, accordionLayout } = attributes;
 
 	return (
 		<InspectorControls>
@@ -42,9 +43,8 @@ const Inspector = props => {
 									},
 								})}
 								<AccordionControl
-									isSecondary
 									items={[
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Accordion Settings',
 												'maxi-blocks'
@@ -55,9 +55,11 @@ const Inspector = props => {
 														accordionLayout
 													}
 													clientId={clientId}
-													autoPaneClose={
-														autoPaneClose
-													}
+													{...getGroupAttributes(
+														attributes,
+														'accordion'
+													)}
+													breakpoint={deviceType}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}

@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-
 /**
  * Attributes
  */
@@ -30,8 +29,7 @@ const attributes = {
 		type: 'number',
 		default: 2,
 	},
-	accordionLayout: { type: 'string', default: 'simple' },
-	autoPaneClose: { type: 'boolean', default: true },
+	...attributesData.accordion,
 	'icon-content': {
 		type: 'string',
 		default: '',

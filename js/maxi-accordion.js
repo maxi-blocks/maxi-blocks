@@ -30,26 +30,11 @@ class Accordion {
 				this.paneIcon;
 			for (var i = 0; i < this.openPanes.length; i++)
 				if (this.openPanes[i] === index) this.openPanes.splice(i, 1);
-
-			if (this.accordionLayout === 'boxed')
-				pane.removeChild(pane.querySelector('hr'));
-			else pane.removeChild(pane.querySelectorAll('hr')[1]);
 		} else {
 			pane.querySelector('.maxi-pane-block__content').style.display =
 				'block';
 			pane.querySelector('.maxi-pane-block__icon').innerHTML =
 				this.paneIconActive;
-
-			if (this.accordionLayout === 'boxed')
-				pane.insertBefore(
-					document.createElement('hr'),
-					pane.querySelector('.maxi-pane-block__content')
-				);
-			else
-				pane.insertBefore(
-					document.createElement('hr'),
-					pane.querySelector('.maxi-pane-block__content').nextSibling
-				);
 
 			if (this.openPanes.length > 0 && this.autoPaneClose) {
 				let index = this.openPanes[0];
@@ -60,15 +45,6 @@ class Accordion {
 				this.accordion.children[index].querySelector(
 					'.maxi-pane-block__icon'
 				).innerHTML = this.paneIcon;
-
-				if (this.accordionLayout === 'boxed')
-					this.accordion.children[index].removeChild(
-						this.accordion.children[index].querySelector('hr')
-					);
-				else
-					this.accordion.children[index].removeChild(
-						this.accordion.children[index].querySelectorAll('hr')[1]
-					);
 			}
 			this.openPanes.push(index);
 		}

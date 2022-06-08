@@ -13,11 +13,14 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import { BlockInserter } from '../../components';
 import getStyles from './styles';
+import AccordionContext from '../accordion-maxi/context';
 
 /**
  * Edit
  */
 class edit extends MaxiBlockComponent {
+	static contextType = AccordionContext;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -29,13 +32,9 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			clientId,
 			hasInnerBlocks,
-			paneIcon,
 		} = this.props;
-		const { uniqueID, title, accordionLayout } = attributes;
-		/**
-		 * TODO: Gutenberg still does not have the disallowedBlocks feature
-		 */
-
+		const { uniqueID, title } = attributes;
+		const { paneIcon, paneIconActive, accordionLayout } = this.context;
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()
 			.map(block => block.name)
@@ -80,35 +79,33 @@ class edit extends MaxiBlockComponent {
 						? () => <BlockInserter clientId={clientId} />
 						: false,
 				}}
-				paneIcon={paneIcon}
 				{...getMaxiBlockAttributes(this.props)}
+				accordionLayout={accordionLayout}
 			>
-				<>
-					<div className='maxi-pane-block__header'>
-						<RichText
-							className='maxi-pane-block__title'
-							value={title}
-							identifier='content'
-							onChange={title => {
-								if (this.typingTimeout) {
-									clearTimeout(this.typingTimeout);
-								}
+				<div className='maxi-pane-block__header'>
+					<RichText
+						className='maxi-pane-block__title'
+						value={title}
+						identifier='content'
+						onChange={title => {
+							if (this.typingTimeout) {
+								clearTimeout(this.typingTimeout);
+							}
 
-								this.typingTimeout = setTimeout(() => {
-									maxiSetAttributes({ title });
-								}, 100);
-							}}
-							placeholder={__('Title', 'maxi-blocks')}
-							withoutInteractiveFormatting
-						/>
+							this.typingTimeout = setTimeout(() => {
+								maxiSetAttributes({ title });
+							}, 100);
+						}}
+						placeholder={__('Title', 'maxi-blocks')}
+						withoutInteractiveFormatting
+					/>
 
-						<div className='maxi-pane-block__icon'>
-							<RawHTML>{paneIcon}</RawHTML>
-						</div>
+					<div className='maxi-pane-block__icon'>
+						<RawHTML>
+							{paneOpen ? paneIconActive : paneIcon}
+						</RawHTML>
 					</div>
-					{accordionLayout === 'simple' && <hr />}
-					{accordionLayout === 'boxed' && paneOpen && <hr />}
-				</>
+				</div>
 			</MaxiBlock>,
 		];
 	}

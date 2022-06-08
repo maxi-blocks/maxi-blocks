@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /**
  * WordPress dependencies
  */
@@ -13,6 +14,7 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
 import { Button } from '../../components';
+import AccordionContext from './context';
 
 /**
  * Edit
@@ -40,7 +42,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, maxiSetAttributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, lastIndex, accordionLayout } = attributes;
 
 		/**
@@ -50,45 +52,53 @@ class edit extends MaxiBlockComponent {
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<MaxiBlock
-				key={`maxi-accordion--${uniqueID}`}
-				blockFullWidth={blockFullWidth}
-				ref={this.blockRef}
-				className={`maxi-accordion-block--${accordionLayout}-layout`}
-				useInnerBlocks
-				innerBlocksSettings={{
-					allowedBlocks: ALLOWED_BLOCKS,
-					renderAppender: false,
-					templateLock: false,
-					template: [
-						[
-							'maxi-blocks/pane-maxi',
-							{ accordionLayout: 'simple' },
-						],
-						[
-							'maxi-blocks/pane-maxi',
-							{ accordionLayout: 'simple' },
-						],
-					],
+			<AccordionContext.Provider
+				key={`accordion-content-${uniqueID}`}
+				value={{
+					paneIcon: attributes['icon-content'],
+					paneIconActive: attributes['icon-content-active'],
+					accordionLayout,
 				}}
-				{...getMaxiBlockAttributes(this.props)}
 			>
-				<Button
-					className='maxi-accordion__add-item-button'
-					onClick={() => {
-						dispatch('core/block-editor').insertBlock(
-							createBlock('maxi-blocks/pane-maxi', {
-								accordionLayout,
-							}),
-							lastIndex,
-							this.props.clientId
-						);
-						maxiSetAttributes({ lastIndex: lastIndex + 1 });
+				<MaxiBlock
+					key={`maxi-accordion--${uniqueID}`}
+					ref={this.blockRef}
+					className={`maxi-accordion-block--${accordionLayout}-layout`}
+					useInnerBlocks
+					innerBlocksSettings={{
+						allowedBlocks: ALLOWED_BLOCKS,
+						renderAppender: false,
+						templateLock: false,
+						template: [
+							[
+								'maxi-blocks/pane-maxi',
+								{ accordionLayout: 'simple' },
+							],
+							[
+								'maxi-blocks/pane-maxi',
+								{ accordionLayout: 'simple' },
+							],
+						],
 					}}
+					{...getMaxiBlockAttributes(this.props)}
 				>
-					{__('Add Item', 'maxi-blocks')}
-				</Button>
-			</MaxiBlock>,
+					<Button
+						className='maxi-accordion__add-item-button'
+						onClick={() => {
+							dispatch('core/block-editor').insertBlock(
+								createBlock('maxi-blocks/pane-maxi', {
+									accordionLayout,
+								}),
+								lastIndex,
+								this.props.clientId
+							);
+							maxiSetAttributes({ lastIndex: lastIndex + 1 });
+						}}
+					>
+						{__('Add Item', 'maxi-blocks')}
+					</Button>
+				</MaxiBlock>
+			</AccordionContext.Provider>,
 		];
 	}
 }

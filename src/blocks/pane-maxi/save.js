@@ -20,19 +20,16 @@ const save = props => {
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			accordionLayout={accordionLayout}
 		>
-			<>
-				<div className='maxi-pane-block__header'>
-					<RichText.Content
-						className='maxi-pane-block__title'
-						value={title}
-						tagName='span'
-					/>
-
-					<div className='maxi-pane-block__icon' />
-				</div>
-				{accordionLayout === 'simple' && <hr />}
-			</>
+			<div className='maxi-pane-block__header'>
+				<RichText.Content
+					className='maxi-pane-block__title'
+					value={title}
+					tagName='span'
+				/>
+				<div className='maxi-pane-block__icon' />
+			</div>
 		</MaxiBlock.save>
 	);
 };

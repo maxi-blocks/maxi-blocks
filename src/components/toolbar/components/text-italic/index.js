@@ -55,10 +55,7 @@ const TextItalic = props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip
-				text={__('Italic', 'maxi-blocks')}
-				position='bottom center'
-			>
+			<Tooltip text={__('Italic', 'maxi-blocks')} position='top center'>
 				{italicContent()}
 			</Tooltip>
 		);

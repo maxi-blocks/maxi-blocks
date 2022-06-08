@@ -164,6 +164,7 @@ const getMaxiBlockAttributes = props => {
 
 	return {
 		clientId,
+		deviceType,
 		blockName: name,
 		blockStyle,
 		extraClassName,

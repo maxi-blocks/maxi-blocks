@@ -77,8 +77,10 @@ const NumberCounter = attributes => {
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			setCount(startCountValue);
-			setReplayStatus(false);
-			clearInterval(countRef.current);
+			if (count >= endCountValue) {
+				setReplayStatus(false);
+				clearInterval(countRef.current);
+			}
 		}
 	}, [
 		startCountValue,
@@ -117,6 +119,7 @@ const NumberCounter = attributes => {
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
+			deviceType={deviceType}
 			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',

@@ -16,6 +16,7 @@ const getHoverProp = (property, prefix = '') => {
 	}
 };
 
+// AFTER #3265 WILL BE RECEIVED FROM THE STORE
 const disableDefaultTransition = false;
 
 const transitionRaw = breakpointAttributesCreator({

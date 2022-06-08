@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect, useState, useMemo } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
 import { CheckboxControl } from '@wordpress/components';
 
 /**
@@ -343,6 +343,7 @@ const LibraryContainer = props => {
 			//  query_by is required.
 			additionalSearchParameters: {
 				query_by: params,
+				sort_by: 'post_date_int:desc',
 			},
 		});
 	};
@@ -355,7 +356,7 @@ const LibraryContainer = props => {
 	).searchClient;
 
 	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_tag, svg_category' // svg_tag
+		'post_title, svg_tag, svg_category'
 	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);

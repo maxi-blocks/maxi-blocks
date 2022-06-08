@@ -202,19 +202,21 @@ describe('BoxShadowControl', () => {
 			click => click[3].click()
 		);
 
-		const sHorizontal = await accordionPanel.$$eval(
-			'.maxi-shadow-control .maxi-advanced-number-control input',
-			input => input[2].value
-		);
+		const expectSAttributes = {
+			'box-shadow-blur-s': 0,
+			'box-shadow-horizontal-s': 5,
+			'box-shadow-spread-s': 0,
+			'box-shadow-vertical-s': 6,
+		};
 
-		expect(sHorizontal).toStrictEqual('5');
+		const typographySAttributes = await getAttributes([
+			'box-shadow-blur-s',
+			'box-shadow-horizontal-s',
+			'box-shadow-spread-s',
+			'box-shadow-vertical-s',
+		]);
 
-		const sVertical = await accordionPanel.$$eval(
-			'.maxi-shadow-control .maxi-advanced-number-control input',
-			input => input[4].value
-		);
-
-		expect(sVertical).toStrictEqual('6');
+		expect(typographySAttributes).toStrictEqual(expectSAttributes);
 
 		// xs
 		await changeResponsive(page, 'xs');

@@ -105,8 +105,8 @@ class MaxiBlocks_StyleCards {
 		}
 	}
 
-	public function get_maxi_blocks_active_style_card() {
-		$maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
+	public static function get_maxi_blocks_active_style_card() {
+		$maxi_blocks_style_cards = self::get_maxi_blocks_current_style_cards();
 
 		$maxi_blocks_style_cards_array = json_decode(
 			$maxi_blocks_style_cards,
@@ -123,17 +123,17 @@ class MaxiBlocks_StyleCards {
 
 	public static function get_maxi_blocks_style_card_fonts($block_style, $text_level)
 	{
-		$maxi_blocks_style_cards = json_decode(self::get_maxi_blocks_current_style_cards());
-
-		$style_card_name = array_key_first((array) $maxi_blocks_style_cards);
+		$maxi_blocks_style_cards = (object) self::get_maxi_blocks_active_style_card();
+		$block_style_values = (object) $maxi_blocks_style_cards->$block_style;
+		$default_values = $block_style_values->defaultStyleCard;
+		$values = $block_style_values->styleCard;
 
 		$style_card_values = (object) array_merge(
-			(array) $maxi_blocks_style_cards->$style_card_name->$block_style->defaultStyleCard,
-			(array) $maxi_blocks_style_cards->$style_card_name->$block_style->styleCard
+			(array) $default_values,
+			(array) $values
 		);
 
-
-		$text_level_values = $style_card_values->$text_level;
+		$text_level_values = (object) $style_card_values->$text_level;
 
 		$font = $text_level_values->{'font-family-general'};
 
@@ -307,7 +307,7 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-s": "px",
 							"line-height-general": 40,
 							"line-height-unit-general": "px",
-							"line-height-xxl": 30,
+							"line-height-xxl": 50,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 40,
 							"line-height-unit-xl": "px",
@@ -471,8 +471,8 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
-							"line-heigh-general": 100,
-							"line-heigh-unit-general": "%",
+							"line-height-general": 100,
+							"line-height-unit-general": "%",
 							"line-height-xl": 100,
 							"line-height-unit-xl": "%",
 							"font-weight-general": 400,
@@ -876,8 +876,8 @@ class MaxiBlocks_StyleCards {
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
-							"line-heigh-general": 100,
-							"line-heigh-unit-general": "%",
+							"line-height-general": 100,
+							"line-height-unit-general": "%",
 							"line-height-xl": 100,
 							"line-height-unit-xl": "%",
 							"font-weight-general": 400,

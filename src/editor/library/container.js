@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect, useState } from '@wordpress/element';
+import { RawHTML, useEffect, useState, useMemo } from '@wordpress/element';
 import { CheckboxControl } from '@wordpress/components';
 
 /**
@@ -38,6 +38,8 @@ import {
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { isEmpty, uniqueId } from 'lodash';
+import Masonry from 'masonry-layout';
+import useInterval from '../../extensions/dom/useInterval';
 
 const MasonryItem = props => {
 	const {
@@ -74,26 +76,31 @@ const MasonryItem = props => {
 					</div>
 				</div>
 				<div className='maxi-cloud-masonry-card__image'>
-					{(type === 'patterns' || type === 'sc') && (
-						<img src={previewIMG} alt={`Preview for ${serial}`} />
-					)}
+					<img src={previewIMG} alt={`Preview for ${serial}`} />
 				</div>
 				<div className='maxi-cloud-masonry-card__buttons'>
 					{type === 'patterns' && (
-						<MaxiModal
-							type='preview'
-							url={demoUrl}
-							title={serial}
-							onRequestInsert={onRequestInsert}
-							cardId={masonryCardId}
-						/>
+						<>
+							<MaxiModal
+								type='preview'
+								url={demoUrl}
+								title={serial}
+								onRequestInsert={onRequestInsert}
+								cardId={masonryCardId}
+							/>
+							<Button
+								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
+								onClick={onRequestInsert}
+							>
+								{__('Load', 'maxi-blocks')}
+							</Button>
+						</>
 					)}
-					<Button
-						className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-						onClick={onRequestInsert}
-					>
-						{__('Load', 'maxi-blocks')}
-					</Button>
+					{type === 'sc' && (
+						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
+							{__('Load', 'maxi-block')}
+						</span>
+					)}
 					<div className='maxi-cloud-masonry-card__tags'>
 						{isPro && (
 							<span className='maxi-cloud-masonry-card__tags__pro-tag'>
@@ -587,9 +594,8 @@ const LibraryContainer = props => {
 		return (
 			<CheckboxControl
 				className='use-placeholer-all-images'
-				label={__('Use placeholder for all images', 'maxi-blocks')}
-				help={__(
-					'(do not download any images to your media library, use a generic grey image)',
+				label={__(
+					'Swap stock images for placeholders to save disk space',
 					'maxi-blocks'
 				)}
 				checked={isChecked}
@@ -603,6 +609,22 @@ const LibraryContainer = props => {
 	const CustomMenuSelect = connectMenu(MenuSelect);
 
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
+
+	const masonryGenerator = () => {
+		const elem = document.querySelector(
+			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
+		);
+
+		if (elem) {
+			// eslint-disable-next-line no-new
+			new Masonry(elem, {
+				itemSelector: '.ais-InfiniteHits-item',
+				gutter: 16,
+			});
+		}
+	};
+
+	useInterval(masonryGenerator, 100);
 
 	const maxiPreviewIframe = (url, title) => {
 		return (
@@ -781,7 +803,6 @@ const LibraryContainer = props => {
 					</InstantSearch>
 				</div>
 			)}
-
 			{type === 'sc' && (
 				<div className='maxi-cloud-container__sc'>
 					<InstantSearch

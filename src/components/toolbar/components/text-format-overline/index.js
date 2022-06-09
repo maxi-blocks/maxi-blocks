@@ -111,10 +111,7 @@ const TextFormatOverline = props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip
-				text={__('Overline', 'maxi-blocks')}
-				position='bottom center'
-			>
+			<Tooltip text={__('Overline', 'maxi-blocks')} position='top center'>
 				{overlineContent()}
 			</Tooltip>
 		);

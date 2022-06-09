@@ -43,7 +43,7 @@ const CloudLibrary = props => {
 
 	return (
 		<Modal
-			title={__('Maxi Cloud Library', 'maxi-blocks')}
+			title={__('Template Library Maxi', 'maxi-blocks')}
 			className={classes}
 			shouldCloseOnEsc
 			shouldCloseOnClickOutside={false}

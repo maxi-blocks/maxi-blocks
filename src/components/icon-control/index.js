@@ -275,7 +275,7 @@ const IconControl = props => {
 									)}
 									<ToggleSwitch
 										label={__(
-											'Inherit Colour/Background from Button',
+											'Inherit colour/background from button',
 											'maxi-block'
 										)}
 										selected={props['icon-inherit']}
@@ -304,6 +304,7 @@ const IconControl = props => {
 								<ColorControl
 									label={__('Icon stroke', 'maxi-blocks')}
 									className='maxi-icon-styles-control--color'
+									avoidBreakpointForDefault
 									color={
 										props[
 											`icon-stroke-color${
@@ -311,7 +312,7 @@ const IconControl = props => {
 											}`
 										]
 									}
-									prefix='icon-'
+									prefix='icon-stroke-'
 									paletteColor={
 										props[
 											`icon-stroke-palette-color${
@@ -429,7 +430,7 @@ const IconControl = props => {
 						svgType !== 'Line' &&
 						!props['icon-inherit'] && (
 							<ColorControl
-								label={__('Icon Fill', 'maxi-blocks')}
+								label={__('Icon fill', 'maxi-blocks')}
 								color={
 									props[
 										`icon-fill-color${
@@ -437,7 +438,8 @@ const IconControl = props => {
 										}`
 									]
 								}
-								prefix='icon-fill'
+								prefix='icon-fill-'
+								avoidBreakpointForDefault
 								paletteColor={
 									props[
 										`icon-fill-palette-color${
@@ -563,7 +565,7 @@ const IconControl = props => {
 									isHover,
 								})}
 								prefix='icon-background-'
-								useBreakpointForDefault
+								avoidBreakpointForDefault
 								onChangeInline={({ color }) =>
 									onChangeInline &&
 									onChangeInline(
@@ -681,7 +683,7 @@ const IconControl = props => {
 					{!isHover && (
 						<AxisControl
 							{...getGroupAttributes(props, 'iconPadding')}
-							label={__('Icon Padding', 'maxi-blocks')}
+							label={__('Icon padding', 'maxi-blocks')}
 							onChange={onChange}
 							breakpoint={breakpoint}
 							target='icon-padding'

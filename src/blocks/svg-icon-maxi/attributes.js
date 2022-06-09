@@ -21,7 +21,7 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('SVG Icon', 'maxi-blocks'),
+		default: __('Icon Maxi', 'maxi-blocks'),
 	},
 	openFirstTime: {
 		type: 'boolean',

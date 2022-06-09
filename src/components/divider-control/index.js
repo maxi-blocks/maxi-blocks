@@ -192,6 +192,7 @@ const DividerControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
+					deviceType={breakpoint}
 					prefix='divider-border-'
 					paletteColor={getLastBreakpointAttribute({
 						target: 'divider-border-palette-color',

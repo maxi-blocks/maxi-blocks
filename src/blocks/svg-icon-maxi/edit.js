@@ -220,7 +220,7 @@ class edit extends MaxiBlockComponent {
 								className='maxi-block-library__modal-button'
 								onClick={() => this.setState({ isOpen: true })}
 							>
-								{__('Select SVG Icon', 'maxi-blocks')}
+								{__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}
@@ -230,15 +230,7 @@ class edit extends MaxiBlockComponent {
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
-							maxWidth={
-								getLastBreakpointAttribute({
-									target: 'svg-responsive',
-									breakpoint: deviceType,
-									attributes,
-								})
-									? '100%'
-									: null
-							}
+							deviceType={deviceType}
 							defaultSize={{
 								width: `${getLastBreakpointAttribute({
 									target: 'svg-width',

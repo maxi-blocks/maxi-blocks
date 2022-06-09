@@ -1,4 +1,7 @@
 body.maxi-blocks--active {
+	.maxi-block-style-preview {
+		position: relative;
+	}
 	.maxi-block-style-control {
 		.maxi-select-control__input {
 			padding-right: 24px;
@@ -7,8 +10,6 @@ body.maxi-blocks--active {
 
 	.maxi-block-style-preview {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
 
 		&__light {
 			background: #f2f2f2;
@@ -20,8 +21,10 @@ body.maxi-blocks--active {
 		}
 		span {
 			padding: 5px 10px;
-			border-radius: 5px;
 			text-transform: capitalize;
+			height: 32px;
+			display: flex;
+			align-items: center;
 		}
 	}
 }

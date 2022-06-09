@@ -336,6 +336,7 @@ const NumberCounterControl = props => {
 					attributes: props,
 				})}
 				prefix='number-counter-text-'
+				deviceType={breakpoint}
 				onChangeInline={({ color }) =>
 					onChangeInline(
 						{ fill: color },

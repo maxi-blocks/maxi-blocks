@@ -65,7 +65,6 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-			fullWidth: props.blockFullWidth,
 		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
@@ -133,7 +132,6 @@ const getNormalObject = props => {
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'button-'),
-				fullWidth: props.fullWidth,
 			},
 			'button-'
 		),

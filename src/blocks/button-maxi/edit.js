@@ -12,6 +12,7 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
@@ -63,8 +64,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, blockFullWidth, fullWidth } = attributes;
+		const { attributes, deviceType, maxiSetAttributes } = this.props;
+		const { uniqueID } = attributes;
 		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
@@ -82,6 +83,12 @@ class edit extends MaxiBlockComponent {
 			border: '.maxi-button-block__button',
 			boxShadow: '.maxi-button-block__button',
 		};
+
+		const fullWidth = getLastBreakpointAttribute({
+			target: 'button-full-width',
+			breakpoint: deviceType,
+			attributes,
+		});
 
 		return [
 			<Inspector
@@ -109,7 +116,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<div data-align={fullWidth} className={buttonClasses}>

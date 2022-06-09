@@ -51,7 +51,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		uniqueID,
 		className,
 		displayValue,
-		blockFullWidth,
 		motion,
 		background,
 		disableBackground = false,
@@ -161,11 +160,10 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				)
 					setIsDragOverBlock(true);
 		  }, []);
-
+	console.log(props.attributes.blockFullWidth);
 	const blockProps = {
 		tagName,
 		className: classes,
-		'data-align': blockFullWidth,
 		ref,
 		id: uniqueID,
 		key: `maxi-block-${uniqueID}`,

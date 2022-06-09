@@ -298,6 +298,7 @@ describe('BorderControl', () => {
 	});
 
 	it('Checking the responsive delete border', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
@@ -308,7 +309,7 @@ describe('BorderControl', () => {
 		);
 
 		expect(await getAttributes('border-style-general')).toStrictEqual(
-			undefined
+			'solid'
 		);
 
 		// s

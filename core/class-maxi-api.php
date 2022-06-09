@@ -265,7 +265,10 @@ if (!class_exists('MaxiBlocks_API')):
 
             global $wpdb;
             $response = $wpdb->get_results(
-                "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$id}",
+                $wpdb->prepare(
+                    "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
+                    $id
+                ),
                 OBJECT
             );
 
@@ -295,13 +298,17 @@ if (!class_exists('MaxiBlocks_API')):
 
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
+            
             if (empty($styles) || $styles === '{}') {
-                $wpdb->query("DELETE FROM {$table} WHERE post_id={$id}");
+                $wpdb->query($wpdb->prepare("DELETE FROM %s WHERE post_id = %d"), array($table, $id));
                 return '{}';
             }
 
             $exists = $wpdb->get_results(
-                "SELECT * FROM {$table} WHERE post_id = {$id}",
+                $wpdb->prepare(
+                    "SELECT * FROM {$table} WHERE post_id = %d",
+                    $id
+                ),
                 OBJECT
             );
 

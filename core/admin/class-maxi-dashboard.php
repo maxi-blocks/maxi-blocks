@@ -71,7 +71,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 wp_register_script(
                     'maxi-admin',
-                    MAXI_PLUGIN_URL_PATH.'build/admin.js',
+                    MAXI_PLUGIN_URL_PATH.'build/admin.js'
                 );
                 wp_enqueue_script('maxi-admin');
             }
@@ -107,7 +107,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
             
             echo '<div class="maxi-dashboard_wrap">';
-            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', self::$maxi_text_domain).'"></header>';
+            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
             
             foreach ($settings_tabs as $tab_page => $tab_name) {
@@ -202,7 +202,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
-            if (isset($_GET['settings-updated'])) {
+            if (isset($_GET['settings-updated'])) {//phpcs:ignore
                 $content .= '<h2>'.__('Successfully done', self::$maxi_text_domain).'</h2>';
             }
 

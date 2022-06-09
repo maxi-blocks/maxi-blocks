@@ -17,6 +17,7 @@ import {
 	getAttributes,
 	editColorControl,
 	addCustomCSS,
+	openPreviewPage,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -241,6 +242,7 @@ describe('Button Maxi', () => {
 			'.maxi-border-control .maxi-default-styles-control button',
 			button => button[2].click()
 		);
+
 		// border color
 		await editColorControl({
 			page,
@@ -268,7 +270,27 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-bottom-width-general-hover')
 		).toStrictEqual(70);
 	});
+	it('Check Button frontend and backend', async () => {
+		const checkEditor = await page.$eval(
+			'.maxi-button-block',
+			el => el.outerHTML
+		);
+
+		expect(checkEditor).toMatchSnapshot();
+
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+		await page.waitForTimeout(300);
+
+		const buttonFrontend = await page.$eval(
+			'.maxi-button-block',
+			button => button.outerHTML
+		);
+		await page.waitForTimeout(300);
+
+		expect(buttonFrontend).toMatchSnapshot();
+	});
 	it('Button Maxi Custom CSS', async () => {
-		await expect(await addCustomCSS(page));
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
 });

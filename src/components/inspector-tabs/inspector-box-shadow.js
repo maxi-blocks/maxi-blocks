@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BoxShadowControl from '../box-shadow-control';
 import ToggleSwitch from '../toggle-switch';
+import { openSidebarAccordion } from '../../extensions/inspector';
 import {
 	getGroupAttributes,
 	setHoverAttributes,
@@ -66,6 +67,22 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
 								<>
+									<div
+										className='maxi-warning-box manage-transitions'
+										onClick={() => {
+											console.log(
+												openSidebarAccordion.props
+											);
+											openSidebarAccordion(
+												2,
+												'hyperlink hover transition'
+											);
+										}}
+									>
+										<div className='maxi-warning-box__links'>
+											<a>Manage hover transitions</a>
+										</div>
+									</div>
 									<ToggleSwitch
 										label={__(
 											'Enable box shadow hover',

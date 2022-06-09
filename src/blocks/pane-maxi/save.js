@@ -13,7 +13,7 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, accordionLayout } = attributes;
+	const { title, titleLevel, accordionLayout } = attributes;
 	const name = 'maxi-blocks/pane-maxi';
 
 	return (
@@ -26,7 +26,7 @@ const save = props => {
 				<RichText.Content
 					className='maxi-pane-block__title'
 					value={title}
-					tagName='span'
+					tagName={titleLevel}
 				/>
 				<div className='maxi-pane-block__icon' />
 			</div>

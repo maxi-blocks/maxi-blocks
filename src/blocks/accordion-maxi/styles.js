@@ -6,11 +6,15 @@ import { isNil } from 'lodash';
 /**
  * Internal dependencies
  */
-import { stylesCleaner } from '../../extensions/styles';
+import {
+	getPaletteAttributes,
+	getColorRGBAString,
+	stylesCleaner,
+} from '../../extensions/styles';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getPaneStyles = props => {
+const getPaneSpacing = props => {
 	const response = { label: 'Pane spacing', general: {} };
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
@@ -20,7 +24,40 @@ const getPaneStyles = props => {
 			}px`;
 		}
 	});
-	return { paneSpacing: response };
+	return response;
+};
+
+const getPaneTitleStyles = props => {
+	const response = { label: 'Pane title', general: {} };
+
+	const getColor = prefix => {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj: props,
+				prefix,
+			});
+		if (!paletteStatus && !isNil(color)) return color;
+		if (paletteStatus && paletteColor)
+			return getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle: props.blockStyle,
+			});
+	};
+
+	response.general = {
+		color: getColor('title-'),
+		'background-color': getColor('title-background-'),
+	};
+
+	return { paneTitle: response };
+};
+
+const getPaneStyles = props => {
+	const response = {
+		paneSpacing: getPaneSpacing(props),
+	};
+	return response;
 };
 
 const getStyles = props => {
@@ -29,6 +66,8 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			' .maxi-pane-block': getPaneStyles(props),
+			' .maxi-pane-block .maxi-pane-block__title':
+				getPaneTitleStyles(props),
 		}),
 	};
 	return response;

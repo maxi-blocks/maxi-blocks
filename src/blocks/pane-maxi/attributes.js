@@ -19,6 +19,7 @@ const attributes = {
 	},
 	title: { type: 'string' },
 	accordionLayout: { type: 'string' },
+	titleLevel: { type: 'string', default: 'h6' },
 };
 
 export default attributes;

@@ -43,7 +43,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, lastIndex, accordionLayout } = attributes;
+		const { uniqueID, lastIndex, accordionLayout, titleLevel } = attributes;
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -58,6 +58,7 @@ class edit extends MaxiBlockComponent {
 					paneIcon: attributes['icon-content'],
 					paneIconActive: attributes['icon-content-active'],
 					accordionLayout,
+					titleLevel,
 				}}
 			>
 				<MaxiBlock

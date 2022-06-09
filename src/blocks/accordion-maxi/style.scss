@@ -2,6 +2,8 @@
 	margin: 50px 0 !important;
 	&--simple-layout {
 		& .maxi-pane-block {
+			padding-left: 25px !important;
+			padding-right: 25px !important;
 			& .maxi-pane-block__header {
 				padding-bottom: 25px;
 				padding-top: 25px;

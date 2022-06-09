@@ -7,6 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { paletteAttributesCreator } from '../../extensions/styles';
+
 /**
  * Attributes
  */
@@ -30,6 +32,15 @@ const attributes = {
 		default: 2,
 	},
 	...attributesData.accordion,
+	titleLevel: { type: 'string', default: 'h6' },
+	...{
+		...paletteAttributesCreator({ prefix: 'title-' }),
+		'title-palette-color': { type: 'number', default: 6 },
+	},
+	...{
+		...paletteAttributesCreator({ prefix: 'title-background-' }),
+		'title-background-palette-color': { type: 'number', default: 1 },
+	},
 	'icon-content': {
 		type: 'string',
 		default: '',

@@ -34,7 +34,8 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 		} = this.props;
 		const { uniqueID, title } = attributes;
-		const { paneIcon, paneIconActive, accordionLayout } = this.context;
+		const { paneIcon, paneIconActive, accordionLayout, titleLevel } =
+			this.context;
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()
 			.map(block => block.name)
@@ -98,6 +99,7 @@ class edit extends MaxiBlockComponent {
 						}}
 						placeholder={__('Title', 'maxi-blocks')}
 						withoutInteractiveFormatting
+						tagName={titleLevel}
 					/>
 
 					<div className='maxi-pane-block__icon'>

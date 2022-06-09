@@ -66,7 +66,7 @@ body.maxi-blocks--active .maxi-text-block {
 		margin: 0;
 		border: 2px dotted var(--maxi-grey-7-color);
 	}
-	p:not(&__content) {
+	p:not(&__content):not(.maxi-pane-block__title) {
 		margin-left: auto;
 		margin-right: auto;
 	}

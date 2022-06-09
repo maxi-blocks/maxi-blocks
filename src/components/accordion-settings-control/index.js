@@ -12,6 +12,11 @@ import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
+/**
+ * Styles
+ */
+import './editor.scss';
+
 const AccordionSettings = props => {
 	const { accordionLayout, clientId, onChange, autoPaneClose, breakpoint } =
 		props;

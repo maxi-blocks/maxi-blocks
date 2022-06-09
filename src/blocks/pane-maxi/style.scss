@@ -16,21 +16,12 @@
 	&__ {
 		&icon svg {
 			width: 20px;
-			position: absolute;
-			right: 25px;
-			top: 50%;
-			transform: translateY(-50%);
-		}
-
-		&title {
-			position: absolute;
-			top: 10px;
-			left: 10px;
 		}
 
 		&header {
-			position: relative;
-			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 		}
 
 		&content {

@@ -11,6 +11,7 @@ import {
 	SettingTabsControl,
 	AccordionControl,
 	AccordionSettings,
+	AccordionTitleSettings,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -22,7 +23,20 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { blockStyle, accordionLayout } = attributes;
+	const { blockStyle, accordionLayout, titleLevel } = attributes;
+	const titleColors = {
+		'title-color': attributes['title-color'],
+		'title-palette-color': attributes['title-palette-color'],
+		'title-palette-opacity': attributes['title-palette-opacity'],
+		'title-palette-status': attributes['title-palette-status'],
+		'title-background-color': attributes['title-background-color'],
+		'title-background-palette-color':
+			attributes['title-background-palette-color'],
+		'title-background-palette-opacity':
+			attributes['title-background-palette-opacity'],
+		'title-background-palette-status':
+			attributes['title-background-palette-status'],
+	};
 
 	return (
 		<InspectorControls>
@@ -63,6 +77,19 @@ const Inspector = props => {
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
+												/>
+											),
+										},
+										deviceType === 'general' && {
+											label: __('Title', 'maxi-blocks'),
+											content: (
+												<AccordionTitleSettings
+													titleLevel={titleLevel}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													{...titleColors}
+													clientId={clientId}
 												/>
 											),
 										},

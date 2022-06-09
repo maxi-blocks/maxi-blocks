@@ -39,7 +39,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			width: 70%;
+			width: 65%;
 			height: 11rem;
 			border: 1px solid #dddfe1;
 			border-radius: 5px;
@@ -128,7 +128,7 @@
 		&__y-control {
 			position: absolute;
 			top: 60px;
-			right: -30px;
+			right: -22px;
 			width: 11rem;
 			@at-root .rtl #{&} {
 				left: -30px;
@@ -137,7 +137,7 @@
 
 			input[type='range'] {
 				position: relative;
-				right: 16px;
+				right: 18px;
 				top: 18px;
 				margin-left: 4px;
 				@at-root .rtl #{&} {
@@ -180,7 +180,7 @@
 				flex-direction: column;
 				align-items: flex-end;
 				.maxi-base-control {
-					width: 61px;
+					width: 70px;
 					margin: 5px 0 0 !important;
 					&__field {
 						margin-bottom: 0;
@@ -202,14 +202,14 @@
 			right: 0;
 			display: flex;
 			align-items: flex-end;
-			width: 69px;
+			width: 64px;
 			@at-root .rtl #{&} {
 				right: unset;
 				left: 0;
 			}
 
 			button[type='button'] {
-				margin-left: 5px;
+				margin-left: 3px;
 			}
 			button[type='button'],
 			button[type='reset'] {
@@ -268,6 +268,13 @@
 				margin-left: 5px;
 			}
 		}
+	}
+	.maxi-transform-control__square-control__y-control__value .maxi-base-control,
+	.maxi-transform-control__square-control__x-control__value__input,
+	.maxi-transform-control__square-control__x-control__value .maxi-base-control
+	.maxi-transform-control__square-control__y-control__value .maxi-base-control,
+	.maxi-transform-control__square-control__y-control__value__input {
+		width: 70px;
 	}
 	.maxi-transform-control__rotate-control {
 		margin-bottom: 10px;

@@ -352,7 +352,7 @@ const TypographyControl = props => {
 		},
 		em: {
 			min: 0,
-			max: 99,
+			max: 100,
 		},
 		vw: {
 			min: 0,

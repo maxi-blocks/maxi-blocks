@@ -23,6 +23,33 @@ const getSizeStyles = (obj, prefix = '') => {
 
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
+			if (target === 'width' || target === 'max-width') {
+				const fullWidth = getLastBreakpointAttribute({
+					target: `${prefix}full-width`,
+					breakpoint,
+					attributes: obj,
+				});
+				console.log('fullWidth', fullWidth, 'target', target);
+
+				if (target === 'width' && fullWidth === 'full') {
+					return null;
+				}
+
+				if (target === 'max-width') {
+					if (fullWidth === 'full') {
+						return {
+							'min-width': '100% !important',
+						};
+					}
+
+					if (fullWidth === 'normal') {
+						return {
+							'min-width': 'initial !important',
+						};
+					}
+				}
+			}
+
 			if (!obj[`${prefix}size-advanced-options`]) {
 				if (target.includes('max') || target.includes('min'))
 					return null;
@@ -48,14 +75,6 @@ const getSizeStyles = (obj, prefix = '') => {
 
 				if (fitContent) {
 					return { width: 'fit-content' };
-				}
-			}
-
-			if (target === 'width' || target === 'max-width') {
-				const fullWidth = obj.fullWidth || false;
-
-				if (fullWidth === 'full') {
-					return null;
 				}
 			}
 
@@ -99,7 +118,7 @@ const getSizeStyles = (obj, prefix = '') => {
 			...getValue('min-height'),
 		};
 	});
-
+	console.log(response);
 	return response;
 };
 

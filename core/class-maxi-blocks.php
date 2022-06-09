@@ -47,8 +47,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
         {
             $script_asset_path = MAXI_PLUGIN_DIR_PATH . 'build/index.asset.php';
             if (!file_exists($script_asset_path)) {
-                throw new Error(
-                    'You need to run `npm start` or `npm run build` for the "create-block/test-maxi-blocks" block first.',
+                throw new Error( //phpcs:ignore
+                    'You need to run `npm start` or `npm run build` for the "create-block/test-maxi-blocks" block first.'
                 );
             }
 
@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block-editor',
                 plugins_url($index_js, dirname(__FILE__)),
                 $script_asset['dependencies'],
-                $script_asset['version'],
+                $script_asset['version']
             );
 
             $editor_css = 'build/index.css';
@@ -66,7 +66,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block-editor',
                 plugins_url($editor_css, dirname(__FILE__)),
                 [],
-                filemtime(MAXI_PLUGIN_DIR_PATH . "/$editor_css"),
+                filemtime(MAXI_PLUGIN_DIR_PATH . "/$editor_css")
             );
 
             register_block_type('maxi-blocks/block-settings', [
@@ -79,7 +79,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block',
                 plugins_url($style_css, dirname(__FILE__)),
                 [],
-                filemtime(MAXI_PLUGIN_DIR_PATH . "/$style_css"),
+                filemtime(MAXI_PLUGIN_DIR_PATH . "/$style_css")
             );
             wp_enqueue_style('maxi-blocks-block');
         }
@@ -93,7 +93,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         'title' => __('Maxi Blocks', 'maxi-blocks'),
                     ],
                 ],
-                $categories,
+                $categories
             );
         }
     }

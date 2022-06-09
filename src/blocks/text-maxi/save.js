@@ -17,6 +17,8 @@ const save = props => {
 
 	const name = 'maxi-blocks/text-maxi';
 
+	const value = content?.replace(/\n/g, '<br />');
+
 	return (
 		<MaxiBlock.save
 			classes={`${isList ? 'maxi-list-block' : ''}`}
@@ -24,7 +26,7 @@ const save = props => {
 		>
 			<RichText.Content
 				className='maxi-text-block__content'
-				value={content}
+				value={value}
 				tagName={isList ? typeOfList : textLevel}
 				reversed={!!listReversed}
 				start={listStart}

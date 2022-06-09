@@ -20,6 +20,8 @@ const getIconStyles = (
 		general: {},
 	};
 
+	if (isIconInherit && !obj['typography-status-hover']) return response;
+
 	if (isIconInherit) {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({

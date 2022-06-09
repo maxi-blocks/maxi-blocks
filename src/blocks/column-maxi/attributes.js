@@ -21,10 +21,6 @@ const attributes = {
 		type: 'string',
 		default: __('Column', 'maxi-blocks'),
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

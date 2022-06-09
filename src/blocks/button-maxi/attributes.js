@@ -23,10 +23,6 @@ const attributes = {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	buttonContent: {
 		type: 'string',
 	},
@@ -169,10 +165,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,

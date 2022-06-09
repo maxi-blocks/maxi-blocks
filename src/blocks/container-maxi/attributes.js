@@ -21,10 +21,6 @@ const attributes = {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'full',
-	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...{

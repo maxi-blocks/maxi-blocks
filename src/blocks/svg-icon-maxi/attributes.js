@@ -84,10 +84,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

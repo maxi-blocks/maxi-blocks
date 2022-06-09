@@ -26,10 +26,6 @@ const attributes = {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -144,10 +140,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

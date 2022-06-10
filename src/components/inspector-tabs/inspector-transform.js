@@ -13,7 +13,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 /**
  * Component
  */
-const transform = ({ props, depth = 2 }) => {
+const transform = ({ props, depth = 2, categories, selectors }) => {
 	const {
 		attributes,
 		deviceType,
@@ -29,7 +29,12 @@ const transform = ({ props, depth = 2 }) => {
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<TransformControl
 					{...getGroupAttributes(attributes, 'transform')}
-					onChangeInline={obj => insertInlineStyles({ obj })}
+					onChangeInline={(obj, target) => {
+						insertInlineStyles({
+							obj,
+							target,
+						});
+					}}
 					onChange={obj => {
 						maxiSetAttributes(obj);
 						cleanInlineStyles();
@@ -37,6 +42,8 @@ const transform = ({ props, depth = 2 }) => {
 					uniqueID={uniqueID}
 					breakpoint={deviceType}
 					depth={depth}
+					categories={categories}
+					selectors={selectors}
 				/>
 			</ResponsiveTabsControl>
 		),

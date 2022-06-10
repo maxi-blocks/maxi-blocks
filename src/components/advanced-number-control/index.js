@@ -159,7 +159,7 @@ const AdvancedNumberControl = props => {
 					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
-					onChange={val => onChangeValue(val ? 'auto' : '')}
+					onChange={val => onChangeValue(val ? 'auto' : undefined)}
 				/>
 			)}
 			{value !== 'auto' && (

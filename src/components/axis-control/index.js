@@ -634,7 +634,7 @@ const AxisControl = props => {
 		if (optionType === 'number' && isNaN(val))
 			if (isEmpty(val)) newValue = val;
 			else newValue = +val;
-		else if (isEmpty(val) && !isNumber(val)) newValue = '';
+		else if (isEmpty(val) && !isNumber(val)) newValue = val;
 		else if (val === 'auto') newValue = 'auto';
 		else if (optionType === 'string') newValue = val.toString();
 		else newValue = val;

@@ -27,9 +27,7 @@ const getPaneSpacing = props => {
 	return response;
 };
 
-const getPaneTitleStyles = props => {
-	const response = { label: 'Pane title', general: {} };
-
+const getPaneTitleStyles = (props, target) => {
 	const getColor = prefix => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
@@ -45,12 +43,26 @@ const getPaneTitleStyles = props => {
 			});
 	};
 
-	response.general = {
-		color: getColor('title-'),
-		'background-color': getColor('title-background-'),
+	const response = {
+		[`${target} .maxi-pane-block__title`]: {
+			paneTitleColor: {
+				label: 'Pane title color',
+				general: {
+					color: getColor('title-'),
+				},
+			},
+		},
+		[`${target} .maxi-pane-block__header`]: {
+			paneTitleBgColor: {
+				label: 'Pane title background color',
+				general: {
+					'background-color': getColor('title-background-'),
+				},
+			},
+		},
 	};
 
-	return { paneTitle: response };
+	return response;
 };
 
 const getPaneStyles = props => {
@@ -62,13 +74,11 @@ const getPaneStyles = props => {
 
 const getStyles = props => {
 	const { uniqueID } = props;
-
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'.maxi-accordion-block .maxi-accordion-block__content':
 				getPaneStyles(props),
-			' .maxi-pane-block .maxi-pane-block__title':
-				getPaneTitleStyles(props),
+			...getPaneTitleStyles(props, ' .maxi-pane-block'),
 		}),
 	};
 	return response;

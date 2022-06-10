@@ -68,9 +68,7 @@ const getInnerBlocksChild = ({
 						key={`maxi-pane-content__${uniqueID}`}
 					>
 						<hr />
-						{cloneElement(innerBlocksChildren, {
-							key: `maxi-inner-content__${uniqueID}`,
-						})}
+						{cloneElement(innerBlocksChildren)}
 					</div>
 					{accordionLayout === 'simple' && <hr />}
 				</>
@@ -78,12 +76,9 @@ const getInnerBlocksChild = ({
 			blockName === 'maxi-blocks/accordion-maxi' && (
 				<div
 					className='maxi-accordion-block__content'
-					key={`maxi-pane-content__${uniqueID}`}
+					key={`maxi-accordion-content__${uniqueID}`}
 				>
-					<hr />
-					{cloneElement(innerBlocksChildren, {
-						key: `maxi-inner-content__${uniqueID}`,
-					})}
+					{cloneElement(innerBlocksChildren)}
 				</div>
 			),
 			...(blockName === 'maxi-blocks/accordion-maxi' && children),

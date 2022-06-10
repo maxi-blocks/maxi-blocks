@@ -507,9 +507,14 @@ const ScrollEffectsControl = props => {
 			onChange({
 				...newDefaultShortcuts?.[type]?.[`shortcut${number}`],
 				shortcutEffectType: {
-					...props['shortcutEffectType'],
+					...props.shortcutEffectType,
 					[type]: number,
 				},
+			});
+		else if (number === '0')
+			onChange({
+				...newDefaultShortcuts?.[`shortcut${number}`](),
+				shortcutEffect: toNumber(number),
 			});
 		else
 			onChange({
@@ -529,7 +534,7 @@ const ScrollEffectsControl = props => {
 			<SelectControl
 				label={__('Scroll combinations', 'maxi-blocks')}
 				onChange={val => onChangeShortcut(val)}
-				value={props['shortcutEffect']}
+				value={props.shortcutEffect}
 				options={globalShortcutsOptions}
 			/>
 			<SettingTabsControl
@@ -587,9 +592,7 @@ const ScrollEffectsControl = props => {
 											'Direction preset',
 											'maxi-blocks'
 										)}
-										value={
-											props['shortcutEffectType']?.[type]
-										}
+										value={props.shortcutEffectType?.[type]}
 										onChange={val =>
 											onChangeShortcut(val, type)
 										}
@@ -696,7 +699,7 @@ const ScrollEffectsControl = props => {
 									<ToggleSwitch
 										// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 										label={__(
-											`Simulate scroll effect live (test)`,
+											'Simulate scroll effect live (test)',
 											'maxi-block'
 										)}
 										selected={isPreviewEnabled}

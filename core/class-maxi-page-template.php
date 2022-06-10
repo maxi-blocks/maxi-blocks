@@ -65,7 +65,7 @@ if (!class_exists('MaxiBlocks_PageTemplate')) :
             return $posts_templates;
         }
 
-        public function register_templates($atts)
+        public function register_templates($attr)
         {
             $cache_key = 'page_templates-' . md5(get_theme_root() . '/' . get_stylesheet());
 
@@ -80,7 +80,7 @@ if (!class_exists('MaxiBlocks_PageTemplate')) :
 
             wp_cache_add($cache_key, $templates, 'themes', 1800);
 
-            return $atts;
+            return $attr;
         }
 
         public function view_template($template)
@@ -113,9 +113,6 @@ if (!class_exists('MaxiBlocks_PageTemplate')) :
             if (file_exists($file)) {
                 return $file;
             }
-            // } else {
-            // 	echo $file;
-            // }
 
             return $template;
         }

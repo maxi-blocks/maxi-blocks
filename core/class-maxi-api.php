@@ -300,13 +300,14 @@ if (!class_exists('MaxiBlocks_API')):
 
             
             if (empty($styles) || $styles === '{}') {
-                $wpdb->query($wpdb->prepare("DELETE FROM %s WHERE post_id = %d"), array($table, $id));
+                $wpdb->query($wpdb->prepare("DELETE FROM %s WHERE post_id = %d", $table, $id));
                 return '{}';
             }
 
             $exists = $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT * FROM {$table} WHERE post_id = %d",
+                    "SELECT * FROM %s WHERE post_id = %d",
+                    $table,
                     $id
                 ),
                 OBJECT
@@ -351,7 +352,10 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             $post = (array)$wpdb->get_results(
-                "SELECT * FROM {$table} WHERE post_id = {$id}",
+                $wpdb->prepare(
+                    "SELECT * FROM %s WHERE post_id = %d",
+                    array($table, $id)
+                ),
                 OBJECT
             )[0];
 

@@ -342,7 +342,6 @@ class MaxiBlocks_Styles
     public function update_color_palette_backups($style)
     {
         global $wpdb;
-        //  $table_name = $wpdb->prefix . 'maxi_blocks_general';
     
         $style_card = maybe_unserialize(
             $wpdb->get_var(

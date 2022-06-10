@@ -4,7 +4,6 @@
 import { RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -34,8 +33,17 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 		} = this.props;
 		const { uniqueID, title } = attributes;
-		const { paneIcon, paneIconActive, accordionLayout, titleLevel } =
-			this.context;
+		const {
+			paneIcon,
+			paneIconActive,
+			accordionLayout,
+			titleLevel,
+			openPane,
+			setOpenPane,
+		} = this.context;
+
+		const isOpen = openPane === clientId;
+
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()
 			.map(block => block.name)
@@ -46,26 +54,6 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 					].indexOf(blockName) === -1
 			);
-		const { isBlockSelected, getSelectedBlockClientId, getBlockParents } =
-			select('core/block-editor');
-		let paneOpen = false;
-
-		if (
-			(isBlockSelected(clientId) ||
-				getBlockParents(getSelectedBlockClientId()).includes(
-					clientId
-				)) &&
-			this.blockRef.current
-		) {
-			this.blockRef.current.querySelector(
-				'.maxi-pane-block__content'
-			).style.display = 'block';
-			paneOpen = true;
-		} else if (this.blockRef.current) {
-			this.blockRef.current.querySelector(
-				'.maxi-pane-block__content'
-			).style.display = 'none';
-		}
 
 		return [
 			<MaxiBlock
@@ -82,8 +70,14 @@ class edit extends MaxiBlockComponent {
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 				accordionLayout={accordionLayout}
+				aria-expanded={isOpen}
 			>
-				<div className='maxi-pane-block__header'>
+				<div
+					className='maxi-pane-block__header'
+					onClick={() => {
+						setOpenPane(clientId);
+					}}
+				>
 					<RichText
 						className='maxi-pane-block__title'
 						value={title}
@@ -103,9 +97,7 @@ class edit extends MaxiBlockComponent {
 					/>
 
 					<div className='maxi-pane-block__icon'>
-						<RawHTML>
-							{paneOpen ? paneIconActive : paneIcon}
-						</RawHTML>
+						<RawHTML>{isOpen ? paneIconActive : paneIcon}</RawHTML>
 					</div>
 				</div>
 			</MaxiBlock>,

@@ -23,9 +23,8 @@
 			align-items: center;
 			justify-content: space-between;
 		}
-
-		&content {
-			display: none;
-		}
 	}
+}
+.maxi-pane-block[aria-expanded='false'] .maxi-pane-block__content {
+	display: none;
 }

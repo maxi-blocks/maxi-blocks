@@ -19,7 +19,7 @@ const getPaneSpacing = props => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 		if (!isNil(props[`pane-spacing-${breakpoint}`])) {
-			response[breakpoint]['margin-bottom'] = `${
+			response[breakpoint]['row-gap'] = `${
 				props[`pane-spacing-${breakpoint}`]
 			}px`;
 		}
@@ -65,7 +65,8 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner({
-			' .maxi-pane-block': getPaneStyles(props),
+			'.maxi-accordion-block .maxi-accordion-block__content':
+				getPaneStyles(props),
 			' .maxi-pane-block .maxi-pane-block__title':
 				getPaneTitleStyles(props),
 		}),

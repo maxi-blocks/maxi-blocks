@@ -21,6 +21,7 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
 			accordionLayout={accordionLayout}
+			aria-expanded={false}
 		>
 			<div className='maxi-pane-block__header'>
 				<RichText.Content

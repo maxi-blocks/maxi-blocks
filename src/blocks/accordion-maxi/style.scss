@@ -1,4 +1,9 @@
 .maxi-accordion-block {
+	& .maxi-accordion-block__content {
+		display: flex;
+		flex-direction: column;
+	}
+
 	margin: 50px 0 !important;
 	&--simple-layout {
 		& .maxi-pane-block {

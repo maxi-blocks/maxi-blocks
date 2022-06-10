@@ -20,6 +20,12 @@ import AccordionContext from './context';
  * Edit
  */
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+
+		this.state = { openPane: '' };
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -59,6 +65,8 @@ class edit extends MaxiBlockComponent {
 					paneIconActive: attributes['icon-content-active'],
 					accordionLayout,
 					titleLevel,
+					openPane: this.state.openPane,
+					setOpenPane: openPane => this.setState({ openPane }),
 				}}
 			>
 				<MaxiBlock

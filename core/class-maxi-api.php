@@ -444,12 +444,9 @@ if (!class_exists('MaxiBlocks_API')):
         public function mb_delete_register($postId)
         {
             global $wpdb;
-
-            $table_styles =  $wpdb->prefix . 'maxi_blocks_styles';
-            $table_custom_meta =  $wpdb->prefix . 'maxi_blocks_custom_data';
-
-            $wpdb->query($wpdb->prepare("DELETE FROM %s WHERE post_id=%d", $table_styles, $postId));
-            $wpdb->query($wpdb->prepare("DELETE FROM %s WHERE post_id=%d", $table_custom_meta, $postId));
+            
+            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}'maxi_blocks_styles' WHERE post_id=%d", $postId));
+            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}'maxi_blocks_custom_data' WHERE post_id=%d", $postId));
         }
 
         public function get_api_response($response)

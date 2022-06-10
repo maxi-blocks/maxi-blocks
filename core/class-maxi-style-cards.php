@@ -87,7 +87,7 @@ class MaxiBlocks_StyleCards
         return $style;
     }
 
-    public function get_maxi_blocks_current_style_cards()
+    public static function get_maxi_blocks_current_style_cards()
     {
         global $wpdb;
         
@@ -105,7 +105,7 @@ class MaxiBlocks_StyleCards
         ) {
             return $maxi_blocks_style_cards_current;
         } else {
-            $defaultStyleCard = $this->getDefaultStyleCard();
+            $defaultStyleCard = self::getDefaultStyleCard();
 
             $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',
@@ -122,9 +122,9 @@ class MaxiBlocks_StyleCards
         }
     }
 
-    public function get_maxi_blocks_active_style_card()
+    public static function get_maxi_blocks_active_style_card()
     {
-        $maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
+        $maxi_blocks_style_cards = self::get_maxi_blocks_current_style_cards();
 
         $maxi_blocks_style_cards_array = json_decode(
             $maxi_blocks_style_cards,

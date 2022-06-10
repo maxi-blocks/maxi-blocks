@@ -4,7 +4,6 @@ const opacity = breakpointAttributesCreator({
 	obj: {
 		opacity: {
 			type: 'number',
-			default: 1,
 		},
 	},
 });

@@ -20,10 +20,15 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 const opacity = ({ props }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
+	const extraIndicators = Object.keys(opacityAttr);
+
 	return {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
+			<ResponsiveTabsControl
+				breakpoint={deviceType}
+				extraIndicators={extraIndicators}
+			>
 				<OpacityControl
 					opacity={getLastBreakpointAttribute({
 						target: 'opacity',
@@ -36,7 +41,7 @@ const opacity = ({ props }) => {
 				/>
 			</ResponsiveTabsControl>
 		),
-		extraIndicators: Object.keys(opacityAttr),
+		extraIndicators,
 	};
 };
 

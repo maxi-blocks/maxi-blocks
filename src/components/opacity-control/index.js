@@ -7,13 +7,13 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import { getIsValid } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, round, isNil } from 'lodash';
-import { getIsValid } from '../../extensions/styles';
 
 /**
  * Component
@@ -44,7 +44,7 @@ const OpacityControl = props => {
 			}}
 			min={0}
 			max={100}
-			onReset={() => (onReset ? onReset() : onChange(1))}
+			onReset={() => (onReset ? onReset() : onChange(undefined))}
 		/>
 	);
 };

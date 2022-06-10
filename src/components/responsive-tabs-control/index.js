@@ -30,6 +30,7 @@ const ResponsiveTabsControl = props => {
 		breakpoint,
 		disableCallback = false,
 		target,
+		extraIndicators,
 	} = props;
 
 	const { winBreakpoint } = useSelect(select => {
@@ -80,6 +81,7 @@ const ResponsiveTabsControl = props => {
 								: setScreenSize(breakpoint.toLowerCase())
 							: null,
 					breakpoint: breakpoint.toLowerCase(),
+					extraIndicators,
 				};
 			})}
 			forceTab={getTextOptionsTab()}

@@ -97,21 +97,10 @@ const Inspector = props => {
 											label: __('Icon', 'maxi-blocks'),
 											content: (
 												<AccordionIconSettings
-													icon-content={
-														attributes[
-															'icon-content'
-														]
-													}
-													icon-content-active={
-														attributes[
-															'icon-content-active'
-														]
-													}
-													icon-position={
-														attributes[
-															'icon-position'
-														]
-													}
+													{...getGroupAttributes(
+														attributes,
+														'accordionIcon'
+													)}
 													blockStyle={blockStyle}
 													onChange={obj =>
 														maxiSetAttributes(obj)

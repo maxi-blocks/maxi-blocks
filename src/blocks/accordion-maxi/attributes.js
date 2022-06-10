@@ -41,18 +41,7 @@ const attributes = {
 		...paletteAttributesCreator({ prefix: 'title-background-' }),
 		'title-background-palette-color': { type: 'number', default: 1 },
 	},
-	'icon-position': {
-		type: 'string',
-		default: 'right',
-	},
-	'icon-content': {
-		type: 'string',
-		default: '',
-	},
-	'icon-content-active': {
-		type: 'string',
-		default: '',
-	},
+	...attributesData.accordionIcon,
 };
 
 export default attributes;

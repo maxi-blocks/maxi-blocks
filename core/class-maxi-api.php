@@ -266,9 +266,10 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $response = $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d, OBJECT",
+                    "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
                     $id
-                )
+                ),
+                OBJECT
             );
 
             if (!$response) {
@@ -297,18 +298,17 @@ if (!class_exists('MaxiBlocks_API')):
 
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
-            
             if (empty($styles) || $styles === '{}') {
-                $wpdb->query($wpdb->prepare("DELETE FROM %s WHERE post_id = %d", $table, $id));
+                $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d", $id));
                 return '{}';
             }
 
             $exists = $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT * FROM %s WHERE post_id = %d, OBJECT",
-                    $table,
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
                     $id
-                )
+                ),
+                OBJECT
             );
 
             if (!empty($exists)) {
@@ -351,10 +351,10 @@ if (!class_exists('MaxiBlocks_API')):
 
             $post = (array)$wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT * FROM %s WHERE post_id = %d, OBJECT",
-                    $table,
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
                     $id
-                )
+                ),
+                OBJECT
             )[0];
 
             return $post;
@@ -552,9 +552,10 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $response = $wpdb->get_results(
                 $wpdb->prepare(
-                    'SELECT custom_data_value FROM  ' . $wpdb->prefix . 'maxi_blocks_custom_data WHERE post_id = %d, OBJECT',
+                    'SELECT custom_data_value FROM  ' . $wpdb->prefix . 'maxi_blocks_custom_data WHERE post_id = %d',
                     $id
-                )
+                ),
+                OBJECT
             );
 
             if (!$response) {

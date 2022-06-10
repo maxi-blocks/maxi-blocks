@@ -89,17 +89,23 @@ export const getColorBackgroundObject = ({
 	}
 
 	if (isIconInherit) {
-		response[breakpoint]['background-color'] =
-			props['background-active-media'] !== '' && paletteStatus
-				? getColorRGBAString({
-						firstVar: `button-background-color${
-							isHover ? '-hover' : ''
-						}`,
-						secondVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle,
-				  })
-				: color;
+		const hasBackground =
+			!!props['background-active-media'] &&
+			props['background-active-media'] !== 'none';
+
+		if (hasBackground)
+			response[breakpoint]['background-color'] =
+				props['background-active-media'] !== '' && paletteStatus
+					? getColorRGBAString({
+							firstVar: `button-background-color${
+								isHover ? '-hover' : ''
+							}`,
+							secondVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle,
+					  })
+					: color;
+		else response[breakpoint]['background-color'] = '';
 	}
 
 	if (!isIconInherit && isIcon)
@@ -111,6 +117,10 @@ export const getColorBackgroundObject = ({
 			  })
 			: color;
 	else if (isIcon) {
+		const hasBackground =
+			!!props['background-active-media'] &&
+			props['background-active-media'] !== 'none';
+
 		const { paletteColor, paletteOpacity, color } = getPaletteAttributes({
 			obj: props,
 			prefix: 'button-background-',
@@ -118,13 +128,15 @@ export const getColorBackgroundObject = ({
 			breakpoint,
 		});
 
-		response[breakpoint].background = paletteStatus
-			? getColorRGBAString({
-					firstVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-			  })
-			: color;
+		if (hasBackground)
+			response[breakpoint].background = paletteStatus
+				? getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle,
+				  })
+				: color;
+		else response[breakpoint].background = '';
 	}
 
 	if (isBgColorClipPathActive)

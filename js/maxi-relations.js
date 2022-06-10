@@ -20,17 +20,18 @@ const relations = () => {
 
 				effectsObj = {
 					...effectsObj,
-					...(effects[`transition-duration-${breakpoint}`] && {
+					...(effects[`transition-duration-${breakpoint}`] !==
+						undefined && {
 						'transition-duration':
 							effects[`transition-duration-${breakpoint}`],
 					}),
-					...(effects[`transition-delay-${breakpoint}`] && {
+					...(effects[`transition-delay-${breakpoint}`] !==
+						undefined && {
 						'transition-delay':
 							effects[`transition-delay-${breakpoint}`],
 					}),
-					...(effects[`transition-timing-function-${breakpoint}`] && {
-						'transition-timing-function':
-							effects[`transition-timing-function-${breakpoint}`],
+					...(effects[`easing-${breakpoint}`] !== undefined && {
+						easing: effects[`easing-${breakpoint}`],
 					}),
 				};
 			}
@@ -56,8 +57,7 @@ const relations = () => {
 
 		const { css, effectsObj } = getCssResponsiveObj(item.css, item.effects);
 
-		const transitionString = `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['transition-timing-function']}`;
-
+		const transitionString = `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`;
 		let timeout;
 
 		switch (item.action) {
@@ -73,8 +73,9 @@ const relations = () => {
 					toggleInlineStyles(css, targetEl, true);
 
 					timeout = setTimeout(() => {
+						// Removing transition after transition-duration + 1s to make sure it's done
 						targetEl.style.transition = '';
-					}, item.effects['transition-duration-general'] * 1000 + 10);
+					}, item.effects['transition-duration-general'] * 1000 + 1000);
 				});
 			}
 			case 'click': {

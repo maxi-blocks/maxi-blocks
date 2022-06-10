@@ -18,6 +18,11 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsMap } from './custom-css';
 
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -61,9 +66,6 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -124,15 +126,26 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getNormalObject(props),
-				':hover': getHoverNormalObject(props),
-				' .map-marker-info-window__title': getMapObject(props, 'text'),
-				' .map-marker-info-window__address': getMapObject(
-					props,
-					'address'
-				),
-			},
+			merge(
+				{
+					'': getNormalObject(props),
+					':hover': getHoverNormalObject(props),
+					' .map-marker-info-window__title': getMapObject(
+						props,
+						'text'
+					),
+					' .map-marker-info-window__address': getMapObject(
+						props,
+						'address'
+					),
+				},
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsMap
+				)
+			),
 			selectorsMap,
 			props
 		),

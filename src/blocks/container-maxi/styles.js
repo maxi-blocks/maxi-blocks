@@ -64,9 +64,6 @@ const getNormalObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		margin: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin'),
@@ -233,7 +230,13 @@ const getStyles = props => {
 						isHover: true,
 					}),
 				},
-				...getTransitionStyles(props)
+				...getTransitionStyles(props),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsContainer
+				)
 			),
 			selectorsContainer,
 			props

@@ -44,9 +44,6 @@ const getWrapperObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
@@ -266,7 +263,13 @@ const getStyles = props => {
 						isHover: true,
 					}),
 				},
-				...getTransitionStyles(props, transitionObj)
+				...getTransitionStyles(props, transitionObj),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsNumberCounter
+				)
 			),
 			selectorsNumberCounter,
 			props

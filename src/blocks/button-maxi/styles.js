@@ -81,9 +81,6 @@ const getWrapperObject = props => {
 				...getGroupAttributes(props, 'padding'),
 			},
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
@@ -627,7 +624,13 @@ const getStyles = (props, scValues) => {
 						}),
 					}),
 				},
-				...getTransitionStyles(props, transitionObj)
+				...getTransitionStyles(props, transitionObj),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsButton
+				)
 			),
 			selectorsButton,
 			props

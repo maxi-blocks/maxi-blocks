@@ -69,9 +69,6 @@ const getWrapperObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -202,7 +199,13 @@ const getStyles = props => {
 						blockStyle: props.blockStyle,
 					}),
 				},
-				...getTransitionStyles(props, transitionObj)
+				...getTransitionStyles(props, transitionObj),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsDivider
+				)
 			),
 			selectorsDivider,
 			props

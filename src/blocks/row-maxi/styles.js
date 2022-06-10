@@ -64,9 +64,6 @@ const getNormalObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		row: {
 			general: {},
 		},
@@ -145,7 +142,13 @@ const getStyles = props => {
 				},
 				...getTransitionStyles({
 					...getGroupAttributes(props, 'transition'),
-				})
+				}),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsRow
+				)
 			),
 			selectorsRow,
 			props

@@ -57,9 +57,6 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		columnSize: {
 			...getColumnSizeStyles(
 				{
@@ -148,7 +145,13 @@ const getStyles = (props, rowGapProps, clientId) => {
 						rowBorderRadius: props.rowBorderRadius,
 					}),
 				},
-				...getTransitionStyles(props)
+				...getTransitionStyles(props),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsColumn
+				)
 			),
 			selectorsColumn,
 			props

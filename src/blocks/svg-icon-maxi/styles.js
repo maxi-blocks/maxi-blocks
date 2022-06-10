@@ -73,9 +73,6 @@ const getWrapperObject = props => {
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
@@ -264,7 +261,13 @@ const getStyles = props => {
 						blockStyle,
 					}),
 				},
-				...getTransitionStyles(props, transitionObj)
+				...getTransitionStyles(props, transitionObj),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsSvgIcon
+				)
 			),
 			selectorsSvgIcon,
 			props

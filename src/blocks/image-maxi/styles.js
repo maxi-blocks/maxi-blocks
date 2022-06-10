@@ -100,9 +100,6 @@ const getWrapperObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
@@ -495,7 +492,13 @@ const getStyles = props => {
 						props.blockStyle
 					),
 				},
-				...getTransitionStyles(props, transitionObj)
+				...getTransitionStyles(props, transitionObj),
+				...getTransformStyles(
+					{
+						...getGroupAttributes(props, 'transform'),
+					},
+					selectorsImage
+				)
 			),
 			selectorsImage,
 			props

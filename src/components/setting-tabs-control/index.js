@@ -135,6 +135,25 @@ const SettingTabsControl = props => {
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;
+
+						const maxiAttrsFromChildren = getMaxiAttrsFromChildren({
+							items: itemsIndicators,
+							blockName:
+								blockName ??
+								getBlockName(getSelectedBlockClientId()),
+						});
+
+						const isActive = getIsActiveTab(
+							maxiAttrsFromChildren,
+							item.breakpoint,
+							item.extraIndicators,
+							item.extraIndicatorsResponsive,
+							[
+								...getChildrenIgnoreIndicator(items),
+								...item.ignoreIndicator,
+							]
+						);
+
 						return (
 							<Button
 								key={`maxi-tabs-control__button-${buttonLabel}`}
@@ -144,25 +163,8 @@ const SettingTabsControl = props => {
 									`maxi-tabs-control__button-${buttonLabel}`,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
-									getIsActiveTab(
-										getMaxiAttrsFromChildren({
-											items: itemsIndicators,
-											blockName:
-												blockName ??
-												getBlockName(
-													getSelectedBlockClientId()
-												),
-										}),
-										item.breakpoint,
-										item.extraIndicators,
-										item.extraIndicatorsResponsive,
-										[
-											...getChildrenIgnoreIndicator(
-												items
-											),
-											...item.ignoreIndicator,
-										]
-									) && 'maxi-tabs-control__button--active'
+									isActive &&
+										'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
 									setActiveTab(i, item.label || item.value);

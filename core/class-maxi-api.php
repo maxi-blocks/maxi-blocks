@@ -474,6 +474,8 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_current_style_cards()
         {
             global $wpdb;
+
+            $table_name = $wpdb->prefix . 'maxi_blocks_general';
         
             $style_cards = $wpdb->get_var(
                 $wpdb->prepare(

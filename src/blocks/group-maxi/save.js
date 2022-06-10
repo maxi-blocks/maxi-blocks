@@ -10,7 +10,6 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
-	console.log(attributes);
 
 	const name = 'maxi-blocks/group-maxi';
 

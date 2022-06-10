@@ -29,7 +29,6 @@ const getSizeStyles = (obj, prefix = '') => {
 					breakpoint,
 					attributes: obj,
 				});
-				console.log('fullWidth', fullWidth, 'target', target);
 
 				if (target === 'width' && fullWidth === 'full') {
 					return null;
@@ -118,7 +117,7 @@ const getSizeStyles = (obj, prefix = '') => {
 			...getValue('min-height'),
 		};
 	});
-	console.log(response);
+
 	return response;
 };
 

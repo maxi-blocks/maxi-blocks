@@ -1,10 +1,10 @@
+import { cloneElement } from '@wordpress/element';
+
 import { isNil } from 'lodash';
 
 const fromFullWidthNonToResponsive = ({ attributes, save }) => {
-	console.log('here1');
 	return {
 		isEligible(blockAttributes) {
-			console.log('isEligible', blockAttributes);
 			if (!isNil(blockAttributes.blockFullWidth)) {
 				return true;
 			}
@@ -21,8 +21,6 @@ const fromFullWidthNonToResponsive = ({ attributes, save }) => {
 		},
 
 		migrate(oldAttributes) {
-			console.log(oldAttributes.blockFullWidth);
-
 			const { blockFullWidth } = oldAttributes;
 			delete oldAttributes.blockFullWidth;
 
@@ -33,8 +31,13 @@ const fromFullWidthNonToResponsive = ({ attributes, save }) => {
 		},
 
 		save(props) {
-			console.log(props);
-			return save(props, { 'data-align': 'full' });
+			let newSave = save(props, { 'data-align': 'full' });
+			// eslint-disable-next-line no-unused-vars
+			const { blockFullWidth, ...childProps } = newSave.props;
+
+			newSave = cloneElement({ ...newSave, props: childProps });
+
+			return newSave;
 		},
 	};
 };

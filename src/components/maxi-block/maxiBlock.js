@@ -160,7 +160,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				)
 					setIsDragOverBlock(true);
 		  }, []);
-	console.log(props.attributes.blockFullWidth);
+
 	const blockProps = {
 		tagName,
 		className: classes,

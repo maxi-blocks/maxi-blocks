@@ -57,6 +57,10 @@ const getPaneTitleStyles = (props, target) => {
 				label: 'Pane title background color',
 				general: {
 					'background-color': getColor('title-background-'),
+					'flex-direction':
+						props['icon-position'] === 'right'
+							? 'row'
+							: 'row-reverse',
 				},
 			},
 		},

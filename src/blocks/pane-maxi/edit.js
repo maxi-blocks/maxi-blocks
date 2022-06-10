@@ -71,6 +71,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 				accordionLayout={accordionLayout}
 				aria-expanded={isOpen}
+				icon={{ normal: paneIcon, active: paneIconActive }}
 			>
 				<div
 					className='maxi-pane-block__header'

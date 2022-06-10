@@ -229,6 +229,8 @@ const MaxiBlock = memo(
 			deviceType: newDeviceType,
 		} = rawNewProps;
 
+		if (!isEqual(rawOldProps.icon, rawNewProps.icon)) return false;
+
 		if (!isEqual(oldAttr, newAttr)) return false;
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;

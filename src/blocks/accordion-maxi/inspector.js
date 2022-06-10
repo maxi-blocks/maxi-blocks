@@ -12,10 +12,10 @@ import {
 	AccordionControl,
 	AccordionSettings,
 	AccordionTitleSettings,
+	AccordionIconSettings,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-import MaxiModal from '../../editor/library/modal';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -96,49 +96,27 @@ const Inspector = props => {
 										deviceType === 'general' && {
 											label: __('Icon', 'maxi-blocks'),
 											content: (
-												<>
-													<MaxiModal
-														type='accordion-icon'
-														style={blockStyle}
-														onSelect={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														onRemove={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														icon={
-															attributes[
-																'icon-content'
-															]
-														}
-														label='Icon'
-													/>
-
-													<MaxiModal
-														type='accordion-icon-active'
-														style={blockStyle}
-														onSelect={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														onRemove={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														icon={
-															attributes[
-																'icon-content-active'
-															]
-														}
-														label='Icon Active'
-													/>
-												</>
+												<AccordionIconSettings
+													icon-content={
+														attributes[
+															'icon-content'
+														]
+													}
+													icon-content-active={
+														attributes[
+															'icon-content-active'
+														]
+													}
+													icon-position={
+														attributes[
+															'icon-position'
+														]
+													}
+													blockStyle={blockStyle}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+												/>
 											),
 										},
 									]}

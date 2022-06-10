@@ -50,6 +50,8 @@ const relations = () => {
 	};
 
 	maxiRelations[0]?.map(item => {
+		if (!item?.uniqueID) return;
+
 		const triggerEl = document.querySelector(`.${item.trigger}`);
 		const targetEl = document.querySelector(
 			`.${item.uniqueID} ${item.target ?? ''}`

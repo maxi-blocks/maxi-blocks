@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -19,6 +20,7 @@ import {
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
+	getColorRGBAString,
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
@@ -47,6 +49,7 @@ import {
 	presetTen,
 	presetEleven,
 } from '../../icons';
+import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
 
 /**
  * Inspector
@@ -61,7 +64,108 @@ const Inspector = props => {
 		inlineStylesTargets,
 		clientId,
 	} = props;
-	const { blockStyle, svgType } = attributes;
+	const {
+		blockStyle,
+		svgType,
+		'icon-only': iconOnly,
+		'icon-inherit': iconInherit,
+		'icon-content': iconContent,
+	} = attributes;
+
+	const getIconWithColor = (args = {}) => {
+		let {
+			paletteColor,
+			paletteOpacity,
+			paletteStatus,
+			color,
+			isInherit,
+			isIconOnly,
+		} = args;
+		const { isHover, type = 'stroke', rawIcon } = args;
+
+		if (isNil(isInherit)) isInherit = iconInherit;
+		if (isNil(isIconOnly)) isIconOnly = iconOnly;
+
+		const useIconColor = isIconOnly || !isInherit;
+
+		let lineColorStr = '';
+
+		if (type === 'fill')
+			lineColorStr = getColorRGBAString({
+				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
+				secondVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+		else if (
+			useIconColor ||
+			(isHover && !useIconColor && !attributes['typography-status-hover'])
+		) {
+			if (!paletteColor)
+				paletteColor =
+					attributes[
+						`icon-${type}-palette-color${isHover ? '-hover' : ''}`
+					];
+			if (!paletteOpacity)
+				paletteOpacity =
+					attributes[
+						`icon-${type}-palette-opacity${isHover ? '-hover' : ''}`
+					];
+			if (!paletteStatus)
+				paletteStatus =
+					attributes[
+						`icon-${type}-palette-status${isHover ? '-hover' : ''}`
+					];
+			if (!color)
+				color =
+					attributes[`icon-${type}-color${isHover ? '-hover' : ''}`];
+
+			lineColorStr = getColorRGBAString({
+				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
+				secondVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+		} else {
+			if (!paletteColor)
+				paletteColor =
+					attributes[
+						`palette-color-general${isHover ? '-hover' : ''}`
+					];
+			if (!paletteOpacity)
+				paletteOpacity =
+					attributes[
+						`palette-opacity-general${isHover ? '-hover' : ''}`
+					];
+			if (!paletteStatus)
+				paletteStatus =
+					attributes[
+						`palette-status-general${isHover ? '-hover' : ''}`
+					];
+			if (!color)
+				color = attributes[`color-general${isHover ? '-hover' : ''}`];
+
+			lineColorStr = getColorRGBAString({
+				firstVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+		}
+
+		const icon = isHover
+			? setSVGContentHover(
+					rawIcon ?? iconContent,
+					paletteStatus ? lineColorStr : color,
+					type
+			  )
+			: setSVGContent(
+					rawIcon ?? iconContent,
+					paletteStatus ? lineColorStr : color,
+					type
+			  );
+
+		return icon;
+	};
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -113,8 +217,43 @@ const Inspector = props => {
 			};
 		}
 
+		const {
+			'icon-stroke-palette-status': strokePaletteStatus,
+			'icon-stroke-palette-hover-status': strokePaletteHoverStatus,
+			'icon-content': rawIcon,
+		} = newDefaultPresets[`preset${number}`];
+
+		let icon = null;
+
+		if (rawIcon && (strokePaletteStatus || strokePaletteHoverStatus)) {
+			const {
+				'icon-stroke-palette-color': strokePaletteColor,
+				'icon-stroke-palette-hover-color': strokePaletteHoverColor,
+				'icon-inherit': rawIconInherit,
+				'icon-only': rawIconOnly,
+			} = newDefaultPresets[`preset${number}`];
+
+			icon = getIconWithColor({
+				paletteStatus: strokePaletteStatus,
+				paletteColor: strokePaletteColor,
+				rawIcon,
+				isInherit: rawIconInherit,
+				isIconOnly: rawIconOnly,
+			});
+
+			icon = getIconWithColor({
+				paletteStatus: strokePaletteHoverStatus,
+				paletteColor: strokePaletteHoverColor,
+				isHover: true,
+				rawIcon: icon,
+				isInherit: rawIconInherit,
+				isIconOnly: rawIconOnly,
+			});
+		}
+
 		maxiSetAttributes({
 			...newDefaultPresets[`preset${number}`],
+			...(icon && { 'icon-content': icon }),
 		});
 	};
 
@@ -125,6 +264,23 @@ const Inspector = props => {
 
 	const alignmentLabel = __('Button', 'maxi-blocks');
 	const textAlignmentLabel = __('Text', 'maxi-blocks');
+
+	useEffect(
+		() =>
+			maxiSetAttributes({
+				'icon-content': getIconWithColor(),
+			}),
+		[
+			attributes['palette-color-general'],
+			attributes['palette-color-general-hover'],
+			attributes['palette-status-general'],
+			attributes['palette-status-general-hover'],
+			attributes['palette-opacity-general'],
+			attributes['palette-opacity-general-hover'],
+			attributes['color-general'],
+			attributes['color-general-hover'],
+		]
+	);
 
 	return (
 		<InspectorControls>
@@ -402,6 +558,9 @@ const Inspector = props => {
 																blockStyle={
 																	blockStyle
 																}
+																getIconWithColor={
+																	getIconWithColor
+																}
 															/>
 														),
 													},
@@ -465,6 +624,9 @@ const Inspector = props => {
 																		}
 																		blockStyle={
 																			blockStyle
+																		}
+																		getIconWithColor={
+																			getIconWithColor
 																		}
 																		isHover
 																	/>
@@ -541,21 +703,23 @@ const Inspector = props => {
 											</ResponsiveTabsControl>
 										),
 									},
-									...inspectorTabs.typography({
-										props: {
-											...props,
-										},
-										styleCardPrefix: 'button',
-										hideAlignment: true,
-										disableCustomFormats: true,
-										globalProps: {
-											target: '',
-											type: 'button',
-										},
-										hoverGlobalProps: {
-											target: 'hover',
-											type: 'button',
-										},
+									...(!iconOnly && {
+										...inspectorTabs.typography({
+											props: {
+												...props,
+											},
+											styleCardPrefix: 'button',
+											hideAlignment: true,
+											disableCustomFormats: true,
+											globalProps: {
+												target: '',
+												type: 'button',
+											},
+											hoverGlobalProps: {
+												target: 'hover',
+												type: 'button',
+											},
+										}),
 									}),
 									...inspectorTabs.background({
 										label: 'Button',

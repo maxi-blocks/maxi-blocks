@@ -6,7 +6,7 @@ import { dispatch } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isNumber, isBoolean, isObject, merge } from 'lodash';
+import { isEmpty, isNumber, isBoolean, isObject, merge, isEqual } from 'lodash';
 
 /**
  * Styles resolver
@@ -46,6 +46,8 @@ const getCleanContent = content => {
 			newContent[target] = cleanContent(newContent[target]);
 
 		if (isEmpty(newContent[target])) delete newContent[target];
+		if (isEqual(newContent[target], { general: {} }))
+			delete newContent[target];
 	}
 
 	return newContent;
@@ -54,6 +56,7 @@ const getCleanContent = content => {
 const styleResolver = (
 	target,
 	styles,
+	// eslint-disable-next-line default-param-last
 	remover = false,
 	breakpoints,
 	update = true

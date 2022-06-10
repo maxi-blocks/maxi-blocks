@@ -669,6 +669,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsImage,
+										categories: categoriesImage,
 									}),
 									...inspectorTabs.transition({
 										props: {

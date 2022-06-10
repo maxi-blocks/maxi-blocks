@@ -140,6 +140,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsRow,
+										categories: categoriesRow,
 									}),
 									...inspectorTabs.transition({
 										props: {

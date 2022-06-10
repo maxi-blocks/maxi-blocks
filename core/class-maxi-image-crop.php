@@ -42,19 +42,19 @@ class MaxiBlocks_ImageCrop
     public function maxi_add_custom_image_size()
     {
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
-            $old_media = esc_url_raw($_POST['old_media_src']);
+            $old_media = esc_url_raw($_POST['old_media_src']);//phpcs:ignore
             $this->delete_old_file($old_media);
         }
        
         if (isset($_POST['src'], $_POST['src_x'], $_POST['src_y'], $_POST['src_w'], $_POST['src_h'], $_POST['dst_w'], $_POST['dst_h'])) {//phpcs:ignore
             $new_media = [
-            'src' => sanitize_text_field($_POST['src']),
-            'src_x' => sanitize_text_field($_POST['src_x']),
-            'src_y' => sanitize_text_field($_POST['src_y']),
-            'src_w' => sanitize_text_field($_POST['src_w']),
-            'src_h' => sanitize_text_field($_POST['src_h']),
-            'dst_w' => sanitize_text_field($_POST['dst_w']),
-            'dst_h' => sanitize_text_field($_POST['dst_h']),
+            'src' => sanitize_text_field($_POST['src']),//phpcs:ignore
+            'src_x' => sanitize_text_field($_POST['src_x']),//phpcs:ignore
+            'src_y' => sanitize_text_field($_POST['src_y']),//phpcs:ignore
+            'src_w' => sanitize_text_field($_POST['src_w']),//phpcs:ignore
+            'src_h' => sanitize_text_field($_POST['src_h']),//phpcs:ignore
+            'dst_w' => sanitize_text_field($_POST['dst_w']),//phpcs:ignore
+            'dst_h' => sanitize_text_field($_POST['dst_h']),//phpcs:ignore
         ];
         
             $this->upload_new_file($new_media);
@@ -100,7 +100,7 @@ class MaxiBlocks_ImageCrop
     public function maxi_remove_custom_image_size()
     {
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
-            $old_media = esc_url_raw($_POST['old_media_src']);
+            $old_media = esc_url_raw($_POST['old_media_src']);//phpcs:ignore
             $this->delete_old_file($old_media);
 
             global $wp_filesystem;

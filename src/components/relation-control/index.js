@@ -18,8 +18,8 @@ import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
 import {
-	getGroupAttributes,
 	getDefaultAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 
@@ -59,6 +59,12 @@ const RelationControl = props => {
 		return blockOptions;
 	};
 
+	const transitionDefaultAttributes = {
+		'transition-duration-general': 0.3,
+		'transition-delay-general': 0,
+		'easing-general': 'ease',
+	};
+
 	const onAddRelation = () => {
 		const relation = {
 			title: '',
@@ -70,11 +76,7 @@ const RelationControl = props => {
 			attributes: {},
 			css: {},
 			id: getRelationId(),
-			effects: {
-				'transition-duration-general': 0.3,
-				'transition-delay-general': 0,
-				'transition-timing-function-general': 'ease',
-			},
+			effects: transitionDefaultAttributes,
 		};
 
 		onChange({ relations: [...relations, relation] });
@@ -235,6 +237,9 @@ const RelationControl = props => {
 	};
 
 	const blocksToAffect = getBlocksToAffect();
+
+	const getDefaultTransitionAttribute = target =>
+		transitionDefaultAttributes[`${target}-${deviceType}`];
 
 	return (
 		<div className='maxi-relation-control'>
@@ -406,16 +411,22 @@ const RelationControl = props => {
 															}
 														>
 															<TransitionControl
-																{...item.effects}
-																onChange={value =>
+																className='maxi-relation-control__item__effects'
+																onChange={obj =>
 																	onChangeRelationProperty(
 																		item.id,
 																		'effects',
 																		{
 																			...item.effects,
-																			...value,
+																			...obj,
 																		}
 																	)
+																}
+																transition={
+																	item.effects
+																}
+																getDefaultTransitionAttribute={
+																	getDefaultTransitionAttribute
 																}
 																breakpoint={
 																	deviceType

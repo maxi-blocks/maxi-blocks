@@ -218,12 +218,16 @@ const AdvancedNumberControl = props => {
 							options={getOptions()}
 							value={unit}
 							onChange={val => {
-								onChangeUnit(val);
-
-								if (value > minMaxSettingsResult[val]?.maxRange)
+								if (
+									value > minMaxSettingsResult[val]?.maxRange
+								) {
 									onChangeValue(
 										minMaxSettingsResult[val]?.maxRange
 									);
+									onChangeUnit(val);
+								} else {
+									onChangeUnit(val);
+								}
 							}}
 						/>
 					)}

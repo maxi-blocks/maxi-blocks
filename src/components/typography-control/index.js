@@ -541,6 +541,7 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}font-size-unit`]: val,
+							[`${prefix}font-size`]: minMaxSettings[val].max,
 						});
 					}}
 					placeholder={getValue(`${prefix}font-size`, !isStyleCards)}
@@ -581,10 +582,7 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}line-height-unit`]: val,
-							...(val === '-' && {
-								[`${prefix}line-height`]:
-									minMaxSettings['-'].max,
-							}),
+							[`${prefix}line-height`]: minMaxSettings[val].max,
 						});
 					}}
 					placeholder={getValue(

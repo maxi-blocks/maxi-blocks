@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, merge } from 'lodash';
 
 /**
  * Internal dependencies
@@ -35,6 +35,7 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsButton } from './custom-css';
+import transitionObj from './transitionObj';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -161,9 +162,6 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
 				props,
@@ -265,9 +263,6 @@ const getHoverContentObject = (props, scValues) => {
 			},
 			scValues,
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
 	};
 
 	return response;
@@ -282,23 +277,18 @@ const getIconSize = (obj, isHover = false) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
-			response[breakpoint].width = `${
-				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute({
+		const iconWidth =
+			obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`];
+
+		if (!isNil(iconWidth) && !isEmpty(iconWidth)) {
+			const iconUnit = getLastBreakpointAttribute({
 				target: 'icon-width-unit',
 				breakpoint,
 				attributes: obj,
 				isHover,
-			})}`;
-			response[breakpoint].height = `${
-				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute({
-				target: 'icon-width-unit',
-				breakpoint,
-				attributes: obj,
-				isHover,
-			})}`;
+			});
+			response[breakpoint].width = `${iconWidth}${iconUnit}`;
+			response[breakpoint].height = `${iconWidth}${iconUnit}`;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
@@ -454,7 +444,12 @@ const getIconHoverObject = (props, target) => {
 				...getColorBackgroundObject({
 					...getGroupAttributes(
 						props,
-						['icon', 'iconBackgroundColor'],
+						[
+							'icon',
+							'iconBackgroundColor',
+							'background',
+							'backgroundColor',
+						],
 						true
 					),
 					prefix: 'icon-',
@@ -503,81 +498,137 @@ const getIconHoverObject = (props, target) => {
 };
 
 const getStyles = (props, scValues) => {
-	const { uniqueID, blockStyle } = props;
+	const {
+		uniqueID,
+		blockStyle,
+		'icon-status-hover': iconHoverStatus,
+		'icon-inherit': iconInherit,
+	} = props;
+
+	const hasIcon = !!props['icon-content'];
+	const useIconColor = !iconInherit;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getHoverWrapperObject(props),
-				' .maxi-button-block__button': getNormalObject(props),
-				' .maxi-button-block__button:hover': getHoverObject(
-					props,
-					scValues
-				),
-				...getSVGStyles({
-					obj: props,
-					target: '.maxi-button-block__icon',
-					blockStyle,
-					prefix: 'icon-',
-				}),
-				...(props['icon-status-hover'] && {
-					...getSVGStyles({
-						obj: props,
-						target: ':hover .maxi-button-block__icon',
-						blockStyle,
-						prefix: 'icon-',
-						isHover: true,
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getHoverWrapperObject(props),
+					' .maxi-button-block__button': getNormalObject(props),
+					' .maxi-button-block__content': getContentObject(props),
+					...(hasIcon && {
+						...getSVGStyles({
+							obj: props,
+							target: '.maxi-button-block__icon',
+							blockStyle,
+							prefix: 'icon-',
+							useIconColor,
+						}),
+						' .maxi-button-block__icon': getIconObject(
+							props,
+							'icon'
+						),
+						' .maxi-button-block__icon svg': getIconSize(
+							props,
+							false
+						),
+						' .maxi-button-block__icon svg > *': getIconObject(
+							props,
+							'svg'
+						),
+						' .maxi-button-block__icon svg path': getIconPathStyles(
+							props,
+							false
+						),
 					}),
-				}),
-				' .maxi-button-block__content': getContentObject(props),
-				' .maxi-button-block__button:hover .maxi-button-block__content':
-					getHoverContentObject(props, scValues),
-				' .maxi-button-block__icon': getIconObject(props, 'icon'),
-				' .maxi-button-block__icon svg': getIconSize(props, false),
-				' .maxi-button-block__icon svg > *': getIconObject(
-					props,
-					'svg'
-				),
-				' .maxi-button-block__icon svg path': getIconPathStyles(
-					props,
-					false
-				),
-				' .maxi-button-block__button:hover .maxi-button-block__icon':
-					props['icon-status-hover'] &&
-					getIconHoverObject(props, 'iconHover'),
-				' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
-					props['icon-status-hover'] &&
-					getIconHoverObject(props, 'iconHover'),
-				' .maxi-button-block__button:hover .maxi-button-block__icon svg':
-					props['icon-status-hover'] && getIconSize(props, true),
-				' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
-					props['icon-status-hover'] &&
-					getIconPathStyles(props, true),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
+					// Hover
+					' .maxi-button-block__button:hover': getHoverObject(
 						props,
-						[
+						scValues
+					),
+					' .maxi-button-block__button:hover .maxi-button-block__content':
+						getHoverContentObject(props, scValues),
+					...(hasIcon &&
+						iconHoverStatus &&
+						(() => {
+							const iconHoverObj = getIconHoverObject(
+								props,
+								'iconHover'
+							);
+
+							return {
+								' .maxi-button-block__button:hover .maxi-button-block__icon':
+									iconHoverObj,
+								' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
+									iconHoverObj,
+								' .maxi-button-block__button:hover .maxi-button-block__icon svg':
+									getIconSize(props, true),
+								' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
+									getIconPathStyles(props, true),
+								...getSVGStyles({
+									obj: props,
+									target: ':hover .maxi-button-block__icon',
+									blockStyle,
+									prefix: 'icon-',
+									isHover: true,
+								}),
+							};
+						})()),
+					// Background
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-				}),
-			},
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, 'svg'),
+						' .maxi-button-block__icon svg path': getIconPathStyles(
+							props,
+							false
+						),
+						' .maxi-button-block__button:hover .maxi-button-block__icon':
+							props['icon-status-hover'] &&
+							getIconHoverObject(props, 'iconHover'),
+						' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
+							props['icon-status-hover'] &&
+							getIconHoverObject(props, 'iconHover'),
+						' .maxi-button-block__button:hover .maxi-button-block__icon svg':
+							props['icon-status-hover'] &&
+							getIconSize(props, true),
+						' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
+							props['icon-status-hover'] &&
+							getIconPathStyles(props, true),
+						...getBlockBackgroundStyles({
+							...getGroupAttributes(props, [
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							]),
+							blockStyle: props.blockStyle,
+						}),
+						...getBlockBackgroundStyles({
+							...getGroupAttributes(
+								props,
+								[
+									'blockBackground',
+									'border',
+									'borderWidth',
+									'borderRadius',
+								],
+								true
+							),
+							isHover: true,
+							blockStyle: props.blockStyle,
+						}),
+					}),
+				},
+				...getTransitionStyles(props, transitionObj)
+			),
 			selectorsButton,
 			props
 		),

@@ -594,7 +594,10 @@ const LibraryContainer = props => {
 		return (
 			<CheckboxControl
 				className='use-placeholer-all-images'
-				label={__('Swap stock images for placeholders to save disk space', 'maxi-blocks')}
+				label={__(
+					'Swap stock images for placeholders to save disk space',
+					'maxi-blocks'
+				)}
 				checked={isChecked}
 				onChange={setChecked}
 			/>

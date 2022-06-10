@@ -17,8 +17,7 @@ const onChangeRichText = ({
 	onChange,
 	richTextValues,
 }) => {
-	const { value: formatValue } = richTextValues;
-	const { onChange: onChangeRichText } = richTextValues;
+	const { value: formatValue, onChange: onChangeRichText } = richTextValues;
 
 	/**
 	 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
@@ -46,17 +45,13 @@ const onChangeRichText = ({
 	}
 
 	// Returns the new state
-	if (!isEqual(oldFormatValue, formatValue)) {
-		// Avoid saving state on the render cycle
-		setTimeout(() => {
-			onChange({
-				formatValue,
-				...(onChangeRichText && {
-					onChangeFormat: onChangeRichText,
-				}),
-			});
-		}, 50);
-	}
+	if (!isEqual(oldFormatValue, formatValue))
+		onChange({
+			formatValue,
+			...(onChangeRichText && {
+				onChangeFormat: onChangeRichText,
+			}),
+		});
 };
 
 export default onChangeRichText;

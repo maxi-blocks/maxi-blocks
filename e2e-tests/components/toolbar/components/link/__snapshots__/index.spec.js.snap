@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button link Check button link 1`] = `
+Object {
+  "noFollow": true,
+  "opensInNewTab": true,
+  "sponsored": true,
+  "ugc": true,
+  "url": "test.com",
+}
+`;

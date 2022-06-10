@@ -19,7 +19,7 @@ const getBorderDefault = (
 	};
 };
 
-export const borderNone = (prefix = '', isHover) => {
+export const borderNone = (prefix = '', hasBorderStyle) => {
 	let response = {};
 
 	const currentDefaultBorder = prefix
@@ -42,7 +42,7 @@ export const borderNone = (prefix = '', isHover) => {
 				.default,
 		[`${prefix}border-color`]:
 			currentDefaultBorder[`${prefix}border-color-general`].default,
-		[`${prefix}border-style`]: isHover
+		[`${prefix}border-style`]: hasBorderStyle
 			? 'none'
 			: currentDefaultBorder[`${prefix}border-style-general`].default,
 		[`${prefix}border-top-width`]:

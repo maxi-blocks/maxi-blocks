@@ -22,6 +22,7 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
+	const { 'transform-target': transformTarget } = attributes;
 
 	return {
 		label: __('Transform', 'maxi-blocks'),
@@ -29,15 +30,17 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<TransformControl
 					{...getGroupAttributes(attributes, 'transform')}
-					onChangeInline={(obj, target) => {
+					onChangeInline={obj => {
 						insertInlineStyles({
 							obj,
-							target,
+							target: selectors[transformTarget]?.normal.target,
 						});
 					}}
 					onChange={obj => {
 						maxiSetAttributes(obj);
-						cleanInlineStyles();
+						cleanInlineStyles(
+							selectors[transformTarget]?.normal.target
+						);
 					}}
 					uniqueID={uniqueID}
 					breakpoint={deviceType}

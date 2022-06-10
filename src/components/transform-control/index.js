@@ -51,12 +51,7 @@ const TransformControl = props => {
 
 	const isTransformed = () =>
 		Object.entries(transformOptions).some(([key, val]) => {
-			if (
-				!key.includes('unit') &&
-				!key.includes('translate') &&
-				!isNil(val)
-			)
-				return true;
+			if (!isNil(val)) return true;
 			return false;
 		});
 
@@ -78,23 +73,23 @@ const TransformControl = props => {
 
 		const transformObj = getTransformStyles(transformOptions, selectors);
 
-		if (!transformObj || hoverSelected === 'hover') return;
+		if (!transformObj) return;
 
-		const targetTransformObj =
-			transformObj[selectors[transformTarget][hoverSelected].target]
-				.transform;
+		const inlineStylesTarget =
+			selectors[transformTarget][hoverSelected].target;
+
+		if (inlineStylesTarget.includes(':')) return;
+
+		const targetTransformObj = transformObj[inlineStylesTarget].transform;
 
 		const {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
 		} = targetTransformObj;
 
-		onChangeInline(
-			{
-				transform: transform ?? '',
-				'transform-origin': transformOrigin ?? '',
-			},
-			selectors[transformTarget][hoverSelected].target
-		);
+		onChangeInline({
+			transform: transform ?? '',
+			'transform-origin': transformOrigin ?? '',
+		});
 	};
 
 	const getOptions = () => {
@@ -190,7 +185,6 @@ const TransformControl = props => {
 							},
 						]}
 						onChange={val => setHoverSelected(val)}
-						depth={depth + 1}
 						hasBorder
 					/>
 					{transformStatus === 'scale' && (

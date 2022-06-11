@@ -13,6 +13,9 @@
 /*****************
 * General settings
 ******************/
+body.maxi-blocks--active .interface-interface-skeleton__body {
+	z-index: 999;
+}
 .interface-interface-skeleton__sidebar {
 	overflow-x: hidden;
 	scrollbar-gutter: stable;

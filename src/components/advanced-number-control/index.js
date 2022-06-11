@@ -253,9 +253,9 @@ const AdvancedNumberControl = props => {
 						label={label}
 						value={
 							+(
-								value ||
-								defaultValue ||
-								initial ||
+								value ??
+								defaultValue ??
+								initial ??
 								placeholder
 							) || 0
 						}

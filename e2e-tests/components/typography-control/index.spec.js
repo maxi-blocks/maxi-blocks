@@ -298,8 +298,8 @@ describe('TypographyControl', () => {
 				'.maxi-typography-control .maxi-typography-control__size input',
 			needFocus: true,
 			baseExpect: '19',
-			xsExpect: '100',
-			newValue: '100',
+			xsExpect: '11',
+			newValue: '11',
 		});
 		expect(responsiveSizeControl).toBeTruthy();
 

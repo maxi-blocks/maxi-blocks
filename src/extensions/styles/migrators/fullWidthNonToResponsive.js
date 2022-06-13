@@ -47,6 +47,7 @@ const fromFullWidthNonToResponsive = ({ attributes, save, prefix }) => {
 					'data-align': fullWidth,
 				})
 			);
+
 			return newSave;
 		},
 	};

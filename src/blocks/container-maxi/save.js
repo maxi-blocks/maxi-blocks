@@ -13,7 +13,7 @@ import classnames from 'classnames';
 /**
  * Save
  */
-const save = props => {
+const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
 	const { fullWidth, uniqueID } = attributes;
 
@@ -26,6 +26,7 @@ const save = props => {
 			tagName='section'
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			{...extendedAttributes}
 			useInnerBlocks
 		>
 			<ArrowDisplayer

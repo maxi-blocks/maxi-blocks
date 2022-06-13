@@ -11,7 +11,7 @@ import classnames from 'classnames';
 /**
  * Save
  */
-const save = props => {
+const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
 	const { fullWidth } = attributes;
 
@@ -24,6 +24,7 @@ const save = props => {
 			className={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			{...extendedAttributes}
 		/>
 	);
 };

@@ -15,7 +15,6 @@ import {
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getArrowStyles,
 	getBlockBackgroundStyles,
@@ -166,13 +165,7 @@ const getStyles = props => {
 						isHover: true,
 					}),
 				},
-				...getTransitionStyles(props),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsGroup
-				)
+				...getTransitionStyles(props)
 			),
 			selectorsGroup,
 			props

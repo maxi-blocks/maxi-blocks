@@ -13,7 +13,6 @@ import {
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
@@ -142,13 +141,7 @@ const getStyles = props => {
 				},
 				...getTransitionStyles({
 					...getGroupAttributes(props, 'transition'),
-				}),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsRow
-				)
+				})
 			),
 			selectorsRow,
 			props

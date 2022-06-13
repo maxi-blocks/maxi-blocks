@@ -12,7 +12,6 @@ import {
 	getZIndexStyles,
 	getColumnSizeStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -145,13 +144,7 @@ const getStyles = (props, rowGapProps, clientId) => {
 						rowBorderRadius: props.rowBorderRadius,
 					}),
 				},
-				...getTransitionStyles(props),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsColumn
-				)
+				...getTransitionStyles(props)
 			),
 			selectorsColumn,
 			props

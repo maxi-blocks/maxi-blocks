@@ -21,7 +21,6 @@ import {
 	getOpacityStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
@@ -492,13 +491,7 @@ const getStyles = props => {
 						props.blockStyle
 					),
 				},
-				...getTransitionStyles(props, transitionObj),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsImage
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsImage,
 			props

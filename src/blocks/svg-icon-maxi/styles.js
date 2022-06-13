@@ -18,7 +18,6 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getSVGStyles,
-	getTransformStyles,
 	getZIndexStyles,
 	getOverflowStyles,
 	getSVGWidthStyles,
@@ -261,13 +260,7 @@ const getStyles = props => {
 						blockStyle,
 					}),
 				},
-				...getTransitionStyles(props, transitionObj),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsSvgIcon
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsSvgIcon,
 			props

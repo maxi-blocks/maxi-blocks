@@ -18,7 +18,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
@@ -263,13 +262,7 @@ const getStyles = props => {
 						isHover: true,
 					}),
 				},
-				...getTransitionStyles(props, transitionObj),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsNumberCounter
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsNumberCounter,
 			props

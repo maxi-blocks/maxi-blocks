@@ -27,7 +27,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
@@ -607,13 +606,7 @@ const getStyles = props => {
 						props.blockStyle
 					),
 				},
-				...getTransitionStyles(props, transitionObj),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsText
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsText,
 			props

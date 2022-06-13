@@ -29,7 +29,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
@@ -624,13 +623,7 @@ const getStyles = (props, scValues) => {
 						}),
 					}),
 				},
-				...getTransitionStyles(props, transitionObj),
-				...getTransformStyles(
-					{
-						...getGroupAttributes(props, 'transform'),
-					},
-					selectorsButton
-				)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsButton,
 			props

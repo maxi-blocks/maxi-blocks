@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getCustomCssObject } from './helpers';
+import { getCustomCssObject, getTransformStyles } from './helpers';
 import { getSelectorsCss } from '../../components/custom-css-control/utils';
 
 /**
@@ -107,7 +107,9 @@ const stylesCleaner = (obj, selectors, props) => {
 
 	if (!isEmpty(newSelectors)) {
 		const customCssObject = getCustomCssObject(newSelectors, props);
+		const transformObject = getTransformStyles(props, newSelectors);
 		!isEmpty(customCssObject) && merge(response, customCssObject);
+		!isEmpty(transformObject) && merge(response, transformObject);
 	}
 
 	Object.entries(response).forEach(item => {

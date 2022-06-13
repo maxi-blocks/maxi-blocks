@@ -1,8 +1,6 @@
-import { cloneElement } from '@wordpress/element';
-
 import { isNil } from 'lodash';
 
-const fromFullWidthNonToResponsive = ({ attributes, save }) => {
+const fromFullWidthNonToResponsive = ({ attributes, save, prefix }) => {
 	return {
 		isEligible(blockAttributes) {
 			if (!isNil(blockAttributes.blockFullWidth)) {
@@ -18,25 +16,37 @@ const fromFullWidthNonToResponsive = ({ attributes, save }) => {
 				type: 'string',
 				default: 'normal',
 			},
+			fullWidth: {
+				type: 'string',
+				default: 'normal',
+			},
 		},
 
 		migrate(oldAttributes) {
-			const { blockFullWidth } = oldAttributes;
+			const { blockFullWidth, fullWidth } = oldAttributes;
 			delete oldAttributes.blockFullWidth;
 
 			return {
 				...oldAttributes,
 				'full-width-general': blockFullWidth,
+				...(prefix && { [`${prefix}full-width-general`]: fullWidth }),
 			};
 		},
 
 		save(props) {
-			let newSave = save(props, { 'data-align': 'full' });
-			// eslint-disable-next-line no-unused-vars
-			const { blockFullWidth, ...childProps } = newSave.props;
+			console.log(props);
+			const { attributes } = props;
+			const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
 
-			newSave = cloneElement({ ...newSave, props: childProps });
-
+			const newSave = save(
+				{ ...props, attributes: restAttrs },
+				{
+					'data-align': blockFullWidth,
+				},
+				...(prefix && {
+					'data-align': fullWidth,
+				})
+			);
 			return newSave;
 		},
 	};

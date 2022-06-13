@@ -21,10 +21,20 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
 
+	const isFullWidth = breakpoints.some(breakpoint => {
+		const val = getLastBreakpointAttribute({
+			target: `${prefix}full-width`,
+			breakpoint,
+			attributes: obj,
+		});
+
+		return val !== 'normal';
+	});
+
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
-			let minWidthStyles = {};
-			if (target === 'width' || target === 'max-width') {
+			let fullWidthNormalStyles = {};
+			if ((target === 'width' || target === 'max-width') && isFullWidth) {
 				const fullWidth = getLastBreakpointAttribute({
 					target: `${prefix}full-width`,
 					breakpoint,
@@ -43,7 +53,7 @@ const getSizeStyles = (obj, prefix = '') => {
 					}
 
 					if (fullWidth === 'normal') {
-						minWidthStyles = {
+						fullWidthNormalStyles = {
 							'min-width': 'initial',
 						};
 					}
@@ -52,7 +62,7 @@ const getSizeStyles = (obj, prefix = '') => {
 
 			if (!obj[`${prefix}size-advanced-options`]) {
 				if (target.includes('min')) return null;
-				if (target.includes('max')) return minWidthStyles;
+				if (target.includes('max')) return fullWidthNormalStyles;
 			}
 
 			if (target === 'height') {
@@ -105,12 +115,12 @@ const getSizeStyles = (obj, prefix = '') => {
 				if (!isNil(num) && !isNil(unit))
 					return {
 						[target]: auto ? 'auto' : num + unit,
-						...minWidthStyles,
+						...fullWidthNormalStyles,
 					};
 			}
 
 			return {
-				...minWidthStyles,
+				...fullWidthNormalStyles,
 			};
 		};
 

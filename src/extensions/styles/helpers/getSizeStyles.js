@@ -21,20 +21,10 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
 
-	const isFullWidth = breakpoints.some(breakpoint => {
-		const val = getLastBreakpointAttribute({
-			target: `${prefix}full-width`,
-			breakpoint,
-			attributes: obj,
-		});
-
-		return val !== 'normal';
-	});
-
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
 			let fullWidthNormalStyles = {};
-			if ((target === 'width' || target === 'max-width') && isFullWidth) {
+			if (target === 'width' || target === 'max-width') {
 				const fullWidth = getLastBreakpointAttribute({
 					target: `${prefix}full-width`,
 					breakpoint,

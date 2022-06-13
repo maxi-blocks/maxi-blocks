@@ -228,9 +228,17 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-scale-${breakpoint}`]: {
-										...transformOptions[
-											`transform-scale-${breakpoint}`
-										],
+										...getLastBreakpointAttribute({
+											target: 'transform-scale',
+											breakpoint,
+											attributes: props,
+										}),
+										[`${transformTarget}`]: {
+											[`${hoverSelected}`]: {
+												x,
+												y,
+											},
+										},
 									},
 								});
 							}}
@@ -302,9 +310,19 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-translate-${breakpoint}`]: {
-										...transformOptions[
-											`transform-translate-${breakpoint}`
-										],
+										...getLastBreakpointAttribute({
+											target: 'transform-translate',
+											breakpoint,
+											attributes: props,
+										}),
+										[`${transformTarget}`]: {
+											[`${hoverSelected}`]: {
+												x,
+												y,
+												'x-unit': xUnit,
+												'y-unit': yUnit,
+											},
+										},
 									},
 								});
 							}}
@@ -350,9 +368,18 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-rotate-${breakpoint}`]: {
-										...transformOptions[
-											`transform-rotate-${breakpoint}`
-										],
+										...getLastBreakpointAttribute({
+											target: 'transform-rotate',
+											breakpoint,
+											attributes: props,
+										}),
+										[`${transformTarget}`]: {
+											[`${hoverSelected}`]: {
+												x,
+												y,
+												z,
+											},
+										},
 									},
 								});
 							}}
@@ -426,9 +453,19 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-origin-${breakpoint}`]: {
-										...transformOptions[
-											`transform-origin-${breakpoint}`
-										],
+										...getLastBreakpointAttribute({
+											target: 'transform-origin',
+											breakpoint,
+											attributes: props,
+										}),
+										[`${transformTarget}`]: {
+											[`${hoverSelected}`]: {
+												x,
+												y,
+												'x-unit': xUnit,
+												'y-unit': yUnit,
+											},
+										},
 									},
 								});
 							}}

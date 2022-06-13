@@ -63,7 +63,6 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-			fullWidth: props.blockFullWidth,
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),

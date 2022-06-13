@@ -107,7 +107,6 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-			fullWidth: props.blockFullWidth,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -291,7 +290,6 @@ const getImageObject = props => {
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'image-'),
-				fullWidth: props.fullWidth,
 			},
 			'image-'
 		),

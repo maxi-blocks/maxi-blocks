@@ -78,8 +78,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, deviceType, isSelected, maxiSetAttributes } =
 			this.props;
-		const { uniqueID, lineOrientation, blockFullWidth, fullWidth } =
-			attributes;
+		const { uniqueID, lineOrientation } = attributes;
 
 		const classes = classnames(
 			lineOrientation === 'vertical'
@@ -165,7 +164,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				classes={classes}
 				resizableObject={this.resizableObject}
 				{...getMaxiBlockAttributes(this.props)}

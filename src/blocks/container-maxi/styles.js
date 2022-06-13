@@ -33,7 +33,6 @@ const getNormalObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-			fullWidth: props.blockFullWidth,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {

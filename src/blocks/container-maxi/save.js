@@ -15,16 +15,13 @@ import classnames from 'classnames';
  */
 const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
-	const { fullWidth, uniqueID } = attributes;
+	const { uniqueID } = attributes;
 
 	const name = 'maxi-blocks/container-maxi';
-
-	const classes = classnames(fullWidth === 'full' ? 'alignfull' : null);
 
 	return (
 		<MaxiBlock.save
 			tagName='section'
-			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			{...extendedAttributes}
 			useInnerBlocks

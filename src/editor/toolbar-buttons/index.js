@@ -22,6 +22,12 @@ import { main } from '../../icons';
 const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
 
+	// Rendering true or false for the toolbar visibility so we can use CSS based on the state
+	const toolbarHeader = document.querySelector(
+		'.interface-interface-skeleton__header'
+	);
+	toolbarHeader.className = `interface-interface-skeleton__header ${isResponsiveOpen}`;
+
 	return (
 		<>
 			<div className='maxi-toolbar-layout'>

@@ -14,6 +14,7 @@ export { default as map } from './map';
 export { default as margin } from './margin';
 export { default as scroll } from './scroll';
 export { default as numberCounter } from './numberCounter';
+export { default as navigation } from './navigation';
 export { default as opacity } from './opacity';
 export { default as overflow } from './overflow';
 export { default as padding } from './padding';

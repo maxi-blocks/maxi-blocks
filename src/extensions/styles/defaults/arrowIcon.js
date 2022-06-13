@@ -1,4 +1,5 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import { icon } from './icon';
 
 const prefix = 'navigation-arrow-both-';
@@ -15,6 +16,7 @@ const arrowIcon = {
 			'icon-only',
 			'icon-position',
 			'icon-content',
+			'icon-spacing',
 		],
 	}),
 	...{
@@ -29,6 +31,18 @@ const arrowIcon = {
 				'<svg class="arrow-right-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24" fill="none" data-stroke stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M15.15 5l7 7-7 7m7-7H1.85"/></svg>',
 		},
 	},
+	...breakpointAttributesCreator({
+		obj: {
+			'navigation-arrow-both-icon-spacing-horizontal': {
+				type: 'number',
+				default: -40,
+			},
+			'navigation-arrow-both-icon-spacing-vertical': {
+				type: 'number',
+				default: 50,
+			},
+		},
+	}),
 };
 
 export default arrowIcon;

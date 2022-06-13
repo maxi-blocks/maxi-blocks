@@ -35,6 +35,7 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.navigation,
 	...attributesData.arrowIcon,
 	...attributesData.arrowIconHover,
 	...{

@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 /**
  * Internal dependencies
  */
@@ -90,26 +91,49 @@ const getSVGPathFillStyles = (obj, blockStyle, isHover, prefix = 'svg-') => {
 	return { SVGPathFill: response };
 };
 
-const getSVGPathStrokeStyles = (obj, blockStyle, isHover, prefix = 'svg-') => {
+const getSVGPathStrokeStyles = (
+	obj,
+	blockStyle,
+	prefix = 'svg-',
+	isHover,
+	useIconColor
+) => {
 	const response = {
 		label: 'SVG Path stroke',
 		general: {},
 	};
 
+	if (isHover && !useIconColor && !obj['typography-status-hover']) {
+		response.general.stroke = '';
+
+		return response;
+	}
+
 	const linePrefix =
 		prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: linePrefix, isHover });
-
-	if (paletteStatus && paletteColor)
-		response.general.stroke = getColorRGBAString({
-			firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
-			secondVar: `color-${paletteColor}`,
-			opacity: paletteOpacity,
-			blockStyle,
+		getPaletteAttributes({
+			obj,
+			prefix: useIconColor ? linePrefix : '',
+			isHover,
 		});
-	else if (!paletteStatus && !isNil(color)) response.general.stroke = color;
+
+	if (paletteStatus && paletteColor) {
+		if (useIconColor)
+			response.general.stroke = getColorRGBAString({
+				firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
+				secondVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+		else
+			response.general.stroke = getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			});
+	} else if (!paletteStatus && !isNil(color)) response.general.stroke = color;
 
 	return { SVGPathStroke: response };
 };
@@ -120,6 +144,7 @@ export const getSVGStyles = ({
 	blockStyle,
 	prefix,
 	isHover = false,
+	useIconColor = true,
 }) => {
 	const response = {
 		[` ${target} svg[data-fill]:not([fill^="none"])`]: getSVGPathFillStyles(
@@ -129,20 +154,54 @@ export const getSVGStyles = ({
 			isHover
 		),
 		[` ${target} svg[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+			getSVGPathStrokeStyles(
+				obj,
+				blockStyle,
+				prefix,
+				isHover,
+				useIconColor
+			),
 		[` ${target} svg path`]: getSVGPathStyles(obj, prefix, isHover),
 		[` ${target} svg path[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 		[` ${target} svg path[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+			getSVGPathStrokeStyles(
+				obj,
+				blockStyle,
+				prefix,
+				isHover,
+				useIconColor
+			),
 		[` ${target} svg g[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 		[` ${target} svg g[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+			getSVGPathStrokeStyles(
+				obj,
+				blockStyle,
+				prefix,
+				isHover,
+				useIconColor
+			),
 		[` ${target} svg use[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 		[` ${target} svg use[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+			getSVGPathStrokeStyles(
+				obj,
+				blockStyle,
+				prefix,
+				isHover,
+				useIconColor
+			),
+		[` ${target} svg circle[data-fill]:not([fill^="none"])`]:
+			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+		[` ${target} svg circle[data-stroke]:not([stroke^="none"])`]:
+			getSVGPathStrokeStyles(
+				obj,
+				blockStyle,
+				prefix,
+				isHover,
+				useIconColor
+			),
 	};
 
 	if (isHover) {
@@ -166,13 +225,31 @@ export const getSVGStyles = ({
 				[` ${target} svg g[data-hover-fill]:not([fill^="none"])`]:
 					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 				[` ${target} svg[data-hover-stroke] path:not([stroke^="none"])`]:
-					getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+					getSVGPathStrokeStyles(
+						obj,
+						blockStyle,
+						prefix,
+						isHover,
+						useIconColor
+					),
 				[` ${target} svg g[data-hover-stroke]:not([stroke^="none"])`]:
-					getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+					getSVGPathStrokeStyles(
+						obj,
+						blockStyle,
+						prefix,
+						isHover,
+						useIconColor
+					),
 				[` ${target} svg use[data-hover-fill]:not([fill^="none"])`]:
 					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 				[` ${target} svg use[data-hover-stroke]:not([stroke^="none"])`]:
-					getSVGPathStrokeStyles(obj, blockStyle, prefix, isHover),
+					getSVGPathStrokeStyles(
+						obj,
+						blockStyle,
+						prefix,
+						isHover,
+						useIconColor
+					),
 			},
 		};
 	}

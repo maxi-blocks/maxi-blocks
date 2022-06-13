@@ -20,45 +20,60 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 
 const getPositionStyles = obj => {
+	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const getValue = direction => {
-			const val = getLastBreakpointAttribute({
-				target: `position-${direction}`,
-				breakpoint,
-				attributes: obj,
-			});
+		const isPositionStyleNeeded = breakpoints.some(breakpoint => {
+			const breakpointPosition = obj[`position-${breakpoint}`];
 
-			return val;
-		};
+			if (breakpoint !== 'general') {
+				return !isNil(breakpointPosition);
+			}
 
-		const position = obj[`position-${breakpoint}`];
-		const top = getValue('top');
-		const right = getValue('right');
-		const bottom = getValue('bottom');
-		const left = getValue('left');
-		const unit = getLastBreakpointAttribute({
-			target: 'position-unit',
+			return breakpointPosition !== 'inherit';
+		});
+
+		if (!isPositionStyleNeeded) return;
+
+		const position = getLastBreakpointAttribute({
+			target: 'position',
 			breakpoint,
 			attributes: obj,
 		});
 
-		response[breakpoint] = {
-			...(position && { position }),
-			...(!isNil(top) && {
-				top: getValue('top') + unit,
-			}),
-			...(!isNil(right) && {
-				right: getValue('right') + unit,
-			}),
-			...(!isNil(bottom) && {
-				bottom: getValue('bottom') + unit,
-			}),
-			...(!isNil(left) && {
-				left: getValue('left') + unit,
-			}),
-		};
+		response[breakpoint] = {};
+
+		if (!isNil(position)) {
+			response[breakpoint] = {
+				position,
+			};
+		}
+
+		keyWords.forEach(keyWord => {
+			const lastBreakpointValue = getLastBreakpointAttribute({
+				target: `position-${keyWord}`,
+				breakpoint,
+				attributes: obj,
+			});
+
+			const value =
+				position !== 'inherit'
+					? lastBreakpointValue
+					: lastBreakpointValue
+					? '0'
+					: null;
+
+			const unit = getLastBreakpointAttribute({
+				target: `position-${keyWord}-unit`,
+				breakpoint,
+				attributes: obj,
+			});
+
+			if (!isNil(value) && !isNil(unit))
+				response[breakpoint][keyWord] =
+					value !== 'auto' ? `${value}${unit}` : value;
+		});
 
 		if (isEmpty(response[breakpoint])) delete response[breakpoint];
 	});

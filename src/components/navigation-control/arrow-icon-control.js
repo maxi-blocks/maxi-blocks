@@ -9,6 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import SettingTabsControl from '../setting-tabs-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import ColorControl from '../color-control';
 import {
 	getDefaultAttribute,
@@ -100,73 +101,114 @@ const ArrowIconControl = props => {
 			{(props['navigation-arrow-first-icon-content'] ||
 				props['navigation-arrow-second-icon-content']) && (
 				<>
-					<SvgWidthControl
-						{...getGroupAttributes(
-							props,
-							`arrowIcon${isHover ? 'Hover' : ''}`,
-							isHover
-						)}
-						onChange={onChange}
-						prefix='navigation-arrow-both-icon-'
-						breakpoint={breakpoint}
-						isHover={isHover}
-					/>
-					<SvgStrokeWidthControl
-						{...getGroupAttributes(
-							props,
-							`arrowIcon${isHover ? 'Hover' : ''}`,
-							isHover
-						)}
-						onChange={obj => {
-							onChange({
-								...obj,
-								'navigation-arrow-first-icon-content':
-									setSVGStrokeWidth(
-										props[
-											'navigation-arrow-first-icon-content'
-										],
-										obj[
-											`navigation-arrow-both-icon-stroke-${breakpoint}${
-												isHover ? '-hover' : ''
-											}`
-										]
-									),
-							});
-						}}
-						prefix='navigation-arrow-both-icon-'
-						breakpoint={breakpoint}
-						isHover={isHover}
-					/>
 					{!isHover && (
-						<AdvancedNumberControl
-							label={__('Horizontal Spacing', 'maxi-blocks')}
-							min={-999}
-							max={999}
-							initial={1}
-							step={1}
-							breakpoint={breakpoint}
-							value={
-								props[
-									`navigation-arrow-both-icon-spacing-${breakpoint}`
-								]
-							}
-							onChangeValue={val => {
-								onChange({
-									[`navigation-arrow-both-icon-spacing-${breakpoint}`]:
-										val !== undefined && val !== ''
-											? val
-											: '',
-								});
-							}}
-							onReset={() =>
-								onChange({
-									[`navigation-arrow-both-icon-spacing-${breakpoint}`]:
-										getDefaultAttribute(
-											`navigation-arrow-both-icon-spacing-${breakpoint}`
-										),
-								})
-							}
-						/>
+						<ResponsiveTabsControl breakpoint={breakpoint}>
+							<>
+								<SvgWidthControl
+									{...getGroupAttributes(
+										props,
+										`arrowIcon${isHover ? 'Hover' : ''}`,
+										isHover
+									)}
+									onChange={onChange}
+									prefix='navigation-arrow-both-icon-'
+									breakpoint={breakpoint}
+									isHover={isHover}
+								/>
+								<SvgStrokeWidthControl
+									{...getGroupAttributes(
+										props,
+										`arrowIcon${isHover ? 'Hover' : ''}`,
+										isHover
+									)}
+									onChange={obj => {
+										onChange({
+											...obj,
+											'navigation-arrow-first-icon-content':
+												setSVGStrokeWidth(
+													props[
+														'navigation-arrow-first-icon-content'
+													],
+													obj[
+														`navigation-arrow-both-icon-stroke-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`
+													]
+												),
+										});
+									}}
+									prefix='navigation-arrow-both-icon-'
+									breakpoint={breakpoint}
+									isHover={isHover}
+								/>
+								<AdvancedNumberControl
+									label={__(
+										'Horizontal Spacing',
+										'maxi-blocks'
+									)}
+									min={-300}
+									max={300}
+									initial={1}
+									step={1}
+									breakpoint={breakpoint}
+									value={
+										props[
+											`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`
+										]
+									}
+									onChangeValue={val => {
+										onChange({
+											[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`]:
+												val !== undefined && val !== ''
+													? val
+													: '',
+										});
+									}}
+									onReset={() =>
+										onChange({
+											[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`]:
+												getDefaultAttribute(
+													`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`
+												),
+										})
+									}
+								/>
+								<AdvancedNumberControl
+									label={__(
+										'Vertical Spacing',
+										'maxi-blocks'
+									)}
+									min={-100}
+									max={200}
+									initial={1}
+									step={1}
+									breakpoint={breakpoint}
+									value={
+										props[
+											`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`
+										]
+									}
+									onChangeValue={val => {
+										onChange({
+											[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`]:
+												val !== undefined && val !== ''
+													? val
+													: '',
+										});
+									}}
+									onReset={() =>
+										onChange({
+											[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`]:
+												getDefaultAttribute(
+													`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`
+												),
+										})
+									}
+								/>
+							</>
+						</ResponsiveTabsControl>
 					)}
 					<SettingTabsControl
 						label=''

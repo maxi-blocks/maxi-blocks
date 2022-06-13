@@ -239,12 +239,18 @@ const getIconSpacing = (props, icon) => {
 			attributes: props,
 		})}`;
 
-		if (!isNil(props[`navigation-arrow-both-icon-spacing-${breakpoint}`])) {
+		if (
+			!isNil(
+				props[
+					`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`
+				]
+			)
+		) {
 			if (icon === 'prev')
 				responsive[
 					breakpoint
 				].left = `calc(${-getLastBreakpointAttribute({
-					target: 'navigation-arrow-both-icon-spacing',
+					target: 'navigation-arrow-both-icon-spacing-horizontal',
 					breakpoint,
 					attributes: props,
 				})}px - ${halfSize})`;
@@ -252,10 +258,24 @@ const getIconSpacing = (props, icon) => {
 				responsive[
 					breakpoint
 				].right = `calc(${-getLastBreakpointAttribute({
-					target: 'navigation-arrow-both-icon-spacing',
+					target: 'navigation-arrow-both-icon-spacing-horizontal',
 					breakpoint,
 					attributes: props,
 				})}px - (${size} + ${halfSize}))`;
+		}
+
+		if (
+			!isNil(
+				props[
+					`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`
+				]
+			)
+		) {
+			responsive[breakpoint].top = `${getLastBreakpointAttribute({
+				target: 'navigation-arrow-both-icon-spacing-vertical',
+				breakpoint,
+				attributes: props,
+			})}%`;
 		}
 	});
 
@@ -310,6 +330,7 @@ const getStyles = props => {
 					'next'
 				),
 				' .maxi-slider-block__arrow svg': getIconSize(props, false),
+				' .maxi-slider-block__arrow': getIconSize(props, false),
 				' .maxi-slider-block__arrow svg path': getIconPathStyles(
 					props,
 					false

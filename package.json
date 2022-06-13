@@ -33,7 +33,6 @@
 		"@wordpress/icons": "^9.1.0",
 		"@wordpress/primitives": "^3.8.0",
 		"@wordpress/rich-text": "^5.8.0",
-		"algoliasearch": "^4.13.1",
 		"babel-eslint": "^10.1.0",
 		"babel-preset-react": "^6.24.1",
 		"bezier-easing-editor": "^0.8.0",
@@ -61,6 +60,7 @@
 		"react-tilt": "^0.1.4",
 		"tilt.js": "^1.2.1",
 		"tinycolor2": "^1.4.2",
+		"typesense-instantsearch-adapter": "^2.4.0",
 		"w3c-css-validator": "^1.2.1"
 	},
 	"devDependencies": {

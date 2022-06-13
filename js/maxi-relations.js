@@ -8,7 +8,6 @@ const relations = () => {
 		let effectsObj = {};
 
 		Object.entries(css).forEach(([breakpoint, obj]) => {
-			console.log(breakpoint, breakpoints.includes(breakpoint), obj);
 			if (
 				breakpoints.includes(breakpoint) &&
 				(window.innerWidth < obj.breakpoint || !obj.breakpoint)

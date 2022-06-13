@@ -11,6 +11,7 @@ import {
 	AccordionControl,
 	NumberCounterControl,
 	SettingTabsControl,
+	AlignmentControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -30,6 +31,9 @@ const Inspector = props => {
 		cleanInlineStyles,
 	} = props;
 
+	const alignmentLabel = __('Counter', 'maxi-blocks');
+	const textAlignmentLabel = __('Text', 'maxi-blocks');
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -48,17 +52,61 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									...inspectorTabs.alignment({
-										props: {
-											...props,
-										},
-										isAlignment: true,
-										alignmentLabel: __(
-											'Counter',
-											'maxi-blocks'
+									{
+										label: __('Alignment', 'maxi-blocks'),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<>
+													<label
+														className='maxi-base-control__label'
+														htmlFor={`${alignmentLabel}-alignment`}
+													>
+														{`${alignmentLabel} alignment`}
+													</label>
+													<AlignmentControl
+														id={`${alignmentLabel}-alignment`}
+														label={alignmentLabel}
+														{...getGroupAttributes(
+															attributes,
+															'alignment'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														disableJustify
+													/>
+													<label
+														className='maxi-base-control__label'
+														htmlFor={`${textAlignmentLabel}-alignment`}
+													>
+														{`${textAlignmentLabel} alignment`}
+													</label>
+													<AlignmentControl
+														id={`${textAlignmentLabel}-alignment`}
+														label={
+															textAlignmentLabel
+														}
+														{...getGroupAttributes(
+															attributes,
+															'textAlignment'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														type='text'
+													/>
+												</>
+											</ResponsiveTabsControl>
 										),
-										disableJustify: true,
-									}),
+									},
 									{
 										label: __('Number', 'maxi-blocks'),
 										content: (

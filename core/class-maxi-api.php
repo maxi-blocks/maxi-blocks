@@ -445,8 +445,8 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
             
-            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}'maxi_blocks_styles' WHERE post_id=%d", $postId));
-            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}'maxi_blocks_custom_data' WHERE post_id=%d", $postId));
+            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id=%d", $postId));
+            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id=%d", $postId));
         }
 
         public function get_api_response($response)

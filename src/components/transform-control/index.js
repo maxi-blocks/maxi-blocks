@@ -113,12 +113,8 @@ const TransformControl = props => {
 
 	useEffect(() => {
 		const activeStatusName = getActiveTabName(depth);
-		const activeHoverName = getActiveTabName(depth + 1);
 		if (activeStatusName) {
 			setTransformStatus(toLower(activeStatusName));
-		}
-		if (activeHoverName) {
-			setTransformStatus(toLower(activeHoverName));
 		}
 	});
 

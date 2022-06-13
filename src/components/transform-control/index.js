@@ -92,10 +92,13 @@ const TransformControl = props => {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
 		} = targetTransformObj;
 
-		onChangeInline({
-			transform: transform ?? '',
-			'transform-origin': transformOrigin ?? '',
-		});
+		onChangeInline(
+			{
+				transform: transform ?? '',
+				'transform-origin': transformOrigin ?? '',
+			},
+			target
+		);
 	};
 
 	const getOptions = () => {
@@ -228,21 +231,29 @@ const TransformControl = props => {
 										},
 									},
 								});
-								onChange({
-									[`transform-scale-${breakpoint}`]: {
-										[`${latestTarget.current[0]}`]: {
-											...getLastBreakpointAttribute({
-												target: 'transform-scale',
-												breakpoint,
-												attributes: props,
-											})?.[`${latestTarget.current[0]}`],
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
+								onChange(
+									{
+										[`transform-scale-${breakpoint}`]: {
+											[`${latestTarget.current[0]}`]: {
+												...getLastBreakpointAttribute({
+													target: 'transform-scale',
+													breakpoint,
+													attributes: props,
+												})?.[
+													`${latestTarget.current[0]}`
+												],
+												[`${latestTarget.current[1]}`]:
+													{
+														x,
+														y,
+													},
 											},
 										},
 									},
-								});
+									selectors[`${latestTarget.current[0]}`][
+										`${latestTarget.current[1]}`
+									].target
+								);
 							}}
 						/>
 					)}
@@ -310,23 +321,31 @@ const TransformControl = props => {
 										},
 									},
 								});
-								onChange({
-									[`transform-translate-${breakpoint}`]: {
-										[`${latestTarget.current[0]}`]: {
-											...getLastBreakpointAttribute({
-												target: 'transform-translate',
-												breakpoint,
-												attributes: props,
-											})?.[`${latestTarget.current[0]}`],
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												'x-unit': xUnit,
-												'y-unit': yUnit,
+								onChange(
+									{
+										[`transform-translate-${breakpoint}`]: {
+											[`${latestTarget.current[0]}`]: {
+												...getLastBreakpointAttribute({
+													target: 'transform-translate',
+													breakpoint,
+													attributes: props,
+												})?.[
+													`${latestTarget.current[0]}`
+												],
+												[`${latestTarget.current[1]}`]:
+													{
+														x,
+														y,
+														'x-unit': xUnit,
+														'y-unit': yUnit,
+													},
 											},
 										},
 									},
-								});
+									selectors[`${latestTarget.current[0]}`][
+										`${latestTarget.current[1]}`
+									].target
+								);
 							}}
 						/>
 					)}
@@ -368,22 +387,30 @@ const TransformControl = props => {
 										},
 									},
 								});
-								onChange({
-									[`transform-rotate-${breakpoint}`]: {
-										[`${latestTarget.current[0]}`]: {
-											...getLastBreakpointAttribute({
-												target: 'transform-rotate',
-												breakpoint,
-												attributes: props,
-											})?.[`${latestTarget.current[0]}`],
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												z,
+								onChange(
+									{
+										[`transform-rotate-${breakpoint}`]: {
+											[`${latestTarget.current[0]}`]: {
+												...getLastBreakpointAttribute({
+													target: 'transform-rotate',
+													breakpoint,
+													attributes: props,
+												})?.[
+													`${latestTarget.current[0]}`
+												],
+												[`${latestTarget.current[1]}`]:
+													{
+														x,
+														y,
+														z,
+													},
 											},
 										},
 									},
-								});
+									selectors[`${latestTarget.current[0]}`][
+										`${latestTarget.current[1]}`
+									].target
+								);
 							}}
 						/>
 					)}
@@ -453,23 +480,31 @@ const TransformControl = props => {
 										},
 									},
 								});
-								onChange({
-									[`transform-origin-${breakpoint}`]: {
-										[`${latestTarget.current[0]}`]: {
-											...getLastBreakpointAttribute({
-												target: 'transform-origin',
-												breakpoint,
-												attributes: props,
-											})?.[`${latestTarget.current[0]}`],
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												'x-unit': xUnit,
-												'y-unit': yUnit,
+								onChange(
+									{
+										[`transform-origin-${breakpoint}`]: {
+											[`${latestTarget.current[0]}`]: {
+												...getLastBreakpointAttribute({
+													target: 'transform-origin',
+													breakpoint,
+													attributes: props,
+												})?.[
+													`${latestTarget.current[0]}`
+												],
+												[`${latestTarget.current[1]}`]:
+													{
+														x,
+														y,
+														'x-unit': xUnit,
+														'y-unit': yUnit,
+													},
 											},
 										},
 									},
-								});
+									selectors[`${latestTarget.current[0]}`][
+										`${latestTarget.current[1]}`
+									].target
+								);
 							}}
 						/>
 					)}

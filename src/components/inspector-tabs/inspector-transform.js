@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import TransformControl from '../transform-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
 
 /**
  * Component
@@ -22,7 +23,6 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-	const { 'transform-target': transformTarget } = attributes;
 
 	return {
 		label: __('Transform', 'maxi-blocks'),
@@ -30,23 +30,21 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<TransformControl
 					{...getGroupAttributes(attributes, 'transform')}
-					onChangeInline={obj => {
+					onChangeInline={(obj, target) => {
 						insertInlineStyles({
 							obj,
-							target: selectors[transformTarget]?.normal.target,
+							target,
 						});
 					}}
-					onChange={obj => {
+					onChange={(obj, inlineStylesTargets) => {
 						maxiSetAttributes(obj);
-						cleanInlineStyles(
-							selectors[transformTarget]?.normal.target
-						);
+						cleanInlineStyles(inlineStylesTargets);
 					}}
 					uniqueID={uniqueID}
 					breakpoint={deviceType}
 					depth={depth}
-					categories={categories}
-					selectors={selectors}
+					categories={getCategoriesCss(categories, attributes)}
+					selectors={getSelectorsCss(selectors, attributes)}
 				/>
 			</ResponsiveTabsControl>
 		),

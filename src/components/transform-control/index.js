@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -48,6 +48,11 @@ const TransformControl = props => {
 	);
 	const [hoverSelected, setHoverSelected] = useState('normal');
 	const [transformTarget, setTransformTarget] = useState(null);
+	const latestTarget = useRef();
+
+	useEffect(() => {
+		latestTarget.current = [transformTarget, hoverSelected];
+	}, [transformTarget, hoverSelected]);
 
 	const isTransformed = () =>
 		Object.entries(transformOptions).some(([key, val]) => {
@@ -71,16 +76,17 @@ const TransformControl = props => {
 
 		changeTransformOptions(transformOptions);
 
+		const [transformTarget, hoverSelected] = latestTarget.current;
+
 		const transformObj = getTransformStyles(transformOptions, selectors);
 
 		if (!transformObj) return;
 
-		const inlineStylesTarget =
-			selectors[transformTarget][hoverSelected].target;
+		const { target } = selectors[transformTarget][hoverSelected];
 
-		if (inlineStylesTarget.includes(':')) return;
+		if (target.includes(':')) return;
 
-		const targetTransformObj = transformObj[inlineStylesTarget].transform;
+		const targetTransformObj = transformObj[target].transform;
 
 		const {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
@@ -202,8 +208,8 @@ const TransformControl = props => {
 							onChange={(x, y) => {
 								onChangeTransform({
 									'transform-scale': {
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 											},
@@ -214,8 +220,8 @@ const TransformControl = props => {
 							onSave={(x, y) => {
 								onChangeTransform({
 									'transform-scale': {
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 											},
@@ -224,13 +230,13 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-scale-${breakpoint}`]: {
-										...getLastBreakpointAttribute({
-											target: 'transform-scale',
-											breakpoint,
-											attributes: props,
-										}),
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											...getLastBreakpointAttribute({
+												target: 'transform-scale',
+												breakpoint,
+												attributes: props,
+											})?.[`${latestTarget.current[0]}`],
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 											},
@@ -280,8 +286,8 @@ const TransformControl = props => {
 							onChange={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-translate': {
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												'x-unit': xUnit,
@@ -294,8 +300,8 @@ const TransformControl = props => {
 							onSave={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-translate': {
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												'x-unit': xUnit,
@@ -306,13 +312,13 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-translate-${breakpoint}`]: {
-										...getLastBreakpointAttribute({
-											target: 'transform-translate',
-											breakpoint,
-											attributes: props,
-										}),
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											...getLastBreakpointAttribute({
+												target: 'transform-translate',
+												breakpoint,
+												attributes: props,
+											})?.[`${latestTarget.current[0]}`],
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												'x-unit': xUnit,
@@ -353,8 +359,8 @@ const TransformControl = props => {
 							onChange={(x, y, z) => {
 								onChangeTransform({
 									'transform-rotate': {
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												z,
@@ -364,13 +370,13 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-rotate-${breakpoint}`]: {
-										...getLastBreakpointAttribute({
-											target: 'transform-rotate',
-											breakpoint,
-											attributes: props,
-										}),
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											...getLastBreakpointAttribute({
+												target: 'transform-rotate',
+												breakpoint,
+												attributes: props,
+											})?.[`${latestTarget.current[0]}`],
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												z,
@@ -423,8 +429,8 @@ const TransformControl = props => {
 							onChange={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-origin': {
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												'x-unit': xUnit,
@@ -437,8 +443,8 @@ const TransformControl = props => {
 							onSave={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-origin': {
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												'x-unit': xUnit,
@@ -449,13 +455,13 @@ const TransformControl = props => {
 								});
 								onChange({
 									[`transform-origin-${breakpoint}`]: {
-										...getLastBreakpointAttribute({
-											target: 'transform-origin',
-											breakpoint,
-											attributes: props,
-										}),
-										[`${transformTarget}`]: {
-											[`${hoverSelected}`]: {
+										[`${latestTarget.current[0]}`]: {
+											...getLastBreakpointAttribute({
+												target: 'transform-origin',
+												breakpoint,
+												attributes: props,
+											})?.[`${latestTarget.current[0]}`],
+											[`${latestTarget.current[1]}`]: {
 												x,
 												y,
 												'x-unit': xUnit,

@@ -84,12 +84,6 @@ class edit extends MaxiBlockComponent {
 			boxShadow: '.maxi-button-block__button',
 		};
 
-		const fullWidth = getLastBreakpointAttribute({
-			target: 'button-full-width',
-			breakpoint: deviceType,
-			attributes,
-		});
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -118,7 +112,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<div data-align={fullWidth} className={buttonClasses}>
+				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (
 						<RichText
 							className='maxi-button-block__content'

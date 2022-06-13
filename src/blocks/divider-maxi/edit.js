@@ -196,12 +196,7 @@ class edit extends MaxiBlockComponent {
 					target: 'divider-border-style',
 					breakpoint: deviceType,
 					attributes,
-				}) !== 'none' && (
-					<hr
-						data-align={fullWidth}
-						className='maxi-divider-block__divider'
-					/>
-				)}
+				}) !== 'none' && <hr className='maxi-divider-block__divider' />}
 			</MaxiBlock>,
 		];
 	}

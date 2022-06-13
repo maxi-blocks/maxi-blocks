@@ -34,7 +34,6 @@ const fromFullWidthNonToResponsive = ({ attributes, save, prefix }) => {
 		},
 
 		save(props) {
-			console.log(props);
 			const { attributes } = props;
 			const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
 

@@ -95,9 +95,7 @@ const MaxiToolbar = memo(
 			copyPasteMapping,
 		} = props;
 		const {
-			blockFullWidth,
 			customLabel,
-			fullWidth,
 			isFirstOnHierarchy,
 			isList,
 			linkSettings,
@@ -534,8 +532,6 @@ const MaxiToolbar = memo(
 						/>
 						<Size
 							blockName={name}
-							blockFullWidth={blockFullWidth}
-							fullWidth={fullWidth}
 							{...getGroupAttributes(
 								attributes,
 								'size',

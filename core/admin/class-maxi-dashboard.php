@@ -253,13 +253,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain);
             $description .= '<i> '.__('(Default)', self::$maxi_text_domain).'</i></p>';
             $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
-
             if ($fontUploadsDirSize > 0) {
                 $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__(
                     'MB',
                     'maxi-blocks'
                 ).'</p>';
-                if (!(bool) get_option('local_fonts')) {
+                
+                if (!(bool)get_option('local_fonts')) {
                     update_option('local_fonts_uploaded', false);
                     $description = '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
                     $content .= $this->generate_setting($description, 'remove_local_fonts', $this->remove_local_fonts());
@@ -356,7 +356,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $toggle .= '<input name="';
             $toggle .= $option;
             $toggle .= '" class="maxi-dashboard_main-content_accordion-item-toggle" ';
-            if ((bool) get_option($option)) {
+            if ((bool)get_option($option)) {
                 $toggle .= ' checked="checked" ';
                 if (is_callable($function)) {
                     $function();

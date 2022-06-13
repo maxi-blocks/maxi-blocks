@@ -38,6 +38,20 @@ body.maxi-blocks--active .maxi-button-block {
 			width: 100%;
 			text-align: center;
 		}
+		&--icon-top {
+			flex-direction: column;
+			.maxi-button-block__icon {
+				order: 0;
+				margin-bottom: 5px;
+			}
+		}
+		&--icon-bottom {
+			flex-direction: column;
+			.maxi-button-block__icon {
+				order: 2;
+				margin-top: 5px;
+			}
+		}
 		&--icon-left {
 			.maxi-button-block__icon {
 				order: 0;

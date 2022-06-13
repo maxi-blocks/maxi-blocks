@@ -234,20 +234,9 @@ const TransformControl = props => {
 								onChange(
 									{
 										[`transform-scale-${breakpoint}`]: {
-											[`${latestTarget.current[0]}`]: {
-												...getLastBreakpointAttribute({
-													target: 'transform-scale',
-													breakpoint,
-													attributes: props,
-												})?.[
-													`${latestTarget.current[0]}`
-												],
-												[`${latestTarget.current[1]}`]:
-													{
-														x,
-														y,
-													},
-											},
+											...transformOptions[
+												`transform-scale-${breakpoint}`
+											],
 										},
 									},
 									selectors[`${latestTarget.current[0]}`][
@@ -324,22 +313,9 @@ const TransformControl = props => {
 								onChange(
 									{
 										[`transform-translate-${breakpoint}`]: {
-											[`${latestTarget.current[0]}`]: {
-												...getLastBreakpointAttribute({
-													target: 'transform-translate',
-													breakpoint,
-													attributes: props,
-												})?.[
-													`${latestTarget.current[0]}`
-												],
-												[`${latestTarget.current[1]}`]:
-													{
-														x,
-														y,
-														'x-unit': xUnit,
-														'y-unit': yUnit,
-													},
-											},
+											...transformOptions[
+												`transform-translate-${breakpoint}`
+											],
 										},
 									},
 									selectors[`${latestTarget.current[0]}`][
@@ -390,21 +366,9 @@ const TransformControl = props => {
 								onChange(
 									{
 										[`transform-rotate-${breakpoint}`]: {
-											[`${latestTarget.current[0]}`]: {
-												...getLastBreakpointAttribute({
-													target: 'transform-rotate',
-													breakpoint,
-													attributes: props,
-												})?.[
-													`${latestTarget.current[0]}`
-												],
-												[`${latestTarget.current[1]}`]:
-													{
-														x,
-														y,
-														z,
-													},
-											},
+											...transformOptions[
+												`transform-rotate-${breakpoint}`
+											],
 										},
 									},
 									selectors[`${latestTarget.current[0]}`][
@@ -483,22 +447,9 @@ const TransformControl = props => {
 								onChange(
 									{
 										[`transform-origin-${breakpoint}`]: {
-											[`${latestTarget.current[0]}`]: {
-												...getLastBreakpointAttribute({
-													target: 'transform-origin',
-													breakpoint,
-													attributes: props,
-												})?.[
-													`${latestTarget.current[0]}`
-												],
-												[`${latestTarget.current[1]}`]:
-													{
-														x,
-														y,
-														'x-unit': xUnit,
-														'y-unit': yUnit,
-													},
-											},
+											...transformOptions[
+												`transform-origin-${breakpoint}`
+											],
 										},
 									},
 									selectors[`${latestTarget.current[0]}`][

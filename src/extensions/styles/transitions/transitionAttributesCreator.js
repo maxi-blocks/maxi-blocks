@@ -44,11 +44,12 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj
 			? Object.values(transitionObj).map(
-					({ title, property, prefix }) => {
+					({ title, property, prefix, ignoreHoverProp = false }) => {
 						return {
 							title,
 							property,
 							prefix,
+							ignoreHoverProp,
 						};
 					}
 			  )
@@ -69,12 +70,14 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 
 	const createTransitionStyleObjForType = (type, options) =>
 		options &&
-		options.forEach(({ title, property, prefix }) => {
+		options.forEach(({ title, property, prefix, ignoreHoverProp }) => {
 			transitionStyleObj[type] = {
 				...transitionStyleObj[type],
 				[title.toLowerCase()]: {
 					...transitionRawObj,
-					hoverProp: getHoverProp(property, prefix),
+					...(!ignoreHoverProp && {
+						hoverProp: getHoverProp(property, prefix),
+					}),
 				},
 			};
 		});

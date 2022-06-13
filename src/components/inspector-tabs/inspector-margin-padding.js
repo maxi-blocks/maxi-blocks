@@ -18,14 +18,14 @@ import {
  */
 const marginPadding = ({
 	props,
-	prefix,
+	prefix = '',
 	customLabel,
 	disableMargin = false,
 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	const fullWidth = getLastBreakpointAttribute({
-		target: `${prefix}-full-width`,
+		target: `${prefix}full-width`,
 		breakpoint: deviceType,
 		attributes,
 	});
@@ -45,6 +45,7 @@ const marginPadding = ({
 						prefix={prefix}
 						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
+						fullWidth={fullWidth}
 					/>
 				)}
 				<PaddingControl
@@ -57,7 +58,6 @@ const marginPadding = ({
 					prefix={prefix}
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
-					fullWidth={fullWidth}
 				/>
 			</>
 		),

@@ -10,7 +10,7 @@ import AxisControl from '../axis-control';
 import { getGroupAttributes } from '../../extensions/styles';
 
 const PaddingControl = props => {
-	const { breakpoint, fullWidth, onChange, prefix } = props;
+	const { breakpoint, onChange, prefix } = props;
 
 	return (
 		<AxisControl
@@ -21,7 +21,6 @@ const PaddingControl = props => {
 			breakpoint={breakpoint}
 			target='padding'
 			optionType='string'
-			fullWidth={fullWidth}
 			disableAuto
 			enableAxisUnits
 		/>

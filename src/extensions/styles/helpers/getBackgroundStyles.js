@@ -487,36 +487,6 @@ const getSVGWrapperBackgroundObject = ({
 		attributes: props,
 		isHover,
 	});
-	const bgSVGTop = getLastBreakpointAttribute({
-		target: 'background-svg-position-top',
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-	const bgSVGRight = getLastBreakpointAttribute({
-		target: 'background-svg-position-right',
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-	const bgSVGbottom = getLastBreakpointAttribute({
-		target: 'background-svg-position-bottom',
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-	const bgSVGLeft = getLastBreakpointAttribute({
-		target: 'background-svg-position-left',
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-	const bgSVGUnit = getLastBreakpointAttribute({
-		target: 'background-svg-position-unit',
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
 
 	if (isNumber(bgSVGSize)) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute({
@@ -529,22 +499,28 @@ const getSVGWrapperBackgroundObject = ({
 		response[breakpoint].width = `${bgSVGSize}${bgSVGSizeUnit}`;
 	}
 
-	if (!isEmpty(bgSVGTop) || isNumber(bgSVGTop))
-		response[breakpoint].top = `${bgSVGTop}${
-			bgSVGTop !== 'auto' ? bgSVGUnit : ''
-		}`;
-	if (!isEmpty(bgSVGRight) || isNumber(bgSVGRight))
-		response[breakpoint].right = `${bgSVGRight}${
-			bgSVGRight !== 'auto' ? bgSVGUnit : ''
-		}`;
-	if (!isEmpty(bgSVGbottom) || isNumber(bgSVGbottom))
-		response[breakpoint].bottom = `${bgSVGbottom}${
-			bgSVGbottom !== 'auto' ? bgSVGUnit : ''
-		}`;
-	if (!isEmpty(bgSVGLeft) || isNumber(bgSVGLeft))
-		response[breakpoint].left = `${bgSVGLeft}${
-			bgSVGLeft !== 'auto' ? bgSVGUnit : ''
-		}`;
+	const keyWords = ['top', 'right', 'bottom', 'left'];
+
+	keyWords.forEach(keyWord => {
+		const positionValue = getLastBreakpointAttribute({
+			target: `background-svg-position-${keyWord}`,
+			breakpoint,
+			attributes: props,
+		});
+
+		const positionUnit = getLastBreakpointAttribute({
+			target: `background-svg-position-${keyWord}-unit`,
+			breakpoint,
+			attributes: props,
+		});
+
+		if (!isNil(positionValue) && !isNil(positionUnit)) {
+			response[breakpoint][keyWord] =
+				positionValue === 'auto'
+					? 'auto'
+					: `${positionValue}${positionUnit}`;
+		}
+	});
 
 	return response;
 };

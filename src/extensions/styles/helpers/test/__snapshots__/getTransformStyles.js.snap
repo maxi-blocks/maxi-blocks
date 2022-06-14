@@ -2,33 +2,62 @@
 
 exports[`getTransformStyles Get a correct transform styles 1`] = `
 Object {
-  "general": Object {
-    "transform": "scaleX(0.01) scaleY(0.02) translateX(3px) translateY(4px) rotateX(1deg) rotateY(2deg) rotateZ(3deg) ",
-    "transform-origin": "100% 0% ",
+  "": Object {
+    "transform": Object {
+      "general": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+        "transform-origin": "0% 0% ",
+      },
+      "l": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+        "transform-origin": "0% 0% ",
+      },
+      "m": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+        "transform-origin": "0% 0% ",
+      },
+      "s": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+        "transform-origin": "0% 0% ",
+      },
+      "xl": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+        "transform-origin": "0% 0% ",
+      },
+      "xs": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+        "transform-origin": "0% 0% ",
+      },
+      "xxl": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+        "transform-origin": "0% 0% ",
+      },
+    },
   },
-  "l": Object {
-    "transform": "scaleX(0.02) scaleY(0.03) translateX(4px) translateY(1px) rotateX(2deg) rotateY(3deg) rotateZ(4deg) ",
-    "transform-origin": "100% 0% ",
-  },
-  "m": Object {
-    "transform": "scaleX(0.01) scaleY(0.02) translateX(3px) translateY(4px) rotateX(1deg) rotateY(2deg) rotateZ(3deg) ",
-    "transform-origin": "100% 0% ",
-  },
-  "s": Object {
-    "transform": "scaleX(0.04) scaleY(0.01) translateX(2px) translateY(3px) rotateX(4deg) rotateY(1deg) rotateZ(2deg) ",
-    "transform-origin": "100% 0% ",
-  },
-  "xl": Object {
-    "transform": "scaleX(0.03) scaleY(0.04) translateX(1px) translateY(2px) rotateX(3deg) rotateY(4deg) rotateZ(1deg) ",
-    "transform-origin": "100% 0% ",
-  },
-  "xs": Object {
-    "transform": "scaleX(0.04) scaleY(0.02) translateX(1px) translateY(2px) rotateX(3deg) rotateY(4deg) rotateZ(1deg) ",
-    "transform-origin": "100% 0% ",
-  },
-  "xxl": Object {
-    "transform": "scaleX(0.04) scaleY(0.01) translateX(2px) translateY(3px) rotateX(4deg) rotateY(1deg) rotateZ(2deg) ",
-    "transform-origin": "100% 0% ",
+  ":hover": Object {
+    "transform": Object {
+      "general": Object {
+        "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
+      },
+      "l": Object {
+        "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
+      },
+      "m": Object {
+        "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
+      },
+      "s": Object {
+        "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
+      },
+      "xl": Object {
+        "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
+      },
+      "xs": Object {
+        "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
+      },
+      "xxl": Object {
+        "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
+      },
+    },
   },
 }
 `;

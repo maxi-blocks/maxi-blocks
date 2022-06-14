@@ -11,7 +11,7 @@ const transitionObj = {
 		},
 		link: {
 			title: 'Link',
-			target: ' .maxi-text-block--link, .maxi-text-block--link span',
+			target: [' .maxi-text-block--link', ' .maxi-text-block--link span'],
 			property: 'color',
 			ignoreHoverProp: true,
 		},

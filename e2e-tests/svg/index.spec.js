@@ -13,19 +13,37 @@ import { svgFetch, openPreviewPage } from '../utils';
  * External dependencies
  */
 import parse from 'html-react-parser';
-import { isEqual, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Tests
  */
+const htmlComparison = async (page, html1, html2) =>
+	page.evaluate(
+		(_html1, _html2) => {
+			const node1 = document.createElement('div');
+			node1.innerHTML = _html1;
+
+			const node2 = document.createElement('div');
+			node2.innerHTML = _html2;
+
+			return node1.isEqualNode(node2);
+		},
+		html1,
+		html2
+	);
+
 const checkSVGGroup = async (page, fetchPage = 1) => {
 	await createNewPost();
 	const svgHtml = [];
 	const result = [];
+	const resultRefresh = [];
 
 	const svgGroup = await svgFetch(page, fetchPage);
 
 	for (let i = 0; i < svgGroup.length - 1; i += 1) {
+		if (i === 48 && fetchPage === 96) return;
+
 		const svg = svgGroup[i];
 
 		// Add block without opening the modal and adding the SVG
@@ -54,28 +72,65 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 	await page.waitForTimeout(250);
 
 	for (let e = 0; e < svgGroup.length - 1; e += 1) {
+		if (e === 48 && fetchPage === 96) return;
+
 		const previewIcon = await previewPage.$$eval(
 			'.maxi-svg-icon-block__icon svg',
 			(svg, _e) => svg[_e]?.outerHTML,
 			e
 		);
-
 		const previewIconHtml = parse(svgHtml[e]);
 
+		// check string exist
 		if (typeof previewIcon !== 'string')
 			result.push(previewIconHtml.props.className);
 		else {
-			const frontEndHtml = parse(previewIcon);
+			// check preview and svgHtml are equal
 
-			if (!isEqual(frontEndHtml, previewIconHtml))
-				result.push(previewIconHtml.props.className);
+			const svgSanitize = svgHtml[e].replace(/ "/g, '"');
+			const previewSanitize = previewIcon.replace(/ "/g, '"');
+
+			const compareFrontHtml = await htmlComparison(
+				page,
+				svgSanitize,
+				previewSanitize
+			);
+			debugger;
+			// if are not equal check replace
+			if (!compareFrontHtml) {
+				debugger;
+				const editedSvgHtml = svgHtml[e].replace(
+					/enable-background="new"/g,
+					''
+				);
+
+				const editedPreviewIcon = previewIcon.replace(
+					/enable-background="new"/g,
+					''
+				);
+				debugger;
+				const compareEditedFrontHtml = await htmlComparison(
+					page,
+					editedPreviewIcon,
+					editedSvgHtml
+				);
+
+				// if are not equal return error
+				if (compareEditedFrontHtml !== true)
+					result.push(
+						`${
+							previewIconHtml.props.className ??
+							'⚠️Class not found⚠️'
+						} - ${e}/${fetchPage}`
+					);
+			}
 		}
 	}
-
+	// renderToString
 	if (!isEmpty(result)) {
 		console.error(
-			`Comparison on frontend failed on this/these svg: ${result.join(
-				', '
+			`Comparison on frontend failed on this/these svg: ${JSON.stringify(
+				result
 			)}`
 		);
 
@@ -90,27 +145,32 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 	await page.waitForSelector('.maxi-svg-icon-block__icon svg');
 
 	for (let i = 0; i < svgGroup.length - 1; i += 1) {
+		if (i === 48 && fetchPage === 96) return;
+
 		const svgRefresh = await page.$$eval(
 			'.maxi-svg-icon-block__icon svg',
 			(svg, _i) => svg[_i]?.outerHTML,
 			i
 		);
-
 		const previewIconHtml = parse(svgHtml[i]);
 
 		if (typeof svgRefresh !== 'string')
-			result.push(previewIconHtml.props.className);
+			resultRefresh.push(previewIconHtml.props.className);
 		else {
-			const frontEndHtml = parse(svgRefresh);
+			const compareRefreshHtml = await htmlComparison(
+				page,
+				svgRefresh,
+				svgHtml[i]
+			);
 
-			if (!isEqual(frontEndHtml, previewIconHtml))
+			if (compareRefreshHtml !== true)
 				result.push(previewIconHtml.props.className);
 		}
 	}
 
-	if (!isEmpty(result)) {
+	if (!isEmpty(resultRefresh)) {
 		console.error(
-			`Comparison after refresh failed on this/these svg: ${result.join(
+			`Comparison after refresh failed on this/these svg: ${resultRefresh.join(
 				', '
 			)}`
 		);
@@ -125,7 +185,6 @@ describe.skip('SVG checker 2100', () => {
 	it('SVG icons (0 =>2100)', async () => {
 		// 30min +/-
 		let i = 1;
-
 		do {
 			const test = await checkSVGGroup(page, i);
 			await page.waitForTimeout(250);
@@ -169,7 +228,7 @@ describe.skip('SVG checker 6300', () => {
 		} while (i <= 90);
 	}, 999999999);
 });
-describe.skip('SVG checker 8400', () => {
+describe('SVG checker 8400', () => {
 	it('SVG icons (6300 => 8400)', async () => {
 		let i = 90;
 

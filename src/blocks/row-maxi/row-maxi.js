@@ -23,7 +23,7 @@ import { rowIcon } from '../../icons';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
-import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
+import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
 
 /**
  * Block
@@ -32,8 +32,7 @@ import fromNumberToStringMigrator from '../../extensions/styles/migrators/number
 registerBlockType('maxi-blocks/row-maxi', {
 	title: __('Row Maxi', 'maxi-blocks'),
 	icon: rowIcon,
-	description:
-		'Configure columns inside a row',
+	description: 'Configure columns inside a row',
 	category: 'maxi-blocks',
 	parent: ['maxi-blocks/container-maxi'],
 	supports: {
@@ -52,5 +51,5 @@ registerBlockType('maxi-blocks/row-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [fromNumberToStringMigrator({ attributes, save })],
+	deprecated: [positionMigrator({ attributes, save })],
 });

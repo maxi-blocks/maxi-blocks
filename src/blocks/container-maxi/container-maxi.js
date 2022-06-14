@@ -23,7 +23,7 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { containerIcon } from '../../icons';
-import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
+import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
 
 /**
  * Block
@@ -50,5 +50,5 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [fromNumberToStringMigrator({ attributes, save })],
+	deprecated: [positionMigrator({ attributes, save })],
 });

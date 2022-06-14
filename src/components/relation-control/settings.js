@@ -184,6 +184,7 @@ const settings = {
 					{...props}
 					styleCardPrefix=''
 					hideAlignment
+					disableCustomFormats
 				/>
 			),
 			helper: props => styleHelpers.getTypographyStyles({ ...props }),

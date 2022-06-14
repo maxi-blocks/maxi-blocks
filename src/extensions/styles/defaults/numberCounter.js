@@ -1,7 +1,6 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
-import { alignment } from './alignment';
-import textAlignment from './textAlignment';
+import alignment from './alignment';
 
 const numberCounter = {
 	...breakpointAttributesCreator({
@@ -92,7 +91,6 @@ const numberCounter = {
 			default: 'center',
 		},
 	},
-	...textAlignment,
 };
 
 export default numberCounter;

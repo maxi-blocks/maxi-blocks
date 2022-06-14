@@ -3,8 +3,6 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getPaletteAttributes from '../getPaletteAttributes';
-import getGroupAttributes from '../getGroupAttributes';
-import getAlignmentTextStyles from './getAlignmentTextStyles';
 /**
  * External dependencies
  */
@@ -113,9 +111,6 @@ const getTextStyles = (obj, blockStyle) => {
 
 	return {
 		numberCounterText: response,
-		textAlignment: getAlignmentTextStyles({
-			...getGroupAttributes(obj, 'textAlignment'),
-		}),
 	};
 };
 

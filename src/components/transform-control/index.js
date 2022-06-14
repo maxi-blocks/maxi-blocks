@@ -109,10 +109,23 @@ const TransformControl = props => {
 			},
 		];
 
+		const isUsed = category => {
+			const typeObj =
+				transformOptions[`transform-${transformStatus}-${breakpoint}`];
+
+			if (isNil(typeObj)) return false;
+			return category in typeObj;
+		};
+
 		categories?.forEach(category => {
+			const optionClass = isUsed(category)
+				? 'maxi-option__in-use'
+				: 'maxi-option__not-in-use';
+
 			options.push({
 				label: capitalize(category),
 				value: category,
+				className: optionClass,
 			});
 		});
 		return options;
@@ -414,7 +427,7 @@ const TransformControl = props => {
 									breakpoint,
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.[
-									'x-unit'
+									'y-unit'
 								] ?? '%'
 							}
 							onChange={(x, y, xUnit, yUnit) => {

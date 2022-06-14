@@ -11,6 +11,7 @@ import AxisControl from '../axis-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
+import PositionControl from '../position-control';
 import {
 	getAttributeKey,
 	getBlockStyle,
@@ -73,13 +74,12 @@ const SVGLayerContent = props => {
 				{
 					label: __('Position', 'maxi-blocks'),
 					content: (
-						<AxisControl
+						<PositionControl
 							{...SVGOptions}
-							label='Position'
-							target='background-svg-position'
-							breakpoint={breakpoint}
+							prefix='background-svg-'
 							onChange={onChange}
-							optionType='string'
+							breakpoint={breakpoint}
+							disablePosition
 						/>
 					),
 				},

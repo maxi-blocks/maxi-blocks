@@ -53,6 +53,6 @@ registerBlockType('maxi-blocks/container-maxi', {
 	save,
 	deprecated: [
 		fromNumberToStringMigrator({ attributes, save }),
-		fromFullWidthNonToResponsive({ attributes, save }),
+		fromFullWidthNonToResponsive({ attributes, save, isContainer: true }),
 	],
 });

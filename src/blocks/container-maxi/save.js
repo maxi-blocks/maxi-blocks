@@ -6,11 +6,6 @@ import { getGroupAttributes } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Save
  */
 const save = (props, extendedAttributes = {}) => {

@@ -1,6 +1,11 @@
 import { isNil } from 'lodash';
 
-const fromFullWidthNonToResponsive = ({ attributes, save, prefix }) => {
+const fromFullWidthNonToResponsive = ({
+	attributes,
+	save,
+	prefix,
+	isContainer = false,
+}) => {
 	return {
 		isEligible(blockAttributes) {
 			if (!isNil(blockAttributes.blockFullWidth)) {
@@ -14,7 +19,7 @@ const fromFullWidthNonToResponsive = ({ attributes, save, prefix }) => {
 			...attributes,
 			blockFullWidth: {
 				type: 'string',
-				default: 'normal',
+				default: isContainer ? 'full' : 'normal',
 			},
 			fullWidth: {
 				type: 'string',

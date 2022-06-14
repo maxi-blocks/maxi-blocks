@@ -31,7 +31,6 @@ import { round } from 'lodash';
 /**
  * NumberCounter
  */
-
 const NumberCounter = attributes => {
 	const {
 		'number-counter-duration': countDuration,

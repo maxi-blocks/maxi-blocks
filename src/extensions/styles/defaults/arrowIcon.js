@@ -10,6 +10,7 @@ const arrowIcon = {
 		prefix,
 		diffValAttr: {
 			'navigation-arrow-both-icon-width-general': '20',
+			'navigation-arrow-both-icon-stroke-palette-color': 5,
 		},
 		exclAttr: [
 			'icon-inherit',

@@ -101,115 +101,121 @@ const ArrowIconControl = props => {
 			{(props['navigation-arrow-first-icon-content'] ||
 				props['navigation-arrow-second-icon-content']) && (
 				<>
-					{!isHover && (
-						<ResponsiveTabsControl breakpoint={breakpoint}>
-							<>
-								<SvgWidthControl
-									{...getGroupAttributes(
-										props,
-										`arrowIcon${isHover ? 'Hover' : ''}`,
-										isHover
-									)}
-									onChange={onChange}
-									prefix='navigation-arrow-both-icon-'
-									breakpoint={breakpoint}
-									isHover={isHover}
-								/>
-								<SvgStrokeWidthControl
-									{...getGroupAttributes(
-										props,
-										`arrowIcon${isHover ? 'Hover' : ''}`,
-										isHover
-									)}
-									onChange={obj => {
-										onChange({
-											...obj,
-											'navigation-arrow-first-icon-content':
-												setSVGStrokeWidth(
-													props[
-														'navigation-arrow-first-icon-content'
-													],
-													obj[
-														`navigation-arrow-both-icon-stroke-${breakpoint}${
-															isHover
-																? '-hover'
-																: ''
-														}`
-													]
-												),
-										});
-									}}
-									prefix='navigation-arrow-both-icon-'
-									breakpoint={breakpoint}
-									isHover={isHover}
-								/>
-								<AdvancedNumberControl
-									label={__(
-										'Horizontal Spacing',
-										'maxi-blocks'
-									)}
-									min={-300}
-									max={300}
-									initial={1}
-									step={1}
-									breakpoint={breakpoint}
-									value={
-										props[
-											`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`
-										]
-									}
-									onChangeValue={val => {
-										onChange({
-											[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`]:
-												val !== undefined && val !== ''
-													? val
-													: '',
-										});
-									}}
-									onReset={() =>
-										onChange({
-											[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`]:
-												getDefaultAttribute(
-													`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`
-												),
-										})
-									}
-								/>
-								<AdvancedNumberControl
-									label={__(
-										'Vertical Spacing',
-										'maxi-blocks'
-									)}
-									min={-100}
-									max={200}
-									initial={1}
-									step={1}
-									breakpoint={breakpoint}
-									value={
-										props[
-											`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`
-										]
-									}
-									onChangeValue={val => {
-										onChange({
-											[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`]:
-												val !== undefined && val !== ''
-													? val
-													: '',
-										});
-									}}
-									onReset={() =>
-										onChange({
-											[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`]:
-												getDefaultAttribute(
-													`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`
-												),
-										})
-									}
-								/>
-							</>
-						</ResponsiveTabsControl>
-					)}
+					<ResponsiveTabsControl breakpoint={breakpoint}>
+						<>
+							<SvgWidthControl
+								{...getGroupAttributes(
+									props,
+									`arrowIcon${isHover ? 'Hover' : ''}`,
+									isHover
+								)}
+								onChange={onChange}
+								prefix='navigation-arrow-both-icon-'
+								breakpoint={breakpoint}
+								isHover={isHover}
+							/>
+							<SvgStrokeWidthControl
+								{...getGroupAttributes(
+									props,
+									`arrowIcon${isHover ? 'Hover' : ''}`,
+									isHover
+								)}
+								onChange={obj => {
+									onChange({
+										...obj,
+										'navigation-arrow-first-icon-content':
+											setSVGStrokeWidth(
+												props[
+													'navigation-arrow-first-icon-content'
+												],
+												obj[
+													`navigation-arrow-both-icon-stroke-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`
+												]
+											),
+									});
+								}}
+								prefix='navigation-arrow-both-icon-'
+								breakpoint={breakpoint}
+								isHover={isHover}
+							/>
+							<AdvancedNumberControl
+								label={__('Horizontal Spacing', 'maxi-blocks')}
+								min={-300}
+								max={300}
+								initial={1}
+								step={1}
+								breakpoint={breakpoint}
+								value={
+									props[
+										`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}
+								onChangeValue={val => {
+									onChange({
+										[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+								}}
+								onReset={() =>
+									onChange({
+										[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: getDefaultAttribute(
+											`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+												isHover ? '-hover' : ''
+											}`
+										),
+									})
+								}
+								isHover={isHover}
+							/>
+							<AdvancedNumberControl
+								label={__('Vertical Spacing', 'maxi-blocks')}
+								min={-100}
+								max={200}
+								initial={1}
+								step={1}
+								breakpoint={breakpoint}
+								value={
+									props[
+										`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}
+								onChangeValue={val => {
+									onChange({
+										[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+								}}
+								onReset={() =>
+									onChange({
+										[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: getDefaultAttribute(
+											`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+												isHover ? '-hover' : ''
+											}`
+										),
+									})
+								}
+								isHover={isHover}
+							/>
+						</>
+					</ResponsiveTabsControl>
 					<SettingTabsControl
 						label=''
 						className='maxi-icon-styles-control'
@@ -221,9 +227,7 @@ const ArrowIconControl = props => {
 					/>
 					{iconStyle === 'color' && svgType !== 'Shape' && (
 						<ColorControl
-							label={__('Icon stroke', 'maxi-blocks')}
-							className='maxi-icon-styles-control--color'
-							avoidBreakpointForDefault
+							label={__('Icon line', 'maxi-blocks')}
 							color={
 								props[
 									`navigation-arrow-both-icon-stroke-color${
@@ -232,6 +236,7 @@ const ArrowIconControl = props => {
 								]
 							}
 							prefix='navigation-arrow-both-icon-stroke-'
+							avoidBreakpointForDefault
 							paletteColor={
 								props[
 									`navigation-arrow-both-icon-stroke-palette-color${
@@ -267,7 +272,7 @@ const ArrowIconControl = props => {
 								paletteStatus,
 								paletteOpacity,
 							}) => {
-								const lineColorStr = getColorRGBAString({
+								const strokeColorStr = getColorRGBAString({
 									firstVar: `navigation-arrow-both-icon-stroke${
 										isHover ? '-hover' : ''
 									}`,
@@ -298,7 +303,7 @@ const ArrowIconControl = props => {
 														'navigation-arrow-first-icon-content'
 													],
 													paletteStatus
-														? lineColorStr
+														? strokeColorStr
 														: color,
 													'stroke'
 											  )
@@ -307,7 +312,7 @@ const ArrowIconControl = props => {
 														'navigation-arrow-first-icon-content'
 													],
 													paletteStatus
-														? lineColorStr
+														? strokeColorStr
 														: color,
 													'stroke'
 											  ),
@@ -318,7 +323,7 @@ const ArrowIconControl = props => {
 														'navigation-arrow-second-icon-content'
 													],
 													paletteStatus
-														? lineColorStr
+														? strokeColorStr
 														: color,
 													'stroke'
 											  )
@@ -327,7 +332,7 @@ const ArrowIconControl = props => {
 														'navigation-arrow-second-icon-content'
 													],
 													paletteStatus
-														? lineColorStr
+														? strokeColorStr
 														: color,
 													'stroke'
 											  ),

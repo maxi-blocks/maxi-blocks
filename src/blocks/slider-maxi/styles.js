@@ -199,11 +199,15 @@ const getIconPathStyles = (obj, isHover = false) => {
 	return { iconPath: response };
 };
 
-const getIconSpacing = (props, icon) => {
+const getIconSpacing = (props, icon, isHover = false) => {
 	const response = {
 		padding: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'navigationArrowBothIconPadding'),
+				...getGroupAttributes(
+					props,
+					'navigationArrowBothIconPadding',
+					isHover
+				),
 			},
 			prefix: 'navigation-arrow-both-icon-',
 		}),
@@ -221,10 +225,12 @@ const getIconSpacing = (props, icon) => {
 			target: 'navigation-arrow-both-icon-width',
 			breakpoint,
 			attributes: props,
+			isHover,
 		})}${getLastBreakpointAttribute({
 			target: 'navigation-arrow-both-icon-width-unit',
 			breakpoint,
 			attributes: props,
+			isHover,
 		})}`;
 
 		const halfSize = `${
@@ -232,17 +238,21 @@ const getIconSpacing = (props, icon) => {
 				target: 'navigation-arrow-both-icon-width',
 				breakpoint,
 				attributes: props,
+				isHover,
 			}) / 2
 		}${getLastBreakpointAttribute({
 			target: 'navigation-arrow-both-icon-width-unit',
 			breakpoint,
 			attributes: props,
+			isHover,
 		})}`;
 
 		if (
 			!isNil(
 				props[
-					`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}`
+					`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
 				]
 			)
 		) {
@@ -253,6 +263,7 @@ const getIconSpacing = (props, icon) => {
 					target: 'navigation-arrow-both-icon-spacing-horizontal',
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}px - ${halfSize})`;
 			if (icon === 'next')
 				responsive[
@@ -261,13 +272,16 @@ const getIconSpacing = (props, icon) => {
 					target: 'navigation-arrow-both-icon-spacing-horizontal',
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}px - (${size} + ${halfSize}))`;
 		}
 
 		if (
 			!isNil(
 				props[
-					`navigation-arrow-both-icon-spacing-vertical-${breakpoint}`
+					`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
 				]
 			)
 		) {
@@ -275,6 +289,7 @@ const getIconSpacing = (props, icon) => {
 				target: 'navigation-arrow-both-icon-spacing-vertical',
 				breakpoint,
 				attributes: props,
+				isHover,
 			})}%`;
 		}
 	});
@@ -286,6 +301,8 @@ const getIconSpacing = (props, icon) => {
 
 const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
+
+	const iconHoverStatus = props['navigation-arrow-both-icon-status-hover'];
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -323,11 +340,13 @@ const getStyles = props => {
 				}),
 				' .maxi-slider-block__arrow--prev': getIconSpacing(
 					props,
-					'prev'
+					'prev',
+					false
 				),
 				' .maxi-slider-block__arrow--next': getIconSpacing(
 					props,
-					'next'
+					'next',
+					false
 				),
 				' .maxi-slider-block__arrow svg': getIconSize(props, false),
 				' .maxi-slider-block__arrow': getIconSize(props, false),
@@ -335,6 +354,58 @@ const getStyles = props => {
 					props,
 					false
 				),
+				...(iconHoverStatus &&
+					(() => {
+						// const iconHoverObj = getIconHoverObject(
+						// 	props,
+						// 	'arrowIconHover'
+						// );
+
+						return {
+							// ' .maxi-slider-block__arrow--prev:hover':
+							// 	iconHoverObj,
+							// ' .maxi-slider-block__arrow--prev:hover svg > *':
+							// 	iconHoverObj,
+							' .maxi-slider-block__arrow--prev:hover':
+								getIconSpacing(props, 'prev', true),
+							' .maxi-slider-block__arrow--prev:hover svg':
+								getIconSize(props, true),
+							' .maxi-slider-block__arrow--prev:hover svg path':
+								getIconPathStyles(props, true),
+							...getSVGStyles({
+								obj: {
+									...getGroupAttributes(
+										props,
+										'arrowIconHover',
+										true
+									),
+								},
+								target: '.maxi-slider-block__arrow--prev:hover',
+								blockStyle,
+								prefix: 'navigation-arrow-both-icon-',
+								isHover: true,
+							}),
+							' .maxi-slider-block__arrow--next:hover':
+								getIconSpacing(props, 'next', true),
+							' .maxi-slider-block__arrow--next:hover svg':
+								getIconSize(props, true),
+							' .maxi-slider-block__arrow--next:hover svg path':
+								getIconPathStyles(props, true),
+							...getSVGStyles({
+								obj: {
+									...getGroupAttributes(
+										props,
+										'arrowIconHover',
+										true
+									),
+								},
+								target: '.maxi-slider-block__arrow--next:hover',
+								blockStyle,
+								prefix: 'navigation-arrow-both-icon-',
+								isHover: true,
+							}),
+						};
+					})()),
 			},
 			selectorsSlider,
 			props

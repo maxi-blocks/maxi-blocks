@@ -6,18 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import {
-	IconControl,
-	SettingTabsControl,
-	ToggleSwitch,
-} from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { SettingTabsControl, ToggleSwitch } from '../../components';
 import ArrowIconControl from './arrow-icon-control';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 const NavigationArrowsControl = props => {
 	const {
@@ -66,29 +56,38 @@ const NavigationArrowsControl = props => {
 					content: (
 						<>
 							<ToggleSwitch
-								label={__('Enable Icon Hover', 'maxi-blocks')}
+								label={__('Enable icon hover', 'maxi-blocks')}
 								selected={
-									props['navigation-arrow-both-status-hover']
+									attributes[
+										'navigation-arrow-both-icon-status-hover'
+									]
 								}
 								onChange={val =>
 									onChange({
-										'navigation-arrow-both-status-hover':
+										'navigation-arrow-both-icon-status-hover':
 											val,
 									})
 								}
 							/>
-							{props['navigation-arrow-both-status-hover'] && (
-								<IconControl
-									{...getGroupAttributes(
-										props,
-										[
-											'navigationArrowIcon',
-											'navigationArrowIconHover',
-										],
-										true
-									)}
-									onChange={obj => {
+							{attributes[
+								'navigation-arrow-both-icon-status-hover'
+							] && (
+								<ArrowIconControl
+									{...attributes}
+									onChangeInline={(
+										obj,
+										target,
+										isMultiplySelector = false
+									) =>
+										insertInlineStyles({
+											obj,
+											target,
+											isMultiplySelector,
+										})
+									}
+									onChange={(obj, target) => {
 										onChange(obj);
+										cleanInlineStyles(target);
 									}}
 									svgType={svgType}
 									breakpoint={deviceType}

@@ -1,24 +1,74 @@
 /**
- * This is a temporary file to migrate attributes with type `number` to `string`
+ * This is a temporary file to migrate position attribute from 'number' to 'string' and units from non to axis.
  *
  * Can be used as example for future migrations
  */
 
 import getGroupAttributes from '../getGroupAttributes';
-import { isFinite } from 'lodash';
+import { isFinite, isEmpty } from 'lodash';
 
-const fromNumberToStringMigrator = ({ attributes, save }) => {
-	const targets = 'position';
+const positionMigrator = ({ attributes, save }) => {
+	const targets = ['position', 'blockBackground'];
+	const keyWords = ['top', 'right', 'bottom', 'left'];
+
+	// Check if unit no axis
+	const unitChecker = key => key.includes('unit') && !key.includes(keyWords);
+
+	const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
+		if (key.includes('position')) {
+			// Convert number to string
+			if (isFinite(val) && attributes?.[key]?.type === 'string')
+				oldAttributes[key] = val.toString();
+
+			// Convert non-axis unit to axis unit
+			if (unitChecker(key)) {
+				keyWords.forEach(keyWord => {
+					const stringBeforeUnit = key.slice(0, key.indexOf('unit'));
+					const stringAfterUnit = key.slice(key.indexOf('unit'));
+					const newKey = `${stringBeforeUnit}${keyWord}-${stringAfterUnit}`;
+
+					oldAttributes[newKey] = val;
+				});
+
+				delete oldAttributes[key];
+			}
+		}
+	};
 
 	return {
 		isEligible(blockAttributes) {
 			const attrsToChange = getGroupAttributes(blockAttributes, targets);
 
 			return Object.entries(attrsToChange).some(([attrKey, attrVal]) => {
-				if (isFinite(attrVal)) {
-					const defaultType = attributes[attrKey].type;
+				if (attrKey.includes('position')) {
+					if (isFinite(attrVal)) {
+						const defaultType = attributes[attrKey].type;
 
-					return defaultType === 'string';
+						return defaultType === 'string';
+					}
+
+					return unitChecker(attrKey);
+				}
+
+				if (
+					attrKey.includes('background-layers') &&
+					!isEmpty(attrVal)
+				) {
+					return attrVal.some(layer => {
+						if (layer.type === 'shape') {
+							return Object.entries(layer).some(([key, val]) => {
+								if (key.includes('position')) {
+									if (isFinite(val)) return true;
+
+									return unitChecker(key);
+								}
+
+								return false;
+							});
+						}
+
+						return false;
+					});
 				}
 
 				return false;
@@ -182,8 +232,20 @@ const fromNumberToStringMigrator = ({ attributes, save }) => {
 			const attrsToChange = getGroupAttributes(oldAttributes, targets);
 
 			Object.entries(attrsToChange).forEach(([key, val]) => {
-				if (isFinite(val) && attributes?.[key]?.type === 'string')
-					oldAttributes[key] = val.toString();
+				migratePositionAttributes(key, val, oldAttributes, attributes);
+
+				if (key.includes('background-layers') && !isEmpty(val)) {
+					val.forEach(layer => {
+						Object.entries(layer).forEach(([key, val]) => {
+							migratePositionAttributes(
+								key,
+								val,
+								layer,
+								attributes
+							);
+						});
+					});
+				}
 			});
 
 			return oldAttributes;
@@ -195,4 +257,4 @@ const fromNumberToStringMigrator = ({ attributes, save }) => {
 	};
 };
 
-export default fromNumberToStringMigrator;
+export default positionMigrator;

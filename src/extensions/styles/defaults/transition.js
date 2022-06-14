@@ -10,6 +10,10 @@ const transition = {
 		type: 'string',
 		default: 'none',
 	},
+	'transition-change-all': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export default transition;

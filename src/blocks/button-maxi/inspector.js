@@ -263,6 +263,7 @@ const Inspector = props => {
 	};
 
 	const alignmentLabel = __('Button', 'maxi-blocks');
+	const textAlignmentLabel = __('Text', 'maxi-blocks');
 
 	useEffect(
 		() =>
@@ -664,6 +665,29 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 														disableJustify
+													/>
+													<label
+														className='maxi-base-control__label'
+														htmlFor={`${textAlignmentLabel}-alignment`}
+													>
+														{`${textAlignmentLabel} alignment`}
+													</label>
+													<AlignmentControl
+														id={`${textAlignmentLabel}-alignment`}
+														label={
+															textAlignmentLabel
+														}
+														{...getGroupAttributes(
+															attributes,
+															'textAlignment'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														type='text'
 													/>
 												</>
 											</ResponsiveTabsControl>

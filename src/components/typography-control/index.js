@@ -539,10 +539,22 @@ const TypographyControl = props => {
 					unit={getValue(`${prefix}font-size-unit`, !isStyleCards)}
 					defaultUnit={getDefault(`${prefix}font-size-unit`)}
 					onChangeUnit={val => {
-						onChangeFormat({
-							[`${prefix}font-size-unit`]: val,
-							[`${prefix}font-size`]: minMaxSettings[val].max,
-						});
+						if (
+							getValue(`${prefix}font-size`) >
+							minMaxSettings[val].max
+						) {
+							onChangeFormat({
+								[`${prefix}font-size`]: minMaxSettings[val].max,
+								[`${prefix}font-size-unit`]: val,
+							});
+						} else {
+							onChangeFormat({
+								[`${prefix}font-size`]: getValue(
+									`${prefix}font-size`
+								),
+								[`${prefix}font-size-unit`]: val,
+							});
+						}
 					}}
 					placeholder={getValue(`${prefix}font-size`, !isStyleCards)}
 					value={getValue(
@@ -580,10 +592,23 @@ const TypographyControl = props => {
 					}
 					defaultUnit={getDefault(`${prefix}line-height-unit`)}
 					onChangeUnit={val => {
-						onChangeFormat({
-							[`${prefix}line-height-unit`]: val,
-							[`${prefix}line-height`]: minMaxSettings[val].max,
-						});
+						if (
+							getValue(`${prefix}line-height`) >
+							minMaxSettings[val].max
+						) {
+							onChangeFormat({
+								[`${prefix}line-height`]:
+									minMaxSettings[val].max,
+								[`${prefix}line-height-unit`]: val,
+							});
+						} else {
+							onChangeFormat({
+								[`${prefix}line-height`]: getValue(
+									`${prefix}line-height`
+								),
+								[`${prefix}line-height-unit`]: val,
+							});
+						}
 					}}
 					placeholder={getValue(
 						`${prefix}line-height`,

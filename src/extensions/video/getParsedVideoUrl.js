@@ -46,7 +46,7 @@ const getParsedVideoUrl = props => {
 
 			let controls = '&controls=0';
 
-			if (showPlayerControls) controls = '&controls=0';
+			if (showPlayerControls) controls = '&controls=1';
 			if (isLoop) parsedVideoUrl += '&loop=1';
 			if (isAutoplay) parsedVideoUrl += '&autoplay=1';
 			if (isMuted) parsedVideoUrl += '&muted=1';

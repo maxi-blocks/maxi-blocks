@@ -42,13 +42,7 @@ import { capitalize, isEmpty, isNil } from 'lodash';
  * Dimension tab
  */
 const dimensionTab = props => {
-	const {
-		attributes,
-		clientId,
-		imageData,
-		maxiSetAttributes,
-		resizableObject,
-	} = props;
+	const { attributes, clientId, maxiSetAttributes, resizableObject } = props;
 	const {
 		cropOptions,
 		imageRatio,
@@ -59,8 +53,11 @@ const dimensionTab = props => {
 		useInitSize,
 	} = attributes;
 
+	const imageData = select('core').getMedia(mediaID);
+
 	const getSizeOptions = () => {
 		const response = [];
+
 		if (imageData) {
 			let { sizes } = imageData.media_details;
 			sizes = Object.entries(sizes).sort((a, b) => {

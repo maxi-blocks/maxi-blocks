@@ -47,7 +47,8 @@ const getImageShapeStyles = (target = 'svg', obj, prefix = '') => {
 		});
 
 		if (isNumber(scale)) {
-			if (target === 'svg') transformString += `scale(${scale / 100}) `;
+			if (target === 'svg' && scale !== 100)
+				transformString += `scale(${scale / 100}) `;
 			if (target === 'image') transformString += `scale(${100 / scale}) `;
 		}
 

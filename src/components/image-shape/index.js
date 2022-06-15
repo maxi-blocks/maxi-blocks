@@ -12,7 +12,10 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import MaxiModal from '../../editor/library/modal';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import {
 	setSVGRatio,
 	setSVGPosition,
@@ -166,7 +169,8 @@ const ImageShape = props => {
 						}}
 						onReset={() =>
 							onChange({
-								[`${prefix}image-shape-scale-${breakpoint}`]: 100,
+								[`${prefix}image-shape-scale-${breakpoint}`]:
+									getDefaultAttribute('image-shape-scale'),
 							})
 						}
 					/>

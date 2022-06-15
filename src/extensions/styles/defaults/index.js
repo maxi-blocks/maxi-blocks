@@ -33,6 +33,7 @@ export { default as clipPath } from './clipPath';
 export { default as flex } from './flex';
 export { default as arrowIcon } from './arrowIcon';
 export { default as arrowIconHover } from './arrowIconHover';
+export { default as dotIcon } from './dotIcon';
 export * from './background';
 export * from './backgroundHover';
 export * from './border';

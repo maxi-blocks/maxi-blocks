@@ -38,6 +38,7 @@ const attributes = {
 	...attributesData.navigation,
 	...attributesData.arrowIcon,
 	...attributesData.arrowIconHover,
+	...attributesData.dotIcon,
 	...{
 		...attributesData.size,
 		'max-width-xxl': {

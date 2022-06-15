@@ -299,10 +299,12 @@ const getIconSpacing = (props, icon, isHover = false) => {
 	return response;
 };
 
-const getStyles = props => {
+const getStyles = (props, breakpoint) => {
 	const { uniqueID, blockStyle } = props;
 
 	const iconHoverStatus = props['navigation-arrow-both-icon-status-hover'];
+
+	const navigationType = props[`navigation-type-${breakpoint}`];
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -332,29 +334,39 @@ const getStyles = props => {
 					isHover: true,
 					blockStyle: props.blockStyle,
 				}),
-				...getSVGStyles({
-					obj: props,
-					target: ' .maxi-slider-block__arrow',
-					blockStyle,
-					prefix: 'navigation-arrow-both-icon-',
-				}),
-				' .maxi-slider-block__arrow--prev': getIconSpacing(
-					props,
-					'prev',
-					false
-				),
-				' .maxi-slider-block__arrow--next': getIconSpacing(
-					props,
-					'next',
-					false
-				),
-				' .maxi-slider-block__arrow svg': getIconSize(props, false),
-				' .maxi-slider-block__arrow': getIconSize(props, false),
-				' .maxi-slider-block__arrow svg path': getIconPathStyles(
-					props,
-					false
-				),
-				...(iconHoverStatus &&
+				...(navigationType.includes('arrow') &&
+					(() => {
+						return {
+							...getSVGStyles({
+								obj: props,
+								target: ' .maxi-slider-block__arrow',
+								blockStyle,
+								prefix: 'navigation-arrow-both-icon-',
+							}),
+							' .maxi-slider-block__arrow--prev': getIconSpacing(
+								props,
+								'prev',
+								false
+							),
+							' .maxi-slider-block__arrow--next': getIconSpacing(
+								props,
+								'next',
+								false
+							),
+							' .maxi-slider-block__arrow svg': getIconSize(
+								props,
+								false
+							),
+							' .maxi-slider-block__arrow': getIconSize(
+								props,
+								false
+							),
+							' .maxi-slider-block__arrow svg path':
+								getIconPathStyles(props, false),
+						};
+					})()),
+				...(navigationType.includes('arrow') &&
+					iconHoverStatus &&
 					(() => {
 						// const iconHoverObj = getIconHoverObject(
 						// 	props,

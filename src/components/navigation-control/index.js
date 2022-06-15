@@ -25,7 +25,7 @@ import classnames from 'classnames';
 import './editor.scss';
 
 const NavigationControl = props => {
-	const { className, onChange, deviceType } = props;
+	const { className, onChange, deviceType, attributes } = props;
 
 	const classes = classnames('maxi-slider-navigation', className);
 
@@ -47,13 +47,11 @@ const NavigationControl = props => {
 							{ label: __('Dots', 'maxi-blocks'), value: 'dots' },
 							{ label: __('None', 'maxi-blocks'), value: 'none' },
 						]}
-						value={
-							getLastBreakpointAttribute({
-								target: 'navigation-type',
-								deviceType,
-								attributes: props,
-							}) || 'arrows-dots'
-						}
+						value={getLastBreakpointAttribute({
+							target: 'navigation-type',
+							deviceType,
+							attributes,
+						})}
 						onChange={val =>
 							onChange({
 								[`navigation-type-${deviceType}`]: val,
@@ -76,7 +74,7 @@ const NavigationControl = props => {
 							value={getLastBreakpointAttribute({
 								target: 'navigation-arrow-position',
 								deviceType,
-								attributes: props,
+								attributes,
 							})}
 							onChange={val => {
 								onChange({
@@ -97,7 +95,7 @@ const NavigationControl = props => {
 					)}
 				</>
 			</ResponsiveTabsControl>
-			{props[`navigation-type-${deviceType}`] !== 'dots' && (
+			{attributes[`navigation-type-${deviceType}`].includes('arrows') && (
 				<NavigationArrowsControl {...props} />
 			)}
 		</div>

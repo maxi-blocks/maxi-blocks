@@ -125,8 +125,15 @@ const TEMPLATE = [
 ];
 
 const SliderWrapper = props => {
-	const { slidesWidth, isEditView, numberOfSlides, attributes, uniqueID } =
-		props;
+	const {
+		slidesWidth,
+		isEditView,
+		numberOfSlides,
+		attributes,
+		uniqueID,
+		deviceType,
+	} = props;
+
 	const { isLoop } = attributes;
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
@@ -324,6 +331,11 @@ const SliderWrapper = props => {
 		isEditView && 'maxi-slider-block__wrapper--edit-view'
 	);
 
+	const navigationType = attributes[`navigation-type-${deviceType}`];
+
+	console.log('navigationType', navigationType);
+	console.log('Array(numberOfSlides)', numberOfSlides);
+
 	return (
 		<>
 			<ul
@@ -344,64 +356,85 @@ const SliderWrapper = props => {
 					}
 				)}
 			/>
-			<div className='maxi-slider-block__nav'>
-				<span
-					className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
-					onClick={!isEditView ? () => prevSlide() : undefined}
-				>
-					{attributes['navigation-arrow-first-icon-content'] && (
-						<>
-							<IconToolbar
-								key={`navigation-arrow-first-icon-toolbar-${uniqueID}`}
-								ref={iconRef}
-								{...props}
-								propsToAvoid={['buttonContent', 'formatValue']}
-							/>
-							<IconWrapper
-								ref={iconRef}
-								uniqueID={uniqueID}
-								className='maxi-navigation-arrow-first-icon-block__icon'
+			{navigationType !== 'none' && (
+				<div className='maxi-slider-block__nav'>
+					{navigationType?.includes('arrow') &&
+						attributes['navigation-arrow-first-icon-content'] && (
+							<span
+								className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
+								onClick={
+									!isEditView ? () => prevSlide() : undefined
+								}
 							>
-								<RawHTML>
-									{
-										attributes[
-											'navigation-arrow-first-icon-content'
-										]
-									}
-								</RawHTML>
-							</IconWrapper>
-						</>
-					)}
-				</span>
-				<span
-					className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
-					onClick={!isEditView ? () => nextSlide() : undefined}
-				>
-					{attributes['navigation-arrow-second-icon-content'] && (
-						<>
-							<IconToolbar
-								key={`navigation-arrow-second-icon-toolbar-${uniqueID}`}
-								ref={iconRef}
-								{...props}
-								propsToAvoid={['buttonContent', 'formatValue']}
-							/>
-							<IconWrapper
-								ref={iconRef}
-								uniqueID={uniqueID}
-								className='maxi-navigation-arrow-second-icon-block__icon'
+								<IconWrapper
+									ref={iconRef}
+									uniqueID={uniqueID}
+									className='maxi-navigation-arrow-first-icon-block__icon'
+								>
+									<RawHTML>
+										{
+											attributes[
+												'navigation-arrow-first-icon-content'
+											]
+										}
+									</RawHTML>
+								</IconWrapper>
+							</span>
+						)}
+					{navigationType?.includes('arrow') &&
+						attributes['navigation-arrow-second-icon-content'] && (
+							<span
+								className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
+								onClick={
+									!isEditView ? () => nextSlide() : undefined
+								}
 							>
-								<RawHTML>
-									{
-										attributes[
-											'navigation-arrow-second-icon-content'
-										]
-									}
-								</RawHTML>
-							</IconWrapper>
-						</>
-					)}
-				</span>
-			</div>
+								<IconWrapper
+									ref={iconRef}
+									uniqueID={uniqueID}
+									className='maxi-navigation-arrow-second-icon-block__icon'
+								>
+									<RawHTML>
+										{
+											attributes[
+												'navigation-arrow-second-icon-content'
+											]
+										}
+									</RawHTML>
+								</IconWrapper>
+							</span>
+						)}
+					{navigationType?.includes('dot') &&
+						attributes['navigation-dot-icon-content'] && (
+							<div className='maxi-slider-block__dots'>
+								{[...Array(numberOfSlides)].map(i => {
+									return (
+										<span
+											className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
+											// onClick={
+											// 	!isEditView ? () => prevSlide() : undefined
+											// }
+										>
+											<IconWrapper
+												ref={iconRef}
+												uniqueID={uniqueID}
+												className='maxi-navigation-dot-icon-block__icon'
+											>
+												<RawHTML>
+													{
+														attributes[
+															'navigation-dot-icon-content'
+														]
+													}
+												</RawHTML>
+											</IconWrapper>
+										</span>
+									);
+								})}
+							</div>
+						)}
+				</div>
+			)}
 		</>
 	);
 };
@@ -420,7 +453,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(this.props.attributes, this.props.deviceType);
 	}
 
 	// eslint-disable-next-line class-methods-use-this

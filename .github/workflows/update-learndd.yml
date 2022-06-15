@@ -16,7 +16,7 @@ jobs:
               with:
                   node-version: 16.x
             - name: Install dependencies
-              run: npm install
+              run: npm install --legacy-peer-deps
             - name: Build
               run: npm run build
             - name: reset package-lock.json
@@ -60,8 +60,7 @@ jobs:
                       **/src/index.js,
                       CODEOWNERS,
                       LICENSE,
-                      readme.md
-                  ]'
+                      readme.md]'
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1
               with:

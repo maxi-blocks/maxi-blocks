@@ -71,7 +71,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 wp_register_script(
                     'maxi-admin',
-                    MAXI_PLUGIN_URL_PATH.'build/admin.js',
+                    MAXI_PLUGIN_URL_PATH.'build/admin.js'
                 );
                 wp_enqueue_script('maxi-admin');
             }
@@ -107,7 +107,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
             
             echo '<div class="maxi-dashboard_wrap">';
-            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', self::$maxi_text_domain).'"></header>';
+            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
             
             foreach ($settings_tabs as $tab_page => $tab_name) {
@@ -202,7 +202,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
-            if (isset($_GET['settings-updated'])) {
+            if (isset($_GET['settings-updated'])) {//phpcs:ignore
                 $content .= '<h2>'.__('Successfully done', self::$maxi_text_domain).'</h2>';
             }
 
@@ -253,13 +253,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain);
             $description .= '<i> '.__('(Default)', self::$maxi_text_domain).'</i></p>';
             $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
-
             if ($fontUploadsDirSize > 0) {
                 $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__(
                     'MB',
                     'maxi-blocks'
                 ).'</p>';
-                if (!(bool) get_option('local_fonts')) {
+                
+                if (!(bool)get_option('local_fonts')) {
                     update_option('local_fonts_uploaded', false);
                     $description = '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
                     $content .= $this->generate_setting($description, 'remove_local_fonts', $this->remove_local_fonts());
@@ -356,7 +356,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $toggle .= '<input name="';
             $toggle .= $option;
             $toggle .= '" class="maxi-dashboard_main-content_accordion-item-toggle" ';
-            if ((bool) get_option($option)) {
+            if ((bool)get_option($option)) {
                 $toggle .= ' checked="checked" ';
                 if (is_callable($function)) {
                     $function();

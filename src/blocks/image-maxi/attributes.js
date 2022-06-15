@@ -10,7 +10,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
 import {
 	breakpointAttributesCreator,
 	prefixAttributesCreator,
+	transitionAttributesCreator,
 } from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -167,7 +169,10 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

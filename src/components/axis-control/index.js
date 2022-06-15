@@ -23,7 +23,15 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber, replace, round, isNil } from 'lodash';
+import {
+	isEmpty,
+	isNaN,
+	capitalize,
+	isNumber,
+	replace,
+	round,
+	isNil,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -623,7 +631,7 @@ const AxisControl = props => {
 
 	const onChangeValue = (val, singleTarget, customBreakpoint, prefix) => {
 		let newValue = '';
-		if (optionType === 'number')
+		if (optionType === 'number' && isNaN(val))
 			if (isEmpty(val)) newValue = val;
 			else newValue = +val;
 		else if (isEmpty(val) && !isNumber(val)) newValue = '';

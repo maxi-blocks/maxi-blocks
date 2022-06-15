@@ -79,9 +79,9 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					properties.forEach(property => {
 						const transitionProperty = limitless ? 'all' : property;
 						const isSomeValue =
-							!!transitionDuration ??
-							!!transitionDelay ??
-							!!transitionTimingFunction;
+							transitionDuration ??
+							transitionDelay ??
+							transitionTimingFunction;
 
 						if (!transitionStatus) {
 							transitionString += `${transitionProperty} 0s 0s, `;

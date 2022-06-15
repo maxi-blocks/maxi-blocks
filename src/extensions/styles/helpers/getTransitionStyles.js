@@ -73,21 +73,25 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					const transitionTimingFunction =
 						getTransitionAttribute('easing');
 
-					const transitionStatus =
+					const lastTransitionStatus =
 						getLastTransitionAttribute('transition-status');
+					const transitionStatus =
+						getTransitionAttribute('transition-status');
 
 					properties.forEach(property => {
 						const transitionProperty = limitless ? 'all' : property;
 						const isSomeValue =
 							transitionDuration ??
 							transitionDelay ??
-							transitionTimingFunction;
+							transitionTimingFunction ??
+							transitionStatus === lastTransitionStatus;
 
-						if (!transitionStatus) {
-							transitionString += `${transitionProperty} 0s 0s, `;
-						} else if (isSomeValue || transitionStatus) {
-							transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
-						}
+						if (isSomeValue)
+							if (!transitionStatus) {
+								transitionString += `${transitionProperty} 0s 0s, `;
+							} else if (transitionStatus) {
+								transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
+							}
 					});
 
 					transitionString = transitionString.replace(/,\s*$/, '');

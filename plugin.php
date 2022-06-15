@@ -19,6 +19,7 @@ if (!defined('ABSPATH')) {
 define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 define('MAXI_PLUGIN_DIR_FILE', __FILE__);
 define('MAXI_PLUGIN_URL_PATH', plugin_dir_url(__FILE__));
+define('MAXI_PLUGIN_VERSION', get_file_data(__FILE__, array('Version' => 'Version'), false)['Version']);
 
 
 //======================================================================

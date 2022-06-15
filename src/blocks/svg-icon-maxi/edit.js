@@ -230,6 +230,7 @@ class edit extends MaxiBlockComponent {
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
+							deviceType={deviceType}
 							defaultSize={{
 								width: `${getLastBreakpointAttribute({
 									target: 'svg-width',

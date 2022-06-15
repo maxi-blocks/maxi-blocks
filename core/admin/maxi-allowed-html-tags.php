@@ -235,6 +235,12 @@ function maxi_blocks_allowed_html()
             'lang'     => true,
             'xml:lang' => true,
         ),
+        'option'       => array(
+            'id'       => true,
+            'class'    => true,
+            'value'    => true,
+            'name'      => true,
+        ),
         'p'          => array(
             'id'       => true,
             'class'    => true,
@@ -260,6 +266,12 @@ function maxi_blocks_allowed_html()
         's'          => array(),
         'samp'       => array(),
         'script'       => array(),
+        'select'       => array(
+            'id'       => true,
+            'class'    => true,
+            'onchange'    => true,
+            'name'      => true,
+        ),
         'span'       => array(
             'id'       => true,
             'class'    => true,

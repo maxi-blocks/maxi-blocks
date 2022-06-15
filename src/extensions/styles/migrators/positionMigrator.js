@@ -5,14 +5,17 @@
  */
 
 import getGroupAttributes from '../getGroupAttributes';
-import { isFinite, isEmpty } from 'lodash';
+import { cloneDeep, isEmpty, isFinite } from 'lodash';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const positionMigrator = ({ attributes, save }) => {
 	const targets = ['position', 'blockBackground'];
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
 	// Check if unit no axis
-	const unitChecker = key => key.includes('unit') && !key.includes(keyWords);
+	const unitChecker = key =>
+		key.includes('unit') && !keyWords.includes(key.split('-')[1]);
 
 	const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
 		if (key.includes('position')) {
@@ -229,10 +232,18 @@ const positionMigrator = ({ attributes, save }) => {
 		},
 
 		migrate(oldAttributes) {
-			const attrsToChange = getGroupAttributes(oldAttributes, targets);
+			const newAttributes = cloneDeep(oldAttributes);
+
+			const attrsToChange = Object.assign(
+				{ ...getGroupAttributes(newAttributes, targets) },
+				...breakpoints.map(bp => ({
+					[`position-unit-${bp}`]:
+						newAttributes[`position-unit-${bp}`],
+				}))
+			);
 
 			Object.entries(attrsToChange).forEach(([key, val]) => {
-				migratePositionAttributes(key, val, oldAttributes, attributes);
+				migratePositionAttributes(key, val, newAttributes, attributes);
 
 				if (key.includes('background-layers') && !isEmpty(val)) {
 					val.forEach(layer => {
@@ -248,7 +259,7 @@ const positionMigrator = ({ attributes, save }) => {
 				}
 			});
 
-			return oldAttributes;
+			return newAttributes;
 		},
 
 		save(props) {

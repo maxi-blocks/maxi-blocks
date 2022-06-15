@@ -12,7 +12,7 @@ import transitionDefault from '../transitions/transitionDefault';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEqual } from 'lodash';
 
 /**
  * Generates size styles object
@@ -81,15 +81,21 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					properties.forEach(property => {
 						const transitionProperty = limitless ? 'all' : property;
 						const isSomeValue =
-							transitionDuration ??
-							transitionDelay ??
-							transitionTimingFunction ??
-							transitionStatus === lastTransitionStatus;
+							isEqual(
+								transitionDuration,
+								lastTransitionDuration
+							) ||
+							isEqual(transitionDelay, lastTransitionDelay) ||
+							isEqual(
+								transitionTimingFunction,
+								lastTransitionTimingFunction
+							) ||
+							isEqual(transitionStatus, lastTransitionStatus);
 
 						if (isSomeValue)
-							if (!transitionStatus) {
+							if (!lastTransitionStatus) {
 								transitionString += `${transitionProperty} 0s 0s, `;
-							} else if (transitionStatus) {
+							} else if (lastTransitionStatus) {
 								transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
 							}
 					});
@@ -109,7 +115,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 			});
 		});
 	});
-
+	console.log(response);
 	return response;
 };
 

@@ -64,29 +64,34 @@ const NumberCounterControl = props => {
 
 	return (
 		<div className={classes}>
-			<ToggleSwitch
-				label={__('Auto width', 'maxi-blocks')}
-				selected={autoWidth}
-				onChange={val =>
-					onChange({
-						[`number-counter-width-auto-${breakpoint}`]: val,
-					})
-				}
-			/>
-			<ToggleSwitch
-				label={__('Set width to fit content', 'maxi-blocks')}
-				className='maxi-full-size-control__width-fit-content'
-				selected={getLastBreakpointAttribute({
-					target: 'number-counter-width-fit-content',
-					breakpoint,
-					attributes: props,
-				})}
-				onChange={val => {
-					onChange({
-						[`number-counter-width-fit-content-${breakpoint}`]: val,
-					});
-				}}
-			/>
+			{!fitContent && (
+				<ToggleSwitch
+					label={__('Auto width', 'maxi-blocks')}
+					selected={autoWidth}
+					onChange={val =>
+						onChange({
+							[`number-counter-width-auto-${breakpoint}`]: val,
+						})
+					}
+				/>
+			)}
+			{!autoWidth && (
+				<ToggleSwitch
+					label={__('Set width to fit content', 'maxi-blocks')}
+					className='maxi-full-size-control__width-fit-content'
+					selected={getLastBreakpointAttribute({
+						target: 'number-counter-width-fit-content',
+						breakpoint,
+						attributes: props,
+					})}
+					onChange={val => {
+						onChange({
+							[`number-counter-width-fit-content-${breakpoint}`]:
+								val,
+						});
+					}}
+				/>
+			)}
 			{!autoWidth && !fitContent && (
 				<AdvancedNumberControl
 					label={__('Width', 'maxi-blocks')}

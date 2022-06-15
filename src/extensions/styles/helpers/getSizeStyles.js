@@ -47,7 +47,12 @@ const getSizeStyles = (obj, prefix = '') => {
 				});
 
 				if (fitContent) {
-					return { width: 'fit-content' };
+					return {
+						width:
+							prefix === 'number-counter-'
+								? 'fit-content !important'
+								: 'fit-content',
+					};
 				}
 			}
 

@@ -4,20 +4,22 @@ const getClientIdFromUniqueId = uniqueID => {
 	const { getBlocks } = select('core/block-editor');
 
 	const findClientId = (blocks, uniqueID) => {
-		const block = blocks.find(block => {
+		let clientId = null;
+
+		blocks.forEach(block => {
 			if (block.attributes.uniqueID === uniqueID) {
-				return block.clientId;
+				clientId = block.clientId;
 			}
 
 			if (block.innerBlocks.length) {
 				const foundClientId = findClientId(block.innerBlocks, uniqueID);
 				if (foundClientId) {
-					return foundClientId;
+					clientId = foundClientId;
 				}
 			}
 		});
 
-		return block ? block.clientId : null;
+		return clientId;
 	};
 
 	const blocks = getBlocks();

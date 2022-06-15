@@ -8,6 +8,7 @@ export { default as customCss } from './customCss';
 export { default as display } from './display';
 export { default as displayHover } from './displayHover';
 export { default as divider } from './divider';
+export { default as dynamicContent } from './dynamicContent';
 export { default as global } from './global';
 export { default as link } from './link';
 export { default as map } from './map';

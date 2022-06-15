@@ -41,6 +41,8 @@ const MoreSettings = props => {
 		prefix,
 		copyPasteMapping,
 		tooltipsHide,
+		disableCustomFormats,
+		content = '',
 	} = props;
 
 	const { breakpoint } = useSelect(select => {
@@ -77,7 +79,11 @@ const MoreSettings = props => {
 							copyPasteMapping={copyPasteMapping}
 						/>
 						{blockName === 'maxi-blocks/text-maxi' && (
-							<TextGenerator onChange={onChange} />
+							<TextGenerator
+								onChange={onChange}
+								content={content}
+								disableCustomFormats={disableCustomFormats}
+							/>
 						)}
 						{blockName === 'maxi-blocks/button-maxi' && (
 							<div>

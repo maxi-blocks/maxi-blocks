@@ -28,11 +28,17 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange, linkSettings } = props;
+	const {
+		blockName,
+		onChange,
+		linkSettings,
+		disableCustomFormats = false,
+	} = props;
 
 	if (
-		blockName === 'maxi-blocks/divider-maxi' ||
-		blockName === 'maxi-blocks/text-maxi'
+		(blockName === 'maxi-blocks/divider-maxi' ||
+			blockName === 'maxi-blocks/text-maxi') &&
+		!disableCustomFormats
 	)
 		return null;
 

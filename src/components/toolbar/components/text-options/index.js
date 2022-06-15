@@ -169,11 +169,14 @@ const TextOptions = props => {
 		styleCards = false,
 		styleCardPrefix,
 		isCaptionToolbar = false,
+		disableCustomFormats = false,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { formatValue, onChangeTextFormat } = !disableCustomFormats
+		? useContext(textContext)
+		: {};
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
@@ -206,6 +209,7 @@ const TextOptions = props => {
 			textLevel,
 			styleCard,
 			styleCardPrefix,
+			disableFormats: disableCustomFormats,
 		});
 
 	const onChangeFormat = value => {
@@ -216,13 +220,16 @@ const TextOptions = props => {
 			value,
 			breakpoint,
 			textLevel,
-			returnFormatValue: true,
+			returnFormatValue: !disableCustomFormats,
+			disableCustomFormats,
 		});
 
-		const newFormatValue = { ...obj.formatValue };
-		delete obj.formatValue;
+		if (!disableCustomFormats) {
+			const newFormatValue = { ...obj.formatValue };
+			delete obj.formatValue;
 
-		onChangeTextFormat(newFormatValue);
+			onChangeTextFormat(newFormatValue);
+		}
 
 		onChange(obj);
 	};

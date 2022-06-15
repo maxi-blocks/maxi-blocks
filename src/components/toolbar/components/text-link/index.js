@@ -35,9 +35,10 @@ import { isEmpty, isEqual } from 'lodash';
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
+import Link from '../link';
 
 /**
- * Link
+ * TextLink
  */
 const LinkContent = props => {
 	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
@@ -261,33 +262,48 @@ const LinkContent = props => {
 	);
 };
 
-const Link = props => {
-	const { blockName, isCaptionToolbar = false } = props;
+const TextLink = props => {
+	const {
+		blockName,
+		isCaptionToolbar = false,
+		'dc-status': dcStatus = false,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
-	return (
-		<ToolbarPopover
-			icon={toolbarLink}
-			tooltip={__('Link', 'maxi-blocks')}
-			className='toolbar-item__text-link'
-		>
-			<ToolbarContext.Consumer>
-				{({ isOpen, onClose }) => {
-					if (isOpen)
-						return (
-							<LinkContent
-								isOpen={isOpen}
-								onClose={onClose}
-								{...props}
-							/>
-						);
+	if (!dcStatus)
+		return (
+			<ToolbarPopover
+				icon={toolbarLink}
+				tooltip={__('Link', 'maxi-blocks')}
+				className='toolbar-item__text-link'
+			>
+				<ToolbarContext.Consumer>
+					{({ isOpen, onClose }) => {
+						if (isOpen)
+							return (
+								<LinkContent
+									isOpen={isOpen}
+									onClose={onClose}
+									{...props}
+								/>
+							);
 
-					return null;
-				}}
-			</ToolbarContext.Consumer>
-		</ToolbarPopover>
+						return null;
+					}}
+				</ToolbarContext.Consumer>
+			</ToolbarPopover>
+		);
+
+	return (
+		<Link
+			blockName={blockName}
+			linkSettings={props.linkSettings}
+			onChange={props.onChange}
+			textLevel={props.textLevel}
+			disableCustomFormats={props.disableCustomFormats}
+		/>
 	);
 };
 
-export default Link;
+export default TextLink;

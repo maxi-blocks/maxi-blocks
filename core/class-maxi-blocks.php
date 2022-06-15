@@ -82,6 +82,13 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 filemtime(MAXI_PLUGIN_DIR_PATH . "/$style_css"),
             );
             wp_enqueue_style('maxi-blocks-block');
+
+			// Dynamic blocks
+			register_block_type( 'maxi-blocks/text-maxi', array(
+				'api_version' => 2,
+				'editor_script' => 'maxi-blocks-block-editor',
+				'render_callback' => [$this, 'render_text_maxi'],
+			) );
         }
 
         public function maxi_block_category($categories)
@@ -96,5 +103,40 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 $categories,
             );
         }
+
+		public function render_text_maxi( $attributes, $content ) {
+			$dc_status = $attributes['dc-status'];
+
+			if(!$dc_status) return $content;
+
+			$dc_type = $attributes['dc-type'] ?? 'posts';
+			$dc_id = $attributes['dc-id'];
+			$dc_field = $attributes['dc-field'];
+
+			$args = [];
+
+			if($dc_type == 'posts') {
+				$args = [
+					'post_type' => 'post',
+					'post_status' => 'publish',
+					'posts_per_page' => 1,
+					'p' => $dc_id,
+				];
+			} else if($dc_type == 'pages') {
+				$args = [
+					'post_type' => 'page',
+					'post_status' => 'publish',
+					'p' => $dc_id,
+				];
+			}
+
+			$query = new WP_Query($args);
+
+			$post_data = $query->post->{"post_$dc_field"};
+
+			$content = str_replace('$text-to-replace', $post_data, $content);
+
+			return $content;
+		}
     }
 endif;

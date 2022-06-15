@@ -42,11 +42,14 @@ const TextColor = props => {
 		textLevel,
 		styleCard,
 		isCaptionToolbar = false,
+		disableCustomFormats = false,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { formatValue, onChangeTextFormat } = !disableCustomFormats
+		? useContext(textContext)
+		: {};
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
@@ -92,12 +95,13 @@ const TextColor = props => {
 			breakpoint,
 			textLevel,
 			returnFormatValue: true,
+			disableCustomFormats,
 		});
 
 		const newFormatValue = { ...obj.formatValue };
 		delete obj.formatValue;
 
-		onChangeTextFormat(newFormatValue);
+		if (!disableCustomFormats) onChangeTextFormat(newFormatValue);
 
 		onChange(obj);
 	};

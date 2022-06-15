@@ -28,9 +28,11 @@ import { LoremIpsum } from 'react-lorem-ipsum';
 import './editor.scss';
 
 const TextGenerator = props => {
-	const { onChange } = props;
+	const { onChange, content, disableCustomFormats } = props;
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { formatValue, onChangeTextFormat } = !disableCustomFormats
+		? useContext(textContext)
+		: {};
 
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
@@ -42,21 +44,28 @@ const TextGenerator = props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		const newContent = `${formatValue.text}${generatedText[0].props.children}`;
+		if (!disableCustomFormats) {
+			const newContent = `${formatValue.text}${generatedText[0].props.children}`;
 
-		const newFormatsArray = [];
-		const newReplacementsArray = [];
-		newFormatsArray.length = newContent.length;
-		newReplacementsArray.length = newContent.length;
+			const newFormatsArray = [];
+			const newReplacementsArray = [];
+			newFormatsArray.length = newContent.length;
+			newReplacementsArray.length = newContent.length;
 
-		const newFormatValue = insert(
-			formatValue,
-			` ${generatedText[0].props.children}`
-		);
+			const newFormatValue = insert(
+				formatValue,
+				` ${generatedText[0].props.children}`
+			);
 
-		onChangeTextFormat(newFormatValue);
+			onChangeTextFormat(newFormatValue);
 
-		onChange({ isList: false, content: newContent });
+			onChange({ isList: false, content: newContent });
+		} else {
+			onChange({
+				isList: false,
+				content: content + generatedText[0].props.children,
+			});
+		}
 	};
 
 	const replaceText = (sentencesPerParagraph, wordsPerSentence) => {

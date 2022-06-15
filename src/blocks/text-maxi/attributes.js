@@ -23,6 +23,7 @@ import transitionObj from './transitionObj';
  */
 const attributes = {
 	...attributesData.global,
+	...attributesData.dynamicContent,
 
 	/**
 	 * Block styles

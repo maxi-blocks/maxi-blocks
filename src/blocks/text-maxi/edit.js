@@ -107,7 +107,12 @@ class edit extends MaxiBlockComponent {
 			textLevel,
 			typeOfList,
 			uniqueID,
+			'dc-status': dcStatus,
+			'dc-content': dcContent,
 		} = attributes;
+
+		const className = 'maxi-text-block__content';
+		const DCTagName = textLevel;
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -135,6 +140,48 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
+		const richTextProps = {
+			className,
+			identifier: 'content',
+			value: content,
+			onChange: processContent,
+			tagName: isList ? typeOfList : textLevel,
+			onSplit: () => {
+				this.state.onChangeFormat(insert(this.state.formatValue, '\n'));
+			},
+			onReplace: (blocks, indexToSelect, initialPosition) => {
+				if (
+					!blocks ||
+					isEmpty(compact(blocks)) ||
+					flatten(blocks).every(block => isEmpty(block))
+				)
+					return;
+
+				const { blocks: cleanBlocks } = onReplaceBlocks(
+					blocks,
+					clientId,
+					content
+				);
+
+				if (!isEmpty(compact(cleanBlocks)))
+					onReplace(cleanBlocks, indexToSelect, initialPosition);
+			},
+			onMerge: forward => onMerge(this.props, forward),
+			// onRemove needs to be commented to avoid removing the block
+			// on pressing backspace with the content empty 👍
+			// onRemove,
+			...(!isList && {
+				__unstableEmbedURLOnPaste: true,
+				withoutInteractiveFormatting: true,
+				preserveWhiteSpace: true,
+			}),
+			...(isList && {
+				start: listStart,
+				reversed: listReversed,
+				type: typeOfList,
+			}),
+		};
+
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -152,12 +199,17 @@ class edit extends MaxiBlockComponent {
 					},
 				}}
 			>
-				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Inspector
+					key={`block-settings-${uniqueID}`}
+					disableCustomFormats={dcStatus}
+					{...this.props}
+				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
+					disableCustomFormats={dcStatus}
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}
@@ -170,54 +222,12 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					{!isList && (
-						<RichText
-							className='maxi-text-block__content'
-							identifier='content'
-							value={content}
-							onChange={processContent}
-							tagName={textLevel}
-							onSplit={() => {
-								this.state.onChangeFormat(
-									insert(this.state.formatValue, '\n')
-								);
-							}}
-							onReplace={(
-								blocks,
-								indexToSelect,
-								initialPosition
-							) => {
-								if (
-									!blocks ||
-									isEmpty(compact(blocks)) ||
-									flatten(blocks).every(block =>
-										isEmpty(block)
-									)
-								)
-									return;
+					{!dcStatus && (
+						<RichText {...richTextProps}>
+							{richTextValues => {
+								const { value: formatValue, onChange } =
+									richTextValues;
 
-								const { blocks: cleanBlocks } = onReplaceBlocks(
-									blocks,
-									clientId,
-									content
-								);
-
-								if (!isEmpty(compact(cleanBlocks)))
-									onReplace(
-										cleanBlocks,
-										indexToSelect,
-										initialPosition
-									);
-							}}
-							onMerge={forward => onMerge(this.props, forward)}
-							// onRemove needs to be commented to avoid removing the block
-							// on pressing backspace with the content empty 👍
-							// onRemove={onRemove}
-							__unstableEmbedURLOnPaste
-							withoutInteractiveFormatting
-							preserveWhiteSpace
-						>
-							{richTextValues =>
 								onChangeRichText({
 									attributes,
 									maxiSetAttributes,
@@ -234,89 +244,16 @@ class edit extends MaxiBlockComponent {
 												this.setState(newState);
 											}, 10);
 
-										if (newContent) {
+										if (!isList && newContent) {
 											maxiSetAttributes({
 												content: newContent,
 											});
 										}
 									},
 									richTextValues,
-								})
-							}
-						</RichText>
-					)}
-					{isList && (
-						<RichText
-							className='maxi-text-block__content'
-							identifier='content'
-							multiline='li'
-							value={content}
-							onChange={processContent}
-							tagName={typeOfList}
-							onSplit={() => {
-								this.state.onChangeFormat(
-									insert(this.state.formatValue, '\n')
-								);
-							}}
-							onReplace={(
-								blocks,
-								indexToSelect,
-								initialPosition
-							) => {
-								if (
-									!blocks ||
-									isEmpty(compact(blocks)) ||
-									flatten(blocks).every(block =>
-										isEmpty(block)
-									)
-								)
-									return;
-
-								const { blocks: cleanBlocks } = onReplaceBlocks(
-									blocks,
-									clientId,
-									content
-								);
-
-								if (!isEmpty(compact(cleanBlocks)))
-									onReplace(
-										cleanBlocks,
-										indexToSelect,
-										initialPosition
-									);
-							}}
-							onMerge={forward => onMerge(this.props, forward)}
-							// onRemove needs to be commented to avoid removing the block
-							// on pressing backspace with the content empty 👍
-							// onRemove={onRemove}
-							start={listStart}
-							reversed={listReversed}
-							type={typeOfList}
-						>
-							{richTextValues => {
-								const { value: formatValue, onChange } =
-									richTextValues;
-
-								onChangeRichText({
-									attributes,
-									maxiSetAttributes,
-									oldFormatValue: this.state.formatValue,
-									onChange: newState => {
-										if (this.typingTimeoutFormatValue) {
-											clearTimeout(
-												this.typingTimeoutFormatValue
-											);
-										}
-
-										this.typingTimeoutFormatValue =
-											setTimeout(() => {
-												this.setState(newState);
-											}, 10);
-									},
-									richTextValues,
 								});
 
-								if (isSelected)
+								if (isList && isSelected)
 									return (
 										<>
 											<RichTextShortcut
@@ -371,6 +308,9 @@ class edit extends MaxiBlockComponent {
 								return null;
 							}}
 						</RichText>
+					)}
+					{dcStatus && (
+						<DCTagName className={className}>{dcContent}</DCTagName>
 					)}
 				</MaxiBlock>
 			</textContext.Provider>,

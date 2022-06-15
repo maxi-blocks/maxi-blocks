@@ -202,6 +202,7 @@ const RelationControl = props => {
 				onChangeRelationProperty(item.id, 'css', styles);
 			},
 			prefix,
+			blockStyle,
 			breakpoint: deviceType,
 		});
 	};

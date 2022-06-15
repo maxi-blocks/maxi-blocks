@@ -145,15 +145,18 @@ class MaxiBlocks_Local_Fonts
     {
         $response = [];
         foreach ($allFonts as $fontName => $fontData) {
-			if(strpos($fontName, 'sc_font') !== false) {
-				$split_font = explode('_', str_replace('sc_font_', '', $fontName));
-				$block_style = $split_font[0];
-				$text_level = $split_font[1];
-				$breakpoint = $split_font[2];
+            if (strpos($fontName, 'sc_font') !== false) {
+                $split_font = explode('_', str_replace('sc_font_', '', $fontName));
+                if (isset($split_font)) {
+                    $block_style = isset($split_font[0]) ? $split_font[0] : 'light';
+                    $text_level  = isset($split_font[1]) ? $split_font[1] : 'p';
+                    $breakpoint  = isset($split_font[2]) ? $split_font[2] : 'general';
 
-				if (class_exists('MaxiBlocks_StyleCards'))
-					$fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
-			}
+                    if (class_exists('MaxiBlocks_StyleCards')) {
+                        $fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+                    }
+                }
+            }
 
             $fontNameSanitized = str_replace(' ', '+', $fontName);
 
@@ -182,16 +185,16 @@ class MaxiBlocks_Local_Fonts
     public function uploadCssFiles($allURLs)
     {
         foreach ($allURLs as $fontName => $fontUrl) {
-			if(strpos($fontName, 'sc_font') !== false) {
-				$split_font = explode('_', str_replace('sc_font_', '', $fontName));
-				$block_style = $split_font[0];
-				$text_level = $split_font[1];
-				$breakpoint = $split_font[2];
+            if (strpos($fontName, 'sc_font') !== false) {
+                $split_font = explode('_', str_replace('sc_font_', '', $fontName));
+                $block_style = $split_font[0];
+                $text_level = $split_font[1];
+                $breakpoint = $split_font[2];
 
-				if (class_exists('MaxiBlocks_StyleCards'))
-					$fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
-
-			}
+                if (class_exists('MaxiBlocks_StyleCards')) {
+                    $fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+                }
+            }
 
             $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
 

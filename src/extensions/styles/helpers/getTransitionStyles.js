@@ -38,7 +38,11 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 			targets.forEach(target => {
 				const transitionContent = transition[type][key];
-				if (!props[transitionContent.hoverProp]) return;
+				if (
+					transitionContent?.hoverProp &&
+					!props[transitionContent.hoverProp]
+				)
+					return;
 
 				if (isNil(response[target]))
 					response[target] = { transition: {} };

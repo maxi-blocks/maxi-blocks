@@ -17,7 +17,6 @@ import {
  */
 import Inspector from './inspector';
 import { Toolbar } from '../../components';
-import IconToolbar from '../../components/toolbar/iconToolbar';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
@@ -132,6 +131,7 @@ const SliderWrapper = props => {
 		attributes,
 		uniqueID,
 		deviceType,
+		clientId,
 	} = props;
 
 	const { isLoop } = attributes;
@@ -178,6 +178,11 @@ const SliderWrapper = props => {
 				return next - 1;
 			});
 		}
+	};
+
+	const exactSlide = slideNumber => {
+		wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+		setCurrentSlide(slideNumber);
 	};
 
 	const onDragAction = e => {
@@ -333,9 +338,11 @@ const SliderWrapper = props => {
 
 	const navigationType = attributes[`navigation-type-${deviceType}`];
 
-	console.log('navigationType', navigationType);
-	console.log('Array(numberOfSlides)', numberOfSlides);
+	const innerBlockCount = wp.data
+		.select('core/block-editor')
+		.getBlock(clientId).innerBlocks.length;
 
+	console.log();
 	return (
 		<>
 			<ul
@@ -407,30 +414,34 @@ const SliderWrapper = props => {
 					{navigationType?.includes('dot') &&
 						attributes['navigation-dot-icon-content'] && (
 							<div className='maxi-slider-block__dots'>
-								{[...Array(numberOfSlides)].map(i => {
-									return (
-										<span
-											className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
-											// onClick={
-											// 	!isEditView ? () => prevSlide() : undefined
-											// }
-										>
-											<IconWrapper
-												ref={iconRef}
-												uniqueID={uniqueID}
-												className='maxi-navigation-dot-icon-block__icon'
+								{Array.from(Array(innerBlockCount).keys()).map(
+									i => {
+										return (
+											<span
+												className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
+												onClick={
+													!isEditView
+														? () => exactSlide(i)
+														: undefined
+												}
 											>
-												<RawHTML>
-													{
-														attributes[
-															'navigation-dot-icon-content'
-														]
-													}
-												</RawHTML>
-											</IconWrapper>
-										</span>
-									);
-								})}
+												<IconWrapper
+													ref={iconRef}
+													uniqueID={uniqueID}
+													className='maxi-navigation-dot-icon-block__icon'
+												>
+													<RawHTML>
+														{
+															attributes[
+																'navigation-dot-icon-content'
+															]
+														}
+													</RawHTML>
+												</IconWrapper>
+											</span>
+										);
+									}
+								)}
 							</div>
 						)}
 				</div>

@@ -115,7 +115,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 			});
 		});
 	});
-	console.log(response);
+
 	return response;
 };
 

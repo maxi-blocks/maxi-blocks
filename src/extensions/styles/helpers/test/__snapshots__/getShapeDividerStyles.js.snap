@@ -4,7 +4,6 @@ exports[`getShapeDividerStyles Get a correct shape divider styles 1`] = `
 Object {
   "general": Object {
     "height": "1px",
-    "opacity": 1,
   },
   "l": Object {},
   "label": "Shape Divider",
@@ -21,6 +20,24 @@ Object {
   "general": Object {
     "fill": "rgb(255, 99, 71)",
   },
+  "l": Object {
+    "fill": "rgb(255, 99, 71)",
+  },
   "label": "Shape Divider SVG",
+  "m": Object {
+    "fill": "rgb(255, 99, 71)",
+  },
+  "s": Object {
+    "fill": "rgb(255, 99, 71)",
+  },
+  "xl": Object {
+    "fill": "rgb(255, 99, 71)",
+  },
+  "xs": Object {
+    "fill": "rgb(255, 99, 71)",
+  },
+  "xxl": Object {
+    "fill": "rgb(255, 99, 71)",
+  },
 }
 `;

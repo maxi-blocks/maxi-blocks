@@ -13,9 +13,20 @@ const positionMigrator = ({ attributes, save }) => {
 	const targets = ['position', 'blockBackground'];
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
+	const getOldUnits = attributes =>
+		breakpoints.map(bp => ({
+			[`position-unit-${bp}`]: attributes[`position-unit-${bp}`],
+		}));
+
+	const getAttrsToChange = attributes =>
+		Object.assign(
+			{ ...getGroupAttributes(attributes, targets) },
+			...getOldUnits(attributes)
+		);
+
 	// Check if unit no axis
 	const unitChecker = key =>
-		key.includes('unit') && !keyWords.includes(key.split('-')[1]);
+		key.includes('unit') && !keyWords.some(word => key.includes(word));
 
 	const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
 		if (key.includes('position')) {
@@ -40,7 +51,7 @@ const positionMigrator = ({ attributes, save }) => {
 
 	return {
 		isEligible(blockAttributes) {
-			const attrsToChange = getGroupAttributes(blockAttributes, targets);
+			const attrsToChange = getAttrsToChange(blockAttributes);
 
 			return Object.entries(attrsToChange).some(([attrKey, attrVal]) => {
 				if (attrKey.includes('position')) {
@@ -234,13 +245,7 @@ const positionMigrator = ({ attributes, save }) => {
 		migrate(oldAttributes) {
 			const newAttributes = cloneDeep(oldAttributes);
 
-			const attrsToChange = Object.assign(
-				{ ...getGroupAttributes(newAttributes, targets) },
-				...breakpoints.map(bp => ({
-					[`position-unit-${bp}`]:
-						newAttributes[`position-unit-${bp}`],
-				}))
-			);
+			const attrsToChange = getAttrsToChange(newAttributes);
 
 			Object.entries(attrsToChange).forEach(([key, val]) => {
 				migratePositionAttributes(key, val, newAttributes, attributes);

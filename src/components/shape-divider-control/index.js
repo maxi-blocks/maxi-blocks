@@ -12,7 +12,10 @@ import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import Dropdown from '../dropdown';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Styles and icons
@@ -65,7 +68,7 @@ import {
  * Component
  */
 const ShapeDividerControl = props => {
-	const { onChangeInline, onChange } = props;
+	const { onChangeInline, onChange, breakpoint } = props;
 
 	const shapeItemsTop = [
 		{ label: __('None', 'max-block'), value: '' },
@@ -270,34 +273,42 @@ const ShapeDividerControl = props => {
 												'Colour opacity',
 												'maxi-blocks'
 											)}
-											opacity={
-												props[
-													'shape-divider-top-opacity'
-												]
-											}
+											opacity={getLastBreakpointAttribute(
+												{
+													target: 'shape-divider-top-opacity',
+													breakpoint,
+													attributes: props,
+												}
+											)}
 											onChange={opacity =>
 												onChange({
-													'shape-divider-top-opacity':
+													[`shape-divider-top-opacity-${breakpoint}`]:
 														opacity,
 												})
 											}
 										/>
 										<ColorControl
 											label={__('Divider', 'maxi-blocks')}
-											color={
-												props['shape-divider-top-color']
-											}
+											color={getLastBreakpointAttribute({
+												target: 'shape-divider-top-color',
+												breakpoint,
+												attributes: props,
+											})}
 											prefix='shape-divider-top-'
-											paletteColor={
-												props[
-													'shape-divider-top-palette-color'
-												]
-											}
-											paletteStatus={
-												props[
-													'shape-divider-top-palette-status'
-												]
-											}
+											paletteColor={getLastBreakpointAttribute(
+												{
+													target: 'shape-divider-top-palette-color',
+													breakpoint,
+													attributes: props,
+												}
+											)}
+											paletteStatus={getLastBreakpointAttribute(
+												{
+													target: 'shape-divider-top-palette-status',
+													breakpoint,
+													attributes: props,
+												}
+											)}
 											onChangeInline={({ color }) =>
 												onChangeInline({ fill: color })
 											}
@@ -307,11 +318,11 @@ const ShapeDividerControl = props => {
 												paletteStatus,
 											}) =>
 												onChange({
-													'shape-divider-top-color':
+													[`shape-divider-top-color-${breakpoint}`]:
 														color,
-													'shape-divider-top-palette-color':
+													[`shape-divider-top-palette-color-${breakpoint}`]:
 														paletteColor,
-													'shape-divider-top-palette-status':
+													[`shape-divider-top-palette-status-${breakpoint}`]:
 														paletteStatus,
 												})
 											}
@@ -324,39 +335,39 @@ const ShapeDividerControl = props => {
 												'maxi-blocks'
 											)}
 											enableUnit
-											unit={
-												props[
-													'shape-divider-top-height-unit'
-												]
-											}
+											unit={getLastBreakpointAttribute({
+												target: 'shape-divider-top-height-unit',
+												breakpoint,
+												attributes: props,
+											})}
 											allowedUnits={['px']}
 											onChangeUnit={val =>
 												onChange({
-													'shape-divider-top-height-unit':
+													[`shape-divider-top-height-unit-${breakpoint}`]:
 														val,
 												})
 											}
-											value={
-												props[
-													'shape-divider-top-height'
-												]
-											}
+											value={getLastBreakpointAttribute({
+												target: 'shape-divider-top-height',
+												breakpoint,
+												attributes: props,
+											})}
 											onChangeValue={val =>
 												onChange({
-													'shape-divider-top-height':
+													[`shape-divider-top-height-${breakpoint}`]:
 														val,
 												})
 											}
 											onReset={() =>
 												onChange({
-													'shape-divider-top-height':
-														getDefaultAttribute(
-															'shape-divider-top-height'
-														),
-													'shape-divider-top-height-unit':
-														getDefaultAttribute(
-															'shape-divider-top-height-unit'
-														),
+													[`shape-divider-top-height-${breakpoint}`]:
+														getDefaultAttribute([
+															`shape-divider-top-height-${breakpoint}`,
+														]),
+													[`shape-divider-top-height-unit-${breakpoint}`]:
+														getDefaultAttribute([
+															`shape-divider-top-height-unit-${breakpoint}`,
+														]),
 												})
 											}
 										/>
@@ -446,36 +457,42 @@ const ShapeDividerControl = props => {
 												'Colour opacity',
 												'maxi-blocks'
 											)}
-											opacity={
-												props[
-													'shape-divider-bottom-opacity'
-												]
-											}
+											opacity={getLastBreakpointAttribute(
+												{
+													target: 'shape-divider-bottom-opacity',
+													breakpoint,
+													attributes: props,
+												}
+											)}
 											onChange={opacity =>
 												onChange({
-													'shape-divider-bottom-opacity':
+													[`shape-divider-bottom-opacity-${breakpoint}`]:
 														opacity,
 												})
 											}
 										/>
 										<ColorControl
 											label={__('Divider', 'maxi-blocks')}
-											color={
-												props[
-													'shape-divider-bottom-color'
-												]
-											}
+											color={getLastBreakpointAttribute({
+												target: 'shape-divider-bottom-color',
+												breakpoint,
+												attributes: props,
+											})}
 											prefix='shape-divider-bottom-'
-											paletteColor={
-												props[
-													'shape-divider-bottom-palette-color'
-												]
-											}
-											paletteStatus={
-												props[
-													'shape-divider-bottom-palette-status'
-												]
-											}
+											paletteColor={getLastBreakpointAttribute(
+												{
+													target: 'shape-divider-bottom-palette-color',
+													breakpoint,
+													attributes: props,
+												}
+											)}
+											paletteStatus={getLastBreakpointAttribute(
+												{
+													target: 'shape-divider-bottom-palette-status',
+													breakpoint,
+													attributes: props,
+												}
+											)}
 											onChangeInline={({ color }) =>
 												onChangeInline({ fill: color })
 											}
@@ -485,11 +502,11 @@ const ShapeDividerControl = props => {
 												paletteStatus,
 											}) =>
 												onChange({
-													'shape-divider-bottom-color':
+													[`shape-divider-bottom-color-${breakpoint}`]:
 														color,
-													'shape-divider-bottom-palette-color':
+													[`shape-divider-bottom-palette-color-${breakpoint}`]:
 														paletteColor,
-													'shape-divider-bottom-palette-status':
+													[`shape-divider-bottom-palette-status-${breakpoint}`]:
 														paletteStatus,
 												})
 											}
@@ -501,39 +518,39 @@ const ShapeDividerControl = props => {
 												'maxi-blocks'
 											)}
 											enableUnit
-											unit={
-												props[
-													'shape-divider-bottom-height-unit'
-												]
-											}
+											unit={getLastBreakpointAttribute({
+												target: 'shape-divider-bottom-height-unit',
+												breakpoint,
+												attributes: props,
+											})}
 											allowedUnits={['px']}
 											onChangeUnit={val =>
 												onChange({
-													'shape-divider-bottom-height-unit':
+													[`shape-divider-bottom-height-unit-${breakpoint}`]:
 														val,
 												})
 											}
-											value={
-												props[
-													'shape-divider-bottom-height'
-												]
-											}
+											value={getLastBreakpointAttribute({
+												target: 'shape-divider-bottom-height',
+												breakpoint,
+												attributes: props,
+											})}
 											onChangeValue={val =>
 												onChange({
-													'shape-divider-bottom-height':
+													[`shape-divider-bottom-height-${breakpoint}`]:
 														val,
 												})
 											}
 											onReset={() =>
 												onChange({
-													'shape-divider-bottom-height':
-														getDefaultAttribute(
-															'shape-divider-bottom-height'
-														),
-													'shape-divider-bottom-height-unit':
-														getDefaultAttribute(
-															'shape-divider-bottom-height-unit'
-														),
+													[`shape-divider-bottom-height-${breakpoint}`]:
+														getDefaultAttribute([
+															`shape-divider-bottom-height-${breakpoint}`,
+														]),
+													[`shape-divider-bottom-height-unit-${breakpoint}`]:
+														getDefaultAttribute([
+															`shape-divider-bottom-height-unit-${breakpoint}`,
+														]),
 												})
 											}
 										/>

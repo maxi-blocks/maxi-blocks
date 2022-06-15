@@ -31,7 +31,12 @@ const Inspector = props => {
 		cleanInlineStyles,
 		inlineStylesTargets,
 	} = props;
-	const { blockStyle, playerType } = attributes;
+	const {
+		blockStyle,
+		playerType,
+		'overlay-mediaID': overlayMediaId,
+		'overlay-altSelector': overlayAltSelector,
+	} = attributes;
 
 	return (
 		<InspectorControls>
@@ -115,6 +120,10 @@ const Inspector = props => {
 														false,
 														'overlay-'
 													)}
+													mediaID={overlayMediaId}
+													altSelector={
+														overlayAltSelector
+													}
 													inlineStylesTargets={
 														inlineStylesTargets
 													}

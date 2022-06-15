@@ -128,33 +128,37 @@ const SVGLayerContent = props => {
 
 	const SVGOptions = cloneDeep(props.SVGOptions);
 
-	return isHover ? (
-		!isEmpty(SVGOptions['background-svg-SVGElement']) && (
-			<SVGSize {...props} />
-		)
-	) : (
-		<SettingTabsControl
-			disablePadding
-			className='maxi-background-control__svg-layer--size'
-			items={[
-				{
-					label: __('Position', 'maxi-blocks'),
-					content: (
-						<PositionControl
-							{...SVGOptions}
-							prefix='background-svg-'
-							onChange={onChange}
-							breakpoint={breakpoint}
-							disablePosition
-						/>
-					),
-				},
-				!isEmpty(SVGOptions['background-svg-SVGElement']) && {
-					label: __('Size', 'maxi-blocks'),
-					content: <SVGSize {...props} />,
-				},
-			]}
-		/>
+	return (
+		<div className='maxi-background-control__svg-layer--size'>
+			{isHover ? (
+				!isEmpty(SVGOptions['background-svg-SVGElement']) && (
+					<SVGSize {...props} />
+				)
+			) : (
+				<SettingTabsControl
+					disablePadding
+					className='maxi-background-control__svg-layer--size'
+					items={[
+						{
+							label: __('Position', 'maxi-blocks'),
+							content: (
+								<PositionControl
+									{...SVGOptions}
+									prefix='background-svg-'
+									onChange={onChange}
+									breakpoint={breakpoint}
+									disablePosition
+								/>
+							),
+						},
+						!isEmpty(SVGOptions['background-svg-SVGElement']) && {
+							label: __('Size', 'maxi-blocks'),
+							content: <SVGSize {...props} />,
+						},
+					]}
+				/>
+			)}
+		</div>
 	);
 };
 

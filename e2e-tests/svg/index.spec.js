@@ -95,10 +95,9 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 				svgSanitize,
 				previewSanitize
 			);
-			debugger;
+
 			// if are not equal check replace
 			if (!compareFrontHtml) {
-				debugger;
 				const editedSvgHtml = svgHtml[e].replace(
 					/enable-background="new"/g,
 					''
@@ -108,7 +107,7 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 					/enable-background="new"/g,
 					''
 				);
-				debugger;
+
 				const compareEditedFrontHtml = await htmlComparison(
 					page,
 					editedPreviewIcon,
@@ -146,7 +145,6 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 
 	for (let i = 0; i < svgGroup.length - 1; i += 1) {
 		if (i === 48 && fetchPage === 96) return;
-
 		const svgRefresh = await page.$$eval(
 			'.maxi-svg-icon-block__icon svg',
 			(svg, _i) => svg[_i]?.outerHTML,
@@ -181,7 +179,7 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 	return true;
 };
 
-describe.skip('SVG checker 2100', () => {
+describe('SVG checker 2100', () => {
 	it('SVG icons (0 =>2100)', async () => {
 		// 30min +/-
 		let i = 1;
@@ -197,7 +195,7 @@ describe.skip('SVG checker 2100', () => {
 	}, 999999999);
 });
 
-describe.skip('SVG checker 4200', () => {
+describe('SVG checker 4200', () => {
 	it('SVG icons (2100 => 4200)', async () => {
 		// 1h +/-
 		let e = 30;
@@ -213,7 +211,7 @@ describe.skip('SVG checker 4200', () => {
 		} while (e <= 60);
 	}, 999999999);
 });
-describe.skip('SVG checker 6300', () => {
+describe('SVG checker 6300', () => {
 	it('SVG icons (4200 => 6300)', async () => {
 		let i = 60;
 
@@ -243,7 +241,7 @@ describe('SVG checker 8400', () => {
 		} while (i <= 120);
 	}, 999999999);
 });
-describe.skip('SVG checker 8960', () => {
+describe('SVG checker 8960', () => {
 	it('SVG icons (8300 => 8960 +/-)', async () => {
 		let i = 120;
 

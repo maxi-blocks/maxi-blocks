@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import AxisControl from '../axis-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
@@ -29,16 +28,16 @@ import { isEmpty, cloneDeep } from 'lodash';
 /**
  * Component
  */
-const SVGLayerContent = props => {
+const SVGSize = props => {
 	const {
-		onChange,
-		isHover = false,
-		prefix = '',
 		breakpoint,
+		isHover,
 		isLayer = false,
+		onChange,
+		prefix = '',
+		SVGOptions,
 	} = props;
 
-	const SVGOptions = cloneDeep(props.SVGOptions);
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -67,6 +66,73 @@ const SVGLayerContent = props => {
 	};
 
 	return (
+		<AdvancedNumberControl
+			label={__('Size', 'maxi-blocks')}
+			value={getLastBreakpointAttribute({
+				target: `${prefix}background-svg-size`,
+				breakpoint,
+				attributes: SVGOptions,
+				isHover,
+			})}
+			allowedUnits={['px', 'em', 'vw', '%']}
+			enableUnit
+			unit={getLastBreakpointAttribute({
+				target: `${prefix}background-svg-size-unit`,
+				breakpoint,
+				attributes: SVGOptions,
+				isHover,
+			})}
+			onChangeValue={val => {
+				onChange({
+					[getAttributeKey(
+						'background-svg-size',
+						isHover,
+						prefix,
+						breakpoint
+					)]: val,
+				});
+			}}
+			onChangeUnit={val =>
+				onChange({
+					[getAttributeKey(
+						'background-svg-size-unit',
+						isHover,
+						prefix,
+						breakpoint
+					)]: val,
+				})
+			}
+			onReset={() =>
+				onChange({
+					[getAttributeKey(
+						'background-svg-size',
+						isHover,
+						prefix,
+						breakpoint
+					)]: getDefaultAttr('background-svg-size'),
+					[getAttributeKey(
+						'background-svg-size-unit',
+						isHover,
+						prefix,
+						breakpoint
+					)]: getDefaultAttr('background-svg-size-unit'),
+				})
+			}
+			minMaxSettings={minMaxSettings}
+		/>
+	);
+};
+
+const SVGLayerContent = props => {
+	const { onChange, isHover = false, breakpoint } = props;
+
+	const SVGOptions = cloneDeep(props.SVGOptions);
+
+	return isHover ? (
+		!isEmpty(SVGOptions['background-svg-SVGElement']) && (
+			<SVGSize {...props} />
+		)
+	) : (
 		<SettingTabsControl
 			disablePadding
 			className='maxi-background-control__svg-layer--size'
@@ -85,64 +151,7 @@ const SVGLayerContent = props => {
 				},
 				!isEmpty(SVGOptions['background-svg-SVGElement']) && {
 					label: __('Size', 'maxi-blocks'),
-					content: (
-						<AdvancedNumberControl
-							label={__('Size', 'maxi-blocks')}
-							value={getLastBreakpointAttribute({
-								target: `${prefix}background-svg-size`,
-								breakpoint,
-								attributes: SVGOptions,
-								isHover,
-							})}
-							allowedUnits={['px', 'em', 'vw', '%']}
-							enableUnit
-							unit={getLastBreakpointAttribute({
-								target: `${prefix}background-svg-size-unit`,
-								breakpoint,
-								attributes: SVGOptions,
-								isHover,
-							})}
-							onChangeValue={val => {
-								onChange({
-									[getAttributeKey(
-										'background-svg-size',
-										isHover,
-										prefix,
-										breakpoint
-									)]: val,
-								});
-							}}
-							onChangeUnit={val =>
-								onChange({
-									[getAttributeKey(
-										'background-svg-size-unit',
-										isHover,
-										prefix,
-										breakpoint
-									)]: val,
-								})
-							}
-							onReset={() =>
-								onChange({
-									[getAttributeKey(
-										'background-svg-size',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttr('background-svg-size'),
-									[getAttributeKey(
-										'background-svg-size-unit',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttr(
-										'background-svg-size-unit'
-									),
-								})
-							}
-							minMaxSettings={minMaxSettings}
-						/>
-					),
+					content: <SVGSize {...props} />,
 				},
 			]}
 		/>

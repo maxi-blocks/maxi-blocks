@@ -24,8 +24,8 @@ const VideoOverlayControl = props => {
 		insertInlineStyles,
 		inlineStylesTargets,
 		cleanInlineStyles,
-		'overlay-mediaID': overlayMediaId,
-		'overlay-altSelector': altSelector,
+		mediaID,
+		altSelector,
 	} = props;
 
 	return (
@@ -33,7 +33,7 @@ const VideoOverlayControl = props => {
 			<MediaUploaderControl
 				className='maxi-video-overlay-control__cover-image'
 				placeholder={__('Image overlay')}
-				mediaID={overlayMediaId}
+				mediaID={mediaID}
 				onSelectImage={val => {
 					const alt =
 						(altSelector === 'wordpress' && val?.alt) ||
@@ -41,7 +41,7 @@ const VideoOverlayControl = props => {
 						null;
 
 					onChange({
-						'overlay-mediaID': val.order,
+						'overlay-mediaID': val.id,
 						'overlay-mediaURL': val.url,
 						'overlay-mediaAlt':
 							altSelector === 'wordpress' && !alt

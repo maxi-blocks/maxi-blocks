@@ -63,7 +63,7 @@ const handleYoutubeVideos = () => {
 			const { isLoop, startTime } = videoData;
 
 			if (state.data === YT.PlayerState.ENDED && isLoop) {
-				player.seekTo(+startTime);
+				player.seekTo(startTime || 0);
 			}
 		}
 
@@ -91,7 +91,7 @@ function handleVimeoVideos() {
 
 		vimeoPlayer.on('timeupdate', function (data) {
 			if (data.seconds > +endTime) {
-				if (isLoop) vimeoPlayer.setCurrentTime(+startTime);
+				if (isLoop) vimeoPlayer.setCurrentTime(startTime || '0');
 				else vimeoPlayer.pause();
 			}
 		});

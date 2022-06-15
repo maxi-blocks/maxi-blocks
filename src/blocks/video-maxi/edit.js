@@ -45,7 +45,7 @@ const VideoPlayer = props => {
 
 	const handleStateChange = state => {
 		if (state.data === 0 && isLoop) {
-			player.seekTo(startTime);
+			player.seekTo(startTime || 0);
 		}
 	};
 
@@ -62,7 +62,7 @@ const VideoPlayer = props => {
 		player = new window.Vimeo.Player(playerElement);
 		player.on('timeupdate', data => {
 			if (data.seconds > +endTime) {
-				if (isLoop) player.setCurrentTime(+startTime);
+				if (isLoop) player.setCurrentTime(startTime || '0');
 				else player.pause();
 			}
 		});
@@ -94,7 +94,7 @@ const VideoPlayer = props => {
 				handleVimeoVideo();
 			}
 		}
-	}, []);
+	}, [videoType, endTime, startTime, isLoop]);
 
 	return (
 		<>

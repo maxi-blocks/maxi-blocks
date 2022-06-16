@@ -12,7 +12,7 @@ const transition = {
 	},
 	'transition-change-all': {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 };
 

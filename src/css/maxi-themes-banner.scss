@@ -9,7 +9,7 @@ body.maxi-blocks--active .maxi-block {
 	padding: 0;
 	/* max-width: none; */ /* Not sure if it can create and interfere with theme styles */
 	width: 100%;
-	min-width: inherit;
+	min-width: initial;
 	max-height: none;
 	height: initial;
 	min-height: inherit;

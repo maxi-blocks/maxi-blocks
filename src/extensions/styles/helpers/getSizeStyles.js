@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getDefaultAttribute from '../getDefaultAttribute';
 
 /**
  * External dependencies
@@ -24,14 +25,21 @@ const getSizeStyles = (obj, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
 			let fullWidthNormalStyles = {};
-			if (target === 'width' || target === 'max-width') {
+			if (
+				target === 'width' ||
+				target === 'max-width' ||
+				target === 'min-width'
+			) {
 				const fullWidth = getLastBreakpointAttribute({
 					target: `${prefix}full-width`,
 					breakpoint,
 					attributes: obj,
 				});
 
-				if (target === 'width' && fullWidth === 'full') {
+				if (
+					(target === 'width' || target === 'min-width') &&
+					fullWidth === 'full'
+				) {
 					return null;
 				}
 
@@ -42,7 +50,18 @@ const getSizeStyles = (obj, prefix = '') => {
 						};
 					}
 
-					if (fullWidth === 'normal') {
+					const isMinWidthNeeded = breakpoints
+						.slice(0, breakpoints.indexOf(breakpoint) + 1)
+						.some(bp => {
+							const val = obj[`${prefix}full-width-${bp}`];
+							const defaultVal = getDefaultAttribute(
+								`${prefix}full-width-${bp}`
+							);
+
+							return val !== defaultVal;
+						});
+
+					if (fullWidth === 'normal' && isMinWidthNeeded) {
 						fullWidthNormalStyles = {
 							'min-width': 'initial',
 						};

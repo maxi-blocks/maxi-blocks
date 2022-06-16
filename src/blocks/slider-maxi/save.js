@@ -76,6 +76,7 @@ const save = props => {
 										return (
 											<span
 												className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
+												key={`maxi-slider-block__dot--${i}`}
 											>
 												<RawHTML className='maxi-navigation-dot-icon-block__icon'>
 													{

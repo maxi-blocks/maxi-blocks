@@ -419,6 +419,7 @@ const SliderWrapper = props => {
 										return (
 											<span
 												className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
+												key={`maxi-slider-block__dot--${i}`}
 												onClick={
 													!isEditView
 														? () => exactSlide(i)

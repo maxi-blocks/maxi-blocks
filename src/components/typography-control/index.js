@@ -539,22 +539,9 @@ const TypographyControl = props => {
 					unit={getValue(`${prefix}font-size-unit`, !isStyleCards)}
 					defaultUnit={getDefault(`${prefix}font-size-unit`)}
 					onChangeUnit={val => {
-						if (
-							getValue(`${prefix}font-size`) >
-							minMaxSettings[val].max
-						) {
-							onChangeFormat({
-								[`${prefix}font-size`]: minMaxSettings[val].max,
-								[`${prefix}font-size-unit`]: val,
-							});
-						} else {
-							onChangeFormat({
-								[`${prefix}font-size`]: getValue(
-									`${prefix}font-size`
-								),
-								[`${prefix}font-size-unit`]: val,
-							});
-						}
+						onChangeFormat({
+							[`${prefix}font-size-unit`]: val,
+						});
 					}}
 					placeholder={getValue(`${prefix}font-size`, !isStyleCards)}
 					value={getValue(
@@ -564,9 +551,10 @@ const TypographyControl = props => {
 						true
 					)}
 					defaultValue={getDefault(`${prefix}font-size`)}
-					onChangeValue={val => {
+					onChangeValue={(val, unit) => {
 						onChangeFormat({
 							[`${prefix}font-size`]: val,
+							...(unit && { [`${prefix}font-size-unit`]: unit }),
 						});
 					}}
 					onReset={() =>

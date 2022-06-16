@@ -9,7 +9,6 @@ const checkIndicators = async ({ page, indicators }) => {
 	const indicator = await page.$$(
 		'.maxi-accordion-control__item__button.maxi-accordion-control__item--active'
 	);
-	debugger;
 
 	for (let i = 0; i < indicator.length; i += 1) {
 		const expectInspector = !isArray(indicators)
@@ -20,10 +19,7 @@ const checkIndicators = async ({ page, indicators }) => {
 			input => input[0].outerText
 		);
 
-		debugger;
 		if (test !== expectInspector) return false;
-
-		debugger;
 	}
 	return true;
 };

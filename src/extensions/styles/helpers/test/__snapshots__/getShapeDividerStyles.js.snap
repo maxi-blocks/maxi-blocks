@@ -4,6 +4,7 @@ exports[`getShapeDividerStyles Get a correct shape divider styles 1`] = `
 Object {
   "general": Object {
     "height": "1px",
+    "opacity": 1,
   },
   "l": Object {},
   "label": "Shape Divider",

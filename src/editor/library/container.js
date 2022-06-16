@@ -513,6 +513,7 @@ const LibraryContainer = props => {
 			if (type === 'image-shape') {
 				const SVGData = {
 					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
 						imageID: mediaID,
 						imageURL: mediaURL,
 					},

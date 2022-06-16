@@ -62,6 +62,7 @@ const ToolbarMediaUpload = props => {
 
 						const resData = {
 							[`${uniqueID}__${uniqueId()}`]: {
+								color: '',
 								imageID: '',
 								imageURL: '',
 							},

@@ -260,6 +260,7 @@ class edit extends MaxiBlockComponent {
 
 								const resData = {
 									[`${uniqueID}__${uniqueId()}`]: {
+										color: '',
 										imageID: '',
 										imageURL: '',
 									},

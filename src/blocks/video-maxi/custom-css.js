@@ -1,5 +1,5 @@
 export const selectorsVideo = {
-	vdieo: {
+	video: {
 		normal: {
 			label: 'video',
 			target: '.maxi-video-block',

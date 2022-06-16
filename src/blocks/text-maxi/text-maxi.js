@@ -26,6 +26,7 @@ import './editor.scss';
 import './style.scss';
 import { textIcon } from '../../icons';
 import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
+import fromFullWidthNonToResponsive from '../../extensions/styles/migrators/fullWidthNonToResponsive';
 
 /**
  * Block
@@ -52,5 +53,8 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save,
 	transforms,
-	deprecated: [positionMigrator({ attributes, save })],
+	deprecated: [
+		positionMigrator({ attributes, save }),
+		fromFullWidthNonToResponsive({ attributes, save }),
+	],
 });

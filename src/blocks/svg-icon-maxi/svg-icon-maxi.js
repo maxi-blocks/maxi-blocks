@@ -25,6 +25,7 @@ import './style.scss';
 import './editor.scss';
 import { iconBox } from '../../icons';
 import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
+import fromFullWidthNonToResponsive from '../../extensions/styles/migrators/fullWidthNonToResponsive';
 
 /**
  * Block
@@ -50,5 +51,8 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [positionMigrator({ attributes, save })],
+	deprecated: [
+		positionMigrator({ attributes, save }),
+		fromFullWidthNonToResponsive({ attributes, save }),
+	],
 });

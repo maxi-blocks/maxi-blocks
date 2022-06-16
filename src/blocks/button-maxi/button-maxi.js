@@ -25,6 +25,7 @@ import './style.scss';
 import './editor.scss';
 import { buttonIcon } from '../../icons';
 import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
+import fromFullWidthNonToResponsiveMigrator from '../../extensions/styles/migrators/fullWidthNonToResponsive';
 
 /**
  * Block
@@ -50,5 +51,12 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [positionMigrator({ attributes, save })],
+	deprecated: [
+		positionMigrator({ attributes, save }),
+		fromFullWidthNonToResponsiveMigrator({
+			attributes,
+			save,
+			prefix: 'button-',
+		}),
+	],
 });

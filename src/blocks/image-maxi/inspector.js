@@ -1,11 +1,10 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { RangeControl } from '@wordpress/components';
-import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -42,7 +41,13 @@ import { capitalize, isEmpty, isNil } from 'lodash';
  * Dimension tab
  */
 const dimensionTab = props => {
-	const { attributes, clientId, maxiSetAttributes, resizableObject } = props;
+	const {
+		attributes,
+		clientId,
+		maxiSetAttributes,
+		resizableObject,
+		imageData,
+	} = props;
 	const {
 		cropOptions,
 		imageRatio,
@@ -52,8 +57,6 @@ const dimensionTab = props => {
 		SVGElement,
 		useInitSize,
 	} = attributes;
-
-	const imageData = select('core').getMedia(mediaID);
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -250,10 +253,10 @@ const Inspector = props => {
 		captionPosition,
 	} = attributes;
 
-	const imageData = useCallback(
-		() => select('core').getMedia(mediaID),
+	const imageData = useSelect(
+		select => select('core').getMedia(mediaID),
 		[mediaID]
-	)();
+	);
 
 	const getCaptionOptions = () => {
 		const response = [
@@ -290,7 +293,10 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' &&
 										fullWidth !== 'full' &&
-										dimensionTab(props),
+										dimensionTab({
+											...props,
+											imageData,
+										}),
 									...inspectorTabs.alignment({
 										props,
 										isAlignment: true,

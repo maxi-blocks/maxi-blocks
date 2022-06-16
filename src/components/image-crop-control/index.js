@@ -217,7 +217,7 @@ const ImageCropControl = props => {
 			crop: {
 				...crop.crop,
 				x: newCrop.x || 0,
-				y: newCrop.x || 0,
+				y: newCrop.y || 0,
 				width: newCrop.width || imgNode.current.width,
 				height: newCrop.height || imgNode.current.height,
 			},

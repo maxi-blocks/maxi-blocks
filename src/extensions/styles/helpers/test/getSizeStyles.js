@@ -274,6 +274,33 @@ describe('getSizeStyles', () => {
 	it('Get a correct size styles with full width', () => {
 		const object = {
 			'full-width-general': 'full',
+			'full-width-l': 'normal',
+		};
+
+		const result = getSizeStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct size styles with full width 2', () => {
+		const object = {
+			'size-advanced-options': true,
+			'full-width-general': 'full',
+			'full-width-xl': 'normal',
+			'full-width-l': 'full',
+			'min-width-l': '2',
+			'min-width-unit-l': 'px',
+			'full-width-m': 'normal',
+			'min-width-m': '3',
+			'min-width-s': '0',
+		};
+
+		const result = getSizeStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct size styles with full width 3', () => {
+		const object = {
+			'full-width-general': 'full',
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': '2',

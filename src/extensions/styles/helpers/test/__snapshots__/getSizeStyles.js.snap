@@ -130,6 +130,58 @@ Object {
 exports[`getSizeStyles Get a correct size styles with full width 1`] = `
 Object {
   "general": Object {
+    "min-width": "100%",
+  },
+  "l": Object {
+    "min-width": "initial",
+  },
+  "m": Object {
+    "min-width": "initial",
+  },
+  "s": Object {
+    "min-width": "initial",
+  },
+  "xl": Object {
+    "min-width": "100%",
+  },
+  "xs": Object {
+    "min-width": "initial",
+  },
+  "xxl": Object {
+    "min-width": "100%",
+  },
+}
+`;
+
+exports[`getSizeStyles Get a correct size styles with full width 2 1`] = `
+Object {
+  "general": Object {
+    "min-width": "100%",
+  },
+  "l": Object {
+    "min-width": "100%",
+  },
+  "m": Object {
+    "min-width": "3px",
+  },
+  "s": Object {
+    "min-width": "0px",
+  },
+  "xl": Object {
+    "min-width": "initial",
+  },
+  "xs": Object {
+    "min-width": "0px",
+  },
+  "xxl": Object {
+    "min-width": "100%",
+  },
+}
+`;
+
+exports[`getSizeStyles Get a correct size styles with full width 3 1`] = `
+Object {
+  "general": Object {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",

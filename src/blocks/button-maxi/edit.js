@@ -12,7 +12,6 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
@@ -64,7 +63,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, maxiSetAttributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID } = attributes;
 		const { scValues } = this.state;
 

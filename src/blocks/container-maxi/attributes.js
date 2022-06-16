@@ -22,10 +22,6 @@ const attributes = {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'full',
-	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...{
@@ -57,6 +53,10 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
+		'full-width-general': {
+			type: 'string',
+			default: 'full',
+		},
 		'size-advanced-options': {
 			type: 'boolean',
 			default: true,

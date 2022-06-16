@@ -315,7 +315,6 @@ const TypographyControl = props => {
 		blockStyle,
 		globalProps,
 	} = props;
-	console.log(props);
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
 

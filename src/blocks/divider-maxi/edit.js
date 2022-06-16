@@ -169,7 +169,6 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				isOverflowHidden={getIsOverflowHidden()}
-				minWidth='1px'
 				defaultSize={{
 					width: '100%',
 					height: `${getLastBreakpointAttribute({

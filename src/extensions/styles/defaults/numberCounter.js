@@ -86,10 +86,6 @@ const numberCounter = {
 	},
 	...{
 		...alignment,
-		'alignment-general': {
-			type: 'string',
-			default: 'center',
-		},
 	},
 };
 

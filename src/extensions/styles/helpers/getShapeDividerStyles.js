@@ -31,7 +31,7 @@ export const getShapeDividerStyles = (obj, location) => {
 				obj[`shape-divider-${location}-height-unit-${breakpoint}`] ??
 				'px'
 			}`;
-		if (!isNil(obj[`shape-divider-${location}-opacity`]))
+		if (!isNil(obj[`shape-divider-${location}-opacity-${breakpoint}`]))
 			response[breakpoint].opacity =
 				obj[`shape-divider-${location}-opacity-${breakpoint}`];
 	});

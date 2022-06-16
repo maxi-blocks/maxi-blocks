@@ -9,20 +9,20 @@ import { MediaUpload } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Button from '../../../button';
-import { generateDataObject, injectImgSVG } from '../../../../extensions/svg';
+import { injectImgSVG } from '../../../../extensions/svg';
 
 /**
  * External dependencies
  */
 import DOMPurify from 'dompurify';
-import { isEmpty } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Component
  */
 const ToolbarMediaUpload = props => {
 	const { blockName, attributes, maxiSetAttributes } = props;
-	const { mediaID, altSelector } = attributes;
+	const { mediaID, altSelector, uniqueID } = attributes;
 
 	if (blockName !== 'maxi-blocks/image-maxi') return null;
 
@@ -50,7 +50,9 @@ const ToolbarMediaUpload = props => {
 					});
 
 					if (!isEmpty(attributes.SVGData)) {
-						const cleanedContent = DOMPurify.sanitize(SVGElement);
+						const cleanedContent = DOMPurify.sanitize(
+							attributes.SVGElement
+						);
 
 						const svg = document
 							.createRange()
@@ -58,8 +60,12 @@ const ToolbarMediaUpload = props => {
 								cleanedContent
 							).firstElementChild;
 
-						const resData = generateDataObject('', svg);
-
+						const resData = {
+							[`${uniqueID}__${uniqueId()}`]: {
+								imageID: '',
+								imageURL: '',
+							},
+						};
 						const SVGValue = resData;
 						const el = Object.keys(SVGValue)[0];
 

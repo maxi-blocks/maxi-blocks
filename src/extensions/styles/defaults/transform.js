@@ -16,6 +16,9 @@ const rawTransform = {
 };
 
 const transform = {
+	'transform-target': {
+		type: 'string',
+	},
 	...breakpointAttributesCreator({
 		obj: rawTransform,
 	}),

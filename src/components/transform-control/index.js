@@ -41,13 +41,13 @@ const TransformControl = props => {
 		depth,
 		categories,
 		selectors,
+		'transform-target': transformTarget,
 	} = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
 	);
 	const [hoverSelected, setHoverSelected] = useState('normal');
-	const [transformTarget, setTransformTarget] = useState(null);
 	const latestTarget = useRef();
 
 	useEffect(() => {
@@ -180,7 +180,9 @@ const TransformControl = props => {
 					'maxi-blocks'
 				)}
 				value={transformTarget ?? 'none'}
-				onChange={val => setTransformTarget(val)}
+				onChange={val => {
+					onChange({ 'transform-target': val });
+				}}
 				options={getOptions()}
 			/>
 			{transformTarget && transformTarget !== 'none' && (

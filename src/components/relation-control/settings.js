@@ -14,7 +14,20 @@ import {
 } from '../../extensions/styles';
 
 const canvasSettings = [
-	// TODO: Add Background / Layer control
+	{
+		label: __('Background / Layer', 'maxi-blocks'),
+		attrGroupName: [
+			'blockBackground',
+			'border',
+			'borderWidth',
+			'borderRadius',
+		],
+		component: props => (
+			<Controls.BlockBackgroundControl {...props} disableAddLayer />
+		),
+		helper: ({ obj, blockStyle }) =>
+			styleHelpers.getBlockBackgroundStyles({ ...obj, blockStyle }),
+	},
 	{
 		label: __('Border', 'maxi-blocks'),
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],

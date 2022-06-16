@@ -184,20 +184,53 @@ const RelationControl = props => {
 					},
 				});
 
-				const styles = Object.keys(stylesObj).reduce((acc, key) => {
-					if (key !== 'label') {
-						acc[key] = {
-							styles: stylesObj[key],
-							breakpoint: breakpoints[key] || null,
-						};
+				const getStyles = (stylesObj, isFirst = false) => {
+					if (
+						Object.keys(stylesObj).some(key =>
+							key.includes('general')
+						)
+					) {
+						const styles = Object.keys(stylesObj).reduce(
+							(acc, key) => {
+								if (
+									breakpoints[key] ||
+									key === 'xxl' ||
+									key === 'general'
+								) {
+									acc[key] = {
+										styles: stylesObj[key],
+										breakpoint: breakpoints[key] || null,
+									};
 
-						return acc;
+									return acc;
+								}
+
+								return acc;
+							},
+							{}
+						);
+						console.log(styles);
+						return styles;
 					}
 
-					acc[key] = stylesObj[key];
+					const styles = Object.keys(stylesObj).reduce((acc, key) => {
+						if (isFirst) {
+							acc[key] = getStyles(stylesObj[key]);
+							return acc;
+						}
 
-					return acc;
-				}, {});
+						const newAcc = {
+							...acc,
+							...getStyles(stylesObj[key]),
+						};
+
+						return newAcc;
+					}, {});
+
+					return styles;
+				};
+
+				const styles = getStyles(stylesObj, true);
 
 				onChangeRelationProperty(item.id, 'css', styles);
 			},
@@ -205,7 +238,7 @@ const RelationControl = props => {
 			breakpoint: deviceType,
 		});
 	};
-
+	console.log(relations);
 	const getBlocksToAffect = () => {
 		const { getBlocks } = select('core/block-editor');
 		const maxiBlocks = getBlocks().filter(block =>

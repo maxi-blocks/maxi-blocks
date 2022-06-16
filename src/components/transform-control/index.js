@@ -51,7 +51,7 @@ const TransformControl = props => {
 	const latestTarget = useRef();
 
 	useEffect(() => {
-		latestTarget.current = [transformTarget, hoverSelected];
+		latestTarget.current = { transformTarget, hoverSelected };
 	}, [transformTarget, hoverSelected]);
 
 	const isTransformed = () =>
@@ -76,15 +76,15 @@ const TransformControl = props => {
 
 		changeTransformOptions(transformOptions);
 
-		const [transformTarget, hoverSelected] = latestTarget.current;
+		const { transformTarget } = latestTarget.current;
 
 		const transformObj = getTransformStyles(transformOptions, selectors);
 
 		if (!transformObj) return;
 
-		const { target } = selectors[transformTarget][hoverSelected];
+		const target = selectors[transformTarget]?.normal?.target;
 
-		if (target.includes(':')) return;
+		if (isNil(target) || target.includes(':')) return;
 
 		const targetTransformObj = transformObj[target].transform;
 
@@ -226,24 +226,28 @@ const TransformControl = props => {
 							onChange={(x, y) => {
 								onChangeTransform({
 									'transform-scale': {
-										[`${latestTarget.current[0]}`]: {
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
+										[`${latestTarget.current.transformTarget}`]:
+											{
+												[`${latestTarget.current.hoverSelected}`]:
+													{
+														x,
+														y,
+													},
 											},
-										},
 									},
 								});
 							}}
 							onSave={(x, y) => {
 								onChangeTransform({
 									'transform-scale': {
-										[`${latestTarget.current[0]}`]: {
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
+										[`${latestTarget.current.transformTarget}`]:
+											{
+												[`${latestTarget.current.hoverSelected}`]:
+													{
+														x,
+														y,
+													},
 											},
-										},
 									},
 								});
 								onChange(
@@ -254,9 +258,10 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[`${latestTarget.current[0]}`][
-										`${latestTarget.current[1]}`
-									].target
+									selectors[
+										`${latestTarget.current.transformTarget}`
+									]?.[`${latestTarget.current.hoverSelected}`]
+										?.target
 								);
 							}}
 						/>
@@ -301,28 +306,32 @@ const TransformControl = props => {
 							onChange={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-translate': {
-										[`${latestTarget.current[0]}`]: {
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												'x-unit': xUnit,
-												'y-unit': yUnit,
+										[`${latestTarget.current.transformTarget}`]:
+											{
+												[`${latestTarget.current.hoverSelected}`]:
+													{
+														x,
+														y,
+														'x-unit': xUnit,
+														'y-unit': yUnit,
+													},
 											},
-										},
 									},
 								});
 							}}
 							onSave={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-translate': {
-										[`${latestTarget.current[0]}`]: {
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												'x-unit': xUnit,
-												'y-unit': yUnit,
+										[`${latestTarget.current.transformTarget}`]:
+											{
+												[`${latestTarget.current.hoverSelected}`]:
+													{
+														x,
+														y,
+														'x-unit': xUnit,
+														'y-unit': yUnit,
+													},
 											},
-										},
 									},
 								});
 								onChange(
@@ -333,9 +342,10 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[`${latestTarget.current[0]}`][
-										`${latestTarget.current[1]}`
-									].target
+									selectors[
+										`${latestTarget.current.transformTarget}`
+									]?.[`${latestTarget.current.hoverSelected}`]
+										?.target
 								);
 							}}
 						/>
@@ -369,13 +379,15 @@ const TransformControl = props => {
 							onChange={(x, y, z) => {
 								onChangeTransform({
 									'transform-rotate': {
-										[`${latestTarget.current[0]}`]: {
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												z,
+										[`${latestTarget.current.transformTarget}`]:
+											{
+												[`${latestTarget.current.hoverSelected}`]:
+													{
+														x,
+														y,
+														z,
+													},
 											},
-										},
 									},
 								});
 								onChange(
@@ -386,9 +398,10 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[`${latestTarget.current[0]}`][
-										`${latestTarget.current[1]}`
-									].target
+									selectors[
+										`${latestTarget.current.transformTarget}`
+									]?.[`${latestTarget.current.hoverSelected}`]
+										?.target
 								);
 							}}
 						/>
@@ -435,28 +448,32 @@ const TransformControl = props => {
 							onChange={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-origin': {
-										[`${latestTarget.current[0]}`]: {
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												'x-unit': xUnit,
-												'y-unit': yUnit,
+										[`${latestTarget.current.transformTarget}`]:
+											{
+												[`${latestTarget.current.hoverSelected}`]:
+													{
+														x,
+														y,
+														'x-unit': xUnit,
+														'y-unit': yUnit,
+													},
 											},
-										},
 									},
 								});
 							}}
 							onSave={(x, y, xUnit, yUnit) => {
 								onChangeTransform({
 									'transform-origin': {
-										[`${latestTarget.current[0]}`]: {
-											[`${latestTarget.current[1]}`]: {
-												x,
-												y,
-												'x-unit': xUnit,
-												'y-unit': yUnit,
+										[`${latestTarget.current.transformTarget}`]:
+											{
+												[`${latestTarget.current.hoverSelected}`]:
+													{
+														x,
+														y,
+														'x-unit': xUnit,
+														'y-unit': yUnit,
+													},
 											},
-										},
 									},
 								});
 								onChange(
@@ -467,9 +484,10 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[`${latestTarget.current[0]}`][
-										`${latestTarget.current[1]}`
-									].target
+									selectors[
+										`${latestTarget.current.transformTarget}`
+									]?.[`${latestTarget.current.hoverSelected}`]
+										?.target
 								);
 							}}
 						/>

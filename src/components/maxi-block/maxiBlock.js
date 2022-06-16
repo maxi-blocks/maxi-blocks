@@ -217,15 +217,25 @@ const MaxiBlock = memo(
 		);
 	}),
 	(rawOldProps, rawNewProps) => {
-		const { attributes: oldAttr, isSelected: wasSelected } = rawOldProps;
+		const {
+			attributes: oldAttr,
+			isSelected: wasSelected,
+			deviceType: oldDeviceType,
+		} = rawOldProps;
 
-		const { attributes: newAttr, isSelected } = rawNewProps;
+		const {
+			attributes: newAttr,
+			isSelected,
+			deviceType: newDeviceType,
+		} = rawNewProps;
 
 		if (!isEqual(oldAttr, newAttr)) return false;
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;
 
 		if (wasSelected !== isSelected) return false;
+
+		if (!isEqual(oldDeviceType, newDeviceType)) return false;
 
 		const propsCleaner = props => {
 			const response = {};

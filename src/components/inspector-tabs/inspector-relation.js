@@ -10,7 +10,6 @@ import RelationControl from '../relation-control';
 
 const relation = ({ props }) => {
 	const { attributes, maxiSetAttributes, deviceType } = props;
-	const { blockStyle } = attributes;
 
 	return {
 		label: __('Interaction builder', 'maxi-blocks'),
@@ -18,7 +17,6 @@ const relation = ({ props }) => {
 			<RelationControl
 				{...attributes}
 				onChange={obj => maxiSetAttributes(obj)}
-				blockStyle={blockStyle}
 				deviceType={deviceType}
 			/>
 		),

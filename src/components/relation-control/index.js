@@ -36,7 +36,7 @@ import './editor.scss';
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 
-	const { blockStyle, deviceType, onChange, uniqueID } = props;
+	const { deviceType, onChange, uniqueID } = props;
 	const relations = cloneDeep(props.relations) ?? [];
 
 	const getRelationId = () =>
@@ -176,7 +176,7 @@ const RelationControl = props => {
 				const stylesObj = selectedSettingsObj?.helper({
 					obj: newGroupAttributes,
 					prefix,
-					blockStyle,
+					blockStyle: blockAttributes.blockStyle,
 					deviceType,
 					blockAttributes: {
 						...blockAttributes,
@@ -202,7 +202,7 @@ const RelationControl = props => {
 				onChangeRelationProperty(item.id, 'css', styles);
 			},
 			prefix,
-			blockStyle,
+			blockStyle: blockAttributes.blockStyle,
 			breakpoint: deviceType,
 		});
 	};

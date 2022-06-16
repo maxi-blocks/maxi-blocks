@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+
+exports[`getImageShapeStyles Ensure that image shape scale is working with responsive 1`] = `
+Object {
+  "m": Object {
+    "transform": "scale(0.5) ",
+  },
+  "s": Object {
+    "transform": "scale(0.5) ",
+  },
+  "xs": Object {
+    "transform": "scale(0.5) ",
+  },
+}
+`;
+
+exports[`getImageShapeStyles Ensure that image shape scale is working with responsive 2`] = `
+Object {
+  "general": Object {
+    "transform": "scale(0.5) ",
+  },
+  "l": Object {
+    "transform": "scale(0.5) ",
+  },
+  "xl": Object {
+    "transform": "scale(0.5) ",
+  },
+  "xxl": Object {
+    "transform": "scale(0.5) ",
+  },
+}
+`;

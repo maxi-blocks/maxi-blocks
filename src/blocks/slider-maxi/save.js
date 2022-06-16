@@ -29,6 +29,8 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null
 	);
 
+	const innerBlockCount = 6;
+
 	return (
 		<MaxiBlock.save
 			className={classes}
@@ -43,7 +45,7 @@ const save = props => {
 				/>
 				{(attributes['navigation-arrow-first-icon-content'] ||
 					attributes['navigation-arrow-first-icon-content'] ||
-					attributes['navigation-dots-content']) && (
+					attributes['navigation-dot-icon-content']) && (
 					<div className='maxi-slider-block__nav'>
 						{attributes['navigation-arrow-first-icon-content'] && (
 							<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
@@ -66,6 +68,27 @@ const save = props => {
 									}
 								</RawHTML>
 							</span>
+						)}
+						{attributes['navigation-dot-icon-content'] && (
+							<div className='maxi-slider-block__dots'>
+								{Array.from(Array(innerBlockCount).keys()).map(
+									i => {
+										return (
+											<span
+												className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
+											>
+												<RawHTML className='maxi-navigation-dot-icon-block__icon'>
+													{
+														attributes[
+															'navigation-dot-icon-content'
+														]
+													}
+												</RawHTML>
+											</span>
+										);
+									}
+								)}
+							</div>
 						)}
 					</div>
 				)}

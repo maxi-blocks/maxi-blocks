@@ -48,6 +48,9 @@ class MaxiSlider {
 		this._arrowPrev = this._container.querySelector(
 			'.maxi-slider-block__arrow--prev'
 		);
+		this._dots = this._container.querySelectorAll(
+			'.maxi-slider-block__dot'
+		);
 
 		// States
 		this.currentSlide = 0;
@@ -119,6 +122,14 @@ class MaxiSlider {
 	navEvents() {
 		this._arrowNext.addEventListener('click', this.slideNext.bind(this));
 		this._arrowPrev.addEventListener('click', this.slidePrev.bind(this));
+
+		const self = this;
+		self._dots.forEach(function addClickToDot(dot, currentSlide) {
+			dot.addEventListener(
+				'click',
+				self.exactSlide.bind(this, currentSlide, self)
+			);
+		});
 	}
 
 	wrapperEvents() {
@@ -229,6 +240,11 @@ class MaxiSlider {
 			this.currentSlide -= 1;
 		}
 		this.sliderAction();
+	}
+
+	exactSlide(slideNumber, self) {
+		self.currentSlide = slideNumber;
+		self.sliderAction();
 	}
 
 	sliderAction(withTransition = true) {

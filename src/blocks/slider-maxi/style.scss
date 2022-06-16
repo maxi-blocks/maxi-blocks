@@ -49,4 +49,8 @@ body.maxi-blocks--active .maxi-slider-block {
 			left: 0px;
 		}
 	}
+	.maxi-slider-block__dots {
+		display: flex;
+		position: absolute;
+	}
 }

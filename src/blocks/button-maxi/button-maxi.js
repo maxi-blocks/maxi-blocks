@@ -25,6 +25,7 @@ import './style.scss';
 import './editor.scss';
 import { buttonIcon } from '../../icons';
 import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
+import fromFullWidthNonToResponsiveMigrator from '../../extensions/styles/migrators/fullWidthNonToResponsive';
 
 /**
  * Block
@@ -50,5 +51,12 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [fromNumberToStringMigrator({ attributes, save })],
+	deprecated: [
+		fromNumberToStringMigrator({ attributes, save }),
+		fromFullWidthNonToResponsiveMigrator({
+			attributes,
+			save,
+			prefix: 'button-',
+		}),
+	],
 });

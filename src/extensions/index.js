@@ -5,6 +5,7 @@ import './dom';
 import './save';
 import './styles';
 import './text';
+import './video';
 import './style-cards';
 import './column-templates';
 import './svg';

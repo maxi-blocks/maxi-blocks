@@ -22,6 +22,7 @@ import {
 	getDisplayStyles,
 	getFlexStyles,
 	getGradientBackgroundObject,
+	getIconPathStyles,
 	getIconStyles,
 	getSVGStyles,
 	getMarginPaddingStyles,
@@ -296,30 +297,6 @@ const getIconSize = (obj, isHover = false) => {
 	return { iconSize: response };
 };
 
-const getIconPathStyles = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon path',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`])
-		) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconPath: response };
-};
-
 const getIconObject = (props, target) => {
 	const response = {
 		background: props['icon-background-active-media-general'] ===
@@ -389,8 +366,15 @@ const getIconObject = (props, target) => {
 			!isNil(props[`icon-spacing-${breakpoint}`]) &&
 			!isNil(props['icon-position'])
 		) {
-			props['icon-position'] === 'left'
-				? (responsive[breakpoint]['margin-right'] = `${
+			props['icon-position'] === 'left' ||
+			props['icon-position'] === 'right'
+				? (responsive[breakpoint][
+						`margin-${
+							props['icon-position'] === 'right'
+								? 'left'
+								: 'right'
+						}`
+				  ] = `${
 						props['icon-only']
 							? '0'
 							: getLastBreakpointAttribute({
@@ -399,7 +383,11 @@ const getIconObject = (props, target) => {
 									attributes: props,
 							  })
 				  }px`)
-				: (responsive[breakpoint]['margin-left'] = `${
+				: (responsive[breakpoint][
+						`margin-${
+							props['icon-position'] === 'top' ? 'bottom' : 'top'
+						}`
+				  ] = `${
 						props['icon-only']
 							? '0'
 							: getLastBreakpointAttribute({

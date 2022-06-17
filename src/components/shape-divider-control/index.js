@@ -232,186 +232,188 @@ const ShapeDividerControl = props => {
 									}
 								/>
 								{!!props['shape-divider-top-status'] && (
-									<ResponsiveTabsControl
-										breakpoint={breakpoint}
-									>
-										<>
-											<Dropdown
-												className='maxi-shape-divider-control__shape-selector'
-												contentClassName='maxi-shape-divider-control_popover'
-												position='bottom center'
-												renderToggle={({
-													isOpen,
-													onToggle,
-												}) => (
-													<button
-														className='maxi-shape-divider-control__shape-selector__display'
-														onClick={onToggle}
-														type='button'
-													>
-														{showShapes('top')}
-													</button>
-												)}
-												renderContent={({
-													onClose,
-												}) => (
-													<SettingTabsControl
-														type='buttons'
-														className='maxi-shape-divider-control__shape-list'
-														selected={
-															props[
-																'shape-divider-top-shape-style'
-															]
+									<>
+										<Dropdown
+											className='maxi-shape-divider-control__shape-selector'
+											contentClassName='maxi-shape-divider-control_popover'
+											position='bottom center'
+											renderToggle={({
+												isOpen,
+												onToggle,
+											}) => (
+												<button
+													className='maxi-shape-divider-control__shape-selector__display'
+													onClick={onToggle}
+													type='button'
+												>
+													{showShapes('top')}
+												</button>
+											)}
+											renderContent={({ onClose }) => (
+												<SettingTabsControl
+													type='buttons'
+													className='maxi-shape-divider-control__shape-list'
+													selected={
+														props[
+															'shape-divider-top-shape-style'
+														]
+													}
+													items={shapeItemsTop}
+													onChange={shapeStyle => {
+														onChange({
+															'shape-divider-top-shape-style':
+																shapeStyle,
+														});
+														onClose();
+													}}
+												/>
+											)}
+										/>
+										<ResponsiveTabsControl
+											breakpoint={breakpoint}
+										>
+											<>
+												<OpacityControl
+													label={__(
+														'Colour opacity',
+														'maxi-blocks'
+													)}
+													opacity={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-top-opacity',
+															breakpoint,
+															attributes: props,
 														}
-														items={shapeItemsTop}
-														onChange={shapeStyle => {
-															onChange({
-																'shape-divider-top-shape-style':
-																	shapeStyle,
-															});
-															onClose();
-														}}
-													/>
-												)}
-											/>
-											<OpacityControl
-												label={__(
-													'Colour opacity',
-													'maxi-blocks'
-												)}
-												opacity={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-top-opacity',
-														breakpoint,
-														attributes: props,
+													)}
+													onChange={opacity =>
+														onChange({
+															[`shape-divider-top-opacity-${breakpoint}`]:
+																opacity,
+														})
 													}
-												)}
-												onChange={opacity =>
-													onChange({
-														[`shape-divider-top-opacity-${breakpoint}`]:
-															opacity,
-													})
-												}
-											/>
-											<ColorControl
-												label={__(
-													'Divider',
-													'maxi-blocks'
-												)}
-												color={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-top-color',
-														breakpoint,
-														attributes: props,
+												/>
+												<ColorControl
+													label={__(
+														'Divider',
+														'maxi-blocks'
+													)}
+													color={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-top-color',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													prefix='shape-divider-top-'
+													paletteColor={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-top-palette-color',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													paletteStatus={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-top-palette-status',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													onChangeInline={({
+														color,
+													}) =>
+														onChangeInline({
+															fill: color,
+														})
 													}
-												)}
-												prefix='shape-divider-top-'
-												paletteColor={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-top-palette-color',
-														breakpoint,
-														attributes: props,
+													onChange={({
+														color,
+														paletteColor,
+														paletteStatus,
+													}) =>
+														onChange({
+															[`shape-divider-top-color-${breakpoint}`]:
+																color,
+															[`shape-divider-top-palette-color-${breakpoint}`]:
+																paletteColor,
+															[`shape-divider-top-palette-status-${breakpoint}`]:
+																paletteStatus,
+														})
 													}
-												)}
-												paletteStatus={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-top-palette-status',
-														breakpoint,
-														attributes: props,
+													disableOpacity
+												/>
+												<AdvancedNumberControl
+													className='maxi-divider-height'
+													label={__(
+														'Divider height',
+														'maxi-blocks'
+													)}
+													enableUnit
+													unit={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-top-height-unit',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													allowedUnits={['px']}
+													onChangeUnit={val =>
+														onChange({
+															[`shape-divider-top-height-unit-${breakpoint}`]:
+																val,
+														})
 													}
-												)}
-												onChangeInline={({ color }) =>
-													onChangeInline({
-														fill: color,
-													})
-												}
-												onChange={({
-													color,
-													paletteColor,
-													paletteStatus,
-												}) =>
-													onChange({
-														[`shape-divider-top-color-${breakpoint}`]:
-															color,
-														[`shape-divider-top-palette-color-${breakpoint}`]:
-															paletteColor,
-														[`shape-divider-top-palette-status-${breakpoint}`]:
-															paletteStatus,
-													})
-												}
-												disableOpacity
-											/>
-											<AdvancedNumberControl
-												className='maxi-divider-height'
-												label={__(
-													'Divider height',
-													'maxi-blocks'
-												)}
-												enableUnit
-												unit={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-top-height-unit',
-														breakpoint,
-														attributes: props,
+													value={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-top-height',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													onChangeValue={val =>
+														onChange({
+															[`shape-divider-top-height-${breakpoint}`]:
+																val,
+														})
 													}
-												)}
-												allowedUnits={['px']}
-												onChangeUnit={val =>
-													onChange({
-														[`shape-divider-top-height-unit-${breakpoint}`]:
-															val,
-													})
-												}
-												value={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-top-height',
-														breakpoint,
-														attributes: props,
+													onReset={() =>
+														onChange({
+															[`shape-divider-top-height-${breakpoint}`]:
+																getDefaultAttribute(
+																	[
+																		`shape-divider-top-height-${breakpoint}`,
+																	]
+																),
+															[`shape-divider-top-height-unit-${breakpoint}`]:
+																getDefaultAttribute(
+																	[
+																		`shape-divider-top-height-unit-${breakpoint}`,
+																	]
+																),
+														})
 													}
-												)}
-												onChangeValue={val =>
-													onChange({
-														[`shape-divider-top-height-${breakpoint}`]:
-															val,
-													})
-												}
-												onReset={() =>
-													onChange({
-														[`shape-divider-top-height-${breakpoint}`]:
-															getDefaultAttribute(
-																[
-																	`shape-divider-top-height-${breakpoint}`,
-																]
-															),
-														[`shape-divider-top-height-unit-${breakpoint}`]:
-															getDefaultAttribute(
-																[
-																	`shape-divider-top-height-unit-${breakpoint}`,
-																]
-															),
-													})
-												}
-											/>
-											<ToggleSwitch
-												className='shape-divider-top-effects-status'
-												label={__(
-													'Enable scroll effect',
-													'maxi-blocks'
-												)}
-												selected={
-													props[
-														'shape-divider-top-effects-status'
-													]
-												}
-												onChange={val =>
-													onChange({
-														'shape-divider-top-effects-status':
-															val,
-													})
-												}
-											/>
-										</>
-									</ResponsiveTabsControl>
+												/>
+												<ToggleSwitch
+													className='shape-divider-top-effects-status'
+													label={__(
+														'Enable scroll effect',
+														'maxi-blocks'
+													)}
+													selected={
+														props[
+															'shape-divider-top-effects-status'
+														]
+													}
+													onChange={val =>
+														onChange({
+															'shape-divider-top-effects-status':
+																val,
+														})
+													}
+												/>
+											</>
+										</ResponsiveTabsControl>
+									</>
 								)}
 							</>
 						),
@@ -437,185 +439,187 @@ const ShapeDividerControl = props => {
 									}
 								/>
 								{!!props['shape-divider-bottom-status'] && (
-									<ResponsiveTabsControl
-										breakpoint={breakpoint}
-									>
-										<>
-											<Dropdown
-												className='maxi-shape-divider-control__shape-selector'
-												contentClassName='maxi-shape-divider-control_popover'
-												position='bottom center'
-												renderToggle={({
-													isOpen,
-													onToggle,
-												}) => (
-													<button
-														className='maxi-shape-divider-control__shape-selector__display'
-														onClick={onToggle}
-														type='button'
-													>
-														{showShapes('bottom')}
-													</button>
-												)}
-												renderContent={({
-													onClose,
-												}) => (
-													<SettingTabsControl
-														type='buttons'
-														className='maxi-shape-divider-control__shape-list'
-														selected={
-															props[
-																'shape-divider-bottom-shape-style'
-															]
+									<>
+										<Dropdown
+											className='maxi-shape-divider-control__shape-selector'
+											contentClassName='maxi-shape-divider-control_popover'
+											position='bottom center'
+											renderToggle={({
+												isOpen,
+												onToggle,
+											}) => (
+												<button
+													className='maxi-shape-divider-control__shape-selector__display'
+													onClick={onToggle}
+													type='button'
+												>
+													{showShapes('bottom')}
+												</button>
+											)}
+											renderContent={({ onClose }) => (
+												<SettingTabsControl
+													type='buttons'
+													className='maxi-shape-divider-control__shape-list'
+													selected={
+														props[
+															'shape-divider-bottom-shape-style'
+														]
+													}
+													items={shapeItemsBottom}
+													onChange={shapeStyle => {
+														onChange({
+															'shape-divider-bottom-shape-style':
+																shapeStyle,
+														});
+														onClose();
+													}}
+												/>
+											)}
+										/>
+										<ResponsiveTabsControl
+											breakpoint={breakpoint}
+										>
+											<>
+												<OpacityControl
+													label={__(
+														'Colour opacity',
+														'maxi-blocks'
+													)}
+													opacity={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-bottom-opacity',
+															breakpoint,
+															attributes: props,
 														}
-														items={shapeItemsBottom}
-														onChange={shapeStyle => {
-															onChange({
-																'shape-divider-bottom-shape-style':
-																	shapeStyle,
-															});
-															onClose();
-														}}
-													/>
-												)}
-											/>
-											<OpacityControl
-												label={__(
-													'Colour opacity',
-													'maxi-blocks'
-												)}
-												opacity={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-bottom-opacity',
-														breakpoint,
-														attributes: props,
+													)}
+													onChange={opacity =>
+														onChange({
+															[`shape-divider-bottom-opacity-${breakpoint}`]:
+																opacity,
+														})
 													}
-												)}
-												onChange={opacity =>
-													onChange({
-														[`shape-divider-bottom-opacity-${breakpoint}`]:
-															opacity,
-													})
-												}
-											/>
-											<ColorControl
-												label={__(
-													'Divider',
-													'maxi-blocks'
-												)}
-												color={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-bottom-color',
-														breakpoint,
-														attributes: props,
+												/>
+												<ColorControl
+													label={__(
+														'Divider',
+														'maxi-blocks'
+													)}
+													color={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-bottom-color',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													prefix='shape-divider-bottom-'
+													paletteColor={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-bottom-palette-color',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													paletteStatus={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-bottom-palette-status',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													onChangeInline={({
+														color,
+													}) =>
+														onChangeInline({
+															fill: color,
+														})
 													}
-												)}
-												prefix='shape-divider-bottom-'
-												paletteColor={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-bottom-palette-color',
-														breakpoint,
-														attributes: props,
+													onChange={({
+														color,
+														paletteColor,
+														paletteStatus,
+													}) =>
+														onChange({
+															[`shape-divider-bottom-color-${breakpoint}`]:
+																color,
+															[`shape-divider-bottom-palette-color-${breakpoint}`]:
+																paletteColor,
+															[`shape-divider-bottom-palette-status-${breakpoint}`]:
+																paletteStatus,
+														})
 													}
-												)}
-												paletteStatus={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-bottom-palette-status',
-														breakpoint,
-														attributes: props,
+													disableOpacity
+												/>
+												<AdvancedNumberControl
+													label={__(
+														'Divider height',
+														'maxi-blocks'
+													)}
+													enableUnit
+													unit={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-bottom-height-unit',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													allowedUnits={['px']}
+													onChangeUnit={val =>
+														onChange({
+															[`shape-divider-bottom-height-unit-${breakpoint}`]:
+																val,
+														})
 													}
-												)}
-												onChangeInline={({ color }) =>
-													onChangeInline({
-														fill: color,
-													})
-												}
-												onChange={({
-													color,
-													paletteColor,
-													paletteStatus,
-												}) =>
-													onChange({
-														[`shape-divider-bottom-color-${breakpoint}`]:
-															color,
-														[`shape-divider-bottom-palette-color-${breakpoint}`]:
-															paletteColor,
-														[`shape-divider-bottom-palette-status-${breakpoint}`]:
-															paletteStatus,
-													})
-												}
-												disableOpacity
-											/>
-											<AdvancedNumberControl
-												label={__(
-													'Divider height',
-													'maxi-blocks'
-												)}
-												enableUnit
-												unit={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-bottom-height-unit',
-														breakpoint,
-														attributes: props,
+													value={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-bottom-height',
+															breakpoint,
+															attributes: props,
+														}
+													)}
+													onChangeValue={val =>
+														onChange({
+															[`shape-divider-bottom-height-${breakpoint}`]:
+																val,
+														})
 													}
-												)}
-												allowedUnits={['px']}
-												onChangeUnit={val =>
-													onChange({
-														[`shape-divider-bottom-height-unit-${breakpoint}`]:
-															val,
-													})
-												}
-												value={getLastBreakpointAttribute(
-													{
-														target: 'shape-divider-bottom-height',
-														breakpoint,
-														attributes: props,
+													onReset={() =>
+														onChange({
+															[`shape-divider-bottom-height-${breakpoint}`]:
+																getDefaultAttribute(
+																	[
+																		`shape-divider-bottom-height-${breakpoint}`,
+																	]
+																),
+															[`shape-divider-bottom-height-unit-${breakpoint}`]:
+																getDefaultAttribute(
+																	[
+																		`shape-divider-bottom-height-unit-${breakpoint}`,
+																	]
+																),
+														})
 													}
-												)}
-												onChangeValue={val =>
-													onChange({
-														[`shape-divider-bottom-height-${breakpoint}`]:
-															val,
-													})
-												}
-												onReset={() =>
-													onChange({
-														[`shape-divider-bottom-height-${breakpoint}`]:
-															getDefaultAttribute(
-																[
-																	`shape-divider-bottom-height-${breakpoint}`,
-																]
-															),
-														[`shape-divider-bottom-height-unit-${breakpoint}`]:
-															getDefaultAttribute(
-																[
-																	`shape-divider-bottom-height-unit-${breakpoint}`,
-																]
-															),
-													})
-												}
-											/>
-											<ToggleSwitch
-												className='shape-divider-bottom-effects-status'
-												label={__(
-													'Enable scroll effect',
-													'maxi-blocks'
-												)}
-												selected={
-													props[
-														'shape-divider-bottom-effects-status'
-													]
-												}
-												onChange={val =>
-													onChange({
-														'shape-divider-bottom-effects-status':
-															val,
-													})
-												}
-											/>
-										</>
-									</ResponsiveTabsControl>
+												/>
+												<ToggleSwitch
+													className='shape-divider-bottom-effects-status'
+													label={__(
+														'Enable scroll effect',
+														'maxi-blocks'
+													)}
+													selected={
+														props[
+															'shape-divider-bottom-effects-status'
+														]
+													}
+													onChange={val =>
+														onChange({
+															'shape-divider-bottom-effects-status':
+																val,
+														})
+													}
+												/>
+											</>
+										</ResponsiveTabsControl>
+									</>
 								)}
 							</>
 						),

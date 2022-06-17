@@ -204,22 +204,11 @@ const IconControl = props => {
 							`icon${isHover ? 'Hover' : ''}`,
 							isHover
 						)}
-						onChange={obj => {
-							onChange({
-								...obj,
-								'icon-content': setSVGStrokeWidth(
-									iconContent,
-									obj[
-										`icon-stroke-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`
-									]
-								),
-							});
-						}}
+						onChange={obj => onChange(obj)}
 						prefix='icon-'
 						breakpoint={breakpoint}
 						isHover={isHover}
+						content={props['icon-content']}
 					/>
 					{!isHover && !iconOnly && (
 						<>

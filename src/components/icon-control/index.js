@@ -19,6 +19,7 @@ import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
+	getIconWithColor,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { setSVGStrokeWidth } from '../../extensions/svg';
@@ -61,7 +62,6 @@ const IconControl = props => {
 		'icon-only': iconOnly,
 		'icon-inherit': iconInherit,
 		'icon-content': iconContent,
-		getIconWithColor,
 	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
@@ -151,7 +151,7 @@ const IconControl = props => {
 					type='button-icon'
 					style={blockStyle}
 					onSelect={obj => {
-						const icon = getIconWithColor({
+						const icon = getIconWithColor(props, {
 							rawIcon: obj['icon-content'],
 						});
 
@@ -174,7 +174,7 @@ const IconControl = props => {
 								className='maxi-color-control__palette__custom'
 								selected={iconOnly}
 								onChange={val => {
-									const icon = getIconWithColor({
+									const icon = getIconWithColor(props, {
 										isIconOnly: val,
 										isHover,
 									});
@@ -281,7 +281,7 @@ const IconControl = props => {
 							)}
 							selected={iconInherit}
 							onChange={val => {
-								const icon = getIconWithColor({
+								const icon = getIconWithColor(props, {
 									isInherit: val,
 									isHover,
 								});
@@ -351,7 +351,7 @@ const IconControl = props => {
 										paletteStatus,
 										paletteOpacity,
 									}) => {
-										const icon = getIconWithColor({
+										const icon = getIconWithColor(props, {
 											color,
 											paletteColor,
 											paletteStatus,
@@ -454,7 +454,7 @@ const IconControl = props => {
 								paletteStatus,
 								paletteOpacity,
 							}) => {
-								const icon = getIconWithColor({
+								const icon = getIconWithColor(props, {
 									color,
 									paletteColor,
 									paletteStatus,

@@ -8,6 +8,7 @@ export { default as getColorRGBAParts } from './getColorRGBAParts';
 export { default as getColorRGBAString } from './getColorRGBAString';
 export { default as getDefaultAttribute } from './getDefaultAttribute';
 export { default as getGroupAttributes } from './getGroupAttributes';
+export { default as getIconWithColor } from './getIconWithColor';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';
 export { default as getPaletteAttributes } from './getPaletteAttributes';
 export { default as hoverAttributesCreator } from './hoverAttributesCreator';

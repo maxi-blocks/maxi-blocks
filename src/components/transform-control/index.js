@@ -22,7 +22,7 @@ import SelectControl from '../select-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, toLower, capitalize } from 'lodash';
+import { isNil, toLower, capitalize, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -51,7 +51,13 @@ const TransformControl = props => {
 	const latestTarget = useRef();
 
 	useEffect(() => {
-		latestTarget.current = { transformTarget, hoverSelected };
+		const targetSelector =
+			selectors[transformTarget]?.[hoverSelected]?.target;
+		latestTarget.current = {
+			transformTarget,
+			hoverSelected,
+			targetSelector,
+		};
 	}, [transformTarget, hoverSelected]);
 
 	const isTransformed = () =>
@@ -76,17 +82,15 @@ const TransformControl = props => {
 
 		changeTransformOptions(transformOptions);
 
-		const { transformTarget } = latestTarget.current;
+		const { targetSelector } = latestTarget.current;
 
 		const transformObj = getTransformStyles(transformOptions, selectors);
 
-		if (!transformObj) return;
+		if (isEmpty(transformObj)) return;
 
-		const target = selectors[transformTarget]?.normal?.target;
+		if (isNil(targetSelector) || targetSelector.includes(':')) return;
 
-		if (isNil(target) || target.includes(':')) return;
-
-		const targetTransformObj = transformObj[target].transform;
+		const targetTransformObj = transformObj[targetSelector].transform;
 
 		const {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
@@ -97,7 +101,7 @@ const TransformControl = props => {
 				transform: transform ?? '',
 				'transform-origin': transformOrigin ?? '',
 			},
-			target
+			targetSelector
 		);
 	};
 
@@ -258,10 +262,7 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[
-										`${latestTarget.current.transformTarget}`
-									]?.[`${latestTarget.current.hoverSelected}`]
-										?.target
+									latestTarget.current.targetSelector
 								);
 							}}
 						/>
@@ -342,10 +343,7 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[
-										`${latestTarget.current.transformTarget}`
-									]?.[`${latestTarget.current.hoverSelected}`]
-										?.target
+									latestTarget.current.targetSelector
 								);
 							}}
 						/>
@@ -398,10 +396,7 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[
-										`${latestTarget.current.transformTarget}`
-									]?.[`${latestTarget.current.hoverSelected}`]
-										?.target
+									latestTarget.current.targetSelector
 								);
 							}}
 						/>
@@ -484,10 +479,7 @@ const TransformControl = props => {
 											],
 										},
 									},
-									selectors[
-										`${latestTarget.current.transformTarget}`
-									]?.[`${latestTarget.current.hoverSelected}`]
-										?.target
+									latestTarget.current.targetSelector
 								);
 							}}
 						/>

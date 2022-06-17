@@ -22,8 +22,6 @@ describe('BackgroundControl', () => {
 	it('Check Background gradient layer', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
-		await openSidebarTab(page, 'style', 'background layer');
-		await addBackgroundLayer(page, 'shape');
 
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'gradient');

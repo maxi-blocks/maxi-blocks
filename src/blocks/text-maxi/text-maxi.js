@@ -25,7 +25,7 @@ import transforms from './transforms';
 import './editor.scss';
 import './style.scss';
 import { textIcon } from '../../icons';
-import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
+import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
 import fromFullWidthNonToResponsive from '../../extensions/styles/migrators/fullWidthNonToResponsive';
 
 /**
@@ -54,7 +54,7 @@ registerBlockType('maxi-blocks/text-maxi', {
 	save,
 	transforms,
 	deprecated: [
-		fromNumberToStringMigrator({ attributes, save }),
+		positionMigrator({ attributes, save }),
 		fromFullWidthNonToResponsive({ attributes, save }),
 	],
 });

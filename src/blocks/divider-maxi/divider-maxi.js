@@ -24,6 +24,7 @@ import save from './save';
 import './style.scss';
 import { dividerIcon } from '../../icons';
 import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
+import fromFullWidthNonToResponsive from '../../extensions/styles/migrators/fullWidthNonToResponsive';
 
 /**
  * Block
@@ -49,5 +50,8 @@ registerBlockType('maxi-blocks/divider-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [fromNumberToStringMigrator({ attributes, save })],
+	deprecated: [
+		fromNumberToStringMigrator({ attributes, save }),
+		fromFullWidthNonToResponsive({ attributes, save }),
+	],
 });

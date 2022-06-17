@@ -245,7 +245,6 @@ const Inspector = props => {
 		altSelector,
 		blockStyle,
 		captionType,
-		fullWidth,
 		mediaAlt,
 		SVGElement,
 		uniqueID,
@@ -292,7 +291,9 @@ const Inspector = props => {
 								isSecondary
 								items={[
 									deviceType === 'general' &&
-										fullWidth !== 'full' &&
+										attributes[
+											'image-full-width-general'
+										] !== 'full' &&
 										dimensionTab(props),
 									...inspectorTabs.alignment({
 										props,

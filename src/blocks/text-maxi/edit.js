@@ -93,7 +93,6 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const {
 			attributes,
-			blockFullWidth,
 			clientId,
 			isSelected,
 			onReplace,
@@ -166,7 +165,6 @@ class edit extends MaxiBlockComponent {
 							? 'maxi-text-block__empty'
 							: 'maxi-text-block__has-text'
 					} ${isList ? 'maxi-list-block' : ''}`}
-					blockFullWidth={blockFullWidth}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>

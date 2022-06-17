@@ -7,7 +7,7 @@ import classnames from 'classnames';
  * Internal Dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import parseVideo from './utils';
+import { parseVideo, videoValidation } from '../../extensions/video';
 import { isNil } from 'lodash';
 
 /**
@@ -166,45 +166,33 @@ const VideoLayer = props => {
 		}
 	}
 
-	const videoValidation = url =>
-		url.match(
-			/https?:\/\/.*\.(?:mp4|webm|ogg)|(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/
-		);
-
 	return (
-		<>
-			{videoValidation(videoUrl) && (
-				<div
-					className={videoPlayerClasses}
-					data-start={videoStartTime}
-					data-end={videoEndTime}
-					data-type={parsedVideo.type}
-				>
-					{parsedVideo.type === 'direct' && (
-						<video
-							loop={!!+videoLoop}
-							src={videoUrl}
-							autoPlay
-							muted
-						/>
-					)}
+		videoValidation(videoUrl) && (
+			<div
+				className={videoPlayerClasses}
+				data-start={videoStartTime}
+				data-end={videoEndTime}
+				data-type={parsedVideo.type}
+			>
+				{parsedVideo.type === 'direct' && (
+					<video loop={!!+videoLoop} src={videoUrl} autoPlay muted />
+				)}
 
-					{(parsedVideo.type === 'youtube' ||
-						parsedVideo.type === 'vimeo') && (
-						<div className='maxi-background-displayer__iframe-wrapper'>
-							<iframe
-								title={`${parsedVideo.type} video`}
-								src={videoUrl}
-								frameBorder='0'
-								allow='autoplay'
-								allowFullScreen='allowfullscreen'
-								style={style}
-							/>
-						</div>
-					)}
-				</div>
-			)}
-		</>
+				{(parsedVideo.type === 'youtube' ||
+					parsedVideo.type === 'vimeo') && (
+					<div className='maxi-background-displayer__iframe-wrapper'>
+						<iframe
+							title={`${parsedVideo.type} video`}
+							src={videoUrl}
+							frameBorder='0'
+							allow='autoplay'
+							allowFullScreen='allowfullscreen'
+							style={style}
+						/>
+					</div>
+				)}
+			</div>
+		)
 	);
 };
 

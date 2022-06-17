@@ -7,9 +7,9 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { SettingTabsControl, ToggleSwitch } from '../../components';
-import ArrowIconControl from './arrow-icon-control';
+import NavigationIconControl from './navigation-icon-control';
 
-const NavigationArrowsControl = props => {
+const NavigationIconsControl = props => {
 	const {
 		onChange,
 		deviceType,
@@ -19,6 +19,7 @@ const NavigationArrowsControl = props => {
 		clientId,
 		blockStyle,
 		attributes,
+		prefix = 'navigation-arrow-both-icon',
 	} = props;
 
 	return (
@@ -27,7 +28,7 @@ const NavigationArrowsControl = props => {
 				{
 					label: __('Normal state', 'maxi-blocks'),
 					content: (
-						<ArrowIconControl
+						<NavigationIconControl
 							{...attributes}
 							onChangeInline={(
 								obj,
@@ -48,6 +49,7 @@ const NavigationArrowsControl = props => {
 							breakpoint={deviceType}
 							clientId={clientId}
 							blockStyle={blockStyle}
+							prefix={prefix}
 						/>
 					),
 				},
@@ -57,22 +59,15 @@ const NavigationArrowsControl = props => {
 						<>
 							<ToggleSwitch
 								label={__('Enable icon hover', 'maxi-blocks')}
-								selected={
-									attributes[
-										'navigation-arrow-both-icon-status-hover'
-									]
-								}
+								selected={attributes[`${prefix}-status-hover`]}
 								onChange={val =>
 									onChange({
-										'navigation-arrow-both-icon-status-hover':
-											val,
+										[`${prefix}-status-hover`]: val,
 									})
 								}
 							/>
-							{attributes[
-								'navigation-arrow-both-icon-status-hover'
-							] && (
-								<ArrowIconControl
+							{attributes[`${prefix}-status-hover`] && (
+								<NavigationIconControl
 									{...attributes}
 									onChangeInline={(
 										obj,
@@ -93,6 +88,7 @@ const NavigationArrowsControl = props => {
 									breakpoint={deviceType}
 									clientId={clientId}
 									blockStyle={blockStyle}
+									prefix={prefix}
 									isHover
 								/>
 							)}
@@ -104,4 +100,4 @@ const NavigationArrowsControl = props => {
 	);
 };
 
-export default NavigationArrowsControl;
+export default NavigationIconsControl;

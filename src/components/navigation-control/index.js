@@ -7,11 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
-import {
-	getDefaultAttribute,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import NavigationArrowsControl from './arrows-control';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
+import NavigationIconsControl from './navigation-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -58,7 +55,9 @@ const NavigationControl = props => {
 							})
 						}
 					/>
-					{props[`navigation-type-${deviceType}`] !== 'dots' && (
+					{props[`navigation-type-${deviceType}`]?.includes(
+						'arrows'
+					) && (
 						<SelectControl
 							label={__('Arrow position', 'maxi-blocks')}
 							options={[
@@ -93,10 +92,56 @@ const NavigationControl = props => {
 							}}
 						/>
 					)}
+					{props[`navigation-type-${deviceType}`]?.includes(
+						'dots'
+					) && (
+						<SelectControl
+							label={__('Dots position', 'maxi-blocks')}
+							options={[
+								{
+									label: __('Inside', 'maxi-blocks'),
+									value: 'inside',
+								},
+								{
+									label: __('Outside', 'maxi-blocks'),
+									value: 'outside',
+								},
+							]}
+							value={getLastBreakpointAttribute({
+								target: 'navigation-dot-position',
+								deviceType,
+								attributes,
+							})}
+							onChange={val => {
+								onChange({
+									[`navigation-dot-position-${deviceType}`]:
+										val,
+								});
+								val === 'inside' &&
+									onChange({
+										[`navigation-dot-icon-spacing-horizontal-${deviceType}`]:
+											-40,
+									});
+								val === 'outside' &&
+									onChange({
+										[`navigation-dot-icon-spacing-horizontal-${deviceType}`]: 10,
+									});
+							}}
+						/>
+					)}
 				</>
 			</ResponsiveTabsControl>
 			{attributes[`navigation-type-${deviceType}`].includes('arrows') && (
-				<NavigationArrowsControl {...props} />
+				<NavigationIconsControl
+					{...props}
+					prefix='navigation-arrow-both-icon'
+				/>
+			)}
+			{attributes[`navigation-type-${deviceType}`].includes('dots') && (
+				<NavigationIconsControl
+					{...props}
+					prefix='navigation-dot-icon'
+				/>
 			)}
 		</div>
 	);

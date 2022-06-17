@@ -104,14 +104,14 @@ const MaxiModal = props => {
 							: __('Replace Icon', 'maxi-blocks')}
 					</Button>
 				)}
-				{type === 'arrow-icon' && (
+				{type === 'navigation-icon' && (
 					<Button
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
 					>
 						{isEmpty(icon)
-							? __('Add arrow icon', 'maxi-blocks')
-							: __('Replace arrow icon', 'maxi-blocks')}
+							? __('Add icon', 'maxi-blocks')
+							: __('Replace icon', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'preview' && (
@@ -153,7 +153,7 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'arrow-icon' && !isEmpty(icon) && (
+			{type === 'navigation-icon' && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'

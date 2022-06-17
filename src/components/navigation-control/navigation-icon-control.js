@@ -39,7 +39,7 @@ import { iconBorder, iconFill } from '../../icons';
 /**
  * Component
  */
-const ArrowIconControl = props => {
+const NavigationIconControl = props => {
 	const {
 		className,
 		onChangeInline = null,
@@ -48,6 +48,7 @@ const ArrowIconControl = props => {
 		breakpoint,
 		blockStyle,
 		isHover = false,
+		prefix,
 	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
@@ -74,69 +75,130 @@ const ArrowIconControl = props => {
 		return options;
 	};
 
+	const shortPrefix =
+		prefix === 'navigation-arrow-both-icon'
+			? 'navigation-arrow'
+			: 'navigation-dot';
+
+	console.log('prefix', prefix);
+	console.log('shortPrefix', shortPrefix);
+
 	return (
 		<div className={classes}>
-			{!isHover && breakpoint === 'general' && (
-				<>
+			{!isHover &&
+				breakpoint === 'general' &&
+				shortPrefix === 'navigation-arrow' && (
+					<>
+						<MaxiModal
+							type='navigation-icon'
+							title={__('Add first arrow icon', 'maxi-blocks')}
+							style={blockStyle}
+							onSelect={obj => onChange(obj)}
+							onRemove={obj => onChange(obj)}
+							icon={props[`${shortPrefix}-first-icon-content`]}
+							prefix={`${shortPrefix}-first-`}
+						/>
+						<MaxiModal
+							type='navigation-icon'
+							title={__('Add second arrow icon', 'maxi-blocks')}
+							style={blockStyle}
+							onSelect={obj => onChange(obj)}
+							onRemove={obj => onChange(obj)}
+							icon={props[`${shortPrefix}-second-icon-content`]}
+							prefix={`${shortPrefix}-second-`}
+						/>
+					</>
+				)}
+			{!isHover &&
+				breakpoint === 'general' &&
+				shortPrefix === 'navigation-dot' && (
 					<MaxiModal
-						type='arrow-icon'
-						title={__('Add first arrow icon', 'maxi-blocks')}
+						type='navigation-icon'
+						title={__('Add dot icon', 'maxi-blocks')}
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
-						icon={props['navigation-arrow-first-icon-content']}
-						prefix='navigation-arrow-first-'
+						icon={props[`${shortPrefix}-icon-content`]}
+						prefix={`${shortPrefix}-`}
 					/>
-					<MaxiModal
-						type='arrow-icon'
-						title={__('Add second arrow icon', 'maxi-blocks')}
-						style={blockStyle}
-						onSelect={obj => onChange(obj)}
-						onRemove={obj => onChange(obj)}
-						icon={props['navigation-arrow-second-icon-content']}
-						prefix='navigation-arrow-second-'
-					/>
-				</>
-			)}
+				)}
 			{(props['navigation-arrow-first-icon-content'] ||
-				props['navigation-arrow-second-icon-content']) && (
+				props['navigation-arrow-second-icon-content'] ||
+				props['navigation-dot-icon-content']) && (
 				<>
 					<ResponsiveTabsControl breakpoint={breakpoint}>
 						<>
 							<SvgWidthControl
 								{...getGroupAttributes(
 									props,
-									`arrowIcon${isHover ? 'Hover' : ''}`,
+									shortPrefix === 'navigation-dot'
+										? `dotIcon${isHover ? 'Hover' : ''}`
+										: `arrowIcon${isHover ? 'Hover' : ''}`,
 									isHover
 								)}
 								onChange={onChange}
-								prefix='navigation-arrow-both-icon-'
+								prefix={`${prefix}-`}
 								breakpoint={breakpoint}
 								isHover={isHover}
 							/>
 							<SvgStrokeWidthControl
 								{...getGroupAttributes(
 									props,
-									`arrowIcon${isHover ? 'Hover' : ''}`,
+									shortPrefix === 'navigation-dot'
+										? `dotIcon${isHover ? 'Hover' : ''}`
+										: `arrowIcon${isHover ? 'Hover' : ''}`,
 									isHover
 								)}
 								onChange={obj => {
-									onChange({
-										...obj,
-										'navigation-arrow-first-icon-content':
-											setSVGStrokeWidth(
-												props[
-													'navigation-arrow-first-icon-content'
-												],
-												obj[
-													`navigation-arrow-both-icon-stroke-${breakpoint}${
-														isHover ? '-hover' : ''
-													}`
-												]
-											),
-									});
+									shortPrefix === 'navigation-arrow' &&
+										onChange({
+											...obj,
+											'navigation-arrow-first-icon-content':
+												setSVGStrokeWidth(
+													props[
+														'navigation-arrow-first-icon-content'
+													],
+													obj[
+														`${prefix}-stroke-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`
+													]
+												),
+											'navigation-arrow-second-icon-content':
+												setSVGStrokeWidth(
+													props[
+														'navigation-arrow-second-icon-content'
+													],
+													obj[
+														`${prefix}-stroke-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`
+													]
+												),
+										});
+									shortPrefix === 'navigation-dot' &&
+										onChange({
+											...obj,
+											'navigation-dot-icon-content':
+												setSVGStrokeWidth(
+													props[
+														'navigation-dot-icon-content'
+													],
+													obj[
+														`${prefix}-stroke-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`
+													]
+												),
+										});
 								}}
-								prefix='navigation-arrow-both-icon-'
+								prefix={`${prefix}-`}
 								breakpoint={breakpoint}
 								isHover={isHover}
 							/>
@@ -149,14 +211,14 @@ const ArrowIconControl = props => {
 								breakpoint={breakpoint}
 								value={
 									props[
-										`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+										`${prefix}-spacing-horizontal-${breakpoint}${
 											isHover ? '-hover' : ''
 										}`
 									]
 								}
 								onChangeValue={val => {
 									onChange({
-										[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+										[`${prefix}-spacing-horizontal-${breakpoint}${
 											isHover ? '-hover' : ''
 										}`]:
 											val !== undefined && val !== ''
@@ -166,10 +228,10 @@ const ArrowIconControl = props => {
 								}}
 								onReset={() =>
 									onChange({
-										[`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+										[`${prefix}-spacing-horizontal-${breakpoint}${
 											isHover ? '-hover' : ''
 										}`]: getDefaultAttribute(
-											`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+											`${prefix}-spacing-horizontal-${breakpoint}${
 												isHover ? '-hover' : ''
 											}`
 										),
@@ -186,14 +248,14 @@ const ArrowIconControl = props => {
 								breakpoint={breakpoint}
 								value={
 									props[
-										`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+										`${prefix}-spacing-vertical-${breakpoint}${
 											isHover ? '-hover' : ''
 										}`
 									]
 								}
 								onChangeValue={val => {
 									onChange({
-										[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+										[`${prefix}-spacing-vertical-${breakpoint}${
 											isHover ? '-hover' : ''
 										}`]:
 											val !== undefined && val !== ''
@@ -203,10 +265,10 @@ const ArrowIconControl = props => {
 								}}
 								onReset={() =>
 									onChange({
-										[`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+										[`${prefix}-spacing-vertical-${breakpoint}${
 											isHover ? '-hover' : ''
 										}`]: getDefaultAttribute(
-											`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+											`${prefix}-spacing-vertical-${breakpoint}${
 												isHover ? '-hover' : ''
 											}`
 										),
@@ -230,30 +292,30 @@ const ArrowIconControl = props => {
 							label={__('Icon line', 'maxi-blocks')}
 							color={
 								props[
-									`navigation-arrow-both-icon-stroke-color${
+									`${prefix}-stroke-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
-							prefix='navigation-arrow-both-icon-stroke-'
+							prefix={`${prefix}-stroke-`}
 							avoidBreakpointForDefault
 							paletteColor={
 								props[
-									`navigation-arrow-both-icon-stroke-palette-color${
+									`${prefix}-stroke-palette-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteOpacity={
 								props[
-									`navigation-arrow-both-icon-stroke-palette-opacity${
+									`${prefix}-stroke-palette-opacity${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteStatus={
 								props[
-									`navigation-arrow-both-icon-stroke-palette-status${
+									`${prefix}-stroke-palette-status${
 										isHover ? '-hover' : ''
 									}`
 								]
@@ -273,7 +335,7 @@ const ArrowIconControl = props => {
 								paletteOpacity,
 							}) => {
 								const strokeColorStr = getColorRGBAString({
-									firstVar: `navigation-arrow-both-icon-stroke${
+									firstVar: `${prefix}-stroke${
 										isHover ? '-hover' : ''
 									}`,
 									secondVar: `color-${paletteColor}${
@@ -284,16 +346,16 @@ const ArrowIconControl = props => {
 								});
 
 								onChange({
-									[`navigation-arrow-both-icon-stroke-color${
+									[`${prefix}-stroke-color${
 										isHover ? '-hover' : ''
 									}`]: color,
-									[`navigation-arrow-both-icon-stroke-palette-color${
+									[`${prefix}-stroke-palette-color${
 										isHover ? '-hover' : ''
 									}`]: paletteColor,
-									[`navigation-arrow-both-icon-stroke-palette-status${
+									[`${prefix}-stroke-palette-status${
 										isHover ? '-hover' : ''
 									}`]: paletteStatus,
-									[`navigation-arrow-both-icon-stroke-palette-opacity${
+									[`${prefix}-stroke-palette-opacity${
 										isHover ? '-hover' : ''
 									}`]: paletteOpacity,
 									'navigation-arrow-first-icon-content':
@@ -346,30 +408,30 @@ const ArrowIconControl = props => {
 							label={__('Icon fill', 'maxi-blocks')}
 							color={
 								props[
-									`navigation-arrow-both-icon-fill-color${
+									`${prefix}-fill-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
-							prefix='navigation-arrow-both-icon-fill-'
+							prefix={`${prefix}-fill-`}
 							avoidBreakpointForDefault
 							paletteColor={
 								props[
-									`navigation-arrow-both-icon-fill-palette-color${
+									`${prefix}-fill-palette-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteOpacity={
 								props[
-									`navigation-arrow-both-icon-fill-palette-opacity${
+									`${prefix}-fill-palette-opacity${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteStatus={
 								props[
-									`navigation-arrow-both-icon-fill-palette-status${
+									`${prefix}-fill-palette-status${
 										isHover ? '-hover' : ''
 									}`
 								]
@@ -389,7 +451,7 @@ const ArrowIconControl = props => {
 								paletteOpacity,
 							}) => {
 								const fillColorStr = getColorRGBAString({
-									firstVar: `navigation-arrow-both-icon-fill${
+									firstVar: `${prefix}-fill${
 										isHover ? '-hover' : ''
 									}`,
 									secondVar: `color-${paletteColor}${
@@ -400,38 +462,37 @@ const ArrowIconControl = props => {
 								});
 
 								onChange({
-									[`navigation-arrow-both-icon-fill-color${
+									[`${prefix}-fill-color${
 										isHover ? '-hover' : ''
 									}`]: color,
-									[`navigation-arrow-both-icon-fill-palette-color${
+									[`${prefix}-fill-palette-color${
 										isHover ? '-hover' : ''
 									}`]: paletteColor,
-									[`navigation-arrow-both-icon-fill-palette-status${
+									[`${prefix}-fill-palette-status${
 										isHover ? '-hover' : ''
 									}`]: paletteStatus,
-									[`navigation-arrow-both-icon-fill-palette-opacity${
+									[`${prefix}-fill-palette-opacity${
 										isHover ? '-hover' : ''
 									}`]: paletteOpacity,
-									'navigation-arrow-both-icon--content':
-										isHover
-											? setSVGContentHover(
-													props[
-														'navigation-arrow-first-icon-content'
-													],
-													paletteStatus
-														? fillColorStr
-														: color,
-													'fill'
-											  )
-											: setSVGContent(
-													props[
-														'navigation-arrow-first-icon-content'
-													],
-													paletteStatus
-														? fillColorStr
-														: color,
-													'fill'
-											  ),
+									[`${prefix}-content`]: isHover
+										? setSVGContentHover(
+												props[
+													'navigation-arrow-first-icon-content'
+												],
+												paletteStatus
+													? fillColorStr
+													: color,
+												'fill'
+										  )
+										: setSVGContent(
+												props[
+													'navigation-arrow-first-icon-content'
+												],
+												paletteStatus
+													? fillColorStr
+													: color,
+												'fill'
+										  ),
 								});
 							}}
 							isHover={isHover}
@@ -443,4 +504,4 @@ const ArrowIconControl = props => {
 	);
 };
 
-export default ArrowIconControl;
+export default NavigationIconControl;

@@ -20,6 +20,7 @@ export { default as getOverflowStyles } from './getOverflowStyles';
 export { default as getPositionStyles } from './getPositionStyles';
 export { default as getShapeStyles } from './getShapeStyles';
 export { default as getSizeStyles } from './getSizeStyles';
+export { default as getSVGIconStyles } from './getSVGIconStyles';
 export { default as getTransformStyles } from './getTransformStyles';
 export { default as getTransitionStyles } from './getTransitionStyles';
 export { default as getTypographyStyles } from './getTypographyStyles';

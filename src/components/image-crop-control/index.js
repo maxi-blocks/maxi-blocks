@@ -22,6 +22,7 @@ import { capitalize, isEqual, isNumber } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import 'react-image-crop/src/ReactCrop.scss';
 
 /**
  * Component
@@ -210,17 +211,15 @@ const ImageCropControl = props => {
 			...crop,
 			image: {
 				...crop.image,
-				width: newCrop.width ? newCrop.width : imgNode.current.width,
-				height: newCrop.height
-					? newCrop.height
-					: imgNode.current.height,
+				width: newCrop.width || imgNode.current.width,
+				height: newCrop.height || imgNode.current.height,
 			},
 			crop: {
 				...crop.crop,
-				x: crop.width ? crop.x : 0,
-				y: crop.height ? crop.y : 0,
-				width: crop.width ? crop.width : imgNode.current.width,
-				height: crop.height ? crop.height : imgNode.current.height,
+				x: newCrop.x || 0,
+				y: newCrop.y || 0,
+				width: newCrop.width || imgNode.current.width,
+				height: newCrop.height || imgNode.current.height,
 			},
 		};
 
@@ -228,9 +227,7 @@ const ImageCropControl = props => {
 		setInputState(getInputState(newCropOptions));
 	};
 
-	const onImageLoad = newImage => {
-		imgNode.current = newImage;
-
+	const onImageLoad = () => {
 		const newCropOptions = {
 			...crop,
 			image: {
@@ -290,9 +287,7 @@ const ImageCropControl = props => {
 			{imageData && (
 				<>
 					<ReactCrop
-						src={imageData.media_details.sizes.full.source_url}
 						crop={crop.crop}
-						onImageLoaded={image => onImageLoad(image)}
 						onChange={newCrop => {
 							if (
 								Object.keys(newCrop).every(el => {
@@ -316,7 +311,14 @@ const ImageCropControl = props => {
 						}}
 						onComplete={crop => onCropComplete(crop)}
 						keepSelection={false}
-					/>
+					>
+						<img
+							src={imageData.media_details.sizes.full.source_url}
+							onLoad={onImageLoad}
+							ref={imgNode}
+							alt='crop'
+						/>
+					</ReactCrop>
 					{imgNode.current && (
 						<div className='maxi-image-crop-control__options'>
 							<GeneralInput

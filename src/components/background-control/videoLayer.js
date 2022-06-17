@@ -18,6 +18,7 @@ import {
 	getAttributeValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { videoUrlRegex } from '../../extensions/video';
 
 /**
  * External dependencies
@@ -108,9 +109,6 @@ const VideoLayer = props => {
 	const isLayerHover = videoOptions.isHover;
 
 	const [validationText, setValidationText] = useState(null);
-
-	const videoUrlRegex =
-		/(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
 
 	return (
 		<div className='maxi-background-control__video'>

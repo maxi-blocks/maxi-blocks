@@ -61,10 +61,10 @@ const TransitionControlWrapper = props => {
 			Object.keys(attributes?.transition).forEach(t => {
 				newObj.transition[t] = {};
 
-				Object.keys(attributes?.transition?.[t]).forEach(key => {
+				Object.keys(attributes.transition?.[t]).forEach(key => {
 					newObj.transition[t][key] = {
 						...attributes.transition[t][key],
-						...attributes?.transition[type][selected],
+						...attributes.transition[type][selected],
 						hoverProp: attributes.transition[t][key].hoverProp,
 						...obj,
 					};

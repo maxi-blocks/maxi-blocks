@@ -154,8 +154,6 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, isSelected } = this.props;
 		const {
-			blockFullWidth,
-			fullWidth,
 			uniqueID,
 			embedUrl,
 			playerType,
@@ -165,10 +163,7 @@ class edit extends MaxiBlockComponent {
 			'overlay-mediaAlt': overlayMediaAlt,
 		} = attributes;
 
-		const classes = classnames(
-			'maxi-video-block',
-			fullWidth === 'full' && 'alignfull'
-		);
+		const classes = classnames('maxi-video-block');
 
 		const inlineStylesTargets = {
 			playIcon: '.maxi-video-block__play-button svg path',
@@ -192,7 +187,6 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-video--${uniqueID}`}
-				blockFullWidth={blockFullWidth}
 				className={classes}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}

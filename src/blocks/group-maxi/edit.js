@@ -19,13 +19,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			blockFullWidth,
-			deviceType,
-			hasInnerBlocks,
-			clientId,
-		} = this.props;
+		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -52,7 +46,6 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-group--${uniqueID}`}
-				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				useInnerBlocks
 				innerBlocksSettings={{

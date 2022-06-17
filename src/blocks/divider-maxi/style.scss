@@ -19,10 +19,6 @@ body.maxi-blocks--active .maxi-divider-block {
 		position: relative;
 		background: none;
 
-		&[data-align='full'] {
-			width: 100% !important;
-			text-align: center;
-		}
 		&:before,
 		&:after {
 			content: none !important;

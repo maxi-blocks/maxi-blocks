@@ -11,15 +11,18 @@ const checkIndicators = async ({ page, indicators }) => {
 	);
 
 	for (let i = 0; i < indicator.length; i += 1) {
-		const expectInspector = !isArray(indicators)
+		const expectIndicator = !isArray(indicators)
 			? indicators
 			: indicators[i];
-		const test = await page.$$eval(
+		const activeIndicator = await page.$$eval(
 			'.maxi-accordion-control__item__button.maxi-accordion-control__item--active',
 			input => input[0].outerText
 		);
 
-		if (test !== expectInspector) return false;
+		if (activeIndicator !== expectIndicator)
+			console.error(
+				`The activated indicator has been ${activeIndicator}`
+			);
 	}
 	return true;
 };

@@ -389,8 +389,15 @@ const getIconObject = (props, target) => {
 			!isNil(props[`icon-spacing-${breakpoint}`]) &&
 			!isNil(props['icon-position'])
 		) {
-			props['icon-position'] === 'left'
-				? (responsive[breakpoint]['margin-right'] = `${
+			props['icon-position'] === 'left' ||
+			props['icon-position'] === 'right'
+				? (responsive[breakpoint][
+						`margin-${
+							props['icon-position'] === 'right'
+								? 'left'
+								: 'right'
+						}`
+				  ] = `${
 						props['icon-only']
 							? '0'
 							: getLastBreakpointAttribute({
@@ -399,7 +406,11 @@ const getIconObject = (props, target) => {
 									attributes: props,
 							  })
 				  }px`)
-				: (responsive[breakpoint]['margin-left'] = `${
+				: (responsive[breakpoint][
+						`margin-${
+							props['icon-position'] === 'top' ? 'bottom' : 'top'
+						}`
+				  ] = `${
 						props['icon-only']
 							? '0'
 							: getLastBreakpointAttribute({

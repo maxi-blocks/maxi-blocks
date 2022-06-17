@@ -40,6 +40,12 @@ const save = (
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
 		attributes['icon-content'] &&
+			attributes['icon-position'] === 'top' &&
+			'maxi-button-block__button--icon-top',
+		attributes['icon-content'] &&
+			attributes['icon-position'] === 'bottom' &&
+			'maxi-button-block__button--icon-bottom',
+		attributes['icon-content'] &&
 			attributes['icon-position'] === 'left' &&
 			'maxi-button-block__button--icon-left',
 		attributes['icon-content'] &&

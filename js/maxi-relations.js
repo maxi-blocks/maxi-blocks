@@ -32,6 +32,11 @@ const relations = () => {
 					...(effects[`easing-${breakpoint}`] !== undefined && {
 						easing: effects[`easing-${breakpoint}`],
 					}),
+					...(effects[`transition-status-${breakpoint}`] !==
+						undefined && {
+						'transition-status':
+							effects[`transition-status-${breakpoint}`],
+					}),
 				};
 			}
 		});
@@ -49,7 +54,9 @@ const relations = () => {
 	};
 
 	const getTransitionString = effectsObj =>
-		`all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`;
+		effectsObj['transition-status']
+			? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
+			: 'all 0s 0s';
 
 	maxiRelations[0]?.forEach(item => {
 		if (!item?.uniqueID) return;

@@ -24,11 +24,8 @@ const transitionRaw = breakpointAttributesCreator({
 	},
 });
 
-const createTransitionObj = (disableTransitionStatus = false) =>
+const createTransitionObj = () =>
 	Object.keys(transitionRaw).reduce((acc, key) => {
-		if (disableTransitionStatus && key.includes('transition-status'))
-			return acc;
-
 		acc[key] = transitionRaw[key].default;
 		return acc;
 	}, {});

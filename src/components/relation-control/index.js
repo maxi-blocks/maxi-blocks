@@ -60,7 +60,7 @@ const RelationControl = props => {
 		return blockOptions;
 	};
 
-	const transitionDefaultAttributes = createTransitionObj(true);
+	const transitionDefaultAttributes = createTransitionObj();
 
 	const onAddRelation = () => {
 		const relation = {

@@ -23,7 +23,9 @@ const handleInsertInlineStyles = ({
 
 	const parentElement = ref?.current.blockRef.current;
 	const targetElements =
-		target !== '' && target !== ':hover'
+		target !== '' &&
+		target !== ':hover' &&
+		!parentElement.classList.contains(target)
 			? isMultiplySelector
 				? Array.from(parentElement.querySelectorAll(target))
 				: [parentElement.querySelector(target)]

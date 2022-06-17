@@ -108,8 +108,6 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 		} = attributes;
 
-		this.state.formatValue.text = content;
-
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *
@@ -140,7 +138,12 @@ class edit extends MaxiBlockComponent {
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
-					formatValue: this.state.formatValue,
+					formatValue: {
+						...this.state.formatValue,
+						...(this.state.formatValue.text !== content && {
+							text: content,
+						}),
+					},
 					onChangeTextFormat: newFormatValue => {
 						this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({

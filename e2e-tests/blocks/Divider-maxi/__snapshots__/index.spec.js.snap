@@ -8,7 +8,7 @@ exports[`Divider Maxi Divider Custom CSS 1`] = `"<style>body.maxi-blocks--active
 
 exports[`Divider Maxi Divider Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/divider-maxi {\\"blockStyle\\":\\"light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"divider-maxi-2\\"} -->
-<div class=\\"wp-block-maxi-blocks-divider-maxi maxi-block maxi-divider-block maxi-light divider-maxi-2 maxi-divider-block--horizontal\\" data-align=\\"normal\\" id=\\"divider-maxi-2\\"><hr class=\\"maxi-divider-block__divider\\"/></div>
+<div class=\\"wp-block-maxi-blocks-divider-maxi maxi-block maxi-divider-block maxi-light divider-maxi-2 maxi-divider-block--horizontal\\" id=\\"divider-maxi-2\\"><hr class=\\"maxi-divider-block__divider\\"/></div>
 <!-- /wp:maxi-blocks/divider-maxi -->"
 `;
 

@@ -92,10 +92,8 @@ class edit extends MaxiBlockComponent {
 		const {
 			'hover-preview': hoverPreview,
 			'hover-type': hoverType,
-			blockFullWidth,
 			captionContent,
 			captionType,
-			fullWidth,
 			imgWidth,
 			mediaAlt,
 			altSelector,
@@ -109,11 +107,6 @@ class edit extends MaxiBlockComponent {
 			captionPosition,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
-
-		const classes = classnames(
-			'maxi-image-block',
-			fullWidth === 'full' && 'alignfull'
-		);
 
 		const wrapperClassName = classnames('maxi-image-block-wrapper');
 
@@ -189,6 +182,12 @@ class edit extends MaxiBlockComponent {
 
 			return '100%';
 		};
+
+		const fullWidth = getLastBreakpointAttribute({
+			target: 'image-full-width',
+			breakpoint: deviceType,
+			attributes,
+		});
 
 		return [
 			<textContext.Provider
@@ -299,8 +298,7 @@ class edit extends MaxiBlockComponent {
 					key={`maxi-image--${uniqueID}`}
 					ref={this.blockRef}
 					tagName='figure'
-					blockFullWidth={blockFullWidth}
-					className={classes}
+					className='maxi-image-block'
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					{!isNil(mediaID) || mediaURL ? (

@@ -48,7 +48,6 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-			fullWidth: props.blockFullWidth,
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {

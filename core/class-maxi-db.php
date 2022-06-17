@@ -58,8 +58,9 @@ if (!class_exists('MaxiBlocks_DB')):
             $charset_collate = $wpdb->get_charset_collate();
 
             //add general table
+            
             if (
-                $wpdb->get_var("show tables like '$db_general_table_name'") !=
+                $wpdb->get_var($wpdb->prepare("show tables like %s", $db_general_table_name)) !=
                 $db_general_table_name
             ) {
                 $sql = "CREATE TABLE $db_general_table_name (
@@ -74,7 +75,7 @@ if (!class_exists('MaxiBlocks_DB')):
 
             //add css table
             if (
-                $wpdb->get_var("show tables like '$db_css_table_name'") !=
+                $wpdb->get_var($wpdb->prepare("show tables like %s", $db_css_table_name)) !=
                 $db_css_table_name
             ) {
                 $sql = "CREATE TABLE $db_css_table_name (
@@ -95,7 +96,7 @@ if (!class_exists('MaxiBlocks_DB')):
 
             //add custom data table
             if (
-                $wpdb->get_var("show tables like '$db_custom_data_table_name'") !=
+                $wpdb->get_var($wpdb->prepare("show tables like %s", $db_custom_data_table_name)) !=
                 $db_custom_data_table_name
             ) {
                 $sql = "CREATE TABLE $db_custom_data_table_name (

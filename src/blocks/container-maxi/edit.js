@@ -59,7 +59,7 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			clientId,
 		} = this.props;
-		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
+		const { uniqueID, isFirstOnHierarchy } = attributes;
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -72,7 +72,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,

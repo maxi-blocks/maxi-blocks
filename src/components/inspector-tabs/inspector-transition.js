@@ -10,12 +10,10 @@ import InfoBox from '../info-box';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
-	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -46,12 +44,6 @@ const TransitionControlWrapper = props => {
 	const defaultTransition = getDefaultAttribute('transition')[type][selected];
 	const selectedTransition = transition[type][selected];
 
-	const transitionStatus = getLastBreakpointAttribute({
-		target: 'transition-status',
-		attributes: selectedTransition,
-		breakpoint: deviceType,
-	});
-
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
 
@@ -73,11 +65,6 @@ const TransitionControlWrapper = props => {
 
 		return newObj;
 	};
-
-	const onChangeSwitch = value =>
-		onChangeTransition({
-			[`transition-status-${deviceType}`]: !value,
-		});
 
 	return !isEmpty(transition[type]) ? (
 		<>
@@ -103,28 +90,16 @@ const TransitionControlWrapper = props => {
 			/>
 			{selected && selected !== 'none' && (
 				<ResponsiveTabsControl breakpoint={deviceType}>
-					<>
-						<ToggleSwitch
-							label={__('Disable transition', 'maxi-blocks')}
-							selected={!transitionStatus}
-							onChange={onChangeSwitch}
-						/>
-						{transitionStatus && (
-							<TransitionControl
-								{...getGroupAttributes(
-									attributes,
-									'transition'
-								)}
-								onChange={onChangeTransition}
-								getDefaultTransitionAttribute={
-									getDefaultTransitionAttribute
-								}
-								transition={selectedTransition}
-								breakpoint={deviceType}
-								type={type}
-							/>
-						)}
-					</>
+					<TransitionControl
+						{...getGroupAttributes(attributes, 'transition')}
+						onChange={onChangeTransition}
+						getDefaultTransitionAttribute={
+							getDefaultTransitionAttribute
+						}
+						transition={selectedTransition}
+						breakpoint={deviceType}
+						type={type}
+					/>
 				</ResponsiveTabsControl>
 			)}
 		</>

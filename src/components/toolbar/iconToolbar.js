@@ -77,14 +77,16 @@ const IconToolbar = memo(
 				<Popover
 					noArrow
 					animate={false}
-					position={
-						attributes['icon-position'] === 'top'
-							? 'top center'
-							: 'bottom center'
-					}
+					position='bottom center'
 					focusOnMount={false}
 					anchorRef={anchorRef}
-					className={classnames('maxi-toolbar__popover')}
+					className={
+						attributes['icon-position'] === 'top'
+							? classnames(
+									'maxi-toolbar__popover icon-position-top'
+							  )
+							: classnames('maxi-toolbar__popover')
+					}
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding

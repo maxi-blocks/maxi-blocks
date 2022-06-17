@@ -1,5 +1,9 @@
 .maxi-toolbar__popover {
 	z-index: 29;
+
+	&.icon-position-top {
+		transform: translateY(30px);
+	}
 	
 	.components-popover__content {
 		overflow: visible;

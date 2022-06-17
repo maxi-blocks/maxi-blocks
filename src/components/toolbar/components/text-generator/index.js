@@ -51,7 +51,7 @@ const TextGenerator = props => {
 
 		const newFormatValue = insert(
 			formatValue,
-			` ${generatedText[0].props.children}`
+			`${generatedText[0].props.children}`
 		);
 
 		onChangeTextFormat(newFormatValue);

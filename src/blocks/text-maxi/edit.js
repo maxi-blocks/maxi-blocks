@@ -108,6 +108,8 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 		} = attributes;
 
+		this.state.formatValue.text = content;
+
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *

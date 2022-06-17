@@ -48,7 +48,10 @@ const relations = () => {
 		});
 	};
 
-	maxiRelations[0]?.map(item => {
+	const getTransitionString = effectsObj =>
+		`all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`;
+
+	maxiRelations[0]?.forEach(item => {
 		if (!item?.uniqueID) return;
 
 		const triggerEl = document.querySelector(`.${item.trigger}`);
@@ -56,21 +59,25 @@ const relations = () => {
 			`.${item.uniqueID} ${item.target ?? ''}`
 		);
 
-		const { css, effectsObj } = getCssResponsiveObj(item.css, item.effects);
-
-		const transitionString = `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`;
 		let timeout;
 
 		switch (item.action) {
 			case 'hover': {
 				triggerEl.addEventListener('mouseenter', () => {
 					clearTimeout(timeout);
-					targetEl.style.transition = transitionString;
+					const { css, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
+
+					targetEl.style.transition = getTransitionString(effectsObj);
 
 					toggleInlineStyles(css, targetEl);
 				});
 
 				triggerEl.addEventListener('mouseleave', () => {
+					const { css } = getCssResponsiveObj(item.css, item.effects);
+
 					toggleInlineStyles(css, targetEl, true);
 
 					timeout = setTimeout(() => {
@@ -81,7 +88,12 @@ const relations = () => {
 			}
 			case 'click': {
 				triggerEl.addEventListener('click', () => {
-					targetEl.style.transition = transitionString;
+					const { css, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
+
+					targetEl.style.transition = getTransitionString(effectsObj);
 					toggleInlineStyles(css, targetEl);
 				});
 			}
@@ -90,3 +102,4 @@ const relations = () => {
 };
 
 window.addEventListener('load', relations);
+window.addEventListener('resize', relations);

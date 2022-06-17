@@ -18,6 +18,8 @@ import { isEmpty } from 'lodash';
 /**
  * Tests
  */
+
+// Check html1 and html2 are equals
 const htmlComparison = async (page, html1, html2) =>
 	page.evaluate(
 		(_html1, _html2) => {
@@ -33,6 +35,10 @@ const htmlComparison = async (page, html1, html2) =>
 		html2
 	);
 
+// Sanitizes html icons code
+const iconSanitize = icon =>
+	icon.replace(/ "/g, '"').replace(/enable-background="new"/g, '');
+
 const checkSVGGroup = async (page, fetchPage = 1) => {
 	await createNewPost();
 	const svgHtml = [];
@@ -41,9 +47,8 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 
 	const svgGroup = await svgFetch(page, fetchPage);
 
+	// First loop to generate icons
 	for (let i = 0; i < svgGroup.length - 1; i += 1) {
-		if (i === 48 && fetchPage === 96) return;
-
 		const svg = svgGroup[i];
 
 		// Add block without opening the modal and adding the SVG
@@ -64,16 +69,15 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 
 		svgHtml.push(svgBaseHtml);
 	}
+
 	await page.waitForTimeout(250);
 
-	// FrontEnd
+	// Check FrontEnd
 	const previewPage = await openPreviewPage(page);
 	await previewPage.waitForSelector('.entry-content');
 	await page.waitForTimeout(250);
 
 	for (let e = 0; e < svgGroup.length - 1; e += 1) {
-		if (e === 48 && fetchPage === 96) return;
-
 		const previewIcon = await previewPage.$$eval(
 			'.maxi-svg-icon-block__icon svg',
 			(svg, _e) => svg[_e]?.outerHTML,
@@ -81,14 +85,12 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 		);
 		const previewIconHtml = parse(svgHtml[e]);
 
-		// check string exist
+		// Check string exist
 		if (typeof previewIcon !== 'string')
 			result.push(previewIconHtml.props.className);
 		else {
-			// check preview and svgHtml are equal
-
-			const svgSanitize = svgHtml[e].replace(/ "/g, '"');
-			const previewSanitize = previewIcon.replace(/ "/g, '"');
+			const svgSanitize = iconSanitize(svgHtml[e]);
+			const previewSanitize = iconSanitize(previewIcon);
 
 			const compareFrontHtml = await htmlComparison(
 				page,
@@ -96,47 +98,16 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 				previewSanitize
 			);
 
-			// if are not equal check replace
-			if (!compareFrontHtml) {
-				const editedSvgHtml = svgHtml[e].replace(
-					/enable-background="new"/g,
-					''
+			if (!compareFrontHtml)
+				result.push(
+					`${
+						previewIconHtml.props.className ?? '⚠️Class not found⚠️'
+					} - ${e}/${fetchPage}`
 				);
-
-				const editedPreviewIcon = previewIcon.replace(
-					/enable-background="new"/g,
-					''
-				);
-
-				const compareEditedFrontHtml = await htmlComparison(
-					page,
-					editedPreviewIcon,
-					editedSvgHtml
-				);
-
-				// if are not equal return error
-				if (compareEditedFrontHtml !== true)
-					result.push(
-						`${
-							previewIconHtml.props.className ??
-							'⚠️Class not found⚠️'
-						} - ${e}/${fetchPage}`
-					);
-			}
 		}
 	}
-	// renderToString
-	if (!isEmpty(result)) {
-		console.error(
-			`Comparison on frontend failed on this/these svg: ${JSON.stringify(
-				result
-			)}`
-		);
 
-		return false;
-	}
-
-	// Reload
+	// Check Reload
 	await page.waitForTimeout(250);
 	await previewPage.close();
 	await page.waitForTimeout(150);
@@ -144,7 +115,6 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 	await page.waitForSelector('.maxi-svg-icon-block__icon svg');
 
 	for (let i = 0; i < svgGroup.length - 1; i += 1) {
-		if (i === 48 && fetchPage === 96) return;
 		const svgRefresh = await page.$$eval(
 			'.maxi-svg-icon-block__icon svg',
 			(svg, _i) => svg[_i]?.outerHTML,
@@ -161,26 +131,35 @@ const checkSVGGroup = async (page, fetchPage = 1) => {
 				svgHtml[i]
 			);
 
-			if (compareRefreshHtml !== true)
+			if (!compareRefreshHtml)
 				result.push(previewIconHtml.props.className);
 		}
 	}
 
-	if (!isEmpty(resultRefresh)) {
+	// Return error ms
+	if (!isEmpty(resultRefresh, result)) {
 		console.error(
 			`Comparison after refresh failed on this/these svg: ${resultRefresh.join(
 				', '
 			)}`
 		);
 
+		console.error(
+			`Comparison on frontend failed on this/these svg: ${JSON.stringify(
+				result
+			)}`
+		);
 		return false;
 	}
-
 	return true;
 };
 
 describe('SVG checker 2100', () => {
 	it('SVG icons (0 =>2100)', async () => {
+		// Avoids tests to stop when a console.error appears
+		console.error = jest.fn();
+		console.warn = jest.fn();
+
 		// 30min +/-
 		let i = 1;
 		do {
@@ -197,6 +176,10 @@ describe('SVG checker 2100', () => {
 
 describe('SVG checker 4200', () => {
 	it('SVG icons (2100 => 4200)', async () => {
+		// Avoids tests to stop when a console.error appears
+		console.error = jest.fn();
+		console.warn = jest.fn();
+
 		// 1h +/-
 		let e = 30;
 
@@ -213,6 +196,10 @@ describe('SVG checker 4200', () => {
 });
 describe('SVG checker 6300', () => {
 	it('SVG icons (4200 => 6300)', async () => {
+		// Avoids tests to stop when a console.error appears
+		console.error = jest.fn();
+		console.warn = jest.fn();
+
 		let i = 60;
 
 		do {
@@ -228,6 +215,10 @@ describe('SVG checker 6300', () => {
 });
 describe('SVG checker 8400', () => {
 	it('SVG icons (6300 => 8400)', async () => {
+		// Avoids tests to stop when a console.error appears
+		console.error = jest.fn();
+		console.warn = jest.fn();
+
 		let i = 90;
 
 		do {
@@ -243,6 +234,10 @@ describe('SVG checker 8400', () => {
 });
 describe('SVG checker 8960', () => {
 	it('SVG icons (8300 => 8960 +/-)', async () => {
+		// Avoids tests to stop when a console.error appears
+		console.error = jest.fn();
+		console.warn = jest.fn();
+
 		let i = 120;
 
 		do {

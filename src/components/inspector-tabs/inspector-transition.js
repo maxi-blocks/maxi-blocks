@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -51,18 +52,20 @@ const TransitionControlWrapper = props => {
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
 
-	const onChangeTransition = obj => {
+	const onChangeTransition = (obj = {}) => {
 		let newObj = {
 			transition: {},
 		};
 
 		if (transitionChangeAll) {
-			Object.keys(attributes?.transition).forEach(type => {
-				newObj.transition[type] = {};
+			Object.keys(attributes?.transition).forEach(t => {
+				newObj.transition[t] = {};
 
-				Object.keys(attributes?.transition?.[type]).forEach(key => {
-					newObj.transition[type][key] = {
-						...attributes?.transition?.[type][key],
+				Object.keys(attributes?.transition?.[t]).forEach(key => {
+					newObj.transition[t][key] = {
+						...attributes.transition[t][key],
+						...attributes?.transition[type][selected],
+						hoverProp: attributes.transition[t][key].hoverProp,
 						...obj,
 					};
 				});
@@ -85,6 +88,10 @@ const TransitionControlWrapper = props => {
 
 		return newObj;
 	};
+
+	useEffect(() => {
+		onChangeTransition();
+	}, [transitionChangeAll]);
 
 	const onChangeSwitch = value =>
 		onChangeTransition({
@@ -200,7 +207,7 @@ const transition = ({
 					<ToggleSwitch
 						label={__('Change all transitions', 'maxi-blocks')}
 						selected={transitionChangeAll}
-						onChange={val =>
+						onChange={val => {
 							maxiSetAttributes({
 								'transition-change-all': val,
 								// Set as selected first transition from type if no transition is selected
@@ -210,8 +217,8 @@ const transition = ({
 											transition?.[availableType]
 										)[0],
 								}),
-							})
-						}
+							});
+						}}
 					/>
 					{!isEmpty(rawTransition.block) &&
 					!isEmpty(rawTransition.canvas) &&

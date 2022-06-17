@@ -18,6 +18,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
 import {
+	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
@@ -59,11 +60,7 @@ const RelationControl = props => {
 		return blockOptions;
 	};
 
-	const transitionDefaultAttributes = {
-		'transition-duration-general': 0.3,
-		'transition-delay-general': 0,
-		'easing-general': 'ease',
-	};
+	const transitionDefaultAttributes = createTransitionObj(true);
 
 	const onAddRelation = () => {
 		const relation = {

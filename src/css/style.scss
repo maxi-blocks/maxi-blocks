@@ -12,11 +12,6 @@
 	position: relative;
 	z-index: 0;
 
-	&[data-align='full'] {
-		width: 100% !important;
-		max-width: 100% !important;
-	}
-
 	span.maxi-block-anchor {
 		position: absolute;
 		top: 0;

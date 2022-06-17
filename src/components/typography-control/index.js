@@ -580,23 +580,9 @@ const TypographyControl = props => {
 					}
 					defaultUnit={getDefault(`${prefix}line-height-unit`)}
 					onChangeUnit={val => {
-						if (
-							getValue(`${prefix}line-height`) >
-							minMaxSettings[val].max
-						) {
-							onChangeFormat({
-								[`${prefix}line-height`]:
-									minMaxSettings[val].max,
-								[`${prefix}line-height-unit`]: val,
-							});
-						} else {
-							onChangeFormat({
-								[`${prefix}line-height`]: getValue(
-									`${prefix}line-height`
-								),
-								[`${prefix}line-height-unit`]: val,
-							});
-						}
+						onChangeFormat({
+							[`${prefix}line-height-unit`]: val,
+						});
 					}}
 					placeholder={getValue(
 						`${prefix}line-height`,
@@ -608,9 +594,12 @@ const TypographyControl = props => {
 						true
 					)}
 					defaultValue={getDefault(`${prefix}line-height`)}
-					onChangeValue={val => {
+					onChangeValue={(val, unit) => {
 						onChangeFormat({
 							[`${prefix}line-height`]: val,
+							...(unit && {
+								[`${prefix}line-height-unit`]: unit,
+							}),
 						});
 					}}
 					onReset={() =>

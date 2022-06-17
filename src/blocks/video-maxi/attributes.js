@@ -20,10 +20,6 @@ const attributes = {
 		type: 'string',
 		default: __('Video', 'maxi-blocks'),
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 
 	...attributesData.video,
 	...prefixAttributesCreator({

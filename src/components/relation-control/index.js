@@ -26,7 +26,7 @@ import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFrom
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep, isEmpty, merge } from 'lodash';
 
 /**
  * Styles
@@ -52,11 +52,7 @@ const RelationControl = props => {
 		const blockName = getBlock(clientId)?.name;
 		const blockOptions = settings[blockName] || [];
 
-		if (!blockOptions) {
-			return [];
-		}
-
-		return blockOptions;
+		return blockOptions || [];
 	};
 
 	const transitionDefaultAttributes = {
@@ -182,6 +178,7 @@ const RelationControl = props => {
 						...blockAttributes,
 						...newAttributesObj,
 					},
+					target: selectedSettingsObj?.target,
 				});
 
 				const getStyles = (stylesObj, isFirst = false) => {
@@ -209,7 +206,7 @@ const RelationControl = props => {
 							},
 							{}
 						);
-						console.log(styles);
+
 						return styles;
 					}
 
@@ -219,10 +216,7 @@ const RelationControl = props => {
 							return acc;
 						}
 
-						const newAcc = {
-							...acc,
-							...getStyles(stylesObj[key]),
-						};
+						const newAcc = merge(acc, getStyles(stylesObj[key]));
 
 						return newAcc;
 					}, {});
@@ -236,9 +230,10 @@ const RelationControl = props => {
 			},
 			prefix,
 			breakpoint: deviceType,
+			clientId: getClientIdFromUniqueId(item.uniqueID),
 		});
 	};
-	console.log(relations);
+
 	const getBlocksToAffect = () => {
 		const { getBlocks } = select('core/block-editor');
 		const maxiBlocks = getBlocks().filter(block =>

@@ -35,6 +35,7 @@ const transitionObj = {
 			target: [
 				' .maxi-button-block__icon svg > *',
 				' .maxi-button-block__icon svg',
+				' .maxi-button-block__icon',
 			],
 			property: 'icon',
 			limitless: true,

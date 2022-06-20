@@ -26,7 +26,7 @@ import {
 	RawHTML,
 	MaxiPopoverButton,
 } from '../../components';
-import { generateDataObject, injectImgSVG } from '../../extensions/svg';
+import { injectImgSVG } from '../../extensions/svg';
 import copyPasteMapping from './copy-paste-mapping';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
@@ -35,7 +35,7 @@ import CaptionToolbar from '../../components/toolbar/captionToolbar';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round, isNumber } from 'lodash';
+import { isEmpty, isNil, round, isNumber, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -278,8 +278,9 @@ class edit extends MaxiBlockComponent {
 							this.setState({ isExternalClass: false });
 
 							if (!isEmpty(attributes.SVGData)) {
-								const cleanedContent =
-									DOMPurify.sanitize(SVGElement);
+								const cleanedContent = DOMPurify.sanitize(
+									attributes.SVGElement
+								);
 
 								const svg = document
 									.createRange()
@@ -287,7 +288,13 @@ class edit extends MaxiBlockComponent {
 										cleanedContent
 									).firstElementChild;
 
-								const resData = generateDataObject('', svg);
+								const resData = {
+									[`${uniqueID}__${uniqueId()}`]: {
+										color: '',
+										imageID: '',
+										imageURL: '',
+									},
+								};
 
 								const SVGValue = resData;
 								const el = Object.keys(SVGValue)[0];

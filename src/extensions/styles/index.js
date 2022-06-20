@@ -1,6 +1,7 @@
 import './store';
 
 export { default as breakpointAttributesCreator } from './breakpointAttributesCreator';
+export { default as createTransitionObj } from './transitions/createTransitionObj';
 export { default as getAttributeKey } from './getAttributeKey';
 export { default as getAttributeValue } from './getAttributeValue';
 export { default as getBlockStyle } from './getBlockStyle';

@@ -17,7 +17,7 @@ import {
 	fitSvg,
 	onRequestInsertPattern,
 } from './util';
-import { injectImgSVG, generateDataObject } from '../../extensions/svg';
+import { injectImgSVG } from '../../extensions/svg';
 import MaxiModal from './modal';
 import DOMPurify from 'dompurify';
 
@@ -490,15 +490,10 @@ const LibraryContainer = props => {
 					.createRange()
 					.createContextualFragment(cleanedContent).firstElementChild;
 
-				const SVGData = {
-					[`${uniqueID}__${uniqueId()}`]: {
-						color: '',
-						imageID: mediaID,
-						imageURL: mediaURL,
-					},
+				const resData = {
+					[`${uniqueID}__${uniqueId()}`]: {},
 				};
-				const SVGOptions = {};
-				const resData = generateDataObject(SVGOptions[SVGData], svg);
+
 				resData[Object.keys(resData)[0]].color = svgData
 					? svgData[Object.keys(svgData)[0]].color
 					: '';
@@ -528,7 +523,6 @@ const LibraryContainer = props => {
 					},
 				};
 
-				const SVGOptions = {};
 				const newSvgCode = svgCode
 					.replace(/width="(.*?)"/g, '')
 					.replace(/height="(.*?)"/g, '');
@@ -537,11 +531,9 @@ const LibraryContainer = props => {
 				const svg = document
 					.createRange()
 					.createContextualFragment(cleanedContent).firstElementChild;
-				const resData = generateDataObject(SVGOptions[SVGData], svg);
-				const resEl = injectImgSVG(svg, resData);
 
 				onSelect({
-					SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
+					SVGElement: injectImgSVG(svg, SVGData).outerHTML,
 					SVGData,
 				});
 

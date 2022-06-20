@@ -28,6 +28,7 @@ const ToolbarMediaUpload = props => {
 		[`${prefix}mediaID`]: mediaID,
 		[`${prefix}altSelector`]: altSelector,
 		playerType,
+		SVGElement,
 	} = attributes;
 
 	if (!ALLOWED_BLOCKS.includes(blockName) || playerType === 'video')

@@ -18,6 +18,11 @@ import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
 
 /**
+ * Internal dependencies
+ */
+import { toolbarPin } from '../../icons';
+
+/**
  * Utils
  */
 import Breadcrumbs from '../breadcrumbs';
@@ -244,8 +249,7 @@ const MaxiToolbar = memo(
 										{pinActive ? 'Unpin' : 'Pin Open'}
 									</span>
 									<span className='breadcrumbs-pin-icon'>
-										<span className='breadcrumbs-pin-icon-circle' />
-										<span className='breadcrumbs-pin-icon-line' />
+										{toolbarPin}
 									</span>
 								</span>
 								{customLabel}

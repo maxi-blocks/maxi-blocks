@@ -28,7 +28,7 @@ import { LoremIpsum } from 'react-lorem-ipsum';
 import './editor.scss';
 
 const TextGenerator = props => {
-	const { onChange } = props;
+	const { onChange, closeMoreSettings } = props;
 
 	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
@@ -53,10 +53,10 @@ const TextGenerator = props => {
 			formatValue,
 			`${generatedText[0].props.children}`
 		);
-
 		onChangeTextFormat(newFormatValue);
 
 		onChange({ isList: false, content: newContent });
+		closeMoreSettings();
 	};
 
 	const replaceText = (sentencesPerParagraph, wordsPerSentence) => {
@@ -78,6 +78,7 @@ const TextGenerator = props => {
 		onChangeTextFormat(newFormatValue);
 
 		onChange({ isList: false, content: generatedText[0].props.children });
+		closeMoreSettings();
 	};
 
 	return (

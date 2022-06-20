@@ -140,9 +140,6 @@ class edit extends MaxiBlockComponent {
 				value={{
 					formatValue: {
 						...this.state.formatValue,
-						...(this.state.formatValue.text !== content && {
-							text: content,
-						}),
 					},
 					onChangeTextFormat: newFormatValue => {
 						this.state.onChangeFormat(newFormatValue);

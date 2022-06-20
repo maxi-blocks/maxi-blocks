@@ -11,6 +11,7 @@ import * as styleHelpers from '../../extensions/styles/helpers';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getIconWithColor,
 } from '../../extensions/styles';
 
 const canvasSettings = [
@@ -125,13 +126,22 @@ const settings = {
 				'iconBorderWidth',
 				'iconBorderRadius',
 				'iconPadding',
+				'typography',
 			],
 			component: props => {
-				const { attributes } = props;
+				const { attributes, blockAttributes } = props;
 				const { svgType, 'icon-content': iconContent } = attributes;
-
+				const { 'icon-inherit': iconInherit } = blockAttributes;
 				return iconContent ? (
-					<Controls.IconControl {...props} svgType={svgType} />
+					<Controls.IconControl
+						{...props}
+						svgType={svgType}
+						isInteractionBuilder
+						getIconWithColor={args =>
+							getIconWithColor(attributes, args)
+						}
+						disableIconInherit={!iconInherit}
+					/>
 				) : (
 					'Add button icon to be able to use this control'
 				);

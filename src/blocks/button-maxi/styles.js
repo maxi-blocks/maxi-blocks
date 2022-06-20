@@ -11,6 +11,7 @@ import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
 	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getDisplayStyles,
@@ -275,6 +276,15 @@ const getStyles = (props, scValues) => {
 					),
 					' .maxi-button-block__button:hover .maxi-button-block__content':
 						getHoverContentObject(props, scValues),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						]),
+						blockStyle,
+					}),
 					...getButtonIconStyles({
 						obj: props,
 						blockStyle,

@@ -19,10 +19,8 @@ import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
-	getIconWithColor,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { setSVGStrokeWidth } from '../../extensions/svg';
 import SvgWidthControl from '../svg-width-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
@@ -59,6 +57,9 @@ const IconControl = props => {
 		breakpoint,
 		blockStyle,
 		isHover = false,
+		isInteractionBuilder = false,
+		disableIconInherit = false,
+		getIconWithColor,
 		'icon-only': iconOnly,
 		'icon-inherit': iconInherit,
 		'icon-content': iconContent,
@@ -146,12 +147,12 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
-			{!isHover && breakpoint === 'general' && (
+			{!isInteractionBuilder && !isHover && breakpoint === 'general' && (
 				<MaxiModal
 					type='button-icon'
 					style={blockStyle}
 					onSelect={obj => {
-						const icon = getIconWithColor(props, {
+						const icon = getIconWithColor({
 							rawIcon: obj['icon-content'],
 						});
 
@@ -163,30 +164,32 @@ const IconControl = props => {
 			)}
 			{iconContent && (
 				<>
-					{!isHover && breakpoint === 'general' && (
-						<>
-							<hr />
-							<ToggleSwitch
-								label={__(
-									'Icon only (remove text)',
-									'maxi-blocks'
-								)}
-								className='maxi-color-control__palette__custom'
-								selected={iconOnly}
-								onChange={val => {
-									const icon = getIconWithColor(props, {
-										isIconOnly: val,
-										isHover,
-									});
+					{!isInteractionBuilder &&
+						!isHover &&
+						breakpoint === 'general' && (
+							<>
+								<hr />
+								<ToggleSwitch
+									label={__(
+										'Icon only (remove text)',
+										'maxi-blocks'
+									)}
+									className='maxi-color-control__palette__custom'
+									selected={iconOnly}
+									onChange={val => {
+										const icon = getIconWithColor({
+											isIconOnly: val,
+											isHover,
+										});
 
-									onChange({
-										'icon-only': val,
-										'icon-content': icon,
-									});
-								}}
-							/>
-						</>
-					)}
+										onChange({
+											'icon-only': val,
+											'icon-content': icon,
+										});
+									}}
+								/>
+							</>
+						)}
 					<SvgWidthControl
 						{...getGroupAttributes(
 							props,
@@ -270,26 +273,28 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{!isHover && breakpoint === 'general' && (
-						<ToggleSwitch
-							label={__(
-								'Inherit colour/background from button',
-								'maxi-block'
-							)}
-							selected={iconInherit}
-							onChange={val => {
-								const icon = getIconWithColor(props, {
-									isInherit: val,
-									isHover,
-								});
+					{!disableIconInherit &&
+						!isHover &&
+						breakpoint === 'general' && (
+							<ToggleSwitch
+								label={__(
+									'Inherit colour/background from button',
+									'maxi-block'
+								)}
+								selected={iconInherit}
+								onChange={val => {
+									const icon = getIconWithColor({
+										isInherit: val,
+										isHover,
+									});
 
-								onChange({
-									'icon-inherit': val,
-									'icon-content': icon,
-								});
-							}}
-						/>
-					)}
+									onChange({
+										'icon-inherit': val,
+										'icon-content': icon,
+									});
+								}}
+							/>
+						)}
 					<SettingTabsControl
 						className='maxi-icon-styles-control'
 						type='buttons'
@@ -348,7 +353,7 @@ const IconControl = props => {
 										paletteStatus,
 										paletteOpacity,
 									}) => {
-										const icon = getIconWithColor(props, {
+										const icon = getIconWithColor({
 											color,
 											paletteColor,
 											paletteStatus,
@@ -451,7 +456,7 @@ const IconControl = props => {
 								paletteStatus,
 								paletteOpacity,
 							}) => {
-								const icon = getIconWithColor(props, {
+								const icon = getIconWithColor({
 									color,
 									paletteColor,
 									paletteStatus,

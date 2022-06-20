@@ -147,6 +147,7 @@ const RelationControl = props => {
 				prefix
 			),
 			attributes: mergedAttributes,
+			blockAttributes,
 			onChange: obj => {
 				const newAttributesObj = {
 					...item.attributes,
@@ -401,6 +402,11 @@ const RelationControl = props => {
 														item.id,
 														'attributes',
 														{}
+													);
+													onChangeRelationProperty(
+														item.id,
+														'target',
+														''
 													);
 													onChangeRelationProperty(
 														item.id,

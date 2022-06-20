@@ -456,8 +456,11 @@ const Inspector = props => {
 																blockStyle={
 																	blockStyle
 																}
-																getIconWithColor={
-																	getIconWithColor
+																getIconWithColor={args =>
+																	getIconWithColor(
+																		attributes,
+																		args
+																	)
 																}
 															/>
 														),
@@ -523,8 +526,11 @@ const Inspector = props => {
 																		blockStyle={
 																			blockStyle
 																		}
-																		getIconWithColor={
-																			getIconWithColor
+																		getIconWithColor={args =>
+																			getIconWithColor(
+																				attributes,
+																				args
+																			)
 																		}
 																		isHover
 																	/>

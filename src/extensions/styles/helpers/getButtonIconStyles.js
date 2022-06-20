@@ -7,6 +7,7 @@ import getMarginPaddingStyles from './getMarginPaddingStyles';
 import getBorderStyles from './getBorderStyles';
 import { getSVGStyles } from './getSVGStyles';
 import getIconStyles from './getIconStyles';
+import getIconPathStyles from './getIconPathStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
@@ -42,30 +43,6 @@ const getIconSize = (obj, isHover = false) => {
 	});
 
 	return { iconSize: response };
-};
-
-const getIconPathStyles = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon path',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`])
-		) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconPath: response };
 };
 
 const getIconObject = (props, target) => {
@@ -137,8 +114,15 @@ const getIconObject = (props, target) => {
 			!isNil(props[`icon-spacing-${breakpoint}`]) &&
 			!isNil(props['icon-position'])
 		) {
-			props['icon-position'] === 'left'
-				? (responsive[breakpoint]['margin-right'] = `${
+			props['icon-position'] === 'left' ||
+			props['icon-position'] === 'right'
+				? (responsive[breakpoint][
+						`margin-${
+							props['icon-position'] === 'right'
+								? 'left'
+								: 'right'
+						}`
+				  ] = `${
 						props['icon-only']
 							? '0'
 							: getLastBreakpointAttribute({
@@ -147,7 +131,11 @@ const getIconObject = (props, target) => {
 									attributes: props,
 							  })
 				  }px`)
-				: (responsive[breakpoint]['margin-left'] = `${
+				: (responsive[breakpoint][
+						`margin-${
+							props['icon-position'] === 'top' ? 'bottom' : 'top'
+						}`
+				  ] = `${
 						props['icon-only']
 							? '0'
 							: getLastBreakpointAttribute({
@@ -249,6 +237,7 @@ const getButtonIconStyles = ({ obj, blockStyle, isHover = false }) => {
 		'icon-inherit': iconInherit,
 		'icon-status-hover': iconHoverStatus,
 	} = obj;
+
 	const useIconColor = !iconInherit;
 
 	const response = {
@@ -295,15 +284,6 @@ const getButtonIconStyles = ({ obj, blockStyle, isHover = false }) => {
 					};
 			  })()),
 		// Background
-		...getBlockBackgroundStyles({
-			...getGroupAttributes(obj, [
-				'blockBackground',
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
-			blockStyle,
-		}),
 		...getBlockBackgroundStyles({
 			...getGroupAttributes(obj, 'svg'),
 			' .maxi-button-block__icon svg path': getIconPathStyles(obj, false),

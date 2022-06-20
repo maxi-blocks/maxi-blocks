@@ -243,7 +243,7 @@ const getIconHoverObject = (props, target) => {
 	return response;
 };
 
-const getSVGIconStyles = ({ obj, blockStyle, isHover = false }) => {
+const getButtonIconStyles = ({ obj, blockStyle, isHover = false }) => {
 	const hasIcon = !!obj['icon-content'];
 	const {
 		'icon-inherit': iconInherit,
@@ -346,4 +346,4 @@ const getSVGIconStyles = ({ obj, blockStyle, isHover = false }) => {
 	return response;
 };
 
-export default getSVGIconStyles;
+export default getButtonIconStyles;

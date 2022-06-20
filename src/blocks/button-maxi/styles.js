@@ -24,7 +24,7 @@ import {
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
-	getSVGIconStyles,
+	getButtonIconStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsButton } from './custom-css';
 import transitionObj from './transitionObj';
@@ -267,7 +267,7 @@ const getStyles = (props, scValues) => {
 					':hover': getHoverWrapperObject(props),
 					' .maxi-button-block__button': getNormalObject(props),
 					' .maxi-button-block__content': getContentObject(props),
-					...getSVGIconStyles({ obj: props, blockStyle }),
+					...getButtonIconStyles({ obj: props, blockStyle }),
 					// Hover
 					' .maxi-button-block__button:hover': getHoverObject(
 						props,
@@ -275,7 +275,7 @@ const getStyles = (props, scValues) => {
 					),
 					' .maxi-button-block__button:hover .maxi-button-block__content':
 						getHoverContentObject(props, scValues),
-					...getSVGIconStyles({
+					...getButtonIconStyles({
 						obj: props,
 						blockStyle,
 						isHover: true,

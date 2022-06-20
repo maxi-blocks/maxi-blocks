@@ -136,7 +136,7 @@ const settings = {
 					'Add button icon to be able to use this control'
 				);
 			},
-			helper: props => styleHelpers.getSVGIconStyles(props),
+			helper: props => styleHelpers.getButtonIconStyles(props),
 		},
 		{
 			label: __('Button typography', 'maxi-blocks'),

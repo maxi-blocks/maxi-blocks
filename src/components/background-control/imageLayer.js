@@ -143,11 +143,10 @@ const ImageLayerSettings = props => {
 				isHover,
 			}) === 'custom' && (
 				<ImageCropControl
-					mediaID={getLastBreakpointAttribute({
-						target: `${prefix}background-image-mediaID`,
-						breakpoint,
-						attributes: imageOptions,
-						isHover,
+					mediaID={getAttributeValue({
+						target: 'background-image-mediaID',
+						props: imageOptions,
+						prefix,
 					})}
 					cropOptions={getLastBreakpointAttribute({
 						target: `${prefix}background-image-crop-options`,

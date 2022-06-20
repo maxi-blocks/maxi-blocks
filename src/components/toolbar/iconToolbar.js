@@ -77,7 +77,11 @@ const IconToolbar = memo(
 				<Popover
 					noArrow
 					animate={false}
-					position='bottom center'
+					position={
+						attributes['icon-position'] === 'top'
+							? 'top center'
+							: 'bottom center'
+					}
 					focusOnMount={false}
 					anchorRef={anchorRef}
 					className={classnames('maxi-toolbar__popover')}

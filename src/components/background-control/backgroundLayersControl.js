@@ -383,22 +383,6 @@ const BackgroundLayersControl = ({
 			  ) + 1
 			: 1;
 
-	// WILL BE DELETED AFTER BACKGROUND LAYERS ARE UPDATED
-	if (!allLayers.every(layer => typeof layer.order === 'number')) {
-		allLayers.forEach((layer, index, array) => {
-			layer.order = getLayerUniqueParameter('order', array);
-		});
-
-		const normalLayers = allLayers.filter(layer => !layer.isHover);
-		const hoverLayers = allLayers.filter(layer => layer.isHover);
-
-		onChange({
-			'background-layers': normalLayers,
-			'background-layers-hover': hoverLayers,
-		});
-	}
-	//
-
 	allLayers.sort((a, b) => a.order - b.order);
 
 	const getLayerLabel = type => {

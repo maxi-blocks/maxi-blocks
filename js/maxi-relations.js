@@ -104,7 +104,7 @@ const relations = () => {
 	};
 
 	console.log(maxiRelations[0]);
-	maxiRelations[0]?.map(item => {
+	maxiRelations[0]?.forEach(item => {
 		if (!item?.uniqueID) return;
 
 		const triggerEl = document.querySelector(`.${item.trigger}`);
@@ -112,12 +112,11 @@ const relations = () => {
 			`.${item.uniqueID} ${item.target ?? ''}`
 		);
 
-		const { stylesObj, effectsObj } = getCssResponsiveObj(
-			item.css,
-			item.effects
-		);
-		console.log(stylesObj, effectsObj);
-		const transitionString = `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`;
+		const getTransitionString = effectsObj =>
+			effectsObj['transition-status']
+				? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
+				: 'all 0s 0s';
+
 		let timeout;
 
 		const targets = stylesObj.isTargets ? Object.keys(stylesObj) : null;
@@ -126,8 +125,14 @@ const relations = () => {
 			case 'hover': {
 				triggerEl.addEventListener('mouseenter', () => {
 					clearTimeout(timeout);
+
+					const { stylesObj, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
+
 					toggleTransition(
-						transitionString,
+						getTransitionString(effectsObj),
 						targetEl,
 						false,
 						targets
@@ -137,12 +142,17 @@ const relations = () => {
 				});
 
 				triggerEl.addEventListener('mouseleave', () => {
+					const { stylesObj, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
+
 					toggleInlineStyles(stylesObj, targetEl, true, targets);
 
 					timeout = setTimeout(() => {
 						// Removing transition after transition-duration + 1s to make sure it's done
 						toggleTransition(
-							transitionString,
+							getTransitionString(effectsObj),
 							targetEl,
 							true,
 							targets
@@ -152,7 +162,12 @@ const relations = () => {
 			}
 			case 'click': {
 				triggerEl.addEventListener('click', () => {
-					toggleTransition(transitionString, targetEl);
+					const { stylesObj, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
+
+					toggleTransition(getTransitionString(effectsObj), targetEl);
 
 					toggleInlineStyles(stylesObj, targetEl);
 				});
@@ -162,3 +177,4 @@ const relations = () => {
 };
 
 window.addEventListener('load', relations);
+window.addEventListener('resize', relations);

@@ -18,6 +18,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
 import {
+	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
@@ -36,7 +37,7 @@ import './editor.scss';
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 
-	const { blockStyle, deviceType, onChange, uniqueID } = props;
+	const { deviceType, onChange, uniqueID } = props;
 	const relations = cloneDeep(props.relations) ?? [];
 
 	const getRelationId = () =>
@@ -55,11 +56,7 @@ const RelationControl = props => {
 		return blockOptions || [];
 	};
 
-	const transitionDefaultAttributes = {
-		'transition-duration-general': 0.3,
-		'transition-delay-general': 0,
-		'easing-general': 'ease',
-	};
+	const transitionDefaultAttributes = createTransitionObj();
 
 	const onAddRelation = () => {
 		const relation = {
@@ -172,7 +169,7 @@ const RelationControl = props => {
 				const stylesObj = selectedSettingsObj?.helper({
 					obj: newGroupAttributes,
 					prefix,
-					blockStyle,
+					blockStyle: blockAttributes.blockStyle,
 					deviceType,
 					blockAttributes: {
 						...blockAttributes,
@@ -229,6 +226,7 @@ const RelationControl = props => {
 				onChangeRelationProperty(item.id, 'css', styles);
 			},
 			prefix,
+			blockStyle: blockAttributes.blockStyle,
 			breakpoint: deviceType,
 			clientId: getClientIdFromUniqueId(item.uniqueID),
 		});

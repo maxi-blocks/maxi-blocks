@@ -25,17 +25,20 @@ const positionMigrator = ({ attributes, save }) => {
 		);
 
 	// Check if unit no axis
-	const unitChecker = key =>
-		key.includes('unit') && !keyWords.some(word => key.includes(word));
+	const unitChecker = (key, val) =>
+		val &&
+		key.includes('unit') &&
+		!keyWords.some(word => key.includes(word));
 
 	const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
 		if (key.includes('position')) {
 			// Convert number to string
-			if (isFinite(val) && attributes?.[key]?.type === 'string')
+			if (isFinite(val) && attributes?.[key]?.type === 'string') {
 				oldAttributes[key] = val.toString();
+			}
 
 			// Convert non-axis unit to axis unit
-			if (unitChecker(key)) {
+			if (unitChecker(key, val)) {
 				keyWords.forEach(keyWord => {
 					const stringBeforeUnit = key.slice(0, key.indexOf('unit'));
 					const stringAfterUnit = key.slice(key.indexOf('unit'));
@@ -61,7 +64,7 @@ const positionMigrator = ({ attributes, save }) => {
 						return defaultType === 'string';
 					}
 
-					return unitChecker(attrKey);
+					return unitChecker(attrKey, attrVal);
 				}
 
 				if (
@@ -74,7 +77,7 @@ const positionMigrator = ({ attributes, save }) => {
 								if (key.includes('position')) {
 									if (isFinite(val)) return true;
 
-									return unitChecker(key);
+									return unitChecker(key, val);
 								}
 
 								return false;

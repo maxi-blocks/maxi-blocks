@@ -84,9 +84,7 @@ const numberCounter = {
 	'number-counter-title-font-weight': {
 		type: 'string',
 	},
-	...{
-		...alignment,
-	},
+	...alignment,
 };
 
 export default numberCounter;

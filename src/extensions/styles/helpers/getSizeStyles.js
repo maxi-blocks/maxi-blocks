@@ -48,10 +48,7 @@ const getSizeStyles = (obj, prefix = '') => {
 
 				if (fitContent) {
 					return {
-						width:
-							prefix === 'number-counter-'
-								? 'fit-content !important'
-								: 'fit-content',
+						width: 'fit-content',
 					};
 				}
 			}
@@ -82,11 +79,12 @@ const getSizeStyles = (obj, prefix = '') => {
 				const auto =
 					prefix === 'number-counter-' &&
 					target === 'width' &&
-					getLastBreakpointAttribute({
-						target: `${prefix}${target}-auto`,
-						breakpoint,
-						attributes: obj,
-					});
+					(obj['number-counter-circle-status'] ||
+						getLastBreakpointAttribute({
+							target: `${prefix}${target}-auto`,
+							breakpoint,
+							attributes: obj,
+						}));
 
 				if (!isNil(num) && !isNil(unit))
 					return { [target]: auto ? 'auto' : num + unit };

@@ -112,29 +112,30 @@ const NumberCounter = attributes => {
 		setCount(startCountValue);
 		setReplayStatus(true);
 	});
-
 	return (
 		<BlockResizer
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
 			deviceType={deviceType}
-			defaultSize={{
-				width: getLastBreakpointAttribute({
-					target: 'number-counter-width-auto',
-					breakpoint: deviceType,
-					attributes,
-				})
-					? 'auto'
-					: `${getLastBreakpointAttribute({
-							target: 'number-counter-width',
-							breakpoint: deviceType,
-							attributes,
-					  })}${getLastBreakpointAttribute({
-							target: 'number-counter-width-unit',
-							breakpoint: deviceType,
-							attributes,
-					  })}`,
+			size={{
+				width:
+					circleStatus ||
+					getLastBreakpointAttribute({
+						target: 'number-counter-width-auto',
+						breakpoint: deviceType,
+						attributes,
+					})
+						? 'auto'
+						: `${getLastBreakpointAttribute({
+								target: 'number-counter-width',
+								breakpoint: deviceType,
+								attributes,
+						  })}${getLastBreakpointAttribute({
+								target: 'number-counter-width-unit',
+								breakpoint: deviceType,
+								attributes,
+						  })}`,
 			}}
 			maxWidth='100%'
 			minWidth={

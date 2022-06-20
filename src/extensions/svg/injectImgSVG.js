@@ -17,11 +17,18 @@ import getSVGRatio from './getSVGRatio';
 /**
  * Utils
  */
-const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
+const injectImgSVG = (
+	svg,
+	SVGData = {},
+	removeMode = false,
+	blockUniqueID = null
+) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
 
-	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
+	const uniqueID =
+		blockUniqueID ??
+		getBlockAttributes(getSelectedBlockClientId()).uniqueID;
 	const imageShapePosition = getSVGPosition(svg.outerHTML ?? svg);
 	const imageShapeRatio = getSVGRatio(svg.outerHTML ?? svg);
 

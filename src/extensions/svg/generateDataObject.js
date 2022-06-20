@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  */
 import { uniqueId, isObject } from 'lodash';
 
-const generateDataObject = (data, svg) => {
+const generateDataObject = (data, svg, blockUniqueID = null) => {
 	const response = data ? (!isObject(data) ? JSON.parse(data) : data) : {};
 	const obj = {
 		color: '',
@@ -17,7 +17,9 @@ const generateDataObject = (data, svg) => {
 	};
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
-	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
+	const uniqueID =
+		blockUniqueID ??
+		getBlockAttributes(getSelectedBlockClientId()).uniqueID;
 	const SVGLayers = Array.from(
 		svg.querySelectorAll('path, circle, rect, polygon, line, ellipse')
 	);

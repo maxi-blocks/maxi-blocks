@@ -38,7 +38,11 @@ const TransitionControlWrapper = props => {
 	} = props;
 	const { 'transition-change-all': transitionChangeAll } = attributes;
 
-	const selected = attributes[`transition-${type}-selected`];
+	const selected =
+		attributes[`transition-${type}-selected`] === 'none' &&
+		transitionChangeAll
+			? Object.keys(transition?.[type])[0]
+			: attributes[`transition-${type}-selected`];
 
 	const defaultTransition = getDefaultAttribute('transition')[type][selected];
 	const selectedTransition = transition[type][selected];
@@ -90,7 +94,7 @@ const TransitionControlWrapper = props => {
 	};
 
 	useEffect(() => {
-		onChangeTransition();
+		if (transitionChangeAll) onChangeTransition();
 	}, [transitionChangeAll]);
 
 	const onChangeSwitch = value =>
@@ -185,7 +189,6 @@ const transition = ({
 	});
 
 	const availableType = isEmpty(transition?.block) ? 'canvas' : 'block';
-	const selected = attributes[`transition-${availableType}-selected`];
 
 	const ignoreIndicator = [
 		'transition-block-selected',
@@ -210,13 +213,6 @@ const transition = ({
 						onChange={val => {
 							maxiSetAttributes({
 								'transition-change-all': val,
-								// Set as selected first transition from type if no transition is selected
-								...(selected === 'none' && {
-									[`transition-${availableType}-selected`]:
-										Object.keys(
-											transition?.[availableType]
-										)[0],
-								}),
 							});
 						}}
 					/>

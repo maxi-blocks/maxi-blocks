@@ -187,6 +187,7 @@ const settings = {
 					disableImage
 					disableVideo
 					disableSVG
+					disableClipPath
 				/>
 			),
 			helper: props =>

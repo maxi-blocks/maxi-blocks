@@ -18,21 +18,26 @@ const relations = () => {
 						...obj.styles,
 					};
 
+					const getLastEffectsBreakpointAttribute = target =>
+						effects[`${target}-${breakpoint}`] !== undefined
+							? {
+									[target]:
+										effects[`${target}-${breakpoint}`],
+							  }
+							: {};
+
 					effectsObj = {
 						...effectsObj,
-						...(effects[`transition-duration-${breakpoint}`] !==
-							undefined && {
-							'transition-duration':
-								effects[`transition-duration-${breakpoint}`],
-						}),
-						...(effects[`transition-delay-${breakpoint}`] !==
-							undefined && {
-							'transition-delay':
-								effects[`transition-delay-${breakpoint}`],
-						}),
-						...(effects[`easing-${breakpoint}`] !== undefined && {
-							easing: effects[`easing-${breakpoint}`],
-						}),
+						...getLastEffectsBreakpointAttribute(
+							'transition-status'
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-duration'
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-delay'
+						),
+						...getLastEffectsBreakpointAttribute('easing'),
 					};
 				} else if (!obj.breakpoint) {
 					const { stylesObj: rawStyles, effectsObj: rawEffects } =
@@ -71,39 +76,45 @@ const relations = () => {
 					target.includes('>') ? `:scope ${target}` : target
 				);
 
-				targetEls.forEach(targetEl => {
-					toggleInlineStyles(styles, targetEl, remove);
-				});
+				targetEls.forEach(targetEl =>
+					toggleInlineStyles(styles, targetEl, remove)
+				);
 			});
 		} else {
-			Object.entries(stylesObj).forEach(([key, value]) => {
-				element.style[key] = !remove ? value : '';
-			});
+			Object.entries(stylesObj).forEach(
+				([key, value]) => (element.style[key] = !remove ? value : '')
+			);
 		}
 	};
 
 	const toggleTransition = (
 		transitionString,
 		element,
-		remove = false,
-		targets
+		stylesObj,
+		remove = false
 	) => {
+		const targets = stylesObj.isTargets ? Object.keys(stylesObj) : null;
+
 		if (targets) {
 			targets.forEach(target => {
 				const targetEls = element.querySelectorAll(
 					target.includes('>') ? `:scope ${target}` : target
 				);
 
-				targetEls.forEach(targetEl => {
-					toggleTransition(transitionString, targetEl, remove);
-				});
+				targetEls.forEach(targetEl =>
+					toggleTransition(transitionString, targetEl, remove)
+				);
 			});
 		} else {
 			element.style.transition = !remove ? transitionString : '';
 		}
 	};
 
-	console.log(maxiRelations[0]);
+	const getTransitionString = effectsObj =>
+		effectsObj['transition-status']
+			? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
+			: 'all 0s 0s';
+
 	maxiRelations[0]?.forEach(item => {
 		if (!item?.uniqueID) return;
 
@@ -112,14 +123,7 @@ const relations = () => {
 			`.${item.uniqueID} ${item.target ?? ''}`
 		);
 
-		const getTransitionString = effectsObj =>
-			effectsObj['transition-status']
-				? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
-				: 'all 0s 0s';
-
 		let timeout;
-
-		const targets = stylesObj.isTargets ? Object.keys(stylesObj) : null;
 
 		switch (item.action) {
 			case 'hover': {
@@ -134,8 +138,7 @@ const relations = () => {
 					toggleTransition(
 						getTransitionString(effectsObj),
 						targetEl,
-						false,
-						targets
+						stylesObj
 					);
 
 					toggleInlineStyles(stylesObj, targetEl);
@@ -147,15 +150,15 @@ const relations = () => {
 						item.effects
 					);
 
-					toggleInlineStyles(stylesObj, targetEl, true, targets);
+					toggleInlineStyles(stylesObj, targetEl, true);
 
 					timeout = setTimeout(() => {
 						// Removing transition after transition-duration + 1s to make sure it's done
 						toggleTransition(
 							getTransitionString(effectsObj),
 							targetEl,
-							true,
-							targets
+							stylesObj,
+							true
 						);
 					}, item.effects['transition-duration-general'] * 1000 + 1000);
 				});
@@ -167,7 +170,11 @@ const relations = () => {
 						item.effects
 					);
 
-					toggleTransition(getTransitionString(effectsObj), targetEl);
+					toggleTransition(
+						getTransitionString(effectsObj),
+						targetEl,
+						stylesObj
+					);
 
 					toggleInlineStyles(stylesObj, targetEl);
 				});

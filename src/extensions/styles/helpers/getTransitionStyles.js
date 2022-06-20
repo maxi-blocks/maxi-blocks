@@ -58,7 +58,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						});
 
 					const getTransitionAttribute = target =>
-						transitionContent[`${target}-${breakpoint}`];
+						transitionContent?.[`${target}-${breakpoint}`];
 
 					const lastTransitionDuration = getLastTransitionAttribute(
 						'transition-duration'

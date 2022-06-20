@@ -384,6 +384,13 @@ const IconControl = props => {
 										});
 									}}
 									isHover={isHover}
+									globalProps={{
+										target: `${
+											isHover ? 'hover-line' : 'line'
+										}`,
+										type: 'icon',
+									}}
+									noColorPrefix
 								/>
 							)
 						) : (
@@ -488,6 +495,11 @@ const IconControl = props => {
 								});
 							}}
 							isHover={isHover}
+							globalProps={{
+								target: `${isHover ? 'hover-fill' : 'fill'}`,
+								type: 'icon',
+							}}
+							noColorPrefix
 							avoidBreakpointForDefault
 						/>
 					)}

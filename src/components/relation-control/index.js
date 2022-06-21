@@ -134,10 +134,7 @@ const RelationControl = props => {
 			);
 		}
 
-		const mergedAttributes = {
-			...blockAttributes,
-			...item.attributes,
-		};
+		const mergedAttributes = merge(blockAttributes, item.attributes);
 
 		return settingsComponent({
 			...getGroupAttributes(

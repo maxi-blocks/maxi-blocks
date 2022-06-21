@@ -157,7 +157,11 @@ const getIconSize = (
 };
 
 // TO DO: abstract this (and the Button's one) later
-const getIconPathStyles = (obj, isHover = false) => {
+const getIconPathStyles = (
+	obj,
+	isHover = false,
+	prefix = 'navigation-arrow-both'
+) => {
 	const response = {
 		label: 'Icon path',
 		general: {},
@@ -169,7 +173,7 @@ const getIconPathStyles = (obj, isHover = false) => {
 		if (
 			!isNil(
 				obj[
-					`navigation-arrow-both-icon-stroke-${breakpoint}${
+					`${prefix}-icon-stroke-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`
 				]
@@ -177,7 +181,7 @@ const getIconPathStyles = (obj, isHover = false) => {
 		) {
 			response[breakpoint]['stroke-width'] = `${
 				obj[
-					`navigation-arrow-both-icon-stroke-${breakpoint}${
+					`${prefix}-icon-stroke-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`
 				]
@@ -191,17 +195,25 @@ const getIconPathStyles = (obj, isHover = false) => {
 	return { iconPath: response };
 };
 
-const getIconSpacing = (props, icon, isHover = false) => {
+const getIconSpacing = (
+	props,
+	icon,
+	isHover = false,
+	prefix = 'navigation-arrow-both',
+	clientId = ''
+) => {
 	const response = {
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(
 					props,
-					'navigationArrowBothIconPadding',
+					icon === ''
+						? 'navigationDotIconPadding'
+						: 'navigationArrowBothIconPadding',
 					isHover
 				),
 			},
-			prefix: 'navigation-arrow-both-icon-',
+			prefix: `${prefix}-icon-`,
 		}),
 	};
 
@@ -210,16 +222,20 @@ const getIconSpacing = (props, icon, isHover = false) => {
 		general: {},
 	};
 
+	const innerBlockCount =
+		wp.data.select('core/block-editor').getBlocksByClientId(clientId)?.[0]
+			?.innerBlocks?.length ?? 0;
+
 	breakpoints.forEach(breakpoint => {
 		responsive[breakpoint] = {};
 
 		const size = `${getLastBreakpointAttribute({
-			target: 'navigation-arrow-both-icon-width',
+			target: `${prefix}-icon-width`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		})}${getLastBreakpointAttribute({
-			target: 'navigation-arrow-both-icon-width-unit',
+			target: `${prefix}-icon-width-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -227,22 +243,49 @@ const getIconSpacing = (props, icon, isHover = false) => {
 
 		const halfSize = `${
 			getLastBreakpointAttribute({
-				target: 'navigation-arrow-both-icon-width',
+				target: `${prefix}-icon-width`,
 				breakpoint,
 				attributes: props,
 				isHover,
 			}) / 2
 		}${getLastBreakpointAttribute({
-			target: 'navigation-arrow-both-icon-width-unit',
+			target: `${prefix}-icon-width-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		})}`;
 
+		const halfSizeAll = `${
+			(getLastBreakpointAttribute({
+				target: `${prefix}-icon-width`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			}) *
+				innerBlockCount) /
+			2
+		}${getLastBreakpointAttribute({
+			target: `${prefix}-icon-width-unit`,
+			breakpoint,
+			attributes: props,
+			isHover,
+		})}`;
+
+		const halfSizeSpacingBetween = `${
+			(getLastBreakpointAttribute({
+				target: `${prefix}-icon-spacing-between`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			}) *
+				innerBlockCount) /
+			2
+		}px`;
+
 		if (
 			!isNil(
 				props[
-					`navigation-arrow-both-icon-spacing-horizontal-${breakpoint}${
+					`${prefix}-icon-spacing-horizontal-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`
 				]
@@ -252,7 +295,7 @@ const getIconSpacing = (props, icon, isHover = false) => {
 				responsive[
 					breakpoint
 				].left = `calc(${-getLastBreakpointAttribute({
-					target: 'navigation-arrow-both-icon-spacing-horizontal',
+					target: `${prefix}-icon-spacing-horizontal`,
 					breakpoint,
 					attributes: props,
 					isHover,
@@ -261,24 +304,33 @@ const getIconSpacing = (props, icon, isHover = false) => {
 				responsive[
 					breakpoint
 				].right = `calc(${-getLastBreakpointAttribute({
-					target: 'navigation-arrow-both-icon-spacing-horizontal',
+					target: `${prefix}-icon-spacing-horizontal`,
 					breakpoint,
 					attributes: props,
 					isHover,
 				})}px - (${size} + ${halfSize}))`;
+			if (icon === 'dots')
+				responsive[
+					breakpoint
+				].left = `calc(${getLastBreakpointAttribute({
+					target: `${prefix}-icon-spacing-horizontal`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}% - ${halfSizeAll} - ${halfSizeSpacingBetween})`;
 		}
 
 		if (
 			!isNil(
 				props[
-					`navigation-arrow-both-icon-spacing-vertical-${breakpoint}${
+					`${prefix}-icon-spacing-vertical-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`
 				]
 			)
 		) {
 			responsive[breakpoint].top = `${getLastBreakpointAttribute({
-				target: 'navigation-arrow-both-icon-spacing-vertical',
+				target: `${prefix}-icon-spacing-vertical`,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -291,10 +343,52 @@ const getIconSpacing = (props, icon, isHover = false) => {
 	return response;
 };
 
-const getStyles = (props, breakpoint) => {
+const getIconSpacingBetween = (
+	props,
+	prefix = 'navigation-dot',
+	isHover = false
+) => {
+	const response = {};
+
+	const responsive = {
+		label: 'Icon responsive',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		responsive[breakpoint] = {};
+
+		if (
+			!isNil(
+				props[
+					`${prefix}-icon-spacing-between-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
+				]
+			)
+		) {
+			responsive[breakpoint][
+				'margin-right'
+			] = `${getLastBreakpointAttribute({
+				target: `${prefix}-icon-spacing-between`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}px`;
+		}
+	});
+
+	response.iconResponsive = responsive;
+
+	return response;
+};
+
+const getStyles = (props, breakpoint, clientId) => {
 	const { uniqueID, blockStyle } = props;
 
-	const iconHoverStatus = props['navigation-arrow-both-icon-status-hover'];
+	const arrowIconHoverStatus =
+		props['navigation-arrow-both-icon-status-hover'];
+	const dotIconHoverStatus = props['navigation-arrow-both-icon-status-hover'];
 
 	const navigationType = props[`navigation-type-${breakpoint}`];
 
@@ -338,12 +432,14 @@ const getStyles = (props, breakpoint) => {
 							' .maxi-slider-block__arrow--prev': getIconSpacing(
 								props,
 								'prev',
-								false
+								false,
+								'navigation-arrow-both'
 							),
 							' .maxi-slider-block__arrow--next': getIconSpacing(
 								props,
 								'next',
-								false
+								false,
+								'navigation-arrow-both'
 							),
 							' .maxi-slider-block__arrow svg': getIconSize(
 								props,
@@ -356,7 +452,11 @@ const getStyles = (props, breakpoint) => {
 								false
 							),
 							' .maxi-slider-block__arrow svg path':
-								getIconPathStyles(props, false),
+								getIconPathStyles(
+									props,
+									false,
+									'navigation-arrow-both'
+								),
 						};
 					})()),
 				...(navigationType.includes('dot') &&
@@ -370,30 +470,49 @@ const getStyles = (props, breakpoint) => {
 							}),
 							' .maxi-slider-block__dots': getIconSpacing(
 								props,
-								'prev',
-								false
+								'dots',
+								false,
+								'navigation-dot',
+								clientId
 							),
-							// ' .maxi-slider-block__dots': getIconSpacing(
-							// 	props,
-							// 	'next',
-							// 	false
-							// ),
+							' .maxi-navigation-dot-icon-block__icon':
+								getIconSize(
+									props,
+									'navigation-dot-icon',
+									false
+								),
+							' .maxi-navigation-dot-icon-block__icon > div':
+								getIconSize(
+									props,
+									'navigation-dot-icon',
+									false
+								),
 							' .maxi-slider-block__dot svg': getIconSize(
 								props,
 								'navigation-dot-icon',
 								false
 							),
-							' .maxi-slider-block__dot ': getIconSize(
+							' .maxi-slider-block__dot': getIconSize(
 								props,
 								'navigation-dot-icon',
 								false
 							),
+							' .maxi-slider-block__dot:not(:last-child)':
+								getIconSpacingBetween(
+									props,
+									'navigation-dot',
+									false
+								),
 							' .maxi-slider-block__dot svg path':
-								getIconPathStyles(props, false),
+								getIconPathStyles(
+									props,
+									false,
+									'navigation-dot'
+								),
 						};
 					})()),
 				...(navigationType.includes('arrow') &&
-					iconHoverStatus &&
+					arrowIconHoverStatus &&
 					(() => {
 						// const iconHoverObj = getIconHoverObject(
 						// 	props,
@@ -414,7 +533,11 @@ const getStyles = (props, breakpoint) => {
 									true
 								),
 							' .maxi-slider-block__arrow--prev:hover svg path':
-								getIconPathStyles(props, true),
+								getIconPathStyles(
+									props,
+									true,
+									'navigation-arrow-both'
+								),
 							...getSVGStyles({
 								obj: {
 									...getGroupAttributes(
@@ -437,7 +560,11 @@ const getStyles = (props, breakpoint) => {
 									true
 								),
 							' .maxi-slider-block__arrow--next:hover svg path':
-								getIconPathStyles(props, true),
+								getIconPathStyles(
+									props,
+									true,
+									'navigation-arrow-both'
+								),
 							...getSVGStyles({
 								obj: {
 									...getGroupAttributes(

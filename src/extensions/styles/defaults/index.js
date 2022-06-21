@@ -34,6 +34,8 @@ export { default as flex } from './flex';
 export { default as arrowIcon } from './arrowIcon';
 export { default as arrowIconHover } from './arrowIconHover';
 export { default as dotIcon } from './dotIcon';
+export { default as dotIconHover } from './dotIconHover';
+export { default as dotIconActive } from './dotIconActive';
 export * from './background';
 export * from './backgroundHover';
 export * from './border';

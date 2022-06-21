@@ -80,9 +80,6 @@ const NavigationIconControl = props => {
 			? 'navigation-arrow'
 			: 'navigation-dot';
 
-	console.log('prefix', prefix);
-	console.log('shortPrefix', shortPrefix);
-
 	return (
 		<div className={classes}>
 			{!isHover &&
@@ -276,6 +273,45 @@ const NavigationIconControl = props => {
 								}
 								isHover={isHover}
 							/>
+							{prefix.includes('dot') && (
+								<AdvancedNumberControl
+									label={__('Spacing Between', 'maxi-blocks')}
+									min={-10}
+									max={100}
+									initial={1}
+									step={1}
+									breakpoint={breakpoint}
+									value={
+										props[
+											`${prefix}-spacing-between-${breakpoint}${
+												isHover ? '-hover' : ''
+											}`
+										]
+									}
+									onChangeValue={val => {
+										onChange({
+											[`${prefix}-spacing-between-${breakpoint}${
+												isHover ? '-hover' : ''
+											}`]:
+												val !== undefined && val !== ''
+													? val
+													: '',
+										});
+									}}
+									onReset={() =>
+										onChange({
+											[`${prefix}-spacing-between-${breakpoint}${
+												isHover ? '-hover' : ''
+											}`]: getDefaultAttribute(
+												`${prefix}-spacing-between-${breakpoint}${
+													isHover ? '-hover' : ''
+												}`
+											),
+										})
+									}
+									isHover={isHover}
+								/>
+							)}
 						</>
 					</ResponsiveTabsControl>
 					<SettingTabsControl
@@ -345,24 +381,79 @@ const NavigationIconControl = props => {
 									blockStyle,
 								});
 
-								onChange({
-									[`${prefix}-stroke-color${
-										isHover ? '-hover' : ''
-									}`]: color,
-									[`${prefix}-stroke-palette-color${
-										isHover ? '-hover' : ''
-									}`]: paletteColor,
-									[`${prefix}-stroke-palette-status${
-										isHover ? '-hover' : ''
-									}`]: paletteStatus,
-									[`${prefix}-stroke-palette-opacity${
-										isHover ? '-hover' : ''
-									}`]: paletteOpacity,
-									'navigation-arrow-first-icon-content':
-										isHover
+								shortPrefix === 'navigation-arrow' &&
+									onChange({
+										[`${prefix}-stroke-color${
+											isHover ? '-hover' : ''
+										}`]: color,
+										[`${prefix}-stroke-palette-color${
+											isHover ? '-hover' : ''
+										}`]: paletteColor,
+										[`${prefix}-stroke-palette-status${
+											isHover ? '-hover' : ''
+										}`]: paletteStatus,
+										[`${prefix}-stroke-palette-opacity${
+											isHover ? '-hover' : ''
+										}`]: paletteOpacity,
+										'navigation-arrow-first-icon-content':
+											isHover
+												? setSVGContentHover(
+														props[
+															'navigation-arrow-first-icon-content'
+														],
+														paletteStatus
+															? strokeColorStr
+															: color,
+														'stroke'
+												  )
+												: setSVGContent(
+														props[
+															'navigation-arrow-first-icon-content'
+														],
+														paletteStatus
+															? strokeColorStr
+															: color,
+														'stroke'
+												  ),
+										'navigation-arrow-second-icon-content':
+											isHover
+												? setSVGContentHover(
+														props[
+															'navigation-arrow-second-icon-content'
+														],
+														paletteStatus
+															? strokeColorStr
+															: color,
+														'stroke'
+												  )
+												: setSVGContent(
+														props[
+															'navigation-arrow-second-icon-content'
+														],
+														paletteStatus
+															? strokeColorStr
+															: color,
+														'stroke'
+												  ),
+									});
+								shortPrefix === 'navigation-dot' &&
+									onChange({
+										[`${prefix}-stroke-color${
+											isHover ? '-hover' : ''
+										}`]: color,
+										[`${prefix}-stroke-palette-color${
+											isHover ? '-hover' : ''
+										}`]: paletteColor,
+										[`${prefix}-stroke-palette-status${
+											isHover ? '-hover' : ''
+										}`]: paletteStatus,
+										[`${prefix}-stroke-palette-opacity${
+											isHover ? '-hover' : ''
+										}`]: paletteOpacity,
+										'navigation-dot-icon-content': isHover
 											? setSVGContentHover(
 													props[
-														'navigation-arrow-first-icon-content'
+														'navigation-dot-icon-content'
 													],
 													paletteStatus
 														? strokeColorStr
@@ -371,34 +462,14 @@ const NavigationIconControl = props => {
 											  )
 											: setSVGContent(
 													props[
-														'navigation-arrow-first-icon-content'
+														'navigation-dot-icon-content'
 													],
 													paletteStatus
 														? strokeColorStr
 														: color,
 													'stroke'
 											  ),
-									'navigation-arrow-second-icon-content':
-										isHover
-											? setSVGContentHover(
-													props[
-														'navigation-arrow-second-icon-content'
-													],
-													paletteStatus
-														? strokeColorStr
-														: color,
-													'stroke'
-											  )
-											: setSVGContent(
-													props[
-														'navigation-arrow-second-icon-content'
-													],
-													paletteStatus
-														? strokeColorStr
-														: color,
-													'stroke'
-											  ),
-								});
+									});
 							}}
 							isHover={isHover}
 						/>
@@ -461,39 +532,96 @@ const NavigationIconControl = props => {
 									blockStyle,
 								});
 
-								onChange({
-									[`${prefix}-fill-color${
-										isHover ? '-hover' : ''
-									}`]: color,
-									[`${prefix}-fill-palette-color${
-										isHover ? '-hover' : ''
-									}`]: paletteColor,
-									[`${prefix}-fill-palette-status${
-										isHover ? '-hover' : ''
-									}`]: paletteStatus,
-									[`${prefix}-fill-palette-opacity${
-										isHover ? '-hover' : ''
-									}`]: paletteOpacity,
-									[`${prefix}-content`]: isHover
-										? setSVGContentHover(
-												props[
-													'navigation-arrow-first-icon-content'
-												],
-												paletteStatus
-													? fillColorStr
-													: color,
-												'fill'
-										  )
-										: setSVGContent(
-												props[
-													'navigation-arrow-first-icon-content'
-												],
-												paletteStatus
-													? fillColorStr
-													: color,
-												'fill'
-										  ),
-								});
+								shortPrefix === 'navigation-arrow' &&
+									onChange({
+										[`${prefix}-fill-color${
+											isHover ? '-hover' : ''
+										}`]: color,
+										[`${prefix}-fill-palette-color${
+											isHover ? '-hover' : ''
+										}`]: paletteColor,
+										[`${prefix}-fill-palette-status${
+											isHover ? '-hover' : ''
+										}`]: paletteStatus,
+										[`${prefix}-fill-palette-opacity${
+											isHover ? '-hover' : ''
+										}`]: paletteOpacity,
+										'navigation-arrow-first-icon-content':
+											isHover
+												? setSVGContentHover(
+														props[
+															'navigation-arrow-first-icon-content'
+														],
+														paletteStatus
+															? fillColorStr
+															: color,
+														'fill'
+												  )
+												: setSVGContent(
+														props[
+															'navigation-arrow-first-icon-content'
+														],
+														paletteStatus
+															? fillColorStr
+															: color,
+														'fill'
+												  ),
+										'navigation-arrow-second-icon-content':
+											isHover
+												? setSVGContentHover(
+														props[
+															'navigation-arrow-second-icon-content'
+														],
+														paletteStatus
+															? fillColorStr
+															: color,
+														'fill'
+												  )
+												: setSVGContent(
+														props[
+															'navigation-arrow-second-icon-content'
+														],
+														paletteStatus
+															? fillColorStr
+															: color,
+														'fill'
+												  ),
+									});
+
+								shortPrefix === 'navigation-dot' &&
+									onChange({
+										[`${prefix}-fill-color${
+											isHover ? '-hover' : ''
+										}`]: color,
+										[`${prefix}-fill-palette-color${
+											isHover ? '-hover' : ''
+										}`]: paletteColor,
+										[`${prefix}-fill-palette-status${
+											isHover ? '-hover' : ''
+										}`]: paletteStatus,
+										[`${prefix}-fill-palette-opacity${
+											isHover ? '-hover' : ''
+										}`]: paletteOpacity,
+										[`${prefix}-content`]: isHover
+											? setSVGContentHover(
+													props[
+														'navigation-dot-icon-content'
+													],
+													paletteStatus
+														? fillColorStr
+														: color,
+													'fill'
+											  )
+											: setSVGContent(
+													props[
+														'navigation-dot-icon-content'
+													],
+													paletteStatus
+														? fillColorStr
+														: color,
+													'fill'
+											  ),
+									});
 							}}
 							isHover={isHover}
 						/>

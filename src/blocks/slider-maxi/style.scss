@@ -52,5 +52,17 @@ body.maxi-blocks--active .maxi-slider-block {
 	.maxi-slider-block__dots {
 		display: flex;
 		position: absolute;
+		svg {
+			position: absolute;
+		}
+	}
+}
+
+@keyframes maxiFadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
 	}
 }

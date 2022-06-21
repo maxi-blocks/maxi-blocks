@@ -95,6 +95,51 @@ const NavigationIconsControl = props => {
 						</>
 					),
 				},
+				prefix.includes('dot') && {
+					label: __('Active state', 'maxi-blocks'),
+					content: (
+						<>
+							<ToggleSwitch
+								label={__(
+									'Enable active icon state',
+									'maxi-blocks'
+								)}
+								selected={attributes[`${prefix}-status-active`]}
+								onChange={val =>
+									onChange({
+										[`${prefix}-status-active`]: val,
+									})
+								}
+							/>
+							{attributes[`${prefix}-status-active`] && (
+								<NavigationIconControl
+									{...attributes}
+									onChangeInline={(
+										obj,
+										target,
+										isMultiplySelector = false
+									) =>
+										insertInlineStyles({
+											obj,
+											target,
+											isMultiplySelector,
+										})
+									}
+									onChange={(obj, target) => {
+										onChange(obj);
+										cleanInlineStyles(target);
+									}}
+									svgType={svgType}
+									breakpoint={deviceType}
+									clientId={clientId}
+									blockStyle={blockStyle}
+									prefix={prefix}
+									isHover
+								/>
+							)}
+						</>
+					),
+				},
 			]}
 		/>
 	);

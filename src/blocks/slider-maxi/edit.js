@@ -136,6 +136,9 @@ const SliderWrapper = props => {
 
 	const { isLoop } = attributes;
 
+	const sliderTransition = attributes['slider-transition'];
+	const sliderTransitionSpeed = attributes['slider-transition-speed'];
+
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
 	const iconRef = createRef(null);
@@ -145,6 +148,28 @@ const SliderWrapper = props => {
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [wrapperTranslate, setWrapperTranslate] = useState(0);
 	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
+
+	const getTransitionEffect = () => {
+		let effect = '';
+
+		switch (sliderTransition) {
+			case 'slide':
+				effect += 'maxiSlide';
+				break;
+			case 'fade':
+				effect += 'maxiFadeIn';
+				break;
+			case 'zoom-fade':
+				effect += 'maxiZoomFadeIn';
+				break;
+			default:
+				effect += 'maxiSlide';
+		}
+
+		effect += ` ${sliderTransitionSpeed / 1000}s ease-in-out`;
+
+		return effect;
+	};
 
 	const getSlidePosition = currentSlide => {
 		if (currentSlide < 0)
@@ -163,8 +188,9 @@ const SliderWrapper = props => {
 	};
 
 	const nextSlide = () => {
+		console.log(getTransitionEffect());
 		if (currentSlide + 1 < numberOfSlides || isLoop) {
-			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+			wrapperRef.current.style.animation = getTransitionEffect();
 			setCurrentSlide(prev => {
 				return prev + 1;
 			});
@@ -173,7 +199,7 @@ const SliderWrapper = props => {
 
 	const prevSlide = () => {
 		if (currentSlide - 1 >= 0 || isLoop) {
-			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+			wrapperRef.current.style.animation = getTransitionEffect();
 			setCurrentSlide(next => {
 				return next - 1;
 			});
@@ -181,7 +207,7 @@ const SliderWrapper = props => {
 	};
 
 	const exactSlide = slideNumber => {
-		wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+		wrapperRef.current.style.animation = getTransitionEffect();
 		setCurrentSlide(slideNumber);
 	};
 
@@ -208,7 +234,7 @@ const SliderWrapper = props => {
 		} else if (dragPosition - initPosition > 100) {
 			prevSlide();
 		} else {
-			wrapperRef.current.style.transition = 'transform 0.2s ease-out';
+			wrapperRef.current.style.animation = getTransitionEffect();
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 
@@ -229,7 +255,7 @@ const SliderWrapper = props => {
 	};
 
 	const handleTransitionEnd = () => {
-		wrapperRef.current.style.transition = '';
+		wrapperRef.current.style.animation = '';
 		if (currentSlide >= numberOfSlides) {
 			setCurrentSlide(0);
 		}
@@ -342,7 +368,6 @@ const SliderWrapper = props => {
 		.select('core/block-editor')
 		.getBlock(clientId).innerBlocks.length;
 
-	console.log();
 	return (
 		<>
 			<ul
@@ -465,7 +490,11 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes, this.props.deviceType);
+		return getStyles(
+			this.props.attributes,
+			this.props.deviceType,
+			this.props.clientId
+		);
 	}
 
 	// eslint-disable-next-line class-methods-use-this

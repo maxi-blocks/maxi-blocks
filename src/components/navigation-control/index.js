@@ -55,8 +55,8 @@ const NavigationControl = props => {
 							})
 						}
 					/>
-					{props[`navigation-type-${deviceType}`]?.includes(
-						'arrows'
+					{attributes[`navigation-type-${deviceType}`]?.includes(
+						'arrow'
 					) && (
 						<SelectControl
 							label={__('Arrow position', 'maxi-blocks')}
@@ -92,8 +92,8 @@ const NavigationControl = props => {
 							}}
 						/>
 					)}
-					{props[`navigation-type-${deviceType}`]?.includes(
-						'dots'
+					{attributes[`navigation-type-${deviceType}`]?.includes(
+						'dot'
 					) && (
 						<SelectControl
 							label={__('Dots position', 'maxi-blocks')}
@@ -119,12 +119,11 @@ const NavigationControl = props => {
 								});
 								val === 'inside' &&
 									onChange({
-										[`navigation-dot-icon-spacing-horizontal-${deviceType}`]:
-											-40,
+										[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 85,
 									});
 								val === 'outside' &&
 									onChange({
-										[`navigation-dot-icon-spacing-horizontal-${deviceType}`]: 10,
+										[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 110,
 									});
 							}}
 						/>

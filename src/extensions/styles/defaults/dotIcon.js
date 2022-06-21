@@ -9,7 +9,7 @@ const dotIcon = {
 		obj: icon,
 		prefix,
 		diffValAttr: {
-			'navigation-dot-icon-width-general': '5',
+			'navigation-dot-icon-width-general': '10',
 			'navigation-dot-icon-stroke-palette-color': 5,
 		},
 		exclAttr: [
@@ -35,7 +35,11 @@ const dotIcon = {
 			},
 			'navigation-dot-icon-spacing-vertical': {
 				type: 'number',
-				default: 90,
+				default: 85,
+			},
+			'navigation-dot-icon-spacing-between': {
+				type: 'number',
+				default: 3,
 			},
 		},
 	}),

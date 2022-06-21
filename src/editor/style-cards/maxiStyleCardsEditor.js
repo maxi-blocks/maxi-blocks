@@ -253,6 +253,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		setSelectedStyleCard(newId);
 	};
 
+	const [settingsToggled, setSettingsToggled] = useState(false);
+	const toggleSettings = () => {
+		setSettingsToggled(!settingsToggled);
+	};
+
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
@@ -271,9 +276,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						<Icon icon={closeIcon} />
 					</span>
 				</h2>
+
 				<hr />
 				<div className='maxi-style-cards__popover__sub-title'>
-					{__('Search or edit style cards', 'maxi-blocks')}
+					{__('Active card', 'maxi-blocks')}
 				</div>
 				<div className='maxi-style-cards__sc'>
 					<div className='maxi-style-cards__sc__more-sc'>
@@ -331,6 +337,29 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						>
 							<Icon icon={SCDelete} />
 						</Button>
+					</div>
+					<div className='maxi-style-cards__active-card-options'>
+						<span
+							className='maxi-style-card__active-card-edit'
+							onClick={toggleSettings}
+						>
+							Edit
+						</span>
+						<span
+							className='maxi-style-card__active-card-edit'
+							onClick={() => {
+								const fileName = `${selectedSCValue.name}.txt`;
+								exportStyleCard(
+									{
+										...selectedSCValue,
+										status: '',
+									},
+									fileName
+								);
+							}}
+						>
+							Export
+						</span>
 					</div>
 					<div className='maxi-style-cards__sc__actions'>
 						<PostPreviewButton
@@ -432,6 +461,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							{__('Add', 'maxi-blocks')}
 						</Button>
 					</div>
+
 					<div className='maxi-style-cards__sc__ie'>
 						<Button
 							className='maxi-style-cards__sc__ie--export'
@@ -474,39 +504,41 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						</MediaUploadCheck>
 					</div>
 				</div>
-				<hr />
-				<SettingTabsControl
-					disablePadding
-					returnValue={({ key }) => setCurrentSCStyle(key)}
-					items={[
-						{
-							label: __('Light tone globals', 'maxi-blocks'),
-							key: 'light',
-							content: (
-								<MaxiStyleCardsTab
-									SC={selectedSCValue.light}
-									SCStyle='light'
-									onChangeValue={onChangeValue}
-									breakpoint={breakpoint}
-									currentKey={selectedSCKey}
-								/>
-							),
-						},
-						{
-							label: __('Dark tone globals', 'maxi-blocks'),
-							key: 'dark',
-							content: (
-								<MaxiStyleCardsTab
-									SC={selectedSCValue.dark}
-									SCStyle='dark'
-									onChangeValue={onChangeValue}
-									breakpoint={breakpoint}
-									currentKey={selectedSCKey}
-								/>
-							),
-						},
-					]}
-				/>
+				{settingsToggled && (
+					<SettingTabsControl
+						toggled={false}
+						disablePadding
+						returnValue={({ key }) => setCurrentSCStyle(key)}
+						items={[
+							{
+								label: __('Light tone globals', 'maxi-blocks'),
+								key: 'light',
+								content: (
+									<MaxiStyleCardsTab
+										SC={selectedSCValue.light}
+										SCStyle='light'
+										onChangeValue={onChangeValue}
+										breakpoint={breakpoint}
+										currentKey={selectedSCKey}
+									/>
+								),
+							},
+							{
+								label: __('Dark tone globals', 'maxi-blocks'),
+								key: 'dark',
+								content: (
+									<MaxiStyleCardsTab
+										SC={selectedSCValue.dark}
+										SCStyle='dark'
+										onChangeValue={onChangeValue}
+										breakpoint={breakpoint}
+										currentKey={selectedSCKey}
+									/>
+								),
+							},
+						]}
+					/>
+				)}
 			</Popover>
 		)
 	);

@@ -14,7 +14,12 @@ body {
 		margin: 134px 0 0 184px;
 	}
 }
-
+.maxi-style-cards__active-card-options {
+	padding: 10px 0;
+}
+.maxi-style-card__active-card-edit {
+	padding-right: 10px;
+}
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
 		position: fixed;

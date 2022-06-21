@@ -64,11 +64,17 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, blockFullWidth, fullWidth } = attributes;
+		const { uniqueID } = attributes;
 		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'top' &&
+				'maxi-button-block__button--icon-top',
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'bottom' &&
+				'maxi-button-block__button--icon-bottom',
 			attributes['icon-content'] &&
 				attributes['icon-position'] === 'left' &&
 				'maxi-button-block__button--icon-left',
@@ -109,10 +115,9 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<div data-align={fullWidth} className={buttonClasses}>
+				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (
 						<RichText
 							className='maxi-button-block__content'

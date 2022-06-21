@@ -7,7 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -23,10 +27,6 @@ const attributes = {
 		type: 'string',
 		default: __('Divider', 'maxi-blocks'),
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.divider,
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
@@ -34,10 +34,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
@@ -67,7 +63,10 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

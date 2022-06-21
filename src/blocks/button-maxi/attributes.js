@@ -7,7 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -22,10 +26,6 @@ const attributes = {
 	customLabel: {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
-	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
 	},
 	buttonContent: {
 		type: 'string',
@@ -169,10 +169,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -189,7 +185,10 @@ const attributes = {
 	...attributesData.blockBackground,
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

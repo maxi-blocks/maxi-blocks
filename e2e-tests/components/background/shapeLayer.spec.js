@@ -13,7 +13,6 @@ import {
 	addBackgroundLayer,
 	modalMock,
 	changeResponsive,
-	editAxisControl,
 	getBlockStyle,
 	openPreviewPage,
 	editAdvancedNumberControl,
@@ -195,18 +194,6 @@ describe('BackgroundControl', () => {
 			options => options[0].click()
 		);
 
-		await editAxisControl({
-			page,
-			instance: await page.$('.maxi-background-control__svg-layer--size'),
-			values: '66',
-		});
-
-		// size
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
-		);
-
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
@@ -222,11 +209,6 @@ describe('BackgroundControl', () => {
 
 	it('Check Background shape layer hover responsive', async () => {
 		await changeResponsive(page, 's');
-
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
-		);
 
 		const baseBackgroundShapeSize = await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
@@ -255,11 +237,6 @@ describe('BackgroundControl', () => {
 		// expect XS responsive
 		await changeResponsive(page, 'xs');
 
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
-		);
-
 		const xsBackgroundShapeSize = await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
 			selector => selector[0].value
@@ -269,11 +246,6 @@ describe('BackgroundControl', () => {
 
 		// expect M responsive
 		await changeResponsive(page, 'm');
-
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
-		);
 
 		const mBackgroundShapeSize = await page.$$eval(
 			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',

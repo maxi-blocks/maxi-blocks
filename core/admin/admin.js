@@ -28,4 +28,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			});
 		});
 	}
+
+	const select = document.getElementById('maxi-versions');
+	const version = document.getElementById('maxi-rollback-version');
+
+	select?.addEventListener('change', function updateBreakpoints() {
+		const { value } = select;
+		version.value = value;
+	});
 });

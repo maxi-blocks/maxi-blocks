@@ -4,8 +4,14 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies
+ * External dependencies.
  */
+import { isEmpty } from 'lodash';
+
+/**
+ * Internal dependencies.
+ */
+import InfoBox from '../info-box';
 import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
 import {
@@ -23,9 +29,18 @@ const canvasSettings = [
 			'borderWidth',
 			'borderRadius',
 		],
-		component: props => (
-			<Controls.BlockBackgroundControl {...props} disableAddLayer />
-		),
+		component: props => {
+			const { attributes } = props;
+			const { 'background-layers': bgLayers } = attributes;
+
+			return !isEmpty(bgLayers) ? (
+				<Controls.BlockBackgroundControl {...props} disableAddLayer />
+			) : (
+				<InfoBox
+					message={__('No background layers added', 'maxi-blocks')}
+				/>
+			);
+		},
 		helper: ({ obj, blockStyle }) =>
 			styleHelpers.getBlockBackgroundStyles({ ...obj, blockStyle }),
 	},
@@ -143,7 +158,11 @@ const settings = {
 						disableIconInherit={!iconInherit}
 					/>
 				) : (
-					'Add button icon to be able to use this control'
+					<InfoBox
+						message={__(
+							'Add button icon to be able to use this control'
+						)}
+					/>
 				);
 			},
 			helper: props => styleHelpers.getButtonIconStyles(props),

@@ -14,7 +14,10 @@ describe('Svg Icon Maxi default size', () => {
 		await insertBlock('Icon Maxi');
 
 		await modalMock(page, { type: 'svg' });
-		await page.waitForTimeout(150);
+		await page.$eval('button[aria-label="Close dialog"]', button =>
+			button.click()
+		);
+		await page.waitForTimeout(200);
 
 		// click and drag
 		const resizerBottomRight = await page.$(

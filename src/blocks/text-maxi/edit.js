@@ -19,6 +19,7 @@ import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
+	createTransitionObj,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
@@ -104,9 +105,22 @@ class edit extends MaxiBlockComponent {
 			listReversed,
 			listStart,
 			textLevel,
+			transition,
 			typeOfList,
 			uniqueID,
 		} = attributes;
+
+		// Add link if transitions hasn't it
+		if (!transition.canvas?.link)
+			maxiSetAttributes({
+				transition: {
+					...transition,
+					canvas: {
+						...transition.canvas,
+						link: createTransitionObj(),
+					},
+				},
+			});
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content

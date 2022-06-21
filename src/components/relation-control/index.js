@@ -104,7 +104,7 @@ const RelationControl = props => {
 
 		const settingsComponent = selectedSettingsObj.component;
 		const prefix = selectedSettingsObj?.prefix || '';
-		const blockAttributes = getBlock(clientId)?.attributes;
+		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
 		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(

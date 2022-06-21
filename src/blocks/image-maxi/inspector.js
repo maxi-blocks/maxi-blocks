@@ -1,11 +1,10 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { RangeControl } from '@wordpress/components';
-import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -45,9 +44,9 @@ const dimensionTab = props => {
 	const {
 		attributes,
 		clientId,
-		imageData,
 		maxiSetAttributes,
 		resizableObject,
+		imageData,
 	} = props;
 	const {
 		cropOptions,
@@ -61,6 +60,7 @@ const dimensionTab = props => {
 
 	const getSizeOptions = () => {
 		const response = [];
+
 		if (imageData) {
 			let { sizes } = imageData.media_details;
 			sizes = Object.entries(sizes).sort((a, b) => {
@@ -245,7 +245,6 @@ const Inspector = props => {
 		altSelector,
 		blockStyle,
 		captionType,
-		fullWidth,
 		mediaAlt,
 		SVGElement,
 		uniqueID,
@@ -253,10 +252,10 @@ const Inspector = props => {
 		captionPosition,
 	} = attributes;
 
-	const imageData = useCallback(
-		() => select('core').getMedia(mediaID),
+	const imageData = useSelect(
+		select => select('core').getMedia(mediaID),
 		[mediaID]
-	)();
+	);
 
 	const getCaptionOptions = () => {
 		const response = [
@@ -292,8 +291,10 @@ const Inspector = props => {
 								isSecondary
 								items={[
 									deviceType === 'general' &&
-										fullWidth !== 'full' &&
-										dimensionTab(props),
+										attributes[
+											'image-full-width-general'
+										] !== 'full' &&
+										dimensionTab({ ...props, imageData }),
 									...inspectorTabs.alignment({
 										props,
 										isAlignment: true,

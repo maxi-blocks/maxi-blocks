@@ -27,7 +27,7 @@ import { groupIcon } from '../../icons';
 /**
  * Migrators
  */
-import v1 from '../../extensions/styles/migrators/v1';
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
 
 /**
  * Block
@@ -54,5 +54,5 @@ registerBlockType('maxi-blocks/group-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [v1({ attributes, save })],
+	deprecated: [blockMigrator({ attributes, save })],
 });

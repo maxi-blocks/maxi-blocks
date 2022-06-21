@@ -9,7 +9,7 @@ import {
 	migrate as fromFullWidthNonToResponsiveMigrator,
 } from './fullWidthNonToResponsive';
 
-const v1 = ({ attributes, save, prefix, isContainer = false }) => {
+const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 	return {
 		isEligible(blockAttributes) {
 			return (
@@ -25,7 +25,6 @@ const v1 = ({ attributes, save, prefix, isContainer = false }) => {
 		},
 
 		migrate(oldAttributes) {
-			debugger;
 			const newAttributes = { ...oldAttributes };
 
 			positionMigrator(newAttributes, attributes);
@@ -35,7 +34,6 @@ const v1 = ({ attributes, save, prefix, isContainer = false }) => {
 		},
 
 		save(props) {
-			debugger;
 			const { attributes } = props;
 			const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
 
@@ -54,4 +52,4 @@ const v1 = ({ attributes, save, prefix, isContainer = false }) => {
 	};
 };
 
-export default v1;
+export default blockMigrator;

@@ -100,7 +100,13 @@ class edit extends MaxiBlockComponent {
 				.createRange()
 				.createContextualFragment(cleanedContent).firstElementChild;
 
-			const resData = generateDataObject('', svg, uniqueID);
+			const resData = {
+				[`${uniqueID}__${uniqueId()}`]: {
+					color: '',
+					imageID: '',
+					imageURL: '',
+				},
+			};
 
 			const SVGValue = resData;
 			const el = Object.keys(SVGValue)[0];

@@ -39,13 +39,6 @@ body.maxi-blocks--active figure.maxi-image-block {
 			position: relative;
 			margin: 0;
 			text-align: left;  
-			border: 1.5px dashed transparent;
-			&:hover {
-				border-color: #7fbddc;
-			}
-			&:focus {
-				border-color: #7fbddc;
-			}
 		}
 	}
 	.maxi-hover-details {

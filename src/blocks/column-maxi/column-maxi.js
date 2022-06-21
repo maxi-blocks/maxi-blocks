@@ -25,9 +25,9 @@ import edit from './edit';
 import save from './save';
 
 /**
- * External dependencies
+ * Migrators
  */
-import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
+import v1 from '../../extensions/styles/migrators/v1';
 
 /**
  * Block
@@ -54,5 +54,5 @@ registerBlockType('maxi-blocks/column-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [positionMigrator({ attributes, save })],
+	deprecated: [v1({ attributes, save })],
 });

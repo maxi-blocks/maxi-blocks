@@ -23,8 +23,11 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { groupIcon } from '../../icons';
-import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
-import fromFullWidthNonToResponsive from '../../extensions/styles/migrators/fullWidthNonToResponsive';
+
+/**
+ * Migrators
+ */
+import v1 from '../../extensions/styles/migrators/v1';
 
 /**
  * Block
@@ -51,8 +54,5 @@ registerBlockType('maxi-blocks/group-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [
-		positionMigrator({ attributes, save }),
-		fromFullWidthNonToResponsive({ attributes, save }),
-	],
+	deprecated: [v1({ attributes, save })],
 });

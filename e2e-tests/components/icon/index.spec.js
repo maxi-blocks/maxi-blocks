@@ -6,7 +6,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { modalMock, getAttributes } from '../../utils';
+import { modalMock, getAttributes, openSidebarTab } from '../../utils';
 
 describe('Svg Icon Maxi default size', () => {
 	it('Svg Icon Maxi default size', async () => {
@@ -16,8 +16,30 @@ describe('Svg Icon Maxi default size', () => {
 		await modalMock(page, { type: 'svg' });
 		await page.waitForTimeout(150);
 
-		await page.$eval('button[aria-label="Close dialog"]', button =>
-			button.click()
+		// click and drag
+		const resizerBottomRight = await page.$(
+			'.maxi-svg-icon-block .maxi-block__resizer .maxi-resizable__handle-bottomright'
+		);
+		const boundingBox = await resizerBottomRight.boundingBox();
+
+		await page.mouse.move(
+			boundingBox.x + boundingBox.width / 2,
+			boundingBox.y + boundingBox.height / 2
+		);
+		await page.mouse.down();
+		await page.mouse.move(60, 4);
+		await page.mouse.up();
+
+		await page.waitForTimeout(300);
+
+		expect(await getAttributes('svg-width-general')).toStrictEqual('10');
+
+		await openSidebarTab(page, 'style', 'height width');
+
+		// reset width
+		await page.$eval(
+			'.maxi-responsive-tabs-control .maxi-advanced-number-control button',
+			button => button.click()
 		);
 
 		expect(await getAttributes('svg-width-general')).toStrictEqual('64');

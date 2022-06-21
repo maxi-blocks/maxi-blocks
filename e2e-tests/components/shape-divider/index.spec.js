@@ -1,12 +1,16 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab } from '../../utils';
+import { getAttributes, openSidebarTab, editColorControl } from '../../utils';
 
 describe('Shape divider', () => {
 	it('Checking the shape divider', async () => {
@@ -38,51 +42,44 @@ describe('Shape divider', () => {
 			button => button.click()
 		);
 
-		const expectAttributes = {
-			'arrow-position-general': 50,
-			'arrow-side-general': 'bottom',
-			'arrow-status-general': false,
-			'arrow-width-general': 80,
-			'shape-divider-bottom-effects-status': false,
-			'shape-divider-bottom-height-unit': 'px',
-			'shape-divider-bottom-height': 100,
-			'shape-divider-bottom-opacity': 1,
-			'shape-divider-bottom-palette-color': 5,
-			'shape-divider-bottom-palette-status': true,
-			'shape-divider-bottom-status': false,
-			'shape-divider-top-effects-status': false,
-			'shape-divider-top-height': 100,
-			'shape-divider-top-height-unit': 'px',
-			'shape-divider-top-opacity': 1,
-			'shape-divider-top-palette-color': 5,
-			'shape-divider-top-palette-status': true,
-			'shape-divider-top-shape-style': 'waves-top',
-			'shape-divider-top-status': true,
-		};
-		const attributeResult = await getAttributes([
-			'arrow-position-general',
-			'arrow-side-general',
-			'arrow-status-general',
-			'arrow-width-general',
-			'shape-divider-bottom-effects-status',
-			'shape-divider-bottom-height-unit',
-			'shape-divider-bottom-height',
-			'shape-divider-bottom-opacity',
-			'shape-divider-bottom-palette-color',
-			'shape-divider-bottom-palette-status',
-			'shape-divider-bottom-status',
-			'shape-divider-top-effects-status',
-			'shape-divider-top-height',
-			'shape-divider-top-height-unit',
-			'shape-divider-top-opacity',
-			'shape-divider-top-palette-color',
-			'shape-divider-top-palette-status',
-			'shape-divider-top-shape-style',
-			'shape-divider-top-status',
-		]);
+		expect(
+			await getAttributes('shape-divider-top-shape-style')
+		).toStrictEqual('waves-top');
 
-		expect(attributeResult).toStrictEqual(expectAttributes);
-		expect(await getAttributes('background-layers')).toMatchSnapshot();
+		// top attributes
+		await page.$eval('.maxi-opacity-control input', input => input.focus());
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('88');
+
+		expect(await getAttributes('shape-divider-top-opacity')).toStrictEqual(
+			0.88
+		);
+
+		await editColorControl({
+			page,
+			instance: await page.$(
+				'.maxi-tab-content .maxi-color-palette-control .maxi-color-control__palette'
+			),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
+
+		expect(
+			await getAttributes('shape-divider-top-palette-color')
+		).toStrictEqual(5);
+
+		await page.$eval(
+			'.maxi-tabs-content .maxi-divider-height input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('70');
+
+		expect(await getAttributes('shape-divider-top-height')).toStrictEqual(
+			70
+		);
 
 		// bottom shape
 		await accordionPanel.$eval(
@@ -110,5 +107,40 @@ describe('Shape divider', () => {
 		expect(
 			await getAttributes('shape-divider-bottom-shape-style')
 		).toStrictEqual('waves-bottom');
+
+		// bottom attributes
+		await page.$eval('.maxi-opacity-control input', input => input.focus());
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('44');
+
+		expect(
+			await getAttributes('shape-divider-bottom-opacity')
+		).toStrictEqual(0.44);
+
+		await editColorControl({
+			page,
+			instance: await page.$(
+				'.maxi-tab-content .maxi-color-palette-control .maxi-color-control__palette'
+			),
+			paletteStatus: true,
+			colorPalette: 7,
+		});
+
+		expect(
+			await getAttributes('shape-divider-bottom-palette-color')
+		).toStrictEqual(7);
+
+		await page.$$eval(
+			'.maxi-tabs-content .maxi-advanced-number-control input',
+			input => input[2].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('50');
+
+		expect(
+			await getAttributes('shape-divider-bottom-height')
+		).toStrictEqual(50);
 	});
 });

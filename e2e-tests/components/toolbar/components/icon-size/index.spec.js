@@ -21,10 +21,6 @@ describe('Icon size', () => {
 		await modalMock(page, { type: 'svg' });
 		await page.waitForTimeout(150);
 
-		await page.$eval('button[aria-label="Close dialog"]', button =>
-			button.click()
-		);
-
 		// edit color
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__svg-size',

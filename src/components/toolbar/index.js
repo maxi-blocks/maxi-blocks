@@ -53,9 +53,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getColorRGBAString,
 } from '../../extensions/styles';
-import { setSVGContent } from '../../extensions/svg';
 
 /**
  * Styles
@@ -326,34 +324,13 @@ const MaxiToolbar = memo(
 											})
 										}
 										onChangeFill={obj => {
-											const fillColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-fill',
-													secondVar: `color-${obj['svg-fill-palette-color']}`,
-													opacity:
-														obj[
-															'svg-fill-palette-opacity'
-														],
-													blockStyle,
-												});
-
-											maxiSetAttributes({
-												...obj,
-												content: setSVGContent(
-													attributes.content,
-													obj[
-														'svg-fill-palette-status'
-													]
-														? fillColorStr
-														: obj['svg-fill-color'],
-													'fill'
-												),
-											});
+											maxiSetAttributes(obj);
 											cleanInlineStyles('[data-fill]');
 										}}
 										svgType='Fill'
 										type='fill'
 										blockStyle={blockStyle}
+										content={attributes.content}
 									/>
 								)}
 								{svgType !== 'Shape' && (
@@ -376,34 +353,13 @@ const MaxiToolbar = memo(
 											})
 										}
 										onChangeStroke={obj => {
-											const lineColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-stroke',
-													secondVar: `color-${obj['svg-line-palette-color']}`,
-													opacity:
-														obj[
-															'svg-line-palette-opacity'
-														],
-													blockStyle,
-												});
-
-											maxiSetAttributes({
-												...obj,
-												content: setSVGContent(
-													attributes.content,
-													obj[
-														'svg-line-palette-status'
-													]
-														? lineColorStr
-														: obj['svg-line-color'],
-													'stroke'
-												),
-											});
+											maxiSetAttributes(obj);
 											cleanInlineStyles('[data-stroke]');
 										}}
 										svgType='Line'
 										type='line'
 										blockStyle={blockStyle}
+										content={attributes.content}
 									/>
 								)}
 								<SvgWidth

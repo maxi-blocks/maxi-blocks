@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import SelectControl from '../select-control';
-import { getWeightOptions } from '../../components/typography-control/utils';
+import { getWeightOptions } from '../typography-control/utils';
 import { loadFonts } from '../../extensions/text/fonts';
 
 const FontWeightControl = props => {

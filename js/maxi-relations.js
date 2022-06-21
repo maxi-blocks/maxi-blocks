@@ -11,7 +11,7 @@ const relations = () => {
 			Object.entries(css).forEach(([breakpoint, obj]) => {
 				if (
 					breakpoints.includes(breakpoint) &&
-					(window.innerWidth < obj.breakpoint || !obj.breakpoint)
+					(window.innerWidth <= obj.breakpoint || !obj.breakpoint)
 				) {
 					stylesObj = {
 						...stylesObj,

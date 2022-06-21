@@ -239,19 +239,21 @@ const MaxiToolbar = memo(
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
-								<span
-									className='breadcrumbs-pin'
-									onClick={() => {
-										togglePin();
-									}}
-								>
-									<span className='breadcrumbs-pin-toltip'>
-										{pinActive ? 'Unpin' : 'Pin Open'}
+								{!isFirstOnHierarchy && (
+									<span
+										className='breadcrumbs-pin'
+										onClick={() => {
+											togglePin();
+										}}
+									>
+										<span className='breadcrumbs-pin-toltip'>
+											{pinActive ? 'Unpin' : 'Pin Open'}
+										</span>
+										<span className='breadcrumbs-pin-icon'>
+											{toolbarPin}
+										</span>
 									</span>
-									<span className='breadcrumbs-pin-icon'>
-										{toolbarPin}
-									</span>
-								</span>
+								)}
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}

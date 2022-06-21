@@ -10,6 +10,7 @@ import {
 	editAxisControl,
 	getAttributes,
 	addResponsiveTest,
+	resettingAttributes,
 } from '../../utils';
 
 describe('Padding control', () => {
@@ -49,6 +50,13 @@ describe('Padding control', () => {
 		]);
 
 		expect(paddingResult).toStrictEqual(expectPadding);
+
+		const resetExpect = await resettingAttributes({
+			page,
+			instance: 'maxi-axis-control__content__item__margin',
+			expectValue: '',
+		});
+		expect(resetExpect).toBeTruthy();
 	});
 
 	it('Checking responsive padding', async () => {

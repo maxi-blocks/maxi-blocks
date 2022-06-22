@@ -107,10 +107,6 @@ const SliderControl = props => {
 						label: __('Fade', 'maxi-blocks'),
 						value: 'fade',
 					},
-					{
-						label: __('Zoom Fade', 'maxi-blocks'),
-						value: 'zoom-fade',
-					},
 				]}
 				value={getLastBreakpointAttribute({
 					target: 'slider-transition',

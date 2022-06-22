@@ -58,11 +58,22 @@ body.maxi-blocks--active .maxi-slider-block {
 	}
 }
 
-@keyframes maxiFadeIn {
+@keyframes maxiFade {
 	0% {
 		opacity: 0;
 	}
 	100% {
 		opacity: 1;
+	}
+}
+
+@keyframes maxiZoomFade {
+	0% {
+		opacity: 0;
+		zoom: 1.2;
+	}
+	100% {
+		opacity: 1;
+		zoom: 1;
 	}
 }

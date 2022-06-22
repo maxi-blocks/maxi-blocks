@@ -134,10 +134,12 @@ const SliderWrapper = props => {
 		clientId,
 	} = props;
 
-	const { isLoop } = attributes;
+	const { isLoop, isAutoplay, isHovered, pauseOnHover, pauseOnInteraction } =
+		attributes;
 
 	const sliderTransition = attributes['slider-transition'];
 	const sliderTransitionSpeed = attributes['slider-transition-speed'];
+	const sliderAutoplaySpeed = attributes['slider-autoplay-speed'];
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
@@ -149,24 +151,21 @@ const SliderWrapper = props => {
 	const [wrapperTranslate, setWrapperTranslate] = useState(0);
 	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
 
-	const getTransitionEffect = () => {
+	const getSliderEffect = () => {
 		let effect = '';
 
 		switch (sliderTransition) {
 			case 'slide':
-				effect += 'maxiSlide';
+				effect += 'transform';
 				break;
 			case 'fade':
-				effect += 'maxiFadeIn';
-				break;
-			case 'zoom-fade':
-				effect += 'maxiZoomFadeIn';
+				effect += 'maxiFade';
 				break;
 			default:
 				effect += 'maxiSlide';
 		}
 
-		effect += ` ${sliderTransitionSpeed / 1000}s ease-in-out`;
+		effect += ` ${sliderTransitionSpeed / 1000}s ease-out`;
 
 		return effect;
 	};
@@ -188,9 +187,11 @@ const SliderWrapper = props => {
 	};
 
 	const nextSlide = () => {
-		console.log(getTransitionEffect());
-		if (currentSlide + 1 < numberOfSlides || isLoop) {
-			wrapperRef.current.style.animation = getTransitionEffect();
+		if (currentSlide + 1 < numberOfSlides || isLoop || isAutoplay) {
+			if (sliderTransition !== 'slide')
+				wrapperRef.current.style.animation = getSliderEffect();
+			else wrapperRef.current.style.transition = getSliderEffect();
+
 			setCurrentSlide(prev => {
 				return prev + 1;
 			});
@@ -199,7 +200,9 @@ const SliderWrapper = props => {
 
 	const prevSlide = () => {
 		if (currentSlide - 1 >= 0 || isLoop) {
-			wrapperRef.current.style.animation = getTransitionEffect();
+			if (sliderTransition !== 'slide')
+				wrapperRef.current.style.animation = getSliderEffect();
+			else wrapperRef.current.style.transition = getSliderEffect();
 			setCurrentSlide(next => {
 				return next - 1;
 			});
@@ -207,7 +210,9 @@ const SliderWrapper = props => {
 	};
 
 	const exactSlide = slideNumber => {
-		wrapperRef.current.style.animation = getTransitionEffect();
+		if (sliderTransition !== 'slide')
+			wrapperRef.current.style.animation = getSliderEffect();
+		else wrapperRef.current.style.transition = getSliderEffect();
 		setCurrentSlide(slideNumber);
 	};
 
@@ -234,7 +239,9 @@ const SliderWrapper = props => {
 		} else if (dragPosition - initPosition > 100) {
 			prevSlide();
 		} else {
-			wrapperRef.current.style.animation = getTransitionEffect();
+			if (sliderTransition !== 'slide')
+				wrapperRef.current.style.animation = getSliderEffect();
+			else wrapperRef.current.style.transition = getSliderEffect();
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 
@@ -254,8 +261,9 @@ const SliderWrapper = props => {
 		dragPosition = initPosition;
 	};
 
-	const handleTransitionEnd = () => {
+	const handleEnd = () => {
 		wrapperRef.current.style.animation = '';
+		wrapperRef.current.style.transition = '';
 		if (currentSlide >= numberOfSlides) {
 			setCurrentSlide(0);
 		}
@@ -357,6 +365,29 @@ const SliderWrapper = props => {
 		}
 	}, [numberOfSlides]);
 
+	useEffect(() => {
+		const isPaused = () => {
+			if (isHovered && pauseOnHover) return true;
+			if (pauseOnInteraction) return true;
+
+			return false;
+		};
+
+		if (isAutoplay && !isPaused()) {
+			const autoplayInterval = setInterval(() => {
+				nextSlide();
+			}, sliderAutoplaySpeed);
+			return () => clearInterval(autoplayInterval);
+		}
+		return null;
+	}, [
+		isAutoplay,
+		sliderAutoplaySpeed,
+		isHovered,
+		pauseOnHover,
+		pauseOnInteraction,
+	]);
+
 	const classes = classnames(
 		'maxi-slider-block__wrapper',
 		isEditView && 'maxi-slider-block__wrapper--edit-view'
@@ -378,7 +409,8 @@ const SliderWrapper = props => {
 						style: {
 							transform: `translateX(-${wrapperTranslate}px)`,
 						},
-						onTransitionEnd: handleTransitionEnd,
+						onAnimationEnd: handleEnd,
+						onTransitionEnd: handleEnd,
 					},
 					{
 						allowedBlocks: ALLOWED_BLOCKS,

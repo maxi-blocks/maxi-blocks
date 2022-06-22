@@ -25,7 +25,7 @@ const slider = {
 	},
 	'slider-autoplay-speed': {
 		type: 'number',
-		default: 500,
+		default: 2500,
 	},
 	'slider-transition': {
 		type: 'string',
@@ -33,7 +33,7 @@ const slider = {
 	},
 	'slider-transition-speed': {
 		type: 'number',
-		default: 200,
+		default: 500,
 	},
 };
 

@@ -88,10 +88,13 @@ const TransformControl = props => {
 
 		const transformObj = getTransformStyles(transformOptions, selectors);
 
-		if (isEmpty(transformObj)) return;
-
-		// if selector contains pseudo-classes inlineStyles won't work
-		if (isNil(targetSelector) || targetSelector.includes(':')) return;
+		if (
+			isEmpty(transformObj[targetSelector]) ||
+			isNil(targetSelector) ||
+			// if selector contains pseudo-classes inlineStyles won't work
+			targetSelector.includes(':')
+		)
+			return;
 
 		const targetTransformObj = transformObj[targetSelector].transform;
 
@@ -120,8 +123,13 @@ const TransformControl = props => {
 			const typeObj =
 				transformOptions[`transform-${transformStatus}-${breakpoint}`];
 
-			if (isNil(typeObj)) return false;
-			return category in typeObj;
+			const isCategoryEmpty = () => {
+				return Object.values(typeObj[category] ?? {}).every(val => {
+					return Object.values(val).every(coord => isNil(coord));
+				});
+			};
+
+			return !isNil(typeObj) && !isCategoryEmpty();
 		};
 
 		categories?.forEach(category => {
@@ -221,7 +229,6 @@ const TransformControl = props => {
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.x
 							}
-							defaultX={100}
 							y={
 								getLastBreakpointAttribute({
 									target: 'transform-scale',
@@ -229,7 +236,6 @@ const TransformControl = props => {
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.y
 							}
-							defaultY={100}
 							onChange={(x, y) => {
 								onChangeTransform({
 									'transform-scale': {

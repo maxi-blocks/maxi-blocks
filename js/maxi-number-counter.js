@@ -87,7 +87,7 @@ const numberCounterEffect = () => {
 						numberCounterElemCircle &&
 							numberCounterElemCircle.setAttribute(
 								'stroke-dasharray',
-								`${parseInt(
+								`${Math.ceil(
 									(count / 100) * circumference
 								)} ${circumference}`
 							);

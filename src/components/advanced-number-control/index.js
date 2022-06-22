@@ -202,7 +202,10 @@ const AdvancedNumberControl = props => {
 							);
 						}}
 						onKeyDown={e => {
-							if (e.key === '-' && min >= 0) {
+							if (
+								e.key === '-' &&
+								(enableUnit ? minValue : min) >= 0
+							) {
 								e.preventDefault();
 							}
 						}}

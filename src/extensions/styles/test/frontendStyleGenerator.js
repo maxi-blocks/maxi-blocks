@@ -9,7 +9,7 @@ describe('frontendStyleGenerator', () => {
 					xl: 1920,
 					l: 1366,
 					m: 1024,
-					s: 768,
+					s: 767,
 					xs: 480,
 				},
 				content: {

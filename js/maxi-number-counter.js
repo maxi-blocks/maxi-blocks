@@ -51,10 +51,8 @@ const numberCounterEffect = () => {
 					'number-counter-percentage-sign-status': usePercentage,
 					'number-counter-start-animation': startAnimation,
 				} = numberData;
-				const startCountValue = Math.ceil(
-					(numberCounterStart * 360) / 100
-				);
-				const endCountValue = Math.ceil((numberCounterEnd * 360) / 100);
+				const startCountValue = +numberCounterStart;
+				const endCountValue = +numberCounterEnd;
 
 				const frameDuration =
 					(1 /
@@ -73,7 +71,7 @@ const numberCounterEffect = () => {
 							clearInterval(interval);
 						}
 
-						let newInnerHTML = `${parseInt((count / 360) * 100)}`;
+						let newInnerHTML = `${count}`;
 
 						if (usePercentage) {
 							const percentageNode =
@@ -90,7 +88,7 @@ const numberCounterEffect = () => {
 							numberCounterElemCircle.setAttribute(
 								'stroke-dasharray',
 								`${parseInt(
-									(count / 360) * circumference
+									(count / 100) * circumference
 								)} ${circumference}`
 							);
 					}, frameDuration);

@@ -20,7 +20,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { toolbarPin } from '../../icons';
+import { toolbarPin, toolbarPinLocked } from '../../icons';
 
 /**
  * Utils
@@ -250,7 +250,9 @@ const MaxiToolbar = memo(
 											{pinActive ? 'Unpin' : 'Pin Open'}
 										</span>
 										<span className='breadcrumbs-pin-icon'>
-											{toolbarPin}
+											{pinActive
+												? toolbarPinLocked
+												: toolbarPin}
 										</span>
 									</span>
 								)}

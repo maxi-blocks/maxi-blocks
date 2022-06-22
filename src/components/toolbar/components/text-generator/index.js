@@ -29,8 +29,8 @@ import './editor.scss';
 
 const TextGenerator = props => {
 	const { onChange, closeMoreSettings } = props;
-
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { content, formatValue, onChangeTextFormat } =
+		useContext(textContext);
 
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
@@ -42,7 +42,7 @@ const TextGenerator = props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		const newContent = `${formatValue.text}${generatedText[0].props.children}`;
+		const newContent = `${content}${generatedText[0].props.children}`;
 
 		const newFormatsArray = [];
 		const newReplacementsArray = [];

@@ -138,6 +138,7 @@ class edit extends MaxiBlockComponent {
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
+					content,
 					formatValue: {
 						...this.state.formatValue,
 					},

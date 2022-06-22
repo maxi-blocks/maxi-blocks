@@ -1,11 +1,6 @@
 body.maxi-blocks--active .maxi-svg-icon-block {
 	display: flex;
 
-	&[data-align='full'] {
-		width: 100% !important;
-		max-width: 100% !important;
-	}
-
 	.maxi-svg-icon-block__icon {
 		display: flex;
 

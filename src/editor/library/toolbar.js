@@ -73,10 +73,11 @@ const LibraryToolbar = props => {
 				{type === 'patterns' && __('Template library', 'maxi-blocks')}
 				{type === 'preview' && __('Preview', 'maxi-blocks')}
 				{type === 'sc' && __('Style cards', 'maxi-blocks')}
-				{type.includes('shape') &&
-					__('Shape library', 'maxi-blocks')}
+				{type.includes('shape') && __('Shape library', 'maxi-blocks')}
 				{type.includes('button') &&
 					__('Button icon library', 'maxi-blocks')}
+				{type.includes('video') &&
+					__('Video icon library', 'maxi-blocks')}
 			</a>
 			{type === 'preview' && (
 				<>

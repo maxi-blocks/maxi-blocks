@@ -42,9 +42,12 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 							}),
 						});
 					}}
-					onChange={(obj, inlineStylesTargets) => {
+					onChange={(obj, inlineStylesTargets, pseudoElement) => {
 						maxiSetAttributes(obj);
-						cleanInlineStyles(inlineStylesTargets);
+						cleanInlineStyles(
+							inlineStylesTargets,
+							pseudoElement && `::${pseudoElement}`
+						);
 					}}
 					uniqueID={uniqueID}
 					breakpoint={deviceType}

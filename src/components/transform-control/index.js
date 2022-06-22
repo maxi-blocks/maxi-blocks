@@ -68,7 +68,7 @@ const TransformControl = props => {
 
 	const [transformStatus, setTransformStatus] = useState('scale');
 
-	const onChangeTransform = obj => {
+	const updateTransformOptions = obj => {
 		Object.entries(obj).forEach(([type, diffTypeObj]) => {
 			const typeObj = { ...transformOptions[`${type}-${breakpoint}`] };
 			Object.entries(diffTypeObj).forEach(([target, targetObj]) => {
@@ -83,7 +83,11 @@ const TransformControl = props => {
 		});
 
 		changeTransformOptions(transformOptions);
+	};
 
+	const getInlineTargetAndPseudoElement = target => target.split('::');
+
+	const insertInlineStyles = () => {
 		const { targetSelector } = latestTarget.current;
 
 		const transformObj = getTransformStyles(transformOptions, selectors);
@@ -101,8 +105,8 @@ const TransformControl = props => {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
 		} = targetTransformObj;
 
-		const inlineTarget = targetSelector.split('::')[0];
-		const pseudoElement = targetSelector.split('::')?.[1];
+		const [inlineTarget, pseudoElement] =
+			getInlineTargetAndPseudoElement(targetSelector);
 
 		onChangeInline(
 			{
@@ -112,6 +116,11 @@ const TransformControl = props => {
 			inlineTarget,
 			pseudoElement
 		);
+	};
+
+	const onChangeTransform = obj => {
+		updateTransformOptions(obj);
+		insertInlineStyles(obj);
 	};
 
 	const getOptions = () => {
@@ -128,7 +137,7 @@ const TransformControl = props => {
 
 			const isCategoryEmpty = () => {
 				return Object.values(typeObj[category] ?? {}).every(val => {
-					return Object.values(val).every(coord => isNil(coord));
+					return Object.values(val).every(axis => isNil(axis));
 				});
 			};
 
@@ -274,7 +283,9 @@ const TransformControl = props => {
 											],
 										},
 									},
-									latestTarget.current.targetSelector
+									...getInlineTargetAndPseudoElement(
+										latestTarget.current.targetSelector
+									)
 								);
 							}}
 						/>
@@ -289,7 +300,6 @@ const TransformControl = props => {
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.x
 							}
-							defaultX={0}
 							y={
 								getLastBreakpointAttribute({
 									target: 'transform-translate',
@@ -297,7 +307,6 @@ const TransformControl = props => {
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.y
 							}
-							defaultY={0}
 							xUnit={
 								getLastBreakpointAttribute({
 									target: 'transform-translate',
@@ -355,7 +364,9 @@ const TransformControl = props => {
 											],
 										},
 									},
-									latestTarget.current.targetSelector
+									...getInlineTargetAndPseudoElement(
+										latestTarget.current.targetSelector
+									)
 								);
 							}}
 						/>
@@ -369,7 +380,6 @@ const TransformControl = props => {
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.x
 							}
-							defaultX={0}
 							y={
 								getLastBreakpointAttribute({
 									target: 'transform-rotate',
@@ -377,7 +387,6 @@ const TransformControl = props => {
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.y
 							}
-							defaultY={0}
 							z={
 								getLastBreakpointAttribute({
 									target: 'transform-rotate',
@@ -385,7 +394,6 @@ const TransformControl = props => {
 									attributes: props,
 								})?.[transformTarget]?.[`${hoverSelected}`]?.z
 							}
-							defaultZ={0}
 							onChange={(x, y, z) => {
 								onChangeTransform({
 									'transform-rotate': {
@@ -408,7 +416,9 @@ const TransformControl = props => {
 											],
 										},
 									},
-									latestTarget.current.targetSelector
+									...getInlineTargetAndPseudoElement(
+										latestTarget.current.targetSelector
+									)
 								);
 							}}
 						/>
@@ -424,7 +434,6 @@ const TransformControl = props => {
 								})?.[transformTarget]?.[`${hoverSelected}`]
 									?.x || 'center'
 							}
-							defaultX={0}
 							y={
 								getLastBreakpointAttribute({
 									target: 'transform-origin',
@@ -433,7 +442,6 @@ const TransformControl = props => {
 								})?.[transformTarget]?.[`${hoverSelected}`]
 									?.y || 'middle'
 							}
-							defaultY={0}
 							xUnit={
 								getLastBreakpointAttribute({
 									target: 'transform-origin',
@@ -491,7 +499,9 @@ const TransformControl = props => {
 											],
 										},
 									},
-									latestTarget.current.targetSelector
+									...getInlineTargetAndPseudoElement(
+										latestTarget.current.targetSelector
+									)
 								);
 							}}
 						/>

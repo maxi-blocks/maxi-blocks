@@ -10,7 +10,7 @@ import AxisControl from '../axis-control';
 import { getGroupAttributes } from '../../extensions/styles';
 
 const MarginControl = props => {
-	const { blockFullWidth, breakpoint, onChange, prefix } = props;
+	const { breakpoint, fullWidth, onChange, prefix } = props;
 
 	return (
 		<AxisControl
@@ -21,7 +21,7 @@ const MarginControl = props => {
 			breakpoint={breakpoint}
 			target='margin'
 			optionType='string'
-			blockFullWidth={blockFullWidth}
+			fullWidth={fullWidth}
 			minMaxSettings={{
 				px: {
 					min: -999,

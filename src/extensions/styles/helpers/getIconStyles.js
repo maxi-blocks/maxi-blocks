@@ -13,18 +13,21 @@ const getIconStyles = (
 	obj,
 	blockStyle,
 	isIconInherit = true,
-	isHover = false
+	isHover = false,
+	prefix = ''
 ) => {
 	const response = {
 		label: 'Icon',
 		general: {},
 	};
 
+	if (isIconInherit && !obj['typography-status-hover']) return response;
+
 	if (isIconInherit) {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: '',
+				prefix,
 				isHover,
 				breakpoint: 'general',
 			});

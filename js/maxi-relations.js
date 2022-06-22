@@ -1,39 +1,107 @@
 // Relations
 
-const relations = () => {
-	const getCssStyles = css => {
-		let styles = '';
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-		Object.entries(css).forEach(([key, value]) => {
-			if (!value.breakpoint || window.innerWidth < value.breakpoint) {
-				styles += value.content;
+const relations = () => {
+	const getCssResponsiveObj = (css, effects) => {
+		let stylesObj = {};
+		let effectsObj = {};
+
+		Object.entries(css).forEach(([breakpoint, obj]) => {
+			if (
+				breakpoints.includes(breakpoint) &&
+				(window.innerWidth < obj.breakpoint || !obj.breakpoint)
+			) {
+				stylesObj = {
+					...stylesObj,
+					...obj.styles,
+				};
+
+				effectsObj = {
+					...effectsObj,
+					...(effects[`transition-duration-${breakpoint}`] !==
+						undefined && {
+						'transition-duration':
+							effects[`transition-duration-${breakpoint}`],
+					}),
+					...(effects[`transition-delay-${breakpoint}`] !==
+						undefined && {
+						'transition-delay':
+							effects[`transition-delay-${breakpoint}`],
+					}),
+					...(effects[`easing-${breakpoint}`] !== undefined && {
+						easing: effects[`easing-${breakpoint}`],
+					}),
+					...(effects[`transition-status-${breakpoint}`] !==
+						undefined && {
+						'transition-status':
+							effects[`transition-status-${breakpoint}`],
+					}),
+				};
 			}
 		});
 
-		return styles;
+		return {
+			css: stylesObj,
+			effectsObj,
+		};
 	};
 
-	maxiRelations[0]?.map(item => {
+	const toggleInlineStyles = (stylesObj, element, remove = false) => {
+		Object.entries(stylesObj).forEach(([key, value]) => {
+			element.style[key] = !remove ? value : '';
+		});
+	};
+
+	const getTransitionString = effectsObj =>
+		effectsObj['transition-status']
+			? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
+			: 'all 0s 0s';
+
+	maxiRelations[0]?.forEach(item => {
+		if (!item?.uniqueID) return;
+
 		const triggerEl = document.querySelector(`.${item.trigger}`);
 		const targetEl = document.querySelector(
 			`.${item.uniqueID} ${item.target ?? ''}`
 		);
 
-		const css = getCssStyles(item.css);
+		let timeout;
 
 		switch (item.action) {
 			case 'hover': {
 				triggerEl.addEventListener('mouseenter', () => {
-					targetEl.style = css;
+					clearTimeout(timeout);
+					const { css, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
+
+					targetEl.style.transition = getTransitionString(effectsObj);
+
+					toggleInlineStyles(css, targetEl);
 				});
 
 				triggerEl.addEventListener('mouseleave', () => {
-					targetEl.style = '';
+					const { css } = getCssResponsiveObj(item.css, item.effects);
+
+					toggleInlineStyles(css, targetEl, true);
+
+					timeout = setTimeout(() => {
+						// Removing transition after transition-duration + 1s to make sure it's done
+						targetEl.style.transition = '';
+					}, item.effects['transition-duration-general'] * 1000 + 1000);
 				});
 			}
 			case 'click': {
 				triggerEl.addEventListener('click', () => {
-					targetEl.style = css;
+					const { css, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
+
+					targetEl.style.transition = getTransitionString(effectsObj);
+					toggleInlineStyles(css, targetEl);
 				});
 			}
 		}
@@ -41,3 +109,4 @@ const relations = () => {
 };
 
 window.addEventListener('load', relations);
+window.addEventListener('resize', relations);

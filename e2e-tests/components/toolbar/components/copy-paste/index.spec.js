@@ -74,11 +74,14 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		const expectPosition = {
-			'position-top-general': 56,
-			'position-bottom-general': 56,
-			'position-left-general': 56,
-			'position-right-general': 56,
-			'position-unit-general': '%',
+			'position-top-general': '56',
+			'position-bottom-general': '56',
+			'position-left-general': '56',
+			'position-right-general': '56',
+			'position-top-unit-general': '%',
+			'position-bottom-unit-general': '%',
+			'position-left-unit-general': '%',
+			'position-right-unit-general': '%',
 		};
 
 		const positionResult = await getAttributes([
@@ -86,7 +89,10 @@ describe('CopyPaste from Toolbar', () => {
 			'position-bottom-general',
 			'position-left-general',
 			'position-right-general',
-			'position-unit-general',
+			'position-top-unit-general',
+			'position-bottom-unit-general',
+			'position-left-unit-general',
+			'position-right-unit-general',
 		]);
 
 		expect(positionResult).toStrictEqual(expectPosition);

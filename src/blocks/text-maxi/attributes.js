@@ -9,12 +9,14 @@ import { __ } from '@wordpress/i18n';
 import {
 	breakpointAttributesCreator,
 	paletteAttributesCreator,
+	transitionAttributesCreator,
 } from '../../extensions/styles';
 
 /**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -28,10 +30,6 @@ const attributes = {
 	customLabel: {
 		type: 'string',
 		default: __('Text', 'maxi-blocks'),
-	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
 	},
 	content: {
 		type: 'string',
@@ -142,7 +140,10 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.position,

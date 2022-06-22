@@ -28,7 +28,7 @@ describe('FullSizeControl', () => {
 			use => use.click()
 		);
 
-		expect(await getAttributes('blockFullWidth')).toStrictEqual('full');
+		expect(await getAttributes('full-width-general')).toStrictEqual('full');
 
 		// responsive
 		await accordionPanel.$eval(

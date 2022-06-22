@@ -72,8 +72,10 @@ const TransformControl = props => {
 		Object.entries(obj).forEach(([type, diffTypeObj]) => {
 			const typeObj = { ...transformOptions[`${type}-${breakpoint}`] };
 			Object.entries(diffTypeObj).forEach(([target, targetObj]) => {
+				// save both hover and normal state
 				typeObj[target] = { ...typeObj?.[target], ...targetObj };
 			});
+			// save each type of transform(scale, translate, etc...)
 			transformOptions[`${type}-${breakpoint}`] = {
 				...transformOptions[`${type}-${breakpoint}`],
 				...typeObj,
@@ -88,6 +90,7 @@ const TransformControl = props => {
 
 		if (isEmpty(transformObj)) return;
 
+		// if selector contains pseudo-classes inlineStyles won't work
 		if (isNil(targetSelector) || targetSelector.includes(':')) return;
 
 		const targetTransformObj = transformObj[targetSelector].transform;

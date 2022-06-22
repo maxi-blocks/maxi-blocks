@@ -3,6 +3,7 @@
  */
 import { getCustomCssObject, getTransformStyles } from './helpers';
 import { getSelectorsCss } from '../../components/custom-css-control/utils';
+import { getTransformSelectors } from '../../components/transform-control/utils';
 
 /**
  * External dependencies
@@ -103,12 +104,18 @@ const stylesCleaner = (obj, selectors, props) => {
 	const response = cloneDeep(obj);
 
 	// Process custom styles if they exist
-	const newSelectors = getSelectorsCss(selectors, props);
+	const newCssSelectors = getSelectorsCss(selectors, props);
+	const newTransformSelectors = getTransformSelectors(selectors);
 
-	if (!isEmpty(newSelectors)) {
-		const customCssObject = getCustomCssObject(newSelectors, props);
-		const transformObject = getTransformStyles(props, newSelectors);
+	if (!isEmpty(newCssSelectors)) {
+		const customCssObject = getCustomCssObject(newCssSelectors, props);
 		!isEmpty(customCssObject) && merge(response, customCssObject);
+	}
+	if (!isEmpty(newTransformSelectors)) {
+		const transformObject = getTransformStyles(
+			props,
+			newTransformSelectors
+		);
 		!isEmpty(transformObject) && merge(response, transformObject);
 	}
 

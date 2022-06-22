@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import TransformControl from '../transform-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
-import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
+import {
+	getTransformSelectors,
+	getTransformCategories,
+} from '../transform-control/utils';
 
 /**
  * Component
@@ -43,8 +46,8 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 					uniqueID={uniqueID}
 					breakpoint={deviceType}
 					depth={depth}
-					categories={getCategoriesCss(categories, attributes)}
-					selectors={getSelectorsCss(selectors, attributes)}
+					categories={getTransformCategories(categories, attributes)}
+					selectors={getTransformSelectors(selectors)}
 				/>
 			</ResponsiveTabsControl>
 		),

@@ -9,22 +9,30 @@ import { MediaUpload } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Button from '../../../button';
-import { generateDataObject, injectImgSVG } from '../../../../extensions/svg';
+import { injectImgSVG } from '../../../../extensions/svg';
 
 /**
  * External dependencies
  */
 import DOMPurify from 'dompurify';
-import { isEmpty } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
+
+const ALLOWED_BLOCKS = ['maxi-blocks/image-maxi', 'maxi-blocks/video-maxi'];
 
 /**
  * Component
  */
 const ToolbarMediaUpload = props => {
-	const { blockName, attributes, maxiSetAttributes } = props;
-	const { mediaID, altSelector } = attributes;
+	const { blockName, attributes, maxiSetAttributes, prefix = '' } = props;
+	const {
+		[`${prefix}mediaID`]: mediaID,
+		[`${prefix}altSelector`]: altSelector,
+		playerType,
+		uniqueID,
+	} = attributes;
 
-	if (blockName !== 'maxi-blocks/image-maxi') return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) || playerType === 'video')
+		return null;
 
 	return (
 		<div className='toolbar-item toolbar-item__replace-image'>
@@ -36,21 +44,23 @@ const ToolbarMediaUpload = props => {
 						null;
 
 					maxiSetAttributes({
-						mediaID: media.id,
-						mediaURL: media.url,
-						mediaWidth: media.width,
-						mediaHeight: media.height,
-						isImageUrl: false,
+						[`${prefix}mediaID`]: media.id,
+						[`${prefix}mediaURL`]: media.url,
+						[`${prefix}mediaWidth`]: media.width,
+						[`${prefix}mediaHeight`]: media.height,
+						[`${prefix}isImageUrl`]: false,
 						...(altSelector === 'wordpress' &&
 							!alt && { altSelector: 'title' }),
-						mediaAlt:
+						[`${prefix}mediaAlt`]:
 							altSelector === 'wordpress' && !alt
 								? media.title
 								: alt,
 					});
 
 					if (!isEmpty(attributes.SVGData)) {
-						const cleanedContent = DOMPurify.sanitize(SVGElement);
+						const cleanedContent = DOMPurify.sanitize(
+							attributes.SVGElement
+						);
 
 						const svg = document
 							.createRange()
@@ -58,8 +68,13 @@ const ToolbarMediaUpload = props => {
 								cleanedContent
 							).firstElementChild;
 
-						const resData = generateDataObject('', svg);
-
+						const resData = {
+							[`${uniqueID}__${uniqueId()}`]: {
+								color: '',
+								imageID: '',
+								imageURL: '',
+							},
+						};
 						const SVGValue = resData;
 						const el = Object.keys(SVGValue)[0];
 

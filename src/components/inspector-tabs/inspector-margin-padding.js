@@ -8,18 +8,27 @@ import { __ } from '@wordpress/i18n';
  */
 import MarginControl from '../margin-control';
 import PaddingControl from '../padding-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Component
  */
 const marginPadding = ({
 	props,
-	prefix,
+	prefix = '',
 	customLabel,
 	disableMargin = false,
 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
+
+	const fullWidth = getLastBreakpointAttribute({
+		target: `${prefix}full-width`,
+		breakpoint: deviceType,
+		attributes,
+	});
 
 	return {
 		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
@@ -36,6 +45,7 @@ const marginPadding = ({
 						prefix={prefix}
 						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
+						fullWidth={fullWidth}
 					/>
 				)}
 				<PaddingControl

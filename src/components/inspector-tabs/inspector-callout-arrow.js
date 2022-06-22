@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ArrowControl from '../arrow-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -15,7 +18,12 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
  */
 const calloutArrow = ({ props }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
-	const { blockFullWidth } = attributes;
+
+	const fullWidth = getLastBreakpointAttribute({
+		target: 'full-width',
+		breakpoint: deviceType,
+		attributes,
+	});
 
 	const ignoreIndicator =
 		!attributes[`arrow-status-${deviceType}`] &&
@@ -41,7 +49,7 @@ const calloutArrow = ({ props }) => {
 						'border',
 					])}
 					onChange={obj => maxiSetAttributes(obj)}
-					isFullWidth={blockFullWidth}
+					isFullWidth={fullWidth}
 					breakpoint={deviceType}
 				/>
 			</ResponsiveTabsControl>

@@ -31,7 +31,6 @@ import { round } from 'lodash';
 /**
  * NumberCounter
  */
-
 const NumberCounter = attributes => {
 	const {
 		'number-counter-duration': countDuration,
@@ -265,7 +264,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
-		const { uniqueID, blockFullWidth } = attributes;
+		const { uniqueID } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
@@ -300,7 +299,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockAttributes(this.props)}
 			>

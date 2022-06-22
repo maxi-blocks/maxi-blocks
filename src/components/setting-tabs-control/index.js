@@ -19,7 +19,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 
 /**
  * Styles and icons
@@ -129,9 +129,10 @@ const SettingTabsControl = props => {
 			<div className={classesControl}>
 				{items.map((item, i) => {
 					if (item) {
-						const buttonLabel = !isEmpty(item.label)
-							? item.label
-							: item.value;
+						const buttonLabel =
+							!isEmpty(item.label) || isNumber(item.label)
+								? item.label
+								: item.value;
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;

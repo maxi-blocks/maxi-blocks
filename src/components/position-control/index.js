@@ -23,7 +23,13 @@ import { isEmpty } from 'lodash';
  * Component
  */
 const PositionControl = props => {
-	const { className, onChange, breakpoint = 'general' } = props;
+	const {
+		className,
+		onChange,
+		disablePosition = false,
+		breakpoint = 'general',
+		prefix = '',
+	} = props;
 
 	const classes = classnames('maxi-position-control', className);
 
@@ -48,76 +54,87 @@ const PositionControl = props => {
 
 	const getCleanOptions = () => {
 		return {
-			[`position-top-${breakpoint}`]: getDefaultAttribute(
-				`position-top-${breakpoint}`
+			[`${prefix}position-top-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-top-${breakpoint}`
 			),
-			[`position-right-${breakpoint}`]: getDefaultAttribute(
-				`position-right-${breakpoint}`
+			[`${prefix}position-right-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-right-${breakpoint}`
 			),
-			[`position-bottom-${breakpoint}`]: getDefaultAttribute(
-				`position-bottom-${breakpoint}`
+			[`${prefix}position-bottom-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-bottom-${breakpoint}`
 			),
-			[`position-left-${breakpoint}`]: getDefaultAttribute(
-				`position-left-${breakpoint}`
+			[`${prefix}position-left-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-left-${breakpoint}`
 			),
-			[`position-sync-${breakpoint}`]: getDefaultAttribute(
-				`position-sync-${breakpoint}`
+			[`${prefix}position-sync-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-sync-${breakpoint}`
 			),
-			[`position-top-unit-${breakpoint}`]: getDefaultAttribute(
-				`position-top-unit-${breakpoint}`
+			[`${prefix}position-top-unit-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-top-unit-${breakpoint}`
 			),
-			[`position-right-unit-${breakpoint}`]: getDefaultAttribute(
-				`position-right-unit-${breakpoint}`
+			[`${prefix}position-right-unit-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-right-unit-${breakpoint}`
 			),
-			[`position-bottom-unit-${breakpoint}`]: getDefaultAttribute(
-				`position-bottom-unit-${breakpoint}`
-			),
-			[`position-left-unit-${breakpoint}`]: getDefaultAttribute(
-				`position-left-unit-${breakpoint}`
+			[`${prefix}position-bottom-unit-${breakpoint}`]:
+				getDefaultAttribute(
+					`${prefix}position-bottom-unit-${breakpoint}`
+				),
+			[`${prefix}position-left-unit-${breakpoint}`]: getDefaultAttribute(
+				`${prefix}position-left-unit-${breakpoint}`
 			),
 		};
 	};
 
+	const PositionAxisControl = (
+		<AxisControl
+			{...props}
+			target='position'
+			prefix={prefix}
+			onChange={obj => onChange(obj)}
+			breakpoint={breakpoint}
+			minMaxSettings={minMaxSettings}
+			optionType='string'
+			enableAxisUnits
+			allowedUnits={['px', 'em', 'vw', '%', '-']}
+		/>
+	);
+
 	return (
 		<div className={classes}>
-			<SelectControl
-				label={__('Position', 'maxi-blocks')}
-				options={[
-					{ label: 'Default', value: 'inherit' },
-					{ label: 'Relative', value: 'relative' },
-					{ label: 'Absolute', value: 'absolute' },
-					{ label: 'Fixed', value: 'fixed' },
-					{ label: 'Static', value: 'static' },
-					{ label: 'Sticky', value: 'sticky' },
-				]}
-				value={
-					getLastBreakpointAttribute({
-						target: 'position',
+			{!disablePosition ? (
+				<>
+					<SelectControl
+						label={__('Position', 'maxi-blocks')}
+						options={[
+							{ label: 'Default', value: 'inherit' },
+							{ label: 'Relative', value: 'relative' },
+							{ label: 'Absolute', value: 'absolute' },
+							{ label: 'Fixed', value: 'fixed' },
+							{ label: 'Static', value: 'static' },
+							{ label: 'Sticky', value: 'sticky' },
+						]}
+						value={
+							getLastBreakpointAttribute({
+								target: `${prefix}position`,
+								breakpoint,
+								attributes: props,
+							}) || ''
+						}
+						onChange={val =>
+							onChange({
+								[`${prefix}position-${breakpoint}`]: val,
+								...(isEmpty(val) && getCleanOptions()),
+							})
+						}
+					/>
+					{getLastBreakpointAttribute({
+						target: `${prefix}position`,
 						breakpoint,
 						attributes: props,
-					}) || ''
-				}
-				onChange={val =>
-					onChange({
-						[`position-${breakpoint}`]: val,
-						...(isEmpty(val) && getCleanOptions()),
-					})
-				}
-			/>
-			{getLastBreakpointAttribute({
-				target: 'position',
-				breakpoint,
-				attributes: props,
-			}) !== 'inherit' && (
-				<AxisControl
-					{...props}
-					target='position'
-					onChange={obj => onChange(obj)}
-					breakpoint={breakpoint}
-					minMaxSettings={minMaxSettings}
-					optionType='string'
-					enableAxisUnits
-				/>
+					}) !== 'inherit' && PositionAxisControl}
+				</>
+			) : (
+				PositionAxisControl
 			)}
 		</div>
 	);

@@ -13,7 +13,8 @@ const getIconStyles = (
 	obj,
 	blockStyle,
 	isIconInherit = true,
-	isHover = false
+	isHover = false,
+	prefix = ''
 ) => {
 	const response = {
 		label: 'Icon',
@@ -26,7 +27,7 @@ const getIconStyles = (
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: '',
+				prefix,
 				isHover,
 				breakpoint: 'general',
 			});

@@ -489,7 +489,7 @@ const AxisControl = props => {
 		],
 		optionType = 'number',
 		disableSync = false,
-		blockFullWidth,
+		fullWidth,
 		enableAxisUnits,
 	} = props;
 
@@ -503,8 +503,7 @@ const AxisControl = props => {
 	const useResponsiveTabs =
 		!noResponsiveTabs && ['margin', 'padding'].includes(target);
 
-	const disableLeftRightMargin =
-		target === 'margin' && blockFullWidth === 'full';
+	const disableLeftRightMargin = target === 'margin' && fullWidth === 'full';
 
 	const getOptions = () => {
 		const options = [];

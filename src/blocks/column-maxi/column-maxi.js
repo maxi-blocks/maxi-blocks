@@ -27,7 +27,7 @@ import save from './save';
 /**
  * External dependencies
  */
-import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
+import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
 
 /**
  * Block
@@ -54,5 +54,5 @@ registerBlockType('maxi-blocks/column-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [fromNumberToStringMigrator({ attributes, save })],
+	deprecated: [positionMigrator({ attributes, save })],
 });

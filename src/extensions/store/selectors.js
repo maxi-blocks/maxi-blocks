@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isEmpty, inRange } from 'lodash';
+import { isEmpty } from 'lodash';
 
 const selectors = {
 	receiveMaxiSettings(state) {
@@ -64,15 +64,21 @@ const selectors = {
 
 		if (winWidth > breakpoints.xl) return 'xxl';
 
-		return Object.entries(breakpoints)
-			.reduce(([prevKey, prevValue], [currKey, currValue]) => {
-				if (!prevValue) return [prevKey];
-				if (inRange(winWidth, prevValue, currValue + 1))
-					return [currKey];
+		// Objects are unordered collection of properties, so as we can't rely on
+		// its own order, we need to iterate over an ordered array
+		const getBreakpointRange = (obj, minWidth) => {
+			let result;
 
-				return [prevKey, prevValue];
-			})[0]
-			.toLowerCase();
+			['xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+				if (obj[breakpoint] >= minWidth) {
+					result = breakpoint;
+				}
+			});
+
+			return result;
+		};
+
+		return getBreakpointRange(breakpoints, winWidth);
 	},
 };
 

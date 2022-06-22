@@ -220,7 +220,7 @@ class MaxiBlocks_Styles
         // TODO: It may connect to the API to centralize the default values there
         return (object) [
             'xs' => 480,
-            's' => 7,
+            's' => 767,
             'm' => 1024,
             'l' => 1366,
             'xl' => 1920,

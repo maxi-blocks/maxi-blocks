@@ -87,7 +87,7 @@ const getSizeStyles = (obj, prefix = '') => {
 						}));
 
 				if (!isNil(num) && !isNil(unit))
-					return { [target]: auto ? 'auto' : num + unit };
+					return { [target]: auto ? '100%' : num + unit };
 			}
 
 			return {};

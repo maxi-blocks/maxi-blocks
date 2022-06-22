@@ -126,7 +126,7 @@ const NumberCounter = attributes => {
 						breakpoint: deviceType,
 						attributes,
 					})
-						? 'auto'
+						? '100%'
 						: `${getLastBreakpointAttribute({
 								target: 'number-counter-width',
 								breakpoint: deviceType,

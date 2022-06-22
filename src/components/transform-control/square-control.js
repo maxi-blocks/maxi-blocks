@@ -322,7 +322,7 @@ const SquareControl = props => {
 						/>
 						<Button
 							aria-pressed={
-								xAxis === 'center' && yAxis === 'middle'
+								xAxis === 'middle' && yAxis === 'center'
 									? 'active'
 									: ''
 							}
@@ -335,8 +335,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('middle');
 								changeYAxis('center');
-								onChange('center', 'center');
-								onSave('center', 'center');
+								onChange('middle', 'center');
+								onSave('middle', 'center');
 							}}
 						/>
 						<Button

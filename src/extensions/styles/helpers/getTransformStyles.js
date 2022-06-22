@@ -95,17 +95,14 @@ const getTransformStyles = obj => {
 		const originValueToNumber = value => {
 			switch (validateOriginValue(value)) {
 				case 'top':
-					return 0;
-				case 'right':
-					return 100;
-				case 'bottom':
-					return 100;
 				case 'left':
 					return 0;
+				case 'middle':
 				case 'center':
 					return 50;
-				case 'middle':
-					return 50;
+				case 'bottom':
+				case 'right':
+					return 100;
 				default:
 					return value;
 			}

@@ -19,12 +19,6 @@
 			border-radius: 0;
 			border: 1px solid var(--maxi-grey-1-color);
 
-			&.pinned--false .breadcrumbs-pin path {
-				opacity: 0.7;
-			}
-			&.pinned--true .breadcrumbs-pin path {
-				opacity: 1 !important;
-			}
 			&.pinned--true .maxi-breadcrumbs {
 				transform: scaleX(1);
 
@@ -77,11 +71,6 @@
 					display: inline-block;
 					padding-right: 10px;
 					cursor: pointer;
-
-					path {
-						fill: #fff;
-						opacity: 0.5;
-					}
 				}
 			
 			}

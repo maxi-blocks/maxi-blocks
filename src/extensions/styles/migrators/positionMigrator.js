@@ -6,6 +6,7 @@
 
 import getGroupAttributes from '../getGroupAttributes';
 import { isEmpty, isFinite } from 'lodash';
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const targets = ['position', 'blockBackground'];
@@ -84,114 +85,21 @@ const isEligible = (blockAttributes, attributes) => {
 	});
 };
 
-const attributes = {
-	'position-top-general': {
-		type: 'number',
+const attributes = breakpointAttributesCreator({
+	obj: {
+		...keyWords.reduce((acc, keyWord) => {
+			acc[`position-${keyWord}`] = {
+				type: 'number',
+			};
+
+			return acc;
+		}, {}),
+		'position-unit': {
+			type: 'string',
+			default: 'px',
+		},
 	},
-	'position-top-xxl': {
-		type: 'number',
-	},
-	'position-top-xl': {
-		type: 'number',
-	},
-	'position-top-l': {
-		type: 'number',
-	},
-	'position-top-m': {
-		type: 'number',
-	},
-	'position-top-s': {
-		type: 'number',
-	},
-	'position-top-xs': {
-		type: 'number',
-	},
-	'position-right-general': {
-		type: 'number',
-	},
-	'position-right-xxl': {
-		type: 'number',
-	},
-	'position-right-xl': {
-		type: 'number',
-	},
-	'position-right-l': {
-		type: 'number',
-	},
-	'position-right-m': {
-		type: 'number',
-	},
-	'position-right-s': {
-		type: 'number',
-	},
-	'position-right-xs': {
-		type: 'number',
-	},
-	'position-bottom-general': {
-		type: 'number',
-	},
-	'position-bottom-xxl': {
-		type: 'number',
-	},
-	'position-bottom-xl': {
-		type: 'number',
-	},
-	'position-bottom-l': {
-		type: 'number',
-	},
-	'position-bottom-m': {
-		type: 'number',
-	},
-	'position-bottom-s': {
-		type: 'number',
-	},
-	'position-bottom-xs': {
-		type: 'number',
-	},
-	'position-left-general': {
-		type: 'number',
-	},
-	'position-left-xxl': {
-		type: 'number',
-	},
-	'position-left-xl': {
-		type: 'number',
-	},
-	'position-left-l': {
-		type: 'number',
-	},
-	'position-left-m': {
-		type: 'number',
-	},
-	'position-left-s': {
-		type: 'number',
-	},
-	'position-left-xs': {
-		type: 'number',
-	},
-	'position-unit-general': {
-		type: 'string',
-		default: 'px',
-	},
-	'position-unit-xxl': {
-		type: 'string',
-	},
-	'position-unit-xl': {
-		type: 'string',
-	},
-	'position-unit-l': {
-		type: 'string',
-	},
-	'position-unit-m': {
-		type: 'string',
-	},
-	'position-unit-s': {
-		type: 'string',
-	},
-	'position-unit-xs': {
-		type: 'string',
-	},
-};
+});
 
 const migrate = (newAttributes, attributes) => {
 	const attrsToChange = getAttrsToChange(newAttributes);

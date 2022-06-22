@@ -256,6 +256,14 @@ const IconControl = props => {
 									selected={props['icon-position']}
 									items={[
 										{
+											label: __('Top', 'maxi-block'),
+											value: 'top',
+										},
+										{
+											label: __('Bottom', 'maxi-block'),
+											value: 'bottom',
+										},
+										{
 											label: __('Left', 'maxi-block'),
 											value: 'left',
 										},

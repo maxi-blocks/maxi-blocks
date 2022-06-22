@@ -30,6 +30,7 @@ import './blocks/svg-icon-maxi/svg-icon-maxi';
 import './blocks/text-maxi/text-maxi';
 import './blocks/slider-maxi/slider-maxi';
 import './blocks/slide-maxi/slide-maxi';
+import './blocks/video-maxi/video-maxi';
 
 // Editor
 import './editor/saver';

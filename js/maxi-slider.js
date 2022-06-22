@@ -34,12 +34,21 @@ class MaxiSlider {
 			'.maxi-slider-block__wrapper'
 		);
 
+		this._wrapper = this._container.querySelector(
+			'.maxi-slider-block__wrapper'
+		);
+
 		// Slides
 		this._slides = Array.from(
 			this._wrapper.getElementsByClassName('maxi-slide-block')
 		).map((slide, i) => new Slide(slide, i));
 
 		this.isLoop = this._container.dataset.infiniteLoop === 'true';
+		this.isAutoplay = this._container.dataset.autoplay === 'true';
+		this.hoverPause = this._container.dataset.hoverPause === 'true';
+		this.interactionPause =
+			this._container.dataset.interactionPause === 'true';
+		this.autoplaySpeed = this._container.dataset.autoplaySpeed;
 
 		// Navigation
 		this._arrowNext = this._container.querySelector(
@@ -64,6 +73,28 @@ class MaxiSlider {
 		this.onDragStart = this.dragStart.bind(this);
 		this.onDragAction = this.dragAction.bind(this);
 		this.onDragEnd = this.dragEnd.bind(this);
+		this.onHover = this.onHover.bind(this);
+		this.onHoverEnd = this.onHoverEnd.bind(this);
+
+		this._container.addEventListener('mouseenter', this.onHover);
+		this._container.addEventListener('mouseout', this.onHoverEnd);
+
+		const isPaused = () => {
+			if (this.hoverPause) return true;
+			if (this.interactionPause) return true;
+
+			return false;
+		};
+
+		console.log('isPaused', isPaused());
+		console.log('isAutoplay', this.isAutoplay);
+		console.log('speed', this.autoplaySpeed);
+
+		if (this.isAutoplay && !isPaused()) {
+			setInterval(() => {
+				this.slideNext();
+			}, this.autoplaySpeed);
+		}
 
 		this.init();
 	}
@@ -165,6 +196,9 @@ class MaxiSlider {
 		e.preventDefault();
 
 		this._wrapper.style.transition = '';
+		this._wrapper.style.animation = '';
+
+		this._wrapper.classList.add('maxi-slider-interaction');
 
 		if (e.type === 'touchstart') {
 			this.initPosition = e.touches[0].clientX;
@@ -222,12 +256,18 @@ class MaxiSlider {
 			this.sliderAction();
 		}
 
+		this._wrapper.classList.remove('maxi-slider-interaction');
+
 		document.removeEventListener('mousemove', this.onDragAction);
 		document.removeEventListener('mouseup', this.onDragEnd);
 	}
 
 	slideNext() {
-		if (this.currentSlide + 1 < this._slides.length || this.isLoop) {
+		if (
+			this.currentSlide + 1 < this._slides.length ||
+			this.isLoop ||
+			this.isAutoplay
+		) {
 			// Update current slide
 			this.currentSlide += 1;
 		}
@@ -257,6 +297,14 @@ class MaxiSlider {
 		this.wrapperTranslate = this.activeSlidePosition;
 	}
 
+	onHover() {
+		this._wrapper.classList.add('maxi-slider-hovered');
+	}
+
+	onHoverEnd() {
+		this._wrapper.classList.remove('maxi-slider-hovered');
+	}
+
 	loop() {
 		if (this.currentSlide >= this._slides.length) {
 			this.currentSlide = 0;
@@ -270,6 +318,7 @@ class MaxiSlider {
 
 	transitionEnd() {
 		this._wrapper.style.transition = '';
+		this._wrapper.style.animation = '';
 		if (this.isLoop) this.loop();
 	}
 }

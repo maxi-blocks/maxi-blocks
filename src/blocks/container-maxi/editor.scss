@@ -15,23 +15,10 @@
 	&__container {
 		width: 100%;
 	}
-	&[data-align='full'] {
-		width: 100%;
-		max-width: 100%;
-		.maxi-container-block__container {
-			width: 100%;
-			max-width: 100% !important;
-		}
-	}
 }
 
 body.maxi-blocks--active .maxi-container-block {
 	&.wp-block.maxi-block.maxi-block--backend {
 		margin: 0 auto;
-	}
-
-	&[data-align='full'] > .maxi-container-block__container {
-		max-width: 100% !important;
-		width: 100% !important;
 	}
 }

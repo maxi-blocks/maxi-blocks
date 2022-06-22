@@ -18,9 +18,19 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes } = props;
-	const { isLoop } = attributes;
-	const { fullWidth } = attributes;
+	const { attributes, clientId } = props;
+	const {
+		isLoop,
+		isAutoplay,
+		pauseOnHover,
+		pauseOnInteraction,
+		fullWidth,
+		numberOfSlides,
+	} = attributes;
+
+	const sliderTransition = attributes['slider-transition'];
+	const sliderTransitionSpeed = attributes['slider-transition-speed'];
+	const sliderAutoplaySpeed = attributes['slider-autoplay-speed'];
 
 	const name = 'maxi-blocks/slider-maxi';
 
@@ -29,13 +39,19 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null
 	);
 
-	const innerBlockCount = 6;
+	const innerBlockCount =
+		wp?.data?.select('core/block-editor')?.getBlock(clientId)?.innerBlocks
+			?.length || numberOfSlides;
 
 	return (
 		<MaxiBlock.save
 			className={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 			data-infinite-loop={isLoop}
+			data-autoplay={isAutoplay}
+			data-autoplay-speed={sliderAutoplaySpeed}
+			data-hover-pause={pauseOnHover}
+			data-interaction-pause={pauseOnInteraction}
 		>
 			<div className='maxi-slider-block__tracker'>
 				<ul

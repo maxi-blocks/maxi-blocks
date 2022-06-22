@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import FullSizeControl from '../full-size-control';
 import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -23,10 +26,16 @@ const size = ({
 	isImage = false,
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
-	const { fullWidth, blockFullWidth, isFirstOnHierarchy } = attributes;
+	const { isFirstOnHierarchy } = attributes;
+
+	const fullWidth = getLastBreakpointAttribute({
+		target: `${prefix}full-width`,
+		breakpoint: deviceType,
+		attributes,
+	});
 
 	const showFullWidth = isFirstOnHierarchy || name === 'maxi-blocks/row-maxi';
-	const isBlockFullWidth = blockFullWidth === 'full';
+	const isBlockFullWidth = fullWidth === 'full';
 
 	return {
 		label: __('Height / Width', 'maxi-blocks'),
@@ -44,7 +53,9 @@ const size = ({
 								selected={isBlockFullWidth}
 								onChange={val =>
 									maxiSetAttributes({
-										blockFullWidth: val ? 'full' : 'normal',
+										[`full-width-${deviceType}`]: val
+											? 'full'
+											: 'normal',
 									})
 								}
 							/>
@@ -61,14 +72,12 @@ const size = ({
 												imageRatio: 'original',
 												imageSize: 'full',
 												imgWidth: 100,
-												fullWidth: val
-													? 'full'
-													: 'normal',
+												[`${prefix}full-width-${deviceType}`]:
+													val ? 'full' : 'normal',
 										  })
 										: maxiSetAttributes({
-												fullWidth: val
-													? 'full'
-													: 'normal',
+												[`${prefix}full-width-${deviceType}`]:
+													val ? 'full' : 'normal',
 										  })
 								}
 							/>

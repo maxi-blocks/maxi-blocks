@@ -24,6 +24,7 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/slider-maxi',
 	'maxi-blocks/slide-maxi',
+	'maxi-blocks/video-maxi',
 ];
 
 const BoxShadow = props => {

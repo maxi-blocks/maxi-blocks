@@ -73,7 +73,8 @@ class MaxiBlocks_Styles
                 'number-counter',
                 'shape-divider',
                 'relations',
-                'slider'
+                'slider',
+				'video'
             ];
 
             foreach ($scripts as &$script) {

@@ -58,7 +58,7 @@ describe('IconControl', () => {
 			'.maxi-settingstab-control.maxi-icon-position-control button'
 		);
 
-		await iconPosition[0].click();
+		await iconPosition[2].click();
 		const { 'icon-position': position } = await getBlockAttributes();
 
 		expect(position).toStrictEqual('left');

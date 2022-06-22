@@ -17,7 +17,7 @@ import {
 	fitSvg,
 	onRequestInsertPattern,
 } from './util';
-import { injectImgSVG, generateDataObject } from '../../extensions/svg';
+import { injectImgSVG } from '../../extensions/svg';
 import MaxiModal from './modal';
 import DOMPurify from 'dompurify';
 
@@ -144,6 +144,7 @@ const MasonryItem = props => {
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
+									'video-shape',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
@@ -377,6 +378,8 @@ const LibraryContainer = props => {
 				return 'icon';
 			case 'navigation-icon':
 				return 'icon';
+			case 'video-shape':
+				return 'shape';
 			case 'sidebar-block-shape':
 				return 'shape';
 			case 'bg-shape':
@@ -498,15 +501,10 @@ const LibraryContainer = props => {
 					.createRange()
 					.createContextualFragment(cleanedContent).firstElementChild;
 
-				const SVGData = {
-					[`${uniqueID}__${uniqueId()}`]: {
-						color: '',
-						imageID: mediaID,
-						imageURL: mediaURL,
-					},
+				const resData = {
+					[`${uniqueID}__${uniqueId()}`]: {},
 				};
-				const SVGOptions = {};
-				const resData = generateDataObject(SVGOptions[SVGData], svg);
+
 				resData[Object.keys(resData)[0]].color = svgData
 					? svgData[Object.keys(svgData)[0]].color
 					: '';
@@ -536,7 +534,6 @@ const LibraryContainer = props => {
 					},
 				};
 
-				const SVGOptions = {};
 				const newSvgCode = svgCode
 					.replace(/width="(.*?)"/g, '')
 					.replace(/height="(.*?)"/g, '');
@@ -545,21 +542,19 @@ const LibraryContainer = props => {
 				const svg = document
 					.createRange()
 					.createContextualFragment(cleanedContent).firstElementChild;
-				const resData = generateDataObject(SVGOptions[SVGData], svg);
-				const resEl = injectImgSVG(svg, resData);
 
 				onSelect({
-					SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
+					SVGElement: injectImgSVG(svg, SVGData).outerHTML,
 					SVGData,
 				});
 
 				onRequestClose();
 			}
 
-			if (type === 'button-icon') {
+			if (type === 'button-icon' || type === 'video-shape') {
 				onSelect({
-					'icon-content': svgCode,
-					svgType,
+					[`${prefix}icon-content`]: svgCode,
+					[`${prefix}svgType`]: svgType,
 				});
 
 				onRequestClose();
@@ -735,7 +730,7 @@ const LibraryContainer = props => {
 				</div>
 			)}
 
-			{type.includes('shape') && (
+			{(type.includes('shape') || type === 'video-shape') && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}

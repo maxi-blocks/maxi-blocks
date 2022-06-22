@@ -49,8 +49,13 @@ const canvasSettings = [
 		label: __('Height / Width', 'maxi-blocks'),
 		attrGroupName: 'size',
 		component: props => {
-			const { blockFullWidth } = props.attributes;
-			const isBlockFullWidth = blockFullWidth === 'full';
+			const fullWidth = getLastBreakpointAttribute({
+				target: 'full-width',
+				breakpoint: props.breakpoint,
+				attributes: getGroupAttributes(props, 'size'),
+			});
+
+			const isBlockFullWidth = fullWidth === 'full';
 
 			return (
 				<Controls.FullSizeControl
@@ -184,6 +189,7 @@ const settings = {
 					{...props}
 					styleCardPrefix=''
 					hideAlignment
+					disableCustomFormats
 				/>
 			),
 			helper: props => styleHelpers.getTypographyStyles({ ...props }),

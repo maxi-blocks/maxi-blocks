@@ -91,8 +91,7 @@ const TransformControl = props => {
 		if (
 			isEmpty(transformObj[targetSelector]) ||
 			isNil(targetSelector) ||
-			// if selector contains pseudo-classes inlineStyles won't work
-			targetSelector.includes(':')
+			targetSelector.includes(':hover')
 		)
 			return;
 
@@ -102,12 +101,16 @@ const TransformControl = props => {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
 		} = targetTransformObj;
 
+		const inlineTarget = targetSelector.split('::')[0];
+		const pseudoElement = targetSelector.split('::')?.[1];
+
 		onChangeInline(
 			{
 				transform: transform ?? '',
 				'transform-origin': transformOrigin ?? '',
 			},
-			targetSelector
+			inlineTarget,
+			pseudoElement
 		);
 	};
 

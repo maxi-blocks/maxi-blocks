@@ -33,10 +33,13 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<TransformControl
 					{...getGroupAttributes(attributes, 'transform')}
-					onChangeInline={(obj, target) => {
+					onChangeInline={(obj, target, pseudoElement) => {
 						insertInlineStyles({
 							obj,
 							target,
+							...(pseudoElement && {
+								pseudoElement: `::${pseudoElement}`,
+							}),
 						});
 					}}
 					onChange={(obj, inlineStylesTargets) => {

@@ -86,7 +86,7 @@ class edit extends MaxiBlockComponent {
 		};
 	}
 
-	maxiBlockDidUpdate() {
+	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { SVGData, SVGElement, uniqueID, mediaID, mediaURL } = attributes;
 

@@ -36,6 +36,14 @@ const IconPosition = props => {
 					value={props['icon-position']}
 					options={[
 						{
+							label: __('Top', 'maxi-blocks'),
+							value: 'top',
+						},
+						{
+							label: __('Bottom', 'maxi-blocks'),
+							value: 'bottom',
+						},
+						{
 							label: __('Left', 'maxi-blocks'),
 							value: 'left',
 						},

@@ -201,22 +201,34 @@ export const rawBackgroundSVG = {
 		default: '%',
 	},
 	'background-svg-position-top': {
-		type: 'number',
-		default: 0,
+		type: 'string',
+		default: '0',
 	},
 	'background-svg-position-right': {
-		type: 'number',
-		default: 0,
+		type: 'string',
+		default: '0',
 	},
 	'background-svg-position-bottom': {
-		type: 'number',
-		default: 0,
+		type: 'string',
+		default: '0',
 	},
 	'background-svg-position-left': {
-		type: 'number',
-		default: 0,
+		type: 'string',
+		default: '0',
 	},
-	'background-svg-position-unit': {
+	'background-svg-position-top-unit': {
+		type: 'string',
+		default: '%',
+	},
+	'background-svg-position-right-unit': {
+		type: 'string',
+		default: '%',
+	},
+	'background-svg-position-bottom-unit': {
+		type: 'string',
+		default: '%',
+	},
+	'background-svg-position-left-unit': {
 		type: 'string',
 		default: '%',
 	},

@@ -36,3 +36,4 @@ export { default as textBox } from './text-box';
 export { default as textIcon } from './text-icon';
 export { default as titleExtra } from './title-extra';
 export { default as toggle } from './toggle';
+export { default as videoIcon } from './video-icon';

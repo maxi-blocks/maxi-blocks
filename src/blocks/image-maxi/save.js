@@ -19,7 +19,7 @@ import { isEmpty } from 'lodash';
 /**
  * Save
  */
-const save = props => {
+const save = (props, extendedWrapperAttributes = {}) => {
 	const { attributes } = props;
 	const {
 		uniqueID,
@@ -31,7 +31,6 @@ const save = props => {
 		mediaHeight,
 		mediaAlt,
 		SVGElement,
-		fullWidth,
 		'hover-type': hoverType,
 		isImageUrl,
 		captionPosition,
@@ -53,8 +52,8 @@ const save = props => {
 	return (
 		<MaxiBlock.save
 			tagName='figure'
-			className={fullWidth === 'full' && 'alignfull'}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			{...extendedWrapperAttributes}
 		>
 			<>
 				{captionType !== 'none' &&

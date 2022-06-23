@@ -27,6 +27,7 @@ import {
 	getOverflowStyles,
 	getClipPathStyles,
 	getFlexStyles,
+	getAspectRatio,
 } from '../../extensions/styles/helpers';
 import { selectorsImage } from './custom-css';
 import transitionObj from './transitionObj';
@@ -35,32 +36,6 @@ import transitionObj from './transitionObj';
  * External dependencies
  */
 import { isEmpty, isNil, merge } from 'lodash';
-
-const getAspectRatio = imageRatio => {
-	return {
-		imageRatio: {
-			general: {
-				'aspect-ratio': (() => {
-					switch (imageRatio) {
-						case 'ar11':
-							return '1 / 1';
-						case 'ar23':
-							return '2 / 3';
-						case 'ar32':
-							return '3 / 2';
-						case 'ar43':
-							return '4 / 3';
-						case 'ar169':
-							return '16 / 9';
-						case 'original':
-						default:
-							return 'initial';
-					}
-				})(),
-			},
-		},
-	};
-};
 
 const getWrapperObject = props => {
 	const response = {
@@ -104,7 +79,6 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-			fullWidth: props.blockFullWidth,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -288,7 +262,6 @@ const getImageObject = props => {
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'image-'),
-				fullWidth: props.fullWidth,
 			},
 			'image-'
 		),

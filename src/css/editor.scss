@@ -363,7 +363,7 @@ svg path#styleCardBoat_b {
 
 .maxi-block {
 	&::after {
-		border: 2px solid #7fbddc;
+		border: 2px solid var(--maxi-light-blue-3-color);
 		border-radius: 0;
 		box-shadow: none !important;
 		opacity: 0;

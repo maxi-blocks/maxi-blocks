@@ -110,7 +110,8 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 		} = attributes;
 
-		// Add link if transitions hasn't it
+		// Temporary code to ensure that all text-maxi transitions objects has link transitions
+		// Need to be removed
 		if (!transition.canvas?.link)
 			maxiSetAttributes({
 				transition: {
@@ -121,6 +122,7 @@ class edit extends MaxiBlockComponent {
 					},
 				},
 			});
+		// End of temporary code
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content

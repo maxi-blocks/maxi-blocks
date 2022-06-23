@@ -12,7 +12,7 @@ import transitionDefault from '../transitions/transitionDefault';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEqual } from 'lodash';
 
 /**
  * Generates size styles object
@@ -38,7 +38,11 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 			targets.forEach(target => {
 				const transitionContent = transition[type][key];
-				if (!props[transitionContent.hoverProp]) return;
+				if (
+					transitionContent?.hoverProp &&
+					!props[transitionContent.hoverProp]
+				)
+					return;
 
 				if (isNil(response[target]))
 					response[target] = { transition: {} };
@@ -54,7 +58,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						});
 
 					const getTransitionAttribute = target =>
-						transitionContent[`${target}-${breakpoint}`];
+						transitionContent?.[`${target}-${breakpoint}`];
 
 					const lastTransitionDuration = getLastTransitionAttribute(
 						'transition-duration'
@@ -73,21 +77,31 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					const transitionTimingFunction =
 						getTransitionAttribute('easing');
 
-					const transitionStatus =
+					const lastTransitionStatus =
 						getLastTransitionAttribute('transition-status');
+					const transitionStatus =
+						getTransitionAttribute('transition-status');
 
 					properties.forEach(property => {
 						const transitionProperty = limitless ? 'all' : property;
 						const isSomeValue =
-							transitionDuration ||
-							transitionDelay ||
-							transitionTimingFunction;
+							isEqual(
+								transitionDuration,
+								lastTransitionDuration
+							) ||
+							isEqual(transitionDelay, lastTransitionDelay) ||
+							isEqual(
+								transitionTimingFunction,
+								lastTransitionTimingFunction
+							) ||
+							isEqual(transitionStatus, lastTransitionStatus);
 
-						if (transitionStatus && isSomeValue) {
-							transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
-						} else if (isSomeValue) {
-							transitionString += `${transitionProperty} 0s 0s, `;
-						}
+						if (isSomeValue)
+							if (!lastTransitionStatus) {
+								transitionString += `${transitionProperty} 0s 0s, `;
+							} else if (lastTransitionStatus) {
+								transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
+							}
 					});
 
 					transitionString = transitionString.replace(/,\s*$/, '');

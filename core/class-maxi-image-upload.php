@@ -69,8 +69,8 @@ class MaxiBlocks_ImageUpload
     {
         global $wpdb;
 
-        if (isset($_GET['maxi_image_to_upload'])) {
-            $image_link = sanitize_text_field($_GET['maxi_image_to_upload']);
+        if (isset($_GET['maxi_image_to_upload'])) { //phpcs:ignore
+            $image_link = sanitize_text_field($_GET['maxi_image_to_upload']); //phpcs:ignore
         } elseif (!empty($maxi_image_to_upload)) {
             $image_link = $maxi_image_to_upload;
         } else {

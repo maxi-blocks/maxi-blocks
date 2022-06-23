@@ -40,20 +40,20 @@ const AdvancedNumberControl = props => {
 		em: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		vw: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		vh: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		'%': {
 			min: 0,
@@ -202,7 +202,10 @@ const AdvancedNumberControl = props => {
 							);
 						}}
 						onKeyDown={e => {
-							if (e.key === '-' && min >= 0) {
+							if (
+								e.key === '-' &&
+								(enableUnit ? minValue : min) >= 0
+							) {
 								e.preventDefault();
 							}
 						}}
@@ -220,10 +223,12 @@ const AdvancedNumberControl = props => {
 							onChange={val => {
 								onChangeUnit(val);
 
-								if (value > minMaxSettingsResult[val]?.maxRange)
+								if (value > minMaxSettings[val]?.max) {
 									onChangeValue(
-										minMaxSettingsResult[val]?.maxRange
+										minMaxSettings[val]?.max,
+										val
 									);
+								}
 							}}
 						/>
 					)}

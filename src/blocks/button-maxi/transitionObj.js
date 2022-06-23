@@ -30,6 +30,16 @@ const transitionObj = {
 			property: 'box-shadow',
 			prefix,
 		},
+		icon: {
+			title: 'Icon',
+			target: [
+				' .maxi-button-block__icon svg > *',
+				' .maxi-button-block__icon svg',
+				' .maxi-button-block__icon',
+			],
+			property: 'icon',
+			limitless: true,
+		},
 	},
 };
 

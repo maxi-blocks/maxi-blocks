@@ -256,6 +256,14 @@ const IconControl = props => {
 									selected={props['icon-position']}
 									items={[
 										{
+											label: __('Top', 'maxi-block'),
+											value: 'top',
+										},
+										{
+											label: __('Bottom', 'maxi-block'),
+											value: 'bottom',
+										},
+										{
 											label: __('Left', 'maxi-block'),
 											value: 'left',
 										},
@@ -376,6 +384,13 @@ const IconControl = props => {
 										});
 									}}
 									isHover={isHover}
+									globalProps={{
+										target: `${
+											isHover ? 'hover-line' : 'line'
+										}`,
+										type: 'icon',
+									}}
+									noColorPrefix
 								/>
 							)
 						) : (
@@ -480,6 +495,11 @@ const IconControl = props => {
 								});
 							}}
 							isHover={isHover}
+							globalProps={{
+								target: `${isHover ? 'hover-fill' : 'fill'}`,
+								type: 'icon',
+							}}
+							noColorPrefix
 							avoidBreakpointForDefault
 						/>
 					)}

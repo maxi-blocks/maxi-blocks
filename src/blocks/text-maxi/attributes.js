@@ -32,10 +32,6 @@ const attributes = {
 		type: 'string',
 		default: __('Text', 'maxi-blocks'),
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	content: {
 		type: 'string',
 		default: '',

@@ -1,4 +1,4 @@
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import createTransitionObj from './createTransitionObj';
 import transitionDefault from './transitionDefault';
 
 const getHoverProp = (property, prefix = '') => {
@@ -16,39 +16,16 @@ const getHoverProp = (property, prefix = '') => {
 	}
 };
 
-// AFTER #3265 WILL BE RECEIVED FROM THE STORE
-const disableDefaultTransition = false;
-
-const transitionRaw = breakpointAttributesCreator({
-	obj: {
-		'transition-duration': {
-			type: 'number',
-			default: 0.3,
-		},
-		'transition-delay': {
-			type: 'number',
-			default: 0,
-		},
-		easing: {
-			type: 'string',
-			default: 'ease',
-		},
-		'transition-status': {
-			type: 'boolean',
-			default: !disableDefaultTransition,
-		},
-	},
-});
-
 const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj
 			? Object.values(transitionObj).map(
-					({ title, property, prefix }) => {
+					({ title, property, prefix, ignoreHoverProp = false }) => {
 						return {
 							title,
 							property,
 							prefix,
+							ignoreHoverProp,
 						};
 					}
 			  )
@@ -57,10 +34,7 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const blockOptions = getTransitionOptions(transitionObj?.block);
 	const canvasOptions = getTransitionOptions(transitionObj?.canvas);
 
-	const transitionRawObj = Object.keys(transitionRaw).reduce((acc, key) => {
-		acc[key] = transitionRaw[key].default;
-		return acc;
-	}, {});
+	const transitionRawObj = createTransitionObj();
 
 	const transitionStyleObj = {
 		block: {},
@@ -69,12 +43,14 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 
 	const createTransitionStyleObjForType = (type, options) =>
 		options &&
-		options.forEach(({ title, property, prefix }) => {
+		options.forEach(({ title, property, prefix, ignoreHoverProp }) => {
 			transitionStyleObj[type] = {
 				...transitionStyleObj[type],
 				[title.toLowerCase()]: {
 					...transitionRawObj,
-					hoverProp: getHoverProp(property, prefix),
+					...(!ignoreHoverProp && {
+						hoverProp: getHoverProp(property, prefix),
+					}),
 				},
 			};
 		});

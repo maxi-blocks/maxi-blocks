@@ -64,6 +64,7 @@ import { setSVGContent } from '../../extensions/svg';
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
 import { getBoundaryElement } from '../../extensions/dom';
+import VideoUrl from './components/video-url';
 
 /**
  * Component
@@ -80,6 +81,7 @@ const MaxiToolbar = memo(
 		const {
 			attributes,
 			backgroundAdvancedOptions,
+			backgroundPrefix,
 			backgroundGlobalProps,
 			cleanInlineStyles,
 			clientId,
@@ -96,12 +98,9 @@ const MaxiToolbar = memo(
 			rowPattern,
 			toggleHandlers,
 		} = props;
+		const { blockStyle, content, mediaPrefix } = props;
 		const {
-			blockFullWidth,
-			blockStyle,
-			content,
 			customLabel,
-			fullWidth,
 			isFirstOnHierarchy,
 			isList,
 			linkSettings,
@@ -245,6 +244,7 @@ const MaxiToolbar = memo(
 							breakpoint={breakpoint}
 							clientId={clientId}
 							attributes={attributes}
+							prefix={mediaPrefix}
 						/>
 						<TextColor
 							blockName={name}
@@ -421,6 +421,12 @@ const MaxiToolbar = memo(
 								/>
 							</>
 						)}
+						{name === 'maxi-blocks/video-maxi' && (
+							<VideoUrl
+								{...getGroupAttributes(attributes, 'video')}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
+						)}
 						<ColumnMover
 							clientId={clientId}
 							blockName={name}
@@ -435,9 +441,12 @@ const MaxiToolbar = memo(
 									'backgroundGradient',
 								],
 								false,
-								prefix
+								backgroundPrefix || prefix
 							)}
-							prefix={prefix}
+							{...(name === 'maxi-blocks/video-maxi' && {
+								...getGroupAttributes(attributes, 'video'),
+							})}
+							prefix={backgroundPrefix || prefix}
 							advancedOptions={backgroundAdvancedOptions}
 							globalProps={backgroundGlobalProps}
 							blockName={name}
@@ -539,8 +548,6 @@ const MaxiToolbar = memo(
 						/>
 						<Size
 							blockName={name}
-							blockFullWidth={blockFullWidth}
-							fullWidth={fullWidth}
 							{...getGroupAttributes(
 								attributes,
 								'size',

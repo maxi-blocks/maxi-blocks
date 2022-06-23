@@ -16,7 +16,7 @@
 		"test:e2e-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js --puppeteer-interactive",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
 		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
-		"minify:frontend": "minify js/maxi-bg-video.js > js/maxi-bg-video.min.js && minify js/maxi-hover-effects.js > js/maxi-hover-effects.min.js && minify js/maxi-map.js > js/maxi-map.min.js && minify js/maxi-number-counter.js > js/maxi-number-counter.min.js && minify js/maxi-parallax.js > js/maxi-parallax.min.js && minify js/maxi-scroll-effects.js > js/maxi-scroll-effects.min.js && minify js/maxi-shape-divider.js > js/maxi-shape-divider.min.js && minify js/maxi-relations.js > js/maxi-relations.min.js"
+		"minify:frontend": "minify js/maxi-bg-video.js > js/maxi-bg-video.min.js && minify js/maxi-hover-effects.js > js/maxi-hover-effects.min.js && minify js/maxi-map.js > js/maxi-map.min.js && minify js/maxi-number-counter.js > js/maxi-number-counter.min.js && minify js/maxi-parallax.js > js/maxi-parallax.min.js && minify js/maxi-scroll-effects.js > js/maxi-scroll-effects.min.js && minify js/maxi-shape-divider.js > js/maxi-shape-divider.min.js && minify js/maxi-relations.js > js/maxi-relations.min.js && minify js/maxi-video.js > js/maxi-video.min.js"
 	},
 	"dependencies": {
 		"@googlemaps/js-api-loader": "^1.14.3",
@@ -33,7 +33,6 @@
 		"@wordpress/icons": "^9.1.0",
 		"@wordpress/primitives": "^3.8.0",
 		"@wordpress/rich-text": "^5.8.0",
-		"algoliasearch": "^4.13.1",
 		"babel-eslint": "^10.1.0",
 		"babel-preset-react": "^6.24.1",
 		"bezier-easing-editor": "^0.8.0",
@@ -61,6 +60,7 @@
 		"react-tilt": "^0.1.4",
 		"tilt.js": "^1.2.1",
 		"tinycolor2": "^1.4.2",
+		"typesense-instantsearch-adapter": "^2.4.0",
 		"w3c-css-validator": "^1.2.1"
 	},
 	"devDependencies": {

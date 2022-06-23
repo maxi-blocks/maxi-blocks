@@ -59,6 +59,7 @@ export { default as toolbarDrop } from './drag';
 export { default as toolbarMoreSettings } from './more-settings';
 export { default as toolbarHelp } from './help';
 export { default as toolbarVerticalAlign } from './vertical-align';
+export { default as toolbarVideo } from './video';
 export { default as toolbarTextMargin } from './text-margin';
 export { default as colorOpacity } from './color-opacity';
 export { default as toolbarTextSize } from './text-size';

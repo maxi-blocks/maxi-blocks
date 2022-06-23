@@ -52,6 +52,19 @@ const background = ({
 	const hoverStatus =
 		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
 
+	const getIgnoreIndicator = (isHover = false) =>
+		attributes[
+			`${prefix}background-active-media-${deviceType}${
+				isHover ? '-hover' : ''
+			}`
+		] === 'none' &&
+		Object.keys(
+			getGroupAttributes(attributes, groupAttributes, isHover, prefix)
+		).filter(key => key.includes(deviceType));
+
+	const ignoreIndicator = getIgnoreIndicator();
+	const ignoreIndicatorHover = getIgnoreIndicator(true);
+
 	return {
 		label: __(`${label} background`, 'maxi-blocks'),
 		disablePadding: true,
@@ -90,6 +103,7 @@ const background = ({
 								globalProps={globalProps}
 							/>
 						),
+						ignoreIndicator,
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -165,11 +179,13 @@ const background = ({
 							</>
 						),
 						extraIndicators: [`${prefix}background-hover-status`],
+						ignoreIndicator: ignoreIndicatorHover,
 					},
 				]}
 				depth={depth}
 			/>
 		),
+		ignoreIndicator: [...ignoreIndicator, ...ignoreIndicatorHover],
 	};
 };
 

@@ -21,6 +21,7 @@ export const blockBackground = {
 export const rawBackground = {
 	'background-active-media': {
 		type: 'string',
+		default: 'none',
 	},
 };
 

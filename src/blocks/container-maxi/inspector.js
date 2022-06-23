@@ -74,6 +74,15 @@ const Inspector = props => {
 												}}
 											/>
 										),
+										ignoreIndicatorGroups:
+											!attributes[
+												'shape-divider-bottom-status'
+											] &&
+											!attributes[
+												'shape-divider-top-status'
+											]
+												? ['shapeDivider']
+												: [],
 									},
 									...inspectorTabs.blockBackground({
 										props,

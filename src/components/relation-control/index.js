@@ -37,7 +37,7 @@ import './editor.scss';
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 
-	const { deviceType, onChange, uniqueID } = props;
+	const { deviceType, onChange, uniqueID, isButton } = props;
 	const relations = cloneDeep(props.relations) ?? [];
 
 	const getRelationId = () =>
@@ -62,7 +62,9 @@ const RelationControl = props => {
 		const relation = {
 			title: '',
 			uniqueID: '',
-			trigger: uniqueID,
+			trigger: `${uniqueID} ${
+				isButton ? '.maxi-button-block__button' : ''
+			}`,
 			target: '',
 			action: '',
 			settings: '',

@@ -800,6 +800,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.relation({
 										props,
+										isButton: true,
 									}),
 								]}
 							/>

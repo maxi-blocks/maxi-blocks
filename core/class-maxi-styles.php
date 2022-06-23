@@ -218,10 +218,10 @@ class MaxiBlocks_Styles
             return $breakpoints;
         }
 
-        // It may connect to the API to centralize the default values there
+        // TODO: It may connect to the API to centralize the default values there
         return (object) [
             'xs' => 480,
-            's' => 768,
+            's' => 767,
             'm' => 1024,
             'l' => 1366,
             'xl' => 1920,
@@ -344,7 +344,7 @@ class MaxiBlocks_Styles
     public function update_color_palette_backups($style)
     {
         global $wpdb;
-    
+
         $style_card = maybe_unserialize(
             $wpdb->get_var(
                 $wpdb->prepare(

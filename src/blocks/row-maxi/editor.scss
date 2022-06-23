@@ -44,7 +44,7 @@
 	&__empty {
 		&.is-selected {
 			&::after {
-				border-color: #7fbddc !important;
+				border-color: var(--maxi-light-blue-3-color) !important;
 			}
 		}
 		&::after {

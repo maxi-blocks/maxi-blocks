@@ -16,7 +16,7 @@ export const validateOriginValue = val => {
 		if (typeof val !== 'string') return false;
 		return !Number.isNaN(val) && !Number.isNaN(parseFloat(val));
 	};
-	const words = ['top', 'bottom', 'left', 'right', 'centre', 'middle'];
+	const words = ['top', 'bottom', 'left', 'right', 'center', 'middle'];
 
 	if (isNumeric(val)) return Number(val);
 	if (words.includes(val)) return val;

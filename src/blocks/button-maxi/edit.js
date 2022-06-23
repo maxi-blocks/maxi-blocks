@@ -140,7 +140,12 @@ class edit extends MaxiBlockComponent {
 						<>
 							<IconToolbar
 								key={`icon-toolbar-${uniqueID}`}
-								ref={this.blockRef}
+								ref={
+									attributes['icon-position'] === 'top' ||
+									attributes['icon-position'] === 'bottom'
+										? this.blockRef
+										: this.iconRef
+								}
 								{...this.props}
 								propsToAvoid={['buttonContent', 'formatValue']}
 							/>

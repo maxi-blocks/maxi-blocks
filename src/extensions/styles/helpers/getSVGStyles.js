@@ -70,11 +70,18 @@ const getSVGPathStyles = (obj, isHover, prefix = 'svg-') => {
 	return { SVGPath: response };
 };
 
-const getSVGPathFillStyles = (obj, blockStyle, isHover, prefix = 'svg-') => {
+const getSVGPathFillStyles = (
+	obj,
+	blockStyle,
+	prefix = 'svg-',
+	isHover = false
+) => {
 	const response = {
 		label: 'SVG path-fill',
 		general: {},
 	};
+
+	console.log('fill prefix', prefix);
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({ obj, prefix: `${prefix}fill-`, isHover });
@@ -109,8 +116,22 @@ const getSVGPathStrokeStyles = (
 		return response;
 	}
 
-	const linePrefix =
-		prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
+	let linePrefix = '';
+
+	switch (prefix) {
+		case 'icon-':
+			linePrefix = `${prefix}stroke-`;
+			break;
+		case 'navigation-arrow-both-icon-':
+			linePrefix = `${prefix}stroke-`;
+			break;
+		case 'navigation-dot-icon-':
+			linePrefix = `${prefix}stroke-`;
+			break;
+		default:
+			linePrefix = `${prefix}line-`;
+			break;
+	}
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -250,6 +271,8 @@ export const getSVGStyles = ({
 						isHover,
 						useIconColor
 					),
+				[` ${target} svg circle[data-hover-fill]:not([fill^="none"])`]:
+					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 			},
 		};
 	}

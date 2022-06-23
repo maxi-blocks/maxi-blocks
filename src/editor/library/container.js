@@ -551,19 +551,14 @@ const LibraryContainer = props => {
 				onRequestClose();
 			}
 
-			if (type === 'button-icon' || type === 'video-shape') {
+			if (
+				type === 'button-icon' ||
+				type === 'video-shape' ||
+				type === 'navigation-icon'
+			) {
 				onSelect({
 					[`${prefix}icon-content`]: svgCode,
 					[`${prefix}svgType`]: svgType,
-				});
-
-				onRequestClose();
-			}
-
-			if (type === 'navigation-icon') {
-				onSelect({
-					[`${prefix}icon-content`]: svgCode,
-					svgType,
 				});
 
 				onRequestClose();

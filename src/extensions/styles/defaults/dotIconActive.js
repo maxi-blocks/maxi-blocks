@@ -18,11 +18,11 @@ const dotIconActive = activeAttributesCreator({
 		},
 		'navigation-dot-icon-stroke-palette-color-active': {
 			type: 'number',
-			default: 6,
-		},
-		'navigation-dot-fill-palette-color-active': {
-			type: 'number',
 			default: 2,
+		},
+		'navigation-dot-icon-fill-palette-color-active': {
+			type: 'number',
+			default: 5,
 		},
 	},
 });

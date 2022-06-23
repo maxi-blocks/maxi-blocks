@@ -388,7 +388,47 @@ const getStyles = (props, breakpoint, clientId) => {
 
 	const arrowIconHoverStatus =
 		props['navigation-arrow-both-icon-status-hover'];
-	const dotIconHoverStatus = props['navigation-arrow-both-icon-status-hover'];
+
+	// console.log(
+	// 	'icon',
+	// 	getSVGStyles({
+	// 		obj: props,
+	// 		target: ' .maxi-slider-block__arrow',
+	// 		blockStyle,
+	// 		prefix: 'navigation-arrow-both-icon-',
+	// 		isHover: false,
+	// 		useIconColor: true,
+	// 	})
+	// );
+
+	// console.log(
+	// 	'icon prev hover',
+	// 	getSVGStyles({
+	// 		obj: props,
+	// 		target: '.maxi-slider-block__arrow--prev:hover',
+	// 		blockStyle,
+	// 		prefix: 'navigation-arrow-both-icon-',
+	// 		isHover: true,
+	// 		useIconColor: true,
+	// 	})
+	// );
+
+	const dotIconHoverStatus = props['navigation-dot-icon-status-hover'];
+
+	console.log('dotIconHoverStatus', dotIconHoverStatus);
+	console.log('props', getGroupAttributes(props, 'dotIconHover', true));
+
+	console.log(
+		getSVGStyles({
+			obj: {
+				...getGroupAttributes(props, 'dotIconHover', true),
+			},
+			target: ' .maxi-slider-block__dot:hover',
+			blockStyle,
+			prefix: 'navigation-dot-icon-',
+			isHover: true,
+		})
+	);
 
 	const navigationType = props[`navigation-type-${breakpoint}`];
 
@@ -459,6 +499,55 @@ const getStyles = (props, breakpoint, clientId) => {
 								),
 						};
 					})()),
+				...(navigationType.includes('arrow') &&
+					arrowIconHoverStatus &&
+					(() => {
+						return {
+							...getSVGStyles({
+								obj: props,
+								target: ' .maxi-slider-block__arrow--prev:hover',
+								blockStyle,
+								prefix: 'navigation-arrow-both-icon-',
+								isHover: true,
+							}),
+							...getSVGStyles({
+								obj: props,
+								target: ' .maxi-slider-block__arrow--next:hover',
+								blockStyle,
+								prefix: 'navigation-arrow-both-icon-',
+								isHover: true,
+							}),
+							' .maxi-slider-block__arrow--prev:hover':
+								getIconSpacing(props, 'prev', true),
+							' .maxi-slider-block__arrow--prev:hover svg':
+								getIconSize(
+									props,
+									'navigation-arrow-both-icon',
+									true
+								),
+							' .maxi-slider-block__arrow--prev:hover svg path':
+								getIconPathStyles(
+									props,
+									true,
+									'navigation-arrow-both'
+								),
+
+							' .maxi-slider-block__arrow--next:hover':
+								getIconSpacing(props, 'next', true),
+							' .maxi-slider-block__arrow--next:hover svg':
+								getIconSize(
+									props,
+									'navigation-arrow-both-icon',
+									true
+								),
+							' .maxi-slider-block__arrow--next:hover svg path':
+								getIconPathStyles(
+									props,
+									true,
+									'navigation-arrow-both'
+								),
+						};
+					})()),
 				...(navigationType.includes('dot') &&
 					(() => {
 						return {
@@ -511,73 +600,33 @@ const getStyles = (props, breakpoint, clientId) => {
 								),
 						};
 					})()),
-				...(navigationType.includes('arrow') &&
-					arrowIconHoverStatus &&
+				...(navigationType.includes('dot') &&
+					dotIconHoverStatus &&
 					(() => {
-						// const iconHoverObj = getIconHoverObject(
-						// 	props,
-						// 	'arrowIconHover'
-						// );
-
 						return {
-							// ' .maxi-slider-block__arrow--prev:hover':
-							// 	iconHoverObj,
-							// ' .maxi-slider-block__arrow--prev:hover svg > *':
-							// 	iconHoverObj,
-							' .maxi-slider-block__arrow--prev:hover':
-								getIconSpacing(props, 'prev', true),
-							' .maxi-slider-block__arrow--prev:hover svg':
-								getIconSize(
-									props,
-									'navigation-arrow-both-icon',
-									true
-								),
-							' .maxi-slider-block__arrow--prev:hover svg path':
+							...getSVGStyles({
+								obj: props,
+								target: ' .maxi-slider-block__dot:hover',
+								blockStyle,
+								prefix: 'navigation-dot-icon-',
+								isHover: true,
+							}),
+							' .maxi-slider-block__dot:hover': getIconSpacing(
+								props,
+								'prev',
+								true
+							),
+							' .maxi-slider-block__dot:hover svg': getIconSize(
+								props,
+								'navigation-dot-icon',
+								true
+							),
+							' .maxi-slider-block__dot:hover svg path':
 								getIconPathStyles(
 									props,
 									true,
-									'navigation-arrow-both'
+									'navigation-dot'
 								),
-							...getSVGStyles({
-								obj: {
-									...getGroupAttributes(
-										props,
-										'arrowIconHover',
-										true
-									),
-								},
-								target: '.maxi-slider-block__arrow--prev:hover',
-								blockStyle,
-								prefix: 'navigation-arrow-both-icon-',
-								isHover: true,
-							}),
-							' .maxi-slider-block__arrow--next:hover':
-								getIconSpacing(props, 'next', true),
-							' .maxi-slider-block__arrow--next:hover svg':
-								getIconSize(
-									props,
-									'navigation-arrow-both-icon',
-									true
-								),
-							' .maxi-slider-block__arrow--next:hover svg path':
-								getIconPathStyles(
-									props,
-									true,
-									'navigation-arrow-both'
-								),
-							...getSVGStyles({
-								obj: {
-									...getGroupAttributes(
-										props,
-										'arrowIconHover',
-										true
-									),
-								},
-								target: '.maxi-slider-block__arrow--next:hover',
-								blockStyle,
-								prefix: 'navigation-arrow-both-icon-',
-								isHover: true,
-							}),
 						};
 					})()),
 			},

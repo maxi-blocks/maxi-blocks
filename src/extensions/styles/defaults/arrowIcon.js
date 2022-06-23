@@ -44,6 +44,18 @@ const arrowIcon = {
 			},
 		},
 	}),
+	...{
+		'navigation-arrow-first-svgType': {
+			type: 'string',
+			default: 'Line',
+		},
+	},
+	...{
+		'navigation-arrow-second-svgType': {
+			type: 'string',
+			default: 'Line',
+		},
+	},
 };
 
 export default arrowIcon;

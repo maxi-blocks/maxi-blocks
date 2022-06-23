@@ -11,6 +11,7 @@ const dotIcon = {
 		diffValAttr: {
 			'navigation-dot-icon-width-general': '10',
 			'navigation-dot-icon-stroke-palette-color': 5,
+			'navigation-dot-icon-fill-palette-color': 3,
 		},
 		exclAttr: [
 			'icon-inherit',
@@ -43,6 +44,12 @@ const dotIcon = {
 			},
 		},
 	}),
+	...{
+		'navigation-dot-svgType': {
+			type: 'string',
+			default: 'Shape',
+		},
+	},
 };
 
 export default dotIcon;

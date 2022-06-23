@@ -44,7 +44,7 @@ const NavigationIconControl = props => {
 		className,
 		onChangeInline = null,
 		onChange,
-		svgType = 'Line',
+		svgType = 'Filled',
 		breakpoint,
 		blockStyle,
 		isHover = false,

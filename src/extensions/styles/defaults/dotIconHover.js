@@ -18,11 +18,11 @@ const dotIconHover = hoverAttributesCreator({
 		},
 		'navigation-dot-icon-stroke-palette-color-hover': {
 			type: 'number',
-			default: 6,
-		},
-		'navigation-dot-fill-palette-color-hover': {
-			type: 'number',
 			default: 2,
+		},
+		'navigation-dot-icon-fill-palette-color-hover': {
+			type: 'number',
+			default: 6,
 		},
 	},
 });

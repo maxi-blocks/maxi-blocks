@@ -15,12 +15,23 @@ const NavigationIconsControl = props => {
 		deviceType,
 		insertInlineStyles,
 		cleanInlineStyles,
-		svgType,
 		clientId,
 		blockStyle,
 		attributes,
 		prefix = 'navigation-arrow-both-icon',
 	} = props;
+
+	let svgType = 'Filled';
+
+	if (prefix === 'navigation-arrow-both-icon')
+		svgType =
+			attributes['navigation-arrow-first-svgType'] ===
+			attributes['navigation-arrow-second-svgType']
+				? attributes['navigation-arrow-first-svgType']
+				: 'Filed';
+
+	if (prefix === 'navigation-dot-icon')
+		svgType = attributes['navigation-dot-svgType'];
 
 	return (
 		<SettingTabsControl

@@ -252,6 +252,20 @@ const Inspector = props => {
 		captionPosition,
 	} = attributes;
 
+	const hoverEffectAttributeGroups = [
+		'hover',
+		'hoverBorder',
+		'hoverBorderWidth',
+		'hoverBorderRadius',
+		'hoverBackground',
+		'hoverBackgroundColor',
+		'hoverBackgroundGradient',
+		'hoverMargin',
+		'hoverPadding',
+		'hoverTitleTypography',
+		'hoverContentTypography',
+	];
+
 	const imageData = useSelect(
 		select => select('core').getMedia(mediaID),
 		[mediaID]
@@ -521,19 +535,7 @@ const Inspector = props => {
 													uniqueID={uniqueID}
 													{...getGroupAttributes(
 														attributes,
-														[
-															'hover',
-															'hoverBorder',
-															'hoverBorderWidth',
-															'hoverBorderRadius',
-															'hoverBackground',
-															'hoverBackgroundColor',
-															'hoverBackgroundGradient',
-															'hoverMargin',
-															'hoverPadding',
-															'hoverTitleTypography',
-															'hoverContentTypography',
-														]
+														hoverEffectAttributeGroups
 													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)
@@ -543,6 +545,10 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
+										ignoreIndicatorGroups:
+											attributes['hover-type'] === 'none'
+												? hoverEffectAttributeGroups
+												: [],
 									},
 									{
 										label: __('Shape mask', 'maxi-blocks'),

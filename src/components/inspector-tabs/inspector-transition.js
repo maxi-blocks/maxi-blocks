@@ -91,7 +91,7 @@ const TransitionControlWrapper = props => {
 			{selected && selected !== 'none' && (
 				<ResponsiveTabsControl breakpoint={deviceType}>
 					<TransitionControl
-						{...getGroupAttributes(attributes, 'transition')}
+						{...attributes}
 						onChange={onChangeTransition}
 						getDefaultTransitionAttribute={
 							getDefaultTransitionAttribute
@@ -148,6 +148,10 @@ const transition = ({
 								<TransitionControlWrapper
 									type='block'
 									{...props}
+									attributes={getGroupAttributes(
+										attributes,
+										'transition'
+									)}
 								/>
 							),
 							ignoreIndicator,
@@ -158,6 +162,10 @@ const transition = ({
 								<TransitionControlWrapper
 									type='canvas'
 									{...props}
+									attributes={getGroupAttributes(
+										attributes,
+										'transition'
+									)}
 								/>
 							),
 							ignoreIndicator,
@@ -165,7 +173,12 @@ const transition = ({
 					]}
 				/>
 			) : (
-				<TransitionControlWrapper type='canvas' isOneType {...props} />
+				<TransitionControlWrapper
+					type='canvas'
+					isOneType
+					{...props}
+					attributes={getGroupAttributes(attributes, 'transition')}
+				/>
 			),
 		ignoreIndicator,
 	};

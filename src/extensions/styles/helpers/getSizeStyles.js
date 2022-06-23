@@ -117,16 +117,17 @@ const getSizeStyles = (obj, prefix = '') => {
 				const auto =
 					prefix === 'number-counter-' &&
 					target === 'width' &&
-					(obj['number-counter-circle-status'] ||
-						getLastBreakpointAttribute({
-							target: `${prefix}${target}-auto`,
-							breakpoint,
-							attributes: obj,
-						}));
+					obj['number-counter-circle-status']
+						? 'auto'
+						: getLastBreakpointAttribute({
+								target: `${prefix}${target}-auto`,
+								breakpoint,
+								attributes: obj,
+						  }) && '100%';
 
 				if (!isNil(num) && !isNil(unit))
 					return {
-						[target]: auto ? '100%' : num + unit,
+						[target]: auto || num + unit,
 						...fullWidthNormalStyles,
 					};
 			}

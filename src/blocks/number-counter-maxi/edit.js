@@ -119,23 +119,23 @@ const NumberCounter = attributes => {
 			lockAspectRatio
 			deviceType={deviceType}
 			size={{
-				width:
-					circleStatus ||
-					getLastBreakpointAttribute({
-						target: 'number-counter-width-auto',
-						breakpoint: deviceType,
-						attributes,
-					})
-						? '100%'
-						: `${getLastBreakpointAttribute({
-								target: 'number-counter-width',
-								breakpoint: deviceType,
-								attributes,
-						  })}${getLastBreakpointAttribute({
-								target: 'number-counter-width-unit',
-								breakpoint: deviceType,
-								attributes,
-						  })}`,
+				width: circleStatus
+					? 'auto'
+					: getLastBreakpointAttribute({
+							target: 'number-counter-width-auto',
+							breakpoint: deviceType,
+							attributes,
+					  })
+					? '100%'
+					: `${getLastBreakpointAttribute({
+							target: 'number-counter-width',
+							breakpoint: deviceType,
+							attributes,
+					  })}${getLastBreakpointAttribute({
+							target: 'number-counter-width-unit',
+							breakpoint: deviceType,
+							attributes,
+					  })}`,
 			}}
 			maxWidth='100%'
 			minWidth={

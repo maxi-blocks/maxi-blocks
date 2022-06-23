@@ -86,6 +86,36 @@ class edit extends MaxiBlockComponent {
 		};
 	}
 
+	maxiBlockDidMount() {
+		const { attributes, maxiSetAttributes } = this.props;
+		const { SVGData, SVGElement, uniqueID, mediaID, mediaURL } = attributes;
+
+		if (
+			!isEmpty(SVGData) &&
+			Object.keys(SVGData)[0].split('__')[0] !== uniqueID
+		) {
+			const cleanedContent = DOMPurify.sanitize(SVGElement);
+
+			const svg = document
+				.createRange()
+				.createContextualFragment(cleanedContent).firstElementChild;
+
+			const resData = {
+				[`${uniqueID}__${uniqueId()}`]: {
+					color: '',
+					imageID: mediaID,
+					imageURL: mediaURL,
+				},
+			};
+
+			const resEl = injectImgSVG(svg, resData, false, uniqueID);
+			maxiSetAttributes({
+				SVGElement: resEl.outerHTML,
+				SVGData: resData,
+			});
+		}
+	}
+
 	render() {
 		const { attributes, maxiSetAttributes, isSelected, deviceType } =
 			this.props;

@@ -20,7 +20,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  */
 const getImageShapeStyles = (target = 'svg', obj, prefix = '') => {
 	const response = {};
-
+	let omitTransformScale = true;
 	breakpoints.forEach(breakpoint => {
 		let transformString = '';
 		const scale = getLastBreakpointAttribute({
@@ -47,8 +47,11 @@ const getImageShapeStyles = (target = 'svg', obj, prefix = '') => {
 		});
 
 		if (isNumber(scale)) {
-			if (target === 'svg') transformString += `scale(${scale / 100}) `;
-			if (target === 'image') transformString += `scale(${100 / scale}) `;
+			omitTransformScale = omitTransformScale ? scale === 100 : false;
+			if (target === 'svg' && !(scale === 100 && omitTransformScale))
+				transformString += `scale(${scale / 100}) `;
+			if (target === 'image' && !(scale === 100 && omitTransformScale))
+				transformString += `scale(${100 / scale}) `;
 		}
 
 		if (isNumber(rotate)) {

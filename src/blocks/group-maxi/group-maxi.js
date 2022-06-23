@@ -23,8 +23,11 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { groupIcon } from '../../icons';
-import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
-import fromFullWidthNonToResponsive from '../../extensions/styles/migrators/fullWidthNonToResponsive';
+
+/**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
 
 /**
  * Block
@@ -51,8 +54,5 @@ registerBlockType('maxi-blocks/group-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [
-		fromNumberToStringMigrator({ attributes, save }),
-		fromFullWidthNonToResponsive({ attributes, save }),
-	],
+	deprecated: [blockMigrator({ attributes, save })],
 });

@@ -69,7 +69,11 @@ const ColorPaletteControl = props => {
 				  )
 				: false;
 
-			return { globalStatus, globalPaletteColor, globalPaletteOpacity };
+			return {
+				globalStatus,
+				globalPaletteColor,
+				globalPaletteOpacity: globalPaletteOpacity || 1,
+			};
 		});
 
 	const classes = classnames(

@@ -5,7 +5,11 @@ const transitionObj = {
 		...transitionDefault.canvas,
 		typography: {
 			title: 'Typography',
-			target: ' .maxi-text-block__content',
+			target: [
+				' .maxi-text-block__content',
+				' .maxi-text-block__content li',
+				' .maxi-text-block__content ol',
+			],
 			property: 'typography',
 			limitless: true,
 		},

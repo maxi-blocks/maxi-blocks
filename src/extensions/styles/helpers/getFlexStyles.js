@@ -22,9 +22,13 @@ const getFlexStyles = obj => {
 		});
 		if (
 			flexBasis &&
-			!['content', 'max-content', 'min-content', 'fit-content'].includes(
-				flexBasis
-			)
+			![
+				'auto',
+				'content',
+				'max-content',
+				'min-content',
+				'fit-content',
+			].includes(flexBasis)
 		) {
 			flexBasis = `${flexBasis}${getLastBreakpointAttribute({
 				target: 'flex-basis-unit',
@@ -92,9 +96,9 @@ const getFlexStyles = obj => {
 		});
 
 		response[breakpoint] = {
-			...((flexBasis || flexGrow || flexShrink) && {
+			...((flexBasis !== 'unset' || flexGrow || flexShrink) && {
 				flex: `${flexGrow || 0} ${flexShrink || 1} ${
-					flexBasis || 'auto'
+					flexBasis !== 'unset' ? flexBasis : 'auto'
 				}`,
 			}),
 			...(!isNil(flexWrap) && {

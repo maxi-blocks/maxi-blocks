@@ -9,6 +9,7 @@ const rawFlex = {
 	},
 	'flex-basis': {
 		type: 'string',
+		default: 'unset',
 	},
 	'flex-basis-unit': {
 		type: 'string',
@@ -16,21 +17,26 @@ const rawFlex = {
 	},
 	'flex-wrap': {
 		type: 'string',
+		default: 'nowrap',
 	},
 	'flex-flow': {
 		type: 'string',
 	},
 	'justify-content': {
 		type: 'string',
+		default: 'flex-start',
 	},
 	'flex-direction': {
 		type: 'string',
+		default: 'row',
 	},
 	'align-items': {
 		type: 'string',
+		default: 'flex-start',
 	},
 	'align-content': {
 		type: 'string',
+		default: 'flex-start',
 	},
 	'row-gap': {
 		type: 'number',

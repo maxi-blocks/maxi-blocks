@@ -150,7 +150,7 @@ const SettingTabsControl = props => {
 							item.extraIndicators,
 							item.extraIndicatorsResponsive,
 							[
-								...getChildrenIgnoreIndicator(items),
+								...getChildrenIgnoreIndicator(item),
 								...item.ignoreIndicator,
 							]
 						);

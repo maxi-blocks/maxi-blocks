@@ -40,7 +40,6 @@ const TransformControl = props => {
 		breakpoint = 'general',
 		depth,
 	} = props;
-	console.log('transform attrs', getGroupAttributes(props, 'transform'));
 
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')

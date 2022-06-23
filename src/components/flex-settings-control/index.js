@@ -14,8 +14,9 @@ import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import {
-	getLastBreakpointAttribute,
 	getAttributeValue,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -55,6 +56,13 @@ const FlexSettingsControl = props => {
 	];
 
 	const classes = classnames('maxi-flex-settings--control', className);
+
+	const flexChildAttributeKeys = [
+		`order-${breakpoint}`,
+		`flex-grow-${breakpoint}`,
+		`flex-shrink-${breakpoint}`,
+		`flex-basis-${breakpoint}`,
+	];
 
 	return (
 		<div className={classes}>
@@ -217,6 +225,7 @@ const FlexSettingsControl = props => {
 								)}
 							</div>
 						),
+						ignoreIndicator: flexChildAttributeKeys,
 					},
 					{
 						label: __('Flex-child', 'maxi-blocks'),
@@ -242,7 +251,10 @@ const FlexSettingsControl = props => {
 									step={1}
 									onReset={() =>
 										onChange({
-											[`order-${breakpoint}`]: null,
+											[`order-${breakpoint}`]:
+												getDefaultAttribute(
+													`order-${breakpoint}`
+												),
 										})
 									}
 								/>
@@ -265,7 +277,10 @@ const FlexSettingsControl = props => {
 									step={0.1}
 									onReset={() =>
 										onChange({
-											[`flex-grow-${breakpoint}`]: null,
+											[`flex-grow-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-grow-${breakpoint}`
+												),
 										})
 									}
 								/>
@@ -288,7 +303,10 @@ const FlexSettingsControl = props => {
 									step={0.1}
 									onReset={() =>
 										onChange({
-											[`flex-shrink-${breakpoint}`]: null,
+											[`flex-shrink-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-shrink-${breakpoint}`
+												),
 										})
 									}
 								/>
@@ -305,6 +323,10 @@ const FlexSettingsControl = props => {
 											  })
 									}
 									options={[
+										{
+											label: __('Unset', 'maxi-blocks'),
+											value: 'unset',
+										},
 										{
 											label: __('Content', 'maxi-blocks'),
 											value: 'content',
@@ -400,7 +422,9 @@ const FlexSettingsControl = props => {
 										onReset={() =>
 											onChange({
 												[`flex-basis-${breakpoint}`]:
-													null,
+													getDefaultAttribute(
+														`flex-basis-${breakpoint}`
+													),
 											})
 										}
 									/>
@@ -414,6 +438,7 @@ const FlexSettingsControl = props => {
 								)}
 							</div>
 						),
+						extraIndicators: flexChildAttributeKeys,
 					},
 				]}
 				depth={2}

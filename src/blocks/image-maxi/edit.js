@@ -103,16 +103,10 @@ class edit extends MaxiBlockComponent {
 			const resData = {
 				[`${uniqueID}__${uniqueId()}`]: {
 					color: '',
-					imageID: '',
-					imageURL: '',
+					imageID: mediaID,
+					imageURL: mediaURL,
 				},
 			};
-
-			const SVGValue = resData;
-			const el = Object.keys(SVGValue)[0];
-
-			SVGValue[el].imageID = mediaID;
-			SVGValue[el].imageURL = mediaURL;
 
 			const resEl = injectImgSVG(svg, resData, false, uniqueID);
 			maxiSetAttributes({

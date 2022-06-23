@@ -313,6 +313,12 @@ const Inspector = props => {
 													}}
 												/>
 											),
+											ignoreIndicator: [
+												'mediaID',
+												...(altSelector === 'title'
+													? ['mediaAlt']
+													: []),
+											],
 										},
 									{
 										label: __('Caption', 'maxi-blocks'),
@@ -566,6 +572,9 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												ignoreIndicator={[
+													'clip-path-general',
+												]}
 											>
 												<ClipPath
 													onChange={obj => {
@@ -582,9 +591,7 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: [
-											`clip-path-${deviceType}`,
-										],
+										ignoreIndicator: ['clip-path-general'],
 									},
 									...inspectorTabs.border({
 										props,

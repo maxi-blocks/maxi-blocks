@@ -91,7 +91,7 @@ const attributes = {
 	},
 	altSelector: {
 		type: 'string',
-		default: 'wordpress',
+		default: 'title',
 	},
 	mediaWidth: {
 		type: 'number',

@@ -1,30 +1,37 @@
-import activeAttributesCreator from '../activeAttributesCreator';
-import dotIcon from './dotIcon';
+import prefixAttributesCreator from '../prefixAttributesCreator';
+import { icon } from './icon';
 
-const dotIconActive = activeAttributesCreator({
-	obj: dotIcon,
+const prefix = 'navigation-active-dot-';
+
+const dotIconActive = prefixAttributesCreator({
+	obj: icon,
+	prefix,
+	diffValAttr: {
+		[`${prefix}icon-width-general`]: '10',
+		[`${prefix}icon-stroke-palette-color`]: 2,
+		[`${prefix}icon-fill-palette-color`]: 5,
+	},
 	newAttr: {
-		'navigation-dot-icon-status-active': {
+		[`${prefix}icon-status`]: {
 			type: 'boolean',
 			default: true,
 		},
-		'navigation-dot-icon-stroke-palette-status-active': {
+		[`${prefix}icon-stroke-palette-status`]: {
 			type: 'boolean',
 			default: true,
 		},
-		'navigation-dot-icon-fill-palette-status-active': {
+		[`${prefix}icon-fill-palette-status`]: {
 			type: 'boolean',
 			default: true,
-		},
-		'navigation-dot-icon-stroke-palette-color-active': {
-			type: 'number',
-			default: 2,
-		},
-		'navigation-dot-icon-fill-palette-color-active': {
-			type: 'number',
-			default: 5,
 		},
 	},
+	exclAttr: [
+		'icon-inherit',
+		'icon-only',
+		'icon-position',
+		'icon-content',
+		'icon-spacing',
+	],
 });
 
 export default dotIconActive;

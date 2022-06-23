@@ -115,14 +115,21 @@ const NavigationIconsControl = props => {
 									'Enable active icon state',
 									'maxi-blocks'
 								)}
-								selected={attributes[`${prefix}-status-active`]}
+								selected={
+									attributes[
+										'navigation-active-dot-icon-status'
+									]
+								}
 								onChange={val =>
 									onChange({
-										[`${prefix}-status-active`]: val,
+										'navigation-active-dot-icon-status':
+											val,
 									})
 								}
 							/>
-							{attributes[`${prefix}-status-active`] && (
+							{attributes[
+								'navigation-active-dot-icon-status'
+							] && (
 								<NavigationIconControl
 									{...attributes}
 									onChangeInline={(
@@ -144,8 +151,8 @@ const NavigationIconsControl = props => {
 									breakpoint={deviceType}
 									clientId={clientId}
 									blockStyle={blockStyle}
-									prefix={prefix}
-									isHover
+									prefix='navigation-active-dot-icon'
+									isHover={false}
 								/>
 							)}
 						</>

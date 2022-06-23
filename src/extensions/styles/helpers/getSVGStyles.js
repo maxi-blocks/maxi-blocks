@@ -81,8 +81,6 @@ const getSVGPathFillStyles = (
 		general: {},
 	};
 
-	console.log('fill prefix', prefix);
-
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({ obj, prefix: `${prefix}fill-`, isHover });
 

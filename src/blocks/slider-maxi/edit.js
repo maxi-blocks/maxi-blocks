@@ -186,6 +186,21 @@ const SliderWrapper = props => {
 		);
 	};
 
+	const setActiveDot = dotNumber => {
+		const dots = document.querySelectorAll(
+			`.${uniqueID} .maxi-slider-block__dot`
+		);
+
+		[].forEach.call(dots, function removeActiveClass(el) {
+			el.classList.remove('maxi-slider-block__dot--active');
+		});
+		const activeDot = document.querySelectorAll(
+			`.${uniqueID} .maxi-slider-block__dot--${dotNumber}`
+		)[0];
+
+		activeDot?.classList.add('maxi-slider-block__dot--active');
+	};
+
 	const nextSlide = () => {
 		if (currentSlide + 1 < numberOfSlides || isLoop || isAutoplay) {
 			if (sliderTransition !== 'slide')
@@ -195,6 +210,8 @@ const SliderWrapper = props => {
 			setCurrentSlide(prev => {
 				return prev + 1;
 			});
+
+			setActiveDot(currentSlide + 1);
 		}
 	};
 
@@ -206,6 +223,8 @@ const SliderWrapper = props => {
 			setCurrentSlide(next => {
 				return next - 1;
 			});
+
+			setActiveDot(currentSlide - 1);
 		}
 	};
 
@@ -214,6 +233,7 @@ const SliderWrapper = props => {
 			wrapperRef.current.style.animation = getSliderEffect();
 		else wrapperRef.current.style.transition = getSliderEffect();
 		setCurrentSlide(slideNumber);
+		setActiveDot(slideNumber);
 	};
 
 	const onDragAction = e => {
@@ -475,7 +495,12 @@ const SliderWrapper = props => {
 									i => {
 										return (
 											<span
-												className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
+												className={classnames(
+													'maxi-slider-block__dot',
+													`maxi-slider-block__dot--${i}`,
+													i === 0 &&
+														' maxi-slider-block__dot--active'
+												)}
 												key={`maxi-slider-block__dot--${i}`}
 												onClick={
 													!isEditView

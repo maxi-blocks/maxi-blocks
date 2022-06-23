@@ -91,7 +91,12 @@ const save = props => {
 									i => {
 										return (
 											<span
-												className={`maxi-slider-block__dot maxi-slider-block__dot--${i}`}
+												className={classnames(
+													'maxi-slider-block__dot',
+													`maxi-slider-block__dot--${i}`,
+													i === 0 &&
+														' maxi-slider-block__dot--active'
+												)}
 												key={`maxi-slider-block__dot--${i}`}
 											>
 												<RawHTML className='maxi-navigation-dot-icon-block__icon'>

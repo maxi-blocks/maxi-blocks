@@ -51,6 +51,8 @@ const NavigationIconControl = props => {
 		prefix,
 	} = props;
 
+	const isActive = prefix.includes('-active');
+
 	const classes = classnames('maxi-icon-control', className);
 
 	const [iconStyle, setIconStyle] = useState('color');
@@ -83,6 +85,7 @@ const NavigationIconControl = props => {
 	return (
 		<div className={classes}>
 			{!isHover &&
+				!isActive &&
 				breakpoint === 'general' &&
 				shortPrefix === 'navigation-arrow' && (
 					<>
@@ -107,6 +110,7 @@ const NavigationIconControl = props => {
 					</>
 				)}
 			{!isHover &&
+				!isActive &&
 				breakpoint === 'general' &&
 				shortPrefix === 'navigation-dot' && (
 					<MaxiModal
@@ -123,197 +127,231 @@ const NavigationIconControl = props => {
 				props['navigation-arrow-second-icon-content'] ||
 				props['navigation-dot-icon-content']) && (
 				<>
-					<ResponsiveTabsControl breakpoint={breakpoint}>
-						<>
-							<SvgWidthControl
-								{...getGroupAttributes(
-									props,
-									shortPrefix === 'navigation-dot'
-										? `dotIcon${isHover ? 'Hover' : ''}`
-										: `arrowIcon${isHover ? 'Hover' : ''}`,
-									isHover
-								)}
-								onChange={onChange}
-								prefix={`${prefix}-`}
-								breakpoint={breakpoint}
-								isHover={isHover}
-							/>
-							<SvgStrokeWidthControl
-								{...getGroupAttributes(
-									props,
-									shortPrefix === 'navigation-dot'
-										? `dotIcon${isHover ? 'Hover' : ''}`
-										: `arrowIcon${isHover ? 'Hover' : ''}`,
-									isHover
-								)}
-								onChange={obj => {
-									shortPrefix === 'navigation-arrow' &&
-										onChange({
-											...obj,
-											'navigation-arrow-first-icon-content':
-												setSVGStrokeWidth(
-													props[
-														'navigation-arrow-first-icon-content'
-													],
-													obj[
-														`${prefix}-stroke-${breakpoint}${
-															isHover
-																? '-hover'
-																: ''
-														}`
-													]
-												),
-											'navigation-arrow-second-icon-content':
-												setSVGStrokeWidth(
-													props[
-														'navigation-arrow-second-icon-content'
-													],
-													obj[
-														`${prefix}-stroke-${breakpoint}${
-															isHover
-																? '-hover'
-																: ''
-														}`
-													]
-												),
-										});
-									shortPrefix === 'navigation-dot' &&
-										onChange({
-											...obj,
-											'navigation-dot-icon-content':
-												setSVGStrokeWidth(
-													props[
-														'navigation-dot-icon-content'
-													],
-													obj[
-														`${prefix}-stroke-${breakpoint}${
-															isHover
-																? '-hover'
-																: ''
-														}`
-													]
-												),
-										});
-								}}
-								prefix={`${prefix}-`}
-								breakpoint={breakpoint}
-								isHover={isHover}
-							/>
-							<AdvancedNumberControl
-								label={__('Horizontal Spacing', 'maxi-blocks')}
-								min={-300}
-								max={300}
-								initial={1}
-								step={1}
-								breakpoint={breakpoint}
-								value={
-									props[
-										`${prefix}-spacing-horizontal-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`
-									]
-								}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}-spacing-horizontal-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								onReset={() =>
-									onChange({
-										[`${prefix}-spacing-horizontal-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: getDefaultAttribute(
-											`${prefix}-spacing-horizontal-${breakpoint}${
-												isHover ? '-hover' : ''
-											}`
-										),
-									})
-								}
-								isHover={isHover}
-							/>
-							<AdvancedNumberControl
-								label={__('Vertical Spacing', 'maxi-blocks')}
-								min={-100}
-								max={200}
-								initial={1}
-								step={1}
-								breakpoint={breakpoint}
-								value={
-									props[
-										`${prefix}-spacing-vertical-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`
-									]
-								}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}-spacing-vertical-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								onReset={() =>
-									onChange({
-										[`${prefix}-spacing-vertical-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: getDefaultAttribute(
-											`${prefix}-spacing-vertical-${breakpoint}${
-												isHover ? '-hover' : ''
-											}`
-										),
-									})
-								}
-								isHover={isHover}
-							/>
-							{prefix.includes('dot') && (
-								<AdvancedNumberControl
-									label={__('Spacing Between', 'maxi-blocks')}
-									min={-10}
-									max={100}
-									initial={1}
-									step={1}
+					{!isActive && (
+						<ResponsiveTabsControl breakpoint={breakpoint}>
+							<>
+								<SvgWidthControl
+									{...getGroupAttributes(
+										props,
+										shortPrefix === 'navigation-dot'
+											? `dotIcon${isHover ? 'Hover' : ''}`
+											: `arrowIcon${
+													isHover ? 'Hover' : ''
+											  }`,
+										isHover
+									)}
+									onChange={onChange}
+									prefix={`${prefix}-`}
 									breakpoint={breakpoint}
-									value={
-										props[
-											`${prefix}-spacing-between-${breakpoint}${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									onChangeValue={val => {
-										onChange({
-											[`${prefix}-spacing-between-${breakpoint}${
-												isHover ? '-hover' : ''
-											}`]:
-												val !== undefined && val !== ''
-													? val
-													: '',
-										});
-									}}
-									onReset={() =>
-										onChange({
-											[`${prefix}-spacing-between-${breakpoint}${
-												isHover ? '-hover' : ''
-											}`]: getDefaultAttribute(
-												`${prefix}-spacing-between-${breakpoint}${
-													isHover ? '-hover' : ''
-												}`
-											),
-										})
-									}
 									isHover={isHover}
 								/>
-							)}
-						</>
-					</ResponsiveTabsControl>
+								<SvgStrokeWidthControl
+									{...getGroupAttributes(
+										props,
+										shortPrefix === 'navigation-dot'
+											? `dotIcon${isHover ? 'Hover' : ''}`
+											: `arrowIcon${
+													isHover ? 'Hover' : ''
+											  }`,
+										isHover
+									)}
+									onChange={obj => {
+										shortPrefix === 'navigation-arrow' &&
+											onChange({
+												...obj,
+												'navigation-arrow-first-icon-content':
+													setSVGStrokeWidth(
+														props[
+															'navigation-arrow-first-icon-content'
+														],
+														obj[
+															`${prefix}-stroke-${breakpoint}${
+																isHover
+																	? '-hover'
+																	: ''
+															}`
+														]
+													),
+												'navigation-arrow-second-icon-content':
+													setSVGStrokeWidth(
+														props[
+															'navigation-arrow-second-icon-content'
+														],
+														obj[
+															`${prefix}-stroke-${breakpoint}${
+																isHover
+																	? '-hover'
+																	: ''
+															}`
+														]
+													),
+											});
+										shortPrefix === 'navigation-dot' &&
+											onChange({
+												...obj,
+												'navigation-dot-icon-content':
+													setSVGStrokeWidth(
+														props[
+															'navigation-dot-icon-content'
+														],
+														obj[
+															`${prefix}-stroke-${breakpoint}${
+																isHover
+																	? '-hover'
+																	: ''
+															}`
+														]
+													),
+											});
+									}}
+									prefix={`${prefix}-`}
+									breakpoint={breakpoint}
+									isHover={isHover}
+								/>
+								{!isHover && !isActive && (
+									<>
+										<AdvancedNumberControl
+											label={__(
+												'Horizontal Spacing',
+												'maxi-blocks'
+											)}
+											min={-300}
+											max={300}
+											initial={1}
+											step={1}
+											breakpoint={breakpoint}
+											value={
+												props[
+													`${prefix}-spacing-horizontal-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`
+												]
+											}
+											onChangeValue={val => {
+												onChange({
+													[`${prefix}-spacing-horizontal-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`]:
+														val !== undefined &&
+														val !== ''
+															? val
+															: '',
+												});
+											}}
+											onReset={() =>
+												onChange({
+													[`${prefix}-spacing-horizontal-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`]: getDefaultAttribute(
+														`${prefix}-spacing-horizontal-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`
+													),
+												})
+											}
+											isHover={isHover}
+										/>
+										<AdvancedNumberControl
+											label={__(
+												'Vertical Spacing',
+												'maxi-blocks'
+											)}
+											min={-100}
+											max={200}
+											initial={1}
+											step={1}
+											breakpoint={breakpoint}
+											value={
+												props[
+													`${prefix}-spacing-vertical-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`
+												]
+											}
+											onChangeValue={val => {
+												onChange({
+													[`${prefix}-spacing-vertical-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`]:
+														val !== undefined &&
+														val !== ''
+															? val
+															: '',
+												});
+											}}
+											onReset={() =>
+												onChange({
+													[`${prefix}-spacing-vertical-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`]: getDefaultAttribute(
+														`${prefix}-spacing-vertical-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`
+													),
+												})
+											}
+											isHover={isHover}
+										/>
+										{prefix.includes('dot') && (
+											<AdvancedNumberControl
+												label={__(
+													'Spacing Between',
+													'maxi-blocks'
+												)}
+												min={-10}
+												max={100}
+												initial={1}
+												step={1}
+												breakpoint={breakpoint}
+												value={
+													props[
+														`${prefix}-spacing-between-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`
+													]
+												}
+												onChangeValue={val => {
+													onChange({
+														[`${prefix}-spacing-between-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`]:
+															val !== undefined &&
+															val !== ''
+																? val
+																: '',
+													});
+												}}
+												onReset={() =>
+													onChange({
+														[`${prefix}-spacing-between-${breakpoint}${
+															isHover
+																? '-hover'
+																: ''
+														}`]: getDefaultAttribute(
+															`${prefix}-spacing-between-${breakpoint}${
+																isHover
+																	? '-hover'
+																	: ''
+															}`
+														),
+													})
+												}
+												isHover={isHover}
+											/>
+										)}
+									</>
+								)}
+							</>
+						</ResponsiveTabsControl>
+					)}
 					<SettingTabsControl
 						label=''
 						className='maxi-icon-styles-control'
@@ -358,6 +396,7 @@ const NavigationIconControl = props => {
 							}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
+								!isActive &&
 								onChangeInline(
 									{ stroke: color },
 									'[data-stroke]',
@@ -460,7 +499,8 @@ const NavigationIconControl = props => {
 														: color,
 													'stroke'
 											  )
-											: setSVGContent(
+											: !isActive &&
+											  setSVGContent(
 													props[
 														'navigation-dot-icon-content'
 													],
@@ -509,6 +549,7 @@ const NavigationIconControl = props => {
 							}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
+								!isActive &&
 								onChangeInline(
 									{ fill: color },
 									'[data-fill]',
@@ -612,7 +653,8 @@ const NavigationIconControl = props => {
 														: color,
 													'fill'
 											  )
-											: setSVGContent(
+											: !isActive &&
+											  setSVGContent(
 													props[
 														'navigation-dot-icon-content'
 													],

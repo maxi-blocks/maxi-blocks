@@ -34,10 +34,6 @@ class MaxiSlider {
 			'.maxi-slider-block__wrapper'
 		);
 
-		this._wrapper = this._container.querySelector(
-			'.maxi-slider-block__wrapper'
-		);
-
 		// Slides
 		this._slides = Array.from(
 			this._wrapper.getElementsByClassName('maxi-slide-block')
@@ -262,6 +258,22 @@ class MaxiSlider {
 		document.removeEventListener('mouseup', this.onDragEnd);
 	}
 
+	setActiveDot(dotNumber) {
+		const dots = this._container.querySelectorAll(
+			' .maxi-slider-block__dot'
+		);
+
+		[].forEach.call(dots, function removeActiveClass(el) {
+			el.classList.remove('maxi-slider-block__dot--active');
+		});
+
+		const activeDot = this._container.querySelectorAll(
+			` .maxi-slider-block__dot--${dotNumber}`
+		)[0];
+
+		activeDot?.classList.add('maxi-slider-block__dot--active');
+	}
+
 	slideNext() {
 		if (
 			this.currentSlide + 1 < this._slides.length ||
@@ -270,6 +282,7 @@ class MaxiSlider {
 		) {
 			// Update current slide
 			this.currentSlide += 1;
+			this.setActiveDot(this.currentSlide + 1);
 		}
 		this.sliderAction();
 	}
@@ -278,12 +291,14 @@ class MaxiSlider {
 		if (this.currentSlide - 1 >= 0 || this.isLoop) {
 			// Update current slide
 			this.currentSlide -= 1;
+			this.setActiveDot(this.currentSlide - 1);
 		}
 		this.sliderAction();
 	}
 
 	exactSlide(slideNumber, self) {
 		self.currentSlide = slideNumber;
+		self.setActiveDot(slideNumber);
 		self.sliderAction();
 	}
 

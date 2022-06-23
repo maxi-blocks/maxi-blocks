@@ -73,7 +73,6 @@ const numberCounter = {
 			},
 			'font-weight': {
 				type: 'string',
-				default: '400',
 			},
 			...paletteAttributesCreator({
 				prefix: 'number-counter-text-',

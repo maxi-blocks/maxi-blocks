@@ -5,6 +5,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,108 +16,30 @@ import SelectControl from '../../../select-control';
 /**
  * External dependencies
  */
-import { find, isEmpty, isFinite } from 'lodash';
+import { find, isEmpty, isFinite, isNil, random, isArray } from 'lodash';
 
 /**
  * Icons
  */
 import { toolbarTextMargin } from '../../../../icons';
-import { getCPTOptions, getCTOptions } from './utils';
+import {
+	renderedFields,
+	fieldOptions,
+	sanitizeContent,
+	typeOptions,
+	relationTypes,
+	getByOptions,
+	relationOptions,
+	idFields,
+	idOptionByField,
+	randomOptions,
+} from './utils';
 import ToggleSwitch from '../../../toggle-switch';
 
 /**
  * Dynamic Content
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi'];
-
-const typeOptions = [
-	{ label: __('Post', 'maxi-blocks'), value: 'posts' },
-	{ label: __('Page', 'maxi-blocks'), value: 'pages' },
-	...getCPTOptions(),
-	{ label: __('Site', 'maxi-blocks'), value: 'site' },
-	{ label: __('Media', 'maxi-blocks'), value: 'media' },
-	{ label: __('Author', 'maxi-blocks'), value: 'author' },
-	// { label: __('Comments', 'maxi-blocks'), value: 'comments' }, ??
-	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
-	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
-	...getCTOptions(),
-];
-
-const relationOptions = [
-	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get last published'), value: 'last-published' },
-	{ label: __('Get last published by…'), value: 'last-published-by' },
-	{ label: __('Get random'), value: 'random' },
-];
-
-const getByOptions = [
-	{ label: __('Date', 'maxi-blocks'), value: 'date' },
-	{ label: __('Author', 'maxi-blocks'), value: 'author' },
-	{ label: __('Modified', 'maxi-blocks'), value: 'modified' },
-	{ label: __('Next', 'maxi-blocks'), value: 'next' },
-	{ label: __('Previous', 'maxi-blocks'), value: 'previous' },
-];
-
-const postsPagesOptions = [
-	{
-		label: __('Title', 'maxi-blocks'),
-		value: 'title',
-	},
-	{
-		label: __('Content', 'maxi-blocks'),
-		value: 'content',
-	},
-	{
-		label: __('Excerpt', 'maxi-blocks'),
-		value: 'excerpt',
-	},
-	{ label: __('Date', 'maxi-blocks'), value: 'date' },
-	{ label: __('Author', 'maxi-blocks'), value: 'author' },
-];
-
-const catTagOptions = [
-	{ label: __('Name', 'maxi-blocks'), value: 'name' },
-	{ label: __('Description', 'maxi-blocks'), value: 'description' },
-	{ label: __('Slug', 'maxi-blocks'), value: 'slug' },
-	{ label: __('Parent', 'maxi-blocks'), value: 'parent' },
-	{ label: __('Count', 'maxi-blocks'), value: 'count' },
-];
-
-const fieldOptions = {
-	posts: postsPagesOptions,
-	pages: postsPagesOptions,
-	site: [
-		{ label: __('Title', 'maxi-blocks'), value: 'title' },
-		{ label: __('Tagline', 'maxi-blocks'), value: 'tagline' },
-		{ label: __('Description', 'maxi-blocks'), value: 'description' },
-		{ label: __('Site URL', 'maxi-blocks'), value: 'url' },
-		{ label: __('Admin email', 'maxi-blocks'), value: 'admin_email' },
-		{ label: __('Language', 'maxi-blocks'), value: 'language' },
-	],
-	author: [
-		{ label: __('Name', 'maxi-blocks'), value: 'name' },
-		{ label: __('Nickname', 'maxi-blocks'), value: 'nickname' },
-		{ label: __('Description', 'maxi-blocks'), value: 'description' },
-		{ label: __('Avatar', 'maxi-blocks'), value: 'avatar' },
-		{ label: __('Email', 'maxi-blocks'), value: 'email' },
-		{ label: __('Website', 'maxi-blocks'), value: 'website' },
-		{ label: __('Bio', 'maxi-blocks'), value: 'bio' },
-	],
-	categories: catTagOptions,
-	tags: catTagOptions,
-};
-
-// Fields that have rendered and raw content
-const renderedFields = ['title', 'content', 'excerpt'];
-
-// Types that accept relations
-const relationTypes = ['posts', 'pages', 'categories', 'tags'];
-
-// In case content is empty, show this text
-const sanitizeContent = content =>
-	content && !isEmpty(content)
-		? content
-		: __('No content found', 'maxi-blocks');
 
 const DynamicContent = props => {
 	const { blockName, onChange, ...dynamicContent } = props;
@@ -134,74 +57,170 @@ const DynamicContent = props => {
 	} = dynamicContent;
 
 	const [postIdOptions, setPostIdOptions] = useState([]);
+	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
 
-	const getContent = async dataRequest => {
-		const { type: _type, id: _id, field: _field } = dataRequest;
+	const getContentPath = (type, id, field) => {
+		if (relationTypes.includes(type) && relation === 'last-published')
+			return `/wp/v2/${type}&per_page=1`;
+		if (
+			relationTypes.includes(type) &&
+			relation === 'last-published-by' &&
+			getBy === 'author'
+		)
+			return `/wp/v2/${type}?author=${id}&per_page=1&_fields=${field}`;
+		if (
+			relationTypes.includes(type) &&
+			relation === 'last-published-by' &&
+			['previous', 'next'].includes(getBy)
+		)
+			return `/wp/v2/${type}/${id}&_fields=${field}`;
 
-		switch (_type) {
-			case 'posts':
-			case 'pages': {
-				return apiFetch({
-					path: `/wp/v2/${_type}/${_id}?_fields=${_field}`,
-				})
-					.catch(err => console.error(err)) // TODO: need a good error handler
-					.then(content => {
-						if (content) {
-							if (renderedFields.includes(_field))
-								return content[_field].rendered;
+		if (relationTypes.includes(type) && relation === 'last-published-by')
+			return `/wp/v2/${type}?orderby=${getBy}&per_page=1&_fields=${field}`;
 
-							return content[_field];
-						}
-
-						return null; // TODO: needs to handle empty posts(type)
-					});
-			}
-			default:
-				return null;
-		}
+		return `/wp/v2/${type}${
+			idFields.includes(type) ? `/${id}` : ''
+		}?_fields=${field}`;
 	};
 
-	const getPostIds = async newType =>
-		apiFetch({
-			path: `/wp/v2/${newType ?? type}?_fields=id, title`,
+	const requestContent = async dataRequest => {
+		const { type: _type, id: _id, field: _field } = dataRequest;
+
+		return apiFetch({
+			path: getContentPath(_type, _id, _field),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
-			.then(async posts => {
-				const newPostIdOptions = posts.map(post => {
+			.then(result => {
+				const content = isArray(result) ? result[0] : result;
+
+				if (content) {
+					if (
+						renderedFields.includes(_field) &&
+						!isNil(content[_field]?.rendered)
+					)
+						return content[_field].rendered;
+
+					// Author conditional !!!
+
+					return content[_field];
+				}
+
+				return null; // TODO: needs to handle empty posts(type)
+			});
+	};
+
+	const getContent = async dataRequest => {
+		if (relationTypes.includes(type) && relation === 'random') {
+			const { type } = dataRequest;
+
+			const randomPath = `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
+				randomOptions[random(randomOptions.length - 1)]
+			}`;
+
+			return apiFetch({
+				path: randomPath,
+			}).then(res =>
+				requestContent({
+					...dataRequest,
+					id: res[random(res.length - 1)].id,
+				})
+			);
+		}
+
+		if (
+			relationTypes.includes(type) &&
+			relation === 'last-published-by' &&
+			['previous', 'next'].includes(getBy)
+		) {
+			const { id: postId, type: postType } =
+				select('core/editor').getCurrentPost();
+
+			const postTypeDic = {
+				post: 'posts',
+				page: 'pages',
+			};
+
+			const prevNextPath = `/wp/v2/${postTypeDic[postType]}/${postId}?_fields=${getBy}`;
+
+			return apiFetch({
+				path: prevNextPath,
+			}).then(res =>
+				isFinite(res[getBy].id)
+					? requestContent({
+							...dataRequest,
+							type: postTypeDic[postType],
+							id: res[getBy].id,
+					  })
+					: ''
+			);
+		}
+
+		return requestContent(dataRequest);
+	};
+
+	const getIdOptionsPath = type => {
+		if (relation === 'last-published-by' && getBy === 'author')
+			return '/wp/v2/users?per_page=99&_fields=id, name';
+
+		return `/wp/v2/${type}?_fields=id, ${idOptionByField[type]}`;
+	};
+
+	const getIdOptions = async newType =>
+		idFields.includes(newType ?? type) &&
+		apiFetch({
+			path: getIdOptionsPath(newType ?? type),
+		})
+			.catch(err => console.error(err)) // TODO: need a good error handler
+			.then(async result => {
+				const isGetByAuthor =
+					relation === 'last-published-by' && getBy === 'author';
+				const _type = isGetByAuthor ? 'author' : newType ?? type;
+
+				const newPostIdOptions = result.map(item => {
 					return {
-						label: `${post.id} - ${post.title.rendered}`,
-						value: post.id,
+						label: `${item.id} - ${
+							item[idOptionByField[_type]]?.rendered ??
+							item[idOptionByField[_type]]
+						}`,
+						value: +item.id,
 					};
 				});
 
-				setPostIdOptions(newPostIdOptions);
+				if (isEmpty(newPostIdOptions)) setIsEmptyIdOptions(true);
+				else {
+					setIsEmptyIdOptions(false);
 
-				// Set default values in case they are not defined
-				const defaultValues = {};
+					setPostIdOptions(newPostIdOptions);
 
-				// Ensures first post id is selected
-				if (isEmpty(find(newPostIdOptions, { value: id })))
-					defaultValues['dc-id'] = posts[0].id;
+					// Set default values in case they are not defined
+					const defaultValues = {};
 
-				// Ensures first field is selected
-				if (!field)
-					defaultValues['dc-field'] = fieldOptions[type][0].value;
+					// Ensures first post id is selected
+					if (isEmpty(find(newPostIdOptions, { value: id })))
+						defaultValues['dc-id'] = result[0].id;
 
-				// Ensures content is selected
-				if (!isEmpty(defaultValues)) {
-					const newContent = await getContent({
-						type: newType ?? type,
-						id: defaultValues['dc-id'] ?? id,
-						field: defaultValues['dc-field'] ?? field,
-					});
+					// Ensures first field is selected
+					if (!field)
+						defaultValues['dc-field'] = fieldOptions[type][0].value;
 
-					defaultValues['dc-content'] = sanitizeContent(newContent);
+					// Ensures content is selected
+					if (!isEmpty(defaultValues)) {
+						const newContent = await getContent({
+							type: newType ?? type,
+							id: defaultValues['dc-id'] ?? id,
+							field: defaultValues['dc-field'] ?? field,
+						});
+
+						defaultValues['dc-content'] =
+							sanitizeContent(newContent);
+					}
+
+					if (!isEmpty(defaultValues)) onChange(defaultValues);
 				}
-
-				if (!isEmpty(defaultValues)) onChange(defaultValues);
 			});
 
-	if (status && isEmpty(postIdOptions)) getPostIds();
+	if (status && type && isEmpty(postIdOptions) && isEmptyIdOptions)
+		getIdOptions();
 
 	useEffect(async () => {
 		if (status)
@@ -210,7 +229,7 @@ const DynamicContent = props => {
 					await getContent({ type, id, field })
 				),
 			});
-	}, [id, field]);
+	}, [type, id, field, relation, getBy]);
 
 	return (
 		<ToolbarPopover
@@ -226,7 +245,7 @@ const DynamicContent = props => {
 					onChange={() => {
 						onChange({ 'dc-status': !status });
 
-						if (!status && isEmpty(postIdOptions)) getPostIds();
+						if (!status) getIdOptions();
 					}}
 				/>
 				{status && (
@@ -238,53 +257,79 @@ const DynamicContent = props => {
 							onChange={value => {
 								onChange({ 'dc-type': value });
 
-								getPostIds(value);
+								getIdOptions(value);
 							}}
 						/>
-						{relationTypes.includes(type) && (
-							<SelectControl
-								label={__('Relation', 'maxi-blocks')}
-								value={relation}
-								options={relationOptions}
-								onChange={value =>
-									onChange({ 'dc-relation': value })
-								}
-							/>
-						)}
-						{relation === 'by-id' && (
-							<SelectControl
-								label={__('Post id', 'maxi-blocks')}
-								value={id}
-								options={postIdOptions}
-								onChange={value => onChange({ 'dc-id': value })}
-							/>
-						)}
-						{relationTypes.includes(type) &&
-							relation === 'last-published-by' && (
-								<SelectControl
-									label={__(
-										'Last published by…',
-										'maxi-blocks'
+						{isEmptyIdOptions ? (
+							<p>This type is empty</p>
+						) : (
+							<>
+								{relationTypes.includes(type) && (
+									<SelectControl
+										label={__('Relation', 'maxi-blocks')}
+										value={relation}
+										options={relationOptions}
+										onChange={value =>
+											onChange({ 'dc-relation': value })
+										}
+									/>
+								)}
+								{relation === 'by-id' && (
+									<SelectControl
+										label={__('Post id', 'maxi-blocks')}
+										value={id}
+										options={postIdOptions}
+										onChange={value =>
+											onChange({ 'dc-id': value })
+										}
+									/>
+								)}
+								{relationTypes.includes(type) &&
+									relation === 'last-published-by' && (
+										<SelectControl
+											label={__(
+												'Last published by…',
+												'maxi-blocks'
+											)}
+											value={getBy}
+											options={getByOptions}
+											onChange={value => {
+												onChange({
+													'dc-get-by': value,
+												});
+
+												getIdOptions();
+											}}
+										/>
 									)}
-									value={getBy}
-									options={getByOptions}
-									onChange={value =>
-										onChange({ 'dc-get-by': value })
-									}
-								/>
-							)}
-						{((relation === 'by-id' && isFinite(id)) ||
-							relation === 'last-published' ||
-							(relation === 'last-published-by' && getBy) ||
-							relation === 'random') && (
-							<SelectControl
-								label={__('Field', 'maxi-blocks')}
-								value={field}
-								options={fieldOptions[type]}
-								onChange={value =>
-									onChange({ 'dc-field': value })
-								}
-							/>
+								{relationTypes.includes(type) &&
+									relation === 'last-published-by' &&
+									getBy === 'author' && (
+										<SelectControl
+											label={__('Post id', 'maxi-blocks')}
+											value={id}
+											options={postIdOptions}
+											onChange={value =>
+												onChange({ 'dc-id': value })
+											}
+										/>
+									)}
+								{(['settings'].includes(type) ||
+									(relation === 'by-id' && isFinite(id)) ||
+									relation === 'last-published' ||
+									(relation === 'last-published-by' &&
+										getBy) ||
+									relation === 'random') && (
+									<SelectControl
+										label={__('Field', 'maxi-blocks')}
+										value={field}
+										options={fieldOptions[type]}
+										onChange={value =>
+											onChange({ 'dc-field': value })
+										}
+									/>
+								)}
+							</>
 						)}
 					</>
 				)}

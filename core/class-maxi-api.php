@@ -47,6 +47,9 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Handlers
             add_action('before_delete_post', [$this, 'mb_delete_register']);
+
+			// Extensions
+			add_filter( 'rest_prepare_post', [$this, 'mb_add_prev_next_to_rest'], 10, 3 );
         }
 
         /**
@@ -581,5 +584,24 @@ if (!class_exists('MaxiBlocks_API')):
 
             return $new_custom_data;
         }
+
+		/**
+		 * Add previous and next posts data on REST API requests for posts
+		 */
+		public function mb_add_prev_next_to_rest( $response, $post, $request ) {
+			global $post;
+
+			// Get the next post.
+			$next = get_adjacent_post( false, '', false );
+
+			// Get the previous post.
+			$previous = get_adjacent_post( false, '', true );
+
+			// Only send id and slug (or null, if there is no next/previous post).
+			$response->data['next'] = ( is_a( $next, 'WP_Post') ) ? array( "id" => $next->ID ) : null;
+			$response->data['previous'] = ( is_a( $previous, 'WP_Post') ) ? array( "id" => $previous->ID ) : null;
+
+			return $response;
+		}
     }
 endif;

@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import RelationControl from '../relation-control';
 
 const relation = ({ props }) => {
-	const { attributes, maxiSetAttributes, blockStyle, deviceType } = props;
+	const { attributes, maxiSetAttributes, deviceType } = props;
 
 	return {
 		label: __('Interaction builder', 'maxi-blocks'),
@@ -17,7 +17,6 @@ const relation = ({ props }) => {
 			<RelationControl
 				{...attributes}
 				onChange={obj => maxiSetAttributes(obj)}
-				blockStyle={blockStyle}
 				deviceType={deviceType}
 			/>
 		),

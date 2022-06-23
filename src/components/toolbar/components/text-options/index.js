@@ -89,7 +89,8 @@ const TextOptionsContent = props => {
 						breakpoint
 					)
 				}
-				minMaxSettings={minMaxSettings}
+				min={minMaxSettings[getValue(`${prefix}font-size-unit`)].min}
+				max={minMaxSettings[getValue(`${prefix}font-size-unit`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -117,7 +118,8 @@ const TextOptionsContent = props => {
 						breakpoint
 					)
 				}
-				minMaxSettings={minMaxSettings}
+				min={minMaxSettings[getValue(`${prefix}line-height-unit`)].min}
+				max={minMaxSettings[getValue(`${prefix}line-height-unit`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -147,7 +149,16 @@ const TextOptionsContent = props => {
 						breakpoint
 					)
 				}
-				minMaxSettings={minMaxSettingsLetterSpacing}
+				min={
+					minMaxSettingsLetterSpacing[
+						getValue(`${prefix}letter-spacing-unit`)
+					].min
+				}
+				max={
+					minMaxSettingsLetterSpacing[
+						getValue(`${prefix}letter-spacing-unit`)
+					].max
+				}
 				step={0.1}
 			/>
 		</>

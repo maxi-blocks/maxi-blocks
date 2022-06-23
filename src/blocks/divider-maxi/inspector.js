@@ -59,6 +59,11 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												extraIndicators={[
+													`line-orientation-${deviceType}`,
+													`line-vertical-${deviceType}`,
+													`line-horizontal-${deviceType}`,
+												]}
 											>
 												<>
 													<SelectControl

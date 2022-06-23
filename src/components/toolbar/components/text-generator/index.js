@@ -5,7 +5,6 @@
 
 import { __ } from '@wordpress/i18n';
 import { useContext, useState } from '@wordpress/element';
-import { create, insert } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -29,8 +28,7 @@ import './editor.scss';
 
 const TextGenerator = props => {
 	const { onChange, closeMoreSettings } = props;
-	const { content, formatValue, onChangeTextFormat } =
-		useContext(textContext);
+	const { content } = useContext(textContext);
 
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
@@ -49,12 +47,6 @@ const TextGenerator = props => {
 		newFormatsArray.length = newContent.length;
 		newReplacementsArray.length = newContent.length;
 
-		const newFormatValue = insert(
-			formatValue,
-			`${generatedText[0].props.children}`
-		);
-		onChangeTextFormat(newFormatValue);
-
 		onChange({ isList: false, content: newContent });
 		closeMoreSettings();
 	};
@@ -72,10 +64,6 @@ const TextGenerator = props => {
 		const newReplacementsArray = [];
 		newFormatsArray.length = newContent.length;
 		newReplacementsArray.length = newContent.length;
-
-		const newFormatValue = create({ text: newContent });
-
-		onChangeTextFormat(newFormatValue);
 
 		onChange({ isList: false, content: generatedText[0].props.children });
 		closeMoreSettings();

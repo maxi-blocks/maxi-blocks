@@ -9,6 +9,7 @@ const toolbarPin = (
 		width='7.792'
 		height='10.616'
 		fill='none'
+		opacity='0.7'
 		stroke='#fff'
 		strokeLinejoin='round'
 		strokeWidth='1.5'

@@ -87,7 +87,7 @@ class MaxiBlocks_Styles
                         ucwords(str_replace('-', ' ', $script))
                     );
                 $jsScriptName = 'maxi-' . $script;
-                $jsScriptPath = '//js//' . $jsScriptName . '.min.js';
+                $jsScriptPath = '//js//' . $jsScriptName . '.js'; //.min.js
 
                 $meta = $this->customMeta($jsVar);
 

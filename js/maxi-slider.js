@@ -45,6 +45,8 @@ class MaxiSlider {
 		this.interactionPause =
 			this._container.dataset.interactionPause === 'true';
 		this.autoplaySpeed = this._container.dataset.autoplaySpeed;
+		this.transition = this._container.dataset.transition;
+		this.transitionSpeed = this._container.dataset.transitionSpeed;
 
 		// Navigation
 		this._arrowNext = this._container.querySelector(
@@ -82,9 +84,8 @@ class MaxiSlider {
 			return false;
 		};
 
-		console.log('isPaused', isPaused());
-		console.log('isAutoplay', this.isAutoplay);
-		console.log('speed', this.autoplaySpeed);
+		console.log('transition', this.transition);
+		console.log('speed', this.transitionSpeed);
 
 		if (this.isAutoplay && !isPaused()) {
 			setInterval(() => {
@@ -166,6 +167,10 @@ class MaxiSlider {
 		this._wrapper.addEventListener('touchend', this.onDragEnd);
 		this._wrapper.addEventListener(
 			'transitionend',
+			this.transitionEnd.bind(this)
+		);
+		this._wrapper.addEventListener(
+			'animationend',
 			this.transitionEnd.bind(this)
 		);
 	}
@@ -276,13 +281,13 @@ class MaxiSlider {
 
 	slideNext() {
 		if (
-			this.currentSlide + 1 < this._slides.length ||
+			this.currentSlide + 1 <= this._slides.length ||
 			this.isLoop ||
 			this.isAutoplay
 		) {
 			// Update current slide
 			this.currentSlide += 1;
-			this.setActiveDot(this.currentSlide + 1);
+			this.setActiveDot(this.currentSlide);
 		}
 		this.sliderAction();
 	}
@@ -291,7 +296,7 @@ class MaxiSlider {
 		if (this.currentSlide - 1 >= 0 || this.isLoop) {
 			// Update current slide
 			this.currentSlide -= 1;
-			this.setActiveDot(this.currentSlide - 1);
+			this.setActiveDot(this.currentSlide);
 		}
 		this.sliderAction();
 	}
@@ -302,13 +307,36 @@ class MaxiSlider {
 		self.sliderAction();
 	}
 
+	getSliderEffect() {
+		let effect = '';
+
+		switch (this.transition) {
+			case 'slide':
+				effect += 'transform';
+				break;
+			case 'fade':
+				effect += 'maxiFade';
+				break;
+			default:
+				effect += 'maxiSlide';
+		}
+
+		effect += ` ${this.transitionSpeed / 1000}s ease-out`;
+
+		return effect;
+	}
+
 	sliderAction(withTransition = true) {
 		// Update active slide
 		this._slides.forEach(slide => (slide.isActive = this.currentSlide));
 
 		// Move the slider
-		if (withTransition)
-			this._wrapper.style.transition = 'transform 0.2s ease-out';
+		if (withTransition) {
+			if (this.transition !== 'slide')
+				this._wrapper.style.animation = this.getSliderEffect();
+			else this._wrapper.style.transition = this.getSliderEffect();
+		}
+
 		this.wrapperTranslate = this.activeSlidePosition;
 	}
 

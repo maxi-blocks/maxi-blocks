@@ -52,6 +52,8 @@ const save = props => {
 			data-autoplay-speed={sliderAutoplaySpeed}
 			data-hover-pause={pauseOnHover}
 			data-interaction-pause={pauseOnInteraction}
+			data-transition={sliderTransition}
+			data-transition-speed={sliderTransitionSpeed}
 		>
 			<div className='maxi-slider-block__tracker'>
 				<ul

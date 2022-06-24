@@ -19,9 +19,13 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Save
  */
-const save = props => {
+const save = (
+	props,
+	extendedWrapperAttributes = {},
+	extendedAttributes = {}
+) => {
 	const { attributes } = props;
-	const { fullWidth, linkSettings, buttonContent } = attributes;
+	const { linkSettings, buttonContent } = attributes;
 
 	const name = 'maxi-blocks/button-maxi';
 
@@ -36,6 +40,12 @@ const save = props => {
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
 		attributes['icon-content'] &&
+			attributes['icon-position'] === 'top' &&
+			'maxi-button-block__button--icon-top',
+		attributes['icon-content'] &&
+			attributes['icon-position'] === 'bottom' &&
+			'maxi-button-block__button--icon-bottom',
+		attributes['icon-content'] &&
 			attributes['icon-position'] === 'left' &&
 			'maxi-button-block__button--icon-left',
 		attributes['icon-content'] &&
@@ -44,11 +54,14 @@ const save = props => {
 	);
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			{...getMaxiBlockAttributes({ ...props, name })}
+			{...extendedWrapperAttributes}
+		>
 			<Button
 				className={buttonClasses}
-				data-align={fullWidth}
 				{...(!isEmpty(linkProps.href) && linkProps)}
+				{...extendedAttributes}
 			>
 				{!attributes['icon-only'] && (
 					<RichText.Content

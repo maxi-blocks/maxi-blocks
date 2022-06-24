@@ -3,6 +3,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 export const rawImageShape = {
 	'image-shape-scale': {
 		type: 'number',
+		default: 100,
 	},
 	'image-shape-rotate': {
 		type: 'number',

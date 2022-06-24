@@ -3,13 +3,21 @@
 * it has the objective to remove other theme/plugins styles that can affect them
 ********/
 
+.editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper > * + *,
+.editor-styles-wrapper
+	.block-editor-block-list__layout.is-root-container
+	> *
+	+ .maxi-block {
+	margin-top: 0;
+}
+
 body.maxi-blocks--active .maxi-block {
 	position: relative;
 	margin: 0 auto;
 	padding: 0;
 	/* max-width: none; */ /* Not sure if it can create and interfere with theme styles */
 	width: 100%;
-	min-width: inherit;
+	min-width: initial;
 	max-height: none;
 	height: initial;
 	min-height: inherit;
@@ -66,14 +74,6 @@ body.maxi-blocks--active .maxi-button-block button:focus {
 }
 
 /*Fixes container alignment for Twenty Twenty Two*/
-body.maxi-blocks--active
-	#wpcontent
-	.block-editor-block-list__layout.is-root-container
-	.maxi-block[data-align='full'] {
-	width: 100%;
-	margin-right: auto !important;
-	margin-left: auto !important;
-}
 body.maxi-blocks--active #wpcontent .is-root-container {
 	padding: 0;
 }

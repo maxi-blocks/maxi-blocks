@@ -8,7 +8,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap: wrap;
 		width: 100%;
+
+		&__label {
+			flex-basis: 100%;
+		}
 
 		&__buttons {
 			width: 100%;
@@ -1355,7 +1360,7 @@
 /*******************************
 * RTL
 *******************************/
-html[dir="rtl"]  {
+html[dir='rtl'] {
 	.maxi-library-modal .maxi-cloud-toolbar__help-button svg {
 		margin-right: 0;
 		margin-left: 5px;
@@ -1364,28 +1369,45 @@ html[dir="rtl"]  {
 		left: unset;
 		right: 194px;
 	}
-	.maxi-library-modal .components-modal__content .components-modal__header .components-button {
+	.maxi-library-modal
+		.components-modal__content
+		.components-modal__header
+		.components-button {
 		left: 4px;
 		right: unset;
 	}
-	.maxi-library-modal .maxi-cloud-container__patterns__top-menu .maxi-cloud-container__content-svg-shape__button {
+	.maxi-library-modal
+		.maxi-cloud-container__patterns__top-menu
+		.maxi-cloud-container__content-svg-shape__button {
 		margin-right: 0;
 		margin-left: 15px;
 	}
 	.maxi-library-modal .maxi-cloud-toolbar {
 		padding: 5px 8px 5px 43px;
 	}
-	.maxi-library-modal .maxi-cloud-container__svg-shape .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu), 
-	.maxi-library-modal .maxi-cloud-container__svg-icon .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu), 
-	.maxi-library-modal .maxi-cloud-container__patterns .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu), 
-	.maxi-library-modal .maxi-cloud-container__sc .maxi-cloud-container__patterns__top-menu > div:not(.ais-Menu) {
+	.maxi-library-modal
+		.maxi-cloud-container__svg-shape
+		.maxi-cloud-container__patterns__top-menu
+		> div:not(.ais-Menu),
+	.maxi-library-modal
+		.maxi-cloud-container__svg-icon
+		.maxi-cloud-container__patterns__top-menu
+		> div:not(.ais-Menu),
+	.maxi-library-modal
+		.maxi-cloud-container__patterns
+		.maxi-cloud-container__patterns__top-menu
+		> div:not(.ais-Menu),
+	.maxi-library-modal
+		.maxi-cloud-container__sc
+		.maxi-cloud-container__patterns__top-menu
+		> div:not(.ais-Menu) {
 		padding: 9px 24px 8px 0px;
 	}
 	.maxi-block-inserter__button {
 		top: 50%;
 		margin: 0;
 	}
-	.toolbar-item-move__horizontally .maxi-components-button.components-button{
+	.toolbar-item-move__horizontally .maxi-components-button.components-button {
 		transform: scaleX(-1);
 	}
 	.maxi-responsive-selector .action-buttons__button.style-card-button {
@@ -1395,5 +1417,5 @@ html[dir="rtl"]  {
 		margin-left: 0;
 		padding-left: 8px;
 		padding-right: 5px;
-	  }
+	}
 }

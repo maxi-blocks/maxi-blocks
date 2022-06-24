@@ -315,7 +315,6 @@ const TypographyControl = props => {
 		blockStyle,
 		globalProps,
 	} = props;
-
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
 
@@ -348,15 +347,15 @@ const TypographyControl = props => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 99,
+			max: 300,
 		},
 		em: {
 			min: 0,
-			max: 99,
+			max: 100,
 		},
 		vw: {
 			min: 0,
-			max: 99,
+			max: 100,
 		},
 		'%': {
 			min: 0,
@@ -551,9 +550,10 @@ const TypographyControl = props => {
 						true
 					)}
 					defaultValue={getDefault(`${prefix}font-size`)}
-					onChangeValue={val => {
+					onChangeValue={(val, unit) => {
 						onChangeFormat({
 							[`${prefix}font-size`]: val,
+							...(unit && { [`${prefix}font-size-unit`]: unit }),
 						});
 					}}
 					onReset={() =>
@@ -581,10 +581,6 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}line-height-unit`]: val,
-							...(val === '-' && {
-								[`${prefix}line-height`]:
-									minMaxSettings['-'].max,
-							}),
 						});
 					}}
 					placeholder={getValue(
@@ -597,9 +593,12 @@ const TypographyControl = props => {
 						true
 					)}
 					defaultValue={getDefault(`${prefix}line-height`)}
-					onChangeValue={val => {
+					onChangeValue={(val, unit) => {
 						onChangeFormat({
 							[`${prefix}line-height`]: val,
+							...(unit && {
+								[`${prefix}line-height-unit`]: unit,
+							}),
 						});
 					}}
 					onReset={() =>

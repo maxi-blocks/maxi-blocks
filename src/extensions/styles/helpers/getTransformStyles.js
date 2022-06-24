@@ -64,6 +64,14 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			scaleString += `scaleX(${scaleObj[category][index].x / 100}) `;
 		if (isNumber(scaleObj?.[category]?.[index]?.y))
 			scaleString += `scaleY(${scaleObj[category][index].y / 100}) `;
+
+		if (
+			!scaleString &&
+			index === 'hover' &&
+			(isNumber(scaleObj?.[category]?.normal?.x) ||
+				isNumber(scaleObj?.[category]?.normal?.y))
+		)
+			scaleString += 'scale(1) ';
 		return scaleString;
 	};
 
@@ -79,6 +87,15 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			translateString += `translateX(${translateObj[category][index].x}${translateObj[category][index]['x-unit']}) `;
 		if (isNumber(translateObj?.[category]?.[index]?.y))
 			translateString += `translateY(${translateObj[category][index].y}${translateObj[category][index]['y-unit']}) `;
+
+		if (
+			!translateString &&
+			index === 'hover' &&
+			(isNumber(translateObj?.[category]?.normal?.x) ||
+				isNumber(translateObj?.[category]?.normal?.y))
+		)
+			translateString += 'translate(0) ';
+
 		return translateString;
 	};
 
@@ -96,6 +113,15 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			rotateString += `rotateY(${rotateObj[category][index].y}deg) `;
 		if (isNumber(rotateObj?.[category]?.[index]?.z))
 			rotateString += `rotateZ(${rotateObj[category][index].z}deg) `;
+
+		if (
+			!rotateString &&
+			index === 'hover' &&
+			(isNumber(rotateObj?.[category]?.normal?.x) ||
+				isNumber(rotateObj?.[category]?.normal?.y))
+		)
+			rotateString += 'rotate(0) ';
+
 		return rotateString;
 	};
 
@@ -121,6 +147,14 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			originString += `${originObj[category][index].x}${originObj[category][index]['x-unit']} `;
 		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.y)))
 			originString += `${originObj[category][index].y}${originObj[category][index]['y-unit']} `;
+
+		if (
+			!originString &&
+			index === 'hover' &&
+			(validateOriginValue(originObj?.[category]?.normal?.x) ||
+				validateOriginValue(originObj?.[category]?.normal?.y))
+		)
+			originString += '50% 50% ';
 
 		return originString;
 	};

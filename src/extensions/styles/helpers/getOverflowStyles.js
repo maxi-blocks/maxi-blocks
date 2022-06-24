@@ -13,23 +13,6 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getOverflowStyles = obj => {
 	const response = {};
 
-	// const overflowX = getLastBreakpointAttribute({
-	// 	target: 'overflow-x',
-	// 	breakpoint,
-	// 	attributes: obj,
-	// });
-
-	// const overflowY = getLastBreakpointAttribute({
-	// 	target: 'overflow-y',
-	// 	breakpoint,
-	// 	attributes: obj,
-	// });
-
-	// if (overflowX !== 'visible' || overflowY !== 'visible') {
-	// 	return true;
-	// }
-
-	// return false;
 	let omitOverflowX = true;
 	let omitOverflowY = true;
 

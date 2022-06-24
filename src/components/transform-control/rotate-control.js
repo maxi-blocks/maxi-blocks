@@ -41,7 +41,7 @@ const RotateControl = props => {
 
 							onChange(value, y, z);
 						}}
-						min={0}
+						min={-360}
 						max={360}
 					/>
 					<input
@@ -49,7 +49,7 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(x) ? '' : x}
-						min={0}
+						min={-360}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
@@ -88,7 +88,7 @@ const RotateControl = props => {
 
 							onChange(x, value, z);
 						}}
-						min={0}
+						min={-360}
 						max={360}
 					/>
 					<input
@@ -96,7 +96,7 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(y) ? '' : y}
-						min={0}
+						min={-360}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
@@ -135,7 +135,7 @@ const RotateControl = props => {
 
 							onChange(x, y, value);
 						}}
-						min={0}
+						min={-360}
 						max={360}
 					/>
 					<input
@@ -143,7 +143,7 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(z) ? '' : z}
-						min={0}
+						min={-360}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {

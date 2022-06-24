@@ -88,7 +88,9 @@ const getWrapperObject = props => {
 			...getGroupAttributes(props, 'display'),
 		}),
 		position: getPositionStyles({
-			...getGroupAttributes(props, 'position'),
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -124,6 +126,12 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
+		position: getPositionStyles({
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
+			isHover: true,
+		}),
 	};
 
 	return response;

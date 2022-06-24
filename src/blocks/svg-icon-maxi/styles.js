@@ -70,7 +70,9 @@ const getWrapperObject = props => {
 			...getGroupAttributes(props, 'alignment'),
 		}),
 		position: getPositionStyles({
-			...getGroupAttributes(props, 'position'),
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
@@ -113,6 +115,12 @@ const getWrapperObjectHover = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		position: getPositionStyles({
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
+			isHover: true,
+		}),
 	};
 
 	return response;

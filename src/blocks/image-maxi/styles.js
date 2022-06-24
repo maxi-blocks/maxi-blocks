@@ -70,7 +70,9 @@ const getWrapperObject = props => {
 			...getGroupAttributes(props, 'zIndex'),
 		}),
 		position: getPositionStyles({
-			...getGroupAttributes(props, 'position'),
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
@@ -120,6 +122,12 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
+		}),
+		position: getPositionStyles({
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
+			isHover: true,
 		}),
 	};
 

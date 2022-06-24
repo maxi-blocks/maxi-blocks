@@ -3,7 +3,6 @@
 exports[`getOverflowStyles Get a correct overflow styles 1`] = `
 Object {
   "general": Object {
-    "overflow-x": "visible",
     "overflow-y": "hidden",
   },
   "l": Object {
@@ -33,6 +32,26 @@ Object {
 }
 `;
 
-exports[`getOverflowStyles Get a correct overflow styles when all values visible 1`] = `Object {}`;
+exports[`getOverflowStyles Get a correct overflow styles when all values visible 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
 
-exports[`getOverflowStyles Get a correct overflow styles with default values 1`] = `Object {}`;
+exports[`getOverflowStyles Get a correct overflow styles with default values 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;

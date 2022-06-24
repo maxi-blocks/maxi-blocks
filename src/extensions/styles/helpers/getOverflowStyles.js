@@ -13,37 +13,44 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getOverflowStyles = obj => {
 	const response = {};
 
-	const isOverflowStylesNeeded = breakpoints.some(breakpoint => {
-		const overflowX = getLastBreakpointAttribute({
-			target: 'overflow-x',
-			breakpoint,
-			attributes: obj,
-		});
+	// const overflowX = getLastBreakpointAttribute({
+	// 	target: 'overflow-x',
+	// 	breakpoint,
+	// 	attributes: obj,
+	// });
 
-		const overflowY = getLastBreakpointAttribute({
-			target: 'overflow-y',
-			breakpoint,
-			attributes: obj,
-		});
+	// const overflowY = getLastBreakpointAttribute({
+	// 	target: 'overflow-y',
+	// 	breakpoint,
+	// 	attributes: obj,
+	// });
 
-		if (overflowX !== 'visible' || overflowY !== 'visible') {
-			return true;
-		}
+	// if (overflowX !== 'visible' || overflowY !== 'visible') {
+	// 	return true;
+	// }
 
-		return false;
-	});
+	// return false;
+	let omitOverflowX = true;
+	let omitOverflowY = true;
 
-	if (isOverflowStylesNeeded)
-		breakpoints.forEach(breakpoint => {
-			response[breakpoint] = {
-				...(obj[`overflow-x-${breakpoint}`] && {
+	breakpoints.forEach(breakpoint => {
+		const overflowX = obj[`overflow-x-${breakpoint}`];
+		const overflowY = obj[`overflow-y-${breakpoint}`];
+
+		omitOverflowX = omitOverflowX ? overflowX === 'visible' : false;
+		omitOverflowY = omitOverflowY ? overflowY === 'visible' : false;
+
+		response[breakpoint] = {
+			...(!omitOverflowX &&
+				obj[`overflow-x-${breakpoint}`] && {
 					'overflow-x': obj[`overflow-x-${breakpoint}`],
 				}),
-				...(obj[`overflow-y-${breakpoint}`] && {
+			...(!omitOverflowY &&
+				obj[`overflow-y-${breakpoint}`] && {
 					'overflow-y': obj[`overflow-y-${breakpoint}`],
 				}),
-			};
-		});
+		};
+	});
 
 	return response;
 };

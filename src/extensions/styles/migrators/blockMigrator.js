@@ -20,7 +20,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 			return (
 				positionIsEligible(blockAttributes, attributes) ||
 				fromFullWidthNonToResponsiveIsEligible(blockAttributes) ||
-				shapeDividerIsEligible(blockAttributes)
+				(isContainer && shapeDividerIsEligible(blockAttributes))
 			);
 		},
 
@@ -28,7 +28,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 			...attributes,
 			...positionAttributes,
 			...fromFullWidthNonToResponsiveAttributes(isContainer),
-			...shapeDividerAttributes,
+			...(isContainer && shapeDividerAttributes),
 		},
 
 		migrate(oldAttributes) {
@@ -36,7 +36,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 
 			positionMigrator(newAttributes, attributes);
 			fromFullWidthNonToResponsiveMigrator(newAttributes, prefix);
-			shapeDividerMigrator(newAttributes);
+			if (isContainer) shapeDividerMigrator(newAttributes);
 
 			return newAttributes;
 		},

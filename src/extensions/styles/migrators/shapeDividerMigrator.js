@@ -37,7 +37,7 @@ const attributes = {
 
 const migrate = newAttributes => {
 	Object.entries(newAttributes).forEach(([key, attr]) => {
-		if (Object.keys(attributes).includes(key)) {
+		if (key in attributes) {
 			newAttributes[`${key}-general`] = attr;
 
 			delete newAttributes[key];
@@ -46,8 +46,10 @@ const migrate = newAttributes => {
 };
 
 const isEligible = blockAttributes =>
-	Object.keys(blockAttributes).some(key =>
-		Object.keys(attributes).includes(key)
+	Object.keys(blockAttributes).some(
+		key =>
+			key in attributes &&
+			blockAttributes[key] !== attributes[key].default
 	);
 
 export { attributes, migrate, isEligible };

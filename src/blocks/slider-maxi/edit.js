@@ -572,7 +572,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, hasInnerBlocks } = this.props;
+		const { attributes, hasInnerBlocks } = this.props;
 		const { uniqueID } = attributes;
 
 		const emptySliderClass = !hasInnerBlocks

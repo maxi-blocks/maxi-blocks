@@ -19,7 +19,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  * @param {Object} obj Block size properties
  */
 
-const getPositionStyles = obj => {
+const getPositionStyles = ({ obj, isHover = false }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
 
@@ -40,6 +40,7 @@ const getPositionStyles = obj => {
 			target: 'position',
 			breakpoint,
 			attributes: obj,
+			isHover,
 		});
 
 		response[breakpoint] = {};
@@ -55,6 +56,7 @@ const getPositionStyles = obj => {
 				target: `position-${keyWord}`,
 				breakpoint,
 				attributes: obj,
+				isHover,
 			});
 
 			const value =
@@ -68,6 +70,7 @@ const getPositionStyles = obj => {
 				target: `position-${keyWord}-unit`,
 				breakpoint,
 				attributes: obj,
+				isHover,
 			});
 
 			if (!isNil(value) && !isNil(unit))

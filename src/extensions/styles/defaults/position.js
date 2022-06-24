@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import hoverAttributesCreator from '../hoverAttributesCreator';
 
 const rawPosition = {
 	position: {
@@ -38,9 +39,12 @@ const rawPosition = {
 		default: 'px',
 	},
 };
-
-const position = breakpointAttributesCreator({
+const breakpointPosition = breakpointAttributesCreator({
 	obj: rawPosition,
 });
+const position = {
+	...breakpointPosition,
+	...hoverAttributesCreator({ obj: breakpointPosition }),
+};
 
 export default position;

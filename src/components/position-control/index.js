@@ -120,11 +120,14 @@ const PositionControl = props => {
 								target: `${prefix}position`,
 								breakpoint,
 								attributes: props,
+								isHover,
 							}) || ''
 						}
 						onChange={val =>
 							onChange({
-								[`${prefix}position-${breakpoint}`]: val,
+								[`${prefix}position-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: val,
 								...(isEmpty(val) && getCleanOptions()),
 							})
 						}
@@ -133,6 +136,7 @@ const PositionControl = props => {
 						target: `${prefix}position`,
 						breakpoint,
 						attributes: props,
+						isHover,
 					}) !== 'inherit' && PositionAxisControl}
 				</>
 			) : (

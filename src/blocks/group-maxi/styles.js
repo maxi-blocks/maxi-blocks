@@ -59,7 +59,9 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'zIndex'),
 		}),
 		position: getPositionStyles({
-			...getGroupAttributes(props, 'position'),
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
@@ -102,6 +104,12 @@ const getHoverObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		position: getPositionStyles({
+			obj: {
+				...getGroupAttributes(props, 'position'),
+			},
+			isHover: true,
+		}),
 	};
 
 	return response;

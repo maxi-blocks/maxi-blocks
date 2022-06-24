@@ -24,6 +24,8 @@ const getPositionStyles = ({ obj, isHover = false }) => {
 	const response = {};
 	let omitPositionStyle = true;
 
+	if (isHover && !obj['position-status-hover']) return response;
+
 	breakpoints.forEach(breakpoint => {
 		const position = getLastBreakpointAttribute({
 			target: 'position',

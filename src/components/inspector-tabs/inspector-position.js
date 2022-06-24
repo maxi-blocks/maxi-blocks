@@ -10,6 +10,7 @@ import PositionControl from '../position-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * Component
@@ -39,15 +40,35 @@ const position = ({ props }) => {
 						{
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
-								<PositionControl
-									{...getGroupAttributes(
-										attributes,
-										'position'
+								<>
+									<ToggleSwitch
+										label={__(
+											'Enable position hover',
+											'maxi-blocks'
+										)}
+										selected={
+											attributes['position-status-hover']
+										}
+										onChange={val =>
+											maxiSetAttributes({
+												'position-status-hover': val,
+											})
+										}
+									/>
+									{attributes['position-status-hover'] && (
+										<PositionControl
+											{...getGroupAttributes(
+												attributes,
+												'position'
+											)}
+											onChange={obj =>
+												maxiSetAttributes(obj)
+											}
+											breakpoint={deviceType}
+											isHover
+										/>
 									)}
-									onChange={obj => maxiSetAttributes(obj)}
-									breakpoint={deviceType}
-									isHover
-								/>
+								</>
 							),
 						},
 					]}

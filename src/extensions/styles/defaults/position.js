@@ -44,6 +44,7 @@ const breakpointPosition = breakpointAttributesCreator({
 });
 const position = {
 	...breakpointPosition,
+	'position-status-hover': { type: 'boolean', default: false },
 	...hoverAttributesCreator({ obj: breakpointPosition }),
 };
 

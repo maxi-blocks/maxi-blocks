@@ -19,6 +19,10 @@ const transform = {
 	'transform-target': {
 		type: 'string',
 	},
+	'transform-hover-status': {
+		type: 'boolean',
+		default: false,
+	},
 	...breakpointAttributesCreator({
 		obj: rawTransform,
 	}),

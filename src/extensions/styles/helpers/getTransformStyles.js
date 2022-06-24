@@ -114,6 +114,8 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 const getTransformValue = (obj, category, index) => {
 	const response = {};
 
+	if (index === 'hover' && !obj['transform-hover-status']) return response;
+
 	breakpoints.forEach(breakpoint => {
 		const [transformString, transformOriginString] = getTransformStrings(
 			category,

@@ -71,7 +71,31 @@ describe('getPositionStyles', () => {
 			'position-bottom-unit-xs': 'vw',
 			'position-left-unit-xs': '%',
 		};
-		const result = getPositionStyles(object);
+		const result = getPositionStyles({ obj: object });
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure unnecessary position styles are not added', () => {
+		const object = {
+			'position-general': 'inherit',
+			'position-top-unit-xl': 'px',
+			'position-right-unit-xl': 'em',
+			'position-bottom-unit-xl': 'vw',
+			'position-left-unit-xl': '%',
+			'position-top-l': 1,
+			'position-right-l': 2,
+			'position-bottom-l': 3,
+			'position-left-l': 4,
+			'position-sync-l': true,
+			'position-m': 'relative',
+			'position-left-unit-s': '%',
+			'position-top-xs': 1,
+			'position-right-xs': 2,
+			'position-bottom-xs': 3,
+			'position-left-xs': 4,
+			'position-sync-xs': true,
+		};
+		const result = getPositionStyles({ obj: object });
 		expect(result).toMatchSnapshot();
 	});
 });

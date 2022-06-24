@@ -8,6 +8,7 @@ import { BlockInserter, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import SliderContext from '../slider-maxi/context';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -65,6 +66,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				propsToAvoid={['resizableObject']}
+				copyPasteMapping={copyPasteMapping}
 				{...this.props}
 			/>,
 			<MaxiBlock

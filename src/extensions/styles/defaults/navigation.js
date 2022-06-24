@@ -8,7 +8,11 @@ const navigation = breakpointAttributesCreator({
 		},
 		'navigation-arrow-position': {
 			type: 'string',
-			default: 'arrows-dots',
+			default: 'inside',
+		},
+		'navigation-dot-position': {
+			type: 'string',
+			default: 'inside',
 		},
 	},
 });

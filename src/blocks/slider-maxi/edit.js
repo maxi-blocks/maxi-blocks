@@ -19,8 +19,8 @@ import Inspector from './inspector';
 import { Toolbar } from '../../components';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -594,6 +594,7 @@ class edit extends MaxiBlockComponent {
 						displayHandlers: !this.state.displayHandlers,
 					});
 				}}
+				copyPasteMapping={copyPasteMapping}
 				{...this.props}
 			/>,
 			<SliderContext.Provider
@@ -620,7 +621,6 @@ class edit extends MaxiBlockComponent {
 				<MaxiBlock
 					key={`maxi-slider--${uniqueID}`}
 					ref={this.blockRef}
-					blockFullWidth={blockFullWidth}
 					classes={emptySliderClass}
 					{...getMaxiBlockAttributes(this.props)}
 				>

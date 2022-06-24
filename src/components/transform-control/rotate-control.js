@@ -24,7 +24,8 @@ import { reset } from '../../icons';
  */
 const RotateControl = props => {
 	const { x, y, z, defaultX, defaultY, defaultZ, onChange } = props;
-
+	const min = -360;
+	const max = 360;
 	return (
 		<div className='maxi-transform-control__rotate-control'>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -41,24 +42,24 @@ const RotateControl = props => {
 
 							onChange(value, y, z);
 						}}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 					/>
 					<input
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(x) ? '' : x}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(defaultX, y, z);
 							} else {
 								let value = +e.target.value;
 
-								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value > max) value = max;
+								if (value < min) value = min;
 
 								onChange(value, y, z);
 							}
@@ -88,24 +89,24 @@ const RotateControl = props => {
 
 							onChange(x, value, z);
 						}}
-						min={0}
-						max={360}
+						min={min}
+						max={max}
 					/>
 					<input
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(y) ? '' : y}
-						min={0}
-						max={360}
+						min={min}
+						max={max}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, defaultY, z);
 							} else {
 								let value = +e.target.value;
 
-								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value > max) value = max;
+								if (value < min) value = min;
 
 								onChange(x, value, z);
 							}
@@ -135,24 +136,24 @@ const RotateControl = props => {
 
 							onChange(x, y, value);
 						}}
-						min={0}
-						max={360}
+						min={min}
+						max={max}
 					/>
 					<input
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(z) ? '' : z}
-						min={0}
-						max={360}
+						min={min}
+						max={max}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, y, defaultZ);
 							} else {
 								let value = +e.target.value;
 
-								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value > max) value = max;
+								if (value < min) value = min;
 
 								onChange(x, y, value);
 							}

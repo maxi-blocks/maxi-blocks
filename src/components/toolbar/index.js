@@ -18,6 +18,11 @@ import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
 
 /**
+ * Internal dependencies
+ */
+import { toolbarPin, toolbarPinLocked } from '../../icons';
+
+/**
  * Utils
  */
 import Breadcrumbs from '../breadcrumbs';
@@ -165,6 +170,12 @@ const MaxiToolbar = memo(
 			attributes
 		);
 
+		const [pinActive, setPinActive] = useState(false);
+
+		const togglePin = () => {
+			setPinActive(!pinActive);
+		};
+
 		return (
 			isSelected &&
 			anchorRef && (
@@ -225,9 +236,26 @@ const MaxiToolbar = memo(
 						anchorRef
 					)}
 				>
-					<div className='toolbar-wrapper'>
+					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
+								{!isFirstOnHierarchy && (
+									<span
+										className='breadcrumbs-pin'
+										onClick={() => {
+											togglePin();
+										}}
+									>
+										<span className='breadcrumbs-pin-toltip'>
+											{pinActive ? 'Unpin' : 'Pin Open'}
+										</span>
+										<span className='breadcrumbs-pin-icon'>
+											{pinActive
+												? toolbarPinLocked
+												: toolbarPin}
+										</span>
+									</span>
+								)}
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}

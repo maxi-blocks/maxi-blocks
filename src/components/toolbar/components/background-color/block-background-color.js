@@ -35,6 +35,8 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/slide-maxi',
+	'maxi-blocks/slider-maxi',
 ];
 
 const BlockBackgroundColor = props => {

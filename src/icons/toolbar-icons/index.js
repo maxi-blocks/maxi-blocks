@@ -46,6 +46,7 @@ export { default as toolbarShapeLineColor } from './shape-line-color';
 export { default as toolbarIconSize } from './icon-size';
 export { default as toolbarShow } from './show';
 export { default as toolbarSizing } from './sizing';
+export { default as toolbarSliderSettings } from './slider-settings';
 export { default as toolbarSpecialPaste } from './special-paste';
 export { default as toolbarStrikethrough } from './strikethrough';
 export { default as toolbarStyle } from './style';

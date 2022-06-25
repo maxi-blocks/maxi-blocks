@@ -26,6 +26,7 @@ export { default as textAlignment } from './textAlignment';
 export { default as transform } from './transform';
 export { default as transition } from './transition';
 export { default as typographyHover } from './typographyHover';
+export { default as video } from './video';
 export { default as zIndex } from './zIndex';
 export { default as clipPath } from './clipPath';
 export { default as flex } from './flex';

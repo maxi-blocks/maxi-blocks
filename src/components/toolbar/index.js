@@ -19,6 +19,11 @@ import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
 
 /**
+ * Internal dependencies
+ */
+import { toolbarPin, toolbarPinLocked } from '../../icons';
+
+/**
  * Utils
  */
 import Breadcrumbs from '../breadcrumbs';
@@ -64,6 +69,7 @@ import { setSVGContent } from '../../extensions/svg';
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
 import { getBoundaryElement } from '../../extensions/dom';
+import VideoUrl from './components/video-url';
 
 /**
  * Component
@@ -80,6 +86,7 @@ const MaxiToolbar = memo(
 		const {
 			attributes,
 			backgroundAdvancedOptions,
+			backgroundPrefix,
 			clientId,
 			isSelected,
 			name,
@@ -94,11 +101,10 @@ const MaxiToolbar = memo(
 			inlineStylesTargets = inlineStylesTargetsDefault,
 			resetNumberHelper,
 			copyPasteMapping,
+			mediaPrefix,
 		} = props;
 		const {
-			blockFullWidth,
 			customLabel,
-			fullWidth,
 			isFirstOnHierarchy,
 			isList,
 			linkSettings,
@@ -165,6 +171,12 @@ const MaxiToolbar = memo(
 			attributes
 		);
 
+		const [pinActive, setPinActive] = useState(false);
+
+		const togglePin = () => {
+			setPinActive(!pinActive);
+		};
+
 		return (
 			isSelected &&
 			anchorRef && (
@@ -228,9 +240,26 @@ const MaxiToolbar = memo(
 					<DotTip tipId='guide/block-toolbar'>
 						Make quick block settings using the toolbar.
 					</DotTip>
-					<div className='toolbar-wrapper'>
+					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
+								{!isFirstOnHierarchy && (
+									<span
+										className='breadcrumbs-pin'
+										onClick={() => {
+											togglePin();
+										}}
+									>
+										<span className='breadcrumbs-pin-toltip'>
+											{pinActive ? 'Unpin' : 'Pin Open'}
+										</span>
+										<span className='breadcrumbs-pin-icon'>
+											{pinActive
+												? toolbarPinLocked
+												: toolbarPin}
+										</span>
+									</span>
+								)}
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}
@@ -246,6 +275,7 @@ const MaxiToolbar = memo(
 							breakpoint={breakpoint}
 							clientId={clientId}
 							attributes={attributes}
+							prefix={mediaPrefix}
 						/>
 						<TextColor
 							blockName={name}
@@ -420,6 +450,12 @@ const MaxiToolbar = memo(
 								/>
 							</>
 						)}
+						{name === 'maxi-blocks/video-maxi' && (
+							<VideoUrl
+								{...getGroupAttributes(attributes, 'video')}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
+						)}
 						<ColumnMover
 							clientId={clientId}
 							blockName={name}
@@ -434,9 +470,12 @@ const MaxiToolbar = memo(
 									'backgroundGradient',
 								],
 								false,
-								prefix
+								backgroundPrefix || prefix
 							)}
-							prefix={prefix}
+							{...(name === 'maxi-blocks/video-maxi' && {
+								...getGroupAttributes(attributes, 'video'),
+							})}
+							prefix={backgroundPrefix || prefix}
 							advancedOptions={backgroundAdvancedOptions}
 							globalProps={backgroundGlobalProps}
 							blockName={name}
@@ -538,8 +577,6 @@ const MaxiToolbar = memo(
 						/>
 						<Size
 							blockName={name}
-							blockFullWidth={blockFullWidth}
-							fullWidth={fullWidth}
 							{...getGroupAttributes(
 								attributes,
 								'size',

@@ -4,7 +4,7 @@ exports[`Map Maxi Map Maxi Custom CSS 1`] = `"<style>body.maxi-blocks--active .e
 
 exports[`Map Maxi Map Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/map-maxi {\\"blockStyle\\":\\"light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"map-maxi-2\\"} -->
-<div class=\\"wp-block-maxi-blocks-map-maxi maxi-block maxi-light map-maxi-2 maxi-map-block\\" data-align=\\"normal\\" id=\\"map-maxi-2\\"><div class=\\"maxi-map-container\\" id=\\"map-container-map-maxi-2\\"></div></div>
+<div class=\\"wp-block-maxi-blocks-map-maxi maxi-block maxi-light map-maxi-2 maxi-map-block\\" id=\\"map-maxi-2\\"><div class=\\"maxi-map-container\\" id=\\"map-container-map-maxi-2\\"></div></div>
 <!-- /wp:maxi-blocks/map-maxi -->"
 `;
 

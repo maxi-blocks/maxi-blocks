@@ -1,6 +1,6 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { background, backgroundColor, backgroundGradient } from './background';
-import { width } from './size';
+import { height, width } from './size';
 import padding from './padding';
 
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
@@ -42,6 +42,13 @@ export const icon = {
 		prefix,
 		diffValAttr: {
 			'icon-width-general': '32',
+		},
+	}),
+	...prefixAttributesCreator({
+		obj: height,
+		prefix: 'icon-',
+		diffValAttr: {
+			'icon-height-general': '32',
 		},
 	}),
 	...paletteAttributesCreator({ prefix: `${prefix}stroke-`, palette: 1 }),

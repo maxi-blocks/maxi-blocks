@@ -27,10 +27,6 @@ const attributes = {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	buttonContent: {
 		type: 'string',
 	},
@@ -69,7 +65,10 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...attributesData.textAlignment,
+	...{
+		...attributesData.textAlignment,
+		'text-alignment-general': { type: 'string', default: 'center' },
+	},
 	...{
 		...attributesData.typography,
 		'line-height-unit-general': {
@@ -173,10 +172,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,

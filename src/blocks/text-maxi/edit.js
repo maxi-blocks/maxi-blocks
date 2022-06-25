@@ -19,6 +19,7 @@ import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
+	createTransitionObj,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
@@ -93,7 +94,6 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const {
 			attributes,
-			blockFullWidth,
 			clientId,
 			isSelected,
 			onReplace,
@@ -105,9 +105,24 @@ class edit extends MaxiBlockComponent {
 			listReversed,
 			listStart,
 			textLevel,
+			transition,
 			typeOfList,
 			uniqueID,
 		} = attributes;
+
+		// Temporary code to ensure that all text-maxi transitions objects has link transitions
+		// Need to be removed
+		if (!transition.canvas?.link)
+			maxiSetAttributes({
+				transition: {
+					...transition,
+					canvas: {
+						...transition.canvas,
+						link: createTransitionObj(),
+					},
+				},
+			});
+		// End of temporary code
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -166,7 +181,6 @@ class edit extends MaxiBlockComponent {
 							? 'maxi-text-block__empty'
 							: 'maxi-text-block__has-text'
 					} ${isList ? 'maxi-list-block' : ''}`}
-					blockFullWidth={blockFullWidth}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>

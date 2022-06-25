@@ -344,7 +344,7 @@ class MaxiBlockComponent extends Component {
 				...(!isEmpty(bgParallaxLayers) && {
 					...{ parallax: bgParallaxLayers },
 				}),
-				...(!isEmpty(relations) && {
+				...(relations && {
 					relations,
 				}),
 				...(hasVideo && { bg_video: true }),

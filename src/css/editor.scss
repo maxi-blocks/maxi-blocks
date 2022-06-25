@@ -52,6 +52,14 @@ h2.gx_error {
 }
 
 /*****************
+* NUX
+******************/
+
+body.maxi-blocks--active .nux-dot-tip .components-popover__content > div {
+    padding: 15px;
+}
+
+/*****************
 * Editor settings
 ******************/
 body.maxi-blocks--active {

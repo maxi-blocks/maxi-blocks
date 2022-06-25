@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { Button, Icon } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { DotTip } from '@wordpress/nux';
 
 /**
  * Internal dependencies
@@ -36,6 +37,10 @@ const MaxiStyleCardsEditorPopUp = () => {
 				aria-label={__('Style card manager', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
+				<DotTip tipId='guide/sc'>
+					Change global colours using the Style Cards manager. You can
+					change the card whenever you want.
+				</DotTip>
 				<Icon icon={styleCardMenu} />
 				<span>{__('Style card manager', 'maxi-blocks')}</span>
 			</Button>

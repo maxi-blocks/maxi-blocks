@@ -10,6 +10,7 @@ import {
 	useRef,
 } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
+import { DotTip } from '@wordpress/nux';
 
 /**
  * External dependencies
@@ -224,6 +225,9 @@ const MaxiToolbar = memo(
 						anchorRef
 					)}
 				>
+					<DotTip tipId='guide/block-toolbar'>
+						Make quick block settings using the toolbar.
+					</DotTip>
 					<div className='toolbar-wrapper'>
 						{!isTyping && (
 							<div className='toolbar-block-custom-label'>

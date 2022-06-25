@@ -2,8 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+import { DotTip } from '@wordpress/nux';
+
+dispatch('core/nux').triggerGuide(['guide/patterns', 'guide/sc']);
+dispatch('core/nux').triggerGuide(['guide/settings', 'guide/block-toolbar']);
 
 /**
  * Internal dependencies
@@ -165,6 +169,10 @@ const ResponsiveSelector = props => {
 					aria-label='Template library'
 					onClick={() => addCloudLibrary()}
 				>
+					<DotTip tipId='guide/patterns'>
+						Load the Template library to choose a premade pattern
+						for the page.
+					</DotTip>
 					<Icon icon={cloudLib} />
 					<span>{__('Template library', 'maxi-blocks')}</span>
 				</Button>

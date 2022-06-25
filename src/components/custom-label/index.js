@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { DotTip } from '@wordpress/nux';
 
 /**
  * Internal dependencies
@@ -25,10 +26,13 @@ const CustomLabel = props => {
 		<div className={classes}>
 			<TextControl
 				label={__('Block name', 'maxi-blocks')}
-				placeholder={__('Give a name...')}
+				placeholder={__('Give a name…')}
 				value={customLabel}
 				onChange={value => onChange(value)}
 			/>
+			<DotTip tipId='guide/settings'>
+				All block settings are located in the sidebar.
+			</DotTip>
 		</div>
 	);
 };

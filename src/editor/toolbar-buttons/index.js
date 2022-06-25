@@ -3,6 +3,7 @@
  */
 import { subscribe } from '@wordpress/data';
 import { useState, render } from '@wordpress/element';
+import { DotTip } from '@wordpress/nux';
 
 /**
  * Internal dependencies
@@ -30,9 +31,13 @@ const ToolbarButtons = () => {
 					aria-pressed={isResponsiveOpen}
 					onClick={() => setIsResponsiveOpen(!isResponsiveOpen)}
 				>
+					<DotTip tipId='guide/maxi-toolbar'>
+						Start by toggling the Maxi toolbar.
+					</DotTip>
 					<Icon icon={main} />
 				</Button>
 			</div>
+
 			<ResponsiveSelector
 				isOpen={isResponsiveOpen}
 				onClose={() => setIsResponsiveOpen(false)}

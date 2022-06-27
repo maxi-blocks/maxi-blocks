@@ -670,7 +670,6 @@ const TypographyControl = props => {
 					fontWeight={getValue(`${prefix}font-weight`)}
 					fontName={getValue(`${prefix}font-family`)}
 					fontStyle={getValue(`${prefix}font-style`)}
-					prefix={prefix}
 					breakpoint={breakpoint}
 				/>
 				<SelectControl

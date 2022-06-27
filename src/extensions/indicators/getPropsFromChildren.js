@@ -46,11 +46,18 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 				getProps(Children.toArray(item.props.children));
 
 			if ('items' in item.props) getProps(item.props.items);
+			if ('options' in item.props) response.push('background-layers');
 
 			Object.entries(item.props).forEach(([key, val]) => {
 				keyResponse.push(key);
 				if (!excludedEntries.includes(key) && getIsValid(val, true)) {
-					if (isObject(val))
+					if (isObject(val) && key === 'transition') {
+						response.push(key);
+					} else if (
+						isObject(val) &&
+						key !== 'allAttributes' &&
+						key !== 'options'
+					)
 						Object.keys(val).forEach(subKey =>
 							response.push(subKey)
 						);

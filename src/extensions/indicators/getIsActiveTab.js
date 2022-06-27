@@ -3,8 +3,33 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray, isEqual } from 'lodash';
+import { cloneDeep, isArray, isEqual, isNil, isObject } from 'lodash';
 import { getGroupAttributes } from '../styles';
+import { getObject } from '../../components/background-control/utils';
+
+const filterAttribute = attribute => {
+	if (isObject(attribute)) {
+		const filteredAttribute = cloneDeep(attribute);
+
+		const filterObject = obj => {
+			Object.keys(obj).forEach(key => {
+				if (isObject(obj[key])) {
+					filterObject(obj[key]);
+				}
+
+				if (isNil(obj[key])) {
+					delete obj[key];
+				}
+			});
+		};
+
+		filterObject(filteredAttribute);
+
+		return filteredAttribute;
+	}
+
+	return attribute;
+};
 
 const getIsActiveTab = (
 	attributes,
@@ -42,14 +67,44 @@ const getIsActiveTab = (
 		...ignoreAttributes,
 	];
 
-	const extractAttributes = items => {
+	const extractAttributes = (items, defaultItems, bgLayers = false) => {
 		const attributesArr = [];
 
-		items.forEach(item => {
-			for (const [key] of Object.entries(item)) {
-				attributesArr.push(key);
-			}
-		});
+		const extractingAttributes = (
+			items,
+			attributesArr,
+			defaultAttributes,
+			bgLayers
+		) => {
+			Object.entries(items).forEach(([key, value]) => {
+				if ((isArray(value) || isObject(value)) && value.length !== 0) {
+					let currentDefaultAttributes = defaultAttributes?.[key];
+
+					if (bgLayers && value?.type) {
+						currentDefaultAttributes = {
+							...getObject(
+								value.type,
+								breakpoint,
+								false,
+								bgLayers
+							),
+							'display-general': 'block',
+						};
+					}
+
+					extractingAttributes(
+						value,
+						attributesArr,
+						currentDefaultAttributes,
+						bgLayers
+					);
+				} else if (value !== defaultAttributes[key]) {
+					attributesArr.push(key);
+				}
+			});
+		};
+
+		extractingAttributes(items, attributesArr, defaultItems, bgLayers);
 
 		return attributesArr;
 	};
@@ -69,19 +124,27 @@ const getIsActiveTab = (
 		) {
 			console.log(
 				attribute,
-				currentAttributes[attribute],
-				defaultAttributes[attribute]
+				filterAttribute(currentAttributes[attribute]),
+				filterAttribute(defaultAttributes[attribute])
 			);
 		}
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
 				if (
-					isArray(currentAttributes[attribute]) &&
+					(isObject(currentAttributes[attribute]) ||
+						isArray(currentAttributes[attribute])) &&
 					currentAttributes[attribute].length !== 0
 				) {
 					return [
-						...extractAttributes(currentAttributes[attribute]),
+						...extractAttributes(
+							currentAttributes[attribute],
+							defaultAttributes[attribute],
+							attribute === 'background-layers' ||
+								attribute === 'background-layers-hover'
+								? currentAttributes[attribute]
+								: false
+						),
 					].every(attr => {
 						if (attr.split('-').pop() === bp) {
 							return false;
@@ -90,13 +153,16 @@ const getIsActiveTab = (
 						return true;
 					});
 				}
+
+				const hoverLength = attribute.includes('-hover') ? 6 : 0;
+
 				if (
 					attribute.lastIndexOf(`-${bp}`) ===
-					attribute.length - `-${bp}`.length
+					attribute.length - `-${bp}`.length - hoverLength
 				) {
 					return isEqual(
-						currentAttributes[attribute],
-						defaultAttributes[attribute]
+						filterAttribute(currentAttributes[attribute]),
+						filterAttribute(defaultAttributes[attribute])
 					);
 				}
 
@@ -117,15 +183,15 @@ const getIsActiveTab = (
 			currentAttributes[attribute].length === 0
 		) {
 			return !isEqual(
-				currentAttributes[attribute],
-				defaultAttributes[attribute]
+				filterAttribute(currentAttributes[attribute]),
+				filterAttribute(defaultAttributes[attribute])
 			);
 		}
 		if (currentAttributes[attribute] === '') return true;
 
 		return isEqual(
-			currentAttributes[attribute],
-			defaultAttributes[attribute]
+			filterAttribute(currentAttributes[attribute]),
+			filterAttribute(defaultAttributes[attribute])
 		);
 	});
 };

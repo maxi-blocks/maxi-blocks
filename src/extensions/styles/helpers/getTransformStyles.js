@@ -52,13 +52,11 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		}
 	};
 
-	const getScaleString = () => {
+	const getScaleString = (scaleObj, category, index) => {
 		let scaleString = '';
-		if (
-			isEmpty(scaleObj) ||
-			(index === 'hover' && !scaleObj?.[category]?.['hover-status'])
-		)
-			return scaleString;
+		if (isEmpty(scaleObj)) return scaleString;
+		if (index === 'hover' && !scaleObj?.[category]?.['hover-status'])
+			return getScaleString(scaleObj, category, 'normal');
 
 		if (isNumber(scaleObj?.[category]?.[index]?.x))
 			scaleString += `scaleX(${scaleObj[category][index].x / 100}) `;
@@ -75,13 +73,11 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		return scaleString;
 	};
 
-	const getTranslateString = () => {
+	const getTranslateString = (translateObj, category, index) => {
 		let translateString = '';
-		if (
-			isEmpty(translateObj) ||
-			(index === 'hover' && !translateObj?.[category]?.['hover-status'])
-		)
-			return translateString;
+		if (isEmpty(translateObj)) return translateString;
+		if (index === 'hover' && !translateObj?.[category]?.['hover-status'])
+			return getTranslateString(translateObj, category, 'normal');
 
 		if (isNumber(translateObj?.[category]?.[index]?.x))
 			translateString += `translateX(${translateObj[category][index].x}${translateObj[category][index]['x-unit']}) `;
@@ -99,13 +95,11 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		return translateString;
 	};
 
-	const getRotateString = () => {
+	const getRotateString = (rotateObj, category, index) => {
 		let rotateString = '';
-		if (
-			isEmpty(rotateObj) ||
-			(index === 'hover' && !rotateObj?.[category]?.['hover-status'])
-		)
-			return rotateString;
+		if (isEmpty(rotateObj)) return rotateString;
+		if (index === 'hover' && !rotateObj?.[category]?.['hover-status'])
+			return getRotateString(rotateObj, category, 'normal');
 
 		if (isNumber(rotateObj?.[category]?.[index]?.x))
 			rotateString += `rotateX(${rotateObj[category][index].x}deg) `;
@@ -125,7 +119,7 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		return rotateString;
 	};
 
-	const getOriginString = () => {
+	const getOriginString = (originObj, category, index) => {
 		let originString = '';
 
 		if (
@@ -160,8 +154,10 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	};
 
 	const transformString =
-		getScaleString() + getTranslateString() + getRotateString();
-	const transformOriginString = getOriginString();
+		getScaleString(scaleObj, category, index) +
+		getTranslateString(translateObj, category, index) +
+		getRotateString(rotateObj, category, index);
+	const transformOriginString = getOriginString(originObj, category, index);
 
 	return [transformString, transformOriginString];
 };

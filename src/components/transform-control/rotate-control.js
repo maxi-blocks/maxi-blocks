@@ -58,7 +58,7 @@ const RotateControl = props => {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value < -360) value = -360;
 
 								onChange(value, y, z);
 							}
@@ -105,7 +105,7 @@ const RotateControl = props => {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value < -360) value = -360;
 
 								onChange(x, value, z);
 							}
@@ -152,7 +152,7 @@ const RotateControl = props => {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value < -360) value = -360;
 
 								onChange(x, y, value);
 							}

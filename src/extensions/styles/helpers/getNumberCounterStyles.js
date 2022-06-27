@@ -101,17 +101,14 @@ const getTextStyles = (obj, blockStyle) => {
 			...(!isNil(obj[`font-family-${breakpoint}`]) && {
 				'font-family': `${obj[`font-family-${breakpoint}`]}`,
 			}),
+			...(!isNil(obj[`font-weight-${breakpoint}`]) && {
+				'font-weight': `${obj[`font-weight-${breakpoint}`]}`,
+			}),
 			[typeOfStyle]: getColor(breakpoint),
 		};
 	});
 
-	if (!isNil(obj['number-counter-title-font-weight']))
-		response.general['font-weight'] =
-			obj['number-counter-title-font-weight'];
-
-	return {
-		numberCounterText: response,
-	};
+	return { numberCounterText: response };
 };
 
 const getSupStyles = obj => {

@@ -669,7 +669,6 @@ const TypographyControl = props => {
 					fontWeight={getValue(`${prefix}font-weight`)}
 					fontName={getValue(`${prefix}font-family`)}
 					fontStyle={getValue(`${prefix}font-style`)}
-					prefix={prefix}
 				/>
 				<SelectControl
 					label={__('Text transform', 'maxi-blocks')}

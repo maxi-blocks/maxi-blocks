@@ -23,7 +23,11 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { mapIcon } from '../../icons';
-import positionMigrator from '../../extensions/styles/migrators/positionMigrator';
+
+/**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
 
 /**
  * Block
@@ -50,5 +54,5 @@ registerBlockType('maxi-blocks/map-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [positionMigrator({ attributes, save })],
+	deprecated: [blockMigrator({ attributes, save })],
 });

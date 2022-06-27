@@ -1,60 +1,32 @@
 import { isNil } from 'lodash';
 
-const fromFullWidthNonToResponsive = ({
-	attributes,
-	save,
-	prefix,
-	isContainer = false,
-}) => {
+const isEligible = blockAttributes => {
+	if (!isNil(blockAttributes.blockFullWidth)) {
+		return true;
+	}
+
+	return false;
+};
+
+const attributes = isContainer => {
 	return {
-		isEligible(blockAttributes) {
-			if (!isNil(blockAttributes.blockFullWidth)) {
-				return true;
-			}
-
-			return false;
+		blockFullWidth: {
+			type: 'string',
+			default: isContainer ? 'full' : 'normal',
 		},
-
-		attributes: {
-			...attributes,
-			blockFullWidth: {
-				type: 'string',
-				default: isContainer ? 'full' : 'normal',
-			},
-			fullWidth: {
-				type: 'string',
-				default: 'normal',
-			},
-		},
-
-		migrate(oldAttributes) {
-			const { blockFullWidth, fullWidth } = oldAttributes;
-			delete oldAttributes.blockFullWidth;
-
-			return {
-				...oldAttributes,
-				'full-width-general': blockFullWidth,
-				...(prefix && { [`${prefix}full-width-general`]: fullWidth }),
-			};
-		},
-
-		save(props) {
-			const { attributes } = props;
-			const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
-
-			const newSave = save(
-				{ ...props, attributes: restAttrs },
-				{
-					'data-align': blockFullWidth,
-				},
-				...(prefix && {
-					'data-align': fullWidth,
-				})
-			);
-
-			return newSave;
+		fullWidth: {
+			type: 'string',
+			default: 'normal',
 		},
 	};
 };
 
-export default fromFullWidthNonToResponsive;
+const migrate = (newAttributes, prefix) => {
+	const { blockFullWidth, fullWidth } = newAttributes;
+	delete newAttributes.blockFullWidth;
+
+	newAttributes['full-width-general'] = blockFullWidth;
+	if (prefix) newAttributes[`${prefix}full-width-general`] = fullWidth;
+};
+
+export { isEligible, attributes, migrate };

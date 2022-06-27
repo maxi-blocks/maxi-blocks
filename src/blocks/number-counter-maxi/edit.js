@@ -179,7 +179,7 @@ const NumberCounter = attributes => {
 								? 'round'
 								: ''
 						}
-						strokeDasharray={`${parseInt(
+						strokeDasharray={`${Math.ceil(
 							(count / 360) * circumference
 						)} ${circumference}`}
 					/>

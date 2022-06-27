@@ -1,3 +1,5 @@
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+
 /**
  * General
  */
@@ -11,13 +13,30 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getOverflowStyles = obj => {
 	const response = {};
 
+	let omitOverflowX = true;
+	let omitOverflowY = true;
+
 	breakpoints.forEach(breakpoint => {
+		const overflowX = getLastBreakpointAttribute({
+			target: 'overflow-x',
+			breakpoint,
+			attributes: obj,
+		});
+		const overflowY = getLastBreakpointAttribute({
+			target: 'overflow-y',
+			breakpoint,
+			attributes: obj,
+		});
+
+		omitOverflowX = omitOverflowX ? overflowX === 'visible' : false;
+		omitOverflowY = omitOverflowY ? overflowY === 'visible' : false;
+
 		response[breakpoint] = {
-			...(obj[`overflow-x-${breakpoint}`] && {
-				'overflow-x': obj[`overflow-x-${breakpoint}`],
+			...(!omitOverflowX && {
+				'overflow-x': overflowX,
 			}),
-			...(obj[`overflow-y-${breakpoint}`] && {
-				'overflow-y': obj[`overflow-y-${breakpoint}`],
+			...(!omitOverflowY && {
+				'overflow-y': overflowY,
 			}),
 		};
 	});

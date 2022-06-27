@@ -8,11 +8,14 @@ describe('getTransformStyles', () => {
 					normal: {
 						x: 'left',
 						y: 'top',
+						'x-unit': '%',
+						'y-unit': '%',
 					},
 				},
 			},
 			'transform-rotate-general': {
 				canvas: {
+					'hover-status': true,
 					hover: {
 						z: 90,
 					},
@@ -23,6 +26,7 @@ describe('getTransformStyles', () => {
 					normal: {
 						y: 200,
 					},
+					'hover-status': true,
 					hover: {
 						x: 200,
 					},
@@ -36,6 +40,7 @@ describe('getTransformStyles', () => {
 						'x-unit': '%',
 						'y-unit': '%',
 					},
+					'hover-status': true,
 					hover: {
 						x: 20,
 						y: 10,

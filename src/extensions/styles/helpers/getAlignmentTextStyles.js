@@ -1,23 +1,41 @@
 /**
- * General
+ * Internal dependencies
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
 
+/**
+ * General
+ */
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getAlignmentTextStyles = (obj, type = 'text') => {
 	const response = {};
 
+	let omitTextAlignment = true;
+
 	breakpoints.forEach(breakpoint => {
-		if (!isEmpty(obj[`text-alignment-${breakpoint}`]))
-			switch (obj[`text-alignment-${breakpoint}`]) {
+		const textAlignment = getLastBreakpointAttribute({
+			target: 'text-alignment',
+			breakpoint,
+			attributes: obj,
+		});
+
+		if (!isEmpty(textAlignment)) {
+			omitTextAlignment = omitTextAlignment
+				? textAlignment === 'left'
+				: false;
+
+			switch (textAlignment) {
 				case 'left':
-					response[breakpoint] = {
-						'text-align': 'left',
-					};
+					if (!omitTextAlignment)
+						response[breakpoint] = {
+							'text-align': 'left',
+						};
 					break;
 				case 'center':
 					type === 'list'
@@ -45,8 +63,9 @@ const getAlignmentTextStyles = (obj, type = 'text') => {
 						  });
 					break;
 				default:
-					return false;
+					break;
 			}
+		}
 	});
 
 	return response;

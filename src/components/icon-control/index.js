@@ -144,6 +144,8 @@ const IconControl = props => {
 		iconBackgroundActiveMedia || 'none'
 	);
 
+	console.log('iconStyle', iconStyle);
+
 	return (
 		<div className={classes}>
 			{!isHover && breakpoint === 'general' && (
@@ -411,7 +413,7 @@ const IconControl = props => {
 								]}
 							/>
 						))}
-					{iconStyle === 'border' && (
+					{iconStyle === 'color' && (
 						<BorderControl
 							{...getGroupAttributes(props, [
 								`iconBorder${isHover ? 'Hover' : ''}`,

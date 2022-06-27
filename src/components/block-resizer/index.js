@@ -146,7 +146,7 @@ const BlockResizer = memo(
 	}),
 	(oldRawProps, newRawProps) => {
 		if (oldRawProps.deviceType !== newRawProps.deviceType) return false;
-		if (oldRawProps.size.width !== newRawProps.size.width) return false;
+		if (!isEqual(oldRawProps.size, newRawProps.size)) return false;
 
 		if (!memoChildrenComparator(oldRawProps.children, newRawProps.children))
 			return false;

@@ -69,6 +69,8 @@ const IconToolbar = memo(
 			}
 
 			maxiSetAttributes(obj);
+
+			console.log('as');
 		};
 
 		return (
@@ -80,13 +82,7 @@ const IconToolbar = memo(
 					position='bottom center'
 					focusOnMount={false}
 					anchorRef={anchorRef}
-					className={
-						attributes['icon-position'] === 'top'
-							? classnames(
-									'maxi-toolbar__popover icon-position-top'
-							  )
-							: classnames('maxi-toolbar__popover')
-					}
+					className='maxi-toolbar__popover'
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding

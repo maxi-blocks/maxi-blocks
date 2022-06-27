@@ -10,6 +10,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import BackgroundControl from '../background-control';
 import ToggleSwitch from '../toggle-switch';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
@@ -52,15 +53,19 @@ const background = ({
 	const hoverStatus =
 		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
 
-	const getIgnoreIndicator = (isHover = false) =>
-		attributes[
-			`${prefix}background-active-media-${deviceType}${
-				isHover ? '-hover' : ''
-			}`
-		] === 'none' &&
-		Object.keys(
-			getGroupAttributes(attributes, groupAttributes, isHover, prefix)
-		).filter(key => key.includes(deviceType));
+	const getIgnoreIndicator = (isHover = false) => {
+		const activeMediaAttributeKey = `${prefix}background-active-media-${deviceType}${
+			isHover ? '-hover' : ''
+		}`;
+
+		return (
+			attributes[activeMediaAttributeKey] ===
+				getDefaultAttribute(activeMediaAttributeKey) &&
+			Object.keys(
+				getGroupAttributes(attributes, groupAttributes, isHover, prefix)
+			).filter(key => key.includes(deviceType))
+		);
+	};
 
 	const ignoreIndicator = getIgnoreIndicator();
 	const ignoreIndicatorHover = getIgnoreIndicator(true);

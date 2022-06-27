@@ -52,10 +52,7 @@ const ResponsiveControl = props => {
 					onChange({
 						[`breakpoints-${
 							breakpoint === 'xxl' ? 'xl' : breakpoint
-						}`]:
-							defaultBreakpoints[
-								breakpoint === 'xxl' ? 'xl' : breakpoint
-							],
+						}`]: undefined,
 					})
 				}
 				initialPosition={

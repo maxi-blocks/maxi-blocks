@@ -136,11 +136,6 @@ const modalMock = async (
 		clientId,
 		response
 	);
-
-	/* await page.$eval('button[aria-label="Close dialog"]', button =>
-		button.click()
-	);
-	await page.waitForTimeout(200); */
 };
 
 export default modalMock;

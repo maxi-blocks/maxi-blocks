@@ -38,7 +38,7 @@ const ColorLayerContent = props => {
 		isToolbar = false,
 	} = props;
 
-	const colorOptions = cloneDeep(props.colorOptions);
+	const colorOptions = cloneDeep(props.options);
 
 	const getDefaultAttr = () => {
 		const prefix = 'background-';

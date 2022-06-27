@@ -105,7 +105,7 @@ const VideoLayerContent = props => {
 const VideoLayer = props => {
 	const { onChange, isHover = false, prefix = '', breakpoint } = props;
 
-	const videoOptions = cloneDeep(props.videoOptions);
+	const videoOptions = cloneDeep(props.options);
 	const isLayerHover = videoOptions.isHover;
 
 	const [validationText, setValidationText] = useState(null);

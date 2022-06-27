@@ -551,7 +551,7 @@ const ImageLayer = props => {
 		isLayer = false,
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	const imageOptions = cloneDeep(props.options);
 
 	const [moreSettings, setMoreSettings] = useState(false);
 

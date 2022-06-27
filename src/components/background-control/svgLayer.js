@@ -173,7 +173,7 @@ const SVGLayer = props => {
 		isLayer = false,
 	} = props;
 
-	const SVGOptions = cloneDeep(props.SVGOptions);
+	const SVGOptions = cloneDeep(props.options);
 	const isLayerHover = SVGOptions.isHover;
 
 	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];

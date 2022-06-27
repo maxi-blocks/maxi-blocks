@@ -35,7 +35,7 @@ const GradientLayerContent = props => {
 		isLayer = false,
 	} = props;
 
-	const gradientOptions = cloneDeep(props.gradientOptions);
+	const gradientOptions = cloneDeep(props.options);
 
 	const getDefaultAttr = target => {
 		if (isLayer) return getDefaultLayerAttr('colorOptions', target);

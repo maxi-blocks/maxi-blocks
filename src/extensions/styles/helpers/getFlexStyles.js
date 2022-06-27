@@ -6,6 +6,7 @@ import { isNil, isEmpty } from 'lodash';
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import flex from '../defaults/flex';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -14,16 +15,40 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 const getFlexStyles = obj => {
 	const response = {};
+
+	const getFlexAttribute = (
+		attribute,
+		breakpoint,
+		obj,
+		selectLast = false
+	) => {
+		const defaultAttribute = flex[`${attribute}-${breakpoint}`].default;
+		const currentAttribute = !selectLast
+			? obj[`${attribute}-${breakpoint}`]
+			: getLastBreakpointAttribute({
+					target: attribute,
+					breakpoint,
+					attributes: obj,
+			  });
+
+		if (defaultAttribute !== currentAttribute) {
+			return currentAttribute;
+		}
+
+		return null;
+	};
+
 	breakpoints.forEach(breakpoint => {
 		let flexBasis = getLastBreakpointAttribute({
 			target: 'flex-basis',
 			breakpoint,
 			attributes: obj,
 		});
+
 		if (
 			flexBasis &&
 			![
-				'auto',
+				'unset',
 				'content',
 				'max-content',
 				'min-content',
@@ -37,63 +62,35 @@ const getFlexStyles = obj => {
 			})}`;
 		}
 
-		const flexGrow = getLastBreakpointAttribute({
-			target: 'flex-grow',
-			breakpoint,
-			attributes: obj,
-		});
+		const flexGrow = getFlexAttribute('flex-grow', breakpoint, obj, true);
 
-		const flexShrink = getLastBreakpointAttribute({
-			target: 'flex-shrink',
+		const flexShrink = getFlexAttribute(
+			'flex-shrink',
 			breakpoint,
-			attributes: obj,
-		});
-		const flexWrap = getLastBreakpointAttribute({
-			target: 'flex-wrap',
-			breakpoint,
-			attributes: obj,
-		});
-		const flexFlow = getLastBreakpointAttribute({
-			target: 'flex-flow',
-			breakpoint,
-			attributes: obj,
-		});
-		const flexOrder = getLastBreakpointAttribute({
-			target: 'order',
-			breakpoint,
-			attributes: obj,
-		});
-		const justifyContent = getLastBreakpointAttribute({
-			target: 'justify-content',
-			breakpoint,
-			attributes: obj,
-		});
-		const flexDirection = getLastBreakpointAttribute({
-			target: 'flex-direction',
-			breakpoint,
-			attributes: obj,
-		});
-		const alignItems = getLastBreakpointAttribute({
-			target: 'align-items',
-			breakpoint,
-			attributes: obj,
-		});
-		const alignContent = getLastBreakpointAttribute({
-			target: 'align-content',
-			breakpoint,
-			attributes: obj,
-		});
-		const rowGapProps = getLastBreakpointAttribute({
-			target: 'row-gap',
-			breakpoint,
-			attributes: obj,
-		});
+			obj,
+			true
+		);
+		const flexWrap = getFlexAttribute('flex-wrap', breakpoint, obj);
 
-		const columnGap = getLastBreakpointAttribute({
-			target: 'column-gap',
+		const flexFlow = getFlexAttribute('flex-flow', breakpoint, obj);
+		const flexOrder = getFlexAttribute('order', breakpoint, obj);
+		const justifyContent = getFlexAttribute(
+			'justify-content',
 			breakpoint,
-			attributes: obj,
-		});
+			obj
+		);
+
+		const flexDirection = getFlexAttribute(
+			'flex-direction',
+			breakpoint,
+			obj
+		);
+		const alignItems = getFlexAttribute('align-items', breakpoint, obj);
+
+		const alignContent = getFlexAttribute('align-content', breakpoint, obj);
+		const rowGapProps = getFlexAttribute('row-gap', breakpoint, obj);
+
+		const columnGap = getFlexAttribute('column-gap', breakpoint, obj);
 
 		response[breakpoint] = {
 			...((flexBasis !== 'unset' || flexGrow || flexShrink) && {

@@ -124,19 +124,21 @@ describe('FullSizeControl', () => {
 		await openSidebarTab(page, 'style', 'height width');
 
 		// select Force Aspect Ratio
-		await page.$$eval(
-			'.maxi-full-size-control .maxi-base-control.maxi-toggle-switch input',
-			input => input[1].click()
+		await page.$eval(
+			'.maxi-full-size-control .maxi-full-size-control__force-aspect-ratio input',
+			input => input.click()
 		);
+
+		// forceAspectRatioInput;
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// check responsive
 		await changeResponsive(page, 's');
 
 		// unselect Force Aspect Ratio
-		await page.$$eval(
-			'.maxi-full-size-control .maxi-base-control.maxi-toggle-switch input',
-			input => input[1].click()
+		await page.$eval(
+			'.maxi-full-size-control .maxi-full-size-control__force-aspect-ratio input',
+			input => input.click()
 		);
 
 		await page.waitForTimeout(100);
@@ -152,8 +154,6 @@ describe('FullSizeControl', () => {
 			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
 			input => input.value
 		);
-		expect(await getBlockStyle(page)).toMatchSnapshot();
-
 		expect(fullSizeControlInputXs).toStrictEqual('55');
 
 		await changeResponsive(page, 'm');

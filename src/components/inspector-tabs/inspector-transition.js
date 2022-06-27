@@ -25,10 +25,15 @@ import { capitalize, cloneDeep, isEmpty } from 'lodash';
  * Component
  */
 const TransitionControlWrapper = props => {
-	const { attributes, deviceType, maxiSetAttributes, type, isOneType } =
-		props;
+	const {
+		allAttributes: attributes,
+		deviceType,
+		maxiSetAttributes,
+		type,
+		isOneType,
+	} = props;
 	const { transition: rawTransition } = attributes;
-
+	console.log(rawTransition);
 	const transition = cloneDeep(rawTransition);
 
 	Object.keys(transition[type]).forEach(key => {
@@ -65,7 +70,7 @@ const TransitionControlWrapper = props => {
 
 		return newObj;
 	};
-
+	console.log(transition, type);
 	return !isEmpty(transition[type]) ? (
 		<>
 			<SelectControl
@@ -91,7 +96,7 @@ const TransitionControlWrapper = props => {
 			{selected && selected !== 'none' && (
 				<ResponsiveTabsControl breakpoint={deviceType}>
 					<TransitionControl
-						{...attributes}
+						{...getGroupAttributes(attributes, 'transition')}
 						onChange={onChangeTransition}
 						getDefaultTransitionAttribute={
 							getDefaultTransitionAttribute
@@ -120,14 +125,19 @@ const transition = ({
 	props,
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
-	const { attributes, deviceType } = props;
+	const { attributes, deviceType, ...rest } = props;
 	const { transition } = attributes;
 
 	const ignoreIndicator = [
 		'transition-block-selected',
 		'transition-canvas-selected',
 	];
-
+	console.log(
+		transition,
+		isEmpty(transition.block),
+		isEmpty(transition.canvas),
+		isEmpty(transition.block) && isEmpty(transition.canvas)
+	);
 	return {
 		label,
 		content:
@@ -146,12 +156,14 @@ const transition = ({
 							label: __('Block', 'maxi-blocks'),
 							content: (
 								<TransitionControlWrapper
-									type='block'
-									{...props}
-									attributes={getGroupAttributes(
+									{...getGroupAttributes(
 										attributes,
 										'transition'
 									)}
+									type='block'
+									{...rest}
+									deviceType={deviceType}
+									allAttributes={attributes}
 								/>
 							),
 							ignoreIndicator,
@@ -160,12 +172,14 @@ const transition = ({
 							label: __('Canvas', 'maxi-blocks'),
 							content: (
 								<TransitionControlWrapper
-									type='canvas'
-									{...props}
-									attributes={getGroupAttributes(
+									{...getGroupAttributes(
 										attributes,
 										'transition'
 									)}
+									type='canvas'
+									{...rest}
+									deviceType={deviceType}
+									allAttributes={attributes}
 								/>
 							),
 							ignoreIndicator,
@@ -174,10 +188,12 @@ const transition = ({
 				/>
 			) : (
 				<TransitionControlWrapper
+					{...getGroupAttributes(attributes, 'transition')}
 					type='canvas'
 					isOneType
-					{...props}
-					attributes={getGroupAttributes(attributes, 'transition')}
+					{...rest}
+					deviceType={deviceType}
+					allAttributes={attributes}
 				/>
 			),
 		ignoreIndicator,

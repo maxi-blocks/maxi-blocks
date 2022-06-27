@@ -16,6 +16,11 @@ const transitionDefault = {
 			property: 'background',
 			limitless: true,
 		},
+		position: {
+			title: 'Position',
+			target: '',
+			property: ['position', 'top', 'bottom', 'left', 'right'],
+		},
 	},
 };
 

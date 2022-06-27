@@ -4,6 +4,12 @@
 import { select, dispatch, subscribe } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { getPageFonts } from '../text/fonts';
+import loadFonts from '../text/fonts/loadFonts';
+
+/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
@@ -223,6 +229,9 @@ wp.domReady(() => {
 									? 's'
 									: 'xs'
 							);
+
+							// Copy all fonts to iframe
+							loadFonts(getPageFonts(), true, iframeDocument);
 
 							// Get all Maxi blocks <style> from <head>
 							// and move to new iframe

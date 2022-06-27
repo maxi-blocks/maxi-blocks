@@ -6,6 +6,11 @@ import { getAttributeKey } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Utils
  */
 export const setBreakpointToLayer = ({
@@ -64,3 +69,41 @@ export const setBreakpointToLayer = ({
 
 export const getDefaultLayerAttr = (layerType, target) =>
 	backgroundLayers[layerType][target];
+
+export const getLayerLabel = type => {
+	switch (type) {
+		case 'color':
+			return 'colorOptions';
+		case 'image':
+			return 'imageOptions';
+		case 'video':
+			return 'videoOptions';
+		case 'gradient':
+			return 'gradientOptions';
+		case 'shape':
+			return 'SVGOptions';
+		default:
+			return false;
+	}
+};
+
+const getLayerUniqueParameter = (parameter, layers) =>
+	layers && !isEmpty(layers)
+		? Math.max(
+				...layers.map(layer =>
+					typeof layer[parameter] === 'number' ? layer[parameter] : 0
+				)
+		  ) + 1
+		: 1;
+
+export const getObject = (type, breakpoint, isHover, layers) => {
+	return {
+		...setBreakpointToLayer({
+			layer: backgroundLayers[getLayerLabel(type)],
+			breakpoint,
+			isHover,
+		}),
+		order: getLayerUniqueParameter('order', layers),
+		id: getLayerUniqueParameter('id', layers),
+	};
+};

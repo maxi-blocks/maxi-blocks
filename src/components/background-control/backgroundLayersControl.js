@@ -22,7 +22,7 @@ import Icon from '../icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
-import { setBreakpointToLayer } from './utils';
+import { setBreakpointToLayer, getLayerLabel, getObject } from './utils';
 import SelectControl from '../select-control';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
@@ -57,7 +57,7 @@ const getLayerCardContent = props => {
 			return (
 				<ColorLayer
 					key={`background-color-layer--${layer.order}`}
-					colorOptions={layer}
+					options={layer}
 					onChangeInline={obj => {
 						previewRef.current.style.background =
 							obj['background-color'];
@@ -82,7 +82,7 @@ const getLayerCardContent = props => {
 			return (
 				<ImageLayer
 					key={`background-image-layer--${layer.order}`}
-					imageOptions={layer}
+					options={layer}
 					onChange={obj =>
 						onChange({
 							...layer,
@@ -98,7 +98,7 @@ const getLayerCardContent = props => {
 			return (
 				<VideoLayer
 					key={`background-video-layer--${layer.order}`}
-					videoOptions={layer}
+					options={layer}
 					onChange={obj =>
 						onChange({
 							...layer,
@@ -114,7 +114,7 @@ const getLayerCardContent = props => {
 			return (
 				<GradientLayer
 					key={`background-gradient-layer--${layer.order}`}
-					gradientOptions={layer}
+					options={layer}
 					onChange={obj =>
 						onChange({
 							...layer,
@@ -130,7 +130,7 @@ const getLayerCardContent = props => {
 			return (
 				<SVGLayer
 					key={`background-SVG-layer--${layer.order}`}
-					SVGOptions={layer}
+					options={layer}
 					onChange={obj =>
 						onChange({
 							...layer,
@@ -371,47 +371,7 @@ const BackgroundLayersControl = ({
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
 
-	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
-		layers && !isEmpty(layers)
-			? Math.max(
-					...layers.map(layer =>
-						typeof layer[parameter] === 'number'
-							? layer[parameter]
-							: 0
-					)
-			  ) + 1
-			: 1;
-
 	allLayers.sort((a, b) => a.order - b.order);
-
-	const getLayerLabel = type => {
-		switch (type) {
-			case 'color':
-				return 'colorOptions';
-			case 'image':
-				return 'imageOptions';
-			case 'video':
-				return 'videoOptions';
-			case 'gradient':
-				return 'gradientOptions';
-			case 'shape':
-				return 'SVGOptions';
-			default:
-				return false;
-		}
-	};
-
-	const getObject = type => {
-		return {
-			...setBreakpointToLayer({
-				layer: backgroundLayers[getLayerLabel(type)],
-				breakpoint,
-				isHover,
-			}),
-			order: getLayerUniqueParameter('order'),
-			id: getLayerUniqueParameter('id'),
-		};
-	};
 
 	const onLayersDrag = (fromIndex, toIndex) => {
 		const layer = allLayers.splice(fromIndex, 1)[0];
@@ -556,7 +516,13 @@ const BackgroundLayersControl = ({
 						},
 					]}
 					onChange={val => {
-						const newLayer = getObject(val);
+						const newLayer = getObject(
+							val,
+							breakpoint,
+							isHover,
+							allLayers
+						);
+
 						onAddLayer(newLayer);
 					}}
 				/>

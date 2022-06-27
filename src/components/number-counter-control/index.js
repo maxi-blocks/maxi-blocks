@@ -235,6 +235,7 @@ const NumberCounterControl = props => {
 						[`font-family-${breakpoint}`]: font.value,
 					})
 				}
+				breakpoint={breakpoint}
 			/>
 			<FontWeightControl
 				onChange={val => {
@@ -244,6 +245,7 @@ const NumberCounterControl = props => {
 				fontName={props['number-counter-title-font-family']}
 				prefix='number-counter-title-'
 				fontStyle=''
+				breakpoint={breakpoint}
 			/>
 			<AdvancedNumberControl
 				className='maxi-number-counter-control__font-size'

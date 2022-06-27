@@ -3,11 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import SelectControl from '../select-control';
-import { getWeightOptions } from '../../components/typography-control/utils';
+import { getWeightOptions } from '../typography-control/utils';
 import { loadFonts } from '../../extensions/text/fonts';
 
 const FontWeightControl = props => {
-	const { onChange, fontName, fontStyle, fontWeight } = props;
+	const { onChange, fontName, fontStyle, fontWeight, breakpoint } = props;
 
 	return (
 		<SelectControl
@@ -22,7 +22,12 @@ const FontWeightControl = props => {
 				objFont[fontName].weight = val.toString();
 				if (fontStyle) objFont[fontName].style = fontStyle;
 
-				loadFonts(objFont);
+				if (breakpoint === 's' || breakpoint === 'xs') {
+					const iframeEditor = document.querySelector(
+						'iframe[name="editor-canvas"]'
+					);
+					loadFonts(objFont, true, iframeEditor.contentDocument);
+				} else loadFonts(objFont);
 			}}
 		/>
 	);

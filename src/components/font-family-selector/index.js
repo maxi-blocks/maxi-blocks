@@ -37,6 +37,7 @@ const FontFamilySelector = props => {
 		fontWeight,
 		fontStyle,
 		disableFontFamilyReset = false,
+		breakpoint,
 	} = props;
 
 	const { options } = useSelect(select => {
@@ -65,7 +66,12 @@ const FontFamilySelector = props => {
 
 		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
 		if (fontStyle) objFont[newFont.value].style = fontStyle;
-		loadFonts(objFont);
+		if (breakpoint === 's' || breakpoint === 'xs') {
+			const iframeEditor = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+			loadFonts(objFont, true, iframeEditor.contentDocument);
+		} else loadFonts(objFont);
 
 		setValue({ label: newFont.value, value: newFont.value });
 	};

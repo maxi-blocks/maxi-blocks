@@ -15,7 +15,7 @@ import { isEmpty, uniq } from 'lodash';
  *
  * @param {string} font Name of the selected font
  */
-const loadFonts = (font, backendOnly = true, target = null) => {
+const loadFonts = (font, backendOnly = true, target = document) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
 			if (isEmpty(fontName)) return null;
@@ -62,10 +62,9 @@ const loadFonts = (font, backendOnly = true, target = null) => {
 					`url(${url})`,
 					fontDataNew
 				);
-				if (target) {
+				fontLoad.load().then(() => {
 					target.fonts.add(fontLoad);
-				}
-				document.fonts.add(fontLoad);
+				});
 				fontLoad.loaded.catch(err => {
 					console.error(
 						__(`Font hasn't been able to download: ${err}`)

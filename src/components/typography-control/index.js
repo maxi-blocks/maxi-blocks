@@ -483,6 +483,7 @@ const TypographyControl = props => {
 						}}
 						fontWeight={getValue(`${prefix}font-weight`)}
 						fontStyle={getValue(`${prefix}font-style`)}
+						breakpoint={breakpoint}
 					/>
 				)}
 				{!disableColor && !isStyleCards && (
@@ -670,6 +671,7 @@ const TypographyControl = props => {
 					fontName={getValue(`${prefix}font-family`)}
 					fontStyle={getValue(`${prefix}font-style`)}
 					prefix={prefix}
+					breakpoint={breakpoint}
 				/>
 				<SelectControl
 					label={__('Text transform', 'maxi-blocks')}

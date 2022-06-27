@@ -32,6 +32,7 @@ import { capitalize } from 'lodash';
  */
 import './editor.scss';
 import { styleNone, boxShadow } from '../../icons';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * Component
@@ -303,14 +304,33 @@ const BoxShadowControl = props => {
 						deviceType={breakpoint}
 						clientId={clientId}
 					/>
-					{!isToolbar &&
-						boxShadowItems.map(type => (
-							<BoxShadowValueControl
-								type={type}
-								key={type}
-								{...props}
+					{!isToolbar && (
+						<>
+							<ToggleSwitch
+								label={__('Inset', 'maxi-block')}
+								selected={getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-inset`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}
+								onChange={val =>
+									onChange({
+										[`${prefix}box-shadow-inset-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: val,
+									})
+								}
 							/>
-						))}
+							{boxShadowItems.map(type => (
+								<BoxShadowValueControl
+									type={type}
+									key={type}
+									{...props}
+								/>
+							))}
+						</>
+					)}
 				</>
 			)}
 		</div>

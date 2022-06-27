@@ -320,9 +320,8 @@ const TypographyControlInner = props => {
 	const typography =
 		props.typography ||
 		getGroupAttributes(props, [
-			'typography',
 			...(allowLink ? ['link'] : []),
-			...(isHover ? ['typographyHover'] : []),
+			...(isHover ? ['typographyHover'] : ['typography']),
 		]);
 
 	const { styleCard, winBreakpoint } = useSelect(select => {

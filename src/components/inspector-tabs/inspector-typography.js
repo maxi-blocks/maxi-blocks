@@ -114,8 +114,7 @@ const typography = ({
 									<TypographyControl
 										{...getGroupAttributes(
 											attributes,
-											'typography',
-											true
+											'typographyHover'
 										)}
 										onChange={obj => maxiSetAttributes(obj)}
 										hideAlignment={hideAlignment}

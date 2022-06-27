@@ -32,6 +32,7 @@ const BlockBackgroundControl = props => {
 		disableGradient = false,
 		disableColor = false,
 		disableSVG = false,
+		disableAddLayer = false,
 	} = props;
 
 	const layersOptions = compact([
@@ -72,6 +73,7 @@ const BlockBackgroundControl = props => {
 				disableGradient={disableGradient}
 				disableColor={disableColor}
 				disableSVG={disableSVG}
+				disableAddLayer={disableAddLayer}
 				clientId={clientId}
 				breakpoint={breakpoint}
 				hoverStatus={hoverStatus}

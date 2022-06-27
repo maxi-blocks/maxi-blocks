@@ -35,7 +35,7 @@ import './editor.scss';
 const TransformControl = props => {
 	const {
 		className,
-		onChangeInline,
+		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
 		depth,
@@ -75,10 +75,11 @@ const TransformControl = props => {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
 		} = transformObj;
 
-		onChangeInline({
-			transform: transform ?? '',
-			'transform-origin': transformOrigin ?? '',
-		});
+		onChangeInline &&
+			onChangeInline({
+				transform: transform ?? '',
+				'transform-origin': transformOrigin ?? '',
+			});
 	};
 
 	const classes = classnames('maxi-transform-control', className);

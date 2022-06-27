@@ -4,17 +4,46 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies
+ * External dependencies.
  */
+import { isEmpty } from 'lodash';
+
+/**
+ * Internal dependencies.
+ */
+import InfoBox from '../info-box';
 import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getIconWithColor,
 } from '../../extensions/styles';
 
 const canvasSettings = [
-	// TODO: Add Background / Layer control
+	{
+		label: __('Background / Layer', 'maxi-blocks'),
+		attrGroupName: [
+			'blockBackground',
+			'border',
+			'borderWidth',
+			'borderRadius',
+		],
+		component: props => {
+			const { attributes } = props;
+			const { 'background-layers': bgLayers } = attributes;
+
+			return !isEmpty(bgLayers) ? (
+				<Controls.BlockBackgroundControl {...props} disableAddLayer />
+			) : (
+				<InfoBox
+					message={__('No background layers added', 'maxi-blocks')}
+				/>
+			);
+		},
+		helper: ({ obj, blockStyle }) =>
+			styleHelpers.getBlockBackgroundStyles({ ...obj, blockStyle }),
+	},
 	{
 		label: __('Border', 'maxi-blocks'),
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
@@ -79,10 +108,65 @@ const canvasSettings = [
 		),
 		helper: props => styleHelpers.getMarginPaddingStyles(props),
 	},
+	{
+		label: __('Transform', 'maxi-blocks'),
+		attrGroupName: 'transform',
+		component: props => (
+			<Controls.TransformControl
+				{...props}
+				uniqueID={props.attributes.uniqueID}
+				depth={2}
+			/>
+		),
+		helper: props => styleHelpers.getTransformStyles(props.obj),
+	},
+	{
+		label: __('Position', 'maxi-blocks'),
+		attrGroupName: 'position',
+		component: props => <Controls.PositionControl {...props} />,
+		helper: props => styleHelpers.getPositionStyles(props.obj),
+	},
 ];
 
 const settings = {
 	'maxi-blocks/button-maxi': [
+		{
+			label: __('Button icon', 'maxi-blocks'),
+			attrGroupName: [
+				'icon',
+				'iconBackground',
+				'iconBackgroundGradient',
+				'iconBackgroundColor',
+				'iconBorder',
+				'iconBorderWidth',
+				'iconBorderRadius',
+				'iconPadding',
+				'typography',
+			],
+			component: props => {
+				const { attributes, blockAttributes } = props;
+				const { svgType, 'icon-content': iconContent } = attributes;
+				const { 'icon-inherit': iconInherit } = blockAttributes;
+				return iconContent ? (
+					<Controls.IconControl
+						{...props}
+						svgType={svgType}
+						isInteractionBuilder
+						getIconWithColor={args =>
+							getIconWithColor(attributes, args)
+						}
+						disableIconInherit={!iconInherit}
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Add button icon to be able to use this control'
+						)}
+					/>
+				);
+			},
+			helper: props => styleHelpers.getButtonIconStyles(props),
+		},
 		{
 			label: __('Button typography', 'maxi-blocks'),
 			attrGroupName: 'typography',
@@ -122,6 +206,7 @@ const settings = {
 					disableImage
 					disableVideo
 					disableSVG
+					disableClipPath
 				/>
 			),
 			helper: props =>
@@ -157,7 +242,29 @@ const settings = {
 	],
 	'maxi-blocks/column-maxi': [...canvasSettings],
 	'maxi-blocks/container-maxi': [...canvasSettings],
-	'maxi-blocks/divider-maxi': [...canvasSettings],
+	'maxi-blocks/divider-maxi': [
+		{
+			label: __('Divider box shadow', 'maxi-blocks'),
+			attrGroupName: 'boxShadow',
+			prefix: 'divider-',
+			component: props => <Controls.BoxShadowControl {...props} />,
+			helper: props => styleHelpers.getBoxShadowStyles(props),
+			target: ' hr.maxi-divider-block__divider',
+		},
+		{
+			label: __('Line settings', 'maxi-blocks'),
+			attrGroupName: ['divider', 'size'],
+			component: props => <Controls.DividerControl {...props} />,
+			helper: props =>
+				styleHelpers.getDividerStyles(
+					props.obj,
+					'line',
+					props.blockStyle
+				),
+			target: ' hr.maxi-divider-block__divider',
+		},
+		...canvasSettings,
+	],
 	'maxi-blocks/group-maxi': [...canvasSettings],
 	'maxi-blocks/image-maxi': [
 		{
@@ -171,7 +278,87 @@ const settings = {
 	'maxi-blocks/map-maxi': [...canvasSettings],
 	'maxi-blocks/number-counter-maxi': [...canvasSettings],
 	'maxi-blocks/row-maxi': [...canvasSettings],
-	'maxi-blocks/svg-icon-maxi': [...canvasSettings],
+	'maxi-blocks/svg-icon-maxi': [
+		{
+			label: __('Icon colour'),
+			attrGroupName: 'svg',
+			component: props => {
+				const { attributes, onChange } = props;
+				const { blockStyle, content, svgType } = attributes;
+
+				return (
+					<Controls.SvgColorControl
+						{...props}
+						onChangeFill={onChange}
+						onChangeStroke={onChange}
+						blockStyle={blockStyle}
+						content={content}
+						svgType={svgType}
+						disableHover
+					/>
+				);
+			},
+			helper: props =>
+				styleHelpers.getSVGStyles({
+					...props,
+					target: ' .maxi-svg-icon-block__icon',
+					prefix: 'svg-',
+				}),
+		},
+		{
+			label: __('Icon line width', 'maxi-blocks'),
+			attrGroupName: 'svg',
+			component: props => {
+				const { attributes } = props;
+				const { content } = attributes;
+
+				return (
+					<Controls.SvgStrokeWidthControl
+						{...props}
+						content={content}
+						prefix='svg-'
+					/>
+				);
+			},
+			helper: props =>
+				styleHelpers.getSVGStyles({
+					...props,
+					target: ' .maxi-svg-icon-block__icon',
+					prefix: 'svg-',
+				}),
+		},
+		{
+			label: __('Icon background', 'maxi-blocks'),
+			attrGroupName: [
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+			],
+			prefix: 'svg-',
+			component: props => (
+				<Controls.BackgroundControl
+					{...props}
+					disableImage
+					disableVideo
+					disableClipPath
+					disableSVG
+				/>
+			),
+			helper: props =>
+				styleHelpers.getBackgroundStyles({ ...props, ...props.obj })
+					.background,
+			target: ' .maxi-svg-icon-block__icon',
+		},
+		{
+			label: __('Icon border', 'maxi-blocks'),
+			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
+			prefix: 'svg-',
+			component: props => <Controls.BorderControl {...props} />,
+			helper: props => styleHelpers.getBorderStyles(props),
+			target: ' .maxi-svg-icon-block__icon',
+		},
+		...canvasSettings,
+	],
 	'maxi-blocks/text-maxi': [
 		{
 			label: __('Alignment', 'maxi-blocks'),

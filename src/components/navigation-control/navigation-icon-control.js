@@ -7,11 +7,13 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import AxisControl from '../axis-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
+import BorderControl from '../border-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -58,6 +60,7 @@ const NavigationIconControl = props => {
 		blockStyle,
 		isHover = false,
 		prefix,
+		clientId,
 	} = props;
 
 	const isActive = prefix.includes('-active');
@@ -66,15 +69,15 @@ const NavigationIconControl = props => {
 
 	const [iconStyle, setIconStyle] = useState('color');
 
-	const arrowIconBackgroundActiveMedia = getLastBreakpointAttribute({
+	const iconBgActiveMedia = getLastBreakpointAttribute({
 		target: `${prefix}-background-active-media`,
 		breakpoint,
 		attributes: props,
 		isHover,
 	});
 
-	const [arrowIconBgActive, setArrowIconBgActive] = useState(
-		arrowIconBackgroundActiveMedia || 'none'
+	const [iconBgActive, setIconBgActive] = useState(
+		iconBgActiveMedia || 'none'
 	);
 
 	const getBackgroundOptions = () => {
@@ -118,10 +121,36 @@ const NavigationIconControl = props => {
 		return options;
 	};
 
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
+
 	const shortPrefix =
 		prefix === 'navigation-arrow-both-icon'
 			? 'navigation-arrow'
 			: 'navigation-dot';
+
+	let shortestPrefix = 'arrow';
+
+	if (isActive) shortestPrefix = 'dotActive';
+	if (!isActive && shortPrefix.includes('dot')) shortestPrefix = 'dot';
+
+	console.log(getGroupAttributes(props, `${shortestPrefix}IconPadding`));
 
 	return (
 		<div className={classes}>
@@ -709,16 +738,35 @@ const NavigationIconControl = props => {
 							isHover={isHover}
 						/>
 					)}
+					<BorderControl
+						{...getGroupAttributes(props, [
+							`${shortestPrefix}IconBorder${
+								isHover ? 'Hover' : ''
+							}`,
+
+							`${shortestPrefix}IconBorderWidth${
+								isHover ? 'Hover' : ''
+							}`,
+							`${shortestPrefix}IconBorderRadius${
+								isHover ? 'Hover' : ''
+							}`,
+						])}
+						prefix={`${prefix}-`}
+						onChange={onChange}
+						breakpoint={breakpoint}
+						clientId={clientId}
+						isHover={isHover}
+					/>
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode
-						selected={arrowIconBgActive}
+						selected={iconBgActive}
 						items={getBackgroundOptions()}
 						onChange={val => {
-							setArrowIconBgActive(val);
+							setIconBgActive(val);
 							onChange({
 								[getAttributeKey(
-									`${prefix}-background-active-media`,
+									'-background-active-media',
 									isHover,
 									prefix,
 									breakpoint
@@ -726,7 +774,7 @@ const NavigationIconControl = props => {
 							});
 						}}
 					/>
-					{arrowIconBgActive === 'color' && (
+					{iconBgActive === 'color' && (
 						<ColorControl
 							label={__('Icon background', 'maxi-blocks')}
 							paletteStatus={getLastBreakpointAttribute({
@@ -761,7 +809,9 @@ const NavigationIconControl = props => {
 									{
 										background: color,
 									},
-									'.maxi-slider-block__arrow'
+									shortPrefix === 'navigation-arrow'
+										? '.maxi-slider-block__arrow'
+										: '.maxi-slider-block__dot'
 								)
 							}
 							onChange={({
@@ -797,13 +847,15 @@ const NavigationIconControl = props => {
 											breakpoint
 										)]: color,
 									},
-									'.maxi-slider-block__arrow'
+									shortPrefix === 'navigation-arrow'
+										? '.maxi-slider-block__arrow'
+										: '.maxi-slider-block__dot'
 								);
 							}}
 							isHover={isHover}
 						/>
 					)}
-					{arrowIconBgActive === 'gradient' && (
+					{iconBgActive === 'gradient' && (
 						<GradientControl
 							label={__(
 								'Icon Background gradient',
@@ -823,7 +875,7 @@ const NavigationIconControl = props => {
 							})}
 							defaultGradient={getDefaultAttribute(
 								getAttributeKey(
-									`${prefix}-background-gradient`,
+									'-background-gradient',
 									isHover,
 									prefix,
 									breakpoint
@@ -850,6 +902,22 @@ const NavigationIconControl = props => {
 								})
 							}
 							isHover={isHover}
+						/>
+					)}
+					{!isHover && (
+						<AxisControl
+							{...getGroupAttributes(
+								props,
+								`${shortestPrefix}IconPadding`
+							)}
+							label={__('Icon padding', 'maxi-blocks')}
+							onChange={onChange}
+							breakpoint={breakpoint}
+							target='padding'
+							disableAuto
+							optionType='string'
+							minMaxSettings={minMaxSettings}
+							prefix={`${prefix}-`}
 						/>
 					)}
 				</>

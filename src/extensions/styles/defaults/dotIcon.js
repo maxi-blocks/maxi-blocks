@@ -1,10 +1,13 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import { icon } from './icon';
+import padding from './padding';
+import { background, backgroundColor, backgroundGradient } from './background';
 
 const prefix = 'navigation-dot-';
+const prefixIcon = 'navigation-dot-icon-';
 
-const dotIcon = {
+export const dotIcon = {
 	...prefixAttributesCreator({
 		obj: icon,
 		prefix,
@@ -52,4 +55,27 @@ const dotIcon = {
 	},
 };
 
-export default dotIcon;
+export const dotIconPadding = prefixAttributesCreator({
+	obj: padding,
+	prefix: prefixIcon,
+});
+
+export const dotIconBackground = prefixAttributesCreator({
+	obj: background,
+	prefix: prefixIcon,
+	diffValAttr: {
+		'navigation-dot-icon-background-active-media-general': 'none',
+	},
+});
+
+export const dotIconBackgroundColor = prefixAttributesCreator({
+	obj: backgroundColor,
+	prefix: prefixIcon,
+	exclAttr: ['background-color-clip-path'],
+});
+
+export const dotIconBackgroundGradient = prefixAttributesCreator({
+	obj: backgroundGradient,
+	prefix: prefixIcon,
+	exclAttr: ['background-gradient-clip-path'],
+});

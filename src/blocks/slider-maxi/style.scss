@@ -48,12 +48,18 @@ body.maxi-blocks--active .maxi-slider-block {
 		&--prev {
 			left: 0px;
 		}
+		&:hover {
+			cursor: pointer;
+		}
 	}
 	.maxi-slider-block__dots {
 		display: flex;
 		position: absolute;
 		svg {
 			position: absolute;
+		}
+		.maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover {
+			cursor: pointer;
 		}
 	}
 }

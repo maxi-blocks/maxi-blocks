@@ -115,19 +115,19 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getIconObject = (
-	props,
-	target,
-	prefix = 'navigation-arrow-both-icon-'
-) => {
+const getIconObject = (props, prefix = 'navigation-arrow-both-icon-') => {
+	let attrPrefix = 'arrow';
+	if (prefix.includes('active')) attrPrefix = 'dotActive';
+	else if (prefix.includes('dot')) attrPrefix = 'dot';
+
 	const response = {
 		background: props[`${prefix}background-active-media-general`] ===
 			'color' && {
 			...getColorBackgroundObject({
 				...getGroupAttributes(props, [
-					'arrowIcon',
+					`${attrPrefix}Icon`,
 					'background',
-					'arrowIconBackgroundColor',
+					`${attrPrefix}IconBackgroundColor`,
 				]),
 				...getGroupAttributes(props, 'backgroundColor', false, prefix),
 				prefix,
@@ -140,27 +140,31 @@ const getIconObject = (
 			'gradient' && {
 			...getGradientBackgroundObject({
 				...getGroupAttributes(props, [
-					'arrowIcon',
-					'arrowIconBackground',
-					'arrowIconBackgroundGradient',
+					`${attrPrefix}Icon`,
+					`${attrPrefix}IconBackground`,
+					`${attrPrefix}IconBackgroundGradient`,
 				]),
 				prefix,
 				isIcon: true,
 			}),
 		},
-		border:
-			target === 'icon' &&
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(props, [
-						'arrowIconBorder',
-						'arrowIconBorderWidth',
-						'arrowIconBorderRadius',
-					]),
-				},
-				prefix,
-				blockStyle: props.blockStyle,
-			}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, `${attrPrefix}IconPadding`),
+			},
+			prefix,
+		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					`${attrPrefix}IconBorder`,
+					`${attrPrefix}IconBorderWidth`,
+					`${attrPrefix}IconBorderRadius`,
+				]),
+			},
+			prefix,
+			blockStyle: props.blockStyle,
+		}),
 	};
 
 	return response;
@@ -446,9 +450,6 @@ const getStyles = (props, breakpoint, clientId) => {
 	const dotIconActiveStatus = props['navigation-active-dot-icon-status'];
 	const navigationType = props[`navigation-type-${breakpoint}`];
 
-	console.log('teeeeeeeeeeeest');
-	console.log(getIconObject(props, 'icon', 'navigation-arrow-both-icon-'));
-
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
@@ -486,18 +487,16 @@ const getStyles = (props, breakpoint, clientId) => {
 								blockStyle,
 								prefix: 'navigation-arrow-both-icon-',
 							}),
-							' .maxi-slider-block__arrow': [
-								getIconObject(
-									props,
-									'icon',
-									'navigation-arrow-both-icon-'
-								),
+							' .maxi-slider-block__arrow': getIconObject(
+								props,
+								'navigation-arrow-both-icon-'
+							),
+							' .maxi-slider-block__arrow > div > div':
 								getIconSize(
 									props,
 									'navigation-arrow-both-icon',
 									false
 								),
-							],
 							' .maxi-slider-block__arrow--prev': getIconSpacing(
 								props,
 								'prev',
@@ -588,12 +587,6 @@ const getStyles = (props, breakpoint, clientId) => {
 								'navigation-dot',
 								clientId
 							),
-							' .maxi-navigation-dot-icon-block__icon':
-								getIconSize(
-									props,
-									'navigation-dot-icon',
-									false
-								),
 							' .maxi-navigation-dot-icon-block__icon > div':
 								getIconSize(
 									props,
@@ -605,11 +598,11 @@ const getStyles = (props, breakpoint, clientId) => {
 								'navigation-dot-icon',
 								false
 							),
-							' .maxi-slider-block__dot': getIconSize(
+							' .maxi-slider-block__dot': getIconObject(
 								props,
-								'navigation-dot-icon',
-								false
+								'navigation-dot-icon-'
 							),
+
 							' .maxi-slider-block__dot:not(:last-child)':
 								getIconSpacingBetween(
 									props,

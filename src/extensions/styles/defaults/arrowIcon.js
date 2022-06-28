@@ -1,6 +1,7 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import { icon } from './icon';
+import padding from './padding';
 import { background, backgroundColor, backgroundGradient } from './background';
 
 const prefix = 'navigation-arrow-both-';
@@ -59,6 +60,11 @@ export const arrowIcon = {
 		},
 	},
 };
+
+export const arrowIconPadding = prefixAttributesCreator({
+	obj: padding,
+	prefix: prefixIcon,
+});
 
 export const arrowIconBackground = prefixAttributesCreator({
 	obj: background,

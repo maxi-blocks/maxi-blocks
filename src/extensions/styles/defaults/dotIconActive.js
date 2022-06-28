@@ -1,9 +1,11 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { icon } from './icon';
+import { background, backgroundColor, backgroundGradient } from './background';
 
 const prefix = 'navigation-active-dot-';
+const prefixIcon = 'navigation-active-dot-icon-';
 
-const dotIconActive = prefixAttributesCreator({
+export const dotIconActive = prefixAttributesCreator({
 	obj: icon,
 	prefix,
 	diffValAttr: {
@@ -34,4 +36,22 @@ const dotIconActive = prefixAttributesCreator({
 	],
 });
 
-export default dotIconActive;
+export const dotIconActiveBackground = prefixAttributesCreator({
+	obj: background,
+	prefix: prefixIcon,
+	diffValAttr: {
+		'navigation-dot-icon-background-active-media-general': 'none',
+	},
+});
+
+export const dotIconActiveBackgroundColor = prefixAttributesCreator({
+	obj: backgroundColor,
+	prefix: prefixIcon,
+	exclAttr: ['background-color-clip-path'],
+});
+
+export const dotIconActiveBackgroundGradient = prefixAttributesCreator({
+	obj: backgroundGradient,
+	prefix: prefixIcon,
+	exclAttr: ['background-gradient-clip-path'],
+});

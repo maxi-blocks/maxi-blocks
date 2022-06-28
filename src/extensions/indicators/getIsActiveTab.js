@@ -3,7 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { cloneDeep, isArray, isEqual, isNil, isObject } from 'lodash';
+import { cloneDeep, isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { getGroupAttributes } from '../styles';
 import { getObject } from '../../components/background-control/utils';
 
@@ -70,62 +70,94 @@ const getIsActiveTab = (
 		...ignoreAttributes,
 	];
 
-	const extractAttributes = (items, defaultItems, bgLayers = false) => {
+	const extractAttributes = (
+		items,
+		defaultItems,
+		bgLayers = false,
+		transitionType = false
+	) => {
 		const attributesArr = [];
 
 		const extractingAttributes = (
 			items,
 			attributesArr,
 			defaultAttributes,
-			bgLayers
+			bgLayers,
+			transitionType
 		) => {
-			Object.entries(items).forEach(([key, rawValue]) => {
-				const value = { ...rawValue };
-
+			Object.entries(items).forEach(([key, value]) => {
 				if ((isArray(value) || isObject(value)) && value.length !== 0) {
+					let copiedValue = { ...value };
+
 					let currentDefaultAttributes = defaultAttributes?.[key];
 
-					if (bgLayers && value?.type) {
+					// Transitions
+					if (
+						transitionType &&
+						(copiedValue?.[transitionType.block] ||
+							copiedValue?.[transitionType.canvas])
+					) {
+						copiedValue =
+							copiedValue[transitionType.block] ||
+							copiedValue[transitionType.canvas];
+
+						currentDefaultAttributes =
+							currentDefaultAttributes[transitionType.block] ||
+							currentDefaultAttributes[transitionType.canvas];
+					}
+
+					// Background layers
+					if (bgLayers && copiedValue?.type) {
 						currentDefaultAttributes = {
-							// For background layers
 							...getObject(
-								value.type,
+								copiedValue.type,
 								breakpoint,
 								true,
 								bgLayers
 							),
 							...getObject(
-								value.type,
+								copiedValue.type,
 								breakpoint,
 								false,
 								bgLayers
 							),
-							'display-general': value.isHover ? 'none' : 'block',
+							'display-general': copiedValue.isHover
+								? 'none'
+								: 'block',
 							'display-general-hover': 'block',
 						};
 
-						// To not affect hover state by change in normal state attributes
+						// To not affect hover state indicators by changes in normal state attributes
 						isBgLayersHover &&
-							Object.keys(value).forEach(key => {
+							Object.keys(copiedValue).forEach(key => {
 								if (!key.includes('hover')) {
-									delete value[key];
+									delete copiedValue[key];
 								}
 							});
 					}
 
 					extractingAttributes(
-						value,
+						copiedValue,
 						attributesArr,
 						currentDefaultAttributes,
 						bgLayers
 					);
-				} else if (value !== defaultAttributes[key]) {
+				} else if (
+					value !== defaultAttributes[key] &&
+					!attributesArr.includes(key)
+				) {
 					attributesArr.push(key);
 				}
 			});
 		};
 
-		extractingAttributes(items, attributesArr, defaultItems, bgLayers);
+		extractingAttributes(
+			items,
+			attributesArr,
+			defaultItems,
+			bgLayers,
+			transitionType
+		);
 
 		return attributesArr;
 	};
@@ -158,7 +190,7 @@ const getIsActiveTab = (
 					) &&
 					(isObject(currentAttributes[attribute]) ||
 						isArray(currentAttributes[attribute])) &&
-					currentAttributes[attribute].length !== 0
+					!isEmpty(currentAttributes[attribute])
 				) {
 					return [
 						...extractAttributes(
@@ -167,6 +199,16 @@ const getIsActiveTab = (
 							attribute === 'background-layers' ||
 								attribute === 'background-layers-hover'
 								? currentAttributes[attribute]
+								: false,
+							attribute === 'transition'
+								? {
+										canvas: currentAttributes[
+											'transition-canvas-selected'
+										],
+										block: currentAttributes[
+											'transition-block-selected'
+										],
+								  }
 								: false
 						),
 					].every(attr => {

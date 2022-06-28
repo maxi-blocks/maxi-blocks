@@ -9,11 +9,13 @@ import { useState } from '@wordpress/element';
  */
 import AxisControl from '../axis-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+import BorderControl from '../border-control';
+import BoxShadowControl from '../box-shadow-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
-import BorderControl from '../border-control';
+import SettingTabsControl from '../setting-tabs-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -149,8 +151,6 @@ const NavigationIconControl = props => {
 
 	if (isActive) shortestPrefix = 'dotActive';
 	if (!isActive && shortPrefix.includes('dot')) shortestPrefix = 'dot';
-
-	console.log(getGroupAttributes(props, `${shortestPrefix}IconPadding`));
 
 	return (
 		<div className={classes}>
@@ -920,6 +920,18 @@ const NavigationIconControl = props => {
 							prefix={`${prefix}-`}
 						/>
 					)}
+					<BoxShadowControl
+						{...getGroupAttributes(
+							props,
+							`${shortestPrefix}IconBoxShadow`,
+							isHover
+						)}
+						prefix={`${prefix}-`}
+						onChange={onChange}
+						breakpoint={breakpoint}
+						clientId={clientId}
+						isHover={isHover}
+					/>
 				</>
 			)}
 		</div>

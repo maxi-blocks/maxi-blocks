@@ -136,6 +136,13 @@ const getIconObject = (props, prefix = 'navigation-arrow-both-icon-') => {
 				isIcon: true,
 			}),
 		},
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, `${attrPrefix}IconBoxShadow`),
+			},
+			prefix,
+			blockStyle: props.blockStyle,
+		}),
 		gradient: props[`${prefix}background-active-media-general`] ===
 			'gradient' && {
 			...getGradientBackgroundObject({

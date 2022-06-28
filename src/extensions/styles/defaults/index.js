@@ -1,4 +1,6 @@
 export { default as alignment } from './alignment';
+export { default as arrowIconBoxShadow } from './arrowIconBoxShadow';
+export { default as arrowIconBoxShadowHover } from './arrowIconBoxShadowHover';
 export { default as arrow } from './arrow';
 export { default as boxShadow } from './boxShadow';
 export { default as boxShadowHover } from './boxShadowHover';
@@ -8,6 +10,8 @@ export { default as customCss } from './customCss';
 export { default as display } from './display';
 export { default as displayHover } from './displayHover';
 export { default as divider } from './divider';
+export { default as dotIconBoxShadow } from './dotIconBoxShadow';
+export { default as dotIconBoxShadowHover } from './dotIconBoxShadowHover';
 export { default as global } from './global';
 export { default as link } from './link';
 export { default as map } from './map';

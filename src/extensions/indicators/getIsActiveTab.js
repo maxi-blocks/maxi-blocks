@@ -7,6 +7,8 @@ import { cloneDeep, isArray, isEqual, isNil, isObject } from 'lodash';
 import { getGroupAttributes } from '../styles';
 import { getObject } from '../../components/background-control/utils';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const filterAttribute = attribute => {
 	if (isObject(attribute)) {
 		const filteredAttribute = cloneDeep(attribute);
@@ -161,6 +163,9 @@ const getIsActiveTab = (
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
 				if (
+					!breakpoints.some(bp =>
+						getIsBreakpointAttribute(attribute, bp)
+					) &&
 					(isObject(currentAttributes[attribute]) ||
 						isArray(currentAttributes[attribute])) &&
 					currentAttributes[attribute].length !== 0
@@ -200,7 +205,9 @@ const getIsActiveTab = (
 			if (result && winBreakpoint === breakpoint)
 				result = breakpointAttributeChecker('general');
 
-			return result;
+			if (!isNil(result)) {
+				return result;
+			}
 		}
 		if (
 			isArray(currentAttributes[attribute]) &&

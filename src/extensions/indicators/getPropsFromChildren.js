@@ -54,7 +54,10 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 			Object.entries(item.props).forEach(([key, val]) => {
 				keyResponse.push(key);
 				if (!excludedEntries.includes(key) && getIsValid(val, true)) {
-					if (isObject(val) && key === 'transition') {
+					if (
+						isObject(val) &&
+						(key === 'transition' || key.includes('custom-css'))
+					) {
 						response.push(key);
 					} else if (
 						isObject(val) &&

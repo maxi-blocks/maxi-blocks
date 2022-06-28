@@ -17,6 +17,10 @@ import BaseControl from '../base-control';
 import Button from '../button';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 /**
  * Styles
  */
@@ -25,9 +29,14 @@ import './editor.scss';
 /**
  * Component
  */
-const CustomCssControl = props => {
-	const { breakpoint, categories, category, selectors, value, onChange } =
-		props;
+const CustomCssControlInner = props => {
+	const { breakpoint, categories, category, selectors, onChange } = props;
+
+	const value = getLastBreakpointAttribute({
+		target: 'custom-css',
+		breakpoint,
+		attributes: props,
+	});
 
 	const [notValidCode, setNotValidCode] = useState({});
 
@@ -116,7 +125,11 @@ const CustomCssControl = props => {
 
 			if (!isEmpty(newCustomCss))
 				onChange(`custom-css-${breakpoint}`, newCustomCss);
-			else onChange(`custom-css-${breakpoint}`, '');
+			else
+				onChange(
+					`custom-css-${breakpoint}`,
+					getDefaultAttribute(`custom-css-${breakpoint}`)
+				);
 		};
 
 		async function validateCss(code) {
@@ -193,27 +206,35 @@ const CustomCssControl = props => {
 	};
 
 	return (
+		<>
+			<SelectControl
+				label={__('Add CSS for', 'maxi-blocks')}
+				className='maxi-custom-css-control__category'
+				id='maxi-custom-css-control__category'
+				value={category || 'none'}
+				options={getOptions()}
+				onChange={val => onChange('custom-css-category', val)}
+			/>
+			{!isEmpty(selectors?.[category]) &&
+				Object.entries(selectors?.[category])?.map(element => {
+					const label = element?.[1]?.label;
+					const index = element?.[0];
+					return generateComponent(label, index, category);
+				})}
+		</>
+	);
+};
+
+const CustomCssControl = props => {
+	const { breakpoint } = props;
+
+	return (
 		<ResponsiveTabsControl
 			className='maxi-typography-control__text-options-tabs'
 			breakpoint={breakpoint}
 			target='custom-css'
 		>
-			<>
-				<SelectControl
-					label={__('Add CSS for', 'maxi-blocks')}
-					className='maxi-custom-css-control__category'
-					id='maxi-custom-css-control__category'
-					value={category || 'none'}
-					options={getOptions()}
-					onChange={val => onChange('custom-css-category', val)}
-				/>
-				{!isEmpty(selectors?.[category]) &&
-					Object.entries(selectors?.[category])?.map(element => {
-						const label = element?.[1]?.label;
-						const index = element?.[0];
-						return generateComponent(label, index, category);
-					})}
-			</>
+			<CustomCssControlInner {...props} />
 		</ResponsiveTabsControl>
 	);
 };

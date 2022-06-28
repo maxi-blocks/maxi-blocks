@@ -163,8 +163,9 @@ const getBoxShadowStyles = ({
 		} else if (isNotDefault) {
 			const blurValue = isNumber(blur) ? blur : defaultBlur;
 			const spreadValue = isNumber(spread) ? spread : defaultSpread;
+			const insetValue = isBoolean(inset) ? inset : defaultInset;
 
-			boxShadowString += inset ? 'inset ' : '';
+			boxShadowString += insetValue ? 'inset ' : '';
 			boxShadowString += `${horizontalValue || 0}${
 				horizontalUnit || 'px'
 			} `;

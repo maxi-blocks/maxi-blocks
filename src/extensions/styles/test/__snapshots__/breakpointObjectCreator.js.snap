@@ -161,7 +161,6 @@ Object {
     "type": "string",
   },
   "background-image-opacity-general": Object {
-    "default": 1,
     "type": "number",
   },
   "background-image-opacity-l": Object {

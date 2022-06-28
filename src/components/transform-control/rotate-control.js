@@ -41,7 +41,7 @@ const RotateControl = props => {
 
 							onChange(value, y, z);
 						}}
-						min={0}
+						min={-360}
 						max={360}
 					/>
 					<input
@@ -49,7 +49,7 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(x) ? '' : x}
-						min={0}
+						min={-360}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
@@ -58,7 +58,7 @@ const RotateControl = props => {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value < -360) value = -360;
 
 								onChange(value, y, z);
 							}
@@ -88,7 +88,7 @@ const RotateControl = props => {
 
 							onChange(x, value, z);
 						}}
-						min={0}
+						min={-360}
 						max={360}
 					/>
 					<input
@@ -96,7 +96,7 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(y) ? '' : y}
-						min={0}
+						min={-360}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
@@ -105,7 +105,7 @@ const RotateControl = props => {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value < -360) value = -360;
 
 								onChange(x, value, z);
 							}
@@ -135,7 +135,7 @@ const RotateControl = props => {
 
 							onChange(x, y, value);
 						}}
-						min={0}
+						min={-360}
 						max={360}
 					/>
 					<input
@@ -143,7 +143,7 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(z) ? '' : z}
-						min={0}
+						min={-360}
 						max={360}
 						onChange={e => {
 							if (e.target.value === '') {
@@ -152,7 +152,7 @@ const RotateControl = props => {
 								let value = +e.target.value;
 
 								if (value > 360) value = 360;
-								if (value < 0) value = 0;
+								if (value < -360) value = -360;
 
 								onChange(x, y, value);
 							}

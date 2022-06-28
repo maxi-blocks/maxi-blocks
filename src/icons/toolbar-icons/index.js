@@ -37,6 +37,8 @@ export { default as toolbarOverline } from './overline';
 export { default as toolbarP } from './p';
 export { default as toolbarPadding } from './padding';
 export { default as toolbarPaste } from './paste';
+export { default as toolbarPin } from './pin';
+export { default as toolbarPinLocked } from './pin/pinned';
 export { default as toolbarReplaceImage } from './replace-image';
 export { default as toolbarImageUrl } from './image-link';
 export { default as toolbarReusableBlock } from './reusable-blocks';

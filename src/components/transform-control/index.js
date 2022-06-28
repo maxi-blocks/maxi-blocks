@@ -36,7 +36,7 @@ import './editor.scss';
 const TransformControl = props => {
 	const {
 		className,
-		onChangeInline,
+		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
 		depth,

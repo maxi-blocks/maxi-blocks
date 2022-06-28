@@ -17,7 +17,7 @@ import { validateOriginValue } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isString, isNumber, round } from 'lodash';
+import { isEmpty, isNaN, isNumber, isString, round, toNumber } from 'lodash';
 
 /**
  * Icons
@@ -131,6 +131,8 @@ const SquareControl = props => {
 			yAxis || 0
 		}${yUnit || '%'})`;
 	}, [xAxis, xUnit, yAxis, yUnit]);
+
+	const isShowUnit = axis => !isNaN(toNumber(axis));
 
 	useEffect(() => {
 		changeXAxis(x);
@@ -260,8 +262,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('left');
 								changeYAxis('top');
-								onChange('left', 'top');
-								onSave('left', 'top');
+								onChange('left', 'top', xUnit, yUnit);
+								onSave('left', 'top', xUnit, yUnit);
 							}}
 						/>
 						<Button
@@ -279,8 +281,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('middle');
 								changeYAxis('top');
-								onChange('center', 'top');
-								onSave('center', 'top');
+								onChange('center', 'top', xUnit, yUnit);
+								onSave('center', 'top', xUnit, yUnit);
 							}}
 						/>
 						<Button
@@ -298,8 +300,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('right');
 								changeYAxis('top');
-								onChange('right', 'top');
-								onSave('right', 'top');
+								onChange('right', 'top', xUnit, yUnit);
+								onSave('right', 'top', xUnit, yUnit);
 							}}
 						/>
 						<Button
@@ -317,13 +319,13 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('left');
 								changeYAxis('center');
-								onChange('left', 'center');
-								onSave('left', 'center');
+								onChange('left', 'center', xUnit, yUnit);
+								onSave('left', 'center', xUnit, yUnit);
 							}}
 						/>
 						<Button
 							aria-pressed={
-								xAxis === 'center' && yAxis === 'middle'
+								xAxis === 'middle' && yAxis === 'center'
 									? 'active'
 									: ''
 							}
@@ -336,8 +338,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('middle');
 								changeYAxis('center');
-								onChange('center', 'center');
-								onSave('center', 'center');
+								onChange('middle', 'center', xUnit, yUnit);
+								onSave('middle', 'center', xUnit, yUnit);
 							}}
 						/>
 						<Button
@@ -355,8 +357,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('right');
 								changeYAxis('center');
-								onChange('right', 'center');
-								onSave('right', 'center');
+								onChange('right', 'center', xUnit, yUnit);
+								onSave('right', 'center', xUnit, yUnit);
 							}}
 						/>
 						<Button
@@ -374,8 +376,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('left');
 								changeYAxis('bottom');
-								onChange('left', 'bottom');
-								onSave('left', 'bottom');
+								onChange('left', 'bottom', xUnit, yUnit);
+								onSave('left', 'bottom', xUnit, yUnit);
 							}}
 						/>
 						<Button
@@ -393,8 +395,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('middle');
 								changeYAxis('bottom');
-								onChange('center', 'bottom');
-								onSave('center', 'bottom');
+								onChange('center', 'bottom', xUnit, yUnit);
+								onSave('center', 'bottom', xUnit, yUnit);
 							}}
 						/>
 						<Button
@@ -412,8 +414,8 @@ const SquareControl = props => {
 							onClick={() => {
 								changeXAxis('right');
 								changeYAxis('bottom');
-								onChange('right', 'bottom');
-								onSave('right', 'bottom');
+								onChange('right', 'bottom', xUnit, yUnit);
+								onSave('right', 'bottom', xUnit, yUnit);
 							}}
 						/>
 					</div>
@@ -512,7 +514,7 @@ const SquareControl = props => {
 									}
 								}}
 							/>
-							{!!yUnit && (
+							{isShowUnit(y) && (
 								<SelectControl
 									options={[
 										{ label: 'PX', value: 'px' },
@@ -622,7 +624,7 @@ const SquareControl = props => {
 									}
 								}}
 							/>
-							{!!xUnit && (
+							{isShowUnit(x) && (
 								<SelectControl
 									options={[
 										{ label: 'PX', value: 'px' },

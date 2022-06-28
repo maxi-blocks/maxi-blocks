@@ -65,7 +65,10 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...attributesData.textAlignment,
+	...{
+		...attributesData.textAlignment,
+		'text-alignment-general': { type: 'string', default: 'center' },
+	},
 	...{
 		...attributesData.typography,
 		'line-height-unit-general': {

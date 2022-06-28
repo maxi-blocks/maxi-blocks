@@ -23,6 +23,7 @@ function SvgColorToolbar(props) {
 	const {
 		type,
 		blockName,
+		content,
 		onChangeInline,
 		onChangeFill,
 		onChangeHoverFill,
@@ -61,6 +62,7 @@ function SvgColorToolbar(props) {
 					onChangeHoverStroke={onChangeHoverStroke}
 					label={__(`Icon ${type}`, 'maxi-blocks')}
 					blockStyle={blockStyle}
+					content={content}
 				/>
 			</div>
 		</ToolbarPopover>

@@ -364,6 +364,7 @@ const BackgroundLayersControl = ({
 	onChange,
 	clientId,
 	breakpoint,
+	disableAddLayer,
 }) => {
 	const previewRef = useRef(null);
 
@@ -486,46 +487,48 @@ const BackgroundLayersControl = ({
 						})}
 					</ListControl>
 				)}
-				<SelectControl
-					className='maxi-background-control__add-layer'
-					value='Add new layer'
-					options={[
-						{
-							label: __('Add new layer', 'maxi-blocks'),
-							value: 'normal',
-						},
-						{
-							label: __('Background color', 'maxi-blocks'),
-							value: 'color',
-						},
-						{
-							label: __('Background image', 'maxi-blocks'),
-							value: 'image',
-						},
-						{
-							label: __('Background video', 'maxi-blocks'),
-							value: 'video',
-						},
-						{
-							label: __('Background gradient', 'maxi-blocks'),
-							value: 'gradient',
-						},
-						{
-							label: __('Background shape', 'maxi-blocks'),
-							value: 'shape',
-						},
-					]}
-					onChange={val => {
-						const newLayer = getObject(
-							val,
-							breakpoint,
-							isHover,
-							allLayers
-						);
+				{!disableAddLayer && (
+					<SelectControl
+						className='maxi-background-control__add-layer'
+						value='Add new layer'
+						options={[
+							{
+								label: __('Add new layer', 'maxi-blocks'),
+								value: 'normal',
+							},
+							{
+								label: __('Background color', 'maxi-blocks'),
+								value: 'color',
+							},
+							{
+								label: __('Background image', 'maxi-blocks'),
+								value: 'image',
+							},
+							{
+								label: __('Background video', 'maxi-blocks'),
+								value: 'video',
+							},
+							{
+								label: __('Background gradient', 'maxi-blocks'),
+								value: 'gradient',
+							},
+							{
+								label: __('Background shape', 'maxi-blocks'),
+								value: 'shape',
+							},
+						]}
+						onChange={val => {
+							const newLayer = getObject(
+								val,
+								breakpoint,
+								isHover,
+								allLayers
+							);
 
-						onAddLayer(newLayer);
-					}}
-				/>
+							onAddLayer(newLayer);
+						}}
+					/>
+				)}
 			</div>
 		</div>
 	);

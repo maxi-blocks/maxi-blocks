@@ -17,7 +17,7 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber, merge } from 'lodash';
+import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -202,7 +202,10 @@ const AdvancedNumberControl = props => {
 							);
 						}}
 						onKeyDown={e => {
-							if (e.key === '-' && min >= 0) {
+							if (
+								e.key === '-' &&
+								(enableUnit ? minValue : min) >= 0
+							) {
 								e.preventDefault();
 							}
 						}}
@@ -250,12 +253,9 @@ const AdvancedNumberControl = props => {
 					<RangeControl
 						label={label}
 						value={
-							+(
-								value ??
-								defaultValue ??
-								initial ??
-								placeholder
-							) || 0
+							+(!isNil(value)
+								? value
+								: defaultValue || initial || placeholder || 0)
 						}
 						onChange={val => {
 							onChangeValue(

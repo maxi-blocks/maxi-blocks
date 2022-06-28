@@ -412,7 +412,10 @@ export const getImageBackgroundObject = ({
 	}
 
 	// Opacity
-	if (isNumber(bgImageOpacity)) response[breakpoint].opacity = bgImageOpacity;
+	if (isNumber(bgImageOpacity)) {
+		response[breakpoint].opacity = bgImageOpacity;
+		response[breakpoint]['will-change'] = 'opacity';
+	}
 
 	// Clip-path
 	if (isbgImageClipPathActive)

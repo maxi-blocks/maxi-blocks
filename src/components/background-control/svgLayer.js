@@ -126,7 +126,7 @@ const SVGSize = props => {
 const SVGLayerContent = props => {
 	const { onChange, isHover = false, breakpoint } = props;
 
-	const SVGOptions = cloneDeep(props.SVGOptions);
+	const SVGOptions = cloneDeep(props.options);
 
 	return (
 		<div className='maxi-background-control__svg-layer--size'>
@@ -202,15 +202,18 @@ const SVGLayer = props => {
 			{!isEmpty(SVGElement) && (
 				<>
 					<SVGFillControl
-						SVGOptions={SVGOptions}
+						options={SVGOptions}
 						onChange={onChange}
 						clientId={clientId}
 						isHover={isHover}
 						breakpoint={breakpoint}
 					/>
-					<ResponsiveTabsControl breakpoint={breakpoint}>
+					<ResponsiveTabsControl
+						breakpoint={breakpoint}
+						isBgLayersHover={isHover}
+					>
 						<SVGLayerContent
-							SVGOptions={SVGOptions}
+							options={SVGOptions}
 							onChange={onChange}
 							prefix={prefix}
 							isHover={isHover}

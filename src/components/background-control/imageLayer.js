@@ -45,7 +45,7 @@ const ImageLayerSettings = props => {
 		setMoreSettings,
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	const imageOptions = cloneDeep(props.options);
 
 	const parallaxStatus = getAttributeValue({
 		target: 'background-image-parallax-status',
@@ -630,7 +630,10 @@ const ImageLayer = props => {
 						{
 							label: __('Settings', 'maxi-blocks'),
 							content: (
-								<ResponsiveTabsControl breakpoint={breakpoint}>
+								<ResponsiveTabsControl
+									breakpoint={breakpoint}
+									isBgLayersHover={isHover}
+								>
 									<ImageLayerSettings
 										getDefaultAttr={getDefaultAttr}
 										moreSettings={moreSettings}

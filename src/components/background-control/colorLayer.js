@@ -162,14 +162,26 @@ const ColorLayerContent = props => {
 };
 
 const ColorLayer = props => {
-	const { breakpoint, disableResponsiveTabs = false, ...rest } = props;
+	const {
+		breakpoint,
+		isHover = false,
+		disableResponsiveTabs = false,
+		...rest
+	} = props;
 
 	if (disableResponsiveTabs)
 		return <ColorLayerContent breakpoint={breakpoint} {...rest} />;
 
 	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<ColorLayerContent {...rest} />
+		<ResponsiveTabsControl
+			breakpoint={breakpoint}
+			isBgLayersHover={isHover}
+		>
+			<ColorLayerContent
+				isHover={isHover}
+				breakpoint={breakpoint}
+				{...rest}
+			/>
 		</ResponsiveTabsControl>
 	);
 };

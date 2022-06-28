@@ -103,11 +103,18 @@ const GradientLayerContent = props => {
 };
 
 const GradientLayer = props => {
-	const { breakpoint, ...rest } = props;
+	const { breakpoint, isHover, ...rest } = props;
 
 	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<GradientLayerContent {...rest} />
+		<ResponsiveTabsControl
+			breakpoint={breakpoint}
+			isBgLayersHover={isHover}
+		>
+			<GradientLayerContent
+				breakpoint={breakpoint}
+				isHover={isHover}
+				{...rest}
+			/>
 		</ResponsiveTabsControl>
 	);
 };

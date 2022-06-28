@@ -31,7 +31,7 @@ import { cloneDeep } from 'lodash';
 const VideoLayerContent = props => {
 	const { onChange, isHover = false, prefix = '', breakpoint } = props;
 
-	const videoOptions = cloneDeep(props.videoOptions);
+	const videoOptions = cloneDeep(props.options);
 
 	return (
 		<>
@@ -247,7 +247,7 @@ const VideoLayer = props => {
 			)}
 			<ResponsiveTabsControl breakpoint={breakpoint}>
 				<VideoLayerContent
-					videoOptions={videoOptions}
+					options={videoOptions}
 					onChange={onChange}
 					isHover={isHover}
 					prefix={prefix}

@@ -29,7 +29,7 @@ import { ResponsiveTabsControl } from '..';
  * Component
  */
 const ColorContent = ({
-	SVGOptions,
+	options: SVGOptions,
 	SVGData,
 	breakpoint,
 	isHover,
@@ -120,7 +120,7 @@ const SVGFillControl = props => {
 		className,
 		clientId,
 		isHover,
-		SVGOptions,
+		options: SVGOptions,
 		breakpoint = '',
 	} = props;
 
@@ -188,10 +188,13 @@ const SVGFillControl = props => {
 					}}
 				/>
 				{!useImage && (
-					<ResponsiveTabsControl breakpoint={breakpoint}>
+					<ResponsiveTabsControl
+						breakpoint={breakpoint}
+						isBgLayersHover={isHover}
+					>
 						<ColorContent
 							breakpoint={breakpoint}
-							SVGOptions={SVGOptions}
+							options={SVGOptions}
 							SVGData={SVGData}
 							isHover={isHover}
 							id={id}
@@ -256,7 +259,10 @@ const SVGFillControl = props => {
 							/>
 						)}
 						{getSVGHasImage(SVGElement) && (
-							<ResponsiveTabsControl breakpoint={breakpoint}>
+							<ResponsiveTabsControl
+								breakpoint={breakpoint}
+								isBgLayersHover={isHover}
+							>
 								<ImageShape
 									{...SVGOptions}
 									onChange={obj => {

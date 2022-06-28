@@ -143,7 +143,7 @@ const getIsActiveTab = (
 						bgLayers
 					);
 				} else if (
-					value !== defaultAttributes[key] &&
+					value !== defaultAttributes?.[key] &&
 					!attributesArr.includes(key)
 				) {
 					attributesArr.push(key);

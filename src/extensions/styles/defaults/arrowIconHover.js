@@ -1,5 +1,5 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import arrowIcon from './arrowIcon';
+import { arrowIcon } from './arrowIcon';
 
 const arrowIconHover = hoverAttributesCreator({
 	obj: arrowIcon,

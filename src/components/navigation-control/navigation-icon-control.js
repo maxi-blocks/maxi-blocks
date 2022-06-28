@@ -11,10 +11,13 @@ import AdvancedNumberControl from '../advanced-number-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import ColorControl from '../color-control';
+import GradientControl from '../gradient-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getColorRGBAString,
+	getAttributeKey,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import {
 	setSVGStrokeWidth,
@@ -34,7 +37,13 @@ import classnames from 'classnames';
 /**
  * Styles and icons
  */
-import { iconBorder, iconFill } from '../../icons';
+import {
+	iconBorder,
+	iconFill,
+	backgroundColor,
+	backgroundGradient,
+	styleNone,
+} from '../../icons';
 
 /**
  * Component
@@ -56,6 +65,38 @@ const NavigationIconControl = props => {
 	const classes = classnames('maxi-icon-control', className);
 
 	const [iconStyle, setIconStyle] = useState('color');
+
+	const arrowIconBackgroundActiveMedia = getLastBreakpointAttribute({
+		target: `${prefix}-background-active-media`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const [arrowIconBgActive, setArrowIconBgActive] = useState(
+		arrowIconBackgroundActiveMedia || 'none'
+	);
+
+	const getBackgroundOptions = () => {
+		const options = [];
+
+		options.push({
+			icon: <Icon icon={styleNone} />,
+			value: 'none',
+		});
+
+		options.push({
+			icon: <Icon icon={backgroundColor} />,
+			value: 'color',
+		});
+
+		options.push({
+			icon: <Icon icon={backgroundGradient} />,
+			value: 'gradient',
+		});
+
+		return options;
+	};
 
 	const getOptions = () => {
 		const options = [];
@@ -665,6 +706,149 @@ const NavigationIconControl = props => {
 											  ),
 									});
 							}}
+							isHover={isHover}
+						/>
+					)}
+					<SettingTabsControl
+						type='buttons'
+						fullWidthMode
+						selected={arrowIconBgActive}
+						items={getBackgroundOptions()}
+						onChange={val => {
+							setArrowIconBgActive(val);
+							onChange({
+								[getAttributeKey(
+									`${prefix}-background-active-media`,
+									isHover,
+									prefix,
+									breakpoint
+								)]: val,
+							});
+						}}
+					/>
+					{arrowIconBgActive === 'color' && (
+						<ColorControl
+							label={__('Icon background', 'maxi-blocks')}
+							paletteStatus={getLastBreakpointAttribute({
+								target: `${prefix}-background-palette-status`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							paletteColor={getLastBreakpointAttribute({
+								target: `${prefix}-background-palette-color`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							paletteOpacity={getLastBreakpointAttribute({
+								target: `${prefix}-background-palette-opacity`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							color={getLastBreakpointAttribute({
+								target: `${prefix}-background-color`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							prefix={`${prefix}-background-`}
+							avoidBreakpointForDefault
+							onChangeInline={({ color }) =>
+								onChangeInline &&
+								onChangeInline(
+									{
+										background: color,
+									},
+									'.maxi-slider-block__arrow'
+								)
+							}
+							onChange={({
+								paletteStatus,
+								paletteColor,
+								paletteOpacity,
+								color,
+							}) => {
+								onChange(
+									{
+										[getAttributeKey(
+											'-background-palette-status',
+											isHover,
+											prefix,
+											breakpoint
+										)]: paletteStatus,
+										[getAttributeKey(
+											'-background-palette-color',
+											isHover,
+											prefix,
+											breakpoint
+										)]: paletteColor,
+										[getAttributeKey(
+											'-background-palette-opacity',
+											isHover,
+											prefix,
+											breakpoint
+										)]: paletteOpacity,
+										[getAttributeKey(
+											'-background-color',
+											isHover,
+											prefix,
+											breakpoint
+										)]: color,
+									},
+									'.maxi-slider-block__arrow'
+								);
+							}}
+							isHover={isHover}
+						/>
+					)}
+					{arrowIconBgActive === 'gradient' && (
+						<GradientControl
+							label={__(
+								'Icon Background gradient',
+								'maxi-blocks'
+							)}
+							gradient={getLastBreakpointAttribute({
+								target: `${prefix}-background-gradient`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							gradientOpacity={getLastBreakpointAttribute({
+								target: `${prefix}-background-gradient-opacity`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							defaultGradient={getDefaultAttribute(
+								getAttributeKey(
+									`${prefix}-background-gradient`,
+									isHover,
+									prefix,
+									breakpoint
+								)
+							)}
+							onChange={val =>
+								onChange({
+									[getAttributeKey(
+										'-background-gradient',
+										isHover,
+										prefix,
+										breakpoint
+									)]: val,
+								})
+							}
+							onChangeOpacity={val =>
+								onChange({
+									[getAttributeKey(
+										'-background-gradient-opacity',
+										isHover,
+										prefix,
+										breakpoint
+									)]: val,
+								})
+							}
 							isHover={isHover}
 						/>
 					)}

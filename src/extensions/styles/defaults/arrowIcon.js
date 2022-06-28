@@ -1,10 +1,12 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import { icon } from './icon';
+import { background, backgroundColor, backgroundGradient } from './background';
 
 const prefix = 'navigation-arrow-both-';
+const prefixIcon = 'navigation-arrow-both-icon-';
 
-const arrowIcon = {
+export const arrowIcon = {
 	...prefixAttributesCreator({
 		obj: icon,
 		prefix,
@@ -58,4 +60,22 @@ const arrowIcon = {
 	},
 };
 
-export default arrowIcon;
+export const arrowIconBackground = prefixAttributesCreator({
+	obj: background,
+	prefix: prefixIcon,
+	diffValAttr: {
+		'navigation-arrow-both-icon-background-active-media-general': 'none',
+	},
+});
+
+export const arrowIconBackgroundColor = prefixAttributesCreator({
+	obj: backgroundColor,
+	prefix: prefixIcon,
+	exclAttr: ['background-color-clip-path'],
+});
+
+export const arrowIconBackgroundGradient = prefixAttributesCreator({
+	obj: backgroundGradient,
+	prefix: prefixIcon,
+	exclAttr: ['background-gradient-clip-path'],
+});

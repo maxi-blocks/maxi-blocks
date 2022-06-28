@@ -20,12 +20,15 @@ import {
 	getTransformStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
+	getColorBackgroundObject,
+	getGradientBackgroundObject,
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
 	getFlexStyles,
 	getSVGStyles,
 } from '../../extensions/styles/helpers';
+
 import { selectorsSlider } from './custom-css';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -105,6 +108,57 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
+				blockStyle: props.blockStyle,
+			}),
+	};
+
+	return response;
+};
+
+const getIconObject = (
+	props,
+	target,
+	prefix = 'navigation-arrow-both-icon-'
+) => {
+	const response = {
+		background: props[`${prefix}background-active-media-general`] ===
+			'color' && {
+			...getColorBackgroundObject({
+				...getGroupAttributes(props, [
+					'arrowIcon',
+					'background',
+					'arrowIconBackgroundColor',
+				]),
+				...getGroupAttributes(props, 'backgroundColor', false, prefix),
+				prefix,
+				blockStyle: props.blockStyle,
+				isIconInherit: false,
+				isIcon: true,
+			}),
+		},
+		gradient: props[`${prefix}background-active-media-general`] ===
+			'gradient' && {
+			...getGradientBackgroundObject({
+				...getGroupAttributes(props, [
+					'arrowIcon',
+					'arrowIconBackground',
+					'arrowIconBackgroundGradient',
+				]),
+				prefix,
+				isIcon: true,
+			}),
+		},
+		border:
+			target === 'icon' &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(props, [
+						'arrowIconBorder',
+						'arrowIconBorderWidth',
+						'arrowIconBorderRadius',
+					]),
+				},
+				prefix,
 				blockStyle: props.blockStyle,
 			}),
 	};
@@ -392,6 +446,9 @@ const getStyles = (props, breakpoint, clientId) => {
 	const dotIconActiveStatus = props['navigation-active-dot-icon-status'];
 	const navigationType = props[`navigation-type-${breakpoint}`];
 
+	console.log('teeeeeeeeeeeest');
+	console.log(getIconObject(props, 'icon', 'navigation-arrow-both-icon-'));
+
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
@@ -429,6 +486,18 @@ const getStyles = (props, breakpoint, clientId) => {
 								blockStyle,
 								prefix: 'navigation-arrow-both-icon-',
 							}),
+							' .maxi-slider-block__arrow': [
+								getIconObject(
+									props,
+									'icon',
+									'navigation-arrow-both-icon-'
+								),
+								getIconSize(
+									props,
+									'navigation-arrow-both-icon',
+									false
+								),
+							],
 							' .maxi-slider-block__arrow--prev': getIconSpacing(
 								props,
 								'prev',
@@ -442,11 +511,6 @@ const getStyles = (props, breakpoint, clientId) => {
 								'navigation-arrow-both'
 							),
 							' .maxi-slider-block__arrow svg': getIconSize(
-								props,
-								'navigation-arrow-both-icon',
-								false
-							),
-							' .maxi-slider-block__arrow': getIconSize(
 								props,
 								'navigation-arrow-both-icon',
 								false

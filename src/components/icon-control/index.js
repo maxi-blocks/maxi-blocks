@@ -145,8 +145,6 @@ const IconControl = props => {
 		iconBackgroundActiveMedia || 'none'
 	);
 
-	console.log('iconStyle', iconStyle);
-
 	return (
 		<div className={classes}>
 			{!isInteractionBuilder && !isHover && breakpoint === 'general' && (

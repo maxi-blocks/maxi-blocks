@@ -144,18 +144,18 @@ const SettingTabsControl = props => {
 								getBlockName(getSelectedBlockClientId()),
 						});
 
-						const isActive = getIsActiveTab(
-							maxiAttrsFromChildren,
-							item.breakpoint,
-							item.extraIndicators,
-							item.extraIndicatorsResponsive,
-							[
+						const isActive = getIsActiveTab({
+							attributes: maxiAttrsFromChildren,
+							breakpoint: item.breakpoint,
+							extraIndicators: item.extraIndicators,
+							extraIndicatorsResponsive:
+								item.extraIndicatorsResponsive,
+							ignoreIndicator: [
 								...getChildrenIgnoreIndicator(item),
 								...item.ignoreIndicator,
 							],
-							[],
-							item.isBgLayersHover
-						);
+							isBgLayersHover: item.isBgLayersHover,
+						});
 
 						return (
 							<Button

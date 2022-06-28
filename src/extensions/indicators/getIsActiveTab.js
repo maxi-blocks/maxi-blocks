@@ -33,15 +33,15 @@ const filterAttribute = attribute => {
 	return attribute;
 };
 
-const getIsActiveTab = (
+const getIsActiveTab = ({
 	attributes,
 	breakpoint,
 	extraIndicators = [],
 	extraIndicatorsResponsive = [],
 	ignoreIndicator = [],
 	ignoreIndicatorGroups = [],
-	isBgLayersHover = false
-) => {
+	isBgLayersHover = false,
+}) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
 	const block = getBlock(getSelectedBlockClientId());

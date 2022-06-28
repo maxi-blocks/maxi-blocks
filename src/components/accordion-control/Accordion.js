@@ -86,8 +86,8 @@ const Accordion = props => {
 					'maxi-accordion-control__item__button',
 					(item.indicatorProps
 						? isActiveTab
-						: getIsActiveTab(
-								getMaxiAttrsFromChildren({
+						: getIsActiveTab({
+								attributes: getMaxiAttrsFromChildren({
 									items: itemsIndicators,
 									blockName:
 										blockName ??
@@ -95,12 +95,14 @@ const Accordion = props => {
 											getSelectedBlockClientId()
 										),
 								}),
-								item.breakpoint,
-								item.extraIndicators,
-								item.extraIndicatorsResponsive,
-								item.ignoreIndicator,
-								item.ignoreIndicatorGroups
-						  )) && 'maxi-accordion-control__item--active'
+								breakpoint: item.breakpoint,
+								extraIndicators: item.extraIndicators,
+								extraIndicatorsResponsive:
+									item.extraIndicatorsResponsive,
+								ignoreIndicator: item.ignoreIndicator,
+								ignoreIndicatorGroups:
+									item.ignoreIndicatorGroups,
+						  })) && 'maxi-accordion-control__item--active'
 				);
 
 				const classesItem = classnames(

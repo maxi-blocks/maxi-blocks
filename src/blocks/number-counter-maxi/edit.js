@@ -90,6 +90,28 @@ const NumberCounter = attributes => {
 		stroke,
 	]);
 
+	const getResizerSize = () => {
+		return {
+			width: circleStatus
+				? 'auto'
+				: getLastBreakpointAttribute({
+						target: 'number-counter-width-auto',
+						breakpoint: deviceType,
+						attributes,
+				  })
+				? '100%'
+				: `${getLastBreakpointAttribute({
+						target: 'number-counter-width',
+						breakpoint: deviceType,
+						attributes,
+				  })}${getLastBreakpointAttribute({
+						target: 'number-counter-width-unit',
+						breakpoint: deviceType,
+						attributes,
+				  })}`,
+		};
+	};
+
 	const fontSize = getLastBreakpointAttribute({
 		target: 'number-counter-title-font-size',
 		breakpoint: deviceType,
@@ -118,25 +140,7 @@ const NumberCounter = attributes => {
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
 			deviceType={deviceType}
-			size={{
-				width: circleStatus
-					? 'auto'
-					: getLastBreakpointAttribute({
-							target: 'number-counter-width-auto',
-							breakpoint: deviceType,
-							attributes,
-					  })
-					? '100%'
-					: `${getLastBreakpointAttribute({
-							target: 'number-counter-width',
-							breakpoint: deviceType,
-							attributes,
-					  })}${getLastBreakpointAttribute({
-							target: 'number-counter-width-unit',
-							breakpoint: deviceType,
-							attributes,
-					  })}`,
-			}}
+			size={getResizerSize()}
 			maxWidth='100%'
 			minWidth={
 				!circleStatus
@@ -277,6 +281,7 @@ class edit extends MaxiBlockComponent {
 			});
 
 			maxiSetAttributes({
+				[`number-counter-width-auto-${deviceType}`]: false,
 				[`number-counter-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,

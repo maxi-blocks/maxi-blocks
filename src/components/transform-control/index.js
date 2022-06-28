@@ -203,6 +203,7 @@ const TransformControl = props => {
 				hasBorder
 			/>
 			<SelectControl
+				className='maxi-transform-control__target-select'
 				label={__(
 					`${capitalize(transformStatus)} target`,
 					'maxi-blocks'

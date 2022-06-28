@@ -112,6 +112,26 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 	};
+	const object = {
+		'box-shadow-palette-status-general': true,
+		'box-shadow-palette-color-general': 4,
+		'box-shadow-horizontal-general': 1,
+		'box-shadow-vertical-general': 2,
+		'box-shadow-blur-general': 3,
+		'box-shadow-spread-general': 4,
+		'box-shadow-palette-color-l': 2,
+		'box-shadow-palette-opacity-l': 0.2,
+		'box-shadow-blur-unit-general': 'px',
+		'box-shadow-horizontal-unit-general': 'px',
+		'box-shadow-vertical-unit-general': 'px',
+		'box-shadow-spread-unit-general': 'px',
+	};
+	console.log(
+		getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+		})
+	);
 
 	return response;
 };

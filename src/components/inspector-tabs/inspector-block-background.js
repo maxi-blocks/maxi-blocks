@@ -65,6 +65,7 @@ const blockBackground = ({
 							/>
 						),
 						extraIndicators: ['background-layers'],
+						ignoreIndicator: ['block-background-hover-status'],
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),

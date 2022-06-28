@@ -33,7 +33,7 @@ const TransitionControlWrapper = props => {
 		isOneType,
 	} = props;
 	const { transition: rawTransition } = attributes;
-	console.log(rawTransition);
+
 	const transition = cloneDeep(rawTransition);
 
 	Object.keys(transition[type]).forEach(key => {
@@ -70,7 +70,7 @@ const TransitionControlWrapper = props => {
 
 		return newObj;
 	};
-	console.log(transition, type);
+
 	return !isEmpty(transition[type]) ? (
 		<>
 			<SelectControl
@@ -132,12 +132,7 @@ const transition = ({
 		'transition-block-selected',
 		'transition-canvas-selected',
 	];
-	console.log(
-		transition,
-		isEmpty(transition.block),
-		isEmpty(transition.canvas),
-		isEmpty(transition.block) && isEmpty(transition.canvas)
-	);
+
 	return {
 		label,
 		content:

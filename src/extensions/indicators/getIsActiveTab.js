@@ -150,16 +150,6 @@ const getIsActiveTab = (
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === false) return true;
 
-		if (
-			!isEqual(currentAttributes[attribute], defaultAttributes[attribute])
-		) {
-			console.log(
-				attribute,
-				filterAttribute(currentAttributes[attribute]),
-				filterAttribute(defaultAttributes[attribute])
-			);
-		}
-
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
 				if (

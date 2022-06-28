@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getPositionStyles Ensure unnecessary position styles are not added 1`] = `
+Object {
+  "m": Object {
+    "bottom": "3vw",
+    "left": "4%",
+    "position": "relative",
+    "right": "2em",
+    "top": "1px",
+  },
+  "s": Object {
+    "bottom": "3vw",
+    "left": "4%",
+    "position": "relative",
+    "right": "2em",
+    "top": "1px",
+  },
+  "xs": Object {
+    "bottom": "3vw",
+    "left": "4%",
+    "position": "relative",
+    "right": "2em",
+    "top": "1px",
+  },
+}
+`;
+
 exports[`getPositionStyles Get a correct position styles 1`] = `
 Object {
   "general": Object {

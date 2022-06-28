@@ -39,7 +39,7 @@ const customCss = ({
 				}
 			/>
 		),
-		extraIndicators: [`custom-css-${breakpoint}`],
+		extraIndicatorsResponsive: ['custom-css'],
 	};
 };
 

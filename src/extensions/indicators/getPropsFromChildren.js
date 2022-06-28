@@ -3,11 +3,11 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { Children } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import getResponsiveAttributeKeys from './getResponsiveAttributeKeys';
 
 /**
  * External dependencies
@@ -18,9 +18,6 @@ import { getIsValid } from '../styles';
 const getPropsFromChildren = (items, excludedEntries = []) => {
 	const response = [];
 	const keyResponse = [];
-
-	const currentBreakpoint =
-		select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 
 	const getProps = item => {
 		if (!isObject(item)) return;
@@ -35,8 +32,8 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 			item.extraIndicators.forEach(indicator => response.push(indicator));
 
 		if ('extraIndicatorsResponsive' in item) {
-			item.extraIndicatorsResponsive.forEach(indicator =>
-				response.push(`${indicator}-${currentBreakpoint}`)
+			response.push(
+				...getResponsiveAttributeKeys(item.extraIndicatorsResponsive)
 			);
 		}
 

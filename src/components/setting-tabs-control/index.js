@@ -13,6 +13,7 @@ import { getForcedTabFromPath } from '../../extensions/inspector';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
+	getChildrenIgnoreIndicator,
 } from '../../extensions/indicators';
 
 /**
@@ -29,26 +30,6 @@ import './editor.scss';
 /**
  * Component
  */
-const getChildrenIgnoreIndicator = items => {
-	let ignoreIndicatorArray = [];
-
-	Object.entries(items).forEach(([key, value]) => {
-		if (key === 'ignoreIndicator' && value)
-			ignoreIndicatorArray = [...ignoreIndicatorArray, ...value];
-
-		if (
-			value?.content ||
-			value?.props ||
-			value?.children ||
-			value?.items ||
-			Array.isArray(value)
-		)
-			ignoreIndicatorArray.push(...getChildrenIgnoreIndicator(value));
-	});
-
-	return ignoreIndicatorArray;
-};
-
 const SettingTabsControl = props => {
 	const {
 		items,

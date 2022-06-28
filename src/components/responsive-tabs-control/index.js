@@ -31,7 +31,9 @@ const ResponsiveTabsControl = props => {
 		disableCallback = false,
 		target,
 		extraIndicators,
+		extraIndicatorsResponsive,
 		ignoreIndicator,
+		ignoreIndicatorGroups,
 		isBgLayersHover = false,
 	} = props;
 
@@ -74,7 +76,6 @@ const ResponsiveTabsControl = props => {
 								? 'general'
 								: breakpoint.toLowerCase(),
 					}),
-					// content: children,
 					showNotification: showNotification(breakpoint),
 					callback: () =>
 						!disableCallback
@@ -84,7 +85,9 @@ const ResponsiveTabsControl = props => {
 							: null,
 					breakpoint: breakpoint.toLowerCase(),
 					extraIndicators,
+					extraIndicatorsResponsive,
 					ignoreIndicator,
+					ignoreIndicatorGroups,
 					isBgLayersHover,
 				};
 			})}

@@ -58,10 +58,10 @@ const FlexSettingsControl = props => {
 	const classes = classnames('maxi-flex-settings--control', className);
 
 	const flexChildAttributeKeys = [
-		`order-${breakpoint}`,
-		`flex-grow-${breakpoint}`,
-		`flex-shrink-${breakpoint}`,
-		`flex-basis-${breakpoint}`,
+		'order',
+		'flex-grow',
+		'flex-shrink',
+		'flex-basis',
 	];
 
 	return (
@@ -225,7 +225,7 @@ const FlexSettingsControl = props => {
 								)}
 							</div>
 						),
-						ignoreIndicator: flexChildAttributeKeys,
+						ignoreIndicatorResponsive: flexChildAttributeKeys,
 					},
 					{
 						label: __('Flex-child', 'maxi-blocks'),
@@ -438,7 +438,7 @@ const FlexSettingsControl = props => {
 								)}
 							</div>
 						),
-						extraIndicators: flexChildAttributeKeys,
+						extraIndicatorsResponsive: flexChildAttributeKeys,
 					},
 				]}
 				depth={2}

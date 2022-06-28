@@ -37,23 +37,16 @@ const size = ({
 	const showFullWidth = isFirstOnHierarchy || name === 'maxi-blocks/row-maxi';
 	const isBlockFullWidth = fullWidth === 'full';
 
-	const ignoreIndicator =
-		!attributes[`${prefix}size-advanced-options`] &&
-		Object.keys(
-			getGroupAttributes(attributes, [
-				'maxWidth',
-				'minWidth',
-				'maxHeight',
-				'minHeight',
-			])
-		).map(key => `${prefix}${key}`);
+	const ignoreIndicatorGroups = !attributes[`${prefix}size-advanced-options`]
+		? ['maxWidth', 'minWidth', 'maxHeight', 'minHeight']
+		: [];
 
 	return {
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl
 				breakpoint={deviceType}
-				ignoreIndicator={ignoreIndicator}
+				ignoreIndicatorGroups={ignoreIndicatorGroups}
 			>
 				<>
 					{showFullWidth &&
@@ -114,10 +107,7 @@ const size = ({
 				</>
 			</ResponsiveTabsControl>
 		),
-		extraIndicators: [
-			...(isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth'),
-		],
-		ignoreIndicator,
+		ignoreIndicatorGroups,
 	};
 };
 

@@ -59,10 +59,10 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
-												extraIndicators={[
-													`line-orientation-${deviceType}`,
-													`line-vertical-${deviceType}`,
-													`line-horizontal-${deviceType}`,
+												extraIndicatorsResponsive={[
+													'line-orientation',
+													'line-vertical',
+													'line-horizontal',
 												]}
 											>
 												<>
@@ -192,10 +192,10 @@ const Inspector = props => {
 												</>
 											</ResponsiveTabsControl>
 										),
-										extraIndicators: [
-											`line-horizontal-${deviceType}`,
-											`line-vertical-${deviceType}`,
-											`line-orientation-${deviceType}`,
+										extraIndicatorsResponsive: [
+											'line-horizontal',
+											'line-vertical',
+											'line-orientation',
 										],
 									},
 									{
@@ -229,10 +229,10 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: [
-											`line-horizontal-${deviceType}`,
-											`line-vertical-${deviceType}`,
-											`line-orientation-${deviceType}`,
+										ignoreIndicatorResponsive: [
+											'line-horizontal',
+											'line-vertical',
+											'line-orientation',
 										],
 									},
 									...inspectorTabs.boxShadow({

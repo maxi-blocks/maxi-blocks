@@ -566,11 +566,11 @@ const Inspector = props => {
 											/>
 										),
 										extraIndicators: ['SVGElement'],
-										ignoreIndicator: [
-											`image-shape-scale-${deviceType}`,
-											`image-shape-rotate-${deviceType}`,
-											`image-shape-flip-x-${deviceType}`,
-											`image-shape-flip-y-${deviceType}`,
+										ignoreIndicatorResponsive: [
+											'image-shape-scale',
+											'image-shape-rotate',
+											'image-shape-flip-x',
+											'image-shape-flip-y',
 										],
 									},
 									{

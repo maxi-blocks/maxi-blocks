@@ -169,9 +169,9 @@ const Inspector = props => {
 												content={attributes.content}
 											/>
 										),
-										ignoreIndicator: [
-											`svg-width-${deviceType}`,
-											`svg-stroke-${deviceType}`,
+										ignoreIndicatorResponsive: [
+											'svg-width',
+											'svg-stroke',
 										],
 									},
 
@@ -202,7 +202,9 @@ const Inspector = props => {
 												'svg-line-palette-color',
 												'svg-line-palette-status',
 												'svg-line-color',
-												`svg-width-${deviceType}`,
+											],
+											ignoreIndicatorResponsive: [
+												'svg-width',
 											],
 										},
 									...inspectorTabs.background({
@@ -255,7 +257,9 @@ const Inspector = props => {
 											'svg-line-palette-color',
 											'svg-line-palette-status',
 											'svg-line-color',
-											`svg-stroke-${deviceType}`,
+										],
+										ignoreIndicatorResponsive: [
+											'svg-stroke',
 										],
 									},
 									...inspectorTabs.marginPadding({

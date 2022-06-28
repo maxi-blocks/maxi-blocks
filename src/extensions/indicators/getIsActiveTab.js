@@ -6,6 +6,7 @@ import { select } from '@wordpress/data';
 import { cloneDeep, isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { getGroupAttributes } from '../styles';
 import { getObject } from '../../components/background-control/utils';
+import getResponsiveAttributeKeys from './getResponsiveAttributeKeys';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -37,8 +38,9 @@ const getIsActiveTab = ({
 	attributes,
 	breakpoint,
 	extraIndicators = [],
-	extraIndicatorsResponsive = [],
+	extraIndicatorsResponsive: extraIndicatorsResponsiveRaw = [],
 	ignoreIndicator = [],
+	ignoreIndicatorResponsive: ignoreIndicatorResponsiveRaw = [],
 	ignoreIndicatorGroups = [],
 	isBgLayersHover = false,
 }) => {
@@ -61,12 +63,21 @@ const getIsActiveTab = ({
 		);
 	});
 
+	const extraIndicatorsResponsive = getResponsiveAttributeKeys(
+		extraIndicatorsResponsiveRaw
+	);
+
+	const ignoreIndicatorResponsive = getResponsiveAttributeKeys(
+		ignoreIndicatorResponsiveRaw
+	);
+
 	const excludedAttributes = [
 		'blockStyle',
 		'isFirstOnHierarchy',
 		'uniqueID',
 		'svgType',
 		...ignoreIndicator,
+		...ignoreIndicatorResponsive,
 		...ignoreAttributes,
 	];
 

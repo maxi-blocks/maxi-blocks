@@ -63,6 +63,7 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
+				defaultOpacity={1}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(

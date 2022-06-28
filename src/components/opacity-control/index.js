@@ -26,6 +26,7 @@ const OpacityControl = props => {
 		opacity,
 		onReset,
 		disableLabel = false,
+		defaultOpacity = undefined,
 	} = props;
 
 	const classes = classnames('maxi-opacity-control', className);
@@ -44,7 +45,7 @@ const OpacityControl = props => {
 			}}
 			min={0}
 			max={100}
-			onReset={() => (onReset ? onReset() : onChange(undefined))}
+			onReset={() => (onReset ? onReset() : onChange(defaultOpacity))}
 		/>
 	);
 };

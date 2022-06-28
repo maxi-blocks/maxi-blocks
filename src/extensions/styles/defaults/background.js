@@ -94,7 +94,6 @@ export const rawBackgroundImage = {
 	},
 	'background-image-opacity': {
 		type: 'number',
-		default: 1,
 	},
 	'background-image-clip': {
 		type: 'string',

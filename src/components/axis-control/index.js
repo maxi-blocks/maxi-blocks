@@ -75,11 +75,9 @@ const AxisInput = props => {
 			label={__(capitalize(label), 'maxi-blocks')}
 			className={classnames(
 				'maxi-axis-control__content__item',
-				`maxi-axis-control__content__item__${replace(
-					label,
-					' ',
-					'-'
-				).toLowerCase()}`
+				`maxi-axis-control__content__item__${replace(label, ' ', '-')
+					.replace(/[ //]/g, '')
+					.toLowerCase()}`
 			)}
 			placeholder={lastValue}
 			value={value}

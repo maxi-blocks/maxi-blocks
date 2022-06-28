@@ -13,6 +13,7 @@ import {
 	VideoControl,
 	VideoOptionsControl,
 	VideoOverlayControl,
+	PopupSettingsControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsVideo, categoriesVideo } from './custom-css';
@@ -100,48 +101,74 @@ const Inspector = props => {
 												/>
 											),
 										},
-										playerType === 'popup' && {
-											label: __(
-												'Video overlay',
-												'maxi-blocks'
-											),
-											content: (
-												<VideoOverlayControl
-													{...getGroupAttributes(
-														attributes,
-														'video'
-													)}
-													{...getGroupAttributes(
-														attributes,
-														[
-															'background',
-															'backgroundColor',
-														],
-														false,
-														'overlay-'
-													)}
-													mediaID={overlayMediaId}
-													altSelector={
-														overlayAltSelector
-													}
-													inlineStylesTargets={
-														inlineStylesTargets
-													}
-													insertInlineStyles={
-														insertInlineStyles
-													}
-													cleanInlineStyles={
-														cleanInlineStyles
-													}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													breakpoint={deviceType}
-													clientId={clientId}
-													blockStyle={blockStyle}
-												/>
-											),
-										},
+										...(playerType === 'popup' && [
+											{
+												label: __(
+													'Popup settings',
+													'maxi-blocks'
+												),
+												content: (
+													<PopupSettingsControl
+														{...getGroupAttributes(
+															attributes,
+															'video'
+														)}
+														breakpoint={deviceType}
+														clientId={clientId}
+														blockStyle={blockStyle}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Video overlay',
+													'maxi-blocks'
+												),
+												content: (
+													<VideoOverlayControl
+														{...getGroupAttributes(
+															attributes,
+															'video'
+														)}
+														{...getGroupAttributes(
+															attributes,
+															[
+																'background',
+																'backgroundColor',
+															],
+															false,
+															'overlay-'
+														)}
+														mediaID={overlayMediaId}
+														altSelector={
+															overlayAltSelector
+														}
+														inlineStylesTargets={
+															inlineStylesTargets
+														}
+														insertInlineStyles={
+															insertInlineStyles
+														}
+														cleanInlineStyles={
+															cleanInlineStyles
+														}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														clientId={clientId}
+														blockStyle={blockStyle}
+													/>
+												),
+											},
+										]),
 										...inspectorTabs.border({
 											props,
 										}),

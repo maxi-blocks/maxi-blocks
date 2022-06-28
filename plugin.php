@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Maxi Blocks - Last Github version
  * Plugin URI:
- * Description: MaxiBlocks — Last update: some moment of 2022 lol
+ * Description: MaxiBlocks — Last update: some moment of May 2022 lol
  * Author: Gutenberg Den
  * Author URI:
  * Version: 0.1
@@ -18,6 +18,9 @@ if (!defined('ABSPATH')) {
 
 define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 define('MAXI_PLUGIN_DIR_FILE', __FILE__);
+define('MAXI_PLUGIN_URL_PATH', plugin_dir_url(__FILE__));
+define('MAXI_PLUGIN_VERSION', get_file_data(__FILE__, array('Version' => 'Version'), false)['Version']);
+
 
 //======================================================================
 // MaxiBlocks Core
@@ -91,12 +94,15 @@ if (class_exists('MaxiBlocks_ImageUpload')) {
     MaxiBlocks_ImageUpload::register();
 }
 
+//======================================================================
+// MaxiBlocks Dashboard
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/admin/class-maxi-dashboard.php';
+if (class_exists('MaxiBlocks_Dashboard')) {
+    MaxiBlocks_Dashboard::register();
+}
 
 /**
  * TODO: Old init.php file. Please, delete these lines of comment and require onces this file has been removed
  */
 require_once plugin_dir_path(__FILE__) . 'src/init.php';
-/**
- * TODO: After creating dashboard plugin we should remove this file
- */
-require_once MAXI_PLUGIN_DIR_PATH . 'src/options.php';

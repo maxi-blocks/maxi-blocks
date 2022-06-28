@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -16,6 +17,7 @@ import {
 	openSidebarTab,
 	getAttributes,
 	editColorControl,
+	addCustomCSS,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -32,14 +34,28 @@ describe('Button Maxi', () => {
 	});
 
 	it('Button Style', async () => {
-		await openSidebarTab(page, 'style', 'style shortcut');
+		await openSidebarTab(page, 'style', 'quick styles');
 
 		const buttons = await page.$$('.maxi-button-default-styles button');
-		await buttons[4].click();
 
-		await expect(await getEditedPostContent()).toMatchSnapshot();
+		for (let i = 0; i < buttons.length; i += 1) {
+			await page.$$eval(
+				'.maxi-button-default-styles button',
+				(buttons, i) => buttons[i].click(),
+				i
+			);
 
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+			await page.waitForTimeout(500);
+
+			expect(await getEditedPostContent()).toMatchSnapshot();
+
+			expect(await getBlockStyle(page)).toMatchSnapshot();
+
+			await page.waitForTimeout(500);
+		}
+
+		// Need to end the test
+		expect(true).toBeTruthy();
 	});
 
 	it.skip('Check Button Icon', async () => {
@@ -181,7 +197,6 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-padding-bottom-general')
 		).toStrictEqual(33);
 	});
-
 	it.skip('Check Button Icon Hover', async () => {
 		const accordion = await openSidebarTab(page, 'style', 'icon');
 
@@ -259,4 +274,8 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-bottom-width-general-hover')
 		).toStrictEqual(70);
 	});
+
+	it('Button Maxi Custom CSS', async () => {
+		await expect(await addCustomCSS(page)).toMatchSnapshot();
+	}, 500000);
 });

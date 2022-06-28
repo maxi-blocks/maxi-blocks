@@ -1,0 +1,271 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
+/**
+ * WordPress dependencies
+ */
+import {
+	forwardRef,
+	useEffect,
+	useState,
+	memo,
+	useCallback,
+	useReducer,
+} from '@wordpress/element';
+import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { getHasParallax } from '../../extensions/styles';
+import InnerBlocksBlock from './innerBlocksBlock';
+import MainMaxiBlock from './mainMaxiBlock';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isEmpty, isEqual } from 'lodash';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+
+const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
+
+const getBlockClassName = blockName => {
+	return `maxi-${blockName
+		.replace('maxi-blocks/', '')
+		.replace('-maxi', '')}-block`;
+};
+
+const MaxiBlockContent = forwardRef((props, ref) => {
+	const {
+		clientId,
+		blockName,
+		tagName = 'div',
+		children,
+		blockStyle,
+		extraClassName,
+		anchorLink,
+		uniqueID,
+		className,
+		displayValue,
+		motion,
+		background,
+		disableBackground = false,
+		isSave = false,
+		classes: customClasses,
+		paletteClasses,
+		hasLink,
+		useInnerBlocks = false,
+		hasInnerBlocks = false,
+		isSelected,
+		hasSelectedChild,
+		isHovered,
+		...extraProps
+	} = props;
+	// Are just necessary for the memo() part
+	delete extraProps.attributes;
+	delete extraProps.isChild;
+	delete extraProps.deviceType;
+
+	// Not usable/necessary on save blocks
+	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
+
+	const {
+		isDraggingBlocks,
+		getDraggedBlockClientIds,
+		getBlockParentsByBlockName,
+	} = select('core/block-editor');
+
+	const isDragging = isDraggingBlocks();
+
+	const draggedBlockClientIds = getDraggedBlockClientIds();
+	const blockParents = getBlockParentsByBlockName(
+		draggedBlockClientIds[0],
+		INNER_BLOCKS,
+		true
+	);
+	const isDraggingOrigin = blockParents.includes(clientId);
+
+	if (!isSave && !INNER_BLOCKS.includes(blockName))
+		useEffect(() => {
+			if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
+		}, [isDragging]);
+
+	const classes = classnames(
+		'maxi-block',
+		!isSave && 'maxi-block--backend',
+		blockName && getBlockClassName(blockName),
+		motion['hover-type'] &&
+			motion['hover-type'] !== 'none' &&
+			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
+		getHasParallax(background['background-layers']) &&
+			`maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,
+		motion['number-counter-status'] &&
+			`maxi-nc-effect maxi-nc-effect-${uniqueID}`,
+		(motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status']) &&
+			`maxi-sd-effect maxi-sd-effect-${uniqueID}`,
+		// blockStyle is included 'maxi-' prefix before #2885, now it's not and we need to add prefix to className
+		// to support old blocks, we check if blockStyle has 'maxi-' prefix
+		blockStyle && blockStyle.includes('maxi-')
+			? blockStyle
+			: `maxi-${blockStyle ?? 'light'}`,
+		extraClassName,
+		uniqueID,
+		className,
+		displayValue === 'none' && 'maxi-block-display-none',
+		customClasses,
+		paletteClasses,
+		hasLink && 'maxi-block--has-link',
+		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
+		isHovered && 'maxi-block--is-hovered'
+	);
+
+	const onDragLeave = isSave
+		? null
+		: useCallback(({ target }) => {
+				if (
+					isDragOverBlock &&
+					(!ref.current.isSameNode(target) ||
+						isDraggingOrigin ||
+						!ref.current.contains(target))
+				)
+					setIsDragOverBlock(false);
+		  }, []);
+
+	const onDragOver = isSave
+		? null
+		: useCallback(() => {
+				const { getBlock } = select('core/block-editor');
+				const { innerBlocks } = getBlock(clientId);
+
+				const isLastOnHierarchy = isEmpty(innerBlocks)
+					? true
+					: innerBlocks.every(
+							({ name }) =>
+								![
+									...INNER_BLOCKS,
+									'maxi-blocks/row-maxi',
+								].includes(name)
+					  );
+
+				if (
+					!isDragOverBlock &&
+					!isSave &&
+					INNER_BLOCKS.includes(blockName) &&
+					isLastOnHierarchy
+				)
+					setIsDragOverBlock(true);
+		  }, []);
+
+	const blockProps = {
+		tagName,
+		className: classes,
+		ref,
+		id: uniqueID,
+		key: `maxi-block-${uniqueID}`,
+		uniqueID,
+		anchorLink,
+		background,
+		disableBackground: !disableBackground,
+		isSave,
+		...(!isSave &&
+			INNER_BLOCKS.includes(blockName) && {
+				onDragLeave,
+				onDragOver,
+			}),
+		...extraProps,
+	};
+
+	if (!useInnerBlocks)
+		return <MainMaxiBlock {...blockProps}>{children}</MainMaxiBlock>;
+
+	return (
+		<InnerBlocksBlock
+			{...blockProps}
+			clientId={clientId}
+			blockName={blockName}
+			hasInnerBlocks={hasInnerBlocks}
+			isSelected={isSelected}
+			hasSelectedChild={hasSelectedChild}
+		>
+			{children}
+		</InnerBlocksBlock>
+	);
+});
+
+const MaxiBlock = memo(
+	forwardRef((props, ref) => {
+		const { clientId } = props;
+
+		const [isHovered, setHovered] = useReducer(e => !e, false);
+
+		return (
+			<MaxiBlockContent
+				key={`maxi-block-content__${clientId}`}
+				ref={ref}
+				onMouseEnter={setHovered}
+				onMouseLeave={setHovered}
+				isHovered={isHovered}
+				{...props}
+			/>
+		);
+	}),
+	(rawOldProps, rawNewProps) => {
+		const {
+			attributes: oldAttr,
+			isSelected: wasSelected,
+			deviceType: oldDeviceType,
+		} = rawOldProps;
+
+		const {
+			attributes: newAttr,
+			isSelected,
+			deviceType: newDeviceType,
+		} = rawNewProps;
+
+		if (!isEqual(oldAttr, newAttr)) return false;
+
+		if (select('core/block-editor').isDraggingBlocks()) return true;
+
+		if (wasSelected !== isSelected) return false;
+
+		if (!isEqual(oldDeviceType, newDeviceType)) return false;
+
+		const propsCleaner = props => {
+			const response = {};
+
+			const propsToClean = [
+				'innerBlocksSettings',
+				'resizableObject',
+				'tagName',
+				'background',
+				'motion',
+				'children',
+			];
+
+			Object.entries(props).forEach(([key, value]) => {
+				if (
+					!propsToClean.includes(key) &&
+					typeof value !== 'function' &&
+					typeof value !== 'object'
+				)
+					response[key] = value;
+			});
+
+			return response;
+		};
+
+		const oldProps = propsCleaner(rawOldProps);
+		const newProps = propsCleaner(rawNewProps);
+
+		return isEqual(oldProps, newProps);
+	}
+);
+
+MaxiBlock.save = props => <MaxiBlockContent {...props} isSave />;
+
+export default MaxiBlock;

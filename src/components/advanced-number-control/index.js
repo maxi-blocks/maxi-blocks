@@ -17,7 +17,7 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber, merge } from 'lodash';
+import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -40,20 +40,20 @@ const AdvancedNumberControl = props => {
 		em: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		vw: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		vh: {
 			min: 0,
 			max: 999,
-			minRange: -199,
-			maxRange: 199,
+			minRange: -300,
+			maxRange: 300,
 		},
 		'%': {
 			min: 0,
@@ -91,6 +91,7 @@ const AdvancedNumberControl = props => {
 		onReset,
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
+		optionType = 'number',
 	} = props;
 
 	const classes = classnames('maxi-advanced-number-control', className);
@@ -194,10 +195,17 @@ const AdvancedNumberControl = props => {
 									value = min;
 							}
 
-							onChangeValue(value === '' ? value : +value);
+							onChangeValue(
+								value === '' || optionType === 'string'
+									? value.toString()
+									: +value
+							);
 						}}
 						onKeyDown={e => {
-							if (e.key === '-' && min >= 0) {
+							if (
+								e.key === '-' &&
+								(enableUnit ? minValue : min) >= 0
+							) {
 								e.preventDefault();
 							}
 						}}
@@ -215,10 +223,12 @@ const AdvancedNumberControl = props => {
 							onChange={val => {
 								onChangeUnit(val);
 
-								if (value > minMaxSettingsResult[val]?.maxRange)
+								if (value > minMaxSettings[val]?.max) {
 									onChangeValue(
-										minMaxSettingsResult[val]?.maxRange
+										minMaxSettings[val]?.max,
+										val
 									);
+								}
 							}}
 						/>
 					)}
@@ -243,15 +253,14 @@ const AdvancedNumberControl = props => {
 					<RangeControl
 						label={label}
 						value={
-							+(
-								value ||
-								defaultValue ||
-								initial ||
-								placeholder
-							) || 0
+							+(!isNil(value)
+								? value
+								: defaultValue || initial || placeholder || 0)
 						}
 						onChange={val => {
-							onChangeValue(+val);
+							onChangeValue(
+								optionType === 'string' ? val.toString() : +val
+							);
 						}}
 						min={enableUnit ? minValueRange : min}
 						max={enableUnit ? maxValueRange : max}

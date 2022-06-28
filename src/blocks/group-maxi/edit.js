@@ -2,13 +2,10 @@
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { ArrowDisplayer, BlockInserter, Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -22,13 +19,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			blockFullWidth,
-			deviceType,
-			hasInnerBlocks,
-			clientId,
-		} = this.props;
+		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -55,7 +46,6 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-group--${uniqueID}`}
-				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				useInnerBlocks
 				innerBlocksSettings={{

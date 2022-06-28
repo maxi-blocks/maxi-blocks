@@ -3,13 +3,21 @@
 * it has the objective to remove other theme/plugins styles that can affect them
 ********/
 
+.editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper > * + *,
+.editor-styles-wrapper
+	.block-editor-block-list__layout.is-root-container
+	> *
+	+ .maxi-block {
+	margin-top: 0;
+}
+
 body.maxi-blocks--active .maxi-block {
 	position: relative;
 	margin: 0 auto;
 	padding: 0;
 	/* max-width: none; */ /* Not sure if it can create and interfere with theme styles */
 	width: 100%;
-	min-width: inherit;
+	min-width: initial;
 	max-height: none;
 	height: initial;
 	min-height: inherit;
@@ -24,7 +32,11 @@ body.maxi-blocks--active .maxi-block {
 	transition: none;
 	line-height: 1;
 
-	&.maxi-container-block .maxi-block:not(.maxi-row-block) {
+	*:not(.maxi-background-displayer) {
+		box-sizing: border-box;
+	}
+
+	&.maxi-container-block .maxi-block {
 		max-width: none;
 	}
 
@@ -53,6 +65,12 @@ body.maxi-blocks--active
 body.maxi-blocks--active #content .maxi-text-block--link:focus,
 body.maxi-blocks--active #content .maxi-link-wrapper:focus {
 	background: unset;
+	text-decoration: none;
+}
+
+/*Removes image outline on link focus for Twenty Twenty One*/
+.maxi-link-wrapper:focus img {
+	outline: none !important;
 }
 
 /*Removes button focus outline for Twenty Twenty One*/
@@ -61,17 +79,30 @@ body.maxi-blocks--active .maxi-button-block button:focus {
 }
 
 /*Fixes container alignment for Twenty Twenty Two*/
-body.maxi-blocks--active
-	#wpcontent
-	.block-editor-block-list__layout.is-root-container
-	.maxi-block[data-align='full'] {
-	width: 100%;
-	margin-right: auto !important;
-	margin-left: auto !important;
-}
 body.maxi-blocks--active #wpcontent .is-root-container {
 	padding: 0;
 }
 body.maxi-blocks--active #wpcontent .editor-styles-wrapper {
 	padding: 5px;
+}
+
+/*Removes anchor border for Twenty Twenty One and Twenty*/
+body.maxi-blocks--active .maxi-link-wrapper {
+	text-decoration: none;
+	outline: none;
+}
+
+/** Astra **/
+/*Block inserted position*/
+body.maxi-blocks--active #wpwrap .maxi-block-inserter__button {
+	margin: auto;
+}
+
+/*Block border radius*/
+body.maxi-blocks--active.ast-highlight-wpblock-onhover
+	.maxi-block--backend.block-editor-block-list__block {
+	&.is-highlighted,
+	&:hover {
+		border-radius: 0;
+	}
 }

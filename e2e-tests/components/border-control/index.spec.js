@@ -18,6 +18,7 @@ import {
 	getAttributes,
 	editAxisControl,
 	addResponsiveTest,
+	changeResponsive,
 } from '../../utils';
 
 describe('BorderControl', () => {
@@ -128,17 +129,19 @@ describe('BorderControl', () => {
 			buttons => buttons[1].click()
 		);
 
-		await borderAccordion.$$eval('.maxi-tabs-control__button', buttons =>
-			buttons[1].click()
+		await borderAccordion.$$eval(
+			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			buttons => buttons[1].click()
 		);
 
 		await page.$eval(
-			'.maxi-border-status-hover.maxi-toggle-switch .maxi-base-control__label',
+			'.maxi-tabs-content .maxi-border-status-hover input',
 			use => use.click()
 		);
 
-		await borderAccordion.$$eval('.maxi-tabs-control__button', buttons =>
-			buttons[0].click()
+		await borderAccordion.$$eval(
+			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			buttons => buttons[0].click()
 		);
 
 		await borderAccordion.$$eval(
@@ -250,5 +253,92 @@ describe('BorderControl', () => {
 		expect(
 			await getAttributes('border-bottom-left-radius-general')
 		).toStrictEqual(undefined);
+	});
+	it('Checking the responsive border control', async () => {
+		const borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		// base
+		await borderAccordion.$$eval(
+			'.maxi-tabs-content .maxi-default-styles-control button',
+			buttons => buttons[1].click()
+		);
+
+		expect(await getAttributes('border-style-general')).toStrictEqual(
+			'solid'
+		);
+
+		// s
+		await changeResponsive(page, 's');
+		await borderAccordion.$$eval(
+			'.maxi-tabs-content .maxi-default-styles-control button',
+			buttons => buttons[2].click()
+		);
+
+		expect(await getAttributes('border-style-s')).toStrictEqual('dashed');
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const borderXsStyle = await page.$eval(
+			'.maxi-border-control .maxi-border-control__type select',
+			select => select.value
+		);
+
+		expect(borderXsStyle).toStrictEqual('dashed');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const borderMStyle = await page.$eval(
+			'.maxi-border-control .maxi-border-control__type select',
+			select => select.value
+		);
+
+		expect(borderMStyle).toStrictEqual('solid');
+	});
+
+	it('Checking the responsive delete border', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		const borderAccordion = await openSidebarTab(page, 'style', 'border');
+
+		// base
+		await borderAccordion.$$eval(
+			'.maxi-tabs-content .maxi-default-styles-control button',
+			buttons => buttons[1].click()
+		);
+
+		expect(await getAttributes('border-style-general')).toStrictEqual(
+			'solid'
+		);
+
+		// s
+		await changeResponsive(page, 's');
+		await borderAccordion.$$eval(
+			'.maxi-tabs-content .maxi-default-styles-control button',
+			buttons => buttons[0].click()
+		);
+
+		expect(await getAttributes('border-style-s')).toStrictEqual('none');
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const borderXsStyle = await page.$eval(
+			'.maxi-border-control .maxi-border-control__type select',
+			select => select.value
+		);
+
+		expect(borderXsStyle).toStrictEqual('none');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const borderMStyle = await page.$eval(
+			'.maxi-border-control .maxi-border-control__type select',
+			select => select.value
+		);
+
+		expect(borderMStyle).toStrictEqual('solid');
 	});
 });

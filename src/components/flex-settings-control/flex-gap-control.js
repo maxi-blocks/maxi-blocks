@@ -28,8 +28,8 @@ const FlexGapControl = props => {
 
 	return (
 		<div className={classes}>
-			<GapAxisControl label='Row Gap' target='row-gap' {...props} />
-			<GapAxisControl label='Column Gap' target='column-gap' {...props} />
+			<GapAxisControl label='Row gap' target='row-gap' {...props} />
+			<GapAxisControl label='Column gap' target='column-gap' {...props} />
 		</div>
 	);
 };
@@ -39,7 +39,7 @@ const GapAxisControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			className='maxi__size'
+			className={`maxi-gap-control__${target}`}
 			label={__(label, 'maxi-blocks')}
 			enableUnit
 			unit={getLastBreakpointAttribute({
@@ -67,6 +67,9 @@ const GapAxisControl = props => {
 				onChange({
 					[`${target}-${breakpoint}`]: getDefaultAttribute(
 						`${target}-${breakpoint}`
+					),
+					[`${target}-unit-${breakpoint}`]: getDefaultAttribute(
+						`${target}-unit-${breakpoint}`
 					),
 				})
 			}

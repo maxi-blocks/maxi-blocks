@@ -11,9 +11,9 @@ const hovers = () => {
 
 		const hoverData =
 			// eslint-disable-next-line no-undef
-			maxiHoverEffects[hoverID] !== undefined
+			maxiHoverEffects[0][hoverID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxiHoverEffects[hoverID]
+				  maxiHoverEffects[0][hoverID]
 				: null;
 
 		if (hoverData !== null) {
@@ -30,23 +30,19 @@ const hovers = () => {
 						`#${hoverID} .maxi-image-block-wrapper svg`
 					);
 
-				hoverElem.addEventListener('mouseenter', e => {
-					if (
-						hoverData['hover-type'] === 'text' ||
-						hoverData['hover-basic-effect-type'] === 'zoom-in' ||
-						hoverData['hover-basic-effect-type'] === 'zoom-out' ||
-						hoverData['hover-basic-effect-type'] === 'slide' ||
-						hoverData['hover-basic-effect-type'] === 'rotate' ||
-						hoverData['hover-basic-effect-type'] === 'blur' ||
-						hoverData['hover-basic-effect-type'] === 'sepia' ||
-						hoverData['hover-basic-effect-type'] ===
-							'clear-sepia' ||
-						hoverData['hover-basic-effect-type'] === 'grey-scale' ||
-						hoverData['hover-basic-effect-type'] ===
-							'clear-grey-scale'
-					) {
-						e.target.style.transitionDuration = `${hoverData['hover-transition-duration']}s`;
-						e.target.style.transitionTimingFunction = `
+				if (
+					hoverData['hover-basic-effect-type'] === 'zoom-in' ||
+					hoverData['hover-basic-effect-type'] === 'zoom-out' ||
+					hoverData['hover-basic-effect-type'] === 'slide' ||
+					hoverData['hover-basic-effect-type'] === 'rotate' ||
+					hoverData['hover-basic-effect-type'] === 'blur' ||
+					hoverData['hover-basic-effect-type'] === 'sepia' ||
+					hoverData['hover-basic-effect-type'] === 'clear-sepia' ||
+					hoverData['hover-basic-effect-type'] === 'grey-scale' ||
+					hoverData['hover-basic-effect-type'] === 'clear-grey-scale'
+				) {
+					hoverElem.style.transitionDuration = `${hoverData['hover-transition-duration']}s`;
+					hoverElem.style.transitionTimingFunction = `
 					${
 						hoverData['hover-transition-easing'] !== 'cubic-bezier'
 							? hoverData['hover-transition-easing']
@@ -57,8 +53,9 @@ const hovers = () => {
 							: 'easing'
 					}
 					`;
-					}
+				}
 
+				hoverElem.addEventListener('mouseenter', e => {
 					if (hoverData['hover-type'] === 'basic') {
 						if (hoverData['hover-basic-effect-type'] === 'zoom-in')
 							e.target.style.transform = `scale(${hoverData['hover-basic-zoom-in-value']})`;

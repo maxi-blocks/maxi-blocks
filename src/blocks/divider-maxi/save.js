@@ -1,8 +1,7 @@
 /**
  * Internal dependencies
  */
-import MaxiBlock from '../../components/maxi-block';
-import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -12,7 +11,7 @@ import classnames from 'classnames';
 /**
  * Save
  */
-const save = props => {
+const save = (props, extendedWrapperAttributes = {}) => {
 	const { attributes } = props;
 	const { lineOrientation } = attributes;
 
@@ -28,6 +27,7 @@ const save = props => {
 		<MaxiBlock.save
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			{...extendedWrapperAttributes}
 		>
 			{attributes['divider-border-style'] !== 'none' && (
 				<hr className='maxi-divider-block__divider' />

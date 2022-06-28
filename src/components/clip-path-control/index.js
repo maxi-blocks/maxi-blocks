@@ -349,7 +349,7 @@ const ClipPath = props => {
 				<>
 					<ToggleSwitch
 						className='clip-path-custom'
-						label={__('Use Custom', 'maxi-blocks')}
+						label={__('Custom clip-path', 'maxi-blocks')}
 						selected={isCustom}
 						onChange={val => changeIsCustom(val)}
 					/>
@@ -358,7 +358,7 @@ const ClipPath = props => {
 							<Tooltip
 								key='clip-path-defaults__item__none'
 								text={__('none', 'maxi-blocks')}
-								position='bottom center'
+								position='top center'
 							>
 								<Button
 									aria-pressed={clipPath === ''}

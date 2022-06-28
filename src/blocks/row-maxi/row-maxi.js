@@ -25,14 +25,18 @@ import edit from './edit';
 import save from './save';
 
 /**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+
+/**
  * Block
  */
 
 registerBlockType('maxi-blocks/row-maxi', {
 	title: __('Row Maxi', 'maxi-blocks'),
 	icon: rowIcon,
-	description:
-		'Position one or more blocks, arranged side-by-side (horizontal)',
+	description: 'Configure columns inside a row',
 	category: 'maxi-blocks',
 	parent: ['maxi-blocks/container-maxi'],
 	supports: {
@@ -51,4 +55,5 @@ registerBlockType('maxi-blocks/row-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [blockMigrator({ attributes, save })],
 });

@@ -12,7 +12,7 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	SettingTabsControl,
-	SvgColor,
+	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
 } from '../../components';
@@ -20,8 +20,11 @@ import {
 	getColorRGBAString,
 	getGroupAttributes,
 } from '../../extensions/styles';
+import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -29,18 +32,75 @@ import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 const Inspector = props => {
 	const {
 		attributes,
-		changeSVGContent,
-		changeSVGContentWithBlockStyle,
-		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
 		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
 	} = props;
 	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } = attributes;
 
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{deviceType === 'general' && (
+				<div className='maxi-tab-content__box sidebar-block-info'>
+					<CustomLabel
+						customLabel={customLabel}
+						onChange={customLabel =>
+							maxiSetAttributes({
+								customLabel,
+							})
+						}
+					/>
+					<BlockStylesControl
+						blockStyle={blockStyle}
+						isFirstOnHierarchy={isFirstOnHierarchy}
+						onChange={obj => {
+							const { blockStyle } = obj;
+
+							const {
+								'svg-fill-palette-color': svgPaletteFillColor,
+								'svg-fill-palette-opacity':
+									svgPaletteFillOpacity,
+								'svg-fill-color': svgFillColor,
+								'svg-line-palette-color': svgPaletteLineColor,
+								'svg-line-palette-opacity':
+									svgPaletteLineOpacity,
+								'svg-line-color': svgLineColor,
+							} = attributes;
+
+							const fillColorStr = getColorRGBAString({
+								firstVar: 'icon-fill',
+								secondVar: `color-${svgPaletteFillColor}`,
+								opacity: svgPaletteFillOpacity,
+								blockStyle,
+							});
+							const lineColorStr = getColorRGBAString({
+								firstVar: 'icon-stroke',
+								secondVar: `color-${svgPaletteLineColor}`,
+								opacity: svgPaletteLineOpacity,
+								blockStyle,
+							});
+
+							maxiSetAttributes({
+								...obj,
+								content: setSVGContentWithBlockStyle(
+									attributes.content,
+									attributes['svg-fill-palette-status']
+										? fillColorStr
+										: svgFillColor,
+									attributes['svg-line-palette-status']
+										? lineColorStr
+										: svgLineColor
+								),
+							});
+						}}
+						clientId={clientId}
+					/>
+				</div>
+			)}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -50,235 +110,131 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{deviceType === 'general' && (
-									<div className='maxi-tab-content__box'>
-										<CustomLabel
-											customLabel={customLabel}
-											onChange={customLabel =>
-												maxiSetAttributes({
-													customLabel,
-												})
-											}
-										/>
-										<BlockStylesControl
-											blockStyle={blockStyle}
-											isFirstOnHierarchy={
-												isFirstOnHierarchy
-											}
-											onChange={obj => {
-												maxiSetAttributes(obj);
-
-												const { blockStyle } = obj;
-
-												const {
-													'svg-fill-palette-color':
-														svgPaletteFillColor,
-													'svg-fill-palette-opacity':
-														svgPaletteFillOpacity,
-													'svg-fill-color':
-														svgFillColor,
-													'svg-line-palette-color':
-														svgPaletteLineColor,
-													'svg-line-palette-opacity':
-														svgPaletteLineOpacity,
-													'svg-line-color':
-														svgLineColor,
-												} = attributes;
-
-												const fillColorStr =
-													getColorRGBAString({
-														firstVar: 'icon-fill',
-														secondVar: `color-${svgPaletteFillColor}`,
-														opacity:
-															svgPaletteFillOpacity,
-														blockStyle,
+							<AccordionControl
+								isSecondary
+								items={[
+									...inspectorTabs.alignment({
+										props,
+										isAlignment: true,
+										disableJustify: true,
+									}),
+									attributes.content && {
+										label: __('Icon colour', 'maxi-blocks'),
+										content: (
+											<SvgColorControl
+												{...getGroupAttributes(
+													attributes,
+													'svg'
+												)}
+												{...getGroupAttributes(
+													attributes,
+													'svgHover'
+												)}
+												svgType={svgType}
+												maxiSetAttributes={
+													maxiSetAttributes
+												}
+												onChangeInline={(
+													obj,
+													target
+												) => {
+													insertInlineStyles({
+														obj,
+														target,
+														isMultiplySelector: true,
 													});
-												const lineColorStr =
-													getColorRGBAString({
-														firstVar: 'icon-line',
-														secondVar: `color-${svgPaletteLineColor}`,
-														opacity:
-															svgPaletteLineOpacity,
-														blockStyle,
-													});
+												}}
+												onChangeFill={obj => {
+													maxiSetAttributes(obj);
+													if (svgType !== 'Line')
+														cleanInlineStyles(
+															'[data-fill]'
+														);
+												}}
+												onChangeStroke={obj => {
+													maxiSetAttributes(obj);
 
-												changeSVGContentWithBlockStyle(
-													attributes[
-														'svg-fill-palette-status'
-													]
-														? fillColorStr
-														: svgFillColor,
-													attributes[
-														'svg-line-palette-status'
-													]
-														? lineColorStr
-														: svgLineColor
-												);
-											}}
-											clientId={clientId}
-										/>
-									</div>
-								)}
-								<AccordionControl
-									isSecondary
-									items={[
-										...inspectorTabs.alignment({
-											props,
-											isAlignment: true,
-											disableJustify: true,
-										}),
-										attributes.content && {
-											label: __('Colour', 'maxi-blocks'),
-											content: (
-												<>
-													{svgType !== 'Line' && (
-														<>
-															<SvgColor
-																{...getGroupAttributes(
-																	attributes,
-																	'svg'
-																)}
-																type='fill'
-																label={__(
-																	'SVG Fill',
-																	'maxi-blocks'
-																)}
-																onChange={obj => {
-																	maxiSetAttributes(
-																		obj
-																	);
+													if (svgType !== 'Shape')
+														cleanInlineStyles(
+															'[data-stroke]'
+														);
+												}}
+												onChangeHoverFill={obj => {
+													maxiSetAttributes(obj);
+												}}
+												onChangeHoverStroke={obj => {
+													maxiSetAttributes(obj);
+												}}
+												blockStyle={blockStyle}
+												content={attributes.content}
+											/>
+										),
+										ignoreIndicator: [
+											`svg-width-${deviceType}`,
+											`svg-stroke-${deviceType}`,
+										],
+									},
 
-																	const fillColorStr =
-																		getColorRGBAString(
-																			{
-																				firstVar:
-																					'icon-fill',
-																				secondVar: `color-${obj['svg-fill-palette-color']}`,
-																				opacity:
-																					obj[
-																						'svg-fill-palette-opacity'
-																					],
-																				blockStyle,
-																			}
-																		);
-
-																	changeSVGContent(
-																		obj[
-																			'svg-fill-palette-status'
-																		]
-																			? fillColorStr
-																			: obj[
-																					'svg-fill-color'
-																			  ],
-																		'fill'
-																	);
-																}}
-															/>
-															{svgType ===
-																'Filled' && (
-																<hr />
-															)}
-														</>
-													)}
-													{svgType !== 'Shape' && (
-														<SvgColor
-															{...getGroupAttributes(
-																attributes,
-																'svg'
-															)}
-															type='line'
-															label={__(
-																'SVG Line',
-																'maxi-blocks'
-															)}
-															onChange={obj => {
-																maxiSetAttributes(
-																	obj
-																);
-
-																const lineColorStr =
-																	getColorRGBAString(
-																		{
-																			firstVar:
-																				'icon-line',
-																			secondVar: `color-${obj['svg-line-palette-color']}`,
-																			opacity:
-																				obj[
-																					'svg-line-palette-opacity'
-																				],
-																			blockStyle,
-																		}
-																	);
-
-																changeSVGContent(
-																	obj[
-																		'svg-line-palette-status'
-																	]
-																		? lineColorStr
-																		: obj[
-																				'svg-line-color'
-																		  ],
-																	'stroke'
-																);
-															}}
-														/>
-													)}
-												</>
-											),
-										},
-										attributes.content &&
-											svgType !== 'Shape' && {
-												label: __(
-													'Icon line width',
-													'maxi-blocks'
-												),
-												content: (
-													<SvgStrokeWidthControl
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														prefix='svg-'
-														onChange={obj => {
-															maxiSetAttributes(
-																obj
-															);
-															changeSVGStrokeWidth(
-																obj[
-																	`svg-stroke-${deviceType}`
-																]
-															);
-														}}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-										...inspectorTabs.background({
-											label: 'SVG',
-											props: {
-												...props,
-											},
-											disableImage: true,
-											disableVideo: true,
-											disableClipPath: true,
-											disableSVG: true,
-											prefix: 'svg-',
-										}),
-										...inspectorTabs.border({
-											props,
-											prefix: 'svg-',
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-											prefix: 'svg-',
-										}),
-										attributes.content && {
+									attributes.content &&
+										svgType !== 'Shape' && {
 											label: __(
-												'Height / Width',
+												'Icon line width',
 												'maxi-blocks'
 											),
 											content: (
+												<SvgStrokeWidthControl
+													{...getGroupAttributes(
+														attributes,
+														'svg'
+													)}
+													prefix='svg-'
+													onChange={obj => {
+														maxiSetAttributes(obj);
+													}}
+													content={attributes.content}
+													breakpoint={deviceType}
+												/>
+											),
+											ignoreIndicator: [
+												'svg-fill-palette-color',
+												'svg-fill-palette-status',
+												'svg-fill-color',
+												'svg-line-palette-color',
+												'svg-line-palette-status',
+												'svg-line-color',
+												`svg-width-${deviceType}`,
+											],
+										},
+									...inspectorTabs.background({
+										label: 'Icon',
+										props: {
+											...props,
+										},
+										disableImage: true,
+										disableVideo: true,
+										disableClipPath: true,
+										disableSVG: true,
+										prefix: 'svg-',
+										inlineTarget:
+											inlineStylesTargets.background,
+									}),
+									...inspectorTabs.border({
+										props,
+										prefix: 'svg-',
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'svg-',
+									}),
+									attributes.content && {
+										label: __(
+											'Height / Width',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
 												<SvgWidthControl
 													{...getGroupAttributes(
 														attributes,
@@ -289,17 +245,25 @@ const Inspector = props => {
 													}}
 													breakpoint={deviceType}
 													prefix='svg-'
-													enableResponsive
 												/>
-											),
-										},
-										...inspectorTabs.marginPadding({
-											props,
-											prefix: 'svg-',
-										}),
-									]}
-								/>
-							</>
+											</ResponsiveTabsControl>
+										),
+										ignoreIndicator: [
+											'svg-fill-palette-color',
+											'svg-fill-palette-status',
+											'svg-fill-color',
+											'svg-line-palette-color',
+											'svg-line-palette-status',
+											'svg-line-color',
+											`svg-stroke-${deviceType}`,
+										],
+									},
+									...inspectorTabs.marginPadding({
+										props,
+										prefix: 'svg-',
+									}),
+								]}
+							/>
 						),
 					},
 					{
@@ -338,60 +302,61 @@ const Inspector = props => {
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<>
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props,
-											}),
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsSvgIcon,
+										categories: categoriesSvgIcon,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props,
-											}),
-										},
-										...inspectorTabs.customCss({
-											props,
-											breakpoint: deviceType,
-											selectors: selectorsSvgIcon,
-											categories: categoriesSvgIcon,
-										}),
-										...inspectorTabs.scrollEffects({
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props,
 										}),
-										...inspectorTabs.transform({
-											props,
-										}),
-										...inspectorTabs.transition({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.display({
-											props,
-										}),
-										...inspectorTabs.position({
-											props,
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props,
-											}),
-										},
-										...inspectorTabs.overflow({
-											props,
-										}),
-										...inspectorTabs.flex({
-											props,
-										}),
-										...inspectorTabs.zindex({
-											props,
-										}),
-									]}
-								/>
-							</>
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.relation({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 				]}
@@ -400,4 +365,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

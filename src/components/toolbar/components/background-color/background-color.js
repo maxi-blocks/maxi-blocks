@@ -29,11 +29,12 @@ import { backgroundColor } from '../../../../icons';
  * BackgroundColor
  */
 
-const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi'];
+const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/video-maxi'];
 
 const BackgroundColor = props => {
 	const {
 		blockName,
+		onChangeInline,
 		onChange,
 		clientId,
 		breakpoint,
@@ -42,7 +43,8 @@ const BackgroundColor = props => {
 		advancedOptions = 'background',
 	} = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) || props.playerType === 'video')
+		return null;
 
 	const activeMedia = getLastBreakpointAttribute({
 		target: `${prefix}background-active-media`,
@@ -88,7 +90,8 @@ const BackgroundColor = props => {
 							),
 						}}
 						key={`background-color-layer--${clientId}`}
-						onChange={obj => onChange(obj)}
+						onChangeInline={onChangeInline}
+						onChange={onChange}
 						breakpoint={breakpoint}
 						globalProps={globalProps}
 						prefix={prefix}

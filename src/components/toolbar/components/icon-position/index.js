@@ -27,14 +27,23 @@ const IconPosition = props => {
 		<ToolbarPopover
 			className='toolbar-item__icon-position'
 			tooltip={__('Icon Position', 'maxi-blocks')}
+			position='bottom center'
 			icon={toolbarIconAlign}
 		>
 			<div className='toolbar-item__icon-position__popover'>
 				<SelectControl
-					label={__('Icon Position', 'maxi-block')}
+					label={__('Icon position', 'maxi-block')}
 					className='maxi-icon__position'
 					value={props['icon-position']}
 					options={[
+						{
+							label: __('Top', 'maxi-blocks'),
+							value: 'top',
+						},
+						{
+							label: __('Bottom', 'maxi-blocks'),
+							value: 'bottom',
+						},
 						{
 							label: __('Left', 'maxi-blocks'),
 							value: 'left',

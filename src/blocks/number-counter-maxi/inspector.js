@@ -15,16 +15,27 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsNumberCounter, categoriesNumberCounter } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -34,16 +45,26 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										{
-											label: __('Number', 'maxi-blocks'),
-											content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.alignment({
+										props: {
+											...props,
+										},
+										isAlignment: true,
+										alignmentLabel: __(
+											'Counter',
+											'maxi-blocks'
+										),
+										disableJustify: true,
+									}),
+									{
+										label: __('Number', 'maxi-blocks'),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
@@ -55,28 +76,41 @@ const Inspector = props => {
 														false,
 														'number-counter-'
 													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
+													onChangeInline={(
+														obj,
+														target
+													) =>
+														insertInlineStyles({
+															obj,
+															target,
+														})
 													}
+													onChange={(obj, target) => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															target
+														);
+													}}
 													breakpoint={deviceType}
 												/>
-											),
-										},
-										...inspectorTabs.border({
-											props,
-											prefix: 'number-counter-',
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-											prefix: 'number-counter-',
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-											prefix: 'number-counter-',
-										}),
-									]}
-								/>
-							</>
+											</ResponsiveTabsControl>
+										),
+										ignoreIndicatorGroups: ['alignment'],
+									},
+									...inspectorTabs.border({
+										props,
+										prefix: 'number-counter-',
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'number-counter-',
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+										prefix: 'number-counter-',
+									}),
+								]}
+							/>
 						),
 					},
 					{
@@ -161,6 +195,9 @@ const Inspector = props => {
 									...inspectorTabs.zindex({
 										props,
 									}),
+									...inspectorTabs.relation({
+										props,
+									}),
 								]}
 							/>
 						),
@@ -171,4 +208,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

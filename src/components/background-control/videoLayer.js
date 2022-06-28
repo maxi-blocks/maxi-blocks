@@ -18,6 +18,7 @@ import {
 	getAttributeValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { videoUrlRegex } from '../../extensions/video';
 
 /**
  * External dependencies
@@ -109,9 +110,6 @@ const VideoLayer = props => {
 
 	const [validationText, setValidationText] = useState(null);
 
-	const videoUrlRegex =
-		/(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
-
 	return (
 		<div className='maxi-background-control__video'>
 			{(!isHover || (isHover && isLayerHover)) && (
@@ -146,7 +144,7 @@ const VideoLayer = props => {
 					/>
 					<AdvancedNumberControl
 						className='maxi-background-video-start-time'
-						label={__('Start Time (s)', 'maxi-blocks')}
+						label={__('Start time (s)', 'maxi-blocks')}
 						value={getAttributeValue({
 							target: 'background-video-startTime',
 							props: videoOptions,
@@ -175,7 +173,7 @@ const VideoLayer = props => {
 					/>
 					<AdvancedNumberControl
 						className='maxi-background-video-end-time'
-						label={__('End Time (s)', 'maxi-blocks')}
+						label={__('End time (s)', 'maxi-blocks')}
 						value={getAttributeValue({
 							target: 'background-video-endTime',
 							props: videoOptions,

@@ -22,10 +22,6 @@ const attributes = {
 		type: 'string',
 		default: __('Map', 'maxi-blocks'),
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -37,8 +33,8 @@ const attributes = {
 	...{
 		...attributesData.size,
 		'height-general': {
-			type: 'number',
-			default: 300,
+			type: 'string',
+			default: '300',
 		},
 		'height-unit-general': {
 			type: 'string',

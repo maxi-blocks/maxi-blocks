@@ -21,7 +21,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getAttributeKey,
-	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -43,24 +42,21 @@ const BorderColorControl = props => {
 		prefix = '',
 		breakpoint,
 		isHover = false,
+		onChangeInline = null,
 		onChange,
 		clientId,
 		globalProps,
-		isToolbar,
 	} = props;
 
 	return (
 		<ColorControl
-			{...(!isToolbar && { label: __('Border', 'maxi-blocks') })}
+			label={__('Border', 'maxi-blocks')}
 			color={getLastBreakpointAttribute({
 				target: `${prefix}border-color`,
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
-			defaultColor={getDefaultAttribute(
-				`${prefix}border-color-${breakpoint}${isHover ? '-hover' : ''}`
-			)}
 			paletteStatus={getLastBreakpointAttribute({
 				target: `${prefix}border-palette-status`,
 				breakpoint,
@@ -79,6 +75,12 @@ const BorderColorControl = props => {
 				attributes: props,
 				isHover,
 			})}
+			onChangeInline={({ color }) => {
+				onChangeInline &&
+					onChangeInline({
+						'border-color': color,
+					});
+			}}
 			onChange={({
 				paletteColor,
 				paletteStatus,
@@ -107,6 +109,7 @@ const BorderColorControl = props => {
 			deviceType={breakpoint}
 			clientId={clientId}
 			globalProps={globalProps}
+			prefix={`${prefix}border-`}
 		/>
 	);
 };
@@ -263,7 +266,17 @@ const BorderControl = props => {
 							/>
 						),
 						onChange: () =>
-							onChangeDefault(borderNone(prefix, isHover)),
+							onChangeDefault(
+								borderNone(
+									prefix,
+									getLastBreakpointAttribute({
+										target: `${prefix}border-style`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									}) && breakpoint !== 'general'
+								)
+							),
 					},
 					{
 						activeItem: getIsActive() === 'solid',
@@ -359,7 +372,7 @@ const BorderControl = props => {
 						target={`${prefix}border`}
 						auxTarget='radius'
 						label={__('Border radius', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
+						onChange={onChange}
 						breakpoint={breakpoint}
 						minMaxSettings={{
 							px: {

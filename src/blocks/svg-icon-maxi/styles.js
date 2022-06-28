@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
@@ -19,6 +27,7 @@ import {
 	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSvgIcon } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getWrapperObject = props => {
 	const response = {
@@ -65,9 +74,6 @@ const getWrapperObject = props => {
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
-		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
@@ -156,9 +162,6 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
 	};
 
 	return response;
@@ -208,46 +211,60 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, blockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getWrapperObjectHover(props),
-				' .maxi-svg-icon-block__icon': getNormalObject(props),
-				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-				...getSVGStyles({
-					obj: {
-						...getGroupAttributes(props, 'svg'),
-					},
-					target: ' .maxi-svg-icon-block__icon',
-					blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getWrapperObjectHover(props),
+					' .maxi-svg-icon-block__icon': getNormalObject(props),
+					' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
+					...getSVGStyles({
+						obj: {
+							...getGroupAttributes(props, 'svg'),
+						},
+						target: ' .maxi-svg-icon-block__icon',
+						blockStyle,
+					}),
+
+					...(props['svg-status-hover'] && {
+						...getSVGStyles({
+							obj: {
+								...getGroupAttributes(props, 'svgHover', true),
+							},
+							target: '.maxi-svg-icon-block__icon:hover',
+							blockStyle,
+							isHover: true,
+						}),
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle,
-				}),
-			},
+						]),
+						blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle,
+					}),
+				},
+				...getTransitionStyles(props, transitionObj)
+			),
 			selectorsSvgIcon,
 			props
 		),

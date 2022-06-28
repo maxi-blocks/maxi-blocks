@@ -23,6 +23,7 @@ const typography = ({
 	globalProps,
 	hoverGlobalProps,
 	depth = 2,
+	inlineTarget = '.maxi-text-block__content',
 }) => {
 	const {
 		attributes,
@@ -30,6 +31,8 @@ const typography = ({
 		deviceType,
 		maxiSetAttributes,
 		scValues = {},
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
 	const {
 		blockStyle,
@@ -60,7 +63,21 @@ const typography = ({
 									attributes,
 									typographyTarget
 								)}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChangeInline={(
+									obj,
+									target,
+									isMultiplySelector
+								) =>
+									insertInlineStyles({
+										obj,
+										target,
+										isMultiplySelector,
+									})
+								}
+								onChange={(obj, target) => {
+									maxiSetAttributes(obj);
+									cleanInlineStyles(target);
+								}}
 								hideAlignment={hideAlignment}
 								breakpoint={deviceType}
 								clientId={clientId}
@@ -68,6 +85,7 @@ const typography = ({
 								blockStyle={blockStyle}
 								styleCardPrefix={styleCardPrefix}
 								textLevel={textLevel}
+								inlineTarget={inlineTarget}
 								isList={isList}
 								allowLink={allowLink}
 								globalProps={globalProps}
@@ -81,7 +99,7 @@ const typography = ({
 								{!globalHoverStatus && (
 									<ToggleSwitch
 										label={__(
-											'Enable Typography Hover',
+											'Enable typography hover',
 											'maxi-blocks'
 										)}
 										selected={hoverStatus}

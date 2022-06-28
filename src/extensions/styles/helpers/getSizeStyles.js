@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getDefaultAttribute from '../getDefaultAttribute';
 
 /**
  * External dependencies
@@ -23,6 +24,56 @@ const getSizeStyles = (obj, prefix = '') => {
 
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
+			let fullWidthNormalStyles = {};
+			if (
+				target === 'width' ||
+				target === 'max-width' ||
+				target === 'min-width'
+			) {
+				const fullWidth = getLastBreakpointAttribute({
+					target: `${prefix}full-width`,
+					breakpoint,
+					attributes: obj,
+				});
+
+				if (
+					(target === 'width' || target === 'min-width') &&
+					fullWidth === 'full'
+				) {
+					return null;
+				}
+
+				if (target === 'max-width') {
+					if (fullWidth === 'full') {
+						return {
+							'min-width': '100%',
+						};
+					}
+
+					const isMinWidthNeeded = breakpoints
+						.slice(0, breakpoints.indexOf(breakpoint) + 1)
+						.some(bp => {
+							const val = obj[`${prefix}full-width-${bp}`];
+							const defaultVal = getDefaultAttribute(
+								`${prefix}full-width-${bp}`
+							);
+
+							return val !== defaultVal;
+						});
+
+					if (fullWidth === 'normal' && isMinWidthNeeded) {
+						fullWidthNormalStyles = {
+							'min-width': 'initial',
+						};
+					}
+				}
+			}
+
+			if (!obj[`${prefix}size-advanced-options`]) {
+				if (target.includes('min')) return null;
+				if (target.includes('max')) return fullWidthNormalStyles;
+			}
+
 			if (target === 'height') {
 				const forceAspectRatio = getLastBreakpointAttribute({
 					target: `${prefix}force-aspect-ratio`,
@@ -45,8 +96,9 @@ const getSizeStyles = (obj, prefix = '') => {
 					return { width: 'fit-content' };
 				}
 			}
+
 			if (
-				isNumber(obj[`${prefix}${target}-${breakpoint}`]) ||
+				isNumber(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
 				obj[`${prefix}${target}-unit-${breakpoint}`]
 			) {
 				const num = getLastBreakpointAttribute({
@@ -70,10 +122,15 @@ const getSizeStyles = (obj, prefix = '') => {
 					});
 
 				if (!isNil(num) && !isNil(unit))
-					return { [target]: auto ? 'auto' : num + unit };
+					return {
+						[target]: auto ? 'auto' : num + unit,
+						...fullWidthNormalStyles,
+					};
 			}
 
-			return {};
+			return {
+				...fullWidthNormalStyles,
+			};
 		};
 
 		response[breakpoint] = {

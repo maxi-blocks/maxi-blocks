@@ -10,7 +10,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
 import {
 	breakpointAttributesCreator,
 	prefixAttributesCreator,
+	transitionAttributesCreator,
 } from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -25,10 +27,6 @@ const attributes = {
 	customLabel: {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),
-	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
 	},
 	...{
 		...attributesData.alignment,
@@ -144,10 +142,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
@@ -167,7 +161,10 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

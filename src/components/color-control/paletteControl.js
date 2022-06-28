@@ -32,6 +32,7 @@ const ColorPaletteControl = props => {
 		value,
 		onChange,
 		globalProps,
+		noColorPrefix = false,
 		disableOpacity,
 		opacity = 1,
 		clientId,
@@ -48,7 +49,7 @@ const ColorPaletteControl = props => {
 
 			const globalStatus = globalProps
 				? receiveStyleCardValue(
-						`${prefix}color-global`,
+						`${prefix}${noColorPrefix ? '' : 'color-'}global`,
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )
@@ -68,7 +69,11 @@ const ColorPaletteControl = props => {
 				  )
 				: false;
 
-			return { globalStatus, globalPaletteColor, globalPaletteOpacity };
+			return {
+				globalStatus,
+				globalPaletteColor,
+				globalPaletteOpacity: globalPaletteOpacity || 1,
+			};
 		});
 
 	const classes = classnames(

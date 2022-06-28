@@ -26,6 +26,11 @@ import './editor.scss';
 import { buttonIcon } from '../../icons';
 
 /**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+
+/**
  * Block
  */
 registerBlockType('maxi-blocks/button-maxi', {
@@ -49,4 +54,5 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [blockMigrator({ attributes, save, prefix: 'button-' })],
 });

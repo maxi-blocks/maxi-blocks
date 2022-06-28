@@ -33,7 +33,6 @@ const OverflowControl = props => {
 					label={__(`Overflow ${axis}`, 'maxi-blocks')}
 					key={uniqueId('maxi-position-control__overflow')}
 					options={[
-						{ label: 'Default', value: '' },
 						{ label: 'Visible', value: 'visible' },
 						{ label: 'Hidden', value: 'hidden' },
 						{ label: 'Auto', value: 'auto' },

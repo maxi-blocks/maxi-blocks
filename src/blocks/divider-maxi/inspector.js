@@ -19,15 +19,29 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsDivider, categoriesDivider } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		clientId,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
+	} = props;
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -37,19 +51,15 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isSecondary
-									items={[
-										{
-											label: __(
-												'Alignment',
-												'maxi-blocks'
-											),
-											content: (
+							<AccordionControl
+								isSecondary
+								items={[
+									{
+										label: __('Alignment', 'maxi-blocks'),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
 												<>
 													<SelectControl
 														label={__(
@@ -175,48 +185,57 @@ const Inspector = props => {
 														}
 													/>
 												</>
-											),
-											extraIndicators: [
-												`line-horizontal-${deviceType}`,
-												`line-vertical-${deviceType}`,
-												`line-orientation-${deviceType}`,
-											],
-										},
-										{
-											label: __(
-												'Line settings',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<DividerControl
-														{...getGroupAttributes(
-															attributes,
-															['divider', 'size']
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-														clientId={clientId}
-													/>
-												</>
-											),
-											ignoreIndicator: [
-												`line-horizontal-${deviceType}`,
-												`line-vertical-${deviceType}`,
-												`line-orientation-${deviceType}`,
-											],
-										},
-										...inspectorTabs.boxShadow({
-											props,
-											prefix: 'divider-',
-										}),
-									]}
-								/>
-							</>
+											</ResponsiveTabsControl>
+										),
+										extraIndicators: [
+											`line-horizontal-${deviceType}`,
+											`line-vertical-${deviceType}`,
+											`line-orientation-${deviceType}`,
+										],
+									},
+									{
+										label: __(
+											'Line settings',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<DividerControl
+													{...getGroupAttributes(
+														attributes,
+														['divider', 'size']
+													)}
+													onChangeInline={obj =>
+														insertInlineStyles({
+															obj,
+															target: inlineStylesTargets.dividerColor,
+														})
+													}
+													onChange={obj => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															inlineStylesTargets.dividerColor
+														);
+													}}
+													breakpoint={deviceType}
+													clientId={clientId}
+												/>
+											</ResponsiveTabsControl>
+										),
+										ignoreIndicator: [
+											`line-horizontal-${deviceType}`,
+											`line-vertical-${deviceType}`,
+											`line-orientation-${deviceType}`,
+										],
+									},
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'divider-',
+									}),
+								]}
+							/>
 						),
 					},
 					{
@@ -252,60 +271,61 @@ const Inspector = props => {
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<>
-								<AccordionControl
-									isPrimary
-									items={[
-										deviceType === 'general' && {
-											...inspectorTabs.customClasses({
-												props,
-											}),
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors: selectorsDivider,
+										categories: categoriesDivider,
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
 										},
-										deviceType === 'general' && {
-											...inspectorTabs.anchor({
-												props,
-											}),
-										},
-										...inspectorTabs.customCss({
-											props,
-											breakpoint: deviceType,
-											selectors: selectorsDivider,
-											categories: categoriesDivider,
-										}),
-										...inspectorTabs.scrollEffects({
+									}),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
 											props,
 										}),
-										...inspectorTabs.transform({
-											props,
-										}),
-										...inspectorTabs.transition({
-											props: {
-												...props,
-											},
-										}),
-										...inspectorTabs.display({
-											props,
-										}),
-										...inspectorTabs.position({
-											props,
-										}),
-										deviceType !== 'general' && {
-											...inspectorTabs.responsive({
-												props,
-											}),
-										},
-										...inspectorTabs.overflow({
-											props,
-										}),
-										...inspectorTabs.flex({
-											props,
-										}),
-										...inspectorTabs.zindex({
-											props,
-										}),
-									]}
-								/>
-							</>
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.relation({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 				]}
@@ -314,4 +334,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

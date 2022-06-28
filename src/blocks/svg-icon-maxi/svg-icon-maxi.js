@@ -26,12 +26,17 @@ import './editor.scss';
 import { iconBox } from '../../icons';
 
 /**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+
+/**
  * Block
  */
 registerBlockType('maxi-blocks/svg-icon-maxi', {
-	title: __('SVG Icon Maxi', 'maxi-blocks'),
+	title: __('Icon Maxi', 'maxi-blocks'),
 	icon: iconBox,
-	description: 'Insert, modify or style SVG icons',
+	description: 'Add icon or shape and style it',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
@@ -49,4 +54,5 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [blockMigrator({ attributes, save })],
 });

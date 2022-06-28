@@ -9,22 +9,22 @@ import { select, useDispatch, useSelect } from '@wordpress/data';
  */
 import BaseControl from '../base-control';
 import Button from '../button';
+import { getForcedTabFromPath } from '../../extensions/inspector';
+import {
+	getIsActiveTab,
+	getMaxiAttrsFromChildren,
+} from '../../extensions/indicators';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import {
-	getIsActiveTab,
-	getMaxiAttrsFromChildren,
-} from '../../extensions/indicators';
-import { getForcedTabFromPath } from '../../extensions/inspector-path';
 
 /**
  * Component
@@ -56,7 +56,7 @@ const SettingTabsControl = props => {
 	const [tab, setTab] = useState(0);
 
 	const updatedTab = useSelect(
-		() => select('maxiBlocks').receiveInspectorPath()?.[0]?.value || 0
+		() => select('maxiBlocks').receiveInspectorPath()?.[depth]?.value || 0
 	);
 
 	const currentForcedTab = getForcedTabFromPath(items, depth);
@@ -109,9 +109,10 @@ const SettingTabsControl = props => {
 			<div className={classesControl}>
 				{items.map((item, i) => {
 					if (item) {
-						const buttonLabel = !isEmpty(item.label)
-							? item.label
-							: item.value;
+						const buttonLabel =
+							!isEmpty(item.label) || isNumber(item.label)
+								? item.label
+								: item.value;
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;
@@ -121,6 +122,7 @@ const SettingTabsControl = props => {
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
+									`maxi-tabs-control__button-${buttonLabel}`,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									getIsActiveTab(

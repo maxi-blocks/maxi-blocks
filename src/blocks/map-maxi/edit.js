@@ -9,13 +9,10 @@ import { withSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { defaultMarkers } from './defaultMarkers';
@@ -43,7 +40,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, apiKey } = this.props;
+		const { attributes, apiKey } = this.props;
 		const {
 			uniqueID,
 			'map-latitude': mapLatitude,
@@ -125,7 +122,6 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-map--${uniqueID}`}
 				ref={this.blockRef}
 				className='maxi-map-block'
-				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				{apiKey ? (

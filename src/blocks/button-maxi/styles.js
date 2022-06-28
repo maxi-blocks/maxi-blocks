@@ -1,16 +1,12 @@
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { merge } from 'lodash';
 
 /**
  * Internal dependencies
  */
-import {
-	getGroupAttributes,
-	stylesCleaner,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -18,12 +14,8 @@ import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
-	getColorBackgroundObject,
 	getDisplayStyles,
 	getFlexStyles,
-	getGradientBackgroundObject,
-	getIconStyles,
-	getSVGStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
@@ -33,10 +25,10 @@ import {
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
+	getButtonIconStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsButton } from './custom-css';
-
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+import transitionObj from './transitionObj';
 
 const getWrapperObject = props => {
 	const response = {
@@ -159,9 +151,6 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
 				props,
@@ -263,234 +252,6 @@ const getHoverContentObject = (props, scValues) => {
 			},
 			scValues,
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
-	};
-
-	return response;
-};
-
-const getIconSize = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon size',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
-			response[breakpoint].width = `${
-				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute({
-				target: 'icon-width-unit',
-				breakpoint,
-				attributes: obj,
-				isHover,
-			})}`;
-			response[breakpoint].height = `${
-				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
-			}${getLastBreakpointAttribute({
-				target: 'icon-width-unit',
-				breakpoint,
-				attributes: obj,
-				isHover,
-			})}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconSize: response };
-};
-
-const getIconPathStyles = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon path',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`])
-		) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconPath: response };
-};
-
-const getIconObject = (props, target) => {
-	const response = {
-		background: props['icon-background-active-media-general'] ===
-			'color' && {
-			...getColorBackgroundObject({
-				...getGroupAttributes(props, [
-					'icon',
-					'background',
-					'iconBackgroundColor',
-				]),
-				...getGroupAttributes(
-					props,
-					'backgroundColor',
-					false,
-					'button-'
-				),
-				prefix: 'icon-',
-				blockStyle: props.blockStyle,
-				isIconInherit: props['icon-inherit'],
-				isIcon: true,
-			}),
-		},
-		gradient: props['icon-background-active-media-general'] ===
-			'gradient' && {
-			...getGradientBackgroundObject({
-				...getGroupAttributes(props, [
-					'icon',
-					'iconBackground',
-					'iconBackgroundGradient',
-				]),
-				prefix: 'icon-',
-				isIcon: true,
-			}),
-		},
-		padding:
-			target === 'icon' &&
-			getMarginPaddingStyles({
-				obj: {
-					...getGroupAttributes(props, 'iconPadding'),
-				},
-				prefix: 'icon-',
-			}),
-		border:
-			target === 'icon' &&
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(props, [
-						'iconBorder',
-						'iconBorderWidth',
-						'iconBorderRadius',
-					]),
-				},
-				prefix: 'icon-',
-				blockStyle: props.blockStyle,
-			}),
-	};
-
-	const responsive = {
-		label: 'Icon responsive',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		responsive[breakpoint] = {};
-
-		if (
-			!isNil(props[`icon-spacing-${breakpoint}`]) &&
-			!isNil(props['icon-position'])
-		) {
-			props['icon-position'] === 'left'
-				? (responsive[breakpoint][
-						'margin-right'
-				  ] = `${getLastBreakpointAttribute({
-						target: 'icon-spacing',
-						breakpoint,
-						attributes: props,
-				  })}px`)
-				: (responsive[breakpoint][
-						'margin-left'
-				  ] = `${getLastBreakpointAttribute({
-						target: 'icon-spacing',
-						breakpoint,
-						attributes: props,
-				  })}px`);
-		}
-	});
-
-	response.iconResponsive = responsive;
-
-	return response;
-};
-
-const getIconHoverObject = (props, target) => {
-	const iconHoverStatus = props['icon-status-hover'];
-	const iconHoverActiveMedia =
-		props['icon-background-active-media-general-hover'];
-
-	const response = {
-		icon:
-			iconHoverStatus &&
-			getIconStyles(
-				{
-					...getGroupAttributes(
-						props,
-						['iconHover', 'typography'],
-						true
-					),
-				},
-				props.blockStyle,
-				props['icon-inherit'],
-				true
-			),
-		background: iconHoverStatus &&
-			iconHoverActiveMedia === 'color' &&
-			target === 'iconHover' && {
-				...getColorBackgroundObject({
-					...getGroupAttributes(
-						props,
-						['icon', 'iconBackgroundColor'],
-						true
-					),
-					prefix: 'icon-',
-					blockStyle: props.blockStyle,
-					isIconInherit: props['icon-inherit'],
-					isHover: true,
-					isIcon: true,
-				}),
-			},
-		gradient: iconHoverStatus &&
-			iconHoverActiveMedia === 'gradient' &&
-			target === 'iconHover' && {
-				...getGradientBackgroundObject({
-					...getGroupAttributes(
-						props,
-						['icon', 'iconBackgroundGradient'],
-						true
-					),
-					prefix: 'icon-',
-					isHover: true,
-					isIcon: true,
-				}),
-			},
-		border:
-			iconHoverStatus &&
-			target === 'iconHover' &&
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						[
-							'iconBorderHover',
-							'iconBorderWidthHover',
-							'iconBorderRadiusHover',
-						],
-						true
-					),
-				},
-				prefix: 'icon-',
-				blockStyle: props.blockStyle,
-				isHover: true,
-			}),
 	};
 
 	return response;
@@ -501,68 +262,37 @@ const getStyles = (props, scValues) => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getHoverWrapperObject(props),
-				' .maxi-button-block__button': getNormalObject(props),
-				' .maxi-button-block__button:hover': getHoverObject(
-					props,
-					scValues
-				),
-				...getSVGStyles({
-					obj: props,
-					target: '.maxi-button-block__icon',
-					blockStyle: blockStyle,
-					prefix: 'icon-',
-				}),
-				' .maxi-button-block__content': getContentObject(props),
-				' .maxi-button-block__button:hover .maxi-button-block__content':
-					getHoverContentObject(props, scValues),
-				' .maxi-button-block__icon': getIconObject(props, 'icon'),
-				' .maxi-button-block__icon svg': getIconSize(props, false),
-				' .maxi-button-block__icon svg > *': getIconObject(
-					props,
-					'svg'
-				),
-				' .maxi-button-block__icon svg path': getIconPathStyles(
-					props,
-					false
-				),
-				' .maxi-button-block__button:hover .maxi-button-block__icon':
-					props['icon-status-hover'] &&
-					getIconHoverObject(props, 'iconHover'),
-				' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
-					props['icon-status-hover'] &&
-					getIconHoverObject(props, 'iconHover'),
-				' .maxi-button-block__button:hover .maxi-button-block__icon svg':
-					props['icon-status-hover'] && getIconSize(props, true),
-				' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
-					props['icon-status-hover'] &&
-					getIconPathStyles(props, true),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getHoverWrapperObject(props),
+					' .maxi-button-block__button': getNormalObject(props),
+					' .maxi-button-block__content': getContentObject(props),
+					...getButtonIconStyles({ obj: props, blockStyle }),
+					// Hover
+					' .maxi-button-block__button:hover': getHoverObject(
 						props,
-						[
+						scValues
+					),
+					' .maxi-button-block__button:hover .maxi-button-block__content':
+						getHoverContentObject(props, scValues),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-				}),
-			},
+						]),
+						blockStyle,
+					}),
+					...getButtonIconStyles({
+						obj: props,
+						blockStyle,
+						isHover: true,
+					}),
+				},
+				...getTransitionStyles(props, transitionObj)
+			),
 			selectorsButton,
 			props
 		),

@@ -27,6 +27,11 @@ import './style.scss';
 import { textIcon } from '../../icons';
 
 /**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+
+/**
  * Block
  */
 registerBlockType('maxi-blocks/text-maxi', {
@@ -51,4 +56,5 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save,
 	transforms,
+	deprecated: [blockMigrator({ attributes, save })],
 });

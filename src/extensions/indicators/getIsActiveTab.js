@@ -37,7 +37,8 @@ const getIsActiveTab = (
 	extraIndicators = [],
 	extraIndicatorsResponsive = [],
 	ignoreIndicator = [],
-	ignoreIndicatorGroups = []
+	ignoreIndicatorGroups = [],
+	isBgLayersHover = false
 ) => {
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
@@ -76,20 +77,38 @@ const getIsActiveTab = (
 			defaultAttributes,
 			bgLayers
 		) => {
-			Object.entries(items).forEach(([key, value]) => {
+			Object.entries(items).forEach(([key, rawValue]) => {
+				const value = { ...rawValue };
+
 				if ((isArray(value) || isObject(value)) && value.length !== 0) {
 					let currentDefaultAttributes = defaultAttributes?.[key];
 
 					if (bgLayers && value?.type) {
 						currentDefaultAttributes = {
+							// For background layers
+							...getObject(
+								value.type,
+								breakpoint,
+								true,
+								bgLayers
+							),
 							...getObject(
 								value.type,
 								breakpoint,
 								false,
 								bgLayers
 							),
-							'display-general': 'block',
+							'display-general': value.isHover ? 'none' : 'block',
+							'display-general-hover': 'block',
 						};
+
+						// To not affect hover state by change in normal state attributes
+						isBgLayersHover &&
+							Object.keys(value).forEach(key => {
+								if (!key.includes('hover')) {
+									delete value[key];
+								}
+							});
 					}
 
 					extractingAttributes(
@@ -107,6 +126,16 @@ const getIsActiveTab = (
 		extractingAttributes(items, attributesArr, defaultItems, bgLayers);
 
 		return attributesArr;
+	};
+
+	const getIsBreakpointAttribute = (attribute, breakpoint) => {
+		const hoverLength = attribute.includes('-hover') ? 6 : 0;
+
+		return (
+			attribute.includes(`-${breakpoint}`) &&
+			attribute.lastIndexOf(`-${breakpoint}`) ===
+				attribute.length - `-${breakpoint}`.length - hoverLength
+		);
 	};
 
 	return ![
@@ -146,7 +175,7 @@ const getIsActiveTab = (
 								: false
 						),
 					].every(attr => {
-						if (attr.split('-').pop() === bp) {
+						if (getIsBreakpointAttribute(attr, bp)) {
 							return false;
 						}
 
@@ -154,12 +183,7 @@ const getIsActiveTab = (
 					});
 				}
 
-				const hoverLength = attribute.includes('-hover') ? 6 : 0;
-
-				if (
-					attribute.lastIndexOf(`-${bp}`) ===
-					attribute.length - `-${bp}`.length - hoverLength
-				) {
+				if (getIsBreakpointAttribute(attribute, bp)) {
 					return isEqual(
 						filterAttribute(currentAttributes[attribute]),
 						filterAttribute(defaultAttributes[attribute])

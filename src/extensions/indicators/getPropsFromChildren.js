@@ -46,7 +46,10 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 				getProps(Children.toArray(item.props.children));
 
 			if ('items' in item.props) getProps(item.props.items);
-			if ('options' in item.props) response.push('background-layers');
+			if ('options' in item.props)
+				response.push(
+					...['background-layers', 'background-layers-hover']
+				);
 
 			Object.entries(item.props).forEach(([key, val]) => {
 				keyResponse.push(key);

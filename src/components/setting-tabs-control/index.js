@@ -152,7 +152,9 @@ const SettingTabsControl = props => {
 							[
 								...getChildrenIgnoreIndicator(item),
 								...item.ignoreIndicator,
-							]
+							],
+							[],
+							item.isBgLayersHover
 						);
 
 						return (

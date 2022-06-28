@@ -176,7 +176,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableVideo && backgroundActiveMedia === 'video' && (
 				<VideoLayer
-					videoOptions={{
+					options={{
 						...getGroupAttributes(
 							props,
 							'backgroundVideo',
@@ -193,7 +193,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableGradient && backgroundActiveMedia === 'gradient' && (
 				<GradientLayer
-					gradientOptions={{
+					options={{
 						...getGroupAttributes(
 							props,
 							'backgroundGradient',
@@ -210,7 +210,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableSVG && backgroundActiveMedia === 'svg' && (
 				<SVGLayer
-					SVGOptions={{
+					options={{
 						...getGroupAttributes(
 							props,
 							'backgroundSVG',

@@ -35,7 +35,7 @@ const SVGSize = props => {
 		isLayer = false,
 		onChange,
 		prefix = '',
-		SVGOptions,
+		options: SVGOptions,
 	} = props;
 
 	const minMaxSettings = {

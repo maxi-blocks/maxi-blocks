@@ -104,7 +104,7 @@ const BlockBackgroundColor = props => {
 					<ColorLayer
 						disableClipPath
 						key={`background-color-layer--${layer.order}`}
-						colorOptions={layer}
+						options={layer}
 						onChangeInline={obj =>
 							onChangeInline(
 								obj,

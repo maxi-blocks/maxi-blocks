@@ -19,7 +19,7 @@ import './style.scss';
  * Component
  */
 const VideoLayer = props => {
-	const { videoOptions, wrapperRef, className, breakpoint } = props;
+	const { options: videoOptions, wrapperRef, className, breakpoint } = props;
 
 	let videoUrl = videoOptions['background-video-mediaURL'];
 

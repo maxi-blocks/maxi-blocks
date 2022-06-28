@@ -14,6 +14,7 @@ import {
 	VideoOptionsControl,
 	VideoOverlayControl,
 	PopupSettingsControl,
+	VideoIconControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsVideo, categoriesVideo } from './custom-css';
@@ -113,6 +114,15 @@ const Inspector = props => {
 															attributes,
 															'video'
 														)}
+														{...getGroupAttributes(
+															attributes,
+															[
+																'background',
+																'backgroundColor',
+															],
+															false,
+															'lightbox-'
+														)}
 														breakpoint={deviceType}
 														clientId={clientId}
 														blockStyle={blockStyle}
@@ -126,7 +136,7 @@ const Inspector = props => {
 											},
 											{
 												label: __(
-													'Video overlay',
+													'Image',
 													'maxi-blocks'
 												),
 												content: (
@@ -165,6 +175,48 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														clientId={clientId}
 														blockStyle={blockStyle}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Playback icon',
+													'maxi-blocks'
+												),
+												content: (
+													<VideoIconControl
+														prefix='play-'
+														label={__(
+															'Play icon',
+															'maxi-blocks'
+														)}
+														blockStyle={blockStyle}
+														breakpoint={deviceType}
+														clientId={clientId}
+														onChangeInline={obj =>
+															insertInlineStyles({
+																obj,
+																target: inlineStylesTargets.playIcon,
+															})
+														}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+															cleanInlineStyles(
+																inlineStylesTargets.playIcon
+															);
+														}}
+														{...getGroupAttributes(
+															attributes,
+															[
+																'icon',
+																'iconBackground',
+																'iconBackgroundColor',
+															],
+															false,
+															'play-'
+														)}
 													/>
 												),
 											},

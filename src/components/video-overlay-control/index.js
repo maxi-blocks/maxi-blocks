@@ -6,9 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import VideoIconControl from '../video-icon-control';
 import {
-	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../extensions/styles';
@@ -17,7 +15,6 @@ import MediaUploaderControl from '../media-uploader-control';
 
 const VideoOverlayControl = props => {
 	const {
-		blockStyle,
 		breakpoint,
 		clientId,
 		onChange,
@@ -109,29 +106,6 @@ const VideoOverlayControl = props => {
 				globalProps={{
 					target: 'overlay',
 				}}
-			/>
-			<VideoIconControl
-				prefix='play-'
-				label={__('Play icon', 'maxi-blocks')}
-				blockStyle={blockStyle}
-				breakpoint={breakpoint}
-				clientId={clientId}
-				onChangeInline={obj =>
-					insertInlineStyles({
-						obj,
-						target: inlineStylesTargets.playIcon,
-					})
-				}
-				onChange={obj => {
-					onChange(obj);
-					cleanInlineStyles(inlineStylesTargets.playIcon);
-				}}
-				{...getGroupAttributes(
-					props,
-					['icon', 'iconBackground', 'iconBackgroundColor'],
-					false,
-					'play-'
-				)}
 			/>
 		</>
 	);

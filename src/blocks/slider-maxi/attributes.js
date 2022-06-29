@@ -97,26 +97,6 @@ const attributes = {
 			type: 'string',
 			default: '%',
 		},
-		'width-l': {
-			type: 'number',
-			default: 1170,
-		},
-		'width-m': {
-			type: 'number',
-			default: 1000,
-		},
-		'width-s': {
-			type: 'number',
-			default: 700,
-		},
-		'width-xs': {
-			type: 'number',
-			default: 460,
-		},
-		'width-unit-l': {
-			type: 'string',
-			default: 'px',
-		},
 	},
 	...attributesData.margin,
 	...attributesData.padding,

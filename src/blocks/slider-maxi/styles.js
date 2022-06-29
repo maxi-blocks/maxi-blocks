@@ -674,6 +674,12 @@ const getStyles = (props, breakpoint, clientId) => {
 								'navigation-dot',
 								clientId
 							),
+							' .maxi-navigation-dot-icon-block__icon':
+								getIconSize(
+									props,
+									'navigation-dot-icon',
+									false
+								),
 							' .maxi-navigation-dot-icon-block__icon > div':
 								getIconSize(
 									props,

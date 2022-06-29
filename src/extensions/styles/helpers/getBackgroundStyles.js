@@ -414,7 +414,9 @@ export const getImageBackgroundObject = ({
 	// Opacity
 	if (isNumber(bgImageOpacity)) {
 		response[breakpoint].opacity = bgImageOpacity;
-		response[breakpoint]['will-change'] = 'opacity';
+		if (!isHover) {
+			response[breakpoint]['-webkit-transform'] = 'translate3d(0,0,0)';
+		}
 	}
 
 	// Clip-path

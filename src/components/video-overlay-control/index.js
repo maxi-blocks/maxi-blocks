@@ -11,7 +11,6 @@ import {
 	getDefaultAttribute,
 } from '../../extensions/styles';
 import ColorControl from '../color-control';
-import MediaUploaderControl from '../media-uploader-control';
 import ToggleSwitch from '../toggle-switch';
 
 const VideoOverlayControl = props => {
@@ -22,35 +21,11 @@ const VideoOverlayControl = props => {
 		insertInlineStyles,
 		inlineStylesTargets,
 		cleanInlineStyles,
-		mediaID,
-		altSelector,
 		hideImage,
 	} = props;
 
 	return (
 		<>
-			{!hideImage && (
-				<MediaUploaderControl
-					className='maxi-video-overlay-control__cover-image'
-					placeholder={__('Image overlay')}
-					mediaID={mediaID}
-					onSelectImage={val => {
-						const alt =
-							(altSelector === 'wordpress' && val?.alt) ||
-							(altSelector === 'title' && val?.title) ||
-							null;
-
-						onChange({
-							'overlay-mediaID': val.id,
-							'overlay-mediaURL': val.url,
-							'overlay-mediaAlt':
-								altSelector === 'wordpress' && !alt
-									? val.title
-									: alt,
-						});
-					}}
-				/>
-			)}
 			<ToggleSwitch
 				className='maxi-video-overlay-control__hide-image'
 				label={__('Hide image(icon only)', 'maxi-blocks')}

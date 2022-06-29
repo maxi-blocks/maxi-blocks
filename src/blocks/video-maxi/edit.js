@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { RawHTML, useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -10,17 +11,23 @@ import getStyles from './styles';
 import Inspector from './inspector';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar, Placeholder } from '../../components';
+import {
+	Toolbar,
+	Placeholder,
+	MaxiPopoverButton,
+	Button,
+} from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { videoValidation } from '../../extensions/video';
 import copyPasteMapping from './copy-paste-mapping';
-import { placeholderImage } from '../../icons';
+import { placeholderImage, toolbarReplaceImage } from '../../icons';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
+import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Video player
@@ -132,6 +139,14 @@ const VideoPlayer = props => {
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+
+		this.state = {
+			isUploaderOpen: false,
+		};
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -152,7 +167,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, isSelected } = this.props;
+		const { attributes, isSelected, maxiSetAttributes } = this.props;
 		const {
 			uniqueID,
 			embedUrl,
@@ -162,7 +177,11 @@ class edit extends MaxiBlockComponent {
 			'overlay-mediaURL': overlayMediaUrl,
 			'overlay-mediaAlt': overlayMediaAlt,
 			hideImage,
+			mediaID,
+			altSelector,
 		} = attributes;
+
+		const { isUploaderOpen } = this.state;
 
 		const classes = classnames('maxi-video-block');
 
@@ -186,6 +205,52 @@ class edit extends MaxiBlockComponent {
 				backgroundPrefix='overlay-'
 				mediaPrefix='overlay-'
 			/>,
+			<MaxiPopoverButton
+				key={`popover-${uniqueID}`}
+				ref={this.blockRef}
+				isOpen={isUploaderOpen}
+				{...this.props}
+			>
+				<MediaUpload
+					onSelect={val => {
+						const alt =
+							(altSelector === 'wordpress' && val?.alt) ||
+							(altSelector === 'title' && val?.title) ||
+							null;
+
+						maxiSetAttributes({
+							'overlay-mediaID': val.id,
+							'overlay-mediaURL': val.url,
+							'overlay-mediaAlt':
+								altSelector === 'wordpress' && !alt
+									? val.title
+									: alt,
+						});
+					}}
+					allowedTypes='image'
+					value={mediaID}
+					render={({ open }) =>
+						!hideImage && (
+							<div className='maxi-video-block__settings maxi-settings-media-upload'>
+								<Button
+									className='maxi-video-block__settings__upload-button maxi-settings-media-upload__button'
+									label={__(
+										'Upload / Add from Media Library',
+										'maxi-blocks'
+									)}
+									showTooltip='true'
+									onClick={() => {
+										open();
+										this.setState({ isUploaderOpen: true });
+									}}
+									icon={toolbarReplaceImage}
+								/>
+							</div>
+						)
+					}
+					onClose={() => this.setState({ isUploaderOpen: false })}
+				/>
+			</MaxiPopoverButton>,
 			<MaxiBlock
 				key={`maxi-video--${uniqueID}`}
 				className={classes}

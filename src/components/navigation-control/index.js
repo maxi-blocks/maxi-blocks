@@ -26,6 +26,13 @@ const NavigationControl = props => {
 
 	const classes = classnames('maxi-slider-navigation', className);
 
+	const navigationType = getLastBreakpointAttribute({
+		target: 'navigation-type',
+		breakpoint: deviceType,
+		attributes,
+		forceSingle: true,
+	});
+
 	return (
 		<div className={classes}>
 			<ResponsiveTabsControl breakpoint={deviceType}>
@@ -46,7 +53,7 @@ const NavigationControl = props => {
 						]}
 						value={getLastBreakpointAttribute({
 							target: 'navigation-type',
-							deviceType,
+							breakpoint: deviceType,
 							attributes,
 						})}
 						onChange={val =>
@@ -55,9 +62,7 @@ const NavigationControl = props => {
 							})
 						}
 					/>
-					{attributes[`navigation-type-${deviceType}`]?.includes(
-						'arrow'
-					) && (
+					{navigationType?.includes('arrow') && (
 						<SelectControl
 							label={__('Arrow position', 'maxi-blocks')}
 							options={[
@@ -92,9 +97,7 @@ const NavigationControl = props => {
 							}}
 						/>
 					)}
-					{attributes[`navigation-type-${deviceType}`]?.includes(
-						'dot'
-					) && (
+					{navigationType?.includes('dot') && (
 						<SelectControl
 							label={__('Dots position', 'maxi-blocks')}
 							options={[
@@ -130,13 +133,13 @@ const NavigationControl = props => {
 					)}
 				</>
 			</ResponsiveTabsControl>
-			{attributes[`navigation-type-${deviceType}`].includes('arrows') && (
+			{navigationType.includes('arrows') && (
 				<NavigationIconsControl
 					{...props}
 					prefix='navigation-arrow-both-icon'
 				/>
 			)}
-			{attributes[`navigation-type-${deviceType}`].includes('dots') && (
+			{navigationType.includes('dots') && (
 				<NavigationIconsControl
 					{...props}
 					prefix='navigation-dot-icon'

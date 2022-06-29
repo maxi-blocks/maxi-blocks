@@ -525,7 +525,12 @@ const getStyles = (props, breakpoint, clientId) => {
 		props['navigation-arrow-both-icon-status-hover'];
 	const dotIconHoverStatus = props['navigation-dot-icon-status-hover'];
 	const dotIconActiveStatus = props['navigation-active-dot-icon-status'];
-	const navigationType = props[`navigation-type-${breakpoint}`];
+	const navigationType = getLastBreakpointAttribute({
+		target: 'navigation-type',
+		breakpoint,
+		attributes: props,
+		forceSingle: true,
+	});
 
 	const response = {
 		[uniqueID]: stylesCleaner(

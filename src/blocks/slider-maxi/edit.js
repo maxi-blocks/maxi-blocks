@@ -21,6 +21,7 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -413,7 +414,12 @@ const SliderWrapper = props => {
 		isEditView && 'maxi-slider-block__wrapper--edit-view'
 	);
 
-	const navigationType = attributes[`navigation-type-${deviceType}`];
+	const navigationType = getLastBreakpointAttribute({
+		target: 'navigation-type',
+		breakpoint: deviceType,
+		attributes,
+		forceSingle: true,
+	});
 
 	const innerBlockCount = wp.data
 		.select('core/block-editor')

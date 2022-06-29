@@ -8,7 +8,7 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { loadFonts } from '../../extensions/text/fonts';
+import { loadFontsInEditor } from '../../extensions/text/fonts';
 import Button from '../button';
 import BaseControl from '../base-control';
 
@@ -66,12 +66,7 @@ const FontFamilySelector = props => {
 
 		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
 		if (fontStyle) objFont[newFont.value].style = fontStyle;
-		if (breakpoint === 's' || breakpoint === 'xs') {
-			const iframeEditor = document.querySelector(
-				'iframe[name="editor-canvas"]'
-			);
-			loadFonts(objFont, true, iframeEditor.contentDocument);
-		} else loadFonts(objFont);
+		loadFontsInEditor(breakpoint, objFont);
 
 		setValue({ label: newFont.value, value: newFont.value });
 	};

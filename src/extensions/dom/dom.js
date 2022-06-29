@@ -6,8 +6,7 @@ import { select, dispatch, subscribe } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getPageFonts } from '../text/fonts';
-import loadFonts from '../text/fonts/loadFonts';
+import { getPageFonts, loadFonts } from '../text/fonts';
 
 /**
  * External dependencies

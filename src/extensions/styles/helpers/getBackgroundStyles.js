@@ -414,7 +414,10 @@ export const getImageBackgroundObject = ({
 	// Opacity
 	if (isNumber(bgImageOpacity)) {
 		response[breakpoint].opacity = bgImageOpacity;
-		if (!isHover) {
+
+		const hoverStatus = props[`${prefix}background-hover-status`];
+
+		if (hoverStatus) {
 			// To avoid image blinking when hovering
 			response[breakpoint]['-webkit-transform'] = 'translate3d(0,0,0)';
 		}

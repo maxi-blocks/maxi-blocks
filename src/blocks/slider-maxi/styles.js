@@ -127,9 +127,9 @@ const getIconObject = (props, prefix = 'navigation-arrow-both-icon-') => {
 				...getGroupAttributes(props, [
 					`${attrPrefix}Icon`,
 					'background',
+					'backgroundColor',
 					`${attrPrefix}IconBackgroundColor`,
 				]),
-				...getGroupAttributes(props, 'backgroundColor', false, prefix),
 				prefix,
 				blockStyle: props.blockStyle,
 				isIconInherit: false,
@@ -172,6 +172,76 @@ const getIconObject = (props, prefix = 'navigation-arrow-both-icon-') => {
 			prefix,
 			blockStyle: props.blockStyle,
 		}),
+	};
+
+	return response;
+};
+
+const getIconHoverObject = (props, prefix) => {
+	let attrPrefix = 'arrow';
+	if (prefix.includes('active')) attrPrefix = 'dotActive';
+	else if (prefix.includes('dot')) attrPrefix = 'dot';
+
+	const iconHoverStatus = props[`${prefix}status-hover`];
+	const iconHoverActiveMedia =
+		props[`${prefix}background-active-media-general-hover`];
+
+	const response = {
+		background: iconHoverStatus &&
+			iconHoverActiveMedia === 'color' && {
+				...getColorBackgroundObject({
+					...getGroupAttributes(
+						props,
+						[
+							`${attrPrefix}Icon`,
+							`${attrPrefix}IconBackgroundColor`,
+							'background',
+							'backgroundColor',
+						],
+						true
+					),
+					prefix,
+					blockStyle: props.blockStyle,
+					isHover: true,
+					isIcon: true,
+				}),
+			},
+		gradient: iconHoverStatus &&
+			iconHoverActiveMedia === 'gradient' && {
+				...getGradientBackgroundObject({
+					...getGroupAttributes(
+						props,
+						(props,
+						[
+							`${attrPrefix}Icon`,
+							`${attrPrefix}IconBackground`,
+							`${attrPrefix}IconBackgroundGradient`,
+						]),
+						true
+					),
+					prefix,
+					isHover: true,
+					isIcon: true,
+				}),
+			},
+		border:
+			iconHoverStatus &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						[
+							`${attrPrefix}IconBorder`,
+							`${attrPrefix}IconBorderWidth`,
+							`${attrPrefix}IconBorderRadius`,
+						],
+						true
+					),
+				},
+				prefix,
+				blockStyle: props.blockStyle,
+				isHover: true,
+			}),
 	};
 
 	return response;
@@ -547,6 +617,11 @@ const getStyles = (props, breakpoint, clientId) => {
 								prefix: 'navigation-arrow-both-icon-',
 								isHover: true,
 							}),
+							' .maxi-slider-block__arrow:hover':
+								getIconHoverObject(
+									props,
+									'navigation-arrow-both-icon-'
+								),
 							' .maxi-slider-block__arrow--prev:hover':
 								getIconSpacing(props, 'prev', true),
 							' .maxi-slider-block__arrow--prev:hover svg':
@@ -635,6 +710,11 @@ const getStyles = (props, breakpoint, clientId) => {
 								prefix: 'navigation-dot-icon-',
 								isHover: true,
 							}),
+							' .maxi-slider-block__dot:hover':
+								getIconHoverObject(
+									props,
+									'navigation-dot-icon-'
+								),
 							' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover':
 								getIconSpacing(props, 'prev', true),
 							' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover svg':

@@ -36,13 +36,8 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg path": Object {
     "SVGPath": Object {
-      "general": Object {
-        "stroke-width": "2",
-      },
+      "general": Object {},
       "label": "SVG path",
-      "m": Object {
-        "stroke-width": "20",
-      },
     },
   },
   "  .maxi-svg-icon-block__icon svg path[data-fill]:not([fill^=\\"none\\"])": Object {

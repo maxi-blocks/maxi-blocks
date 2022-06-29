@@ -1,6 +1,6 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
-import { icon, iconBackground, iconPadding } from './icon';
-import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
+import { icon } from './icon';
+import { iconHover } from './iconHover';
 
 const rawVideo = {
 	url: {
@@ -57,11 +57,7 @@ const rawIcon = {
 		default: false,
 	},
 	...icon,
-	...iconBackground,
-	...iconPadding,
-	...iconBorder,
-	...iconBorderWidth,
-	...iconBorderRadius,
+	...iconHover,
 };
 
 const icons = {

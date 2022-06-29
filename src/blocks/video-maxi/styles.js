@@ -7,8 +7,8 @@ import { isNil, isEmpty } from 'lodash';
  * Internal dependencies
  */
 import {
+	getAttributeValue,
 	getGroupAttributes,
-	getLastBreakpointAttribute,
 	stylesCleaner,
 } from '../../extensions/styles';
 import {
@@ -26,6 +26,7 @@ import {
 	getIconPathStyles,
 	getIconStyles,
 	getAspectRatio,
+	getSVGStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsVideo } from './custom-css';
 
@@ -154,7 +155,7 @@ const getVideoPlayerOject = props => {
 	return response;
 };
 
-const getIconSize = (obj, prefix = '') => {
+const getIconSize = (obj, prefix = '', isHover = false) => {
 	const response = {
 		label: 'Icon size',
 		general: {},
@@ -163,20 +164,42 @@ const getIconSize = (obj, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`${prefix}icon-height-${breakpoint}`])) {
-			response[breakpoint].height = `${
-				obj[`${prefix}icon-height-${breakpoint}`]
-			}${getLastBreakpointAttribute({
-				target: `${prefix}icon-height-unit`,
+		if (
+			!isNil(
+				getAttributeValue({
+					target: 'icon-height',
+					isHover,
+					breakpoint,
+					prefix,
+					props: obj,
+				})
+			)
+		) {
+			response[breakpoint].height = `${getAttributeValue({
+				target: 'icon-height',
+				isHover,
 				breakpoint,
-				attributes: obj,
+				prefix,
+				props: obj,
+			})}${getAttributeValue({
+				target: 'icon-height-unit',
+				isHover,
+				breakpoint,
+				prefix,
+				props: obj,
 			})}`;
-			response[breakpoint].width = `${
-				obj[`${prefix}icon-height-${breakpoint}`]
-			}${getLastBreakpointAttribute({
-				target: `${prefix}icon-height-unit`,
+			response[breakpoint].width = `${getAttributeValue({
+				target: 'icon-height',
+				isHover,
 				breakpoint,
-				attributes: obj,
+				prefix,
+				props: obj,
+			})}${getAttributeValue({
+				target: 'icon-height-unit',
+				isHover,
+				breakpoint,
+				prefix,
+				props: obj,
 			})}`;
 		}
 
@@ -185,6 +208,48 @@ const getIconSize = (obj, prefix = '') => {
 	});
 
 	return { iconSize: response };
+};
+
+const getIconObject = (prefix, obj) => {
+	const { [`${prefix}icon-status-hover`]: iconHoverStatus } = obj;
+
+	return {
+		[` .maxi-video-block__${prefix}button svg`]: getIconSize(obj, prefix),
+		[` .maxi-video-block__${prefix}button svg path`]: getIconPathStyles(
+			obj,
+			false,
+			prefix
+		),
+		[` .maxi-video-block__${prefix}button`]: {
+			icon: getIconStyles(obj, obj.blockStyle, false, false, prefix),
+		},
+		...getSVGStyles({
+			obj,
+			target: `.maxi-video-block__${prefix}button`,
+			blockStyle: obj.blockStyle,
+			prefix: `${prefix}icon-`,
+			useIconColor: true,
+		}),
+		...(iconHoverStatus && {
+			[`:hover .maxi-video-block__${prefix}button svg`]: getIconSize(
+				obj,
+				prefix
+			),
+			[`:hover .maxi-video-block__${prefix}button svg`]: {
+				icon: getIconStyles(obj, obj.blockStyle, false, true, prefix),
+			},
+			[`:hover .maxi-video-block__${prefix}button svg path`]:
+				getIconPathStyles(obj, true, prefix),
+			...getSVGStyles({
+				obj,
+				target: `:hover .maxi-video-block__${prefix}button`,
+				blockStyle: obj.blockStyle,
+				prefix: `${prefix}icon-`,
+				useIconColor: true,
+				isHover: true,
+			}),
+		}),
+	};
 };
 
 const getStyles = props => {
@@ -199,38 +264,8 @@ const getStyles = props => {
 				' .maxi-video-block__video-player': getVideoPlayerOject(props),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
-				' .maxi-video-block__close-button': getIconStyles(
-					props,
-					props.blockStyle,
-					false,
-					false,
-					'close-'
-				),
-				' .maxi-video-block__close-button svg': getIconSize(
-					props,
-					'close-'
-				),
-				' .maxi-video-block__close-button svg path': getIconPathStyles(
-					props,
-					false,
-					'close-'
-				),
-				' .maxi-video-block__play-button svg': getIconSize(
-					props,
-					'play-'
-				),
-				' .maxi-video-block__play-button': getIconStyles(
-					props,
-					props.blockStyle,
-					false,
-					false,
-					'play-'
-				),
-				' .maxi-video-block__play-button svg path': getIconPathStyles(
-					props,
-					false,
-					'play-'
-				),
+				...getIconObject('play-', props),
+				...getIconObject('close-', props),
 			},
 			selectorsVideo,
 			props

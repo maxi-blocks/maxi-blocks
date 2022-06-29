@@ -44,7 +44,7 @@ const getIconStyles = (
 		}
 	} else {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({ obj, prefix: 'icon-', isHover });
+			getPaletteAttributes({ obj, prefix: `${prefix}icon-`, isHover });
 
 		if (!paletteStatus && !isNil(color)) {
 			response.general.stroke = color;

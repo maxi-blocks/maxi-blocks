@@ -136,6 +136,47 @@ const Inspector = props => {
 											},
 											{
 												label: __(
+													'Playback icon',
+													'maxi-blocks'
+												),
+												content: (
+													<VideoIconControl
+														prefix='play-'
+														label={__(
+															'Play icon',
+															'maxi-blocks'
+														)}
+														blockStyle={blockStyle}
+														breakpoint={deviceType}
+														clientId={clientId}
+														onChangeInline={obj =>
+															insertInlineStyles({
+																obj,
+																target: inlineStylesTargets.playIcon,
+															})
+														}
+														onChange={obj => {
+															maxiSetAttributes(
+																obj
+															);
+															cleanInlineStyles(
+																inlineStylesTargets.playIcon
+															);
+														}}
+														{...getGroupAttributes(
+															attributes,
+															[
+																'icon',
+																'iconHover',
+															],
+															false,
+															'play-'
+														)}
+													/>
+												),
+											},
+											{
+												label: __(
 													'Image',
 													'maxi-blocks'
 												),
@@ -175,48 +216,6 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														clientId={clientId}
 														blockStyle={blockStyle}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Playback icon',
-													'maxi-blocks'
-												),
-												content: (
-													<VideoIconControl
-														prefix='play-'
-														label={__(
-															'Play icon',
-															'maxi-blocks'
-														)}
-														blockStyle={blockStyle}
-														breakpoint={deviceType}
-														clientId={clientId}
-														onChangeInline={obj =>
-															insertInlineStyles({
-																obj,
-																target: inlineStylesTargets.playIcon,
-															})
-														}
-														onChange={obj => {
-															maxiSetAttributes(
-																obj
-															);
-															cleanInlineStyles(
-																inlineStylesTargets.playIcon
-															);
-														}}
-														{...getGroupAttributes(
-															attributes,
-															[
-																'icon',
-																'iconBackground',
-																'iconBackgroundColor',
-															],
-															false,
-															'play-'
-														)}
 													/>
 												),
 											},

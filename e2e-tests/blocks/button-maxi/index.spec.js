@@ -17,11 +17,11 @@ import {
 	getAttributes,
 	editColorControl,
 	addCustomCSS,
-	openPreviewPage,
+	modalMock,
 } from '../../utils';
 
 describe('Button Maxi', () => {
-	it('Button Maxi does not break', async () => {
+	it('Button Maxi does not break and has default attributes', async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 
@@ -44,7 +44,7 @@ describe('Button Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Button Icon', async () => {
+	it('Check Button Icon(line icon)', async () => {
 		await openSidebarTab(page, 'style', 'icon');
 
 		// Width spacing
@@ -185,6 +185,7 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-padding-bottom-general')
 		).toStrictEqual('33');
 	});
+
 	it('Check Button Icon Hover', async () => {
 		await page.$eval(
 			'.maxi-settingstab-control .maxi-tabs-control__button-Hover',
@@ -270,26 +271,127 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-bottom-width-general-hover')
 		).toStrictEqual(70);
 	});
-	it('Check Button frontend and backend', async () => {
-		const checkEditor = await page.$eval(
-			'.maxi-button-block',
-			el => el.outerHTML
+
+	it('Check Button inherit', async () => {
+		await insertBlock('Button Maxi');
+
+		// Change Typo color
+		await openSidebarTab(page, 'style', 'typography');
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-control__color'),
+			paletteStatus: true,
+			colorPalette: 3,
+		});
+
+		expect(await getAttributes('palette-color-general')).toStrictEqual(3);
+
+		// Change hover typo color
+		await page.$eval(
+			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-control__button-Hover',
+			button => button.click()
 		);
 
-		expect(checkEditor).toMatchSnapshot();
-
-		const previewPage = await openPreviewPage(page);
-		await previewPage.waitForSelector('.entry-content');
-		await page.waitForTimeout(300);
-
-		const buttonFrontend = await page.$eval(
-			'.maxi-button-block',
-			button => button.outerHTML
+		await page.$eval(
+			'.maxi-tabs-content .maxi-toggle-switch__toggle input',
+			button => button.click()
 		);
-		await page.waitForTimeout(300);
 
-		expect(buttonFrontend).toMatchSnapshot();
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-typography-control__color'),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
+
+		expect(
+			await getAttributes('palette-color-general-hover')
+		).toStrictEqual(5);
+
+		// Change button background color
+		await openSidebarTab(page, 'style', 'button background');
+
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-background-control__simple .maxi-tabs-control__full-width button',
+			button => button[1].click()
+		);
+
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-background-control'),
+			paletteStatus: true,
+			colorPalette: 5,
+		});
+
+		expect(
+			await getAttributes('button-background-palette-color-general')
+		).toStrictEqual(5);
+
+		// Change hover button background color
+
+		await page.$eval(
+			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-control__button-Hover',
+			button => button.click()
+		);
+
+		await page.$eval(
+			'.maxi-tabs-content .maxi-toggle-switch__toggle input',
+			button => button.click()
+		);
+
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-background-control'),
+			paletteStatus: true,
+			colorPalette: 3,
+		});
+
+		expect(
+			await getAttributes('button-background-palette-color-general-hover')
+		).toStrictEqual(3);
+
+		await openSidebarTab(page, 'style', 'icon');
+
+		await modalMock(page, { type: 'button-icon-filled' });
+
+		// change hover
+		await page.$eval(
+			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-control__button-Hover',
+			button => button.click()
+		);
+
+		await page.$eval(
+			'.maxi-tabs-content .maxi-toggle-switch__toggle input',
+			button => button.click()
+		);
+
+		// hover icon attributes
+		expect(await getAttributes('icon-status-hover')).toStrictEqual(true);
+
+		expect(await getAttributes('icon-inherit')).toStrictEqual(true);
+
+		// Icon position
+		await page.$eval(
+			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-control__button-Normal',
+			button => button.click()
+		);
+
+		await page.$eval(
+			'.maxi-icon-position-control .maxi-tabs-control .maxi-tabs-control__button-Left',
+			button => button.click()
+		);
+
+		expect(await getAttributes('icon-position')).toStrictEqual('left');
+
+		// Icon only
+		await page.$eval(
+			'.maxi-icon-control .maxi-color-control__palette__custom input',
+			input => input.click()
+		);
+
+		expect(await getAttributes('icon-only')).toStrictEqual(true);
 	});
+
 	it('Button Maxi Custom CSS', async () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);

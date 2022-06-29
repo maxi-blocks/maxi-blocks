@@ -46,6 +46,10 @@ const rawVideo = {
 		type: 'string',
 		default: 'video',
 	},
+	hideImage: {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 const rawIcon = {

@@ -161,6 +161,7 @@ class edit extends MaxiBlockComponent {
 			'overlay-mediaID': overlayMediaId,
 			'overlay-mediaURL': overlayMediaUrl,
 			'overlay-mediaAlt': overlayMediaAlt,
+			hideImage,
 		} = attributes;
 
 		const classes = classnames('maxi-video-block');
@@ -195,20 +196,21 @@ class edit extends MaxiBlockComponent {
 					videoValidation(embedUrl) &&
 					(playerType === 'popup' ? (
 						<div className='maxi-video-block__overlay'>
-							{!isNil(overlayMediaId) || overlayMediaUrl ? (
-								<img
-									className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
-									src={overlayMediaUrl}
-									alt={overlayMediaAlt}
-								/>
-							) : (
-								<div className='maxi-video-block__placeholder'>
-									<Placeholder
-										icon={placeholderImage}
-										label=''
+							{!hideImage &&
+								(!isNil(overlayMediaId) || overlayMediaUrl ? (
+									<img
+										className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
+										src={overlayMediaUrl}
+										alt={overlayMediaAlt}
 									/>
-								</div>
-							)}
+								) : (
+									<div className='maxi-video-block__placeholder'>
+										<Placeholder
+											icon={placeholderImage}
+											label=''
+										/>
+									</div>
+								))}
 							<div className='maxi-video-block__overlay-background' />
 							<div className='maxi-video-block__play-button'>
 								<RawHTML>{playIcon}</RawHTML>

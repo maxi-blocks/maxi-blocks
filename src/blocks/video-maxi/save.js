@@ -31,6 +31,7 @@ const save = props => {
 		'overlay-mediaID': overlayMediaId,
 		'overlay-mediaURL': overlayMediaUrl,
 		'overlay-mediaAlt': overlayMediaAlt,
+		hideImage,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
@@ -45,13 +46,14 @@ const save = props => {
 				(playerType === 'popup' ? (
 					<>
 						<div className='maxi-video-block__overlay'>
-							{(!isNil(overlayMediaId) || overlayMediaUrl) && (
-								<img
-									className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
-									src={overlayMediaUrl}
-									alt={overlayMediaAlt}
-								/>
-							)}
+							{(!isNil(overlayMediaId) || overlayMediaUrl) &&
+								!hideImage && (
+									<img
+										className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
+										src={overlayMediaUrl}
+										alt={overlayMediaAlt}
+									/>
+								)}
 							<div className='maxi-video-block__overlay-background' />
 							<div className='maxi-video-block__play-button'>
 								<RawHTML>{playIcon}</RawHTML>

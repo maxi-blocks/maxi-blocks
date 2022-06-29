@@ -74,7 +74,7 @@ const relations = () => {
 			  )
 			: [element];
 
-	const applyStyles = (target, element, callback) => {
+	const applyStylesForTarget = (target, element, callback) => {
 		if (target === 'isTargets') return;
 
 		const targetEls = getTargetEls(target, element);
@@ -87,7 +87,7 @@ const relations = () => {
 	const toggleInlineStyles = (stylesObj, element, remove = false) => {
 		if (stylesObj.isTargets) {
 			Object.entries(stylesObj).forEach(([target, styles]) => {
-				applyStyles(target, element, targetEl => {
+				applyStylesForTarget(target, element, targetEl => {
 					toggleInlineStyles(styles, targetEl, remove);
 				});
 			});
@@ -108,7 +108,7 @@ const relations = () => {
 
 		if (targets) {
 			targets.forEach(target => {
-				applyStyles(target, element, targetEl => {
+				applyStylesForTarget(target, element, targetEl => {
 					toggleTransition(transitionString, targetEl, null, remove);
 				});
 			});

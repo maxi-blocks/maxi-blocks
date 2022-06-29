@@ -50,6 +50,7 @@ const Border = props => {
 			className='toolbar-item__border'
 			advancedOptions={isIconToolbar ? 'icon' : 'border'}
 			tooltip={__('Border', 'maxi-blocks')}
+			position={isIconToolbar ? 'bottom center' : 'top center'}
 			icon={
 				<div className='toolbar-item__border__icon'>
 					<Icon

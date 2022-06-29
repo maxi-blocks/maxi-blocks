@@ -364,6 +364,7 @@ const BackgroundLayersControl = ({
 	onChange,
 	clientId,
 	breakpoint,
+	disableAddLayer,
 }) => {
 	const previewRef = useRef(null);
 
@@ -381,22 +382,6 @@ const BackgroundLayersControl = ({
 					)
 			  ) + 1
 			: 1;
-
-	// WILL BE DELETED AFTER BACKGROUND LAYERS ARE UPDATED
-	if (!allLayers.every(layer => typeof layer.order === 'number')) {
-		allLayers.forEach((layer, index, array) => {
-			layer.order = getLayerUniqueParameter('order', array);
-		});
-
-		const normalLayers = allLayers.filter(layer => !layer.isHover);
-		const hoverLayers = allLayers.filter(layer => layer.isHover);
-
-		onChange({
-			'background-layers': normalLayers,
-			'background-layers-hover': hoverLayers,
-		});
-	}
-	//
 
 	allLayers.sort((a, b) => a.order - b.order);
 
@@ -542,40 +527,42 @@ const BackgroundLayersControl = ({
 						})}
 					</ListControl>
 				)}
-				<SelectControl
-					className='maxi-background-control__add-layer'
-					value='Add new layer'
-					options={[
-						{
-							label: __('Add new layer', 'maxi-blocks'),
-							value: 'normal',
-						},
-						{
-							label: __('Background color', 'maxi-blocks'),
-							value: 'color',
-						},
-						{
-							label: __('Background image', 'maxi-blocks'),
-							value: 'image',
-						},
-						{
-							label: __('Background video', 'maxi-blocks'),
-							value: 'video',
-						},
-						{
-							label: __('Background gradient', 'maxi-blocks'),
-							value: 'gradient',
-						},
-						{
-							label: __('Background shape', 'maxi-blocks'),
-							value: 'shape',
-						},
-					]}
-					onChange={val => {
-						const newLayer = getObject(val);
-						onAddLayer(newLayer);
-					}}
-				/>
+				{!disableAddLayer && (
+					<SelectControl
+						className='maxi-background-control__add-layer'
+						value='Add new layer'
+						options={[
+							{
+								label: __('Add new layer', 'maxi-blocks'),
+								value: 'normal',
+							},
+							{
+								label: __('Background color', 'maxi-blocks'),
+								value: 'color',
+							},
+							{
+								label: __('Background image', 'maxi-blocks'),
+								value: 'image',
+							},
+							{
+								label: __('Background video', 'maxi-blocks'),
+								value: 'video',
+							},
+							{
+								label: __('Background gradient', 'maxi-blocks'),
+								value: 'gradient',
+							},
+							{
+								label: __('Background shape', 'maxi-blocks'),
+								value: 'shape',
+							},
+						]}
+						onChange={val => {
+							const newLayer = getObject(val);
+							onAddLayer(newLayer);
+						}}
+					/>
+				)}
 			</div>
 		</div>
 	);

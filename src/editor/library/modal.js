@@ -9,7 +9,7 @@ import { Button } from '@wordpress/components';
  * Internal dependencies
  */
 import CloudLibrary from '.';
-import { Icon } from '../../components';
+import { Icon, BaseControl } from '../../components';
 
 /**
  * External dependencies
@@ -41,6 +41,8 @@ const MaxiModal = props => {
 		url,
 		title,
 		cardId,
+		prefix = '',
+		label = '',
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
@@ -58,6 +60,11 @@ const MaxiModal = props => {
 
 	return (
 		<div className='maxi-library-modal__action-section'>
+			{!isEmpty(label) && (
+				<BaseControl.VisualLabel className='maxi-library-modal__action-section__label'>
+					{label}
+				</BaseControl.VisualLabel>
+			)}
 			<div className='maxi-library-modal__action-section__buttons'>
 				{type === 'patterns' && (
 					<Button
@@ -86,7 +93,8 @@ const MaxiModal = props => {
 				)}
 				{(type === 'bg-shape' ||
 					type === 'image-shape' ||
-					type === 'sidebar-block-shape') && (
+					type === 'sidebar-block-shape' ||
+					type === 'video-shape') && (
 					<Button
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
@@ -166,6 +174,7 @@ const MaxiModal = props => {
 						url={url}
 						title={title}
 						cardId={cardId}
+						prefix={prefix}
 						className={`maxi-library-modal__${type}`}
 					/>
 				)}
@@ -216,6 +225,22 @@ const MaxiModal = props => {
 						}
 					/>
 					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
+						{icon}
+					</RawHTML>
+				</div>
+			)}
+			{type === 'video-shape' && !isEmpty(icon) && (
+				<div className='maxi-library-modal__action-section__preview'>
+					<Icon
+						className='maxi-library-modal__action-section__preview--remove'
+						icon={remove}
+						onClick={() =>
+							onRemove({
+								[`${prefix}icon-content`]: '',
+							})
+						}
+					/>
+					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
 						{icon}
 					</RawHTML>
 				</div>

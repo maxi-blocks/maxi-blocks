@@ -28,6 +28,7 @@ const allowedBlocks = [
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/pane-maxi',
 	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/video-maxi',
 ];
 
 /**

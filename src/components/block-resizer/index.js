@@ -29,6 +29,8 @@ const BlockResizer = memo(
 			isOverflowHidden = false,
 			...rest
 		} = props;
+		// Needed for memo part only
+		delete rest.deviceType;
 
 		const classes = classnames(
 			'maxi-block__resizer',
@@ -143,6 +145,8 @@ const BlockResizer = memo(
 		);
 	}),
 	(oldRawProps, newRawProps) => {
+		if (oldRawProps.deviceType !== newRawProps.deviceType) return false;
+
 		if (!memoChildrenComparator(oldRawProps.children, newRawProps.children))
 			return false;
 

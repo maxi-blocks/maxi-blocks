@@ -78,6 +78,8 @@ const LibraryToolbar = props => {
 					__('Button icon library', 'maxi-blocks')}
 				{type.includes('accordion') &&
 					__('Maxi accordion icon library', 'maxi-blocks')}
+				{type.includes('video') &&
+					__('Video icon library', 'maxi-blocks')}
 			</a>
 			{type === 'preview' && (
 				<>

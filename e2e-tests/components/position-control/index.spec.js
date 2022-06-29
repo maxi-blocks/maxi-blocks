@@ -37,11 +37,14 @@ describe('PositionControl', () => {
 		});
 
 		const expectPosition = {
-			'position-top-general': 56,
-			'position-bottom-general': 56,
-			'position-left-general': 56,
-			'position-right-general': 56,
-			'position-unit-general': '%',
+			'position-top-general': '56',
+			'position-bottom-general': '56',
+			'position-left-general': '56',
+			'position-right-general': '56',
+			'position-top-unit-general': '%',
+			'position-bottom-unit-general': '%',
+			'position-left-unit-general': '%',
+			'position-right-unit-general': '%',
 		};
 
 		const positionResult = await getAttributes([
@@ -49,7 +52,10 @@ describe('PositionControl', () => {
 			'position-bottom-general',
 			'position-left-general',
 			'position-right-general',
-			'position-unit-general',
+			'position-top-unit-general',
+			'position-bottom-unit-general',
+			'position-left-unit-general',
+			'position-right-unit-general',
 		]);
 
 		expect(positionResult).toStrictEqual(expectPosition);
@@ -64,7 +70,7 @@ describe('PositionControl', () => {
 			values: '56',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual(56);
+		expect(await getAttributes('position-top-general')).toStrictEqual('56');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('relative');
@@ -80,14 +86,14 @@ describe('PositionControl', () => {
 		expect(positionSelector).toStrictEqual('relative');
 
 		const positionGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionGeneralValue).toStrictEqual('56');
 
 		const positionGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionGeneralUnit).toStrictEqual('%');
@@ -114,14 +120,14 @@ describe('PositionControl', () => {
 		expect(positionSSelector).toStrictEqual('fixed');
 
 		const positionSGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionSGeneralValue).toStrictEqual('87');
 
 		const positionSGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionSGeneralUnit).toStrictEqual('px');
@@ -137,14 +143,14 @@ describe('PositionControl', () => {
 		expect(positionXsSelector).toStrictEqual('fixed');
 
 		const positionXsGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionXsGeneralValue).toStrictEqual('87');
 
 		const positionXsGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionXsGeneralUnit).toStrictEqual('px');
@@ -160,14 +166,14 @@ describe('PositionControl', () => {
 		expect(positionMSelector).toStrictEqual('relative');
 
 		const positionMGeneralValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-advanced-number-control input',
+			'.maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionMGeneralValue).toStrictEqual('56');
 
 		const positionMGeneralUnit = await page.$eval(
-			'.maxi-axis-control__unit-header select',
+			'.maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionMGeneralUnit).toStrictEqual('%');
@@ -197,7 +203,7 @@ describe('PositionControl', () => {
 			values: '44',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual(44);
+		expect(await getAttributes('position-top-general')).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('sticky');
@@ -209,7 +215,7 @@ describe('PositionControl', () => {
 			values: '12',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual(12);
+		expect(await getAttributes('position-top-general')).toStrictEqual('12');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -77,7 +77,10 @@ const MoreSettings = props => {
 							copyPasteMapping={copyPasteMapping}
 						/>
 						{blockName === 'maxi-blocks/text-maxi' && (
-							<TextGenerator onChange={onChange} />
+							<TextGenerator
+								onChange={onChange}
+								closeMoreSettings={args.onClose}
+							/>
 						)}
 						{blockName === 'maxi-blocks/button-maxi' && (
 							<div>
@@ -156,10 +159,7 @@ const MoreSettings = props => {
 	return tooltipsHide ? (
 		moreSettingsContent
 	) : (
-		<Tooltip
-			text={__('More Settings', 'maxi-blocks')}
-			position='bottom center'
-		>
+		<Tooltip text={__('More', 'maxi-blocks')} position='top center'>
 			{moreSettingsContent}
 		</Tooltip>
 	);

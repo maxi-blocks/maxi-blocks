@@ -238,12 +238,20 @@ const NumberCounterControl = props => {
 			/>
 			<FontWeightControl
 				onChange={val => {
-					onChange({ 'number-counter-title-font-weight': val });
+					onChange({ [`font-weight-${breakpoint}`]: val });
 				}}
-				value={props['number-counter-title-font-weight']}
-				fontName={props['number-counter-title-font-family']}
-				prefix='number-counter-title-'
-				fontStyle=''
+				fontWeight={
+					getLastBreakpointAttribute({
+						target: 'font-weight',
+						breakpoint,
+						attributes: props,
+					}) || '400'
+				}
+				fontName={getLastBreakpointAttribute({
+					target: 'font-family',
+					breakpoint,
+					attributes: props,
+				})}
 			/>
 			<AdvancedNumberControl
 				className='maxi-number-counter-control__font-size'
@@ -271,7 +279,6 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-
 			<ToggleSwitch
 				className='number-counter-percentage-sign-status'
 				label={__('Show percentage sign', 'maxi-block')}
@@ -336,6 +343,7 @@ const NumberCounterControl = props => {
 					attributes: props,
 				})}
 				prefix='number-counter-text-'
+				deviceType={breakpoint}
 				onChangeInline={({ color }) =>
 					onChangeInline(
 						{ fill: color },

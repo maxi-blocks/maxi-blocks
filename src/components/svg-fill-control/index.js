@@ -42,7 +42,6 @@ const ColorContent = ({
 		<ColorControl
 			label={__('Fill', 'maxi-blocks')}
 			prefix='background-svg-'
-			useBreakpointForDefault
 			paletteStatus={getLastBreakpointAttribute({
 				target: 'background-svg-palette-status',
 				breakpoint,
@@ -300,13 +299,7 @@ const SVGFillControl = props => {
 	};
 
 	return (
-		<div className={classes}>
-			{Object.keys(SVGData).length > 1 && (
-				<SettingTabsControl items={getFillItems()} />
-			)}
-			{Object.keys(SVGData).length === 1 &&
-				getFillItem(Object.entries(SVGData)[0])}
-		</div>
+		<div className={classes}>{getFillItem(Object.entries(SVGData)[0])}</div>
 	);
 };
 

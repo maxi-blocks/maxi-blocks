@@ -69,6 +69,7 @@ class MaxiBlocks_Styles {
 				'number-counter',
 				'shape-divider',
 				'relations',
+				'video',
 				'accordion',
 			];
 
@@ -83,7 +84,7 @@ class MaxiBlocks_Styles {
 					);
 				$jsScriptName = 'maxi-' . $script;
 				$jsScriptPath = '//js//' . $jsScriptName . '.min.js';
-				$jsName = '//js//' . $jsScriptName . '.js';
+
 				$meta = $this->customMeta($jsVar);
 
 				if (!empty($meta)) {
@@ -120,7 +121,10 @@ class MaxiBlocks_Styles {
 
 		global $wpdb;
 		$post_content_array = (array) $wpdb->get_results(
-			"SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$post->ID}",
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
+				$post->ID,
+			),
 			OBJECT,
 		);
 
@@ -149,7 +153,10 @@ class MaxiBlocks_Styles {
 
 		global $wpdb;
 		$response = $wpdb->get_results(
-			"SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$id}",
+			$wpdb->prepare(
+				"SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = %d",
+				$id,
+			),
 			OBJECT,
 		);
 
@@ -202,10 +209,10 @@ class MaxiBlocks_Styles {
 			return $breakpoints;
 		}
 
-		// It may connect to the API to centralize the default values there
+		// TODO: It may connect to the API to centralize the default values there
 		return (object) [
 			'xs' => 480,
-			's' => 768,
+			's' => 767,
 			'm' => 1024,
 			'l' => 1366,
 			'xl' => 1920,
@@ -327,11 +334,15 @@ class MaxiBlocks_Styles {
 
 	public function update_color_palette_backups($style) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'maxi_blocks_general';
-		$query =
-			'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
 
-		$style_card = maybe_unserialize($wpdb->get_var($query));
+		$style_card = maybe_unserialize(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+					'sc_string',
+				),
+			),
+		);
 
 		if (!$style_card) {
 			return $style;

@@ -73,7 +73,7 @@ const TextFormatUnderline = props => {
 		return (
 			<Tooltip
 				text={__('Underline', 'maxi-blocks')}
-				position='bottom center'
+				position='top center'
 			>
 				{underlineContent()}
 			</Tooltip>

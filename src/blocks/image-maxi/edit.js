@@ -26,7 +26,7 @@ import {
 	RawHTML,
 	MaxiPopoverButton,
 } from '../../components';
-import { generateDataObject, injectImgSVG } from '../../extensions/svg';
+import { injectImgSVG } from '../../extensions/svg';
 import copyPasteMapping from './copy-paste-mapping';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
@@ -35,7 +35,7 @@ import CaptionToolbar from '../../components/toolbar/captionToolbar';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round, isNumber } from 'lodash';
+import { isEmpty, isNil, round, isNumber, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -86,16 +86,44 @@ class edit extends MaxiBlockComponent {
 		};
 	}
 
+	maxiBlockDidMount() {
+		const { attributes, maxiSetAttributes } = this.props;
+		const { SVGData, SVGElement, uniqueID, mediaID, mediaURL } = attributes;
+
+		if (
+			!isEmpty(SVGData) &&
+			Object.keys(SVGData)[0].split('__')[0] !== uniqueID
+		) {
+			const cleanedContent = DOMPurify.sanitize(SVGElement);
+
+			const svg = document
+				.createRange()
+				.createContextualFragment(cleanedContent).firstElementChild;
+
+			const resData = {
+				[`${uniqueID}__${uniqueId()}`]: {
+					color: '',
+					imageID: mediaID,
+					imageURL: mediaURL,
+				},
+			};
+
+			const resEl = injectImgSVG(svg, resData, false, uniqueID);
+			maxiSetAttributes({
+				SVGElement: resEl.outerHTML,
+				SVGData: resData,
+			});
+		}
+	}
+
 	render() {
 		const { attributes, maxiSetAttributes, isSelected, deviceType } =
 			this.props;
 		const {
 			'hover-preview': hoverPreview,
 			'hover-type': hoverType,
-			blockFullWidth,
 			captionContent,
 			captionType,
-			fullWidth,
 			imgWidth,
 			mediaAlt,
 			altSelector,
@@ -109,11 +137,6 @@ class edit extends MaxiBlockComponent {
 			captionPosition,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
-
-		const classes = classnames(
-			'maxi-image-block',
-			fullWidth === 'full' && 'alignfull'
-		);
 
 		const wrapperClassName = classnames('maxi-image-block-wrapper');
 
@@ -190,6 +213,12 @@ class edit extends MaxiBlockComponent {
 			return '100%';
 		};
 
+		const fullWidth = getLastBreakpointAttribute({
+			target: 'image-full-width',
+			breakpoint: deviceType,
+			attributes,
+		});
+
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -249,8 +278,9 @@ class edit extends MaxiBlockComponent {
 							this.setState({ isExternalClass: false });
 
 							if (!isEmpty(attributes.SVGData)) {
-								const cleanedContent =
-									DOMPurify.sanitize(SVGElement);
+								const cleanedContent = DOMPurify.sanitize(
+									attributes.SVGElement
+								);
 
 								const svg = document
 									.createRange()
@@ -258,7 +288,13 @@ class edit extends MaxiBlockComponent {
 										cleanedContent
 									).firstElementChild;
 
-								const resData = generateDataObject('', svg);
+								const resData = {
+									[`${uniqueID}__${uniqueId()}`]: {
+										color: '',
+										imageID: '',
+										imageURL: '',
+									},
+								};
 
 								const SVGValue = resData;
 								const el = Object.keys(SVGValue)[0];
@@ -299,8 +335,7 @@ class edit extends MaxiBlockComponent {
 					key={`maxi-image--${uniqueID}`}
 					ref={this.blockRef}
 					tagName='figure'
-					blockFullWidth={blockFullWidth}
-					className={classes}
+					className='maxi-image-block'
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					{!isNil(mediaID) || mediaURL ? (

@@ -31,7 +31,6 @@ import { round } from 'lodash';
 /**
  * NumberCounter
  */
-
 const NumberCounter = attributes => {
 	const {
 		'number-counter-duration': countDuration,
@@ -119,6 +118,7 @@ const NumberCounter = attributes => {
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
+			deviceType={deviceType}
 			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',
@@ -178,7 +178,7 @@ const NumberCounter = attributes => {
 								? 'round'
 								: ''
 						}
-						strokeDasharray={`${parseInt(
+						strokeDasharray={`${Math.ceil(
 							(count / 360) * circumference
 						)} ${circumference}`}
 					/>
@@ -264,7 +264,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
-		const { uniqueID, blockFullWidth } = attributes;
+		const { uniqueID } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
@@ -299,7 +299,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockAttributes(this.props)}
 			>

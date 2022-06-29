@@ -28,6 +28,9 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -37,75 +40,68 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isSecondary
-									items={[
-										deviceType === 'general' &&
-											!isList && {
-												label: __(
-													'Heading / Paragraph tag',
-													'maxi-blocks'
-												),
-												content: (
-													<FontLevelControl
-														{...getGroupAttributes(
-															attributes,
-															'typography',
-															true
-														)}
-														value={textLevel}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-													/>
-												),
-												indicatorProps: ['textLevel'],
-											},
-										...(isList && listTab(props)),
-										...inspectorTabs.alignment({
-											props,
-											isTextAlignment: true,
-										}),
-										...inspectorTabs.typography({
-											props,
-											styleCardPrefix: '',
-											hideAlignment: true,
-											allowLink: true,
-											globalProps: {
-												target: '',
-												type: textLevel,
-											},
-											hoverGlobalProps: {
-												target: 'hover',
-												type: textLevel,
-											},
-											context,
-										}),
-										...inspectorTabs.blockBackground({
-											props,
-										}),
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+							<AccordionControl
+								isSecondary
+								items={[
+									deviceType === 'general' &&
+										!isList && {
+											label: __(
+												'Heading / Paragraph tag',
+												'maxi-blocks'
+											),
+											content: (
+												<FontLevelControl
+													{...getGroupAttributes(
+														attributes,
+														'typography',
+														true
+													)}
+													value={textLevel}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+												/>
+											),
+											indicatorProps: ['textLevel'],
+										},
+									...(isList && listTab(props)),
+									...inspectorTabs.alignment({
+										props,
+										isTextAlignment: true,
+									}),
+									...inspectorTabs.typography({
+										props,
+										styleCardPrefix: '',
+										hideAlignment: true,
+										allowLink: true,
+										globalProps: {
+											target: '',
+											type: textLevel,
+										},
+										hoverGlobalProps: {
+											target: 'hover',
+											type: textLevel,
+										},
+										context,
+									}),
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{

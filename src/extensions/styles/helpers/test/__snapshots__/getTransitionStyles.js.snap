@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTransitionStyles Get a correct responsive transition styles 1`] = `
+Object {
+  "": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "border 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease, box-shadow 0s 0s",
+      },
+      "l": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.4s 0.1s ease-in",
+      },
+      "m": Object {
+        "transition": "border 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out, box-shadow 0s 0s",
+      },
+      "s": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.6s 0.3s ease-in-out",
+      },
+      "xs": Object {
+        "transition": "border 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear, box-shadow 0s 0s",
+      },
+      "xxl": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.8s 0.5s ease-in-out",
+      },
+    },
+  },
+  " > .maxi-background-displayer": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "border 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
+      },
+      "l": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s",
+      },
+      "m": Object {
+        "transition": "border 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out",
+      },
+      "s": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s",
+      },
+      "xs": Object {
+        "transition": "border 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear",
+      },
+      "xxl": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s",
+      },
+    },
+  },
+}
+`;
+
+exports[`getTransitionStyles Get a correct responsive transition styles with custom transitionObj 1`] = `
+Object {
+  "": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "border 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease, box-shadow 0.3s 0s ease",
+      },
+      "l": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0s 0s",
+      },
+      "m": Object {
+        "transition": "border 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out, box-shadow 0.5s 0.2s ease-out",
+      },
+      "s": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0s 0s",
+      },
+      "xs": Object {
+        "transition": "border 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear, box-shadow 0.7s 0.4s linear",
+      },
+      "xxl": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0s 0s",
+      },
+    },
+  },
+  " .maxi-button-block__content": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "all 0.3s 0s ease",
+      },
+      "l": Object {
+        "transition": "all 0s 0s",
+      },
+      "m": Object {
+        "transition": "all 0.5s 0.2s ease-out",
+      },
+      "s": Object {
+        "transition": "all 0s 0s",
+      },
+      "xs": Object {
+        "transition": "all 0.7s 0.4s linear",
+      },
+      "xxl": Object {
+        "transition": "all 0s 0s",
+      },
+    },
+  },
+  " > .maxi-background-displayer": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "border 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
+      },
+      "l": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s",
+      },
+      "m": Object {
+        "transition": "border 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out",
+      },
+      "s": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s",
+      },
+      "xs": Object {
+        "transition": "border 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear",
+      },
+      "xxl": Object {
+        "transition": "border 0s 0s, top 0s 0s, left 0s 0s",
+      },
+    },
+  },
+}
+`;
+
+exports[`getTransitionStyles Get a correct transition styles 1`] = `
+Object {
+  "": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "border 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
+      },
+    },
+  },
+  " > .maxi-background-displayer": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "border 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
+      },
+    },
+  },
+  " > .maxi-background-displayer > div": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "all 0s 0s",
+      },
+    },
+  },
+}
+`;

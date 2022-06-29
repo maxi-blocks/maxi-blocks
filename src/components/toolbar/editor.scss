@@ -19,6 +19,30 @@
 			border-radius: 0;
 			border: 1px solid var(--maxi-grey-1-color);
 
+			&.pinned--true .maxi-breadcrumbs {
+				transform: scaleX(1);
+
+				.maxi-breadcrumbs__item {
+					transition-delay: 0.2s;
+					opacity: 1;
+				}
+			}
+
+			.breadcrumbs-pin-toltip {
+				position: absolute;
+				top: -18px;
+				left: 0;
+				background-color: #1e1e1e;
+				padding: 4px 8px;
+				text-align: center;
+				color: #fff;
+				display: none;
+				z-index: 5;
+			}
+			.breadcrumbs-pin:hover .breadcrumbs-pin-toltip {
+				display: block;
+			}
+
 			&.icon-toolbar,
 			&.caption-toolbar {
 				top: 5px;
@@ -39,13 +63,16 @@
 				font-family: 'Roboto', sans-serif !important;
 				line-height: 100%;
 
-				& + .toolbar-item {
-					padding-left: 2px;
-				}
-
 				&__block-style {
 					text-transform: capitalize;
 				}
+
+				.breadcrumbs-pin {
+					display: inline-block;
+					padding-right: 10px;
+					cursor: pointer;
+				}
+			
 			}
 
 			@at-root .rtl #{&} {
@@ -71,7 +98,6 @@
 				border-right: 1px solid var(--maxi-grey-1-color);
 				cursor: pointer;
 
-				&.toolbar-item__help,
 				&.toolbar-item__more-settings {
 					border-right: none;
 				}

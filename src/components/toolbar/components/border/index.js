@@ -20,7 +20,11 @@ import { getGroupAttributes } from '../../../../extensions/styles';
 /**
  * Border
  */
-const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
+const ALLOWED_BLOCKS = [
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/video-maxi',
+];
 
 /**
  * Component
@@ -44,6 +48,7 @@ const Border = props => {
 			className='toolbar-item__border'
 			advancedOptions={isIconToolbar ? 'icon' : 'border'}
 			tooltip={__('Border', 'maxi-blocks')}
+			position={isIconToolbar ? 'bottom center' : 'top center'}
 			icon={
 				<div className='toolbar-item__border__icon'>
 					<Icon

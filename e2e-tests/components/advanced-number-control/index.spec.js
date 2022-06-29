@@ -54,7 +54,7 @@ describe('Advanced Number Control', () => {
 
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-3);
 
-		// reset value
+		// Reset value
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__letter-spacing'),
@@ -69,6 +69,20 @@ describe('Advanced Number Control', () => {
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(
 			undefined
 		);
+
+		// Check max value change
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__size'),
+			newNumber: '300',
+		});
+
+		const selector = await page.$(
+			'.maxi-typography-control .maxi-typography-control__size select'
+		);
+
+		await selector.select('em');
+		expect(await getAttributes('font-size-m')).toStrictEqual(100);
 	});
 	it('Checking the advanced number control max value', async () => {
 		await changeResponsive(page, 'base');
@@ -194,7 +208,7 @@ describe('Advanced Number Control', () => {
 			instance: await page.$(
 				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
 			),
-			newNumber: '198',
+			newNumber: '298',
 		});
 
 		await page.$eval(
@@ -204,7 +218,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('ArrowUp', '3');
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
-			'199'
+			'300'
 		);
 
 		// check em min rangue
@@ -213,7 +227,7 @@ describe('Advanced Number Control', () => {
 			instance: await page.$(
 				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
 			),
-			newNumber: '-198',
+			newNumber: '-298',
 		});
 
 		await page.$eval(
@@ -223,7 +237,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('ArrowDown', '3');
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
-			'-199'
+			'-300'
 		);
 
 		// vw min default value
@@ -247,7 +261,7 @@ describe('Advanced Number Control', () => {
 			instance: await page.$(
 				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
 			),
-			newNumber: '198',
+			newNumber: '298',
 		});
 
 		await page.$eval(
@@ -257,7 +271,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('ArrowUp', '3');
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
-			'199'
+			'300'
 		);
 
 		// check vw min rangue
@@ -266,7 +280,7 @@ describe('Advanced Number Control', () => {
 			instance: await page.$(
 				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
 			),
-			newNumber: '-198',
+			newNumber: '-298',
 		});
 
 		await page.$eval(
@@ -276,7 +290,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('ArrowDown', '3');
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
-			'-199'
+			'-300'
 		);
 
 		// % min default value

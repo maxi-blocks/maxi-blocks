@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOverflowStyles Get a correct overflow styles 1`] = `
+Object {
+  "general": Object {
+    "overflow-y": "hidden",
+  },
+  "l": Object {
+    "overflow-x": "clip",
+    "overflow-y": "auto",
+  },
+  "m": Object {
+    "overflow-x": "scroll",
+    "overflow-y": "scroll",
+  },
+  "s": Object {
+    "overflow-x": "auto",
+    "overflow-y": "auto",
+  },
+  "xl": Object {
+    "overflow-x": "auto",
+    "overflow-y": "clip",
+  },
+  "xs": Object {
+    "overflow-x": "visible",
+    "overflow-y": "visible",
+  },
+  "xxl": Object {
+    "overflow-x": "hidden",
+    "overflow-y": "visible",
+  },
+}
+`;
+
+exports[`getOverflowStyles Get a correct overflow styles when all values visible 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
+exports[`getOverflowStyles Get a correct overflow styles with default values 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;

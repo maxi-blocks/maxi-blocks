@@ -22,7 +22,7 @@ const rawDivider = {
 		default: 'px',
 	},
 	'divider-border-radius': {
-		type: 'string',
+		type: 'boolean',
 		default: false,
 	},
 	'divider-width': {

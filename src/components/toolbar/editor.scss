@@ -9,6 +9,7 @@
 
 		.toolbar-wrapper {
 			display: flex;
+			background-color: #fff;
 			width: min-content;
 			position: relative;
 			top: -23px;
@@ -17,6 +18,30 @@
 			box-shadow: 0px 6px 6px 0 rgb(0 0 0 / 16%);
 			border-radius: 0;
 			border: 1px solid var(--maxi-grey-1-color);
+
+			&.pinned--true .maxi-breadcrumbs {
+				transform: scaleX(1);
+
+				.maxi-breadcrumbs__item {
+					transition-delay: 0.2s;
+					opacity: 1;
+				}
+			}
+
+			.breadcrumbs-pin-toltip {
+				position: absolute;
+				top: -18px;
+				left: 0;
+				background-color: #1e1e1e;
+				padding: 4px 8px;
+				text-align: center;
+				color: #fff;
+				display: none;
+				z-index: 5;
+			}
+			.breadcrumbs-pin:hover .breadcrumbs-pin-toltip {
+				display: block;
+			}
 
 			&.icon-toolbar,
 			&.caption-toolbar {
@@ -38,13 +63,16 @@
 				font-family: 'Roboto', sans-serif !important;
 				line-height: 100%;
 
-				& + .toolbar-item {
-					padding-left: 2px;
-				}
-
 				&__block-style {
 					text-transform: capitalize;
 				}
+
+				.breadcrumbs-pin {
+					display: inline-block;
+					padding-right: 10px;
+					cursor: pointer;
+				}
+			
 			}
 
 			@at-root .rtl #{&} {
@@ -70,7 +98,6 @@
 				border-right: 1px solid var(--maxi-grey-1-color);
 				cursor: pointer;
 
-				&.toolbar-item__help,
 				&.toolbar-item__more-settings {
 					border-right: none;
 				}

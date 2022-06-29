@@ -10,6 +10,7 @@ import {
 	changeResponsive,
 	getBlockStyle,
 	getAttributes,
+	editAdvancedNumberControl,
 } from '../../utils';
 
 describe('ColumnPattern', () => {
@@ -25,6 +26,15 @@ describe('ColumnPattern', () => {
 			'column picker'
 		);
 
+		// check default values
+		expect(await getAttributes('column-gap-general')).toStrictEqual(2.5);
+		expect(await getAttributes('column-gap-unit-general')).toStrictEqual(
+			'%'
+		);
+
+		expect(await getAttributes('row-gap-general')).toStrictEqual(20);
+		expect(await getAttributes('row-gap-unit-general')).toStrictEqual('px');
+
 		// select column
 		await accordionControl.$eval(
 			'.components-column-pattern .maxi-base-control__field input',
@@ -39,33 +49,41 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(await getAttributes('row-pattern-general')).toStrictEqual('1-1');
+
+		// row gap
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-gap-control .maxi-gap-control__row-gap'
+			),
+			newNumber: '14',
+			newValue: '%',
+		});
+
+		// column gap
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-gap-control .maxi-gap-control__column-gap'
+			),
+			newNumber: '32',
+			newValue: 'em',
+		});
+
+		expect(await getAttributes('column-gap-general')).toStrictEqual(32);
+		expect(await getAttributes('column-gap-unit-general')).toStrictEqual(
+			'em'
+		);
+
+		expect(await getAttributes('row-gap-general')).toStrictEqual(14);
+		expect(await getAttributes('row-gap-unit-general')).toStrictEqual('%');
 	});
 
 	it('Check responsive row-pattern', async () => {
-		const accordionControl = await openSidebarTab(
-			page,
-			'style',
-			'column picker'
-		);
-
-		// general
-		await accordionControl.$eval(
-			'.components-column-pattern .maxi-base-control__field input',
-			select => select.focus()
-		);
-
-		await page.keyboard.press('Backspace');
-		await page.keyboard.type('2');
-
-		await accordionControl.$$eval(
-			'.components-column-pattern__templates button',
-			click => click[0].click()
-		);
-
-		// s
+		// s responsive
 		await changeResponsive(page, 's');
 
-		await accordionControl.$$eval(
+		await page.$$eval(
 			'.components-column-pattern__templates button',
 			click => click[1].click()
 		);
@@ -79,7 +97,33 @@ describe('ColumnPattern', () => {
 
 		expect(await getAttributes('row-pattern-s')).toStrictEqual('1-3');
 
-		// xs
+		// row gap S
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-gap-control .maxi-gap-control__row-gap'
+			),
+			newNumber: '6',
+			newValue: 'px',
+		});
+
+		// column gap S
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-gap-control .maxi-gap-control__column-gap'
+			),
+			newNumber: '12',
+			newValue: '%',
+		});
+
+		expect(await getAttributes('column-gap-s')).toStrictEqual(12);
+		expect(await getAttributes('column-gap-unit-s')).toStrictEqual('%');
+
+		expect(await getAttributes('row-gap-s')).toStrictEqual(6);
+		expect(await getAttributes('row-gap-unit-s')).toStrictEqual('px');
+
+		// xs responsive
 		await changeResponsive(page, 'xs');
 
 		const rowSelectedXs = await page.$$eval(
@@ -89,8 +133,32 @@ describe('ColumnPattern', () => {
 
 		expect(rowSelectedXs).toBeTruthy();
 
-		// l
-		await changeResponsive(page, 'l');
+		const rowGapValueXs = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__row-gap input',
+			input => input.value
+		);
+		const rowGapSelectXs = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__row-gap select',
+			input => input.value
+		);
+
+		const columnGapValueXs = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__column-gap input',
+			input => input.value
+		);
+		const columnGapSelectXs = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__column-gap select',
+			input => input.value
+		);
+
+		expect(rowGapValueXs).toStrictEqual('6');
+		expect(rowGapSelectXs).toStrictEqual('px');
+
+		expect(columnGapValueXs).toStrictEqual('12');
+		expect(columnGapSelectXs).toStrictEqual('%');
+
+		// m responsive
+		await changeResponsive(page, 'm');
 
 		const rowSelectedL = await page.$$eval(
 			'.components-column-pattern__templates button',
@@ -98,6 +166,30 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(rowSelectedL).toBeTruthy();
+
+		const rowGapValueM = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__row-gap input',
+			input => input.value
+		);
+		const rowGapSelectM = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__row-gap select',
+			input => input.value
+		);
+
+		const columnGapValueM = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__column-gap input',
+			input => input.value
+		);
+		const columnGapSelectM = await page.$eval(
+			'.maxi-gap-control .maxi-gap-control__column-gap select',
+			input => input.value
+		);
+
+		expect(rowGapValueM).toStrictEqual('14');
+		expect(rowGapSelectM).toStrictEqual('%');
+
+		expect(columnGapValueM).toStrictEqual('32');
+		expect(columnGapSelectM).toStrictEqual('em');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

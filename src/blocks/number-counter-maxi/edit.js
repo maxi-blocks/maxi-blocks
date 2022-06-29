@@ -11,10 +11,9 @@ import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
-	getMaxiBlockAttributes,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,
@@ -32,7 +31,6 @@ import { round } from 'lodash';
 /**
  * NumberCounter
  */
-
 const NumberCounter = attributes => {
 	const {
 		'number-counter-duration': countDuration,
@@ -78,8 +76,10 @@ const NumberCounter = attributes => {
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			setCount(startCountValue);
-			setReplayStatus(false);
-			clearInterval(countRef.current);
+			if (count >= endCountValue) {
+				setReplayStatus(false);
+				clearInterval(countRef.current);
+			}
 		}
 	}, [
 		startCountValue,
@@ -118,7 +118,8 @@ const NumberCounter = attributes => {
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
-			size={{
+			deviceType={deviceType}
+			defaultSize={{
 				width: getLastBreakpointAttribute({
 					target: 'number-counter-width-auto',
 					breakpoint: deviceType,
@@ -177,7 +178,7 @@ const NumberCounter = attributes => {
 								? 'round'
 								: ''
 						}
-						strokeDasharray={`${parseInt(
+						strokeDasharray={`${Math.ceil(
 							(count / 360) * circumference
 						)} ${circumference}`}
 					/>
@@ -263,7 +264,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
-		const { uniqueID, blockFullWidth } = attributes;
+		const { uniqueID } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
@@ -298,7 +299,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				className={classes}
 				{...getMaxiBlockAttributes(this.props)}
 			>

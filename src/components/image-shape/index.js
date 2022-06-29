@@ -13,6 +13,10 @@ import {
 } from '../../components';
 import MaxiModal from '../../editor/library/modal';
 import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import {
 	setSVGRatio,
 	setSVGPosition,
 	getSVGPosition,
@@ -32,7 +36,6 @@ const ImageShape = props => {
 	} = props;
 
 	const {
-		[`${prefix}image-shape-scale-${breakpoint}`]: shapeScale,
 		[`${prefix}image-shape-rotate-${breakpoint}`]: shapeRotate,
 		[`${prefix}image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
 		[`${prefix}image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
@@ -45,7 +48,18 @@ const ImageShape = props => {
 			{!disableModal && breakpoint === 'general' && (
 				<MaxiModal
 					type='image-shape'
-					onSelect={obj => onChange(obj)}
+					onSelect={obj => {
+						const { SVGElement } = obj;
+
+						const newSVGElement = SVGElement.replace(
+							/class="(.*?)"/,
+							`class="${
+								SVGElement.match(/class="(.*?)"/)[1]
+							} maxi-image-block__image"`
+						);
+
+						onChange({ ...obj, SVGElement: newSVGElement });
+					}}
 					onRemove={obj => {
 						onChange(obj);
 					}}
@@ -138,12 +152,15 @@ const ImageShape = props => {
 					)}
 					<AdvancedNumberControl
 						label={__('Scale shape', 'maxi-blocks')}
-						value={shapeScale || null}
+						value={getLastBreakpointAttribute({
+							target: `${prefix}image-shape-scale`,
+							attributes: props,
+							breakpoint,
+						})}
 						min={0}
 						max={500}
 						step={1}
 						initial={100}
-						placeholder='100%'
 						onChangeValue={val => {
 							onChange({
 								[`${prefix}image-shape-scale-${breakpoint}`]:
@@ -153,7 +170,7 @@ const ImageShape = props => {
 						onReset={() =>
 							onChange({
 								[`${prefix}image-shape-scale-${breakpoint}`]:
-									null,
+									getDefaultAttribute('image-shape-scale'),
 							})
 						}
 					/>

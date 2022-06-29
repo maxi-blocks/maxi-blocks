@@ -71,7 +71,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 wp_register_script(
                     'maxi-admin',
-                    MAXI_PLUGIN_URL_PATH.'build/admin.js',
+                    MAXI_PLUGIN_URL_PATH.'build/admin.js'
                 );
                 wp_enqueue_script('maxi-admin');
             }
@@ -107,7 +107,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
             
             echo '<div class="maxi-dashboard_wrap">';
-            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.__('Maxi Blocks Logo', self::$maxi_text_domain).'"></header>';
+            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
             
             foreach ($settings_tabs as $tab_page => $tab_name) {
@@ -202,6 +202,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
+            if (isset($_GET['settings-updated'])) {//phpcs:ignore
+                $content .= '<h2>'.__('Successfully done', self::$maxi_text_domain).'</h2>';
+            }
+
             $content .= $this->generate_item_header('Editor preferences', true);
 
             $description = '<h4>'.__('Hide interface tooltips', self::$maxi_text_domain).'</h4>';
@@ -249,13 +253,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain);
             $description .= '<i> '.__('(Default)', self::$maxi_text_domain).'</i></p>';
             $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
-
             if ($fontUploadsDirSize > 0) {
                 $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__(
                     'MB',
                     'maxi-blocks'
                 ).'</p>';
-                if (!(bool) get_option('local_fonts')) {
+                
+                if (!(bool)get_option('local_fonts')) {
                     update_option('local_fonts_uploaded', false);
                     $description = '<h4>'.__('Remove local fonts', 'maxi-blocks').'</h4>';
                     $content .= $this->generate_setting($description, 'remove_local_fonts', $this->remove_local_fonts());
@@ -292,6 +296,18 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_item_header('Updates & Roll-Back', false);
 
             $content .= '<p>'.__('Maxi Blocks includes a roll-back feature to restore a previous version of the plugin if required. It is recommended to run a backup of your website and database before you perform a rollback.', self::$maxi_text_domain).'</p>';
+
+            if (MAXI_PLUGIN_VERSION) {
+                $content .= '<p>'.__('You are using version <strong>', self::$maxi_text_domain).MAXI_PLUGIN_VERSION.'</strong></p>';
+            }
+            $content .= '<h4>'.__('Choose a version to rollback to', self::$maxi_text_domain).'</h4>';
+            $content .= $this->generate_dropdown();
+            $content .= '<input type="hidden" name="maxi_rollback_version" id="maxi-rollback-version" value="current">';
+            $version_to_roll = get_option('maxi_rollback_version');
+            if ($version_to_roll !== 'current') {
+                $this->rollback_zip($version_to_roll);
+            }
+            $content .= get_submit_button(__('Rollback', self::$maxi_text_domain), 'primary', 'maxi-rollback-submit');
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -340,7 +356,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $toggle .= '<input name="';
             $toggle .= $option;
             $toggle .= '" class="maxi-dashboard_main-content_accordion-item-toggle" ';
-            if ((bool) get_option($option)) {
+            if ((bool)get_option($option)) {
                 $toggle .= ' checked="checked" ';
                 if (is_callable($function)) {
                     $function();
@@ -357,13 +373,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $toggle;
         }
 
-        public function generate_input($option, $function = '')
+        public function generate_input($option, $function = '', $type = 'text')
         {
             $input = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
             $input .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
             $input .= '<input name="';
             $input .= $option;
-            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="text" value="';
+            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="';
+            $input .= $type;
+            $input .= '" value="';
             $input .= get_option($option);
             $input .= '">';
             $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__input
@@ -416,14 +434,36 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $breakpoints_html;
         }
 
-        public function generate_setting($description, $option, $function = '')
+        public function generate_dropdown()
+        {
+            $dropdown = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $dropdown .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__dropdown">';
+            $dropdown .= '<select name="maxi_versions" id="maxi-versions" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
+            $dropdown .= '<option value="current">'.__('Select a version', self::$maxi_text_domain).'</option>';
+
+            $versions = $this->get_versions_list();
+            if ($versions) {
+                foreach ($versions as $version => $url) {
+                    $dropdown .= '<option value="'.$url.'">'.$version.'</option>';
+                }
+            } else {
+                $dropdown .= '<option value="">'.__('Can\'t get a list of versions from WordPress.com', self::$maxi_text_domain).'</option>';
+            }
+            $dropdown .= '</select>';
+            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__dropdown
+            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+
+            return $dropdown;
+        }
+
+        public function generate_setting($description, $option, $function = '', $type = 'text')
         {
             $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= $description;
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
             if ($option === 'google_api_key_option') {
-                $content .= $this->generate_input($option, $function);
+                $content .= $this->generate_input($option, $function, $type);
             } else {
                 $content .= $this->generate_toggle($option, $function);
             }
@@ -447,6 +487,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'boolean',
                 'default' => false,
             );
+
+            $argsRollback = array(
+                'type' => 'string',
+                'default' => 'current',
+            );
             
             register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
@@ -456,6 +501,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
+            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $argsRollback);
         }
 
         public function get_folder_size($folder)
@@ -507,6 +553,75 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if (get_option('allow_svg_json_uploads')) {
                 add_filter('upload_mimes', 'maxi_svg_json_upload');
+            }
+        }
+
+        public function rollback_zip($url)
+        {
+            $zip_file = substr($url, strrpos($url, '/') + 1);
+            $file_content = file_put_contents($zip_file, fopen($url, 'r'), LOCK_EX);
+            if (false === $file_content) {
+                die('Couldn\'t write to file.');
+            }
+
+            $zip = new ZipArchive;
+            $res = $zip->open($zip_file);
+
+            if ($res === true) {
+                $zip->extractTo(plugin_dir_path(__DIR__) . '../..');
+                $zip->close();
+            }
+            
+            update_option('maxi_rollback_version', 'current');
+        }
+
+        public function get_versions_list()
+        {
+            // You can test with the Jetpack plugin for now
+
+            // $args = array(
+            //     'slug' => 'jetpack', // change to Maxi when we have it on WordPress plugins directory
+            //     'fields' => array(
+            //         'downloaded' => true,
+            //         'downloadlink' => true
+            //     )
+            // );
+            // $response = wp_remote_post(
+            //     'http://api.wordpress.org/plugins/info/1.0/',
+            //     array(
+            //         'body' => array(
+            //             'action' => 'plugin_information',
+            //             'request'=>serialize((object)$args)
+            //         )
+            //     )
+            // );
+
+            // if (!is_wp_error($response)) {
+            //     $returned_object = unserialize(wp_remote_retrieve_body($response));
+            //     $versions = $returned_object->versions;
+            //     if (!is_array($versions)) {
+            //         return false;
+            //     } else {
+            //         if ($versions) {
+            //             return $versions;
+            //         }
+            //     }
+            // } else {
+            //     return false;
+            // }
+
+            // Temporary solution until we have our plugin in the WP plugins directory
+            $json = file_get_contents('https://storage.googleapis.com/plugin-files/updates/versions.json');
+            $returned_object = json_decode($json, true);
+
+            $versions = $returned_object['versions'];
+
+            if (!is_array($versions)) {
+                return false;
+            } else {
+                if ($versions) {
+                    return $versions;
+                }
             }
         }
     }

@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, dispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
+import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -21,13 +23,12 @@ import TextItalic from '../text-italic';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	setFormat,
-	getCustomFormatValue,
-	withFormatValue,
+	getTypographyValue,
+	textContext,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
-	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 
 /**
@@ -48,7 +49,7 @@ import {
 /**
  * Component
  */
-const TextOptions = props => {
+const TextOptionsContent = props => {
 	const {
 		getValue,
 		getDefault,
@@ -88,7 +89,8 @@ const TextOptions = props => {
 						breakpoint
 					)
 				}
-				minMaxSettings={minMaxSettings}
+				min={minMaxSettings[getValue(`${prefix}font-size-unit`)].min}
+				max={minMaxSettings[getValue(`${prefix}font-size-unit`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -116,7 +118,8 @@ const TextOptions = props => {
 						breakpoint
 					)
 				}
-				minMaxSettings={minMaxSettings}
+				min={minMaxSettings[getValue(`${prefix}line-height-unit`)].min}
+				max={minMaxSettings[getValue(`${prefix}line-height-unit`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -146,7 +149,16 @@ const TextOptions = props => {
 						breakpoint
 					)
 				}
-				minMaxSettings={minMaxSettingsLetterSpacing}
+				min={
+					minMaxSettingsLetterSpacing[
+						getValue(`${prefix}letter-spacing-unit`)
+					].min
+				}
+				max={
+					minMaxSettingsLetterSpacing[
+						getValue(`${prefix}letter-spacing-unit`)
+					].max
+				}
 				step={0.1}
 			/>
 		</>
@@ -154,27 +166,25 @@ const TextOptions = props => {
 };
 
 /**
- * TypographyControl
+ * TextOptions
  */
-const TypographyControl = withFormatValue(props => {
+const TextOptions = props => {
 	const {
-		textLevel,
+		textLevel = 'p',
 		blockName,
 		onChange,
 		breakpoint,
 		isList,
-		formatValue,
 		clientId,
 		prefix = '',
 		styleCards = false,
-		disableFormats = false,
-		isHover = false,
 		styleCardPrefix,
 		isCaptionToolbar = false,
-		name,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
+
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
@@ -198,52 +208,24 @@ const TypographyControl = withFormatValue(props => {
 		};
 	});
 
-	const getValue = (prop, customBreakpoint, avoidXXL) => {
-		const currentBreakpoint = customBreakpoint || breakpoint;
-
-		if (disableFormats)
-			return getLastBreakpointAttribute({
-				target: prop,
-				breakpoint: currentBreakpoint,
-				attributes: typography,
-				isHover,
-				avoidXXL,
-			});
-
-		const nonHoverValue = getCustomFormatValue({
+	const getValue = prop =>
+		getTypographyValue({
+			prop,
+			breakpoint,
 			typography,
 			formatValue,
-			prop,
-			breakpoint: currentBreakpoint,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
-			avoidXXL,
 		});
 
-		if (!isHover) return nonHoverValue;
-
-		return (
-			getCustomFormatValue({
-				typography,
-				formatValue,
-				prop,
-				breakpoint: currentBreakpoint,
-				isHover,
-				textLevel,
-				styleCard,
-				styleCardPrefix,
-			}) || nonHoverValue
-		);
-	};
-
-	const onChangeFormat = (value, customBreakpoint) => {
+	const onChangeFormat = value => {
 		const obj = setFormat({
 			formatValue,
 			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
+			typography,
 			value,
-			breakpoint: customBreakpoint ?? breakpoint,
+			breakpoint,
 			textLevel,
 			returnFormatValue: true,
 		});
@@ -251,13 +233,7 @@ const TypographyControl = withFormatValue(props => {
 		const newFormatValue = { ...obj.formatValue };
 		delete obj.formatValue;
 
-		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
-		setTimeout(() => {
-			dispatch('maxiBlocks/text').sendFormatValue(
-				newFormatValue,
-				clientId
-			);
-		}, 200); // higher than the 150 of `onChangeRichText` method
+		onChangeTextFormat(newFormatValue);
 
 		onChange(obj);
 	};
@@ -351,91 +327,39 @@ const TypographyControl = withFormatValue(props => {
 										isToolbar
 									/>
 									<TextBold
-										{...getGroupAttributes(
-											props,
-											'typography'
-										)}
-										formatValue={formatValue}
-										blockName={name}
-										onChange={onChange}
-										isList={isList}
-										breakpoint={breakpoint}
-										textLevel={textLevel}
-										styleCard={styleCard}
-										isCaptionToolbar
+										onChangeFormat={onChangeFormat}
+										getValue={getValue}
 										tooltipsHide={tooltipsHide}
 									/>
 									<TextItalic
-										{...getGroupAttributes(
-											props,
-											'typography'
-										)}
-										formatValue={formatValue}
-										blockName={name}
-										onChange={onChange}
-										isList={isList}
-										breakpoint={breakpoint}
-										textLevel={textLevel}
-										styleCard={styleCard}
-										isCaptionToolbar
+										onChangeFormat={onChangeFormat}
+										getValue={getValue}
 										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatUnderline
-										{...getGroupAttributes(
-											props,
-											'typography'
-										)}
-										formatValue={formatValue}
-										onChange={onChange}
-										isList={isList}
-										breakpoint={breakpoint}
-										textLevel={textLevel}
-										styleCard={styleCard}
+										onChangeFormat={onChangeFormat}
+										getValue={getValue}
 										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatStrikethrough
-										{...getGroupAttributes(
-											props,
-											'typography'
-										)}
-										formatValue={formatValue}
-										onChange={onChange}
-										isList={isList}
-										breakpoint={breakpoint}
-										textLevel={textLevel}
-										styleCard={styleCard}
+										onChangeFormat={onChangeFormat}
+										getValue={getValue}
 										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatSubscript
-										{...getGroupAttributes(
-											props,
-											'typography'
-										)}
-										formatValue={formatValue}
-										onChange={onChange}
-										isList={isList}
-										breakpoint={breakpoint}
-										textLevel={textLevel}
-										styleCard={styleCard}
+										onChangeFormat={onChangeFormat}
+										getValue={getValue}
 										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatSuperscript
-										{...getGroupAttributes(
-											props,
-											'typography'
-										)}
-										formatValue={formatValue}
-										onChange={onChange}
-										isList={isList}
-										breakpoint={breakpoint}
-										textLevel={textLevel}
-										styleCard={styleCard}
+										onChangeFormat={onChangeFormat}
+										getValue={getValue}
 										tooltipsHide={tooltipsHide}
 									/>
 								</div>
 							</div>
 							<div className='toolbar-item__popover__font-options__wrap toolbar-item__popover__font-options__wrap_inputs'>
-								<TextOptions
+								<TextOptionsContent
 									getValue={getValue}
 									getDefault={getDefault}
 									onChangeFormat={onChangeFormat}
@@ -454,6 +378,6 @@ const TypographyControl = withFormatValue(props => {
 			</ToolbarPopover>
 		</div>
 	);
-});
+};
 
-export default TypographyControl;
+export default TextOptions;

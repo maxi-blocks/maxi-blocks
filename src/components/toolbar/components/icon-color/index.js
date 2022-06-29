@@ -29,15 +29,15 @@ const IconColor = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
-			position='bottom center'
 			tooltip={__('Icon Colour', 'maxi-blocks')}
+			position='bottom center'
 			icon={toolbarShapeColor}
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-color__popover'>
 				<ToggleSwitch
 					label={__(
-						'Inherit Colour/Background from Button',
+						'Inherit colour/background from button',
 						'maxi-blocks'
 					)}
 					selected={props['icon-inherit']}
@@ -59,10 +59,14 @@ const IconColor = props => {
 						{svgType !== 'Shape' && (
 							<ColorControl
 								label={__('Icon stroke', 'maxi-blocks')}
-								color={props['icon-color']}
-								prefix='icon-'
-								paletteColor={props['icon-palette-color']}
-								paletteStatus={props['icon-palette-status']}
+								color={props['icon-stroke-color']}
+								prefix='icon-stroke-'
+								paletteColor={
+									props['icon-stroke-palette-color']
+								}
+								paletteStatus={
+									props['icon-stroke-palette-status']
+								}
 								onChangeInline={({ color }) =>
 									onChangeInline(
 										{ stroke: color },
@@ -77,15 +81,19 @@ const IconColor = props => {
 									const lineColorStr = getColorRGBAString({
 										firstVar: 'icon-stroke',
 										secondVar: `color-${paletteColor}`,
-										opacity: props['icon-palette-opacity'],
+										opacity:
+											props[
+												'icon-stroke-palette-opacity'
+											],
 										blockStyle,
 									});
 
 									onChange(
 										{
-											'icon-color': color,
-											'icon-palette-color': paletteColor,
-											'icon-palette-status':
+											'icon-stroke-color': color,
+											'icon-stroke-palette-color':
+												paletteColor,
+											'icon-stroke-palette-status':
 												paletteStatus,
 											'icon-content': setSVGContent(
 												props['icon-content'],
@@ -103,9 +111,9 @@ const IconColor = props => {
 						)}
 						{svgType !== 'Line' && (
 							<ColorControl
-								label={__('Icon Fill', 'maxi-blocks')}
+								label={__('Icon fill', 'maxi-blocks')}
 								color={props['icon-fill-color']}
-								prefix='icon-fill'
+								prefix='icon-fill-'
 								paletteColor={props['icon-fill-palette-color']}
 								paletteStatus={
 									props['icon-fill-palette-status']

@@ -1,5 +1,9 @@
 import getBoxShadowStyles from '../getBoxShadowStyles';
 
+jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+	jest.fn(() => 4)
+);
+
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
 		return {
@@ -35,6 +39,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-vertical-general': 2,
 			'box-shadow-blur-general': 3,
 			'box-shadow-spread-general': 4,
+			'box-shadow-inset-general': true,
 			'box-shadow-blur-unit-general': 'px',
 			'box-shadow-horizontal-unit-general': 'px',
 			'box-shadow-vertical-unit-general': 'px',
@@ -75,6 +80,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-vertical-m': 18,
 			'box-shadow-blur-m': 19,
 			'box-shadow-spread-m': 20,
+			'box-shadow-inset-m': false,
 			'box-shadow-blur-unit-m': 'px',
 			'box-shadow-horizontal-unit-m': 'px',
 			'box-shadow-vertical-unit-m': 'px',
@@ -95,6 +101,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-vertical-xs': 26,
 			'box-shadow-blur-xs': 27,
 			'box-shadow-spread-xs': 28,
+			'box-shadow-inset-xs': true,
 			'box-shadow-blur-unit-xs': 'px',
 			'box-shadow-horizontal-unit-xs': 'px',
 			'box-shadow-vertical-unit-xs': 'px',

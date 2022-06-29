@@ -139,6 +139,12 @@ const DividerControl = props => {
 		attributes: props,
 	});
 
+	const dividerBorderRadius = getLastBreakpointAttribute({
+		target: 'divider-border-radius',
+		breakpoint,
+		attributes: props,
+	});
+
 	return (
 		<>
 			<DefaultDividersControl
@@ -176,10 +182,10 @@ const DividerControl = props => {
 				dividerBorderStyle === 'solid' && (
 					<ToggleSwitch
 						label={__('Line radius', 'maxi-blocks')}
-						selected={dividerBorderStyle}
+						selected={dividerBorderRadius}
 						onChange={val =>
 							onChange({
-								[`divider-border-style-${breakpoint}`]: val,
+								[`divider-border-radius-${breakpoint}`]: val,
 							})
 						}
 					/>
@@ -192,6 +198,7 @@ const DividerControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
+					deviceType={breakpoint}
 					prefix='divider-border-'
 					paletteColor={getLastBreakpointAttribute({
 						target: 'divider-border-palette-color',

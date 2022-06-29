@@ -328,7 +328,6 @@ describe('Button Maxi', () => {
 		).toStrictEqual(5);
 
 		// Change hover button background color
-
 		await page.$eval(
 			'.maxi-accordion-control__item__panel--disable-padding .maxi-tabs-control__button-Hover',
 			button => button.click()

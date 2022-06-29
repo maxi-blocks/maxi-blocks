@@ -35,6 +35,7 @@ const CloudLibrary = props => {
 		url,
 		title,
 		cardId,
+		prefix,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -43,7 +44,7 @@ const CloudLibrary = props => {
 
 	return (
 		<Modal
-			title={__('Maxi Cloud Library', 'maxi-blocks')}
+			title={__('Template Library Maxi', 'maxi-blocks')}
 			className={classes}
 			shouldCloseOnEsc
 			shouldCloseOnClickOutside={false}
@@ -63,6 +64,7 @@ const CloudLibrary = props => {
 					onSelect={onSelect}
 					url={url}
 					title={title}
+					prefix={prefix}
 				/>
 			</>
 		</Modal>

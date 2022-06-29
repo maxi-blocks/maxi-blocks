@@ -28,7 +28,7 @@ describe('FullSizeControl', () => {
 			use => use.click()
 		);
 
-		expect(await getAttributes('blockFullWidth')).toStrictEqual('full');
+		expect(await getAttributes('full-width-general')).toStrictEqual('full');
 
 		// responsive
 		await accordionPanel.$eval(
@@ -36,18 +36,18 @@ describe('FullSizeControl', () => {
 			use => use.click()
 		);
 
-		const inputs = await accordionPanel.$$(
-			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value'
+		const inputs = await accordionPanel.$(
+			'.maxi-full-size-control .maxi-full-size-control__height .maxi-advanced-number-control__value'
 		);
 
-		await inputs[0].focus();
+		await inputs.focus();
 		await page.keyboard.type('330', { delay: 100 });
 
 		// check responsive
 		const responsiveResult = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
+				'.maxi-full-size-control .maxi-full-size-control__height .maxi-advanced-number-control__value',
 			needFocus: true,
 			baseExpect: '330',
 			xsExpect: '200',
@@ -61,21 +61,28 @@ describe('FullSizeControl', () => {
 	it('Checking fullSizeControl unit selector', async () => {
 		await changeResponsive(page, 'base');
 
-		await page.$$eval(
-			'.maxi-full-size-control .maxi-toggle-switch input',
-			button => button[2].click()
+		await page.$eval(
+			'.maxi-full-size-control .maxi-full-size-control__custom-min-max input',
+			button => button.click()
 		);
+
+		const selectorHeight = await page.$(
+			'.maxi-full-size-control .maxi-full-size-control__height .maxi-dimensions-control__units select'
+		);
+		const selectorWidth = await page.$(
+			'.maxi-full-size-control .maxi-full-size-control__min-width .maxi-dimensions-control__units select'
+		);
+
+		// check that vh works in height and does not exist in width
+		await selectorHeight.select('vh');
+		await selectorWidth.select('vh');
+
+		expect(await getAttributes('height-unit-general')).toStrictEqual('vh');
+		expect(await getAttributes('min-width-unit-general')).toStrictEqual('');
 
 		const selector = await page.$$(
 			'.maxi-full-size-control .maxi-dimensions-control__units select'
 		);
-
-		// check that vh works in height and does not exist in width
-		await selector[0].select('vh');
-		await selector[1].select('vh');
-
-		expect(await getAttributes('height-unit-general')).toStrictEqual('vh');
-		expect(await getAttributes('max-width-unit-general')).toStrictEqual('');
 
 		for (let i = 0; i < selector.length; i += 1) {
 			const selection = selector[i];

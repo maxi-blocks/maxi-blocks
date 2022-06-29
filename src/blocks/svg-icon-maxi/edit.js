@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
 import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
 import { Button } from '@wordpress/components';
@@ -14,7 +13,6 @@ import Inspector from './inspector';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
-	getMaxiBlockAttributes,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import {
@@ -24,7 +22,8 @@ import {
 	MaxiPopoverButton,
 } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -113,8 +112,7 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			isSelected,
 		} = this.props;
-		const { blockFullWidth, content, openFirstTime, blockStyle, uniqueID } =
-			attributes;
+		const { content, openFirstTime, blockStyle, uniqueID } = attributes;
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
@@ -209,7 +207,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
-				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<>
@@ -221,7 +218,7 @@ class edit extends MaxiBlockComponent {
 								className='maxi-block-library__modal-button'
 								onClick={() => this.setState({ isOpen: true })}
 							>
-								{__('Select SVG Icon', 'maxi-blocks')}
+								{__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}
@@ -231,16 +228,8 @@ class edit extends MaxiBlockComponent {
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden()}
 							lockAspectRatio
-							maxWidth={
-								getLastBreakpointAttribute({
-									target: 'svg-responsive',
-									breakpoint: deviceType,
-									attributes,
-								})
-									? '100%'
-									: null
-							}
-							size={{
+							deviceType={deviceType}
+							defaultSize={{
 								width: `${getLastBreakpointAttribute({
 									target: 'svg-width',
 									breakpoint: deviceType || 'general',
@@ -269,4 +258,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withMaxiProps)(edit);
+export default withMaxiProps(edit);

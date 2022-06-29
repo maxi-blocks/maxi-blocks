@@ -4,11 +4,10 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
 import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
-import { useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,8 +21,8 @@ import {
 	getFormattedString,
 	applyLinkFormat,
 	removeLinkFormat,
-	withFormatValue,
 	getFormatPosition,
+	textContext,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -40,16 +39,11 @@ import { toolbarLink } from '../../../../icons';
 /**
  * Link
  */
-const LinkContent = withFormatValue(props => {
-	const {
-		onChange,
-		isList,
-		formatValue,
-		textLevel,
-		onClose,
-		blockStyle,
-		styleCard,
-	} = props;
+const LinkContent = props => {
+	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
+		props;
+
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const formatName = 'maxi-blocks/text-link';
 
@@ -152,7 +146,16 @@ const LinkContent = withFormatValue(props => {
 			isList,
 			textLevel,
 			saveFormatValue: true,
+			onChangeTextFormat,
+			returnFormatValue: true,
 		});
+
+		onChangeTextFormat({
+			...obj.formatValue,
+			start: updatedFormatValue.start,
+			end: updatedFormatValue.end,
+		});
+		delete obj.formatValue;
 
 		onChange(obj);
 	};
@@ -256,7 +259,7 @@ const LinkContent = withFormatValue(props => {
 			)}
 		</>
 	);
-});
+};
 
 const Link = props => {
 	const { blockName, isCaptionToolbar = false } = props;

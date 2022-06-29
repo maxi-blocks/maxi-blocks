@@ -3,24 +3,37 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 const rawPosition = {
 	position: {
 		type: 'string',
+		default: 'inherit',
 	},
 	'position-top': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-right': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-bottom': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-left': {
-		type: 'number',
+		type: 'string',
 	},
 	'position-sync': {
 		type: 'string',
 		default: 'all',
 	},
-	'position-unit': {
+	'position-top-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'position-right-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'position-bottom-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'position-left-unit': {
 		type: 'string',
 		default: 'px',
 	},

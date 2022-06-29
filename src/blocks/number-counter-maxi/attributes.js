@@ -7,7 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -52,10 +56,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
@@ -74,7 +74,10 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

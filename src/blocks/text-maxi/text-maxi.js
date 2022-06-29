@@ -25,7 +25,11 @@ import transforms from './transforms';
 import './editor.scss';
 import './style.scss';
 import { textIcon } from '../../icons';
-import fromNumberToStringMigrator from '../../extensions/styles/migrators/numberToString';
+
+/**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
 
 /**
  * Block
@@ -52,5 +56,5 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save,
 	transforms,
-	deprecated: [fromNumberToStringMigrator({ attributes, save })],
+	deprecated: [blockMigrator({ attributes, save })],
 });

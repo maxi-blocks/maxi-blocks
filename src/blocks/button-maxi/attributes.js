@@ -7,7 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -22,10 +26,6 @@ const attributes = {
 	customLabel: {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
-	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
 	},
 	buttonContent: {
 		type: 'string',
@@ -65,7 +65,10 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...attributesData.textAlignment,
+	...{
+		...attributesData.textAlignment,
+		'text-alignment-general': { type: 'string', default: 'center' },
+	},
 	...{
 		...attributesData.typography,
 		'line-height-unit-general': {
@@ -153,26 +156,22 @@ const attributes = {
 		obj: attributesData.padding,
 		prefix,
 		diffValAttr: {
+			[`${prefix}padding-sync-xxl`]: 'axis',
 			[`${prefix}padding-top-xxl`]: '23',
 			[`${prefix}padding-right-xxl`]: '55',
 			[`${prefix}padding-bottom-xxl`]: '23',
 			[`${prefix}padding-left-xxl`]: '55',
-			[`${prefix}padding-top-xl`]: '15',
-			[`${prefix}padding-right-xl`]: '36',
-			[`${prefix}padding-bottom-xl`]: '15',
-			[`${prefix}padding-left-xl`]: '36',
-			[`${prefix}padding-sync-xl`]: 'axis',
-			[`${prefix}padding-sync-xxl`]: 'axis',
+			[`${prefix}padding-sync-general`]: 'axis',
+			[`${prefix}padding-top-general`]: '15',
+			[`${prefix}padding-right-general`]: '36',
+			[`${prefix}padding-bottom-general`]: '15',
+			[`${prefix}padding-left-general`]: '36',
 		},
 	}),
 
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -189,7 +188,10 @@ const attributes = {
 	...attributesData.blockBackground,
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

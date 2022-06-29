@@ -11,12 +11,13 @@ import {
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import { setSVGStrokeWidth } from '../../extensions/svg';
 
 /**
  * Component
  */
 const SvgStrokeWidthControl = props => {
-	const { onChange, breakpoint, prefix, isHover = false } = props;
+	const { onChange, breakpoint, prefix, content, isHover = false } = props;
 
 	const stroke =
 		props[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`];
@@ -24,7 +25,7 @@ const SvgStrokeWidthControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			label={__('Stroke Width', 'maxi-blocks')}
+			label={__('Stroke width', 'maxi-blocks')}
 			value={stroke || defaultStroke}
 			placeholder={
 				breakpoint !== 'general'
@@ -36,10 +37,14 @@ const SvgStrokeWidthControl = props => {
 					  })
 					: null
 			}
-			onChangeValue={val => {
+			onChangeValue={rawVal => {
+				const val = rawVal !== undefined && rawVal !== '' ? rawVal : '';
+
 				onChange({
 					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
 						val !== undefined && val !== '' ? val : '',
+					[`${prefix === 'svg-' ? '' : prefix}content`]:
+						setSVGStrokeWidth(content, val),
 				});
 			}}
 			min={0.1}

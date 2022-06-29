@@ -60,7 +60,7 @@ const NumberCounterControl = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				label={__('Auto Width', 'maxi-blocks')}
+				label={__('Auto width', 'maxi-blocks')}
 				selected={autoWidth}
 				onChange={val =>
 					onChange({
@@ -118,7 +118,7 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<SelectControl
-				label={__('Start Animation', 'maxi-blocks')}
+				label={__('Start animation', 'maxi-blocks')}
 				className='maxi-number-counter-control__start-animation'
 				value={props['number-counter-start-animation']}
 				options={[
@@ -143,7 +143,7 @@ const NumberCounterControl = props => {
 				</div>
 			)}
 			<AdvancedNumberControl
-				label={__('Start Number', 'maxi-blocks')}
+				label={__('Start number', 'maxi-blocks')}
 				min={0}
 				max={props['number-counter-end']}
 				initial={0}
@@ -159,7 +159,7 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
-				label={__('End Number', 'maxi-blocks')}
+				label={__('End number', 'maxi-blocks')}
 				min={1}
 				max={props['number-counter-circle-status'] ? 9999 : 100}
 				initial={100}
@@ -238,16 +238,24 @@ const NumberCounterControl = props => {
 			/>
 			<FontWeightControl
 				onChange={val => {
-					onChange({ 'number-counter-title-font-weight': val });
+					onChange({ [`font-weight-${breakpoint}`]: val });
 				}}
-				value={props['number-counter-title-font-weight']}
-				fontName={props['number-counter-title-font-family']}
-				prefix='number-counter-title-'
-				fontStyle=''
+				fontWeight={
+					getLastBreakpointAttribute({
+						target: 'font-weight',
+						breakpoint,
+						attributes: props,
+					}) || '400'
+				}
+				fontName={getLastBreakpointAttribute({
+					target: 'font-family',
+					breakpoint,
+					attributes: props,
+				})}
 			/>
 			<AdvancedNumberControl
 				className='maxi-number-counter-control__font-size'
-				label={__('Title Font Size', 'maxi-blocks')}
+				label={__('Title font size', 'maxi-blocks')}
 				min={0}
 				max={99}
 				initial={32}
@@ -271,10 +279,9 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-
 			<ToggleSwitch
 				className='number-counter-percentage-sign-status'
-				label={__('Show Percentage Sign', 'maxi-block')}
+				label={__('Show percentage sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}
 				onChange={val =>
 					onChange({
@@ -284,7 +291,7 @@ const NumberCounterControl = props => {
 			/>
 			<ToggleSwitch
 				className='number-counter-circle-status'
-				label={__('Hide Circle', 'maxi-block')}
+				label={__('Hide circle', 'maxi-block')}
 				selected={props['number-counter-circle-status']}
 				onChange={val => {
 					onChange({
@@ -303,7 +310,7 @@ const NumberCounterControl = props => {
 			{!props['number-counter-circle-status'] && (
 				<ToggleSwitch
 					className='number-counter-rounded-status'
-					label={__('Rounded Bar', 'maxi-block')}
+					label={__('Rounded bar', 'maxi-block')}
 					selected={props['number-counter-rounded-status']}
 					onChange={val =>
 						onChange({
@@ -336,6 +343,7 @@ const NumberCounterControl = props => {
 					attributes: props,
 				})}
 				prefix='number-counter-text-'
+				deviceType={breakpoint}
 				onChangeInline={({ color }) =>
 					onChangeInline(
 						{ fill: color },
@@ -366,7 +374,7 @@ const NumberCounterControl = props => {
 			{!props['number-counter-circle-status'] && (
 				<>
 					<ColorControl
-						label={__('Circle Background', 'maxi-blocks')}
+						label={__('Circle background', 'maxi-blocks')}
 						paletteStatus={
 							props[
 								'number-counter-circle-background-palette-status'
@@ -413,7 +421,7 @@ const NumberCounterControl = props => {
 					/>
 					<hr />
 					<ColorControl
-						label={__('Circle Bar', 'maxi-blocks')}
+						label={__('Circle bar', 'maxi-blocks')}
 						paletteStatus={getLastBreakpointAttribute({
 							target: 'number-counter-circle-bar-palette-status',
 							breakpoint,

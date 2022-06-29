@@ -16,22 +16,21 @@ import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsText, categoriesText } from './custom-css';
 import listTab from './list-tab';
-
-/**
- * External dependencies
- */
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, context } = props;
 	const { isList, textLevel } = attributes;
 
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -41,74 +40,68 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isSecondary
-									items={[
-										deviceType === 'general' &&
-											!isList && {
-												label: __(
-													'Heading / Paragraph tag',
-													'maxi-blocks'
-												),
-												content: (
-													<FontLevelControl
-														{...getGroupAttributes(
-															attributes,
-															'typography',
-															true
-														)}
-														value={textLevel}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-													/>
-												),
-												indicatorProps: ['textLevel'],
-											},
-										...(isList && listTab(props)),
-										...inspectorTabs.alignment({
-											props,
-											isTextAlignment: true,
-										}),
-										...inspectorTabs.typography({
-											props,
-											styleCardPrefix: '',
-											hideAlignment: true,
-											allowLink: true,
-											globalProps: {
-												target: '',
-												type: textLevel,
-											},
-											hoverGlobalProps: {
-												target: 'hover',
-												type: textLevel,
-											},
-										}),
-										...inspectorTabs.blockBackground({
-											props,
-										}),
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+							<AccordionControl
+								isSecondary
+								items={[
+									deviceType === 'general' &&
+										!isList && {
+											label: __(
+												'Heading / Paragraph tag',
+												'maxi-blocks'
+											),
+											content: (
+												<FontLevelControl
+													{...getGroupAttributes(
+														attributes,
+														'typography',
+														true
+													)}
+													value={textLevel}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+												/>
+											),
+											indicatorProps: ['textLevel'],
+										},
+									...(isList && listTab(props)),
+									...inspectorTabs.alignment({
+										props,
+										isTextAlignment: true,
+									}),
+									...inspectorTabs.typography({
+										props,
+										styleCardPrefix: '',
+										hideAlignment: true,
+										allowLink: true,
+										globalProps: {
+											target: '',
+											type: textLevel,
+										},
+										hoverGlobalProps: {
+											target: 'hover',
+											type: textLevel,
+										},
+										context,
+									}),
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{

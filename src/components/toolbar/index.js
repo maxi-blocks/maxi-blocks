@@ -3,20 +3,24 @@
  */
 import { Popover } from '@wordpress/components';
 import {
-	forwardRef,
 	memo,
+	forwardRef,
 	useEffect,
-	useRef,
 	useState,
+	useRef,
 } from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
+import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
+import { toolbarPin, toolbarPinLocked } from '../../icons';
 
 /**
  * Utils
@@ -54,32 +58,15 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getColorRGBAString,
 } from '../../extensions/styles';
-import { setSVGContent } from '../../extensions/svg';
 
 /**
  * Styles
  */
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
-
-/**
- * General
- */
-const allowedBlocks = [
-	'maxi-blocks/button-maxi',
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/divider-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/image-maxi',
-	'maxi-blocks/map-maxi',
-	'maxi-blocks/number-counter-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/text-maxi',
-];
+import { getBoundaryElement } from '../../extensions/dom';
+import VideoUrl from './components/video-url';
 
 /**
  * Component
@@ -96,6 +83,7 @@ const MaxiToolbar = memo(
 		const {
 			attributes,
 			backgroundAdvancedOptions,
+			backgroundPrefix,
 			clientId,
 			isSelected,
 			name,
@@ -110,12 +98,10 @@ const MaxiToolbar = memo(
 			inlineStylesTargets = inlineStylesTargetsDefault,
 			resetNumberHelper,
 			copyPasteMapping,
+			mediaPrefix,
 		} = props;
 		const {
-			blockFullWidth,
-			content,
 			customLabel,
-			fullWidth,
 			isFirstOnHierarchy,
 			isList,
 			linkSettings,
@@ -161,8 +147,6 @@ const MaxiToolbar = memo(
 			setAnchorRef(ref.current);
 		});
 
-		if (!allowedBlocks.includes(name)) return null;
-
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');
 			const originalNestedBlocks = clientId
@@ -178,16 +162,17 @@ const MaxiToolbar = memo(
 			inlineStylesTargets
 		);
 
-		const boundaryElement =
-			document.defaultView.frameElement ||
-			getScrollContainer(anchorRef) ||
-			document.body;
-
 		const lineOrientation = getLastBreakpointAttribute(
 			'line-orientation',
 			breakpoint,
 			attributes
 		);
+
+		const [pinActive, setPinActive] = useState(false);
+
+		const togglePin = () => {
+			setPinActive(!pinActive);
+		};
 
 		return (
 			isSelected &&
@@ -198,7 +183,10 @@ const MaxiToolbar = memo(
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					getAnchorRect={() => {
+					getAnchorRect={spanEl => {
+						// span element needs to be hidden to don't break the grid
+						spanEl.style.display = 'none';
+
 						const rect = anchorRef.getBoundingClientRect();
 						const popoverRect = popoverRef.current
 							?.querySelector('.components-popover__content')
@@ -242,11 +230,30 @@ const MaxiToolbar = memo(
 					)}
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
-					__unstableStickyBoundaryElement={boundaryElement}
+					__unstableStickyBoundaryElement={getBoundaryElement(
+						anchorRef
+					)}
 				>
-					<div className='toolbar-wrapper'>
+					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
+								{!isFirstOnHierarchy && (
+									<span
+										className='breadcrumbs-pin'
+										onClick={() => {
+											togglePin();
+										}}
+									>
+										<span className='breadcrumbs-pin-toltip'>
+											{pinActive ? 'Unpin' : 'Pin Open'}
+										</span>
+										<span className='breadcrumbs-pin-icon'>
+											{pinActive
+												? toolbarPinLocked
+												: toolbarPin}
+										</span>
+									</span>
+								)}
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}
@@ -262,6 +269,7 @@ const MaxiToolbar = memo(
 							breakpoint={breakpoint}
 							clientId={clientId}
 							attributes={attributes}
+							prefix={mediaPrefix}
 						/>
 						<TextColor
 							blockName={name}
@@ -284,10 +292,7 @@ const MaxiToolbar = memo(
 								);
 							}}
 							breakpoint={breakpoint}
-							node={anchorRef}
 							isList={isList}
-							typeOfList={typeOfList}
-							clientId={clientId}
 							textLevel={textLevel}
 							styleCard={styleCard}
 						/>
@@ -298,15 +303,11 @@ const MaxiToolbar = memo(
 							])}
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
-							node={anchorRef}
-							content={content}
 							breakpoint={breakpoint}
 							isList={isList}
-							typeOfList={typeOfList}
 							textLevel={textLevel}
 							styleCard={styleCard}
 							clientId={clientId}
-							blockStyle={blockStyle}
 						/>
 						<Mover
 							clientId={clientId}
@@ -351,34 +352,13 @@ const MaxiToolbar = memo(
 											})
 										}
 										onChangeFill={obj => {
-											const fillColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-fill',
-													secondVar: `color-${obj['svg-fill-palette-color']}`,
-													opacity:
-														obj[
-															'svg-fill-palette-opacity'
-														],
-													blockStyle,
-												});
-
-											maxiSetAttributes({
-												...obj,
-												content: setSVGContent(
-													attributes.content,
-													obj[
-														'svg-fill-palette-status'
-													]
-														? fillColorStr
-														: obj['svg-fill-color'],
-													'fill'
-												),
-											});
+											maxiSetAttributes(obj);
 											cleanInlineStyles('[data-fill]');
 										}}
 										svgType='Fill'
 										type='fill'
 										blockStyle={blockStyle}
+										content={attributes.content}
 									/>
 								)}
 								{svgType !== 'Shape' && (
@@ -401,34 +381,13 @@ const MaxiToolbar = memo(
 											})
 										}
 										onChangeStroke={obj => {
-											const lineColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-stroke',
-													secondVar: `color-${obj['svg-line-palette-color']}`,
-													opacity:
-														obj[
-															'svg-line-palette-opacity'
-														],
-													blockStyle,
-												});
-
-											maxiSetAttributes({
-												...obj,
-												content: setSVGContent(
-													attributes.content,
-													obj[
-														'svg-line-palette-status'
-													]
-														? lineColorStr
-														: obj['svg-line-color'],
-													'stroke'
-												),
-											});
+											maxiSetAttributes(obj);
 											cleanInlineStyles('[data-stroke]');
 										}}
 										svgType='Line'
 										type='line'
 										blockStyle={blockStyle}
+										content={attributes.content}
 									/>
 								)}
 								<SvgWidth
@@ -442,6 +401,12 @@ const MaxiToolbar = memo(
 									resizableObject={resizableObject}
 								/>
 							</>
+						)}
+						{name === 'maxi-blocks/video-maxi' && (
+							<VideoUrl
+								{...getGroupAttributes(attributes, 'video')}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
 						)}
 						<ColumnMover
 							clientId={clientId}
@@ -457,9 +422,12 @@ const MaxiToolbar = memo(
 									'backgroundGradient',
 								],
 								false,
-								prefix
+								backgroundPrefix || prefix
 							)}
-							prefix={prefix}
+							{...(name === 'maxi-blocks/video-maxi' && {
+								...getGroupAttributes(attributes, 'video'),
+							})}
+							prefix={backgroundPrefix || prefix}
 							advancedOptions={backgroundAdvancedOptions}
 							globalProps={backgroundGlobalProps}
 							blockName={name}
@@ -561,8 +529,6 @@ const MaxiToolbar = memo(
 						/>
 						<Size
 							blockName={name}
-							blockFullWidth={blockFullWidth}
-							fullWidth={fullWidth}
 							{...getGroupAttributes(
 								attributes,
 								'size',
@@ -706,16 +672,33 @@ const MaxiToolbar = memo(
 			)
 		);
 	}),
-	// Avoids non-necessary renderings
 	(oldProps, newProps) => {
 		const {
 			attributes: oldAttr,
 			propsToAvoid,
 			isSelected: wasSelected,
+			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
 		} = oldProps;
-		const { attributes: newAttr, isSelected } = newProps;
 
-		if (!wasSelected || wasSelected !== isSelected) return false;
+		const {
+			attributes: newAttr,
+			isSelected,
+			deviceType: breakpoint,
+			scValues,
+		} = newProps;
+
+		// If is not selected, don't render
+		if (!isSelected && wasSelected === isSelected) return true;
+
+		if (select('core/block-editor').isDraggingBlocks()) return true;
+
+		if (
+			wasSelected !== isSelected ||
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
+		)
+			return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { transitionAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -20,10 +21,6 @@ const attributes = {
 	customLabel: {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
-	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'full',
 	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
@@ -56,6 +53,14 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
+		'full-width-general': {
+			type: 'string',
+			default: 'full',
+		},
+		'size-advanced-options': {
+			type: 'boolean',
+			default: true,
+		},
 		'max-width-xxl': {
 			type: 'string',
 			default: '1690',
@@ -119,7 +124,10 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(),
+	},
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.position,
@@ -136,7 +144,7 @@ const attributes = {
 			type: 'string',
 			default: 'px',
 		},
-	}
+	},
 };
 
 export default attributes;

@@ -51,7 +51,8 @@ const ColorControl = props => {
 		disableColorDisplay = false,
 		isToolbar = false,
 		prefix = '',
-		useBreakpointForDefault = false,
+		avoidBreakpointForDefault = false,
+		noColorPrefix,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -108,7 +109,7 @@ const ColorControl = props => {
 					'palette-status',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.paletteColor = getDefaultAttribute(
@@ -116,7 +117,7 @@ const ColorControl = props => {
 					'palette-color',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.paletteOpacity = getDefaultAttribute(
@@ -124,7 +125,7 @@ const ColorControl = props => {
 					'palette-opacity',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 			defaultColorAttr.color = getDefaultAttribute(
@@ -132,7 +133,7 @@ const ColorControl = props => {
 					'color',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					avoidBreakpointForDefault ? '' : deviceType
 				)
 			);
 		}
@@ -168,7 +169,7 @@ const ColorControl = props => {
 					'palette-opacity',
 					isHover,
 					prefix,
-					useBreakpointForDefault ? deviceType : null
+					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
 		onChange({
@@ -186,7 +187,6 @@ const ColorControl = props => {
 					label={label}
 					value={paletteColor}
 					globalProps={globalProps}
-					noColorPrefix
 					isHover={isHover}
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}
@@ -196,6 +196,7 @@ const ColorControl = props => {
 					className={className}
 					onReset={onReset}
 					onResetOpacity={onResetOpacity}
+					noColorPrefix={noColorPrefix}
 				/>
 			)}
 			{!disablePalette && (

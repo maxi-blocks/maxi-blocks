@@ -3,7 +3,7 @@
  */
 import { useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useRef } from '@wordpress/element';
+import { useRef, useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -59,39 +59,44 @@ const withMaxiProps = createHigherOrderComponent(
 				};
 			});
 
-			const maxiSetAttributes = obj =>
+			const maxiSetAttributes = useCallback(obj =>
 				handleSetAttributes({
 					obj,
 					attributes,
 					clientId,
 					onChange: setAttributes,
-				});
+				})
+			);
 
 			const ref = useRef(null);
 			const styleObjKeys = useRef([]);
 
-			const insertInlineStyles = ({
-				obj,
-				target = '',
-				isMultiplySelector = false,
-				pseudoElement = '',
-			}) =>
-				handleInsertInlineStyles({
-					styleObj: obj,
-					target,
-					isMultiplySelector,
-					pseudoElement,
-					styleObjKeys,
-					ref,
-				});
+			const insertInlineStyles = useCallback(
+				({
+					obj,
+					target = '',
+					isMultiplySelector = false,
+					pseudoElement = '',
+				}) =>
+					handleInsertInlineStyles({
+						styleObj: obj,
+						target,
+						isMultiplySelector,
+						pseudoElement,
+						styleObjKeys,
+						ref,
+					})
+			);
 
-			const cleanInlineStyles = (target = '', pseudoElement = '') =>
-				handleCleanInlineStyles(
-					target,
-					pseudoElement,
-					styleObjKeys,
-					ref
-				);
+			const cleanInlineStyles = useCallback(
+				(target = '', pseudoElement = '') =>
+					handleCleanInlineStyles(
+						target,
+						pseudoElement,
+						styleObjKeys,
+						ref
+					)
+			);
 
 			return (
 				<WrappedComponent

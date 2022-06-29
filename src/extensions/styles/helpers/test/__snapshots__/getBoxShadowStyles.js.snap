@@ -3,10 +3,10 @@
 exports[`getBoxShadowStyles Get a correct box shadow styles with values in all responsive and with custom color 1`] = `
 Object {
   "general": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "inset 1px 2px 3px 4px rgb(255, 99, 71)",
   },
   "l": Object {
-    "box-shadow": "13px 14px 15px 16px rgb(255, 99, 74)",
+    "box-shadow": "inset 13px 14px 15px 16px rgb(255, 99, 74)",
   },
   "m": Object {
     "box-shadow": "17px 18px 19px 20px rgb(255, 99, 75)",
@@ -15,13 +15,13 @@ Object {
     "box-shadow": "21px 22px 23px 24px rgb(255, 99, 76)",
   },
   "xl": Object {
-    "box-shadow": "9px 10px 11px 12px rgb(255, 99, 73)",
+    "box-shadow": "inset 9px 10px 11px 12px rgb(255, 99, 73)",
   },
   "xs": Object {
-    "box-shadow": "25px 26px 27px 28px rgb(255, 99, 77)",
+    "box-shadow": "inset 25px 26px 27px 28px rgb(255, 99, 77)",
   },
   "xxl": Object {
-    "box-shadow": "5px 6px 7px 8px rgb(255, 99, 72)",
+    "box-shadow": "inset 5px 6px 7px 8px rgb(255, 99, 72)",
   },
 }
 `;
@@ -30,6 +30,9 @@ exports[`getBoxShadowStyles Returns box-shadow object with different colors base
 Object {
   "general": Object {
     "box-shadow": "1px 2px 3px 4px rgba(var(--maxi-light-color-4,255,74,23),1)",
+  },
+  "l": Object {
+    "box-shadow": "1px 2px 3px 4px rgba(var(--maxi-light-color-2,242,249,253),0.2)",
   },
 }
 `;

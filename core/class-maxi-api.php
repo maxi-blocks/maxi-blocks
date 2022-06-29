@@ -265,7 +265,10 @@ if (!class_exists('MaxiBlocks_API')):
 
             global $wpdb;
             $response = $wpdb->get_results(
-                "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = {$id}",
+                $wpdb->prepare(
+                    "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
+                    $id
+                ),
                 OBJECT
             );
 
@@ -296,12 +299,15 @@ if (!class_exists('MaxiBlocks_API')):
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
             if (empty($styles) || $styles === '{}') {
-                $wpdb->query("DELETE FROM {$table} WHERE post_id={$id}");
+                $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d", $id));
                 return '{}';
             }
 
             $exists = $wpdb->get_results(
-                "SELECT * FROM {$table} WHERE post_id = {$id}",
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
+                    $id
+                ),
                 OBJECT
             );
 
@@ -344,7 +350,10 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             $post = (array)$wpdb->get_results(
-                "SELECT * FROM {$table} WHERE post_id = {$id}",
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
+                    $id
+                ),
                 OBJECT
             )[0];
 
@@ -359,12 +368,13 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_sc_string()
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-            $query = 'SELECT object FROM ' .
-                     $table_name .
-                     ' where id = "sc_string"';
-
-            $response =  maybe_unserialize($wpdb->get_var($query));
+          
+            $response =  maybe_unserialize($wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                    'sc_string'
+                )
+            ));
 
             if (!$response) {
                 $response = '';
@@ -419,7 +429,7 @@ if (!class_exists('MaxiBlocks_API')):
             if (!$breakpoints) {
                 $default_breakpoints = [
                     'xs' => 480,
-                    's' => 768,
+                    's' => 767,
                     'm' => 1024,
                     'l' => 1366,
                     'xl' => 1920,
@@ -434,12 +444,9 @@ if (!class_exists('MaxiBlocks_API')):
         public function mb_delete_register($postId)
         {
             global $wpdb;
-
-            $table_styles =  $wpdb->prefix . 'maxi_blocks_styles';
-            $table_custom_meta =  $wpdb->prefix . 'maxi_blocks_custom_data';
-
-            $wpdb->query("DELETE FROM {$table_styles} WHERE post_id={$postId}");
-            $wpdb->query("DELETE FROM {$table_custom_meta} WHERE post_id={$postId}");
+            
+            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id=%d", $postId));
+            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id=%d", $postId));
         }
 
         public function get_api_response($response)
@@ -459,7 +466,7 @@ if (!class_exists('MaxiBlocks_API')):
                 return new WP_Error(
                     $response_code,
                     $response_message,
-                    $response_body,
+                    $response_body
                 );
             }
         }
@@ -467,12 +474,16 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_current_style_cards()
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-            $query =
-                'SELECT object FROM ' .
-                $table_name .
-                ' where id = "style_cards_current"';
-            $style_cards = $wpdb->get_var($query);
+
+            $table_name = $wpdb->prefix . 'maxi_blocks_general';
+        
+            $style_cards = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                    'style_cards_current'
+                )
+            );
+            
             if ($style_cards && !empty($style_cards)) {
                 return $style_cards;
             } else {
@@ -486,7 +497,13 @@ if (!class_exists('MaxiBlocks_API')):
                     'id' => 'style_cards_current',
                     'object' => $defaultStyleCard,
                 ]);
-                $style_cards = $wpdb->get_var($query);
+                
+                $style_cards = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                        'style_cards_current'
+                    )
+                );
                 return $style_cards;
             }
         }
@@ -533,7 +550,10 @@ if (!class_exists('MaxiBlocks_API')):
 
             global $wpdb;
             $response = $wpdb->get_results(
-                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = {$id}",
+                $wpdb->prepare(
+                    'SELECT custom_data_value FROM  ' . $wpdb->prefix . 'maxi_blocks_custom_data WHERE post_id = %d',
+                    $id
+                ),
                 OBJECT
             );
 
@@ -558,7 +578,7 @@ if (!class_exists('MaxiBlocks_API')):
                     'active_custom_data' =>  null,
                 ), ['post_id' => $id]);
 
-                $wpdb->query("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id={$id}");
+                $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id=%d", $id));
 
                 return '{}';
             }

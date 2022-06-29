@@ -37,6 +37,7 @@ const PaddingMargin = props => {
 		<ToolbarPopover
 			className='toolbar-item__padding-margin'
 			tooltip={__('Padding & Margin', 'maxi-blocks')}
+			position='bottom center'
 			icon={toolbarPadding}
 			advancedOptions={isIconToolbar ? 'icon' : 'margin / padding'}
 		>
@@ -51,6 +52,7 @@ const PaddingMargin = props => {
 						onChange={onChange}
 						breakpoint={breakpoint}
 						target={paddingTarget}
+						optionType='string'
 						disableAuto
 						disableSync
 					/>

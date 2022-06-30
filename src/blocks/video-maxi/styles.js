@@ -9,6 +9,7 @@ import { isNil, isEmpty } from 'lodash';
 import {
 	getAttributeValue,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 	stylesCleaner,
 } from '../../extensions/styles';
 import {
@@ -145,7 +146,7 @@ const getOverlayBackgroundObject = props => {
 	return response;
 };
 
-const getVideoPlayerOject = props => {
+const getVideoContainerOject = props => {
 	const { videoRatio } = props;
 
 	const response = {
@@ -210,6 +211,50 @@ const getIconSize = (obj, prefix = '', isHover = false) => {
 	return { iconSize: response };
 };
 
+const getCloseIconPosition = obj => {
+	const response = {
+		label: 'Icon position',
+	};
+
+	const { 'close-icon-position': iconPosition } = obj;
+
+	// if the icon is spacing from the screen boundaries we want to move it left down,
+	// if it is spacing from the video we want to move it top right
+	const isSpacingPositive = iconPosition === 'top-screen-right';
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		const rawIconSpacing = getLastBreakpointAttribute({
+			target: 'close-icon-spacing',
+			breakpoint,
+			attributes: obj,
+		});
+		const iconSpacingUnit = getLastBreakpointAttribute({
+			target: 'close-icon-spacing-unit',
+			breakpoint,
+			attributes: obj,
+		});
+
+		const iconSpacing = isSpacingPositive
+			? rawIconSpacing
+			: -rawIconSpacing;
+
+		response[breakpoint].top = `${iconSpacing ?? 0}${
+			iconSpacingUnit ?? 'px'
+		}`;
+		response[breakpoint].right = `${iconSpacing ?? 0}${
+			iconSpacingUnit ?? 'px'
+		}`;
+	});
+
+	return {
+		iconPosition: {
+			response,
+		},
+	};
+};
+
 const getIconObject = (prefix, obj) => {
 	const { [`${prefix}icon-status-hover`]: iconHoverStatus } = obj;
 
@@ -222,6 +267,9 @@ const getIconObject = (prefix, obj) => {
 		),
 		[` .maxi-video-block__${prefix}button`]: {
 			icon: getIconStyles(obj, obj.blockStyle, false, false, prefix),
+			...(prefix === 'close-' && {
+				iconPosition: getCloseIconPosition(obj),
+			}),
 		},
 		...getSVGStyles({
 			obj,
@@ -261,7 +309,8 @@ const getStyles = props => {
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
-				' .maxi-video-block__video-player': getVideoPlayerOject(props),
+				' .maxi-video-block__video-container':
+					getVideoContainerOject(props),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
 				...getIconObject('play-', props),

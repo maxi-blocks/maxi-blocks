@@ -32,6 +32,7 @@ const save = props => {
 		'overlay-mediaURL': overlayMediaUrl,
 		'overlay-mediaAlt': overlayMediaAlt,
 		hideImage,
+		'close-icon-position': closeIconPosition,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
@@ -63,10 +64,18 @@ const save = props => {
 							className='maxi-video-block__popup-wrapper'
 							style={{ display: 'none' }}
 						>
-							<div className='maxi-video-block__close-button'>
-								<RawHTML>{closeIcon}</RawHTML>
-							</div>
-							<div className='maxi-video-block__video-container'>
+							{closeIconPosition === 'top-screen-right' && (
+								<div className='maxi-video-block__close-button'>
+									<RawHTML>{closeIcon}</RawHTML>
+								</div>
+							)}
+							<div className='maxi-video-block__video-container maxi-video-block__video-container--popup'>
+								{closeIconPosition ===
+									'top-right-above-video' && (
+									<div className='maxi-video-block__close-button'>
+										<RawHTML>{closeIcon}</RawHTML>
+									</div>
+								)}
 								{videoType === 'direct' ? (
 									<video
 										className='maxi-video-block__video-player'
@@ -90,25 +99,29 @@ const save = props => {
 						</div>
 					</>
 				) : videoType === 'direct' ? (
-					<video
-						className='maxi-video-block__video-player'
-						loop={isLoop}
-						muted={isMuted}
-						autoPlay={isAutoplay}
-						controls={showPlayerControls}
-						src={embedUrl}
-					>
-						<track kind='captions' />
-					</video>
+					<div className='maxi-video-block__video-container'>
+						<video
+							className='maxi-video-block__video-player'
+							loop={isLoop}
+							muted={isMuted}
+							autoPlay={isAutoplay}
+							controls={showPlayerControls}
+							src={embedUrl}
+						>
+							<track kind='captions' />
+						</video>
+					</div>
 				) : (
-					<iframe
-						className='maxi-video-block__video-player'
-						title='video player'
-						allowFullScreen
-						allow='autoplay'
-						src={embedUrl}
-						frameBorder={0}
-					/>
+					<div className='maxi-video-block__video-container'>
+						<iframe
+							className='maxi-video-block__video-player'
+							title='video player'
+							allowFullScreen
+							allow='autoplay'
+							src={embedUrl}
+							frameBorder={0}
+						/>
+					</div>
 				))}
 		</MaxiBlock.save>
 	);

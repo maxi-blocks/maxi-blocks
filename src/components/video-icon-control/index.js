@@ -14,15 +14,16 @@ import {
 	getAttributeKey,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
+import AdvancedNumberControl from '../advanced-number-control';
+import SettingTabsControl from '../setting-tabs-control';
+import ToggleSwitch from '../toggle-switch';
+import SelectControl from '../select-control';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
 import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
-import AdvancedNumberControl from '../advanced-number-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
 
 const IconSettings = props => {
 	const {
@@ -181,6 +182,7 @@ const IconSettings = props => {
 					/>
 					<AdvancedNumberControl
 						label='Icon height'
+						className='maxi-video-icon-control__icon-height'
 						optionType='string'
 						value={getLastBreakpointAttribute({
 							target: getAttributeKey(
@@ -248,6 +250,94 @@ const IconSettings = props => {
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', '%']}
 					/>
+					{prefix === 'close-' && (
+						<>
+							<SelectControl
+								label={__('Icon position', 'maxi-blocks')}
+								className='maxi-video-icon-control__icon-position'
+								value={props[`${prefix}icon-position`]}
+								options={[
+									{
+										label: __(
+											'Top screen right',
+											'maxi-blocks'
+										),
+										value: 'top-screen-right',
+									},
+									{
+										label: __(
+											'Top right above video',
+											'maxi-blocks'
+										),
+										value: 'top-right-above-video',
+									},
+								]}
+								onChange={val =>
+									onChange({
+										[`${prefix}icon-position`]: val,
+									})
+								}
+							/>
+							<AdvancedNumberControl
+								label={__('Icon spacing', 'maxi-blocks')}
+								className='maxi-video-icon-control__icon-spacing'
+								placeholder={0}
+								value={getLastBreakpointAttribute({
+									target: `${prefix}icon-spacing`,
+									breakpoint,
+									attributes: props,
+								})}
+								onChangeValue={val =>
+									onChange({
+										[`${prefix}icon-spacing-${breakpoint}`]:
+											val,
+									})
+								}
+								enableUnit
+								unit={getLastBreakpointAttribute({
+									target: `${prefix}icon-spacing-unit`,
+									breakpoint,
+									attributes: props,
+								})}
+								minMaxSettings={{
+									px: {
+										min: -999,
+										max: 999,
+									},
+									em: {
+										min: -99,
+										max: 99,
+									},
+									vw: {
+										min: -99,
+										max: 99,
+									},
+									'%': {
+										min: -100,
+										max: 100,
+									},
+								}}
+								onChangeUnit={val =>
+									onChange({
+										[`${prefix}icon-spacing-unit-${breakpoint}`]:
+											val,
+									})
+								}
+								onReset={() => {
+									onChange({
+										[`${prefix}icon-spacing-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}icon-spacing-${breakpoint}`
+											),
+										[`${prefix}icon-spacing-unit-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}icon-spacing-unit-${breakpoint}`
+											),
+									});
+								}}
+							/>
+						</>
+					)}
 				</>
 			)}
 		</>

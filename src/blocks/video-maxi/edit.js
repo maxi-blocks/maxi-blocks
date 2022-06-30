@@ -104,7 +104,7 @@ const VideoPlayer = props => {
 	}, [videoType, endTime, startTime, isLoop]);
 
 	return (
-		<>
+		<div className='maxi-video-block__video-container'>
 			{videoType === 'direct' ? (
 				<video
 					src={embedUrl}
@@ -131,7 +131,7 @@ const VideoPlayer = props => {
 			{!isSelected && (
 				<div className='maxi-video-block__select-overlay' />
 			)}
-		</>
+		</div>
 	);
 };
 

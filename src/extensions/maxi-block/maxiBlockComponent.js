@@ -261,6 +261,13 @@ class MaxiBlockComponent extends Component {
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
 
+		if (this.maxiBlockGetSnapshotBeforeUpdate) {
+			return (
+				this.maxiBlockGetSnapshotBeforeUpdate(prevProps) &&
+				isEqual(prevProps.attributes, this.props.attributes)
+			);
+		}
+
 		// For render styles when there's no <style> element for the block
 		// Normally happens when duplicate the block
 		if (
@@ -274,12 +281,6 @@ class MaxiBlockComponent extends Component {
 			)
 		)
 			return false;
-
-		if (this.maxiBlockGetSnapshotBeforeUpdate)
-			return (
-				this.maxiBlockGetSnapshotBeforeUpdate(prevProps) &&
-				isEqual(prevProps.attributes, this.props.attributes)
-			);
 
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}

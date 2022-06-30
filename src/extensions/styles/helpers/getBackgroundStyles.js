@@ -12,7 +12,15 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isNumber, merge, compact, round } from 'lodash';
+import {
+	compact,
+	isEmpty,
+	isNil,
+	isNumber,
+	merge,
+	pickBy,
+	round,
+} from 'lodash';
 import getPaletteAttributes from '../getPaletteAttributes';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -259,12 +267,12 @@ export const getImageBackgroundObject = ({
 
 	if (isEmpty(bgImageUrl)) return {};
 
-	const getBgImageAttributeValue = target =>
+	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
 		getAttributeValue({
 			target,
 			props,
 			prefix,
-			isHover,
+			isHover: isHoverParam,
 			breakpoint,
 		});
 	const getBgImageLastBreakpointAttribute = target =>
@@ -415,11 +423,16 @@ export const getImageBackgroundObject = ({
 	if (isNumber(bgImageOpacity)) {
 		response[breakpoint].opacity = bgImageOpacity;
 
-		const hoverStatus = props[`${prefix}background-hover-status`];
+		// To avoid image blinking on opacity hover
+		if (!isHover) {
+			const bgImageOpacity = getBgImageAttributeValue(
+				'background-image-opacity',
+				true
+			);
 
-		if (hoverStatus) {
-			// To avoid image blinking when hovering
-			response[breakpoint]['-webkit-transform'] = 'translate3d(0,0,0)';
+			if (bgImageOpacity)
+				response[breakpoint]['-webkit-transform'] =
+					'translate3d(0,0,0)';
 		}
 	}
 
@@ -660,6 +673,18 @@ const getBackgroundLayers = ({
 										'backgroundImage',
 										isHover
 									),
+									...(!isHover &&
+										pickBy(
+											getGroupAttributes(
+												layer,
+												'backgroundImage',
+												true
+											),
+											(value, key) =>
+												key.includes(
+													'background-image-opacity'
+												) && key.includes('-hover')
+										)),
 									isHover,
 									prefix,
 									breakpoint,

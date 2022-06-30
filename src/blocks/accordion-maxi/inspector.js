@@ -13,6 +13,7 @@ import {
 	AccordionSettings,
 	AccordionTitleSettings,
 	AccordionIconSettings,
+	AccordionBackgroundSettings,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -60,7 +61,7 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Accordion Settings',
+												'Accordion settings',
 												'maxi-blocks'
 											),
 											content: (
@@ -93,7 +94,7 @@ const Inspector = props => {
 												/>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __('Icon', 'maxi-blocks'),
 											content: (
 												<AccordionIconSettings
@@ -102,6 +103,21 @@ const Inspector = props => {
 														'accordionIcon'
 													)}
 													blockStyle={blockStyle}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Pane background',
+												'maxi-blocks'
+											),
+											content: (
+												<AccordionBackgroundSettings
+													{...attributes}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}

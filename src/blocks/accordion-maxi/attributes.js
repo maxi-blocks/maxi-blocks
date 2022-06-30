@@ -7,7 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { paletteAttributesCreator } from '../../extensions/styles';
+import {
+	breakpointAttributesCreator,
+	hoverAttributesCreator,
+	paletteAttributesCreator,
+} from '../../extensions/styles';
 
 /**
  * Attributes
@@ -42,6 +46,29 @@ const attributes = {
 		'title-background-palette-color': { type: 'number', default: 1 },
 	},
 	...attributesData.accordionIcon,
+	'background-status-hover': { type: 'boolean', default: false },
+	'active-background-status-hover': { type: 'boolean', default: false },
+	...breakpointAttributesCreator({
+		obj: {
+			...paletteAttributesCreator({ prefix: 'background-', palette: 1 }),
+			...paletteAttributesCreator({
+				prefix: 'active-background-',
+				palette: 1,
+			}),
+			...hoverAttributesCreator({
+				obj: {
+					...paletteAttributesCreator({
+						prefix: 'background-',
+						palette: 1,
+					}),
+					...paletteAttributesCreator({
+						prefix: 'active-background-',
+						palette: 1,
+					}),
+				},
+			}),
+		},
+	}),
 };
 
 export default attributes;

@@ -94,28 +94,28 @@ const getPaneSpacing = props => {
 	return response;
 };
 
-const getPaneTitleStyles = (props, target) => {
-	const getColor = prefix => {
-		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({
-				obj: props,
-				prefix,
-			});
-		if (!paletteStatus && !isNil(color)) return color;
-		if (paletteStatus && paletteColor)
-			return getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle: props.blockStyle,
-			});
-	};
+const getColor = (props, prefix) => {
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj: props,
+			prefix,
+		});
+	if (!paletteStatus && !isNil(color)) return color;
+	if (paletteStatus && paletteColor)
+		return getColorRGBAString({
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
+			blockStyle: props.blockStyle,
+		});
+};
 
+const getPaneTitleStyles = (props, target) => {
 	const response = {
 		[`${target} .maxi-pane-block__title`]: {
 			paneTitleColor: {
 				label: 'Pane title color',
 				general: {
-					color: getColor('title-'),
+					color: getColor(props, 'title-'),
 				},
 			},
 		},
@@ -123,7 +123,7 @@ const getPaneTitleStyles = (props, target) => {
 			paneTitleBgColor: {
 				label: 'Pane title background color',
 				general: {
-					'background-color': getColor('title-background-'),
+					'background-color': getColor(props, 'title-background-'),
 					'flex-direction':
 						props['icon-position'] === 'right'
 							? 'row'
@@ -132,6 +132,42 @@ const getPaneTitleStyles = (props, target) => {
 			},
 		},
 	};
+
+	return response;
+};
+
+const getBackgroundObject = props => {
+	const response = {};
+
+	['active-background-', 'background-'].forEach(prefix => {
+		[false, true].forEach(isHover => {
+			const resp = {};
+			breakpoints.forEach(breakpoint => {
+				resp[breakpoint] = {};
+				const { paletteStatus, paletteColor, paletteOpacity, color } =
+					getPaletteAttributes({
+						obj: props,
+						prefix,
+						breakpoint,
+						isHover,
+					});
+				if (!paletteStatus && !isNil(color))
+					resp[breakpoint]['background-color'] = color;
+				if (paletteStatus && paletteColor)
+					resp[breakpoint]['background-color'] = getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: props.blockStyle,
+					});
+			});
+
+			response[
+				` .maxi-pane-block[aria-expanded=${
+					prefix === 'background-' ? 'false' : 'true'
+				}] .maxi-pane-block__content${isHover ? ':hover' : ''}`
+			] = { paneBackground: resp };
+		});
+	});
 
 	return response;
 };
@@ -151,6 +187,7 @@ const getStyles = props => {
 				getPaneStyles(props),
 			...getPaneTitleStyles(props, ' .maxi-pane-block'),
 			...getIconObject(props),
+			...getBackgroundObject(props),
 		}),
 	};
 	return response;

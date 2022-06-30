@@ -1,0 +1,11 @@
+body.maxi-blocks--active .components-popover.maxi-popover-button {
+	.components-popover__content {
+		margin: auto;
+		overflow: hidden;
+		transform: translateX(-50%);
+	}
+
+	&--open {
+		z-index: -1;
+	}
+}

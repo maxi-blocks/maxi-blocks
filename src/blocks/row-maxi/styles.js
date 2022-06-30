@@ -6,6 +6,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -14,11 +15,6 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsRow } from './custom-css';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -62,6 +58,9 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
 		row: {
 			general: {},
 		},
@@ -72,12 +71,6 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'flex'),
 		}),
 	};
-
-	if (!isEmpty(props.horizontalAlign))
-		response.row.general['justify-content'] = props.horizontalAlign;
-
-	if (!isEmpty(props.verticalAlign))
-		response.row.general['align-items'] = props.verticalAlign;
 
 	return response;
 };
@@ -111,6 +104,16 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -119,6 +122,7 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
+				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

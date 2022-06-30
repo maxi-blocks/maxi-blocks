@@ -91,6 +91,10 @@ export const rawBackgroundImage = {
 		type: 'string',
 		default: 'padding-box',
 	},
+	'background-image-opacity': {
+		type: 'number',
+		default: 1,
+	},
 	'background-image-clip': {
 		type: 'string',
 		default: 'border-box',

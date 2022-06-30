@@ -12,15 +12,11 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
+	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
-const getNormalObject = props => {
+const getNormalObject = (props, rowGapProps) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -57,9 +53,12 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'transform'),
 		}),
 		columnSize: {
-			...getColumnSizeStyles({
-				...getGroupAttributes(props, 'columnSize'),
-			}),
+			...getColumnSizeStyles(
+				{
+					...getGroupAttributes(props, 'columnSize'),
+				},
+				rowGapProps
+			),
 		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -67,20 +66,17 @@ const getNormalObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
-		...(!isEmpty(props.verticalAlign) && {
-			column: {
-				general: {
-					'justify-content': props.verticalAlign,
-				},
-			},
-		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
+		}),
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
 	return response;
 };
+
 
 const getHoverObject = props => {
 	const response = {
@@ -111,14 +107,28 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = props => {
+
+const getBackgroundDisplayer = props => {
+	const response = {
+		transition: getTransitionStyles({
+			...getGroupAttributes(props, 'transition'),
+		}),
+	};
+
+	return response;
+};
+
+
+const getStyles = (props, rowGapProps) => {
+
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
 			{
-				'': getNormalObject(props),
+				'': getNormalObject(props, rowGapProps),
 				':hover': getHoverObject(props),
+				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',
@@ -127,6 +137,7 @@ const getStyles = props => {
 						'borderRadius',
 					]),
 					blockStyle: props.parentBlockStyle,
+					rowBorderRadius: props.rowBorderRadius,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -141,6 +152,7 @@ const getStyles = props => {
 					),
 					isHover: true,
 					blockStyle: props.parentBlockStyle,
+					rowBorderRadius: props.rowBorderRadius,
 				}),
 			},
 			selectorsColumn,

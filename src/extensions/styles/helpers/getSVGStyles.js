@@ -12,7 +12,7 @@ import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = (obj, prefix) => {
+export const getSVGWidthStyles = (obj, prefix = '') => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -43,7 +43,7 @@ export const getSVGWidthStyles = (obj, prefix) => {
 	return { SVGWidth: response };
 };
 
-const getSVGPathStyles = (obj, prefix) => {
+const getSVGPathStyles = (obj, prefix = '') => {
 	const response = {
 		label: 'SVG path',
 		general: {},
@@ -65,7 +65,7 @@ const getSVGPathStyles = (obj, prefix) => {
 	return { SVGPath: response };
 };
 
-const getSVGPathFillStyles = (obj, blockStyle, prefix) => {
+const getSVGPathFillStyles = (obj, blockStyle, prefix = '') => {
 	const response = {
 		label: 'SVG path-fill',
 		general: {},
@@ -86,7 +86,7 @@ const getSVGPathFillStyles = (obj, blockStyle, prefix) => {
 	return { SVGPathFill: response };
 };
 
-const getSVGPathStrokeStyles = (obj, blockStyle, prefix) => {
+const getSVGPathStrokeStyles = (obj, blockStyle, prefix = '') => {
 	const response = {
 		label: 'SVG',
 		general: {},

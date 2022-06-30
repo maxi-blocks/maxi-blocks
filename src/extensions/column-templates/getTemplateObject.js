@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import columnTemplates from './defaults';
+import columnTemplates from './columnTemplates';
 
 /**
  * Get Template Object

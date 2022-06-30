@@ -28,12 +28,11 @@ const getIconStyles = (
 				isHover,
 				breakpoint: 'general',
 			});
+		response.general.fill = 'none';
 
 		if (!paletteStatus && color) {
-			response.general.fill = 'none';
 			response.general.stroke = color;
 		} else if (paletteStatus && paletteColor) {
-			response.general.fill = 'none';
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
@@ -45,10 +44,8 @@ const getIconStyles = (
 			getPaletteAttributes({ obj, prefix: 'icon-', isHover });
 
 		if (!paletteStatus && !isNil(color)) {
-			response.general.fill = 'none';
 			response.general.stroke = color;
 		} else if (paletteStatus && paletteColor) {
-			response.general.fill = 'none';
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: obj[paletteOpacity],

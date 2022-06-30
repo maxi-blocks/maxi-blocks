@@ -82,6 +82,54 @@ Object {
 }
 `;
 
+exports[`getBackgroundStyles Get correct block background styles for color layer with border radius and row border radius 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-left-radius": "160px",
+        "border-bottom-right-radius": "200px",
+        "border-top-left-radius": "182px",
+        "border-top-right-radius": "183px",
+      },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+    },
+  },
+}
+`;
+
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
@@ -162,6 +210,54 @@ Object {
       },
       "xxl": Object {
         "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.2)",
+      },
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get correct block background styles for color layer with row border radius 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-left-radius": "181px",
+        "border-bottom-right-radius": "182px",
+        "border-top-left-radius": "183px",
+        "border-top-right-radius": "184px",
+      },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
     },
   },
@@ -603,6 +699,7 @@ Object {
         "background-repeat": "repeat-x",
         "background-size": "cover",
         "display": "block",
+        "opacity": 0.52,
       },
       "l": Object {
         "background-attachment": "fixed",
@@ -616,6 +713,7 @@ Object {
       "m": Object {
         "background-position": "right top",
         "background-size": "contain",
+        "opacity": 0.91,
       },
       "s": Object {
         "background-attachment": "scroll",
@@ -630,6 +728,7 @@ Object {
         "background-position": "left top",
         "background-repeat": "repeat-x",
         "background-size": "cover",
+        "opacity": 0.52,
       },
       "xs": Object {
         "background-position": "center top",
@@ -638,6 +737,7 @@ Object {
       "xxl": Object {
         "background-position": "left top",
         "background-size": "cover",
+        "opacity": 0.11,
       },
     },
   },
@@ -669,6 +769,7 @@ Object {
         "background-size": "cover",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
+        "opacity": 0.52,
       },
       "l": Object {
         "background-attachment": "fixed",
@@ -684,6 +785,7 @@ Object {
         "background-position": "right top",
         "background-size": "contain",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+        "opacity": 0.91,
       },
       "s": Object {
         "background-attachment": "scroll",
@@ -700,6 +802,7 @@ Object {
         "background-repeat": "repeat-x",
         "background-size": "cover",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.52,
       },
       "xs": Object {
         "background-position": "center top",
@@ -710,6 +813,7 @@ Object {
         "background-position": "left top",
         "background-size": "cover",
         "clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+        "opacity": 0.11,
       },
     },
   },
@@ -742,6 +846,7 @@ Object {
         "display": "block",
         "object-fit": "cover",
         "object-position": "left top",
+        "opacity": 0.52,
       },
       "l": Object {
         "object-fit": "contain",
@@ -751,6 +856,7 @@ Object {
       "m": Object {
         "object-fit": "contain",
         "object-position": "right top",
+        "opacity": 0.91,
       },
       "s": Object {
         "object-fit": "contain",
@@ -759,6 +865,7 @@ Object {
       "xl": Object {
         "object-fit": "cover",
         "object-position": "left top",
+        "opacity": 0.52,
       },
       "xs": Object {
         "object-fit": "auto",
@@ -767,6 +874,7 @@ Object {
       "xxl": Object {
         "object-fit": "cover",
         "object-position": "left top",
+        "opacity": 0.11,
       },
     },
   },

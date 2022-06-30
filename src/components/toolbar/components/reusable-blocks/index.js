@@ -5,6 +5,7 @@
 import { __ } from '@wordpress/i18n';
 import { useCallback, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
+import { store as reusableBlocksStore } from '@wordpress/reusable-blocks';
 
 /**
  * Internal dependencies
@@ -27,7 +28,7 @@ const ReusableBlocks = props => {
 	const [title, setTitle] = useState('');
 
 	const { __experimentalConvertBlocksToReusable: convertBlocksToReusable } =
-		useDispatch('maxiBlocks/reusable-blocks');
+		useDispatch(reusableBlocksStore);
 
 	const onConvert = useCallback(
 		async function (reusableBlockTitle) {

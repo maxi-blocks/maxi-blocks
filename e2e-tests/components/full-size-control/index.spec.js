@@ -63,12 +63,19 @@ describe('FullSizeControl', () => {
 
 		await page.$$eval(
 			'.maxi-full-size-control .maxi-toggle-switch input',
-			button => button[1].click()
+			button => button[2].click()
 		);
 
 		const selector = await page.$$(
 			'.maxi-full-size-control .maxi-dimensions-control__units select'
 		);
+
+		// check that vh works in height and does not exist in width
+		await selector[0].select('vh');
+		await selector[1].select('vh');
+
+		expect(await getAttributes('height-unit-general')).toStrictEqual('vh');
+		expect(await getAttributes('max-width-unit-general')).toStrictEqual('');
 
 		for (let i = 0; i < selector.length; i += 1) {
 			const selection = selector[i];

@@ -17,7 +17,7 @@ import {
 	getBlockStyle,
 } from '../../utils';
 
-describe('AxisControl', () => {
+describe.skip('AxisControl', () => {
 	it('Checking AxisControl util', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

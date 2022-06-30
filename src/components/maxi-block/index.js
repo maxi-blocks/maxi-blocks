@@ -19,6 +19,7 @@ import { select, useSelect } from '@wordpress/data';
 import { getHasParallax } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
 import BlockInserter from '../block-inserter';
+import { maxiBlockTopMargin } from './utils';
 
 /**
  * External dependencies
@@ -96,6 +97,9 @@ const getInnerBlocksChild = ({
 	ref,
 	clientId,
 	hasInnerBlocks,
+	isSelected,
+	hasSelectedChild,
+	isDragging,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -115,11 +119,13 @@ const getInnerBlocksChild = ({
 			...cloneElement(innerBlocksChildren, {
 				key: `maxi-inner-content__${uniqueID}`,
 			}),
-			...(!isSave && hasInnerBlocks && (
+			...(!isSave && hasInnerBlocks && !isDragging && (
 				<BlockInserter.WrapperInserter
 					key={`maxi-block-wrapper-inserter__${clientId}`}
 					ref={ref}
 					clientId={clientId}
+					isSelected={isSelected}
+					hasSelectedChild={hasSelectedChild}
 				/>
 			)),
 		];
@@ -145,11 +151,13 @@ const getInnerBlocksChild = ({
 			key: `maxi-inner-content__${uniqueID}`,
 		}),
 		...secondGroup,
-		...(!isSave && hasInnerBlocks && (
+		...(!isSave && hasInnerBlocks && !isDragging && (
 			<BlockInserter.WrapperInserter
 				key={`maxi-block-wrapper-inserter__${clientId}`}
 				ref={ref}
 				clientId={clientId}
+				isSelected={isSelected}
+				hasSelectedChild={hasSelectedChild}
 			/>
 		)),
 	];
@@ -168,6 +176,9 @@ const InnerBlocksBlock = forwardRef(
 			innerBlocksSettings,
 			clientId,
 			hasInnerBlocks,
+			isSelected,
+			hasSelectedChild,
+			isDragging,
 			...props
 		},
 		ref
@@ -198,6 +209,9 @@ const InnerBlocksBlock = forwardRef(
 				ref,
 				clientId,
 				hasInnerBlocks,
+				isSelected,
+				hasSelectedChild,
+				isDragging,
 			})
 		);
 
@@ -234,11 +248,13 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink,
 		useInnerBlocks = false,
 		hasInnerBlocks = false,
+		isSelected,
+		hasSelectedChild,
 		...extraProps
 	} = props;
-
-	// Is just necessary for the memo() part
+	// Are just necessary for the memo() part
 	delete extraProps.attributes;
+	delete extraProps.isChild;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -354,6 +370,9 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			{...blockProps}
 			clientId={clientId}
 			hasInnerBlocks={hasInnerBlocks}
+			isSelected={isSelected}
+			hasSelectedChild={hasSelectedChild}
+			isDragging={isDragging}
 		>
 			{children}
 		</InnerBlocksBlock>
@@ -362,7 +381,47 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		return <MaxiBlockContent {...props} ref={ref} />;
+		const { isChild, clientId, blockName, isSelected } = props;
+
+		// Controls the state of the top margin applied to child for showing inserter
+		const [marginApplied, setMarginApplied] = useState(false);
+
+		const { getBlockParents, getBlock } = select('core/block-editor');
+
+		let allowMargin = false;
+
+		if (
+			isChild &&
+			!isSelected &&
+			!['maxi-blocks/row-maxi', 'maxi-blocks/column-maxi'].includes(
+				blockName
+			)
+		) {
+			const parentClientId = getBlockParents(clientId, true)[0];
+			const parentInnerBlocks = getBlock(parentClientId).innerBlocks;
+			const innerBlocksClientIds = parentInnerBlocks.map(
+				block => block.clientId
+			);
+
+			allowMargin = innerBlocksClientIds.indexOf(clientId) !== 0;
+		}
+
+		return (
+			<MaxiBlockContent
+				key={`maxi-block-content__${clientId}`}
+				ref={ref}
+				onMouseEnter={e => {
+					allowMargin &&
+						maxiBlockTopMargin({
+							e,
+							ref,
+							marginApplied,
+							setMarginApplied,
+						});
+				}}
+				{...props}
+			/>
+		);
 	}),
 	(rawOldProps, rawNewProps) => {
 		if (!isEqual(rawOldProps.attributes, rawNewProps.attributes))

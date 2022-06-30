@@ -350,7 +350,7 @@ const VideoIconControl = props => {
 	return (
 		<>
 			<MaxiModal
-				type='video-shape'
+				type='video-icon'
 				prefix={prefix}
 				style={blockStyle}
 				onSelect={obj => onChange(obj)}

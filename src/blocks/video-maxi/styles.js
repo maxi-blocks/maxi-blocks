@@ -15,7 +15,6 @@ import {
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getMarginPaddingStyles,
 	getBorderStyles,
 	getOpacityStyles,
@@ -63,9 +62,6 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),

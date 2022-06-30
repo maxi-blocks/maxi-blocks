@@ -6,13 +6,27 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { SelectControl, ColorControl, SettingTabsControl } from '..';
+import {
+	SelectControl,
+	SettingTabsControl,
+	AdvancedNumberControl,
+	ToggleSwitch,
+} from '..';
 import MaxiModal from '../../editor/library/modal';
-import { getColorRGBAString } from '../../extensions/styles';
-import { setSVGContent } from '../../extensions/svg';
+import {
+	getAttributeKey,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import IconColor from './IconColor';
 
 const AccordionIconSettings = props => {
-	const { onChange, blockStyle, svgType, svgTypeActive } = props;
+	const { onChange, blockStyle, svgType, svgTypeActive, breakpoint } = props;
+
+	const defaultWidth = getDefaultAttribute(`icon-width-${breakpoint}`);
+	const defaultWidthUnit = getDefaultAttribute(
+		`icon-width-unit-${breakpoint}`
+	);
 
 	return (
 		<>
@@ -49,102 +63,154 @@ const AccordionIconSettings = props => {
 									icon={props['icon-content']}
 									label='Icon'
 								/>
-								{svgType !== 'Shape' && (
-									<ColorControl
-										label={__('Icon stroke', 'maxi-blocks')}
-										className='maxi-icon-styles-control--color'
-										color={props['icon-stroke-color']}
-										prefix='icon-stroke-'
-										paletteColor={
-											props['icon-stroke-palette-color']
-										}
-										paletteOpacity={
-											props['icon-stroke-palette-opacity']
-										}
-										paletteStatus={
-											props['icon-stroke-palette-status']
-										}
-										onChange={({
-											color,
-											paletteColor,
-											paletteStatus,
-											paletteOpacity,
-										}) => {
-											const lineColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-stroke',
-													secondVar: `color-${paletteColor}`,
-													opacity: paletteOpacity,
-													blockStyle,
-												});
 
-											onChange({
-												'icon-stroke-color': color,
-												'icon-stroke-palette-color':
-													paletteColor,
-												'icon-stroke-palette-status':
-													paletteStatus,
-												'icon-stroke-palette-opacity':
-													paletteOpacity,
-												'icon-content': setSVGContent(
-													props['icon-content'],
-													paletteStatus
-														? lineColorStr
-														: color,
-													'stroke'
-												),
-											});
-										}}
-									/>
-								)}
-								{svgType !== 'Line' && (
-									<ColorControl
-										label={__('Icon fill', 'maxi-blocks')}
-										className='maxi-icon-styles-control--color'
-										color={props['icon-fill-color']}
-										prefix='icon-fill-'
-										paletteColor={
-											props['icon-fill-palette-color']
-										}
-										paletteOpacity={
-											props['icon-fill-palette-opacity']
-										}
-										paletteStatus={
-											props['icon-fill-palette-status']
-										}
-										onChange={({
-											color,
-											paletteColor,
-											paletteStatus,
-											paletteOpacity,
-										}) => {
-											const lineColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-fill',
-													secondVar: `color-${paletteColor}`,
-													opacity: paletteOpacity,
-													blockStyle,
-												});
+								<AdvancedNumberControl
+									label={__('Width', 'maxi-blocks')}
+									value={
+										getLastBreakpointAttribute({
+											target: 'icon-width',
+											breakpoint,
+											attributes: props,
+										}) || defaultWidth
+									}
+									placeholder={getLastBreakpointAttribute({
+										target: 'icon-width',
+										breakpoint,
+										attributes: props,
+									})}
+									onChangeValue={val => {
+										const newVal =
+											val !== undefined && val !== ''
+												? val
+												: '';
 
-											onChange({
-												'icon-fill-color': color,
-												'icon-fill-palette-color':
-													paletteColor,
-												'icon-fill-palette-status':
-													paletteStatus,
-												'icon-fill-palette-opacity':
-													paletteOpacity,
-												'icon-content': setSVGContent(
-													props['icon-content'],
-													paletteStatus
-														? lineColorStr
-														: color,
-													'fill'
-												),
-											});
-										}}
-									/>
-								)}
+										onChange({
+											[getAttributeKey(
+												'width',
+												false,
+												'icon-',
+												breakpoint
+											)]: newVal,
+										});
+									}}
+									enableUnit
+									unit={getLastBreakpointAttribute({
+										target: 'icon-width-unit',
+										breakpoint,
+										attributes: props,
+									})}
+									allowedUnits={['px', 'vw', '%']}
+									onChangeUnit={val => {
+										onChange({
+											[getAttributeKey(
+												'width-unit',
+												false,
+												'icon-',
+												breakpoint
+											)]: val,
+										});
+									}}
+									min={10}
+									max={500}
+									step={1}
+									onReset={() =>
+										onChange({
+											[getAttributeKey(
+												'width',
+												false,
+												'icon-',
+												breakpoint
+											)]: defaultWidth,
+											[getAttributeKey(
+												'width-unit',
+												false,
+												'icon-',
+												breakpoint
+											)]: defaultWidthUnit,
+										})
+									}
+									defaultValue={defaultWidth}
+									initialPosition={defaultWidth}
+									optionType='string'
+								/>
+
+								<SettingTabsControl
+									items={[
+										{
+											label: __(
+												'Normal state',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													{svgType !== 'Shape' && (
+														<IconColor
+															colorType='stroke'
+															prefix='icon-'
+															{...props}
+														/>
+													)}
+													{svgType !== 'Line' && (
+														<IconColor
+															colorType='fill'
+															prefix='icon-'
+															{...props}
+														/>
+													)}
+												</>
+											),
+										},
+										{
+											label: __(
+												'Hover state',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<ToggleSwitch
+														label={__(
+															'Enable Icon Hover',
+															'maxi-blocks'
+														)}
+														selected={
+															props[
+																'icon-status-hover'
+															]
+														}
+														onChange={val =>
+															onChange({
+																'icon-status-hover':
+																	val,
+															})
+														}
+													/>
+													{props[
+														'icon-status-hover'
+													] &&
+														svgType !== 'Shape' && (
+															<IconColor
+																colorType='stroke'
+																prefix='icon-'
+																isHover
+																{...props}
+															/>
+														)}
+													{props[
+														'icon-status-hover'
+													] &&
+														svgType !== 'Line' && (
+															<IconColor
+																colorType='fill'
+																prefix='icon-'
+																isHover
+																{...props}
+															/>
+														)}
+												</>
+											),
+										},
+									]}
+								/>
 							</>
 						),
 					},
@@ -157,124 +223,90 @@ const AccordionIconSettings = props => {
 									style={blockStyle}
 									onSelect={obj => onChange(obj)}
 									onRemove={obj => onChange(obj)}
-									icon={props['icon-content-active']}
+									icon={props['active-icon-content']}
 									label='Icon Active'
 								/>
-								{svgTypeActive !== 'Shape' && (
-									<ColorControl
-										label={__('Icon stroke', 'maxi-blocks')}
-										className='maxi-icon-styles-control--color'
-										color={props['icon-stroke-color']}
-										prefix='active-icon-stroke-'
-										paletteColor={
-											props[
-												'active-icon-stroke-palette-color'
-											]
-										}
-										paletteOpacity={
-											props[
-												'active-icon-stroke-palette-opacity'
-											]
-										}
-										paletteStatus={
-											props[
-												'active-icon-stroke-palette-status'
-											]
-										}
-										onChange={({
-											color,
-											paletteColor,
-											paletteStatus,
-											paletteOpacity,
-										}) => {
-											const lineColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-stroke',
-													secondVar: `color-${paletteColor}`,
-													opacity: paletteOpacity,
-													blockStyle,
-												});
-
-											onChange({
-												'active-icon-stroke-color':
-													color,
-												'active-icon-stroke-palette-color':
-													paletteColor,
-												'active-icon-stroke-palette-status':
-													paletteStatus,
-												'active-icon-stroke-palette-opacity':
-													paletteOpacity,
-												'icon-content-active':
-													setSVGContent(
-														props[
-															'icon-content-active'
-														],
-														paletteStatus
-															? lineColorStr
-															: color,
-														'stroke'
-													),
-											});
-										}}
-									/>
-								)}
-								{svgTypeActive !== 'Line' && (
-									<ColorControl
-										label={__('Icon fill', 'maxi-blocks')}
-										className='maxi-icon-styles-control--color'
-										color={props['active-icon-fill-color']}
-										prefix='active-icon-fill-'
-										paletteColor={
-											props[
-												'active-icon-fill-palette-color'
-											]
-										}
-										paletteOpacity={
-											props[
-												'active-icon-fill-palette-opacity'
-											]
-										}
-										paletteStatus={
-											props[
-												'active-icon-fill-palette-status'
-											]
-										}
-										onChange={({
-											color,
-											paletteColor,
-											paletteStatus,
-											paletteOpacity,
-										}) => {
-											const lineColorStr =
-												getColorRGBAString({
-													firstVar: 'icon-fill',
-													secondVar: `color-${paletteColor}`,
-													opacity: paletteOpacity,
-													blockStyle,
-												});
-
-											onChange({
-												'active-icon-fill-color': color,
-												'active-icon-fill-palette-color':
-													paletteColor,
-												'active-icon-fill-palette-status':
-													paletteStatus,
-												'active-icon-fill-palette-opacity':
-													paletteOpacity,
-												'icon-content-active':
-													setSVGContent(
-														props[
-															'icon-content-active'
-														],
-														paletteStatus
-															? lineColorStr
-															: color,
-														'fill'
-													),
-											});
-										}}
-									/>
-								)}
+								<SettingTabsControl
+									items={[
+										{
+											label: __(
+												'Normal state',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													{svgTypeActive !==
+														'Shape' && (
+														<IconColor
+															colorType='stroke'
+															prefix='active-icon-'
+															{...props}
+														/>
+													)}
+													{svgTypeActive !==
+														'Line' && (
+														<IconColor
+															colorType='fill'
+															prefix='active-icon-'
+															{...props}
+														/>
+													)}
+												</>
+											),
+										},
+										{
+											label: __(
+												'Hover state',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<ToggleSwitch
+														label={__(
+															'Enable Icon Hover',
+															'maxi-blocks'
+														)}
+														selected={
+															props[
+																'active-icon-status-hover'
+															]
+														}
+														onChange={val =>
+															onChange({
+																'active-icon-status-hover':
+																	val,
+															})
+														}
+													/>
+													{props[
+														'active-icon-status-hover'
+													] &&
+														svgTypeActive !==
+															'Shape' && (
+															<IconColor
+																colorType='stroke'
+																prefix='active-icon-'
+																isHover
+																{...props}
+															/>
+														)}
+													{props[
+														'active-icon-status-hover'
+													] &&
+														svgTypeActive !==
+															'Line' && (
+															<IconColor
+																colorType='fill'
+																prefix='active-icon-'
+																isHover
+																{...props}
+															/>
+														)}
+												</>
+											),
+										},
+									]}
+								/>
 							</>
 						),
 					},

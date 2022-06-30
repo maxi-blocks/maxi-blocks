@@ -105,6 +105,7 @@ const Inspector = props => {
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
+													breakpoint={deviceType}
 												/>
 											),
 										},

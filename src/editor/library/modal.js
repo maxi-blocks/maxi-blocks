@@ -36,7 +36,6 @@ const MaxiModal = props => {
 		onSelect,
 		onClose,
 		icon,
-		label,
 		forceHide = false,
 		url,
 		title,
@@ -115,21 +114,7 @@ const MaxiModal = props => {
 				{(type === 'accordion-icon' ||
 					type === 'accordion-icon-active') && (
 					<>
-						<label
-							htmlFor={`accordion-icon${
-								type === 'accordion-icon-active'
-									? '-active'
-									: ''
-							}`}
-						>
-							{__(label, 'maxi-blocks')}
-						</label>
 						<Button
-							id={`accordion-icon${
-								type === 'accordion-icon-active'
-									? '-active'
-									: ''
-							}`}
 							className='maxi-library-modal__action-section__buttons__load-library'
 							onClick={onClick}
 						>
@@ -146,7 +131,7 @@ const MaxiModal = props => {
 										onRemove({
 											[type === 'accordion-icon'
 												? 'icon-content'
-												: 'icon-content-active']: '',
+												: 'active-icon-content']: '',
 										})
 									}
 								/>

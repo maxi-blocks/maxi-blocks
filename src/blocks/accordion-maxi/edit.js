@@ -37,7 +37,7 @@ class edit extends MaxiBlockComponent {
 			accordion: {
 				[uniqueID]: {
 					paneIcon: attributes['icon-content'],
-					paneIconActive: attributes['icon-content-active'],
+					paneIconActive: attributes['active-icon-content'],
 					accordionLayout: attributes.accordionLayout,
 					autoPaneClose: attributes.autoPaneClose,
 				},
@@ -62,7 +62,7 @@ class edit extends MaxiBlockComponent {
 				key={`accordion-content-${uniqueID}`}
 				value={{
 					paneIcon: attributes['icon-content'],
-					paneIconActive: attributes['icon-content-active'],
+					paneIconActive: attributes['active-icon-content'],
 					accordionLayout,
 					titleLevel,
 					openPane: this.state.openPane,

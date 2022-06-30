@@ -555,7 +555,7 @@ const LibraryContainer = props => {
 
 			if (type === 'accordion-icon-active') {
 				onSelect({
-					'icon-content-active': svgCode,
+					'active-icon-content': svgCode,
 					svgTypeActive: svgType,
 				});
 
@@ -722,7 +722,6 @@ const LibraryContainer = props => {
 					</InstantSearch>
 				</div>
 			)}
-
 			{(type.includes('shape') || type === 'video-shape') && (
 				<InstantSearch
 					indexName='svg_icon'
@@ -753,7 +752,6 @@ const LibraryContainer = props => {
 					</div>
 				</InstantSearch>
 			)}
-
 			{type === 'button-icon' && (
 				<InstantSearch
 					indexName='svg_icon'
@@ -788,9 +786,10 @@ const LibraryContainer = props => {
 			{(type === 'accordion-icon' ||
 				type === 'accordion-icon-active') && (
 				<InstantSearch
-					indexName='maxi_posts_svg_icon'
-					searchClient={searchClient}
+					indexName='svg_icon'
+					searchClient={searchClientSvg}
 				>
+					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar'>
 							<SearchBox
@@ -801,7 +800,7 @@ const LibraryContainer = props => {
 							/>
 							<CustomRefinementList
 								className='hidden'
-								attribute='taxonomies.svg_category'
+								attribute='svg_category'
 								defaultRefinement={['Line']}
 								showLoadingIndicator
 							/>

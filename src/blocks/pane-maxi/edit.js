@@ -58,7 +58,6 @@ class edit extends MaxiBlockComponent {
 		return [
 			<MaxiBlock
 				key={`maxi-pane--${uniqueID}`}
-				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				useInnerBlocks
 				innerBlocksSettings={{

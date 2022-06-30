@@ -44,7 +44,7 @@ export const getSVGWidthStyles = (obj, prefix = 'svg-') => {
 	return { SVGWidth: response };
 };
 
-const getSVGPathStyles = (obj, isHover, prefix = 'svg-') => {
+const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
 	const response = {
 		label: 'SVG path',
 		general: {},

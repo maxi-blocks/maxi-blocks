@@ -301,6 +301,7 @@ const settings = {
 			component: props => <Controls.AlignmentControl {...props} />,
 			helper: props => styleHelpers.getAlignmentFlexStyles(props.obj),
 		},
+		...getTransformControl('image'),
 		...canvasSettings,
 	],
 	'maxi-blocks/map-maxi': [...getTransformControl('map'), ...canvasSettings],

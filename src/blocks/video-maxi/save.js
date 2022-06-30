@@ -13,6 +13,7 @@ import { videoValidation } from '../../extensions/video';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import classNames from 'classnames';
 
 /**
  * Save
@@ -33,9 +34,19 @@ const save = props => {
 		'overlay-mediaAlt': overlayMediaAlt,
 		hideImage,
 		'close-icon-position': closeIconPosition,
+		popAnimation,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
+
+	const videoContainerClassNames = classNames(
+		'maxi-video-block__video-container',
+		...(playerType === 'popup' && [
+			'maxi-video-block__video-container--popup',
+			popAnimation &&
+				`maxi-video-block__video-container--popup--${popAnimation}`,
+		])
+	);
 
 	return (
 		<MaxiBlock.save
@@ -69,7 +80,7 @@ const save = props => {
 									<RawHTML>{closeIcon}</RawHTML>
 								</div>
 							)}
-							<div className='maxi-video-block__video-container maxi-video-block__video-container--popup'>
+							<div className={videoContainerClassNames}>
 								{closeIconPosition ===
 									'top-right-above-video' && (
 									<div className='maxi-video-block__close-button'>
@@ -99,7 +110,7 @@ const save = props => {
 						</div>
 					</>
 				) : videoType === 'direct' ? (
-					<div className='maxi-video-block__video-container'>
+					<div className={videoContainerClassNames}>
 						<video
 							className='maxi-video-block__video-player'
 							loop={isLoop}

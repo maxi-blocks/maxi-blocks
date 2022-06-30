@@ -50,6 +50,9 @@ const rawVideo = {
 		type: 'boolean',
 		default: false,
 	},
+	popAnimation: {
+		type: 'string',
+	},
 };
 
 const rawIcon = {

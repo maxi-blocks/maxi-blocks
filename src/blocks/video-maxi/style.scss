@@ -28,6 +28,12 @@
 		width: 100%;
 		&--popup {
 			width: 50%;
+			&--zoom-out {
+				animation: popup-zoom-out 0.1s ease-out;
+			}
+			&--zoom-in {
+				animation: popup-zoom-in 0.1s ease-out;
+			}
 		}
 	}
 
@@ -95,5 +101,23 @@
 
 	&__video-container &__close-button {
 		transform: translate(100%, -100%);
+	}
+}
+
+@keyframes popup-zoom-out {
+	0% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes popup-zoom-in {
+	0% {
+		transform: scale(0.8);
+	}
+	100% {
+		transform: scale(1);
 	}
 }

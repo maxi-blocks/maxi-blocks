@@ -14,7 +14,6 @@ import {
 	editColorControl,
 	editAdvancedNumberControl,
 	changeResponsive,
-	modalMock,
 } from '../../utils';
 
 describe('Video icon control', () => {

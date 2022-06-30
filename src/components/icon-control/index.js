@@ -405,7 +405,7 @@ const IconControl = props => {
 								]}
 							/>
 						))}
-					{iconStyle === 'color' && (
+					{(iconStyle === 'color' || iconStyle === 'border') && (
 						<BorderControl
 							{...getGroupAttributes(props, [
 								`iconBorder${isHover ? 'Hover' : ''}`,

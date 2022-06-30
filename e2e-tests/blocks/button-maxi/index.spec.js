@@ -118,12 +118,6 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-palette-color-general')
 		).toStrictEqual(6);
 
-		// icon position
-		await page.$eval('.maxi-icon-position-control button', leftButton =>
-			leftButton.click()
-		);
-		expect(await getAttributes('icon-position')).toStrictEqual('left');
-
 		// border
 		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',

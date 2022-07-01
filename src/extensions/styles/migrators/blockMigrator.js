@@ -10,7 +10,7 @@ import {
 } from './fullWidthNonToResponsive';
 import {
 	isEligible as shapeDividerIsEligible,
-	attributes as shapeDividerAttributes,
+	deprecatedAttributes as shapeDividerAttributes,
 	migrate as shapeDividerMigrator,
 } from './shapeDividerMigrator';
 

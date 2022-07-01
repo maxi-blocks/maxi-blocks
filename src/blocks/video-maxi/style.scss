@@ -52,6 +52,7 @@
 		height: 100%;
 
 		overflow: hidden;
+		cursor: pointer;
 	}
 
 	&__placeholder {
@@ -89,8 +90,6 @@
 		z-index: 2;
 
 		transform: translate(-50%, -50%);
-
-		cursor: pointer;
 	}
 
 	&__close-button {

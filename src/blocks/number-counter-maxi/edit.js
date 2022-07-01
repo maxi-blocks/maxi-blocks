@@ -281,7 +281,6 @@ class edit extends MaxiBlockComponent {
 			});
 
 			maxiSetAttributes({
-				[`number-counter-width-auto-${deviceType}`]: false,
 				[`number-counter-width-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
@@ -319,7 +318,13 @@ class edit extends MaxiBlockComponent {
 					resizerProps={{
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,
-						showHandle: isSelected,
+						showHandle:
+							isSelected &&
+							!getLastBreakpointAttribute({
+								target: 'number-counter-width-auto',
+								breakpoint: deviceType,
+								attributes,
+							}),
 					}}
 					deviceType={deviceType}
 					blockRef={this.blockRef}

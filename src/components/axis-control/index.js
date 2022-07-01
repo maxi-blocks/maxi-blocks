@@ -76,9 +76,7 @@ const AxisInput = props => {
 			label={__(capitalize(label), 'maxi-blocks')}
 			className={classnames(
 				'maxi-axis-control__content__item',
-				`maxi-axis-control__content__item__${kebabCase(
-					label
-				).toLowerCase()}`
+				`maxi-axis-control__content__item__${kebabCase(label)}`
 			)}
 			placeholder={lastValue}
 			value={value}

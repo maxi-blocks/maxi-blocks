@@ -81,7 +81,7 @@ const PopupSettingsControl = props => {
 				onChange={obj => onChange(obj)}
 				{...getGroupAttributes(
 					props,
-					['icon', 'iconBackground', 'iconBackgroundColor'],
+					['icon', 'iconHover'],
 					false,
 					'close-'
 				)}

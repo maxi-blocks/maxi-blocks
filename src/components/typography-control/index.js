@@ -478,6 +478,7 @@ const TypographyControlInner = props => {
 					}}
 					fontWeight={getValue(`${prefix}font-weight`)}
 					fontStyle={getValue(`${prefix}font-style`)}
+					breakpoint={breakpoint}
 				/>
 			)}
 			{!disableColor && !isStyleCards && (

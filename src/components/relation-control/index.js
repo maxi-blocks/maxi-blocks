@@ -62,9 +62,6 @@ const RelationControl = props => {
 		const relation = {
 			title: '',
 			uniqueID: '',
-			trigger: `${uniqueID} ${
-				isButton ? '.maxi-button-block__button' : ''
-			}`,
 			target: '',
 			action: '',
 			settings: '',
@@ -72,6 +69,7 @@ const RelationControl = props => {
 			css: {},
 			id: getRelationId(),
 			effects: transitionDefaultAttributes,
+			isButton,
 		};
 
 		onChange({ relations: [...relations, relation] });

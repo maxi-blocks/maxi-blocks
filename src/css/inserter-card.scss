@@ -20,10 +20,8 @@
 	.block-editor-block-inspector.maxi-controls {
 		.block-editor-block-card {
 			position: relative;
-			margin: 0 0 8px 0 !important;
 			padding: 8px;
 			color: #fff;
-			border-bottom: 1px solid #dbdde6;
 			background: #fff;
 			letter-spacing: 0;
 
@@ -37,10 +35,23 @@
 				line-height: 14px;
 			}
 			&__description {
-				display: block;
+				display: none;
 				width: 100%;
 				margin: 0;
+				position: relative;
+				left: -25px;
+				padding-top: 5px;
 			}
 		}
+	}
+}
+
+/*******************************
+* RTL
+*******************************/
+html[dir="rtl"]  {
+	.maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card__content {
+		margin-left: 0;
+		margin-right: 8px;
 	}
 }

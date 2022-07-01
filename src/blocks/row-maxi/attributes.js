@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { transitionAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -20,10 +21,6 @@ const attributes = {
 		type: 'string',
 		default: __('Row', 'maxi-blocks'),
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
 	...attributesData.border,
@@ -36,17 +33,21 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
+		'size-advanced-options': {
+			type: 'boolean',
+			default: true,
+		},
 		'max-width-xxl': {
-			type: 'number',
-			default: 1690,
+			type: 'string',
+			default: '1690',
 		},
 		'max-width-xl': {
-			type: 'number',
-			default: 1170,
+			type: 'string',
+			default: '1170',
 		},
 		'max-width-l': {
-			type: 'number',
-			default: 90,
+			type: 'string',
+			default: '90',
 		},
 		'max-width-unit-xxl': {
 			type: 'string',
@@ -60,26 +61,6 @@ const attributes = {
 			type: 'string',
 			default: '%',
 		},
-		'width-l': {
-			type: 'number',
-			default: 1170,
-		},
-		'width-m': {
-			type: 'number',
-			default: 1000,
-		},
-		'width-s': {
-			type: 'number',
-			default: 700,
-		},
-		'width-xs': {
-			type: 'number',
-			default: 460,
-		},
-		'width-unit-l': {
-			type: 'string',
-			default: 'px',
-		},
 	},
 	...attributesData.margin,
 	...attributesData.padding,
@@ -88,7 +69,10 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
-	...attributesData.transition,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(),
+	},
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.position,
@@ -107,7 +91,7 @@ const attributes = {
 		},
 		'column-gap-general': {
 			type: 'number',
-			default: 1.5,
+			default: 2.5,
 		},
 		'column-gap-unit-general': {
 			type: 'string',

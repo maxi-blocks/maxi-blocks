@@ -18,6 +18,7 @@ import Delete from '../delete';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
 import { getGroupAttributes } from '../../../../extensions/styles';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * Icons
@@ -28,13 +29,19 @@ import { toolbarMoreSettings } from '../../../../icons';
  * Style
  */
 import './editor.scss';
-import { openSidebarAccordion } from '../../../../extensions/inspector-path';
 
 /**
  * Duplicate
  */
 const MoreSettings = props => {
-	const { clientId, blockName, onChange, prefix, copyPasteMapping } = props;
+	const {
+		clientId,
+		blockName,
+		onChange,
+		prefix,
+		copyPasteMapping,
+		tooltipsHide,
+	} = props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
@@ -46,124 +53,114 @@ const MoreSettings = props => {
 		};
 	});
 
-	return (
-		<Tooltip
-			text={__('More Settings', 'maxi-blocks')}
-			position='bottom center'
-		>
-			<div className='toolbar-item toolbar-item__more-settings'>
-				<Dropdown
-					className='maxi-more-settings__settings-selector'
-					contentClassName='maxi-more-settings__popover'
-					position='right bottom'
-					renderToggle={({ onToggle }) => (
-						<Button onClick={onToggle}>
-							<Icon
-								className='toolbar-item__icon'
-								icon={toolbarMoreSettings}
-							/>
-						</Button>
-					)}
-					renderContent={args => (
-						<div>
-							<CopyPaste
-								clientId={clientId}
-								blockName={blockName}
-								prefix={prefix}
+	const moreSettingsContent = (
+		<div className='toolbar-item toolbar-item__more-settings'>
+			<Dropdown
+				className='maxi-more-settings__settings-selector'
+				contentClassName='maxi-more-settings__popover'
+				position='right bottom'
+				renderToggle={({ onToggle }) => (
+					<Button onClick={onToggle}>
+						<Icon
+							className='toolbar-item__icon'
+							icon={toolbarMoreSettings}
+						/>
+					</Button>
+				)}
+				renderContent={args => (
+					<div>
+						<CopyPaste
+							clientId={clientId}
+							blockName={blockName}
+							prefix={prefix}
+							closeMoreSettings={args.onClose}
+							copyPasteMapping={copyPasteMapping}
+						/>
+						{blockName === 'maxi-blocks/text-maxi' && (
+							<TextGenerator
+								onChange={onChange}
 								closeMoreSettings={args.onClose}
-								copyPasteMapping={copyPasteMapping}
 							/>
-							{blockName === 'maxi-blocks/text-maxi' && (
-								<TextGenerator
+						)}
+						{blockName === 'maxi-blocks/button-maxi' && (
+							<div>
+								<Button
+									onClick={() => {
+										openSidebarAccordion(0, 'height width');
+									}}
+								>
+									{__('Button width', 'maxi-blocks')}
+								</Button>
+								<Button
+									onClick={() => {
+										openSidebarAccordion(
+											0,
+											'margin padding'
+										);
+									}}
+								>
+									{__('Button padding/margin', 'maxi-blocks')}
+								</Button>
+								<Alignment
 									clientId={clientId}
 									blockName={blockName}
+									getGroupAttributes
+									{...getGroupAttributes(props, [
+										'alignment',
+										'textAlignment',
+									])}
 									onChange={onChange}
+									breakpoint={breakpoint}
 								/>
-							)}
-							{blockName === 'maxi-blocks/button-maxi' && (
-								<div>
-									<Button
-										onClick={() => {
-											openSidebarAccordion(
-												0,
-												'height width'
-											);
-										}}
-									>
-										{__('Button width', 'maxi-blocks')}
-									</Button>
-									<Button
-										onClick={() => {
-											openSidebarAccordion(
-												0,
-												'margin padding'
-											);
-										}}
-									>
-										{__(
-											'Button padding/margin',
-											'maxi-blocks'
-										)}
-									</Button>
-									<Alignment
-										clientId={clientId}
-										blockName={blockName}
-										getGroupAttributes
-										{...getGroupAttributes(props, [
-											'alignment',
-											'textAlignment',
-										])}
-										onChange={onChange}
-										breakpoint={breakpoint}
-									/>
-								</div>
-							)}
-							{blockName === 'maxi-blocks/image-maxi' && (
-								<>
-									<Button
-										onClick={() => {
-											openSidebarAccordion(
-												0,
-												'dimension'
-											);
-										}}
-									>
-										{__('Image dimension', 'maxi-blocks')}
-									</Button>
-									<Button
-										onClick={() => {
-											openSidebarAccordion(0, 'caption');
-										}}
-									>
-										{__('Caption', 'maxi-blocks')}
-									</Button>
-								</>
-							)}
-							{(blockName === 'maxi-blocks/svg-icon-maxi' ||
-								blockName === 'maxi-blocks/image-maxi') && (
-								<>
-									<Alignment
-										clientId={clientId}
-										blockName={blockName}
-										getGroupAttributes
-										{...getGroupAttributes(props, [
-											'alignment',
-											'textAlignment',
-										])}
-										onChange={onChange}
-										breakpoint={breakpoint}
-									/>
-								</>
-							)}
-							<ReusableBlocks
+							</div>
+						)}
+						{blockName === 'maxi-blocks/image-maxi' && (
+							<>
+								<Button
+									onClick={() => {
+										openSidebarAccordion(0, 'dimension');
+									}}
+								>
+									{__('Image dimension', 'maxi-blocks')}
+								</Button>
+								<Button
+									onClick={() => {
+										openSidebarAccordion(0, 'caption');
+									}}
+								>
+									{__('Caption', 'maxi-blocks')}
+								</Button>
+							</>
+						)}
+						{(blockName === 'maxi-blocks/svg-icon-maxi' ||
+							blockName === 'maxi-blocks/image-maxi') && (
+							<Alignment
 								clientId={clientId}
 								blockName={blockName}
+								getGroupAttributes
+								{...getGroupAttributes(props, [
+									'alignment',
+									'textAlignment',
+								])}
+								onChange={onChange}
+								breakpoint={breakpoint}
 							/>
-							<Delete clientId={clientId} blockName={blockName} />
-						</div>
-					)}
-				/>
-			</div>
+						)}
+						<ReusableBlocks
+							clientId={clientId}
+							blockName={blockName}
+						/>
+						<Delete clientId={clientId} blockName={blockName} />
+					</div>
+				)}
+			/>
+		</div>
+	);
+	return tooltipsHide ? (
+		moreSettingsContent
+	) : (
+		<Tooltip text={__('More', 'maxi-blocks')} position='top center'>
+			{moreSettingsContent}
 		</Tooltip>
 	);
 };

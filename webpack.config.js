@@ -2,15 +2,17 @@
  * WordPress Dependencies
  */
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+const { getWebpackEntryPoints } = require('@wordpress/scripts/utils');
 
 /**
  * External Dependencies
  */
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const { basename, dirname } = require('path');
 
-const isProduction = process.env.NODE_ENV === 'production';
+const adminEntry = {
+	admin: ['./core/admin/admin.js', './core/admin/admin.scss'],
+};
+const newEntry = { ...getWebpackEntryPoints(), ...adminEntry };
 
 module.exports = {
 	...defaultConfig,
@@ -34,4 +36,5 @@ module.exports = {
 		...defaultConfig.resolve,
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
 	},
+	entry: newEntry,
 };

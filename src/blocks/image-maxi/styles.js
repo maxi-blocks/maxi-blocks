@@ -28,39 +28,15 @@ import {
 	getOverflowStyles,
 	getClipPathStyles,
 	getFlexStyles,
+	getAspectRatio,
 } from '../../extensions/styles/helpers';
 import { selectorsImage } from './custom-css';
+import transitionObj from './transitionObj';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
-
-const getAspectRatio = imageRatio => {
-	return {
-		imageRatio: {
-			general: {
-				'aspect-ratio': (() => {
-					switch (imageRatio) {
-						case 'ar11':
-							return '1 / 1';
-						case 'ar23':
-							return '2 / 3';
-						case 'ar32':
-							return '3 / 2';
-						case 'ar43':
-							return '4 / 3';
-						case 'ar169':
-							return '16 / 9';
-						case 'original':
-						default:
-							return 'initial';
-					}
-				})(),
-			},
-		},
-	};
-};
+import { isEmpty, isNil, merge } from 'lodash';
 
 const getWrapperObject = props => {
 	const response = {
@@ -72,13 +48,13 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -131,7 +107,7 @@ const getHoverWrapperObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		}),
 		...(props['box-shadow-status-hover'] && {
@@ -141,7 +117,7 @@ const getHoverWrapperObject = props => {
 				},
 				dropShadow:
 					!isEmpty(props.clipPath) || !isNil(props.SVGElement),
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
 		}),
@@ -166,7 +142,7 @@ const getHoverEffectDetailsBoxObject = props => {
 					),
 				},
 				prefix: 'hover-',
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		}),
 		margin: getMarginPaddingStyles({
@@ -190,7 +166,7 @@ const getHoverEffectDetailsBoxObject = props => {
 						'hoverBackgroundGradient',
 					]),
 				},
-				props.parentBlockStyle
+				props.blockStyle
 			),
 		},
 		size: getSizeStyles({
@@ -210,7 +186,7 @@ const getHoverEffectTitleTextObject = props => {
 					...getGroupAttributes(props, 'hoverTitleTypography'),
 				},
 				prefix: 'hover-title-',
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		}),
 	};
@@ -226,7 +202,7 @@ const getHoverEffectContentTextObject = props => {
 					...getGroupAttributes(props, 'hoverContentTypography'),
 				},
 				prefix: 'hover-content-',
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		}),
 	};
@@ -235,8 +211,6 @@ const getHoverEffectContentTextObject = props => {
 };
 
 const getImageWrapperObject = props => {
-	const { imgWidth, useInitSize, mediaWidth } = props;
-
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
@@ -259,20 +233,13 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
-		...(imgWidth && {
-			imgWidth: {
-				general: {
-					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
-				},
-			},
-		}),
 	};
 
 	return response;
 };
 
 const getImageObject = props => {
-	const { imageRatio } = props;
+	const { imageRatio, imgWidth, useInitSize, mediaWidth } = props;
 
 	return {
 		border: getBorderStyles({
@@ -284,7 +251,7 @@ const getImageObject = props => {
 					'image-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'image-',
 		}),
 		boxShadow: getBoxShadowStyles({
@@ -292,7 +259,7 @@ const getImageObject = props => {
 				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
 			},
 			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'image-',
 		}),
 		...(imageRatio && getAspectRatio(imageRatio)),
@@ -305,8 +272,12 @@ const getImageObject = props => {
 		clipPath: getClipPathStyles({
 			...getGroupAttributes(props, 'clipPath'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
+		...(imgWidth && {
+			imgWidth: {
+				general: {
+					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
+				},
+			},
 		}),
 	};
 };
@@ -324,7 +295,7 @@ const getHoverImageObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'image-',
 			}),
 		}),
@@ -334,7 +305,7 @@ const getHoverImageObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'image-',
 			}),
 		}),
@@ -348,7 +319,7 @@ const getFigcaptionObject = props => {
 				obj: {
 					...getGroupAttributes(props, 'typography'),
 				},
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		}),
 		textAlignment: getAlignmentTextStyles({
@@ -415,75 +386,90 @@ const getImageShapeObject = (target, props) => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
+	const imgTag = props.SVGElement === '' || !props.SVGElement ? 'img' : 'svg';
+
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getHoverWrapperObject(props),
-				' .maxi-image-block-wrapper': getImageWrapperObject(props),
-				' .maxi-image-block-wrapper img': getImageObject(props),
-				':hover .maxi-image-block-wrapper img':
-					getHoverImageObject(props),
-				' .maxi-image-block-wrapper > svg:first-child':
-					getImageShapeObject('svg', props),
-				' .maxi-image-block-wrapper > svg:first-child pattern image':
-					getImageShapeObject('image', props),
-				' figcaption': getFigcaptionObject(props),
-				' .maxi-hover-details .maxi-hover-details__content h4':
-					getHoverEffectTitleTextObject(props),
-				' .maxi-hover-details .maxi-hover-details__content p':
-					getHoverEffectContentTextObject(props),
-				' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.parentBlockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getHoverWrapperObject(props),
+					' .maxi-image-block-wrapper': getImageWrapperObject(props),
+					[` .maxi-image-block-wrapper ${imgTag}`]:
+						getImageObject(props),
+					[`:hover .maxi-image-block-wrapper ${imgTag}`]:
+						getHoverImageObject(props),
+					' .maxi-image-block-wrapper > svg:first-child':
+						getImageShapeObject('svg', props),
+					' .maxi-image-block-wrapper > svg:first-child pattern image':
+						getImageShapeObject('image', props),
+					' figcaption': getFigcaptionObject(props),
+					' .maxi-hover-details .maxi-hover-details__content h4':
+						getHoverEffectTitleTextObject(props),
+					' .maxi-hover-details .maxi-hover-details__content p':
+						getHoverEffectContentTextObject(props),
+					' .maxi-hover-details':
+						getHoverEffectDetailsBoxObject(props),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
+							'blockBackground',
+							'borderWidth',
+							'borderRadius',
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle: props.blockStyle,
+					}),
+					...getCustomFormatsStyles(
+						' .maxi-image-block__caption',
+						props['custom-formats'],
+						false,
+						{ ...getGroupAttributes(props, 'typography') },
+						'p',
+						props.blockStyle
 					),
-					isHover: true,
-					blockStyle: props.parentBlockStyle,
-				}),
-				...getCustomFormatsStyles(
-					' .maxi-image-block__caption',
-					props['custom-formats'],
-					false,
-					{ ...getGroupAttributes(props, 'typography') },
-					'p',
-					props.parentBlockStyle
-				),
-				...getCustomFormatsStyles(
-					':hover .maxi-image-block__caption',
-					props['custom-formats-hover'],
-					true,
-					getGroupAttributes(props, 'typographyHover'),
-					'p',
-					props.parentBlockStyle
-				),
-				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
-					[' a figcaption.maxi-image-block__caption'],
-					props.parentBlockStyle
-				),
-				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
-					[' figcaption.maxi-image-block__caption a'],
-					props.parentBlockStyle
-				),
-			},
+					...getCustomFormatsStyles(
+						':hover .maxi-image-block__caption',
+						props['custom-formats-hover'],
+						true,
+						getGroupAttributes(props, 'typographyHover'),
+						'p',
+						props.blockStyle
+					),
+					...getLinkStyles(
+						{ ...getGroupAttributes(props, 'link') },
+						[' a figcaption.maxi-image-block__caption'],
+						props.blockStyle
+					),
+					...getLinkStyles(
+						{ ...getGroupAttributes(props, 'link') },
+						[' figcaption.maxi-image-block__caption a'],
+						props.blockStyle
+					),
+				},
+				...getTransitionStyles(props, transitionObj)
+			),
 			selectorsImage,
 			props
 		),

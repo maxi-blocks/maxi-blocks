@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useReducer } from '@wordpress/element';
 import { select, dispatch } from '@wordpress/data';
 
 /**
@@ -25,68 +26,71 @@ import './editor.scss';
  * Component
  */
 const BlockStylesControl = props => {
-	const {
-		onChange,
-		isFirstOnHierarchy,
-		className,
-		parentBlockStyle: blockStyle,
-		clientId,
-	} = props;
+	const { onChange, isFirstOnHierarchy, className, blockStyle, clientId } =
+		props;
 
 	const classes = classnames('maxi-block-style-control', className);
 
 	const getSelectorOptions = () => {
 		if (isFirstOnHierarchy)
 			return [
-				{ label: __('Dark', 'maxi-blocks'), value: 'maxi-dark' },
-				{ label: __('Light', 'maxi-blocks'), value: 'maxi-light' },
+				{ label: __('Dark', 'maxi-blocks'), value: 'dark' },
+				{ label: __('Light', 'maxi-blocks'), value: 'light' },
 			];
-		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
+		return null;
 	};
 
-	const getAllInnerBlocks = (id, parentBlockStyle) => {
+	const [, setDescVisibility] = useReducer(isVisible => {
+		const blockDesc = document.querySelector(
+			'.block-editor-block-card__description'
+		);
+
+		!isVisible
+			? (blockDesc.style.display = 'block')
+			: (blockDesc.style.display = 'none');
+
+		return !isVisible;
+	}, false);
+
+	const getAllInnerBlocks = (id, blockStyle) => {
 		const { getBlockOrder } = select('core/block-editor');
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const innerBlockIds = id ? getBlockOrder(id) : getBlockOrder(clientId);
-		const innerBlocksStyle = parentBlockStyle || '';
+		const innerBlocksStyle = blockStyle || '';
 
 		if (innerBlockIds) {
 			innerBlockIds.forEach(innerBlockId => {
 				if (!isEmpty(innerBlocksStyle))
 					updateBlockAttributes(innerBlockId, {
-						parentBlockStyle: innerBlocksStyle,
+						blockStyle: innerBlocksStyle,
 					});
 
-				getAllInnerBlocks(innerBlockId, parentBlockStyle);
+				getAllInnerBlocks(innerBlockId, blockStyle);
 			});
 		}
 	};
 	return (
 		<>
+			<div className='block-info-icon' onClick={setDescVisibility}>
+				<span className='block-info-icon-span'>i</span>
+			</div>
 			{isFirstOnHierarchy ? (
 				<SelectControl
 					label={__('Block tone', 'maxi-blocks')}
 					className={classes}
-					value={`maxi-${blockStyle}`}
+					value={blockStyle}
 					options={getSelectorOptions()}
 					onChange={blockStyle => {
-						const dependsOnParent = blockStyle.includes('parent');
-						const parentBlockStyle = blockStyle.replace(
-							'maxi-',
-							''
-						);
-
-						getAllInnerBlocks(clientId, parentBlockStyle);
+						getAllInnerBlocks(clientId, blockStyle);
 
 						onChange({
 							blockStyle,
-							...(!dependsOnParent && { parentBlockStyle }),
+							...{ blockStyle },
 						});
 					}}
 				/>
 			) : (
 				<div className='maxi-block-style-preview'>
-					{__('Block style: ', 'maxi-blocks')}
 					<span
 						className={`maxi-block-style-preview__${getBlockStyle(
 							clientId

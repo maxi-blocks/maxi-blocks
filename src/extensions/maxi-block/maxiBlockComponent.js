@@ -21,13 +21,14 @@ import { select, dispatch, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import {
-	styleResolver,
-	styleGenerator,
-	getGroupAttributes,
 	getBlockStyle,
-	getParallaxLayers,
-	getHasVideo,
+	getGroupAttributes,
 	getHasScrollEffects,
+	getHasVideo,
+	getParallaxLayers,
+	getRelations,
+	styleGenerator,
+	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts, getAllFonts } from '../text/fonts';
@@ -87,19 +88,24 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
-		const { attributes, clientId } = this.props;
-		const { uniqueID, blockStyle } = attributes;
+		this.state = {
+			oldSC: {},
+			scValues: {},
+		};
+
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
+		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.getDefaultBlockStyle(blockStyle, clientId);
 		if (!isEmpty(this.typography)) this.loadFonts();
-		this.getParentStyle();
+		this.getCurrentBlockStyle();
 		this.displayStyles(newUniqueID);
 	}
 
@@ -120,10 +126,21 @@ class MaxiBlockComponent extends Component {
 	// Removes non-necessary entries of props object for comparison
 	propsObjectCleaner(props) {
 		const newProps = cloneDeep(props);
-		const entriesToRemove = ['maxiSetAttributes'];
+		const entriesToRemove = [
+			'maxiSetAttributes',
+			'insertInlineStyles',
+			'cleanInlineStyles',
+			'context',
+		];
 
 		entriesToRemove.forEach(entry => {
 			delete newProps[entry];
+		});
+
+		// Transform objects into strings to compare easier
+		Object.entries(newProps).forEach(([key, value]) => {
+			if (typeof value === 'object')
+				newProps[key] = JSON.stringify(value);
 		});
 
 		return newProps;
@@ -149,11 +166,29 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Force rendering the block when SC related values change
-		if (!isEqual(this.props.scValues, nextProps.scValues)) return true;
+		if (this.scProps) {
+			const SC = select(
+				'maxiBlocks/style-cards'
+			).receiveMaxiSelectedStyleCard();
+
+			if (!isEqual(this.state.oldSC, SC)) {
+				this.setState({
+					oldSC: SC,
+					scValues: select(
+						'maxiBlocks/style-cards'
+					).receiveStyleCardValue(
+						this.scProps.scElements,
+						this.props.attributes.blockStyle,
+						this.scProps.scType
+					),
+				});
+
+				return true;
+			}
+		}
 
 		// Ensures rendering when selecting or unselecting
 		if (
-			!this.props.isSelected ||
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
 			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
@@ -204,7 +239,7 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Prevents styling
 	 */
-	getSnapshotBeforeUpdate(prevProps) {
+	getSnapshotBeforeUpdate(prevProps, prevState) {
 		if (!isEmpty(this.propsToAvoidStyling)) {
 			const oldAttributes = cloneDeep(prevProps.attributes);
 			const newAttributes = cloneDeep(this.props.attributes);
@@ -218,13 +253,13 @@ class MaxiBlockComponent extends Component {
 				this.difference(oldAttributes, newAttributes);
 
 			if (this.maxiBlockGetSnapshotBeforeUpdate)
-				this.maxiBlockGetSnapshotBeforeUpdate();
+				this.maxiBlockGetSnapshotBeforeUpdate(prevProps, prevState);
 
 			return isEqual(oldAttributes, newAttributes);
 		}
 
-		// Force render styles when changing scValues
-		if (!isEqual(prevProps.scValues, this.props.scValues)) return false;
+		// Force render styles when changing state
+		if (!isEqual(prevState, this.state)) return false;
 
 		// For render styles when there's no <style> element for the block
 		// Normally happens when duplicate the block
@@ -274,8 +309,6 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 
-		dispatch('maxiBlocks/text').removeFormatValue(this.props.clientId);
-
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
@@ -289,8 +322,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
-		const { uniqueID, 'background-layers': bgLayers } =
-			this.props.attributes;
+		const {
+			uniqueID,
+			'background-layers': bgLayers,
+			relations: relationsRaw,
+		} = this.props.attributes;
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,
@@ -303,47 +339,21 @@ class MaxiBlockComponent extends Component {
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
 		const hasScrollEffects = getHasScrollEffects(uniqueID, scroll);
+		const relations = getRelations(uniqueID, relationsRaw);
 
 		return {
 			[uniqueID]: {
 				...(!isEmpty(bgParallaxLayers) && {
 					...{ parallax: bgParallaxLayers },
 				}),
+				...(relations && {
+					relations,
+				}),
 				...(hasVideo && { bg_video: true }),
 				...(hasScrollEffects && { scroll_effects: true }),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};
-	}
-
-	getDefaultBlockStyle(blockStyle, clientId) {
-		if (blockStyle) return;
-
-		let res;
-
-		const blockRootClientId =
-			select('core/block-editor').getBlockRootClientId(clientId);
-
-		if (!blockRootClientId) {
-			res = 'maxi-light';
-		} else if (
-			select('core/block-editor')
-				.getBlockName(blockRootClientId)
-				.includes('maxi-blocks')
-		) {
-			select('core/block-editor').getBlockAttributes(blockRootClientId)
-				.blockStyle === 'maxi-custom'
-				? (res = 'maxi-custom')
-				: (res = 'maxi-parent');
-		} else {
-			res = 'maxi-light';
-		}
-
-		// Kind of cheat. What it seeks is to don't generate an historical entity in the registry
-		// that transforms in the necessity of clicking more than onces on undo button after pasting
-		// any content on Text Maxi due to the `setAttributes` action that creates a record entity
-		// on the historical registry 👍
-		this.props.attributes.blockStyle = res;
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -364,16 +374,16 @@ class MaxiBlockComponent extends Component {
 		if (!isEmpty(response)) loadFonts(response);
 	}
 
-	getParentStyle() {
+	getCurrentBlockStyle() {
 		const {
 			clientId,
-			attributes: { parentBlockStyle },
+			attributes: { blockStyle },
 		} = this.props;
 
-		const newParentStyle = getBlockStyle(clientId);
+		const newBlockStyle = getBlockStyle(clientId);
 
-		if (parentBlockStyle !== newParentStyle) {
-			this.props.attributes.parentBlockStyle = newParentStyle;
+		if (blockStyle !== newBlockStyle) {
+			this.props.attributes.blockStyle = newBlockStyle;
 
 			return true;
 		}

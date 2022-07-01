@@ -12,13 +12,9 @@ import { RichText } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	getMaxiBlockAttributes,
-	withMaxiProps,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import MaxiBlock from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { defaultMarkers } from './defaultMarkers';

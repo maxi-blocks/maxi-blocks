@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
@@ -33,7 +41,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -42,7 +50,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -58,9 +66,6 @@ const getNormalObject = props => {
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
-		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -86,7 +91,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -95,18 +100,8 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
-	};
-
-	return response;
-};
-
-const getBackgroundDisplayer = props => {
-	const response = {
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
 	};
 
 	return response;
@@ -117,62 +112,64 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getNormalObject(props),
-				':hover': getHoverObject(props),
-				' > .maxi-background-displayer > div': getBackgroundDisplayer(props),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.parentBlockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+			merge(
+				{
+					'': getNormalObject(props),
+					':hover': getHoverObject(props),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.parentBlockStyle,
-				}),
-				...getArrowStyles({
-					...getGroupAttributes(props, [
-						'arrow',
-						'border',
-						'borderWidth',
-						'borderRadius',
-						'blockBackground',
-						'boxShadow',
-					]),
-					blockStyle: props.parentBlockStyle,
-				}),
-				...getArrowStyles({
-					...getGroupAttributes(
-						props,
-						[
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle: props.blockStyle,
+					}),
+					...getArrowStyles({
+						...getGroupAttributes(props, [
 							'arrow',
 							'border',
 							'borderWidth',
 							'borderRadius',
 							'blockBackground',
 							'boxShadow',
-						],
-						true
-					),
-					...getGroupAttributes(props, ['arrow']),
-					blockStyle: props.parentBlockStyle,
-					isHover: true,
-				}),
-			},
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getArrowStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'arrow',
+								'border',
+								'borderWidth',
+								'borderRadius',
+								'blockBackground',
+								'boxShadow',
+							],
+							true
+						),
+						...getGroupAttributes(props, ['arrow']),
+						blockStyle: props.blockStyle,
+						isHover: true,
+					}),
+				},
+				...getTransitionStyles(props)
+			),
 			selectorsGroup,
 			props
 		),

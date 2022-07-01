@@ -16,7 +16,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
-import { getActiveTabName } from '../../extensions/inspector-path';
+import { getActiveTabName } from '../../extensions/inspector';
 
 /**
  * External dependencies
@@ -35,9 +35,9 @@ import './editor.scss';
 const TransformControl = props => {
 	const {
 		className,
+		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
-		uniqueID,
 		depth,
 	} = props;
 
@@ -66,46 +66,29 @@ const TransformControl = props => {
 		});
 
 		changeTransformOptions(transformOptions);
+
+		const transformObj = getTransformStyles(transformOptions);
+
+		if (!transformObj || !transformObj[breakpoint]) return;
+
+		const {
+			[breakpoint]: { transform, 'transform-origin': transformOrigin },
+		} = transformObj;
+
+		onChangeInline &&
+			onChangeInline({
+				transform: transform ?? '',
+				'transform-origin': transformOrigin ?? '',
+			});
 	};
 
 	const classes = classnames('maxi-transform-control', className);
-
-	const forceStyles = () => {
-		const node = document.querySelector(
-			`.maxi-block[uniqueid="${uniqueID}"]`
-		);
-
-		if (node) {
-			const transformObj = getTransformStyles(
-				getGroupAttributes(transformOptions, 'transform')
-			);
-
-			if (!transformObj || !transformObj[breakpoint]) {
-				node.style.transform = null;
-				node.style.transformOrigin = null;
-
-				return;
-			}
-
-			const {
-				[breakpoint]: {
-					transform,
-					'transform-origin': transformOrigin,
-				},
-			} = transformObj;
-
-			if (transform) node.style.transform = transform;
-			if (transformOrigin) node.style.transformOrigin = transformOrigin;
-		}
-	};
 
 	useEffect(() => {
 		if (activeTabName) {
 			setTransformStatus(toLower(activeTabName));
 		}
 	});
-
-	useEffect(forceStyles);
 
 	return (
 		<div className={classes}>
@@ -173,7 +156,6 @@ const TransformControl = props => {
 							'transform-scale-x': x,
 							'transform-scale-y': y,
 						});
-						forceStyles();
 					}}
 					onSave={(x, y) => {
 						onChangeTransform({
@@ -184,7 +166,6 @@ const TransformControl = props => {
 							[`transform-scale-x-${breakpoint}`]: x,
 							[`transform-scale-y-${breakpoint}`]: y,
 						});
-						forceStyles();
 					}}
 				/>
 			)}
@@ -220,7 +201,6 @@ const TransformControl = props => {
 							'transform-translate-y': y,
 							'transform-translate-y-unit': yUnit,
 						});
-						forceStyles();
 					}}
 					onSave={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
@@ -235,7 +215,6 @@ const TransformControl = props => {
 							[`transform-translate-y-${breakpoint}`]: y,
 							[`transform-translate-y-unit-${breakpoint}`]: yUnit,
 						});
-						forceStyles();
 					}}
 				/>
 			)}
@@ -270,7 +249,6 @@ const TransformControl = props => {
 							[`transform-rotate-y-${breakpoint}`]: y,
 							[`transform-rotate-z-${breakpoint}`]: z,
 						});
-						forceStyles();
 					}}
 				/>
 			)}
@@ -310,7 +288,6 @@ const TransformControl = props => {
 							'transform-origin-y': y,
 							'transform-origin-y-unit': yUnit,
 						});
-						forceStyles();
 					}}
 					onSave={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
@@ -325,7 +302,6 @@ const TransformControl = props => {
 							[`transform-origin-y-${breakpoint}`]: y,
 							[`transform-origin-y-unit-${breakpoint}`]: yUnit,
 						});
-						forceStyles();
 					}}
 				/>
 			)}

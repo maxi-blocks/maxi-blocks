@@ -3,25 +3,25 @@
 exports[`getAlignmentFlexStyles Get a correct alignment flex styles 1`] = `
 Object {
   "general": Object {
-    "align-items": "flex-end",
+    "justify-content": "flex-end",
   },
   "l": Object {
-    "align-items": "flex-start",
+    "justify-content": "flex-start",
   },
   "m": Object {
-    "align-items": "flex-end",
+    "justify-content": "flex-end",
   },
   "s": Object {
-    "align-items": "flex-start",
+    "justify-content": "flex-start",
   },
   "xl": Object {
-    "align-items": "flex-end",
+    "justify-content": "flex-end",
   },
   "xs": Object {
-    "align-items": "flex-end",
+    "justify-content": "flex-end",
   },
   "xxl": Object {
-    "align-items": "flex-start",
+    "justify-content": "flex-start",
   },
 }
 `;

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Background color from Toolbar Test background color from toolbar 1`] = `
+Array [
+  Object {
+    "background-color-clip-path-status-general": false,
+    "background-palette-color-general": 5,
+    "background-palette-opacity-general": 0.66,
+    "background-palette-status-general": true,
+    "display-general": "block",
+    "isHover": false,
+    "order": 1,
+    "type": "color",
+  },
+]
+`;

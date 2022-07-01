@@ -21,6 +21,7 @@ import './editor.scss';
 const BlockBackgroundControl = props => {
 	const {
 		className,
+		onChangeInline,
 		onChange,
 		isHover = false,
 		prefix = '',
@@ -31,6 +32,7 @@ const BlockBackgroundControl = props => {
 		disableGradient = false,
 		disableColor = false,
 		disableSVG = false,
+		disableAddLayer = false,
 	} = props;
 
 	const layersOptions = compact([
@@ -62,7 +64,8 @@ const BlockBackgroundControl = props => {
 			<BackgroundLayersControl
 				layersOptions={layersOptions}
 				layersHoverOptions={layersHoverOptions}
-				onChange={obj => onChange(obj)}
+				onChangeInline={onChangeInline}
+				onChange={onChange}
 				isHover={isHover}
 				prefix={prefix}
 				disableImage={disableImage}
@@ -70,6 +73,7 @@ const BlockBackgroundControl = props => {
 				disableGradient={disableGradient}
 				disableColor={disableColor}
 				disableSVG={disableSVG}
+				disableAddLayer={disableAddLayer}
 				clientId={clientId}
 				breakpoint={breakpoint}
 				hoverStatus={hoverStatus}

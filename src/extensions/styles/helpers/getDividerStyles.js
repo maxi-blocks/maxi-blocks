@@ -12,7 +12,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getDividerStyles = (obj, target, parentBlockStyle) => {
+const getDividerStyles = (obj, target, blockStyle) => {
 	const response = {
 		label: 'Divider',
 		general: {},
@@ -32,12 +32,16 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 					firstVar: 'divider-color',
 					secondVar: `color-${paletteColor}`,
 					opacity: paletteOpacity,
-					blockStyle: parentBlockStyle,
+					blockStyle,
 				}),
 			};
 
 		return { 'border-color': color };
 	};
+
+	const getPrevBreakpoint = breakpoint =>
+		breakpoints[breakpoints.indexOf(breakpoint) - 1] ?? 'general';
+
 	breakpoints.forEach(breakpoint => {
 		if (target === 'line') {
 			const isHorizontal =
@@ -91,12 +95,26 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 					attributes: obj,
 				}) ?? 'px';
 
+			const dividerBorderRaidus = getLastBreakpointAttribute({
+				target: 'divider-border-radius',
+				breakpoint,
+				attributes: obj,
+			});
+
 			response[breakpoint] = {
 				...getColor(breakpoint),
-				...(obj[`divider-border-radius-${breakpoint}`] &&
-					obj[`divider-border-style-${breakpoint}`] === 'solid' && {
-						'border-radius': '20px',
-					}),
+				...(dividerBorderStyle === 'solid' &&
+					(dividerBorderRaidus
+						? {
+								'border-radius': '20px',
+						  }
+						: getLastBreakpointAttribute({
+								target: 'divider-border-radius',
+								breakpoint: getPrevBreakpoint(breakpoint),
+								attributes: obj,
+						  }) && {
+								'border-radius': '0px',
+						  })),
 
 				...(isHorizontal && {
 					'border-top-style': dividerBorderStyle,

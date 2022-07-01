@@ -3,18 +3,6 @@
  */
 import { select } from '@wordpress/data';
 
-const blockSwitcher = style => {
-	switch (style) {
-		case 'maxi-dark':
-		case 'dark':
-			return 'dark';
-		case 'maxi-light':
-		case 'light':
-		default:
-			return 'light';
-	}
-};
-
 const getBlockStyle = clientId => {
 	const {
 		getBlockHierarchyRootClientId,
@@ -28,16 +16,15 @@ const getBlockStyle = clientId => {
 		getSelectedBlockClientId() ||
 		getFirstMultiSelectedBlockClientId();
 
-	const { blockStyle: currentBlockStyle } = getBlockAttributes(id);
-
-	if (currentBlockStyle !== 'maxi-parent')
-		return blockSwitcher(currentBlockStyle);
+	if (getBlockAttributes(id)?.blockStyle)
+		return getBlockAttributes(id).blockStyle;
 
 	const rootClientId = getBlockHierarchyRootClientId(id);
 	const rootAttributes = getBlockAttributes(rootClientId);
-	const { blockStyle: parentBlockStyle } = rootAttributes;
 
-	return blockSwitcher(parentBlockStyle);
+	if (getBlockAttributes(id)?.blockStyle) return rootAttributes?.blockStyle;
+
+	return 'light';
 };
 
 export default getBlockStyle;

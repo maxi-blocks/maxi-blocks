@@ -6,19 +6,21 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import MaxiBlock from '../../components/maxi-block';
-import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * Save
  */
-const save = props => {
+const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
 
 	const name = 'maxi-blocks/svg-icon-maxi';
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			{...getMaxiBlockAttributes({ ...props, name })}
+			{...extendedAttributes}
+		>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{attributes.content}
 			</RawHTML>

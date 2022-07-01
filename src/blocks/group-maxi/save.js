@@ -3,13 +3,12 @@
  */
 import { ArrowDisplayer } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-import MaxiBlock from '../../components/maxi-block';
-import { getMaxiBlockAttributes } from '../../extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
  * Save
  */
-const save = props => {
+const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
 
 	const name = 'maxi-blocks/group-maxi';
@@ -18,6 +17,7 @@ const save = props => {
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			{...extendedAttributes}
 		>
 			<ArrowDisplayer
 				key={`maxi-arrow-displayer__${attributes.uniqueID}`}

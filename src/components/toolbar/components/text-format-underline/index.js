@@ -10,11 +10,6 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import {
-	setFormat,
-	getCustomFormatValue,
-} from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -30,32 +25,16 @@ import { toolbarUnderline } from '../../../../icons';
  * TextFormatUnderline
  */
 const TextFormatUnderline = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
-		props;
+	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	const getTextDecorationValue = () => {
-		return (
-			getCustomFormatValue({
-				typography: { ...getGroupAttributes(props, 'typography') },
-				formatValue,
-				prop: 'text-decoration',
-				breakpoint,
-				textLevel,
-				styleCard,
-			}) || ''
-		);
-	};
-
-	const textDecorationValue = getTextDecorationValue();
+	const getTextDecorationValue = () => getValue('text-decoration') || '';
 
 	const [isActive, setIsActive] = useState(
-		textDecorationValue.indexOf('overline') >= 0
+		getTextDecorationValue().indexOf('overline') >= 0
 	);
 
 	useEffect(() => {
-		const textDecorationValue = getTextDecorationValue();
-
-		setIsActive(textDecorationValue.indexOf('underline') >= 0);
+		setIsActive(getTextDecorationValue().indexOf('underline') >= 0);
 	});
 
 	const onClick = () => {
@@ -73,25 +52,13 @@ const TextFormatUnderline = props => {
 		response = trim(response);
 		if (isEmpty(response)) response = 'unset';
 
-		const obj = setFormat({
-			formatValue,
-			isActive: textDecorationValue.indexOf('underline') >= 0,
-			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
-			value: {
-				'text-decoration': response,
-			},
-			breakpoint,
-			textLevel,
+		onChangeFormat({
+			'text-decoration': response,
 		});
-
-		setIsActive(!isActive);
-
-		onChange(obj);
 	};
 
-	return (
-		<Tooltip text={__('Underline', 'maxi-blocks')} position='bottom center'>
+	const underlineContent = () => {
+		return (
 			<Button
 				className='toolbar-item toolbar-item__underline'
 				onClick={onClick}
@@ -99,8 +66,19 @@ const TextFormatUnderline = props => {
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarUnderline} />
 			</Button>
-		</Tooltip>
-	);
+		);
+	};
+
+	if (!tooltipsHide)
+		return (
+			<Tooltip
+				text={__('Underline', 'maxi-blocks')}
+				position='top center'
+			>
+				{underlineContent()}
+			</Tooltip>
+		);
+	return underlineContent();
 };
 
 export default TextFormatUnderline;

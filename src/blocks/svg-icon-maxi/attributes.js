@@ -7,7 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 /**
  * Attributes
@@ -21,7 +25,7 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('SVG Icon', 'maxi-blocks'),
+		default: __('Icon Maxi', 'maxi-blocks'),
 	},
 	openFirstTime: {
 		type: 'boolean',
@@ -34,6 +38,7 @@ const attributes = {
 		type: 'string',
 	},
 	...attributesData.svg,
+	...attributesData.svgHover,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -83,10 +88,6 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
@@ -106,7 +107,11 @@ const attributes = {
 	 */
 	...attributesData.scroll,
 	...attributesData.transform,
-	...attributesData.transition,
+	...attributesData.transform,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.overflow,

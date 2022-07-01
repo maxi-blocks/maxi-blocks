@@ -16,7 +16,7 @@ import InfoBox from '../info-box';
 import ToggleSwitch from '../toggle-switch';
 import OpacityControl from '../opacity-control';
 import SettingTabsControl from '../setting-tabs-control';
-import SvgColor from '../svg-color';
+import { SvgColor } from '../svg-color';
 import {
 	getDefaultAttribute,
 	getColorRGBAString,

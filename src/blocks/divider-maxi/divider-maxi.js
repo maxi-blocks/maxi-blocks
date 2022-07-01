@@ -25,6 +25,11 @@ import './style.scss';
 import { dividerIcon } from '../../icons';
 
 /**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+
+/**
  * Block
  */
 registerBlockType('maxi-blocks/divider-maxi', {
@@ -48,4 +53,5 @@ registerBlockType('maxi-blocks/divider-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [blockMigrator({ attributes, save })],
 });

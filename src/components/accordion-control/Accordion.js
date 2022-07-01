@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { select, useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
-import { cloneElement } from '@wordpress/element';
+import { useEffect, useState, cloneElement } from '@wordpress/element';
+import { getBlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -28,6 +28,8 @@ const Accordion = props => {
 		disablePadding = false,
 		preExpandedAccordion,
 		blockName,
+		depth = 1,
+		isStyleCard = false,
 	} = props;
 
 	const [itemExpanded, setItemExpanded] = useState(preExpandedAccordion);
@@ -35,20 +37,20 @@ const Accordion = props => {
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
 	const updatedItemExpanded = useSelect(
-		() => select('maxiBlocks').receiveInspectorPath()?.[1]?.value
+		() => select('maxiBlocks').receiveInspectorPath()?.[depth]?.value
 	);
 
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
 
 	const toggleExpanded = uuid => {
-		updateInspectorPath({ depth: 1, value: uuid });
+		if (!isStyleCard) updateInspectorPath({ depth, value: uuid });
 		setItemExpanded(uuid);
 	};
 
 	useEffect(() => {
 		if (updatedItemExpanded !== itemExpanded) {
-			setItemExpanded(updatedItemExpanded);
+			if (!isStyleCard) setItemExpanded(updatedItemExpanded);
 		}
 	}, [updatedItemExpanded]);
 
@@ -61,20 +63,44 @@ const Accordion = props => {
 					? cloneElement(item.content)
 					: item;
 
+				let isActiveTab = false;
+
+				if (item.indicatorProps) {
+					const { getBlock, getSelectedBlockClientId } =
+						select('core/block-editor');
+
+					const block = getBlock(getSelectedBlockClientId());
+
+					if (block && block.name.includes('maxi-blocks')) {
+						const { attributes, name } = block;
+						const defaultAttributes = getBlockAttributes(name);
+						isActiveTab = !item.indicatorProps.every(prop =>
+							Array.isArray(attributes[prop])
+								? isEmpty(attributes[prop])
+								: attributes[prop] === defaultAttributes[prop]
+						);
+					}
+				}
+
 				const classesItemButton = classnames(
 					'maxi-accordion-control__item__button',
-					getIsActiveTab(
-						getMaxiAttrsFromChildren({
-							items: itemsIndicators,
-							blockName:
-								blockName ??
-								getBlockName(getSelectedBlockClientId()),
-						}),
-						item.breakpoint,
-						item.extraIndicators,
-						item.extraIndicatorsResponsive,
-						item.ignoreIndicator
-					) && 'maxi-accordion-control__item--active'
+					(item.indicatorProps
+						? isActiveTab
+						: getIsActiveTab(
+								getMaxiAttrsFromChildren({
+									items: itemsIndicators,
+									blockName:
+										blockName ??
+										getBlockName(
+											getSelectedBlockClientId()
+										),
+								}),
+								item.breakpoint,
+								item.extraIndicators,
+								item.extraIndicatorsResponsive,
+								item.ignoreIndicator,
+								item.ignoreIndicatorGroups
+						  )) && 'maxi-accordion-control__item--active'
 				);
 
 				const classesItem = classnames(

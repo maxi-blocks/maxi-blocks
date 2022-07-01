@@ -1,4 +1,5 @@
 <?php
+require_once MAXI_PLUGIN_DIR_PATH . 'core/utils/get-last-breakpoint-attribute.php';
 
 class MaxiBlocks_StyleCards
 {
@@ -49,18 +50,22 @@ class MaxiBlocks_StyleCards
     public function getStylesString()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-        $query =
-            'SELECT object FROM ' . $table_name . ' where id = "sc_string"';
-
-        $style_card = maybe_unserialize($wpdb->get_var($query));
+        $style_card = maybe_unserialize(
+            $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                    'sc_string'
+                )
+            )
+        );
 
         if (!$style_card) {
             return false;
         }
 
         if (!array_key_exists('_maxi_blocks_style_card', $style_card)) {
-            $style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card_preview'];
+            $style_card['_maxi_blocks_style_card'] =
+                $style_card['_maxi_blocks_style_card_preview'];
         }
 
         $style =
@@ -82,39 +87,48 @@ class MaxiBlocks_StyleCards
         return $style;
     }
 
-    public function get_maxi_blocks_current_style_cards()
+    public static function get_maxi_blocks_current_style_cards()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-        $query =
-            'SELECT object FROM ' .
-            $table_name .
-            ' where id = "style_cards_current"';
-        $maxi_blocks_style_cards_current = $wpdb->get_var($query);
+        
+        $maxi_blocks_style_cards_current =
+            $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                    'style_cards_current'
+                )
+            );
+            
         if (
             $maxi_blocks_style_cards_current &&
             !empty($maxi_blocks_style_cards_current)
         ) {
             return $maxi_blocks_style_cards_current;
         } else {
-            $defaultStyleCard = $this->getDefaultStyleCard();
+            $defaultStyleCard = self::getDefaultStyleCard();
 
             $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',
-                'object' => $defaultStyleCard,
+                'object' => $defaultStyleCard
             ]);
-            $maxi_blocks_style_cards_current = $wpdb->get_var($query);
+            
+            $maxi_blocks_style_cards_current = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                    'style_cards_current'
+                )
+            );
             return $maxi_blocks_style_cards_current;
         }
     }
 
-    public function get_maxi_blocks_active_style_card()
+    public static function get_maxi_blocks_active_style_card()
     {
-        $maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
+        $maxi_blocks_style_cards = self::get_maxi_blocks_current_style_cards();
 
         $maxi_blocks_style_cards_array = json_decode(
             $maxi_blocks_style_cards,
-            true,
+            true
         );
 
         foreach ($maxi_blocks_style_cards_array as $key => $sc) {
@@ -123,6 +137,25 @@ class MaxiBlocks_StyleCards
             }
         }
         return false;
+    }
+
+    public static function get_maxi_blocks_style_card_fonts($block_style, $text_level)
+    {
+        $maxi_blocks_style_cards = (object) self::get_maxi_blocks_active_style_card();
+        $block_style_values = (object) $maxi_blocks_style_cards->$block_style;
+        $default_values = $block_style_values->defaultStyleCard;
+        $values = $block_style_values->styleCard;
+
+        $style_card_values = (object) array_merge(
+            (array) $default_values,
+            (array) $values
+        );
+
+        $text_level_values = (object) $style_card_values->$text_level;
+
+        $font = $text_level_values->{'font-family-general'};
+
+        return $font;
     }
 
 
@@ -152,10 +185,14 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 16,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 20,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
+							"line-height-general": 26,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 30,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 26,
@@ -163,11 +200,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 400,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h1": {
 							"color-global": false,
@@ -176,6 +217,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 45,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 60,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 45,
@@ -188,6 +231,8 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-s": "px",
 							"font-size-xs": 32,
 							"font-size-unit-xs": "px",
+							"line-height-general": 55,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 70,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 55,
@@ -203,11 +248,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h2": {
 							"color-global": false,
@@ -216,6 +265,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 38,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 50,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 38,
@@ -228,6 +279,8 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-s": "px",
 							"font-size-xs": 28,
 							"font-size-unit-xs": "px",
+							"line-height-general": 48,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 60,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 48,
@@ -243,11 +296,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h3": {
 							"color-global": false,
@@ -256,6 +313,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 30,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 40,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 30,
@@ -264,7 +323,9 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-m": "px",
 							"font-size-s": 24,
 							"font-size-unit-s": "px",
-							"line-height-xxl": 30,
+							"line-height-general": 40,
+							"line-height-unit-general": "px",
+							"line-height-xxl": 50,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 40,
 							"line-height-unit-xl": "px",
@@ -275,11 +336,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h4": {
 							"color-global": false,
@@ -288,6 +353,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 26,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 38,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 26,
@@ -296,6 +363,8 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-l": "px",
 							"font-size-s": 22,
 							"font-size-unit-s": "px",
+							"line-height-general": 36,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 48,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 36,
@@ -307,11 +376,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h5": {
 							"color-global": false,
@@ -320,12 +393,16 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 22,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 30,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 22,
 							"font-size-unit-xl": "px",
 							"font-size-m": 20,
 							"font-size-unit-m": "px",
+							"line-height-general": 32,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 40,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 32,
@@ -335,11 +412,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h6": {
 							"color-global": false,
@@ -348,12 +429,16 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 20,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 26,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 20,
 							"font-size-unit-xl": "px",
 							"font-size-m": 18,
 							"font-size-unit-m": "px",
+							"line-height-general": 30,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 36,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 30,
@@ -364,11 +449,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"button": {
 							"border-color-global": false,
@@ -394,20 +483,28 @@ class MaxiBlocks_StyleCards
 							"hover-palette-opacity": 1,
 							"hover-color": "",
 							"font-family-general": "",
+							"font-size-general": 16,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 20,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
+							"line-height-general": 100,
+							"line-height-unit-general": "%",
 							"line-height-xl": 100,
 							"line-height-unit-xl": "%",
 							"font-weight-general": 400,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
 							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr",
 							"background-color-global": false,
 							"background-palette-status": true,
 							"background-palette-color": 4,
@@ -452,7 +549,17 @@ class MaxiBlocks_StyleCards
 							"fill-palette-status": true,
 							"fill-palette-color": 4,
 							"fill-palette-opacity": 1,
-							"fill": ""
+							"fill": "",
+							"hover-line-global": false,
+							"hover-line-palette-status": true,
+							"hover-line-palette-color": 5,
+							"hover-line-palette-opacity": 1,
+							"hover-line": "",
+							"hover-fill-global": false,
+							"hover-fill-palette-status": true,
+							"hover-fill-palette-color": 6,
+							"hover-fill-palette-opacity": 1,
+							"hover-fill": ""
 						},
 						"divider": {
 							"color-global": false,
@@ -483,10 +590,14 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 16,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 20,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
+							"line-height-general": 26,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 30,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 26,
@@ -494,11 +605,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 400,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h1": {
 							"color-global": false,
@@ -507,6 +622,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 45,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 60,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 45,
@@ -519,6 +636,8 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-s": "px",
 							"font-size-xs": 32,
 							"font-size-unit-xs": "px",
+							"line-height-general": 55,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 70,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 55,
@@ -534,11 +653,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h2": {
 							"color-global": false,
@@ -547,6 +670,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 38,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 50,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 38,
@@ -559,6 +684,8 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-s": "px",
 							"font-size-xs": 28,
 							"font-size-unit-xs": "px",
+							"line-height-general": 48,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 60,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 48,
@@ -574,11 +701,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h3": {
 							"color-global": false,
@@ -587,6 +718,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 30,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 40,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 30,
@@ -595,6 +728,8 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-m": "px",
 							"font-size-s": 24,
 							"font-size-unit-s": "px",
+							"line-height-general": 40,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 50,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 40,
@@ -606,11 +741,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h4": {
 							"color-global": false,
@@ -619,6 +758,8 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 26,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 38,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 26,
@@ -627,6 +768,8 @@ class MaxiBlocks_StyleCards
 							"font-size-unit-l": "px",
 							"font-size-s": 22,
 							"font-size-unit-s": "px",
+							"line-height-general": 36,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 48,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 36,
@@ -638,11 +781,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h5": {
 							"color-global": false,
@@ -651,12 +798,16 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 22,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 30,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 22,
 							"font-size-unit-xl": "px",
 							"font-size-m": 20,
 							"font-size-unit-m": "px",
+							"line-height-general": 32,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 40,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 32,
@@ -666,11 +817,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"h6": {
 							"color-global": false,
@@ -679,12 +834,16 @@ class MaxiBlocks_StyleCards
 							"palette-opacity": 1,
 							"color": "",
 							"font-family-general": "Roboto",
+							"font-size-general": 20,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 26,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 20,
 							"font-size-unit-xl": "px",
 							"font-size-m": 18,
 							"font-size-unit-m": "px",
+							"line-height-general": 30,
+							"line-height-unit-general": "px",
 							"line-height-xxl": 36,
 							"line-height-unit-xxl": "px",
 							"line-height-xl": 30,
@@ -695,11 +854,15 @@ class MaxiBlocks_StyleCards
 							"font-weight-general": 500,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"text-decoration-general": "unset"
+							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr"
 						},
 						"button": {
 							"border-color-global": false,
@@ -725,20 +888,28 @@ class MaxiBlocks_StyleCards
 							"hover-palette-opacity": 1,
 							"hover-color": "",
 							"font-family-general": "",
+							"font-size-general": 16,
+							"font-size-unit-general": "px",
 							"font-size-xxl": 24,
 							"font-size-unit-xxl": "px",
 							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
+							"line-height-general": 100,
+							"line-height-unit-general": "%",
 							"line-height-xl": 100,
 							"line-height-unit-xl": "%",
 							"font-weight-general": 400,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
+							"letter-spacing-general": 0,
+							"letter-spacing-unit-general": "px",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
 							"text-decoration-general": "unset",
+							"text-orientation-general": "unset",
+							"text-direction-general": "ltr",
 							"background-color-global": false,
 							"background-palette-status": true,
 							"background-palette-color": 4,
@@ -783,7 +954,17 @@ class MaxiBlocks_StyleCards
 							"fill-palette-status": true,
 							"fill-palette-color": 4,
 							"fill-palette-opacity": 1,
-							"fill": ""
+							"fill": "",
+							"hover-line-global": false,
+							"hover-line-palette-status": true,
+							"hover-line-palette-color": 5,
+							"hover-line-palette-opacity": 1,
+							"hover-line": "",
+							"hover-fill-global": false,
+							"hover-fill-palette-status": true,
+							"hover-fill-palette-color": 6,
+							"hover-fill-palette-opacity": 1,
+							"hover-fill": ""
 						},
 						"divider": {
 							"color-global": false,

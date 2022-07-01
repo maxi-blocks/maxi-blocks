@@ -68,3 +68,13 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir="rtl"]  {
+	.maxi-gradient-control .components-circular-option-picker__custom-clear-wrapper {
+		right: unset;
+		left: 35px;
+	}
+}

@@ -1,7 +1,7 @@
 /**
  * BLOCK: maxi-blocks/group-maxi
  *
- * Group of blocks composed with a similar style or layout
+ * Combine a set of blocks in a group
  */
 
 /**
@@ -25,13 +25,18 @@ import './editor.scss';
 import { groupIcon } from '../../icons';
 
 /**
+ * Migrators
+ */
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+
+/**
  * Block
  */
 
 registerBlockType('maxi-blocks/group-maxi', {
 	title: __('Group Maxi', 'maxi-blocks'),
 	icon: groupIcon,
-	description: 'Group of blocks composed with a similar style or layout',
+	description: 'Combine a set of blocks in a group',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
@@ -49,4 +54,5 @@ registerBlockType('maxi-blocks/group-maxi', {
 	},
 	edit,
 	save,
+	deprecated: [blockMigrator({ attributes, save })],
 });

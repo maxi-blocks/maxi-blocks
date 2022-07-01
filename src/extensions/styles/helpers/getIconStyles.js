@@ -11,20 +11,23 @@ import { isNil } from 'lodash';
 
 const getIconStyles = (
 	obj,
-	parentBlockStyle,
+	blockStyle,
 	isIconInherit = true,
-	isHover = false
+	isHover = false,
+	prefix = ''
 ) => {
 	const response = {
 		label: 'Icon',
 		general: {},
 	};
 
+	if (isIconInherit && !obj['typography-status-hover']) return response;
+
 	if (isIconInherit) {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: '',
+				prefix,
 				isHover,
 				breakpoint: 'general',
 			});
@@ -36,7 +39,7 @@ const getIconStyles = (
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
-				blockStyle: parentBlockStyle,
+				blockStyle,
 			});
 		}
 	} else {
@@ -49,7 +52,7 @@ const getIconStyles = (
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: obj[paletteOpacity],
-				blockStyle: parentBlockStyle,
+				blockStyle,
 			});
 		}
 	}

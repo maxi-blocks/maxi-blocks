@@ -23,6 +23,7 @@ const HoverPreview = props => {
 		'hover-transition-duration': hoverTransitionDuration,
 		'hover-transition-easing': hoverTransitionEasing,
 		'hover-transition-easing-cubic-bezier': hoverTransitionEasingCB,
+		isSave = false,
 	} = props;
 
 	const transitionDurationEffects = [
@@ -43,6 +44,16 @@ const HoverPreview = props => {
 		hoverType !== 'none' && hoverClassName
 	);
 
+	const showEffects = props['hover-preview'] || isSave;
+
+	const transitionTimingFunction = `${
+		hoverTransitionEasing !== 'cubic-bezier'
+			? hoverTransitionEasing
+			: !isNil(hoverTransitionEasingCB)
+			? `cubic-bezier(${hoverTransitionEasingCB.join()})`
+			: 'easing'
+	}`;
+
 	const mouseHoverHandle = ({ target }) => {
 		if (
 			hoverType === 'text' ||
@@ -51,16 +62,11 @@ const HoverPreview = props => {
 			target.style.transform = '';
 			target.style.marginLeft = '';
 			target.style.filter = '';
-			target.style.transitionTimingFunction = `${
-				hoverTransitionEasing !== 'cubic-bezier'
-					? hoverTransitionEasing
-					: !isNil(hoverTransitionEasingCB)
-					? `cubic-bezier(${hoverTransitionEasingCB.join()})`
-					: 'easing'
-			}`;
+			target.style.transitionDuration = `${hoverTransitionDuration}s`;
+			target.style.transitionTimingFunction = transitionTimingFunction;
 		}
 
-		if (hoverType === 'basic') {
+		if (hoverType === 'basic' && showEffects) {
 			if (hoverBasicEffectType === 'zoom-in')
 				target.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
 			else if (hoverBasicEffectType === 'rotate')
@@ -135,47 +141,26 @@ const HoverPreview = props => {
 	return (
 		<div className={classes}>
 			{enhancedChildren}
-			{hoverType !== 'none' &&
-				hoverType !== 'basic' &&
-				props['hover-preview'] && (
+			{hoverType !== 'none' && hoverType !== 'basic' && showEffects && (
+				<div
+					style={{
+						transitionDuration: `${hoverTransitionDuration}s`,
+						transitionTimingFunction,
+					}}
+					className='maxi-hover-details'
+				>
 					<div
-						style={{
-							transitionDuration: `${hoverTransitionDuration}s`,
-							transitionTimingFunction:
-								hoverTransitionEasing !== 'cubic-bezier'
-									? hoverTransitionEasing
-									: !isNil(
-											props[
-												'hover-transition-easing-cubic-bezier'
-											]
-									  )
-									? `cubic-bezier(${props[
-											'hover-transition-easing-cubic-bezier'
-									  ].join()})`
-									: 'easing',
-						}}
-						className='maxi-hover-details'
+						className={`maxi-hover-details__content maxi-hover-details__content--${props['hover-text-preset']}`}
 					>
-						<div
-							className={`maxi-hover-details__content maxi-hover-details__content--${props['hover-text-preset']}`}
-						>
-							{!isEmpty(
-								props['hover-title-typography-content']
-							) && (
-								<h4>
-									{props['hover-title-typography-content']}
-								</h4>
-							)}
-							{!isEmpty(
-								props['hover-content-typography-content']
-							) && (
-								<p>
-									{props['hover-content-typography-content']}
-								</p>
-							)}
-						</div>
+						{!isEmpty(props['hover-title-typography-content']) && (
+							<h4>{props['hover-title-typography-content']}</h4>
+						)}
+						{!isEmpty(
+							props['hover-content-typography-content']
+						) && <p>{props['hover-content-typography-content']}</p>}
 					</div>
-				)}
+				</div>
+			)}
 		</div>
 	);
 };

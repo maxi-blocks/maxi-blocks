@@ -23,7 +23,15 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, capitalize, isNumber, replace, round, isNil } from 'lodash';
+import {
+	isEmpty,
+	isNaN,
+	capitalize,
+	isNumber,
+	replace,
+	round,
+	isNil,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -78,7 +86,7 @@ const AxisInput = props => {
 			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
-			autoLabel={__(`Auto ${label}`, 'maxi-blocks')}
+			autoLabel={__(`Auto ${label.toLowerCase()}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			enableUnit={enableAxisUnits}
 			min={minMaxSettings[currentUnit].min || 0}
@@ -123,23 +131,21 @@ const AxisContent = props => {
 	return (
 		<div>
 			{(sync === 'all' || disableSync) && (
-				<>
-					<AxisInput
-						label={type}
-						target={inputsArray[0]}
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-						enableAxisUnits={enableAxisUnits}
-						onChangeUnit={onChangeUnit}
-						onReset={() => onReset({ reset: 'all' })}
-					/>
-				</>
+				<AxisInput
+					label={type}
+					target={inputsArray[0]}
+					getValue={getValue}
+					getLastBreakpointValue={getLastBreakpointValue}
+					breakpoint={breakpoint}
+					disableAuto={disableAuto}
+					onChangeValue={onChangeValue}
+					minMaxSettings={minMaxSettings}
+					currentUnit={currentUnit}
+					type={type}
+					enableAxisUnits={enableAxisUnits}
+					onChangeUnit={onChangeUnit}
+					onReset={() => onReset({ reset: 'all' })}
+				/>
 			)}
 			{sync === 'axis' && !disableSync && (
 				<>
@@ -483,7 +489,7 @@ const AxisControl = props => {
 		],
 		optionType = 'number',
 		disableSync = false,
-		blockFullWidth,
+		fullWidth,
 		enableAxisUnits,
 	} = props;
 
@@ -497,8 +503,7 @@ const AxisControl = props => {
 	const useResponsiveTabs =
 		!noResponsiveTabs && ['margin', 'padding'].includes(target);
 
-	const disableLeftRightMargin =
-		target === 'margin' && blockFullWidth === 'full';
+	const disableLeftRightMargin = target === 'margin' && fullWidth === 'full';
 
 	const getOptions = () => {
 		const options = [];
@@ -625,7 +630,7 @@ const AxisControl = props => {
 
 	const onChangeValue = (val, singleTarget, customBreakpoint, prefix) => {
 		let newValue = '';
-		if (optionType === 'number')
+		if (optionType === 'number' && isNaN(val))
 			if (isEmpty(val)) newValue = val;
 			else newValue = +val;
 		else if (isEmpty(val) && !isNumber(val)) newValue = '';

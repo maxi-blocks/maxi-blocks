@@ -2,15 +2,25 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
+import {
+	memo,
+	forwardRef,
+	useEffect,
+	useState,
+	useRef,
+} from '@wordpress/element';
 import { select, useSelect } from '@wordpress/data';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
  */
+import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import { toolbarPin, toolbarPinLocked } from '../../icons';
 
 /**
  * Utils
@@ -30,8 +40,8 @@ import {
 	Duplicate,
 	Link,
 	Mover,
+	NumberCounterReplay,
 	Size,
-	SvgColor,
 	SvgWidth,
 	TextColor,
 	TextLevel,
@@ -54,83 +64,88 @@ import {
  * Styles
  */
 import './editor.scss';
-
-/**
- * General
- */
-const allowedBlocks = [
-	'maxi-blocks/button-maxi',
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/container-maxi',
-	'maxi-blocks/divider-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/image-maxi',
-	'maxi-blocks/map-maxi',
-	'maxi-blocks/number-counter-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/text-maxi',
-];
+import SvgColorToolbar from './components/svg-color';
+import { getBoundaryElement } from '../../extensions/dom';
+import VideoUrl from './components/video-url';
 
 /**
  * Component
  */
 const MaxiToolbar = memo(
 	forwardRef((props, ref) => {
+		const inlineStylesTargetsDefault = {
+			background: '',
+			border: '',
+			boxShadow: '',
+			dividerColor: '',
+		};
+
 		const {
 			attributes,
 			backgroundAdvancedOptions,
-			changeSVGContent,
+			backgroundPrefix,
 			clientId,
 			isSelected,
 			name,
 			maxiSetAttributes,
 			toggleHandlers,
 			rowPattern,
-			changeSVGStrokeWidth,
 			prefix = '',
 			backgroundGlobalProps,
 			resizableObject,
+			insertInlineStyles,
+			cleanInlineStyles,
+			inlineStylesTargets = inlineStylesTargetsDefault,
+			resetNumberHelper,
 			copyPasteMapping,
+			mediaPrefix,
 		} = props;
 		const {
-			blockFullWidth,
-			content,
 			customLabel,
-			fullWidth,
 			isFirstOnHierarchy,
 			isList,
 			linkSettings,
 			textLevel,
 			typeOfList,
 			uniqueID,
-			parentBlockStyle,
+			blockStyle,
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard } = useSelect(select => {
-			const { receiveMaxiDeviceType } = select('maxiBlocks');
-			const { receiveMaxiSelectedStyleCard } = select(
-				'maxiBlocks/style-cards'
-			);
+		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
+			select => {
+				const { receiveMaxiDeviceType, receiveMaxiSettings } =
+					select('maxiBlocks');
+				const { receiveMaxiSelectedStyleCard } = select(
+					'maxiBlocks/style-cards'
+				);
+				const { isTyping } = select('core/block-editor');
 
-			const breakpoint = receiveMaxiDeviceType();
+				const breakpoint = receiveMaxiDeviceType();
 
-			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-			return {
-				breakpoint,
-				styleCard,
-			};
-		});
+				const maxiSettings = receiveMaxiSettings();
+				const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+					? maxiSettings.hide_tooltips
+					: false;
+
+				return {
+					breakpoint,
+					styleCard,
+					isTyping: isTyping(),
+					tooltipsHide,
+				};
+			}
+		);
+
+		const popoverRef = useRef(null);
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
 		useEffect(() => {
 			setAnchorRef(ref.current);
 		});
-
-		if (!allowedBlocks.includes(name)) return null;
 
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');
@@ -142,10 +157,10 @@ const MaxiToolbar = memo(
 			return originalNestedBlocks.length > 1;
 		};
 
-		const boundaryElement =
-			document.defaultView.frameElement ||
-			getScrollContainer(anchorRef) ||
-			document.body;
+		const inlineStylesTargetsResults = merge(
+			inlineStylesTargetsDefault,
+			inlineStylesTargets
+		);
 
 		const lineOrientation = getLastBreakpointAttribute(
 			'line-orientation',
@@ -153,352 +168,537 @@ const MaxiToolbar = memo(
 			attributes
 		);
 
+		const [pinActive, setPinActive] = useState(false);
+
+		const togglePin = () => {
+			setPinActive(!pinActive);
+		};
+
 		return (
-			<>
-				{isSelected && anchorRef && (
-					<Popover
-						noArrow
-						animate={false}
-						position='top center right'
-						focusOnMount={false}
-						anchorRef={anchorRef}
-						className={classnames(
-							'maxi-toolbar__popover',
-							!!breadcrumbStatus() &&
-								'maxi-toolbar__popover--has-breadcrumb'
-						)}
-						__unstableSlotName='block-toolbar'
-						shouldAnchorIncludePadding
-						__unstableStickyBoundaryElement={boundaryElement}
-					>
-						<div className='toolbar-wrapper'>
+			isSelected &&
+			anchorRef && (
+				<Popover
+					ref={popoverRef}
+					noArrow
+					animate={false}
+					position='top center right'
+					focusOnMount={false}
+					getAnchorRect={spanEl => {
+						// span element needs to be hidden to don't break the grid
+						spanEl.style.display = 'none';
+
+						const rect = anchorRef.getBoundingClientRect();
+						const popoverRect = popoverRef.current
+							?.querySelector('.components-popover__content')
+							?.getBoundingClientRect();
+
+						const { width, x } = rect;
+						const { width: popoverWidth } = popoverRect;
+
+						const expectedContentX =
+							x + width / 2 - popoverWidth / 2;
+
+						const container = document
+							.querySelector('.editor-styles-wrapper')
+							?.getBoundingClientRect();
+
+						if (container) {
+							const { x: containerX, width: containerWidth } =
+								container;
+
+							// Left cut off check
+							if (expectedContentX < containerX)
+								rect.x += containerX - expectedContentX;
+
+							// Right cut off check
+							if (
+								expectedContentX + popoverWidth >
+								containerX + containerWidth
+							)
+								rect.x -=
+									expectedContentX +
+									popoverWidth -
+									(containerX + containerWidth);
+						}
+
+						return rect;
+					}}
+					className={classnames(
+						'maxi-toolbar__popover',
+						!!breadcrumbStatus() &&
+							'maxi-toolbar__popover--has-breadcrumb'
+					)}
+					__unstableSlotName='block-toolbar'
+					shouldAnchorIncludePadding
+					__unstableStickyBoundaryElement={getBoundaryElement(
+						anchorRef
+					)}
+				>
+					<div className={`toolbar-wrapper pinned--${pinActive}`}>
+						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
+								{!isFirstOnHierarchy && (
+									<span
+										className='breadcrumbs-pin'
+										onClick={() => {
+											togglePin();
+										}}
+									>
+										<span className='breadcrumbs-pin-toltip'>
+											{pinActive ? 'Unpin' : 'Pin Open'}
+										</span>
+										<span className='breadcrumbs-pin-icon'>
+											{pinActive
+												? toolbarPinLocked
+												: toolbarPin}
+										</span>
+									</span>
+								)}
 								{customLabel}
 								<span className='toolbar-block-custom-label__block-style'>
-									{` | ${parentBlockStyle}`}
+									{` | ${blockStyle}`}
 								</span>
 							</div>
-							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
-							<ToolbarMediaUpload
-								blockName={name}
-								maxiSetAttributes={maxiSetAttributes}
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-								clientId={clientId}
-								attributes={attributes}
-							/>
-							<TextColor
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-								node={anchorRef}
-								isList={isList}
-								typeOfList={typeOfList}
-								clientId={clientId}
-								textLevel={textLevel}
-								styleCard={styleCard}
-							/>
-							<TextOptions
-								{...getGroupAttributes(attributes, [
-									'typography',
-									'textAlignment',
-								])}
-								blockName={name}
-								onChange={obj => maxiSetAttributes(obj)}
-								node={anchorRef}
-								content={content}
-								breakpoint={breakpoint}
-								isList={isList}
-								typeOfList={typeOfList}
-								textLevel={textLevel}
-								styleCard={styleCard}
-								clientId={clientId}
-								blockStyle={parentBlockStyle}
-							/>
-							<Mover clientId={clientId} blockName={name} />
-							<TextLevel
-								{...getGroupAttributes(attributes, [
-									'typography',
-									'typographyHover',
-								])}
-								blockName={name}
-								textLevel={textLevel}
-								isList={isList}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<TextListOptions
-								blockName={name}
-								isList={isList}
-								typeOfList={typeOfList}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							{name === 'maxi-blocks/svg-icon-maxi' && (
-								<>
-									{svgType !== 'Line' && (
-										<SvgColor
-											{...getGroupAttributes(
-												attributes,
-												'svg'
-											)}
-											blockName={name}
-											onChange={obj => {
-												maxiSetAttributes(obj);
-											}}
-											changeSVGContent={changeSVGContent}
-											type='fill'
-											parentBlockStyle={parentBlockStyle}
-										/>
-									)}
-									{svgType !== 'Shape' && (
-										<SvgColor
-											{...getGroupAttributes(
-												attributes,
-												'svg'
-											)}
-											blockName={name}
-											onChange={obj => {
-												maxiSetAttributes(obj);
-											}}
-											changeSVGContent={changeSVGContent}
-											type='line'
-											parentBlockStyle={parentBlockStyle}
-										/>
-									)}
-									<SvgWidth
+						)}
+						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
+						<ToolbarMediaUpload
+							blockName={name}
+							maxiSetAttributes={maxiSetAttributes}
+							{...getGroupAttributes(attributes, 'typography')}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={breakpoint}
+							clientId={clientId}
+							attributes={attributes}
+							prefix={mediaPrefix}
+						/>
+						<TextColor
+							blockName={name}
+							{...getGroupAttributes(attributes, 'typography')}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: `.maxi-text-block__content ${
+										isList ? 'li' : ''
+									}`,
+									isMultiplySelector: isList,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									`.maxi-text-block__content ${
+										isList ? 'li' : ''
+									}`
+								);
+							}}
+							breakpoint={breakpoint}
+							isList={isList}
+							textLevel={textLevel}
+							styleCard={styleCard}
+						/>
+						<TextOptions
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'textAlignment',
+							])}
+							blockName={name}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={breakpoint}
+							isList={isList}
+							textLevel={textLevel}
+							styleCard={styleCard}
+							clientId={clientId}
+						/>
+						<Mover
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
+						<TextLevel
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'typographyHover',
+							])}
+							blockName={name}
+							textLevel={textLevel}
+							isList={isList}
+							onChange={obj => maxiSetAttributes(obj)}
+						/>
+						<TextListOptions
+							blockName={name}
+							isList={isList}
+							typeOfList={typeOfList}
+							onChange={obj => maxiSetAttributes(obj)}
+						/>
+						{name === 'maxi-blocks/svg-icon-maxi' && (
+							<>
+								{svgType !== 'Line' && (
+									<SvgColorToolbar
 										{...getGroupAttributes(
 											attributes,
 											'svg'
 										)}
+										{...getGroupAttributes(
+											attributes,
+											'svgHover'
+										)}
+										maxiSetAttributes={maxiSetAttributes}
 										blockName={name}
-										onChange={obj => {
-											maxiSetAttributes(obj);
-										}}
-										breakpoint={breakpoint}
-										changeSVGStrokeWidth={
-											changeSVGStrokeWidth
+										onChangeInline={(obj, target) =>
+											insertInlineStyles({
+												obj,
+												target,
+												isMultiplySelector: true,
+											})
 										}
-										type={svgType}
-										resizableObject={resizableObject}
+										onChangeFill={obj => {
+											maxiSetAttributes(obj);
+											cleanInlineStyles('[data-fill]');
+										}}
+										svgType='Fill'
+										type='fill'
+										blockStyle={blockStyle}
+										content={attributes.content}
 									/>
-								</>
+								)}
+								{svgType !== 'Shape' && (
+									<SvgColorToolbar
+										{...getGroupAttributes(
+											attributes,
+											'svg'
+										)}
+										{...getGroupAttributes(
+											attributes,
+											'svgHover'
+										)}
+										maxiSetAttributes={maxiSetAttributes}
+										blockName={name}
+										onChangeInline={(obj, target) =>
+											insertInlineStyles({
+												obj,
+												target,
+												isMultiplySelector: true,
+											})
+										}
+										onChangeStroke={obj => {
+											maxiSetAttributes(obj);
+											cleanInlineStyles('[data-stroke]');
+										}}
+										svgType='Line'
+										type='line'
+										blockStyle={blockStyle}
+										content={attributes.content}
+									/>
+								)}
+								<SvgWidth
+									{...getGroupAttributes(attributes, 'svg')}
+									blockName={name}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+									}}
+									breakpoint={breakpoint}
+									type={svgType}
+									resizableObject={resizableObject}
+								/>
+							</>
+						)}
+						{name === 'maxi-blocks/video-maxi' && (
+							<VideoUrl
+								{...getGroupAttributes(attributes, 'video')}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
+						)}
+						<ColumnMover
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
+						<BackgroundColor
+							{...getGroupAttributes(
+								attributes,
+								[
+									'background',
+									'backgroundColor',
+									'backgroundGradient',
+								],
+								false,
+								backgroundPrefix || prefix
 							)}
-							<ColumnMover clientId={clientId} blockName={name} />
-							<BackgroundColor
-								{...getGroupAttributes(
-									attributes,
-									[
-										'background',
-										'backgroundColor',
-										'backgroundGradient',
-									],
-									false,
-									prefix
-								)}
-								prefix={prefix}
-								advancedOptions={backgroundAdvancedOptions}
-								globalProps={backgroundGlobalProps}
-								blockName={name}
-								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
-							/>
-							<BlockBackgroundColor
-								{...getGroupAttributes(
-									attributes,
-									'blockBackground'
-								)}
-								blockName={name}
-								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
-							/>
-							<Border
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									['border', 'borderWidth', 'borderRadius'],
-									false,
-									prefix
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-								clientId={clientId}
-								prefix={prefix}
-							/>
-							<BoxShadow
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									['boxShadow'],
-									false,
-									prefix
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
-								breakpoint={breakpoint}
-								prefix={prefix}
-							/>
-							<ToolbarColumnPattern
-								clientId={clientId}
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'rowPattern'
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-							/>
-							<ColumnsHandlers
-								toggleHandlers={toggleHandlers}
-								blockName={name}
-							/>
-							<Size
-								blockName={name}
-								blockFullWidth={blockFullWidth}
-								fullWidth={fullWidth}
-								{...getGroupAttributes(
-									attributes,
-									'size',
-									false,
-									prefix
-								)}
-								isFirstOnHierarchy={isFirstOnHierarchy}
-								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<ColumnSize
-								{...getGroupAttributes(
-									attributes,
-									'columnSize'
-								)}
-								clientId={clientId}
-								blockName={name}
-								verticalAlign={attributes.verticalAlign}
-								onChange={obj => maxiSetAttributes(obj)}
-								breakpoint={breakpoint}
-								rowPattern={rowPattern}
-							/>
-							<TextMargin
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'margin',
-									false,
-									prefix
-								)}
-								onChange={obj => maxiSetAttributes(obj)}
-								textLevel={textLevel}
-							/>
-							<Link
-								blockName={name}
-								linkSettings={linkSettings}
-								onChange={linkSettings =>
-									maxiSetAttributes({ linkSettings })
-								}
-								textLevel={textLevel}
-							/>
-							<TextLink
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								blockName={name}
-								onChange={obj => maxiSetAttributes(obj)}
-								isList={isList}
-								linkSettings={linkSettings}
-								breakpoint={breakpoint}
-								textLevel={textLevel}
-								blockStyle={parentBlockStyle}
-								styleCard={styleCard}
-							/>
-							<VerticalAlign
-								clientId={clientId}
-								blockName={name}
-								verticalAlign={attributes.verticalAlign}
-								uniqueID={uniqueID}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<DividerColor
-								{...getGroupAttributes(attributes, 'divider')}
-								blockName={name}
-								breakpoint={breakpoint}
-								onChange={obj => maxiSetAttributes(obj)}
-								clientId={clientId}
-							/>
-							<Divider
-								{...getGroupAttributes(attributes, 'divider')}
-								blockName={name}
-								breakpoint={breakpoint}
-								lineOrientation={lineOrientation}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-							<DividerAlignment
-								{...getGroupAttributes(attributes, 'divider')}
-								lineOrientation={lineOrientation}
-								lineVertical={getLastBreakpointAttribute(
-									'line-vertical',
-									breakpoint,
-									attributes
-								)}
-								lineHorizontal={getLastBreakpointAttribute(
-									'line-horizontal',
-									breakpoint,
-									attributes
-								)}
-								blockName={name}
-								onChangeOrientation={lineOrientation =>
-									maxiSetAttributes({
-										[`line-orientation-${breakpoint}`]:
-											lineOrientation,
-									})
-								}
-								onChangeHorizontal={lineHorizontal =>
-									maxiSetAttributes({
-										[`line-horizontal-${breakpoint}`]:
-											lineHorizontal,
-									})
-								}
-								onChangeVertical={lineVertical =>
-									maxiSetAttributes({
-										[`line-vertical-${breakpoint}`]:
-											lineVertical,
-									})
-								}
-							/>
-							<Duplicate clientId={clientId} blockName={name} />
-							<Help />
-							<MoreSettings
-								clientId={clientId}
-								{...getGroupAttributes(attributes, [
-									'alignment',
-									'textAlignment',
-								])}
-								blockName={name}
-								breakpoint={breakpoint}
-								copyPasteMapping={copyPasteMapping}
-								prefix={prefix}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
-						</div>
-					</Popover>
-				)}
-			</>
+							{...(name === 'maxi-blocks/video-maxi' && {
+								...getGroupAttributes(attributes, 'video'),
+							})}
+							prefix={backgroundPrefix || prefix}
+							advancedOptions={backgroundAdvancedOptions}
+							globalProps={backgroundGlobalProps}
+							blockName={name}
+							breakpoint={breakpoint}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsDefault.background,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsDefault.background
+								);
+							}}
+							clientId={clientId}
+						/>
+						<BlockBackgroundColor
+							{...getGroupAttributes(
+								attributes,
+								'blockBackground'
+							)}
+							blockName={name}
+							breakpoint={breakpoint}
+							onChangeInline={(obj, target) =>
+								insertInlineStyles({ obj, target })
+							}
+							onChange={(obj, target) => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(target);
+							}}
+							clientId={clientId}
+						/>
+						<Border
+							blockName={name}
+							{...getGroupAttributes(
+								attributes,
+								['border', 'borderWidth', 'borderRadius'],
+								false,
+								prefix
+							)}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsResults.border,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsResults.border
+								);
+							}}
+							breakpoint={breakpoint}
+							clientId={clientId}
+							prefix={prefix}
+						/>
+						<BoxShadow
+							blockName={name}
+							{...getGroupAttributes(
+								attributes,
+								['boxShadow'],
+								false,
+								prefix
+							)}
+							onChangeInline={obj => {
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsResults.boxShadow,
+								});
+							}}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsResults.boxShadow
+								);
+							}}
+							clientId={clientId}
+							breakpoint={breakpoint}
+							prefix={prefix}
+						/>
+						<ToolbarColumnPattern
+							clientId={clientId}
+							blockName={name}
+							{...getGroupAttributes(attributes, 'rowPattern')}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={breakpoint}
+						/>
+						<NumberCounterReplay
+							resetNumberHelper={resetNumberHelper}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
+						<ColumnsHandlers
+							toggleHandlers={toggleHandlers}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
+						<Size
+							blockName={name}
+							{...getGroupAttributes(
+								attributes,
+								'size',
+								false,
+								prefix
+							)}
+							isFirstOnHierarchy={isFirstOnHierarchy}
+							breakpoint={breakpoint}
+							onChange={obj => maxiSetAttributes(obj)}
+						/>
+						<ColumnSize
+							{...getGroupAttributes(attributes, 'columnSize')}
+							clientId={clientId}
+							blockName={name}
+							verticalAlign={attributes.verticalAlign}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={breakpoint}
+							rowPattern={rowPattern}
+						/>
+						<TextMargin
+							blockName={name}
+							{...getGroupAttributes(
+								attributes,
+								'margin',
+								false,
+								prefix
+							)}
+							onChange={obj => maxiSetAttributes(obj)}
+							textLevel={textLevel}
+						/>
+						<Link
+							blockName={name}
+							linkSettings={linkSettings}
+							onChange={linkSettings =>
+								maxiSetAttributes({ linkSettings })
+							}
+							textLevel={textLevel}
+						/>
+						<TextLink
+							{...getGroupAttributes(attributes, 'typography')}
+							blockName={name}
+							onChange={obj => maxiSetAttributes(obj)}
+							isList={isList}
+							linkSettings={linkSettings}
+							breakpoint={breakpoint}
+							textLevel={textLevel}
+							blockStyle={blockStyle}
+							styleCard={styleCard}
+						/>
+						<VerticalAlign
+							clientId={clientId}
+							blockName={name}
+							verticalAlign={getLastBreakpointAttribute({
+								target: 'justify-content',
+								breakpoint,
+								attributes,
+							})}
+							breakpoint={breakpoint}
+							uniqueID={uniqueID}
+							onChange={obj => maxiSetAttributes(obj)}
+						/>
+						<DividerColor
+							{...getGroupAttributes(attributes, 'divider')}
+							blockName={name}
+							breakpoint={breakpoint}
+							onChangeInline={obj =>
+								insertInlineStyles({
+									obj,
+									target: inlineStylesTargetsResults.dividerColor,
+								})
+							}
+							onChange={obj => {
+								maxiSetAttributes(obj);
+								cleanInlineStyles(
+									inlineStylesTargetsResults.dividerColor
+								);
+							}}
+							clientId={clientId}
+						/>
+						<Divider
+							{...getGroupAttributes(attributes, 'divider')}
+							blockName={name}
+							breakpoint={breakpoint}
+							lineOrientation={lineOrientation}
+							onChange={obj => maxiSetAttributes(obj)}
+						/>
+						<DividerAlignment
+							{...getGroupAttributes(attributes, 'divider')}
+							lineOrientation={lineOrientation}
+							lineVertical={getLastBreakpointAttribute(
+								'line-vertical',
+								breakpoint,
+								attributes
+							)}
+							lineHorizontal={getLastBreakpointAttribute(
+								'line-horizontal',
+								breakpoint,
+								attributes
+							)}
+							blockName={name}
+							onChangeOrientation={lineOrientation =>
+								maxiSetAttributes({
+									[`line-orientation-${breakpoint}`]:
+										lineOrientation,
+								})
+							}
+							onChangeHorizontal={lineHorizontal =>
+								maxiSetAttributes({
+									[`line-horizontal-${breakpoint}`]:
+										lineHorizontal,
+								})
+							}
+							onChangeVertical={lineVertical =>
+								maxiSetAttributes({
+									[`line-vertical-${breakpoint}`]:
+										lineVertical,
+								})
+							}
+						/>
+						<Duplicate
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
+						<Help tooltipsHide={tooltipsHide} />
+						<MoreSettings
+							clientId={clientId}
+							{...getGroupAttributes(attributes, [
+								'alignment',
+								'textAlignment',
+							])}
+							blockName={name}
+							breakpoint={breakpoint}
+							copyPasteMapping={copyPasteMapping}
+							prefix={prefix}
+							onChange={obj => maxiSetAttributes(obj)}
+							tooltipsHide={tooltipsHide}
+						/>
+					</div>
+				</Popover>
+			)
 		);
 	}),
-	// Avoids non-necessary renderings
-	(
-		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },
-		{ attributes: newAttr, isSelected }
-	) => {
-		if (!wasSelected || wasSelected !== isSelected) return false;
+	(oldProps, newProps) => {
+		const {
+			attributes: oldAttr,
+			propsToAvoid,
+			isSelected: wasSelected,
+			deviceType: oldBreakpoint,
+			scValues: oldSCValues,
+		} = oldProps;
+
+		const {
+			attributes: newAttr,
+			isSelected,
+			deviceType: breakpoint,
+			scValues,
+		} = newProps;
+
+		// If is not selected, don't render
+		if (!isSelected && wasSelected === isSelected) return true;
+
+		if (select('core/block-editor').isDraggingBlocks()) return true;
+
+		if (
+			wasSelected !== isSelected ||
+			oldBreakpoint !== breakpoint ||
+			!isEqual(oldSCValues, scValues)
+		)
+			return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);
@@ -508,8 +708,6 @@ const MaxiToolbar = memo(
 				delete oldAttributes[prop];
 				delete newAttributes[prop];
 			});
-
-			return isEqual(oldAttributes, newAttributes);
 		}
 
 		return isEqual(oldAttributes, newAttributes);

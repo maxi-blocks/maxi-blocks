@@ -26,6 +26,7 @@ const allowedBlocks = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/video-maxi',
 ];
 
 /**
@@ -61,7 +62,14 @@ const withAttributes = createHigherOrderComponent(
 
 			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
 			if (!attributes.isFirstOnHierarchy) {
-				attributes.blockStyle = 'maxi-parent';
+				const { getBlockHierarchyRootClientId } =
+					select('core/block-editor');
+
+				const firstParentBlock = select('core/block-editor').getBlock(
+					getBlockHierarchyRootClientId(clientId)
+				);
+
+				attributes.blockStyle = firstParentBlock.attributes.blockStyle;
 			}
 
 			// RTL

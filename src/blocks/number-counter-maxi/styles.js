@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -14,11 +22,16 @@ import {
 	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
+	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNumberCounter } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getWrapperObject = props => {
 	const response = {
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -55,28 +68,19 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground']),
-				blockStyle: props.parentBlockStyle,
-			}),
-		},
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
-		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -96,7 +100,7 @@ const getHoverWrapperObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -105,15 +109,8 @@ const getHoverWrapperObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
-		background: {
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(props, ['blockBackground'], true),
-				blockStyle: props.parentBlockStyle,
-				isHover: true,
-			}),
-		},
 	};
 
 	return response;
@@ -168,7 +165,7 @@ const getBoxObject = props => {
 					'number-counter-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'number-counter-',
 		}),
 		border: getBorderStyles({
@@ -180,11 +177,8 @@ const getBoxObject = props => {
 					'number-counter-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'number-counter-',
-		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -205,7 +199,7 @@ const getHoverBoxObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'number-counter-',
 			}),
 		boxShadow:
@@ -220,7 +214,7 @@ const getHoverBoxObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'number-counter-',
 			}),
 	};
@@ -229,23 +223,50 @@ const getHoverBoxObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, parentBlockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getHoverWrapperObject(props),
-				':hover .maxi-number-counter__box': getHoverBoxObject(props),
-				' .maxi-number-counter__box': getBoxObject(props),
-				...getNumberCounterStyles({
-					obj: {
-						...getGroupAttributes(props, 'numberCounter'),
-					},
-					target: '.maxi-number-counter__box',
-					blockStyle,
-				}),
-			},
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getHoverWrapperObject(props),
+					':hover .maxi-number-counter__box':
+						getHoverBoxObject(props),
+					' .maxi-number-counter__box': getBoxObject(props),
+					...getNumberCounterStyles({
+						obj: {
+							...getGroupAttributes(props, 'numberCounter'),
+						},
+						target: '.maxi-number-counter__box',
+						blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						]),
+						blockStyle: props.blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						blockStyle: props.blockStyle,
+						isHover: true,
+					}),
+				},
+				...getTransitionStyles(props, transitionObj)
+			),
 			selectorsNumberCounter,
 			props
 		),

@@ -4,15 +4,7 @@
 
 		.maxi-more-settings__settings-selector {
 			height: 100%;
-		}
-
-		.components-button {
-			&:hover {
-				background-color: transparent !important;
-			}
-			&:after {
-				display: none !important;
-			}
+			width: 100%;
 		}
 	}
 }

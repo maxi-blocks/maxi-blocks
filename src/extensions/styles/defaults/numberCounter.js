@@ -1,5 +1,6 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import alignment from './alignment';
 
 const numberCounter = {
 	...breakpointAttributesCreator({
@@ -50,7 +51,7 @@ const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
-	...paletteAttributesCreator({ prefix: 'number-counter-text-', palette: 4 }),
+
 	...paletteAttributesCreator({
 		prefix: 'number-counter-circle-background-',
 		palette: 2,
@@ -59,14 +60,31 @@ const numberCounter = {
 		prefix: 'number-counter-circle-bar-',
 		palette: 4,
 	}),
-	'number-counter-title-font-size': {
-		type: 'number',
-		default: 40,
-	},
-	'number-counter-title-font-family': {
-		type: 'string',
-		default: 'Roboto',
-	},
+
+	...breakpointAttributesCreator({
+		obj: {
+			'number-counter-title-font-size': {
+				type: 'number',
+				default: 40,
+			},
+			'font-family': {
+				type: 'string',
+				default: 'Roboto',
+			},
+			'font-weight': {
+				type: 'string',
+			},
+			...paletteAttributesCreator({
+				prefix: 'number-counter-text-',
+				palette: 4,
+			}),
+			...paletteAttributesCreator({
+				prefix: 'number-counter-circle-bar-',
+				palette: 4,
+			}),
+		},
+	}),
+	...alignment,
 };
 
 export default numberCounter;

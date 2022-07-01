@@ -16,8 +16,10 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsRow, categoriesRow } from './custom-css';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { withMaxiInspector } from '../../extensions/inspector';
 
-const ColumnPicker = props => {
+function ColumnPicker(props) {
 	const { clientId, attributes, deviceType, maxiSetAttributes } = props;
 
 	return (
@@ -40,7 +42,7 @@ const ColumnPicker = props => {
 			/>
 		</>
 	);
-};
+}
 
 /**
  * Inspector
@@ -51,6 +53,9 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -60,53 +65,52 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										{
-											label: __(
-												'Column picker',
-												'maxi-blocks'
-											),
-											content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									{
+										label: __(
+											'Column picker',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
 												<ColumnPicker {...props} />
-											),
-											ignoreIndicator: [
-												'row-pattern-general',
-												'row-pattern-m',
-											],
-											extraIndicators: [
-												'verticalAlign',
-												'horizontalAlign',
-											],
-										},
-										...inspectorTabs.blockBackground({
-											props,
-										}),
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+											</ResponsiveTabsControl>
+										),
+										ignoreIndicator: [
+											'row-pattern-general',
+											'row-pattern-m',
+										],
+										extraIndicators: [
+											'verticalAlign',
+											'horizontalAlign',
+										],
+									},
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 						ignoreIndicator: [
 							'row-pattern-general',
-							`row-pattern-m`,
+							'row-pattern-m',
 						],
 					},
 					{
@@ -165,6 +169,9 @@ const Inspector = props => {
 									...inspectorTabs.zindex({
 										props,
 									}),
+									...inspectorTabs.relation({
+										props,
+									}),
 								]}
 							/>
 						),
@@ -175,4 +182,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

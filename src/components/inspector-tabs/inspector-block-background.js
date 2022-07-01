@@ -23,7 +23,14 @@ const blockBackground = ({
 	disableSVG = false,
 	depth = 2,
 }) => {
-	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 
 	const bgHoverStatus = attributes['block-background-hover-status'];
 
@@ -36,22 +43,26 @@ const blockBackground = ({
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
-							<>
-								<BlockBackgroundControl
-									{...getGroupAttributes(attributes, [
-										'blockBackground',
-										'background-layers',
-									])}
-									onChange={obj => maxiSetAttributes(obj)}
-									clientId={clientId}
-									breakpoint={deviceType}
-									disableImage={disableImage}
-									disableVideo={disableVideo}
-									disableGradient={disableGradient}
-									disableColor={disableColor}
-									disableSVG={disableSVG}
-								/>
-							</>
+							<BlockBackgroundControl
+								{...getGroupAttributes(attributes, [
+									'blockBackground',
+									'background-layers',
+								])}
+								onChangeInline={(obj, target) =>
+									insertInlineStyles({ obj, target })
+								}
+								onChange={(obj, target) => {
+									maxiSetAttributes(obj);
+									if (target) cleanInlineStyles(target);
+								}}
+								clientId={clientId}
+								breakpoint={deviceType}
+								disableImage={disableImage}
+								disableVideo={disableVideo}
+								disableGradient={disableGradient}
+								disableColor={disableColor}
+								disableSVG={disableSVG}
+							/>
 						),
 						extraIndicators: ['background-layers'],
 					},
@@ -61,7 +72,7 @@ const blockBackground = ({
 							<>
 								<ToggleSwitch
 									label={__(
-										'Enable Background Hover',
+										'Enable background hover',
 										'maxi-blocks'
 									)}
 									selected={bgHoverStatus}

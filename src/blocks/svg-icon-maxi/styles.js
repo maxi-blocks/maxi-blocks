@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
@@ -19,6 +27,7 @@ import {
 	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSvgIcon } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getWrapperObject = props => {
 	const response = {
@@ -30,13 +39,13 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -66,9 +75,6 @@ const getWrapperObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
-		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
@@ -96,7 +102,7 @@ const getWrapperObjectHover = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -105,7 +111,7 @@ const getWrapperObjectHover = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 			}),
 	};
 
@@ -118,7 +124,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'svg-'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
 		padding: getMarginPaddingStyles({
@@ -142,7 +148,7 @@ const getNormalObject = props => {
 					'svg-'
 				),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
 		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
@@ -153,11 +159,8 @@ const getNormalObject = props => {
 				false,
 				'svg-'
 			),
-			blockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			prefix: 'svg-',
-		}),
-		transition: getTransitionStyles({
-			...getGroupAttributes(props, 'transition'),
 		}),
 	};
 
@@ -178,7 +181,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'svg-',
 			}),
 		boxShadow:
@@ -188,7 +191,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true, 'svg-'),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.blockStyle,
 				prefix: 'svg-',
 			}),
 		...getBackgroundStyles({
@@ -198,7 +201,7 @@ const getHoverObject = props => {
 				true,
 				'svg-'
 			),
-			blockStyle: props.parentBlockStyle,
+			blockStyle: props.blockStyle,
 			isHover: true,
 			prefix: 'svg-',
 		}),
@@ -208,46 +211,60 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, parentBlockStyle: blockStyle } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			{
-				'': getWrapperObject(props),
-				':hover': getWrapperObjectHover(props),
-				' .maxi-svg-icon-block__icon': getNormalObject(props),
-				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
-				...getSVGStyles({
-					obj: {
-						...getGroupAttributes(props, 'svg'),
-					},
-					target: ' .maxi-svg-icon-block__icon',
-					blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
+			merge(
+				{
+					'': getWrapperObject(props),
+					':hover': getWrapperObjectHover(props),
+					' .maxi-svg-icon-block__icon': getNormalObject(props),
+					' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
+					...getSVGStyles({
+						obj: {
+							...getGroupAttributes(props, 'svg'),
+						},
+						target: ' .maxi-svg-icon-block__icon',
+						blockStyle,
+					}),
+
+					...(props['svg-status-hover'] && {
+						...getSVGStyles({
+							obj: {
+								...getGroupAttributes(props, 'svgHover', true),
+							},
+							target: '.maxi-svg-icon-block__icon:hover',
+							blockStyle,
+							isHover: true,
+						}),
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(props, [
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle,
-				}),
-			},
+						]),
+						blockStyle,
+					}),
+					...getBlockBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							[
+								'blockBackground',
+								'border',
+								'borderWidth',
+								'borderRadius',
+							],
+							true
+						),
+						isHover: true,
+						blockStyle,
+					}),
+				},
+				...getTransitionStyles(props, transitionObj)
+			),
 			selectorsSvgIcon,
 			props
 		),

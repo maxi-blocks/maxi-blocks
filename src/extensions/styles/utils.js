@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isNumber, isBoolean, isEmpty, isNil } from 'lodash';
+import { cloneDeep, isNumber, isBoolean, isEmpty, isNil } from 'lodash';
 
 export const getIsValid = (val, cleaned = false) =>
 	(cleaned &&
@@ -69,4 +69,18 @@ export const splitValueAndUnit = val => {
 	const value = +val.split(unit)[0].trim();
 
 	return { value, unit };
+};
+
+export const getRelations = (uniqueID, relations) => {
+	if (isEmpty(relations)) return null;
+
+	const newRelations = cloneDeep(relations);
+
+	newRelations.forEach(relation => {
+		relation.trigger = `${uniqueID}${
+			relation.isButton ? ' .maxi-button-block__button' : ''
+		}`;
+	});
+
+	return newRelations;
 };

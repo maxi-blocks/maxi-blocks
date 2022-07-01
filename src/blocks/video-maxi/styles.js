@@ -278,25 +278,54 @@ const getIconObject = (prefix, obj) => {
 			prefix: `${prefix}icon-`,
 			useIconColor: true,
 		}),
-		...(iconHoverStatus && {
-			[`:hover .maxi-video-block__${prefix}button svg`]: getIconSize(
-				obj,
-				prefix
-			),
-			[`:hover .maxi-video-block__${prefix}button svg`]: {
-				icon: getIconStyles(obj, obj.blockStyle, false, true, prefix),
-			},
-			[`:hover .maxi-video-block__${prefix}button svg path`]:
-				getIconPathStyles(obj, true, prefix),
-			...getSVGStyles({
-				obj,
-				target: `:hover .maxi-video-block__${prefix}button`,
-				blockStyle: obj.blockStyle,
-				prefix: `${prefix}icon-`,
-				useIconColor: true,
-				isHover: true,
-			}),
-		}),
+		...(iconHoverStatus &&
+			(prefix === 'play-'
+				? {
+						[`:hover .maxi-video-block__${prefix}button svg`]:
+							getIconSize(obj, prefix),
+						[`:hover .maxi-video-block__${prefix}button svg`]: {
+							icon: getIconStyles(
+								obj,
+								obj.blockStyle,
+								false,
+								true,
+								prefix
+							),
+						},
+						[`:hover .maxi-video-block__${prefix}button svg path`]:
+							getIconPathStyles(obj, true, prefix),
+						...getSVGStyles({
+							obj,
+							target: `:hover .maxi-video-block__${prefix}button`,
+							blockStyle: obj.blockStyle,
+							prefix: `${prefix}icon-`,
+							useIconColor: true,
+							isHover: true,
+						}),
+				  }
+				: {
+						[` .maxi-video-block__${prefix}button:hover svg`]:
+							getIconSize(obj, prefix),
+						[` .maxi-video-block__${prefix}button:hover svg`]: {
+							icon: getIconStyles(
+								obj,
+								obj.blockStyle,
+								false,
+								true,
+								prefix
+							),
+						},
+						[` .maxi-video-block__${prefix}button:hover svg path`]:
+							getIconPathStyles(obj, true, prefix),
+						...getSVGStyles({
+							obj,
+							target: ` .maxi-video-block__${prefix}button:hover`,
+							blockStyle: obj.blockStyle,
+							prefix: `${prefix}icon-`,
+							useIconColor: true,
+							isHover: true,
+						}),
+				  })),
 	};
 };
 

@@ -34,7 +34,6 @@ const attributes = {
 		prefix: 'lightbox-',
 		diffValAttr: {
 			'lightbox-background-palette-color-general': 5,
-			'lightbox-background-palette-opacity-general': 0.7,
 		},
 	}),
 

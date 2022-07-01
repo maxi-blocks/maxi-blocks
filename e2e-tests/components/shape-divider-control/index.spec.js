@@ -71,9 +71,9 @@ describe('ShapeDividerControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		expect(await getAttributes('shape-divider-top-opacity')).toStrictEqual(
-			0.5
-		);
+		expect(
+			await getAttributes('shape-divider-top-opacity-general')
+		).toStrictEqual(0.5);
 
 		// color
 		await accordionPanel.$$eval(
@@ -82,7 +82,7 @@ describe('ShapeDividerControl', () => {
 		);
 
 		expect(
-			await getAttributes('shape-divider-top-palette-color')
+			await getAttributes('shape-divider-top-palette-color-general')
 		).toStrictEqual(4);
 
 		// divider height
@@ -94,9 +94,9 @@ describe('ShapeDividerControl', () => {
 			newNumber: '200',
 		});
 
-		expect(await getAttributes('shape-divider-top-height')).toStrictEqual(
-			200
-		);
+		expect(
+			await getAttributes('shape-divider-top-height-general')
+		).toStrictEqual(200);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -15,7 +15,7 @@ import { isEmpty, uniq } from 'lodash';
  *
  * @param {string} font Name of the selected font
  */
-const loadFonts = (font, backendOnly = true) => {
+const loadFonts = (font, backendOnly = true, target = document) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
 			if (isEmpty(fontName)) return null;
@@ -62,7 +62,9 @@ const loadFonts = (font, backendOnly = true) => {
 					`url(${url})`,
 					fontDataNew
 				);
-				document.fonts.add(fontLoad);
+				fontLoad.load().then(() => {
+					target.fonts.add(fontLoad);
+				});
 				fontLoad.loaded.catch(err => {
 					console.error(
 						__(`Font hasn't been able to download: ${err}`)
@@ -127,4 +129,13 @@ const loadFonts = (font, backendOnly = true) => {
 	return null;
 };
 
-export default loadFonts;
+const loadFontsInEditor = (breakpoint, objFont) => {
+	if (breakpoint === 's' || breakpoint === 'xs') {
+		const iframeEditor = document.querySelector(
+			'iframe[name="editor-canvas"]'
+		);
+		loadFonts(objFont, true, iframeEditor.contentDocument);
+	} else loadFonts(objFont);
+};
+
+export { loadFontsInEditor, loadFonts };

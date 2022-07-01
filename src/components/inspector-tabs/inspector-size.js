@@ -12,6 +12,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getIgnoreIndicator } from '../../extensions/indicators';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -37,16 +38,25 @@ const size = ({
 	const showFullWidth = isFirstOnHierarchy || name === 'maxi-blocks/row-maxi';
 	const isBlockFullWidth = fullWidth === 'full';
 
-	const ignoreIndicatorGroups = !attributes[`${prefix}size-advanced-options`]
-		? ['maxWidth', 'minWidth', 'maxHeight', 'minHeight']
-		: [];
+	const ignoreIndicator = getIgnoreIndicator({
+		target: 'size-advanced-options',
+		ignoreGroupAttributes: [
+			'maxWidth',
+			'minWidth',
+			'maxHeight',
+			'minHeight',
+		],
+		attributes,
+		prefix,
+		breakpoint: false,
+	});
 
 	return {
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl
 				breakpoint={deviceType}
-				ignoreIndicatorGroups={ignoreIndicatorGroups}
+				ignoreIndicator={ignoreIndicator}
 			>
 				<>
 					{showFullWidth &&
@@ -107,7 +117,7 @@ const size = ({
 				</>
 			</ResponsiveTabsControl>
 		),
-		ignoreIndicatorGroups,
+		ignoreIndicator,
 	};
 };
 

@@ -11,6 +11,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getIgnoreIndicator } from '../../extensions/indicators';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -25,15 +26,12 @@ const calloutArrow = ({ props }) => {
 		attributes,
 	});
 
-	const ignoreIndicator =
-		!attributes[`arrow-status-${deviceType}`] &&
-		Object.keys(
-			getGroupAttributes(attributes, [
-				'blockBackground',
-				'arrow',
-				'border',
-			])
-		);
+	const ignoreIndicator = getIgnoreIndicator({
+		attributes,
+		ignoreGroupAttributes: ['blockBackground', 'arrow', 'border'],
+		target: 'arrow-status',
+		valueToCompare: false,
+	});
 
 	return {
 		label: __('Callout arrow', 'maxi-blocks'),

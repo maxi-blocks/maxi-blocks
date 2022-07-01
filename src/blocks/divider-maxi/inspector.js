@@ -206,6 +206,11 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												ignoreIndicatorResponsive={[
+													'line-horizontal',
+													'line-vertical',
+													'line-orientation',
+												]}
 											>
 												<DividerControl
 													{...getGroupAttributes(

@@ -33,6 +33,7 @@ const ResponsiveTabsControl = props => {
 		extraIndicators,
 		extraIndicatorsResponsive,
 		ignoreIndicator,
+		ignoreIndicatorResponsive,
 		ignoreIndicatorGroups,
 		isBgLayersHover = false,
 	} = props;
@@ -87,6 +88,7 @@ const ResponsiveTabsControl = props => {
 					extraIndicators,
 					extraIndicatorsResponsive,
 					ignoreIndicator,
+					ignoreIndicatorResponsive,
 					ignoreIndicatorGroups,
 					isBgLayersHover,
 				};

@@ -161,7 +161,6 @@ const border = ({
 									)}
 								</>
 							),
-							extraIndicators: [`${prefix}border-status-hover`],
 						},
 					]}
 					depth={depth}

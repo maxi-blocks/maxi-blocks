@@ -208,12 +208,15 @@ export const SvgColorControl = props => {
 		</>
 	);
 
+	const ignoreIndicatorResponsive = ['svg-width', 'svg-stroke'];
+
 	return !disableHover ? (
 		<SettingTabsControl
 			items={[
 				{
 					label: __('Normal state', 'maxi-blocks'),
 					content: normalSvgColor,
+					ignoreIndicatorResponsive,
 				},
 				{
 					label: __('Hover state', 'maxi-blocks'),
@@ -276,6 +279,7 @@ export const SvgColorControl = props => {
 							)}
 						</>
 					),
+					ignoreIndicatorResponsive,
 				},
 			]}
 		/>

@@ -51,6 +51,10 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												extraIndicatorsResponsive={[
+													'column-fit-content',
+													'column-size',
+												]}
 											>
 												<ColumnSizeControl
 													props
@@ -67,9 +71,9 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										extraIndicators: [
-											`column-fit-content-${deviceType}`,
-											`column-size-${deviceType}`,
+										extraIndicatorsResponsive: [
+											'column-fit-content',
+											'column-size',
 										],
 									},
 									...inspectorTabs.blockBackground({

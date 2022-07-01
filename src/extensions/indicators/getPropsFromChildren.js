@@ -38,7 +38,6 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 		}
 
 		if ('props' in item) {
-			if ('content' in item) getProps(item.content);
 			if ('children' in item.props)
 				getProps(Children.toArray(item.props.children));
 

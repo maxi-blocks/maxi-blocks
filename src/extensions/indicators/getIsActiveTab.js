@@ -76,6 +76,7 @@ const getIsActiveTab = ({
 		'isFirstOnHierarchy',
 		'uniqueID',
 		'svgType',
+		'content', // breaks svg-icon indicators
 		...ignoreIndicator,
 		...ignoreIndicatorResponsive,
 		...ignoreAttributes,
@@ -191,7 +192,6 @@ const getIsActiveTab = ({
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
 		if (currentAttributes[attribute] === undefined) return true;
-		if (currentAttributes[attribute] === false) return true;
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
@@ -233,8 +233,8 @@ const getIsActiveTab = ({
 
 				if (getIsBreakpointAttribute(attribute, bp)) {
 					return isEqual(
-						filterAttribute(currentAttributes[attribute]),
-						filterAttribute(defaultAttributes[attribute])
+						currentAttributes[attribute],
+						defaultAttributes[attribute]
 					);
 				}
 
@@ -248,9 +248,7 @@ const getIsActiveTab = ({
 			if (result && winBreakpoint === breakpoint)
 				result = breakpointAttributeChecker('general');
 
-			if (!isNil(result)) {
-				return result;
-			}
+			return result;
 		}
 		if (
 			isArray(currentAttributes[attribute]) &&

@@ -5,4 +5,8 @@ body.maxi-blocks--active div.maxi-column-block {
 	height: auto;
 	margin: 0;
 	box-sizing: border-box;
+
+	> .maxi-link-wrapper {
+		height: 100%;
+	}
 }

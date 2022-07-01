@@ -15,7 +15,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import './editor.scss';
-import { imageBox } from '../../icons';
+import { slideIcon } from '../../icons';
 
 /**
  * Block dependencies
@@ -30,7 +30,7 @@ import save from './save';
 
 registerBlockType('maxi-blocks/slide-maxi', {
 	title: __('Slide Maxi', 'maxi-blocks'),
-	icon: imageBox,
+	icon: slideIcon,
 	description: 'Stack one or more blocks, top-to-bottom (vertical)',
 	category: 'maxi-blocks',
 	supports: {

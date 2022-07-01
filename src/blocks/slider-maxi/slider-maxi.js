@@ -15,7 +15,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import './editor.scss';
-import { rowIcon } from '../../icons';
+import { sliderIcon } from '../../icons';
 
 /**
  * Block dependencies
@@ -30,7 +30,7 @@ import save from './save';
 
 registerBlockType('maxi-blocks/slider-maxi', {
 	title: __('Slider Maxi', 'maxi-blocks'),
-	icon: rowIcon,
+	icon: sliderIcon,
 	description:
 		'Position one or more blocks, arranged side-by-side (horizontal)',
 	category: 'maxi-blocks',

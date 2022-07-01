@@ -26,6 +26,48 @@ Object {
 }
 `;
 
+exports[`getPositionStyles Ensure unnecessary position styles are not added 2`] = `
+Object {
+  "general": Object {
+    "bottom": "3vw",
+    "left": "4%",
+    "position": "relative",
+    "right": "2em",
+    "top": "1px",
+  },
+  "l": Object {
+    "bottom": "3vw",
+    "left": "4%",
+    "position": "relative",
+    "right": "2em",
+    "top": "1px",
+  },
+  "m": Object {
+    "position": "inherit",
+  },
+  "s": Object {
+    "position": "inherit",
+  },
+  "xl": Object {
+    "bottom": "3vw",
+    "left": "4%",
+    "position": "relative",
+    "right": "2em",
+    "top": "1px",
+  },
+  "xs": Object {
+    "position": "inherit",
+  },
+  "xxl": Object {
+    "bottom": "3vw",
+    "left": "4%",
+    "position": "relative",
+    "right": "2em",
+    "top": "1px",
+  },
+}
+`;
+
 exports[`getPositionStyles Get a correct position styles 1`] = `
 Object {
   "general": Object {

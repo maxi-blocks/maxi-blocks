@@ -97,5 +97,37 @@ describe('getPositionStyles', () => {
 		};
 		const result = getPositionStyles(object);
 		expect(result).toMatchSnapshot();
+
+		const object2 = {
+			'position-general': 'relative',
+			'position-top-general': 1,
+			'position-right-general': 2,
+			'position-bottom-general': 3,
+			'position-left-general': 4,
+			'position-sync-general': true,
+			'position-top-unit-general': 'px',
+			'position-right-unit-general': 'em',
+			'position-bottom-unit-general': 'vw',
+			'position-left-unit-general': '%',
+			'position-top-unit-xl': 'px',
+			'position-right-unit-xl': 'em',
+			'position-bottom-unit-xl': 'vw',
+			'position-left-unit-xl': '%',
+			'position-top-l': 1,
+			'position-right-l': 2,
+			'position-bottom-l': 3,
+			'position-left-l': 4,
+			'position-sync-l': true,
+			'position-m': 'inherit',
+			'position-left-unit-s': '%',
+			'position-top-xs': 1,
+			'position-right-xs': 2,
+			'position-bottom-xs': 3,
+			'position-left-xs': 4,
+			'position-sync-xs': true,
+		};
+
+		const result2 = getPositionStyles(object2);
+		expect(result2).toMatchSnapshot();
 	});
 });

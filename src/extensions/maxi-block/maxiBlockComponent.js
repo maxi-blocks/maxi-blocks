@@ -21,13 +21,14 @@ import { select, dispatch, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import {
-	styleResolver,
-	styleGenerator,
-	getGroupAttributes,
 	getBlockStyle,
-	getParallaxLayers,
-	getHasVideo,
+	getGroupAttributes,
 	getHasScrollEffects,
+	getHasVideo,
+	getParallaxLayers,
+	getRelations,
+	styleGenerator,
+	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts, getAllFonts } from '../text/fonts';
@@ -324,7 +325,7 @@ class MaxiBlockComponent extends Component {
 		const {
 			uniqueID,
 			'background-layers': bgLayers,
-			relations,
+			relations: relationsRaw,
 		} = this.props.attributes;
 
 		const scroll = getGroupAttributes(
@@ -338,6 +339,7 @@ class MaxiBlockComponent extends Component {
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
 		const hasScrollEffects = getHasScrollEffects(uniqueID, scroll);
+		const relations = getRelations(uniqueID, relationsRaw);
 
 		return {
 			[uniqueID]: {

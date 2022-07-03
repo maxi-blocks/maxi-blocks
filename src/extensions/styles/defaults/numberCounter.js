@@ -71,6 +71,9 @@ const numberCounter = {
 				type: 'string',
 				default: 'Roboto',
 			},
+			'font-weight': {
+				type: 'string',
+			},
 			...paletteAttributesCreator({
 				prefix: 'number-counter-text-',
 				palette: 4,
@@ -81,9 +84,6 @@ const numberCounter = {
 			}),
 		},
 	}),
-	'number-counter-title-font-weight': {
-		type: 'string',
-	},
 	...alignment,
 };
 

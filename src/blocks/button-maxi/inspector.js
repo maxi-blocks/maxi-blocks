@@ -26,8 +26,7 @@ import {
 } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { withMaxiInspector } from '../../extensions/inspector';
-
+import { withMaxiInspector, openTransitions } from '../../extensions/inspector';
 /**
  * External dependencies
  */
@@ -472,6 +471,20 @@ const Inspector = props => {
 														),
 														content: (
 															<>
+																<div
+																	className='maxi-warning-box manage-transitions'
+																	onClick={() => {
+																		openTransitions();
+																	}}
+																>
+																	<div className='maxi-warning-box__links'>
+																		<a>
+																			Manage
+																			hover
+																			transitions
+																		</a>
+																	</div>
+																</div>
 																<ToggleSwitch
 																	label={__(
 																		'Enable Icon Hover',

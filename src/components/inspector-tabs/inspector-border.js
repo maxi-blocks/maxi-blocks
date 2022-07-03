@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BorderControl from '../border-control';
 import ToggleSwitch from '../toggle-switch';
-import { openSidebarAccordion } from '../../extensions/inspector';
+import { openTransitions } from '../../extensions/inspector';
 import {
 	getGroupAttributes,
 	setHoverAttributes,
@@ -98,10 +98,7 @@ const border = ({
 									<div
 										className='maxi-warning-box manage-transitions'
 										onClick={() => {
-											openSidebarAccordion(
-												1,
-												'hyperlink hover transition'
-											);
+											openTransitions();
 										}}
 									>
 										<div className='maxi-warning-box__links'>

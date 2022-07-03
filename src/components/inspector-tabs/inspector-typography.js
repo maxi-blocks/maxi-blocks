@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import TypographyControl from '../typography-control';
 import ToggleSwitch from '../toggle-switch';
-import { openSidebarAccordion } from '../../extensions/inspector';
+import { openTransitions } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -100,10 +100,7 @@ const typography = ({
 								<div
 									className='maxi-warning-box manage-transitions'
 									onClick={() => {
-										openSidebarAccordion(
-											1 || 2,
-											'hyperlink hover transition'
-										);
+										openTransitions();
 									}}
 								>
 									<div className='maxi-warning-box__links'>

@@ -93,7 +93,9 @@ const getSizeStyles = (obj, prefix = '') => {
 				});
 
 				if (fitContent) {
-					return { width: 'fit-content' };
+					return {
+						width: 'fit-content',
+					};
 				}
 			}
 
@@ -115,15 +117,17 @@ const getSizeStyles = (obj, prefix = '') => {
 				const auto =
 					prefix === 'number-counter-' &&
 					target === 'width' &&
-					getLastBreakpointAttribute({
-						target: `${prefix}${target}-auto`,
-						breakpoint,
-						attributes: obj,
-					});
+					obj['number-counter-circle-status']
+						? 'auto'
+						: getLastBreakpointAttribute({
+								target: `${prefix}${target}-auto`,
+								breakpoint,
+								attributes: obj,
+						  }) && '100%';
 
 				if (!isNil(num) && !isNil(unit))
 					return {
-						[target]: auto ? 'auto' : num + unit,
+						[target]: auto || num + unit,
 						...fullWidthNormalStyles,
 					};
 			}

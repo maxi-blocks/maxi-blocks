@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import RelationControl from '../relation-control';
 
-const relation = ({ props }) => {
+const relation = ({ props, isButton = false }) => {
 	const { attributes, maxiSetAttributes, deviceType } = props;
 
 	return {
@@ -18,6 +18,7 @@ const relation = ({ props }) => {
 				{...attributes}
 				onChange={obj => maxiSetAttributes(obj)}
 				deviceType={deviceType}
+				isButton={isButton}
 			/>
 		),
 		indicatorProps: ['relations'],

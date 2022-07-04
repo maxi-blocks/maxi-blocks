@@ -56,5 +56,5 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save,
 	transforms,
-	deprecated: [blockMigrator({ attributes, save })],
+	deprecated: blockMigrator({ attributes, save }),
 });

@@ -35,16 +35,16 @@ const saveProps = (prefix, { props, extendedAttributes }) => {
 	const { attributes } = props;
 	const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
 
-	return {
-		props: { ...props, attributes: restAttrs },
-		extendedAttributes: {
+	return [
+		{ ...props, attributes: restAttrs },
+		{
 			...extendedAttributes,
 			'data-align': blockFullWidth,
-			...(prefix && {
-				'data-align': fullWidth,
-			}),
 		},
-	};
+		...(prefix && {
+			'data-align': fullWidth,
+		}),
+	];
 };
 
 export default { isEligible, attributes, migrate, saveProps };

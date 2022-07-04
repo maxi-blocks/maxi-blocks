@@ -54,5 +54,5 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save, prefix: 'button-' })],
+	deprecated: blockMigrator({ attributes, save, prefix: 'button-' }),
 });

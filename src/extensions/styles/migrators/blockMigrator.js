@@ -1,7 +1,7 @@
 import positionMigrator from './positionMigrator';
 import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
 
-export const blockMigrator = ({
+const blockMigrator = ({
 	attributes,
 	save,
 	prefix = '',
@@ -14,55 +14,35 @@ export const blockMigrator = ({
 		...innerBlockMigrators,
 	];
 
-	return {
-		isEligible(blockAttributes) {
-			return migrators.some(migrator =>
-				migrator.isEligible(blockAttributes)
-			);
-		},
+	return migrators.map(migrator => {
+		const {
+			isEligible,
+			attributes: newAttributes,
+			migrate,
+			saveProps,
+		} = migrator;
 
-		attributes: migrators.reduce(
-			(acc, migrator) => ({
-				...acc,
-				...migrator.attributes(isContainer),
-			}),
-			{ ...attributes }
-		),
-
-		migrate(oldAttributes) {
-			return migrators.reduce(
-				(acc, migrator) => {
-					if (migrator.isEligible(oldAttributes)) {
-						return {
-							...acc,
-							...migrator.migrate({
-								newAttributes: { ...oldAttributes },
-								attributes,
-								prefix,
-							}),
-						};
-					}
-
-					return acc;
-				},
-				{ ...oldAttributes }
-			);
-		},
-
-		save(props) {
-			const saveProps = migrators.reduce(
-				(acc, migrator) => {
-					if (migrator.saveProps)
-						return migrator.saveProps(prefix, acc);
-
-					return acc;
-				},
-				{ props, extendedAttributes: {} }
-			);
-
-			return save(saveProps.props, saveProps.extendedAttributes);
-		},
-	};
+		return {
+			isEligible: blockAttributes =>
+				isEligible(blockAttributes, attributes),
+			attributes: { ...attributes, ...newAttributes(isContainer) },
+			migrate: oldAttributes =>
+				migrate({
+					newAttributes: { ...oldAttributes },
+					attributes,
+					prefix,
+				}),
+			save: props =>
+				saveProps
+					? save(
+							...saveProps(prefix, {
+								props,
+								extendedAttributes: {},
+							})
+					  )
+					: save(props),
+		};
+	});
 };
 
 export default blockMigrator;

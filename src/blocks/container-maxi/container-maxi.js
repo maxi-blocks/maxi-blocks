@@ -28,6 +28,7 @@ import { containerIcon } from '../../icons';
  * Migrators
  */
 import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import shapeDividerMigrator from '../../extensions/styles/migrators/shapeDividerMigrator';
 
 /**
  * Block
@@ -54,11 +55,10 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [
-		blockMigrator({
-			attributes,
-			save,
-			isContainer: true,
-		}),
-	],
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		isContainer: true,
+		migrators: [shapeDividerMigrator],
+	}),
 });

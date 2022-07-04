@@ -55,5 +55,5 @@ registerBlockType('maxi-blocks/row-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save })],
+	deprecated: blockMigrator({ attributes, save }),
 });

@@ -53,5 +53,5 @@ registerBlockType('maxi-blocks/divider-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save })],
+	deprecated: blockMigrator({ attributes, save }),
 });

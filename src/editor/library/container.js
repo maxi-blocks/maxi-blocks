@@ -366,11 +366,10 @@ const LibraryContainer = props => {
 	const getShapeType = type => {
 		switch (type) {
 			case 'button-icon':
+			case 'search-icon':
 				return 'icon';
 			case 'video-shape':
-				return 'shape';
 			case 'sidebar-block-shape':
-				return 'shape';
 			case 'bg-shape':
 				return 'shape';
 			default:
@@ -540,7 +539,11 @@ const LibraryContainer = props => {
 				onRequestClose();
 			}
 
-			if (type === 'button-icon' || type === 'video-shape') {
+			if (
+				type === 'button-icon' ||
+				type === 'video-shape' ||
+				type === 'search-icon'
+			) {
 				onSelect({
 					[`${prefix}icon-content`]: svgCode,
 					[`${prefix}svgType`]: svgType,
@@ -741,7 +744,7 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{type === 'button-icon' && (
+			{(type === 'button-icon' || type === 'search-icon') && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}

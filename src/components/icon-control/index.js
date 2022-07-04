@@ -63,7 +63,10 @@ const IconControl = props => {
 		'icon-only': iconOnly,
 		'icon-inherit': iconInherit,
 		'icon-content': iconContent,
+		type = 'button-icon',
 	} = props;
+
+	const isSearch = type === 'search-icon';
 
 	const classes = classnames('maxi-icon-control', className);
 
@@ -149,7 +152,7 @@ const IconControl = props => {
 		<div className={classes}>
 			{!isInteractionBuilder && !isHover && breakpoint === 'general' && (
 				<MaxiModal
-					type='button-icon'
+					type={type}
 					style={blockStyle}
 					onSelect={obj => {
 						const icon = getIconWithColor({
@@ -165,6 +168,7 @@ const IconControl = props => {
 			{iconContent && (
 				<>
 					{!isInteractionBuilder &&
+						!isSearch &&
 						!isHover &&
 						breakpoint === 'general' && (
 							<>
@@ -247,14 +251,19 @@ const IconControl = props => {
 									type='buttons'
 									selected={props['icon-position']}
 									items={[
-										{
-											label: __('Top', 'maxi-block'),
-											value: 'top',
-										},
-										{
-											label: __('Bottom', 'maxi-block'),
-											value: 'bottom',
-										},
+										...(!isSearch && [
+											{
+												label: __('Top', 'maxi-block'),
+												value: 'top',
+											},
+											{
+												label: __(
+													'Bottom',
+													'maxi-block'
+												),
+												value: 'bottom',
+											},
+										]),
 										{
 											label: __('Left', 'maxi-block'),
 											value: 'left',

@@ -23,8 +23,9 @@ describe('DisplayControl', () => {
 			'show hide block'
 		);
 
-		await accordionPanel.$$eval('.maxi-display-control button', button =>
-			button[1].click()
+		await accordionPanel.$eval(
+			'.maxi-display-control .maxi-tabs-control__button-Hide',
+			button => button.click()
 		);
 
 		expect(await getAttributes('display-general')).toStrictEqual('none');
@@ -33,21 +34,22 @@ describe('DisplayControl', () => {
 	it('Check Responsive display control', async () => {
 		await openSidebarTab(page, 'advanced', 'show hide block');
 
-		const isItemChecked = await page.$$eval(
-			'.maxi-display-control button',
-			select => select[1].ariaPressed
+		const isItemChecked = await page.$eval(
+			'.maxi-display-control .maxi-tabs-control__button-Hide',
+			select => select.ariaPressed
 		);
 
 		expect(isItemChecked).toBe('true');
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await page.$$eval('.maxi-display-control button', button =>
-			button[0].click()
+		await page.$eval(
+			'.maxi-display-control .maxi-tabs-control__button-Show',
+			button => button.click()
 		);
-		const responsiveSOption = await page.$$eval(
-			'.maxi-display-control button',
-			select => select[0].ariaPressed
+		const responsiveSOption = await page.$eval(
+			'.maxi-display-control .maxi-tabs-control__button-Show',
+			select => select.ariaPressed
 		);
 
 		expect(responsiveSOption).toBe('true');
@@ -57,9 +59,9 @@ describe('DisplayControl', () => {
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
-		const responsiveXsOption = await page.$$eval(
-			'.maxi-display-control button',
-			select => select[0].ariaPressed
+		const responsiveXsOption = await page.$eval(
+			'.maxi-display-control .maxi-tabs-control__button-Show',
+			select => select.ariaPressed
 		);
 
 		expect(responsiveXsOption).toBe('true');
@@ -67,9 +69,9 @@ describe('DisplayControl', () => {
 		// responsive M
 		await changeResponsive(page, 'm');
 
-		const responsiveMOption = await page.$$eval(
-			'.maxi-display-control button',
-			select => select[1].ariaPressed
+		const responsiveMOption = await page.$eval(
+			'.maxi-display-control .maxi-tabs-control__button-Hide',
+			select => select.ariaPressed
 		);
 
 		expect(responsiveMOption).toBe('true');

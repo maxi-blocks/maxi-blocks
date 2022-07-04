@@ -94,9 +94,9 @@ describe('FlexSettings', () => {
 		expect(attributeParent).toStrictEqual(expectedParentAttribute);
 
 		// check warning box
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control_has-border-left-right button',
-			button => button[1].click()
+		await accordionPanel.$eval(
+			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-Flex-child',
+			button => button.click()
 		);
 
 		const warningBox = await accordionPanel.$eval(
@@ -118,9 +118,9 @@ describe('FlexSettings', () => {
 			button => button.click()
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control_has-border-left-right button',
-			button => button[1].click()
+		await accordionPanel.$eval(
+			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-Flex-child',
+			button => button.click()
 		);
 		await editAdvancedNumberControl({
 			page,

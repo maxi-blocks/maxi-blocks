@@ -99,7 +99,7 @@ const MasonryItem = props => {
 					)}
 					{type === 'sc' && (
 						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
-							{__('Load', 'maxi-block')}
+							{__('Preview', 'maxi-block')}
 						</span>
 					)}
 					<div className='maxi-cloud-masonry-card__tags'>

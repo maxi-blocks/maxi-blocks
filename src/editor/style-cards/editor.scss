@@ -13,6 +13,25 @@ body {
 		.maxi-style-cards__popover {
 		margin: 134px 0 0 184px;
 	}
+
+	.active-sc-settings {
+		margin: 10px 0px;
+		display: flex;
+	}
+	.maxi-style-cards__sc__style-card {
+		margin: 10px 0px;
+		display: flex;
+
+		.maxi-library-modal__action-section {
+			width: auto;
+		}
+	}
+}
+.maxi-style-cards__sc__actions {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	margin: 10px 0px;
+	padding: 10px 0px;
 }
 .maxi-style-cards__active-card-options {
 	padding: 10px 0;
@@ -129,8 +148,12 @@ body {
 			font-size: 14px;
 			color: #464a53;
 			background: #fff;
-			padding: 10px;
-			margin-bottom: 1px;
+			padding: 20px 0 0px 10px;
+
+			.active-sc-name {
+				margin-left: 10px;
+				font-weight: 600;
+			}
 		}
 		&__title {
 			display: flex;

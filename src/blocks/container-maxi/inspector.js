@@ -72,6 +72,7 @@ const Inspector = props => {
 													maxiSetAttributes(obj);
 													cleanInlineStyles('svg');
 												}}
+												breakpoint={deviceType}
 											/>
 										),
 									},

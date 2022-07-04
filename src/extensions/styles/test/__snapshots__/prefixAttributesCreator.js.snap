@@ -439,6 +439,27 @@ Object {
   "button-box-shadow-horizontal-xxl-hover": Object {
     "type": "number",
   },
+  "button-box-shadow-inset-general-hover": Object {
+    "type": "boolean",
+  },
+  "button-box-shadow-inset-l-hover": Object {
+    "type": "boolean",
+  },
+  "button-box-shadow-inset-m-hover": Object {
+    "type": "boolean",
+  },
+  "button-box-shadow-inset-s-hover": Object {
+    "type": "boolean",
+  },
+  "button-box-shadow-inset-xl-hover": Object {
+    "type": "boolean",
+  },
+  "button-box-shadow-inset-xs-hover": Object {
+    "type": "boolean",
+  },
+  "button-box-shadow-inset-xxl-hover": Object {
+    "type": "boolean",
+  },
   "button-box-shadow-palette-color-general-hover": Object {
     "default": 6,
     "type": "number",

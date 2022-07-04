@@ -3,7 +3,6 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getPaletteAttributes from '../getPaletteAttributes';
-
 /**
  * External dependencies
  */

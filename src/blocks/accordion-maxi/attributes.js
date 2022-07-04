@@ -11,6 +11,7 @@ import {
 	breakpointAttributesCreator,
 	hoverAttributesCreator,
 	paletteAttributesCreator,
+	transitionAttributesCreator,
 } from '../../extensions/styles';
 
 /**
@@ -27,24 +28,28 @@ const attributes = {
 		type: 'string',
 		default: __('Accordion', 'maxi-blocks'),
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
+
+	...attributesData.border,
+	...attributesData.borderHover,
+	...attributesData.borderRadius,
+	...attributesData.borderWidth,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.size,
+	...attributesData.margin,
+	...attributesData.padding,
+
 	lastIndex: {
 		type: 'number',
 		default: 2,
 	},
 	...attributesData.accordion,
 	titleLevel: { type: 'string', default: 'h6' },
-	...{
-		...paletteAttributesCreator({ prefix: 'title-' }),
-		'title-palette-color': { type: 'number', default: 6 },
-	},
-	...{
-		...paletteAttributesCreator({ prefix: 'title-background-' }),
-		'title-background-palette-color': { type: 'number', default: 1 },
-	},
+	...paletteAttributesCreator({ prefix: 'title-', palette: 6 }),
+	...paletteAttributesCreator({
+		prefix: 'title-background-',
+		palette: 1,
+	}),
 	...attributesData.accordionIcon,
 	'background-status-hover': { type: 'boolean', default: false },
 	'active-background-status-hover': { type: 'boolean', default: false },
@@ -69,6 +74,26 @@ const attributes = {
 			}),
 		},
 	}),
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.blockBackground,
+	...attributesData.scroll,
+	...attributesData.transform,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(),
+	},
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.overflow,
+	...attributesData.zIndex,
+	...attributesData.size,
+	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.customCss,
+	...attributesData.flex,
 };
 
 export default attributes;

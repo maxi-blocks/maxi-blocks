@@ -57,6 +57,7 @@ class edit extends MaxiBlockComponent {
 			isUploaderOpen: false,
 			formatValue: {},
 			onChangeFormat: null,
+			blockRef: null,
 		};
 
 		this.textRef = createRef(null);
@@ -115,6 +116,11 @@ class edit extends MaxiBlockComponent {
 			});
 		}
 	}
+
+	handleRef = ref => {
+		this.setState({ blockRef: ref });
+		this.blockRef.current = ref;
+	};
 
 	render() {
 		const { attributes, maxiSetAttributes, isSelected, deviceType } =
@@ -333,7 +339,7 @@ class edit extends MaxiBlockComponent {
 				</MaxiPopoverButton>
 				<MaxiBlock
 					key={`maxi-image--${uniqueID}`}
-					ref={this.blockRef}
+					ref={this.handleRef}
 					tagName='figure'
 					className='maxi-image-block'
 					{...getMaxiBlockAttributes(this.props)}

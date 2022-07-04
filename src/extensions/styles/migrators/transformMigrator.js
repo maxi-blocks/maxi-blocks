@@ -92,8 +92,8 @@ const migrate = (newAttributes, selectors) => {
 		if (key in attributes) {
 			updateAttribute(key, attr);
 		}
-		if (key === 'relations') {
-			const newRelations = [...newAttributes[key]];
+		if (key === 'relations' && !isNil(attr)) {
+			const newRelations = [...attr];
 			attr.forEach((relation, index) => {
 				const newRelationAttributes = { ...relation.attributes };
 

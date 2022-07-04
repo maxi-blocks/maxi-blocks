@@ -207,7 +207,9 @@ const RelationControl = props => {
 
 					const styles = Object.keys(stylesObj).reduce((acc, key) => {
 						if (isFirst) {
-							acc[key] = getStyles(stylesObj[key]);
+							if (!key.includes(':hover'))
+								acc[key] = getStyles(stylesObj[key]);
+
 							return acc;
 						}
 

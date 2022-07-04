@@ -23,6 +23,7 @@ import { columnIcon } from '../../icons';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsColumn } from './custom-css';
 
 /**
  * Migrators
@@ -54,5 +55,5 @@ registerBlockType('maxi-blocks/column-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save }),
+	deprecated: getMigrators({ attributes, save, selectors: selectorsColumn }),
 });

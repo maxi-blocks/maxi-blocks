@@ -17,6 +17,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsDivider } from './custom-css';
 
 /**
  * Styles and icons
@@ -53,5 +54,5 @@ registerBlockType('maxi-blocks/divider-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save }),
+	deprecated: getMigrators({ attributes, save, selectors: selectorsDivider }),
 });

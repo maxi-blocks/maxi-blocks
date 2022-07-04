@@ -16,6 +16,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsNumberCounter } from './custom-css';
 
 /**
  * Styles and icons
@@ -53,5 +54,9 @@ registerBlockType('maxi-blocks/number-counter-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save }),
+	deprecated: getMigrators({
+		attributes,
+		save,
+		selectors: selectorsNumberCounter,
+	}),
 });

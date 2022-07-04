@@ -16,6 +16,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsContainer } from './custom-css';
 
 /**
  * Styles and icons
@@ -54,5 +55,10 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save, isContainer: true }),
+	deprecated: getMigrators({
+		attributes,
+		save,
+		isContainer: true,
+		selectors: selectorsContainer,
+	}),
 });

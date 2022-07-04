@@ -59,15 +59,19 @@ const isEligible = blockAttributes =>
 			Object.keys(relation.attributes).some(key => key in attributes)
 		));
 
-const migrate = newAttributes => {
+const migrate = (newAttributes, selectors) => {
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
+
+	const target = Object.entries(selectors).find(
+		([key, selector]) => selector.normal.target === ''
+	)[0];
 
 	const updateAttribute = (key, attr) => {
 		types.every(type => {
 			if (key.match(type) && !isNil(attr)) {
 				const breakpoint = getBreakpointFromAttribute(key);
 				newAttributes[`transform-${type}-${breakpoint}`] = {
-					canvas: {
+					[`${target}`]: {
 						normal: {
 							...newAttributes[`transform-${type}-${breakpoint}`]
 								?.canvas?.normal,

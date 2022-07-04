@@ -19,7 +19,13 @@ import {
 	migrate as transformMigrator,
 } from './transformMigrator';
 
-const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
+const blockMigrator = ({
+	attributes,
+	save,
+	prefix,
+	isContainer = false,
+	selectors,
+}) => {
 	return {
 		isEligible(blockAttributes) {
 			return (
@@ -44,7 +50,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 			positionMigrator(newAttributes, attributes);
 			fromFullWidthNonToResponsiveMigrator(newAttributes, prefix);
 			if (isContainer) shapeDividerMigrator(newAttributes);
-			transformMigrator(newAttributes);
+			transformMigrator(newAttributes, selectors);
 
 			return newAttributes;
 		},

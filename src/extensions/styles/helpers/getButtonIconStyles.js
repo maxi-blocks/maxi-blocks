@@ -231,7 +231,13 @@ const getIconHoverObject = (props, target) => {
 	return response;
 };
 
-const getButtonIconStyles = ({ obj, blockStyle, isHover = false }) => {
+const getButtonIconStyles = ({
+	obj,
+	blockStyle,
+	isHover = false,
+	target,
+	wrapperTarget,
+}) => {
 	const hasIcon = !!obj['icon-content'];
 	const {
 		'icon-inherit': iconInherit,
@@ -245,38 +251,33 @@ const getButtonIconStyles = ({ obj, blockStyle, isHover = false }) => {
 			? {
 					...getSVGStyles({
 						obj,
-						target: '.maxi-button-block__icon',
+						target,
 						blockStyle,
 						prefix: 'icon-',
 						useIconColor,
 					}),
-					' .maxi-button-block__icon': getIconObject(obj, 'icon'),
-					' .maxi-button-block__icon svg': getIconSize(obj, false),
-					' .maxi-button-block__icon svg > *': getIconObject(
-						obj,
-						'svg'
-					),
-					' .maxi-button-block__icon svg path': getIconPathStyles(
-						obj,
-						false
-					),
+					[` ${target}`]: getIconObject(obj, 'icon'),
+					[` ${target} svg`]: getIconSize(obj, false),
+					[` ${target} svg > *`]: getIconObject(obj, 'svg'),
+					[` ${target} svg path`]: getIconPathStyles(obj, false),
 			  }
 			: iconHoverStatus &&
 			  (() => {
 					const iconHoverObj = getIconHoverObject(obj, 'iconHover');
 
 					return {
-						' .maxi-button-block__button:hover .maxi-button-block__icon':
+						[` ${wrapperTarget}:hover ${target}`]: iconHoverObj,
+						[` ${wrapperTarget}:hover ${target} svg > *`]:
 							iconHoverObj,
-						' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
-							iconHoverObj,
-						' .maxi-button-block__button:hover .maxi-button-block__icon svg':
-							getIconSize(obj, true),
-						' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
+						[` ${wrapperTarget}:hover ${target} svg`]: getIconSize(
+							obj,
+							true
+						),
+						[` ${wrapperTarget}:hover ${target} svg path`]:
 							getIconPathStyles(obj, true),
 						...getSVGStyles({
 							obj,
-							target: ':hover .maxi-button-block__icon',
+							target: `:hover ${target}`,
 							blockStyle,
 							prefix: 'icon-',
 							isHover: true,
@@ -286,16 +287,16 @@ const getButtonIconStyles = ({ obj, blockStyle, isHover = false }) => {
 		// Background
 		...getBlockBackgroundStyles({
 			...getGroupAttributes(obj, 'svg'),
-			' .maxi-button-block__icon svg path': getIconPathStyles(obj, false),
-			' .maxi-button-block__button:hover .maxi-button-block__icon':
+			[`${target} svg path`]: getIconPathStyles(obj, false),
+			[` ${wrapperTarget}:hover ${target}`]:
 				obj['icon-status-hover'] &&
 				getIconHoverObject(obj, 'iconHover'),
-			' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
+			[` ${wrapperTarget}:hover ${target} svg > *`]:
 				obj['icon-status-hover'] &&
 				getIconHoverObject(obj, 'iconHover'),
-			' .maxi-button-block__button:hover .maxi-button-block__icon svg':
+			[` ${wrapperTarget}:hover ${target} svg`]:
 				obj['icon-status-hover'] && getIconSize(obj, true),
-			' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
+			[` ${wrapperTarget}:hover ${target} svg path`]:
 				obj['icon-status-hover'] && getIconPathStyles(obj, true),
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(obj, [

@@ -134,6 +134,9 @@ const Inspector = props => {
 												maxiSetAttributes={
 													maxiSetAttributes
 												}
+												cleanInlineStyles={
+													cleanInlineStyles
+												}
 												onChangeInline={(
 													obj,
 													target
@@ -143,27 +146,6 @@ const Inspector = props => {
 														target,
 														isMultiplySelector: true,
 													});
-												}}
-												onChangeFill={obj => {
-													maxiSetAttributes(obj);
-													if (svgType !== 'Line')
-														cleanInlineStyles(
-															'[data-fill]'
-														);
-												}}
-												onChangeStroke={obj => {
-													maxiSetAttributes(obj);
-
-													if (svgType !== 'Shape')
-														cleanInlineStyles(
-															'[data-stroke]'
-														);
-												}}
-												onChangeHoverFill={obj => {
-													maxiSetAttributes(obj);
-												}}
-												onChangeHoverStroke={obj => {
-													maxiSetAttributes(obj);
 												}}
 												blockStyle={blockStyle}
 												content={attributes.content}

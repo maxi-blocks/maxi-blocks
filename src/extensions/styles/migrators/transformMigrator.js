@@ -97,7 +97,7 @@ const migrate = (newAttributes, selectors) => {
 			attr.forEach((relation, index) => {
 				const newRelationAttributes = { ...relation.attributes };
 
-				migrate(newRelationAttributes);
+				migrate(newRelationAttributes, selectors);
 
 				newRelations[index] = {
 					...newRelations[index],

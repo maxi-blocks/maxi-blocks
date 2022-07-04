@@ -147,9 +147,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (!this.getBreakpoints.xxl) this.forceUpdate();
-
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+
+		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
 
 	/**

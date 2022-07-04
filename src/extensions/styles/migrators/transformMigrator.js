@@ -53,57 +53,57 @@ const attributes = breakpointAttributesCreator({
 });
 
 const isEligible = blockAttributes =>
-	Object.keys(blockAttributes).some(key => key in attributes);
+	Object.keys(blockAttributes).some(key => key in attributes) ||
+	(blockAttributes.relations &&
+		blockAttributes.relations.some(relation =>
+			Object.keys(relation.attributes).some(key => key in attributes)
+		));
 
 const migrate = newAttributes => {
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
 
+	const updateAttribute = (key, attr) => {
+		types.every(type => {
+			if (key.match(type) && !isNil(attr)) {
+				const breakpoint = getBreakpointFromAttribute(key);
+				newAttributes[`transform-${type}-${breakpoint}`] = {
+					canvas: {
+						normal: {
+							...newAttributes[`transform-${type}-${breakpoint}`]
+								?.canvas?.normal,
+							[getAxis(key)]: attr,
+						},
+					},
+				};
+
+				delete newAttributes[key];
+
+				return false;
+			}
+			return true;
+		});
+	};
+
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key in attributes) {
-			types.every(type => {
-				if (key.match(type) && !isNil(attr)) {
-					const breakpoint = getBreakpointFromAttribute(key);
-					newAttributes[`transform-${type}-${breakpoint}`] = {
-						canvas: {
-							normal: {
-								...newAttributes[
-									`transform-${type}-${breakpoint}`
-								]?.canvas?.normal,
-								[getAxis(key)]: attr,
-							},
-						},
-					};
+			updateAttribute(key, attr);
+		}
+		if (key === 'relations') {
+			const newRelations = [...newAttributes[key]];
+			attr.forEach((relation, index) => {
+				const newRelationAttributes = { ...relation.attributes };
 
-					delete newAttributes[key];
+				migrate(newRelationAttributes);
 
-					return false;
-				}
-				return true;
+				newRelations[index] = {
+					...newRelations[index],
+					attributes: newRelationAttributes,
+				};
 			});
+
+			newAttributes[key] = newRelations;
 		}
 	});
 };
 
-const transformMigrator = ({ blockAttributes, save }) => {
-	return {
-		isEligible,
-		attributes: {
-			...blockAttributes,
-			...attributes,
-		},
-		migrate(oldAttributes) {
-			const newAttributes = { ...oldAttributes };
-
-			migrate(newAttributes);
-
-			return newAttributes;
-		},
-		save(props) {
-			const newSave = save(props);
-
-			return newSave;
-		},
-	};
-};
-
-export { attributes, migrate, isEligible, transformMigrator };
+export { attributes, migrate, isEligible };

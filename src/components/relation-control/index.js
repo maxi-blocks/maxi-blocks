@@ -144,9 +144,11 @@ const RelationControl = props => {
 			if (!winBreakpoint) return {};
 
 			return Object.keys(obj).reduce((acc, key) => {
-				const newKey = key.replace('general', winBreakpoint);
+				if (key.includes('-general')) {
+					const newKey = key.replace('general', winBreakpoint);
 
-				acc[newKey] = obj[key];
+					acc[newKey] = obj[key];
+				}
 
 				return acc;
 			}, {});

@@ -8,8 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../select-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import NavigationIconsControl from './navigation-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * External dependencies
@@ -35,114 +33,92 @@ const NavigationControl = props => {
 
 	return (
 		<div className={classes}>
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<>
-					<SelectControl
-						label={__('Navigation', 'maxi-blocks')}
-						options={[
-							{
-								label: __('Arrows and dots ', 'maxi-blocks'),
-								value: 'arrows-dots',
-							},
-							{
-								label: __('Arrows', 'maxi-blocks'),
-								value: 'arrows',
-							},
-							{ label: __('Dots', 'maxi-blocks'), value: 'dots' },
-							{ label: __('None', 'maxi-blocks'), value: 'none' },
-						]}
-						value={getLastBreakpointAttribute({
-							target: 'navigation-type',
-							breakpoint: deviceType,
-							attributes,
-						})}
-						onChange={val =>
+			<SelectControl
+				label={__('Navigation', 'maxi-blocks')}
+				options={[
+					{
+						label: __('Arrows and dots ', 'maxi-blocks'),
+						value: 'arrows-dots',
+					},
+					{
+						label: __('Arrows', 'maxi-blocks'),
+						value: 'arrows',
+					},
+					{ label: __('Dots', 'maxi-blocks'), value: 'dots' },
+					{ label: __('None', 'maxi-blocks'), value: 'none' },
+				]}
+				value={navigationType}
+				onChange={val =>
+					onChange({
+						[`navigation-type-${deviceType}`]: val,
+					})
+				}
+			/>
+			{navigationType.includes('arrow') && (
+				<SelectControl
+					label={__('Arrow position', 'maxi-blocks')}
+					options={[
+						{
+							label: __('Inside', 'maxi-blocks'),
+							value: 'inside',
+						},
+						{
+							label: __('Outside', 'maxi-blocks'),
+							value: 'outside',
+						},
+					]}
+					value={getLastBreakpointAttribute({
+						target: 'navigation-arrow-position',
+						deviceType,
+						attributes,
+					})}
+					onChange={val => {
+						onChange({
+							[`navigation-arrow-position-${deviceType}`]: val,
+						});
+						val === 'inside' &&
 							onChange({
-								[`navigation-type-${deviceType}`]: val,
-							})
-						}
-					/>
-					{navigationType?.includes('arrow') && (
-						<SelectControl
-							label={__('Arrow position', 'maxi-blocks')}
-							options={[
-								{
-									label: __('Inside', 'maxi-blocks'),
-									value: 'inside',
-								},
-								{
-									label: __('Outside', 'maxi-blocks'),
-									value: 'outside',
-								},
-							]}
-							value={getLastBreakpointAttribute({
-								target: 'navigation-arrow-position',
-								deviceType,
-								attributes,
-							})}
-							onChange={val => {
-								onChange({
-									[`navigation-arrow-position-${deviceType}`]:
-										val,
-								});
-								val === 'inside' &&
-									onChange({
-										[`navigation-arrow-both-icon-spacing-horizontal-${deviceType}`]:
-											-40,
-									});
-								val === 'outside' &&
-									onChange({
-										[`navigation-arrow-both-icon-spacing-horizontal-${deviceType}`]: 10,
-									});
-							}}
-						/>
-					)}
-					{navigationType?.includes('dot') && (
-						<SelectControl
-							label={__('Dots position', 'maxi-blocks')}
-							options={[
-								{
-									label: __('Inside', 'maxi-blocks'),
-									value: 'inside',
-								},
-								{
-									label: __('Outside', 'maxi-blocks'),
-									value: 'outside',
-								},
-							]}
-							value={getLastBreakpointAttribute({
-								target: 'navigation-dot-position',
-								deviceType,
-								attributes,
-							})}
-							onChange={val => {
-								onChange({
-									[`navigation-dot-position-${deviceType}`]:
-										val,
-								});
-								val === 'inside' &&
-									onChange({
-										[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 85,
-									});
-								val === 'outside' &&
-									onChange({
-										[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 110,
-									});
-							}}
-						/>
-					)}
-				</>
-			</ResponsiveTabsControl>
-			{navigationType.includes('arrows') && (
-				<NavigationIconsControl
-					{...props}
-					prefix='navigation-arrow-both-icon'
+								[`navigation-arrow-both-icon-spacing-horizontal-${deviceType}`]:
+									-40,
+							});
+						val === 'outside' &&
+							onChange({
+								[`navigation-arrow-both-icon-spacing-horizontal-${deviceType}`]: 10,
+							});
+					}}
 				/>
 			)}
-			{navigationType.includes('dots') && (
-				<NavigationIconsControl
-					{...props}
-					prefix='navigation-dot-icon'
+			{navigationType.includes('dot') && (
+				<SelectControl
+					label={__('Dots position', 'maxi-blocks')}
+					options={[
+						{
+							label: __('Inside', 'maxi-blocks'),
+							value: 'inside',
+						},
+						{
+							label: __('Outside', 'maxi-blocks'),
+							value: 'outside',
+						},
+					]}
+					value={getLastBreakpointAttribute({
+						target: 'navigation-dot-position',
+						deviceType,
+						attributes,
+					})}
+					onChange={val => {
+						onChange({
+							[`navigation-dot-position-${deviceType}`]: val,
+						});
+						val === 'inside' &&
+							onChange({
+								[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 85,
+							});
+						val === 'outside' &&
+							onChange({
+								[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 110,
+							});
+					}}
 				/>
 			)}
 		</div>

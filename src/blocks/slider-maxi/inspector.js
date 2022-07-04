@@ -11,10 +11,15 @@ import {
 	SettingTabsControl,
 	SliderControl,
 	NavigationControl,
+	NavigationDotControl,
+	NavigationArrowControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -35,6 +40,13 @@ const Inspector = props => {
 	} = props;
 
 	const { blockStyle, svgType } = attributes;
+
+	const navigationType = getLastBreakpointAttribute({
+		target: 'navigation-type',
+		breakpoint: deviceType,
+		attributes,
+		forceSingle: true,
+	});
 
 	return (
 		<InspectorControls>
@@ -86,6 +98,21 @@ const Inspector = props => {
 														maxiSetAttributes(obj)
 													}
 													deviceType={deviceType}
+													blockStyle={blockStyle}
+												/>
+											),
+										},
+										...(navigationType.includes(
+											'arrow'
+										) && {
+											label: __('Arrows', 'maxi-blocks'),
+											content: (
+												<NavigationArrowControl
+													{...props}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													deviceType={deviceType}
 													insertInlineStyles={
 														insertInlineStyles
 													}
@@ -96,7 +123,27 @@ const Inspector = props => {
 													svgType={svgType}
 												/>
 											),
-										},
+										}),
+										...(navigationType.includes('dot') && {
+											label: __('Dots', 'maxi-blocks'),
+											content: (
+												<NavigationDotControl
+													{...props}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													deviceType={deviceType}
+													insertInlineStyles={
+														insertInlineStyles
+													}
+													cleanInlineStyles={
+														cleanInlineStyles
+													}
+													blockStyle={blockStyle}
+													svgType={svgType}
+												/>
+											),
+										}),
 										...inspectorTabs.blockBackground({
 											props,
 										}),

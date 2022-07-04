@@ -22,25 +22,13 @@ import classnames from 'classnames';
 import './editor.scss';
 
 const NavigationDotControl = props => {
-	const { className, onChange, deviceType, attributes } = props;
+	const { className } = props;
 
-	const classes = classnames('maxi-slider-navigation', className);
-
-	const navigationType = getLastBreakpointAttribute({
-		target: 'navigation-type',
-		breakpoint: deviceType,
-		attributes,
-		forceSingle: true,
-	});
+	const classes = classnames('maxi-slider-dot-navigation', className);
 
 	return (
 		<div className={classes}>
-			{navigationType.includes('dots') && (
-				<NavigationIconsControl
-					{...props}
-					prefix='navigation-dot-icon'
-				/>
-			)}
+			<NavigationIconsControl {...props} prefix='navigation-dot-icon' />
 		</div>
 	);
 };

@@ -14,6 +14,7 @@ import BoxShadowControl from '../box-shadow-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 import SettingTabsControl from '../setting-tabs-control';
+import ToggleSwitch from '../toggle-switch';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 import {
@@ -148,9 +149,19 @@ const NavigationIconControl = props => {
 			: 'navigation-dot';
 
 	let shortestPrefix = 'arrow';
+	let labelLow = 'arrows';
+	let labelCapital = 'Arrows';
 
-	if (isActive) shortestPrefix = 'dotActive';
-	if (!isActive && shortPrefix.includes('dot')) shortestPrefix = 'dot';
+	if (isActive) {
+		shortestPrefix = 'dotActive';
+		labelLow = 'dots';
+		labelCapital = 'Dots';
+	}
+	if (!isActive && shortPrefix.includes('dot')) {
+		shortestPrefix = 'dot';
+		labelLow = 'dots';
+		labelCapital = 'Dots';
+	}
 
 	return (
 		<div className={classes}>
@@ -212,6 +223,7 @@ const NavigationIconControl = props => {
 									)}
 									onChange={onChange}
 									prefix={`${prefix}-`}
+									customLabel={`${labelCapital} size`}
 									breakpoint={breakpoint}
 									isHover={isHover}
 								/>
@@ -275,6 +287,7 @@ const NavigationIconControl = props => {
 											});
 									}}
 									prefix={`${prefix}-`}
+									customLabel={`${labelCapital} stroke width`}
 									breakpoint={breakpoint}
 									isHover={isHover}
 								/>
@@ -282,7 +295,7 @@ const NavigationIconControl = props => {
 									<>
 										<AdvancedNumberControl
 											label={__(
-												'Horizontal Spacing',
+												`${labelCapital} horizontal spacing`,
 												'maxi-blocks'
 											)}
 											min={-300}
@@ -325,7 +338,7 @@ const NavigationIconControl = props => {
 										/>
 										<AdvancedNumberControl
 											label={__(
-												'Vertical Spacing',
+												`${labelCapital} vertical spacing`,
 												'maxi-blocks'
 											)}
 											min={-100}
@@ -369,7 +382,7 @@ const NavigationIconControl = props => {
 										{prefix.includes('dot') && (
 											<AdvancedNumberControl
 												label={__(
-													'Spacing Between',
+													'Spacing between dots',
 													'maxi-blocks'
 												)}
 												min={-10}
@@ -419,21 +432,43 @@ const NavigationIconControl = props => {
 										)}
 									</>
 								)}
+								{!isHover && (
+									<AxisControl
+										{...getGroupAttributes(
+											props,
+											`${shortestPrefix}IconPadding`
+										)}
+										label={__(
+											`${labelCapital} padding`,
+											'maxi-blocks'
+										)}
+										onChange={onChange}
+										breakpoint={breakpoint}
+										target='padding'
+										disableAuto
+										optionType='string'
+										minMaxSettings={minMaxSettings}
+										prefix={`${prefix}-`}
+										noResponsiveTabs
+									/>
+								)}
 							</>
 						</ResponsiveTabsControl>
 					)}
-					<SettingTabsControl
-						label=''
-						className='maxi-icon-styles-control'
-						type='buttons'
-						fullWidthMode
-						selected={iconStyle}
-						items={getOptions()}
-						onChange={val => setIconStyle(val)}
-					/>
+					{svgType === 'Filled' && (
+						<SettingTabsControl
+							label=''
+							className='maxi-icon-styles-control'
+							type='buttons'
+							fullWidthMode
+							selected={iconStyle}
+							items={getOptions()}
+							onChange={val => setIconStyle(val)}
+						/>
+					)}
 					{iconStyle === 'color' && svgType !== 'Shape' && (
 						<ColorControl
-							label={__('Icon line', 'maxi-blocks')}
+							label={__(`${labelCapital} line`, 'maxi-blocks')}
 							color={
 								props[
 									`${prefix}-stroke-color${
@@ -586,7 +621,7 @@ const NavigationIconControl = props => {
 					)}
 					{iconStyle === 'fill' && svgType !== 'Line' && (
 						<ColorControl
-							label={__('Icon fill', 'maxi-blocks')}
+							label={__(`${labelCapital} fill`, 'maxi-blocks')}
 							color={
 								props[
 									`${prefix}-fill-color${
@@ -738,187 +773,211 @@ const NavigationIconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					<BorderControl
-						{...getGroupAttributes(props, [
-							`${shortestPrefix}IconBorder${
-								isHover ? 'Hover' : ''
-							}`,
-
-							`${shortestPrefix}IconBorderWidth${
-								isHover ? 'Hover' : ''
-							}`,
-							`${shortestPrefix}IconBorderRadius${
-								isHover ? 'Hover' : ''
-							}`,
-						])}
-						prefix={`${prefix}-`}
-						onChange={onChange}
-						breakpoint={breakpoint}
-						clientId={clientId}
-						isHover={isHover}
-					/>
-					<SettingTabsControl
-						type='buttons'
-						fullWidthMode
-						selected={iconBgActive}
-						items={getBackgroundOptions()}
-						onChange={val => {
-							setIconBgActive(val);
+					<ToggleSwitch
+						label={__(`Add ${labelLow} border`, 'maxi-blocks')}
+						selected={props[`${prefix}-status-border`]}
+						onChange={val =>
 							onChange({
-								[getAttributeKey(
-									'-background-active-media',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							});
-						}}
+								[`${prefix}-status-border`]: val,
+							})
+						}
 					/>
-					{iconBgActive === 'color' && (
-						<ColorControl
-							label={__('Icon background', 'maxi-blocks')}
-							paletteStatus={getLastBreakpointAttribute({
-								target: `${prefix}-background-palette-status`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							paletteColor={getLastBreakpointAttribute({
-								target: `${prefix}-background-palette-color`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							paletteOpacity={getLastBreakpointAttribute({
-								target: `${prefix}-background-palette-opacity`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							color={getLastBreakpointAttribute({
-								target: `${prefix}-background-color`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							prefix={`${prefix}-background-`}
-							avoidBreakpointForDefault
-							onChangeInline={({ color }) =>
-								onChangeInline &&
-								onChangeInline(
-									{
-										background: color,
-									},
-									shortPrefix === 'navigation-arrow'
-										? '.maxi-slider-block__arrow'
-										: '.maxi-slider-block__dot'
-								)
-							}
-							onChange={({
-								paletteStatus,
-								paletteColor,
-								paletteOpacity,
-								color,
-							}) => {
-								onChange(
-									{
-										[getAttributeKey(
-											'-background-palette-status',
-											isHover,
-											prefix,
-											breakpoint
-										)]: paletteStatus,
-										[getAttributeKey(
-											'-background-palette-color',
-											isHover,
-											prefix,
-											breakpoint
-										)]: paletteColor,
-										[getAttributeKey(
-											'-background-palette-opacity',
-											isHover,
-											prefix,
-											breakpoint
-										)]: paletteOpacity,
-										[getAttributeKey(
-											'-background-color',
-											isHover,
-											prefix,
-											breakpoint
-										)]: color,
-									},
-									shortPrefix === 'navigation-arrow'
-										? '.maxi-slider-block__arrow'
-										: '.maxi-slider-block__dot'
-								);
-							}}
-							isHover={isHover}
-						/>
-					)}
-					{iconBgActive === 'gradient' && (
-						<GradientControl
-							label={__(
-								'Icon Background gradient',
-								'maxi-blocks'
-							)}
-							gradient={getLastBreakpointAttribute({
-								target: `${prefix}-background-gradient`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							gradientOpacity={getLastBreakpointAttribute({
-								target: `${prefix}-background-gradient-opacity`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							defaultGradient={getDefaultAttribute(
-								getAttributeKey(
-									'-background-gradient',
-									isHover,
-									prefix,
-									breakpoint
-								)
-							)}
-							onChange={val =>
-								onChange({
-									[getAttributeKey(
-										'-background-gradient',
-										isHover,
-										prefix,
-										breakpoint
-									)]: val,
-								})
-							}
-							onChangeOpacity={val =>
-								onChange({
-									[getAttributeKey(
-										'-background-gradient-opacity',
-										isHover,
-										prefix,
-										breakpoint
-									)]: val,
-								})
-							}
-							isHover={isHover}
-						/>
-					)}
-					{!isHover && (
-						<AxisControl
-							{...getGroupAttributes(
-								props,
-								`${shortestPrefix}IconPadding`
-							)}
-							label={__('Icon padding', 'maxi-blocks')}
+					{props[`${prefix}-status-border`] && (
+						<BorderControl
+							{...getGroupAttributes(props, [
+								`${shortestPrefix}IconBorder${
+									isHover ? 'Hover' : ''
+								}`,
+
+								`${shortestPrefix}IconBorderWidth${
+									isHover ? 'Hover' : ''
+								}`,
+								`${shortestPrefix}IconBorderRadius${
+									isHover ? 'Hover' : ''
+								}`,
+							])}
+							prefix={`${prefix}-`}
 							onChange={onChange}
 							breakpoint={breakpoint}
-							target='padding'
-							disableAuto
-							optionType='string'
-							minMaxSettings={minMaxSettings}
-							prefix={`${prefix}-`}
+							clientId={clientId}
+							isHover={isHover}
 						/>
+					)}
+					<ToggleSwitch
+						label={__(`Add ${labelLow} background`, 'maxi-blocks')}
+						selected={props[`${prefix}-status-background`]}
+						onChange={val => {
+							onChange({
+								[`${prefix}-status-background`]: val,
+							});
+							val === false &&
+								onChange({
+									[`${prefix}-background-active-media`]:
+										'none',
+								});
+							val === true &&
+								iconBgActive === 'none' &&
+								onChange({
+									[`${prefix}-background-active-media`]:
+										'solid',
+								});
+						}}
+					/>
+					{iconBgActive !== 'none' && (
+						<>
+							<SettingTabsControl
+								type='buttons'
+								fullWidthMode
+								selected={iconBgActive}
+								items={getBackgroundOptions()}
+								onChange={val => {
+									setIconBgActive(val);
+									onChange({
+										[getAttributeKey(
+											'-background-active-media',
+											isHover,
+											prefix,
+											breakpoint
+										)]: val,
+									});
+								}}
+							/>
+							{iconBgActive === 'color' && (
+								<ColorControl
+									label={__(
+										'{labelCapital} background',
+										'maxi-blocks'
+									)}
+									paletteStatus={getLastBreakpointAttribute({
+										target: `${prefix}-background-palette-status`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}
+									paletteColor={getLastBreakpointAttribute({
+										target: `${prefix}-background-palette-color`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}
+									paletteOpacity={getLastBreakpointAttribute({
+										target: `${prefix}-background-palette-opacity`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}
+									color={getLastBreakpointAttribute({
+										target: `${prefix}-background-color`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}
+									prefix={`${prefix}-background-`}
+									avoidBreakpointForDefault
+									onChangeInline={({ color }) =>
+										onChangeInline &&
+										onChangeInline(
+											{
+												background: color,
+											},
+											shortPrefix === 'navigation-arrow'
+												? '.maxi-slider-block__arrow'
+												: '.maxi-slider-block__dot'
+										)
+									}
+									onChange={({
+										paletteStatus,
+										paletteColor,
+										paletteOpacity,
+										color,
+									}) => {
+										onChange(
+											{
+												[getAttributeKey(
+													'-background-palette-status',
+													isHover,
+													prefix,
+													breakpoint
+												)]: paletteStatus,
+												[getAttributeKey(
+													'-background-palette-color',
+													isHover,
+													prefix,
+													breakpoint
+												)]: paletteColor,
+												[getAttributeKey(
+													'-background-palette-opacity',
+													isHover,
+													prefix,
+													breakpoint
+												)]: paletteOpacity,
+												[getAttributeKey(
+													'-background-color',
+													isHover,
+													prefix,
+													breakpoint
+												)]: color,
+											},
+											shortPrefix === 'navigation-arrow'
+												? '.maxi-slider-block__arrow'
+												: '.maxi-slider-block__dot'
+										);
+									}}
+									isHover={isHover}
+								/>
+							)}
+							{iconBgActive === 'gradient' && (
+								<GradientControl
+									label={__(
+										`${labelCapital} background gradient`,
+										'maxi-blocks'
+									)}
+									gradient={getLastBreakpointAttribute({
+										target: `${prefix}-background-gradient`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}
+									gradientOpacity={getLastBreakpointAttribute(
+										{
+											target: `${prefix}-background-gradient-opacity`,
+											breakpoint,
+											attributes: props,
+											isHover,
+										}
+									)}
+									defaultGradient={getDefaultAttribute(
+										getAttributeKey(
+											'-background-gradient',
+											isHover,
+											prefix,
+											breakpoint
+										)
+									)}
+									onChange={val =>
+										onChange({
+											[getAttributeKey(
+												'-background-gradient',
+												isHover,
+												prefix,
+												breakpoint
+											)]: val,
+										})
+									}
+									onChangeOpacity={val =>
+										onChange({
+											[getAttributeKey(
+												'-background-gradient-opacity',
+												isHover,
+												prefix,
+												breakpoint
+											)]: val,
+										})
+									}
+									isHover={isHover}
+								/>
+							)}
+						</>
 					)}
 					<BoxShadowControl
 						{...getGroupAttributes(
@@ -927,6 +986,7 @@ const NavigationIconControl = props => {
 							isHover
 						)}
 						prefix={`${prefix}-`}
+						customLabel={`${labelCapital} box shadow`}
 						onChange={onChange}
 						breakpoint={breakpoint}
 						clientId={clientId}

@@ -20,14 +20,14 @@ import classnames from 'classnames';
 import './editor.scss';
 
 const NavigationControl = props => {
-	const { className, onChange, deviceType, attributes } = props;
+	const { className, onChange, deviceType } = props;
 
 	const classes = classnames('maxi-slider-navigation', className);
 
 	const navigationType = getLastBreakpointAttribute({
 		target: 'navigation-type',
 		breakpoint: deviceType,
-		attributes,
+		props,
 		forceSingle: true,
 	});
 
@@ -70,7 +70,7 @@ const NavigationControl = props => {
 					value={getLastBreakpointAttribute({
 						target: 'navigation-arrow-position',
 						deviceType,
-						attributes,
+						props,
 					})}
 					onChange={val => {
 						onChange({
@@ -104,7 +104,7 @@ const NavigationControl = props => {
 					value={getLastBreakpointAttribute({
 						target: 'navigation-dot-position',
 						deviceType,
-						attributes,
+						props,
 					})}
 					onChange={val => {
 						onChange({

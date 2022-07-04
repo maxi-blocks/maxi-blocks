@@ -22,9 +22,9 @@ import classnames from 'classnames';
 import './editor.scss';
 
 const NavigationArrowControl = props => {
-	const { className, onChange, deviceType, attributes } = props;
+	const { className } = props;
 
-	const classes = classnames('maxi-slider-navigation', className);
+	const classes = classnames('maxi-slider-arrow-navigation', className);
 
 	return (
 		<div className={classes}>

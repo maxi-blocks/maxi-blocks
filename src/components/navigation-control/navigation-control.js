@@ -17,7 +17,6 @@ const NavigationIconsControl = props => {
 		cleanInlineStyles,
 		clientId,
 		blockStyle,
-		attributes,
 		prefix = 'navigation-arrow-both-icon',
 	} = props;
 
@@ -25,13 +24,13 @@ const NavigationIconsControl = props => {
 
 	if (prefix === 'navigation-arrow-both-icon')
 		svgType =
-			attributes['navigation-arrow-first-svgType'] ===
-			attributes['navigation-arrow-second-svgType']
-				? attributes['navigation-arrow-first-svgType']
+			props['navigation-arrow-first-svgType'] ===
+			props['navigation-arrow-second-svgType']
+				? props['navigation-arrow-first-svgType']
 				: 'Filed';
 
 	if (prefix === 'navigation-dot-icon')
-		svgType = attributes['navigation-dot-svgType'];
+		svgType = props['navigation-dot-svgType'];
 
 	return (
 		<SettingTabsControl
@@ -40,7 +39,7 @@ const NavigationIconsControl = props => {
 					label: __('Normal state', 'maxi-blocks'),
 					content: (
 						<NavigationIconControl
-							{...attributes}
+							{...props}
 							onChangeInline={(
 								obj,
 								target,
@@ -70,16 +69,16 @@ const NavigationIconsControl = props => {
 						<>
 							<ToggleSwitch
 								label={__('Enable icon hover', 'maxi-blocks')}
-								selected={attributes[`${prefix}-status-hover`]}
+								selected={props[`${prefix}-status-hover`]}
 								onChange={val =>
 									onChange({
 										[`${prefix}-status-hover`]: val,
 									})
 								}
 							/>
-							{attributes[`${prefix}-status-hover`] && (
+							{props[`${prefix}-status-hover`] && (
 								<NavigationIconControl
-									{...attributes}
+									{...props}
 									onChangeInline={(
 										obj,
 										target,
@@ -116,9 +115,7 @@ const NavigationIconsControl = props => {
 									'maxi-blocks'
 								)}
 								selected={
-									attributes[
-										'navigation-active-dot-icon-status'
-									]
+									props['navigation-active-dot-icon-status']
 								}
 								onChange={val =>
 									onChange({
@@ -127,11 +124,9 @@ const NavigationIconsControl = props => {
 									})
 								}
 							/>
-							{attributes[
-								'navigation-active-dot-icon-status'
-							] && (
+							{props['navigation-active-dot-icon-status'] && (
 								<NavigationIconControl
-									{...attributes}
+									{...props}
 									onChangeInline={(
 										obj,
 										target,

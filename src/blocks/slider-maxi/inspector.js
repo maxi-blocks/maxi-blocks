@@ -48,6 +48,29 @@ const Inspector = props => {
 		forceSingle: true,
 	});
 
+	console.log('arrow');
+	console.log(
+		getGroupAttributes(attributes, [
+			'arrowIcon',
+			'arrowIconBackground',
+			'arrowIconBackgroundColor',
+			'arrowIconBackgroundGradient',
+			'arrowIconBorder',
+			'arrowIconBorderRadius',
+			'arrowIconBorderWidth',
+			'arrowIconPadding',
+			'arrowIconBoxShadow',
+			'arrowIconHover',
+			'arrowIconBackgroundHover',
+			'arrowIconBackgroundColorHover',
+			'arrowIconBackgroundGradientHover',
+			'arrowIconBorderHover',
+			'arrowIconBorderRadiusHover',
+			'arrowIconBorderWidthHover',
+			'arrowIconBoxShadowHover',
+		])
+	);
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -93,7 +116,10 @@ const Inspector = props => {
 											),
 											content: (
 												<NavigationControl
-													{...props}
+													{...getGroupAttributes(
+														attributes,
+														'navigation'
+													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
@@ -108,7 +134,28 @@ const Inspector = props => {
 											label: __('Arrows', 'maxi-blocks'),
 											content: (
 												<NavigationArrowControl
-													{...props}
+													{...getGroupAttributes(
+														attributes,
+														[
+															'arrowIcon',
+															'arrowIconBackground',
+															'arrowIconBackgroundColor',
+															'arrowIconBackgroundGradient',
+															'arrowIconBorder',
+															'arrowIconBorderRadius',
+															'arrowIconBorderWidth',
+															'arrowIconPadding',
+															'arrowIconBoxShadow',
+															'arrowIconHover',
+															'arrowIconBackgroundHover',
+															'arrowIconBackgroundColorHover',
+															'arrowIconBackgroundGradientHover',
+															'arrowIconBorderHover',
+															'arrowIconBorderRadiusHover',
+															'arrowIconBorderWidthHover',
+															'arrowIconBoxShadowHover',
+														]
+													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
@@ -128,7 +175,29 @@ const Inspector = props => {
 											label: __('Dots', 'maxi-blocks'),
 											content: (
 												<NavigationDotControl
-													{...props}
+													{...getGroupAttributes(
+														attributes,
+														[
+															'dotIcon',
+															'dotIconHover',
+															'dotIconActive',
+															'dotIconBackground',
+															'dotIconBackgroundColor',
+															'dotIconBackgroundGradient',
+															'dotIconBorder',
+															'dotIconBorderRadius',
+															'dotIconBorderWidth',
+															'dotIconPadding',
+															'dotIconBoxShadow',
+															'dotIconBackgroundHover',
+															'dotIconBackgroundColorHover',
+															'dotIconBackgroundGradientHover',
+															'dotIconBorderHover',
+															'dotIconBorderRadiusHover',
+															'dotIconBorderWidthHover',
+															'dotIconBoxShadowHover',
+														]
+													)}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}

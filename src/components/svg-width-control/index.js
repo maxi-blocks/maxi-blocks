@@ -23,6 +23,7 @@ const SvgWidthControl = props => {
 		prefix,
 		isHover,
 		resizableObject = false,
+		customLabel = 'Width',
 	} = props;
 
 	const width =
@@ -39,7 +40,7 @@ const SvgWidthControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			label={__('Width', 'maxi-blocks')}
+			label={__(`${customLabel}`, 'maxi-blocks')}
 			value={width || defaultWidth}
 			placeholder={
 				breakpoint !== 'general'

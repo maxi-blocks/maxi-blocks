@@ -156,15 +156,6 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
-		// Even when not rendering, on breakpoint stage change
-		// re-render the styles
-		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
-
-		if (breakpoint !== this.currentBreakpoint) {
-			this.currentBreakpoint = breakpoint;
-			this.displayStyles();
-		}
-
 		// Force rendering the block when SC related values change
 		if (this.scProps) {
 			const SC = select(
@@ -286,7 +277,14 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		if (!shouldDisplayStyles) this.displayStyles();
+		// Even when not rendering, on breakpoint stage change
+		// re-render the styles
+		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+
+		if (!shouldDisplayStyles || breakpoint !== this.currentBreakpoint) {
+			this.currentBreakpoint = breakpoint;
+			this.displayStyles();
+		}
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);

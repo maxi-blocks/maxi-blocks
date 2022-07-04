@@ -494,7 +494,11 @@ class edit extends MaxiBlockComponent {
 						</BlockResizer>
 					) : (
 						<div className='maxi-image-block__placeholder'>
-							<Placeholder icon={placeholderImage} label='' />
+							<Placeholder
+								icon={placeholderImage}
+								label=''
+								instructions='Placeholder image'
+							/>
 						</div>
 					)}
 				</MaxiBlock>

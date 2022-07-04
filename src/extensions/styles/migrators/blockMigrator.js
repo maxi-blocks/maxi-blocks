@@ -8,13 +8,19 @@ import {
 	attributes as fromFullWidthNonToResponsiveAttributes,
 	migrate as fromFullWidthNonToResponsiveMigrator,
 } from './fullWidthNonToResponsive';
+import {
+	isEligible as shapeDividerIsEligible,
+	deprecatedAttributes as shapeDividerAttributes,
+	migrate as shapeDividerMigrator,
+} from './shapeDividerMigrator';
 
 const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 	return {
 		isEligible(blockAttributes) {
 			return (
 				positionIsEligible(blockAttributes, attributes) ||
-				fromFullWidthNonToResponsiveIsEligible(blockAttributes)
+				fromFullWidthNonToResponsiveIsEligible(blockAttributes) ||
+				(isContainer && shapeDividerIsEligible(blockAttributes))
 			);
 		},
 
@@ -22,6 +28,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 			...attributes,
 			...positionAttributes,
 			...fromFullWidthNonToResponsiveAttributes(isContainer),
+			...(isContainer && shapeDividerAttributes),
 		},
 
 		migrate(oldAttributes) {
@@ -29,6 +36,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 
 			positionMigrator(newAttributes, attributes);
 			fromFullWidthNonToResponsiveMigrator(newAttributes, prefix);
+			if (isContainer) shapeDividerMigrator(newAttributes);
 
 			return newAttributes;
 		},

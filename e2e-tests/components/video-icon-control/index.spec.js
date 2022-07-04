@@ -25,7 +25,7 @@ describe('Video icon control', () => {
 
 		// Change type
 		const videoType = await accordionPanel.$(
-			'.maxi-accordion-control__item .maxi-accordion-control__item__panel .maxi-base-control select'
+			'.maxi-accordion-control__item .maxi-video-type select'
 		);
 
 		await videoType.select('popup');

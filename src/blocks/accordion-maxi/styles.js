@@ -11,10 +11,110 @@ import {
 	getColorRGBAString,
 	stylesCleaner,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
-import { getSVGStyles } from '../../extensions/styles/helpers';
+import {
+	getBorderStyles,
+	getBoxShadowStyles,
+	getDisplayStyles,
+	getFlexStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
+	getOverflowStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getSVGStyles,
+	getTransformStyles,
+	getZIndexStyles,
+} from '../../extensions/styles/helpers';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+const getNormalObject = props => {
+	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			blockStyle: props.blockStyle,
+		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			blockStyle: props.blockStyle,
+		}),
+		opacity: getOpacityStyles({
+			...getGroupAttributes(props, 'opacity'),
+		}),
+		zIndex: getZIndexStyles({
+			...getGroupAttributes(props, 'zIndex'),
+		}),
+		position: getPositionStyles({
+			...getGroupAttributes(props, 'position'),
+		}),
+		display: getDisplayStyles({
+			...getGroupAttributes(props, 'display'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
+		transform: getTransformStyles({
+			...getGroupAttributes(props, 'transform'),
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
+		}),
+		flex: getFlexStyles({
+			...getGroupAttributes(props, 'flex'),
+		}),
+	};
+
+	return response;
+};
+
+const getHoverObject = props => {
+	const response = {
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				isHover: true,
+				blockStyle: props.blockStyle,
+			}),
+		boxShadow:
+			props['box-shadow-status-hover'] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				isHover: true,
+				blockStyle: props.blockStyle,
+			}),
+	};
+
+	return response;
+};
 
 const getIconSize = (obj, isHover = false) => {
 	const response = {
@@ -183,6 +283,8 @@ const getStyles = props => {
 	const { uniqueID } = props;
 	const response = {
 		[uniqueID]: stylesCleaner({
+			'': getNormalObject(props),
+			':hover': getHoverObject(props),
 			'.maxi-accordion-block .maxi-accordion-block__content':
 				getPaneStyles(props),
 			...getPaneTitleStyles(props, ' .maxi-pane-block'),

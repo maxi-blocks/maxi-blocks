@@ -1,5 +1,13 @@
+/**
+ * Internal dependencies
+ */
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
+import getBlockCategoriesAndSelectors from '../../../components/relation-control/getBlockCategoriesAndSelectors';
+
+/**
+ * External dependencies
+ */
 import { isNil } from 'lodash';
 
 const types = ['scale', 'translate', 'rotate', 'origin'];
@@ -68,7 +76,11 @@ const migrate = (newAttributes, selectors) => {
 
 	const updateAttribute = (key, attr) => {
 		types.every(type => {
-			if (key.match(type) && !isNil(attr)) {
+			if (
+				key.match(type) &&
+				!isNil(attr) &&
+				attr !== attributes[key].default
+			) {
 				const breakpoint = getBreakpointFromAttribute(key);
 				newAttributes[`transform-${type}-${breakpoint}`] = {
 					[`${target}`]: {
@@ -97,8 +109,11 @@ const migrate = (newAttributes, selectors) => {
 			const newRelations = [...attr];
 			attr.forEach((relation, index) => {
 				const newRelationAttributes = { ...relation.attributes };
+				const name = relation.uniqueID.split('-')[0];
+				const { selectors: relationSelectors } =
+					getBlockCategoriesAndSelectors(name);
 
-				migrate(newRelationAttributes, selectors);
+				migrate(newRelationAttributes, relationSelectors);
 
 				newRelations[index] = {
 					...newRelations[index],

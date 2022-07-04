@@ -54,5 +54,11 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save, isContainer: true })],
+	deprecated: [
+		blockMigrator({
+			attributes,
+			save,
+			isContainer: true,
+		}),
+	],
 });

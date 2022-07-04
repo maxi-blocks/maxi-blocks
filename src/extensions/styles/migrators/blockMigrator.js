@@ -1,53 +1,66 @@
-import {
-	isEligible as positionIsEligible,
-	attributes as positionAttributes,
-	migrate as positionMigrator,
-} from './positionMigrator';
-import {
-	isEligible as fromFullWidthNonToResponsiveIsEligible,
-	attributes as fromFullWidthNonToResponsiveAttributes,
-	migrate as fromFullWidthNonToResponsiveMigrator,
-} from './fullWidthNonToResponsive';
+import positionMigrator from './positionMigrator';
+import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
 
-const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
+export const blockMigrator = ({
+	attributes,
+	save,
+	prefix = '',
+	migrators: innerBlockMigrators = [],
+	isContainer = false,
+}) => {
+	const migrators = [
+		positionMigrator,
+		fullWidthNonToResponsiveMigrator,
+		...innerBlockMigrators,
+	];
+
 	return {
 		isEligible(blockAttributes) {
-			return (
-				positionIsEligible(blockAttributes, attributes) ||
-				fromFullWidthNonToResponsiveIsEligible(blockAttributes)
+			return migrators.some(migrator =>
+				migrator.isEligible(blockAttributes)
 			);
 		},
 
-		attributes: {
-			...attributes,
-			...positionAttributes,
-			...fromFullWidthNonToResponsiveAttributes(isContainer),
-		},
+		attributes: migrators.reduce(
+			(acc, migrator) => ({
+				...acc,
+				...migrator.attributes(isContainer),
+			}),
+			{ ...attributes }
+		),
 
 		migrate(oldAttributes) {
-			const newAttributes = { ...oldAttributes };
+			return migrators.reduce(
+				(acc, migrator) => {
+					if (migrator.isEligible(oldAttributes)) {
+						return {
+							...acc,
+							...migrator.migrate({
+								newAttributes: { ...oldAttributes },
+								attributes,
+								prefix,
+							}),
+						};
+					}
 
-			positionMigrator(newAttributes, attributes);
-			fromFullWidthNonToResponsiveMigrator(newAttributes, prefix);
-
-			return newAttributes;
+					return acc;
+				},
+				{ ...oldAttributes }
+			);
 		},
 
 		save(props) {
-			const { attributes } = props;
-			const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
+			const saveProps = migrators.reduce(
+				(acc, migrator) => {
+					if (migrator.saveProps)
+						return migrator.saveProps(prefix, acc);
 
-			const newSave = save(
-				{ ...props, attributes: restAttrs },
-				{
-					'data-align': blockFullWidth,
+					return acc;
 				},
-				...(prefix && {
-					'data-align': fullWidth,
-				})
+				{ props, extendedAttributes: {} }
 			);
 
-			return newSave;
+			return save(saveProps.props, saveProps.extendedAttributes);
 		},
 	};
 };

@@ -28,7 +28,7 @@ import { imageBox } from '../../icons';
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import getMigrators from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,5 +54,5 @@ registerBlockType('maxi-blocks/image-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save, prefix: 'image-' })],
+	deprecated: getMigrators({ attributes, save, prefix: 'image-' }),
 });

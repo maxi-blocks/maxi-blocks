@@ -13,6 +13,11 @@ import {
 	deprecatedAttributes as shapeDividerAttributes,
 	migrate as shapeDividerMigrator,
 } from './shapeDividerMigrator';
+import {
+	isEligible as transformIsEligible,
+	attributes as transformAttributes,
+	migrate as transformMigrator,
+} from './transformMigrator';
 
 const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 	return {
@@ -20,7 +25,8 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 			return (
 				positionIsEligible(blockAttributes, attributes) ||
 				fromFullWidthNonToResponsiveIsEligible(blockAttributes) ||
-				(isContainer && shapeDividerIsEligible(blockAttributes))
+				(isContainer && shapeDividerIsEligible(blockAttributes)) ||
+				transformIsEligible(blockAttributes)
 			);
 		},
 
@@ -29,6 +35,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 			...positionAttributes,
 			...fromFullWidthNonToResponsiveAttributes(isContainer),
 			...(isContainer && shapeDividerAttributes),
+			...transformAttributes,
 		},
 
 		migrate(oldAttributes) {
@@ -37,6 +44,7 @@ const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
 			positionMigrator(newAttributes, attributes);
 			fromFullWidthNonToResponsiveMigrator(newAttributes, prefix);
 			if (isContainer) shapeDividerMigrator(newAttributes);
+			transformMigrator(newAttributes);
 
 			return newAttributes;
 		},

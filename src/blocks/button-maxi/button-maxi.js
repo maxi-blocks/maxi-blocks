@@ -28,7 +28,7 @@ import { buttonIcon } from '../../icons';
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import getMigrators from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,5 +54,5 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save, prefix: 'button-' })],
+	deprecated: getMigrators({ attributes, save, prefix: 'button-' }),
 });

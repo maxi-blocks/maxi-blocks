@@ -27,7 +27,7 @@ import { mapIcon } from '../../icons';
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import getMigrators from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,5 +54,5 @@ registerBlockType('maxi-blocks/map-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save })],
+	deprecated: getMigrators({ attributes, save }),
 });

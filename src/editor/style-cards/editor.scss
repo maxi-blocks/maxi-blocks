@@ -18,13 +18,13 @@ body {
 		margin: 10px 0px;
 		display: flex;
 	}
-	.maxi-style-cards__sc__style-card {
-		margin: 10px 0px;
-		display: flex;
 
-		.maxi-library-modal__action-section {
-			width: auto;
-		}
+	.maxi-style-cards__sc__style-card {
+		display: flex;
+	}
+	.custom-sc {
+		padding: 10px;
+		background-color: #f6f6f6;
 	}
 }
 .maxi-style-cards__sc__actions {
@@ -179,6 +179,22 @@ body {
 			padding: 10px 10px 2px;
 			background: #fff;
 
+			.active-sc-edit,
+			.sc-import,
+			.active-sc-export {
+				width: 25%;
+
+				button {
+					width: 100%;
+				}
+			}
+
+			.maxi-library-modal__action-section {
+				width: auto;
+				margin-right: 10px;
+				display: inline-block;
+			}
+
 			button,
 			a.components-button {
 				display: flex;
@@ -231,6 +247,13 @@ body {
 					border-radius: 5px;
 					margin-right: 5px;
 					padding: 0;
+					width: auto;
+					background-color: #edf6fa;
+
+					svg {
+						margin-right: 5px;
+						width: 12px;
+					}
 				}
 				&--select {
 					flex: 1;

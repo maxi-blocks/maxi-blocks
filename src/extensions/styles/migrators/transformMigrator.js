@@ -73,19 +73,20 @@ const migrate = (newAttributes, selectors) => {
 				newAttributes[`transform-${type}-${breakpoint}`] = {
 					[`${target}`]: {
 						normal: {
-							...newAttributes[`transform-${type}-${breakpoint}`]
-								?.canvas?.normal,
+							...newAttributes[
+								`transform-${type}-${breakpoint}`
+							]?.[`${target}`]?.normal,
 							[getAxis(key)]: attr,
 						},
 					},
 				};
 
-				delete newAttributes[key];
-
 				return false;
 			}
 			return true;
 		});
+
+		delete newAttributes[key];
 	};
 
 	Object.entries(newAttributes).forEach(([key, attr]) => {

@@ -43,6 +43,7 @@ const TransformControl = props => {
 		categories,
 		selectors,
 		'transform-target': transformTarget,
+		disableHover = false,
 	} = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
@@ -109,14 +110,15 @@ const TransformControl = props => {
 		const [inlineTarget, pseudoElement] =
 			getInlineTargetAndPseudoElement(targetSelector);
 
-		onChangeInline(
-			{
-				transform: transform ?? '',
-				'transform-origin': transformOrigin ?? '',
-			},
-			inlineTarget,
-			pseudoElement
-		);
+		onChangeInline &&
+			onChangeInline(
+				{
+					transform: transform ?? '',
+					'transform-origin': transformOrigin ?? '',
+				},
+				inlineTarget,
+				pseudoElement
+			);
 	};
 
 	const onChangeTransform = obj => {
@@ -216,25 +218,27 @@ const TransformControl = props => {
 			/>
 			{transformTarget && transformTarget !== 'none' && (
 				<>
-					<SettingTabsControl
-						label=''
-						type='buttons'
-						selected={hoverSelected}
-						fullWidthMode
-						items={[
-							{
-								label: __('Normal state', 'maxi-blocks'),
-								value: 'normal',
-							},
-							{
-								label: __('Hover state', 'maxi-blocks'),
-								value: 'hover',
-							},
-						]}
-						onChange={val => setHoverSelected(val)}
-						hasBorder
-					/>
-					{hoverSelected === 'hover' && (
+					{!disableHover && (
+						<SettingTabsControl
+							label=''
+							type='buttons'
+							selected={hoverSelected}
+							fullWidthMode
+							items={[
+								{
+									label: __('Normal state', 'maxi-blocks'),
+									value: 'normal',
+								},
+								{
+									label: __('Hover state', 'maxi-blocks'),
+									value: 'hover',
+								},
+							]}
+							onChange={val => setHoverSelected(val)}
+							hasBorder
+						/>
+					)}
+					{!disableHover && hoverSelected === 'hover' && (
 						<ToggleSwitch
 							label={__('Enable hover', 'maxi-blocks')}
 							selected={

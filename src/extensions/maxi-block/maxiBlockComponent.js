@@ -83,8 +83,6 @@ const StyleComponent = ({
 class MaxiBlockComponent extends Component {
 	propsToAvoidRendering = [];
 
-	propsToAvoidStyling = [];
-
 	constructor(...args) {
 		super(...args);
 
@@ -231,24 +229,6 @@ class MaxiBlockComponent extends Component {
 	 * Prevents styling
 	 */
 	getSnapshotBeforeUpdate(prevProps, prevState) {
-		if (!isEmpty(this.propsToAvoidStyling)) {
-			const oldAttributes = cloneDeep(prevProps.attributes);
-			const newAttributes = cloneDeep(this.props.attributes);
-
-			this.propsToAvoidStyling.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			if (!isEqual(oldAttributes, newAttributes))
-				this.difference(oldAttributes, newAttributes);
-
-			if (this.maxiBlockGetSnapshotBeforeUpdate)
-				this.maxiBlockGetSnapshotBeforeUpdate(prevProps, prevState);
-
-			return isEqual(oldAttributes, newAttributes);
-		}
-
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
 

@@ -81,8 +81,6 @@ const StyleComponent = ({
  * Class
  */
 class MaxiBlockComponent extends Component {
-	propsToAvoidRendering = [];
-
 	constructor(...args) {
 		super(...args);
 
@@ -186,24 +184,6 @@ class MaxiBlockComponent extends Component {
 
 		// Check changes on states
 		if (!isEqual(this.state, nextState)) return true;
-
-		// Check changes on props
-		if (!isEmpty(this.propsToAvoidRendering)) {
-			const oldAttributes = cloneDeep(nextProps.attributes);
-			const newAttributes = cloneDeep(this.props.attributes);
-
-			this.propsToAvoidRendering.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			// eslint-disable-next-line no-constant-condition
-			if (!isEqual(oldAttributes, newAttributes) && false)
-				// Just for debugging 👍
-				this.difference(oldAttributes, newAttributes);
-
-			return !isEqual(oldAttributes, newAttributes);
-		}
 
 		if (this.shouldMaxiBlockUpdate)
 			return (

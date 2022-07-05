@@ -13,7 +13,7 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
-import { Button } from '../../components';
+import { Button, Toolbar } from '../../components';
 import AccordionContext from './context';
 
 /**
@@ -58,6 +58,12 @@ class edit extends MaxiBlockComponent {
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+				// copyPasteMapping={copyPasteMapping}
+			/>,
 			<AccordionContext.Provider
 				key={`accordion-content-${uniqueID}`}
 				value={{

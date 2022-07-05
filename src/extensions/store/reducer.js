@@ -39,7 +39,6 @@ const reducer = (
 		copiedStyles: {},
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
-		accordionData: {},
 	},
 	action
 ) => {

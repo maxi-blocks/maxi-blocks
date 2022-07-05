@@ -272,399 +272,324 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					<Icon icon={styleCardBoat} />
 					{__('Style card manager', 'maxi-blocks')}
 					<span
-						className='maxi-responsive-selector__close'
+						className='maxi-sc--close'
 						onClick={() => setIsVisible(false)}
 					>
 						<Icon icon={closeIcon} />
 					</span>
 				</h2>
 				<hr />
-				<div className='maxi-style-cards__popover__sub-title'>
-					{__('Active style card', 'maxi-blocks')}
-					<span className='active-sc-name'>
-						{activeStyleCard.value.name}
-					</span>
-				</div>
-				<div className='maxi-style-cards__sc'>
-					<div className='maxi-style-cards__sc__style-card'>
-						<MaxiModal type='sc' />
-						<SelectControl
-							className='maxi-style-cards__sc__more-sc--select'
-							value={selectedSCKey}
-							options={SCList}
-							onChange={val => {
-								setSelectedStyleCard(val);
-							}}
-						/>
-						<Button
-							disabled={!canBeReset(selectedSCKey)}
-							className='maxi-style-cards__sc__more-sc--reset'
-							onClick={() => {
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure to reset "%s" style card\'s styles to defaults? Don\'t forget to apply the changes after',
-												'maxi-blocks'
-											),
-											getCurrentSCName
-										)
-									)
-								) {
-									resetCurrentSC();
-								}
-							}}
-						>
-							<Icon icon={reset} />
-						</Button>
+				<div>
+					<div className='maxi-style-cards__popover__sub-title'>
+						{__('Active style card', 'maxi-blocks')}
+						<span className='active-sc-name'>
+							{activeStyleCard.value.name}
+						</span>
 					</div>
-					<div className='maxi-style-cards__sc__more-sc'>
-						<div className='active-sc-edit'>
-							<Button onClick={toggleSettingsFn}>Edit</Button>
-						</div>
-						<Button
-							disabled={!canBeRemoved(selectedSCKey)}
-							className='maxi-style-cards__sc__more-sc--delete'
-							onClick={() => {
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure you want to delete "%s" style card? You cannot undo it',
-												'maxi-blocks'
-											),
-											styleCards[selectedSCKey].name
-										)
-									)
-								) {
-									removeStyleCard(selectedSCKey);
-
-									if (activeSCKey === selectedSCKey)
-										setActiveStyleCard('sc_maxi');
-								}
-							}}
-						>
-							<Icon icon={SCDelete} />
-						</Button>
-						<div className='sc-import'>
-							<MediaUploadCheck>
-								<MediaUpload
-									onSelect={media => {
-										fetch(media.url)
-											.then(response => response.json())
-											.then(jsonData => {
-												saveImportedStyleCard(jsonData);
-											})
-											.catch(error => {
-												console.error(error);
-											});
-									}}
-									allowedTypes='text'
-									render={({ open }) => (
-										<Button
-											className='maxi-style-cards__sc__ie--import'
-											onClick={open}
-										>
-											{__('Import', 'maxi-blocks')}
-										</Button>
-									)}
-								/>
-							</MediaUploadCheck>
-						</div>
-						<div className='active-sc-activate'>
-							<Button
-								disabled={isEmpty(styleCardName)}
-								onClick={() => {
-									const newStyleCard = {
-										name: styleCardName,
-										status: '',
-										dark: {
-											defaultStyleCard: {
-												...selectedSCValue.dark
-													.defaultStyleCard,
-												...selectedSCValue.dark
-													.styleCard,
-											},
-											styleCard: {},
-										},
-										light: {
-											defaultStyleCard: {
-												...selectedSCValue.light
-													.defaultStyleCard,
-												...selectedSCValue.light
-													.styleCard,
-											},
-											styleCard: {},
-										},
-									};
-									saveImportedStyleCard(newStyleCard);
+					<div className='maxi-style-cards__sc'>
+						<div className='maxi-style-cards__sc__style-card'>
+							<MaxiModal type='sc' />
+							<SelectControl
+								className='maxi-style-cards__sc__more-sc--select'
+								value={selectedSCKey}
+								options={SCList}
+								onChange={val => {
+									setSelectedStyleCard(val);
 								}}
-							>
-								{__('Activate', 'maxi-blocks')}
-							</Button>
-						</div>
-					</div>
-				</div>
-				<hr />
-				{toggleSettings && (
-					<>
-						<SettingTabsControl
-							disablePadding
-							returnValue={({ key }) => setCurrentSCStyle(key)}
-							items={[
-								{
-									label: __(
-										'Light tone globals',
-										'maxi-blocks'
-									),
-									key: 'light',
-									content: (
-										<MaxiStyleCardsTab
-											SC={selectedSCValue.light}
-											SCStyle='light'
-											onChangeValue={onChangeValue}
-											breakpoint={breakpoint}
-											currentKey={selectedSCKey}
-										/>
-									),
-								},
-								{
-									label: __(
-										'Dark tone globals',
-										'maxi-blocks'
-									),
-									key: 'dark',
-									content: (
-										<MaxiStyleCardsTab
-											SC={selectedSCValue.dark}
-											SCStyle='dark'
-											onChangeValue={onChangeValue}
-											breakpoint={breakpoint}
-											currentKey={selectedSCKey}
-										/>
-									),
-								},
-							]}
-						/>
-						{/* <div className='maxi-style-cards__sc__actions'>
-							<PostPreviewButton
-								className='maxi-style-cards__sc__actions--preview'
-								textContent={__('Preview', 'maxi-blocks')}
 							/>
 							<Button
-								className='maxi-style-cards__sc__actions--save'
-								disabled={!canBeSaved(selectedSCKey)}
-								onClick={() => {
-									if (activeSCKey === selectedSCKey) {
-										if (
-											window.confirm(
-												sprintf(
-													__(
-														'Are you sure you want to save active "%s" style card? It will apply new styles to the whole site',
-														'maxi-blocks'
-													),
-													getCurrentSCName
-												)
-											)
-										) {
-											saveCurrentSC();
-											showMaxiSCSavedActiveSnackbar(
-												selectedSCValue.name
-											);
-										}
-									} else {
-										showMaxiSCSavedSnackbar(
-											selectedSCValue.name
-										);
-										saveCurrentSC();
-									}
-								}}
-							>
-								{__('Save', 'maxi-blocks')}
-							</Button>
-							<Button
-								className='maxi-style-cards__sc__actions--apply'
-								disabled={
-									!canBeApplied(selectedSCKey, activeSCKey)
-								}
+								disabled={!canBeReset(selectedSCKey)}
+								className='maxi-style-cards__sc__more-sc--reset'
 								onClick={() => {
 									if (
 										window.confirm(
 											sprintf(
 												__(
-													'Are you sure you want to apply "%s" style card? It will apply the styles to the whole site',
+													'Are you sure to reset the "%s" style card\'s styles to defaults? Don\'t forget to apply the changes after.',
 													'maxi-blocks'
 												),
 												getCurrentSCName
 											)
 										)
 									) {
-										applyCurrentSCGlobally();
-										showMaxiSCAppliedActiveSnackbar(
-											selectedSCValue.name
-										);
+										resetCurrentSC();
 									}
 								}}
 							>
-								{__('Apply', 'maxi-blocks')}
+								<Icon icon={reset} />
 							</Button>
 						</div>
-						<Button
-							disabled={!canBeReset(selectedSCKey)}
-							className='maxi-style-cards__sc__more-sc--reset'
-							onClick={() => {
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure to reset "%s" style card\'s styles to defaults? Don\'t forget to apply the changes after',
-												'maxi-blocks'
-											),
-											getCurrentSCName
+						<div className='maxi-style-cards__sc__more-sc'>
+							<div className='active-sc-edit'>
+								<Button onClick={toggleSettingsFn}>Edit</Button>
+							</div>
+							<Button
+								disabled={!canBeRemoved(selectedSCKey)}
+								className='maxi-style-cards__sc__more-sc--delete'
+								onClick={() => {
+									if (
+										window.confirm(
+											sprintf(
+												__(
+													'Are you sure you want to delete "%s" style card? You cannot undo it',
+													'maxi-blocks'
+												),
+												styleCards[selectedSCKey].name
+											)
 										)
-									)
-								) {
-									resetCurrentSC();
-								}
-							}}
-						>
-							<Icon icon={reset} />
-						</Button>
-*/}
+									) {
+										removeStyleCard(selectedSCKey);
 
-						<div className='custom-sc'>
-							<div className='custom-sc-name'>
-								Save new SC with current settings
-							</div>
-							<div className='maxi-style-cards__sc__save'>
-								<input
-									type='text'
-									placeholder={__(
-										'Add your Style Card Name here',
-										'maxi-blocks'
-									)}
-									value={styleCardName}
-									onChange={e =>
-										setStyleCardName(e.target.value)
+										if (activeSCKey === selectedSCKey)
+											setActiveStyleCard('sc_maxi');
 									}
-								/>
-								<Button
-									disabled={isEmpty(styleCardName)}
-									onClick={() => {
-										const newStyleCard = {
-											name: styleCardName,
-											status: '',
-											dark: {
-												defaultStyleCard: {
-													...selectedSCValue.dark
-														.defaultStyleCard,
-													...selectedSCValue.dark
-														.styleCard,
-												},
-												styleCard: {},
-											},
-											light: {
-												defaultStyleCard: {
-													...selectedSCValue.light
-														.defaultStyleCard,
-													...selectedSCValue.light
-														.styleCard,
-												},
-												styleCard: {},
-											},
-										};
-										saveImportedStyleCard(newStyleCard);
-									}}
-								>
-									{__('Add', 'maxi-blocks')}
-								</Button>
-							</div>
-							<div className='maxi-style-cards__sc__ie'>
-								<PostPreviewButton
-									className='maxi-style-cards__sc__actions--preview'
-									textContent={__('Preview', 'maxi-blocks')}
-								/>
-								<Button
-									className='maxi-style-cards__sc__ie--export'
-									disabled={false}
-									onClick={() => {
-										const fileName = `${selectedSCValue.name}.txt`;
-										exportStyleCard(
-											{
-												...selectedSCValue,
-												status: '',
-											},
-											fileName
-										);
-									}}
-								>
-									{__('Export', 'maxi-blocks')}
-								</Button>
-								<Button
-									className='maxi-style-cards__sc__actions--save'
-									disabled={!canBeSaved(selectedSCKey)}
-									onClick={() => {
-										if (activeSCKey === selectedSCKey) {
-											if (
-												window.confirm(
-													sprintf(
-														__(
-															'Are you sure you want to save active "%s" style card? It will apply new styles to the whole site',
-															'maxi-blocks'
-														),
-														getCurrentSCName
-													)
+								}}
+							>
+								<Icon icon={SCDelete} />
+							</Button>
+							<div className='sc-import'>
+								<MediaUploadCheck>
+									<MediaUpload
+										onSelect={media => {
+											fetch(media.url)
+												.then(response =>
+													response.json()
 												)
-											) {
-												saveCurrentSC();
-												showMaxiSCSavedActiveSnackbar(
-													selectedSCValue.name
-												);
-											}
-										} else {
-											showMaxiSCSavedSnackbar(
+												.then(jsonData => {
+													saveImportedStyleCard(
+														jsonData
+													);
+												})
+												.catch(error => {
+													console.error(error);
+												});
+										}}
+										allowedTypes='text'
+										render={({ open }) => (
+											<Button
+												className='maxi-style-cards__sc__ie--import'
+												onClick={open}
+											>
+												{__('Import', 'maxi-blocks')}
+											</Button>
+										)}
+									/>
+								</MediaUploadCheck>
+							</div>
+							<div className='active-sc-activate'>
+								<Button
+									className='maxi-style-cards--activate'
+									disabled={
+										!canBeApplied(
+											selectedSCKey,
+											activeSCKey
+										)
+									}
+									onClick={() => {
+										if (
+											window.confirm(
+												sprintf(
+													__(
+														'Are you sure you want to activate "%s" style card? It will apply the styles to the whole site',
+														'maxi-blocks'
+													),
+													getCurrentSCName
+												)
+											)
+										) {
+											applyCurrentSCGlobally();
+											showMaxiSCAppliedActiveSnackbar(
 												selectedSCValue.name
 											);
-											saveCurrentSC();
 										}
-									}}
-								>
-									{__('Save', 'maxi-blocks')}
-								</Button>
-								<Button
-									disabled={isEmpty(styleCardName)}
-									onClick={() => {
-										const newStyleCard = {
-											name: styleCardName,
-											status: '',
-											dark: {
-												defaultStyleCard: {
-													...selectedSCValue.dark
-														.defaultStyleCard,
-													...selectedSCValue.dark
-														.styleCard,
-												},
-												styleCard: {},
-											},
-											light: {
-												defaultStyleCard: {
-													...selectedSCValue.light
-														.defaultStyleCard,
-													...selectedSCValue.light
-														.styleCard,
-												},
-												styleCard: {},
-											},
-										};
-										saveImportedStyleCard(newStyleCard);
 									}}
 								>
 									{__('Activate', 'maxi-blocks')}
 								</Button>
 							</div>
 						</div>
-					</>
-				)}
+					</div>
+					<hr />
+					{toggleSettings && (
+						<>
+							<SettingTabsControl
+								disablePadding
+								returnValue={({ key }) =>
+									setCurrentSCStyle(key)
+								}
+								items={[
+									{
+										label: __(
+											'Light tone globals',
+											'maxi-blocks'
+										),
+										key: 'light',
+										content: (
+											<MaxiStyleCardsTab
+												SC={selectedSCValue.light}
+												SCStyle='light'
+												onChangeValue={onChangeValue}
+												breakpoint={breakpoint}
+												currentKey={selectedSCKey}
+											/>
+										),
+									},
+									{
+										label: __(
+											'Dark tone globals',
+											'maxi-blocks'
+										),
+										key: 'dark',
+										content: (
+											<MaxiStyleCardsTab
+												SC={selectedSCValue.dark}
+												SCStyle='dark'
+												onChangeValue={onChangeValue}
+												breakpoint={breakpoint}
+												currentKey={selectedSCKey}
+											/>
+										),
+									},
+								]}
+							/>
+
+							<div className='custom-sc'>
+								<div className='custom-sc-name'>
+									Save new SC with current settings
+								</div>
+								<div className='maxi-style-cards__sc__add'>
+									<input
+										type='text'
+										placeholder={__(
+											'Add your Style Card Name here',
+											'maxi-blocks'
+										)}
+										value={styleCardName}
+										onChange={e =>
+											setStyleCardName(e.target.value)
+										}
+									/>
+									<Button
+										className='maxi-style-cards__sc__add--button'
+										disabled={isEmpty(styleCardName)}
+										onClick={() => {
+											const newStyleCard = {
+												name: styleCardName,
+												status: '',
+												dark: {
+													defaultStyleCard: {
+														...selectedSCValue.dark
+															.defaultStyleCard,
+														...selectedSCValue.dark
+															.styleCard,
+													},
+													styleCard: {},
+												},
+												light: {
+													defaultStyleCard: {
+														...selectedSCValue.light
+															.defaultStyleCard,
+														...selectedSCValue.light
+															.styleCard,
+													},
+													styleCard: {},
+												},
+											};
+											saveImportedStyleCard(newStyleCard);
+										}}
+									>
+										{__('Add', 'maxi-blocks')}
+									</Button>
+								</div>
+								<div className='maxi-style-cards__sc__ie'>
+									<PostPreviewButton
+										className='maxi-style-cards__sc__actions--preview'
+										textContent={__(
+											'Preview',
+											'maxi-blocks'
+										)}
+									/>
+									<Button
+										className='maxi-style-cards__sc__ie--export'
+										disabled={false}
+										onClick={() => {
+											const fileName = `${selectedSCValue.name}.txt`;
+											exportStyleCard(
+												{
+													...selectedSCValue,
+													status: '',
+												},
+												fileName
+											);
+										}}
+									>
+										{__('Export', 'maxi-blocks')}
+									</Button>
+									<Button
+										className='maxi-style-cards__sc__actions--save'
+										disabled={!canBeSaved(selectedSCKey)}
+										onClick={() => {
+											if (activeSCKey === selectedSCKey) {
+												if (
+													window.confirm(
+														sprintf(
+															__(
+																'Are you sure you want to save active "%s" style card? It will apply new styles to the whole site',
+																'maxi-blocks'
+															),
+															getCurrentSCName
+														)
+													)
+												) {
+													saveCurrentSC();
+													showMaxiSCSavedActiveSnackbar(
+														selectedSCValue.name
+													);
+												}
+											} else {
+												showMaxiSCSavedSnackbar(
+													selectedSCValue.name
+												);
+												saveCurrentSC();
+											}
+										}}
+									>
+										{__('Save', 'maxi-blocks')}
+									</Button>
+									<Button
+										className='maxi-style-cards--activate'
+										disabled={
+											!canBeApplied(
+												selectedSCKey,
+												activeSCKey
+											)
+										}
+										onClick={() => {
+											if (
+												window.confirm(
+													sprintf(
+														__(
+															'Are you sure you want to activate "%s" style card? It will apply the styles to the whole site',
+															'maxi-blocks'
+														),
+														getCurrentSCName
+													)
+												)
+											) {
+												applyCurrentSCGlobally();
+												showMaxiSCAppliedActiveSnackbar(
+													selectedSCValue.name
+												);
+											}
+										}}
+									>
+										{__('Activate', 'maxi-blocks')}
+									</Button>
+								</div>
+							</div>
+						</>
+					)}
+				</div>
 			</Popover>
 		)
 	);

@@ -25,6 +25,41 @@ body {
 	.custom-sc {
 		padding: 10px;
 		background-color: #f6f6f6;
+
+		.maxi-style-cards__sc__add {
+			display: flex;
+			justify-content: space-between;
+			margin: 5px 0 10px 0;
+
+			button {
+				width: 60px;
+				margin-right: 0;
+				margin-left: 10px;
+			}
+		}
+
+		button,
+		a {
+			background: #fff !important;
+			text-align: center;
+			display: flex;
+			justify-content: center;
+			border: 2px solid #dddfe1;
+			transition: all 0.5s;
+			border-radius: 0;
+			padding: 8px;
+			color: #232533;
+			margin-right: 8px;
+
+			&:hover {
+				background: var(--maxi-grey-3-color) !important;
+				color: inherit;
+			}
+		}
+		.maxi-style-cards__sc__save button,
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 }
 .maxi-style-cards__sc__actions {
@@ -38,6 +73,9 @@ body {
 }
 .maxi-style-card__active-card-edit {
 	padding-right: 10px;
+}
+.components-popover .components-popover__content {
+	overflow: unset;
 }
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
@@ -169,9 +207,28 @@ body {
 				height: 35px;
 				margin-right: 10px;
 			}
-			.maxi-responsive-selector__close {
+			.maxi-sc--close {
+				position: absolute;
+				top: -10px;
+				right: -10px;
+				background: rgba(var(--maxi-light-color-4), 1);
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 20px;
+				height: 20px;
+				color: #fff;
+				cursor: pointer;
+
+				&:hover {
+					background-color: var(--maxi-grey-5-color);
+				}
+
 				svg {
-					margin-right: 10px;
+					g {
+						stroke: #fff;
+					}
 				}
 			}
 		}
@@ -220,11 +277,30 @@ body {
 				flex: 1;
 			}
 
+			.maxi-style-cards--activate {
+				min-width: 90px;
+				background-color: rgba(var(--maxi-light-color-4), 1);
+				border: none;
+
+				&:disabled {
+					background-color: #fff;
+				}
+			}
+
 			&__more-sc {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				margin-bottom: 8px;
+
+				.maxi-style-cards__sc__more-sc--delete {
+					svg {
+						transform: scale(1.4);
+						position: relative;
+						top: 3px;
+						left: 5px;
+					}
+				}
 
 				.maxi-library-modal__action-section {
 					width: auto;
@@ -327,6 +403,8 @@ body {
 			}
 		}
 		.maxi-settingstab-control {
+			max-height: 500px;
+
 			.maxi-tabs-content {
 				padding-left: 0;
 				padding-right: 0;

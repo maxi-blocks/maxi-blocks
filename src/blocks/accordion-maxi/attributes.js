@@ -43,14 +43,11 @@ const attributes = {
 		type: 'number',
 		default: 2,
 	},
+
 	...attributesData.accordion,
-	titleLevel: { type: 'string', default: 'h6' },
-	...paletteAttributesCreator({ prefix: 'title-', palette: 6 }),
-	...paletteAttributesCreator({
-		prefix: 'title-background-',
-		palette: 1,
-	}),
 	...attributesData.accordionIcon,
+	...attributesData.accordionTitle,
+
 	'background-status-hover': { type: 'boolean', default: false },
 	'active-background-status-hover': { type: 'boolean', default: false },
 	...breakpointAttributesCreator({

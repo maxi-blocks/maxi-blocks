@@ -25,7 +25,7 @@ import { categoriesAccordion, selectorsAccordion } from './custom-css';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { blockStyle, accordionLayout, titleLevel } = attributes;
+	const { blockStyle } = attributes;
 
 	return (
 		<InspectorControls>
@@ -53,9 +53,6 @@ const Inspector = props => {
 										),
 										content: (
 											<AccordionSettings
-												accordionLayout={
-													accordionLayout
-												}
 												clientId={clientId}
 												{...getGroupAttributes(
 													attributes,
@@ -72,19 +69,12 @@ const Inspector = props => {
 										label: __('Title', 'maxi-blocks'),
 										content: (
 											<AccordionTitleSettings
-												titleLevel={titleLevel}
 												onChange={obj =>
 													maxiSetAttributes(obj)
 												}
 												{...getGroupAttributes(
 													attributes,
-													[
-														'typography',
-														'background',
-														'backgroundColor',
-													],
-													false,
-													'title-'
+													'accordionTitle'
 												)}
 												clientId={clientId}
 											/>
@@ -130,7 +120,6 @@ const Inspector = props => {
 									...inspectorTabs.size({
 										props,
 										block: true,
-										hideWidth: true,
 									}),
 									...inspectorTabs.marginPadding({
 										props,

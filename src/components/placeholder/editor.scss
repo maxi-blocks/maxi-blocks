@@ -131,7 +131,11 @@
 		.maxi-placeholder__instructions {
 			position: absolute;
 			bottom: 40px;
-			left: 40%;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			font-size: 18px;
+			color: var(--maxi-grey-6-color);
 		}
 	}
 

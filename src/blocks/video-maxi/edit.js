@@ -3,6 +3,7 @@
  */
 import { RawHTML, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -27,7 +28,6 @@ import { placeholderImage, toolbarReplaceImage } from '../../icons';
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
-import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Video player

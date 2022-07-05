@@ -25,13 +25,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			blockFullWidth,
-			maxiSetAttributes,
-			clientId,
-			hasInnerBlocks,
-		} = this.props;
+		const { attributes, maxiSetAttributes, clientId, hasInnerBlocks } =
+			this.props;
 		const { uniqueID, title } = attributes;
 		const {
 			paneIcon,

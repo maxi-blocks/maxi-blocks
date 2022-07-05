@@ -84,8 +84,7 @@ const getInnerBlocksChild = ({
 			...(blockName === 'maxi-blocks/accordion-maxi' && children),
 			...(!isSave &&
 				hasInnerBlocks &&
-				blockName !== 'maxi-blocks/row-maxi' &&
-				blockName !== 'maxi-blocks/accordion-maxi' && (
+				blockName !== 'maxi-blocks/row-maxi' && (
 					<BlockInserter.WrapperInserter
 						key={`maxi-block-wrapper-inserter__${clientId}`}
 						ref={ref}

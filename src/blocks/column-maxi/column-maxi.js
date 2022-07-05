@@ -28,7 +28,7 @@ import { selectorsColumn } from './custom-css';
 /**
  * Migrators
  */
-import getMigrators from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -55,5 +55,5 @@ registerBlockType('maxi-blocks/column-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save, selectors: selectorsColumn }),
+	deprecated: blockMigrator({ attributes, save, selectors: selectorsColumn }),
 });

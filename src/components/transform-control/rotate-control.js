@@ -161,7 +161,7 @@ const RotateControl = props => {
 					/>
 					<Button
 						className='components-maxi-control__reset-button'
-						onClick={() => onChange(z, y, defaultZ)}
+						onClick={() => onChange(x, y, defaultZ)}
 						action='reset'
 						type='reset'
 					>

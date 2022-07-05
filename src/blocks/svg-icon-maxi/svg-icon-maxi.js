@@ -29,7 +29,7 @@ import { iconBox } from '../../icons';
 /**
  * Migrators
  */
-import getMigrators from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -55,5 +55,9 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save, selectors: selectorsSvgIcon }),
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: selectorsSvgIcon,
+	}),
 });

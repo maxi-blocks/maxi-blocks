@@ -27,7 +27,7 @@ import { numberCounterIcon } from '../../icons';
 /**
  * Migrators
  */
-import getMigrators from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,7 +54,7 @@ registerBlockType('maxi-blocks/number-counter-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({
+	deprecated: blockMigrator({
 		attributes,
 		save,
 		selectors: selectorsNumberCounter,

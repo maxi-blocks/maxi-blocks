@@ -85,23 +85,24 @@ const isEligible = (blockAttributes, attributes) => {
 	});
 };
 
-const attributes = breakpointAttributesCreator({
-	obj: {
-		...keyWords.reduce((acc, keyWord) => {
-			acc[`position-${keyWord}`] = {
-				type: 'number',
-			};
+const attributes = () =>
+	breakpointAttributesCreator({
+		obj: {
+			...keyWords.reduce((acc, keyWord) => {
+				acc[`position-${keyWord}`] = {
+					type: 'number',
+				};
 
-			return acc;
-		}, {}),
-		'position-unit': {
-			type: 'string',
-			default: 'px',
+				return acc;
+			}, {}),
+			'position-unit': {
+				type: 'string',
+				default: 'px',
+			},
 		},
-	},
-});
+	});
 
-const migrate = (newAttributes, attributes) => {
+const migrate = ({ newAttributes, attributes }) => {
 	const attrsToChange = getAttrsToChange(newAttributes);
 
 	Object.entries(attrsToChange).forEach(([key, val]) => {
@@ -115,6 +116,8 @@ const migrate = (newAttributes, attributes) => {
 			});
 		}
 	});
+
+	return newAttributes;
 };
 
-export { isEligible, attributes, migrate };
+export default { isEligible, attributes, migrate };

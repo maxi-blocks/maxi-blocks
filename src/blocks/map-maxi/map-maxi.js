@@ -28,7 +28,7 @@ import { mapIcon } from '../../icons';
 /**
  * Migrators
  */
-import getMigrators from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -55,5 +55,5 @@ registerBlockType('maxi-blocks/map-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save, selectors: selectorsMap }),
+	deprecated: blockMigrator({ attributes, save, selectors: selectorsMap }),
 });

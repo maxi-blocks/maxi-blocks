@@ -28,7 +28,7 @@ import { dividerIcon } from '../../icons';
 /**
  * Migrators
  */
-import getMigrators from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,5 +54,9 @@ registerBlockType('maxi-blocks/divider-maxi', {
 	},
 	edit,
 	save,
-	deprecated: getMigrators({ attributes, save, selectors: selectorsDivider }),
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: selectorsDivider,
+	}),
 });

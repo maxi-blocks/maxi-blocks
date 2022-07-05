@@ -30,7 +30,7 @@ import { textIcon } from '../../icons';
 /**
  * Migrators
  */
-import getMigrators from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -57,5 +57,5 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save,
 	transforms,
-	deprecated: getMigrators({ attributes, save, selectors: selectorsText }),
+	deprecated: blockMigrator({ attributes, save, selectors: selectorsText }),
 });

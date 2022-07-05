@@ -1,77 +1,48 @@
-import {
-	isEligible as positionIsEligible,
-	attributes as positionAttributes,
-	migrate as positionMigrator,
-} from './positionMigrator';
-import {
-	isEligible as fromFullWidthNonToResponsiveIsEligible,
-	attributes as fromFullWidthNonToResponsiveAttributes,
-	migrate as fromFullWidthNonToResponsiveMigrator,
-} from './fullWidthNonToResponsive';
-import {
-	isEligible as shapeDividerIsEligible,
-	deprecatedAttributes as shapeDividerAttributes,
-	migrate as shapeDividerMigrator,
-} from './shapeDividerMigrator';
-import {
-	isEligible as transformIsEligible,
-	attributes as transformAttributes,
-	migrate as transformMigrator,
-} from './transformMigrator';
+import positionMigrator from './positionMigrator';
+import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
 
 const blockMigrator = ({
 	attributes,
 	save,
-	prefix,
+	prefix = '',
+	migrators: innerBlockMigrators = [],
 	isContainer = false,
-	selectors,
 }) => {
-	return {
-		isEligible(blockAttributes) {
-			return (
-				positionIsEligible(blockAttributes, attributes) ||
-				fromFullWidthNonToResponsiveIsEligible(blockAttributes) ||
-				(isContainer && shapeDividerIsEligible(blockAttributes)) ||
-				transformIsEligible(blockAttributes)
-			);
-		},
+	const migrators = [
+		positionMigrator,
+		fullWidthNonToResponsiveMigrator,
+		...innerBlockMigrators,
+	];
 
-		attributes: {
-			...attributes,
-			...positionAttributes,
-			...fromFullWidthNonToResponsiveAttributes(isContainer),
-			...(isContainer && shapeDividerAttributes),
-			...transformAttributes,
-		},
+	return migrators.map(migrator => {
+		const {
+			isEligible,
+			attributes: newAttributes,
+			migrate,
+			saveProps,
+		} = migrator;
 
-		migrate(oldAttributes) {
-			const newAttributes = { ...oldAttributes };
-
-			positionMigrator(newAttributes, attributes);
-			fromFullWidthNonToResponsiveMigrator(newAttributes, prefix);
-			if (isContainer) shapeDividerMigrator(newAttributes);
-			transformMigrator(newAttributes, selectors);
-
-			return newAttributes;
-		},
-
-		save(props) {
-			const { attributes } = props;
-			const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
-
-			const newSave = save(
-				{ ...props, attributes: restAttrs },
-				{
-					'data-align': blockFullWidth,
-				},
-				...(prefix && {
-					'data-align': fullWidth,
-				})
-			);
-
-			return newSave;
-		},
-	};
+		return {
+			isEligible: blockAttributes =>
+				isEligible(blockAttributes, attributes),
+			attributes: { ...attributes, ...newAttributes(isContainer) },
+			migrate: oldAttributes =>
+				migrate({
+					newAttributes: { ...oldAttributes },
+					attributes,
+					prefix,
+				}),
+			save: props =>
+				saveProps
+					? save(
+							...saveProps(prefix, {
+								props,
+								extendedAttributes: {},
+							})
+					  )
+					: save(props),
+		};
+	});
 };
 
 export default blockMigrator;

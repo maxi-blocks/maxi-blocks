@@ -10,7 +10,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
-import { BlockInserter } from '../../components';
+import { BlockInserter, Toolbar } from '../../components';
 import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 
@@ -51,6 +51,12 @@ class edit extends MaxiBlockComponent {
 			);
 
 		return [
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+				// copyPasteMapping={copyPasteMapping}
+			/>,
 			<MaxiBlock
 				key={`maxi-pane--${uniqueID}`}
 				ref={this.blockRef}

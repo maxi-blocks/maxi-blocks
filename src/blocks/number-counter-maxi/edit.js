@@ -90,6 +90,28 @@ const NumberCounter = attributes => {
 		stroke,
 	]);
 
+	const getResizerSize = () => {
+		return {
+			width: circleStatus
+				? 'auto'
+				: getLastBreakpointAttribute({
+						target: 'number-counter-width-auto',
+						breakpoint: deviceType,
+						attributes,
+				  })
+				? '100%'
+				: `${getLastBreakpointAttribute({
+						target: 'number-counter-width',
+						breakpoint: deviceType,
+						attributes,
+				  })}${getLastBreakpointAttribute({
+						target: 'number-counter-width-unit',
+						breakpoint: deviceType,
+						attributes,
+				  })}`,
+		};
+	};
+
 	const fontSize = getLastBreakpointAttribute({
 		target: 'number-counter-title-font-size',
 		breakpoint: deviceType,
@@ -112,30 +134,13 @@ const NumberCounter = attributes => {
 		setCount(startCountValue);
 		setReplayStatus(true);
 	});
-
 	return (
 		<BlockResizer
 			className='maxi-number-counter__box'
 			isOverflowHidden={getIsOverflowHidden()}
 			lockAspectRatio
 			deviceType={deviceType}
-			defaultSize={{
-				width: getLastBreakpointAttribute({
-					target: 'number-counter-width-auto',
-					breakpoint: deviceType,
-					attributes,
-				})
-					? 'auto'
-					: `${getLastBreakpointAttribute({
-							target: 'number-counter-width',
-							breakpoint: deviceType,
-							attributes,
-					  })}${getLastBreakpointAttribute({
-							target: 'number-counter-width-unit',
-							breakpoint: deviceType,
-							attributes,
-					  })}`,
-			}}
+			size={getResizerSize()}
 			maxWidth='100%'
 			minWidth={
 				!circleStatus
@@ -178,7 +183,7 @@ const NumberCounter = attributes => {
 								? 'round'
 								: ''
 						}
-						strokeDasharray={`${parseInt(
+						strokeDasharray={`${Math.ceil(
 							(count / 360) * circumference
 						)} ${circumference}`}
 					/>
@@ -313,7 +318,13 @@ class edit extends MaxiBlockComponent {
 					resizerProps={{
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,
-						showHandle: isSelected,
+						showHandle:
+							isSelected &&
+							!getLastBreakpointAttribute({
+								target: 'number-counter-width-auto',
+								breakpoint: deviceType,
+								attributes,
+							}),
 					}}
 					deviceType={deviceType}
 					blockRef={this.blockRef}

@@ -29,8 +29,8 @@ const IconColor = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
-			position='bottom center'
 			tooltip={__('Icon Colour', 'maxi-blocks')}
+			position='bottom center'
 			icon={toolbarShapeColor}
 			advancedOptions='icon'
 		>

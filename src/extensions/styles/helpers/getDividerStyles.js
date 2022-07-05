@@ -38,6 +38,10 @@ const getDividerStyles = (obj, target, blockStyle) => {
 
 		return { 'border-color': color };
 	};
+
+	const getPrevBreakpoint = breakpoint =>
+		breakpoints[breakpoints.indexOf(breakpoint) - 1] ?? 'general';
+
 	breakpoints.forEach(breakpoint => {
 		if (target === 'line') {
 			const isHorizontal =
@@ -91,12 +95,26 @@ const getDividerStyles = (obj, target, blockStyle) => {
 					attributes: obj,
 				}) ?? 'px';
 
+			const dividerBorderRaidus = getLastBreakpointAttribute({
+				target: 'divider-border-radius',
+				breakpoint,
+				attributes: obj,
+			});
+
 			response[breakpoint] = {
 				...getColor(breakpoint),
-				...(obj[`divider-border-radius-${breakpoint}`] &&
-					obj[`divider-border-style-${breakpoint}`] === 'solid' && {
-						'border-radius': '20px',
-					}),
+				...(dividerBorderStyle === 'solid' &&
+					(dividerBorderRaidus
+						? {
+								'border-radius': '20px',
+						  }
+						: getLastBreakpointAttribute({
+								target: 'divider-border-radius',
+								breakpoint: getPrevBreakpoint(breakpoint),
+								attributes: obj,
+						  }) && {
+								'border-radius': '0px',
+						  })),
 
 				...(isHorizontal && {
 					'border-top-style': dividerBorderStyle,

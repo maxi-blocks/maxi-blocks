@@ -38,6 +38,7 @@ const IconBackground = props => {
 		<ToolbarPopover
 			className='toolbar-item__background'
 			tooltip={__('Icon Background', 'maxi-blocks')}
+			position='bottom center'
 			icon={backgroundColor}
 			advancedOptions='icon'
 		>

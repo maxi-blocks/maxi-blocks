@@ -72,6 +72,12 @@ export const arrowIconBackground = prefixAttributesCreator({
 	diffValAttr: {
 		'navigation-arrow-both-icon-background-active-media-general': 'none',
 	},
+	newAttr: {
+		'navigation-arrow-both-icon-status-background': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 });
 
 export const arrowIconBackgroundColor = prefixAttributesCreator({

@@ -39,8 +39,14 @@ export const dotIconActive = prefixAttributesCreator({
 export const dotIconActiveBackground = prefixAttributesCreator({
 	obj: background,
 	prefix: prefixIcon,
+	newAttr: {
+		'navigation-active-dot-icon-status-background': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 	diffValAttr: {
-		'navigation-dot-icon-background-active-media-general': 'none',
+		'navigation-active-dot-icon-background-active-media-general': 'none',
 	},
 });
 

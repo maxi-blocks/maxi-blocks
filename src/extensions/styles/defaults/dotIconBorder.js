@@ -5,6 +5,12 @@ const prefix = 'navigation-dot-icon-';
 
 export const dotIconBorder = prefixAttributesCreator({
 	obj: border,
+	newAttr: {
+		'navigation-dot-icon-status-border': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 	prefix,
 });
 

@@ -5,6 +5,12 @@ const prefix = 'navigation-arrow-both-icon-';
 
 export const arrowIconBorder = prefixAttributesCreator({
 	obj: border,
+	newAttr: {
+		'navigation-arrow-both-icon-status-border': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 	prefix,
 });
 

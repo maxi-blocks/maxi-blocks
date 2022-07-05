@@ -806,24 +806,13 @@ const NavigationIconControl = props => {
 					<ToggleSwitch
 						label={__(`Add ${labelLow} background`, 'maxi-blocks')}
 						selected={props[`${prefix}-status-background`]}
-						onChange={val => {
+						onChange={val =>
 							onChange({
 								[`${prefix}-status-background`]: val,
-							});
-							val === false &&
-								onChange({
-									[`${prefix}-background-active-media`]:
-										'none',
-								});
-							val === true &&
-								iconBgActive === 'none' &&
-								onChange({
-									[`${prefix}-background-active-media`]:
-										'solid',
-								});
-						}}
+							})
+						}
 					/>
-					{iconBgActive !== 'none' && (
+					{props[`${prefix}-status-background`] && (
 						<>
 							<SettingTabsControl
 								type='buttons'
@@ -979,19 +968,30 @@ const NavigationIconControl = props => {
 							)}
 						</>
 					)}
-					<BoxShadowControl
-						{...getGroupAttributes(
-							props,
-							`${shortestPrefix}IconBoxShadow`,
-							isHover
-						)}
-						prefix={`${prefix}-`}
-						customLabel={`${labelCapital} box shadow`}
-						onChange={onChange}
-						breakpoint={breakpoint}
-						clientId={clientId}
-						isHover={isHover}
+					<ToggleSwitch
+						label={__(`Add ${labelLow} shadow`, 'maxi-blocks')}
+						selected={props[`${prefix}-status-shadow`]}
+						onChange={val =>
+							onChange({
+								[`${prefix}-status-shadow`]: val,
+							})
+						}
 					/>
+					{props[`${prefix}-status-shadow`] && (
+						<BoxShadowControl
+							{...getGroupAttributes(
+								props,
+								`${shortestPrefix}IconBoxShadow`,
+								isHover
+							)}
+							prefix={`${prefix}-`}
+							customLabel={`${labelCapital} box shadow`}
+							onChange={onChange}
+							breakpoint={breakpoint}
+							clientId={clientId}
+							isHover={isHover}
+						/>
+					)}
 				</>
 			)}
 		</div>

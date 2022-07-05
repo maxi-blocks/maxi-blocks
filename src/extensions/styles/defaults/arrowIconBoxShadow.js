@@ -5,6 +5,12 @@ const prefix = 'navigation-arrow-both-icon-';
 
 const arrowIconBoxShadow = prefixAttributesCreator({
 	obj: boxShadow,
+	newAttr: {
+		'navigation-arrow-both-icon-status-shadow': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 	prefix,
 });
 

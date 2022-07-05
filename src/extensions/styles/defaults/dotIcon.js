@@ -63,6 +63,12 @@ export const dotIconPadding = prefixAttributesCreator({
 export const dotIconBackground = prefixAttributesCreator({
 	obj: background,
 	prefix: prefixIcon,
+	newAttr: {
+		'navigation-dot-icon-status-background': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 	diffValAttr: {
 		'navigation-dot-icon-background-active-media-general': 'none',
 	},

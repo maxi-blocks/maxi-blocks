@@ -5,6 +5,12 @@ const prefix = 'navigation-dot-icon-';
 
 const dotIconBoxShadow = prefixAttributesCreator({
 	obj: boxShadow,
+	newAttr: {
+		'navigation-dot-icon-status-shadow': {
+			type: 'boolean',
+			default: false,
+		},
+	},
 	prefix,
 });
 

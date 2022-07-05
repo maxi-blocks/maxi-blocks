@@ -1,5 +1,6 @@
 import positionMigrator from './positionMigrator';
 import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
+import transformMigrator from './transformMigrator';
 
 const blockMigrator = ({
 	attributes,
@@ -7,10 +8,12 @@ const blockMigrator = ({
 	prefix = '',
 	migrators: innerBlockMigrators = [],
 	isContainer = false,
+	selectors,
 }) => {
 	const migrators = [
 		positionMigrator,
 		fullWidthNonToResponsiveMigrator,
+		transformMigrator,
 		...innerBlockMigrators,
 	];
 
@@ -31,6 +34,7 @@ const blockMigrator = ({
 					newAttributes: { ...oldAttributes },
 					attributes,
 					prefix,
+					selectors,
 				}),
 			save: props =>
 				saveProps

@@ -67,7 +67,7 @@ const isEligible = blockAttributes =>
 			Object.keys(relation.attributes).some(key => key in attributes)
 		));
 
-const migrate = (newAttributes, selectors) => {
+const migrate = ({ newAttributes, selectors }) => {
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
 
 	const target = Object.entries(selectors).find(
@@ -124,6 +124,8 @@ const migrate = (newAttributes, selectors) => {
 			newAttributes[key] = newRelations;
 		}
 	});
+
+	return newAttributes;
 };
 
-export { attributes, migrate, isEligible };
+export default { attributes: () => attributes, migrate, isEligible };

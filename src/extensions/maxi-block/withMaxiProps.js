@@ -96,21 +96,6 @@ const withMaxiProps = createHigherOrderComponent(
 						ref
 					)
 			);
-			if (ownProps.name === 'maxi-blocks/pane-maxi')
-				return (
-					<WrappedComponent
-						{...ownProps}
-						ref={ref}
-						maxiSetAttributes={maxiSetAttributes}
-						insertInlineStyles={insertInlineStyles}
-						cleanInlineStyles={cleanInlineStyles}
-						deviceType={deviceType}
-						winBreakpoint={winBreakpoint}
-						hasInnerBlocks={hasInnerBlocks}
-						isChild={isChild}
-						hasSelectedChild={hasSelectedChild}
-					/>
-				);
 
 			return (
 				<WrappedComponent

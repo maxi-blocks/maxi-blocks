@@ -25,6 +25,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
+import { SvgAltControl } from '../../components';
 
 /**
  * Inspector
@@ -118,6 +119,20 @@ const Inspector = props => {
 										isAlignment: true,
 										disableJustify: true,
 									}),
+									{
+										label: __('Icon alt', 'maxi-blocks'),
+										content: deviceType === 'general' && (
+											<SvgAltControl
+												altTitle={attributes.altTitle}
+												altDescription={
+													attributes.altDescription
+												}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+											/>
+										),
+									},
 									attributes.content && {
 										label: __('Icon colour', 'maxi-blocks'),
 										content: (

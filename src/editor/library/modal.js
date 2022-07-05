@@ -118,9 +118,7 @@ const MaxiModal = props => {
 							className='maxi-library-modal__action-section__buttons__load-library'
 							onClick={onClick}
 						>
-							{isEmpty(icon)
-								? __('Add Icon', 'maxi-blocks')
-								: __('Replace Icon', 'maxi-blocks')}
+							{__('Load icon library', 'maxi-blocks')}
 						</Button>
 						{!isEmpty(icon) && (
 							<div className='maxi-library-modal__action-section__preview'>

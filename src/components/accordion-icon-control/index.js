@@ -49,21 +49,28 @@ const AccordionIconSettings = props => {
 					})
 				}
 			/>
+			<MaxiModal
+				type='accordion-icon'
+				style={blockStyle}
+				onSelect={obj => onChange(obj)}
+				onRemove={obj => onChange(obj)}
+				icon={props['icon-content']}
+				label='Icon'
+			/>
+			<MaxiModal
+				type='accordion-icon-active'
+				style={blockStyle}
+				onSelect={obj => onChange(obj)}
+				onRemove={obj => onChange(obj)}
+				icon={props['active-icon-content']}
+				label='Active icon'
+			/>
 			<SettingTabsControl
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<>
-								<MaxiModal
-									type='accordion-icon'
-									style={blockStyle}
-									onSelect={obj => onChange(obj)}
-									onRemove={obj => onChange(obj)}
-									icon={props['icon-content']}
-									label='Icon'
-								/>
-
 								{(props['icon-content'] !== '' ||
 									props['active-icon-content'] !== '') && (
 									<AdvancedNumberControl
@@ -84,9 +91,7 @@ const AccordionIconSettings = props => {
 										)}
 										onChangeValue={val => {
 											const newVal =
-												val !== undefined && val !== ''
-													? val
-													: '';
+												val !== undefined ? val : '';
 
 											onChange({
 												[getAttributeKey(
@@ -223,102 +228,85 @@ const AccordionIconSettings = props => {
 							</>
 						),
 					},
-					{
+					props['active-icon-content'] !== '' && {
 						label: __('Active state', 'maxi-blocks'),
 						content: (
-							<>
-								<MaxiModal
-									type='accordion-icon-active'
-									style={blockStyle}
-									onSelect={obj => onChange(obj)}
-									onRemove={obj => onChange(obj)}
-									icon={props['active-icon-content']}
-									label='Icon Active'
-								/>
-								{props['active-icon-content'] !== '' && (
-									<SettingTabsControl
-										items={[
-											{
-												label: __(
-													'Normal state',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{svgTypeActive !==
-															'Shape' && (
-															<IconColor
-																colorType='stroke'
-																prefix='active-icon-'
-																{...props}
-															/>
-														)}
-														{svgTypeActive !==
-															'Line' && (
-															<IconColor
-																colorType='fill'
-																prefix='active-icon-'
-																{...props}
-															/>
-														)}
-													</>
-												),
-											},
-											{
-												label: __(
-													'Hover state',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														<ToggleSwitch
-															label={__(
-																'Enable Icon Hover',
-																'maxi-blocks'
-															)}
-															selected={
-																props[
-																	'active-icon-status-hover'
-																]
-															}
-															onChange={val =>
-																onChange({
-																	'active-icon-status-hover':
-																		val,
-																})
-															}
+							<SettingTabsControl
+								items={[
+									{
+										label: __(
+											'Normal state',
+											'maxi-blocks'
+										),
+										content: (
+											<>
+												{svgTypeActive !== 'Shape' && (
+													<IconColor
+														colorType='stroke'
+														prefix='active-icon-'
+														{...props}
+													/>
+												)}
+												{svgTypeActive !== 'Line' && (
+													<IconColor
+														colorType='fill'
+														prefix='active-icon-'
+														{...props}
+													/>
+												)}
+											</>
+										),
+									},
+									{
+										label: __('Hover state', 'maxi-blocks'),
+										content: (
+											<>
+												<ToggleSwitch
+													label={__(
+														'Enable Icon Hover',
+														'maxi-blocks'
+													)}
+													selected={
+														props[
+															'active-icon-status-hover'
+														]
+													}
+													onChange={val =>
+														onChange({
+															'active-icon-status-hover':
+																val,
+														})
+													}
+												/>
+												{props[
+													'active-icon-status-hover'
+												] &&
+													svgTypeActive !==
+														'Shape' && (
+														<IconColor
+															colorType='stroke'
+															prefix='active-icon-'
+															isHover
+															{...props}
 														/>
-														{props[
-															'active-icon-status-hover'
-														] &&
-															svgTypeActive !==
-																'Shape' && (
-																<IconColor
-																	colorType='stroke'
-																	prefix='active-icon-'
-																	isHover
-																	{...props}
-																/>
-															)}
-														{props[
-															'active-icon-status-hover'
-														] &&
-															svgTypeActive !==
-																'Line' && (
-																<IconColor
-																	colorType='fill'
-																	prefix='active-icon-'
-																	isHover
-																	{...props}
-																/>
-															)}
-													</>
-												),
-											},
-										]}
-									/>
-								)}
-							</>
+													)}
+												{props[
+													'active-icon-status-hover'
+												] &&
+													svgTypeActive !==
+														'Line' && (
+														<IconColor
+															colorType='fill'
+															prefix='active-icon-'
+															isHover
+															{...props}
+														/>
+													)}
+											</>
+										),
+									},
+								]}
+							/>
 						),
 					},
 				]}

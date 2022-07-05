@@ -279,7 +279,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					</span>
 				</h2>
 				<hr />
-				<div>
+				<div className='sc-settings-wrapper'>
 					<div className='maxi-style-cards__popover__sub-title'>
 						{__('Active style card', 'maxi-blocks')}
 						<span className='active-sc-name'>
@@ -318,11 +318,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							>
 								<Icon icon={reset} />
 							</Button>
-						</div>
-						<div className='maxi-style-cards__sc__more-sc'>
-							<div className='active-sc-edit'>
-								<Button onClick={toggleSettingsFn}>Edit</Button>
-							</div>
 							<Button
 								disabled={!canBeRemoved(selectedSCKey)}
 								className='maxi-style-cards__sc__more-sc--delete'
@@ -347,6 +342,12 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							>
 								<Icon icon={SCDelete} />
 							</Button>
+						</div>
+						<div className='maxi-style-cards__sc__more-sc'>
+							<div className='active-sc-edit'>
+								<Button onClick={toggleSettingsFn}>Edit</Button>
+							</div>
+
 							<div className='sc-import'>
 								<MediaUploadCheck>
 									<MediaUpload
@@ -376,6 +377,24 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									/>
 								</MediaUploadCheck>
 							</div>
+							<div className='sc-export'>
+								<Button
+									className='maxi-style-cards__sc__ie--export'
+									disabled={false}
+									onClick={() => {
+										const fileName = `${selectedSCValue.name}.txt`;
+										exportStyleCard(
+											{
+												...selectedSCValue,
+												status: '',
+											},
+											fileName
+										);
+									}}
+								>
+									{__('Export', 'maxi-blocks')}
+								</Button>
+							</div>
 							<div className='active-sc-activate'>
 								<Button
 									className='maxi-style-cards--activate'
@@ -390,7 +409,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 											window.confirm(
 												sprintf(
 													__(
-														'Are you sure you want to activate "%s" style card? It will apply the styles to the whole site',
+														'Are you sure you want to apply "%s" style card? It will apply the styles to the whole site',
 														'maxi-blocks'
 													),
 													getCurrentSCName
@@ -404,7 +423,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										}
 									}}
 								>
-									{__('Activate', 'maxi-blocks')}
+									{__('Apply', 'maxi-blocks')}
 								</Button>
 							</div>
 						</div>
@@ -502,14 +521,14 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									</Button>
 								</div>
 								<div className='maxi-style-cards__sc__ie'>
-									<PostPreviewButton
+									{/* <PostPreviewButton
 										className='maxi-style-cards__sc__actions--preview'
 										textContent={__(
 											'Preview',
 											'maxi-blocks'
 										)}
-									/>
-									<Button
+									/> */}
+									{/* <Button
 										className='maxi-style-cards__sc__ie--export'
 										disabled={false}
 										onClick={() => {
@@ -524,8 +543,8 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										}}
 									>
 										{__('Export', 'maxi-blocks')}
-									</Button>
-									<Button
+									</Button> */}
+									{/* <Button
 										className='maxi-style-cards__sc__actions--save'
 										disabled={!canBeSaved(selectedSCKey)}
 										onClick={() => {
@@ -555,8 +574,8 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										}}
 									>
 										{__('Save', 'maxi-blocks')}
-									</Button>
-									<Button
+									</Button> */}
+									{/* <Button
 										className='maxi-style-cards--activate'
 										disabled={
 											!canBeApplied(
@@ -584,7 +603,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										}}
 									>
 										{__('Activate', 'maxi-blocks')}
-									</Button>
+									</Button> */}
 								</div>
 							</div>
 						</>

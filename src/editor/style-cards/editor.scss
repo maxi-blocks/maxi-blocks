@@ -29,7 +29,7 @@ body {
 		.maxi-style-cards__sc__add {
 			display: flex;
 			justify-content: space-between;
-			margin: 5px 0 10px 0;
+			margin: 5px 0 0 0;
 
 			button {
 				width: 60px;
@@ -117,6 +117,16 @@ body {
 			}
 		}
 
+		.maxi-style-cards__sc__more-sc--delete {
+			margin-left: 10px;
+
+			svg {
+				transform: scale(1.4);
+				position: relative;
+				top: 3px;
+				left: 5px;
+			}
+		}
 		.maxi-style-cards__quick-color-presets {
 			display: flex;
 			justify-content: space-between;
@@ -141,6 +151,7 @@ body {
 					height: 10px;
 					border-radius: 50%;
 					border: 1px solid #dfe2e4;
+					min-width: 80px;
 				}
 				&:hover {
 					background: #f9f9f9;
@@ -293,13 +304,13 @@ body {
 				align-items: center;
 				margin-bottom: 8px;
 
-				.maxi-style-cards__sc__more-sc--delete {
-					svg {
-						transform: scale(1.4);
-						position: relative;
-						top: 3px;
-						left: 5px;
-					}
+				.active-sc-edit,
+				.active-sc-activate {
+					width: 28%;
+				}
+				.sc-import,
+				.sc-export {
+					width: 18%;
 				}
 
 				.maxi-library-modal__action-section {
@@ -402,9 +413,12 @@ body {
 				}
 			}
 		}
-		.maxi-settingstab-control {
+		.sc-settings-wrapper > .maxi-settingstab-control {
 			max-height: 500px;
-
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+		.maxi-settingstab-control {
 			.maxi-tabs-content {
 				padding-left: 0;
 				padding-right: 0;

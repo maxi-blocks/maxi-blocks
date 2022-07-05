@@ -7,13 +7,12 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { Button, ColorControl } from '..';
+import { ColorControl, FontLevelControl } from '..';
 
 const prefix = 'title-';
 const bgPrefix = 'title-background-';
 const AccordionTitleSettings = props => {
 	const { titleLevel, onChange, clientId } = props;
-	const classes = 'maxi-font-level-control';
 
 	const onChangeValue = obj => {
 		const blocks = select('core/block-editor').getClientIdsOfDescendants([
@@ -32,57 +31,15 @@ const AccordionTitleSettings = props => {
 	};
 	return (
 		<>
-			<div className={classes}>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={titleLevel === 'p'}
-					onClick={() => onChangeValue({ titleLevel: 'p' })}
-				>
-					{__('P', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={titleLevel === 'h1'}
-					onClick={() => onChangeValue({ titleLevel: 'h1' })}
-				>
-					{__('H1', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={titleLevel === 'h2'}
-					onClick={() => onChangeValue({ titleLevel: 'h2' })}
-				>
-					{__('H2', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={titleLevel === 'h3'}
-					onClick={() => onChangeValue({ titleLevel: 'h3' })}
-				>
-					{__('H3', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={titleLevel === 'h4'}
-					onClick={() => onChangeValue({ titleLevel: 'h4' })}
-				>
-					{__('H4', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={titleLevel === 'h5'}
-					onClick={() => onChangeValue({ titleLevel: 'h5' })}
-				>
-					{__('H5', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={titleLevel === 'h6'}
-					onClick={() => onChangeValue({ titleLevel: 'h6' })}
-				>
-					{__('H6', 'maxi-blocks')}
-				</Button>
-			</div>
+			<FontLevelControl
+				value={titleLevel}
+				onChange={obj => {
+					onChangeValue({
+						titleLevel: obj.textLevel,
+					});
+					onChange(obj);
+				}}
+			/>
 			<ColorControl
 				label={__('Title', 'maxi-blocks')}
 				color={props[`${prefix}color`]}

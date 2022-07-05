@@ -13,6 +13,8 @@ import {
 	VideoControl,
 	VideoOptionsControl,
 	VideoOverlayControl,
+	PopupSettingsControl,
+	VideoIconControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsVideo, categoriesVideo } from './custom-css';
@@ -41,6 +43,9 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -50,34 +55,60 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										{
-											label: __('Video', 'maxi-blocks'),
-											content: (
-												<VideoControl
-													{...getGroupAttributes(
-														attributes,
-														'video'
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-												/>
-											),
-										},
+							<AccordionControl
+								isPrimary
+								items={[
+									{
+										label: __('Video', 'maxi-blocks'),
+										content: (
+											<VideoControl
+												{...getGroupAttributes(
+													attributes,
+													'video'
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+											/>
+										),
+									},
+									{
+										label: __(
+											'Video options',
+											'maxi-blocks'
+										),
+										content: (
+											<VideoOptionsControl
+												{...getGroupAttributes(
+													attributes,
+													'video'
+												)}
+												{...getGroupAttributes(
+													attributes,
+													[
+														'background',
+														'backgroundColor',
+													],
+													false,
+													'lightbox-'
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												breakpoint={deviceType}
+												clientId={clientId}
+												blockStyle={blockStyle}
+											/>
+										),
+									},
+									...(playerType === 'popup' && [
 										{
 											label: __(
-												'Video options',
+												'Popup settings',
 												'maxi-blocks'
 											),
 											content: (
-												<VideoOptionsControl
+												<PopupSettingsControl
 													{...getGroupAttributes(
 														attributes,
 														'video'
@@ -91,20 +122,53 @@ const Inspector = props => {
 														false,
 														'lightbox-'
 													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
 													breakpoint={deviceType}
 													clientId={clientId}
 													blockStyle={blockStyle}
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
 												/>
 											),
 										},
-										playerType === 'popup' && {
+										{
 											label: __(
-												'Video overlay',
+												'Playback icon',
 												'maxi-blocks'
 											),
+											content: (
+												<VideoIconControl
+													prefix='play-'
+													label={__(
+														'Play icon',
+														'maxi-blocks'
+													)}
+													blockStyle={blockStyle}
+													breakpoint={deviceType}
+													clientId={clientId}
+													onChangeInline={obj =>
+														insertInlineStyles({
+															obj,
+															target: inlineStylesTargets.playIcon,
+														})
+													}
+													onChange={obj => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															inlineStylesTargets.playIcon
+														);
+													}}
+													{...getGroupAttributes(
+														attributes,
+														['icon', 'iconHover'],
+														false,
+														'play-'
+													)}
+												/>
+											),
+										},
+										{
+											label: __('Image', 'maxi-blocks'),
 											content: (
 												<VideoOverlayControl
 													{...getGroupAttributes(
@@ -142,23 +206,23 @@ const Inspector = props => {
 												/>
 											),
 										},
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-											hideWidth: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+									]),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+										hideWidth: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{

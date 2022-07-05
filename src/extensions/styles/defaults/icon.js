@@ -31,6 +31,10 @@ export const icon = {
 				type: 'number',
 				default: 5,
 			},
+			'icon-spacing-unit': {
+				type: 'string',
+				default: '%',
+			},
 			'icon-stroke': {
 				type: 'number',
 				default: 2,

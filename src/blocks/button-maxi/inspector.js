@@ -471,71 +471,46 @@ const Inspector = props => {
 															'maxi-blocks'
 														),
 														content: (
-															<>
-																<ToggleSwitch
-																	label={__(
-																		'Enable Icon Hover',
-																		'maxi-blocks'
-																	)}
-																	selected={
-																		attributes[
-																			'icon-status-hover'
-																		]
-																	}
-																	onChange={val =>
-																		maxiSetAttributes(
-																			{
-																				'icon-status-hover':
-																					val,
-																			}
-																		)
-																	}
-																/>
-																{attributes[
-																	'icon-status-hover'
-																] && (
-																	<IconControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'icon',
-																				'iconHover',
-																				'iconBackgroundGradient',
-																				'iconBackgroundColor',
-																				'iconBorder',
-																				'iconBackgroundHover',
-																				'iconBorderWidth',
-																				'iconBorderRadius',
-																			],
-																			true
-																		)}
-																		onChange={obj => {
-																			maxiSetAttributes(
-																				obj
-																			);
-																		}}
-																		svgType={
-																			svgType
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																		blockStyle={
-																			blockStyle
-																		}
-																		getIconWithColor={args =>
-																			getIconWithColor(
-																				attributes,
-																				args
-																			)
-																		}
-																		isHover
-																	/>
+															<IconControl
+																{...getGroupAttributes(
+																	attributes,
+																	[
+																		'icon',
+																		'iconHover',
+																		'iconBackgroundGradient',
+																		'iconBackgroundColor',
+																		'iconBorder',
+																		'iconBackgroundHover',
+																		'iconBorderWidth',
+																		'iconBorderRadius',
+																	],
+																	true
 																)}
-															</>
+																onChange={obj => {
+																	maxiSetAttributes(
+																		obj
+																	);
+																}}
+																svgType={
+																	svgType
+																}
+																breakpoint={
+																	deviceType
+																}
+																clientId={
+																	clientId
+																}
+																blockStyle={
+																	blockStyle
+																}
+																getIconWithColor={args =>
+																	getIconWithColor(
+																		attributes,
+																		args
+																	)
+																}
+																isHover
+															/>
 														),
 													},
 												]}

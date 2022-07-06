@@ -119,7 +119,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 			});
 		});
 	});
-
+	console.log('getTransitionStyles', response);
 	return response;
 };
 

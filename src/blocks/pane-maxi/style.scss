@@ -1,11 +1,8 @@
 .maxi-pane-block {
 	& hr {
-		width: 95%;
-		margin-left: auto !important;
-		margin-right: auto !important;
-		margin-top: 0 !important;
-		margin-bottom: 0 !important;
-		border-color: #edf6fa !important;
+		width: 100%;
+		margin: 0;
+		border-color: #d6d6d6 !important;
 		border-style: solid !important;
 		border-top: 3px;
 		border-right: 0;
@@ -13,17 +10,15 @@
 		border-bottom: 0;
 	}
 
-	&__ {
-		&icon svg {
-			width: 32px;
-			height: 32px;
-		}
+	&__icon svg {
+		width: 32px;
+		height: 32px;
+	}
 
-		&header {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-		}
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 }
 .maxi-pane-block[aria-expanded='false'] .maxi-pane-block__content {

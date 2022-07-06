@@ -80,9 +80,13 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			return getTranslateString(translateObj, category, 'normal');
 
 		if (isNumber(translateObj?.[category]?.[index]?.x))
-			translateString += `translateX(${translateObj[category][index].x}${translateObj[category][index]['x-unit']}) `;
+			translateString += `translateX(${translateObj[category][index].x}${
+				translateObj[category][index]['x-unit'] ?? '%'
+			}) `;
 		if (isNumber(translateObj?.[category]?.[index]?.y))
-			translateString += `translateY(${translateObj[category][index].y}${translateObj[category][index]['y-unit']}) `;
+			translateString += `translateY(${translateObj[category][index].y}${
+				translateObj[category][index]['y-unit'] ?? '%'
+			}) `;
 
 		if (
 			!translateString &&
@@ -138,9 +142,13 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			)}% `;
 
 		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.x)))
-			originString += `${originObj[category][index].x}${originObj[category][index]['x-unit']} `;
+			originString += `${originObj[category][index].x}${
+				originObj[category][index]['x-unit'] ?? '%'
+			} `;
 		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.y)))
-			originString += `${originObj[category][index].y}${originObj[category][index]['y-unit']} `;
+			originString += `${originObj[category][index].y}${
+				originObj[category][index]['y-unit'] ?? '%'
+			} `;
 
 		if (
 			!originString &&

@@ -15,6 +15,7 @@ import {
 	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
+	SvgAltControl,
 } from '../../components';
 import {
 	getColorRGBAString,
@@ -25,7 +26,6 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
-import { SvgAltControl } from '../../components';
 
 /**
  * Inspector

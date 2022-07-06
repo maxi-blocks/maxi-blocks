@@ -1,19 +1,12 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 /**
- * WordPress dependencies
- */
-import { dispatch } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
-import { Button, Toolbar } from '../../components';
+import { Toolbar } from '../../components';
 import AccordionContext from './context';
 
 /**
@@ -48,8 +41,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, lastIndex, accordionLayout, titleLevel } = attributes;
+		const { attributes } = this.props;
+		const { uniqueID, accordionLayout, titleLevel } = attributes;
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -89,30 +82,10 @@ class edit extends MaxiBlockComponent {
 								'maxi-blocks/pane-maxi',
 								{ accordionLayout: 'simple' },
 							],
-							[
-								'maxi-blocks/pane-maxi',
-								{ accordionLayout: 'simple' },
-							],
 						],
 					}}
 					{...getMaxiBlockAttributes(this.props)}
-				>
-					<Button
-						className='maxi-accordion__add-item-button'
-						onClick={() => {
-							dispatch('core/block-editor').insertBlock(
-								createBlock('maxi-blocks/pane-maxi', {
-									accordionLayout,
-								}),
-								lastIndex,
-								this.props.clientId
-							);
-							maxiSetAttributes({ lastIndex: lastIndex + 1 });
-						}}
-					>
-						{__('Add Item', 'maxi-blocks')}
-					</Button>
-				</MaxiBlock>
+				/>
 			</AccordionContext.Provider>,
 		];
 	}

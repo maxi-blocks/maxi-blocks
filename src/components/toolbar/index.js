@@ -254,7 +254,7 @@ const MaxiToolbar = memo(
 										</span>
 									</span>
 								)}
-								{customLabel}
+								{customLabel.substring(0, 30)}
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}
 								</span>

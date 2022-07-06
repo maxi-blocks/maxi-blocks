@@ -21,8 +21,14 @@ import {
 import './editor.scss';
 
 const AccordionSettings = props => {
-	const { accordionLayout, clientId, onChange, autoPaneClose, breakpoint } =
-		props;
+	const {
+		accordionLayout,
+		clientId,
+		onChange,
+		autoPaneClose,
+		isCollapsible,
+		breakpoint,
+	} = props;
 
 	return (
 		<>
@@ -56,6 +62,15 @@ const AccordionSettings = props => {
 
 							onChange({ accordionLayout: val });
 						}}
+					/>
+					<ToggleSwitch
+						label={__('Collapsible', 'maxi-block')}
+						selected={isCollapsible}
+						onChange={val =>
+							onChange({
+								isCollapsible: val,
+							})
+						}
 					/>
 					<ToggleSwitch
 						label={__(

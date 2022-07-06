@@ -16,7 +16,7 @@ class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
 
-		this.state = { openPane: '' };
+		this.state = { openPanes: [] };
 	}
 
 	get getStylesObject() {
@@ -33,11 +33,35 @@ class edit extends MaxiBlockComponent {
 					paneIconActive: attributes['active-icon-content'],
 					accordionLayout: attributes.accordionLayout,
 					autoPaneClose: attributes.autoPaneClose,
+					isCollapsible: attributes.isCollapsible,
 				},
 			},
 		};
 
 		return response;
+	}
+
+	openPane(paneId) {
+		const { autoPaneClose } = this.props.attributes;
+
+		if (autoPaneClose) {
+			this.setState({ openPanes: [paneId] });
+			return;
+		}
+
+		this.setState({ openPanes: [...this.state.openPanes, paneId] });
+	}
+
+	closePane(paneId) {
+		const { isCollapsible } = this.props.attributes;
+
+		if (!isCollapsible && this.state.openPanes.length === 1) return;
+
+		this.setState({
+			openPanes: [
+				...this.state.openPanes.filter(pane => pane !== paneId),
+			],
+		});
 	}
 
 	render() {
@@ -64,8 +88,9 @@ class edit extends MaxiBlockComponent {
 					paneIconActive: attributes['active-icon-content'],
 					accordionLayout,
 					titleLevel,
-					openPane: this.state.openPane,
-					setOpenPane: openPane => this.setState({ openPane }),
+					openPanes: this.state.openPanes,
+					onOpen: paneId => this.openPane(paneId),
+					onClose: paneId => this.closePane(paneId),
 				}}
 			>
 				<MaxiBlock

@@ -33,11 +33,12 @@ class edit extends MaxiBlockComponent {
 			paneIconActive,
 			accordionLayout,
 			titleLevel,
-			openPane,
-			setOpenPane,
+			openPanes,
+			onOpen,
+			onClose,
 		} = this.context;
 
-		const isOpen = openPane === clientId;
+		const isOpen = openPanes.includes(clientId);
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
 		const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
@@ -64,12 +65,12 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 				accordionLayout={accordionLayout}
 				aria-expanded={isOpen}
-				icon={{ normal: paneIcon, active: paneIconActive }}
 			>
 				<div
 					className='maxi-pane-block__header'
 					onClick={() => {
-						setOpenPane(clientId);
+						if (!isOpen) onOpen(clientId);
+						else onClose(clientId);
 					}}
 				>
 					<RichText

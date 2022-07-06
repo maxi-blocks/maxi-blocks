@@ -1,8 +1,7 @@
 .maxi-accordion-block {
-	& .maxi-accordion-block__content {
-		display: flex;
-		flex-direction: column;
-	}
+	display: flex;
+	flex-direction: column;
+
 	& .maxi-pane-block__header {
 		padding-right: 25px !important;
 		padding-left: 25px !important;

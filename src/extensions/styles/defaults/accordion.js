@@ -6,6 +6,10 @@ const accordion = {
 	...breakpointAttributesCreator({
 		obj: { 'pane-spacing': { type: 'number', default: 15 } },
 	}),
+	isCollapsible: {
+		type: 'boolean',
+		default: true,
+	},
 };
 
 export default accordion;

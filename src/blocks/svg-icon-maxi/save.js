@@ -23,8 +23,8 @@ const addAlt = (content, title, description) => {
 	let withAlt = content;
 	if (!isEmpty(title)) {
 		withAlt = withAlt.replace(
-			/<svg(.*?)>/,
-			`${withAlt.match(/<svg(.*?)>/)[0]}<title>${title}</title>`
+			/<svg.*?>/,
+			`${withAlt.match(/<svg.*?>/)[0]}<title>${title}</title>`
 		);
 	}
 	if (!isEmpty(description)) {
@@ -35,8 +35,8 @@ const addAlt = (content, title, description) => {
 			);
 		else
 			withAlt = withAlt.replace(
-				/<svg(.*?)>/,
-				`${withAlt.match(/<svg(.*?)>/)[0]}<desc>${description}</desc>`
+				/<svg.*?>/,
+				`${withAlt.match(/<svg.*?>/)[0]}<desc>${description}</desc>`
 			);
 	}
 

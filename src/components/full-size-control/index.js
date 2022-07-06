@@ -142,7 +142,6 @@ const FullSizeControl = props => {
 			)}
 			{allowForceAspectRatio && (
 				<ToggleSwitch
-					className='force-aspect-ratio-toggle-switch'
 					label={__(
 						'Force canvas equal height & width',
 						'maxi-blocks'

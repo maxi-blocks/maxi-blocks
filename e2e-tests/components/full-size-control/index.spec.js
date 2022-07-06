@@ -149,6 +149,8 @@ describe('FullSizeControl', () => {
 		await inputs.focus();
 		await page.keyboard.type('55', { delay: 100 });
 
+		expect(await getAttributes('height-s')).toStrictEqual('55');
+
 		await changeResponsive(page, 'xs');
 		const fullSizeControlInputXs = await page.$eval(
 			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',

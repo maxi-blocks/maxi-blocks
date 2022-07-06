@@ -25,6 +25,7 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSearch } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getNormalObject = props => {
 	const response = {
@@ -294,7 +295,7 @@ const getStyles = props => {
 					' .maxi-search-block__button__content':
 						getSearchButtonContentStyles(props),
 				},
-				...getTransitionStyles(props)
+				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsSearch,
 			props

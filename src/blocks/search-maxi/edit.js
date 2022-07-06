@@ -52,7 +52,10 @@ const SearchBlock = props => {
 		'maxi-search-block__button__icon',
 		skin === 'icon-reveal'
 			? isInputOpen
-				? 'maxi-search-block__button__icon--open'
+				? [
+						'maxi-search-block__button__icon--open',
+						'maxi-search-block__button__close-icon',
+				  ]
 				: 'maxi-search-block__button__icon--closed'
 			: 'maxi-search-block__button__icon--open'
 	);

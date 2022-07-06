@@ -50,9 +50,13 @@ const SvgStrokeWidthControl = props => {
 				onChange({
 					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
 						val !== undefined && val !== '' ? val : '',
-					[`${prefix === 'svg-' ? '' : prefix}content`]:
-						setSVGStrokeWidth(content, val),
 				});
+
+				!prefix.includes('navigation') &&
+					onChange({
+						[`${prefix === 'svg-' ? '' : prefix}content`]:
+							setSVGStrokeWidth(content, val),
+					});
 			}}
 			min={0.1}
 			max={5}

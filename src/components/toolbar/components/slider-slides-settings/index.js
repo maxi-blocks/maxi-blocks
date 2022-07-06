@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
-import { useState } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -16,10 +15,6 @@ import classnames from 'classnames';
 
 import ToolbarPopover from '../toolbar-popover';
 import Button from '../../../button';
-import {
-	getLastBreakpointAttribute,
-	getDefaultAttribute,
-} from '../../../../extensions/styles';
 
 /**
  * Styles & Icons

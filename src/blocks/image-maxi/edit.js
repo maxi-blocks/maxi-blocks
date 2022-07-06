@@ -90,6 +90,9 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { SVGData, SVGElement, uniqueID, mediaID, mediaURL } = attributes;
 
+		// to make upload popover button appear immediately after adding image maxi
+		if (!mediaID) this.forceUpdate();
+
 		if (
 			!isEmpty(SVGData) &&
 			Object.keys(SVGData)[0].split('__')[0] !== uniqueID
@@ -115,11 +118,6 @@ class edit extends MaxiBlockComponent {
 			});
 		}
 	}
-
-	handleRef = ref => {
-		this.blockRef.current = ref;
-		this.forceUpdate();
-	};
 
 	render() {
 		const { attributes, maxiSetAttributes, isSelected, deviceType } =
@@ -338,7 +336,7 @@ class edit extends MaxiBlockComponent {
 				</MaxiPopoverButton>
 				<MaxiBlock
 					key={`maxi-image--${uniqueID}`}
-					ref={this.handleRef}
+					ref={this.blockRef}
 					tagName='figure'
 					className='maxi-image-block'
 					{...getMaxiBlockAttributes(this.props)}
@@ -495,7 +493,6 @@ class edit extends MaxiBlockComponent {
 						<div className='maxi-image-block__placeholder'>
 							<Placeholder
 								icon={placeholderImage}
-								label=''
 								instructions='Placeholder image'
 							/>
 						</div>

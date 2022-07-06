@@ -111,7 +111,7 @@ const icon = ({
 									selected={hoverStatus}
 									onChange={val =>
 										maxiSetAttributes({
-											'icon-status-hover': val,
+											[`${prefix}icon-status-hover`]: val,
 										})
 									}
 								/>

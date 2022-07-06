@@ -1,63 +1,28 @@
-import hoverAttributesCreator from '../hoverAttributesCreator';
-import paletteAttributesCreator from '../paletteAttributesCreator';
+import { icon } from './icon';
 import prefixAttributesCreator from '../prefixAttributesCreator';
-import { width } from './size';
+import { iconHover } from './iconHover';
 
 const accordionIcon = {
-	'icon-position': {
-		type: 'string',
-		default: 'right',
-	},
-	svgType: { type: 'string' },
-	svgTypeActive: { type: 'string' },
+	...prefixAttributesCreator({
+		obj: icon,
+		prefix: 'active-',
+		diffValAttr: {
+			'active-icon-stroke-palette-color': 5,
+			'active-icon-content':
+				'<svg class="arrow-up-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M2.9 17.25L12 6.75l9.1 10.5" fill="none" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
+		},
+	}),
+	...icon,
+	...iconHover,
 	'icon-content': {
 		type: 'string',
-		default: '',
+		default:
+			'<svg class="arrow-down-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.1 6.75L12 17.25 2.9 6.75" fill="none" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
 	},
-	'active-icon-content': {
-		type: 'string',
-		default: '',
+	'icon-stroke-palette-color': {
+		type: 'number',
+		default: 5,
 	},
-	...paletteAttributesCreator({ prefix: 'icon-stroke-', palette: 5 }),
-	...paletteAttributesCreator({ prefix: 'icon-fill-', palette: 4 }),
-	...paletteAttributesCreator({ prefix: 'active-icon-stroke-', palette: 5 }),
-	...paletteAttributesCreator({ prefix: 'active-icon-fill-', palette: 4 }),
-	'icon-status-hover': { type: 'boolean', default: false },
-	'active-icon-status-hover': { type: 'boolean', default: false },
-	...hoverAttributesCreator({
-		obj: {
-			...paletteAttributesCreator({
-				prefix: 'icon-stroke-',
-				status: true,
-			}),
-			...paletteAttributesCreator({ prefix: 'icon-fill-', status: true }),
-			...paletteAttributesCreator({
-				prefix: 'active-icon-stroke-',
-				status: true,
-			}),
-			...paletteAttributesCreator({
-				prefix: 'active-icon-fill-',
-				status: true,
-			}),
-		},
-		diffValAttr: {
-			'icon-stroke-palette-color': 5,
-			'icon-stroke-palette-status': true,
-			'icon-fill-palette-color': 4,
-			'icon-fill-palette-status': true,
-			'active-icon-stroke-palette-color': 5,
-			'active-icon-stroke-palette-status': true,
-			'active-icon-fill-palette-color': 4,
-			'active-icon-fill-palette-status': true,
-		},
-	}),
-	...prefixAttributesCreator({
-		obj: width,
-		prefix: 'icon-',
-		diffValAttr: {
-			'icon-width-general': '32',
-		},
-	}),
 };
 
 export default accordionIcon;

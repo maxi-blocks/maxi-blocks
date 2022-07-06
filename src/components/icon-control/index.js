@@ -43,6 +43,7 @@ import {
 	iconStroke,
 	iconFill,
 } from '../../icons';
+import AxisPositionControl from '../axis-position-control';
 
 /**
  * Component
@@ -267,54 +268,17 @@ const IconControl = props => {
 											})
 										}
 									/>
-									{breakpoint === 'general' && (
-										<SettingTabsControl
-											label={__(
-												'Icon Position',
-												'maxi-block'
-											)}
-											className='maxi-icon-position-control'
-											type='buttons'
-											selected={props['icon-position']}
-											items={[
-												...(!isSearch && [
-													{
-														label: __(
-															'Top',
-															'maxi-block'
-														),
-														value: 'top',
-													},
-													{
-														label: __(
-															'Bottom',
-															'maxi-block'
-														),
-														value: 'bottom',
-													},
-												]),
-												{
-													label: __(
-														'Left',
-														'maxi-block'
-													),
-													value: 'left',
-												},
-												{
-													label: __(
-														'Right',
-														'maxi-block'
-													),
-													value: 'right',
-												},
-											]}
-											onChange={val =>
-												onChange({
-													'icon-position': val,
-												})
-											}
-										/>
-									)}
+									<AxisPositionControl
+										label='Icon'
+										className='maxi-icon-position-control'
+										selected={props['icon-position']}
+										onChange={val => {
+											onChange({
+												'icon-position': val,
+											});
+										}}
+										breakpoint={breakpoint}
+									/>
 								</>
 							)}
 							{!disableIconInherit &&

@@ -21,12 +21,13 @@ const background = ({
 	label = '',
 	props,
 	prefix = '',
-	disableImage = false,
-	disableVideo = false,
-	disableGradient = false,
-	disableColor = false,
-	disableSVG = false,
 	disableClipPath = false,
+	disableColor = false,
+	disableGradient = false,
+	disableImage = false,
+	disableNoneStyle = false,
+	disableSVG = false,
+	disableVideo = false,
 	globalProps,
 	hoverGlobalProps,
 	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
@@ -79,12 +80,13 @@ const background = ({
 									maxiSetAttributes(obj);
 									cleanInlineStyles(inlineTarget);
 								}}
-								disableColor={disableColor}
-								disableImage={disableImage}
-								disableGradient={disableGradient}
-								disableVideo={disableVideo}
-								disableSVG={disableSVG}
 								disableClipPath={disableClipPath}
+								disableColor={disableColor}
+								disableGradient={disableGradient}
+								disableImage={disableImage}
+								disableNoneStyle={disableNoneStyle}
+								disableSVG={disableSVG}
+								disableVideo={disableVideo}
 								clientId={clientId}
 								breakpoint={deviceType}
 								globalProps={globalProps}

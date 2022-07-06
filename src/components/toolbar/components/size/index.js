@@ -31,6 +31,7 @@ const EXCLUDED_BLOCKS = [
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/button-maxi',
+	'maxi-blocks/video-maxi',
 ];
 
 const BLOCKS_MAX_WIDTH = [

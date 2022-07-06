@@ -93,7 +93,7 @@ const MaxiModal = props => {
 				{(type === 'bg-shape' ||
 					type === 'image-shape' ||
 					type === 'sidebar-block-shape' ||
-					type === 'video-shape') && (
+					type === 'video-icon') && (
 					<Button
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
@@ -209,7 +209,7 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'video-shape' && !isEmpty(icon) && (
+			{type === 'video-icon' && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'

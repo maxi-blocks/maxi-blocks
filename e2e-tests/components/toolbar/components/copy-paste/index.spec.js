@@ -179,7 +179,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 		// open advanced
 		await page.$eval(
-			'.components-popover__content .maxi-tabs-control__button-Advanced',
+			'.components-popover__content .maxi-tabs-control__button-advanced',
 			button => button.click()
 		);
 
@@ -250,7 +250,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await page.$eval(
-			'.edit-post-editor__list-view-panel-content .block-editor-list-view-leaf .block-editor-list-view-block__contents-container button',
+			'.edit-post-editor__list-view-panel-content .block-editor-list-view-leaf .block-editor-list-view-block__contents-container .components-button',
 			column => column.click()
 		);
 		await page.waitForTimeout(500);

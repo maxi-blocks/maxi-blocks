@@ -57,7 +57,6 @@ class edit extends MaxiBlockComponent {
 			isUploaderOpen: false,
 			formatValue: {},
 			onChangeFormat: null,
-			blockRef: null,
 		};
 
 		this.textRef = createRef(null);
@@ -118,8 +117,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	handleRef = ref => {
-		this.setState({ blockRef: ref });
 		this.blockRef.current = ref;
+		this.forceUpdate();
 	};
 
 	render() {

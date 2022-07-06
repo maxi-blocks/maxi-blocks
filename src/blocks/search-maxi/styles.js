@@ -153,7 +153,7 @@ const getSearchButtonStyles = (props, isHover = false) => {
 };
 
 const getSearchButtonIconStyles = props => {
-	const { blockStyle, searchButtonSkin } = props;
+	const { blockStyle, searchButtonSkin, skin } = props;
 
 	const searchButtonIsIcon = searchButtonSkin === 'icon';
 
@@ -162,19 +162,40 @@ const getSearchButtonIconStyles = props => {
 			...getButtonIconStyles({
 				obj: props,
 				blockStyle,
-				target: ' .maxi-search-block__button__icon',
+				target: ` .maxi-search-block__button__icon--${
+					skin === 'icon-reveal' ? 'closed' : 'open'
+				}`,
 				wrapperTarget: ' .maxi-search-block__button',
 			}),
 			...getButtonIconStyles({
 				obj: props,
 				blockStyle,
 				isHover: true,
-				target: ' .maxi-search-block__button__icon',
+				target: ` .maxi-search-block__button__icon--${
+					skin === 'icon-reveal' ? 'closed' : 'open'
+				}`,
 				wrapperTarget: ' .maxi-search-block__button',
 			}),
 		}),
+		...(skin === 'icon-reveal' && {
+			...getButtonIconStyles({
+				obj: props,
+				blockStyle,
+				target: ' .maxi-search-block__button__icon--open',
+				wrapperTarget: ' .maxi-search-block__button',
+				prefix: 'close-',
+			}),
+			...getButtonIconStyles({
+				obj: props,
+				blockStyle,
+				isHover: true,
+				target: ' .maxi-search-block__button__icon--open',
+				wrapperTarget: ' .maxi-search-block__button',
+				prefix: 'close-',
+			}),
+		}),
 	};
-
+	console.log('icon styles', response);
 	return response;
 };
 

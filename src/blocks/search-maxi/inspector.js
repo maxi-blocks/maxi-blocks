@@ -193,6 +193,7 @@ const Inspector = props => {
 												type: 'search-icon',
 												disableBackground: true,
 												disableIconInherit: true,
+												disableIconOnly: true,
 												disablePadding: true,
 												disablePosition: true,
 												disableSpacing: true,
@@ -205,6 +206,23 @@ const Inspector = props => {
 												inlineTarget:
 													' .maxi-search-block__button__content',
 										  })),
+									...(searchButtonSkin === 'icon' &&
+										skin === 'icon-reveal' &&
+										inspectorTabs.icon({
+											props,
+											label: __(
+												'Close icon',
+												'maxi-blocks'
+											),
+											type: 'search-icon',
+											disableBackground: true,
+											disableIconInherit: true,
+											disableIconOnly: true,
+											disablePadding: true,
+											disablePosition: true,
+											disableSpacing: true,
+											prefix: 'close-',
+										})),
 									{
 										label: __('Position', 'maxi-blocks'),
 										content: (

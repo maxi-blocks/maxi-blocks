@@ -40,12 +40,21 @@ const SearchBlock = props => {
 	const [isInputOpen, setIsInputOpen] = useState(skin !== 'icon-reveal');
 
 	const onInputToggle = () => {
-		setIsInputOpen(!isInputOpen);
+		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
 	};
 
 	const inputClasses = classnames(
 		'maxi-search-block__input',
 		!isInputOpen && 'maxi-search-block__input--hidden'
+	);
+
+	const buttonIconClasses = classnames(
+		'maxi-search-block__button__icon',
+		skin === 'icon-reveal'
+			? isInputOpen
+				? 'maxi-search-block__button__icon--open'
+				: 'maxi-search-block__button__icon--closed'
+			: 'maxi-search-block__button__icon--open'
 	);
 
 	return (
@@ -69,7 +78,7 @@ const SearchBlock = props => {
 			<div className='maxi-search-block__button' onClick={onInputToggle}>
 				{searchButtonSkin === 'icon' ? (
 					searchButtonIcon && (
-						<div className='maxi-search-block__button__icon'>
+						<div className={buttonIconClasses}>
 							<RawHTML>
 								{skin === 'icon-reveal'
 									? isInputOpen

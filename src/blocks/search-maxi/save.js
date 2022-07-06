@@ -41,6 +41,13 @@ const save = (props, extendedAttributes = {}) => {
 		skin === 'icon-reveal' && 'maxi-search-block__input--hidden'
 	);
 
+	const buttonIconClasses = classnames(
+		'maxi-search-block__button__icon',
+		`maxi-search-block__button__icon--${
+			skin === 'icon-reveal' ? 'closed' : 'open'
+		}`
+	);
+
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
@@ -55,7 +62,7 @@ const save = (props, extendedAttributes = {}) => {
 			<div className='maxi-search-block__button'>
 				{searchButtonIsIcon ? (
 					searchButtonIcon && (
-						<div className='maxi-search-block__button__icon'>
+						<div className={buttonIconClasses}>
 							<RawHTML>{searchButtonIcon}</RawHTML>
 						</div>
 					)

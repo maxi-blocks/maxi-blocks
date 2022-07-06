@@ -39,6 +39,10 @@ const attributes = {
 		type: 'string',
 		default: 'Shape',
 	},
+	'close-svgType': {
+		type: 'string',
+		default: 'Shape',
+	},
 	skin: {
 		type: 'string',
 		default: 'boxed',
@@ -151,7 +155,7 @@ const attributes = {
 			'close-icon-fill-palette-color': 1,
 			'close-icon-spacing-general': 0,
 			'close-icon-content':
-				'<svg class="cross-58-shape-maxi-svg" width="64px" height="64px" viewBox="0 0 36.1 36.1" data-fill fill="#081219"><path d="M18.1.4A17.67 17.67 0 0 0 .4 18.1c0 9.8 7.9 17.6 17.6 17.6s17.6-7.9 17.6-17.6S27.8.4 18.1.4zm16.2 17.7c0 9-7.3 16.3-16.3 16.3S1.7 27.1 1.7 18.1 9.1 1.8 18.1 1.8c8.9 0 16.2 7.3 16.2 16.3zm-9.4-7.3c-.3-.3-.9-.3-1.2 0L18 16.5l-5.7-5.7c-.3-.3-.9-.3-1.2 0s-.3.9 0 1.2l5.7 5.7-5.7 5.7c-.3.3-.3.9 0 1.2.2.2.4.3.6.3s.4-.1.6-.3l5.7-5.7 5.7 5.7c.2.2.4.3.6.3s.4-.1.6-.3c.3-.3.3-.9 0-1.2l-5.7-5.7 5.7-5.7a.75.75 0 0 0 0-1.2z"/></svg>',
+				'<svg class="cross-29-shape-maxi-svg" width="64px" height="64px" viewBox="0 0 36.1 36.1" data-fill fill="#081219"><path d="M26.1 13l-3-3-5 5-5.1-5-3 3 5 5-5 5.1 3 3 5.1-5 5 5 3-3-5-5.1zm4.5-7.5c-6.9-6.9-18.2-6.9-25.1 0s-6.9 18.2 0 25.1 18.2 6.9 25.1 0 6.9-18.2 0-25.1zm-2.1 23c-5.8 5.8-15.2 5.8-20.9 0-5.8-5.8-5.8-15.2 0-20.9 5.8-5.8 15.2-5.8 20.9 0 5.8 5.8 5.8 15.1 0 20.9z"/></svg>',
 		},
 	}),
 

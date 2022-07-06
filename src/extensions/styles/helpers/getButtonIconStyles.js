@@ -235,8 +235,8 @@ const getButtonIconStyles = ({
 	obj,
 	blockStyle,
 	isHover = false,
-	target,
-	wrapperTarget,
+	target = '',
+	wrapperTarget = '',
 }) => {
 	const hasIcon = !!obj['icon-content'];
 	const {

@@ -74,6 +74,7 @@ class MaxiBlocks_Styles
                 'shape-divider',
                 'relations',
 				'video',
+				'search',
             ];
 
             foreach ($scripts as &$script) {

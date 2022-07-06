@@ -59,17 +59,18 @@ const IconControl = props => {
 		blockStyle,
 		isHover = false,
 		isInteractionBuilder = false,
-		disableIconInherit = false,
 		disableBackground = false,
+		disableIconInherit = false,
+		disableIconOnly = false,
 		disablePadding = false,
+		disablePosition = false,
+		disableSpacing = false,
 		getIconWithColor,
 		'icon-only': iconOnly,
 		'icon-inherit': iconInherit,
 		'icon-content': iconContent,
 		type = 'button-icon',
 	} = props;
-
-	const isSearch = type === 'search-icon';
 
 	const classes = classnames('maxi-icon-control', className);
 
@@ -174,7 +175,7 @@ const IconControl = props => {
 			{iconContent && (
 				<>
 					{!isInteractionBuilder &&
-						!isSearch &&
+						!disableIconOnly &&
 						!isHover &&
 						breakpoint === 'general' && (
 							<>
@@ -223,7 +224,7 @@ const IconControl = props => {
 						isHover={isHover}
 						content={props['icon-content']}
 					/>
-					{!isHover && !iconOnly && (
+					{!disableSpacing && !isHover && !iconOnly && (
 						<>
 							<AdvancedNumberControl
 								label={__('Spacing', 'maxi-blocks')}
@@ -250,17 +251,19 @@ const IconControl = props => {
 									})
 								}
 							/>
-							<AxisPositionControl
-								label='Icon'
-								className='maxi-icon-position-control'
-								selected={props['icon-position']}
-								onChange={val => {
-									onChange({
-										'icon-position': val,
-									});
-								}}
-								breakpoint={breakpoint}
-							/>
+							{!disablePosition && (
+								<AxisPositionControl
+									label='Icon'
+									className='maxi-icon-position-control'
+									selected={props['icon-position']}
+									onChange={val => {
+										onChange({
+											'icon-position': val,
+										});
+									}}
+									breakpoint={breakpoint}
+								/>
+							)}
 						</>
 					)}
 					{!disableIconInherit &&

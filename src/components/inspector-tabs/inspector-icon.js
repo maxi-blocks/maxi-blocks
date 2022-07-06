@@ -11,7 +11,17 @@ import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 
-const icon = ({ props, depth = 2, prefix }) => {
+const icon = ({
+	props,
+	type,
+	depth = 2,
+	disableBackground = false,
+	disableIconInherit = false,
+	disableIconOnly = false,
+	disablePadding = false,
+	disablePosition = false,
+	disableSpacing = false,
+}) => {
 	const {
 		attributes,
 		deviceType,
@@ -31,6 +41,13 @@ const icon = ({ props, depth = 2, prefix }) => {
 		breakpoint: deviceType,
 		clientId,
 		blockStyle,
+		disableBackground,
+		disableIconInherit,
+		disableIconOnly,
+		disablePadding,
+		disablePosition,
+		disableSpacing,
+		type,
 		getIconWithColor: args => getIconWithColor(attributes, args),
 	};
 
@@ -115,6 +132,7 @@ const icon = ({ props, depth = 2, prefix }) => {
 						),
 					},
 				]}
+				depth={depth}
 			/>
 		),
 	};

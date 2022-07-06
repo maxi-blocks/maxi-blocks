@@ -24,7 +24,7 @@ const typography = ({
 	hoverGlobalProps,
 	depth = 2,
 	inlineTarget = '.maxi-text-block__content',
-	prefix,
+	prefix = '',
 }) => {
 	const {
 		attributes,
@@ -109,7 +109,8 @@ const typography = ({
 										selected={hoverStatus}
 										onChange={val =>
 											maxiSetAttributes({
-												'typography-status-hover': val,
+												[`${prefix}typography-status-hover`]:
+													val,
 											})
 										}
 									/>

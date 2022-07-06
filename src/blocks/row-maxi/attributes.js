@@ -19,7 +19,6 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('Row', 'maxi-blocks'),
 	},
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,

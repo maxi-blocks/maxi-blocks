@@ -25,7 +25,6 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('Icon Maxi', 'maxi-blocks'),
 	},
 	openFirstTime: {
 		type: 'boolean',

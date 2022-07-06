@@ -20,7 +20,6 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('Container', 'maxi-blocks'),
 	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,

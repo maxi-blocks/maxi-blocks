@@ -20,7 +20,6 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('Column', 'maxi-blocks'),
 	},
 	...attributesData.blockBackground,
 	...attributesData.border,

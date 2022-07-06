@@ -25,7 +25,6 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('Button', 'maxi-blocks'),
 	},
 	buttonContent: {
 		type: 'string',

@@ -62,7 +62,7 @@ const attributes = breakpointAttributesCreator({
 
 const isEligible = blockAttributes =>
 	Object.keys(blockAttributes).some(key => key in attributes) ||
-	(blockAttributes.relations &&
+	(!!blockAttributes.relations &&
 		blockAttributes.relations.some(relation =>
 			Object.keys(relation.attributes).some(key => key in attributes)
 		));

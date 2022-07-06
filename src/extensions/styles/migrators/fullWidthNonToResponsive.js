@@ -1,12 +1,6 @@
 import { isNil } from 'lodash';
 
-const isEligible = blockAttributes => {
-	if (!isNil(blockAttributes.blockFullWidth)) {
-		return true;
-	}
-
-	return false;
-};
+const isEligible = blockAttributes => !isNil(blockAttributes.blockFullWidth);
 
 const attributes = isContainer => {
 	return {
@@ -31,20 +25,24 @@ const migrate = ({ newAttributes, prefix }) => {
 	return newAttributes;
 };
 
-const saveProps = (prefix, { props, extendedAttributes }) => {
+const getSaveProps = (
+	prefix,
+	[props, extendedWrapperAttributes, extendedAttributes]
+) => {
 	const { attributes } = props;
 	const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
 
 	return [
 		{ ...props, attributes: restAttrs },
 		{
-			...extendedAttributes,
+			...extendedWrapperAttributes,
 			'data-align': blockFullWidth,
 		},
-		...(prefix && {
-			'data-align': fullWidth,
-		}),
+		{
+			...extendedAttributes,
+			...(prefix && { 'data-align': fullWidth }),
+		},
 	];
 };
 
-export default { isEligible, attributes, migrate, saveProps };
+export default { isEligible, attributes, migrate, getSaveProps };

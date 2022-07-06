@@ -1,6 +1,14 @@
+/**
+ * Internal dependencies
+ */
 import positionMigrator from './positionMigrator';
 import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
 import transformMigrator from './transformMigrator';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 const blockMigrator = ({
 	attributes,
@@ -17,36 +25,64 @@ const blockMigrator = ({
 		...innerBlockMigrators,
 	];
 
-	return migrators.map(migrator => {
-		const {
-			isEligible,
-			attributes: newAttributes,
-			migrate,
-			saveProps,
-		} = migrator;
-
-		return {
+	return [
+		{
 			isEligible: blockAttributes =>
-				isEligible(blockAttributes, attributes),
-			attributes: { ...attributes, ...newAttributes(isContainer) },
-			migrate: oldAttributes =>
-				migrate({
-					newAttributes: { ...oldAttributes },
-					attributes,
-					prefix,
-					selectors,
-				}),
-			save: props =>
-				saveProps
-					? save(
-							...saveProps(prefix, {
-								props,
-								extendedAttributes: {},
-							})
-					  )
-					: save(props),
-		};
-	});
+				migrators.some(migrator =>
+					migrator.isEligible(blockAttributes, attributes)
+				),
+
+			attributes: {
+				...attributes,
+				...migrators.reduce((acc, migrator) => {
+					return { ...acc, ...migrator.attributes(isContainer) };
+				}, {}),
+			},
+
+			migrate: newAttributes => {
+				return migrators.reduce(
+					(acc, migrator) => {
+						if (migrator.isEligible(newAttributes, attributes))
+							return migrator.migrate({
+								newAttributes: { ...acc },
+								attributes,
+								prefix,
+								selectors,
+							});
+
+						return acc;
+					},
+					{ ...newAttributes }
+				);
+			},
+
+			save: props => {
+				const [
+					saveProps,
+					extendedWrapperAttributes,
+					extendedAttributes,
+				] = migrators.reduce(
+					(acc, migrator) => {
+						if (migrator.getSaveProps)
+							return migrator.getSaveProps(prefix, acc);
+
+						return acc;
+					},
+					[props, {}, {}]
+				);
+
+				if (!isEmpty(saveProps)) {
+					return save(
+						saveProps,
+						extendedWrapperAttributes,
+						extendedAttributes
+					);
+				}
+
+				return save(props);
+			},
+		},
+	];
 };
 
 export default blockMigrator;

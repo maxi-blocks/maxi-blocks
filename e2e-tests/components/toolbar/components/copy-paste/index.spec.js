@@ -179,7 +179,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 		// open advanced
 		await page.$eval(
-			'.components-popover__content .maxi-tabs-control__button-Advanced',
+			'.components-popover__content .maxi-tabs-control__button-advanced',
 			button => button.click()
 		);
 

@@ -55,6 +55,7 @@ export { default as OpacityControl } from './opacity-control';
 export { default as OverflowControl } from './overflow-control';
 export { default as PaddingControl } from './padding-control';
 export { default as Placeholder } from './placeholder';
+export { default as PopupSettingsControl } from './popup-settings-control';
 export { default as PositionControl } from './position-control';
 export { default as RawHTML } from './raw-html';
 export { default as RelationControl } from './relation-control';

@@ -136,7 +136,9 @@ const MasonryItem = props => {
 						{svgCode}
 					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon' || target.includes('Line')
+						{target === 'button-icon' ||
+						target === 'search-icon' ||
+						target.includes('Line')
 							? serial.replace(' Line', '')
 							: [
 									'image-shape',

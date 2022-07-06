@@ -39,16 +39,8 @@ class edit extends MaxiBlockComponent {
 
 		const isOpen = openPane === clientId;
 
-		const ALLOWED_BLOCKS = wp.blocks
-			.getBlockTypes()
-			.map(block => block.name)
-			.filter(
-				blockName =>
-					[
-						'maxi-blocks/accordion-maxi',
-						'maxi-blocks/pane-maxi',
-					].indexOf(blockName) === -1
-			);
+		const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
+		const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
 		return [
 			<Toolbar
@@ -63,6 +55,7 @@ class edit extends MaxiBlockComponent {
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
+					template: ROW_TEMPLATE,
 					templateLock: false,
 					renderAppender: !hasInnerBlocks
 						? () => <BlockInserter clientId={clientId} />

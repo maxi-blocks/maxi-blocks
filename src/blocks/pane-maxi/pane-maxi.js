@@ -1,7 +1,5 @@
 /**
- * BLOCK: maxi-blocks/group-maxi
- *
- * Group of blocks composed with a similar style or layout
+ * BLOCK: maxi-blocks/pane-maxi
  */
 
 /**
@@ -30,6 +28,7 @@ import { groupIcon } from '../../icons';
 
 registerBlockType('maxi-blocks/pane-maxi', {
 	title: __('Pane Maxi', 'maxi-blocks'),
+	description: __('Hide some content inside of it', 'maxi-blocks'),
 	icon: groupIcon,
 	category: 'maxi-blocks',
 	supports: {

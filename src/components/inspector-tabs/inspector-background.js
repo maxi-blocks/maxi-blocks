@@ -53,6 +53,20 @@ const background = ({
 	const hoverStatus =
 		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
 
+	const backgroundControlBasicProps = {
+		prefix,
+		disableClipPath,
+		disableColor,
+		disableGradient,
+		disableImage,
+		disableNoneStyle,
+		disableSVG,
+		disableVideo,
+		clientId,
+		breakpoint: deviceType,
+		globalProps,
+	};
+
 	return {
 		label: __(`${label} background`, 'maxi-blocks'),
 		disablePadding: true,
@@ -69,7 +83,6 @@ const background = ({
 									false,
 									prefix
 								)}
-								prefix={prefix}
 								onChangeInline={obj => {
 									insertInlineStyles({
 										obj,
@@ -80,16 +93,7 @@ const background = ({
 									maxiSetAttributes(obj);
 									cleanInlineStyles(inlineTarget);
 								}}
-								disableClipPath={disableClipPath}
-								disableColor={disableColor}
-								disableGradient={disableGradient}
-								disableImage={disableImage}
-								disableNoneStyle={disableNoneStyle}
-								disableSVG={disableSVG}
-								disableVideo={disableVideo}
-								clientId={clientId}
-								breakpoint={deviceType}
-								globalProps={globalProps}
+								{...backgroundControlBasicProps}
 							/>
 						),
 					},
@@ -150,18 +154,11 @@ const background = ({
 											true,
 											prefix
 										)}
-										prefix={prefix}
 										onChange={obj => {
 											maxiSetAttributes(obj);
 										}}
-										disableImage
-										disableVideo
-										disableClipPath
-										disableSVG
 										isHover
-										clientId={clientId}
-										breakpoint={deviceType}
-										globalProps={hoverGlobalProps}
+										{...backgroundControlBasicProps}
 									/>
 								)}
 							</>

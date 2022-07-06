@@ -25,7 +25,6 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('Number Counter', 'maxi-blocks'),
 	},
 	...attributesData.numberCounter,
 	...prefixAttributesCreator({ obj: attributesData.border, prefix }),

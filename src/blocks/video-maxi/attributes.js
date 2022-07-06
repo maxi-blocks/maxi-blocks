@@ -18,7 +18,6 @@ const attributes = {
 
 	customLabel: {
 		type: 'string',
-		default: __('Video', 'maxi-blocks'),
 	},
 
 	...attributesData.video,

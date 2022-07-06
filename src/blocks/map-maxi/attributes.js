@@ -20,7 +20,6 @@ const attributes = {
 	...attributesData.map,
 	customLabel: {
 		type: 'string',
-		default: __('Map', 'maxi-blocks'),
 	},
 	...attributesData.border,
 	...attributesData.borderHover,

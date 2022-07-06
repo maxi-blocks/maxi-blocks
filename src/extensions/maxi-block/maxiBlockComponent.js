@@ -360,6 +360,9 @@ class MaxiBlockComponent extends Component {
 			const newUniqueID = uniqueIDGenerator(idToCheck);
 
 			this.props.attributes.uniqueID = newUniqueID;
+			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
+			this.props.attributes.customLabel =
+				label.charAt(0).toUpperCase() + label.slice(1);
 
 			return newUniqueID;
 		}

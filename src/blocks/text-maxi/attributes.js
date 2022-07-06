@@ -29,7 +29,6 @@ const attributes = {
 	 */
 	customLabel: {
 		type: 'string',
-		default: __('Text', 'maxi-blocks'),
 	},
 	content: {
 		type: 'string',

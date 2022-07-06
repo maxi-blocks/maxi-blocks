@@ -48,29 +48,6 @@ const Inspector = props => {
 		forceSingle: true,
 	});
 
-	console.log('arrow');
-	console.log(
-		getGroupAttributes(attributes, [
-			'arrowIcon',
-			'arrowIconBackground',
-			'arrowIconBackgroundColor',
-			'arrowIconBackgroundGradient',
-			'arrowIconBorder',
-			'arrowIconBorderRadius',
-			'arrowIconBorderWidth',
-			'arrowIconPadding',
-			'arrowIconBoxShadow',
-			'arrowIconHover',
-			'arrowIconBackgroundHover',
-			'arrowIconBackgroundColorHover',
-			'arrowIconBackgroundGradientHover',
-			'arrowIconBorderHover',
-			'arrowIconBorderRadiusHover',
-			'arrowIconBorderWidthHover',
-			'arrowIconBoxShadowHover',
-		])
-	);
-
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}

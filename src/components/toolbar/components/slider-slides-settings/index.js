@@ -2,14 +2,20 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useDispatch, select } from '@wordpress/data';
+import { useState } from '@wordpress/element';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../advanced-number-control';
-import ToggleSwitch from '../../../toggle-switch';
-import SelectControl from '../../../select-control';
+
 import ToolbarPopover from '../toolbar-popover';
+import Button from '../../../button';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -19,127 +25,83 @@ import {
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarSliderSettings } from '../../../../icons';
+import { toolbarSlideSettings, toolbarRemove } from '../../../../icons';
 
 /**
  * Slider settings
  */
 const SliderSlidesSettings = props => {
-	const {
-		onChange,
-		isLoop,
-		isAutoplay,
-		pauseOnHover,
-		pauseOnInteraction,
-		attributes,
-	} = props;
+	const { numberOfSlides } = props;
+
+	const { duplicateBlocks } = useDispatch('core/block-editor');
+	const { removeBlock } = useDispatch('core/block-editor');
+
+	const sliderId = wp.data
+		.select('core/block-editor')
+		.getSelectedBlockClientId();
+
+	const innerBlocks =
+		select('core/block-editor').getBlock(sliderId)?.innerBlocks;
+	const innerBlockCount = innerBlocks?.length || numberOfSlides;
+
+	const getInnerBlocksIds = () => {
+		const array = Object.values(innerBlocks);
+
+		array.forEach((element, key) => {
+			array[key] = element?.clientId;
+		});
+
+		return array;
+	};
+
+	const slideIds = getInnerBlocksIds();
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__size'
-			tooltip={__('Slider Settings', 'maxi-blocks')}
-			icon={toolbarSliderSettings}
-			advancedOptions='height width'
+			className='toolbar-item__slide'
+			tooltip={__('Slides Settings', 'maxi-blocks')}
+			icon={toolbarSlideSettings}
 		>
-			<div className='toolbar-item__size__popover'>
-				<ToggleSwitch
-					label={__('Autoplay', 'maxi-blocks')}
-					selected={isAutoplay}
-					onChange={val => {
-						onChange({ isAutoplay: val });
+			<div className='toolbar-item__slide__popover'>
+				{Array.from(Array(innerBlockCount).keys()).map(i => {
+					return (
+						<div
+							className={classnames(
+								'maxi-slider-toolbar__slide',
+								`maxi-slider-toolbar__slide--${i}`,
+								i === 0 && ' maxi-slider-toolbar__slide--active'
+							)}
+							key={`maxi-slider-toolbar__slide--${i}`}
+						>
+							<span>{i + 1}</span>
+							<Button
+								className={classnames(
+									`maxi-slider-toolbar__slide--${i}`,
+									'maxi-slider-toolbar__slide-remove'
+								)}
+								showTooltip='false'
+								onClick={() => {
+									const id = slideIds[i];
+									removeBlock(id);
+								}}
+								icon={toolbarRemove}
+							/>
+						</div>
+					);
+				})}
+				<Button
+					className={classnames(
+						'maxi-slider-toolbar__slide',
+						'maxi-slider-toolbar__slide--add'
+					)}
+					showTooltip='false'
+					onClick={() => {
+						const id = slideIds[slideIds.length - 1];
+						duplicateBlocks([id]);
 					}}
-				/>
-				{isAutoplay && (
-					<>
-						<ToggleSwitch
-							label={__('Pause on hover', 'maxi-blocks')}
-							selected={pauseOnHover}
-							onChange={val => {
-								onChange({ pauseOnHover: val });
-							}}
-						/>
-						<ToggleSwitch
-							label={__('Pause on interaction', 'maxi-blocks')}
-							selected={pauseOnInteraction}
-							onChange={val => {
-								onChange({ pauseOnInteraction: val });
-							}}
-						/>
-						<AdvancedNumberControl
-							label={__('Autoplay speed (ms)', 'maxi-blocks')}
-							min={500}
-							max={10000}
-							initial={1}
-							step={1}
-							value={props['slider-autoplay-speed']}
-							onChangeValue={val => {
-								onChange({
-									'slider-autoplay-speed':
-										val !== undefined && val !== ''
-											? val
-											: '',
-								});
-							}}
-							onReset={() =>
-								onChange({
-									'slider-autoplay-speed':
-										getDefaultAttribute('autoplay-speed'),
-								})
-							}
-						/>
-					</>
-				)}
-
-				<ToggleSwitch
-					label={__('Infinite loop', 'maxi-blocks')}
-					selected={isLoop}
-					onChange={val => {
-						onChange({ isLoop: val });
-					}}
-				/>
-				<SelectControl
-					label={__('Transition', 'maxi-blocks')}
-					options={[
-						{
-							label: __('Slide', 'maxi-blocks'),
-							value: 'slide',
-						},
-						{
-							label: __('Fade', 'maxi-blocks'),
-							value: 'fade',
-						},
-					]}
-					value={getLastBreakpointAttribute({
-						target: 'slider-transition',
-						attributes,
-					})}
-					onChange={val => {
-						onChange({
-							'slider-transition': val,
-						});
-					}}
-				/>
-				<AdvancedNumberControl
-					label={__('Transition speed (ms)', 'maxi-blocks')}
-					min={0}
-					max={10000}
-					initial={200}
-					step={1}
-					value={props['slider-transition-speed']}
-					onChangeValue={val => {
-						onChange({
-							'slider-transition-speed':
-								val !== undefined && val !== '' ? val : '',
-						});
-					}}
-					onReset={() =>
-						onChange({
-							'slider-transition-speed': getDefaultAttribute(
-								'slider-transition-speed'
-							),
-						})
-					}
-				/>
+				>
+					<span>+</span>
+				</Button>
 			</div>
 		</ToolbarPopover>
 	);

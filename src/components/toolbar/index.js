@@ -43,6 +43,7 @@ import {
 	NumberCounterReplay,
 	Size,
 	SliderSettings,
+	SliderSlidesSettings,
 	SvgWidth,
 	TextColor,
 	TextLevel,
@@ -111,6 +112,7 @@ const MaxiToolbar = memo(
 			uniqueID,
 			blockStyle,
 			svgType,
+			numberOfSlides,
 		} = attributes;
 
 		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
@@ -561,10 +563,18 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 						/>
 						{name === 'maxi-blocks/slider-maxi' && (
-							<SliderSettings
-								{...getGroupAttributes(attributes, 'slider')}
-								onChange={obj => maxiSetAttributes(obj)}
-							/>
+							<>
+								<SliderSlidesSettings
+									numberOfSlides={numberOfSlides}
+								/>
+								<SliderSettings
+									{...getGroupAttributes(
+										attributes,
+										'slider'
+									)}
+									onChange={obj => maxiSetAttributes(obj)}
+								/>
+							</>
 						)}
 						<Link
 							blockName={name}

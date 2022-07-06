@@ -16,27 +16,34 @@ import { isEmpty } from 'lodash';
 /**
  * Save
  */
-const addAlt = (content, title, description) => {
+const addAlt = (content, title, description, uniqueID) => {
 	if (isEmpty(title) && isEmpty(description)) {
 		return content;
 	}
 	let withAlt = content;
+	const titleID = isEmpty(title) ? '' : `title-${uniqueID}`;
+	const descID = isEmpty(description) ? '' : `desc-${uniqueID}`;
+
 	if (!isEmpty(title)) {
 		withAlt = withAlt.replace(
 			/<svg.*?>/,
-			`${withAlt.match(/<svg.*?>/)[0]}<title>${title}</title>`
+			`<svg${withAlt.match(/<svg(.*?)>/)[1]} aria-labelledby="${titleID}${
+				!isEmpty(description) ? ` ${descID}` : ''
+			}"><title id="${titleID}">${title}</title>`
 		);
 	}
 	if (!isEmpty(description)) {
 		if (!isEmpty(title))
 			withAlt = withAlt.replace(
 				'</title>',
-				`</title><desc>${description}</desc>`
+				`</title><desc id="${descID}">${description}</desc>`
 			);
 		else
 			withAlt = withAlt.replace(
 				/<svg.*?>/,
-				`${withAlt.match(/<svg.*?>/)[0]}<desc>${description}</desc>`
+				`<svg${
+					withAlt.match(/<svg(.*?)>/)[1]
+				} aria-labelledby="${descID}"><desc id="${descID}">${description}</desc>`
 			);
 	}
 
@@ -57,7 +64,8 @@ const save = (props, extendedAttributes = {}) => {
 				{addAlt(
 					attributes.content,
 					attributes.altTitle,
-					attributes.altDescription
+					attributes.altDescription,
+					attributes.uniqueID
 				)}
 			</RawHTML>
 		</MaxiBlock.save>
